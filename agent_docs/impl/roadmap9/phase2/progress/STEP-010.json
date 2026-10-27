@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "taskId": "STEP-010",
+  "status": "in-progress",
+  "implementationCommit": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
+  "gate": "G-PATH",
+  "completedWork": [
+    "private topology kernel",
+    "native primitive review",
+    "clean review qualification"
+  ],
+  "openObligations": [
+    "G-PATH exact design and visual approval",
+    "public schema and primitive edit integration",
+    "STEP-011 geometry and STEP-012 renderer/persistence consumers"
+  ]
+}

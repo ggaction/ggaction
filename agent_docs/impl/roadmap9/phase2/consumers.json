@@ -4,15 +4,17 @@
   "cells": [
     {
       "id": "topology-kernel",
-      "status": "implemented-awaiting-clean-qualification",
+      "status": "review-preparation-passed",
       "owner": "src/grammar/pathTopology.js",
-      "obligation": "dense exact commands, subpaths, copying, whole-path limit"
+      "obligation": "dense exact commands, subpaths, copying, whole-path limit",
+      "evidence": "agent_docs/impl/roadmap9/phase2/evidence/summary.json"
     },
     {
       "id": "native-primitive-review",
-      "status": "implemented-awaiting-clean-qualification",
+      "status": "review-preparation-passed",
       "owner": "test/gates/compound-path/review.render.js",
-      "obligation": "six targets; four backends; not product integration"
+      "obligation": "six targets; four backends; not product integration",
+      "evidence": "agent_docs/impl/roadmap9/phase2/evidence/summary.json"
     },
     {
       "id": "graphic-validation-and-editing",

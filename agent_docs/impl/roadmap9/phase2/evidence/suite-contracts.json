@@ -1,0 +1,55 @@
+{
+  "label": "suite-contracts",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/agent-docs-navigation.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/oracle-independence.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/package-artifact.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/package-boundaries.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/test-discovery.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 2631,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-27T18:53:29.705Z",
+  "finishedAt": "2026-10-27T18:53:32.336Z",
+  "source": {
+    "available": true,
+    "commit": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "ca2c08f397f82ddded783197043003017eeae5eeb24553898bc127fb3233717f",
+  "discovery": {
+    "suite": "contracts",
+    "selectors": [
+      "contracts/oracle-independence.test.js",
+      "contracts/test-discovery.test.js",
+      "contracts/agent-docs-navigation.test.js",
+      "contracts/package-boundaries.test.js",
+      "contracts/package-artifact.test.js"
+    ],
+    "files": [
+      "test/contracts/agent-docs-navigation.test.js",
+      "test/contracts/oracle-independence.test.js",
+      "test/contracts/package-artifact.test.js",
+      "test/contracts/package-boundaries.test.js",
+      "test/contracts/test-discovery.test.js"
+    ]
+  },
+  "bytes": 7306,
+  "retainedBytes": 7306,
+  "truncated": false
+}

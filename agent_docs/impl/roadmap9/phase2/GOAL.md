@@ -1,6 +1,6 @@
 # Phase 2 — 복합 경로와 공통 geometry
 
-상태: 진행 중. STEP-010의 순수 topology kernel과 새 시각 계약의 검토 자료를 준비한다.
+상태: **G-PATH ready-for-review**. STEP-010의 순수 topology kernel과 검토 준비 검증을 완료했다.
 STEP-010–012 제품 통합 및 AT-11/12 완료는 아직 아니다.
 
 사용자 “승인 계속 진행” (2026-10-27)에 따라 Phase 1 다음 작업을 시작했다.
@@ -35,3 +35,26 @@ G-PATH 승인 후 STEP-010–012의 공개 검증·geometry·네 renderer·scene
 generated metadata와 docs build/browser를 통합 checkpoint에서 요구한다. 실행계획에 이 검사들을 선언한다.
 기존 exact cubic extrema owner를 재사용하고, 현재 단일 subpath 가정인 stroke/clip 소비자를 교체한다.
 후속 hit runtime·animation과 신규 chart family는 원안의 뒤 단계에 남기며 geometry 의무를 누락하지 않는다.
+
+## 검토 준비 검증 결과
+
+기준 commit: `ebc63915af5837d7a7500bae420500b4f5c2d68c`. 아래 실행은 모두 시작·종료가 같은 clean revision이다.
+이후 evidence 기록 commit은 제품·test source를 바꾸지 않는다.
+
+| 검사 | 결과 |
+|---|---|
+| suite-unit | 15 passed, 0 failed; 2 files |
+| suite-gates | 2 passed, 0 failed; 1 files |
+| suite-contracts | 36 passed, 0 failed; 5 files |
+| suite-all | 6360 passed, 0 failed; 1048 files |
+| suite-render | 1 passed, 0 failed; 1 files |
+| package-check | exit 0 |
+| machine-docs | exit 0 |
+
+[실행 집계](evidence/summary.json), [네 backend 출력 결과](evidence/render-results.json), [완료 증거](preparation.json), [검증 결과](preparation-validation.json)를 보존한다.
+검토 준비만 complete이며 제품 STEP-010–012는 계속 열려 있다. 이미지는 아래 명령으로 재생성한다.
+
+```sh
+node scripts/run-tests.js render gates/compound-path/review.render.js
+node scripts/verification-evidence.js agent_docs/impl/roadmap9/phase2/review-plan.json agent_docs/impl/roadmap9/phase2/preparation.json
+```

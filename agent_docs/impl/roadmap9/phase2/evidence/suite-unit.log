@@ -1,0 +1,100 @@
+TAP version 13
+# Subtest: preserves three separate rings and their authored winding
+ok 1 - preserves three separate rings and their authored winding
+  ---
+  duration_ms: 1.387792
+  type: 'test'
+  ...
+# Subtest: keeps open curves, closed point paths and consecutive moves distinct
+ok 2 - keeps open curves, closed point paths and consecutive moves distinct
+  ---
+  duration_ms: 0.199292
+  type: 'test'
+  ...
+# Subtest: copies every command and freezes the result without modifying caller input
+ok 3 - copies every command and freezes the result without modifying caller input
+  ---
+  duration_ms: 0.138667
+  type: 'test'
+  ...
+# Subtest: rejects missing moves and commands after closure at their exact index
+ok 4 - rejects missing moves and commands after closure at their exact index
+  ---
+  duration_ms: 0.222875
+  type: 'test'
+  ...
+# Subtest: rejects unknown, nonfinite, sparse and accessor-bearing commands
+ok 5 - rejects unknown, nonfinite, sparse and accessor-bearing commands
+  ---
+  duration_ms: 0.337417
+  type: 'test'
+  ...
+# Subtest: applies the existing command limit to the complete compound path
+ok 6 - applies the existing command limit to the complete compound path
+  ---
+  duration_ms: 180.414833
+  type: 'test'
+  ...
+# Subtest: requires nonempty individual subpaths when building a compound path
+ok 7 - requires nonempty individual subpaths when building a compound path
+  ---
+  duration_ms: 0.158708
+  type: 'test'
+  ...
+# Subtest: path-specific inclusive 30000 bound preserves unrelated generated cardinality
+ok 8 - path-specific inclusive 30000 bound preserves unrelated generated cardinality
+  ---
+  duration_ms: 88.154333
+  type: 'test'
+  ...
+# Subtest: all interpolations count expanded commands and reject first overflowing observation
+ok 9 - all interpolations count expanded commands and reject first overflowing observation
+  ---
+  duration_ms: 144.05375
+  type: 'test'
+  ...
+# Subtest: area limit combines both boundaries and closing command, including oriented smooth curves
+ok 10 - area limit combines both boundaries and closing command, including oriented smooth curves
+  ---
+  duration_ms: 278.478875
+  type: 'test'
+  ...
+# Subtest: ordinary full and basic lines persist all 12070 connected vertices and replay scale/style edits
+ok 11 - ordinary full and basic lines persist all 12070 connected vertices and replay scale/style edits
+  ---
+  duration_ms: 585.555875
+  type: 'test'
+  ...
+# Subtest: ordinary line rejects 30001 atomically and 30000 survives concrete validation
+ok 12 - ordinary line rejects 30001 atomically and 30000 survives concrete validation
+  ---
+  duration_ms: 485.881583
+  type: 'test'
+  ...
+# Subtest: a 25909-vertex line retains every coordinate through native editing and data revision
+ok 13 - a 25909-vertex line retains every coordinate through native editing and data revision
+  ---
+  duration_ms: 1819.409459
+  type: 'test'
+  ...
+# Subtest: 30001-vertex creation and revision reject atomically with the shared diagnostic
+ok 14 - 30001-vertex creation and revision reject atomically with the shared diagnostic
+  ---
+  duration_ms: 460.728833
+  type: 'test'
+  ...
+# Subtest: a large concrete line renders without reduction in SVG, Canvas and PDF
+ok 15 - a large concrete line renders without reduction in SVG, Canvas and PDF
+  ---
+  duration_ms: 765.166208
+  type: 'test'
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4866.729625

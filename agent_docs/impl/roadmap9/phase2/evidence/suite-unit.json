@@ -1,0 +1,46 @@
+{
+  "label": "suite-unit",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/unit/grammar/compound-path-topology.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/unit/grammar/path-command-limits.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 4945,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-27T18:53:24.339Z",
+  "finishedAt": "2026-10-27T18:53:29.285Z",
+  "source": {
+    "available": true,
+    "commit": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "f5efdbfc4ed12bbe2e03313f071ae5c7f58c1250de36524f591d37d6320a756a",
+  "discovery": {
+    "suite": "unit",
+    "selectors": [
+      "unit/grammar/compound-path-topology.test.js",
+      "unit/grammar/path-command-limits.test.js"
+    ],
+    "files": [
+      "test/unit/grammar/compound-path-topology.test.js",
+      "test/unit/grammar/path-command-limits.test.js"
+    ]
+  },
+  "bytes": 3447,
+  "retainedBytes": 3447,
+  "truncated": false
+}

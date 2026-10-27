@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "implementationCommit": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
+  "scope": "Review preparation only; product integration remains pending G-PATH approval.",
+  "runs": [
+    {
+      "label": "suite-unit",
+      "code": 0,
+      "durationMs": 4945,
+      "testFiles": 2,
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "label": "suite-gates",
+      "code": 0,
+      "durationMs": 248,
+      "testFiles": 1,
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "label": "suite-contracts",
+      "code": 0,
+      "durationMs": 2631,
+      "testFiles": 5,
+      "tests": 36,
+      "pass": 36,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "label": "suite-all",
+      "code": 0,
+      "durationMs": 292050,
+      "testFiles": 1048,
+      "tests": 6360,
+      "pass": 6360,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "label": "suite-render",
+      "code": 0,
+      "durationMs": 3001,
+      "testFiles": 1,
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    {
+      "label": "package-check",
+      "code": 0,
+      "durationMs": 3268,
+      "testFiles": 0
+    },
+    {
+      "label": "machine-docs",
+      "code": 0,
+      "durationMs": 168,
+      "testFiles": 0
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "src/grammar/pathCommands.js",
+      "sha256": "8d0ab6b04331caeafb4a9b03b70d8c02bfd9aca8396500f60dedcfe71e311821"
+    },
+    {
+      "path": "src/grammar/pathTopology.js",
+      "sha256": "7bf4c69254ba96f3d8d5f14c703a308d55f7b46c237609dee3c77a5deb4c14f8"
+    },
+    {
+      "path": "test/fixtures/geometry/compound-path.js",
+      "sha256": "3eed2e5984b749f6c4043155b2882054219411f914cea1a03f36a596d09728bf"
+    },
+    {
+      "path": "test/gates/compound-path/contract.test.js",
+      "sha256": "89b63b39cb8bdd9f47b22f2f3d30e04c9ed196f0d6aadf5cce299bcff30f096f"
+    },
+    {
+      "path": "test/gates/compound-path/index.html",
+      "sha256": "35f08fcddf17886cecaa5831f5482c334fc75a9a0559bca1d37e94dce9066eec"
+    },
+    {
+      "path": "test/gates/compound-path/manifest.js",
+      "sha256": "f3e1873325e23c87912eb1323d5886971cf530b0d86e066c4078c4beb8622f40"
+    },
+    {
+      "path": "test/gates/compound-path/primitive.program.js",
+      "sha256": "fb65e0444aa572c412827ff3a1e6119af8ab44f6390af78b3e823524ba240900"
+    },
+    {
+      "path": "test/gates/compound-path/review.render.js",
+      "sha256": "da90c2af2634b1caffd5c5641582ad329cdde9cb50e833d785227c1b46280c2c"
+    },
+    {
+      "path": "test/gates/compound-path/target.program.js",
+      "sha256": "5923f2f6385ff2d153482f7c30e08dd5bddf17aac68b2440f1e22054b42283b6"
+    },
+    {
+      "path": "test/unit/grammar/compound-path-topology.test.js",
+      "sha256": "889c95117ed0a1e9efa0bc5adc9ca8e69630854273cf5c8d6c93751d2cd5befa"
+    }
+  ],
+  "visualReview": {
+    "contactSheet": {
+      "path": ".artifacts/test/png/review/compound-path/contact-sheet.png",
+      "sha256": "7019dc82f4b3422a4c4171c22b7c87c7f8e1fbb00b293f5417a5b4c7d4a79f45"
+    },
+    "regenerate": [
+      "node",
+      "scripts/run-tests.js",
+      "render",
+      "gates/compound-path/review.render.js"
+    ],
+    "variants": 6,
+    "backends": [
+      "SVG",
+      "browser Canvas",
+      "native PNG",
+      "native PDF"
+    ],
+    "productIntegration": "pending-approval"
+  }
+}

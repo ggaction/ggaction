@@ -6,7 +6,7 @@
 - [x] 순수 subpath 분리·조립 kernel 및 독립 면적/좌표 시험
 - [x] 6개 primitive target과 공개 호출안 작성
 - [x] SVG·Canvas·PNG·PDF native primitive 검사
-- [ ] 같은 clean revision에서 누적 검사 및 원격 검토 checkpoint
+- [x] 같은 clean revision에서 누적 검사 및 원격 검토 checkpoint
 - [ ] G-PATH D1–D6와 시각 target 명시 승인
 - [ ] STEP-010 공개 schema/primitive validation 연결
 - [ ] STEP-011 flatten·arc·winding·distance·stroke/clip bounds 연결

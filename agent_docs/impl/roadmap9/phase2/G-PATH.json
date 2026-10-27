@@ -1,6 +1,6 @@
 {
   "id": "G-PATH",
-  "state": "planned",
+  "state": "ready-for-review",
   "scope": [
     "STEP-010",
     "STEP-011",
@@ -24,8 +24,8 @@
     "priorApproval": "phase1/G-CORE.json의 명시 승인 범위는 D1–D8 / STEP-004–009다.",
     "designApproval": null
   },
-  "codeRevision": null,
-  "evidenceRevision": null,
+  "codeRevision": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
+  "evidenceRevision": "sha256:4736951f46440de115c0fbc2f76985ca6d7af60569b76a0967f6462e5dc7658c",
   "requiredChecks": [
     "suite-unit",
     "suite-gates",
@@ -36,9 +36,15 @@
     "machine-docs"
   ],
   "remaining": [
-    "clean revision 누적 검증과 원격 evidence",
     "D1–D6 공개/저장 계약과 시각 target 승인",
     "STEP-010–012 제품 통합"
   ],
-  "notice": "원안 G-CORE와 G-VISUAL의 복합 경로 결정을 한 검토 묶음에 기록한다."
+  "notice": "원안 G-CORE와 G-VISUAL의 복합 경로 결정을 한 검토 묶음에 기록한다.",
+  "evidenceManifest": "agent_docs/impl/roadmap9/phase2/preparation.json",
+  "reviewPreparation": {
+    "complete": [
+      "PATH-REVIEW-PREPARATION"
+    ],
+    "ready": []
+  }
 }

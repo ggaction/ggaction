@@ -1,0 +1,1727 @@
+{
+  "productIntegration": "pending-approval",
+  "variants": [
+    {
+      "variant": "nonzero-hole",
+      "independentNativePixelsEqual": true,
+      "publicIntegration": "pending-approval",
+      "checks": {
+        "png": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              115,
+              171,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              115,
+              171,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              255,
+              179,
+              92,
+              255
+            ],
+            "actual": [
+              255,
+              179,
+              92,
+              255
+            ]
+          }
+        ],
+        "svg": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              113,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              113,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              255,
+              179,
+              92,
+              255
+            ],
+            "actual": [
+              255,
+              179,
+              92,
+              255
+            ]
+          }
+        ],
+        "pdf": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              255,
+              179,
+              92,
+              255
+            ],
+            "actual": [
+              255,
+              179,
+              92,
+              255
+            ]
+          }
+        ],
+        "canvas": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              255,
+              179,
+              92,
+              255
+            ],
+            "actual": [
+              255,
+              179,
+              92,
+              255
+            ]
+          }
+        ]
+      },
+      "sha256": {
+        "png": "8e97a12883c5830170fbaf8052a8fb0bd8ecbe405d915e5f97b0c789463d832c",
+        "svg": "504bcac8da4c297d121418bb8c36821ae854df35da3be18de6cb3bdd03003226",
+        "pdf": "119792810b1775ba962c2b5d665c4f36a653def67704bf7a92b61e8ebf1b269a",
+        "browser": "13548aaf33355152e99a310eb5202b75c2411317a7e07ff5f20b3a6c73dacc27"
+      }
+    },
+    {
+      "variant": "evenodd-hole",
+      "independentNativePixelsEqual": true,
+      "publicIntegration": "pending-approval",
+      "checks": {
+        "png": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              115,
+              171,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              115,
+              171,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              255,
+              179,
+              92,
+              255
+            ],
+            "actual": [
+              255,
+              179,
+              92,
+              255
+            ]
+          }
+        ],
+        "svg": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              113,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              113,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              255,
+              179,
+              92,
+              255
+            ],
+            "actual": [
+              255,
+              179,
+              92,
+              255
+            ]
+          }
+        ],
+        "pdf": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              255,
+              179,
+              92,
+              255
+            ],
+            "actual": [
+              255,
+              179,
+              92,
+              255
+            ]
+          }
+        ],
+        "canvas": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              255,
+              179,
+              92,
+              255
+            ],
+            "actual": [
+              255,
+              179,
+              92,
+              255
+            ]
+          }
+        ]
+      },
+      "sha256": {
+        "png": "8e97a12883c5830170fbaf8052a8fb0bd8ecbe405d915e5f97b0c789463d832c",
+        "svg": "0c411fb4c293025949a305f9c18b3e026e7d789fa0d57690697049d359d3c6b9",
+        "pdf": "f42cd058bcd636243be7595087c9be5717fd59cc180aa84d86a33d03875f5a4e",
+        "browser": "13548aaf33355152e99a310eb5202b75c2411317a7e07ff5f20b3a6c73dacc27"
+      }
+    },
+    {
+      "variant": "nonzero-solid",
+      "independentNativePixelsEqual": true,
+      "publicIntegration": "pending-approval",
+      "checks": {
+        "png": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              115,
+              171,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              115,
+              171,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              114,
+              144,
+              198,
+              255
+            ],
+            "actual": [
+              115,
+              144,
+              197,
+              255
+            ]
+          }
+        ],
+        "svg": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              113,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              113,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              114,
+              144,
+              198,
+              255
+            ],
+            "actual": [
+              113,
+              143,
+              198,
+              255
+            ]
+          }
+        ],
+        "pdf": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              114,
+              144,
+              198,
+              255
+            ],
+            "actual": [
+              114,
+              144,
+              197,
+              255
+            ]
+          }
+        ],
+        "canvas": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              114,
+              144,
+              198,
+              255
+            ],
+            "actual": [
+              114,
+              143,
+              198,
+              255
+            ]
+          }
+        ]
+      },
+      "sha256": {
+        "png": "b5d4b7701a5d3553d94bd0ffe1ae79ac2acfd6de3b48507affe76aec9c8a3691",
+        "svg": "9463a9502f0780be5a43fe6e56c55ff7e8dc64eaf3063168d549eebe7246f854",
+        "pdf": "ca9c208e6f955b26773df486641a3407637202c88dbf8b9a853c282ecc654125",
+        "browser": "4cd28c31e4a2684f2fc00ff6260409958ca716fa52ab36e14d3034c52d9872b1"
+      }
+    },
+    {
+      "variant": "evenodd-clip",
+      "independentNativePixelsEqual": true,
+      "publicIntegration": "pending-approval",
+      "checks": {
+        "png": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              115,
+              171,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              115,
+              171,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              255,
+              179,
+              92,
+              255
+            ],
+            "actual": [
+              255,
+              179,
+              92,
+              255
+            ]
+          }
+        ],
+        "svg": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              255,
+              179,
+              92,
+              255
+            ],
+            "actual": [
+              255,
+              179,
+              92,
+              255
+            ]
+          }
+        ],
+        "pdf": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              255,
+              179,
+              92,
+              255
+            ],
+            "actual": [
+              255,
+              179,
+              92,
+              255
+            ]
+          }
+        ],
+        "canvas": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "outer",
+            "pixel": [
+              56,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "island",
+            "pixel": [
+              344,
+              56
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "center",
+            "pixel": [
+              152,
+              152
+            ],
+            "expected": [
+              255,
+              179,
+              92,
+              255
+            ],
+            "actual": [
+              255,
+              179,
+              92,
+              255
+            ]
+          }
+        ]
+      },
+      "sha256": {
+        "png": "d8a4fe7aa6265b36dd2be2232547d7fa879bb16ac9b73757d27177e097966e1b",
+        "svg": "ab901af9b87d7090218941c8a203790f6b457163223e109ce989d4986c20dbb9",
+        "pdf": "4440c7f4a043448b7a2a870448bc3030f865f97fcb44c43adb17d7f546c7d72b",
+        "browser": "0fa4c324627d55a39a55ce93670773b0443a9cde4d1527c98f3a6f2b48063c6c"
+      }
+    },
+    {
+      "variant": "open-fill",
+      "independentNativePixelsEqual": true,
+      "publicIntegration": "pending-approval",
+      "checks": {
+        "png": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "open-stroke-gap",
+            "pixel": [
+              152,
+              31
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "curve-fill",
+            "pixel": [
+              152,
+              80
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              115,
+              171,
+              255,
+              255
+            ]
+          }
+        ],
+        "svg": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "open-stroke-gap",
+            "pixel": [
+              152,
+              31
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "curve-fill",
+            "pixel": [
+              152,
+              80
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              113,
+              170,
+              255,
+              255
+            ]
+          }
+        ],
+        "pdf": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "open-stroke-gap",
+            "pixel": [
+              152,
+              31
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "curve-fill",
+            "pixel": [
+              152,
+              80
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          }
+        ],
+        "canvas": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "open-stroke-gap",
+            "pixel": [
+              152,
+              31
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "curve-fill",
+            "pixel": [
+              152,
+              80
+            ],
+            "expected": [
+              114,
+              171,
+              255,
+              255
+            ],
+            "actual": [
+              114,
+              170,
+              255,
+              255
+            ]
+          }
+        ]
+      },
+      "sha256": {
+        "png": "08988e256425e2e8382f34d1b3ec15b1714a4c2d81016ade21abc18c983f0fe1",
+        "svg": "0cfb7b09e9ef4c9e4bd298b53c271ddf13ca09c3e5fe65a529ebf9c52018e3e0",
+        "pdf": "69735f461c22debb2e52530fe70ed38b2b6ff1850587563528951e894dbcb062",
+        "browser": "d9c0ece19984277905e7d832bdf2bd9376630eb8e19e7dda66a131afab1829d3"
+      }
+    },
+    {
+      "variant": "point-only",
+      "independentNativePixelsEqual": true,
+      "publicIntegration": "pending-approval",
+      "checks": {
+        "png": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "zero-area",
+            "pixel": [
+              320,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          }
+        ],
+        "svg": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "zero-area",
+            "pixel": [
+              320,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          }
+        ],
+        "pdf": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "zero-area",
+            "pixel": [
+              320,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          }
+        ],
+        "canvas": [
+          {
+            "name": "outside",
+            "pixel": [
+              296,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          },
+          {
+            "name": "zero-area",
+            "pixel": [
+              320,
+              56
+            ],
+            "expected": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "actual": [
+              255,
+              255,
+              255,
+              255
+            ]
+          }
+        ]
+      },
+      "sha256": {
+        "png": "71f58b12a31c8132df12c1b8ac67d09003111f5c809a8838391bd3bf0d6be5ca",
+        "svg": "41ec46b6517ca822006144486806b7a8bf5a6d1cc5d2d4ee15648d029152b406",
+        "pdf": "fe3c677a3d1abb9e721cb35acc15f14861313c35e1b14bf1a27521a13520c6a1",
+        "browser": "a38e1c68024466a625dbf4f79ebd8a89e722fe4adbaa7eb599590e4421e4a345"
+      }
+    }
+  ]
+}

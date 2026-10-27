@@ -1,0 +1,43 @@
+{
+  "label": "suite-render",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/gates/compound-path/review.render.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 3001,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-27T18:54:22.462Z",
+  "finishedAt": "2026-10-27T18:54:25.464Z",
+  "source": {
+    "available": true,
+    "commit": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "412c086cdaf9a7e7cb79869aaae247143d70a19c6f7607058c738ad80c4c3c4d",
+  "discovery": {
+    "suite": "render",
+    "selectors": [
+      "gates/compound-path/review.render.js"
+    ],
+    "files": [
+      "test/gates/compound-path/review.render.js"
+    ]
+  },
+  "bytes": 366,
+  "retainedBytes": 366,
+  "truncated": false
+}

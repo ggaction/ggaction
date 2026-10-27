@@ -1,0 +1,33 @@
+{
+  "label": "package-check",
+  "command": "npm",
+  "args": [
+    "run",
+    "package:check"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 3268,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-27T18:54:22.226Z",
+  "finishedAt": "2026-10-27T18:54:25.495Z",
+  "source": {
+    "available": true,
+    "commit": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "06739bed59b85c0bf495712aae057ac7521bea0839bfdc5a87234757185b01ac",
+  "bytes": 444,
+  "retainedBytes": 444,
+  "truncated": false
+}

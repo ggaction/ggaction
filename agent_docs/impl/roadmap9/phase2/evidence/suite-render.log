@@ -1,0 +1,16 @@
+TAP version 13
+# Subtest: renders pending compound primitives through four backends with literal topology probes
+ok 1 - renders pending compound primitives through four backends with literal topology probes
+  ---
+  duration_ms: 1802.343833
+  type: 'test'
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2882.477958

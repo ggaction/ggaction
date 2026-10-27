@@ -1,0 +1,41 @@
+{
+  "label": "suite-gates",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/gates/compound-path/contract.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 248,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-27T18:53:29.371Z",
+  "finishedAt": "2026-10-27T18:53:29.619Z",
+  "source": {
+    "available": true,
+    "commit": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "9f4eefb0de570e0b35cc037ffc64bff65dd5b1ec43cae904b4fbc0775a2d6be2",
+  "discovery": {
+    "suite": "gates",
+    "selectors": [],
+    "files": [
+      "test/gates/compound-path/contract.test.js"
+    ]
+  },
+  "bytes": 557,
+  "retainedBytes": 557,
+  "truncated": false
+}

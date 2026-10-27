@@ -1,0 +1,231 @@
+TAP version 13
+# Subtest: keeps one optional active roadmap and an explicit completed owner
+ok 1 - keeps one optional active roadmap and an explicit completed owner
+  ---
+  duration_ms: 2.306709
+  type: 'test'
+  ...
+# Subtest: keeps human entry points synchronized with roadmap activity
+ok 2 - keeps human entry points synchronized with roadmap activity
+  ---
+  duration_ms: 0.700666
+  type: 'test'
+  ...
+# Subtest: keeps the active or last completed phase linked to its roadmap
+ok 3 - keeps the active or last completed phase linked to its roadmap
+  ---
+  duration_ms: 0.09275
+  type: 'test'
+  ...
+# Subtest: links current and historical roadmap roots to their canonical owner
+ok 4 - links current and historical roadmap roots to their canonical owner
+  ---
+  duration_ms: 5.188334
+  type: 'test'
+  ...
+# Subtest: routes architecture work without duplicating the canonical record
+ok 5 - routes architecture work without duplicating the canonical record
+  ---
+  duration_ms: 1.619083
+  type: 'test'
+  ...
+# Subtest: keeps the contract landing page lightweight and action-directed
+ok 6 - keeps the contract landing page lightweight and action-directed
+  ---
+  duration_ms: 0.357416
+  type: 'test'
+  ...
+# Subtest: keeps current agent-documentation routes and anchors valid
+ok 7 - keeps current agent-documentation routes and anchors valid
+  ---
+  duration_ms: 264.139959
+  type: 'test'
+  ...
+# Subtest: independent expected-value modules have no transitive production imports
+ok 8 - independent expected-value modules have no transitive production imports
+  ---
+  duration_ms: 10.805208
+  type: 'test'
+  ...
+# Subtest: isolates npm pack from the caller's global cache
+ok 9 - isolates npm pack from the caller's global cache
+  ---
+  duration_ms: 0.812167
+  type: 'test'
+  ...
+# npm notice
+# npm notice New major version of npm available! 10.9.8 -> 12.2.1
+# npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+# npm notice To update run: npm install -g npm@12.2.1
+# npm notice
+# Subtest: publishes only the bounded public package artifact
+ok 10 - publishes only the bounded public package artifact
+  ---
+  duration_ms: 1570.39025
+  type: 'test'
+  ...
+# Subtest: rejects missing, forbidden, and oversized package manifests
+ok 11 - rejects missing, forbidden, and oversized package manifests
+  ---
+  duration_ms: 0.425625
+  type: 'test'
+  ...
+# Subtest: packed scale compaction preserves exports and numeric color results
+ok 12 - packed scale compaction preserves exports and numeric color results
+  ---
+  duration_ms: 44.725291
+  type: 'test'
+  ...
+# Subtest: consumer setup removes its temporary directory when installation fails
+ok 13 - consumer setup removes its temporary directory when installation fails
+  ---
+  duration_ms: 191.561333
+  type: 'test'
+  ...
+# Subtest: independent installed cases continue after a failure and retain case identities
+ok 14 - independent installed cases continue after a failure and retain case identities
+  ---
+  duration_ms: 1.712167
+  type: 'test'
+  ...
+# Subtest: installed fixture modules and their case manifest are exhaustive
+ok 15 - installed fixture modules and their case manifest are exhaustive
+  ---
+  duration_ms: 52.265209
+  type: 'test'
+  ...
+# Subtest: exports the public module boundaries
+ok 16 - exports the public module boundaries
+  ---
+  duration_ms: 0.751708
+  type: 'test'
+  ...
+# Subtest: keeps the basic entry focused on common Cartesian charts
+ok 17 - keeps the basic entry focused on common Cartesian charts
+  ---
+  duration_ms: 0.646292
+  type: 'test'
+  ...
+# Subtest: maps every public entry point to a declaration file
+ok 18 - maps every public entry point to a declaration file
+  ---
+  duration_ms: 2.057833
+  type: 'test'
+  ...
+# Subtest: keeps runtime values and declarations in exact public-entry parity
+ok 19 - keeps runtime values and declarations in exact public-entry parity
+  ---
+  duration_ms: 36.76975
+  type: 'test'
+  ...
+# Subtest: keeps the public release identity and legal metadata consistent
+ok 20 - keeps the public release identity and legal metadata consistent
+  ---
+  duration_ms: 2.725
+  type: 'test'
+  ...
+# Subtest: keeps library terminology source-neutral
+ok 21 - keeps library terminology source-neutral
+  ---
+  duration_ms: 366.255625
+  type: 'test'
+  ...
+# Subtest: discovers every normal, render, and browser test recursively exactly once
+ok 22 - discovers every normal, render, and browser test recursively exactly once
+  ---
+  duration_ms: 61.44375
+  type: 'test'
+  ...
+# Subtest: separates network-backed corpus sweeps from source coverage
+ok 23 - separates network-backed corpus sweeps from source coverage
+  ---
+  duration_ms: 35.005625
+  type: 'test'
+  ...
+# Subtest: shards realistic CI after preparing its dataset cache once
+ok 24 - shards realistic CI after preparing its dataset cache once
+  ---
+  duration_ms: 0.298917
+  type: 'test'
+  ...
+# Subtest: does not discover programs or support modules as tests
+ok 25 - does not discover programs or support modules as tests
+  ---
+  duration_ms: 5.36175
+  type: 'test'
+  ...
+# Subtest: keeps every test module reachable from a suite or module-script entry
+ok 26 - keeps every test module reachable from a suite or module-script entry
+  ---
+  duration_ms: 367.304542
+  type: 'test'
+  ...
+# Subtest: requires every active gate to expose a complete reviewable slice
+ok 27 - requires every active gate to expose a complete reviewable slice
+  ---
+  duration_ms: 0.4385
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from active gate implementations
+ok 28 - keeps stable tests independent from active gate implementations
+  ---
+  duration_ms: 70.543333
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from implementation roadmap records
+ok 29 - keeps stable tests independent from implementation roadmap records
+  ---
+  duration_ms: 48.322667
+  type: 'test'
+  ...
+# Subtest: selects tests by chart, capability, or relative path
+ok 30 - selects tests by chart, capability, or relative path
+  ---
+  duration_ms: 51.747709
+  type: 'test'
+  ...
+# Subtest: caps file concurrency without changing file order or coverage policy
+ok 31 - caps file concurrency without changing file order or coverage policy
+  ---
+  duration_ms: 1.57
+  type: 'test'
+  ...
+# Subtest: validates realistic shard coordinates before invoking Node
+ok 32 - validates realistic shard coordinates before invoking Node
+  ---
+  duration_ms: 1.142625
+  type: 'test'
+  ...
+# Subtest: maps every named capability entry to an exact file or prefix
+ok 33 - maps every named capability entry to an exact file or prefix
+  ---
+  duration_ms: 404.782708
+  type: 'test'
+  ...
+# Subtest: assigns every normal test file to at least one named capability
+ok 34 - assigns every normal test file to at least one named capability
+  ---
+  duration_ms: 8.1345
+  type: 'test'
+  ...
+# Subtest: validates every selector before short-circuit matching
+ok 35 - validates every selector before short-circuit matching
+  ---
+  duration_ms: 0.100084
+  type: 'test'
+  ...
+# Subtest: coverage capture preserves UTF-8 markers across every byte boundary
+ok 36 - coverage capture preserves UTF-8 markers across every byte boundary
+  ---
+  duration_ms: 0.482666
+  type: 'test'
+  ...
+1..36
+# tests 36
+# suites 0
+# pass 36
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2558.220084
