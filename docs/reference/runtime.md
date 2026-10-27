@@ -336,6 +336,9 @@ export type {
   FacetScaleResolution,
   FacetScaleResolutions,
   GraphicClipRect,
+  GraphicClipPath,
+  GraphicClip,
+  PathFillRule,
   GraphicObject,
   GraphicSpec,
   GraphicType,
@@ -931,7 +934,7 @@ export function getMarkItems(program: ProgramInput, options?: {target?: string |
 [Complete declaration and relative dependencies](../types/scene.d.ts)
 
 ```typescript
-import type { ChartProgram, GraphicObject } from './program.js';
+import type { ChartProgram, GraphicObject, GraphicClipPath } from './program.js';
 export interface TransitionNode {
   readonly key: string;
   readonly type: string;
@@ -953,7 +956,7 @@ export interface CanvasTransitionNode {
   readonly topology: string;
   readonly properties: Readonly<NonNullable<GraphicObject['properties']>>;
   /** Explicit outer-to-inner global clip frames; the root physical viewport is implicit. */
-  readonly clips?: readonly (readonly [number, number, number, number])[];
+  readonly clips?: readonly (readonly [number, number, number, number] | GraphicClipPath)[];
   readonly offset: readonly [number, number];
   readonly clip: readonly [number, number, number, number];
 }

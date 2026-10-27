@@ -40,11 +40,9 @@ test("rejects malformed points, commands, sequences, and close options", () => {
     /close must be a boolean/
   );
   for (const [commands, message] of [
-    [[], /at least one command/],
-    [[{ op: "L", x: 0, y: 0 }, { op: "L", x: 1, y: 1 }], /start with M/],
-    [[{ op: "M", x: 0, y: 0 }, { op: "M", x: 1, y: 1 }], /only one initial M/],
-    [[{ op: "M", x: 0, y: 0 }, { op: "Z" }], /at least one L or C/],
-    [[{ op: "M", x: 0, y: 0 }, { op: "Z" }, { op: "L", x: 1, y: 1 }], /Z must be the final/],
+    [[], /at least one/],
+    [[{ op: "L", x: 0, y: 0 }, { op: "L", x: 1, y: 1 }], /requires M/],
+    [[{ op: "M", x: 0, y: 0 }, { op: "Z" }, { op: "L", x: 1, y: 1 }], /requires M/],
     [[{ op: "M", x: 0, y: 0 }, { op: "Q", x: 1, y: 1 }], /M, L, C, or Z/],
     [[{ op: "M", x: 0, y: 0 }, { op: "L", x: 1, y: 1, extra: true }], /invalid properties/],
     [[{ op: "M", x: 0, y: 0 }, { op: "C", x1: 1, y1: 2, x2: 3, y2: 4, x: NaN, y: 5 }], /must be a finite number/]

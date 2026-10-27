@@ -1528,9 +1528,17 @@ export interface GraphicClipRect {
   readonly x: number; readonly y: number; readonly width: number; readonly height: number;
 }
 
+export type PathFillRule = "nonzero" | "evenodd";
+export interface GraphicClipPath {
+  readonly type: "path";
+  readonly commands: readonly ConcretePathCommand[];
+  readonly fillRule?: PathFillRule;
+}
+export type GraphicClip = GraphicClipRect | GraphicClipPath;
+
 export interface GraphicObject {
   /** Optional named non-Canvas owner clip in its unchanged parent frame. */
-  readonly clip?: GraphicClipRect;
+  readonly clip?: GraphicClip;
   readonly type: GraphicType;
   readonly properties?: Readonly<Record<string, unknown>>;
   readonly items?: readonly GraphicItem[];

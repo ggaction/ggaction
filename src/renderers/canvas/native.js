@@ -146,6 +146,10 @@ export function preflightCanvasGraphicSpec(target, scale = 1) {
       preflightGraphic(id, object, scale, object.type, offset);
       if (object.clip !== undefined) {
         const clip = validateGraphicClip(object.clip, object.type);
+        if (clip.type === "path") {
+          for (const command of clip.commands) requireProperties(command, COMMAND_PROPERTIES, `Graphic "${id}" Canvas clip`, scale, offset);
+          return;
+        }
         requireProperties(clip, ["x", "y", "width", "height"], `Graphic "${id}" Canvas clip`, scale, offset);
         requireCanvasNativeValue(clip.x + clip.width, `Graphic "${id}" Canvas clip`, scale, offset?.[0]);
         requireCanvasNativeValue(clip.y + clip.height, `Graphic "${id}" Canvas clip`, scale, offset?.[1]);

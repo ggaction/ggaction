@@ -200,6 +200,10 @@ Historical namespaces are deterministic from the original envelope and child pat
 no row field is silently treated as a key. Saved graphics are preserved, and
 migration does not replay actions or redraw a chart. Graphic snapshots remain
 version 1 and may carry optional concrete item identity metadata.
+Compound paths, explicit fill rules and path owner clips round-trip unchanged in
+current editable and graphic snapshots. Legacy editable versions 1–3 retain
+their historical single-subpath grammar and reject these newer features.
+Older runtimes are not forward-compatible with the extended concrete grammar.
 `packageVersion` records the producer version; `schemaVersion` determines the
 format. Other schema versions are rejected. `extensions` contains the exact
 registered extension names required by the editable action traces, including

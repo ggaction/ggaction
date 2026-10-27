@@ -1,7 +1,7 @@
-<!doctype html><html lang="en"><meta charset="utf-8"><title>Compound path primitive review</title><body><p id="status">Loading</p>
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Compound path native reference</title><body><p id="status">Loading</p>
 <script type="module">
-import { variants, frame } from './manifest.js';
-import { drawPrimitive } from './primitive.program.js';
+import { variants, frame } from '../../../examples/compound-path/data.js';
+import { drawPrimitive } from './native-reference.js';
 for (const variant of variants) {
   const canvas = document.createElement('canvas');
   canvas.id = variant.id; canvas.width = frame.width; canvas.height = frame.height;

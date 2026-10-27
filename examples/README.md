@@ -606,6 +606,12 @@ Two independent charts share a Y domain and align their actual plot frames.
 
 Representative actions: `createAdjacentPlot editCompositionScales createTitle`. [Documentation](https://ggaction.github.io/ggaction/api/composition/editing/).
 
+### [Compound paths and holes](./compound-path/)
+
+Author compound paths and path clips through extension primitives.
+
+Representative actions: `createGraphics`, `editGraphics`. [Documentation](https://ggaction.github.io/ggaction/extension/primitives/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

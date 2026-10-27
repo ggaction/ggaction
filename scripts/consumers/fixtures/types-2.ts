@@ -2069,3 +2069,11 @@ chart().createData({ values: [{}, {}], keys: [new Date(0), [1n, true, "a"]] });
 chart().createData({ values: [{ id: "a" }], keyField: "id", keys: ["a"] });
 // @ts-expect-error revision mappings cannot be mixed
 keyedSource.reviseData({ source: "keyed", id: "invalid", values: [{}], keys: ["a"], rowMap: [0] });
+
+const compoundClip: import("ggaction").GraphicClipPath = {type:"path",commands:[{op:"M",x:0,y:0},{op:"Z"}],fillRule:"evenodd"};
+const clipUnion: import("ggaction").GraphicClip = compoundClip;
+const fillRule: import("ggaction").PathFillRule = "nonzero";
+const compoundOwner: import("ggaction").GraphicObject = {type:"path",clip:clipUnion,properties:{fillRule}};
+// @ts-expect-error unknown fill rules are rejected
+const invalidClip: import("ggaction").GraphicClipPath = {...compoundClip,fillRule:"alternate"};
+const compoundSceneClip: NonNullable<import("ggaction/scene").CanvasTransitionNode["clips"]>[number] = compoundClip;

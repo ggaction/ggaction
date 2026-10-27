@@ -1,7 +1,7 @@
 import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { validateFontStyle } from "../../core/font.js";
 import { isOwned, isPlainObject } from "../../core/immutable.js";
-import { validatePathCommands } from "../pathCommands.js";
+import { validatePathCommands, validatePathFillRule } from "../pathCommands.js";
 import { validateFillPaint } from "../paint.js";
 import {
   validateLineCap,
@@ -36,6 +36,7 @@ export function validateConcreteGraphicValue(type, property, value) {
     }
     validateGeneratedItemLimit(value.length, "Text line count");
   }
+  if (property === "fillRule") validatePathFillRule(value);
   if (property === "fill") {
     if (typeof value === "string") {
       validateFillPaint(value, `${type}.fill`);

@@ -2,8 +2,9 @@ import {
   requireFiniteBounds,
   resolveTextBounds
 } from "../../core/textMetrics.js";
-import { interpolateNumber } from "../numeric.js";
-import { isOwned } from "../../core/immutable.js";
+import { resolvePathSubpaths } from "../pathTopology.js";
+import { resolvePathCommandBounds } from "../pathGeometry.js";
+export { resolvePathCommandBounds } from "../pathGeometry.js";
 import { graphicClipBounds, intersectClipBounds } from "./graphicClip.js";
 import { resolveStrokeDetails } from "../strokeStyle.js";
 import {
@@ -13,7 +14,6 @@ import {
 } from "./graphicTree.js";
 
 const EPSILON = Number.EPSILON * 64;
-const pathBounds = new WeakMap();
 
 function box(left, right, top, bottom, extent = 0) {
   return {
@@ -43,116 +43,6 @@ function unionBounds(bounds) {
     }
   }
   return result;
-}
-
-function cubicValue(start, control1, control2, end, t) {
-  const remaining = 1 - t;
-  if (Math.max(
-    Math.abs(start),
-    Math.abs(control1),
-    Math.abs(control2),
-    Math.abs(end)
-  ) <= Number.MAX_VALUE / 4) {
-    return remaining ** 3 * start +
-      3 * remaining ** 2 * t * control1 +
-      3 * remaining * t ** 2 * control2 +
-      t ** 3 * end;
-  }
-  const left = interpolateNumber(start, control1, t);
-  const middle = interpolateNumber(control1, control2, t);
-  const right = interpolateNumber(control2, end, t);
-  return interpolateNumber(
-    interpolateNumber(left, middle, t),
-    interpolateNumber(middle, right, t),
-    t
-  );
-}
-
-function cubicExtrema(start, control1, control2, end) {
-  let scale = Math.max(
-    Math.abs(start),
-    Math.abs(control1),
-    Math.abs(control2),
-    Math.abs(end)
-  );
-  const normalizeCoordinates = scale > Number.MAX_VALUE / 24 ||
-    (scale > 0 && scale < EPSILON);
-  if (normalizeCoordinates) {
-    start /= scale;
-    control1 /= scale;
-    control2 /= scale;
-    end /= scale;
-  }
-  let quadratic = 3 * (-start + 3 * control1 - 3 * control2 + end);
-  let linear = 2 * (3 * start - 6 * control1 + 3 * control2);
-  let constant = 3 * (control1 - start);
-  scale = Math.max(
-    Math.abs(quadratic),
-    Math.abs(linear),
-    Math.abs(constant)
-  );
-  let epsilon = EPSILON * Math.max(normalizeCoordinates ? 0 : 1, scale);
-  if (scale > Math.sqrt(Number.MAX_VALUE) / 2) {
-    quadratic /= scale;
-    linear /= scale;
-    constant /= scale;
-    epsilon = EPSILON;
-  }
-  if (Math.abs(quadratic) <= epsilon) {
-    if (Math.abs(linear) <= epsilon) return [];
-    const root = -constant / linear;
-    return root > 0 && root < 1 ? [root] : [];
-  }
-  const discriminant = linear ** 2 - 4 * quadratic * constant;
-  if (discriminant < -epsilon) return [];
-  const root = Math.sqrt(Math.max(0, discriminant));
-  return [
-    (-linear - root) / (2 * quadratic),
-    (-linear + root) / (2 * quadratic)
-  ].filter(value => value > 0 && value < 1);
-}
-
-export function resolvePathCommandBounds(commands) {
-  if (pathBounds.has(commands)) {
-    const cached = pathBounds.get(commands);
-    return cached === undefined ? undefined : { ...cached };
-  }
-  let bounds;
-  let current;
-  for (const command of commands) {
-    if (command.op === "M" || command.op === "L") {
-      if ([command.x, command.y].every(Number.isFinite)) {
-        current = { x: command.x, y: command.y };
-        bounds = includeExtent(
-          bounds, current.x, current.x, current.y, current.y
-        );
-      }
-      continue;
-    }
-    if (command.op !== "C" || current === undefined) continue;
-    if (![command.x1, command.y1, command.x2, command.y2, command.x, command.y]
-      .every(Number.isFinite)) continue;
-    const roots = new Set([
-      0,
-      1,
-      ...cubicExtrema(current.x, command.x1, command.x2, command.x),
-      ...cubicExtrema(current.y, command.y1, command.y2, command.y)
-    ]);
-    for (const t of roots) {
-      const x = cubicValue(current.x, command.x1, command.x2, command.x, t);
-      const y = cubicValue(current.y, command.y1, command.y2, command.y, t);
-      bounds = includeExtent(
-        bounds,
-        x,
-        x,
-        y,
-        y
-      );
-    }
-    current = { x: command.x, y: command.y };
-  }
-  if (isOwned(commands)) pathBounds.set(commands, bounds);
-  return bounds === undefined ? undefined : { ...bounds };
 }
 
 function endpointDirection(start, command, end, reverse = false) {
@@ -288,7 +178,7 @@ function includeJoin(
   );
 }
 
-function pathStrokeBounds(commands, bounds, strokeExtent, details) {
+function singlePathStrokeBounds(commands, bounds, strokeExtent, details) {
   if (!(strokeExtent > 0)) return bounds;
   const start = { x: commands[0].x, y: commands[0].y };
   let current = start;
@@ -312,6 +202,11 @@ function pathStrokeBounds(commands, bounds, strokeExtent, details) {
     if (command.op === "Z") break;
   }
   let expanded = bounds;
+  // Zero-length drawable/close commands may paint endpoint caps in a backend.
+  // A lone move has no stroked segment. Keep occupied bounds conservative.
+  if (segments.length === 0 && commands.length > 1 && details.lineCap !== "butt") {
+    return box(bounds.left, bounds.right, bounds.top, bounds.bottom, strokeExtent);
+  }
   for (const segment of segments) {
     let segmentBounds;
     if (segment.command.op === "C") {
@@ -377,6 +272,14 @@ function pathStrokeBounds(commands, bounds, strokeExtent, details) {
     );
   }
   return expanded;
+}
+
+function pathStrokeBounds(commands, bounds, strokeExtent, details) {
+  if (!(strokeExtent > 0)) return bounds;
+  return unionBounds(resolvePathSubpaths(commands).map(({ start, end }) => {
+    const subpath = commands.slice(start, end + 1);
+    return singlePathStrokeBounds(subpath, resolvePathCommandBounds(subpath), strokeExtent, details);
+  }));
 }
 
 function hasActiveStroke(properties) {

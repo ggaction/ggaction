@@ -1,7 +1,7 @@
-import { buildCompoundPathCommands } from "../../../src/grammar/pathTopology.js";
+const buildCompoundPathCommands = subpaths => subpaths.flat();
 import {
   outerCommands, holeCommands, reversedHoleCommands, islandCommands, cubicCommands
-} from "../../fixtures/geometry/compound-path.js";
+} from "./coordinates.js";
 
 export const frame = Object.freeze({ width: 400, height: 304, scale: 24, x: 32, y: 32 });
 export const underlay = Object.freeze({ x: frame.x - frame.scale / 2, y: frame.y + 4 * frame.scale, width: 15 * frame.scale, height: 2 * frame.scale });
@@ -28,17 +28,3 @@ export function pixelCommands(variant) {
     [key, key === "op" ? value : value * frame.scale + (key.startsWith("x") ? frame.x : frame.y)])));
 }
 
-export function reviewSamples(variant) {
-  const result = [{ name: "outside", x: 11, y: 1, color: [255, 255, 255, 255] }];
-  if (variant.kind === "rings" || variant.kind === "clip") result.push(
-    { name: "outer", x: 1, y: 1, color: [114, 171, 255, 255] },
-    { name: "island", x: 13, y: 1, color: [114, 171, 255, 255] },
-    { name: "center", x: 5, y: 5, color: variant.hole ? [255, 179, 92, 255] : [114, 144, 198, 255] }
-  );
-  if (variant.kind === "curve") result.push(
-    { name: "open-stroke-gap", x: 5, y: -1 / frame.scale, color: [255, 255, 255, 255] },
-    { name: "curve-fill", x: 5, y: 2, color: [114, 171, 255, 255] }
-  );
-  if (variant.kind === "points") result.push({ name: "zero-area", x: 12, y: 1, color: [255, 255, 255, 255] });
-  return result.map(sample => ({ ...sample, pixel: [Math.round(frame.x + sample.x * frame.scale), Math.round(frame.y + sample.y * frame.scale)] }));
-}

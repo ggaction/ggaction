@@ -1,3 +1,4 @@
+import { createCompoundPathExample } from "./compound-path/program.js";
 import { createSharedAdjacent } from "./shared-adjacent/program.js";
 import { createLinkedOverlay } from "./linked-overlay/program.js";
 import { createBootstrapMeanCI } from "./bootstrap-mean-ci/program.js";
@@ -172,6 +173,8 @@ export const DOCUMENTATION_WORKFLOWS = Object.freeze([
 
 // Chart-family examples retain their independent primitive/public baselines.
 export const PUBLIC_CHARTS = Object.freeze([
+  example({ id:"compound-path",data:{},width:400,height:304,docsGroup:"tutorials",createProgram:()=>createCompoundPathExample(),
+    browser:{path:"compound-path/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"compound-path",width:400,height:304}}}}),
   example({ id: "bootstrap-mean-ci", data: {}, width: 320, height: 220, docsGroup: "tutorials", createProgram: createBootstrapMeanCI,
     browser: { path: "bootstrap-mean-ci/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "bootstrap-mean-ci", width: 320, height: 220 } } } }),
   example({ id: "continuous-area-color", data: {}, width: 320, height: 220, docsGroup: "tutorials", createProgram: createContinuousAreaColor,

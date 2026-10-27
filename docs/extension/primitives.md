@@ -255,8 +255,9 @@ cyclic, or unknown attachments instead of silently skipping them.
 
 Path graphics use backend-neutral `path.commands` arrays rather than renderer-specific
 path strings. The closed command vocabulary is `M`, `L`, `C`, and `Z`. A path starts
-with one `M`; `L` and `C` draw straight and cubic segments; an optional final `Z`
-closes the path. At least one `L` or `C` segment is required. Coordinates and cubic
+with `M`; each later `M` starts another subpath. `L` and `C` draw straight and cubic
+segments, and `Z` closes the current subpath. After `Z`, only a new `M` is valid.
+A lone `M`, `M Z`, or consecutive `M` commands retain positions without fill area. Coordinates and cubic
 control points must be finite numbers, and one path may contain at most 30,000
 commands. Generated linear and closed paths enforce the same limit before allocation.
 TypeScript users can import the `ConcretePathCommand` union from `ggaction`.
@@ -272,9 +273,17 @@ Circle graphics support a required fill and an optional concrete
 `stroke`/`strokeWidth` pair. Accepted graphic properties have Canvas rendering
 semantics; opaque style bags are not stored in `graphicSpec`.
 
-A path can be open and stroked or Z-closed and filled. Filled paths require a final
-`Z` command; their stroke is optional. When both fill and stroke are present, the
-Canvas renderer fills first and strokes second.
+Paths accept `fillRule: "nonzero" | "evenodd"`; omission uses nonzero. Fill implicitly
+closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
+keeps its own caps and joins. When both fill and stroke are present, rendering
+fills first and strokes second.
+
+The [compound path example](https://github.com/ggaction/ggaction/tree/{{ site.data.provenance.exampleSourceRef }}/examples/compound-path) combines
+an outer ring, a hole and a separate island over a translucent underlay. Its
+[executable program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/compound-path/program.js)
+is shared by the browser example and renderer regressions.
+
+{% include chart-figure.html id="compound-path" %}
 
 <!-- snippet-context:start -->
 
@@ -300,7 +309,7 @@ program
   .editGraphics({ target: "band", property: "opacity", value: 0.18 });
 ```
 
-Rect and closed-path `fill` also accept a backend-neutral `LinearGradientPaint`.
+Rect and path `fill` also accept a backend-neutral `LinearGradientPaint`.
 The `from` and `to` coordinates are normalized to each item's own fill bounds,
 not the whole Canvas. Stops are ordered by offsets from `0` to `1`; repeated
 adjacent offsets create a hard transition. A paint object and its nested `stops`
@@ -335,7 +344,7 @@ program.editGraphics({
 TypeScript users can import `FillPaint`, `LinearGradientPaint`,
 `LinearGradientPoint`, and `LinearGradientStop` from `ggaction` or
 `ggaction/extension`. Structured paint is currently fill-only for rects and
-closed paths. Circle/text fills, strokes, radial or conic gradients, patterns,
+paths. Circle/text fills, strokes, radial or conic gradients, patterns,
 and Canvas-wide user-space coordinates are not supported.
 
 Only normalized paint data is stored in `graphicSpec`. The Canvas renderer
@@ -409,6 +418,10 @@ properties needed to draw the primitive to be present.
 Use `editGraphics({ target, property: "clip", value: { x, y, width, height } })`
 to clip one named non-Canvas owner and its items/children in its unchanged parent
 frame. Values must be finite, dimensions nonnegative, and endpoints finite.
+A path clip accepts `value: { type: "path", commands, fillRule? }` with the same
+command and fill-rule contracts. It uses the path's fill area, including holes,
+and has no stroke. TypeScript exports `GraphicClip`, `GraphicClipPath`,
+`GraphicClipRect`, and `PathFillRule` from `ggaction`.
 Use `value: false` to clear the optional clip. Generated item IDs, inline item
 properties and Canvas clips are rejected; nested Canvas retains its existing
 viewport behavior. Item coordinates and IDs stay unchanged, including after

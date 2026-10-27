@@ -25,6 +25,12 @@ export async function testNodeConsumer(directory) {
       .replace('"./data.js"', '"./facet-header-data.js"'));
   await writeFile(path.join(directory, "facet-header-data.js"),
     await readFile(new URL("../../examples/facet-header-rotation/data.js", import.meta.url), "utf8"));
+  await mkdir(path.join(directory, "compound-path"), {recursive:true});
+  for (const file of ["program.js", "data.js", "coordinates.js"]) {
+    await writeFile(path.join(directory, "compound-path", file),
+      (await readFile(new URL(`../../examples/compound-path/${file}`, import.meta.url), "utf8"))
+        .replace('"../../src/index.js"', '"ggaction"'));
+  }
   const output = path.join(directory, "chart.png");
   const pdfOutput = path.join(directory, "chart.pdf");
   const fontWeightOutput = path.join(directory, "font-weight.png");

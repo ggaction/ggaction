@@ -1675,3 +1675,18 @@
   actions: createAdjacentPlot editCompositionScales createTitle
   tasks: composition comparison
   url: /api/composition/editing/
+- id: compound-path
+  example: /examples/compound-path/
+  title: Compound paths and holes
+  image: /assets/images/compound-path.png
+  alt: Blue outer ring and separate island with an orange underlay visible through the hole
+  width: 800
+  height: 608
+  thumbnail: /assets/images/compound-path-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 486
+  caption: The evenodd fill preserves the hole and separate island.
+  summary: Author compound paths and path clips through extension primitives.
+  actions: createGraphics · editGraphics
+  tasks: extension
+  url: /extension/primitives/

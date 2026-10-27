@@ -6,7 +6,7 @@ import { resolvePathCommandBounds } from "../../../src/grammar/schemas/graphicBo
 import { signedPolygonArea } from "../../oracles/geometry.js";
 import {
   outer, hole, island, outerCommands, reversedHoleCommands, islandCommands, cubicCommands
-} from "../../fixtures/geometry/compound-path.js";
+} from "../../../examples/compound-path/coordinates.js";
 
 test("preserves three separate rings and their authored winding", () => {
   const commands = buildCompoundPathCommands([outerCommands, reversedHoleCommands, islandCommands]);

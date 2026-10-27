@@ -900,7 +900,7 @@ baseline과 rotation까지 적용한 concrete bounds를 반환하며 axis label/
 계산을 공유한다. Renderer의 platform text measurement는 drawing 품질에만 사용되고 layout topology를 결정하지
 않는다.
 
-Named non-Canvas owner는 optional resolved `clip: {x,y,width,height}`를 가질 수 있다. 같은 parent frame에서 전체 items/subtree의 보이는 영역만 제한하며 좌표/identity를 재작성하지 않는다. Request는 canonical mark config가, rectangle은 owning materializer가, drawing은 graphic-only renderer가 각각 소유한다. 자기/조상 clip의 교집합은 공통 visible-bounds/isolated-paint 경로가 적용한다. 정확한 API는 [mark clipping](contract/current/MARKS.md#shared-cartesian-plot-clipping)과 [primitive editor](contract/current/PRIMITIVES.md#editgraphics)에 둔다.
+Named non-Canvas owner는 optional resolved rectangle/path `clip`를 가질 수 있다. 같은 parent frame에서 전체 items/subtree의 보이는 영역만 제한하며 좌표/identity를 재작성하지 않는다. Request는 canonical mark config가, rectangle은 owning materializer가, drawing은 graphic-only renderer가 각각 소유한다. 자기/조상 clip의 교집합은 공통 visible-bounds/isolated-paint 경로가 적용한다. 정확한 API는 [mark clipping](contract/current/MARKS.md#shared-cartesian-plot-clipping)과 [primitive editor](contract/current/PRIMITIVES.md#editgraphics)에 둔다.
 
 ### Shared concrete-graphic contract
 
@@ -2798,3 +2798,18 @@ hue channel을 기록하고, `legendBlocks`/facet/encoding removal은 같은 cha
 
 공통 tagged value encoding은 `core/valueEncoding.js`가 소유하고 persistence codec과 item/resource digest가 재사용한다.
 복원 검증은 읽기 전용 `materialization/resourceState.js`를 호출하며, action 실행이나 그래픽 재계산을 하지 않는다.
+
+### 복합 경로의 공통 geometry owner
+
+`grammar/pathTopology.js`는 command shape·전체 한도·subpath topology를 소유한다.
+`grammar/pathGeometry.js`는 기존 exact cubic extrema와 adaptive flatten·arc·winding·distance를
+소유하고 bounds와 clip이 이를 공유한다. `pathCommands.js`는 공개 grammar 검증과 legacy 저장
+검증을 분리한다. Renderer는 materialized commands와 fill rule만 소비하고 scene은 같은 clip을
+전달한다. 정확한 값과 호환성은 [PRIMITIVES](contract/current/PRIMITIVES.md)와
+[저장 및 scene 계약](contract/current/PRIMITIVES.md#compound-path-persistence-and-scenes)에 둔다.
+
+복합 geometry의 새 private module로 entry 실측은672이며 기존671을 초과한다.
+최종 계측은 Node22.23.1/npm10에서 packed1,002,146bytes, unpacked4,683,067bytes다.
+이전 packed1,001,000/unpacked4,669,000 한도 실패를 보존하고 entry672,
+packed1,003,000/unpacked4,684,000으로 최소 천 byte 단위만 조정한다.
+일반·수치·pixel·coverage 검사는 완화하지 않는다.

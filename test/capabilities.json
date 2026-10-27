@@ -180,7 +180,7 @@
       },
       {
         "type": "prefix",
-        "path": "gates/compound-path/"
+        "path": "charts/compound-path/"
       }
     ],
     "guides": [

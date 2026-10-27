@@ -1,3 +1,4 @@
+import { validateLegacyPathCommands } from "../grammar/pathCommands.js";
 import { validateGraphicIdentity } from "../grammar/schemas/graphicIdentity.js";
 import { validateLegendOverflow } from "../grammar/legendOverflow.js";
 import { normalizeTextOverrides } from "../grammar/text.js";
@@ -103,7 +104,12 @@ function requireArray(value, path) {
   }
 }
 
-export function validateGraphic(graphic, path = "payload.graphicSpec") {
+export function validateGraphic(graphic, path = "payload.graphicSpec", { legacy = false } = {}) {
+  const validateProperties = (type, properties) => {
+    validateConcreteGraphicProperties(type, properties);
+    if (legacy && Object.hasOwn(properties, "fillRule")) throw invalidSnapshot("Path fillRule requires editable snapshot version 4.", path);
+    if (legacy && properties.commands !== undefined) validateLegacyPathCommands(properties.commands);
+  };
   exactKeys(graphic, ["objects", "order"], path);
   requireObject(graphic.objects, `${path}.objects`);
   requireArray(graphic.order, `${path}.order`);
@@ -120,8 +126,11 @@ export function validateGraphic(graphic, path = "payload.graphicSpec") {
     if (Object.keys(object).some(key => !["type", "properties", "items", "children", "clip"].includes(key))) {
       throw invalidSnapshot(`Unknown graphic member at ${id}.`, path);
     }
-    if (object.clip !== undefined) validateGraphicClip(object.clip, object.type);
-    if (object.properties !== undefined) validateConcreteGraphicProperties(object.type, object.properties);
+    if (object.clip !== undefined) {
+      if (legacy && object.clip.type === "path") throw invalidSnapshot("Path clip requires editable snapshot version 4.", path);
+      validateGraphicClip(object.clip, object.type);
+    }
+    if (object.properties !== undefined) validateProperties(object.type, object.properties);
     if (object.items !== undefined) {
       if (object.type === "canvas" || object.properties !== undefined) throw invalidSnapshot(`Invalid item owner "${id}".`, path);
       requireArray(object.items, `${path}.objects.${id}.items`);
@@ -133,7 +142,7 @@ export function validateGraphic(graphic, path = "payload.graphicSpec") {
         const type = item.type ?? object.type;
         validateGraphicType(type);
         if (isGraphicContainerType(type)) throw invalidSnapshot("Graphic items must be primitive drawables.", path);
-        validateConcreteGraphicProperties(type, item.properties);
+        validateProperties(type, item.properties);
       }
     } else if (object.properties === undefined) {
       throw invalidSnapshot(`Graphic "${id}" requires properties or items.`, path);
@@ -579,7 +588,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     for (const resource of resources.get(kind).values()) visit(resource);
   }
-  validateGraphic(program.graphicSpec, `${path}.graphicSpec`);
+  validateGraphic(program.graphicSpec, `${path}.graphicSpec`, { legacy });
   for (const [id, graphic] of Object.entries(program.graphicSpec.objects)) {
     if (!legacy) for (const item of graphic.items ?? []) {
       if (item.identity !== undefined) resolveGraphicLineage(program, item.identity);

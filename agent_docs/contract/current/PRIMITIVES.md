@@ -150,7 +150,7 @@ Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. 
   - `items`: heterogeneous collection의 typed concrete item array를 원자적으로 교체하며 최대 길이는
     일반 graphic은 `10,000`, 위에서 정의한 point-owned collection만 `50,000`이다.
 - `children`: named Canvas/collection의 기존 직접 자식 ID의 정확한 순열을 편집한다. 기존 ID·parent·property·items·clip·object 선언 순서와 root order는 유지한다. 누락/추가/중복/다른 parent/비문자열과 generated item/drawable owner는 거부한다. 빈 container의 `[]`와 동일 순열도 허용한다. Caller array와 이전 상태는 불변이다. 실제 `children` field를 편집하며 property bag에 저장하지 않는다. Evidence: `test/unit/actions/primitives/graphic-child-order.test.js`.
-- `clip`: named non-Canvas owner의 node-level rectangle을 편집한다. `value: {x,y,width,height}`는 finite x/y와 nonnegative finite width/height를 요구하며 끝점도 finite여야 한다. 같은 parent frame에서 전체 items/subtree를 자르고 item properties/좌표/ID를 바꾸지 않는다. `false`는 optional field를 제거한다. Generated/inline item과 Canvas에는 지원하지 않는다. `items`/`length` 변경, renderer와 persistence가 같은 owner clip을 보존한다. Evidence: `test/unit/renderers/graphic-owner-clipping.test.js`.
+- `clip`: named non-Canvas owner의 node-level rectangle 또는 compound path를 편집한다. `value: {type:"path",commands,fillRule?}`는 아래 path grammar를 공유하며 fill 영역으로만 clip한다. `value: {x,y,width,height}`는 finite x/y와 nonnegative finite width/height를 요구하며 끝점도 finite여야 한다. 같은 parent frame에서 전체 items/subtree를 자르고 item properties/좌표/ID를 바꾸지 않는다. `false`는 optional field를 제거한다. Generated/inline item과 Canvas에는 지원하지 않는다. `items`/`length` 변경, renderer와 persistence가 같은 owner clip을 보존한다. Evidence: `test/unit/renderers/graphic-owner-clipping.test.js`.
 - `remove`: `true`일 때 property/value 없이 named graphic과 owned named subtree를 삭제하고 parent의
   `children` 또는 top-level `order`에서 detach한다. Canvas root와 generated item의 독립 삭제는 허용하지 않는다.
 - Effect: concrete graphic path만 structural copy한다. semantic state나 automatic compiler는 관여하지 않는다.
@@ -178,7 +178,14 @@ Concrete rectangle의 outline은 네 모서리 모두 closed join을 갖는다. 
   - ✅ Covered: the shared concrete-property schema is table-tested by type and `editGraphics` exercises single,
     broadcast, distributed and heterogeneous application paths.
   - ✅ Covered: finite `M | L | C | Z` path command arrays, maximum 30,000 commands, and command-order validation.
-    A single initial M is a valid position-only path with no painted segment; longer paths require L/C.
+    각 `M`이 새 subpath를 시작한다. `L/C`는 열린 subpath에서만 허용하고 `Z`는 그 subpath를 닫는다.
+    `Z` 뒤에는 `M`만 허용한다. `M`, `M Z`, 연속 `M`은 zero-area position-only subpath로 유효하다.
+    모든 command는 exact own data fields와 finite 좌표만 받으며 배열은 dense하다.
+  - ✅ Covered: path-only `fillRule: "nonzero" | "evenodd"`; 생략은 nonzero이며 기존 저장값에 필드를 추가하지 않는다.
+    Fill은 열린 subpath를 암묵적으로 닫고 stroke는 명시한 `Z`만 닫는다. 각 subpath의 cap/join은 독립적이다.
+    Named path, path item, compatible collection broadcast/distribution이 같은 schema를 사용한다.
+    Evidence: `test/charts/compound-path/public.test.js`, `test/unit/grammar/compound-path-topology.test.js`,
+    `test/unit/grammar/path-geometry.test.js`, `test/charts/compound-path/backends.render.js`.
 - `value` distribution
   - ✅ Covered: scalar broadcast, outer array distribution, mismatched length, nested points arrays preserved,
     heterogeneous item replacement and shared compatible-property broadcast.
@@ -227,3 +234,14 @@ target compositing support before destination resize or clear.
 revision, rowKeys를 참조한다. primitive role과 semantic key로 private child ID를 생성한다. key·role 중복과
 malformed metadata는 거부한다. Metadata가 없는 extension graphics는 기존 순서 기반 private ID를 쓴다.
 의미를 바꾸지 않는 graphics edit는 metadata를 보존하고, domain materializer가 의미 변경의 metadata를 갱신한다.
+
+### Compound path persistence and scenes
+
+Editable envelope 4와 graphic envelope 1은 commands·fillRule·owner clip을 그대로 보존한다.
+기존 생략값은 생성하지 않는다. Legacy editable 1–3은 기존 단일 subpath grammar를 검증하고
+fillRule 및 path clip을 거부한다. 구버전 runtime이 새 값을 읽는 호환성은 제공하지 않는다.
+SVG scene version 1은 path clip을 definitions와 node SVG에 보존한다. `node.clip`은 rectangular viewport/owner 교집합을 유지한다. Path bounds를 다시 clip으로 적용하여
+fractional edge의 antialias를 중복 곱하지 않는다. Canvas scene version 2의 `node.clips`는 outer-to-inner global
+rectangle tuple 또는 path clip이며 replay가 각 실제 fill 영역을 적용한다.
+JSON/structured clone과 fresh-process restore/edit/remove는 `test/charts/compound-path/public.test.js`,
+scene pixel replay는 `test/charts/compound-path/backends.render.js`가 검증한다.

@@ -39,6 +39,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "textBaseline",
     "rotation",
     "commands",
+    "fillRule",
     "opacity"
   ]),
   circle: new Set([
@@ -102,6 +103,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
   ]),
   path: new Set([
     "commands",
+    "fillRule",
     "fill",
     "stroke",
     "strokeWidth",

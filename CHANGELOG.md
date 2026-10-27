@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Support compound M/L/C/Z paths, nonzero/evenodd fills and path owner clips across SVG, Canvas, PNG, PDF, transition scenes and saved programs. Preserve open strokes with implicitly closed fills and share subpath-aware bounds and adaptive geometry calculations.
+
 - Add typed row keys to source creation and explicit correspondence to source revision. Preserve keyed identity through reordering and edits while isolating new generated rows across immutable branches.
 - Track exact contributing rows across every transform and attach semantic item identity to concrete graphics. Keep line/area series identity separate from ordered path topology across all renderers.
 - Persist selection predicates and row keys as revisioned resources with exact dependency checks. Restore editable snapshots as schema 4 and migrate validated schemas 1–3 without replaying actions or redrawing saved graphics.

@@ -5,7 +5,7 @@ import { resolveCanvasSolidPaint } from "./fill.js";
 import { annotateError } from "../../core/diagnostics.js";
 import { drawCircleGraphic } from "./circle.js";
 import { drawLineGraphic } from "./line.js";
-import { drawPathGraphic } from "./path.js";
+import { drawPathGraphic, tracePath } from "./path.js";
 import { drawRectGraphic } from "./rect.js";
 import { drawTextGraphic } from "./text.js";
 import { requireFiniteProperty } from "./validation.js";
@@ -168,9 +168,14 @@ export function drawResolvedGraphicSpec(target, context, options = {}) {
         requireContextMethod(context, "clip", `Graphic "${id}" clip`);
         context.save();
         context.beginPath();
-        const {x, y, width, height} = object.clip;
-        context.rect(x, y, width, height);
-        context.clip();
+        if (object.clip.type === "path") {
+          tracePath(context, object.clip.commands);
+          context.clip(object.clip.fillRule ?? "nonzero");
+        } else {
+          const {x, y, width, height} = object.clip;
+          context.rect(x, y, width, height);
+          context.clip();
+        }
       }
       if (object.type === "collection") {
         context.save();

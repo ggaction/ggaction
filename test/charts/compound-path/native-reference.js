@@ -1,5 +1,5 @@
-import { frame, paint, pixelCommands, underlay, shapeBounds } from "./manifest.js";
-import { outer, hole, island, cubicCommands } from "../../fixtures/geometry/compound-path.js";
+import { frame, paint, pixelCommands, underlay, shapeBounds } from "../../../examples/compound-path/data.js";
+import { outer, hole, island, cubicCommands } from "../../../examples/compound-path/coordinates.js";
 
 function trace(context, commands) {
   for (const c of commands) {
@@ -27,29 +27,31 @@ function referencePath(context, variant) {
   context.rect(island[0][0], island[0][1], island[2][0] - island[0][0], island[2][1] - island[0][1]);
 }
 
-// Native primitive reference for a pending visual contract. This deliberately
-// does not claim that the public graphic validator accepts compound paths yet.
+// Independent native commands complement the extension primitive/program pair.
 export function drawPrimitive(context, variant, { reference = false } = {}) {
   context.save();
   context.fillStyle = "#ffffff";
   context.fillRect(0, 0, frame.width, frame.height);
   context.fillStyle = paint.underlay;
   context.fillRect(underlay.x, underlay.y, underlay.width, underlay.height);
-  context.translate(frame.x, frame.y);
-  context.scale(frame.scale, frame.scale);
+  if (reference) {
+    context.translate(frame.x, frame.y);
+    context.scale(frame.scale, frame.scale);
+  }
   context.beginPath();
   if (reference) referencePath(context, variant);
-  else trace(context, variant.commands);
+  else trace(context, pixelCommands(variant));
   context.globalAlpha = paint.opacity;
   context.fillStyle = paint.fill;
   if (variant.kind === "clip") {
     context.clip(variant.fillRule);
-    context.fillRect(0, 0, 14, 10);
+    if (reference) context.fillRect(0, 0, 14, 10);
+    else context.fillRect(shapeBounds.x, shapeBounds.y, shapeBounds.width, shapeBounds.height);
   } else {
     context.fill(variant.fillRule);
     if (variant.kind !== "points") {
       context.strokeStyle = paint.stroke;
-      context.lineWidth = 2 / frame.scale;
+      context.lineWidth = reference ? 2 / frame.scale : 2;
       context.stroke();
     }
   }

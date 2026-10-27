@@ -1,3 +1,5 @@
+import { translateGraphicClip } from "../grammar/schemas/graphicClip.js";
+
 function translateCommands(commands, dx, dy) {
   return commands.map(command => {
     if (command.op === "Z") return { ...command };
@@ -36,7 +38,7 @@ export function translateGraphic(program, id, dx, dy) {
   const graphic = program.graphicSpec.objects[id];
   if (dx === 0 && dy === 0) return program;
   if (graphic.clip !== undefined) program = program.editGraphics({target: id, property: "clip",
-    value: {...graphic.clip, x: graphic.clip.x + dx, y: graphic.clip.y + dy}});
+    value: translateGraphicClip(graphic.clip, dx, dy)});
   if (graphic.items !== undefined) {
     let next = program.editGraphics({
       target: id,

@@ -1,3 +1,4 @@
+import { arcControlFactor } from "./pathGeometry.js";
 import { freezeOwned } from "../core/immutable.js";
 
 const KAPPA = 0.5522847498307936;
@@ -46,7 +47,7 @@ function arcCommands(frame, radius, startTheta, endTheta) {
     const startRadians = start * Math.PI / 180;
     const endRadians = end * Math.PI / 180;
     const deltaRadians = endRadians - startRadians;
-    const control = 4 / 3 * Math.tan(deltaRadians / 4);
+    const control = arcControlFactor(deltaRadians);
     const from = resolvePolarPoint(frame, start, radius);
     const to = resolvePolarPoint(frame, end, radius);
     const fromDerivative = {

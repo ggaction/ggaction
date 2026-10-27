@@ -1,4 +1,5 @@
 import { cloneAndFreeze } from "../core/immutable.js";
+import { translateGraphicClip } from "../grammar/schemas/graphicClip.js";
 import { legendResourcePolicies } from "./guides/resources.js";
 import { translatedProperties } from "./graphicTranslation.js";
 import { unionConcreteGraphicBounds } from "../grammar/schemas/graphicBounds.js";
@@ -29,7 +30,7 @@ export function applyLegendItemsOffset(program) {
     touched.add(id);
     const moved = { ...object };
     if (object.properties) moved.properties = translatedProperties(object.type, object.properties, dx, dy);
-    if (object.clip) moved.clip = { ...object.clip, x: object.clip.x + dx, y: object.clip.y + dy };
+    if (object.clip) moved.clip = translateGraphicClip(object.clip, dx, dy);
     if (object.items) moved.items = object.items.map(item => ({ ...item,
       properties: translatedProperties(item.type ?? object.type, item.properties, dx, dy) }));
     objects[id] = moved;

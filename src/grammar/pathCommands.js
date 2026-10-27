@@ -1,48 +1,12 @@
 import { freezeOwned, isOwned, isPlainObject } from "../core/immutable.js";
-import { validateGeneratedItemLimit } from "../core/validation.js";
+import { resolvePathSubpaths, validatePathCommand, validatePathCommandCount } from "./pathTopology.js";
+export { MAX_PATH_COMMANDS, validatePathCommandCount, validatePathFillRule } from "./pathTopology.js";
 
-export const MAX_PATH_COMMANDS = 30_000;
-
-export function validatePathCommandCount(count, label) {
-  return validateGeneratedItemLimit(count, label, MAX_PATH_COMMANDS);
-}
-
-const COMMAND_KEYS = Object.freeze({
-  M: Object.freeze(["op", "x", "y"]),
-  L: Object.freeze(["op", "x", "y"]),
-  C: Object.freeze(["op", "x1", "y1", "x2", "y2", "x", "y"]),
-  Z: Object.freeze(["op"])
-});
 const validatedCommands = new WeakSet();
+const validatedLegacyCommands = new WeakSet();
 
-export function validatePathCommand(command, index) {
-  if (!isPlainObject(command) || !Object.hasOwn(COMMAND_KEYS, command.op)) {
-    throw new TypeError(
-      `path.commands[${index}] must be an M, L, C, or Z command.`
-    );
-  }
-  const expected = COMMAND_KEYS[command.op];
-  const keys = Object.keys(command);
-  if (
-    keys.length !== expected.length ||
-    !expected.every(key => Object.hasOwn(command, key))
-  ) {
-    throw new TypeError(
-      `path.commands[${index}] has invalid properties for ${command.op}.`
-    );
-  }
-  for (const key of expected) {
-    if (key !== "op" && !Number.isFinite(command[key])) {
-      throw new TypeError(
-        `path.commands[${index}].${key} must be a finite number.`
-      );
-    }
-  }
-  return command;
-}
-
-export function validatePathCommands(commands) {
-  if (validatedCommands.has(commands)) return commands;
+export function validateLegacyPathCommands(commands) {
+  if (validatedLegacyCommands.has(commands)) return commands;
   if (!Array.isArray(commands) || commands.length < 1) {
     throw new TypeError("path.commands must contain at least one command.");
   }
@@ -52,7 +16,7 @@ export function validatePathCommands(commands) {
     throw new Error("path.commands must start with M.");
   }
   if (commands.length === 1) {
-    if (isOwned(commands)) validatedCommands.add(commands);
+    if (isOwned(commands)) validatedLegacyCommands.add(commands);
     return commands;
   }
   if (commands.slice(1).some(command => command.op === "M")) {
@@ -65,7 +29,7 @@ export function validatePathCommands(commands) {
   if (closeIndex !== -1 && closeIndex !== commands.length - 1) {
     throw new Error("path.commands Z must be the final command.");
   }
-  if (isOwned(commands)) validatedCommands.add(commands);
+  if (isOwned(commands)) validatedLegacyCommands.add(commands);
   return commands;
 }
 
@@ -102,4 +66,11 @@ export function buildLinearPathCommands(points, { close = false } = {}) {
   ];
   if (close) commands.push({ op: "Z" });
   return freezeOwned(commands.map(command => freezeOwned(command)));
+}
+
+export function validatePathCommands(commands) {
+  if (validatedCommands.has(commands)) return commands;
+  resolvePathSubpaths(commands);
+  if (isOwned(commands)) validatedCommands.add(commands);
+  return commands;
 }

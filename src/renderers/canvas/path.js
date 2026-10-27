@@ -22,9 +22,6 @@ function drawPath(context, child, collectionId) {
   if (!hasFill && !hasStroke) {
     throw new Error(`Graphic "${graphicId}" requires a fill or stroke property.`);
   }
-  if (hasFill && commands.at(-1).op !== "Z") {
-    throw new Error(`Graphic "${graphicId}" requires a final Z command when filled.`);
-  }
   if (hasStroke && typeof properties.stroke !== "string") {
     throw new Error(`Graphic "${graphicId}" requires a string stroke property.`);
   }
@@ -55,6 +52,35 @@ function drawPath(context, child, collectionId) {
 
   context.globalAlpha = opacity;
   context.beginPath();
+  tracePath(context, commands);
+
+  if (hasFill) {
+    const bounds = resolvePathCommandBounds(commands);
+    if (bounds === undefined) {
+      throw new Error(`Graphic "${graphicId}" requires finite path fill bounds.`);
+    }
+    applyCanvasFill(context, properties.fill, bounds, graphicId);
+    if (properties.fillRule === undefined) context.fill();
+    else context.fill(properties.fillRule);
+  }
+  if (hasStroke && strokeWidth > 0) {
+    applyCanvasStroke(context, properties, strokeDash);
+    context.stroke();
+  }
+}
+
+export function drawPathGraphic(context, id, graphic) {
+  if (graphic.items) {
+    for (const item of graphic.items) {
+      drawPath(context, item, id);
+    }
+    return;
+  }
+
+  drawPath(context, { id, properties: graphic.properties }, id);
+}
+
+export function tracePath(context, commands) {
   for (const command of commands) {
     if (command.op === "M") {
       context.moveTo(command.x, command.y);
@@ -73,28 +99,4 @@ function drawPath(context, child, collectionId) {
       context.closePath();
     }
   }
-
-  if (hasFill) {
-    const bounds = resolvePathCommandBounds(commands);
-    if (bounds === undefined) {
-      throw new Error(`Graphic "${graphicId}" requires finite path fill bounds.`);
-    }
-    applyCanvasFill(context, properties.fill, bounds, graphicId);
-    context.fill();
-  }
-  if (hasStroke && strokeWidth > 0) {
-    applyCanvasStroke(context, properties, strokeDash);
-    context.stroke();
-  }
-}
-
-export function drawPathGraphic(context, id, graphic) {
-  if (graphic.items) {
-    for (const item of graphic.items) {
-      drawPath(context, item, id);
-    }
-    return;
-  }
-
-  drawPath(context, { id, properties: graphic.properties }, id);
 }

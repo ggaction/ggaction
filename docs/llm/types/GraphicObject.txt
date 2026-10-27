@@ -1,6 +1,6 @@
 export interface GraphicObject {
   /** Optional named non-Canvas owner clip in its unchanged parent frame. */
-  readonly clip?: GraphicClipRect;
+  readonly clip?: GraphicClip;
   readonly type: GraphicType;
   readonly properties?: Readonly<Record<string, unknown>>;
   readonly items?: readonly GraphicItem[];

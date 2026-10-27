@@ -1,6 +1,6 @@
 import { collectTransitionGraphics } from "./transitionScene.js";
 import { isOwned } from "../core/immutable.js";
-import { validateGraphicClip } from "../grammar/schemas/graphicClip.js";
+import { validateGraphicClip, translateGraphicClip } from "../grammar/schemas/graphicClip.js";
 import {
   requireSingleOrderedGraphicByType,
   walkGraphicTreeEvents
@@ -337,9 +337,6 @@ function serializePath(state, graphicId, properties) {
   if (!hasFill && !hasStroke) {
     throw new Error(`Graphic "${graphicId}" requires a fill or stroke property.`);
   }
-  if (hasFill && commands.at(-1).op !== "Z") {
-    throw new Error(`Graphic "${graphicId}" requires a final Z command when filled.`);
-  }
   if (hasStroke && typeof properties.stroke !== "string") {
     throw new Error(`Graphic "${graphicId}" requires a string stroke property.`);
   }
@@ -362,6 +359,7 @@ function serializePath(state, graphicId, properties) {
   }
   return element("path", [
     ["d", serializePathData(commands)],
+    ["fill-rule", properties.fillRule],
     ["fill", fill],
     ["stroke", properties.stroke],
     ["stroke-width", strokeWidth === undefined
@@ -519,8 +517,7 @@ function serializeBody(graphicSpec, rootId, rootCanvas, width, height, state) {
       if (object.clip !== undefined) {
         validateGraphicClip(object.clip, object.type);
         const clipId = `ggaction-clip-${state.resourceNamespace}-${state.clipCount++}`;
-        state.definitions.push(element("clipPath", [["id", clipId]], element("rect",
-          Object.entries(object.clip).map(([key, value]) => [key, formatNumber(value)]))));
+        state.definitions.push(element("clipPath", [["id", clipId]], serializeClip(object.clip)));
         output.push(`<g clip-path="url(#${clipId})">`);
       }
       if (object.type === "canvas") {
@@ -646,8 +643,31 @@ export function renderTransitionGraphics(graphicSpec, identities) {
   let namespace;
   const state = { definitions: [], gradientCount: 1, clipCount: 1,
     get resourceNamespace() { return namespace ??= `scene-${resourceNamespace(graphicSpec)}`; } };
-  const nodes = scene.nodes.map(({ properties, clips, ...node }) => ({ ...node,
-    svg: serializeConcreteGraphic(state, node.key, { type: node.type, properties }) }));
+  const nodes = scene.nodes.map(({ properties, clips, ...node }) => {
+    let svg = serializeConcreteGraphic(state, node.key, { type: node.type, properties });
+    const pathClips = (clips ?? []).filter(clip => clip.type === "path");
+    for (const clip of pathClips.reverse()) {
+      const id = `ggaction-clip-${state.resourceNamespace}-${state.clipCount++}`;
+      state.definitions.push(element("clipPath", [["id", id]], serializeClip(translateGraphicClip(clip, -node.offset[0], -node.offset[1]))));
+      svg = element("g", [["clip-path", `url(#${id})`]], svg);
+    }
+    if (pathClips.length) {
+      // The fragment applies each path clip. Applying its bounding box again
+      // as node.clip would multiply fractional-edge antialias coverage.
+      node.clip = (clips ?? []).filter(Array.isArray).reduce((parent, clip) => {
+        const left = Math.max(parent[0], clip[0]), top = Math.max(parent[1], clip[1]);
+        return [left, top, Math.max(0, Math.min(parent[0] + parent[2], clip[0] + clip[2]) - left),
+          Math.max(0, Math.min(parent[1] + parent[3], clip[1] + clip[3]) - top)];
+      }, [0, 0, scene.width, scene.height]);
+    }
+    return { ...node, svg };
+  });
   return { version: 1, width: scene.width, height: scene.height,
     definitions: state.definitions.join(""), nodes };
+}
+
+function serializeClip(clip) {
+  return clip.type === "path"
+    ? element("path", [["d", serializePathData(clip.commands)], ["clip-rule", clip.fillRule ?? "nonzero"]])
+    : element("rect", Object.entries(clip).map(([key, value]) => [key, formatNumber(value)]));
 }

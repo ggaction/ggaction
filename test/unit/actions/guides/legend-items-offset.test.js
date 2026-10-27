@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {applyLegendItemsOffset,restoreLegendItemsOffset} from '../../../../src/materialization/legendItemsOffset.js';
 import assert from 'node:assert/strict';
 import {chart,hconcat,vconcat} from '../../../../src/index.js';
 import {serializeProgram,deserializeProgram} from '../../../../src/persistence.js';
@@ -113,4 +114,15 @@ test('fitCanvas measures shifted body and restores its anchor after repeated non
  shifted(measure(normal,'colorLegendLabels'),measure(q,'colorLegendLabels'),90,60);
  const canvas=q.graphicSpec.objects.canvas.properties,body=measure(q,'colorLegendLabels');
  assert.ok(body.right<=canvas.width&&body.bottom<=canvas.height);
+});
+
+test('compound owner clip moves with legend symbols and restores without accumulating offsets',()=>{
+ const commands=[{op:'M',x:0,y:0},{op:'L',x:2000,y:0},{op:'C',x1:2000,y1:500,x2:2000,y2:1500,x:2000,y:2000},{op:'L',x:0,y:2000},{op:'Z'},{op:'M',x:3000,y:3000}];
+ const p=restoreLegendItemsOffset(unit().editLegend({channel:'color',itemsOffset:{x:7,y:-3}}))
+  .editGraphics({target:'colorLegendSymbols',property:'clip',value:{type:'path',commands,fillRule:'evenodd'}});
+ const q=applyLegendItemsOffset(p);
+ assert.deepEqual(q.graphicSpec.objects.colorLegendSymbols.clip.commands[2],{op:'C',x1:2007,y1:497,x2:2007,y2:1497,x:2007,y:1997});
+ assert.equal(q.graphicSpec.objects.colorLegendSymbols.clip.fillRule,'evenodd');
+ assert.deepEqual(restoreLegendItemsOffset(q).graphicSpec.objects.colorLegendSymbols.clip,p.graphicSpec.objects.colorLegendSymbols.clip);
+ assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec,q.graphicSpec);
 });

@@ -770,6 +770,10 @@
     "file": "extension.mjs",
     "cases": [
       {
+        "id": "extension/compound-path",
+        "statements": 1
+      },
+      {
         "id": "extension/passthrough",
         "statements": 8
       }

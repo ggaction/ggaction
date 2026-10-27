@@ -48,3 +48,18 @@ test("property translation copies path controls and primitive positions without 
   assert.deepEqual(translatedProperties("line", { x1: 1, x2: 2, y1: 3, y2: 4 }, 10, -2),
     { x1: 11, x2: 12, y1: 1, y2: 2 });
 });
+
+test("graphic translation shifts compound owner clips and cubic controls exactly once",()=>{
+  const commands=[{op:"M",x:1,y:2},{op:"C",x1:3,y1:4,x2:5,y2:6,x:7,y:8},{op:"Z"},{op:"M",x:20,y:30}];
+  const p=chart().createCanvas().createGraphics({id:"group",type:"collection",parent:"plot-main"})
+    .editGraphics({target:"group",property:"clip",value:{type:"path",commands,fillRule:"evenodd"}})
+    .createGraphics({id:"path",type:"path",parent:"group"})
+    .editGraphics({target:"path",property:"commands",value:commands})
+    .editGraphics({target:"path",property:"fillRule",value:"nonzero"});
+  const saved=serializeProgram(p),q=translateGraphic(p,"group",4,-2);
+  assert.equal(serializeProgram(p),saved);
+  assert.deepEqual(q.graphicSpec.objects.group.clip.commands,q.graphicSpec.objects.path.properties.commands);
+  assert.deepEqual(q.graphicSpec.objects.group.clip.commands[1],{op:"C",x1:7,y1:2,x2:9,y2:4,x:11,y:6});
+  assert.equal(q.graphicSpec.objects.group.clip.fillRule,"evenodd");
+  assert.equal(q.graphicSpec.objects.path.properties.fillRule,"nonzero");
+});

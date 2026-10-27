@@ -1,4 +1,4 @@
-import { validateGraphicClip } from '../grammar/schemas/graphicClip.js';
+import { validateGraphicClip, graphicClipBounds, translateGraphicClip } from '../grammar/schemas/graphicClip.js';
 import { validateConcreteGraphicProperties } from '../grammar/schemas/concreteGraphic.js';
 import { requireSingleOrderedGraphicByType, walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
 function opaqueKey(value) {
@@ -50,12 +50,14 @@ export function collectTransitionGraphics(graphicSpec, identities) {
         background(id, object);
       } else {
         if (object.clip !== undefined) {
-          const rect = validateGraphicClip(object.clip, object.type), parent = stack.at(-1);
-          const left = Math.max(parent.x + rect.x, parent.clip[0]);
-          const top = Math.max(parent.y + rect.y, parent.clip[1]);
-          stack.push({ ...parent, clips: [...parent.clips, [parent.x + rect.x, parent.y + rect.y, rect.width, rect.height]], clip: [left, top,
-            Math.max(0, Math.min(parent.x + rect.x + rect.width, parent.clip[0] + parent.clip[2]) - left),
-            Math.max(0, Math.min(parent.y + rect.y + rect.height, parent.clip[1] + parent.clip[3]) - top)] });
+          const clip = validateGraphicClip(object.clip, object.type), parent = stack.at(-1);
+          const bounds = graphicClipBounds(clip, parent.x, parent.y);
+          const left = Math.max(bounds.left, parent.clip[0]), top = Math.max(bounds.top, parent.clip[1]);
+          const absolute = clip.type === "path" ? translateGraphicClip(clip, parent.x, parent.y)
+            : [bounds.left, bounds.top, bounds.right - bounds.left, bounds.bottom - bounds.top];
+          stack.push({ ...parent, clips: [...parent.clips, absolute], clip: [left, top,
+            Math.max(0, Math.min(bounds.right, parent.clip[0] + parent.clip[2]) - left),
+            Math.max(0, Math.min(bounds.bottom, parent.clip[1] + parent.clip[3]) - top)] });
         }
         if (object.type !== "collection" && !Array.isArray(object.items)) add(id, object);
       }

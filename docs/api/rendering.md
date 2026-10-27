@@ -413,6 +413,10 @@ It returns a frozen, structured-cloneable version-1 scene with native `width` an
 `key`, concrete `type`, path `topology` signature, escaped SVG fragment, absolute
 parent `offset`, and intersected canvas `clip` rectangle. Keys are correspondence
 hints, not editable graphic addresses. Renderers still consume concrete graphics.
+Compound path fill rules are retained in each SVG fragment. Path owner clips are
+preserved through scoped definitions and fragment wrappers. The SVG `clip`
+rectangle retains the rectangular viewport/owner intersection; path clips apply
+inside the fragment so fractional edges are not clipped twice.
 
 <!-- snippet-context:start -->
 
@@ -451,9 +455,10 @@ no DOM, Canvas resources, semantic compilation or data tables. The default forma
 remains SVG/version 1; unknown formats are rejected.
 
 Canvas nodes also retain optional `clips`: the explicit outer-to-inner clip
-frames in global logical coordinates. The root physical viewport is implicit.
+frames in global logical coordinates: rectangle tuples or
+`{ type: "path", commands, fillRule? }` objects. The root physical viewport is implicit.
 This preserves fractional-edge coverage and owner clips inside nested Canvases;
-`clip` remains their intersected bounds. If an intermediate node omits `clips`,
+Canvas `clip` remains their intersected bounds, including path bounds. If an intermediate node omits `clips`,
 its single `clip` rectangle is used. Retain the supplied frames when animating
 an unchanged clipping hierarchy.
 

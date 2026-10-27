@@ -52,7 +52,7 @@ generated metadata와 docs build/browser를 통합 checkpoint에서 요구한다
 | machine-docs | exit 0 |
 
 [실행 집계](evidence/summary.json), [네 backend 출력 결과](evidence/render-results.json), [완료 증거](preparation.json), [검증 결과](preparation-validation.json)를 보존한다.
-검토 준비만 complete이며 제품 STEP-010–012는 계속 열려 있다. 이미지는 아래 명령으로 재생성한다.
+검토 준비만 complete이며 제품 STEP-010–012는 계속 열려 있다. 이미지는 당시 commit에서 아래 명령으로 재생성한다. 현재 제품 slice는 `test/charts/compound-path/`에 있다.
 
 ```sh
 node scripts/run-tests.js render gates/compound-path/review.render.js

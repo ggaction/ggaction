@@ -1,3 +1,4 @@
+import { validateGraphicClip, translateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { isOwned } from '../../core/immutable.js';
 import { render } from './index.js';
 
@@ -22,27 +23,37 @@ function compile(scene) {
   const groups = [objects.canvas], origins = [[0, 0]];
   const validClip = clip => Array.isArray(clip) && clip.length === 4 &&
     clip.every(Number.isFinite) && clip[2] >= 0 && clip[3] >= 0;
+  const validFrame = clip => {
+    if (Array.isArray(clip)) return validClip(clip);
+    if (clip?.type !== "path") return false;
+    validateGraphicClip(clip, "collection");
+    return true;
+  };
+  const sameClip = (a, b) => a === b || JSON.stringify(a) === JSON.stringify(b);
   for (const node of scene.nodes) {
     const clips = node.clips ?? [node.clip];
     if (typeof node.key !== 'string' || keys.has(node.key) || !['circle','rect','line','path','text'].includes(node.type) ||
         node.offset?.length !== 2 || !node.offset.every(Number.isFinite) || !validClip(node.clip) ||
-        !Array.isArray(clips) || !clips.every(validClip) || !node.properties || typeof node.properties !== 'object') {
+        !Array.isArray(clips) || !clips.every(validFrame) || !node.properties || typeof node.properties !== 'object') {
       throw new TypeError('Canvas scene nodes require unique keys, concrete properties, offsets and clips.');
     }
     keys.add(node.key);
     let common = 0;
     while (common < Math.min(clips.length, activeClips.length) &&
-        clips[common].every((value, i) => value === activeClips[common][i])) common++;
+        sameClip(clips[common], activeClips[common])) common++;
     groups.length = common + 1; origins.length = common + 1;
     // Retain shared concrete clip ancestors across adjacent nodes. Rebuilding
     // a fractional ancestor between its children can change raster coverage.
     for (let i = common; i < clips.length; i++) {
       const clip = clips[i], origin = origins.at(-1), parent = groups.at(-1);
       const id = `clip-${index++}`;
-      const nested = objects[id] = { type: 'canvas', properties: {
-        x: clip[0] - origin[0], y: clip[1] - origin[1], width: clip[2], height: clip[3]
-      }, children: [] };
-      parent.children.push(id); groups.push(nested); origins.push([clip[0], clip[1]]);
+      const pathClip = clip.type === "path";
+      const nested = objects[id] = pathClip ? { type: "collection", items: [],
+        clip: translateGraphicClip(clip, -origin[0], -origin[1]), children: [] }
+        : { type: 'canvas', properties: {
+          x: clip[0] - origin[0], y: clip[1] - origin[1], width: clip[2], height: clip[3]
+        }, children: [] };
+      parent.children.push(id); groups.push(nested); origins.push(pathClip ? origin : [clip[0], clip[1]]);
     }
     activeClips = clips;
     const group = groups.at(-1), origin = origins.at(-1);
