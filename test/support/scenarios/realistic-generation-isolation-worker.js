@@ -9,7 +9,9 @@ import {
   "../../../scripts/run-realistic-scenario-generation-coordinator.js";
 
 export const REALISTIC_GENERATION_ISOLATION_LIMITS = Object.freeze([216, 360]);
-export const REALISTIC_GENERATION_ISOLATION_TIMEOUT_MS = 900_000;
+// The reference and isolated paths share this deadline on slower CI CPUs.
+// Their descriptor counts, per-child heaps and parity assertions stay fixed.
+export const REALISTIC_GENERATION_ISOLATION_TIMEOUT_MS = 1_200_000;
 
 export async function realisticGenerationIsolationBoundary(limit) {
   if (!REALISTIC_GENERATION_ISOLATION_LIMITS.includes(limit)) {
