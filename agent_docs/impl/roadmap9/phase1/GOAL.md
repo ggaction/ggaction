@@ -12,6 +12,7 @@ API/소유권/복원 검토 패키지를 준비했다. **제품 row identity 및
 - [G-CORE 설계](DESIGN.md): 승인 대상 옵션·상태·오류·호환성·분기 규칙
 - [G-CORE 기록](G-CORE.json): 승인 상태와 code/evidence revision
 - [consumer matrix](consumers.json): 모든 적용 경로와 아직 남은 연결
+- [STEP-004 진행 기록](progress/STEP-004.json): 제품 작업은 in-progress, 구현·승인 의무 미종료
 
 요구 근거는 [root AGENTS](../../../../AGENTS.md)의
 “Before implementing an unresolved material decision about public APIs, persisted schemas, or core architecture, present the concrete proposal and obtain explicit user approval.”이다.
@@ -44,3 +45,26 @@ Date/tuple/counter의 독립 oracle은 제품 구현과 분리되어 있으며 �
 fixture 재현은 검토 code revision을 checkout한 뒤 `node agent_docs/impl/roadmap9/phase1/fixture-source.mjs <새 디렉터리>`로 한다.
 기존 fixture는 덮어쓰지 않는다. v1/v2는 과거 형식 호환성 입력이며 과거 배포 artifact가 아니다.
 큰 누적 실행은 상위 프로젝트 storage:run 정책을 따른다.
+
+## 검토 준비 검증 완료
+
+검토 code revision: `129a506dfd2fc2455b7de949d73fdd6cf34e27a5`.
+실행 전후 모두 이 commit의 clean checkout이다. 이번 기록 commit은 제품·test source를 바꾸지 않는다.
+
+| 검사 | 결과 |
+|---|---|
+| 독립 identity / historical persistence | 13 passed, 2 files |
+| 독립성 / discovery / documentation navigation | 23 passed, 3 files |
+| npm test | 6,311 passed, 0 failed/skipped/cancelled/todo, 1,038 files, 약 250초 |
+| docs:machine:check | exit 0 |
+
+[실행 집계](evidence/summary.json), [완료 증거](preparation.json), [검증 결과](preparation-validation.json)를 보존한다.
+Focused와 문서 검사는 Node 22.23.2, 전체 일반 검사는 storage wrapper의 Node 22.23.1/darwin/arm64에서 실행했다.
+원본 로그는 각 2MiB 이내이고 모두 truncated=false다. 저장 공간 감시기는 near-limit 경고 후 exit 0으로 완료했다.
+G-CORE는 ready-for-review이며 승인되지 않았다. 완료된 범위는 CORE-REVIEW-PREPARATION뿐이다.
+
+저장한 증거는 다음 명령으로 다시 검증한다. 이 명령은 test를 다시 실행하거나 Gate를 승인하지 않는다.
+
+```sh
+node scripts/verification-evidence.js agent_docs/impl/roadmap9/phase1/review-plan.json agent_docs/impl/roadmap9/phase1/preparation.json
+```

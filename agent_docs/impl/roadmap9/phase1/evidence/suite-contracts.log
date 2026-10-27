@@ -1,0 +1,148 @@
+TAP version 13
+# Subtest: keeps one optional active roadmap and an explicit completed owner
+ok 1 - keeps one optional active roadmap and an explicit completed owner
+  ---
+  duration_ms: 1.912709
+  type: 'test'
+  ...
+# Subtest: keeps human entry points synchronized with roadmap activity
+ok 2 - keeps human entry points synchronized with roadmap activity
+  ---
+  duration_ms: 1.091666
+  type: 'test'
+  ...
+# Subtest: keeps the active or last completed phase linked to its roadmap
+ok 3 - keeps the active or last completed phase linked to its roadmap
+  ---
+  duration_ms: 0.091209
+  type: 'test'
+  ...
+# Subtest: links current and historical roadmap roots to their canonical owner
+ok 4 - links current and historical roadmap roots to their canonical owner
+  ---
+  duration_ms: 4.294209
+  type: 'test'
+  ...
+# Subtest: routes architecture work without duplicating the canonical record
+ok 5 - routes architecture work without duplicating the canonical record
+  ---
+  duration_ms: 2.057083
+  type: 'test'
+  ...
+# Subtest: keeps the contract landing page lightweight and action-directed
+ok 6 - keeps the contract landing page lightweight and action-directed
+  ---
+  duration_ms: 0.329083
+  type: 'test'
+  ...
+# Subtest: keeps current agent-documentation routes and anchors valid
+ok 7 - keeps current agent-documentation routes and anchors valid
+  ---
+  duration_ms: 150.937875
+  type: 'test'
+  ...
+# Subtest: independent expected-value modules have no transitive production imports
+ok 8 - independent expected-value modules have no transitive production imports
+  ---
+  duration_ms: 8.441833
+  type: 'test'
+  ...
+# Subtest: discovers every normal, render, and browser test recursively exactly once
+ok 9 - discovers every normal, render, and browser test recursively exactly once
+  ---
+  duration_ms: 39.386125
+  type: 'test'
+  ...
+# Subtest: separates network-backed corpus sweeps from source coverage
+ok 10 - separates network-backed corpus sweeps from source coverage
+  ---
+  duration_ms: 18.898917
+  type: 'test'
+  ...
+# Subtest: shards realistic CI after preparing its dataset cache once
+ok 11 - shards realistic CI after preparing its dataset cache once
+  ---
+  duration_ms: 0.260041
+  type: 'test'
+  ...
+# Subtest: does not discover programs or support modules as tests
+ok 12 - does not discover programs or support modules as tests
+  ---
+  duration_ms: 4.142042
+  type: 'test'
+  ...
+# Subtest: keeps every test module reachable from a suite or module-script entry
+ok 13 - keeps every test module reachable from a suite or module-script entry
+  ---
+  duration_ms: 229.345125
+  type: 'test'
+  ...
+# Subtest: requires every active gate to expose a complete reviewable slice
+ok 14 - requires every active gate to expose a complete reviewable slice
+  ---
+  duration_ms: 0.29375
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from active gate implementations
+ok 15 - keeps stable tests independent from active gate implementations
+  ---
+  duration_ms: 59.303667
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from implementation roadmap records
+ok 16 - keeps stable tests independent from implementation roadmap records
+  ---
+  duration_ms: 35.503333
+  type: 'test'
+  ...
+# Subtest: selects tests by chart, capability, or relative path
+ok 17 - selects tests by chart, capability, or relative path
+  ---
+  duration_ms: 34.868834
+  type: 'test'
+  ...
+# Subtest: caps file concurrency without changing file order or coverage policy
+ok 18 - caps file concurrency without changing file order or coverage policy
+  ---
+  duration_ms: 0.8825
+  type: 'test'
+  ...
+# Subtest: validates realistic shard coordinates before invoking Node
+ok 19 - validates realistic shard coordinates before invoking Node
+  ---
+  duration_ms: 0.338125
+  type: 'test'
+  ...
+# Subtest: maps every named capability entry to an exact file or prefix
+ok 20 - maps every named capability entry to an exact file or prefix
+  ---
+  duration_ms: 320.895042
+  type: 'test'
+  ...
+# Subtest: assigns every normal test file to at least one named capability
+ok 21 - assigns every normal test file to at least one named capability
+  ---
+  duration_ms: 6.687084
+  type: 'test'
+  ...
+# Subtest: validates every selector before short-circuit matching
+ok 22 - validates every selector before short-circuit matching
+  ---
+  duration_ms: 0.075333
+  type: 'test'
+  ...
+# Subtest: coverage capture preserves UTF-8 markers across every byte boundary
+ok 23 - coverage capture preserves UTF-8 markers across every byte boundary
+  ---
+  duration_ms: 0.414291
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 23
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 814.041625

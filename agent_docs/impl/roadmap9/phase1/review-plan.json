@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "scope": "Review preparation only; does not complete G-CORE approval or any STEP-004..009 product task.",
+  "requirementsDeclaredAt": "129a506dfd2fc2455b7de949d73fdd6cf34e27a5",
+  "requirementsSource": "agent_docs/impl/roadmap9/phase1/GOAL.md",
+  "tasks": [
+    {
+      "id": "CORE-REVIEW-PREPARATION",
+      "dependsOn": [],
+      "requiredChecks": [
+        "suite-unit",
+        "suite-contracts",
+        "suite-all",
+        "machine-docs"
+      ],
+      "requiredGates": []
+    }
+  ],
+  "finalTask": "CORE-REVIEW-PREPARATION"
+}

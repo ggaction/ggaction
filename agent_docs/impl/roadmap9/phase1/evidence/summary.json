@@ -1,0 +1,115 @@
+{
+  "status": "verified-review-only",
+  "codeRevision": "129a506dfd2fc2455b7de949d73fdd6cf34e27a5",
+  "checks": [
+    {
+      "label": "suite-unit",
+      "exitCode": 0,
+      "node": "v22.23.2",
+      "platform": "darwin",
+      "arch": "arm64",
+      "durationMs": 562,
+      "discoveredFiles": 2,
+      "counts": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "receipt": {
+        "path": "agent_docs/impl/roadmap9/phase1/evidence/suite-unit.json",
+        "sha256": "8f6a72e332af26a98c3c98b46dd405ce9e03df3f3f1d35f739d451f6981746db"
+      },
+      "log": {
+        "path": "agent_docs/impl/roadmap9/phase1/evidence/suite-unit.log",
+        "sha256": "5a203a81e5fca06d01684d8690144ddc44413ca782f8e6dcc8f47d7ecea64631"
+      }
+    },
+    {
+      "label": "suite-contracts",
+      "exitCode": 0,
+      "node": "v22.23.2",
+      "platform": "darwin",
+      "arch": "arm64",
+      "durationMs": 886,
+      "discoveredFiles": 3,
+      "counts": {
+        "tests": 23,
+        "pass": 23,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "receipt": {
+        "path": "agent_docs/impl/roadmap9/phase1/evidence/suite-contracts.json",
+        "sha256": "fb6590344ebc7a82bf89b19c76de5fe1d9a8760ca50a090b8885205447298bfa"
+      },
+      "log": {
+        "path": "agent_docs/impl/roadmap9/phase1/evidence/suite-contracts.log",
+        "sha256": "ddc783f15d69b379cfb16a14f57ddc51dedb6d5d1d3b7bd7fcc23718847d9394"
+      }
+    },
+    {
+      "label": "suite-all",
+      "exitCode": 0,
+      "node": "v22.23.1",
+      "platform": "darwin",
+      "arch": "arm64",
+      "durationMs": 250341,
+      "discoveredFiles": 1038,
+      "counts": {
+        "tests": 6311,
+        "pass": 6311,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "receipt": {
+        "path": "agent_docs/impl/roadmap9/phase1/evidence/suite-all.json",
+        "sha256": "1d9ae33017d5b46acd3934e1b779be9b74b5960ea104e7566928aaaf3b35374a"
+      },
+      "log": {
+        "path": "agent_docs/impl/roadmap9/phase1/evidence/suite-all.log",
+        "sha256": "769b0806b2eed914d1d9fc931018dc4c1b94bd9c795eb21c4d298641af025202"
+      }
+    },
+    {
+      "label": "machine-docs",
+      "exitCode": 0,
+      "node": "v22.23.2",
+      "platform": "darwin",
+      "arch": "arm64",
+      "durationMs": 203,
+      "discoveredFiles": null,
+      "counts": {},
+      "receipt": {
+        "path": "agent_docs/impl/roadmap9/phase1/evidence/machine-docs.json",
+        "sha256": "cec937e239f1994d7cc56ca49c9f0667d7846ed3088b965bbee3341184a7e71c"
+      },
+      "log": {
+        "path": "agent_docs/impl/roadmap9/phase1/evidence/machine-docs.log",
+        "sha256": "795dd208b8c58e44015d36a6d75d7b26bf5661c5e8c07a4b442bb215e7e219f5"
+      }
+    }
+  ],
+  "notice": "Review preparation only; does not complete G-CORE approval or any STEP-004..009 product task.",
+  "notRun": [
+    {
+      "checks": [
+        "browser",
+        "render",
+        "package-consumer"
+      ],
+      "reason": "No runtime, renderer, public type, dependency, export, or packed-file change; required at product integration/Phase closeout."
+    }
+  ],
+  "storageGuard": {
+    "exitCode": 0,
+    "warning": "project-budget-near-limit",
+    "command": "npm run storage:run -- node ../ggactionnewbrand/scripts/run-check.js identity-review-all -- npm test"
+  }
+}

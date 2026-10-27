@@ -1,0 +1,49 @@
+{
+  "label": "suite-contracts",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/agent-docs-navigation.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/oracle-independence.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/test-discovery.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 886,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-27T08:09:39.753Z",
+  "finishedAt": "2026-10-27T08:09:40.640Z",
+  "source": {
+    "available": true,
+    "commit": "129a506dfd2fc2455b7de949d73fdd6cf34e27a5",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "129a506dfd2fc2455b7de949d73fdd6cf34e27a5",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "ddc783f15d69b379cfb16a14f57ddc51dedb6d5d1d3b7bd7fcc23718847d9394",
+  "discovery": {
+    "suite": "contracts",
+    "selectors": [
+      "contracts/oracle-independence.test.js",
+      "contracts/test-discovery.test.js",
+      "contracts/agent-docs-navigation.test.js"
+    ],
+    "files": [
+      "test/contracts/agent-docs-navigation.test.js",
+      "test/contracts/oracle-independence.test.js",
+      "test/contracts/test-discovery.test.js"
+    ]
+  },
+  "bytes": 4655,
+  "retainedBytes": 4655,
+  "truncated": false
+}

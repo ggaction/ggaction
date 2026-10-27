@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: typed key reference distinguishes scalar types and tuple boundaries
+ok 1 - typed key reference distinguishes scalar types and tuple boundaries
+  ---
+  duration_ms: 0.974792
+  type: 'test'
+  ...
+# Subtest: typed key reference ordering is transitive, antisymmetric and locale independent
+ok 2 - typed key reference ordering is transitive, antisymmetric and locale independent
+  ---
+  duration_ms: 4.227208
+  type: 'test'
+  ...
+# Subtest: invalid, empty, sparse, nested and accessor keys fail without reading accessors
+ok 3 - invalid, empty, sparse, nested and accessor keys fail without reading accessors
+  ---
+  duration_ms: 0.390959
+  type: 'test'
+  ...
+# Subtest: explicit keys survive ordering and value edits and reject duplicate identity
+ok 4 - explicit keys survive ordering and value edits and reject duplicate identity
+  ---
+  duration_ms: 0.128333
+  type: 'test'
+  ...
+# Subtest: generated reference labels preserve only explicit correspondence and never reuse deletions
+ok 5 - generated reference labels preserve only explicit correspondence and never reuse deletions
+  ---
+  duration_ms: 0.38725
+  type: 'test'
+  ...
+# Subtest: invalid correspondence and token exhaustion reject atomically
+ok 6 - invalid correspondence and token exhaustion reject atomically
+  ---
+  duration_ms: 0.312708
+  type: 'test'
+  ...
+# Subtest: historical editable v1 preserves selected row, tagged cells and graphics
+ok 7 - historical editable v1 preserves selected row, tagged cells and graphics
+  ---
+  duration_ms: 23.024333
+  type: 'test'
+  ...
+# Subtest: historical editable v1 rejects dangling and out-of-range selection before restoration
+ok 8 - historical editable v1 rejects dangling and out-of-range selection before restoration
+  ---
+  duration_ms: 9.282208
+  type: 'test'
+  ...
+# Subtest: historical editable v2 preserves selected row, tagged cells and graphics
+ok 9 - historical editable v2 preserves selected row, tagged cells and graphics
+  ---
+  duration_ms: 9.708459
+  type: 'test'
+  ...
+# Subtest: historical editable v2 rejects dangling and out-of-range selection before restoration
+ok 10 - historical editable v2 rejects dangling and out-of-range selection before restoration
+  ---
+  duration_ms: 7.264958
+  type: 'test'
+  ...
+# Subtest: historical editable v3 preserves selected row, tagged cells and graphics
+ok 11 - historical editable v3 preserves selected row, tagged cells and graphics
+  ---
+  duration_ms: 8.864333
+  type: 'test'
+  ...
+# Subtest: historical editable v3 rejects dangling and out-of-range selection before restoration
+ok 12 - historical editable v3 rejects dangling and out-of-range selection before restoration
+  ---
+  duration_ms: 6.977
+  type: 'test'
+  ...
+# Subtest: historical snapshots restore, edit and remove selections in a fresh process
+ok 13 - historical snapshots restore, edit and remove selections in a fresh process
+  ---
+  duration_ms: 195.995375
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 491.161875

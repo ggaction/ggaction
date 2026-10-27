@@ -1,3 +1,4 @@
 # Preserve hashed review records on every checkout platform.
 *.json text eol=lf
 *.log -text -whitespace
+*.txt -text

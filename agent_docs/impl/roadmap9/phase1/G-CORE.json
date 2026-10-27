@@ -1,6 +1,6 @@
 {
   "id": "G-CORE",
-  "state": "planned",
+  "state": "ready-for-review",
   "scope": [
     "STEP-004",
     "STEP-005",
@@ -24,12 +24,12 @@
     "preparation": "User: 진행해, following the proposal to prepare the G-CORE review package.",
     "designApproval": null
   },
-  "codeRevision": null,
-  "evidenceRevision": null,
-  "evidenceManifest": null,
+  "codeRevision": "129a506dfd2fc2455b7de949d73fdd6cf34e27a5",
+  "evidenceRevision": "sha256:d3ac78b242b3792c40a3a5535171f2f8447ddb83f9c98cce98e6db804d470e52",
+  "evidenceManifest": "agent_docs/impl/roadmap9/phase1/preparation.json",
   "requiredChecks": [
-    "focused-identity",
-    "focused-contracts",
+    "suite-unit",
+    "suite-contracts",
     "suite-all",
     "machine-docs"
   ],
@@ -37,5 +37,11 @@
     "Explicit approval of D1-D8",
     "Production STEP-004 through STEP-009 and their consumer checks"
   ],
-  "notice": "Review preparation is not public API or persisted-schema approval."
+  "notice": "Evidence revision is the immutable manifest digest. Design approval is still absent; no product STEP is complete.",
+  "reviewPreparation": {
+    "complete": [
+      "CORE-REVIEW-PREPARATION"
+    ],
+    "ready": []
+  }
 }

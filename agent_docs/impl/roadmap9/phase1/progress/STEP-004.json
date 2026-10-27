@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "taskId": "STEP-004",
+  "status": "in-progress",
+  "implementationCommit": null,
+  "reviewPreparation": "agent_docs/impl/roadmap9/phase1/preparation.json",
+  "gate": "G-CORE",
+  "gateState": "ready-for-review",
+  "openObligations": [
+    "Explicit approval of DESIGN.md D1-D8",
+    "Production key owner and createData/reviseData integration",
+    "Applicable consumer, type, current-contract, persistence and rendering verification"
+  ],
+  "notice": "Independent reference checks do not constitute product implementation."
+}
