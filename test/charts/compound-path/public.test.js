@@ -42,6 +42,25 @@ test("legacy editable versions reject compound grammar instead of accepting forg
     assert.throws(()=>deserializeProgram(JSON.stringify(envelope)),/subpath|snapshot version 4|L or C/);
   }
 });
+test("legacy editable versions restore original path grammar and reject newer topology without fillRule",()=>{
+  const move={op:"M",x:1,y:2},line={op:"L",x:4,y:5};
+  for(const version of [1,2,3]) for(const commands of [[move],[move,line],[move,line,{op:"Z"}],[move,line,{op:"M",x:8,y:9}],[move,{op:"Z"}]]){
+    const p=chart().createCanvas({width:20,height:20,margin:0})
+      .createGraphics({id:"path",type:"path",parent:"plot-main"})
+      .editGraphics({target:"path",property:"stroke",value:"black"})
+      .editGraphics({target:"path",property:"strokeWidth",value:1})
+      .editGraphics({target:"path",property:"commands",value:commands});
+    const envelope=JSON.parse(serializeProgram(p)),state=decodeValue(envelope.payload);
+    delete state.semanticSpec.resources;envelope.schemaVersion=version;envelope.payload=encodeValue(state);
+    const snapshot=JSON.stringify(envelope),legacy=commands.length===1||commands[1].op==="L"&&commands.at(-1).op!=="M";
+    if(legacy){
+      const restored=deserializeProgram(snapshot);
+      assert.deepEqual(restored.graphicSpec.objects.path.properties.commands,commands);
+      assert.equal(renderToSVG(restored),renderToSVG(p));
+    }else assert.throws(()=>deserializeProgram(snapshot),/one subpath|at least one L or C/);
+    assert.equal(JSON.stringify(envelope),snapshot);
+  }
+});
 test("a fresh process can restore, edit and remove compound graphics",()=>{
   const snapshots=variants.map(v=>serializeProgram(createCompoundPathExample(v)));
   const result=spawnSync(process.execPath,["--input-type=module","-e",`

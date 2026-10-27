@@ -33,6 +33,11 @@ G-PATH 승인 후 STEP-010–012의 공개 검증·geometry·네 renderer·scene
 연결한다. 공개 프로그램과 primitive를 같은 실행에서 비교하고 실제 소비자 전체를 통과해야 한다.
 누적 coverage, 실데이터 두 shard, browser, 전체 render/gallery, installed package, package artifact,
 generated metadata와 docs build/browser를 통합 checkpoint에서 요구한다. 실행계획에 이 검사들을 선언한다.
+Coverage는 로컬 계측 임시 파일의 storage 한도 때문에 동일 clean commit의 GitHub CI 전체 실행으로
+검증한다. `ci-coverage`는 성공한 job과 artifact의 commit·ZIP digest·clean source receipt·전체 test discovery를
+대조하고, 내려받은 원본 보고서에 기존 global 및 critical coverage 기준을 다시 적용한다.
+원본 ZIP·receipt·metrics·report와 조회한 CI identity를 완료 증거에 포함한다. 임시 공간 한도나
+coverage 기준을 낮추지 않으며 실패한 CI 실행은 완료 증거로 인정하지 않는다.
 기존 exact cubic extrema owner를 재사용하고, 현재 단일 subpath 가정인 stroke/clip 소비자를 교체한다.
 후속 hit runtime·animation과 신규 chart family는 원안의 뒤 단계에 남기며 geometry 의무를 누락하지 않는다.
 

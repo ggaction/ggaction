@@ -3,8 +3,10 @@ import test from "node:test";
 
 import {
   buildLinearPathCommands,
+  validateLegacyPathCommands,
   validatePathCommands
 } from "../../../src/grammar/pathCommands.js";
+import { freezeOwned } from "../../../src/core/immutable.js";
 
 test("builds immutable open and closed linear command paths", () => {
   const points = [{ x: 1, y: 2 }, { x: 3, y: 4 }, { x: 5, y: 6 }];
@@ -75,4 +77,38 @@ test("bounds explicit and generated path command arrays", () => {
 test("a single move retains a position without inventing a line segment", () => {
   const commands = [{ op: "M", x: 12, y: 34 }];
   assert.equal(validatePathCommands(commands), commands);
+});
+
+test("legacy paths retain single moves and open or closed single-subpath geometry", () => {
+  const move = { op: "M", x: 1, y: 2 };
+  const line = { op: "L", x: 4, y: 5 };
+  const cubic = { op: "C", x1: 2, y1: 3, x2: 3, y2: 4, x: 4, y: 5 };
+  for (const commands of [[move], [move, line], [move, cubic, { op: "Z" }]]) {
+    const before = structuredClone(commands);
+    assert.equal(validateLegacyPathCommands(commands), commands);
+    assert.deepEqual(commands, before);
+    const owned = freezeOwned(commands.map(command => freezeOwned({ ...command })));
+    assert.equal(validateLegacyPathCommands(owned), owned);
+    assert.equal(validateLegacyPathCommands(owned), owned);
+  }
+});
+
+test("legacy paths reject compound topology and misplaced closing commands", () => {
+  const move = { op: "M", x: 1, y: 2 };
+  const line = { op: "L", x: 4, y: 5 };
+  for (const [commands, message] of [
+    [undefined, /at least one/],
+    [[], /at least one/],
+    [[line], /start with M/],
+    [[move, line, move], /one subpath/],
+    [[move, { op: "Z" }], /at least one L or C/],
+    [[move, line, { op: "Z" }, line], /final command/]
+  ]) assert.throws(() => validateLegacyPathCommands(commands), message);
+});
+
+test("legacy validation rechecks mutable caller-owned commands", () => {
+  const commands = [{ op: "M", x: 1, y: 2 }, { op: "L", x: 4, y: 5 }];
+  assert.equal(validateLegacyPathCommands(commands), commands);
+  commands.push({ op: "M", x: 6, y: 7 });
+  assert.throws(() => validateLegacyPathCommands(commands), /one subpath/);
 });
