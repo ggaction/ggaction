@@ -208,7 +208,7 @@ export function pathFillContains(commands, query, { fillRule = "nonzero", ...opt
   for (const { points } of requireFlattened(commands, options).subpaths) {
     const origin = points[0], distinct = points.find(p => p.x !== origin.x || p.y !== origin.y);
     if (!distinct || !points.some(p => {
-      const scale = Math.max(1, Math.abs(origin.x), Math.abs(origin.y), Math.abs(distinct.x), Math.abs(distinct.y), Math.abs(p.x), Math.abs(p.y));
+      const scale = Math.max(Number.MIN_VALUE, Math.abs(origin.x), Math.abs(origin.y), Math.abs(distinct.x), Math.abs(distinct.y), Math.abs(p.x), Math.abs(p.y));
       return (distinct.x / scale - origin.x / scale) * (p.y / scale - origin.y / scale) !==
         (distinct.y / scale - origin.y / scale) * (p.x / scale - origin.x / scale);
     })) continue;

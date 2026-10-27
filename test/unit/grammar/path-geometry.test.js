@@ -68,3 +68,13 @@ test("adaptive arc lowering retains full circles, reversed ellipses and error bo
   for(const change of [{radiusX:0},{radiusY:-1},{endAngle:Infinity},{endAngle:1e10},{centerX:1.7e308,radiusX:1e308},{tolerance:0}]) assert.throws(()=>arcToCubicCommands({...args,...change}));
   assert.ok(arcToCubicCommands({...args,tolerance:0.01}).commands.length>arcToCubicCommands({...args,tolerance:1}).commands.length);
 });
+
+test("fill queries retain nonzero area below the squared-number underflow range",()=>{
+  for(const size of [1,1e-160,1e-200,1e-300]){
+    const commands=[{op:"M",x:0,y:0},{op:"L",x:size,y:0},{op:"L",x:0,y:size},{op:"Z"}];
+    for(const fillRule of ["nonzero","evenodd"]){
+      assert.equal(pathFillContains(commands,{x:size/4,y:size/4},{fillRule}),true);
+      assert.equal(pathFillContains(commands,{x:size,y:size},{fillRule}),false);
+    }
+  }
+});
