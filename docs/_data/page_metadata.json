@@ -848,7 +848,8 @@
     "title": "Primitive API",
     "source": "docs/extension/primitives.md",
     "editSource": "docs/extension/primitives.md",
-    "description": "A named Canvas or collection can reorder its existing direct children with editGraphics({ target, property: \"children\", value: orderedIds })."
+    "description": "A named Canvas or collection can reorder its existing direct children with editGraphics({ target, property: \"children\", value: orderedIds }).",
+    "image": "/assets/images/compound-path.png"
   },
   "/api/data/summaries-and-shaping/": {
     "title": "Summaries, Bins, and Data Shaping",

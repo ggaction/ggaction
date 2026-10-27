@@ -283,7 +283,7 @@ an outer ring, a hole and a separate island over a translucent underlay. Its
 [executable program](https://github.com/ggaction/ggaction/blob/{{ site.data.provenance.exampleSourceRef }}/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
-{% include chart-figure.html id="compound-path" %}
+{% include chart-example.html id="compound-path" %}
 
 <!-- snippet-context:start -->
 
