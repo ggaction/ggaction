@@ -1,0 +1,4 @@
+# Preserve hashed execution records on every checkout platform.
+*.json text eol=lf
+# Retain diagnostic whitespace and exact output bytes.
+*.log -text -whitespace
