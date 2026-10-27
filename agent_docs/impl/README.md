@@ -4,7 +4,7 @@
 
 ## 현재 상태
 
-- 현재 활성 계획은 **Roadmap 9 Phase 2**의 [복합 경로 검토](roadmap9/phase2/GOAL.md)다. Phase 0과 Phase 1은 완료했다. 마지막 완료 Roadmap은 Roadmap 8 Phase 7이다.
+- 현재 활성 Roadmap 9의 마지막 검증 checkpoint는 **Phase 2**의 [복합 경로 완료 기록](roadmap9/phase2/GOAL.md)다. Phase 0–2를 완료했고 STEP-013–077은 후속 범위다. 마지막 완료 Roadmap은 Roadmap 8 Phase 7이다.
 - [`roadmap9/ROADMAP.md`](roadmap9/ROADMAP.md) — native 확장과 실행 의존성
 - [`roadmap9/phase0/GOAL.md`](roadmap9/phase0/GOAL.md) — baseline·독립 oracle·검증 증거 구현
 - [`roadmap9/phase1/GOAL.md`](roadmap9/phase1/GOAL.md) — ID·리소스·저장 형식 검토와 구현 경계

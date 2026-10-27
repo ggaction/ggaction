@@ -1,17 +1,485 @@
 {
   "schemaVersion": 1,
   "taskId": "STEP-010",
-  "status": "in-progress",
-  "implementationCommit": "ebc63915af5837d7a7500bae420500b4f5c2d68c",
-  "gate": "G-PATH",
-  "completedWork": [
-    "private topology kernel",
-    "native primitive review",
-    "clean review qualification"
+  "status": "complete",
+  "implementationCommit": "53f251a336b1a0e3764fed115d9ec4c35d8cfdfc",
+  "contractRevision": "approved-G-PATH-D1-D6",
+  "gateEvidence": [
+    {
+      "id": "G-PATH",
+      "status": "approved",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/G-PATH.json",
+        "sha256": "452e658a31dac7b39701206d514a38d704749bc07eab7b2a52cc384e3d799de2"
+      }
+    }
   ],
-  "openObligations": [
-    "G-PATH exact design and visual approval",
-    "public schema and primitive edit integration",
-    "STEP-011 geometry and STEP-012 renderer/persistence consumers"
-  ]
+  "commands": [
+    {
+      "command": [
+        "node",
+        ".artifacts/checks/verify-ci-coverage.mjs"
+      ],
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+      "receiptSha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d",
+      "logPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.log",
+      "logSha256": "183c98bc9d7e9354d42bcbf5359d284ad5a1b7dbe66ce035e305a5a314124d24"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:realistic",
+        "--",
+        "--shard=1/2"
+      ],
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/realistic-shard-1.json",
+      "receiptSha256": "ffc87580d43f6943fd66a0e7c9b86d35255ea59ed28701cd5df889a1b2ebbcd1",
+      "logPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/realistic-shard-1.log",
+      "logSha256": "6e6b3f735aaa4b45913c9a1b07b40dc767e1e52cc5faa6db1035412ba8da9acc"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:realistic",
+        "--",
+        "--shard=2/2"
+      ],
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/realistic-shard-2.json",
+      "receiptSha256": "1de7d278d1f94f7de32c7ace13338177e06f68f202877cbbdff057d8f9210370",
+      "logPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/realistic-shard-2.log",
+      "logSha256": "2b68b222b5e2f095410749c7a7d278fb3a3fb6bd42bcff631cdf9bbba72288e6"
+    },
+    {
+      "command": [
+        "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+        "--test",
+        "--test-concurrency=4",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/area-fill-paint.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/axis-title-ink-clearance.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/axis-title-label-relative-offset.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/backend-compatibility.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/bar-blend.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/bin2d-assignment.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/bootstrap-mean-ci.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/capability-pages.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/color-controls.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/combined-legend.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/combined-legends.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/continuous-area-color.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/directional-point-shapes.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/facet-axis-gaps.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/facet-content-headers.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/facet-top-lane.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/gradient-layout.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/legend-appearance.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/legend-border-dash.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/legend-symbol-window.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/legend-title-alignment.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/line-missing.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/multiline-text.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/named-shapes.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/none-paint.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/normal-glyph-opacity.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/normal-glyph-svg.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/package-consumer.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/plot-border.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/plot-guide-underlays.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/public-examples.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/side-legend-top-alignment.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/size-shape-legend.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/subtitle-line-height.browser.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/browser/zero-stroke.browser.js"
+      ],
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/suite-browser.json",
+      "receiptSha256": "fd6cf91ec912fd1f911a39073048db59b944c0d08dec336fde9c97c402c14f1c",
+      "logPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/suite-browser.log",
+      "logSha256": "49490a8788555087ac98a31cdb82e47b37da71838b150865e77e0103debbde87"
+    },
+    {
+      "command": [
+        "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+        "--test",
+        "--test-concurrency=4",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/airline-passenger-moving-windows/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/airline-passenger-moving-windows/renderer.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/annotated-imdb-scatterplot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/area-layout/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/area-layout/vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/axis-owners/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/bar-compositing/pdf.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/bar-compositing/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/beeswarm-plot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/bootstrap-mean-ci/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-acceleration-violins/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-binned-heatmap/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-box-plot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-density-area/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-error-bar/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-error-bar/variants/field-stroke-width/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-gradient-plot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-histogram/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-line-chart/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-multi-legend-layout/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-multi-legend-layout/renderer.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-origin-scatterplot-facet/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-parallel-coordinates/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-regression-scatterplot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-scatterplot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-temporal-bar-line/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cars-window-rank-scatterplot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/centered-area-stream/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/centered-area-stream/renderer.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/color-controls/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/color-controls/vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/color-midpoint/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/color-midpoint/vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/color-transitions/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/color-transitions/vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/combined-legends/pdf.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/combined-legends/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/compound-path/backends.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/compound-path/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/continuous-area-color/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cross-feature-integration/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cross-feature-integration/variants/facet-resolution/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/cross-feature-integration/variants/focused-editing/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/dark-theme-scatterplot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/density-plot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/density-plot/vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/directional-tick-plot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/directional-tick-plot/renderer.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/ecdf-plot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/endpoint-plots/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/facet-field-titles/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/facet-grid/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/facet-header-rotation/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/facet-shared-top-lane/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/facet-shared-top-lane/vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/fitted-long-labels/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/gapminder-continuous-color-bars/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/gapminder-country-labels/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/gapminder-development-trajectories/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/gapminder-discretized-color-scales/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/gapminder-error-band/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/gapminder-horizon/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/gapminder-life-expectancy-heatmap/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/gapminder-temporal-discrete-scales/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/gapminder-transformed-scales/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/horizon-plot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/horizon-plot/vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/jobs-grouped-bar/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/jobs-horizontal-grouped-bar/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/legend-appearance/appearance-vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/legend-appearance/opacity-pdf.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/legend-appearance/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/legend-appearance/sample-window.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/legend-content-spacing/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/legend-content-spacing/vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/linear-nearest-ticks/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/linear-nice-count/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/linked-composition/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/linked-composition/variants/independent-layers/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/lookup-data/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/mark-selection-bars/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/mark-selection-lines/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/mark-selection-points/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/named-shapes/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/named-shapes/vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/ordered-category-bar/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/pie-plot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/pie-plot/vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/plot-guide-underlays/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/plot-guide-underlays/vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/point-jitter/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/polar-arcs/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/polar-guides/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/polar-line-radar/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/polar-points/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/program-composition/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/program-composition/variants/layouts/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/radial-sectors/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/radial-sectors/vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/raincloud-plot/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/repeat-charts/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/series-identity/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/shared-facet-owner/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/symbol-window/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/temporal-input/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/theta-legend-order/png.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/theta-legend-order/vector.render.js",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/charts/time-unit-data/png.render.js"
+      ],
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/suite-render.json",
+      "receiptSha256": "6cf4e768396848093062fba074a9c89c89359002a59d4408865d4879ebd2b3f9",
+      "logPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/suite-render.log",
+      "logSha256": "a50115f09f5f74e9e1f6153736ed3a55365e9e11219a94f0803d976e00ff2e87"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:render"
+      ],
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/test-render.json",
+      "receiptSha256": "80fc536fdbedee2087e15fcf5df25aad6bb0e40e7239a175c5278712fa70326a",
+      "logPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/test-render.log",
+      "logSha256": "082a0849c41fa7e8a5c4b3b78109c64c83d139df4828f95fb032e1144f543b3d"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "test:package"
+      ],
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/test-package.json",
+      "receiptSha256": "2cf42047b9fdb6b0842970519cd9eae3a13dac0261008723fe1ce65a98b81fc2",
+      "logPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/test-package.log",
+      "logSha256": "336336bbcda79a2e0cfcc8c97e354f7b9ab3b5505f16a8cd7849f69559748e10"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "package:check"
+      ],
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/package-check.json",
+      "receiptSha256": "cab46f22e5fd3af1876243bb5dddd69d444533821f7f19a8dac3738dd848d957",
+      "logPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/package-check.log",
+      "logSha256": "e7d3fd80bf66e1b7d514903e9f4dca897abd4d0cb6e86ea5d87764d67a7d7eed"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "docs:machine:check"
+      ],
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/metadata-check.json",
+      "receiptSha256": "9b537a740f22d6dce30cd7ae13746c798e5e7dd4bdfcdadc94aad3d9319f3ca2",
+      "logPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/metadata-check.log",
+      "logSha256": "795dd208b8c58e44015d36a6d75d7b26bf5661c5e8c07a4b442bb215e7e219f5"
+    },
+    {
+      "command": [
+        "npm",
+        "run",
+        "docs:verify"
+      ],
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/docs-verify.json",
+      "receiptSha256": "a13d6ea61e7d933d20598c6588fe4507b6f81022cb2c09c13f09d7b8ab4e47e3",
+      "logPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/docs-verify.log",
+      "logSha256": "fd8a521d57fe594146049fbe60f2f0f23b5ea634821de6e710c894feba0ec271"
+    },
+    {
+      "command": [
+        "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+        "--test",
+        "--test-concurrency=4",
+        "/Users/hyeonjeon/Projects/ggactionnewbrand/test/unit/renderers/native-font-fallback.test.js"
+      ],
+      "exitCode": 0,
+      "receiptPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/suite-unit.json",
+      "receiptSha256": "46ab4d682f73c4f867382aa9ebf31c3aa272420a795be01cd2273f4b7e00740b",
+      "logPath": "agent_docs/impl/roadmap9/phase2/integration-evidence/suite-unit.log",
+      "logSha256": "5e1fc0ed419786fa6f53b3b4731be9445a2343a40b733e571ed243fa2b311a7c"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/coverage-metrics.json",
+      "sha256": "abd64922c06751c52e9adef3dc88c3fd5b5226786e2645709ec8e0ee98319901"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage-origin.json",
+      "sha256": "c863555ecbcb342811728eb9cea05c078a732235a4f90bb99d54133ae25971ce"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage-receipt.json",
+      "sha256": "6cd225134ff779bea8bddb3108725bd23c532da33343e5feee16402a86ef6af2"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage-report.log",
+      "sha256": "d4e78ec30cbe19c9b3dd09874063057dc0fa509721fb7a55820ecb25ec424535"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage-artifact.zip",
+      "sha256": "d3b01acd9c4cd4f63398cd9e19b17bac33a955a9ea19cfe7acd9922616cdfe11"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/verify-ci-coverage.mjs",
+      "sha256": "f1623a366b3aee22b5781b6e6535de87378c0ce81bdd9c34abd9ea28f60f68ac"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/consumer-qualification.json",
+      "sha256": "46d8118dd80b1eab8709f488398bbbe75120cbc7942ac0563e2bccc1a3860c99"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/node-cases.json",
+      "sha256": "a46e7694a1b0fce45bbaa38967f7e88b3bdc319d99ae98927f4e3b8f641a3779"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/compound-render-results.json",
+      "sha256": "f68085843a09e6d509f136452eaf8bec716aee9440c7b1a89e760972a25bc28a"
+    },
+    {
+      "path": "data/corpus/manifest.json",
+      "sha256": "a5824c0f7ff59fabf9fa1d0d3f86a7433b2eefbbcfc3414c95f378728a00cf06"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/realistic-partitions.json",
+      "sha256": "b4e4c07567a890462b31c05741454329849130157ec49c0187686dfc1350dc2e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase2/consumers.json",
+      "sha256": "950d8d046f353348858edc5cd486b053762120d3bea13175befebf9853a476ce"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase2/integration-results.json",
+      "sha256": "de652c84f738c799367f3a82f451210afeb741a7d24f0158a140f6d44f84cb81"
+    },
+    {
+      "path": "examples/compound-path/coordinates.js",
+      "sha256": "3eed2e5984b749f6c4043155b2882054219411f914cea1a03f36a596d09728bf"
+    },
+    {
+      "path": "examples/compound-path/program.js",
+      "sha256": "0292370009846a16e4b07942ba8011f366a9dd640cc457913c3a1f13c0e5d6d3"
+    },
+    {
+      "path": "docs/assets/images/compound-path.png",
+      "sha256": "dc005662ff44a560a1574f1eb571c310187b29bb21a994b5084bbae78de72963"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-workflow.json",
+      "sha256": "8454fdcb46f1bf52cc4bfa97a56c57e1b8b71a1bdd2c3f662d4989bb4069c9ea"
+    }
+  ],
+  "consumerCells": [
+    {
+      "consumer": "topology-kernel",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
+    },
+    {
+      "consumer": "native-primitive-review",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/compound-render-results.json",
+        "sha256": "f68085843a09e6d509f136452eaf8bec716aee9440c7b1a89e760972a25bc28a"
+      }
+    },
+    {
+      "consumer": "graphic-validation-and-editing",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
+    },
+    {
+      "consumer": "bounds-and-geometry",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
+    },
+    {
+      "consumer": "owner-clip",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
+    },
+    {
+      "consumer": "canvas-and-native-png-pdf",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/compound-render-results.json",
+        "sha256": "f68085843a09e6d509f136452eaf8bec716aee9440c7b1a89e760972a25bc28a"
+      }
+    },
+    {
+      "consumer": "svg",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/compound-render-results.json",
+        "sha256": "f68085843a09e6d509f136452eaf8bec716aee9440c7b1a89e760972a25bc28a"
+      }
+    },
+    {
+      "consumer": "scene",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/compound-render-results.json",
+        "sha256": "f68085843a09e6d509f136452eaf8bec716aee9440c7b1a89e760972a25bc28a"
+      }
+    },
+    {
+      "consumer": "persistence",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
+    },
+    {
+      "consumer": "types-and-package",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/consumer-qualification.json",
+        "sha256": "46d8118dd80b1eab8709f488398bbbe75120cbc7942ac0563e2bccc1a3860c99"
+      }
+    },
+    {
+      "consumer": "contracts-and-documentation",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/docs-verify.json",
+        "sha256": "a13d6ea61e7d933d20598c6588fe4507b6f81022cb2c09c13f09d7b8ab4e47e3"
+      }
+    },
+    {
+      "consumer": "inspection-and-accessibility",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
+    },
+    {
+      "consumer": "refs-and-rematerialization",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
+    },
+    {
+      "consumer": "new-mark-family",
+      "status": "not-applicable",
+      "reason": "This phase expands concrete path geometry, not semantic mark families."
+    },
+    {
+      "consumer": "hit-and-animation-runtime",
+      "status": "not-applicable",
+      "reason": "STEP-011 provides geometry; runtime integration remains STEP-047 onward as originally planned."
+    }
+  ],
+  "openObligations": []
 }

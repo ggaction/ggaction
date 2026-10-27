@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "implementationCommit": "53f251a336b1a0e3764fed115d9ec4c35d8cfdfc",
+  "tests": {
+    "ci-coverage": {
+      "tests": 6392,
+      "pass": 6391,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 1,
+      "todo": 0
+    },
+    "suite-unit": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "realistic-shard-1": {
+      "tests": 178,
+      "pass": 178,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "realistic-shard-2": {
+      "tests": 97,
+      "pass": 97,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "suite-browser": {
+      "tests": 297,
+      "pass": 297,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "suite-render": {
+      "tests": 272,
+      "pass": 272,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    }
+  },
+  "coverage": {
+    "lines": 95.9,
+    "branches": 93.46,
+    "functions": 98.74
+  },
+  "checks": [
+    {
+      "label": "ci-coverage",
+      "code": 0,
+      "seconds": 0.267,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "realistic-shard-1",
+      "code": 0,
+      "seconds": 1687.182,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "realistic-shard-2",
+      "code": 0,
+      "seconds": 1736.456,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "suite-browser",
+      "code": 0,
+      "seconds": 144.181,
+      "discoveredFiles": 35,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "suite-render",
+      "code": 0,
+      "seconds": 83.027,
+      "discoveredFiles": 108,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "test-render",
+      "code": 0,
+      "seconds": 100.125,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "test-package",
+      "code": 0,
+      "seconds": 83.534,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "package-check",
+      "code": 0,
+      "seconds": 2.556,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "metadata-check",
+      "code": 0,
+      "seconds": 0.377,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "docs-verify",
+      "code": 0,
+      "seconds": 332.728,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "suite-unit",
+      "code": 0,
+      "seconds": 0.753,
+      "discoveredFiles": 1,
+      "node": "v22.23.1"
+    }
+  ],
+  "consumerCases": 187,
+  "acceptance": [
+    {
+      "id": "AT-11",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/compound-render-results.json",
+        "sha256": "f68085843a09e6d509f136452eaf8bec716aee9440c7b1a89e760972a25bc28a"
+      }
+    },
+    {
+      "id": "AT-12",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
+    }
+  ],
+  "actionSurface": {
+    "editGraphics": "implemented",
+    "newDirectActions": [],
+    "plannedInCompletedScope": []
+  },
+  "continuousIntegration": {
+    "provider": "GitHub Actions",
+    "runId": 40582876460,
+    "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460",
+    "sourceCommit": "53f251a336b1a0e3764fed115d9ec4c35d8cfdfc",
+    "status": "completed",
+    "conclusion": "success",
+    "passedJobs": 20,
+    "evidence": {
+      "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-workflow.json",
+      "sha256": "8454fdcb46f1bf52cc4bfa97a56c57e1b8b71a1bdd2c3f662d4989bb4069c9ea"
+    }
+  },
+  "coverageExecution": {
+    "provider": "GitHub Actions",
+    "runId": 40582876460,
+    "jobId": 122466957559,
+    "artifactId": 12772501015,
+    "sourceCommit": "53f251a336b1a0e3764fed115d9ec4c35d8cfdfc",
+    "node": "v22.23.3",
+    "platform": "linux",
+    "arch": "x64",
+    "tests": {
+      "tests": 6392,
+      "pass": 6391,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 1,
+      "todo": 0
+    },
+    "supplementalHostFontTests": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "note": "checks[].node for ci-coverage identifies the local artifact verifier; this entry identifies the full CI coverage runtime."
+  }
+}

@@ -1,0 +1,28 @@
+TAP version 13
+# Subtest: native font fallback keeps authored families first and includes only installed families
+ok 1 - native font fallback keeps authored families first and includes only installed families
+  ---
+  duration_ms: 0.730167
+  type: 'test'
+  ...
+# Subtest: native fallback preserves Latin pixels and never changes the graphical scene
+ok 2 - native fallback preserves Latin pixels and never changes the graphical scene
+  ---
+  duration_ms: 17.341417
+  type: 'test'
+  ...
+# Subtest: native PNG resolves Hangul through an installed fallback and PDF remains vector text
+ok 3 - native PNG resolves Hangul through an installed fallback and PDF remains vector text
+  ---
+  duration_ms: 8.911792
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 595.716459

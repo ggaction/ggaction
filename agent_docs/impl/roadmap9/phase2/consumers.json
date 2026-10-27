@@ -1,86 +1,136 @@
 {
   "schemaVersion": 1,
-  "scope": "STEP-010–012 product integration; review-only passes do not close product cells",
+  "scope": "Completed STEP-010-012 product integration; original hit/animation runtime deferral unchanged",
   "cells": [
     {
       "id": "topology-kernel",
-      "status": "review-preparation-passed",
+      "status": "passed",
       "owner": "src/grammar/pathTopology.js",
       "obligation": "dense exact commands, subpaths, copying, whole-path limit",
-      "evidence": "agent_docs/impl/roadmap9/phase2/evidence/summary.json"
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
     },
     {
       "id": "native-primitive-review",
-      "status": "review-preparation-passed",
-      "owner": "test/gates/compound-path/review.render.js",
-      "obligation": "six targets; four backends; not product integration",
-      "evidence": "agent_docs/impl/roadmap9/phase2/evidence/summary.json"
+      "status": "passed",
+      "owner": "test/charts/compound-path/backends.render.js",
+      "obligation": "Six approved targets graduated to stable product tests; four backends and both scenes verified.",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/compound-render-results.json",
+        "sha256": "f68085843a09e6d509f136452eaf8bec716aee9440c7b1a89e760972a25bc28a"
+      }
     },
     {
       "id": "graphic-validation-and-editing",
-      "status": "pending",
+      "status": "passed",
       "owner": "src/grammar/schemas/concreteGraphic.js",
-      "obligation": "path owners/items, fillRule, clip union and atomic errors"
+      "obligation": "path owners/items, fillRule, clip union and atomic errors",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
     },
     {
       "id": "bounds-and-geometry",
-      "status": "pending",
+      "status": "passed",
       "owner": "src/grammar/schemas/graphicBounds.js",
-      "obligation": "reuse exact extrema; all subpath stroke/cap/join, transforms, clip, adaptive flatten/arc/winding/distance"
+      "obligation": "reuse exact extrema; all subpath stroke/cap/join, transforms, clip, adaptive flatten/arc/winding/distance",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
     },
     {
       "id": "owner-clip",
-      "status": "pending",
+      "status": "passed",
       "owner": "src/grammar/schemas/graphicClip.js",
-      "obligation": "same parent frame; nested scopes; false removal; occupied bounds"
+      "obligation": "same parent frame; nested scopes; false removal; occupied bounds",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
     },
     {
       "id": "canvas-and-native-png-pdf",
-      "status": "pending",
+      "status": "passed",
       "owner": "src/renderers/canvas/path.js",
-      "obligation": "fill rule and compound clip; native preflight; no silent fallback"
+      "obligation": "fill rule and compound clip; native preflight; no silent fallback",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/compound-render-results.json",
+        "sha256": "f68085843a09e6d509f136452eaf8bec716aee9440c7b1a89e760972a25bc28a"
+      }
     },
     {
       "id": "svg",
-      "status": "pending",
+      "status": "passed",
       "owner": "src/renderers/svgSerialization.js",
-      "obligation": "path serialization, fill-rule, clip-rule and scoped defs"
+      "obligation": "path serialization, fill-rule, clip-rule and scoped defs",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/compound-render-results.json",
+        "sha256": "f68085843a09e6d509f136452eaf8bec716aee9440c7b1a89e760972a25bc28a"
+      }
     },
     {
       "id": "scene",
-      "status": "pending",
+      "status": "passed",
       "owner": "src/scene.js",
-      "obligation": "Canvas/SVG round-trip and replay; immutable state; exact commands"
+      "obligation": "Canvas/SVG round-trip and replay; immutable state; exact commands",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/compound-render-results.json",
+        "sha256": "f68085843a09e6d509f136452eaf8bec716aee9440c7b1a89e760972a25bc28a"
+      }
     },
     {
       "id": "persistence",
-      "status": "pending",
+      "status": "passed",
       "owner": "src/persistence.js",
-      "obligation": "graphic/editable round-trip; legacy rejection; fresh-process edit/remove"
+      "obligation": "graphic/editable round-trip; legacy rejection; fresh-process edit/remove",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
     },
     {
       "id": "types-and-package",
-      "status": "pending",
+      "status": "passed",
       "owner": "types/program.d.ts",
-      "obligation": "runtime/declaration parity and installed exports; no new entry point"
+      "obligation": "runtime/declaration parity and installed exports; no new entry point",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/consumer-qualification.json",
+        "sha256": "46d8118dd80b1eab8709f488398bbbe75120cbc7942ac0563e2bccc1a3860c99"
+      }
     },
     {
       "id": "contracts-and-documentation",
-      "status": "pending",
+      "status": "passed",
       "owner": "agent_docs/contract/current/PRIMITIVES.md",
-      "obligation": "current action surface and extension docs with generated references"
+      "obligation": "current action surface and extension docs with generated references",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/docs-verify.json",
+        "sha256": "a13d6ea61e7d933d20598c6588fe4507b6f81022cb2c09c13f09d7b8ab4e47e3"
+      }
     },
     {
       "id": "inspection-and-accessibility",
-      "status": "pending",
+      "status": "passed",
       "owner": "src/inspection.js",
-      "obligation": "concrete properties, item identity and metadata remain intact"
+      "obligation": "concrete properties, item identity and metadata remain intact",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
     },
     {
       "id": "refs-and-rematerialization",
-      "status": "pending",
+      "status": "passed",
       "owner": "src/materialization",
-      "obligation": "explicit lowerings; retain compatible authored overrides; full consumer audit"
+      "obligation": "explicit lowerings; retain compatible authored overrides; full consumer audit",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase2/integration-evidence/ci-coverage.json",
+        "sha256": "57b3a111d780feb38a32eda34dc047f295c6c9341779a512f8de2694a2c5158d"
+      }
     },
     {
       "id": "new-mark-family",

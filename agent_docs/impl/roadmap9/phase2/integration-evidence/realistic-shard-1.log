@@ -1,0 +1,1205 @@
+
+> ggaction@0.0.26 test:realistic
+> node scripts/run-tests.js realistic --shard=1/2
+
+{"shard":{"index":1,"total":2},"files":["contracts/generated-lifecycle-scenarios.test.js","contracts/generated-scenario-effective-factors.test.js","contracts/generated-scenario-feature-coverage.test.js","contracts/realistic-combined-legend-witness.test.js","contracts/realistic-complete-chart-facades.test.js","contracts/realistic-data-color-contracts.test.js","contracts/realistic-data-mark-recipes.test.js","contracts/realistic-facade-option-recipes.test.js","contracts/realistic-hierarchical-facade-matrix.test.js","contracts/realistic-layer-plot.test.js","contracts/realistic-legend-option-witness.test.js","contracts/realistic-lifecycle-factor-effects.test.js","contracts/realistic-lifecycle-provenance.test.js","contracts/realistic-scenario-generation-isolation.test.js","contracts/realistic-scenario-runner.test.js","contracts/realistic-scoped-composition.test.js","contracts/realistic-statistical-facade-coverage-recipes.test.js"],"estimatedMs":2210416}
+TAP version 13
+# Subtest: executes deterministic lifecycle recipes through integrity and SVG oracles
+ok 1 - executes deterministic lifecycle recipes through integrity and SVG oracles
+  ---
+  duration_ms: 20587.910333
+  type: 'test'
+  ...
+# Subtest: calls every user-facing action directly from a generated scenario root
+ok 2 - calls every user-facing action directly from a generated scenario root
+  ---
+  duration_ms: 16991.99025
+  type: 'test'
+  ...
+# Subtest: retains direct action effects in final semantic and graphic state
+ok 3 - retains direct action effects in final semantic and graphic state
+  ---
+  duration_ms: 1821.625875
+  type: 'test'
+  ...
+# Subtest: preserves every Unicode label and all 257 long legend categories
+ok 4 - preserves every Unicode label and all 257 long legend categories
+  ---
+  duration_ms: 761.794792
+  type: 'test'
+  ...
+# Subtest: executes monotone temporal lines for every direction and path-order mode
+ok 5 - executes monotone temporal lines for every direction and path-order mode
+  ---
+  duration_ms: 2757.754959
+  type: 'test'
+  ...
+# Subtest: materializes every requested histogram binning policy without substitution
+ok 6 - materializes every requested histogram binning policy without substitution
+  ---
+  duration_ms: 438.245709
+  type: 'test'
+  ...
+# Subtest: keeps error-bar and error-band factors active in separate recipes
+ok 7 - keeps error-bar and error-band factors active in separate recipes
+  ---
+  duration_ms: 1267.763709
+  type: 'test'
+  ...
+# Subtest: derives a bounded public option inventory without runtime prototype paths
+ok 8 - derives a bounded public option inventory without runtime prototype paths
+  ---
+  duration_ms: 218295.330958
+  type: 'test'
+  ...
+# Subtest: passes only trace-backed action and recursive option evidence plus observed extras
+ok 9 - passes only trace-backed action and recursive option evidence plus observed extras
+  ---
+  duration_ms: 5.37575
+  type: 'test'
+  ...
+# Subtest: observes collection and named-axis array parents through recursive trace count aliases
+ok 10 - observes collection and named-axis array parents through recursive trace count aliases
+  ---
+  duration_ms: 166123.419542
+  type: 'test'
+  ...
+# Subtest: hard-gates explicit distribution minima and reports exact scoped waivers
+ok 11 - hard-gates explicit distribution minima and reports exact scoped waivers
+  ---
+  duration_ms: 4.661125
+  type: 'test'
+  ...
+# Subtest: does not let descriptors, transitive calls, duplicates, or option claims inflate coverage
+ok 12 - does not let descriptors, transitive calls, duplicates, or option claims inflate coverage
+  ---
+  duration_ms: 1.458541
+  type: 'test'
+  ...
+# Subtest: validates explicit and compact source lineage without reporting raw indexes
+ok 13 - validates explicit and compact source lineage without reporting raw indexes
+  ---
+  duration_ms: 1.876125
+  type: 'test'
+  ...
+# Subtest: reports dataset, tier, recipe, and chart-family concentration failures
+ok 14 - reports dataset, tier, recipe, and chart-family concentration failures
+  ---
+  duration_ms: 0.416291
+  type: 'test'
+  ...
+# Subtest: combined legend lifecycle calls preserve actual rows from tt-tour-de-france-winners
+ok 15 - combined legend lifecycle calls preserve actual rows from tt-tour-de-france-winners
+  ---
+  duration_ms: 3441.003666
+  type: 'test'
+  ...
+# Subtest: combined legend lifecycle calls preserve actual rows from tt-london-marathon-winners
+ok 16 - combined legend lifecycle calls preserve actual rows from tt-london-marathon-winners
+  ---
+  duration_ms: 3022.888042
+  type: 'test'
+  ...
+# Subtest: combined legend lifecycle calls preserve actual rows from tt-penguins
+ok 17 - combined legend lifecycle calls preserve actual rows from tt-penguins
+  ---
+  duration_ms: 2498.700583
+  type: 'test'
+  ...
+# Subtest: quantitative combined legend lifecycle preserves actual rows from tt-tour-de-france-winners
+ok 18 - quantitative combined legend lifecycle preserves actual rows from tt-tour-de-france-winners
+  ---
+  duration_ms: 726.53575
+  type: 'test'
+  ...
+# Subtest: quantitative combined legend lifecycle preserves actual rows from tt-london-marathon-winners
+ok 19 - quantitative combined legend lifecycle preserves actual rows from tt-london-marathon-winners
+  ---
+  duration_ms: 654.50675
+  type: 'test'
+  ...
+# Subtest: quantitative combined legend lifecycle preserves actual rows from tt-penguins
+ok 20 - quantitative combined legend lifecycle preserves actual rows from tt-penguins
+  ---
+  duration_ms: 638.60675
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 1 from cars with proportional measured sectors
+ok 21 - authors createRosePlot variant 1 from cars with proportional measured sectors
+  ---
+  duration_ms: 107.757542
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 1 from cars with proportional measured sectors
+ok 22 - authors createRadialBarPlot variant 1 from cars with proportional measured sectors
+  ---
+  duration_ms: 71.097333
+  type: 'test'
+  ...
+# Subtest: authors pie variant 1 from cars with complete sectors and immutable source
+ok 23 - authors pie variant 1 from cars with complete sectors and immutable source
+  ---
+  duration_ms: 65.747125
+  type: 'test'
+  ...
+# Subtest: authors density variant 1 from cars with complete profiles and revisions
+ok 24 - authors density variant 1 from cars with complete profiles and revisions
+  ---
+  duration_ms: 82.609875
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 1 from cars against independent signed folds
+ok 25 - authors Horizon variant 1 from cars against independent signed folds
+  ---
+  duration_ms: 337.501042
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 2 from cars with proportional measured sectors
+ok 26 - authors createRosePlot variant 2 from cars with proportional measured sectors
+  ---
+  duration_ms: 23.99775
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 2 from cars with proportional measured sectors
+ok 27 - authors createRadialBarPlot variant 2 from cars with proportional measured sectors
+  ---
+  duration_ms: 10.190959
+  type: 'test'
+  ...
+# Subtest: authors pie variant 2 from cars with complete sectors and immutable source
+ok 28 - authors pie variant 2 from cars with complete sectors and immutable source
+  ---
+  duration_ms: 12.801709
+  type: 'test'
+  ...
+# Subtest: authors density variant 2 from cars with complete profiles and revisions
+ok 29 - authors density variant 2 from cars with complete profiles and revisions
+  ---
+  duration_ms: 48.238166
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 2 from cars against independent signed folds
+ok 30 - authors Horizon variant 2 from cars against independent signed folds
+  ---
+  duration_ms: 271.553958
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 3 from cars with proportional measured sectors
+ok 31 - authors createRosePlot variant 3 from cars with proportional measured sectors
+  ---
+  duration_ms: 16.131375
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 3 from cars with proportional measured sectors
+ok 32 - authors createRadialBarPlot variant 3 from cars with proportional measured sectors
+  ---
+  duration_ms: 18.173458
+  type: 'test'
+  ...
+# Subtest: authors pie variant 3 from cars with complete sectors and immutable source
+ok 33 - authors pie variant 3 from cars with complete sectors and immutable source
+  ---
+  duration_ms: 30.560167
+  type: 'test'
+  ...
+# Subtest: authors density variant 3 from cars with complete profiles and revisions
+ok 34 - authors density variant 3 from cars with complete profiles and revisions
+  ---
+  duration_ms: 202.563
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 3 from cars against independent signed folds
+ok 35 - authors Horizon variant 3 from cars against independent signed folds
+  ---
+  duration_ms: 420.854917
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 4 from cars with proportional measured sectors
+ok 36 - authors createRosePlot variant 4 from cars with proportional measured sectors
+  ---
+  duration_ms: 13.112375
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 4 from cars with proportional measured sectors
+ok 37 - authors createRadialBarPlot variant 4 from cars with proportional measured sectors
+  ---
+  duration_ms: 9.976875
+  type: 'test'
+  ...
+# Subtest: authors pie variant 4 from cars with complete sectors and immutable source
+ok 38 - authors pie variant 4 from cars with complete sectors and immutable source
+  ---
+  duration_ms: 3.964917
+  type: 'test'
+  ...
+# Subtest: authors density variant 4 from cars with complete profiles and revisions
+ok 39 - authors density variant 4 from cars with complete profiles and revisions
+  ---
+  duration_ms: 27.896209
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 4 from cars against independent signed folds
+ok 40 - authors Horizon variant 4 from cars against independent signed folds
+  ---
+  duration_ms: 332.114917
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 5 from cars with proportional measured sectors
+ok 41 - authors createRosePlot variant 5 from cars with proportional measured sectors
+  ---
+  duration_ms: 43.135833
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 5 from cars with proportional measured sectors
+ok 42 - authors createRadialBarPlot variant 5 from cars with proportional measured sectors
+  ---
+  duration_ms: 33.199875
+  type: 'test'
+  ...
+# Subtest: authors pie variant 5 from cars with complete sectors and immutable source
+ok 43 - authors pie variant 5 from cars with complete sectors and immutable source
+  ---
+  duration_ms: 21.012375
+  type: 'test'
+  ...
+# Subtest: authors density variant 5 from cars with complete profiles and revisions
+ok 44 - authors density variant 5 from cars with complete profiles and revisions
+  ---
+  duration_ms: 148.15975
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 5 from cars against independent signed folds
+ok 45 - authors Horizon variant 5 from cars against independent signed folds
+  ---
+  duration_ms: 783.704292
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 1 from countries with proportional measured sectors
+ok 46 - authors createRosePlot variant 1 from countries with proportional measured sectors
+  ---
+  duration_ms: 19.773334
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 1 from countries with proportional measured sectors
+ok 47 - authors createRadialBarPlot variant 1 from countries with proportional measured sectors
+  ---
+  duration_ms: 20.261041
+  type: 'test'
+  ...
+# Subtest: authors pie variant 1 from countries with complete sectors and immutable source
+ok 48 - authors pie variant 1 from countries with complete sectors and immutable source
+  ---
+  duration_ms: 22.884792
+  type: 'test'
+  ...
+# Subtest: authors density variant 1 from countries with complete profiles and revisions
+ok 49 - authors density variant 1 from countries with complete profiles and revisions
+  ---
+  duration_ms: 47.485583
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 1 from countries against independent signed folds
+ok 50 - authors Horizon variant 1 from countries against independent signed folds
+  ---
+  duration_ms: 787.195583
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 2 from countries with proportional measured sectors
+ok 51 - authors createRosePlot variant 2 from countries with proportional measured sectors
+  ---
+  duration_ms: 12.617125
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 2 from countries with proportional measured sectors
+ok 52 - authors createRadialBarPlot variant 2 from countries with proportional measured sectors
+  ---
+  duration_ms: 17.559166
+  type: 'test'
+  ...
+# Subtest: authors pie variant 2 from countries with complete sectors and immutable source
+ok 53 - authors pie variant 2 from countries with complete sectors and immutable source
+  ---
+  duration_ms: 14.887792
+  type: 'test'
+  ...
+# Subtest: authors density variant 2 from countries with complete profiles and revisions
+ok 54 - authors density variant 2 from countries with complete profiles and revisions
+  ---
+  duration_ms: 74.4355
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 2 from countries against independent signed folds
+ok 55 - authors Horizon variant 2 from countries against independent signed folds
+  ---
+  duration_ms: 378.490334
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 3 from countries with proportional measured sectors
+ok 56 - authors createRosePlot variant 3 from countries with proportional measured sectors
+  ---
+  duration_ms: 20.751208
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 3 from countries with proportional measured sectors
+ok 57 - authors createRadialBarPlot variant 3 from countries with proportional measured sectors
+  ---
+  duration_ms: 153.386542
+  type: 'test'
+  ...
+# Subtest: authors pie variant 3 from countries with complete sectors and immutable source
+ok 58 - authors pie variant 3 from countries with complete sectors and immutable source
+  ---
+  duration_ms: 34.021625
+  type: 'test'
+  ...
+# Subtest: authors density variant 3 from countries with complete profiles and revisions
+ok 59 - authors density variant 3 from countries with complete profiles and revisions
+  ---
+  duration_ms: 80.552708
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 3 from countries against independent signed folds
+ok 60 - authors Horizon variant 3 from countries against independent signed folds
+  ---
+  duration_ms: 468.547167
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 4 from countries with proportional measured sectors
+ok 61 - authors createRosePlot variant 4 from countries with proportional measured sectors
+  ---
+  duration_ms: 16.02525
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 4 from countries with proportional measured sectors
+ok 62 - authors createRadialBarPlot variant 4 from countries with proportional measured sectors
+  ---
+  duration_ms: 22.584916
+  type: 'test'
+  ...
+# Subtest: authors pie variant 4 from countries with complete sectors and immutable source
+ok 63 - authors pie variant 4 from countries with complete sectors and immutable source
+  ---
+  duration_ms: 10.79825
+  type: 'test'
+  ...
+# Subtest: authors density variant 4 from countries with complete profiles and revisions
+ok 64 - authors density variant 4 from countries with complete profiles and revisions
+  ---
+  duration_ms: 59.214208
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 4 from countries against independent signed folds
+ok 65 - authors Horizon variant 4 from countries against independent signed folds
+  ---
+  duration_ms: 680.480125
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 5 from countries with proportional measured sectors
+ok 66 - authors createRosePlot variant 5 from countries with proportional measured sectors
+  ---
+  duration_ms: 44.380917
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 5 from countries with proportional measured sectors
+ok 67 - authors createRadialBarPlot variant 5 from countries with proportional measured sectors
+  ---
+  duration_ms: 25.175791
+  type: 'test'
+  ...
+# Subtest: authors pie variant 5 from countries with complete sectors and immutable source
+ok 68 - authors pie variant 5 from countries with complete sectors and immutable source
+  ---
+  duration_ms: 30.050333
+  type: 'test'
+  ...
+# Subtest: authors density variant 5 from countries with complete profiles and revisions
+ok 69 - authors density variant 5 from countries with complete profiles and revisions
+  ---
+  duration_ms: 214.497167
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 5 from countries against independent signed folds
+ok 70 - authors Horizon variant 5 from countries against independent signed folds
+  ---
+  duration_ms: 1416.74
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 1 from movies with proportional measured sectors
+ok 71 - authors createRosePlot variant 1 from movies with proportional measured sectors
+  ---
+  duration_ms: 3.178709
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 1 from movies with proportional measured sectors
+ok 72 - authors createRadialBarPlot variant 1 from movies with proportional measured sectors
+  ---
+  duration_ms: 67.178458
+  type: 'test'
+  ...
+# Subtest: authors pie variant 1 from movies with complete sectors and immutable source
+ok 73 - authors pie variant 1 from movies with complete sectors and immutable source
+  ---
+  duration_ms: 5.483292
+  type: 'test'
+  ...
+# Subtest: authors density variant 1 from movies with complete profiles and revisions
+ok 74 - authors density variant 1 from movies with complete profiles and revisions
+  ---
+  duration_ms: 9.192708
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 1 from movies against independent signed folds
+ok 75 - authors Horizon variant 1 from movies against independent signed folds
+  ---
+  duration_ms: 10.426083
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 2 from movies with proportional measured sectors
+ok 76 - authors createRosePlot variant 2 from movies with proportional measured sectors
+  ---
+  duration_ms: 3.127292
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 2 from movies with proportional measured sectors
+ok 77 - authors createRadialBarPlot variant 2 from movies with proportional measured sectors
+  ---
+  duration_ms: 2.723417
+  type: 'test'
+  ...
+# Subtest: authors pie variant 2 from movies with complete sectors and immutable source
+ok 78 - authors pie variant 2 from movies with complete sectors and immutable source
+  ---
+  duration_ms: 6.905875
+  type: 'test'
+  ...
+# Subtest: authors density variant 2 from movies with complete profiles and revisions
+ok 79 - authors density variant 2 from movies with complete profiles and revisions
+  ---
+  duration_ms: 45.948
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 2 from movies against independent signed folds
+ok 80 - authors Horizon variant 2 from movies against independent signed folds
+  ---
+  duration_ms: 14.584
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 3 from movies with proportional measured sectors
+ok 81 - authors createRosePlot variant 3 from movies with proportional measured sectors
+  ---
+  duration_ms: 4.245625
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 3 from movies with proportional measured sectors
+ok 82 - authors createRadialBarPlot variant 3 from movies with proportional measured sectors
+  ---
+  duration_ms: 3.277833
+  type: 'test'
+  ...
+# Subtest: authors pie variant 3 from movies with complete sectors and immutable source
+ok 83 - authors pie variant 3 from movies with complete sectors and immutable source
+  ---
+  duration_ms: 10.637833
+  type: 'test'
+  ...
+# Subtest: authors density variant 3 from movies with complete profiles and revisions
+ok 84 - authors density variant 3 from movies with complete profiles and revisions
+  ---
+  duration_ms: 37.621959
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 3 from movies against independent signed folds
+ok 85 - authors Horizon variant 3 from movies against independent signed folds
+  ---
+  duration_ms: 16.007125
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 4 from movies with proportional measured sectors
+ok 86 - authors createRosePlot variant 4 from movies with proportional measured sectors
+  ---
+  duration_ms: 2.898458
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 4 from movies with proportional measured sectors
+ok 87 - authors createRadialBarPlot variant 4 from movies with proportional measured sectors
+  ---
+  duration_ms: 5.213667
+  type: 'test'
+  ...
+# Subtest: authors pie variant 4 from movies with complete sectors and immutable source
+ok 88 - authors pie variant 4 from movies with complete sectors and immutable source
+  ---
+  duration_ms: 1.707875
+  type: 'test'
+  ...
+# Subtest: authors density variant 4 from movies with complete profiles and revisions
+ok 89 - authors density variant 4 from movies with complete profiles and revisions
+  ---
+  duration_ms: 13.619334
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 4 from movies against independent signed folds
+ok 90 - authors Horizon variant 4 from movies against independent signed folds
+  ---
+  duration_ms: 12.243
+  type: 'test'
+  ...
+# Subtest: authors createRosePlot variant 5 from movies with proportional measured sectors
+ok 91 - authors createRosePlot variant 5 from movies with proportional measured sectors
+  ---
+  duration_ms: 11.548625
+  type: 'test'
+  ...
+# Subtest: authors createRadialBarPlot variant 5 from movies with proportional measured sectors
+ok 92 - authors createRadialBarPlot variant 5 from movies with proportional measured sectors
+  ---
+  duration_ms: 4.528584
+  type: 'test'
+  ...
+# Subtest: authors pie variant 5 from movies with complete sectors and immutable source
+ok 93 - authors pie variant 5 from movies with complete sectors and immutable source
+  ---
+  duration_ms: 9.523125
+  type: 'test'
+  ...
+# Subtest: authors density variant 5 from movies with complete profiles and revisions
+ok 94 - authors density variant 5 from movies with complete profiles and revisions
+  ---
+  duration_ms: 64.385334
+  type: 'test'
+  ...
+# Subtest: authors Horizon variant 5 from movies against independent signed folds
+ok 95 - authors Horizon variant 5 from movies against independent signed folds
+  ---
+  duration_ms: 38.407291
+  type: 'test'
+  ...
+# {"completedDataset":"tt-penguins","actualBuilds":20}
+# {"completedDataset":"tt-london-marathon-winners","actualBuilds":40}
+# {"completedDataset":"tt-astronauts","actualBuilds":60}
+# {"completedDataset":"tt-us-births","actualBuilds":80}
+# {"completedDataset":"tt-chocolate-ratings","actualBuilds":100}
+# {"requirementCount":159,"requirementSha256":"945f57c2d544486480599f6730c944b55f3f25eb74ba4e06a249f4f92950c071","actualBuilds":100,"minimumOccurrences":5,"minimumDatasets":3}
+# Subtest: computed, fit, statistics and color additions have actual public 5/3 witnesses
+ok 96 - computed, fit, statistics and color additions have actual public 5/3 witnesses
+  ---
+  duration_ms: 219040.302458
+  type: 'test'
+  ...
+# {"paletteDataset":"tt-penguins","actualBuilds":29}
+# {"paletteDataset":"tt-london-marathon-winners","actualBuilds":58}
+# {"paletteDataset":"tt-astronauts","actualBuilds":87}
+# {"paletteDataset":"tt-us-births","actualBuilds":116}
+# {"paletteDataset":"tt-chocolate-ratings","actualBuilds":145}
+# {"paletteRequirementCount":136,"paletteRequirementSha256":"4e1c7c39e4de54cd80c29a988271a3aa891e1a684876b8d78484e30a4eec4d09","actualBuilds":145,"minimumOccurrences":5,"minimumDatasets":3}
+# Subtest: palette range objects have actual public 5/3 witnesses at every restored consumer
+ok 97 - palette range objects have actual public 5/3 witnesses at every restored consumer
+  ---
+  duration_ms: 203464.22325
+  type: 'test'
+  ...
+# Subtest: direct trace array summaries witness presence without inventing extent values
+ok 98 - direct trace array summaries witness presence without inventing extent values
+  ---
+  duration_ms: 0.368292
+  type: 'test'
+  ...
+# Subtest: defines focused realistic recipes over at least three actual TidyTuesday datasets
+ok 99 - defines focused realistic recipes over at least three actual TidyTuesday datasets
+  ---
+  duration_ms: 1.563208
+  type: 'test'
+  ...
+# Subtest: every advertised data-mark factor changes the final chart one factor at a time
+ok 100 - every advertised data-mark factor changes the final chart one factor at a time
+  ---
+  duration_ms: 34558.081166
+  type: 'test'
+  ...
+# Subtest: recognizes renderer-specific removed strokes on non-circular points
+ok 101 - recognizes renderer-specific removed strokes on non-circular points
+  ---
+  duration_ms: 227.86975
+  type: 'test'
+  ...
+# Subtest: only advertises arc bindings with positive weights for every aggregate
+ok 102 - only advertises arc bindings with positive weights for every aggregate
+  ---
+  duration_ms: 7043.738542
+  type: 'test'
+  ...
+# Subtest: keeps every advertised arc padding ratio materially distinct
+ok 103 - keeps every advertised arc padding ratio materially distinct
+  ---
+  duration_ms: 3167.569166
+  type: 'test'
+  ...
+# Subtest: only advertises monotone error bands on a strictly ordered position axis
+ok 104 - only advertises monotone error bands on a strictly ordered position axis
+  ---
+  duration_ms: 88.234083
+  type: 'test'
+  ...
+# Subtest: paired-measure sampling filters the full source before selecting displayed rows
+ok 105 - paired-measure sampling filters the full source before selecting displayed rows
+  ---
+  duration_ms: 1661.463458
+  type: 'test'
+  ...
+# Subtest: split-density eligibility is filtered before deterministic sampling
+ok 106 - split-density eligibility is filtered before deterministic sampling
+  ---
+  duration_ms: 1298.076458
+  type: 'test'
+  ...
+# Subtest: preserves every authentic volcano density category on the expanded x-axis
+ok 107 - preserves every authentic volcano density category on the expanded x-axis
+  ---
+  duration_ms: 119.790083
+  type: 'test'
+  ...
+# Subtest: preflights every eligible density field pair on a label-preserving axis
+ok 108 - preflights every eligible density field pair on a label-preserving axis
+  ---
+  duration_ms: 35349.892208
+  type: 'test'
+  ...
+# Subtest: known corpus-wide density and axis witnesses remain nondegenerate
+ok 109 - known corpus-wide density and axis witnesses remain nondegenerate
+  ---
+  duration_ms: 4298.514833
+  type: 'test'
+  ...
+# Subtest: sizes step histograms from the full sampled extent for extreme outliers
+ok 110 - sizes step histograms from the full sampled extent for extreme outliers
+  ---
+  duration_ms: 140.793458
+  type: 'test'
+  ...
+# Subtest: materializes analytic and SVG output with compact truthful lineage
+ok 111 - materializes analytic and SVG output with compact truthful lineage
+  ---
+  duration_ms: 7962.443625
+  type: 'test'
+  ...
+# Subtest: directly covers every newly targeted action option and broad maximal paths
+ok 112 - directly covers every newly targeted action option and broad maximal paths
+  ---
+  duration_ms: 120372.744334
+  type: 'test'
+  ...
+# Subtest: defines five integration-ready facade recipes and a 315-chart selection schedule
+ok 113 - defines five integration-ready facade recipes and a 315-chart selection schedule
+  ---
+  duration_ms: 1.540083
+  type: 'test'
+  ...
+# Subtest: bounds facade data caches while preserving deterministic recomputation
+ok 114 - bounds facade data caches while preserving deterministic recomputation
+  ---
+  duration_ms: 5535.857083
+  type: 'test'
+  ...
+# Subtest: keeps the authentic volcano population violin title visible with exact provenance
+ok 115 - keeps the authentic volcano population violin title visible with exact provenance
+  ---
+  duration_ms: 94.662709
+  type: 'test'
+  ...
+# Subtest: uses truthful empty and occupied bins for the cats-and-dogs quantize heatmap
+ok 116 - uses truthful empty and occupied bins for the cats-and-dogs quantize heatmap
+  ---
+  duration_ms: 68.898833
+  type: 'test'
+  ...
+# Subtest: keeps every TT heatmap field pair valid for each discretized color variant
+ok 117 - keeps every TT heatmap field pair valid for each discretized color variant
+  ---
+  duration_ms: 185657.036333
+  type: 'test'
+  ...
+# Subtest: fits baseline and longest authentic titles across every eligible TT facade pairing
+ok 118 - fits baseline and longest authentic titles across every eligible TT facade pairing
+  ---
+  duration_ms: 40418.185792
+  type: 'test'
+  ...
+# Subtest: locks the role-valid facade scale inventory at 201 paths and 189 literals
+ok 119 - locks the role-valid facade scale inventory at 201 paths and 189 literals
+  ---
+  duration_ms: 113304.634833
+  type: 'test'
+  ...
+# Subtest: 315 actual TT charts cover every target path and literal at least five times across three datasets
+ok 120 - 315 actual TT charts cover every target path and literal at least five times across three datasets
+  ---
+  duration_ms: 12903.196958
+  type: 'test'
+  ...
+# Subtest: every facade variant changes the final program on an identical TT field binding
+ok 121 - every facade variant changes the final program on an identical TT field binding
+  ---
+  duration_ms: 1867.919167
+  type: 'test'
+  ...
+# Subtest: executes restored palette range strings and named objects through all three color facades
+ok 122 - executes restored palette range strings and named objects through all three color facades
+  ---
+  duration_ms: 0.356541
+  type: 'test'
+  ...
+# Subtest: covers every hierarchical facade option, literal and diversity requirement
+ok 123 - covers every hierarchical facade option, literal and diversity requirement
+  ---
+  duration_ms: 506210.413541
+  type: 'test'
+  ...
+# Subtest: independent native layer constructors preserve original rows and owners on tt-tour-de-france-winners
+ok 124 - independent native layer constructors preserve original rows and owners on tt-tour-de-france-winners
+  ---
+  duration_ms: 10051.445917
+  type: 'test'
+  ...
+# Subtest: independent native layer constructors preserve original rows and owners on tt-london-marathon-winners
+ok 125 - independent native layer constructors preserve original rows and owners on tt-london-marathon-winners
+  ---
+  duration_ms: 6689.520167
+  type: 'test'
+  ...
+# Subtest: independent native layer constructors preserve original rows and owners on tt-penguins
+ok 126 - independent native layer constructors preserve original rows and owners on tt-penguins
+  ---
+  duration_ms: 7840.535833
+  type: 'test'
+  ...
+# Subtest: new legend option and selector witnesses retain five calls and three authentic datasets
+ok 127 - new legend option and selector witnesses retain five calls and three authentic datasets
+  ---
+  duration_ms: 9760.766375
+  type: 'test'
+  ...
+# Subtest: point-owned facade combinations execute five times on tt-tour-de-france-winners
+ok 128 - point-owned facade combinations execute five times on tt-tour-de-france-winners
+  ---
+  duration_ms: 769.023667
+  type: 'test'
+  ...
+# Subtest: point-owned facade combinations execute five times on tt-london-marathon-winners
+ok 129 - point-owned facade combinations execute five times on tt-london-marathon-winners
+  ---
+  duration_ms: 460.823
+  type: 'test'
+  ...
+# Subtest: point-owned facade combinations execute five times on tt-penguins
+ok 130 - point-owned facade combinations execute five times on tt-penguins
+  ---
+  duration_ms: 477.034166
+  type: 'test'
+  ...
+# Subtest: schedules every two-way chart-family lifecycle at five TT witnesses per family
+ok 131 - schedules every two-way chart-family lifecycle at five TT witnesses per family
+  ---
+  duration_ms: 1.502583
+  type: 'test'
+  ...
+# Subtest: every realistic lifecycle factor has a final or explicit transient effect
+ok 132 - every realistic lifecycle factor has a final or explicit transient effect
+  ---
+  duration_ms: 49273.342084
+  type: 'test'
+  ...
+# Subtest: scales explicit intervals to the authentic New Zealand name time span
+ok 133 - scales explicit intervals to the authentic New Zealand name time span
+  ---
+  duration_ms: 670.090375
+  type: 'test'
+  ...
+# Subtest: single-series temporal provenance follows the actual full-source operations
+ok 134 - single-series temporal provenance follows the actual full-source operations
+  ---
+  duration_ms: 86.7385
+  type: 'test'
+  ...
+# Subtest: leaves termination grace around the shared generation deadline
+ok 135 - leaves termination grace around the shared generation deadline
+  ---
+  duration_ms: 0.565167
+  type: 'test'
+  ...
+# Subtest: matches the isolated strict 216 descriptor and state boundary
+ok 136 - matches the isolated strict 216 descriptor and state boundary
+  ---
+  duration_ms: 141125.33425
+  type: 'test'
+  ...
+# {"limit":216,"isolatedResources":{"complete":true,"children":[{"operation":"plan","rssBytes":93634560,"maximumRssBytes":93634560,"wallTimeMs":412.29220799999894},{"operation":"requirements","dataset":"tt-penguins","rssBytes":93487104,"maximumRssBytes":103366656,"wallTimeMs":1345.8140830000048},{"operation":"requirements","dataset":"tt-global-temperatures","rssBytes":92504064,"maximumRssBytes":98353152,"wallTimeMs":1077.6046249999927},{"operation":"requirements","dataset":"tt-london-marathon-winners","rssBytes":92667904,"maximumRssBytes":101269504,"wallTimeMs":1166.9358330000105},{"operation":"merge","rssBytes":89931776,"maximumRssBytes":91373568,"wallTimeMs":560.2347499999887},{"operation":"dataset","dataset":"tt-penguins","rssBytes":171819008,"maximumRssBytes":178143232,"wallTimeMs":10010.847208000007},{"operation":"dataset","dataset":"tt-global-temperatures","rssBytes":161398784,"maximumRssBytes":161513472,"wallTimeMs":17548.198374999993},{"operation":"dataset","dataset":"tt-london-marathon-winners","rssBytes":150831104,"maximumRssBytes":161185792,"wallTimeMs":38154.85520799999},{"operation":"finalize","rssBytes":101203968,"maximumRssBytes":101482496,"wallTimeMs":372.5386250000156}],"maximumChildRssBytes":178143232,"maximumCoordinatorRssBytes":64962560,"maximumCombinedRssBytes":243105792,"wallTimeMs":{"total":70706.19637499998,"children":70649.320915,"plan":412.29220799999894,"factorRequirements":3590.354541000008,"merge":560.2347499999887,"datasetGeneration":65713.900791,"finalize":372.5386250000156}},"referenceResources":{"rssBytes":162529280,"maximumRssBytes":192593920,"wallTimeMs":70324.618333}}
+# Subtest: matches the isolated strict 360 descriptor and state boundary
+ok 137 - matches the isolated strict 360 descriptor and state boundary
+  ---
+  duration_ms: 613272.896834
+  type: 'test'
+  ...
+# {"limit":360,"isolatedResources":{"complete":true,"children":[{"operation":"plan","rssBytes":94437376,"maximumRssBytes":94437376,"wallTimeMs":366.98199999995995},{"operation":"requirements","dataset":"tt-penguins","rssBytes":102563840,"maximumRssBytes":102563840,"wallTimeMs":1298.048999999999},{"operation":"requirements","dataset":"tt-global-temperatures","rssBytes":100712448,"maximumRssBytes":100712448,"wallTimeMs":983.2258339999826},{"operation":"requirements","dataset":"tt-london-marathon-winners","rssBytes":102858752,"maximumRssBytes":102858752,"wallTimeMs":1140.9812079999829},{"operation":"requirements","dataset":"tt-himalayan-peaks","rssBytes":104071168,"maximumRssBytes":104235008,"wallTimeMs":969.9003329999978},{"operation":"requirements","dataset":"tt-us-tornadoes","rssBytes":184549376,"maximumRssBytes":222642176,"wallTimeMs":57141.32358299999},{"operation":"merge","rssBytes":98025472,"maximumRssBytes":98025472,"wallTimeMs":452.5938750000205},{"operation":"dataset","dataset":"tt-penguins","rssBytes":166346752,"maximumRssBytes":170835968,"wallTimeMs":17206.69504099997},{"operation":"dataset","dataset":"tt-global-temperatures","rssBytes":235405312,"maximumRssBytes":242515968,"wallTimeMs":77719.59229099995},{"operation":"dataset","dataset":"tt-london-marathon-winners","rssBytes":166936576,"maximumRssBytes":177127424,"wallTimeMs":20892.15525000001},{"operation":"dataset","dataset":"tt-himalayan-peaks","rssBytes":284672000,"maximumRssBytes":302661632,"wallTimeMs":72857.30008400005},{"operation":"dataset","dataset":"tt-us-tornadoes","rssBytes":227459072,"maximumRssBytes":279707648,"wallTimeMs":63312.824292000034},{"operation":"finalize","rssBytes":104349696,"maximumRssBytes":104366080,"wallTimeMs":388.77637500001583}],"maximumChildRssBytes":302661632,"maximumCoordinatorRssBytes":71745536,"maximumCombinedRssBytes":374407168,"wallTimeMs":{"total":314829.130208,"children":314730.39916599996,"plan":366.98199999995995,"factorRequirements":61533.47995799995,"merge":452.5938750000205,"datasetGeneration":251988.566958,"finalize":388.77637500001583}},"referenceResources":{"rssBytes":255131648,"maximumRssBytes":337281024,"wallTimeMs":298342.975416}}
+# Subtest: keeps diagnostic scenarios out of the human gallery and enforces compact canvases
+ok 138 - keeps diagnostic scenarios out of the human gallery and enforces compact canvases
+  ---
+  duration_ms: 1.545459
+  type: 'test'
+  ...
+# Subtest: labels every gallery chart with a short ordinal and stable descriptor id
+ok 139 - labels every gallery chart with a short ordinal and stable descriptor id
+  ---
+  duration_ms: 7.313666
+  type: 'test'
+  ...
+# Subtest: fails closed when strict artifact execution exceeds 512 MiB per child
+ok 140 - fails closed when strict artifact execution exceeds 512 MiB per child
+  ---
+  duration_ms: 0.441167
+  type: 'test'
+  ...
+# Subtest: parses strict realistic scenario renderer and resource options
+ok 141 - parses strict realistic scenario renderer and resource options
+  ---
+  duration_ms: 0.168666
+  type: 'test'
+  ...
+# Subtest: rejects ambiguous or coverage-defeating realistic runner options
+ok 142 - rejects ambiguous or coverage-defeating realistic runner options
+  ---
+  duration_ms: 0.17875
+  type: 'test'
+  ...
+# Subtest: isolates realistic descriptor generation in a disposable worker
+ok 143 - isolates realistic descriptor generation in a disposable worker
+  ---
+  duration_ms: 76539.35075
+  type: 'test'
+  ...
+# Subtest: isolates serial dataset execution in a bounded child process
+ok 144 - isolates serial dataset execution in a bounded child process
+  ---
+  duration_ms: 555.058875
+  type: 'test'
+  ...
+# Subtest: runs one dataset in ordered serial batches of at most 24 scenarios
+ok 145 - runs one dataset in ordered serial batches of at most 24 scenarios
+  ---
+  duration_ms: 2.602541
+  type: 'test'
+  ...
+# Subtest: fails closed at a completed batch boundary without blaming the next task
+ok 146 - fails closed at a completed batch boundary without blaming the next task
+  ---
+  duration_ms: 1.572083
+  type: 'test'
+  ...
+# Subtest: bounds execution child protocol, timeout, and crash failures
+ok 147 - bounds execution child protocol, timeout, and crash failures
+  ---
+  duration_ms: 26.148875
+  type: 'test'
+  ...
+# Subtest: rejects forged execution results before committing child evidence
+ok 148 - rejects forged execution results before committing child evidence
+  ---
+  duration_ms: 6.482333
+  type: 'test'
+  ...
+# Subtest: fails closed without spawning a replacement for an unconfirmed child
+ok 149 - fails closed without spawning a replacement for an unconfirmed child
+  ---
+  duration_ms: 32.560542
+  type: 'test'
+  ...
+# Subtest: commits serialized outcomes and resumes after an execution child crash
+ok 150 - commits serialized outcomes and resumes after an execution child crash
+  ---
+  duration_ms: 0.49225
+  type: 'test'
+  ...
+# Subtest: round-trips canonical outcome chunks and rejects corruption
+ok 151 - round-trips canonical outcome chunks and rejects corruption
+  ---
+  duration_ms: 0.80975
+  type: 'test'
+  ...
+# Subtest: terminates timed-out generation children and reports process crashes
+ok 152 - terminates timed-out generation children and reports process crashes
+  ---
+  duration_ms: 182.309
+  type: 'test'
+  ...
+# Subtest: keeps the last complete dataset state atomic after ScenarioGenerationCrashError
+ok 153 - keeps the last complete dataset state atomic after ScenarioGenerationCrashError
+  ---
+  duration_ms: 3.388958
+  type: 'test'
+  ...
+# Subtest: keeps the last complete dataset state atomic after ScenarioGenerationTimeoutError
+ok 154 - keeps the last complete dataset state atomic after ScenarioGenerationTimeoutError
+  ---
+  duration_ms: 0.696083
+  type: 'test'
+  ...
+# Subtest: rejects a malformed successful dataset state before committing it
+ok 155 - rejects a malformed successful dataset state before committing it
+  ---
+  duration_ms: 1.207792
+  type: 'test'
+  ...
+# Subtest: rejects a validly sealed dataset state that resets checkpoint history
+ok 156 - rejects a validly sealed dataset state that resets checkpoint history
+  ---
+  duration_ms: 0.971917
+  type: 'test'
+  ...
+# Subtest: rejects forged factor usages and unknown schedule eligibility
+ok 157 - rejects forged factor usages and unknown schedule eligibility
+  ---
+  duration_ms: 0.587291
+  type: 'test'
+  ...
+# Subtest: rejects a successful finalizer with an incomplete descriptor payload
+ok 158 - rejects a successful finalizer with an incomplete descriptor payload
+  ---
+  duration_ms: 0.512459
+  type: 'test'
+  ...
+# Subtest: rejects weakened final requirements and post-validation deadline overruns
+ok 159 - rejects weakened final requirements and post-validation deadline overruns
+  ---
+  duration_ms: 33.119041
+  type: 'test'
+  ...
+# Subtest: preserves compact generator diagnostics in a failed audit report
+ok 160 - preserves compact generator diagnostics in a failed audit report
+  ---
+  duration_ms: 1778.796333
+  type: 'test'
+  ...
+# Subtest: keeps thin PNG content visible to native-resolution audit evidence
+ok 161 - keeps thin PNG content visible to native-resolution audit evidence
+  ---
+  duration_ms: 66.35575
+  type: 'test'
+  ...
+# Subtest: reads length-bounded compressed PDF text and rejects drawing-only streams
+ok 162 - reads length-bounded compressed PDF text and rejects drawing-only streams
+  ---
+  duration_ms: 2.230291
+  type: 'test'
+  ...
+# Subtest: accepts deterministic readable PNG and compressed PDF artifact regressions
+ok 163 - accepts deterministic readable PNG and compressed PDF artifact regressions
+  ---
+  duration_ms: 1243.901209
+  type: 'test'
+  ...
+# Subtest: renders every artifact from the exact program credited by scenario evidence
+ok 164 - renders every artifact from the exact program credited by scenario evidence
+  ---
+  duration_ms: 203.789667
+  type: 'test'
+  ...
+# Subtest: keeps partial and audit runs immutable while promoting only strict artifacts
+ok 165 - keeps partial and audit runs immutable while promoting only strict artifacts
+  ---
+  duration_ms: 8.164417
+  type: 'test'
+  ...
+# [1/1] ok realistic-category-boxes-adf8d750c469
+# {
+#   "output": "../.ggaction-cache/run-94a1af4afbb04cf09c0244569ab466a8/ggaction-realistic-partial-KsBsTR/partial/bounded-audit",
+#   "descriptors": 1,
+#   "rejectedCandidates": 0,
+#   "duplicateCandidates": 0,
+#   "skippedRecipeDatasets": 0,
+#   "generationWallTimeMs": 76538.72320800001,
+#   "generationMaximumChildRssBytes": 307331072,
+#   "generationMaximumCombinedRssBytes": 459096064,
+#   "executionWallTimeMs": 603.0774590000074,
+#   "executionMaximumChildRssBytes": 122847232,
+#   "executionMaximumCoordinatorLifetimeRssBytes": 233930752,
+#   "executionMaximumCoordinatorSampledRssBytes": 233930752,
+#   "executionMaximumIpcSampledCombinedRssBytes": 356352000,
+#   "executionMaximumPhaseConservativeCombinedRssBytes": 356777984,
+#   "executionMaximumConservativeCombinedRssBytes": 356777984,
+#   "executionResourceGatePassed": true,
+#   "passed": 1,
+#   "failed": 0,
+#   "coveragePassed": false,
+#   "publicActions": 6,
+#   "strictOptionPaths": 16909,
+#   "requirementDeficits": 30446,
+#   "interactionDeficits": 25,
+#   "diversityDeficits": 454,
+#   "minimumFeatureOccurrences": {
+#     "byKind": {
+#       "action": {
+#         "occurrences": 0,
+#         "datasets": 0,
+#         "recipes": 0,
+#         "tiers": 0
+#       },
+#       "action-lifecycle": {
+#         "occurrences": 0,
+#         "datasets": 0,
+#         "recipes": 0,
+#         "tiers": 0
+#       },
+#       "chart-family": {
+#         "occurrences": 1,
+#         "datasets": 1,
+#         "recipes": 1,
+#         "tiers": 1
+#       },
+#       "data-operation": {
+#         "occurrences": 1,
+#         "datasets": 1,
+#         "recipes": 1,
+#         "tiers": 1
+#       },
+#       "family-literal": {
+#         "occurrences": 0,
+#         "datasets": 0,
+#         "recipes": 0,
+#         "tiers": 0
+#       },
+#       "feature": {
+#         "occurrences": 0,
+#         "datasets": 0,
+#         "recipes": 0,
+#         "tiers": 0
+#       },
+#       "lifecycle": {
+#         "occurrences": 0,
+#         "datasets": 0,
+#         "recipes": 0,
+#         "tiers": 0
+#       },
+#       "nested-option": {
+#         "occurrences": 0,
+#         "datasets": 0,
+#         "recipes": 0,
+#         "tiers": 0
+#       },
+#       "path-literal": {
+#         "occurrences": 0,
+#         "datasets": 0,
+#         "recipes": 0,
+#         "tiers": 0
+#       },
+#       "renderer": {
+#         "occurrences": 1,
+#         "datasets": 1,
+#         "recipes": 1,
+#         "tiers": 1
+#       },
+#       "top-level-option": {
+#         "occurrences": 0,
+#         "datasets": 0,
+#         "recipes": 0,
+#         "tiers": 0
+#       }
+#     },
+#     "interactions": {
+#       "occurrences": 0,
+#       "datasets": 0,
+#       "recipes": 0,
+#       "tiers": 0
+#     }
+#   }
+# }
+# Subtest: writes bounded diagnostics separately and narrows only renderer audit evidence
+ok 166 - writes bounded diagnostics separately and narrows only renderer audit evidence
+  ---
+  duration_ms: 104931.23525
+  type: 'test'
+  ...
+# Subtest: scopes constructors, individual resources and atomic batches on tt-penguins
+ok 167 - scopes constructors, individual resources and atomic batches on tt-penguins
+  ---
+  duration_ms: 346.031041
+  type: 'test'
+  ...
+# Subtest: scopes constructors, individual resources and atomic batches on tt-london-marathon-winners
+ok 168 - scopes constructors, individual resources and atomic batches on tt-london-marathon-winners
+  ---
+  duration_ms: 238.83775
+  type: 'test'
+  ...
+# Subtest: scopes constructors, individual resources and atomic batches on tt-astronauts
+ok 169 - scopes constructors, individual resources and atomic batches on tt-astronauts
+  ---
+  duration_ms: 320.716375
+  type: 'test'
+  ...
+# Subtest: scopes constructors, individual resources and atomic batches on tt-us-births
+ok 170 - scopes constructors, individual resources and atomic batches on tt-us-births
+  ---
+  duration_ms: 268.115
+  type: 'test'
+  ...
+# Subtest: scopes constructors, individual resources and atomic batches on tt-chocolate-ratings
+ok 171 - scopes constructors, individual resources and atomic batches on tt-chocolate-ratings
+  ---
+  duration_ms: 384.679292
+  type: 'test'
+  ...
+# Subtest: defines five bounded statistical facade schedules totaling 540 real charts
+ok 172 - defines five bounded statistical facade schedules totaling 540 real charts
+  ---
+  duration_ms: 1.29375
+  type: 'test'
+  ...
+# Subtest: distributes every orthogonal variant exactly five times across at least three datasets
+ok 173 - distributes every orthogonal variant exactly five times across at least three datasets
+  ---
+  duration_ms: 58.24225
+  type: 'test'
+  ...
+# Subtest: locks the corrected audit target counts and exact requirement-set digests
+ok 174 - locks the corrected audit target counts and exact requirement-set digests
+  ---
+  duration_ms: 0.191708
+  type: 'test'
+  ...
+# Subtest: 540 actual direct-root witnesses close every corrected action target and diversity
+ok 175 - 540 actual direct-root witnesses close every corrected action target and diversity
+  ---
+  duration_ms: 249120.022041
+  type: 'test'
+  ...
+# Subtest: the exact 540-chart tail counterfactual fails before and passes after real root evidence
+ok 176 - the exact 540-chart tail counterfactual fails before and passes after real root evidence
+  ---
+  duration_ms: 398.834375
+  type: 'test'
+  ...
+# Subtest: the 540-chart projection losslessly subsumes the retired facade scale surface
+ok 177 - the 540-chart projection losslessly subsumes the retired facade scale surface
+  ---
+  duration_ms: 5.770709
+  type: 'test'
+  ...
+# Subtest: every same-binding facade variant materially changes the final program
+ok 178 - every same-binding facade variant materially changes the final program
+  ---
+  duration_ms: 14933.07125
+  type: 'test'
+  ...
+1..178
+# tests 178
+# suites 0
+# pass 178
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1686270.318083
+npm notice
+npm notice New major version of npm available! 10.9.8 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

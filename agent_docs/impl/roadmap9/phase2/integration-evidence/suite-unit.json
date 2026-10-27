@@ -1,0 +1,43 @@
+{
+  "label": "suite-unit",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/unit/renderers/native-font-fallback.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 753,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-27T21:24:39.058Z",
+  "finishedAt": "2026-10-27T21:24:39.811Z",
+  "source": {
+    "available": true,
+    "commit": "53f251a336b1a0e3764fed115d9ec4c35d8cfdfc",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "53f251a336b1a0e3764fed115d9ec4c35d8cfdfc",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "5e1fc0ed419786fa6f53b3b4731be9445a2343a40b733e571ed243fa2b311a7c",
+  "discovery": {
+    "suite": "unit",
+    "selectors": [
+      "unit/renderers/native-font-fallback.test.js"
+    ],
+    "files": [
+      "test/unit/renderers/native-font-fallback.test.js"
+    ]
+  },
+  "bytes": 827,
+  "retainedBytes": 827,
+  "truncated": false
+}

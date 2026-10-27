@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "provider": "GitHub Actions",
+  "repository": "ggaction/ggaction",
+  "runId": 40582876460,
+  "observedAt": "2026-10-27T21:41:34.847Z",
+  "attempt": 1,
+  "conclusion": "success",
+  "createdAt": "2026-10-27T20:59:24Z",
+  "event": "push",
+  "headSha": "53f251a336b1a0e3764fed115d9ec4c35d8cfdfc",
+  "jobs": [
+    {
+      "id": 122466957067,
+      "name": "realistic-data",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:01Z",
+      "completedAt": "2026-10-27T21:00:13Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122466957067"
+    },
+    {
+      "id": 122466957482,
+      "name": "package (24)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:01Z",
+      "completedAt": "2026-10-27T21:02:05Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122466957482"
+    },
+    {
+      "id": 122466957513,
+      "name": "peer-compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:01Z",
+      "completedAt": "2026-10-27T21:00:24Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122466957513"
+    },
+    {
+      "id": 122466957519,
+      "name": "test",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:01Z",
+      "completedAt": "2026-10-27T21:23:20Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122466957519"
+    },
+    {
+      "id": 122466957536,
+      "name": "browsers (firefox)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:01Z",
+      "completedAt": "2026-10-27T21:01:14Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122466957536"
+    },
+    {
+      "id": 122466957559,
+      "name": "coverage",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:01Z",
+      "completedAt": "2026-10-27T21:19:12Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122466957559"
+    },
+    {
+      "id": 122466957580,
+      "name": "package (22)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:01Z",
+      "completedAt": "2026-10-27T21:02:17Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122466957580"
+    },
+    {
+      "id": 122466957608,
+      "name": "platform (macos-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:02Z",
+      "completedAt": "2026-10-27T21:00:24Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122466957608"
+    },
+    {
+      "id": 122466957640,
+      "name": "browsers (webkit)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:01Z",
+      "completedAt": "2026-10-27T21:01:19Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122466957640"
+    },
+    {
+      "id": 122466957706,
+      "name": "package (20)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:01Z",
+      "completedAt": "2026-10-27T21:01:57Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122466957706"
+    },
+    {
+      "id": 122466957729,
+      "name": "documentation",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:01Z",
+      "completedAt": "2026-10-27T21:05:35Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122466957729"
+    },
+    {
+      "id": 122466957800,
+      "name": "platform (windows-latest)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:02Z",
+      "completedAt": "2026-10-27T21:01:05Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122466957800"
+    },
+    {
+      "id": 122467081085,
+      "name": "realistic (4)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:16Z",
+      "completedAt": "2026-10-27T21:12:01Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122467081085"
+    },
+    {
+      "id": 122467081090,
+      "name": "realistic (2)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:16Z",
+      "completedAt": "2026-10-27T21:37:48Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122467081090"
+    },
+    {
+      "id": 122467081127,
+      "name": "realistic (1)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:16Z",
+      "completedAt": "2026-10-27T21:20:37Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122467081127"
+    },
+    {
+      "id": 122467081193,
+      "name": "realistic (6)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:16Z",
+      "completedAt": "2026-10-27T21:25:06Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122467081193"
+    },
+    {
+      "id": 122467081204,
+      "name": "realistic (3)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:16Z",
+      "completedAt": "2026-10-27T21:07:22Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122467081204"
+    },
+    {
+      "id": 122467081335,
+      "name": "realistic (5)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:16Z",
+      "completedAt": "2026-10-27T21:17:53Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122467081335"
+    },
+    {
+      "id": 122467081566,
+      "name": "realistic (7)",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:00:16Z",
+      "completedAt": "2026-10-27T21:15:57Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122467081566"
+    },
+    {
+      "id": 122485774286,
+      "name": "realistic-required",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-27T21:37:53Z",
+      "completedAt": "2026-10-27T21:38:02Z",
+      "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460/job/122485774286"
+    }
+  ],
+  "name": "CI",
+  "status": "completed",
+  "updatedAt": "2026-10-27T21:38:03Z",
+  "url": "https://github.com/ggaction/ggaction/actions/runs/40582876460"
+}

@@ -41,15 +41,14 @@
     "package-check",
     "machine-docs"
   ],
-  "remaining": [
-    "STEP-010–012 제품 통합 및 필수 검증"
-  ],
-  "notice": "원안 G-CORE와 G-VISUAL의 복합 경로 결정을 한 검토 묶음에 기록한다.",
+  "remaining": [],
+  "notice": "D1-D6 approved and implemented; STEP-010 through STEP-012 consumer qualification complete.",
   "evidenceManifest": "agent_docs/impl/roadmap9/phase2/preparation.json",
   "reviewPreparation": {
     "complete": [
       "PATH-REVIEW-PREPARATION"
     ],
     "ready": []
-  }
+  },
+  "implementationCommit": "53f251a336b1a0e3764fed115d9ec4c35d8cfdfc"
 }

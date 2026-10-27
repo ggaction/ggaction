@@ -8,12 +8,12 @@
 - [x] SVG·Canvas·PNG·PDF native primitive 검사
 - [x] 같은 clean revision에서 누적 검사 및 원격 검토 checkpoint
 - [x] G-PATH D1–D6와 시각 target 명시 승인 (2026-10-27, 사용자 “네”)
-- [ ] STEP-010 공개 schema/primitive validation 연결
-- [ ] STEP-011 flatten·arc·winding·distance·stroke/clip bounds 연결
-- [ ] STEP-012 네 제품 renderer·scene·persistence 및 문서 통합
-- [ ] 전체 소비자 검증 및 AT-11/12 closure
+- [x] STEP-010 공개 schema/primitive validation 연결
+- [x] STEP-011 flatten·arc·winding·distance·stroke/clip bounds 연결
+- [x] STEP-012 네 제품 renderer·scene·persistence 및 문서 통합
+- [x] 전체 소비자 검증 및 AT-11/12 closure
 
-상태: STEP-010–012 구현 연결 완료, 누적 통합 검증 진행 중. 필수 검사가 끝나기 전 완료 처리하지 않는다.
+상태: **STEP-010–012 및 AT-11/12 완료**. 최종 통합 결과와 재현 경로는 [GOAL](GOAL.md), 기계 검증 결과는 [completion-validation](completion-validation.json)이 소유한다.
 
 ## 구현 및 집중 검증
 
@@ -36,4 +36,5 @@ mark identity/accessibility 및 rematerialization을 검사한다. 정상 unit �
 ## 최종 통합 검증
 
 실행계획의 coverage·realistic 두 shard·browser·render/gallery·installed package·artifact·metadata·docs를
-같은 clean commit에서 실행하고 소비자 표와 AT-11/12를 닫는다.
+같은 clean commit `53f251a336b1a0e3764fed115d9ec4c35d8cfdfc`에서 모두 통과했다.
+CI coverage 원본과 로컬 font 보완 검증을 포함한 [통합 집계](integration-results.json)로 소비자 표와 AT-11/12를 닫았다.
