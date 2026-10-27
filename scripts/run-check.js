@@ -4,16 +4,18 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { npmInvocation } from "./npm-command.js";
+import { captureRevision, evidenceHash } from "./verification-evidence.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const LOG_LIMIT = 2 * 1024 * 1024;
 
-export async function runCheck(label, command, args, { cwd = root, outputDirectory = path.join(root, ".artifacts/checks"), stdout = process.stdout, stderr = process.stderr, timeoutMs = Number(process.env.GGACTION_CHECK_TIMEOUT_MS ?? 90 * 60 * 1000), killGraceMs = 1000 } = {}) {
+export async function runCheck(label, command, args, { cwd = root, outputDirectory = path.join(root, ".artifacts/checks"), stdout = process.stdout, stderr = process.stderr, timeoutMs = Number(process.env.GGACTION_CHECK_TIMEOUT_MS ?? 90 * 60 * 1000), killGraceMs = 1000, discovery } = {}) {
   if (!/^[a-z0-9-]+$/.test(label) || !command) throw new Error("A check requires a safe label and command.");
   if (!Number.isFinite(timeoutMs) || timeoutMs <= 0 || !Number.isFinite(killGraceMs) || killGraceMs < 0) throw new Error("Check deadlines must be finite and positive.");
   let tail = Buffer.alloc(0);
   let bytes = 0;
   const started = Date.now();
+  const source = captureRevision(cwd);
   const invocation = command === "npm" ? npmInvocation(args)
     : { command: command === "node" ? process.execPath : command, args };
   const child = spawn(invocation.command, invocation.args, { cwd, detached: process.platform !== "win32", stdio: ["inherit", "pipe", "pipe"] });
@@ -69,7 +71,10 @@ export async function runCheck(label, command, args, { cwd = root, outputDirecto
     await writeFile(path.join(outputDirectory, `${label}.log`), tail);
     await writeFile(path.join(outputDirectory, `${label}.json`), JSON.stringify({
       label, command, args, ...result, startupError, termination, timeoutMs, durationMs: Date.now() - started,
-      node: process.version, platform: process.platform, bytes, retainedBytes: tail.length, truncated: bytes > tail.length
+      node: process.version, platform: process.platform, arch: process.arch,
+      startedAt: new Date(started).toISOString(), finishedAt: new Date().toISOString(),
+      source, sourceAfter: captureRevision(cwd), logSha256: evidenceHash(tail), discovery,
+      bytes, retainedBytes: tail.length, truncated: bytes > tail.length
     }, null, 2));
   } catch (error) {
     process.stderr.write(`Could not retain check log: ${error.message}\n`);

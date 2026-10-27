@@ -178,6 +178,25 @@ claims that future chart features are implemented. Oracle tests include wrong
 answers and mutation/cancellation cases. A contract checks their transitive
 imports stay independent from production code.
 
+`run-check.js` receipts include the exact command, exit status, timestamps,
+Node/platform, retained log SHA-256 and repository revision before and after
+execution. The canonical test runner also records the discovered test files
+actually passed to Node. Empty optional gate suites remain explicit no-ops;
+they cannot supply discovery evidence for a completed capability.
+
+Use `node scripts/verification-evidence.js <execution-plan.json> [completion.json ...]`
+to validate delivery dependencies and completion evidence. Completion records
+use `schemaVersion: 1`, `taskId`, `status: "complete"`, `implementationCommit`,
+`commands`, `artifacts`, `consumerCells`, `gateEvidence`, and `openObligations`.
+Each command has its argument array, `exitCode`, `receiptPath`/`receiptSha256`
+and `logPath`/`logSha256`; each artifact has `path`/`sha256`, relative to the
+repository root. Required check labels come from the execution plan, not from
+the result record. Every result must identify the same clean implementation
+commit, both before and after execution. A later metadata commit may reference
+that exact verified commit; dirty or uncommitted implementation results do not
+qualify. Missing, altered, stale, unexecuted or unresolved evidence fails closed.
+File hashes establish integrity, not independent human approval of a Gate.
+
 `corpus-mutation-relations.test.js` reports bounded input-size tiers and pathology
 postconditions separately from real-source sampling. Its 32/512/4096-row point
 cases are stress witnesses, not a scalability benchmark. Seed, original and

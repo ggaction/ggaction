@@ -209,6 +209,7 @@ async function run(suite, selectors, shard) {
   const stdout = createTestOutputCapture(), stderr = createTestOutputCapture();
   const code = await runCheck(`suite-${suite}`, process.execPath, args, {
     cwd: repositoryRoot,
+    discovery: { suite, selectors, files: (shard === undefined ? files : partitionTestFiles(files, shard.total)[shard.index - 1].files).map(file => path.relative(repositoryRoot, file).split(path.sep).join("/")) },
     ...(coverage ? { stdout, stderr } : {})
   });
   if (coverage) {

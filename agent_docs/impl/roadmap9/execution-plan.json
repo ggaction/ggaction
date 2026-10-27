@@ -6,21 +6,51 @@
     {
       "id": "STEP-001",
       "dependsOn": [],
-      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-001-baseline.ko.md"
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-001-baseline.ko.md",
+      "requiredChecks": [
+        "suite-all",
+        "suite-browser",
+        "suite-render",
+        "test-render",
+        "test-package",
+        "package-check",
+        "metadata-check"
+      ],
+      "requiredGates": []
     },
     {
       "id": "STEP-002",
       "dependsOn": [
         "STEP-001"
       ],
-      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-002-oracle-harness.ko.md"
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-002-oracle-harness.ko.md",
+      "requiredChecks": [
+        "suite-all",
+        "suite-browser",
+        "suite-render",
+        "test-render",
+        "test-package",
+        "package-check",
+        "metadata-check"
+      ],
+      "requiredGates": []
     },
     {
       "id": "STEP-003",
       "dependsOn": [
         "STEP-002"
       ],
-      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-003-test-discovery.ko.md"
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-003-test-discovery.ko.md",
+      "requiredChecks": [
+        "suite-all",
+        "suite-browser",
+        "suite-render",
+        "test-render",
+        "test-package",
+        "package-check",
+        "metadata-check"
+      ],
+      "requiredGates": []
     },
     {
       "id": "STEP-004",
