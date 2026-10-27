@@ -18,5 +18,6 @@
       "requiredGates": []
     }
   ],
-  "finalTask": "PATH-REVIEW-PREPARATION"
+  "finalTask": "PATH-REVIEW-PREPARATION",
+  "requirementsDeclaredAt": "655114c7f8a74f3d50d1bdbd6310617b81fa203b"
 }
