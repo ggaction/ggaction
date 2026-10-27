@@ -1,89 +1,131 @@
 {
-  "status": "verification",
+  "status": "complete-for-phase1",
   "cells": [
     {
       "consumer": "identity-kernel",
       "owner": "src/core/itemIdentity.js",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/suite-coverage.json",
+        "sha256": "62d14553bb626f4424104c3af88cb2e0e3cd41992ec4af55dc039693e42004e2"
+      }
     },
     {
       "consumer": "create-revise",
       "owner": "src/actions/data/revise.js",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/suite-coverage.json",
+        "sha256": "62d14553bb626f4424104c3af88cb2e0e3cd41992ec4af55dc039693e42004e2"
+      }
     },
     {
       "consumer": "derived-lineage",
       "owner": "src/grammar/transforms.js",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/suite-coverage.json",
+        "sha256": "62d14553bb626f4424104c3af88cb2e0e3cd41992ec4af55dc039693e42004e2"
+      }
     },
     {
       "consumer": "selectors-references",
       "owner": "src/core/resourceReferences.js",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/suite-coverage.json",
+        "sha256": "62d14553bb626f4424104c3af88cb2e0e3cd41992ec4af55dc039693e42004e2"
+      }
     },
     {
       "consumer": "materialization",
       "owner": "src/materialization/planner.js",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/suite-coverage.json",
+        "sha256": "62d14553bb626f4424104c3af88cb2e0e3cd41992ec4af55dc039693e42004e2"
+      }
     },
     {
       "consumer": "scene",
       "owner": "src/scene.js",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/suite-coverage.json",
+        "sha256": "62d14553bb626f4424104c3af88cb2e0e3cd41992ec4af55dc039693e42004e2"
+      }
     },
     {
       "consumer": "selection-highlight",
       "owner": "src/materialization/selection/state.js",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/suite-coverage.json",
+        "sha256": "62d14553bb626f4424104c3af88cb2e0e3cd41992ec4af55dc039693e42004e2"
+      }
     },
     {
       "consumer": "inspection-accessibility",
       "owner": "src/inspection.js",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/suite-coverage.json",
+        "sha256": "62d14553bb626f4424104c3af88cb2e0e3cd41992ec4af55dc039693e42004e2"
+      }
     },
     {
       "consumer": "composition",
       "owner": "src/actions/data/revise.js",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/suite-coverage.json",
+        "sha256": "62d14553bb626f4424104c3af88cb2e0e3cd41992ec4af55dc039693e42004e2"
+      }
     },
     {
       "consumer": "persistence",
       "owner": "src/persistence.js",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/suite-coverage.json",
+        "sha256": "62d14553bb626f4424104c3af88cb2e0e3cd41992ec4af55dc039693e42004e2"
+      }
     },
     {
       "consumer": "svg-canvas-png-pdf",
       "owner": "src/renderers",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/test-render.json",
+        "sha256": "2c89c66fce9095cdba909dfc12d68e476b472aacaf3ff4d02e4b6018b8e1c9b6"
+      }
     },
     {
       "consumer": "types-exports",
       "owner": "types/program.d.ts",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/consumer-qualification.json",
+        "sha256": "1b18068de242063daea83f702f90598a5e69705a59b868542430e17779e8f492"
+      }
     },
     {
       "consumer": "contracts-docs",
       "owner": "agent_docs/contract/current",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/docs-verify.json",
+        "sha256": "073fbddb9c9c0850ea76bf904c2d8057493302d78d5ec44ed1d035e3d9c6bdde"
+      }
     },
     {
       "consumer": "package",
       "owner": "package.json",
-      "status": "implemented-awaiting-qualification",
-      "remaining": "Clean revision cumulative verification and evidence closure"
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/consumer-qualification.json",
+        "sha256": "1b18068de242063daea83f702f90598a5e69705a59b868542430e17779e8f492"
+      }
     },
     {
       "consumer": "hit-animation",

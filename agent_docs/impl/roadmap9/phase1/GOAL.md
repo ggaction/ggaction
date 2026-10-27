@@ -1,35 +1,70 @@
 # Phase 1 — 안정적인 ID와 공통 리소스 기반
 
-상태: **진행 중**. 사용자 “승인한다” (2026-10-27)는 원격 검토 revision `96971d21`의
+상태: **완료**. 사용자 “승인한다” (2026-10-27)는 원격 검토 revision `96971d21`의
 D1–D8과 STEP-004–009 제품 구현을 명시 승인한다. 정확한 승인 증거는 [G-CORE](G-CORE.json)에 기록한다.
 
 ## 범위와 Gate
 
 STEP-004–009의 승인된 D1–D8을 구현했다. create/revise, 26개 transform, concrete item identity,
-persistent-selection 리소스와 schema 4를 연결했으며 현재 전체 소비자 검증 중이다.
-완료 기록은 clean implementation revision의 필수 검사가 모두 통과한 뒤 고정한다.
+persistent-selection 리소스와 schema 4를 연결했고 모든 필수 소비자 검사를 통과했다.
+완료 기록은 아래 clean implementation revision과 실행 증거에 고정했다.
 
-- [STEP1](STEP1.md): STEP-004 준비 상태, 정확한 후속 범위
+- [STEP1](STEP1.md): STEP-004–009 구현·검증 완료 상태
 - [G-CORE 설계](DESIGN.md): 승인 대상 옵션·상태·오류·호환성·분기 규칙
 - [G-CORE 기록](G-CORE.json): 승인 상태와 code/evidence revision
-- [consumer matrix](consumers.json): 모든 적용 경로와 아직 남은 연결
-- [STEP-004 진행 기록](progress/STEP-004.json): 제품 작업은 in-progress, 구현·검증 의무 미종료
+- [consumer matrix](consumers.json): 모든 적용 경로의 결과와 후속 runtime 범위
+- [STEP-004 진행 기록](progress/STEP-004.json): 동일 통합 checkpoint로 STEP-004–009 complete
 
 요구 근거는 [root AGENTS](../../../../AGENTS.md)의
 “Before implementing an unresolved material decision about public APIs, persisted schemas, or core architecture, present the concrete proposal and obtain explicit user approval.”이다.
 [impl AGENTS](../../AGENTS.md)에 따라 검토 source와 evidence를 commit/push한 뒤 승인을 받았다.
-승인된 state/API 구현과 적용 소비자 검증을 계속한다.
+승인된 state/API 구현과 적용 소비자 검증 결과를 아래에 고정했다.
 
 ## 단계와 실행 조건
 
-| 작업 | 현재 상태 | 완료에 필요한 것 |
+| 작업 | 현재 상태 | 검증한 범위 |
 |---|---|---|
-| STEP-004 | verification | product key owner, create/revise·소비자·타입·문서 |
-| STEP-005 | verification | 모든 transform의 final-grain lineage |
-| STEP-006 | verification | scene/selection/inspection identity와 revision 연결 |
-| STEP-007 | verification | resource schema, typed selectors, reference DAG |
-| STEP-008 | verification | lifecycle preflight와 selective rematerialization |
-| STEP-009 | verification | 1/2/3→4 migration, fresh-process 신규 resource edit/remove |
+| STEP-004 | complete | product key owner, create/revise·소비자·타입·문서 |
+| STEP-005 | complete | 모든 transform의 final-grain lineage |
+| STEP-006 | complete | scene/selection/inspection identity와 revision 연결 |
+| STEP-007 | complete | resource schema, typed selectors, reference DAG |
+| STEP-008 | complete | lifecycle preflight와 selective rematerialization |
+| STEP-009 | complete | 1/2/3→4 migration, fresh-process 신규 resource edit/remove |
+
+## 제품 통합 검증 완료
+
+검증 기준 commit: `8b8ab3cff7144be29bb6ba6825085c3a56f0a4d9`. 모든 필수 실행은 시작·종료 모두 같은 clean checkout이었다.
+이후 완료 기록 commit은 제품·테스트 source를 바꾸지 않는다. [실행 집계](integration-results.json),
+[완료 검증](completion-validation.json), [실행 receipt와 로그](integration-evidence/)에 실제 명령·환경·hash를 고정한다.
+
+| 검사 | 결과 |
+|---|---|
+| 일반 전체 suite + source coverage | 6351 passed, 0 failed; 1046 files |
+| 실데이터 shard 1 / shard 2 | 178 passed, 0 failed / 97 passed, 0 failed; 전체 29개 파일의 disjoint union |
+| Browser | 296 passed, 0 failed |
+| SVG·Canvas·PNG·PDF renderer 회귀 | 265 passed, 0 failed; gallery 생성·검사 포함 |
+| 설치된 package | Node 186 cases, MCP·types·tutorials·Full/Basic/SVG browser consumers 통과 |
+| Package / metadata / docs | 각 exit 0; built-site 및 desktop/mobile browser 검사 포함 |
+
+원격 CI도 [c8f78984](https://github.com/ggaction/ggaction/actions/runs/40499412739)에서 모두 통과했다.
+로컬 검증 commit과의 차이는 순차 생성 검사의 합산 제한 15→20분뿐이며, 제품 코드·검사 개수·결과 비교·메모리 한도는 동일하다.
+더 엄격한 15분 제한으로 통과한 로컬 증거를 재사용했고 정확한 단일 파일 diff를 완료 기록 생성 시 검증했다.
+
+완료 문서 점검에서 과거 snapshot version 1 문구 두 곳을 현재 계약 링크로 정리했다.
+이 문서 변경은 별도의 [전체 문서 재검증](integration-evidence/documentation-closeout.json)을 통과했으며,
+해당 receipt는 수정 상태와 로그 hash를 보존한다. 제품 코드와 기존 필수 검사 증거는 그대로다.
+
+Coverage: lines **95.89%**, branches **93.44%**, functions **98.72%**.
+전역 threshold와 192개 critical floor를 유지했다. 적용 소비자 14개를 통과로 기록하고,
+hit testing·animation의 후속 STEP-047 이후 의무는 기존 범위대로 명시했다.
+
+저장된 완료 증거를 재검증하는 명령:
+
+```sh
+node scripts/verification-evidence.js agent_docs/impl/roadmap9/execution-plan.json \
+  agent_docs/impl/roadmap9/phase0/progress/STEP-00{1,2,3}.json \
+  agent_docs/impl/roadmap9/phase1/progress/STEP-00{4,5,6,7,8,9}.json
+```
 
 ## 승인 전 검토 checkpoint의 검사 (보존 기록)
 

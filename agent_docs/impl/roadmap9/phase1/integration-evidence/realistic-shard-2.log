@@ -1,0 +1,602 @@
+
+> ggaction@0.0.26 test:realistic
+> node scripts/run-tests.js realistic --shard=2/2
+
+{"shard":{"index":2,"total":2},"files":["contracts/dataset-fixtures.test.js","contracts/generated-scenarios.test.js","contracts/realistic-arc-legend-layout.test.js","contracts/realistic-axis-facet-owner-witness.test.js","contracts/realistic-cartesian-facade-coverage-recipes.test.js","contracts/realistic-direct-lifecycle-coverage-recipes.test.js","contracts/realistic-encoding-coverage-recipes.test.js","contracts/realistic-facet-column-factors.test.js","contracts/realistic-facet-raster-bounds.test.js","contracts/realistic-guide-scale-recipes.test.js","contracts/realistic-row-selection.test.js","contracts/realistic-scenario-generator.test.js"],"estimatedMs":2215889}
+TAP version 13
+# Subtest: loads only the dataset requested by a test
+ok 1 - loads only the dataset requested by a test
+  ---
+  duration_ms: 3.401042
+  type: 'test'
+  ...
+# Subtest: locks every reference dataset by row count, bytes, and sha256
+ok 2 - locks every reference dataset by row count, bytes, and sha256
+  ---
+  duration_ms: 11.338416
+  type: 'test'
+  ...
+# Subtest: registers a frozen, uniquely identified real-data and edge-case corpus
+ok 3 - registers a frozen, uniquely identified real-data and edge-case corpus
+  ---
+  duration_ms: 0.223583
+  type: 'test'
+  ...
+# Subtest: describes every real source with typed fields, roles, mappings, and provenance
+ok 4 - describes every real source with typed fields, roles, mappings, and provenance
+  ---
+  duration_ms: 5.968667
+  type: 'test'
+  ...
+# Subtest: loads zoo datasets through immutable fixtures and isolated clones
+ok 5 - loads zoo datasets through immutable fixtures and isolated clones
+  ---
+  duration_ms: 5.106667
+  type: 'test'
+  ...
+# Subtest: coerces pinned CSV fields only through explicit schemas
+ok 6 - coerces pinned CSV fields only through explicit schemas
+  ---
+  duration_ms: 1.198375
+  type: 'test'
+  ...
+# Subtest: normalizes only explicitly declared upstream CSV quirks
+ok 7 - normalizes only explicitly declared upstream CSV quirks
+  ---
+  duration_ms: 0.611292
+  type: 'test'
+  ...
+# Subtest: selects deterministic samples with endpoint and numeric extrema witnesses
+ok 8 - selects deterministic samples with endpoint and numeric extrema witnesses
+  ---
+  duration_ms: 8.184
+  type: 'test'
+  ...
+# Subtest: matches the independent full-sort stable-sample oracle
+ok 9 - matches the independent full-sort stable-sample oracle
+  ---
+  duration_ms: 21.833083
+  type: 'test'
+  ...
+# Subtest: preserves the pinned large-source stable-sample index digest
+ok 10 - preserves the pinned large-source stable-sample index digest
+  ---
+  duration_ms: 1197.11575
+  type: 'test'
+  ...
+# Subtest: keeps TidyTuesday URLs commit-pinned and reports optional local caches
+ok 11 - keeps TidyTuesday URLs commit-pinned and reports optional local caches
+  ---
+  duration_ms: 9639.43225
+  type: 'test'
+  ...
+# Subtest: exposes every verified source row with immutable original lineage
+ok 12 - exposes every verified source row with immutable original lineage
+  ---
+  duration_ms: 2974.624458
+  type: 'test'
+  ...
+# Subtest: keeps optional raw caches outside git and the published package
+ok 13 - keeps optional raw caches outside git and the published package
+  ---
+  duration_ms: 0.798542
+  type: 'test'
+  ...
+# Subtest: rejects unknown or ambiguous dataset sync arguments before downloading
+ok 14 - rejects unknown or ambiguous dataset sync arguments before downloading
+  ---
+  duration_ms: 199.643125
+  type: 'test'
+  ...
+# Subtest: applies deterministic, non-mutating corpus mutations
+ok 15 - applies deterministic, non-mutating corpus mutations
+  ---
+  duration_ms: 0.600292
+  type: 'test'
+  ...
+# Subtest: generates deterministic pairwise cases without a Cartesian explosion
+ok 16 - generates deterministic pairwise cases without a Cartesian explosion
+  ---
+  duration_ms: 1.813375
+  type: 'test'
+  ...
+# Subtest: covers every recipe factor pair in the deterministic deep descriptor set
+ok 17 - covers every recipe factor pair in the deterministic deep descriptor set
+  ---
+  duration_ms: 30.456834
+  type: 'test'
+  ...
+# Subtest: builds and independently validates every offline smoke scenario
+ok 18 - builds and independently validates every offline smoke scenario
+  ---
+  duration_ms: 12534.458
+  type: 'test'
+  ...
+# Subtest: each offline recipe has a differential analytic raster witness
+ok 19 - each offline recipe has a differential analytic raster witness
+  ---
+  duration_ms: 3223.330625
+  type: 'test'
+  ...
+# Subtest: lays out the exact volcano padded-donut top legend without changing source labels
+ok 20 - lays out the exact volcano padded-donut top legend without changing source labels
+  ---
+  duration_ms: 200.35725
+  type: 'test'
+  ...
+# Subtest: builds both arc recipes at every legend position across all fifty TT sources
+ok 21 - builds both arc recipes at every legend position across all fifty TT sources
+  ---
+  duration_ms: 39452.483292
+  type: 'test'
+  ...
+# Subtest: named axis and parent legend lifecycle preserve actual rows from tt-tour-de-france-winners
+ok 22 - named axis and parent legend lifecycle preserve actual rows from tt-tour-de-france-winners
+  ---
+  duration_ms: 4447.858167
+  type: 'test'
+  ...
+# Subtest: named axis and parent legend lifecycle preserve actual rows from tt-london-marathon-winners
+ok 23 - named axis and parent legend lifecycle preserve actual rows from tt-london-marathon-winners
+  ---
+  duration_ms: 3393.570709
+  type: 'test'
+  ...
+# Subtest: named axis and parent legend lifecycle preserve actual rows from tt-penguins
+ok 24 - named axis and parent legend lifecycle preserve actual rows from tt-penguins
+  ---
+  duration_ms: 3705.735542
+  type: 'test'
+  ...
+# Subtest: parent legend options and literals have actual public 5/3 witnesses
+ok 25 - parent legend options and literals have actual public 5/3 witnesses
+  ---
+  duration_ms: 199461.189042
+  type: 'test'
+  ...
+# Subtest: defines four bounded facade recipes and a 880-chart schedule
+ok 26 - defines four bounded facade recipes and a 880-chart schedule
+  ---
+  duration_ms: 32.953208
+  type: 'test'
+  ...
+# Subtest: normalizes exact continuous-color facade bars before native rendering
+ok 27 - normalizes exact continuous-color facade bars before native rendering
+  ---
+  duration_ms: 757.837542
+  type: 'test'
+  ...
+# Subtest: locks the exact assigned option, literal, aggregate, and diversity target set
+ok 28 - locks the exact assigned option, literal, aggregate, and diversity target set
+  ---
+  duration_ms: 171755.343125
+  type: 'test'
+  ...
+# Subtest: keeps every orthogonal profile materially distinct under one authentic witness
+ok 29 - keeps every orthogonal profile materially distinct under one authentic witness
+  ---
+  duration_ms: 8529.203625
+  type: 'test'
+  ...
+# Subtest: factor observers require the direct evidence claimed for data and facade profiles
+ok 30 - factor observers require the direct evidence claimed for data and facade profiles
+  ---
+  duration_ms: 148.515709
+  type: 'test'
+  ...
+# Subtest: direct authentic witnesses satisfy every assigned hard minimum and diversity rule
+ok 31 - direct authentic witnesses satisfy every assigned hard minimum and diversity rule
+  ---
+  duration_ms: 83354.411125
+  type: 'test'
+  ...
+# Subtest: defines ten bounded schedules totaling fifty authentic TT charts
+ok 32 - defines ten bounded schedules totaling fifty authentic TT charts
+  ---
+  duration_ms: 2700.987667
+  type: 'test'
+  ...
+# Subtest: keeps direct Cartesian guide presentation readable on all fifty eligible TT datasets
+ok 33 - keeps direct Cartesian guide presentation readable on all fifty eligible TT datasets
+  ---
+  duration_ms: 190299.334708
+  type: 'test'
+  ...
+# Subtest: materializes every alternate direct coverage-tail witness
+ok 34 - materializes every alternate direct coverage-tail witness
+  ---
+  duration_ms: 18216.525583
+  type: 'test'
+  ...
+# Subtest: keeps authentic Christmas Song selection lines materially continuous
+ok 35 - keeps authentic Christmas Song selection lines materially continuous
+  ---
+  duration_ms: 2308.104209
+  type: 'test'
+  ...
+# Subtest: falls back to authentic source order for one-measure Spiders selection
+ok 36 - falls back to authentic source order for one-measure Spiders selection
+  ---
+  duration_ms: 3268.45025
+  type: 'test'
+  ...
+# Subtest: locks the disjoint corrected hard-requirement partition at 918
+ok 37 - locks the disjoint corrected hard-requirement partition at 918
+  ---
+  duration_ms: 0.376958
+  type: 'test'
+  ...
+# Subtest: keeps every authentic TV-ratings series label inside the shared facet legend
+ok 38 - keeps every authentic TV-ratings series label inside the shared facet legend
+  ---
+  duration_ms: 231.492167
+  type: 'test'
+  ...
+# Subtest: preflights the maximal facet profile on all fifty eligible TT datasets
+ok 39 - preflights the maximal facet profile on all fifty eligible TT datasets
+  ---
+  duration_ms: 226409.702292
+  type: 'test'
+  ...
+# Subtest: selects polynomial-safe Space Launch groups before sampling
+ok 40 - selects polynomial-safe Space Launch groups before sampling
+  ---
+  duration_ms: 43132.615292
+  type: 'test'
+  ...
+# Subtest: keeps the assigned single-series operation truthful and removal-only
+ok 41 - keeps the assigned single-series operation truthful and removal-only
+  ---
+  duration_ms: 1909.668208
+  type: 'test'
+  ...
+# Subtest: uses stable selected source order for the one-measure Spiders removal view
+ok 42 - uses stable selected source order for the one-measure Spiders removal view
+  ---
+  duration_ms: 1940.801417
+  type: 'test'
+  ...
+# Subtest: preflights the maximal removal profile on all fifty eligible TT datasets
+ok 43 - preflights the maximal removal profile on all fifty eligible TT datasets
+  ---
+  duration_ms: 271443.178084
+  type: 'test'
+  ...
+# Subtest: uses one truthful horizon cohort for sparse Nuclear Explosion purposes
+ok 44 - uses one truthful horizon cohort for sparse Nuclear Explosion purposes
+  ---
+  duration_ms: 1252.989959
+  type: 'test'
+  ...
+# Subtest: preflights the maximal derived-encoding profile on all temporal-eligible TT datasets
+ok 45 - preflights the maximal derived-encoding profile on all temporal-eligible TT datasets
+  ---
+  duration_ms: 246692.866833
+  type: 'test'
+  ...
+# Subtest: uses one truthful statistical cohort for sparse Nuclear Explosion bands
+ok 46 - uses one truthful statistical cohort for sparse Nuclear Explosion bands
+  ---
+  duration_ms: 2718.315708
+  type: 'test'
+  ...
+# Subtest: preserves a bounded root cause in statistical band diagnostics
+ok 47 - preserves a bounded root cause in statistical band diagnostics
+  ---
+  duration_ms: 0.536333
+  type: 'test'
+  ...
+# Subtest: preflights the maximal statistical profile on all temporal-eligible TT datasets
+ok 48 - preflights the maximal statistical profile on all temporal-eligible TT datasets
+  ---
+  duration_ms: 240991.685708
+  type: 'test'
+  ...
+# Subtest: preflights the maximal regression profile on all fifty eligible TT datasets
+ok 49 - preflights the maximal regression profile on all fifty eligible TT datasets
+  ---
+  duration_ms: 539025.127167
+  type: 'test'
+  ...
+# Subtest: fifty direct-root builds close every assigned gap with material graphics
+ok 50 - fifty direct-root builds close every assigned gap with material graphics
+  ---
+  duration_ms: 1.376625
+  type: 'test'
+  ...
+# Subtest: defines three direct-encoding recipes with five authentic TT witnesses each
+ok 51 - defines three direct-encoding recipes with five authentic TT witnesses each
+  ---
+  duration_ms: 2.400708
+  type: 'test'
+  ...
+# Subtest: covers every valid direct encoding option path and path literal at 5/3
+ok 52 - covers every valid direct encoding option path and path literal at 5/3
+  ---
+  duration_ms: 206052.006459
+  type: 'test'
+  ...
+# Subtest: executes both restored range palette spellings with authentic 5/3 witnesses
+ok 53 - executes both restored range palette spellings with authentic 5/3 witnesses
+  ---
+  duration_ms: 0.473458
+  type: 'test'
+  ...
+# Subtest: schedules each facet axis policy five times across real datasets
+ok 54 - schedules each facet axis policy five times across real datasets
+  ---
+  duration_ms: 1226.68125
+  type: 'test'
+  ...
+# Subtest: reserves data-aware facet guide space for the exact Christmas-song case
+ok 55 - reserves data-aware facet guide space for the exact Christmas-song case
+  ---
+  duration_ms: 66.918
+  type: 'test'
+  ...
+# Subtest: wraps complete long facet titles and questions inside the final Canvas
+ok 56 - wraps complete long facet titles and questions inside the final Canvas
+  ---
+  duration_ms: 517.903542
+  type: 'test'
+  ...
+# Subtest: turns known clamped TT column requests into distinct final visual policies
+ok 57 - turns known clamped TT column requests into distinct final visual policies
+  ---
+  duration_ms: 549.856542
+  type: 'test'
+  ...
+# Subtest: every lifecycle facet column produces a distinct final TT chart
+ok 58 - every lifecycle facet column produces a distinct final TT chart
+  ---
+  duration_ms: 22604.186042
+  type: 'test'
+  ...
+# Subtest: every analysis facet column produces a distinct final TT chart
+ok 59 - every analysis facet column produces a distinct final TT chart
+  ---
+  duration_ms: 30938.949875
+  type: 'test'
+  ...
+# Subtest: covers every eligible facet binding plus every column-scale-axis interaction
+ok 60 - covers every eligible facet binding plus every column-scale-axis interaction
+  ---
+  duration_ms: 73998.366084
+  type: 'test'
+  ...
+# Subtest: renders every formerly oversized realistic facet through SVG, Canvas, PNG, and PDF
+ok 61 - renders every formerly oversized realistic facet through SVG, Canvas, PNG, and PDF
+  ---
+  duration_ms: 93275.230792
+  type: 'test'
+  ...
+# Subtest: defines a feasible 739-selection guide/scale coverage schedule
+ok 62 - defines a feasible 739-selection guide/scale coverage schedule
+  ---
+  duration_ms: 53.832084
+  type: 'test'
+  ...
+# Subtest: observes field-pair and variant factors with independent direct and final evidence
+ok 63 - observes field-pair and variant factors with independent direct and final evidence
+  ---
+  duration_ms: 6604.595375
+  type: 'test'
+  ...
+# Subtest: keeps known video-game facets and complete-case parallel profiles nonempty
+ok 64 - keeps known video-game facets and complete-case parallel profiles nonempty
+  ---
+  duration_ms: 28373.4005
+  type: 'test'
+  ...
+# Subtest: reserves a complete side-legend lane for long Christmas-song labels
+ok 65 - reserves a complete side-legend lane for long Christmas-song labels
+  ---
+  duration_ms: 341.800833
+  type: 'test'
+  ...
+# Subtest: filters transit parallel dimensions before its deterministic sample
+ok 66 - filters transit parallel dimensions before its deterministic sample
+  ---
+  duration_ms: 27.950708
+  type: 'test'
+  ...
+# Subtest: preflights every temporal display policy on every eligible TT dataset
+ok 67 - preflights every temporal display policy on every eligible TT dataset
+  ---
+  duration_ms: 54459.386875
+  type: 'test'
+  ...
+# Subtest: keeps the meteorites long day labels sparse and non-overlapping
+ok 68 - keeps the meteorites long day labels sparse and non-overlapping
+  ---
+  duration_ms: 960.101458
+  type: 'test'
+  ...
+# Subtest: runs every non-sequential scale profile with branch-exact direct actions
+ok 69 - runs every non-sequential scale profile with branch-exact direct actions
+  ---
+  duration_ms: 1086.475208
+  type: 'test'
+  ...
+# Subtest: uses truthful record counts when a quantize share field has zero span
+ok 70 - uses truthful record counts when a quantize share field has zero span
+  ---
+  duration_ms: 117.179167
+  type: 'test'
+  ...
+# Subtest: preflights every quantitative non-sequential scale on every eligible field pair
+ok 71 - preflights every quantitative non-sequential scale on every eligible field pair
+  ---
+  duration_ms: 134907.654833
+  type: 'test'
+  ...
+# Subtest: replays the automatic cartesian guide identically after cloning, reordering, and a process boundary
+ok 72 - replays the automatic cartesian guide identically after cloning, reordering, and a process boundary
+  ---
+  duration_ms: 11931.733959
+  type: 'test'
+  ...
+# Subtest: keeps every cartesian guide variant stable after structured-clone replay across all 50 datasets
+ok 73 - keeps every cartesian guide variant stable after structured-clone replay across all 50 datasets
+  ---
+  duration_ms: 196251.133375
+  type: 'test'
+  ...
+# Subtest: preserves whitespace through a realistic long wrapped title block
+ok 74 - preserves whitespace through a realistic long wrapped title block
+  ---
+  duration_ms: 194.16175
+  type: 'test'
+  ...
+# Subtest: builds every reserved witness and directly satisfies guide/scale coverage
+ok 75 - builds every reserved witness and directly satisfies guide/scale coverage
+  ---
+  duration_ms: 200624.437083
+  type: 'test'
+  ...
+# Subtest: new row selection and text highlight options have five authentic dataset witnesses
+ok 76 - new row selection and text highlight options have five authentic dataset witnesses
+  ---
+  duration_ms: 34595.431375
+  type: 'test'
+  ...
+# Subtest: owns exactly fifty real TidyTuesday sources and the integrated realistic recipe set
+ok 77 - owns exactly fifty real TidyTuesday sources and the integrated realistic recipe set
+  ---
+  duration_ms: 1.953291
+  type: 'test'
+  ...
+# Subtest: integrates every coverage recipe once with bounded tier capacity
+ok 78 - integrates every coverage recipe once with bounded tier capacity
+  ---
+  duration_ms: 202.5545
+  type: 'test'
+  ...
+# Subtest: does not advertise impossible outliers for min-max whiskers
+ok 79 - does not advertise impossible outliers for min-max whiskers
+  ---
+  duration_ms: 0.101667
+  type: 'test'
+  ...
+# Subtest: distributes the full palette vocabulary across bounded recipe domains
+ok 80 - distributes the full palette vocabulary across bounded recipe domains
+  ---
+  duration_ms: 0.168042
+  type: 'test'
+  ...
+# Subtest: composition alignment moves deliberately unequal child canvases
+ok 81 - composition alignment moves deliberately unequal child canvases
+  ---
+  duration_ms: 253.146583
+  type: 'test'
+  ...
+# Subtest: composition children reserve room for long authentic titles
+ok 82 - composition children reserve room for long authentic titles
+  ---
+  duration_ms: 42.993167
+  type: 'test'
+  ...
+# Subtest: only advertises positive-weight field bindings for base arc recipes
+ok 83 - only advertises positive-weight field bindings for base arc recipes
+  ---
+  duration_ms: 5502.374125
+  type: 'test'
+  ...
+# Subtest: only advertises materially varying bindings for summary comparisons
+ok 84 - only advertises materially varying bindings for summary comparisons
+  ---
+  duration_ms: 8299.839916
+  type: 'test'
+  ...
+# Subtest: preflights one balanced dataset quota with truthful metadata and replay
+ok 85 - preflights one balanced dataset quota with truthful metadata and replay
+  ---
+  duration_ms: 132766.030209
+  type: 'test'
+  ...
+# Subtest: validates serialized scheduler identity, counts, and complete descriptor shards
+ok 86 - validates serialized scheduler identity, counts, and complete descriptor shards
+  ---
+  duration_ms: 130222.6165
+  type: 'test'
+  ...
+# Subtest: aligns default secondary bindings and actual record eligibility across all fifty sources
+ok 87 - aligns default secondary bindings and actual record eligibility across all fifty sources
+  ---
+  duration_ms: 9542.230958
+  type: 'test'
+  ...
+# Subtest: records unsupported dataset recipes as skips without preflight rejection loops
+ok 88 - records unsupported dataset recipes as skips without preflight rejection loops
+  ---
+  duration_ms: 82790.657333
+  type: 'test'
+  ...
+# Subtest: advances past exhausted factor domains under strict scheduling
+ok 89 - advances past exhausted factor domains under strict scheduling
+  ---
+  duration_ms: 60232.001375
+  type: 'test'
+  ...
+# Subtest: prioritizes a scheduled variant on its last eligible dataset
+ok 90 - prioritizes a scheduled variant on its last eligible dataset
+  ---
+  duration_ms: 0.2675
+  type: 'test'
+  ...
+# Subtest: keeps no-slack encoding schedules urgent through their full-plan deadline
+ok 91 - keeps no-slack encoding schedules urgent through their full-plan deadline
+  ---
+  duration_ms: 0.31425
+  type: 'test'
+  ...
+# Subtest: plans every heatmap schedule variant across eligible real datasets
+ok 92 - plans every heatmap schedule variant across eligible real datasets
+  ---
+  duration_ms: 54.208959
+  type: 'test'
+  ...
+# Subtest: plans both facet axis policies five times across real datasets
+ok 93 - plans both facet axis policies five times across real datasets
+  ---
+  duration_ms: 11647.684208
+  type: 'test'
+  ...
+# Subtest: observes lifecycle features from recipe-specific direct trace signatures
+ok 94 - observes lifecycle features from recipe-specific direct trace signatures
+  ---
+  duration_ms: 2321.301625
+  type: 'test'
+  ...
+# Subtest: keeps derived-data regression viable after realistic subgroup filtering
+ok 95 - keeps derived-data regression viable after realistic subgroup filtering
+  ---
+  duration_ms: 19.389667
+  type: 'test'
+  ...
+# Subtest: uses full-source grouped aggregates, truthful samples, and median IQR intervals
+ok 96 - uses full-source grouped aggregates, truthful samples, and median IQR intervals
+  ---
+  duration_ms: 1350.38425
+  type: 'test'
+  ...
+# Subtest: preserves exact lifecycle contributor lineage and sampling disclosures
+ok 97 - preserves exact lifecycle contributor lineage and sampling disclosures
+  ---
+  duration_ms: 646.642
+  type: 'test'
+  ...
+1..97
+# tests 97
+# suites 0
+# pass 97
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2072551.466541
+npm notice
+npm notice New major version of npm available! 10.9.8 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

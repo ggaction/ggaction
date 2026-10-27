@@ -1,0 +1,1787 @@
+TAP version 13
+# Subtest: Browser Canvas and SVG consume the same materialized area gradient
+ok 1 - Browser Canvas and SVG consume the same materialized area gradient
+  ---
+  duration_ms: 1940.1055
+  type: 'test'
+  ...
+# Subtest: edge-clamped vertical title ink stays inside SVG and Canvas at small, default and large fonts
+ok 2 - edge-clamped vertical title ink stays inside SVG and Canvas at small, default and large fonts
+  ---
+  duration_ms: 1755.524917
+  type: 'test'
+  ...
+# Subtest: four independent title widths exactly match the numeric public reference in decoded RGBA
+ok 3 - four independent title widths exactly match the numeric public reference in decoded RGBA
+  ---
+  duration_ms: 1332.560292
+  type: 'test'
+  ...
+# Subtest: chromium preserves occupied legend spacing in installed Canvas and SVG at both densities
+ok 4 - chromium preserves occupied legend spacing in installed Canvas and SVG at both densities
+  ---
+  duration_ms: 10192.684709
+  type: 'test'
+  ...
+# Subtest: chromium preserves Canvas/SVG clipping, gradient, text, resize, density, and downloads at DPR 1
+ok 5 - chromium preserves Canvas/SVG clipping, gradient, text, resize, density, and downloads at DPR 1
+  ---
+  duration_ms: 1350.346875
+  type: 'test'
+  ...
+# Subtest: chromium preserves Canvas/SVG clipping, gradient, text, resize, density, and downloads at DPR 2
+ok 6 - chromium preserves Canvas/SVG clipping, gradient, text, resize, density, and downloads at DPR 2
+  ---
+  duration_ms: 1461.927042
+  type: 'test'
+  ...
+# Subtest: chromium keeps vertical and slanted axis labels outside fixed plots in Canvas and SVG
+ok 7 - chromium keeps vertical and slanted axis labels outside fixed plots in Canvas and SVG
+  ---
+  duration_ms: 1185.786416
+  type: 'test'
+  ...
+# Subtest: chromium renders hard title breaks as concrete Canvas and SVG text lines
+ok 8 - chromium renders hard title breaks as concrete Canvas and SVG text lines
+  ---
+  duration_ms: 1034.616875
+  type: 'test'
+  ...
+# Subtest: chromium composites each bar fill and outline once in Canvas and SVG
+ok 9 - chromium composites each bar fill and outline once in Canvas and SVG
+  ---
+  duration_ms: 1737.550834
+  type: 'test'
+  ...
+# Subtest: chromium clips one Cartesian mark without moving its items or outside guides
+ok 10 - chromium clips one Cartesian mark without moving its items or outside guides
+  ---
+  duration_ms: 1088.952083
+  type: 'test'
+  ...
+# Subtest: chromium preserves keyed selection and graphic-only scene identity after a saved revision
+ok 11 - chromium preserves keyed selection and graphic-only scene identity after a saved revision
+  ---
+  duration_ms: 1206.150167
+  type: 'test'
+  ...
+# Subtest: difference paints the independently approved fill/outline source in DOM and Offscreen Canvas
+ok 12 - difference paints the independently approved fill/outline source in DOM and Offscreen Canvas
+  ---
+  duration_ms: 1478.109833
+  type: 'test'
+  ...
+# Subtest: chromium renders explicit step cells and byte-identical default edges at DPR 1
+ok 13 - chromium renders explicit step cells and byte-identical default edges at DPR 1
+  ---
+  duration_ms: 8596.022208
+  type: 'test'
+  ...
+# Subtest: chromium renders explicit step cells and byte-identical default edges at DPR 2
+ok 14 - chromium renders explicit step cells and byte-identical default edges at DPR 2
+  ---
+  duration_ms: 1316.58575
+  type: 'test'
+  ...
+# Subtest: canonical bootstrap-mean-ci browser Canvas and SVG preserve the independent literal scene
+ok 15 - canonical bootstrap-mean-ci browser Canvas and SVG preserve the independent literal scene
+  ---
+  duration_ms: 1574.800292
+  type: 'test'
+  ...
+# Subtest: renders direct-source-facets through the shared capability harness
+ok 16 - renders direct-source-facets through the shared capability harness
+  ---
+  duration_ms: 1413.491459
+  type: 'test'
+  ...
+# Subtest: renders facet-resolution through the shared capability harness
+ok 17 - renders facet-resolution through the shared capability harness
+  ---
+  duration_ms: 1264.761458
+  type: 'test'
+  ...
+# Subtest: renders polar-points through the shared capability harness
+ok 18 - renders polar-points through the shared capability harness
+  ---
+  duration_ms: 1488.057583
+  type: 'test'
+  ...
+# Subtest: renders program-composition-layouts through the shared capability harness
+ok 19 - renders program-composition-layouts through the shared capability harness
+  ---
+  duration_ms: 1264.462375
+  type: 'test'
+  ...
+# Subtest: color-controls browser-safe SVG preserves every concrete rectangle and fill
+ok 20 - color-controls browser-safe SVG preserves every concrete rectangle and fill
+  ---
+  duration_ms: 2173.937541
+  type: 'test'
+  ...
+# Subtest: color-white-point browser-safe SVG preserves every concrete rectangle and fill
+ok 21 - color-white-point browser-safe SVG preserves every concrete rectangle and fill
+  ---
+  duration_ms: 1785.686875
+  type: 'test'
+  ...
+# Subtest: browser Canvas and SVG paint all three-channel legend samples without changing source marks
+ok 22 - browser Canvas and SVG paint all three-channel legend samples without changing source marks
+  ---
+  duration_ms: 1327.647959
+  type: 'test'
+  ...
+# Subtest: shared numeric samples match literal Canvas and SVG on DOM and Offscreen surfaces
+ok 23 - shared numeric samples match literal Canvas and SVG on DOM and Offscreen surfaces
+  ---
+  duration_ms: 2534.213291
+  type: 'test'
+  ...
+# Subtest: canonical continuous-area-color browser Canvas and SVG preserve the independent literal scene
+ok 24 - canonical continuous-area-color browser Canvas and SVG preserve the independent literal scene
+  ---
+  duration_ms: 1839.700917
+  type: 'test'
+  ...
+# Subtest: browser Canvas renders directional named glyphs like independent polygon primitives
+ok 25 - browser Canvas renders directional named glyphs like independent polygon primitives
+  ---
+  duration_ms: 1034.93825
+  type: 'test'
+  ...
+# Subtest: chromium preserves exact scalar and equal-pair SVG and PNG in both browser backends at DPR 1
+ok 26 - chromium preserves exact scalar and equal-pair SVG and PNG in both browser backends at DPR 1
+  ---
+  duration_ms: 7141.606791
+  type: 'test'
+  ...
+# Subtest: chromium fits asymmetric plot tracks, headers and outer guides inside the logical frame at DPR 1
+ok 27 - chromium fits asymmetric plot tracks, headers and outer guides inside the logical frame at DPR 1
+  ---
+  duration_ms: 1252.735917
+  type: 'test'
+  ...
+# Subtest: chromium preserves exact scalar and equal-pair SVG and PNG in both browser backends at DPR 2
+ok 28 - chromium preserves exact scalar and equal-pair SVG and PNG in both browser backends at DPR 2
+  ---
+  duration_ms: 1501.74475
+  type: 'test'
+  ...
+# Subtest: chromium fits asymmetric plot tracks, headers and outer guides inside the logical frame at DPR 2
+ok 29 - chromium fits asymmetric plot tracks, headers and outer guides inside the logical frame at DPR 2
+  ---
+  duration_ms: 1110.337208
+  type: 'test'
+  ...
+# Subtest: chromium matches explicit content-header geometry in Canvas and SVG at DPR 1
+ok 30 - chromium matches explicit content-header geometry in Canvas and SVG at DPR 1
+  ---
+  duration_ms: 6807.045
+  type: 'test'
+  ...
+# Subtest: chromium matches explicit content-header geometry in Canvas and SVG at DPR 2
+ok 31 - chromium matches explicit content-header geometry in Canvas and SVG at DPR 2
+  ---
+  duration_ms: 1249.019583
+  type: 'test'
+  ...
+# Subtest: chromium independently packed content matches literal plot origins at DPR 1
+ok 32 - chromium independently packed content matches literal plot origins at DPR 1
+  ---
+  duration_ms: 1494.613667
+  type: 'test'
+  ...
+# Subtest: chromium independently packed content matches literal plot origins at DPR 2
+ok 33 - chromium independently packed content matches literal plot origins at DPR 2
+  ---
+  duration_ms: 1417.327375
+  type: 'test'
+  ...
+# Subtest: chromium matches shared top lane primitive in installed Canvas and SVG at DPR 1
+ok 34 - chromium matches shared top lane primitive in installed Canvas and SVG at DPR 1
+  ---
+  duration_ms: 7652.556791
+  type: 'test'
+  ...
+# Subtest: chromium matches shared top lane primitive in installed Canvas and SVG at DPR 2
+ok 35 - chromium matches shared top lane primitive in installed Canvas and SVG at DPR 2
+  ---
+  duration_ms: 1586.658708
+  type: 'test'
+  ...
+# Subtest: chromium matches blank header primitive in installed Canvas and SVG at DPR 1
+ok 36 - chromium matches blank header primitive in installed Canvas and SVG at DPR 1
+  ---
+  duration_ms: 1437.754209
+  type: 'test'
+  ...
+# Subtest: chromium matches blank header primitive in installed Canvas and SVG at DPR 2
+ok 37 - chromium matches blank header primitive in installed Canvas and SVG at DPR 2
+  ---
+  duration_ms: 1328.075291
+  type: 'test'
+  ...
+# Subtest: browser gradient strips preserve independent orientation and dimensions at every edge
+ok 38 - browser gradient strips preserve independent orientation and dimensions at every edge
+  ---
+  duration_ms: 1270.780875
+  type: 'test'
+  ...
+# Subtest: legend-layout gradient has exact browser Canvas and SVG primitive output
+ok 39 - legend-layout gradient has exact browser Canvas and SVG primitive output
+  ---
+  duration_ms: 2334.09125
+  type: 'test'
+  ...
+# Subtest: legend-recipe-opacity 0 has exact browser Canvas and SVG primitive output
+ok 40 - legend-recipe-opacity 0 has exact browser Canvas and SVG primitive output
+  ---
+  duration_ms: 1449.9405
+  type: 'test'
+  ...
+# Subtest: legend-recipe-opacity 0.7 has exact browser Canvas and SVG primitive output
+ok 41 - legend-recipe-opacity 0.7 has exact browser Canvas and SVG primitive output
+  ---
+  duration_ms: 1392.525584
+  type: 'test'
+  ...
+# Subtest: legend-recipe-opacity 1 has exact browser Canvas and SVG primitive output
+ok 42 - legend-recipe-opacity 1 has exact browser Canvas and SVG primitive output
+  ---
+  duration_ms: 1906.245834
+  type: 'test'
+  ...
+# Subtest: browser dashed legend frame has one continuous four-side dash phase
+ok 43 - browser dashed legend frame has one continuous four-side dash phase
+  ---
+  duration_ms: 1149.996916
+  type: 'test'
+  ...
+# Subtest: sample windows preserve full circles and clip fill and stroke with exact browser pixels
+ok 44 - sample windows preserve full circles and clip fill and stroke with exact browser pixels
+  ---
+  duration_ms: 1157.092208
+  type: 'test'
+  ...
+# Subtest: Browser Canvas and SVG use the same top-title alignment without viewing pixels
+ok 45 - Browser Canvas and SVG use the same top-title alignment without viewing pixels
+  ---
+  duration_ms: 1810.713708
+  type: 'test'
+  ...
+# Subtest: direct line gaps agree in browser Canvas and independently inspected SVG geometry
+ok 46 - direct line gaps agree in browser Canvas and independently inspected SVG geometry
+  ---
+  duration_ms: 1946.181625
+  type: 'test'
+  ...
+# Subtest: Browser Canvas and SVG render two separately positioned lines
+ok 47 - Browser Canvas and SVG render two separately positioned lines
+  ---
+  duration_ms: 2082.522917
+  type: 'test'
+  ...
+# Subtest: canonical named-shapes browser Canvas and SVG preserve the independent literal scene
+ok 48 - canonical named-shapes browser Canvas and SVG preserve the independent literal scene
+  ---
+  duration_ms: 1699.860583
+  type: 'test'
+  ...
+# Subtest: browser Canvas and SVG interpret none as no paint across filled primitives and lines
+ok 49 - browser Canvas and SVG interpret none as no paint across filled primitives and lines
+  ---
+  duration_ms: 922.885792
+  type: 'test'
+  ...
+# Subtest: browser normal opacity matches bounded independent sources in DOM and Offscreen Canvas
+ok 50 - browser normal opacity matches bounded independent sources in DOM and Offscreen Canvas
+  ---
+  duration_ms: 1460.3385
+  type: 'test'
+  ...
+# Subtest: browser SVG normal opacity remains one whole element with independent literal pixels
+ok 51 - browser SVG normal opacity remains one whole element with independent literal pixels
+  ---
+  duration_ms: 972.526
+  type: 'test'
+  ...
+# Subtest: imports and renders the packed browser entries
+    # Subtest: packed browser result inventory
+    ok 1 - packed browser result inventory
+      ---
+      duration_ms: 1.061417
+      type: 'test'
+      ...
+    # Subtest: packed browser theme
+    ok 2 - packed browser theme
+      ---
+      duration_ms: 0.237625
+      type: 'test'
+      ...
+    # Subtest: packed browser fitting
+    ok 3 - packed browser fitting
+      ---
+      duration_ms: 0.082
+      type: 'test'
+      ...
+    # Subtest: packed browser sourceTextDomain
+    ok 4 - packed browser sourceTextDomain
+      ---
+      duration_ms: 0.047416
+      type: 'test'
+      ...
+    # Subtest: packed browser sourceTextPositions
+    ok 5 - packed browser sourceTextPositions
+      ---
+      duration_ms: 0.03025
+      type: 'test'
+      ...
+    # Subtest: packed browser sourceTextSVG
+    ok 6 - packed browser sourceTextSVG
+      ---
+      duration_ms: 0.104958
+      type: 'test'
+      ...
+    # Subtest: packed browser textDatum
+    ok 7 - packed browser textDatum
+      ---
+      duration_ms: 0.116125
+      type: 'test'
+      ...
+    # Subtest: packed browser annotation
+    ok 8 - packed browser annotation
+      ---
+      duration_ms: 0.306667
+      type: 'test'
+      ...
+    # Subtest: packed browser explicitRotations
+    ok 9 - packed browser explicitRotations
+      ---
+      duration_ms: 0.275792
+      type: 'test'
+      ...
+    # Subtest: packed browser referenceFacades
+    ok 10 - packed browser referenceFacades
+      ---
+      duration_ms: 0.134042
+      type: 'test'
+      ...
+    # Subtest: packed browser temporalRectCount
+    ok 11 - packed browser temporalRectCount
+      ---
+      duration_ms: 0.068125
+      type: 'test'
+      ...
+    # Subtest: packed browser referenceRect
+    ok 12 - packed browser referenceRect
+      ---
+      duration_ms: 0.044166
+      type: 'test'
+      ...
+    # Subtest: packed browser referenceRectSVG
+    ok 13 - packed browser referenceRectSVG
+      ---
+      duration_ms: 0.03475
+      type: 'test'
+      ...
+    # Subtest: packed browser semanticTexts
+    ok 14 - packed browser semanticTexts
+      ---
+      duration_ms: 0.034
+      type: 'test'
+      ...
+    # Subtest: packed browser semanticTextSVG
+    ok 15 - packed browser semanticTextSVG
+      ---
+      duration_ms: 0.032083
+      type: 'test'
+      ...
+    # Subtest: packed browser semanticFiltered
+    ok 16 - packed browser semanticFiltered
+      ---
+      duration_ms: 0.030708
+      type: 'test'
+      ...
+    # Subtest: packed browser semanticSelected
+    ok 17 - packed browser semanticSelected
+      ---
+      duration_ms: 0.032167
+      type: 'test'
+      ...
+    # Subtest: packed browser semanticPlacement
+    ok 18 - packed browser semanticPlacement
+      ---
+      duration_ms: 0.029959
+      type: 'test'
+      ...
+    # Subtest: packed browser semanticLabelsRemoved
+    ok 19 - packed browser semanticLabelsRemoved
+      ---
+      duration_ms: 0.030875
+      type: 'test'
+      ...
+    # Subtest: packed browser commonFormats
+    ok 20 - packed browser commonFormats
+      ---
+      duration_ms: 0.034125
+      type: 'test'
+      ...
+    # Subtest: packed browser intervalPosition
+    ok 21 - packed browser intervalPosition
+      ---
+      duration_ms: 0.027708
+      type: 'test'
+      ...
+    # Subtest: packed browser intervalColumns
+    ok 22 - packed browser intervalColumns
+      ---
+      duration_ms: 0.074083
+      type: 'test'
+      ...
+    # Subtest: packed browser intervalSVG
+    ok 23 - packed browser intervalSVG
+      ---
+      duration_ms: 0.026334
+      type: 'test'
+      ...
+    # Subtest: packed browser addedRecipeTypes
+    ok 24 - packed browser addedRecipeTypes
+      ---
+      duration_ms: 0.019917
+      type: 'test'
+      ...
+    # Subtest: packed browser removedRecipeTypes
+    ok 25 - packed browser removedRecipeTypes
+      ---
+      duration_ms: 0.095583
+      type: 'test'
+      ...
+    # Subtest: packed browser replaySVG
+    ok 26 - packed browser replaySVG
+      ---
+      duration_ms: 0.01775
+      type: 'test'
+      ...
+    # Subtest: packed browser editedKinds
+    ok 27 - packed browser editedKinds
+      ---
+      duration_ms: 0.015291
+      type: 'test'
+      ...
+    # Subtest: packed browser editedSizeFill
+    ok 28 - packed browser editedSizeFill
+      ---
+      duration_ms: 0.012875
+      type: 'test'
+      ...
+    # Subtest: packed browser editedSizeWeight
+    ok 29 - packed browser editedSizeWeight
+      ---
+      duration_ms: 0.012417
+      type: 'test'
+      ...
+    # Subtest: packed browser editedSVG
+    ok 30 - packed browser editedSVG
+      ---
+      duration_ms: 0.011083
+      type: 'test'
+      ...
+    # Subtest: packed browser partialChannels
+    ok 31 - packed browser partialChannels
+      ---
+      duration_ms: 0.013
+      type: 'test'
+      ...
+    # Subtest: packed browser partialTitleHidden
+    ok 32 - packed browser partialTitleHidden
+      ---
+      duration_ms: 0.012958
+      type: 'test'
+      ...
+    # Subtest: packed browser encodingTitleHidden
+    ok 33 - packed browser encodingTitleHidden
+      ---
+      duration_ms: 0.012625
+      type: 'test'
+      ...
+    # Subtest: packed browser partialSizeCount
+    ok 34 - packed browser partialSizeCount
+      ---
+      duration_ms: 0.012292
+      type: 'test'
+      ...
+    # Subtest: packed browser partialSVG
+    ok 35 - packed browser partialSVG
+      ---
+      duration_ms: 0.012333
+      type: 'test'
+      ...
+    # Subtest: packed browser inferredColorType
+    ok 36 - packed browser inferredColorType
+      ---
+      duration_ms: 0.013083
+      type: 'test'
+      ...
+    # Subtest: packed browser inferredShapeType
+    ok 37 - packed browser inferredShapeType
+      ---
+      duration_ms: 0.012292
+      type: 'test'
+      ...
+    # Subtest: packed browser inferredSizeParity
+    ok 38 - packed browser inferredSizeParity
+      ---
+      duration_ms: 0.011833
+      type: 'test'
+      ...
+    # Subtest: packed browser inferredSizeSVG
+    ok 39 - packed browser inferredSizeSVG
+      ---
+      duration_ms: 0.012792
+      type: 'test'
+      ...
+    # Subtest: packed browser onlyColorKinds
+    ok 40 - packed browser onlyColorKinds
+      ---
+      duration_ms: 0.095125
+      type: 'test'
+      ...
+    # Subtest: packed browser onlyColorSymbol
+    ok 41 - packed browser onlyColorSymbol
+      ---
+      duration_ms: 0.061166
+      type: 'test'
+      ...
+    # Subtest: packed browser combinedContentKinds
+    ok 42 - packed browser combinedContentKinds
+      ---
+      duration_ms: 0.042708
+      type: 'test'
+      ...
+    # Subtest: packed browser combinedContentCount
+    ok 43 - packed browser combinedContentCount
+      ---
+      duration_ms: 0.032584
+      type: 'test'
+      ...
+    # Subtest: packed browser combinedPosition
+    ok 44 - packed browser combinedPosition
+      ---
+      duration_ms: 0.036542
+      type: 'test'
+      ...
+    # Subtest: packed browser combinedSizeTitleColors
+    ok 45 - packed browser combinedSizeTitleColors
+      ---
+      duration_ms: 0.06325
+      type: 'test'
+      ...
+    # Subtest: packed browser guideRejects
+    ok 46 - packed browser guideRejects
+      ---
+      duration_ms: 0.033708
+      type: 'test'
+      ...
+    # Subtest: packed browser guideOrder
+    ok 47 - packed browser guideOrder
+      ---
+      duration_ms: 0.140417
+      type: 'test'
+      ...
+    # Subtest: packed browser transitionEdges
+    ok 48 - packed browser transitionEdges
+      ---
+      duration_ms: 0.103125
+      type: 'test'
+      ...
+    # Subtest: packed browser hiddenCategorical
+    ok 49 - packed browser hiddenCategorical
+      ---
+      duration_ms: 0.096083
+      type: 'test'
+      ...
+    # Subtest: packed browser occupiedAlignment
+    ok 50 - packed browser occupiedAlignment
+      ---
+      duration_ms: 0.121292
+      type: 'test'
+      ...
+    # Subtest: packed browser itemStrokeGaps
+    ok 51 - packed browser itemStrokeGaps
+      ---
+      duration_ms: 0.176042
+      type: 'test'
+      ...
+    # Subtest: packed browser categoricalSideOptions
+    ok 52 - packed browser categoricalSideOptions
+      ---
+      duration_ms: 0.036458
+      type: 'test'
+      ...
+    # Subtest: packed browser categoricalSampleGaps
+    ok 53 - packed browser categoricalSampleGaps
+      ---
+      duration_ms: 0.0255
+      type: 'test'
+      ...
+    # Subtest: packed browser opacitySampleGaps
+    ok 54 - packed browser opacitySampleGaps
+      ---
+      duration_ms: 0.029209
+      type: 'test'
+      ...
+    # Subtest: packed browser ignoredOptionRejects
+    ok 55 - packed browser ignoredOptionRejects
+      ---
+      duration_ms: 0.018458
+      type: 'test'
+      ...
+    # Subtest: packed browser gradientTitleParity
+    ok 56 - packed browser gradientTitleParity
+      ---
+      duration_ms: 0.017
+      type: 'test'
+      ...
+    # Subtest: packed browser combinedSVG
+    ok 57 - packed browser combinedSVG
+      ---
+      duration_ms: 0.0135
+      type: 'test'
+      ...
+    # Subtest: packed browser combinedTitlesAligned
+    ok 58 - packed browser combinedTitlesAligned
+      ---
+      duration_ms: 0.013209
+      type: 'test'
+      ...
+    # Subtest: packed browser combinedContentSVG
+    ok 59 - packed browser combinedContentSVG
+      ---
+      duration_ms: 0.0125
+      type: 'test'
+      ...
+    # Subtest: packed browser legacyBottomYs
+    ok 60 - packed browser legacyBottomYs
+      ---
+      duration_ms: 0.013375
+      type: 'test'
+      ...
+    # Subtest: packed browser edgeBottomYs
+    ok 61 - packed browser edgeBottomYs
+      ---
+      duration_ms: 0.013292
+      type: 'test'
+      ...
+    # Subtest: packed browser bottomLegendSVG
+    ok 62 - packed browser bottomLegendSVG
+      ---
+      duration_ms: 0.012583
+      type: 'test'
+      ...
+    # Subtest: packed browser shapeLegendChannels
+    ok 63 - packed browser shapeLegendChannels
+      ---
+      duration_ms: 0.013375
+      type: 'test'
+      ...
+    # Subtest: packed browser shapeLegendItems
+    ok 64 - packed browser shapeLegendItems
+      ---
+      duration_ms: 0.01225
+      type: 'test'
+      ...
+    # Subtest: packed browser shapeLegendSVG
+    ok 65 - packed browser shapeLegendSVG
+      ---
+      duration_ms: 0.012625
+      type: 'test'
+      ...
+    # Subtest: packed browser sizeLegendPosition
+    ok 66 - packed browser sizeLegendPosition
+      ---
+      duration_ms: 0.012417
+      type: 'test'
+      ...
+    # Subtest: packed browser sizeLegendSVG
+    ok 67 - packed browser sizeLegendSVG
+      ---
+      duration_ms: 0.011959
+      type: 'test'
+      ...
+    # Subtest: packed browser sizeLegendRadii
+    ok 68 - packed browser sizeLegendRadii
+      ---
+      duration_ms: 0.01325
+      type: 'test'
+      ...
+    # Subtest: packed browser sizeLegendTitle
+    ok 69 - packed browser sizeLegendTitle
+      ---
+      duration_ms: 0.012791
+      type: 'test'
+      ...
+    # Subtest: packed browser hiddenSizeTitle
+    ok 70 - packed browser hiddenSizeTitle
+      ---
+      duration_ms: 0.012417
+      type: 'test'
+      ...
+    # Subtest: packed browser restoredSizeTitle
+    ok 71 - packed browser restoredSizeTitle
+      ---
+      duration_ms: 0.014
+      type: 'test'
+      ...
+    # Subtest: packed browser polarCanvas
+    ok 72 - packed browser polarCanvas
+      ---
+      duration_ms: 0.013542
+      type: 'test'
+      ...
+    # Subtest: packed browser polarRemovedTitle
+    ok 73 - packed browser polarRemovedTitle
+      ---
+      duration_ms: 0.012958
+      type: 'test'
+      ...
+    # Subtest: packed browser parallelTitles
+    ok 74 - packed browser parallelTitles
+      ---
+      duration_ms: 0.01425
+      type: 'test'
+      ...
+    # Subtest: packed browser parallelFirstLabel
+    ok 75 - packed browser parallelFirstLabel
+      ---
+      duration_ms: 0.0125
+      type: 'test'
+      ...
+    # Subtest: packed browser parallelStyledTitle
+    ok 76 - packed browser parallelStyledTitle
+      ---
+      duration_ms: 0.011584
+      type: 'test'
+      ...
+    # Subtest: packed browser parallelStyledWidth
+    ok 77 - packed browser parallelStyledWidth
+      ---
+      duration_ms: 0.011375
+      type: 'test'
+      ...
+    # Subtest: packed browser parallelStyledSVG
+    ok 78 - packed browser parallelStyledSVG
+      ---
+      duration_ms: 0.012208
+      type: 'test'
+      ...
+    # Subtest: packed browser polarRemovedAxis
+    ok 79 - packed browser polarRemovedAxis
+      ---
+      duration_ms: 0.011416
+      type: 'test'
+      ...
+    # Subtest: packed browser polarTitleY
+    ok 80 - packed browser polarTitleY
+      ---
+      duration_ms: 0.011667
+      type: 'test'
+      ...
+    # Subtest: packed browser polarSharedAngle
+    ok 81 - packed browser polarSharedAngle
+      ---
+      duration_ms: 0.011291
+      type: 'test'
+      ...
+    # Subtest: packed browser polarSVGTitle
+    ok 82 - packed browser polarSVGTitle
+      ---
+      duration_ms: 0.129458
+      type: 'test'
+      ...
+    # Subtest: packed browser weightedHistogram
+    ok 83 - packed browser weightedHistogram
+      ---
+      duration_ms: 0.07875
+      type: 'test'
+      ...
+    # Subtest: packed browser width
+    ok 84 - packed browser width
+      ---
+      duration_ms: 0.032541
+      type: 'test'
+      ...
+    # Subtest: packed browser height
+    ok 85 - packed browser height
+      ---
+      duration_ms: 0.027083
+      type: 'test'
+      ...
+    # Subtest: packed browser points
+    ok 86 - packed browser points
+      ---
+      duration_ms: 0.0465
+      type: 'test'
+      ...
+    # Subtest: packed browser radii
+    ok 87 - packed browser radii
+      ---
+      duration_ms: 0.032583
+      type: 'test'
+      ...
+    # Subtest: packed browser fills
+    ok 88 - packed browser fills
+      ---
+      duration_ms: 0.030542
+      type: 'test'
+      ...
+    # Subtest: packed browser strokeWidths
+    ok 89 - packed browser strokeWidths
+      ---
+      duration_ms: 0.030542
+      type: 'test'
+      ...
+    # Subtest: packed browser removedChannels
+    ok 90 - packed browser removedChannels
+      ---
+      duration_ms: 0.063584
+      type: 'test'
+      ...
+    # Subtest: packed browser selectionRemoved
+    ok 91 - packed browser selectionRemoved
+      ---
+      duration_ms: 0.051083
+      type: 'test'
+      ...
+    # Subtest: packed browser legendCanvas
+    ok 92 - packed browser legendCanvas
+      ---
+      duration_ms: 0.033292
+      type: 'test'
+      ...
+    # Subtest: packed browser widthLegendPosition
+    ok 93 - packed browser widthLegendPosition
+      ---
+      duration_ms: 0.016333
+      type: 'test'
+      ...
+    # Subtest: packed browser widthLegendSVG
+    ok 94 - packed browser widthLegendSVG
+      ---
+      duration_ms: 0.016042
+      type: 'test'
+      ...
+    # Subtest: packed browser legendCount
+    ok 95 - packed browser legendCount
+      ---
+      duration_ms: 0.044625
+      type: 'test'
+      ...
+    # Subtest: packed browser legendTitle
+    ok 96 - packed browser legendTitle
+      ---
+      duration_ms: 0.012792
+      type: 'test'
+      ...
+    # Subtest: packed browser legendLabelColor
+    ok 97 - packed browser legendLabelColor
+      ---
+      duration_ms: 0.257
+      type: 'test'
+      ...
+    # Subtest: packed browser exactLegendValues
+    ok 98 - packed browser exactLegendValues
+      ---
+      duration_ms: 0.053334
+      type: 'test'
+      ...
+    # Subtest: packed browser exactLegendLabels
+    ok 99 - packed browser exactLegendLabels
+      ---
+      duration_ms: 0.075084
+      type: 'test'
+      ...
+    # Subtest: packed browser exactLegendWidths
+    ok 100 - packed browser exactLegendWidths
+      ---
+      duration_ms: 0.056542
+      type: 'test'
+      ...
+    # Subtest: packed browser restoredLegendCount
+    ok 101 - packed browser restoredLegendCount
+      ---
+      duration_ms: 0.031833
+      type: 'test'
+      ...
+    # Subtest: packed browser selectiveLegendRemoved
+    ok 102 - packed browser selectiveLegendRemoved
+      ---
+      duration_ms: 0.0695
+      type: 'test'
+      ...
+    # Subtest: packed browser axisCanvas
+    ok 103 - packed browser axisCanvas
+      ---
+      duration_ms: 0.042417
+      type: 'test'
+      ...
+    # Subtest: packed browser axisComponentsRemoved
+    ok 104 - packed browser axisComponentsRemoved
+      ---
+      duration_ms: 0.052417
+      type: 'test'
+      ...
+    # Subtest: packed browser axisComponentsRetained
+    ok 105 - packed browser axisComponentsRetained
+      ---
+      duration_ms: 0.059917
+      type: 'test'
+      ...
+    # Subtest: packed browser bin2dCanvas
+    ok 106 - packed browser bin2dCanvas
+      ---
+      duration_ms: 0.040083
+      type: 'test'
+      ...
+    # Subtest: packed browser bin2dRevision
+    ok 107 - packed browser bin2dRevision
+      ---
+      duration_ms: 0.030792
+      type: 'test'
+      ...
+    # Subtest: packed browser bin2dItems
+    ok 108 - packed browser bin2dItems
+      ---
+      duration_ms: 0.031166
+      type: 'test'
+      ...
+    # Subtest: packed browser bin2dRebound
+    ok 109 - packed browser bin2dRebound
+      ---
+      duration_ms: 0.028541
+      type: 'test'
+      ...
+    # Subtest: packed browser basicCanvas
+    ok 110 - packed browser basicCanvas
+      ---
+      duration_ms: 0.031
+      type: 'test'
+      ...
+    # Subtest: packed browser basicPoints
+    ok 111 - packed browser basicPoints
+      ---
+      duration_ms: 0.030083
+      type: 'test'
+      ...
+    # Subtest: packed browser basicExcludesRegression
+    ok 112 - packed browser basicExcludesRegression
+      ---
+      duration_ms: 0.027875
+      type: 'test'
+      ...
+    # Subtest: packed browser svgViewBox
+    ok 113 - packed browser svgViewBox
+      ---
+      duration_ms: 0.028083
+      type: 'test'
+      ...
+    # Subtest: packed browser svgTitle
+    ok 114 - packed browser svgTitle
+      ---
+      duration_ms: 0.02675
+      type: 'test'
+      ...
+    # Subtest: packed browser svgDescription
+    ok 115 - packed browser svgDescription
+      ---
+      duration_ms: 0.027292
+      type: 'test'
+      ...
+    # Subtest: packed browser svgPoints
+    ok 116 - packed browser svgPoints
+      ---
+      duration_ms: 0.070542
+      type: 'test'
+      ...
+    # Subtest: packed browser svgResourceIds
+    ok 117 - packed browser svgResourceIds
+      ---
+      duration_ms: 0.095333
+      type: 'test'
+      ...
+    # Subtest: packed browser svgResourceReferences
+    ok 118 - packed browser svgResourceReferences
+      ---
+      duration_ms: 0.041208
+      type: 'test'
+      ...
+    # Subtest: packed browser svgResourceTargets
+    ok 119 - packed browser svgResourceTargets
+      ---
+      duration_ms: 0.032791
+      type: 'test'
+      ...
+    1..119
+ok 52 - imports and renders the packed browser entries
+  ---
+  duration_ms: 7752.626625
+  type: 'test'
+  ...
+# Subtest: Full plot borders preserve actual SVG outer edges and Canvas dimensions
+ok 53 - Full plot borders preserve actual SVG outer edges and Canvas dimensions
+  ---
+  duration_ms: 1727.364708
+  type: 'test'
+  ...
+# Subtest: Basic plot borders preserve actual SVG outer edges and Canvas dimensions
+ok 54 - Basic plot borders preserve actual SVG outer edges and Canvas dimensions
+  ---
+  duration_ms: 1127.795042
+  type: 'test'
+  ...
+# Subtest: chromium preserves literal underlay pixels and opaque difference arithmetic at DPR 1
+ok 55 - chromium preserves literal underlay pixels and opaque difference arithmetic at DPR 1
+  ---
+  duration_ms: 7914.919834
+  type: 'test'
+  ...
+# Subtest: chromium preserves literal underlay pixels and opaque difference arithmetic at DPR 2
+ok 56 - chromium preserves literal underlay pixels and opaque difference arithmetic at DPR 2
+  ---
+  duration_ms: 1176.102125
+  type: 'test'
+  ...
+# Subtest: renders bootstrap-mean-ci at its logical Canvas size
+ok 57 - renders bootstrap-mean-ci at its logical Canvas size
+  ---
+  duration_ms: 1651.62675
+  type: 'test'
+  ...
+# Subtest: renders continuous-area-color at its logical Canvas size
+ok 58 - renders continuous-area-color at its logical Canvas size
+  ---
+  duration_ms: 1352.462625
+  type: 'test'
+  ...
+# Subtest: renders shared-adjacent at its logical Canvas size
+ok 59 - renders shared-adjacent at its logical Canvas size
+  ---
+  duration_ms: 1102.681458
+  type: 'test'
+  ...
+# Subtest: renders linked-overlay at its logical Canvas size
+ok 60 - renders linked-overlay at its logical Canvas size
+  ---
+  duration_ms: 1254.300041
+  type: 'test'
+  ...
+# Subtest: renders named-shapes at its logical Canvas size
+ok 61 - renders named-shapes at its logical Canvas size
+  ---
+  duration_ms: 1407.475833
+  type: 'test'
+  ...
+# Subtest: renders axis-owners at its logical Canvas size
+ok 62 - renders axis-owners at its logical Canvas size
+  ---
+  duration_ms: 1249.002958
+  type: 'test'
+  ...
+# Subtest: renders shared-facet-owner at its logical Canvas size
+ok 63 - renders shared-facet-owner at its logical Canvas size
+  ---
+  duration_ms: 1247.502667
+  type: 'test'
+  ...
+# Subtest: renders color-controls at its logical Canvas size
+ok 64 - renders color-controls at its logical Canvas size
+  ---
+  duration_ms: 1116.057541
+  type: 'test'
+  ...
+# Subtest: renders color-white-point at its logical Canvas size
+ok 65 - renders color-white-point at its logical Canvas size
+  ---
+  duration_ms: 1293.156625
+  type: 'test'
+  ...
+# Subtest: renders bar-compositing at its logical Canvas size
+ok 66 - renders bar-compositing at its logical Canvas size
+  ---
+  duration_ms: 1192.58275
+  type: 'test'
+  ...
+# Subtest: renders cars-origin-histogram-facet at its logical Canvas size
+ok 67 - renders cars-origin-histogram-facet at its logical Canvas size
+  ---
+  duration_ms: 1075.58275
+  type: 'test'
+  ...
+# Subtest: renders cars-weighted-rules at its logical Canvas size
+ok 68 - renders cars-weighted-rules at its logical Canvas size
+  ---
+  duration_ms: 1231.308667
+  type: 'test'
+  ...
+# Subtest: renders raincloud-plot at its logical Canvas size
+ok 69 - renders raincloud-plot at its logical Canvas size
+  ---
+  duration_ms: 1042.465166
+  type: 'test'
+  ...
+# Subtest: renders beeswarm-plot at its logical Canvas size
+ok 70 - renders beeswarm-plot at its logical Canvas size
+  ---
+  duration_ms: 1080.405208
+  type: 'test'
+  ...
+# Subtest: renders dot-plot at its logical Canvas size
+ok 71 - renders dot-plot at its logical Canvas size
+  ---
+  duration_ms: 845.785542
+  type: 'test'
+  ...
+# Subtest: renders lollipop-plot at its logical Canvas size
+ok 72 - renders lollipop-plot at its logical Canvas size
+  ---
+  duration_ms: 862.09825
+  type: 'test'
+  ...
+# Subtest: renders dumbbell-plot at its logical Canvas size
+ok 73 - renders dumbbell-plot at its logical Canvas size
+  ---
+  duration_ms: 947.599542
+  type: 'test'
+  ...
+# Subtest: renders ecdf-plot at its logical Canvas size
+ok 74 - renders ecdf-plot at its logical Canvas size
+  ---
+  duration_ms: 1016.4095
+  type: 'test'
+  ...
+# Subtest: renders color-transitions at its logical Canvas size
+ok 75 - renders color-transitions at its logical Canvas size
+  ---
+  duration_ms: 1118.991417
+  type: 'test'
+  ...
+# Subtest: renders color-midpoint at its logical Canvas size
+ok 76 - renders color-midpoint at its logical Canvas size
+  ---
+  duration_ms: 967.818791
+  type: 'test'
+  ...
+# Subtest: renders radial-sectors at its logical Canvas size
+ok 77 - renders radial-sectors at its logical Canvas size
+  ---
+  duration_ms: 883.133208
+  type: 'test'
+  ...
+# Subtest: renders theta-legend-order at its logical Canvas size
+ok 78 - renders theta-legend-order at its logical Canvas size
+  ---
+  duration_ms: 917.379708
+  type: 'test'
+  ...
+# Subtest: renders combined-legends at its logical Canvas size
+ok 79 - renders combined-legends at its logical Canvas size
+  ---
+  duration_ms: 940.382708
+  type: 'test'
+  ...
+# Subtest: renders legend-layout at its logical Canvas size
+ok 80 - renders legend-layout at its logical Canvas size
+  ---
+  duration_ms: 880.310709
+  type: 'test'
+  ...
+# Subtest: renders legend-recipe-opacity at its logical Canvas size
+ok 81 - renders legend-recipe-opacity at its logical Canvas size
+  ---
+  duration_ms: 875.979625
+  type: 'test'
+  ...
+# Subtest: renders legend-appearance at its logical Canvas size
+ok 82 - renders legend-appearance at its logical Canvas size
+  ---
+  duration_ms: 1049.600666
+  type: 'test'
+  ...
+# Subtest: renders legend-content-spacing at its logical Canvas size
+ok 83 - renders legend-content-spacing at its logical Canvas size
+  ---
+  duration_ms: 911.925792
+  type: 'test'
+  ...
+# Subtest: renders plot-guide-underlays at its logical Canvas size
+ok 84 - renders plot-guide-underlays at its logical Canvas size
+  ---
+  duration_ms: 917.7515
+  type: 'test'
+  ...
+# Subtest: renders facet-shared-top-lane at its logical Canvas size
+ok 85 - renders facet-shared-top-lane at its logical Canvas size
+  ---
+  duration_ms: 909.889875
+  type: 'test'
+  ...
+# Subtest: renders symbol-window at its logical Canvas size
+ok 86 - renders symbol-window at its logical Canvas size
+  ---
+  duration_ms: 917.171041
+  type: 'test'
+  ...
+# Subtest: renders area-layout at its logical Canvas size
+ok 87 - renders area-layout at its logical Canvas size
+  ---
+  duration_ms: 1689.327667
+  type: 'test'
+  ...
+# Subtest: renders horizon-plot at its logical Canvas size
+ok 88 - renders horizon-plot at its logical Canvas size
+  ---
+  duration_ms: 1444.738833
+  type: 'test'
+  ...
+# Subtest: renders density-plot at its logical Canvas size
+ok 89 - renders density-plot at its logical Canvas size
+  ---
+  duration_ms: 1738.874833
+  type: 'test'
+  ...
+# Subtest: renders pie-plot at its logical Canvas size
+ok 90 - renders pie-plot at its logical Canvas size
+  ---
+  duration_ms: 2877.481458
+  type: 'test'
+  ...
+# Subtest: renders temporal-input at its logical Canvas size
+ok 91 - renders temporal-input at its logical Canvas size
+  ---
+  duration_ms: 1561.058666
+  type: 'test'
+  ...
+# Subtest: renders series-identity at its logical Canvas size
+ok 92 - renders series-identity at its logical Canvas size
+  ---
+  duration_ms: 1958.339083
+  type: 'test'
+  ...
+# Subtest: renders centered-area-stream at its logical Canvas size
+ok 93 - renders centered-area-stream at its logical Canvas size
+  ---
+  duration_ms: 1075.960333
+  type: 'test'
+  ...
+# Subtest: renders directional-tick-plot at its logical Canvas size
+ok 94 - renders directional-tick-plot at its logical Canvas size
+  ---
+  duration_ms: 1004.284375
+  type: 'test'
+  ...
+# Subtest: renders cars-binned-heatmap at its logical Canvas size
+ok 95 - renders cars-binned-heatmap at its logical Canvas size
+  ---
+  duration_ms: 1019.182917
+  type: 'test'
+  ...
+# Subtest: renders time-unit-data at its logical Canvas size
+ok 96 - renders time-unit-data at its logical Canvas size
+  ---
+  duration_ms: 1151.052875
+  type: 'test'
+  ...
+# Subtest: renders airline-passenger-moving-windows at its logical Canvas size
+ok 97 - renders airline-passenger-moving-windows at its logical Canvas size
+  ---
+  duration_ms: 1067.049792
+  type: 'test'
+  ...
+# Subtest: renders ordered-category-bar at its logical Canvas size
+ok 98 - renders ordered-category-bar at its logical Canvas size
+  ---
+  duration_ms: 1008.880125
+  type: 'test'
+  ...
+# Subtest: renders cars-window-rank-scatterplot at its logical Canvas size
+ok 99 - renders cars-window-rank-scatterplot at its logical Canvas size
+  ---
+  duration_ms: 925.464166
+  type: 'test'
+  ...
+# Subtest: renders cross-feature-dashboard at its logical Canvas size
+ok 100 - renders cross-feature-dashboard at its logical Canvas size
+  ---
+  duration_ms: 944.46875
+  type: 'test'
+  ...
+# Subtest: renders program-composition at its logical Canvas size
+ok 101 - renders program-composition at its logical Canvas size
+  ---
+  duration_ms: 911.056875
+  type: 'test'
+  ...
+# Subtest: renders facet-grid at its logical Canvas size
+ok 102 - renders facet-grid at its logical Canvas size
+  ---
+  duration_ms: 895.820708
+  type: 'test'
+  ...
+# Subtest: renders lookup-data at its logical Canvas size
+ok 103 - renders lookup-data at its logical Canvas size
+  ---
+  duration_ms: 913.56075
+  type: 'test'
+  ...
+# Subtest: renders linear-nice-count at its logical Canvas size
+ok 104 - renders linear-nice-count at its logical Canvas size
+  ---
+  duration_ms: 893.139167
+  type: 'test'
+  ...
+# Subtest: renders linear-nearest-ticks at its logical Canvas size
+ok 105 - renders linear-nearest-ticks at its logical Canvas size
+  ---
+  duration_ms: 930.487292
+  type: 'test'
+  ...
+# Subtest: renders facet-field-titles at its logical Canvas size
+ok 106 - renders facet-field-titles at its logical Canvas size
+  ---
+  duration_ms: 1105.180792
+  type: 'test'
+  ...
+# Subtest: renders facet-header-rotation at its logical Canvas size
+ok 107 - renders facet-header-rotation at its logical Canvas size
+  ---
+  duration_ms: 1008.414625
+  type: 'test'
+  ...
+# Subtest: renders repeat-charts at its logical Canvas size
+ok 108 - renders repeat-charts at its logical Canvas size
+  ---
+  duration_ms: 943.845834
+  type: 'test'
+  ...
+# Subtest: renders cars-origin-scatterplot-facet at its logical Canvas size
+ok 109 - renders cars-origin-scatterplot-facet at its logical Canvas size
+  ---
+  duration_ms: 994.867041
+  type: 'test'
+  ...
+# Subtest: renders cars-scatterplot at its logical Canvas size
+ok 110 - renders cars-scatterplot at its logical Canvas size
+  ---
+  duration_ms: 939.571125
+  type: 'test'
+  ...
+# Subtest: renders cars-parallel-coordinates at its logical Canvas size
+ok 111 - renders cars-parallel-coordinates at its logical Canvas size
+  ---
+  duration_ms: 951.485916
+  type: 'test'
+  ...
+# Subtest: renders cars-origin-jitter at its logical Canvas size
+ok 112 - renders cars-origin-jitter at its logical Canvas size
+  ---
+  duration_ms: 975.235417
+  type: 'test'
+  ...
+# Subtest: renders gapminder-cluster-jitter at its logical Canvas size
+ok 113 - renders gapminder-cluster-jitter at its logical Canvas size
+  ---
+  duration_ms: 979.642375
+  type: 'test'
+  ...
+# Subtest: renders annotated-imdb-scatterplot at its logical Canvas size
+ok 114 - renders annotated-imdb-scatterplot at its logical Canvas size
+  ---
+  duration_ms: 958.345167
+  type: 'test'
+  ...
+# Subtest: renders dark-theme-scatterplot at its logical Canvas size
+ok 115 - renders dark-theme-scatterplot at its logical Canvas size
+  ---
+  duration_ms: 955.396833
+  type: 'test'
+  ...
+# Subtest: renders fitted-long-labels at its logical Canvas size
+ok 116 - renders fitted-long-labels at its logical Canvas size
+  ---
+  duration_ms: 977.255167
+  type: 'test'
+  ...
+# Subtest: renders gapminder-life-expectancy-heatmap at its logical Canvas size
+ok 117 - renders gapminder-life-expectancy-heatmap at its logical Canvas size
+  ---
+  duration_ms: 914.386208
+  type: 'test'
+  ...
+# Subtest: renders gapminder-development-trajectories at its logical Canvas size
+ok 118 - renders gapminder-development-trajectories at its logical Canvas size
+  ---
+  duration_ms: 929.712584
+  type: 'test'
+  ...
+# Subtest: renders gapminder-country-labels at its logical Canvas size
+ok 119 - renders gapminder-country-labels at its logical Canvas size
+  ---
+  duration_ms: 951.353709
+  type: 'test'
+  ...
+# Subtest: renders cars-polar-scatterplot at its logical Canvas size
+ok 120 - renders cars-polar-scatterplot at its logical Canvas size
+  ---
+  duration_ms: 889.645917
+  type: 'test'
+  ...
+# Subtest: renders cars-polar-guides at its logical Canvas size
+ok 121 - renders cars-polar-guides at its logical Canvas size
+  ---
+  duration_ms: 963.28975
+  type: 'test'
+  ...
+# Subtest: renders gapminder-polar-trends at its logical Canvas size
+ok 122 - renders gapminder-polar-trends at its logical Canvas size
+  ---
+  duration_ms: 1761.138666
+  type: 'test'
+  ...
+# Subtest: renders jobs-radar-chart at its logical Canvas size
+ok 123 - renders jobs-radar-chart at its logical Canvas size
+  ---
+  duration_ms: 1052.122208
+  type: 'test'
+  ...
+# Subtest: renders cars-origin-donut at its logical Canvas size
+ok 124 - renders cars-origin-donut at its logical Canvas size
+  ---
+  duration_ms: 981.689333
+  type: 'test'
+  ...
+# Subtest: renders gapminder-population-donut at its logical Canvas size
+ok 125 - renders gapminder-population-donut at its logical Canvas size
+  ---
+  duration_ms: 1049.803958
+  type: 'test'
+  ...
+# Subtest: renders nightingale-rose-chart at its logical Canvas size
+ok 126 - renders nightingale-rose-chart at its logical Canvas size
+  ---
+  duration_ms: 1257.841625
+  type: 'test'
+  ...
+# Subtest: renders gapminder-radial-bars at its logical Canvas size
+ok 127 - renders gapminder-radial-bars at its logical Canvas size
+  ---
+  duration_ms: 1012.093625
+  type: 'test'
+  ...
+# Subtest: renders cars-line-chart at its logical Canvas size
+ok 128 - renders cars-line-chart at its logical Canvas size
+  ---
+  duration_ms: 957.248792
+  type: 'test'
+  ...
+# Subtest: renders cars-temporal-bar-line at its logical Canvas size
+ok 129 - renders cars-temporal-bar-line at its logical Canvas size
+  ---
+  duration_ms: 951.124917
+  type: 'test'
+  ...
+# Subtest: renders cars-histogram at its logical Canvas size
+ok 130 - renders cars-histogram at its logical Canvas size
+  ---
+  duration_ms: 881.330084
+  type: 'test'
+  ...
+# Subtest: renders jobs-grouped-bar at its logical Canvas size
+ok 131 - renders jobs-grouped-bar at its logical Canvas size
+  ---
+  duration_ms: 871.777458
+  type: 'test'
+  ...
+# Subtest: renders jobs-horizontal-grouped-bar at its logical Canvas size
+ok 132 - renders jobs-horizontal-grouped-bar at its logical Canvas size
+  ---
+  duration_ms: 1162.651417
+  type: 'test'
+  ...
+# Subtest: renders cars-regression-scatterplot at its logical Canvas size
+ok 133 - renders cars-regression-scatterplot at its logical Canvas size
+  ---
+  duration_ms: 946.66625
+  type: 'test'
+  ...
+# Subtest: renders cars-multi-legend-layout at its logical Canvas size
+ok 134 - renders cars-multi-legend-layout at its logical Canvas size
+  ---
+  duration_ms: 863.306625
+  type: 'test'
+  ...
+# Subtest: renders cars-density-area at its logical Canvas size
+ok 135 - renders cars-density-area at its logical Canvas size
+  ---
+  duration_ms: 892.397458
+  type: 'test'
+  ...
+# Subtest: renders gapminder-horizon at its logical Canvas size
+ok 136 - renders gapminder-horizon at its logical Canvas size
+  ---
+  duration_ms: 895.895125
+  type: 'test'
+  ...
+# Subtest: renders cars-acceleration-violins at its logical Canvas size
+ok 137 - renders cars-acceleration-violins at its logical Canvas size
+  ---
+  duration_ms: 986.104166
+  type: 'test'
+  ...
+# Subtest: renders cars-error-bar at its logical Canvas size
+ok 138 - renders cars-error-bar at its logical Canvas size
+  ---
+  duration_ms: 862.977459
+  type: 'test'
+  ...
+# Subtest: renders cars-gradient-plot at its logical Canvas size
+ok 139 - renders cars-gradient-plot at its logical Canvas size
+  ---
+  duration_ms: 896.105125
+  type: 'test'
+  ...
+# Subtest: renders cars-box-plot at its logical Canvas size
+ok 140 - renders cars-box-plot at its logical Canvas size
+  ---
+  duration_ms: 978.140375
+  type: 'test'
+  ...
+# Subtest: renders gapminder-error-band at its logical Canvas size
+ok 141 - renders gapminder-error-band at its logical Canvas size
+  ---
+  duration_ms: 922.688542
+  type: 'test'
+  ...
+# Subtest: renders gapminder-continuous-color-bars at its logical Canvas size
+ok 142 - renders gapminder-continuous-color-bars at its logical Canvas size
+  ---
+  duration_ms: 1072.55825
+  type: 'test'
+  ...
+# Subtest: renders gapminder-discretized-color-scales at its logical Canvas size
+ok 143 - renders gapminder-discretized-color-scales at its logical Canvas size
+  ---
+  duration_ms: 977.629709
+  type: 'test'
+  ...
+# Subtest: renders gapminder-temporal-discrete-scales at its logical Canvas size
+ok 144 - renders gapminder-temporal-discrete-scales at its logical Canvas size
+  ---
+  duration_ms: 1043.965875
+  type: 'test'
+  ...
+# Subtest: renders gapminder-transformed-scales at its logical Canvas size
+ok 145 - renders gapminder-transformed-scales at its logical Canvas size
+  ---
+  duration_ms: 957.183625
+  type: 'test'
+  ...
+# Subtest: renders mark-selection-points at its logical Canvas size
+ok 146 - renders mark-selection-points at its logical Canvas size
+  ---
+  duration_ms: 977.922292
+  type: 'test'
+  ...
+# Subtest: renders mark-selection-bars at its logical Canvas size
+ok 147 - renders mark-selection-bars at its logical Canvas size
+  ---
+  duration_ms: 874.799959
+  type: 'test'
+  ...
+# Subtest: renders mark-selection-lines at its logical Canvas size
+ok 148 - renders mark-selection-lines at its logical Canvas size
+  ---
+  duration_ms: 878.325625
+  type: 'test'
+  ...
+# Subtest: renders hierarchical-authoring at its logical Canvas size
+ok 149 - renders hierarchical-authoring at its logical Canvas size
+  ---
+  duration_ms: 920.94175
+  type: 'test'
+  ...
+# Subtest: renders remove-dependent-resources at its logical Canvas size
+ok 150 - renders remove-dependent-resources at its logical Canvas size
+  ---
+  duration_ms: 902.06025
+  type: 'test'
+  ...
+# Subtest: renders edit-facet-source at its logical Canvas size
+ok 151 - renders edit-facet-source at its logical Canvas size
+  ---
+  duration_ms: 994.474
+  type: 'test'
+  ...
+# Subtest: renders apply-custom-theme at its logical Canvas size
+ok 152 - renders apply-custom-theme at its logical Canvas size
+  ---
+  duration_ms: 971.748125
+  type: 'test'
+  ...
+# Subtest: renders edit-selected-labels at its logical Canvas size
+ok 153 - renders edit-selected-labels at its logical Canvas size
+  ---
+  duration_ms: 924.767125
+  type: 'test'
+  ...
+# Subtest: renders edit-scales-and-guides at its logical Canvas size
+ok 154 - renders edit-scales-and-guides at its logical Canvas size
+  ---
+  duration_ms: 907.526292
+  type: 'test'
+  ...
+# Subtest: renders switch-encoding-modes at its logical Canvas size
+ok 155 - renders switch-encoding-modes at its logical Canvas size
+  ---
+  duration_ms: 927.909042
+  type: 'test'
+  ...
+# Subtest: renders compare-weighted-distributions at its logical Canvas size
+ok 156 - renders compare-weighted-distributions at its logical Canvas size
+  ---
+  duration_ms: 928.109417
+  type: 'test'
+  ...
+# Subtest: renders repair-missing-observations at its logical Canvas size
+ok 157 - renders repair-missing-observations at its logical Canvas size
+  ---
+  duration_ms: 1110.729
+  type: 'test'
+  ...
+# Subtest: keeps logical Canvas size at a high browser pixel density
+ok 158 - keeps logical Canvas size at a high browser pixel density
+  ---
+  duration_ms: 952.699542
+  type: 'test'
+  ...
+# Subtest: side color legends align actual SVG bounds with the plot and render to Canvas
+ok 159 - side color legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1395.955959
+  type: 'test'
+  ...
+# Subtest: side series legends align actual SVG bounds with the plot and render to Canvas
+ok 160 - side series legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1238.782833
+  type: 'test'
+  ...
+# Subtest: side stroke legends align actual SVG bounds with the plot and render to Canvas
+ok 161 - side stroke legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1427.134791
+  type: 'test'
+  ...
+# Subtest: side gradient legends align actual SVG bounds with the plot and render to Canvas
+ok 162 - side gradient legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1396.845083
+  type: 'test'
+  ...
+# Subtest: side strokeGradient legends align actual SVG bounds with the plot and render to Canvas
+ok 163 - side strokeGradient legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1413.58275
+  type: 'test'
+  ...
+# Subtest: side interval legends align actual SVG bounds with the plot and render to Canvas
+ok 164 - side interval legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1285.189709
+  type: 'test'
+  ...
+# Subtest: side strokeInterval legends align actual SVG bounds with the plot and render to Canvas
+ok 165 - side strokeInterval legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1201.394791
+  type: 'test'
+  ...
+# Subtest: side size legends align actual SVG bounds with the plot and render to Canvas
+ok 166 - side size legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1096.147333
+  type: 'test'
+  ...
+# Subtest: side opacity legends align actual SVG bounds with the plot and render to Canvas
+ok 167 - side opacity legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1421.101792
+  type: 'test'
+  ...
+# Subtest: side strokeWidth legends align actual SVG bounds with the plot and render to Canvas
+ok 168 - side strokeWidth legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1152.984875
+  type: 'test'
+  ...
+# Subtest: side multi legends align actual SVG bounds with the plot and render to Canvas
+ok 169 - side multi legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1286.771042
+  type: 'test'
+  ...
+# Subtest: side shared-color legends align actual SVG bounds with the plot and render to Canvas
+ok 170 - side shared-color legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1048.125834
+  type: 'test'
+  ...
+# Subtest: side shared-gradient legends align actual SVG bounds with the plot and render to Canvas
+ok 171 - side shared-gradient legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1157.699333
+  type: 'test'
+  ...
+# Subtest: side shared-interval legends align actual SVG bounds with the plot and render to Canvas
+ok 172 - side shared-interval legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1147.301167
+  type: 'test'
+  ...
+# Subtest: side shared-multi legends align actual SVG bounds with the plot and render to Canvas
+ok 173 - side shared-multi legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 1411.172209
+  type: 'test'
+  ...
+# Subtest: side shared-inferred legends align actual SVG bounds with the plot and render to Canvas
+ok 174 - side shared-inferred legends align actual SVG bounds with the plot and render to Canvas
+  ---
+  duration_ms: 948.749875
+  type: 'test'
+  ...
+# Subtest: browser combined size-shape samples match independent area geometry
+ok 175 - browser combined size-shape samples match independent area geometry
+  ---
+  duration_ms: 1232.490875
+  type: 'test'
+  ...
+# Subtest: Browser Canvas and SVG keep a subtitle-only ten-pixel line interval
+ok 176 - Browser Canvas and SVG keep a subtitle-only ten-pixel line interval
+  ---
+  duration_ms: 1498.276292
+  type: 'test'
+  ...
+# Subtest: browser zero-width strokes never retain previous width or create outline ink
+ok 177 - browser zero-width strokes never retain previous width or create outline ink
+  ---
+  duration_ms: 970.489791
+  type: 'test'
+  ...
+1..177
+# tests 296
+# suites 0
+# pass 296
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 141933.108375

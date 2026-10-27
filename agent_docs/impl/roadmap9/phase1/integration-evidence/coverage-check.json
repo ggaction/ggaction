@@ -1,0 +1,33 @@
+{
+  "label": "coverage-check",
+  "command": "npm",
+  "args": [
+    "run",
+    "test:coverage"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 630294,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-27T11:33:27.985Z",
+  "finishedAt": "2026-10-27T11:43:58.280Z",
+  "source": {
+    "available": true,
+    "commit": "8b8ab3cff7144be29bb6ba6825085c3a56f0a4d9",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "8b8ab3cff7144be29bb6ba6825085c3a56f0a4d9",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "3ae03be4c0f2932169eb0b54f7d0e4fdfe20997738c27a8cf542bd418a115031",
+  "bytes": 366,
+  "retainedBytes": 366,
+  "truncated": false
+}

@@ -1,0 +1,333 @@
+{
+  "schemaVersion": 1,
+  "implementationCommit": "8b8ab3cff7144be29bb6ba6825085c3a56f0a4d9",
+  "supplementalDocumentation": [
+    {
+      "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/documentation-closeout.json",
+      "sha256": "bfbd67ea76dc8087e5a319573a8bc1445432ff5aaee80e1e84940221d7ade02b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase1/integration-evidence/documentation-closeout.log",
+      "sha256": "a1736da7525cff5dac427c71847dcc91da80b7ae7f5bb2f968b33633834a6578"
+    }
+  ],
+  "continuousIntegration": {
+    "schemaVersion": 1,
+    "runId": 40499412739,
+    "workflow": "CI",
+    "commit": "c8f78984b9645ed85f53a8dc23dd761bff5f517f",
+    "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739",
+    "conclusion": "success",
+    "runAttempt": 1,
+    "observedAt": "2026-10-27 12:47:32 UTC",
+    "jobs": [
+      {
+        "id": 122173267303,
+        "name": "package (20)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173267303",
+        "startedAt": "2026-10-27T11:53:13Z",
+        "completedAt": "2026-10-27T12:03:24Z"
+      },
+      {
+        "id": 122173267414,
+        "name": "package (22)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173267414",
+        "startedAt": "2026-10-27T11:53:13Z",
+        "completedAt": "2026-10-27T12:03:08Z"
+      },
+      {
+        "id": 122173267470,
+        "name": "browsers (firefox)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173267470",
+        "startedAt": "2026-10-27T11:53:13Z",
+        "completedAt": "2026-10-27T12:12:01Z"
+      },
+      {
+        "id": 122173267512,
+        "name": "documentation",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173267512",
+        "startedAt": "2026-10-27T11:53:13Z",
+        "completedAt": "2026-10-27T12:08:28Z"
+      },
+      {
+        "id": 122173267521,
+        "name": "package (24)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173267521",
+        "startedAt": "2026-10-27T11:53:13Z",
+        "completedAt": "2026-10-27T12:03:07Z"
+      },
+      {
+        "id": 122173267572,
+        "name": "realistic-data",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173267572",
+        "startedAt": "2026-10-27T11:53:13Z",
+        "completedAt": "2026-10-27T11:53:22Z"
+      },
+      {
+        "id": 122173267607,
+        "name": "test",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173267607",
+        "startedAt": "2026-10-27T11:53:14Z",
+        "completedAt": "2026-10-27T12:16:12Z"
+      },
+      {
+        "id": 122173267616,
+        "name": "browsers (webkit)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173267616",
+        "startedAt": "2026-10-27T11:53:14Z",
+        "completedAt": "2026-10-27T11:54:25Z"
+      },
+      {
+        "id": 122173267657,
+        "name": "peer-compatibility",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173267657",
+        "startedAt": "2026-10-27T11:53:14Z",
+        "completedAt": "2026-10-27T11:53:40Z"
+      },
+      {
+        "id": 122173267661,
+        "name": "platform (macos-latest)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173267661",
+        "startedAt": "2026-10-27T11:53:15Z",
+        "completedAt": "2026-10-27T11:53:44Z"
+      },
+      {
+        "id": 122173267669,
+        "name": "coverage",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173267669",
+        "startedAt": "2026-10-27T11:53:13Z",
+        "completedAt": "2026-10-27T12:12:32Z"
+      },
+      {
+        "id": 122173267972,
+        "name": "platform (windows-latest)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173267972",
+        "startedAt": "2026-10-27T11:53:14Z",
+        "completedAt": "2026-10-27T11:54:15Z"
+      },
+      {
+        "id": 122173352326,
+        "name": "realistic (3)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173352326",
+        "startedAt": "2026-10-27T11:53:25Z",
+        "completedAt": "2026-10-27T12:01:19Z"
+      },
+      {
+        "id": 122173352333,
+        "name": "realistic (5)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173352333",
+        "startedAt": "2026-10-27T11:53:25Z",
+        "completedAt": "2026-10-27T12:03:03Z"
+      },
+      {
+        "id": 122173352346,
+        "name": "realistic (7)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173352346",
+        "startedAt": "2026-10-27T11:53:25Z",
+        "completedAt": "2026-10-27T12:06:12Z"
+      },
+      {
+        "id": 122173352459,
+        "name": "realistic (1)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173352459",
+        "startedAt": "2026-10-27T11:53:26Z",
+        "completedAt": "2026-10-27T12:15:02Z"
+      },
+      {
+        "id": 122173352467,
+        "name": "realistic (2)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173352467",
+        "startedAt": "2026-10-27T11:53:25Z",
+        "completedAt": "2026-10-27T12:46:10Z"
+      },
+      {
+        "id": 122173352474,
+        "name": "realistic (4)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173352474",
+        "startedAt": "2026-10-27T11:53:25Z",
+        "completedAt": "2026-10-27T12:13:16Z"
+      },
+      {
+        "id": 122173352559,
+        "name": "realistic (6)",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122173352559",
+        "startedAt": "2026-10-27T11:53:25Z",
+        "completedAt": "2026-10-27T12:15:21Z"
+      },
+      {
+        "id": 122196627655,
+        "name": "realistic-required",
+        "conclusion": "success",
+        "url": "https://github.com/ggaction/ggaction/actions/runs/40499412739/job/122196627655",
+        "startedAt": "2026-10-27T12:46:13Z",
+        "completedAt": "2026-10-27T12:46:23Z"
+      }
+    ],
+    "generationIsolation": {
+      "jobId": 122173352459,
+      "conclusion": "success",
+      "cases": [
+        {
+          "descriptors": 216,
+          "referenceMs": 116999.463265,
+          "isolatedMs": 118936.51359800002,
+          "maximumChildRssBytes": 200024064,
+          "maximumCombinedRssBytes": 288055296
+        },
+        {
+          "descriptors": 360,
+          "referenceMs": 500588.227891,
+          "isolatedMs": 538662.7994300001,
+          "maximumChildRssBytes": 334602240,
+          "maximumCombinedRssBytes": 439914496
+        }
+      ]
+    },
+    "reusedQualification": {
+      "implementationCommit": "8b8ab3cff7144be29bb6ba6825085c3a56f0a4d9",
+      "onlyChangedFile": "test/support/scenarios/realistic-generation-isolation-worker.js",
+      "localDeadlineMs": 900000,
+      "ciDeadlineMs": 1200000,
+      "runtimeUnchanged": true,
+      "assertionsUnchanged": true
+    }
+  },
+  "tests": {
+    "suite-coverage": {
+      "tests": 6351,
+      "pass": 6351,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "realistic-shard-1": {
+      "tests": 178,
+      "pass": 178,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "realistic-shard-2": {
+      "tests": 97,
+      "pass": 97,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "suite-browser": {
+      "tests": 296,
+      "pass": 296,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "suite-render": {
+      "tests": 265,
+      "pass": 265,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    }
+  },
+  "coverage": {
+    "lines": 95.89,
+    "branches": 93.44,
+    "functions": 98.72
+  },
+  "checks": [
+    {
+      "label": "suite-coverage",
+      "code": 0,
+      "seconds": 629.451,
+      "discoveredFiles": 1046,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "coverage-check",
+      "code": 0,
+      "seconds": 630.294,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "realistic-shard-1",
+      "code": 0,
+      "seconds": 2010.061,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "realistic-shard-2",
+      "code": 0,
+      "seconds": 2073.378,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "suite-browser",
+      "code": 0,
+      "seconds": 142.073,
+      "discoveredFiles": 35,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "suite-render",
+      "code": 0,
+      "seconds": 69.973,
+      "discoveredFiles": 106,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "test-render",
+      "code": 0,
+      "seconds": 85.378,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "test-package",
+      "code": 0,
+      "seconds": 88.552,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "package-check",
+      "code": 0,
+      "seconds": 2.3,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "metadata-check",
+      "code": 0,
+      "seconds": 0.374,
+      "node": "v22.23.1"
+    },
+    {
+      "label": "docs-verify",
+      "code": 0,
+      "seconds": 330.925,
+      "node": "v22.23.1"
+    }
+  ],
+  "consumerCases": 186
+}

@@ -1,0 +1,33 @@
+{
+  "label": "closeout-docs-verify",
+  "command": "npm",
+  "args": [
+    "run",
+    "docs:verify"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 304411,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-27T12:09:12.034Z",
+  "finishedAt": "2026-10-27T12:14:16.450Z",
+  "source": {
+    "available": true,
+    "commit": "c8f78984b9645ed85f53a8dc23dd761bff5f517f",
+    "clean": false,
+    "statusSha256": "621d21775ce9f96d4430ecb5f36a143aa9edacf62e826a2255dfb399a9770059"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "c8f78984b9645ed85f53a8dc23dd761bff5f517f",
+    "clean": false,
+    "statusSha256": "621d21775ce9f96d4430ecb5f36a143aa9edacf62e826a2255dfb399a9770059"
+  },
+  "logSha256": "a1736da7525cff5dac427c71847dcc91da80b7ae7f5bb2f968b33633834a6578",
+  "bytes": 47693,
+  "retainedBytes": 47693,
+  "truncated": false
+}

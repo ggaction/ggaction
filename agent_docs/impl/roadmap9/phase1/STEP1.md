@@ -11,11 +11,11 @@
 - [x] production 순수 key kernel과 independent oracle 비교
 - [x] createData/reviseData 및 persistence 연결
 - [x] current contracts·types·generated docs 및 현재 적용 소비자 연결
-- [ ] 실제 제품 actual과 oracle 비교, atomicity·renderer·package 검증 후 complete
+- [x] 실제 제품 actual과 oracle 비교, atomicity·renderer·package 검증 후 complete
 
-상태 in-progress. independent oracle의 통과를 STEP-004 complete로 기록하지 않는다.
-[DESIGN](DESIGN.md)의 D1–D8을 제품 호출 경로에 연결했으며 최종 clean revision 검증 전이다.
-[기계 판독 진행 기록](progress/STEP-004.json)과 [실행 집계](evidence/summary.json)를 함께 읽는다.
+상태 complete. [DESIGN](DESIGN.md)의 D1–D8을 제품 호출 경로에 연결하고 같은 clean revision에서
+STEP-004–009의 모든 필수 검사를 통과했다. [Phase 완료 결과](GOAL.md),
+[기계 판독 진행 기록](progress/STEP-004.json), [통합 실행 집계](integration-results.json)를 함께 읽는다.
 
 ## 검토 준비에서 구현한 것
 
@@ -26,7 +26,7 @@
 - `test/unit/persistence/legacy-selection.test.js`: literal b 선택, tagged scalar, shared array,
   원본 concrete output 보존, current edit/remove, fresh process, malformed input 거부.
 
-## 승인된 첫 구현
+## 승인 직후의 구현 계획 (이전 기록)
 
 새 core/itemIdentity owner를 만들기 전에 기존 typed lookup/ordering과 중복 가능성을 확인한다.
 순수 codec·allocation actual을 독립 reference와 비교한 뒤 wrapped createData/reviseData에 연결한다.

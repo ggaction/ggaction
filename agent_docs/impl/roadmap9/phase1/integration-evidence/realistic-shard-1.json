@@ -1,0 +1,35 @@
+{
+  "label": "realistic-shard-1",
+  "command": "npm",
+  "args": [
+    "run",
+    "test:realistic",
+    "--",
+    "--shard=1/2"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 2010061,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-27T11:27:04.850Z",
+  "finishedAt": "2026-10-27T12:00:34.914Z",
+  "source": {
+    "available": true,
+    "commit": "8b8ab3cff7144be29bb6ba6825085c3a56f0a4d9",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "8b8ab3cff7144be29bb6ba6825085c3a56f0a4d9",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "d83a941198669f0bee557c8cf51abcbe8f36c065b87f3fa463f12202b8d98abd",
+  "bytes": 48904,
+  "retainedBytes": 48904,
+  "truncated": false
+}

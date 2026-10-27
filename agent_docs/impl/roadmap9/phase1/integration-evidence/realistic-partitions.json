@@ -1,0 +1,54 @@
+{
+  "sourceCommit": "8b8ab3cff7144be29bb6ba6825085c3a56f0a4d9",
+  "partitions": [
+    {
+      "shard": {
+        "index": 1,
+        "total": 2
+      },
+      "files": [
+        "contracts/generated-lifecycle-scenarios.test.js",
+        "contracts/generated-scenario-effective-factors.test.js",
+        "contracts/generated-scenario-feature-coverage.test.js",
+        "contracts/realistic-combined-legend-witness.test.js",
+        "contracts/realistic-complete-chart-facades.test.js",
+        "contracts/realistic-data-color-contracts.test.js",
+        "contracts/realistic-data-mark-recipes.test.js",
+        "contracts/realistic-facade-option-recipes.test.js",
+        "contracts/realistic-hierarchical-facade-matrix.test.js",
+        "contracts/realistic-layer-plot.test.js",
+        "contracts/realistic-legend-option-witness.test.js",
+        "contracts/realistic-lifecycle-factor-effects.test.js",
+        "contracts/realistic-lifecycle-provenance.test.js",
+        "contracts/realistic-scenario-generation-isolation.test.js",
+        "contracts/realistic-scenario-runner.test.js",
+        "contracts/realistic-scoped-composition.test.js",
+        "contracts/realistic-statistical-facade-coverage-recipes.test.js"
+      ],
+      "estimatedMs": 2210416
+    },
+    {
+      "shard": {
+        "index": 2,
+        "total": 2
+      },
+      "files": [
+        "contracts/dataset-fixtures.test.js",
+        "contracts/generated-scenarios.test.js",
+        "contracts/realistic-arc-legend-layout.test.js",
+        "contracts/realistic-axis-facet-owner-witness.test.js",
+        "contracts/realistic-cartesian-facade-coverage-recipes.test.js",
+        "contracts/realistic-direct-lifecycle-coverage-recipes.test.js",
+        "contracts/realistic-encoding-coverage-recipes.test.js",
+        "contracts/realistic-facet-column-factors.test.js",
+        "contracts/realistic-facet-raster-bounds.test.js",
+        "contracts/realistic-guide-scale-recipes.test.js",
+        "contracts/realistic-row-selection.test.js",
+        "contracts/realistic-scenario-generator.test.js"
+      ],
+      "estimatedMs": 2215889
+    }
+  ],
+  "exhaustive": true,
+  "disjoint": true
+}

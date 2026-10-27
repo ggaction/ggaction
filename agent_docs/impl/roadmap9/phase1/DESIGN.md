@@ -1,6 +1,6 @@
 # G-CORE — ID·lineage·resource·schema 4 검토안
 
-상태: **D1–D8 승인, 제품 구현 진행 중**. [Gate 기록](G-CORE.json)이 승인과 검증 revision을 소유한다.
+상태: **D1–D8 승인, 제품 구현·통합 검증 완료**. [Gate 기록](G-CORE.json)이 승인과 검증 revision을 소유한다.
 기존 [core 원안](../../../../study/coverage-expansion-2026-10-27/roadmap/contracts/core.ko.md)을 현재 코드와 대조하여
 빠져 있던 옵션·분기·이전 형식 처리를 구체화했다. 이 문서는 승인 당시의 설계 기록을 보존한다.
 아래의 기존 동작과 미구현 설명은 검토 code revision `129a506d` 기준이다.

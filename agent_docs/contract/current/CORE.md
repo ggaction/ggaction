@@ -300,7 +300,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     누락된 row는 index를 포함한 오류로 첫 저장 전에 거부한다.
   - Effect: caller-owned 값을 deep clone/freeze하여 immutable source dataset으로 저장한다.
     graphic output은 만들지 않는다.
-- 원본 행 키와 schema의 `name`은 빈 문자열·공백을 포함하여 손실 없이 보존한다. 미사용 빈 열을 제거하거나 이름을 바꾸지 않는다. 명시 schema의 누락 열, 중복 이름, storageType/nullable/optional 검사는 그대로다. Schema version 1을 유지하며 빈 키가 있는 새 snapshot은 지원 런타임을 필요로 한다.
+- 원본 행 키와 schema의 `name`은 빈 문자열·공백을 포함하여 손실 없이 보존한다. 미사용 빈 열을 제거하거나 이름을 바꾸지 않는다. 명시 schema의 누락 열, 중복 이름, storageType/nullable/optional 검사는 그대로다. 빈 키를 포함한 행도 현재 editable snapshot 형식으로 저장·복원한다.
 - 차트/변환 입력·생성 필드 참조, lineage 입력과 resource ID의 non-empty 검증은 완화하지 않는다. 행 보존 변환·revision·facet·persistence는 빈 셀을 유지하고 summary/fold 등은 기존 열 투영 정책을 따른다.
 - 오류: ambiguous omitted ID, invalid/duplicate ID, non-array와 non-object row를 거부한다.
 - Coverage: `test/unit/actions/data/create-data.test.js`가 empty/multiple data, ownership,
@@ -2279,7 +2279,7 @@ type EditableCurrentScale = {
 
 ## Persistence package boundary
 
-Browser-safe `ggaction/persistence`의 네 함수는 action replay 없이 canonical state를 저장·복원한다. 정확한 version 1 format과 Full/Basic/extension/render-only 경계는 [`../../../docs/data-updates.md`](../../../docs/data-updates.md#save-and-restore-snapshots)가 소유한다. `test/unit/persistence/`와 installed package consumer가 codec, immutable editing, 현재 action corpus의 state/SVG 동치 및 malformed input rejection을 검증한다.
+Browser-safe `ggaction/persistence`의 네 함수는 action replay 없이 canonical state를 저장·복원한다. 현재 editable/graphic format과 Full/Basic/extension/render-only 경계는 [`../../../docs/data-updates.md`](../../../docs/data-updates.md#save-and-restore-snapshots)가 소유한다. `test/unit/persistence/`와 installed package consumer가 codec, immutable editing, 현재 action corpus의 state/SVG 동치 및 malformed input rejection을 검증한다.
 
 ## `createSortedData`
 

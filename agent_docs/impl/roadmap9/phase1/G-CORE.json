@@ -39,14 +39,13 @@
     "suite-all",
     "machine-docs"
   ],
-  "remaining": [
-    "Clean revision verification and evidence for integrated STEP-004 through STEP-009"
-  ],
-  "notice": "D1-D8 explicitly approved and integrated; final consumer qualification remains open.",
+  "remaining": [],
+  "notice": "D1-D8 approved and implemented; STEP-004 through STEP-009 consumer qualification complete.",
   "reviewPreparation": {
     "complete": [
       "CORE-REVIEW-PREPARATION"
     ],
     "ready": []
-  }
+  },
+  "implementationCommit": "8b8ab3cff7144be29bb6ba6825085c3a56f0a4d9"
 }
