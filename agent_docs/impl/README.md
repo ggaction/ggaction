@@ -4,7 +4,9 @@
 
 ## 현재 상태
 
-- 현재 활성 계획은 없고 마지막 완료 owner는 **Roadmap 8 Phase 7**이다.
+- 현재 활성 계획은 **Roadmap 9 Phase 0**이다. 마지막 완료 Roadmap은 Roadmap 8 Phase 7이다.
+- [`roadmap9/ROADMAP.md`](roadmap9/ROADMAP.md) — native 확장과 실행 의존성
+- [`roadmap9/phase0/GOAL.md`](roadmap9/phase0/GOAL.md) — baseline·독립 oracle·검증 증거 구현
 - [`roadmap8/ROADMAP.md`](roadmap8/ROADMAP.md) — 구현된 11개 보완의 범위·Phase·완료 기준
 - [`roadmap8/phase7/GOAL.md`](roadmap8/phase7/GOAL.md) — 통합 검증과 외부 배포 경계
 - [`roadmap8/IMPLEMENTER_START_HERE.md`](roadmap8/IMPLEMENTER_START_HERE.md) — 다른 구현자를 위한 상세 명세·타입·파일별 작업 지도

@@ -159,6 +159,15 @@ production layout resolver. Their selection/order and composition-equivalence
 assertions are complemented by literal shape/geometry tests in the owning slices
 and `test/unit/layout/composition-layout.test.js`.
 
+Capture a committed repository baseline with
+`node scripts/verification-baseline.js <output.json> [ref] [source-map.json]`.
+The snapshot records the exact commit/tree, package and action inventory,
+lockfile and verification-owner hashes, npm scripts and workflow commands.
+An optional source map reports changed/missing files and relocated declarations;
+it never resets files or silently updates the reference. Environment and current
+working-tree state are separate observations, not proof that checks ran. This
+inventory is independent of the primitive-equivalence report above.
+
 `corpus-mutation-relations.test.js` reports bounded input-size tiers and pathology
 postconditions separately from real-source sampling. Its 32/512/4096-row point
 cases are stress witnesses, not a scalability benchmark. Seed, original and

@@ -1,0 +1,4134 @@
+{
+  "schemaVersion": 1,
+  "kind": "committed-repository-baseline",
+  "commit": "48cbd44c7b2b3fcc81127e419bfa0936afb1063d",
+  "tree": "6bc490816b4c5753cf5351684840dd8eb56a2bf0",
+  "workingTreeAtCapture": "M agent_docs/README.md\n M agent_docs/impl/README.md\n M agent_docs/impl/ROADMAP_INDEX.json\n M test/README.md\n?? agent_docs/impl/roadmap9/ROADMAP.md\n?? agent_docs/impl/roadmap9/execution-plan.json\n?? agent_docs/impl/roadmap9/phase0/GOAL.md\n?? agent_docs/impl/roadmap9/phase0/STEP1.md\n?? agent_docs/impl/roadmap9/phase0/STEP2.md\n?? agent_docs/impl/roadmap9/phase0/STEP3.md\n?? agent_docs/impl/roadmap9/phase0/baseline.json\n?? scripts/verification-baseline.js\n?? test/contracts/verification-baseline.test.js",
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "engines": {
+      "node": ">=20"
+    },
+    "exports": {
+      ".": {
+        "types": "./types/index.d.ts",
+        "default": "./src/index.js"
+      },
+      "./basic": {
+        "types": "./types/basic.d.ts",
+        "default": "./src/basic.js"
+      },
+      "./extension": {
+        "types": "./types/extension.d.ts",
+        "default": "./src/extension.js"
+      },
+      "./png": {
+        "types": "./types/png.d.ts",
+        "default": "./src/renderers/png.js"
+      },
+      "./pdf": {
+        "types": "./types/pdf.d.ts",
+        "default": "./src/renderers/pdf.js"
+      },
+      "./svg": {
+        "types": "./types/svg.d.ts",
+        "default": "./src/renderers/svg.js"
+      },
+      "./diagnostics": {
+        "types": "./types/diagnostics.d.ts",
+        "default": "./src/diagnostics.js"
+      },
+      "./persistence": {
+        "types": "./types/persistence.d.ts",
+        "default": "./src/persistence.js"
+      },
+      "./accessibility": {
+        "types": "./types/accessibility.d.ts",
+        "default": "./src/accessibility.js"
+      },
+      "./inspection": {
+        "types": "./types/inspection.d.ts",
+        "default": "./src/inspection.js"
+      },
+      "./scene": {
+        "types": "./types/scene.d.ts",
+        "default": "./src/scene.js"
+      }
+    }
+  },
+  "actions": {
+    "count": 298,
+    "byLayer": {
+      "advanced": 4,
+      "primitive": 3,
+      "user-facing": 291
+    }
+  },
+  "files": [
+    {
+      "path": "package.json",
+      "sha256": "2eeb8eaba9a66516c1f2184d000afb7ec6083d60c5f492dbf4208c192f9cb95a"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "6caf1f3a554c34ee127967c03581971176086ef90db0166d4c71948933a22f1e"
+    },
+    {
+      "path": "agent_docs/contract/ACTION_INDEX.json",
+      "sha256": "8e528757f302ac75c5b16230a40b6d7b0f03796c05c6f19928cb7788b8b7ea92"
+    },
+    {
+      "path": "src/persistence.js",
+      "sha256": "be9b8080dd778ab590f8cce00ffac0c20c67a8eed0c211e4df84ae5af8be1573"
+    },
+    {
+      "path": "scripts/run-tests.js",
+      "sha256": "5b77183637640c7e87657f3048827e7073ba25e08bdfe898e5637c101bff368d"
+    },
+    {
+      "path": "scripts/coverage-policy.js",
+      "sha256": "480cbd8a4a29449473239581bafc4637be3dc8386f5f44a2d335da95eb3c8284"
+    },
+    {
+      "path": "test/capabilities.json",
+      "sha256": "30beeb593c1567b5e91389ad095ed45f4ed479936c0eaff5f4700f491e1da0c2"
+    }
+  ],
+  "commands": {
+    "npmScripts": {
+      "test": "node scripts/run-tests.js all",
+      "test:unit": "node scripts/run-tests.js unit",
+      "test:contracts": "node scripts/run-tests.js contracts",
+      "test:charts": "node scripts/run-tests.js charts",
+      "test:gates": "node scripts/run-tests.js gates",
+      "test:docs": "node scripts/run-tests.js docs",
+      "test:realistic": "node scripts/run-tests.js realistic",
+      "test:browser": "node scripts/run-tests.js browser",
+      "test:docs:built": "node scripts/check-built-docs.js _site",
+      "test:docs:browser": "node scripts/test-built-docs.js _site",
+      "test:coverage": "node scripts/run-tests.js coverage",
+      "test:render": "node scripts/run-render-tests.js",
+      "assets:readme": "node scripts/generate-readme-demo.js",
+      "artifacts:renderers": "node scripts/generate-renderer-comparison.js",
+      "artifacts:clean": "node test/support/artifacts.js",
+      "artifacts:gallery": "node scripts/generate-artifact-gallery.js",
+      "artifacts:gallery:test": "node scripts/test-artifact-gallery.js",
+      "datasets:sync": "node scripts/sync-dataset-corpus.js --all",
+      "scenarios:smoke": "node scripts/run-generated-scenarios.js --mode=smoke --no-tidytuesday",
+      "scenarios:deep": "node scripts/run-generated-scenarios.js --mode=deep",
+      "scenarios:realistic": "node --expose-gc scripts/run-realistic-scenarios.js",
+      "scenarios:realistic:audit": "node --expose-gc scripts/run-realistic-scenarios.js --no-artifacts",
+      "docs:images": "node scripts/generate-doc-images.js",
+      "docs:llms": "node scripts/generate-llm-docs.js",
+      "docs:capabilities": "node scripts/generate-doc-capabilities.js",
+      "docs:capabilities:check": "node scripts/generate-doc-capabilities.js --check",
+      "docs:actions": "node scripts/generate-doc-action-metadata.js",
+      "docs:actions:check": "node scripts/generate-doc-action-metadata.js --check",
+      "docs:machine": "node scripts/generate-doc-machine-artifacts.js",
+      "docs:machine:check": "node scripts/generate-doc-machine-artifacts.js --check",
+      "docs:search": "node scripts/generate-doc-search-index.js",
+      "docs:search:check": "node scripts/generate-doc-search-index.js --check",
+      "docs:reference": "node scripts/generate-doc-action-reference.js",
+      "docs:reference:check": "node scripts/generate-doc-action-reference.js --check",
+      "docs:metadata": "node scripts/generate-doc-page-metadata.js",
+      "docs:metadata:check": "node scripts/generate-doc-page-metadata.js --check",
+      "docs:preflight": "node scripts/check-docs-environment.js",
+      "docs:signatures": "node scripts/generate-doc-signatures.js",
+      "docs:signatures:check": "node scripts/generate-doc-signatures.js --check",
+      "examples:index": "node scripts/generate-examples-readme.js",
+      "examples:index:check": "node scripts/generate-examples-readme.js --check",
+      "docs:generate": "npm run contracts:relations && npm run contracts:cards && npm run inspection:descriptors && npm run docs:provenance && npm run docs:workflows && npm run examples:index && npm run docs:capabilities && npm run docs:reference && npm run docs:picker && npm run docs:scale-editors && npm run docs:actions && npm run docs:signatures && npm run docs:snippets && npm run docs:metadata && npm run docs:search && npm run docs:images && npm run docs:machine && npm run docs:llms",
+      "docs:build": "bundle exec jekyll build --source docs --destination _site --baseurl /ggaction",
+      "docs:verify": "npm run docs:preflight && npm run docs:generate && npm run test:docs && npm run docs:build && npm run test:docs:built && npm run test:docs:browser",
+      "contracts:catalog": "node scripts/generate-action-catalog.js",
+      "contracts:catalog:check": "node scripts/generate-action-catalog.js --check",
+      "contracts:relations": "node scripts/generate-action-relationships.js",
+      "contracts:relations:check": "node scripts/generate-action-relationships.js --check",
+      "contracts:cards": "node scripts/generate-action-cards.js",
+      "contracts:cards:check": "node scripts/generate-action-cards.js --check",
+      "inspection:descriptors": "node scripts/generate-inspection-descriptors.js",
+      "inspection:descriptors:check": "node scripts/generate-inspection-descriptors.js --check",
+      "package:check": "node scripts/package-artifact.js --check",
+      "package:pack": "node scripts/package-artifact.js --pack",
+      "package:bundle": "node scripts/measure-browser-bundle.js",
+      "test:package": "node scripts/package-consumer.js",
+      "release:notes": "node scripts/release-notes.js",
+      "docs:workflows": "node scripts/generate-doc-workflows.js",
+      "docs:provenance": "node scripts/doc-provenance.js",
+      "docs:picker": "node scripts/generate-doc-chart-picker.js",
+      "docs:snippets": "node scripts/generate-doc-snippet-contracts.js",
+      "docs:scale-editors": "node scripts/generate-doc-scale-editors.js",
+      "benchmark:runtime": "node scripts/benchmark-runtime.js",
+      "benchmark:authoring": "node scripts/evaluate-authoring-requirements.js",
+      "test:platform": "node scripts/test-platform-package.js",
+      "test:browser:compat": "node scripts/run-tests.js browser browser/backend-compatibility.browser.js browser/facet-content-headers.browser.js",
+      "release:prepare": "node scripts/prepare-release.js"
+    },
+    "workflows": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "sha256": "6545e77f65a0aacfbf12621df247d5f4cf1f0462f68fa2f881389a93011c8c66",
+        "jobs": [
+          {
+            "id": "package",
+            "runsOn": "ubuntu-latest",
+            "strategy": {
+              "matrix": {
+                "node-version": [
+                  20,
+                  22,
+                  24
+                ]
+              }
+            },
+            "commands": [
+              {
+                "name": "Install dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Audit the packed package",
+                "run": "npm run package:check",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Install Chromium for tutorial consumers",
+                "run": "npx playwright install --with-deps chromium",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Test installed JavaScript, extension, PNG, and TypeScript consumers",
+                "run": "node scripts/run-check.js test-package -- npm run test:package",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "test",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Install dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Install Chromium for documentation and browser tests",
+                "run": "npx playwright install --with-deps chromium",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Run unit, acceptance, and documentation tests",
+                "run": "node scripts/run-check.js test -- npm test",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Test browser examples and the packed browser entry",
+                "run": "node scripts/run-check.js test-browser -- npm run test:browser",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Install PDF pixel-test decoder",
+                "run": "sudo apt-get update && sudo apt-get install -y poppler-utils",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Render PNG regression charts",
+                "run": "node scripts/run-check.js test-render -- npm run test:render",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "realistic-data",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Fetch and verify dataset corpus",
+                "run": "npm run datasets:sync",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "steps.dataset-cache.outputs.cache-hit != 'true'"
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "realistic",
+            "runsOn": "ubuntu-latest",
+            "strategy": {
+              "fail-fast": false,
+              "matrix": {
+                "shard": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7
+                ]
+              }
+            },
+            "commands": [
+              {
+                "name": "Install dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Run realistic corpus contracts",
+                "run": "node scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=${{ matrix.shard }}/7",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "realistic-required",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Require every realistic prerequisite and shard",
+                "run": "node scripts/test-sharding.js --check-jobs realistic-data realistic",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "platform",
+            "runsOn": "${{ matrix.os }}",
+            "strategy": {
+              "fail-fast": false,
+              "matrix": {
+                "os": [
+                  "macos-latest",
+                  "windows-latest"
+                ]
+              }
+            },
+            "commands": [
+              {
+                "name": "Install dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify installed native package outputs",
+                "run": "node scripts/run-check.js test-platform -- npm run test:platform",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify portable compiler and test paths",
+                "run": "node scripts/run-check.js test-platform-contracts -- node scripts/run-tests.js all contracts/compiler-harness.test.js contracts/data-completion-types.test.js contracts/focused-scale-editor-types.test.js unit/support/test-sharding.test.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "browsers",
+            "runsOn": "ubuntu-latest",
+            "strategy": {
+              "fail-fast": false,
+              "matrix": {
+                "browser": [
+                  "firefox",
+                  "webkit"
+                ]
+              }
+            },
+            "commands": [
+              {
+                "name": "Install dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Install the browser runtime",
+                "run": "npx playwright install --with-deps ${{ matrix.browser }}",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify browser rendering and downloads",
+                "run": "node scripts/run-check.js test-browser-compat -- npm run test:browser:compat",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "coverage",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Install dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Install Chromium for documentation source tests",
+                "run": "npx playwright install --with-deps chromium",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Enforce coverage thresholds",
+                "run": "node scripts/run-check.js test-coverage -- npm run test:coverage",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "documentation",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Install dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Install Chromium",
+                "run": "npx playwright install --with-deps chromium",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Check the documentation environment",
+                "run": "npm run docs:preflight",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify current documentation sources",
+                "run": "npm run examples:index:check\nnpm run contracts:cards:check\nnpm run docs:reference:check\nnpm run docs:actions:check\nnpm run docs:signatures:check\nnpm run docs:capabilities:check\nnpm run docs:metadata:check\nnpm run docs:search:check\nnpm run docs:machine:check\nnode scripts/run-check.js test-docs -- npm run test:docs\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Build documentation with Jekyll",
+                "run": "node scripts/run-check.js docs-build -- npm run docs:build",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Check built documentation",
+                "run": "node scripts/run-check.js test-docs-built -- npm run test:docs:built",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Test desktop and mobile documentation",
+                "run": "node scripts/run-check.js test-docs-browser -- npm run test:docs:browser",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "peer-compatibility",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": null,
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Qualify the latest compatible native peer",
+                "run": "node scripts/run-check.js test-peer-latest -- npm run test:platform",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": ".github/workflows/context7-refresh.yml",
+        "sha256": "e5696eabc62dab5205e66df8026d01f51883d0252016249384dc8af6f556bd70",
+        "jobs": [
+          {
+            "id": "refresh",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Refresh released documentation",
+                "run": "if [ -z \"${CONTEXT7_API_KEY}\" ]; then\n  echo \"::error::Add CONTEXT7_API_KEY as a repository Actions secret before running this workflow.\"\n  exit 1\nfi\n\ncurl --fail-with-body --silent --show-error \\\n  --request POST \\\n  --url https://context7.com/api/v1/refresh \\\n  --header \"Authorization: Bearer ${CONTEXT7_API_KEY}\" \\\n  --header \"Content-Type: application/json\" \\\n  --data '{\"libraryName\":\"/${{ github.repository }}\"}'\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": ".github/workflows/release.yml",
+        "sha256": "2994879bafce3b939a2be8cb0825a8395f1852d0a3dc733b62eedddbb700cec0",
+        "jobs": [
+          {
+            "id": "candidate",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Install exact dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify tag, version, and checked-out commit",
+                "run": "set -euo pipefail\ntest \"$GITHUB_REF\" = \"refs/tags/$RELEASE_TAG\"\ntest \"$RELEASE_TAG\" = \"v$(node -p \"require('./package.json').version\")\"\ntest \"$(node -p \"require('./package-lock.json').version\")\" = \"$(node -p \"require('./package.json').version\")\"\ntest \"$(git cat-file -t \"refs/tags/$RELEASE_TAG\")\" = \"tag\"\ntest \"$(git rev-parse HEAD)\" = \"$(git rev-parse \"refs/tags/$RELEASE_TAG^{commit}\")\"\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Pack the exact release candidate once",
+                "run": "node scripts/release-candidate.js \"$RELEASE_TAG\"",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "verify-source",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Install exact dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify and select the exact candidate for package consumers",
+                "run": "node scripts/release-candidate.js --verify .artifacts/release/candidate.json \"$RELEASE_TAG\"\nnode --input-type=module -e '\n  import { readFileSync, appendFileSync } from \"node:fs\";\n  import path from \"node:path\";\n  const candidate = JSON.parse(readFileSync(\".artifacts/release/candidate.json\", \"utf8\"));\n  appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(\".artifacts/release\", candidate.filename)}\\n`);\n'\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Install Chromium for browser consumers",
+                "run": "npx playwright install --with-deps chromium",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Run unit, acceptance, and contract tests",
+                "run": "node scripts/run-check.js test -- npm test",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Test browser package consumers",
+                "run": "node scripts/run-check.js test-browser -- npm run test:browser",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Install PDF pixel-test decoder",
+                "run": "sudo apt-get update && sudo apt-get install -y poppler-utils",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Render PNG regression charts",
+                "run": "node scripts/run-check.js test-render -- npm run test:render",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "verify-coverage",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Install exact dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify and select the exact candidate for package consumers",
+                "run": "node scripts/release-candidate.js --verify .artifacts/release/candidate.json \"$RELEASE_TAG\"\nnode --input-type=module -e '\n  import { readFileSync, appendFileSync } from \"node:fs\";\n  import path from \"node:path\";\n  const candidate = JSON.parse(readFileSync(\".artifacts/release/candidate.json\", \"utf8\"));\n  appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(\".artifacts/release\", candidate.filename)}\\n`);\n'\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Install Chromium for browser consumers",
+                "run": "npx playwright install --with-deps chromium",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Enforce coverage thresholds",
+                "run": "node scripts/run-check.js test-coverage -- npm run test:coverage",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "verify-package",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Install exact dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify and select the exact candidate for package consumers",
+                "run": "node scripts/release-candidate.js --verify .artifacts/release/candidate.json \"$RELEASE_TAG\"\nnode --input-type=module -e '\n  import { readFileSync, appendFileSync } from \"node:fs\";\n  import path from \"node:path\";\n  const candidate = JSON.parse(readFileSync(\".artifacts/release/candidate.json\", \"utf8\"));\n  appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(\".artifacts/release\", candidate.filename)}\\n`);\n'\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Install Chromium for browser consumers",
+                "run": "npx playwright install --with-deps chromium",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Test the installed canonical package",
+                "run": "node scripts/run-check.js test-package -- npm run test:package",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "verify-documentation",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Install exact dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify and select the exact candidate for package consumers",
+                "run": "node scripts/release-candidate.js --verify .artifacts/release/candidate.json \"$RELEASE_TAG\"\nnode --input-type=module -e '\n  import { readFileSync, appendFileSync } from \"node:fs\";\n  import path from \"node:path\";\n  const candidate = JSON.parse(readFileSync(\".artifacts/release/candidate.json\", \"utf8\"));\n  appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(\".artifacts/release\", candidate.filename)}\\n`);\n'\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Install Chromium for browser consumers",
+                "run": "npx playwright install --with-deps chromium",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify generated contracts and documentation",
+                "run": "npm run contracts:catalog:check\nnode scripts/run-check.js docs-generate -- npm run docs:generate\nnode --input-type=module -e '\n  import assert from \"node:assert/strict\";\n  import { buildDocProvenance } from \"./scripts/doc-provenance.js\";\n  assert.equal((await buildDocProvenance()).status, \"published-release\");\n'\nnode scripts/run-check.js test-docs -- npm run test:docs\n# Native Canvas PNG bytes vary across supported operating systems.\n# Their sources, manifest, dimensions, and rendered output remain\n# covered by documentation and render tests; all other generated\n# documentation must stay byte-identical to the release tag.\ngit diff --exit-code -- \\\n  docs \\\n  examples/README.md \\\n  knowledge/action-cards.json \\\n  ':(exclude)docs/assets/images/*.png'\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Build documentation with Jekyll",
+                "run": "node scripts/run-check.js docs-build -- npm run docs:build",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Check built documentation",
+                "run": "node scripts/run-check.js test-docs-built -- npm run test:docs:built",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Test documentation in desktop and mobile browsers",
+                "run": "node scripts/run-check.js test-docs-browser -- npm run test:docs:browser",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "realistic-data",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Install exact dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Fetch and verify dataset corpus",
+                "run": "npm run datasets:sync",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "steps.dataset-cache.outputs.cache-hit != 'true'"
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "verify-realistic",
+            "runsOn": "ubuntu-latest",
+            "strategy": {
+              "fail-fast": false,
+              "matrix": {
+                "shard": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7
+                ]
+              }
+            },
+            "commands": [
+              {
+                "name": "Install exact dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify and select the exact candidate for package consumers",
+                "run": "node scripts/release-candidate.js --verify .artifacts/release/candidate.json \"$RELEASE_TAG\"\nnode --input-type=module -e '\n  import { readFileSync, appendFileSync } from \"node:fs\";\n  import path from \"node:path\";\n  const candidate = JSON.parse(readFileSync(\".artifacts/release/candidate.json\", \"utf8\"));\n  appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(\".artifacts/release\", candidate.filename)}\\n`);\n'\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Fetch and verify dataset corpus",
+                "run": "npm run datasets:sync",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "steps.dataset-cache.outputs.cache-hit != 'true'"
+              },
+              {
+                "name": "Run the assigned realistic files",
+                "run": "node scripts/run-check.js test-realistic -- npm run test:realistic -- --shard=${{ matrix.shard }}/7",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "verify-platform",
+            "runsOn": "${{ matrix.os }}",
+            "strategy": {
+              "fail-fast": false,
+              "matrix": {
+                "os": [
+                  "macos-latest",
+                  "windows-latest"
+                ]
+              }
+            },
+            "commands": [
+              {
+                "name": "Install dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify and select the exact candidate for package consumers",
+                "run": "node scripts/release-candidate.js --verify .artifacts/release/candidate.json \"$RELEASE_TAG\"\nnode --input-type=module -e '\n  import { readFileSync, appendFileSync } from \"node:fs\";\n  import path from \"node:path\";\n  const candidate = JSON.parse(readFileSync(\".artifacts/release/candidate.json\", \"utf8\"));\n  appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(\".artifacts/release\", candidate.filename)}\\n`);\n'\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify installed native package outputs",
+                "run": "node scripts/run-check.js test-platform -- npm run test:platform",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify portable compiler and test paths",
+                "run": "node scripts/run-check.js test-platform-contracts -- node scripts/run-tests.js all contracts/compiler-harness.test.js contracts/data-completion-types.test.js contracts/focused-scale-editor-types.test.js unit/support/test-sharding.test.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "verify-browsers",
+            "runsOn": "ubuntu-latest",
+            "strategy": {
+              "fail-fast": false,
+              "matrix": {
+                "browser": [
+                  "firefox",
+                  "webkit"
+                ]
+              }
+            },
+            "commands": [
+              {
+                "name": "Install dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify and select the exact candidate for package consumers",
+                "run": "node scripts/release-candidate.js --verify .artifacts/release/candidate.json \"$RELEASE_TAG\"\nnode --input-type=module -e '\n  import { readFileSync, appendFileSync } from \"node:fs\";\n  import path from \"node:path\";\n  const candidate = JSON.parse(readFileSync(\".artifacts/release/candidate.json\", \"utf8\"));\n  appendFileSync(process.env.GITHUB_ENV, `GGACTION_PACKAGE_SPEC=${path.resolve(\".artifacts/release\", candidate.filename)}\\n`);\n'\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Install the browser runtime",
+                "run": "npx playwright install --with-deps ${{ matrix.browser }}",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify browser rendering and downloads",
+                "run": "node scripts/run-check.js test-browser-compat -- npm run test:browser:compat",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "verify",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Require every verification job to succeed",
+                "run": "node scripts/test-sharding.js --check-jobs candidate verify-source verify-coverage verify-package verify-documentation realistic-data verify-realistic verify-platform verify-browsers",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "publish",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Install a trusted-publishing-capable npm CLI",
+                "run": "npm install --global \"npm@^11.5.1\"",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Verify downloaded artifact identity",
+                "run": "node scripts/release-candidate.js --verify .artifacts/release/candidate.json \"$RELEASE_TAG\"",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Check whether this exact version is already public",
+                "run": "set -euo pipefail\nPACKAGE=$(node -p \"require('./.artifacts/release/candidate.json').name\")\nVERSION=$(node -p \"require('./.artifacts/release/candidate.json').version\")\nLOCAL_SHA1=$(node -p \"require('./.artifacts/release/candidate.json').sha1\")\nif REMOTE_SHA1=$(npm view \"$PACKAGE@$VERSION\" dist.shasum 2>.artifacts/release/npm-view-error.log); then\n  test \"$REMOTE_SHA1\" = \"$LOCAL_SHA1\"\n  echo \"already=true\" >> \"$GITHUB_OUTPUT\"\nelif grep -q \"E404\" .artifacts/release/npm-view-error.log; then\n  echo \"already=false\" >> \"$GITHUB_OUTPUT\"\nelse\n  cat .artifacts/release/npm-view-error.log >&2\n  exit 1\nfi\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Publish to npm through OIDC",
+                "run": "TARBALL=\".artifacts/release/$(node -p \"require('./.artifacts/release/candidate.json').filename\")\"\nnpm publish \"$TARBALL\" --access public --tag latest\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "steps.registry.outputs.already != 'true'"
+              },
+              {
+                "name": "Create or repair the matching GitHub Release",
+                "run": "VERSION=$(node -p \"require('./.artifacts/release/candidate.json').version\")\nNOTES=\".artifacts/release/$(node -p \"require('./.artifacts/release/candidate.json').releaseNotes\")\"\nif gh release view \"$RELEASE_TAG\" >/dev/null 2>&1; then\n  gh release edit \"$RELEASE_TAG\" --title \"ggaction $VERSION\" --notes-file \"$NOTES\"\nelse\n  gh release create \"$RELEASE_TAG\" --verify-tag --title \"ggaction $VERSION\" --notes-file \"$NOTES\"\nfi\n",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "pages-build",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": [
+              {
+                "name": "Verify the documentation source commit",
+                "run": "test \"$(git rev-parse HEAD)\" = \"$(git rev-parse \"refs/tags/$RELEASE_TAG^{commit}\")\"",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Install dependencies",
+                "run": "npm ci",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Build the exact release documentation",
+                "run": "node scripts/run-check.js docs-build -- npm run docs:build",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Check the built documentation",
+                "run": "node scripts/run-check.js test-docs-built -- npm run test:docs:built",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": null
+              },
+              {
+                "name": "Collect bounded failure evidence",
+                "run": "node scripts/collect-failure-artifacts.js",
+                "shell": null,
+                "workingDirectory": null,
+                "condition": "${{ failure() }}"
+              }
+            ]
+          },
+          {
+            "id": "context7-refresh",
+            "strategy": null,
+            "commands": []
+          },
+          {
+            "id": "pages-deploy",
+            "runsOn": "ubuntu-latest",
+            "strategy": null,
+            "commands": []
+          }
+        ]
+      }
+    ]
+  },
+  "sourceMap": {
+    "commit": "40ec7edead7fc84de05aad31888dd0f7d264a512",
+    "files": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "expectedSha256": "6545e77f65a0aacfbf12621df247d5f4cf1f0462f68fa2f881389a93011c8c66",
+        "actualSha256": "6545e77f65a0aacfbf12621df247d5f4cf1f0462f68fa2f881389a93011c8c66",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": ".github/workflows/release.yml",
+        "expectedSha256": "2994879bafce3b939a2be8cb0825a8395f1852d0a3dc733b62eedddbb700cec0",
+        "actualSha256": "2994879bafce3b939a2be8cb0825a8395f1852d0a3dc733b62eedddbb700cec0",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "AGENTS.md",
+        "expectedSha256": "a1fb8660a994fdd2fb7a783bc947a9925a1382845e13d41e7315e81f3430b76c",
+        "actualSha256": "a1fb8660a994fdd2fb7a783bc947a9925a1382845e13d41e7315e81f3430b76c",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "## Instruction Hierarchy",
+            "previousLine": 3,
+            "currentLines": [
+              3
+            ]
+          },
+          {
+            "declaration": "## Architecture References",
+            "previousLine": 11,
+            "currentLines": [
+              11
+            ]
+          },
+          {
+            "declaration": "## Core Invariants",
+            "previousLine": 19,
+            "currentLines": [
+              19
+            ]
+          },
+          {
+            "declaration": "## Development Workflow",
+            "previousLine": 29,
+            "currentLines": [
+              29
+            ]
+          },
+          {
+            "declaration": "## Decisions and Simplicity",
+            "previousLine": 40,
+            "currentLines": [
+              40
+            ]
+          }
+        ]
+      },
+      {
+        "path": "agent_docs/SECOND_ARCHITECTURE.md",
+        "expectedSha256": "8f98c0ad905885f734ffa6722091b9f0a07411db306b4aa7d96666533161c8b5",
+        "actualSha256": "8f98c0ad905885f734ffa6722091b9f0a07411db306b4aa7d96666533161c8b5",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "## 현재 구조 빠른 지도",
+            "previousLine": 7,
+            "currentLines": [
+              7
+            ]
+          },
+          {
+            "declaration": "## 범례 항목 이동 소유권",
+            "previousLine": 33,
+            "currentLines": [
+              33
+            ]
+          },
+          {
+            "declaration": "## 범례 요약 행 정책",
+            "previousLine": 45,
+            "currentLines": [
+              45
+            ]
+          },
+          {
+            "declaration": "## Content facet 배치 소유권",
+            "previousLine": 52,
+            "currentLines": [
+              52
+            ]
+          },
+          {
+            "declaration": "## 문서의 위치",
+            "previousLine": 65,
+            "currentLines": [
+              65
+            ]
+          },
+          {
+            "declaration": "## 핵심 결론",
+            "previousLine": 114,
+            "currentLines": [
+              114
+            ]
+          },
+          {
+            "declaration": "## 전체 계층",
+            "previousLine": 216,
+            "currentLines": [
+              216
+            ]
+          },
+          {
+            "declaration": "## Public package boundary",
+            "previousLine": 278,
+            "currentLines": [
+              278
+            ]
+          },
+          {
+            "declaration": "## 실행 계약의 위치",
+            "previousLine": 541,
+            "currentLines": [
+              541
+            ]
+          },
+          {
+            "declaration": "## `ChartProgram`의 canonical state",
+            "previousLine": 565,
+            "currentLines": [
+              565
+            ]
+          },
+          {
+            "declaration": "## Immutability와 ownership",
+            "previousLine": 665,
+            "currentLines": [
+              665
+            ]
+          },
+          {
+            "declaration": "## 저작용 text metrics",
+            "previousLine": 713,
+            "currentLines": [
+              713
+            ]
+          },
+          {
+            "declaration": "## 구조화된 진단 경계",
+            "previousLine": 719,
+            "currentLines": [
+              719
+            ]
+          },
+          {
+            "declaration": "## `semanticSpec`",
+            "previousLine": 723,
+            "currentLines": [
+              723
+            ]
+          },
+          {
+            "declaration": "## `graphicSpec`",
+            "previousLine": 768,
+            "currentLines": [
+              768
+            ]
+          },
+          {
+            "declaration": "## `resolvedScales`",
+            "previousLine": 901,
+            "currentLines": [
+              901
+            ]
+          },
+          {
+            "declaration": "## `materializationConfigs`",
+            "previousLine": 956,
+            "currentLines": [
+              956
+            ]
+          },
+          {
+            "declaration": "## Context",
+            "previousLine": 1006,
+            "currentLines": [
+              1006
+            ]
+          },
+          {
+            "declaration": "## Action과 trace",
+            "previousLine": 1048,
+            "currentLines": [
+              1048
+            ]
+          },
+          {
+            "declaration": "## API의 세 층",
+            "previousLine": 1104,
+            "currentLines": [
+              1104
+            ]
+          },
+          {
+            "declaration": "## Primitive action",
+            "previousLine": 1168,
+            "currentLines": [
+              1168
+            ]
+          },
+          {
+            "declaration": "## Selector와 resource identity",
+            "previousLine": 1174,
+            "currentLines": [
+              1174
+            ]
+          },
+          {
+            "declaration": "## Generated internal identity",
+            "previousLine": 1194,
+            "currentLines": [
+              1194
+            ]
+          },
+          {
+            "declaration": "## Pure grammar와 action의 분리",
+            "previousLine": 1223,
+            "currentLines": [
+              1223
+            ]
+          },
+          {
+            "declaration": "## Scale resolution과 materialization",
+            "previousLine": 1248,
+            "currentLines": [
+              1248
+            ]
+          },
+          {
+            "declaration": "## Mark materialization policy",
+            "previousLine": 1327,
+            "currentLines": [
+              1327
+            ]
+          },
+          {
+            "declaration": "## Cross-cutting rematerialization plan",
+            "previousLine": 1349,
+            "currentLines": [
+              1349
+            ]
+          },
+          {
+            "declaration": "## Canvas와 layout",
+            "previousLine": 1464,
+            "currentLines": [
+              1464
+            ]
+          },
+          {
+            "declaration": "## Axis, grid, legend, title",
+            "previousLine": 1488,
+            "currentLines": [
+              1488
+            ]
+          },
+          {
+            "declaration": "## Aggregate action hierarchy",
+            "previousLine": 1547,
+            "currentLines": [
+              1547
+            ]
+          },
+          {
+            "declaration": "## Built-in visual default",
+            "previousLine": 1560,
+            "currentLines": [
+              1560
+            ]
+          },
+          {
+            "declaration": "## Canvas renderer",
+            "previousLine": 1590,
+            "currentLines": [
+              1590
+            ]
+          },
+          {
+            "declaration": "## SVG renderer",
+            "previousLine": 1629,
+            "currentLines": [
+              1629
+            ]
+          },
+          {
+            "declaration": "## PDF adapter",
+            "previousLine": 1651,
+            "currentLines": [
+              1651
+            ]
+          },
+          {
+            "declaration": "## 선택 의존성과 메모리 출력",
+            "previousLine": 1671,
+            "currentLines": [
+              1671
+            ]
+          },
+          {
+            "declaration": "## PNG adapter",
+            "previousLine": 1677,
+            "currentLines": [
+              1677
+            ]
+          },
+          {
+            "declaration": "## Source ownership",
+            "previousLine": 1701,
+            "currentLines": [
+              1701
+            ]
+          },
+          {
+            "declaration": "## Test architecture",
+            "previousLine": 1865,
+            "currentLines": [
+              1865
+            ]
+          },
+          {
+            "declaration": "## 현재 완성된 vertical slice",
+            "previousLine": 2100,
+            "currentLines": [
+              2100
+            ]
+          },
+          {
+            "declaration": "## 새 기능을 추가하는 기준",
+            "previousLine": 2104,
+            "currentLines": [
+              2104
+            ]
+          },
+          {
+            "declaration": "## 현재 범위 밖 또는 제한된 부분",
+            "previousLine": 2140,
+            "currentLines": [
+              2140
+            ]
+          },
+          {
+            "declaration": "## 초기 아키텍처에서 확립되거나 달라진 점",
+            "previousLine": 2156,
+            "currentLines": [
+              2156
+            ]
+          },
+          {
+            "declaration": "## 읽기 전용 전환 장면과 외부 재생기",
+            "previousLine": 2665,
+            "currentLines": [
+              2665
+            ]
+          },
+          {
+            "declaration": "## Immutable composition snapshot transfer",
+            "previousLine": 2758,
+            "currentLines": [
+              2758
+            ]
+          },
+          {
+            "declaration": "## Guide 표시 상태 (2026-10-25)",
+            "previousLine": 2762,
+            "currentLines": [
+              2762
+            ]
+          }
+        ]
+      },
+      {
+        "path": "agent_docs/impl/AGENTS.md",
+        "expectedSha256": "ac856f13f61335c0f8200795adbef2a638a920bec1c84414405ba5d9b64359d3",
+        "actualSha256": "ac856f13f61335c0f8200795adbef2a638a920bec1c84414405ba5d9b64359d3",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "## Planning Records",
+            "previousLine": 5,
+            "currentLines": [
+              5
+            ]
+          },
+          {
+            "declaration": "## Approval Gates",
+            "previousLine": 11,
+            "currentLines": [
+              11
+            ]
+          },
+          {
+            "declaration": "## Visual Review Evidence",
+            "previousLine": 20,
+            "currentLines": [
+              20
+            ]
+          },
+          {
+            "declaration": "## Closeout and Release",
+            "previousLine": 29,
+            "currentLines": [
+              29
+            ]
+          }
+        ]
+      },
+      {
+        "path": "knowledge/action-cards.json",
+        "expectedSha256": "690b73a26b69df0b24d2d61e0b3412cfa55f856d7d5693aa660caa8c8df8b944",
+        "actualSha256": "690b73a26b69df0b24d2d61e0b3412cfa55f856d7d5693aa660caa8c8df8b944",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "knowledge/task-resolver.js",
+        "expectedSha256": "996965a043d0dec52afdaec85ba46d6e7c451df7634a800bb480e250a4420108",
+        "actualSha256": "996965a043d0dec52afdaec85ba46d6e7c451df7634a800bb480e250a4420108",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export class TaskPacketBudgetError extends Error {",
+            "previousLine": 62,
+            "currentLines": [
+              62
+            ]
+          },
+          {
+            "declaration": "export function validateResolverKnowledge() {",
+            "previousLine": 1969,
+            "currentLines": [
+              1969
+            ]
+          },
+          {
+            "declaration": "export function searchGgaction(query) {",
+            "previousLine": 2058,
+            "currentLines": [
+              2058
+            ]
+          },
+          {
+            "declaration": "export function taskPacketBytes(packet) {",
+            "previousLine": 2162,
+            "currentLines": [
+              2162
+            ]
+          }
+        ]
+      },
+      {
+        "path": "package-lock.json",
+        "expectedSha256": "6caf1f3a554c34ee127967c03581971176086ef90db0166d4c71948933a22f1e",
+        "actualSha256": "6caf1f3a554c34ee127967c03581971176086ef90db0166d4c71948933a22f1e",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "package.json",
+        "expectedSha256": "2eeb8eaba9a66516c1f2184d000afb7ec6083d60c5f492dbf4208c192f9cb95a",
+        "actualSha256": "2eeb8eaba9a66516c1f2184d000afb7ec6083d60c5f492dbf4208c192f9cb95a",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "scripts/coverage-policy.js",
+        "expectedSha256": "480cbd8a4a29449473239581bafc4637be3dc8386f5f44a2d335da95eb3c8284",
+        "actualSha256": "480cbd8a4a29449473239581bafc4637be3dc8386f5f44a2d335da95eb3c8284",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({",
+            "previousLine": 7,
+            "currentLines": [
+              7
+            ]
+          },
+          {
+            "declaration": "export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({",
+            "previousLine": 66,
+            "currentLines": [
+              66
+            ]
+          },
+          {
+            "declaration": "export function coverageFloorsForFiles(",
+            "previousLine": 249,
+            "currentLines": [
+              249
+            ]
+          },
+          {
+            "declaration": "export const CRITICAL_COVERAGE_FLOORS = coverageFloorsForFiles(sourceFiles(sourceRoot));",
+            "previousLine": 266,
+            "currentLines": [
+              266
+            ]
+          },
+          {
+            "declaration": "export function parseCoverageTable(output) {",
+            "previousLine": 268,
+            "currentLines": [
+              268
+            ]
+          },
+          {
+            "declaration": "export function assertCriticalCoverage(",
+            "previousLine": 298,
+            "currentLines": [
+              298
+            ]
+          },
+          {
+            "declaration": "export const SOURCE_COVERAGE_EXCLUSIONS = Object.freeze({",
+            "previousLine": 325,
+            "currentLines": [
+              325
+            ]
+          },
+          {
+            "declaration": "export function assertSourceCoverage(output, files = sourceFiles(sourceRoot), exclusions = SOURCE_COVERAGE_EXCLUSIONS) {",
+            "previousLine": 328,
+            "currentLines": [
+              328
+            ]
+          }
+        ]
+      },
+      {
+        "path": "scripts/generate-action-catalog.js",
+        "expectedSha256": "3600c66cdaf33381590771e9fe0257eafef9f46d2c4534c92a7d93dfdc2036c8",
+        "actualSha256": "3600c66cdaf33381590771e9fe0257eafef9f46d2c4534c92a7d93dfdc2036c8",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function renderActionCatalog(index) {",
+            "previousLine": 25,
+            "currentLines": [
+              25
+            ]
+          }
+        ]
+      },
+      {
+        "path": "scripts/package-consumer.js",
+        "expectedSha256": "a04b7ac806d60a3c9c9fd608e74dbcd9554eaf7ebce7ab42aea786de21ca0b2d",
+        "actualSha256": "a04b7ac806d60a3c9c9fd608e74dbcd9554eaf7ebce7ab42aea786de21ca0b2d",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export async function preparePackageConsumer({",
+            "previousLine": 20,
+            "currentLines": [
+              20
+            ]
+          },
+          {
+            "declaration": "export async function testPackageConsumer(options) {",
+            "previousLine": 63,
+            "currentLines": [
+              63
+            ]
+          }
+        ]
+      },
+      {
+        "path": "scripts/release-candidate.js",
+        "expectedSha256": "a5e5a55cacb69b4a36f1dfbff8e61197ad38172166a7ba9815e41a1b41b150ac",
+        "actualSha256": "a5e5a55cacb69b4a36f1dfbff8e61197ad38172166a7ba9815e41a1b41b150ac",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function validateReleaseIdentity({ tag, ref, packageVersion, lockVersion }) {",
+            "previousLine": 16,
+            "currentLines": [
+              16
+            ]
+          },
+          {
+            "declaration": "export async function createReleaseCandidate({ tag, ref }) {",
+            "previousLine": 53,
+            "currentLines": [
+              53
+            ]
+          },
+          {
+            "declaration": "export async function verifyReleaseCandidate({ manifestFile, tag, ref }) {",
+            "previousLine": 81,
+            "currentLines": [
+              81
+            ]
+          }
+        ]
+      },
+      {
+        "path": "scripts/run-tests.js",
+        "expectedSha256": "5b77183637640c7e87657f3048827e7073ba25e08bdfe898e5637c101bff368d",
+        "actualSha256": "5b77183637640c7e87657f3048827e7073ba25e08bdfe898e5637c101bff368d",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export const TEST_CAPABILITIES = Object.freeze(Object.fromEntries(",
+            "previousLine": 43,
+            "currentLines": [
+              43
+            ]
+          },
+          {
+            "declaration": "export function classifyTestFile(file, root = testRoot) {",
+            "previousLine": 67,
+            "currentLines": [
+              67
+            ]
+          },
+          {
+            "declaration": "export function matchesCapabilityEntry(relative, entry) {",
+            "previousLine": 86,
+            "currentLines": [
+              86
+            ]
+          },
+          {
+            "declaration": "export function collectTestFiles(suite = \"all\", root = testRoot, selectors = []) {",
+            "previousLine": 114,
+            "currentLines": [
+              114
+            ]
+          },
+          {
+            "declaration": "export function parseTestShard(argument) {",
+            "previousLine": 139,
+            "currentLines": [
+              139
+            ]
+          },
+          {
+            "declaration": "export function testRunnerArguments(suite, files, shard) {",
+            "previousLine": 156,
+            "currentLines": [
+              156
+            ]
+          },
+          {
+            "declaration": "export function createTestOutputCapture() {",
+            "previousLine": 180,
+            "currentLines": [
+              180
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/AGENTS.md",
+        "expectedSha256": "517a3a2223b4cd3676e6f4dd60e93975a2ba5efc09df4a86a53b52bfbfbec37e",
+        "actualSha256": "517a3a2223b4cd3676e6f4dd60e93975a2ba5efc09df4a86a53b52bfbfbec37e",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "## Scoped Source Instructions",
+            "previousLine": 5,
+            "currentLines": [
+              5
+            ]
+          },
+          {
+            "declaration": "## Source-Wide Boundaries",
+            "previousLine": 14,
+            "currentLines": [
+              14
+            ]
+          },
+          {
+            "declaration": "## Canonical Behavioral Records",
+            "previousLine": 29,
+            "currentLines": [
+              29
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/ChartProgram.js",
+        "expectedSha256": "82dea44d5fd7c545e774f4fdd1a8394d5637964f0fd053397a55ff3c3f504c56",
+        "actualSha256": "82dea44d5fd7c545e774f4fdd1a8394d5637964f0fd053397a55ff3c3f504c56",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export class ChartProgram extends CoreChartProgram {}",
+            "previousLine": 5,
+            "currentLines": [
+              5
+            ]
+          },
+          {
+            "declaration": "export function chart() {",
+            "previousLine": 10,
+            "currentLines": [
+              10
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/accessibility.js",
+        "expectedSha256": "b850f330ba23ef1e48c38ace60bf0ce8490f9657c41f7d3a009ab77499101637",
+        "actualSha256": "b850f330ba23ef1e48c38ace60bf0ce8490f9657c41f7d3a009ab77499101637",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function exportAccessibleData(program, options = {}) {",
+            "previousLine": 166,
+            "currentLines": [
+              166
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/AGENTS.md",
+        "expectedSha256": "04e6b79b598b7881194455e51d61ad88048a0582c8fdb60d3d5be9c86f25d489",
+        "actualSha256": "04e6b79b598b7881194455e51d61ad88048a0582c8fdb60d3d5be9c86f25d489",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "## Public API Shape",
+            "previousLine": 5,
+            "currentLines": [
+              5
+            ]
+          },
+          {
+            "declaration": "## Lifecycle and Atomicity",
+            "previousLine": 24,
+            "currentLines": [
+              24
+            ]
+          },
+          {
+            "declaration": "## Action and Trace Semantics",
+            "previousLine": 34,
+            "currentLines": [
+              34
+            ]
+          },
+          {
+            "declaration": "## Domain Contracts",
+            "previousLine": 45,
+            "currentLines": [
+              45
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/charts/index.js",
+        "expectedSha256": "eebb70180ffd4b244e9bc44f4e5225cb010f808393171d61679b39ce426ec62b",
+        "actualSha256": "eebb70180ffd4b244e9bc44f4e5225cb010f808393171d61679b39ce426ec62b",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function registerChartActions(ProgramClass) {",
+            "previousLine": 24,
+            "currentLines": [
+              24
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/composition/index.js",
+        "expectedSha256": "031f1a3c1905896b0f5d2e9069da14e3dcf0abe43c63b53557cf8a6e957410ac",
+        "actualSha256": "031f1a3c1905896b0f5d2e9069da14e3dcf0abe43c63b53557cf8a6e957410ac",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function registerCompositionActions(ProgramClass) {",
+            "previousLine": 6,
+            "currentLines": [
+              6
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/coordinates/actions.js",
+        "expectedSha256": "9d6596fcbf719d2743cc2ee54eaeec529b4a641aa25ebabec43e2a0219b566b9",
+        "actualSha256": "9d6596fcbf719d2743cc2ee54eaeec529b4a641aa25ebabec43e2a0219b566b9",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export const createCoordinate = /* @__PURE__ */ action(",
+            "previousLine": 35,
+            "currentLines": [
+              35
+            ]
+          },
+          {
+            "declaration": "export function registerBasicCoordinateActions(ProgramClass) {",
+            "previousLine": 86,
+            "currentLines": [
+              86
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/coordinates/edit.js",
+        "expectedSha256": "887e9b30c30677f98871b6e147b04f11a0e1a54fe1cb0708c312d6aee4e6caa5",
+        "actualSha256": "887e9b30c30677f98871b6e147b04f11a0e1a54fe1cb0708c312d6aee4e6caa5",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export const editCoordinate = /* @__PURE__ */ action(",
+            "previousLine": 30,
+            "currentLines": [
+              30
+            ]
+          },
+          {
+            "declaration": "export function registerCoordinateEditActions(ProgramClass) {",
+            "previousLine": 74,
+            "currentLines": [
+              74
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/data/index.js",
+        "expectedSha256": "30caff90444b1a795f992c87a850bdcfcf6f6c690ee38c6a5c1671da121859a0",
+        "actualSha256": "30caff90444b1a795f992c87a850bdcfcf6f6c690ee38c6a5c1671da121859a0",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function registerDataActions(ProgramClass) {",
+            "previousLine": 58,
+            "currentLines": [
+              58
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/data/revise.js",
+        "expectedSha256": "87b6e623b423a7af28017998b4dda14cdbc73f32ccbe37f937b85e0e0775badb",
+        "actualSha256": "87b6e623b423a7af28017998b4dda14cdbc73f32ccbe37f937b85e0e0775badb",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function registerFacetDataRevision(handler) {",
+            "previousLine": 31,
+            "currentLines": [
+              31
+            ]
+          },
+          {
+            "declaration": "export function reviseUnitData(program, { source, id, values, schema }) {",
+            "previousLine": 35,
+            "currentLines": [
+              35
+            ]
+          },
+          {
+            "declaration": "export const reviseData = /* @__PURE__ */ closedAction(",
+            "previousLine": 61,
+            "currentLines": [
+              61
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/data/revisionBindings.js",
+        "expectedSha256": "63a284a95e4b433f6aa885b34a7f1f0dd3a3252ecd43407213f436bc8fa0ba1d",
+        "actualSha256": "63a284a95e4b433f6aa885b34a7f1f0dd3a3252ecd43407213f436bc8fa0ba1d",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function outputFieldChanges(previous, next) {",
+            "previousLine": 6,
+            "currentLines": [
+              6
+            ]
+          },
+          {
+            "declaration": "export function rebindLayerOutputFields(program, id, changes) {",
+            "previousLine": 37,
+            "currentLines": [
+              37
+            ]
+          },
+          {
+            "declaration": "export function rebindMaterializationDataReferences(program, replacements) {",
+            "previousLine": 114,
+            "currentLines": [
+              114
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/encodings/index.js",
+        "expectedSha256": "e6e955059e55a03f26854e5da65e80184eb45ccd80231cfa0ab09edde7c6a7d9",
+        "actualSha256": "e6e955059e55a03f26854e5da65e80184eb45ccd80231cfa0ab09edde7c6a7d9",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function registerEncodingActions(ProgramClass) {",
+            "previousLine": 21,
+            "currentLines": [
+              21
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/guides/axes/index.js",
+        "expectedSha256": "1132ad739beae1755f1e2b15a41736e59c8ddee30ebe45808f5db7ec07b1c72a",
+        "actualSha256": "1132ad739beae1755f1e2b15a41736e59c8ddee30ebe45808f5db7ec07b1c72a",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function registerBasicCartesianAxisActions(ProgramClass) {",
+            "previousLine": 17,
+            "currentLines": [
+              17
+            ]
+          },
+          {
+            "declaration": "export function registerCartesianAxisActions(ProgramClass) {",
+            "previousLine": 27,
+            "currentLines": [
+              27
+            ]
+          },
+          {
+            "declaration": "export function registerGuideAxisActions(ProgramClass) {",
+            "previousLine": 34,
+            "currentLines": [
+              34
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/index.js",
+        "expectedSha256": "37d02fc33e971a867ac2d2fb44aab1b69026a6549e6c85a93f56aaa9a6fa8338",
+        "actualSha256": "37d02fc33e971a867ac2d2fb44aab1b69026a6549e6c85a93f56aaa9a6fa8338",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function registerActions(ProgramClass) {",
+            "previousLine": 31,
+            "currentLines": [
+              31
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/marks/arc/index.js",
+        "expectedSha256": "785f4e0563088412e6099097ba98452c4a5679906e42cdf8fe3c257c0cbadc7a",
+        "actualSha256": "785f4e0563088412e6099097ba98452c4a5679906e42cdf8fe3c257c0cbadc7a",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "src/actions/marks/index.js",
+        "expectedSha256": "29cca176424e6a725c991200c69cefda5ad0046ed88d48654176c7d953af654b",
+        "actualSha256": "29cca176424e6a725c991200c69cefda5ad0046ed88d48654176c7d953af654b",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function registerMarkActions(ProgramClass) {",
+            "previousLine": 23,
+            "currentLines": [
+              23
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/marks/line/materialize.js",
+        "expectedSha256": "b90b577e1f9dc3f2a6efb281e092247597749d20b5d7345dd5878b746749099e",
+        "actualSha256": "b90b577e1f9dc3f2a6efb281e092247597749d20b5d7345dd5878b746749099e",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function resolveParallelLineMaterialization({",
+            "previousLine": 40,
+            "currentLines": [
+              40
+            ]
+          },
+          {
+            "declaration": "export function resolvePositionedLineMaterialization({",
+            "previousLine": 86,
+            "currentLines": [
+              86
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/marks/rect/index.js",
+        "expectedSha256": "f9d5ec1ad3ad045aede20e2e7fdbb60aae79534c3b98be213a1776c8e8fa5e7b",
+        "actualSha256": "f9d5ec1ad3ad045aede20e2e7fdbb60aae79534c3b98be213a1776c8e8fa5e7b",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "src/actions/overlays/index.js",
+        "expectedSha256": "37ce84cd05f5d556ba2efd56cccfcb68f2ad4be3240829d0b1d2814bb69b0c23",
+        "actualSha256": "37ce84cd05f5d556ba2efd56cccfcb68f2ad4be3240829d0b1d2814bb69b0c23",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export const rematerializeOverlay = /* @__PURE__ */ closedAction({",
+            "previousLine": 62,
+            "currentLines": [
+              62
+            ]
+          },
+          {
+            "declaration": "export function registerOverlayActions(ProgramClass) {",
+            "previousLine": 164,
+            "currentLines": [
+              164
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/selection/actions.js",
+        "expectedSha256": "f4de8a494e08f095a2d8ffc07b2f2d841b25c0c878270d51980c6af6d614d5d2",
+        "actualSha256": "f4de8a494e08f095a2d8ffc07b2f2d841b25c0c878270d51980c6af6d614d5d2",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function rematerializeLabelsBeforeHighlights(",
+            "previousLine": 142,
+            "currentLines": [
+              142
+            ]
+          },
+          {
+            "declaration": "export function rematerializeThemeHighlights(program) {",
+            "previousLine": 262,
+            "currentLines": [
+              262
+            ]
+          },
+          {
+            "declaration": "export const selectMarks = /* @__PURE__ */ closedAction(",
+            "previousLine": 271,
+            "currentLines": [
+              271
+            ]
+          },
+          {
+            "declaration": "export const editMarkSelection = /* @__PURE__ */ closedAction(",
+            "previousLine": 283,
+            "currentLines": [
+              283
+            ]
+          },
+          {
+            "declaration": "export const removeMarkHighlight = /* @__PURE__ */ closedAction(",
+            "previousLine": 316,
+            "currentLines": [
+              316
+            ]
+          },
+          {
+            "declaration": "export const removeMarkSelection = /* @__PURE__ */ closedAction(",
+            "previousLine": 340,
+            "currentLines": [
+              340
+            ]
+          },
+          {
+            "declaration": "export const applyPointHighlight = /* @__PURE__ */ closedAction(",
+            "previousLine": 369,
+            "currentLines": [
+              369
+            ]
+          },
+          {
+            "declaration": "export const applyBarHighlight = /* @__PURE__ */ action(",
+            "previousLine": 432,
+            "currentLines": [
+              432
+            ]
+          },
+          {
+            "declaration": "export const applyRectHighlight = /* @__PURE__ */ action(",
+            "previousLine": 439,
+            "currentLines": [
+              439
+            ]
+          },
+          {
+            "declaration": "export const applyPathHighlight = /* @__PURE__ */ closedAction(",
+            "previousLine": 452,
+            "currentLines": [
+              452
+            ]
+          },
+          {
+            "declaration": "export const applyRuleHighlight = /* @__PURE__ */ closedAction(",
+            "previousLine": 472,
+            "currentLines": [
+              472
+            ]
+          },
+          {
+            "declaration": "export const dimUnselectedMarkItems = /* @__PURE__ */ closedAction(",
+            "previousLine": 491,
+            "currentLines": [
+              491
+            ]
+          },
+          {
+            "declaration": "export const placeSelectedMarkItemsLast = /* @__PURE__ */ closedAction(",
+            "previousLine": 504,
+            "currentLines": [
+              504
+            ]
+          },
+          {
+            "declaration": "export const rematerializeMarkHighlights = /* @__PURE__ */ closedAction(",
+            "previousLine": 524,
+            "currentLines": [
+              524
+            ]
+          },
+          {
+            "declaration": "export const highlightMarks = /* @__PURE__ */ closedAction(",
+            "previousLine": 624,
+            "currentLines": [
+              624
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/textMetrics/index.js",
+        "expectedSha256": "5fe316c051c6bc89d4d0a9f18815e2b32142a4a1eae11c120d95e30e6541bba3",
+        "actualSha256": "5fe316c051c6bc89d4d0a9f18815e2b32142a4a1eae11c120d95e30e6541bba3",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function inheritTextMetrics(parent, child) {",
+            "previousLine": 12,
+            "currentLines": [
+              12
+            ]
+          },
+          {
+            "declaration": "export const applyTextMetrics = /* @__PURE__ */ closedAction(",
+            "previousLine": 35,
+            "currentLines": [
+              35
+            ]
+          },
+          {
+            "declaration": "export const removeTextMetrics = /* @__PURE__ */ action(",
+            "previousLine": 44,
+            "currentLines": [
+              44
+            ]
+          },
+          {
+            "declaration": "export function registerTextMetricActions(ProgramClass) {",
+            "previousLine": 54,
+            "currentLines": [
+              54
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/actions/theme/index.js",
+        "expectedSha256": "e9078a7a975daec3a7b411299b7f06c02dcb9e05a3efd5f0e7361c0cc8772bc9",
+        "actualSha256": "e9078a7a975daec3a7b411299b7f06c02dcb9e05a3efd5f0e7361c0cc8772bc9",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function registerThemeActions(ProgramClass, compositionHandlers) {",
+            "previousLine": 9,
+            "currentLines": [
+              9
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/core/ChartProgram.js",
+        "expectedSha256": "37ac348127ebef217a8c4d3215a40a10ccc8e7e9a9f2d68aea2241ee9add5608",
+        "actualSha256": "37ac348127ebef217a8c4d3215a40a10ccc8e7e9a9f2d68aea2241ee9add5608",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export class ChartProgram {",
+            "previousLine": 27,
+            "currentLines": [
+              27
+            ]
+          },
+          {
+            "declaration": "export function chart() {",
+            "previousLine": 305,
+            "currentLines": [
+              305
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/core/action.js",
+        "expectedSha256": "06ee9bca7d8cba0ec3e1bf5899ddfbd415d59e39f3bf137827afbd09422c4f92",
+        "actualSha256": "06ee9bca7d8cba0ec3e1bf5899ddfbd415d59e39f3bf137827afbd09422c4f92",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function registerActionTargetDispatcher(ProgramClass, dispatcher) {",
+            "previousLine": 10,
+            "currentLines": [
+              10
+            ]
+          },
+          {
+            "declaration": "export function supportsScopedActionTargets(ProgramClass, operation) {",
+            "previousLine": 20,
+            "currentLines": [
+              20
+            ]
+          },
+          {
+            "declaration": "export function setActionCompletionHook(hook) {",
+            "previousLine": 24,
+            "currentLines": [
+              24
+            ]
+          },
+          {
+            "declaration": "export function getWrappedActionMetadata(value) {",
+            "previousLine": 31,
+            "currentLines": [
+              31
+            ]
+          },
+          {
+            "declaration": "export function invokeWrappedActionImplementation(value, program, args = {}) {",
+            "previousLine": 35,
+            "currentLines": [
+              35
+            ]
+          },
+          {
+            "declaration": "export function summarizeArgs(args) {",
+            "previousLine": 68,
+            "currentLines": [
+              68
+            ]
+          },
+          {
+            "declaration": "export function countActionNodes(node) {",
+            "previousLine": 76,
+            "currentLines": [
+              76
+            ]
+          },
+          {
+            "declaration": "export function createActionNode({ id, op, description, args }) {",
+            "previousLine": 83,
+            "currentLines": [
+              83
+            ]
+          },
+          {
+            "declaration": "export function appendActionNodeAtPath(root, parentPath, actionNode) {",
+            "previousLine": 149,
+            "currentLines": [
+              149
+            ]
+          },
+          {
+            "declaration": "export function action(metadata, implementation) {",
+            "previousLine": 181,
+            "currentLines": [
+              181
+            ]
+          },
+          {
+            "declaration": "export function closedAction(metadata, options, implementation) {",
+            "previousLine": 259,
+            "currentLines": [
+              259
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/core/compositionScales.js",
+        "expectedSha256": "1583cdc2c6097ded41321249fcade51341165a01f1dfa530c42bc3c6bf9ef81f",
+        "actualSha256": "1583cdc2c6097ded41321249fcade51341165a01f1dfa530c42bc3c6bf9ef81f",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export const COMPOSITION_SCALE_CHANNELS = Object.freeze([\"x\", \"y\", \"color\", \"stroke\", \"size\", \"shape\", \"opacity\", \"strokeWidth\", \"strokeDash\"]);",
+            "previousLine": 3,
+            "currentLines": [
+              3
+            ]
+          },
+          {
+            "declaration": "export function normalizeCompositionShares(value = {}) {",
+            "previousLine": 5,
+            "currentLines": [
+              5
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/core/datasetReferences.js",
+        "expectedSha256": "f2dfbfd570b99105ea896b7b6567e16a65720ec4b71160467b848d7835da0f11",
+        "actualSha256": "f2dfbfd570b99105ea896b7b6567e16a65720ec4b71160467b848d7835da0f11",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function datasetInputReferences(dataset) {",
+            "previousLine": 2,
+            "currentLines": [
+              2
+            ]
+          },
+          {
+            "declaration": "export function datasetInputIds(dataset) {",
+            "previousLine": 10,
+            "currentLines": [
+              10
+            ]
+          },
+          {
+            "declaration": "export function rebindTransformDatasetInputs(transform, replacements) {",
+            "previousLine": 14,
+            "currentLines": [
+              14
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/core/diagnostics.js",
+        "expectedSha256": "93e2bd00540d88f3e93768f5e43e9b4c98379f43cc9c7a8a61fa93cbfeb255b5",
+        "actualSha256": "93e2bd00540d88f3e93768f5e43e9b4c98379f43cc9c7a8a61fa93cbfeb255b5",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function getErrorDetails(error) {",
+            "previousLine": 3,
+            "currentLines": [
+              3
+            ]
+          },
+          {
+            "declaration": "export function annotateError(error, details) {",
+            "previousLine": 9,
+            "currentLines": [
+              9
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/core/materializationState.js",
+        "expectedSha256": "83c161d426ab3ae14a036b62c77f8fd524d8d7fc55a249fc3b5054282d574b71",
+        "actualSha256": "83c161d426ab3ae14a036b62c77f8fd524d8d7fc55a249fc3b5054282d574b71",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function createMaterializationConfigs(",
+            "previousLine": 33,
+            "currentLines": [
+              33
+            ]
+          },
+          {
+            "declaration": "export function setMaterializationConfig(configs, path, config) {",
+            "previousLine": 47,
+            "currentLines": [
+              47
+            ]
+          },
+          {
+            "declaration": "export function removeMaterializationConfig(configs, path) {",
+            "previousLine": 53,
+            "currentLines": [
+              53
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/core/resourceReferences.js",
+        "expectedSha256": "d945c7af8a95115a347a1516b0ae5df4753514ff7ce92a926cc04df9547325ab",
+        "actualSha256": "d945c7af8a95115a347a1516b0ae5df4753514ff7ce92a926cc04df9547325ab",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export const RESOURCE_KINDS = Object.freeze([",
+            "previousLine": 5,
+            "currentLines": [
+              5
+            ]
+          },
+          {
+            "declaration": "export function canonicalResourcePath(path) {",
+            "previousLine": 56,
+            "currentLines": [
+              56
+            ]
+          },
+          {
+            "declaration": "export function collectSemanticDataReferences(program) {",
+            "previousLine": 69,
+            "currentLines": [
+              69
+            ]
+          },
+          {
+            "declaration": "export function collectSemanticScaleReferences(program) {",
+            "previousLine": 82,
+            "currentLines": [
+              82
+            ]
+          },
+          {
+            "declaration": "export function collectSemanticCoordinateReferences(program) {",
+            "previousLine": 114,
+            "currentLines": [
+              114
+            ]
+          },
+          {
+            "declaration": "export function collectMarkConfigReferences(program) {",
+            "previousLine": 131,
+            "currentLines": [
+              131
+            ]
+          },
+          {
+            "declaration": "export function collectGuideConfigReferences(program) {",
+            "previousLine": 206,
+            "currentLines": [
+              206
+            ]
+          },
+          {
+            "declaration": "export function collectSelectionReferences(program) {",
+            "previousLine": 242,
+            "currentLines": [
+              242
+            ]
+          },
+          {
+            "declaration": "export function collectDataOwnerReferences(program) {",
+            "previousLine": 273,
+            "currentLines": [
+              273
+            ]
+          },
+          {
+            "declaration": "export function collectCompositionReferences(program) {",
+            "previousLine": 290,
+            "currentLines": [
+              290
+            ]
+          },
+          {
+            "declaration": "export function collectContextReferences(program) {",
+            "previousLine": 305,
+            "currentLines": [
+              305
+            ]
+          },
+          {
+            "declaration": "export function collectResourceReferences(program, { kind, id }) {",
+            "previousLine": 340,
+            "currentLines": [
+              340
+            ]
+          },
+          {
+            "declaration": "export function collectAllResourceReferences(program) {",
+            "previousLine": 350,
+            "currentLines": [
+              350
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/core/specs.js",
+        "expectedSha256": "d825580ba6635d83d324658b9389d3da1d33bbcdab87caed411a5bb65a92e2a4",
+        "actualSha256": "d825580ba6635d83d324658b9389d3da1d33bbcdab87caed411a5bb65a92e2a4",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function createEmptySemanticSpec() {",
+            "previousLine": 3,
+            "currentLines": [
+              3
+            ]
+          },
+          {
+            "declaration": "export function createEmptyGraphicSpec() {",
+            "previousLine": 14,
+            "currentLines": [
+              14
+            ]
+          },
+          {
+            "declaration": "export function createTraceRoot() {",
+            "previousLine": 21,
+            "currentLines": [
+              21
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/core/textMetricProfile.js",
+        "expectedSha256": "b89d5a02128674a30037faca84fdc1d6970f6d70f67c6c93dbbe57aa3befeb54",
+        "actualSha256": "b89d5a02128674a30037faca84fdc1d6970f6d70f67c6c93dbbe57aa3befeb54",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function normalizeTextMetricProfile(profile) {",
+            "previousLine": 7,
+            "currentLines": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/core/textMetrics.js",
+        "expectedSha256": "3f1105c05cef2b3ad686a7e5454da25ade4bf90144d3569b2be3b088bc91a826",
+        "actualSha256": "3f1105c05cef2b3ad686a7e5454da25ade4bf90144d3569b2be3b088bc91a826",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function formatVisibleText(value) {",
+            "previousLine": 30,
+            "currentLines": [
+              30
+            ]
+          },
+          {
+            "declaration": "export function textBoundsIntersect(first, second) {",
+            "previousLine": 34,
+            "currentLines": [
+              34
+            ]
+          },
+          {
+            "declaration": "export function textBoundsFitCanvas(bounds, canvas) {",
+            "previousLine": 39,
+            "currentLines": [
+              39
+            ]
+          },
+          {
+            "declaration": "export function measureTextWidth(",
+            "previousLine": 45,
+            "currentLines": [
+              45
+            ]
+          },
+          {
+            "declaration": "export function requireFiniteBounds(bounds, label = \"Graphic\") {",
+            "previousLine": 84,
+            "currentLines": [
+              84
+            ]
+          },
+          {
+            "declaration": "export function resolveTextBounds({",
+            "previousLine": 91,
+            "currentLines": [
+              91
+            ]
+          },
+          {
+            "declaration": "export function unionBounds(bounds) {",
+            "previousLine": 145,
+            "currentLines": [
+              145
+            ]
+          },
+          {
+            "declaration": "export function resolveTextLines(text, config) {",
+            "previousLine": 155,
+            "currentLines": [
+              155
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/grammar/AGENTS.md",
+        "expectedSha256": "92dd3f3c88a8c9cd4da5f7c57adfd923a2ccad2fb696e718dced786dde0d5a8f",
+        "actualSha256": "92dd3f3c88a8c9cd4da5f7c57adfd923a2ccad2fb696e718dced786dde0d5a8f",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "src/grammar/computed.js",
+        "expectedSha256": "c6289890cda6b51cfe2e6600f0133f2ff36efd304edf71476e6857a4663296b3",
+        "actualSha256": "c6289890cda6b51cfe2e6600f0133f2ff36efd304edf71476e6857a4663296b3",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function normalizeComputedTransform({ as, expression } = {}) {",
+            "previousLine": 200,
+            "currentLines": [
+              200
+            ]
+          },
+          {
+            "declaration": "export function validateComputedTransform(transform) {",
+            "previousLine": 209,
+            "currentLines": [
+              209
+            ]
+          },
+          {
+            "declaration": "export function deriveComputedRows(rows, transform) {",
+            "previousLine": 410,
+            "currentLines": [
+              410
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/grammar/datasetSchema.js",
+        "expectedSha256": "99019554fbcafc76006e1446cd2791a1c32cfc8a48e62045aa11c826daf23a21",
+        "actualSha256": "99019554fbcafc76006e1446cd2791a1c32cfc8a48e62045aa11c826daf23a21",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function normalizeSourceSchema(value) {",
+            "previousLine": 82,
+            "currentLines": [
+              82
+            ]
+          },
+          {
+            "declaration": "export function validateDatasetSchema(value) {",
+            "previousLine": 98,
+            "currentLines": [
+              98
+            ]
+          },
+          {
+            "declaration": "export function inferDatasetSchema(values, { origin = \"inferred\" } = {}) {",
+            "previousLine": 124,
+            "currentLines": [
+              124
+            ]
+          },
+          {
+            "declaration": "export function validateRowsAgainstSchema(values, schema, label = \"Dataset\") {",
+            "previousLine": 151,
+            "currentLines": [
+              151
+            ]
+          },
+          {
+            "declaration": "export function schemaField(schema, name) {",
+            "previousLine": 180,
+            "currentLines": [
+              180
+            ]
+          },
+          {
+            "declaration": "export function assertFieldsAvailable(schema, fields, { data, operation } = {}) {",
+            "previousLine": 184,
+            "currentLines": [
+              184
+            ]
+          },
+          {
+            "declaration": "export function transformInputFields(transform) {",
+            "previousLine": 212,
+            "currentLines": [
+              212
+            ]
+          },
+          {
+            "declaration": "export function datasetSchemaContext(source,transform,ownerId,resolveInput) {",
+            "previousLine": 271,
+            "currentLines": [
+              271
+            ]
+          },
+          {
+            "declaration": "export function deriveTransformSchema(inputSchema, transform, values, { sourceId, ownerId, sourceTransform,lookupSchema,lookupSourceId } = {}) {",
+            "previousLine": 283,
+            "currentLines": [
+              283
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/grammar/paint.js",
+        "expectedSha256": "e46e0b4f655a0292eb5ffe030ec03a7ac20b5f54e581f2d765d67c00f444d8fd",
+        "actualSha256": "e46e0b4f655a0292eb5ffe030ec03a7ac20b5f54e581f2d765d67c00f444d8fd",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function isLinearGradientPaint(value) {",
+            "previousLine": 37,
+            "currentLines": [
+              37
+            ]
+          },
+          {
+            "declaration": "export function validateFillPaint(value, label = \"fill\") {",
+            "previousLine": 41,
+            "currentLines": [
+              41
+            ]
+          },
+          {
+            "declaration": "export function resolveLinearGradientCoordinates(paint, bounds) {",
+            "previousLine": 69,
+            "currentLines": [
+              69
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/grammar/pathCommands.js",
+        "expectedSha256": "54346d546646e3ee65d7a47594d83aa29014818c84348f8e1030a3ea045caf70",
+        "actualSha256": "54346d546646e3ee65d7a47594d83aa29014818c84348f8e1030a3ea045caf70",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export const MAX_PATH_COMMANDS = 30_000;",
+            "previousLine": 4,
+            "currentLines": [
+              4
+            ]
+          },
+          {
+            "declaration": "export function validatePathCommandCount(count, label) {",
+            "previousLine": 6,
+            "currentLines": [
+              6
+            ]
+          },
+          {
+            "declaration": "export function validatePathCommands(commands) {",
+            "previousLine": 44,
+            "currentLines": [
+              44
+            ]
+          },
+          {
+            "declaration": "export function buildLinearPathCommands(points, { close = false } = {}) {",
+            "previousLine": 90,
+            "currentLines": [
+              90
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/grammar/schemas/concreteGraphic.js",
+        "expectedSha256": "5229246fbafbb6630733d89c47132740564af7bd6992f59e4c8053ada16878f5",
+        "actualSha256": "5229246fbafbb6630733d89c47132740564af7bd6992f59e4c8053ada16878f5",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function validateConcreteGraphicValue(type, property, value) {",
+            "previousLine": 30,
+            "currentLines": [
+              30
+            ]
+          },
+          {
+            "declaration": "export function validateConcreteGraphicProperties(type, properties) {",
+            "previousLine": 101,
+            "currentLines": [
+              101
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/grammar/schemas/graphicBounds.js",
+        "expectedSha256": "333bad79951b9a460b85f810c7b9f0e18cd4a26af88e18892daaaec92f43164e",
+        "actualSha256": "333bad79951b9a460b85f810c7b9f0e18cd4a26af88e18892daaaec92f43164e",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function resolvePathCommandBounds(commands) {",
+            "previousLine": 115,
+            "currentLines": [
+              115
+            ]
+          },
+          {
+            "declaration": "export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {",
+            "previousLine": 387,
+            "currentLines": [
+              387
+            ]
+          },
+          {
+            "declaration": "export function resolveGraphicParentOffset(graphicSpec, target) {",
+            "previousLine": 463,
+            "currentLines": [
+              463
+            ]
+          },
+          {
+            "declaration": "export function resolveGraphicClipBounds(graphicSpec, target, {rootViewport = false} = {}) {",
+            "previousLine": 505,
+            "currentLines": [
+              505
+            ]
+          },
+          {
+            "declaration": "export function resolveConcreteGraphicBounds(graphicSpec, target, profile, {includeOwnerClips = true} = {}) {",
+            "previousLine": 560,
+            "currentLines": [
+              560
+            ]
+          },
+          {
+            "declaration": "export function unionConcreteGraphicBounds(graphicSpec, targets, profile, options) {",
+            "previousLine": 575,
+            "currentLines": [
+              575
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/grammar/schemas/graphicClip.js",
+        "expectedSha256": "579b5cf4fbed88cf5cf9f5a031c4c92c628dbf428145423948620dbb039e0cd3",
+        "actualSha256": "579b5cf4fbed88cf5cf9f5a031c4c92c628dbf428145423948620dbb039e0cd3",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function validateGraphicClip(value, type) {",
+            "previousLine": 4,
+            "currentLines": [
+              4
+            ]
+          },
+          {
+            "declaration": "export function graphicClipBounds(rect, x = 0, y = 0) {",
+            "previousLine": 15,
+            "currentLines": [
+              15
+            ]
+          },
+          {
+            "declaration": "export function intersectClipBounds(a, b) {",
+            "previousLine": 20,
+            "currentLines": [
+              20
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/grammar/transforms.js",
+        "expectedSha256": "1e9351a664459e72d798a43384dce2e96d2811f344290d06ecc7b18e0910bc49",
+        "actualSha256": "1e9351a664459e72d798a43384dce2e96d2811f344290d06ecc7b18e0910bc49",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function findTransformPolicy(type) {",
+            "previousLine": 539,
+            "currentLines": [
+              539
+            ]
+          },
+          {
+            "declaration": "export function findTransformValidator(type) {",
+            "previousLine": 543,
+            "currentLines": [
+              543
+            ]
+          },
+          {
+            "declaration": "export function requestedDatasetTransform(transform) {",
+            "previousLine": 547,
+            "currentLines": [
+              547
+            ]
+          },
+          {
+            "declaration": "export function normalizeDatasetTransformEdit(transform, patch, owner) {",
+            "previousLine": 558,
+            "currentLines": [
+              558
+            ]
+          },
+          {
+            "declaration": "export function datasetTransformOutputRoles(transform) {",
+            "previousLine": 566,
+            "currentLines": [
+              566
+            ]
+          },
+          {
+            "declaration": "export function validateDatasetTransforms(value) {",
+            "previousLine": 571,
+            "currentLines": [
+              571
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/inspection.js",
+        "expectedSha256": "e3f88000443b9b73d755ffb03781e1e2893102a6149f4025f22a21f8b00cf4f5",
+        "actualSha256": "e3f88000443b9b73d755ffb03781e1e2893102a6149f4025f22a21f8b00cf4f5",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function getPlotComposition(program, { target, childPath } = {}) {",
+            "previousLine": 90,
+            "currentLines": [
+              90
+            ]
+          },
+          {
+            "declaration": "export function getDatasetSchema(program, { data, childPath } = {}) {",
+            "previousLine": 96,
+            "currentLines": [
+              96
+            ]
+          },
+          {
+            "declaration": "export function describeAction(program, { action, target, options = {} } = {}) {",
+            "previousLine": 105,
+            "currentLines": [
+              105
+            ]
+          },
+          {
+            "declaration": "export function comparePrograms(before, after, { target } = {}) {",
+            "previousLine": 355,
+            "currentLines": [
+              355
+            ]
+          },
+          {
+            "declaration": "export function inspectProgram(program, { target } = {}) {",
+            "previousLine": 568,
+            "currentLines": [
+              568
+            ]
+          },
+          {
+            "declaration": "export function getMarkItems(program, { target, grain = 'item' } = {}) {",
+            "previousLine": 639,
+            "currentLines": [
+              639
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/inspectionDescriptors.js",
+        "expectedSha256": "3af23791ef03a723fbf396a89041b6b2d781088b0aa6dcdd679818e80e278923",
+        "actualSha256": "3af23791ef03a723fbf396a89041b6b2d781088b0aa6dcdd679818e80e278923",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export const BUILTIN_ACTION_DESCRIPTOR_RECORDS = [[\"createCanvas\",[[\"width\",false,\"number\",null,\"logical-pixel\"],[\"height\",false,\"number\",null,\"logical-pixel\"],[\"background\",false,",
+            "previousLine": 3,
+            "currentLines": []
+          }
+        ]
+      },
+      {
+        "path": "src/layout/AGENTS.md",
+        "expectedSha256": "8963d5248516cf8637e80e7940ce08d1a57aca920847b2801d05a46aa3e26e5e",
+        "actualSha256": "8963d5248516cf8637e80e7940ce08d1a57aca920847b2801d05a46aa3e26e5e",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "src/materialization/AGENTS.md",
+        "expectedSha256": "36fde68643ffdb269390372b21555ffeeaadb379fae4962b870aef1df94cc9ef",
+        "actualSha256": "36fde68643ffdb269390372b21555ffeeaadb379fae4962b870aef1df94cc9ef",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "src/materialization/composition.js",
+        "expectedSha256": "aac44aa2a7266683da3bd67eabd43646cd785959f57d9cf7a482d34abe0cefe7",
+        "actualSha256": "aac44aa2a7266683da3bd67eabd43646cd785959f57d9cf7a482d34abe0cefe7",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function requireChildCanvas(program, id) {",
+            "previousLine": 21,
+            "currentLines": [
+              21
+            ]
+          },
+          {
+            "declaration": "export function compositionChildDescriptor(id, program) {",
+            "previousLine": 30,
+            "currentLines": [
+              30
+            ]
+          },
+          {
+            "declaration": "export function compositionPlotBounds(program) {",
+            "previousLine": 45,
+            "currentLines": [
+              45
+            ]
+          },
+          {
+            "declaration": "export function prepareCompositionSnapshots(program) {",
+            "previousLine": 114,
+            "currentLines": [
+              114
+            ]
+          },
+          {
+            "declaration": "export function resolveCompositionProgramLayout(program) {",
+            "previousLine": 154,
+            "currentLines": [
+              154
+            ]
+          },
+          {
+            "declaration": "export function attachSnapshotObject(program, snapshot, id, parent) {",
+            "previousLine": 188,
+            "currentLines": [
+              188
+            ]
+          },
+          {
+            "declaration": "export function clearCompositionChildren(program) {",
+            "previousLine": 207,
+            "currentLines": [
+              207
+            ]
+          },
+          {
+            "declaration": "export function materializeCompositionGraphics(program) {",
+            "previousLine": 212,
+            "currentLines": [
+              212
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/materialization/compositionSnapshot.js",
+        "expectedSha256": "f76aa0ebc1554e6bc47149cdb2729f980c74eb2f825fd0e18debe200693be8f7",
+        "actualSha256": "f76aa0ebc1554e6bc47149cdb2729f980c74eb2f825fd0e18debe200693be8f7",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function namespaceGraphicSnapshot(",
+            "previousLine": 82,
+            "currentLines": [
+              82
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/materialization/facets.js",
+        "expectedSha256": "6622fdad2015dd9cf09ca6b7f19d8bf951554acef8dd60ff2f7cc7882fc24f4b",
+        "actualSha256": "6622fdad2015dd9cf09ca6b7f19d8bf951554acef8dd60ff2f7cc7882fc24f4b",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function resolveFacetProgramLayout(program, preparedLegend) {",
+            "previousLine": 90,
+            "currentLines": [
+              90
+            ]
+          },
+          {
+            "declaration": "export function materializeFacetGraphics(program) {",
+            "previousLine": 200,
+            "currentLines": [
+              200
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/materialization/layout.js",
+        "expectedSha256": "ac2d90c9f204df0dd56f72ede63ac5a88a0809fb5bb2c12ab5588bcce849c4fb",
+        "actualSha256": "ac2d90c9f204df0dd56f72ede63ac5a88a0809fb5bb2c12ab5588bcce849c4fb",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function planCanvasRematerialization(program) {",
+            "previousLine": 6,
+            "currentLines": [
+              6
+            ]
+          },
+          {
+            "declaration": "export function planLayoutRematerialization(program) {",
+            "previousLine": 64,
+            "currentLines": [
+              64
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/materialization/marks/capabilities.js",
+        "expectedSha256": "0bc5de4341b91c8f15e3a49a723a62f2cdc1c8294fc373d3672b9c490138460a",
+        "actualSha256": "0bc5de4341b91c8f15e3a49a723a62f2cdc1c8294fc373d3672b9c490138460a",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function canMaterializePoint(_program, layer) {",
+            "previousLine": 30,
+            "currentLines": [
+              30
+            ]
+          },
+          {
+            "declaration": "export function canMaterializeTick(_program, layer) {",
+            "previousLine": 36,
+            "currentLines": [
+              36
+            ]
+          },
+          {
+            "declaration": "export function canMaterializeLine(program, layer) {",
+            "previousLine": 40,
+            "currentLines": [
+              40
+            ]
+          },
+          {
+            "declaration": "export function canMaterializeArea(program, layer) {",
+            "previousLine": 79,
+            "currentLines": [
+              79
+            ]
+          },
+          {
+            "declaration": "export function isIntentionallyEmptyArea(program, layer) {",
+            "previousLine": 102,
+            "currentLines": [
+              102
+            ]
+          },
+          {
+            "declaration": "export function canMaterializeArc(_program, layer) {",
+            "previousLine": 112,
+            "currentLines": [
+              112
+            ]
+          },
+          {
+            "declaration": "export function canMaterializeBar(program, layer) {",
+            "previousLine": 137,
+            "currentLines": [
+              137
+            ]
+          },
+          {
+            "declaration": "export function canMaterializeRule(program, layer) {",
+            "previousLine": 159,
+            "currentLines": [
+              159
+            ]
+          },
+          {
+            "declaration": "export function isTextSource(layer) {",
+            "previousLine": 179,
+            "currentLines": [
+              179
+            ]
+          },
+          {
+            "declaration": "export function canMaterializeText(program, layer) {",
+            "previousLine": 184,
+            "currentLines": [
+              184
+            ]
+          },
+          {
+            "declaration": "export function canMaterializeRect(program, layer) {",
+            "previousLine": 197,
+            "currentLines": [
+              197
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/materialization/planner.js",
+        "expectedSha256": "aef0bf9382bb6daddfac0a0db126c6c225efea670ec2e9e732eba196ef03dcb0",
+        "actualSha256": "aef0bf9382bb6daddfac0a0db126c6c225efea670ec2e9e732eba196ef03dcb0",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function buildMaterializationPlan(stages = {}) {",
+            "previousLine": 105,
+            "currentLines": [
+              105
+            ]
+          },
+          {
+            "declaration": "export function applyMaterializationPlan(program, plan) {",
+            "previousLine": 119,
+            "currentLines": [
+              119
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/materialization/revisionIdentity.js",
+        "expectedSha256": "d0e23090117b9e2866cece4fe1d38ec1e27b847f710192c36d0022556f462276",
+        "actualSha256": "d0e23090117b9e2866cece4fe1d38ec1e27b847f710192c36d0022556f462276",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function withLogicalDataReplacements(replacements, operation) {",
+            "previousLine": 3,
+            "currentLines": [
+              3
+            ]
+          },
+          {
+            "declaration": "export function comparableDataIdentity(id) {",
+            "previousLine": 13,
+            "currentLines": [
+              13
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/materialization/selection/items/index.js",
+        "expectedSha256": "1136d390468657628000fb1aaa9d2d5ab11ea4218e181af88511dea2205ed36c",
+        "actualSha256": "1136d390468657628000fb1aaa9d2d5ab11ea4218e181af88511dea2205ed36c",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "src/materialization/selection/items/path.js",
+        "expectedSha256": "2d24fa400cbbee78081d6a347f1c89b259e7341a3e7ef804f52a8e19c982bea2",
+        "actualSha256": "2d24fa400cbbee78081d6a347f1c89b259e7341a3e7ef804f52a8e19c982bea2",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function resolveLineItems(program, layer, dataset) {",
+            "previousLine": 36,
+            "currentLines": [
+              36
+            ]
+          },
+          {
+            "declaration": "export function resolveAreaItems(program, layer, dataset) {",
+            "previousLine": 84,
+            "currentLines": [
+              84
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/materialization/selection/policies/index.js",
+        "expectedSha256": "8861196f01747b52197caa709d1489c030881df50c3aee41f2d52a4f2f020963",
+        "actualSha256": "8861196f01747b52197caa709d1489c030881df50c3aee41f2d52a4f2f020963",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function findSelectionPolicy(markType) {",
+            "previousLine": 29,
+            "currentLines": [
+              29
+            ]
+          },
+          {
+            "declaration": "export function requireSelectionPolicy(markType) {",
+            "previousLine": 33,
+            "currentLines": [
+              33
+            ]
+          },
+          {
+            "declaration": "export function resolveMarkItems(program, target, grain = \"item\") {",
+            "previousLine": 41,
+            "currentLines": [
+              41
+            ]
+          },
+          {
+            "declaration": "export function resolveMarkSourceItems(program, target, grain = 'item') {",
+            "previousLine": 73,
+            "currentLines": [
+              73
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/materialization/selection/rows.js",
+        "expectedSha256": "28b801e26fa979ac3e1df12f2327b255b312ca0e6b3c5771ef0ea7fe86f77981",
+        "actualSha256": "28b801e26fa979ac3e1df12f2327b255b312ca0e6b3c5771ef0ea7fe86f77981",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function markFilterSourceIndices(sourceRows, rows) {",
+            "previousLine": 71,
+            "currentLines": [
+              71
+            ]
+          },
+          {
+            "declaration": "export function memberRowReferences(program, members) {",
+            "previousLine": 80,
+            "currentLines": [
+              80
+            ]
+          },
+          {
+            "declaration": "export function validateRowSelection(program, rows, items) {",
+            "previousLine": 87,
+            "currentLines": [
+              87
+            ]
+          },
+          {
+            "declaration": "export function rowsForSelectedItems(program, items, keys, preferredData) {",
+            "previousLine": 95,
+            "currentLines": [
+              95
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/materialization/selection/state.js",
+        "expectedSha256": "450fc8569cb15de015021338e72ee1a104db85ca3d121595112b4bb665f9fdee",
+        "actualSha256": "450fc8569cb15de015021338e72ee1a104db85ca3d121595112b4bb665f9fdee",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function resolveMarkSelection(program, target, selector) {",
+            "previousLine": 6,
+            "currentLines": [
+              6
+            ]
+          },
+          {
+            "declaration": "export function resolveSelectionCreationId(program, id, target) {",
+            "previousLine": 35,
+            "currentLines": [
+              35
+            ]
+          },
+          {
+            "declaration": "export function selectionPredicate(program, definition) {",
+            "previousLine": 49,
+            "currentLines": [
+              49
+            ]
+          },
+          {
+            "declaration": "export function resolveStoredSelection(program, id) {",
+            "previousLine": 60,
+            "currentLines": [
+              60
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/materialization/selection/styles.js",
+        "expectedSha256": "23609302667a5d251bb51f3a84dde0cca2722076c0613a5daec1caad470aa4ae",
+        "actualSha256": "23609302667a5d251bb51f3a84dde0cca2722076c0613a5daec1caad470aa4ae",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function normalizeDimOthers(dimOthers) {",
+            "previousLine": 48,
+            "currentLines": [
+              48
+            ]
+          },
+          {
+            "declaration": "export function normalizePointHighlightStyle(args) {",
+            "previousLine": 63,
+            "currentLines": [
+              63
+            ]
+          },
+          {
+            "declaration": "export function normalizeBarHighlightStyle(args) {",
+            "previousLine": 127,
+            "currentLines": [
+              127
+            ]
+          },
+          {
+            "declaration": "export function normalizeRectHighlightStyle(args) {",
+            "previousLine": 131,
+            "currentLines": [
+              131
+            ]
+          },
+          {
+            "declaration": "export function normalizeStrokeHighlightStyle(args, mark) {",
+            "previousLine": 143,
+            "currentLines": [
+              143
+            ]
+          },
+          {
+            "declaration": "export function normalizeAreaHighlightStyle(args, mark = \"Area\") {",
+            "previousLine": 176,
+            "currentLines": [
+              176
+            ]
+          },
+          {
+            "declaration": "export function normalizeTextHighlightStyle(args) {",
+            "previousLine": 196,
+            "currentLines": [
+              196
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/persistence.js",
+        "expectedSha256": "be9b8080dd778ab590f8cce00ffac0c20c67a8eed0c211e4df84ae5af8be1573",
+        "actualSha256": "be9b8080dd778ab590f8cce00ffac0c20c67a8eed0c211e4df84ae5af8be1573",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function serializeProgram(program) {",
+            "previousLine": 121,
+            "currentLines": [
+              121
+            ]
+          },
+          {
+            "declaration": "export function deserializeProgram(text) {",
+            "previousLine": 135,
+            "currentLines": [
+              135
+            ]
+          },
+          {
+            "declaration": "export function serializeGraphic(program) {",
+            "previousLine": 153,
+            "currentLines": [
+              153
+            ]
+          },
+          {
+            "declaration": "export function deserializeGraphic(text) {",
+            "previousLine": 158,
+            "currentLines": [
+              158
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/persistence/codec.js",
+        "expectedSha256": "4e1ce23a6201d1f822111b90789936e19d68fb0bfc7b50b8061ef979de23bccd",
+        "actualSha256": "4e1ce23a6201d1f822111b90789936e19d68fb0bfc7b50b8061ef979de23bccd",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function invalidSnapshot(message, optionPath) {",
+            "previousLine": 4,
+            "currentLines": [
+              4
+            ]
+          },
+          {
+            "declaration": "export function encodeValue(value, path = \"payload\", ancestors = new WeakSet(), shared) {",
+            "previousLine": 8,
+            "currentLines": [
+              8
+            ]
+          },
+          {
+            "declaration": "export function encodeSharedValue(value) {",
+            "previousLine": 47,
+            "currentLines": [
+              47
+            ]
+          },
+          {
+            "declaration": "export function decodeValue(value, path = \"payload\", references) {",
+            "previousLine": 53,
+            "currentLines": [
+              53
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/persistence/validation.js",
+        "expectedSha256": "c090eb076cde577a56588cab2b453948bec266050dfec8ea380c4994399963ac",
+        "actualSha256": "c090eb076cde577a56588cab2b453948bec266050dfec8ea380c4994399963ac",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export const STATE_KEYS = Object.freeze([",
+            "previousLine": 63,
+            "currentLines": [
+              63
+            ]
+          },
+          {
+            "declaration": "export function requireObject(value, path) {",
+            "previousLine": 83,
+            "currentLines": [
+              83
+            ]
+          },
+          {
+            "declaration": "export function exactKeys(value, keys, path) {",
+            "previousLine": 87,
+            "currentLines": [
+              87
+            ]
+          },
+          {
+            "declaration": "export function validateGraphic(graphic, path = \"payload.graphicSpec\") {",
+            "previousLine": 100,
+            "currentLines": [
+              100
+            ]
+          },
+          {
+            "declaration": "export function validateTrace(trace, ProgramClass, extensions, path = \"payload.trace\") {",
+            "previousLine": 144,
+            "currentLines": [
+              144
+            ]
+          },
+          {
+            "declaration": "export function validateProgramState(program, path, { allowMissingLookupSchemas = false } = {}) {",
+            "previousLine": 179,
+            "currentLines": [
+              179
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/renderers/AGENTS.md",
+        "expectedSha256": "7810b281452d6d8fe33b0e4b6a1987a0dd69370fc9aab4cfe97105190d00073f",
+        "actualSha256": "7810b281452d6d8fe33b0e4b6a1987a0dd69370fc9aab4cfe97105190d00073f",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "src/renderers/canvas/path.js",
+        "expectedSha256": "6b9e382b82fb5f44b048b6cfbf15bbb3c8f03deb957879b0f7a556803b2c47c1",
+        "actualSha256": "6b9e382b82fb5f44b048b6cfbf15bbb3c8f03deb957879b0f7a556803b2c47c1",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function drawPathGraphic(context, id, graphic) {",
+            "previousLine": 91,
+            "currentLines": [
+              91
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/renderers/canvas/scene.js",
+        "expectedSha256": "6b8534840f4ad64e5fbeb5b30810b9f6585c3db5a69055582d1616b5be42a226",
+        "actualSha256": "6b8534840f4ad64e5fbeb5b30810b9f6585c3db5a69055582d1616b5be42a226",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function renderTransitionScene(scene, context, options) {",
+            "previousLine": 57,
+            "currentLines": [
+              57
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/renderers/pdf.js",
+        "expectedSha256": "aa0bf4b56bb1bd076907021d5eb690592a1a14ae92acc715a9241779ac1c02df",
+        "actualSha256": "aa0bf4b56bb1bd076907021d5eb690592a1a14ae92acc715a9241779ac1c02df",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export async function renderToPDFBuffer(program, options = {}) {",
+            "previousLine": 69,
+            "currentLines": [
+              69
+            ]
+          },
+          {
+            "declaration": "export async function renderToPDF(program, options = {}) {",
+            "previousLine": 87,
+            "currentLines": [
+              87
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/renderers/png.js",
+        "expectedSha256": "9d4ffd81b8b93d863ed7a57d2721ffc64c274f0b1d0f3464e56902e2ac7c0b1c",
+        "actualSha256": "9d4ffd81b8b93d863ed7a57d2721ffc64c274f0b1d0f3464e56902e2ac7c0b1c",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export async function renderToPNGBuffer(program, options = {}) {",
+            "previousLine": 10,
+            "currentLines": [
+              10
+            ]
+          },
+          {
+            "declaration": "export async function renderToPNG(program, options = {}) {",
+            "previousLine": 24,
+            "currentLines": [
+              24
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/renderers/svg.js",
+        "expectedSha256": "35a2db221d9cdcc4b243418dfd4e4356774b118bbd6ddbc9120c219c42b5ee58",
+        "actualSha256": "35a2db221d9cdcc4b243418dfd4e4356774b118bbd6ddbc9120c219c42b5ee58",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "src/renderers/svgSerialization.js",
+        "expectedSha256": "01b1dc32b48ddc2d20e1a306aadc5f3191bcfd54bcb2f913ef971d03601ae1f1",
+        "actualSha256": "01b1dc32b48ddc2d20e1a306aadc5f3191bcfd54bcb2f913ef971d03601ae1f1",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function renderToSVG(program, options = {}) {",
+            "previousLine": 578,
+            "currentLines": [
+              578
+            ]
+          },
+          {
+            "declaration": "export function renderTransitionGraphics(graphicSpec, identities) {",
+            "previousLine": 644,
+            "currentLines": [
+              644
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/renderers/text.js",
+        "expectedSha256": "8ec7821d7c54883b29f1463341adbd0724734ee0fa06729712bb08d34d6ef3ac",
+        "actualSha256": "8ec7821d7c54883b29f1463341adbd0724734ee0fa06729712bb08d34d6ef3ac",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "src/renderers/transitionScene.js",
+        "expectedSha256": "458fbd59cd958c3b5b3aeaacbf2276b45af9fc1ac38c00352f8970c625cabaff",
+        "actualSha256": "458fbd59cd958c3b5b3aeaacbf2276b45af9fc1ac38c00352f8970c625cabaff",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function collectTransitionGraphics(graphicSpec, identities) {",
+            "previousLine": 10,
+            "currentLines": [
+              10
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/scene.js",
+        "expectedSha256": "83ecb814b660d2f21b5e4b1b302b9204f6012e4f1c0755b794301a6a3f7f4acf",
+        "actualSha256": "83ecb814b660d2f21b5e4b1b302b9204f6012e4f1c0755b794301a6a3f7f4acf",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function createTransitionScene(program, { format = \"svg\" } = {}) {",
+            "previousLine": 83,
+            "currentLines": [
+              83
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/selectors/coordinates.js",
+        "expectedSha256": "e6e08eae3d7c533ccddf58cb8e8f22a525a634de83b026e9424f91bcdf737d6c",
+        "actualSha256": "e6e08eae3d7c533ccddf58cb8e8f22a525a634de83b026e9424f91bcdf737d6c",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export function findCoordinate(program, id) {",
+            "previousLine": 3,
+            "currentLines": [
+              3
+            ]
+          },
+          {
+            "declaration": "export function hasCoordinate(program, id) {",
+            "previousLine": 7,
+            "currentLines": [
+              7
+            ]
+          },
+          {
+            "declaration": "export function requireCoordinate(program, id) {",
+            "previousLine": 11,
+            "currentLines": [
+              11
+            ]
+          }
+        ]
+      },
+      {
+        "path": "src/theme/defaults.js",
+        "expectedSha256": "312d427dd1c6f2cc3c6ff9068ee82e5ec8ab06b9ea4d7e01c52c54f7ca80bbf8",
+        "actualSha256": "312d427dd1c6f2cc3c6ff9068ee82e5ec8ab06b9ea4d7e01c52c54f7ca80bbf8",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export const DEFAULT_POINT_RADIUS = 3;",
+            "previousLine": 4,
+            "currentLines": [
+              4
+            ]
+          },
+          {
+            "declaration": "export const AXIS_LABEL_FONT_SIZES = Object.freeze({ cartesian: 12, polar: 11, parallel: 11 });",
+            "previousLine": 5,
+            "currentLines": [
+              5
+            ]
+          },
+          {
+            "declaration": "export const AXIS_TITLE_FONT_SIZE = 13;",
+            "previousLine": 6,
+            "currentLines": [
+              6
+            ]
+          },
+          {
+            "declaration": "export const DEFAULT_VERTICAL_LEGEND_ITEM_GAP = 18;",
+            "previousLine": 7,
+            "currentLines": [
+              7
+            ]
+          },
+          {
+            "declaration": "export const DEFAULT_COLORS = Object.freeze({",
+            "previousLine": 9,
+            "currentLines": [
+              9
+            ]
+          },
+          {
+            "declaration": "export const THEME_NAMES = Object.freeze([\"light\", \"dark\"]);",
+            "previousLine": 28,
+            "currentLines": [
+              28
+            ]
+          },
+          {
+            "declaration": "export const THEME_TOKEN_KEYS = Object.freeze([",
+            "previousLine": 30,
+            "currentLines": [
+              30
+            ]
+          },
+          {
+            "declaration": "export const THEME_TOKENS = Object.freeze({",
+            "previousLine": 81,
+            "currentLines": [
+              81
+            ]
+          },
+          {
+            "declaration": "export function themeTokens(name = \"light\") {",
+            "previousLine": 109,
+            "currentLines": [
+              109
+            ]
+          },
+          {
+            "declaration": "export function normalizeThemeDefinition(definition) {",
+            "previousLine": 135,
+            "currentLines": [
+              135
+            ]
+          },
+          {
+            "declaration": "export function resolveThemeTokens(definition = \"light\") {",
+            "previousLine": 158,
+            "currentLines": [
+              158
+            ]
+          }
+        ]
+      },
+      {
+        "path": "test/AGENTS.md",
+        "expectedSha256": "348ef0f428d1d7d3e7e3a7a3abed7f79289d6f37e7d9af17a119deea1af2e43c",
+        "actualSha256": "348ef0f428d1d7d3e7e3a7a3abed7f79289d6f37e7d9af17a119deea1af2e43c",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "## Scoped Test Instructions",
+            "previousLine": 5,
+            "currentLines": [
+              5
+            ]
+          },
+          {
+            "declaration": "## Suite-Wide Rules",
+            "previousLine": 12,
+            "currentLines": [
+              12
+            ]
+          },
+          {
+            "declaration": "## Active Review Gates",
+            "previousLine": 29,
+            "currentLines": [
+              29
+            ]
+          }
+        ]
+      },
+      {
+        "path": "test/capabilities.json",
+        "expectedSha256": "30beeb593c1567b5e91389ad095ed45f4ed479936c0eaff5f4700f491e1da0c2",
+        "actualSha256": "30beeb593c1567b5e91389ad095ed45f4ed479936c0eaff5f4700f491e1da0c2",
+        "status": "matched",
+        "symbols": []
+      },
+      {
+        "path": "test/support/browser.js",
+        "expectedSha256": "90d2e617372af13ebd6ac8c9dedcbfc74559962060cfb4ce39ab084d9afbe26b",
+        "actualSha256": "90d2e617372af13ebd6ac8c9dedcbfc74559962060cfb4ce39ab084d9afbe26b",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export async function openBrowserPage(browser, url, { waitFor, waitForArg } = {}) {",
+            "previousLine": 8,
+            "currentLines": [
+              8
+            ]
+          },
+          {
+            "declaration": "export async function windowValue(page, name) {",
+            "previousLine": 28,
+            "currentLines": [
+              28
+            ]
+          },
+          {
+            "declaration": "export function assertNoBrowserErrors(errors, label) {",
+            "previousLine": 32,
+            "currentLines": [
+              32
+            ]
+          },
+          {
+            "declaration": "export async function saveBrowserPageEvidence(page, error, label) {",
+            "previousLine": 36,
+            "currentLines": [
+              36
+            ]
+          },
+          {
+            "declaration": "export async function saveBrowserContextEvidence(context, error) {",
+            "previousLine": 48,
+            "currentLines": [
+              48
+            ]
+          },
+          {
+            "declaration": "export async function saveBrowserEvidence(browser, error) {",
+            "previousLine": 54,
+            "currentLines": [
+              54
+            ]
+          },
+          {
+            "declaration": "export async function closeBrowserWithEvidence(browser) {",
+            "previousLine": 63,
+            "currentLines": [
+              63
+            ]
+          }
+        ]
+      },
+      {
+        "path": "types/program.d.ts",
+        "expectedSha256": "89701a6935eae443336827ca0404cf5b80e7ec886b4d0070b5608d353e1431e4",
+        "actualSha256": "89701a6935eae443336827ca0404cf5b80e7ec886b4d0070b5608d353e1431e4",
+        "status": "matched",
+        "symbols": [
+          {
+            "declaration": "export class ChartProgram {",
+            "previousLine": 5417,
+            "currentLines": [
+              5417
+            ]
+          }
+        ]
+      },
+      {
+        "path": "types/scene.d.ts",
+        "expectedSha256": "caffa2620174c83b2bfb2efad2aa1f37771ad8001bffded8b882da75f1660554",
+        "actualSha256": "caffa2620174c83b2bfb2efad2aa1f37771ad8001bffded8b882da75f1660554",
+        "status": "matched",
+        "symbols": []
+      }
+    ]
+  },
+  "notice": "Committed snapshot inventory, not an executed verification result. Working-tree state and environment are recorded separately.",
+  "environment": {
+    "node": "v22.23.2",
+    "nodeExecutableSha256": "18e387c90ab8a8400183e8bdd396376e1e875b91b4c874b894dcade7b35bf572",
+    "npm": "10.9.8",
+    "platform": "darwin",
+    "arch": "arm64",
+    "osRelease": "27.0.0",
+    "cpus": 10,
+    "memoryBytes": 17179869184,
+    "browser": {
+      "status": "available",
+      "engine": "chromium",
+      "version": "Google Chrome for Testing 153.0.8010.12"
+    }
+  }
+}
