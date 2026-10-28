@@ -1,0 +1,332 @@
+{
+  "status": "verified-conceptual-checkpoint",
+  "sourceCommit": "3a3ec85d834ccc0fb36079b52d0df879e1c20831",
+  "recordedAt": "2026-10-28T23:20:18.494Z",
+  "scope": "STEP022 flow DAG/cyclic public slice; downstream integration obligations remain explicit",
+  "runtimeChangesAfterFullRun": [],
+  "coverage": {
+    "status": "passed-across-unchanged-source-runs",
+    "totalCriticalFloors": 336,
+    "originalCriticalFloorsPassed": 334,
+    "originalGlobal": {
+      "lines": 96.41,
+      "branches": 94.26,
+      "functions": 98.87
+    },
+    "focusedOwners": {
+      "renderers/canvas/circle.js": {
+        "floor": {
+          "lines": 75,
+          "branches": 60,
+          "functions": 80
+        },
+        "metrics": {
+          "lines": 84.13,
+          "branches": 66.67,
+          "functions": 100
+        }
+      },
+      "renderers/canvas/path.js": {
+        "floor": {
+          "lines": 75,
+          "branches": 60,
+          "functions": 80
+        },
+        "metrics": {
+          "lines": 79.52,
+          "branches": 79.41,
+          "functions": 100
+        }
+      }
+    },
+    "floorsLowered": false,
+    "source": "3a3ec85d834ccc0fb36079b52d0df879e1c20831",
+    "note": "Original full run remains 7361/7362 (one generated baseline registry failure). Focused repair runs are recorded separately; no synthetic merged global coverage."
+  },
+  "fullRun": {
+    "command": "node scripts/run-tests.js coverage",
+    "tests": 7362,
+    "passed": 7361,
+    "failed": 1,
+    "failure": "Generated baseline-evidence omitted the flow primitive fixture. Original failure is preserved."
+  },
+  "repairs": [
+    {
+      "command": "node scripts/run-tests.js contracts test/contracts/chart-variant-structure.test.js",
+      "tests": 3,
+      "passed": 3
+    },
+    {
+      "command": "node --experimental-test-coverage --test-coverage-include=src/renderers/canvas/circle.js --test-coverage-include=src/renderers/canvas/path.js --test test/unit/renderers/canvas-renderer.test.js test/unit/renderers/canvas-path-renderer.test.js test/unit/renderers/canvas-stroke-details.test.js test/unit/renderers/structured-fill-contours.test.js",
+      "tests": 33,
+      "passed": 33,
+      "note": "Reuse unchanged Partition regression for existing pattern contour callbacks; no floor lowered."
+    }
+  ],
+  "evidence": {
+    "beforeLabelRepair": {
+      "render": 301,
+      "browser": 323,
+      "realistic": 16
+    },
+    "afterLabelRepair": {
+      "selection": 75,
+      "boundariesAndTypes": 12,
+      "render": 8,
+      "browser": 4,
+      "docsSource": 170,
+      "builtPages": 155,
+      "builtArtifacts": 1328,
+      "responsiveWidths": [
+        320,
+        390,
+        768
+      ]
+    },
+    "installed": {
+      "artifact": {
+        "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/flow/repair/package/ggaction-0.0.26.tgz",
+        "sha256": "587c5f1994f7bff9668f8bf751e06fac97fcaf8b8e8853f7aff6eaa1c65a0757",
+        "entries": 819,
+        "packedBytes": 1198034,
+        "unpackedBytes": 5523241
+      },
+      "nodes": [
+        20,
+        22,
+        24
+      ],
+      "runtimePerNode": 212,
+      "tutorialPerNode": 74,
+      "qualificationPerNode": 7
+    }
+  },
+  "pending": [
+    "Root final graph/inference/flow data-revision closure merge and shared lifecycle three-file run.",
+    "STEP035 graph/flow facet-repeat partition policy; current hconcat/vconcat supported and automatic facet/repeat rejected.",
+    "AT65 public animation integration; retained identities and topology are ready.",
+    "Latest font/typography, P2 paint/effects and theme consumer integration."
+  ],
+  "files": [
+    {
+      "source": ".artifacts/flow/repair/coverage-full.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/coverage-full.log.gz",
+      "sha256": "4e935d6ff30e636cbdc5e1bfe72c7170cd57b02f77d4ed727fe368b77b0051a1"
+    },
+    {
+      "source": ".artifacts/flow/repair/coverage.receipt.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/coverage.receipt.json",
+      "sha256": "dc2d47dc26a8d73a8c94843ead5f479d8d9f6f8731579e83fafbc14d2f048822"
+    },
+    {
+      "source": ".artifacts/flow/repair/coverage-policy.receipt.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/coverage-policy.receipt.json",
+      "sha256": "a5867d5c04f4321747f04e930344f9d9774eb3fb7fff3137a94c8f2851a5e1f2"
+    },
+    {
+      "source": ".artifacts/flow/repair/critical-policy.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/critical-policy.json",
+      "sha256": "7cb21859a570032324ee28d0e1d75c153bca8072ec9dbf5c072f937ae16a9763"
+    },
+    {
+      "source": ".artifacts/flow/repair/baseline-repair-2.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/baseline-repair-2.log.gz",
+      "sha256": "3d927ac8ba4ae99409ad9dd9a5fc039bced1da4111d2d6dc970d55e5c8add462"
+    },
+    {
+      "source": ".artifacts/flow/repair/canvas-contours-coverage.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/canvas-contours-coverage.log.gz",
+      "sha256": "8ae3b80a3010108e59d123a029e2c2b8799f7a9ead2ae59c819962f7aaa0ba73"
+    },
+    {
+      "source": ".artifacts/flow/repair/discovery-final.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/discovery-final.log.gz",
+      "sha256": "7567581cb93ccb0b2d37952238fa349467ac0917863a388a69059db547cca7ee"
+    },
+    {
+      "source": ".artifacts/flow/repair/highlight-regressions-2.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/highlight-regressions-2.log.gz",
+      "sha256": "b1084f03f14cd918bbd78ccf0801f0beaa2f705785a5f3d1793026b12b843167"
+    },
+    {
+      "source": ".artifacts/flow/repair/focused-contracts.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/focused-contracts.log.gz",
+      "sha256": "c2a9678e3b0934c49a2c3cf1b762ee671e22c49a6bc52556cfdc4d3b94d4af2d"
+    },
+    {
+      "source": ".artifacts/flow/repair/docs-source.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/docs-source.log.gz",
+      "sha256": "461e6cdbf14e37d8c0dc6f99d797de5fcb61682f3f7e4d2c2330d853bd71d17d"
+    },
+    {
+      "source": ".artifacts/flow/repair/docs-generate-final.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/docs-generate-final.log.gz",
+      "sha256": "10279482a7f9f20656deb136fa7dca773864154ff273a6d6d751dc9deab807c9"
+    },
+    {
+      "source": ".artifacts/flow/repair/docs-build-final.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/docs-build-final.log.gz",
+      "sha256": "fd8f24a27cfcf203fde550973199d661d45c0d4721b729394f79922e21917bc2"
+    },
+    {
+      "source": ".artifacts/flow/repair/docs-built-corrected.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/docs-built-corrected.log.gz",
+      "sha256": "eaa54bae68d52f982bb82d4ceca8077901b3964bda725a1c9865ddb5445da758"
+    },
+    {
+      "source": ".artifacts/flow/repair/docs-browser-final.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/docs-browser-final.log.gz",
+      "sha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
+    },
+    {
+      "source": ".artifacts/flow/repair/render-2.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/render-2.log.gz",
+      "sha256": "c479c5da4df3967590a3e35bad7f98dbede47f3c96cad506681497ad2a9ff9f4"
+    },
+    {
+      "source": ".artifacts/flow/repair/render.receipt.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/render.receipt.json",
+      "sha256": "9a011d4a48abc2fa987edf73cfe140ee87056e38aadf6d352b9fda626638b3d2"
+    },
+    {
+      "source": ".artifacts/flow/repair/browser-2.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/browser-2.log.gz",
+      "sha256": "e73aefae412fcd50d9129057ffcc2b7f937619020d156fd1ebf9d06403cdef20"
+    },
+    {
+      "source": ".artifacts/flow/repair/browser.receipt.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/browser.receipt.json",
+      "sha256": "86d1ff2b84b56751df54efddc6ef27551c01e89e364d71ae1adf5b876673e683"
+    },
+    {
+      "source": ".artifacts/flow/repair/installed-matrix.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/installed-matrix.json",
+      "sha256": "fc56da67cc0fc9f59de59b575e43ec7bff554d073e5f9cd9e2646182d29703a2"
+    },
+    {
+      "source": ".artifacts/flow/repair/package.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/package.json",
+      "sha256": "c4e919b43112b647e4225750e563a2234ab2533bb7db7ba114dbd9eeb4efe76d"
+    },
+    {
+      "source": ".artifacts/flow/repair/installed-node20.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/installed-node20.log.gz",
+      "sha256": "ddbef273ad93c342ab58e681be470951674797ce41cbe594d3c381ea0d60d8ca"
+    },
+    {
+      "source": ".artifacts/flow/repair/installed-node20-node-cases.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/installed-node20-node-cases.json",
+      "sha256": "815bab3bbd8a0e369ffe9420809b1a7012998c6c4ba15aa629dfb640ea56abda"
+    },
+    {
+      "source": ".artifacts/flow/repair/installed-node20-tutorials.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/installed-node20-tutorials.json",
+      "sha256": "dbb058552059d150bb3906c5a5302cbacf13e01515ec9ec3c1fe81d56247a6eb"
+    },
+    {
+      "source": ".artifacts/flow/repair/installed-node20-qualification.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/installed-node20-qualification.json",
+      "sha256": "6d86a518839d4b7542872fe70bd721a4183b6f85cf66afc86073acd20c80f99e"
+    },
+    {
+      "source": ".artifacts/flow/repair/installed-node22.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/installed-node22.log.gz",
+      "sha256": "d41692f43ef1c9b3ff33427e340240130859f5e58d63695bb2db6b2cf7952815"
+    },
+    {
+      "source": ".artifacts/flow/repair/installed-node22-node-cases.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/installed-node22-node-cases.json",
+      "sha256": "3f857fec6ecb690bbd1f2b2b7481dcff43fdba5ccc0cf2367294d5b68bae88cd"
+    },
+    {
+      "source": ".artifacts/flow/repair/installed-node22-tutorials.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/installed-node22-tutorials.json",
+      "sha256": "b69e3a34b9de63ea615e69189c8b53179fd86b6fbf494ac145702fc2de03b379"
+    },
+    {
+      "source": ".artifacts/flow/repair/installed-node22-qualification.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/installed-node22-qualification.json",
+      "sha256": "6890783ebe41818c02d2a71ffc6660190d85c4862ee3a001f738a0eea378870d"
+    },
+    {
+      "source": ".artifacts/flow/repair/installed-node24.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/installed-node24.log.gz",
+      "sha256": "70a4c45c559d2c3a4f03b61e52f4e917556b737ce1ac3f5c8e2324ae883d9b15"
+    },
+    {
+      "source": ".artifacts/flow/repair/installed-node24-node-cases.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/installed-node24-node-cases.json",
+      "sha256": "2e694fb936a39d5e5711a83db19df81c975642e10cd03bc7d0b2a0b97efc2f31"
+    },
+    {
+      "source": ".artifacts/flow/repair/installed-node24-tutorials.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/installed-node24-tutorials.json",
+      "sha256": "aaa5ea8d9faed6ba353b9a9708a9ab212f2d63f3490fed2577538b2125e03c85"
+    },
+    {
+      "source": ".artifacts/flow/repair/installed-node24-qualification.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/installed-node24-qualification.json",
+      "sha256": "cf96e220660887d81eb8336dad6555e40c4afc8fe4b9ec48cb3849937b9d27d3"
+    },
+    {
+      "source": ".artifacts/flow/repair/package-size-v20.20.2.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/package-size-v20.20.2.json",
+      "sha256": "ebb051807ab76c2f077155f167964fc2e6a81982a0e1cc3d3da9c2ec39834d41"
+    },
+    {
+      "source": ".artifacts/flow/repair/package-size-v22.23.1.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/package-size-v22.23.1.json",
+      "sha256": "ec7849132cac7b68d255a5ce9ef7bf9036be2dc014f772aa92f79d0fa4c8cf5a"
+    },
+    {
+      "source": ".artifacts/flow/repair/package-size-v24.22.1.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/package-size-v24.22.1.json",
+      "sha256": "8da50d0ec7bfa0fd8d895f95f3ba288a3d6b67e9f412f44479f16bb53f85411a"
+    },
+    {
+      "source": ".artifacts/flow/focused-coverage-3.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/focused-coverage-3.log.gz",
+      "sha256": "f52c09ec03b882310173156c0b9756a13e41c0dd2cd8892fd363d0de31f859fd"
+    },
+    {
+      "source": ".artifacts/flow/render-full.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/render-full.log.gz",
+      "sha256": "5d8f9bdedf52b3890bccc24bff9e594d7a481145b74dacb4912e81977c4c1856"
+    },
+    {
+      "source": ".artifacts/flow/render-full.receipt.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/render-full.receipt.json",
+      "sha256": "3b82b403e1fb7e9a2cbf49139dbb127c8eb86bc3d33128a8306f24420642e5a6"
+    },
+    {
+      "source": ".artifacts/flow/browser-full.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/browser-full.log.gz",
+      "sha256": "867c70828d4e3c4317853e9d53066a2b6aaeafecb6aa5aa20b5b970b05edffa9"
+    },
+    {
+      "source": ".artifacts/flow/browser-full.receipt.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/browser-full.receipt.json",
+      "sha256": "051f2bc0350413f51dd4436ff14bacd6e73b1a3b2aff7291c098b1743db4f2e0"
+    },
+    {
+      "source": ".artifacts/flow/realistic-2.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/realistic-2.log.gz",
+      "sha256": "d2a9bd301e35f365a7d40506ad4858ad45d7f8c6013fa13ffe0d26750e8eb6e6"
+    },
+    {
+      "source": ".artifacts/flow/inventory-final.log",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/inventory-final.log.gz",
+      "sha256": "446461f198bd31d741bcc452b0cb1f1c6e01239d06bae93c865632bdd139752f"
+    },
+    {
+      "source": ".artifacts/flow/inventory-final.receipt.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/inventory-final.receipt.json",
+      "sha256": "2c2edd29990140fda275011aba0e2c9e1050f8208349ae38dc02d4e46dbe7b98"
+    },
+    {
+      "source": ".artifacts/flow/browser-sizes.json",
+      "path": "agent_docs/impl/roadmap9/chart/flow-evidence/browser-sizes.json",
+      "sha256": "9c27db7bbfea38259df728c82c912836469d51d1695b9256988ddc6b190302ef"
+    }
+  ]
+}

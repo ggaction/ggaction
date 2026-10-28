@@ -1,0 +1,682 @@
+[
+  {
+    "name": "recipes-annotations--primary",
+    "id": "recipes/annotations.md",
+    "file": "recipes/annotations.md",
+    "sha256": "ce818623ccbaaa0fa580cbc4fa12c8937874b49d3e49323d9b7c679fec0286d1",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 738.784249999997
+  },
+  {
+    "name": "recipes-bar-chart--primary",
+    "id": "recipes/bar-chart.md",
+    "file": "recipes/bar-chart.md",
+    "sha256": "30fe88cfcf1b7e166d4be95a9b5073ea71a3d6ce4739b73142a35bbc1111894e",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 655.5307079999984
+  },
+  {
+    "name": "recipes-box-plot--primary",
+    "id": "recipes/box-plot.md",
+    "file": "recipes/box-plot.md",
+    "sha256": "3a6a7151f81b296240fa45d87f3ae859bf4f37c3d19508329a6ad15e594cf9df",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 664.6605419999978
+  },
+  {
+    "name": "recipes-composition--primary",
+    "id": "recipes/composition.md",
+    "file": "recipes/composition.md",
+    "sha256": "cb3c423c571f15191275752eef12611e5ee5ec4d32de48f7335d46554b634077",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 645.4972080000007
+  },
+  {
+    "name": "recipes-density-area--primary",
+    "id": "recipes/density-area.md",
+    "file": "recipes/density-area.md",
+    "sha256": "c5c33c6016aa381e51a067e214c91b359c29d6a0674d5186b5cf7ca64bc7ea42",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 661.3508749999964
+  },
+  {
+    "name": "recipes-error-band--primary",
+    "id": "recipes/error-band.md",
+    "file": "recipes/error-band.md",
+    "sha256": "5a0799f16223ef516803cfca666e6dc88630a8f6dbe1d008dce14c9179a4c35b",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 666.5298750000002
+  },
+  {
+    "name": "recipes-error-bar--primary",
+    "id": "recipes/error-bar.md",
+    "file": "recipes/error-bar.md",
+    "sha256": "f1dc56716a6b2eca9f51c8b519c2fefe80de25c5c782a3f9cb438e2d6cde362a",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 660.7402500000026
+  },
+  {
+    "name": "recipes-facet--primary",
+    "id": "recipes/facet.md",
+    "file": "recipes/facet.md",
+    "sha256": "ce282608a312de16e5c5ce9753196bca7f2b21e769df6561f8b3fec52accb521",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 650.6737499999945
+  },
+  {
+    "name": "recipes-gradient-plot--primary",
+    "id": "recipes/gradient-plot.md",
+    "file": "recipes/gradient-plot.md",
+    "sha256": "bab424d706990c8f4d14f1f42cf7e044a41103c1515f797bc19ad100b604828d",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 651.947874999998
+  },
+  {
+    "name": "recipes-heatmap--primary",
+    "id": "recipes/heatmap.md",
+    "file": "recipes/heatmap.md",
+    "sha256": "3890522a709f614cdea790f1a601bafde16f7f62fed3fed1897597e1df38ee51",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 652.5790409999972
+  },
+  {
+    "name": "recipes-histogram--primary",
+    "id": "recipes/histogram.md",
+    "file": "recipes/histogram.md",
+    "sha256": "16793039f3b974dce5961d27726468a86bbb354f90eb89d3db93c9391b0de438",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 657.4452910000036
+  },
+  {
+    "name": "recipes-horizon--primary",
+    "id": "recipes/horizon.md",
+    "file": "recipes/horizon.md",
+    "sha256": "3f137dd064dfc24f5f608ba5d8088e46be146ff37ae37dec0c1e6ac7fb2cd540",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 652.7055830000027
+  },
+  {
+    "name": "recipes-line-chart--primary",
+    "id": "recipes/line-chart.md",
+    "file": "recipes/line-chart.md",
+    "sha256": "f948f315dd8c409359ba9a55a1f04dac4892544ae11937ecb1edcccf56865aeb",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 659.3446249999979
+  },
+  {
+    "name": "recipes-parallel-coordinates--primary",
+    "id": "recipes/parallel-coordinates.md",
+    "file": "recipes/parallel-coordinates.md",
+    "sha256": "220d3636a6a0dd32880ab9ae7769c967b507c2751b6edca2af7f26786bf96ee1",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 709.7330419999998
+  },
+  {
+    "name": "recipes-path-ordering--primary",
+    "id": "recipes/path-ordering.md",
+    "file": "recipes/path-ordering.md",
+    "sha256": "8f7d9d707147050c2b307549e44b37a3df2da0eb493b408b9f2cedc3deca756c",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 677.2568329999995
+  },
+  {
+    "name": "recipes-regression-scatterplot--primary",
+    "id": "recipes/regression-scatterplot.md",
+    "file": "recipes/regression-scatterplot.md",
+    "sha256": "b0e1a53d4e8a812eaa6715c974318235ea99563f8ecf1ab1def60fad8e817085",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 658.0374579999989
+  },
+  {
+    "name": "recipes-rose-chart--primary",
+    "id": "recipes/rose-chart.md",
+    "file": "recipes/rose-chart.md",
+    "sha256": "2f108ab82b1fcefd0e6f624763fe4f8a13b38aef83b4ceb589340b0f139e8ff1",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 707.346332999994
+  },
+  {
+    "name": "recipes-scatterplot--primary",
+    "id": "recipes/scatterplot.md",
+    "file": "recipes/scatterplot.md",
+    "sha256": "8fca2b5056ea046d41e1db9db14a9afa5c8605a2ce440404a61422324bebf874",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 630.3204160000023
+  },
+  {
+    "name": "recipes-violin-plot--primary",
+    "id": "recipes/violin-plot.md",
+    "file": "recipes/violin-plot.md",
+    "sha256": "3d7ecd7d48f19fb75443150e3462755f7bfd211b81f71605eb2e206163fb6612",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 620.4666250000009
+  },
+  {
+    "name": "tutorials-area-layout--primary",
+    "id": "tutorials/area-layout.md",
+    "file": "tutorials/area-layout.md",
+    "sha256": "fe1bb9ac5fc75b393532f8c8349b47783cc9cb4ad7a7f181e6c404c6917a16dc",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 630.7620420000021
+  },
+  {
+    "name": "tutorials-density-area--primary",
+    "dataset": "cars",
+    "id": "tutorials/density-area.md",
+    "file": "tutorials/density-area.md",
+    "sha256": "6fb5f691509db5d732c384410b5985b92699356fc96ec03c19e116a769d20f19",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 639.2798750000075
+  },
+  {
+    "name": "tutorials-ecdf--primary",
+    "id": "tutorials/ecdf.md",
+    "file": "tutorials/ecdf.md",
+    "sha256": "a640a84aeeef0d1d6896ebb80f2928cb874bed0a7680415a0baab881833cfc5e",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 622.734209000002
+  },
+  {
+    "name": "tutorials-endpoint-plots--primary",
+    "id": "tutorials/endpoint-plots.md",
+    "file": "tutorials/endpoint-plots.md",
+    "sha256": "babd75bba578955bbd2ddd53b45139f0d835bc545e4d3cf607880eef2482a703",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 676.2049160000024
+  },
+  {
+    "name": "tutorials-error-band--primary",
+    "dataset": "gapminder",
+    "id": "tutorials/error-band.md",
+    "file": "tutorials/error-band.md",
+    "sha256": "89be4466ae295891d8bcc7b3a5d821e9fe9212fa58902a8e37675fc4c9229482",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 620.6232919999893
+  },
+  {
+    "name": "tutorials-error-bar--primary",
+    "dataset": "cars",
+    "id": "tutorials/error-bar.md",
+    "file": "tutorials/error-bar.md",
+    "sha256": "6a4e58790128b04e9aa9afd9c869a208a230677d758f5d271a21d87a1ae49070",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 652.3517500000016
+  },
+  {
+    "name": "tutorials-grouped-bar--primary",
+    "dataset": "jobs",
+    "id": "tutorials/grouped-bar.md",
+    "file": "tutorials/grouped-bar.md",
+    "sha256": "cd1fae10dee045aa9babfa0844732a2c88760e9dc7722c8b9be9e5efa8b6b2ec",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 638.0715000000055
+  },
+  {
+    "name": "tutorials-histogram--primary",
+    "dataset": "cars",
+    "id": "tutorials/histogram.md",
+    "file": "tutorials/histogram.md",
+    "sha256": "c5fe21523f291496606da4b12282dd94b8d2d2c244e55339a280c0026b18330b",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 660.3434579999885
+  },
+  {
+    "name": "tutorials-horizon--primary",
+    "dataset": "gapminder",
+    "id": "tutorials/horizon.md",
+    "file": "tutorials/horizon.md",
+    "sha256": "17ad59b4c0cecb5e79a9447ceb08019864a08d26b063bd8cc05c727a3f2949f6",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 638.7112909999996
+  },
+  {
+    "name": "tutorials-line-chart--primary",
+    "dataset": "cars",
+    "id": "tutorials/line-chart.md",
+    "file": "tutorials/line-chart.md",
+    "sha256": "e228f8635bbe3a43cf0671f0df293bdecc7d2ac13a7aaa83b5e4805e9af80755",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 676.1362910000025
+  },
+  {
+    "name": "tutorials-mark-selection--primary",
+    "dataset": "cars",
+    "id": "tutorials/mark-selection.md",
+    "file": "tutorials/mark-selection.md",
+    "sha256": "8a5b32ed2591fcfac2fa746d56b5f757029ca4847143187043f36d09ae1cb8a4",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 632.677165999994
+  },
+  {
+    "name": "tutorials-polar-arcs--primary",
+    "dataset": "cars",
+    "id": "tutorials/polar-arcs.md",
+    "file": "tutorials/polar-arcs.md",
+    "sha256": "c729cf799de573ecb43a26cfca40cd732daca79e3ae516e02e554292581302d6",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 647.1538329999894
+  },
+  {
+    "name": "tutorials-polar-lines--primary",
+    "dataset": "gapminder",
+    "id": "tutorials/polar-lines.md",
+    "file": "tutorials/polar-lines.md",
+    "sha256": "8c1ac61e0984d44ac4212ce0027e62d39589f8ca5ee8e3861d41332dbd83fbd3",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 647.9914580000041
+  },
+  {
+    "name": "tutorials-polar-points--primary",
+    "dataset": "cars",
+    "id": "tutorials/polar-points.md",
+    "file": "tutorials/polar-points.md",
+    "sha256": "f3caf7da4efd5b2bd78e7fcc7436d1ff8d0bfa3c65bdc2e57578c7e9efb3dd49",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 693.9678750000021
+  },
+  {
+    "name": "tutorials-regression-scatterplot--primary",
+    "dataset": "cars",
+    "id": "tutorials/regression-scatterplot.md",
+    "file": "tutorials/regression-scatterplot.md",
+    "sha256": "d74bee51a543b72342b01e5514661d56c8129b9f76e78b29ed01fe19cad0bcfa",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 718.9989170000044
+  },
+  {
+    "name": "tutorials-scatterplot--primary",
+    "dataset": "cars",
+    "id": "tutorials/scatterplot.md",
+    "file": "tutorials/scatterplot.md",
+    "sha256": "a4d7302488af7d62bed59cee9417db12b48240fd577c82c96ca83c9965ca75ba",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 642.4275419999904
+  },
+  {
+    "name": "api-data-filtering--primary",
+    "id": "api/data/filtering.md",
+    "file": "api/data/filtering.md",
+    "sha256": "7a04cf0818a6852a16564513ce3f4132ae7278767ca06b4841dc108104f9119b",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 654.6600840000028
+  },
+  {
+    "name": "recipes-repair-missing-observations--primary",
+    "id": "recipes/repair-missing-observations.md",
+    "file": "recipes/repair-missing-observations.md",
+    "sha256": "bb5b6aec5421f447f0c72e15de4f9fddf15d501cc9c6707f65055734aebda79b",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 630.0374999999913
+  },
+  {
+    "name": "recipes-compare-weighted-distributions--primary",
+    "id": "recipes/compare-weighted-distributions.md",
+    "file": "recipes/compare-weighted-distributions.md",
+    "sha256": "1a508a69329d91489f4211c2ef6d6622de2993461f1243cddff5f1c5a43670f3",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 670.657457999987
+  },
+  {
+    "name": "recipes-switch-encoding-modes--primary",
+    "id": "recipes/switch-encoding-modes.md",
+    "file": "recipes/switch-encoding-modes.md",
+    "sha256": "1cfd133d9a7173bf5ebeb330678c9d85ec0b511439043cb963d2112f0d88ce21",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 655.7366249999905
+  },
+  {
+    "name": "recipes-edit-scales-and-guides--primary",
+    "id": "recipes/edit-scales-and-guides.md",
+    "file": "recipes/edit-scales-and-guides.md",
+    "sha256": "474eceb4ccb2fa020ffe9f1475921b2fc2ad5183d2c3da142f1efd0a60f58b9b",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 669.2174999999988
+  },
+  {
+    "name": "recipes-edit-selected-labels--primary",
+    "id": "recipes/edit-selected-labels.md",
+    "file": "recipes/edit-selected-labels.md",
+    "sha256": "4f242d7bece67ebabb5c48ad9333521cf7b91bec7e1fd5bcef68b492e1ac41cb",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 629.4707500000077
+  },
+  {
+    "name": "recipes-apply-custom-theme--primary",
+    "id": "recipes/apply-custom-theme.md",
+    "file": "recipes/apply-custom-theme.md",
+    "sha256": "6ce5fa30e91573c39af79ca3792e20a3bc0495259adda20d08450327ddd77f15",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 638.1878340000112
+  },
+  {
+    "name": "recipes-edit-facet-source--primary",
+    "id": "recipes/edit-facet-source.md",
+    "file": "recipes/edit-facet-source.md",
+    "sha256": "fc7bca9c3831fd1e87ae4d9cb27e31f64ff4846651cd06d0e03268ff812695f5",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 688.7143329999963
+  },
+  {
+    "name": "recipes-remove-dependent-resources--primary",
+    "id": "recipes/remove-dependent-resources.md",
+    "file": "recipes/remove-dependent-resources.md",
+    "sha256": "dfde9630e4f96bccc2c509052ac2079847e507f2f071a80e12b6eb8cb1774b93",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 648.206582999992
+  },
+  {
+    "name": "tutorials-hierarchical-authoring--primary",
+    "id": "tutorials/hierarchical-authoring.md",
+    "file": "tutorials/hierarchical-authoring.md",
+    "sha256": "75abc8118fb9b1d87bde4daf21fee18ea5f3295f1741d7f3e476bcecabe01b8f",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 654.3835410000029
+  },
+  {
+    "name": "api-marks-line-area--primary",
+    "id": "api/marks/line-area.md",
+    "file": "api/marks/line-area.md",
+    "sha256": "adf96253153a3f6f7e21beeeaf752fd85dca7b25f5c523c7aaac4a2765b11d38",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 678.0899159999972
+  },
+  {
+    "name": "tutorials-image-assets--primary",
+    "id": "tutorials/image-assets.md",
+    "file": "tutorials/image-assets.md",
+    "sha256": "1e3ffb339e4166935adf5b97b4453ee37388f1037d0f5c1a290af0a82967fa43",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 674.6540830000013
+  },
+  {
+    "name": "tutorials-hierarchy--primary",
+    "id": "tutorials/hierarchy.md",
+    "file": "tutorials/hierarchy.md",
+    "sha256": "94240237c1cadfc0c4e027d4da42fbb1060c3132f87f2fd079b155d61e51e77d",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 644.632540999999
+  },
+  {
+    "name": "tutorials-flows--primary",
+    "id": "tutorials/flows.md",
+    "file": "tutorials/flows.md",
+    "sha256": "a61f3b8a2ece9fe7a45a9a71c2802498e8b314a9689ae8b7305587c2b1d001d0",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 630.0941670000029
+  },
+  {
+    "name": "api-marks-bar--canvas-layout-1",
+    "id": "canvas-layout-1",
+    "file": "api/marks/bar.md",
+    "sha256": "d3c3447ea368cdd061e0722377bc71a255fde1c382d41181a7fa43f2ec9c2e0b",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 635.7526669999934
+  },
+  {
+    "name": "api-marks-line-area--canvas-layout-2",
+    "id": "canvas-layout-2",
+    "file": "api/marks/line-area.md",
+    "sha256": "1e471e4bcdd4e5bc08dd9723f732d2e1de77c19b10b1f7f3697dc540f1773d2c",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 652.4039580000099
+  },
+  {
+    "name": "api-marks-line-area--canvas-layout-3",
+    "id": "canvas-layout-3",
+    "file": "api/marks/line-area.md",
+    "sha256": "7866ca913f6b9ea834b89546a4f9d0301c32539b537af69cfcac1d27b491da71",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 628.1468330000062
+  },
+  {
+    "name": "api-marks-line-area--canvas-layout-4",
+    "id": "canvas-layout-4",
+    "file": "api/marks/line-area.md",
+    "sha256": "38497ffbc7fb4263f35d40ba551e84fd0d6c072276c8be5e443c950cdebaf68e",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 624.1917079999985
+  },
+  {
+    "name": "api-marks-line-area--canvas-layout-5",
+    "id": "canvas-layout-5",
+    "file": "api/marks/line-area.md",
+    "sha256": "2c03caccd646eb10b4e303b07a7a69be8cd1d0c0c787fbd9147f32816885b58c",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 669.2350409999926
+  },
+  {
+    "name": "api-marks-point--canvas-layout-6",
+    "id": "canvas-layout-6",
+    "file": "api/marks/point.md",
+    "sha256": "2488693ca093301c55e11fdb34b84c30e9187ff537b71078a221319dc50411e5",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 647.3643749999901
+  },
+  {
+    "name": "recipes-line-chart--canvas-layout-7",
+    "id": "canvas-layout-7",
+    "file": "recipes/line-chart.md",
+    "sha256": "5b4eb7a1710734b69f52380ea9dbed9020d1b8ae24a3f70656317797c5cbd7d5",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 625.1767499999987
+  },
+  {
+    "name": "inspection--inspection-roundtrip",
+    "id": "inspection-roundtrip",
+    "file": "inspection.md",
+    "sha256": "893e1d783ee1fde8da52b377d619ecd6f9a1cbd1ebe07e2a81fd5a23a4afdee6",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 684.6512499999953
+  },
+  {
+    "name": "api-rendering--render-first",
+    "id": "render-first",
+    "file": "api/rendering.md",
+    "sha256": "afaab2a8b06c0b2861c9563e7628a837f0014f25860825f8509745008f825ccb",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 616.5122080000001
+  },
+  {
+    "name": "root-README--readme-quick-start",
+    "id": "readme-quick-start",
+    "file": "../README.md",
+    "sha256": "36d9a5835909c9aa166dd9d318e2e0d60b1a591420db65c54bdf885d6ea878a9",
+    "rendering": "renders-canvas",
+    "status": "passed",
+    "durationMs": 623.5472920000029
+  },
+  {
+    "name": "root-README--readme-immutable-branches",
+    "id": "readme-immutable-branches",
+    "file": "../README.md",
+    "sha256": "0681363e744e0b0e0a4b45af7d64736d21b95cd26a856558951b70dd3e5c66a5",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 635.3171670000011
+  },
+  {
+    "name": "api-composition-facets--facet-axis-gaps",
+    "id": "facet-axis-gaps",
+    "file": "api/composition/facets.md",
+    "sha256": "96821fbbe0adf6cd046c5b9e7ad18cddadf13d555cc9924fc6a23ba1fe04d064",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 633.2631660000043
+  },
+  {
+    "name": "api-axes--axis-title-label-relative-gap",
+    "id": "axis-title-label-relative-gap",
+    "file": "api/axes.md",
+    "sha256": "7b95a29e29da6aaddee131ac0aa89e065f95c5f263b67746179f4020607f9831",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 642.9940829999978
+  },
+  {
+    "name": "api-composition-editing--adjacent-group-placement",
+    "id": "adjacent-group-placement",
+    "file": "api/composition/editing.md",
+    "sha256": "df9c376239fce696ce86921bba3f4b3196feb9e6cb87ac129fd7feb6360492d6",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 703.6923749999987
+  },
+  {
+    "name": "api-legends--legend-fine-positioning",
+    "id": "legend-fine-positioning",
+    "file": "api/legends.md",
+    "sha256": "483ff2f6d0cb2f6102cfbed80406092197760ed6f2f271094494a76e89f4265a",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 642.0413750000007
+  },
+  {
+    "name": "api-composition-editing--native-layer-composition",
+    "id": "native-layer-composition",
+    "file": "api/composition/editing.md",
+    "sha256": "0851aad4af09f444c2f6d3391ea9d71edb0815af46092e53d2ecc49a11208ec2",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 631.42008299999
+  },
+  {
+    "name": "api-legends--three-channel-interval-legend",
+    "id": "three-channel-interval-legend",
+    "file": "api/legends.md",
+    "sha256": "5e45cd018374e43c9d916ad445e746f17f87c5ca724542192c46ad2c31229e2d",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 641.0239169999986
+  },
+  {
+    "name": "api-data-summaries-and-shaping--pivot-data",
+    "id": "pivot-data",
+    "file": "api/data/summaries-and-shaping.md",
+    "sha256": "5b7b53dd9ac042e268a19860af98e51f61b55d4c26319996ea3f9a32020df91e",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 617.3562499999971
+  },
+  {
+    "name": "api-regression--quadratic-loess",
+    "id": "quadratic-loess",
+    "file": "api/regression.md",
+    "sha256": "37b98fc3011280746fba67d97db1d8aaf46065a0e35036d9b6b07b90cd2da523",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 613.7865420000016
+  },
+  {
+    "name": "api-data-missing-data--calendar-day-completion",
+    "id": "calendar-day-completion",
+    "file": "api/data/missing-data.md",
+    "sha256": "6cb96ffba7f2e362fb4f5451544f3226a5eb6b29a469be47246f1c657f465257",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 637.3162500000035
+  },
+  {
+    "name": "api-data-expressions-and-normalization--parameter-computed-revision",
+    "id": "parameter-computed-revision",
+    "file": "api/data/expressions-and-normalization.md",
+    "sha256": "3c2cb03189872bed79f4be602c76d1ac9251c14ebe6a599667fe5482729cedba",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 653.3108330000105
+  },
+  {
+    "name": "data-updates--prepared-source-refresh",
+    "id": "prepared-source-refresh",
+    "file": "data-updates.md",
+    "sha256": "9ba460450ce640a0d3e69fed219b6ecb5fd6581fb7bee785565eadd204bc7e1a",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 663.4362919999985
+  },
+  {
+    "name": "api-data-filtering--parameter-filter-revision",
+    "id": "parameter-filter-revision",
+    "file": "api/data/filtering.md",
+    "sha256": "20bb394ac1db1195891bc67fe5385685dfd49e3824752740595738b6dd96a944",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 652.020875000002
+  },
+  {
+    "name": "api-encodings--conditional-appearance",
+    "id": "conditional-appearance",
+    "file": "api/encodings.md",
+    "sha256": "0ea350c16712226c8a4804e1b797d865174de0a1039c66bbd8cf9745846cff6b",
+    "rendering": "authoring-only",
+    "status": "passed",
+    "durationMs": 625.0684580000088
+  },
+  {
+    "name": "api-data-source-and-derived--observed-graph-data",
+    "id": "observed-graph-data",
+    "file": "api/data/source-and-derived.md",
+    "sha256": "4621d7bed7384142f48eae7fbb2cbb9e8ee06dd90e6bc0bc7257ab05e01b313b",
+    "rendering": "authoring-only",
+    "resultKind": "semantic",
+    "status": "passed",
+    "durationMs": 637.3025830000115
+  }
+]

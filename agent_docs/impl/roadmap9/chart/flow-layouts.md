@@ -6,8 +6,8 @@
 - [x] 공개·저장·시각 결정의 기존 포괄 승인 재사용
 - [x] 독립 수치·위상 실패 시험과 순수 계산
 - [x] 공개 action과 현재 소비자 연결; 후행035/AT23/AT65는 아래 의무로 유지
-- [ ] 타입·Current·문서·렌더·설치·실제 데이터 검증
-- [ ] 검증된 checkpoint commit/push
+- [x] 타입·Current·문서·렌더·설치·실제 데이터 검증
+- [x] 검증된 checkpoint commit/push (source `3a3ec85d8`, 아래 최종 evidence 기록)
 
 기준은 graph layout source `cbcaaf991d2a99485651e785108f21a42acf5434`다.
 원안은 `study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-022-flow-layouts.ko.md`와
@@ -140,5 +140,20 @@ body의 stroke, 공통 fill/opacity/offset, revision/codec 재실행과 이전 �
   3Node에서 통과했다. 이 tar는 위 label 수리 전 결과이며 새 tar와 구분한다.
 - label 수리 후 selection/Flow75/75, boundary/types12/12, docs source170/170 통과.
   새 packed 최대1,201,119/unpacked5,523,241bytes,819entries에 최소1000byte ceiling을 적용했다.
-- canonical full coverage와 label 수리 이후 고정 tar3Node·최종 문서 검증은 실행 대기/진행 중이다.
-  이 중간 source checkpoint를 전체 종료나 STEP077 완료 증거로 사용하지 않는다.
+
+## 최종 검증 기록
+
+Source `3a3ec85d8`의 canonical coverage는7,362개 중7,361개를 통과했다. 유일 실패는
+신규 Flow primitive의 generated baseline 목록 누락이며 원본을 보존했다. 목록 재생성 후
+owning 계약3/3과 discovery가 통과했다. runtime/types/consumer 변경은 없다.
+전체 원본 coverage는96.41/94.26/98.87이다. critical336개 중334개가 원본에서 통과하고,
+기존 Canvas circle/path의 함수 누락2개는 Partition의 동일 pattern contour 회귀를 재사용한
+focused33/33에서 각100%를 확인했다. 기준을 낮추거나 서로 다른 run의 global 수치를 합치지 않았다.
+
+Label 수리 후 동일 tar SHA256 `587c5f1994f7bff9668f8bf751e06fac97fcaf8b8e8853f7aff6eaa1c65a0757`를
+Node20/22/24에서 각각212runtime+74tutorial+7qualification으로 검증했다.
+선택75/75, boundary/types12/12, Flow render8/8·browser4/4, docs source170/170,
+built155pages/1328artifacts 및 desktop search/320·390·768px를 통과했다.
+전체 render301/browser323은 label 수리 전 결과이며 수리 후 대상 renderer 검사와 구분한다.
+명령·원본 실패·log hash·고정 tar와 후행 의무는 [flow-checkpoint.json](flow-checkpoint.json)에
+기록하고 압축 로그/receipt는 [flow-evidence](flow-evidence/)에 보존했다.
