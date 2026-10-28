@@ -423,6 +423,16 @@
         "path": "contracts/composition-integration.test.js"
       }
     ],
+    "radial-gradient": [
+      {
+        "type": "file",
+        "path": "unit/grammar/radial-gradient.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/radial-gradient/"
+      }
+    ],
     "realistic": [
       {
         "type": "file",
