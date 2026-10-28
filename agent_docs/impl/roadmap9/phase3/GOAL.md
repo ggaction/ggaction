@@ -98,3 +98,10 @@ Package·Full/Basic bundle 및 생성 machine metadata 검사도 exit0이다. �
 Runtime commit은 `3a022aea`다. Commit 후 source reference를 갱신한 공개 문서 158개 검사도
 모두 통과했다. 증거 receipt의 pre-commit working tree를 clean 실행이라고 바꾸지 않았으며,
 기록한 source/test/script 2,386개 hash와 이 commit의 동일성을 별도로 확인했다.
+
+## G-PARAM resource 검토 준비
+
+[STEP2](STEP2.md)의 P1–P6 계약 패키지는 검증·push 완료이며 [G-PARAM](G-PARAM.json)은
+ready-for-review다. 아직 parameter 제품 구현이나 공개 v2 통합 완료를 뜻하지 않는다.
+기존 core와 같은 Node22.23.1에서 normal suite6,449개가 통과했고, 현재 Node22.23.2 압축 한도와
+기존 stricter TypeScript 선언 한계는 [compatibility](parameter/compatibility.md)에 별도로 보존했다.

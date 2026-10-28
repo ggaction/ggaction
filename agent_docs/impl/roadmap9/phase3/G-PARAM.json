@@ -1,6 +1,6 @@
 {
   "id": "G-PARAM",
-  "state": "planned",
+  "state": "ready-for-review",
   "scope": [
     "STEP-013 parameter resource lifecycle and computed binding contract"
   ],
@@ -33,7 +33,6 @@
     "parameter-machine"
   ],
   "remaining": [
-    "complete and push verified review package",
     "explicit approval of P1-P6"
   ],
   "baselineCommit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
@@ -51,5 +50,7 @@
   "supplementalDecisionsPending": [
     "STEP-016 conditional dataflow policy remains outside P1-P6; obligation retained",
     "G-DATA contract and public v2 integration remain required"
-  ]
+  ],
+  "codeRevision": "49f6bb9283e6ba34dba78508118b9d321a8417f5",
+  "reviewPackagePushed": true
 }
