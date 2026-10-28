@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "state": "approved",
+  "codeRevision": "ec0484613ff1c91e243a9097ff42c4a5cd72138f",
+  "evidenceRecordingRevision": "b8442cc1f40f2c76c5c16b708fef87176832d477",
+  "userReply": "5개 대상 모두 승인",
+  "approvalSource": "Explicit user reply reported by parent /root in the active task",
+  "targets": [
+    {
+      "chart": "tree-layouts",
+      "variant": "vertical",
+      "sourceSha256": "0c890d5ca6aa13bdf26043630742d47c335419e091886ab90babbedeb5da5d38",
+      "pngSha256": "9cf9f13c824b0ddd32bd85ab51cda2ae7965adf35ef87dd8047108ad286bc5fb"
+    },
+    {
+      "chart": "tree-layouts",
+      "variant": "horizontal",
+      "sourceSha256": "0c890d5ca6aa13bdf26043630742d47c335419e091886ab90babbedeb5da5d38",
+      "pngSha256": "19c5d02aff9aab34ce8934b86bd988b2cea6f518ff3bb7e7e957073c43f62ecf"
+    },
+    {
+      "chart": "tree-layouts",
+      "variant": "radial",
+      "sourceSha256": "0c890d5ca6aa13bdf26043630742d47c335419e091886ab90babbedeb5da5d38",
+      "pngSha256": "9b8038b4b4d24a356dc5bd1e2ff9ad30bbe8ee15182f7f5ce257f4f841c7cb3a"
+    },
+    {
+      "chart": "treemap-layouts",
+      "variant": "slice-dice",
+      "sourceSha256": "606e147f05b18635195e7bbbe0c07fa9396801d7f157c02f49d018f62568f31b",
+      "pngSha256": "495f70a05d2eca876d0a80cc86f9586202533efeec98678b646ef51486954093"
+    },
+    {
+      "chart": "treemap-layouts",
+      "variant": "squarify",
+      "sourceSha256": "606e147f05b18635195e7bbbe0c07fa9396801d7f157c02f49d018f62568f31b",
+      "pngSha256": "bd47c26c78b1bc47f2ffe5f38bea2f2c6e7bf1f3c8cfe707e306f0881038c6fd"
+    }
+  ],
+  "publicImplementationComplete": false
+}

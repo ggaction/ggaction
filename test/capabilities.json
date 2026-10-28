@@ -271,6 +271,24 @@
         "path": "charts/compound-path/"
       }
     ],
+    "graph": [
+      {
+        "type": "file",
+        "path": "unit/grammar/graph-layout.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/graph-model.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/graph-normalize.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/grammar/graph/"
+      }
+    ],
     "guides": [
       {
         "type": "prefix",
@@ -303,6 +321,48 @@
       {
         "type": "file",
         "path": "contracts/facade-legend-combination-types.test.js"
+      }
+    ],
+    "hierarchy": [
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-normalize.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-input.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-model.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-validation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-tree.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-treemap.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-order.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/tree-layouts/"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/treemap-layouts/"
       }
     ],
     "horizon": [

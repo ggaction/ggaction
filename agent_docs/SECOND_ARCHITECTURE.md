@@ -47,6 +47,52 @@ public resource/action/schema와 renderer 경계는 아직 바꾸지 않았다. 
 object와 mutable byte buffer는 저장 결과에 들어가지 않는다. 공개 연결 전의 근거와 남은 범위는
 [image](impl/roadmap9/phase4/images/PRIVATE.md)와 [font](impl/roadmap9/phase4/fonts/PRIVATE.md)에 있다.
 
+## Private hierarchy normalization
+
+`grammar/hierarchy/normalize.js`는 명시 node records의 typed identity, parent/children topology,
+iterative preorder/postorder와 세 가지 value aggregation을 한 번 검증하는 pure owner다.
+기존 `core/itemIdentity`, own-data boundary, finite sum과 work limit을 재사용하며 source-row 참조를
+자손별 복사로 증폭하지 않는다. `grammar/hierarchy/input.js`가 flat/nested/group-path 입력을 같은
+경계로 낮추고, 입력 확장 비용도 공통 work 한도에 합산한다. `grammar/hierarchy/model.js`는
+이 결과의 canonical preorder·reference·value 일관성을 검증하고 layout용 index를 만든다.
+`grammar/hierarchy/tree.js`는 그 순서를 그대로 소비하여 persistent contour로 tidy 좌표를 계산하고,
+가로 전치와 기존 polar owner를 통한 방사형 변환을 수행한다. Node size·gap·orientation은 명시 입력이다.
+`grammar/hierarchy/partition.js`도 같은 model 경계를 소비하여 depth와 정규화 구간·reserved residual tail을 만든다.
+계층의 합계와 prefix는 기존 numeric owner의 명시 compensated 정책을 공유하며 기존 호출 기본 계산은 유지한다.
+`grammar/hierarchy/treemap.js`는 같은 model에서 slice-dice/squarify rectangle을 계산하고,
+padding을 뺀 content와 own-value reserved rectangle을 분리해 보존한다.
+`grammar/hierarchy/order.js`는 명시 input/value/key/field 순서를 공통 model에 반영한다. Key는 기존 typed
+identity comparator, field는 기존 sort transform 정책을 재사용하며 원본 field 해결은 semantic caller의 책임이다.
+현재는 private 계산만 있고 hierarchy/layout resource 저장, public
+action, renderer 또는 새 시각 target과 연결하지 않았다.
+상세 범위·후속 의무와 실측 package 증거는 [normalizer](impl/roadmap9/phase3/hierarchy/NORMALIZE_KERNEL.md)와
+[input adapter](impl/roadmap9/phase3/hierarchy/INPUT_KERNEL.md), [tree 계산](impl/roadmap9/phase3/hierarchy/TREE_KERNEL.md),
+[partition 계산](impl/roadmap9/phase3/hierarchy/PARTITION_KERNEL.md), [treemap 계산](impl/roadmap9/phase3/hierarchy/TREEMAP_KERNEL.md),
+[sibling 정렬](impl/roadmap9/phase3/hierarchy/ORDER_KERNEL.md) 기록이 소유한다.
+Inclusive model 검증은 normalizer가 저장한 차액 식을 그대로 검사하여 역연산 반올림으로 유효 값을 거부하지 않는다.
+이 검증 보수의 package 실측4,908,179bytes가 기존 unpacked4,908,000을179bytes 초과해 최소1,000byte 단위
+4,909,000으로 조정했다. Entry710/packed1,061,000와 browser 한도는 유지하며 상세 재현·검증은
+[inclusive model 감사](impl/roadmap9/phase3/hierarchy/INCLUSIVE_VALIDATION.md)에 둔다.
+이어진 own-data 경계 보수는 hierarchy의 required fields와 optional maxNodes/synthetic 읽기를 검사하고
+필수 차원 배열의 arity를 descriptor 검사 전에 제한한다. Public/import/renderer 경계는 그대로이며
+unpacked 실측4,909,964bytes에 맞춰 cap만4,910,000으로 조정했다.
+[입력 검증 감사](impl/roadmap9/phase3/hierarchy/OWN_DATA_VALIDATION.md)가 반례와 coverage 증거를 소유한다.
+
+## Private observed graph normalization
+
+`grammar/graph/normalize.js`는 명시 node/edge records의 raw typed key를 기존 identity owner로 한 번
+정규화한다. Caller가 이미 보관한 occurrence key를 받으며 row index로 edge identity를 추정하지 않는다.
+`grammar/graph/model.js`는 opaque node/edge key, endpoint·direction·origin·source membership과
+bounded plain-data attributes를 검증하고 stable incoming/outgoing/weak-neighbor adjacency를 만든다.
+Layout 소비자는 같은 model owner로 저장 adjacency의 일관성을 확인하며 topology를 다시 추론하지 않는다.
+`grammar/graph/layout.js`는 opaque key에 명시한 fixed 좌표 또는 stable model 순서의 circular 좌표만 만든다.
+Circular 계산은 기존 polarToCartesian의 clockwise degree owner를 사용하며 model과 layout work를 합산한다.
+Resource 저장·공개 action·force solver·component packing을 포함하지 않는다. 수치·검증·실측 package 경계는
+[fixed/circular private checkpoint](impl/roadmap9/phase3/graph/LAYOUT_KERNEL.md)가 소유한다.
+현재는 private 계산이며 public GraphResource, source field adapter, graph action, layout/renderer에는
+연결하지 않았다. 별도 graph metric/preprocessing 작업과 상태를 섞지 않는다.
+상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
+
 ## 내부 expression kernel 경계
 
 `grammar/expressionAst.js`는 versioned AST의 정규화·정적 검사·명시 dependency 추출,
