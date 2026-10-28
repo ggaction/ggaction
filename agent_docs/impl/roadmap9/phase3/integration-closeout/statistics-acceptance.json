@@ -1,0 +1,32 @@
+{
+  "label": "statistics-acceptance",
+  "command": "node",
+  "args": [
+    "scripts/check-statistical-fixtures.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 408,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T16:19:16.373Z",
+  "finishedAt": "2026-10-28T16:19:16.781Z",
+  "source": {
+    "available": true,
+    "commit": "72855612447cf391defdbf6a121a26cc503bb9ce",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "72855612447cf391defdbf6a121a26cc503bb9ce",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "83834f9d6e33786e2565a9b69ec7b980b3ece97be4d71edb2b203afcfef08cc0",
+  "bytes": 75,
+  "retainedBytes": 75,
+  "truncated": false
+}

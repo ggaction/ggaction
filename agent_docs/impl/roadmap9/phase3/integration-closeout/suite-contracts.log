@@ -1,0 +1,4119 @@
+TAP version 13
+# Subtest: keeps the generated catalog synchronized with the manifest
+ok 1 - keeps the generated catalog synchronized with the manifest
+  ---
+  duration_ms: 4.143417
+  type: 'test'
+  ...
+# Subtest: removes the singular filterMark API from every current public surface
+ok 2 - removes the singular filterMark API from every current public surface
+  ---
+  duration_ms: 84.307959
+  type: 'test'
+  ...
+# Subtest: keeps every declared direct action in one current domain contract
+ok 3 - keeps every declared direct action in one current domain contract
+  ---
+  duration_ms: 1293.628417
+  type: 'test'
+  ...
+# Subtest: keeps lifecycle, coverage, and edit gaps machine-readable
+ok 4 - keeps lifecycle, coverage, and edit gaps machine-readable
+  ---
+  duration_ms: 0.4715
+  type: 'test'
+  ...
+# Subtest: keeps every current action contract fully covered
+ok 5 - keeps every current action contract fully covered
+  ---
+  duration_ms: 0.931833
+  type: 'test'
+  ...
+# Subtest: keeps primitives and internal wrapped actions in separate layers
+ok 6 - keeps primitives and internal wrapped actions in separate layers
+  ---
+  duration_ms: 1.438125
+  type: 'test'
+  ...
+# Subtest: documents every internal wrapped owner exactly once
+ok 7 - documents every internal wrapped owner exactly once
+  ---
+  duration_ms: 0.78425
+  type: 'test'
+  ...
+# Subtest: keeps planned direct actions and reassignment gaps explicit
+ok 8 - keeps planned direct actions and reassignment gaps explicit
+  ---
+  duration_ms: 1.776208
+  type: 'test'
+  ...
+# Subtest: keeps implemented and planned formal values distinct
+ok 9 - keeps implemented and planned formal values distinct
+  ---
+  duration_ms: 9.684
+  type: 'test'
+  ...
+# Subtest: keeps maybe-future ideas outside the active proposal queue
+ok 10 - keeps maybe-future ideas outside the active proposal queue
+  ---
+  duration_ms: 1.0365
+  type: 'test'
+  ...
+# Subtest: keeps all executable coverage evidence paths valid
+ok 11 - keeps all executable coverage evidence paths valid
+  ---
+  duration_ms: 1.9335
+  type: 'test'
+  ...
+# Subtest: complete-chart discovery reaches semantic and primitive authoring layers
+ok 12 - complete-chart discovery reaches semantic and primitive authoring layers
+  ---
+  duration_ms: 15.375375
+  type: 'test'
+  ...
+# Subtest: discovery separates completion from resource validity
+ok 13 - discovery separates completion from resource validity
+  ---
+  duration_ms: 4.001
+  type: 'test'
+  ...
+# Subtest: entry-point discovery matches declarations and runtime methods
+ok 14 - entry-point discovery matches declarations and runtime methods
+  ---
+  duration_ms: 6.496625
+  type: 'test'
+  ...
+# Subtest: every cataloged public action rejects malformed and unknown options on a valid source state
+ok 15 - every cataloged public action rejects malformed and unknown options on a valid source state
+  ---
+  duration_ms: 10740.023
+  type: 'test'
+  ...
+# Subtest: generic, focused, and atomic authoring paths preserve the same intended chart
+ok 16 - generic, focused, and atomic authoring paths preserve the same intended chart
+  ---
+  duration_ms: 3.10725
+  type: 'test'
+  ...
+# Subtest: bundlers discard unused built-in wrappers but preserve extension validation
+ok 17 - bundlers discard unused built-in wrappers but preserve extension validation
+  ---
+  duration_ms: 112.818708
+  type: 'test'
+  ...
+# Subtest: keeps accepted planned capabilities linked and non-public
+ok 18 - keeps accepted planned capabilities linked and non-public
+  ---
+  duration_ms: 0.650417
+  type: 'test'
+  ...
+# Subtest: current action statuses agree with the runtime surface
+ok 19 - current action statuses agree with the runtime surface
+  ---
+  duration_ms: 103.642333
+  type: 'test'
+  ...
+# Subtest: normative current value vocabularies match shipped declarations
+ok 20 - normative current value vocabularies match shipped declarations
+  ---
+  duration_ms: 3.603375
+  type: 'test'
+  ...
+# Subtest: adjacent constructors and explicit action targets retain native closed types
+ok 21 - adjacent constructors and explicit action targets retain native closed types
+  ---
+  duration_ms: 272.559791
+  type: 'test'
+  ...
+# Subtest: inspection exposes adjacency policies and respects explicit editable view boundaries
+ok 22 - inspection exposes adjacency policies and respects explicit editable view boundaries
+  ---
+  duration_ms: 304.619291
+  type: 'test'
+  ...
+# Subtest: recomputes a complete derived-data provenance chain and releases every retired revision
+ok 23 - recomputes a complete derived-data provenance chain and releases every retired revision
+  ---
+  duration_ms: 29.683167
+  type: 'test'
+  ...
+# Subtest: keeps legends, selected labels, references, themes, and shape details on the final encoding state
+ok 24 - keeps legends, selected labels, references, themes, and shape details on the final encoding state
+  ---
+  duration_ms: 101.422542
+  type: 'test'
+  ...
+# Subtest: replays Polar frame, local domains, headers, labels, highlights, and theme after a revised source
+ok 25 - replays Polar frame, local domains, headers, labels, highlights, and theme after a revised source
+  ---
+  duration_ms: 64.215375
+  type: 'test'
+  ...
+# Subtest: preserves Parallel siblings across scale, repeat, and facet edits before complete resource cleanup
+ok 26 - preserves Parallel siblings across scale, repeat, and facet edits before complete resource cleanup
+  ---
+  duration_ms: 29.02325
+  type: 'test'
+  ...
+# Subtest: keeps one optional active roadmap and an explicit completed owner
+ok 27 - keeps one optional active roadmap and an explicit completed owner
+  ---
+  duration_ms: 0.944709
+  type: 'test'
+  ...
+# Subtest: keeps human entry points synchronized with roadmap activity
+ok 28 - keeps human entry points synchronized with roadmap activity
+  ---
+  duration_ms: 1.244333
+  type: 'test'
+  ...
+# Subtest: keeps the active or last completed phase linked to its roadmap
+ok 29 - keeps the active or last completed phase linked to its roadmap
+  ---
+  duration_ms: 0.110209
+  type: 'test'
+  ...
+# Subtest: links current and historical roadmap roots to their canonical owner
+ok 30 - links current and historical roadmap roots to their canonical owner
+  ---
+  duration_ms: 3.656792
+  type: 'test'
+  ...
+# Subtest: routes architecture work without duplicating the canonical record
+ok 31 - routes architecture work without duplicating the canonical record
+  ---
+  duration_ms: 1.714916
+  type: 'test'
+  ...
+# Subtest: keeps the contract landing page lightweight and action-directed
+ok 32 - keeps the contract landing page lightweight and action-directed
+  ---
+  duration_ms: 0.576708
+  type: 'test'
+  ...
+# Subtest: keeps current agent-documentation routes and anchors valid
+ok 33 - keeps current agent-documentation routes and anchors valid
+  ---
+  duration_ms: 244.342292
+  type: 'test'
+  ...
+# Subtest: declares aggregate axes with existing edit types and closed resource selectors
+ok 34 - declares aggregate axes with existing edit types and closed resource selectors
+  ---
+  duration_ms: 195.36175
+  type: 'test'
+  ...
+# Subtest: analytic raster witnesses reject invisible marks even when guides remain visible
+ok 35 - analytic raster witnesses reject invisible marks even when guides remain visible
+  ---
+  duration_ms: 42.092708
+  type: 'test'
+  ...
+# Subtest: data annotation equals its lower actions, literal graphic, Canvas, and PNG
+ok 36 - data annotation equals its lower actions, literal graphic, Canvas, and PNG
+  ---
+  duration_ms: 137.544583
+  type: 'test'
+  ...
+# Subtest: mark and plot annotation branches equal their lower public chains
+ok 37 - mark and plot annotation branches equal their lower public chains
+  ---
+  duration_ms: 19.536375
+  type: 'test'
+  ...
+# Subtest: area endpoint declarations accept mixed bounds and reject ambiguous constant pairs
+ok 38 - area endpoint declarations accept mixed bounds and reject ambiguous constant pairs
+  ---
+  duration_ms: 120.856875
+  type: 'test'
+  ...
+# Subtest: declares the closed full-only atomic encoding payload
+ok 39 - declares the closed full-only atomic encoding payload
+  ---
+  duration_ms: 123.94125
+  type: 'test'
+  ...
+# Subtest: exposes atomic encoding only from the full program
+ok 40 - exposes atomic encoding only from the full program
+  ---
+  duration_ms: 2.357917
+  type: 'test'
+  ...
+# Subtest: matches the corresponding focused action for one channel
+ok 41 - matches the corresponding focused action for one channel
+  ---
+  duration_ms: 22.081292
+  type: 'test'
+  ...
+# Subtest: uses canonical channel order independently of property insertion order
+ok 42 - uses canonical channel order independently of property insertion order
+  ---
+  duration_ms: 10.772291
+  type: 'test'
+  ...
+# Subtest: swaps x and y fields against the final fixed scales
+ok 43 - swaps x and y fields against the final fixed scales
+  ---
+  duration_ms: 8.28925
+  type: 'test'
+  ...
+# Subtest: updates primary and secondary rectangle endpoints from one final draft
+ok 44 - updates primary and secondary rectangle endpoints from one final draft
+  ---
+  duration_ms: 15.134958
+  type: 'test'
+  ...
+# Subtest: validates an offset against the final categorical parent encoding
+ok 45 - validates an offset against the final categorical parent encoding
+  ---
+  duration_ms: 21.224458
+  type: 'test'
+  ...
+# Subtest: transposes aggregate bar roles from one final x/y state
+ok 46 - transposes aggregate bar roles from one final x/y state
+  ---
+  duration_ms: 28.450125
+  type: 'test'
+  ...
+# Subtest: rejects a transpose when its final categorical channel retains an explicit numeric grid count
+ok 47 - rejects a transpose when its final categorical channel retains an explicit numeric grid count
+  ---
+  duration_ms: 11.456708
+  type: 'test'
+  ...
+# Subtest: updates path grouping and ordering before one final series materialization
+ok 48 - updates path grouping and ordering before one final series materialization
+  ---
+  duration_ms: 8.477208
+  type: 'test'
+  ...
+# Subtest: updates supported Parallel appearance without replacing its dimensions
+ok 49 - updates supported Parallel appearance without replacing its dimensions
+  ---
+  duration_ms: 9.047084
+  type: 'test'
+  ...
+# Subtest: updates theta and r through the public r alias
+ok 50 - updates theta and r through the public r alias
+  ---
+  duration_ms: 3.166917
+  type: 'test'
+  ...
+# Subtest: rebuilds combined and sampled legends from final appearance channels
+ok 51 - rebuilds combined and sampled legends from final appearance channels
+  ---
+  duration_ms: 42.08375
+  type: 'test'
+  ...
+# Subtest: assigns point shape, opacity, and angle from one final appearance draft
+ok 52 - assigns point shape, opacity, and angle from one final appearance draft
+  ---
+  duration_ms: 8.905042
+  type: 'test'
+  ...
+# Subtest: assigns line stroke width, dash, and opacity at final series grain
+ok 53 - assigns line stroke width, dash, and opacity at final series grain
+  ---
+  duration_ms: 8.95225
+  type: 'test'
+  ...
+# Subtest: assigns independent text position and content from one final draft
+ok 54 - assigns independent text position and content from one final draft
+  ---
+  duration_ms: 4.045125
+  type: 'test'
+  ...
+# Subtest: accepts identical explicit patches when two channels share one scale
+ok 55 - accepts identical explicit patches when two channels share one scale
+  ---
+  duration_ms: 1.95475
+  type: 'test'
+  ...
+# Subtest: refreshes every external consumer of a reassigned shared scale
+ok 56 - refreshes every external consumer of a reassigned shared scale
+  ---
+  duration_ms: 3.385875
+  type: 'test'
+  ...
+# Subtest: removes a field stroke and its legend without leaving stale graphics
+ok 57 - removes a field stroke and its legend without leaving stale graphics
+  ---
+  duration_ms: 12.088167
+  type: 'test'
+  ...
+# Subtest: keeps the original program unchanged when any requested channel is invalid
+ok 58 - keeps the original program unchanged when any requested channel is invalid
+  ---
+  duration_ms: 2.482667
+  type: 'test'
+  ...
+# Subtest: rejects an unsupported mark and channel combination without any write
+ok 59 - rejects an unsupported mark and channel combination without any write
+  ---
+  duration_ms: 1.93625
+  type: 'test'
+  ...
+# Subtest: rejects conflicting explicit patches for one shared scale before writing
+ok 60 - rejects conflicting explicit patches for one shared scale before writing
+  ---
+  duration_ms: 2.611542
+  type: 'test'
+  ...
+# Subtest: rejects malformed, empty, aliased, and injected channel payloads
+ok 61 - rejects malformed, empty, aliased, and injected channel payloads
+  ---
+  duration_ms: 3.993458
+  type: 'test'
+  ...
+# Subtest: keeps the completed authoring lifecycle surface Current and fully covered
+ok 62 - keeps the completed authoring lifecycle surface Current and fully covered
+  ---
+  duration_ms: 1.360208
+  type: 'test'
+  ...
+# Subtest: composes selective legends, encoding teardown, and selection release
+ok 63 - composes selective legends, encoding teardown, and selection release
+  ---
+  duration_ms: 102.1165
+  type: 'test'
+  ...
+# Subtest: keeps removed boundaries and axis components absent after revision replay
+ok 64 - keeps removed boundaries and axis components absent after revision replay
+  ---
+  duration_ms: 93.242292
+  type: 'test'
+  ...
+# Subtest: facet rederivation preserves teardown and replays retained highlights
+ok 65 - facet rederivation preserves teardown and replays retained highlights
+  ---
+  duration_ms: 66.364833
+  type: 'test'
+  ...
+# Subtest: the requirement corpus evaluates execution and fulfillment separately
+ok 66 - the requirement corpus evaluates execution and fulfillment separately
+  ---
+  duration_ms: 639.96425
+  type: 'test'
+  ...
+# Subtest: an executable chart that omits requested color is a false completion
+ok 67 - an executable chart that omits requested color is a false completion
+  ---
+  duration_ms: 11.233458
+  type: 'test'
+  ...
+# Subtest: publishes Cartesian axis component removal as current behavior
+ok 68 - publishes Cartesian axis component removal as current behavior
+  ---
+  duration_ms: 1.009458
+  type: 'test'
+  ...
+# Subtest: renders only retained axis components in Canvas and Node PNG
+ok 69 - renders only retained axis components in Canvas and Node PNG
+  ---
+  duration_ms: 145.764916
+  type: 'test'
+  ...
+# Subtest: Cartesian complete, focused and grid declarations expose finite numeric offset vocabulary
+ok 70 - Cartesian complete, focused and grid declarations expose finite numeric offset vocabulary
+  ---
+  duration_ms: 123.566208
+  type: 'test'
+  ...
+# Subtest: anchors the independent difference equation with opaque and transparent colors
+ok 71 - anchors the independent difference equation with opaque and transparent colors
+  ---
+  duration_ms: 2.180167
+  type: 'test'
+  ...
+# Subtest: bar blend is a single optional semantic intent with exact normal reset
+ok 72 - bar blend is a single optional semantic intent with exact normal reset
+  ---
+  duration_ms: 46.270625
+  type: 'test'
+  ...
+# Subtest: difference combines one bar fill and outline before applying mark opacity
+ok 73 - difference combines one bar fill and outline before applying mark opacity
+  ---
+  duration_ms: 21.550583
+  type: 'test'
+  ...
+# Subtest: rounded, gradient and transparent bars preserve concrete blend through replay
+ok 74 - rounded, gradient and transparent bars preserve concrete blend through replay
+  ---
+  duration_ms: 36.017083
+  type: 'test'
+  ...
+# Subtest: blend rejects invalid inputs and unsupported concrete types atomically
+ok 75 - blend rejects invalid inputs and unsupported concrete types atomically
+  ---
+  duration_ms: 11.042416
+  type: 'test'
+  ...
+# Subtest: missing isolated surface capability is rejected before clear or canvas resize
+ok 76 - missing isolated surface capability is rejected before clear or canvas resize
+  ---
+  duration_ms: 14.368209
+  type: 'test'
+  ...
+# Subtest: independent bar sources preserve painter order and caller composite state
+ok 77 - independent bar sources preserve painter order and caller composite state
+  ---
+  duration_ms: 24.03025
+  type: 'test'
+  ...
+# Subtest: nested fractional clipping, shared paint objects and pixel ratios keep source coordinates
+ok 78 - nested fractional clipping, shared paint objects and pixel ratios keep source coordinates
+  ---
+  duration_ms: 0.679625
+  type: 'test'
+  ...
+# Subtest: DOM-compatible surface creation remains backend neutral
+ok 79 - DOM-compatible surface creation remains backend neutral
+  ---
+  duration_ms: 7.171125
+  type: 'test'
+  ...
+# Subtest: isolated sources preflight dimensions, pixel budgets and incompatible surfaces
+ok 80 - isolated sources preflight dimensions, pixel budgets and incompatible surfaces
+  ---
+  duration_ms: 5.4925
+  type: 'test'
+  ...
+# Subtest: malformed stored blend is rejected by shared graphic and semantic validation
+ok 81 - malformed stored blend is rejected by shared graphic and semantic validation
+  ---
+  duration_ms: 21.262416
+  type: 'test'
+  ...
+# Subtest: ranged horizontal and vertical bars retain blend through data, themes, highlights and facets
+ok 82 - ranged horizontal and vertical bars retain blend through data, themes, highlights and facets
+  ---
+  duration_ms: 173.487708
+  type: 'test'
+  ...
+# Subtest: bar creation, editing and facade declarations share structured fill paint
+ok 83 - bar creation, editing and facade declarations share structured fill paint
+  ---
+  duration_ms: 167.136625
+  type: 'test'
+  ...
+# Subtest: bar width declarations distinguish calendar intervals from slot and box widths
+ok 84 - bar width declarations distinguish calendar intervals from slot and box widths
+  ---
+  duration_ms: 191.066333
+  type: 'test'
+  ...
+# Subtest: keeps every basic chart facade in one canonical Current owner
+ok 85 - keeps every basic chart facade in one canonical Current owner
+  ---
+  duration_ms: 1.64575
+  type: 'test'
+  ...
+# Subtest: keeps every facade declaration and current root type export exact
+ok 86 - keeps every facade declaration and current root type export exact
+  ---
+  duration_ms: 1.902042
+  type: 'test'
+  ...
+# Subtest: keeps every facade program in its canonical chart slice
+ok 87 - keeps every facade program in its canonical chart slice
+  ---
+  duration_ms: 1449.445417
+  type: 'test'
+  ...
+# Subtest: hands every facade result to its documented resource edit path
+ok 88 - hands every facade result to its documented resource edit path
+  ---
+  duration_ms: 1184.4225
+  type: 'test'
+  ...
+# Subtest: keeps Parallel facade guides on the Parallel coordinate
+ok 89 - keeps Parallel facade guides on the Parallel coordinate
+  ---
+  duration_ms: 6.8075
+  type: 'test'
+  ...
+# Subtest: keeps facade-specific branches out of materialization and renderers
+ok 90 - keeps facade-specific branches out of materialization and renderers
+  ---
+  duration_ms: 5.942375
+  type: 'test'
+  ...
+# Subtest: Basic encoding reassignment retains its existing public editor and Full restoration boundaries
+ok 91 - Basic encoding reassignment retains its existing public editor and Full restoration boundaries
+  ---
+  duration_ms: 173.367916
+  type: 'test'
+  ...
+# Subtest: declares Full-only role-safe point packing and Beeswarm contracts
+ok 92 - declares Full-only role-safe point packing and Beeswarm contracts
+  ---
+  duration_ms: 169.466625
+  type: 'test'
+  ...
+# Subtest: publishes the logical Bin2D edit facade as current behavior
+ok 93 - publishes the logical Bin2D edit facade as current behavior
+  ---
+  duration_ms: 2.016
+  type: 'test'
+  ...
+# Subtest: renders the rebound Bin2D revision in Canvas and Node PNG
+ok 94 - renders the rebound Bin2D revision in Canvas and Node PNG
+  ---
+  duration_ms: 249.0095
+  type: 'test'
+  ...
+# Subtest: calendar completion declares exclusive day domains and Full-only editing
+ok 95 - calendar completion declares exclusive day domains and Full-only editing
+  ---
+  duration_ms: 167.15075
+  type: 'test'
+  ...
+# Subtest: declares Canvas scenes separately from the unchanged SVG contract
+ok 96 - declares Canvas scenes separately from the unchanged SVG contract
+  ---
+  duration_ms: 177.993208
+  type: 'test'
+  ...
+# Subtest: categorical spacing matches independent primitive graphics and pixels
+ok 97 - categorical spacing matches independent primitive graphics and pixels
+  ---
+  duration_ms: 3654.784125
+  type: 'test'
+  ...
+# Subtest: declares categorical theta and legend ordering with exclusive policies
+ok 98 - declares categorical theta and legend ordering with exclusive policies
+  ---
+  duration_ms: 252.606209
+  type: 'test'
+  ...
+# Subtest: keeps category-order runtime, declarations, current contract, and inventory aligned
+ok 99 - keeps category-order runtime, declarations, current contract, and inventory aligned
+  ---
+  duration_ms: 6.042417
+  type: 'test'
+  ...
+# Subtest: declares channel-specific scale editors with channel-appropriate options
+ok 100 - declares channel-specific scale editors with channel-appropriate options
+  ---
+  duration_ms: 179.322208
+  type: 'test'
+  ...
+# Subtest: keeps chart variants under one capability-oriented variants tree
+ok 101 - keeps chart variants under one capability-oriented variants tree
+  ---
+  duration_ms: 10.398334
+  type: 'test'
+  ...
+# Subtest: uses capability names instead of completed gate or phase names
+ok 102 - uses capability names instead of completed gate or phase names
+  ---
+  duration_ms: 7.536875
+  type: 'test'
+  ...
+# Subtest: baseline evidence declares shared production dependencies without claiming independent geometry
+ok 103 - baseline evidence declares shared production dependencies without claiming independent geometry
+  ---
+  duration_ms: 107.12875
+  type: 'test'
+  ...
+# Subtest: keeps the public chart registry and vertical slices synchronized
+ok 104 - keeps the public chart registry and vertical slices synchronized
+  ---
+  duration_ms: 7352.126375
+  type: 'test'
+  ...
+# Subtest: combined size titles share the categorical appearance at every edge
+ok 105 - combined size titles share the categorical appearance at every edge
+  ---
+  duration_ms: 5247.780917
+  type: 'test'
+  ...
+# Subtest: combined horizontal legends match primitive geometry, drawing order and pixels
+ok 106 - combined horizontal legends match primitive geometry, drawing order and pixels
+  ---
+  duration_ms: 1311.693083
+  type: 'test'
+  ...
+# Subtest: deferred chart owner cards distinguish creation from completed geometry
+ok 107 - deferred chart owner cards distinguish creation from completed geometry
+  ---
+  duration_ms: 6.311208
+  type: 'test'
+  ...
+# Subtest: compact action cards are generated from the current action contract
+ok 108 - compact action cards are generated from the current action contract
+  ---
+  duration_ms: 3272.403333
+  type: 'test'
+  ...
+# Subtest: missing generated routes fail closed even when card and route map both omit one
+ok 109 - missing generated routes fail closed even when card and route map both omit one
+  ---
+  duration_ms: 2944.534208
+  type: 'test'
+  ...
+# Subtest: compact action cards satisfy the bounded typed public schema projection
+ok 110 - compact action cards satisfy the bounded typed public schema projection
+  ---
+  duration_ms: 55.308834
+  type: 'test'
+  ...
+# Subtest: action-card hierarchy is generated from the executable direct-child trace
+ok 111 - action-card hierarchy is generated from the executable direct-child trace
+  ---
+  duration_ms: 6808.898917
+  type: 'test'
+  ...
+# Subtest: scale spacing units agree across every generic and focused editor
+ok 112 - scale spacing units agree across every generic and focused editor
+  ---
+  duration_ms: 5.800584
+  type: 'test'
+  ...
+# Subtest: Cartesian title cards retain numeric and relative gap logical-pixel units
+ok 113 - Cartesian title cards retain numeric and relative gap logical-pixel units
+  ---
+  duration_ms: 2.251
+  type: 'test'
+  ...
+# Subtest: action cards separate entry support, units, inference, and completion
+ok 114 - action cards separate entry support, units, inference, and completion
+  ---
+  duration_ms: 2.917208
+  type: 'test'
+  ...
+# Subtest: every compact snippet type-checks against the exact ChartProgram declaration
+ok 115 - every compact snippet type-checks against the exact ChartProgram declaration
+  ---
+  duration_ms: 152.321792
+  type: 'test'
+  ...
+# Subtest: imputation call patterns preserve method-specific requirements
+ok 116 - imputation call patterns preserve method-specific requirements
+  ---
+  duration_ms: 3.000292
+  type: 'test'
+  ...
+# Subtest: call pattern validation rejects unsupported top-level keys without confusing nested keys
+ok 117 - call pattern validation rejects unsupported top-level keys without confusing nested keys
+  ---
+  duration_ms: 0.269834
+  type: 'test'
+  ...
+# Subtest: advertised bar calls execute and direction-only guide branches retain their exact meaning
+ok 118 - advertised bar calls execute and direction-only guide branches retain their exact meaning
+  ---
+  duration_ms: 27.779916
+  type: 'test'
+  ...
+# Subtest: exposes exactly one read-only search tool with a byte-equal direct payload
+ok 119 - exposes exactly one read-only search tool with a byte-equal direct payload
+  ---
+  duration_ms: 37.503958
+  type: 'test'
+  ...
+# Subtest: keeps resource discovery bounded and reads exact cards and recipes
+ok 120 - keeps resource discovery bounded and reads exact cards and recipes
+  ---
+  duration_ms: 26.271875
+  type: 'test'
+  ...
+# Subtest: permits documentation only for the latest unresolved result
+ok 121 - permits documentation only for the latest unresolved result
+  ---
+  duration_ms: 6.091833
+  type: 'test'
+  ...
+# Subtest: does not require or authorize documentation for a terminal unsupported result
+ok 122 - does not require or authorize documentation for a terminal unsupported result
+  ---
+  duration_ms: 2.289875
+  type: 'test'
+  ...
+# Subtest: routes attached-label removal to its explicit source selector
+ok 123 - routes attached-label removal to its explicit source selector
+  ---
+  duration_ms: 0.63875
+  type: 'test'
+  ...
+# Subtest: routes selected-label reset to the exact attached-label editor
+ok 124 - routes selected-label reset to the exact attached-label editor
+  ---
+  duration_ms: 0.616959
+  type: 'test'
+  ...
+# Subtest: routes semantic label placement to the exact attached-label editor
+ok 125 - routes semantic label placement to the exact attached-label editor
+  ---
+  duration_ms: 1.373958
+  type: 'test'
+  ...
+# Subtest: rejects legacy unresolved entries that omit their explicit resource
+ok 126 - rejects legacy unresolved entries that omit their explicit resource
+  ---
+  duration_ms: 0.149875
+  type: 'test'
+  ...
+# Subtest: rejects non-knowledge resources and invalid tool arguments without execution
+ok 127 - rejects non-knowledge resources and invalid tool arguments without execution
+  ---
+  duration_ms: 1.794875
+  type: 'test'
+  ...
+# Subtest: keeps the MCP implementation out of chart execution and network surfaces
+ok 128 - keeps the MCP implementation out of chart execution and network surfaces
+  ---
+  duration_ms: 0.598167
+  type: 'test'
+  ...
+# Subtest: retains exclusions without proposing contradictory actions or facade defaults
+ok 129 - retains exclusions without proposing contradictory actions or facade defaults
+  ---
+  duration_ms: 47.793959
+  type: 'test'
+  ...
+# Subtest: keeps positive requests actionable and quoted restriction words literal
+ok 130 - keeps positive requests actionable and quoted restriction words literal
+  ---
+  duration_ms: 20.14475
+  type: 'test'
+  ...
+# Subtest: chart packets either materialize their chart or expose the missing decision
+ok 131 - chart packets either materialize their chart or expose the missing decision
+  ---
+  duration_ms: 201.182833
+  type: 'test'
+  ...
+# Subtest: raw mark requests remain distinct from incomplete chart requests
+ok 132 - raw mark requests remain distinct from incomplete chart requests
+  ---
+  duration_ms: 7.941417
+  type: 'test'
+  ...
+# Subtest: specific polar phrases shadow only overlapping generic chart phrases
+ok 133 - specific polar phrases shadow only overlapping generic chart phrases
+  ---
+  duration_ms: 37.567833
+  type: 'test'
+  ...
+# Subtest: polar point, line, and Radar discovery select distinct complete facades
+ok 134 - polar point, line, and Radar discovery select distinct complete facades
+  ---
+  duration_ms: 42.818209
+  type: 'test'
+  ...
+# Subtest: rose and radial bar discovery select distinct complete measurement owners
+ok 135 - rose and radial bar discovery select distinct complete measurement owners
+  ---
+  duration_ms: 24.256584
+  type: 'test'
+  ...
+# Subtest: intent taxonomy covers every supported constraint with exact owners
+ok 136 - intent taxonomy covers every supported constraint with exact owners
+  ---
+  duration_ms: 52.356125
+  type: 'test'
+  ...
+# Subtest: completes density axis requests through the facade without creating duplicate guides
+ok 137 - completes density axis requests through the facade without creating duplicate guides
+  ---
+  duration_ms: 22.232041
+  type: 'test'
+  ...
+# Subtest: every exact action name resolves to its compact card without gaps
+ok 138 - every exact action name resolves to its compact card without gaps
+  ---
+  duration_ms: 220.66125
+  type: 'test'
+  ...
+# Subtest: selects atomic channel encoding only for an explicit batch intent
+ok 139 - selects atomic channel encoding only for an explicit batch intent
+  ---
+  duration_ms: 3.698417
+  type: 'test'
+  ...
+# Subtest: routes equal-unit layout intent through explicit coordinate editing
+ok 140 - routes equal-unit layout intent through explicit coordinate editing
+  ---
+  duration_ms: 13.580834
+  type: 'test'
+  ...
+# Subtest: routes moved Polar-frame intent through the Polar coordinate editor
+ok 141 - routes moved Polar-frame intent through the Polar coordinate editor
+  ---
+  duration_ms: 11.179458
+  type: 'test'
+  ...
+# Subtest: routes semantic mark-label placement through its explicit editor
+ok 142 - routes semantic mark-label placement through its explicit editor
+  ---
+  duration_ms: 0.744708
+  type: 'test'
+  ...
+# Subtest: provides exact executable Canvas and SVG authoring bootstraps
+ok 143 - provides exact executable Canvas and SVG authoring bootstraps
+  ---
+  duration_ms: 33.82825
+  type: 'test'
+  ...
+# Subtest: prefers the complete reference-line phrase without hiding separate marks
+ok 144 - prefers the complete reference-line phrase without hiding separate marks
+  ---
+  duration_ms: 1.174416
+  type: 'test'
+  ...
+# Subtest: uses the regression owner for its fitted line and uncertainty ribbon
+ok 145 - uses the regression owner for its fitted line and uncertainty ribbon
+  ---
+  duration_ms: 0.651417
+  type: 'test'
+  ...
+# Subtest: routes point-and-whisker language to the error-bar action
+ok 146 - routes point-and-whisker language to the error-bar action
+  ---
+  duration_ms: 0.743417
+  type: 'test'
+  ...
+# Subtest: injects an executable point source for an explicit regression-layer request
+ok 147 - injects an executable point source for an explicit regression-layer request
+  ---
+  duration_ms: 21.956792
+  type: 'test'
+  ...
+# Subtest: preserves request order only within one lifecycle priority
+ok 148 - preserves request order only within one lifecycle priority
+  ---
+  duration_ms: 1.857708
+  type: 'test'
+  ...
+# Subtest: orders a positioned point before its inherited text overlay
+ok 149 - orders a positioned point before its inherited text overlay
+  ---
+  duration_ms: 9.274792
+  type: 'test'
+  ...
+# Subtest: connects a requested color scale to its facade legend owner
+ok 150 - connects a requested color scale to its facade legend owner
+  ---
+  duration_ms: 11.985292
+  type: 'test'
+  ...
+# Subtest: orders a raw bar category before its quantitative measure
+ok 151 - orders a raw bar category before its quantitative measure
+  ---
+  duration_ms: 6.723375
+  type: 'test'
+  ...
+# Subtest: keeps incomplete rule endpoints open and preserves requested appearance text
+ok 152 - keeps incomplete rule endpoints open and preserves requested appearance text
+  ---
+  duration_ms: 7.318
+  type: 'test'
+  ...
+# Subtest: keeps terminal unsupported output separate from open renderer decisions
+ok 153 - keeps terminal unsupported output separate from open renderer decisions
+  ---
+  duration_ms: 1.415417
+  type: 'test'
+  ...
+# Subtest: reports concrete options, placeholders, and unsupported requirements without silent partials
+ok 154 - reports concrete options, placeholders, and unsupported requirements without silent partials
+  ---
+  duration_ms: 15.166041
+  type: 'test'
+  ...
+# Subtest: executes the complete Horizon facade with original field roles, bands and owned x guides
+ok 155 - executes the complete Horizon facade with original field roles, bands and owned x guides
+  ---
+  duration_ms: 12.280042
+  type: 'test'
+  ...
+# Subtest: reports incompatible complete-chart guides and derived color as unresolved without invalid actions
+ok 156 - reports incompatible complete-chart guides and derived color as unresolved without invalid actions
+  ---
+  duration_ms: 61.583083
+  type: 'test'
+  ...
+# Subtest: design fixtures prove bounded one-call task closure without silent partials
+ok 157 - design fixtures prove bounded one-call task closure without silent partials
+  ---
+  duration_ms: 41.933459
+  type: 'test'
+  ...
+# Subtest: every supported constraint and design-fixture authoring step type-checks
+ok 158 - every supported constraint and design-fixture authoring step type-checks
+  ---
+  duration_ms: 448.671167
+  type: 'test'
+  ...
+# Subtest: task packets reject ambiguous, unsupported, empty, and oversized input explicitly
+ok 159 - task packets reject ambiguous, unsupported, empty, and oversized input explicitly
+  ---
+  duration_ms: 3.14475
+  type: 'test'
+  ...
+# Subtest: area discovery uses the complete facade and preserves requested fields and guides
+ok 160 - area discovery uses the complete facade and preserves requested fields and guides
+  ---
+  duration_ms: 10.059334
+  type: 'test'
+  ...
+# Subtest: executes point color, explicit axis rotation, and logarithmic scale requirements together
+ok 161 - executes point color, explicit axis rotation, and logarithmic scale requirements together
+  ---
+  duration_ms: 14.913166
+  type: 'test'
+  ...
+# Subtest: required options reflect the contract and selected imputation method rather than sample calls
+ok 162 - required options reflect the contract and selected imputation method rather than sample calls
+  ---
+  duration_ms: 2.575208
+  type: 'test'
+  ...
+# Subtest: retains unparsed, conflicting, and non-English requirements instead of claiming completion
+ok 163 - retains unparsed, conflicting, and non-English requirements instead of claiming completion
+  ---
+  duration_ms: 12.331917
+  type: 'test'
+  ...
+# Subtest: the compiler harness accepts a used negative assertion and rejects a stale one
+ok 164 - the compiler harness accepts a used negative assertion and rejects a stale one
+  ---
+  duration_ms: 223.428458
+  type: 'test'
+  ...
+# Subtest: declares explicit facet-source routing, color inheritance and horizontal line roles
+ok 165 - declares explicit facet-source routing, color inheritance and horizontal line roles
+  ---
+  duration_ms: 119.191042
+  type: 'test'
+  ...
+# Subtest: executes named composition edits across Cartesian, Polar, and Parallel children
+ok 166 - executes named composition edits across Cartesian, Polar, and Parallel children
+  ---
+  duration_ms: 151.200208
+  type: 'test'
+  ...
+# Subtest: executes Polar and Parallel facet, grid, and repeat families
+ok 167 - executes Polar and Parallel facet, grid, and repeat families
+  ---
+  duration_ms: 55.869792
+  type: 'test'
+  ...
+# Subtest: retains Polar children in horizontal and nested concat compositions
+ok 168 - retains Polar children in horizontal and nested concat compositions
+  ---
+  duration_ms: 30.551333
+  type: 'test'
+  ...
+# Subtest: facets a Polar program without changing the source program
+ok 169 - facets a Polar program without changing the source program
+  ---
+  duration_ms: 23.003666
+  type: 'test'
+  ...
+# Subtest: shares a temporal aggregate scale across compatible layered marks
+ok 170 - shares a temporal aggregate scale across compatible layered marks
+  ---
+  duration_ms: 16.20725
+  type: 'test'
+  ...
+# Subtest: propagates an immutable Polar child revision through explicit ancestor replacement
+ok 171 - propagates an immutable Polar child revision through explicit ancestor replacement
+  ---
+  duration_ms: 44.157625
+  type: 'test'
+  ...
+# Subtest: composition legend policy has closed public types and inspection choices
+ok 172 - composition legend policy has closed public types and inspection choices
+  ---
+  duration_ms: 131.709208
+  type: 'test'
+  ...
+# Subtest: declares strict grid, repeat, source, and named-child composition contracts
+ok 173 - declares strict grid, repeat, source, and named-child composition contracts
+  ---
+  duration_ms: 108.489834
+  type: 'test'
+  ...
+# Subtest: computed access and literal replacement declare closed serializable node shapes
+ok 174 - computed access and literal replacement declare closed serializable node shapes
+  ---
+  duration_ms: 105.921875
+  type: 'test'
+  ...
+# Subtest: Context7 configuration matches the supported repository schema
+ok 175 - Context7 configuration matches the supported repository schema
+  ---
+  duration_ms: 1.762042
+  type: 'test'
+  ...
+# Subtest: Context7 indexes canonical public documentation without duplicate bundles
+ok 176 - Context7 indexes canonical public documentation without duplicate bundles
+  ---
+  duration_ms: 0.189208
+  type: 'test'
+  ...
+# Subtest: Context7 refresh is wired to releases and explicit manual dispatch
+ok 177 - Context7 refresh is wired to releases and explicit manual dispatch
+  ---
+  duration_ms: 0.898542
+  type: 'test'
+  ...
+# Subtest: continuous facade grids reject categorical band placement without changing prior state
+ok 178 - continuous facade grids reject categorical band placement without changing prior state
+  ---
+  duration_ms: 148.292541
+  type: 'test'
+  ...
+# Subtest: area facade keeps native band grids for both independent-channel orientations
+ok 179 - area facade keeps native band grids for both independent-channel orientations
+  ---
+  duration_ms: 17.543792
+  type: 'test'
+  ...
+# Subtest: unrelated band resources cannot replace continuous facade grid ownership
+ok 180 - unrelated band resources cannot replace continuous facade grid ownership
+  ---
+  duration_ms: 95.751208
+  type: 'test'
+  ...
+# Subtest: continuous facade grid declarations prohibit only physically impossible band roles
+ok 181 - continuous facade grid declarations prohibit only physically impossible band roles
+  ---
+  duration_ms: 120.4735
+  type: 'test'
+  ...
+# Subtest: generated option inventory retains real band paths and omits unreachable continuous ones
+ok 182 - generated option inventory retains real band paths and omits unreachable continuous ones
+  ---
+  duration_ms: 123633.522875
+  type: 'test'
+  ...
+# Subtest: continuous color and stroke declarations retain closed palette descriptors
+ok 183 - continuous color and stroke declarations retain closed palette descriptors
+  ---
+  duration_ms: 111.272167
+  type: 'test'
+  ...
+# Subtest: declares full-only coordinate aspect editing
+ok 184 - declares full-only coordinate aspect editing
+  ---
+  duration_ms: 105.901459
+  type: 'test'
+  ...
+# Subtest: exposes coordinate editing only from the full program
+ok 185 - exposes coordinate editing only from the full program
+  ---
+  duration_ms: 0.842042
+  type: 'test'
+  ...
+# Subtest: resolves frame and data aspect bounds from independent literal oracles
+ok 186 - resolves frame and data aspect bounds from independent literal oracles
+  ---
+  duration_ms: 0.700583
+  type: 'test'
+  ...
+# Subtest: stores a normalized data aspect and gives x and y units the requested ratio
+ok 187 - stores a normalized data aspect and gives x and y units the requested ratio
+  ---
+  duration_ms: 18.854291
+  type: 'test'
+  ...
+# Subtest: uses absolute reversed domain spans without rewriting the domains
+ok 188 - uses absolute reversed domain spans without rewriting the domains
+  ---
+  duration_ms: 4.453625
+  type: 'test'
+  ...
+# Subtest: rematerializes axes and grids against the shared effective bounds
+ok 189 - rematerializes axes and grids against the shared effective bounds
+  ---
+  duration_ms: 10.187
+  type: 'test'
+  ...
+# Subtest: recomputes coupled ranges after domain and Canvas edits and auto restores allocation
+ok 190 - recomputes coupled ranges after domain and Canvas edits and auto restores allocation
+  ---
+  duration_ms: 10.516
+  type: 'test'
+  ...
+# Subtest: rejects invalid or ambiguous data aspects atomically
+ok 191 - rejects invalid or ambiguous data aspects atomically
+  ---
+  duration_ms: 42.993958
+  type: 'test'
+  ...
+# Subtest: rejects multiple Cartesian scale pairs for one data-aspect coordinate
+ok 192 - rejects multiple Cartesian scale pairs for one data-aspect coordinate
+  ---
+  duration_ms: 3.03825
+  type: 'test'
+  ...
+# Subtest: applies frame aspect to Polar and Parallel coordinate consumers
+ok 193 - applies frame aspect to Polar and Parallel coordinate consumers
+  ---
+  duration_ms: 14.282834
+  type: 'test'
+  ...
+# Subtest: renaming fields preserves summary values and point geometry (cars-metamorphic-v1)
+ok 194 - renaming fields preserves summary values and point geometry (cars-metamorphic-v1)
+  ---
+  duration_ms: 45.673375
+  type: 'test'
+  ...
+# Subtest: rescaling data and its domain preserves geometry while changing aggregates (cars-metamorphic-v1)
+ok 195 - rescaling data and its domain preserves geometry while changing aggregates (cars-metamorphic-v1)
+  ---
+  duration_ms: 20.25325
+  type: 'test'
+  ...
+# Subtest: missing-value injection agrees with an independent grouped reduction (cars-metamorphic-v1)
+ok 196 - missing-value injection agrees with an independent grouped reduction (cars-metamorphic-v1)
+  ---
+  duration_ms: 2.021834
+  type: 'test'
+  ...
+# Subtest: mutation helpers reject collisions and numeric overflow without changing input
+ok 197 - mutation helpers reject collisions and numeric overflow without changing input
+  ---
+  duration_ms: 0.460875
+  type: 'test'
+  ...
+# Subtest: bounded small point consumer preserves 32 rows and 4 categories
+ok 198 - bounded small point consumer preserves 32 rows and 4 categories
+  ---
+  duration_ms: 4.815333
+  type: 'test'
+  ...
+# Subtest: bounded medium point consumer preserves 512 rows and 32 categories
+ok 199 - bounded medium point consumer preserves 512 rows and 32 categories
+  ---
+  duration_ms: 27.578459
+  type: 'test'
+  ...
+# Subtest: bounded large point consumer preserves 4096 rows and 256 categories
+ok 200 - bounded large point consumer preserves 4096 rows and 256 categories
+  ---
+  duration_ms: 175.901458
+  type: 'test'
+  ...
+# Subtest: pathology missing retains its explicit aggregate postcondition
+ok 201 - pathology missing retains its explicit aggregate postcondition
+  ---
+  duration_ms: 0.80675
+  type: 'test'
+  ...
+# Subtest: pathology duplicates retains its explicit aggregate postcondition
+ok 202 - pathology duplicates retains its explicit aggregate postcondition
+  ---
+  duration_ms: 0.821833
+  type: 'test'
+  ...
+# Subtest: pathology signed-zero retains its explicit aggregate postcondition
+ok 203 - pathology signed-zero retains its explicit aggregate postcondition
+  ---
+  duration_ms: 0.998125
+  type: 'test'
+  ...
+# Subtest: pathology constant retains its explicit aggregate postcondition
+ok 204 - pathology constant retains its explicit aggregate postcondition
+  ---
+  duration_ms: 0.4145
+  type: 'test'
+  ...
+# Subtest: pathology large-magnitude retains its explicit aggregate postcondition
+ok 205 - pathology large-magnitude retains its explicit aggregate postcondition
+  ---
+  duration_ms: 0.503791
+  type: 'test'
+  ...
+# Subtest: declares Full-only completion, imputation, calendar, and duration windows
+ok 206 - declares Full-only completion, imputation, calendar, and duration windows
+  ---
+  duration_ms: 111.271
+  type: 'test'
+  ...
+# Subtest: declares exact Full-only derived editing unions
+ok 207 - declares exact Full-only derived editing unions
+  ---
+  duration_ms: 117.183167
+  type: 'test'
+  ...
+# Subtest: publishes every derived editor as Current and renders a revised owner
+ok 208 - publishes every derived editor as Current and renders a revised owner
+  ---
+  duration_ms: 124.942625
+  type: 'test'
+  ...
+# Subtest: Full and Basic share structured option errors without retaining supplied data
+ok 209 - Full and Basic share structured option errors without retaining supplied data
+  ---
+  duration_ms: 2.408416
+  type: 'test'
+  ...
+# Subtest: resource diagnostics distinguish missing, ambiguous, and live consumers
+ok 210 - resource diagnostics distinguish missing, ambiguous, and live consumers
+  ---
+  duration_ms: 6.026583
+  type: 'test'
+  ...
+# Subtest: numeric diagnostics retain Error classes and include actual resource budgets
+ok 211 - numeric diagnostics retain Error classes and include actual resource budgets
+  ---
+  duration_ms: 98.00475
+  type: 'test'
+  ...
+# Subtest: unknown failures retain identity and use a fallback code without message parsing
+ok 212 - unknown failures retain identity and use a fallback code without message parsing
+  ---
+  duration_ms: 0.244583
+  type: 'test'
+  ...
+# Subtest: wedge preserves independently specified vertices, area and clockwise rotation
+ok 213 - wedge preserves independently specified vertices, area and clockwise rotation
+  ---
+  duration_ms: 45.647292
+  type: 'test'
+  ...
+# Subtest: wedge renders the independent primitive identically in PNG and persists in Full and Basic
+ok 214 - wedge renders the independent primitive identically in PNG and persists in Full and Basic
+  ---
+  duration_ms: 120.200125
+  type: 'test'
+  ...
+# Subtest: arrow preserves independently specified vertices, area and clockwise rotation
+ok 215 - arrow preserves independently specified vertices, area and clockwise rotation
+  ---
+  duration_ms: 16.742125
+  type: 'test'
+  ...
+# Subtest: arrow renders the independent primitive identically in PNG and persists in Full and Basic
+ok 216 - arrow renders the independent primitive identically in PNG and persists in Full and Basic
+  ---
+  duration_ms: 16.446583
+  type: 'test'
+  ...
+# Subtest: renders mapped axis, legend, and role headers through every backend
+ok 217 - renders mapped axis, legend, and role headers through every backend
+  ---
+  duration_ms: 82.780583
+  type: 'test'
+  ...
+# Subtest: mapped axis and legend text matches literal primitive edits and pixels
+ok 218 - mapped axis and legend text matches literal primitive edits and pixels
+  ---
+  duration_ms: 52.209625
+  type: 'test'
+  ...
+# Subtest: declares typed display maps on supported axis, legend, and facet surfaces
+ok 219 - declares typed display maps on supported axis, legend, and facet surfaces
+  ---
+  duration_ms: 102.178542
+  type: 'test'
+  ...
+# Subtest: Box and Gradient facades expose ordinary field and fixed color encodings
+ok 220 - Box and Gradient facades expose ordinary field and fixed color encodings
+  ---
+  duration_ms: 102.050625
+  type: 'test'
+  ...
+# Subtest: publishes distribution owner role revisions as current behavior
+ok 221 - publishes distribution owner role revisions as current behavior
+  ---
+  duration_ms: 7.209958
+  type: 'test'
+  ...
+# Subtest: renders revised distribution owners through Canvas and Node PNG
+ok 222 - renders revised distribution owners through Canvas and Node PNG
+  ---
+  duration_ms: 264.610917
+  type: 'test'
+  ...
+# Subtest: keeps current package surfaces visible in public and architecture documentation
+ok 223 - keeps current package surfaces visible in public and architecture documentation
+  ---
+  duration_ms: 2.988833
+  type: 'test'
+  ...
+# Subtest: documents each shipped renderer entry at the package boundary
+ok 224 - documents each shipped renderer entry at the package boundary
+  ---
+  duration_ms: 0.718542
+  type: 'test'
+  ...
+# Subtest: keeps documented browser bundle ceilings synchronized with package checks
+ok 225 - keeps documented browser bundle ceilings synchronized with package checks
+  ---
+  duration_ms: 9.880125
+  type: 'test'
+  ...
+# Subtest: declares Full-only ECDF data, chart, and atomic statistical editor
+ok 226 - declares Full-only ECDF data, chart, and atomic statistical editor
+  ---
+  duration_ms: 143.025125
+  type: 'test'
+  ...
+# Subtest: renders encoding and outline teardown through Canvas and Node PNG
+ok 227 - renders encoding and outline teardown through Canvas and Node PNG
+  ---
+  duration_ms: 123.600541
+  type: 'test'
+  ...
+# Subtest: keeps an incomplete circle empty after removing x
+ok 228 - keeps an incomplete circle empty after removing x
+  ---
+  duration_ms: 6.645584
+  type: 'test'
+  ...
+# Subtest: keeps an incomplete circle empty after removing y
+ok 229 - keeps an incomplete circle empty after removing y
+  ---
+  duration_ms: 4.239667
+  type: 'test'
+  ...
+# Subtest: keeps an incomplete square empty after removing x
+ok 230 - keeps an incomplete square empty after removing x
+  ---
+  duration_ms: 8.069584
+  type: 'test'
+  ...
+# Subtest: keeps an incomplete square empty after removing y
+ok 231 - keeps an incomplete square empty after removing y
+  ---
+  duration_ms: 3.618209
+  type: 'test'
+  ...
+# Subtest: keeps an incomplete diamond empty after removing x
+ok 232 - keeps an incomplete diamond empty after removing x
+  ---
+  duration_ms: 4.044542
+  type: 'test'
+  ...
+# Subtest: keeps an incomplete diamond empty after removing y
+ok 233 - keeps an incomplete diamond empty after removing y
+  ---
+  duration_ms: 4.129625
+  type: 'test'
+  ...
+# Subtest: declares Full-only endpoint chart facades and their atomic role editor
+ok 234 - declares Full-only endpoint chart facades and their atomic role editor
+  ---
+  duration_ms: 101.36575
+  type: 'test'
+  ...
+# Subtest: routes installed extension agents through current package knowledge
+ok 235 - routes installed extension agents through current package knowledge
+  ---
+  duration_ms: 2.590583
+  type: 'test'
+  ...
+# Subtest: keeps every local extension knowledge link resolvable
+ok 236 - keeps every local extension knowledge link resolvable
+  ---
+  duration_ms: 1.294292
+  type: 'test'
+  ...
+# Subtest: facade declarations retain only combinations supported by their own mark and field inputs
+ok 237 - facade declarations retain only combinations supported by their own mark and field inputs
+  ---
+  duration_ms: 105.232209
+  type: 'test'
+  ...
+# Subtest: createLinePlot rejects another mark's combined legend atomically
+ok 238 - createLinePlot rejects another mark's combined legend atomically
+  ---
+  duration_ms: 26.664583
+  type: 'test'
+  ...
+# Subtest: createBarPlot rejects another mark's combined legend atomically
+ok 239 - createBarPlot rejects another mark's combined legend atomically
+  ---
+  duration_ms: 17.519458
+  type: 'test'
+  ...
+# Subtest: createIntervalPlot rejects another mark's combined legend atomically
+ok 240 - createIntervalPlot rejects another mark's combined legend atomically
+  ---
+  duration_ms: 75.80275
+  type: 'test'
+  ...
+# Subtest: createDotPlot rejects another mark's combined legend atomically
+ok 241 - createDotPlot rejects another mark's combined legend atomically
+  ---
+  duration_ms: 6.224125
+  type: 'test'
+  ...
+# Subtest: categorical path legends reject bottom titles while gradient legends retain them
+ok 242 - categorical path legends reject bottom titles while gradient legends retain them
+  ---
+  duration_ms: 14.843083
+  type: 'test'
+  ...
+# Subtest: quantitative fusion rejects a polar point without changing its source program
+ok 243 - quantitative fusion rejects a polar point without changing its source program
+  ---
+  duration_ms: 4.340542
+  type: 'test'
+  ...
+# Subtest: facet content anchors use one closed vocabulary for creation and editing
+ok 244 - facet content anchors use one closed vocabulary for creation and editing
+  ---
+  duration_ms: 105.970709
+  type: 'test'
+  ...
+# Subtest: facet field titles use role-scoped options and Full-only actions
+ok 245 - facet field titles use role-scoped options and Full-only actions
+  ---
+  duration_ms: 104.001875
+  type: 'test'
+  ...
+# Subtest: facet header rotation uses the existing closed rotation vocabulary and Full-only actions
+ok 246 - facet header rotation uses the existing closed rotation vocabulary and Full-only actions
+  ---
+  duration_ms: 102.003583
+  type: 'test'
+  ...
+# Subtest: publishes facet policy editing as current behavior
+ok 247 - publishes facet policy editing as current behavior
+  ---
+  duration_ms: 0.811667
+  type: 'test'
+  ...
+# Subtest: renders edited facet policies through Canvas and Node PNG
+ok 248 - renders edited facet policies through Canvas and Node PNG
+  ---
+  duration_ms: 226.73025
+  type: 'test'
+  ...
+# Subtest: facet top lane declarations keep closed values, canonical state and Full-only composition
+ok 249 - facet top lane declarations keep closed values, canonical state and Full-only composition
+  ---
+  duration_ms: 110.187
+  type: 'test'
+  ...
+# Subtest: keeps field-driven encodings Current and out of Planned
+ok 250 - keeps field-driven encodings Current and out of Planned
+  ---
+  duration_ms: 1.928792
+  type: 'test'
+  ...
+# Subtest: exports the complete strict field-driven option surface
+ok 251 - exports the complete strict field-driven option surface
+  ---
+  duration_ms: 0.511167
+  type: 'test'
+  ...
+# Subtest: keeps both field-driven visual capabilities executable and equivalent
+ok 252 - keeps both field-driven visual capabilities executable and equivalent
+  ---
+  duration_ms: 60.977875
+  type: 'test'
+  ...
+# Subtest: documents both additive field-driven contracts and their limits
+ok 253 - documents both additive field-driven contracts and their limits
+  ---
+  duration_ms: 0.605875
+  type: 'test'
+  ...
+# Subtest: publishes fitting only on Full unit programs
+ok 254 - publishes fitting only on Full unit programs
+  ---
+  duration_ms: 6.6385
+  type: 'test'
+  ...
+# Subtest: keeps fitting inside one authoring trace and preserves semantic state
+ok 255 - keeps fitting inside one authoring trace and preserves semantic state
+  ---
+  duration_ms: 167.557208
+  type: 'test'
+  ...
+# Subtest: publishes Cartesian layout separately from categorical Parallel display mappings
+ok 256 - publishes Cartesian layout separately from categorical Parallel display mappings
+  ---
+  duration_ms: 0.495084
+  type: 'test'
+  ...
+# Subtest: shape fixed and field branches are mutually exclusive in public types
+ok 257 - shape fixed and field branches are mutually exclusive in public types
+  ---
+  duration_ms: 111.652125
+  type: 'test'
+  ...
+# Subtest: promotes the approved focused guide actions and keeps later work Planned
+ok 258 - promotes the approved focused guide actions and keeps later work Planned
+  ---
+  duration_ms: 3.568084
+  type: 'test'
+  ...
+# Subtest: promotes the approved mark and scale parameter extensions
+ok 259 - promotes the approved mark and scale parameter extensions
+  ---
+  duration_ms: 0.572833
+  type: 'test'
+  ...
+# Subtest: covers every focused-editing action in an approved visual target
+ok 260 - covers every focused-editing action in an approved visual target
+  ---
+  duration_ms: 1.573959
+  type: 'test'
+  ...
+# Subtest: publishes exact current option types and aligns audience classifications
+ok 261 - publishes exact current option types and aligns audience classifications
+  ---
+  duration_ms: 2.301375
+  type: 'test'
+  ...
+# Subtest: keeps every accepted focused-editing action and capability current
+ok 262 - keeps every accepted focused-editing action and capability current
+  ---
+  duration_ms: 0.085
+  type: 'test'
+  ...
+# Subtest: declares the Full-only field-selected Parallel scale editor
+ok 263 - declares the Full-only field-selected Parallel scale editor
+  ---
+  duration_ms: 110.191958
+  type: 'test'
+  ...
+# Subtest: publishes editParallelScale as one Current direct action
+ok 264 - publishes editParallelScale as one Current direct action
+  ---
+  duration_ms: 0.180208
+  type: 'test'
+  ...
+# Subtest: publishes both focused offset scale editors as Current direct actions
+ok 265 - publishes both focused offset scale editors as Current direct actions
+  ---
+  duration_ms: 0.075083
+  type: 'test'
+  ...
+# Subtest: locks the complete public graphic hierarchy inventory
+ok 266 - locks the complete public graphic hierarchy inventory
+  ---
+  duration_ms: 4396.012208
+  type: 'test'
+  ...
+# Subtest: snapshots roots, ownership, items, and depth-first drawing order
+ok 267 - snapshots roots, ownership, items, and depth-first drawing order
+  ---
+  duration_ms: 3.409958
+  type: 'test'
+  ...
+# Subtest: separates concrete node equality from attachment equality
+ok 268 - separates concrete node equality from attachment equality
+  ---
+  duration_ms: 4.990625
+  type: 'test'
+  ...
+# Subtest: preserves extension-authored top-level graphics
+ok 269 - preserves extension-authored top-level graphics
+  ---
+  duration_ms: 0.319958
+  type: 'test'
+  ...
+# Subtest: emits balanced recursive enter and exit events
+ok 270 - emits balanced recursive enter and exit events
+  ---
+  duration_ms: 0.346917
+  type: 'test'
+  ...
+# Subtest: guide visibility types accept retained partial edits and reject non-boolean flags
+ok 271 - guide visibility types accept retained partial edits and reject non-boolean flags
+  ---
+  duration_ms: 113.893542
+  type: 'test'
+  ...
+# Subtest: hidden categorical edge legends match literal primitive bounds and pixels
+ok 272 - hidden categorical edge legends match literal primitive bounds and pixels
+  ---
+  duration_ms: 1139.393375
+  type: 'test'
+  ...
+# Subtest: preview shares owned unrelated rows while isolating caller-owned updates
+ok 273 - preview shares owned unrelated rows while isolating caller-owned updates
+  ---
+  duration_ms: 5.357125
+  type: 'test'
+  ...
+# Subtest: data-only actions preserve every themed visual branch and later styling works
+ok 274 - data-only actions preserve every themed visual branch and later styling works
+  ---
+  duration_ms: 15.144208
+  type: 'test'
+  ...
+# Subtest: keeps implemented capability groups out of planned inventory
+ok 275 - keeps implemented capability groups out of planned inventory
+  ---
+  duration_ms: 0.683708
+  type: 'test'
+  ...
+# Subtest: keeps the implemented box-plot contract complete
+ok 276 - keeps the implemented box-plot contract complete
+  ---
+  duration_ms: 8.644625
+  type: 'test'
+  ...
+# Subtest: keeps mark selection current, documented, and executable
+ok 277 - keeps mark selection current, documented, and executable
+  ---
+  duration_ms: 3.260041
+  type: 'test'
+  ...
+# Subtest: Full rejects unknown primitive options without changing the source
+ok 278 - Full rejects unknown primitive options without changing the source
+  ---
+  duration_ms: 3.709
+  type: 'test'
+  ...
+# Subtest: Full rejects sparse rows at both source data boundaries
+ok 279 - Full rejects sparse rows at both source data boundaries
+  ---
+  duration_ms: 4.709042
+  type: 'test'
+  ...
+# Subtest: Full refuses mutable function cells without freezing caller values
+ok 280 - Full refuses mutable function cells without freezing caller values
+  ---
+  duration_ms: 0.308625
+  type: 'test'
+  ...
+# Subtest: Basic rejects unknown primitive options without changing the source
+ok 281 - Basic rejects unknown primitive options without changing the source
+  ---
+  duration_ms: 0.389292
+  type: 'test'
+  ...
+# Subtest: Basic rejects sparse rows at both source data boundaries
+ok 282 - Basic rejects sparse rows at both source data boundaries
+  ---
+  duration_ms: 0.518167
+  type: 'test'
+  ...
+# Subtest: Basic refuses mutable function cells without freezing caller values
+ok 283 - Basic refuses mutable function cells without freezing caller values
+  ---
+  duration_ms: 0.191209
+  type: 'test'
+  ...
+# Subtest: extension callbacks remain executable without entering immutable trace state
+ok 284 - extension callbacks remain executable without entering immutable trace state
+  ---
+  duration_ms: 0.20175
+  type: 'test'
+  ...
+# Subtest: keeps browser inspection descriptors synchronized with action cards
+ok 285 - keeps browser inspection descriptors synchronized with action cards
+  ---
+  duration_ms: 9.902625
+  type: 'test'
+  ...
+# Subtest: covers every registered built-in action without descriptor evasion
+ok 286 - covers every registered built-in action without descriptor evasion
+  ---
+  duration_ms: 10.029959
+  type: 'test'
+  ...
+# Subtest: keeps the scoped instruction hierarchy explicit and bounded
+ok 287 - keeps the scoped instruction hierarchy explicit and bounded
+  ---
+  duration_ms: 29.260584
+  type: 'test'
+  ...
+# Subtest: keeps durable instruction bullets owned by one scope
+ok 288 - keeps durable instruction bullets owned by one scope
+  ---
+  duration_ms: 20.243542
+  type: 'test'
+  ...
+# Subtest: places interval legends at four edges with exact primitive graphics and pixels
+ok 289 - places interval legends at four edges with exact primitive graphics and pixels
+  ---
+  duration_ms: 2248.642833
+  type: 'test'
+  ...
+# Subtest: declares full-only Interval and Regression complete facades
+ok 290 - declares full-only Interval and Regression complete facades
+  ---
+  duration_ms: 125.00775
+  type: 'test'
+  ...
+# Subtest: item legend strokes reserve sample space with exact primitive graphics and pixels
+ok 291 - item legend strokes reserve sample space with exact primitive graphics and pixels
+  ---
+  duration_ms: 1141.906958
+  type: 'test'
+  ...
+# Subtest: keeps crossing label leaders above grids across creation and refresh order
+ok 292 - keeps crossing label leaders above grids across creation and refresh order
+  ---
+  duration_ms: 52.5535
+  type: 'test'
+  ...
+# Subtest: replays derived data through filters, selected labels, references, layout, and highlights
+ok 293 - replays derived data through filters, selected labels, references, layout, and highlights
+  ---
+  duration_ms: 104.318708
+  type: 'test'
+  ...
+# Subtest: native layering and read-only composition inspection have discriminated public types
+ok 294 - native layering and read-only composition inspection have discriminated public types
+  ---
+  duration_ms: 114.785459
+  type: 'test'
+  ...
+# Subtest: legend block declarations expose the closed Full-only contract
+ok 295 - legend block declarations expose the closed Full-only contract
+  ---
+  duration_ms: 115.817292
+  type: 'test'
+  ...
+# Subtest: edits separate categorical and sampled blocks by stable channel identity
+ok 296 - edits separate categorical and sampled blocks by stable channel identity
+  ---
+  duration_ms: 49.735292
+  type: 'test'
+  ...
+# Subtest: treats every member of one merged block as the same selector
+ok 297 - treats every member of one merged block as the same selector
+  ---
+  duration_ms: 20.701084
+  type: 'test'
+  ...
+# Subtest: maps categorical legend labels by typed raw value and resets the block override
+ok 298 - maps categorical legend labels by typed raw value and resets the block override
+  ---
+  duration_ms: 23.364333
+  type: 'test'
+  ...
+# Subtest: rejects nonnumeric display maps for continuous size legend blocks atomically
+ok 299 - rejects nonnumeric display maps for continuous size legend blocks atomically
+  ---
+  duration_ms: 13.996708
+  type: 'test'
+  ...
+# Subtest: replaces symbol patches completely and removes stale concrete properties
+ok 300 - replaces symbol patches completely and removes stale concrete properties
+  ---
+  duration_ms: 28.472875
+  type: 'test'
+  ...
+# Subtest: edits sampled, interval, and gradient families through one block contract
+ok 301 - edits sampled, interval, and gradient families through one block contract
+  ---
+  duration_ms: 44.820167
+  type: 'test'
+  ...
+# Subtest: matches lower-level graphics and decoded pixels for a block-only symbol edit
+ok 302 - matches lower-level graphics and decoded pixels for a block-only symbol edit
+  ---
+  duration_ms: 103.34075
+  type: 'test'
+  ...
+# Subtest: stores categorical order in the existing semantic order owner
+ok 303 - stores categorical order in the existing semantic order owner
+  ---
+  duration_ms: 9.969625
+  type: 'test'
+  ...
+# Subtest: preserves compatible overrides and rejects ambiguous structural transitions
+ok 304 - preserves compatible overrides and rejects ambiguous structural transitions
+  ---
+  duration_ms: 105.5975
+  type: 'test'
+  ...
+# Subtest: migrates compatible block style across color families and rejects incompatible content
+ok 305 - migrates compatible block style across color families and rejects incompatible content
+  ---
+  duration_ms: 39.160083
+  type: 'test'
+  ...
+# Subtest: drops removed block state and keeps retained state through replay
+ok 306 - drops removed block state and keeps retained state through replay
+  ---
+  duration_ms: 52.004375
+  type: 'test'
+  ...
+# Subtest: keeps block title visibility authoritative over root title edits
+ok 307 - keeps block title visibility authoritative over root title edits
+  ---
+  duration_ms: 11.425584
+  type: 'test'
+  ...
+# Subtest: rejects invalid block requests atomically
+ok 308 - rejects invalid block requests atomically
+  ---
+  duration_ms: 36.970875
+  type: 'test'
+  ...
+# Subtest: keeps editLegendBlock on the Full surface only
+ok 309 - keeps editLegendBlock on the Full surface only
+  ---
+  duration_ms: 0.14525
+  type: 'test'
+  ...
+# Subtest: matches exact point legend content to independent graphic primitives
+ok 310 - matches exact point legend content to independent graphic primitives
+  ---
+  duration_ms: 1970.621833
+  type: 'test'
+  ...
+# Subtest: matches inferred point legend content to independent graphic primitives
+ok 311 - matches inferred point legend content to independent graphic primitives
+  ---
+  duration_ms: 1647.093708
+  type: 'test'
+  ...
+# Subtest: matches partial point legend removal to independent graphic primitives
+ok 312 - matches partial point legend removal to independent graphic primitives
+  ---
+  duration_ms: 1702.014375
+  type: 'test'
+  ...
+# Subtest: matches point content replacement to the existing independent graphic targets
+ok 313 - matches point content replacement to the existing independent graphic targets
+  ---
+  duration_ms: 1676.173375
+  type: 'test'
+  ...
+# Subtest: replays automatic companion symbols against independent graphic primitives
+ok 314 - replays automatic companion symbols against independent graphic primitives
+  ---
+  duration_ms: 1154.802167
+  type: 'test'
+  ...
+# Subtest: renders the edited stroke-width block and its selective removal
+ok 315 - renders the edited stroke-width block and its selective removal
+  ---
+  duration_ms: 48.87975
+  type: 'test'
+  ...
+# Subtest: matches standalone size content edits to explicit primitive styling and exact pixels
+ok 316 - matches standalone size content edits to explicit primitive styling and exact pixels
+  ---
+  duration_ms: 387.942875
+  type: 'test'
+  ...
+# Subtest: preserves explicit bottom placement through focused styling and exact pixels
+ok 317 - preserves explicit bottom placement through focused styling and exact pixels
+  ---
+  duration_ms: 848.304958
+  type: 'test'
+  ...
+# Subtest: legend spacing declarations preserve Full/Basic creation and edit-only resets
+ok 318 - legend spacing declarations preserve Full/Basic creation and edit-only resets
+  ---
+  duration_ms: 128.902375
+  type: 'test'
+  ...
+# Subtest: removeLegend exposes the optional boolean suppression contract in declarations and inspection
+ok 319 - removeLegend exposes the optional boolean suppression contract in declarations and inspection
+  ---
+  duration_ms: 110.006125
+  type: 'test'
+  ...
+# Subtest: stores exact size samples without changing the scale or mark mapping
+ok 320 - stores exact size samples without changing the scale or mark mapping
+  ---
+  duration_ms: 102.430167
+  type: 'test'
+  ...
+# Subtest: maps exact opacity and stroke-width samples through their real scales
+ok 321 - maps exact opacity and stroke-width samples through their real scales
+  ---
+  duration_ms: 39.855125
+  type: 'test'
+  ...
+# Subtest: preserves the automatic count while entering, replacing, and leaving exact mode
+ok 322 - preserves the automatic count while entering, replacing, and leaving exact mode
+  ---
+  duration_ms: 29.832667
+  type: 'test'
+  ...
+# Subtest: rejects malformed, conflicting, unsupported, and out-of-domain values atomically
+ok 323 - rejects malformed, conflicting, unsupported, and out-of-domain values atomically
+  ---
+  duration_ms: 87.618167
+  type: 'test'
+  ...
+# Subtest: rejects a scale edit when stored exact samples become invalid
+ok 324 - rejects a scale edit when stored exact samples become invalid
+  ---
+  duration_ms: 19.123708
+  type: 'test'
+  ...
+# Subtest: rejects a data rebind when its inferred domain invalidates exact samples
+ok 325 - rejects a data rebind when its inferred domain invalidates exact samples
+  ---
+  duration_ms: 4.977208
+  type: 'test'
+  ...
+# Subtest: validates exact samples against shared and independent facet domains
+ok 326 - validates exact samples against shared and independent facet domains
+  ---
+  duration_ms: 24.787208
+  type: 'test'
+  ...
+# Subtest: keeps exact values through theme, layout, Canvas, and every renderer
+ok 327 - keeps exact values through theme, layout, Canvas, and every renderer
+  ---
+  duration_ms: 30.153792
+  type: 'test'
+  ...
+# Subtest: declares exact legend sample values for create, edit, and guide facades
+ok 328 - declares exact legend sample values for create, edit, and guide facades
+  ---
+  duration_ms: 117.021875
+  type: 'test'
+  ...
+# Subtest: line horizontal grids reject band positioning for every supported y role atomically
+ok 329 - line horizontal grids reject band positioning for every supported y role atomically
+  ---
+  duration_ms: 35.797375
+  type: 'test'
+  ...
+# Subtest: line vertical grids retain both band positioning values on categorical x
+ok 330 - line vertical grids retain both band positioning values on categorical x
+  ---
+  duration_ms: 16.355083
+  type: 'test'
+  ...
+# Subtest: an auxiliary band scale cannot replace the line facade's horizontal grid owner
+ok 331 - an auxiliary band scale cannot replace the line facade's horizontal grid owner
+  ---
+  duration_ms: 5.668
+  type: 'test'
+  ...
+# Subtest: line grid declarations allow bands only on the categorical axis
+ok 332 - line grid declarations allow bands only on the categorical axis
+  ---
+  duration_ms: 174.963584
+  type: 'test'
+  ...
+# Subtest: the option inventory follows the corrected line role without excluding valid grid options
+ok 333 - the option inventory follows the corrected line role without excluding valid grid options
+  ---
+  duration_ms: 117295.587916
+  type: 'test'
+  ...
+# Subtest: horizontal lines expose categorical Y band grids without allowing a band on quantitative X
+ok 334 - horizontal lines expose categorical Y band grids without allowing a band on quantitative X
+  ---
+  duration_ms: 26.070583
+  type: 'test'
+  ...
+# Subtest: line missing types expose the closed direct-line policy in Full and Basic
+ok 335 - line missing types expose the closed direct-line policy in Full and Basic
+  ---
+  duration_ms: 99.760709
+  type: 'test'
+  ...
+# Subtest: converges across all position, color, and stroke-dash authoring orders
+ok 336 - converges across all position, color, and stroke-dash authoring orders
+  ---
+  duration_ms: 97.579375
+  type: 'test'
+  ...
+# Subtest: preserves constant stroke dash before, between, and after position assignments
+ok 337 - preserves constant stroke dash before, between, and after position assignments
+  ---
+  duration_ms: 7.738917
+  type: 'test'
+  ...
+# Subtest: converges for quantitative x then y and y then x
+ok 338 - converges for quantitative x then y and y then x
+  ---
+  duration_ms: 3.656042
+  type: 'test'
+  ...
+# Subtest: keeps grouped quantitative lines independent of position action order
+ok 339 - keeps grouped quantitative lines independent of position action order
+  ---
+  duration_ms: 4.799208
+  type: 'test'
+  ...
+# Subtest: explicit aggregate Y groups a quantitative X partial by exact positions
+ok 340 - explicit aggregate Y groups a quantitative X partial by exact positions
+  ---
+  duration_ms: 1.753375
+  type: 'test'
+  ...
+# Subtest: preserves temporal aggregate line behavior
+ok 341 - preserves temporal aggregate line behavior
+  ---
+  duration_ms: 1.626542
+  type: 'test'
+  ...
+# Subtest: renders the x-first quantitative line through Browser Canvas and Node PNG
+ok 342 - renders the x-first quantitative line through Browser Canvas and Node PNG
+  ---
+  duration_ms: 110.895625
+  type: 'test'
+  ...
+# Subtest: Cartesian tick rounding types cover full, focused, Basic and nested facade authoring
+ok 343 - Cartesian tick rounding types cover full, focused, Basic and nested facade authoring
+  ---
+  duration_ms: 111.399125
+  type: 'test'
+  ...
+# Subtest: complete nearest axis matches literal primitives and Basic graphics
+ok 344 - complete nearest axis matches literal primitives and Basic graphics
+  ---
+  duration_ms: 49.535917
+  type: 'test'
+  ...
+# Subtest: focused tick edits update the opted-in labels and inferred grid together
+ok 345 - focused tick edits update the opted-in labels and inferred grid together
+  ---
+  duration_ms: 14.176334
+  type: 'test'
+  ...
+# Subtest: grouped and complete editors retain a shared tick-label selection policy
+ok 346 - grouped and complete editors retain a shared tick-label selection policy
+  ---
+  duration_ms: 29.414708
+  type: 'test'
+  ...
+# Subtest: label-only axes support nearest selection and supply it to later ticks
+ok 347 - label-only axes support nearest selection and supply it to later ticks
+  ---
+  duration_ms: 31.112375
+  type: 'test'
+  ...
+# Subtest: explicit grid policies remove inherited rounding and auto restores it
+ok 348 - explicit grid policies remove inherited rounding and auto restores it
+  ---
+  duration_ms: 22.536708
+  type: 'test'
+  ...
+# Subtest: Canvas, scale and saved-program replay preserve the chosen policy
+ok 349 - Canvas, scale and saved-program replay preserve the chosen policy
+  ---
+  duration_ms: 19.778875
+  type: 'test'
+  ...
+# Subtest: independent facets choose ticks from every actual child domain
+ok 350 - independent facets choose ticks from every actual child domain
+  ---
+  duration_ms: 30.45175
+  type: 'test'
+  ...
+# Subtest: malformed rounding, explicit values and unsupported axis families reject atomically
+ok 351 - malformed rounding, explicit values and unsupported axis families reject atomically
+  ---
+  duration_ms: 16.547167
+  type: 'test'
+  ...
+# Subtest: named axes keep separate policies and inferred grids reject conflicting owners
+ok 352 - named axes keep separate policies and inferred grids reject conflicting owners
+  ---
+  duration_ms: 13.875875
+  type: 'test'
+  ...
+# Subtest: source revisions refresh automatic domains, ticks, labels and grid without changing old rows
+ok 353 - source revisions refresh automatic domains, ticks, labels and grid without changing old rows
+  ---
+  duration_ms: 10.332458
+  type: 'test'
+  ...
+# Subtest: X-axis policies use the same selection and honor reversed domains
+ok 354 - X-axis policies use the same selection and honor reversed domains
+  ---
+  duration_ms: 6.973667
+  type: 'test'
+  ...
+# Subtest: saved programs reject corrupt or stale rounding instead of retaining inconsistent guides
+ok 355 - saved programs reject corrupt or stale rounding instead of retaining inconsistent guides
+  ---
+  duration_ms: 53.414583
+  type: 'test'
+  ...
+# Subtest: count rounding preserves exact histogram boundaries and membership
+ok 356 - count rounding preserves exact histogram boundaries and membership
+  ---
+  duration_ms: 2.402416
+  type: 'test'
+  ...
+# Subtest: histogram facade, axis inference, edits and persistence share the rounded domain
+ok 357 - histogram facade, axis inference, edits and persistence share the rounded domain
+  ---
+  duration_ms: 70.386958
+  type: 'test'
+  ...
+# Subtest: binned aggregate line and shared bar reuse the same unchanged boundaries
+ok 358 - binned aggregate line and shared bar reuse the same unchanged boundaries
+  ---
+  duration_ms: 34.861084
+  type: 'test'
+  ...
+# Subtest: shared and independent binned facets retain the same stored policy
+ok 359 - shared and independent binned facets retain the same stored policy
+  ---
+  duration_ms: 33.074417
+  type: 'test'
+  ...
+# Subtest: count objects do not extend the data-bin transform policy
+ok 360 - count objects do not extend the data-bin transform policy
+  ---
+  duration_ms: 0.493375
+  type: 'test'
+  ...
+# Subtest: Full and Basic facades retain the same immutable count policy and graphics
+ok 361 - Full and Basic facades retain the same immutable count policy and graphics
+  ---
+  duration_ms: 23.436917
+  type: 'test'
+  ...
+# Subtest: focused and generic editors rematerialize the same resolved owner
+ok 362 - focused and generic editors rematerialize the same resolved owner
+  ---
+  duration_ms: 12.732
+  type: 'test'
+  ...
+# Subtest: explicit descending domains keep precedence and auto restores count inference
+ok 363 - explicit descending domains keep precedence and auto restores count inference
+  ---
+  duration_ms: 6.569791
+  type: 'test'
+  ...
+# Subtest: independent facets apply the count rule to every actual child domain
+ok 364 - independent facets apply the count rule to every actual child domain
+  ---
+  duration_ms: 65.787959
+  type: 'test'
+  ...
+# Subtest: data revisions and filters refresh domains without changing original rows or old programs
+ok 365 - data revisions and filters refresh domains without changing original rows or old programs
+  ---
+  duration_ms: 9.341625
+  type: 'test'
+  ...
+# Subtest: shared scale edits and filtering refresh all consumers
+ok 366 - shared scale edits and filtering refresh all consumers
+  ---
+  duration_ms: 12.474667
+  type: 'test'
+  ...
+# Subtest: persistence preserves canonical policy, pixels and editable inference
+ok 367 - persistence preserves canonical policy, pixels and editable inference
+  ---
+  duration_ms: 8.14225
+  type: 'test'
+  ...
+# Subtest: invalid count edit is atomic {"count":0}
+ok 368 - invalid count edit is atomic {"count":0}
+  ---
+  duration_ms: 5.636167
+  type: 'test'
+  ...
+# Subtest: invalid count edit is atomic {"count":1.5}
+ok 369 - invalid count edit is atomic {"count":1.5}
+  ---
+  duration_ms: 9.9365
+  type: 'test'
+  ...
+# Subtest: invalid count edit is atomic {"count":10,"extra":true}
+ok 370 - invalid count edit is atomic {"count":10,"extra":true}
+  ---
+  duration_ms: 2.928875
+  type: 'test'
+  ...
+# Subtest: invalid count edit is atomic null
+ok 371 - invalid count edit is atomic null
+  ---
+  duration_ms: 2.33575
+  type: 'test'
+  ...
+# Subtest: time/transformed/type edits cannot retain an incompatible count object
+ok 372 - time/transformed/type edits cannot retain an incompatible count object
+  ---
+  duration_ms: 8.521875
+  type: 'test'
+  ...
+# Subtest: count policy remains limited to position scales
+ok 373 - count policy remains limited to position scales
+  ---
+  duration_ms: 4.91875
+  type: 'test'
+  ...
+# Subtest: corrupt semantic count objects are rejected on restore
+ok 374 - corrupt semantic count objects are rejected on restore
+  ---
+  duration_ms: 8.205083
+  type: 'test'
+  ...
+# Subtest: overlay inspection exposes real parameters and distinguishes sources from dependents
+ok 375 - overlay inspection exposes real parameters and distinguishes sources from dependents
+  ---
+  duration_ms: 46.232041
+  type: 'test'
+  ...
+# Subtest: overlay declarations keep typed appearance, result basis and detachment exclusive
+ok 376 - overlay declarations keep typed appearance, result basis and detachment exclusive
+  ---
+  duration_ms: 108.154583
+  type: 'test'
+  ...
+# Subtest: keeps published MCP benchmark aggregates internally consistent
+ok 377 - keeps published MCP benchmark aggregates internally consistent
+  ---
+  duration_ms: 0.643083
+  type: 'test'
+  ...
+# Subtest: keeps the public MCP claims anchored to the benchmark record
+ok 378 - keeps the public MCP claims anchored to the benchmark record
+  ---
+  duration_ms: 1.127584
+  type: 'test'
+  ...
+# Subtest: keeps the raw benchmark identifiable without shipping execution traces
+ok 379 - keeps the raw benchmark identifiable without shipping execution traces
+  ---
+  duration_ms: 0.152416
+  type: 'test'
+  ...
+# Subtest: semantic label pie-share matches independent literal text primitives
+ok 380 - semantic label pie-share matches independent literal text primitives
+  ---
+  duration_ms: 308.383541
+  type: 'test'
+  ...
+# Subtest: semantic label stack-values matches independent literal text primitives
+ok 381 - semantic label stack-values matches independent literal text primitives
+  ---
+  duration_ms: 268.752791
+  type: 'test'
+  ...
+# Subtest: mark label facade pie-share matches literal primitives
+ok 382 - mark label facade pie-share matches literal primitives
+  ---
+  duration_ms: 267.401291
+  type: 'test'
+  ...
+# Subtest: mark label facade stack-values matches literal primitives
+ok 383 - mark label facade stack-values matches literal primitives
+  ---
+  duration_ms: 259.331834
+  type: 'test'
+  ...
+# Subtest: executes materialization plans in order and deduplicates equivalent steps
+ok 384 - executes materialization plans in order and deduplicates equivalent steps
+  ---
+  duration_ms: 1.526541
+  type: 'test'
+  ...
+# Subtest: deduplicates equivalent arguments independent of object key order
+ok 385 - deduplicates equivalent arguments independent of object key order
+  ---
+  duration_ms: 0.176459
+  type: 'test'
+  ...
+# Subtest: owns nested array arguments and canonicalizes their object entries
+ok 386 - owns nested array arguments and canonicalizes their object entries
+  ---
+  duration_ms: 0.176042
+  type: 'test'
+  ...
+# Subtest: rejects malformed plans and unavailable operations clearly
+ok 387 - rejects malformed plans and unavailable operations clearly
+  ---
+  duration_ms: 0.380666
+  type: 'test'
+  ...
+# Subtest: builds one deterministic scale, mark, guide, layout, highlight plan
+ok 388 - builds one deterministic scale, mark, guide, layout, highlight plan
+  ---
+  duration_ms: 0.150083
+  type: 'test'
+  ...
+# Subtest: plans registered layout consumers without hard-coded planner branches
+ok 389 - plans registered layout consumers without hard-coded planner branches
+  ---
+  duration_ms: 0.076292
+  type: 'test'
+  ...
+# Subtest: stops after an injected failure without mutating the input program
+ok 390 - stops after an injected failure without mutating the input program
+  ---
+  duration_ms: 0.141125
+  type: 'test'
+  ...
+# Subtest: plans point encoding scale, mark, and existing legend in order
+ok 391 - plans point encoding scale, mark, and existing legend in order
+  ---
+  duration_ms: 0.241792
+  type: 'test'
+  ...
+# Subtest: plans every area consumer of one shared color scale
+ok 392 - plans every area consumer of one shared color scale
+  ---
+  duration_ms: 0.330709
+  type: 'test'
+  ...
+# Subtest: plans the revised density target before every shared-scale mark
+ok 393 - plans the revised density target before every shared-scale mark
+  ---
+  duration_ms: 0.308375
+  type: 'test'
+  ...
+# Subtest: plans each unique scale after one layer changes data
+ok 394 - plans each unique scale after one layer changes data
+  ---
+  duration_ms: 0.388708
+  type: 'test'
+  ...
+# Subtest: scopes normalized remaining steps privately and restores nested execution context
+ok 395 - scopes normalized remaining steps privately and restores nested execution context
+  ---
+  duration_ms: 2.558709
+  type: 'test'
+  ...
+# Subtest: declares ordinary and measured radial encodings with exclusive count and sum options
+ok 396 - declares ordinary and measured radial encodings with exclusive count and sum options
+  ---
+  duration_ms: 105.874542
+  type: 'test'
+  ...
+# Subtest: declares quantitative midpoint while excluding temporal, position and discrete roles
+ok 397 - declares quantitative midpoint while excluding temporal, position and discrete roles
+  ---
+  duration_ms: 106.55275
+  type: 'test'
+  ...
+# Subtest: Cartesian named identities, owner targets and nonempty aggregate arrays remain closed contracts
+ok 398 - Cartesian named identities, owner targets and nonempty aggregate arrays remain closed contracts
+  ---
+  duration_ms: 128.262542
+  type: 'test'
+  ...
+# Subtest: derives only role-reachable nested scale type paths
+ok 399 - derives only role-reachable nested scale type paths
+  ---
+  duration_ms: 114705.774417
+  type: 'test'
+  ...
+# Subtest: executes every strict nested scale type path and literal
+ok 400 - executes every strict nested scale type path and literal
+  ---
+  duration_ms: 6137.987
+  type: 'test'
+  ...
+# Subtest: materializes every role-specific nested scale type vocabulary
+ok 401 - materializes every role-specific nested scale type vocabulary
+  ---
+  duration_ms: 19.42975
+  type: 'test'
+  ...
+# Subtest: rejects formerly accepted-but-ignored role combinations
+ok 402 - rejects formerly accepted-but-ignored role combinations
+  ---
+  duration_ms: 55.113291
+  type: 'test'
+  ...
+# Subtest: Canvas none paint cannot retain the previous opaque fill or stroke
+ok 403 - Canvas none paint cannot retain the previous opaque fill or stroke
+  ---
+  duration_ms: 4.873208
+  type: 'test'
+  ...
+# Subtest: none paint preserves shared preflight atomicity and ordinary paint assignments
+ok 404 - none paint preserves shared preflight atomicity and ordinary paint assignments
+  ---
+  duration_ms: 0.758833
+  type: 'test'
+  ...
+# Subtest: a none Canvas background leaves transparent pixels and does not affect glyph fill
+ok 405 - a none Canvas background leaves transparent pixels and does not affect glyph fill
+  ---
+  duration_ms: 0.348083
+  type: 'test'
+  ...
+# Subtest: declares typed computed expressions and Full-only normalization
+ok 406 - declares typed computed expressions and Full-only normalization
+  ---
+  duration_ms: 106.703417
+  type: 'test'
+  ...
+# Subtest: single horizontal legends match literal occupied-bound primitive targets
+ok 407 - single horizontal legends match literal occupied-bound primitive targets
+  ---
+  duration_ms: 2298.966209
+  type: 'test'
+  ...
+# Subtest: large opacity samples and text match independent spacing primitives
+ok 408 - large opacity samples and text match independent spacing primitives
+  ---
+  duration_ms: 3471.35425
+  type: 'test'
+  ...
+# Subtest: declares opacity point recipes across legend creation, edits and guide options
+ok 409 - declares opacity point recipes across legend creation, edits and guide options
+  ---
+  duration_ms: 94.210041
+  type: 'test'
+  ...
+# Subtest: option inventory preserves object and named-array branches at the same property depth
+ok 410 - option inventory preserves object and named-array branches at the same property depth
+  ---
+  duration_ms: 3546.424208
+  type: 'test'
+  ...
+# Subtest: independent expected-value modules have no transitive production imports
+ok 411 - independent expected-value modules have no transitive production imports
+  ---
+  duration_ms: 10.286375
+  type: 'test'
+  ...
+# Subtest: ordered categorical dash declarations cover direct, facade and bulk APIs while preserving Basic method boundaries and constant restrictions
+ok 412 - ordered categorical dash declarations cover direct, facade and bulk APIs while preserving Basic method boundaries and constant restrictions
+  ---
+  duration_ms: 110.177083
+  type: 'test'
+  ...
+# Subtest: isolates npm pack from the caller's global cache
+ok 413 - isolates npm pack from the caller's global cache
+  ---
+  duration_ms: 1.227458
+  type: 'test'
+  ...
+# npm notice
+# npm notice New major version of npm available! 10.9.8 -> 12.2.1
+# npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+# npm notice To update run: npm install -g npm@12.2.1
+# npm notice
+# Subtest: publishes only the bounded public package artifact
+ok 414 - publishes only the bounded public package artifact
+  ---
+  duration_ms: 2320.216875
+  type: 'test'
+  ...
+# Subtest: rejects missing, forbidden, and oversized package manifests
+ok 415 - rejects missing, forbidden, and oversized package manifests
+  ---
+  duration_ms: 0.539208
+  type: 'test'
+  ...
+# Subtest: packed scale compaction preserves exports and numeric color results
+ok 416 - packed scale compaction preserves exports and numeric color results
+  ---
+  duration_ms: 70.121625
+  type: 'test'
+  ...
+# Subtest: consumer setup removes its temporary directory when installation fails
+ok 417 - consumer setup removes its temporary directory when installation fails
+  ---
+  duration_ms: 289.483125
+  type: 'test'
+  ...
+# Subtest: independent installed cases continue after a failure and retain case identities
+ok 418 - independent installed cases continue after a failure and retain case identities
+  ---
+  duration_ms: 3.107875
+  type: 'test'
+  ...
+# Subtest: installed fixture modules and their case manifest are exhaustive
+ok 419 - installed fixture modules and their case manifest are exhaustive
+  ---
+  duration_ms: 72.280709
+  type: 'test'
+  ...
+# Subtest: exports the public module boundaries
+ok 420 - exports the public module boundaries
+  ---
+  duration_ms: 1.396042
+  type: 'test'
+  ...
+# Subtest: keeps the basic entry focused on common Cartesian charts
+ok 421 - keeps the basic entry focused on common Cartesian charts
+  ---
+  duration_ms: 0.433709
+  type: 'test'
+  ...
+# Subtest: maps every public entry point to a declaration file
+ok 422 - maps every public entry point to a declaration file
+  ---
+  duration_ms: 1.08275
+  type: 'test'
+  ...
+# Subtest: keeps runtime values and declarations in exact public-entry parity
+ok 423 - keeps runtime values and declarations in exact public-entry parity
+  ---
+  duration_ms: 21.085042
+  type: 'test'
+  ...
+# Subtest: keeps the public release identity and legal metadata consistent
+ok 424 - keeps the public release identity and legal metadata consistent
+  ---
+  duration_ms: 2.022
+  type: 'test'
+  ...
+# Subtest: keeps library terminology source-neutral
+ok 425 - keeps library terminology source-neutral
+  ---
+  duration_ms: 608.769792
+  type: 'test'
+  ...
+# Subtest: declares Parallel field lifecycle with component, tick mode, and Basic boundaries
+ok 426 - declares Parallel field lifecycle with component, tick mode, and Basic boundaries
+  ---
+  duration_ms: 108.265291
+  type: 'test'
+  ...
+# Subtest: keeps the Parallel public actions in their canonical Current contracts
+ok 427 - keeps the Parallel public actions in their canonical Current contracts
+  ---
+  duration_ms: 1.236916
+  type: 'test'
+  ...
+# Subtest: keeps Parallel declarations and root type exports synchronized
+ok 428 - keeps Parallel declarations and root type exports synchronized
+  ---
+  duration_ms: 1.256375
+  type: 'test'
+  ...
+# Subtest: parameter and expression declarations preserve typed closed calls in Full and Basic
+ok 429 - parameter and expression declarations preserve typed closed calls in Full and Basic
+  ---
+  duration_ms: 487.927417
+  type: 'test'
+  ...
+# Subtest: computed temporal parsing declares a closed format union and recursive operand
+ok 430 - computed temporal parsing declares a closed format union and recursive operand
+  ---
+  duration_ms: 108.737209
+  type: 'test'
+  ...
+# Subtest: keeps command arrays as the only canonical geometry for every chart path
+ok 431 - keeps command arrays as the only canonical geometry for every chart path
+  ---
+  duration_ms: 1120.575916
+  type: 'test'
+  ...
+# Subtest: renders every public chart through the PDF concrete schema
+ok 432 - renders every public chart through the PDF concrete schema
+  ---
+  duration_ms: 5210.243333
+  type: 'test'
+  ...
+# Subtest: pivot declares Full-only numeric and count contracts with typed columns
+ok 433 - pivot declares Full-only numeric and count contracts with typed columns
+  ---
+  duration_ms: 98.37125
+  type: 'test'
+  ...
+# Subtest: declares clipping on supported Cartesian marks and their facade styles only
+ok 434 - declares clipping on supported Cartesian marks and their facade styles only
+  ---
+  duration_ms: 102.81775
+  type: 'test'
+  ...
+# Subtest: editable and graphic-only snapshots validate owner rectangles and item boundaries
+ok 435 - editable and graphic-only snapshots validate owner rectangles and item boundaries
+  ---
+  duration_ms: 92.383458
+  type: 'test'
+  ...
+# Subtest: axis and border underlay types keep Boolean placement on complete Cartesian resources
+ok 436 - axis and border underlay types keep Boolean placement on complete Cartesian resources
+  ---
+  duration_ms: 99.693583
+  type: 'test'
+  ...
+# Subtest: materializes a default Cartesian point radius for Browser and PNG rendering
+ok 437 - materializes a default Cartesian point radius for Browser and PNG rendering
+  ---
+  duration_ms: 118.341792
+  type: 'test'
+  ...
+# Subtest: lets explicit radius and field-driven size override the default immutably
+ok 438 - lets explicit radius and field-driven size override the default immutably
+  ---
+  duration_ms: 6.014667
+  type: 'test'
+  ...
+# Subtest: materializes the same default glyph radius for Polar point positions
+ok 439 - materializes the same default glyph radius for Polar point positions
+  ---
+  duration_ms: 3.193209
+  type: 'test'
+  ...
+# Subtest: keeps point jitter actions Current and out of Planned
+ok 440 - keeps point jitter actions Current and out of Planned
+  ---
+  duration_ms: 1.467375
+  type: 'test'
+  ...
+# Subtest: exports the complete strict point jitter option surface
+ok 441 - exports the complete strict point jitter option surface
+  ---
+  duration_ms: 0.310583
+  type: 'test'
+  ...
+# Subtest: keeps both point jitter visual targets executable and equivalent
+ok 442 - keeps both point jitter visual targets executable and equivalent
+  ---
+  duration_ms: 94.422834
+  type: 'test'
+  ...
+# Subtest: documents and package-tests the additive point jitter contract
+ok 443 - documents and package-tests the additive point jitter contract
+  ---
+  duration_ms: 2.056667
+  type: 'test'
+  ...
+# Subtest: declares Polar component creation with resource, angle and tick mode boundaries
+ok 444 - declares Polar component creation with resource, angle and tick mode boundaries
+  ---
+  duration_ms: 118.438541
+  type: 'test'
+  ...
+# Subtest: declares full-only Polar point and line facades with separate position and glyph roles
+ok 445 - declares full-only Polar point and line facades with separate position and glyph roles
+  ---
+  duration_ms: 174.0345
+  type: 'test'
+  ...
+# Subtest: resolves the three fixed Polar frame geometry oracles
+ok 446 - resolves the three fixed Polar frame geometry oracles
+  ---
+  duration_ms: 1.270792
+  type: 'test'
+  ...
+# Subtest: moves point, line, arc, axes, and grids through one requested frame
+ok 447 - moves point, line, arc, axes, and grids through one requested frame
+  ---
+  duration_ms: 45.382167
+  type: 'test'
+  ...
+# Subtest: applies aspect before Polar frame and replaces frame objects completely
+ok 448 - applies aspect before Polar frame and replaces frame objects completely
+  ---
+  duration_ms: 7.016875
+  type: 'test'
+  ...
+# Subtest: replays fraction and pixel frames across Canvas edits and restores auto
+ok 449 - replays fraction and pixel frames across Canvas edits and restores auto
+  ---
+  duration_ms: 18.181958
+  type: 'test'
+  ...
+# Subtest: rejects invalid frame edits and range conflicts atomically
+ok 450 - rejects invalid frame edits and range conflicts atomically
+  ---
+  duration_ms: 21.316417
+  type: 'test'
+  ...
+# Subtest: renders a moved Polar frame through Canvas, SVG, PNG, and PDF
+ok 451 - renders a moved Polar frame through Canvas, SVG, PNG, and PDF
+  ---
+  duration_ms: 109.920291
+  type: 'test'
+  ...
+# Subtest: locks Polar and Parallel shared-domain and local-denominator numeric oracles
+ok 452 - locks Polar and Parallel shared-domain and local-denominator numeric oracles
+  ---
+  duration_ms: 97.681625
+  type: 'test'
+  ...
+# Subtest: renders all seven non-Cartesian facet families through every backend
+ok 453 - renders all seven non-Cartesian facet families through every backend
+  ---
+  duration_ms: 305.677208
+  type: 'test'
+  ...
+# Subtest: replays non-Cartesian source, scale, headers, theme, selection, and style state
+ok 454 - replays non-Cartesian source, scale, headers, theme, selection, and style state
+  ---
+  duration_ms: 55.516209
+  type: 'test'
+  ...
+# Subtest: rejects unsupported non-Cartesian policies without changing caller state
+ok 455 - rejects unsupported non-Cartesian policies without changing caller state
+  ---
+  duration_ms: 16.015958
+  type: 'test'
+  ...
+# Subtest: preserves canonical empty graphics for every non-Cartesian full-grid family
+ok 456 - preserves canonical empty graphics for every non-Cartesian full-grid family
+  ---
+  duration_ms: 59.994083
+  type: 'test'
+  ...
+# Subtest: replays selected Polar labels, placement, leaders, theme, and revised Canvas per child
+ok 457 - replays selected Polar labels, placement, leaders, theme, and revised Canvas per child
+  ---
+  duration_ms: 22.279875
+  type: 'test'
+  ...
+# Subtest: replays named Polar label membership independently in every child
+ok 458 - replays named Polar label membership independently in every child
+  ---
+  duration_ms: 5.828
+  type: 'test'
+  ...
+# Subtest: promotes exact sampled Polar legend blocks without losing requested state
+ok 459 - promotes exact sampled Polar legend blocks without losing requested state
+  ---
+  duration_ms: 19.824042
+  type: 'test'
+  ...
+# Subtest: does not resurrect removed Polar labels in facet or repeat replay
+ok 460 - does not resurrect removed Polar labels in facet or repeat replay
+  ---
+  duration_ms: 6.643583
+  type: 'test'
+  ...
+# Subtest: polygon symbols exactly match independent concrete paths in PNG and export PDF
+ok 461 - polygon symbols exactly match independent concrete paths in PNG and export PDF
+  ---
+  duration_ms: 150.944583
+  type: 'test'
+  ...
+# Subtest: Full and Basic declarations accept polygon policies and reject malformed point options
+ok 462 - Full and Basic declarations accept polygon policies and reject malformed point options
+  ---
+  duration_ms: 106.80925
+  type: 'test'
+  ...
+# Subtest: compact point cards retain polygon normalization in generated authoring guidance
+ok 463 - compact point cards retain polygon normalization in generated authoring guidance
+  ---
+  duration_ms: 4.006166
+  type: 'test'
+  ...
+# Subtest: prepared data declarations preserve opaque handles and Full/Basic lifecycle boundaries
+ok 464 - prepared data declarations preserve opaque handles and Full/Basic lifecycle boundaries
+  ---
+  duration_ms: 215.380292
+  type: 'test'
+  ...
+# Subtest: inspects semantic layers and final point items through public state
+ok 465 - inspects semantic layers and final point items through public state
+  ---
+  duration_ms: 24.655292
+  type: 'test'
+  ...
+# Subtest: uses the same public item path for final bars and line series
+ok 466 - uses the same public item path for final bars and line series
+  ---
+  duration_ms: 11.321625
+  type: 'test'
+  ...
+# Subtest: keeps canonical public state paths discoverable in documentation
+ok 467 - keeps canonical public state paths discoverable in documentation
+  ---
+  duration_ms: 4.299917
+  type: 'test'
+  ...
+# Subtest: declares full-only long and explicit-wide Radar contracts
+ok 468 - declares full-only long and explicit-wide Radar contracts
+  ---
+  duration_ms: 143.037958
+  type: 'test'
+  ...
+# Subtest: declares complete measured radial charts with count/sum and Polar guide constraints
+ok 469 - declares complete measured radial charts with count/sum and Polar guide constraints
+  ---
+  duration_ms: 107.141208
+  type: 'test'
+  ...
+# Subtest: declares Full-only role-safe Raincloud create and edit contracts
+ok 470 - declares Full-only role-safe Raincloud create and edit contracts
+  ---
+  duration_ms: 99.711792
+  type: 'test'
+  ...
+# Subtest: range encoders declare numeric datum pairs without widening temporal or Basic options
+ok 471 - range encoders declare numeric datum pairs without widening temporal or Basic options
+  ---
+  duration_ms: 99.265959
+  type: 'test'
+  ...
+# Subtest: a concrete rect closes all four stroke joins like an independent native rectangle
+ok 472 - a concrete rect closes all four stroke joins like an independent native rectangle
+  ---
+  duration_ms: 2.160417
+  type: 'test'
+  ...
+# Subtest: constant x Rect span matches literal graphics and PNG
+ok 473 - constant x Rect span matches literal graphics and PNG
+  ---
+  duration_ms: 200.422417
+  type: 'test'
+  ...
+# Subtest: constant y Rect span matches literal graphics and PNG
+ok 474 - constant y Rect span matches literal graphics and PNG
+  ---
+  duration_ms: 213.706708
+  type: 'test'
+  ...
+# Subtest: reference facade graphics equal literal primitives, lower actions, Canvas and PNG
+ok 475 - reference facade graphics equal literal primitives, lower actions, Canvas and PNG
+  ---
+  duration_ms: 217.815416
+  type: 'test'
+  ...
+# Subtest: data references retain lower-chain parity and selection after resize and style edits
+ok 476 - data references retain lower-chain parity and selection after resize and style edits
+  ---
+  duration_ms: 16.455125
+  type: 'test'
+  ...
+# Subtest: Rule guide examples execute with complete Canvas setup and explicit field types
+ok 477 - Rule guide examples execute with complete Canvas setup and explicit field types
+  ---
+  duration_ms: 39.4885
+  type: 'test'
+  ...
+# Subtest: requires one exact package, lock, tag, and workflow-ref identity
+ok 478 - requires one exact package, lock, tag, and workflow-ref identity
+  ---
+  duration_ms: 1.072042
+  type: 'test'
+  ...
+# Subtest: rejects mismatched release versions and non-tag workflow refs
+ok 479 - rejects mismatched release versions and non-tag workflow refs
+  ---
+  duration_ms: 0.212458
+  type: 'test'
+  ...
+# Subtest: loads release verification without package build dependencies
+ok 480 - loads release verification without package build dependencies
+  ---
+  duration_ms: 6.525875
+  type: 'test'
+  ...
+# Subtest: derives the 0.0.2 GitHub release notes from the canonical changelog
+ok 481 - derives the 0.0.2 GitHub release notes from the canonical changelog
+  ---
+  duration_ms: 2.315167
+  type: 'test'
+  ...
+# Subtest: rejects unknown, empty, and malformed release-note requests
+ok 482 - rejects unknown, empty, and malformed release-note requests
+  ---
+  duration_ms: 0.271333
+  type: 'test'
+  ...
+# Subtest: prepares all canonical version owners and promotes only unreleased notes without changing dependencies
+ok 483 - prepares all canonical version owners and promotes only unreleased notes without changing dependencies
+  ---
+  duration_ms: 2.535333
+  type: 'test'
+  ...
+# Subtest: preflight rejects drift, empty notes, invalid dates, downgrades and existing releases
+ok 484 - preflight rejects drift, empty notes, invalid dates, downgrades and existing releases
+  ---
+  duration_ms: 0.356625
+  type: 'test'
+  ...
+# Subtest: release preparation has no publish, tag, push, or candidate-packing side effects
+ok 485 - release preparation has no publish, tag, push, or candidate-packing side effects
+  ---
+  duration_ms: 0.210458
+  type: 'test'
+  ...
+# Subtest: keeps publishing manual, immutable-tag-bound, protected, and non-concurrent
+ok 486 - keeps publishing manual, immutable-tag-bound, protected, and non-concurrent
+  ---
+  duration_ms: 0.872292
+  type: 'test'
+  ...
+# Subtest: uses current trusted-publishing requirements without an npm secret
+ok 487 - uses current trusted-publishing requirements without an npm secret
+  ---
+  duration_ms: 0.118416
+  type: 'test'
+  ...
+# Subtest: keeps generated release documentation strict across native PNG platforms
+ok 488 - keeps generated release documentation strict across native PNG platforms
+  ---
+  duration_ms: 0.219542
+  type: 'test'
+  ...
+# Subtest: qualifies, retains, verifies, and publishes one exact artifact
+ok 489 - qualifies, retains, verifies, and publishes one exact artifact
+  ---
+  duration_ms: 0.138625
+  type: 'test'
+  ...
+# Subtest: deploys Pages only after the protected release publish
+ok 490 - deploys Pages only after the protected release publish
+  ---
+  duration_ms: 0.160458
+  type: 'test'
+  ...
+# Subtest: parallel qualifications consume one canonical candidate and join before publishing
+ok 491 - parallel qualifications consume one canonical candidate and join before publishing
+  ---
+  duration_ms: 0.497
+  type: 'test'
+  ...
+# Subtest: qualifies native platforms and three browser engines with strict release dependencies
+ok 492 - qualifies native platforms and three browser engines with strict release dependencies
+  ---
+  duration_ms: 0.417291
+  type: 'test'
+  ...
+# Subtest: realistic CI has a stable aggregate that cannot accept skipped or failed dependencies
+ok 493 - realistic CI has a stable aggregate that cannot accept skipped or failed dependencies
+  ---
+  duration_ms: 0.086459
+  type: 'test'
+  ...
+# Subtest: test and documentation failures retain bounded artifacts without forgiving required checks
+ok 494 - test and documentation failures retain bounded artifacts without forgiving required checks
+  ---
+  duration_ms: 0.775875
+  type: 'test'
+  ...
+# Subtest: every qualification rejects disabled, forgiven, and echo-only commands
+ok 495 - every qualification rejects disabled, forgiven, and echo-only commands
+  ---
+  duration_ms: 46.419875
+  type: 'test'
+  ...
+# Subtest: removes one attached label and its leader while preserving its source and siblings
+ok 496 - removes one attached label and its leader while preserving its source and siblings
+  ---
+  duration_ms: 83.6615
+  type: 'test'
+  ...
+# Subtest: removes every label owned by a source and returns active label context to that source
+ok 497 - removes every label owned by a source and returns active label context to that source
+  ---
+  duration_ms: 43.6455
+  type: 'test'
+  ...
+# Subtest: treats an existing source with no labels as a successful deterministic no-op
+ok 498 - treats an existing source with no labels as a successful deterministic no-op
+  ---
+  duration_ms: 41.231
+  type: 'test'
+  ...
+# Subtest: cleans label-target interaction state but preserves source selections
+ok 499 - cleans label-target interaction state but preserves source selections
+  ---
+  duration_ms: 40.912292
+  type: 'test'
+  ...
+# Subtest: rejects invalid or externally referenced targets before changing any state
+ok 500 - rejects invalid or externally referenced targets before changing any state
+  ---
+  duration_ms: 89.34425
+  type: 'test'
+  ...
+# Subtest: does not resurrect removed labels during source, scale, Canvas, or theme replay
+ok 501 - does not resurrect removed labels during source, scale, Canvas, or theme replay
+  ---
+  duration_ms: 107.194833
+  type: 'test'
+  ...
+# Subtest: declares Full-only exact named-resource removal contracts
+ok 502 - declares Full-only exact named-resource removal contracts
+  ---
+  duration_ms: 98.301666
+  type: 'test'
+  ...
+# Subtest: publishes three exact Full-only safe-removal actions
+ok 503 - publishes three exact Full-only safe-removal actions
+  ---
+  duration_ms: 2.159167
+  type: 'test'
+  ...
+# Subtest: R25-N01/N02/N03 remove unused named resources without visual drift
+ok 504 - R25-N01/N02/N03 remove unused named resources without visual drift
+  ---
+  duration_ms: 137.700333
+  type: 'test'
+  ...
+# Subtest: R25-E01 reports a Parallel dimension as a single live scale edge
+ok 505 - R25-E01 reports a Parallel dimension as a single live scale edge
+  ---
+  duration_ms: 17.636917
+  type: 'test'
+  ...
+# Subtest: R25-E02 retained facet source blocks parent deletion
+ok 506 - R25-E02 retained facet source blocks parent deletion
+  ---
+  duration_ms: 43.002833
+  type: 'test'
+  ...
+# Subtest: R25-L01 removes a logical data owner only after its last consumer
+ok 507 - R25-L01 removes a logical data owner only after its last consumer
+  ---
+  duration_ms: 23.500625
+  type: 'test'
+  ...
+# Subtest: uses structural ownership for chart-generated statistical data
+ok 508 - uses structural ownership for chart-generated statistical data
+  ---
+  duration_ms: 11.020167
+  type: 'test'
+  ...
+# Subtest: rejects concat parents before attempting cross-child name resolution
+ok 509 - rejects concat parents before attempting cross-child name resolution
+  ---
+  duration_ms: 1.971833
+  type: 'test'
+  ...
+# Subtest: keeps the public chart corpus complete for the renderer matrix
+ok 510 - keeps the public chart corpus complete for the renderer matrix
+  ---
+  duration_ms: 4473.405917
+  type: 'test'
+  ...
+# Subtest: consumes one complete concrete matrix through every renderer
+ok 511 - consumes one complete concrete matrix through every renderer
+  ---
+  duration_ms: 110.749333
+  type: 'test'
+  ...
+# Subtest: keeps contributor entry points complete and security reports private
+ok 512 - keeps contributor entry points complete and security reports private
+  ---
+  duration_ms: 2.512166
+  type: 'test'
+  ...
+# Subtest: keeps automated dependency updates bounded to reviewable non-major changes
+ok 513 - keeps automated dependency updates bounded to reviewable non-major changes
+  ---
+  duration_ms: 0.216875
+  type: 'test'
+  ...
+# Subtest: Full and Basic declare exclusive typed row keys and Full revision correspondence
+ok 514 - Full and Basic declare exclusive typed row keys and Full revision correspondence
+  ---
+  duration_ms: 149.176542
+  type: 'test'
+  ...
+# Subtest: declares a Full-only orientation-safe Rug contract
+ok 515 - declares a Full-only orientation-safe Rug contract
+  ---
+  duration_ms: 99.39225
+  type: 'test'
+  ...
+# Subtest: turns an inherited opposite position into a horizontal datum span
+ok 516 - turns an inherited opposite position into a horizontal datum span
+  ---
+  duration_ms: 32.200542
+  type: 'test'
+  ...
+# Subtest: turns the symmetric inherited position into a vertical datum span
+ok 517 - turns the symmetric inherited position into a vertical datum span
+  ---
+  duration_ms: 5.415167
+  type: 'test'
+  ...
+# Subtest: renders the inferred datum span through Browser Canvas and Node PNG
+ok 518 - renders the inferred datum span through Browser Canvas and Node PNG
+  ---
+  duration_ms: 115.339375
+  type: 'test'
+  ...
+# Subtest: keeps explicit-data datum spans independent from layered provenance
+ok 519 - keeps explicit-data datum spans independent from layered provenance
+  ---
+  duration_ms: 8.206584
+  type: 'test'
+  ...
+# Subtest: preserves inherited orthogonal fields for interval construction
+ok 520 - preserves inherited orthogonal fields for interval construction
+  ---
+  duration_ms: 4.905291
+  type: 'test'
+  ...
+# Subtest: keeps field-based full spans available through explicit data
+ok 521 - keeps field-based full spans available through explicit data
+  ---
+  duration_ms: 3.20925
+  type: 'test'
+  ...
+# Subtest: continuous color representation is declared through supported creation and edit surfaces
+ok 522 - continuous color representation is declared through supported creation and edit surfaces
+  ---
+  duration_ms: 98.933583
+  type: 'test'
+  ...
+# Subtest: closes every accepted scale capability out of the Planned inventory
+ok 523 - closes every accepted scale capability out of the Planned inventory
+  ---
+  duration_ms: 0.633125
+  type: 'test'
+  ...
+# Subtest: keeps time as the only UTC temporal token in the current contract
+ok 524 - keeps time as the only UTC temporal token in the current contract
+  ---
+  duration_ms: 0.276708
+  type: 'test'
+  ...
+# Subtest: publishes the complete current scale type vocabulary
+ok 525 - publishes the complete current scale type vocabulary
+  ---
+  duration_ms: 4.290667
+  type: 'test'
+  ...
+# Subtest: publishes mapping fallback ownership and compound-grain limits
+ok 526 - publishes mapping fallback ownership and compound-grain limits
+  ---
+  duration_ms: 0.3045
+  type: 'test'
+  ...
+# Subtest: imports the scenario engine without the optional TidyTuesday cache
+ok 527 - imports the scenario engine without the optional TidyTuesday cache
+  ---
+  duration_ms: 287.050833
+  type: 'test'
+  ...
+# Subtest: paces large recipe reservations across every eligible dataset
+ok 528 - paces large recipe reservations across every eligible dataset
+  ---
+  duration_ms: 0.196208
+  type: 'test'
+  ...
+# Subtest: matches wrapped visible titles while preserving every non-whitespace character
+ok 529 - matches wrapped visible titles while preserving every non-whitespace character
+  ---
+  duration_ms: 0.174458
+  type: 'test'
+  ...
+# Subtest: keeps strict candidate diagnostics reproducible without dumping row arrays
+ok 530 - keeps strict candidate diagnostics reproducible without dumping row arrays
+  ---
+  duration_ms: 0.634417
+  type: 'test'
+  ...
+# Subtest: bounds structured preflight diagnostics without raw factors
+ok 531 - bounds structured preflight diagnostics without raw factors
+  ---
+  duration_ms: 8.332666
+  type: 'test'
+  ...
+# Subtest: rejects unknown, duplicate, mismatched, and missing factor-effect claims
+ok 532 - rejects unknown, duplicate, mismatched, and missing factor-effect claims
+  ---
+  duration_ms: 1.053708
+  type: 'test'
+  ...
+# Subtest: hard-fails incomplete factor-value requirement reports
+ok 533 - hard-fails incomplete factor-value requirement reports
+  ---
+  duration_ms: 0.198625
+  type: 'test'
+  ...
+# Subtest: labels only inline-selected final items while preserving source order and body
+ok 534 - labels only inline-selected final items while preserving source order and body
+  ---
+  duration_ms: 22.826875
+  type: 'test'
+  ...
+# Subtest: uses the existing first and all tie policies without reordering selected labels by rank
+ok 535 - uses the existing first and all tie policies without reordering selected labels by rank
+  ---
+  duration_ms: 17.273458
+  type: 'test'
+  ...
+# Subtest: treats an empty match as a valid empty label collection
+ok 536 - treats an empty match as a valid empty label collection
+  ---
+  duration_ms: 3.756917
+  type: 'test'
+  ...
+# Subtest: keeps semantic share values relative to the complete final source
+ok 537 - keeps semantic share values relative to the complete final source
+  ---
+  duration_ms: 8.714917
+  type: 'test'
+  ...
+# Subtest: replays attached collision layout and removes stale leaders as membership changes
+ok 538 - replays attached collision layout and removes stale leaders as membership changes
+  ---
+  duration_ms: 14.03575
+  type: 'test'
+  ...
+# Subtest: replays named membership on selection edit and protects the live dependency
+ok 539 - replays named membership on selection edit and protects the live dependency
+  ---
+  duration_ms: 11.910458
+  type: 'test'
+  ...
+# Subtest: replaces label membership atomically and leaves named selections after label removal
+ok 540 - replaces label membership atomically and leaves named selections after label removal
+  ---
+  duration_ms: 7.986792
+  type: 'test'
+  ...
+# Subtest: validates exclusive selection modes, ownership, fields, and edit targets before writing
+ok 541 - validates exclusive selection modes, ownership, fields, and edit targets before writing
+  ---
+  duration_ms: 21.434125
+  type: 'test'
+  ...
+# Subtest: reevaluates inline membership after mark filtering, reencoding, Canvas, and theme replay
+ok 542 - reevaluates inline membership after mark filtering, reencoding, Canvas, and theme replay
+  ---
+  duration_ms: 12.768917
+  type: 'test'
+  ...
+# Subtest: evaluates new and edited label membership before source highlight geometry
+ok 543 - evaluates new and edited label membership before source highlight geometry
+  ---
+  duration_ms: 15.395417
+  type: 'test'
+  ...
+# Subtest: renders edited selection keys and the clean removal baseline
+ok 544 - renders edited selection keys and the clean removal baseline
+  ---
+  duration_ms: 179.820542
+  type: 'test'
+  ...
+# Subtest: keeps one complete selection policy beside every supported mark
+ok 545 - keeps one complete selection policy beside every supported mark
+  ---
+  duration_ms: 1.53425
+  type: 'test'
+  ...
+# Subtest: finds, checks, and requires named semantic resources
+ok 546 - finds, checks, and requires named semantic resources
+  ---
+  duration_ms: 1.144875
+  type: 'test'
+  ...
+# Subtest: resolves explicit, current, unique, missing, and ambiguous layers
+ok 547 - resolves explicit, current, unique, missing, and ambiguous layers
+  ---
+  duration_ms: 0.378583
+  type: 'test'
+  ...
+# Subtest: anchors signed bar labels outside each final value boundary
+ok 548 - anchors signed bar labels outside each final value boundary
+  ---
+  duration_ms: 33.8055
+  type: 'test'
+  ...
+# Subtest: does not let an omitted zero-length bar fail the remaining labels
+ok 549 - does not let an omitted zero-length bar fail the remaining labels
+  ---
+  duration_ms: 12.046042
+  type: 'test'
+  ...
+# Subtest: anchors every stacked segment at its own start and end
+ok 550 - anchors every stacked segment at its own start and end
+  ---
+  duration_ms: 14.885
+  type: 'test'
+  ...
+# Subtest: supports Cartesian Point centers, Polar Point outward anchors, and directed Rect intervals
+ok 551 - supports Cartesian Point centers, Polar Point outward anchors, and directed Rect intervals
+  ---
+  duration_ms: 56.750458
+  type: 'test'
+  ...
+# Subtest: recomputes inside fit, reverse direction, Canvas geometry, and Polar frame
+ok 552 - recomputes inside fit, reverse direction, Canvas geometry, and Polar frame
+  ---
+  duration_ms: 45.866959
+  type: 'test'
+  ...
+# Subtest: creates one owned placement leader and removes every stale owner
+ok 553 - creates one owned placement leader and removes every stale owner
+  ---
+  duration_ms: 12.019875
+  type: 'test'
+  ...
+# Subtest: updates placement leaders after collision layout displacement
+ok 554 - updates placement leaders after collision layout displacement
+  ---
+  duration_ms: 113.27225
+  type: 'test'
+  ...
+# Subtest: rejects unsupported families, invalid policies, and dual leader ownership atomically
+ok 555 - rejects unsupported families, invalid policies, and dual leader ownership atomically
+  ---
+  duration_ms: 27.172417
+  type: 'test'
+  ...
+# Subtest: renders semantic placement and leaders through Canvas, SVG, PNG, and PDF
+ok 556 - renders semantic placement and leaders through Canvas, SVG, PNG, and PDF
+  ---
+  duration_ms: 251.173458
+  type: 'test'
+  ...
+# Subtest: declares R49 shape details on every supported public owner only
+ok 557 - declares R49 shape details on every supported public owner only
+  ---
+  duration_ms: 129.274708
+  type: 'test'
+  ...
+# Subtest: graphical editing and rendering share concrete value validation
+ok 558 - graphical editing and rendering share concrete value validation
+  ---
+  duration_ms: 2.112417
+  type: 'test'
+  ...
+# Subtest: renderers may add completeness checks without changing value rules
+ok 559 - renderers may add completeness checks without changing value rules
+  ---
+  duration_ms: 0.490416
+  type: 'test'
+  ...
+# Subtest: authoring and rendering share the structured rect fill contract
+ok 560 - authoring and rendering share the structured rect fill contract
+  ---
+  duration_ms: 0.407625
+  type: 'test'
+  ...
+# Subtest: filtering a shared position consumer refreshes sibling marks and attached labels
+ok 561 - filtering a shared position consumer refreshes sibling marks and attached labels
+  ---
+  duration_ms: 37.565375
+  type: 'test'
+  ...
+# Subtest: encodeColor refreshes both shared consumers in either authoring order
+ok 562 - encodeColor refreshes both shared consumers in either authoring order
+  ---
+  duration_ms: 18.034542
+  type: 'test'
+  ...
+# Subtest: encodeSize refreshes both shared consumers in either authoring order
+ok 563 - encodeSize refreshes both shared consumers in either authoring order
+  ---
+  duration_ms: 12.676667
+  type: 'test'
+  ...
+# Subtest: encodeOpacity refreshes both shared consumers in either authoring order
+ok 564 - encodeOpacity refreshes both shared consumers in either authoring order
+  ---
+  duration_ms: 11.049917
+  type: 'test'
+  ...
+# Subtest: shared color refresh crosses compatible mark families
+ok 565 - shared color refresh crosses compatible mark families
+  ---
+  duration_ms: 13.911
+  type: 'test'
+  ...
+# Subtest: removeMark removes the departed x scale contribution
+ok 566 - removeMark removes the departed x scale contribution
+  ---
+  duration_ms: 8.653917
+  type: 'test'
+  ...
+# Subtest: removeEncoding removes the departed x scale contribution
+ok 567 - removeEncoding removes the departed x scale contribution
+  ---
+  duration_ms: 2.972334
+  type: 'test'
+  ...
+# Subtest: reassign removes the departed x scale contribution
+ok 568 - reassign removes the departed x scale contribution
+  ---
+  duration_ms: 3.674875
+  type: 'test'
+  ...
+# Subtest: removeMark removes the departed y scale contribution
+ok 569 - removeMark removes the departed y scale contribution
+  ---
+  duration_ms: 3.602041
+  type: 'test'
+  ...
+# Subtest: removeEncoding removes the departed y scale contribution
+ok 570 - removeEncoding removes the departed y scale contribution
+  ---
+  duration_ms: 2.96675
+  type: 'test'
+  ...
+# Subtest: reassign removes the departed y scale contribution
+ok 571 - reassign removes the departed y scale contribution
+  ---
+  duration_ms: 2.591125
+  type: 'test'
+  ...
+# Subtest: removeMark removes the departed color scale contribution
+ok 572 - removeMark removes the departed color scale contribution
+  ---
+  duration_ms: 8.401916
+  type: 'test'
+  ...
+# Subtest: removeEncoding removes the departed color scale contribution
+ok 573 - removeEncoding removes the departed color scale contribution
+  ---
+  duration_ms: 3.605834
+  type: 'test'
+  ...
+# Subtest: reassign removes the departed color scale contribution
+ok 574 - reassign removes the departed color scale contribution
+  ---
+  duration_ms: 4.057125
+  type: 'test'
+  ...
+# Subtest: removeMark removes the departed size scale contribution
+ok 575 - removeMark removes the departed size scale contribution
+  ---
+  duration_ms: 3.444625
+  type: 'test'
+  ...
+# Subtest: removeEncoding removes the departed size scale contribution
+ok 576 - removeEncoding removes the departed size scale contribution
+  ---
+  duration_ms: 3.444083
+  type: 'test'
+  ...
+# Subtest: reassign removes the departed size scale contribution
+ok 577 - reassign removes the departed size scale contribution
+  ---
+  duration_ms: 12.838542
+  type: 'test'
+  ...
+# Subtest: removeMark removes the departed opacity scale contribution
+ok 578 - removeMark removes the departed opacity scale contribution
+  ---
+  duration_ms: 8.377584
+  type: 'test'
+  ...
+# Subtest: removeEncoding removes the departed opacity scale contribution
+ok 579 - removeEncoding removes the departed opacity scale contribution
+  ---
+  duration_ms: 3.798667
+  type: 'test'
+  ...
+# Subtest: reassign removes the departed opacity scale contribution
+ok 580 - reassign removes the departed opacity scale contribution
+  ---
+  duration_ms: 3.923834
+  type: 'test'
+  ...
+# Subtest: detaching the last consumer preserves the named scale without trying to resolve it
+ok 581 - detaching the last consumer preserves the named scale without trying to resolve it
+  ---
+  duration_ms: 3.901958
+  type: 'test'
+  ...
+# Subtest: detachment preserves explicit domains and refreshes the remaining opacity after constant assignment
+ok 582 - detachment preserves explicit domains and refreshes the remaining opacity after constant assignment
+  ---
+  duration_ms: 10.03925
+  type: 'test'
+  ...
+# Subtest: places size legends at four edges with exact primitive graphics and pixels
+ok 583 - places size legends at four edges with exact primitive graphics and pixels
+  ---
+  duration_ms: 1868.030083
+  type: 'test'
+  ...
+# Subtest: maps logarithmic, power, and square-root size scales in area space
+ok 584 - maps logarithmic, power, and square-root size scales in area space
+  ---
+  duration_ms: 36.866958
+  type: 'test'
+  ...
+# Subtest: renders nonlinear size marks and their legend through every public backend
+ok 585 - renders nonlinear size marks and their legend through every public backend
+  ---
+  duration_ms: 168.850041
+  type: 'test'
+  ...
+# Subtest: maps threshold and duplicate-quantile buckets and renders every interval
+ok 586 - maps threshold and duplicate-quantile buckets and renders every interval
+  ---
+  duration_ms: 13.437708
+  type: 'test'
+  ...
+# Subtest: edits size scale families with explicit migration and stable interval labels
+ok 587 - edits size scale families with explicit migration and stable interval labels
+  ---
+  duration_ms: 30.442125
+  type: 'test'
+  ...
+# Subtest: recomputes automatic quantile thresholds after a derived source revision
+ok 588 - recomputes automatic quantile thresholds after a derived source revision
+  ---
+  duration_ms: 15.880959
+  type: 'test'
+  ...
+# Subtest: uses unknown areas only for missing values and rejects invalid size states atomically
+ok 589 - uses unknown areas only for missing values and rejects invalid size states atomically
+  ---
+  duration_ms: 5.747708
+  type: 'test'
+  ...
+# Subtest: keeps source imports inside their architectural boundaries
+ok 590 - keeps source imports inside their architectural boundaries
+  ---
+  duration_ms: 81.056916
+  type: 'test'
+  ...
+# Subtest: the compact source-action vocabulary matches public default action metadata
+ok 591 - the compact source-action vocabulary matches public default action metadata
+  ---
+  duration_ms: 1.574042
+  type: 'test'
+  ...
+# Subtest: Basic source preparation excludes Full revision and facet orchestration
+ok 592 - Basic source preparation excludes Full revision and facet orchestration
+  ---
+  duration_ms: 28.731542
+  type: 'test'
+  ...
+# Subtest: parses static, re-exported, and dynamic module references
+ok 593 - parses static, re-exported, and dynamic module references
+  ---
+  duration_ms: 0.0915
+  type: 'test'
+  ...
+# Subtest: resolves extensionless files and directory entry points
+ok 594 - resolves extensionless files and directory entry points
+  ---
+  duration_ms: 0.193625
+  type: 'test'
+  ...
+# Subtest: keeps the local source import graph acyclic
+ok 595 - keeps the local source import graph acyclic
+  ---
+  duration_ms: 81.444792
+  type: 'test'
+  ...
+# Subtest: keeps semantic and graphic cloning inside primitive actions
+ok 596 - keeps semantic and graphic cloning inside primitive actions
+  ---
+  duration_ms: 257.539208
+  type: 'test'
+  ...
+# Subtest: routes exact named semantic resource lookup through selectors
+ok 597 - routes exact named semantic resource lookup through selectors
+  ---
+  duration_ms: 636.403583
+  type: 'test'
+  ...
+# Subtest: keeps cross-cutting planners independent from concrete mark names
+ok 598 - keeps cross-cutting planners independent from concrete mark names
+  ---
+  duration_ms: 0.525792
+  type: 'test'
+  ...
+# Subtest: keeps every ordinary mark family behind a stable directory entry
+ok 599 - keeps every ordinary mark family behind a stable directory entry
+  ---
+  duration_ms: 2.397625
+  type: 'test'
+  ...
+# Subtest: architectural syntax checks ignore comments and recognize direct bracket and optional access
+ok 600 - architectural syntax checks ignore comments and recognize direct bracket and optional access
+  ---
+  duration_ms: 1.041458
+  type: 'test'
+  ...
+# Subtest: source rows preserve structural interfaces and reject non-storable values in both entries
+ok 601 - source rows preserve structural interfaces and reject non-storable values in both entries
+  ---
+  duration_ms: 124.535333
+  type: 'test'
+  ...
+# Subtest: source field reassignment with labels matches literal endpoint graphics and PNG
+ok 602 - source field reassignment with labels matches literal endpoint graphics and PNG
+  ---
+  duration_ms: 106.228791
+  type: 'test'
+  ...
+# Subtest: publishes statistical-owner revision options as current behavior
+ok 603 - publishes statistical-owner revision options as current behavior
+  ---
+  duration_ms: 6.067125
+  type: 'test'
+  ...
+# Subtest: renders every revised statistical owner through Canvas and Node PNG
+ok 604 - renders every revised statistical owner through Canvas and Node PNG
+  ---
+  duration_ms: 283.17725
+  type: 'test'
+  ...
+# Subtest: statistical facade exports strict single-statistic and interval types only in the full API
+ok 605 - statistical facade exports strict single-statistic and interval types only in the full API
+  ---
+  duration_ms: 119.847542
+  type: 'test'
+  ...
+# Subtest: stores normalized statistical reference recipes and exact one-row values
+ok 606 - stores normalized statistical reference recipes and exact one-row values
+  ---
+  duration_ms: 31.699459
+  type: 'test'
+  ...
+# Subtest: matches literal Rule and Rect output through Canvas, SVG, and PNG
+ok 607 - matches literal Rule and Rect output through Canvas, SVG, and PNG
+  ---
+  duration_ms: 193.824125
+  type: 'test'
+  ...
+# Subtest: distinguishes bound rows from visible items and ignores selections
+ok 608 - distinguishes bound rows from visible items and ignores selections
+  ---
+  duration_ms: 15.63625
+  type: 'test'
+  ...
+# Subtest: axis bindings follow source re-encoding while explicit fields persist
+ok 609 - axis bindings follow source re-encoding while explicit fields persist
+  ---
+  duration_ms: 9.476542
+  type: 'test'
+  ...
+# Subtest: keeps statistical values out of automatic source scale domains
+ok 610 - keeps statistical values out of automatic source scale domains
+  ---
+  duration_ms: 4.999583
+  type: 'test'
+  ...
+# Subtest: follows binned scales without joining their scale policy
+ok 611 - follows binned scales without joining their scale policy
+  ---
+  duration_ms: 8.125833
+  type: 'test'
+  ...
+# Subtest: recomputes after derived edits and removes the owned closure
+ok 612 - recomputes after derived edits and removes the owned closure
+  ---
+  duration_ms: 14.416041
+  type: 'test'
+  ...
+# Subtest: computes facet-cell statistics from each partition
+ok 613 - computes facet-cell statistics from each partition
+  ---
+  duration_ms: 15.418583
+  type: 'test'
+  ...
+# Subtest: rejects invalid dynamic recipes atomically
+ok 614 - rejects invalid dynamic recipes atomically
+  ---
+  duration_ms: 13.269208
+  type: 'test'
+  ...
+# Subtest: declares a Full-only role-safe Strip contract
+ok 615 - declares a Full-only role-safe Strip contract
+  ---
+  duration_ms: 106.618
+  type: 'test'
+  ...
+# Subtest: keeps point fill and stroke as independent categorical channels and legends
+ok 616 - keeps point fill and stroke as independent categorical channels and legends
+  ---
+  duration_ms: 45.92875
+  type: 'test'
+  ...
+# Subtest: validates line stroke at final series grain before writing state
+ok 617 - validates line stroke at final series grain before writing state
+  ---
+  duration_ms: 10.646458
+  type: 'test'
+  ...
+# Subtest: uses one continuous stroke mapper and preserves stroke legend transitions
+ok 618 - uses one continuous stroke mapper and preserves stroke legend transitions
+  ---
+  duration_ms: 28.155459
+  type: 'test'
+  ...
+# Subtest: reassigns categorical and quantitative stroke with the correct legend family
+ok 619 - reassigns categorical and quantitative stroke with the correct legend family
+  ---
+  duration_ms: 37.747417
+  type: 'test'
+  ...
+# Subtest: cleans field and constant ownership without disturbing fill
+ok 620 - cleans field and constant ownership without disturbing fill
+  ---
+  duration_ms: 8.500084
+  type: 'test'
+  ...
+# Subtest: supports every approved stroke mark family and raw stroke selection values
+ok 621 - supports every approved stroke mark family and raw stroke selection values
+  ---
+  duration_ms: 37.49575
+  type: 'test'
+  ...
+# Subtest: preserves Rule constant trace compatibility and rejects invalid requests atomically
+ok 622 - preserves Rule constant trace compatibility and rejects invalid requests atomically
+  ---
+  duration_ms: 7.167459
+  type: 'test'
+  ...
+# Subtest: edits compatible shared color and stroke scales and rejects incompatible edits atomically
+ok 623 - edits compatible shared color and stroke scales and rejects incompatible edits atomically
+  ---
+  duration_ms: 2.654375
+  type: 'test'
+  ...
+# Subtest: transitions both legends on a shared continuous color and stroke scale
+ok 624 - transitions both legends on a shared continuous color and stroke scale
+  ---
+  duration_ms: 62.32675
+  type: 'test'
+  ...
+# Subtest: preserves an explicit zero stroke width in stroke legends
+ok 625 - preserves an explicit zero stroke width in stroke legends
+  ---
+  duration_ms: 14.902583
+  type: 'test'
+  ...
+# Subtest: preserves field stroke through theme and Canvas replay
+ok 626 - preserves field stroke through theme and Canvas replay
+  ---
+  duration_ms: 6.810791
+  type: 'test'
+  ...
+# Subtest: replays stroke-channel highlights into marks and the stroke legend
+ok 627 - replays stroke-channel highlights into marks and the stroke legend
+  ---
+  duration_ms: 8.986791
+  type: 'test'
+  ...
+# Subtest: removeEncoding removes stroke-owned state while preserving fill
+ok 628 - removeEncoding removes stroke-owned state while preserving fill
+  ---
+  duration_ms: 4.660375
+  type: 'test'
+  ...
+# Subtest: renders field stroke colors consistently through Canvas, SVG, PNG, and PDF
+ok 629 - renders field stroke colors consistently through Canvas, SVG, PNG, and PDF
+  ---
+  duration_ms: 110.180625
+  type: 'test'
+  ...
+# Subtest: promotes separate categorical and continuous stroke legends through facets
+ok 630 - promotes separate categorical and continuous stroke legends through facets
+  ---
+  duration_ms: 37.623875
+  type: 'test'
+  ...
+# Subtest: places stroke-width legends at four edges with exact primitive graphics and pixels
+ok 631 - places stroke-width legends at four edges with exact primitive graphics and pixels
+  ---
+  duration_ms: 2110.937167
+  type: 'test'
+  ...
+# Subtest: renders every public chart through the SVG concrete schema
+ok 632 - renders every public chart through the SVG concrete schema
+  ---
+  duration_ms: 4685.8035
+  type: 'test'
+  ...
+# Subtest: discovers every normal, render, and browser test recursively exactly once
+ok 633 - discovers every normal, render, and browser test recursively exactly once
+  ---
+  duration_ms: 56.435208
+  type: 'test'
+  ...
+# Subtest: separates network-backed corpus sweeps from source coverage
+ok 634 - separates network-backed corpus sweeps from source coverage
+  ---
+  duration_ms: 26.1905
+  type: 'test'
+  ...
+# Subtest: shards realistic CI after preparing its dataset cache once
+ok 635 - shards realistic CI after preparing its dataset cache once
+  ---
+  duration_ms: 0.283167
+  type: 'test'
+  ...
+# Subtest: does not discover programs or support modules as tests
+ok 636 - does not discover programs or support modules as tests
+  ---
+  duration_ms: 5.436625
+  type: 'test'
+  ...
+# Subtest: keeps every test module reachable from a suite or module-script entry
+ok 637 - keeps every test module reachable from a suite or module-script entry
+  ---
+  duration_ms: 250.803541
+  type: 'test'
+  ...
+# Subtest: requires every active gate to expose a complete reviewable slice
+ok 638 - requires every active gate to expose a complete reviewable slice
+  ---
+  duration_ms: 0.119625
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from active gate implementations
+ok 639 - keeps stable tests independent from active gate implementations
+  ---
+  duration_ms: 67.389875
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from implementation roadmap records
+ok 640 - keeps stable tests independent from implementation roadmap records
+  ---
+  duration_ms: 48.668792
+  type: 'test'
+  ...
+# Subtest: selects tests by chart, capability, or relative path
+ok 641 - selects tests by chart, capability, or relative path
+  ---
+  duration_ms: 50.348334
+  type: 'test'
+  ...
+# Subtest: caps file concurrency without changing file order or coverage policy
+ok 642 - caps file concurrency without changing file order or coverage policy
+  ---
+  duration_ms: 0.721458
+  type: 'test'
+  ...
+# Subtest: validates realistic shard coordinates before invoking Node
+ok 643 - validates realistic shard coordinates before invoking Node
+  ---
+  duration_ms: 0.316792
+  type: 'test'
+  ...
+# Subtest: maps every named capability entry to an exact file or prefix
+ok 644 - maps every named capability entry to an exact file or prefix
+  ---
+  duration_ms: 1007.495292
+  type: 'test'
+  ...
+# Subtest: assigns every normal test file to at least one named capability
+ok 645 - assigns every normal test file to at least one named capability
+  ---
+  duration_ms: 10.454375
+  type: 'test'
+  ...
+# Subtest: validates every selector before short-circuit matching
+ok 646 - validates every selector before short-circuit matching
+  ---
+  duration_ms: 0.115292
+  type: 'test'
+  ...
+# Subtest: coverage capture preserves UTF-8 markers across every byte boundary
+ok 647 - coverage capture preserves UTF-8 markers across every byte boundary
+  ---
+  duration_ms: 0.580375
+  type: 'test'
+  ...
+# Subtest: coverage provenance hashes untracked symlinks without reading their directory
+ok 648 - coverage provenance hashes untracked symlinks without reading their directory
+  ---
+  duration_ms: 2.538333
+  type: 'test'
+  ...
+# Subtest: text content and precision types match their runtime vocabularies
+ok 649 - text content and precision types match their runtime vocabularies
+  ---
+  duration_ms: 119.389667
+  type: 'test'
+  ...
+# Subtest: constant Text position matches literal graphics, Canvas, and decoded PNG
+ok 650 - constant Text position matches literal graphics, Canvas, and decoded PNG
+  ---
+  duration_ms: 97.928917
+  type: 'test'
+  ...
+# Subtest: text metric profile types preserve the closed schema and Full-only actions
+ok 651 - text metric profile types preserve the closed schema and Full-only actions
+  ---
+  duration_ms: 100.254166
+  type: 'test'
+  ...
+# Subtest: numeric Text offset types retain exact unions and Basic exclusion
+ok 652 - numeric Text offset types retain exact unions and Basic exclusion
+  ---
+  duration_ms: 107.232042
+  type: 'test'
+  ...
+# Subtest: publishes program theme lifecycle in runtime, types, and the Current catalog
+ok 653 - publishes program theme lifecycle in runtime, types, and the Current catalog
+  ---
+  duration_ms: 2.906416
+  type: 'test'
+  ...
+# Subtest: publishes custom tokens and composition theme scope as current behavior
+ok 654 - publishes custom tokens and composition theme scope as current behavior
+  ---
+  duration_ms: 29.23825
+  type: 'test'
+  ...
+# Subtest: rejects malformed custom theme definitions before changing state
+ok 655 - rejects malformed custom theme definitions before changing state
+  ---
+  duration_ms: 2.561791
+  type: 'test'
+  ...
+# Subtest: keeps theme reconciliation nested under the authoring action trace
+ok 656 - keeps theme reconciliation nested under the authoring action trace
+  ---
+  duration_ms: 2.36225
+  type: 'test'
+  ...
+# Subtest: applies the dark theme to every public unit chart without semantic drift
+ok 657 - applies the dark theme to every public unit chart without semantic drift
+  ---
+  duration_ms: 4417.668708
+  type: 'test'
+  ...
+# Subtest: keeps every stored dataset transform in the grammar registry
+ok 658 - keeps every stored dataset transform in the grammar registry
+  ---
+  duration_ms: 0.921083
+  type: 'test'
+  ...
+# Subtest: streaming typed CSV parsing matches the materialized reference
+ok 659 - streaming typed CSV parsing matches the materialized reference
+  ---
+  duration_ms: 8.696541
+  type: 'test'
+  ...
+# Subtest: preserves quoted, BOM, CRLF, empty, trailing, and duplicate-header semantics
+ok 660 - preserves quoted, BOM, CRLF, empty, trailing, and duplicate-header semantics
+  ---
+  duration_ms: 0.204834
+  type: 'test'
+  ...
+# Subtest: preserves parse-error precedence and typed row-field diagnostics
+ok 661 - preserves parse-error precedence and typed row-field diagnostics
+  ---
+  duration_ms: 0.124917
+  type: 'test'
+  ...
+# Subtest: returns fresh mutable arrays containing fresh frozen row records
+ok 662 - returns fresh mutable arrays containing fresh frozen row records
+  ---
+  duration_ms: 0.070041
+  type: 'test'
+  ...
+# Subtest: keeps long quoted descriptions within a bounded parser heap
+ok 663 - keeps long quoted descriptions within a bounded parser heap
+  ---
+  duration_ms: 211.958125
+  type: 'test'
+  ...
+# Subtest: declares existing grouped numeric and UTC weekday formats in Full and Basic
+ok 664 - declares existing grouped numeric and UTC weekday formats in Full and Basic
+  ---
+  duration_ms: 95.181583
+  type: 'test'
+  ...
+# Subtest: captures the exact committed inventory and workflow commands without executing them
+ok 665 - captures the exact committed inventory and workflow commands without executing them
+  ---
+  duration_ms: 453.445083
+  type: 'test'
+  ...
+# Subtest: separates historical snapshot bytes from dirty checkout and reports source drift
+ok 666 - separates historical snapshot bytes from dirty checkout and reports source drift
+  ---
+  duration_ms: 699.86975
+  type: 'test'
+  ...
+# Subtest: rejects ambiguous, invalid and inconsistent inventory inputs
+ok 667 - rejects ambiguous, invalid and inconsistent inventory inputs
+  ---
+  duration_ms: 613.250792
+  type: 'test'
+  ...
+# Subtest: actual execution retains commit, discovered files and matching logs for completion
+ok 668 - actual execution retains commit, discovered files and matching logs for completion
+  ---
+  duration_ms: 291.838541
+  type: 'test'
+  ...
+# Subtest: completion rejects not-run, failed commands, missing checks, artifacts and unresolved obligations
+ok 669 - completion rejects not-run, failed commands, missing checks, artifacts and unresolved obligations
+  ---
+  duration_ms: 355.112334
+  type: 'test'
+  ...
+# Subtest: receipt failures, stale revisions and zero discovered files cannot be relabelled passed
+ok 670 - receipt failures, stale revisions and zero discovered files cannot be relabelled passed
+  ---
+  duration_ms: 309.165459
+  type: 'test'
+  ...
+# Subtest: path escapes, modified logs and dirty checkouts remain visible
+ok 671 - path escapes, modified logs and dirty checkouts remain visible
+  ---
+  duration_ms: 332.616834
+  type: 'test'
+  ...
+# Subtest: execution graph rejects disconnected delivery paths, cycles and incomplete prerequisites
+ok 672 - execution graph rejects disconnected delivery paths, cycles and incomplete prerequisites
+  ---
+  duration_ms: 201.349875
+  type: 'test'
+  ...
+# Subtest: canonical test runner exits unsuccessfully when a selector discovers no test files
+ok 673 - canonical test runner exits unsuccessfully when a selector discovers no test files
+  ---
+  duration_ms: 85.858875
+  type: 'test'
+  ...
+# Subtest: keeps the implemented visual capability surface callable
+ok 674 - keeps the implemented visual capability surface callable
+  ---
+  duration_ms: 0.8025
+  type: 'test'
+  ...
+# Subtest: stores a Polar resource without inventing positional encodings
+ok 675 - stores a Polar resource without inventing positional encodings
+  ---
+  duration_ms: 5.418833
+  type: 'test'
+  ...
+# Subtest: inherits only compatible positions from a layered rule
+ok 676 - inherits only compatible positions from a layered rule
+  ---
+  duration_ms: 24.18225
+  type: 'test'
+  ...
+# Subtest: shares a temporal position scale between compatible bars and lines
+ok 677 - shares a temporal position scale between compatible bars and lines
+  ---
+  duration_ms: 9.294792
+  type: 'test'
+  ...
+# Subtest: captures horizontal grouped bars and the implemented palette shorthand
+ok 678 - captures horizontal grouped bars and the implemented palette shorthand
+  ---
+  duration_ms: 17.727292
+  type: 'test'
+  ...
+# Subtest: captures stale state after raw graphic removal
+ok 679 - captures stale state after raw graphic removal
+  ---
+  duration_ms: 5.288042
+  type: 'test'
+  ...
+# Subtest: keeps the implemented visual actions Current, callable, and typed
+ok 680 - keeps the implemented visual actions Current, callable, and typed
+  ---
+  duration_ms: 5.129959
+  type: 'test'
+  ...
+# Subtest: keeps approved visual evidence owned by current capabilities
+ok 681 - keeps approved visual evidence owned by current capabilities
+  ---
+  duration_ms: 0.264083
+  type: 'test'
+  ...
+# Subtest: keeps closed polar lines and advanced facets in the strict public types
+ok 682 - keeps closed polar lines and advanced facets in the strict public types
+  ---
+  duration_ms: 1.021792
+  type: 'test'
+  ...
+# Subtest: zero-width stroke leaves fills intact and produces no line or outline ink
+ok 683 - zero-width stroke leaves fills intact and produces no line or outline ink
+  ---
+  duration_ms: 21.388708
+  type: 'test'
+  ...
+# Subtest: zero-width drawing still validates before any paint and preserves positive strokes
+ok 684 - zero-width drawing still validates before any paint and preserves positive strokes
+  ---
+  duration_ms: 0.556
+  type: 'test'
+  ...
+1..684
+# tests 684
+# suites 0
+# pass 684
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 153146.6535

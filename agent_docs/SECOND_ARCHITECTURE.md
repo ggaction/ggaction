@@ -39,8 +39,9 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 `core/ownData.js`는 descriptor 검증을 공유하고 action summary는 getter를 호출하지 않는다.
 `grammar/transformInput.js`는 dispatch 전 transform 배열 검증을 Full/Basic에서 공유하며
 큰 transform policy 모듈을 Basic 입력 경계로 끌어오지 않는다.
-현재 kernel은 private이며 public authoring, 저장 schema, parameter resource lifecycle과
-renderer에는 연결하지 않았다. 기존 computed v1의 의미와 직접 materialization 경계는 유지한다.
+이 pure kernel은 공개 computed v2, parameter와 prepared data source의 명시 계산에서 재사용한다.
+공개 연결과 저장 검증 경계는 아래 computed 및 data-source integration 절이 소유한다.
+Renderer는 AST를 읽거나 평가하지 않으며 기존 computed v1의 의미와 명시 materialization을 유지한다.
 상세 내부 계약은 [expression core](architecture/EXPRESSION_CORE.md), 공개 computed는
 [CORE](contract/current/CORE.md), action trace는 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
 

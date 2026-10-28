@@ -38,15 +38,17 @@
       "id": "CALENDAR-INTEGRATION",
       "owner": "STEP-015",
       "gate": null,
-      "status": "open",
-      "requirement": "Calendar/day completion, DST/year/week aggregation fixtures; registry date rules remain in STEP-013"
+      "status": "verified",
+      "requirement": "Calendar/day completion, DST/year/week aggregation fixtures; registry date rules remain in STEP-013",
+      "evidence": "STEP8.md"
     },
     {
       "id": "STEP-013-CLOSEOUT",
       "owner": "STEP-013",
       "gate": null,
-      "status": "open",
-      "requirement": "AT-16 actual/expected/diff, consumer matrix, package/types/docs, CI coverage and full integration"
+      "status": "verified",
+      "requirement": "AT-16 actual/expected/diff, consumer matrix, package/types/docs, CI coverage and full integration",
+      "evidence": "STEP8.md"
     }
   ]
 }
