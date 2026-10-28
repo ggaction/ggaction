@@ -10,6 +10,8 @@
 - [ ] facade/edit/revise/types/current contract 및 STEP-014 전체 종료
 
 상태는 **private math 준비 완료, 공개 degree2 통합 미완료**다.
+이 상태와 아래 수치는 당시 private checkpoint의 기록이다. 후속 공개 통합의 현재 상태는
+[LOESS public checkpoint](LOESS_PUBLIC.md)가 소유한다.
 실행 승인은 [전체 계획 승인](../../AUTHORIZATION.json)을 재사용한다.
 Branch는 `codex/roadmap9-statistics`, 직전 pivot checkpoint는 `933597d6358d16a7142af45d4106495d5a4b4f69`다.
 Main source freeze를 유지하면서 격리 worktree에서 수행했다.

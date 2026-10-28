@@ -301,6 +301,28 @@
         "path": "unit/actions/guides/"
       }
     ],
+    "loess": [
+      {
+        "type": "file",
+        "path": "unit/actions/data/loess-degree.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/loess-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/robust-loess.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/local-quadratic.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/interval-regression-facade-types.test.js"
+      }
+    ],
     "lookup-data": [
       {
         "type": "file",

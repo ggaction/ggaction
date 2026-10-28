@@ -205,5 +205,15 @@
     "result": "plot",
     "prerequisites": "The complete snippet imports chart and declares its input rows.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "quadratic-loess",
+    "file": "api/regression.md",
+    "contains": "const observations = Array.from",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "quadraticFit",
+    "prerequisites": "Standalone ES module with ggaction installed; all observations are declared in the sample.",
+    "rendering": "authoring-only"
   }
 ]

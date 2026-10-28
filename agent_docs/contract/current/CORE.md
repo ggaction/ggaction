@@ -963,7 +963,9 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
   생략/false interval은 `false`로 저장하고 CI columns를 만들지 않는다. Degree/span/robustIterations,
   confidenceMethod/level/confidence 및 mean/prediction interval은 명시적으로 거부한다.
 - `degree`, `span`: Implemented method-specific parameter다. polynomial degree 기본값은 `2`, LOESS
-  span 기본값은 `0.75`이며 다른 method와 함께 주면 오류다. Degree는 `1..32`다.
+  span 기본값은 `0.75`다. Polynomial degree는 `1..32`, LOESS degree는 `1|2`이며 기본 `1`이다.
+  LOESS degree 생략/1은 기존 local-linear 계산과 저장 shape를 유지하고 degree2만 `degree:2`를 저장한다.
+  Degree는 linear/exp, span은 LOESS 외 method에서 거부한다.
 - `robustIterations`: LOESS 전용 정수 `0..32`, 기본 `0`. 양수만 provenance에 저장한다.
   각 반복은 group별 정규화 absolute residual 중앙값의 6배를 cutoff로 bisquare weight를
   tricube weight에 곱한다. Cutoff가 `64*Number.EPSILON` 이하이면 그 tolerance 안쪽만 weight 1이다.
@@ -978,19 +980,25 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
   기본값은 `"mean"`이다. 첫 LOESS 계약에서는 confidence/interval output을 만들지 않는다.
 - Effect: source, fields, grouping과 resolved method defaults를 transform provenance에 저장하고 observed
   unique x별 fitted row를 materialize한다. Polynomial은 normalized basis의 stable least squares를 사용하고
-  LOESS는 source-order tie를 가진 tricube local-linear neighbors를 사용한다. Linear/polynomial은
+  LOESS는 source-order tie를 가진 tricube neighborhood에서 degree1의 local-linear 또는 degree2의
+  centered/scaled quadratic fit을 사용한다. 이웃 수는 `min(n,max(degree+1,ceil(span*n)))`이다.
+  Degree2의 scaled design rank 판정은 partial-pivot tolerance `1e-12`이고 singular일 때 동일 이웃의
+  weighted constant mean으로 fallback한다. 이웃을 확대하지 않는다. n<2 또는 varying x가 없으면
+  오류이고 n=2의 degree2는 local constant fallback을 사용한다. Linear/polynomial은
   lower/upper를 만들고 LOESS는 fitted y만 만든다. Finite extreme input은 centered/scaled arithmetic으로
   계산하며 fitted value, model coefficient 또는 interval endpoint가 finite number로 표현될 수 없으면
   materialization 전에 명확히 거부한다. 전체 unique group/x output은 최대 `10,000` rows다.
   Polynomial work `sum(n*(degree+1)^2+(degree+1)^3)`와 LOESS work
-  `sum(n*(uniqueX*(1+robustIterations)+newPredictionX)*ceil(log2(n+1)))`는 각각 `10,000,000`을 넘기 전에 거부한다. graphic은 직접 만들지 않는다.
+  `sum(n*(uniqueX*(1+robustIterations)+newPredictionX)*ceil(log2(n+1)))`에 degree2만 local fit마다
+  `32*neighborCount+27`을 더한다. Descriptor/value 검증과 moment/solve 비용까지 포함한 보수적 한도다.
+  모든 group·robust pass·새 prediction의 누적 work는 `10,000,000`을 넘기 전에 거부한다. Graphic은 직접 만들지 않는다.
 - Coverage: `test/unit/actions/data/regression-data.test.js`와
   `test/charts/cars-regression-scatterplot/reference-values.test.js`가 grouped/ungrouped 값,
   confidence bounds와 invalid/degenerate groups를 검증한다. 여러 confidence 대표값 coverage는 부분적이다.
 
 ### Formal values — `createRegressionData`
 
-- Implemented: `createRegressionData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; groupBy?: FieldName } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "loess"; span?: UnitIntervalExclusiveZero; robustIterations?: NonNegativeInteger } | { method: "exp"; interval?: false }))`
+- Implemented: `createRegressionData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; groupBy?: FieldName } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "loess"; degree?: 1 | 2; span?: UnitIntervalExclusiveZero; robustIterations?: NonNegativeInteger } | { method: "exp"; interval?: false }))`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -1000,6 +1008,10 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
   - ✅ Covered: inferred/explicit source, grouped/ungrouped, missing fields, non-finite data와 degenerate groups.
 - `method`
   - ✅ Covered: all four methods, unknown rejection, degree/span defaults and boundaries, deterministic provenance/output ordering.
+  - ✅ Covered: LOESS degree2 literal quadratic/affine fits, independent weighted-system oracle, scale/translation,
+    singular/tied/all-zero robust neighborhoods, grouped cumulative work, degree1 exact compatibility와
+    create/edit/revise/facet/follow-source/persistence in `test/unit/actions/data/loess-degree.test.js` and
+    `test/unit/actions/data/loess-lifecycle.test.js`.
   - ✅ Covered: exponential response weighting, positive-pair checks, no-interval normalization,
     prediction positions and immutable source/edit/facade/persistence lifecycle in `exponential-regression.test.js`.
 - `confidenceMethod`, `level`, `confidence`
@@ -1381,6 +1393,8 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 - Signature: `editRegressionData({ target, x?, y?, groupBy?, method?, degree?, span?, robustIterations?, confidenceMethod?, level?, confidence?, interval?, dependents? })`.
 - Linear↔polynomial은 공통 confidence/interval을 보존하고 degree만 mode에 맞게 추가/제거한다. Loess 전환은
   confidence/interval을 제거하며 loess 밖으로 전환할 때 해당 defaults를 다시 정규화한다.
+  Method를 바꾸면 inherited degree를 제거하고 새 method 기본값을 쓴다. 명시 degree는 새 method로 검증하며
+  같은 LOESS에서 degree1 편집은 저장 degree를 제거하고 local-linear 결과로 복원한다.
 
 ### Formal values — `editRegressionData`
 

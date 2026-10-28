@@ -805,5 +805,14 @@
         "statements": 16
       }
     ]
+  },
+  {
+    "file": "loess-degree.mjs",
+    "cases": [
+      {
+        "id": "regression/quadratic-loess",
+        "statements": 16
+      }
+    ]
   }
 ]

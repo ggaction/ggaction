@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:76b3e4503e6abbe07e407711ec597713b0ab1e87591cc766fb74b103cd7cd758. Status: development. Runtime source: 028157707ba1a55080fd00607f2569de4568aeff. Release baseline: v0.0.13.
+Contract: sha256:84dcb9c9eaecdfbf4d03be1c42ae30064283c3411b70ab82cfbb4e151935b2a8. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/028157707ba1a55080fd00607f2569de4568aeff/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/028157707ba1a55080fd00607f2569de4568aeff/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -7829,6 +7829,24 @@ programs. Later independently authored marks follow ordinary authoring order;
 editing a plot-last regression reapplies its placement. `createRegressionPlot`
 accepts the same option.
 
+For a complete quadratic example:
+
+> **Executable complete.** Standalone ES module with ggaction installed; all observations are declared in the sample.
+
+```javascript
+import { chart } from "ggaction";
+
+const observations = Array.from({ length: 11 }, (_, x) => ({ x, y: x * x }));
+const quadraticFit = chart()
+  .createCanvas({ width: 480, height: 320, margin: 50 })
+  .createData({ values: observations })
+  .createRegressionPlot({
+    x: "x", y: "y", method: "loess", degree: 2, span: 1
+  });
+```
+
+The fitted values match the quadratic observations within floating-point precision.
+
 ## At a glance
 
 | Action | Required decision | Inferred or default behavior |
@@ -7874,7 +7892,7 @@ program.createRegression({
 | `x`, `y` | quantitative field names | target x/y fields |
 | `groupBy` | nominal field name or `false` (legacy explicit `undefined` also supported) | unique color/shape field |
 | `method` | `"linear"`, `"polynomial"`, `"loess"`, or `"exp"` | `"linear"` |
-| `degree` | integer from `1` through `32` for polynomial | `2` |
+| `degree` | polynomial: integer `1..32`; LOESS: `1` or `2` | polynomial: `2`; LOESS: `1` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `robustIterations` | LOESS residual reweighting passes, integer `0..32` | `0` |
 | `confidenceMethod` | `"normal"` or `"student-t"` | `"student-t"` |
@@ -7929,9 +7947,16 @@ used at creation. `"follow"` refits when `reviseData` advances that logical
 source. Appearance-only edits preserve fitted rows. Statistical, field, or
 prediction-grid edits create one new immutable fitted dataset.
 
-LOESS defaults to an ordinary local-linear fit. Set `robustIterations: 2`
+LOESS defaults to an ordinary local-linear fit. Set `degree: 2` for local quadratic
+fits, or `degree: 1` to restore local-linear fitting. The quadratic fit centers and
+scales x at each prediction location; a rank-deficient neighborhood uses its weighted
+constant mean without adding more neighbors. A two-row group therefore remains valid.
+All groups still need at least two rows and two distinct x values. Omitted degree
+and explicit degree 1 retain the existing stored transform; only degree 2 is stored.
+
+Set `robustIterations: 2`
 for two residual reweighting passes. Each neighborhood contains
-`max(2, ceil(span * groupRowCount))` rows; equal distances use source order,
+`min(groupRowCount, max(degree + 1, ceil(span * groupRowCount)))` rows; equal distances use source order,
 and duplicate x values share one prediction. If all neighbors lie at the
 tricube boundary (all distance weights zero), equal weights resolve the tied
 sample. Each pass multiplies the tricube distance
@@ -7947,7 +7972,8 @@ its persisted transform; positive counts are stored in provenance.
 
 Each regression produces at most 10,000 group/x rows. Polynomial and LOESS
 inputs whose estimated fitting work exceeds 10,000,000 units throw a
-`RangeError` before the expensive fit begins.
+`RangeError` before the expensive fit begins. Quadratic LOESS includes the extra
+local solves in that cumulative limit across groups, robust passes, and prediction positions.
 
 The action keeps each fitted dataset, band, and line associated with its target
 point mark, so multiple point layers can add independent regressions in one
@@ -18180,7 +18206,7 @@ createRegressionData({
 
 Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
-LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
+LOESS is line-only, with `degree: 1` (default) or `degree: 2` for a local quadratic fit. Optional `robustIterations` (integer `0..32`, default `0`)
 adds residual reweighting; see [regression](./api/regression/) for the estimator policy.
 [Data](./api/data/)
 
@@ -25388,7 +25414,8 @@ createRegression({
 
 Infer an eligible point layer and create immutable fitted data, optional grouped
 interval-band paths, and grouped line paths. Method defaults to `"linear"`;
-polynomial degree to `2`; LOESS span to `0.75` and `robustIterations` to `0`.
+polynomial degree to `2`; LOESS degree to `1`, span to `0.75`, and `robustIterations` to `0`.
+Set LOESS `degree: 2` for local quadratic fits.
 [Regression](./api/regression/)
 
 ## `editRegression`
@@ -34278,7 +34305,7 @@ export type DatasetRegressionTransform = {
       method: "loess";
       span: number;
       robustIterations?: number;
-      degree?: never;
+      degree?: 2;
       confidenceMethod?: never;
       level?: never;
       confidence?: never;
@@ -39929,7 +39956,8 @@ type RegressionParameterOptions =
     }
   | {
       method: "loess";
-      degree?: never;
+      /** Local polynomial degree; default 1. */
+      degree?: 1 | 2;
       span?: number;
       /** Residual reweighting passes, integer 0..32; default 0. */
       robustIterations?: number;
@@ -42314,12 +42342,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/028157707ba1a55080fd00607f2569de4568aeff/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/028157707ba1a55080fd00607f2569de4568aeff/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -45156,9 +45184,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:76b3e4503e6abbe07e407711ec597713b0ab1e87591cc766fb74b103cd7cd758` |
+| Contract fingerprint | `sha256:84dcb9c9eaecdfbf4d03be1c42ae30064283c3411b70ab82cfbb4e151935b2a8` |
 | Example and dataset source | `b8f9668133b278974c9cfe7324402a18282c9f4b` |
-| Runtime source commit | `028157707ba1a55080fd00607f2569de4568aeff` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 300 |
 | Declared actions in that release | 234 |

@@ -287,7 +287,6 @@ test("validates method-specific regression boundaries and singular groups", () =
     { method: "linear", degree: 2 },
     { method: "linear", span: 0.5 },
     { method: "polynomial", span: 0.5 },
-    { method: "loess", degree: 2 },
     { method: "loess", confidence: 0.95 },
     { method: "loess", interval: "mean" }
   ]) {

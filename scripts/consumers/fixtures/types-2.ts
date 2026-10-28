@@ -2083,3 +2083,11 @@ const pivotConsumer = chart().createData({ id: "pivotRaw", values: [{ key: "a", 
   .editPivotData({ target: "pivotWide", op: "count" });
 // @ts-expect-error count has no numeric value input
 chart().createPivotData({id:"badPivot",field:"key",op:"count",value:"amount"});
+
+chart().createRegressionPlot({ x: "x", y: "y", method: "loess", degree: 2, robustIterations: 2 });
+chart().createRegressionData({ id: "fit", x: "x", y: "y", method: "loess", degree: 1 });
+chart().editRegression({ method: "loess", degree: 2 });
+// @ts-expect-error local polynomial degree is bounded
+chart().createRegression({ method: "loess", degree: 3 });
+// @ts-expect-error local quadratic fits do not produce intervals
+chart().createRegressionData({ id: "fit", x: "x", y: "y", method: "loess", degree: 2, interval: false });

@@ -3561,6 +3561,18 @@
   {
     "file": "api/regression.md",
     "block": 1,
+    "heading": "Regression",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Standalone ES module with ggaction installed; all observations are declared in the sample.",
+    "sha256": "37b98fc3011280746fba67d97db1d8aaf46065a0e35036d9b6b07b90cd2da523",
+    "executable": true
+  },
+  {
+    "file": "api/regression.md",
+    "block": 2,
     "heading": "`createRegression(options?)`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3574,7 +3586,7 @@
   },
   {
     "file": "api/regression.md",
-    "block": 2,
+    "block": 3,
     "heading": "`createRegression(options?)`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3588,7 +3600,7 @@
   },
   {
     "file": "api/regression.md",
-    "block": 3,
+    "block": 4,
     "heading": "`createRegression(options?)`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3602,7 +3614,7 @@
   },
   {
     "file": "api/regression.md",
-    "block": 4,
+    "block": 5,
     "heading": "Editing a regression",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3618,7 +3630,7 @@
   },
   {
     "file": "api/regression.md",
-    "block": 5,
+    "block": 6,
     "heading": "Editing a regression",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3634,7 +3646,7 @@
   },
   {
     "file": "api/regression.md",
-    "block": 6,
+    "block": 7,
     "heading": "Editing generated components",
     "mode": "fragment",
     "environment": "esm-context",

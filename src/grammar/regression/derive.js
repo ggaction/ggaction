@@ -3,7 +3,8 @@ import {
   readNominalField,
   readQuantitativeField
 } from "../scales/index.js";
-import { fitRegressionGroup, predictRegressionAt, linearRegressionStatistics } from "./models.js";
+import { fitRegressionGroup, predictRegressionAt, linearRegressionStatistics, loessNeighborCount } from "./models.js";
+import { localQuadraticWork } from "./localQuadratic.js";
 import { requireFiniteResult } from "../numeric.js";
 import {
   validateGeneratedItemLimit,
@@ -134,9 +135,13 @@ function computeRegression(values, {
       const observedSet = new Set(observedX);
       const newPredictions = predict === undefined ? 0 :
         xValues.filter(value => !observedSet.has(value)).length;
-      work += groupRows.length *
-        (observedX.length * (1 + (parameters.robustIterations ?? 0)) + newPredictions) *
+      const localFits = observedX.length * (1 + (parameters.robustIterations ?? 0)) + newPredictions;
+      work += groupRows.length * localFits *
         Math.ceil(Math.log2(groupRows.length + 1));
+      if (parameters.degree === 2) {
+        const neighbors = loessNeighborCount(groupRows.length, parameters);
+        work += localFits * localQuadraticWork(neighbors);
+      }
     }
     validateWorkLimit(work, "Regression computation");
     const model = fitRegressionGroup(groupRows, {

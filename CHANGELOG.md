@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add local quadratic LOESS with `degree: 2` across regression data, plots and editors, preserving the default local-linear result and supporting robust fitting and prediction grids.
+
 - Add Full-only `createPivotData` and `editPivotData` with typed columns, explicit duplicate aggregation, stable schema and lineage, and immutable revision of dependent data and chart consumers.
 
 - Prevent action trace summaries from invoking getters; reject executable computed-expression properties before evaluation while preserving existing formula results.

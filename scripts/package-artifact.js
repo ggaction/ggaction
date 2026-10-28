@@ -25,7 +25,7 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 683, // Adds the public pivot action owner.
   packedBytes: 1_016_000, // Public pivot checkpoint: measured 1,015,469 bytes.
-  unpackedBytes: 4_736_000 // Public pivot checkpoint: measured 4,735,980 bytes.
+  unpackedBytes: 4_738_000 // Quadratic LOESS checkpoint: measured 4,737,028 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

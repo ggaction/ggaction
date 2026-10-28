@@ -560,7 +560,7 @@ export type DatasetRegressionTransform = {
       method: "loess";
       span: number;
       robustIterations?: number;
-      degree?: never;
+      degree?: 2;
       confidenceMethod?: never;
       level?: never;
       confidence?: never;
@@ -5023,7 +5023,8 @@ type RegressionParameterOptions =
     }
   | {
       method: "loess";
-      degree?: never;
+      /** Local polynomial degree; default 1. */
+      degree?: 1 | 2;
       span?: number;
       /** Residual reweighting passes, integer 0..32; default 0. */
       robustIterations?: number;

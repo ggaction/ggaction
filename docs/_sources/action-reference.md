@@ -1257,7 +1257,7 @@ createRegressionData({
 
 Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
-LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
+LOESS is line-only, with `degree: 1` (default) or `degree: 2` for a local quadratic fit. Optional `robustIterations` (integer `0..32`, default `0`)
 adds residual reweighting; see [regression](../api/regression.md) for the estimator policy.
 [Data](../api/data.md)
 
@@ -2487,7 +2487,8 @@ createRegression({
 
 Infer an eligible point layer and create immutable fitted data, optional grouped
 interval-band paths, and grouped line paths. Method defaults to `"linear"`;
-polynomial degree to `2`; LOESS span to `0.75` and `robustIterations` to `0`.
+polynomial degree to `2`; LOESS degree to `1`, span to `0.75`, and `robustIterations` to `0`.
+Set LOESS `degree: 2` for local quadratic fits.
 [Regression](../api/regression.md)
 
 ### `editRegression`

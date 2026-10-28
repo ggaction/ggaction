@@ -218,7 +218,7 @@ function normalizeRegressionEdit(transform, patch) {
   if (patch.predict === false) delete base.predict;
   const method = patch.method ?? base.method;
   if (method !== base.method) {
-    if (method !== "polynomial") delete base.degree;
+    delete base.degree;
     if (method !== "loess") {
       delete base.span;
       delete base.robustIterations;

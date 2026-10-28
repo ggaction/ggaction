@@ -71,19 +71,28 @@ Public action owner 한 개와 declarations/descriptors를 연결한 독립 bran
 올리고 Basic285,851 및 SVG는 기존286,000/25,000 한도를 유지한다. 정확 action2개와 설명을 더한
 search index857,741bytes는857,000을 초과해858,000으로만 조정한다. 모든 값은 main 통합 때 재측정한다.
 
-## Private local quadratic 준비
+## LOESS local quadratic integration
 
 `grammar/regression/localQuadratic.js`는 이미 선택한 이웃의 x/y와 최종 weight만 받아 local quadratic
 prediction을 계산한다. Coordinate/response/weight scale을 정규화하고 singular local design은 동일 이웃의
 weighted constant mean으로 처리한다. 이웃 선택과 all-zero robust weight fallback은 기존 LOESS owner에 남는다.
 기존 polynomial의 partial-pivot linear solve와1e-12 rank 판정을 `regression/linearSystem.js`로 옮겨 공유하며,
-polynomial의 오류와 연산 순서 및 기존 LOESS local-linear 코드는 유지한다. Public degree2 옵션은 아직 없다.
-재현과 남은 통합은 [private checkpoint](impl/roadmap9/phase3/statistics/LOCAL_QUADRATIC.md)가 기록한다.
+polynomial의 오류와 연산 순서 및 기존 LOESS local-linear 코드는 유지한다. 기존 공통 regression parameter
+owner가 공개 degree1/2를 정규화하며 기존 fit/robust/prediction 경로에서 degree2만 quadratic kernel로 dispatch한다.
+이웃 수는 fit과 work preflight가 같은 policy를 소비하고 모든 group의 추가 계산을 누적한다.
+새 action, materialization owner 또는 renderer 분기는 없다. 정확한 동작은 Current CORE와 STATISTICS가 소유한다.
+Private 준비 재현은 [private checkpoint](impl/roadmap9/phase3/statistics/LOCAL_QUADRATIC.md),
+공개 lifecycle 검증과 남은 범위는 [public checkpoint](impl/roadmap9/phase3/statistics/LOESS_PUBLIC.md)가 기록한다.
 
-Pivot 준비 이후 private math owner2개를 더한 Node22.23.1/npm10.9.8 staging 실측은681entries,
+Pivot 준비 이후 private math owner2개를 더한 당시 Node22.23.1/npm10.9.8 staging 실측은681entries,
 1,012,717packed, 4,722,952unpacked bytes다. 이전679entries/1,012,000/4,720,000 한도를 넘으므로
 최소681entries/1,013,000/4,723,000으로 변경했다. Full gzip507,618, Basic285,702bytes는 기존
 508,000/286,000 한도를 유지한다. 이 역시 독립 branch의 누적 측정이며 main 통합 시 다시 실측한다.
+
+공개 LOESS degree2 연결 뒤 동일 branch의 실측은683entries, 1,015,796packed/4,737,028unpacked bytes다.
+기존683entries와1,016,000packed 한도를 유지하며 unpacked만4,736,000을 넘어서4,738,000으로 최소 조정했다.
+설치 Full/Basic/SVG gzip509,588/285,851/8,111과 search857,752bytes는 기존 한도 안이다.
+이 값도 main의 다른 승인 변경을 통합한 뒤 누적 실측을 대체하지 않는다.
 
 ## Private civil-day domain 준비
 

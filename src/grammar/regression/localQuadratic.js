@@ -5,9 +5,11 @@ import { trySolveLinearSystem } from "./linearSystem.js";
 
 // Points are an already-selected neighborhood with final distance/residual
 // weights. Neighborhood and all-zero residual fallback remain with LOESS.
+export const localQuadraticWork = pointCount => pointCount * 32 + 27;
+
 export function predictLocalQuadratic(points, xValue) {
   if (!Number.isFinite(xValue)) throw new TypeError("Local quadratic prediction x must be finite.");
-  if (Array.isArray(points)) validateWorkLimit(points.length * 32 + 27, "Local quadratic computation");
+  if (Array.isArray(points)) validateWorkLimit(localQuadraticWork(points.length), "Local quadratic computation");
   ownArray(points, "Local quadratic points");
   for (const point of points) {
     ownRecord(point, "Local quadratic point");

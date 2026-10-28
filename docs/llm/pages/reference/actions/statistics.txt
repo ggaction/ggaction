@@ -966,7 +966,8 @@ createRegression({
 
 Infer an eligible point layer and create immutable fitted data, optional grouped
 interval-band paths, and grouped line paths. Method defaults to `"linear"`;
-polynomial degree to `2`; LOESS span to `0.75` and `robustIterations` to `0`.
+polynomial degree to `2`; LOESS degree to `1`, span to `0.75`, and `robustIterations` to `0`.
+Set LOESS `degree: 2` for local quadratic fits.
 [Regression](../../../../api/regression/)
 
 ## `editRegression`
