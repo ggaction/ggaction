@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "graph-grammar": { prefix: "grammar/graph/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph identity, adjacency, finite geometry and bounded calculation must preserve explicit topology." },
   "hierarchy-grammar": { prefix: "grammar/hierarchy/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Hierarchy identity, topology, aggregation and bounded layout must preserve exact node meaning." },
   "complete-grammar": { prefix: "grammar/complete", floor: { lines: 90, branches: 85, functions: 100 }, rationale: "Completion must preserve observed rows and explicitly bound calendar expansion, grouping and work." },
   "pivot-actions": { prefix: "actions/data/pivot", floor: { lines: 90, branches: 85, functions: 100 }, rationale: "Pivot inference, ownership and explicit materialization must remain exercised." },

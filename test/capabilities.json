@@ -201,6 +201,16 @@
         "path": "charts/compound-path/"
       }
     ],
+    "graph": [
+      {
+        "type": "file",
+        "path": "unit/grammar/graph-model.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/graph-normalize.test.js"
+      }
+    ],
     "guides": [
       {
         "type": "prefix",

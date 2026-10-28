@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 690, // Adds the private hierarchy ordering owner.
-  packedBytes: 1_028_000, // Hierarchy ordering: measured 1,027,885 bytes.
-  unpackedBytes: 4_781_000 // Hierarchy ordering: measured 4,780,216 bytes.
+  entries: 692, // Adds the private observed graph model and normalization owners.
+  packedBytes: 1_031_000, // Observed graph: measured 1,030,782 bytes.
+  unpackedBytes: 4_793_000 // Observed graph: measured 4,792,575 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

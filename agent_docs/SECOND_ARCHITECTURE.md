@@ -53,6 +53,17 @@ action, renderer 또는 새 시각 target과 연결하지 않았다.
 [partition 계산](impl/roadmap9/phase3/hierarchy/PARTITION_KERNEL.md), [treemap 계산](impl/roadmap9/phase3/hierarchy/TREEMAP_KERNEL.md),
 [sibling 정렬](impl/roadmap9/phase3/hierarchy/ORDER_KERNEL.md) 기록이 소유한다.
 
+## Private observed graph normalization
+
+`grammar/graph/normalize.js`는 명시 node/edge records의 raw typed key를 기존 identity owner로 한 번
+정규화한다. Caller가 이미 보관한 occurrence key를 받으며 row index로 edge identity를 추정하지 않는다.
+`grammar/graph/model.js`는 opaque node/edge key, endpoint·direction·origin·source membership과
+bounded plain-data attributes를 검증하고 stable incoming/outgoing/weak-neighbor adjacency를 만든다.
+Layout 소비자는 같은 model owner로 저장 adjacency의 일관성을 확인하며 topology를 다시 추론하지 않는다.
+현재는 private 계산이며 public GraphResource, source field adapter, graph action, layout/renderer에는
+연결하지 않았다. 별도 graph metric/preprocessing 작업과 상태를 섞지 않는다.
+상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
+
 ## 내부 expression kernel 경계
 
 `grammar/expressionAst.js`는 versioned AST의 정규화·정적 검사·명시 dependency 추출,
