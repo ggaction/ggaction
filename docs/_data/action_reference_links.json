@@ -22,6 +22,8 @@
   "createPivotData": "/reference/actions/statistics/#createpivotdata",
   "createGraphData": "/reference/actions/charts-data/#creategraphdata",
   "editGraphData": "/reference/actions/charts-data/#editgraphdata",
+  "editInferredGraphData": "/reference/actions/charts-data/#editinferredgraphdata",
+  "createInferredGraphData": "/reference/actions/charts-data/#createinferredgraphdata",
   "createParameter": "/reference/actions/charts-data/#createparameter",
   "editParameter": "/reference/actions/charts-data/#editparameter",
   "removeParameter": "/reference/actions/charts-data/#removeparameter",

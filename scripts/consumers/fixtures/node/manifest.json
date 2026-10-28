@@ -951,5 +951,14 @@
         "statements": 20
       }
     ]
+  },
+  {
+    "file": "inferred-graphs.mjs",
+    "cases": [
+      {
+        "id": "data/inferred-graph-lifecycle",
+        "statements": 22
+      }
+    ]
   }
 ]

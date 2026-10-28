@@ -2020,6 +2020,18 @@
     "executable": false
   },
   {
+    "file": "api/graphs.md",
+    "block": 1,
+    "heading": "Graph inference",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "763a08ab408e0e4ebc51c3c1aee83c4c9e841ff22d1ab03e1017dbf6617a2726",
+    "executable": false
+  },
+  {
     "file": "api/grids.md",
     "block": 1,
     "heading": "`createGrid(options?)`",

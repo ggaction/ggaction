@@ -8,7 +8,7 @@ import { deriveSortedRows, normalizeSortTransform } from "../sort.js";
 import { normalizeTemporalValue } from "../scales/fields.js";
 import { inferredGraphEdgeIdentity } from "./edgeIdentity.js";
 
-function policy(input, sequence) {
+export function normalizeGraphStructuralOptions(input, sequence) {
   ownRecord(input, "Graph structural options");
   rejectUnknownProperties(input, ["ruleId", "missing", ...(sequence ? ["lag", "maxGap", "temporalUnit"] : ["mode", "hubKey", "hubs"])], "graph structural");
   const options = Object.assign(Object.create(null), input);
@@ -81,7 +81,7 @@ function chargeKey(preparation, key) {
   chargeValues(preparation, Array.isArray(key) ? key : [key]);
 }
 
-function hubsFor(options, preparation) {
+export function resolveGraphGroupHubs(options, preparation) {
   const hubs = new Map(), indexes = new Map(preparation.tokens.map((key, index) => [key, index]));
   if (Object.hasOwn(options, "hubKey")) {
     chargeKey(preparation, options.hubKey);
@@ -109,8 +109,8 @@ function hubsFor(options, preparation) {
 }
 
 export function inferGraphGroups(keys, tuples, input) {
-  const options = policy(input, false), preparation = prepare(keys, tuples, options.missing);
-  const hubs = hubsFor(options, preparation);
+  const options = normalizeGraphStructuralOptions(input, false), preparation = prepare(keys, tuples, options.missing);
+  const hubs = resolveGraphGroupHubs(options, preparation);
   let count = 0, identityWork = 0;
   for (const [group, members] of preparation.groups) {
     if (options.mode === "star" && members.length > 1 && !hubs.has(group)) throw new Error("Graph star requires an explicit hub for every non-singleton group.");
@@ -132,7 +132,7 @@ export function inferGraphGroups(keys, tuples, input) {
 }
 
 export function inferGraphSequence(keys, tuples, orderValues, input) {
-  const options = policy(input, true), preparation = prepare(keys, tuples, options.missing);
+  const options = normalizeGraphStructuralOptions(input, true), preparation = prepare(keys, tuples, options.missing);
   ownArray(orderValues, "Graph sequence order");
   if (orderValues.length !== keys.length) throw new Error("Graph sequence order and keys must have equal length.");
   chargeValues(preparation, orderValues);

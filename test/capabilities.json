@@ -311,6 +311,26 @@
       {
         "type": "file",
         "path": "browser/graph-output.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/inferred-graph.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/inferred-graph-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/inferred-graph-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/core/graph-prepared-revisions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-inferred-graphs.test.js"
       }
     ],
     "guides": [
@@ -757,6 +777,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-legend-option-witness.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-inferred-graphs.test.js"
       }
     ],
     "rendering": [

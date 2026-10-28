@@ -29,7 +29,7 @@ const analysisChartEditorNames = new Set([
 
 const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot", "createLayerPlot"]);
 const coreH3Names = new Set([
-  "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "removeResource",
+  "editInferredGraphData", "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "removeResource",
   "applyTextMetrics",
   "removeTextMetrics",
   "reviseData",
@@ -66,6 +66,8 @@ const explicitFacadeEditors = Object.freeze({
 });
 
 const explicitLifecycleEditors = Object.freeze({
+  createInferredGraphData: ["editInferredGraphData", "removeResource"],
+  editInferredGraphData: ["editInferredGraphData", "removeResource"],
   createHierarchyData: ["editHierarchyData", "removeResource"],
   editHierarchyData: ["editHierarchyData", "removeResource"],
   layoutHierarchy: ["editLayout", "removeResource"],
@@ -149,6 +151,7 @@ const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "pr
 const emptyResultActions = new Set([
   "layoutGraph",
   "createGraphData",
+  "createInferredGraphData",
   "editGraphData",
   "filterData",
   "filterMarks",

@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 3,
+  "name": "editInferredGraphData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Revise an inferred graph and its dependent layouts and plots.",
+  "signature": "editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;",
+  "intents": [
+    "edit inferred graph data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "inferred graph data",
+    "nearest neighbor network"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing inferred graph data",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editInferredGraphData",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing inferred graph data",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "candidateGraph",
+      "required": false,
+      "type": "string | null | undefined"
+    },
+    {
+      "name": "definition",
+      "required": false,
+      "type": "Partial<GraphCandidateMstDefinition | (InferredGraphSource & { readonly metric: \"cosine\" | \"euclidean\" | \"manhattan\"; readonly features: readonly string[]; readonly preprocess?: \"minmax\" | ... 2 more ... | undefined; } & { ...; }) | ... 11 more ... | (InferredGraphSource & ... 1 more ... & { ...; })> | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editInferredGraphData({ target?, data?, candidateGraph?, definition? })"
+  ],
+  "snippet": "program.editInferredGraphData({ target: \"neighbors\", definition: { options: { k: 2 } } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editinferredgraphdata"
+}

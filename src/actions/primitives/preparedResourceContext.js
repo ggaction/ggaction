@@ -17,7 +17,7 @@ export function preparedResourceResults(args, enteredProgram) {
 
 // Bind precomputed dependent results only to the exact resource primitive argument.
 // Nested callers restore their prior binding and every exit removes authority.
-export function withPreparedResourceResults(program, args, replacements, operation) {
+export function withPreparedResourceResults(program, args, replacements, operation, dataReplacements = []) {
   ownRecord(args, "Prepared resource arguments");
   ownArray(replacements, "Prepared resource replacements");
   const identities = new Set();
@@ -28,14 +28,29 @@ export function withPreparedResourceResults(program, args, replacements, operati
     validateInputReference(replacement.previous);
     validateStoredResource(replacement.resource, program.constructor);
     const { previous, resource } = replacement;
-    if (!["data-source", "layout"].includes(previous.kind) || resource.kind !== previous.kind || previous.id !== resource.id ||
+    if (!["data-source", "graph", "layout"].includes(previous.kind) || resource.kind !== previous.kind || previous.id !== resource.id ||
         resource.revision !== previous.revision + 1 || identities.has(JSON.stringify([previous.kind, previous.id]))) {
       throw new TypeError("Prepared resource replacements require unique next revisions.");
     }
     identities.add(JSON.stringify([previous.kind, previous.id]));
   }
+  ownArray(dataReplacements, "Prepared data replacements");
+  const dataIds = new Set();
+  for (const entry of dataReplacements) {
+    ownRecord(entry, "Prepared data replacement");
+    if (Object.keys(entry).length !== 2) throw new TypeError("Prepared data replacement requires previous and next.");
+    validateInputReference(entry.previous); validateInputReference(entry.next);
+    if (entry.previous.kind !== "data" || entry.next.kind !== "data" || entry.previous.logicalId !== entry.next.logicalId ||
+        entry.next.revision <= entry.previous.revision || dataIds.has(entry.previous.id)) throw new TypeError("Prepared data replacements require unique later revisions of the same source.");
+    dataIds.add(entry.previous.id);
+  }
   const hadPrevious = prepared.has(args), previous = prepared.get(args);
-  prepared.set(args, { program, replacements: cloneAndFreeze(replacements) });
+  prepared.set(args, { program, replacements: cloneAndFreeze(replacements), dataReplacements: cloneAndFreeze(dataReplacements) });
   try { return operation(args); }
   finally { if (hadPrevious) prepared.set(args, previous); else prepared.delete(args); }
+}
+
+export function preparedResourceDataReplacements(args, enteredProgram) {
+  preparedResourceResults(args, enteredProgram);
+  return prepared.get(args)?.dataReplacements ?? [];
 }

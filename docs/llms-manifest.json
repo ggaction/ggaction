@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:0fe502c9276a84e89746d321ac901108e9c1e8d6de3614adba5b6a34dc56af8e",
-    "sourceCommit": "7659f0f7f7d57c2bfa8f2c78f4ac8704dde08db1",
+    "contractId": "sha256:e81f1fd288d083d089dd4e4ed6ab37c413181969f2c7ed301a6d51e3a50378fb",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "273a69ec3f947eac8302769f7529213541fcd964390ae3a1bcf7209c1f2d2247"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1987,8 +1987,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 34479,
-      "sha256": "39de76a5591e88b9d14343758ce207394c1ee951fe601786469213b1bf19a5e8"
+      "bytes": 34707,
+      "sha256": "fc9ffb6582bbba04464f725c0652a65982d4a95bb107cd45e437cb4885d92b77"
     },
     {
       "order": 118,
@@ -2014,6 +2014,8 @@
         "filterdata",
         "creategraphdata",
         "editgraphdata",
+        "editinferredgraphdata",
+        "createinferredgraphdata",
         "createparameter",
         "editparameter",
         "removeparameter",
@@ -2115,8 +2117,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 225944,
-      "sha256": "69dee0c40f3f20a7e82497c5a674e1ab7a9b585d61f267cc0644be8b108fa927"
+      "bytes": 230096,
+      "sha256": "48e4a2848e601aaa3fd4397c9b5e6aaf3693bb9a09dfcd2ff18a688b92c3a06d"
     },
     {
       "order": 119,
@@ -2444,8 +2446,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 37841,
-      "sha256": "b983e1e6254b92ffeb8378f02e85b0a74aed9f3a14ec727271ca1b5cdfb71faa"
+      "bytes": 38257,
+      "sha256": "49401aba0b6ead8e2c772bd39804534261ec6761efa270936bea8b714f4ac822"
     },
     {
       "order": 126,
@@ -2604,6 +2606,7 @@
         "type-createhistogramoptions",
         "type-createhorizonplotoptions",
         "type-createimagemarkoptions",
+        "type-createinferredgraphdataoptions",
         "type-createintervalplotoptions",
         "type-createlayerplotoptions",
         "type-createlineplotoptions",
@@ -2747,6 +2750,7 @@
         "type-edithorizonoptions",
         "type-editimagemarkoptions",
         "type-editimputeddataoptions",
+        "type-editinferredgraphdataoptions",
         "type-editintervaldataoptions",
         "type-editlayoutoptions",
         "type-editlegendblockoptions",
@@ -2866,18 +2870,25 @@
         "type-gradientplotguideoptions",
         "type-gradientplotoptions",
         "type-gradientplotpositionchannel",
+        "type-graphcandidatemstdefinition",
         "type-graphcircularoptions",
         "type-graphedgepaint",
+        "type-graphfeaturepolicy",
         "type-graphfixedoptions",
         "type-graphforceoptions",
         "type-graphkeyfield",
         "type-graphlabelpaint",
         "type-graphlabelsoptions",
         "type-graphlayoutlimits",
+        "type-graphmetricdefinition",
+        "type-graphmetricmstdefinition",
+        "type-graphneighbordefinition",
         "type-graphnodepaint",
         "type-graphpin",
         "type-graphplotoptions",
         "type-graphposition",
+        "type-graphsearchoptions",
+        "type-graphstructuraldefinition",
         "type-graphicclip",
         "type-graphicclippath",
         "type-graphiccliprect",
@@ -2914,6 +2925,8 @@
         "type-imagemarkoptions",
         "type-imputeddatabaseoptions",
         "type-imputeddataoptions",
+        "type-inferredgraphdefinition",
+        "type-inferredgraphsource",
         "type-inferredruledatumpositionencodingoptions",
         "type-insertcompositionchildoptions",
         "type-intervalcenter",
@@ -3228,8 +3241,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 426531,
-      "sha256": "dfb3e314998d4e22e167d29768f8cac0b469733dc593999f1636964f840ac951"
+      "bytes": 433379,
+      "sha256": "9792ae439d5c2504ee14a7fa1d4d21befdd25174e7c07cecf091324d1f04903a"
     },
     {
       "order": 127,
@@ -3263,8 +3276,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "85606b4c77b402a9968f74b887ab8ecc7744668af9002e63ee036c7c8146510b"
+      "bytes": 20908,
+      "sha256": "56270c1c80a0632366486cc3cac7feb41dd5dd4a747aaf2260d353b536f666dc"
     },
     {
       "order": 129,
@@ -3603,8 +3616,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "71a27a0b7fef1220ee740240522fe407fdc3fe580554a995d0b327fd34d71871"
+      "bytes": 3000,
+      "sha256": "8d4fc1e33e622b66b794243fc3d9f029e7004d944cb0affc231357672ee57255"
     },
     {
       "order": 150,
@@ -3684,10 +3697,11 @@
         "creategraphplot",
         "editgraphplot",
         "labels-and-identity",
-        "updates-removal-and-outputs"
+        "updates-removal-and-outputs",
+        "graph-inference"
       ],
-      "bytes": 4517,
-      "sha256": "678fbdf82a9e4e6d18a13e8fb7c3de01d64c38b383117484fa44f8758abf8cdd"
+      "bytes": 8214,
+      "sha256": "06f8ea5692ec2fcac3e6fd6f13f1883e7565ed3681ab6a1530a9792caeb1543f"
     },
     {
       "order": 155,

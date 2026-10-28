@@ -585,6 +585,26 @@ editGraphData({ target?, nodes?, edges?, definition? })
 Revise an existing observed graph. The graph ID is `target`; the edge endpoint
 column belongs in `definition.target`. See [observed graph data](../api/data/source-and-derived.md#observed-graph-data).
 
+### `createInferredGraphData`
+
+```javascript
+createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges? })
+```
+
+Infer a graph using nearest neighbors, radius, similarity, a spanning tree,
+groups, or ordered sequences. Metric and structural rules have distinct options.
+See [graph inference](../api/graphs.md#graph-inference).
+
+### `editInferredGraphData`
+
+```javascript
+editInferredGraphData({ target?, data?, candidateGraph?, definition? })
+```
+
+Revise an inferred graph and its dependent layouts and plots. Use
+`candidateGraph: null` to remove a spanning-tree candidate input.
+See [graph inference](../api/graphs.md#graph-inference).
+
 ### `applyDataUpdate`
 
 ```javascript

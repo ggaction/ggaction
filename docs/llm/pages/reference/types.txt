@@ -57,6 +57,8 @@ interface ChartProgramActions {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createGraphData(options: CreateGraphDataOptions): ChartProgram;
+  createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
+  editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
   editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
   layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
@@ -2686,6 +2688,18 @@ export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; 
 
 Related types: [`ImageMarkOptions`](../../../reference/types/#type-imagemarkoptions).
 
+### `CreateInferredGraphDataOptions` {#type-createinferredgraphdataoptions}
+
+ Expand CreateInferredGraphDataOptions
+
+```typescript
+export type CreateInferredGraphDataOptions = { readonly id: string; readonly data?: string } & (
+  (GraphNeighborDefinition | GraphMetricMstDefinition | GraphStructuralDefinition) & { readonly candidateGraph?: never } |
+  GraphCandidateMstDefinition & { readonly candidateGraph: string });
+```
+
+Related types: [`GraphNeighborDefinition`](../../../reference/types/#type-graphneighbordefinition) · [`GraphMetricMstDefinition`](../../../reference/types/#type-graphmetricmstdefinition) · [`GraphStructuralDefinition`](../../../reference/types/#type-graphstructuraldefinition) · [`GraphCandidateMstDefinition`](../../../reference/types/#type-graphcandidatemstdefinition).
+
 ### `CreateIntervalPlotOptions` {#type-createintervalplotoptions}
 
  Expand CreateIntervalPlotOptions
@@ -5121,6 +5135,19 @@ export type EditImputedDataOptions = FocusedDerivedDataEdit<ImputedDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focusedderiveddataedit) · [`ImputedDataOptions`](../../../reference/types/#type-imputeddataoptions).
 
+### `EditInferredGraphDataOptions` {#type-editinferredgraphdataoptions}
+
+ Expand EditInferredGraphDataOptions
+
+```typescript
+export interface EditInferredGraphDataOptions {
+  readonly target?: string; readonly data?: string; readonly candidateGraph?: string | null;
+  readonly definition?: Partial<InferredGraphDefinition>;
+}
+```
+
+Related types: [`InferredGraphDefinition`](../../../reference/types/#type-inferredgraphdefinition).
+
 ### `EditIntervalDataOptions` {#type-editintervaldataoptions}
 
  Expand EditIntervalDataOptions
@@ -6847,6 +6874,16 @@ export type GradientPlotPositionChannel = BoxPlotPositionChannel;
 
 Related types: [`BoxPlotPositionChannel`](../../../reference/types/#type-boxplotpositionchannel).
 
+### `GraphCandidateMstDefinition` {#type-graphcandidatemstdefinition}
+
+ Expand GraphCandidateMstDefinition
+
+```typescript
+export type GraphCandidateMstDefinition = InferredGraphSource & { readonly rule: "mst"; readonly options?: { readonly forest?: boolean }; readonly features?: never; readonly metric?: never; readonly preprocess?: never };
+```
+
+Related types: [`InferredGraphSource`](../../../reference/types/#type-inferredgraphsource).
+
 ### `GraphCircularOptions` {#type-graphcircularoptions}
 
  Expand GraphCircularOptions
@@ -6863,6 +6900,14 @@ Related types: [`GraphLayoutLimits`](../../../reference/types/#type-graphlayoutl
 
 ```typescript
 export interface GraphEdgePaint { stroke?: string; strokeWidth?: number; opacity?: number; parallelGap?: number; loopRadius?: number; arrowSize?: number; arrows?: "auto" | boolean; }
+```
+
+### `GraphFeaturePolicy` {#type-graphfeaturepolicy}
+
+ Expand GraphFeaturePolicy
+
+```typescript
+export interface GraphFeaturePolicy { readonly missing?: "error" | "omit-node"; readonly zeroVector?: "error" | "zero-similarity"; }
 ```
 
 ### `GraphFixedOptions` {#type-graphfixedoptions}
@@ -6927,6 +6972,40 @@ Related types: [`GraphLabelPaint`](../../../reference/types/#type-graphlabelpain
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
 ```
 
+### `GraphMetricDefinition` {#type-graphmetricdefinition}
+
+ Expand GraphMetricDefinition
+
+```typescript
+export type GraphMetricDefinition =
+  { readonly metric: "euclidean" | "manhattan" | "cosine"; readonly features: readonly string[]; readonly preprocess?: "none" | "standardize" | "minmax" } |
+  { readonly metric: "jaccard"; readonly features: readonly string[] | { readonly set: string }; readonly preprocess?: "none" } |
+  { readonly metric: "great-circle"; readonly features: readonly string[] | { readonly longitude: string; readonly latitude: string }; readonly preprocess?: "none" };
+```
+
+### `GraphMetricMstDefinition` {#type-graphmetricmstdefinition}
+
+ Expand GraphMetricMstDefinition
+
+```typescript
+export type GraphMetricMstDefinition = InferredGraphSource & GraphMetricDefinition & { readonly rule: "mst"; readonly options?: GraphFeaturePolicy & { readonly forest?: boolean } };
+```
+
+Related types: [`InferredGraphSource`](../../../reference/types/#type-inferredgraphsource) · [`GraphMetricDefinition`](../../../reference/types/#type-graphmetricdefinition) · [`GraphFeaturePolicy`](../../../reference/types/#type-graphfeaturepolicy).
+
+### `GraphNeighborDefinition` {#type-graphneighbordefinition}
+
+ Expand GraphNeighborDefinition
+
+```typescript
+export type GraphNeighborDefinition = InferredGraphSource & GraphMetricDefinition & (
+  { readonly rule: "knn"; readonly options?: GraphFeaturePolicy & { readonly k?: number; readonly symmetrize?: "directed" | "union" | "mutual"; readonly search?: GraphSearchOptions } } |
+  { readonly rule: "radius"; readonly options: GraphFeaturePolicy & { readonly radius: number; readonly directed?: boolean; readonly search?: Extract<GraphSearchOptions, { readonly mode?: "exact" }> } } |
+  { readonly rule: "similarity"; readonly metric: "cosine" | "jaccard"; readonly options: GraphFeaturePolicy & { readonly threshold: number; readonly directed?: boolean; readonly search?: { readonly mode?: "exact"; readonly algorithm?: "brute-force" } } });
+```
+
+Related types: [`InferredGraphSource`](../../../reference/types/#type-inferredgraphsource) · [`GraphMetricDefinition`](../../../reference/types/#type-graphmetricdefinition) · [`GraphFeaturePolicy`](../../../reference/types/#type-graphfeaturepolicy) · [`GraphSearchOptions`](../../../reference/types/#type-graphsearchoptions).
+
 ### `GraphNodePaint` {#type-graphnodepaint}
 
  Expand GraphNodePaint
@@ -6970,6 +7049,30 @@ export interface GraphPosition { readonly key: RowKey; readonly x: number; reado
 ```
 
 Related types: [`RowKey`](../../../reference/types/#type-rowkey).
+
+### `GraphSearchOptions` {#type-graphsearchoptions}
+
+ Expand GraphSearchOptions
+
+```typescript
+export type GraphSearchOptions = { readonly mode?: "exact"; readonly algorithm?: "brute-force" | "kd-tree" | "grid" } |
+  { readonly mode: "approximate"; readonly algorithm?: "projection-forest"; readonly seed: number; readonly trees?: number;
+    readonly projections?: 1; readonly leafSize?: number; readonly searchLeaves?: number; readonly fallback?: "error" | "exact"; readonly minRecall?: number };
+```
+
+### `GraphStructuralDefinition` {#type-graphstructuraldefinition}
+
+ Expand GraphStructuralDefinition
+
+```typescript
+export type GraphStructuralDefinition = InferredGraphSource & { readonly features?: never; readonly metric?: never; readonly preprocess?: never } & (
+  { readonly rule: "group"; readonly options: { readonly fields: readonly string[]; readonly missing?: "error" | "omit-node" | "include"; readonly mode?: "clique" | "star";
+    readonly hubKey?: RowKey; readonly hubs?: readonly { readonly group: readonly unknown[]; readonly key: RowKey }[] } } |
+  { readonly rule: "sequence"; readonly options: { readonly orderField: string; readonly groupBy?: readonly string[]; readonly missing?: "error" | "omit-node";
+    readonly lag?: number; readonly maxGap?: number; readonly temporalUnit?: TemporalInputUnit } });
+```
+
+Related types: [`InferredGraphSource`](../../../reference/types/#type-inferredgraphsource) · [`RowKey`](../../../reference/types/#type-rowkey) · [`TemporalInputUnit`](../../../reference/types/#type-temporalinputunit).
 
 ### `GraphicClip` {#type-graphicclip}
 
@@ -7487,6 +7590,29 @@ export type ImputedDataOptions = ImputedDataBaseOptions & (
 ```
 
 Related types: [`ImputedDataBaseOptions`](../../../reference/types/#type-imputeddatabaseoptions) · [`WindowSort`](../../../reference/types/#type-windowsort) · [`DatasetScalar`](../../../reference/types/#type-datasetscalar).
+
+### `InferredGraphDefinition` {#type-inferredgraphdefinition}
+
+ Expand InferredGraphDefinition
+
+```typescript
+export type InferredGraphDefinition = GraphNeighborDefinition | GraphMetricMstDefinition | GraphCandidateMstDefinition | GraphStructuralDefinition;
+```
+
+Related types: [`GraphNeighborDefinition`](../../../reference/types/#type-graphneighbordefinition) · [`GraphMetricMstDefinition`](../../../reference/types/#type-graphmetricmstdefinition) · [`GraphCandidateMstDefinition`](../../../reference/types/#type-graphcandidatemstdefinition) · [`GraphStructuralDefinition`](../../../reference/types/#type-graphstructuraldefinition).
+
+### `InferredGraphSource` {#type-inferredgraphsource}
+
+ Expand InferredGraphSource
+
+```typescript
+export interface InferredGraphSource {
+  readonly nodeKey: GraphKeyField; readonly ruleId: string; readonly attributes?: readonly string[];
+  readonly maxNodes?: number; readonly maxEdges?: number;
+}
+```
+
+Related types: [`GraphKeyField`](../../../reference/types/#type-graphkeyfield).
 
 ### `InferredRuleDatumPositionEncodingOptions` {#type-inferredruledatumpositionencodingoptions}
 

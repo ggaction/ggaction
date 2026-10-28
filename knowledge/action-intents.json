@@ -1009,6 +1009,12 @@
       "graph plot",
       "network plot",
       "nodes and edges"
+    ],
+    "InferredGraphData": [
+      "inferred graph data",
+      "nearest neighbor network",
+      "similarity and spanning graph",
+      "group and sequence connections"
     ]
   },
   "summaryOverrides": {
@@ -1934,6 +1940,25 @@
       "target": "networkPlot",
       "nodes": {
         "radius": 8
+      }
+    },
+    "createInferredGraphData": {
+      "id": "neighbors",
+      "data": "points",
+      "nodeKey": "id",
+      "ruleId": "nearest",
+      "rule": "knn",
+      "features": [
+        "x"
+      ],
+      "metric": "euclidean"
+    },
+    "editInferredGraphData": {
+      "target": "neighbors",
+      "definition": {
+        "options": {
+          "k": 2
+        }
       }
     }
   },

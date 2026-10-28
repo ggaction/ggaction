@@ -163,8 +163,9 @@ renderer는 다음 통합 경계다. 수치·검증·실측 package 경계는
 검증한다. DATA revision owner는 등록된 graph 갱신 함수를 명시적으로 호출한다. Basic과 renderer는
 graph resource를 읽지 않으며 automatic compiler는 없다. `createGraphData.target`은 endpoint 열이므로
 기존 unit-local creation dispatch를 사용한다. 수정 target은 별도의 resource selector다.
-Full의 graph layout과 plot은 같은 typed resource 경계를 사용한다. `actions/graphs/layouts.js`가 변경될 graph→layout→plot closure를 먼저 계산·검증한 뒤 wrapped semantic replacement와 plot materialization을 명시 호출한다.
-`materialization/graph/geometry.js`는 finite cubic route·parallel offset·self-loop·endpoint trimming을, plot owner는 concrete circle/path/text·paint·source-row identity를 소유한다. 공통 selection policy는 node와 edge를 별도 logical item으로 유지하며 arrow/label을 같은 item에 결박한다. Renderer는 기존 concrete primitives만 읽는다. Inference 공개 연결은 후속 domain owner다.
+Full의 graph layout과 plot은 같은 typed resource 경계를 사용한다. `actions/graphs/layouts.js`가 변경될 graph→inferred graph→layout→plot closure를 먼저 계산·검증한 뒤 wrapped semantic replacement와 plot materialization을 명시 호출한다.
+`materialization/graph/geometry.js`는 finite cubic route·parallel offset·self-loop·endpoint trimming을, plot owner는 concrete circle/path/text·paint·source-row identity를 소유한다. 공통 selection policy는 node와 edge를 별도 logical item으로 유지하며 arrow/label을 같은 item에 결박한다. Renderer는 기존 concrete primitives만 읽는다. Inference는 Full의 `actions/graphs/inference.js`가 명시적으로 호출한다. 입력 dataset과 선택 candidate graph의 typed revision을 저장하며, source 갱신은 공통 resource DAG 순서로 각 graph/layout을 한 번씩 갱신한다.
+`materialization/graph/inferredState.js`는 저장 model·source binding·진단의 정합성을 검사하며 pair search나 spanning solver를 재실행하지 않는다. Prepared resource context는 exact receiver/primitive argument에만 graph와 data-reference 교체 권한을 결박하고 작업 종료 때 제거한다.
 정확한 공개·저장 계약은 [GRAPHS.md](contract/current/GRAPHS.md)가 소유한다.
 상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
 
@@ -762,7 +763,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 596,000 bytes |
+| `ggaction` | 613,000 bytes |
 | `ggaction/basic` | 346,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -3206,3 +3207,12 @@ null/default 및 복원 limit 검증을 보강한 최종 graph-layout source는 
 동일 final archive의 Node20 browser 실측은 Full590,307/Basic342,113bytes이며 두 기존 한도591,000/343,000 안이다.
 
 GraphPlot와 outline을 합친 source7659f0f7f archive의 Node20 bundle은 Full595,806/Basic345,437bytes다. 기존591,000/343,000 한도를 초과하여 실제값 기준 최소596,000/346,000으로 조정하고 README와 현재 표를 동기화했다.
+
+
+### 그래프 추론 공개 연결의 package 경계
+
+관측 graph와 같은 model로 연결한 여섯 inference rule, exact/approximate search, 저장 검증과
+source/candidate revision closure가 Full bundle에 포함된다. Node20 실측은 Full612,463/Basic345,748gzip bytes다.
+Full 한도를596,000에서613,000으로 최소 조정하며 Basic346,000과 SVG25,000은 유지한다.
+패키지 실측814entries/packed1,200,052/unpacked5,534,974bytes에 맞춰
+814/1,201,000/5,535,000 한도를 적용한다. Basic은 inference action과 resource를 등록하지 않는다.

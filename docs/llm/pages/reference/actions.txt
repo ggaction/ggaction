@@ -66,6 +66,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createImageMark`](../../../reference/actions/marks/#createimagemark) | H2 | user-facing | marks |
 | [`createImageResource`](../../../reference/actions/charts-data/#createimageresource) | H3 | user-facing | core |
 | [`createImputedData`](../../../reference/actions/statistics/#createimputeddata) | H1 | user-facing | statistics |
+| [`createInferredGraphData`](../../../reference/actions/charts-data/#createinferredgraphdata) | H2 | user-facing | core |
 | [`createIntervalData`](../../../reference/actions/statistics/#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](../../../reference/actions/charts-data/#createintervalplot) | H0, H1 | user-facing | charts |
 | [`createLayerPlot`](../../../reference/actions/charts-data/#createlayerplot) | H0 | user-facing | composition |
@@ -182,6 +183,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editHorizontalGrid`](../../../reference/actions/guides/#edithorizontalgrid) | H3 | user-facing | grid |
 | [`editImageMark`](../../../reference/actions/marks/#editimagemark) | H3 | user-facing | marks |
 | [`editImputedData`](../../../reference/actions/statistics/#editimputeddata) | H1, H3 | user-facing | statistics |
+| [`editInferredGraphData`](../../../reference/actions/charts-data/#editinferredgraphdata) | H3 | user-facing | core |
 | [`editIntervalData`](../../../reference/actions/statistics/#editintervaldata) | H1, H3 | user-facing | statistics |
 | [`editLayout`](../../../reference/actions/charts-data/#editlayout) | H2 | user-facing | core |
 | [`editLegend`](../../../reference/actions/guides/#editlegend) | H3 | user-facing | legend_and_title |

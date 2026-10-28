@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:0fe502c9276a84e89746d321ac901108e9c1e8d6de3614adba5b6a34dc56af8e. Status: development. Runtime source: 7659f0f7f7d57c2bfa8f2c78f4ac8704dde08db1. Release baseline: v0.0.13.
+Contract: sha256:e81f1fd288d083d089dd4e4ed6ab37c413181969f2c7ed301a6d51e3a50378fb. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/7659f0f7f7d57c2bfa8f2c78f4ac8704dde08db1/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/7659f0f7f7d57c2bfa8f2c78f4ac8704dde08db1/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -17885,6 +17885,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createImageMark`](./reference/actions/marks/#createimagemark) | H2 | user-facing | marks |
 | [`createImageResource`](./reference/actions/charts-data/#createimageresource) | H3 | user-facing | core |
 | [`createImputedData`](./reference/actions/statistics/#createimputeddata) | H1 | user-facing | statistics |
+| [`createInferredGraphData`](./reference/actions/charts-data/#createinferredgraphdata) | H2 | user-facing | core |
 | [`createIntervalData`](./reference/actions/statistics/#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](./reference/actions/charts-data/#createintervalplot) | H0, H1 | user-facing | charts |
 | [`createLayerPlot`](./reference/actions/charts-data/#createlayerplot) | H0 | user-facing | composition |
@@ -18001,6 +18002,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editHorizontalGrid`](./reference/actions/guides/#edithorizontalgrid) | H3 | user-facing | grid |
 | [`editImageMark`](./reference/actions/marks/#editimagemark) | H3 | user-facing | marks |
 | [`editImputedData`](./reference/actions/statistics/#editimputeddata) | H1, H3 | user-facing | statistics |
+| [`editInferredGraphData`](./reference/actions/charts-data/#editinferredgraphdata) | H3 | user-facing | core |
 | [`editIntervalData`](./reference/actions/statistics/#editintervaldata) | H1, H3 | user-facing | statistics |
 | [`editLayout`](./reference/actions/charts-data/#editlayout) | H2 | user-facing | core |
 | [`editLegend`](./reference/actions/guides/#editlegend) | H3 | user-facing | legend_and_title |
@@ -18775,6 +18777,81 @@ editGraphData({ target?, nodes?, edges?, definition? })
 
 Revise an existing observed graph. The graph ID is `target`; the edge endpoint
 column belongs in `definition.target`. See [observed graph data](./api/data/source-and-derived/#observed-graph-data).
+
+## `editInferredGraphData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditInferredGraphDataOptions`](./reference/types/#type-editinferredgraphdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `candidateGraph` | Optional / branch-dependent | `string \| null \| undefined` |
+| `definition` | Optional / branch-dependent | `Partial<GraphCandidateMstDefinition \| (InferredGraphSource & { readonly metric: "cosine" \| "euclidean" \| "manhattan"; readonly features: readonly string[]; readonly preprocess?: "minmax" \| ... 2 more ... \| undefined; } & { ...; }) \| ... 11 more ... \| (InferredGraphSource & ... 1 more ... & { ...; })> \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editInferredGraphData({ target?, data?, candidateGraph?, definition? })
+```
+
+Revise an inferred graph and its dependent layouts and plots. Use
+`candidateGraph: null` to remove a spanning-tree candidate input.
+See [graph inference](./api/graphs/#graph-inference).
+
+## `createInferredGraphData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateInferredGraphDataOptions`](./reference/types/#type-createinferredgraphdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `nodeKey` | Required | `GraphKeyField` |
+| `ruleId` | Required | `string` |
+| `attributes` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+| `maxEdges` | Optional / branch-dependent | `number \| undefined` |
+| `rule` | Required | `"group" \| "knn" \| "mst" \| "radius" \| "sequence" \| "similarity"` |
+| `options` | Optional / branch-dependent | `{ readonly forest?: boolean \| undefined; } \| { readonly fields: readonly string[]; readonly missing?: "error" \| "include" \| "omit-node" \| undefined; readonly mode?: "clique" \| "star" \| undefined; readonly hubKey?: RowKey \| undefined; readonly hubs?: readonly { ...; }[] \| undefined; } \| ... 5 more ... \| undefined` |
+| `features` | Optional / branch-dependent | `readonly string[] \| { readonly set: string; } \| { readonly longitude: string; readonly latitude: string; } \| undefined` |
+| `metric` | Optional / branch-dependent | `"cosine" \| "euclidean" \| "great-circle" \| "jaccard" \| "manhattan" \| undefined` |
+| `preprocess` | Optional / branch-dependent | `"minmax" \| "none" \| "standardize" \| undefined` |
+| `candidateGraph` | Optional / branch-dependent | `string \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges? })
+```
+
+Infer a graph using nearest neighbors, radius, similarity, a spanning tree,
+groups, or ordered sequences. Metric and structural rules have distinct options.
+See [graph inference](./api/graphs/#graph-inference).
 
 ## `createParameter`
 
@@ -31626,6 +31703,8 @@ export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageR
 export function prepareImageResource(program: ChartProgram, request: CreateImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"create">>;
 export function prepareImageResource(program: ChartProgram, request: ReplaceImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"replace">>;
 export function prepareImageResource(program: ChartProgram, request: ImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource>;
+
+export type { GraphMetric, GraphFeatures, GraphSearchOptions, GraphFeaturePolicy, InferredGraphSource, GraphMetricDefinition, GraphNeighborDefinition, GraphMetricMstDefinition, GraphCandidateMstDefinition, GraphStructuralDefinition, InferredGraphDefinition, CreateInferredGraphDataOptions, EditInferredGraphDataOptions, GraphInferenceDiagnostics, ObservedGraphResource, InferredGraphResource } from "./program.js";
 ```
 
 #### `ggaction/basic`
@@ -32209,6 +32288,8 @@ interface ChartProgramActions {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createGraphData(options: CreateGraphDataOptions): ChartProgram;
+  createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
+  editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
   editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
   layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
@@ -34838,6 +34919,18 @@ export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; 
 
 Related types: [`ImageMarkOptions`](./reference/types/#type-imagemarkoptions).
 
+### `CreateInferredGraphDataOptions` {#type-createinferredgraphdataoptions}
+
+ Expand CreateInferredGraphDataOptions
+
+```typescript
+export type CreateInferredGraphDataOptions = { readonly id: string; readonly data?: string } & (
+  (GraphNeighborDefinition | GraphMetricMstDefinition | GraphStructuralDefinition) & { readonly candidateGraph?: never } |
+  GraphCandidateMstDefinition & { readonly candidateGraph: string });
+```
+
+Related types: [`GraphNeighborDefinition`](./reference/types/#type-graphneighbordefinition) · [`GraphMetricMstDefinition`](./reference/types/#type-graphmetricmstdefinition) · [`GraphStructuralDefinition`](./reference/types/#type-graphstructuraldefinition) · [`GraphCandidateMstDefinition`](./reference/types/#type-graphcandidatemstdefinition).
+
 ### `CreateIntervalPlotOptions` {#type-createintervalplotoptions}
 
  Expand CreateIntervalPlotOptions
@@ -37273,6 +37366,19 @@ export type EditImputedDataOptions = FocusedDerivedDataEdit<ImputedDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`ImputedDataOptions`](./reference/types/#type-imputeddataoptions).
 
+### `EditInferredGraphDataOptions` {#type-editinferredgraphdataoptions}
+
+ Expand EditInferredGraphDataOptions
+
+```typescript
+export interface EditInferredGraphDataOptions {
+  readonly target?: string; readonly data?: string; readonly candidateGraph?: string | null;
+  readonly definition?: Partial<InferredGraphDefinition>;
+}
+```
+
+Related types: [`InferredGraphDefinition`](./reference/types/#type-inferredgraphdefinition).
+
 ### `EditIntervalDataOptions` {#type-editintervaldataoptions}
 
  Expand EditIntervalDataOptions
@@ -38999,6 +39105,16 @@ export type GradientPlotPositionChannel = BoxPlotPositionChannel;
 
 Related types: [`BoxPlotPositionChannel`](./reference/types/#type-boxplotpositionchannel).
 
+### `GraphCandidateMstDefinition` {#type-graphcandidatemstdefinition}
+
+ Expand GraphCandidateMstDefinition
+
+```typescript
+export type GraphCandidateMstDefinition = InferredGraphSource & { readonly rule: "mst"; readonly options?: { readonly forest?: boolean }; readonly features?: never; readonly metric?: never; readonly preprocess?: never };
+```
+
+Related types: [`InferredGraphSource`](./reference/types/#type-inferredgraphsource).
+
 ### `GraphCircularOptions` {#type-graphcircularoptions}
 
  Expand GraphCircularOptions
@@ -39015,6 +39131,14 @@ Related types: [`GraphLayoutLimits`](./reference/types/#type-graphlayoutlimits).
 
 ```typescript
 export interface GraphEdgePaint { stroke?: string; strokeWidth?: number; opacity?: number; parallelGap?: number; loopRadius?: number; arrowSize?: number; arrows?: "auto" | boolean; }
+```
+
+### `GraphFeaturePolicy` {#type-graphfeaturepolicy}
+
+ Expand GraphFeaturePolicy
+
+```typescript
+export interface GraphFeaturePolicy { readonly missing?: "error" | "omit-node"; readonly zeroVector?: "error" | "zero-similarity"; }
 ```
 
 ### `GraphFixedOptions` {#type-graphfixedoptions}
@@ -39079,6 +39203,40 @@ Related types: [`GraphLabelPaint`](./reference/types/#type-graphlabelpaint) · [
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
 ```
 
+### `GraphMetricDefinition` {#type-graphmetricdefinition}
+
+ Expand GraphMetricDefinition
+
+```typescript
+export type GraphMetricDefinition =
+  { readonly metric: "euclidean" | "manhattan" | "cosine"; readonly features: readonly string[]; readonly preprocess?: "none" | "standardize" | "minmax" } |
+  { readonly metric: "jaccard"; readonly features: readonly string[] | { readonly set: string }; readonly preprocess?: "none" } |
+  { readonly metric: "great-circle"; readonly features: readonly string[] | { readonly longitude: string; readonly latitude: string }; readonly preprocess?: "none" };
+```
+
+### `GraphMetricMstDefinition` {#type-graphmetricmstdefinition}
+
+ Expand GraphMetricMstDefinition
+
+```typescript
+export type GraphMetricMstDefinition = InferredGraphSource & GraphMetricDefinition & { readonly rule: "mst"; readonly options?: GraphFeaturePolicy & { readonly forest?: boolean } };
+```
+
+Related types: [`InferredGraphSource`](./reference/types/#type-inferredgraphsource) · [`GraphMetricDefinition`](./reference/types/#type-graphmetricdefinition) · [`GraphFeaturePolicy`](./reference/types/#type-graphfeaturepolicy).
+
+### `GraphNeighborDefinition` {#type-graphneighbordefinition}
+
+ Expand GraphNeighborDefinition
+
+```typescript
+export type GraphNeighborDefinition = InferredGraphSource & GraphMetricDefinition & (
+  { readonly rule: "knn"; readonly options?: GraphFeaturePolicy & { readonly k?: number; readonly symmetrize?: "directed" | "union" | "mutual"; readonly search?: GraphSearchOptions } } |
+  { readonly rule: "radius"; readonly options: GraphFeaturePolicy & { readonly radius: number; readonly directed?: boolean; readonly search?: Extract<GraphSearchOptions, { readonly mode?: "exact" }> } } |
+  { readonly rule: "similarity"; readonly metric: "cosine" | "jaccard"; readonly options: GraphFeaturePolicy & { readonly threshold: number; readonly directed?: boolean; readonly search?: { readonly mode?: "exact"; readonly algorithm?: "brute-force" } } });
+```
+
+Related types: [`InferredGraphSource`](./reference/types/#type-inferredgraphsource) · [`GraphMetricDefinition`](./reference/types/#type-graphmetricdefinition) · [`GraphFeaturePolicy`](./reference/types/#type-graphfeaturepolicy) · [`GraphSearchOptions`](./reference/types/#type-graphsearchoptions).
+
 ### `GraphNodePaint` {#type-graphnodepaint}
 
  Expand GraphNodePaint
@@ -39122,6 +39280,30 @@ export interface GraphPosition { readonly key: RowKey; readonly x: number; reado
 ```
 
 Related types: [`RowKey`](./reference/types/#type-rowkey).
+
+### `GraphSearchOptions` {#type-graphsearchoptions}
+
+ Expand GraphSearchOptions
+
+```typescript
+export type GraphSearchOptions = { readonly mode?: "exact"; readonly algorithm?: "brute-force" | "kd-tree" | "grid" } |
+  { readonly mode: "approximate"; readonly algorithm?: "projection-forest"; readonly seed: number; readonly trees?: number;
+    readonly projections?: 1; readonly leafSize?: number; readonly searchLeaves?: number; readonly fallback?: "error" | "exact"; readonly minRecall?: number };
+```
+
+### `GraphStructuralDefinition` {#type-graphstructuraldefinition}
+
+ Expand GraphStructuralDefinition
+
+```typescript
+export type GraphStructuralDefinition = InferredGraphSource & { readonly features?: never; readonly metric?: never; readonly preprocess?: never } & (
+  { readonly rule: "group"; readonly options: { readonly fields: readonly string[]; readonly missing?: "error" | "omit-node" | "include"; readonly mode?: "clique" | "star";
+    readonly hubKey?: RowKey; readonly hubs?: readonly { readonly group: readonly unknown[]; readonly key: RowKey }[] } } |
+  { readonly rule: "sequence"; readonly options: { readonly orderField: string; readonly groupBy?: readonly string[]; readonly missing?: "error" | "omit-node";
+    readonly lag?: number; readonly maxGap?: number; readonly temporalUnit?: TemporalInputUnit } });
+```
+
+Related types: [`InferredGraphSource`](./reference/types/#type-inferredgraphsource) · [`RowKey`](./reference/types/#type-rowkey) · [`TemporalInputUnit`](./reference/types/#type-temporalinputunit).
 
 ### `GraphicClip` {#type-graphicclip}
 
@@ -39639,6 +39821,29 @@ export type ImputedDataOptions = ImputedDataBaseOptions & (
 ```
 
 Related types: [`ImputedDataBaseOptions`](./reference/types/#type-imputeddatabaseoptions) · [`WindowSort`](./reference/types/#type-windowsort) · [`DatasetScalar`](./reference/types/#type-datasetscalar).
+
+### `InferredGraphDefinition` {#type-inferredgraphdefinition}
+
+ Expand InferredGraphDefinition
+
+```typescript
+export type InferredGraphDefinition = GraphNeighborDefinition | GraphMetricMstDefinition | GraphCandidateMstDefinition | GraphStructuralDefinition;
+```
+
+Related types: [`GraphNeighborDefinition`](./reference/types/#type-graphneighbordefinition) · [`GraphMetricMstDefinition`](./reference/types/#type-graphmetricmstdefinition) · [`GraphCandidateMstDefinition`](./reference/types/#type-graphcandidatemstdefinition) · [`GraphStructuralDefinition`](./reference/types/#type-graphstructuraldefinition).
+
+### `InferredGraphSource` {#type-inferredgraphsource}
+
+ Expand InferredGraphSource
+
+```typescript
+export interface InferredGraphSource {
+  readonly nodeKey: GraphKeyField; readonly ruleId: string; readonly attributes?: readonly string[];
+  readonly maxNodes?: number; readonly maxEdges?: number;
+}
+```
+
+Related types: [`GraphKeyField`](./reference/types/#type-graphkeyfield).
 
 ### `InferredRuleDatumPositionEncodingOptions` {#type-inferredruledatumpositionencodingoptions}
 
@@ -44806,12 +45011,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/7659f0f7f7d57c2bfa8f2c78f4ac8704dde08db1/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/7659f0f7f7d57c2bfa8f2c78f4ac8704dde08db1/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -47847,11 +48052,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:0fe502c9276a84e89746d321ac901108e9c1e8d6de3614adba5b6a34dc56af8e` |
+| Contract fingerprint | `sha256:e81f1fd288d083d089dd4e4ed6ab37c413181969f2c7ed301a6d51e3a50378fb` |
 | Example and dataset source | `7659f0f7f7d57c2bfa8f2c78f4ac8704dde08db1` |
-| Runtime source commit | `7659f0f7f7d57c2bfa8f2c78f4ac8704dde08db1` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 322 |
+| Declared actions here | 324 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -48789,6 +48994,74 @@ Highlight `color` or `stroke` changes node borders, edge paths and arrow fill; l
 Data, graph and layout revisions preflight all dependent plots, then update exact revisions and materialize nodes, edges, arrows and labels explicitly. Failure preserves the previous program and trace. Concat supports explicitly scoped plot/layout edits. Raw position encodings, axes and scale legends do not apply to these stored layout coordinates. Graph facet/repeat and induced filtering are not currently supported.
 
 Remove a plot with `removeMark` before removing its bound layout or graph. Resource cascade does not silently remove live graph marks. Editable serialization validates stored data, layout and style without rerunning force simulation. Canvas, SVG, PNG and PDF consume the same concrete primitives. Inspection and accessible export count each node or edge once rather than counting its label or arrow again.
+
+## Graph inference
+
+Use `createInferredGraphData` when relationships follow a rule. The resulting
+graph works with the same `layoutGraph` and `createGraphPlot` actions.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { chart } from 'ggaction';
+
+const program = chart()
+  .createData({ id: 'points', keyField: 'id', values: [
+    { id: 'a', x: 0 }, { id: 'b', x: 1 },
+    { id: 'c', x: 3 }, { id: 'd', x: 10 }
+  ] })
+  .createInferredGraphData({
+    id: 'neighbors', nodeKey: 'id', ruleId: 'nearest',
+    rule: 'knn', features: ['x'], metric: 'euclidean',
+    options: { k: 1, symmetrize: 'union' }
+  })
+  .layoutGraph({ id: 'placement', method: 'circular' })
+  .createCanvas({ width: 400, height: 300 })
+  .createGraphPlot({ labels: {} });
+```
+
+The inferred edges are a–b, b–c, and c–d, with weights 1, 2, and 7. Their identities
+include `ruleId` and typed endpoint keys. Changing a threshold or source value
+preserves the identity of a surviving relationship. A new `ruleId` denotes a
+separate inference.
+
+| Rule | Required rule options | Meaning |
+| --- | --- | --- |
+| `knn` | None; `k` defaults to 1 | Nearest neighbors, with `directed`, `union`, or `mutual` symmetry |
+| `radius` | `radius` | Include distances at or below the radius |
+| `similarity` | `threshold` | Include cosine or Jaccard similarities at or above the threshold |
+| `mst` | None | Minimum spanning tree of metric distances or an explicit candidate graph |
+| `group` | `fields` | Connect equal typed groups as a clique or an explicit-hub star |
+| `sequence` | `orderField` | Connect each row to the row `lag` positions later within its group |
+
+Numeric metrics accept a field array. Jaccard also accepts `features: { set:
+'attributes' }` for an array-valued column. Great-circle accepts `features: {
+longitude: 'longitude', latitude: 'latitude' }` and returns distances in meters.
+Preprocessing defaults to `none`; numeric metrics also support `standardize` and
+`minmax`. Missing features fail unless `options.missing: 'omit-node'` is explicit.
+Cosine zero vectors fail unless `options.zeroVector: 'zero-similarity'` is explicit.
+
+Group and sequence rules do not accept metric features. A candidate MST uses
+`candidateGraph: 'existingGraph'` with an undirected weighted graph and omits
+metric features. Disconnected candidates require `options.forest: true`.
+
+Search defaults to exact brute force. Use `options.search: { algorithm:
+'kd-tree' }` for Euclidean or Manhattan neighbor/radius queries up to eight
+dimensions, or `{ algorithm: 'grid' }` for radius queries up to three dimensions.
+Approximate kNN requires `{ mode: 'approximate', seed: 42 }`; it records measured
+recall and fails below its `minRecall` threshold, which defaults to 0.95. It never
+silently substitutes approximate results for exact search.
+
+`editInferredGraphData({ target: 'neighbors', definition: { options: { k: 2 } } })`
+replaces the rule options and refreshes dependent layouts and plots. A different
+rule requires its new `ruleId` and applicable definition. Source revisions also
+refresh dependent inferred graphs; layout, canvas, and paint edits preserve the
+topology. `candidateGraph: null` removes a candidate input, so provide metric
+features in the same edit when switching to a complete metric MST.
+
+Inference supports the Full entry point. Resource-backed graph plots currently
+reject automatic facet partitioning and mark filtering. Create an explicitly
+filtered dataset and a separate inferred graph when you need recomputation.
 
 <!-- Source: /tutorials/graphs/ -->
 
