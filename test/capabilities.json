@@ -63,6 +63,12 @@
         "path": "unit/support/visual-variants.test.js"
       }
     ],
+    "blend-paints": [
+      {
+        "type": "prefix",
+        "path": "gates/blend-paints/"
+      }
+    ],
     "center-stack": [
       {
         "type": "prefix",
