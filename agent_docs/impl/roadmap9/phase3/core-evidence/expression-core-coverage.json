@@ -1,0 +1,42 @@
+{
+  "label": "expression-core-coverage",
+  "command": "node",
+  "args": [
+    "--experimental-test-coverage",
+    "--test-coverage-include=src/grammar/expression*.js",
+    "--test-coverage-include=src/grammar/transformInput.js",
+    "--test-coverage-include=src/core/ownData.js",
+    "--test",
+    "test/unit/grammar/expression-calendar.test.js",
+    "test/unit/grammar/expression-evaluation.test.js",
+    "test/unit/grammar/expression-functions.test.js",
+    "test/unit/grammar/expression-limits.test.js",
+    "test/unit/grammar/expression-validation.test.js",
+    "test/unit/actions/data/derived-data.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 4185,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T09:32:00.894Z",
+  "finishedAt": "2026-10-28T09:32:05.079Z",
+  "source": {
+    "available": true,
+    "commit": "a08836f0a054e1a7463bc12bc87e9d3e07c43625",
+    "clean": false,
+    "statusSha256": "0275e5b2da87274c5bd807dc1537c55af3375dda2e1a0e00641b74e87e7f922d"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "a08836f0a054e1a7463bc12bc87e9d3e07c43625",
+    "clean": false,
+    "statusSha256": "0275e5b2da87274c5bd807dc1537c55af3375dda2e1a0e00641b74e87e7f922d"
+  },
+  "logSha256": "1afaf9c331a931d17b0e700c567d930f6c41c6bd7b31a24bdfafd277c9c7a3ef",
+  "bytes": 11798,
+  "retainedBytes": 11798,
+  "truncated": false
+}

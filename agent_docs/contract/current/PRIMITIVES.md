@@ -5,6 +5,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 세 primitive의 최상위 option object는 closed key 검증을 공유하며 unknown key를 거부한다.
 `dataset[id].values`는 dense plain-row array만 받고 함수·class instance·cycle을 저장하지 않는다.
 외부 함수가 extension 실행 인자라면 trace는 함수 자체 대신 lightweight type summary를 보관한다.
+Action top-level options는 enumerable own-data여야 하며 accessor/symbol/hidden key는 dispatch 전에 거부한다.
+Nested accessor는 summary에 `<name>Type: "accessor"`로 기록하며 실행하지 않는다. Nested input 검증은 domain 소유다.
+Summary는 constructor getter도 읽지 않고 깊은 plain-object 입력을 반복 순회한다.
+Evidence: `test/unit/core/action.test.js`, `test/unit/grammar/expression-validation.test.js`.
 공통 검증 근거는 `test/contracts/input-boundaries.test.js`다.
 
 ## `editSemantic`

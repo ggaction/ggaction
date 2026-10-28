@@ -30,6 +30,20 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 현재 한도는 package/consumer/search 검사의 상수와 현재 실행 결과가 기준이다.
 아래 설명에 남은 과거 checkpoint 수치를 현재 제한으로 해석하지 않는다.
 
+## 내부 expression kernel 경계
+
+`grammar/expressionAst.js`는 versioned AST의 정규화·정적 검사·명시 dependency 추출,
+`expressionFunctions.js`는 닫힌 standard@1 등록표·함수 계산, `expressionEvaluate.js`는
+행별 지연 평가·진단, `expressionValues.js`는 타입·자원 한도를 소유한다.
+모두 pure이며 명시 fields/parameters environment만 받아 immutable 결과를 반환한다.
+`core/ownData.js`는 descriptor 검증을 공유하고 action summary는 getter를 호출하지 않는다.
+`grammar/transformInput.js`는 dispatch 전 transform 배열 검증을 Full/Basic에서 공유하며
+큰 transform policy 모듈을 Basic 입력 경계로 끌어오지 않는다.
+현재 kernel은 private이며 public authoring, 저장 schema, parameter resource lifecycle과
+renderer에는 연결하지 않았다. 기존 computed v1의 의미와 직접 materialization 경계는 유지한다.
+상세 내부 계약은 [expression core](architecture/EXPRESSION_CORE.md), 공개 computed는
+[CORE](contract/current/CORE.md), action trace는 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
+
 ## 범례 항목 이동 소유권
 
 범례 항목의 독립 이동 의도는 기존 `guideConfigs.legend`가 소유하고,

@@ -38,6 +38,9 @@ boolean logic, `if`, `coalesce`, `concat`, `log`, `sqrt`, `floor`, `datePart`, `
 and boolean nodes short-circuit value evaluation, while every branch and field
 name is structurally checked first. The action stores this data AST as
 provenance and never evaluates callbacks, source strings, or arbitrary code.
+Expression nodes and arrays must contain only enumerable own data properties;
+getters, setters, symbol keys, hidden properties and sparse operand arrays reject
+before evaluation. Argument trace summaries do not invoke getters.
 
 Use `{ op: "toNumber", operand: { field: "amountText" } }` to explicitly convert a decimal or scientific-notation string into a finite number in a new derived field. Surrounding whitespace is trimmed. Empty strings, null, booleans, hexadecimal text and non-finite results reject. Finite numeric inputs remain unchanged.
 

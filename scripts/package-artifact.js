@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 672, // Includes the shared compound path topology and geometry owners.
-  packedBytes: 1_005_000, // Compound integration: CI Node 20/22 measured at most 1,004,363 bytes.
-  unpackedBytes: 4_684_000 // Compound integration: measured 4,683,067 bytes.
+  entries: 678, // Adds private expression owners, own-data validation and lightweight transform input.
+  packedBytes: 1_010_000, // Expression core: measured 1,009,699 bytes before final qualification.
+  unpackedBytes: 4_713_000 // Expression core and safe replay: measured 4,712,083 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

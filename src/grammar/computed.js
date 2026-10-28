@@ -1,3 +1,4 @@
+import { ownArray, ownDataProperties, ownRecord } from "../core/ownData.js";
 import {parseTimeValue,validateParseTimeFormat} from "./parseTime.js";
 import { calendarParts, validateTimeZone } from "./timeUnit.js";
 import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
@@ -35,6 +36,7 @@ function requireNode(expression, key, operation) {
 }
 
 function validateOperands(expression, minimum) {
+  if (Array.isArray(expression.operands)) ownArray(expression.operands, "Computed operands");
   rejectUnknownKeys(expression, ["op", "operands"], "computed variadic expression");
   if (!Array.isArray(expression.operands) || expression.operands.length < minimum) {
     throw new TypeError(
@@ -47,6 +49,7 @@ function inspectExpression(expression, depth, state, optionalPathRoot = false) {
   if (!isPlainObject(expression)) {
     throw new TypeError("Computed expression nodes must be plain objects.");
   }
+  ownDataProperties(expression, "Computed expression");
   if (state.ancestors.has(expression)) {
     throw new RangeError("Computed expression cannot contain cycles.");
   }
@@ -84,6 +87,8 @@ function inspectExpression(expression, depth, state, optionalPathRoot = false) {
       return;
     }
     if (expression.op === "getPath") {
+      if (isPlainObject(expression.operand)) ownDataProperties(expression.operand, "Computed path operand");
+      if (Array.isArray(expression.path)) ownArray(expression.path, "Computed getPath path");
       rejectUnknownKeys(expression, ["op", "operand", "path"], "computed path expression");
       if (!isPlainObject(expression.operand) ||
           Object.keys(expression.operand).length !== 1 ||
@@ -161,6 +166,7 @@ function inspectComputedTransform(transform) {
   if (!isPlainObject(transform)) {
     throw new TypeError("Computed transform must be a plain object.");
   }
+  ownDataProperties(transform, "Computed transform");
   rejectUnknownKeys(transform, TRANSFORM_KEYS, "computed transform");
   if (transform.type !== "computed") {
     throw new Error(`Unsupported computed transform "${transform.type}".`);
@@ -197,7 +203,9 @@ function normalizeExpression(expression) {
   return { ...expression };
 }
 
-export function normalizeComputedTransform({ as, expression } = {}) {
+export function normalizeComputedTransform(options = {}) {
+  ownRecord(options, "Computed options");
+  const { as, expression } = options;
   const requested = { type: "computed", as, expression };
   inspectComputedTransform(requested);
   return cloneAndFreeze({

@@ -1,0 +1,17 @@
+
+> ggaction@0.0.26 package:check
+> node scripts/package-artifact.js --check
+
+npm notice
+npm notice New major version of npm available! 10.9.8 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice
+{
+  "name": "ggaction",
+  "version": "0.0.26",
+  "filename": "ggaction-0.0.26.tgz",
+  "entryCount": 678,
+  "packedBytes": 1009983,
+  "unpackedBytes": 4712832
+}

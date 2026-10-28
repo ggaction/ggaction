@@ -187,7 +187,8 @@ compose on the standard `chart()` factory with collision checks.
 
 - Metadata is snapshotted when `action()` is called and requires a stable
  non-empty `op` and `description`.
-- Every action accepts one plain option object.
+- Every action accepts one plain option object with enumerable own data properties.
+ Top-level accessors, symbol keys and hidden options are rejected before dispatch.
 - The implementation runs with the entered immutable program as `this`.
 - It must return an instance of the same `ChartProgram` class.
 - Wrapped actions called inside it become trace children.
@@ -197,7 +198,10 @@ compose on the standard `chart()` factory with collision checks.
 
 Arguments are summarized before storage in the trace. Arrays become counts, so
 large values are not retained twice. Circular plain-object arguments are
-rejected because a finite immutable trace summary cannot represent them.
+rejected because a finite immutable trace summary cannot represent them. Nested
+accessors are recorded as `<name>Type: "accessor"` without invoking them; the
+action implementation still owns validation of nested input. Computed expressions
+reject accessors throughout their AST. Use plain data for expression inputs.
 
 Use the [primitive extension API](../../../extension/primitives/) to express semantic and
 graphical changes. A semantic edit never materializes graphics automatically;

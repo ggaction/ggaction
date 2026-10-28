@@ -1,6 +1,6 @@
 {
   "id": "G-EXPR",
-  "state": "ready-for-review",
+  "state": "approved",
   "scope": [
     "STEP-013 AST core only"
   ],
@@ -21,7 +21,13 @@
       "covered": "D1 방향 및 검토 자료 준비",
       "notCovered": "아직 제시하지 않은 D2–D6 정확한 공개/저장 계약"
     },
-    "designApproval": null
+    "designApproval": {
+      "date": "2026-10-28",
+      "userMessage": "구현해",
+      "approvedQuestion": "설계안 D2–D6대로 AST core 구현을 진행할까요?",
+      "reviewCommit": "a08836f0a054e1a7463bc12bc87e9d3e07c43625",
+      "scope": "D2–D6 AST core pure kernel, closed registry, safety and independent verification; D6 public integration boundary retained"
+    }
   },
   "requiredChecks": [
     "expression-review",
@@ -31,12 +37,11 @@
     "suite-all",
     "machine-docs"
   ],
-  "remaining": [
-    "D2–D6 정확한 AST core 계약 승인"
-  ],
-  "notice": "검토 준비이며 STEP-013 완료가 아니다. Parameter와 CSV/JSON resolver 계약은 별도 미해결 의무로 보존한다.",
+  "remaining": [],
+  "notice": "AST core 승인 완료. G-PARAM/G-DATA와 STEP-013 제품 통합은 별도 남은 의무다.",
   "codeRevision": "c555ec14f36aa55ae5590ce2ac4f68d04df806fd",
   "evidenceRevision": "sha256:5bc064c9ba4c3a8a3383445af9e738fde8388f577164483b58f4e20fa9ce20a0",
   "evidenceManifest": "agent_docs/impl/roadmap9/phase3/preparation.json",
-  "proposalSha256": "1699b6cea4847f92ccb2681af544a1b5311357fef591b37e710cc51f0590521b"
+  "proposalSha256": "1699b6cea4847f92ccb2681af544a1b5311357fef591b37e710cc51f0590521b",
+  "implementationEvidence": "agent_docs/impl/roadmap9/phase3/core-implementation.json"
 }

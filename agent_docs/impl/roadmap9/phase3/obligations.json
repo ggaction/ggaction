@@ -7,8 +7,8 @@
       "id": "AST-PRODUCT",
       "owner": "STEP-013",
       "gate": "G-EXPR",
-      "status": "open",
-      "requirement": "AST pure kernel과 모든 computed consumer; 검토 승인 후 구현"
+      "status": "partial",
+      "requirement": "AST private pure kernel 구현·독립 시험 완료; 공개 computed consumer 통합은 G-PARAM/G-DATA 이후"
     },
     {
       "id": "PARAMETER-RESOURCE",

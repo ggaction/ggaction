@@ -1,3 +1,4 @@
+import { validateDatasetTransformInput } from "../../grammar/transformInput.js";
 import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import {resolveDatasetTransformInputs} from "./shared.js";
 import { closedAction } from "../../core/action.js";
@@ -52,6 +53,7 @@ export const createDerivedData = /* @__PURE__ */ closedAction(
     if (!hasDataset(this, source)) {
       throw new Error(`Unknown source dataset "${source}".`);
     }
+    validateDatasetTransformInput(args.transform);
     const transforms=args.transform?.[0]?.type==="lookup"
       ? [resolveDatasetTransformInputs(this,args.transform[0])]
       : args.transform;

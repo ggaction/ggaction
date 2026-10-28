@@ -1,0 +1,399 @@
+TAP version 13
+# Subtest: createDerivedData accepts each documented transform branch as an array
+ok 1 - createDerivedData accepts each documented transform branch as an array
+  ---
+  duration_ms: 13.684875
+  type: 'test'
+  ...
+# Subtest: createDerivedData rejects object, empty, multiple, and unknown transform inputs
+ok 2 - createDerivedData rejects object, empty, multiple, and unknown transform inputs
+  ---
+  duration_ms: 0.520084
+  type: 'test'
+  ...
+# Subtest: createDerivedData validates complete normalized moving-window provenance
+ok 3 - createDerivedData validates complete normalized moving-window provenance
+  ---
+  duration_ms: 0.659708
+  type: 'test'
+  ...
+# Subtest: rebindLayerData records an explicit immutable consumer transition
+ok 4 - rebindLayerData records an explicit immutable consumer transition
+  ---
+  duration_ms: 1.764667
+  type: 'test'
+  ...
+# Subtest: createDerivedData structurally owns caller transform inputs
+ok 5 - createDerivedData structurally owns caller transform inputs
+  ---
+  duration_ms: 0.411834
+  type: 'test'
+  ...
+# Subtest: explicit parsers reject rollover and timezone-free ISO values
+ok 6 - explicit parsers reject rollover and timezone-free ISO values
+  ---
+  duration_ms: 4.880875
+  type: 'test'
+  ...
+# Subtest: date parts use astronomical Gregorian fields and TimeClip truncation
+ok 7 - date parts use astronomical Gregorian fields and TimeClip truncation
+  ---
+  duration_ms: 16.274625
+  type: 'test'
+  ...
+# Subtest: calendar floors share earliest-fold and first-valid-gap boundary policy
+ok 8 - calendar floors share earliest-fold and first-valid-gap boundary policy
+  ---
+  duration_ms: 3.462458
+  type: 'test'
+  ...
+# Subtest: calendar output is independent of the host timezone in fresh processes
+ok 9 - calendar output is independent of the host timezone in fresh processes
+  ---
+  duration_ms: 229.656292
+  type: 'test'
+  ...
+# Subtest: calendar and angular options are closed and explicit even on empty data
+ok 10 - calendar and angular options are closed and explicit even on empty data
+  ---
+  duration_ms: 0.833083
+  type: 'test'
+  ...
+# Subtest: expression core separates missing arithmetic from explicit null
+ok 11 - expression core separates missing arithmetic from explicit null
+  ---
+  duration_ms: 3.293083
+  type: 'test'
+  ...
+# Subtest: expression core preserves typed equality and lazy branch diagnostics
+ok 12 - expression core preserves typed equality and lazy branch diagnostics
+  ---
+  duration_ms: 0.269584
+  type: 'test'
+  ...
+# Subtest: arithmetic, comparisons and boolean nodes retain strict scalar semantics
+ok 13 - arithmetic, comparisons and boolean nodes retain strict scalar semantics
+  ---
+  duration_ms: 1.401333
+  type: 'test'
+  ...
+# Subtest: lazy operators evaluate only the selected runtime values
+ok 14 - lazy operators evaluate only the selected runtime values
+  ---
+  duration_ms: 0.560875
+  type: 'test'
+  ...
+# Subtest: expression abs: [-3]
+ok 15 - expression abs: [-3]
+  ---
+  duration_ms: 2.72325
+  type: 'test'
+  ...
+# Subtest: expression min: [4,-2,7]
+ok 16 - expression min: [4,-2,7]
+  ---
+  duration_ms: 0.218167
+  type: 'test'
+  ...
+# Subtest: expression max: [4,-2,7]
+ok 17 - expression max: [4,-2,7]
+  ---
+  duration_ms: 0.164083
+  type: 'test'
+  ...
+# Subtest: expression pow: [2,3]
+ok 18 - expression pow: [2,3]
+  ---
+  duration_ms: 0.096292
+  type: 'test'
+  ...
+# Subtest: expression sqrt: [9]
+ok 19 - expression sqrt: [9]
+  ---
+  duration_ms: 0.068041
+  type: 'test'
+  ...
+# Subtest: expression log: [1]
+ok 20 - expression log: [1]
+  ---
+  duration_ms: 0.143
+  type: 'test'
+  ...
+# Subtest: expression exp: [0]
+ok 21 - expression exp: [0]
+  ---
+  duration_ms: 0.371875
+  type: 'test'
+  ...
+# Subtest: expression round: [1.5]
+ok 22 - expression round: [1.5]
+  ---
+  duration_ms: 0.122959
+  type: 'test'
+  ...
+# Subtest: expression floor: [-1.1]
+ok 23 - expression floor: [-1.1]
+  ---
+  duration_ms: 0.084541
+  type: 'test'
+  ...
+# Subtest: expression ceil: [-1.1]
+ok 24 - expression ceil: [-1.1]
+  ---
+  duration_ms: 0.192917
+  type: 'test'
+  ...
+# Subtest: expression toNumber: [" -1.25e2 "]
+ok 25 - expression toNumber: [" -1.25e2 "]
+  ---
+  duration_ms: 0.1225
+  type: 'test'
+  ...
+# Subtest: expression toNumber: [8]
+ok 26 - expression toNumber: [8]
+  ---
+  duration_ms: 0.057791
+  type: 'test'
+  ...
+# Subtest: expression sin: [90]
+ok 27 - expression sin: [90]
+  ---
+  duration_ms: 0.112916
+  type: 'test'
+  ...
+# Subtest: expression cos: [0]
+ok 28 - expression cos: [0]
+  ---
+  duration_ms: 0.161083
+  type: 'test'
+  ...
+# Subtest: expression tan: [0]
+ok 29 - expression tan: [0]
+  ---
+  duration_ms: 0.165666
+  type: 'test'
+  ...
+# Subtest: expression atan2: [1,0]
+ok 30 - expression atan2: [1,0]
+  ---
+  duration_ms: 0.433166
+  type: 'test'
+  ...
+# Subtest: expression lower: ["ABCÄ"]
+ok 31 - expression lower: ["ABCÄ"]
+  ---
+  duration_ms: 0.216875
+  type: 'test'
+  ...
+# Subtest: expression upper: ["Straße"]
+ok 32 - expression upper: ["Straße"]
+  ---
+  duration_ms: 0.18075
+  type: 'test'
+  ...
+# Subtest: expression length: ["A😀é"]
+ok 33 - expression length: ["A😀é"]
+  ---
+  duration_ms: 0.217792
+  type: 'test'
+  ...
+# Subtest: expression substring: ["A😀B",1,2]
+ok 34 - expression substring: ["A😀B",1,2]
+  ---
+  duration_ms: 0.197166
+  type: 'test'
+  ...
+# Subtest: expression replace: ["aa-aa","aa","$&"]
+ok 35 - expression replace: ["aa-aa","aa","$&"]
+  ---
+  duration_ms: 0.102625
+  type: 'test'
+  ...
+# Subtest: expression replace: ["abc","x","y"]
+ok 36 - expression replace: ["abc","x","y"]
+  ---
+  duration_ms: 0.072166
+  type: 'test'
+  ...
+# Subtest: expression concat: ["a","😀","b"]
+ok 37 - expression concat: ["a","😀","b"]
+  ---
+  duration_ms: 0.076375
+  type: 'test'
+  ...
+# Subtest: expression isNull: [null]
+ok 38 - expression isNull: [null]
+  ---
+  duration_ms: 0.053958
+  type: 'test'
+  ...
+# Subtest: expression isMissing: [null]
+ok 39 - expression isMissing: [null]
+  ---
+  duration_ms: 0.058167
+  type: 'test'
+  ...
+# Subtest: expression isFinite: ["1"]
+ok 40 - expression isFinite: ["1"]
+  ---
+  duration_ms: 0.054042
+  type: 'test'
+  ...
+# Subtest: expression isFinite: [1]
+ok 41 - expression isFinite: [1]
+  ---
+  duration_ms: 0.051667
+  type: 'test'
+  ...
+# Subtest: expression coalesce: [null,7]
+ok 42 - expression coalesce: [null,7]
+  ---
+  duration_ms: 0.093875
+  type: 'test'
+  ...
+# Subtest: expression coalesce: [null,null]
+ok 43 - expression coalesce: [null,null]
+  ---
+  duration_ms: 0.057875
+  type: 'test'
+  ...
+# Subtest: numeric functions preserve signed zero and finite tangent near its pole
+ok 44 - numeric functions preserve signed zero and finite tangent near its pole
+  ---
+  duration_ms: 0.40225
+  type: 'test'
+  ...
+# Subtest: numeric failures count executed operations without retaining cell values
+ok 45 - numeric failures count executed operations without retaining cell values
+  ---
+  duration_ms: 1.579708
+  type: 'test'
+  ...
+# Subtest: array operations distinguish holes, bounds and invalid selected cells
+ok 46 - array operations distinguish holes, bounds and invalid selected cells
+  ---
+  duration_ms: 1.093541
+  type: 'test'
+  ...
+# Subtest: registry descriptors are immutable, closed and cover all thirty functions
+ok 47 - registry descriptors are immutable, closed and cover all thirty functions
+  ---
+  duration_ms: 1.636959
+  type: 'test'
+  ...
+# Subtest: depth and occurrence budgets count shared references and inactive branches
+ok 48 - depth and occurrence budgets count shared references and inactive branches
+  ---
+  duration_ms: 24.677666
+  type: 'test'
+  ...
+# Subtest: row work uses total normalized nodes before any evaluation
+ok 49 - row work uses total normalized nodes before any evaluation
+  ---
+  duration_ms: 1251.479625
+  type: 'test'
+  ...
+# Subtest: string size applies to literal input and generated output before returning rows
+ok 50 - string size applies to literal input and generated output before returning rows
+  ---
+  duration_ms: 1.711875
+  type: 'test'
+  ...
+# Subtest: array and total work budgets are bounded and rejected atomically
+ok 51 - array and total work budgets are bounded and rejected atomically
+  ---
+  duration_ms: 2531.5185
+  type: 'test'
+  ...
+# Subtest: string work counts each processed input and output once including lazy result leaves
+ok 52 - string work counts each processed input and output once including lazy result leaves
+  ---
+  duration_ms: 3.52425
+  type: 'test'
+  ...
+# Subtest: normalization rejects malformed and executable input without invoking accessors
+ok 53 - normalization rejects malformed and executable input without invoking accessors
+  ---
+  duration_ms: 2.617209
+  type: 'test'
+  ...
+# Subtest: all lazy branches have validated structure, references and known types
+ok 54 - all lazy branches have validated structure, references and known types
+  ---
+  duration_ms: 0.426125
+  type: 'test'
+  ...
+# Subtest: field and parameter dependencies use explicit identities and own keys
+ok 55 - field and parameter dependencies use explicit identities and own keys
+  ---
+  duration_ms: 0.589166
+  type: 'test'
+  ...
+# Subtest: unknown field types are checked only in executed branches and outputs remain homogeneous
+ok 56 - unknown field types are checked only in executed branches and outputs remain homogeneous
+  ---
+  duration_ms: 0.433292
+  type: 'test'
+  ...
+# Subtest: schema, parameter and row descriptors are validated without executing code
+ok 57 - schema, parameter and row descriptors are validated without executing code
+  ---
+  duration_ms: 0.199917
+  type: 'test'
+  ...
+# Subtest: action summaries and computed creation or editing never execute AST getters
+ok 58 - action summaries and computed creation or editing never execute AST getters
+  ---
+  duration_ms: 8.636541
+  type: 'test'
+  ...
+# Subtest: summaries handle deep plain data and avoid constructor getters or prototype mutation
+ok 59 - summaries handle deep plain data and avoid constructor getters or prototype mutation
+  ---
+  duration_ms: 14.362
+  type: 'test'
+  ...
+# Subtest: private v2 core does not expose authoring or registry lookup prematurely
+ok 60 - private v2 core does not expose authoring or registry lookup prematurely
+  ---
+  duration_ms: 1.057625
+  type: 'test'
+  ...
+# Subtest: arrays reject hidden, extra, sparse or custom prototype AST elements
+ok 61 - arrays reject hidden, extra, sparse or custom prototype AST elements
+  ---
+  duration_ms: 0.369667
+  type: 'test'
+  ...
+# Subtest: shared argument DAGs do not expand before computed occurrence validation
+ok 62 - shared argument DAGs do not expand before computed occurrence validation
+  ---
+  duration_ms: 0.659166
+  type: 'test'
+  ...
+1..62
+# tests 62
+# suites 0
+# pass 62
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3927.744583
+# start of coverage report
+# -------------------------------------------------------------------------
+# file                     | line % | branch % | funcs % | uncovered lines
+# -------------------------------------------------------------------------
+# src                      |        |          |         | 
+#  core                    |        |          |         | 
+#   ownData.js             | 100.00 |   100.00 |  100.00 | 
+#  grammar                 |        |          |         | 
+#   expressionAst.js       | 100.00 |   100.00 |  100.00 | 
+#   expressionEvaluate.js  | 100.00 |   100.00 |  100.00 | 
+#   expressionFunctions.js |  98.83 |    98.80 |  100.00 | 113-114
+#   expressionValues.js    | 100.00 |   100.00 |  100.00 | 
+#   transformInput.js      | 100.00 |    88.89 |  100.00 | 
+# -------------------------------------------------------------------------
+# all files                |  99.63 |    99.33 |  100.00 | 
+# -------------------------------------------------------------------------
+# end of coverage report

@@ -1,6 +1,6 @@
 # Phase 3 — 안전한 AST v2와 데이터 입력
 
-상태: **AST core 검토 준비 완료; G-EXPR ready-for-review**. 제품 구현과 AT-16은 미완료다. Phase 0–2/STEP-001–012는 완료 상태를 유지한다.
+상태: **G-EXPR D2–D6 승인 완료; AST private core 구현·검증 완료**. 공개 제품 통합과 AT-16은 미완료다. Phase 0–2/STEP-001–012는 완료 상태를 유지한다.
 
 사용자 “검토하자” 뒤 기존 AST 보존과 v2 도입 방향을 제안했고, “진행”(2026-10-28)으로 구체화를 요청받았다.
 [G-EXPR](G-EXPR.json)은 이 방향을 재질문하지 않고 정확한 신규 계약 D2–D6만 구분한다.
@@ -8,7 +8,7 @@
 
 - [설계안](DESIGN.md): 노드, null/missing, 함수, 비용, 저장 및 통합 경계
 - [진행 상태](STEP1.md): 준비와 제품 구현 구별
-- [후보 인벤토리](candidates.json): 미승인 API 후보; current/planned에 등록하지 않음
+- [후보 인벤토리](candidates.json): 승인된 설계와 남은 공개 통합; current/planned에 등록하지 않음
 - [consumer matrix](consumers.json): 적용 대상과 후속 검증
 - [검토 실행계획](review-plan.json): 승인 전에 요구하는 실행 증거
 
@@ -56,5 +56,39 @@ verify.mjs의 JSON stdout은 .artifacts/checks/expression-review.log와 아래 �
 
 [집계](evidence/summary.json), [실행 receipt와 hash manifest](preparation.json),
 [완료 증거 검증](preparation-validation.json)에 재현 근거를 보존한다.
-현재 제품의 AST getter 실행은 재현된 결함으로 남아 있다. descriptor 실험의 성공은 제품 수정 완료가 아니다.
-이번 준비 완료는 G-EXPR의 D2–D6 승인 또는 STEP-013/AT-16 완료를 의미하지 않는다.
+위 c555ec14 검토 baseline에서 AST getter 실행은 재현된 결함으로 남아 있었다. descriptor 실험의 성공은 제품 수정 완료가 아니다.
+당시 검토 준비만으로는 G-EXPR 승인 또는 STEP-013/AT-16 완료를 의미하지 않았다. 이후 승인은 아래에 별도로 기록한다.
+
+## AST core 구현 승인
+
+사용자 “구현해”(2026-10-28)는 `a08836f0` 검토 자료의 D2–D6를 승인했다.
+이 단계는 pure kernel와 getter 안전성, 독립 검증을 구현한다. D6에 따라 공개 v2 authoring 및
+STEP-013 종료는 parameter/resolver 계약과 전체 소비자 통합 뒤에 진행한다.
+핵심 검사는 focused unit/contract, 누적 suite, 신규 critical coverage, package/metadata 검사다.
+
+## Private core 구현 checkpoint
+
+8종 AST node, closed standard@1 30함수, explicit dependency, null/missing·lazy evaluation·typed output,
+calendar/DST, immutable 결과와 structured resource-limit를 구현했다. Action summary는 descriptor로
+읽으며 전용 computed action뿐 아니라 범용 editDerivedData의 복사 전 검증도 포함한다.
+현재 v1 결과·공개 exports·저장 schema는 유지한다. 내부 계약은
+[EXPRESSION_CORE](../../../architecture/EXPRESSION_CORE.md), 실행 증거는 [core-implementation.json](core-implementation.json)에 기록한다.
+
+검토용 review/verify.mjs는 c555ec14의 getter 결함을 재현하는 역사적 runner다. 수정한 HEAD에서
+그 baseline assertion을 재실행해 안전성 결과로 사용하지 않는다. 안정 시험은
+`test/unit/grammar/expression-*.test.js`와 기존 computed/action suite가 소유한다.
+
+Package는 기존 staging 규칙으로 678 entries, packed 1,009,983 bytes, unpacked 4,712,832 bytes다.
+신규 private kernel 4개와 own-data/transform-input owner 2개에 맞춰 entry 한도를 672→678로 조정하고
+bytes는 기존 1,000 단위 올림으로 1,010,000 / 4,713,000만 허용한다. Full/Basic gzip은
+507,597 / 285,702 bytes로 기존 508,000 / 286,000 한도 안이다.
+
+이 checkpoint는 G-PARAM/G-DATA, 공개 registry query, create/edit/revise·schema·lineage·codec·
+Full/Basic 선언·렌더러 소비자와 AT-16을 닫지 않는다. 전체 source coverage/실데이터/browser/render/
+installed-package 통합 검사는 기존 정책대로 공개 통합 checkpoint에 남긴다.
+
+최종 검증: 정상 suite **6,449 passed, 0 failed/skipped**; 핵심 및 입력 경계 **62 passed**.
+영향받은 kernel/own-data/transform-input source coverage는 line99.63%, branch99.33%, function100%이며
+신규 critical family/file 기준을 모두 통과했다. 이 수치는 전체 repository coverage가 아니다.
+Package·Full/Basic bundle 및 생성 machine metadata 검사도 exit0이다. 전체 suite raw log는 gzip으로
+보존하고 receipt·입력 파일 hash와 함께 같은 source bytes를 재현할 수 있게 기록했다.

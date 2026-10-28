@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:42c8d1c2ceeabf5217933997e2e3b019401b2bb5aad94aabbbefc19bbfde73b8. Status: development. Runtime source: 930c0ce8f0baf9c8a55a165564f1a88a25313220. Release baseline: v0.0.13.
+Contract: sha256:da14c6fa784ad71e53dc994c51fea71f353ef3f309f08a7ced70625e3711f8e4. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/930c0ce8f0baf9c8a55a165564f1a88a25313220/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/930c0ce8f0baf9c8a55a165564f1a88a25313220/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -41826,7 +41826,8 @@ compose on the standard `chart()` factory with collision checks.
 
 - Metadata is snapshotted when `action()` is called and requires a stable
  non-empty `op` and `description`.
-- Every action accepts one plain option object.
+- Every action accepts one plain option object with enumerable own data properties.
+ Top-level accessors, symbol keys and hidden options are rejected before dispatch.
 - The implementation runs with the entered immutable program as `this`.
 - It must return an instance of the same `ChartProgram` class.
 - Wrapped actions called inside it become trace children.
@@ -41836,7 +41837,10 @@ compose on the standard `chart()` factory with collision checks.
 
 Arguments are summarized before storage in the trace. Arrays become counts, so
 large values are not retained twice. Circular plain-object arguments are
-rejected because a finite immutable trace summary cannot represent them.
+rejected because a finite immutable trace summary cannot represent them. Nested
+accessors are recorded as `<name>Type: "accessor"` without invoking them; the
+action implementation still owns validation of nested input. Computed expressions
+reject accessors throughout their AST. Use plain data for expression inputs.
 
 Use the [primitive extension API](./extension/primitives/) to express semantic and
 graphical changes. A semantic edit never materializes graphics automatically;
@@ -42163,12 +42167,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/930c0ce8f0baf9c8a55a165564f1a88a25313220/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/930c0ce8f0baf9c8a55a165564f1a88a25313220/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -42562,6 +42566,9 @@ boolean logic, `if`, `coalesce`, `concat`, `log`, `sqrt`, `floor`, `datePart`, `
 and boolean nodes short-circuit value evaluation, while every branch and field
 name is structurally checked first. The action stores this data AST as
 provenance and never evaluates callbacks, source strings, or arbitrary code.
+Expression nodes and arrays must contain only enumerable own data properties;
+getters, setters, symbol keys, hidden properties and sparse operand arrays reject
+before evaluation. Argument trace summaries do not invoke getters.
 
 Use `{ op: "toNumber", operand: { field: "amountText" } }` to explicitly convert a decimal or scientific-notation string into a finite number in a new derived field. Surrounding whitespace is trimmed. Empty strings, null, booleans, hexadecimal text and non-finite results reject. Finite numeric inputs remain unchanged.
 
@@ -44950,9 +44957,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:42c8d1c2ceeabf5217933997e2e3b019401b2bb5aad94aabbbefc19bbfde73b8` |
+| Contract fingerprint | `sha256:da14c6fa784ad71e53dc994c51fea71f353ef3f309f08a7ced70625e3711f8e4` |
 | Example and dataset source | `b8f9668133b278974c9cfe7324402a18282c9f4b` |
-| Runtime source commit | `930c0ce8f0baf9c8a55a165564f1a88a25313220` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 298 |
 | Declared actions in that release | 234 |

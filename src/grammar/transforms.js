@@ -1,3 +1,5 @@
+import { ownRecord } from "../core/ownData.js";
+import { validateDatasetTransformInput } from "./transformInput.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { validateRegressionStatisticsTransform } from "./regression/statistics.js";
 import { validateBoxTransform } from "./boxPlot.js";
@@ -77,6 +79,13 @@ function requestedTransform(transform) {
 }
 
 const requestedDensityTransform = requestedTransform;
+
+function requestedComputedTransform(transform) {
+  ownRecord(transform, "Computed transform");
+  const { resolved: _resolved, ...requested } = transform;
+  validateComputedTransform(requested);
+  return cloneAndFreeze(requested);
+}
 
 function requestedOptions(transform) {
   const { type: _type, resolved: _resolved, ...options } = transform;
@@ -324,7 +333,7 @@ const TRANSFORM_POLICIES = Object.freeze({
     ...findTransformTopology("computed"),
     validate: validateComputedTransform,
     materializeOp: "materializeComputedData",
-    replayTransform: requestedTransform,
+    replayTransform: requestedComputedTransform,
     editable: true,
     normalizeEdit: normalizeSimple(normalizeComputedTransform),
     outputRoles: transform => ({ value: transform.as })
@@ -547,9 +556,7 @@ export function findTransformValidator(type) {
 }
 
 export function requestedDatasetTransform(transform) {
-  if (!isPlainObject(transform)) {
-    throw new TypeError("Requested dataset transform must be a plain object.");
-  }
+  ownRecord(transform, "Requested dataset transform");
   const policy = findTransformPolicy(transform.type);
   if (policy?.editable !== true) {
     throw new Error(`Dataset transform "${transform.type ?? "unknown"}" is not editable.`);
@@ -571,11 +578,7 @@ export function datasetTransformOutputRoles(transform) {
 }
 
 export function validateDatasetTransforms(value) {
-  if (!Array.isArray(value) || value.length !== 1 || !isPlainObject(value[0])) {
-    throw new TypeError(
-      "Dataset transform must contain exactly one plain object."
-    );
-  }
+  validateDatasetTransformInput(value);
   for (const transform of value) {
     const validate = findTransformValidator(transform.type);
     if (validate === undefined) {

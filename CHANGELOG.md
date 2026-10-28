@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Prevent action trace summaries from invoking getters; reject executable computed-expression properties before evaluation while preserving existing formula results.
+
 - Support compound M/L/C/Z paths, nonzero/evenodd fills and path owner clips across SVG, Canvas, PNG, PDF, transition scenes and saved programs. Preserve open strokes with implicitly closed fills and share subpath-aware bounds and adaptive geometry calculations.
 
 - Add typed row keys to source creation and explicit correspondence to source revision. Preserve keyed identity through reordering and edits while isolating new generated rows across immutable branches.

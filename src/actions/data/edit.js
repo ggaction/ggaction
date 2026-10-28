@@ -1,3 +1,4 @@
+import { ownRecord } from "../../core/ownData.js";
 import {resolveDatasetTransformInputs} from "./shared.js";
 import { action, closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
@@ -392,6 +393,7 @@ export const editDerivedData = /* @__PURE__ */ closedAction(
     if (!isPlainObject(args.definition)) {
       throw new TypeError("editDerivedData definition must be a plain object.");
     }
+    ownRecord(args.definition, "Derived definition");
     for (const forbidden of ["id", "source", "resolved", "current"]) {
       if (Object.hasOwn(args.definition, forbidden)) {
         throw new Error(`editDerivedData definition cannot include ${forbidden}.`);

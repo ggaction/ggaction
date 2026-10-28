@@ -1,6 +1,8 @@
 import { validateKeys } from "./validation.js";
 import { annotateError } from "./diagnostics.js";
-import { cloneAndFreeze, freezeOwned, isOwned, isPlainObject } from "./immutable.js";
+import { freezeOwned, isOwned, isPlainObject } from "./immutable.js";
+
+import { ownDataProperties } from "./ownData.js";
 
 const metadataByWrappedAction = new WeakMap();
 const implementationByWrappedAction = new WeakMap();
@@ -40,28 +42,52 @@ export function invokeWrappedActionImplementation(value, program, args = {}) {
   return implementation.call(program, args);
 }
 
-function summarizeObject(value, ancestors = new WeakSet()) {
-  if (ancestors.has(value)) {
-    throw new TypeError("Action arguments must not contain circular references.");
-  }
-  ancestors.add(value);
-  const summary = {};
-
-  for (const [key, item] of Object.entries(value)) {
-    if (Array.isArray(item)) {
-      summary[`${key}Count`] = item.length;
-    } else if (isPlainObject(item)) {
-      summary[key] = summarizeObject(item, ancestors);
-    } else if (typeof item === "function") {
-      summary[`${key}Type`] = "function";
-    } else if (item !== null && typeof item === "object") {
-      summary[`${key}Type`] = item.constructor?.name ?? "object";
-    } else {
-      summary[key] = item;
+function referenceType(value) {
+  for (let owner = value; owner !== null; owner = Object.getPrototypeOf(owner)) {
+    const descriptor = Object.getOwnPropertyDescriptor(owner, "constructor");
+    if (descriptor !== undefined) {
+      if (!Object.hasOwn(descriptor, "value")) return "object";
+      return Object.getOwnPropertyDescriptor(descriptor.value ?? {}, "name")?.value ?? "object";
     }
   }
+  return "object";
+}
 
-  ancestors.delete(value);
+function summarizeObject(value) {
+  const summary = {};
+  const ancestors = new WeakSet();
+  const completed = new WeakMap();
+  const stack = [{ value, summary, entries: undefined, index: 0 }];
+  while (stack.length > 0) {
+    const frame = stack[stack.length - 1];
+    if (frame.entries === undefined) {
+      if (ancestors.has(frame.value)) throw new TypeError("Action arguments must not contain circular references.");
+      ancestors.add(frame.value);
+      frame.entries = Object.entries(Object.getOwnPropertyDescriptors(frame.value)).filter(([, descriptor]) => descriptor.enumerable);
+    }
+    if (frame.index === frame.entries.length) {
+      freezeOwned(frame.summary);
+      completed.set(frame.value, frame.summary);
+      ancestors.delete(frame.value);
+      stack.pop();
+      continue;
+    }
+    const [key, descriptor] = frame.entries[frame.index++];
+    const item = descriptor.value;
+    let target = key, result;
+    if (!Object.hasOwn(descriptor, "value")) { target = `${key}Type`; result = "accessor"; }
+    else if (Array.isArray(item)) { target = `${key}Count`; result = item.length; }
+    else if (isPlainObject(item)) {
+      result = completed.get(item);
+      if (result === undefined) {
+        result = {};
+        stack.push({ value: item, summary: result, entries: undefined, index: 0 });
+      }
+    } else if (typeof item === "function") { target = `${key}Type`; result = "function"; }
+    else if (item !== null && typeof item === "object") { target = `${key}Type`; result = referenceType(item); }
+    else result = item;
+    Object.defineProperty(frame.summary, target, { value: result, enumerable: true, configurable: true, writable: true });
+  }
   return summary;
 }
 
@@ -70,7 +96,7 @@ export function summarizeArgs(args) {
     throw new TypeError("Action arguments must be a plain object.");
   }
 
-  return cloneAndFreeze(summarizeObject(args));
+  return summarizeObject(args);
 }
 
 export function countActionNodes(node) {
@@ -216,6 +242,7 @@ export function action(metadata, implementation) {
         throw new TypeError("Action arguments must be a plain object.");
       }
   
+      ownDataProperties(args, "Action arguments");
       const scoped = isPlainObject(args.target) || Array.isArray(args.target);
       const dispatch = scoped && !UNSCOPED_PRIMITIVES.has(ownedMetadata.op) ? targetDispatcher(this.constructor) : undefined;
       if (!dispatch && scope === "unit") this._assertUnitProgram(ownedMetadata.op);

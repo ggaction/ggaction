@@ -1,0 +1,33 @@
+{
+  "label": "expression-machine",
+  "command": "npm",
+  "args": [
+    "run",
+    "docs:machine:check"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 433,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T09:35:28.074Z",
+  "finishedAt": "2026-10-28T09:35:28.507Z",
+  "source": {
+    "available": true,
+    "commit": "a08836f0a054e1a7463bc12bc87e9d3e07c43625",
+    "clean": false,
+    "statusSha256": "0275e5b2da87274c5bd807dc1537c55af3375dda2e1a0e00641b74e87e7f922d"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "a08836f0a054e1a7463bc12bc87e9d3e07c43625",
+    "clean": false,
+    "statusSha256": "0275e5b2da87274c5bd807dc1537c55af3375dda2e1a0e00641b74e87e7f922d"
+  },
+  "logSha256": "795dd208b8c58e44015d36a6d75d7b26bf5661c5e8c07a4b442bb215e7e219f5",
+  "bytes": 96,
+  "retainedBytes": 96,
+  "truncated": false
+}

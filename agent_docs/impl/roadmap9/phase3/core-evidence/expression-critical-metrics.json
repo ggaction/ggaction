@@ -1,0 +1,71 @@
+{
+  "floors": {
+    "core/ownData.js": {
+      "lines": 80,
+      "branches": 75,
+      "functions": 80
+    },
+    "grammar/expressionAst.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "grammar/expressionEvaluate.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "grammar/expressionFunctions.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "grammar/expressionValues.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "grammar/transformInput.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    }
+  },
+  "actual": {
+    "core/ownData.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/expressionAst.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/expressionEvaluate.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/expressionFunctions.js": {
+      "lines": 98.83,
+      "branches": 98.8,
+      "functions": 100
+    },
+    "grammar/expressionValues.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/transformInput.js": {
+      "lines": 100,
+      "branches": 88.89,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 99.63,
+      "branches": 99.33,
+      "functions": 100
+    }
+  }
+}

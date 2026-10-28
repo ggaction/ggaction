@@ -1,4 +1,4 @@
-# STEP1 — AST core 검토 준비
+# STEP1 — AST core 검토와 구현
 
 ## 진행 상태
 
@@ -7,8 +7,8 @@
 - [x] D2–D6 후보 계약과 남은 STEP-013 범위 구체화
 - [x] baseline·독립 oracle·제안 타입·누적 suite 실행 증거 고정
 - [x] 검증된 검토 패키지 commit/push 및 G-EXPR 검토 요청 준비
-- [ ] G-EXPR 세부 계약 승인
-- [ ] pure kernel 구현·독립 검증
+- [x] G-EXPR 세부 계약 승인
+- [x] pure kernel 구현·독립 검증
 - [ ] parameter/resolver 세부 Gate와 전체 제품 통합
 - [ ] AT-16과 STEP-013 종료
 
