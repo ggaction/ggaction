@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { ChartProgram } from "../../src/ChartProgram.js";
-import { action, getWrappedActionMetadata, invokeWrappedActionImplementation } from "../../src/core/action.js";
+import { action, actionSource, getWrappedActionMetadata, invokeWrappedActionImplementation } from "../../src/core/action.js";
 import { chart } from "../../src/index.js";
 import { buildActionRelationships } from "../../scripts/action-relationship-source.js";
 
@@ -16,7 +16,7 @@ test("every cataloged public action rejects malformed and unknown options on a v
       originals.set(name, original);
       ChartProgram.prototype[name] = action(getWrappedActionMetadata(original), function (args = {}) {
         const result = invokeWrappedActionImplementation(original, this, args);
-        if (!calls.has(name)) calls.set(name, { source: this, args });
+        if (!calls.has(name)) calls.set(name, { source: actionSource(this), args });
         return result;
       });
     }

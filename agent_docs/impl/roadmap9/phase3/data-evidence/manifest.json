@@ -1,0 +1,601 @@
+{
+  "schemaVersion": 1,
+  "status": "product-integration-verified",
+  "files": [
+    {
+      "original": ".artifacts/validation/data-final/all-command.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/all-command.log.gz",
+      "sha256": "141bd56073dbe08e4e6070eb8e5b1f380f6e4a3685356aaa3306cd88ccc8457c",
+      "originalSha256": "a6ddf1ca3c929ff820830646730627191dbb0aa72a42b96997ab340d615d8ac5",
+      "bytes": 1390291
+    },
+    {
+      "original": ".artifacts/validation/data-final/browser-input-delta.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/browser-input-delta.json",
+      "sha256": "da862a108a26932e926f0d11771e43fb88d9a36c90a9544a16c93213d507753e",
+      "originalSha256": "da862a108a26932e926f0d11771e43fb88d9a36c90a9544a16c93213d507753e",
+      "bytes": 162
+    },
+    {
+      "original": ".artifacts/validation/data-final/browser.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/browser.log.gz",
+      "sha256": "25802a4f88423b646259e0114099d28727853ba1032a3e889c16fd76993686ee",
+      "originalSha256": "95779a71f6b9cbab3ad0f15baf7d9fb31a9baa001f506f124ffe8a61574fef68",
+      "bytes": 57301
+    },
+    {
+      "original": ".artifacts/validation/data-final/coverage-command.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/coverage-command.log.gz",
+      "sha256": "ddea1752146bf68a73812510a46458aa81a58117e99b7a171bc34abc22b9bb4a",
+      "originalSha256": "6eb7d06e1be7b6debf8a4b93a7f462a573f9eb1a48adc614cc48fb21ce4e3e64",
+      "bytes": 85
+    },
+    {
+      "original": ".artifacts/validation/data-final/coverage-metrics.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/coverage-metrics.json",
+      "sha256": "9e5efc8a7b93895ee11f69e9f1070ea2219b3c199bc47cb94b88fb947357eb78",
+      "originalSha256": "9e5efc8a7b93895ee11f69e9f1070ea2219b3c199bc47cb94b88fb947357eb78",
+      "bytes": 69005
+    },
+    {
+      "original": ".artifacts/validation/data-final/coverage-receipt.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/coverage-receipt.json",
+      "sha256": "7d2e329849dfccd7b16e2178aaa9705308d6c49fb230660f7d01b1fab93af743",
+      "originalSha256": "7d2e329849dfccd7b16e2178aaa9705308d6c49fb230660f7d01b1fab93af743",
+      "bytes": 71841
+    },
+    {
+      "original": ".artifacts/validation/data-final/coverage-report.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/coverage-report.log.gz",
+      "sha256": "d57ea425775e2cc23e8c404c8b9cebbc31f3d38ec223b7a6fb001a9f17038f77",
+      "originalSha256": "c1fbe1b98dd76ccdfdc9bbcdfa2309a7a11f909746faf72e2828122febc9c474",
+      "bytes": 1451505
+    },
+    {
+      "original": ".artifacts/validation/data-final/data-docs-browser.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/data-docs-browser.json",
+      "sha256": "8d00e209b9c5eda119741c33e46b933a3dbaf912368729f758edc0f3dcf41351",
+      "originalSha256": "8d00e209b9c5eda119741c33e46b933a3dbaf912368729f758edc0f3dcf41351",
+      "bytes": 952
+    },
+    {
+      "original": ".artifacts/validation/data-final/data-docs-browser.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/data-docs-browser.log.gz",
+      "sha256": "fcb9f73218e956d0e4b2d64d1bf78f9affaafa35e5f5bfb158c04fbe6a55da85",
+      "originalSha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d",
+      "bytes": 79
+    },
+    {
+      "original": ".artifacts/validation/data-final/data-docs-build.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/data-docs-build.json",
+      "sha256": "f57995b73b20ae17505eb12fffd5332b807da8352d09fba2a3569ac7c5b52d44",
+      "originalSha256": "f57995b73b20ae17505eb12fffd5332b807da8352d09fba2a3569ac7c5b52d44",
+      "bytes": 1000
+    },
+    {
+      "original": ".artifacts/validation/data-final/data-docs-build.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/data-docs-build.log.gz",
+      "sha256": "ddd823fa29fee57add4163e9170e58fd3132f32210986fadf89cb9e1dd289292",
+      "originalSha256": "99f359d8b614dd3a39ac3ed975f1abc646b5053d7632c932b73212a52c5fe925",
+      "bytes": 307
+    },
+    {
+      "original": ".artifacts/validation/data-final/data-docs-built-links.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/data-docs-built-links.json",
+      "sha256": "60317c4df406d7b0b4d7449e151570608574b1bfa9c9ea0d7b5a09939e9c8ea5",
+      "originalSha256": "60317c4df406d7b0b4d7449e151570608574b1bfa9c9ea0d7b5a09939e9c8ea5",
+      "bytes": 957
+    },
+    {
+      "original": ".artifacts/validation/data-final/data-docs-built-links.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/data-docs-built-links.log.gz",
+      "sha256": "a6a277cbc7b580d5c3bb8735389b68a1c52bd51cf28ea4bfc3d8e9f8f0b6a426",
+      "originalSha256": "47739d6ad3dbaac2384f90c48e0c3a856882a013e09910c30c804a987a7333f5",
+      "bytes": 102
+    },
+    {
+      "original": ".artifacts/validation/data-final/data-docs-preflight.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/data-docs-preflight.json",
+      "sha256": "1451b8681523ca62284200155995fb94bc408e0496e96f60c5f80c1a81622dad",
+      "originalSha256": "1451b8681523ca62284200155995fb94bc408e0496e96f60c5f80c1a81622dad",
+      "bytes": 907
+    },
+    {
+      "original": ".artifacts/validation/data-final/data-docs-preflight.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/data-docs-preflight.log.gz",
+      "sha256": "8560848710109182ec1c1d542e2f46b22ebb0163aa4479ac03b640d78bb9eaf3",
+      "originalSha256": "4264122012a6b28dea31f2560e823021bdb4c4da3a7f6db5a2c7e479fb8a3659",
+      "bytes": 181
+    },
+    {
+      "original": ".artifacts/validation/data-final/docs-input-delta.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/docs-input-delta.json",
+      "sha256": "00f50b12abbd659b1a62019251dbaced5f8b516acf780cce2c7b17634c701778",
+      "originalSha256": "00f50b12abbd659b1a62019251dbaced5f8b516acf780cce2c7b17634c701778",
+      "bytes": 64
+    },
+    {
+      "original": ".artifacts/validation/data-final/docs-inputs.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/docs-inputs.json",
+      "sha256": "c3c933cc10193b2dce687ceb2223708e33fa7883fe5b4ed8e20ae80b554c786c",
+      "originalSha256": "c3c933cc10193b2dce687ceb2223708e33fa7883fe5b4ed8e20ae80b554c786c",
+      "bytes": 251561
+    },
+    {
+      "original": ".artifacts/validation/data-final/docs-workflow.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/docs-workflow.json",
+      "sha256": "329ecedebeb880205e297cad8627eda1f14b09ffe7267c5bce0ca1ccf1e52b14",
+      "originalSha256": "329ecedebeb880205e297cad8627eda1f14b09ffe7267c5bce0ca1ccf1e52b14",
+      "bytes": 645
+    },
+    {
+      "original": ".artifacts/validation/data-final/docs-workflow.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/docs-workflow.log.gz",
+      "sha256": "134954553465d15ed807865110a2b8806abd2ab9dcf24374190e43d54f266459",
+      "originalSha256": "8c0b0990815a0062420fe2b45f94f3d898164073a9d588cd367648e6ecbf2206",
+      "bytes": 488
+    },
+    {
+      "original": ".artifacts/validation/data-final/final-checks.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/final-checks.json",
+      "sha256": "d6ca46f7b590313c51a1505951260ff71ef8cd95b405d10b506f4b98ef4fa4b9",
+      "originalSha256": "d6ca46f7b590313c51a1505951260ff71ef8cd95b405d10b506f4b98ef4fa4b9",
+      "bytes": 301
+    },
+    {
+      "original": ".artifacts/validation/data-final/final-input-delta.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/final-input-delta.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "originalSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    {
+      "original": ".artifacts/validation/data-final/final-inputs-after.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/final-inputs-after.json",
+      "sha256": "1c00709a0335b57ad8cf55b4ee5d10b728dbcaa826801dd0d426a00a520c5040",
+      "originalSha256": "1c00709a0335b57ad8cf55b4ee5d10b728dbcaa826801dd0d426a00a520c5040",
+      "bytes": 471648
+    },
+    {
+      "original": ".artifacts/validation/data-final/final-inputs-before.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/final-inputs-before.json",
+      "sha256": "1c00709a0335b57ad8cf55b4ee5d10b728dbcaa826801dd0d426a00a520c5040",
+      "originalSha256": "1c00709a0335b57ad8cf55b4ee5d10b728dbcaa826801dd0d426a00a520c5040",
+      "bytes": 471648
+    },
+    {
+      "original": ".artifacts/validation/data-final/render-browser-docs-summary.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/render-browser-docs-summary.json",
+      "sha256": "c55835cc1434952d01fdecdc4eb592339e741521e4ce44d7497b53d4d85f3444",
+      "originalSha256": "c55835cc1434952d01fdecdc4eb592339e741521e4ce44d7497b53d4d85f3444",
+      "bytes": 5035
+    },
+    {
+      "original": ".artifacts/validation/data-final/render-browser-inputs.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/render-browser-inputs.json",
+      "sha256": "7a16dcf1723af75eecd3aa87e1e3ecff0d6cf1f06aadc2fd659b75efc4582ad5",
+      "originalSha256": "7a16dcf1723af75eecd3aa87e1e3ecff0d6cf1f06aadc2fd659b75efc4582ad5",
+      "bytes": 418704
+    },
+    {
+      "original": ".artifacts/validation/data-final/render-input-delta.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/render-input-delta.json",
+      "sha256": "8d384e286814a691bb4623ba6f541e96bea1cdfbb3014f818127841af970a58c",
+      "originalSha256": "8d384e286814a691bb4623ba6f541e96bea1cdfbb3014f818127841af970a58c",
+      "bytes": 111
+    },
+    {
+      "original": ".artifacts/validation/data-final/render-stage-0.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/render-stage-0.json",
+      "sha256": "0439b33ebda0e35c95dd97e8dd996b467fab54268e998b4a56b2cc6b7783d79b",
+      "originalSha256": "0439b33ebda0e35c95dd97e8dd996b467fab54268e998b4a56b2cc6b7783d79b",
+      "bytes": 949
+    },
+    {
+      "original": ".artifacts/validation/data-final/render-stage-0.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/render-stage-0.log.gz",
+      "sha256": "6241c34d077649e2b015a622a337cce8f7ebfbcdd2d3564ed439bcc8e37cb155",
+      "originalSha256": "76f35ddb347d523e433fc31d60663929ac3c460ac9de26b6af9769afcfb526b8",
+      "bytes": 45918
+    },
+    {
+      "original": ".artifacts/validation/data-final/render-stage-1.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/render-stage-1.json",
+      "sha256": "6b5607c01b56b71f634a1072d3354371386c4fd68bafee3e0afbbb2d4eb56b40",
+      "originalSha256": "6b5607c01b56b71f634a1072d3354371386c4fd68bafee3e0afbbb2d4eb56b40",
+      "bytes": 945
+    },
+    {
+      "original": ".artifacts/validation/data-final/render-stage-1.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/render-stage-1.log.gz",
+      "sha256": "b85a771711e2b87b76af7b601453a29c9f05cb1581258be2fefbc372a634b260",
+      "originalSha256": "3aecaee5da4f3630e60f3b5d625b2c8dc6cca8a0d5f51ab13e8e7dcf056b88da",
+      "bytes": 296
+    },
+    {
+      "original": ".artifacts/validation/data-final/render-stage-2.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/render-stage-2.json",
+      "sha256": "db9f0631c96a9920cee1200970afc1ad78e3bbdd9125e3f70f21795051a3a894",
+      "originalSha256": "db9f0631c96a9920cee1200970afc1ad78e3bbdd9125e3f70f21795051a3a894",
+      "bytes": 943
+    },
+    {
+      "original": ".artifacts/validation/data-final/render-stage-2.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/render-stage-2.log.gz",
+      "sha256": "4c3550a0d56abd6e072fc0ea0d35dd8928d3e64e68ee52f996bc4c48e9e2771b",
+      "originalSha256": "8c877165637e75ff93594b408df5f1d7a31632de8b84885fc13092eed2d33e39",
+      "bytes": 272
+    },
+    {
+      "original": ".artifacts/validation/data-final/render.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/render.log.gz",
+      "sha256": "d42ad7d0c8af30e0d80233f91215d2b3afe3183c1ce3d80e3b40bdccf3c44ef8",
+      "originalSha256": "d06aeabb1f4688a5291864fba6e30e677d01ef08b0aebb86e8eb3b231d6749f7",
+      "bytes": 46486
+    },
+    {
+      "original": ".artifacts/validation/data-final/suite-all.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/suite-all.json",
+      "sha256": "3541ee88928855f5228e81ff4f54d81bf1f15c449046fae439f1ffbef89f5857",
+      "originalSha256": "3541ee88928855f5228e81ff4f54d81bf1f15c449046fae439f1ffbef89f5857",
+      "bytes": 194695
+    },
+    {
+      "original": ".artifacts/validation/data-final/suite-all.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/suite-all.log.gz",
+      "sha256": "141bd56073dbe08e4e6070eb8e5b1f380f6e4a3685356aaa3306cd88ccc8457c",
+      "originalSha256": "a6ddf1ca3c929ff820830646730627191dbb0aa72a42b96997ab340d615d8ac5",
+      "bytes": 1390291
+    },
+    {
+      "original": ".artifacts/validation/data-final/suite-browser.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/suite-browser.json",
+      "sha256": "e362d264041fa842c0e4edcee09d56e624c029d02efd98869dea6c98716bd43f",
+      "originalSha256": "e362d264041fa842c0e4edcee09d56e624c029d02efd98869dea6c98716bd43f",
+      "bytes": 6992
+    },
+    {
+      "original": ".artifacts/validation/data-final/suite-browser.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/suite-browser.log.gz",
+      "sha256": "25802a4f88423b646259e0114099d28727853ba1032a3e889c16fd76993686ee",
+      "originalSha256": "95779a71f6b9cbab3ad0f15baf7d9fb31a9baa001f506f124ffe8a61574fef68",
+      "bytes": 57301
+    },
+    {
+      "original": ".artifacts/validation/data-final/suite-coverage.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/suite-coverage.json",
+      "sha256": "9aef153e6ad454c5f81763783efdb9c9781978391cd7ae3d20b3e4d8c464adb3",
+      "originalSha256": "9aef153e6ad454c5f81763783efdb9c9781978391cd7ae3d20b3e4d8c464adb3",
+      "bytes": 194887
+    },
+    {
+      "original": ".artifacts/validation/data-final/suite-coverage.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/suite-coverage.log.gz",
+      "sha256": "d57ea425775e2cc23e8c404c8b9cebbc31f3d38ec223b7a6fb001a9f17038f77",
+      "originalSha256": "c1fbe1b98dd76ccdfdc9bbcdfa2309a7a11f909746faf72e2828122febc9c474",
+      "bytes": 1451505
+    },
+    {
+      "original": ".artifacts/validation/data-final/suite-render.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/suite-render.json",
+      "sha256": "30484a52794f0dbb149fc8b9cd97a664454f7b2673e4cdef03fcc1970fdfb9ba",
+      "originalSha256": "30484a52794f0dbb149fc8b9cd97a664454f7b2673e4cdef03fcc1970fdfb9ba",
+      "bytes": 20001
+    },
+    {
+      "original": ".artifacts/validation/data-final/suite-render.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/suite-render.log.gz",
+      "sha256": "6241c34d077649e2b015a622a337cce8f7ebfbcdd2d3564ed439bcc8e37cb155",
+      "originalSha256": "76f35ddb347d523e433fc31d60663929ac3c460ac9de26b6af9769afcfb526b8",
+      "bytes": 45918
+    },
+    {
+      "original": ".artifacts/acceptance/expressions.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/expressions.json",
+      "sha256": "d53e2d13aa67df3424cdce555d592be582a2d9676b9223d0c0903c691d8bf5e9",
+      "originalSha256": "d53e2d13aa67df3424cdce555d592be582a2d9676b9223d0c0903c691d8bf5e9",
+      "bytes": 134495
+    },
+    {
+      "original": ".artifacts/data-source-installed-final2.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/data-source-installed-final2.log.gz",
+      "sha256": "e867880b23c1366276b0a996584902f0268ee514cb45b26ff90d069ae958c7df",
+      "originalSha256": "1cfb10a4b1ab8b76046f7e52be9c11ebf3e36657cbcbd62b24d754d134db05b5",
+      "bytes": 3145
+    },
+    {
+      "original": ".artifacts/data-source-package-final2.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/data-source-package-final2.log.gz",
+      "sha256": "fe87a2a9138353ac8bab89f583946fb53e069eb3b59377aac2c1cc71ddee289a",
+      "originalSha256": "4fa056eb47d9b83f226c4c01a2d9ea399c87d52d912c303856ba4532139001f3",
+      "bytes": 694
+    },
+    {
+      "original": ".artifacts/data-source-doc-tests-final.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/data-source-doc-tests-final.log.gz",
+      "sha256": "93188064751178ad8fc4571f74a7b695cb9cf2d5b57f0200b8d648ef4977a102",
+      "originalSha256": "5b5eedc328fdebf37d01d0106aef99e9ef3425b181232d1b9263a77b8c1b2027",
+      "bytes": 37139
+    },
+    {
+      "original": ".artifacts/data-source-contract-repair.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/data-source-contract-repair.log.gz",
+      "sha256": "732675cd53520193b4e8400e0ab63ee1ec8277b17c9c31ef692e432c6d2aed0e",
+      "originalSha256": "da0f0c14c2603cc2b374aff926cf5448344cf020accd471eda43611933077a8e",
+      "bytes": 13011
+    },
+    {
+      "original": ".artifacts/data-source-matrix/node20/node-cases.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/package-node20-node-cases.json",
+      "sha256": "55a65672601a5bc604828206b3da8f43315c126de73ca495c36e29a108919fe2",
+      "originalSha256": "55a65672601a5bc604828206b3da8f43315c126de73ca495c36e29a108919fe2",
+      "bytes": 20972
+    },
+    {
+      "original": ".artifacts/data-source-matrix/node20/qualification.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/package-node20-qualification.json",
+      "sha256": "763a4ff31da91cffaf26710b1e3f7c320e944e87c2acfc89d59de70826d24a8c",
+      "originalSha256": "763a4ff31da91cffaf26710b1e3f7c320e944e87c2acfc89d59de70826d24a8c",
+      "bytes": 758
+    },
+    {
+      "original": ".artifacts/data-source-matrix/node20/tutorials.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/package-node20-tutorials.json",
+      "sha256": "03e76fb4b2e032f866e376d6eba6c023894684d33dce559ecd2a1e202c933235",
+      "originalSha256": "03e76fb4b2e032f866e376d6eba6c023894684d33dce559ecd2a1e202c933235",
+      "bytes": 20577
+    },
+    {
+      "original": ".artifacts/data-source-matrix/node22/node-cases.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/package-node22-node-cases.json",
+      "sha256": "76b0f7f31ee36407cc8ee5c517e294a57f58cdfef49d231042c9c2dfa490a3e3",
+      "originalSha256": "76b0f7f31ee36407cc8ee5c517e294a57f58cdfef49d231042c9c2dfa490a3e3",
+      "bytes": 20916
+    },
+    {
+      "original": ".artifacts/data-source-matrix/node22/qualification.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/package-node22-qualification.json",
+      "sha256": "a449ff9de0fb26d0fb56126d6b7adc84455ecbb94fa55d4624fb565c908973db",
+      "originalSha256": "a449ff9de0fb26d0fb56126d6b7adc84455ecbb94fa55d4624fb565c908973db",
+      "bytes": 769
+    },
+    {
+      "original": ".artifacts/data-source-matrix/node22/tutorials.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/package-node22-tutorials.json",
+      "sha256": "5be3a3cfc295edc137032b923f8fe4b46152c3be3215e0372a90365182f768eb",
+      "originalSha256": "5be3a3cfc295edc137032b923f8fe4b46152c3be3215e0372a90365182f768eb",
+      "bytes": 20580
+    },
+    {
+      "original": ".artifacts/data-source-matrix/node24/node-cases.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/package-node24-node-cases.json",
+      "sha256": "10e24f9187bee6ca375cc8678b2d40a7fbea8ec128b81572b4c3ba4a4135bcc5",
+      "originalSha256": "10e24f9187bee6ca375cc8678b2d40a7fbea8ec128b81572b4c3ba4a4135bcc5",
+      "bytes": 20975
+    },
+    {
+      "original": ".artifacts/data-source-matrix/node24/qualification.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/package-node24-qualification.json",
+      "sha256": "08648388dcf020e4e22519222debe0000407982209744e84543cf057d17778e7",
+      "originalSha256": "08648388dcf020e4e22519222debe0000407982209744e84543cf057d17778e7",
+      "bytes": 763
+    },
+    {
+      "original": ".artifacts/data-source-matrix/node24/tutorials.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/package-node24-tutorials.json",
+      "sha256": "47dddb206765b92c88a17cb03f489cd0fe77899fa6890ee37199f7c785bbe32e",
+      "originalSha256": "47dddb206765b92c88a17cb03f489cd0fe77899fa6890ee37199f7c785bbe32e",
+      "bytes": 20569
+    },
+    {
+      "original": ".artifacts/data-source-matrix/result.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/package-result.json",
+      "sha256": "277205146ffaa3ffc904bdfa319c8a7215b8be0b5fcc497ff4d25363edeec681",
+      "originalSha256": "277205146ffaa3ffc904bdfa319c8a7215b8be0b5fcc497ff4d25363edeec681",
+      "bytes": 1002
+    },
+    {
+      "original": ".artifacts/data-source-coverage-initial/suite-coverage.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/initial-suite-coverage.json",
+      "sha256": "9ec3c63c79eb58af116211484ef2daea4d447719e0999a390ab3cd84ef346f3f",
+      "originalSha256": "9ec3c63c79eb58af116211484ef2daea4d447719e0999a390ab3cd84ef346f3f",
+      "bytes": 194887
+    },
+    {
+      "original": ".artifacts/data-source-coverage-initial/suite-coverage.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/initial-suite-coverage.log.gz",
+      "sha256": "7538c675fd22ec0bc917fe7dc1a274816c736e129ba2f999c9242605db146fa7",
+      "originalSha256": "4f025c6b5a5ce55b805850276b5c73bca4e41f6c4c2517d70cd4513ae70cee8d",
+      "bytes": 1462101
+    },
+    {
+      "original": ".artifacts/release/ggaction-0.0.26.tgz",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/ggaction-0.0.26.tgz",
+      "sha256": "e7a1b5aad141ab5f10e24a71b85283911e5b456f060ec6f7949e554eee57ccd7",
+      "originalSha256": "e7a1b5aad141ab5f10e24a71b85283911e5b456f060ec6f7949e554eee57ccd7",
+      "bytes": 1035817
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-1/canonical-receipt.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-1/canonical-receipt.json",
+      "sha256": "edccbe6ea203adede4b6e68d2275fd2bdadd71c0565eed22f28d88269c91a45b",
+      "originalSha256": "edccbe6ea203adede4b6e68d2275fd2bdadd71c0565eed22f28d88269c91a45b",
+      "bytes": 6752
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-1/canonical-receipt.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-1/canonical-receipt.log.gz",
+      "sha256": "6d7a4b693199e5e85cbf910057b8d8f61cfe2219627cc0c7bf7f3728c0289e22",
+      "originalSha256": "58b8fd9046f273055e7921e7904c37541542d627d6960035e4ef8c73605a54ed",
+      "bytes": 6768
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-1/discovery.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-1/discovery.json",
+      "sha256": "cd397caf5f2aba1276bc505c671ca858de1b1b1492060784b9f241e41cb4b7f6",
+      "originalSha256": "cd397caf5f2aba1276bc505c671ca858de1b1b1492060784b9f241e41cb4b7f6",
+      "bytes": 1859
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-1/full.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-1/full.log.gz",
+      "sha256": "3fc197a586a53f0267ee9128cc75bc66316b58afa93cdfee3793669291a3ccbe",
+      "originalSha256": "07b5156bdbbf4d98c73ca8a8a4bba93e55cd2f18b3631b7176d235ae322c98d1",
+      "bytes": 6779
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-1/inputs-after.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-1/inputs-after.json",
+      "sha256": "e0d94fd849fabb3e5ab7c023408b35dd1810bb985a7b25ae39761edaedab46ea",
+      "originalSha256": "e0d94fd849fabb3e5ab7c023408b35dd1810bb985a7b25ae39761edaedab46ea",
+      "bytes": 292659
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-1/inputs-before.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-1/inputs-before.json",
+      "sha256": "6129c38e62338efca344ba4e881557ae37ae4ad12ee294a1b4cd942a151c53c1",
+      "originalSha256": "6129c38e62338efca344ba4e881557ae37ae4ad12ee294a1b4cd942a151c53c1",
+      "bytes": 292659
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-1/run.mjs",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-1/run.mjs",
+      "sha256": "a1cf2ad34d463eb2f2d95a68c75039aa3580ea1bd494fd4da611e155a5493023",
+      "originalSha256": "a1cf2ad34d463eb2f2d95a68c75039aa3580ea1bd494fd4da611e155a5493023",
+      "bytes": 3505
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-1/summary.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-1/summary.json",
+      "sha256": "d9545974759691dcaeeaaca3c470cc0e8fcc35dc28ebb9a1bee3b2b11e1111d6",
+      "originalSha256": "d9545974759691dcaeeaaca3c470cc0e8fcc35dc28ebb9a1bee3b2b11e1111d6",
+      "bytes": 876
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/canonical-receipt.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/canonical-receipt.json",
+      "sha256": "63d1742bc0fa2eb428a466975f465ef3bde2e3bc60e465b760be4acef1602913",
+      "originalSha256": "63d1742bc0fa2eb428a466975f465ef3bde2e3bc60e465b760be4acef1602913",
+      "bytes": 6725
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/canonical-receipt.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/canonical-receipt.log.gz",
+      "sha256": "fb72cbb46e33740e07c8889a3d5747867fc6ffba33ce8e458d3f8a20e37a48d4",
+      "originalSha256": "ad613a52313ba9be7ddb5c61364f73491c6883af23f90c3829e2ed96a45f9faf",
+      "bytes": 68570
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/dataset-cache-after.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/dataset-cache-after.json",
+      "sha256": "787595dbfc18986e973a5b1860953927080e4802fc56d2d81503d9a214f93d03",
+      "originalSha256": "787595dbfc18986e973a5b1860953927080e4802fc56d2d81503d9a214f93d03",
+      "bytes": 7156
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/dataset-cache.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/dataset-cache.json",
+      "sha256": "cb91e0d9d73c72ef0f82efc5d284d36f87a7b298dfa17b5f84b02d03d1a3c623",
+      "originalSha256": "cb91e0d9d73c72ef0f82efc5d284d36f87a7b298dfa17b5f84b02d03d1a3c623",
+      "bytes": 7091
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/discovery.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/discovery.json",
+      "sha256": "cd397caf5f2aba1276bc505c671ca858de1b1b1492060784b9f241e41cb4b7f6",
+      "originalSha256": "cd397caf5f2aba1276bc505c671ca858de1b1b1492060784b9f241e41cb4b7f6",
+      "bytes": 1859
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/final-verification.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/final-verification.json",
+      "sha256": "0497ea2f64082ce26fa1111c84ec42863d13b174f851ef51cab177b930b998ca",
+      "originalSha256": "0497ea2f64082ce26fa1111c84ec42863d13b174f851ef51cab177b930b998ca",
+      "bytes": 90763
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/full.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/full.log.gz",
+      "sha256": "fb72cbb46e33740e07c8889a3d5747867fc6ffba33ce8e458d3f8a20e37a48d4",
+      "originalSha256": "ad613a52313ba9be7ddb5c61364f73491c6883af23f90c3829e2ed96a45f9faf",
+      "bytes": 68570
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/input-change-notes.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/input-change-notes.json",
+      "sha256": "d6f140128be9ce325d6ccbedd168e6b118a7e533a16200bfe16ee6fd872bf1fb",
+      "originalSha256": "d6f140128be9ce325d6ccbedd168e6b118a7e533a16200bfe16ee6fd872bf1fb",
+      "bytes": 704
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/inputs-after.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/inputs-after.json",
+      "sha256": "4c2b2ef77d4eb2f4bdd256cab2a1e4358d5652aabf998b62d0939d2286af56ba",
+      "originalSha256": "4c2b2ef77d4eb2f4bdd256cab2a1e4358d5652aabf998b62d0939d2286af56ba",
+      "bytes": 292764
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/inputs-before.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/inputs-before.json",
+      "sha256": "59a9eee8efcb4c4fce492ea26bc3864197a75cd6cc99685dc0c9573d303cc9e9",
+      "originalSha256": "59a9eee8efcb4c4fce492ea26bc3864197a75cd6cc99685dc0c9573d303cc9e9",
+      "bytes": 292659
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/run-tests-at-start.js",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/run-tests-at-start.js",
+      "sha256": "08a80b693808a1cc2e29c13edf225acb9607ce2b93932e093dbd6d5a159c621b",
+      "originalSha256": "08a80b693808a1cc2e29c13edf225acb9607ce2b93932e093dbd6d5a159c621b",
+      "bytes": 10636
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/run.mjs",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/run.mjs",
+      "sha256": "322c33545a17719645909cc3bccbac2b9510251a8448f781cf4834f6306b40f1",
+      "originalSha256": "322c33545a17719645909cc3bccbac2b9510251a8448f781cf4834f6306b40f1",
+      "bytes": 4340
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/runner-coverage-only.patch",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/runner-coverage-only.patch",
+      "sha256": "c9051e882485dcd251e003b9b18bd4fb323570ce89f7bc047fdd377a12bebeaf",
+      "originalSha256": "c9051e882485dcd251e003b9b18bd4fb323570ce89f7bc047fdd377a12bebeaf",
+      "bytes": 1979
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/status.mjs",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/status.mjs",
+      "sha256": "43c7d2488da5cafc2771fd195e3daed01c5004bb431cafa9e6eceaa942296284",
+      "originalSha256": "43c7d2488da5cafc2771fd195e3daed01c5004bb431cafa9e6eceaa942296284",
+      "bytes": 1145
+    },
+    {
+      "original": ".artifacts/data-update-realistic/integration-2/summary.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/realistic/integration-2/summary.json",
+      "sha256": "a8acc4987d4979bdefbbcbde99dc1be03d0d3522914dad32a717d136c6ddcd89",
+      "originalSha256": "a8acc4987d4979bdefbbcbde99dc1be03d0d3522914dad32a717d136c6ddcd89",
+      "bytes": 1219
+    },
+    {
+      "original": "agent_docs/impl/roadmap9/phase3/data-evidence/preceding-parameter-ci.json",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/preceding-parameter-ci.json",
+      "sha256": "5727fb9cd21ffc4e2c852df1c3086eea08087a88d1d89c90e5bd715fe897c17c",
+      "originalSha256": "5727fb9cd21ffc4e2c852df1c3086eea08087a88d1d89c90e5bd715fe897c17c",
+      "bytes": 45009
+    },
+    {
+      "original": ".artifacts/validation/data-final/main-merge-docs.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/main-merge-docs.log.gz",
+      "sha256": "083e2f607d8e3c52b9ee28740b1e5dcff8c7c9086f9461c3eebb6c524dff080a",
+      "originalSha256": "ca9cbc3f987facd6d3755d499c20ceab4e8f1993e627e21984e7d895c3a505a3",
+      "bytes": 10073
+    },
+    {
+      "original": ".artifacts/validation/data-final/main-merge-contracts.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/main-merge-contracts.log.gz",
+      "sha256": "fdc3b924b8efa60776d7267f5bbc8dfc1ea4abcd0aaba6c309010465ae429eb8",
+      "originalSha256": "9c8eafaf52bf9658f179fe960db27ab1dedbfd9f2004f11deebe313b38a0f462",
+      "bytes": 11091
+    }
+  ]
+}

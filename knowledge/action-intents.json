@@ -945,6 +945,16 @@
       "independent plot layer",
       "shared coordinates"
     ],
+    "Parameter": [
+      "scalar parameter",
+      "named expression input",
+      "reusable scalar value"
+    ],
+    "DataUpdate": [
+      "prepared data update",
+      "CSV and JSON sources",
+      "atomic source refresh"
+    ],
     "PivotData": [
       "grouped pivot data",
       "category columns",
@@ -970,7 +980,8 @@
     "editSemantic": "Sets or removes one semantic property inside an extension action.",
     "createGraphics": "Creates one backend-neutral concrete graphic resource inside an extension action.",
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action.",
-    "encodeChannels": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state."
+    "encodeChannels": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state.",
+    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token."
   },
   "sampleOverrides": {
     "createStackData": {
@@ -1718,6 +1729,25 @@
     "encodeShape": {
       "value": "circle"
     },
+    "createParameter": {
+      "id": "factor",
+      "value": 2
+    },
+    "editParameter": {
+      "target": "factor",
+      "value": 3
+    },
+    "removeParameter": {
+      "id": "factor"
+    },
+    "applyDataUpdate": {
+      "prepared": {
+        "$code": "prepared"
+      },
+      "requestToken": {
+        "$code": "currentToken"
+      }
+    },
     "createPivotData": {
       "id": "wide",
       "field": "category",
@@ -1998,6 +2028,16 @@
       {
         "error": "range, type, or order is supplied.",
         "fix": "Use domain for subgroup order; the parent category slot owns the concrete range and the scale type is ordinal."
+      }
+    ],
+    "applyDataUpdate": [
+      {
+        "error": "A copied handle, changed receiver or stale request token cannot be applied.",
+        "fix": "Prepare against the latest program and pass the unchanged handle with the current host token."
+      },
+      {
+        "error": "Basic accepts create preparations only.",
+        "fix": "Use the default entry point for prepared revisions and parameter updates."
       }
     ]
   }

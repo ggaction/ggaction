@@ -67,6 +67,9 @@ all dependent marks and guides are validated and updated together. It does not
 expose the Full `editScale`, focused scale editors, or legend editors. Use Full
 for scale-type transitions, or create a new scale ID in Basic. See
 [Encoding reassignment](./encodings.md#reassign-an-existing-encoding).
+Basic also supports `createParameter` and `createComputedData`, including explicit
+version 2 expressions. Parameter editing/removal and derived-data editing remain
+Full actions. [Expressions and parameters](./data/expressions-and-normalization.md)
 
 ## Shared behavior
 

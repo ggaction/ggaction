@@ -1,0 +1,52 @@
+{
+  "label": "suite-realistic",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "--import",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/scripts/test-file-metrics.js",
+    "--max-old-space-size=512",
+    "--test",
+    "--test-concurrency=2",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/generated-lifecycle-scenarios.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/generated-scenario-feature-coverage.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-arc-legend-layout.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-cartesian-facade-coverage-recipes.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-guide-scale-recipes.test.js"
+  ],
+  "code": 1,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 438584,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T12:02:41.547Z",
+  "finishedAt": "2026-10-28T12:10:00.132Z",
+  "source": {
+    "available": true,
+    "commit": "bc83c93a583fdc15b2428bbd97004e523799a844",
+    "clean": false,
+    "statusSha256": "81eaf05de65072fcf6d3ddc3773bd913a1c30976eb240ac0c6806d041376022b"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "bc83c93a583fdc15b2428bbd97004e523799a844",
+    "clean": false,
+    "statusSha256": "81eaf05de65072fcf6d3ddc3773bd913a1c30976eb240ac0c6806d041376022b"
+  },
+  "logSha256": "2e825b07efd30bd3b859722333bc1b8fa5a1b248f5708c18e4a8dc8b12280abe",
+  "discovery": {
+    "suite": "realistic",
+    "selectors": [],
+    "files": [
+      "test/contracts/generated-lifecycle-scenarios.test.js",
+      "test/contracts/generated-scenario-feature-coverage.test.js",
+      "test/contracts/realistic-arc-legend-layout.test.js",
+      "test/contracts/realistic-cartesian-facade-coverage-recipes.test.js",
+      "test/contracts/realistic-guide-scale-recipes.test.js"
+    ]
+  },
+  "bytes": 8769,
+  "retainedBytes": 8769,
+  "truncated": false
+}

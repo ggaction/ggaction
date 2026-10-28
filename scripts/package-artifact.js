@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 692, // Adds the private observed graph model and normalization owners.
-  packedBytes: 1_031_000, // Observed graph: measured 1,030,782 bytes.
-  unpackedBytes: 4_793_000 // Observed graph: measured 4,792,575 bytes.
+  entries: 710, // Combined prepared-source, hierarchy and observed-graph owners.
+  packedBytes: 1_061_000, // Measured 1,056,936 bytes plus the existing 4KB CI pack variation allowance.
+  unpackedBytes: 4_908_000 // Combined artifact measured 4,907,846 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

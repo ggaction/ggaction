@@ -1,3 +1,6 @@
+import { inspectExpressionV2, normalizeExpressionV2 } from "./expressionAst.js";
+import { evaluateExpressionV2 } from "./expressionEvaluate.js";
+import { validateUserId } from "../core/identifiers.js";
 import { ownArray, ownDataProperties, ownRecord } from "../core/ownData.js";
 import {parseTimeValue,validateParseTimeFormat} from "./parseTime.js";
 import { calendarParts, validateTimeZone } from "./timeUnit.js";
@@ -162,16 +165,27 @@ function inspectExpression(expression, depth, state, optionalPathRoot = false) {
   }
 }
 
-function inspectComputedTransform(transform) {
+function inspectComputedTransform(transform, { requested = false, environment } = {}) {
   if (!isPlainObject(transform)) {
     throw new TypeError("Computed transform must be a plain object.");
   }
   ownDataProperties(transform, "Computed transform");
-  rejectUnknownKeys(transform, TRANSFORM_KEYS, "computed transform");
+  const v2 = isExpressionV2(transform.expression);
+  rejectUnknownKeys(transform, v2 && !requested ? [...TRANSFORM_KEYS, "parameterInputs"] : TRANSFORM_KEYS, "computed transform");
   if (transform.type !== "computed") {
     throw new Error(`Unsupported computed transform "${transform.type}".`);
   }
   requireField(transform.as, "Computed output field");
+  if (v2) {
+    const normalized = environment === undefined
+      ? inspectExpressionV2(transform.expression)
+      : normalizeExpressionV2(transform.expression, environment);
+    if (environment !== undefined && Object.hasOwn(normalized.environment.fields, transform.as)) {
+      throw new Error(`Computed output field "${transform.as}" already exists.`);
+    }
+    if (!requested) validateComputedParameterInputs(transform, normalized.parameters);
+    return normalized;
+  }
   const state = { nodes: 0, fields: new Set(), requiredFields: new Set(), ancestors: new WeakSet() };
   inspectExpression(transform.expression, 1, state);
   return state;
@@ -203,14 +217,14 @@ function normalizeExpression(expression) {
   return { ...expression };
 }
 
-export function normalizeComputedTransform(options = {}) {
+export function normalizeComputedTransform(options = {}, environment) {
   ownRecord(options, "Computed options");
   const { as, expression } = options;
   const requested = { type: "computed", as, expression };
-  inspectComputedTransform(requested);
+  const inspected = inspectComputedTransform(requested, { requested: true, environment });
   return cloneAndFreeze({
     ...requested,
-    expression: normalizeExpression(expression)
+    expression: isExpressionV2(expression) ? inspected.expression : normalizeExpression(expression)
   });
 }
 
@@ -415,8 +429,19 @@ function evaluate(expression, row, rowIndex) {
   return result;
 }
 
-export function deriveComputedRows(rows, transform) {
-  const { nodes, fields, requiredFields } = inspectComputedTransform(transform);
+export function deriveComputedRows(rows, transform, environment) {
+  const inspected = inspectComputedTransform(transform, { environment });
+  if (isExpressionV2(transform.expression)) {
+    if (rows.some(row => Object.hasOwn(row, transform.as))) {
+      throw new Error(`Computed output field "${transform.as}" already exists.`);
+    }
+    const evaluated = evaluateExpressionV2(transform.expression, rows, environment);
+    return {
+      values: rows.map((row, index) => ({ ...row, [transform.as]: evaluated.values[index] })),
+      report: { ...evaluated.report, parameterInputs: transform.parameterInputs }
+    };
+  }
+  const { nodes, fields, requiredFields } = inspected;
   if (rows.length * nodes > MAX_WORK) {
     throw new RangeError(`Computed work cannot exceed ${MAX_WORK} row-nodes.`);
   }
@@ -445,4 +470,29 @@ export function deriveComputedRows(rows, transform) {
     }
     return { ...row, [transform.as]: value };
   });
+}
+
+export function isExpressionV2(expression) {
+  if (!isPlainObject(expression)) return false;
+  ownRecord(expression, "Computed expression");
+  return Object.hasOwn(expression, "version");
+}
+
+export function validateComputedParameterInputs(transform, dependencies) {
+  ownRecord(transform, "Computed transform");
+  dependencies ??= inspectExpressionV2(transform.expression).parameters;
+  const inputs = transform.parameterInputs;
+  if (!Array.isArray(inputs)) throw new TypeError("Computed v2 transform requires parameterInputs.");
+  if (inputs.length !== dependencies.length) throw new TypeError("Computed parameter inputs do not match expression dependencies.");
+  ownArray(inputs, "Computed parameter inputs");
+  inputs.forEach((input, index) => {
+    ownRecord(input, "Computed parameter input");
+    rejectUnknownKeys(input, ["kind", "id", "revision"], "computed parameter input");
+    validateUserId(input.id, "Computed parameter input id");
+    if (input.kind !== "parameter" || input.id !== dependencies[index] ||
+        !Number.isSafeInteger(input.revision) || input.revision < 0) {
+      throw new TypeError("Computed parameter inputs must be ordered exact parameter references.");
+    }
+  });
+  return inputs;
 }

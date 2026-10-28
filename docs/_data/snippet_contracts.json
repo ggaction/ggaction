@@ -1148,6 +1148,21 @@
   {
     "file": "api/data/expressions-and-normalization.md",
     "block": 2,
+    "heading": "Parameters",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "data: \"adjusted\"",
+      "target: \"factor\""
+    ],
+    "prerequisites": "Run this standalone ES module; all data and imports are included. Both immutable programs own a Canvas and materialized point chart.",
+    "sha256": "3c2cb03189872bed79f4be602c76d1ac9251c14ebe6a599667fe5482729cedba",
+    "executable": true
+  },
+  {
+    "file": "api/data/expressions-and-normalization.md",
+    "block": 3,
     "heading": "`createNormalizedData({ id, source?, field, as, groupBy?, method, ... })` {#createnormalizeddata-id-source-field-as-groupby-method}",
     "mode": "fragment",
     "environment": "esm-context",

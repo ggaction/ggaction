@@ -254,9 +254,9 @@ The following call patterns are abbreviated examples; the declaration above owns
 createComputedData({ id, source?, as, expression })
 ```
 
-Materialize a typed primitive or null field from a serializable, closed
-expression, including explicit nested scalar `getPath` and first-occurrence
-`replaceLiteral` operations. [Source and Derived Data](../../../../api/data/source-and-derived/#createcomputeddata-id-source-as-expression)
+Materialize a scalar field from a serializable, closed v1 or explicit v2
+expression. Version 2 adds named parameter inputs, a closed function registry,
+and missing-value diagnostics while preserving existing v1 behavior. [Source and Derived Data](../../../../api/data/source-and-derived/#createcomputeddata-id-source-as-expression)
 
 ## `createNormalizedData`
 

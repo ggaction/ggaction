@@ -20,6 +20,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 | Action | Authoring role | API layer | Domain |
 | --- | --- | --- | --- |
+| [`applyDataUpdate`](../../../reference/actions/charts-data/#applydataupdate) | H3 | user-facing | core |
 | [`applyTextMetrics`](../../../reference/actions/charts-data/#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](../../../reference/actions/charts-data/#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](../../../reference/actions/charts-data/#bindmarkdata) | H2 | user-facing | core |
@@ -74,6 +75,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createParallelAxes`](../../../reference/actions/guides/#createparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](../../../reference/actions/guides/#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](../../../reference/actions/charts-data/#createparallelcoordinates) | H0 | user-facing | charts |
+| [`createParameter`](../../../reference/actions/charts-data/#createparameter) | H2 | user-facing | core |
 | [`createPiePlot`](../../../reference/actions/charts-data/#createpieplot) | H0 | user-facing | charts |
 | [`createPivotData`](../../../reference/actions/statistics/#createpivotdata) | H1 | user-facing | statistics |
 | [`createPointMark`](../../../reference/actions/marks/#createpointmark) | H2 | user-facing | marks |
@@ -187,6 +189,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editOverlay`](../../../reference/actions/marks/#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](../../../reference/actions/guides/#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](../../../reference/actions/charts-data/#editparallelscale) | H2 | user-facing | core |
+| [`editParameter`](../../../reference/actions/charts-data/#editparameter) | H3 | user-facing | core |
 | [`editPivotData`](../../../reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](../../../reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editRadarPlot`](../../../reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
@@ -304,6 +307,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeMarkSelection`](../../../reference/actions/advanced/#removemarkselection) | H3 | advanced | mark-selection |
 | [`removeParallelAxes`](../../../reference/actions/guides/#removeparallelaxes) | H3 | user-facing | axes |
 | [`removeParallelAxis`](../../../reference/actions/guides/#removeparallelaxis) | H3 | user-facing | axes |
+| [`removeParameter`](../../../reference/actions/charts-data/#removeparameter) | H3 | user-facing | core |
 | [`removePathOrder`](../../../reference/actions/encodings/#removepathorder) | H2, H3 | user-facing | encodings |
 | [`removePointPacking`](../../../reference/actions/marks/#removepointpacking) | H3 | user-facing | marks |
 | [`removePointRadius`](../../../reference/actions/encodings/#removepointradius) | H2, H3 | user-facing | encodings |

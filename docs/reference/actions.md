@@ -32,6 +32,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 | Action | Authoring role | API layer | Domain |
 | --- | --- | --- | --- |
+| [`applyDataUpdate`](./actions/charts-data.md#applydataupdate) | H3 | user-facing | core |
 | [`applyTextMetrics`](./actions/charts-data.md#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](./actions/charts-data.md#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](./actions/charts-data.md#bindmarkdata) | H2 | user-facing | core |
@@ -86,6 +87,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createParallelAxes`](./actions/guides.md#createparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](./actions/guides.md#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](./actions/charts-data.md#createparallelcoordinates) | H0 | user-facing | charts |
+| [`createParameter`](./actions/charts-data.md#createparameter) | H2 | user-facing | core |
 | [`createPiePlot`](./actions/charts-data.md#createpieplot) | H0 | user-facing | charts |
 | [`createPivotData`](./actions/statistics.md#createpivotdata) | H1 | user-facing | statistics |
 | [`createPointMark`](./actions/marks.md#createpointmark) | H2 | user-facing | marks |
@@ -199,6 +201,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editOverlay`](./actions/marks.md#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](./actions/guides.md#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./actions/charts-data.md#editparallelscale) | H2 | user-facing | core |
+| [`editParameter`](./actions/charts-data.md#editparameter) | H3 | user-facing | core |
 | [`editPivotData`](./actions/statistics.md#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
 | [`editRadarPlot`](./actions/charts-data.md#editradarplot) | H1, H3 | user-facing | charts |
@@ -316,6 +319,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeMarkSelection`](./actions/advanced.md#removemarkselection) | H3 | advanced | mark-selection |
 | [`removeParallelAxes`](./actions/guides.md#removeparallelaxes) | H3 | user-facing | axes |
 | [`removeParallelAxis`](./actions/guides.md#removeparallelaxis) | H3 | user-facing | axes |
+| [`removeParameter`](./actions/charts-data.md#removeparameter) | H3 | user-facing | core |
 | [`removePathOrder`](./actions/encodings.md#removepathorder) | H2, H3 | user-facing | encodings |
 | [`removePointPacking`](./actions/marks.md#removepointpacking) | H3 | user-facing | marks |
 | [`removePointRadius`](./actions/encodings.md#removepointradius) | H2, H3 | user-facing | encodings |

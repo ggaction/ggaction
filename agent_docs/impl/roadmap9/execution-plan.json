@@ -261,21 +261,61 @@
       "dependsOn": [
         "STEP-009"
       ],
-      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-013-expression-ast.ko.md"
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-013-expression-ast.ko.md",
+      "requiredChecks": [
+        "ci-coverage",
+        "suite-unit",
+        "suite-contracts",
+        "expression-acceptance",
+        "metadata-check",
+        "docs-verify",
+        "package-check"
+      ],
+      "requiredGates": [
+        "G-EXPR",
+        "G-PARAM",
+        "G-DATA"
+      ]
     },
     {
       "id": "STEP-014",
       "dependsOn": [
         "STEP-013"
       ],
-      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-014-statistics-oracles.ko.md"
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-014-statistics-oracles.ko.md",
+      "requiredChecks": [
+        "ci-coverage",
+        "suite-unit",
+        "suite-contracts",
+        "statistics-acceptance",
+        "metadata-check",
+        "package-check",
+        "test-package",
+        "suite-browser",
+        "test-render",
+        "docs-verify"
+      ],
+      "requiredGates": []
     },
     {
       "id": "STEP-015",
       "dependsOn": [
         "STEP-014"
       ],
-      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-015-time-transform.ko.md"
+      "card": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-015-time-transform.ko.md",
+      "requiredChecks": [
+        "ci-coverage",
+        "suite-unit",
+        "suite-contracts",
+        "statistics-acceptance",
+        "metadata-check",
+        "package-check",
+        "test-package",
+        "suite-browser",
+        "test-render",
+        "docs-verify"
+      ],
+      "requiredGates": []
     },
     {
       "id": "STEP-016",

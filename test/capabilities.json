@@ -127,6 +127,16 @@
         "path": "charts/lookup-data/"
       }
     ],
+    "data-sources": [
+      {
+        "type": "prefix",
+        "path": "unit/resources/"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/data-source-parsing.test.js"
+      }
+    ],
     "documentation": [
       {
         "type": "prefix",
@@ -135,6 +145,24 @@
       {
         "type": "file",
         "path": "contracts/documentation-truth.test.js"
+      }
+    ],
+    "expressions": [
+      {
+        "type": "file",
+        "path": "unit/expression-registry.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/computed-v2.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/parameter-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/parameter-expression-types.test.js"
       }
     ],
     "facet-field-titles": [

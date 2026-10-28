@@ -567,6 +567,20 @@ createData({ id?, values })
 
 Create one immutable named dataset. [Data](../api/data.md)
 
+### `applyDataUpdate`
+
+```javascript
+applyDataUpdate({ prepared, requestToken })
+```
+
+Apply an opaque result of `await prepareDataUpdate(program, request, host)` to
+its exact immutable base with the application's current request token. Full
+supports creating, refreshing, and parameter-dependent source updates; Basic
+supports creation. Hosts provide explicit CSV/JSON loaders. All source and
+computed consumers update atomically. See the
+[prepared data reference](../api/data/source-and-derived.md#prepared-data-updates)
+and [refresh workflow](../data-updates.md#prepare-and-apply-source-data).
+
 ### `reviseData`
 
 ```javascript
@@ -662,6 +676,34 @@ createFoldData({ id, source?, fields, as? })
 Materialize selected wide fields as stable key/value rows while preserving
 every source cell. [Source and Derived Data](../api/data/source-and-derived.md#createfolddata-id-source-fields-as)
 
+### `createParameter`
+
+```javascript
+createParameter({ id, value, type?, nullable? })
+```
+
+Create a named number, string, or boolean input for version 2 computed expressions.
+A null initial value requires an explicit type and `nullable: true`.
+Available in Full and Basic. [Parameters](../api/data/expressions-and-normalization.md#parameters)
+
+### `editParameter`
+
+```javascript
+editParameter({ target, value })
+```
+
+Atomically revise a parameter value, dependent datasets, and their chart consumers.
+Type and nullability remain fixed. Available in Full.
+[Parameters](../api/data/expressions-and-normalization.md#parameters)
+
+### `removeParameter`
+
+```javascript
+removeParameter({ id })
+```
+
+Remove an existing parameter only after all stored references have been removed.
+Available in Full. [Parameters](../api/data/expressions-and-normalization.md#parameters)
 ### `createPivotData`
 
 ```javascript
@@ -678,9 +720,9 @@ require an explicit aggregation operation. Full only.
 createComputedData({ id, source?, as, expression })
 ```
 
-Materialize a typed primitive or null field from a serializable, closed
-expression, including explicit nested scalar `getPath` and first-occurrence
-`replaceLiteral` operations. [Source and Derived Data](../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
+Materialize a scalar field from a serializable, closed v1 or explicit v2
+expression. Version 2 adds named parameter inputs, a closed function registry,
+and missing-value diagnostics while preserving existing v1 behavior. [Source and Derived Data](../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
 
 ### `createNormalizedData`
 

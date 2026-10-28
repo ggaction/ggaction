@@ -1,3 +1,4 @@
+import { inspectExpressionV2 } from "./expressionAst.js";
 import { requireStringValue as requireName } from "../core/validation.js";
 import { annotateError } from "../core/diagnostics.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
@@ -202,6 +203,7 @@ export function assertFieldsAvailable(schema, fields, { data, operation } = {}) 
 
 function expressionFields(expression, output = []) {
   if (!isPlainObject(expression)) return output;
+  if (Object.hasOwn(expression, "version")) return [...output, ...inspectExpressionV2(expression).fields];
   if (typeof expression.field === "string") output.push(expression.field);
   for (const value of Object.values(expression)) {
     if (Array.isArray(value)) value.forEach(item => expressionFields(item, output));

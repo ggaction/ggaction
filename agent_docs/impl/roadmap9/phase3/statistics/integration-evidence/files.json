@@ -1,0 +1,284 @@
+[
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/unit.log.gz",
+    "bytes": 15736,
+    "sha256": "c82746538b824017add5d254aedea18efeafb10ca0c74aa992821b096043fb76",
+    "originalSha256": "3561ad7f0d8e28252f79b8e6e6038a6fc5d160af9cecb6a24c8bd7e256a0187e"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/contracts.log.gz",
+    "bytes": 155508,
+    "sha256": "8759ab1281420e7dce2211be473acfbd4080066e4edbbdf92f82f0f487d924d1",
+    "originalSha256": "b30d4526dad39cf803008c9ac4bafc66c00a47fd4a0488ec87e7a3876ae70bd7"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/cards-final.log.gz",
+    "bytes": 827,
+    "sha256": "c411a8f074dac8b4cc6565d4773e8fca275006fb6402a7cc918f73ebe2c75f28",
+    "originalSha256": "13909be070216b6bb526dbe3e2ebe87c0dfbf7bdff7d3c268b6bbd5fef7b26fd"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/repair-contracts.log.gz",
+    "bytes": 1260,
+    "sha256": "5526cb3b67c2929158fe1c10575757ac796e07edcfd9e3f21f32a7a2a1ad8562",
+    "originalSha256": "38bec40c06e4f8f6ae23d7a267a141667084863c5b9462d04bfcb0ae494e05a6"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/docs.log.gz",
+    "bytes": 9084,
+    "sha256": "c584cc96f6c15c118f51f290814d472eecb319d5d380e021051667b910179775",
+    "originalSha256": "ff0ae42c28f80470733ea2aca4960209c7c9195d48eab46518eaf8bcd4d92f8d"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/package-initial.log.gz",
+    "bytes": 517,
+    "sha256": "16c6741e35c2fee6657e4252591146a6378147ea360d2ff121ae37d7015f1421",
+    "originalSha256": "1f73d405476d5153679105f8e2167537ca362eca514813257126f96e86d67d33"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/package-initial.json",
+    "bytes": 70759,
+    "sha256": "1c246d33d1c32b597045e03e52b38603135c069c90f9d35545c1c72cb8368b13",
+    "originalSha256": "1c246d33d1c32b597045e03e52b38603135c069c90f9d35545c1c72cb8368b13"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/package-final.log.gz",
+    "bytes": 392,
+    "sha256": "2fdcf868b613121d758a5981ac133884a815c88db6509eb7b3787c1d45211f86",
+    "originalSha256": "3c6584ef767589a4a1a2182a57d680e26aacee6da8cdbe26ef3e722dfc820c0d"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/package-confirm.log.gz",
+    "bytes": 392,
+    "sha256": "2fdcf868b613121d758a5981ac133884a815c88db6509eb7b3787c1d45211f86",
+    "originalSha256": "3c6584ef767589a4a1a2182a57d680e26aacee6da8cdbe26ef3e722dfc820c0d"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/bundles.log.gz",
+    "bytes": 299,
+    "sha256": "83589fb6381d01ca88adf7169d81c8033093d1db667ca5ef51f8f4d7534d8197",
+    "originalSha256": "a9d699a1508aac0b2cf1827f691270b484495b7cd213f1d2fd30d079aeda0081"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/metadata-cases.log.gz",
+    "bytes": 1891,
+    "sha256": "0d35ea56550bd1274132fa9cca72b02246fecd2e08c6ead5e88a5db099e91538",
+    "originalSha256": "13c291cc490cce9ab648d1ee01aa35496c06bd71b5b7e661df002974c8ee4b34"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/run.mjs",
+    "bytes": 1626,
+    "sha256": "ae38d9cb416b27746870b72ac6a1c394e20afcf239b88c73ffb0872ba39e1145",
+    "originalSha256": "ae38d9cb416b27746870b72ac6a1c394e20afcf239b88c73ffb0872ba39e1145"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/result.json",
+    "bytes": 1498,
+    "sha256": "437c015df2857399df0eed122540e7e23b7a0bd1d1c76fd1c24cbafc4649436d",
+    "originalSha256": "437c015df2857399df0eed122540e7e23b7a0bd1d1c76fd1c24cbafc4649436d"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/node20/qualification.json",
+    "bytes": 771,
+    "sha256": "e962d33c9d36d7c22526aab00f50d90874b9b46c11858158b1a8009d85581f0d",
+    "originalSha256": "e962d33c9d36d7c22526aab00f50d90874b9b46c11858158b1a8009d85581f0d"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/node20/tutorials.json",
+    "bytes": 21507,
+    "sha256": "80231a73b19af44d5cfbc88a0bf5ba765bb09e7bf12fdb4414991fe4326f99ea",
+    "originalSha256": "80231a73b19af44d5cfbc88a0bf5ba765bb09e7bf12fdb4414991fe4326f99ea"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/node20/run.log.gz",
+    "bytes": 1191,
+    "sha256": "bf22ce13dcd4f0a7524978e1e73b46b0ad48e84a94ad94369bb4faf26d28f44e",
+    "originalSha256": "348d948e1a827b969762d36c3d2da4a0b30a35e0db7a61295c5e2554f4b07cb8"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/node20/node-cases.json",
+    "bytes": 21298,
+    "sha256": "6fbbb1254f33bdb785e47908e3bf9b2ff1acccc6b6946735fb97c70d8d4485b2",
+    "originalSha256": "6fbbb1254f33bdb785e47908e3bf9b2ff1acccc6b6946735fb97c70d8d4485b2"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/node22/qualification.json",
+    "bytes": 776,
+    "sha256": "9d36c4e9695d6df6d35cc1020a9d2eccce0faa0a0203985de7d95e21776284a0",
+    "originalSha256": "9d36c4e9695d6df6d35cc1020a9d2eccce0faa0a0203985de7d95e21776284a0"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/node22/tutorials.json",
+    "bytes": 21507,
+    "sha256": "c3ee57acade8accdb964f152a3ffd2523e82c92d6d3cabee482e67e55dac8559",
+    "originalSha256": "c3ee57acade8accdb964f152a3ffd2523e82c92d6d3cabee482e67e55dac8559"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/node22/run.log.gz",
+    "bytes": 1191,
+    "sha256": "87d579eb419cc594ba129c1375fe46d34b5fe6aaf6740f475c967f3683bcf2d2",
+    "originalSha256": "61e09e4e7a68aeb32965a883ab6a48b5f4af54b83dbd062b702526ae621108b4"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/node22/node-cases.json",
+    "bytes": 21287,
+    "sha256": "817520ec0ca2d9e0cdfa1eb33e50592651f6ff67dda961d0b5c9357a1c786def",
+    "originalSha256": "817520ec0ca2d9e0cdfa1eb33e50592651f6ff67dda961d0b5c9357a1c786def"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/node24/qualification.json",
+    "bytes": 762,
+    "sha256": "6c8d75bb4608652970e958b93ac79b42385f721db26413395495b6bb807aaf49",
+    "originalSha256": "6c8d75bb4608652970e958b93ac79b42385f721db26413395495b6bb807aaf49"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/node24/tutorials.json",
+    "bytes": 21517,
+    "sha256": "c33a50baa83f287ef282fd70f8c9d7bb8141bc7ca0639eef0ff736441f2e2b5f",
+    "originalSha256": "c33a50baa83f287ef282fd70f8c9d7bb8141bc7ca0639eef0ff736441f2e2b5f"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/node24/run.log.gz",
+    "bytes": 1191,
+    "sha256": "3a0adc248964ba9b7db45c975117728c2f50c38fdf8e63d806648abceafac869",
+    "originalSha256": "1b8deac47486e3f9d548c9dbe2c7502cd056f05522b454fbbd285290be469202"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/matrix/node24/node-cases.json",
+    "bytes": 21311,
+    "sha256": "aed83460472d9db38b8bdd3220cedcb8bf57e17ae12ae32dc385dbbc144ce5ba",
+    "originalSha256": "aed83460472d9db38b8bdd3220cedcb8bf57e17ae12ae32dc385dbbc144ce5ba"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/numeric-evidence.json",
+    "bytes": 98898,
+    "sha256": "762b60778b2b87bc04608835f076654f871ffa8f3140545da47b2f2e65b60b2e",
+    "originalSha256": "762b60778b2b87bc04608835f076654f871ffa8f3140545da47b2f2e65b60b2e"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/qualified-package.tgz",
+    "bytes": 1042710,
+    "sha256": "432b9cce9d2017770452934f84526ea56d52fc36e14c85ad9fcf45cd9331d06c",
+    "originalSha256": "432b9cce9d2017770452934f84526ea56d52fc36e14c85ad9fcf45cd9331d06c"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-clean/metadata-check.log.gz",
+    "bytes": 102,
+    "sha256": "2970ceb3830b3ae8923e2ae3212fd9dd7870e970c2d964c7c4b8f05d27fbefe3",
+    "originalSha256": "795dd208b8c58e44015d36a6d75d7b26bf5661c5e8c07a4b442bb215e7e219f5"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-clean/suite-contracts.json",
+    "bytes": 34356,
+    "sha256": "06274b5bd853dfeb8bb1ff4580dd0a3c442f357dfaba3a4d7eaf6a052dca1e53",
+    "originalSha256": "06274b5bd853dfeb8bb1ff4580dd0a3c442f357dfaba3a4d7eaf6a052dca1e53"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-clean/docs-verify.json",
+    "bytes": 891,
+    "sha256": "3e23284d040e75f0af463da8298f5e7851b95882fa061bd3cdce9e2ef04b2eb4",
+    "originalSha256": "3e23284d040e75f0af463da8298f5e7851b95882fa061bd3cdce9e2ef04b2eb4"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-clean/expression-acceptance.log.gz",
+    "bytes": 257,
+    "sha256": "3d45751d2196238c9356d4746363273fe8d9748d457d4dc96f73853ce6195d68",
+    "originalSha256": "50568cc88586853749131a90bae590a2fe906ca23b13fc61c04199e30901a3ec"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-clean/suite-contracts.log.gz",
+    "bytes": 27220,
+    "sha256": "a58644b65f77b2f7afc788e44a8898fe802eece3e00905a9eacd3e974a94f74b",
+    "originalSha256": "3387bb3bd7dc7fe0bad42b85b5ef022e33dc595bcfddf72e4400eab5d9d70ecc"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-clean/package-check.json",
+    "bytes": 889,
+    "sha256": "842249adf138e4f9de6384ab0d1f4017aa5faa1637fa1df1bcad62b92dd542bd",
+    "originalSha256": "842249adf138e4f9de6384ab0d1f4017aa5faa1637fa1df1bcad62b92dd542bd"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-clean/metadata-check.json",
+    "bytes": 892,
+    "sha256": "246960ea98d2fc3d9ce9f03ed3d742c2ae4de732d34553b33c1b7e53a3a762df",
+    "originalSha256": "246960ea98d2fc3d9ce9f03ed3d742c2ae4de732d34553b33c1b7e53a3a762df"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-clean/results.json",
+    "bytes": 3663,
+    "sha256": "2a8b95e3fe9ec38e0c2039d4d69b396a9061a8f36a773d32755bc110e833727d",
+    "originalSha256": "2a8b95e3fe9ec38e0c2039d4d69b396a9061a8f36a773d32755bc110e833727d"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-clean/expression-acceptance.json",
+    "bytes": 902,
+    "sha256": "5fe61d5b177cc201162a81984ab8b9c0b502ed0e8fa24dd5dd07b911fc9cacb2",
+    "originalSha256": "5fe61d5b177cc201162a81984ab8b9c0b502ed0e8fa24dd5dd07b911fc9cacb2"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-clean/package-check.log.gz",
+    "bytes": 284,
+    "sha256": "2553c6b9d3acbe19c6ea69a24ba5816bc2bd7ec29604c8dd293d7bb4da817a5d",
+    "originalSha256": "cd6e6818dbdf46d30a165e880e55ab94c169c66e8948202a9685ecf0974bdc28"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-clean/docs-verify.log.gz",
+    "bytes": 8873,
+    "sha256": "0b2b482376f14a58a9c052e43c697067c093fec4229f8d4b530bab07bc9ef163",
+    "originalSha256": "e19946317427dde4d3df9fc4d58358646e3062d4e271cfb3152234c9ba7bd8ec"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-clean/suite-unit.log.gz",
+    "bytes": 178569,
+    "sha256": "8827bb218c9378a833e0d67cb9c09e9210e997caa123e391d5278b3331703eb8",
+    "originalSha256": "3f5d851a19946bfeae9d56d6cfc94bc475e3bf8a67c62a2baa62273ed2d75903"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-clean/suite-unit.json",
+    "bytes": 118331,
+    "sha256": "659f64c0ee03d8ea20a700170080b7bf762da03b33e3be7496a83631c35de58f",
+    "originalSha256": "659f64c0ee03d8ea20a700170080b7bf762da03b33e3be7496a83631c35de58f"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-ci/coverage.log.gz",
+    "bytes": 451417,
+    "sha256": "0e59480f417b3482d85032bdcc638dc74fda7a082be93e0f84684cb1aaa7727b",
+    "originalSha256": "590d55c43c3e64ed18da40b40b326b5b002c621f0d82f54e5b075e2d3f852cc1"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-ci/windows.log.gz",
+    "bytes": 5329,
+    "sha256": "c0cb9ab48a32e0807976e729081620ab897fed69722bf41f0a3f3bae22fde830",
+    "originalSha256": "9448b56160b830e468f28c9ec209a59610e11599a3ad13b6a373cd74eacb6032"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-ci/firefox.log.gz",
+    "bytes": 14093,
+    "sha256": "531408d645f400e368ffcfed7e8689c1549d0d588d9e23bbd2342f69f0ad336d",
+    "originalSha256": "e4c58e670af0cf34316655d3d000bac46fa94630b5069062ea0cb8d44907d6b2"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-ci/macos.log.gz",
+    "bytes": 5690,
+    "sha256": "d395843f8ade9bc2fdbc6ab11d13dc70102b5feaeedcecc5fc9b931116e4448f",
+    "originalSha256": "d35391a93e9a12a054f651469b6cee53b1d520928abf4a75a096f3b673dc1d07"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-ci/package24.log.gz",
+    "bytes": 5018,
+    "sha256": "50d961b22a1c886301179fbfa0de2bb5cd6552ae5b5348022d4910acbc1c122c",
+    "originalSha256": "4ee2d797e701726d4c685a131b12760eac851245d731170255f34cc8020e5286"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/docs-final.log.gz",
+    "bytes": 7188,
+    "sha256": "d294e48274225f3dc8892e9dfc3297e1e443085cbc9ee3aa214242fb58fe399c",
+    "originalSha256": "f067bd022e42f67c7401ca0b48f36b468b376f0280ffecfb0d92f0ef239516b3"
+  },
+  {
+    "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/preceding-data-ci/summary.json",
+    "bytes": 979,
+    "sha256": "b04121b547a3704b3b397b304782118096dad5eac59c0195ef8e2e618166b0fa",
+    "originalSha256": "b04121b547a3704b3b397b304782118096dad5eac59c0195ef8e2e618166b0fa"
+  }
+]

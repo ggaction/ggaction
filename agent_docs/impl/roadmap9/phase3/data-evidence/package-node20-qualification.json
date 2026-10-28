@@ -1,0 +1,41 @@
+{
+  "node": "v20.20.2",
+  "platform": "darwin",
+  "records": [
+    {
+      "id": "node",
+      "status": "passed",
+      "durationMs": 14057.750667
+    },
+    {
+      "id": "mcp",
+      "status": "passed",
+      "durationMs": 581.9856250000012
+    },
+    {
+      "id": "types",
+      "status": "passed",
+      "durationMs": 326.25816699999996
+    },
+    {
+      "id": "tutorials",
+      "status": "passed",
+      "durationMs": 42118.33575
+    },
+    {
+      "id": "bundle-full",
+      "status": "passed",
+      "durationMs": 1941.6677090000012
+    },
+    {
+      "id": "bundle-basic",
+      "status": "passed",
+      "durationMs": 1066.617542
+    },
+    {
+      "id": "bundle-svg",
+      "status": "passed",
+      "durationMs": 41.091707999999926
+    }
+  ]
+}

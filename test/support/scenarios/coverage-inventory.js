@@ -179,6 +179,8 @@ function structuredProperties(checker, project, declarationFile, type) {
   const properties = [];
   const seen = new Set();
   const add = property => {
+    // TypeScript's compiler symbols are not string-keyed authoring options.
+    if (property.name.startsWith("__@")) return;
     if (!seen.has(property)) {
       seen.add(property);
       properties.push(property);
@@ -186,7 +188,11 @@ function structuredProperties(checker, project, declarationFile, type) {
   };
   const candidates = flattenedTypes(type).filter(current => {
     const printed = checker.typeToString(current);
+    // A prepared handle is supplied intact. Its readonly inspection descriptor
+    // and private brand are output evidence, not caller-authored nested options.
+    const opaqueHandle = current.getSymbol?.()?.name === "PreparedDataUpdate";
     return !(
+      opaqueHandle ||
       isPrimitiveType(checker, current) ||
       checker.isArrayType(current) ||
       checker.isTupleType(current) ||

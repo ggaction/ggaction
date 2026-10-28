@@ -64,6 +64,9 @@ import { invalidSnapshot } from "./codec.js";
 import { DATA_IDENTITY_FIELDS, validateSourceIdentity } from "../core/itemIdentity.js";
 import { validateDatasetLineage } from "../grammar/rowLineage.js";
 import { validateResourceGraph } from "../materialization/resourceState.js";
+import { validateDataSourceState } from "../materialization/dataSourceState.js";
+import { resolveComputedEnvironment } from "../materialization/computedInputs.js";
+import { canonicalJSON } from "../core/contentDigest.js";
 import { storedSelectionSelector } from "../selectors/selectionResources.js";
 import { requireStoredResource, resolveGraphicLineage } from "../selectors/resources.js";
 
@@ -197,6 +200,36 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
   exactKeys(semantic, ["datasets", "layers", "scales", "coordinates", "guides", "title", ...(legacy ? [] : ["resources"])], `${path}.semanticSpec`);
   if (!legacy) validateDatasetLineage(semantic.datasets);
   if (!legacy) validateResourceGraph(program);
+  if (!legacy) validateDataSourceState(program);
+  for (const dataset of semantic.datasets) {
+    if (legacy && dataset.sourceReceipt !== undefined) throw invalidSnapshot("Data source receipts require editable snapshot version 4.", path);
+    for (const transform of dataset.transform ?? []) {
+      if (transform.type !== "computed" || transform.expression?.version !== 2) continue;
+      if (legacy) throw invalidSnapshot("Computed v2 requires editable snapshot version 4.", path);
+      const source = resolveDatasetReference(program, dataset.source);
+      resolveComputedEnvironment(program, source, transform);
+      if (dataset.values !== undefined) {
+        const report = program.materializationConfigs.calculations?.datasets?.[dataset.id];
+        const reportPath = `${path}.materializationConfigs.calculations.datasets.${dataset.id}`;
+        exactKeys(report, ["algorithm", "registry", "evaluatedRows", "missingRows", "counts", "parameterInputs", "owner", "inputs"], reportPath);
+        if (report.algorithm !== "expression@2" || report.registry !== "standard@1" ||
+            report.evaluatedRows !== source.values?.length || report.evaluatedRows !== dataset.values.length ||
+            report.missingRows !== dataset.values.filter(row => row[transform.as] === undefined).length ||
+            canonicalJSON(report.parameterInputs) !== canonicalJSON(transform.parameterInputs) ||
+            canonicalJSON(report.owner) !== canonicalJSON({ kind: "data", id: dataset.id }) ||
+            canonicalJSON(report.inputs) !== canonicalJSON([{ kind: "data", id: source.id }])) {
+          throw invalidSnapshot("Computed diagnostics must match their dataset and parameter inputs.", reportPath);
+        }
+        const countKeys = ["divideByZero", "domain", "nonFinite", "dateRange", "arrayBounds"];
+        exactKeys(report.counts, countKeys, `${reportPath}.counts`);
+        for (const key of countKeys) {
+          if (!Number.isSafeInteger(report.counts[key]) || report.counts[key] < 0) {
+            throw invalidSnapshot("Computed diagnostic counts must be nonnegative integers.", reportPath);
+          }
+        }
+      }
+    }
+  }
   const resources = new Map();
   for (const [collection, kind, referenceKind] of [
     ["datasets", "dataset", "data"], ["layers", "layer", "mark"],

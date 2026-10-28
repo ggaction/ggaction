@@ -1,0 +1,36 @@
+diff --git a/scripts/run-tests.js b/scripts/run-tests.js
+index e243b2b8..ff789192 100644
+--- a/scripts/run-tests.js
++++ b/scripts/run-tests.js
+@@ -1,4 +1,4 @@
+-import { readFileSync, readdirSync, mkdirSync, writeFileSync } from "node:fs";
++import { lstatSync, readFileSync, readlinkSync, readdirSync, mkdirSync, writeFileSync } from "node:fs";
+ import path from "node:path";
+ import { createHash } from "node:crypto";
+ import { runCheck } from "./run-check.js";
+@@ -185,6 +185,16 @@ export function createTestOutputCapture() {
+   };
+ }
+ 
++export function hashUntrackedInputs(files, root = repositoryRoot) {
++  return Object.fromEntries(files.map(file => {
++    const target = path.join(root, file);
++    // Hash the checkout's link identity without following dependency directories.
++    const input = lstatSync(target).isSymbolicLink()
++      ? `symlink\0${readlinkSync(target)}` : readFileSync(target);
++    return [file, createHash("sha256").update(input).digest("hex")];
++  }));
++}
++
+ async function run(suite, selectors, shard) {
+   const files = collectTestFiles(suite, testRoot, selectors);
+   if (files.length === 0) {
+@@ -223,7 +233,7 @@ async function run(suite, selectors, shard) {
+       status: code, files: files.map(file => path.relative(repositoryRoot, file)),
+       sourceCommit: git(["rev-parse", "HEAD"]),
+       workingTree: git(["status", "--porcelain"]),
+-      untrackedSha256: Object.fromEntries((git(["ls-files", "--others", "--exclude-standard", "-z"]) ?? "").split("\0").filter(Boolean).map(file => [file, createHash("sha256").update(readFileSync(path.join(repositoryRoot, file))).digest("hex")])),
++      untrackedSha256: hashUntrackedInputs((git(["ls-files", "--others", "--exclude-standard", "-z"]) ?? "").split("\0").filter(Boolean)),
+       trackedDiffSha256: createHash("sha256").update(git(["diff", "HEAD", "--binary"]) ?? "").digest("hex")
+     }, null, 2));
+     // Preserve machine-readable metrics even when a threshold later rejects them.

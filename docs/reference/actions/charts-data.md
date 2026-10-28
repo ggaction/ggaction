@@ -333,6 +333,45 @@ createData({ id?, values })
 Create one immutable named dataset. [Data](../../api/data.md)
 
 
+## `applyDataUpdate`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
+```
+
+Named option contracts: [`ApplyDataUpdateOptions`](./../types.md#type-applydataupdateoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedDataUpdate<"create" \| "parameter" \| "revise">` |
+| `requestToken` | Required | `string` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+applyDataUpdate({ prepared, requestToken })
+```
+
+Apply an opaque result of `await prepareDataUpdate(program, request, host)` to
+its exact immutable base with the application's current request token. Full
+supports creating, refreshing, and parameter-dependent source updates; Basic
+supports creation. Hosts provide explicit CSV/JSON loaders. All source and
+computed consumers update atomically. See the
+[prepared data reference](../../api/data/source-and-derived.md#prepared-data-updates)
+and [refresh workflow](../../data-updates.md#prepare-and-apply-source-data).
+
+
 ## `reviseData`
 
 **API layer:** user-facing. **Authoring roles:** H3.
@@ -559,6 +598,113 @@ filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })
 Create an immutable named derived dataset using exactly one membership,
 comparison, or range filter. The source defaults to current data.
 [Data](../../api/data.md)
+
+
+## `createParameter`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateParameterOptions`](./../types.md#type-createparameteroptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `type` | Optional / branch-dependent | `"boolean" \| "number" \| "string" \| undefined` |
+| `value` | Required | `string \| number \| boolean \| null` |
+| `nullable` | Optional / branch-dependent | `boolean \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createParameter({ id, value, type?, nullable? })
+```
+
+Create a named number, string, or boolean input for version 2 computed expressions.
+A null initial value requires an explicit type and `nullable: true`.
+Available in Full and Basic. [Parameters](../../api/data/expressions-and-normalization.md#parameters)
+
+
+## `editParameter`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditParameterOptions`](./../types.md#type-editparameteroptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
+| `value` | Required | `ParameterValue` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editParameter({ target, value })
+```
+
+Atomically revise a parameter value, dependent datasets, and their chart consumers.
+Type and nullability remain fixed. Available in Full.
+[Parameters](../../api/data/expressions-and-normalization.md#parameters)
+
+
+## `removeParameter`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RemoveParameterOptions`](./../types.md#type-removeparameteroptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+removeParameter({ id })
+```
+
+Remove an existing parameter only after all stored references have been removed.
+Available in Full. [Parameters](../../api/data/expressions-and-normalization.md#parameters)
 
 
 ## `createDensityData`

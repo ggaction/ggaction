@@ -1,10 +1,11 @@
 import { ownRecord } from "../../core/ownData.js";
 import {resolveDatasetTransformInputs} from "./shared.js";
+import { bindComputedTransform } from "./computedBinding.js";
 import { action, closedAction } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { validateKeys } from "../../core/validation.js";
-import {orderedDatasetDependents} from "../../grammar/datasetDependencies.js";
+import { validateKeys, validateWorkLimit } from "../../core/validation.js";
+import {orderedDatasetClosure, orderedDatasetDependents} from "../../grammar/datasetDependencies.js";
 import {rebindTransformDatasetInputs} from "../../core/datasetReferences.js";
 import {
   findTransformPolicy,
@@ -211,11 +212,11 @@ function ownerForCurrent(program, dataset) {
   return matches[0];
 }
 
-function nextRevisionId(program, owner, role, reserved) {
+function nextRevisionId(program, owner, role, reserved, occupied) {
   let revision = 1;
   const prefix = `${owner}${role}Revision`;
   while (
-    hasDataset(program, `${prefix}${revision}`) ||
+    (occupied === undefined ? hasDataset(program, `${prefix}${revision}`) : occupied.has(`${prefix}${revision}`)) ||
     reserved.has(`${prefix}${revision}`)
   ) revision += 1;
   const id = `${prefix}${revision}`;
@@ -286,22 +287,29 @@ function directLayerConsumers(program, data) {
     .map(layer => layer.id);
 }
 
-export function applyRevisionPlan(program, resolved, plan, { retain = new Set() } = {}) {
+export function applyRevisionPlan(program, resolved, plan, { retain = new Set(), parameterBudget = false } = {}) {
   return withLogicalDataReplacements(plan.replacements, () =>
-    applyRevisionPlanWithIdentity(program, resolved, plan, { retain }));
+    applyRevisionPlanWithIdentity(program, resolved, plan, { retain, parameterBudget }));
 }
 
-function applyRevisionPlanWithIdentity(program, resolved, plan, { retain }) {
+function applyRevisionPlanWithIdentity(program, resolved, plan, { retain, parameterBudget }) {
   const root = plan.revisions[0];
   const changes = resolved === undefined ? new Map() : outputFieldChanges(
     resolved.dataset.transform[0],
     root.transform
   );
   let next = program;
+  let work = 0;
   for (const revision of plan.revisions) {
     if (revision.transform === undefined) continue;
     const policy = findTransformPolicy(revision.transform.type);
-    const identity = derivedIdentityBase(findDataset(next, revision.source), revision.id, findDataset(next, revision.old));
+    const source = findDataset(next, revision.source), previous = findDataset(next, revision.old);
+    if (parameterBudget) {
+      const complexity = revision.transform.type === "computed" ? policy.validate(previous.transform[0]) : 1;
+      work += (source.values?.length ?? 0) * complexity;
+      validateWorkLimit(work, "Parameter revision work");
+    }
+    const identity = derivedIdentityBase(source, revision.id, previous);
     next = withPreparedDatasetIdentity({
       id: revision.id,
       source: revision.source,
@@ -361,6 +369,65 @@ export function buildSourceRevisionPlan(program, source, id) {
   }, undefined, "recompute");
 }
 
+// Parameter edits can invalidate several roots of the same dataset DAG. Build
+// one union before allocating revisions so a shared lookup/diamond is replayed
+// once, after every changed input has been replaced.
+export function buildParameterRevisionPlan(program, parameterId, { sourceRevisions = [] } = {}) {
+  const datasets = program.semanticSpec.datasets;
+  const roots = datasets.filter(dataset => dataset.transform?.some(transform =>
+    transform.parameterInputs?.some(ref => ref.kind === "parameter" && ref.id === parameterId)));
+  const ordered = orderedDatasetClosure(datasets, [...roots.map(dataset => dataset.id), ...sourceRevisions.map(source => source.old)], {
+    skip: dataset => dataset.transform?.[0]?.type === "statisticalReference"
+  });
+  const owners = new Map(), occupied = new Set(datasets.map(dataset => dataset.id));
+  for (const [family, records] of Object.entries(program.materializationConfigs.data ?? {})) {
+    for (const [owner, config] of Object.entries(records)) {
+      if (typeof config?.current !== "string") continue;
+      occupied.add(owner);
+      const list = owners.get(config.current) ?? [];
+      list.push({ family, owner }); owners.set(config.current, list);
+    }
+  }
+  const revisions = [], replacements = new Map(), reserved = new Set(), raw = new Map();
+  for (const source of sourceRevisions) {
+    if (raw.has(source.old)) throw new Error(`Source dataset "${source.old}" has multiple revision owners.`);
+    const dataset = findDataset(program, source.old);
+    if (dataset?.source !== undefined || !Array.isArray(dataset?.values)) {
+      throw new Error(`Source "${source.old}" must be a materialized original dataset.`);
+    }
+    const id = source.id === undefined
+      ? nextRevisionId(program, source.owner, "Data", reserved, occupied)
+      : validateUserId(source.id, "Source revision dataset id");
+    if (source.id !== undefined) {
+      if (occupied.has(id) || reserved.has(id)) throw new Error(`Dataset "${id}" already exists.`);
+      reserved.add(id);
+    }
+    raw.set(source.old, { old: source.old, id });
+    replacements.set(source.old, id);
+  }
+  for (const dataset of ordered) {
+    if (raw.has(dataset.id)) {
+      revisions.push(raw.get(dataset.id));
+      continue;
+    }
+    if (dataset.transform?.length !== 1) throw new Error(`Dataset "${dataset.id}" requires one replayable transform.`);
+    const previous = dataset.transform[0], policy = findTransformPolicy(previous.type);
+    if (typeof policy?.materializeOp !== "string") throw new Error(`Dataset "${dataset.id}" has no replayable materializer.`);
+    const matches = owners.get(dataset.id) ?? [];
+    if (matches.length > 1) throw new Error(`Derived dataset "${dataset.id}" has ambiguous logical ownership.`);
+    const owner = matches[0];
+    const id = nextRevisionId(program, owner?.owner ?? dataset.id,
+      REVISION_ROLE[previous.type] ?? "DerivedData", reserved, occupied);
+    const transform = policy.replayTransform?.(previous) ?? previous;
+    revisions.push({ old: dataset.id, id,
+      source: replacements.get(dataset.source) ?? dataset.source,
+      transform: rebindTransformDatasetInputs(transform, replacements),
+      family: owner?.family, owner: owner?.owner });
+    replacements.set(dataset.id, id);
+  }
+  return { revisions, replacements };
+}
+
 function sameRequested(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
 }
@@ -408,7 +475,9 @@ export const editDerivedData = /* @__PURE__ */ closedAction(
       args.definition.type
     );
     const definition = resolveDatasetTransformInputs(this,requestedDatasetTransform(args.definition));
-    findTransformPolicy(definition.type).validate(definition);
+    findTransformPolicy(definition.type).validate(definition.type === "computed"
+      ? bindComputedTransform(this, findDataset(this, resolved.dataset.source), definition)
+      : definition);
     const previous = requestedDatasetTransform(resolved.dataset.transform[0]);
     if (sameRequested(definition, previous)) return this;
 

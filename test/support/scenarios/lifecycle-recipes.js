@@ -1,4 +1,4 @@
-import { chart, hconcat } from "../../../src/index.js";
+import { chart, hconcat, prepareDataUpdate } from "../../../src/index.js";
 
 import { loadZooDataset } from "../datasets/zoo.js";
 import {
@@ -9,6 +9,16 @@ import {
   realisticLifecycleRows,
   realisticSourceFields
 } from "./realistic-data.js";
+
+// Prepare once, then keep every recipe build synchronous on the exact immutable
+// receiver. This unused source fixture is separate from the chart's source rows.
+const preparedSourceBase = chart();
+const preparedSourceToken = "lifecycle-source";
+const preparedSource = await prepareDataUpdate(preparedSourceBase, {
+  kind: "create",
+  id: "unusedPreparedLifecycleSource",
+  source: { kind: "inline", values: [{ fixture: "prepared-source", value: 1 }] }
+}, { requestToken: preparedSourceToken });
 
 const CARTESIAN_CANVAS = Object.freeze({
   width: 920,
@@ -1025,6 +1035,24 @@ function addDirectDerivedDataEdits(program) {
   ];
   return program
     .createData({ id: "editSource", values })
+    .createParameter({ id: "computedOffset", type: "number", value: 1, nullable: false })
+    .createComputedData({
+      id: "parameterComputed",
+      source: "editSource",
+      as: "adjusted",
+      expression: {
+        version: 2,
+        registry: "standard@1",
+        root: {
+          type: "binary", op: "add",
+          left: { type: "field", name: "x" },
+          right: { type: "parameter", id: "computedOffset" }
+        }
+      }
+    })
+    .editParameter({ target: "computedOffset", value: 2 })
+    .createParameter({ id: "unusedLifecycleParameter", type: "boolean", value: null, nullable: true })
+    .removeParameter({ id: "unusedLifecycleParameter" })
     .createComputedData({
       id: "editComputed",
       source: "editSource",
@@ -1074,6 +1102,10 @@ function addDirectDerivedDataEdits(program) {
       target: "editSummary",
       aggregates: [{ op: "sum", field: "value", as: "summaryValue" }]
     })
+    .createPivotData({
+      id: "editPivot", source: "editSource", field: "category", value: "value", op: "sum"
+    })
+    .editPivotData({ target: "editPivot", op: "mean", groupBy: "group" })
     .createBinData({
       id: "editBin",
       source: "editSource",
@@ -1217,7 +1249,10 @@ function buildDirectDataResources(factors) {
   const bandwidth = factors.dataset.startsWith("tt-")
     ? spread * factors.bandwidth
     : factors.bandwidth;
-  let program = chart()
+  let program = preparedSourceBase.applyDataUpdate({
+    prepared: preparedSource,
+    requestToken: preparedSourceToken
+  })
     .createCanvas(cartesianCanvas(factors))
     .editCanvas({
       width,
@@ -2117,9 +2152,12 @@ function lifecycleSignature(base, factors) {
     "action-facet-grid-lifecycle": ["facetGrid", "editFacetSource"],
     "action-repeat-charts-lifecycle": ["repeatCharts"],
     "action-direct-data-resources": [
+      "applyDataUpdate",
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale",
       "removeData", "removeScale", "removeCoordinate",
-      "createNormalizedData", "createCompleteData", "createImputedData", "editDerivedData",
+      "createParameter", "editParameter", "removeParameter",
+      "createNormalizedData", "createCompleteData", "createImputedData",
+      "createPivotData", "editPivotData", "editDerivedData",
       "editComputedData", "editFilteredData", "editFoldData", "editSummaryData",
       "editBinData", "editTimeUnitData", "editWindowData", "createSortedData", "editSortedData", "editDensityData",
       "editStackData", "editRegressionData", "createRegressionStatisticsData", "editRegressionStatisticsData", "editIntervalData", "editECDFData",
@@ -2373,11 +2411,13 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
-  "reviseData", "applyTextMetrics", "removeTextMetrics",
+  "reviseData", "applyDataUpdate", "applyTextMetrics", "removeTextMetrics",
+  "createParameter", "editParameter", "removeParameter",
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createSortedData", "editSortedData",
   "createIntervalData", "createTickMark", "editTickMark", "removeMark",
   "createNormalizedData", "createCompleteData", "createImputedData",
+  "createPivotData", "editPivotData",
   "editDerivedData", "editComputedData", "editFilteredData", "editFoldData",
   "editSummaryData", "editBinData", "editTimeUnitData", "editWindowData",
   "editDensityData", "editStackData", "editRegressionData", "createRegressionStatisticsData", "editRegressionStatisticsData", "editIntervalData",

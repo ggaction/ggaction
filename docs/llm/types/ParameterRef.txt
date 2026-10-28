@@ -1,0 +1,1 @@
+export interface ParameterRef { readonly kind: "parameter"; readonly id: string; readonly revision: number; }

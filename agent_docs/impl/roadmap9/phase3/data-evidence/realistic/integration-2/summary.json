@@ -1,0 +1,38 @@
+{
+  "command": [
+    "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+    "scripts/run-tests.js",
+    "realistic"
+  ],
+  "code": 0,
+  "signal": null,
+  "node": "v22.23.1",
+  "environment": {
+    "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT": "/Users/hyeonjeon/Projects/ggactionnewbrand/.artifacts/datasets/tidytuesday"
+  },
+  "datasetCacheSha256": "c37892fb18c2a8d4fa19a071bc6d619c66a1d8d8777252c0ad1246fc3e6c34c4",
+  "startedAt": "2026-10-28T13:21:46.445Z",
+  "finishedAt": "2026-10-28T14:11:42.594Z",
+  "durationMs": 2996149,
+  "discoveredFiles": 29,
+  "counts": {
+    "tests": 275,
+    "suites": 0,
+    "pass": 275,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "duration_ms": 2994846.1325
+  },
+  "inputSha256Before": "6b3fe08f19201220366f2a6e2e40e36925c0d8389efe0567678919b6d102ddba",
+  "inputSha256After": "0fc62d35243d15749f5e1c343cb6074bb3fae073631db4ff6682a3354d664ffa",
+  "changedInputs": [
+    "scripts/run-tests.js",
+    "test/contracts/action-input-matrix.test.js",
+    "test/contracts/compact-task-resolver.test.js",
+    "test/contracts/test-discovery.test.js",
+    "scripts/qualify-expression.js"
+  ],
+  "logSha256": "ad613a52313ba9be7ddb5c61364f73491c6883af23f90c3829e2ed96a45f9faf"
+}

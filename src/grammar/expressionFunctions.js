@@ -1,4 +1,4 @@
-import { parseTimeValue } from "./parseTime.js";
+import { parseIsoOffsetValue, parseTimeValue } from "./parseTime.js";
 import { bucketTime, calendarParts, validateTimeZone } from "./timeUnit.js";
 import { array, checkType, charge, EXPRESSION_LIMITS, limit, missing, numericResult, operand, record, scalar, valueType } from "./expressionValues.js";
 
@@ -21,7 +21,7 @@ const descriptors = [
   { name: "timeFloor", min: 1, max: 1, inputs: ["number"], output: "number", options: "floor" }
 ];
 
-// The closed table is private until the public integration gates are approved.
+// Closed descriptors are shared by evaluation and read-only inspection.
 export const EXPRESSION_FUNCTIONS = Object.freeze(descriptors.map(descriptor => Object.freeze({
   ...descriptor, inputs: Object.freeze(descriptor.inputs)
 })));
@@ -83,21 +83,10 @@ function index(value) {
   return value;
 }
 
-function isoOffset(text) {
-  const match = /^(\d{4}|[+-]\d{6})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,3}))?(Z|[+-]\d{2}:\d{2})$/.exec(text);
-  if (!match) return null;
-  const [year, month, day, hour, minute, second] = match.slice(1, 7).map(Number);
-  if (match[1] === "-000000" || month < 1 || month > 12 || day < 1 || hour > 23 || minute > 59 || second > 59) return null;
-  const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
-  if (day > [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1]) return null;
-  if (match[8] !== "Z" && (Number(match[8].slice(1, 3)) > 23 || Number(match[8].slice(4)) > 59)) return null;
-  const result = Date.parse(text);
-  return Number.isFinite(result) ? result : null;
-}
 
 function timeResult(name, value, options, state) {
   if (name === "parseTime") {
-    const timestamp = options.format === "iso-offset" ? isoOffset(value) : parseTimeValue(value, options.format);
+    const timestamp = options.format === "iso-offset" ? parseIsoOffsetValue(value) : parseTimeValue(value, options.format);
     return timestamp === null ? missing(state, "dateRange") : timestamp;
   }
   const timestamp = new Date(value).getTime();

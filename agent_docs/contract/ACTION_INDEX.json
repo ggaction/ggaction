@@ -184,6 +184,24 @@
       }
     },
     {
+      "name": "applyDataUpdate",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Prepare another source or parameter revision; remove unused live sources through removeData",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "applydataupdate"
+      }
+    },
+    {
       "name": "reviseData",
       "layer": "user-facing",
       "domain": "core",
@@ -397,6 +415,60 @@
       "contract": {
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "createpivotdata"
+      }
+    },
+    {
+      "name": "createParameter",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Revise its value with `editParameter`; remove only when unreferenced with `removeParameter`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createparameter"
+      }
+    },
+    {
+      "name": "editParameter",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Atomically revises the scalar parameter and every dependent dataset and chart consumer",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editparameter"
+      }
+    },
+    {
+      "name": "removeParameter",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Removes one unreferenced scalar parameter",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "removeparameter"
       }
     },
     {

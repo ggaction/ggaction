@@ -3,7 +3,6 @@ import test from "node:test";
 import { evaluateExpressionV2 } from "../../../src/grammar/expressionEvaluate.js";
 import { normalizeExpressionV2 } from "../../../src/grammar/expressionAst.js";
 import { chart } from "../../../src/index.js";
-import * as inspection from "../../../src/inspection.js";
 import { summarizeArgs } from "../../../src/core/action.js";
 const literal = value => ({ type: "literal", value });
 const envelope = root => ({ version: 2, registry: "standard@1", root });
@@ -125,10 +124,9 @@ test("summaries handle deep plain data and avoid constructor getters or prototyp
   assert.doesNotThrow(() => summarizeArgs(deep));
 });
 
-test("private v2 core does not expose authoring or registry lookup prematurely", () => {
-  assert.equal(inspection.getExpressionFunctions, undefined);
+test("computed authoring keeps distinct v1 and v2 null semantics", () => {
   const program = chart().createData({ values: [{ x: 1 }] });
-  assert.throws(() => program.createComputedData({ id: "computed", as: "result", expression: envelope(literal(1)) }));
+  assert.deepEqual(program.createComputedData({ id: "computed", as: "result", expression: envelope(binary("eq", literal(null), literal(null))) }).semanticSpec.datasets.at(-1).values.map(row => row.result), [false]);
   assert.deepEqual(program.createComputedData({ id: "computed", as: "result", expression: { op: "eq", left: { constant: null }, right: { constant: null } } }).semanticSpec.datasets.at(-1).values.map(row => row.result), [true]);
 });
 

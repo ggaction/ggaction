@@ -1,0 +1,36 @@
+[
+  {
+    "label": "data-docs-build",
+    "command": "bundle",
+    "args": [
+      "exec",
+      "jekyll",
+      "build",
+      "--source",
+      "docs",
+      "--destination",
+      "_site",
+      "--baseurl",
+      "/ggaction"
+    ],
+    "code": 0
+  },
+  {
+    "label": "data-docs-built-links",
+    "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+    "args": [
+      "scripts/check-built-docs.js",
+      "_site"
+    ],
+    "code": 0
+  },
+  {
+    "label": "data-docs-browser",
+    "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+    "args": [
+      "scripts/test-built-docs.js",
+      "_site"
+    ],
+    "code": 0
+  }
+]

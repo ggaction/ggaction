@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 511_000, // Calendar completion: Node 22.23.1 measured 510544.
-  "ggaction/basic": 288_000, // Shared completion lineage: Node 22.23.1 measured 287705; authoring remains Full-only.
+  ggaction: 529_000, // Combined prepared source and statistical owners measured at 526996 gzip bytes.
+  "ggaction/basic": 307_000, // Combined create-only source and statistical owners measured at 304841 gzip bytes.
   "ggaction/svg": 25_000
 });
 

@@ -1,5 +1,5 @@
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  extends Omit<LegendOptions, "channels" | "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
   visible?: boolean;
   /** Body offset in pixels; auto resets. */
   itemsOffset?: { x?: number; y?: number } | "auto";

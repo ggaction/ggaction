@@ -1,0 +1,32 @@
+{
+  "label": "render-stage-2",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "scripts/test-artifact-gallery.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 14926,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T11:40:26.495Z",
+  "finishedAt": "2026-10-28T11:40:41.421Z",
+  "source": {
+    "available": true,
+    "commit": "8685719fb2937ef6653bd14cfabcc3edc7a4c701",
+    "clean": false,
+    "statusSha256": "6c1559b95810c58aef05f09c28b856a551acbf2ea4f899bce1a56babcbf0f2a6"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "8685719fb2937ef6653bd14cfabcc3edc7a4c701",
+    "clean": false,
+    "statusSha256": "6c1559b95810c58aef05f09c28b856a551acbf2ea4f899bce1a56babcbf0f2a6"
+  },
+  "logSha256": "0408e0bcc92bc65c9416f1cb733f5cb03d4a5850408cdb3cb1ea31eb2820e94b",
+  "bytes": 228,
+  "retainedBytes": 228,
+  "truncated": false
+}

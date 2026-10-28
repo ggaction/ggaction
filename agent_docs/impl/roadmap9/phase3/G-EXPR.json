@@ -38,10 +38,11 @@
     "machine-docs"
   ],
   "remaining": [],
-  "notice": "AST core 승인 완료. G-PARAM/G-DATA와 STEP-013 제품 통합은 별도 남은 의무다.",
+  "notice": "AST core 승인 및 public v2/parameter checkpoint 완료. G-DATA 최종 통합과 STEP-013 종료 검증은 STEP4.md에 기록한다.",
   "codeRevision": "c555ec14f36aa55ae5590ce2ac4f68d04df806fd",
   "evidenceRevision": "sha256:5bc064c9ba4c3a8a3383445af9e738fde8388f577164483b58f4e20fa9ce20a0",
   "evidenceManifest": "agent_docs/impl/roadmap9/phase3/preparation.json",
   "proposalSha256": "1699b6cea4847f92ccb2681af544a1b5311357fef591b37e710cc51f0590521b",
-  "implementationEvidence": "agent_docs/impl/roadmap9/phase3/core-implementation.json"
+  "implementationEvidence": "agent_docs/impl/roadmap9/phase3/core-implementation.json",
+  "publicIntegrationEvidence": "agent_docs/impl/roadmap9/phase3/product-implementation.json"
 }

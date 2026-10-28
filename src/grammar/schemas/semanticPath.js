@@ -50,7 +50,7 @@ const ENCODING_PATHS = Object.freeze([
 const ENTITY_PATHS = Object.freeze({
   dataset: {
     collection: "datasets",
-    properties: new Set(["source", "transform", "schema", "values"])
+    properties: new Set(["source", "transform", "schema", "sourceReceipt", "values"])
   },
   layer: {
     collection: "layers",

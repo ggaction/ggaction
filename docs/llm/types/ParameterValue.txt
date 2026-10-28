@@ -1,0 +1,1 @@
+export type ParameterValue = number | string | boolean | null;

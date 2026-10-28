@@ -29,6 +29,18 @@ import { findSemanticScale } from "./selectors/scales.js";
 import { findCoordinate } from "./selectors/coordinates.js";
 import { inferDatasetSchema } from "./grammar/datasetSchema.js";
 import { BUILTIN_ACTION_DESCRIPTOR_RECORDS } from "./inspectionDescriptors.js";
+import { EXPRESSION_FUNCTIONS } from "./grammar/expressionFunctions.js";
+import { ownRecord } from "./core/ownData.js";
+
+/** Read the immutable, closed expression registry without exposing execution. */
+export function getExpressionFunctions(options = {}) {
+  ownRecord(options, "Expression registry options");
+  if (Object.keys(options).some(key => key !== "registry") ||
+      (Object.hasOwn(options, "registry") && options.registry !== "standard@1")) {
+    throw new TypeError("Expression registry must be standard@1.");
+  }
+  return EXPRESSION_FUNCTIONS;
+}
 
 const KINDS = new Set(["data", "mark", "scale", "coordinate", "guide"]);
 const ACTION_DESCRIPTORS = new Map(BUILTIN_ACTION_DESCRIPTOR_RECORDS.map(

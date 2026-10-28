@@ -18,6 +18,7 @@ import {
   validateECDFTransform
 } from "./ecdf.js";
 import {
+  isExpressionV2,
   normalizeComputedTransform,
   validateComputedTransform
 } from "./computed.js";
@@ -85,12 +86,16 @@ const requestedDensityTransform = requestedTransform;
 function requestedComputedTransform(transform) {
   ownRecord(transform, "Computed transform");
   const { resolved: _resolved, ...requested } = transform;
-  validateComputedTransform(requested);
-  return cloneAndFreeze(requested);
+  if (!isExpressionV2(requested.expression) || Object.hasOwn(requested, "parameterInputs")) {
+    validateComputedTransform(requested);
+  } else if (Object.keys(requested).some(key => !["type", "as", "expression"].includes(key))) {
+    throw new TypeError("Computed transform has unknown properties.");
+  }
+  return normalizeComputedTransform({ as: requested.as, expression: requested.expression });
 }
 
 function requestedOptions(transform) {
-  const { type: _type, resolved: _resolved, ...options } = transform;
+  const { type: _type, resolved: _resolved, parameterInputs: _parameterInputs, ...options } = transform;
   return options;
 }
 

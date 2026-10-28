@@ -1,0 +1,5 @@
+export type DataSourceProvenance =
+  | { readonly parserVersion: "rows@1"; readonly format: "rows"; readonly contentHash: string; readonly hashKind: "encoded-rows" }
+  | { readonly parserVersion: "csv@1" | "json@1"; readonly format: "csv" | "json";
+      readonly contentHash: string; readonly hashKind: "utf8-bytes"; readonly mimeType: string;
+      readonly encoding: "utf-8"; readonly byteLength: number };

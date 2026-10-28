@@ -1,0 +1,32 @@
+{
+  "label": "data-docs-preflight",
+  "command": "node",
+  "args": [
+    "scripts/check-docs-environment.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 1324,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T13:17:40.924Z",
+  "finishedAt": "2026-10-28T13:17:42.250Z",
+  "source": {
+    "available": true,
+    "commit": "00c28e81cb5f7314d2714fd1803bbd6747fff91e",
+    "clean": false,
+    "statusSha256": "aa3e3ee45ad7054df8771e7aac26a550820a9b820afdc7233862342289818cb0"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "00c28e81cb5f7314d2714fd1803bbd6747fff91e",
+    "clean": false,
+    "statusSha256": "aa3e3ee45ad7054df8771e7aac26a550820a9b820afdc7233862342289818cb0"
+  },
+  "logSha256": "4264122012a6b28dea31f2560e823021bdb4c4da3a7f6db5a2c7e479fb8a3659",
+  "bytes": 181,
+  "retainedBytes": 181,
+  "truncated": false
+}

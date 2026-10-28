@@ -936,7 +936,7 @@ export interface DatasetFoldTransform {
   };
 }
 export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
-export type ComputedExpression =
+export type ComputedExpressionV1 =
   | { readonly field: string }
   | { readonly constant: number | string | boolean | null }
   | {
@@ -946,45 +946,66 @@ export type ComputedExpression =
     }
   | {
       readonly op: "replaceLiteral";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly search: string;
       readonly replacement: string;
     }
   | {
       readonly op: "datePart";
       readonly part: "year";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly timeZone?: string;
     }
   | {
       readonly op: "parseTime";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly format?: ParseTimeFormat;
     }
   | {
       readonly op: "negate" | "absolute" | "log" | "sqrt" | "floor" | "not" | "isNull" | "toNumber";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
     }
   | {
       readonly op: "add" | "subtract" | "multiply" | "divide" |
         "eq" | "neq" | "lt" | "lte" | "gt" | "gte";
-      readonly left: ComputedExpression;
-      readonly right: ComputedExpression;
+      readonly left: ComputedExpressionV1;
+      readonly right: ComputedExpressionV1;
     }
   | {
       readonly op: "and" | "or" | "coalesce";
-      readonly operands: readonly [ComputedExpression, ComputedExpression, ...ComputedExpression[]];
+      readonly operands: readonly [ComputedExpressionV1, ComputedExpressionV1, ...ComputedExpressionV1[]];
     }
   | {
       readonly op: "concat";
-      readonly operands: readonly [ComputedExpression, ...ComputedExpression[]];
+      readonly operands: readonly [ComputedExpressionV1, ...ComputedExpressionV1[]];
     }
   | {
       readonly op: "if";
-      readonly condition: ComputedExpression;
-      readonly then: ComputedExpression;
-      readonly else: ComputedExpression;
+      readonly condition: ComputedExpressionV1;
+      readonly then: ComputedExpressionV1;
+      readonly else: ComputedExpressionV1;
     };
+export type ExpressionNode =
+  | { readonly type: "literal"; readonly value: number | string | boolean | null }
+  | { readonly type: "field"; readonly name: string }
+  | { readonly type: "fieldPath"; readonly root: string; readonly path: readonly [string, ...string[]] }
+  | { readonly type: "parameter"; readonly id: string }
+  | { readonly type: "unary"; readonly op: "negate" | "not"; readonly operand: ExpressionNode }
+  | { readonly type: "binary"; readonly op: "add" | "subtract" | "multiply" | "divide" | "eq" | "neq" | "lt" | "lte" | "gt" | "gte" | "and" | "or"; readonly left: ExpressionNode; readonly right: ExpressionNode }
+  | { readonly type: "if"; readonly condition: ExpressionNode; readonly then: ExpressionNode; readonly else: ExpressionNode }
+  | ExpressionCall;
+export type ExpressionCall =
+  | { readonly type: "call"; readonly name: "abs" | "sqrt" | "log" | "exp" | "round" | "floor" | "ceil" | "min" | "max" | "pow" | "toNumber" | "lower" | "upper" | "length" | "substring" | "replace" | "concat" | "isNull" | "isMissing" | "isFinite" | "coalesce" | "arrayLength" | "at"; readonly args: readonly ExpressionNode[] }
+  | { readonly type: "call"; readonly name: "sin" | "cos" | "tan" | "atan2"; readonly args: readonly ExpressionNode[]; readonly options: { readonly angleUnit: "radians" | "degrees" } }
+  | { readonly type: "call"; readonly name: "parseTime"; readonly args: readonly ExpressionNode[]; readonly options: { readonly format: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso-offset" } }
+  | { readonly type: "call"; readonly name: "datePart"; readonly args: readonly ExpressionNode[]; readonly options: { readonly part: "year" | "quarter" | "month" | "day" | "weekday" | "hour" | "minute" | "second" | "millisecond"; readonly timeZone: string } }
+  | { readonly type: "call"; readonly name: "timeFloor"; readonly args: readonly ExpressionNode[]; readonly options: { readonly timeZone: string } & ({ readonly unit: "week"; readonly weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | { readonly unit: "year" | "quarter" | "month" | "day" | "hour" | "minute" | "second" }) };
+export interface ComputedExpressionV2 {
+  readonly version: 2;
+  readonly registry: "standard@1";
+  readonly root: ExpressionNode;
+}
+export type ComputedExpression = ComputedExpressionV1 | ComputedExpressionV2;
 export interface DatasetComputedTransform {
   readonly type: "computed";
   readonly as: string;
@@ -1406,7 +1427,111 @@ export interface RowLineage {
   readonly entries: readonly (readonly InputRowRef[])[];
   readonly rowRefs: readonly number[];
 }
-export type StoredResourceKind = "persistent-selection";
+export type ParameterType = "number" | "string" | "boolean";
+export type ParameterValue = number | string | boolean | null;
+type ParameterDefinition<T extends ParameterType, V> =
+  | { readonly type?: T; readonly value: V; readonly nullable?: boolean }
+  | { readonly type: T; readonly value: null; readonly nullable: true };
+export type CreateParameterOptions = { readonly id: string } & (
+  ParameterDefinition<"number", number> | ParameterDefinition<"string", string> | ParameterDefinition<"boolean", boolean>
+);
+export interface EditParameterOptions { readonly target: string; readonly value: ParameterValue; }
+export interface RemoveParameterOptions { readonly id: string; }
+export interface ParameterRef { readonly kind: "parameter"; readonly id: string; readonly revision: number; }
+export interface ParameterResource extends ParameterRef {
+  readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly [];
+  readonly options: { readonly type: ParameterType; readonly nullable: boolean };
+  readonly result: { readonly value: ParameterValue };
+  readonly provenance: { readonly origin: "authored" };
+}
+export type DataSourceValue = null | boolean | number | string
+  | readonly DataSourceValue[] | { readonly [key: string]: DataSourceValue };
+export type DataParseDirective =
+  | { readonly type: "string" | "number" | "boolean"; readonly nullable?: boolean; readonly format?: never; readonly timeZone?: never }
+  | { readonly type: "date"; readonly nullable?: boolean; readonly timeZone: string;
+      readonly format?: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso" };
+export type DataParse = Readonly<Record<string, DataParseDirective>>;
+type DataSourceParsing = { readonly parse?: DataParse; readonly schema?: SourceSchemaInput };
+type DataSourceFormat = { readonly format: "csv"; readonly delimiter?: string }
+  | { readonly format: "json"; readonly delimiter?: never };
+export type DataSource = DataSourceParsing & (
+  | { readonly kind: "inline"; readonly values: readonly Readonly<Record<string, DataSourceValue>>[];
+      readonly text?: never; readonly format?: never; readonly delimiter?: never }
+  | (DataSourceFormat & { readonly kind: "inline"; readonly text: string; readonly values?: never })
+  | (DataSourceFormat & { readonly kind: "url"; readonly url: string | ComputedExpressionV2 })
+  | (DataSourceFormat & { readonly kind: "named"; readonly name: string })
+);
+type DataSourceKeys =
+  | { readonly keyField?: never; readonly keyFields?: never }
+  | { readonly keyField: string; readonly keyFields?: never }
+  | { readonly keyField?: never; readonly keyFields: readonly string[] };
+export type CreateDataUpdateRequest = DataSourceKeys & {
+  readonly kind: "create"; readonly id: string; readonly source: DataSource;
+};
+export interface ReviseDataUpdateRequest {
+  readonly kind: "revise"; readonly target: string; readonly id: string;
+  readonly rowMap?: readonly (number | null)[];
+}
+export interface ParameterDataUpdateRequest {
+  readonly kind: "parameter"; readonly target: string; readonly value: ParameterValue;
+}
+export type DataUpdateRequest = CreateDataUpdateRequest | ReviseDataUpdateRequest | ParameterDataUpdateRequest;
+export type DataSourceResponse = { readonly encoding: "utf-8"; readonly mimeType: string } & (
+  | { readonly text: string; readonly bytes?: never }
+  | { readonly bytes: Uint8Array; readonly text?: never }
+);
+export interface DataUpdateHost {
+  /** Supply the application's current request token again when applying. */
+  readonly requestToken: string;
+  /** Absolute URL for resolving a newly created relative URL source. */
+  readonly baseURL?: string;
+  readonly signal?: AbortSignal;
+  readonly load?: (request: Readonly<{ url: string; signal?: AbortSignal }>) => DataSourceResponse | PromiseLike<DataSourceResponse>;
+  readonly resolveNamed?: (request: Readonly<{ name: string; signal?: AbortSignal }>) => DataSourceResponse | PromiseLike<DataSourceResponse>;
+}
+interface DataUpdateDescriptors {
+  create: { readonly kind: "create"; readonly id: string; readonly sourceKind: DataSource["kind"]; readonly format?: "csv" | "json" };
+  revise: { readonly kind: "revise"; readonly target: string; readonly id: string };
+  parameter: { readonly kind: "parameter"; readonly target: string };
+}
+declare const preparedDataUpdate: unique symbol;
+/** Opaque preparation evidence. Only prepareDataUpdate can create a valid handle. */
+export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly [preparedDataUpdate]: Kind;
+  readonly kind: "data-update";
+  readonly request: DataUpdateDescriptors[Kind];
+}
+export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly prepared: PreparedDataUpdate<Kind>;
+  readonly requestToken: string;
+}
+export type DataSourceProvenance =
+  | { readonly parserVersion: "rows@1"; readonly format: "rows"; readonly contentHash: string; readonly hashKind: "encoded-rows" }
+  | { readonly parserVersion: "csv@1" | "json@1"; readonly format: "csv" | "json";
+      readonly contentHash: string; readonly hashKind: "utf8-bytes"; readonly mimeType: string;
+      readonly encoding: "utf-8"; readonly byteLength: number };
+export interface DataSourceReceipt {
+  readonly sourceId: string;
+  readonly parsing: { readonly parse: DataParse; readonly format?: "csv" | "json";
+    readonly delimiter?: string; readonly schema?: SourceSchemaInput };
+  readonly resolvedURL?: string;
+  readonly name?: string;
+  readonly original: { readonly kind: "text"; readonly text: string }
+    | { readonly kind: "rows"; readonly values: readonly Readonly<Record<string, DataSourceValue>>[] };
+  readonly provenance: DataSourceProvenance;
+}
+export interface DataSourceResource {
+  readonly kind: "data-source"; readonly id: string; readonly revision: number;
+  readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly ParameterRef[];
+  readonly options: DataSourceKeys & { readonly source: DataSource; readonly baseURL?: string };
+  readonly result: { readonly data: Extract<InputRef, { readonly kind: "data" }>; readonly inputHash: string };
+  readonly provenance: { readonly origin: "authored" };
+}
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source";
 export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
   | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
 export interface PersistentSelectionResource {
@@ -1429,6 +1554,7 @@ export interface SemanticDataset {
   readonly rowKeys?: readonly string[];
   readonly nextGeneratedKey?: number;
   readonly lineage?: RowLineage;
+  readonly sourceReceipt?: DataSourceReceipt;
   readonly schema: DatasetSchema;
   readonly values?: readonly Readonly<Record<string, unknown>>[];
   readonly source?: string;
@@ -1537,7 +1663,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly PersistentSelectionResource[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -5306,7 +5432,7 @@ export interface LegendTitleStyleEditOptions extends Omit<LegendTitleStyleOption
 export interface LegendLabelEditStyle extends LegendTextOptions { visible?: boolean; }
 export interface LegendTitleEditStyle extends LegendTitleStyleEditOptions { visible?: boolean; }
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  extends Omit<LegendOptions, "channels" | "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
   visible?: boolean;
   /** Body offset in pixels; auto resets. */
   itemsOffset?: { x?: number; y?: number } | "auto";
@@ -5536,6 +5662,7 @@ export class ChartProgram {
   applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
+  applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -5556,6 +5683,9 @@ export class ChartProgram {
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
   createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
+  createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
+  removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
   createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;
   createCompleteData(options: TargetedOptions<CompleteDataOptions>): ChartProgram;

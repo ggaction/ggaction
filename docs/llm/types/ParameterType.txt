@@ -1,0 +1,1 @@
+export type ParameterType = "number" | "string" | "boolean";

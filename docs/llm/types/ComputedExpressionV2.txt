@@ -1,0 +1,5 @@
+export interface ComputedExpressionV2 {
+  readonly version: 2;
+  readonly registry: "standard@1";
+  readonly root: ExpressionNode;
+}

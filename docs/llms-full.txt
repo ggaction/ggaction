@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:b15ddfa6ac0a004b1f95e6e96483019398667ead1564bc9b62743058c3b33319. Status: development. Runtime source: 982c53a2587d5747b0865e6f68f47ee79a13fd27. Release baseline: v0.0.13.
+Contract: sha256:40ba83f1722b03c6c309334ccf013fc94a37d861a49d5dd55402dfbbb3c56f94. Status: development. Runtime source: b84b54b536bfb3c282dc6301d72e105aea665e35. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/982c53a2587d5747b0865e6f68f47ee79a13fd27/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/b84b54b536bfb3c282dc6301d72e105aea665e35/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/982c53a2587d5747b0865e6f68f47ee79a13fd27/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/b84b54b536bfb3c282dc6301d72e105aea665e35/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4231,6 +4231,9 @@ all dependent marks and guides are validated and updated together. It does not
 expose the Full `editScale`, focused scale editors, or legend editors. Use Full
 for scale-type transitions, or create a new scale ID in Basic. See
 [Encoding reassignment](./api/encodings/#reassign-an-existing-encoding).
+Basic also supports `createParameter` and `createComputedData`, including explicit
+version 2 expressions. Parameter editing/removal and derived-data editing remain
+Full actions. [Expressions and parameters](./api/data/expressions-and-normalization/)
 
 ## Shared behavior
 
@@ -4944,6 +4947,7 @@ operation; marks and renderers never mutate source values.
 | Family | Actions | Use |
 | --- | --- | --- |
 | [Source and derived data](./api/data/source-and-derived/) | `createData`, `createDerivedData` | Store source rows or explicit transform provenance |
+| [Prepared sources](./api/data/source-and-derived/#prepared-data-updates) | `prepareDataUpdate`, `applyDataUpdate` | Prepare CSV/JSON or named data, then apply an immutable update |
 | [Safe resource removal](./api/data/revisions-and-removal/#removedata-id) | `removeData` | Delete one named dataset only after all live consumers are gone |
 | [Reusable summaries](./api/data/summaries-and-shaping/#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./api/data/summaries-and-shaping/#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
@@ -5048,6 +5052,96 @@ field names requires a runtime that supports these source keys.
 The most recently created dataset becomes the default for `createPointMark`,
 `createLineMark`, or `createBarMark`. Creating data records semantic state only
 and produces no graphics.
+
+## Prepared data updates {#prepared-data-updates}
+
+`prepareDataUpdate(program, request, host)` is an asynchronous chart-authoring
+helper exported by `ggaction` and `ggaction/basic`. It prepares data without
+changing the program. `program.applyDataUpdate({ prepared, requestToken })`
+applies its opaque result synchronously to that exact program instance.
+
+| Request | Fields | Availability |
+| --- | --- | --- |
+| Create | `{ kind: "create", id, source, keyField?, keyFields? }` | Full and Basic |
+| Refresh | `{ kind: "revise", target, id, rowMap? }` | Full |
+| Parameter change | `{ kind: "parameter", target, value }` | Full |
+
+Create requires a fresh explicit dataset ID and creates a source binding with
+the same ID. Refresh targets that binding and needs a fresh snapshot ID.
+Parameter changes load every affected URL source and update the combined
+source/computed dependency graph once. The existing parameter type and
+nullability remain fixed. Same-value parameter updates load nothing.
+
+Choose one source shape:
+
+| Source | Required fields | Optional fields |
+| --- | --- | --- |
+| Inline rows | `{ kind: "inline", values }` | `parse`, `schema` |
+| Inline text | `{ kind: "inline", text, format }` | `delimiter`, `parse`, `schema` |
+| Named text | `{ kind: "named", name, format }` | `delimiter`, `parse`, `schema` |
+| URL text | `{ kind: "url", url, format }` | `delimiter`, `parse`, `schema` |
+
+Formats are `"csv"` and `"json"`. CSV defaults to a comma and accepts a single
+nonquote, nonnewline delimiter. It supports quoted cells, doubled quotes and
+embedded newlines, with unique nonempty headers and consistent row widths.
+JSON must contain an array of plain row objects. Source rows accept finite JSON
+values, including nested arrays/objects; executable values, undefined, bigint,
+Date objects, cycles, accessors and reserved prototype keys are rejected.
+
+`parse` maps field names to `{ type, nullable? }`, with types `string`, `number`,
+`boolean`, and `date`. Nullable defaults to false. Numeric parsing accepts finite
+decimal and exponent forms; boolean text must be exactly `"true"` or `"false"`.
+Dates require an explicit `timeZone` (`"UTC"` or an IANA name). Their optional
+`format` is `%Y-%m-%d` (default), `%d/%m/%Y`, `%m/%d/%Y`, or `iso`. Dates become
+epoch milliseconds. Invalid calendar dates and ambiguous or nonexistent local
+times fail. Optional `schema` uses the closed source schema above; empty parsed
+data keeps declared or typed field meaning.
+
+A URL can be a string or a `ComputedExpressionV2` using scalar parameters from
+the same unit. Field access is unavailable in URL expressions. Every branch is
+validated; the selected result must be a nonempty string. Relative URLs require
+an absolute `host.baseURL`. A binding retains its base URL for later refreshes.
+
+The host object requires a nonempty string `requestToken`. It may also provide
+`baseURL`, an `AbortSignal` as `signal`, and these callbacks:
+
+| Host callback | Input | Result |
+| --- | --- | --- |
+| `load` | `{ url, signal? }` | CSV/JSON payload or a promise for it |
+| `resolveNamed` | `{ name, signal? }` | CSV/JSON payload or a promise for it |
+
+A payload contains exactly one of `text` or `bytes` (`Uint8Array`), plus
+`mimeType` and `encoding: "utf-8"`. CSV accepts `text/csv` or `application/csv`;
+JSON accepts `application/json` or `application/*+json`. A UTF-8 charset parameter
+is accepted. Invalid Unicode, MIME/format mismatches, and other encodings fail.
+The library never invokes fetch automatically and does not unwrap a Response.
+
+Choose at most one key policy, `keyField` or ordered `keyFields`. Generated keys
+are the default. Explicit key arrays are unavailable for prepared sources.
+Refresh preserves a field/tuple key policy. For generated keys, optional
+`rowMap` follows [the source revision rules](./api/data/revisions-and-removal/).
+
+All source requests are validated before loading starts. Results may arrive in
+any order; application waits for all of them. A failed load, parse, key mapping
+or consumer update preserves the original program and its trace. Aborted,
+forged, copied or serialized handles cannot be applied. Applying to a different
+program instance or with a different token reports `stale-result`.
+
+Use the application's **current program and current request token** when applying.
+An old immutable program is a valid intentional branch; the library cannot
+observe which variable the application considers current. See the complete
+[refresh workflow](./data-updates/#prepare-and-apply-source-data).
+
+Full snapshots retain original received text/rows and parsing receipts for
+offline restoration. Old snapshots preserve their historical receipts. Restore
+validates stored data without loading or evaluating URL expressions. Canvas,
+SVG, PNG, PDF and scenes continue to use concrete graphics only.
+
+Facet/repeat updates rebuild their retained source and existing recipe. For
+concat, prepare and apply in an explicit child, then replace that child. A live
+source is a consumer of its URL parameters, so removing those parameters is
+restricted until the binding is gone. Direct manual row revisions detach the
+binding as described in [data revisions](./api/data/revisions-and-removal/).
 
 ## `createDerivedData({ id, source, transform })` {#create-derived-data}
 
@@ -16192,10 +16286,63 @@ dependent chart, or rebuild a program from application-owned rows.
 
 | Change | Action or workflow | Prerequisite |
 | --- | --- | --- |
+| CSV/JSON, named, or URL data | `prepareDataUpdate` then `applyDataUpdate` | Explicit host loader and current request token |
 | New rows with compatible fields | `reviseData({ source, id, values })` | Existing source ID and fresh revision ID; dependent transforms remain valid |
 | Field names, types, or chart topology change | Rebuild from application-owned rows | Update affected encodings and transform definitions together |
 | Transform parameters change | The owning `edit*Data` action | Existing logical transform ID and valid options |
 | One mark should use independent data | `createData` then the mark's data editor | Explicit target and a compatible replacement schema |
+
+## Prepare and apply source data {#prepare-and-apply-source-data}
+
+This complete ES module prepares inline CSV, builds a chart, and refreshes its
+source. The host supplies text explicitly; the same callback boundary can load
+application-owned files or network responses.
+
+```javascript
+import { chart, prepareDataUpdate } from "ggaction";
+
+let program = chart();
+let currentToken = "initial";
+const initial = await prepareDataUpdate(program, {
+  kind: "create", id: "sales", keyField: "quarter",
+  source: {
+    kind: "named", name: "sales-table", format: "csv",
+    parse: { revenue: { type: "number" } }
+  }
+}, {
+  requestToken: currentToken,
+  resolveNamed: () => ({ text: "quarter,revenue\nQ1,12", mimeType: "text/csv", encoding: "utf-8" })
+});
+program = program.applyDataUpdate({ prepared: initial, requestToken: currentToken })
+  .createCanvas()
+  .createBarPlot({ data: "sales", x: "quarter", y: "revenue", guides: false });
+
+async function refreshSales(text, token, snapshotId) {
+  currentToken = token;
+  const prepared = await prepareDataUpdate(program, {
+    kind: "revise", target: "sales", id: snapshotId
+  }, {
+    requestToken: token,
+    resolveNamed: () => ({ text, mimeType: "text/csv", encoding: "utf-8" })
+  });
+  program = program.applyDataUpdate({ prepared, requestToken: currentToken });
+}
+
+await refreshSales("quarter,revenue\nQ1,15\nQ2,20", "refresh-1", "salesUpdated");
+```
+
+Each request uses a fresh application token and snapshot ID. The final line of
+`refreshSales` reads the current variables after awaiting. If another request
+or chart action has advanced them, the older result fails instead of replacing
+the latest chart. Catch that failure in the host when stale requests are expected.
+
+Full supports source refresh and parameter requests; Basic supports creation.
+A parameter request has `{ kind: "parameter", target, value }` and refreshes
+all URL sources that use it together with their computed consumers. The host
+must supply `load` for URL data and `resolveNamed` for named data. URL response
+bytes are never fetched implicitly. See the
+[prepared data reference](./api/data/source-and-derived/#prepared-data-updates)
+for parsing, callback payloads, keys, abort and scope rules.
 
 ## Revise a source and its dependent chart
 
@@ -16388,6 +16535,11 @@ Compound paths, explicit fill rules and path owner clips round-trip unchanged in
 current editable and graphic snapshots. Legacy editable versions 1–3 retain
 their historical single-subpath grammar and reject these newer features.
 Older runtimes are not forward-compatible with the extended concrete grammar.
+Parameter resources and version 2 expressions also require editable schema 4.
+Restoration checks their scalar types, expression fields, and exact parameter
+revision vectors without evaluating expressions or making resource requests.
+Malformed, missing, duplicate, extra, and stale parameter inputs reject; legacy
+versions 1–3 cannot carry these newer parameter or expression payloads.
 `packageVersion` records the producer version; `schemaVersion` determines the
 format. Other schema versions are rejected. `extensions` contains the exact
 registered extension names required by the editable action traces, including
@@ -16492,6 +16644,22 @@ physical revision. The result reports the resolved ID and normalized schema.
 `completeness: "unknown"` means the library cannot prove field availability;
 it is different from a known schema whose `fields` array is empty. Use
 `childPath` to address a dataset inside a composition.
+
+## Expression functions
+
+`getExpressionFunctions({ registry? })` reads the immutable closed expression
+registry without a program or evaluator. The default and only supported registry
+is `standard@1`. Each descriptor provides `name`, minimum/maximum argument counts
+(`min`/`max`), input and output types, and any option family. Unknown registry names,
+unknown options, and an explicitly undefined registry reject.
+
+Import `getExpressionFunctions` from `ggaction/inspection`, then call
+`getExpressionFunctions().find(item => item.name === "sqrt")`. The descriptor
+has `min: 1`, `max: 1`, `inputs: ["number"]`, and `output: "number"`.
+
+[Version 2 expressions](./api/data/expressions-and-normalization/#version-2-expressions)
+use these names. Computed calculation reports include their registry, evaluated and
+missing row counts, numeric failure counts, and exact parameter input revisions.
 
 ## Preflight an action
 
@@ -17312,6 +17480,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 | Action | Authoring role | API layer | Domain |
 | --- | --- | --- | --- |
+| [`applyDataUpdate`](./reference/actions/charts-data/#applydataupdate) | H3 | user-facing | core |
 | [`applyTextMetrics`](./reference/actions/charts-data/#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](./reference/actions/charts-data/#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](./reference/actions/charts-data/#bindmarkdata) | H2 | user-facing | core |
@@ -17366,6 +17535,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createParallelAxes`](./reference/actions/guides/#createparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](./reference/actions/guides/#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](./reference/actions/charts-data/#createparallelcoordinates) | H0 | user-facing | charts |
+| [`createParameter`](./reference/actions/charts-data/#createparameter) | H2 | user-facing | core |
 | [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | H0 | user-facing | charts |
 | [`createPivotData`](./reference/actions/statistics/#createpivotdata) | H1 | user-facing | statistics |
 | [`createPointMark`](./reference/actions/marks/#createpointmark) | H2 | user-facing | marks |
@@ -17479,6 +17649,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editOverlay`](./reference/actions/marks/#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](./reference/actions/guides/#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./reference/actions/charts-data/#editparallelscale) | H2 | user-facing | core |
+| [`editParameter`](./reference/actions/charts-data/#editparameter) | H3 | user-facing | core |
 | [`editPivotData`](./reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editRadarPlot`](./reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
@@ -17596,6 +17767,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeMarkSelection`](./reference/actions/advanced/#removemarkselection) | H3 | advanced | mark-selection |
 | [`removeParallelAxes`](./reference/actions/guides/#removeparallelaxes) | H3 | user-facing | axes |
 | [`removeParallelAxis`](./reference/actions/guides/#removeparallelaxis) | H3 | user-facing | axes |
+| [`removeParameter`](./reference/actions/charts-data/#removeparameter) | H3 | user-facing | core |
 | [`removePathOrder`](./reference/actions/encodings/#removepathorder) | H2, H3 | user-facing | encodings |
 | [`removePointPacking`](./reference/actions/marks/#removepointpacking) | H3 | user-facing | marks |
 | [`removePointRadius`](./reference/actions/encodings/#removepointradius) | H2, H3 | user-facing | encodings |
@@ -17912,6 +18084,41 @@ createData({ id?, values })
 
 Create one immutable named dataset. [Data](./api/data/)
 
+## `applyDataUpdate`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
+```
+
+Named option contracts: [`ApplyDataUpdateOptions`](./reference/types/#type-applydataupdateoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedDataUpdate<"create" \| "parameter" \| "revise">` |
+| `requestToken` | Required | `string` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+applyDataUpdate({ prepared, requestToken })
+```
+
+Apply an opaque result of `await prepareDataUpdate(program, request, host)` to
+its exact immutable base with the application's current request token. Full
+supports creating, refreshing, and parameter-dependent source updates; Basic
+supports creation. Hosts provide explicit CSV/JSON loaders. All source and
+computed consumers update atomically. See the
+[prepared data reference](./api/data/source-and-derived/#prepared-data-updates)
+and [refresh workflow](./data-updates/#prepare-and-apply-source-data).
+
 ## `reviseData`
 
 **API layer:** user-facing. **Authoring roles:** H3.
@@ -18115,6 +18322,101 @@ filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })
 Create an immutable named derived dataset using exactly one membership,
 comparison, or range filter. The source defaults to current data.
 [Data](./api/data/)
+
+## `createParameter`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateParameterOptions`](./reference/types/#type-createparameteroptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `type` | Optional / branch-dependent | `"boolean" \| "number" \| "string" \| undefined` |
+| `value` | Required | `string \| number \| boolean \| null` |
+| `nullable` | Optional / branch-dependent | `boolean \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createParameter({ id, value, type?, nullable? })
+```
+
+Create a named number, string, or boolean input for version 2 computed expressions.
+A null initial value requires an explicit type and `nullable: true`.
+Available in Full and Basic. [Parameters](./api/data/expressions-and-normalization/#parameters)
+
+## `editParameter`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditParameterOptions`](./reference/types/#type-editparameteroptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
+| `value` | Required | `ParameterValue` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editParameter({ target, value })
+```
+
+Atomically revise a parameter value, dependent datasets, and their chart consumers.
+Type and nullability remain fixed. Available in Full.
+[Parameters](./api/data/expressions-and-normalization/#parameters)
+
+## `removeParameter`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`RemoveParameterOptions`](./reference/types/#type-removeparameteroptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+removeParameter({ id })
+```
+
+Remove an existing parameter only after all stored references have been removed.
+Available in Full. [Parameters](./api/data/expressions-and-normalization/#parameters)
 
 ## `createDensityData`
 
@@ -24704,9 +25006,9 @@ The following call patterns are abbreviated examples; the declaration above owns
 createComputedData({ id, source?, as, expression })
 ```
 
-Materialize a typed primitive or null field from a serializable, closed
-expression, including explicit nested scalar `getPath` and first-occurrence
-`replaceLiteral` operations. [Source and Derived Data](./api/data/source-and-derived/#createcomputeddata-id-source-as-expression)
+Materialize a scalar field from a serializable, closed v1 or explicit v2
+expression. Version 2 adds named parameter inputs, a closed function registry,
+and missing-value diagnostics while preserving existing v1 behavior. [Source and Derived Data](./api/data/source-and-derived/#createcomputeddata-id-source-as-expression)
 
 ## `createNormalizedData`
 
@@ -29655,8 +29957,14 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](./types/index.d.ts)
 
 ```typescript
+export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
-import type { ChartProgram, CompositionOptions } from "./program.js";
+export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
+  ReviseDataUpdateRequest, ParameterDataUpdateRequest, DataUpdateRequest, DataSourceResponse,
+  DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions, DataSourceProvenance,
+  DataSourceReceipt, DataSourceResource } from "./program.js";
+import type { ChartProgram, CompositionOptions, DataUpdateRequest, CreateDataUpdateRequest,
+  ReviseDataUpdateRequest, ParameterDataUpdateRequest, DataUpdateHost, PreparedDataUpdate } from "./program.js";
 
 export type {
   CreateOverlayOptions,
@@ -30136,6 +30444,10 @@ export type {
 } from "./program.js";
 
 export function chart(): ChartProgram;
+export function prepareDataUpdate(program: ChartProgram, request: CreateDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"create">>;
+export function prepareDataUpdate(program: ChartProgram, request: ReviseDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"revise">>;
+export function prepareDataUpdate(program: ChartProgram, request: ParameterDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"parameter">>;
+export function prepareDataUpdate(program: ChartProgram, request: DataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate>;
 export function hconcat(options: CompositionOptions): ChartProgram;
 export function vconcat(options: CompositionOptions): ChartProgram;
 export function render(
@@ -30150,8 +30462,13 @@ export function render(
 [Complete declaration and relative dependencies](./types/basic.d.ts)
 
 ```typescript
+export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./program.js";
-import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget } from "./program.js";
+export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
+  DataSourceResponse, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions,
+  DataSourceProvenance, DataSourceReceipt, DataSourceResource } from "./program.js";
+import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget,
+  CreateDataUpdateRequest, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions } from "./program.js";
 
 export type {
   LinearNiceCountOptions,
@@ -30225,6 +30542,8 @@ type BasicMethodKey =
   | "applyTheme"
   | "removeTheme"
   | "createData"
+  | "createParameter"
+  | "createComputedData"
   | "createFlattenData"
   | "createLookupData"
   | "createPointMark"
@@ -30279,9 +30598,13 @@ export type BasicChartProgram =
   Pick<ChartProgram, BasicStateKey> &
   { readonly [Key in Exclude<BasicMethodKey, "createData">]: RebindMethod<ChartProgram[Key]> } &
   { createData<Row extends object>(options: CreateDataOptions<Row>): BasicChartProgram } &
+  { applyDataUpdate(options: ApplyDataUpdateOptions<"create">): BasicChartProgram } &
   { readonly layoutSeries: (options: BasicSeriesLayoutOptions) => BasicChartProgram };
 
 export function chart(): BasicChartProgram;
+export function prepareDataUpdate(
+  program: BasicChartProgram, request: CreateDataUpdateRequest, host: DataUpdateHost
+): Promise<PreparedDataUpdate<"create">>;
 export function render(
   program: Pick<BasicChartProgram, "graphicSpec">,
   context: CanvasRenderingContext2D,
@@ -30564,6 +30887,16 @@ export interface MarkItemInspection {
   readonly bounds: Readonly<{left:number;top:number;right:number;bottom:number}> | null;
 }
 export function getMarkItems(program: ProgramInput, options?: {target?: string | {childPath?:readonly string[];id:string};grain?:"item"|"stack"}): readonly MarkItemInspection[];
+export interface ExpressionFunctionDescriptor {
+  readonly name: import("./program.js").ExpressionCall["name"];
+  readonly min: number;
+  readonly max: number;
+  readonly inputs: readonly ("number" | "string" | "boolean" | "array")[];
+  readonly output: "number" | "string" | "boolean" | "unknown";
+  readonly options?: "angle" | "parse" | "part" | "floor";
+  readonly lazy?: true;
+}
+export function getExpressionFunctions(options?: { readonly registry?: "standard@1" }): readonly ExpressionFunctionDescriptor[];
 ```
 
 #### `ggaction/scene`
@@ -30654,6 +30987,7 @@ interface ChartProgramActions {
   applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
+  applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -30674,6 +31008,9 @@ interface ChartProgramActions {
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
   createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
+  createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
+  removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
   createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;
   createCompleteData(options: TargetedOptions<CompleteDataOptions>): ChartProgram;
@@ -31101,6 +31438,19 @@ type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "t
 ```
 
 Related types: [`TextMarkOptions`](./reference/types/#type-textmarkoptions) · [`TextFormat`](./reference/types/#type-textformat) · [`LabelLayoutOptions`](./reference/types/#type-labellayoutoptions).
+
+### `ApplyDataUpdateOptions` {#type-applydataupdateoptions}
+
+ Expand ApplyDataUpdateOptions
+
+```typescript
+export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly prepared: PreparedDataUpdate<Kind>;
+  readonly requestToken: string;
+}
+```
+
+Related types: [`DataUpdateRequest`](./reference/types/#type-dataupdaterequest) · [`PreparedDataUpdate`](./reference/types/#type-prepareddataupdate).
 
 ### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
 
@@ -32648,7 +32998,17 @@ Related types: [`ComputedExpression`](./reference/types/#type-computedexpression
  Expand ComputedExpression
 
 ```typescript
-export type ComputedExpression =
+export type ComputedExpression = ComputedExpressionV1 | ComputedExpressionV2;
+```
+
+Related types: [`ComputedExpressionV1`](./reference/types/#type-computedexpressionv1) · [`ComputedExpressionV2`](./reference/types/#type-computedexpressionv2).
+
+### `ComputedExpressionV1` {#type-computedexpressionv1}
+
+ Expand ComputedExpressionV1
+
+```typescript
+export type ComputedExpressionV1 =
   | { readonly field: string }
   | { readonly constant: number | string | boolean | null }
   | {
@@ -32658,48 +33018,62 @@ export type ComputedExpression =
     }
   | {
       readonly op: "replaceLiteral";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly search: string;
       readonly replacement: string;
     }
   | {
       readonly op: "datePart";
       readonly part: "year";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly timeZone?: string;
     }
   | {
       readonly op: "parseTime";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly format?: ParseTimeFormat;
     }
   | {
       readonly op: "negate" | "absolute" | "log" | "sqrt" | "floor" | "not" | "isNull" | "toNumber";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
     }
   | {
       readonly op: "add" | "subtract" | "multiply" | "divide" |
         "eq" | "neq" | "lt" | "lte" | "gt" | "gte";
-      readonly left: ComputedExpression;
-      readonly right: ComputedExpression;
+      readonly left: ComputedExpressionV1;
+      readonly right: ComputedExpressionV1;
     }
   | {
       readonly op: "and" | "or" | "coalesce";
-      readonly operands: readonly [ComputedExpression, ComputedExpression, ...ComputedExpression[]];
+      readonly operands: readonly [ComputedExpressionV1, ComputedExpressionV1, ...ComputedExpressionV1[]];
     }
   | {
       readonly op: "concat";
-      readonly operands: readonly [ComputedExpression, ...ComputedExpression[]];
+      readonly operands: readonly [ComputedExpressionV1, ...ComputedExpressionV1[]];
     }
   | {
       readonly op: "if";
-      readonly condition: ComputedExpression;
-      readonly then: ComputedExpression;
-      readonly else: ComputedExpression;
+      readonly condition: ComputedExpressionV1;
+      readonly then: ComputedExpressionV1;
+      readonly else: ComputedExpressionV1;
     };
 ```
 
 Related types: [`ParseTimeFormat`](./reference/types/#type-parsetimeformat).
+
+### `ComputedExpressionV2` {#type-computedexpressionv2}
+
+ Expand ComputedExpressionV2
+
+```typescript
+export interface ComputedExpressionV2 {
+  readonly version: 2;
+  readonly registry: "standard@1";
+  readonly root: ExpressionNode;
+}
+```
+
+Related types: [`ExpressionNode`](./reference/types/#type-expressionnode).
 
 ### `ConfidenceIntervalMethod` {#type-confidenceintervalmethod}
 
@@ -32959,6 +33333,18 @@ export type CreateDataOptions<Row extends object> = DataKeyOptions & {
 ```
 
 Related types: [`DataKeyOptions`](./reference/types/#type-datakeyoptions) · [`StoredCell`](./reference/types/#type-storedcell) · [`SourceSchemaInput`](./reference/types/#type-sourceschemainput).
+
+### `CreateDataUpdateRequest` {#type-createdataupdaterequest}
+
+ Expand CreateDataUpdateRequest
+
+```typescript
+export type CreateDataUpdateRequest = DataSourceKeys & {
+  readonly kind: "create"; readonly id: string; readonly source: DataSource;
+};
+```
+
+Related types: [`DataSourceKeys`](./reference/types/#type-datasourcekeys) · [`DataSource`](./reference/types/#type-datasource).
 
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
@@ -33297,6 +33683,18 @@ export interface CreateParallelCoordinatesOptions {
 ```
 
 Related types: [`ParallelDimension`](./reference/types/#type-paralleldimension) · [`ParallelMissingPolicy`](./reference/types/#type-parallelmissingpolicy) · [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`NonCartesianStrokeDashChannel`](./reference/types/#type-noncartesianstrokedashchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ParallelGuideOptions`](./reference/types/#type-parallelguideoptions).
+
+### `CreateParameterOptions` {#type-createparameteroptions}
+
+ Expand CreateParameterOptions
+
+```typescript
+export type CreateParameterOptions = { readonly id: string } & (
+  ParameterDefinition<"number", number> | ParameterDefinition<"string", string> | ParameterDefinition<"boolean", boolean>
+);
+```
+
+Related types: [`ParameterDefinition`](./reference/types/#type-parameterdefinition).
 
 ### `CreatePiePlotOptions` {#type-createpieplotoptions}
 
@@ -33807,6 +34205,108 @@ export type DataKeyOptions =
 ```
 
 Related types: [`RowKey`](./reference/types/#type-rowkey).
+
+### `DataParse` {#type-dataparse}
+
+ Expand DataParse
+
+```typescript
+export type DataParse = Readonly<Record<string, DataParseDirective>>;
+```
+
+Related types: [`DataParseDirective`](./reference/types/#type-dataparsedirective).
+
+### `DataParseDirective` {#type-dataparsedirective}
+
+ Expand DataParseDirective
+
+```typescript
+export type DataParseDirective =
+  | { readonly type: "string" | "number" | "boolean"; readonly nullable?: boolean; readonly format?: never; readonly timeZone?: never }
+  | { readonly type: "date"; readonly nullable?: boolean; readonly timeZone: string;
+      readonly format?: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso" };
+```
+
+### `DataSource` {#type-datasource}
+
+ Expand DataSource
+
+```typescript
+export type DataSource = DataSourceParsing & (
+  | { readonly kind: "inline"; readonly values: readonly Readonly<Record<string, DataSourceValue>>[];
+      readonly text?: never; readonly format?: never; readonly delimiter?: never }
+  | (DataSourceFormat & { readonly kind: "inline"; readonly text: string; readonly values?: never })
+  | (DataSourceFormat & { readonly kind: "url"; readonly url: string | ComputedExpressionV2 })
+  | (DataSourceFormat & { readonly kind: "named"; readonly name: string })
+);
+```
+
+Related types: [`DataSourceParsing`](./reference/types/#type-datasourceparsing) · [`DataSourceValue`](./reference/types/#type-datasourcevalue) · [`DataSourceFormat`](./reference/types/#type-datasourceformat) · [`ComputedExpressionV2`](./reference/types/#type-computedexpressionv2).
+
+### `DataSourceFormat` {#type-datasourceformat}
+
+ Expand DataSourceFormat
+
+```typescript
+type DataSourceFormat = { readonly format: "csv"; readonly delimiter?: string }
+  | { readonly format: "json"; readonly delimiter?: never };
+```
+
+### `DataSourceKeys` {#type-datasourcekeys}
+
+ Expand DataSourceKeys
+
+```typescript
+type DataSourceKeys =
+  | { readonly keyField?: never; readonly keyFields?: never }
+  | { readonly keyField: string; readonly keyFields?: never }
+  | { readonly keyField?: never; readonly keyFields: readonly string[] };
+```
+
+### `DataSourceParsing` {#type-datasourceparsing}
+
+ Expand DataSourceParsing
+
+```typescript
+type DataSourceParsing = { readonly parse?: DataParse; readonly schema?: SourceSchemaInput };
+```
+
+Related types: [`DataParse`](./reference/types/#type-dataparse) · [`SourceSchemaInput`](./reference/types/#type-sourceschemainput).
+
+### `DataSourceValue` {#type-datasourcevalue}
+
+ Expand DataSourceValue
+
+```typescript
+export type DataSourceValue = null | boolean | number | string
+  | readonly DataSourceValue[] | { readonly [key: string]: DataSourceValue };
+```
+
+### `DataUpdateDescriptors` {#type-dataupdatedescriptors}
+
+ Expand DataUpdateDescriptors
+
+```typescript
+interface DataUpdateDescriptors {
+  create: { readonly kind: "create"; readonly id: string; readonly sourceKind: DataSource["kind"]; readonly format?: "csv" | "json" };
+  revise: { readonly kind: "revise"; readonly target: string; readonly id: string };
+  parameter: { readonly kind: "parameter"; readonly target: string };
+}
+declare const preparedDataUpdate: unique symbol;
+/** Opaque preparation evidence. Only prepareDataUpdate can create a valid handle. */
+```
+
+Related types: [`DataSource`](./reference/types/#type-datasource).
+
+### `DataUpdateRequest` {#type-dataupdaterequest}
+
+ Expand DataUpdateRequest
+
+```typescript
+export type DataUpdateRequest = CreateDataUpdateRequest | ReviseDataUpdateRequest | ParameterDataUpdateRequest;
+```
+
+Related types: [`CreateDataUpdateRequest`](./reference/types/#type-createdataupdaterequest) · [`ReviseDataUpdateRequest`](./reference/types/#type-revisedataupdaterequest) · [`ParameterDataUpdateRequest`](./reference/types/#type-parameterdataupdaterequest).
 
 ### `DatasetBin2DOutputFields` {#type-datasetbin2doutputfields}
 
@@ -35541,7 +36041,7 @@ Related types: [`LegendChannel`](./reference/types/#type-legendchannel).
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  extends Omit<LegendOptions, "channels" | "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
   visible?: boolean;
   /** Body offset in pixels; auto resets. */
   itemsOffset?: { x?: number; y?: number } | "auto";
@@ -35716,6 +36216,16 @@ export type EditParallelScaleOptions = {
 ```
 
 Related types: [`WithoutScaleId`](./reference/types/#type-withoutscaleid) · [`QuantitativePositionScaleOptions`](./reference/types/#type-quantitativepositionscaleoptions) · [`CategoricalPositionScaleOptions`](./reference/types/#type-categoricalpositionscaleoptions).
+
+### `EditParameterOptions` {#type-editparameteroptions}
+
+ Expand EditParameterOptions
+
+```typescript
+export interface EditParameterOptions { readonly target: string; readonly value: ParameterValue; }
+```
+
+Related types: [`ParameterValue`](./reference/types/#type-parametervalue).
 
 ### `EditPivotDataOptions` {#type-editpivotdataoptions}
 
@@ -36487,6 +36997,39 @@ type ExistingSizeScaleEditPatch = {
   exponent?: number;
 };
 ```
+
+### `ExpressionCall` {#type-expressioncall}
+
+ Expand ExpressionCall
+
+```typescript
+export type ExpressionCall =
+  | { readonly type: "call"; readonly name: "abs" | "sqrt" | "log" | "exp" | "round" | "floor" | "ceil" | "min" | "max" | "pow" | "toNumber" | "lower" | "upper" | "length" | "substring" | "replace" | "concat" | "isNull" | "isMissing" | "isFinite" | "coalesce" | "arrayLength" | "at"; readonly args: readonly ExpressionNode[] }
+  | { readonly type: "call"; readonly name: "sin" | "cos" | "tan" | "atan2"; readonly args: readonly ExpressionNode[]; readonly options: { readonly angleUnit: "radians" | "degrees" } }
+  | { readonly type: "call"; readonly name: "parseTime"; readonly args: readonly ExpressionNode[]; readonly options: { readonly format: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso-offset" } }
+  | { readonly type: "call"; readonly name: "datePart"; readonly args: readonly ExpressionNode[]; readonly options: { readonly part: "year" | "quarter" | "month" | "day" | "weekday" | "hour" | "minute" | "second" | "millisecond"; readonly timeZone: string } }
+  | { readonly type: "call"; readonly name: "timeFloor"; readonly args: readonly ExpressionNode[]; readonly options: { readonly timeZone: string } & ({ readonly unit: "week"; readonly weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | { readonly unit: "year" | "quarter" | "month" | "day" | "hour" | "minute" | "second" }) };
+```
+
+Related types: [`ExpressionNode`](./reference/types/#type-expressionnode).
+
+### `ExpressionNode` {#type-expressionnode}
+
+ Expand ExpressionNode
+
+```typescript
+export type ExpressionNode =
+  | { readonly type: "literal"; readonly value: number | string | boolean | null }
+  | { readonly type: "field"; readonly name: string }
+  | { readonly type: "fieldPath"; readonly root: string; readonly path: readonly [string, ...string[]] }
+  | { readonly type: "parameter"; readonly id: string }
+  | { readonly type: "unary"; readonly op: "negate" | "not"; readonly operand: ExpressionNode }
+  | { readonly type: "binary"; readonly op: "add" | "subtract" | "multiply" | "divide" | "eq" | "neq" | "lt" | "lte" | "gt" | "gte" | "and" | "or"; readonly left: ExpressionNode; readonly right: ExpressionNode }
+  | { readonly type: "if"; readonly condition: ExpressionNode; readonly then: ExpressionNode; readonly else: ExpressionNode }
+  | ExpressionCall;
+```
+
+Related types: [`ExpressionCall`](./reference/types/#type-expressioncall).
 
 ### `FacadePositionChannel` {#type-facadepositionchannel}
 
@@ -38838,6 +39381,46 @@ Related types: [`PathLegendOptions`](./reference/types/#type-pathlegendoptions) 
 export type ParallelMissingPolicy = "break" | "drop-row" | "error";
 ```
 
+### `ParameterDataUpdateRequest` {#type-parameterdataupdaterequest}
+
+ Expand ParameterDataUpdateRequest
+
+```typescript
+export interface ParameterDataUpdateRequest {
+  readonly kind: "parameter"; readonly target: string; readonly value: ParameterValue;
+}
+```
+
+Related types: [`ParameterValue`](./reference/types/#type-parametervalue).
+
+### `ParameterDefinition` {#type-parameterdefinition}
+
+ Expand ParameterDefinition
+
+```typescript
+type ParameterDefinition<T extends ParameterType, V> =
+  | { readonly type?: T; readonly value: V; readonly nullable?: boolean }
+  | { readonly type: T; readonly value: null; readonly nullable: true };
+```
+
+Related types: [`ParameterType`](./reference/types/#type-parametertype).
+
+### `ParameterType` {#type-parametertype}
+
+ Expand ParameterType
+
+```typescript
+export type ParameterType = "number" | "string" | "boolean";
+```
+
+### `ParameterValue` {#type-parametervalue}
+
+ Expand ParameterValue
+
+```typescript
+export type ParameterValue = number | string | boolean | null;
+```
+
 ### `ParameterizedAggregateOperation` {#type-parameterizedaggregateoperation}
 
  Expand ParameterizedAggregateOperation
@@ -39399,6 +39982,20 @@ export interface PreGriddedHeatmapOptions extends HeatmapBaseOptions {
 ```
 
 Related types: [`HeatmapBaseOptions`](./reference/types/#type-heatmapbaseoptions) · [`HeatmapCategoryPositionChannel`](./reference/types/#type-heatmapcategorypositionchannel) · [`RectColorChannel`](./reference/types/#type-rectcolorchannel).
+
+### `PreparedDataUpdate` {#type-prepareddataupdate}
+
+ Expand PreparedDataUpdate
+
+```typescript
+export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly [preparedDataUpdate]: Kind;
+  readonly kind: "data-update";
+  readonly request: DataUpdateDescriptors[Kind];
+}
+```
+
+Related types: [`DataUpdateRequest`](./reference/types/#type-dataupdaterequest) · [`DataUpdateDescriptors`](./reference/types/#type-dataupdatedescriptors).
 
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
@@ -40189,6 +40786,14 @@ export interface RemoveMarkSelectionOptions {
 export interface RemoveParallelAxisOptions { field: string; target?: string; }
 ```
 
+### `RemoveParameterOptions` {#type-removeparameteroptions}
+
+ Expand RemoveParameterOptions
+
+```typescript
+export interface RemoveParameterOptions { readonly id: string; }
+```
+
 ### `RemovePathOrderOptions` {#type-removepathorderoptions}
 
  Expand RemovePathOrderOptions
@@ -40302,6 +40907,17 @@ export type ReviseDataOptions<Row extends object> = ({ keys?: never; rowMap?: re
 ```
 
 Related types: [`RowKey`](./reference/types/#type-rowkey) · [`StoredCell`](./reference/types/#type-storedcell) · [`SourceSchemaInput`](./reference/types/#type-sourceschemainput).
+
+### `ReviseDataUpdateRequest` {#type-revisedataupdaterequest}
+
+ Expand ReviseDataUpdateRequest
+
+```typescript
+export interface ReviseDataUpdateRequest {
+  readonly kind: "revise"; readonly target: string; readonly id: string;
+  readonly rowMap?: readonly (number | null)[];
+}
+```
 
 ### `RotationInput` {#type-rotationinput}
 
@@ -42368,12 +42984,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/982c53a2587d5747b0865e6f68f47ee79a13fd27/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b84b54b536bfb3c282dc6301d72e105aea665e35/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/982c53a2587d5747b0865e6f68f47ee79a13fd27/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b84b54b536bfb3c282dc6301d72e105aea665e35/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -42796,7 +43412,9 @@ the same complete normalized lookup definition. See [data revisions](./api/data/
 
 ## `createComputedData({ id, source?, as, expression })` {#createcomputeddata-id-source-as-expression}
 
-Add a typed primitive or null field to every source row with a serializable formula:
+Add a scalar field to every source row with a serializable formula. Full and Basic
+support both existing v1 expressions and [explicit v2 expressions](./api/data/expressions-and-normalization/#version-2-expressions).
+The following legacy syntax and rules describe v1:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -42874,6 +43492,116 @@ Arithmetic remains finite and strictly numeric. Other operations do not coerce
 types. Undefined scalar cells normalize to null; ordinary field references still reject missing row keys. The explicit `getPath` missing-root policy above applies only to that operation.
 Non-null results must have one primitive type across all rows. Expressions are
 bounded to depth 16 and 128 nodes, with at most 10,000,000 row-nodes.
+
+## Version 2 expressions
+
+Choose `expression: { version: 2, registry: "standard@1", root }` explicitly.
+The existing v1 syntax retains its results, limits, and errors. Version 2 uses
+eight node kinds:
+
+| Node | Shape |
+| --- | --- |
+| Literal | `{ type: "literal", value }` |
+| Literal field name | `{ type: "field", name }` |
+| Nested field | `{ type: "fieldPath", root, path }` |
+| Named scalar input | `{ type: "parameter", id }` |
+| Unary operation | `{ type: "unary", op, operand }` |
+| Binary operation | `{ type: "binary", op, left, right }` |
+| Conditional | `{ type: "if", condition, then, else }` |
+| Registry function | `{ type: "call", name, args, options? }` |
+
+Unary operations are `negate` and `not`. Binary operations are `add`, `subtract`,
+`multiply`, `divide`, `eq`, `neq`, `lt`, `lte`, `gt`, `gte`, `and`, and `or`.
+The closed function registry covers numeric, string, array, and calendar
+operations. Use [getExpressionFunctions](./inspection/#expression-functions)
+to inspect names, argument limits, input/output types, and option families.
+Trigonometric calls require `options.angleUnit` (`radians` or `degrees`).
+`parseTime` requires an explicit `format` (`%Y-%m-%d`, `%d/%m/%Y`, `%m/%d/%Y`,
+or `iso-offset`). `datePart` requires `part` and `timeZone`; `timeFloor` requires
+`unit` and `timeZone`, plus `weekStartsOn` from 0 (Sunday) to 6 for a week.
+
+Every branch is validated before evaluation, including inactive references and
+known field types. `if`, `and`, `or`, and `coalesce` evaluate only their selected
+values. Conditions require booleans. A field name containing dots remains one
+literal column name; `fieldPath` traverses up to eight own record keys and
+produces missing when an optional path is absent.
+
+Missing (`undefined`) and `null` remain distinct. Nullish arithmetic and numeric
+domain failures produce missing; nullish comparisons return false. Invalid operand
+types still reject the complete action. Computed outputs must have one scalar
+type among non-null, non-missing values. Materialization reports include evaluated
+and missing row counts plus numeric/domain/bounds diagnostics; read them through
+[program inspection](./inspection/). No invalid source row is silently removed.
+
+Version 2 limits depth to 64, nodes to 4,096, arguments per call to 64, and
+row-node work to 10,000,000. Strings have at most 1,048,576 UTF-16 units,
+arrays at most 100,000 elements, and cumulative value work at most 10,000,000.
+Callback functions, source strings, regular expressions, custom registries,
+getters, and executable objects are unsupported.
+
+## Parameters
+
+`createParameter({ id, value, type?, nullable? })` creates a named scalar input.
+The ID is required. Type is inferred from a non-null number, string, or boolean;
+numbers must be finite. The default `nullable` is false. To start at null, supply
+both the intended `type` and `nullable: true`. Zero, negative zero, false, and
+an empty string remain valid values. Undefined, objects, arrays, and Date values
+are invalid; convert dates to epoch milliseconds explicitly when needed.
+
+This complete ES module creates a computed column, then updates its parameter:
+
+> **Executable complete.** Run this standalone ES module; all data and imports are included. Both immutable programs own a Canvas and materialized point chart.
+
+```javascript
+import { chart } from "ggaction";
+
+const original = chart().createCanvas()
+  .createData({ id: "sales", values: [{ amount: 10 }, { amount: 20 }] })
+  .createParameter({ id: "factor", value: 2 })
+  .createComputedData({
+    id: "adjusted", as: "adjustedAmount",
+    expression: {
+      version: 2, registry: "standard@1",
+      root: {
+        type: "binary", op: "multiply",
+        left: { type: "field", name: "amount" },
+        right: { type: "parameter", id: "factor" }
+      }
+    }
+  })
+  .createScatterPlot({ id: "points", data: "adjusted", x: "amount", y: "adjustedAmount" });
+const updated = original.editParameter({ target: "factor", value: 3 });
+console.log(original.semanticSpec.datasets.at(-1).values.map(row => row.adjustedAmount)); // [20, 40]
+console.log(updated.semanticSpec.datasets.at(-1).values.map(row => row.adjustedAmount)); // [30, 60]
+```
+
+`editParameter({ target, value })` preserves the parameter's type and nullability.
+An edit has a total work limit of 10,000,000 input row operations across its
+dependent transforms; computed transforms count one operation per AST node per
+input row. The count uses the new rows after filtering. Exceeding the limit rejects
+the edit and preserves the earlier program.
+It revises all dependent datasets and chart consumers atomically, including shared
+lookup dependencies, scales, guides, and highlights. Unrelated branches stay shared.
+An unchanged value preserves revisions; negative zero and zero are distinct edits.
+A failed computation or consumer validation leaves the original program unchanged.
+
+If a parameter is used by a live data source URL, a changed value requires
+[`prepareDataUpdate` and `applyDataUpdate`](./api/data/source-and-derived/#prepared-data-updates).
+A direct changed-value `editParameter` reports `prepared-data-required`.
+An unchanged value still needs no loading or revision. The prepared path updates
+all affected source tables and computed consumers together.
+
+`removeParameter({ id })` requires an existing, unreferenced parameter. Remove or
+rewrite every consuming expression first; retained datasets also count as references.
+Deletion has no cascade or force mode. Creation and v2 computed creation are available
+in Full and Basic; parameter editing and removal require Full.
+
+Parameters belong to one unit. Use an explicit `childPath` when editing a concat
+child. Facet and repeated-chart parent edits update their retained source and
+rebuild the dependent children. [Editable snapshots](./data-updates/#save-and-restore-snapshots)
+preserve the parameter values and exact revisions without rerunning expressions
+when restored. Earlier runtimes reject snapshots containing unsupported parameter
+or expression versions.
 
 ## `createNormalizedData({ id, source?, field, as, groupBy?, method, ... })` {#createnormalizeddata-id-source-field-as-groupby-method}
 
@@ -43073,6 +43801,13 @@ contains its old row index or `null` for a new row. The array must match the new
 row count and cannot repeat old indices. Keyed sources reject `rowMap`.
 Independent branches allocate distinct identities for new rows. Earlier
 programs remain unchanged, and invalid mappings reject the whole revision.
+
+For a live source created with `prepareDataUpdate`, use a prepared `revise`
+request to reload its URL or name while retaining that binding. A direct
+`reviseData` call with application-owned rows detaches the live binding after
+consumer validation succeeds. The original snapshot retains its receipt; the
+new rows are not recorded as a response from the old URL. An unused live output
+can be removed with `removeData`, which also removes its binding.
 
 ## Editing derived data {#editing-derived-data}
 
@@ -43669,6 +44404,11 @@ See the [runnable grid example](https://github.com/ggaction/ggaction/tree/b8f966
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
+
+`repeatCharts` accepts direct materialized lookup and computed datasets as well as
+ordinary source data. It changes the selected encoding field without rewriting
+expressions or lookup inputs. A parent `editParameter` rebuilds repeated children
+from the retained source when a repeated computed field depends on that parameter.
 
 `repeatCharts` compares several fields without copying the complete unit recipe:
 
@@ -45277,11 +46017,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:b15ddfa6ac0a004b1f95e6e96483019398667ead1564bc9b62743058c3b33319` |
+| Contract fingerprint | `sha256:40ba83f1722b03c6c309334ccf013fc94a37d861a49d5dd55402dfbbb3c56f94` |
 | Example and dataset source | `b8f9668133b278974c9cfe7324402a18282c9f4b` |
-| Runtime source commit | `982c53a2587d5747b0865e6f68f47ee79a13fd27` |
+| Runtime source commit | `b84b54b536bfb3c282dc6301d72e105aea665e35` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 300 |
+| Declared actions here | 304 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
