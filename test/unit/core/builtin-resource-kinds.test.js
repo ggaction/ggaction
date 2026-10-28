@@ -4,7 +4,8 @@ import { ChartProgram } from "../../../src/ChartProgram.js";
 import { chart as basicChart } from "../../../src/basic.js";
 import { chart } from "../../../src/index.js";
 import { registerBuiltinResourceKinds, getBuiltinResourceKindHandler } from "../../../src/materialization/resourceKinds.js";
-import { validateStoredResource, validateResourceGraph, prepareResourceResult, validatePreparedResource } from "../../../src/materialization/resourceState.js";
+import { validateStoredResource, validateResourceGraph, prepareResourceResult, validatePreparedResource, planStoredResourceRemoval } from "../../../src/materialization/resourceState.js";
+import { collectResourceReferences } from "../../../src/core/resourceReferences.js";
 import { validateProgramState } from "../../../src/persistence/validation.js";
 import { deserializeProgram, serializeProgram } from "../../../src/persistence.js";
 import { encodeValue, decodeValue } from "../../../src/persistence/codec.js";
@@ -124,4 +125,43 @@ test("common envelope and provenance validation precede builtin handler calls", 
   assert.equal(calls, 0);
   validateStoredResource(resource(), Program);
   assert.equal(calls, 1);
+});
+
+test("typed mark references rebind with their resource atomically and keep kind namespaces distinct", () => {
+  class Program extends ChartProgram {}
+  registerBuiltinResourceKinds(Program, { image: handler(), layout: handler() });
+  const image = { ...resource("shared"), kind: "image" }, layout = { ...resource("shared"), kind: "layout" };
+  const resources = put(put(new Program(), image), layout);
+  const before = resources._clone({ semanticSpec: { ...resources.semanticSpec, layers: [
+    { id: "photo", mark: { type: "image" }, image: { kind: "image", id: "shared", revision: 0 } },
+    { id: "tree", mark: { type: "tree" }, hierarchyBinding: { layout: { kind: "layout", id: "shared", revision: 0 } } }
+  ] } });
+  validateResourceGraph(before);
+  const after = put(before, { ...image, revision: 1 });
+  assert.equal(after.semanticSpec.layers[0].image.revision, 1);
+  assert.equal(after.semanticSpec.layers[1].hierarchyBinding.layout.revision, 0);
+  assert.equal(before.semanticSpec.layers[0].image.revision, 0);
+  assert.equal(after.graphicSpec, before.graphicSpec);
+  assert.deepEqual(collectResourceReferences(after, { kind: "image", id: "shared" }).map(ref => [ref.ownerId, ref.path]), [["photo", ["image"]]]);
+  const revisedLayout = put(after, { ...layout, revision: 1 });
+  assert.equal(revisedLayout.semanticSpec.layers[1].hierarchyBinding.layout.revision, 1);
+  assert.equal(revisedLayout.semanticSpec.layers[0].image.revision, 1);
+  assert.throws(() => planStoredResourceRemoval(after, image), /live mark/);
+  assert.throws(() => after.editSemantic({ property: "resource[image:shared]", remove: true }), /live mark/);
+});
+
+test("typed mark references reject missing, wrong-kind and stale bindings before builtin callbacks", () => {
+  class Program extends ChartProgram {}
+  let calls = 0;
+  registerBuiltinResourceKinds(Program, { image: { validateStored() {}, validateBindings() { calls++; } } });
+  const base = put(new Program(), { ...resource(), kind: "image" }), count = calls;
+  const refs = [{ kind: "image", id: "absent", revision: 0 }, { kind: "image", id: "model", revision: 1 },
+    { kind: "layout", id: "model", revision: 0 }, { kind: "image", id: "model", revision: 0, extra: true }];
+  for (const ref of refs) {
+    const malformed = base._clone({ semanticSpec: { ...base.semanticSpec, layers: [{ id: "photo", mark: { type: "image" }, image: ref }] } });
+    assert.throws(() => validateResourceGraph(malformed));
+  }
+  const stale = base._clone({ semanticSpec: { ...base.semanticSpec, layers: [{ id: "photo", mark: { type: "image" }, image: refs[1] }] } });
+  assert.throws(() => put(stale, { ...resource(), kind: "image", revision: 1 }), /stale/);
+  assert.equal(calls, count);
 });

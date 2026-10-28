@@ -53,6 +53,7 @@ import { resolveTextOffsetDataset } from "../grammar/text.js";
 import { isPlainObject } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
 import { collectAllResourceReferences } from "../core/resourceReferences.js";
+import { STORED_RESOURCE_KINDS } from "../core/resourceReference.js";
 import { requiredTraceExtension } from "../core/extensionRegistry.js";
 import { resolveDatasetReference } from "../selectors/datasets.js";
 import { normalizeMarkSelector, validateRowSelectionDataset } from "../grammar/markSelection.js";
@@ -572,6 +573,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
   validateConditionalDependencies(program);
   for (const reference of collectAllResourceReferences(program)) {
     if (reference.kind === "data") resolveDatasetReference(program, reference.id);
+    else if (STORED_RESOURCE_KINDS.includes(reference.kind)) requireStoredResource(program, reference);
     else if (!resources.get(reference.kind)?.has(reference.id)) {
       throw invalidSnapshot(`Unknown ${reference.kind} "${reference.id}" referenced by ${reference.ownerKind} "${reference.ownerId}".`, path);
     }

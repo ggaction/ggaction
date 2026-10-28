@@ -1,6 +1,6 @@
-import { annotateError } from "../core/diagnostics.js";
-import { validateUserId } from "../core/identifiers.js";
-import { ownRecord } from "../core/ownData.js";
+import { annotateError } from "./diagnostics.js";
+import { validateUserId } from "./identifiers.js";
+import { ownRecord } from "./ownData.js";
 
 export const BUILTIN_RESOURCE_KINDS = Object.freeze(["hierarchy", "layout", "image"]);
 export const STORED_RESOURCE_KINDS = Object.freeze(["persistent-selection", "parameter", "data-source", ...BUILTIN_RESOURCE_KINDS]);

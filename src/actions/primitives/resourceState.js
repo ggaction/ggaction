@@ -6,6 +6,7 @@ import { validateResourceGraph, validateStoredResource, resourceDependencies, or
 import { dataSourceValueHash } from "../../grammar/dataSourcePayload.js";
 import { dataSourcesForDataset, validateDataSourceState } from "../../materialization/dataSourceState.js";
 import { preparedSourceResources } from "./dataSourceContext.js";
+import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 
 const same = (a, b) => a.kind === b.kind && a.id === b.id;
 
@@ -59,7 +60,12 @@ export function replaceStoredResource(program, parsed, value, args) {
   }
   if (replacements.size) throw annotateError(new Error("Prepared source replacement is missing from the resource graph."), { code: "stale-result" });
   const resources = supplied.map(resource => updated.get(JSON.stringify([resource.kind, resource.id])));
-  const semanticSpec = { ...program.semanticSpec, resources: cloneAndFreeze(resources) };
+  const layers = mapLayerResourceBindings(program.semanticSpec.layers, ref => {
+    const revision = revisions.get(JSON.stringify([ref.kind, ref.id]));
+    if (revision !== undefined) resolveInputReference(program, ref);
+    return revision === undefined || revision === ref.revision ? ref : { ...ref, revision };
+  });
+  const semanticSpec = { ...program.semanticSpec, resources: cloneAndFreeze(resources), layers: cloneAndFreeze(layers) };
   validateResourceGraph({ ...program, semanticSpec }, program.constructor);
   const selections = program.materializationConfigs.selections;
   const rebound = selections === undefined ? undefined : Object.fromEntries(Object.entries(selections).map(([id, definition]) => {

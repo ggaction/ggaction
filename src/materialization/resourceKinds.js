@@ -1,5 +1,5 @@
 import { ownRecord } from "../core/ownData.js";
-import { BUILTIN_RESOURCE_KINDS } from "../grammar/resourceReference.js";
+import { BUILTIN_RESOURCE_KINDS } from "../core/resourceReference.js";
 
 const handlersByClass = new WeakMap();
 

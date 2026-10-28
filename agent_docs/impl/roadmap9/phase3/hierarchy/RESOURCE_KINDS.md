@@ -42,3 +42,25 @@ global/critical floors는 유지하고 registry에95/90/100 floor를 추가했�
 - 같은 minified bytes의 Full/Basic/SVG 최대gzip535,560/313,517/8,185bytes는 기존
   537,000/315,000/25,000 한도 안이며 변경하지 않았다. TarSHA는 세 runtime에서 같다.
 - Raw measurement와 테스트 로그는 이 기록의 `resource-kinds-evidence`에 보존한다.
+
+## Typed layer binding 체크포인트
+
+- [x] image와 hierarchyBinding.layout의 typed ref 수집·revision rebind·graph/restore 검증
+- [x] 같은 id의 서로 다른 kind 분리, stale/wrong-kind/extra-field 거부, live mark 삭제 제한
+
+`core/resourceReference.js`로 exact ref owner를 이동하고 기존 grammar 경로는 제거했다.
+`core/resourceReferences.js`의 닫힌 descriptor를 수집·rebind가 공유한다. Primitive는 기존 ref를
+먼저 확인하고 변경 resource 및 layer ref를 한 candidate에 저장한다. Graphic spec은 변경하지
+않으며 domain action이 명시적으로 materialize한다. Generic graph validator가 handler 실행 전에
+layer reference의 모양·kind·현재 revision을 확인한다. 삭제 시 live mark가 남으면 거부한다.
+공개 action이나 kind 지원 선언은 아직 확장하지 않는다.
+
+- Core/resource/persistence 회귀72/72, boundary/coverage/package contracts17/17 통과.
+- Focused coverage40/40: 새 core ref owner100/100/100, 기존 resourceReferences95.42/89.10/90.70.
+  기존 core floor80/75/80 및 global/critical floor를 유지했다.
+- 동일 staging의 Node20.20.2/22.23.1/24.22.1 측정은739entries, unpacked5,059,006,
+  packed최대1,098,660bytes. Packed 한도는 유지하고 unpacked만5,060,000으로 최소 조정했다.
+- 같은 minified bytes의 Full/Basic/SVG 최대gzip535,875/313,870/8,185bytes는 기존 한도 안이다.
+- 최초 collector 확장 후 parameter ref를 일반 resource map으로 찾던 persistence 회귀 실패를
+  exact stored-resource selector 분기로 고쳤다. 실패와 최종 통과 로그 및 측정을
+  `resource-bindings-evidence`에 구분해 보존한다.
