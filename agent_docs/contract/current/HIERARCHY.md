@@ -142,3 +142,5 @@ Authored hierarchy/layout dependent와 live hierarchy plot은 먼저 명시적�
 - ✅ Covered: explicit and inferred identity, closed options, immutable lifecycle, exact references, stored validation and dependent concrete output.
 - Evidence: `test/unit/resources/hierarchy-resources.test.js`, `test/unit/resources/hierarchy-plots.test.js`, `test/unit/resources/hierarchy-consumers.test.js`, `test/unit/resources/hierarchy-validation.test.js`, `test/contracts/hierarchy-types.test.js`, `test/charts/tree-layouts/public.test.js`, `test/charts/treemap-layouts/public.test.js`.
 
+
+Body and label `fill` accepts the shared `FillPaint` contract: solid color, linear gradient, pattern or radial gradient. Pattern origins are materialized in object or plot coordinates, and text fills retain concrete glyph bounds. Layout, Canvas and data revisions recompute those bounds while preserving the authored fill. Stroke remains a solid color. Partition cells and labels use the same paint owner.

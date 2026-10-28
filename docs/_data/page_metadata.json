@@ -1044,5 +1044,19 @@
     "editSource": "examples/graph-plots/program.js",
     "description": "Keep observed connections separate from the positions used to draw them.",
     "image": "/assets/images/graph-plots.png"
+  },
+  "/api/partition/": {
+    "title": "Partition Plots",
+    "source": "docs/api/partition.md",
+    "editSource": "docs/api/partition.md",
+    "description": "Draw, focus and revise icicles and sunbursts from one typed hierarchy.",
+    "image": "/assets/images/partition-layouts.png"
+  },
+  "/tutorials/partition/": {
+    "title": "Partition Tutorial",
+    "source": "docs/tutorials/partition.md",
+    "editSource": "examples/partition-layouts/program.js",
+    "description": "Reuse one partition layout as an icicle or sunburst and focus its subtrees.",
+    "image": "/assets/images/partition-layouts.png"
   }
 }

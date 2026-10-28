@@ -4,7 +4,8 @@ import { HIERARCHY_PLOT_DEFAULTS } from "../../grammar/hierarchy/plot.js";
 const OWNERS = Object.freeze({
   graph: { key: "graphPlot", op: "materializeGraphPlot" },
   tree: { key: "hierarchyPlot", op: "materializeTreePlot" },
-  treemap: { key: "hierarchyPlot", op: "materializeTreemapPlot" }
+  treemap: { key: "hierarchyPlot", op: "materializeTreemapPlot" },
+  partition: { key: "hierarchyPlot", op: "materializePartitionPlot" }
 });
 
 export function resourcePlotThemeOwner(layer) {
@@ -27,7 +28,7 @@ export function resourcePlotThemeProperty(path) {
 }
 
 function change(node) {
-  const match = /^(create|edit)(Graph|Tree|Treemap)Plot$/u.exec(node.op);
+  const match = /^(create|edit)(Graph|Tree|Treemap|Partition)Plot$/u.exec(node.op);
   if (match === null) return;
   const family = match[2] === "Graph" ? "graphPlot" : "hierarchyPlot";
   const args = node.args, ids = new Set();

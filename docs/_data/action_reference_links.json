@@ -322,5 +322,7 @@
   "createGraphPlot": "/reference/actions/charts-data/#creategraphplot",
   "editGraphPlot": "/reference/actions/charts-data/#editgraphplot",
   "createFontResource": "/reference/actions/charts-data/#createfontresource",
-  "replaceFontResource": "/reference/actions/charts-data/#replacefontresource"
+  "replaceFontResource": "/reference/actions/charts-data/#replacefontresource",
+  "createPartitionPlot": "/reference/actions/charts-data/#createpartitionplot",
+  "editPartitionPlot": "/reference/actions/charts-data/#editpartitionplot"
 }

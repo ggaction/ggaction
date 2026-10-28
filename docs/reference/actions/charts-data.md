@@ -4912,6 +4912,109 @@ that uses the font, including inherited composition children. The preparation
 host must measure the new font before this action can replace a bound resource.
 
 
+## `createPartitionPlot`
+
+**API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`PartitionPlotOptions`](./../types.md#type-partitionplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `focus` | Optional / branch-dependent | `HierarchyNodeTarget \| null \| undefined` |
+| `rootVisible` | Optional / branch-dependent | `boolean \| undefined` |
+| `prunedSelection` | Optional / branch-dependent | `"drop" \| "keep-hidden" \| undefined` |
+| `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
+| `reverseU` | Optional / branch-dependent | `boolean \| undefined` |
+| `reverseV` | Optional / branch-dependent | `boolean \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| readonly [number, number] \| undefined` |
+| `innerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `outerRadius` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `startAngle` | Optional / branch-dependent | `number \| undefined` |
+| `sweep` | Optional / branch-dependent | `number \| undefined` |
+| `direction` | Optional / branch-dependent | `"clockwise" \| "counterclockwise" \| undefined` |
+| `radiusPolicy` | Optional / branch-dependent | `"equal-depth" \| "equal-depth-area" \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] \| undefined; }) \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| (HierarchyLabelsOptions & { minWidth?: number \| undefined; minArcLength?: number \| undefined; }) \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createPartitionPlot({ id?, layout?, coordinate?, focus?, rootVisible?, prunedSelection?, orientation?, reverseU?, reverseV?, padding?, innerRadius?, outerRadius?, startAngle?, sweep?, direction?, radiusPolicy?, clip?, cells?, labels? })
+```
+
+Draw an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity. Full only.
+[Partition plots](../../api/partition.md#createpartitionplot)
+
+
+## `editPartitionPlot`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditPartitionPlotOptions`](./../types.md#type-editpartitionplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `focus` | Optional / branch-dependent | `HierarchyNodeTarget \| null \| undefined` |
+| `rootVisible` | Optional / branch-dependent | `boolean \| undefined` |
+| `prunedSelection` | Optional / branch-dependent | `"drop" \| "keep-hidden" \| undefined` |
+| `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
+| `reverseU` | Optional / branch-dependent | `boolean \| undefined` |
+| `reverseV` | Optional / branch-dependent | `boolean \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| readonly [number, number] \| undefined` |
+| `innerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `outerRadius` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `startAngle` | Optional / branch-dependent | `number \| undefined` |
+| `sweep` | Optional / branch-dependent | `number \| undefined` |
+| `direction` | Optional / branch-dependent | `"clockwise" \| "counterclockwise" \| undefined` |
+| `radiusPolicy` | Optional / branch-dependent | `"equal-depth" \| "equal-depth-area" \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] \| undefined; }) \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| (HierarchyLabelsOptions & { minWidth?: number \| undefined; minArcLength?: number \| undefined; }) \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editPartitionPlot({ target?, layout?, coordinate?, focus?, rootVisible?, prunedSelection?, orientation?, reverseU?, reverseV?, padding?, innerRadius?, outerRadius?, startAngle?, sweep?, direction?, radiusPolicy?, clip?, cells?, labels? })
+```
+
+Edit an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity. Full only.
+[Partition plots](../../api/partition.md#editpartitionplot)
+
+
 ## Focused core data editing
 
 ```javascript

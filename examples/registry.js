@@ -3,6 +3,7 @@ import { createMarkOutlineExample } from "./mark-outlines/program.js";
 import { createStructuredPaintExample } from "./structured-paints/program.js";
 import { createImageExample } from "./image-assets/program.js";
 import { createFontExample } from "./font-assets/program.js";
+import { createPartition } from "./partition-layouts/program.js";
 import { createTree } from "./tree-layouts/program.js";
 import { createTreemap } from "./treemap-layouts/program.js";
 import { createCompoundPathExample } from "./compound-path/program.js";
@@ -318,6 +319,14 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createTree("radial"),
     browser: { path: "browser-host/?chart=tree-radial", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "tree-radial", width: 640, height: 500 } } }
+  }),
+  example({ id: "partition-layouts", programDirectory: "partition-layouts", testDirectory: "partition-layouts", data: {}, width: 480, height: 360, docsGroup: "tutorials",
+    createProgram: () => createPartition("icicle"),
+    browser: { path: "browser-host/?chart=partition-layouts", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "partition-layouts", width: 480, height: 360 } } }
+  }),
+  example({ id: "partition-sunburst", programDirectory: "partition-layouts", testDirectory: "partition-layouts", data: {}, width: 480, height: 360, docsGroup: "tutorials",
+    createProgram: () => createPartition("sunburst"),
+    browser: { path: "browser-host/?chart=partition-sunburst", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "partition-sunburst", width: 480, height: 360 } } }
   }),
   example({ id: "treemap-layouts", programDirectory: "treemap-layouts", testDirectory: "treemap-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
     createProgram: () => createTreemap("slice-dice"),

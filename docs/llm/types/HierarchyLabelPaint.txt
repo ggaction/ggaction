@@ -1,1 +1,1 @@
-export interface HierarchyLabelPaint { fill?: string; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface HierarchyLabelPaint { fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }

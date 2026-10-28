@@ -1,0 +1,42 @@
+{
+  "node": "v20.20.2",
+  "platform": "darwin",
+  "records": [
+    {
+      "id": "node",
+      "status": "failed",
+      "durationMs": 152650.362208,
+      "error": "Error: Command failed: /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node consumer.mjs\n[\n  {\n    \"id\": \"conditional-encoding/position-text-lifecycle\",\n    \"status\": \"failed\",\n    \"durationMs\": 30101.175499999998,\n    \"error\": \"Error: spawnSync /Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node ETIMEDOUT\\n    at Object.spawnSync (node:internal/child_process:1123:20)\\n    at spawnSync (node:child_process:877:24)\\n    at execFileSync (node:child_process:920:15)\\n    at Object.run (file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-pJQeS6/conditional-encoding.mjs:142:20)\\n    at file:///private/var/folders/5l/mf328hq518n7ml3w3rvjdq580000gn/T/ggaction-consumer-pJQeS6/consumer.mjs:8:27\"\n  }\n]\n\n    at genericNodeError (node:internal/errors:984:15)\n    at wrappedFn (node:internal/errors:538:14)\n    at checkExecSyncError (node:child_process:891:11)\n    at execFileSync (node:child_process:927:15)\n    at run (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/scripts/consumers/runtime.js:19:3)\n    at testNodeConsumer (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/scripts/consumers/node.js:57:9)\n    at async runConsumerCases (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/scripts/consumers/runtime.js:37:27)\n    at async testPackageConsumer (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/scripts/package-consumer.js:73:21)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/scripts/package-consumer.js:98:18"
+    },
+    {
+      "id": "mcp",
+      "status": "passed",
+      "durationMs": 2646.879708000022
+    },
+    {
+      "id": "types",
+      "status": "passed",
+      "durationMs": 1239.951624999987
+    },
+    {
+      "id": "tutorials",
+      "status": "passed",
+      "durationMs": 72037.663917
+    },
+    {
+      "id": "bundle-full",
+      "status": "passed",
+      "durationMs": 18457.570084000006
+    },
+    {
+      "id": "bundle-basic",
+      "status": "passed",
+      "durationMs": 6756.989332999976
+    },
+    {
+      "id": "bundle-svg",
+      "status": "passed",
+      "durationMs": 214.85500000003958
+    }
+  ]
+}

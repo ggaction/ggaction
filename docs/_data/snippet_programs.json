@@ -462,5 +462,16 @@
       "exported": "createGraph"
     },
     "rendering": "renders-canvas"
+  },
+  "tutorials/partition.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "icicle",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/partition-layouts/program.js",
+      "exported": "createPartition"
+    },
+    "rendering": "renders-canvas"
   }
 }

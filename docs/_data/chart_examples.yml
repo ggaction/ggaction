@@ -1876,3 +1876,34 @@
   actions: createGraphData · layoutGraph · createGraphPlot
   tasks: graph network layout
   url: /tutorials/graphs/
+- id: partition-layouts
+  tutorial_order: 250
+  example: /examples/partition-layouts/
+  title: Icicle partition
+  image: /assets/images/partition-layouts.png
+  alt: Hierarchy root and two branches with five visible nodes and stable colors
+  width: 960
+  height: 720
+  thumbnail: /assets/images/partition-layouts-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: Normalized hierarchy intervals become rectangular value and depth bands.
+  summary: Normalized hierarchy intervals become rectangular value and depth bands.
+  actions: createHierarchyData · layoutHierarchy · createPartitionPlot
+  tasks: hierarchy partition focus
+  url: /tutorials/partition/
+- id: partition-sunburst
+  example: /examples/partition-sunburst/
+  title: Sunburst partition
+  image: /assets/images/partition-sunburst.png
+  alt: Hierarchy root and two branches with five visible nodes and stable colors
+  width: 960
+  height: 720
+  thumbnail: /assets/images/partition-sunburst-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: The same hierarchy intervals become angular value and radial depth bands.
+  summary: The same hierarchy intervals become angular value and radial depth bands.
+  actions: createHierarchyData · layoutHierarchy · createPartitionPlot
+  tasks: hierarchy partition focus
+  url: /tutorials/partition/

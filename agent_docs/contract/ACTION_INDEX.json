@@ -5870,6 +5870,42 @@
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "replacefontresource"
       }
+    },
+    {
+      "name": "createPartitionPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editPartitionPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/PARTITION.md",
+        "anchor": "createpartitionplot"
+      }
+    },
+    {
+      "name": "editPartitionPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits or removes the named resource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/PARTITION.md",
+        "anchor": "editpartitionplot"
+      }
     }
   ],
   "plannedActions": [],
@@ -5958,7 +5994,8 @@
       "rematerializeImageMark",
       "materializeTreePlot",
       "materializeTreemapPlot",
-      "materializeGraphPlot"
+      "materializeGraphPlot",
+      "materializePartitionPlot"
     ],
     "guideComponents": [
       "createLegendBackground",

@@ -94,6 +94,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createParallelAxis`](./actions/guides.md#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](./actions/charts-data.md#createparallelcoordinates) | H0 | user-facing | charts |
 | [`createParameter`](./actions/charts-data.md#createparameter) | H2 | user-facing | core |
+| [`createPartitionPlot`](./actions/charts-data.md#createpartitionplot) | H0, H1 | user-facing | charts |
 | [`createPiePlot`](./actions/charts-data.md#createpieplot) | H0 | user-facing | charts |
 | [`createPivotData`](./actions/statistics.md#createpivotdata) | H1 | user-facing | statistics |
 | [`createPointMark`](./actions/marks.md#createpointmark) | H2 | user-facing | marks |
@@ -215,6 +216,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editParallelAxis`](./actions/guides.md#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./actions/charts-data.md#editparallelscale) | H2 | user-facing | core |
 | [`editParameter`](./actions/charts-data.md#editparameter) | H3 | user-facing | core |
+| [`editPartitionPlot`](./actions/charts-data.md#editpartitionplot) | H1, H3 | user-facing | charts |
 | [`editPivotData`](./actions/statistics.md#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
 | [`editRadarPlot`](./actions/charts-data.md#editradarplot) | H1, H3 | user-facing | charts |

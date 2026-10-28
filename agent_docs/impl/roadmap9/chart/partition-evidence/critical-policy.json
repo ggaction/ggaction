@@ -1,0 +1,44 @@
+{
+  "status": "passed-across-unchanged-source-runs",
+  "totalCriticalFloors": 318,
+  "originalCriticalFloorsPassed": 316,
+  "originalGlobal": {
+    "lines": 96.38,
+    "branches": 94.2,
+    "functions": 98.87
+  },
+  "focusedOwners": {
+    "renderers/canvas/circle.js": {
+      "floor": {
+        "lines": 75,
+        "branches": 60,
+        "functions": 80
+      },
+      "metrics": {
+        "lines": 84.13,
+        "branches": 66.67,
+        "functions": 100
+      }
+    },
+    "renderers/canvas/path.js": {
+      "floor": {
+        "lines": 75,
+        "branches": 60,
+        "functions": 80
+      },
+      "metrics": {
+        "lines": 79.52,
+        "branches": 79.41,
+        "functions": 100
+      }
+    }
+  },
+  "sourceRun": "a0b20aef792f3d5dff6ba120523f191db2050b55",
+  "sourceRunTests": {
+    "total": 7334,
+    "passed": 7328,
+    "failed": 6
+  },
+  "floorsLowered": false,
+  "note": "Original full report retains its six metadata/test failures. Original remaining owner floors plus focused contour owner floors are checked separately, without fabricating a merged global metric."
+}

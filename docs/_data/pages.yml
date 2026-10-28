@@ -499,3 +499,10 @@
 - title: Graph Tutorial
   url: /tutorials/graphs/
   parent: /tutorials/
+
+- title: Partition Plots
+  url: /api/partition/
+  parent: /api/hierarchy/
+- title: Partition Tutorial
+  url: /tutorials/partition/
+  parent: /tutorials/

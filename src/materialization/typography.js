@@ -11,7 +11,7 @@ export function rematerializeTypography(program) {
   }
   const exists = (id, op) => program.graphicSpec.objects[id] !== undefined && typeof program[op] === "function";
   const textOwners = { text: "rematerializeTextMark", tree: "materializeTreePlot",
-    treemap: "materializeTreemapPlot", graph: "materializeGraphPlot" };
+    treemap: "materializeTreemapPlot", partition: "materializePartitionPlot", graph: "materializeGraphPlot" };
   const marks = program.semanticSpec.layers.flatMap(layer => {
     const op = textOwners[layer.mark?.type];
     return op !== undefined && exists(layer.id, op) && layer.hierarchyLabels !== false && layer.graphLabels !== false

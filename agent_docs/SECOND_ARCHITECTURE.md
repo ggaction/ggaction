@@ -168,6 +168,23 @@ Full의 graph layout과 plot은 같은 typed resource 경계를 사용한다. `a
 정확한 공개·저장 계약은 [GRAPHS.md](contract/current/GRAPHS.md)가 소유한다.
 상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
 
+## Partition view, mapping and frame preparation
+
+`grammar/hierarchy/partitionView.js`는 위의 model/partition owner를 명시 호출하여 focus 구간과 상대 depth view,
+nearest surviving ancestor와 navigation metadata를 계산한다. Canonical key/value/interval owner를 복제하거나 원 hierarchy를 변경하지 않는다.
+`partitionMapping.js`는 normalized cell을 Cartesian/polar geometry로 매핑하고 pixel gap과 radial policy를 소유한다.
+`actions/hierarchy/partition.js`는 저장된 layout 결과에서 이 view를 투영하고,
+`materialization/hierarchy/partitionPlot.js`는 기존 rect/path/text와 공통 FillPaint owner로 concrete 출력을 만든다.
+Focus·root visibility는 semantic layer, mapping·paint는 materialization config에 남는다.
+Source revision의 명시 hierarchy closure가 focus 복구와 selection pruning을 함께 사전 검증한다.
+자세한 공개 계약은 [PARTITION](contract/current/PARTITION.md)이 소유한다.
+
+`partitionBend.js`의 canonical 수치를 `partitionAdapter.js`가 screen orientation으로 변환한다.
+Private `materialization/hierarchy/partitionFrames.js`는 native endpoint graphics를 그대로 보존하고,
+compatible 중간 frame의 path와 같은 concrete path 기반 hit를 만든다. 퇴화하는 반사나 topology/appearance 변화는
+이유를 기록한 crossfade를 사용한다. 새 공개 animation 상태·renderer 계산 경로는 없다.
+AT65의 public planner/controller/player 연결은 [구현 기록](impl/roadmap9/chart/partition-plots.md)의 후행 의무다.
+
 ## 내부 expression kernel 경계
 
 `grammar/expressionAst.js`는 versioned AST의 정규화·정적 검사·명시 dependency 추출,

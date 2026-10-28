@@ -15,6 +15,7 @@ const analysisChartNames = new Set([
   "createHorizonPlot",
   "createTreePlot",
   "createGraphPlot",
+  "createPartitionPlot",
   "createTreemapPlot"
 ]);
 const analysisChartEditorNames = new Set([
@@ -24,6 +25,7 @@ const analysisChartEditorNames = new Set([
   "editRaincloudPlot",
   "editTreePlot",
   "editGraphPlot",
+  "editPartitionPlot",
   "editTreemapPlot"
 ]);
 
@@ -76,6 +78,8 @@ const explicitLifecycleEditors = Object.freeze({
   createGraphPlot: ["editGraphPlot", "removeMark"],
   editGraphPlot: ["editGraphPlot", "removeMark"],
   editTreePlot: ["editTreePlot", "removeMark"],
+  createPartitionPlot: ["editPartitionPlot", "removeMark"],
+  editPartitionPlot: ["editPartitionPlot", "removeMark"],
   createTreemapPlot: ["editTreemapPlot", "removeMark"],
   editTreemapPlot: ["editTreemapPlot", "removeMark"],
   applyDataUpdate: ["applyDataUpdate", "reviseData", "removeData"],

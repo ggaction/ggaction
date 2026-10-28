@@ -32,6 +32,8 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
   "mark-outlines": ["canvas", "background", "title", "outlined"],
   "image-assets": ["canvas", "plot-main", "label", "backdrop", "image-image-clip", "image"],
   "font-assets": ["canvas", "plot-main", "chartTitle", "chartSubtitle"],
+  "partition-layouts": ["canvas", "partitionPlot", "chartTitle", "chartSubtitle"],
+  "partition-sunburst": ["canvas", "partitionPlot", "chartTitle", "chartSubtitle"],
   "tree-layouts": ["canvas", "treePlot", "chartTitle", "chartSubtitle"],
   "tree-horizontal": ["canvas", "treePlot", "chartTitle", "chartSubtitle"],
   "tree-radial": ["canvas", "treePlot", "chartTitle", "chartSubtitle"],

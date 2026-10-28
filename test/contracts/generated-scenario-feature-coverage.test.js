@@ -240,7 +240,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
   assert.equal(inventory.counts.pathLiteralRequirements, 13994);
   assert.equal(inventory.counts.familyLiteralRequirements, 525);
   assert.equal(inventory.counts.pathDiversityRequirements, 488);
-  for (const action of ["createHierarchyData", "editHierarchyData", "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot"]) {
+  for (const action of ["createHierarchyData", "editHierarchyData", "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot", "createPartitionPlot", "editPartitionPlot"]) {
     const options = inventory.optionPaths.filter(option => option.action === action && option.topLevel);
     assert.ok(options.length > 0 && options.every(option => option.required && option.evidence === "direct-trace"), action);
   }

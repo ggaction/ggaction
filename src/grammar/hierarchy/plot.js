@@ -1,3 +1,4 @@
+import { validateFillPaint } from "../paint.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { encodeRowKey } from "../../core/itemIdentity.js";
 import { ownArray, ownRecord } from "../../core/ownData.js";
@@ -20,14 +21,16 @@ function pair(value, label) {
 }
 function paint(value, allowed, label) {
   ownRecord(value, label); rejectUnknownProperties(value, allowed, label);
+  const normalized = { ...value };
   for (const [key, entry] of Object.entries(value)) {
-    if (["fill", "stroke", "fontFamily"].includes(key)) validateNonEmptyString(entry, `${label} ${key}`);
+    if (key === "fill") normalized.fill = validateFillPaint(entry, `${label} fill`);
+    else if (["stroke", "fontFamily"].includes(key)) validateNonEmptyString(entry, `${label} ${key}`);
     else if (["radius", "strokeWidth"].includes(key)) validateNonNegativeFinite(entry, `${label} ${key}`);
     else if (key === "opacity") validateUnitInterval(entry, `${label} opacity`);
     else if (key === "fontSize") validatePositiveFinite(entry, `${label} fontSize`);
     else if (key === "fontWeight") validateFontWeight(entry, `${label} fontWeight`);
   }
-  return value;
+  return normalized;
 }
 export function hierarchyTargetKey(target, sourceOptions) {
   const hasKey = Object.hasOwn(target, "key"), hasPath = Object.hasOwn(target, "path");
@@ -58,9 +61,9 @@ function overrides(values, allowed, hierarchy, text = false) {
     if (keys.has(key) || !nodes.has(key)) throw new TypeError("Hierarchy override target must be unique and exist.");
     keys.add(key);
     const { key: _key, path: _path, text: label, ...style } = value;
-    paint(style, allowed, "Hierarchy override");
+    const normalized = paint(style, allowed, "Hierarchy override");
     if (Object.hasOwn(value, "text") && (!text || typeof label !== "string")) throw new TypeError("Only label overrides accept string text.");
-    return { key, ...style, ...(label === undefined ? {} : { text: label }) };
+    return { key, ...normalized, ...(label === undefined ? {} : { text: label }) };
   });
 }
 
@@ -80,8 +83,8 @@ export function normalizeHierarchyPlot(method, patch, hierarchy, previous, previ
     ownRecord(patch[bodyName], "Hierarchy body style");
     if (Object.values(patch[bodyName]).some(value => value === undefined)) throw new TypeError("Hierarchy body options cannot be undefined.");
     const { overrides: requested, ...style } = patch[bodyName];
-    paint(style, [...PAINT, ...(method === "tree" ? ["radius"] : [])], "Hierarchy body style");
-    config[bodyName] = { ...config[bodyName], ...style, ...(requested === undefined ? {} : {
+    const normalized = paint(style, [...PAINT, ...(method === "tree" ? ["radius"] : [])], "Hierarchy body style");
+    config[bodyName] = { ...config[bodyName], ...normalized, ...(requested === undefined ? {} : {
       overrides: overrides(requested, [...PAINT, ...(method === "tree" ? ["radius"] : [])], hierarchy) }) };
   }
   if (Object.hasOwn(patch, "links")) {
@@ -94,11 +97,11 @@ export function normalizeHierarchyPlot(method, patch, hierarchy, previous, previ
       ownRecord(patch.labels, "Hierarchy labels");
       if (Object.values(patch.labels).some(value => value === undefined)) throw new TypeError("Hierarchy label options cannot be undefined.");
       const { content, offset, overrides: requested, ...style } = patch.labels;
-      paint(style, LABEL, "Hierarchy labels");
+      const normalized = paint(style, LABEL, "Hierarchy labels");
       if (content !== undefined && content !== "value") throw new TypeError("Hierarchy label content must be value.");
       const entries = requested === undefined ? undefined : overrides(requested, LABEL, hierarchy, true);
       labels = { content: "value", overrides: entries === undefined ? (previousLabels?.overrides ?? []) : entries.filter(entry => entry.text !== undefined).map(({ key, text }) => ({ key, text })) };
-      config.labels = { ...DEFAULT_LABELS, offset: method === "tree" ? [0, 14] : [0, 0], ...config.labels, ...style,
+      config.labels = { ...DEFAULT_LABELS, offset: method === "tree" ? [0, 14] : [0, 0], ...config.labels, ...normalized,
         ...(offset === undefined ? {} : { offset: pair(offset, "Hierarchy label offset") }),
         ...(entries === undefined ? {} : { overrides: entries.map(({ text: _text, ...entry }) => entry) }) };
     }

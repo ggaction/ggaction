@@ -33,9 +33,9 @@ function plot(kind) {
     .createGraphPlot({ id: "plot", labels: { ...labels, field: "label" } });
   return p.createData({ id: "nodes", keyField: "id", values: [{ id: "r", parent: null, value: 2 }, { id: "a", parent: "r", value: 1 }] })
     .createHierarchyData({ id: "source", key: "id", parent: "parent", value: "value" })
-    .layoutHierarchy({ id: "layout", method: kind, options: kind === "tree" ? { nodeSize: [20, 20], siblingGap: 30, depthGap: 40, orientation: "vertical" }
+    .layoutHierarchy({ id: "layout", method: kind, options: kind === "partition" ? {} : kind === "tree" ? { nodeSize: [20, 20], siblingGap: 30, depthGap: 40, orientation: "vertical" }
       : { size: [180, 100], padding: 5, method: "slice-dice" } })
-    [kind === "tree" ? "createTreePlot" : "createTreemapPlot"]({ id: "plot", labels: { ...labels, overrides: [{ key: "r", text: "AB" }, { key: "a", text: "AB" }] } });
+    [{ tree: "createTreePlot", treemap: "createTreemapPlot", partition: "createPartitionPlot" }[kind]]({ id: "plot", labels: { ...labels, overrides: [{ key: "r", text: "AB" }, { key: "a", text: "AB" }] } });
 }
 async function bound(kind) {
   const base = plot(kind), prepared = await prepareFontResource(base, { kind: "create", id: "font", ...source }, host);
@@ -45,13 +45,13 @@ async function bound(kind) {
   assert.ok(queried.includes("AB"), "Resource labels participate in exact width query preparation");
   return p.applyTextMetrics({ prepared: metrics, requestToken: "current" });
 }
-for (const kind of ["graph", "tree", "treemap"]) {
+for (const kind of ["graph", "tree", "treemap", "partition"]) {
   test(`${kind} labels bind exact fonts without recalculating their resource layout`, async () => {
     const p = await bound(kind), before = serializeProgram(p), layout = p.semanticSpec.resources.find(resource => resource.kind === "layout");
     const coordinates = structuredClone(layout.result);
     assert.ok(labelProperties(p).length > 0);
     assert.ok(labelProperties(p).every(properties => properties.font.contentHash === expectedHash));
-    const edit = { graph: "editGraphPlot", tree: "editTreePlot", treemap: "editTreemapPlot" }[kind];
+    const edit = { graph: "editGraphPlot", tree: "editTreePlot", treemap: "editTreemapPlot", partition: "editPartitionPlot" }[kind];
     assert.throws(() => p[edit]({ target: "plot", labels: { overrides: [{ key: "a", text: "BBBB" }] } }), error => error.assetCode === "metrics-required");
     assert.equal(serializeProgram(p), before);
     const replacement = await prepareFontResource(p, { kind: "replace", target: "font", ...source, metricsProviderVersion: "fixture@2" }, host);

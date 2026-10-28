@@ -914,11 +914,11 @@
     "cases": [
       {
         "id": "hierarchy/full-basic-lifecycle",
-        "statements": 17
+        "statements": 14
       },
       {
         "id": "hierarchy/fresh-process-edit-revise",
-        "statements": 9
+        "statements": 1
       },
       {
         "id": "hierarchy/renderers-and-scene",

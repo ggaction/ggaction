@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 324,
+  "actionCount": 326,
   "relationships": [
     {
       "name": "createCanvas",
@@ -2201,6 +2201,20 @@
       "name": "replaceFontResource",
       "wraps": [
         "editSemantic"
+      ]
+    },
+    {
+      "name": "createPartitionPlot",
+      "wraps": [
+        "createCoordinate",
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editPartitionPlot",
+      "wraps": [
+        "editSemantic",
+        "editMarkSelection"
       ]
     }
   ]

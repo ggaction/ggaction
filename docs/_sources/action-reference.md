@@ -3481,6 +3481,24 @@ layoutGraph({ id, graph?, method, options? })
 Store a fixed, circular, or deterministic force layout of an existing graph. Full only.
 [Graph data and layouts](../api/data/source-and-derived.md#layoutgraph)
 
+### `createPartitionPlot`
+
+```javascript
+createPartitionPlot({ id?, layout?, coordinate?, focus?, rootVisible?, prunedSelection?, orientation?, reverseU?, reverseV?, padding?, innerRadius?, outerRadius?, startAngle?, sweep?, direction?, radiusPolicy?, clip?, cells?, labels? })
+```
+
+Draw an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity. Full only.
+[Partition plots](../api/partition.md#createpartitionplot)
+
+### `editPartitionPlot`
+
+```javascript
+editPartitionPlot({ target?, layout?, coordinate?, focus?, rootVisible?, prunedSelection?, orientation?, reverseU?, reverseV?, padding?, innerRadius?, outerRadius?, startAngle?, sweep?, direction?, radiusPolicy?, clip?, cells?, labels? })
+```
+
+Edit an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity. Full only.
+[Partition plots](../api/partition.md#editpartitionplot)
+
 ## Advanced Chart API
 
 Use these actions for explicit semantic resources or focused axis control.

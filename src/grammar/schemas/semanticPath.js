@@ -71,6 +71,7 @@ const ENTITY_PATHS = Object.freeze({
       "hierarchyLabels",
       "graphBinding",
       "graphLabels",
+      "partitionView",
       "mark.missing",
       "mark.orientation",
       "mark.blend",

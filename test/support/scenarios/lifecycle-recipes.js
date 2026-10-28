@@ -1321,6 +1321,9 @@ function buildDirectDataResources(factors) {
     .createTreemapPlot({ id: "directMap", layout: "directMapLayout", labels: {} })
     .editTreemapPlot({ target: "directMap", cells: { opacity: .7 } })
     .layoutHierarchy({ id: "unusedHierarchyLayout", hierarchy: "directHierarchy", method: "partition" })
+    .createPartitionPlot({ id: "directPartition", layout: "unusedHierarchyLayout", padding: [2, 3], labels: {} })
+    .editPartitionPlot({ target: "directPartition", rootVisible: false, reverseU: true, prunedSelection: "drop", labels: { minWidth: 8 } })
+    .removeMark({ target: "directPartition" })
     .removeResource({ kind: "layout", id: "unusedHierarchyLayout" });
   return program
     .createDensityData({

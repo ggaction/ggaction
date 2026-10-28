@@ -1843,9 +1843,9 @@ export type HierarchyLayoutResource = {
   | { readonly options: { readonly method: "partition"; readonly order: HierarchyOrder; readonly options: { readonly maxNodes?: number } }; readonly result: HierarchyPartitionResult }
   | { readonly options: { readonly method: "treemap"; readonly order: HierarchyOrder; readonly options: Readonly<HierarchyTreemapOptions> }; readonly result: HierarchyTreemapResult });
 export type HierarchyNodeTarget = { key: RowKeyScalar; path?: never } | { path: readonly (RowKeyScalar | null)[]; key?: never };
-export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface HierarchyBodyPaint { fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
 export interface HierarchyNodePaint extends HierarchyBodyPaint { radius?: number; }
-export interface HierarchyLabelPaint { fill?: string; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface HierarchyLabelPaint { fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
 export interface HierarchyLabelsOptions extends HierarchyLabelPaint {
   content?: "value"; offset?: readonly [number, number]; overrides?: readonly (HierarchyNodeTarget & HierarchyLabelPaint & { text?: string })[];
 }
@@ -1860,6 +1860,22 @@ export interface TreemapPlotOptions {
   cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] }; labels?: false | HierarchyLabelsOptions;
 }
 export interface EditTreemapPlotOptions extends Omit<TreemapPlotOptions, "id"> { target?: string; }
+
+export interface PartitionPlotOptions {
+  id?: string; layout?: string; coordinate?: string; focus?: HierarchyNodeTarget | null;
+  rootVisible?: boolean; prunedSelection?: "keep-hidden" | "drop";
+  orientation?: "horizontal" | "vertical"; reverseU?: boolean; reverseV?: boolean;
+  padding?: number | readonly [number, number]; innerRadius?: number; outerRadius?: number | "auto";
+  startAngle?: number; sweep?: number; direction?: "clockwise" | "counterclockwise";
+  radiusPolicy?: "equal-depth" | "equal-depth-area"; clip?: boolean;
+  cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] };
+  labels?: false | (HierarchyLabelsOptions & { minWidth?: number; minArcLength?: number });
+}
+export interface EditPartitionPlotOptions extends Omit<PartitionPlotOptions, "id"> { target?: string; }
+export interface PartitionViewState {
+  readonly focusKey: string | null; readonly rootVisible: boolean; readonly prunedSelection: "keep-hidden" | "drop";
+  readonly recovery?: { readonly previousFocusKey: string | null; readonly reason: "ancestor" | "root" | "empty" };
+}
 
 export interface SemanticDataset {
   readonly id: string;
@@ -1920,6 +1936,7 @@ export interface SemanticLayer {
   readonly id: string;
   readonly image?: ImageRef;
   readonly alt?: string;
+  readonly partitionView?: PartitionViewState;
   readonly hierarchyBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly hierarchyLabels?: false | { readonly content: "value"; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly graphBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
@@ -6040,6 +6057,8 @@ export class ChartProgram {
   createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
   editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+  createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
+  editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;

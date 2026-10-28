@@ -195,7 +195,7 @@ function actionResources(action, optionNames, intentSource) {
   const { operation, subject } = operationAndSubject(action.name);
   const aliases = aliasesForSubject(intentSource, subject);
   const resource = aliases[0];
-  const hierarchyPlot = /^(?:create|edit)(?:Tree|Treemap)Plot$/.test(action.name);
+  const hierarchyPlot = /^(?:create|edit)(?:Tree|Treemap|Partition)Plot$/.test(action.name);
   const prerequisites = [];
   if (action.name === "createRegressionStatisticsData" || action.name === "editRegressionStatisticsData") {
     prerequisites.push("materialized linear regression dataset");
@@ -219,7 +219,7 @@ function actionResources(action, optionNames, intentSource) {
     if (optionNames.includes("field")) prerequisites.push("field mode: dataset field");
   }
   if (action.domain === "charts") prerequisites.push(hierarchyPlot
-    ? `canvas and ${action.name.includes("Treemap") ? "treemap" : "tree"} layout resource`
+    ? `canvas and ${action.name.includes("Partition") ? "partition" : action.name.includes("Treemap") ? "treemap" : "tree"} layout resource`
     : "canvas and dataset context");
   if (action.domain === "marks" && operation === "create" && action.name !== "createMarkLabels") {
     prerequisites.push("dataset and coordinate context");
