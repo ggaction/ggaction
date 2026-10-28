@@ -3,9 +3,9 @@
   "status": "development",
   "packageVersion": "0.0.26",
   "contractId": "sha256:35f62d3bbb994a279e1ad23c44c011475ae1cf1a8d54b26d948938ae6d2efc38",
-  "sourceCommit": null,
-  "sourceRef": "main",
-  "exampleSourceRef": "codex/roadmap9-integration",
+  "sourceCommit": "d24eb2bd11616a2ac6022786eb2fe786a1d5e963",
+  "sourceRef": "d24eb2bd11616a2ac6022786eb2fe786a1d5e963",
+  "exampleSourceRef": "d24eb2bd11616a2ac6022786eb2fe786a1d5e963",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
