@@ -1,6 +1,14 @@
 {
-  "state": "ready-for-review",
-  "visualApproval": "pending",
+  "state": "approved",
+  "visualApproval": {
+    "state": "approved",
+    "recordedAt": "2026-10-28",
+    "source": "Current conversation explicit visual approval response",
+    "questionItemId": "[\"request_user_input_async\",\"call_5c8bdc9c41eb4635aa168f7486cf79e8\",0]",
+    "answer": "표시한 이미지 배치 승인",
+    "revision": "3853bdb189e6ffbf60b85fb3fe778cc4d26bb1db",
+    "scope": "Six displayed contain/cover/fill/clip-opacity image placements and public image integration"
+  },
   "publicImageIntegration": "pending",
   "codeBase": "119b7845e709e78169a645948709c61155871eb3",
   "environment": {
@@ -343,5 +351,5 @@
   },
   "codeRevision": "3853bdb189e6ffbf60b85fb3fe778cc4d26bb1db",
   "evidenceRevision": "3853bdb189e6ffbf60b85fb3fe778cc4d26bb1db",
-  "metadataNote": "Revision-only follow-up; runtime, primitive and rendered output hashes are unchanged."
+  "metadataNote": "User visual approval recorded; primitive source and rendered evidence remain at the exact reviewed revision."
 }

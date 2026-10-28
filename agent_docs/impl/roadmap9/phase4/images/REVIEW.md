@@ -9,7 +9,9 @@
 - [ ] 사용자의 rendered primitive 승인
 - [ ] 공개 asset action·저장 schema·renderer 자원 준비·소비자 연결
 
-상태는 **ready-for-review**다. 전체 계획의 실행 승인은 [AUTHORIZATION](../../AUTHORIZATION.json)에
+상태는 **approved**다. 2026-10-28 사용자가 revision `3853bdb1`의 6종 배치에
+“표시한 이미지 배치 승인”이라고 명시 답했다. 정확한 승인 응답과 revision은
+[REVIEW-EVIDENCE.json](REVIEW-EVIDENCE.json)의 `visualApproval`에 기록했다. 전체 계획의 실행 승인은 [AUTHORIZATION](../../AUTHORIZATION.json)에
 기록되어 있다. 새 visual target의 확인은 [시각 검토 규칙](../../../AGENTS.md)에 따라 별도로
 기록한다. 이 자료는 public image 기능이나 STEP-018 완료를 의미하지 않는다.
 
@@ -74,7 +76,7 @@ Output은 gitignored `.artifacts/test/png/review/image-assets/` 아래에 있으
 
 ## 남은 범위
 
-사용자 승인 후에도 asset resource CRUD/ref collector, immutable/offline codec, renderer별
+시각 승인 후 구현할 범위는 asset resource CRUD/ref collector, immutable/offline codec, renderer별
 decode/cache와 export preflight, image mark/fit/align/clip/opacity, revise/rematerialization,
 inspection/scene, Full/Basic/types/exports 및 public/primitive exact equivalence를 구현해야 한다.
 Renderer의 network fetch나 실패한 image의 silent placeholder는 허용하지 않는다.
