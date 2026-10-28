@@ -1,6 +1,6 @@
 {
   "state": "private-kernel-verified",
-  "sourceRevision": null,
+  "sourceRevision": "b5c293a1b2cb4ab731e764deaf4e0cecb10b1fd7",
   "publicIntegration": false,
   "commands": [
     "node scripts/run-tests.js unit unit/grammar/png-encoding.test.js",
@@ -31,6 +31,11 @@
         90,
         100
       ]
+    },
+    "documentation": {
+      "passed": 164,
+      "failed": 0,
+      "sourceRef": "b5c293a1b2cb4ab731e764deaf4e0cecb10b1fd7"
     }
   },
   "package": {
@@ -45,7 +50,8 @@
     ".artifacts/paint-public-integration/png-encoding-coverage.log": "e2cc99455693c3d966fa4dfffa3c78f6da6ec9b476f5c1bbdc327cf2ad03cd92",
     ".artifacts/paint-public-integration/png-encoding-browser.log": "9df28d3c85e0f395fe2dff4b22978a092622de1b78688cb1721b6eea3813222c",
     ".artifacts/paint-public-integration/png-encoding-contracts-final.log": "ff84cffd89315517733d5e75cc3bf42723a36dce1b2ea78bf2e0fae9b7b2ccef",
-    ".artifacts/paint-public-integration/png-encoding-package-final.json": "3dc0b09c71587d867c0433b7992a72d7cba8c663c4565626aaebb54563eed19a"
+    ".artifacts/paint-public-integration/png-encoding-package-final.json": "3dc0b09c71587d867c0433b7992a72d7cba8c663c4565626aaebb54563eed19a",
+    ".artifacts/paint-public-integration/png-encoding-docs-final.log": "38746035527f061de2ea74bbfdac3109f4aa9c91645a28321cfe1773fa3f5a14"
   },
   "limits": {
     "dimension": 4096,

@@ -6,6 +6,7 @@
 - [x] 독립 CRC32·zlib decode, literal 및 경계 검증
 - [x] Browser/Node bytes exact와 native PNG decode
 - [x] Private critical coverage와 source/discovery/package 경계
+- [x] 구현 revision에 source provenance 고정 및 문서164/164
 - [ ] 공통 image I3 payload·materializer 연결 — 공개 저장 형식 승인 뒤 진행
 
 `src/core/pngEncoding.js`의 `encodeRGBA8PNG({width,height,rgba})`는 ordinary Uint8Array 또는
