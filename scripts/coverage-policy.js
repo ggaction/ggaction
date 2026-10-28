@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "hit-geometry": { prefix: "grammar/hit", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "CSS coordinate, transform and exact hit decisions must reject stale or non-finite geometry without mutating chart state." },
   "mark-shadow": { prefix: "grammar/markShadow", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared visual effects must preserve exact input, bounded work, immutable source and backend parity." },
   "shadow-composite": { prefix: "grammar/shadowComposite", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared visual effects must preserve exact input, bounded work, immutable source and backend parity." },
   "paint-frames": { prefix: "renderers/paintFrames", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared visual effects must preserve exact input, bounded work, immutable source and backend parity." },

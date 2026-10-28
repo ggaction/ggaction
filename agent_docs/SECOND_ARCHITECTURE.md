@@ -3227,3 +3227,17 @@ Node20·24의1,201,262 bytes이다. 동일 내부 파일의 압축 차이를 반
 Node20에서586,754/347,170/20,191gzip bytes로 측정되어 각각587,000/348,000/25,000 cap을 사용한다.
 Exact support와 lifecycle은 Current에, 최초실패와
 최종 고정 archive의 Node별 qualification은 paints/shadow-evidence에 분리 기록한다.
+
+
+### Private hit 좌표 계산 경계
+
+`grammar/hitCoordinates.js`는 explicit client point/rect와 root·child affine matrix를 받아
+CSS-local→geometry-local 좌표를 계산하는 private 순수 owner다. DOM/DPR/semantic resource를
+읽거나 program·trace를 변경하지 않는다. Singular/overflow/empty viewport는 no-hit diagnostic이며
+모든 입력과 최대1024 child work를 계산 전에 검증한다. Existing pathGeometry/graphicClip/graphicTree와
+scene identity 소유권은 유지된다. 공개 interaction entry와 exact geometry/index/frame 소비자는
+아직 연결되지 않았으며 [private 범위 기록](impl/roadmap9/interaction/STEP047.md)이 잔여 의무를 구분한다.
+
+Private 좌표 owner 한 파일을 추가한 뒤 packed content는816entries/5,520,464unpacked bytes,
+Node22 packed1,200,158/Node20·24 packed1,202,819bytes였다. Package cap을816/1,203,000/5,521,000으로
+최소 갱신했다. Full/Basic/SVG import graph에는 새 owner가 아직 없으므로 browser bundle 한도와 지원 계약은 같다.
