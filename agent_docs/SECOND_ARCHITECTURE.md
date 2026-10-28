@@ -1895,6 +1895,11 @@ graphics를 즉시 수렴시킨다. 이후 top-level action completion reconcili
 rematerialize된 mark·guide·title·Canvas의 inherited color를 같은 preset으로 다시 투영한다.
 `removeTheme`은 inherited 값을 light library default로 되돌린 뒤 theme config를 제거한다.
 
+Resource-backed graph/tree/treemap의 역할별 기본값은 grammar plot owner가 하나만 정의한다.
+Theme는 이 기본값과 authored override를 구분하고 기존 plot materializer를 통해 body/link/label을
+갱신한다. 마지막 frame 제거는 해당 family 기본값을 복원한다. 저장된 graph/hierarchy/layout 계산은
+다시 실행하지 않으며 named highlight는 새 baseline에서 기존 selection owner가 다시 적용한다.
+
 Theme reconciliation은 concrete appearance와 해당 materialization config만 바꾼다. Field-driven
 palette output, semantic spec, resolved scale, 통계 row, grouping, domain, item/draw order는 입력과
 동일하게 유지한다. Explicit local style은 값이 preset 또는 library default와 같더라도 action

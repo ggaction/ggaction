@@ -1,0 +1,26 @@
+{
+  "ggaction": {
+    "specifier": "ggaction",
+    "chunks": 1,
+    "modules": 731,
+    "minifiedBytes": 2136262,
+    "gzipBytes": 600882,
+    "limit": 601000
+  },
+  "ggaction/basic": {
+    "specifier": "ggaction/basic",
+    "chunks": 1,
+    "modules": 491,
+    "minifiedBytes": 1198385,
+    "gzipBytes": 349344,
+    "limit": 349000
+  },
+  "ggaction/svg": {
+    "specifier": "ggaction/svg",
+    "chunks": 1,
+    "modules": 34,
+    "minifiedBytes": 56009,
+    "gzipBytes": 19199,
+    "limit": 25000
+  }
+}

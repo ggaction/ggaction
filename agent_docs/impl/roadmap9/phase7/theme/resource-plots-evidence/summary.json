@@ -1,0 +1,88 @@
+{
+  "base": "36349d6b1eb7fee9b17aba2f1c6bbae029a8129e",
+  "scope": "Resource plot theme defaults and explicit-style preservation; not full STEP-033",
+  "runtimeHashes": {
+    "src/actions/theme/reconcile.js": "a109d4d55373dedb4daf6fa5cab30f77915e0d92206aa6c4b2a3f39c6e9fedac",
+    "src/grammar/graph/plot.js": "58406cb938b18044d8cd2da923a88b8065f8aa6d4f623b0fed1ca6be5da11e21",
+    "src/grammar/hierarchy/plot.js": "d6efbec8f09373ebfc7e4576b79974be33fb572c68dc2ad01dc9ac55aa6052bc",
+    "src/materialization/selection/path.js": "06099d20a6c65b4156884761606da3e3fe51395fa4166d407aa5769c95f7a961",
+    "src/materialization/selection/policies/hierarchy.js": "e204831b6210adcc6fe057b81f88bc5212697646ab55c802943be1d65a968d39",
+    "src/theme/defaults.js": "33b8f4fd476a72b0694d8ec84abb69af0dad4b03569422bcdf18a6a988df574f",
+    "src/actions/theme/resourcePlots.js": "f3dbda27aa9ec97b3ffa46bcc6dd05aca419f7da43e6ee68c042afd9da3570ee"
+  },
+  "checks": {
+    "unitSelectionCoverage": {
+      "command": "node --experimental-test-coverage --test-coverage-include=src/actions/theme/resourcePlots.js --test-coverage-include=src/theme/defaults.js --test-coverage-include=src/materialization/selection/policies/hierarchy.js --test-coverage-include=src/materialization/selection/path.js --test test/unit/actions/theme-resource-plots.test.js test/unit/theme/defaults.test.js test/unit/actions/theme.test.js test/unit/actions/theme-composition.test.js test/unit/resources/hierarchy-plots.test.js test/unit/resources/hierarchy-consumers.test.js test/unit/actions/selection/row-highlighting.test.js test/unit/actions/selection/selection-robustness.test.js test/unit/actions/selection/mark-selection.test.js",
+      "passed": 103
+    },
+    "contracts": {
+      "passed": 41
+    },
+    "packageContracts": {
+      "passed": 7
+    },
+    "docs": {
+      "command": "npm run docs:generate && node scripts/run-tests.js docs",
+      "passed": 172
+    },
+    "postReadme": {
+      "passed": 6
+    },
+    "installed": {
+      "node": "22.23.1",
+      "case": "theme/resource-plot-renderer-lifecycle",
+      "passed": 1,
+      "families": [
+        "graph",
+        "tree",
+        "treemap"
+      ],
+      "proof": [
+        "SVG concrete color",
+        "Canvas and PNG byte parity",
+        "program and graphic restore",
+        "Canvas scene byte parity",
+        "PDF emission"
+      ]
+    },
+    "coverageFloors": "Affected existing/new critical floors asserted; full suite not rerun"
+  },
+  "packageFinal": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/theme-native/package/ggaction-0.0.26.tgz",
+    "sha256": "ef7fddf3d44ed93cfa16e6e2005967c90eec06f3cacb617f3b9d7f73a6ac36a5",
+    "entries": 822,
+    "packed": 1207007,
+    "unpacked": 5555782
+  },
+  "packageMatrixNote": "Node20/24 matrix uses preceding README ceiling text 349000; final README-only change retains exact runtime and same unpacked length. Final fixed Node22 tar is separately hashed and the installed case reran after this README change.",
+  "limits": {
+    "entries": 822,
+    "packedBytes": 1210000,
+    "unpackedBytes": 5556000,
+    "basicGzip": 350000
+  },
+  "excludedClaims": [
+    "No full STEP-033 completion",
+    "No new full-source coverage run",
+    "No full three-version installed matrix",
+    "No SVG/PDF exact raster edge parity"
+  ],
+  "evidenceHashes": {
+    "browser-node20.json": "b84c15b6bf48f91d2cb94b47d99dfce38bc5ee554bebdf243f4ba9afc639e41d",
+    "package-matrix.json": "5c8ce9c89cf79d0d05b7dbaa3e19d083347136f6ee8b9601da17e61322ea8fc7",
+    "coverage-metrics.json": "570354683b0e44f817d094f93b7d13336d68849f2c9eb697bcffc65df48e1658",
+    "package-final.json": "ac39b99783aaf09add4fc5836c344ef5db0f5c513007dd25df4bf07f4681fd6d",
+    "resource-expanded.log": "656e92bb72e0d72116f164a85d0197093531b551af3f2b6aee47fddabaebaddd",
+    "resource-first.log": "96bd555d4e69427b57b992d84fc6927fd3d8976ee172e3975ef5560ad36c24f0",
+    "docs-tests.log": "10f0c0394f7c844b4da82ca986301929d3cdf63ee2246a93de1c01cc5ebfaea7",
+    "package-first.log": "9b60a185385ab76ffbbdc01ea3b8a2ec0e95ff099936ec1db5c43b90fdd7f7f2",
+    "package-contracts.log": "7001a1aec0e1ca5ff483c49e6d4d496272e7ad1c373fb2fb596985ad30543624",
+    "contracts-initial.log": "a2d27bf8d7754305382c1b8d06656b2bd263a92b0249d56326f6a278e301a57e",
+    "descriptor-first.log": "33843605dfad05e33bb11f5e642227fe441eb5aa993b4bd7d92244e0bf743b24",
+    "installed-final.json": "2d8331fe366c8b167f25d7bfb665ce05b9d1b74ed973b7152eddd4be1c5e3ff5",
+    "resource-reset-first.log": "1a5262061e079b3bb7f539253faee8f1285bd587b9de5db8ec5957cbcaccc061",
+    "installed-final.log": "4136ebe5f8641f6d1f27617e2aae4c180547e69900f084763a74504bf03b8b54",
+    "coverage-final.log": "0fbcabd23e30eb6980a38488465d25cb799938159bb6945ab620a1e8d3dd05d0",
+    "readme-final.log": "329c39e529240b7abf1ebb9e88cc88e9780282c4d404392092605e7fe4e5094d"
+  }
+}

@@ -5,10 +5,13 @@ import { rejectUnknownProperties, validateNonEmptyString, validateNonNegativeFin
 
 const PAINT = ["fill", "stroke", "strokeWidth", "opacity"];
 const LABEL = ["fill", "fontSize", "fontFamily", "fontWeight"];
-const DEFAULT_NODES = Object.freeze({ radius: 6, fill: "#2563eb", stroke: "#ffffff", strokeWidth: 1, opacity: 1, overrides: [] });
-const DEFAULT_CELLS = Object.freeze({ fill: "#3b82f6", stroke: "#ffffff", strokeWidth: 1, opacity: 1, overrides: [] });
-const DEFAULT_LINKS = Object.freeze({ stroke: "#94a3b8", strokeWidth: 1.5, opacity: 1 });
-const DEFAULT_LABELS = Object.freeze({ fill: "#0f172a", fontSize: 12, fontFamily: "sans-serif", fontWeight: "normal", overrides: [] });
+export const HIERARCHY_PLOT_DEFAULTS = cloneAndFreeze({
+  nodes: { radius: 6, fill: "#2563eb", stroke: "#ffffff", strokeWidth: 1, opacity: 1, overrides: [] },
+  cells: { fill: "#3b82f6", stroke: "#ffffff", strokeWidth: 1, opacity: 1, overrides: [] },
+  links: { stroke: "#94a3b8", strokeWidth: 1.5, opacity: 1 },
+  labels: { fill: "#0f172a", fontSize: 12, fontFamily: "sans-serif", fontWeight: "normal", overrides: [] }
+});
+const { nodes: DEFAULT_NODES, cells: DEFAULT_CELLS, links: DEFAULT_LINKS, labels: DEFAULT_LABELS } = HIERARCHY_PLOT_DEFAULTS;
 
 function pair(value, label) {
   ownArray(value, label);

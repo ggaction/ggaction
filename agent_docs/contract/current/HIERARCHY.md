@@ -77,6 +77,7 @@ Authored hierarchy/layout dependent와 live hierarchy plot은 먼저 명시적�
 
 - Signature: `createTreePlot({ id?, layout?, origin?, clip?, nodes?, links?, labels? })`.
 - Draw hierarchy nodes and parent links from a stored tree layout.
+- Item highlights apply fill, opacity and offset to the node body and label; stroke and strokeWidth apply only to the node body. Text labels retain their existing text appearance contract. Theme changes rebuild the unhighlighted baseline before reapplying named highlights.
 - The omitted first ID is `treePlot`; another tree plot needs an explicit ID. The layout must use method tree. Omitted layout uses current eligible context, then the unique eligible resource; ambiguity fails. Nodes default to radius 6, fill #2563eb, stroke #ffffff, width 1 and opacity 1. Links default to #94a3b8, width 1.5 and opacity 1; false disables them. `origin:"auto"` centers stored bounds in the plot frame; explicit `[x,y]` is plot-local. `clip:false` is default.
 
 ### Formal values — `createTreePlot`

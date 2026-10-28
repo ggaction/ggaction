@@ -1,0 +1,95 @@
+TAP version 13
+# Subtest: graph theme paint changes preserve stored layouts and final item identity
+ok 1 - graph theme paint changes preserve stored layouts and final item identity
+  ---
+  duration_ms: 143.994125
+  type: 'test'
+  ...
+# Subtest: graph same-as-default authored paint and per-item styles outrank a theme
+ok 2 - graph same-as-default authored paint and per-item styles outrank a theme
+  ---
+  duration_ms: 31.496708
+  type: 'test'
+  ...
+# Subtest: tree theme paint changes preserve stored layouts and final item identity
+ok 3 - tree theme paint changes preserve stored layouts and final item identity
+  ---
+  duration_ms: 89.834959
+  type: 'test'
+  ...
+# Subtest: tree same-as-default authored paint and per-item styles outrank a theme
+ok 4 - tree same-as-default authored paint and per-item styles outrank a theme
+  ---
+  duration_ms: 27.272333
+  type: 'test'
+  ...
+# Subtest: treemap theme paint changes preserve stored layouts and final item identity
+ok 5 - treemap theme paint changes preserve stored layouts and final item identity
+  ---
+  duration_ms: 22.39875
+  type: 'test'
+  ...
+# Subtest: treemap same-as-default authored paint and per-item styles outrank a theme
+ok 6 - treemap same-as-default authored paint and per-item styles outrank a theme
+  ---
+  duration_ms: 10.855583
+  type: 'test'
+  ...
+# Subtest: resource plot themes keep disabled roles and inferred targets during editing
+ok 7 - resource plot themes keep disabled roles and inferred targets during editing
+  ---
+  duration_ms: 16.041208
+  type: 'test'
+  ...
+# Subtest: resource label typography changes rematerialize once without altering layout resources
+ok 8 - resource label typography changes rematerialize once without altering layout resources
+  ---
+  duration_ms: 66.258541
+  type: 'test'
+  ...
+# Subtest: scoped resource themes preserve child-local requests and restore family defaults
+not ok 9 - scoped resource themes preserve child-local requests and restore family defaults
+  ---
+  duration_ms: 35.481917
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/test/unit/actions/theme-resource-plots.test.js:74:1'
+  failureType: 'testCodeFailure'
+  error: 'q.children.every is not a function'
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/test/unit/actions/theme-resource-plots.test.js:79:24)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: graph theme follows label reset and preserves a named highlight baseline
+ok 10 - graph theme follows label reset and preserves a named highlight baseline
+  ---
+  duration_ms: 23.131625
+  type: 'test'
+  ...
+# Subtest: tree theme follows label reset and preserves a named highlight baseline
+ok 11 - tree theme follows label reset and preserves a named highlight baseline
+  ---
+  duration_ms: 26.275791
+  type: 'test'
+  ...
+# Subtest: treemap theme follows label reset and preserves a named highlight baseline
+ok 12 - treemap theme follows label reset and preserves a named highlight baseline
+  ---
+  duration_ms: 17.395208
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 11
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1668.557333

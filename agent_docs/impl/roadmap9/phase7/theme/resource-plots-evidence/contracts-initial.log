@@ -1,0 +1,256 @@
+TAP version 13
+# Subtest: complete-chart discovery reaches semantic and primitive authoring layers
+ok 1 - complete-chart discovery reaches semantic and primitive authoring layers
+  ---
+  duration_ms: 147.766041
+  type: 'test'
+  ...
+# Subtest: discovery separates completion from resource validity
+ok 2 - discovery separates completion from resource validity
+  ---
+  duration_ms: 61.795625
+  type: 'test'
+  ...
+# Subtest: entry-point discovery matches declarations and runtime methods
+ok 3 - entry-point discovery matches declarations and runtime methods
+  ---
+  duration_ms: 19.693292
+  type: 'test'
+  ...
+# Subtest: exports the public module boundaries
+ok 4 - exports the public module boundaries
+  ---
+  duration_ms: 24.278042
+  type: 'test'
+  ...
+# Subtest: keeps the basic entry focused on common Cartesian charts
+ok 5 - keeps the basic entry focused on common Cartesian charts
+  ---
+  duration_ms: 0.655875
+  type: 'test'
+  ...
+# Subtest: maps every public entry point to a declaration file
+ok 6 - maps every public entry point to a declaration file
+  ---
+  duration_ms: 4.067834
+  type: 'test'
+  ...
+# Subtest: keeps runtime values and declarations in exact public-entry parity
+ok 7 - keeps runtime values and declarations in exact public-entry parity
+  ---
+  duration_ms: 252.146041
+  type: 'test'
+  ...
+# Subtest: keeps the public release identity and legal metadata consistent
+ok 8 - keeps the public release identity and legal metadata consistent
+  ---
+  duration_ms: 2.215333
+  type: 'test'
+  ...
+# Subtest: keeps library terminology source-neutral
+ok 9 - keeps library terminology source-neutral
+  ---
+  duration_ms: 951.073125
+  type: 'test'
+  ...
+# Subtest: keeps source imports inside their architectural boundaries
+ok 10 - keeps source imports inside their architectural boundaries
+  ---
+  duration_ms: 283.333667
+  type: 'test'
+  ...
+# Subtest: the compact source-action vocabulary matches public default action metadata
+ok 11 - the compact source-action vocabulary matches public default action metadata
+  ---
+  duration_ms: 1.475458
+  type: 'test'
+  ...
+# Subtest: Basic source preparation excludes Full revision and facet orchestration
+ok 12 - Basic source preparation excludes Full revision and facet orchestration
+  ---
+  duration_ms: 319.29575
+  type: 'test'
+  ...
+# Subtest: parses static, re-exported, and dynamic module references
+ok 13 - parses static, re-exported, and dynamic module references
+  ---
+  duration_ms: 0.093459
+  type: 'test'
+  ...
+# Subtest: resolves extensionless files and directory entry points
+ok 14 - resolves extensionless files and directory entry points
+  ---
+  duration_ms: 0.210833
+  type: 'test'
+  ...
+# Subtest: keeps the local source import graph acyclic
+ok 15 - keeps the local source import graph acyclic
+  ---
+  duration_ms: 186.525958
+  type: 'test'
+  ...
+# Subtest: keeps semantic and graphic cloning inside primitive actions
+ok 16 - keeps semantic and graphic cloning inside primitive actions
+  ---
+  duration_ms: 1477.47125
+  type: 'test'
+  ...
+# Subtest: routes exact named semantic resource lookup through selectors
+ok 17 - routes exact named semantic resource lookup through selectors
+  ---
+  duration_ms: 1452.806917
+  type: 'test'
+  ...
+# Subtest: keeps cross-cutting planners independent from concrete mark names
+ok 18 - keeps cross-cutting planners independent from concrete mark names
+  ---
+  duration_ms: 0.363583
+  type: 'test'
+  ...
+# Subtest: keeps every ordinary mark family behind a stable directory entry
+ok 19 - keeps every ordinary mark family behind a stable directory entry
+  ---
+  duration_ms: 0.310625
+  type: 'test'
+  ...
+# Subtest: architectural syntax checks ignore comments and recognize direct bracket and optional access
+ok 20 - architectural syntax checks ignore comments and recognize direct bracket and optional access
+  ---
+  duration_ms: 0.182875
+  type: 'test'
+  ...
+# Subtest: discovers every normal, render, and browser test recursively exactly once
+ok 21 - discovers every normal, render, and browser test recursively exactly once
+  ---
+  duration_ms: 239.549541
+  type: 'test'
+  ...
+# Subtest: separates network-backed corpus sweeps from source coverage
+ok 22 - separates network-backed corpus sweeps from source coverage
+  ---
+  duration_ms: 259.572375
+  type: 'test'
+  ...
+# Subtest: shards realistic CI after preparing its dataset cache once
+ok 23 - shards realistic CI after preparing its dataset cache once
+  ---
+  duration_ms: 0.610834
+  type: 'test'
+  ...
+# Subtest: does not discover programs or support modules as tests
+ok 24 - does not discover programs or support modules as tests
+  ---
+  duration_ms: 15.769917
+  type: 'test'
+  ...
+# Subtest: keeps every test module reachable from a suite or module-script entry
+ok 25 - keeps every test module reachable from a suite or module-script entry
+  ---
+  duration_ms: 704.314458
+  type: 'test'
+  ...
+# Subtest: requires every active gate to expose a complete reviewable slice
+ok 26 - requires every active gate to expose a complete reviewable slice
+  ---
+  duration_ms: 82.485541
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from active gate implementations
+ok 27 - keeps stable tests independent from active gate implementations
+  ---
+  duration_ms: 191.446417
+  type: 'test'
+  ...
+# Subtest: keeps stable tests independent from implementation roadmap records
+ok 28 - keeps stable tests independent from implementation roadmap records
+  ---
+  duration_ms: 236.384792
+  type: 'test'
+  ...
+# Subtest: selects tests by chart, capability, or relative path
+ok 29 - selects tests by chart, capability, or relative path
+  ---
+  duration_ms: 503.276291
+  type: 'test'
+  ...
+# Subtest: caps file concurrency without changing file order or coverage policy
+ok 30 - caps file concurrency without changing file order or coverage policy
+  ---
+  duration_ms: 0.576584
+  type: 'test'
+  ...
+# Subtest: validates realistic shard coordinates before invoking Node
+ok 31 - validates realistic shard coordinates before invoking Node
+  ---
+  duration_ms: 0.314417
+  type: 'test'
+  ...
+# Subtest: maps every named capability entry to an exact file or prefix
+ok 32 - maps every named capability entry to an exact file or prefix
+  ---
+  duration_ms: 3872.043542
+  type: 'test'
+  ...
+# Subtest: assigns every normal test file to at least one named capability
+ok 33 - assigns every normal test file to at least one named capability
+  ---
+  duration_ms: 12.7165
+  type: 'test'
+  ...
+# Subtest: validates every selector before short-circuit matching
+ok 34 - validates every selector before short-circuit matching
+  ---
+  duration_ms: 0.108333
+  type: 'test'
+  ...
+# Subtest: coverage capture preserves UTF-8 markers across every byte boundary
+ok 35 - coverage capture preserves UTF-8 markers across every byte boundary
+  ---
+  duration_ms: 0.697583
+  type: 'test'
+  ...
+# Subtest: coverage provenance hashes untracked symlinks without reading their directory
+ok 36 - coverage provenance hashes untracked symlinks without reading their directory
+  ---
+  duration_ms: 1.959833
+  type: 'test'
+  ...
+# Subtest: publishes program theme lifecycle in runtime, types, and the Current catalog
+ok 37 - publishes program theme lifecycle in runtime, types, and the Current catalog
+  ---
+  duration_ms: 8.439667
+  type: 'test'
+  ...
+# Subtest: publishes custom tokens and composition theme scope as current behavior
+ok 38 - publishes custom tokens and composition theme scope as current behavior
+  ---
+  duration_ms: 110.223833
+  type: 'test'
+  ...
+# Subtest: rejects malformed custom theme definitions before changing state
+ok 39 - rejects malformed custom theme definitions before changing state
+  ---
+  duration_ms: 3.201833
+  type: 'test'
+  ...
+# Subtest: keeps theme reconciliation nested under the authoring action trace
+ok 40 - keeps theme reconciliation nested under the authoring action trace
+  ---
+  duration_ms: 2.666708
+  type: 'test'
+  ...
+# Subtest: applies the dark theme to every public unit chart without semantic drift
+ok 41 - applies the dark theme to every public unit chart without semantic drift
+  ---
+  duration_ms: 11702.298125
+  type: 'test'
+  ...
+1..41
+# tests 41
+# suites 0
+# pass 41
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 16962.338166

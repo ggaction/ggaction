@@ -1,0 +1,46 @@
+{
+  "metrics": {
+    "actions/theme/resourcePlots.js": {
+      "lines": 100,
+      "branches": 94.74,
+      "functions": 100
+    },
+    "materialization/selection/path.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "materialization/selection/policies/hierarchy.js": {
+      "lines": 100,
+      "branches": 81.82,
+      "functions": 100
+    },
+    "theme/defaults.js": {
+      "lines": 99.34,
+      "branches": 96.15,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 99.66,
+      "branches": 94.5,
+      "functions": 100
+    }
+  },
+  "floors": {
+    "actions/theme/resourcePlots.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/selection/path.js": {
+      "lines": 80,
+      "branches": 65,
+      "functions": 80
+    },
+    "materialization/selection/policies/hierarchy.js": {
+      "lines": 80,
+      "branches": 65,
+      "functions": 80
+    }
+  }
+}

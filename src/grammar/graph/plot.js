@@ -7,9 +7,12 @@ import { rejectUnknownProperties, validateNonEmptyString, validateNonNegativeFin
 const NODE_FIELDS = ["radius", "fill", "stroke", "strokeWidth", "opacity"];
 const EDGE_FIELDS = ["stroke", "strokeWidth", "opacity", "parallelGap", "loopRadius", "arrowSize", "arrows"];
 const LABEL_FIELDS = ["fill", "fontSize", "fontFamily", "fontWeight"];
-const NODES = { radius: 6, fill: "#2563eb", stroke: "#ffffff", strokeWidth: 1, opacity: 1, overrides: [] };
-const EDGES = { stroke: "#94a3b8", strokeWidth: 1.5, opacity: 1, parallelGap: 16, loopRadius: 20, arrowSize: 8, arrows: "auto" };
-const LABELS = { fill: "#0f172a", fontSize: 12, fontFamily: "sans-serif", fontWeight: "normal", offset: [0, 14], overrides: [] };
+export const GRAPH_PLOT_DEFAULTS = cloneAndFreeze({
+  nodes: { radius: 6, fill: "#2563eb", stroke: "#ffffff", strokeWidth: 1, opacity: 1, overrides: [] },
+  edges: { stroke: "#94a3b8", strokeWidth: 1.5, opacity: 1, parallelGap: 16, loopRadius: 20, arrowSize: 8, arrows: "auto" },
+  labels: { fill: "#0f172a", fontSize: 12, fontFamily: "sans-serif", fontWeight: "normal", offset: [0, 14], overrides: [] }
+});
+const { nodes: NODES, edges: EDGES, labels: LABELS } = GRAPH_PLOT_DEFAULTS;
 function record(input, fields, label) {
   ownRecord(input, label); rejectUnknownProperties(input, fields, label);
   if (Object.values(input).some(value => value === undefined || value === null)) throw new TypeError(`${label} cannot contain null or undefined.`);

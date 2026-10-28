@@ -1135,6 +1135,10 @@
     ],
     "theme": [
       {
+        "type": "file",
+        "path": "unit/actions/theme-resource-plots.test.js"
+      },
+      {
         "type": "prefix",
         "path": "unit/theme/"
       },

@@ -6,7 +6,7 @@ import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 601_000, // Font and graph-label integration, Node20: 600,160 gzip bytes.
-  "ggaction/basic": 349_000, // Font and graph union, Node20: 348,432 gzip bytes.
+  "ggaction/basic": 350_000, // Resource plot theme defaults, Node20: 349,344 gzip bytes.
   "ggaction/svg": 25_000
 });
 

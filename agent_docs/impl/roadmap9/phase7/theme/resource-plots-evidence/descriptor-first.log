@@ -1,0 +1,53 @@
+TAP version 13
+# Subtest: normalizes built-in and custom theme requests into owned partial definitions
+ok 1 - normalizes built-in and custom theme requests into owned partial definitions
+  ---
+  duration_ms: 1.137375
+  type: 'test'
+  ...
+# Subtest: resolves base tokens and the closed optional axis typography vocabulary
+ok 2 - resolves base tokens and the closed optional axis typography vocabulary
+  ---
+  duration_ms: 0.239
+  type: 'test'
+  ...
+# Subtest: replaces custom partial tokens instead of merging consecutive definitions
+ok 3 - replaces custom partial tokens instead of merging consecutive definitions
+  ---
+  duration_ms: 0.342916
+  type: 'test'
+  ...
+# Subtest: rejects malformed custom theme definitions and token values
+ok 4 - rejects malformed custom theme definitions and token values
+  ---
+  duration_ms: 0.628209
+  type: 'test'
+  ...
+# Subtest: rejects executable and hidden theme descriptors before reading them
+not ok 5 - rejects executable and hidden theme descriptors before reading them
+  ---
+  duration_ms: 0.876791
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/test/unit/theme/defaults.test.js:93:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception (TypeError).'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/test/unit/theme/defaults.test.js:104:41)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 4
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 147.891917

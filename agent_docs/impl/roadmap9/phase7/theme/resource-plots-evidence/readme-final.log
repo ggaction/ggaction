@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: keeps the first chart identifiable without color alone
+ok 1 - keeps the first chart identifiable without color alone
+  ---
+  duration_ms: 70.124459
+  type: 'test'
+  ...
+# Subtest: builds the ordered immutable README authoring sequence
+ok 2 - builds the ordered immutable README authoring sequence
+  ---
+  duration_ms: 978.380542
+  type: 'test'
+  ...
+# Subtest: handles zero-variance R-squared input explicitly
+ok 3 - handles zero-variance R-squared input explicitly
+  ---
+  duration_ms: 0.409916
+  type: 'test'
+  ...
+# Subtest: keeps generated README GIF and PNG valid and referenced
+ok 4 - keeps generated README GIF and PNG valid and referenced
+  ---
+  duration_ms: 2.411916
+  type: 'test'
+  ...
+# Subtest: the paper rose sequence retains each revision and materializes its final palette
+ok 5 - the paper rose sequence retains each revision and materializes its final palette
+  ---
+  duration_ms: 103.182417
+  type: 'test'
+  ...
+# Subtest: the README leads with the paper GIF, then installation and a complete first chart
+ok 6 - the README leads with the paper GIF, then installation and a complete first chart
+  ---
+  duration_ms: 0.392417
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1711.3635

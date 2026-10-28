@@ -968,5 +968,14 @@
         "statements": 20
       }
     ]
+  },
+  {
+    "file": "theme-resource-plots.mjs",
+    "cases": [
+      {
+        "id": "theme/resource-plot-renderer-lifecycle",
+        "statements": 2
+      }
+    ]
   }
 ]

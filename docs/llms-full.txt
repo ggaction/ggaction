@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:445ce9a1e8cbd4b7096fb47c1b632ce00bf5a65bae7e934f620d94e5c02c9840. Status: development. Runtime source: e412fe55e9aa5c0a6be4858c58019368ff1c260f. Release baseline: v0.0.13.
+Contract: sha256:cff04346f870de253bd1adb2473b0e302e74000593829c4541b924e8660d09ef. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/e412fe55e9aa5c0a6be4858c58019368ff1c260f/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/e412fe55e9aa5c0a6be4858c58019368ff1c260f/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -45007,12 +45007,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e412fe55e9aa5c0a6be4858c58019368ff1c260f/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e412fe55e9aa5c0a6be4858c58019368ff1c260f/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -47514,6 +47514,8 @@ The first panel uses a lavender background and purple default marks. The second 
 
 Theme defaults and explicit mark properties have separate precedence. Removing a theme does not undo the user's local override. On a composition, choose the documented `scope` deliberately; this example themes independent child programs before composition. Unknown token names fail without changing the input.
 
+Graph, tree, and treemap plots also follow theme defaults for their bodies, links, and labels. Explicit role styles and per-node overrides stay in place. Removing the final theme restores each plot family's defaults, while the stored layout and item identities remain unchanged.
+
 ## Related
 
 [Authoring conventions](./concepts/authoring-conventions/) · [Data policies](./api/data/policies/) ·
@@ -48048,9 +48050,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:445ce9a1e8cbd4b7096fb47c1b632ce00bf5a65bae7e934f620d94e5c02c9840` |
+| Contract fingerprint | `sha256:cff04346f870de253bd1adb2473b0e302e74000593829c4541b924e8660d09ef` |
 | Example and dataset source | `e412fe55e9aa5c0a6be4858c58019368ff1c260f` |
-| Runtime source commit | `e412fe55e9aa5c0a6be4858c58019368ff1c260f` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 324 |
 | Declared actions in that release | 234 |

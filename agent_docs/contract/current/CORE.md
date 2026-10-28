@@ -226,12 +226,17 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   기본 highlight paint는 active `highlight` token을 사용하고 explicit highlight paint는 보존한다.
   `fontFamily` 변경은 Text, axis, legend, title, facet header를 다시 materialize해 text bounds와
   composition layout을 검증한다.
+  Graph/Tree/Treemap plot의 기본 node/cell fill은 `mark`, 경계선은 `background`, edge/link는
+  `mutedText`, label은 `text`/`fontFamily`를 따른다. 명시한 역할별 style과 node별 overrides는
+  theme보다 우선한다. 마지막 frame을 제거하면 각 plot family의 기본값을 복원하며, 저장된
+  graph/hierarchy/layout 결과·revision·item key는 변경하거나 재계산하지 않는다.
 - 상태와 불변성: request는 owner/scope/base/partial token frame으로 immutable하게 저장한다. Full
   resolved token object와 계산된 layout을 theme request state에 저장하지 않는다. Composition 전파는
   retained child input을 변경하지 않고 postorder로 새 snapshots를 만든다.
 - 오류: non-object/empty options, unknown root/token key, missing `base`/`tokens`, invalid theme/scope,
   잘못된 font size, empty 또는 non-string 색/font family token을 거부한다. 전체 candidate materialization이 실패하면 receiver와 caller
   input은 변경되지 않는다.
+  Custom definition/token object의 getter, symbol, 숨겨진 property, 사용자 prototype은 읽기 전에 거부한다.
 - Coverage: `test/unit/theme/defaults.test.js`, `test/unit/theme/state.test.js`,
   `test/unit/actions/theme.test.js`, `test/unit/actions/theme-composition.test.js`가 schema, frame ordering,
   custom replacement, explicit provenance, highlight/font, self/descendant 전파, nested removal과 facet replay를
@@ -240,13 +245,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `applyTheme`
 
 - Implemented: `applyTheme({ theme: ThemeName | { base: ThemeName; tokens: Partial<ThemeTokens> }; scope?: "self" | "descendants" }): ChartProgram`
-- `ThemeName = "light" | "dark"`이며 `ThemeTokens`는 위 18개 required string property다.
+- `ThemeName = "light" | "dark"`이며 `ThemeTokens`는 위 18개 required string property와 5개 optional axis role property다.
 - Proposed (NOT IMPLEMENTED): No proposal. Theme creation/import와 arbitrary token vocabulary는 현재 범위 밖이다.
 
 ### Value coverage — `applyTheme`
 
 - Theme definition
-  - ✅ Covered: built-in light/dark, custom partial, exact 18-token vocabulary, input ownership/freeze,
+  - ✅ Covered: built-in light/dark, custom partial, closed 23-token vocabulary, input ownership/freeze,
     replacement without partial merge, malformed/unknown values와 atomic rejection.
 - Scope와 lifecycle
   - ✅ Covered: unit normalization, composition default descendants, explicit self, nested concat/facet,
@@ -254,6 +259,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Explicit precedence
   - ✅ Covered: mark/Canvas, Cartesian/Polar/Parallel guides, title/subtitle, legend root/block,
     facet headers, statistical/reference components, field-driven palettes와 default/explicit highlight.
+  - ✅ Covered: Graph/Tree/Treemap role defaults, same-valued authored style, per-node overrides,
+    disabled/reset labels/links, named highlight baseline, nested scope and family-default restoration.
 - Layout와 semantic boundary
   - ✅ Covered: font-dependent resource rematerialization, composition snapshot/layout rebuild, semantic spec,
     resolved scales, statistics, ordering과 caller program immutability.
@@ -261,7 +268,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: `dark-theme-scatterplot`의 explicit low-level style primitive와 public `applyTheme`
     program 사이 exact graphic/renderer/decoded PNG pixel equivalence.
 - Evidence: `test/unit/theme/`, `test/unit/actions/theme.test.js`,
-  `test/unit/actions/theme-composition.test.js`, `test/contracts/theme.test.js`,
+  `test/unit/actions/theme-composition.test.js`, `test/unit/actions/theme-resource-plots.test.js`, `test/contracts/theme.test.js`,
   `test/charts/dark-theme-scatterplot/`.
 
 ## `removeTheme`

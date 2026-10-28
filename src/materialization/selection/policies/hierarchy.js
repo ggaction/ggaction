@@ -3,6 +3,7 @@ import { resolveHierarchyPlot } from "../../hierarchy/plot.js";
 import { concreteProperties } from "../items/common.js";
 import { memberRowReferences } from "../rows.js";
 import { normalizeAreaHighlightStyle } from "../styles.js";
+import { transformLabeledPathHighlightChild } from "../path.js";
 
 function sourceItems(program, layer) {
   const resolved = resolveHierarchyPlot(program, layer, program.markConfigs[layer.id]?.hierarchyPlot);
@@ -30,6 +31,7 @@ function resolveItems(program, layer) {
 export const hierarchySelectionPolicy = Object.freeze({
   resourceBacked: true, supportedGrains: Object.freeze(["item"]), resolveItems, resolveSourceItems: sourceItems,
   normalizeHighlightStyle: normalizeAreaHighlightStyle,
+  transformHighlightChild: transformLabeledPathHighlightChild,
   applyHighlightOp: "applyPathHighlight"
 });
 export const treeSelectionPolicy = Object.freeze({ ...hierarchySelectionPolicy, rematerializeOp: "materializeTreePlot" });
