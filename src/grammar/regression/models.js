@@ -7,6 +7,7 @@ import {
   stableFiniteMean,
   stableFiniteSquareSum
 } from "../numeric.js";
+import { trySolveLinearSystem } from "./linearSystem.js";
 
 function restoreFiniteRatio(value, numeratorScale, denominatorScale, label) {
   if (value === 0) return 0;
@@ -165,34 +166,9 @@ function fitLinearGroup(rows, {
 }
 
 function solveLinearSystem(matrix, vector) {
-  const size = matrix.length;
-  const augmented = matrix.map((row, index) => [...row, vector[index]]);
-  for (let column = 0; column < size; column += 1) {
-    let pivot = column;
-    for (let row = column + 1; row < size; row += 1) {
-      if (Math.abs(augmented[row][column]) > Math.abs(augmented[pivot][column])) {
-        pivot = row;
-      }
-    }
-    if (Math.abs(augmented[pivot][column]) < 1e-12) {
-      throw new Error("Polynomial regression design is singular.");
-    }
-    [augmented[column], augmented[pivot]] = [
-      augmented[pivot], augmented[column]
-    ];
-    const divisor = augmented[column][column];
-    for (let index = column; index <= size; index += 1) {
-      augmented[column][index] /= divisor;
-    }
-    for (let row = 0; row < size; row += 1) {
-      if (row === column) continue;
-      const factor = augmented[row][column];
-      for (let index = column; index <= size; index += 1) {
-        augmented[row][index] -= factor * augmented[column][index];
-      }
-    }
-  }
-  return augmented.map(row => row[size]);
+  const result = trySolveLinearSystem(matrix, vector);
+  if (result === undefined) throw new Error("Polynomial regression design is singular.");
+  return result;
 }
 
 function invertSymmetricMatrix(matrix) {

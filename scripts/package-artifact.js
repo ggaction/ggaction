@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 679, // Adds the private pivot grammar owner.
-  packedBytes: 1_012_000, // Private pivot kernel: measured 1,011,694 bytes.
-  unpackedBytes: 4_720_000 // Private pivot kernel: measured 4,719,770 bytes.
+  entries: 681, // Adds shared regression solve and private local quadratic owners.
+  packedBytes: 1_013_000, // Private local quadratic checkpoint: measured 1,012,717 bytes.
+  unpackedBytes: 4_723_000 // Private local quadratic checkpoint: measured 4,722,952 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

@@ -60,6 +60,20 @@ staging 실측은 679entries, 1,011,694packed, 4,719,770unpacked bytes다. 이�
 507,597/285,702bytes로 508,000/286,000 한도를 유지한다. 이 수치는 해당 기준 branch의 측정이며
 다른 통합 checkpoint의 누적 한도를 대체하지 않는다.
 
+## Private local quadratic 준비
+
+`grammar/regression/localQuadratic.js`는 이미 선택한 이웃의 x/y와 최종 weight만 받아 local quadratic
+prediction을 계산한다. Coordinate/response/weight scale을 정규화하고 singular local design은 동일 이웃의
+weighted constant mean으로 처리한다. 이웃 선택과 all-zero robust weight fallback은 기존 LOESS owner에 남는다.
+기존 polynomial의 partial-pivot linear solve와1e-12 rank 판정을 `regression/linearSystem.js`로 옮겨 공유하며,
+polynomial의 오류와 연산 순서 및 기존 LOESS local-linear 코드는 유지한다. Public degree2 옵션은 아직 없다.
+재현과 남은 통합은 [private checkpoint](impl/roadmap9/phase3/statistics/LOCAL_QUADRATIC.md)가 기록한다.
+
+Pivot 준비 이후 private math owner2개를 더한 Node22.23.1/npm10.9.8 staging 실측은681entries,
+1,012,717packed, 4,722,952unpacked bytes다. 이전679entries/1,012,000/4,720,000 한도를 넘으므로
+최소681entries/1,013,000/4,723,000으로 변경했다. Full gzip507,618, Basic285,702bytes는 기존
+508,000/286,000 한도를 유지한다. 이 역시 독립 branch의 누적 측정이며 main 통합 시 다시 실측한다.
+
 ## 범례 항목 이동 소유권
 
 범례 항목의 독립 이동 의도는 기존 `guideConfigs.legend`가 소유하고,
