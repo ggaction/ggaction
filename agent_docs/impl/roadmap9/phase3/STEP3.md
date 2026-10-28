@@ -11,7 +11,7 @@
 - [x] CSV/JSON 파싱·비동기 준비 kernel 및 stale/abort/원본 hash 검증
 - [x] Current/타입/공개 문서/생성 action metadata 동기화
 - [x] 최종 입력 고정 후 coverage·실데이터 7개 shard·browser/render·설치 패키지 재검증
-- [ ] 검증 evidence 기록 후 coherent implementation commit/push
+- [x] 검증 evidence 기록 후 coherent implementation commit/push (`3af6b16e`)
 - [ ] Resolver 공개 commit, parameter URL invalidation와 offline lifecycle 연결
 - [ ] STEP-013 인수 및 소비자 matrix 종료
 

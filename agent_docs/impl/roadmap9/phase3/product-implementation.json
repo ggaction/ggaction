@@ -428,6 +428,41 @@
       "path": "agent_docs/impl/roadmap9/phase3/product-evidence/coverage-inputs.json",
       "source": ".artifacts/validation/parameter-final/inputs.json",
       "sha256": "502c16577c153ffac09fba774b7086c410bdb0f025e28c669102e59a97fe85b0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/product-evidence/postcommit-provenance.log.gz",
+      "source": ".artifacts/parameter-postcommit-provenance.log",
+      "sha256": "fc6d94fc9f5361d2a49e247558befd7b6c906431970b57147e4a2c723cd8c09b",
+      "encoding": "gzip",
+      "decodedSha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/product-evidence/postcommit-machine.log.gz",
+      "source": ".artifacts/parameter-postcommit-machine.log",
+      "sha256": "01c67e77c76cf712236d0b9a3d13fc7945739997e5ccf6e80bb677780b0e29b5",
+      "encoding": "gzip",
+      "decodedSha256": "f5db0c4c6f33b9dba27703b4d87d65b217cd8a18ec73cf0d9bcb41b504f748ae"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/product-evidence/postcommit-llms.log.gz",
+      "source": ".artifacts/parameter-postcommit-llms.log",
+      "sha256": "6b097a1e4acfb2973c0e051f044d8628f67766aa372a580bf2e8db240974d0ab",
+      "encoding": "gzip",
+      "decodedSha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/product-evidence/postcommit-docs.log.gz",
+      "source": ".artifacts/parameter-postcommit-docs.log",
+      "sha256": "330419cb0222f3904881d1d7a6e1b4fa698ba760659a2cf35fb463456139de93",
+      "encoding": "gzip",
+      "decodedSha256": "16c2253566e25b350304e799dcf35a2d8d3c97cb3823c070f0e2529c3eff01b9"
     }
-  ]
+  ],
+  "runtimeCommit": "3af6b16ebb62765f942abaee2da7db5dddbe4cc0",
+  "postCommitDocumentation": {
+    "tests": 159,
+    "failed": 0,
+    "scope": "Only provenance and generated source-reference metadata changed after the runtime commit; exact contractId remains unchanged.",
+    "contractId": "sha256:c7c982f46a51b3f2f571de5bac1a3cfaef65ca4c568eae828204bda13f57c923"
+  }
 }
