@@ -88,3 +88,6 @@ Node20/22/24 각각27개, source/discovery/package33개, native Canvas의 cap×j
 Literal hole/island expected/actual/diff와 최초 실패는 `shape-evidence/`에 보존한다.
 새 source 두 파일을 포함한 실측은818 entries/5,541,801unpacked, Node22 packed1,205,871,
 Node20/24 packed1,208,456bytes다. 최소 cap은818/1,209,000/5,542,000이다. Public import graph는 그대로다.
+
+도형 source `cea9b6169`로 provenance/machine/LLM을 고정한 뒤 docs19/19, built154pages/1310artifacts를 통과했다.
+CSS/JS/images와 화면 구성이 동일하여 `ccbce6a6b`의 desktop/mobile/Axe 증거를 재사용한다.

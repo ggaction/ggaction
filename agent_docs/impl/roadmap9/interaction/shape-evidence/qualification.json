@@ -59,5 +59,12 @@
     "spatial index and current scene binding",
     "synthetic frame bridge",
     "STEP035 nested composition and public interaction consumers"
-  ]
+  ],
+  "sourceCommit": "cea9b6169",
+  "documentation": {
+    "sourceChecks": 19,
+    "builtPages": 154,
+    "selectiveLlmArtifacts": 1310,
+    "browserReuse": "Only source provenance identity changed; CSS, JS, images and layout are unchanged from ccbce6a6b."
+  }
 }
