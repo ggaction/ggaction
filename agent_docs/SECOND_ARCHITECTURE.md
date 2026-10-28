@@ -131,7 +131,9 @@ materialization 또는 renderer에 연결하지 않았다. Field 추출, graph r
 토폴로지의 공개 통합은 별도 domain owner의 남은 작업이다. `neighbors.js`는 정규화된 feature에서
 kNN/radius/similarity의 exact pair를 고르고 raw source index와 stable endpoint identity를 반환한다.
 `spanning.js`는 같은 metric preparation으로 complete graph 또는 명시 weighted candidate에서
-deterministic Kruskal tree/forest와 component/cost를 계산한다. 원격 자원이나 layout을 해석하지 않는다.
+deterministic Kruskal tree/forest와 component/cost를 계산한다. `structural.js`는 같은 typed key와
+grouping identity owner를 사용해 group clique/star 및 grouped sequence lag/maxGap 연결을 만든다.
+Explicit hub와 missing 정책을 보존하며 metric을 요구하지 않는다. 원격 자원이나 layout을 해석하지 않는다.
 공통 graph model이나 source row provenance를 중복 생성하지 않으며 domain adapter가 이를 연결한다. 검증 범위는
 [metric kernel checkpoint](impl/roadmap9/phase3/graph/METRICS_KERNEL.md)에 기록한다.
 
