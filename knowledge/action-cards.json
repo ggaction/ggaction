@@ -2240,13 +2240,13 @@
       "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
-          "existing inferred graph data",
-          "source dataset"
+          "existing inferred graph"
         ],
         "owns": [],
         "idOptions": [
           "target",
-          "data"
+          "data",
+          "candidateGraph"
         ]
       },
       "authoringRoles": [
@@ -2278,8 +2278,7 @@
       "completionRequirements": {
         "state": "contextual",
         "requires": [
-          "existing inferred graph data",
-          "source dataset"
+          "existing inferred graph"
         ],
         "allowsEmpty": false
       },
@@ -2331,14 +2330,15 @@
       "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
-          "source dataset"
+          "materialized source dataset"
         ],
         "owns": [
-          "inferred graph data"
+          "graph resource"
         ],
         "idOptions": [
           "id",
-          "data"
+          "data",
+          "candidateGraph"
         ]
       },
       "authoringRoles": [
@@ -2370,7 +2370,7 @@
       "completionRequirements": {
         "state": "contextual",
         "requires": [
-          "source dataset"
+          "materialized source dataset"
         ],
         "allowsEmpty": true
       },

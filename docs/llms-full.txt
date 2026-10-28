@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:e81f1fd288d083d089dd4e4ed6ab37c413181969f2c7ed301a6d51e3a50378fb. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:c29501d76a1227e5c59734bfa8d9e0f7e70c007de14a87d72bd96d597fa8ff62. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -48052,7 +48052,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:e81f1fd288d083d089dd4e4ed6ab37c413181969f2c7ed301a6d51e3a50378fb` |
+| Contract fingerprint | `sha256:c29501d76a1227e5c59734bfa8d9e0f7e70c007de14a87d72bd96d597fa8ff62` |
 | Example and dataset source | `7659f0f7f7d57c2bfa8f2c78f4ac8704dde08db1` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
@@ -49000,7 +49000,7 @@ Remove a plot with `removeMark` before removing its bound layout or graph. Resou
 Use `createInferredGraphData` when relationships follow a rule. The resulting
 graph works with the same `layoutGraph` and `createGraphPlot` actions.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```javascript
 import { chart } from 'ggaction';

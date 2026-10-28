@@ -3214,5 +3214,5 @@ GraphPlot와 outline을 합친 source7659f0f7f archive의 Node20 bundle은 Full5
 관측 graph와 같은 model로 연결한 여섯 inference rule, exact/approximate search, 저장 검증과
 source/candidate revision closure가 Full bundle에 포함된다. Node20 실측은 Full612,463/Basic345,748gzip bytes다.
 Full 한도를596,000에서613,000으로 최소 조정하며 Basic346,000과 SVG25,000은 유지한다.
-패키지 실측814entries/packed1,200,052/unpacked5,534,974bytes에 맞춰
-814/1,201,000/5,535,000 한도를 적용한다. Basic은 inference action과 resource를 등록하지 않는다.
+패키지 실측814entries/unpacked5,535,332bytes이며 packed는 Node22 1,200,162,
+Node20 1,203,209bytes다. 이 실측에 맞춰814/1,204,000/5,536,000 한도를 적용한다. Basic은 inference action과 resource를 등록하지 않는다.

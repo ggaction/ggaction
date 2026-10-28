@@ -45,7 +45,7 @@ Remove a plot with `removeMark` before removing its bound layout or graph. Resou
 Use `createInferredGraphData` when relationships follow a rule. The resulting
 graph works with the same `layoutGraph` and `createGraphPlot` actions.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 ```javascript
 import { chart } from 'ggaction';

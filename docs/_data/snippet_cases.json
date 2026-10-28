@@ -291,5 +291,14 @@
     "result": "program, withoutHalo",
     "prerequisites": "Run this complete ES module with ggaction installed; the inline row supplies the position and label fields.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "graph-inference",
+    "file": "api/graphs.md",
+    "contains": "id: 'neighbors'",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "program"
   }
 ]

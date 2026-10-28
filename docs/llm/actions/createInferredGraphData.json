@@ -17,14 +17,15 @@
   "lifecycle": "Mutable resource",
   "resources": {
     "prerequisites": [
-      "source dataset"
+      "materialized source dataset"
     ],
     "owns": [
-      "inferred graph data"
+      "graph resource"
     ],
     "idOptions": [
       "id",
-      "data"
+      "data",
+      "candidateGraph"
     ]
   },
   "authoringRoles": [
@@ -56,7 +57,7 @@
   "completionRequirements": {
     "state": "contextual",
     "requires": [
-      "source dataset"
+      "materialized source dataset"
     ],
     "allowsEmpty": true
   },

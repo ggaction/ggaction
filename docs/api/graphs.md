@@ -55,7 +55,7 @@ graph works with the same `layoutGraph` and `createGraphPlot` actions.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
 <!-- snippet-context:end -->
 

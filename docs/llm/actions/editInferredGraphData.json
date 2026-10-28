@@ -17,13 +17,13 @@
   "lifecycle": "Mutable resource",
   "resources": {
     "prerequisites": [
-      "existing inferred graph data",
-      "source dataset"
+      "existing inferred graph"
     ],
     "owns": [],
     "idOptions": [
       "target",
-      "data"
+      "data",
+      "candidateGraph"
     ]
   },
   "authoringRoles": [
@@ -55,8 +55,7 @@
   "completionRequirements": {
     "state": "contextual",
     "requires": [
-      "existing inferred graph data",
-      "source dataset"
+      "existing inferred graph"
     ],
     "allowsEmpty": false
   },

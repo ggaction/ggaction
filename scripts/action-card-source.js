@@ -186,6 +186,11 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (action.name === "createInferredGraphData" || action.name === "editInferredGraphData") return {
+    prerequisites: action.name === "createInferredGraphData" ? ["materialized source dataset"] : ["existing inferred graph"],
+    owns: action.name === "createInferredGraphData" ? ["graph resource"] : [],
+    idOptions: action.name === "createInferredGraphData" ? ["id", "data", "candidateGraph"] : ["target", "data", "candidateGraph"]
+  };
   if (action.name === "layoutGraph") return { prerequisites: ["existing graph resource"], owns: ["layout resource"], idOptions: ["id", "graph"] };
   if (action.name === "createGraphData" || action.name === "editGraphData") return {
     prerequisites: action.name === "createGraphData" ? ["explicit materialized node and edge datasets"] : ["existing observed graph"],
