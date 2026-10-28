@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add Full-only `createPartitionPlot` and `editPartitionPlot` for icicle and sunburst views of stored hierarchy intervals. Preserve typed focus, navigation, selections and source revision recovery across Cartesian and polar mappings. Hierarchy and partition body and label fills accept shared structured paints across Canvas, SVG, PNG and PDF.
+
 - Add `prepareImageResource`, `createImageResource`, `replaceImageResource`, `removeResource`, `createImageMark`, `editImageMark`, and `prepareImageRendering` for Full image resource preparation, immutable authoring, and image marks with contain/cover/fill, alignment, clipping and alternative text. Preserve embedded bytes through offline snapshots, selection, composition and scenes; prepare browser Canvas explicitly and export the same data through SVG, PNG and PDF.
 - Add Full-only `createHierarchyData`, `editHierarchyData`, `layoutHierarchy`, `editLayout`, `removeResource`, `createTreePlot`, `editTreePlot`, `createTreemapPlot`, and `editTreemapPlot`. Preserve typed node identity, exact source contributions, stored layout geometry, labels and selections through edits, facets and offline restoration. Tree and treemap views use the same concrete graphics across Canvas, SVG, PNG and PDF.
 

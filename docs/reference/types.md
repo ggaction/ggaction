@@ -58,6 +58,8 @@ interface ChartProgramActions {
   editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+  createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
+  editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
@@ -6317,6 +6319,19 @@ export interface EditParameterOptions { readonly target: string; readonly value:
 
 Related types: [`ParameterValue`](#type-parametervalue).
 
+### `EditPartitionPlotOptions` {#type-editpartitionplotoptions}
+
+<details markdown="1">
+<summary>Expand EditPartitionPlotOptions</summary>
+
+```typescript
+export interface EditPartitionPlotOptions extends Omit<PartitionPlotOptions, "id"> { target?: string; }
+```
+
+</details>
+
+Related types: [`PartitionPlotOptions`](#type-partitionplotoptions).
+
 ### `EditPivotDataOptions` {#type-editpivotdataoptions}
 
 <details markdown="1">
@@ -8215,10 +8230,12 @@ Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionsc
 <summary>Expand HierarchyBodyPaint</summary>
 
 ```typescript
-export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface HierarchyBodyPaint { fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
 ```
 
 </details>
+
+Related types: [`FillPaint`](#type-fillpaint).
 
 ### `HierarchyLabelPaint` {#type-hierarchylabelpaint}
 
@@ -8226,10 +8243,12 @@ export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidt
 <summary>Expand HierarchyLabelPaint</summary>
 
 ```typescript
-export interface HierarchyLabelPaint { fill?: string; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface HierarchyLabelPaint { fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
 ```
 
 </details>
+
+Related types: [`FillPaint`](#type-fillpaint).
 
 ### `HierarchyLabelsOptions` {#type-hierarchylabelsoptions}
 
@@ -10433,6 +10452,28 @@ export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 ```
 
 </details>
+
+### `PartitionPlotOptions` {#type-partitionplotoptions}
+
+<details markdown="1">
+<summary>Expand PartitionPlotOptions</summary>
+
+```typescript
+export interface PartitionPlotOptions {
+  id?: string; layout?: string; coordinate?: string; focus?: HierarchyNodeTarget | null;
+  rootVisible?: boolean; prunedSelection?: "keep-hidden" | "drop";
+  orientation?: "horizontal" | "vertical"; reverseU?: boolean; reverseV?: boolean;
+  padding?: number | readonly [number, number]; innerRadius?: number; outerRadius?: number | "auto";
+  startAngle?: number; sweep?: number; direction?: "clockwise" | "counterclockwise";
+  radiusPolicy?: "equal-depth" | "equal-depth-area"; clip?: boolean;
+  cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] };
+  labels?: false | (HierarchyLabelsOptions & { minWidth?: number; minArcLength?: number });
+}
+```
+
+</details>
+
+Related types: [`HierarchyNodeTarget`](#type-hierarchynodetarget) · [`HierarchyBodyPaint`](#type-hierarchybodypaint) · [`HierarchyLabelsOptions`](#type-hierarchylabelsoptions).
 
 ### `PathFillRule` {#type-pathfillrule}
 

@@ -2590,5 +2590,23 @@
     ],
     "layer": "user-facing",
     "domain": "charts"
+  },
+  "createPartitionPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H0",
+      "H1"
+    ],
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "editPartitionPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H1",
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "charts"
   }
 }

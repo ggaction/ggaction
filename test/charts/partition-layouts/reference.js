@@ -1,4 +1,4 @@
-import {colors,rectangle,sector,bendOptions} from "./manifest.js";
+import {colors,rectangle,sector,bendOptions} from "./reference-values.js";
 
 // Hand-authored normalized cells, independent of the hierarchy and mapping code.
 export function expectedCells(variant){

@@ -537,6 +537,7 @@ function inspectMark(program, layer, childPath) {
       { reason: "missing-skipped", count: layer.mark?.missing === "skip" && dataset?.values
         ? Math.max(0, dataset.values.length - items.length) : null }
     ],
+    ...(hierarchy?.view === undefined ? {} : { partition: { focusKey: hierarchy.view.focusKey, breadcrumbKeys: hierarchy.view.breadcrumbKeys, levels: hierarchy.view.levels, diagnostics: hierarchy.view.diagnostics, ...(hierarchy.view.recovery ? { recovery: hierarchy.view.recovery } : {}) } }),
     bounds: union,
     sourceRefs: [
       ...layerResourceBindings(layer).map(({ ref }) => resourceRef(ref.kind, ref.id, childPath)),
@@ -701,6 +702,7 @@ export function getMarkItems(program, { target, grain = 'item' } = {}) {
     }).filter(Boolean);
     const visible = item.markType === "image" ? unionConcreteGraphicBounds(view.graphicSpec, item.graphicIds) : undefined;
     return { key:scopedKey(item.key), target:item.layer, markType:item.markType, grain, fields:item.fields,
+      ...(item.visible === undefined ? {} : { visible: item.visible, navigation: item.navigation }),
       channels:item.channels, properties:item.properties, rows:item.rows, geometry,
       bounds:visible ?? (bounds.length ? {left:Math.min(...bounds.map(b=>b.left)),top:Math.min(...bounds.map(b=>b.top)),right:Math.max(...bounds.map(b=>b.right)),bottom:Math.max(...bounds.map(b=>b.bottom))}:null) };
   })));

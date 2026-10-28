@@ -19,9 +19,8 @@ export const variants = Object.freeze([
   {variant:"sunburst",title:"Sunburst · equal depth",kind:"sector",note:"Clockwise from 12 o'clock; 20–120 px radius"},
   {variant:"area-bands",title:"Sunburst · equal depth area",kind:"sector",mapping:{radiusPolicy:"equal-depth-area"},note:"Equal squared-radius bands; values still determine angle"},
   {variant:"counterclockwise",title:"Sunburst · counterclockwise",kind:"sector",mapping:{startAngle:Math.PI/2,direction:"counterclockwise"},note:"Counterclockwise from 3 o'clock"},
-  {variant:"wide-gaps",title:"Sunburst · pixel gaps",kind:"sector",mapping:{angularGap:12,radialGap:6},note:"12 px angular gap at each band's local mid-radius"},
-  ...[0,.5,1].map(bend=>({variant:bend===.5?"bend-half":`bend-${bend}`,title:`Canonical bend · b=${bend}`,kind:"bend",bend,note:"Canonical X/Y shown directly; screen adapter still pending"}))
-].map(value=>Object.freeze({...value,...frame,chart:"partition-layouts",source:"test/gates/partition-layouts/primitive.program.js",callChain:`createPartitionPrimitive(${JSON.stringify(value.variant)});`})));
+  {variant:"wide-gaps",title:"Sunburst · pixel gaps",kind:"sector",mapping:{angularGap:12,radialGap:6},note:"12 px angular gap at each band's local mid-radius"}
+].map(value=>Object.freeze({...value,...frame,chart:"partition-layouts",source:"test/charts/partition-layouts/primitive.program.js",callChain:`createPartitionPrimitive(${JSON.stringify(value.variant)});`})));
 export function variantById(id) {
   const variant=variants.find(value=>value.variant===id);
   if(!variant)throw new Error(`Unknown partition variant ${id}`);
@@ -32,3 +31,5 @@ export function inputRows(variant) {
   if(variant.input==="forest")return rows.filter(row=>row.key!=="R"&&row.key!=="Z").map(row=>({...row,parentKey:row.parentKey==="R"?null:row.parentKey}));
   return rows.map(row=>({...row,...(variant.input==="inclusive"&&row.key==="A2"?{value:1}:{})}));
 }
+
+export const canvas = Object.freeze({plot:{width:420,height:225},margin:{left:30,top:75,right:30,bottom:60},background:"#ffffff",plotBorder:false});

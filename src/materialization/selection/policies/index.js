@@ -1,5 +1,5 @@
 import { imageSelectionPolicy } from "./image.js";
-import { treeSelectionPolicy, treemapSelectionPolicy } from "./hierarchy.js";
+import { treeSelectionPolicy, treemapSelectionPolicy, partitionSelectionPolicy } from "./hierarchy.js";
 import { mapConditionalValues } from "../../conditionalMapping.js";
 import { conditionalSelectionMembership } from "../../conditionalSelection.js";
 import { identifyItems } from "../items/common.js";
@@ -20,7 +20,7 @@ import { resolveOverlayItems } from "../items/overlay.js";
 
 const POLICIES = Object.freeze({
   image: imageSelectionPolicy,
-  tree: treeSelectionPolicy, treemap: treemapSelectionPolicy,
+  tree: treeSelectionPolicy, treemap: treemapSelectionPolicy, partition: partitionSelectionPolicy,
   text: textSelectionPolicy,
   arc: arcSelectionPolicy,
   area: areaSelectionPolicy,

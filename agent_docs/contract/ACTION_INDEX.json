@@ -5744,6 +5744,42 @@
         "file": "agent_docs/contract/current/HIERARCHY.md",
         "anchor": "edittreemapplot"
       }
+    },
+    {
+      "name": "createPartitionPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editPartitionPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/PARTITION.md",
+        "anchor": "createpartitionplot"
+      }
+    },
+    {
+      "name": "editPartitionPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits or removes the named resource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/PARTITION.md",
+        "anchor": "editpartitionplot"
+      }
     }
   ],
   "plannedActions": [],
@@ -5831,7 +5867,8 @@
       "rematerializeOverlay",
       "rematerializeImageMark",
       "materializeTreePlot",
-      "materializeTreemapPlot"
+      "materializeTreemapPlot",
+      "materializePartitionPlot"
     ],
     "guideComponents": [
       "createLegendBackground",

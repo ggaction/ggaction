@@ -73,6 +73,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 | --- | --- | --- | --- |
 | Typed hierarchy and an explicit tree layout | [`createTreePlot`](../../../reference/actions/charts-data/#createtreeplot) | default | [`editTreePlot`](../../../reference/actions/charts-data/#edittreeplot) · [`removeMark`](../../../reference/actions/marks/#removemark) |
 | Typed hierarchy and an explicit rectangular layout | [`createTreemapPlot`](../../../reference/actions/charts-data/#createtreemapplot) | default | [`editTreemapPlot`](../../../reference/actions/charts-data/#edittreemapplot) · [`removeMark`](../../../reference/actions/marks/#removemark) |
+| Typed hierarchy and a partition layout projected as rectangles or sectors | [`createPartitionPlot`](../../../reference/actions/charts-data/#createpartitionplot) | default | [`editPartitionPlot`](../../../reference/actions/charts-data/#editpartitionplot) · [`removeMark`](../../../reference/actions/marks/#removemark) |
 
 ## Compose or refine
 

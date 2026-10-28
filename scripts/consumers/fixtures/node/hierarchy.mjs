@@ -17,8 +17,8 @@ function program(method = "tree") {
     .createHierarchyData({ id: "h", key: "id", parent: "parent", value: "value" })
     .layoutHierarchy({ id: "layout", method, options: method === "tree" ?
       { nodeSize: [24, 10], siblingGap: 30, depthGap: 40, orientation: "vertical" } :
-      { size: [200, 140], padding: 10, method: "squarify" } });
-  return method === "tree" ? p.createTreePlot({ id: "plot", labels: {} }) : p.createTreemapPlot({ id: "plot", labels: {} });
+      method === "treemap" ? { size: [200, 140], padding: 10, method: "squarify" } : undefined });
+  return method === "tree" ? p.createTreePlot({ id: "plot", labels: {} }) : method === "treemap" ? p.createTreemapPlot({ id: "plot", labels: {} }) : p.createPartitionPlot({ id: "plot", labels: {} });
 }
 function pdfStreams(buffer) {
   return [...buffer.toString("latin1").matchAll(/stream\r?\n([\s\S]*?)\r?\nendstream/g)].map(match => {
@@ -29,7 +29,7 @@ function pdfStreams(buffer) {
 export const cases = [
   { id: "hierarchy/full-basic-lifecycle", run() {
     assert.match(import.meta.resolve("ggaction"), /\/node_modules\/ggaction\//);
-    for (const name of ["createHierarchyData", "editHierarchyData", "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot"]) {
+    for (const name of ["createHierarchyData", "editHierarchyData", "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot", "createPartitionPlot", "editPartitionPlot"]) {
       assert.equal(typeof chart()[name], "function"); assert.equal(basicChart()[name], undefined);
     }
     const p = program(), before = serializeProgram(p);
@@ -46,13 +46,14 @@ export const cases = [
     assert.equal(map.graphicSpec.objects.plot.items[0].properties.opacity, .8);
   } },
   { id: "hierarchy/fresh-process-edit-revise", run() {
-    const p = program(), saved = serializeProgram(p);
+    for (const method of ["tree", "partition"]) {
+    const p = program(method), saved = serializeProgram(p);
     const script = `
       import { readFileSync } from "node:fs";
       import { serializeProgram, deserializeProgram } from "ggaction/persistence";
       globalThis.fetch = () => { throw new Error("No network"); };
       const restored = deserializeProgram(readFileSync(0,"utf8"));
-      const edited = restored.editLayout({ target:"layout", options:{siblingGap:40} });
+      const edited = ${method === "tree" ? 'restored.editLayout({ target:"layout", options:{siblingGap:40} })' : 'restored.editPartitionPlot({target:"plot",focus:{key:"a"},cells:{fill:{type:"pattern",style:"dots",pitch:12}},labels:{fill:{type:"radial-gradient",center:{x:.5,y:.5},radius:.5,stops:[{offset:0,color:"red"},{offset:1,color:"blue"}]}}})'};
       const revised = edited.reviseData({ source:"rows", id:"next", values:[{id:"root",parent:null,value:7},{id:"a",parent:"root",value:7}] });
       process.stdout.write(serializeProgram(revised));
     `;
@@ -60,11 +61,13 @@ export const cases = [
     const q = deserializeProgram(output);
     assert.deepEqual(getMarkItems(q, { target: "plot" }).map(item => item.fields.value), [7, 7]);
     assert.equal(q.semanticSpec.resources[0].inputs[0].id, "next");
-    assert.equal(q.semanticSpec.resources[1].revision, 2);
+    assert.equal(q.semanticSpec.resources[1].revision, method === "tree" ? 2 : 1);
+    if (method === "partition") assert.equal(getMarkItems(q,{target:"plot"}).filter(item=>item.visible).length,1);
     assert.equal(serializeProgram(q), output); assert.equal(serializeProgram(p), saved);
+    }
   } },
   { id: "hierarchy/renderers-and-scene", async run() {
-    for (const method of ["tree", "treemap"]) {
+    for (const method of ["tree", "treemap", "partition"]) {
       const p = program(method), graphic = deserializeGraphic(serializeGraphic(p));
       assert.equal(graphic.semanticSpec, undefined); assert.equal(renderToSVG(graphic), renderToSVG(p));
       const png = await renderToPNGBuffer(p), restoredPNG = await renderToPNGBuffer(graphic);
@@ -81,7 +84,7 @@ export const cases = [
       assert.deepEqual(createTransitionScene(graphic, { format: "canvas" }), scene);
       const sceneCanvas = createCanvas(1, 1), sceneContext = sceneCanvas.getContext("2d"); renderTransitionScene(scene, sceneContext);
       assert.deepEqual(sceneContext.getImageData(0, 0, sceneCanvas.width, sceneCanvas.height).data, pixels);
-      const shifted = p.editLayout({ options: method === "tree" ? { orientation: "horizontal" } : { method: "slice-dice" } });
+      const shifted = method === "partition" ? p.createCoordinate({id:"polar",type:"polar"}).editPartitionPlot({target:"plot",coordinate:"polar",padding:2}) : p.editLayout({ options: method === "tree" ? { orientation: "horizontal" } : { method: "slice-dice" } });
       assert.deepEqual(createTransitionScene(shifted, { format: "canvas" }).nodes.map(node => node.key), scene.nodes.map(node => node.key));
     }
   } }

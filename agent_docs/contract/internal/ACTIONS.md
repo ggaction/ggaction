@@ -22,6 +22,7 @@ domain action을 통해서만 실행한다.
 | `materializeBinData` | reusable one-dimensional bin data actions |
 | `materializeBin2DData` | rectangular 2D-bin data actions |
 | `materializeTreePlot` | stored tree layout, plot style and hierarchy resource revisions |
+| `materializePartitionPlot` | stored partition intervals, focus view, coordinate mapping and styles |
 | `materializeTreemapPlot` | stored treemap layout, plot style and hierarchy resource revisions |
 | `materializeComposition` | `hconcat`, `vconcat`, and composition edits |
 | `materializeCompleteData` | typed key-domain completion data actions |

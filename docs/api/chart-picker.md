@@ -82,6 +82,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 | --- | --- | --- | --- |
 | Typed hierarchy and an explicit tree layout | [`createTreePlot`](../reference/actions/charts-data.md#createtreeplot) | default | [`editTreePlot`](../reference/actions/charts-data.md#edittreeplot) · [`removeMark`](../reference/actions/marks.md#removemark) |
 | Typed hierarchy and an explicit rectangular layout | [`createTreemapPlot`](../reference/actions/charts-data.md#createtreemapplot) | default | [`editTreemapPlot`](../reference/actions/charts-data.md#edittreemapplot) · [`removeMark`](../reference/actions/marks.md#removemark) |
+| Typed hierarchy and a partition layout projected as rectangles or sectors | [`createPartitionPlot`](../reference/actions/charts-data.md#createpartitionplot) | default | [`editPartitionPlot`](../reference/actions/charts-data.md#editpartitionplot) · [`removeMark`](../reference/actions/marks.md#removemark) |
 
 <!-- chart-picker:end -->
 

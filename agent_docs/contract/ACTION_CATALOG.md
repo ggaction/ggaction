@@ -325,6 +325,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editTreePlot`](current/HIERARCHY.md#edittreeplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTreemapPlot`](current/HIERARCHY.md#createtreemapplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTreemapPlot`](current/HIERARCHY.md#edittreemapplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createPartitionPlot`](current/PARTITION.md#createpartitionplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editPartitionPlot`](current/PARTITION.md#editpartitionplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

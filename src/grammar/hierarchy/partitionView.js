@@ -1,7 +1,7 @@
 import {cloneAndFreeze} from "../../core/immutable.js";
 import {ownRecord} from "../../core/ownData.js";
 import {rejectUnknownProperties,validateWorkLimit} from "../../core/validation.js";
-import {indexHierarchyModel} from "./model.js";
+import {indexHierarchyModel,hierarchyLayoutModel} from "./model.js";
 import {layoutHierarchyPartition} from "./partition.js";
 
 function requestedKey(value, fallback) {
@@ -18,9 +18,21 @@ export function createPartitionView(model,options={}) {
   // The interval owner validates again. Charge both explicit passes and the view
   // traversal together before requesting any interval/view output allocation.
   validateWorkLimit(indexed.work*2+indexed.nodes.length*80,"Partition view work");
-  const focusKey=requestedKey(options.focusKey,model.rootKey),focusIndex=indexed.indexes.get(focusKey);
+  return projectPartitionView(layoutHierarchyPartition(model,{maxNodes:options.maxNodes}),options);
+}
+
+// Stored layouts already own interval calculation. Projection never recalculates it.
+export function projectPartitionView(partition,options={}) {
+  ownRecord(options,"Partition view options");
+  rejectUnknownProperties(options,["focusKey","rootVisible","maxNodes"],"partition view");
+  if(options.rootVisible!==undefined&&typeof options.rootVisible!=="boolean")throw new TypeError("Partition rootVisible must be a boolean.");
+  const indexed=indexHierarchyModel(hierarchyLayoutModel(partition),options.maxNodes);
+  validateWorkLimit(indexed.work+indexed.nodes.length*80,"Partition view work");
+  for(const node of partition.nodes) {
+    if(![node.u0,node.u1,node.residualStart].every(Number.isFinite)||node.u0<0||node.u1>1||node.u0>node.residualStart||node.residualStart>node.u1)throw new TypeError("Stored partition intervals must be finite and ordered.");
+  }
+  const focusKey=requestedKey(options.focusKey,partition.rootKey),focusIndex=indexed.indexes.get(focusKey);
   if(focusKey!==null&&focusIndex===undefined)throw new Error("Unknown partition focus key.");
-  const partition=layoutHierarchyPartition(model,{maxNodes:options.maxNodes});
   if(focusKey===null)return cloneAndFreeze({focusKey:null,breadcrumbKeys:[],levels:0,nodes:[],diagnostics:{emptyHierarchy:true,emptyValue:true,emptyChildrenView:true}});
   const focus=partition.nodes[focusIndex],sourceDepth=focus.depth,breadcrumbKeys=[];
   let ancestor=focus.parentKey;

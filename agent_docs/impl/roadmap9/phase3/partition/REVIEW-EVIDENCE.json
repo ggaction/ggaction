@@ -1,5 +1,5 @@
 {
-  "status": "ready-for-review",
+  "status": "approved",
   "sourceEvidenceRevision": "0343a07877c2db37d94de92883d5cdabcec4d7b7",
   "baseline": "329eb81da4075eeb8de1ec35df37c75fe12a030c",
   "branch": "codex/roadmap9-partition",
@@ -212,5 +212,11 @@
     "User confirmation of this partition visual target",
     "General screen/direction bend adapter and current-frame hit",
     "Public hierarchy/partition lifecycle and complete consumer integration"
-  ]
+  ],
+  "approval": {
+    "record": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+    "scope": "remainingApproval",
+    "quote": "야 남은거 다 승인할테니까 질문 하지 말고 끝까지 밀어",
+    "visualVariants": 14
+  }
 }

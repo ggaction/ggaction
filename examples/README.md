@@ -654,6 +654,18 @@ Create a hierarchy resource, compute an explicit squarify layout, and draw its n
 
 Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreemapPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchy/).
 
+### [Icicle partition](./partition-layouts/)
+
+Normalized hierarchy intervals become rectangular value and depth bands.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createPartitionPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/partition/).
+
+### [Sunburst partition](./partition-sunburst/)
+
+The same hierarchy intervals become angular value and radial depth bands.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createPartitionPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/partition/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

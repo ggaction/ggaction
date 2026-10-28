@@ -45,6 +45,7 @@
   },
   "Hierarchies": {
     "createTreePlot": "Typed hierarchy and an explicit tree layout",
-    "createTreemapPlot": "Typed hierarchy and an explicit rectangular layout"
+    "createTreemapPlot": "Typed hierarchy and an explicit rectangular layout",
+    "createPartitionPlot": "Typed hierarchy and a partition layout projected as rectangles or sectors"
   }
 }

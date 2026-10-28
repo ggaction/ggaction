@@ -1,3 +1,4 @@
+import { createPartitionPlot, editPartitionPlot } from "./partition.js";
 import { closedAction } from "../../core/action.js";
 import { normalizeHierarchyPlot, validateHierarchyPlotDefinition } from "../../grammar/hierarchy/plot.js";
 import { resolveHierarchyResource } from "../../selectors/hierarchy.js";
@@ -14,7 +15,7 @@ function materializer(method, op) {
     if (layer.mark.type !== method || config === undefined) throw new TypeError(`Materialization requires a configured ${method} plot.`);
     const highlighted = rematerializeHighlightBaseline(this, { target: id, operation: op, resetProperty: "items", resetValue: [] });
     if (highlighted !== undefined) return highlighted;
-    validateHierarchyPlotDefinition(method, config, layer.hierarchyLabels);
+    if (method !== "partition") validateHierarchyPlotDefinition(method, config, layer.hierarchyLabels);
     const resolved = resolveHierarchyPlot(this, layer, config);
     let next = this;
     if (!next.graphicSpec.objects[id]) next = next.createGraphics({ id, type: "collection", ...resolveMarkGraphicPlacement(next, { markType: method }) });
@@ -23,6 +24,7 @@ function materializer(method, op) {
     return next;
   });
 }
+export const materializePartitionPlot = /* @__PURE__ */ materializer("partition", "materializePartitionPlot");
 export const materializeTreePlot = /* @__PURE__ */ materializer("tree", "materializeTreePlot");
 export const materializeTreemapPlot = /* @__PURE__ */ materializer("treemap", "materializeTreemapPlot");
 
@@ -53,5 +55,5 @@ export const editTreePlot = /* @__PURE__ */ facade("tree", true);
 export const createTreemapPlot = /* @__PURE__ */ facade("treemap", false);
 export const editTreemapPlot = /* @__PURE__ */ facade("treemap", true);
 export function registerHierarchyPlotActions(ProgramClass) {
-  Object.assign(ProgramClass.prototype, { createTreePlot, editTreePlot, createTreemapPlot, editTreemapPlot, materializeTreePlot, materializeTreemapPlot });
+  Object.assign(ProgramClass.prototype, { createPartitionPlot, editPartitionPlot, materializePartitionPlot, createTreePlot, editTreePlot, createTreemapPlot, editTreemapPlot, materializeTreePlot, materializeTreemapPlot });
 }

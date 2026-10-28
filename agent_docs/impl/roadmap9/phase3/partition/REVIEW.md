@@ -1,14 +1,21 @@
-# Partition primitive 시각 검토
+# Partition primitive 시각 검토 기록
 
-상태: **ready-for-review**. 이 문서는 STEP025–028 전체 완료 또는 공개 action의 구현 승인을 기록하지 않는다.
+상태: **approved**. [전체 잔여 승인](../../AUTHORIZATION.json)의 사용자 문장을 재사용한다. 원본 0343a078의 14개 시각 표본과 후속 공개 연결을 승인 범위에 포함하며, STEP025–028/AT65 완료는 검증 후 별도로 기록한다.
 
-## 진행 상태
+## 승인 후 공개 연결
+
+현재 실행 원본은 `examples/partition-layouts/program.js`와 `test/charts/partition-layouts/`다.
+정적 11종과 private frame 3종은 stable slice로 졸업했으며 실행 Gate 디렉터리는 제거했다.
+일반 방향 adapter/current-frame hit와 공개 resource/action 연결 상태는 [현재 구현 기록](../../chart/partition-plots.md)에 둔다.
+아래 경로·명령·수치는 원본 0343a078 승인 당시의 역사적 증거이며 현재 실행 지시가 아니다.
+
+## 원본 검토 진행 상태
 
 - [x] 기존 hierarchy value/identity/interval owner와 private focus/mapping 재사용
 - [x] 실행 가능한 명시 primitive chain·14개 manifest·독립 literal reference
 - [x] Icicle/Sunburst/focus/residual/zero/forest 및 canonical bend 3개 frame
 - [x] Native PNG·Browser Canvas·Browser SVG·vector PDF 출력 및 검증
-- [ ] 사용자 시각 확인
+- [x] 사용자 시각 확인 — 전체 잔여 승인 재사용
 - [ ] 일반 screen/direction bend adapter·current-frame hit
 - [ ] 공개 resource/action/schema·rematerialization·selection·scene·접근성·전체 consumer 통합
 
@@ -87,7 +94,7 @@ npm run package:check
 - 기계 판정: `<variant>/evidence.json`와 전체 `results.json`
 - 코드·로그·그림 hashes와 exact revision: [REVIEW-EVIDENCE.json](REVIEW-EVIDENCE.json)
 
-Root의 전체 Roadmap9 구현 승인을 재사용하여 이 private review를 준비했다. 이 새 시각 대상의 별도 확인은 아직 없다.
+후속 명시 승인 “야 남은거 다 승인할테니까 질문 하지 말고 끝까지 밀어”를 AUTHORIZATION.json에 기록하고 같은 범위의 확인을 반복하지 않는다.
 이후 승인된 paint 공개 연결 작업을 우선하며, 현재 partition branch와 검토 증거는 독립적으로 보존한다.
 
 Source/evidence revision은 `0343a07877c2db37d94de92883d5cdabcec4d7b7`다. 후속 revision 기록은 metadata-only이며 검증 입력을 바꾸지 않는다.

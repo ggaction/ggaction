@@ -27,6 +27,8 @@ const LOADERS = Object.freeze({
 const EXPECTED_DRAW_ORDER = Object.freeze({
   "structured-paints": ["canvas", "paint"],
   "image-assets": ["canvas", "plot-main", "label", "backdrop", "image-image-clip", "image"],
+  "partition-layouts": ["canvas", "partitionPlot", "chartTitle", "chartSubtitle"],
+  "partition-sunburst": ["canvas", "partitionPlot", "chartTitle", "chartSubtitle"],
   "tree-layouts": ["canvas", "treePlot", "chartTitle", "chartSubtitle"],
   "tree-horizontal": ["canvas", "treePlot", "chartTitle", "chartSubtitle"],
   "tree-radial": ["canvas", "treePlot", "chartTitle", "chartSubtitle"],

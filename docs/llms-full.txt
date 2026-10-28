@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:3f84fc83d6df46da9a452251249371dced10570b0bfe47572451201bf7c4be12. Status: development. Runtime source: 3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7. Release baseline: v0.0.13.
+Contract: sha256:3fc1f70b158aff5d8e2cc591014946fced44078fb69b34043f2a8ae05aefcdf6. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -213,11 +213,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -652,15 +652,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-partition/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -805,7 +805,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -823,7 +823,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-partition/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -936,7 +936,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-partition/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1106,7 +1106,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-partition/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1328,15 +1328,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-partition/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1472,7 +1472,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1486,15 +1486,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-partition/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1592,7 +1592,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1606,15 +1606,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-partition/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1723,7 +1723,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1739,15 +1739,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-partition/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1872,7 +1872,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1947,7 +1947,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1957,15 +1957,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-partition/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2090,7 +2090,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2123,7 +2123,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2134,8 +2134,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2231,15 +2231,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-partition/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2336,15 +2336,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-partition/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2450,8 +2450,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2460,7 +2460,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-partition/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2760,7 +2760,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -6002,7 +6002,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -10470,7 +10470,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -10536,7 +10536,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -10938,7 +10938,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -11536,7 +11536,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -17783,6 +17783,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createParallelAxis`](./reference/actions/guides/#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](./reference/actions/charts-data/#createparallelcoordinates) | H0 | user-facing | charts |
 | [`createParameter`](./reference/actions/charts-data/#createparameter) | H2 | user-facing | core |
+| [`createPartitionPlot`](./reference/actions/charts-data/#createpartitionplot) | H0, H1 | user-facing | charts |
 | [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | H0 | user-facing | charts |
 | [`createPivotData`](./reference/actions/statistics/#createpivotdata) | H1 | user-facing | statistics |
 | [`createPointMark`](./reference/actions/marks/#createpointmark) | H2 | user-facing | marks |
@@ -17902,6 +17903,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editParallelAxis`](./reference/actions/guides/#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./reference/actions/charts-data/#editparallelscale) | H2 | user-facing | core |
 | [`editParameter`](./reference/actions/charts-data/#editparameter) | H3 | user-facing | core |
+| [`editPartitionPlot`](./reference/actions/charts-data/#editpartitionplot) | H1, H3 | user-facing | charts |
 | [`editPivotData`](./reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editRadarPlot`](./reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
@@ -22226,6 +22228,101 @@ editTreemapPlot({ target?, layout?, origin?, clip?, cells?, labels? })
 
 Edit treemap cells, labels, placement, or the bound treemap layout. Full only.
 [Hierarchy resources and plots](./api/hierarchy/#edittreemapplot)
+
+## `createPartitionPlot`
+
+**API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`PartitionPlotOptions`](./reference/types/#type-partitionplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `focus` | Optional / branch-dependent | `HierarchyNodeTarget \| null \| undefined` |
+| `rootVisible` | Optional / branch-dependent | `boolean \| undefined` |
+| `prunedSelection` | Optional / branch-dependent | `"drop" \| "keep-hidden" \| undefined` |
+| `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
+| `reverseU` | Optional / branch-dependent | `boolean \| undefined` |
+| `reverseV` | Optional / branch-dependent | `boolean \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| readonly [number, number] \| undefined` |
+| `innerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `outerRadius` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `startAngle` | Optional / branch-dependent | `number \| undefined` |
+| `sweep` | Optional / branch-dependent | `number \| undefined` |
+| `direction` | Optional / branch-dependent | `"clockwise" \| "counterclockwise" \| undefined` |
+| `radiusPolicy` | Optional / branch-dependent | `"equal-depth" \| "equal-depth-area" \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] \| undefined; }) \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| (HierarchyLabelsOptions & { minWidth?: number \| undefined; minArcLength?: number \| undefined; }) \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createPartitionPlot({ id?, layout?, coordinate?, focus?, rootVisible?, prunedSelection?, orientation?, reverseU?, reverseV?, padding?, innerRadius?, outerRadius?, startAngle?, sweep?, direction?, radiusPolicy?, clip?, cells?, labels? })
+```
+
+Draw an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity. Full only.
+[Partition plots](./api/partition/#createpartitionplot)
+
+## `editPartitionPlot`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditPartitionPlotOptions`](./reference/types/#type-editpartitionplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `focus` | Optional / branch-dependent | `HierarchyNodeTarget \| null \| undefined` |
+| `rootVisible` | Optional / branch-dependent | `boolean \| undefined` |
+| `prunedSelection` | Optional / branch-dependent | `"drop" \| "keep-hidden" \| undefined` |
+| `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
+| `reverseU` | Optional / branch-dependent | `boolean \| undefined` |
+| `reverseV` | Optional / branch-dependent | `boolean \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| readonly [number, number] \| undefined` |
+| `innerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `outerRadius` | Optional / branch-dependent | `number \| "auto" \| undefined` |
+| `startAngle` | Optional / branch-dependent | `number \| undefined` |
+| `sweep` | Optional / branch-dependent | `number \| undefined` |
+| `direction` | Optional / branch-dependent | `"clockwise" \| "counterclockwise" \| undefined` |
+| `radiusPolicy` | Optional / branch-dependent | `"equal-depth" \| "equal-depth-area" \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] \| undefined; }) \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| (HierarchyLabelsOptions & { minWidth?: number \| undefined; minArcLength?: number \| undefined; }) \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editPartitionPlot({ target?, layout?, coordinate?, focus?, rootVisible?, prunedSelection?, orientation?, reverseU?, reverseV?, padding?, innerRadius?, outerRadius?, startAngle?, sweep?, direction?, radiusPolicy?, clip?, cells?, labels? })
+```
+
+Edit an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity. Full only.
+[Partition plots](./api/partition/#editpartitionplot)
 
 ## Focused core data editing
 
@@ -30799,6 +30896,7 @@ import type { CreateImageResourceRequest, ReplaceImageResourceRequest, ImageReso
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
+export type { PartitionPlotOptions, EditPartitionPlotOptions, PartitionViewState } from "./program.js";
 export type { HierarchyValueMode, HierarchySource, CreateHierarchyDataOptions, EditHierarchyDataOptions, HierarchyOrder, HierarchyTreeOptions, HierarchyTreemapOptions, LayoutHierarchyOptions, EditLayoutOptions, RemoveStoredResourceOptions, HierarchyNode, HierarchyModel, HierarchyResource, HierarchyRectangle, HierarchyTreeResult, HierarchyPartitionResult, HierarchyTreemapResult, HierarchyLayoutResource, HierarchyNodeTarget, HierarchyBodyPaint, HierarchyNodePaint, HierarchyLabelPaint, HierarchyLabelsOptions, TreePlotOptions, EditTreePlotOptions, TreemapPlotOptions, EditTreemapPlotOptions } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
@@ -31700,7 +31798,7 @@ export function exportAccessibleData(program: ChartProgram | BasicChartProgram, 
 
 ```typescript
 import type { BasicChartProgram } from "./basic.js";
-import type { ChartProgram, DatasetSchema, InputRowRef, StoredResourceKind } from "./program.js";
+import type { ChartProgram, DatasetSchema, InputRowRef, StoredResourceKind, PartitionViewState } from "./program.js";
 export type ProgramInput = ChartProgram | BasicChartProgram;
 export interface ResourceRef { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | "canvas" | "composition" | StoredResourceKind; readonly id: string; readonly childPath?: readonly string[]; }
 export interface InspectionTarget { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | StoredResourceKind; readonly id: string; readonly childPath?: readonly string[]; }
@@ -31710,7 +31808,16 @@ export interface ParameterDefinition { readonly path: string; readonly kind: "fi
 export interface ActionDescription { readonly version: 1; readonly action: string; readonly applicability: "supported" | "needs-input" | "incompatible" | "unsupported" | "unverified"; readonly parameterDefinitions: readonly ParameterDefinition[]; readonly requirements: readonly { readonly reason: string; readonly optionPath?: string }[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; }
 export interface Change { readonly resource: ResourceRef; readonly operation: "add" | "remove" | "modify"; readonly effect: "data" | "binding" | "structure" | "scale" | "guide" | "style"; readonly roles: readonly string[]; }
 export interface ProgramComparison { readonly version: 1; readonly equivalence: "equal" | "different" | "unknown"; readonly completeProgramComparison: boolean; readonly changes: readonly Change[]; readonly affected: readonly ResourceRef[]; readonly findings: readonly Finding[]; }
-export interface OwnerInspection { readonly owner: ResourceRef; readonly grain: "item" | "series" | "composite" | "unknown"; readonly rawRows: number | null; readonly logicalDataItems: number | null; readonly drawablePrimitives: number | null; readonly visibleCandidates: number | null; readonly flags: readonly { readonly reason: "opacity-zero" | "zero-size" | "outside-clip" | "missing-skipped"; readonly count: number | null }[]; readonly bounds: Readonly<{x:number;y:number;width:number;height:number}> | null; readonly sourceRefs: readonly ResourceRef[]; readonly checks: readonly CheckResult[]; }
+export interface PartitionInspection {
+  readonly focusKey: string | null; readonly breadcrumbKeys: readonly string[]; readonly levels: number;
+  readonly diagnostics: Readonly<{emptyHierarchy:boolean;emptyValue:boolean;emptyChildrenView:boolean}>;
+  readonly recovery?: PartitionViewState["recovery"];
+}
+export interface PartitionNavigation {
+  readonly key: string; readonly parent: string | null; readonly firstChild: string | null;
+  readonly previousSibling: string | null; readonly nextSibling: string | null; readonly root: string | null;
+}
+export interface OwnerInspection { readonly partition?: PartitionInspection; readonly owner: ResourceRef; readonly grain: "item" | "series" | "composite" | "unknown"; readonly rawRows: number | null; readonly logicalDataItems: number | null; readonly drawablePrimitives: number | null; readonly visibleCandidates: number | null; readonly flags: readonly { readonly reason: "opacity-zero" | "zero-size" | "outside-clip" | "missing-skipped"; readonly count: number | null }[]; readonly bounds: Readonly<{x:number;y:number;width:number;height:number}> | null; readonly sourceRefs: readonly ResourceRef[]; readonly checks: readonly CheckResult[]; }
 export interface ProgramInspection { readonly version: 1; readonly views: readonly OwnerInspection[]; readonly calculations: readonly unknown[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; readonly coverage: Readonly<{partial:boolean;unsupported:readonly ResourceRef[]}>; }
 export function getDatasetSchema(program: ProgramInput, options: {readonly data:string;readonly childPath?:readonly string[]}): Readonly<{data:string;schema:DatasetSchema}>;
 export function describeAction(program: ProgramInput, options: {readonly action:string;readonly target?:InspectionTarget;readonly options?:Readonly<Record<string,unknown>>}): ActionDescription;
@@ -31742,6 +31849,7 @@ export interface PlotComposition {
 export function getPlotComposition(program: ProgramInput, options?: { readonly target?: string | { readonly childPath: readonly string[]; readonly id: string }; readonly childPath?: readonly string[] }): PlotComposition;
 
 export interface MarkItemInspection {
+  readonly visible?: boolean; readonly navigation?: PartitionNavigation;
   readonly key: string; readonly target: string; readonly markType: string; readonly grain: "item" | "stack";
   readonly fields: Readonly<Record<string, unknown>>; readonly channels: Readonly<Record<string, unknown>>;
   readonly properties: Readonly<Record<string, unknown>>;
@@ -31884,6 +31992,8 @@ interface ChartProgramActions {
   editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+  createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
+  editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
@@ -37222,6 +37332,16 @@ export interface EditParameterOptions { readonly target: string; readonly value:
 
 Related types: [`ParameterValue`](./reference/types/#type-parametervalue).
 
+### `EditPartitionPlotOptions` {#type-editpartitionplotoptions}
+
+ Expand EditPartitionPlotOptions
+
+```typescript
+export interface EditPartitionPlotOptions extends Omit<PartitionPlotOptions, "id"> { target?: string; }
+```
+
+Related types: [`PartitionPlotOptions`](./reference/types/#type-partitionplotoptions).
+
 ### `EditPivotDataOptions` {#type-editpivotdataoptions}
 
  Expand EditPivotDataOptions
@@ -38789,16 +38909,20 @@ Related types: [`NonPointBandPositionScaleOptions`](./reference/types/#type-nonp
  Expand HierarchyBodyPaint
 
 ```typescript
-export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface HierarchyBodyPaint { fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
 ```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint).
 
 ### `HierarchyLabelPaint` {#type-hierarchylabelpaint}
 
  Expand HierarchyLabelPaint
 
 ```typescript
-export interface HierarchyLabelPaint { fill?: string; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface HierarchyLabelPaint { fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
 ```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint).
 
 ### `HierarchyLabelsOptions` {#type-hierarchylabelsoptions}
 
@@ -40642,6 +40766,25 @@ Related types: [`ConfidenceIntervalMethod`](./reference/types/#type-confidencein
 ```typescript
 export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 ```
+
+### `PartitionPlotOptions` {#type-partitionplotoptions}
+
+ Expand PartitionPlotOptions
+
+```typescript
+export interface PartitionPlotOptions {
+  id?: string; layout?: string; coordinate?: string; focus?: HierarchyNodeTarget | null;
+  rootVisible?: boolean; prunedSelection?: "keep-hidden" | "drop";
+  orientation?: "horizontal" | "vertical"; reverseU?: boolean; reverseV?: boolean;
+  padding?: number | readonly [number, number]; innerRadius?: number; outerRadius?: number | "auto";
+  startAngle?: number; sweep?: number; direction?: "clockwise" | "counterclockwise";
+  radiusPolicy?: "equal-depth" | "equal-depth-area"; clip?: boolean;
+  cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] };
+  labels?: false | (HierarchyLabelsOptions & { minWidth?: number; minArcLength?: number });
+}
+```
+
+Related types: [`HierarchyNodeTarget`](./reference/types/#type-hierarchynodetarget) · [`HierarchyBodyPaint`](./reference/types/#type-hierarchybodypaint) · [`HierarchyLabelsOptions`](./reference/types/#type-hierarchylabelsoptions).
 
 ### `PathFillRule` {#type-pathfillrule}
 
@@ -44208,9 +44351,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -44276,12 +44419,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -45393,7 +45536,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -45446,7 +45589,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -45692,7 +45835,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -45744,7 +45887,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/repeat-charts).
 
 ## Space between plots
 
@@ -46419,7 +46562,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -47274,6 +47417,7 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 | --- | --- | --- | --- |
 | Typed hierarchy and an explicit tree layout | [`createTreePlot`](./reference/actions/charts-data/#createtreeplot) | default | [`editTreePlot`](./reference/actions/charts-data/#edittreeplot) · [`removeMark`](./reference/actions/marks/#removemark) |
 | Typed hierarchy and an explicit rectangular layout | [`createTreemapPlot`](./reference/actions/charts-data/#createtreemapplot) | default | [`editTreemapPlot`](./reference/actions/charts-data/#edittreemapplot) · [`removeMark`](./reference/actions/marks/#removemark) |
+| Typed hierarchy and a partition layout projected as rectangles or sectors | [`createPartitionPlot`](./reference/actions/charts-data/#createpartitionplot) | default | [`editPartitionPlot`](./reference/actions/charts-data/#editpartitionplot) · [`removeMark`](./reference/actions/marks/#removemark) |
 
 ## Compose or refine
 
@@ -47316,11 +47460,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:3f84fc83d6df46da9a452251249371dced10570b0bfe47572451201bf7c4be12` |
-| Example and dataset source | `b6291b4db13fc895cd966e6025e092c14c31726e` |
-| Runtime source commit | `3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7` |
+| Contract fingerprint | `sha256:3fc1f70b158aff5d8e2cc591014946fced44078fb69b34043f2a8ae05aefcdf6` |
+| Example and dataset source | `codex/roadmap9-partition` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 317 |
+| Declared actions here | 319 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -47824,12 +47968,12 @@ An explicit Cartesian `labelMap` entry with `label: ""` hides only that displaye
 # Place a retained image
 
 Prepare image bytes explicitly, then use one image mark to control its fit,
-alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/image-assets/)
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/image-assets/)
 uses one pinned SVG asset for six placements and retains the bytes for offline export.
 
 ## Prepare and place
 
-The canonical [example program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/image-assets/program.js) loads its
+The canonical [example program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-partition/examples/image-assets/program.js) loads its
 inline asset through `prepareImageResource` and applies the returned handle to the
 same immutable program. Its application-owned decoder reports the source dimensions.
 The synchronous `createImageResource` action stores the validated bytes. Then
@@ -48033,6 +48177,8 @@ Source and parameter revisions refresh dependent hierarchy resources, layouts an
 
 Editable serialization retains layout geometry and exact source refs. Restore validates that state without running a layout algorithm. Canvas, SVG, PNG and PDF read the same concrete graphics. Empty sources produce empty models; zero totals produce finite zero-area partitions and an inspection diagnostic.
 
+Body and label `fill` accepts the shared `FillPaint` contract: solid color, linear gradient, pattern or radial gradient. Pattern origins are materialized in object or plot coordinates, and text fills retain concrete glyph bounds. Layout, Canvas and data revisions recompute those bounds while preserving the authored fill. Stroke remains a solid color. Partition cells and labels use the same paint owner.
+
 <!-- Source: /tutorials/hierarchy/ -->
 
 # Hierarchy tutorial
@@ -48041,7 +48187,7 @@ A hierarchy describes parent-child meaning. A layout computes positions, and a p
 
 ## Run the maintained examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 
@@ -48214,3 +48360,219 @@ Slice-dice alternates subdivision directions. Squarify chooses rows to reduce ex
 Use `reviseData` for source values or `editHierarchyData` for hierarchy input policy. Both update the full dependent layout and plot closure. Unknown parents or invalid values reject the revision, leaving the earlier program and trace intact.
 
 Removing a mark keeps its reusable layout. Remove the layout before its hierarchy, and remove the hierarchy before its source dataset. Shared or authored dependents are never silently discarded. See [Hierarchy resources and plots](./api/hierarchy/) for complete signatures, defaults, grouped and nested source forms, labels, sorting and removal rules.
+
+<!-- Source: /api/partition/ -->
+
+# Partition plots
+
+## Shared contract
+
+The Full entry point draws stored `layoutHierarchy({method:"partition"})` intervals as Cartesian rectangles or polar sectors. The hierarchy and layout contracts, typed key/path targets, label content, exact resource refs, source revision closure, facets and removal rules are owned by [Hierarchy resources and plots](./api/hierarchy/). These actions require the Full entry point. Renderers consume the same concrete rect/path/text output; restore validates stored intervals, view and mapping without running a layout algorithm.
+
+A view changes projection, never hierarchy values or layout order. Focus is `null` (the current root), `{key:scalar}` for flat/nested input or `{path:scalar[]}` for grouped input. Focus must exist. `rootVisible:true` and `prunedSelection:"keep-hidden"` are defaults. A hidden root consumes no depth band. A synthetic forest root remains non-drawable. Zero totals retain node metadata and empty-value diagnostics; no equal-share area is invented. Inclusive residuals remain blank tails, not synthetic leaves.
+
+All real nodes retain stable logical keys, original source lineage, fields and navigation metadata. `getMarkItems` reports visible geometry and `navigation` (parent, firstChild, sibling keys and root). Inspection reports focus, breadcrumb keys and diagnostics. Nonvisible nodes have no graphic or hit candidate. Label thresholds hide ink but retain the accessible name. Existing selection predicates remain active with keep-hidden; node-key/field predicates therefore retain selected hidden nodes and reappear on zoom-out. Property and aggregate selection predicates retain their existing reevaluation semantics. Explicit `drop` intersects the previous membership with visible node keys and stores the result through `editMarkSelection`; a later zoom-out does not resurrect those members.
+
+A source revision which deletes explicit focus recovers the nearest surviving ancestor using the prior parent chain. If none survives, focus becomes the new root, or empty for an empty model. Inspection records the previous key and `ancestor`, `root` or `empty` reason. Explicit focus editing clears that diagnostic. Every dependent plot is preflighted before revision; a failure preserves the input program and trace.
+
+Cartesian orientation is horizontal (value along x, depth along y) or vertical (value along y, depth along x). `reverseU` and `reverseV` reverse value/depth directions. Polar mapping uses degrees clockwise from 12 o'clock by default, `startAngle:0`, `sweep:360`, `direction:"clockwise"`, `innerRadius:0`, `outerRadius:"auto"`, `radiusPolicy:"equal-depth"`. Counterclockwise and equal-depth-area bands are explicit alternatives. Mapping follows the bound coordinate's effective frame and polarFrame; radii must fit the resolved available radius. Mapping fields remain stored when switching coordinate family. Coordinate/Canvas edits rematerialize that intent.
+
+`padding` defaults to `[0,0]`; a scalar applies to both sibling and depth gaps. Values are nonnegative screen pixels. Cartesian gaps inset each side by half a gap; polar angular gaps use the local band mid-radius and radial gaps use pixels. Oversized gaps yield no ink, never negative geometry. `clip:false` is default. Cells and labels use the hierarchy style owner, including solid, linear gradient, pattern and radial gradient fills. Labels default to false; enabling `{}` uses total values. `minWidth:0` and `minArcLength:0` are nonnegative pixel thresholds. Cell overrides and label text use exact typed node targets.
+
+## createPartitionPlot
+
+```typescript
+createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram
+```
+
+Chart authoring. Draw an icicle or sunburst from stored partition intervals. The first omitted ID is `partitionPlot`; another plot requires an explicit ID. Layout and coordinate use current eligible context, then a unique candidate; ambiguous state requires an explicit ID. With no coordinate, a Cartesian `main` coordinate is created. The complete proposed output is checked before changes.
+
+## editPartitionPlot
+
+```typescript
+editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram
+```
+
+Chart authoring. Edit focus, mapping, cells, labels or a partition layout binding. Target uses current eligible context, then a unique partition plot. A nonempty patch is required. Omission preserves intent; `focus:null` returns to the root, `outerRadius:"auto"` follows the coordinate, and `labels:false` removes labels. A new layout must contain any retained explicit focus. Invalid edits leave the earlier chart unchanged.
+
+See the [partition tutorial](./tutorials/partition/) for the maintained executable flow.
+
+<!-- Source: /tutorials/partition/ -->
+
+# Partition tutorial
+
+A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/codex/roadmap9-partition/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+
+## Run the icicle
+
+Use the Getting Started browser module setup with a canvas whose id is `chart`.
+
+```javascript
+import { chart, render } from "ggaction";
+
+const icicle = chart()
+  .createCanvas({
+  "plot": {
+    "width": 420,
+    "height": 225
+  },
+  "margin": {
+    "left": 30,
+    "top": 75,
+    "right": 30,
+    "bottom": 60
+  },
+  "background": "#ffffff",
+  "plotBorder": false
+})
+  .createData({
+  "id": "hierarchy-source",
+  "values": [
+    {
+      "key": "R",
+      "parentKey": null,
+      "value": 10
+    },
+    {
+      "key": "A",
+      "parentKey": "R",
+      "value": 6
+    },
+    {
+      "key": "A1",
+      "parentKey": "A",
+      "value": 2
+    },
+    {
+      "key": "A2",
+      "parentKey": "A",
+      "value": 4
+    },
+    {
+      "key": "B",
+      "parentKey": "R",
+      "value": 4
+    },
+    {
+      "key": "Z",
+      "parentKey": "R",
+      "value": 0
+    }
+  ],
+  "keyField": "key"
+})
+  .createHierarchyData({
+  "id": "hierarchy",
+  "key": "key",
+  "parent": "parentKey",
+  "value": "value",
+  "valueMode": "leaf-sum",
+  "forest": false
+})
+  .layoutHierarchy({
+  "id": "partition-layout",
+  "method": "partition"
+})
+  .createCoordinate({
+  "id": "partition-coordinate",
+  "type": "cartesian"
+})
+  .createPartitionPlot({
+  "layout": "partition-layout",
+  "coordinate": "partition-coordinate",
+  "rootVisible": true,
+  "orientation": "horizontal",
+  "padding": [
+    2,
+    2
+  ],
+  "cells": {
+    "strokeWidth": 0,
+    "overrides": [
+      {
+        "key": "R",
+        "fill": "#94a3b8"
+      },
+      {
+        "key": "A",
+        "fill": "#2563eb"
+      },
+      {
+        "key": "A1",
+        "fill": "#60a5fa"
+      },
+      {
+        "key": "A2",
+        "fill": "#93c5fd"
+      },
+      {
+        "key": "B",
+        "fill": "#f59e0b"
+      },
+      {
+        "key": "Z",
+        "fill": "#475569"
+      }
+    ]
+  },
+  "labels": {
+    "overrides": [
+      {
+        "key": "R",
+        "text": "R 10"
+      },
+      {
+        "key": "A",
+        "text": "A 6"
+      },
+      {
+        "key": "A1",
+        "text": "A1 2"
+      },
+      {
+        "key": "A2",
+        "text": "A2 4"
+      },
+      {
+        "key": "B",
+        "text": "B 4"
+      },
+      {
+        "key": "Z",
+        "text": "Z 0"
+      }
+    ]
+  }
+})
+  .createTitle({
+  "text": "Icicle · full hierarchy",
+  "subtitle": "R=10; A=6; B=4; zero node Z retained",
+  "align": "left",
+  "alongOffset": 24,
+  "offset": 2,
+  "gap": 8,
+  "titleStyle": {
+    "color": "#0f172a",
+    "fontSize": 18,
+    "fontFamily": "sans-serif",
+    "fontWeight": "normal"
+  },
+  "subtitleStyle": {
+    "color": "#0f172a",
+    "fontSize": 11,
+    "fontFamily": "sans-serif",
+    "fontWeight": "normal"
+  }
+});
+render(icicle, document.querySelector("#chart").getContext("2d"));
+```
+
+## Focus and return
+
+Continue from `icicle` above. `icicle.editPartitionPlot({focus:{key:"A"}})` expands A and its descendants into the same frame. `focus:null` returns to the current root. `rootVisible:false` removes the focus node's band while retaining its descendants. Selection by node key or source field retains hidden members; choose `prunedSelection:"drop"` to discard hidden membership explicitly. A source revision that deletes the focused node recovers its nearest surviving ancestor and reports that recovery in inspection.
+
+## Share intervals with a sunburst
+
+The sunburst variant in the same maintained program binds a polar coordinate and uses `innerRadius:20`, `outerRadius:120` and two-pixel gaps. `radiusPolicy:"equal-depth-area"` makes equal squared-radius bands; `direction:"counterclockwise"` changes angular direction. These mappings preserve the partition values and layout resource.
+
+Zero values retain metadata without artificial area. Inclusive parent residuals remain blank space. Tiny labels may be suppressed with `minWidth` or `minArcLength` while their names remain accessible. See [Partition plots](./api/partition/) for all defaults, coordinate rules, selection semantics and atomic errors.

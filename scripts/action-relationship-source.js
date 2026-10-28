@@ -543,6 +543,11 @@ export function buildActionRelationshipPrograms() {
       .editLayout({ target: "tree-layout", options: { siblingGap: 12 } })
       .layoutHierarchy({ id: "treemap-layout", hierarchy: "hierarchy", method: "treemap", options: { size: [200, 100], padding: 3, method: "squarify" } })
       .createTreemapPlot({ id: "treemap", layout: "treemap-layout", labels: {} }).editTreemapPlot({ cells: { opacity: .8 } })
+      .layoutHierarchy({ id: "partition-layout", hierarchy: "hierarchy", method: "partition" })
+      .createPartitionPlot({ id: "partition", layout: "partition-layout", labels: {} })
+      .selectMarks({ id: "partition-choice", target: "partition", field: "id", op: "eq", value: "root" })
+      .editPartitionPlot({ focus: { key: "a" }, prunedSelection: "drop", padding: [2, 3] })
+      .removeMark({ target: "partition" }).removeResource({ kind: "layout", id: "partition-layout" })
       .removeMark({ target: "tree" }).removeMark({ target: "treemap" })
       .removeResource({ kind: "layout", id: "tree-layout" }).removeResource({ kind: "layout", id: "treemap-layout" })
       .removeResource({ kind: "hierarchy", id: "hierarchy" }),

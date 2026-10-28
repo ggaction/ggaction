@@ -995,6 +995,11 @@
     "TreemapPlot": [
       "nested rectangle chart",
       "proportional hierarchy"
+    ],
+    "PartitionPlot": [
+      "icicle chart",
+      "sunburst chart",
+      "focused hierarchy partition"
     ]
   },
   "summaryOverrides": {
@@ -1891,6 +1896,21 @@
       "cells": {
         "opacity": 0.8
       }
+    },
+    "createPartitionPlot": {
+      "id": "partition",
+      "layout": "partition-layout",
+      "labels": {}
+    },
+    "editPartitionPlot": {
+      "target": "partition",
+      "focus": {
+        "key": "a"
+      },
+      "padding": [
+        2,
+        3
+      ]
     }
   },
   "callPatternOverrides": {

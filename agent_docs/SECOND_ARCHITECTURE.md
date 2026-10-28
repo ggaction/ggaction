@@ -160,14 +160,22 @@ renderer는 다음 통합 경계다. 수치·검증·실측 package 경계는
 현재 private 계산이며 public GraphResource, graph action, layout/renderer에는 연결하지 않았다.
 상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
 
-## Private partition view and mapping
+## Partition view, mapping and frame preparation
 
 `grammar/hierarchy/partitionView.js`는 위의 model/partition owner를 명시 호출하여 focus 구간과 상대 depth view,
 nearest surviving ancestor와 navigation metadata를 계산한다. Canonical key/value/interval owner를 복제하거나 원 hierarchy를 변경하지 않는다.
 `partitionMapping.js`는 normalized cell을 Cartesian/polar geometry로 매핑하고 pixel gap과 radial policy를 소유한다.
-`partitionBend.js`는 같은 radius policy에서 canonical mathematical bend point를 계산하며 screen adapter와 현재-frame hit는 후속 통합이다.
-이 세 owner는 private pure 계산이고 resource/action/renderer 저장 경계를 확장하지 않는다.
-정확한 내부 범위·미결정 adapter·검증·실측 한도는 [partition view 계산](impl/roadmap9/phase3/partition/KERNEL.md)이 소유한다.
+`actions/hierarchy/partition.js`는 저장된 layout 결과에서 이 view를 투영하고,
+`materialization/hierarchy/partitionPlot.js`는 기존 rect/path/text와 공통 FillPaint owner로 concrete 출력을 만든다.
+Focus·root visibility는 semantic layer, mapping·paint는 materialization config에 남는다.
+Source revision의 명시 hierarchy closure가 focus 복구와 selection pruning을 함께 사전 검증한다.
+자세한 공개 계약은 [PARTITION](contract/current/PARTITION.md)이 소유한다.
+
+`partitionBend.js`의 canonical 수치를 `partitionAdapter.js`가 screen orientation으로 변환한다.
+Private `materialization/hierarchy/partitionFrames.js`는 native endpoint graphics를 그대로 보존하고,
+compatible 중간 frame의 path와 같은 concrete path 기반 hit를 만든다. 퇴화하는 반사나 topology/appearance 변화는
+이유를 기록한 crossfade를 사용한다. 새 공개 animation 상태·renderer 계산 경로는 없다.
+AT65의 public planner/controller/player 연결은 [구현 기록](impl/roadmap9/chart/partition-plots.md)의 후행 의무다.
 
 ## 내부 expression kernel 경계
 
@@ -763,8 +771,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 581,000 bytes |
-| `ggaction/basic` | 343,000 bytes |
+| `ggaction` | 587,000 bytes |
+| `ggaction/basic` | 349,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 

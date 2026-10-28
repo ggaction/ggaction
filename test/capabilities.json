@@ -628,7 +628,7 @@
       },
       {
         "type": "prefix",
-        "path": "gates/partition-layouts/"
+        "path": "charts/partition-layouts/"
       }
     ],
     "pattern-paints": [
