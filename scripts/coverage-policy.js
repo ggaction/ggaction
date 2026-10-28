@@ -5,6 +5,10 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "structured-paint": { prefix: "grammar/paint.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Authored and concrete fill contracts must preserve normalized coordinate frames and reject unsafe values." },
+  "gradient-stops": { prefix: "grammar/gradientStops.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Ordered stops and hard transitions share one complete validation owner." },
+  "fill-materialization": { prefix: "materialization/fillPaint.js", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Explicit fill origins, glyph bounds and cumulative pattern work must remain exercised." },
+  "paint-color": { prefix: "grammar/color.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Paint colors must have finite host-independent channels and preserve legacy scale parsing." },
   "png-byte-encoding": { prefix: "core/pngEncoding", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Bounded glyph PNG bytes must preserve RGBA and reject unsafe inputs before allocation." },
   "conditional-grammar": { prefix: "grammar/conditional", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Ordered predicates and stored branch contracts must reject inactive malformed inputs." },
   "conditional-materialization": { prefix: "materialization/conditional", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Final item grain, exact dependencies and conditional rematerialization must remain exercised." },

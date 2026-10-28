@@ -1,3 +1,4 @@
+import { validateFillPaint } from "../grammar/paint.js";
 import { validateConditionalDependencies } from "../materialization/resourceState.js";
 import { resolveFilterEnvironment } from "../materialization/expressionInputs.js";
 import { validateLegacyPathCommands } from "../grammar/pathCommands.js";
@@ -620,6 +621,10 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     if (!resources.get("mark").has(id)) throw invalidSnapshot(`Mark config "${id}" has no layer owner.`, path);
     if (resources.get("mark").get(id).mark.type === "point" && program.markConfigs[id].shape !== undefined) {
       validatePointShape(program.markConfigs[id].shape);
+    }
+    const markConfig = program.markConfigs[id];
+    for (const fill of [markConfig.fill, markConfig.barAppearance?.fill]) {
+      if (fill !== undefined) validateFillPaint(fill, "Stored mark fill");
     }
     if (resources.get("mark").get(id).mark.type === "area") {
       validateAreaPaintConfig(program.markConfigs[id]);

@@ -1,25 +1,16 @@
+import { canvasFactory } from "./surfaceFactory.js";
+import { preflightCanvasFillCapabilities } from "./fill.js";
 import { resolvePrimitiveGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 import { graphicClipBounds, intersectClipBounds, validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { walkGraphicTreeEvents } from "../../grammar/schemas/graphicTree.js";
 import { MAX_RASTER_DIMENSION, MAX_RASTER_PIXELS } from "./limits.js";
 import { isBlendMode } from "../../grammar/compositing.js";
 
-function canvasFactory(context, supplied) {
-  if (supplied !== undefined) return supplied;
-  const canvas = context.canvas;
-  if (typeof canvas?.ownerDocument?.createElement === "function") {
-    return (width, height) => {
-      const source = canvas.ownerDocument.createElement("canvas");
-      source.width = width;
-      source.height = height;
-      return source;
-    };
-  }
-  if (canvas?.constructor && canvas.constructor !== Object) {
-    return (width, height) => new canvas.constructor(width, height);
-  }
-  throw new TypeError("Isolated glyph painting requires a compatible Canvas surface.");
+export function requiresIsolatedGlyph(properties) {
+  return isBlendMode(properties?.blend) ||
+    properties?.fill?.type === "pattern" && (properties.opacity ?? 1) !== 1;
 }
+
 
 function requireSurface(surface) {
   const context = surface?.getContext?.("2d");
@@ -32,10 +23,10 @@ function requireSurface(surface) {
 }
 
 // This is renderer-private state: no surface or backend object enters graphicSpec.
-export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createCanvas } = {}) {
-  const requested = Object.values(target.graphicSpec.objects).some(object =>
-    isBlendMode(object.properties?.blend) ||
-    object.items?.some(item => isBlendMode(item.properties?.blend)));
+export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createCanvas, objects = Object.values(target.graphicSpec.objects) } = {}) {
+  const requested = objects.some(object =>
+    requiresIsolatedGlyph(object.properties) ||
+    object.items?.some(item => requiresIsolatedGlyph(item.properties)));
   if (!requested) return undefined;
   if (typeof context.drawImage !== "function" || typeof context.globalCompositeOperation !== "string") {
     throw new TypeError("Isolated glyph painting requires Canvas drawImage and compositing support.");
@@ -45,19 +36,20 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
   try {
     surface = factory(1, 1);
     const source = requireSurface(surface);
-    const hasGradient = Object.values(target.graphicSpec.objects).some(object =>
+    preflightCanvasFillCapabilities(objects, source);
+    const hasGradient = objects.some(object =>
       [object, ...(object.items ?? [])].some(item =>
-        isBlendMode(item.properties?.blend) && item.properties.fill?.type === "linear-gradient"));
-    const normal=Object.values(target.graphicSpec.objects).some(object=>
-      [object,...(object.items??[])].some(item=>item.properties?.blend==="normal"));
+        requiresIsolatedGlyph(item.properties) && item.properties.fill?.type === "linear-gradient"));
+    const normal=objects.some(object=>
+      [object,...(object.items??[])].some(item=>(item.properties?.blend==="normal" || item.properties?.blend===undefined && requiresIsolatedGlyph(item.properties))));
     if(normal){
       if(typeof source.setTransform!=="function")throw new TypeError("Normal glyph opacity requires Canvas transform support.");
       source.save();try{
         source.globalCompositeOperation="destination-in";
         if(source.globalCompositeOperation!=="destination-in")throw new TypeError("Normal glyph opacity requires source attenuation.");
       }finally{source.restore();}
-      const circle=Object.values(target.graphicSpec.objects).some(object=>
-        [object,...(object.items??[])].some(item=>item.properties?.blend==="normal"&&(item.type??object.type)==="circle"));
+      const circle=objects.some(object=>
+        [object,...(object.items??[])].some(item=>(item.properties?.blend==="normal" || item.properties?.blend===undefined && requiresIsolatedGlyph(item.properties))&&(item.type??object.type)==="circle"));
       if(circle&&typeof source.arc!=="function")throw new TypeError("Normal circle painting requires Canvas arcs.");
     }
     if (hasGradient && (typeof source.createLinearGradient !== "function" ||
@@ -70,7 +62,7 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
   context.save();
   try {
     const modes=new Set();
-    for(const object of Object.values(target.graphicSpec.objects))for(const item of [object,...(object.items??[])]){
+    for(const object of objects)for(const item of [object,...(object.items??[])]){
       if(item.properties?.blend!==undefined)modes.add(item.properties.blend==="normal"?"source-over":item.properties.blend);
     }
     for(const mode of modes){
@@ -84,7 +76,7 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
   const frames = [{offset:[0,0],clip:{left:0,top:0,right:target.width,bottom:target.height}}];
   function plan(id, object, type) {
     const properties = object.properties;
-    if (!isBlendMode(properties?.blend)) return;
+    if (!requiresIsolatedGlyph(properties)) return;
     const bounds = resolvePrimitiveGraphicBounds(type, properties);
     if (!bounds) throw new Error(`Graphic "${id}" requires finite isolated paint bounds.`);
     const {offset: [x, y], clip} = frames.at(-1);
@@ -144,7 +136,7 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
 }
 
 // Paint fill and outline together with opacity 1, then composite the source once.
-export function drawIsolatedGlyph(context, id, graphic, draw, prepared) {
+export function drawIsolatedGlyph(context, id, graphic, draw, prepared, options) {
   const plan = prepared?.plans.get(id);
   if (!plan) throw new Error(`Graphic "${id}" has no prepared isolated paint source.`);
   if (plan.empty) return;
@@ -154,8 +146,8 @@ export function drawIsolatedGlyph(context, id, graphic, draw, prepared) {
   const source = requireSurface(surface);
   source.scale(pixelRatio, pixelRatio);
   source.translate(-plan.left, -plan.top);
-  const {blend, opacity = 1, ...properties} = graphic.properties;
-  draw(source, id, {...graphic, properties: {...properties, opacity: 1}});
+  const {blend = "normal", opacity = 1, ...properties} = graphic.properties;
+  draw(source, id, {...graphic, properties: {...properties, opacity: 1}}, options);
   if(blend==="normal"){
     // Attenuate the complete source once. drawImage(globalAlpha) introduces
     // additional native image-alpha quantization; source masking avoids it.

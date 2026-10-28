@@ -3,7 +3,7 @@ import{validateLegendClip,clippedSampleBounds}from"../../../../grammar/legendCli
 import {categoricalLegendSymbolId as symbolGraphic}from"../../../../grammar/legendBlocks.js";
 export {symbolGraphic};
 import { findLegendLayer as findLayer } from "../../../../materialization/legendEncodings.js";
-import { isLinearGradientPaint } from "../../../../grammar/paint.js";
+import { isLinearGradientPaint, isPatternPaint, isRadialGradientPaint } from "../../../../grammar/paint.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { validateOptionObject } from "../../../../core/validation.js";
 import { mapOrdinalValues } from "../../../../grammar/scales/index.js";
@@ -173,15 +173,16 @@ export function resolveLayout(program, config) {
 
 export function resolveAppearance(program, config) {
   const target = findLayer(program, config.target);
-  const gradientFallback = target?.mark?.type === "area" &&
+  const fallbackPaint = program.markConfigs[target?.id]?.barAppearance?.fill ?? program.markConfigs[target?.id]?.fill;
+  const gradientFallback = ["area", "bar", "point", "rect", "arc", "text"].includes(target?.mark?.type) &&
     target.encoding.color === undefined &&
     !config.channels.includes("color") &&
-    isLinearGradientPaint(program.markConfigs[target.id]?.fill);
+    (isLinearGradientPaint(fallbackPaint) || isPatternPaint(fallbackPaint) || isRadialGradientPaint(fallbackPaint));
   const fixedLineStroke = target?.mark?.type === "line" &&
     config.channels.includes("strokeDash")
     ? program.markConfigs[target.id]?.stroke : undefined;
   const fallback = gradientFallback
-    ? program.markConfigs[target.id].fill : fixedLineStroke ?? DEFAULT_COLORS.mark;
+    ? fallbackPaint : fixedLineStroke ?? DEFAULT_COLORS.mark;
   let colors = config.domain.map(() => fallback);
   let strokes = config.domain.map(() => "white");
   let dashes = config.domain.map(() => []);
@@ -195,7 +196,7 @@ export function resolveAppearance(program, config) {
     if (config.channels[index] === "shape") shapes = values;
   }
   return { colors, strokes, dashes, shapes, ...(config.combine === "size-shape" ? {areas: config.sizeAreas} : {}),
-    ...(gradientFallback ? { opacity: program.markConfigs[target.id].opacity } : {}) };
+    ...(gradientFallback ? { opacity: program.markConfigs[target.id].barAppearance?.opacity ?? program.markConfigs[target.id].opacity } : {}) };
 }
 
 export function noOptions(args, operation) {

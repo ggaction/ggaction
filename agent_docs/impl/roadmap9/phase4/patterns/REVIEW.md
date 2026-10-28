@@ -1,5 +1,7 @@
 # 7종 vector pattern primitive 검토
 
+> 공개 P1 연결 시 승인된 실행 slice 전체를 `test/charts/structured-paints/variants/pattern-paints/`로 승격했다. 아래 Gate 경로와 미구현 표현은 원 승인 revision의 기록이며 현재 상태는 [P1 구현 기록](../paints/STRUCTURED_FILL.md)을 따른다.
+
 ## 진행 상태
 
 - [x] private kernel의 기본값·방향·원점 계약 유지

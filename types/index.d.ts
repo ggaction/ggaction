@@ -313,6 +313,8 @@ export type {
   EditSemanticOptions,
   FieldType,
   FillPaint,
+  PatternPaint,
+  RadialGradientPaint,
   FacetCompositionSpec,
   FacetGap,
   FacetGuideOptions,

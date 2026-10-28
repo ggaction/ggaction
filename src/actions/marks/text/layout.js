@@ -1,3 +1,5 @@
+import { materializeFillItems } from "../../../materialization/fillPaint.js";
+import { isPatternPaint } from "../../../grammar/paint.js";
 import { action, closedAction } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { validateOptionObject } from "../../../core/validation.js";
@@ -308,6 +310,14 @@ const materializeLabelLayout = /* @__PURE__ */ closedAction(
       x: resolved.items.map(item => item.x),
       y: resolved.items.map(item => item.y)
     });
+    const painted = next.graphicSpec.objects[id].items;
+    if (painted.some(item => typeof item.properties.fill === "object")) {
+      const fills = materializeFillItems(next, layer, painted.map(item => ({
+        type: "text", properties: { ...item.properties, fill: isPatternPaint(item.properties.fill) && !(next.markConfigs[id].inheritColor && !next.markConfigs[id].fillExplicit) ? next.markConfigs[id].fill : item.properties.fill }
+      })));
+      next = next.editGraphics({ target: id, property: "fill", value: fills.map(item => item.properties.fill) })
+        .editGraphics({ target: id, property: "fillBounds", value: fills.map(item => item.properties.fillBounds) });
+    }
     const leaders = materializeLeaders(next, layer, config, resolved.items);
     next = leaders.program;
     next = next._withMaterializationConfig(["labelLayouts", id], {

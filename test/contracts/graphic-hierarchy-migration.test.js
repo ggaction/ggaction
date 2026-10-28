@@ -25,6 +25,7 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "structured-paints": ["canvas", "paint"],
   "compound-path": ["canvas", "underlay", "shape"],
   "shared-adjacent": [],
   "linked-overlay": ["canvas","horizontalGridLines","bars","trend","xAxisLine","xAxisTicks","xAxisLabels","xAxisTitle","yAxisLine","yAxisTicks","yAxisLabels","yAxisTitle","chartTitle"],

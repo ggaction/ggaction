@@ -1,3 +1,4 @@
+import { patternFillGeometry, validatePatternWork } from "../../grammar/patterns.js";
 import { resolveLinearGradientCoordinates } from "../../grammar/paint.js";
 import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { resolvePathCommandBounds } from
@@ -86,6 +87,7 @@ function preflightGraphic(id, graphic, scale, type, offset) {
     requireValues(properties.strokeDash, label, scale);
   }
   const gradient = properties.fill?.type === "linear-gradient";
+  const structured = gradient || properties.fill?.type === "pattern" || properties.fill?.type === "radial-gradient";
 
   let bounds;
   if (type === "canvas" || type === "rect" || type === "circle") {
@@ -110,9 +112,14 @@ function preflightGraphic(id, graphic, scale, type, offset) {
     for (const command of properties.commands) {
       requireProperties(command, COMMAND_PROPERTIES, label, scale, offset);
     }
-    if (gradient) {
+    if (structured) {
       bounds = resolvePathCommandBounds(properties.commands);
     }
+  }
+  if (type === "text" && structured) {
+    bounds = properties.fillBounds;
+    if (!bounds) throw new TypeError(`Graphic "${id}" requires concrete text fillBounds.`);
+    requireValues(Object.values(bounds), label, scale);
   }
   if (gradient && bounds) {
     resolveCanvasGradientCoordinates(properties.fill, bounds, id, scale);
@@ -120,10 +127,26 @@ function preflightGraphic(id, graphic, scale, type, offset) {
   if (NATIVE_PROPERTIES[type] !== undefined) {
     validateConcreteGraphicProperties(type, properties);
   }
+  if (properties.fill?.type === "pattern" && bounds) {
+    const { type: paintType, origin, ...options } = properties.fill;
+    const geometry = patternFillGeometry(options, bounds, [origin.x, origin.y]);
+    for (const command of geometry.commands) requireProperties(command, COMMAND_PROPERTIES, label, scale, offset);
+    return geometry.workItems;
+  }
+  if (properties.fill?.type === "radial-gradient" && bounds) {
+    const width = bounds.right - bounds.left, height = bounds.bottom - bounds.top;
+    requireValues([width, height, width * properties.fill.radius, height * properties.fill.radius], label, scale);
+  }
+  return 0;
 }
 
 export function preflightCanvasGraphicSpec(target, scale = 1) {
   const offsets = [];
+  let paintWork = 0;
+  const preflight = (...args) => {
+    paintWork += preflightGraphic(...args);
+    validatePatternWork(paintWork);
+  };
   walkGraphicTreeEvents(target.graphicSpec, {
     enter({ id, object }) {
       let offset = offsets.at(-1);
@@ -143,7 +166,7 @@ export function preflightCanvasGraphicSpec(target, scale = 1) {
         offsets.push(effective);
         offset = id === target.canvasId ? undefined : parent;
       }
-      preflightGraphic(id, object, scale, object.type, offset);
+      preflight(id, object, scale, object.type, offset);
       if (object.clip !== undefined) {
         const clip = validateGraphicClip(object.clip, object.type);
         if (clip.type === "path") {
@@ -156,7 +179,7 @@ export function preflightCanvasGraphicSpec(target, scale = 1) {
       }
     },
     item({ id, object, owner }) {
-      preflightGraphic(
+      preflight(
         id,
         object,
         scale,

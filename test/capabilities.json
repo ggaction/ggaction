@@ -568,7 +568,7 @@
       },
       {
         "type": "prefix",
-        "path": "gates/pattern-paints/"
+        "path": "charts/structured-paints/variants/pattern-paints/"
       }
     ],
     "persistence": [
@@ -646,7 +646,7 @@
       },
       {
         "type": "prefix",
-        "path": "gates/radial-gradient/"
+        "path": "charts/structured-paints/variants/radial-gradient/"
       }
     ],
     "realistic": [
@@ -939,6 +939,36 @@
       {
         "type": "prefix",
         "path": "charts/cars-box-plot/"
+      }
+    ],
+    "structured-paints": [
+      {
+        "type": "prefix",
+        "path": "charts/structured-paints/"
+      },
+      {
+        "type": "file",
+        "path": "browser/structured-paint.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/structured-paint-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/structured-paint-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/structured-paint.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/structured-fill.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-structured-paints.test.js"
       }
     ],
     "support": [

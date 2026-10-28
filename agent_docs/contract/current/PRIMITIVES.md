@@ -248,3 +248,14 @@ fractional edge의 antialias를 중복 곱하지 않는다. Canvas scene version
 rectangle tuple 또는 path clip이며 replay가 각 실제 fill 영역을 적용한다.
 JSON/structured clone과 fresh-process restore/edit/remove는 `test/charts/compound-path/public.test.js`,
 scene pixel replay는 `test/charts/compound-path/backends.render.js`가 검증한다.
+
+
+### Concrete structured paint
+
+Rect/Path/Circle/Text fill은 [shared FillPaint](MARKS.md#shared-structured-fill-paint)를 소비한다.
+Pattern은 모든 기본값이 명시된 `{type,style,pitch,strokeWidth,phase,foreground,background,origin:{x,y}}`이며
+coordinateSpace를 저장하지 않는다. Radial은 focal도 명시한다. Primitive는 이 concrete 모양을 검증하며
+semantic origin이나 기본값을 추론하지 않는다. Text의 구조화된 fill에는 명시적 `fillBounds`가 필요하다:
+finite ordered `{left,right,top,bottom}`이며 회전 전 text anchor와 동일 frame이다. Renderer는 이를
+소비하고 native glyph 자체를 그대로 그린다. 기존 string fill은 fillBounds가 필요 없다. 모든 새 값은
+editable/graphic codec에서 같은 schema로 검증된다. Shape geometry나 row lineage는 paint 때문에 바뀌지 않는다.

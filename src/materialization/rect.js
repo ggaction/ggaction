@@ -1,5 +1,6 @@
 import { hasPositionBinding } from "../core/encodingBindings.js";
 import { resolveRowEncodingValues } from "./rowEncoding.js";
+import { materializeFillItems } from "./fillPaint.js";
 import {
   mapOrdinalPositionValues,
   readScaleField
@@ -77,10 +78,11 @@ function mappedEncoding(program, layer, dataset, channel, resolvers) {
 }
 
 function appearance(config, fill, stroke) {
+  const resolvedStroke = stroke ?? (config.stroke === false ? "transparent" : config.stroke);
   return {
-    fill,
-    opacity: config.opacity,
-    stroke: stroke ?? (config.stroke === false ? "transparent" : config.stroke),
+    ...(fill === undefined ? {} : { fill }),
+    ...(config.opacity === undefined ? {} : { opacity: config.opacity }),
+    ...(resolvedStroke === undefined ? {} : { stroke: resolvedStroke }),
     strokeWidth: stroke === undefined && config.stroke === false
       ? 0
       : config.strokeWidth ?? 1,
@@ -114,7 +116,7 @@ export function resolveRectRows(program, layer, dataset, resolvers) {
     if (
       (x !== undefined && !Number.isFinite(x.values[index])) ||
       (y !== undefined && !Number.isFinite(y.values[index])) ||
-      typeof fill !== "string" ||
+      (color !== undefined && typeof fill !== "string") ||
       (stroke !== undefined && typeof stroke[index] !== "string") ||
       (opacity !== undefined && !Number.isFinite(opacity[index])) ||
       (strokeWidth !== undefined && !Number.isFinite(strokeWidth[index]))
@@ -159,7 +161,7 @@ export function resolveRectRows(program, layer, dataset, resolvers) {
 
 export function resolveRectGraphicItems(program, layer, dataset, resolvers) {
   const radius = program.markConfigs[layer.id] ?? {};
-  return resolveRectRows(program, layer, dataset, resolvers).map(item =>
+  return materializeFillItems(program, layer, resolveRectRows(program, layer, dataset, resolvers).map(item =>
     materializeRectItem(item.properties, radius)
-  );
+  ));
 }

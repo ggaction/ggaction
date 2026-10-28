@@ -1,0 +1,10 @@
+{
+  "qualifiedArchiveSha256": "65b3f8ddda6755382028635a9051d29e04edcdc816a1a8734af8797a8d80a043",
+  "finalArchiveSha256": "a20d6590c0d40766e6e6f4d7d79580f87c41b284ae063fdf59ed140a5be938b3",
+  "entryCount": 761,
+  "changedPackedFiles": [
+    "package/README.md"
+  ],
+  "equalRuntimeTypesKnowledgeAndPackageManifest": true,
+  "qualificationReuse": "The final pack differs only in README bundle ceiling text. Node20/22/24 qualification used the qualified archive; final pack is not claimed byte-identical."
+}

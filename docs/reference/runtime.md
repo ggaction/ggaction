@@ -339,6 +339,8 @@ export type {
   EditSemanticOptions,
   FieldType,
   FillPaint,
+  PatternPaint,
+  RadialGradientPaint,
   FacetCompositionSpec,
   FacetGap,
   FacetGuideOptions,
@@ -530,6 +532,7 @@ export function render(
 [Complete declaration and relative dependencies](../types/basic.d.ts)
 
 ```typescript
+export type { FillPaint, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./program.js";
@@ -693,6 +696,8 @@ export { ChartProgram };
 export type {
   InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
   FillPaint,
+  PatternPaint,
+  RadialGradientPaint,
   LinearGradientPaint,
   LinearGradientPoint,
   LinearGradientStop
@@ -1017,6 +1022,9 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 Use [Program composition](../api/composition.md) for sizing, nesting, layout
 editing, and stable child replacement. Use [Rendering](../api/rendering.md) for
 complete Browser Canvas, SVG, Node PNG, and vector PDF examples.
+
+
+Shared mark fill options follow [Pattern and gradient fills](../api/appearance/mark-style.md#pattern-and-gradient-fills). Point, Rect, Bar, Area, Arc, and Text constructors and editors accept the complete FillPaint union; strokes remain solid colors.
 
 ## Internal trace operations
 

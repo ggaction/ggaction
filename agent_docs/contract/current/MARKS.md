@@ -179,7 +179,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `createPointMark`
 
-- Implemented: `createPointMark({ clip?: boolean; id?: UserId; data?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createPointMark({ clip?: boolean; id?: UserId; data?: UserId; shape?: PointShape; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
@@ -207,7 +207,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
   ambiguity는 explicit target을 요구한다.
 - `shape`은 shared `PointShape` named 14종 또는 명시적 단순 polygon이다. Field-driven `encodeShape`가 있으면 constant shape
   edit와 충돌하므로 오류다.
-- `fill`은 non-empty color string이며 field-driven `encodeColor`가 있으면 충돌하므로 오류다.
+- `fill`은 아래 shared `FillPaint` 계약이며 field-driven `encodeColor`가 있으면 충돌하므로 오류다.
 - `opacity`는 `[0, 1]`, `stroke`는 non-empty color string 또는 edit-time `false`, `strokeWidth`는 non-negative
   finite logical pixel이다. `stroke: false`는 outline과 stored width를 함께 비활성화하며 simultaneous
   `strokeWidth`는 오류다. 이후 string stroke는 point default width `1`로 복원한다.
@@ -219,7 +219,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `editPointMark`
 
-- Implemented: `editPointMark({ clip?: boolean; target?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editPointMark({ clip?: boolean; target?: UserId; shape?: PointShape; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
@@ -581,7 +581,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 - Signature: `editBarMark({ clip?, target?, blend?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`: current compatible bar, unique bar, or explicit existing bar ID.
-- `fill`: non-empty constant color 또는 기존 `FillPaint` item-local linear gradient다. 정규화된 from/to와 단조 stops를 shared paint validator로 검증한다. Field-driven color encoding과 함께 사용할 수 없다.
+- `fill`: 아래 shared `FillPaint` 계약이다. 모든 구조화된 paint를 shared validator로 정규화한다. Field-driven color encoding과 함께 사용할 수 없다.
 - `opacity`: unit interval. `stroke`: non-empty color or `false`; false는 concrete transparent zero-width outline로
   materialize한다. `strokeWidth`는 non-negative finite이며 removed stroke에 단독 적용할 수 없다.
 - `blend`: 생략은 보존, `"multiply"`, `"screen"`, `"difference"`는 bar 하나의 fill+outline을 합친 source에
@@ -619,7 +619,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 - Signature: `createAreaMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`, `data`: 첫 unnamed area의 deterministic `"area"` 또는 explicit 새 ID와 optional existing/current dataset이다.
-- `fill`: Implemented, 기존 `FillPaint`의 non-empty color string 또는 path-local linear gradient. 기본값은 theme mark color `"#4c78a8"`다. 구조화된 paint는 shared grammar로 검증하고 immutable config와 concrete path에 보존한다.
+- `fill`: Implemented, 아래 shared `FillPaint`의 solid, linear/radial gradient 또는 pattern. 기본값은 theme mark color `"#4c78a8"`다. 구조화된 paint는 shared grammar로 검증하고 immutable config와 concrete path에 보존한다.
 - `opacity`: Implemented, `[0, 1]` finite number. 기본값은 `0.2`다.
 - `stroke`, `strokeWidth`: Implemented. optional non-empty outline string과 non-negative finite width다.
   Stroke가 있으면 width 기본값은 `1`이며 stroke 없이 width만 지정할 수 없다.
@@ -709,7 +709,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `createArcMark`
 
-- Implemented: `createArcMark({ id?: UserId; data?: UserId; innerRadius?: ArcInnerRadius; padAngle?: NonNegativeFinite; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`, where numeric values satisfy `0 <= innerRadius < 1` and pixel requests use `{ unit: "px", value: NonNegativeFinite }`.
+- Implemented: `createArcMark({ id?: UserId; data?: UserId; innerRadius?: ArcInnerRadius; padAngle?: NonNegativeFinite; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`, where numeric values satisfy `0 <= innerRadius < 1` and pixel requests use `{ unit: "px", value: NonNegativeFinite }`.
 - Proposed (NOT IMPLEMENTED): explicit secondary theta/radius endpoints.
 
 ### Value coverage — `createArcMark`
@@ -732,7 +732,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `editArcMark`
 
-- Implemented: `editArcMark({ target?: UserId; innerRadius?: ArcInnerRadius; padAngle?: NonNegativeFinite; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editArcMark({ target?: UserId; innerRadius?: ArcInnerRadius; padAngle?: NonNegativeFinite; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editArcMark`
@@ -822,7 +822,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `createRectMark`
 
-- Implemented: `createRectMark({ clip?: boolean; id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
+- Implemented: `createRectMark({ clip?: boolean; id?: UserId; data?: UserId; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): categorical cell completion and automatic missing-cell placeholders.
 
@@ -845,7 +845,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `editRectMark`
 
-- Implemented: `editRectMark({ clip?: boolean; target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editRectMark({ clip?: boolean; target?: UserId; fill?: FillPaint; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
@@ -1261,7 +1261,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `createTextMark`
 
-- Implemented: `createTextMark({ clip?: boolean; id?: UserId; data?: UserId; source?: UserId; text?: unknown; fill?: NonEmptyString; opacity?: UnitInterval; fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; align?: "left" | "right" | "center" | "start" | "end"; baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom"; rotation?: RotationInput; dx?: Finite; dy?: Finite } = {})`.
+- Implemented: `createTextMark({ clip?: boolean; id?: UserId; data?: UserId; source?: UserId; text?: unknown; fill?: FillPaint; opacity?: UnitInterval; fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; align?: "left" | "right" | "center" | "start" | "end"; baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom"; rotation?: RotationInput; dx?: Finite; dy?: Finite } = {})`.
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): interactive tooltips.
 
@@ -1391,3 +1391,36 @@ Interior는 sign 합 × min(abs adjacent secants, abs weighted secant mean / 2),
 endpoint는 (3 × secant − adjacent tangent) / 2다. Vertical endpoint는 adjacent
 tangent를 사용한다. Curve/tension validation, command limits, finite normalization을 공유한다.
 Evidence: `test/unit/grammar/steffen-curve.test.js`, `test/unit/actions/marks/steffen-curve.test.js`.
+
+
+### Shared structured fill paint
+
+- Point, Rect, Bar, Area, Arc, Text의 `fill`은 `FillPaint`다. 기존 solid string과 linear-gradient에
+  `{type:"pattern",style?,pitch?,strokeWidth?,phase?,foreground?,background?,coordinateSpace?}` 및
+  `{type:"radial-gradient",center,focal?,radius,stops}`를 추가한다. 기존 solid/linear의 문법은 유지한다.
+- Pattern style은 solid/diagonal/antidiagonal/horizontal/vertical/cross/dots이며 기본 solid다.
+  pitch는 양수 logical pixel(기본 8), strokeWidth는 0 이상(기본 1, dots 반지름은 절반),
+  phase는 finite pair(기본 [0,0])를 pitch로 modulo 정규화한다. 색상 기본값은 #000000/transparent,
+  coordinateSpace는 plot/object(기본 plot)다. 객체 전체 교체이며 부분 merge나 null reset은 없다.
+- plot origin은 해당 coordinate의 최종 plot 좌상단, object origin은 최종 glyph fill bounds 좌상단이며
+  phase는 한 번만 더한다. Concrete paint는 coordinateSpace 대신 명시적 origin:{x,y}를 가진다.
+  데이터/scale/frame replay와 composition 이동이 해당 origin을 갱신한다.
+- Radial center/focal은 [0,1]×[0,1] 좌표다. focal 기본값은 center이며 양수 radius의 끝 원 내부 또는
+  경계에 있어야 한다. 두 개 이상의 stops는 offset [0,1], 비감소 순서이며 동일 offset hard edge를 허용한다.
+  Unit square는 최종 bounds에 affine 매핑하므로 220×140 glyph의 radius .5는 110×70 ellipse다.
+- 신규 paint의 색상은 hex 3/4/6/8, comma rgb/rgba/hsl/hsla, 표준 named color와 transparent만 허용한다.
+  currentColor, CSS variables, none 및 host 의존 문법은 거부한다. Stroke는 기존 solid string 계약이다.
+- Pattern foreground는 단일 nonzero compound fill이며 background와 합친 후 opacity를 한 번 적용한다.
+  각 glyph는 10,000 tile/30,000 command, 누적 paint work는 기존 10,000,000 work limit을 따른다.
+- Text는 기존 metrics/line origin owner가 회전 전 fillBounds를 materialize한다. SVG는 native text와
+  vector paint를 사용한다. Canvas/PNG/PDF Text는 bounded paint texture를 native fillText에 적용하여
+  실제 glyph alpha, 빈 공간, 여러 줄과 회전을 보존한다. Gradient texture 범위는 회전 전 viewport로
+  역투영하여 추정 text bounds 밖의 실제 glyph overhang을 자르지 않는다. 재측정/줄 재분할은 없다.
+  Pattern과 opacity<1의 조합은 기존 glyph isolation을 재사용해 background/foreground에 전체 opacity를 한 번만 적용하며 PDF에 glyph image를 포함할 수 있다.
+  Texture는 output pixelRatio와 기존 32,767 dimension/16,777,216 pixel 및 누적 work 제한을 따른다.
+  Native PDF의 closed glyph radial은 vector shading을 보존하며 Text paint는 raster texture를 포함할 수 있다.
+- 기존 field color reassignment의 constant replacement 규칙을 유지한다. Area의 기존 fallback paint
+  보존 규칙도 유지한다. Selection의 scalar property 비교 문법을 늘리지 않고 highlight 제거 시 원래 paint를
+  복원한다. `inheritColor:"fill"`은 source의 유일하게 정해지는 concrete paint도 상속한다.
+- Evidence: `test/unit/grammar/structured-paint.test.js`, `test/unit/actions/marks/structured-fill.test.js`,
+  `test/contracts/structured-paint-rendering.test.js`, `test/contracts/structured-paint-types.test.js`.

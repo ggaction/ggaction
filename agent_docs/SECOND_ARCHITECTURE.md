@@ -155,6 +155,14 @@ Renderer는 AST를 읽거나 평가하지 않으며 기존 computed v1의 의미
 상세 내부 계약은 [expression core](architecture/EXPRESSION_CORE.md), 공개 computed는
 [CORE](contract/current/CORE.md), action trace는 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
 
+## 공유 색상 계산 경계
+
+`grammar/color.js`는 host-independent 색상 채널과 HSL 변환을 공유한다. Continuous scale은 기존
+입력 정책을 명시적으로 사용하여 accepted syntax와 결과를 유지하고, 승인된 structured paint/effect
+준비는 닫힌 RGBA parser를 사용한다. 새 parser는 아직 public fill/schema에 연결하지 않았으며 state,
+resource 또는 renderer 경계는 그대로다. 정확한 내부 범위와 검증은
+[paint 색상 준비](impl/roadmap9/phase4/paints/COLOR_FOUNDATION.md)에 기록한다.
+
 ## 내부 pattern kernel 경계
 
 `grammar/patterns.js`는 닫힌 pattern 옵션과 phase/origin의 순수 정규화 및 bounded unit tile
@@ -726,8 +734,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 549,000 bytes |
-| `ggaction/basic` | 326,000 bytes |
+| `ggaction` | 557,000 bytes |
+| `ggaction/basic` | 333,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -1935,8 +1943,8 @@ page를 만들고 Phase 1의 Canvas-compatible concrete drawing target으로 같
 - One chart는 exact logical width/height point의 one page다. Native page box가 조용히
   반올림하거나 clamp하지 않도록 positive integer `<= 16777216`만 backend 진입 전에 허용한다.
 - Canvas와 공유하는 complete native geometry preflight가 PDF document/page 생성보다 먼저 실행된다.
-- Text는 native PDF text operator로 남고 renderer가 glyph outline이나 raster image로
-  바꾸지 않는다.
+- 기본 Text는 native PDF text operator로 남는다. Structured Text paint와 isolated-glyph
+  opacity 처리의 bounded texture 예외는 current/MARKS.md의 shared structured fill이 소유한다.
 - Optional metadata는 title, author, subject와 keyword list만 받는다.
 - PDF document, page, context, gradient와 buffer는 adapter-local ephemeral state다.
 - Complete validation/drawing과 document close 뒤에만 directory/file을 기록한다.
@@ -3113,3 +3121,13 @@ Native item/vertex 계산이 각 branch 값을 검증한 뒤 선택된 값을 �
 새 semantic state나 graphic state로 저장하지 않는다. Source-label·interval bounds·point layout의
 selection 의존성까지 scale 계산 전에 순환을 검사한다. 정확한 조건부 채널/원점/단위/오류와
 진단 의미는 [ENCODINGS](contract/current/ENCODINGS.md)와 [MARKS](contract/current/MARKS.md)가 소유한다.
+### Structured paint materialization and Text output
+
+Paint normalization은 grammar/paint.js, 공통 색상은 grammar/color.js가 소유한다. Mark/guide domain
+materializer가 pattern 기준점과 Text fillBounds를 명시적으로 계산하여 concrete graphic에 저장하며,
+renderer는 semantic coordinate나 text width를 재추론하지 않는다. Pattern foreground의 공통 bounded
+geometry를 Canvas/SVG가 공유하고 여러 alpha layer는 기존 isolated glyph owner로 한 번 감쇠한다.
+Native radial output은 affine frame을 실제 fill까지 유지한다. Text는 concrete bounds로 bounded
+paint texture를 준비하고 기존 native glyph에 적용한다. Native glyph overhang 때문에 gradient texture는
+viewport의 역회전 범위를 덮으며 glyph shape를 bounds rectangle으로 바꾸지 않는다. SVG text는 vector
+paint resource를 소비한다. 정확한 값/제한/출력 차이는 current/MARKS.md의 shared structured fill이 소유한다.

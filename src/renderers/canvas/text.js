@@ -1,10 +1,11 @@
-import { resolveCanvasSolidPaint } from "./fill.js";
+import { applyCanvasFill } from "./fill.js";
+import { applyCanvasTextPattern } from "./textPaint.js";
 import { requireFiniteProperty, requireStringProperty } from "./validation.js";
 import { validateConcreteGraphicProperties, validateConcreteGraphicValue } from
   "../../grammar/schemas/concreteGraphic.js";
 import { normalizeRendererFontWeight } from "../text.js";
 
-function drawText(context, child, collectionId, { resolveFontFamily } = {}) {
+function drawText(context, child, collectionId, { resolveFontFamily, textPaint } = {}) {
   const properties = child.properties ?? {};
   const graphicId = child.id ?? collectionId;
   validateConcreteGraphicProperties("text", properties);
@@ -15,7 +16,7 @@ function drawText(context, child, collectionId, { resolveFontFamily } = {}) {
   const opacity = properties.opacity ?? 1;
   const text = properties.text;
   validateConcreteGraphicValue("text", "text", text);
-  const fill = requireStringProperty(properties, "fill", graphicId);
+  const fill = properties.fill;
   const fontFamily = requireStringProperty(
     properties,
     "fontFamily",
@@ -74,7 +75,6 @@ function drawText(context, child, collectionId, { resolveFontFamily } = {}) {
   context.save();
 
   try {
-    context.fillStyle = resolveCanvasSolidPaint(fill);
     context.globalAlpha = opacity;
     const rendererFontWeight = normalizeRendererFontWeight(fontWeight);
     context.font = `${properties.fontStyle === "italic" ? "italic " : ""}${rendererFontWeight} ${fontSize}px ${resolveFontFamily?.(fontFamily) ?? fontFamily}`;
@@ -82,6 +82,10 @@ function drawText(context, child, collectionId, { resolveFontFamily } = {}) {
     context.textBaseline = textBaseline;
     context.translate(x, y);
     context.rotate(rotation);
+    const bounds = properties.fillBounds;
+    const localBounds = bounds && { left: bounds.left - x, right: bounds.right - x, top: bounds.top - y, bottom: bounds.bottom - y };
+    if (fill?.type === "pattern" || fill?.type === "radial-gradient") applyCanvasTextPattern(context, fill, bounds, properties, graphicId, textPaint);
+    else applyCanvasFill(context, fill, localBounds, graphicId);
     if (properties.lines === undefined) context.fillText(text, 0, 0);
     else for (const line of properties.lines) context.fillText(line.text, line.x, line.y);
   } finally {

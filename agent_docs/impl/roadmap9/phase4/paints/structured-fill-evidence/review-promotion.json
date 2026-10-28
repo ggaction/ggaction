@@ -1,0 +1,14 @@
+[
+  {
+    "slice": "pattern-paints",
+    "oldPngCount": 36,
+    "stablePngCount": 36,
+    "byteMismatchFiles": []
+  },
+  {
+    "slice": "radial-gradient",
+    "oldPngCount": 41,
+    "stablePngCount": 41,
+    "byteMismatchFiles": []
+  }
+]

@@ -1,0 +1,19 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Pattern primitive review</title>
+<style>body{font:14px system-ui;background:#edf2f7;color:#243447}section{display:inline-block;vertical-align:top;margin:12px}canvas,svg{display:block;background:white;max-width:100%}</style>
+<body><h1>Pattern primitive review</h1><p id="status">Loading</p>
+<script type="module">
+import { styles } from './fixture.js';
+import { createPatternPrimitive } from './primitive.program.js';
+import { render } from '../../../../../src/index.js';
+import { renderToSVG } from '../../../../../src/renderers/svg.js';
+for (const style of styles) {
+  const section = document.createElement('section'), heading = document.createElement('h2');
+  heading.textContent = style; section.append(heading);
+  const canvas = document.createElement('canvas'); canvas.id = style; canvas.setAttribute('aria-label', `${style} pattern: plot, object, phase and alpha clip panels`);
+  const program = createPatternPrimitive(style); render(program, canvas.getContext('2d'));
+  section.append(canvas); document.body.append(section);
+  const svg = new DOMParser().parseFromString(renderToSVG(program), 'image/svg+xml').documentElement;
+  svg.setAttribute('aria-label', `${style} SVG pattern`); section.append(document.importNode(svg, true));
+}
+document.querySelector('#status').textContent = 'Ready';
+</script></body></html>
