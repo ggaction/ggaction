@@ -65,6 +65,10 @@
     ],
     "blend-paints": [
       {
+        "type": "file",
+        "path": "unit/grammar/compositing.test.js"
+      },
+      {
         "type": "prefix",
         "path": "gates/blend-paints/"
       }

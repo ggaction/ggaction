@@ -1,0 +1,53 @@
+{
+  "sourceEvidenceRevision": null,
+  "publicIntegration": "pending",
+  "approvedVisualRevision": "90f5f67e",
+  "normal": {
+    "passed": 4,
+    "failed": 0,
+    "independentRandomCases": 2000
+  },
+  "coverage": {
+    "file": "grammar/compositing.js",
+    "lines": 100,
+    "branches": 100,
+    "functions": 100,
+    "floor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "scope": "focused new file only"
+  },
+  "contracts": {
+    "passed": 40,
+    "failed": 0
+  },
+  "package": {
+    "entries": 705,
+    "packedBytes": 1047741,
+    "unpackedBytes": 4872991
+  },
+  "commands": [
+    "node scripts/run-tests.js unit unit/grammar/compositing.test.js",
+    "node --test --experimental-test-coverage --test-coverage-include=src/grammar/compositing.js test/unit/grammar/compositing.test.js",
+    "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js",
+    "npm run package:check"
+  ],
+  "inputs": {
+    "src/grammar/compositing.js": "edf04bc440d7b6b71e70f72d1c39295579393aed51eb883efc7c9d1987029aea",
+    "test/unit/grammar/compositing.test.js": "2fc4d9cbad18cf22130b0b9f5ad7c37319cdb53e32a49f41b8b789aae300d507",
+    "test/oracles/compositing.js": "0d5711ae18abd39eaa1748b9733f64a8423211c17a3a06de5974ac5b8910e12c",
+    "scripts/coverage-policy.js": "3027b7123f52430ed646eabf084b06b958091fd93e8e4e8242ab2f8783b28191",
+    "test/capabilities.json": "29031f354e56f013a2a980254219e8cd1c230f846465ff34fbaeeb46736c25ab"
+  },
+  "logs": {
+    ".artifacts/paint-public-integration/compositing-contracts-final.log": "36cb94769cd79ea21da83e4e307bdecc4fef293996d041718e0352f8a02cdc21",
+    ".artifacts/paint-public-integration/compositing-contracts-first.log": "01b0a2241462a32e8a3c18db8d0d6e7f5549a5dbad62bd26c9d96fe4489792b1",
+    ".artifacts/paint-public-integration/compositing-coverage.log": "db59061ed570da05634dac22a5e03ae0c5fffef68ce2ab466541a21ac8d8d239",
+    ".artifacts/paint-public-integration/compositing-normal.log": "01b1480bafe071981fa239cf3e41ee0e578fe208d0829b002854070e5541ca69",
+    ".artifacts/paint-public-integration/compositing-package-entry.log": "dcae76cf26c455861bc1bc500555a29b753f75350df7b26ab185b55a7871c897",
+    ".artifacts/paint-public-integration/compositing-package-final.log": "4d6969f0abd38224cbf92434dda5b15f9b5a4cff73bf5654e78510eec65383b7",
+    ".artifacts/paint-public-integration/compositing-package-first.log": "8e4cfe2ad68dc20f7fe581f82b730f09175f2ff2d90492f59d1fee2ac385fc25"
+  }
+}
