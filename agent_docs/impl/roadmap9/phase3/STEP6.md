@@ -13,7 +13,8 @@
 - [x] AT-16 공개 실행 49사례의 independent expected와 actual/diff 기록
 - [x] 최종 전체 coverage·normal: 6,592 tests, 0 failures, 입력 hash 변화 없음
 - [x] Realistic: 29files/275tests 모두 통과, runtime·타입·fixture·발견한 test SHA 불변
-- [ ] 검증 evidence와 구현 commit/push, STEP-013 종료 기록
+- [x] 검증 evidence와 구현 checkpoint `ed0eff54` commit/push
+- [ ] Main 통합 및 exact-commit STEP-013 종료 기록
 
 현재 구현 계약은 [CORE](../../../contract/current/CORE.md#applydataupdate), 설계 경계는
 [PUBLIC](data/PUBLIC.md), 저장 검증은 [STATE](data/STATE.md)가 소유한다.

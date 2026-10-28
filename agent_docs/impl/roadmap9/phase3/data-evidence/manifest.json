@@ -582,6 +582,20 @@
       "sha256": "5727fb9cd21ffc4e2c852df1c3086eea08087a88d1d89c90e5bd715fe897c17c",
       "originalSha256": "5727fb9cd21ffc4e2c852df1c3086eea08087a88d1d89c90e5bd715fe897c17c",
       "bytes": 45009
+    },
+    {
+      "original": ".artifacts/validation/data-final/main-merge-docs.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/main-merge-docs.log.gz",
+      "sha256": "083e2f607d8e3c52b9ee28740b1e5dcff8c7c9086f9461c3eebb6c524dff080a",
+      "originalSha256": "ca9cbc3f987facd6d3755d499c20ceab4e8f1993e627e21984e7d895c3a505a3",
+      "bytes": 10073
+    },
+    {
+      "original": ".artifacts/validation/data-final/main-merge-contracts.log",
+      "path": "agent_docs/impl/roadmap9/phase3/data-evidence/main-merge-contracts.log.gz",
+      "sha256": "fdc3b924b8efa60776d7267f5bbc8dfc1ea4abcd0aaba6c309010465ae429eb8",
+      "originalSha256": "9c8eafaf52bf9658f179fe960db27ab1dedbfd9f2004f11deebe313b38a0f462",
+      "bytes": 11091
     }
   ]
 }

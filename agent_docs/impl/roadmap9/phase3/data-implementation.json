@@ -73,5 +73,7 @@
     "The initial failed coverage and cache-missing realistic attempt are preserved separately.",
     "Ruby 3.2.11 was used locally; CI pins Ruby 3.2.6.",
     "STEP-014/015 statistics/calendar, STEP-016 conditional closure, and subsequent STEP-077 scope remain open."
-  ]
+  ],
+  "implementationCommit": "ed0eff54a9a87380b9ee7ceb9300a24744755664",
+  "mainMergeReuse": "data-evidence/main-merge-reuse.json"
 }
