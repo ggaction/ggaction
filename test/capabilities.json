@@ -102,11 +102,27 @@
       },
       {
         "type": "prefix",
-        "path": "gates/blend-paints/"
+        "path": "charts/bar-compositing/variants/native/"
       },
       {
         "type": "file",
         "path": "unit/resources/paint-image-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/mark-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/mark-blend-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-mark-blends.test.js"
       }
     ],
     "calendar": [

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a semantic area mark and empty path collection.",
-  "signature": "createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
+  "signature": "createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
   "intents": [
     "create area mark",
     "create",
@@ -91,6 +91,11 @@
       "type": "number | undefined"
     },
     {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
       "name": "clip",
       "required": false,
       "type": "boolean | undefined"
@@ -147,7 +152,7 @@
     }
   ],
   "callPatterns": [
-    "createAreaMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, clip?, fill? })"
+    "createAreaMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, clip? })"
   ],
   "snippet": "program.createAreaMark({})",
   "errors": [],

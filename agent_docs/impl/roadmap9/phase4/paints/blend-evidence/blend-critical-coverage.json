@@ -1,0 +1,66 @@
+{
+  "floors": {
+    "grammar/markBlend.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "actions/marks/blend.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/compositing.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/markOutput.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "renderers/canvas/isolated.js": {
+      "lines": 75,
+      "branches": 60,
+      "functions": 80
+    },
+    "renderers/svgSerialization.js": {
+      "lines": 50,
+      "branches": 60,
+      "functions": 80
+    }
+  },
+  "actual": {
+    "grammar/markBlend.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "actions/marks/blend.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/compositing.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "materialization/markOutput.js": {
+      "lines": 100,
+      "branches": 88.57,
+      "functions": 100
+    },
+    "renderers/canvas/isolated.js": {
+      "lines": 97.18,
+      "branches": 96.43,
+      "functions": 100
+    },
+    "renderers/svgSerialization.js": {
+      "lines": 84.29,
+      "branches": 79.7,
+      "functions": 85.11
+    }
+  }
+}

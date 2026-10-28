@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Private blend primitive review</title></head><body><p id="status">Loading</p><main></main><script type="module">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Native blend reference</title></head><body><p id="status">Loading</p><main></main><script type="module">
 import {drawBlendGroup,drawBlendPrimitive} from "./primitive.program.js";
 window.renderBlend=async({fixture,samples,dataURL})=>{
  const group=document.createElement("canvas");group.width=fixture.group.width;group.height=fixture.group.height;drawBlendGroup(group.getContext("2d"),fixture,{isolated:true});

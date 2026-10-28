@@ -62,6 +62,18 @@
     "executable": false
   },
   {
+    "file": "api/appearance/mark-style.md",
+    "block": 6,
+    "heading": "Blending each mark item",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run this complete ES module with ggaction installed; the inline rows supply both position fields.",
+    "sha256": "480f2390eca85e54863d9a0cabab8734556ea126bae33561997c2666b8e10841",
+    "executable": true
+  },
+  {
     "file": "api/appearance/point.md",
     "block": 1,
     "heading": "`encodeRadius({ value, target? })`",

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Edit line appearance or its explicit missing-coordinate policy and rematerialize concrete path commands without changing field encodings.",
-  "signature": "editLineMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: \"error\" | \"break\"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;",
+  "signature": "editLineMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; missing?: \"error\" | \"break\"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;",
   "intents": [
     "edit line mark",
     "edit",
@@ -76,6 +76,11 @@
       "type": "number | undefined"
     },
     {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
       "name": "clip",
       "required": false,
       "type": "boolean | undefined"
@@ -122,7 +127,7 @@
     }
   ],
   "callPatterns": [
-    "editLineMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, missing?, strokeWidth?, curve? })"
+    "editLineMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, clip?, missing?, strokeWidth? })"
   ],
   "snippet": "program.editLineMark({ lineCap: \"butt\" })",
   "errors": [],

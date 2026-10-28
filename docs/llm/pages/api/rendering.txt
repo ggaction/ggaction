@@ -124,9 +124,9 @@ Canvas and PNG preflight the complete allocation before changing the backing
 store: each physical side is limited to `32767` pixels and the complete image
 to `16777216` pixels.
 
-An explicit bar `blend: "multiply"`, `"screen"`, or `"difference"` also allocates one transparent glyph source
-within its visible stroke bounds. It obeys the same per-surface limits, including
-pixel ratio and nested clips, and is reused while painting individual bars.
+An explicit mark `blend: "multiply"`, `"screen"`, or `"difference"` also allocates one transparent glyph source
+within its visible fill and stroke bounds. It obeys the same per-surface limits, including
+pixel ratio and nested clips, and is reused while painting individual items.
 Unsupported custom Canvas contexts fail before resizing or clearing the chart;
 ordinary drawing does not require the extra surface/compositing capabilities.
 
@@ -227,8 +227,8 @@ absolute `output`, logical `width` and `height`, `pages: 1`, and byte count.
 Metadata is optional; it accepts only non-empty `title`, `author`, and `subject`
 strings plus an array of non-empty `keywords`.
 
-Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
-opacity, dashes, and linear gradients remain vector output. An explicit bar
+Ordinary Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
+opacity, dashes, and linear gradients remain vector output. An explicit mark
 `blend: "multiply"`, `"screen"`, or `"difference"`, or explicit legend recipe-layer opacity rasterizes only
 that glyph's fill-and-outline source for native PDF compositing; the rest of the
 page stays vector. The adapter does not
@@ -353,13 +353,16 @@ program after an edit.
 
 ## Explicit whole-glyph opacity
 
-Concrete rect/path nodes accept `blend:'normal'` as an explicit whole-glyph
-source-over instruction; circles accept only that normal marker. The renderer
-paints fill and outline together, attenuates the source once, and composites it.
-This marker is emitted for explicit legend recipe-layer opacity. Omission keeps
-legacy painting unchanged; line/text/containers do not accept blend markers.
-The bar action's `blend:'normal'` remains a semantic reset which removes its
-optional concrete blend field. Normal does not enable circle difference blending.
+Concrete circle/rect/path/line/text nodes accept `blend:'normal'` as an explicit
+whole-glyph source-over instruction. The renderer paints the fill and stroke or
+outline together, attenuates the source once, and composites it. This marker is
+emitted for explicit legend recipe-layer opacity. Omission keeps ordinary painting
+unchanged. Containers and image nodes do not accept blend markers.
+
+The same five glyph types also accept multiply, screen, and difference. The public
+mark actions treat `blend:'normal'` as a semantic reset which removes the optional
+concrete blend field. See [per-item blend modes](../../../api/appearance/mark-style/#blending-each-mark-item)
+for the supported mark and facade options.
 
 ## Transition scenes
 

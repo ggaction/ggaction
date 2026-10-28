@@ -277,6 +277,41 @@ Its lower `encodeBarWidth` override requires the Box's range to be complete.
 fully concrete `x`, `y`, `width`, `height`, and `fill` values to `graphicSpec`.
 Canvas geometry changes explicitly rematerialize the scales and rectangles.
 
+## Blending each mark item
+
+Point, Bar, Rect, Area, Arc, Text, Line, Rule, and Tick create/edit options accept
+`blend: "normal" | "multiply" | "screen" | "difference"`. Create omission means
+normal painting; edit omission preserves the mode. `blend: "normal"` restores it.
+The option also reaches attached labels, annotations, reference marks, Lollipop
+stems, and Dumbbell connectors through their existing style objects.
+
+For each non-normal item, the renderer combines its fill and stroke or outline,
+applies opacity once, and blends that source over earlier content. Normal restores
+the existing ordinary paint behavior. A Line or Area path
+is one item; a Text item keeps its actual letters and multiline layout. Other
+items remain separate sources, so their drawing order matters. The mode survives
+data changes, layout changes, highlights, composition, and save/load.
+
+Canvas, SVG, PNG, and PDF support the same four modes. Canvas and native exports
+use bounded glyph surfaces; PDF may embed those glyphs as images. SVG keeps vector
+geometry and an isolated root. Native edge quantization can differ by one byte
+from an ideal straight-alpha calculation. Basic accepts blend on its existing
+Point, Bar, Rect, and Line creation methods.
+
+A complete runnable example:
+
+> **Executable complete.** Run this complete ES module with ggaction installed; the inline rows supply both position fields.
+
+```javascript
+import { chart } from "ggaction";
+const program = chart()
+  .createCanvas({ width: 320, height: 240, background: "#336699" })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
+  .createPointMark({ blend: "screen", fill: "red", opacity: .6 })
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" });
+```
+
 ## Related
 
 [Appearance overview](../../../../api/appearance/) · [Rule marks](../../../../api/marks/rule/) · [Bar marks](../../../../api/marks/bar/)

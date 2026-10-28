@@ -891,6 +891,7 @@ test("directly covers every newly targeted action option and broad maximal paths
       const edit = mark === points ? "editPointMark" : "editArcMark";
       paintPrograms.push(mark[edit]({ outline: { color: "white", width: 8 } }));
       paintPrograms.push(mark[edit]({ outline: false }));
+      for (const blend of ["normal", "multiply", "screen", "difference"]) paintPrograms.push(mark[edit]({ blend }));
     }
     for (const { fill } of structuredPaintVariants) {
       paintPrograms.push(points.editPointMark({ target: "paintPoints", fill }));
@@ -917,7 +918,7 @@ test("directly covers every newly targeted action option and broad maximal paths
     // Nested routing is covered by realistic-scoped-composition.test.js.
     !option.path.startsWith("target.")
   );
-  assert.equal(newActionOptions.length, 126);
+  assert.equal(newActionOptions.length, 128);
   assert.deepEqual(
     newActionOptions.filter(option => !directlyObserves(entries, option)).map(option => option.id),
     []

@@ -1,3 +1,5 @@
+import { applyMarkBlend } from "../blend.js";
+import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { requestedMarkOutline } from "../../../grammar/markOutline.js";
 import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
 import { getLayerScaleIds } from "../../../materialization/marks/index.js";
@@ -47,6 +49,7 @@ import {
 } from "../../../grammar/strokeStyle.js";
 
 const ARC_OPTIONS = Object.freeze([
+  "blend",
   "innerRadius", "padAngle", "fill", "opacity", "outline", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
@@ -107,6 +110,7 @@ const createArcMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createArcMark");
+    validateRequestedMarkBlend(args, "arc");
     const strokeDetails = requestedStrokeDetails(args, "createArcMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "arc",
@@ -131,6 +135,7 @@ const createArcMark = /* @__PURE__ */ action(
     let created = this
       .editSemantic({ property: `layer[${id}].mark.type`, value: "arc" })
       .editSemantic({ property: `layer[${id}].data`, value: data });
+    created = applyMarkBlend(created, id, args);
     created = applyLayeredMarkInheritance(created, id, inherited);
     created = created
       .createGraphics({
@@ -255,6 +260,7 @@ const editArcMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editArcMark");
+    validateRequestedMarkBlend(args, "arc");
     const strokeDetails = requestedStrokeDetails(args, "editArcMark");
     if (Object.keys(args).every(key => key === "target")) {
       throw new Error(
@@ -289,7 +295,7 @@ const editArcMark = /* @__PURE__ */ action(
     ) {
       throw new Error("editArcMark strokeWidth requires an active stroke.");
     }
-    const next = this._withMarkConfig(
+    const next = applyMarkBlend(this, layer.id, args)._withMarkConfig(
       layer.id,
       normalizeConfig(args, this.markConfigs[layer.id], {
         allowStrokeRemoval: true,

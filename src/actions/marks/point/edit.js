@@ -1,3 +1,5 @@
+import { applyMarkBlend } from "../blend.js";
+import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { requestedMarkOutline } from "../../../grammar/markOutline.js";
 import { validateFillPaint } from "../../../grammar/paint.js";
 import { assertIndependentOverlayGeometry } from "../../../grammar/overlay.js";
@@ -20,6 +22,7 @@ import { validateMarkOptions } from "../shared.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const OPTIONS = Object.freeze([
+  "blend",
   "target", "clip", "missing", "shape", "fill", "opacity", "outline", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
@@ -31,10 +34,11 @@ export const editPointMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, OPTIONS, "editPointMark");
+    validateRequestedMarkBlend(args, "point");
     requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "editPointMark");
     const editable = [
-      "clip", "missing", "shape", "fill", "opacity", "outline", "stroke", "strokeWidth",
+      "blend", "clip", "missing", "shape", "fill", "opacity", "outline", "stroke", "strokeWidth",
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!editable.some(property => Object.hasOwn(args, property))) {
@@ -69,12 +73,13 @@ export const editPointMark = /* @__PURE__ */ action(
       throw new Error("editPointMark opacity conflicts with a field encoding; use encodeOpacity with value to replace it.");
     }
     validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[id]?.clip);
-    const semantic = Object.hasOwn(args, "missing")
+    let semantic = Object.hasOwn(args, "missing")
       ? this.editSemantic({
           property: `layer[${id}].mark.missing`,
           value: validateItemMissing(args.missing, "Point missing")
         })
       : this;
+    semantic = applyMarkBlend(semantic, layer.id, args);
     const config = { ...semantic.markConfigs[id], ...requestedMarkClip(args) };
     Object.assign(config, strokeDetails, requestedMarkOutline(args));
     if (Object.hasOwn(args, "shape")) {

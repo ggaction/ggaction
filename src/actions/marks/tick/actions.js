@@ -1,3 +1,5 @@
+import { applyMarkBlend } from "../blend.js";
+import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
 import { hasPositionBinding } from "../../../core/encodingBindings.js";
 import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
@@ -42,6 +44,7 @@ import {
 } from "../shared.js";
 
 const APPEARANCE_OPTIONS = Object.freeze([
+  "blend",
   "clip", "length", "stroke", "strokeWidth", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...APPEARANCE_OPTIONS]);
@@ -103,6 +106,7 @@ export const createTickMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createTickMark");
+    validateRequestedMarkBlend(args, "tick");
     requestedMarkClip(args);
     requestedStrokeDetails(args, "createTickMark");
     const id = resolveMarkId(this, args.id, {
@@ -129,6 +133,7 @@ export const createTickMark = /* @__PURE__ */ action(
         value: validateItemMissing(args.missing, "Tick missing")
       });
     }
+    created = applyMarkBlend(created, id, args);
     created = applyLayeredMarkInheritance(created, id, inherited)
       .createGraphics({
         id,
@@ -139,7 +144,7 @@ export const createTickMark = /* @__PURE__ */ action(
       ._withMarkConfig(id, DEFAULT_TICK_CONFIG);
     const materialized = materializeInheritedMark(created, id);
     const appearance = Object.fromEntries(
-      APPEARANCE_OPTIONS.filter(property => Object.hasOwn(args, property))
+      APPEARANCE_OPTIONS.filter(property => property !== "blend" && Object.hasOwn(args, property))
         .map(property => [property, config[property]])
     );
     return Object.keys(appearance).length === 0
@@ -155,6 +160,7 @@ export const editTickMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editTickMark");
+    validateRequestedMarkBlend(args, "tick");
     requestedMarkClip(args);
     requestedStrokeDetails(args, "editTickMark");
     if (!["missing", ...APPEARANCE_OPTIONS].some(property => Object.hasOwn(args, property))) {
@@ -170,12 +176,13 @@ export const editTickMark = /* @__PURE__ */ action(
       );
     }
     validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
-    const semantic = Object.hasOwn(args, "missing")
+    let semantic = Object.hasOwn(args, "missing")
       ? this.editSemantic({
           property: `layer[${layer.id}].mark.missing`,
           value: validateItemMissing(args.missing, "Tick missing")
         })
       : this;
+    semantic = applyMarkBlend(semantic, layer.id, args);
     const config = validateTickConfig(args, {
       ...DEFAULT_TICK_CONFIG,
       ...semantic.markConfigs[layer.id]

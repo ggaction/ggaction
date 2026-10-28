@@ -29,13 +29,9 @@ function editRectangles(program, id, rectangles) {
   rectangles = materializeFillItems(program, findLayer(program, id),
     rectangles.map(properties => ({ type: "rect", properties }))).map(item => item.properties);
   const appearance = program.markConfigs[id]?.barAppearance ?? {};
-  const blend = findLayer(program, id)?.mark?.blend;
-  if (blend !== undefined) rectangles = rectangles.map(rect => ({...rect, blend}));
   const hasShapeStyle = RECT_STYLE_PROPERTIES
     .some(property => Object.hasOwn(appearance, property));
-  const previousBlend = program.graphicSpec.objects[id]?.items?.some(item =>
-    item.properties?.blend !== undefined);
-  if (hasShapeStyle || blend !== undefined || previousBlend) {
+  if (hasShapeStyle) {
     const radius = appearance;
     return materializeFollowingOverlays(materializeMarkOutput(replaceGraphicItems(
       program,

@@ -1,3 +1,5 @@
+import { applyMarkBlend } from "../blend.js";
+import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { requestedMarkOutline } from "../../../grammar/markOutline.js";
 import { requestedMarkClip } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
@@ -21,6 +23,7 @@ import {
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const OPTIONS = Object.freeze([
+  "blend",
   "clip", "id", "data", "missing", "shape", "fill", "opacity", "outline", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
@@ -32,6 +35,7 @@ export const createPointMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, OPTIONS, "createPointMark");
+    validateRequestedMarkBlend(args, "point");
     requestedMarkClip(args);
     requestedMarkOutline(args);
     requestedStrokeDetails(args, "createPointMark");
@@ -71,6 +75,7 @@ export const createPointMark = /* @__PURE__ */ action(
         value: validateItemMissing(args.missing, "Point missing")
       });
     }
+    next = applyMarkBlend(next, id, args);
     next = applyLayeredMarkInheritance(next, id, inherited)
       .createGraphics({
         id,

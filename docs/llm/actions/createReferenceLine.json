@@ -135,6 +135,11 @@
       "type": "TemporalInputUnit | undefined"
     },
     {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
       "name": "stroke",
       "required": false,
       "type": "string | undefined"

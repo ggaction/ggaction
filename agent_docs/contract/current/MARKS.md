@@ -176,7 +176,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ## `createPointMark`
 
-- Signature: `createPointMark({ clip?, id?, data?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
+- Signature: `createPointMark({ blend?, clip?, id?, data?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`: Implemented optional 새 layer/graphic ID. 첫 unnamed point는 `"point"`; 동일 type이 이미 있으면 required다.
 - `data`: Implemented, existing dataset ID. 생략하면 current data를 사용한다.
 - `shape`
@@ -207,7 +207,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `createPointMark`
 
-- Implemented: `createPointMark({ clip?: boolean; id?: UserId; data?: UserId; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createPointMark({ blend?: BlendMode; clip?: boolean; id?: UserId; data?: UserId; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
@@ -230,7 +230,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 ## `editPointMark`
 
 - Implemented: immutable constant shape and appearance edits for existing point marks.
-- Signature: `editPointMark({ clip?, target?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editPointMark({ blend?, clip?, target?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`은 existing point mark다. current compatible mark 또는 유일한 point mark로 infer하며
   ambiguity는 explicit target을 요구한다.
 - `shape`은 shared `PointShape` named 14종 또는 명시적 단순 polygon이다. Field-driven `encodeShape`가 있으면 constant shape
@@ -247,7 +247,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `editPointMark`
 
-- Implemented: `editPointMark({ clip?: boolean; target?: UserId; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editPointMark({ blend?: BlendMode; clip?: boolean; target?: UserId; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
@@ -264,7 +264,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ## `createTickMark`
 
-- Signature: `createTickMark({ clip?, id?, data?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`.
+- Signature: `createTickMark({ blend?, clip?, id?, data?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`.
 - `id`: 첫 unnamed Tick은 `"tick"`을 사용한다. 같은 type의 두 번째 mark는 explicit ID가 필요하다.
 - `data`: existing dataset ID. 생략하면 current data를 사용하고, compatible current/unique Cartesian
   layer가 있으면 data, coordinate와 x/y field encoding을 shared layered-inference policy로 상속한다.
@@ -281,7 +281,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `createTickMark`
 
-- Implemented: `createTickMark({ clip?: boolean; id?: UserId; data?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
+- Implemented: `createTickMark({ blend?: BlendMode; clip?: boolean; id?: UserId; data?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
 - Implemented direction assignment은 `encodeAngle`이 소유한다.
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): x-only rug placement inference.
@@ -297,7 +297,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ## `editTickMark`
 
-- Signature: `editTickMark({ clip?, target?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editTickMark({ blend?, clip?, target?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`: current compatible Tick, otherwise unique Tick으로 infer하며 ambiguity는 explicit target을 요구한다.
 - 최소 한 edit property가 필요하다. Omitted properties는 current config를 보존한다.
 - Validation은 create action과 동일한 positive length, non-empty stroke, non-negative width와 unit opacity를 사용한다.
@@ -306,7 +306,7 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 
 ### Formal values — `editTickMark`
 
-- Implemented: `editTickMark({ clip?: boolean; target?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editTickMark({ blend?: BlendMode; clip?: boolean; target?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
@@ -464,7 +464,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createLineMark`
 
-- Signature: `createLineMark({ clip?, missing?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
+- Signature: `createLineMark({ blend?, clip?, missing?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `missing`: `"error" | "break"`, 기본은 기존 `error`이며 생략 시 semantic 상태를 추가하지 않는다.
   명시 값은 `layer.mark.missing`에 저장한다. `break`는 직접 Cartesian quantitative/temporal x/y에만
   적용하며 aggregate/bin/categorical/Polar/Parallel은 거부한다. null/absent만 경계이고 다른 잘못된
@@ -518,7 +518,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `createLineMark`
 
-- Implemented: `createLineMark({ clip?: boolean; missing?: "error" | "break"; id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; tension?: UnitInterval; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createLineMark({ blend?: BlendMode; clip?: boolean; missing?: "error" | "break"; id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; tension?: UnitInterval; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
@@ -545,7 +545,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `editLineMark`
 
-- Signature: `editLineMark({ clip?, missing?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editLineMark({ blend?, clip?, missing?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed?, lineCap?, lineJoin?, miterLimit? })`.
 - `missing`은 위 생성 계약과 같은 semantic 정책이며 complete line을 재구체화한다. 결측 자료에서
   `error`로 변경하면 strict validation으로 거부하며 이전 immutable program을 유지한다.
 - `target`: existing line mark. Current compatible mark 또는 유일한 line mark로 infer하며 ambiguity는 explicit target을 요구한다.
@@ -560,7 +560,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `editLineMark`
 
-- Implemented: `editLineMark({ clip?: boolean; missing?: "error" | "break"; target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; tension?: UnitInterval; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editLineMark({ blend?: BlendMode; clip?: boolean; missing?: "error" | "break"; target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; tension?: UnitInterval; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
@@ -577,7 +577,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `createBarMark`
 
-- Signature: `createBarMark({ clip?, id?, data?, orientation?, fill?, outline?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
+- Signature: `createBarMark({ blend?, clip?, id?, data?, orientation?, fill?, outline?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`, `data`: 첫 unnamed bar의 deterministic `"bar"` 또는 explicit 새 ID와 optional existing/current data다.
 - Effect: semantic `bar` layer와 길이 0의 rect collection을 만든다. 관련 x/y/grouping semantics가
   완성될 때 rect가 materialize된다.
@@ -588,7 +588,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `createBarMark`
 
-- Implemented: `createBarMark({ clip?: boolean; id?: UserId; data?: UserId; orientation?: "vertical" | "horizontal"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createBarMark({ blend?: BlendMode; clip?: boolean; id?: UserId; data?: UserId; orientation?: "vertical" | "horizontal"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
@@ -612,7 +612,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 - `fill`: 아래 shared `FillPaint` 계약이다. 모든 구조화된 paint를 shared validator로 정규화한다. Field-driven color encoding과 함께 사용할 수 없다.
 - `opacity`: unit interval. `stroke`: non-empty color or `false`; false는 concrete transparent zero-width outline로
   materialize한다. `strokeWidth`는 non-negative finite이며 removed stroke에 단독 적용할 수 없다.
-- `blend`: 생략은 보존, `"multiply"`, `"screen"`, `"difference"`는 bar 하나의 fill+outline을 합친 source에
+- `blend`: 생략은 보존, `"multiply"`, `"screen"`, `"difference"`는 final bar item 하나의 fill+outline을 합친 source에
   선택한 sRGB 합성식을 한 번 적용하고 `"normal"`은 source-over로 복구한다. Semantic
   `layer[id].mark.blend`가 선택한 non-normal mode를 한 번 소유하며 normal은 key를 제거한다.
   Creation/facade 및 다른 mark family에는 공개하지 않는다. concrete rect/path item의
@@ -645,7 +645,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `createAreaMark`
 
-- Signature: `createAreaMark({ clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`
+- Signature: `createAreaMark({ blend?, clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`, `data`: 첫 unnamed area의 deterministic `"area"` 또는 explicit 새 ID와 optional existing/current dataset이다.
 - `fill`: Implemented, 아래 shared `FillPaint`의 solid, linear/radial gradient 또는 pattern. 기본값은 theme mark color `"#4c78a8"`다. 구조화된 paint는 shared grammar로 검증하고 immutable config와 concrete path에 보존한다.
 - `opacity`: Implemented, `[0, 1]` finite number. 기본값은 `0.2`다.
@@ -660,7 +660,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `createAreaMark`
 
-- Implemented: `createAreaMark({ clip?: boolean; id?: UserId; data?: UserId; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
+- Implemented: `createAreaMark({ blend?: BlendMode; clip?: boolean; id?: UserId; data?: UserId; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
@@ -689,7 +689,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `editAreaMark`
 
-- Signature: `editAreaMark({ clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editAreaMark({ blend?, clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`.
 - Constant opacity edits reject an active field opacity encoding; `encodeOpacity({ value })` explicitly replaces that field assignment. A field opacity is one value per existing Area series, using the same public encoding and legend lifecycle as Line opacity.
 - `target`: existing area mark. Current compatible mark 또는 유일한 area mark를 infer하고 ambiguity는
   explicit target을 요구한다.
@@ -706,7 +706,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `editAreaMark`
 
-- Implemented: `editAreaMark({ clip?: boolean; target?: UserId; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editAreaMark({ blend?: BlendMode; clip?: boolean; target?: UserId; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
@@ -723,7 +723,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `createArcMark`
 
-- Signature: `createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`.
+- Signature: `createArcMark({ blend?, id?, data?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`.
 - The first inferred ID is `"arc"`; data follows the shared current/explicit dataset contract.
 - `innerRadius` is a ratio in `[0, 1)` of the available Polar radius, or `{ unit: "px", value }` with a non-negative finite value smaller than the resolved outer radius. Pixel values stay fixed on resize. `padAngle` is a non-negative degree value.
 - Default appearance is theme fill, opacity `1`, white stroke, and stroke width `1`.
@@ -737,7 +737,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `createArcMark`
 
-- Implemented: `createArcMark({ id?: UserId; data?: UserId; innerRadius?: ArcInnerRadius; padAngle?: NonNegativeFinite; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`, where numeric values satisfy `0 <= innerRadius < 1` and pixel requests use `{ unit: "px", value: NonNegativeFinite }`.
+- Implemented: `createArcMark({ blend?: BlendMode; id?: UserId; data?: UserId; innerRadius?: ArcInnerRadius; padAngle?: NonNegativeFinite; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`, where numeric values satisfy `0 <= innerRadius < 1` and pixel requests use `{ unit: "px", value: NonNegativeFinite }`.
 - Proposed (NOT IMPLEMENTED): explicit secondary theta/radius endpoints.
 
 ### Value coverage — `createArcMark`
@@ -751,7 +751,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `editArcMark`
 
-- Signature: `editArcMark({ target?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editArcMark({ blend?, target?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
 - Target inference follows other focused mark editors. At least one edited property is required.
 - Complete arcs rematerialize immediately; incomplete arcs retain the configuration until their encodings complete.
 - Constant fill cannot replace a field-driven color encoding. Geometry edits re-resolve automatic radial ranges.
@@ -760,7 +760,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `editArcMark`
 
-- Implemented: `editArcMark({ target?: UserId; innerRadius?: ArcInnerRadius; padAngle?: NonNegativeFinite; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editArcMark({ blend?: BlendMode; target?: UserId; innerRadius?: ArcInnerRadius; padAngle?: NonNegativeFinite; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editArcMark`
@@ -772,7 +772,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `createRuleMark`
 
-- Signature: `createRuleMark({ clip?, id?, data?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`.
+- Signature: `createRuleMark({ blend?, clip?, id?, data?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`.
 - `id`: 첫 unnamed rule은 deterministic `"rule"`을 사용한다. 동일 type의 두 번째 rule은 explicit ID가
   필요하며 numbered public ID를 만들지 않는다.
 - `data`: existing dataset ID. 생략하면 current dataset을 사용하며 안전한 current source가 없으면 오류다.
@@ -789,7 +789,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `createRuleMark`
 
-- Implemented: `createRuleMark({ clip?: boolean; id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
+- Implemented: `createRuleMark({ blend?: BlendMode; clip?: boolean; id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
@@ -803,7 +803,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `editRuleMark`
 
-- Signature: `editRuleMark({ clip?, target?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editRuleMark({ blend?, clip?, target?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? })`.
 - Target resolution is explicit Rule → current Rule → unique Rule. Missing, non-Rule and ambiguous targets fail.
 - At least one style is required. Full closed-option and value validation happens before the first child action.
 - Requested children run in stroke → strokeWidth → strokeDash → opacity order and reuse their encoding owners.
@@ -815,7 +815,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `editRuleMark`
 
-- Implemented: `editRuleMark({ clip?: boolean; target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editRuleMark({ blend?: BlendMode; clip?: boolean; target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
@@ -827,7 +827,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `createRectMark`
 
-- Signature: `createRectMark({ clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`.
+- Signature: `createRectMark({ blend?, clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? } = {})`.
 - The first omitted ID resolves to `"rect"`. Data is explicit or inferred from the current dataset; a newly layered
   rect may inherit one unique compatible Cartesian source's data, coordinate, and position encodings.
 - Rect is a distinct semantic mark. It materializes two discrete band positions (`x` and `y`), two complete
@@ -850,7 +850,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `createRectMark`
 
-- Implemented: `createRectMark({ clip?: boolean; id?: UserId; data?: UserId; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
+- Implemented: `createRectMark({ blend?: BlendMode; clip?: boolean; id?: UserId; data?: UserId; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): categorical cell completion and automatic missing-cell placeholders.
 
@@ -865,7 +865,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 - Field opacity/width가 활성화된 경우 scalar edit는 거부한다. `encodeOpacity({ value })` 또는 `encodeStrokeWidth({ value })`로 명시적으로 교체한다.
 
-- Signature: `editRectMark({ clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
+- Signature: `editRectMark({ blend?, clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth?, cornerRadius?, cornerRadiusTopLeft?, cornerRadiusTopRight?, cornerRadiusBottomRight?, cornerRadiusBottomLeft?, lineCap?, lineJoin?, miterLimit? })`.
 - At least one property is required. Omitted target resolves only one eligible rect. Omitted properties preserve the
   immutable mark configuration; `stroke: false` disables the stroke and rejects a simultaneous width.
 - Constant fill and `encodeColor` are mutually exclusive. Complete cells rematerialize immediately; incomplete rects
@@ -873,7 +873,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `editRectMark`
 
-- Implemented: `editRectMark({ clip?: boolean; target?: UserId; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
+- Implemented: `editRectMark({ blend?: BlendMode; clip?: boolean; target?: UserId; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; cornerRadiusTopLeft?: NonNegativeFinite; cornerRadiusTopRight?: NonNegativeFinite; cornerRadiusBottomRight?: NonNegativeFinite; cornerRadiusBottomLeft?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): —
 
@@ -1252,7 +1252,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `createTextMark`
 
-- Signature: `createTextMark({ clip?, id?, data?, source?, text?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.
+- Signature: `createTextMark({ blend?, clip?, id?, data?, source?, text?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.
 - The first omitted ID resolves to `"text"`. Passing `data` explicitly creates an independent text layer; otherwise
   the current compatible point, bar, rect, rule, or complete arc layer, then one unique compatible layer, supplies data,
   coordinate, compatible position encodings, and a persisted semantic `source` relation.
@@ -1289,7 +1289,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ### Formal values — `createTextMark`
 
-- Implemented: `createTextMark({ clip?: boolean; id?: UserId; data?: UserId; source?: UserId; text?: unknown; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; align?: "left" | "right" | "center" | "start" | "end"; baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom"; rotation?: RotationInput; dx?: Finite; dy?: Finite } = {})`.
+- Implemented: `createTextMark({ blend?: BlendMode; clip?: boolean; id?: UserId; data?: UserId; source?: UserId; text?: unknown; fill?: FillPaint; outline?: MarkOutline | false; opacity?: UnitInterval; fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; align?: "left" | "right" | "center" | "start" | "end"; baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom"; rotation?: RotationInput; dx?: Finite; dy?: Finite } = {})`.
 - `clip` follows [the shared Cartesian plot-clipping contract](#shared-cartesian-plot-clipping).
 - Proposed (NOT IMPLEMENTED): interactive tooltips.
 
@@ -1307,7 +1307,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 - 승인: VisAuto 사용자가 2026-10-26 `docs/direct-text-editing.md` 제안(4cf2a84)에 “이 API 확장으로 진행” 답변. 후속 지시로 continuous 축/범례 숫자 편집은 제외하되 categorical 및 mark text 편집은 유지.
 - Evidence: `test/unit/actions/marks/text-overrides.test.js` (semantic identity, filtering, literal hard breaks, persistence, reset, immutability).
 
-- Signature: `editTextMark({ textOverrides?, clip?, target?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })`.
+- Signature: `editTextMark({ blend?, textOverrides?, clip?, target?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })`.
 - At least one property is required. Omitted properties preserve current immutable materialization config.
 - Complete text rematerializes immediately; incomplete text retains the edit until position and content complete.
 - `dx` and `dy` are final graphical offsets and never alter inherited semantic position or source geometry.
@@ -1487,3 +1487,27 @@ Evidence: `test/unit/grammar/steffen-curve.test.js`, `test/unit/actions/marks/st
 
 - ✅ Covered: explicit/inferred target, invalid/empty edits, viewport reset and resize, independent child scope, opacity selection, immutable failures, removal and offline restoration.
 - Evidence: `test/unit/resources/image-resource-lifecycle.test.js`, `test/contracts/image-types.test.js`.
+
+## Per-item blend modes
+
+Point, Bar, Rect, Area, Arc, Text, Line, Rule, Tick의 create/edit action은
+`blend?: "normal" | "multiply" | "screen" | "difference"`를 받는다. Create 생략은 normal,
+edit 생략은 보존이다. Non-normal 값만 `layer[id].mark.blend`에 저장하며 normal은 그 key를 제거한다.
+각 non-normal final item의 fill·기존 stroke 또는 pre-fill outline을 먼저 하나의 source로 만들고 mark opacity를
+한 번 적용한 뒤, 앞서 그린 내용에 합성한다. 여러 item이나 series 전체를 하나의 group으로 합치지 않는다.
+Line/Area는 각 path, Rule/Tick은 각 line, Text는 실제 glyph/lines 하나가 해당 grain이다.
+
+Shared final mark-output materialization은 각 concrete circle/rect/path/line/text에 non-normal 값만 쓴다.
+Style config에는 blend를 복제하지 않는다. Data/scale/Canvas/revision/selection/highlight/facet/repeat/concat
+갱신은 같은 intent를 보존한다. Normal 복원은 기존 geometry·ordinary stroke·outline과 identity를 보존한다.
+Text/Rect/Rule 옵션을 상속하는 labels/annotations/reference bands/lines와 Lollipop stem/Dumbbell connector도
+같은 값을 전달한다. 범례의 authored 색 의미는 그대로이며 mark backdrop의 합성 결과를 색상으로 저장하지 않는다.
+Basic은 기존 Point/Bar/Rect/Line 생성 범위에서 지원하며 Full editor 가용성은 기존 package 계약을 따른다.
+
+Canvas/PNG/PDF는 bounded isolated glyph를 사용한다. SVG는 동일 concrete glyph의 mix-blend-mode와 root
+isolation을 사용한다. 저장과 scene은 concrete mode를 보존하고 renderer는 semantic state를 읽지 않는다.
+Unsupported mode, unsupported mark owner, unsafe property descriptors는 오류다. Canvas source capability·크기
+오류는 destination clear/resize 전에 검증한다. 기존 native premultiplied quantization은 유지한다.
+
+Evidence: `test/unit/actions/marks/mark-blend.test.js`, `test/unit/grammar/mark-blend.test.js`,
+`test/contracts/mark-blend-rendering.test.js`, `test/contracts/realistic-mark-blends.test.js`.

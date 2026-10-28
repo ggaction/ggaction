@@ -1,3 +1,5 @@
+import { applyMarkBlend } from "../blend.js";
+import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { requestedMarkOutline } from "../../../grammar/markOutline.js";
 import { requestedMarkClip } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
@@ -19,6 +21,7 @@ import { STROKE_STYLE_PROPERTIES } from
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const CREATE_OPTIONS = Object.freeze([
+  "blend",
   "clip", "id", "data", "orientation", "missing", "fill", "opacity", "outline", "stroke", "strokeWidth",
   ...RECT_RADIUS_PROPERTIES, ...STROKE_STYLE_PROPERTIES
 ]);
@@ -30,6 +33,7 @@ export const createBarMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createBarMark");
+    validateRequestedMarkBlend(args, "bar");
     requestedMarkClip(args);
     requestedMarkOutline(args);
     requestedRectStyleDetails(args, "createBarMark");
@@ -69,6 +73,7 @@ export const createBarMark = /* @__PURE__ */ action(
     if (args.orientation !== undefined) {
       created = created.editSemantic({ property: `layer[${id}].mark.orientation`, value: args.orientation });
     }
+    created = applyMarkBlend(created, id, args);
     created = applyLayeredMarkInheritance(created, id, inherited);
     created = created
       .createGraphics({

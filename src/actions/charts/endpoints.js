@@ -40,7 +40,7 @@ const POINT_OPTIONS = Object.freeze([
   ...STROKE_STYLE_PROPERTIES
 ]);
 const RULE_OPTIONS = Object.freeze([
-  "clip", "stroke", "strokeWidth", "strokeDash", "opacity", ...STROKE_STYLE_PROPERTIES
+  "blend", "clip", "stroke", "strokeWidth", "strokeDash", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const LABEL_OPTIONS = Object.freeze([
   "clip",   "endpoint", "field", "value", "content", "normalizeBy", "format", "layout",

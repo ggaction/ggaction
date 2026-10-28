@@ -280,5 +280,15 @@
     "result": "program, withoutHalo",
     "prerequisites": "Run this complete ES module with ggaction installed; the inline row supplies the position and label fields.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "per-item-blend",
+    "file": "api/appearance/mark-style.md",
+    "contains": ".createPointMark({ blend: \"screen\", fill: \"red\", opacity: .6 })",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run this complete ES module with ggaction installed; the inline rows supply both position fields.",
+    "rendering": "authoring-only"
   }
 ]

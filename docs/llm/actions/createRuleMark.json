@@ -99,6 +99,11 @@
       "type": "\"error\" | \"skip\" | undefined"
     },
     {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
       "name": "stroke",
       "required": false,
       "type": "string | undefined"
@@ -140,7 +145,7 @@
     }
   ],
   "callPatterns": [
-    "createRuleMark({ id?, data?, target?, clip?, missing?, stroke?, strokeWidth?, strokeDash? })"
+    "createRuleMark({ id?, data?, target?, clip?, missing?, blend?, stroke?, strokeWidth? })"
   ],
   "snippet": "program.createRuleMark({})",
   "errors": [],

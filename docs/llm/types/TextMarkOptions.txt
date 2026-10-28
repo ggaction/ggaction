@@ -1,4 +1,5 @@
 export interface TextMarkOptions extends StrokeStyleDetails {
+  blend?: BlendMode;
   clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;

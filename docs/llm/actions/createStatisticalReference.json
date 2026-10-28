@@ -120,6 +120,11 @@
       "type": "number | undefined"
     },
     {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
       "name": "opacity",
       "required": false,
       "type": "number | undefined"

@@ -1,3 +1,5 @@
+import { applyMarkBlend } from "../blend.js";
+import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { requestedMarkOutline } from "../../../grammar/markOutline.js";
 import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
 import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
@@ -44,6 +46,7 @@ import {
 } from "../../../grammar/strokeStyle.js";
 
 const AREA_OPTIONS = Object.freeze([
+  "blend",
   "clip", "fill", "opacity", "outline", "stroke", "strokeWidth", "curve",
   ...STROKE_STYLE_PROPERTIES
 ]);
@@ -74,6 +77,7 @@ const createAreaMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createAreaMark");
+    validateRequestedMarkBlend(args, "area");
     requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "createAreaMark");
     const id = resolveMarkId(this, args.id, {
@@ -101,6 +105,7 @@ const createAreaMark = /* @__PURE__ */ action(
       .editSemantic({ property: `layer[${id}].mark.type`, value: "area" })
       .editSemantic({ property: `layer[${id}].data`, value: data });
     if (Object.hasOwn(args, "missing")) created = created.editSemantic({ property: `layer[${id}].mark.missing`, value: missing });
+    created = applyMarkBlend(created, id, args);
     created = applyLayeredMarkInheritance(created, id, inherited);
     created = created
       .createGraphics({
@@ -246,9 +251,11 @@ const editAreaMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editAreaMark");
+    validateRequestedMarkBlend(args, "area");
     requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "editAreaMark");
     const changes = [
+      "blend",
       "clip", "fill", "opacity", "outline", "stroke", "strokeWidth", "curve", "missing",
       ...STROKE_STYLE_PROPERTIES
     ];
@@ -328,7 +335,7 @@ const editAreaMark = /* @__PURE__ */ action(
     }
 
     validateAreaPaintConfig(config);
-    let next = this._withMarkConfig(layer.id, config);
+    let next = applyMarkBlend(this, layer.id, args)._withMarkConfig(layer.id, config);
     if (Object.hasOwn(args, "missing")) {
       const missing = validateAreaMissing(args.missing);
       if (missing === "break" && ["density", "horizon"].some(type => findUpstreamTransform(this, findDataset(this, layer.data), type))) {

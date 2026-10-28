@@ -3,7 +3,7 @@
 const contains = (bounds, x, y) => x >= bounds.x && y >= bounds.y && x < bounds.x + bounds.width && y < bounds.y + bounds.height;
 export function prepareBlendGroup(fixture) {
   const {width, height} = fixture.group;
-  if (width !== 260 || height !== 90) throw new RangeError("The blend review group must stay within its fixed 260 by 90 budget.");
+  if (width !== 260 || height !== 90) throw new RangeError("The blend fixture group must stay within its fixed 260 by 90 budget.");
   const rgba = new Uint8ClampedArray(width * height * 4);
   for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
     const back = contains(fixture.back.bounds, x, y), front = contains(fixture.front.bounds, x, y);
@@ -16,7 +16,7 @@ export function prepareBlendGroup(fixture) {
       else if (fixture.mode === "multiply") premultiplied = s * b + s * (1 - ab) + b * (1 - as);
       else if (fixture.mode === "screen") premultiplied = s + b - s * b;
       else if (fixture.mode === "difference") premultiplied = s + b - 2 * Math.min(s * ab, b * as);
-      else throw new TypeError("Unknown blend review mode.");
+      else throw new TypeError("Unknown blend fixture mode.");
       rgba[(y * width + x) * 4 + channel] = alpha === 0 ? 0 : Math.round(premultiplied / alpha * 255);
     }
     // Group opacity attenuates the complete isolated result exactly once.

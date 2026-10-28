@@ -1,0 +1,368 @@
+[
+  {
+    "file": "blend-browser.log.gz",
+    "source": ".artifacts/blend-browser.log",
+    "bytes": 623,
+    "sha256": "159fd5b6449bd92ac01ade0308f264380fee2c538a6672b62f871d786d101d1f"
+  },
+  {
+    "file": "blend-bundle-final.log.gz",
+    "source": ".artifacts/blend-bundle-final.log",
+    "bytes": 635,
+    "sha256": "19d54982cd1856ab77979fea38705e12a8743691babe5a79fd8fbff17248dd33"
+  },
+  {
+    "file": "blend-bundle-initial.log.gz",
+    "source": ".artifacts/blend-bundle-initial.log",
+    "bytes": 1121,
+    "sha256": "6598d78c32d058cdc7532ce20fba1b4ed8c82414c0377fdc3f919b8e289b658e"
+  },
+  {
+    "file": "blend-bundle-node20-final.log.gz",
+    "source": ".artifacts/blend-bundle-node20-final.log",
+    "bytes": 559,
+    "sha256": "5d1f60bce1c34970f5dc3446a2627eb3886e2b4367dac34b6eb1c8d9babf25a0"
+  },
+  {
+    "file": "blend-bundle-node20.log.gz",
+    "source": ".artifacts/blend-bundle-node20.log",
+    "bytes": 1047,
+    "sha256": "9e0a9b6fd2a4785771dbdaa17ec614064e7ecc59004dcd6b063f009a14287253"
+  },
+  {
+    "file": "blend-cards-cap-labels.log.gz",
+    "source": ".artifacts/blend-cards-cap-labels.log",
+    "bytes": 966,
+    "sha256": "075049892b2546362a7abe21538a68a51756706e5c08e594af6ed620925ebf4e"
+  },
+  {
+    "file": "blend-cards-cap-reference.log.gz",
+    "source": ".artifacts/blend-cards-cap-reference.log",
+    "bytes": 966,
+    "sha256": "f4a296ccc83e6cc6fb862e24f647963116a2233ffdcd602e147c02e66d540305"
+  },
+  {
+    "file": "blend-cards-final.log.gz",
+    "source": ".artifacts/blend-cards-final.log",
+    "bytes": 136,
+    "sha256": "bae0f8064cc2cb3b6e8147cc3c4f0006fbb797e2919e3890e380d0701febbf5b"
+  },
+  {
+    "file": "blend-catalog.log.gz",
+    "source": ".artifacts/blend-catalog.log",
+    "bytes": 80,
+    "sha256": "b5d04b9d485bf5a7861d1ece0e2a309ea5f5c27da59b893462790fa69e4b67f0"
+  },
+  {
+    "file": "blend-consumer-node22-final.log.gz",
+    "source": ".artifacts/blend-consumer-node22-final.log",
+    "bytes": 2456,
+    "sha256": "cf0ad33e93ced26066138c500b278fbd5e3d21c804c10799c5e188f03c4742aa"
+  },
+  {
+    "file": "blend-consumer-node22.log.gz",
+    "source": ".artifacts/blend-consumer-node22.log",
+    "bytes": 3882,
+    "sha256": "de9db91775ee50cbff699517149cf6184fbad9c29a321441639e76e18d967526"
+  },
+  {
+    "file": "blend-contracts.log.gz",
+    "source": ".artifacts/blend-contracts.log",
+    "bytes": 242626,
+    "sha256": "7e61ee0ede255027272c022b7bc6aaf6496c39292bcbe2af3fedd5f252214a7e"
+  },
+  {
+    "file": "blend-coverage-final.log.gz",
+    "source": ".artifacts/blend-coverage-final.log",
+    "bytes": 22921,
+    "sha256": "0325b6758a7d14dd3a7ab9ee5f330ad478c3381be1cb34a74acfb086e3de931a"
+  },
+  {
+    "file": "blend-coverage.log.gz",
+    "source": ".artifacts/blend-coverage.log",
+    "bytes": 22737,
+    "sha256": "66a249c0c6c88e1aa21dca924454d4cc495c9cf8c1f44fc32aaa68e4ba19c5fe"
+  },
+  {
+    "file": "blend-doc-page.log.gz",
+    "source": ".artifacts/blend-doc-page.log",
+    "bytes": 311,
+    "sha256": "64a6057cfcefa8a9b69a592ef37fe0ebe9434cc88a5e8fb0b2641811aef14558"
+  },
+  {
+    "file": "blend-docs-build.log.gz",
+    "source": ".artifacts/blend-docs-build.log",
+    "bytes": 421,
+    "sha256": "4edbb4ce3562f13f67402eaedb72fcbcf8f5bc3d00344769401e71a2bd221807"
+  },
+  {
+    "file": "blend-docs-built.log.gz",
+    "source": ".artifacts/blend-docs-built.log",
+    "bytes": 102,
+    "sha256": "8d4be97850bce3db144efd2ccadf8e9978387ddd7385508a24a96accbcae33cb"
+  },
+  {
+    "file": "blend-docs-fixed.log.gz",
+    "source": ".artifacts/blend-docs-fixed.log",
+    "bytes": 45156,
+    "sha256": "151d568d799dbd98467d7e06eb819f7d66a4b857f11f4e9889c41fc7345964da"
+  },
+  {
+    "file": "blend-docs-generate-final.log.gz",
+    "source": ".artifacts/blend-docs-generate-final.log",
+    "bytes": 10583,
+    "sha256": "d881bf277d677cc90d8c4a32636b07aa84cc99f83747167df58713cb2365d9a5"
+  },
+  {
+    "file": "blend-docs-generate.log.gz",
+    "source": ".artifacts/blend-docs-generate.log",
+    "bytes": 1677,
+    "sha256": "0a29a15db101728f17984201fc67a34726f0df47ad2998f593c36d3bf672fde9"
+  },
+  {
+    "file": "blend-docs-preflight.log.gz",
+    "source": ".artifacts/blend-docs-preflight.log",
+    "bytes": 257,
+    "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e"
+  },
+  {
+    "file": "blend-docs-source.log.gz",
+    "source": ".artifacts/blend-docs-source.log",
+    "bytes": 49729,
+    "sha256": "93604cbacb705e1d6ec5156d0ea5722a46dc199e50d389aa0ca3135fedc279db"
+  },
+  {
+    "file": "blend-final-metadata-contracts.log.gz",
+    "source": ".artifacts/blend-final-metadata-contracts.log",
+    "bytes": 780,
+    "sha256": "ed345f9494c214ba65230ad4c1f395124875fd93ce96b7676c7d6e19f9859ac3"
+  },
+  {
+    "file": "blend-focused-own-read.log.gz",
+    "source": ".artifacts/blend-focused-own-read.log",
+    "bytes": 22713,
+    "sha256": "40eb94ba43c517396857bf350f437dd866e3f8aee97f0f1d0ffb356934ba0c14"
+  },
+  {
+    "file": "blend-focused.log.gz",
+    "source": ".artifacts/blend-focused.log",
+    "bytes": 28171,
+    "sha256": "b73b1f2b054b44adb6afbf2b6b11e4c82994c79ee1531798dfd4ff0741a4d92b"
+  },
+  {
+    "file": "blend-glyph-artifacts.log.gz",
+    "source": ".artifacts/blend-glyph-artifacts.log",
+    "bytes": 365,
+    "sha256": "8105cc7f8201586b79f2ff0383aa44ffce45aa241efa114862b401584c058705"
+  },
+  {
+    "file": "blend-graduation-contract.log.gz",
+    "source": ".artifacts/blend-graduation-contract.log",
+    "bytes": 777,
+    "sha256": "3e871f49aef2ec9756f376cf53673a678eb5f1fbba37571fb7a2c26d1e506d90"
+  },
+  {
+    "file": "blend-initial.log.gz",
+    "source": ".artifacts/blend-initial.log",
+    "bytes": 7035,
+    "sha256": "37b77f0dbf1d80daf2836b3bb79ca5bc2cba2f50c1c55222d25c23cc1af8d2fa"
+  },
+  {
+    "file": "blend-lifecycle-final.log.gz",
+    "source": ".artifacts/blend-lifecycle-final.log",
+    "bytes": 5140,
+    "sha256": "ac647f5855d0a343bc50d6aaf191eff5ea9a490fb68c508fd9742804f40dcee5"
+  },
+  {
+    "file": "blend-lifecycle-fixed.log.gz",
+    "source": ".artifacts/blend-lifecycle-fixed.log",
+    "bytes": 14585,
+    "sha256": "35c133575067cf5deb104c7b9f28093b8db6b36c6e78ca9782203cff04c122eb"
+  },
+  {
+    "file": "blend-lifecycle.log.gz",
+    "source": ".artifacts/blend-lifecycle.log",
+    "bytes": 22033,
+    "sha256": "7a33c9183abda2f4f157e23b89f411c71c91086fdc5350534aae95f997bde53a"
+  },
+  {
+    "file": "blend-llms-doc-final.log.gz",
+    "source": ".artifacts/blend-llms-doc-final.log",
+    "bytes": 139,
+    "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+  },
+  {
+    "file": "blend-llms-final.log.gz",
+    "source": ".artifacts/blend-llms-final.log",
+    "bytes": 139,
+    "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+  },
+  {
+    "file": "blend-llms-fixed.log.gz",
+    "source": ".artifacts/blend-llms-fixed.log",
+    "bytes": 139,
+    "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+  },
+  {
+    "file": "blend-machine-doc-final.log.gz",
+    "source": ".artifacts/blend-machine-doc-final.log",
+    "bytes": 127,
+    "sha256": "f5db0c4c6f33b9dba27703b4d87d65b217cd8a18ec73cf0d9bcb41b504f748ae"
+  },
+  {
+    "file": "blend-machine-final.log.gz",
+    "source": ".artifacts/blend-machine-final.log",
+    "bytes": 127,
+    "sha256": "f5db0c4c6f33b9dba27703b4d87d65b217cd8a18ec73cf0d9bcb41b504f748ae"
+  },
+  {
+    "file": "blend-machine-fixed.log.gz",
+    "source": ".artifacts/blend-machine-fixed.log",
+    "bytes": 127,
+    "sha256": "f5db0c4c6f33b9dba27703b4d87d65b217cd8a18ec73cf0d9bcb41b504f748ae"
+  },
+  {
+    "file": "blend-native-graduation.log.gz",
+    "source": ".artifacts/blend-native-graduation.log",
+    "bytes": 429,
+    "sha256": "a9b718ffe2449cd6ca9cfab0f50fdeb7e52eb749a0816233a238edb8e4244ec0"
+  },
+  {
+    "file": "blend-own-render.log.gz",
+    "source": ".artifacts/blend-own-render.log",
+    "bytes": 3027,
+    "sha256": "aff1d71af047f4424ae2c4be88240ca8d2f40063d1ef3beb172e7ef9194cd619"
+  },
+  {
+    "file": "blend-pack.log.gz",
+    "source": ".artifacts/blend-pack.log",
+    "bytes": 621,
+    "sha256": "3f858cc6e254c1d4f4fefb8de220466551719c19cdb87a16d3f968acb06d36c8"
+  },
+  {
+    "file": "blend-package-entry.log.gz",
+    "source": ".artifacts/blend-package-entry.log",
+    "bytes": 1131,
+    "sha256": "a58cafd4090eaf7c37966426503a404cfae92b1e8fde9301a74882d905c7e70a"
+  },
+  {
+    "file": "blend-package-final.log.gz",
+    "source": ".artifacts/blend-package-final.log",
+    "bytes": 445,
+    "sha256": "1eb4557293a74d13281ae148ac361cb13ebdf9582f279af935e387b1308ac5e7"
+  },
+  {
+    "file": "blend-package-initial.log.gz",
+    "source": ".artifacts/blend-package-initial.log",
+    "bytes": 1204,
+    "sha256": "a7bd3b8465f399d600c195addfd4022d41f84b842c19916dcb1d0f351762fd54"
+  },
+  {
+    "file": "blend-package-node20.log.gz",
+    "source": ".artifacts/blend-package-node20.log",
+    "bytes": 1117,
+    "sha256": "e94c91f11376c3f0378e4e27d9dc17eefb173434b634d9f88540ed91fc4345e3"
+  },
+  {
+    "file": "blend-provenance-final.log.gz",
+    "source": ".artifacts/blend-provenance-final.log",
+    "bytes": 69,
+    "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5"
+  },
+  {
+    "file": "blend-provenance-fixed.log.gz",
+    "source": ".artifacts/blend-provenance-fixed.log",
+    "bytes": 69,
+    "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5"
+  },
+  {
+    "file": "blend-realistic-cached.log.gz",
+    "source": ".artifacts/blend-realistic-cached.log",
+    "bytes": 30898,
+    "sha256": "1dc03f60473723e8a4ff8154d59d7b63a8406e91ad521ddcc46196365c800bf6"
+  },
+  {
+    "file": "blend-realistic-data-mark.log.gz",
+    "source": ".artifacts/blend-realistic-data-mark.log",
+    "bytes": 3157,
+    "sha256": "e72d59b4c8900779abd1fa446e5e896497100ae37b838f810fe0f5192d1db89f"
+  },
+  {
+    "file": "blend-realistic-final.log.gz",
+    "source": ".artifacts/blend-realistic-final.log",
+    "bytes": 4066,
+    "sha256": "ed237db23e62b387774c4a08316e84afe80b278dd88ede39f0c7f6dd8278a52f"
+  },
+  {
+    "file": "blend-realistic.log.gz",
+    "source": ".artifacts/blend-realistic.log",
+    "bytes": 24005,
+    "sha256": "b115c3b793375ba5dcc1e2f5456948648215512831c25c4acfc6f18018d1aa7a"
+  },
+  {
+    "file": "blend-reference-final.log.gz",
+    "source": ".artifacts/blend-reference-final.log",
+    "bytes": 116,
+    "sha256": "d66e219db78fbc5e050bd74f3dbfb65a84fc1129c6ce8c728361e9da592f3847"
+  },
+  {
+    "file": "blend-reference-fixed.log.gz",
+    "source": ".artifacts/blend-reference-fixed.log",
+    "bytes": 116,
+    "sha256": "d66e219db78fbc5e050bd74f3dbfb65a84fc1129c6ce8c728361e9da592f3847"
+  },
+  {
+    "file": "blend-render-suite.log.gz",
+    "source": ".artifacts/blend-render-suite.log",
+    "bytes": 996,
+    "sha256": "8a37faa3c32d7a3b154e72ac6bf288d2e3e291030b799d0e319a24c649ecccb9"
+  },
+  {
+    "file": "blend-rendering-fixed.log.gz",
+    "source": ".artifacts/blend-rendering-fixed.log",
+    "bytes": 2784,
+    "sha256": "ca6ecdc0e004c95b60285b5fa15e720448a4ed1d9f7edcdf34d8cb0057fe4a35"
+  },
+  {
+    "file": "blend-rendering.log.gz",
+    "source": ".artifacts/blend-rendering.log",
+    "bytes": 15338,
+    "sha256": "936d72750fbbea6d60fdddc1ebde1d1912fb3d309ea654d279a4be56a1df1af7"
+  },
+  {
+    "file": "blend-search-final.log.gz",
+    "source": ".artifacts/blend-search-final.log",
+    "bytes": 121,
+    "sha256": "6eadafbe91cb6766c787ba78a1958acfdbccf42241bd1e1ee05a61bc12773574"
+  },
+  {
+    "file": "blend-search-fixed.log.gz",
+    "source": ".artifacts/blend-search-fixed.log",
+    "bytes": 121,
+    "sha256": "6eadafbe91cb6766c787ba78a1958acfdbccf42241bd1e1ee05a61bc12773574"
+  },
+  {
+    "file": "blend-signatures-final.log.gz",
+    "source": ".artifacts/blend-signatures-final.log",
+    "bytes": 139,
+    "sha256": "41885648d98c50f49d3bbb2747a30c7f46555e03f38f895df0441a52891d1885"
+  },
+  {
+    "file": "blend-signatures-fixed.log.gz",
+    "source": ".artifacts/blend-signatures-fixed.log",
+    "bytes": 139,
+    "sha256": "41885648d98c50f49d3bbb2747a30c7f46555e03f38f895df0441a52891d1885"
+  },
+  {
+    "file": "blend-snippets-fixed.log.gz",
+    "source": ".artifacts/blend-snippets-fixed.log",
+    "bytes": 83,
+    "sha256": "7ab651e51563bec6fa2a5e7453f21c7b2fc022ed973e92ac701aa9c155a50147"
+  },
+  {
+    "file": "blend-unit.log.gz",
+    "source": ".artifacts/blend-unit.log",
+    "bytes": 1201816,
+    "sha256": "86ff4c199ef17d068d5aa4070feeb33ded738fe703f792baa98260ea33881d4a"
+  }
+]

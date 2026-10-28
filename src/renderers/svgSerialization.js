@@ -1,3 +1,4 @@
+import { readBlendMode } from "../grammar/compositing.js";
 import { patternFillGeometry, validatePatternWork } from "../grammar/patterns.js";
 import { paintColorCSS } from "../grammar/color.js";
 import { collectTransitionGraphics } from "./transitionScene.js";
@@ -293,7 +294,8 @@ function serializeCircle(state, graphicId, properties) {
     ["r", formatNumber(radius)],
     ["fill", serializeFill(state, properties.fill, { left: x - radius, right: x + radius, top: y - radius, bottom: y + radius }, graphicId)],
     ...strokeAttributes(properties, strokeWidth),
-    ["opacity", formatNumber(requireOpacity(properties, graphicId))]
+    ["opacity", formatNumber(requireOpacity(properties, graphicId))],
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined]
   ]);
 }
 
@@ -333,7 +335,7 @@ function serializeRect(state, graphicId, properties) {
     ["fill", fill],
     ...strokeAttributes(properties, strokeWidth),
     ["opacity", formatNumber(requireOpacity(properties, graphicId))],
-    ["style", properties.blend && properties.blend !== "normal" ? `mix-blend-mode:${properties.blend}` : undefined]
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined]
   ]);
 }
 
@@ -363,7 +365,8 @@ function serializeLine(state, graphicId, properties) {
     ["stroke-dasharray", strokeDash.length === 0
       ? undefined
       : strokeDash.map(formatNumber).join(" ")],
-    ["opacity", formatNumber(requireOpacity(properties, graphicId))]
+    ["opacity", formatNumber(requireOpacity(properties, graphicId))],
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined]
   ]);
 }
 
@@ -423,7 +426,7 @@ function serializePath(state, graphicId, properties) {
       ? undefined
       : strokeDash.map(formatNumber).join(" ")],
     ["opacity", formatNumber(requireOpacity(properties, graphicId))],
-    ["style", properties.blend && properties.blend !== "normal" ? `mix-blend-mode:${properties.blend}` : undefined]
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined]
   ]);
 }
 
@@ -486,6 +489,7 @@ function serializeText(state, graphicId, properties) {
     ["text-anchor", TEXT_ANCHORS[textAlign]],
     ["dominant-baseline", DOMINANT_BASELINES[textBaseline]],
     ["opacity", formatNumber(opacity)],
+    ["style", readBlendMode(properties) && readBlendMode(properties) !== "normal" ? `mix-blend-mode:${readBlendMode(properties)}` : undefined],
     ["transform", rotation === 0
       ? undefined
       : `rotate(${formatNumber(rotationDegrees)} ${formatNumber(x)} ${formatNumber(y)})`]
@@ -660,9 +664,9 @@ export function renderToSVG(program, options = {}) {
   walkGraphicTreeEvents(graphicSpec, {
     enter({object}) {
       if (object.clip !== undefined) validateGraphicClip(object.clip, object.type);
-      if (isBlendMode(object.properties?.blend) && object.properties.blend !== "normal") state.hasBlend = true;
+      if (isBlendMode(readBlendMode(object.properties)) && readBlendMode(object.properties) !== "normal") state.hasBlend = true;
     },
-    item({object}) { if (isBlendMode(object.properties?.blend) && object.properties.blend !== "normal") state.hasBlend = true; }
+    item({object}) { if (isBlendMode(readBlendMode(object.properties)) && readBlendMode(object.properties) !== "normal") state.hasBlend = true; }
   });
   const body = serializeBody(
     graphicSpec,

@@ -1,4 +1,4 @@
-import {blendOver,sourceOverStraight} from "../../oracles/compositing.js";
+import {blendOver,sourceOverStraight} from "../../../../oracles/compositing.js";
 const inside=(paint,x,y)=>{const b=paint.bounds;return x>=b.x&&x<b.x+b.width&&y>=b.y&&y<b.y+b.height;};
 const color=(paint,alpha)=>paint.rgb.map(v=>v/255).concat(alpha);
 export function expectedGroup(fixture,x,y,isolated=true,applyGroupOpacity=true){

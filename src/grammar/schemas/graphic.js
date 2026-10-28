@@ -88,6 +88,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "lineJoin",
     "miterLimit",
     "opacity",
+    "blend",
     "length"
   ]),
   text: new Set([
@@ -109,6 +110,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "textBaseline",
     "rotation",
     "opacity",
+    "blend",
     "length"
   ]),
   path: new Set([

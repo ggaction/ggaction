@@ -345,7 +345,7 @@ export type {
   EditStrokeDashScaleOptions,
   EditSemanticOptions,
   FieldType,
-  FillPaint, MarkOutline,
+  FillPaint, MarkOutline, BlendMode,
   PatternPaint,
   RadialGradientPaint,
   FacetCompositionSpec,
@@ -546,7 +546,7 @@ export function prepareImageResource(program: ChartProgram, request: ImageResour
 [Complete declaration and relative dependencies](../types/basic.d.ts)
 
 ```typescript
-export type { FillPaint, MarkOutline, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
+export type { FillPaint, MarkOutline, BlendMode, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
@@ -1045,6 +1045,11 @@ complete Browser Canvas, SVG, Node PNG, and vector PDF examples.
 
 
 Shared mark fill options follow [Pattern and gradient fills](../api/appearance/mark-style.md#pattern-and-gradient-fills). Point, Rect, Bar, Area, Arc, and Text constructors and editors accept the complete FillPaint union; strokes remain solid colors.
+
+The `blend` option on Point, Bar, Rect, Area, Arc, Text, Line, Rule, and Tick mark
+creation/editing accepts normal, multiply, screen, or difference. It applies once
+per final glyph and is preserved through rematerialization. See
+[Mark Style](../api/appearance/mark-style.md#blending-each-mark-item) for ordering and output behavior.
 
 ## Internal trace operations
 

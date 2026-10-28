@@ -1,0 +1,26 @@
+[
+  {
+    "width": 1280,
+    "axeViolations": 0,
+    "consoleErrors": 0,
+    "horizontalOverflow": false
+  },
+  {
+    "width": 320,
+    "axeViolations": 0,
+    "consoleErrors": 0,
+    "horizontalOverflow": false
+  },
+  {
+    "width": 390,
+    "axeViolations": 0,
+    "consoleErrors": 0,
+    "horizontalOverflow": false
+  },
+  {
+    "width": 768,
+    "axeViolations": 0,
+    "consoleErrors": 0,
+    "horizontalOverflow": false
+  }
+]

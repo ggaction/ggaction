@@ -1,3 +1,5 @@
+import { applyMarkBlend } from "../blend.js";
+import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
 import { conditionalLinePositions } from "../../../materialization/conditionalLineValues.js";
 import { hasConditionalLinePosition, LINE_POSITION_CHANNELS } from "../../../materialization/conditionalLineStructure.js";
@@ -51,10 +53,12 @@ import {
 const DEFAULT_LINE_STROKE = DEFAULT_COLORS.mark;
 const DEFAULT_LINE_WIDTH = 2;
 const CREATE_OPTIONS = Object.freeze([
+  "blend",
   "clip", "missing", "id", "data", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const EDIT_OPTIONS = Object.freeze([
+  "blend",
   "clip", "missing", "target", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
   ...STROKE_STYLE_PROPERTIES
 ]);
@@ -108,6 +112,7 @@ const createLineMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createLineMark");
+    validateRequestedMarkBlend(args, "line");
     requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "createLineMark");
     const missing = validateLineMissing(args.missing);
@@ -149,6 +154,7 @@ const createLineMark = /* @__PURE__ */ action(
         property: `layer[${id}].data`,
         value: data
       });
+    created = applyMarkBlend(created, id, args);
     created = applyLayeredMarkInheritance(created, id, inherited);
     if (Object.hasOwn(args, "missing")) {
       created = created.editSemantic({ property: `layer[${id}].mark.missing`, value: missing });
@@ -298,6 +304,7 @@ const editLineMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editLineMark");
+    validateRequestedMarkBlend(args, "line");
     requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "editLineMark");
     if (!EDIT_OPTIONS.filter(key => key !== "target").some(key => Object.hasOwn(args, key))) {
@@ -347,7 +354,7 @@ const editLineMark = /* @__PURE__ */ action(
     if (Object.hasOwn(args, "tension")) config.tension = args.tension;
     validateCardinalTension(config.tension, config.curve ?? "linear");
     validatePolarLineConfig(layer, config);
-    let next = this._withMarkConfig(layer.id, config);
+    let next = applyMarkBlend(this, layer.id, args)._withMarkConfig(layer.id, config);
     if (Object.hasOwn(args, "missing")) {
       const missing = validateLineMissing(args.missing);
       validateLineMissingScope({ ...layer, mark: { ...layer.mark, missing } });

@@ -3178,3 +3178,12 @@ outline mark, retained image를 두고 source revision·codec·prepared image st
 통합 search-index 실측896,003bytes는 이전896,000을3bytes 초과한다. 현재 모든 페이지/액션을 유지하며
 공유 canonical search cap만 최소1000단위897,000으로 조정한다. 최초 source2개 및 built 링크 검사 실패와
 해당 입력 수정 뒤 재검증 결과는 outline 통합 evidence가 보존한다.
+
+
+### Shared per-item blend materialization
+
+기존 semantic mark.blend owner를 9개 일반 mark에 공유한다. 각 domain action이 명시적으로 pure capability
+검증과 semantic write를 수행하고 기존 final mark-output 단계가 concrete mode를 적용·제거한다.
+Bar geometry owner의 중복 blend 처리는 제거한다. Renderer는 같은 concrete glyph를 소비하며 circle/line/text도
+기존 isolated glyph owner 및 SVG serializer를 사용한다. 별도 compiler/group transaction/registry를 추가하지 않는다.
+정확한 값·상속 소비자·렌더링 경계는 [MARKS](contract/current/MARKS.md#per-item-blend-modes)에 둔다.

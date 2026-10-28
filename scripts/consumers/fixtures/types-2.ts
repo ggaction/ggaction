@@ -132,8 +132,17 @@ import {
     getMarkItems(chart(), { grain: "series" });
 
     chart().editBarMark({blend:"difference"}).editBarMark({blend:"multiply"}).editBarMark({blend:"screen"}).editBarMark({blend:"normal"});
-    // @ts-expect-error only the bar editor owns blend
     chart().createBarMark({blend:"difference"});
+    chart().createPointMark({blend:"multiply"}).editPointMark({blend:"normal"});
+    chart().createRectMark({blend:"screen"}).editRectMark({blend:"difference"});
+    chart().createAreaMark({blend:"screen"}).editAreaMark({blend:"normal"});
+    chart().createArcMark({blend:"multiply"}).editArcMark({blend:"normal"});
+    chart().createTextMark({blend:"difference"}).editTextMark({blend:"screen"});
+    chart().createLineMark({blend:"multiply"}).editLineMark({blend:"normal"});
+    chart().createRuleMark({blend:"difference"}).editRuleMark({blend:"screen"});
+    chart().createTickMark({blend:"multiply"}).editTickMark({blend:"normal"});
+    basicChart().createPointMark({blend:"screen"}).createBarMark({blend:"multiply"})
+      .createRectMark({blend:"difference"}).createLineMark({blend:"normal"});
     // @ts-expect-error blend is a closed vocabulary
     chart().editBarMark({blend:"overlay"});
     // @ts-expect-error Basic does not expose appearance editing

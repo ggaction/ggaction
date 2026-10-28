@@ -942,5 +942,18 @@
         "statements": 20
       }
     ]
+  },
+  {
+    "file": "mark-blends.mjs",
+    "cases": [
+      {
+        "id": "paint/blend-nine-owners-and-basic",
+        "statements": 2
+      },
+      {
+        "id": "paint/blend-glyph-output-and-fresh-edit",
+        "statements": 1
+      }
+    ]
   }
 ]

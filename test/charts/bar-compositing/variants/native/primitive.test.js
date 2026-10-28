@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";import test from "node:test";
-import {blendOver,sourceOverStraight,differenceOver} from "../../oracles/compositing.js";
+import {blendOver,sourceOverStraight,differenceOver} from "../../../../oracles/compositing.js";
 import {inflateSync} from "node:zlib";
 import {encodeGroupPNG} from "./group-png.js";
 import {prepareBlendGroup} from "./lowered-group.js";

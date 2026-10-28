@@ -47,8 +47,10 @@ export function materializeMarkOutput(program, id) {
   const outline = layer.mark.type === "bar" ? config?.barAppearance?.outline : config?.outline;
   return clipped.editGraphics({ target: id, property: "items", value: graphic.items.map(child => {
     const type = child.type ?? graphic.type;
-    const { outline: previousOutline, ...properties } = { ...child.properties, ...conditionalProperties[child.id] };
+    const { outline: previousOutline, blend: previousBlend, ...properties } = { ...child.properties, ...conditionalProperties[child.id] };
     void previousOutline;
+    void previousBlend;
+    if (Object.hasOwn(layer.mark, "blend")) properties.blend = layer.mark.blend;
     if (outline !== undefined && outline !== false) {
       properties.outline = outline;
       // The outline owns the rendered edge. Retain the concrete ordinary stroke

@@ -5,10 +5,10 @@ import { resolvePrimitiveGraphicBounds } from "../../grammar/schemas/graphicBoun
 import { graphicClipBounds, intersectClipBounds, validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { walkGraphicTreeEvents } from "../../grammar/schemas/graphicTree.js";
 import { MAX_RASTER_DIMENSION, MAX_RASTER_PIXELS } from "./limits.js";
-import { isBlendMode } from "../../grammar/compositing.js";
+import { isBlendMode, readBlendMode } from "../../grammar/compositing.js";
 
 export function requiresIsolatedGlyph(properties) {
-  return isBlendMode(properties?.blend) ||
+  return isBlendMode(readBlendMode(properties)) ||
     properties?.outline?.width > 0 && (properties.opacity ?? 1) !== 1 ||
     properties?.fill?.type === "pattern" && (properties.opacity ?? 1) !== 1;
 }
@@ -43,17 +43,22 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
     const hasGradient = objects.some(object =>
       [object, ...(object.items ?? [])].some(item =>
         requiresIsolatedGlyph(item.properties) && item.properties.fill?.type === "linear-gradient"));
+    const selectedType = type => objects.some(object =>
+      [object, ...(object.items ?? [])].some(item =>
+        requiresIsolatedGlyph(item.properties) && (item.type ?? object.type) === type));
+    if (selectedType("circle") && typeof source.arc !== "function") throw new TypeError("Circle painting requires Canvas arcs.");
+    if (selectedType("text") && (typeof source.fillText !== "function" || typeof source.rotate !== "function")) {
+      throw new TypeError("Text painting requires Canvas glyph and rotation support.");
+    }
     const normal=objects.some(object=>
-      [object,...(object.items??[])].some(item=>(item.properties?.blend==="normal" || item.properties?.blend===undefined && requiresIsolatedGlyph(item.properties))));
+      [object,...(object.items??[])].some(item=>(readBlendMode(item.properties)==="normal" || readBlendMode(item.properties)===undefined && requiresIsolatedGlyph(item.properties))));
     if(normal){
       if(typeof source.setTransform!=="function")throw new TypeError("Normal glyph opacity requires Canvas transform support.");
       source.save();try{
         source.globalCompositeOperation="destination-in";
         if(source.globalCompositeOperation!=="destination-in")throw new TypeError("Normal glyph opacity requires source attenuation.");
       }finally{source.restore();}
-      const circle=objects.some(object=>
-        [object,...(object.items??[])].some(item=>(item.properties?.blend==="normal" || item.properties?.blend===undefined && requiresIsolatedGlyph(item.properties))&&(item.type??object.type)==="circle"));
-      if(circle&&typeof source.arc!=="function")throw new TypeError("Normal circle painting requires Canvas arcs.");
+
     }
     if (hasGradient && (typeof source.createLinearGradient !== "function" ||
         typeof source.createLinearGradient(0, 0, 1, 0)?.addColorStop !== "function")) {
@@ -66,7 +71,7 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
   try {
     const modes=new Set();
     for(const object of objects)for(const item of [object,...(object.items??[])]){
-      if(item.properties?.blend!==undefined)modes.add(item.properties.blend==="normal"?"source-over":item.properties.blend);
+      if(readBlendMode(item.properties)!==undefined)modes.add(readBlendMode(item.properties)==="normal"?"source-over":readBlendMode(item.properties));
     }
     for(const mode of modes){
       context.globalCompositeOperation=mode;
@@ -149,7 +154,7 @@ export function drawIsolatedGlyph(context, id, graphic, draw, prepared, options)
   const source = requireSurface(surface);
   source.scale(pixelRatio, pixelRatio);
   source.translate(-plan.left, -plan.top);
-  const {blend = "normal", opacity = 1, ...properties} = graphic.properties;
+  const {blend = "normal", opacity = 1, ...properties} = {__proto__:null,...graphic.properties};
   draw(source, id, {...graphic, properties: {...properties, opacity: 1}}, options);
   if(blend==="normal"){
     // Attenuate the complete source once. drawImage(globalAlpha) introduces

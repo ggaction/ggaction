@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Edit whole-bar appearance and rematerialize every concrete rectangle.",
-  "signature": "editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: \"normal\" | \"multiply\" | \"screen\" | \"difference\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+  "signature": "editBarMark(options: TargetedOptions<RectStyleDetails & { blend?: BlendMode; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
   "intents": [
     "edit bar mark",
     "edit",
@@ -101,6 +101,11 @@
       "type": "number | undefined"
     },
     {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
       "name": "clip",
       "required": false,
       "type": "boolean | undefined"
@@ -109,11 +114,6 @@
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
-    },
-    {
-      "name": "blend",
-      "required": false,
-      "type": "\"difference\" | \"multiply\" | \"normal\" | \"screen\" | undefined"
     },
     {
       "name": "missing",
