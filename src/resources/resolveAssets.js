@@ -16,7 +16,7 @@ function matchesMime(bytes, mimeType) {
 // Private preparation kernel. No network, decoder, or backend object is implicit.
 export async function prepareImageAsset(input, host) {
   const request = normalizeAssetRequest(input, [], MIMES, "Image");
-  exactAssetRecord(host, ["load", "decode", "signal"], "Image host");
+  host = exactAssetRecord(host, ["load", "decode", "signal"], "Image host");
   if (typeof host.load !== "function" || typeof host.decode !== "function") throw new TypeError("Image preparation requires host load and decode callbacks.");
   const { load, decode, signal } = host;
   assertAssetActive(signal);
@@ -26,15 +26,15 @@ export async function prepareImageAsset(input, host) {
     catch (error) { throw assetError("unsafe-svg", "SVG image failed static image validation.", error); }
   }
   // The decoder receives its own copy; retained bytes cannot be changed by it.
-  const dimensions = await assetHostStage(decode, Object.freeze({ bytes: new Uint8Array(bytes), mimeType: request.mimeType, maxPixels: MAX_PIXELS, ...(signal === undefined ? {} : { signal }) }), signal, "decode-error");
+  let dimensions = await assetHostStage(decode, Object.freeze({ bytes: new Uint8Array(bytes), mimeType: request.mimeType, maxPixels: MAX_PIXELS, ...(signal === undefined ? {} : { signal }) }), signal, "decode-error");
   assertAssetActive(signal);
-  exactAssetRecord(dimensions, ["width", "height", "originClean"], "Decoded image");
+  dimensions = exactAssetRecord(dimensions, ["width", "height", "originClean"], "Decoded image");
   if (![dimensions.width, dimensions.height].every(value => Number.isSafeInteger(value) && value > 0) || dimensions.width * dimensions.height > MAX_PIXELS) {
     throw assetError("dimension-limit", "Decoded image dimensions exceed the pixel budget.");
   }
   if (dimensions.originClean !== true) throw assetError("cors", "Decoded image is not origin-clean for export.");
   return cloneAndFreeze({ uri: request.uri, mimeType: request.mimeType, contentHash: hash, byteLength: bytes.length,
     width: dimensions.width, height: dimensions.height, payload: { encoding: "base64", data: assetBase64(bytes) },
-    ...(request.license === undefined ? {} : { license: request.license }),
-    ...(request.attribution === undefined ? {} : { attribution: request.attribution }) });
+    ...(Object.hasOwn(request, "license") && request.license !== undefined ? { license: request.license } : {}),
+    ...(Object.hasOwn(request, "attribution") && request.attribution !== undefined ? { attribution: request.attribution } : {}) });
 }

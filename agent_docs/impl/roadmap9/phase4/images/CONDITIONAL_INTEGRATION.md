@@ -19,3 +19,11 @@ Node20/24 packed1,067,584bytes로 caps717/1,068,000/4,949,000을 고정했다.
 Full/Basic gzip534,627/312,463은 기존 한도 안이다. 처음 entry limit 실패는
 [원시 evidence](evidence/conditional-integration/manifest.json)에 보존했다.
 Base a9ecf107 원격 CI의 realistic7 inventory 실패는 별도 수리 중이므로 전체CI성공을 주장하지 않는다.
+
+## Own-input hardening integration
+
+`9742199b`를 통합하여 asset callback과 필수·선택 입력에서 상속 getter를 읽지 않게 하고,
+immutable copy가 상속 setter를 실행하지 않도록 했다. 기존 공개 payload는 변경하지 않는다.
+전체 unit 5,119/5,119와 contract 686/686, roadmap metadata 검증 및 Node20 package 검증이 통과했다.
+실측717 entries / packed1,067,661 / unpacked4,949,246 bytes에 맞춰 unpacked cap만4,950,000으로 조정했다.
+[원시 로그와 해시](evidence/own-input-integration/manifest.json)에 검증을 고정했다.
