@@ -7,6 +7,7 @@
 - [Phase 0](phase0/GOAL.md): STEP-001–003 완료; baseline, 독립 oracle, 검증 evidence.
 - [Phase 1](phase1/GOAL.md): STEP-004–009 완료; 안정적인 행·항목 식별자, transform lineage, 선택 리소스와 schema 4 호환성.
 - [Phase 2](phase2/GOAL.md): STEP-010–012 완료; 복합 경로·공통 geometry·네 renderer·scene·저장 통합과 AT-11/12 검증.
+- [Phase 3](phase3/GOAL.md): STEP-013 AST core 검토 준비; 제품 구현 및 parameter/resolver 계약은 미완료.
 - [execution-plan.json](execution-plan.json): 원안 카드 링크와 현재 실행 의존성. STEP-056을 STEP-070의 선행 조건에 추가하여 native chart/recipe 작업이 통합·최종 검증에서 누락되지 않게 한다.
 - STEP-001–012는 완료했으며 다음 우선 작업은 STEP-013이다. STEP-013–077은 후속 범위다. 이번 Phase 완료가 전체 확장 또는 네 렌더러의 새 기능 지원 완료를 뜻하지 않는다.
 

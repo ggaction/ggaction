@@ -1,0 +1,356 @@
+{
+  "status": "proposed-not-runtime",
+  "registry": "standard@1",
+  "functions": [
+    {
+      "name": "abs",
+      "arguments": [
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "arrayLength",
+      "arguments": [
+        "array"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "at",
+      "arguments": [
+        "array",
+        "nonnegative-safe-integer"
+      ],
+      "returns": "scalar|null|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "atan2",
+      "arguments": [
+        "number",
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager",
+      "options": {
+        "angleUnit": {
+          "required": true,
+          "values": [
+            "radians",
+            "degrees"
+          ]
+        }
+      }
+    },
+    {
+      "name": "ceil",
+      "arguments": [
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "coalesce",
+      "arguments": {
+        "type": "scalar|null|missing",
+        "min": 2,
+        "max": 64
+      },
+      "returns": "scalar|missing",
+      "evaluation": "lazy"
+    },
+    {
+      "name": "concat",
+      "arguments": {
+        "type": "string",
+        "min": 1,
+        "max": 64
+      },
+      "returns": "string|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "cos",
+      "arguments": [
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager",
+      "options": {
+        "angleUnit": {
+          "required": true,
+          "values": [
+            "radians",
+            "degrees"
+          ]
+        }
+      }
+    },
+    {
+      "name": "datePart",
+      "arguments": [
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager",
+      "options": {
+        "part": {
+          "required": true,
+          "values": [
+            "year",
+            "quarter",
+            "month",
+            "day",
+            "weekday",
+            "hour",
+            "minute",
+            "second",
+            "millisecond"
+          ]
+        },
+        "timeZone": {
+          "required": true,
+          "type": "UTC|IANA"
+        }
+      }
+    },
+    {
+      "name": "exp",
+      "arguments": [
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "floor",
+      "arguments": [
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "isFinite",
+      "arguments": [
+        "scalar|array|null|missing"
+      ],
+      "returns": "boolean",
+      "evaluation": "eager"
+    },
+    {
+      "name": "isMissing",
+      "arguments": [
+        "scalar|array|null|missing"
+      ],
+      "returns": "boolean",
+      "evaluation": "eager"
+    },
+    {
+      "name": "isNull",
+      "arguments": [
+        "scalar|array|null|missing"
+      ],
+      "returns": "boolean",
+      "evaluation": "eager"
+    },
+    {
+      "name": "length",
+      "arguments": [
+        "string"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "log",
+      "arguments": [
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "lower",
+      "arguments": [
+        "string"
+      ],
+      "returns": "string|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "max",
+      "arguments": {
+        "type": "number",
+        "min": 1,
+        "max": 64
+      },
+      "returns": "number|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "min",
+      "arguments": {
+        "type": "number",
+        "min": 1,
+        "max": 64
+      },
+      "returns": "number|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "parseTime",
+      "arguments": [
+        "string"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager",
+      "options": {
+        "format": {
+          "required": true,
+          "values": [
+            "%Y-%m-%d",
+            "%d/%m/%Y",
+            "%m/%d/%Y",
+            "iso-offset"
+          ]
+        }
+      }
+    },
+    {
+      "name": "pow",
+      "arguments": [
+        "number",
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "replace",
+      "arguments": [
+        "string",
+        "nonempty-string",
+        "string"
+      ],
+      "returns": "string|missing",
+      "evaluation": "eager",
+      "literalArguments": [
+        1,
+        2
+      ]
+    },
+    {
+      "name": "round",
+      "arguments": [
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "sin",
+      "arguments": [
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager",
+      "options": {
+        "angleUnit": {
+          "required": true,
+          "values": [
+            "radians",
+            "degrees"
+          ]
+        }
+      }
+    },
+    {
+      "name": "sqrt",
+      "arguments": [
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "substring",
+      "arguments": [
+        "string",
+        "nonnegative-safe-integer",
+        "nonnegative-safe-integer"
+      ],
+      "returns": "string|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "tan",
+      "arguments": [
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager",
+      "options": {
+        "angleUnit": {
+          "required": true,
+          "values": [
+            "radians",
+            "degrees"
+          ]
+        }
+      }
+    },
+    {
+      "name": "timeFloor",
+      "arguments": [
+        "number"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager",
+      "options": {
+        "unit": {
+          "required": true,
+          "values": [
+            "year",
+            "quarter",
+            "month",
+            "week",
+            "day",
+            "hour",
+            "minute",
+            "second"
+          ]
+        },
+        "timeZone": {
+          "required": true,
+          "type": "UTC|IANA"
+        },
+        "weekStartsOn": {
+          "requiredWhen": "unit=week",
+          "forbiddenOtherwise": true,
+          "type": "integer0..6"
+        }
+      }
+    },
+    {
+      "name": "toNumber",
+      "arguments": [
+        "number|string"
+      ],
+      "returns": "number|missing",
+      "evaluation": "eager"
+    },
+    {
+      "name": "upper",
+      "arguments": [
+        "string"
+      ],
+      "returns": "string|missing",
+      "evaluation": "eager"
+    }
+  ]
+}

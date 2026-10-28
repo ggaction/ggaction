@@ -1,0 +1,38 @@
+{
+  "id": "G-EXPR",
+  "state": "planned",
+  "scope": [
+    "STEP-013 AST core only"
+  ],
+  "proposal": "agent_docs/impl/roadmap9/phase3/DESIGN.md",
+  "decisions": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "D5",
+    "D6"
+  ],
+  "authorization": {
+    "direction": {
+      "date": "2026-10-28",
+      "userMessage": "진행",
+      "precedingProposal": "기존 AST 의미 유지 + 명시적 v2 도입; 노드 형식과 결측값 저장 규칙 구체화",
+      "covered": "D1 방향 및 검토 자료 준비",
+      "notCovered": "아직 제시하지 않은 D2–D6 정확한 공개/저장 계약"
+    },
+    "designApproval": null
+  },
+  "requiredChecks": [
+    "expression-review",
+    "expression-types",
+    "suite-unit",
+    "suite-contracts",
+    "suite-all",
+    "machine-docs"
+  ],
+  "remaining": [
+    "D2–D6 정확한 AST core 계약 승인"
+  ],
+  "notice": "검토 준비이며 STEP-013 완료가 아니다. Parameter와 CSV/JSON resolver 계약은 별도 미해결 의무로 보존한다."
+}

@@ -1,0 +1,159 @@
+{
+  "status": "independent-numeric-reference-not-v2-implementation",
+  "cases": [
+    {
+      "id": "divide-zero",
+      "oracle": "divide",
+      "input": [
+        1,
+        0
+      ],
+      "expected": {
+        "kind": "missing"
+      },
+      "diagnostic": "divideByZero"
+    },
+    {
+      "id": "divide-finite",
+      "oracle": "divide",
+      "input": [
+        3,
+        12
+      ],
+      "expected": 0.25
+    },
+    {
+      "id": "typed-eq",
+      "oracle": "eq",
+      "input": [
+        "1",
+        1
+      ],
+      "expected": false
+    },
+    {
+      "id": "null-eq",
+      "oracle": "eq",
+      "input": [
+        null,
+        null
+      ],
+      "expected": false
+    },
+    {
+      "id": "null-neq",
+      "oracle": "neq",
+      "input": [
+        null,
+        1
+      ],
+      "expected": false
+    },
+    {
+      "id": "unicode-length",
+      "oracle": "length",
+      "input": [
+        "A😀가"
+      ],
+      "expected": 3
+    },
+    {
+      "id": "unicode-substring",
+      "oracle": "substring",
+      "input": [
+        "A😀가",
+        1,
+        2
+      ],
+      "expected": "😀"
+    },
+    {
+      "id": "literal-replace",
+      "oracle": "replace",
+      "input": [
+        "a.b.a",
+        ".",
+        "$&"
+      ],
+      "expected": "a$&b.a"
+    },
+    {
+      "id": "degrees-sin",
+      "oracle": "sin-degrees",
+      "input": [
+        30
+      ],
+      "expected": 0.5,
+      "absoluteTolerance": 1e-15
+    },
+    {
+      "id": "degrees-atan2",
+      "oracle": "atan2-degrees",
+      "input": [
+        1,
+        0
+      ],
+      "expected": 90
+    },
+    {
+      "id": "negative-floor",
+      "oracle": "floor",
+      "input": [
+        -1.2
+      ],
+      "expected": -2
+    },
+    {
+      "id": "negative-round",
+      "oracle": "round",
+      "input": [
+        -1.5
+      ],
+      "expected": -1
+    },
+    {
+      "id": "utc-leap",
+      "oracle": "utc-day",
+      "input": [
+        2024,
+        2,
+        29
+      ],
+      "expected": 1709164800000
+    },
+    {
+      "id": "copenhagen-fold-day",
+      "oracle": "iso-instant",
+      "input": [
+        "2024-10-26T22:00:00.000Z"
+      ],
+      "expected": 1729980000000
+    },
+    {
+      "id": "array-outside",
+      "oracle": "at",
+      "input": [
+        [
+          1,
+          2
+        ],
+        2
+      ],
+      "expected": {
+        "kind": "missing"
+      },
+      "diagnostic": "arrayBounds"
+    },
+    {
+      "id": "array-null",
+      "oracle": "at",
+      "input": [
+        [
+          null
+        ],
+        0
+      ],
+      "expected": null
+    }
+  ]
+}

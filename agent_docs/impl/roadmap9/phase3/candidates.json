@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "status": "proposed-not-implemented",
+  "candidates": [
+    {
+      "id": "expression-v2",
+      "kind": "capability",
+      "owners": [
+        "createComputedData",
+        "editComputedData"
+      ],
+      "status": "proposed",
+      "decision": "D2–D5"
+    },
+    {
+      "id": "getExpressionFunctions",
+      "kind": "query-export",
+      "entry": "ggaction/inspection",
+      "status": "proposed",
+      "decision": "D4"
+    }
+  ],
+  "publicInventoryPromotion": false,
+  "newDomainActions": []
+}

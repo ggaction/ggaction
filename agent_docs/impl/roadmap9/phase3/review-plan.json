@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "scope": "AST core review preparation only; not STEP-013 product completion.",
+  "requirementsSource": "agent_docs/impl/roadmap9/phase3/GOAL.md",
+  "tasks": [
+    {
+      "id": "EXPR-REVIEW-PREPARATION",
+      "dependsOn": [],
+      "requiredChecks": [
+        "expression-review",
+        "expression-types",
+        "suite-unit",
+        "suite-contracts",
+        "suite-all",
+        "machine-docs"
+      ],
+      "requiredGates": []
+    }
+  ],
+  "finalTask": "EXPR-REVIEW-PREPARATION"
+}

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "status": "review-only",
+  "cells": [
+    {
+      "consumer": "normalization-and-evaluation",
+      "contract": "D2–D5",
+      "status": "not-run",
+      "reason": "제품 구현 후 실제 실행 증거를 기록한다."
+    },
+    {
+      "consumer": "create-edit-revise",
+      "contract": "D1–D3",
+      "status": "not-run",
+      "reason": "제품 구현 후 실제 실행 증거를 기록한다."
+    },
+    {
+      "consumer": "schema-and-lineage",
+      "contract": "D2–D3",
+      "status": "not-run",
+      "reason": "제품 구현 후 실제 실행 증거를 기록한다."
+    },
+    {
+      "consumer": "dependency-collector",
+      "contract": "D2/G-PARAM",
+      "status": "not-run",
+      "reason": "제품 구현 후 실제 실행 증거를 기록한다."
+    },
+    {
+      "consumer": "action-summary-accessors",
+      "contract": "D5",
+      "status": "not-run",
+      "reason": "제품 구현 후 실제 실행 증거를 기록한다."
+    },
+    {
+      "consumer": "calculation-inspection",
+      "contract": "D3–D4",
+      "status": "not-run",
+      "reason": "제품 구현 후 실제 실행 증거를 기록한다."
+    },
+    {
+      "consumer": "codec-and-legacy-reader",
+      "contract": "D1–D3",
+      "status": "not-run",
+      "reason": "제품 구현 후 실제 실행 증거를 기록한다."
+    },
+    {
+      "consumer": "full-basic-types-package",
+      "contract": "D2–D4",
+      "status": "not-run",
+      "reason": "제품 구현 후 실제 실행 증거를 기록한다."
+    },
+    {
+      "consumer": "docs-and-current-contracts",
+      "contract": "D1–D6",
+      "status": "not-run",
+      "reason": "제품 구현 후 실제 실행 증거를 기록한다."
+    },
+    {
+      "consumer": "parameter-resource-lifecycle",
+      "contract": "G-PARAM",
+      "status": "not-run",
+      "reason": "제품 구현 후 실제 실행 증거를 기록한다."
+    },
+    {
+      "consumer": "data-source-resolution",
+      "contract": "G-DATA",
+      "status": "not-run",
+      "reason": "제품 구현 후 실제 실행 증거를 기록한다."
+    },
+    {
+      "consumer": "renderers-and-scenes",
+      "contract": "D6",
+      "status": "not-run",
+      "reason": "제품 구현 후 실제 실행 증거를 기록한다."
+    }
+  ],
+  "newVisualTarget": false,
+  "rendererPolicy": "Renderers consume materialized graphicSpec; no AST evaluation."
+}

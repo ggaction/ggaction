@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "sourceTask": "study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-013-expression-ast.ko.md",
+  "scopeChange": false,
+  "items": [
+    {
+      "id": "AST-PRODUCT",
+      "owner": "STEP-013",
+      "gate": "G-EXPR",
+      "status": "open",
+      "requirement": "AST pure kernel과 모든 computed consumer; 검토 승인 후 구현"
+    },
+    {
+      "id": "PARAMETER-RESOURCE",
+      "owner": "STEP-013",
+      "gate": "G-PARAM",
+      "status": "open",
+      "requirement": "Parameter create/edit/remove, typed options, exact revision binding, computed dependencies and fresh-process lifecycle"
+    },
+    {
+      "id": "DATA-RESOLVER",
+      "owner": "STEP-013",
+      "gate": "G-DATA",
+      "status": "open",
+      "requirement": "Inline/named/URL and relative URL CSV/JSON; host baseURL/load, parse directives, hashes, schema, prepared result, stale/abort/offline rules"
+    },
+    {
+      "id": "DATAFLOW-INTEGRATION",
+      "owner": "STEP-016",
+      "gate": "G-PARAM",
+      "status": "open",
+      "requirement": "Parameter→filter→statistics→scale→conditional encoding closure, first-match otherwise, cycle/empty domain behavior"
+    },
+    {
+      "id": "CALENDAR-INTEGRATION",
+      "owner": "STEP-015",
+      "gate": null,
+      "status": "open",
+      "requirement": "Calendar/day completion, DST/year/week aggregation fixtures; registry date rules remain in STEP-013"
+    },
+    {
+      "id": "STEP-013-CLOSEOUT",
+      "owner": "STEP-013",
+      "gate": null,
+      "status": "open",
+      "requirement": "AT-16 actual/expected/diff, consumer matrix, package/types/docs, CI coverage and full integration"
+    }
+  ]
+}
