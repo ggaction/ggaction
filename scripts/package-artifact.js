@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 688, // Adds the private bounded static SVG validator.
+  entries: 690, // Shared asset preparation and the private font identity owner.
   packedBytes: 1_034_000, // Measured 1,029,429 bytes plus observed CI pack variation.
-  unpackedBytes: 4_790_000 // Private image owners and SVG validator: 4,788,996 bytes.
+  unpackedBytes: 4_796_000 // Private image/font preparation owners: 4,795,329 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
