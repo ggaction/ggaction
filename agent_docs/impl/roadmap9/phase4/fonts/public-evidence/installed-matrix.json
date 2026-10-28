@@ -1,0 +1,26 @@
+[
+  {
+    "node": "20",
+    "artifactSHA256": "33a8ed88e9392d05aa2ea2b4ac3349fef1bdb2c2b816f409d375827adfd8575b",
+    "exitCode": 0,
+    "durationSeconds": 108.47031092643738,
+    "log": "installed-node20.log",
+    "receipts": "installed-node20"
+  },
+  {
+    "node": "22",
+    "artifactSHA256": "33a8ed88e9392d05aa2ea2b4ac3349fef1bdb2c2b816f409d375827adfd8575b",
+    "exitCode": 0,
+    "durationSeconds": 123.53572797775269,
+    "log": "installed-node22.log",
+    "receipts": "installed-node22"
+  },
+  {
+    "node": "24",
+    "artifactSHA256": "33a8ed88e9392d05aa2ea2b4ac3349fef1bdb2c2b816f409d375827adfd8575b",
+    "exitCode": 0,
+    "durationSeconds": 101.57158708572388,
+    "log": "installed-node24.log",
+    "receipts": "installed-node24"
+  }
+]

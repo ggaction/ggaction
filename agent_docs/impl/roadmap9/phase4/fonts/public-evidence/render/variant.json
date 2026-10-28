@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "capability": "font-assets",
+  "chart": "font-assets",
+  "variant": "korean-emoji",
+  "title": "Prepared Korean and emoji fonts",
+  "userFacingCallChain": "program.createFontResource({ prepared, requestToken }).applyTextMetrics({ prepared: metrics, requestToken });"
+}

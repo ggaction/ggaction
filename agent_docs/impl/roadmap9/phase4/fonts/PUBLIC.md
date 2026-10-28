@@ -8,10 +8,10 @@
 - [x] font resource / exact profile / bounded host preparation 구현
 - [x] text·guide·composition·hit·scene·codec의 dependency closure
 - [x] 실제 bundled font의 Canvas/SVG/PNG/PDF와 glyph mask 준비
-- [ ] 독립 수치·fallback/지연/한글/emoji/긴 label·설치·문서 검증
-- [ ] verified checkpoint commit/push
+- [x] 독립 수치·fallback/지연/한글/emoji/긴 label·설치·문서 검증
+- [x] source checkpoint `ad538d08d` commit/push 및 최종 증거 동기화
 
-이 문서는 진행 중인 구현 결정이며 Current 지원 목록이 아니다. 승인 정본은
+이 문서는 검증된 공개 연결의 구현 기록이다. 정확한 지원 목록은 Current 계약과 선언이 소유한다. 승인 정본은
 [PUBLIC_APPROVALS_20261028.json](../../PUBLIC_APPROVALS_20261028.json) 및 `b758b912`다.
 기존 [PRIVATE.md](PRIVATE.md), [GRAPHEME.md](GRAPHEME.md)의 준비·Unicode owner를 재사용한다.
 이미지의 공개 I1–I4 checkpoint는 `f33ffb684`다. Renderer는 실제 측정이나 줄바꿈을 하지 않는다.
@@ -141,5 +141,6 @@ Korean 920/1000em 및 emoji 2600/2048em advances를 독립 값과 대조한다. 
 각 줄의 실제 ink를 확인하고, 별도 SVG 문서의 embedded face 2개가 로드됐음을 확인했다. Backend 간
 antialiasing 동일성 대신 같은 backend의 public/primitive 전체 픽셀 또는 SVG 문자열 일치를 검증한다.
 
-최종 source freeze 이후 canonical coverage·installed package·docs 결과는 별도 evidence에 기록한다.
-현재 이 문서만으로 STEP-019 전체 완료를 선언하지 않는다.
+공개 font checkpoint의 검증과 실패 보완 내역은 [PUBLIC_EVIDENCE.md](PUBLIC_EVIDENCE.md) 및
+[기계 판독 증거](public-evidence/summary.json)에 보존한다. Font source는 `ad538d08d` 이후 변경되지 않았다.
+STEP-019의 이 branch 구현은 완료했으며 main 통합과 다른 branch의 P2 Text shadow 연결은 별도 책임으로 남긴다.

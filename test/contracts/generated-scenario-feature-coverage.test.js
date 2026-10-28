@@ -577,6 +577,9 @@ test("derives a bounded public option inventory without runtime prototype paths"
   });
   for (const id of ["action:applyDataUpdate", "option-path:applyDataUpdate.prepared",
     "option-path:applyDataUpdate.requestToken",
+    "action:createFontResource", "option-path:createFontResource.prepared", "option-path:createFontResource.requestToken",
+    "action:replaceFontResource", "option-path:replaceFontResource.prepared", "option-path:replaceFontResource.requestToken",
+    "option-path:applyTextMetrics.prepared", "option-path:applyTextMetrics.requestToken",
     "action:createPivotData", "action:editPivotData",
     "option-path:createPivotData.source", "option-path:createPivotData.field",
     "option-path:createPivotData.value", "option-path:createPivotData.op",
@@ -604,7 +607,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 33170);
+  assert.equal(ledger.requirements.length, 33179);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

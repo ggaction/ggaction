@@ -1,0 +1,540 @@
+{
+  "sourceCommit": "ad538d08d195a2d9aac4e29a130149a4c5227bf0",
+  "status": "verified font checkpoint; integration of other branches remains separate",
+  "approval": "b758b912",
+  "coverage": {
+    "sourceCommit": "ad538d08d195a2d9aac4e29a130149a4c5227bf0",
+    "mode": "separate evidence on identical runtime sources; not a successful full-suite rerun",
+    "original": {
+      "tests": 7334,
+      "passed": 7333,
+      "failed": 1,
+      "exitCode": 1,
+      "aggregate": {
+        "lines": 96.39,
+        "branches": 94.2,
+        "functions": 98.86
+      },
+      "criticalFloors": 318,
+      "report": "coverage-initial/report.log"
+    },
+    "correction": {
+      "metadataTests": {
+        "passed": 3,
+        "failed": 0,
+        "log": "architecture-ceilings-corrected.log"
+      },
+      "rendererTests": {
+        "passed": 33,
+        "failed": 0,
+        "log": "structured-fill-contours-coverage.log",
+        "metrics": {
+          "renderers/canvas/circle.js": {
+            "lines": 84.13,
+            "branches": 66.67,
+            "functions": 100
+          },
+          "renderers/canvas/path.js": {
+            "lines": 77.11,
+            "branches": 77.14,
+            "functions": 100
+          }
+        },
+        "testOrigin": "bf2a1f1dacca9e9709c99d889ef9bf322df19190"
+      }
+    },
+    "allCriticalFloorsVerified": 320,
+    "sourceCoverageVerified": true
+  },
+  "sourceAndArtifactReuseProof": "reuse-proof.json",
+  "package": {
+    "sha256": "33a8ed88e9392d05aa2ea2b4ac3349fef1bdb2c2b816f409d375827adfd8575b",
+    "entries": 803,
+    "packedBytes": 1187379,
+    "unpackedBytes": 5458545,
+    "archiveLocation": ".artifacts/font-public/font-final-33a8ed88.tgz",
+    "nodes": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "perNode": {
+      "nodeCases": 210,
+      "qualificationGroups": 7,
+      "tutorials": 73
+    },
+    "maxGzipBytes": {
+      "full": 584337,
+      "basic": 344844,
+      "svg": 19018
+    },
+    "receipts": "installed-matrix.json"
+  },
+  "docs": {
+    "tests": 169,
+    "builtPages": 154,
+    "selectiveArtifacts": 1305,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ],
+    "generationAndFreshness": "passed"
+  },
+  "realistic": {
+    "generatedLifecycle": {
+      "tests": 3,
+      "passed": 3,
+      "log": "logs/realistic-focused.log.gz"
+    },
+    "correctedFeatureLedger": {
+      "tests": 7,
+      "passed": 7,
+      "log": "logs/realistic-ledger-corrected.log.gz"
+    },
+    "redundantFullDirectLifecycle": "Interrupted own duplicate runner with SIGTERM (exit 143); not counted as pass. Root owns final shared full-profile integration run.",
+    "ledgerTotal": 33179
+  },
+  "render": {
+    "capability": "font-assets",
+    "variant": "korean-emoji",
+    "pairs": [
+      "native Canvas/PNG",
+      "PDF",
+      "SVG"
+    ],
+    "publicPrimitiveSameBackend": "Exact whole-image pixels for native PNG/PDF; exact SVG source; browser Canvas/SVG actual ink and embedded face readiness.",
+    "crossBackendAntialiasEqualityClaimed": false,
+    "outputs": "render/"
+  },
+  "corrections": {
+    "fullUnit": "5573: 5570 passed, 3 failed. Two optional materialization-config regressions and one invalid giant-label test corrected before source freeze; focused owning tests and final full coverage include corrections.",
+    "fullContracts": "716: 712 passed, 4 failed. Fixture/inventory/size expectations corrected before final verification.",
+    "fullDocs": "169: 164 passed, 5 failed initially; full corrected 169/169 passed.",
+    "fullCoverage": "7334: 7333 passed, one architecture size-table assertion failed. Corrected owning documentation tests 3/3, final discovery+documentation 19/19. Full initial status preserved.",
+    "criticalFloors": "318 original critical floors plus two existing renderer floors from shared 33/33 instrumented tests; all 320 independently checked under unchanged source hashes. No fabricated successful full rerun.",
+    "initialRender": "Browser example import path corrected; actual four-backend font slice rerun passed."
+  },
+  "deferredIntegration": [
+    "P2 Text shadow uses this exact glyph RGBA/alpha helper; paints owner implements blur/color/offset/clip and actual ink bounds.",
+    "Theme/responsive/nested-facet STEP033–035 remain next assigned work.",
+    "Main/integration merge and global final qualification are parent-owned."
+  ],
+  "logs": [
+    {
+      "path": "logs/architecture-ceilings-corrected.log.gz",
+      "sha256": "629ea2ab431b020ef76cfc13cd32609c3b69091a8ea175154dc40fbd2b98fc92",
+      "uncompressedBytes": 754
+    },
+    {
+      "path": "logs/baseline-final.log.gz",
+      "sha256": "8a5c60ad8d5fdb3c130adc0f0519910e8560ddf00079a9ffbbdf24bfb3e6a16f",
+      "uncompressedBytes": 776
+    },
+    {
+      "path": "logs/baseline-refresh.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "uncompressedBytes": 0
+    },
+    {
+      "path": "logs/boundaries.log.gz",
+      "sha256": "150abfcac5cbdbf1245105ec67e1ad64c84626053435df6f40996467e7bab474",
+      "uncompressedBytes": 2305
+    },
+    {
+      "path": "logs/browser-font.log.gz",
+      "sha256": "4dce24566fb4981624b8e25665d9d0f0406e77fd7df13cf0adcca7d9dddb8b62",
+      "uncompressedBytes": 286
+    },
+    {
+      "path": "logs/budget-membership.log.gz",
+      "sha256": "0f5c19d3e327faf01e270f9a61a72e7ccdb0b29fe382f743c432e4fa1cc74fe5",
+      "uncompressedBytes": 8564
+    },
+    {
+      "path": "logs/bundle-initial.log.gz",
+      "sha256": "5a2cd8e92413d46595934d2a440e5d559eb86fc2119d0d6e707e5aa08f7b52b0",
+      "uncompressedBytes": 1045
+    },
+    {
+      "path": "logs/cards-final-check.log.gz",
+      "sha256": "ddc9ee8b81a9cbdfe012cc3fede3e68ea8ab583284c89ee5c9b48c6f729df3dd",
+      "uncompressedBytes": 60
+    },
+    {
+      "path": "logs/cards.log.gz",
+      "sha256": "e27bbcfb4109ddf075b5f58fd95b8e703913fcc9688fcae02950bf4910508db9",
+      "uncompressedBytes": 1207
+    },
+    {
+      "path": "logs/catalog.log.gz",
+      "sha256": "9cf9c583207d9e475c3ef76ca00c831f5aa2f71e2ddc35785499af6b8da2ae58",
+      "uncompressedBytes": 80
+    },
+    {
+      "path": "logs/chart-slice-corrected.log.gz",
+      "sha256": "01adbed6be87334d8e1847eef901e8ec6964d53d8187df8246083ead55c62cb8",
+      "uncompressedBytes": 322
+    },
+    {
+      "path": "logs/chart-slice-final.log.gz",
+      "sha256": "9b26e6273e7ee24d2333ed43e40eb5d89e6fa9a2b0b99ee03eab786577277d35",
+      "uncompressedBytes": 1031
+    },
+    {
+      "path": "logs/closeout-contracts.log.gz",
+      "sha256": "7a02086a983d6eb44810d67eb5ccebe9557ee632d566a4000fab6ed3b7302328",
+      "uncompressedBytes": 3923
+    },
+    {
+      "path": "logs/contracts-corrections.log.gz",
+      "sha256": "c9788bcd54cdd4d3a16ce8cd7eaa8ecae0cdcf0883fdcaa9360d842443cadfad",
+      "uncompressedBytes": 5370
+    },
+    {
+      "path": "logs/contracts.log.gz",
+      "sha256": "d3ee863fbb51b76407abeda9eaea601fefdc568ae71fb348b5ea20b01915d422",
+      "uncompressedBytes": 175857
+    },
+    {
+      "path": "logs/coverage-final.log.gz",
+      "sha256": "b2500c0b1ad0571898123d5de31075193d34ea438a773c62047dda2b9e46c651",
+      "uncompressedBytes": 1638571
+    },
+    {
+      "path": "logs/current-focused.log.gz",
+      "sha256": "00dfb764b546d151134d72951e04b492fc570528805e5806713c495110bf523a",
+      "uncompressedBytes": 8408
+    },
+    {
+      "path": "logs/descriptors.log.gz",
+      "sha256": "eb429e5f0cc69194423f30ba671837db40b5fb5ae990338ba8de46fd7fec7abc",
+      "uncompressedBytes": 93
+    },
+    {
+      "path": "logs/discovery-final.log.gz",
+      "sha256": "0f098ac47e528c7a88456ddc44d171140a58d0820535fe602a596e98c9e151ab",
+      "uncompressedBytes": 3279
+    },
+    {
+      "path": "logs/docs-browser-final.log.gz",
+      "sha256": "fcb9f73218e956d0e4b2d64d1bf78f9affaafa35e5f5bfb158c04fbe6a55da85",
+      "uncompressedBytes": 79
+    },
+    {
+      "path": "logs/docs-browser.log.gz",
+      "sha256": "fcb9f73218e956d0e4b2d64d1bf78f9affaafa35e5f5bfb158c04fbe6a55da85",
+      "uncompressedBytes": 79
+    },
+    {
+      "path": "logs/docs-build-final.log.gz",
+      "sha256": "81443a060ea9d5a53403cf597b6eb1803d69bf72fbaed82c96f5a266df227c93",
+      "uncompressedBytes": 420
+    },
+    {
+      "path": "logs/docs-build.log.gz",
+      "sha256": "89a5321b7567356161d1561aafb35276e7259b5af2189800403e6341c6fd1da8",
+      "uncompressedBytes": 420
+    },
+    {
+      "path": "logs/docs-built-final.log.gz",
+      "sha256": "294b17d14105e74d12f39f5e6aaa7653e5e189a9477974e1fcbb31181431b837",
+      "uncompressedBytes": 102
+    },
+    {
+      "path": "logs/docs-built.log.gz",
+      "sha256": "294b17d14105e74d12f39f5e6aaa7653e5e189a9477974e1fcbb31181431b837",
+      "uncompressedBytes": 102
+    },
+    {
+      "path": "logs/docs-final-precommit.log.gz",
+      "sha256": "be03e43b2a9c1ce82177b3cf1b7a58b7090e7cb7dda4dbe280c506ce3d21fd4c",
+      "uncompressedBytes": 40797
+    },
+    {
+      "path": "logs/docs-generate-final.log.gz",
+      "sha256": "bd91d7133e596ac6fa1e47fb523db9573eb7630c1f48d26e2293bd77033d519c",
+      "uncompressedBytes": 10579
+    },
+    {
+      "path": "logs/docs-generate-tail.log.gz",
+      "sha256": "db570229dbd7a39cf8cfc853d1749b6deeff3dedfbb888d65ef9e08a14bbafcc",
+      "uncompressedBytes": 139
+    },
+    {
+      "path": "logs/docs-generate.log.gz",
+      "sha256": "3898f7f4bb131eb715e3c3f94e7801d67b10fbfae33b2605a8c1ddbf4c3d68ba",
+      "uncompressedBytes": 2621
+    },
+    {
+      "path": "logs/docs-postcommit.log.gz",
+      "sha256": "0c8a7d28bf1d19228b80831aa26f54ba0a238cb6041cd0478f0e2d6b41e9e520",
+      "uncompressedBytes": 39084
+    },
+    {
+      "path": "logs/docs-support.log.gz",
+      "sha256": "6ff34605b3e2dd386e41ce1059975613668b5e9433fd5c4140c6588278edc8f1",
+      "uncompressedBytes": 607
+    },
+    {
+      "path": "logs/docs-tests.log.gz",
+      "sha256": "cf10e6d6809e752b4e0454698cba27d1fb8a62d526612bedd9c33c230dd5bba4",
+      "uncompressedBytes": 43009
+    },
+    {
+      "path": "logs/entry-resource-boundaries-final.log.gz",
+      "sha256": "ff8b31e8df26e5cc1ab4de0b41d2cec631500d562bf9dc19ea5ae9ee0861a084",
+      "uncompressedBytes": 6972
+    },
+    {
+      "path": "logs/extended-lifecycle.log.gz",
+      "sha256": "f491f5a852e3ba11bdd79ad8b5195f59b643b62c5416bb808947b069ccbf6421",
+      "uncompressedBytes": 7395
+    },
+    {
+      "path": "logs/final-glyph-budgets.log.gz",
+      "sha256": "9306ef8e290ab1a54d98010b247063ad3bffadb5c49f9c8d80fc047f0b9ca3f7",
+      "uncompressedBytes": 4831
+    },
+    {
+      "path": "logs/final-runtime-regressions.log.gz",
+      "sha256": "8b88f21340902e7cff915384278b87fcc5ffa3c431de9e32e653bd8a1a53a738",
+      "uncompressedBytes": 8588
+    },
+    {
+      "path": "logs/focused-coverage-2.log.gz",
+      "sha256": "7a8a9966a4bf089eb3db34c19fbc30e5a90c33d1ee626647795d357444d6484a",
+      "uncompressedBytes": 13924
+    },
+    {
+      "path": "logs/focused-coverage-3.log.gz",
+      "sha256": "31ef526c8b84fbf468415401d6ad136b5927488c1cba2dc795ea2d4dfdd15f62",
+      "uncompressedBytes": 14638
+    },
+    {
+      "path": "logs/focused-coverage.log.gz",
+      "sha256": "afe997e35b31944d670e7b6b65530511ae11057408aa1559e1080ab59ed9363c",
+      "uncompressedBytes": 11968
+    },
+    {
+      "path": "logs/focused-final-boundaries.log.gz",
+      "sha256": "98671f1fd9d596816757587d44b46e5744fb7adbdf938151584bfec73a0731bc",
+      "uncompressedBytes": 5449
+    },
+    {
+      "path": "logs/focused-preparation-final.log.gz",
+      "sha256": "891c664ba820cbb38a8a17e687bcb0d00cf9f7ac661f6bb4ce3a2a312239d06d",
+      "uncompressedBytes": 2970
+    },
+    {
+      "path": "logs/font-binding.log.gz",
+      "sha256": "7a2338f7a463db011aa36603e80ab4778661a57e274c7cf3ba8582552fa17020",
+      "uncompressedBytes": 5255
+    },
+    {
+      "path": "logs/font-lifetime.log.gz",
+      "sha256": "bb68bae6673cd7b996bf0d3b55f0760f772b22de5fddb25b50746522307b8c32",
+      "uncompressedBytes": 2612
+    },
+    {
+      "path": "logs/glyph-mask.log.gz",
+      "sha256": "a72871956fca227476c123f55283271ebc0e3a929462cac0ec783efb70a79f64",
+      "uncompressedBytes": 6091
+    },
+    {
+      "path": "logs/installed-matrix.log.gz",
+      "sha256": "fdbf3b3b7fe9fd90fa3ed24b14ca5b2aedde79ea5b3a78ea0cb2f67fb8e8903f",
+      "uncompressedBytes": 654
+    },
+    {
+      "path": "logs/installed-node20.log.gz",
+      "sha256": "74a2bc0613b456a9654688ca86ea7385c2f692b3b826ddfa4b59b0a8c1ea27eb",
+      "uncompressedBytes": 2884
+    },
+    {
+      "path": "logs/installed-node22.log.gz",
+      "sha256": "401fe67c229d15d4d8681c29fe33f2c30cfe0756e8aae43cbf889630cfc6678b",
+      "uncompressedBytes": 2884
+    },
+    {
+      "path": "logs/installed-node24.log.gz",
+      "sha256": "2827af5db5c78cafe2b1f8ae824363e6fd35523a9c5f479ef66e71ea557384e1",
+      "uncompressedBytes": 2884
+    },
+    {
+      "path": "logs/layout-lifecycle.log.gz",
+      "sha256": "dba0bbb80ed178256225a6f65d7b75f6ac79e37cc287e8a7b4715f4b60494847",
+      "uncompressedBytes": 986
+    },
+    {
+      "path": "logs/llms-final.log.gz",
+      "sha256": "db570229dbd7a39cf8cfc853d1749b6deeff3dedfbb888d65ef9e08a14bbafcc",
+      "uncompressedBytes": 139
+    },
+    {
+      "path": "logs/long-label-docs.log.gz",
+      "sha256": "115468485f4a0d34e74e2437dd2c726f18fef91415bd78e915331ef8c2f3e91d",
+      "uncompressedBytes": 854
+    },
+    {
+      "path": "logs/machine-final.log.gz",
+      "sha256": "483707fa6215924cea45bde04c6ac0adba58b97c7e7e8f27304fbd2b2276a23b",
+      "uncompressedBytes": 127
+    },
+    {
+      "path": "logs/merged-focused.log.gz",
+      "sha256": "3cb2320a57d3ddb77d1355cbef8b320038d1524d2fa53d9e08825b2a34610a25",
+      "uncompressedBytes": 7047
+    },
+    {
+      "path": "logs/metrics-focused.log.gz",
+      "sha256": "dd99a2d9311d6c54a0415170ceee9cb83c80675769887cb4f8669ec68a6bdd75",
+      "uncompressedBytes": 7159
+    },
+    {
+      "path": "logs/package-initial.log.gz",
+      "sha256": "8d001c32eb75d631589ef75d289b18def38f82035dc4dd8f04166acd828a4767",
+      "uncompressedBytes": 1127
+    },
+    {
+      "path": "logs/payload-focused.log.gz",
+      "sha256": "a9228f04c9457974f5ccdf35ed924d41cb87dac38d410d1272f46b9c0d17af97",
+      "uncompressedBytes": 8664
+    },
+    {
+      "path": "logs/provenance-final.log.gz",
+      "sha256": "9b35b403ed4658b37822e9eb06482a5d9bfbdb5488a669f984c2fa1b14ad45e5",
+      "uncompressedBytes": 69
+    },
+    {
+      "path": "logs/public-preparation.log.gz",
+      "sha256": "a54286e34c34bb1a015c8f367ded19c38fd88ff03898208165c8b331ebba6710",
+      "uncompressedBytes": 6611
+    },
+    {
+      "path": "logs/realistic-corrected-tail.log.gz",
+      "sha256": "680d4fd9ce30d71c2a6221e6f508c644d7635553dccc7a4050c18ca25f00849e",
+      "uncompressedBytes": 1722
+    },
+    {
+      "path": "logs/realistic-focused.log.gz",
+      "sha256": "4f36341b279a279969e2af76132745148dadc7e237ca068bc0dac4dc321f3ab7",
+      "uncompressedBytes": 2955
+    },
+    {
+      "path": "logs/realistic-ledger-corrected.log.gz",
+      "sha256": "680d4fd9ce30d71c2a6221e6f508c644d7635553dccc7a4050c18ca25f00849e",
+      "uncompressedBytes": 1722
+    },
+    {
+      "path": "logs/relations-final.log.gz",
+      "sha256": "2bad015d1061e94359d5aa30960f41e616a8cb32c26ce1b709107b47afb6888a",
+      "uncompressedBytes": 88
+    },
+    {
+      "path": "logs/relations.log.gz",
+      "sha256": "2bad015d1061e94359d5aa30960f41e616a8cb32c26ce1b709107b47afb6888a",
+      "uncompressedBytes": 88
+    },
+    {
+      "path": "logs/render-browser-import-corrected.log.gz",
+      "sha256": "fe1f11ea75fbd633c9592545d26bb3bbdb46fdc08f2bfbaee1f3da3461bbc6fe",
+      "uncompressedBytes": 438
+    },
+    {
+      "path": "logs/render-final.log.gz",
+      "sha256": "ace9619af4d3241566fb487e6f56dfaf979a6738ccd8ae34079257a0f2427e08",
+      "uncompressedBytes": 913
+    },
+    {
+      "path": "logs/render-focused.log.gz",
+      "sha256": "fb9f5b20e9e2ec1b0a28d4f3a222071a0ad6d973557dcca8f8cd1302edbffae1",
+      "uncompressedBytes": 5971
+    },
+    {
+      "path": "logs/resource-state.log.gz",
+      "sha256": "194692ca4a332844adf91fb7094f9d8ddd07f360ec7cddf363987da31a49b533",
+      "uncompressedBytes": 642
+    },
+    {
+      "path": "logs/scoped-prepared-initial.log.gz",
+      "sha256": "8c54bb723d91a6ac569335220e501f384afef402b23d3711ef745f1f9e8af5b1",
+      "uncompressedBytes": 947
+    },
+    {
+      "path": "logs/search-final.log.gz",
+      "sha256": "62945f1ece688632e1557eeae274be617009152ad948aa7f96ec08dca36f2578",
+      "uncompressedBytes": 121
+    },
+    {
+      "path": "logs/snippets-final.log.gz",
+      "sha256": "d681325c1e3ba674311d57d0a82b0695fb4eece80cc8280f018e9109695453e6",
+      "uncompressedBytes": 83
+    },
+    {
+      "path": "logs/structured-fill-contours-coverage.log.gz",
+      "sha256": "7e1fea063adcb49b023a4fac3bee27b029574a8e7116dc2fec53423314d724d0",
+      "uncompressedBytes": 7064
+    },
+    {
+      "path": "logs/structured-shape-corrected.log.gz",
+      "sha256": "178b103831e2db59e7b0b93b3d6f9faf5e253be9be09fea917819548375bc313",
+      "uncompressedBytes": 2166
+    },
+    {
+      "path": "logs/structured-shape-correction.log.gz",
+      "sha256": "b80707fe7cfc8a17f97152d90373accf8bab51ec3249d7e039ede90007199e4e",
+      "uncompressedBytes": 2818
+    },
+    {
+      "path": "logs/structured-shape-coverage-final.log.gz",
+      "sha256": "76c76ac1de3836e859900fa640ecf630c609933df91fb055a3b6949c9e5cd01f",
+      "uncompressedBytes": 2631
+    },
+    {
+      "path": "logs/structured-shape-coverage.log.gz",
+      "sha256": "3682c438ea064ab1199df937a484b9b5d915236892bbc9bb1cc8934f688c257e",
+      "uncompressedBytes": 1406
+    },
+    {
+      "path": "logs/structured-shape-final.log.gz",
+      "sha256": "a4a736e6b7afbf3c47b70925056b0d480ca514f674d78f0f13a11b89e4f028a0",
+      "uncompressedBytes": 546
+    },
+    {
+      "path": "logs/types-focused.log.gz",
+      "sha256": "b448860da366848bc37a50df39728edd08d95876f467299c364b175c315af79e",
+      "uncompressedBytes": 848
+    },
+    {
+      "path": "logs/types-inventory.log.gz",
+      "sha256": "f8a754df7f421d384f84c735e8c8d073445999bdd606c06cde1ca073826f3796",
+      "uncompressedBytes": 850
+    },
+    {
+      "path": "logs/unicode-contract.log.gz",
+      "sha256": "16126a11cab90ef2dbebdf6825ad969465d009e397899157bb2fec03197aaca5",
+      "uncompressedBytes": 387
+    },
+    {
+      "path": "logs/unicode-example.log.gz",
+      "sha256": "3106cb62f4f3ceaa599fd4123eb8472adae79c71fc9b49b2739d4856ef5cd25e",
+      "uncompressedBytes": 1344
+    },
+    {
+      "path": "logs/unicode-render.log.gz",
+      "sha256": "4312bbcc2cef218f64bfe987706dc6f731696266e2c453d04fb01c87579c2905",
+      "uncompressedBytes": 366
+    },
+    {
+      "path": "logs/unit.log.gz",
+      "sha256": "94a69aa447f75a5898b39add1abd0635591be8cfdf0890ffd641340995427e16",
+      "uncompressedBytes": 1206280
+    },
+    {
+      "path": "logs/closeout-docs.log.gz",
+      "sha256": "bde4750a4325677a59002ac1f4e4b6a6826e2a42e04a4130a485cbdbfb938b69",
+      "uncompressedBytes": 1265
+    }
+  ]
+}

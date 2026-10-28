@@ -1033,6 +1033,10 @@
     ],
     "structured-paints": [
       {
+        "type": "file",
+        "path": "unit/renderers/structured-fill-contours.test.js"
+      },
+      {
         "type": "prefix",
         "path": "charts/structured-paints/"
       },

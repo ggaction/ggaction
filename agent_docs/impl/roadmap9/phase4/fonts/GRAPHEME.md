@@ -1,5 +1,7 @@
 # Grapheme 단위 줄바꿈
 
+> 이 문서의 수치와 준비 상태 설명은 당시 private checkpoint의 역사다. 공개 연결과 전체 AT-04/15 검증은 [PUBLIC.md](PUBLIC.md), [PUBLIC_EVIDENCE.md](PUBLIC_EVIDENCE.md)에서 완료했다.
+
 ## 진행 상태
 
 - [x] STEP-019의 한글·combining·emoji cluster 보존
@@ -7,8 +9,8 @@
 - [x] 편집·Canvas replay·저장 복원·이전 program 불변성
 - [x] Node 20/22/24 및 Chromium/Firefox/WebKit의 설치 패키지 검증
 - [x] current 계약·선언 설명·공개 문서·생성물 동기화
-- [ ] 실제 font asset/hash와 renderer 측정값 연결 및 load completion
-- [ ] STEP-019의 전체 AT-04/15 종료
+- [x] 실제 font asset/hash와 renderer 측정값 연결 및 load completion
+- [x] STEP-019의 전체 AT-04/15 종료
 
 [전체 실행 승인](../../AUTHORIZATION.json)의 기존 text layout 요구를 구현한 checkpoint다.
 새 mark나 새 시각 스타일을 추가하지 않는다. 기존 code-point wrapping이 결합 문자와 emoji를

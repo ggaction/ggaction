@@ -38341,9 +38341,9 @@
         "H3"
       ],
       "wraps": [
-        "removeMark",
+        "removeTextMetrics",
         "editSemantic",
-        "removeTextMetrics"
+        "removeMark"
       ],
       "editableVia": [
         "removeResource"

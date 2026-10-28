@@ -3,9 +3,9 @@
   "status": "development",
   "packageVersion": "0.0.26",
   "contractId": "sha256:4a146ea548f6141c3530e8accf2570fb853ce1f0de1c06fc2a925052b25fb651",
-  "sourceCommit": null,
-  "sourceRef": "main",
-  "exampleSourceRef": "codex/roadmap9-images",
+  "sourceCommit": "ad538d08d195a2d9aac4e29a130149a4c5227bf0",
+  "sourceRef": "ad538d08d195a2d9aac4e29a130149a4c5227bf0",
+  "exampleSourceRef": "ad538d08d195a2d9aac4e29a130149a4c5227bf0",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
