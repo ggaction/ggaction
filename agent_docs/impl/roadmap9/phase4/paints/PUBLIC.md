@@ -124,15 +124,8 @@ Radial의 immutable normalized paint와 concrete bounds로 ephemeral gradient를
 승인한 stop alpha 결합/vector radial shading 경로를 사용하고 focal-on-edge cone 밖은 clip한다. Invalid colors/unsupported native
 capability는 fallback 대신 preflight error다.
 
-공통 bounded raster glyph가 필요한 효과는 root가 제안 중인 **단일 image primitive**를 재사용한다:
-
-```ts
-properties: {
-  image: {contentHash, mimeType, byteLength, width, height, payload:{encoding:"base64",data}},
-  x, y, width, height, opacity?
-}
-// 기존 node.clip 사용; renderer fetch 없음
-```
+공통 bounded raster glyph가 필요한 효과는 root의 [Image 공개 연결 I3/I4](https://github.com/ggaction/ggaction/blob/603beed0/agent_docs/impl/roadmap9/phase4/images/PUBLIC_DESIGN.md)를 재사용한다.
+Concrete image의 정확한 필드와 prepare API는 그 문서가 단독 소유한다. 이 문서에서 별도 schema를 정의하지 않는다.
 
 원본 pixel dimensions는 image 내부, resolved draw rect는 properties에 있다. Shadow/isolated alpha lowering은 content-addressed
 PNG를 만들고 source identity/selection role은 mark owner가 유지한다. URI/license resource와 별개이며 새 assets top-level table이나
