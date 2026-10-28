@@ -312,11 +312,15 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createLayerPlot`](current/COMPOSITION.md#createlayerplot) | composition | Structural create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createAdjacentPlot`](current/COMPOSITION.md#createadjacentplot) | composition | Structural create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`editCompositionScales`](current/COMPOSITION.md#editcompositionscales) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createImageResource`](current/CORE.md#createimageresource) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`replaceImageResource`](current/CORE.md#replaceimageresource) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createImageMark`](current/MARKS.md#createimagemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editImageMark`](current/MARKS.md#editimagemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeResource`](current/CORE.md#removeresource) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createHierarchyData`](current/HIERARCHY.md#createhierarchydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editHierarchyData`](current/HIERARCHY.md#edithierarchydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`layoutHierarchy`](current/HIERARCHY.md#layouthierarchy) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLayout`](current/HIERARCHY.md#editlayout) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`removeResource`](current/HIERARCHY.md#removeresource) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTreePlot`](current/HIERARCHY.md#createtreeplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTreePlot`](current/HIERARCHY.md#edittreeplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTreemapPlot`](current/HIERARCHY.md#createtreemapplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |

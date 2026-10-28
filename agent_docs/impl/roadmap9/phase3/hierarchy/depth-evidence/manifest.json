@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "6dba81f61469959c8e6117a1af878e41a7459a16",
+  "status": "passed",
+  "results": {
+    "unit": 5461,
+    "focused": 24,
+    "coverage": {
+      "lines": 90.38,
+      "branches": 91.07,
+      "functions": 100
+    },
+    "boundaries": 20,
+    "node20": 8,
+    "node24": 8,
+    "contracts": 26,
+    "docs": 166,
+    "postcommit": 10,
+    "installedChecks": 69
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 770,
+    "packedBytes": 1143186,
+    "unpackedBytes": 5257384,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-conditional-ci/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "4a255ae15caa5604ecf5cdd5c126b240aa42da68",
+    "sha256": "f019f44d442172d99611c58c9905025f6e6ab29dbe2c01a29abf058933dd06a5"
+  },
+  "evidence": [
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/unit.log.gz",
+      "sha256": "4a608cf09fb342c60f41ce76bd4135dcf96f07bc6ff6f171d115122dc9151efc",
+      "uncompressedSha256": "fb0e9c4bf523d284d988637fe7087e3f184203c5d9bf0cf56fb193c81135b05b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/focused.log.gz",
+      "sha256": "5d4270ab945c30c7f1866902271f843c0176b573e8856605d230661c201bcf01",
+      "uncompressedSha256": "48cdc391e213923835362c5dd65bcca8357f999749b009fa1914396f93abbe6e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/boundaries.log.gz",
+      "sha256": "2c2e55e680a32ad9f1e1ce5610290e6e099b8fb53e015c60ff8f08bca399ee74",
+      "uncompressedSha256": "43c18f5a36b4a40a30ee40b72a69dbc6ef46147e7a6cc10d5eddd50f41f5281a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/node20.log.gz",
+      "sha256": "9ad4bb0d994c55f6efabb5aea80ecdf59f1de9d4abeb9564e7f54cf7a078af91",
+      "uncompressedSha256": "3388976b80ec9da98f4ccb6a902922d4e4955b190d1df3468e4b0492f6ae4d27"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/node24.log.gz",
+      "sha256": "17311753597414c46123e2c5354b89285df6e8e5a84d38b1f5b95f994599efd8",
+      "uncompressedSha256": "cf50106707cda0baf99bc484b58e7e6088fecd273371d626b53a2e5fb5ac0bc0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/contracts.log.gz",
+      "sha256": "6be9a36da85c2ae1d3c8bd7291322a59e81fb508702e2b73548782a3438af9bb",
+      "uncompressedSha256": "18d541b0a8d04e1f10ce810b74ee290a21477a350bfda9853af2220905db306e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/contracts-final.log.gz",
+      "sha256": "4ca924dffd490988e509d8c8a334102d1a8d2b9b166d4482674184c98d841773",
+      "uncompressedSha256": "3b775125946bedc3a7c57e66669d27305d812b48f63cfe7fa44aa9cd098a057d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/docs.log.gz",
+      "sha256": "d427dc5fb66e87602350a1a7ec09055ec2d17fc11371b21f869258d53fe5f1a3",
+      "uncompressedSha256": "149dfd98f1ffefbe17baf0f5bbd3b865fd25a29a778a276d64aab3cc636dd512"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/postcommit.log.gz",
+      "sha256": "5cf2251c078c01f4ce2741855022ff124ec1fe806ac8b4c12ac4d99f0606a8eb",
+      "uncompressedSha256": "f47095027e752b7f8f16f4566b9b22057514b9a3be62f5428184b7e8baa0b84f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/package22.log.gz",
+      "sha256": "d9ff5ef088a69c7ffd7bb31fb81b65c0edfc33a47915736203b5b43d8f9136bd",
+      "uncompressedSha256": "e0f92aa14004c318dbae803b12df12887e0ac5e0287ae3ba3ad46f49434d3b1c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/package22-final.json.gz",
+      "sha256": "00be98b242eb44653db4513028fcf33282ce171c708cdc512677ecef5026fe89",
+      "uncompressedSha256": "77917d28ac88391001a40e881bd670edc7896c7157de47368f96f19456f54135"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/package20.log.gz",
+      "sha256": "3043ff8b768e2b298d2f97bff4875ff334e5938841f089f151b06f6508ce5944",
+      "uncompressedSha256": "e4e6d25a2455b043441be29a03a6be705cc43201cc5a77c37931bc6bb0f82320"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/package24.log.gz",
+      "sha256": "3043ff8b768e2b298d2f97bff4875ff334e5938841f089f151b06f6508ce5944",
+      "uncompressedSha256": "e4e6d25a2455b043441be29a03a6be705cc43201cc5a77c37931bc6bb0f82320"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/bundles20.log.gz",
+      "sha256": "928611384bf6e2341211a0aea54f04bb5f4f4a8f1ea4583f499f20d07298f325",
+      "uncompressedSha256": "4ce9cb41346a7feac49d0be6344243a321d3d6fc5a05c5d12c3ce7c87deae8a4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/consumer22.log.gz",
+      "sha256": "eab77e6211ba262d7da048da2f9254d33d3731d9a936f7101182b19d3698f66f",
+      "uncompressedSha256": "b68401e2272f444512f7df56a03cc5e5c5c7aaa41eafc277c9dd5b01ee8e87ed"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/benchmark.json.gz",
+      "sha256": "301f51e2a205c8893c12eeb2b1feec42ad968cd7c2b27f2c817f7e5bef2a1a87",
+      "uncompressedSha256": "6b759f29b22076b22a2f5246de00a18181b1485938808523b649cd39b7d82dfd"
+    }
+  ],
+  "limitations": [
+    "Only source cloning is covered; no new deep persistence or unlimited hierarchy computation contract.",
+    "Initial discovery failed for missing capability mapping; final discovery passed.",
+    "Initial package check exceeded the prior unpacked budget; final measured caps passed."
+  ]
+}

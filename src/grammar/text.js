@@ -1,4 +1,5 @@
 import { normalizeConditionalEncoding } from "./conditionalEncoding.js";
+import { validateFillPaint } from "./paint.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { schemaField } from "./datasetSchema.js";
 import { readQuantitativeField } from "./scales/fields.js";
@@ -154,8 +155,11 @@ export function normalizeTextMarkConfig(options, base = DEFAULT_TEXT_MARK) {
   };
   for (const [option, property] of Object.entries(mapping)) {
     if (!Object.hasOwn(options, option)) continue;
-    validateConcreteGraphicValue("text", property, options[option]);
-    config[option] = options[option];
+    if (option === "fill") config.fill = validateFillPaint(options.fill, "Text fill");
+    else {
+      validateConcreteGraphicValue("text", property, options[option]);
+      config[option] = options[option];
+    }
   }
   if (Object.hasOwn(options, "rotation")) {
     config.rotation = resolveRotation(options.rotation, "Text rotation");

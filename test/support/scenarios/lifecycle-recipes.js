@@ -1,4 +1,4 @@
-import { chart, hconcat, prepareDataUpdate } from "../../../src/index.js";
+import { chart, hconcat, prepareDataUpdate, prepareImageResource } from "../../../src/index.js";
 
 import { loadZooDataset } from "../datasets/zoo.js";
 import {
@@ -19,6 +19,22 @@ const preparedSource = await prepareDataUpdate(preparedSourceBase, {
   id: "unusedPreparedLifecycleSource",
   source: { kind: "inline", values: [{ fixture: "prepared-source", value: 1 }] }
 }, { requestToken: preparedSourceToken });
+
+// Exercise asynchronous image authority once without changing synchronous recipe builds.
+// The temporary image mark is removed before any chart data is authored.
+const imageBytes = new TextEncoder().encode('<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1"><rect width="2" height="1" fill="red"/></svg>');
+const imageSource = { uri: "fixture:lifecycle-image", expectedHash: "3a12088d5970454aebf783f37e77640d75dab6494850606f04ca6646a62d005c", mimeType: "image/svg+xml" };
+const imageHost = { requestToken: "lifecycle-image", load: () => ({ bytes: imageBytes, mimeType: imageSource.mimeType }),
+  decode: () => ({ width: 2, height: 1, originClean: true }) };
+const imageBase = preparedSourceBase.applyDataUpdate({ prepared: preparedSource, requestToken: preparedSourceToken }).createCanvas();
+const imageCreate = await prepareImageResource(imageBase, { kind: "create", id: "unusedLifecycleImage", ...imageSource }, imageHost);
+const imageMarked = imageBase.createImageResource({ prepared: imageCreate, requestToken: imageHost.requestToken })
+  .createImageMark({ id: "unusedImageMark", image: "unusedLifecycleImage", viewport: { x: 0, y: 0, width: 10, height: 10 },
+    fit: "cover", align: [0, 1], opacity: 0.5, alt: "Lifecycle fixture", clip: { x: 0, y: 0, width: 8, height: 8 } })
+  .editImageMark({ target: "unusedImageMark", image: "unusedLifecycleImage", viewport: "auto", fit: "fill", align: [1, 0], opacity: 1, alt: "Updated fixture", clip: false });
+const imageReplacement = await prepareImageResource(imageMarked, { kind: "replace", target: "unusedLifecycleImage", ...imageSource }, imageHost);
+const preparedResourceBase = imageMarked.replaceImageResource({ prepared: imageReplacement, requestToken: imageHost.requestToken })
+  .removeMark({ target: "unusedImageMark" }).removeResource({ kind: "image", id: "unusedLifecycleImage", cascade: false });
 
 const CARTESIAN_CANVAS = Object.freeze({
   width: 920,
@@ -1257,11 +1273,8 @@ function buildDirectDataResources(factors) {
   const bandwidth = factors.dataset.startsWith("tt-")
     ? spread * factors.bandwidth
     : factors.bandwidth;
-  let program = preparedSourceBase.applyDataUpdate({
-    prepared: preparedSource,
-    requestToken: preparedSourceToken
-  })
-    .createCanvas(cartesianCanvas(factors))
+  let program = preparedResourceBase
+    .editCanvas(cartesianCanvas(factors))
     .editCanvas({
       width,
       background: factors.background
@@ -2196,7 +2209,7 @@ function lifecycleSignature(base, factors) {
     "action-facet-grid-lifecycle": ["facetGrid", "editFacetSource"],
     "action-repeat-charts-lifecycle": ["repeatCharts"],
     "action-direct-data-resources": [
-      "applyDataUpdate",
+      "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "removeResource",
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale",
       "removeData", "removeScale", "removeCoordinate",
       "createParameter", "editParameter", "removeParameter",
@@ -2455,7 +2468,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
-  "reviseData", "applyDataUpdate", "applyTextMetrics", "removeTextMetrics",
+  "reviseData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "removeResource", "applyTextMetrics", "removeTextMetrics",
   "createParameter", "editParameter", "removeParameter",
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createSortedData", "editSortedData",

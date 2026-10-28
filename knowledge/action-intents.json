@@ -960,6 +960,20 @@
       "category columns",
       "long to wide data"
     ],
+    "ImageResource": [
+      "retained image source",
+      "embedded image bytes"
+    ],
+    "ImageMark": [
+      "image placement",
+      "image fit and clipping"
+    ],
+    "Resource": [
+      "typed stored resource",
+      "resource deletion",
+      "stored named resource",
+      "resource dependencies"
+    ],
     "HierarchyData": [
       "typed hierarchy",
       "parent child data",
@@ -973,10 +987,6 @@
     "Layout": [
       "stored hierarchy layout",
       "node positions"
-    ],
-    "Resource": [
-      "stored named resource",
-      "resource dependencies"
     ],
     "TreePlot": [
       "hierarchy node link chart",
@@ -1805,6 +1815,30 @@
     "encodeYOffset": {
       "field": "series"
     },
+    "createImageResource": {
+      "prepared": {
+        "$code": "preparedImageCreate"
+      },
+      "requestToken": "current"
+    },
+    "replaceImageResource": {
+      "prepared": {
+        "$code": "preparedImageReplace"
+      },
+      "requestToken": "current"
+    },
+    "createImageMark": {
+      "image": "logo",
+      "alt": "Logo"
+    },
+    "editImageMark": {
+      "target": "image",
+      "fit": "cover"
+    },
+    "removeResource": {
+      "kind": "image",
+      "id": "logo"
+    },
     "createHierarchyData": {
       "id": "hierarchy",
       "key": "id",
@@ -1835,10 +1869,6 @@
         "by": "value",
         "direction": "descending"
       }
-    },
-    "removeResource": {
-      "kind": "layout",
-      "id": "tree-layout"
     },
     "createTreePlot": {
       "id": "tree",

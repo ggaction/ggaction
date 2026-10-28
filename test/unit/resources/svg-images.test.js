@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { DOMParser } from "@xmldom/xmldom";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
-import { validateSvgImage } from "../../../src/resources/svgImage.js";
+import { validateSvgImage } from "../../../src/grammar/svgImage.js";
 import { prepareImageAsset } from "../../../src/resources/resolveAssets.js";
 
 const encode = source => new TextEncoder().encode(source);

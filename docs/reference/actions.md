@@ -73,6 +73,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createHistogram`](./actions/charts-data.md#createhistogram) | H0, H1 | user-facing | charts |
 | [`createHorizonPlot`](./actions/statistics.md#createhorizonplot) | H0, H1 | user-facing | statistics |
 | [`createHorizontalGrid`](./actions/guides.md#createhorizontalgrid) | H3 | user-facing | grid |
+| [`createImageMark`](./actions/marks.md#createimagemark) | H2 | user-facing | marks |
+| [`createImageResource`](./actions/charts-data.md#createimageresource) | H3 | user-facing | core |
 | [`createImputedData`](./actions/statistics.md#createimputeddata) | H1 | user-facing | statistics |
 | [`createIntervalData`](./actions/statistics.md#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](./actions/charts-data.md#createintervalplot) | H0, H1 | user-facing | charts |
@@ -186,6 +188,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editHierarchyData`](./actions/charts-data.md#edithierarchydata) | H2 | user-facing | core |
 | [`editHorizon`](./actions/encodings.md#edithorizon) | H2, H3 | user-facing | encodings |
 | [`editHorizontalGrid`](./actions/guides.md#edithorizontalgrid) | H3 | user-facing | grid |
+| [`editImageMark`](./actions/marks.md#editimagemark) | H3 | user-facing | marks |
 | [`editImputedData`](./actions/statistics.md#editimputeddata) | H1, H3 | user-facing | statistics |
 | [`editIntervalData`](./actions/statistics.md#editintervaldata) | H1, H3 | user-facing | statistics |
 | [`editLayout`](./actions/charts-data.md#editlayout) | H2 | user-facing | core |
@@ -332,7 +335,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removePointPacking`](./actions/marks.md#removepointpacking) | H3 | user-facing | marks |
 | [`removePointRadius`](./actions/encodings.md#removepointradius) | H2, H3 | user-facing | encodings |
 | [`removeRadialAxis`](./actions/guides.md#removeradialaxis) | H3 | user-facing | axes |
-| [`removeResource`](./actions/charts-data.md#removeresource) | H2 | user-facing | core |
+| [`removeResource`](./actions/charts-data.md#removeresource) | H3 | user-facing | core |
 | [`removeScale`](./actions/charts-data.md#removescale) | H2 | user-facing | core |
 | [`removeTextMetrics`](./actions/charts-data.md#removetextmetrics) | H3 | user-facing | core |
 | [`removeTheme`](./actions/charts-data.md#removetheme) | H3 | user-facing | core |
@@ -343,5 +346,6 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`reorderCompositionChildren`](./actions/charts-data.md#reordercompositionchildren) | H3 | user-facing | composition |
 | [`repeatCharts`](./actions/charts-data.md#repeatcharts) | H0 | user-facing | composition |
 | [`replaceCompositionChild`](./actions/charts-data.md#replacecompositionchild) | H3 | user-facing | composition |
+| [`replaceImageResource`](./actions/charts-data.md#replaceimageresource) | H3 | user-facing | core |
 | [`reviseData`](./actions/charts-data.md#revisedata) | H3 | user-facing | core |
 | [`selectMarks`](./actions/advanced.md#selectmarks) | H3 | advanced | mark-selection |

@@ -1,0 +1,1 @@
+export interface CanvasRenderOptions { pixelRatio?: number; images?: PreparedImageRendering; }

@@ -6,6 +6,8 @@ import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit 
 import { prepareGraphMetricVectors } from "./preprocess.js";
 import { graphMetricPair } from "./metrics.js";
 import { inferredGraphEdgeIdentity } from "./edgeIdentity.js";
+import { normalizeGraphSearch, searchExactGraph } from "./search.js";
+import { searchApproximateGraph } from "./approximate.js";
 
 function normalize(options) {
   ownRecord(options, "Graph neighbor options");
@@ -14,7 +16,7 @@ function normalize(options) {
   const extra = rule === "knn" ? ["k", "symmetrize"] : rule === "radius"
     ? ["radius", "directed"] : rule === "similarity" ? ["threshold", "directed"] : [];
   if (extra.length === 0) throw new Error("Graph neighbors require knn, radius or similarity.");
-  rejectUnknownProperties(options, ["ruleId", "rule", "metric", "preprocess", "missing", "zeroVector", ...extra], "graph neighbor");
+  rejectUnknownProperties(options, ["ruleId", "rule", "metric", "preprocess", "missing", "zeroVector", "search", ...extra], "graph neighbor");
   const ruleId = validateUserId(options.ruleId, "Graph ruleId");
   if (rule === "knn") {
     const k = options.k === undefined ? 1 : options.k;
@@ -51,6 +53,8 @@ export function inferGraphNeighbors(keys, vectors, options) {
   const featureOptions = Object.fromEntries(["metric", "preprocess", "missing", "zeroVector"]
     .filter(key => Object.hasOwn(options, key)).map(key => [key, options[key]]));
   const preparation = prepareGraphMetricVectors(vectors, featureOptions);
+  const searchInput = Object.hasOwn(options, "search") ? options.search : undefined;
+  const searchPolicy = normalizeGraphSearch(searchInput, policy, preparation);
   const indexes = preparation.sourceIndices, n = indexes.length;
   if (policy.rule === "knn" && n > 1 && policy.k >= n) throw new RangeError("Graph k must be less than the included node count.");
   const pairCount = n < 2 ? 0 : n * (n - 1) / 2;
@@ -59,7 +63,7 @@ export function inferGraphNeighbors(keys, vectors, options) {
   const sortWork = n * Math.ceil(Math.log2(Math.max(n, 2)));
   const metricWork = pairCount * Math.max(1, dimension) *
     (preparation.metric === "jaccard" ? 24 + Math.ceil(Math.log2(Math.max(dimension, 2))) : 24);
-  validateWorkLimit(featureWork + metricWork + sortWork * (policy.rule === "knn" ? n : 1), "Graph exact neighbor work");
+  if (searchPolicy.algorithm === "brute-force") validateWorkLimit(featureWork + metricWork + sortWork * (policy.rule === "knn" ? n : 1), "Graph exact neighbor work");
   if (policy.rule === "knn" && policy.directed) validateGeneratedItemLimit(n * (n < 2 ? 0 : policy.k), "Graph neighbor edges");
   const rankOrder = Array.from({ length: n }, (_, i) => i).sort((a, b) => compareRowKeys(keys[indexes[a]], keys[indexes[b]]));
   const ranks = new Array(n);
@@ -78,7 +82,15 @@ export function inferGraphNeighbors(keys, vectors, options) {
   }
   const metricOptions = { metric: preparation.metric,
     ...(Object.hasOwn(preparation, "zeroVector") ? { zeroVector: preparation.zeroVector } : {}) };
-  for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) {
+  let searchResult;
+  if (searchPolicy.algorithm !== "brute-force") {
+    const found = searchPolicy.mode === "approximate"
+      ? searchApproximateGraph(preparation, policy, ranks, searchPolicy)
+      : searchExactGraph(preparation, policy, ranks, searchPolicy);
+    searchResult = found.search;
+    if (neighbors) found.rows.forEach((row, i) => { neighbors[i] = row; });
+    else for (const { a, b, distance } of found.pairs) { add(a, b, distance); if (policy.directed) add(b, a, distance); }
+  } else for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) {
     const result = graphMetricPair(preparation.vectors[a], preparation.vectors[b], metricOptions);
     if (neighbors) {
       neighbors[a].push({ index: b, distance: result.distance });
@@ -102,5 +114,6 @@ export function inferGraphNeighbors(keys, vectors, options) {
     sourceRanks.get(a.targetIndex) - sourceRanks.get(b.targetIndex));
   return cloneAndFreeze({ edges, preparation, options: { ...policy, ...metricOptions,
     preprocess: preparation.preprocess, missing: preparation.missing }, pairCount,
+    ...(searchInput === undefined ? {} : { search: searchResult ?? { ...searchPolicy, algorithmVersion: "brute-force@1", distanceEvaluations: pairCount } }),
     ...(policy.rule === "knn" ? { effectiveK: n < 2 ? 0 : policy.k } : {}) });
 }

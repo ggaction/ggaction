@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 313,
+  "count": 317,
   "cards": [
     {
       "schemaVersion": 3,
@@ -6299,7 +6299,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a point mark using fourteen named shapes or polygons with area/radius normalization.",
-      "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "create point mark",
         "create",
@@ -6415,7 +6415,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -6775,7 +6775,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "strokeDash",
@@ -7190,7 +7190,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -7384,7 +7384,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -7872,7 +7872,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -8128,7 +8128,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -8300,7 +8300,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -8526,7 +8526,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.",
-      "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "edit point mark",
         "edit",
@@ -8620,7 +8620,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -27883,7 +27883,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic arc mark and empty closed-path collection.",
-      "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "create arc mark",
         "create",
@@ -28004,7 +28004,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -28040,7 +28040,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit arc geometry or appearance and rematerialize complete sector paths.",
-      "signature": "editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "edit arc mark",
         "edit",
@@ -28141,7 +28141,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -36152,7 +36152,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -36342,7 +36342,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -36483,7 +36483,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: number | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: number | undefined; fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -36630,7 +36630,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -36776,7 +36776,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -37934,6 +37934,449 @@
     },
     {
       "schemaVersion": 3,
+      "name": "createImageResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Creates retained image source for embedded image bytes.",
+      "signature": "createImageResource(options: ApplyImageResourceOptions<\"create\">): ChartProgram;",
+      "intents": [
+        "create image resource",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "retained image source",
+        "embedded image bytes"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [],
+        "owns": [
+          "retained image source"
+        ],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "replaceImageResource",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "prepared",
+          "required": true,
+          "type": "PreparedImageResource<\"create\">"
+        },
+        {
+          "name": "requestToken",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "createImageResource({ prepared, requestToken })"
+      ],
+      "snippet": "program.createImageResource({ prepared: preparedImageCreate, requestToken: \"current\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createimageresource"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "replaceImageResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Replaces retained image source while preserving its composition slot and order.",
+      "signature": "replaceImageResource(options: ApplyImageResourceOptions<\"replace\">): ChartProgram;",
+      "intents": [
+        "replace image resource",
+        "replace",
+        "swap child",
+        "chart setup",
+        "data and scales",
+        "retained image source",
+        "embedded image bytes"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing retained image source"
+        ],
+        "owns": [],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "replaceImageResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing retained image source"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "prepared",
+          "required": true,
+          "type": "PreparedImageResource<\"replace\">"
+        },
+        {
+          "name": "requestToken",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "replaceImageResource({ prepared, requestToken })"
+      ],
+      "snippet": "program.replaceImageResource({ prepared: preparedImageReplace, requestToken: \"current\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#replaceimageresource"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createImageMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Creates image placement for image fit and clipping.",
+      "signature": "createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;",
+      "intents": [
+        "create image mark",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "image placement",
+        "image fit and clipping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "dataset and coordinate context"
+        ],
+        "owns": [
+          "image placement"
+        ],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic",
+        "createGraphics"
+      ],
+      "editableVia": [
+        "editImageMark",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "viewport",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "dataset and coordinate context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "image",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "viewport",
+          "required": false,
+          "type": "\"auto\" | { x: number; y: number; width: number; height: number; } | undefined"
+        },
+        {
+          "name": "fit",
+          "required": false,
+          "type": "\"contain\" | \"cover\" | \"fill\" | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "alt",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "false | GraphicClip | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createImageMark({ id?, target?, image?, viewport?, fit?, align?, opacity?, alt? })"
+      ],
+      "snippet": "program.createImageMark({ image: \"logo\", alt: \"Logo\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#createimagemark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editImageMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edits image placement, including settings for image fit and clipping.",
+      "signature": "editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;",
+      "intents": [
+        "edit image mark",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "image placement",
+        "image fit and clipping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing image placement"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editImageMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "viewport",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing image placement"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "image",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "viewport",
+          "required": false,
+          "type": "\"auto\" | { x: number; y: number; width: number; height: number; } | undefined"
+        },
+        {
+          "name": "fit",
+          "required": false,
+          "type": "\"contain\" | \"cover\" | \"fill\" | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "alt",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "false | GraphicClip | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })"
+      ],
+      "snippet": "program.editImageMark({ target: \"image\", fit: \"cover\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editimagemark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "removeResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Removes typed stored resource while preserving unrelated chart resources.",
+      "signature": "removeResource(options: RemoveStoredResourceOptions): ChartProgram;",
+      "intents": [
+        "remove resource",
+        "remove",
+        "delete",
+        "chart setup",
+        "data and scales",
+        "typed stored resource",
+        "resource deletion"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing typed stored resource"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "removeMark",
+        "editSemantic"
+      ],
+      "editableVia": [
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing typed stored resource"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "kind",
+          "required": true,
+          "type": "StoredResourceKind"
+        },
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "cascade",
+          "required": false,
+          "type": "boolean | undefined"
+        }
+      ],
+      "callPatterns": [
+        "removeResource({ kind, id, cascade? })"
+      ],
+      "snippet": "program.removeResource({ kind: \"image\", id: \"logo\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#removeresource"
+    },
+    {
+      "schemaVersion": 3,
       "name": "createHierarchyData",
       "layer": "user-facing",
       "domain": "core",
@@ -38380,79 +38823,6 @@
       "snippet": "program.editLayout({ target: \"tree-layout\", order: { by: \"value\", direction: \"descending\" } })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editlayout"
-    },
-    {
-      "schemaVersion": 3,
-      "name": "removeResource",
-      "layer": "user-facing",
-      "domain": "core",
-      "summary": "Remove a named stored resource after checking exact dependencies.",
-      "signature": "removeResource(options: RemoveStoredResourceOptions): ChartProgram;",
-      "intents": [
-        "remove resource",
-        "remove",
-        "delete",
-        "chart setup",
-        "data and scales",
-        "stored named resource",
-        "resource dependencies"
-      ],
-      "lifecycle": "Mutable resource",
-      "resources": {
-        "prerequisites": [
-          "existing stored named resource"
-        ],
-        "owns": [],
-        "idOptions": [
-          "id"
-        ]
-      },
-      "authoringRoles": [
-        "H2"
-      ],
-      "wraps": [
-        "editSemantic"
-      ],
-      "editableVia": [
-        "removeResource"
-      ],
-      "supports": {
-        "entryPoints": [
-          "default"
-        ]
-      },
-      "units": [],
-      "inference": [],
-      "completionRequirements": {
-        "state": "contextual",
-        "requires": [
-          "existing stored named resource"
-        ],
-        "allowsEmpty": false
-      },
-      "options": [
-        {
-          "name": "kind",
-          "required": true,
-          "type": "StoredResourceKind"
-        },
-        {
-          "name": "id",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "cascade",
-          "required": false,
-          "type": "boolean | undefined"
-        }
-      ],
-      "callPatterns": [
-        "removeResource({ kind, id, cascade? })"
-      ],
-      "snippet": "program.removeResource({ kind: \"layout\", id: \"tree-layout\" })",
-      "errors": [],
-      "route": "/reference/actions/charts-data/#removeresource"
     },
     {
       "schemaVersion": 3,

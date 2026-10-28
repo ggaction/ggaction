@@ -1,7 +1,8 @@
+import { isPatternPaint, isRadialGradientPaint } from "../../grammar/paint.js";
 import { requireFiniteProperty } from "./validation.js";
 import { validateConcreteGraphicProperties } from
   "../../grammar/schemas/concreteGraphic.js";
-import { applyCanvasFill } from "./fill.js";
+import { applyCanvasFill, fillCanvasPath } from "./fill.js";
 import { applyCanvasStroke } from "./stroke.js";
 
 function drawRect(context, child, collectionId) {
@@ -36,13 +37,18 @@ function drawRect(context, child, collectionId) {
   }
 
   context.globalAlpha = opacity;
-  applyCanvasFill(context, properties.fill, {
-    left: x,
-    right: x + width,
-    top: y,
-    bottom: y + height
-  }, graphicId);
-  context.fillRect(x, y, width, height);
+  const bounds = { left: x, right: x + width, top: y, bottom: y + height };
+  if (isPatternPaint(properties.fill) || isRadialGradientPaint(properties.fill)) {
+    const trace = () => {
+      context.moveTo(x, y); context.lineTo(x + width, y);
+      context.lineTo(x + width, y + height); context.lineTo(x, y + height); context.closePath();
+    };
+    context.beginPath(); trace();
+    fillCanvasPath(context, properties.fill, bounds, graphicId, trace);
+  } else {
+    applyCanvasFill(context, properties.fill, bounds, graphicId);
+    context.fillRect(x, y, width, height);
+  }
   // Canvas ignores lineWidth = 0 and would retain a previous nonzero width.
   if (strokeWidth > 0) {
     applyCanvasStroke(context, properties);

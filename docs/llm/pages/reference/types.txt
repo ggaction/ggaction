@@ -21,6 +21,7 @@ interface ChartProgramActions {
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
   applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
+  removeResource(options: RemoveStoredResourceOptions): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeCoordinate(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -40,11 +41,14 @@ interface ChartProgramActions {
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
   createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
+  createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
+  replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+  createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
+  editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
   createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;
   editHierarchyData(options: TargetedOptions<EditHierarchyDataOptions>): ChartProgram;
   layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
   editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
-  removeResource(options: RemoveStoredResourceOptions): ChartProgram;
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
@@ -87,8 +91,8 @@ interface ChartProgramActions {
   editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
   editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
   editBin2DData(options: TargetedOptions<EditBin2DDataOptions>): ChartProgram;
-  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   createTickMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   editTickMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   jitterPoints(options: TargetedOptions<JitterPointsOptions>): ChartProgram;
@@ -100,8 +104,8 @@ interface ChartProgramActions {
   createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "multiply" | "screen" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
-  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
-  editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
+  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
+  editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
   createRectMark(options?: TargetedOptions<RectMarkOptions>): ChartProgram;
   editRectMark(options: TargetedOptions<EditRectMarkOptions>): ChartProgram;
   createRuleMark(options?: TargetedOptions<{ clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions>): ChartProgram;
@@ -492,6 +496,18 @@ export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] =
 ```
 
 Related types: [`DataUpdateRequest`](../../../reference/types/#type-dataupdaterequest) · [`PreparedDataUpdate`](../../../reference/types/#type-prepareddataupdate).
+
+### `ApplyImageResourceOptions` {#type-applyimageresourceoptions}
+
+ Expand ApplyImageResourceOptions
+
+```typescript
+export interface ApplyImageResourceOptions<Kind extends "create" | "replace"> {
+  prepared: PreparedImageResource<Kind>; requestToken: string;
+}
+```
+
+Related types: [`PreparedImageResource`](../../../reference/types/#type-preparedimageresource).
 
 ### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
 
@@ -2117,6 +2133,26 @@ export interface ComputedExpressionV2 {
 
 Related types: [`ExpressionNode`](../../../reference/types/#type-expressionnode).
 
+### `ConcretePathCommand` {#type-concretepathcommand}
+
+ Expand ConcretePathCommand
+
+```typescript
+export type ConcretePathCommand =
+  | { readonly op: "M"; readonly x: number; readonly y: number }
+  | { readonly op: "L"; readonly x: number; readonly y: number }
+  | {
+      readonly op: "C";
+      readonly x1: number;
+      readonly y1: number;
+      readonly x2: number;
+      readonly y2: number;
+      readonly x: number;
+      readonly y: number;
+    }
+  | { readonly op: "Z" };
+```
+
 ### `ConditionalEncodingBranch` {#type-conditionalencodingbranch}
 
  Expand ConditionalEncodingBranch
@@ -2623,6 +2659,16 @@ export interface CreateHorizonPlotOptions {
 
 Related types: [`HorizonXEncoding`](../../../reference/types/#type-horizonxencoding) · [`HorizonYEncoding`](../../../reference/types/#type-horizonyencoding) · [`HorizonResolution`](../../../reference/types/#type-horizonresolution) · [`HorizonMissingPolicy`](../../../reference/types/#type-horizonmissingpolicy) · [`HorizonOverflowPolicy`](../../../reference/types/#type-horizonoverflowpolicy) · [`HorizonPaletteOptions`](../../../reference/types/#type-horizonpaletteoptions) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`CurveInterpolation`](../../../reference/types/#type-curveinterpolation) · [`HorizonPlotGuideOptions`](../../../reference/types/#type-horizonplotguideoptions).
 
+### `CreateImageMarkOptions` {#type-createimagemarkoptions}
+
+ Expand CreateImageMarkOptions
+
+```typescript
+export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; }
+```
+
+Related types: [`ImageMarkOptions`](../../../reference/types/#type-imagemarkoptions).
+
 ### `CreateIntervalPlotOptions` {#type-createintervalplotoptions}
 
  Expand CreateIntervalPlotOptions
@@ -2788,12 +2834,12 @@ export type CreatePiePlotOptions = {
   category: PieCategory;
   color?: false | PieColor;
   radius?: PieRadiusChannel;
-  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 ```
 
-Related types: [`PieCategory`](../../../reference/types/#type-piecategory) · [`PieColor`](../../../reference/types/#type-piecolor) · [`PieRadiusChannel`](../../../reference/types/#type-pieradiuschannel) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](../../../reference/types/#type-arcinnerradius) · [`PieLegendOptions`](../../../reference/types/#type-pielegendoptions).
+Related types: [`PieCategory`](../../../reference/types/#type-piecategory) · [`PieColor`](../../../reference/types/#type-piecolor) · [`PieRadiusChannel`](../../../reference/types/#type-pieradiuschannel) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](../../../reference/types/#type-arcinnerradius) · [`FillPaint`](../../../reference/types/#type-fillpaint) · [`PieLegendOptions`](../../../reference/types/#type-pielegendoptions).
 
 ### `CreatePolarLinePlotOptions` {#type-createpolarlineplotoptions}
 
@@ -3043,12 +3089,12 @@ Related types: [`RegressionPlotBaseOptions`](../../../reference/types/#type-regr
 ```typescript
 export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value" | "radius"> & {
   radiusScale?: MeasuredRadiusScaleOptions;
-  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 ```
 
-Related types: [`CreatePiePlotOptions`](../../../reference/types/#type-createpieplotoptions) · [`MeasuredRadiusScaleOptions`](../../../reference/types/#type-measuredradiusscaleoptions) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](../../../reference/types/#type-arcinnerradius) · [`MeasuredRadialGuideOptions`](../../../reference/types/#type-measuredradialguideoptions).
+Related types: [`CreatePiePlotOptions`](../../../reference/types/#type-createpieplotoptions) · [`MeasuredRadiusScaleOptions`](../../../reference/types/#type-measuredradiusscaleoptions) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](../../../reference/types/#type-arcinnerradius) · [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MeasuredRadialGuideOptions`](../../../reference/types/#type-measuredradialguideoptions).
 
 ### `CreateRugPlotOptions` {#type-createrugplotoptions}
 
@@ -5015,6 +5061,16 @@ export interface EditHorizonOptions
 
 Related types: [`HorizonEncodingOptions`](../../../reference/types/#type-horizonencodingoptions).
 
+### `EditImageMarkOptions` {#type-editimagemarkoptions}
+
+ Expand EditImageMarkOptions
+
+```typescript
+export interface EditImageMarkOptions extends ImageMarkOptions { target?: string; }
+```
+
+Related types: [`ImageMarkOptions`](../../../reference/types/#type-imagemarkoptions).
+
 ### `EditImputedDataOptions` {#type-editimputeddataoptions}
 
  Expand EditImputedDataOptions
@@ -6386,10 +6442,10 @@ export type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";
  Expand FillPaint
 
 ```typescript
-export type FillPaint = string | LinearGradientPaint;
+export type FillPaint = string | LinearGradientPaint | PatternPaint | RadialGradientPaint;
 ```
 
-Related types: [`LinearGradientPaint`](../../../reference/types/#type-lineargradientpaint).
+Related types: [`LinearGradientPaint`](../../../reference/types/#type-lineargradientpaint) · [`PatternPaint`](../../../reference/types/#type-patternpaint) · [`RadialGradientPaint`](../../../reference/types/#type-radialgradientpaint).
 
 ### `FilledLegendSymbolRecipe` {#type-filledlegendsymbolrecipe}
 
@@ -6749,6 +6805,40 @@ export type GradientPlotPositionChannel = BoxPlotPositionChannel;
 
 Related types: [`BoxPlotPositionChannel`](../../../reference/types/#type-boxplotpositionchannel).
 
+### `GraphicClip` {#type-graphicclip}
+
+ Expand GraphicClip
+
+```typescript
+export type GraphicClip = GraphicClipRect | GraphicClipPath;
+```
+
+Related types: [`GraphicClipRect`](../../../reference/types/#type-graphiccliprect) · [`GraphicClipPath`](../../../reference/types/#type-graphicclippath).
+
+### `GraphicClipPath` {#type-graphicclippath}
+
+ Expand GraphicClipPath
+
+```typescript
+export interface GraphicClipPath {
+  readonly type: "path";
+  readonly commands: readonly ConcretePathCommand[];
+  readonly fillRule?: PathFillRule;
+}
+```
+
+Related types: [`ConcretePathCommand`](../../../reference/types/#type-concretepathcommand) · [`PathFillRule`](../../../reference/types/#type-pathfillrule).
+
+### `GraphicClipRect` {#type-graphiccliprect}
+
+ Expand GraphicClipRect
+
+```typescript
+export interface GraphicClipRect {
+  readonly x: number; readonly y: number; readonly width: number; readonly height: number;
+}
+```
+
 ### `GraphicType` {#type-graphictype}
 
  Expand GraphicType
@@ -6761,7 +6851,8 @@ export type GraphicType =
   | "rect"
   | "line"
   | "text"
-  | "path";
+  | "path"
+  | "image";
 ```
 
 ### `GridDirectionOptions` {#type-griddirectionoptions}
@@ -7172,6 +7263,22 @@ export type HorizonYScaleOptions = ScaleFields<"id" | "clamp" | "reverse"> & {
 ```
 
 Related types: [`ScaleFields`](../../../reference/types/#type-scalefields).
+
+### `ImageMarkOptions` {#type-imagemarkoptions}
+
+ Expand ImageMarkOptions
+
+```typescript
+export interface ImageMarkOptions {
+  image?: string;
+  viewport?: "auto" | { x: number; y: number; width: number; height: number };
+  fit?: "contain" | "cover" | "fill";
+  align?: readonly [number, number];
+  opacity?: number; alt?: string; clip?: false | GraphicClip;
+}
+```
+
+Related types: [`GraphicClip`](../../../reference/types/#type-graphicclip).
 
 ### `ImputedDataBaseOptions` {#type-imputeddatabaseoptions}
 
@@ -8422,14 +8529,14 @@ Related types: [`StrokeStyleDetails`](../../../reference/types/#type-strokestyle
 export interface OverlayPointAppearance extends StrokeStyleDetails {
   clip?: boolean;
   shape?: PointShape;
-  fill?: string;
+  fill?: FillPaint;
   stroke?: FilledMarkStroke;
   strokeWidth?: number;
   opacity?: number;
 }
 ```
 
-Related types: [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`PointShape`](../../../reference/types/#type-pointshape) · [`FilledMarkStroke`](../../../reference/types/#type-filledmarkstroke).
+Related types: [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`PointShape`](../../../reference/types/#type-pointshape) · [`FillPaint`](../../../reference/types/#type-fillpaint) · [`FilledMarkStroke`](../../../reference/types/#type-filledmarkstroke).
 
 ### `PackPointsOptions` {#type-packpointsoptions}
 
@@ -8703,6 +8810,14 @@ Related types: [`ConfidenceIntervalMethod`](../../../reference/types/#type-confi
 export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 ```
 
+### `PathFillRule` {#type-pathfillrule}
+
+ Expand PathFillRule
+
+```typescript
+export type PathFillRule = "nonzero" | "evenodd";
+```
+
 ### `PathLegendOptions` {#type-pathlegendoptions}
 
  Expand PathLegendOptions
@@ -8732,6 +8847,23 @@ export interface PathOrderEncodingOptions {
   field: string;
   fieldType?: "quantitative";
   order?: "ascending" | "descending";
+}
+```
+
+### `PatternPaint` {#type-patternpaint}
+
+ Expand PatternPaint
+
+```typescript
+export interface PatternPaint {
+  readonly type: "pattern";
+  readonly style?: "solid" | "diagonal" | "antidiagonal" | "horizontal" | "vertical" | "cross" | "dots";
+  readonly pitch?: number;
+  readonly strokeWidth?: number;
+  readonly phase?: readonly [number, number];
+  readonly foreground?: string;
+  readonly background?: string;
+  readonly coordinateSpace?: "plot" | "object";
 }
 ```
 
@@ -9250,6 +9382,18 @@ export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = Dat
 
 Related types: [`DataUpdateRequest`](../../../reference/types/#type-dataupdaterequest) · [`DataUpdateDescriptors`](../../../reference/types/#type-dataupdatedescriptors).
 
+### `PreparedImageResource` {#type-preparedimageresource}
+
+ Expand PreparedImageResource
+
+```typescript
+export interface PreparedImageResource<Kind extends "create" | "replace" = "create" | "replace"> {
+  readonly [preparedImageResourceBrand]: Kind;
+  readonly kind: "image-resource";
+  readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+```
+
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
  Expand QuantileColorScaleOptions
@@ -9415,6 +9559,22 @@ export type RadialEncodingOptions = {
 ```
 
 Related types: [`RadiusScaleOptions`](../../../reference/types/#type-radiusscaleoptions) · [`RadialMapping`](../../../reference/types/#type-radialmapping) · [`MeasuredRadiusScaleOptions`](../../../reference/types/#type-measuredradiusscaleoptions).
+
+### `RadialGradientPaint` {#type-radialgradientpaint}
+
+ Expand RadialGradientPaint
+
+```typescript
+export interface RadialGradientPaint {
+  readonly type: "radial-gradient";
+  readonly center: LinearGradientPoint;
+  readonly focal?: LinearGradientPoint;
+  readonly radius: number;
+  readonly stops: readonly [LinearGradientStop, LinearGradientStop, ...LinearGradientStop[]];
+}
+```
+
+Related types: [`LinearGradientPoint`](../../../reference/types/#type-lineargradientpoint) · [`LinearGradientStop`](../../../reference/types/#type-lineargradientstop).
 
 ### `RadialMapping` {#type-radialmapping}
 
@@ -9645,14 +9805,14 @@ export interface RectMarkOptions extends RectStyleDetails {
   id?: string;
   data?: string;
   missing?: "error" | "skip";
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   stroke?: string | false;
   strokeWidth?: number;
 }
 ```
 
-Related types: [`RectStyleDetails`](../../../reference/types/#type-rectstyledetails).
+Related types: [`RectStyleDetails`](../../../reference/types/#type-rectstyledetails) · [`FillPaint`](../../../reference/types/#type-fillpaint).
 
 ### `RectStyleDetails` {#type-rectstyledetails}
 
@@ -11047,7 +11207,7 @@ export interface TextMarkOptions {
   source?: string;
   text?: unknown;
   missing?: "error" | "skip";
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   fontSize?: number;
   fontFamily?: string;
@@ -11060,7 +11220,7 @@ export interface TextMarkOptions {
 }
 ```
 
-Related types: [`RotationInput`](../../../reference/types/#type-rotationinput).
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`RotationInput`](../../../reference/types/#type-rotationinput).
 
 ### `TextMeasurement` {#type-textmeasurement}
 

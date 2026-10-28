@@ -1,8 +1,10 @@
+import { ownRecord } from "../../core/ownData.js";
+import { validateImagePayload } from "../imagePayload.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { validateFontStyle } from "../../core/font.js";
 import { isOwned, isPlainObject } from "../../core/immutable.js";
 import { validatePathCommands, validatePathFillRule } from "../pathCommands.js";
-import { validateFillPaint } from "../paint.js";
+import { validateConcreteFillPaint } from "../paint.js";
 import { isBlendMode } from "../compositing.js";
 import {
   validateLineCap,
@@ -29,6 +31,15 @@ const TEXT_BASELINES = new Set([
 const validatedProperties = new WeakMap();
 
 export function validateConcreteGraphicValue(type, property, value) {
+  if (property === "fillBounds") {
+    ownRecord(value, "Text fillBounds");
+    if (!isPlainObject(value) || Object.keys(value).length !== 4 ||
+        !["left", "right", "top", "bottom"].every(key => Object.hasOwn(value, key) && Number.isFinite(value[key])) ||
+        value.left > value.right || value.top > value.bottom) {
+      throw new TypeError("Text fillBounds require finite ordered left/right/top/bottom coordinates.");
+    }
+  }
+  if (property === "image") validateImagePayload(value);
   if (property === "lines") {
     if (!Array.isArray(value) || value.length === 0 || value.some(line =>
       !isPlainObject(line) || Object.keys(line).some(key => !["text", "x", "y"].includes(key)) ||
@@ -40,9 +51,9 @@ export function validateConcreteGraphicValue(type, property, value) {
   if (property === "fillRule") validatePathFillRule(value);
   if (property === "fill") {
     if (typeof value === "string") {
-      validateFillPaint(value, `${type}.fill`);
-    } else if (type === "rect" || type === "path") {
-      validateFillPaint(value, `${type}.fill`);
+      validateConcreteFillPaint(value, `${type}.fill`);
+    } else if (type === "rect" || type === "path" || type === "circle" || type === "text") {
+      validateConcreteFillPaint(value, `${type}.fill`);
     } else {
       throw new TypeError(`${type}.fill must be a non-empty string.`);
     }
@@ -105,6 +116,12 @@ export function validateConcreteGraphicProperties(type, properties) {
   if (validatedTypes?.has(type)) return properties;
   if (!isPlainObject(properties)) {
     throw new TypeError(`${type}.properties must be a plain object.`);
+  }
+  if (type === "text" && typeof properties.fill === "object" && properties.fillBounds === undefined) {
+    throw new TypeError("Structured Text fill requires concrete fillBounds.");
+  }
+  if (type === "image" && ["image", "x", "y", "width", "height"].some(key => !Object.hasOwn(properties, key))) {
+    throw new TypeError("image.properties requires image, x, y, width, and height.");
   }
   for (const [property, value] of Object.entries(properties)) {
     validateGraphicProperty(type, property);

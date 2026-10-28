@@ -1,3 +1,5 @@
+import { createStructuredPaintExample } from "./structured-paints/program.js";
+import { createImageExample } from "./image-assets/program.js";
 import { createTree } from "./tree-layouts/program.js";
 import { createTreemap } from "./treemap-layouts/program.js";
 import { createCompoundPathExample } from "./compound-path/program.js";
@@ -175,6 +177,10 @@ export const DOCUMENTATION_WORKFLOWS = Object.freeze([
 
 // Chart-family examples retain their independent primitive/public baselines.
 export const PUBLIC_CHARTS = Object.freeze([
+  example({ id: "structured-paints", data: {}, width: 260, height: 180, docsGroup: "tutorials", createProgram: () => createStructuredPaintExample(),
+    browser: { path: "structured-paints/", canvas: "#chart" } }),
+  example({ id: "image-assets", data: {}, width: 200, height: 210, docsGroup: "tutorials", createProgram: () => createImageExample(),
+    browser: { path: "image-assets/", canvas: "#contain-center" } }),
   example({ id:"compound-path",data:{},width:400,height:304,docsGroup:"tutorials",createProgram:()=>createCompoundPathExample(),
     browser:{path:"compound-path/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"compound-path",width:400,height:304}}}}),
   example({ id: "bootstrap-mean-ci", data: {}, width: 320, height: 220, docsGroup: "tutorials", createProgram: createBootstrapMeanCI,

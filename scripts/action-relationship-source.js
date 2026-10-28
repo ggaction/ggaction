@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { chart, prepareDataUpdate } from "../src/index.js";
+import { chart, prepareDataUpdate, prepareImageResource } from "../src/index.js";
 import {
   buildScenario,
   generateScenarioDescriptors
@@ -423,6 +423,19 @@ function collectDirectRelationships(trace, directNames, relationships, observed)
   }
 }
 
+async function imageResourcePrograms() {
+  const base = chart().createCanvas({width: 100, height: 80, margin: 0});
+  const bytes = new TextEncoder().encode('<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1"><rect width="2" height="1" fill="red"/></svg>');
+  const source = {uri: "fixture:relationship-image", expectedHash: "3a12088d5970454aebf783f37e77640d75dab6494850606f04ca6646a62d005c", mimeType: "image/svg+xml"};
+  const host = {requestToken: "image", load: () => ({bytes, mimeType: source.mimeType}), decode: () => ({width: 2, height: 1, originClean: true})};
+  const prepared = await prepareImageResource(base, {kind: "create", id: "logo", ...source}, host);
+  const marked = base.createImageResource({prepared, requestToken: "image"})
+    .createImageMark({image: "logo", alt: "Logo"}).editImageMark({fit: "cover", opacity: 0.5});
+  const replacement = await prepareImageResource(marked, {kind: "replace", target: "logo", ...source}, host);
+  return [marked.replaceImageResource({prepared: replacement, requestToken: "image"})
+    .removeResource({kind: "image", id: "logo", cascade: true})];
+}
+
 export async function buildActionRelationships() {
   const catalog = JSON.parse(await readFile(catalogFile, "utf8"));
   const actionNames = catalog.actions.map(action => action.name);
@@ -432,7 +445,7 @@ export async function buildActionRelationships() {
   const preparedBase = chart();
   const prepared = await prepareDataUpdate(preparedBase, { kind: "create", id: "received",
     source: { kind: "inline", values: [{ x: 1 }] } }, { requestToken: "received" });
-  const programs = [preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
+  const programs = [...await imageResourcePrograms(), preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
     .createCanvas({ width: 500, height: 400, margin: 70 })
     .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
     .createScatterPlot({ x: "x", y: "y" })

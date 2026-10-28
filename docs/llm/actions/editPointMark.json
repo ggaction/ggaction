@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.",
-  "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+  "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
   "intents": [
     "edit point mark",
     "edit",
@@ -98,7 +98,7 @@
     {
       "name": "fill",
       "required": false,
-      "type": "string | undefined"
+      "type": "FillPaint | undefined"
     },
     {
       "name": "opacity",

@@ -612,6 +612,18 @@ Author compound paths and path clips through extension primitives.
 
 Representative actions: `createGraphics`, `editGraphics`. [Documentation](https://ggaction.github.io/ggaction/extension/primitives/).
 
+### [Pattern and gradient fills](./structured-paints/)
+
+Fill marks with repeated patterns or object-bound radial gradients.
+
+Representative actions: `createRectMark`, `editRectMark`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/).
+
+### [Retained image placement](./image-assets/)
+
+Prepare one source, place an image mark, and render from retained bytes.
+
+Representative actions: `createImageResource`, `createImageMark`, `editImageMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/image-assets/).
+
 ### [Tree layout](./tree-layouts/)
 
 Create a hierarchy resource, compute an explicit vertical layout, and draw its nodes.

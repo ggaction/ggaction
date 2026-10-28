@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 3,
+  "name": "createImageMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Creates image placement for image fit and clipping.",
+  "signature": "createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;",
+  "intents": [
+    "create image mark",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "image placement",
+    "image fit and clipping"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "dataset and coordinate context"
+    ],
+    "owns": [
+      "image placement"
+    ],
+    "idOptions": [
+      "id",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createGraphics"
+  ],
+  "editableVia": [
+    "editImageMark",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "viewport",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "dataset and coordinate context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "image",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "viewport",
+      "required": false,
+      "type": "\"auto\" | { x: number; y: number; width: number; height: number; } | undefined"
+    },
+    {
+      "name": "fit",
+      "required": false,
+      "type": "\"contain\" | \"cover\" | \"fill\" | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "readonly [number, number] | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "alt",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "false | GraphicClip | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createImageMark({ id?, target?, image?, viewport?, fit?, align?, opacity?, alt? })"
+  ],
+  "snippet": "program.createImageMark({ image: \"logo\", alt: \"Logo\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#createimagemark"
+}

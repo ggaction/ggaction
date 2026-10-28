@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 3,
+  "name": "editImageMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Edits image placement, including settings for image fit and clipping.",
+  "signature": "editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;",
+  "intents": [
+    "edit image mark",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "image placement",
+    "image fit and clipping"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing image placement"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editImageMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "viewport",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing image placement"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "image",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "viewport",
+      "required": false,
+      "type": "\"auto\" | { x: number; y: number; width: number; height: number; } | undefined"
+    },
+    {
+      "name": "fit",
+      "required": false,
+      "type": "\"contain\" | \"cover\" | \"fill\" | undefined"
+    },
+    {
+      "name": "align",
+      "required": false,
+      "type": "readonly [number, number] | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "alt",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "false | GraphicClip | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })"
+  ],
+  "snippet": "program.editImageMark({ target: \"image\", fit: \"cover\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editimagemark"
+}

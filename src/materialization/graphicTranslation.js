@@ -1,3 +1,4 @@
+import { translateFillPaint } from "../grammar/paint.js";
 import { translateGraphicClip } from "../grammar/schemas/graphicClip.js";
 
 function translateCommands(commands, dx, dy) {
@@ -20,6 +21,9 @@ function translateCommands(commands, dx, dy) {
 
 export function translatedProperties(type, properties, dx, dy) {
   const next = { ...properties };
+  if (properties.fill !== undefined) next.fill = translateFillPaint(properties.fill, dx, dy);
+  if (properties.fillBounds) next.fillBounds = { left: properties.fillBounds.left + dx, right: properties.fillBounds.right + dx,
+    top: properties.fillBounds.top + dy, bottom: properties.fillBounds.bottom + dy };
   if (["circle", "rect", "text", "canvas"].includes(type)) {
     next.x = (next.x ?? 0) + dx;
     next.y = (next.y ?? 0) + dy;

@@ -1690,6 +1690,38 @@
   actions: createGraphics · editGraphics
   tasks: extension
   url: /extension/primitives/
+
+- id: structured-paints
+  example: /examples/structured-paints/
+  title: Pattern and gradient fills
+  image: /assets/images/structured-paints.png
+  alt: Blue cross stripes over a translucent orange interval rectangle
+  width: 520
+  height: 360
+  thumbnail: /assets/images/structured-paints-thumb.png
+  thumbnail_width: 520
+  thumbnail_height: 360
+  caption: A repeated pattern shares one plot origin and one glyph opacity.
+  summary: Fill marks with repeated patterns or object-bound radial gradients.
+  actions: createRectMark · editRectMark
+  tasks: appearance
+  url: /api/appearance/mark-style/
+- id: image-assets
+  example: /examples/image-assets/
+  title: Retained image placement
+  image: /assets/images/image-assets.png
+  alt: Four colored image quadrants fitted into a square viewport
+  width: 400
+  height: 420
+  thumbnail: /assets/images/image-assets-thumb.png
+  thumbnail_width: 610
+  thumbnail_height: 640
+  caption: One prepared image retains its bytes through fit, clipping and offline export.
+  summary: Prepare one source, place an image mark, and render from retained bytes.
+  actions: createImageResource · createImageMark · editImageMark
+  tasks: image assets
+  url: /tutorials/image-assets/
+  tutorial_order: 170
 - id: tree-layouts
   example: /examples/tree-layouts/
   title: Tree layout
@@ -1705,7 +1737,7 @@
   actions: createHierarchyData · layoutHierarchy · createTreePlot
   tasks: hierarchy layout
   url: /tutorials/hierarchy/
-  tutorial_order: 170
+  tutorial_order: 180
 - id: tree-horizontal
   example: /examples/tree-horizontal/
   title: Horizontal tree

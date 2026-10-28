@@ -1,3 +1,4 @@
+import { registerImageResourceActions } from "./images/index.js";
 import { registerHierarchyPlotActions } from "./hierarchy/plots.js";
 import { registerDataResourceRevision } from "./data/resourceRevision.js";
 import { registerHierarchyResourceActions, reviseHierarchyInputs } from "./hierarchy/resources.js";
@@ -37,6 +38,7 @@ export function registerActions(ProgramClass) {
     remove: removeCompositionTheme
   });
   registerPrimitiveActions(ProgramClass);
+  registerImageResourceActions(ProgramClass);
   registerCompositionActions(ProgramClass);
   registerFacetActions(ProgramClass);
   registerCanvasActions(ProgramClass);

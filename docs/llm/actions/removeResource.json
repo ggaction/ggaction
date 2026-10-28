@@ -3,7 +3,7 @@
   "name": "removeResource",
   "layer": "user-facing",
   "domain": "core",
-  "summary": "Remove a named stored resource after checking exact dependencies.",
+  "summary": "Removes typed stored resource while preserving unrelated chart resources.",
   "signature": "removeResource(options: RemoveStoredResourceOptions): ChartProgram;",
   "intents": [
     "remove resource",
@@ -11,13 +11,13 @@
     "delete",
     "chart setup",
     "data and scales",
-    "stored named resource",
-    "resource dependencies"
+    "typed stored resource",
+    "resource deletion"
   ],
   "lifecycle": "Mutable resource",
   "resources": {
     "prerequisites": [
-      "existing stored named resource"
+      "existing typed stored resource"
     ],
     "owns": [],
     "idOptions": [
@@ -25,9 +25,10 @@
     ]
   },
   "authoringRoles": [
-    "H2"
+    "H3"
   ],
   "wraps": [
+    "removeMark",
     "editSemantic"
   ],
   "editableVia": [
@@ -43,7 +44,7 @@
   "completionRequirements": {
     "state": "contextual",
     "requires": [
-      "existing stored named resource"
+      "existing typed stored resource"
     ],
     "allowsEmpty": false
   },
@@ -67,7 +68,7 @@
   "callPatterns": [
     "removeResource({ kind, id, cascade? })"
   ],
-  "snippet": "program.removeResource({ kind: \"layout\", id: \"tree-layout\" })",
+  "snippet": "program.removeResource({ kind: \"image\", id: \"logo\" })",
   "errors": [],
   "route": "/reference/actions/charts-data/#removeresource"
 }

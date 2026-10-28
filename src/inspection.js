@@ -463,7 +463,7 @@ function itemBounds(properties, type) {
     return { x: properties.x - properties.radius, y: properties.y - properties.radius,
       width: properties.radius * 2, height: properties.radius * 2 };
   }
-  if (type === "rect") {
+  if (type === "rect" || type === "image") {
     if (![properties.x, properties.y, properties.width, properties.height].every(Number.isFinite)) return null;
     return { x: Math.min(properties.x, properties.x + properties.width),
       y: Math.min(properties.y, properties.y + properties.height),
@@ -490,7 +490,7 @@ function inspectMark(program, layer, childPath) {
   const graphic = program.graphicSpec.objects[layer.id];
   const hierarchy = layer.hierarchyBinding === undefined ? undefined : resolveHierarchyPlot(program, layer, program.markConfigs[layer.id].hierarchyPlot);
   const dataset = hierarchy?.dataset ?? findDataset(program, layer.data);
-  const boundedTypes = new Set(["circle", "rect", "line", "path"]);
+  const boundedTypes = new Set(["circle", "rect", "line", "path", "image"]);
   const items = graphic?.items ?? (graphic?.properties ? [{ properties: graphic.properties }] : []);
   const concreteTypes = items.map(item => item.type ?? graphic?.type);
   const logicalSupported = graphic !== undefined && concreteTypes.every(type =>
@@ -699,9 +699,10 @@ export function getMarkItems(program, { target, grain = 'item' } = {}) {
       if (g.type === 'rect') return {left:p.x,top:p.y,right:p.x+p.width,bottom:p.y+p.height};
       return unionConcreteGraphicBounds({objects:{item:g},order:['item']}, ['item'], view.materializationConfigs.textMetrics);
     }).filter(Boolean);
+    const visible = item.markType === "image" ? unionConcreteGraphicBounds(view.graphicSpec, item.graphicIds) : undefined;
     return { key:scopedKey(item.key), target:item.layer, markType:item.markType, grain, fields:item.fields,
       channels:item.channels, properties:item.properties, rows:item.rows, geometry,
-      bounds:bounds.length ? {left:Math.min(...bounds.map(b=>b.left)),top:Math.min(...bounds.map(b=>b.top)),right:Math.max(...bounds.map(b=>b.right)),bottom:Math.max(...bounds.map(b=>b.bottom))}:null };
+      bounds:visible ?? (bounds.length ? {left:Math.min(...bounds.map(b=>b.left)),top:Math.min(...bounds.map(b=>b.top)),right:Math.max(...bounds.map(b=>b.right)),bottom:Math.max(...bounds.map(b=>b.bottom))}:null) };
   })));
   stored.set(key,result); return result;
 }

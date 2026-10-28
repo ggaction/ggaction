@@ -12,7 +12,7 @@ export interface TextMarkOptions {
   source?: string;
   text?: unknown;
   missing?: "error" | "skip";
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   fontSize?: number;
   fontFamily?: string;

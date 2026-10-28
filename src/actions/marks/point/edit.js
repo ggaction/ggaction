@@ -1,3 +1,4 @@
+import { validateFillPaint } from "../../../grammar/paint.js";
 import { assertIndependentOverlayGeometry } from "../../../grammar/overlay.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
@@ -79,7 +80,7 @@ export const editPointMark = /* @__PURE__ */ action(
       config.shape = validatePointShape(args.shape);
     }
     if (Object.hasOwn(args, "fill")) {
-      config.fill = validateNonEmptyString(args.fill, "Point fill");
+      config.fill = validateFillPaint(args.fill, "Point fill");
     }
     if (Object.hasOwn(args, "opacity")) {
       config.opacity = validateUnitInterval(args.opacity, "Point opacity");

@@ -1,3 +1,4 @@
+import { imageSelectionPolicy } from "./image.js";
 import { treeSelectionPolicy, treemapSelectionPolicy } from "./hierarchy.js";
 import { mapConditionalValues } from "../../conditionalMapping.js";
 import { conditionalSelectionMembership } from "../../conditionalSelection.js";
@@ -18,6 +19,7 @@ import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
 import { resolveOverlayItems } from "../items/overlay.js";
 
 const POLICIES = Object.freeze({
+  image: imageSelectionPolicy,
   tree: treeSelectionPolicy, treemap: treemapSelectionPolicy,
   text: textSelectionPolicy,
   arc: arcSelectionPolicy,

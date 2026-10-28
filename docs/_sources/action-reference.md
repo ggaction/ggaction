@@ -48,17 +48,17 @@ interface ChartProgramActions {
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
-  createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editPointMark(options: { target?: string; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   createBarMark(options?: { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editBarMark(options: { target?: string; blend?: "normal" | "difference"; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
-  createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
-  createArcMark(options?: { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editArcMark(options: { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  createAreaMark(options?: { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
+  createArcMark(options?: { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editArcMark(options: { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
@@ -73,7 +73,7 @@ interface ChartProgramActions {
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
-  editAreaMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
+  editAreaMark(options: { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeY(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
@@ -3302,6 +3302,53 @@ removeTitle()
 
 Remove the complete chart title and subtitle resource. [Titles](../api/titles.md)
 
+### `createImageResource`
+
+```js
+createImageResource({ prepared, requestToken })
+```
+
+Commit an authentic create handle from `prepareImageResource` on its exact original
+receiver. Full-only; source bytes, MIME, hash and decoded dimensions are validated
+before synchronous authoring. [Preparation and rendering](../api/rendering.md#embedded-images).
+
+### `replaceImageResource`
+
+```js
+replaceImageResource({ prepared, requestToken })
+```
+
+Commit a prepared replacement, increment the image revision and rematerialize all
+referencing image marks while preserving item identity and highlight intent.
+
+### `removeResource`
+
+```js
+removeResource({ kind, id, cascade? })
+```
+
+Remove an unused typed stored resource. Default restrict rejects live references.
+Explicit image cascade removes its image marks before removing the source.
+
+### `createImageMark`
+
+```js
+createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip? } = {})
+```
+
+Create one resource-backed image item. Unique source inference and the first `image`
+role are supported. Viewport defaults to the plot, fit to contain and align to center.
+The [image tutorial](../tutorials/image-assets.md) shares its public program with all
+four renderer tests.
+
+### `editImageMark`
+
+```js
+editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })
+```
+
+Edit an existing image mark; omission preserves options. `viewport:"auto"` resets
+to the plot. Explicit geometry adds clipping to the always-clipped viewport.
 ### `createHierarchyData`
 
 ```javascript
@@ -3337,15 +3384,6 @@ editLayout({ target?, order?, options? })
 
 Change a layout order or method-specific options and refresh its plot consumers. Full only.
 [Hierarchy resources and plots](../api/hierarchy.md#editlayout)
-
-### `removeResource`
-
-```javascript
-removeResource({ kind, id, cascade? })
-```
-
-Remove a named stored resource after checking exact dependencies. Full only.
-[Hierarchy resources and plots](../api/hierarchy.md#removeresource)
 
 ### `createTreePlot`
 
@@ -3736,3 +3774,6 @@ concrete graphics without recording an authoring action.
 Use [Program composition](../api/composition.md) for sizing, nesting, layout
 editing, and stable child replacement. Use [Rendering](../api/rendering.md) for
 complete Browser Canvas, SVG, Node PNG, and vector PDF examples.
+
+
+Shared mark fill options follow [Pattern and gradient fills](../api/appearance/mark-style.md#pattern-and-gradient-fills). Point, Rect, Bar, Area, Arc, and Text constructors and editors accept the complete FillPaint union; strokes remain solid colors.

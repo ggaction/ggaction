@@ -2893,7 +2893,7 @@
       "covers": [
         "renderer.canvas"
       ],
-      "signature": "render(program: Pick<ChartProgram, \"graphicSpec\">, context: CanvasRenderingContext2D, options?: { pixelRatio?: number }): void;",
+      "signature": "render(program: Pick<ChartProgram, \"graphicSpec\">, context: CanvasRenderingContext2D, options?: CanvasRenderOptions): void;",
       "call": "render(program, context)",
       "route": "/reference/runtime/#ggaction"
     },

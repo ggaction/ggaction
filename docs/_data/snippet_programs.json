@@ -410,6 +410,17 @@
     "prerequisites": "Import ggaction in an ES module; all observations and required setup are included in this program.",
     "rendering": "authoring-only"
   },
+  "tutorials/image-assets.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Install ggaction and provide a canvas with id chart; the explicit decoder supplies image dimensions and backend objects.",
+    "canonical": {
+      "file": "examples/image-assets/program.js",
+      "exported": "createImageExample"
+    },
+    "rendering": "renders-canvas"
+  },
   "tutorials/hierarchy.md": {
     "mode": "complete",
     "environment": "browser-module",

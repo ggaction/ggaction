@@ -1,0 +1,1 @@
+export interface EditImageMarkOptions extends ImageMarkOptions { target?: string; }

@@ -1,3 +1,5 @@
+import { prepareImageRendering } from "./imageRendering.js";
+
 export async function loadNativeBackend() {
   try {
     return await import("@napi-rs/canvas");
@@ -32,4 +34,11 @@ export function nativeFontResolver(globalFonts) {
     cache.set(requested, resolved);
     return resolved;
   };
+}
+
+export function prepareNativeImages(program, loadImage) {
+  return prepareImageRendering(program, { decode: async ({ bytes }) => {
+    const image = await loadImage(bytes);
+    return { image, width: image.width, height: image.height, originClean: true };
+  } });
 }

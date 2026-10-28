@@ -10,7 +10,7 @@
 - [x] renderer/browser 및 문서 build·responsive 검증
 - [x] 최종 source coverage와 변경 후 realistic 실행 종료
 - [x] 재현 명령·입력 hash·원본 로그를 포함한 검증 증거 고정
-- [ ] 구현 checkpoint commit/push 후 clean integration 및 main 통합
+- [x] 구현 `e62e9f38` commit/push 후 `a561ae1c` integration 및 main 통합
 
 사용자가 승인한 STEP-077 전체 범위의 조건부 인코딩 부분이다. 2026-10-28의 남은 설계·시각
 전체 승인은 integration commit `b758b912`의 [AUTHORIZATION](../../AUTHORIZATION.json)에 기록했다.

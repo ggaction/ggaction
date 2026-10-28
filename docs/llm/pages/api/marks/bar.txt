@@ -76,7 +76,7 @@ program.editBarMark({
 });
 ```
 
-`fill` accepts a solid color string or the existing `FillPaint` linear gradient:
+`fill` accepts solid colors and structured `FillPaint` values. For example, a linear gradient:
 `{ type: "linear-gradient", from: { x: 0, y: 1 }, to: { x: 0, y: 0 },
 stops: [{ offset: 0, color: "red" }, { offset: 1, color: "blue" }] }`.
 Endpoints use normalized item-local coordinates; ordered stops must have offsets
@@ -122,3 +122,5 @@ the [renderer allocation limits](../../../../api/rendering/#browser-canvas).
 [Histogram positions](../../../../api/position/histogram/) ·
 [Ordinal bars](../../../../api/position/ordinal-bars/) ·
 [Series encodings](../../../../api/series-encodings/)
+
+Constant `fill` also accepts [pattern and radial-gradient paints](../../../../api/appearance/mark-style/#pattern-and-gradient-fills), with the same creation, editing, and output rules.

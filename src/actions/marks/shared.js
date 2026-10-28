@@ -1,3 +1,4 @@
+import { materializeFillItems } from "../../materialization/fillPaint.js";
 import { materializeMarkOutput } from "../../materialization/markOutput.js";
 import { materializeFollowingOverlays } from "./lifecycle.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
@@ -243,7 +244,15 @@ export function materializeInheritedMark(program, id) {
 
 export function editMarkGraphic(program, target, properties) {
   for (const [property, value] of Object.entries(properties)) {
-    program = program.editGraphics({ target, property, value });
+    let concrete = value;
+    if (property === "fill") {
+      const graphic = program.graphicSpec.objects[target];
+      concrete = materializeFillItems(program, findLayer(program, target), graphic.items.map((item, index) => ({
+        type: item.type ?? graphic.type,
+        properties: { ...item.properties, fill: Array.isArray(value) ? value[index] : value }
+      }))).map(item => item.properties.fill);
+    }
+    program = program.editGraphics({ target, property, value: concrete });
   }
   return materializeFollowingOverlays(materializeMarkOutput(program, target), target);
 }

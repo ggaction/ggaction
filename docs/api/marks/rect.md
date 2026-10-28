@@ -163,3 +163,6 @@ overrides, so resetting the global radius alone does not clear them.
 [Position encodings](../position-encodings.md) ·
 [Series and color encodings](../series-encodings.md) ·
 [Text marks](./text.md)
+
+
+Constant `fill` also accepts [pattern and radial-gradient paints](../appearance/mark-style.md#pattern-and-gradient-fills), with the same creation, editing, and output rules.

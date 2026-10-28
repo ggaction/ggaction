@@ -1,1 +1,1 @@
-export type FillPaint = string | LinearGradientPaint;
+export type FillPaint = string | LinearGradientPaint | PatternPaint | RadialGradientPaint;

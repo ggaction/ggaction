@@ -1,3 +1,4 @@
+import { parseContinuousColor as parseColor, hslToRgb, hue } from "../color.js";
 import { mapTransformedValues } from "./transformed.js";
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
@@ -18,88 +19,8 @@ export const CONTINUOUS_COLOR_INTERPOLATIONS = cloneAndFreeze([
   "cubehelix-long"
 ]);
 
-const BASIC_COLORS = Object.freeze({
-  black: "#000000",
-  blue: "#0000ff",
-  cyan: "#00ffff",
-  gray: "#808080",
-  green: "#008000",
-  grey: "#808080",
-  magenta: "#ff00ff",
-  navy: "#000080",
-  orange: "#ffa500",
-  purple: "#800080",
-  red: "#ff0000",
-  teal: "#008080",
-  white: "#ffffff",
-  yellow: "#ffff00"
-});
-
 function clamp(value, minimum = 0, maximum = 1) {
   return Math.max(minimum, Math.min(maximum, value));
-}
-
-function hue(value) {
-  return ((value % 360) + 360) % 360;
-}
-
-function hslToRgb({ h, s, l }) {
-  const chroma = (1 - Math.abs(2 * l - 1)) * s;
-  const segment = hue(h) / 60;
-  const second = chroma * (1 - Math.abs(segment % 2 - 1));
-  const [red, green, blue] = segment < 1 ? [chroma, second, 0]
-    : segment < 2 ? [second, chroma, 0]
-      : segment < 3 ? [0, chroma, second]
-        : segment < 4 ? [0, second, chroma]
-          : segment < 5 ? [second, 0, chroma]
-            : [chroma, 0, second];
-  const match = l - chroma / 2;
-  return { r: red + match, g: green + match, b: blue + match };
-}
-
-function parseColor(value) {
-  if (typeof value !== "string" || value.length === 0) {
-    throw new TypeError("Continuous color range requires non-empty color strings.");
-  }
-  const normalized = BASIC_COLORS[value.toLowerCase()] ?? value.toLowerCase();
-  let match = normalized.match(/^#([0-9a-f]{3})$/i);
-  if (match) {
-    return Object.fromEntries(["r", "g", "b"].map((channel, index) => [
-      channel,
-      Number.parseInt(match[1][index].repeat(2), 16) / 255
-    ]));
-  }
-  match = normalized.match(/^#([0-9a-f]{6})$/i);
-  if (match) {
-    return {
-      r: Number.parseInt(match[1].slice(0, 2), 16) / 255,
-      g: Number.parseInt(match[1].slice(2, 4), 16) / 255,
-      b: Number.parseInt(match[1].slice(4, 6), 16) / 255
-    };
-  }
-  match = normalized.match(
-    /^rgb\(\s*([\d.]+)%?\s*,\s*([\d.]+)%?\s*,\s*([\d.]+)%?\s*\)$/
-  );
-  if (match) {
-    const percentage = normalized.includes("%");
-    const divisor = percentage ? 100 : 255;
-    const channels = match.slice(1).map(item => Number(item) / divisor);
-    if (channels.every(item => Number.isFinite(item) && item >= 0 && item <= 1)) {
-      return { r: channels[0], g: channels[1], b: channels[2] };
-    }
-  }
-  match = normalized.match(
-    /^hsl\(\s*([-\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*\)$/
-  );
-  if (match) {
-    const h = Number(match[1]);
-    const s = Number(match[2]) / 100;
-    const l = Number(match[3]) / 100;
-    if ([h, s, l].every(Number.isFinite) && s >= 0 && s <= 1 && l >= 0 && l <= 1) {
-      return hslToRgb({ h, s, l });
-    }
-  }
-  throw new Error(`Unsupported continuous color "${value}".`);
 }
 
 function rgbToHex({ r, g, b }) {

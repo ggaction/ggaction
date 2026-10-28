@@ -34,7 +34,8 @@
     "contracts/realistic-scenario-generator.test.js": 535185,
     "contracts/realistic-scenario-runner.test.js": 99611,
     "contracts/realistic-scoped-composition.test.js": 843,
-    "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393
+    "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
+    "contracts/realistic-structured-paints.test.js": 184876
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -91,6 +92,11 @@
       "environment": "macOS, Node22.23.1, max-old-space-size512",
       "source": "local official npm run test:realistic selector",
       "measuredDurationMs": 5885.861667
+    },
+    "contracts/realistic-structured-paints.test.js": {
+      "environment": "macOS arm64, Node 22.23.1; concurrent repository verification jobs",
+      "source": "Canonical realistic runner, 2026-10-28; five pinned datasets, three recipes (two owners each, six total), ten paint variants including linear gradient; 15/15 passed.",
+      "measuredDurationMs": 184875.629333
     }
   },
   "measurementOverrides": {

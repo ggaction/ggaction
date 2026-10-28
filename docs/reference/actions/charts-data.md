@@ -3906,7 +3906,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `category` | Required | `PieCategory` |
 | `color` | Optional / branch-dependent | `false \| PieColor \| undefined` |
 | `radius` | Optional / branch-dependent | `PieRadiusChannel \| undefined` |
-| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: ArcInnerRadius \| undefined; padAngle?: number \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: ArcInnerRadius \| undefined; padAngle?: number \| undefined; fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| { axes?: false \| undefined; grid?: false \| undefined; legend?: false \| PieLegendOptions \| undefined; } \| undefined` |
 | `value` | Optional / branch-dependent | `string \| undefined` |
 | `aggregate` | Optional / branch-dependent | `"count" \| "sum" \| undefined` |
@@ -3969,7 +3969,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `category` | Required | `PieCategory` |
 | `color` | Optional / branch-dependent | `false \| PieColor \| undefined` |
 | `radiusScale` | Optional / branch-dependent | `MeasuredRadiusScaleOptions \| undefined` |
-| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: ArcInnerRadius \| undefined; padAngle?: 0 \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: ArcInnerRadius \| undefined; padAngle?: 0 \| undefined; fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| MeasuredRadialGuideOptions \| undefined` |
 | `value` | Optional / branch-dependent | `string \| undefined` |
 | `aggregate` | Optional / branch-dependent | `"count" \| "sum" \| undefined` |
@@ -4015,7 +4015,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `category` | Required | `PieCategory` |
 | `color` | Optional / branch-dependent | `false \| PieColor \| undefined` |
 | `radiusScale` | Optional / branch-dependent | `MeasuredRadiusScaleOptions \| undefined` |
-| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: ArcInnerRadius \| undefined; padAngle?: 0 \| undefined; fill?: string \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
+| `arc` | Optional / branch-dependent | `(StrokeStyleDetails & { innerRadius?: ArcInnerRadius \| undefined; padAngle?: 0 \| undefined; fill?: FillPaint \| undefined; opacity?: number \| undefined; stroke?: string \| undefined; strokeWidth?: number \| undefined; }) \| undefined` |
 | `guides` | Optional / branch-dependent | `false \| MeasuredRadialGuideOptions \| undefined` |
 | `value` | Optional / branch-dependent | `string \| undefined` |
 | `aggregate` | Optional / branch-dependent | `"count" \| "sum" \| undefined` |
@@ -4228,6 +4228,110 @@ compatible meaning and scale mapping. Canonical child settings remain intact; se
 channel false restores independent domain inference. This edit is atomic.
 
 
+## `createImageResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
+```
+
+Named option contracts: [`ApplyImageResourceOptions`](./../types.md#type-applyimageresourceoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedImageResource<"create">` |
+| `requestToken` | Required | `string` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+createImageResource({ prepared, requestToken })
+```
+
+Commit an authentic create handle from `prepareImageResource` on its exact original
+receiver. Full-only; source bytes, MIME, hash and decoded dimensions are validated
+before synchronous authoring. [Preparation and rendering](../../api/rendering.md#embedded-images).
+
+
+## `replaceImageResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+```
+
+Named option contracts: [`ApplyImageResourceOptions`](./../types.md#type-applyimageresourceoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedImageResource<"replace">` |
+| `requestToken` | Required | `string` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+replaceImageResource({ prepared, requestToken })
+```
+
+Commit a prepared replacement, increment the image revision and rematerialize all
+referencing image marks while preserving item identity and highlight intent.
+
+
+## `removeResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+removeResource(options: RemoveStoredResourceOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveStoredResourceOptions`](./../types.md#type-removestoredresourceoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `kind` | Required | `StoredResourceKind` |
+| `id` | Required | `string` |
+| `cascade` | Optional / branch-dependent | `boolean \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+removeResource({ kind, id, cascade? })
+```
+
+Remove an unused typed stored resource. Default restrict rejects live references.
+Explicit image cascade removes its image marks before removing the source.
+
+
 ## `createHierarchyData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
@@ -4386,41 +4490,6 @@ editLayout({ target?, order?, options? })
 
 Change a layout order or method-specific options and refresh its plot consumers. Full only.
 [Hierarchy resources and plots](../../api/hierarchy.md#editlayout)
-
-
-## `removeResource`
-
-**API layer:** user-facing. **Authoring roles:** H2.
-
-**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
-
-```typescript
-removeResource(options: RemoveStoredResourceOptions): ChartProgram;
-```
-
-Named option contracts: [`RemoveStoredResourceOptions`](./../types.md#type-removestoredresourceoptions).
-
-<details markdown="1">
-<summary>Declared options</summary>
-
-Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
-
-| Option | Presence | Type |
-| --- | --- | --- |
-| `kind` | Required | `StoredResourceKind` |
-| `id` | Required | `string` |
-| `cascade` | Optional / branch-dependent | `boolean \| undefined` |
-
-</details>
-
-The following call patterns are abbreviated examples; the declaration above owns the complete option set.
-
-```javascript
-removeResource({ kind, id, cascade? })
-```
-
-Remove a named stored resource after checking exact dependencies. Full only.
-[Hierarchy resources and plots](../../api/hierarchy.md#removeresource)
 
 
 ## `createTreePlot`

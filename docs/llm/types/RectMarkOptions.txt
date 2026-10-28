@@ -3,7 +3,7 @@ export interface RectMarkOptions extends RectStyleDetails {
   id?: string;
   data?: string;
   missing?: "error" | "skip";
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   stroke?: string | false;
   strokeWidth?: number;

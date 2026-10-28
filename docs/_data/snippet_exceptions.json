@@ -2833,5 +2833,19 @@
     "mode": "contextual-fragment",
     "owner": "docs/supported-features.md",
     "reason": "Requires an existing labels text mark whose items retain region and sales fields. This edit fragment illustrates semantic item identity without supplying the source chart or label creation."
+  },
+  {
+    "id": "docs/api/rendering.md#embedded-images:1",
+    "sha256": "39234f8fd4e5fc2decc98d29b1674a602a83af0e719deb754c5233cded5ff9fc",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/rendering.md",
+    "reason": "This fragment requires an already prepared image program and application canvas. The complete canonical image-assets example executes the same preparation and rendering workflow in the browser and installed-package tests."
+  },
+  {
+    "id": "docs/tutorials/image-assets.md#prepare-and-place:1",
+    "sha256": "619a66bc6bb69433a00feb5f528b172e5a1da8fea8cd6fde99d8694700051f21",
+    "mode": "contextual-fragment",
+    "owner": "docs/tutorials/image-assets.md",
+    "reason": "This fragment requires an already prepared image program and application canvas. The complete canonical image-assets example executes the same preparation and rendering workflow in the browser and installed-package tests."
   }
 ]

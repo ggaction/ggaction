@@ -78,22 +78,13 @@ Selection operates on final nodes and selects body plus label; links are exclude
 - ✅ Covered: explicit and inferred identity, closed options, immutable lifecycle, exact references, stored validation and dependent concrete output.
 - Evidence: `test/unit/resources/hierarchy-resources.test.js`, `test/unit/resources/hierarchy-plots.test.js`, `test/unit/resources/hierarchy-consumers.test.js`, `test/unit/resources/hierarchy-validation.test.js`, `test/contracts/hierarchy-types.test.js`, `test/charts/tree-layouts/public.test.js`, `test/charts/treemap-layouts/public.test.js`.
 
-## `removeResource`
+## 계층 리소스 제거
 
-- Signature: `removeResource({ kind, id, cascade? })`.
-- Remove a named stored resource after checking exact dependencies.
-- `kind` identifies a stored resource; data, scale and coordinate use their existing dedicated removers. Restrict is default. `cascade:true` may remove generated dependents; authored dependents and live hierarchy plots still require explicit removal first. `removeMark` releases a plot while retaining its hierarchy/layout for reuse. Basic does not expose this method.
-
-### Formal values — `removeResource`
-
-- Implemented: `removeResource(options: RemoveStoredResourceOptions): ChartProgram` (Full only).
-- Planned: 없음.
-- Proposed (NOT IMPLEMENTED): No additional options.
-
-### Value coverage — `removeResource`
-
-- ✅ Covered: explicit and inferred identity, closed options, immutable lifecycle, exact references, stored validation and dependent concrete output.
-- Evidence: `test/unit/resources/hierarchy-resources.test.js`, `test/unit/resources/hierarchy-plots.test.js`, `test/unit/resources/hierarchy-consumers.test.js`, `test/unit/resources/hierarchy-validation.test.js`, `test/contracts/hierarchy-types.test.js`, `test/charts/tree-layouts/public.test.js`, `test/charts/treemap-layouts/public.test.js`.
+공통 `removeResource` signature·기본값·cascade 계약은 [CORE.md](CORE.md#removeresource)가 소유한다.
+Authored hierarchy/layout dependent와 live hierarchy plot은 먼저 명시적으로 제거해야 한다.
+`removeMark`는 plot을 제거하면서 재사용할 hierarchy/layout을 유지한다.
+계층 소비자 검증은 `test/unit/resources/hierarchy-resources.test.js`,
+`test/unit/resources/hierarchy-consumers.test.js`가 소유한다.
 
 ## `createTreePlot`
 
