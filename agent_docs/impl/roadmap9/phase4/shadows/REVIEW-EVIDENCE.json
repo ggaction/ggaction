@@ -21,7 +21,7 @@
     "test/gates/shadow-paints/primitive.program.js": "a72a22b486e896e0298fbe312299f9724bc133c6735632db6fc6756d635c3f18",
     "test/gates/shadow-paints/primitive.test.js": "d69d5325dd821310a7d8055f3387ea87f1ed93834a10cad68684601e0d08f5a4",
     "test/gates/shadow-paints/reference.js": "3395fdea9bfc3d153ccda91bd6ae9d1e6deae210cff6a43c2e298dc62a7ef3bd",
-    "agent_docs/impl/roadmap9/phase4/shadows/REVIEW.md": "94d80548cb851ea14aa305d14ee8a05939d6e81614c0e2aefc9c46e115763226"
+    "agent_docs/impl/roadmap9/phase4/shadows/REVIEW.md": "c1f35c4264de743470596e06384e52cfe2e21b26b7b4462416f94461af9dd5bc"
   },
   "checks": [
     {
@@ -370,5 +370,7 @@
       "alpha-once/pdf-4x.png"
     ],
     "result": "Zero/soft/negative offset shadows, one-time glyph opacity, clip, circle silhouette and separate vector sibling visible. User approval pending."
-  }
+  },
+  "codeRevision": "10f04609160998a54e969ea909b89b48cf42aa3e",
+  "evidenceRevision": "10f04609160998a54e969ea909b89b48cf42aa3e"
 }

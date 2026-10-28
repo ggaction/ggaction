@@ -16,7 +16,7 @@
     "scripts/coverage-policy.js": "0a55d40cf9a32587b84957b7a2359c5ad9adcdbd9031654680194383e7105431",
     "scripts/package-artifact.js": "cc25b67d61a5e02de3a378d7dafc52fe4d1acecb8299fe70866bd1e5c52a6e90",
     "test/capabilities.json": "2764a60e9b80fbc72e46f69f3aeeb679a3d9c9bc30fa6dfaf443a244fd05743b",
-    "agent_docs/impl/roadmap9/phase4/shadows/PRIVATE.md": "8daf89cb46dca9a09c5e8065a480f5da937ff9067c676c3d21f2f0449034ddc2"
+    "agent_docs/impl/roadmap9/phase4/shadows/PRIVATE.md": "f31017fb9bb271a33d972ac353a0d9667f6c1d1cc0d09b5759cfee4f301e6fd3"
   },
   "checks": [
     {

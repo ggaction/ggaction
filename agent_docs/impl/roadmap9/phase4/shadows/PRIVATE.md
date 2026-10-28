@@ -6,7 +6,7 @@
 - [x] Native blur 차이의 독립 probe와 실패 증거 보존
 - [x] 순수 alpha-mask kernel과 독립 2D convolution oracle
 - [x] 현재 checkpoint 검사·commit·push 기록
-- [ ] 같은 sublayer를 사용한 4개 출력 primitive 검토
+- [x] 같은 sublayer를 사용한 4개 출력 primitive 검토자료 준비 ([REVIEW.md](REVIEW.md))
 - [ ] 사용자 시각 확인 및 공개 flow 연결
 
 Roadmap 9 전체 실행 승인과 부모 agent의 2026-10-28 명시 private 위임으로 진행한다. 이 문서는 공개 API·저장 schema·새 시각 목표의 승인을 기록하지 않는다. Pattern 및 radial 승인도 별도이며 아직 대기 중이다. STEP-017 또는 AT-13 완료가 아니다.
