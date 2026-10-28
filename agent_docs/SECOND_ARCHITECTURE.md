@@ -108,6 +108,14 @@ Renderer는 AST를 읽거나 평가하지 않으며 기존 computed v1의 의미
 상세 내부 계약은 [expression core](architecture/EXPRESSION_CORE.md), 공개 computed는
 [CORE](contract/current/CORE.md), action trace는 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
 
+## 공유 색상 계산 경계
+
+`grammar/color.js`는 host-independent 색상 채널과 HSL 변환을 공유한다. Continuous scale은 기존
+입력 정책을 명시적으로 사용하여 accepted syntax와 결과를 유지하고, 승인된 structured paint/effect
+준비는 닫힌 RGBA parser를 사용한다. 새 parser는 아직 public fill/schema에 연결하지 않았으며 state,
+resource 또는 renderer 경계는 그대로다. 정확한 내부 범위와 검증은
+[paint 색상 준비](impl/roadmap9/phase4/paints/COLOR_FOUNDATION.md)에 기록한다.
+
 ## 내부 pattern kernel 경계
 
 `grammar/patterns.js`는 닫힌 pattern 옵션과 phase/origin의 순수 정규화 및 bounded unit tile
