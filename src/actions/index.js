@@ -2,6 +2,7 @@ import { registerImageResourceActions } from "./images/index.js";
 import { registerHierarchyPlotActions } from "./hierarchy/plots.js";
 import { registerDataResourceRevision } from "./data/resourceRevision.js";
 import { registerHierarchyResourceActions, reviseHierarchyInputs } from "./hierarchy/resources.js";
+import { registerFontResourceActions } from "./fonts/index.js";
 import { registerPrimitiveActions } from "./primitives/index.js";
 import { registerCanvasActions } from "./canvas/index.js";
 import { registerBasicCoordinateActions } from "./coordinates/actions.js";
@@ -39,6 +40,7 @@ export function registerActions(ProgramClass) {
   });
   registerPrimitiveActions(ProgramClass);
   registerImageResourceActions(ProgramClass);
+  registerFontResourceActions(ProgramClass);
   registerCompositionActions(ProgramClass);
   registerFacetActions(ProgramClass);
   registerCanvasActions(ProgramClass);

@@ -256,11 +256,15 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 
 ```javascript
 applyTextMetrics({ profile })
+applyTextMetrics({ prepared, requestToken })
 ```
 
 Apply a host-measured width profile to title, axis, legend, label, and composition
 layout. See [Measured text layout](../api/rendering.md#measured-text-layout) for the
 exact profile format, matching rules, propagation, and executable example.
+The prepared overload binds stored font bytes and measured widths to one exact
+receiver; missing font queries fail instead of using an estimate. See
+[embedded fonts](../api/rendering.md#embedded-fonts).
 
 ### `removeTextMetrics`
 
@@ -3301,6 +3305,27 @@ removeTitle()
 ```
 
 Remove the complete chart title and subtitle resource. [Titles](../api/titles.md)
+
+### `createFontResource`
+
+```javascript
+createFontResource({ prepared, requestToken })
+```
+
+Commit an authentic create handle from `prepareFontResource` on its exact original
+Full receiver. The explicit host loads and validates pinned font bytes. No text
+layout changes until prepared metrics are applied. See
+[embedded fonts](../api/rendering.md#embedded-fonts).
+
+### `replaceFontResource`
+
+```javascript
+replaceFontResource({ prepared, requestToken })
+```
+
+Commit a prepared replacement and atomically refresh any exact measured layout
+that uses the font, including inherited composition children. The preparation
+host must measure the new font before this action can replace a bound resource.
 
 ### `createImageResource`
 

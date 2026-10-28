@@ -265,6 +265,48 @@
         "path": "unit/renderers/empty-text-renderer.test.js"
       }
     ],
+    "font-assets": [
+      {
+        "type": "prefix",
+        "path": "charts/font-assets/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-public-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-layout-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/font-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/font-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-payload.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-metrics-profile.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-resource-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-work-budget.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-preparation.test.js"
+      }
+    ],
     "grammar": [
       {
         "type": "prefix",

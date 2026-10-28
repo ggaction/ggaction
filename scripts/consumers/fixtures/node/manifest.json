@@ -925,5 +925,18 @@
         "statements": 1
       }
     ]
+  },
+  {
+    "file": "fonts.mjs",
+    "cases": [
+      {
+        "id": "fonts/resource-metrics-offline",
+        "statements": 15
+      },
+      {
+        "id": "fonts/renderers-scene-handles",
+        "statements": 6
+      }
+    ]
   }
 ]

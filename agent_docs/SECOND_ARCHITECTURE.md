@@ -3151,3 +3151,20 @@ Native radial output은 affine frame을 실제 fill까지 유지한다. Text는 
 paint texture를 준비하고 기존 native glyph에 적용한다. Native glyph overhang 때문에 gradient texture는
 viewport의 역회전 범위를 덮으며 glyph shape를 bounds rectangle으로 바꾸지 않는다. SVG text는 vector
 paint resource를 소비한다. 정확한 값/제한/출력 차이는 current/MARKS.md의 shared structured fill이 소유한다.
+
+### Font identity와 explicit measured typography
+
+Font authoring은 다른 retained asset과 동일하게 host 준비와 동기 immutable commit을 나눈다.
+Full registry의 font resource는 source identity와 bytes만 소유한다. Exact text metric profile은
+명시 font refs와 byte/provider identity를 가진 별도 materialization policy이며, 기존 schema 1
+estimate 의미를 바꾸지 않는다. Host 준비는 기존 typography rematerialization을 bounded private
+candidate에서 실행해 필요한 width query closure를 수집하고, 누락 측정은 오류로 유지한다.
+원래 receiver/token에 적용하는 domain action만 resource/profile/graphics를 함께 바꾼다.
+
+Text의 기존 domain owners가 공통 materialization/textFont를 호출해 concrete Text에 실제 font
+payload를 붙인다. Renderer는 semantic resource나 measurement profile을 읽지 않는다. Browser
+Canvas/scene은 ephemeral registration handle, SVG는 embedded font 정의, PNG/PDF는 native
+registration lease로 같은 bytes를 소비한다. Native engine이 같은 bytes의 여러 alias를 공유하므로
+library adapter는 content별 참조 수를 유지해 마지막 출력이 끝날 때 해제한다. 실제 glyph alpha
+준비 역시 공통 concrete Text renderer를 사용하고 bounds rectangle을 glyph로 대체하지 않는다.
+정확한 public shape/상한/오류/생활주기는 [CORE](contract/current/CORE.md)와 rendering 문서가 소유한다.

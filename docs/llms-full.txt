@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:3f84fc83d6df46da9a452251249371dced10570b0bfe47572451201bf7c4be12. Status: development. Runtime source: 3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7. Release baseline: v0.0.13.
+Contract: sha256:4a146ea548f6141c3530e8accf2570fb853ce1f0de1c06fc2a925052b25fb651. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -213,11 +213,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -652,15 +652,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -805,7 +805,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -823,7 +823,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -936,7 +936,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1106,7 +1106,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1328,15 +1328,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1472,7 +1472,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1486,15 +1486,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1592,7 +1592,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1606,15 +1606,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1723,7 +1723,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1739,15 +1739,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1872,7 +1872,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1947,7 +1947,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1957,15 +1957,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2090,7 +2090,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2123,7 +2123,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2134,8 +2134,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2231,15 +2231,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2336,15 +2336,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2450,8 +2450,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2460,7 +2460,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/b6291b4db13fc895cd966e6025e092c14c31726e/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2760,7 +2760,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -6002,7 +6002,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -10431,6 +10431,67 @@ remain vector in SVG/PDF. Editable and graphic-only snapshots retain image paylo
 and validate them offline; decoder objects and preparation handles are never saved.
 Image selection and inspection use the clipped rectangle, not pixel alpha.
 
+## Embedded fonts
+
+Full authoring separates font loading, text measurement, and rendering. Use
+`prepareFontResource(program, request, host)`, then commit its authentic handle
+with `createFontResource({prepared,requestToken})` on that exact receiver.
+Replacement uses `kind:"replace"` with `target` and `replaceFontResource`.
+Request tokens are application identifiers for superseded work; the explicit
+action token appears in the action trace, so use a request identifier, not a secret.
+
+The request includes `uri`, lowercase SHA256 `expectedHash`, `mimeType`, `family`,
+`style:"normal"|"italic"`, numeric weight 100–900 in steps of 100, and
+`metricsProviderVersion`. Optional fields are `maxBytes`, `license`, and
+`attribution`. TTF, OTF, WOFF and WOFF2 use their `font/*` MIME values; the default
+and maximum byte limit is 16 MiB per font. The host explicitly supplies `load`
+and `decode`. Loading returns `{bytes:Uint8Array,mimeType}`. Decoding validates
+the complete font and returns its exact `contentHash`, `family`, `style`, `weight`
+and `metricsProviderVersion`. A decoder may not substitute a fallback font.
+
+Next, `prepareTextMetrics(program,{id,fonts},host)` takes explicit font resource
+IDs and `{requestToken,decode,measure,signal?}`. The measurement callback receives
+`{asset,queries,signal?}` and returns `{contentHash,metricsProviderVersion,widths}`.
+Each query has `text` and `fontSize`; `asset` supplies the exact bytes and font
+descriptor. Widths must be finite, nonnegative, in query order, and measured using
+that font. Apply the result with `applyTextMetrics({prepared,requestToken})`.
+The helper prepares the queries required by existing text layout, including
+bounded grapheme prefixes for wrapping. It never treats a missing width as zero
+or an estimate. Preparation allows 64 font bindings, 64 MiB of unique bytes,
+10,000 queries, 1,048,576 total UTF-16 units, and 256 layout passes.
+
+An exact profile requires a unique resource for each family/style/weight tuple.
+New labels or typography may require new measurements. Such edits fail atomically;
+use `removeTextMetrics()`, make the edit, then prepare and apply the new layout.
+Replacing a bound font prepares its new measurement closure before committing
+the resource and all affected text. Existing schema 1 profiles retain their
+documented estimate behavior for unmatched queries.
+
+Canvas uses `prepareFontRendering(programOrCanvasScene,{register,signal?})` from
+Full or Basic. The explicit `register` callback receives bytes, MIME, content hash,
+a content-addressed `family` alias, original `sourceFamily`, style, weight and
+provider version. It registers **that alias**, then returns
+`{contentHash,family,style,weight,metricsProviderVersion,dispose}`. The identity
+fields must match the request; `dispose()` releases that exact host registration.
+Pass the result as `render(program,context,{fonts})` or
+`renderTransitionScene(scene,context,{fonts})`, and call `fonts.dispose()` when
+finished. Aborts and partial failures also release completed registrations.
+Callbacks sharing an external font registry must manage their own registration
+ownership; deleting another caller's face is not a valid disposal implementation.
+
+Missing, stale, copied, aborted or disposed handles fail before Canvas clear or
+resize. Any change to the prepared graphic content requires preparation again.
+The rendering budget is 64 distinct font identities and 64 MiB of unique bytes.
+No callbacks or handles enter a saved program. SVG embeds the bytes with the same
+aliases; PNG/PDF register the bytes during output and release their native leases
+after drawing. Renderers do not measure or rewrap text. Missing glyph coverage
+must be addressed by the application's chosen fonts; the library does not invent
+a replacement font or claim that one font covers every Unicode character.
+
+The [complete font example](./tutorials/font-assets/) includes explicit browser
+and Node host adapters, pinned Korean and monochrome emoji subsets, combining
+marks, wrapping, offline snapshots and the same primitive across four renderers.
+
 ## Related
 
 [Canvas](./api/canvas/) · [Semantic and graphical state](./concepts/semantic-and-graphics/) ·
@@ -10470,7 +10531,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -10536,7 +10597,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -10938,7 +10999,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -11536,7 +11597,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -17163,27 +17224,31 @@ make different package behavior interchangeable.
 
 # Fonts and Text Rendering
 
-ggaction stores a CSS-style `fontFamily` string in concrete text graphics and
-passes it to the selected rendering backend. The default family is
-`sans-serif`. ggaction does not bundle a font or expose a font-loading or
-registration API, so the browser, operating system, and native renderer decide
-which installed face satisfies that family.
+Text uses `sans-serif` and deterministic estimated bounds by default. You can
+also load explicit font bytes through `prepareFontResource`, retain them with
+`createFontResource`, and prepare exact layout widths through `prepareTextMetrics`.
+The application supplies loading, decoding and measurement callbacks. The
+library verifies the font identity and commits the prepared result synchronously.
+
+See the [prepared-font tutorial](./tutorials/font-assets/) for a complete
+Korean and emoji example, and [embedded-font rendering](./api/rendering/#embedded-fonts)
+for host callbacks, limits, disposal and error behavior.
 
 ## Cross-platform contract
 
 | Concern | Behavior |
 | --- | --- |
-| Family | Must be a non-empty string; availability is controlled by the host/backend |
+| Family | A non-empty string; an exact profile binds one explicit family/style/weight tuple to retained font bytes |
 | Size | Must be a positive finite number in logical chart pixels |
 | Weight | A non-empty string or finite number; numeric renderer weights are rounded to the nearest hundred and clamped to 100–900 |
-| Authoring bounds | Deterministic estimates from text, size, and broad family/weight factors; no backend `measureText` call |
-| Painted glyphs | The host/backend resolves the actual face; its glyph widths can differ from the estimated bounds |
-| SVG | Emits `font-family`, `font-size`, and normalized `font-weight`; the consumer still resolves the font |
-| Canvas, PNG, PDF | Draw through the Canvas-compatible backend with the resolved host/native font |
+| Authoring bounds | Deterministic estimates by default; an applied exact profile uses prepared widths and rejects missing queries |
+| Painted glyphs | Ordinary text uses host fonts; font-bound text uses the retained bytes under a content-addressed alias |
+| SVG | Embeds font-bound bytes in `@font-face`; ordinary `fontFamily` text still uses the consumer's fonts |
+| Canvas, PNG, PDF | Canvas accepts a `prepareFontRendering` handle; PNG/PDF prepare retained fonts for the duration of output |
 
-SVG markup referencing a family is not proof that the font is embedded.
-Likewise, PDF metadata is not a font-embedding control. Qualify the final file
-in the deployment environment when exact typography is a product requirement.
+A family string alone does not embed a font. Font resources and concrete
+font-bound graphics retain validated bytes for offline restoration. Renderers
+use the stored lines and origins without fetching, measuring or wrapping again.
 
 ## Set text styles explicitly
 
@@ -17212,7 +17277,18 @@ global theme or rewrite every axis and legend.
 
 ## Loading in browsers
 
-Load required web fonts before rendering so the backend can use the intended
+For exact layout, prepare font resources on the intended immutable program,
+then call `prepareTextMetrics(program, {id, fonts}, host)` and apply its handle
+with `applyTextMetrics({prepared, requestToken})`. A new label that needs a
+missing width fails atomically. Remove the profile, edit the label, and prepare
+again; replacing a bound font prepares its new measurements before committing.
+
+Browser Canvas also requires `prepareFontRendering(program, {register})` and
+`render(program, context, {fonts})`. Release the handle with `fonts.dispose()`
+when drawing has finished. The host registers exactly the supplied alias and
+bytes and returns the matching identity and a disposer.
+
+For ordinary family-based text, load web fonts before rendering so the backend can use the intended
 face. Waiting for `document.fonts.ready` does not change ggaction's deterministic
 text estimates into browser measurements. Rebuilding the same program with the
 same styles retains those estimates. If a font arrives after drawing, rerender
@@ -17756,6 +17832,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createErrorBar`](./reference/actions/statistics/#createerrorbar) | H1 | user-facing | statistics |
 | [`createFlattenData`](./reference/actions/statistics/#createflattendata) | H1 | user-facing | statistics |
 | [`createFoldData`](./reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
+| [`createFontResource`](./reference/actions/charts-data/#createfontresource) | H3 | user-facing | core |
 | [`createGradientPlot`](./reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphics`](./reference/actions/extension/#creategraphics) | H4 | primitive | primitives |
 | [`createGrid`](./reference/actions/guides/#creategrid) | H3 | user-facing | grid |
@@ -18038,6 +18115,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`reorderCompositionChildren`](./reference/actions/charts-data/#reordercompositionchildren) | H3 | user-facing | composition |
 | [`repeatCharts`](./reference/actions/charts-data/#repeatcharts) | H0 | user-facing | composition |
 | [`replaceCompositionChild`](./reference/actions/charts-data/#replacecompositionchild) | H3 | user-facing | composition |
+| [`replaceFontResource`](./reference/actions/charts-data/#replacefontresource) | H3 | user-facing | core |
 | [`replaceImageResource`](./reference/actions/charts-data/#replaceimageresource) | H3 | user-facing | core |
 | [`reviseData`](./reference/actions/charts-data/#revisedata) | H3 | user-facing | core |
 | [`selectMarks`](./reference/actions/advanced/#selectmarks) | H3 | advanced | mark-selection |
@@ -18163,10 +18241,10 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 **Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-applyTextMetrics(options: TargetedOptions<ApplyTextMetricsOptions>): ChartProgram;
+applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`ApplyTextMetricsOptions`](./reference/types/#type-applytextmetricsoptions).
+Named option contracts: [`ApplyTextMetricsOptions`](./reference/types/#type-applytextmetricsoptions).
 
  Declared options
 
@@ -18174,18 +18252,24 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `profile` | Required | `TextMetricsProfile` |
+| `profile` | Optional / branch-dependent | `TextMetricsProfile \| undefined` |
+| `prepared` | Optional / branch-dependent | `PreparedTextMetrics \| undefined` |
+| `requestToken` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 applyTextMetrics({ profile })
+applyTextMetrics({ prepared, requestToken })
 ```
 
 Apply a host-measured width profile to title, axis, legend, label, and composition
 layout. See [Measured text layout](./api/rendering/#measured-text-layout) for the
 exact profile format, matching rules, propagation, and executable example.
+The prepared overload binds stored font bytes and measured widths to one exact
+receiver; missing font queries fail instead of using an estimate. See
+[embedded fonts](./api/rendering/#embedded-fonts).
 
 ## `removeTextMetrics`
 
@@ -22226,6 +22310,69 @@ editTreemapPlot({ target?, layout?, origin?, clip?, cells?, labels? })
 
 Edit treemap cells, labels, placement, or the bound treemap layout. Full only.
 [Hierarchy resources and plots](./api/hierarchy/#edittreemapplot)
+
+## `createFontResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createFontResource(options: ApplyFontResourceOptions<"create">): ChartProgram;
+```
+
+Named option contracts: [`ApplyFontResourceOptions`](./reference/types/#type-applyfontresourceoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedFontResource<"create">` |
+| `requestToken` | Required | `string` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createFontResource({ prepared, requestToken })
+```
+
+Commit an authentic create handle from `prepareFontResource` on its exact original
+Full receiver. The explicit host loads and validates pinned font bytes. No text
+layout changes until prepared metrics are applied. See
+[embedded fonts](./api/rendering/#embedded-fonts).
+
+## `replaceFontResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+replaceFontResource(options: ApplyFontResourceOptions<"replace">): ChartProgram;
+```
+
+Named option contracts: [`ApplyFontResourceOptions`](./reference/types/#type-applyfontresourceoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedFontResource<"replace">` |
+| `requestToken` | Required | `string` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+replaceFontResource({ prepared, requestToken })
+```
+
+Commit a prepared replacement and atomically refresh any exact measured layout
+that uses the font, including inherited composition children. The preparation
+host must measure the new font before this action can replace a bound resource.
 
 ## Focused core data editing
 
@@ -31308,6 +31455,18 @@ export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageR
 export function prepareImageResource(program: ChartProgram, request: CreateImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"create">>;
 export function prepareImageResource(program: ChartProgram, request: ReplaceImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"replace">>;
 export function prepareImageResource(program: ChartProgram, request: ImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource>;
+export type { FontIdentity, FontMimeType, ConcreteFont, FontRef, FontMetricsProfile, FontResourceSource, CreateFontResourceRequest,
+  ReplaceFontResourceRequest, FontResourceRequest, FontMeasurementHost, TextMetricsHost, FontResourceHost,
+  PreparedFontResource, ApplyFontResourceOptions, PreparedTextMetrics, TextMetricsRequest, FontResource,
+  PreparedFontRendering, FontRenderingHost } from "./program.js";
+import type { CreateFontResourceRequest, ReplaceFontResourceRequest, FontResourceRequest, FontResourceHost, PreparedFontResource,
+  PreparedTextMetrics, TextMetricsRequest, TextMetricsHost, PreparedFontRendering, FontRenderingHost } from "./program.js";
+export function prepareFontResource(program: ChartProgram, request: CreateFontResourceRequest, host: FontResourceHost): Promise<PreparedFontResource<"create">>;
+export function prepareFontResource(program: ChartProgram, request: ReplaceFontResourceRequest, host: FontResourceHost): Promise<PreparedFontResource<"replace">>;
+export function prepareFontResource(program: ChartProgram, request: FontResourceRequest, host: FontResourceHost): Promise<PreparedFontResource>;
+export function prepareTextMetrics(program: ChartProgram, request: TextMetricsRequest, host: TextMetricsHost): Promise<PreparedTextMetrics>;
+export function prepareFontRendering(program: Pick<ChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
+export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
 ```
 
 #### `ggaction/basic`
@@ -31471,6 +31630,10 @@ export function render(
 
 export function prepareImageRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: ImageRenderingHost): Promise<PreparedImageRendering>;
 export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+export type { FontIdentity, FontMimeType, ConcreteFont, PreparedFontRendering, FontRenderingHost } from "./program.js";
+import type { PreparedFontRendering, FontRenderingHost } from "./program.js";
+export function prepareFontRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
+export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
 ```
 
 #### `ggaction/extension`
@@ -31847,7 +32010,7 @@ interface ChartProgramActions {
   createCanvas(options?: TargetedOptions<CanvasOptions>): ChartProgram;
   editCanvas(options: TargetedOptions<CanvasOptions>): ChartProgram;
   fitCanvas(options?: TargetedOptions<FitCanvasOptions>): ChartProgram;
-  applyTextMetrics(options: TargetedOptions<ApplyTextMetricsOptions>): ChartProgram;
+  applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
   removeTextMetrics(): ChartProgram;
   applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
@@ -31876,6 +32039,8 @@ interface ChartProgramActions {
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
   replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+  createFontResource(options: ApplyFontResourceOptions<"create">): ChartProgram;
+  replaceFontResource(options: ApplyFontResourceOptions<"replace">): ChartProgram;
   createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
   editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
   createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;
@@ -32330,6 +32495,17 @@ export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] =
 
 Related types: [`DataUpdateRequest`](./reference/types/#type-dataupdaterequest) · [`PreparedDataUpdate`](./reference/types/#type-prepareddataupdate).
 
+### `ApplyFontResourceOptions` {#type-applyfontresourceoptions}
+
+ Expand ApplyFontResourceOptions
+
+```typescript
+export interface ApplyFontResourceOptions<Kind extends "create" | "replace"> { prepared: PreparedFontResource<Kind>; requestToken: string; }
+declare const preparedTextMetricsBrand: unique symbol;
+```
+
+Related types: [`PreparedFontResource`](./reference/types/#type-preparedfontresource).
+
 ### `ApplyImageResourceOptions` {#type-applyimageresourceoptions}
 
  Expand ApplyImageResourceOptions
@@ -32347,10 +32523,11 @@ Related types: [`PreparedImageResource`](./reference/types/#type-preparedimagere
  Expand ApplyTextMetricsOptions
 
 ```typescript
-export interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }
+export type ApplyTextMetricsOptions = TargetedOptions<{ profile: TextMetricsProfile; prepared?: never; requestToken?: never }> |
+  { profile?: never; prepared: PreparedTextMetrics; requestToken: string; target?: never };
 ```
 
-Related types: [`TextMetricsProfile`](./reference/types/#type-textmetricsprofile).
+Related types: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`TextMetricsProfile`](./reference/types/#type-textmetricsprofile) · [`PreparedTextMetrics`](./reference/types/#type-preparedtextmetrics).
 
 ### `ApplyThemeOptions` {#type-applythemeoptions}
 
@@ -41215,6 +41392,17 @@ export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = Dat
 
 Related types: [`DataUpdateRequest`](./reference/types/#type-dataupdaterequest) · [`DataUpdateDescriptors`](./reference/types/#type-dataupdatedescriptors).
 
+### `PreparedFontResource` {#type-preparedfontresource}
+
+ Expand PreparedFontResource
+
+```typescript
+export interface PreparedFontResource<Kind extends "create" | "replace" = "create" | "replace"> {
+  readonly [preparedFontResourceBrand]: Kind; readonly kind: "font-resource";
+  readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+```
+
 ### `PreparedImageResource` {#type-preparedimageresource}
 
  Expand PreparedImageResource
@@ -41224,6 +41412,17 @@ export interface PreparedImageResource<Kind extends "create" | "replace" = "crea
   readonly [preparedImageResourceBrand]: Kind;
   readonly kind: "image-resource";
   readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+```
+
+### `PreparedTextMetrics` {#type-preparedtextmetrics}
+
+ Expand PreparedTextMetrics
+
+```typescript
+export interface PreparedTextMetrics {
+  readonly [preparedTextMetricsBrand]: true; readonly kind: "text-metrics";
+  readonly request: Readonly<{ id: string; fonts: readonly string[] }>;
 }
 ```
 
@@ -42758,7 +42957,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
  Expand StoredResourceKind
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "font";
 ```
 
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}
@@ -44208,9 +44407,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -44276,12 +44475,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -45393,7 +45592,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -45446,7 +45645,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -45692,7 +45891,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -45744,7 +45943,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/repeat-charts).
 
 ## Space between plots
 
@@ -46419,7 +46618,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -47316,11 +47515,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:3f84fc83d6df46da9a452251249371dced10570b0bfe47572451201bf7c4be12` |
-| Example and dataset source | `b6291b4db13fc895cd966e6025e092c14c31726e` |
-| Runtime source commit | `3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7` |
+| Contract fingerprint | `sha256:4a146ea548f6141c3530e8accf2570fb853ce1f0de1c06fc2a925052b25fb651` |
+| Example and dataset source | `codex/roadmap9-images` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 317 |
+| Declared actions here | 319 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -47824,12 +48023,12 @@ An explicit Cartesian `labelMap` entry with `label: ""` hides only that displaye
 # Place a retained image
 
 Prepare image bytes explicitly, then use one image mark to control its fit,
-alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/image-assets/)
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/image-assets/)
 uses one pinned SVG asset for six placements and retains the bytes for offline export.
 
 ## Prepare and place
 
-The canonical [example program](https://github.com/ggaction/ggaction/blob/b6291b4db13fc895cd966e6025e092c14c31726e/examples/image-assets/program.js) loads its
+The canonical [example program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/image-assets/program.js) loads its
 inline asset through `prepareImageResource` and applies the returned handle to the
 same immutable program. Its application-owned decoder reports the source dimensions.
 The synchronous `createImageResource` action stores the validated bytes. Then
@@ -47924,6 +48123,71 @@ const program = createImageExample();
 const images = await prepareImageRendering(program, {decode: decodeImage});
 render(program, document.querySelector("#chart").getContext("2d"), {images});
 ```
+
+<!-- Source: /tutorials/font-assets/ -->
+
+# Prepare fonts before text layout
+
+Keep font loading explicit, measure with the loaded bytes, and save the final
+text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/font-assets/)
+uses licensed Korean and monochrome emoji subsets with fixed content hashes.
+It includes a combining accent and a wrapped Korean title.
+
+## Load, measure, apply
+
+The canonical [program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/font-assets/program.js)
+first creates a title using the requested font families. Its initial estimated
+layout is a usable immutable program while loading runs. For each named font,
+`prepareFontResource` asks the application to load and decode bytes and verifies
+the expected SHA256. `createFontResource` commits the prepared result to the exact
+original receiver using the current request token.
+
+`prepareTextMetrics` takes the explicit font IDs and asks the application to
+measure every width needed by the existing layout. `applyTextMetrics` commits the
+exact profile and rematerializes the title. Widths that have not been measured
+cannot silently use an estimate. A late result for an edited receiver is stale.
+The [host adapter](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/font-assets/host.js)
+uses browser `FontFace` and Canvas measurement, or a native Canvas in Node.
+
+## Draw the prepared text
+
+The complete example entry below runs inside the linked example directory after
+the standard browser module setup. Its local `program.js` performs the font
+resource and metric preparation described above; `host.js` registers and releases
+the exact requested font alias.
+
+```js
+import { render, prepareFontRendering } from "ggaction";
+import { createFontExample } from "./program.js";
+import { registerFont } from "./host.js";
+
+const program = createFontExample();
+const canvas = document.querySelector("canvas");
+const fonts = await prepareFontRendering(program, { register: registerFont });
+try { render(program, canvas.getContext("2d"), { fonts }); }
+finally { fonts.dispose(); }
+```
+
+SVG embeds the same font bytes. PNG/PDF register them for the duration of output.
+They use the stored lines and origins rather than measuring or wrapping again.
+Editable snapshots retain the font resource and exact profile; graphic snapshots
+retain self-contained concrete fonts. Restore does not fetch the original URI.
+
+## Change labels or fonts
+
+Edits that need only already measured queries stay synchronous. New labels may
+need more queries: remove the exact profile with `removeTextMetrics()`, edit the
+text, and prepare/apply a new profile on that receiver. Replacing a bound font
+uses `prepareFontResource` with `kind:"replace"` and a measurement callback, then
+`replaceFontResource`; bytes, metrics and text update together.
+
+Restrictive `removeResource({kind:"font",id})` rejects an active metric binding.
+Explicit cascade first removes the metric profile and recomputes estimated text.
+See [embedded fonts](./api/rendering/#embedded-fonts) for the complete host
+contracts, budgets, error behavior and registration lifetime.
+
+The subsets only cover the example text. Choose fonts covering your own content;
+the library does not claim that one font covers every script or emoji sequence.
 
 <!-- Source: /api/hierarchy/ -->
 
@@ -48041,7 +48305,7 @@ A hierarchy describes parent-child meaning. A layout computes positions, and a p
 
 ## Run the maintained examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/b6291b4db13fc895cd966e6025e092c14c31726e/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 

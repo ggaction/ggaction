@@ -1,3 +1,4 @@
+import { materializeTextFont } from "../../materialization/textFont.js";
 import { paintedTitleComponent, titleTextProperties } from "../../layout/title.js";
 import { withGuideLayoutValidation } from "../../materialization/guides/layout.js";
 import { action } from "../../core/action.js";
@@ -61,7 +62,7 @@ function editTextGraphic(program, id, component, style) {
       value: component.rotation
     });
   }
-  return next;
+  return materializeTextFont(next, id);
 }
 
 function titleTextAction(kind, create) {

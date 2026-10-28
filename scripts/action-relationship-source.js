@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { chart, prepareDataUpdate, prepareImageResource } from "../src/index.js";
+import { chart, prepareDataUpdate, prepareImageResource, prepareFontResource, prepareTextMetrics } from "../src/index.js";
 import {
   buildScenario,
   generateScenarioDescriptors
@@ -436,6 +436,21 @@ async function imageResourcePrograms() {
     .removeResource({kind: "image", id: "logo", cascade: true})];
 }
 
+async function fontResourcePrograms() {
+  const bytes = new Uint8Array(await readFile(new URL("../test/fixtures/fonts/metric-fixture.ttf", import.meta.url)));
+  const source = { uri: "fixture:relationship-font", expectedHash: "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+    mimeType: "font/ttf", family: "ggaction Metric Fixture", style: "normal", weight: 400, metricsProviderVersion: "fixture@1" };
+  const host = { requestToken: "font", load: () => ({ bytes, mimeType: source.mimeType }),
+    decode: value => Object.fromEntries(["contentHash", "family", "style", "weight", "metricsProviderVersion"].map(key => [key, value[key]])),
+    measure() { throw new Error("An empty font fixture requires no measurements."); } };
+  const base = chart().createCanvas();
+  const created = base.createFontResource({ prepared: await prepareFontResource(base, { kind: "create", id: "font", ...source }, host), requestToken: "font" });
+  const { load: _load, ...metricHost } = host;
+  const measured = created.applyTextMetrics({ prepared: await prepareTextMetrics(created, { id: "metrics", fonts: ["font"] }, metricHost), requestToken: "font" });
+  return [measured.replaceFontResource({ prepared: await prepareFontResource(measured, { kind: "replace", target: "font", ...source }, host), requestToken: "font" })
+    .removeResource({ kind: "font", id: "font", cascade: true })];
+}
+
 export async function buildActionRelationships() {
   const catalog = JSON.parse(await readFile(catalogFile, "utf8"));
   const actionNames = catalog.actions.map(action => action.name);
@@ -445,7 +460,7 @@ export async function buildActionRelationships() {
   const preparedBase = chart();
   const prepared = await prepareDataUpdate(preparedBase, { kind: "create", id: "received",
     source: { kind: "inline", values: [{ x: 1 }] } }, { requestToken: "received" });
-  const programs = [...await imageResourcePrograms(), preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
+  const programs = [...await fontResourcePrograms(), ...await imageResourcePrograms(), preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
     .createCanvas({ width: 500, height: 400, margin: 70 })
     .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
     .createScatterPlot({ x: "x", y: "y" })

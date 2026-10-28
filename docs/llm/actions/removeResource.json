@@ -29,7 +29,8 @@
   ],
   "wraps": [
     "removeMark",
-    "editSemantic"
+    "editSemantic",
+    "removeTextMetrics"
   ],
   "editableVia": [
     "removeResource"

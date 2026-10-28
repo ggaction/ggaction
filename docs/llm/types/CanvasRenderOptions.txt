@@ -1,1 +1,1 @@
-export interface CanvasRenderOptions { pixelRatio?: number; images?: PreparedImageRendering; }
+export interface CanvasRenderOptions { pixelRatio?: number; images?: PreparedImageRendering; fonts?: PreparedFontRendering; }

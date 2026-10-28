@@ -1,0 +1,5 @@
+export interface FontRenderingHost {
+  register(request: Readonly<FontIdentity & { bytes: Uint8Array; mimeType: FontMimeType; sourceFamily: string; signal?: AbortSignal }>):
+    (FontIdentity & { dispose(): void }) | Promise<FontIdentity & { dispose(): void }>;
+  signal?: AbortSignal;
+}

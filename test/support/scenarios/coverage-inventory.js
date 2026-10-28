@@ -190,7 +190,7 @@ function structuredProperties(checker, project, declarationFile, type) {
     const printed = checker.typeToString(current);
     // A prepared handle is supplied intact. Its readonly inspection descriptor
     // and private brand are output evidence, not caller-authored nested options.
-    const opaqueHandle = ["PreparedDataUpdate", "PreparedImageResource", "PreparedImageRendering"].includes(current.getSymbol?.()?.name);
+    const opaqueHandle = ["PreparedDataUpdate", "PreparedImageResource", "PreparedImageRendering", "PreparedFontResource", "PreparedTextMetrics", "PreparedFontRendering"].includes(current.getSymbol?.()?.name);
     return !(
       opaqueHandle ||
       isPrimitiveType(checker, current) ||

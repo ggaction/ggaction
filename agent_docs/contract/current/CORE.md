@@ -152,7 +152,11 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `applyTextMetrics`
 
-- Signature: `applyTextMetrics({ profile })`
+- Signature: `applyTextMetrics({ profile })` 또는 `applyTextMetrics({ prepared, requestToken })`.
+- Exact font overload: `await prepareTextMetrics(program,{id,fonts},host)`의 authentic handle을 동일한 원 receiver와 현재 token에 적용한다. Full의 명시 font resource IDs만 해석하며 같은 family/style/weight 두 개는 ambiguous로 거부한다. Host는 `{requestToken,decode,measure,signal?}`이며 저장된 bytes만 decode/measure한다. 기존 schema 1의 입력과 estimate 의미는 아래와 같이 보존한다.
+- Schema 2: `{schemaVersion:2,id,fonts:[{resource:{kind:"font",id,revision},identity:{contentHash,family,style,weight,metricsProviderVersion}}],measurements:[{text,fontFamily,fontSize,fontWeight,fontStyle,width}]}`. 새 authoring object 입력이 아니라 준비 결과의 저장형식이다. 모든 query의 exact binding이 필요하고 누락 시 `metrics-required`, 미등록 tuple은 `unresolved-font`로 실패한다. 추정값으로 통과하지 않는다. `profile`와 `prepared/requestToken` 혼합 및 prepared overload의 scoped target은 거부한다.
+- Closure: 기존 explicit typography rematerializer를 private candidate에서 반복 실행하여 실제 요구 query만 준비한다. 128 UTF-16 units 이하의 missing text는 grapheme prefix도 batch로 측정한다. 고정 상한은 64 bindings, unique 64MiB, 10,000 query, 합계 1,048,576 UTF-16 units, 256 passes다. 상한 전에 callback을 차단하며 지연·abort·mismatched provider/bytes 오류는 원래 state/trace를 보존한다. 새 label query가 필요한 편집은 원자적으로 실패한다. `removeTextMetrics()` → 편집 → 새 exact receiver 준비/적용으로 갱신한다.
+- Schema 2의 domain text는 실제 선택한 self-contained font bytes를 concrete text에 저장한다. Composition은 parent font resources를 정확히 채택하며 child의 동명 상이 자원을 덮지 않는다. Offline 복원은 resource revision/identity 및 일치하는 concrete font의 byte/provider identity를 검사한다. 독립 primitive text의 다른 font tuple은 extension 소유로 유지한다.
 - 목적과 필수 state: Full unit/composition에서 host가 측정한 text width를 저작용 배치에 적용한다. Canvas 이전에도 적용할 수 있다. Renderer는 기존 concrete text만 그린다.
 - Profile: `{ schemaVersion: 1, id: NonEmptyUserId, measurements: TextMeasurement[] }`. 각 measurement는 정확한 `{ text: string, fontFamily: NonEmptyString, fontSize: PositiveFinite, fontWeight: 100|200|300|400|500|600|700|800|900, fontStyle?: "normal"|"italic", width: NonNegativeFinite }`다. 빈 문자열/빈 measurement 배열/0 width는 유효하다. Root/measurement key는 closed이며 tuple 조합의 중복, 희소 배열, 잘못된 값은 거부한다.
 - 매칭: text/family/size/normalized weight/style의 exact match다. 생략 style은 normal이며 italic과 별도 측정된다. 생략 family는 shared sans-serif, weight는 normal=400, bold=700; numeric weight는 renderer의 100 단위 rounding/clamping을 공유한다. 지원되는 numeric string도 같은 weight다. 미일치 font/text 조합과 그 외 CSS relative weight는 기존 deterministic estimate를 사용한다.
@@ -164,12 +168,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `applyTextMetrics`
 
-- Implemented: `applyTextMetrics({ profile: TextMetricsProfile }): ChartProgram`.
+- Implemented: `applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram` (legacy profile 또는 prepared exact metrics).
 - Proposed (NOT IMPLEMENTED): none.
 
 ### Value coverage — `applyTextMetrics`
 
 - ✅ Covered: exact/normalized match, 0 width, unmatched fallback, Unicode text, closed keys/schema/duplicate/invalid values, owned input, trace, pre-authoring application, title rewrap, Canvas/edit persistence, retained composition, whole action corpus empty-profile equality and editable persistence.
+- ✅ Covered: exact font/profile preparation, no-estimate missing query, stale/token/abort, font revision, nested resource adoption, Cartesian/Polar/Parallel/facet/repeat closure, actual Korean/combining/emoji and four output paths. Evidence: `test/unit/resources/font-public-preparation.test.js`, `test/unit/resources/font-layout-lifecycle.test.js`, `test/charts/font-assets/`.
 
 ## `removeTextMetrics`
 
@@ -2506,12 +2511,47 @@ Browser-safe `ggaction/persistence`의 네 함수는 action replay 없이 canoni
 - ✅ Covered: `target`, `sortBy`, and `dependents` use the shared derived-data lifecycle. Evidence: `test/unit/actions/data/sorted-data.test.js` and `test/unit/actions/data/derived-editing.test.js`.
 - No proposal remains for this action.
 
+## `createFontResource`
+
+- Signature: `createFontResource({prepared,requestToken})`. Full unit/composition의 동일 receiver에서 `await prepareFontResource(program,request,host)`로 준비한 create handle을 적용한다. Request는 `{kind:"create",id,uri,expectedHash,mimeType,family,style,weight,metricsProviderVersion,maxBytes?,license?,attribution?}`이며 host는 `{requestToken,load,decode,signal?,measure?}`다. Helper는 renderer I/O를 만들지 않는다.
+- MIME은 `font/ttf|font/otf|font/woff|font/woff2`, bytes는 기본/최대 16MiB, expectedHash는 lowercase SHA256이다. Family/provider는 nonempty string, style은 `normal|italic`, weight는 100–900의 100 단위다. Load의 `{bytes:Uint8Array,mimeType}`와 decoder의 exact `{contentHash,family,style,weight,metricsProviderVersion}`를 검증한다. Duplicate/잘못된 현재 state/closed own-data options는 host 이전에 거부한다.
+- Authored font envelope revision 0, normalized source options와 result `{byteLength,payload:{encoding:"base64",data}}`를 저장한다. 별도 graphics/metrics는 생성하지 않는다. Handle은 kind/request identity만 노출하며 token·bytes·source URI·callbacks는 보존하지 않는다. Trace는 explicit action requestToken을 기록하지만 source URI·payload·callbacks를 복제하지 않는다. Copied handle, 다른 receiver/ABA/token/action 및 abort는 적용을 거부한다. Offline codec은 MIME/header/hash/shape를 검증하며 network/decoder를 호출하지 않는다.
+- Renderer 준비는 `docs/api/rendering.md#embedded-fonts` 소유다. Basic은 concrete rendering만 지원하고 font authoring/metrics actions는 없다.
+
+### Formal values — `createFontResource`
+
+- Implemented: `createFontResource(options: ApplyFontResourceOptions<"create">): ChartProgram`.
+- Planned: 없음.
+- Proposed (NOT IMPLEMENTED): implicit network loading.
+
+### Value coverage — `createFontResource`
+
+- ✅ Covered: exact receiver/token/abort, closed descriptors, byte/header/hash, decoder identity, Full/Basic, immutable owned result, composition and offline persistence.
+- Evidence: `test/unit/resources/font-public-preparation.test.js`, `test/unit/resources/font-payload.test.js`, `test/unit/resources/font-preparation.test.js`, `test/contracts/font-types.test.js`.
+
+## `replaceFontResource`
+
+- Signature: `replaceFontResource({prepared,requestToken})`. 같은 helper의 request는 `{kind:"replace",target,...FontResourceSource}`이며 id를 함께 받지 않는다. 기존 target과 safe revision +1이 필요하다.
+- Active schema 2 profile에 포함된 font라면 host `measure`가 필수이며 loader 이전에 검사한다. 새 bytes/provider에 대해 전체 query closure를 준비한 후 resource revision, profile identity/measurements 및 concrete typography를 원자적으로 바꾼다. 정확히 같은 parent resource를 물려받은 nested children만 함께 갱신한다. 동명 독립 child namespace는 자동 선택하지 않는다.
+- 기존 callback/measurement state를 임의 재사용하지 않는다. 준비/배치/적용 실패는 원래 program과 trace를 보존하며 삭제는 공통 `removeResource`를 사용한다.
+
+### Formal values — `replaceFontResource`
+
+- Implemented: `replaceFontResource(options: ApplyFontResourceOptions<"replace">): ChartProgram`.
+- Planned: 없음.
+- Proposed (NOT IMPLEMENTED): automatic asynchronous refresh.
+
+### Value coverage — `replaceFontResource`
+
+- ✅ Covered: new exact identity and revision, missing host callback before load, opaque handle/action guards, recursive inherited resources, failure atomicity, offline restoration and restrictive/cascade removal.
+- Evidence: `test/unit/resources/font-public-preparation.test.js`, `test/unit/resources/font-layout-lifecycle.test.js`, `test/contracts/font-types.test.js`.
+
 ## `createImageResource`
 
 - Signature: `createImageResource({ prepared, requestToken })`.
 - Full-only synchronous action commits an authentic create handle from `await prepareImageResource(program, request, host)`. Request is `{kind:"create", id, uri, expectedHash, mimeType, maxBytes?, license?, attribution?}`; host is `{requestToken, load, decode, signal?}`. Exact original receiver, action kind and current token must match. Copied/forged handles, aborted signals and changed receivers fail before writes; intentional branching from the original immutable receiver remains valid.
 - Load returns `{bytes:Uint8Array,mimeType}`; decode returns `{width,height,originClean:true}`. MIME is PNG/JPEG/WebP/static SVG, SHA256 lowercase hex, default and maximum bytes 16 MiB, decoded pixels at most 64 MiPixels. Invalid identities/current bindings fail before loader calls; MIME/hash/decode/CORS/abort errors are distinct. There is no implicit fetch.
-- Stores an authored `image` resource revision 0 with canonical source metadata in options and original dimensions/byteLength/base64 in result. Input refs are empty. Trace includes only the request descriptor and bounded resource metadata; it excludes bytes, URL and token. It creates no graphics. Prepare a unit chart explicitly before composing it; Basic supports concrete rendering only.
+- Stores an authored `image` resource revision 0 with canonical source metadata in options and original dimensions/byteLength/base64 in result. Input refs are empty. Trace includes the request descriptor, explicit action requestToken and bounded resource metadata; it excludes bytes, URL and callbacks. The opaque handle itself does not expose the preparation token. It creates no graphics. Prepare a unit chart explicitly before composing it; Basic supports concrete rendering only.
 - Editable and graphic-only codecs retain self-contained bytes and verify hash/MIME/static SVG offline without decoding. Rendering preparation is documented in `docs/api/rendering.md`.
 
 ### Formal values — `createImageResource`
@@ -2548,6 +2588,7 @@ Browser-safe `ggaction/persistence`의 네 함수는 action replay 없이 canoni
 - Full-only common stored-resource removal requires an explicit typed kind and ID. Same IDs in different resource namespaces are independent. Omitted cascade is restrictive: any live resource or layer reference rejects removal. Cascade must be boolean.
 - Explicit cascade follows the stored ownership/dependency graph; unowned dependent resources remain protected. For an image, first remove every image mark consuming that exact resource through wrapped `removeMark`, then remove the resource. Mark config, owned clip wrappers and selection/highlight projections are removed with their mark. Authored persistent-selection resources remain available. Independent shared resources and unrelated marks are preserved. A speculative complete application validates all consumers before the returned action writes.
 - Authored hierarchy/layout dependents and live hierarchy plots require explicit removal first; `removeMark` releases a plot without deleting its reusable hierarchy or layout. Generated dependents may be removed by the ownership plan.
+- Font removal supports unit/composition roots. An active exact metric binding prevents restrictive deletion; explicit cascade first invokes wrapped `removeTextMetrics` across the affected composition, clearing concrete bindings and recomputing estimated layout, then removes the named font resource. Other resource kinds retain their unit-only scope.
 - Missing IDs, stale references, unknown kinds, invalid cascade, protected dependents and cyclic graphs reject without mutating the receiver. No loader or decoder is called.
 
 ### Formal values — `removeResource`

@@ -27,6 +27,7 @@ const LOADERS = Object.freeze({
 const EXPECTED_DRAW_ORDER = Object.freeze({
   "structured-paints": ["canvas", "paint"],
   "image-assets": ["canvas", "plot-main", "label", "backdrop", "image-image-clip", "image"],
+  "font-assets": ["canvas", "plot-main", "chartTitle", "chartSubtitle"],
   "tree-layouts": ["canvas", "treePlot", "chartTitle", "chartSubtitle"],
   "tree-horizontal": ["canvas", "treePlot", "chartTitle", "chartSubtitle"],
   "tree-radial": ["canvas", "treePlot", "chartTitle", "chartSubtitle"],
@@ -475,6 +476,12 @@ test("locks the complete public graphic hierarchy inventory", () => {
           : undefined;
       if (expectedDrawLength === undefined) assert.ok(drawOrder.length > 20);
       else assert.equal(drawOrder.length, expectedDrawLength);
+      continue;
+    }
+    if (chart.id === "font-assets") {
+      assert.deepEqual(drawOrder, expected);
+      assert.deepEqual(program.graphicSpec.objects.canvas.children, ["plot-main", "chartTitle", "chartSubtitle"]);
+      assert.deepEqual(program.graphicSpec.objects["plot-main"].items, []);
       continue;
     }
     if (chart.id === "image-assets") {

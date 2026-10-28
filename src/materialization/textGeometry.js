@@ -1,3 +1,4 @@
+import { bindTextFontProperties } from "./textFont.js";
 import { hasPositionBinding } from "../core/encodingBindings.js";
 import { contentValue, resolveTextSourceBindings } from "./textContent.js";
 export { sourceValue } from "./textContent.js";
@@ -242,7 +243,7 @@ function sourcePlacementGeometry(program, source, item) {
   return { kind: "point", center: sourceAnchor(program, source, item) };
 }
 
-function concreteTextItem(config, position, text, { offsets = true } = {}) {
+function concreteTextItem(program, config, position, text, { offsets = true } = {}) {
   const x = position.x;
   const y = position.y;
   if (text === undefined || !Number.isFinite(x) || !Number.isFinite(y)) {
@@ -251,7 +252,7 @@ function concreteTextItem(config, position, text, { offsets = true } = {}) {
   const lines = resolveTextLines(text, config);
   return {
     type: "text",
-    properties: {
+    properties: bindTextFontProperties(program, {
       x: x + (offsets ? config.dx : 0),
       y: y + (offsets ? config.dy : 0),
       text,
@@ -264,7 +265,7 @@ function concreteTextItem(config, position, text, { offsets = true } = {}) {
       textAlign: config.align,
       textBaseline: config.baseline,
       rotation: config.rotation
-    }
+    })
   };
 }
 
@@ -376,7 +377,7 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
     const placement = program.markConfigs[layer.id]?.labelAuthoring?.placement;
     if (placement === undefined) {
       const anchor = sourceAnchor(program, itemSource, item);
-      const concrete = concreteTextItem(resolvedConfig, anchor, text);
+      const concrete = concreteTextItem(program, resolvedConfig, anchor, text);
       return concrete === undefined ? [] : [{ graphic: concrete, anchor, ...identity, ...provenance }];
     }
     assertMarkLabelPlacementSupport(sourcePlacementContext(program, itemSource), placement);
@@ -406,7 +407,7 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
     const anchor = { x: resolved.sourceX, y: resolved.sourceY };
     return [{
       graphic: concreteTextItem(
-        resolvedConfig,
+        program, resolvedConfig,
         { x: resolved.x, y: resolved.y },
         text,
         { offsets: false }
@@ -480,6 +481,7 @@ function resolveRowTextItems(program, layer, config, includeIdentities, members,
     const text = overrides.has(identity) ? overrides.get(identity)
       : conditionalText !== undefined ? conditionalText[index] : formatTextValue(contentValue(layer.encoding.text, row), layer.encoding.text.format);
     const concrete = concreteTextItem(
+      program,
       {
         ...config,
         ...(fills === undefined ? {} : { fill: fills[index] }),

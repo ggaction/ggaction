@@ -1,1 +1,2 @@
-export interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }
+export type ApplyTextMetricsOptions = TargetedOptions<{ profile: TextMetricsProfile; prepared?: never; requestToken?: never }> |
+  { profile?: never; prepared: PreparedTextMetrics; requestToken: string; target?: never };

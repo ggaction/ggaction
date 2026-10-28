@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:3f84fc83d6df46da9a452251249371dced10570b0bfe47572451201bf7c4be12",
-  "sourceCommit": "3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7",
-  "sourceRef": "3f7fa8619c36f8bf6c8484a352dda79f57a0c0a7",
-  "exampleSourceRef": "b6291b4db13fc895cd966e6025e092c14c31726e",
+  "contractId": "sha256:4a146ea548f6141c3530e8accf2570fb853ce1f0de1c06fc2a925052b25fb651",
+  "sourceCommit": null,
+  "sourceRef": "main",
+  "exampleSourceRef": "codex/roadmap9-images",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 317,
+  "actionCount": 319,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -119,6 +119,14 @@
       "status": "development"
     },
     "replaceImageResource": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createFontResource": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "replaceFontResource": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

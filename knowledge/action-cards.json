@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 317,
+  "count": 319,
   "cards": [
     {
       "schemaVersion": 3,
@@ -358,7 +358,7 @@
       "layer": "user-facing",
       "domain": "core",
       "summary": "Apply a host-measured width profile to title, axis, legend, label, and composition layout.",
-      "signature": "applyTextMetrics(options: TargetedOptions<ApplyTextMetricsOptions>): ChartProgram;",
+      "signature": "applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;",
       "intents": [
         "apply text metrics",
         "apply",
@@ -405,8 +405,18 @@
       "options": [
         {
           "name": "profile",
-          "required": true,
-          "type": "TextMetricsProfile"
+          "required": false,
+          "type": "TextMetricsProfile | undefined"
+        },
+        {
+          "name": "prepared",
+          "required": false,
+          "type": "PreparedTextMetrics | undefined"
+        },
+        {
+          "name": "requestToken",
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "target",
@@ -415,7 +425,7 @@
         }
       ],
       "callPatterns": [
-        "applyTextMetrics({ profile, target? })"
+        "applyTextMetrics({ target?, profile?, prepared?, requestToken? })"
       ],
       "snippet": "program.applyTextMetrics({ profile: { schemaVersion: 1, id: \"host\", measurements: [] } })",
       "errors": [],
@@ -38332,7 +38342,8 @@
       ],
       "wraps": [
         "removeMark",
-        "editSemantic"
+        "editSemantic",
+        "removeTextMetrics"
       ],
       "editableVia": [
         "removeResource"
@@ -39261,6 +39272,137 @@
       "snippet": "program.editTreemapPlot({ target: \"treemap\", cells: { opacity: 0.8 } })",
       "errors": [],
       "route": "/reference/actions/charts-data/#edittreemapplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createFontResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Commit an authentic create handle from prepareFontResource on its exact original Full receiver.",
+      "signature": "createFontResource(options: ApplyFontResourceOptions<\"create\">): ChartProgram;",
+      "intents": [
+        "create font resource",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "embedded font bytes",
+        "measured font identity"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [],
+        "owns": [
+          "embedded font bytes"
+        ],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "replaceFontResource",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "prepared",
+          "required": true,
+          "type": "PreparedFontResource<\"create\">"
+        },
+        {
+          "name": "requestToken",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "createFontResource({ prepared, requestToken })"
+      ],
+      "snippet": "program.createFontResource({ prepared: preparedFontCreate, requestToken: \"current\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createfontresource"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "replaceFontResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Commit a prepared replacement and atomically refresh any exact measured layout that uses the font, including inherited composition children.",
+      "signature": "replaceFontResource(options: ApplyFontResourceOptions<\"replace\">): ChartProgram;",
+      "intents": [
+        "replace font resource",
+        "replace",
+        "swap child",
+        "chart setup",
+        "data and scales",
+        "embedded font bytes",
+        "measured font identity"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing embedded font bytes"
+        ],
+        "owns": [],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "replaceFontResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing embedded font bytes"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "prepared",
+          "required": true,
+          "type": "PreparedFontResource<\"replace\">"
+        },
+        {
+          "name": "requestToken",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "replaceFontResource({ prepared, requestToken })"
+      ],
+      "snippet": "program.replaceFontResource({ prepared: preparedFontReplace, requestToken: \"current\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#replacefontresource"
     }
   ]
 }

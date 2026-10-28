@@ -1,0 +1,5 @@
+export interface PreparedFontRendering {
+  readonly [preparedFontRenderingBrand]: true; readonly kind: "font-rendering"; readonly fontCount: number;
+  /** Invalidates the handle and releases its host registrations. */
+  dispose(): void;
+}

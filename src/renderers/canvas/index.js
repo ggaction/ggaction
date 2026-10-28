@@ -1,6 +1,7 @@
 import { prepareTextPaints } from "./textPaint.js";
 import { preflightCanvasFillCapabilities } from "./fill.js";
 import { readPreparedImages } from "../imageRendering.js";
+import { readPreparedFonts } from "../fontRendering.js";
 import { drawImageGraphic } from "./image.js";
 import { MAX_RASTER_DIMENSION, MAX_RASTER_PIXELS } from "./limits.js";
 import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
@@ -219,7 +220,7 @@ export function drawResolvedGraphicSpec(target, context, options = {}) {
   });
 }
 
-export function renderCanvasProgram(program, context, { pixelRatio = 1, images } = {}, createCanvas, drawingOptions = {}) {
+export function renderCanvasProgram(program, context, { pixelRatio = 1, images, fonts } = {}, createCanvas, drawingOptions = {}) {
   const graphicSpec = requireProgramGraphicSpec(program);
 
   requireCanvasContext(context);
@@ -258,6 +259,7 @@ export function renderCanvasProgram(program, context, { pixelRatio = 1, images }
   }
   preflightCanvasGraphicSpec(target, pixelRatio);
   const decodedImages = readPreparedImages(graphicSpec, images);
+  const fontAliases = readPreparedFonts(graphicSpec, fonts);
   if (decodedImages.size > 0) requireContextMethod(context, "drawImage", "Image graphic");
   if (Object.values(graphicSpec.objects).some(object => object.clip !== undefined)) {
     requireContextMethod(context, "rect", "Graphic clip");
@@ -280,7 +282,7 @@ export function renderCanvasProgram(program, context, { pixelRatio = 1, images }
     context.scale(pixelRatio, pixelRatio);
     context.clearRect(0, 0, width, height);
     drawResolvedGraphicSpec(target, context, {
-      ...drawingOptions, images: decodedImages, painting, pixelRatio, createCanvas
+      ...drawingOptions, fontAliases, images: decodedImages, painting, pixelRatio, createCanvas
     });
   } finally {
     context.restore();

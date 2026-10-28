@@ -1,0 +1,11 @@
+import { render, prepareFontRendering } from "../../src/index.js";
+import { renderToSVG } from "../../src/renderers/svg.js";
+import { createFontExample } from "./program.js";
+import { registerFont } from "./host.js";
+const program = createFontExample(), canvas = document.querySelector("canvas");
+const fonts = await prepareFontRendering(program, { register: registerFont });
+render(program, canvas.getContext("2d"), { fonts });
+document.querySelector("#svg").innerHTML = renderToSVG(program);
+await document.fonts.ready;
+document.querySelector("#status").textContent = "Ready";
+addEventListener("pagehide", () => fonts.dispose(), { once: true });

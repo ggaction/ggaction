@@ -5744,6 +5744,42 @@
         "file": "agent_docs/contract/current/HIERARCHY.md",
         "anchor": "edittreemapplot"
       }
+    },
+    {
+      "name": "createFontResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Prepare and commit font bytes; replace with replaceFontResource and remove with removeResource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createfontresource"
+      }
+    },
+    {
+      "name": "replaceFontResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Prepare replacement bytes and atomically refresh the bound measured layout",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "replacefontresource"
+      }
     }
   ],
   "plannedActions": [],

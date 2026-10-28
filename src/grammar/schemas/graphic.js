@@ -89,6 +89,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
   ]),
   text: new Set([
     "fillBounds",
+    "font",
     "x",
     "y",
     "text",

@@ -1,0 +1,4 @@
+export interface PreparedTextMetrics {
+  readonly [preparedTextMetricsBrand]: true; readonly kind: "text-metrics";
+  readonly request: Readonly<{ id: string; fonts: readonly string[] }>;
+}

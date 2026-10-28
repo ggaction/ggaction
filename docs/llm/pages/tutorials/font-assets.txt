@@ -1,0 +1,62 @@
+# Prepare fonts before text layout
+
+Keep font loading explicit, measure with the loaded bytes, and save the final
+text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/font-assets/)
+uses licensed Korean and monochrome emoji subsets with fixed content hashes.
+It includes a combining accent and a wrapped Korean title.
+
+## Load, measure, apply
+
+The canonical [program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/font-assets/program.js)
+first creates a title using the requested font families. Its initial estimated
+layout is a usable immutable program while loading runs. For each named font,
+`prepareFontResource` asks the application to load and decode bytes and verifies
+the expected SHA256. `createFontResource` commits the prepared result to the exact
+original receiver using the current request token.
+
+`prepareTextMetrics` takes the explicit font IDs and asks the application to
+measure every width needed by the existing layout. `applyTextMetrics` commits the
+exact profile and rematerializes the title. Widths that have not been measured
+cannot silently use an estimate. A late result for an edited receiver is stale.
+The [host adapter](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/font-assets/host.js)
+uses browser `FontFace` and Canvas measurement, or a native Canvas in Node.
+
+## Draw the prepared text
+
+The complete example entry below runs inside the linked example directory after
+the standard browser module setup. Its local `program.js` performs the font
+resource and metric preparation described above; `host.js` registers and releases
+the exact requested font alias.
+
+```js
+import { render, prepareFontRendering } from "ggaction";
+import { createFontExample } from "./program.js";
+import { registerFont } from "./host.js";
+
+const program = createFontExample();
+const canvas = document.querySelector("canvas");
+const fonts = await prepareFontRendering(program, { register: registerFont });
+try { render(program, canvas.getContext("2d"), { fonts }); }
+finally { fonts.dispose(); }
+```
+
+SVG embeds the same font bytes. PNG/PDF register them for the duration of output.
+They use the stored lines and origins rather than measuring or wrapping again.
+Editable snapshots retain the font resource and exact profile; graphic snapshots
+retain self-contained concrete fonts. Restore does not fetch the original URI.
+
+## Change labels or fonts
+
+Edits that need only already measured queries stay synchronous. New labels may
+need more queries: remove the exact profile with `removeTextMetrics()`, edit the
+text, and prepare/apply a new profile on that receiver. Replacing a bound font
+uses `prepareFontResource` with `kind:"replace"` and a measurement callback, then
+`replaceFontResource`; bytes, metrics and text update together.
+
+Restrictive `removeResource({kind:"font",id})` rejects an active metric binding.
+Explicit cascade first removes the metric profile and recomputes estimated text.
+See [embedded fonts](../../../api/rendering/#embedded-fonts) for the complete host
+contracts, budgets, error behavior and registration lifetime.
+
+The subsets only cover the example text. Choose fonts covering your own content;
+the library does not claim that one font covers every script or emoji sequence.

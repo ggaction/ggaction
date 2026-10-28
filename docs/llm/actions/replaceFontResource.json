@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 3,
+  "name": "replaceFontResource",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Commit a prepared replacement and atomically refresh any exact measured layout that uses the font, including inherited composition children.",
+  "signature": "replaceFontResource(options: ApplyFontResourceOptions<\"replace\">): ChartProgram;",
+  "intents": [
+    "replace font resource",
+    "replace",
+    "swap child",
+    "chart setup",
+    "data and scales",
+    "embedded font bytes",
+    "measured font identity"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing embedded font bytes"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "replaceFontResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing embedded font bytes"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "prepared",
+      "required": true,
+      "type": "PreparedFontResource<\"replace\">"
+    },
+    {
+      "name": "requestToken",
+      "required": true,
+      "type": "string"
+    }
+  ],
+  "callPatterns": [
+    "replaceFontResource({ prepared, requestToken })"
+  ],
+  "snippet": "program.replaceFontResource({ prepared: preparedFontReplace, requestToken: \"current\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#replacefontresource"
+}

@@ -1,0 +1,7 @@
+export interface FontResourceHost extends Omit<TextMetricsHost, "measure"> {
+  load(request: Readonly<FontResourceSource & { maxBytes: number; signal?: AbortSignal }>):
+    Readonly<{ bytes: Uint8Array; mimeType: FontMimeType }> | Promise<Readonly<{ bytes: Uint8Array; mimeType: FontMimeType }>>;
+  /** Required when replacing a font referenced by an exact metric profile. */
+  measure?: FontMeasurementHost["measure"];
+}
+declare const preparedFontResourceBrand: unique symbol;

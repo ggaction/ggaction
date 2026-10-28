@@ -1,5 +1,6 @@
 import { createStructuredPaintExample } from "./structured-paints/program.js";
 import { createImageExample } from "./image-assets/program.js";
+import { createFontExample } from "./font-assets/program.js";
 import { createTree } from "./tree-layouts/program.js";
 import { createTreemap } from "./treemap-layouts/program.js";
 import { createCompoundPathExample } from "./compound-path/program.js";
@@ -177,6 +178,8 @@ export const DOCUMENTATION_WORKFLOWS = Object.freeze([
 
 // Chart-family examples retain their independent primitive/public baselines.
 export const PUBLIC_CHARTS = Object.freeze([
+  example({ id: "font-assets", data: {}, width: 440, height: 220, docsGroup: "tutorials", createProgram: createFontExample,
+    browser: { path: "font-assets/", canvas: "canvas" } }),
   example({ id: "structured-paints", data: {}, width: 260, height: 180, docsGroup: "tutorials", createProgram: () => createStructuredPaintExample(),
     browser: { path: "structured-paints/", canvas: "#chart" } }),
   example({ id: "image-assets", data: {}, width: 200, height: 210, docsGroup: "tutorials", createProgram: () => createImageExample(),

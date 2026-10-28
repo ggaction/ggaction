@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 581_000, // Combined hierarchy, image and paint owners, Node20: 580,123 gzip bytes.
-  "ggaction/basic": 343_000, // Shared immutable source copy, Node20: 342,096 gzip bytes.
+  ggaction: 585_000, // Embedded font preparation and rendering, packed Node20: 584,337 gzip bytes.
+  "ggaction/basic": 345_000, // Shared font rendering preparation, packed Node20: 344,844 gzip bytes.
   "ggaction/svg": 25_000
 });
 

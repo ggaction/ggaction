@@ -618,6 +618,12 @@ Fill marks with repeated patterns or object-bound radial gradients.
 
 Representative actions: `createRectMark`, `editRectMark`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/).
 
+### [Prepared Korean and emoji fonts](./font-assets/)
+
+Prepare fonts and exact widths, then retain the text for offline rendering.
+
+Representative actions: `createFontResource`, `applyTextMetrics`, `replaceFontResource`. [Documentation](https://ggaction.github.io/ggaction/tutorials/font-assets/).
+
 ### [Retained image placement](./image-assets/)
 
 Prepare one source, place an image mark, and render from retained bytes.
