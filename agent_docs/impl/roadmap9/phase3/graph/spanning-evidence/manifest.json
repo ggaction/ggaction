@@ -1,0 +1,140 @@
+{
+  "baseCommit": "d7c190d5f69a4ddc41926b2d96e4f844c15d78c5",
+  "scope": "Private deterministic metric/candidate spanning tree and explicit forest; STEP-031 remains open",
+  "commands": [
+    "node --test test/unit/grammar/graph/spanning.test.js",
+    "node --experimental-test-coverage --test-coverage-include=src/grammar/graph/*.js --test test/unit/grammar/graph/*.test.js",
+    "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js",
+    "node scripts/package-artifact.js --check"
+  ],
+  "inputs": {
+    "src/grammar/graph/spanning.js": "e0b9f65f0391441fcbd1aab978c23a6f9b80e76efa86fdeea01b194a96cec849",
+    "test/unit/grammar/graph/spanning.test.js": "f0971a632c5c82b42204eb87143ac770a22efbea5cbc58128e9c5838583b2f9b",
+    "test/oracles/graphSpanning.js": "b5dd7b9617762784c6973a3449c4fc2f0a4ee5567afd7b559148aec22321dc34",
+    "scripts/package-artifact.js": "1fd68b80751a204a9357b081c8a87429129c84d244b7c0850c5cb71ee5b49394"
+  },
+  "checks": [
+    {
+      "log": "baseline.log.gz",
+      "status": "expected failure: missing spanning module",
+      "rawSha256": "6badc4d261e8e63a871b5d939bfba6403f0bfc7ffbb5c1ca453447027d1bbc6a",
+      "gzipSha256": "fbcb6aeadab7127c42eb451c1e881b5ec1c344bc1a28ea6f69a59c3a04716973",
+      "tests": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "contracts.log.gz",
+      "status": "passed",
+      "rawSha256": "89525937bf19169d26ff06736cc869bd1f0e145f68c05bff32f53f7a978aa7c5",
+      "gzipSha256": "744a3d674fadc85ca15991363a9a8d46793724995237fad67a90ddd560c5ffdb",
+      "tests": {
+        "tests": 40,
+        "pass": 40,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "coverage-final.log.gz",
+      "status": "passed",
+      "rawSha256": "062cdabc0facb955886771349a47154adfd8dc1f6331e7341624b642c89f22b5",
+      "gzipSha256": "615dda12050b0e02a39f9d5f5a531b33502b6c3256210f7d586b846fdf6fa8f2",
+      "tests": {
+        "tests": 36,
+        "pass": 36,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "coverage-initial.log.gz",
+      "status": "failed: normalized cost perturbed exact integer sum; unknown-property assertion wording",
+      "rawSha256": "eb55ed11221be7ca97ae65f419431be7bb11475cba73c2633e9ad0b6d8a7830a",
+      "gzipSha256": "907f98ba4c5bf8a1f0916ee822c41e24e560e8cc2c17a601c4e391cbb6c00aed",
+      "tests": {
+        "tests": 35,
+        "pass": 33,
+        "fail": 2,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "node20.log.gz",
+      "status": "passed",
+      "rawSha256": "933102ed3c2653a424558c946ebbb0d92e6c1341c68da0846054fb435217acde",
+      "gzipSha256": "a25b2bdadf7f099707bfbac84cab975179b7affa6c662a026f318e6464401511",
+      "tests": {
+        "tests": 36,
+        "pass": 36,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "node24.log.gz",
+      "status": "passed",
+      "rawSha256": "68df45e50cc99e87a7e9aed34838b7a2e9ac1b2f4c9541a5e86718c56b55c218",
+      "gzipSha256": "ad0440e9ec72266a7a191ecdedf9314481ec1b8cde67cef17a58d425eeb18a4b",
+      "tests": {}
+    },
+    {
+      "log": "package-entry.log.gz",
+      "status": "passed",
+      "rawSha256": "c9f934f842bd18c7d390e69da30eb8628065ff312f26dc9d5204db0e2ceb4fca",
+      "gzipSha256": "678c4191c030d47e2af92f83ed00c9ffe5213e0bdf4a9e7ba4532383ec44fc27",
+      "tests": {}
+    },
+    {
+      "log": "package-initial.log.gz",
+      "status": "failed previous entry ceiling",
+      "rawSha256": "ab36334c0852e7d45f7d2a80d8076667150fc613a32d4caac1735821579e5177",
+      "gzipSha256": "029426c749806bdb5bbba84b8ba2b93071b9a1b72f2b52871bcf88b23c767c15",
+      "tests": {}
+    },
+    {
+      "log": "package-node20-initial.log.gz",
+      "status": "failed previous packed ceiling",
+      "rawSha256": "a1768c1461ec2b18b96b833193e459128953ca937042b73550fb6afaa5071300",
+      "gzipSha256": "f93896c3bf122b24a58e63516c6889dc7c0c4389dad9c6b00affe70ee98c2b2b",
+      "tests": {}
+    },
+    {
+      "log": "package-node20.log.gz",
+      "status": "passed",
+      "rawSha256": "549db7bc9445cc2ef69f721ec70c0f043eb19669723e68732a2a371359fd8fbb",
+      "gzipSha256": "9530e4f9c35d78096282695f11741c96909649aa459a479828612924f1ac4168",
+      "tests": {}
+    },
+    {
+      "log": "package-node24-initial.log.gz",
+      "status": "failed previous packed ceiling",
+      "rawSha256": "910a9d004a458b55eae65883301b70d42c41a3b01cb231f69fe97427e0b9932e",
+      "gzipSha256": "b0023a7aa54b91f7a102bcdaadc71b3d19c4336c6bceda64cd6897b95fad189e",
+      "tests": {}
+    },
+    {
+      "log": "package-node24.log.gz",
+      "status": "passed",
+      "rawSha256": "549db7bc9445cc2ef69f721ec70c0f043eb19669723e68732a2a371359fd8fbb",
+      "gzipSha256": "9530e4f9c35d78096282695f11741c96909649aa459a479828612924f1ac4168",
+      "tests": {}
+    }
+  ],
+  "coverage": {
+    "owners": 6,
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "package": {
+    "entries": 707,
+    "unpackedBytes": 4881437,
+    "node22PackedBytes": 1049962,
+    "node20And24PackedBytes": 1052250
+  },
+  "bundleEvidence": "Unchanged public import graph; reuse metrics checkpoint Full/Basic 526996/304841 gzip."
+}

@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 706, // Add the pure exact graph neighbor selector.
-  packedBytes: 1_051_000, // Node20/24 pack 1,050,369 bytes with exact neighbors.
-  unpackedBytes: 4_875_000 // Five graph owners measure 4,874,258 unpacked bytes.
+  entries: 707, // Add the pure deterministic spanning tree selector.
+  packedBytes: 1_053_000, // Node20/24 pack 1,052,250 bytes with spanning trees.
+  unpackedBytes: 4_882_000 // Six graph owners measure 4,881,437 unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
