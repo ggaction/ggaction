@@ -1,7 +1,7 @@
 export interface OverlayPointAppearance extends StrokeStyleDetails {
   clip?: boolean;
   shape?: PointShape;
-  fill?: string;
+  fill?: FillPaint;
   stroke?: FilledMarkStroke;
   strokeWidth?: number;
   opacity?: number;

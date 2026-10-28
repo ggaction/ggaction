@@ -1,4 +1,4 @@
-import {normalizeRadialGradient} from "../../../src/grammar/radialGradient.js";
+import {normalizeRadialGradient} from "../../../../../src/grammar/radialGradient.js";
 import {radialFixture,frame} from "./fixture.js";
 import {drawRadialPrimitive,radialPrimitiveSVG} from "./primitive.program.js";
 
@@ -9,4 +9,4 @@ export function ellipseFixture(){
 }
 export const ellipseVariant={chart:"radial-gradient",variant:"object-bounds-ellipse",title:"Radial gradient · object bounds ellipse",...frame,
   fixture:ellipseFixture(),primitive:drawRadialPrimitive,svg:radialPrimitiveSVG,
-  callChain:"drawRadialPrimitive(context, ellipseFixture(), { lowerOpacity: true, clipCone: true });",source:"test/gates/radial-gradient/primitive.program.js"};
+  callChain:"drawRadialPrimitive(context, ellipseFixture(), { lowerOpacity: true, clipCone: true });",source:"test/charts/structured-paints/variants/radial-gradient/primitive.program.js"};

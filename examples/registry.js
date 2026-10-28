@@ -1,3 +1,4 @@
+import { createStructuredPaintExample } from "./structured-paints/program.js";
 import { createCompoundPathExample } from "./compound-path/program.js";
 import { createSharedAdjacent } from "./shared-adjacent/program.js";
 import { createLinkedOverlay } from "./linked-overlay/program.js";
@@ -173,6 +174,8 @@ export const DOCUMENTATION_WORKFLOWS = Object.freeze([
 
 // Chart-family examples retain their independent primitive/public baselines.
 export const PUBLIC_CHARTS = Object.freeze([
+  example({ id: "structured-paints", data: {}, width: 260, height: 180, docsGroup: "tutorials", createProgram: () => createStructuredPaintExample(),
+    browser: { path: "structured-paints/", canvas: "#chart" } }),
   example({ id:"compound-path",data:{},width:400,height:304,docsGroup:"tutorials",createProgram:()=>createCompoundPathExample(),
     browser:{path:"compound-path/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"compound-path",width:400,height:304}}}}),
   example({ id: "bootstrap-mean-ci", data: {}, width: 320, height: 220, docsGroup: "tutorials", createProgram: createBootstrapMeanCI,

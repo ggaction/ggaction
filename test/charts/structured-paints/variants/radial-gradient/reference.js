@@ -1,4 +1,4 @@
-import { radialOffset } from "../../oracles/radial-gradient.js";
+import { radialOffset } from "../../../../oracles/radial-gradient.js";
 const underlay = [226, 232, 240];
 export function expectedColor(fixture, x, y) {
   if (fixture.clip && Math.hypot(x - 130, y - 110) > 60) return [...underlay, 255];

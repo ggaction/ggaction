@@ -1,3 +1,4 @@
+import { translateFillPaint } from "../../grammar/paint.js";
 import { validateGraphicClip, translateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { isOwned } from '../../core/immutable.js';
 import { render } from './index.js';
@@ -8,6 +9,9 @@ const compiled = new WeakMap();
 function position(properties, dx, dy) {
   if (!dx && !dy) return properties;
   const result = { ...properties };
+  if (properties.fill !== undefined) result.fill = translateFillPaint(properties.fill, dx, dy);
+  if (properties.fillBounds) result.fillBounds = { left: properties.fillBounds.left + dx, right: properties.fillBounds.right + dx,
+    top: properties.fillBounds.top + dy, bottom: properties.fillBounds.bottom + dy };
   for (const key of ['x', 'x1', 'x2']) if (key in result) result[key] += dx;
   for (const key of ['y', 'y1', 'y2']) if (key in result) result[key] += dy;
   if (result.commands) result.commands = result.commands.map(command => position(command, dx, dy));

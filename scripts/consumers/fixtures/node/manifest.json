@@ -878,5 +878,22 @@
         "statements": 23
       }
     ]
+  },
+  {
+    "file": "structured-paints.mjs",
+    "cases": [
+      {
+        "id": "paint/structured-filled-marks",
+        "statements": 10
+      },
+      {
+        "id": "paint/structured-text",
+        "statements": 7
+      },
+      {
+        "id": "paint/fresh-codec",
+        "statements": 5
+      }
+    ]
   }
 ]

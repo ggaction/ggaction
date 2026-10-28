@@ -612,6 +612,12 @@ Author compound paths and path clips through extension primitives.
 
 Representative actions: `createGraphics`, `editGraphics`. [Documentation](https://ggaction.github.io/ggaction/extension/primitives/).
 
+### [Pattern and gradient fills](./structured-paints/)
+
+Fill marks with repeated patterns or object-bound radial gradients.
+
+Representative actions: `createRectMark`, `editRectMark`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

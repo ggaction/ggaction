@@ -4,8 +4,8 @@
 <script type="module">
 import { styles } from './fixture.js';
 import { createPatternPrimitive } from './primitive.program.js';
-import { render } from '../../../src/index.js';
-import { renderToSVG } from '../../../src/renderers/svg.js';
+import { render } from '../../../../../src/index.js';
+import { renderToSVG } from '../../../../../src/renderers/svg.js';
 for (const style of styles) {
   const section = document.createElement('section'), heading = document.createElement('h2');
   heading.textContent = style; section.append(heading);

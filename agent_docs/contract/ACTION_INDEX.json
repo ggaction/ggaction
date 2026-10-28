@@ -1125,7 +1125,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editPointMark` and encoding actions",
+      "update": "`editPointMark` and encoding actions; shared structured fill paint follows the owning mark editor",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1305,7 +1305,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editTextMark` and `encodeText`",
+      "update": "`editTextMark` and `encodeText`; shared structured fill paint follows the owning mark editor",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1539,7 +1539,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editBarMark`",
+      "update": "`editBarMark`; shared structured fill paint follows the owning mark editor",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1575,7 +1575,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editAreaMark`",
+      "update": "`editAreaMark`; shared structured fill paint follows the owning mark editor",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4113,7 +4113,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editArcMark`",
+      "update": "`editArcMark`; shared structured fill paint follows the owning mark editor",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -5265,7 +5265,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editRectMark` and position/color encodings",
+      "update": "`editRectMark` and position/color encodings; shared structured fill paint follows the owning mark editor",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

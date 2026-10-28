@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {ellipseVariant} from "./ellipse.manifest.js";
 import {ellipseOffset,ellipseExpected} from "./ellipse-reference.js";
-import {radialOffset} from "../../oracles/radial-gradient.js";
+import {radialOffset} from "../../../../oracles/radial-gradient.js";
 test("anchors the proposed object-bounds radial ellipse without a public API",()=>{
   const fixture=ellipseVariant.fixture;
   assert.deepEqual(fixture.gradient.center,{x:.5,y:.5});assert.equal(fixture.gradient.radius,.5);

@@ -256,7 +256,7 @@ const area = chart().createCanvas()
 ```
 
 Area fill defaults to `"#4c78a8"`, opacity to `0.2`, and curve to `"linear"`.
-Area `fill` also accepts the existing `FillPaint` linear gradient. Coordinates
+Area `fill` also accepts structured `FillPaint` values, including linear gradients. Coordinates
 are normalized within each closed path, so grouped or broken paths each retain
 the same local paint direction. The paint survives resizing, data/scale edits,
 selection restoration, and editable or graphic persistence. Density, violin,
@@ -405,3 +405,6 @@ Stacked totals: Mon 15, Tue 28.
 [Position encodings](../position-encodings.md) · [Polar line tutorial](../../tutorials/polar-lines.md) ·
 [Series encodings](../series-encodings.md) ·
 [Density](../encodings.md#atomic-density) · [Error bands](../error-bands.md)
+
+
+Constant `fill` also accepts [pattern and radial-gradient paints](../appearance/mark-style.md#pattern-and-gradient-fills), with the same creation, editing, and output rules.

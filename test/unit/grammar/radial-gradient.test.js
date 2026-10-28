@@ -16,7 +16,7 @@ test("normalizes private radial geometry and preserves ordered hard stops withou
   assert.equal(actual.stops[0].color, "#fef3c7"); assert.equal(actual.center.x, 30);
   assert.deepEqual(normalizeRadialGradient({ center: { x: -0, y: -0 }, radius: 1, stops }).focal, { x: 0, y: 0 });
   assert.equal(validateGradientStops(stops), stops);
-  assert.throws(() => validateFillPaint({ type: "radial-gradient", ...example }), /linear gradient/);
+  assert.throws(() => validateFillPaint({ type: "radial-gradient", ...example }), /center.x/);
 });
 
 test("anchors the cone circles and independent ray intersection with literal values", () => {

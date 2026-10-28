@@ -1,5 +1,7 @@
 # Radial gradient private kernel과 primitive 검토
 
+> 공개 P1 연결 시 승인된 실행 slice 전체를 `test/charts/structured-paints/variants/radial-gradient/`로 승격했다. 아래 Gate 경로와 미구현 표현은 원 승인 revision의 기록이며 현재 상태는 [P1 구현 기록](../paints/STRUCTURED_FILL.md)을 따른다.
+
 ## 진행 상태
 
 - [x] private normalization·focal containment·circle 계산·독립 oracle

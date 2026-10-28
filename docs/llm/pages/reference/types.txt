@@ -78,8 +78,8 @@ interface ChartProgramActions {
   editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
   editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
   editBin2DData(options: TargetedOptions<EditBin2DDataOptions>): ChartProgram;
-  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   createTickMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   editTickMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   jitterPoints(options: TargetedOptions<JitterPointsOptions>): ChartProgram;
@@ -91,8 +91,8 @@ interface ChartProgramActions {
   createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "multiply" | "screen" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
-  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
-  editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
+  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
+  editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
   createRectMark(options?: TargetedOptions<RectMarkOptions>): ChartProgram;
   editRectMark(options: TargetedOptions<EditRectMarkOptions>): ChartProgram;
   createRuleMark(options?: TargetedOptions<{ clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions>): ChartProgram;
@@ -2768,12 +2768,12 @@ export type CreatePiePlotOptions = {
   category: PieCategory;
   color?: false | PieColor;
   radius?: PieRadiusChannel;
-  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 ```
 
-Related types: [`PieCategory`](../../../reference/types/#type-piecategory) · [`PieColor`](../../../reference/types/#type-piecolor) · [`PieRadiusChannel`](../../../reference/types/#type-pieradiuschannel) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](../../../reference/types/#type-arcinnerradius) · [`PieLegendOptions`](../../../reference/types/#type-pielegendoptions).
+Related types: [`PieCategory`](../../../reference/types/#type-piecategory) · [`PieColor`](../../../reference/types/#type-piecolor) · [`PieRadiusChannel`](../../../reference/types/#type-pieradiuschannel) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](../../../reference/types/#type-arcinnerradius) · [`FillPaint`](../../../reference/types/#type-fillpaint) · [`PieLegendOptions`](../../../reference/types/#type-pielegendoptions).
 
 ### `CreatePolarLinePlotOptions` {#type-createpolarlineplotoptions}
 
@@ -3023,12 +3023,12 @@ Related types: [`RegressionPlotBaseOptions`](../../../reference/types/#type-regr
 ```typescript
 export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value" | "radius"> & {
   radiusScale?: MeasuredRadiusScaleOptions;
-  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 ```
 
-Related types: [`CreatePiePlotOptions`](../../../reference/types/#type-createpieplotoptions) · [`MeasuredRadiusScaleOptions`](../../../reference/types/#type-measuredradiusscaleoptions) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](../../../reference/types/#type-arcinnerradius) · [`MeasuredRadialGuideOptions`](../../../reference/types/#type-measuredradialguideoptions).
+Related types: [`CreatePiePlotOptions`](../../../reference/types/#type-createpieplotoptions) · [`MeasuredRadiusScaleOptions`](../../../reference/types/#type-measuredradiusscaleoptions) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](../../../reference/types/#type-arcinnerradius) · [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MeasuredRadialGuideOptions`](../../../reference/types/#type-measuredradialguideoptions).
 
 ### `CreateRugPlotOptions` {#type-createrugplotoptions}
 
@@ -6326,10 +6326,10 @@ export type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";
  Expand FillPaint
 
 ```typescript
-export type FillPaint = string | LinearGradientPaint;
+export type FillPaint = string | LinearGradientPaint | PatternPaint | RadialGradientPaint;
 ```
 
-Related types: [`LinearGradientPaint`](../../../reference/types/#type-lineargradientpaint).
+Related types: [`LinearGradientPaint`](../../../reference/types/#type-lineargradientpaint) · [`PatternPaint`](../../../reference/types/#type-patternpaint) · [`RadialGradientPaint`](../../../reference/types/#type-radialgradientpaint).
 
 ### `FilledLegendSymbolRecipe` {#type-filledlegendsymbolrecipe}
 
@@ -8251,14 +8251,14 @@ Related types: [`StrokeStyleDetails`](../../../reference/types/#type-strokestyle
 export interface OverlayPointAppearance extends StrokeStyleDetails {
   clip?: boolean;
   shape?: PointShape;
-  fill?: string;
+  fill?: FillPaint;
   stroke?: FilledMarkStroke;
   strokeWidth?: number;
   opacity?: number;
 }
 ```
 
-Related types: [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`PointShape`](../../../reference/types/#type-pointshape) · [`FilledMarkStroke`](../../../reference/types/#type-filledmarkstroke).
+Related types: [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`PointShape`](../../../reference/types/#type-pointshape) · [`FillPaint`](../../../reference/types/#type-fillpaint) · [`FilledMarkStroke`](../../../reference/types/#type-filledmarkstroke).
 
 ### `PackPointsOptions` {#type-packpointsoptions}
 
@@ -8561,6 +8561,23 @@ export interface PathOrderEncodingOptions {
   field: string;
   fieldType?: "quantitative";
   order?: "ascending" | "descending";
+}
+```
+
+### `PatternPaint` {#type-patternpaint}
+
+ Expand PatternPaint
+
+```typescript
+export interface PatternPaint {
+  readonly type: "pattern";
+  readonly style?: "solid" | "diagonal" | "antidiagonal" | "horizontal" | "vertical" | "cross" | "dots";
+  readonly pitch?: number;
+  readonly strokeWidth?: number;
+  readonly phase?: readonly [number, number];
+  readonly foreground?: string;
+  readonly background?: string;
+  readonly coordinateSpace?: "plot" | "object";
 }
 ```
 
@@ -9245,6 +9262,22 @@ export type RadialEncodingOptions = {
 
 Related types: [`RadiusScaleOptions`](../../../reference/types/#type-radiusscaleoptions) · [`RadialMapping`](../../../reference/types/#type-radialmapping) · [`MeasuredRadiusScaleOptions`](../../../reference/types/#type-measuredradiusscaleoptions).
 
+### `RadialGradientPaint` {#type-radialgradientpaint}
+
+ Expand RadialGradientPaint
+
+```typescript
+export interface RadialGradientPaint {
+  readonly type: "radial-gradient";
+  readonly center: LinearGradientPoint;
+  readonly focal?: LinearGradientPoint;
+  readonly radius: number;
+  readonly stops: readonly [LinearGradientStop, LinearGradientStop, ...LinearGradientStop[]];
+}
+```
+
+Related types: [`LinearGradientPoint`](../../../reference/types/#type-lineargradientpoint) · [`LinearGradientStop`](../../../reference/types/#type-lineargradientstop).
+
 ### `RadialMapping` {#type-radialmapping}
 
  Expand RadialMapping
@@ -9474,14 +9507,14 @@ export interface RectMarkOptions extends RectStyleDetails {
   id?: string;
   data?: string;
   missing?: "error" | "skip";
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   stroke?: string | false;
   strokeWidth?: number;
 }
 ```
 
-Related types: [`RectStyleDetails`](../../../reference/types/#type-rectstyledetails).
+Related types: [`RectStyleDetails`](../../../reference/types/#type-rectstyledetails) · [`FillPaint`](../../../reference/types/#type-fillpaint).
 
 ### `RectStyleDetails` {#type-rectstyledetails}
 
@@ -10858,7 +10891,7 @@ export interface TextMarkOptions {
   source?: string;
   text?: unknown;
   missing?: "error" | "skip";
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   fontSize?: number;
   fontFamily?: string;
@@ -10871,7 +10904,7 @@ export interface TextMarkOptions {
 }
 ```
 
-Related types: [`RotationInput`](../../../reference/types/#type-rotationinput).
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`RotationInput`](../../../reference/types/#type-rotationinput).
 
 ### `TextMeasurement` {#type-textmeasurement}
 

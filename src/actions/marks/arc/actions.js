@@ -3,6 +3,7 @@ import { getLayerScaleIds } from "../../../materialization/marks/index.js";
 import { conditionalArcValues } from "../../../materialization/conditionalArcValues.js";
 import { hasConditionalArcPosition } from "../../../materialization/conditionalArcStructure.js";
 import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
+import { validateFillPaint } from "../../../grammar/paint.js";
 import { normalizeArcInnerRadius } from "../../../grammar/arcs.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -68,7 +69,7 @@ function normalizeConfig(
       ? { padAngle: validateNonNegativeFinite(args.padAngle, "Arc padAngle") }
       : {}),
     ...(Object.hasOwn(args, "fill")
-      ? { fill: validateNonEmptyString(args.fill, "Arc fill") }
+      ? { fill: validateFillPaint(args.fill, "Arc fill") }
       : {}),
     ...(Object.hasOwn(args, "opacity")
       ? { opacity: validateUnitInterval(args.opacity, "Arc opacity") }

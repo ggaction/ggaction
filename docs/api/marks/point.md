@@ -228,3 +228,6 @@ required by `editPointMark`; `strokeWidth` requires an active constant or field-
 Jitter requires a complete Cartesian x/y point
 mark, a unique target, a valid offset form, and unique values for an explicit
 identity key.
+
+
+Constant `fill` also accepts [pattern and radial-gradient paints](../appearance/mark-style.md#pattern-and-gradient-fills), with the same creation, editing, and output rules.

@@ -8,21 +8,21 @@ import {createCanvas,loadImage,PDFDocument} from "@napi-rs/canvas";
 import {chromium} from "playwright";
 import {ellipseVariant as variant} from "./ellipse.manifest.js";
 import {ellipseSamples} from "./ellipse-reference.js";
-import {startStaticServer} from "../../support/static-server.js";
-import {openBrowserPage,assertNoBrowserErrors,closeBrowserWithEvidence,saveBrowserEvidence} from "../../support/browser.js";
-import {ensureVariantMetadata} from "../../support/artifact-metadata.js";
+import {startStaticServer} from "../../../../support/static-server.js";
+import {openBrowserPage,assertNoBrowserErrors,closeBrowserWithEvidence,saveBrowserEvidence} from "../../../../support/browser.js";
+import {ensureVariantMetadata} from "../../../../support/artifact-metadata.js";
 
-const root=fileURLToPath(new URL("../../../",import.meta.url));
-const output=path.join(root,".artifacts/test/png/review/radial-gradient",variant.variant);
+const root=fileURLToPath(new URL("../../../../../",import.meta.url));
+const output=path.join(root,".artifacts/test/png/charts/paint/radial-gradient",variant.variant);
 const bytes=value=>Buffer.from(value.split(",")[1],"base64");
 async function decode(buffer){
   const image=await loadImage(buffer);assert.equal(image.width,variant.width);assert.equal(image.height,variant.height);
   const canvas=createCanvas(image.width,image.height);canvas.getContext("2d").drawImage(image,0,0);return canvas;
 }
-test("renders the proposed non-square radial ellipse across four primitive paths",async()=>{
+test("renders the non-square radial ellipse across four primitive paths",async()=>{
   let server,browser;await mkdir(output,{recursive:true});
   try{
-    await ensureVariantMetadata({scope:"review",chart:variant.chart,variant:variant.variant,kind:"primitive",title:variant.title,userFacingCallChain:variant.callChain});
+    await ensureVariantMetadata({scope:"charts",capability:"paint",chart:variant.chart,variant:variant.variant,kind:"primitive",title:variant.title,userFacingCallChain:variant.callChain});
     const canvas=createCanvas(variant.width,variant.height);variant.primitive(canvas.getContext("2d"),variant.fixture,{lowerOpacity:true,clipCone:true});
     const png=canvas.toBuffer("image/png"),svg=variant.svg(variant.fixture);
     await writeFile(path.join(output,"primitive.png"),png);await writeFile(path.join(output,"primitive.svg"),svg);
@@ -30,7 +30,7 @@ test("renders the proposed non-square radial ellipse across four primitive paths
     assert.match(pdf.toString("latin1"),/\/ShadingType 3\b/);assert.doesNotMatch(pdf.toString("latin1"),/\/Subtype\s*\/Image\b/);await writeFile(path.join(output,"primitive.pdf"),pdf);
     execFileSync("pdftoppm",["-r","72","-singlefile","-png",path.join(output,"primitive.pdf"),path.join(output,"pdf")],{stdio:"pipe"});
     server=await startStaticServer(root);browser=await chromium.launch({headless:true});
-    const opened=await openBrowserPage(browser,`${server.baseUrl}test/gates/radial-gradient/ellipse.html`,{waitFor:()=>document.getElementById("status").textContent==="Ready"});
+    const opened=await openBrowserPage(browser,`${server.baseUrl}test/charts/structured-paints/variants/radial-gradient/ellipse.html`,{waitFor:()=>document.getElementById("status").textContent==="Ready"});
     const rendered=await opened.page.evaluate(async svg=>{
       const source=document.querySelector("canvas"),image=new Image();image.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);await image.decode();const canvas=document.createElement("canvas");canvas.width=image.width;canvas.height=image.height;canvas.getContext("2d").drawImage(image,0,0);
       return {canvas:source.toDataURL(),svg:canvas.toDataURL(),width:source.width,height:source.height,label:source.getAttribute("aria-label")};

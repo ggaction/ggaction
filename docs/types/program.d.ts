@@ -90,7 +90,24 @@ export interface LinearGradientPaint {
     ...LinearGradientStop[]
   ];
 }
-export type FillPaint = string | LinearGradientPaint;
+export interface PatternPaint {
+  readonly type: "pattern";
+  readonly style?: "solid" | "diagonal" | "antidiagonal" | "horizontal" | "vertical" | "cross" | "dots";
+  readonly pitch?: number;
+  readonly strokeWidth?: number;
+  readonly phase?: readonly [number, number];
+  readonly foreground?: string;
+  readonly background?: string;
+  readonly coordinateSpace?: "plot" | "object";
+}
+export interface RadialGradientPaint {
+  readonly type: "radial-gradient";
+  readonly center: LinearGradientPoint;
+  readonly focal?: LinearGradientPoint;
+  readonly radius: number;
+  readonly stops: readonly [LinearGradientStop, LinearGradientStop, ...LinearGradientStop[]];
+}
+export type FillPaint = string | LinearGradientPaint | PatternPaint | RadialGradientPaint;
 type FilledMarkStroke = string | false;
 export type CurveInterpolation =
   | "linear"
@@ -1634,7 +1651,7 @@ export interface OverlayLineAppearance extends StrokeStyleDetails {
 export interface OverlayPointAppearance extends StrokeStyleDetails {
   clip?: boolean;
   shape?: PointShape;
-  fill?: string;
+  fill?: FillPaint;
   stroke?: FilledMarkStroke;
   strokeWidth?: number;
   opacity?: number;
@@ -4370,7 +4387,7 @@ export type CreatePiePlotOptions = {
   category: PieCategory;
   color?: false | PieColor;
   radius?: PieRadiusChannel;
-  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 
@@ -4381,7 +4398,7 @@ export type MeasuredRadialGuideOptions = {
 };
 export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value" | "radius"> & {
   radiusScale?: MeasuredRadiusScaleOptions;
-  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 export type CreateRadialBarPlotOptions = CreateRosePlotOptions;
@@ -4586,7 +4603,7 @@ export interface TextMarkOptions {
   source?: string;
   text?: unknown;
   missing?: "error" | "skip";
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   fontSize?: number;
   fontFamily?: string;
@@ -4659,7 +4676,7 @@ export interface RectMarkOptions extends RectStyleDetails {
   id?: string;
   data?: string;
   missing?: "error" | "skip";
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   stroke?: string | false;
   strokeWidth?: number;
@@ -5754,7 +5771,7 @@ export class ChartProgram {
     data?: string;
     missing?: "error" | "skip";
     shape?: PointShape;
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -5764,7 +5781,7 @@ export class ChartProgram {
     target?: string;
     missing?: "error" | "skip";
     shape?: PointShape;
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -5852,7 +5869,7 @@ export class ChartProgram {
     data?: string;
     innerRadius?: ArcInnerRadius;
     padAngle?: number;
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: string;
     strokeWidth?: number;
@@ -5861,7 +5878,7 @@ export class ChartProgram {
     target?: string;
     innerRadius?: ArcInnerRadius;
     padAngle?: number;
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;

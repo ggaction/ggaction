@@ -114,7 +114,7 @@
     {
       "name": "arc",
       "required": false,
-      "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+      "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
     },
     {
       "name": "guides",

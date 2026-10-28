@@ -57,7 +57,9 @@ test("renders every public chart through the PDF concrete schema", async t => {
     );
     const isolatedGlyphs = Object.values(program.graphicSpec.objects).some(object =>
       [object, ...(object.items ?? [])].some(item =>
-        ["normal", "multiply", "screen", "difference"].includes(item.properties?.blend)));
+        ["normal", "multiply", "screen", "difference"].includes(item.properties?.blend) ||
+        item.properties?.fill?.type === "pattern" && (item.properties.opacity ?? 1) !== 1 ||
+        (item.type ?? object.type) === "text" && ["pattern", "radial-gradient"].includes(item.properties?.fill?.type)));
     if (isolatedGlyphs) assert.match(source, /\/Subtype\s*\/Image/, chart.id);
     else assert.doesNotMatch(source, /\/Subtype\s*\/Image/, chart.id);
   }

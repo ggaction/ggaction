@@ -1,5 +1,5 @@
-import { radialGradientCircle } from "../../../src/grammar/radialGradient.js";
-import { interpolateColorStops } from "../../../src/grammar/scales/color.js";
+import { radialGradientCircle } from "../../../../../src/grammar/radialGradient.js";
+import { interpolateColorStops } from "../../../../../src/grammar/scales/color.js";
 import { frame } from "./fixture.js";
 export const RADIAL_BANDS = 512;
 const hex = rgb => "#" + rgb.map(value => value.toString(16).padStart(2,"0")).join("");

@@ -1,6 +1,6 @@
 import { frame, paint, styles, patternFixture } from "./fixture.js";
 import { createPatternPrimitive } from "./primitive.program.js";
-import { defineVisualVariant } from "../../support/visual-variants.js";
+import { defineVisualVariant } from "../../../../support/visual-variants.js";
 export { frame, styles, patternFixture } from "./fixture.js";
 
 function displayedCalls(style) {
@@ -23,7 +23,7 @@ export const visualVariants = styles.map(style => defineVisualVariant({
   chart: "pattern-paints", variant: style, title: `${style} · coordinate space, phase, alpha and clip`, ...frame,
   primitive: () => createPatternPrimitive(style),
   callChain: "chart()\n" + displayedCalls(style).map(call => `  .${call.op}(${JSON.stringify(call.args)})`).join("\n") + ";",
-  artifact: { scope: "review" },
+  artifact: { scope: "charts", capability: "paint" },
   regions: [{ name: "pattern-panels", x: 40, y: 50, width: 510, height: 265, minimumInkPixels: 9000 }],
   colors: [{ value: paint.underlay, minimumPixels: 1000 }]
 }));

@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { visualVariants, patternFixture, styles } from "./manifest.js";
-import { assertDisplayedProgram } from "../../support/visual-variants.js";
+import { assertDisplayedProgram } from "../../../../support/visual-variants.js";
 import { samplePixels, expectedColor } from "./reference.js";
-import { validatePathCommands } from "../../../src/grammar/pathCommands.js";
+import { validatePathCommands } from "../../../../../src/grammar/pathCommands.js";
 
 test("keeps all seven primitive pattern targets and four explicit panels", () => {
   assert.deepEqual(styles, ["solid", "diagonal", "antidiagonal", "horizontal", "vertical", "cross", "dots"]);

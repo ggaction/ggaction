@@ -1,4 +1,4 @@
-import { chart } from "../../../src/index.js";
+import { chart } from "../../../../../src/index.js";
 import { frame, paint, patternFixture } from "./fixture.js";
 
 // Explicit concrete primitive authoring. Geometry and visual inputs have one owner.

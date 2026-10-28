@@ -586,7 +586,7 @@
     "title": "Mark Style",
     "source": "docs/api/appearance/mark-style.md",
     "editSource": "docs/api/appearance/mark-style.md",
-    "description": "Every strokable mark style accepts lineCap, lineJoin, and miterLimit:",
+    "description": "Point, Rect, Bar, Area, Arc, and Text marks accept FillPaint in their create and edit options. The same fill reaches their chart facades and attached labels.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/api/scales/": {

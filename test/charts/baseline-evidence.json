@@ -846,6 +846,34 @@
     ]
   },
   {
+    "file": "test/charts/structured-paints/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/structured-paints/variants/pattern-paints/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/grammar/patterns.js",
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/structured-paints/variants/radial-gradient/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/grammar/radialGradient.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
     "file": "test/charts/symbol-window/primitive.program.js",
     "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
     "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",

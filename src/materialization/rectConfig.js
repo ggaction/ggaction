@@ -1,3 +1,4 @@
+import { validateFillPaint } from "../grammar/paint.js";
 import {
   validateNonEmptyString,
   validateNonNegativeFinite,
@@ -19,7 +20,7 @@ export function normalizeRectMarkConfig(patch, previous = DEFAULT_RECT_MARK) {
     ...requestedRectStyleDetails(patch, "Rect")
   };
   if (Object.hasOwn(patch, "fill")) {
-    result.fill = validateNonEmptyString(patch.fill, "Rect fill");
+    result.fill = validateFillPaint(patch.fill, "Rect fill");
   }
   if (Object.hasOwn(patch, "opacity")) {
     result.opacity = validateUnitInterval(patch.opacity, "Rect opacity");

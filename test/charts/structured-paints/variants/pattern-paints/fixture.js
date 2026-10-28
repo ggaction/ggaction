@@ -1,4 +1,4 @@
-import { createPatternTile, resolvePatternOrigin } from "../../../src/grammar/patterns.js";
+import { createPatternTile, resolvePatternOrigin } from "../../../../../src/grammar/patterns.js";
 
 export const frame = Object.freeze({ width: 600, height: 360 });
 export const styles = Object.freeze(["solid", "diagonal", "antidiagonal", "horizontal", "vertical", "cross", "dots"]);

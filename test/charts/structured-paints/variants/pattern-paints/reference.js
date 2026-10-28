@@ -1,4 +1,4 @@
-import { patternInk } from "../../oracles/patterns.js";
+import { patternInk } from "../../../../oracles/patterns.js";
 
 const foreground = [15, 118, 110], background = [254, 243, 199], underlay = [226, 232, 240];
 // Analytic periodic coverage, independent of the tile polygons and cubic lowering.

@@ -183,7 +183,7 @@
     {
       "name": "fill",
       "required": false,
-      "type": "string | undefined"
+      "type": "FillPaint | undefined"
     },
     {
       "name": "opacity",

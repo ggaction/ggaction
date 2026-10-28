@@ -6299,7 +6299,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a point mark using fourteen named shapes or polygons with area/radius normalization.",
-      "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "create point mark",
         "create",
@@ -6415,7 +6415,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -6775,7 +6775,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "strokeDash",
@@ -7190,7 +7190,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -7384,7 +7384,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -7872,7 +7872,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -8128,7 +8128,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -8300,7 +8300,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -8526,7 +8526,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.",
-      "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "edit point mark",
         "edit",
@@ -8620,7 +8620,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -27883,7 +27883,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic arc mark and empty closed-path collection.",
-      "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "create arc mark",
         "create",
@@ -28004,7 +28004,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -28040,7 +28040,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit arc geometry or appearance and rematerialize complete sector paths.",
-      "signature": "editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "edit arc mark",
         "edit",
@@ -28141,7 +28141,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -36152,7 +36152,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -36342,7 +36342,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -36483,7 +36483,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: number | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: number | undefined; fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -36630,7 +36630,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -36776,7 +36776,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",

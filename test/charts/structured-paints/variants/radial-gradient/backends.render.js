@@ -10,10 +10,10 @@ import { chromium } from "playwright";
 import { variants, frame } from "./manifest.js";
 import { samplePixels } from "./reference.js";
 import { drawRadialVectorPrimitive, RADIAL_BANDS } from "./vector.program.js";
-import { startStaticServer } from "../../support/static-server.js";
-import { openBrowserPage, assertNoBrowserErrors, closeBrowserWithEvidence, saveBrowserEvidence } from "../../support/browser.js";
-import { ensureVariantMetadata } from "../../support/artifact-metadata.js";
-const root = fileURLToPath(new URL("../../../", import.meta.url)), directory = path.join(root,".artifacts/test/png/review/radial-gradient");
+import { startStaticServer } from "../../../../support/static-server.js";
+import { openBrowserPage, assertNoBrowserErrors, closeBrowserWithEvidence, saveBrowserEvidence } from "../../../../support/browser.js";
+import { ensureVariantMetadata } from "../../../../support/artifact-metadata.js";
+const root = fileURLToPath(new URL("../../../../../", import.meta.url)), directory = path.join(root,".artifacts/test/png/charts/paint/radial-gradient");
 const hash = value => createHash("sha256").update(value).digest("hex");
 const bytes = value => Buffer.from(value.split(",")[1], "base64");
 async function decode(buffer) {
@@ -34,10 +34,10 @@ test("compares native radial primitive interiors across four output paths", asyn
   await mkdir(directory,{recursive:true});
   try {
     server=await startStaticServer(root);browser=await chromium.launch({headless:true});
-    const opened=await openBrowserPage(browser,`${server.baseUrl}test/gates/radial-gradient/browser.html`,{waitFor:()=>document.querySelector("#status").textContent==="Ready"});
+    const opened=await openBrowserPage(browser,`${server.baseUrl}test/charts/structured-paints/variants/radial-gradient/browser.html`,{waitFor:()=>document.querySelector("#status").textContent==="Ready"});
     for(const variant of variants){
       const output=path.join(directory,variant.variant);await mkdir(output,{recursive:true});
-      await ensureVariantMetadata({scope:"review",chart:variant.chart,variant:variant.variant,kind:"primitive",title:variant.title,userFacingCallChain:variant.callChain});
+      await ensureVariantMetadata({scope:"charts",capability:"paint",chart:variant.chart,variant:variant.variant,kind:"primitive",title:variant.title,userFacingCallChain:variant.callChain});
       const canvas=createCanvas(frame.width,frame.height);variant.primitive(canvas.getContext("2d"),variant.fixture,{lowerOpacity:true,clipCone:true});
       const png=canvas.toBuffer("image/png"),svg=variant.svg(variant.fixture);
       const document=new PDFDocument(),context=document.beginPage(frame.width,frame.height);variant.primitive(context,variant.fixture,{lowerOpacity:true,clipCone:true});document.endPage();const pdf=document.close();

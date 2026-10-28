@@ -9,17 +9,17 @@ import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { chromium } from "playwright";
 import { visualVariants, frame, patternFixture } from "./manifest.js";
 import { samplePixels } from "./reference.js";
-import { renderToSVG } from "../../../src/renderers/svg.js";
-import { renderToPNGBuffer } from "../../../src/renderers/png.js";
-import { renderToPDFBuffer } from "../../../src/renderers/pdf.js";
-import { renderWithNativeTrace } from "../../support/native-canvas-trace.js";
-import { startStaticServer } from "../../support/static-server.js";
-import { openBrowserPage, assertNoBrowserErrors, closeBrowserWithEvidence, saveBrowserEvidence } from "../../support/browser.js";
-import { ensureVariantMetadata } from "../../support/artifact-metadata.js";
-import { assertDisplayedProgram } from "../../support/visual-variants.js";
+import { renderToSVG } from "../../../../../src/renderers/svg.js";
+import { renderToPNGBuffer } from "../../../../../src/renderers/png.js";
+import { renderToPDFBuffer } from "../../../../../src/renderers/pdf.js";
+import { renderWithNativeTrace } from "../../../../support/native-canvas-trace.js";
+import { startStaticServer } from "../../../../support/static-server.js";
+import { openBrowserPage, assertNoBrowserErrors, closeBrowserWithEvidence, saveBrowserEvidence } from "../../../../support/browser.js";
+import { ensureVariantMetadata } from "../../../../support/artifact-metadata.js";
+import { assertDisplayedProgram } from "../../../../support/visual-variants.js";
 
-const root = fileURLToPath(new URL("../../../", import.meta.url));
-const directory = path.join(root, ".artifacts/test/png/review/pattern-paints");
+const root = fileURLToPath(new URL("../../../../../", import.meta.url));
+const directory = path.join(root, ".artifacts/test/png/charts/paint/pattern-paints");
 const hash = bytes => createHash("sha256").update(bytes).digest("hex");
 const dataBytes = value => Buffer.from(value.split(",")[1], "base64");
 async function decode(bytes) {
@@ -42,13 +42,13 @@ test("renders every pattern primitive through Canvas, SVG, PNG and PDF", async (
   await mkdir(directory, { recursive: true });
   try {
     server = await startStaticServer(root); browser = await chromium.launch({ headless: true });
-    const opened = await openBrowserPage(browser, `${server.baseUrl}test/gates/pattern-paints/browser.html`, {
+    const opened = await openBrowserPage(browser, `${server.baseUrl}test/charts/structured-paints/variants/pattern-paints/browser.html`, {
       waitFor: () => document.querySelector("#status").textContent === "Ready"
     });
     for (const variant of visualVariants) {
       const output = path.join(directory, variant.variant), fixture = patternFixture(variant.variant), program = variant.primitive();
       await mkdir(output, { recursive: true }); assertDisplayedProgram(variant, program);
-      await ensureVariantMetadata({ scope: "review", chart: variant.chart, variant: variant.variant, kind: "primitive", title: variant.title, userFacingCallChain: variant.callChain });
+      await ensureVariantMetadata({ scope: "charts", capability: "paint", chart: variant.chart, variant: variant.variant, kind: "primitive", title: variant.title, userFacingCallChain: variant.callChain });
       const native = renderWithNativeTrace(program, frame), png = (await renderToPNGBuffer(program)).buffer;
       const nativeCanvas = createCanvas(frame.width, frame.height), nativeContext = nativeCanvas.getContext("2d");
       const image = nativeContext.createImageData(frame.width, frame.height); image.data.set(native.rgba); nativeContext.putImageData(image, 0, 0);

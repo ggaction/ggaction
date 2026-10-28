@@ -1,3 +1,5 @@
+import { patternFillGeometry, validatePatternWork } from "../grammar/patterns.js";
+import { paintColorCSS } from "../grammar/color.js";
 import { collectTransitionGraphics } from "./transitionScene.js";
 import { isOwned } from "../core/immutable.js";
 import { validateGraphicClip, translateGraphicClip } from "../grammar/schemas/graphicClip.js";
@@ -14,7 +16,7 @@ import { resolvePathCommandBounds } from
 import {
   isLinearGradientPaint,
   resolveLinearGradientCoordinates,
-  validateFillPaint
+  validateConcreteFillPaint, isPatternPaint, isRadialGradientPaint
 } from "../grammar/paint.js";
 import {
   requireFiniteProperty,
@@ -194,10 +196,45 @@ function addLinearGradient(state, fill, bounds, graphicId) {
   return `url(#${id})`;
 }
 
-function serializeFill(state, fill, bounds, graphicId) {
-  validateFillPaint(fill, `${graphicId}.fill`);
-  if (!isLinearGradientPaint(fill)) return fill;
-  return addLinearGradient(state, fill, bounds, graphicId);
+function serializeFill(state, fill, bounds, graphicId, explicitBounds = false) {
+  validateConcreteFillPaint(fill, `${graphicId}.fill`);
+  if (isLinearGradientPaint(fill)) return addLinearGradient(state, fill, bounds, graphicId);
+  if (isRadialGradientPaint(fill)) {
+    const id = `ggaction-gradient-${state.resourceNamespace}-${state.gradientCount++}`;
+    state.definitions.push(element("radialGradient", [
+      ["id", id], ["gradientUnits", explicitBounds ? "userSpaceOnUse" : "objectBoundingBox"],
+      ["gradientTransform", explicitBounds ? `translate(${formatNumber(bounds.left)} ${formatNumber(bounds.top)}) scale(${formatNumber(bounds.right - bounds.left)} ${formatNumber(bounds.bottom - bounds.top)})` : undefined], ["cx", formatNumber(fill.center.x)],
+      ["cy", formatNumber(fill.center.y)], ["fx", formatNumber(fill.focal.x)],
+      ["fy", formatNumber(fill.focal.y)], ["r", formatNumber(fill.radius)],
+      ["fr", "0"], ["spreadMethod", "pad"], ["color-interpolation", "sRGB"]
+    ], fill.stops.map(stop => element("stop", [["offset", formatNumber(stop.offset)],
+      ["stop-color", paintColorCSS(stop.color)]])).join("")));
+    return `url(#${id})`;
+  }
+  if (isPatternPaint(fill)) {
+    const { type, origin, ...options } = fill;
+    const bounded = patternFillGeometry(options, bounds, [origin.x, origin.y]);
+    state.patternWork = (state.patternWork ?? 0) + bounded.workItems;
+    validatePatternWork(state.patternWork);
+    if (bounds.right === bounds.left || bounds.bottom === bounds.top) return "transparent";
+    // Native text can extend beyond stored metrics. A single periodic tile keeps
+    // its phase continuous there without clipping or measuring the actual glyph.
+    const paintBounds = explicitBounds ? { left: origin.x, top: origin.y,
+      right: origin.x + fill.pitch, bottom: origin.y + fill.pitch } : bounds;
+    const geometry = explicitBounds ? patternFillGeometry(options, paintBounds, [origin.x, origin.y]) : bounded;
+    const width = paintBounds.right - paintBounds.left, height = paintBounds.bottom - paintBounds.top;
+    const id = `ggaction-pattern-${state.resourceNamespace}-${state.gradientCount++}`;
+    const background = element("rect", [["x", formatNumber(paintBounds.left)], ["y", formatNumber(paintBounds.top)],
+      ["width", formatNumber(width)], ["height", formatNumber(height)], ["fill", paintColorCSS(fill.background)]]);
+    const foreground = geometry.commands.length === 0 ? "" : element("path", [
+      ["d", serializePathData(geometry.commands)], ["fill", paintColorCSS(fill.foreground)], ["fill-rule", "nonzero"]]);
+    state.definitions.push(element("pattern", [["id", id], ["patternUnits", "userSpaceOnUse"],
+      ["x", formatNumber(paintBounds.left)], ["y", formatNumber(paintBounds.top)],
+      ["width", formatNumber(width)], ["height", formatNumber(height)],
+      ["viewBox", [paintBounds.left, paintBounds.top, width, height].map(formatNumber).join(" ")]], background + foreground));
+    return `url(#${id})`;
+  }
+  return fill;
 }
 
 function serializeCircle(state, graphicId, properties) {
@@ -208,9 +245,7 @@ function serializeCircle(state, graphicId, properties) {
   if (radius < 0) {
     throw new Error(`Graphic "${graphicId}" requires a non-negative radius.`);
   }
-  if (typeof properties.fill !== "string") {
-    throw new Error(`Graphic "${graphicId}" requires a string fill property.`);
-  }
+  if (properties.fill === undefined) throw new Error(`Graphic "${graphicId}" requires a fill property.`);
   let strokeWidth;
   if (properties.stroke !== undefined) {
     if (typeof properties.stroke !== "string") {
@@ -227,7 +262,7 @@ function serializeCircle(state, graphicId, properties) {
     ["cx", formatNumber(x)],
     ["cy", formatNumber(y)],
     ["r", formatNumber(radius)],
-    ["fill", properties.fill],
+    ["fill", serializeFill(state, properties.fill, { left: x - radius, right: x + radius, top: y - radius, bottom: y + radius }, graphicId)],
     ["stroke", properties.stroke],
     ["stroke-width", strokeWidth === undefined
       ? undefined
@@ -384,7 +419,7 @@ function serializeText(state, graphicId, properties) {
   const opacity = requireOpacity(properties, graphicId);
   const text = properties.text;
   validateConcreteGraphicValue("text", "text", text);
-  const fill = requireStringProperty(properties, "fill", graphicId);
+  const fill = serializeFill(state, properties.fill, properties.fillBounds, graphicId, true);
   const fontFamily = requireStringProperty(
     properties,
     "fontFamily",

@@ -367,3 +367,6 @@ missing values and empty whole labels retain the existing omission policy.
 Rotation, collision layout, and overflow bounds include every resolved line.
 
 Numeric labels also accept `","` for grouped integers and `",.0f"` through `",.12f"` for grouped fixed decimals. UTC formats accept `%a` for an English weekday abbreviation, such as `%a %d` → `Mon 01`. These formats use the shared axis, legend and text formatter.
+
+
+Constant `fill` also accepts [pattern and radial-gradient paints](../appearance/mark-style.md#pattern-and-gradient-fills), with the same creation, editing, and output rules.

@@ -1690,3 +1690,19 @@
   actions: createGraphics · editGraphics
   tasks: extension
   url: /extension/primitives/
+
+- id: structured-paints
+  example: /examples/structured-paints/
+  title: Pattern and gradient fills
+  image: /assets/images/structured-paints.png
+  alt: Blue cross stripes over a translucent orange interval rectangle
+  width: 520
+  height: 360
+  thumbnail: /assets/images/structured-paints-thumb.png
+  thumbnail_width: 520
+  thumbnail_height: 360
+  caption: A repeated pattern shares one plot origin and one glyph opacity.
+  summary: Fill marks with repeated patterns or object-bound radial gradients.
+  actions: createRectMark · editRectMark
+  tasks: appearance
+  url: /api/appearance/mark-style/

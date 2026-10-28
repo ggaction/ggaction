@@ -1,4 +1,4 @@
-import { normalizeRadialGradient } from "../../../src/grammar/radialGradient.js";
+import { normalizeRadialGradient } from "../../../../../src/grammar/radialGradient.js";
 export const frame = Object.freeze({ width: 260, height: 200 });
 export const styles = Object.freeze(["centered", "offset-focus", "hard-stop", "alpha-clip", "edge-focus", "varying-alpha"]);
 const light = { rgb: [254, 243, 199], css: "#fef3c7", alpha: 1 }, dark = { rgb: [15, 118, 110], css: "#0f766e", alpha: 1 };

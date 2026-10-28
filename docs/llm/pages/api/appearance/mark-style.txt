@@ -9,6 +9,64 @@
 | Continuous | point, line, area, bar, rect, arc, rule, tick | point/line/area/bar/rect/arc/rule/tick: quantitative, temporal | sequential scale; no aggregate option; unknown fallback is row-owned Point only; series and final-item uniqueness still apply |
 | Discretized continuous | point, line, area, bar, rect, arc, rule, tick | point/line/area/bar/rect/arc/rule/tick: quantitative | quantize, quantile, threshold; same final-item and series constraints |
 
+## Pattern and gradient fills
+
+Point, Rect, Bar, Area, Arc, and Text marks accept `FillPaint` in their create and
+edit options. The same fill reaches their chart facades and attached labels.
+A new fill replaces the complete previous paint; omitted edit options preserve it.
+
+```ts
+type PatternPaint = {
+  type: "pattern";
+  style?: "solid" | "diagonal" | "antidiagonal" | "horizontal"
+    | "vertical" | "cross" | "dots";
+  pitch?: number;
+  strokeWidth?: number;
+  phase?: readonly [number, number];
+  foreground?: string;
+  background?: string;
+  coordinateSpace?: "plot" | "object";
+};
+type RadialGradientPaint = {
+  type: "radial-gradient";
+  center: { x: number; y: number };
+  focal?: { x: number; y: number };
+  radius: number;
+  stops: readonly [GradientStop, GradientStop, ...GradientStop[]];
+};
+type GradientStop = { offset: number; color: string };
+type FillPaint = string | LinearGradientPaint | PatternPaint | RadialGradientPaint;
+```
+
+Pattern defaults are `style:"solid"`, `pitch:8`, `strokeWidth:1`, `phase:[0,0]`,
+`foreground:"#000000"`, `background:"transparent"`, and `coordinateSpace:"plot"`.
+Pitch is positive; stroke width is non-negative. Dots use half the stroke width
+as their radius. Phase wraps modulo pitch. Plot coordinates align neighboring
+marks to the plot's top-left corner; object coordinates start at each glyph's
+fill bounds. Geometry and frame edits recalculate these origins.
+
+Radial center and focal coordinates lie between 0 and 1. Radius is positive,
+and focal defaults to center and must lie inside or on the end circle. Stops
+use nondecreasing offsets from 0 to 1; equal offsets create a hard edge. A radial
+paint stretches with the glyph bounds: radius `.5` in a 220 × 140 rectangle
+produces an ellipse with horizontal radius 110 and vertical radius 70.
+
+Pattern colors and radial stops accept standard named colors, `transparent`,
+hex colors, and comma-based `rgb()`, `rgba()`, `hsl()`, and `hsla()` values.
+`currentColor`, CSS variables, and `none` are not accepted in these new paints.
+Existing solid and linear-gradient color syntax is unchanged. Strokes remain
+solid colors. Existing field-color precedence and replacement rules still apply.
+
+Text uses the same stored paint bounds across outputs and retains its actual
+letters, whitespace, multiline positions, and rotation. SVG text remains vector.
+Canvas, PNG, and PDF text use a bounded paint texture through the native glyph;
+PDF text may therefore contain an image texture. Pattern fills with mark opacity
+below 1 use the existing isolated glyph path, so their background and foreground
+receive opacity together; PDF can contain a glyph image in this case. Closed-shape radial fills retain
+native PDF vector shading. PNG `pixelRatio` controls texture resolution as well
+as output pixels. Excessively dense patterns or large cumulative texture work
+fail before drawing under the shared output limits.
+
 ## Stroke caps, joins, and rounded rectangles
 
 Every strokable mark style accepts `lineCap`, `lineJoin`, and `miterLimit`:
