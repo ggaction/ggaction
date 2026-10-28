@@ -7,7 +7,7 @@
 - [x] current/type/source/docs/example source 동기화
 - [x] 5개 실제 dataset × 3 methods 및 전체 direct lifecycle 검사
 - [x] 같은 tar의 Node 20/22/24 설치 graph consumer 확인
-- [ ] GraphPlot 통합 checkpoint에서 새 discovery summary override 누적 한도 문제 해결
+- [x] GraphPlot 통합 checkpoint에서 새 discovery summary override 누적 한도 문제 해결 ([검증](PLOT_PUBLIC.md))
 - [ ] Graph 전체 consumer matrix, inference/facet/filter/후행 paint/controller 의무
 
 ## 고정 입력과 결과
@@ -29,3 +29,5 @@ Runtime source는 `cbcaaf991`이며 사용자 범위 승인은 `../../AUTHORIZAT
 GraphPlot 작업의 전체 contract 검사에서 새 `layoutGraph` summary override가 기존20개 제한을 초과함을 발견했다. GraphPlot 브랜치에서 해당 불필요 override와 추가2개를 제거하여 일반 생성 경로로 복귀했다. 이 문서는 runtime 검증 증거를 보존하며 그 discovery 보수가 검증되기 전 전체 공개 graph checkpoint 완료를 선언하지 않는다.
 
 현재 snapshot은 관측 graph→layout까지의 결과다. GraphPlot의 source revision rematerialization과 node/edge selection·rendering은 별도 구현으로 이어지며 STEP-021 전체 또는 Roadmap 9 완료를 뜻하지 않는다. Shared direct resource builder 변경 뒤 추가3개 realistic 파일은 최종 통합 상태에서 한 번 검증한다.
+
+GraphPlot 통합의 최종 보수 검사에서 discovery 한도 문제가 해소됐다. Shared direct resource builder 변경에 영향을 받는 추가3개 realistic 파일도27/27로 통과했으며 증거는 PLOT_PUBLIC.md에 보존했다.

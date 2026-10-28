@@ -3,7 +3,7 @@
   "name": "editGraphPlot",
   "layer": "user-facing",
   "domain": "charts",
-  "summary": "Edit graph appearance or layout binding and rebuild its logical items.",
+  "summary": "Edits graph plot, including settings for network plot.",
   "signature": "editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;",
   "intents": [
     "edit graph plot",

@@ -4,9 +4,10 @@
 
 - [x] 관측 그래프의 typed node/edge identity와 원본 table revision 계약
 - [x] fixed/circular/seeded force 순수 kernel
-- [x] layoutGraph와 공통 editLayout 및 저장 검증 (source 구현·focused 검증; 설치·문서 qualification 진행 중)
-- [ ] 그래프 수정→layout→node/edge/label의 명시 materialization
-- [ ] 네 renderer·선택·inspection·접근성·저장·패키지·문서 검증
+- [x] layoutGraph와 공통 editLayout 및 저장 검증
+- [x] 그래프 수정→layout→node/edge/label의 명시 materialization
+- [x] 네 renderer·선택·inspection·접근성·저장·패키지·문서 검증 ([공개 checkpoint](../phase3/graph/PLOT_PUBLIC.md))
+- [ ] induced-view filter·facet·추론·후행 paint/controller의 전체 소비자 연결
 
 [전체 승인](../AUTHORIZATION.json)의 남은 설계 결정 승인을 적용한다. STEP-021은 layout solver가 관계를 추론하지 않는 경계를 유지한다. STEP-029–032의 inference는 graph model을 생성하는 별도 도메인이다.
 

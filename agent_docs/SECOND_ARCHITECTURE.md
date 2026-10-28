@@ -762,8 +762,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 591,000 bytes |
-| `ggaction/basic` | 343,000 bytes |
+| `ggaction` | 596,000 bytes |
+| `ggaction/basic` | 346,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -3204,3 +3204,5 @@ null/default 및 복원 limit 검증을 보강한 최종 graph-layout source는 
 최소 조정한다. 이전5,438,000 한도 초과55bytes를 통과로 표시하지 않는다.
 
 동일 final archive의 Node20 browser 실측은 Full590,307/Basic342,113bytes이며 두 기존 한도591,000/343,000 안이다.
+
+GraphPlot와 outline을 합친 source7659f0f7f archive의 Node20 bundle은 Full595,806/Basic345,437bytes다. 기존591,000/343,000 한도를 초과하여 실제값 기준 최소596,000/346,000으로 조정하고 README와 현재 표를 동기화했다.

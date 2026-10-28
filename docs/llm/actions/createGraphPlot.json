@@ -3,7 +3,7 @@
   "name": "createGraphPlot",
   "layer": "user-facing",
   "domain": "charts",
-  "summary": "Draw node circles, edge routes and optional labels from one stored graph layout.",
+  "summary": "Creates graph plot for network plot.",
   "signature": "createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;",
   "intents": [
     "create graph plot",

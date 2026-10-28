@@ -2,8 +2,8 @@
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-graph-plots/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/roadmap9-graph-plots/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/7659f0f7f7d57c2bfa8f2c78f4ac8704dde08db1/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/7659f0f7f7d57c2bfa8f2c78f4ac8704dde08db1/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -12,7 +12,7 @@ Follow [Getting Started](../../../getting-started/) to create a browser module a
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-graph-plots/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/7659f0f7f7d57c2bfa8f2c78f4ac8704dde08db1/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
