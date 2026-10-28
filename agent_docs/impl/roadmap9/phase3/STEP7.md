@@ -7,7 +7,7 @@
 - [x] 공개 선언·Current·문서·실행 snippet·액션 카드의 독립 추가 내용 보존
 - [x] 통계/자원/parameter unit393개와 독립 통계18쌍 검증
 - [x] Installed Node20/22/24: 동일 archive의 Node196·tutorial68·qualification7 모두 통과
-- [x] 문서161개, built150pages·LLM1218개와 desktop/mobile browser 검사
+- [x] 문서164개, built150pages·LLM1218개와 desktop/mobile browser 검사
 - [x] action-card route 누락의 fail-closed 검증 및 생성 의존 순서 수정
 - [ ] 최종 source commit의 clean checks와 원격 CI coverage
 - [ ] STEP-013/014/015 개별 종료 receipt 및 completion validator
@@ -30,7 +30,7 @@ cards를 만들던 순서를 수정하고, card/map 양쪽 route가 빠져도 �
 계약19/19가 통과했다. 최종 clean 전체 계약 실행은 아래 종료 검증에 남긴다.
 
 최초 문서 검사3개 실패는 search size와 merge 중 누락된 canonical snippet 등록3개였다.
-원본 두 branch의 실행 사례를 모두 복원했고 최종 문서161개가 통과했다. 검색 payload는
+원본 두 branch의 실행 사례를 모두 복원했고 최종 문서164개가 통과했다. 검색 payload는
 863078bytes, 한도865000이다. Installed tutorial68에는 pivot·LOESS·calendar 및 DATA/parameter
 실행 예제가 모두 포함된다. 중단한 최초 package matrix는 성공 evidence로 사용하지 않았다.
 
