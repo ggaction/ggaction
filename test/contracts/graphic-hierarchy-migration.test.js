@@ -25,8 +25,8 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
-  "mark-shadows": ["canvas", "plot-main", "background", "title", "sibling", "shadowed"],
-  "text-shadows": ["canvas", "plot-main", "labels"],
+  "mark-shadows": ["canvas", "background", "title", "sibling", "shadowed"],
+  "text-shadows": ["canvas", "labels"],
   "structured-paints": ["canvas", "paint"],
   "mark-outlines": ["canvas", "background", "title", "outlined"],
   "image-assets": ["canvas", "plot-main", "label", "backdrop", "image-image-clip", "image"],

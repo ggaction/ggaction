@@ -181,7 +181,7 @@ export const DOCUMENTATION_WORKFLOWS = Object.freeze([
 
 // Chart-family examples retain their independent primitive/public baselines.
 export const PUBLIC_CHARTS = Object.freeze([
-  example({ id: "text-shadows", data: {}, width: 220, height: 160, docsGroup: "tutorials", createProgram: () => createTextShadowExample(),
+  example({ id: "text-shadows", testDirectory: "mark-shadows", data: {}, width: 220, height: 160, docsGroup: "tutorials", createProgram: () => createTextShadowExample(),
     browser: { path: "text-shadows/", canvas: "#chart" } }),
   example({ id: "mark-shadows", data: {}, width: 260, height: 200, docsGroup: "tutorials", createProgram: () => createMarkShadowExample(),
     browser: { path: "mark-shadows/", canvas: "#chart" } }),

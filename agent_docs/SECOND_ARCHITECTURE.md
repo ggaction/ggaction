@@ -754,8 +754,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 585,000 bytes |
-| `ggaction/basic` | 346,000 bytes |
+| `ggaction` | 587,000 bytes |
+| `ggaction/basic` | 348,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -3221,7 +3221,9 @@ layout reflow나 semantic compilation이 아니다. 준비된 exact font와 실�
 공통 bounds owner는 occupied effect 범위를 별도로 계산하며 selection/hit은 원래 source geometry를 유지한다.
 정확한 지원·수명·한도는 [MARKS](contract/current/MARKS.md#prepared-per-item-shadows)가 소유한다.
 
-Shadow source checkpoint의 Node22 실측은815 entries / packed1,198,723 / unpacked5,516,118 bytes이며
-cap은815/1,199,000/5,517,000이다. Minimal installed Vite는 Full585,965/Basic346,504/SVG20,051gzip
-bytes로 각각586,000/347,000/25,000 cap을 사용한다. Exact support와 lifecycle은 Current에, 최초실패와
+Shadow source checkpoint의 실측은815 entries / unpacked5,516,118 bytes이며 packed는 Node22의1,198,723과
+Node20·24의1,201,262 bytes이다. 동일 내부 파일의 압축 차이를 반영해 cap은815/1,202,000/5,517,000이다.
+동일 Node22 archive의 minimal installed Vite는 Node22에서 Full585,965/Basic346,504/SVG20,051gzip,
+Node20에서586,754/347,170/20,191gzip bytes로 측정되어 각각587,000/348,000/25,000 cap을 사용한다.
+Exact support와 lifecycle은 Current에, 최초실패와
 최종 고정 archive의 Node별 qualification은 paints/shadow-evidence에 분리 기록한다.
