@@ -1101,7 +1101,7 @@
       "name": "filterData",
       "layer": "user-facing",
       "domain": "core",
-      "summary": "Create an immutable named derived dataset using exactly one membership, comparison, or range filter.",
+      "summary": "Create an immutable named dataset using a field filter or a strict boolean expression predicate.",
       "signature": "filterData(options: TargetedOptions<FilterDataOptions>): ChartProgram;",
       "intents": [
         "filter data",
@@ -1170,9 +1170,14 @@
           "type": "string | undefined"
         },
         {
+          "name": "where",
+          "required": false,
+          "type": "ComputedExpressionV2 | undefined"
+        },
+        {
           "name": "field",
-          "required": true,
-          "type": "string"
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "nulls",
@@ -1206,14 +1211,14 @@
         }
       ],
       "callPatterns": [
-        "filterData({ id, field, predicate })",
-        "filterData({ id, field, oneOf | range })"
+        "filterData({ id, source?, where })",
+        "filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })"
       ],
       "snippet": "program.filterData({ id: \"filtered\", field: \"value\", predicate: { op: \"gt\", value: 0 } })",
       "errors": [
         {
-          "error": "More or fewer than one of oneOf, predicate, and range is supplied.",
-          "fix": "Choose exactly one filter mode."
+          "error": "The where predicate is combined with field filter options, or a field mode is missing.",
+          "fix": "Supply only where, or supply field and exactly one of oneOf, noneOf, predicate, or range."
         }
       ],
       "route": "/reference/actions/charts-data/#filterdata"
@@ -3853,6 +3858,21 @@
       },
       "options": [
         {
+          "name": "where",
+          "required": false,
+          "type": "ComputedExpressionV2 | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "nulls",
+          "required": false,
+          "type": "\"exclude\" | \"include\" | false | undefined"
+        },
+        {
           "name": "oneOf",
           "required": false,
           "type": "readonly [DatasetScalar, ...DatasetScalar[]] | undefined"
@@ -3878,23 +3898,14 @@
           "type": "string | ActionTargetList | ScopedActionTarget"
         },
         {
-          "name": "field",
-          "required": false,
-          "type": "string | undefined"
-        },
-        {
-          "name": "nulls",
-          "required": false,
-          "type": "\"exclude\" | \"include\" | false | undefined"
-        },
-        {
           "name": "dependents",
           "required": false,
           "type": "DerivedDataDependents | undefined"
         }
       ],
       "callPatterns": [
-        "editFilteredData({ target, oneOf?, noneOf?, predicate?, range?, field?, nulls?, dependents? })"
+        "editFilteredData({ target, where, dependents? })",
+        "editFilteredData({ target, field?, oneOf | noneOf | predicate | range, nulls?, dependents? })"
       ],
       "snippet": "program.editFilteredData({ target: \"filtered\", oneOf: [1] })",
       "errors": [],

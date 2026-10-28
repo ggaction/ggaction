@@ -279,7 +279,7 @@
       "domain": "core",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Create a logical filtered owner; revise it with editFilteredData",
+      "update": "Create a logical field or expression filter; revise it with editFilteredData or dependent parameter edits",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -711,7 +711,7 @@
       "domain": "core",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Partially revises a standalone filtered dataset",
+      "update": "Revises a standalone field filter or boolean expression predicate",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

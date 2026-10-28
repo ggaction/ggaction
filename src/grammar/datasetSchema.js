@@ -246,6 +246,7 @@ export function transformInputFields(transform) {
   }
   add(transform.aggregates?.flatMap(item => [item.field, item.op?.orderBy]));
   add(expressionFields(transform.expression));
+  add(expressionFields(transform.where));
   return [...new Set(result)];
 }
 

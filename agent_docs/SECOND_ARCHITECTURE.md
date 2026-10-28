@@ -4,6 +4,14 @@
 > [`architecture/README.md`](architecture/README.md)의 작업별 경로에서 시작한다. 이 파일은 현재
 > macro-architecture의 canonical 원문으로 유지한다.
 
+### Boolean filter 의존성
+
+AST filter는 computed와 같은 closed v2 expression 및 exact parameter-reference 검증을
+사용한다. 읽기 전용 `materialization/expressionInputs.js`가 action materialization과
+editable restore에 schema/parameter 환경을 공급하며 restore는 predicate를 실행하지 않는다.
+Parameter edit는 공통 dataset DAG와 기존 mark/scale/guide plan을 명시적으로 실행한다.
+필터는 원본 행의 순서·식별자·lineage를 유지한다.
+
 ## 현재 구조 빠른 지도
 
 이 지도는 현재 `package.json.exports`와 대응한다. 기본 authoring은 domain action →
@@ -39,8 +47,8 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 `core/ownData.js`는 descriptor 검증을 공유하고 action summary는 getter를 호출하지 않는다.
 `grammar/transformInput.js`는 dispatch 전 transform 배열 검증을 Full/Basic에서 공유하며
 큰 transform policy 모듈을 Basic 입력 경계로 끌어오지 않는다.
-현재 kernel은 private이며 public authoring, 저장 schema, parameter resource lifecycle과
-renderer에는 연결하지 않았다. 기존 computed v1의 의미와 직접 materialization 경계는 유지한다.
+Public computed v2와 where filter는 이 kernel과 typed parameter resource를 사용한다.
+Renderer는 AST를 실행하지 않으며 기존 computed v1의 의미와 직접 materialization 경계는 유지한다.
 상세 내부 계약은 [expression core](architecture/EXPRESSION_CORE.md), 공개 computed는
 [CORE](contract/current/CORE.md), action trace는 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
 
@@ -695,7 +703,7 @@ Action 경계가 생성 namespace를 준비하고 kernel이 source snapshot iden
 `semanticSpec.resources`의 authored parameter가 scalar 값과 revision을 소유한다.
 `grammar/parameter.js`와 expression grammar는 명시 값을 받아 순수 검증·계산하며,
 `actions/data/computedBinding.js`가 현재 parameter를 exact revision vector에 바인딩한다.
-`materialization/computedInputs.js`는 공통 schema와 exact resource lookup을 사용해 저장된
+`materialization/expressionInputs.js`는 공통 schema와 exact resource lookup을 사용해 저장된
 computed 입력을 검증한다. Persistence는 이 read-only validator를 재사용하고 AST를 재평가하지 않는다.
 Named lookup 자체는 계속 `selectors/resources.js`가 소유한다.
 

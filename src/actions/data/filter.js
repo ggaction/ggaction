@@ -1,3 +1,4 @@
+import { resolveFilterEnvironment } from "../../materialization/expressionInputs.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import { markFilterSourceIndices } from "../../materialization/selection/rows.js";
 import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
@@ -40,7 +41,7 @@ import {
 } from "../../grammar/datasetSchema.js";
 
 const OPTIONS = Object.freeze([
-  "id", "source", "field", "oneOf", "noneOf", "predicate", "range", "nulls"
+  "id", "source", "field", "oneOf", "noneOf", "predicate", "range", "nulls", "where"
 ]);
 const MARK_SELECTOR_KEYS = Object.freeze([
   "rows", "grain", "field", "channel", "property", "op", "value", "values",
@@ -73,7 +74,7 @@ export const materializeFilteredData = /* @__PURE__ */ closedAction(
       data: source.id,
       operation: "materializeFilteredData"
     });
-    const values = deriveFilteredRows(source.values, transform);
+    const values = deriveFilteredRows(source.values, transform, resolveFilterEnvironment(this, source, transform));
     const schema = deriveTransformSchema(source.schema, transform, values, {
       sourceId: source.id,
       ownerId: id

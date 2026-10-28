@@ -1195,11 +1195,13 @@ local scales and axes. Only `dimensions` is required.
 ### `filterData`
 
 ```javascript
+filterData({ id, source?, where })
 filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })
 ```
 
-Create an immutable named derived dataset using exactly one membership,
-comparison, or range filter. The source defaults to current data.
+Create an immutable named dataset using a field filter or a strict boolean expression predicate.
+The source defaults to current data. `where` uses the closed v2 AST and excludes all field
+filter options. Parameter edits revise dependent filters and their chart resources.
 [Data](../api/data.md)
 
 ### `createSortedData`
@@ -1392,6 +1394,7 @@ rebind direct visual consumers, and safely release the prior revision.
 
 ```javascript
 editDerivedData({ target, definition, dependents? })
+editFilteredData({ target, where, dependents? })
 editFilteredData({ target, field?, oneOf? | noneOf? | predicate? | range?, nulls?, dependents? })
 editSortedData({ target, sortBy, dependents? })
 editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })

@@ -209,5 +209,15 @@
       "mark": "points",
       "items": 2
     }
+  },
+  {
+    "id": "parameter-filter-revision",
+    "file": "api/data/filtering.md",
+    "contains": "const revised = program.editParameter({ target: \"minimum\", value: 1 });",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program, revised",
+    "prerequisites": "Standalone ES module with a Canvas, all observations and imports included. Inspect each immutable filtered dataset.",
+    "rendering": "authoring-only"
   }
 ]

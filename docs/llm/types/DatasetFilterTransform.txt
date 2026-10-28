@@ -1,4 +1,4 @@
-export type DatasetFilterTransform = {
+export type DatasetFilterTransform = ({
   type: "filter";
   field: string;
   nulls?: "include" | "exclude";
@@ -7,4 +7,4 @@ export type DatasetFilterTransform = {
   | { oneOf?: never; noneOf: readonly DatasetScalar[]; predicate?: never; range?: never }
   | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
   | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRange }
-);
+)) | ({ type: "filter" } & ExpressionFilterOptions);

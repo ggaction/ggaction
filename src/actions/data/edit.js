@@ -1,3 +1,4 @@
+import { bindFilterTransform } from "./filterBinding.js";
 import { ownRecord } from "../../core/ownData.js";
 import {resolveDatasetTransformInputs} from "./shared.js";
 import { bindComputedTransform } from "./computedBinding.js";
@@ -303,7 +304,7 @@ function applyRevisionPlanWithIdentity(program, resolved, plan, { retain, parame
     const policy = findTransformPolicy(revision.transform.type);
     const source = findDataset(next, revision.source), previous = findDataset(next, revision.old);
     if (parameterBudget) {
-      const complexity = revision.transform.type === "computed" ? policy.validate(previous.transform[0]) : 1;
+      const complexity = ["computed", "filter"].includes(revision.transform.type) ? (policy.validate(previous.transform[0]) ?? 1) : 1;
       work += (source.values?.length ?? 0) * complexity;
       validateWorkLimit(work, "Parameter revision work");
     }
@@ -454,7 +455,9 @@ export const editDerivedData = /* @__PURE__ */ closedAction(
     const definition = resolveDatasetTransformInputs(this,requestedDatasetTransform(args.definition));
     findTransformPolicy(definition.type).validate(definition.type === "computed"
       ? bindComputedTransform(this, findDataset(this, resolved.dataset.source), definition)
-      : definition);
+      : definition.type === "filter"
+        ? bindFilterTransform(this, findDataset(this, resolved.dataset.source), definition)
+        : definition);
     const previous = requestedDatasetTransform(resolved.dataset.transform[0]);
     if (sameRequested(definition, previous)) return this;
 
@@ -506,7 +509,7 @@ export const editComputedData = /* @__PURE__ */ focusedEditor(
   "editComputedData", "computed", ["as", "expression"]
 );
 export const editFilteredData = /* @__PURE__ */ focusedEditor(
-  "editFilteredData", "filter", ["field", "oneOf", "noneOf", "predicate", "range", "nulls"]
+  "editFilteredData", "filter", ["field", "oneOf", "noneOf", "predicate", "range", "nulls", "where"]
 );
 export const editFlattenData = /* @__PURE__ */ focusedEditor(
   "editFlattenData", "flatten", ["fields", "as"]

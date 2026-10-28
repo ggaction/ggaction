@@ -1,3 +1,4 @@
+import { resolveFilterEnvironment } from "../materialization/expressionInputs.js";
 import { validateLegacyPathCommands } from "../grammar/pathCommands.js";
 import { validateGraphicIdentity } from "../grammar/schemas/graphicIdentity.js";
 import { validateLegendOverflow } from "../grammar/legendOverflow.js";
@@ -64,7 +65,7 @@ import { invalidSnapshot } from "./codec.js";
 import { DATA_IDENTITY_FIELDS, validateSourceIdentity } from "../core/itemIdentity.js";
 import { validateDatasetLineage } from "../grammar/rowLineage.js";
 import { validateResourceGraph } from "../materialization/resourceState.js";
-import { resolveComputedEnvironment } from "../materialization/computedInputs.js";
+import { resolveComputedEnvironment } from "../materialization/expressionInputs.js";
 import { canonicalJSON } from "../core/contentDigest.js";
 import { storedSelectionSelector } from "../selectors/selectionResources.js";
 import { requireStoredResource, resolveGraphicLineage } from "../selectors/resources.js";
@@ -201,6 +202,10 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
   if (!legacy) validateResourceGraph(program);
   for (const dataset of semantic.datasets) {
     for (const transform of dataset.transform ?? []) {
+      if (transform.type === "filter" && transform.where !== undefined) {
+        if (legacy) throw invalidSnapshot("Expression filters require editable snapshot version 4.", path);
+        resolveFilterEnvironment(program, resolveDatasetReference(program, dataset.source), transform);
+      }
       if (transform.type !== "computed" || transform.expression?.version !== 2) continue;
       if (legacy) throw invalidSnapshot("Computed v2 requires editable snapshot version 4.", path);
       const source = resolveDatasetReference(program, dataset.source);

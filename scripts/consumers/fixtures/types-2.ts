@@ -2077,3 +2077,15 @@ const compoundOwner: import("ggaction").GraphicObject = {type:"path",clip:clipUn
 // @ts-expect-error unknown fill rules are rejected
 const invalidClip: import("ggaction").GraphicClipPath = {...compoundClip,fillRule:"alternate"};
 const compoundSceneClip: NonNullable<import("ggaction/scene").CanvasTransitionNode["clips"]>[number] = compoundClip;
+
+// Expression filters reuse the closed v2 AST and exclude legacy field options.
+const predicateFilter = chart().createData({ id: "predicate-input", values: [{ x: 1 }] })
+  .createParameter({ id: "threshold", value: 0 })
+  .filterData({ id: "predicate-output", where: { version: 2, registry: "standard@1", root: {
+    type: "binary", op: "gte", left: { type: "field", name: "x" }, right: { type: "parameter", id: "threshold" }
+  } } });
+predicateFilter.editFilteredData({ target: "predicate-output", where: { version: 2, registry: "standard@1", root: { type: "literal", value: false } } });
+// @ts-expect-error Expression filters cannot combine legacy field options.
+predicateFilter.filterData({ id: "mixed-predicate", field: "x", where: { version: 2, registry: "standard@1", root: { type: "literal", value: true } } });
+// @ts-expect-error Filter predicates require the closed v2 AST, not callbacks.
+predicateFilter.filterData({ id: "callback-predicate", where: () => true });

@@ -1219,6 +1219,22 @@
   {
     "file": "api/data/filtering.md",
     "block": 4,
+    "heading": "Filter with a parameter",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"observations\"",
+      "data: \"selected\"",
+      "target: \"minimum\""
+    ],
+    "prerequisites": "Standalone ES module with a Canvas, all observations and imports included. Inspect each immutable filtered dataset.",
+    "sha256": "20bb394ac1db1195891bc67fe5385685dfd49e3824752740595738b6dd96a944",
+    "executable": true
+  },
+  {
+    "file": "api/data/filtering.md",
+    "block": 5,
     "heading": "`filterMarks({ target?, mode?, ...selector })` {#filter-marks}",
     "mode": "complete",
     "environment": "node-esm",
@@ -1230,7 +1246,7 @@
   },
   {
     "file": "api/data/filtering.md",
-    "block": 5,
+    "block": 6,
     "heading": "`filterMarks({ target?, mode?, ...selector })` {#filter-marks}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1246,7 +1262,7 @@
   },
   {
     "file": "api/data/filtering.md",
-    "block": 6,
+    "block": 7,
     "heading": "`filterMarks({ target?, mode?, ...selector })` {#filter-marks}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1262,7 +1278,7 @@
   },
   {
     "file": "api/data/filtering.md",
-    "block": 7,
+    "block": 8,
     "heading": "`removeMarkFilter({ target? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",

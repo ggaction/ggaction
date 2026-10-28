@@ -3972,7 +3972,7 @@ Related types: [`ECDFOutputFields`](#type-ecdfoutputfields) · [`DatasetECDFReso
 <summary>Expand DatasetFilterTransform</summary>
 
 ```typescript
-export type DatasetFilterTransform = {
+export type DatasetFilterTransform = ({
   type: "filter";
   field: string;
   nulls?: "include" | "exclude";
@@ -3981,12 +3981,12 @@ export type DatasetFilterTransform = {
   | { oneOf?: never; noneOf: readonly DatasetScalar[]; predicate?: never; range?: never }
   | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
   | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRange }
-);
+)) | ({ type: "filter" } & ExpressionFilterOptions);
 ```
 
 </details>
 
-Related types: [`DatasetScalar`](#type-datasetscalar) · [`FilterComparison`](#type-filtercomparison) · [`FilterRange`](#type-filterrange).
+Related types: [`DatasetScalar`](#type-datasetscalar) · [`FilterComparison`](#type-filtercomparison) · [`FilterRange`](#type-filterrange) · [`ExpressionFilterOptions`](#type-expressionfilteroptions).
 
 ### `DatasetFlattenTransform` {#type-datasetflattentransform}
 
@@ -5453,17 +5453,18 @@ export type EditFacetSourceOptions =
 <summary>Expand EditFilteredDataOptions</summary>
 
 ```typescript
-export type EditFilteredDataOptions = FilterModePatch & {
+export type EditFilteredDataOptions = (FilterModePatch & {
+  where?: never;
   target: string;
   field?: string;
   nulls?: "include" | "exclude" | false;
   dependents?: DerivedDataDependents;
-};
+}) | (ExpressionFilterOptions & { target: string; dependents?: DerivedDataDependents });
 ```
 
 </details>
 
-Related types: [`FilterModePatch`](#type-filtermodepatch) · [`DerivedDataDependents`](#type-deriveddatadependents).
+Related types: [`FilterModePatch`](#type-filtermodepatch) · [`DerivedDataDependents`](#type-deriveddatadependents) · [`ExpressionFilterOptions`](#type-expressionfilteroptions).
 
 ### `EditFlattenDataOptions` {#type-editflattendataoptions}
 
@@ -6881,6 +6882,27 @@ export type ExpressionCall =
 
 Related types: [`ExpressionNode`](#type-expressionnode).
 
+### `ExpressionFilterOptions` {#type-expressionfilteroptions}
+
+<details markdown="1">
+<summary>Expand ExpressionFilterOptions</summary>
+
+```typescript
+export type ExpressionFilterOptions = {
+  where: ComputedExpressionV2;
+  field?: never;
+  nulls?: never;
+  oneOf?: never;
+  noneOf?: never;
+  predicate?: never;
+  range?: never;
+};
+```
+
+</details>
+
+Related types: [`ComputedExpressionV2`](#type-computedexpressionv2).
+
 ### `ExpressionNode` {#type-expressionnode}
 
 <details markdown="1">
@@ -7240,17 +7262,15 @@ export type FilterComparison =
 <summary>Expand FilterDataOptions</summary>
 
 ```typescript
-export type FilterDataOptions = {
-  id: string;
-  source?: string;
-  field: string;
-  nulls?: "include" | "exclude";
-} & FilterModeOptions;
+export type FilterDataOptions = { id: string; source?: string } & (
+  | ({ field: string; nulls?: "include" | "exclude"; where?: never } & FilterModeOptions)
+  | ExpressionFilterOptions
+);
 ```
 
 </details>
 
-Related types: [`FilterModeOptions`](#type-filtermodeoptions).
+Related types: [`FilterModeOptions`](#type-filtermodeoptions) · [`ExpressionFilterOptions`](#type-expressionfilteroptions).
 
 ### `FilterMarksOptions` {#type-filtermarksoptions}
 

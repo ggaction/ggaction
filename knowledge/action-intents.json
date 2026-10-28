@@ -1804,8 +1804,8 @@
       "createGradientPlot({ id?, data? })"
     ],
     "filterData": [
-      "filterData({ id, field, predicate })",
-      "filterData({ id, field, oneOf | range })"
+      "filterData({ id, source?, where })",
+      "filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })"
     ],
     "filterMarks": [
       "filterMarks({ field | channel | property, op, ...operands })",
@@ -1936,13 +1936,17 @@
     ],
     "createStatisticalReference": [
       "createStatisticalReference({ source, axis, statistic?, statistics? })"
+    ],
+    "editFilteredData": [
+      "editFilteredData({ target, where, dependents? })",
+      "editFilteredData({ target, field?, oneOf | noneOf | predicate | range, nulls?, dependents? })"
     ]
   },
   "errorOverrides": {
     "filterData": [
       {
-        "error": "More or fewer than one of oneOf, predicate, and range is supplied.",
-        "fix": "Choose exactly one filter mode."
+        "error": "The where predicate is combined with field filter options, or a field mode is missing.",
+        "fix": "Supply only where, or supply field and exactly one of oneOf, noneOf, predicate, or range."
       }
     ],
     "encodeAngle": [

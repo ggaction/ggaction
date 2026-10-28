@@ -1,3 +1,4 @@
+import { bindFilterTransform } from "./filterBinding.js";
 import { bindComputedTransform } from "./computedBinding.js";
 import { validateDatasetTransformInput } from "../../grammar/transformInput.js";
 import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
@@ -60,7 +61,9 @@ export const createDerivedData = /* @__PURE__ */ closedAction(
       ? [resolveDatasetTransformInputs(this, requestedTransform)]
       : requestedTransform.type === "computed"
         ? [bindComputedTransform(this, resolveDatasetReference(this, source, "Source dataset"), requestedTransform)]
-        : args.transform;
+        : requestedTransform.type === "filter"
+          ? [bindFilterTransform(this, resolveDatasetReference(this, source, "Source dataset"), requestedTransform)]
+          : args.transform;
     const withSource = this.editSemantic({ property: `dataset[${id}].source`, value: source });
     const created = withPreparedDatasetIdentity(
       { property: `dataset[${id}].transform`, value: transforms }, preparedDatasetIdentity(args),

@@ -35,6 +35,6 @@ v2 envelope를 지원하며 `ggaction/inspection`은 읽기 전용 registry 조�
 suite와 함께 실행한다. `expression-kernel` coverage family는 신규 파일에도 자동 적용한다.
 Public create/edit/revise, persistence, schema/lineage, parameter lifecycle와 registry query의
 통합은 해당 capability의 action·persistence·renderer·installed consumer 시험으로 검증한다.
-`materialization/computedInputs.js`가 저장된 exact parameter vector와 schema를 검증하고,
+`materialization/expressionInputs.js`가 저장된 exact parameter vector와 schema를 검증하고,
 action binding은 현재 revision을 명시적으로 저장한다. Persistence는 재평가하지 않는다.
 CSV/JSON resolver kernel의 공개 commit·offline source lifecycle 연결은 별도 진행 범위다.

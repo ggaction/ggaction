@@ -1,3 +1,4 @@
+import { validateExpressionParameterInputs } from "./expressionInputs.js";
 import { inspectExpressionV2, normalizeExpressionV2 } from "./expressionAst.js";
 import { evaluateExpressionV2 } from "./expressionEvaluate.js";
 import { validateUserId } from "../core/identifiers.js";
@@ -481,18 +482,5 @@ export function isExpressionV2(expression) {
 export function validateComputedParameterInputs(transform, dependencies) {
   ownRecord(transform, "Computed transform");
   dependencies ??= inspectExpressionV2(transform.expression).parameters;
-  const inputs = transform.parameterInputs;
-  if (!Array.isArray(inputs)) throw new TypeError("Computed v2 transform requires parameterInputs.");
-  if (inputs.length !== dependencies.length) throw new TypeError("Computed parameter inputs do not match expression dependencies.");
-  ownArray(inputs, "Computed parameter inputs");
-  inputs.forEach((input, index) => {
-    ownRecord(input, "Computed parameter input");
-    rejectUnknownKeys(input, ["kind", "id", "revision"], "computed parameter input");
-    validateUserId(input.id, "Computed parameter input id");
-    if (input.kind !== "parameter" || input.id !== dependencies[index] ||
-        !Number.isSafeInteger(input.revision) || input.revision < 0) {
-      throw new TypeError("Computed parameter inputs must be ordered exact parameter references.");
-    }
-  });
-  return inputs;
+  return validateExpressionParameterInputs(transform.parameterInputs, dependencies, "Computed");
 }

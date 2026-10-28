@@ -495,12 +495,19 @@ export type FilterModeOptions =
   | { oneOf?: never; noneOf: readonly [DatasetScalar, ...DatasetScalar[]]; predicate?: never; range?: never }
   | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
   | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRange };
-export type FilterDataOptions = {
-  id: string;
-  source?: string;
-  field: string;
-  nulls?: "include" | "exclude";
-} & FilterModeOptions;
+export type ExpressionFilterOptions = {
+  where: ComputedExpressionV2;
+  field?: never;
+  nulls?: never;
+  oneOf?: never;
+  noneOf?: never;
+  predicate?: never;
+  range?: never;
+};
+export type FilterDataOptions = { id: string; source?: string } & (
+  | ({ field: string; nulls?: "include" | "exclude"; where?: never } & FilterModeOptions)
+  | ExpressionFilterOptions
+);
 export type DatasetScalar = string | number | boolean | null;
 export type RegressionPredictOptions =
   | { values: readonly [number, ...number[]]; domain?: never; steps?: never }
@@ -512,7 +519,7 @@ export type DisplayLabelMap = ReadonlyArray<Readonly<{
 export interface DisplayLabelOptions {
   labelMap?: DisplayLabelMap | "auto";
 }
-export type DatasetFilterTransform = {
+export type DatasetFilterTransform = ({
   type: "filter";
   field: string;
   nulls?: "include" | "exclude";
@@ -521,7 +528,7 @@ export type DatasetFilterTransform = {
   | { oneOf?: never; noneOf: readonly DatasetScalar[]; predicate?: never; range?: never }
   | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
   | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRange }
-);
+)) | ({ type: "filter" } & ExpressionFilterOptions);
 export type DatasetRegressionTransform = {
   type: "regression";
   x: string;
@@ -2959,12 +2966,13 @@ type FilterModePatch =
   | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
   | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRangePatch }
   | { oneOf?: never; noneOf?: never; predicate?: never; range?: never };
-export type EditFilteredDataOptions = FilterModePatch & {
+export type EditFilteredDataOptions = (FilterModePatch & {
+  where?: never;
   target: string;
   field?: string;
   nulls?: "include" | "exclude" | false;
   dependents?: DerivedDataDependents;
-};
+}) | (ExpressionFilterOptions & { target: string; dependents?: DerivedDataDependents });
 export type EditFlattenDataOptions = FocusedDerivedDataEdit<FlattenDataOptions>;
 export type EditLookupDataOptions = FocusedDerivedDataEdit<LookupDataOptions>;
 export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;

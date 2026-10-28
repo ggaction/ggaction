@@ -1,3 +1,7 @@
+import { inspectPredicateExpression, normalizePredicateExpression } from "./expressionAst.js";
+import { evaluatePredicateExpression } from "./conditionalEncoding.js";
+import { validateExpressionParameterInputs } from "./expressionInputs.js";
+import { record } from "./expressionValues.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 
 export const FILTER_COMPARISON_OPERATORS = Object.freeze([
@@ -91,6 +95,13 @@ function normalizeSet(values, name) {
 }
 
 export function validateFilterTransform(transform) {
+  if (isPlainObject(transform) && Object.hasOwn(transform, "where")) {
+    record(transform, ["type", "where", "parameterInputs"], [], "Expression filter");
+    if (transform.type !== "filter") throw new TypeError("Expression filter requires type filter.");
+    const inspected = inspectPredicateExpression(transform.where);
+    validateExpressionParameterInputs(transform.parameterInputs, inspected.parameters, "Filter");
+    return inspected.nodes;
+  }
   if (!isPlainObject(transform)) {
     throw new TypeError("Filter transform must be a plain object.");
   }
@@ -130,8 +141,17 @@ export function normalizeFilterTransform({
   noneOf,
   predicate,
   range,
-  nulls
-}) {
+  nulls,
+  where
+}, environment) {
+  if (where !== undefined) {
+    if ([field, oneOf, noneOf, predicate, range, nulls].some(value => value !== undefined)) {
+      throw new TypeError("Filter where cannot be combined with field filter options.");
+    }
+    const normalized = environment === undefined
+      ? inspectPredicateExpression(where) : normalizePredicateExpression(where, environment);
+    return cloneAndFreeze({ type: "filter", where: normalized.expression });
+  }
   const modes = { oneOf, noneOf, predicate, range };
   const selected = Object.keys(modes).filter(key => modes[key] !== undefined);
   const transform = {
@@ -155,7 +175,7 @@ export function normalizeFilterTransform({
 }
 
 export function normalizeFilterTransformEdit(transform, patch) {
-  const modes = ["oneOf", "noneOf", "predicate", "range"];
+  const modes = ["oneOf", "noneOf", "predicate", "range", "where"];
   const previousMode = modes.find(key => Object.hasOwn(transform, key));
   const requestedModes = modes.filter(key => Object.hasOwn(patch, key));
   if (requestedModes.length > 1) {
@@ -208,11 +228,14 @@ export function normalizeFilterTransformEdit(transform, patch) {
       modeValue = patch[mode];
     }
   }
+  if (mode === "where" && (Object.hasOwn(patch, "field") || Object.hasOwn(patch, "nulls"))) {
+    throw new TypeError("Filter where cannot be combined with field filter options.");
+  }
   const nulls = patch.nulls === false ? undefined : (patch.nulls ?? transform.nulls);
   return normalizeFilterTransform({
-    field: patch.field ?? transform.field,
+    ...(mode === "where" ? {} : { field: patch.field ?? transform.field }),
     [mode]: modeValue,
-    ...(nulls === undefined ? {} : { nulls })
+    ...(mode === "where" || nulls === undefined ? {} : { nulls })
   });
 }
 
@@ -247,11 +270,15 @@ function matches(value, transform) {
   return true;
 }
 
-export function deriveFilteredRows(values, transform) {
+export function deriveFilteredRows(values, transform, environment) {
   if (!Array.isArray(values)) {
     throw new TypeError("Filter source values must be an array.");
   }
   validateFilterTransform(transform);
+  if (transform.where !== undefined) {
+    const evaluated = evaluatePredicateExpression(transform.where, values, environment);
+    return values.filter((_, index) => evaluated.values[index]);
+  }
   return values.filter(row => {
     if (!isPlainObject(row)) return false;
     const value = row[transform.field];

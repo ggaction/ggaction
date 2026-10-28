@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:c7c982f46a51b3f2f571de5bac1a3cfaef65ca4c568eae828204bda13f57c923. Status: development. Runtime source: 3af6b16ebb62765f942abaee2da7db5dddbe4cc0. Release baseline: v0.0.13.
+Contract: sha256:18fa96a91d911171ebc5b3101b207ded6a90577a91de757ba2d9caa423cda421. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/3af6b16ebb62765f942abaee2da7db5dddbe4cc0/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/3af6b16ebb62765f942abaee2da7db5dddbe4cc0/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -5093,7 +5093,7 @@ corresponding higher-level action when the library should materialize values:
 | `"normalize"` | `{ type, field, as, groupBy, method, ...methodPolicies }` | `createNormalizedData` |
 | `"complete"` | `{ type, key, groupBy, values? or sequence?, fill, members? }` | `createCompleteData` |
 | `"impute"` | `{ type, fields, groupBy, sortBy, method, value?, edges, maxGap? }` | `createImputedData` |
-| `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
+| `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }`, or `{ type, where }` | `filterData` |
 | `"lookup"` | `{ type, field, lookup: { data, key, fields, as } }` | `createLookupData` |
 | `"flatten"` | `{ type, fields, as }` | `createFlattenData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
@@ -5319,6 +5319,53 @@ program.filterData({
 `editFilteredData` accepts the same modes. Supplying a new mode replaces the
 old one atomically. A partial range edit preserves an omitted endpoint and its
 existing inclusivity; `min: false` or `max: false` removes that endpoint.
+
+## Filter with a parameter
+
+A `where` predicate uses the same closed boolean expression format as computed
+fields. It is exclusive with `field`, `oneOf`, `noneOf`, `predicate`, `range`, and
+`nulls`. The predicate must produce a boolean; `0` and empty strings are not
+converted to booleans. All branches are checked for missing fields, parameters,
+and incompatible types, even when they are inactive.
+
+> **Executable complete.** Standalone ES module with a Canvas, all observations and imports included. Inspect each immutable filtered dataset.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ id: "observations", values: [{ value: 2 }, { value: 5 }] })
+  .createParameter({ id: "minimum", value: 3 })
+  .filterData({
+    id: "selected",
+    source: "observations",
+    where: {
+      version: 2,
+      registry: "standard@1",
+      root: {
+        type: "binary", op: "gte",
+        left: { type: "field", name: "value" },
+        right: { type: "parameter", id: "minimum" }
+      }
+    }
+  })
+  .createScatterPlot({ id: "points", data: "selected", x: "value", y: "value" });
+const revised = program.editParameter({ target: "minimum", value: 1 });
+// selected now contains both rows; program still contains only value 5.
+```
+
+Parameter edits update dependent filters, statistics, scales, marks, and guides.
+`editFilteredData({ target: "selected", where })` replaces the predicate; a
+complete field and filter mode switches back to field filtering. Source order,
+row identity, and schema are retained. A parameter remains referenced until every
+filter or computed dependency using it is removed or changed.
+
+An empty filter does not silently retain an inferred scale domain. Use a fixed
+scale `domain`, or explicitly choose `emptyDomain: "preserve"` to reuse the last
+domain for the same binding. Otherwise the update fails and the original chart
+is unchanged. Comparisons with null or missing values follow the expression
+comparison rules and evaluate to false.
 
 ## `filterMarks({ target?, mode?, ...selector })` {#filter-marks}
 
@@ -18094,7 +18141,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Required | `string` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
-| `field` | Required | `string` |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
 | `nulls` | Optional / branch-dependent | `"exclude" \| "include" \| undefined` |
 | `oneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `noneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
@@ -18105,11 +18153,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
+filterData({ id, source?, where })
 filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })
 ```
 
-Create an immutable named derived dataset using exactly one membership,
-comparison, or range filter. The source defaults to current data.
+Create an immutable named dataset using a field filter or a strict boolean expression predicate.
+The source defaults to current data. `where` uses the closed v2 AST and excludes all field
+filter options. Parameter edits revise dependent filters and their chart resources.
 [Data](./api/data/)
 
 ## `createParameter`
@@ -18544,13 +18594,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `nulls` | Optional / branch-dependent | `"exclude" \| "include" \| false \| undefined` |
 | `oneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `noneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `predicate` | Optional / branch-dependent | `FilterComparison \| undefined` |
 | `range` | Optional / branch-dependent | `FilterRangePatch \| undefined` |
 | `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `nulls` | Optional / branch-dependent | `"exclude" \| "include" \| false \| undefined` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused core data editing](./reference/actions/charts-data/#focused-core-data-editing).
@@ -21383,6 +21434,7 @@ channel false restores independent domain inference. This edit is atomic.
 
 ```javascript
 editDerivedData({ target, definition, dependents? })
+editFilteredData({ target, where, dependents? })
 editFilteredData({ target, field?, oneOf? | noneOf? | predicate? | range?, nulls?, dependents? })
 editSortedData({ target, sortBy, dependents? })
 editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })
@@ -34067,7 +34119,7 @@ Related types: [`ECDFOutputFields`](./reference/types/#type-ecdfoutputfields) ·
  Expand DatasetFilterTransform
 
 ```typescript
-export type DatasetFilterTransform = {
+export type DatasetFilterTransform = ({
   type: "filter";
   field: string;
   nulls?: "include" | "exclude";
@@ -34076,10 +34128,10 @@ export type DatasetFilterTransform = {
   | { oneOf?: never; noneOf: readonly DatasetScalar[]; predicate?: never; range?: never }
   | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
   | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRange }
-);
+)) | ({ type: "filter" } & ExpressionFilterOptions);
 ```
 
-Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`FilterComparison`](./reference/types/#type-filtercomparison) · [`FilterRange`](./reference/types/#type-filterrange).
+Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`FilterComparison`](./reference/types/#type-filtercomparison) · [`FilterRange`](./reference/types/#type-filterrange) · [`ExpressionFilterOptions`](./reference/types/#type-expressionfilteroptions).
 
 ### `DatasetFlattenTransform` {#type-datasetflattentransform}
 
@@ -35332,15 +35384,16 @@ export type EditFacetSourceOptions =
  Expand EditFilteredDataOptions
 
 ```typescript
-export type EditFilteredDataOptions = FilterModePatch & {
+export type EditFilteredDataOptions = (FilterModePatch & {
+  where?: never;
   target: string;
   field?: string;
   nulls?: "include" | "exclude" | false;
   dependents?: DerivedDataDependents;
-};
+}) | (ExpressionFilterOptions & { target: string; dependents?: DerivedDataDependents });
 ```
 
-Related types: [`FilterModePatch`](./reference/types/#type-filtermodepatch) · [`DerivedDataDependents`](./reference/types/#type-deriveddatadependents).
+Related types: [`FilterModePatch`](./reference/types/#type-filtermodepatch) · [`DerivedDataDependents`](./reference/types/#type-deriveddatadependents) · [`ExpressionFilterOptions`](./reference/types/#type-expressionfilteroptions).
 
 ### `EditFlattenDataOptions` {#type-editflattendataoptions}
 
@@ -36527,6 +36580,24 @@ export type ExpressionCall =
 
 Related types: [`ExpressionNode`](./reference/types/#type-expressionnode).
 
+### `ExpressionFilterOptions` {#type-expressionfilteroptions}
+
+ Expand ExpressionFilterOptions
+
+```typescript
+export type ExpressionFilterOptions = {
+  where: ComputedExpressionV2;
+  field?: never;
+  nulls?: never;
+  oneOf?: never;
+  noneOf?: never;
+  predicate?: never;
+  range?: never;
+};
+```
+
+Related types: [`ComputedExpressionV2`](./reference/types/#type-computedexpressionv2).
+
 ### `ExpressionNode` {#type-expressionnode}
 
  Expand ExpressionNode
@@ -36819,15 +36890,13 @@ export type FilterComparison =
  Expand FilterDataOptions
 
 ```typescript
-export type FilterDataOptions = {
-  id: string;
-  source?: string;
-  field: string;
-  nulls?: "include" | "exclude";
-} & FilterModeOptions;
+export type FilterDataOptions = { id: string; source?: string } & (
+  | ({ field: string; nulls?: "include" | "exclude"; where?: never } & FilterModeOptions)
+  | ExpressionFilterOptions
+);
 ```
 
-Related types: [`FilterModeOptions`](./reference/types/#type-filtermodeoptions).
+Related types: [`FilterModeOptions`](./reference/types/#type-filtermodeoptions) · [`ExpressionFilterOptions`](./reference/types/#type-expressionfilteroptions).
 
 ### `FilterMarksOptions` {#type-filtermarksoptions}
 
@@ -42421,12 +42490,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3af6b16ebb62765f942abaee2da7db5dddbe4cc0/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3af6b16ebb62765f942abaee2da7db5dddbe4cc0/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -45322,9 +45391,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:c7c982f46a51b3f2f571de5bac1a3cfaef65ca4c568eae828204bda13f57c923` |
+| Contract fingerprint | `sha256:18fa96a91d911171ebc5b3101b207ded6a90577a91de757ba2d9caa423cda421` |
 | Example and dataset source | `b8f9668133b278974c9cfe7324402a18282c9f4b` |
-| Runtime source commit | `3af6b16ebb62765f942abaee2da7db5dddbe4cc0` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 301 |
 | Declared actions in that release | 234 |

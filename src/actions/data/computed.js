@@ -1,4 +1,4 @@
-import { resolveComputedEnvironment } from "../../materialization/computedInputs.js";
+import { resolveComputedEnvironment } from "../../materialization/expressionInputs.js";
 import {
   deriveComputedRows,
   normalizeComputedTransform

@@ -156,7 +156,7 @@ export function collectParameterInputReferences(program) {
         for (const [inputIndex, ref] of (transform.parameterInputs ?? []).entries()) {
           validateWorkLimit(++work, "Parameter dependency work");
           validateInputReference(ref);
-          if (ref.kind !== "parameter") throw error("Computed parameter inputs require parameter references.");
+          if (ref.kind !== "parameter") throw error("Expression parameter inputs require parameter references.");
           references.push(freezeOwned({ ...ref, ownerId: dataset.id, scope: freezeOwned([...scope]),
             path: freezeOwned(["semanticSpec", "datasets", datasetIndex, "transform", transformIndex, "parameterInputs", inputIndex]) }));
         }
@@ -175,7 +175,7 @@ export function collectParameterInputReferences(program) {
 export function planStoredResourceRemoval(program, requested, { cascade = false } = {}) {
   if (requested.kind === "parameter") {
     const references = collectParameterInputReferences(program).filter(ref => ref.id === requested.id);
-    if (references.length) throw error("Parameter is referenced by live computed datasets.", "resource-in-use", {
+    if (references.length) throw error("Parameter is referenced by live expression datasets.", "resource-in-use", {
       resourceId: requested.id, dependencies: [...new Set(references.map(ref => [...ref.scope, ref.ownerId].join("/")))].slice(0, 16)
     });
   }
