@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Private shadow primitive review</title></head><body><p id="status">Loading</p><main></main><script type="module">
+import { drawShadowPrimitive } from "./primitive.program.js";
+window.renderShadow = async ({fixture, glyph, dataURL}) => {
+  const image = new Image(); image.src=dataURL; await image.decode();
+  const canvas=document.createElement("canvas");canvas.width=260;canvas.height=200;
+  canvas.setAttribute("aria-label",`Private shadow primitive: ${fixture.style}`);document.querySelector("main").append(canvas);
+  drawShadowPrimitive(canvas.getContext("2d"),fixture,image,glyph);return canvas.toDataURL();
+};
+document.getElementById("status").textContent="Ready";
+</script></body></html>

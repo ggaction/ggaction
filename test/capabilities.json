@@ -519,6 +519,10 @@
       {
         "type": "file",
         "path": "unit/grammar/shadow.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/shadow-paints/"
       }
     ],
     "statistics": [
