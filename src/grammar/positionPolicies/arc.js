@@ -1,6 +1,6 @@
-import { validateRadialMapping } from "../../../../grammar/scales/radial.js";
-import { validateAggregate } from "../../../../grammar/aggregate.js";
-import { validateNonEmptyString } from "../../../../core/validation.js";
+import { validateRadialMapping } from "../scales/radial.js";
+import { validateAggregate } from "../aggregate.js";
+import { validateNonEmptyString } from "../../core/validation.js";
 import { emptyPositionPolicy } from "./common.js";
 
 export function resolveArcPositionPolicy({ channel, args, fieldType, layer }) {

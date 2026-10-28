@@ -1,3 +1,5 @@
+import { CONDITIONAL_APPEARANCE_CHANNELS } from "../grammar/conditionalState.js";
+import { hasPositionBinding } from "../core/encodingBindings.js";
 import { resolveConditionalValues } from "./conditionalValues.js";
 import { requireDataset } from "../selectors/datasets.js";
 import { materializeMarkClip } from "./markClip.js";
@@ -13,12 +15,12 @@ export function materializeMarkOutput(program, id) {
   const layer = findLayer(clipped, id);
   if (layer === undefined) return clipped;
   if (layer.mark.type === "point" && !layer.derivedBindings?.overlay &&
-      !((layer.encoding?.x?.scale && layer.encoding?.y?.scale) ||
-        (layer.encoding?.theta?.scale && layer.encoding?.radius?.scale))) return clipped;
+      !((hasPositionBinding(layer, "x") && hasPositionBinding(layer, "y")) ||
+        (hasPositionBinding(layer, "theta") && hasPositionBinding(layer, "radius")))) return clipped;
   let output = clipped;
   const conditionalProperties = {};
   for (const channel of Object.keys(layer.conditionals ?? {})) {
-    if (["size", "shape", "angle"].includes(channel)) continue;
+    if (!CONDITIONAL_APPEARANCE_CHANNELS.includes(channel) || ["size", "shape", "angle"].includes(channel)) continue;
     const sourceItems = resolveMarkSourceItems(output, id);
     const values = resolveConditionalValues(output, layer, channel, sourceItems);
     const byKey = new Map(sourceItems.map((item, index) => [item.key, values[index]]));

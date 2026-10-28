@@ -1,3 +1,4 @@
+import { hasPositionBinding } from "../../../core/encodingBindings.js";
 import { assertIndependentOverlayGeometry } from "../../../grammar/overlay.js";
 import { closedAction } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -13,8 +14,8 @@ const REMOVE_OPTIONS = Object.freeze(["target"]);
 
 function isCartesianPoint(program, layer) {
   return layer.mark?.type === "point" &&
-    layer.encoding?.x?.scale !== undefined &&
-    layer.encoding?.y?.scale !== undefined &&
+    hasPositionBinding(layer, "x") &&
+    hasPositionBinding(layer, "y") &&
     findCoordinate(program, layer.coordinate)?.type === "cartesian";
 }
 

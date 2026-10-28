@@ -1,3 +1,5 @@
+import { conditionalAreaStructure, hasConditionalAreaPosition } from "../../conditionalAreaStructure.js";
+import { conditionalLineStructure, hasConditionalLinePosition } from "../../conditionalLineStructure.js";
 import { canonicalJSON } from "../../../core/contentDigest.js";
 import { encodeValue } from "../../../core/valueEncoding.js";
 import {
@@ -18,20 +20,13 @@ import {
   uniqueFields
 } from "./common.js";
 
-function rowsForSeries(rows, key) {
-  const entries = Object.entries(key);
-  return entries.length === 0
-    ? rows
-    : rows.filter(row => entries.every(([field, value]) => row[field] === value));
-}
-
 function seriesDefinitions(layer, dataset, series) {
   const groups = new Map();
   series.forEach((item, graphicIndex) => {
-    const members = item.sourceIndices === undefined ? rowsForSeries(dataset.values, item.key)
-      : item.sourceIndices.map(index => dataset.values[index]);
-    const memberKeys = item.sourceIndices === undefined ? members.map(row => dataset.rowKeys[dataset.values.indexOf(row)])
-      : item.sourceIndices.map(index => dataset.rowKeys[index]);
+    // Every selection derivation requests lineage; use exact source indices
+    // rather than reconstructing membership from equal-valued rows.
+    const members = item.sourceIndices.map(index => dataset.values[index]);
+    const memberKeys = item.sourceIndices.map(index => dataset.rowKeys[index]);
     const identity = canonicalJSON(encodeValue(item.key));
     if (!groups.has(identity)) groups.set(identity, { key: item.key, segments: [] });
     groups.get(identity).segments.push({ members, memberKeys, graphicIndex });
@@ -68,7 +63,7 @@ export function resolveLineItems(program, layer, dataset, grain, resolveItems, s
     return finalizeItems(program, layer, "row", definitions, "path", { selectionResolvers });
   }
   const x = layer.encoding?.x;
-  const derived = deriveLineSeries(
+  const derived = hasConditionalLinePosition(layer) ? conditionalLineStructure(program, layer, dataset).derived : deriveLineSeries(
     dataset.values,
     layer,
     {
@@ -96,7 +91,7 @@ export function resolveLineItems(program, layer, dataset, grain, resolveItems, s
 
 export function resolveAreaItems(program, layer, dataset, grain, resolveItems, selectionResolvers) {
   const transform = findUpstreamTransform(program, dataset, "density");
-  const derived = transform === undefined
+  const derived = hasConditionalAreaPosition(layer) ? conditionalAreaStructure(program, layer, dataset).raw : transform === undefined
     ? layer.encoding?.y?.stack === "center"
       ? deriveCenteredAreaSeries(dataset.values, layer, { lineage: true, xDomain: program.resolvedScales[layer.encoding.x?.scale]?.domain, yDomain: program.resolvedScales[layer.encoding.y?.scale]?.domain })
       : deriveAreaSeries(dataset.values, layer, { lineage: true, xDomain: program.resolvedScales[layer.encoding.x?.scale]?.domain, yDomain: program.resolvedScales[layer.encoding.y?.scale]?.domain })

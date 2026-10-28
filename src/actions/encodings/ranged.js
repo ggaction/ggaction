@@ -1,3 +1,5 @@
+import { resolveSecondaryPositionPolicy } from "../../grammar/positionPolicies/secondary.js";
+import { commonPositionBinding } from "../../core/encodingBindings.js";
 import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import { readAreaEndpoint, validateAreaEndpointPair, normalizeAreaBound } from "../../grammar/areaEndpoints.js";
 import { action } from "../../core/action.js";
@@ -56,7 +58,7 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
     types.length === 1 ? `${types[0]} mark` : "ranged mark"
   );
   const primaryChannel = channel === "x2" ? "x" : "y";
-  const primary = layer.encoding?.[primaryChannel];
+  const primary = commonPositionBinding(layer, primaryChannel);
   if (primary?.scale === undefined) {
     throw new Error(`${operation} requires an existing ${primaryChannel} encoding.`);
   }
@@ -78,43 +80,7 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
   const dataset = hasField
     ? applyRequestedItemMissingPolicy(layer, sourceDataset, args.field)
     : applyRequestedItemMissingPolicy(layer, sourceDataset);
-  if ((rule || area || rect) && hasField === hasDatum) {
-    throw new Error(`${operation} requires exactly one of field or datum for a ${layer.mark.type} mark.`);
-  }
-  if (!rule && !area && !rect && (!hasField || hasDatum)) {
-    throw new Error(`${operation} requires a field for a ranged mark.`);
-  }
-  if (rule && hasField && args.fieldType === undefined) {
-    throw new Error(`${operation} requires fieldType for a rule mark.`);
-  }
-  const fieldType = rule
-    ? validateSemanticFieldType(args.fieldType ?? "quantitative")
-    : layer.mark.type === "rect"
-      ? args.fieldType ?? primary.fieldType
-      : args.fieldType ?? "quantitative";
-  if (
-    !rule &&
-    layer.mark.type !== "rect" &&
-    fieldType !== "quantitative"
-  ) {
-    throw new Error(`${operation} requires a quantitative field.`);
-  }
-  if (
-    layer.mark.type === "rect" &&
-    !["quantitative", "temporal"].includes(fieldType)
-  ) {
-    throw new Error(`${operation} requires a quantitative or temporal rect field.`);
-  }
-  if (layer.mark.type === "rect" && fieldType !== primary.fieldType) {
-    throw new Error(
-      `${operation} fieldType must match the primary ${primaryChannel} fieldType.`
-    );
-  }
-  if (rule && fieldType !== primary.fieldType) {
-    throw new Error(
-      `${operation} fieldType must match the primary ${primaryChannel} fieldType.`
-    );
-  }
+  const { fieldType } = resolveSecondaryPositionPolicy(layer, primary, primaryChannel, args, operation);
   const previous = layer.encoding?.[channel];
   const temporalUnit = resolveTemporalUnit(args, fieldType, previous);
   if (area) {

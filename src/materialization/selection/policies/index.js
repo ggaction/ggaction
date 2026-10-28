@@ -78,7 +78,7 @@ export function resolveMarkSourceItems(program, target, grain = 'item', options 
   const dataset = applyItemMissingPolicy(layer, findDataset(program, layer.data));
   if (layer.derivedBindings?.overlay && grain !== "item") throw new Error(`Overlay "${target}" supports item selection grain.`);
   const definitions = layer.derivedBindings?.overlay ? resolveOverlayItems(program, layer, { sourceOnly: true, resolveMarkItems, resolveMarkSourceItems })
-    : policy.resolveSourceItems ? policy.resolveSourceItems(program, layer, dataset, grain)
+    : policy.resolveSourceItems ? policy.resolveSourceItems(program, layer, dataset, grain, { resolveMarkItems, resolveMarkSourceItems })
     : policy.resolveItems(program, layer, dataset, grain, resolveMarkItems, { sourceOnly: true, resolveMarkItems, resolveMarkSourceItems });
   const items = definitions.every(item => item.key !== undefined) ? definitions : identifyItems(program, layer, grain, definitions);
   return withConditionalChannels(program, layer, items.map(item => ({
@@ -92,6 +92,7 @@ function withConditionalChannels(program, layer, items, { channels, active = new
   for (const channel of channels ?? Object.keys(layer.conditionals ?? {})) {
     const definition = layer.conditionals?.[channel];
     if (definition === undefined) continue;
+    if ((["bar", "arc"].includes(layer.mark.type) || (channels === undefined && ["line", "area"].includes(layer.mark.type))) && ["x", "y", "x2", "y2", "theta", "radius"].includes(channel)) continue;
     const key = `${layer.id}:${channel}`;
     if (active.has(key)) throw new Error("Cyclic conditional selection dependency.");
     active.add(key);
@@ -101,7 +102,7 @@ function withConditionalChannels(program, layer, items, { channels, active = new
         resolveMarkSourceItems: (program, target, grain, options) => resolveMarkSourceItems(program, target, grain, { ...options, active })
       };
       const membership = conditionalSelectionMembership(program, layer, definition, result, resolvers);
-      const values = mapConditionalValues(program, layer, channel, result, membership, { mapped: false });
+      const values = mapConditionalValues(program, layer, channel, result, membership, { mapped: false, resolvers });
       result = result.map((item, index) => ({ ...item, channels: { ...item.channels, [channel]: values[index] } }));
     } finally { active.delete(key); }
   }

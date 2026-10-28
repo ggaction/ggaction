@@ -345,7 +345,7 @@ function applyEncodingDraft(program, target, requests) {
     requests
   );
   if (isIndependentText(findLayer(draft, target))) {
-    const offsets = requests.filter(request => ["dx", "dy"].includes(request.channel));
+    const offsets = requests.filter(request => ["dx", "dy"].includes(request.channel) && !Object.hasOwn(request.payload, "conditions") && !Object.hasOwn(request.payload, "otherwise"));
     if (offsets.length) {
       draft = withPreviewLayerEncodings(draft, { id: target, encodings: Object.fromEntries(
         offsets.map(({ channel, payload }) => [channel, normalizeTextOffsetAssignment(payload, channel)])

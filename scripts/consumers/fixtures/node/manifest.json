@@ -868,6 +868,10 @@
       {
         "id": "conditional-encoding/renderers-and-scene",
         "statements": 22
+      },
+      {
+        "id": "conditional-encoding/position-text-lifecycle",
+        "statements": 23
       }
     ]
   }

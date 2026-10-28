@@ -2599,17 +2599,15 @@ export interface RadiusScaleOptions {
 }
 
 export type ThetaEncodingOptions = {
-  /**
-   * Arc marks interpret an aggregate-free quantitative field as per-row sector
-   * weights. Categorical arc theta retains the count and weighted-sum modes.
-   */
-  field: string;
   target?: string;
   scale?: ThetaScaleOptions;
   coordinate?: string;
-  aggregate?: "count" | "sum";
-  weight?: string;
 } & (
+  /** Arc quantitative fields are sector weights; categorical fields support count or sum. */
+  | { field: string; datum?: never; aggregate?: "count" | "sum"; weight?: string }
+  /** Constant polar angles are supported by Point marks. */
+  | { field?: never; datum: unknown; aggregate?: never; weight?: never }
+) & (
   | { fieldType?: Exclude<FieldType, "temporal">; temporalUnit?: never }
   | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
 );
@@ -2626,7 +2624,9 @@ export type RadialEncodingOptions = {
   fieldType?: "quantitative";
   coordinate?: string;
 } & (
-  | { field: string; mapping?: false; aggregate?: never; scale?: RadiusScaleOptions }
+  | { field: string; datum?: never; mapping?: false; aggregate?: never; scale?: RadiusScaleOptions }
+  /** Constant polar distances are supported by Point marks. */
+  | { field?: never; datum: number; mapping?: never; aggregate?: never; scale?: RadiusScaleOptions }
   | { field: string; mapping?: never; aggregate: "sum"; scale?: RadiusScaleOptions }
   | { field?: never; mapping?: never; aggregate: "count"; scale?: RadiusScaleOptions }
   | { field: string; mapping?: RadialMapping; aggregate: "sum"; scale?: MeasuredRadiusScaleOptions }
@@ -5074,14 +5074,14 @@ type WithoutEncodingTarget<T> = T extends unknown
   : never;
 
 export interface EncodingChannelAssignments {
-  x?: WithoutEncodingTarget<PositionEncodingOptions | DatumPositionEncodingOptions>;
-  y?: WithoutEncodingTarget<YPositionEncodingOptions | DatumPositionEncodingOptions>;
-  x2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions>;
-  y2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions>;
-  theta?: WithoutEncodingTarget<ThetaEncodingOptions>;
-  r?: WithoutEncodingTarget<RadialEncodingOptions>;
-  xOffset?: WithoutEncodingTarget<XOffsetEncodingOptions>;
-  yOffset?: WithoutEncodingTarget<YOffsetEncodingOptions>;
+  x?: WithoutEncodingTarget<PositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>>;
+  y?: WithoutEncodingTarget<YPositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>>;
+  x2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>;
+  y2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>;
+  theta?: WithoutEncodingTarget<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>;
+  r?: WithoutEncodingTarget<RadialEncodingOptions | ConditionalEncodingOptions<RadialEncodingOptions>>;
+  xOffset?: WithoutEncodingTarget<XOffsetEncodingOptions | ConditionalEncodingOptions<XOffsetEncodingOptions>>;
+  yOffset?: WithoutEncodingTarget<YOffsetEncodingOptions | ConditionalEncodingOptions<YOffsetEncodingOptions>>;
   group?: WithoutEncodingTarget<GroupEncodingOptions>;
   pathOrder?: WithoutEncodingTarget<PathOrderEncodingOptions>;
   color?: WithoutEncodingTarget<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>;
@@ -5092,9 +5092,9 @@ export interface EncodingChannelAssignments {
   strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>;
   strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>;
   angle?: WithoutEncodingTarget<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>;
-  text?: WithoutEncodingTarget<TextEncodingOptions>;
-  dx?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
-  dy?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
+  text?: WithoutEncodingTarget<TextEncodingOptions | ConditionalEncodingOptions<TextEncodingOptions>>;
+  dx?: WithoutEncodingTarget<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>;
+  dy?: WithoutEncodingTarget<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>;
 }
 
 type AtLeastOne<T> = {
@@ -5897,23 +5897,23 @@ export class ChartProgram {
     missing?: "error" | "break";
   }>): ChartProgram;
 
-  encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;
-  encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;
-  encodeTheta(options: TargetedOptions<ThetaEncodingOptions>): ChartProgram;
-  encodeR(options: TargetedOptions<RadialEncodingOptions>): ChartProgram;
-  encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
+  encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
+  encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
+  encodeTheta(options: TargetedOptions<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>): ChartProgram;
+  encodeR(options: TargetedOptions<RadialEncodingOptions | ConditionalEncodingOptions<RadialEncodingOptions>>): ChartProgram;
+  encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>): ChartProgram;
   encodeColor(options: TargetedOptions<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>): ChartProgram;
   encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>): ChartProgram;
   encodeSize(options: TargetedOptions<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>): ChartProgram;
   encodeShape(options: TargetedOptions<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>): ChartProgram;
   encodeAngle(options: TargetedOptions<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>): ChartProgram;
   encodeOpacity(options: TargetedOptions<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>): ChartProgram;
-  encodeRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
-  encodePointRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
+  encodeRadius(options: TargetedOptions<{ value: number; target?: string } | ConditionalEncodingOptions<{ value: number }>>): ChartProgram;
+  encodePointRadius(options: TargetedOptions<{ value: number; target?: string } | ConditionalEncodingOptions<{ value: number }>>): ChartProgram;
   removePointRadius(options?: TargetedOptions<{ target?: string }>): ChartProgram;
-  encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions>): ChartProgram;
-  encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions>): ChartProgram;
-  encodeY2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
+  encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions | ConditionalEncodingOptions<XOffsetEncodingOptions>>): ChartProgram;
+  encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions | ConditionalEncodingOptions<YOffsetEncodingOptions>>): ChartProgram;
+  encodeY2(options: TargetedOptions<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>): ChartProgram;
   encodeYRange(options: TargetedOptions<RangePositionEncodingOptions>): ChartProgram;
   encodeXRange(options: TargetedOptions<RangePositionEncodingOptions>): ChartProgram;
   encodeGroup(options: TargetedOptions<GroupEncodingOptions>): ChartProgram;
@@ -5930,9 +5930,9 @@ export class ChartProgram {
       | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth"
       | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy";
   }>): ChartProgram;
-  encodeText(options: TargetedOptions<TextEncodingOptions>): ChartProgram;
-  encodeDx(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
-  encodeDy(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
+  encodeText(options: TargetedOptions<TextEncodingOptions | ConditionalEncodingOptions<TextEncodingOptions>>): ChartProgram;
+  encodeDx(options: TargetedOptions<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>): ChartProgram;
+  encodeDy(options: TargetedOptions<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>): ChartProgram;
   encodeHistogram(options: TargetedOptions<HistogramEncodingOptions>): ChartProgram;
   encodeDensity(options: TargetedOptions<DensityEncodingOptions>): ChartProgram;
   editDensity(options: TargetedOptions<EditDensityOptions>): ChartProgram;

@@ -166,7 +166,7 @@ CI나 기존 테스트 결과를 현재 변경의 검증 결과로 재사용하�
 
 | 목적 | 현재 소유권 출발점 |
 | --- | --- |
-| Facade와 Bar 교정 | [charts](../../../src/actions/charts/), [position policies](../../../src/actions/encodings/position/policies/) |
+| Facade와 Bar 교정 | [charts](../../../src/actions/charts/), [position policies](../../../src/grammar/positionPolicies/) |
 | Group/appearance/layout | [encodings](../../../src/actions/encodings/) |
 | Data/transform | [data actions](../../../src/actions/data/), [grammar](../../../src/grammar/) |
 | Axis/legend/text | [guides](../../../src/actions/guides/), [marks](../../../src/actions/marks/) |

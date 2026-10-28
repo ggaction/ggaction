@@ -1,3 +1,5 @@
+import { hasConditionalAreaPosition } from "../../conditionalAreaStructure.js";
+import { resolveConditionalAreaConsumer, resolveConditionalBarConsumer } from "../../conditionalValues.js";
 import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
 import { readSeriesIdentity } from "../../../grammar/pathSeries.js";
 import { deriveAreaSeries } from "../../../grammar/areaSeries.js";
@@ -197,6 +199,12 @@ function resolveAreaPartitions(program, consumer) {
 }
 
 export function resolveSeriesLayoutScaleValues(program, consumer) {
+  const bar = resolveConditionalBarConsumer(program, consumer.layer, consumer.encoding, consumer.channel);
+  if (bar !== undefined) return bar.measure === consumer.channel ? { layout: bar.layout, values: bar.values } : undefined;
+  if (hasConditionalAreaPosition(consumer.layer)) {
+    const area = resolveConditionalAreaConsumer(program, consumer.layer, consumer.encoding, consumer.channel);
+    return area !== undefined && area.measure === consumer.channel[0] && area.layout !== "overlay" ? { layout: area.layout, values: area.values } : undefined;
+  }
   if (consumer.layer.mark?.type === "bar") {
     const grain = resolveBarGrain(consumer.layer);
     const channels = resolveBarChannels(consumer.layer);

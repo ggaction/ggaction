@@ -1,3 +1,4 @@
+import { positionBindings, hasPositionBinding } from "../../../core/encodingBindings.js";
 import { resolveArcInnerRadius } from "../../../grammar/arcs.js";
 import { validateMeasuredRadiusScale } from "../../../grammar/scales/radial.js";
 export function resolveArcAutoPositionRange({
@@ -58,11 +59,12 @@ export function validateMeasuredRadiusConsumers({ scale, domain, range, consumer
   validateMeasuredRadiusScale({ ...scale, domain, range }, { allowAuto: true });
   for (const consumer of consumers) {
     const { layer, encoding } = consumer;
-    const theta = layer.encoding?.theta;
-    const thetaScale = thetaScales[layer.id];
+    const thetaBindings = positionBindings(layer, "theta");
+    const thetaScalesForLayer = thetaScales[layer.id];
+    const scales = Array.isArray(thetaScalesForLayer) ? thetaScalesForLayer : [thetaScalesForLayer];
     if (!isPendingMeasuredRadiusConsumer(consumer) && (layer.mark?.type !== "arc" || !["count", "sum"].includes(encoding.aggregate) ||
-      !["nominal", "ordinal"].includes(theta?.fieldType) || theta.aggregate !== undefined ||
-      thetaScale?.type !== "band" || (thetaScale.paddingInner ?? 0) !== 0 || (thetaScale.paddingOuter ?? 0) !== 0)) {
+      thetaBindings.length === 0 || thetaBindings.some(theta => !["nominal", "ordinal"].includes(theta.fieldType) || theta.aggregate !== undefined) ||
+      scales.some(thetaScale => thetaScale?.type !== "band" || (thetaScale.paddingInner ?? 0) !== 0 || (thetaScale.paddingOuter ?? 0) !== 0))) {
       throw new Error("Measured radius requires only equal-angle categorical Arc consumers.");
     }
     const config = markConfigs[layer.id] ?? {};
@@ -76,5 +78,5 @@ export function validateMeasuredRadiusConsumers({ scale, domain, range, consumer
 
 export function isPendingMeasuredRadiusConsumer({ layer, channel, encoding }) {
   return layer.mark?.type === "arc" && channel === "radius" &&
-    ["count", "sum"].includes(encoding.aggregate) && layer.encoding?.theta === undefined;
+    ["count", "sum"].includes(encoding.aggregate) && !hasPositionBinding(layer, "theta");
 }

@@ -1,7 +1,7 @@
+import { resolveRowEncodingValues } from "../rowEncoding.js";
 import { resolveBarCellOpacities } from "./resolve.js";
 import {
   mapContinuousScaleValues,
-  mapOrdinalPositionValues,
   mapOrdinalValues,
   readScaleField
 } from "../../grammar/scales/index.js";
@@ -14,7 +14,7 @@ import {
   resolveBarAppearance
 } from "./resolve.js";
 
-export function deriveRangedRectangles(required, program, width) {
+export function deriveRangedRectangles(required, program, width, resolvers) {
   const { layer, dataset } = required;
   if (width?.interval !== undefined) throw new Error("Bar interval width requires ungrouped aggregate temporal categories.");
   const centered = resolveBarGrain(layer) === BAR_GRAINS.centered;
@@ -25,24 +25,15 @@ export function deriveRangedRectangles(required, program, width) {
   const category = layer.encoding[categoryChannel];
   const primary = layer.encoding[measureChannel];
   const secondary = layer.encoding[secondaryChannel];
-  const categoryScale = program.resolvedScales[category.scale];
-  const measureScale = program.resolvedScales[primary.scale];
-  const categoryValues = readScaleField(dataset.values, category.field, category.fieldType, {
-    temporalUnit: category.temporalUnit
-  });
-  const centers = (centered || categoryScale.type === "time" ? mapContinuousScaleValues : mapOrdinalPositionValues)(
-    categoryValues, categoryScale
-  );
-  const first = mapContinuousScaleValues(
-    dataset.values.map(row => row[primary.field]),
-    measureScale
-  );
-  const second = mapContinuousScaleValues(
-    dataset.values.map(row => secondary === undefined ? 0 : row[secondary.field]),
-    measureScale
-  );
+  const storedLayer = required.storedLayer ?? layer;
+  const categoryValues = resolveRowEncodingValues(program, storedLayer, dataset, categoryChannel, resolvers, { includeScale: true });
+  const centers = categoryValues.map(value => value.value);
+  const firstValues = resolveRowEncodingValues(program, storedLayer, dataset, measureChannel, resolvers, { includeScale: true });
+  const first = firstValues.map(value => value.value);
+  const second = secondary === undefined ? firstValues.map(value => mapContinuousScaleValues([0], value.scale)[0])
+    : resolveRowEncodingValues(program, storedLayer, dataset, secondaryChannel, resolvers);
   if (centered && width?.band !== undefined) throw new Error("Numeric-center bars require pixel width.");
-  const band = resolveBarWidth(centered ? width ?? { pixels: 5 } : width, Math.abs(categoryScale.bandwidth ?? categoryScale.step));
+  const bands = categoryValues.map(value => resolveBarWidth(centered ? width ?? { pixels: 5 } : width, Math.abs(value.scale.bandwidth ?? value.scale.step)));
   const config = program.markConfigs[layer.id] ?? {};
   const appearance = config.barAppearance ?? {};
   const color = layer.encoding?.color;
@@ -62,7 +53,7 @@ export function deriveRangedRectangles(required, program, width) {
   );
   const opacities = resolveBarCellOpacities(program, layer, dataset.values.map(row => [row]));
   return dataset.values.map((_, index) => vertical ? {
-    x: centers[index] - band / 2, y: Math.min(first[index], second[index]), width: band,
+    x: centers[index] - bands[index] / 2, y: Math.min(first[index], second[index]), width: bands[index],
     height: Math.abs(second[index] - first[index]), fill: fills[index],
     ...resolveBarAppearance(
       appearanceConfig,
@@ -73,8 +64,8 @@ export function deriveRangedRectangles(required, program, width) {
     ...(strokes === undefined ? {} : { stroke: strokes[index] }),
     ...(opacities === undefined ? {} : { opacity: opacities[index] })
   } : {
-    x: Math.min(first[index], second[index]), y: centers[index] - band / 2,
-    width: Math.abs(second[index] - first[index]), height: band, fill: fills[index],
+    x: Math.min(first[index], second[index]), y: centers[index] - bands[index] / 2,
+    width: Math.abs(second[index] - first[index]), height: bands[index], fill: fills[index],
     ...resolveBarAppearance(
       appearanceConfig,
       undefined,

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "The corresponding independent Text vertical offset; positive values move down.",
-  "signature": "encodeDy(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;",
+  "signature": "encodeDy(options: TargetedOptions<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode dy",
     "encode",
@@ -68,14 +68,24 @@
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<TextOffsetEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<TextOffsetEncodingOptions>[\"otherwise\"]"
+    },
+    {
       "name": "value",
       "required": false,
-      "type": "number | undefined"
+      "type": "number"
     },
     {
       "name": "field",
       "required": false,
-      "type": "string | undefined"
+      "type": "string"
     }
   ],
   "callPatterns": [

@@ -1,3 +1,5 @@
+import { hasPositionBinding } from "../core/encodingBindings.js";
+import { conditionalPositionUsesRows } from "./conditionalPosition.js";
 import { normalizePositionDatum } from "./positionDatum.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import {
@@ -28,7 +30,7 @@ const RULE_MODES = Object.freeze({
 export function resolveRuleMode(layer) {
   if (layer?.mark?.type !== "rule") return undefined;
   const signature = ENDPOINT_CHANNELS
-    .filter(channel => layer.encoding?.[channel] !== undefined)
+    .filter(channel => hasPositionBinding(layer, channel))
     .join(",");
   return RULE_MODES[signature];
 }
@@ -56,7 +58,7 @@ export function deriveRuleValues(rows, layer) {
         (ENDPOINT_CHANNELS.includes(channel) || Object.hasOwn(encoding, "field"))
       )
   );
-  const hasField = Object.values(encodings).some(encoding =>
+  const hasField = conditionalPositionUsesRows(layer) || Object.values(encodings).some(encoding =>
     Object.hasOwn(encoding, "field")
   );
   const length = hasField ? rows.length : 1;

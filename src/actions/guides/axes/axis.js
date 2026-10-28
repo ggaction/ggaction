@@ -1,3 +1,4 @@
+import { positionGuideLayers } from "../../../materialization/positionGuides.js";
 import { AXIS_RESOURCE_CHANNELS } from "../../../core/vocabulary.js";
 import { cartesianAxisOwners, axisTargetArgs, assertCartesianAxisSideAvailable } from "../../../selectors/axes.js";
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
@@ -105,7 +106,7 @@ function makeCreateAxis(channel) {
             axisGraphicIds(channel, axisId).some(id => this.graphicSpec.objects[id] !== undefined)) {
           throw new Error(`Axis "${axisId}" requires a missing resource and missing concrete components.`);
         }
-        const layers = this.semanticSpec.layers.filter(layer => !isSourceOwnedText(layer) &&
+        const layers = positionGuideLayers(this, [channel]).filter(layer => !isSourceOwnedText(layer) &&
           layer.encoding?.[channel]?.scale !== undefined &&
           (args.coordinate === undefined || layer.coordinate === args.coordinate) &&
           (args.scale === undefined || layer.encoding[channel].scale === args.scale));
@@ -125,7 +126,7 @@ function makeCreateAxis(channel) {
           .editSemantic({ property: `guide.axis.${axisId}.coordinate`, value: coordinate });
       } else if (cartesianAxisOwners(this).some(owner => owner.named)) {
         const scale = args.scale ?? channel;
-        const coordinates = [...new Set(this.semanticSpec.layers.filter(layer =>
+        const coordinates = [...new Set(positionGuideLayers(this, [channel]).filter(layer =>
           layer.encoding?.[channel]?.scale === scale).map(layer => layer.coordinate))];
         const coordinate = args.coordinate ?? (coordinates.length === 1 ? coordinates[0] : undefined);
         assertCartesianAxisSideAvailable(this, { id: axisId, channel, coordinate,
@@ -147,7 +148,7 @@ function makeCreateAxis(channel) {
         const coordinate = validateUserId(args.coordinate, "Coordinate id");
         const scale = args.scale ?? channel;
         const exists = hasCoordinate(next, coordinate);
-        const hasConsumer = next.semanticSpec.layers.some(
+        const hasConsumer = positionGuideLayers(next, [channel]).some(
           layer =>
             !isSourceOwnedText(layer) && layer.coordinate === coordinate &&
             layer.encoding?.[channel]?.scale === scale
@@ -158,7 +159,7 @@ function makeCreateAxis(channel) {
         }
         const standalone = !hasConsumer;
         if (standalone && (!Object.hasOwn(args, "scale") ||
-            next.semanticSpec.layers.some(layer => Object.values(layer.encoding ?? {}).some(encoding => encoding?.scale === scale)))) {
+            positionGuideLayers(next, [channel]).some(layer => Object.values(layer.encoding ?? {}).some(encoding => encoding?.scale === scale)))) {
           throw new Error(`${operation.create} found no ${channel} encoding for coordinate "${coordinate}" and scale "${scale}"; standalone binding requires an explicit unused scale.`);
         }
         if (standalone) {

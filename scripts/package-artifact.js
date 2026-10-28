@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 712, // Prepared sources, statistics and conditional encoding owners.
-  packedBytes: 1_062_000, // Integrated Node 20/22/24 maximum: 1,059,505 bytes.
-  unpackedBytes: 4_926_000 // Integrated runtime, declarations and knowledge: 4,924,496 bytes.
+  entries: 729, // Native conditional position, text and glyph consumers.
+  packedBytes: 1_081_000, // Supported runtime maximum: 1,080,937 bytes.
+  unpackedBytes: 5_031_000 // Runtime, declarations and generated knowledge: 5,030,543 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -78,7 +78,7 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/lineSeries.js",
   "src/grammar/pathSeries.js",
   "src/grammar/scales/colorConsumers.js",
-  "src/actions/encodings/position/policies/line.js",
+  "src/grammar/positionPolicies/line.js",
   "src/inspection.js",
   "src/grammar/regression/derive.js",
   "src/grammar/areaSeries.js",

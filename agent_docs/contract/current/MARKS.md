@@ -294,7 +294,9 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - Lifecycle: Assignment. 같은 target에 다시 호출하면 기존 policy를 semantic base position에서 교체하며
   이전 concrete offset을 누적하지 않는다. 제거는 `removeJitter`가 소유한다.
 - `target`: complete Cartesian x/y point mark. Current compatible mark, otherwise unique compatible mark로
-  infer하며 ambiguity는 explicit ID를 요구한다.
+  infer하며 ambiguity는 explicit ID를 요구한다. Conditional x/y도 같은 native binding을 사용하며,
+  선택된 행의 scale로 slot과 bounds를 계산한다. Band form은 비활성 분기를 포함한 모든 branch의
+  categorical slot을 검증한다.
 - `channel`: closed vocabulary `"x" | "y" | "both"`. 지정 channel의 concrete center만 이동한다.
   `both`는 한 호출에서 x/y 각각의 channel hash와 bounds로 독립 offset을 계산하며 같은 maxOffset을 적용한다.
   Band form은 두 축 모두 categorical slot이 있어야 한다.
@@ -306,6 +308,8 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
   `materializationConfigs.jitters[target]`이 단독 소유한다. `semanticSpec`의 field, scale와 channel value는
   변경하지 않고 final concrete centers만 `graphicSpec`에 materialize한다.
   `both`의 resolved metadata는 `algorithm`, 공통 `itemCount`, 각 축의 기존 resolution 형식인 `axes.x/y`다.
+  각 resolution의 `maximum`은 materialized item들이 선택한 native scale의 requested maximum 중
+  최댓값이다. Item이 없으면 모든 branch의 최댓값이다. Ordinary/common scale의 기존 값은 유지한다.
 - Geometry: point shape, area/radius와 stroke extent를 고려해 plot bounds 안에 유지한다. Categorical
   channel은 category slot 안에도 유지한다. 들어갈 공간이 없으면 해당 item의 offset은 `0`이고 resolved
   metadata에 unavailable 상태가 남는다.
@@ -327,7 +331,10 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - ✅ Covered: plot/category containment for every point shape extent, replacement from semantic base, removal and immutability.
 - ✅ Covered: Canvas, scale, filtering, appearance, highlight and facet rematerialization; primitive/public Canvas parity.
 - ✅ Covered: incomplete/ambiguous/Polar target, invalid offsets, incompatible band scale and duplicate/invalid key errors.
-- Evidence: `test/unit/grammar/layout/point-jitter.test.js`,
+- ✅ Covered: conditional common/mixed scale slots, selected radius/stroke extents, both axes, parameter/selection/facet replay,
+  inactive-branch validation and unchanged ordinary/common-scale diagnostics.
+- Evidence: `test/unit/actions/conditional-point-layout.test.js`, `test/unit/grammar/layout/point-layout-scales.test.js`,
+  `test/unit/grammar/layout/point-jitter.test.js`,
   `test/unit/actions/marks/point-jitter.test.js`, and `test/charts/point-jitter/public.test.js`.
 
 ## `removeJitter`
@@ -353,7 +360,9 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - Lifecycle: Assignment. 같은 target에 다시 호출하면 semantic position에서 policy 전체를 교체하며
   `removePointPacking`이 제거를 소유한다. 한 point에서 jitter와 packing은 동시에 활성화할 수 없다.
 - Target은 complete Cartesian Point다. `channel`은 nominal/ordinal category position이어야 하고 반대
-  position은 quantitative/temporal measure여야 한다. Measure coordinate는 그대로 유지한다.
+  position은 quantitative/temporal measure여야 한다. Conditional binding은 비활성 분기까지 같은
+  role을 충족해야 하며, 이후 encoding edit에서도 다시 검증한다. Measure coordinate는 그대로 유지한다.
+  행마다 선택된 scale의 native slot/maxOffset을 적용하고, 다른 branch의 점도 한 배치에서 충돌 검사한다.
 - `maxOffset`은 `{ pixels: PositiveFinite }` 또는 `{ band: PositiveFiniteAtMostHalf }`이고 생략하면
   category slot half-width다. Point의 실제 shape, area/radius, rotation과 stroke extent를 plot/slot bounds에
   포함하며 `padding`의 기본은 1 logical pixel이다.
@@ -364,6 +373,9 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
   item별 `collisionCount`를 기록한다.
 - State는 `materializationConfigs.pointPacking[target]`이 policy와 resolution을 소유한다. Canvas, scale,
   data/filter, point radius/shape/stroke와 facet replay에서 매번 semantic base position부터 다시 계산한다.
+  `resolved.slotWidth`와 `resolved.maximumOffset`은 각각 materialized item들이 선택한 native bounds의
+  최댓값이며, item이 없으면 모든 branch의 최댓값이다. 단일/common scale 값과 item별 final/offset/
+  collision 진단 형식은 유지하며 transient scale 객체를 저장하지 않는다.
 
 ### Formal values — `packPoints`
 
@@ -376,7 +388,10 @@ Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-r
 - ✅ Covered: literal zero-overlap oracle, measure invariance, slot/plot bounds, mixed glyph extents와 keyed reorder.
 - ✅ Covered: malformed/duplicate identity, infeasible error/overlap, jitter conflict와 immutable rollback.
 - ✅ Covered: Canvas/style replay, exact removal, mark cleanup, public Beeswarm primitive/render parity.
-- Evidence: `test/unit/grammar/layout/point-packing.test.js`,
+- ✅ Covered: conditional per-row category slots and measure coordinates, cross-branch collisions, radius extents,
+  later branch-type rejection, scale/parameter/selection/facet replay and empty-population bounds.
+- Evidence: `test/unit/actions/conditional-point-layout.test.js`, `test/unit/grammar/layout/point-layout-scales.test.js`,
+  `test/unit/grammar/layout/point-packing.test.js`,
   `test/unit/actions/marks/point-packing.test.js`, and `test/charts/beeswarm-plot/`.
 
 ## `removePointPacking`

@@ -94,13 +94,13 @@ program.createBarPlot({ x: 'value', y: 'category', guides: false });
 
 x에 aggregate: 'mean'을 명시하면 가로도 성공한다. Facade는 항상 x→y로 호출하는데, quantitative x를 처리할 때 반대쪽 category가 아직 없어 추론이 실패한다. 하위 measure-first 작성에도 같은 순서 의존성이 있다.
 
-**수정:** facade preflight에서 x/y 역할 쌍을 정규화한 뒤 child owner에 전달한다. 하위 action의 유효한 미완성 measure intent도 보존하는 방향을 검토한다. 세로↔가로, category-first↔measure-first의 semantic/graphic 수렴을 검증한다. P35–P37; [bar facade](../../../../src/actions/charts/bar.js), [bar policy](../../../../src/actions/encodings/position/policies/bar.js).
+**수정:** facade preflight에서 x/y 역할 쌍을 정규화한 뒤 child owner에 전달한다. 하위 action의 유효한 미완성 measure intent도 보존하는 방향을 검토한다. 세로↔가로, category-first↔measure-first의 semantic/graphic 수렴을 검증한다. P35–P37; [bar facade](../../../../src/actions/charts/bar.js), [bar policy](../../../../src/grammar/positionPolicies/bar.js).
 
 ### B02. MCP area chart가 빈 chart를 완료 경로로 제시
 
 createAreaMark → encodeX → encodeY를 제시하고 unresolved는 빈 배열이다. 유효한 rows를 넣어 그대로 실행해도 area item은 **0개**다. Baseline이나 secondary endpoint가 없다.
 
-**수정:** 실제 완성되는 baseline/ranged 경로로 provider를 닫는다. 필요한 결정을 지원하지 못하면 unresolved에 남긴다. 함수 호출 성공과 drawable chart 완성을 별도로 검증한다. [실행 결과](mcp-execution.json), [area policy](../../../../src/actions/encodings/position/policies/area.js).
+**수정:** 실제 완성되는 baseline/ranged 경로로 provider를 닫는다. 필요한 결정을 지원하지 못하면 unresolved에 남긴다. 함수 호출 성공과 drawable chart 완성을 별도로 검증한다. [실행 결과](mcp-execution.json), [area policy](../../../../src/grammar/positionPolicies/area.js).
 
 ### B03. MCP strip plot가 위치 없는 Tick만 생성
 
