@@ -44,7 +44,7 @@ test("removal restricts dependencies and cascades only explicitly owned generate
   const shared = put(generated, resource("shared", [ref("child")]));
   assert.throws(() => planStoredResourceRemoval(shared, root, { cascade: true }), code("resource-in-use"));
   assert.throws(() => validateResourceGraph({ semanticSpec: { resources: [root, root] } }), code("duplicate-id"));
-  assert.throws(() => put(base, { ...resource("bad"), kind: "graph" }), /identity|kind/i);
+  assert.throws(() => put(base, { ...resource("bad"), kind: "future-kind" }), /identity|kind/i);
 });
 
 test("row provenance is validated and prevents removal of its source dataset", () => {
