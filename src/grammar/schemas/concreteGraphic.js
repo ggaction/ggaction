@@ -1,3 +1,4 @@
+import { normalizeMarkShadow } from "../markShadow.js";
 import { normalizeMarkOutline } from "../markOutline.js";
 import { ownRecord } from "../../core/ownData.js";
 import { validateImagePayload } from "../imagePayload.js";
@@ -33,6 +34,13 @@ const TEXT_BASELINES = new Set([
 const validatedProperties = new WeakMap();
 
 export function validateConcreteGraphicValue(type, property, value) {
+  if (property === "shadow") {
+    if (value === false) throw new TypeError("Concrete shadow must be an object.");
+    const normalized = normalizeMarkShadow(value, `${type}.shadow`);
+    if (Object.keys(value).length !== 4 || Object.keys(normalized).some(key => !Object.hasOwn(value, key))) {
+      throw new TypeError("Concrete shadow requires resolved color, offsetX, offsetY and blurRadius.");
+    }
+  }
   if (property === "outline") {
     if (value === false) throw new TypeError("Concrete outline must be an object.");
     normalizeMarkOutline(value, `${type}.outline`);

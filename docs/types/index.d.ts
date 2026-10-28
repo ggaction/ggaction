@@ -319,7 +319,7 @@ export type {
   EditStrokeDashScaleOptions,
   EditSemanticOptions,
   FieldType,
-  FillPaint, MarkOutline, BlendMode,
+  FillPaint, MarkOutline, MarkShadow, BlendMode,
   PatternPaint,
   RadialGradientPaint,
   FacetCompositionSpec,
@@ -525,3 +525,8 @@ export function prepareFontResource(program: ChartProgram, request: FontResource
 export function prepareTextMetrics(program: ChartProgram, request: TextMetricsRequest, host: TextMetricsHost): Promise<PreparedTextMetrics>;
 export function prepareFontRendering(program: Pick<ChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
 export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
+
+export type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
+import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
+export function prepareShadowRendering(program: Pick<ChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
+export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;

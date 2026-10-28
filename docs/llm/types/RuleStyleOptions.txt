@@ -1,5 +1,6 @@
 export interface RuleStyleOptions extends StrokeStyleDetails {
   blend?: BlendMode;
+  shadow?: MarkShadow | false;
   stroke?: string;
   strokeWidth?: number;
   strokeDash?: DashStyle | DashPattern;

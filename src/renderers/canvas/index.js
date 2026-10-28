@@ -1,3 +1,5 @@
+import { preflightCanvasBlendModes } from "./isolated.js";
+import { readPreparedShadows } from "../shadowState.js";
 import { preflightCanvasOutlineCapabilities } from "./outline.js";
 import { prepareTextPaints } from "./textPaint.js";
 import { preflightCanvasFillCapabilities } from "./fill.js";
@@ -222,7 +224,7 @@ export function drawResolvedGraphicSpec(target, context, options = {}) {
   });
 }
 
-export function renderCanvasProgram(program, context, { pixelRatio = 1, images, fonts } = {}, createCanvas, drawingOptions = {}) {
+export function renderCanvasProgram(program, context, { pixelRatio = 1, images, fonts, shadows } = {}, createCanvas, drawingOptions = {}) {
   const graphicSpec = requireProgramGraphicSpec(program);
 
   requireCanvasContext(context);
@@ -260,6 +262,14 @@ export function renderCanvasProgram(program, context, { pixelRatio = 1, images, 
     ), { code: "resource-limit", operation: "render", optionPath: "physicalPixels", limit: MAX_RASTER_PIXELS, actual: physicalWidth * physicalHeight });
   }
   preflightCanvasGraphicSpec(target, pixelRatio);
+  const shadowGlyphs = readPreparedShadows(graphicSpec, shadows, pixelRatio);
+  for (const glyph of shadowGlyphs.values()) {
+    if (!glyph.empty && glyph.image === undefined) throw new Error("Canvas shadows require a decode callback during preparation.");
+  }
+  if (shadowGlyphs.size) {
+    requireContextMethod(context, "drawImage", "Shadow glyph");
+    preflightCanvasBlendModes(Object.values(graphicSpec.objects), context);
+  }
   const decodedImages = readPreparedImages(graphicSpec, images);
   const fontAliases = readPreparedFonts(graphicSpec, fonts);
   if (decodedImages.size > 0) requireContextMethod(context, "drawImage", "Image graphic");
@@ -284,7 +294,7 @@ export function renderCanvasProgram(program, context, { pixelRatio = 1, images, 
     context.scale(pixelRatio, pixelRatio);
     context.clearRect(0, 0, width, height);
     drawResolvedGraphicSpec(target, context, {
-      ...drawingOptions, fontAliases, images: decodedImages, painting, pixelRatio, createCanvas
+      ...drawingOptions, fontAliases, shadows: shadowGlyphs, images: decodedImages, painting, pixelRatio, createCanvas
     });
   } finally {
     context.restore();
@@ -300,6 +310,19 @@ function drawConcreteGraphic(context, id, graphic, isolated, options) {
     for (const item of graphic.items ?? []) {
       drawConcreteGraphic(context, item.id ?? id, item, isolated, options);
     }
+    return;
+  }
+  if (Object.hasOwn(graphic.properties ?? {}, "shadow")) {
+    const glyph = options.shadows?.get(id);
+    if (!glyph) throw new Error(`Graphic "${id}" requires a prepared shadow glyph.`);
+    if (glyph.empty) return;
+    context.save();
+    try {
+      context.globalAlpha = graphic.properties.opacity ?? 1;
+      context.globalCompositeOperation = graphic.properties.blend === undefined || graphic.properties.blend === "normal"
+        ? "source-over" : graphic.properties.blend;
+      context.drawImage(glyph.image, glyph.x, glyph.y, glyph.width, glyph.height);
+    } finally { context.restore(); }
     return;
   }
   const draw = DRAWERS[graphic.type];

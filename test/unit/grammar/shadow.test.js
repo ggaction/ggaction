@@ -76,3 +76,20 @@ test("rejects accessors, symbols, extra and missing alpha properties without rea
   for (const alpha of [getter,new Array(1),Object.assign([255],{extra:1}),Object.assign([255],{[Symbol('extra')]:1}),Object.defineProperty([255],'hidden',{value:1})]) assert.throws(()=>blurShadowMask(alpha,{width:1,height:1}));
   assert.equal(touched,0);
 });
+
+
+test("ignores inherited optional shadow settings without invoking getters", () => {
+  let reads = 0;
+  const saved = Object.getOwnPropertyDescriptor(Object.prototype, "blurRadius");
+  Object.defineProperty(Object.prototype, "blurRadius", { configurable: true,
+    get() { reads++; return 4; } });
+  try {
+    const plan = planShadowMask({ width: 1, height: 1 });
+    assert.equal(plan.padding, 0);
+    assert.deepEqual([...blurShadowMask([255], { width: 1, height: 1 }).alpha], [255]);
+    assert.equal(reads, 0);
+  } finally {
+    if (saved) Object.defineProperty(Object.prototype, "blurRadius", saved);
+    else delete Object.prototype.blurRadius;
+  }
+});

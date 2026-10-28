@@ -1,9 +1,9 @@
-import { blurShadowMask } from "../../../src/grammar/shadow.js";
+import { blurShadowMask } from "../../../../../src/grammar/shadow.js";
 
 export const frame = Object.freeze({width:260,height:200});
 export const styles = Object.freeze(["zero-blur","soft-shadow","negative-offset","alpha-once","clip","circle"]);
 export function shadowFixture(style) {
-  if (!styles.includes(style)) throw new TypeError("Unknown shadow review variant.");
+  if (!styles.includes(style)) throw new TypeError("Unknown shadow reference variant.");
   const width=70,height=60,fillAlpha=style==="alpha-once"?.6:1;
   const alpha=Array.from({length:width*height},(_,index)=>{
     if(style!=="circle")return Math.round(255*fillAlpha);
@@ -17,13 +17,13 @@ export function shadowFixture(style) {
     clip:style==="clip"?{x:65,y:65,width:70,height:78}:null,underlay:[226,232,240]};
 }
 
-// This candidate rasterizes only the effect glyph, then attenuates it once.
+// This reference rasterizes only the effect glyph, then attenuates it once.
 // Source alpha includes authored fill alpha; mark opacity is applied after blur.
 export function prepareShadowGlyph(fixture) {
   const shadow=blurShadowMask(fixture.alpha,fixture.options),left=Math.min(0,shadow.bounds.x),top=Math.min(0,shadow.bounds.y);
   const right=Math.max(fixture.width,shadow.bounds.x+shadow.width),bottom=Math.max(fixture.height,shadow.bounds.y+shadow.height);
   const width=right-left,height=bottom-top;
-  if(![left,top,width,height].every(Number.isSafeInteger)||width*height*4>8_388_608)throw new RangeError("Shadow review RGBA sublayer exceeds its allocation limit.");
+  if(![left,top,width,height].every(Number.isSafeInteger)||width*height*4>8_388_608)throw new RangeError("Shadow reference RGBA sublayer exceeds its allocation limit.");
   const pixels=new Uint8ClampedArray(width*height*4);
   for(let y=0;y<height;y++)for(let x=0;x<width;x++){
     const sourceX=x+left,sourceY=y+top,sx=sourceX-shadow.bounds.x,sy=sourceY-shadow.bounds.y;

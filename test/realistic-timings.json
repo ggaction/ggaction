@@ -37,7 +37,8 @@
     "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
     "contracts/realistic-structured-paints.test.js": 184876,
     "contracts/realistic-mark-outlines.test.js": 2594,
-    "contracts/realistic-mark-blends.test.js": 18646
+    "contracts/realistic-mark-blends.test.js": 18646,
+    "contracts/realistic-mark-shadows.test.js": 3052
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -75,6 +76,10 @@
     "contracts/realistic-mark-blends.test.js": {
       "environment": "macOS arm64, Node22.23.1, max-old-space-size512, test-concurrency2",
       "measurement": "Sum of 15 successful canonical realistic runner test durations 18645.784710ms, rounded upward. Five pinned datasets, three recipes, nine public mark owners, five Text/Rule facades and four blend modes with create/edit/resize/fresh codec proof. Scheduling estimate only."
+    },
+    "contracts/realistic-mark-shadows.test.js": {
+      "environment": "macOS arm64, Node22.23.1, max-old-space-size512, test-concurrency2",
+      "measurement": "Sum of 15 successful canonical realistic test durations 3051.175250ms, rounded upward. Five pinned sources, three recipes, all nine mark owners and five label/rule facades with actual create/edit/remove/resize/codec witnesses. Scheduling estimate only."
     }
   },
   "localMeasurements": {

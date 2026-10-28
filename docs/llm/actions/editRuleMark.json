@@ -84,6 +84,11 @@
       "type": "BlendMode | undefined"
     },
     {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "stroke",
       "required": false,
       "type": "string | undefined"
@@ -120,7 +125,7 @@
     }
   ],
   "callPatterns": [
-    "editRuleMark({ target?, clip?, missing?, blend?, stroke?, strokeWidth?, strokeDash?, opacity? })"
+    "editRuleMark({ target?, clip?, missing?, blend?, shadow?, stroke?, strokeWidth?, strokeDash? })"
   ],
   "snippet": "program.editRuleMark({ stroke: \"#334155\" })",
   "errors": [],

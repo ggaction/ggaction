@@ -666,6 +666,18 @@ Create a hierarchy resource, compute an explicit squarify layout, and draw its n
 
 Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreemapPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchy/).
 
+### [Bounded mark shadows](./mark-shadows/)
+
+Prepare the actual mark alpha once and share its bounded shadow across output backends.
+
+Representative actions: `createRectMark`, `editRectMark`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/#shadows).
+
+### [Exact text shadows](./text-shadows/)
+
+Use an embedded font to preserve actual letters, outlines and shadows across output backends.
+
+Representative actions: `createTextMark`, `createFontResource`, `applyTextMetrics`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/#shadows).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

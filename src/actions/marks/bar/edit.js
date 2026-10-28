@@ -1,6 +1,7 @@
 import { applyMarkBlend } from "../blend.js";
 import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { requestedMarkOutline } from "../../../grammar/markOutline.js";
+import { requestedMarkShadow } from "../../../grammar/markShadow.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -23,7 +24,7 @@ import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const EDIT_OPTIONS = Object.freeze([
   "blend",
-  "target", "clip", "missing", "fill", "opacity", "outline", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+  "target", "clip", "missing", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -38,7 +39,7 @@ export const editBarMark = /* @__PURE__ */ action(
     requestedMarkClip(args);
     const styleDetails = requestedRectStyleDetails(args, "editBarMark");
     const changes = [
-      "clip", "missing", "blend", "fill", "opacity", "outline", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+      "clip", "missing", "blend", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!changes.some(key => Object.hasOwn(args, key))) {
@@ -78,7 +79,7 @@ export const editBarMark = /* @__PURE__ */ action(
     validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
     const config = { ...this.markConfigs[layer.id], ...requestedMarkClip(args) };
     const appearance = { ...config.barAppearance };
-    Object.assign(appearance, styleDetails, requestedMarkOutline(args));
+    Object.assign(appearance, styleDetails, requestedMarkOutline(args), requestedMarkShadow(args));
     if (Object.hasOwn(args, "fill")) {
       appearance.fill = validateFillPaint(args.fill, "Bar fill");
     }

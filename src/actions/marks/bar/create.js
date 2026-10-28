@@ -1,6 +1,7 @@
 import { applyMarkBlend } from "../blend.js";
 import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { requestedMarkOutline } from "../../../grammar/markOutline.js";
+import { requestedMarkShadow } from "../../../grammar/markShadow.js";
 import { requestedMarkClip } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import {
@@ -22,7 +23,7 @@ import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const CREATE_OPTIONS = Object.freeze([
   "blend",
-  "clip", "id", "data", "orientation", "missing", "fill", "opacity", "outline", "stroke", "strokeWidth",
+  "clip", "id", "data", "orientation", "missing", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth",
   ...RECT_RADIUS_PROPERTIES, ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -36,6 +37,7 @@ export const createBarMark = /* @__PURE__ */ action(
     validateRequestedMarkBlend(args, "bar");
     requestedMarkClip(args);
     requestedMarkOutline(args);
+    requestedMarkShadow(args);
     requestedRectStyleDetails(args, "createBarMark");
     if (args.orientation !== undefined && !["vertical", "horizontal"].includes(args.orientation)) {
       throw new Error("Bar orientation must be vertical or horizontal.");
@@ -85,7 +87,7 @@ export const createBarMark = /* @__PURE__ */ action(
     created = materializeInheritedMark(created, id);
     const appearance = Object.fromEntries(
       [
-        "clip", "fill", "opacity", "outline", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+        "clip", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
         ...STROKE_STYLE_PROPERTIES
       ]
         .filter(property => Object.hasOwn(args, property))

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.",
-  "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+  "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
   "intents": [
     "edit point mark",
     "edit",
@@ -81,6 +81,11 @@
       "type": "BlendMode | undefined"
     },
     {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "clip",
       "required": false,
       "type": "boolean | undefined"
@@ -127,7 +132,7 @@
     }
   ],
   "callPatterns": [
-    "editPointMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, clip?, missing?, shape? })"
+    "editPointMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow?, clip?, missing? })"
   ],
   "snippet": "program.editPointMark({ fill: \"#f28e2b\" })",
   "errors": [],

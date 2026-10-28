@@ -63,3 +63,10 @@ npm run package:check
 Public schema/strict color·glyph mask preparation·fractional placement·HiDPI·all mark/text consumers·halo/outline·blend·bounds/hit·inspection·refs·scene/codec·rematerialization·Full/Basic/types·preflight와 public/primitive parity는 남아 있다. 현재 private opaque source mask나 caller-owned Uint8Array를 자동으로 저장 형식으로 승격하지 않는다. Blur의 finite-support tail policy도 공개 계약에 명시되어야 한다. Pattern/radial을 포함한 전체 paint 지원표와 unsupported action/export 진단을 끝내기 전에는 모든 renderer 지원 완료라고 보고하지 않는다.
 
 최종 확인: focused unit37/37, primitive2/2, render1/1, contracts38/38, 새 kernel coverage100/100/100과 package check가 통과했다. Package dimensions는 kernel checkpoint와 동일한681/1,014,128/4,727,468이다. 이번 review는 runtime source 변경이 없고 test/oracle/manifest와 증거만 추가한다. Source/evidence revision은 `10f04609160998a54e969ea909b89b48cf42aa3e`다. 후속 metadata-only 기록은 실행 source와 출력 내용을 바꾸지 않는다.
+
+## Public graduation
+
+The approved primitive source has moved to `test/charts/mark-shadows/variants/native/`.
+Its independently sampled reference remains separate from the public/primitive exact comparisons under
+`test/charts/mark-shadows/`; Text cases live under `variants/text/`. Historical hashes above identify
+the original review checkpoint. Current outputs use `.artifacts/test/png/charts/mark-shadows/`.

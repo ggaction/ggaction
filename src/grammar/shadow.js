@@ -4,11 +4,21 @@ import { validateGeneratedItemLimit, validateKeys, validateNonNegativeFinite, va
 // Private numeric buffers only; this is not a renderer allocation or public API.
 export const SHADOW_LIMITS = Object.freeze({ dimension: 4096, pixels: 1_048_576, bufferBytes: 8_388_608 });
 
+export function shadowBlurSupport(blurRadius, pixelRatio = 1) {
+  validateNonNegativeFinite(blurRadius, "Shadow blurRadius");
+  validatePositiveFinite(pixelRatio, "Shadow pixelRatio");
+  const sigmaPixels = blurRadius * pixelRatio / 2;
+  if (!Number.isFinite(sigmaPixels) || blurRadius > 0 && sigmaPixels === 0) throw new RangeError("Shadow pixel-space blur is not representable.");
+  const padding = Math.ceil(3 * sigmaPixels);
+  if (!Number.isFinite(padding)) throw new RangeError("Shadow blur support is not representable.");
+  return { sigmaPixels, padding };
+}
+
 export function planShadowMask(options) {
   ownRecord(options, "Shadow mask options");
   validateKeys(options, ["width", "height", "blurRadius", "pixelRatio", "offsetX", "offsetY"], "Shadow mask");
   if (Object.values(options).some(value => value === undefined)) throw new TypeError("Shadow mask options cannot contain explicit undefined.");
-  const { width, height, blurRadius = 0, pixelRatio = 1, offsetX = 0, offsetY = 0 } = options;
+  const { width, height, blurRadius = 0, pixelRatio = 1, offsetX = 0, offsetY = 0 } = { __proto__: null, ...options };
   for (const value of [width, height]) {
     if (!Number.isSafeInteger(value) || value <= 0) throw new TypeError("Shadow mask dimensions require positive safe integers.");
     validateGeneratedItemLimit(value, "Shadow mask dimension", SHADOW_LIMITS.dimension);
@@ -16,9 +26,8 @@ export function planShadowMask(options) {
   validateNonNegativeFinite(blurRadius, "Shadow blurRadius");
   validatePositiveFinite(pixelRatio, "Shadow pixelRatio");
   if (![offsetX, offsetY].every(Number.isFinite)) throw new TypeError("Shadow offsets require finite numbers.");
-  const sigmaPixels = blurRadius * pixelRatio / 2;
-  if (!Number.isFinite(sigmaPixels) || blurRadius > 0 && sigmaPixels === 0) throw new RangeError("Shadow pixel-space blur is not representable.");
-  const padding = Math.ceil(3 * sigmaPixels), outputWidth = width + 2 * padding, outputHeight = height + 2 * padding;
+  const { sigmaPixels, padding } = shadowBlurSupport(blurRadius, pixelRatio);
+  const outputWidth = width + 2 * padding, outputHeight = height + 2 * padding;
   for (const value of [outputWidth, outputHeight]) validateGeneratedItemLimit(value, "Shadow output dimension", SHADOW_LIMITS.dimension);
   const pixels = outputWidth * outputHeight;
   validateGeneratedItemLimit(pixels, "Shadow output pixels", SHADOW_LIMITS.pixels);

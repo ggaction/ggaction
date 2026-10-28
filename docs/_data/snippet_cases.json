@@ -290,5 +290,15 @@
     "result": "program",
     "prerequisites": "Run this complete ES module with ggaction installed; the inline rows supply both position fields.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "prepared-shadows",
+    "file": "api/rendering.md",
+    "contains": "const shadows = await prepareShadowRendering(program,",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use the installed ggaction package in a browser module with a canvas element whose id is chart."
   }
 ]

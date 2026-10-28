@@ -1,6 +1,7 @@
 import { applyMarkBlend } from "../blend.js";
 import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { requestedMarkOutline } from "../../../grammar/markOutline.js";
+import { requestedMarkShadow } from "../../../grammar/markShadow.js";
 import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
 import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
 import { getLayerScaleIds } from "../../../materialization/marks/index.js";
@@ -47,7 +48,7 @@ import {
 
 const AREA_OPTIONS = Object.freeze([
   "blend",
-  "clip", "fill", "opacity", "outline", "stroke", "strokeWidth", "curve",
+  "clip", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth", "curve",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...AREA_OPTIONS]);
@@ -121,7 +122,8 @@ const createAreaMark = /* @__PURE__ */ action(
         ...(Object.hasOwn(args, "curve") ? { curve } : {}),
         ...(stroke === undefined ? {} : { stroke, strokeWidth }),
         ...strokeDetails,
-        ...requestedMarkOutline(args)
+        ...requestedMarkOutline(args),
+        ...requestedMarkShadow(args)
       });
     return materializeInheritedMark(created, id);
   }
@@ -256,7 +258,7 @@ const editAreaMark = /* @__PURE__ */ action(
     const strokeDetails = requestedStrokeDetails(args, "editAreaMark");
     const changes = [
       "blend",
-      "clip", "fill", "opacity", "outline", "stroke", "strokeWidth", "curve", "missing",
+      "clip", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth", "curve", "missing",
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!changes.some(key => Object.hasOwn(args, key))) {
@@ -291,7 +293,7 @@ const editAreaMark = /* @__PURE__ */ action(
 
     validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
     let config = { ...this.markConfigs[layer.id], ...requestedMarkClip(args) };
-    Object.assign(config, strokeDetails, requestedMarkOutline(args));
+    Object.assign(config, strokeDetails, requestedMarkOutline(args), requestedMarkShadow(args));
     if (Object.hasOwn(args, "fill")) {
       config.fill = validateFillPaint(args.fill, "Area fill");
       if (config.errorBand !== undefined) config.errorBand = { ...config.errorBand, fill: config.fill };

@@ -1,0 +1,1 @@
+export interface MarkShadow { color: string; offsetX?: number; offsetY?: number; blurRadius?: number; }

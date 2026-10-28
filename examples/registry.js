@@ -1,3 +1,5 @@
+import { createTextShadowExample } from "./text-shadows/program.js";
+import { createMarkShadowExample } from "./mark-shadows/program.js";
 import { createMarkOutlineExample } from "./mark-outlines/program.js";
 import { createStructuredPaintExample } from "./structured-paints/program.js";
 import { createImageExample } from "./image-assets/program.js";
@@ -179,6 +181,10 @@ export const DOCUMENTATION_WORKFLOWS = Object.freeze([
 
 // Chart-family examples retain their independent primitive/public baselines.
 export const PUBLIC_CHARTS = Object.freeze([
+  example({ id: "text-shadows", data: {}, width: 220, height: 160, docsGroup: "tutorials", createProgram: () => createTextShadowExample(),
+    browser: { path: "text-shadows/", canvas: "#chart" } }),
+  example({ id: "mark-shadows", data: {}, width: 260, height: 200, docsGroup: "tutorials", createProgram: () => createMarkShadowExample(),
+    browser: { path: "mark-shadows/", canvas: "#chart" } }),
   example({ id: "mark-outlines", data: {}, width: 280, height: 200, docsGroup: "tutorials", createProgram: () => createMarkOutlineExample(),
     browser: { path: "mark-outlines/", canvas: "#chart" } }),
   example({ id: "font-assets", data: {}, width: 440, height: 220, docsGroup: "tutorials", createProgram: createFontExample,

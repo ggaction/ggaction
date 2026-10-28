@@ -352,6 +352,28 @@ const program = chart()
   .encodeY({ field: "y" });
 ```
 
+## Shadows
+
+{% include chart-example.html id="mark-shadows" %}
+
+{% include chart-example.html id="text-shadows" %}
+
+Use `shadow` on Point, Bar, Rect, Area, Arc, Text, Line, Rule or Tick create/edit actions. The color is required;
+`offsetX`, `offsetY` and `blurRadius` default to zero. A supplied object replaces the complete effect.
+Offsets must be finite, and blur must be finite and non-negative. Remove it with `shadow: false`.
+
+For an existing Bar layer named `bars`, use
+`program.editBarMark({ target: "bars", shadow: { color: "rgba(30,60,90,.5)", offsetX: 8, offsetY: 6, blurRadius: 4 } })`.
+
+Shadow alpha comes from the actual fill, stroke or outline. Overall opacity applies once to the combined glyph,
+followed by clipping and blending. Source identity, row selection and hit geometry stay unchanged. Layout and
+automatic legend samples include the effect. Labels and annotations use the same Text option; Text shadows
+require embedded font preparation and actual glyph ink metrics.
+
+Canvas and SVG use an explicit prepared handle; PNG/PDF prepare it automatically with the native adapter.
+See [prepared shadows](../rendering.md#prepared-shadows) for the complete output lifecycle and limits.
+
+
 ## Related
 
 [Appearance overview](../appearance.md) · [Rule marks](../marks/rule.md) · [Bar marks](../marks/bar.md)

@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:9a71415e3bf980f09a967c55a567a6b4a1f5cfe21edd8f9f6a6115687f445dd4",
+    "contractId": "sha256:c845d54beef0a9e670f791f9acf4de7709eaf119cb16b3f12e9bb40bb46fcff5",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1220,10 +1220,11 @@
         "identity-across-revisions",
         "embedded-images",
         "embedded-fonts",
+        "prepared-shadows",
         "related"
       ],
-      "bytes": 34648,
-      "sha256": "3b01fa55f2118f92880dcaac7dcb880b62b827942c28c78b94c7a68045135a7c"
+      "bytes": 38228,
+      "sha256": "0d5c045686ca4cedb3b6b434271fe541daa57c9bf6d97291ac3d150dadf1febf"
     },
     {
       "order": 73,
@@ -1474,10 +1475,11 @@
         "stroke-color-and-linerule-appearance",
         "encodebarwidth-band-pixels-target",
         "blending-each-mark-item",
+        "shadows",
         "related"
       ],
-      "bytes": 17363,
-      "sha256": "b60dbd0ca8f16996df8abea7069e8caa359267de8631e695d6eec2c2205dc1cc"
+      "bytes": 18463,
+      "sha256": "b225f33b96a8fe0d0b508dedf07ddd546423378cd79abbbf3a4bcd808698c2f8"
     },
     {
       "order": 88,
@@ -2162,8 +2164,8 @@
         "editimagemark",
         "related"
       ],
-      "bytes": 95494,
-      "sha256": "d4265a645f170c446bc1702838ee47489a6eedcb5d5f5f57171c5c49a296c148"
+      "bytes": 98501,
+      "sha256": "1b729a5d1b7878a89a69e428dc0e5931909095b7be66a1499d4d42bca8857b49"
     },
     {
       "order": 120,
@@ -2441,8 +2443,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 39531,
-      "sha256": "82ed106641250449519af0ade786fc6e2d9243e8bb244739a4f5e20d6dacd680"
+      "bytes": 41055,
+      "sha256": "b22139f0dae3a71e5604de2740f76ff163ed647cd659392824d908a58754d2e3"
     },
     {
       "order": 126,
@@ -2945,6 +2947,7 @@
         "type-marklabelselectionoptions",
         "type-markoutline",
         "type-markselector",
+        "type-markshadow",
         "type-meanconfidenceintervalmethod",
         "type-measuredradialguideoptions",
         "type-measuredradiusscaleoptions",
@@ -3212,8 +3215,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 421608,
-      "sha256": "d0c909cceb067f8d50fdbcebcddfcc804e3faf32391bcc918fc8079d21136053"
+      "bytes": 422391,
+      "sha256": "03c5660ace24392c06eb0090f25d505700b6f69b9013f862e1ff457ccb8910e7"
     },
     {
       "order": 127,
@@ -3588,7 +3591,7 @@
         "migration-from-v0013"
       ],
       "bytes": 2981,
-      "sha256": "bd07275e48c7361d76f496a7ae92ee72e2313a3ac4e65b98e07b90b07a6a3701"
+      "sha256": "b806fbb16e4508c93a3c9f34216a39dbb41a2c26d2a0fe861af51d269d865359"
     },
     {
       "order": 150,

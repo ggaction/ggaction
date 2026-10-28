@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Edit arc geometry or appearance and rematerialize complete sector paths.",
-  "signature": "editArcMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;",
+  "signature": "editArcMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;",
   "intents": [
     "edit arc mark",
     "edit",
@@ -93,6 +93,11 @@
       "type": "BlendMode | undefined"
     },
     {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
@@ -134,7 +139,7 @@
     }
   ],
   "callPatterns": [
-    "editArcMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, innerRadius?, padAngle?, fill? })"
+    "editArcMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow?, innerRadius?, padAngle? })"
   ],
   "snippet": "program.editArcMark({ lineCap: \"butt\" })",
   "errors": [],

@@ -1,6 +1,7 @@
 import { applyMarkBlend } from "../blend.js";
 import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { requestedMarkOutline } from "../../../grammar/markOutline.js";
+import { requestedMarkShadow } from "../../../grammar/markShadow.js";
 import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
 import { getLayerScaleIds } from "../../../materialization/marks/index.js";
 import { materializeMarkOutput } from "../../../materialization/markOutput.js";
@@ -41,7 +42,7 @@ import { applyItemMissingPolicy, validateItemMissing } from
 
 const STYLE_OPTIONS = Object.freeze([
   "blend",
-  "clip", "fill", "opacity", "outline", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+  "clip", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
   ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...STYLE_OPTIONS]);
@@ -67,6 +68,7 @@ const createRectMark = /* @__PURE__ */ action(
     requestedMarkClip(args);
     requestedRectStyleDetails(args, "createRectMark");
     requestedMarkOutline(args);
+    requestedMarkShadow(args);
     const id = resolveMarkId(this, args.id, {
       defaultId: "rect",
       label: "Rect mark id",

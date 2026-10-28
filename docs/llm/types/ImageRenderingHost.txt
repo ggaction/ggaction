@@ -5,3 +5,4 @@ export interface ImageRenderingHost {
     Readonly<{ image: object; width: number; height: number; originClean: true }>;
   signal?: AbortSignal;
 }
+declare const preparedShadowRenderingBrand: unique symbol;

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a semantic arc mark and empty closed-path collection.",
-  "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
+  "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
   "intents": [
     "create arc mark",
     "create",
@@ -108,6 +108,11 @@
       "type": "BlendMode | undefined"
     },
     {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "id",
       "required": false,
       "type": "string | undefined"
@@ -159,7 +164,7 @@
     }
   ],
   "callPatterns": [
-    "createArcMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, innerRadius? })"
+    "createArcMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow? })"
   ],
   "snippet": "program.createArcMark({})",
   "errors": [],

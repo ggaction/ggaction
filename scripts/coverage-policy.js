@@ -5,6 +5,14 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "mark-shadow": { prefix: "grammar/markShadow", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared visual effects must preserve exact input, bounded work, immutable source and backend parity." },
+  "shadow-composite": { prefix: "grammar/shadowComposite", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared visual effects must preserve exact input, bounded work, immutable source and backend parity." },
+  "paint-frames": { prefix: "renderers/paintFrames", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared visual effects must preserve exact input, bounded work, immutable source and backend parity." },
+  "shadow-frames": { prefix: "renderers/shadowFrames", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared visual effects must preserve exact input, bounded work, immutable source and backend parity." },
+  "shadow-preparation": { prefix: "renderers/shadowRendering", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared visual effects must preserve exact input, bounded work, immutable source and backend parity." },
+  "shadow-handle": { prefix: "renderers/shadowState", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared visual effects must preserve exact input, bounded work, immutable source and backend parity." },
+  "text-glyph-input": { prefix: "renderers/textGlyphInput", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared visual effects must preserve exact input, bounded work, immutable source and backend parity." },
+  "text-ink-bounds": { prefix: "renderers/textInkBounds", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared visual effects must preserve exact input, bounded work, immutable source and backend parity." },
   "mark-output": { prefix: "materialization/markOutput.js", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Final conditional values, outline appearance and stable item identity must be applied by the same explicit owner." },
   "mark-blend": { prefix: "grammar/markBlend.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Closed mark blend capability and own-data options must remain validated." },
   "mark-blend-action": { prefix: "actions/marks/blend.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Single semantic blend ownership and normal removal must remain exercised." },

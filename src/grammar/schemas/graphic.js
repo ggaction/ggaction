@@ -58,6 +58,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "miterLimit",
     "opacity",
     "blend",
+    "shadow",
     "length"
   ]),
   rect: new Set([
@@ -74,6 +75,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "miterLimit",
     "opacity",
     "blend",
+    "shadow",
     "length"
   ]),
   line: new Set([
@@ -89,6 +91,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "miterLimit",
     "opacity",
     "blend",
+    "shadow",
     "length"
   ]),
   text: new Set([
@@ -112,6 +115,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "rotation",
     "opacity",
     "blend",
+    "shadow",
     "length"
   ]),
   path: new Set([
@@ -127,6 +131,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "miterLimit",
     "opacity",
     "blend",
+    "shadow",
     "length"
   ])
 });

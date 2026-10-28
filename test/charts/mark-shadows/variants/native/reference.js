@@ -1,4 +1,4 @@
-import {shadowSampleReference} from "../../oracles/shadow.js";
+import {shadowSampleReference} from "../../../../oracles/shadow.js";
 export function expectedColor(fixture,x,y){
   if(x<20||x>=240||y<45||y>=180)return [255,255,255,255];
   if(x>=210&&x<230&&y>=75&&y<110)return [251,191,36,255];

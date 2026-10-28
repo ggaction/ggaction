@@ -1,3 +1,4 @@
+import { requestedMarkShadow } from "../../../grammar/markShadow.js";
 import { applyMarkBlend } from "../blend.js";
 import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
@@ -44,7 +45,7 @@ import {
 } from "../shared.js";
 
 const APPEARANCE_OPTIONS = Object.freeze([
-  "blend",
+  "blend", "shadow",
   "clip", "length", "stroke", "strokeWidth", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...APPEARANCE_OPTIONS]);
@@ -83,6 +84,7 @@ function validateTickConfig(args, current = DEFAULT_TICK_CONFIG) {
   return {
     ...current,
     ...requestedMarkClip(args),
+    ...requestedMarkShadow(args),
     length: Object.hasOwn(args, "length")
       ? validatePositiveFinite(args.length, "Tick length")
       : current.length,
@@ -108,6 +110,7 @@ export const createTickMark = /* @__PURE__ */ action(
     validateMarkOptions(args, CREATE_OPTIONS, "createTickMark");
     validateRequestedMarkBlend(args, "tick");
     requestedMarkClip(args);
+    requestedMarkShadow(args);
     requestedStrokeDetails(args, "createTickMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "tick",
@@ -162,6 +165,7 @@ export const editTickMark = /* @__PURE__ */ action(
     validateMarkOptions(args, EDIT_OPTIONS, "editTickMark");
     validateRequestedMarkBlend(args, "tick");
     requestedMarkClip(args);
+    requestedMarkShadow(args);
     requestedStrokeDetails(args, "editTickMark");
     if (!["missing", ...APPEARANCE_OPTIONS].some(property => Object.hasOwn(args, property))) {
       throw new Error(

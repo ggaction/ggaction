@@ -4,8 +4,18 @@ import { applyCanvasTextPattern } from "./textPaint.js";
 import { requireFiniteProperty, requireStringProperty } from "./validation.js";
 import { validateConcreteGraphicProperties, validateConcreteGraphicValue } from
   "../../grammar/schemas/concreteGraphic.js";
-import { normalizeRendererFontWeight } from "../text.js";
+import { normalizeRendererFontWeight, rendererFontFamily } from "../text.js";
 import { fontRenderKey } from "../fonts.js";
+
+// Measurement and painting share the same exact font, baseline and alignment.
+export function configureTextContext(context, properties, { resolveFontFamily, fontAliases } = {}) {
+  const alias = properties.font === undefined ? undefined : fontAliases?.get(fontRenderKey(properties.font));
+  if (properties.font !== undefined && alias === undefined) throw new Error("Font-bound text requires its prepared font alias.");
+  const family = alias === undefined ? (resolveFontFamily ?? rendererFontFamily)(properties.fontFamily) : `"${alias}"`;
+  context.font = `${properties.fontStyle === "italic" ? "italic " : ""}${normalizeRendererFontWeight(properties.fontWeight ?? "normal")} ${properties.fontSize}px ${family}`;
+  context.textAlign = properties.textAlign;
+  context.textBaseline = properties.textBaseline;
+}
 
 function drawText(context, child, collectionId, { resolveFontFamily, fontAliases, textPaint } = {}) {
   const properties = child.properties ?? {};
@@ -35,8 +45,7 @@ function drawText(context, child, collectionId, { resolveFontFamily, fontAliases
     graphicId
   );
   const fontWeight = properties.fontWeight ?? "normal";
-  const alias = properties.font === undefined ? undefined : fontAliases?.get(fontRenderKey(properties.font));
-  if (properties.font !== undefined && alias === undefined) throw new Error("Font-bound text requires its prepared font alias.");
+
 
   if (fontSize <= 0) {
     throw new Error(`Graphic "${graphicId}" requires a positive fontSize.`);
@@ -80,10 +89,7 @@ function drawText(context, child, collectionId, { resolveFontFamily, fontAliases
 
   try {
     context.globalAlpha = opacity;
-    const rendererFontWeight = normalizeRendererFontWeight(fontWeight);
-    context.font = `${properties.fontStyle === "italic" ? "italic " : ""}${rendererFontWeight} ${fontSize}px ${alias === undefined ? resolveFontFamily?.(fontFamily) ?? fontFamily : `"${alias}"`}`;
-    context.textAlign = textAlign;
-    context.textBaseline = textBaseline;
+    configureTextContext(context, properties, { resolveFontFamily, fontAliases });
     context.translate(x, y);
     context.rotate(rotation);
     const bounds = properties.fillBounds;

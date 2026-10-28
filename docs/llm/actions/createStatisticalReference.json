@@ -125,6 +125,11 @@
       "type": "BlendMode | undefined"
     },
     {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "opacity",
       "required": false,
       "type": "number | undefined"

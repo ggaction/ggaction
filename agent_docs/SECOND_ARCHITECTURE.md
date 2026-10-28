@@ -3209,3 +3209,19 @@ Font와 outline/blend의 합산 checkpoint는 기존 source owner를 보존한�
 807 entries / packed 1,190,379 / unpacked 5,479,048bytes이며 cap은807/1,191,000/5,480,000이다.
 동일 source의 installed Vite bundle은 Full584,601 / Basic345,051 gzip bytes로 측정되어
 585,000/346,000 cap을 사용한다. 최종 shadow checkpoint에서 지원 Node별 합산값을 다시 측정한다.
+
+
+### Explicit prepared per-glyph effects
+
+Shadow intent는 기존 mark appearance에 한 번 저장하고 final mark-output에서 명시적으로 concrete 값으로 만든다.
+동기 Canvas/SVG는 exact graphic identity·digest·density에 묶인 private 준비 handle을 소비한다. Native PNG/PDF는
+같은 준비 owner를 호출한다. 실제 glyph RGBA와 공통 pure blur/composite를 거친 image payload는 ephemeral하며
+program이나 codec에 backend 객체를 넣지 않는다. Text ink 측정은 기존 font/line/origin을 바꾸지 않는 준비 단계이고,
+layout reflow나 semantic compilation이 아니다. 준비된 exact font와 실제 glyph drawer를 재사용한다.
+공통 bounds owner는 occupied effect 범위를 별도로 계산하며 selection/hit은 원래 source geometry를 유지한다.
+정확한 지원·수명·한도는 [MARKS](contract/current/MARKS.md#prepared-per-item-shadows)가 소유한다.
+
+Shadow source checkpoint의 Node22 실측은815 entries / packed1,198,723 / unpacked5,516,118 bytes이며
+cap은815/1,199,000/5,517,000이다. Minimal installed Vite는 Full585,965/Basic346,504/SVG20,051gzip
+bytes로 각각586,000/347,000/25,000 cap을 사용한다. Exact support와 lifecycle은 Current에, 최초실패와
+최종 고정 archive의 Node별 qualification은 paints/shadow-evidence에 분리 기록한다.

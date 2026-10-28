@@ -100,21 +100,21 @@ interface ChartProgramActions {
   editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
   editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
   editBin2DData(options: TargetedOptions<EditBin2DDataOptions>): ChartProgram;
-  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  createTickMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
-  editTickMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
+  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createTickMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
+  editTickMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   jitterPoints(options: TargetedOptions<JitterPointsOptions>): ChartProgram;
   removeJitter(options?: TargetedOptions<RemoveJitterOptions>): ChartProgram;
   packPoints(options: TargetedOptions<PackPointsOptions>): ChartProgram;
   removePointPacking(options?: TargetedOptions<RemovePointPackingOptions>): ChartProgram;
-  createLineMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
-  editLineMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
-  createBarMark(options?: TargetedOptions<RectStyleDetails & { blend?: BlendMode; clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editBarMark(options: TargetedOptions<RectStyleDetails & { blend?: BlendMode; clip?: boolean; target?: string; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
-  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
-  editArcMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
+  createLineMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
+  editLineMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
+  createBarMark(options?: TargetedOptions<RectStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editBarMark(options: TargetedOptions<RectStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
+  editArcMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
   createRectMark(options?: TargetedOptions<RectMarkOptions>): ChartProgram;
   editRectMark(options: TargetedOptions<EditRectMarkOptions>): ChartProgram;
   createRuleMark(options?: TargetedOptions<{ clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions>): ChartProgram;
@@ -137,7 +137,7 @@ interface ChartProgramActions {
   editTextMark(options: TargetedOptions<EditTextMarkOptions>): ChartProgram;
   layoutLabels(options?: TargetedOptions<LabelLayoutOptions>): ChartProgram;
   removeLabelLayout(options?: TargetedOptions<RemoveLabelLayoutOptions>): ChartProgram;
-  editAreaMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+  editAreaMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
   encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
   encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
   encodeTheta(options: TargetedOptions<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>): ChartProgram;
@@ -9577,6 +9577,17 @@ export type MarkSelector = { grain?: "item" | "stack"; rows: { data: string; ind
 
 Related types: [`MarkGraphicProperty`](#type-markgraphicproperty).
 
+### `MarkShadow` {#type-markshadow}
+
+<details markdown="1">
+<summary>Expand MarkShadow</summary>
+
+```typescript
+export interface MarkShadow { color: string; offsetX?: number; offsetY?: number; blurRadius?: number; }
+```
+
+</details>
+
 ### `MeanConfidenceIntervalMethod` {#type-meanconfidenceintervalmethod}
 
 <details markdown="1">
@@ -11696,6 +11707,7 @@ Related types: [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel
 ```typescript
 export interface RectMarkOptions extends RectStyleDetails {
   blend?: BlendMode;
+  shadow?: MarkShadow | false;
   clip?: boolean;
   id?: string;
   data?: string;
@@ -11710,7 +11722,7 @@ export interface RectMarkOptions extends RectStyleDetails {
 
 </details>
 
-Related types: [`RectStyleDetails`](#type-rectstyledetails) · [`BlendMode`](#type-blendmode) · [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline).
+Related types: [`RectStyleDetails`](#type-rectstyledetails) · [`BlendMode`](#type-blendmode) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline).
 
 ### `RectStyleDetails` {#type-rectstyledetails}
 
@@ -12524,6 +12536,7 @@ type RulePositionValue =
 ```typescript
 export interface RuleStyleOptions extends StrokeStyleDetails {
   blend?: BlendMode;
+  shadow?: MarkShadow | false;
   stroke?: string;
   strokeWidth?: number;
   strokeDash?: DashStyle | DashPattern;
@@ -12533,7 +12546,7 @@ export interface RuleStyleOptions extends StrokeStyleDetails {
 
 </details>
 
-Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`BlendMode`](#type-blendmode) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern).
+Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`BlendMode`](#type-blendmode) · [`MarkShadow`](#type-markshadow) · [`DashStyle`](#type-dashstyle) · [`DashPattern`](#type-dashpattern).
 
 ### `ScalarAggregateOperation` {#type-scalaraggregateoperation}
 
@@ -13380,6 +13393,7 @@ Related types: [`ValueFormat`](#type-valueformat).
 ```typescript
 export interface TextMarkOptions extends StrokeStyleDetails {
   blend?: BlendMode;
+  shadow?: MarkShadow | false;
   clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;
@@ -13409,7 +13423,7 @@ export interface TextMarkOptions extends StrokeStyleDetails {
 
 </details>
 
-Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`BlendMode`](#type-blendmode) · [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`RotationInput`](#type-rotationinput).
+Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`BlendMode`](#type-blendmode) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`RotationInput`](#type-rotationinput).
 
 ### `TextMeasurement` {#type-textmeasurement}
 

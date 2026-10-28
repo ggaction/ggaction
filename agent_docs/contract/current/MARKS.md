@@ -112,6 +112,52 @@ Evidence: `test/unit/grammar/mark-outline.test.js`, `test/unit/actions/marks/mar
 `test/contracts/mark-outline-rendering.test.js`, `test/contracts/mark-outline-types.test.js`, and
 `test/charts/mark-outlines/`. Current outline support adds no Line/Rule/Tick outline option.
 
+## Prepared per-item shadows
+
+Point, Bar, Rect, Area, Arc, Text, Line, Rule and Tick create/edit actions accept
+`shadow?: {color: string; offsetX?: number; offsetY?: number; blurRadius?: number} | false`.
+Color is required and uses the strict structured-paint color grammar. Offsets default to zero and must be finite;
+blurRadius defaults to zero and must be finite and non-negative. Objects are closed complete replacements.
+Omission preserves an edit, false removes the effect, and null/undefined/accessors/extra keys fail atomically.
+The normalized four fields live in the existing appearance config and are explicitly materialized on each glyph.
+Attached labels, annotations, endpoint/ECDF labels and reference Rule/Rect styles forward their existing mark options.
+Endpoint and ECDF labels also forward the existing Text outline option.
+
+The actual source includes fill and ordinary stroke, or the active pre-fill outline. Its alpha excludes overall
+mark opacity. The shared Gaussian uses sigma=blurRadius/2 at logical density one, ceil(3sigma) support and two
+passes. Fractional offsets bilinearly sample the blurred alpha. The source is composited over the tinted shadow,
+then the complete glyph receives opacity once, the existing owner/ancestor clip and the selected blend mode.
+The original geometry, identity, row grain and selection/hit bounds remain unchanged. Occupied layout bounds
+include source and translated blur support at logical density one. Automatic categorical legend samples inherit
+shadow and remove it on source reset; explicit symbol recipes keep their specified appearance. Highlight changes
+rerasterize the actual current source, including shape changes, without creating an additional selected item.
+
+`prepareShadowRendering(programOrCanvasScene, {createCanvas, decode?, fonts?, pixelRatio?, signal?})` is a
+chart-authoring renderer preparation function exported by Full and Basic. It returns an opaque frozen
+`{kind:"shadow-rendering", glyphCount, pixelRatio, dispose()}`. Canvas `render(...,{shadows})` and browser-safe
+`renderToSVG(...,{shadows})` require preparation for any shadow. The readable Canvas factory is explicit;
+Canvas output additionally requires the same decoder contract as image rendering. SVG embeds the exact prepared
+PNG payload without decoding. A Canvas scene is prepared against that exact scene; SVG scene creation accepts
+`{shadows}`. Handles are bound to exact graphic identity/content and density. Dispose is idempotent. Missing,
+changed, stale, aborted or disposed handles fail before destination clear/resize. Editable/graphic restoration
+and program edits require fresh preparation. Prepared state and decoded objects never enter either codec.
+
+Text shadows require exact embedded font identity and its authentic prepared font handle. Ink measurement uses
+the same font/alignment/baseline as the original drawer and finite actualBoundingBox metrics. Existing line
+origins, rotation, actual glyph holes, fill and outline are preserved. Missing metrics or unbound fonts fail;
+no system font or rectangular glyph substitute is inferred. PNG/PDF prepare fonts and shadows through the native
+adapter automatically, offline. PDF rasterizes only affected glyphs. Other text and geometry retain existing output.
+
+Per-glyph raster dimensions remain <=4096, pixels <=1,048,576, numeric/RGBA output buffers <=8MiB and work
+<=10,000,000. The scene also limits output pixels to16,777,216, RGBA to64MiB and total work to10,000,000.
+All frames are planned before large raster callbacks; Text may use a 1x1 measurement surface first. The source
+outside a clip is retained when its shifted/blurred alpha can contribute inside the clip. Host failure, mutation
+or abort returns no reusable handle.
+
+Evidence: `test/unit/grammar/shadow-composite.test.js`, `test/unit/actions/marks/mark-shadow.test.js`,
+`test/unit/renderers/shadow-rendering.test.js`, `test/unit/renderers/text-shadow.test.js`,
+`test/contracts/mark-shadow-types.test.js`, and `test/contracts/realistic-mark-shadows.test.js`.
+
 ## Shared stroke and rounded-rectangle style details
 
 The existing create/edit actions expose one closed, renderer-neutral stroke vocabulary:
@@ -136,7 +182,7 @@ type RectStyleDetails = StrokeStyleDetails & {
 ```
 
 - Point, Tick, Line, Area, Arc, and Rule accept `StrokeStyleDetails`. Bar and Rect accept
-  `RectStyleDetails`. Text rejects these fields, and every non-rectangular family rejects
+  `RectStyleDetails`. Text accepts shared stroke details for outlines, and every non-rectangular family rejects
   all corner-radius options through its existing closed option validator.
 - Effective omitted defaults are `lineCap: "butt"`, `lineJoin: "miter"`, `miterLimit: 10`, and
   `cornerRadius: 0`. Omitted defaults are not persisted or serialized, so an old program keeps its

@@ -1,6 +1,7 @@
 import { applyMarkBlend } from "../blend.js";
 import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { requestedMarkOutline } from "../../../grammar/markOutline.js";
+import { requestedMarkShadow } from "../../../grammar/markShadow.js";
 import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
 import { getLayerScaleIds } from "../../../materialization/marks/index.js";
 import { conditionalArcValues } from "../../../materialization/conditionalArcValues.js";
@@ -50,7 +51,7 @@ import {
 
 const ARC_OPTIONS = Object.freeze([
   "blend",
-  "innerRadius", "padAngle", "fill", "opacity", "outline", "stroke", "strokeWidth",
+  "innerRadius", "padAngle", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", ...ARC_OPTIONS]);
@@ -67,6 +68,7 @@ function normalizeConfig(
     ...previous,
     ...strokeDetails,
     ...requestedMarkOutline(args),
+        ...requestedMarkShadow(args),
     ...(Object.hasOwn(args, "innerRadius")
       ? { innerRadius: normalizeArcInnerRadius(args.innerRadius), innerRadiusExplicit: true }
       : {}),

@@ -1,6 +1,7 @@
 import { applyMarkBlend } from "../blend.js";
 import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { requestedMarkOutline } from "../../../grammar/markOutline.js";
+import { requestedMarkShadow } from "../../../grammar/markShadow.js";
 import { validateFillPaint } from "../../../grammar/paint.js";
 import { assertIndependentOverlayGeometry } from "../../../grammar/overlay.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
@@ -23,7 +24,7 @@ import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const OPTIONS = Object.freeze([
   "blend",
-  "target", "clip", "missing", "shape", "fill", "opacity", "outline", "stroke", "strokeWidth",
+  "target", "clip", "missing", "shape", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -38,7 +39,7 @@ export const editPointMark = /* @__PURE__ */ action(
     requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "editPointMark");
     const editable = [
-      "blend", "clip", "missing", "shape", "fill", "opacity", "outline", "stroke", "strokeWidth",
+      "blend", "clip", "missing", "shape", "fill", "opacity", "outline", "shadow", "stroke", "strokeWidth",
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!editable.some(property => Object.hasOwn(args, property))) {
@@ -81,7 +82,7 @@ export const editPointMark = /* @__PURE__ */ action(
       : this;
     semantic = applyMarkBlend(semantic, layer.id, args);
     const config = { ...semantic.markConfigs[id], ...requestedMarkClip(args) };
-    Object.assign(config, strokeDetails, requestedMarkOutline(args));
+    Object.assign(config, strokeDetails, requestedMarkOutline(args), requestedMarkShadow(args));
     if (Object.hasOwn(args, "shape")) {
       config.shape = validatePointShape(args.shape);
     }

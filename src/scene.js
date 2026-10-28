@@ -22,12 +22,12 @@ function identities(graphicSpec) {
 }
 
 /** Read-only, browser-safe, structured-cloneable scene for animation consumers. */
-export function createTransitionScene(program, { format = "svg" } = {}) {
+export function createTransitionScene(program, { format = "svg", shadows } = {}) {
   if (!["svg", "canvas"].includes(format)) throw new TypeError("Unknown transition scene format.");
   const cache = format === "canvas" ? canvasScenes : scenes;
   if (!program?.graphicSpec) throw new TypeError("createTransitionScene requires a ChartProgram.");
-  if (cache.has(program)) return cache.get(program);
-  const scene = cloneAndFreeze((format === "canvas" ? collectTransitionGraphics : renderTransitionGraphics)(program.graphicSpec, identities(program.graphicSpec)));
-  cache.set(program, scene);
+  if (shadows === undefined && cache.has(program)) return cache.get(program);
+  const scene = cloneAndFreeze((format === "canvas" ? collectTransitionGraphics : renderTransitionGraphics)(program.graphicSpec, identities(program.graphicSpec), { shadows }));
+  if (shadows === undefined) cache.set(program, scene);
   return scene;
 }

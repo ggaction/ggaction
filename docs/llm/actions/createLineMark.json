@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a semantic line mark and empty path collection.",
-  "signature": "createLineMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; missing?: \"error\" | \"break\"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;",
+  "signature": "createLineMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; missing?: \"error\" | \"break\"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;",
   "intents": [
     "create line mark",
     "create",
@@ -98,6 +98,11 @@
       "type": "BlendMode | undefined"
     },
     {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "clip",
       "required": false,
       "type": "boolean | undefined"
@@ -154,7 +159,7 @@
     }
   ],
   "callPatterns": [
-    "createLineMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, clip? })"
+    "createLineMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow? })"
   ],
   "snippet": "program.createLineMark({})",
   "errors": [],

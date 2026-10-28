@@ -27,6 +27,7 @@ const LINE_OPTIONS = Object.freeze([
   "clip",   "strokeWidth", "stroke", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const LABEL_OPTIONS = Object.freeze([
+  "outline", "shadow",
   "blend",   "field", "value", "content", "normalizeBy", "format", "layout", "fill",
   "opacity", "fontSize", "fontFamily", "fontWeight", "align", "baseline",
   "rotation", "dx", "dy"

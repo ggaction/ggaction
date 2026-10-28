@@ -10,10 +10,10 @@ import {createCanvas,loadImage,ImageData,PDFDocument} from "@napi-rs/canvas";
 import {chromium} from "playwright";
 import {variants,frame} from "./manifest.js";
 import {expectedColor,pixels} from "./reference.js";
-import {startStaticServer} from "../../support/static-server.js";
-import {openBrowserPage,assertNoBrowserErrors,closeBrowserWithEvidence,saveBrowserEvidence} from "../../support/browser.js";
-import {ensureVariantMetadata} from "../../support/artifact-metadata.js";
-const root=fileURLToPath(new URL("../../../",import.meta.url)),directory=path.join(root,".artifacts/test/png/review/shadow-paints");
+import {startStaticServer} from "../../../../support/static-server.js";
+import {openBrowserPage,assertNoBrowserErrors,closeBrowserWithEvidence,saveBrowserEvidence} from "../../../../support/browser.js";
+import {ensureVariantMetadata} from "../../../../support/artifact-metadata.js";
+const root=fileURLToPath(new URL("../../../../../",import.meta.url)),directory=path.join(root,".artifacts/test/png/charts/mark-shadows/native");
 const hash=value=>createHash("sha256").update(value).digest("hex");
 const bytes=value=>Buffer.from(value.split(",")[1],"base64");
 async function decode(buffer,ratio=1){const image=await loadImage(buffer),canvas=createCanvas(frame.width*ratio,frame.height*ratio);assert.equal(image.width,frame.width*ratio);assert.equal(image.height,frame.height*ratio);canvas.getContext("2d").drawImage(image,0,0);return canvas;}
@@ -38,10 +38,10 @@ test("uses identical bounded shadow sublayers across four primitive output paths
  let server,browser;const evidence=[];await mkdir(directory,{recursive:true});
  try{
   server=await startStaticServer(root);browser=await chromium.launch({headless:true});
-  const opened=await openBrowserPage(browser,`${server.baseUrl}test/gates/shadow-paints/browser.html`,{waitFor:()=>document.querySelector("#status").textContent==="Ready"});
+  const opened=await openBrowserPage(browser,`${server.baseUrl}test/charts/mark-shadows/variants/native/browser.html`,{waitFor:()=>document.querySelector("#status").textContent==="Ready"});
   for(const variant of variants){
    const output=path.join(directory,variant.variant);await mkdir(output,{recursive:true});
-   await ensureVariantMetadata({scope:"review",chart:variant.chart,variant:variant.variant,kind:"primitive",title:variant.title,userFacingCallChain:variant.callChain});
+   await ensureVariantMetadata({scope:"charts",capability:"mark-shadows",chart:variant.chart,variant:variant.variant,kind:"primitive",title:variant.title,userFacingCallChain:variant.callChain});
    const glyph=variant.prepare(variant.fixture),surface=createCanvas(glyph.width,glyph.height);surface.getContext("2d").putImageData(new ImageData(glyph.pixels,glyph.width,glyph.height),0,0);
    const sublayer=surface.toBuffer("image/png"),dataURL=`data:image/png;base64,${sublayer.toString("base64")}`,image=await loadImage(sublayer);
    const canvas=createCanvas(frame.width,frame.height);variant.primitive(canvas.getContext("2d"),variant.fixture,image,glyph);
@@ -57,12 +57,12 @@ test("uses identical bounded shadow sublayers across four primitive output paths
    const browserPNG=bytes(rendered.canvas),svgPNG=bytes(rendered.svg);await writeFile(path.join(output,"browser-canvas.png"),browserPNG);await writeFile(path.join(output,"browser-svg.png"),svgPNG);
    const checks=[...samples(canvas,variant.fixture,"Native Canvas / PNG"),...samples(await decode(browserPNG),variant.fixture,"Browser Canvas"),...samples(await decode(svgPNG),variant.fixture,"Browser SVG"),...samples(await decode(pdf4x,4),variant.fixture,"Native PDF at 288dpi",4)];
    const diagnostics=samples(await decode(pdfPNG),variant.fixture,"Native PDF at 72dpi; no equality claim");
-   const entry={variant:variant.variant,nativePrimitiveOnly:true,publicPaintIntegration:"pending",rasterScope:"effect glyph only",glyph:{x:glyph.x,y:glyph.y,width:glyph.width,height:glyph.height},sublayerSHA256:hash(sublayer),pdfPayload,checks,diagnostics};evidence.push(entry);await writeFile(path.join(output,"evidence.json"),JSON.stringify(entry,null,2)+"\n");
+   const entry={variant:variant.variant,nativePrimitiveOnly:true,publicPaintIntegration:"verified separately by mark-shadows public pairs",rasterScope:"effect glyph only",glyph:{x:glyph.x,y:glyph.y,width:glyph.width,height:glyph.height},sublayerSHA256:hash(sublayer),pdfPayload,checks,diagnostics};evidence.push(entry);await writeFile(path.join(output,"evidence.json"),JSON.stringify(entry,null,2)+"\n");
   }
   assert.equal(await opened.page.locator("canvas[aria-label]").count(),variants.length);assertNoBrowserErrors(opened.errors,"Shadow primitive review");await opened.page.close();
   const sheet=createCanvas(frame.width*3,(frame.height+30)*2),context=sheet.getContext("2d");context.fillStyle="#edf2f7";context.fillRect(0,0,sheet.width,sheet.height);
   for(const[index,variant]of variants.entries()){const x=index%3*frame.width,y=Math.floor(index/3)*(frame.height+30);context.drawImage(await loadImage(path.join(directory,variant.variant,"primitive.png")),x,y+30);}
-  await writeFile(path.join(directory,"contact-sheet.png"),sheet.toBuffer("image/png"));await writeFile(path.join(directory,"results.json"),JSON.stringify({nativePrimitiveOnly:true,publicPaintIntegration:"pending",variants:evidence},null,2)+"\n");
+  await writeFile(path.join(directory,"contact-sheet.png"),sheet.toBuffer("image/png"));await writeFile(path.join(directory,"results.json"),JSON.stringify({nativePrimitiveOnly:true,publicPaintIntegration:"verified separately by mark-shadows public pairs",variants:evidence},null,2)+"\n");
   assert.deepEqual(evidence.flatMap(e=>e.checks.filter(c=>!c.passed).map(c=>({variant:e.variant,...c}))),[]);
  }catch(error){await saveBrowserEvidence(browser,error);throw error;}finally{await closeBrowserWithEvidence(browser);await server?.close();}
 });

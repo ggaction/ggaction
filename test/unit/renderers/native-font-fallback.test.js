@@ -1,9 +1,13 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { createCanvas, GlobalFonts, loadImage } from '@napi-rs/canvas';
-import { nativeFontResolver } from '../../../src/renderers/nativeBackend.js';
+import { nativeFontResolver, nativeFontRegistrar } from '../../../src/renderers/nativeBackend.js';
 import { renderToPNGBuffer } from '../../../src/renderers/png.js';
 import { renderToPDFBuffer } from '../../../src/renderers/pdf.js';
+import { prepareFontRendering } from '../../../src/renderers/fontRendering.js';
+import { rendererFontFamily } from '../../../src/renderers/text.js';
 import { renderCanvasProgram } from '../../../src/renderers/canvas/index.js';
 
 const scene = (text, fontFamily = 'Arial') => ({ graphicSpec: { order: ['canvas'], objects: {
@@ -47,4 +51,47 @@ test('native PNG resolves Hangul through an installed fallback and PDF remains v
   assert.match(pdf.buffer.toString('latin1'),/\/ToUnicode/);
   assert.doesNotMatch(pdf.buffer.toString('latin1'),/\/Subtype\s*\/Image/);
   assert.equal(JSON.stringify(p),before);
+});
+
+
+test('Canvas default fallback order preserves authored families and deduplicates their quoted names', () => {
+  const suffix = '"Noto Sans CJK KR", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", '
+    + '"Noto Sans CJK JP", "Noto Sans JP", "Yu Gothic", "Meiryo", '
+    + '"Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", '
+    + '"Noto Sans CJK TC", "PingFang TC", "Microsoft JhengHei", '
+    + '"Arial Unicode MS", "Noto Sans", "DejaVu Sans", "Noto Color Emoji", "Apple Color Emoji", "Segoe UI Emoji"';
+  assert.equal(rendererFontFamily('sans-serif'), `sans-serif, ${suffix}`);
+  const authored = "Custom, 'NOTO SANS CJK KR'";
+  assert.equal(rendererFontFamily(authored), `${authored}, ${suffix.slice(suffix.indexOf(', ') + 2)}`);
+});
+
+test('generic Canvas and native exports agree before, during and after exact font leases', async () => {
+  const bytes = readFileSync(new URL('../../fixtures/fonts/metric-fixture.ttf', import.meta.url));
+  const font = { contentHash: createHash('sha256').update(bytes).digest('hex'), mimeType: 'font/ttf', byteLength: bytes.length,
+    family: 'ggaction Metric Fixture', style: 'normal', weight: 400, metricsProviderVersion: 'fixture@1',
+    payload: { encoding: 'base64', data: bytes.toString('base64') } };
+  const generic = scene('Root 0.9', 'sans-serif'), original = JSON.stringify(generic);
+  let initialPixels;
+  async function compare() {
+    const canvas = createCanvas(1, 1);
+    renderCanvasProgram(generic, canvas.getContext('2d'), {}, createCanvas);
+    const png = await renderToPNGBuffer(generic);
+    assert.deepEqual(png.buffer, canvas.toBuffer('image/png'));
+    if (initialPixels === undefined) initialPixels = png.buffer;
+    else assert.deepEqual(png.buffer, initialPixels, 'Unbound glyphs remain stable across exact font leases');
+    const pdf = await renderToPDFBuffer(generic);
+    assert.match(pdf.buffer.toString('latin1'), /\/ToUnicode/);
+    assert.doesNotMatch(pdf.buffer.toString('latin1'), /\/Subtype\s*\/Image/);
+  }
+  await compare();
+  const bound = scene('AB', font.family);
+  Object.assign(bound.graphicSpec.objects.label.properties, { font, fontWeight: 400 });
+  const fonts = await prepareFontRendering(bound, { register: nativeFontRegistrar(GlobalFonts) });
+  try {
+    const png = await renderToPNGBuffer(bound);
+    assert.ok(png.buffer.length > 0);
+    await compare();
+  } finally { fonts.dispose(); }
+  await compare();
+  assert.equal(JSON.stringify(generic), original);
 });

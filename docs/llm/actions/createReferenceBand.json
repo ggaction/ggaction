@@ -181,6 +181,11 @@
       "type": "BlendMode | undefined"
     },
     {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "missing",
       "required": false,
       "type": "\"error\" | \"skip\" | undefined"

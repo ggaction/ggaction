@@ -104,6 +104,11 @@
       "type": "BlendMode | undefined"
     },
     {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "stroke",
       "required": false,
       "type": "string | undefined"
@@ -145,7 +150,7 @@
     }
   ],
   "callPatterns": [
-    "createRuleMark({ id?, data?, target?, clip?, missing?, blend?, stroke?, strokeWidth? })"
+    "createRuleMark({ id?, data?, target?, clip?, missing?, blend?, shadow?, stroke? })"
   ],
   "snippet": "program.createRuleMark({})",
   "errors": [],

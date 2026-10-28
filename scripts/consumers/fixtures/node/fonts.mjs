@@ -72,3 +72,5 @@ export const cases = [
     finally { prepared.dispose(); }
   } }
 ];
+
+export { bytes as installedFontBytes, source as installedFontSource, host as installedFontHost, register as registerInstalledFont };

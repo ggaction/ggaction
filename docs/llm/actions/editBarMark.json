@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Edit whole-bar appearance and rematerialize every concrete rectangle.",
-  "signature": "editBarMark(options: TargetedOptions<RectStyleDetails & { blend?: BlendMode; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+  "signature": "editBarMark(options: TargetedOptions<RectStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
   "intents": [
     "edit bar mark",
     "edit",
@@ -104,6 +104,11 @@
       "name": "blend",
       "required": false,
       "type": "BlendMode | undefined"
+    },
+    {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
     },
     {
       "name": "clip",

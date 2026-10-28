@@ -149,7 +149,27 @@ export interface ImageRenderingHost {
     Readonly<{ image: object; width: number; height: number; originClean: true }>;
   signal?: AbortSignal;
 }
-export interface CanvasRenderOptions { pixelRatio?: number; images?: PreparedImageRendering; fonts?: PreparedFontRendering; }
+declare const preparedShadowRenderingBrand: unique symbol;
+export interface PreparedShadowRendering {
+  readonly [preparedShadowRenderingBrand]: true;
+  readonly kind: "shadow-rendering";
+  readonly glyphCount: number;
+  readonly pixelRatio: number;
+  dispose(): void;
+}
+export interface ShadowRenderingHost {
+  createCanvas(width: number, height: number): {
+    readonly width: number; readonly height: number;
+    getContext(type: "2d"): CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | null;
+  };
+  /** Required for Canvas output; SVG embeds the prepared bytes directly. */
+  decode?: ImageRenderingHost["decode"];
+  /** Exact font preparation is required for Text shadows. */
+  fonts?: PreparedFontRendering;
+  pixelRatio?: number;
+  signal?: AbortSignal;
+}
+export interface CanvasRenderOptions { pixelRatio?: number; images?: PreparedImageRendering; fonts?: PreparedFontRendering; shadows?: PreparedShadowRendering; }
 export interface ImageResourceSource {
   uri: string; expectedHash: string; mimeType: ImageMimeType; maxBytes?: number; license?: string; attribution?: string;
 }
@@ -241,6 +261,7 @@ export interface RadialGradientPaint {
 /** Stroke painted before the fill; white produces a halo. */
 export type BlendMode = "normal" | "multiply" | "screen" | "difference";
 export interface MarkOutline { color: string; width: number; }
+export interface MarkShadow { color: string; offsetX?: number; offsetY?: number; blurRadius?: number; }
 export type FillPaint = string | LinearGradientPaint | PatternPaint | RadialGradientPaint;
 type FilledMarkStroke = string | false;
 export type CurveInterpolation =
@@ -4798,6 +4819,7 @@ export type TextFormat = ValueFormat;
 
 export interface TextMarkOptions extends StrokeStyleDetails {
   blend?: BlendMode;
+  shadow?: MarkShadow | false;
   clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;
@@ -4882,6 +4904,7 @@ export interface RemoveLabelLayoutOptions {
 
 export interface RectMarkOptions extends RectStyleDetails {
   blend?: BlendMode;
+  shadow?: MarkShadow | false;
   clip?: boolean;
   id?: string;
   data?: string;
@@ -5200,6 +5223,7 @@ export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions e
 
 export interface RuleStyleOptions extends StrokeStyleDetails {
   blend?: BlendMode;
+  shadow?: MarkShadow | false;
   stroke?: string;
   strokeWidth?: number;
   strokeDash?: DashStyle | DashPattern;
@@ -5994,6 +6018,7 @@ export class ChartProgram {
   /** One point layer accepts at most 50,000 selected rows, before missing-value filtering. */
   createPointMark(options?: TargetedOptions<StrokeStyleDetails & {
     blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     id?: string;
     data?: string;
@@ -6007,6 +6032,7 @@ export class ChartProgram {
   }>): ChartProgram;
   editPointMark(options: TargetedOptions<StrokeStyleDetails & {
     blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     target?: string;
     missing?: "error" | "skip";
@@ -6019,6 +6045,7 @@ export class ChartProgram {
   }>): ChartProgram;
   createTickMark(options?: TargetedOptions<StrokeStyleDetails & {
     blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     id?: string;
     data?: string;
@@ -6030,6 +6057,7 @@ export class ChartProgram {
   }>): ChartProgram;
   editTickMark(options: TargetedOptions<StrokeStyleDetails & {
     blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     target?: string;
     missing?: "error" | "skip";
@@ -6044,6 +6072,7 @@ export class ChartProgram {
   removePointPacking(options?: TargetedOptions<RemovePointPackingOptions>): ChartProgram;
   createLineMark(options?: TargetedOptions<StrokeStyleDetails & {
     blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     missing?: "error" | "break";
     id?: string;
@@ -6057,6 +6086,7 @@ export class ChartProgram {
   }>): ChartProgram;
   editLineMark(options: TargetedOptions<StrokeStyleDetails & {
     blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     missing?: "error" | "break";
     target?: string;
@@ -6069,6 +6099,7 @@ export class ChartProgram {
   }>): ChartProgram;
   createBarMark(options?: TargetedOptions<RectStyleDetails & {
     blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     id?: string;
     data?: string;
@@ -6082,6 +6113,7 @@ export class ChartProgram {
   }>): ChartProgram;
   editBarMark(options: TargetedOptions<RectStyleDetails & {
     blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     target?: string;
     missing?: "error" | "skip";
@@ -6093,6 +6125,7 @@ export class ChartProgram {
   }>): ChartProgram;
   createAreaMark(options?: TargetedOptions<StrokeStyleDetails & {
     blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     id?: string;
     data?: string;
@@ -6106,6 +6139,7 @@ export class ChartProgram {
   }>): ChartProgram;
   createArcMark(options?: TargetedOptions<StrokeStyleDetails & {
     blend?: BlendMode;
+  shadow?: MarkShadow | false;
     id?: string;
     data?: string;
     innerRadius?: ArcInnerRadius;
@@ -6118,6 +6152,7 @@ export class ChartProgram {
   }>): ChartProgram;
   editArcMark(options: TargetedOptions<StrokeStyleDetails & {
     blend?: BlendMode;
+  shadow?: MarkShadow | false;
     target?: string;
     innerRadius?: ArcInnerRadius;
     padAngle?: number;
@@ -6151,6 +6186,7 @@ export class ChartProgram {
   removeLabelLayout(options?: TargetedOptions<RemoveLabelLayoutOptions>): ChartProgram;
   editAreaMark(options: TargetedOptions<StrokeStyleDetails & {
     blend?: BlendMode;
+  shadow?: MarkShadow | false;
     clip?: boolean;
     target?: string;
     fill?: FillPaint;

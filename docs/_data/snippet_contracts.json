@@ -3905,6 +3905,18 @@
     "executable": false
   },
   {
+    "file": "api/rendering.md",
+    "block": 14,
+    "heading": "Prepared shadows",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use the installed ggaction package in a browser module with a canvas element whose id is chart.",
+    "sha256": "8490da610111f4e9d96e4e88978061578fed62a4d43b667097a2836a241181d8",
+    "executable": true
+  },
+  {
     "file": "api/scales.md",
     "block": 1,
     "heading": "At a glance",

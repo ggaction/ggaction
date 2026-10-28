@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Creates short tick glyphs for compact one-dimensional distributions or aligned value marks.",
-  "signature": "createTickMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;",
+  "signature": "createTickMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;",
   "intents": [
     "create tick mark",
     "create",
@@ -102,6 +102,11 @@
       "type": "BlendMode | undefined"
     },
     {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "clip",
       "required": false,
       "type": "boolean | undefined"
@@ -148,7 +153,7 @@
     }
   ],
   "callPatterns": [
-    "createTickMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, clip? })"
+    "createTickMark({ id?, data?, target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow? })"
   ],
   "snippet": "program.createTickMark({})",
   "errors": [],

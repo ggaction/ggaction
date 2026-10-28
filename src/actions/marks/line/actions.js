@@ -1,3 +1,4 @@
+import { requestedMarkShadow } from "../../../grammar/markShadow.js";
 import { applyMarkBlend } from "../blend.js";
 import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
@@ -53,12 +54,12 @@ import {
 const DEFAULT_LINE_STROKE = DEFAULT_COLORS.mark;
 const DEFAULT_LINE_WIDTH = 2;
 const CREATE_OPTIONS = Object.freeze([
-  "blend",
+  "blend", "shadow",
   "clip", "missing", "id", "data", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const EDIT_OPTIONS = Object.freeze([
-  "blend",
+  "blend", "shadow",
   "clip", "missing", "target", "stroke", "strokeWidth", "opacity", "curve", "tension", "closed",
   ...STROKE_STYLE_PROPERTIES
 ]);
@@ -114,6 +115,7 @@ const createLineMark = /* @__PURE__ */ action(
     validateMarkOptions(args, CREATE_OPTIONS, "createLineMark");
     validateRequestedMarkBlend(args, "line");
     requestedMarkClip(args);
+    requestedMarkShadow(args);
     const strokeDetails = requestedStrokeDetails(args, "createLineMark");
     const missing = validateLineMissing(args.missing);
     const id = resolveMarkId(this, args.id, {
@@ -174,6 +176,7 @@ const createLineMark = /* @__PURE__ */ action(
           ...(Object.hasOwn(args, "curve") ? { curve } : {}),
           ...(args.tension === undefined ? {} : { tension: args.tension }),
           ...(Object.hasOwn(args, "closed") ? { closed } : {}),
+          ...requestedMarkShadow(args),
           ...strokeDetails
         }
       );
@@ -306,6 +309,7 @@ const editLineMark = /* @__PURE__ */ action(
     validateMarkOptions(args, EDIT_OPTIONS, "editLineMark");
     validateRequestedMarkBlend(args, "line");
     requestedMarkClip(args);
+    requestedMarkShadow(args);
     const strokeDetails = requestedStrokeDetails(args, "editLineMark");
     if (!EDIT_OPTIONS.filter(key => key !== "target").some(key => Object.hasOwn(args, key))) {
       throw new Error("editLineMark requires stroke, strokeWidth, opacity, curve, tension, closed, or missing.");
@@ -338,7 +342,7 @@ const editLineMark = /* @__PURE__ */ action(
     }
     validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
     const config = { ...this.markConfigs[layer.id], ...requestedMarkClip(args) };
-    Object.assign(config, strokeDetails);
+    Object.assign(config, strokeDetails, requestedMarkShadow(args));
     for (const [key, validate] of Object.entries({
       stroke: validateNonEmptyString,
       strokeWidth: validateNonNegativeFinite,

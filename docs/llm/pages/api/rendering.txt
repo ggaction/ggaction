@@ -638,6 +638,72 @@ The [complete font example](../../../tutorials/font-assets/) includes explicit b
 and Node host adapters, pinned Korean and monochrome emoji subsets, combining
 marks, wrapping, offline snapshots and the same primitive across four renderers.
 
+## Prepared shadows
+
+`prepareShadowRendering(programOrCanvasScene, {createCanvas, decode?, fonts?, pixelRatio?, signal?})` is available
+from `ggaction` and `ggaction/basic`. It prepares each affected glyph from actual source pixels, combines its
+shadow and retains the canonical PNG in an opaque handle. Canvas and SVG then consume those same bytes.
+This preparation does not change the immutable program.
+
+Complete browser module with a destination `<canvas id="chart">`:
+
+> **Executable complete.** Use the installed ggaction package in a browser module with a canvas element whose id is chart.
+
+```js
+import { chart, prepareShadowRendering, render } from "ggaction";
+import { renderToSVG } from "ggaction/svg";
+
+const program = chart()
+  .createCanvas({ width: 240, height: 160, margin: 40 })
+  .createData({ values: [{ x: 1, y: 2 }] })
+  .createPointMark({ fill: "#d2462d", shadow: {
+    color: "rgba(30,60,90,.5)", offsetX: 8, offsetY: 6, blurRadius: 4
+  } })
+  .encodeX({ field: "x" }).encodeY({ field: "y" })
+  .encodePointRadius({ value: 18 });
+const context = document.querySelector("#chart").getContext("2d");
+const shadows = await prepareShadowRendering(program, {
+  createCanvas(width, height) {
+    const canvas = document.createElement("canvas");
+    canvas.width = width; canvas.height = height;
+    return canvas;
+  },
+  async decode({ bytes, mimeType }) {
+    const image = await createImageBitmap(new Blob([bytes], { type: mimeType }));
+    return { image, width: image.width, height: image.height, originClean: true };
+  }
+});
+try {
+  render(program, context, { shadows });
+  const svg = renderToSVG(program, { shadows });
+  // Use svg as an inline or saved SVG document.
+} finally {
+  shadows.dispose();
+}
+```
+
+For SVG-only output, omit `decode`. For high-density Canvas output, pass the same `pixelRatio` to preparation
+and `render`. Text shadows additionally require a `fonts` handle from [font preparation](../../../api/rendering/#embedded-fonts)
+for the exact same program or Canvas scene. Pass both `fonts` and `shadows` to Canvas rendering. The host must
+provide finite actual glyph ink metrics; missing fonts or metrics are errors. The original multiline positions,
+rotation, glyph holes, structured fill and outlines are preserved.
+
+`renderToPNG`/`renderToPNGBuffer` and `renderToPDF`/`renderToPDFBuffer` prepare fonts and shadows automatically
+with the installed native backend. They do not fetch resources. PDF keeps unaffected geometry vector and uses
+an image only for each affected glyph. A source outside an owner clip can still cast its shadow inside that clip.
+
+For Canvas scenes, prepare the exact scene returned by `createTransitionScene(program,{format:"canvas"})`, then
+pass the handle to `renderTransitionScene`. For SVG scenes, pass a program-bound handle to
+`createTransitionScene(program,{shadows})`. Scene output contains the prepared effect without adding semantic items.
+
+Handles belong to one exact graphic identity/content and output density. After editing or restoring either
+program codec, prepare again. Disposing twice is safe; missing, changed, stale, disposed or aborted preparation
+fails before the destination is cleared or resized. The handle is ephemeral and cannot be serialized.
+
+Each glyph permits at most 4096 pixels on either axis, 1,048,576 pixels and 8 MiB of numeric/RGBA output buffers.
+The complete scene permits 16,777,216 output pixels, 64 MiB RGBA and 10,000,000 units of convolution/compositing work.
+All glyph frames are checked before large raster allocations. Text may first allocate a 1×1 measuring surface.
+
 ## Related
 
 [Canvas](../../../api/canvas/) · [Semantic and graphical state](../../../concepts/semantic-and-graphics/) ·

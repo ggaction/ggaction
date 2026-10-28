@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Partially edit Tick length or constant line appearance while preserving data, position, and other assignments.",
-  "signature": "editTickMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;",
+  "signature": "editTickMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;",
   "intents": [
     "edit tick mark",
     "edit",
@@ -85,6 +85,11 @@
       "type": "BlendMode | undefined"
     },
     {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "clip",
       "required": false,
       "type": "boolean | undefined"
@@ -121,7 +126,7 @@
     }
   ],
   "callPatterns": [
-    "editTickMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, clip?, missing?, length? })"
+    "editTickMark({ target?, lineCap?, lineJoin?, miterLimit?, blend?, shadow?, clip?, missing? })"
   ],
   "snippet": "program.editTickMark({ lineCap: \"butt\" })",
   "errors": [],

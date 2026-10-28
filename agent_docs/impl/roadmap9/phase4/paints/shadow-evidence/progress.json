@@ -1,0 +1,34 @@
+{
+  "status": "source-candidate",
+  "base": "b0682914b",
+  "fontFallbackSource": "fdb0ea51f91b76638d0db297342a3a027d0e2336",
+  "passed": {
+    "sourceBoundariesTypesPackage": 44,
+    "shapePrimitivePublic": 6,
+    "textPrimitivePublic": 3,
+    "fontFallbackAndText": 17,
+    "markAndTextFocused": 30,
+    "textPatternFocusedAfterCorrection": 7,
+    "realisticPinnedDatasetRecipes": 15
+  },
+  "firstUnit": {
+    "passed": 5666,
+    "total": 5667,
+    "failure": "new pattern literal wrongly assumed zero antialiasing at a narrow gap; wider explicit gap preserves exact zero assertion; focused 7/7 passes"
+  },
+  "docsBeforeSource": {
+    "passed": 170,
+    "total": 172,
+    "remaining": [
+      "new example source link requires source commit",
+      "browser snippet harness missing explicit Canvas factory/Blob decoder; corrected focused 2/2 passes"
+    ]
+  },
+  "pending": [
+    "canonical all/coverage",
+    "same archive Node20/22/24 qualification",
+    "final source docs and built responsive accessibility checks"
+  ],
+  "integrationOwner": "root retains Image/H/Partition/GraphPlot P2 consumer integration",
+  "completeRoadmap": false
+}
