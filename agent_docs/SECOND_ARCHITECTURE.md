@@ -3174,3 +3174,7 @@ outline mark, retained image를 두고 source revision·codec·prepared image st
 교차 검증한다. 합산 canonical packed entry794, Node20 packed1,177,323/unpacked5,410,308bytes에 맞춰
 한도는794/1,178,000/5,411,000이다. 합산 Full gzip581,143은 기존581,000을143bytes 초과하여582,000만
 허용하고 Basic342,894/SVG는 기존343,000/25,000 안에 있다. 개별 기능의 이전 측정을 합산 결과로 대신하지 않는다.
+
+통합 search-index 실측896,003bytes는 이전896,000을3bytes 초과한다. 현재 모든 페이지/액션을 유지하며
+공유 canonical search cap만 최소1000단위897,000으로 조정한다. 최초 source2개 및 built 링크 검사 실패와
+해당 입력 수정 뒤 재검증 결과는 outline 통합 evidence가 보존한다.
