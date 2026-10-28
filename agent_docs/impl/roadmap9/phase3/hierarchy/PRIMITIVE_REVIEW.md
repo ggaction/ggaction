@@ -11,6 +11,8 @@
 - [ ] STEP-020·AT-22·STEP-077 전체 완료
 
 계산 기준은 `06070369753ccc5a4b8f26ccfc69055e0128f6d1`이다.
+검토 소스·테스트 revision은 `ec0484613ff1c91e243a9097ff42c4a5cd72138f`이며 원격 `codex/roadmap9-hierarchy`에 push했다.
+이후 기록만 고정하는 metadata commit은 실행 소스와 PNG를 바꾸지 않는다.
 승인된 전체 계획과 parent의 위임에 따라 private 계산과 이 검토 자료를 준비했다.
 Gate 상태는 **ready-for-review**이며 공개 action이나 승인 완료를 주장하지 않는다.
 Partition mapping/bend와 그 primitive 검토는 별도 담당자가 진행한다.

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "state": "ready-for-review",
   "publicActionImplemented": false,
-  "testedHead": "06070369753ccc5a4b8f26ccfc69055e0128f6d1",
+  "testedHead": "ec0484613ff1c91e243a9097ff42c4a5cd72138f",
   "node": "v22.23.1",
   "command": "node scripts/check-hierarchy-primitives.js",
   "exitCode": 0,
