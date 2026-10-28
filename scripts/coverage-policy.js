@@ -6,6 +6,8 @@ const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "png-byte-encoding": { prefix: "core/pngEncoding", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Bounded glyph PNG bytes must preserve RGBA and reject unsafe inputs before allocation." },
+  "conditional-grammar": { prefix: "grammar/conditional", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Ordered predicates and stored branch contracts must reject inactive malformed inputs." },
+  "conditional-materialization": { prefix: "materialization/conditional", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Final item grain, exact dependencies and conditional rematerialization must remain exercised." },
   "source-preparation": { prefix: "resources/", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Host input, opaque preparation and freshness must be validated before application." },
   "source-grammar": { prefix: "grammar/dataSource", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Parsing, retained payload and request proofs must agree without host execution." },
   "source-actions": { prefix: "actions/data/source", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Prepared source planning and exact child contexts preserve atomic application." },
@@ -83,6 +85,9 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
 });
 
 export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
+  "actions/encodings/conditional.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "materialization/legendEncodings.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "materialization/overlayGeometry.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "core/valueEncoding.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "layout/facetHeaderTitles.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "actions/data/regressionStatistics.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),

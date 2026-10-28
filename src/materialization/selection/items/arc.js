@@ -43,7 +43,7 @@ export function resolveArcItems(program, layer, dataset, grain, resolveItems, se
         ...(strokeValues === undefined ? {} : { stroke: strokeValues[0] })
       },
       properties: {
-        ...concreteProperties(graphic.items[index]?.properties),
+        ...concreteProperties(graphic?.items?.[index]?.properties),
         ...resolvePolarPoint(
           frame,
           (sector.startTheta + sector.endTheta) / 2,

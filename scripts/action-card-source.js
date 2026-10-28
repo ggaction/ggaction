@@ -298,6 +298,8 @@ export async function declaredActionMetadata(actions) {
         throw new Error(`${action.name} has more than one public parameter.`);
       }
       const options = [];
+      const exactSignature = exactSignatureFromSource(source, action.name);
+      const conditional = exactSignature.match(/ConditionalEncodingOptions<([^>]+)>/u)?.[0];
       if (parameters.length === 1) {
         const parameter = parameters[0];
         const declaration = parameter.valueDeclaration?.resolve(project);
@@ -323,13 +325,15 @@ export async function declaredActionMetadata(actions) {
             name: property.name,
             required: commonProperty !== undefined &&
               (commonProperty.flags & SymbolFlags.Optional) === 0,
-            type: checker.typeToString(
+            // Keep the exact named public payload instead of an expanded,
+            // truncated Omit union for conditional branches.
+            type: conditional && ["conditions", "otherwise"].includes(property.name)
+              ? `${conditional}["${property.name}"]` : checker.typeToString(
               checker.getTypeOfSymbolAtLocation(commonProperty ?? property, propertyDeclaration)
             )
           });
         }
       }
-      const exactSignature = exactSignatureFromSource(source, action.name);
       return { name: action.name, signature: exactSignature, options };
     });
   } finally {

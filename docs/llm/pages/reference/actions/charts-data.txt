@@ -516,7 +516,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Required | `string` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
-| `field` | Required | `string` |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
 | `nulls` | Optional / branch-dependent | `"exclude" \| "include" \| undefined` |
 | `oneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `noneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
@@ -527,11 +528,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
+filterData({ id, source?, where })
 filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })
 ```
 
-Create an immutable named derived dataset using exactly one membership,
-comparison, or range filter. The source defaults to current data.
+Create an immutable named dataset using a field filter or a strict boolean expression predicate.
+The source defaults to current data. `where` uses the closed v2 AST and excludes all field
+filter options. Parameter edits revise dependent filters and their chart resources.
 [Data](../../../../api/data/)
 
 ## `createParameter`
@@ -966,13 +969,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `nulls` | Optional / branch-dependent | `"exclude" \| "include" \| false \| undefined` |
 | `oneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `noneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `predicate` | Optional / branch-dependent | `FilterComparison \| undefined` |
 | `range` | Optional / branch-dependent | `FilterRangePatch \| undefined` |
 | `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `nulls` | Optional / branch-dependent | `"exclude" \| "include" \| false \| undefined` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused core data editing](../../../../reference/actions/charts-data/#focused-core-data-editing).
@@ -3805,6 +3809,7 @@ channel false restores independent domain inference. This edit is atomic.
 
 ```javascript
 editDerivedData({ target, definition, dependents? })
+editFilteredData({ target, where, dependents? })
 editFilteredData({ target, field?, oneOf? | noneOf? | predicate? | range?, nulls?, dependents? })
 editSortedData({ target, sortBy, dependents? })
 editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })

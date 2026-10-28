@@ -1,3 +1,4 @@
+import { validateStoredConditional } from "../../../grammar/conditionalState.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   COLOR_LAYOUTS,
@@ -55,6 +56,10 @@ export function validateLayerSemanticValue(
   } = {}
 ) {
   const property = parsed.path.join(".");
+  if (parsed.path[0] === "conditionals") {
+    validateStoredConditional(parsed.path[1], value);
+    return;
+  }
   if (property === "derivedBindings.overlay") {
     const binding = normalizeOverlayBinding(value);
     validateLayerSource(program, parsed, binding.source, ["bar", "line", "area", "point"]);

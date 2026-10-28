@@ -3,7 +3,7 @@ import { ownRecord } from "../../core/ownData.js";
 import { inspectExpressionV2 } from "../../grammar/expressionAst.js";
 import { isExpressionV2, normalizeComputedTransform } from "../../grammar/computed.js";
 import { parameterEnvironment } from "../../grammar/parameter.js";
-import { computedFieldEnvironment } from "../../materialization/computedInputs.js";
+import { expressionFieldEnvironment } from "../../materialization/expressionInputs.js";
 import { requireStoredResource } from "../../selectors/resources.js";
 
 export function bindComputedTransform(program, source, transform) {
@@ -18,7 +18,7 @@ export function bindComputedTransform(program, source, transform) {
   const inspected = inspectExpressionV2(transform.expression);
   const resources = inspected.parameters.map(id => requireStoredResource(program, { kind: "parameter", id }));
   const normalized = normalizeComputedTransform(transform, {
-    fields: computedFieldEnvironment(source), parameters: parameterEnvironment(resources)
+    fields: expressionFieldEnvironment(source), parameters: parameterEnvironment(resources)
   });
   return cloneAndFreeze({
     ...normalized,

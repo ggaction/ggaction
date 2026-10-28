@@ -105,7 +105,7 @@ const encodeRadius = /* @__PURE__ */ action(
     }
 
     const layer = findLayer(this, target);
-    if (layer.encoding?.size !== undefined) {
+    if (layer.encoding?.size !== undefined || layer.conditionals?.size !== undefined) {
       throw new Error("encodeRadius cannot be combined with a size encoding.");
     }
     return this

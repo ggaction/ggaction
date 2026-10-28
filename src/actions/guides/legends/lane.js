@@ -1,3 +1,4 @@
+import { conditionalLegendLayer } from "../../../materialization/legendEncodings.js";
 import { translateGraphic } from "../../../materialization/graphicTranslation.js";
 import { editLegendBorderBounds } from "../../../materialization/legendBorder.js";
 import { resolveLegendAxisOffset, effectiveLegendOffsetConfig } from "../../../materialization/guides/resources.js";
@@ -229,7 +230,7 @@ function groupBlocks(blocks, configs) {
 
 function edgeKinds(program, edge) {
   const configs = program.guideConfigs.legend ?? {};
-  const layerOrder = new Map(program.semanticSpec.layers.map(
+  const layerOrder = new Map(program.semanticSpec.layers.map(layer => conditionalLegendLayer(layer)).map(
     (layer, index) => [layer.id, index]
   ));
   return Object.entries(configs)

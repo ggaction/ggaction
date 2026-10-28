@@ -1,10 +1,11 @@
+import { conditionalLegendLayer } from "../../../materialization/legendEncodings.js";
 import { resolveLegendCreationPlan } from "./categorical/actions.js";
 import { resolveLegendStepConfig } from "./creation.js";
 import { legendBlockChannels } from "../../../grammar/legendBlocks.js";
 
 // Resolve the ordinary legend inference first, then exclude only suppressed
 // owner/channel pairs. Explicit createLegend bypasses this automatic policy.
-export function automaticLegendOptions(program, args, layers = program.semanticSpec.layers) {
+export function automaticLegendOptions(program, args, layers = program.semanticSpec.layers.map(layer => conditionalLegendLayer(layer))) {
   if (args === undefined || !Object.keys(program.guideConfigs.suppressedLegends ?? {}).length) return args;
   const plan = resolveLegendCreationPlan(program, args, layers);
   const owners = new Map();

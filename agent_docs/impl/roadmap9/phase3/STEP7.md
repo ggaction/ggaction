@@ -9,8 +9,8 @@
 - [x] Installed Node20/22/24: 동일 archive의 Node196·tutorial68·qualification7 모두 통과
 - [x] 문서164개, built150pages·LLM1218개와 desktop/mobile browser 검사
 - [x] action-card route 누락의 fail-closed 검증 및 생성 의존 순서 수정
-- [ ] 최종 source commit의 clean checks와 원격 CI coverage
-- [ ] STEP-013/014/015 개별 종료 receipt 및 completion validator
+- [x] 최종 source commit의 clean checks와 인증한 원격 CI coverage; [STEP8](STEP8.md)
+- [x] STEP-013/014/015 개별 종료 receipt 및 completion validator; [STEP8](STEP8.md)
 
 ## 통합 계약과 검증
 

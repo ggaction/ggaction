@@ -1,0 +1,2548 @@
+TAP version 13
+# Subtest: range filters support independent inclusive endpoints
+ok 1 - range filters support independent inclusive endpoints
+  ---
+  duration_ms: 7.020083
+  type: 'test'
+  ...
+# Subtest: noneOf comparisons preserve scalar types and explicit null handling
+ok 2 - noneOf comparisons preserve scalar types and explicit null handling
+  ---
+  duration_ms: 3.645917
+  type: 'test'
+  ...
+# Subtest: partial range edits retain the opposite endpoint and inclusivity
+ok 3 - partial range edits retain the opposite endpoint and inclusivity
+  ---
+  duration_ms: 3.0005
+  type: 'test'
+  ...
+# Subtest: createBinData reuses exact histogram boundary and last-bin rules
+ok 4 - createBinData reuses exact histogram boundary and last-bin rules
+  ---
+  duration_ms: 8.616
+  type: 'test'
+  ...
+# Subtest: createBinData supports maxBins, steps, empty-bin omission, and resolved provenance
+ok 5 - createBinData supports maxBins, steps, empty-bin omission, and resolved provenance
+  ---
+  duration_ms: 2.686834
+  type: 'test'
+  ...
+# Subtest: createBinData rejects invalid bin policies and input atomically
+ok 6 - createBinData rejects invalid bin policies and input atomically
+  ---
+  duration_ms: 1.506083
+  type: 'test'
+  ...
+# Subtest: createBinData produces values directly consumable by ranged marks
+ok 7 - createBinData produces values directly consumable by ranged marks
+  ---
+  duration_ms: 22.48475
+  type: 'test'
+  ...
+# Subtest: createBinData uses weighted mass and positive-weight extent and members
+ok 8 - createBinData uses weighted mass and positive-weight extent and members
+  ---
+  duration_ms: 1.027917
+  type: 'test'
+  ...
+# Subtest: createBinData rejects invalid and all-zero statistical weights
+ok 9 - createBinData rejects invalid and all-zero statistical weights
+  ---
+  duration_ms: 1.258167
+  type: 'test'
+  ...
+# Subtest: roundtrips, preserves and resets assignment through immutable edits
+ok 10 - roundtrips, preserves and resets assignment through immutable edits
+  ---
+  duration_ms: 102.970583
+  type: 'test'
+  ...
+# Subtest: recomputes dependent members when assignment changes
+ok 11 - recomputes dependent members when assignment changes
+  ---
+  duration_ms: 7.605083
+  type: 'test'
+  ...
+# Subtest: facet replay preserves assignment and source member indexes
+ok 12 - facet replay preserves assignment and source member indexes
+  ---
+  duration_ms: 26.432167
+  type: 'test'
+  ...
+# Subtest: basic and direct derived authoring share canonical step provenance
+ok 13 - basic and direct derived authoring share canonical step provenance
+  ---
+  duration_ms: 4.267834
+  type: 'test'
+  ...
+# Subtest: heatmap policy matches its explicit action decomposition and legacy defaults
+ok 14 - heatmap policy matches its explicit action decomposition and legacy defaults
+  ---
+  duration_ms: 59.448375
+  type: 'test'
+  ...
+# Subtest: source revision replays step assignment without mutating the previous program
+ok 15 - source revision replays step assignment without mutating the previous program
+  ---
+  duration_ms: 3.56225
+  type: 'test'
+  ...
+# Subtest: creates immutable 2D-bin provenance and concrete values
+ok 16 - creates immutable 2D-bin provenance and concrete values
+  ---
+  duration_ms: 10.798958
+  type: 'test'
+  ...
+# Subtest: uses an explicit source or the current dataset
+ok 17 - uses an explicit source or the current dataset
+  ---
+  duration_ms: 3.166958
+  type: 'test'
+  ...
+# Subtest: replaces one logical owner with immutable revisions and rematerializes layers
+ok 18 - replaces one logical owner with immutable revisions and rematerializes layers
+  ---
+  duration_ms: 19.238917
+  type: 'test'
+  ...
+# Subtest: accepts a filtered source and rejects unsupported dependent replacement
+ok 19 - accepts a filtered source and rejects unsupported dependent replacement
+  ---
+  duration_ms: 4.502375
+  type: 'test'
+  ...
+# Subtest: replays automatic extents independently inside facet children
+ok 20 - replays automatic extents independently inside facet children
+  ---
+  duration_ms: 14.928209
+  type: 'test'
+  ...
+# Subtest: rejects invalid calls before creating state
+ok 21 - rejects invalid calls before creating state
+  ---
+  duration_ms: 0.532625
+  type: 'test'
+  ...
+# Subtest: keeps public create and edit edge generation finite and atomic
+ok 22 - keeps public create and edit edge generation finite and atomic
+  ---
+  duration_ms: 1.09025
+  type: 'test'
+  ...
+# Subtest: partially edits the unique logical owner and preserves omitted provenance
+ok 23 - partially edits the unique logical owner and preserves omitted provenance
+  ---
+  duration_ms: 3.226625
+  type: 'test'
+  ...
+# Subtest: resolves the current owner before unique inference and rejects ambiguity
+ok 24 - resolves the current owner before unique inference and rejects ambiguity
+  ---
+  duration_ms: 5.731666
+  type: 'test'
+  ...
+# Subtest: edits source, fields, grid, extent, policies and complete output names
+ok 25 - edits source, fields, grid, extent, policies and complete output names
+  ---
+  duration_ms: 1.938209
+  type: 'test'
+  ...
+# Subtest: normalizes the members output when members is toggled without as
+ok 26 - normalizes the members output when members is toggled without as
+  ---
+  duration_ms: 2.042792
+  type: 'test'
+  ...
+# Subtest: preserves a prior revision when the new revision uses it as source
+ok 27 - preserves a prior revision when the new revision uses it as source
+  ---
+  duration_ms: 3.181875
+  type: 'test'
+  ...
+# Subtest: rebinds and rematerializes every direct consumer exactly once
+ok 28 - rebinds and rematerializes every direct consumer exactly once
+  ---
+  duration_ms: 19.4595
+  type: 'test'
+  ...
+# Subtest: tracks output-role renames through consumers, guides, selections, and jitter
+ok 29 - tracks output-role renames through consumers, guides, selections, and jitter
+  ---
+  duration_ms: 149.197583
+  type: 'test'
+  ...
+# Subtest: tracks renamed outputs in category, weighted arc, and Parallel bindings
+ok 30 - tracks renamed outputs in category, weighted arc, and Parallel bindings
+  ---
+  duration_ms: 16.06925
+  type: 'test'
+  ...
+# Subtest: rejects removing a referenced optional output before revising state
+ok 31 - rejects removing a referenced optional output before revising state
+  ---
+  duration_ms: 2.057792
+  type: 'test'
+  ...
+# Subtest: rejects empty, no-op, incomplete-output and invalid edits atomically
+ok 32 - rejects empty, no-op, incomplete-output and invalid edits atomically
+  ---
+  duration_ms: 3.598334
+  type: 'test'
+  ...
+# Subtest: rejects a derived consumer before editing its logical owner
+ok 33 - rejects a derived consumer before editing its logical owner
+  ---
+  duration_ms: 1.188166
+  type: 'test'
+  ...
+# Subtest: bindMarkData atomically rebinds and rematerializes an independent mark
+ok 34 - bindMarkData atomically rebinds and rematerializes an independent mark
+  ---
+  duration_ms: 22.367916
+  type: 'test'
+  ...
+# Subtest: bindMarkData rejects incompatible and incomplete data without changing its source
+ok 35 - bindMarkData rejects incompatible and incomplete data without changing its source
+  ---
+  duration_ms: 4.363209
+  type: 'test'
+  ...
+# Subtest: bindMarkData enforces lifecycle and option boundaries
+ok 36 - bindMarkData enforces lifecycle and option boundaries
+  ---
+  duration_ms: 58.2045
+  type: 'test'
+  ...
+# Subtest: preserves literal small-span bootstrap bounds around a unit-sized center
+ok 37 - preserves literal small-span bootstrap bounds around a unit-sized center
+  ---
+  duration_ms: 15.071958
+  type: 'test'
+  ...
+# Subtest: keeps exact bootstrap values under binary scaling and ordered multiple groups
+ok 38 - keeps exact bootstrap values under binary scaling and ordered multiple groups
+  ---
+  duration_ms: 8.263916
+  type: 'test'
+  ...
+# Subtest: recomputes precise intervals after source revisions and focused edits
+ok 39 - recomputes precise intervals after source revisions and focused edits
+  ---
+  duration_ms: 10.264458
+  type: 'test'
+  ...
+# Subtest: interval-backed complete chart facades consume precise positive bounds
+ok 40 - interval-backed complete chart facades consume precise positive bounds
+  ---
+  duration_ms: 67.422708
+  type: 'test'
+  ...
+# Subtest: matches independent asymmetric percentile endpoints and persists normalized method provenance
+ok 41 - matches independent asymmetric percentile endpoints and persists normalized method provenance
+  ---
+  duration_ms: 21.544667
+  type: 'test'
+  ...
+# Subtest: shares streams across endpoint/output order and multiple levels without extra draws
+ok 42 - shares streams across endpoint/output order and multiple levels without extra draws
+  ---
+  duration_ms: 8.93725
+  type: 'test'
+  ...
+# Subtest: keeps independent streams for fields, seeds and sample counts
+ok 43 - keeps independent streams for fields, seeds and sample counts
+  ---
+  duration_ms: 15.415666
+  type: 'test'
+  ...
+# Subtest: preserves row/group traversal and consumes singleton samples while empty groups consume none
+ok 44 - preserves row/group traversal and consumes singleton samples while empty groups consume none
+  ---
+  duration_ms: 13.517375
+  type: 'test'
+  ...
+# Subtest: uses the same exact mean bootstrap in interval data
+ok 45 - uses the same exact mean bootstrap in interval data
+  ---
+  duration_ms: 3.434958
+  type: 'test'
+  ...
+# Subtest: validates seed/sample endpoints, unknown method keys, unsupported consumers and atomicity
+ok 46 - validates seed/sample endpoints, unknown method keys, unsupported consumers and atomicity
+  ---
+  duration_ms: 3.207791
+  type: 'test'
+  ...
+# Subtest: preflights the action draw limit, deduplicates bounds/levels and retains raw source immutability
+ok 47 - preflights the action draw limit, deduplicates bounds/levels and retains raw source immutability
+  ---
+  duration_ms: 2573.152667
+  type: 'test'
+  ...
+# Subtest: supports immutable focused edits, source revisions and rematerialization
+ok 48 - supports immutable focused edits, source revisions and rematerialization
+  ---
+  duration_ms: 16.461125
+  type: 'test'
+  ...
+# Subtest: normalizes raw transform evaluation without changing caller-owned definitions
+ok 49 - normalizes raw transform evaluation without changing caller-owned definitions
+  ---
+  duration_ms: 7.348166
+  type: 'test'
+  ...
+# Subtest: edits interval seeds and recomputes interval data from source revisions
+ok 50 - edits interval seeds and recomputes interval data from source revisions
+  ---
+  duration_ms: 16.562083
+  type: 'test'
+  ...
+# Subtest: creates immutable box summary and outlier provenance through wrapped data actions
+ok 51 - creates immutable box summary and outlier provenance through wrapped data actions
+  ---
+  duration_ms: 8.518125
+  type: 'test'
+  ...
+# Subtest: validates box data options without changing the source program
+ok 52 - validates box data options without changing the source program
+  ---
+  duration_ms: 0.574084
+  type: 'test'
+  ...
+# Subtest: creates minmax summary provenance without classifying outliers
+ok 53 - creates minmax summary provenance without classifying outliers
+  ---
+  duration_ms: 2.06925
+  type: 'test'
+  ...
+# Subtest: preserves sub-picounit box statistics instead of rounding them to zero
+ok 54 - preserves sub-picounit box statistics instead of rounding them to zero
+  ---
+  duration_ms: 0.798292
+  type: 'test'
+  ...
+# Subtest: summary identity policy distinguishes row count from valid numeric values
+ok 55 - summary identity policy distinguishes row count from valid numeric values
+  ---
+  duration_ms: 8.889625
+  type: 'test'
+  ...
+# Subtest: bin missing policy reports exclusions and includes the final boundary
+ok 56 - bin missing policy reports exclusions and includes the final boundary
+  ---
+  duration_ms: 1.794041
+  type: 'test'
+  ...
+# Subtest: calculation reports follow derived revisions and are removed with owners
+ok 57 - calculation reports follow derived revisions and are removed with owners
+  ---
+  duration_ms: 3.460709
+  type: 'test'
+  ...
+# Subtest: explicit missing:error rejects nullable statistical inputs atomically
+ok 58 - explicit missing:error rejects nullable statistical inputs atomically
+  ---
+  duration_ms: 0.848833
+  type: 'test'
+  ...
+# Subtest: createCompleteData fills one typed key domain with explicit membership
+ok 59 - createCompleteData fills one typed key domain with explicit membership
+  ---
+  duration_ms: 6.95625
+  type: 'test'
+  ...
+# Subtest: createCompleteData preserves group and domain order without Cartesian groups
+ok 60 - createCompleteData preserves group and domain order without Cartesian groups
+  ---
+  duration_ms: 3.070958
+  type: 'test'
+  ...
+# Subtest: createCompleteData handles empty global and grouped sources explicitly
+ok 61 - createCompleteData handles empty global and grouped sources explicitly
+  ---
+  duration_ms: 1.571834
+  type: 'test'
+  ...
+# Subtest: createCompleteData rejects ambiguous or oversized definitions atomically
+ok 62 - createCompleteData rejects ambiguous or oversized definitions atomically
+  ---
+  duration_ms: 1.577875
+  type: 'test'
+  ...
+# Subtest: createImputedData performs constant and distance-based linear filling
+ok 63 - createImputedData performs constant and distance-based linear filling
+  ---
+  duration_ms: 1.688209
+  type: 'test'
+  ...
+# Subtest: createImputedData keeps groups, source order, maxGap, and edge priority
+ok 64 - createImputedData keeps groups, source order, maxGap, and edge priority
+  ---
+  duration_ms: 1.31575
+  type: 'test'
+  ...
+# Subtest: createImputedData applies edge errors only to eligible missing runs
+ok 65 - createImputedData applies edge errors only to eligible missing runs
+  ---
+  duration_ms: 0.978292
+  type: 'test'
+  ...
+# Subtest: createImputedData rejects invalid values and method contracts atomically
+ok 66 - createImputedData rejects invalid values and method contracts atomically
+  ---
+  duration_ms: 1.237291
+  type: 'test'
+  ...
+# Subtest: facets replay completion, imputation, and duration windows from local source rows
+ok 67 - facets replay completion, imputation, and duration windows from local source rows
+  ---
+  duration_ms: 30.525875
+  type: 'test'
+  ...
+# Subtest: mean imputation defaults explicitly, respects groups and preserves completed row grain
+ok 68 - mean imputation defaults explicitly, respects groups and preserves completed row grain
+  ---
+  duration_ms: 1.76325
+  type: 'test'
+  ...
+# Subtest: mean imputation is finite, order independent and obeys missing-run policies
+ok 69 - mean imputation is finite, order independent and obeys missing-run policies
+  ---
+  duration_ms: 1.335333
+  type: 'test'
+  ...
+# Subtest: completion preserves repeated observations and fills only absent group keys
+ok 70 - completion preserves repeated observations and fills only absent group keys
+  ---
+  duration_ms: 94.197792
+  type: 'test'
+  ...
+# Subtest: nested scalar access preserves raw records, optional roots, literal dotted keys and root dependencies
+ok 71 - nested scalar access preserves raw records, optional roots, literal dotted keys and root dependencies
+  ---
+  duration_ms: 11.476583
+  type: 'test'
+  ...
+# Subtest: nested access rejects unsafe shapes and never invokes property getters
+ok 72 - nested access rejects unsafe shapes and never invokes property getters
+  ---
+  duration_ms: 0.959083
+  type: 'test'
+  ...
+# Subtest: literal replacement replaces first exact substring and treats Unicode, regex and dollar text literally
+ok 73 - literal replacement replaces first exact substring and treats Unicode, regex and dollar text literally
+  ---
+  duration_ms: 0.624833
+  type: 'test'
+  ...
+# Subtest: literal replacement validates all branches, preserves laziness, limits and failure atomicity
+ok 74 - literal replacement validates all branches, preserves laziness, limits and failure atomicity
+  ---
+  duration_ms: 1.059875
+  type: 'test'
+  ...
+# Subtest: new expressions replay through edits, persistence, filtered marks and faceted categories
+ok 75 - new expressions replay through edits, persistence, filtered marks and faceted categories
+  ---
+  duration_ms: 59.814625
+  type: 'test'
+  ...
+# Subtest: calendar years use explicit parsing, UTC, nulls and exact calendar duration
+ok 76 - calendar years use explicit parsing, UTC, nulls and exact calendar duration
+  ---
+  duration_ms: 27.875375
+  type: 'test'
+  ...
+# Subtest: year boundaries are time-zone explicit and astronomical years remain signed
+ok 77 - year boundaries are time-zone explicit and astronomical years remain signed
+  ---
+  duration_ms: 2.051291
+  type: 'test'
+  ...
+# Subtest: calendar input and closed AST errors reject atomically including empty sources
+ok 78 - calendar input and closed AST errors reject atomically including empty sources
+  ---
+  duration_ms: 9.548708
+  type: 'test'
+  ...
+# Subtest: year and floor expressions replay into derived consumers and facet children
+ok 79 - year and floor expressions replay into derived consumers and facet children
+  ---
+  duration_ms: 41.138375
+  type: 'test'
+  ...
+# Subtest: createComputedData preserves row grain and materializes closed arithmetic
+ok 80 - createComputedData preserves row grain and materializes closed arithmetic
+  ---
+  duration_ms: 9.802958
+  type: 'test'
+  ...
+# Subtest: createComputedData composes binary, unary, field, and finite constants
+ok 81 - createComputedData composes binary, unary, field, and finite constants
+  ---
+  duration_ms: 0.913375
+  type: 'test'
+  ...
+# Subtest: createComputedData rejects malformed and non-finite calculations atomically
+ok 82 - createComputedData rejects malformed and non-finite calculations atomically
+  ---
+  duration_ms: 3.173458
+  type: 'test'
+  ...
+# Subtest: createComputedData owns expressions and feeds quantitative encodings
+ok 83 - createComputedData owns expressions and feeds quantitative encodings
+  ---
+  duration_ms: 11.910542
+  type: 'test'
+  ...
+# Subtest: createComputedData evaluates conditionals lazily while preflighting every field
+ok 84 - createComputedData evaluates conditionals lazily while preflighting every field
+  ---
+  duration_ms: 1.781417
+  type: 'test'
+  ...
+# Subtest: createComputedData supports null handling, string composition, and boolean logic
+ok 85 - createComputedData supports null handling, string composition, and boolean logic
+  ---
+  duration_ms: 1.20325
+  type: 'test'
+  ...
+# Subtest: createComputedData uses code-point ordering and short-circuits boolean branches
+ok 86 - createComputedData uses code-point ordering and short-circuits boolean branches
+  ---
+  duration_ms: 0.968708
+  type: 'test'
+  ...
+# Subtest: createComputedData rejects typed-expression violations atomically
+ok 87 - createComputedData rejects typed-expression violations atomically
+  ---
+  duration_ms: 1.228958
+  type: 'test'
+  ...
+# Subtest: computed strings feed nominal encodings while computed nulls remain invalid quantitatively
+ok 88 - computed strings feed nominal encodings while computed nulls remain invalid quantitatively
+  ---
+  duration_ms: 11.299375
+  type: 'test'
+  ...
+# Subtest: facets preserve computed provenance and filter its row-preserving output
+ok 89 - facets preserve computed provenance and filter its row-preserving output
+  ---
+  duration_ms: 11.532667
+  type: 'test'
+  ...
+# Subtest: explicit decimal conversion preserves raw text and supports typed chart positions
+ok 90 - explicit decimal conversion preserves raw text and supports typed chart positions
+  ---
+  duration_ms: 6.360708
+  type: 'test'
+  ...
+# Subtest: floor preserves independent rows, signed zero and immutable provenance
+ok 91 - floor preserves independent rows, signed zero and immutable provenance
+  ---
+  duration_ms: 15.984125
+  type: 'test'
+  ...
+# Subtest: floor rejects invalid operands and preserves lazy evaluation and existing bounds
+ok 92 - floor rejects invalid operands and preserves lazy evaluation and existing bounds
+  ---
+  duration_ms: 3.895209
+  type: 'test'
+  ...
+# Subtest: floor derives all 20000 interval endpoints without aggregating 5000 observations
+ok 93 - floor derives all 20000 interval endpoints without aggregating 5000 observations
+  ---
+  duration_ms: 113.618791
+  type: 'test'
+  ...
+# Subtest: computed v2 materializes scalar diagnostics, undefined cells and field lineage
+ok 94 - computed v2 materializes scalar diagnostics, undefined cells and field lineage
+  ---
+  duration_ms: 8.868334
+  type: 'test'
+  ...
+# Subtest: computed v2 records all-branch parameter dependencies in first occurrence order
+ok 95 - computed v2 records all-branch parameter dependencies in first occurrence order
+  ---
+  duration_ms: 2.202
+  type: 'test'
+  ...
+# Subtest: computed v2 distinguishes literal dotted names and optional nested field paths
+ok 96 - computed v2 distinguishes literal dotted names and optional nested field paths
+  ---
+  duration_ms: 2.514917
+  type: 'test'
+  ...
+# Subtest: computed v2 preflights inactive references and typed fields on empty data
+ok 97 - computed v2 preflights inactive references and typed fields on empty data
+  ---
+  duration_ms: 1.254458
+  type: 'test'
+  ...
+# Subtest: computed v2 rejects malformed stored vectors and stale references without evaluation
+ok 98 - computed v2 rejects malformed stored vectors and stale references without evaluation
+  ---
+  duration_ms: 1.051625
+  type: 'test'
+  ...
+# Subtest: computed v2 structural validation never invokes AST or stored-reference accessors
+ok 99 - computed v2 structural validation never invokes AST or stored-reference accessors
+  ---
+  duration_ms: 0.133583
+  type: 'test'
+  ...
+# Subtest: computed v2 edits and source revisions preserve explicit replay bindings
+ok 100 - computed v2 edits and source revisions preserve explicit replay bindings
+  ---
+  duration_ms: 9.084875
+  type: 'test'
+  ...
+# Subtest: creates an immutable dataset and updates currentData
+ok 101 - creates an immutable dataset and updates currentData
+  ---
+  duration_ms: 4.716916
+  type: 'test'
+  ...
+# Subtest: infers one stable dataset id and requires a name after that
+ok 102 - infers one stable dataset id and requires a name after that
+  ---
+  duration_ms: 0.905166
+  type: 'test'
+  ...
+# Subtest: records lightweight nested data actions
+ok 103 - records lightweight nested data actions
+  ---
+  duration_ms: 0.224791
+  type: 'test'
+  ...
+# Subtest: supports empty and multiple datasets
+ok 104 - supports empty and multiple datasets
+  ---
+  duration_ms: 0.37975
+  type: 'test'
+  ...
+# Subtest: owns deeply nested rows and unusual scalar cells
+ok 105 - owns deeply nested rows and unusual scalar cells
+  ---
+  duration_ms: 0.209209
+  type: 'test'
+  ...
+# Subtest: rejects invalid and duplicate datasets
+ok 106 - rejects invalid and duplicate datasets
+  ---
+  duration_ms: 0.2985
+  type: 'test'
+  ...
+# Subtest: declared empty data validates fields independently from row presence
+ok 107 - declared empty data validates fields independently from row presence
+  ---
+  duration_ms: 7.41575
+  type: 'test'
+  ...
+# Subtest: schema inference distinguishes legacy empty and known empty records
+ok 108 - schema inference distinguishes legacy empty and known empty records
+  ---
+  duration_ms: 1.089833
+  type: 'test'
+  ...
+# Subtest: derived schemas reject fields removed by an upstream transform
+ok 109 - derived schemas reject fields removed by an upstream transform
+  ---
+  duration_ms: 3.631
+  type: 'test'
+  ...
+# Subtest: source revision rejects a removed field atomically
+ok 110 - source revision rejects a removed field atomically
+  ---
+  duration_ms: 12.027417
+  type: 'test'
+  ...
+# Subtest: empty-domain preservation follows a validated source revision identity
+ok 111 - empty-domain preservation follows a validated source revision identity
+  ---
+  duration_ms: 5.686792
+  type: 'test'
+  ...
+# Subtest: derives grouped Gaussian KDE on one shared sample grid
+ok 112 - derives grouped Gaussian KDE on one shared sample grid
+  ---
+  duration_ms: 8.953291
+  type: 'test'
+  ...
+# Subtest: derives every kernel and normalization from the approved formulas
+ok 113 - derives every kernel and normalization from the approved formulas
+  ---
+  duration_ms: 1.409125
+  type: 'test'
+  ...
+# Subtest: creates immutable density provenance and concrete values
+ok 114 - creates immutable density provenance and concrete values
+  ---
+  duration_ms: 31.446583
+  type: 'test'
+  ...
+# Subtest: preserves automatic density intent beside deterministic resolved provenance
+ok 115 - preserves automatic density intent beside deterministic resolved provenance
+  ---
+  duration_ms: 1.9515
+  type: 'test'
+  ...
+# Subtest: forwards explicit kernel and normalization into immutable provenance
+ok 116 - forwards explicit kernel and normalization into immutable provenance
+  ---
+  duration_ms: 1.444708
+  type: 'test'
+  ...
+# Subtest: supports ungrouped and explicit-extent density
+ok 117 - supports ungrouped and explicit-extent density
+  ---
+  duration_ms: 0.259166
+  type: 'test'
+  ...
+# Subtest: validates density derivation and action options
+ok 118 - validates density derivation and action options
+  ---
+  duration_ms: 3.420042
+  type: 'test'
+  ...
+# Subtest: does not mutate or retain caller-owned density inputs
+ok 119 - does not mutate or retain caller-owned density inputs
+  ---
+  duration_ms: 0.819791
+  type: 'test'
+  ...
+# Subtest: releases only unreferenced derived data through a wrapped action
+ok 120 - releases only unreferenced derived data through a wrapped action
+  ---
+  duration_ms: 1.463542
+  type: 'test'
+  ...
+# Subtest: computes weighted KDE values, count mass, and positive-weight extent
+ok 121 - computes weighted KDE values, count mass, and positive-weight extent
+  ---
+  duration_ms: 0.791375
+  type: 'test'
+  ...
+# Subtest: keeps reliability KDE shape invariant under weight scaling
+ok 122 - keeps reliability KDE shape invariant under weight scaling
+  ---
+  duration_ms: 0.341625
+  type: 'test'
+  ...
+# Subtest: resolves weighted automatic bandwidth independently for each profile
+ok 123 - resolves weighted automatic bandwidth independently for each profile
+  ---
+  duration_ms: 0.70075
+  type: 'test'
+  ...
+# Subtest: validates weighted KDE rows before excluding zero contribution
+ok 124 - validates weighted KDE rows before excluding zero contribution
+  ---
+  duration_ms: 0.572834
+  type: 'test'
+  ...
+# Subtest: chart facades reject explicit and current definition-only data immutably
+ok 125 - chart facades reject explicit and current definition-only data immutably
+  ---
+  duration_ms: 9.721708
+  type: 'test'
+  ...
+# Subtest: mark creation shares the definition-only data precondition
+ok 126 - mark creation shares the definition-only data precondition
+  ---
+  duration_ms: 3.349708
+  type: 'test'
+  ...
+# Subtest: materialized data remains usable and explicit data takes precedence
+ok 127 - materialized data remains usable and explicit data takes precedence
+  ---
+  duration_ms: 34.037458
+  type: 'test'
+  ...
+# Subtest: createDerivedData accepts each documented transform branch as an array
+ok 128 - createDerivedData accepts each documented transform branch as an array
+  ---
+  duration_ms: 15.690875
+  type: 'test'
+  ...
+# Subtest: createDerivedData rejects object, empty, multiple, and unknown transform inputs
+ok 129 - createDerivedData rejects object, empty, multiple, and unknown transform inputs
+  ---
+  duration_ms: 0.532541
+  type: 'test'
+  ...
+# Subtest: createDerivedData validates complete normalized moving-window provenance
+ok 130 - createDerivedData validates complete normalized moving-window provenance
+  ---
+  duration_ms: 0.521333
+  type: 'test'
+  ...
+# Subtest: rebindLayerData records an explicit immutable consumer transition
+ok 131 - rebindLayerData records an explicit immutable consumer transition
+  ---
+  duration_ms: 1.407458
+  type: 'test'
+  ...
+# Subtest: createDerivedData structurally owns caller transform inputs
+ok 132 - createDerivedData structurally owns caller transform inputs
+  ---
+  duration_ms: 0.737292
+  type: 'test'
+  ...
+# Subtest: edits a derived dependency closure only when recompute is explicit
+ok 133 - edits a derived dependency closure only when recompute is explicit
+  ---
+  duration_ms: 14.999
+  type: 'test'
+  ...
+# Subtest: rebinds every direct consumer output role and preserves unrelated branches
+ok 134 - rebinds every direct consumer output role and preserves unrelated branches
+  ---
+  duration_ms: 32.382292
+  type: 'test'
+  ...
+# Subtest: rejects unsafe downstream field renames and invalid targets atomically
+ok 135 - rejects unsafe downstream field renames and invalid targets atomically
+  ---
+  duration_ms: 18.423458
+  type: 'test'
+  ...
+# Subtest: every focused standalone family supports create, edit, edit, no-op, and logical reuse
+ok 136 - every focused standalone family supports create, edit, edit, no-op, and logical reuse
+  ---
+  duration_ms: 65.442792
+  type: 'test'
+  ...
+# Subtest: supports full definitions, lazy legacy ownership, weight removal, and stale rejection
+ok 137 - supports full definitions, lazy legacy ownership, weight removal, and stale rejection
+  ---
+  duration_ms: 8.485041
+  type: 'test'
+  ...
+# Subtest: clears stale mode fields before normalizing the replacement mode
+ok 138 - clears stale mode fields before normalizing the replacement mode
+  ---
+  duration_ms: 8.886541
+  type: 'test'
+  ...
+# Subtest: shares the revision executor with Bin2D and replays an edited definition in facets
+ok 139 - shares the revision executor with Bin2D and replays an edited definition in facets
+  ---
+  duration_ms: 17.263834
+  type: 'test'
+  ...
+# Subtest: refreshes attached labels and selection highlights from revised rows
+ok 140 - refreshes attached labels and selection highlights from revised rows
+  ---
+  duration_ms: 12.821125
+  type: 'test'
+  ...
+# Subtest: replays edited string computations and timezone buckets from requested definitions
+ok 141 - replays edited string computations and timezone buckets from requested definitions
+  ---
+  duration_ms: 17.431
+  type: 'test'
+  ...
+# Subtest: replays edited closed duration windows independently in facets
+ok 142 - replays edited closed duration windows independently in facets
+  ---
+  duration_ms: 6.772375
+  type: 'test'
+  ...
+# Subtest: creates immutable ECDF data with complete resolved provenance and child trace
+ok 143 - creates immutable ECDF data with complete resolved provenance and child trace
+  ---
+  duration_ms: 10.253959
+  type: 'test'
+  ...
+# Subtest: supports grouped weighted output and custom fields
+ok 144 - supports grouped weighted output and custom fields
+  ---
+  duration_ms: 1.482083
+  type: 'test'
+  ...
+# Subtest: rejects invalid requests without mutating the caller
+ok 145 - rejects invalid requests without mutating the caller
+  ---
+  duration_ms: 1.03175
+  type: 'test'
+  ...
+# Subtest: exponential regression uses response-weighted log least squares and positive predictions
+ok 146 - exponential regression uses response-weighted log least squares and positive predictions
+  ---
+  duration_ms: 9.43475
+  type: 'test'
+  ...
+# Subtest: exponential prediction grids, typed groups and missing policies preserve every eligible observation
+ok 147 - exponential prediction grids, typed groups and missing policies preserve every eligible observation
+  ---
+  duration_ms: 3.404292
+  type: 'test'
+  ...
+# Subtest: exponential fitting scales response weights and full-range predictors without changing the estimator
+ok 148 - exponential fitting scales response weights and full-range predictors without changing the estimator
+  ---
+  duration_ms: 2.415167
+  type: 'test'
+  ...
+# Subtest: exponential failures reject invalid responses, incompatible options and unrepresentable values atomically
+ok 149 - exponential failures reject invalid responses, incompatible options and unrepresentable values atomically
+  ---
+  duration_ms: 8.89025
+  type: 'test'
+  ...
+# Subtest: exponential facades suppress bands, support transitions and remain renderer-neutral
+ok 150 - exponential facades suppress bands, support transitions and remain renderer-neutral
+  ---
+  duration_ms: 74.787875
+  type: 'test'
+  ...
+# Subtest: exponential data edits clear inherited interval settings and replay downstream consumers
+ok 151 - exponential data edits clear inherited interval settings and replay downstream consumers
+  ---
+  duration_ms: 3.37825
+  type: 'test'
+  ...
+# Subtest: exponential public curves match independently drawn primitive Canvas pixels and SVG coordinates
+ok 152 - exponential public curves match independently drawn primitive Canvas pixels and SVG coordinates
+  ---
+  duration_ms: 8.678
+  type: 'test'
+  ...
+# Subtest: exponential following bindings and facet replay refit the same positive-response model
+ok 153 - exponential following bindings and facet replay refit the same positive-response model
+  ---
+  duration_ms: 44.244
+  type: 'test'
+  ...
+# Subtest: parameter filters retain row order, identity, schema and exact input revisions
+ok 154 - parameter filters retain row order, identity, schema and exact input revisions
+  ---
+  duration_ms: 24.490625
+  type: 'test'
+  ...
+# Subtest: parameter filter closure rematerializes summaries, scales, guides and marks
+ok 155 - parameter filter closure rematerializes summaries, scales, guides and marks
+  ---
+  duration_ms: 42.380208
+  type: 'test'
+  ...
+# Subtest: empty inferred domains fail atomically and explicit policies govern empty materialization
+ok 156 - empty inferred domains fail atomically and explicit policies govern empty materialization
+  ---
+  duration_ms: 84.904584
+  type: 'test'
+  ...
+# Subtest: all predicate branches validate even for empty input and inactive parameter references stay live
+ok 157 - all predicate branches validate even for empty input and inactive parameter references stay live
+  ---
+  duration_ms: 2.881208
+  type: 'test'
+  ...
+# Subtest: filter edits switch between expression and legacy modes and release detached dependencies
+ok 158 - filter edits switch between expression and legacy modes and release detached dependencies
+  ---
+  duration_ms: 6.885667
+  type: 'test'
+  ...
+# Subtest: authoring cannot forge exact references and restore rejects malformed or stale filter bindings
+ok 159 - authoring cannot forge exact references and restore rejects malformed or stale filter bindings
+  ---
+  duration_ms: 1.927291
+  type: 'test'
+  ...
+# Subtest: shared parameter roots form one filter/computed lookup diamond and raw revisions replay predicates
+ok 160 - shared parameter roots form one filter/computed lookup diamond and raw revisions replay predicates
+  ---
+  duration_ms: 9.908583
+  type: 'test'
+  ...
+# Subtest: nullable predicates reject candidate edits atomically and zero-rows still validate references
+ok 161 - nullable predicates reject candidate edits atomically and zero-rows still validate references
+  ---
+  duration_ms: 1.524916
+  type: 'test'
+  ...
+# Subtest: a fresh process restores a parameter filter and revises it without evaluating during restoration
+ok 162 - a fresh process restores a parameter filter and revises it without evaluating during restoration
+  ---
+  duration_ms: 279.928625
+  type: 'test'
+  ...
+# Subtest: filters the current dataset through wrapped derived-data actions
+ok 163 - filters the current dataset through wrapped derived-data actions
+  ---
+  duration_ms: 5.319208
+  type: 'test'
+  ...
+# Subtest: supports an explicit source and scalar filter values
+ok 164 - supports an explicit source and scalar filter values
+  ---
+  duration_ms: 1.068208
+  type: 'test'
+  ...
+# Subtest: owns transform options and materialized rows
+ok 165 - owns transform options and materialized rows
+  ---
+  duration_ms: 0.888875
+  type: 'test'
+  ...
+# Subtest: validates filter inference, options, and derived state
+ok 166 - validates filter inference, options, and derived state
+  ---
+  duration_ms: 0.849041
+  type: 'test'
+  ...
+# Subtest: matches the regression scatterplot primitive filter contract
+ok 167 - matches the regression scatterplot primitive filter contract
+  ---
+  duration_ms: 12.455167
+  type: 'test'
+  ...
+# Subtest: supports every strict comparison operator without type coercion
+ok 168 - supports every strict comparison operator without type coercion
+  ---
+  duration_ms: 3.92075
+  type: 'test'
+  ...
+# Subtest: orders strings and excludes sparse or incompatible ordered values
+ok 169 - orders strings and excludes sparse or incompatible ordered values
+  ---
+  duration_ms: 0.333875
+  type: 'test'
+  ...
+# Subtest: resolves inclusive and exclusive range endpoints
+ok 170 - resolves inclusive and exclusive range endpoints
+  ---
+  duration_ms: 3.32075
+  type: 'test'
+  ...
+# Subtest: owns predicate and range provenance
+ok 171 - owns predicate and range provenance
+  ---
+  duration_ms: 1.774459
+  type: 'test'
+  ...
+# Subtest: validates filter mode exclusivity and ordered operands
+ok 172 - validates filter mode exclusivity and ordered operands
+  ---
+  duration_ms: 0.738792
+  type: 'test'
+  ...
+# Subtest: filtered histograms fit surviving complete bins without rebinning or stale ticks
+ok 173 - filtered histograms fit surviving complete bins without rebinning or stale ticks
+  ---
+  duration_ms: 71.410417
+  type: 'test'
+  ...
+# Subtest: replace, compose, resize, empty results and removal retain the correct filter domains
+ok 174 - replace, compose, resize, empty results and removal retain the correct filter domains
+  ---
+  duration_ms: 78.146542
+  type: 'test'
+  ...
+# Subtest: automatically chosen bins keep their counts and widths when only one bin survives
+ok 175 - automatically chosen bins keep their counts and widths when only one bin survives
+  ---
+  duration_ms: 20.083708
+  type: 'test'
+  ...
+# Subtest: auto-domain fitting preserves interior gaps, the last inclusive boundary and explicit scale intent
+ok 176 - auto-domain fitting preserves interior gaps, the last inclusive boundary and explicit scale intent
+  ---
+  duration_ms: 46.323375
+  type: 'test'
+  ...
+# Subtest: bar-endpoint filtering shrinks both domains while preserving a zero measure baseline
+ok 177 - bar-endpoint filtering shrinks both domains while preserving a zero measure baseline
+  ---
+  duration_ms: 21.762458
+  type: 'test'
+  ...
+# Subtest: filtered histograms and their source-following overlays use the same fitted scale
+ok 178 - filtered histograms and their source-following overlays use the same fitted scale
+  ---
+  duration_ms: 35.488917
+  type: 'test'
+  ...
+# Subtest: facet replay derives shared domains from retained bins in every partition
+ok 179 - facet replay derives shared domains from retained bins in every partition
+  ---
+  duration_ms: 65.690209
+  type: 'test'
+  ...
+# Subtest: adjacent plots recompute shared ranges as each child is filtered
+ok 180 - adjacent plots recompute shared ranges as each child is filtered
+  ---
+  duration_ms: 33.360042
+  type: 'test'
+  ...
+# Subtest: filters complete box categories with aligned medians, whiskers and outliers
+ok 181 - filters complete box categories with aligned medians, whiskers and outliers
+  ---
+  duration_ms: 126.31475
+  type: 'test'
+  ...
+# Subtest: supports the shortest call immediately after point creation
+ok 182 - supports the shortest call immediately after point creation
+  ---
+  duration_ms: 1.654125
+  type: 'test'
+  ...
+# Subtest: filters the current mark through an immutable derived dataset
+ok 183 - filters the current mark through an immutable derived dataset
+  ---
+  duration_ms: 8.705458
+  type: 'test'
+  ...
+# Subtest: supports explicit targets and comparison or range modes
+ok 184 - supports explicit targets and comparison or range modes
+  ---
+  duration_ms: 3.98875
+  type: 'test'
+  ...
+# Subtest: supports grouped rank, semantic channel, and concrete property selectors
+ok 185 - supports grouped rank, semantic channel, and concrete property selectors
+  ---
+  duration_ms: 6.000667
+  type: 'test'
+  ...
+# Subtest: filters histogram stacks without changing their approved bin boundaries
+ok 186 - filters histogram stacks without changing their approved bin boundaries
+  ---
+  duration_ms: 61.264167
+  type: 'test'
+  ...
+# Subtest: filters complete line and density-area series at native path grain
+ok 187 - filters complete line and density-area series at native path grain
+  ---
+  duration_ms: 182.34975
+  type: 'test'
+  ...
+# Subtest: filters individual rule items and rematerializes their endpoints
+ok 188 - filters individual rule items and rematerializes their endpoints
+  ---
+  duration_ms: 1.962917
+  type: 'test'
+  ...
+# Subtest: rematerializes connected axes and grids from the filtered scale domains
+ok 189 - rematerializes connected axes and grids from the filtered scale domains
+  ---
+  duration_ms: 9.587375
+  type: 'test'
+  ...
+# Subtest: validates mark selection and filter application atomically
+ok 190 - validates mark selection and filter application atomically
+  ---
+  duration_ms: 2.8735
+  type: 'test'
+  ...
+# Subtest: replaces, composes, and idempotently repeats one active filter
+ok 191 - replaces, composes, and idempotently repeats one active filter
+  ---
+  duration_ms: 4.378416
+  type: 'test'
+  ...
+# Subtest: keeps an empty view on the preceding domain and removes stale graphics
+ok 192 - keeps an empty view on the preceding domain and removes stale graphics
+  ---
+  duration_ms: 10.794167
+  type: 'test'
+  ...
+# Subtest: removes an active filter and restores source, domains, and histogram bins
+ok 193 - removes an active filter and restores source, domains, and histogram bins
+  ---
+  duration_ms: 51.435583
+  type: 'test'
+  ...
+# Subtest: preserves downstream snapshots when an active filter is revised
+ok 194 - preserves downstream snapshots when an active filter is revised
+  ---
+  duration_ms: 4.864083
+  type: 'test'
+  ...
+# Subtest: supports empty views for every current final-item mark family
+ok 195 - supports empty views for every current final-item mark family
+  ---
+  duration_ms: 30.230875
+  type: 'test'
+  ...
+# Subtest: keeps a shared scale domain stable while one filtered consumer is empty
+ok 196 - keeps a shared scale domain stable while one filtered consumer is empty
+  ---
+  duration_ms: 3.65075
+  type: 'test'
+  ...
+# Subtest: keeps legacy selector provenance readable and rejects mixed recipes
+ok 197 - keeps legacy selector provenance readable and rejects mixed recipes
+  ---
+  duration_ms: 0.289084
+  type: 'test'
+  ...
+# Subtest: Full aligned expansion preserves five observations and immutable raw arrays
+ok 198 - Full aligned expansion preserves five observations and immutable raw arrays
+  ---
+  duration_ms: 8.9705
+  type: 'test'
+  ...
+# Subtest: Full defaults replace selected arrays only in derived rows
+ok 199 - Full defaults replace selected arrays only in derived rows
+  ---
+  duration_ms: 1.048792
+  type: 'test'
+  ...
+# Subtest: Full rejects invalid inputs without changing earlier state or trace
+ok 200 - Full rejects invalid inputs without changing earlier state or trace
+  ---
+  duration_ms: 1.630709
+  type: 'test'
+  ...
+# Subtest: Full empty/null/missing arrays align without fabricating rows
+ok 201 - Full empty/null/missing arrays align without fabricating rows
+  ---
+  duration_ms: 0.5835
+  type: 'test'
+  ...
+# Subtest: Full empty source with declared fields and JSON array elements is supported
+ok 202 - Full empty source with declared fields and JSON array elements is supported
+  ---
+  duration_ms: 0.863
+  type: 'test'
+  ...
+# Subtest: Full ordinary scatter facade consumes every expanded numeric observation
+ok 203 - Full ordinary scatter facade consumes every expanded numeric observation
+  ---
+  duration_ms: 14.709042
+  type: 'test'
+  ...
+# Subtest: Basic aligned expansion preserves five observations and immutable raw arrays
+ok 204 - Basic aligned expansion preserves five observations and immutable raw arrays
+  ---
+  duration_ms: 0.805583
+  type: 'test'
+  ...
+# Subtest: Basic defaults replace selected arrays only in derived rows
+ok 205 - Basic defaults replace selected arrays only in derived rows
+  ---
+  duration_ms: 0.675375
+  type: 'test'
+  ...
+# Subtest: Basic rejects invalid inputs without changing earlier state or trace
+ok 206 - Basic rejects invalid inputs without changing earlier state or trace
+  ---
+  duration_ms: 0.924333
+  type: 'test'
+  ...
+# Subtest: Basic empty/null/missing arrays align without fabricating rows
+ok 207 - Basic empty/null/missing arrays align without fabricating rows
+  ---
+  duration_ms: 0.818792
+  type: 'test'
+  ...
+# Subtest: Basic empty source with declared fields and JSON array elements is supported
+ok 208 - Basic empty source with declared fields and JSON array elements is supported
+  ---
+  duration_ms: 0.799959
+  type: 'test'
+  ...
+# Subtest: Basic ordinary scatter facade consumes every expanded numeric observation
+ok 209 - Basic ordinary scatter facade consumes every expanded numeric observation
+  ---
+  duration_ms: 8.029375
+  type: 'test'
+  ...
+# Subtest: aligned expansion bounds fields and total rows with exact inclusive boundary
+ok 210 - aligned expansion bounds fields and total rows with exact inclusive boundary
+  ---
+  duration_ms: 1.52075
+  type: 'test'
+  ...
+# Subtest: Full persistence retains transform, typed schema, raw ancestors and output exactly
+ok 211 - Full persistence retains transform, typed schema, raw ancestors and output exactly
+  ---
+  duration_ms: 5.29975
+  type: 'test'
+  ...
+# Subtest: Full flattened edits create immutable revisions and rebind renamed scalar outputs
+ok 212 - Full flattened edits create immutable revisions and rebind renamed scalar outputs
+  ---
+  duration_ms: 9.812958
+  type: 'test'
+  ...
+# Subtest: Full dependent replay rejects by default and recomputes an expansion chain atomically
+ok 213 - Full dependent replay rejects by default and recomputes an expansion chain atomically
+  ---
+  duration_ms: 3.330166
+  type: 'test'
+  ...
+# Subtest: source revisions replay aligned array data and leave all old snapshots unchanged
+ok 214 - source revisions replay aligned array data and leave all old snapshots unchanged
+  ---
+  duration_ms: 10.896584
+  type: 'test'
+  ...
+# Subtest: faceting keeps original raw ancestors and partitions the expanded observations
+ok 215 - faceting keeps original raw ancestors and partitions the expanded observations
+  ---
+  duration_ms: 11.847875
+  type: 'test'
+  ...
+# Subtest: generic derived editing keeps independent array output roles and exact raw values
+ok 216 - generic derived editing keeps independent array output roles and exact raw values
+  ---
+  duration_ms: 1.620292
+  type: 'test'
+  ...
+# Subtest: createFoldData preserves source cells in stable row-major field order
+ok 217 - createFoldData preserves source cells in stable row-major field order
+  ---
+  duration_ms: 7.43175
+  type: 'test'
+  ...
+# Subtest: createFoldData uses defaults, supports empty input, and feeds ordinary marks
+ok 218 - createFoldData uses defaults, supports empty input, and feeds ordinary marks
+  ---
+  duration_ms: 15.0185
+  type: 'test'
+  ...
+# Subtest: createFoldData rejects invalid fields, aliases, types, and missing cells atomically
+ok 219 - createFoldData rejects invalid fields, aliases, types, and missing cells atomically
+  ---
+  duration_ms: 1.88175
+  type: 'test'
+  ...
+# Subtest: createFoldData bounds field count and expanded output
+ok 220 - createFoldData bounds field count and expanded output
+  ---
+  duration_ms: 16.619125
+  type: 'test'
+  ...
+# Subtest: authors and materializes a traceable gradient-profile dataset
+ok 221 - authors and materializes a traceable gradient-profile dataset
+  ---
+  duration_ms: 7.715042
+  type: 'test'
+  ...
+# Subtest: creates immutable Horizon provenance and generated rows
+ok 222 - creates immutable Horizon provenance and generated rows
+  ---
+  duration_ms: 7.810417
+  type: 'test'
+  ...
+# Subtest: materializes finite extreme crossings and rejects unrepresentable folds atomically
+ok 223 - materializes finite extreme crossings and rejects unrepresentable folds atomically
+  ---
+  duration_ms: 6.574
+  type: 'test'
+  ...
+# Subtest: does not retain caller-owned Horizon source or option objects
+ok 224 - does not retain caller-owned Horizon source or option objects
+  ---
+  duration_ms: 2.042208
+  type: 'test'
+  ...
+# Subtest: validates Horizon data creation and materialization ownership
+ok 225 - validates Horizon data creation and materialization ownership
+  ---
+  duration_ms: 1.325542
+  type: 'test'
+  ...
+# Subtest: creates immutable interval provenance and concrete summary rows
+ok 226 - creates immutable interval provenance and concrete summary rows
+  ---
+  duration_ms: 9.542042
+  type: 'test'
+  ...
+# Subtest: supports custom output fields, grouping arrays, and IQR
+ok 227 - supports custom output fields, grouping arrays, and IQR
+  ---
+  duration_ms: 1.086875
+  type: 'test'
+  ...
+# Subtest: validates options and leaves the source program unchanged
+ok 228 - validates options and leaves the source program unchanged
+  ---
+  duration_ms: 0.542875
+  type: 'test'
+  ...
+# Subtest: rejects unrepresentable interval endpoints atomically
+ok 229 - rejects unrepresentable interval endpoints atomically
+  ---
+  duration_ms: 1.247583
+  type: 'test'
+  ...
+# Subtest: stores the CI method and handles grouped sample boundaries
+ok 230 - stores the CI method and handles grouped sample boundaries
+  ---
+  duration_ms: 2.3145
+  type: 'test'
+  ...
+# Subtest: validates CI method and level independently
+ok 231 - validates CI method and level independently
+  ---
+  duration_ms: 0.22225
+  type: 'test'
+  ...
+# Subtest: shortest lookup uses three options and preserves both raw sources and typed lineage
+ok 232 - shortest lookup uses three options and preserves both raw sources and typed lineage
+  ---
+  duration_ms: 9.761084
+  type: 'test'
+  ...
+# Subtest: lookup explicit source is independent of whichever table is current
+ok 233 - lookup explicit source is independent of whichever table is current
+  ---
+  duration_ms: 2.591375
+  type: 'test'
+  ...
+# Subtest: nine independent reference rows produce exact expected group means
+ok 234 - nine independent reference rows produce exact expected group means
+  ---
+  duration_ms: 2.3885
+  type: 'test'
+  ...
+# Subtest: lookup never coerces copied string cells before an explicit numeric computation
+ok 235 - lookup never coerces copied string cells before an explicit numeric computation
+  ---
+  duration_ms: 5.222166
+  type: 'test'
+  ...
+# Subtest: nullable missing matches retain the declared reference field type
+ok 236 - nullable missing matches retain the declared reference field type
+  ---
+  duration_ms: 0.870875
+  type: 'test'
+  ...
+# Subtest: lookup schema rejects collisions even for an empty declared primary table
+ok 237 - lookup schema rejects collisions even for an empty declared primary table
+  ---
+  duration_ms: 0.455042
+  type: 'test'
+  ...
+# Subtest: invalid lookup creation is atomic and rejects unknown public options
+ok 238 - invalid lookup creation is atomic and rejects unknown public options
+  ---
+  duration_ms: 10.584417
+  type: 'test'
+  ...
+# Subtest: duplicate right keys reject before changing source state
+ok 239 - duplicate right keys reject before changing source state
+  ---
+  duration_ms: 0.507375
+  type: 'test'
+  ...
+# Subtest: lookup secondary references prevent either original table from being removed
+ok 240 - lookup secondary references prevent either original table from being removed
+  ---
+  duration_ms: 1.303292
+  type: 'test'
+  ...
+# Subtest: source revisions of either input recompute the chart and preserve old inputs
+ok 241 - source revisions of either input recompute the chart and preserve old inputs
+  ---
+  duration_ms: 31.068541
+  type: 'test'
+  ...
+# Subtest: duplicate-key reference revision fails atomically
+ok 242 - duplicate-key reference revision fails atomically
+  ---
+  duration_ms: 6.22975
+  type: 'test'
+  ...
+# Subtest: lookup editor renames direct chart consumers and remains addressable
+ok 243 - lookup editor renames direct chart consumers and remains addressable
+  ---
+  duration_ms: 10.663542
+  type: 'test'
+  ...
+# Subtest: lookup editor requires explicit downstream recomputation
+ok 244 - lookup editor requires explicit downstream recomputation
+  ---
+  duration_ms: 4.143916
+  type: 'test'
+  ...
+# Subtest: revising a derived reference rebinds the lookup dependency
+ok 245 - revising a derived reference rebinds the lookup dependency
+  ---
+  duration_ms: 2.452167
+  type: 'test'
+  ...
+# Subtest: diamond source revisions materialize a lookup once after both changed branches
+ok 246 - diamond source revisions materialize a lookup once after both changed branches
+  ---
+  duration_ms: 6.336166
+  type: 'test'
+  ...
+# Subtest: lookup edit rejects own results and downstream tables as reference inputs
+ok 247 - lookup edit rejects own results and downstream tables as reference inputs
+  ---
+  duration_ms: 3.85225
+  type: 'test'
+  ...
+# Subtest: Full and Basic share lookup creation while editors remain Full-only
+ok 248 - Full and Basic share lookup creation while editors remain Full-only
+  ---
+  duration_ms: 3.591958
+  type: 'test'
+  ...
+# Subtest: editable persistence preserves both dependencies and rejects stale values or lineage
+ok 249 - editable persistence preserves both dependencies and rejects stale values or lineage
+  ---
+  duration_ms: 3.795417
+  type: 'test'
+  ...
+# Subtest: lookup persistence rejects absent input fields even when cached values are forged
+ok 250 - lookup persistence rejects absent input fields even when cached values are forged
+  ---
+  duration_ms: 2.093416
+  type: 'test'
+  ...
+# Subtest: createNormalizedData preserves row order for share, minmax, and zscore
+ok 251 - createNormalizedData preserves row order for share, minmax, and zscore
+  ---
+  duration_ms: 10.115125
+  type: 'test'
+  ...
+# Subtest: createNormalizedData applies stable sorted baselines without reordering rows
+ok 252 - createNormalizedData applies stable sorted baselines without reordering rows
+  ---
+  duration_ms: 2.189958
+  type: 'test'
+  ...
+# Subtest: createNormalizedData keeps group summaries and baselines independent
+ok 253 - createNormalizedData keeps group summaries and baselines independent
+  ---
+  duration_ms: 1.372333
+  type: 'test'
+  ...
+# Subtest: createNormalizedData applies explicit zero-denominator policies
+ok 254 - createNormalizedData applies explicit zero-denominator policies
+  ---
+  duration_ms: 3.117916
+  type: 'test'
+  ...
+# Subtest: createNormalizedData rejects invalid definitions and source values atomically
+ok 255 - createNormalizedData rejects invalid definitions and source values atomically
+  ---
+  duration_ms: 1.967083
+  type: 'test'
+  ...
+# Subtest: createNormalizedData owns canonical options and rejects overflowing results
+ok 256 - createNormalizedData owns canonical options and rejects overflowing results
+  ---
+  duration_ms: 0.7775
+  type: 'test'
+  ...
+# Subtest: createNormalizedData validates empty-source structure without inventing fields
+ok 257 - createNormalizedData validates empty-source structure without inventing fields
+  ---
+  duration_ms: 0.406167
+  type: 'test'
+  ...
+# Subtest: facets source rows before replaying statistical normalization
+ok 258 - facets source rows before replaying statistical normalization
+  ---
+  duration_ms: 22.261459
+  type: 'test'
+  ...
+# Subtest: parameter edits revise data, schema provenance, guides, graphics, and stable row selections
+ok 259 - parameter edits revise data, schema provenance, guides, graphics, and stable row selections
+  ---
+  duration_ms: 83.478375
+  type: 'test'
+  ...
+# Subtest: parameter revisions traverse both roots of a lookup diamond exactly once
+ok 260 - parameter revisions traverse both roots of a lookup diamond exactly once
+  ---
+  duration_ms: 14.119708
+  type: 'test'
+  ...
+# Subtest: parameter no-op edits retain resource and dataset identity but append an authoring trace
+ok 261 - parameter no-op edits retain resource and dataset identity but append an authoring trace
+  ---
+  duration_ms: 1.112917
+  type: 'test'
+  ...
+# Subtest: parameters in inactive branches still receive a new exact revision without changing output
+ok 262 - parameters in inactive branches still receive a new exact revision without changing output
+  ---
+  duration_ms: 3.597458
+  type: 'test'
+  ...
+# Subtest: editing one of several parameters updates only its own exact input and can be repeated
+ok 263 - editing one of several parameters updates only its own exact input and can be repeated
+  ---
+  duration_ms: 9.602459
+  type: 'test'
+  ...
+# Subtest: primitive parameter edits retain stale computed bindings until an explicit domain rematerialization
+ok 264 - primitive parameter edits retain stale computed bindings until an explicit domain rematerialization
+  ---
+  duration_ms: 1.2555
+  type: 'test'
+  ...
+# Subtest: parameter deletion is restricted until its computed dependency is removed
+ok 265 - parameter deletion is restricted until its computed dependency is removed
+  ---
+  duration_ms: 2.691833
+  type: 'test'
+  ...
+# Subtest: rejected parameter edits preserve every source state and trace
+ok 266 - rejected parameter edits preserve every source state and trace
+  ---
+  duration_ms: 20.940458
+  type: 'test'
+  ...
+# Subtest: a failure during dependent evaluation rejects the parameter candidate and all calculated revisions
+ok 267 - a failure during dependent evaluation rejects the parameter candidate and all calculated revisions
+  ---
+  duration_ms: 2.553166
+  type: 'test'
+  ...
+# Subtest: safe-integer revision overflow is rejected while a same-value edit remains a no-op
+ok 268 - safe-integer revision overflow is rejected while a same-value edit remains a no-op
+  ---
+  duration_ms: 0.662083
+  type: 'test'
+  ...
+# Subtest: concat parameter edits require explicit child scope and preserve same-named sibling state
+ok 269 - concat parameter edits require explicit child scope and preserve same-named sibling state
+  ---
+  duration_ms: 40.49
+  type: 'test'
+  ...
+# Subtest: facet parameter edits regenerate every partition, shared domain, and restored child snapshot
+ok 270 - facet parameter edits regenerate every partition, shared domain, and restored child snapshot
+  ---
+  duration_ms: 79.483625
+  type: 'test'
+  ...
+# Subtest: repeat parameter edits preserve field choices and refresh retained computed snapshots
+ok 271 - repeat parameter edits preserve field choices and refresh retained computed snapshots
+  ---
+  duration_ms: 61.8965
+  type: 'test'
+  ...
+# Subtest: repeat charts rematerialize parameter-derived columns after parameter and source revisions
+ok 272 - repeat charts rematerialize parameter-derived columns after parameter and source revisions
+  ---
+  duration_ms: 125.802792
+  type: 'test'
+  ...
+# Subtest: Basic creates typed parameters and computed data that restore into editable Full programs
+ok 273 - Basic creates typed parameters and computed data that restore into editable Full programs
+  ---
+  duration_ms: 5.19975
+  type: 'test'
+  ...
+# Subtest: editable restoration rejects stale, missing, duplicated, and forged parameter bindings
+ok 274 - editable restoration rejects stale, missing, duplicated, and forged parameter bindings
+  ---
+  duration_ms: 4.541542
+  type: 'test'
+  ...
+# Subtest: a fresh process restores, edits parameters, revises source data, and serializes usable state
+ok 275 - a fresh process restores, edits parameters, revises source data, and serializes usable state
+  ---
+  duration_ms: 334.569625
+  type: 'test'
+  ...
+# Subtest: parameter revision planning traverses a deep shared-root chain without recursion
+ok 276 - parameter revision planning traverses a deep shared-root chain without recursion
+  ---
+  duration_ms: 141.637125
+  type: 'test'
+  ...
+# Subtest: parameter expansion budgets use newly filtered rows and reject all candidate revisions atomically
+ok 277 - parameter expansion budgets use newly filtered rows and reject all candidate revisions atomically
+  ---
+  duration_ms: 455.587083
+  type: 'test'
+  ...
+# Subtest: shrinking a parameter filter is permitted when its new workload fits the budget
+ok 278 - shrinking a parameter filter is permitted when its new workload fits the budget
+  ---
+  duration_ms: 836.941042
+  type: 'test'
+  ...
+# Subtest: parameter plans reject cycles, missing dependencies and ambiguous logical owners atomically
+ok 279 - parameter plans reject cycles, missing dependencies and ambiguous logical owners atomically
+  ---
+  duration_ms: 0.246417
+  type: 'test'
+  ...
+# Subtest: explicit UTC date formats preserve day/month order and reject calendar rollover
+ok 280 - explicit UTC date formats preserve day/month order and reject calendar rollover
+  ---
+  duration_ms: 0.986458
+  type: 'test'
+  ...
+# Subtest: typed parsing retains original rows and lets a public filter remove missing timestamps
+ok 281 - typed parsing retains original rows and lets a public filter remove missing timestamps
+  ---
+  duration_ms: 23.940375
+  type: 'test'
+  ...
+# Subtest: inferred raw keys preserve empty and whitespace names without changing input ownership
+ok 282 - inferred raw keys preserve empty and whitespace names without changing input ownership
+  ---
+  duration_ms: 19.580167
+  type: 'test'
+  ...
+# Subtest: declared empty names retain nullable, optional and empty-data rules
+ok 283 - declared empty names retain nullable, optional and empty-data rules
+  ---
+  duration_ms: 1.160916
+  type: 'test'
+  ...
+# Subtest: field references, generated fields, lineage inputs and resource IDs remain nonempty
+ok 284 - field references, generated fields, lineage inputs and resource IDs remain nonempty
+  ---
+  duration_ms: 1.659209
+  type: 'test'
+  ...
+# Subtest: row-preserving transforms retain unnamed cells and never invent empty-field lineage
+ok 285 - row-preserving transforms retain unnamed cells and never invent empty-field lineage
+  ---
+  duration_ms: 4.62675
+  type: 'test'
+  ...
+# Subtest: projection transforms preserve their established column policy
+ok 286 - projection transforms preserve their established column policy
+  ---
+  duration_ms: 1.818625
+  type: 'test'
+  ...
+# Subtest: revision preserves unused unnamed cells and replays dependent charts atomically
+ok 287 - revision preserves unused unnamed cells and replays dependent charts atomically
+  ---
+  duration_ms: 11.439792
+  type: 'test'
+  ...
+# Subtest: Full and Basic persistence keep raw keys while unused cells leave SVG unchanged
+ok 288 - Full and Basic persistence keep raw keys while unused cells leave SVG unchanged
+  ---
+  duration_ms: 20.324333
+  type: 'test'
+  ...
+# Subtest: facet children and persisted composition retain unnamed source cells
+ok 289 - facet children and persisted composition retain unnamed source cells
+  ---
+  duration_ms: 20.873708
+  type: 'test'
+  ...
+# Subtest: regression reuses immutable inputs but recomputes caller-owned rows and parameter changes
+ok 290 - regression reuses immutable inputs but recomputes caller-owned rows and parameter changes
+  ---
+  duration_ms: 6.253708
+  type: 'test'
+  ...
+# Subtest: derives grouped OLS rows at observed unique x values
+ok 291 - derives grouped OLS rows at observed unique x values
+  ---
+  duration_ms: 10.207542
+  type: 'test'
+  ...
+# Subtest: validates the public Student-t wrapper independently from its kernel
+ok 292 - validates the public Student-t wrapper independently from its kernel
+  ---
+  duration_ms: 0.23075
+  type: 'test'
+  ...
+# Subtest: creates immutable regression provenance and concrete values
+ok 293 - creates immutable regression provenance and concrete values
+  ---
+  duration_ms: 17.595917
+  type: 'test'
+  ...
+# Subtest: supports ungrouped regression and rejects degenerate groups
+ok 294 - supports ungrouped regression and rejects degenerate groups
+  ---
+  duration_ms: 0.352583
+  type: 'test'
+  ...
+# Subtest: validates regression action options and source inference
+ok 295 - validates regression action options and source inference
+  ---
+  duration_ms: 1.331792
+  type: 'test'
+  ...
+# Subtest: derives polynomial, LOESS, and prediction rows from resolved parameters
+ok 296 - derives polynomial, LOESS, and prediction rows from resolved parameters
+  ---
+  duration_ms: 18.619083
+  type: 'test'
+  ...
+# Subtest: stores method defaults in immutable regression provenance
+ok 297 - stores method defaults in immutable regression provenance
+  ---
+  duration_ms: 2.56575
+  type: 'test'
+  ...
+# Subtest: validates method-specific regression boundaries and singular groups
+ok 298 - validates method-specific regression boundaries and singular groups
+  ---
+  duration_ms: 0.445666
+  type: 'test'
+  ...
+# Subtest: keeps polynomial degree one equivalent to linear and supports prediction bounds
+ok 299 - keeps polynomial degree one equivalent to linear and supports prediction bounds
+  ---
+  duration_ms: 0.593375
+  type: 'test'
+  ...
+# Subtest: supports explicit regression confidence methods and the confidence alias
+ok 300 - supports explicit regression confidence methods and the confidence alias
+  ---
+  duration_ms: 0.4635
+  type: 'test'
+  ...
+# Subtest: interval:false fits two-point linear data without inventing bounds
+ok 301 - interval:false fits two-point linear data without inventing bounds
+  ---
+  duration_ms: 8.570041
+  type: 'test'
+  ...
+# Subtest: interval:false preserves polynomial predictions and rejects invalid degrees atomically
+ok 302 - interval:false preserves polynomial predictions and rejects invalid degrees atomically
+  ---
+  duration_ms: 3.009916
+  type: 'test'
+  ...
+# Subtest: explicit prediction grids are evaluated independently for each group
+ok 303 - explicit prediction grids are evaluated independently for each group
+  ---
+  duration_ms: 1.1975
+  type: 'test'
+  ...
+# Subtest: domain grids include both endpoints and interpolate every requested step
+ok 304 - domain grids include both endpoints and interpolate every requested step
+  ---
+  duration_ms: 1.053125
+  type: 'test'
+  ...
+# Subtest: LOESS predicts unobserved coordinates and missing rows produce an exclusion report
+ok 305 - LOESS predicts unobserved coordinates and missing rows produce an exclusion report
+  ---
+  duration_ms: 1.566292
+  type: 'test'
+  ...
+# Subtest: invalid prediction grids and interval sample requirements fail atomically
+ok 306 - invalid prediction grids and interval sample requirements fail atomically
+  ---
+  duration_ms: 0.7955
+  type: 'test'
+  ...
+# Subtest: statistics expose independent observed linear coefficients and R-squared rather than prediction-row counts
+ok 307 - statistics expose independent observed linear coefficients and R-squared rather than prediction-row counts
+  ---
+  duration_ms: 21.755417
+  type: 'test'
+  ...
+# Subtest: statistics preserve typed first-seen groups, eligible missing-pair counts and constant-response null
+ok 308 - statistics preserve typed first-seen groups, eligible missing-pair counts and constant-response null
+  ---
+  duration_ms: 3.022792
+  type: 'test'
+  ...
+# Subtest: statistics reject missing, unsupported and colliding fit sources without mutating the parent
+ok 309 - statistics reject missing, unsupported and colliding fit sources without mutating the parent
+  ---
+  duration_ms: 14.404875
+  type: 'test'
+  ...
+# Subtest: cached fits are reused and old snapshots materialize the missing cache exactly once on explicit request
+ok 310 - cached fits are reused and old snapshots materialize the missing cache exactly once on explicit request
+  ---
+  duration_ms: 3.980083
+  type: 'test'
+  ...
+# Subtest: statistics source edits and source revisions replay dependent annotation data and clean old caches
+ok 311 - statistics source edits and source revisions replay dependent annotation data and clean old caches
+  ---
+  duration_ms: 24.713625
+  type: 'test'
+  ...
+# Subtest: fit method changes and resource removal enforce the statistics dependency before mutating state
+ok 312 - fit method changes and resource removal enforce the statistics dependency before mutating state
+  ---
+  duration_ms: 2.945416
+  type: 'test'
+  ...
+# Subtest: fit cache snapshots reject orphaned, missing, stale, malformed and misordered statistics
+ok 313 - fit cache snapshots reject orphaned, missing, stale, malformed and misordered statistics
+  ---
+  duration_ms: 14.558917
+  type: 'test'
+  ...
+# Subtest: linear statistics stay finite at previously supported extreme ranges without altering predictions
+ok 314 - linear statistics stay finite at previously supported extreme ranges without altering predictions
+  ---
+  duration_ms: 4.672083
+  type: 'test'
+  ...
+# Subtest: chart-owned regression edits rematerialize dependent statistics and reject unsupported model transitions
+ok 315 - chart-owned regression edits rematerialize dependent statistics and reject unsupported model transitions
+  ---
+  duration_ms: 34.905959
+  type: 'test'
+  ...
+# Subtest: statistics editors require unique ownership and preserve omitted sources
+ok 316 - statistics editors require unique ownership and preserve omitted sources
+  ---
+  duration_ms: 4.726958
+  type: 'test'
+  ...
+# Subtest: statistics source edits reject cycles and lazy transform schemas remain source-specific
+ok 317 - statistics source edits reject cycles and lazy transform schemas remain source-specific
+  ---
+  duration_ms: 6.717959
+  type: 'test'
+  ...
+# Subtest: following chart roles and retained facets rebuild statistics from their fit owners
+ok 318 - following chart roles and retained facets rebuild statistics from their fit owners
+  ---
+  duration_ms: 48.315958
+  type: 'test'
+  ...
+# Subtest: ordinary LOESS remains exact and robust passes reduce curved outlier influence
+ok 319 - ordinary LOESS remains exact and robust passes reduce curved outlier influence
+  ---
+  duration_ms: 4.93775
+  type: 'test'
+  ...
+# Subtest: robust LOESS preserves affine fits, duplicates, and grouped independence
+ok 320 - robust LOESS preserves affine fits, duplicates, and grouped independence
+  ---
+  duration_ms: 2.597333
+  type: 'test'
+  ...
+# Subtest: prediction grid uses final robust weights and retains scale equivariance
+ok 321 - prediction grid uses final robust weights and retains scale equivariance
+  ---
+  duration_ms: 3.590917
+  type: 'test'
+  ...
+# Subtest: robust options validate before fitting and account for repeated work
+ok 322 - robust options validate before fitting and account for repeated work
+  ---
+  duration_ms: 6.490208
+  type: 'test'
+  ...
+# Subtest: data edits persist robust parameters, reset them, and clean up method transitions
+ok 323 - data edits persist robust parameters, reset them, and clean up method transitions
+  ---
+  duration_ms: 18.396875
+  type: 'test'
+  ...
+# Subtest: regression facade, edits, persistence, and SVG carry robust fitted geometry
+ok 324 - regression facade, edits, persistence, and SVG carry robust fitted geometry
+  ---
+  duration_ms: 85.764416
+  type: 'test'
+  ...
+# Subtest: zero-median residuals and empty robust neighborhoods have deterministic finite fits
+ok 325 - zero-median residuals and empty robust neighborhoods have deterministic finite fits
+  ---
+  duration_ms: 0.661084
+  type: 'test'
+  ...
+# Subtest: robust smoothing reduces deterministic noisy outlier error
+ok 326 - robust smoothing reduces deterministic noisy outlier error
+  ---
+  duration_ms: 1.766083
+  type: 'test'
+  ...
+# Subtest: following source field edits retain robust fitting intent after restore
+ok 327 - following source field edits retain robust fitting intent after restore
+  ---
+  duration_ms: 24.616042
+  type: 'test'
+  ...
+# Subtest: keyed revision preserves item, graphic and scene identity through reorder and value edits
+ok 328 - keyed revision preserves item, graphic and scene identity through reorder and value edits
+  ---
+  duration_ms: 61.207709
+  type: 'test'
+  ...
+# Subtest: generated rowMap preserves only explicit correspondence and isolates new rows on forks
+ok 329 - generated rowMap preserves only explicit correspondence and isolates new rows on forks
+  ---
+  duration_ms: 33.637666
+  type: 'test'
+  ...
+# Subtest: stored key selection survives reorder, deletion, restoration and keyed reappearance
+ok 330 - stored key selection survives reorder, deletion, restoration and keyed reappearance
+  ---
+  duration_ms: 43.198083
+  type: 'test'
+  ...
+# Subtest: predicate resources reevaluate values and highlights preserve identity when glyphs change
+ok 331 - predicate resources reevaluate values and highlights preserve identity when glyphs change
+  ---
+  duration_ms: 21.336917
+  type: 'test'
+  ...
+# Subtest: source modes validate atomically and Basic shares the create contract
+ok 332 - source modes validate atomically and Basic shares the create contract
+  ---
+  duration_ms: 1.241292
+  type: 'test'
+  ...
+# Subtest: path series identity survives member changes while topology follows ordered row keys
+ok 333 - path series identity survives member changes while topology follows ordered row keys
+  ---
+  duration_ms: 19.366041
+  type: 'test'
+  ...
+# Subtest: removing one named selection retains other authored resources
+ok 334 - removing one named selection retains other authored resources
+  ---
+  duration_ms: 21.323042
+  type: 'test'
+  ...
+# Subtest: shared diamond lineage expands once per row and rejects a cycle
+ok 335 - shared diamond lineage expands once per row and rejects a cycle
+  ---
+  duration_ms: 4.741084
+  type: 'test'
+  ...
+# Subtest: every registered transform emits unique row keys and exact resolvable lineage
+ok 336 - every registered transform emits unique row keys and exact resolvable lineage
+  ---
+  duration_ms: 5897.825458
+  type: 'test'
+  ...
+# Subtest: window and imputation record the actual contributing rows while retaining output identity
+ok 337 - window and imputation record the actual contributing rows while retaining output identity
+  ---
+  duration_ms: 0.929292
+  type: 'test'
+  ...
+# Subtest: lookup lineage distinguishes typed left and right contributors
+ok 338 - lookup lineage distinguishes typed left and right contributors
+  ---
+  duration_ms: 0.463708
+  type: 'test'
+  ...
+# Subtest: stored lineage rejects stale revisions, out-of-range tables and cycles
+ok 339 - stored lineage rejects stale revisions, out-of-range tables and cycles
+  ---
+  duration_ms: 3.631041
+  type: 'test'
+  ...
+# Subtest: aggregate groups retain exact contributors after filtering and revision
+ok 340 - aggregate groups retain exact contributors after filtering and revision
+  ---
+  duration_ms: 2.37725
+  type: 'test'
+  ...
+# Subtest: createSortedData performs a stable multi-key sort without mutating input
+ok 341 - createSortedData performs a stable multi-key sort without mutating input
+  ---
+  duration_ms: 7.8575
+  type: 'test'
+  ...
+# Subtest: sorted data supports focused edits and rejects mixed key types atomically
+ok 342 - sorted data supports focused edits and rejects mixed key types atomically
+  ---
+  duration_ms: 4.491166
+  type: 'test'
+  ...
+# Subtest: temporal sorting accepts explicit timestamp normalization
+ok 343 - temporal sorting accepts explicit timestamp normalization
+  ---
+  duration_ms: 0.482458
+  type: 'test'
+  ...
+# Subtest: sorted data follows source revisions and editable snapshots
+ok 344 - sorted data follows source revisions and editable snapshots
+  ---
+  duration_ms: 6.530458
+  type: 'test'
+  ...
+# Subtest: source revision preserves its original, styles, trace, and follows new rows through scales and selections
+ok 345 - source revision preserves its original, styles, trace, and follows new rows through scales and selections
+  ---
+  duration_ms: 32.374833
+  type: 'test'
+  ...
+# Subtest: revision recomputes a transitive transform chain and keeps logical editors usable
+ok 346 - revision recomputes a transitive transform chain and keeps logical editors usable
+  ---
+  duration_ms: 22.819167
+  type: 'test'
+  ...
+# Subtest: retained facet and repeat revisions refresh children and can be edited again
+ok 347 - retained facet and repeat revisions refresh children and can be edited again
+  ---
+  duration_ms: 50.220209
+  type: 'test'
+  ...
+# Subtest: source revision rejects incompatible fields and unused selection fields atomically
+ok 348 - source revision rejects incompatible fields and unused selection fields atomically
+  ---
+  duration_ms: 7.301125
+  type: 'test'
+  ...
+# Subtest: source revision validates complete inputs, original source identity, and explicit concat child scope
+ok 349 - source revision validates complete inputs, original source identity, and explicit concat child scope
+  ---
+  duration_ms: 7.643334
+  type: 'test'
+  ...
+# Subtest: source revision preserves renderer output across the complete action corpus with unchanged rows
+ok 350 - source revision preserves renderer output across the complete action corpus with unchanged rows
+  ---
+  duration_ms: 8092.243417
+  type: 'test'
+  ...
+# Subtest: data reference rebinding never renames a statistical reference's mark source with the same ID
+ok 351 - data reference rebinding never renames a statistical reference's mark source with the same ID
+  ---
+  duration_ms: 3.454375
+  type: 'test'
+  ...
+# Subtest: createStackData reuses stable stack math and preserves source row order
+ok 352 - createStackData reuses stable stack math and preserves source row order
+  ---
+  duration_ms: 7.920167
+  type: 'test'
+  ...
+# Subtest: createStackData exposes fill, center, and diverging modes through shared math
+ok 353 - createStackData exposes fill, center, and diverging modes through shared math
+  ---
+  duration_ms: 4.582417
+  type: 'test'
+  ...
+# Subtest: createStackData produces custom ranged fields directly consumable by marks
+ok 354 - createStackData produces custom ranged fields directly consumable by marks
+  ---
+  duration_ms: 21.892125
+  type: 'test'
+  ...
+# Subtest: createStackData rejects invalid cells, modes, aliases, and signs atomically
+ok 355 - createStackData rejects invalid cells, modes, aliases, and signs atomically
+  ---
+  duration_ms: 1.886917
+  type: 'test'
+  ...
+# Subtest: stack data infers one deterministic role and rejects collisions without mutation
+ok 356 - stack data infers one deterministic role and rejects collisions without mutation
+  ---
+  duration_ms: 1.722458
+  type: 'test'
+  ...
+# Subtest: summary capacity counts observed groups through the inclusive 30000 boundary
+ok 357 - summary capacity counts observed groups through the inclusive 30000 boundary
+  ---
+  duration_ms: 1907.956542
+  type: 'test'
+  ...
+# Subtest: summary capacity admits multiple observations for each of 30000 groups
+ok 358 - summary capacity admits multiple observations for each of 30000 groups
+  ---
+  duration_ms: 441.055541
+  type: 'test'
+  ...
+# Subtest: summary grouping retains typed keys, members and weighted values above 10000 input rows
+ok 359 - summary grouping retains typed keys, members and weighted values above 10000 input rows
+  ---
+  duration_ms: 173.495
+  type: 'test'
+  ...
+# Subtest: large summaries replay revisions, logical editors and snapshots without changing capacity ownership
+ok 360 - large summaries replay revisions, logical editors and snapshots without changing capacity ownership
+  ---
+  duration_ms: 867.054583
+  type: 'test'
+  ...
+# Subtest: facet replay uses the same summary group capacity before downstream reduction
+ok 361 - facet replay uses the same summary group capacity before downstream reduction
+  ---
+  duration_ms: 2074.962125
+  type: 'test'
+  ...
+# Subtest: createSummaryData materializes stable grouped multi-aggregate rows
+ok 362 - createSummaryData materializes stable grouped multi-aggregate rows
+  ---
+  duration_ms: 9.6955
+  type: 'test'
+  ...
+# Subtest: createSummaryData defines empty and ungrouped grain deterministically
+ok 363 - createSummaryData defines empty and ungrouped grain deterministically
+  ---
+  duration_ms: 2.227209
+  type: 'test'
+  ...
+# Subtest: createSummaryData rejects invalid fields, types, aliases, and shapes atomically
+ok 364 - createSummaryData rejects invalid fields, types, aliases, and shapes atomically
+  ---
+  duration_ms: 1.229
+  type: 'test'
+  ...
+# Subtest: createSummaryData owns caller options and binds to compatible marks
+ok 365 - createSummaryData owns caller options and binds to compatible marks
+  ---
+  duration_ms: 11.22725
+  type: 'test'
+  ...
+# Subtest: createSummaryData computes frequency and reliability weighted statistics
+ok 366 - createSummaryData computes frequency and reliability weighted statistics
+  ---
+  duration_ms: 2.533125
+  type: 'test'
+  ...
+# Subtest: reliability weight scaling preserves shape statistics and scales mass
+ok 367 - reliability weight scaling preserves shape statistics and scales mass
+  ---
+  duration_ms: 1.354084
+  type: 'test'
+  ...
+# Subtest: weighted sum accepts finite cancellation without requiring finite total mass
+ok 368 - weighted sum accepts finite cancellation without requiring finite total mass
+  ---
+  duration_ms: 0.756709
+  type: 'test'
+  ...
+# Subtest: createSummaryData validates every weighted row and excludes zero-weight members
+ok 369 - createSummaryData validates every weighted row and excludes zero-weight members
+  ---
+  duration_ms: 1.858667
+  type: 'test'
+  ...
+# Subtest: rejects an unrepresentable bucket without changing source data or trace
+ok 370 - rejects an unrepresentable bucket without changing source data or trace
+  ---
+  duration_ms: 7.840375
+  type: 'test'
+  ...
+# Subtest: creates immutable UTC time-unit provenance and materialized values
+ok 371 - creates immutable UTC time-unit provenance and materialized values
+  ---
+  duration_ms: 2.465375
+  type: 'test'
+  ...
+# Subtest: uses explicit or current source and feeds an ordinary temporal encoding
+ok 372 - uses explicit or current source and feeds an ordinary temporal encoding
+  ---
+  duration_ms: 12.237875
+  type: 'test'
+  ...
+# Subtest: replays the canonical materializer and rederives after facet partitioning
+ok 373 - replays the canonical materializer and rederives after facet partitioning
+  ---
+  duration_ms: 17.314417
+  type: 'test'
+  ...
+# Subtest: rejects invalid calls atomically and owns caller options
+ok 374 - rejects invalid calls atomically and owns caller options
+  ---
+  duration_ms: 1.100042
+  type: 'test'
+  ...
+# Subtest: creates UTC and regional calendar weeks and nominal weekdays
+ok 375 - creates UTC and regional calendar weeks and nominal weekdays
+  ---
+  duration_ms: 13.514292
+  type: 'test'
+  ...
+# Subtest: resolves DST gaps, folds, non-hour offsets, and skipped dates
+ok 376 - resolves DST gaps, folds, non-hour offsets, and skipped dates
+  ---
+  duration_ms: 7.560625
+  type: 'test'
+  ...
+# Subtest: keeps explicit zones in provenance and rejects week-policy conflicts
+ok 377 - keeps explicit zones in provenance and rejects week-policy conflicts
+  ---
+  duration_ms: 0.636125
+  type: 'test'
+  ...
+# Subtest: infers a collision-checked time-unit output with three options
+ok 378 - infers a collision-checked time-unit output with three options
+  ---
+  duration_ms: 1.045958
+  type: 'test'
+  ...
+# Subtest: nullable calendar buckets retain raw rows, optional fields and numeric lineage
+ok 379 - nullable calendar buckets retain raw rows, optional fields and numeric lineage
+  ---
+  duration_ms: 13.0015
+  type: 'test'
+  ...
+# Subtest: all-null numeric schemas and weekday policies survive editable restoration
+ok 380 - all-null numeric schemas and weekday policies survive editable restoration
+  ---
+  duration_ms: 12.563292
+  type: 'test'
+  ...
+# Subtest: null handling does not swallow malformed inputs, invalid options or collisions
+ok 381 - null handling does not swallow malformed inputs, invalid options or collisions
+  ---
+  duration_ms: 11.16525
+  type: 'test'
+  ...
+# Subtest: editing null policy recomputes derived consumers and retains strict default shape
+ok 382 - editing null policy recomputes derived consumers and retains strict default shape
+  ---
+  duration_ms: 3.409708
+  type: 'test'
+  ...
+# Subtest: every window operation stores prototype-named output fields as ordinary data
+ok 383 - every window operation stores prototype-named output fields as ordinary data
+  ---
+  duration_ms: 20.424958
+  type: 'test'
+  ...
+# Subtest: creates immutable window provenance and concrete source-ordered rows
+ok 384 - creates immutable window provenance and concrete source-ordered rows
+  ---
+  duration_ms: 1.056666
+  type: 'test'
+  ...
+# Subtest: uses an explicit source or infers the unique current dataset
+ok 385 - uses an explicit source or infers the unique current dataset
+  ---
+  duration_ms: 1.1615
+  type: 'test'
+  ...
+# Subtest: stores normalized moving frames and materializes sequential moving values
+ok 386 - stores normalized moving frames and materializes sequential moving values
+  ---
+  duration_ms: 0.768583
+  type: 'test'
+  ...
+# Subtest: composes after filtering and can feed ordinary marks
+ok 387 - composes after filtering and can feed ordinary marks
+  ---
+  duration_ms: 14.114708
+  type: 'test'
+  ...
+# Subtest: replays the registered window materializer for a facet child
+ok 388 - replays the registered window materializer for a facet child
+  ---
+  duration_ms: 0.69625
+  type: 'test'
+  ...
+# Subtest: facets source rows before replaying window values in every child
+ok 389 - facets source rows before replaying window values in every child
+  ---
+  duration_ms: 15.58425
+  type: 'test'
+  ...
+# Subtest: replays moving windows independently after facet partitioning
+ok 390 - replays moving windows independently after facet partitioning
+  ---
+  duration_ms: 7.18625
+  type: 'test'
+  ...
+# Subtest: rejects duplicate IDs and invalid calls without changing the source
+ok 391 - rejects duplicate IDs and invalid calls without changing the source
+  ---
+  duration_ms: 0.990417
+  type: 'test'
+  ...
+# Subtest: owns operation options and lag defaults deeply
+ok 392 - owns operation options and lag defaults deeply
+  ---
+  duration_ms: 0.7555
+  type: 'test'
+  ...
+# Subtest: computes closed elapsed-duration windows in source order
+ok 393 - computes closed elapsed-duration windows in source order
+  ---
+  duration_ms: 1.408334
+  type: 'test'
+  ...
+# Subtest: duration windows include closed boundaries and all timestamp peers
+ok 394 - duration windows include closed boundaries and all timestamp peers
+  ---
+  duration_ms: 1.774833
+  type: 'test'
+  ...
+# Subtest: moving windows skip only nullish values and enforce minPeriods
+ok 395 - moving windows skip only nullish values and enforce minPeriods
+  ---
+  duration_ms: 1.124167
+  type: 'test'
+  ...
+# Subtest: duration windows reject row-frame mixing and invalid temporal policies
+ok 396 - duration windows reject row-frame mixing and invalid temporal policies
+  ---
+  duration_ms: 2.510958
+  type: 'test'
+  ...
+# Subtest: parameter resources use exact typed identity and immutable revision snapshots
+ok 397 - parameter resources use exact typed identity and immutable revision snapshots
+  ---
+  duration_ms: 4.810291
+  type: 'test'
+  ...
+# Subtest: parameter resource values survive tagged snapshot restoration
+ok 398 - parameter resource values survive tagged snapshot restoration
+  ---
+  duration_ms: 3.073
+  type: 'test'
+  ...
+# Subtest: stored parameters reject generated ownership, inputs, duplicate value owners, and non-authored provenance
+ok 399 - stored parameters reject generated ownership, inputs, duplicate value owners, and non-authored provenance
+  ---
+  duration_ms: 0.416875
+  type: 'test'
+  ...
+# Subtest: stored parameter descriptor safety rejects accessors without execution
+ok 400 - stored parameter descriptor safety rejects accessors without execution
+  ---
+  duration_ms: 0.445209
+  type: 'test'
+  ...
+# Subtest: parameter removal restricts every stored computed snapshot and primitive bypass
+ok 401 - parameter removal restricts every stored computed snapshot and primitive bypass
+  ---
+  duration_ms: 0.621209
+  type: 'test'
+  ...
+# Subtest: parameter consumers include retained facet scopes and exclude independent concat children
+ok 402 - parameter consumers include retained facet scopes and exclude independent concat children
+  ---
+  duration_ms: 0.374833
+  type: 'test'
+  ...
+# Subtest: facet resource adoption supplies missing exact parameter dependencies and preserves current values
+ok 403 - facet resource adoption supplies missing exact parameter dependencies and preserves current values
+  ---
+  duration_ms: 0.450875
+  type: 'test'
+  ...
+# Subtest: ordered predicates choose the first match and required otherwise without dropping zero
+ok 404 - ordered predicates choose the first match and required otherwise without dropping zero
+  ---
+  duration_ms: 2.826333
+  type: 'test'
+  ...
+# Subtest: inactive branches are statically checked and their values are all normalized
+ok 405 - inactive branches are statically checked and their values are all normalized
+  ---
+  duration_ms: 2.013375
+  type: 'test'
+  ...
+# Subtest: later predicates run only for unmatched items and do not produce lazy-domain diagnostics
+ok 406 - later predicates run only for unmatched items and do not produce lazy-domain diagnostics
+  ---
+  duration_ms: 0.228292
+  type: 'test'
+  ...
+# Subtest: stored selections are explicit identities with complete boolean membership
+ok 407 - stored selections are explicit identities with complete boolean membership
+  ---
+  duration_ms: 0.51425
+  type: 'test'
+  ...
+# Subtest: conditional boundaries reject malformed structures, accessors, cycles and oversized work
+ok 408 - conditional boundaries reject malformed structures, accessors, cycles and oversized work
+  ---
+  duration_ms: 89.4595
+  type: 'test'
+  ...
+# Subtest: predicate roots require actual booleans, while comparisons preserve null and missing behavior
+ok 409 - predicate roots require actual booleans, while comparisons preserve null and missing behavior
+  ---
+  duration_ms: 0.542416
+  type: 'test'
+  ...
+# Subtest: expression core separates missing arithmetic from explicit null
+ok 410 - expression core separates missing arithmetic from explicit null
+  ---
+  duration_ms: 1.632
+  type: 'test'
+  ...
+# Subtest: expression core preserves typed equality and lazy branch diagnostics
+ok 411 - expression core preserves typed equality and lazy branch diagnostics
+  ---
+  duration_ms: 0.478875
+  type: 'test'
+  ...
+# Subtest: arithmetic, comparisons and boolean nodes retain strict scalar semantics
+ok 412 - arithmetic, comparisons and boolean nodes retain strict scalar semantics
+  ---
+  duration_ms: 1.262
+  type: 'test'
+  ...
+# Subtest: lazy operators evaluate only the selected runtime values
+ok 413 - lazy operators evaluate only the selected runtime values
+  ---
+  duration_ms: 0.40475
+  type: 'test'
+  ...
+# Subtest: normalization rejects malformed and executable input without invoking accessors
+ok 414 - normalization rejects malformed and executable input without invoking accessors
+  ---
+  duration_ms: 3.79875
+  type: 'test'
+  ...
+# Subtest: all lazy branches have validated structure, references and known types
+ok 415 - all lazy branches have validated structure, references and known types
+  ---
+  duration_ms: 1.922834
+  type: 'test'
+  ...
+# Subtest: field and parameter dependencies use explicit identities and own keys
+ok 416 - field and parameter dependencies use explicit identities and own keys
+  ---
+  duration_ms: 2.441292
+  type: 'test'
+  ...
+# Subtest: unknown field types are checked only in executed branches and outputs remain homogeneous
+ok 417 - unknown field types are checked only in executed branches and outputs remain homogeneous
+  ---
+  duration_ms: 0.454708
+  type: 'test'
+  ...
+# Subtest: schema, parameter and row descriptors are validated without executing code
+ok 418 - schema, parameter and row descriptors are validated without executing code
+  ---
+  duration_ms: 0.206
+  type: 'test'
+  ...
+# Subtest: action summaries and computed creation or editing never execute AST getters
+ok 419 - action summaries and computed creation or editing never execute AST getters
+  ---
+  duration_ms: 9.855666
+  type: 'test'
+  ...
+# Subtest: summaries handle deep plain data and avoid constructor getters or prototype mutation
+ok 420 - summaries handle deep plain data and avoid constructor getters or prototype mutation
+  ---
+  duration_ms: 16.493958
+  type: 'test'
+  ...
+# Subtest: computed authoring keeps distinct v1 and v2 null semantics
+ok 421 - computed authoring keeps distinct v1 and v2 null semantics
+  ---
+  duration_ms: 5.980583
+  type: 'test'
+  ...
+# Subtest: arrays reject hidden, extra, sparse or custom prototype AST elements
+ok 422 - arrays reject hidden, extra, sparse or custom prototype AST elements
+  ---
+  duration_ms: 0.527625
+  type: 'test'
+  ...
+# Subtest: shared argument DAGs do not expand before computed occurrence validation
+ok 423 - shared argument DAGs do not expand before computed occurrence validation
+  ---
+  duration_ms: 0.9015
+  type: 'test'
+  ...
+1..423
+# tests 423
+# suites 0
+# pass 423
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 13850.619125

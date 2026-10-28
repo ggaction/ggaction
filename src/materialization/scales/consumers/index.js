@@ -19,6 +19,7 @@ export {
 } from "./seriesLayout.js";
 
 export function resolveConsumerValuesForDataset(program, consumer, dataset) {
+  if (consumer.role === "conditional") return readConsumerFieldValues(program, consumer, dataset);
   if (consumer.layer.mark.type === "rect") return resolveMarkFamilyConsumerValues(program, consumer, dataset).values;
   if (Object.hasOwn(consumer.encoding, "datum")) {
     if (consumer.layer.mark.type === "area") {

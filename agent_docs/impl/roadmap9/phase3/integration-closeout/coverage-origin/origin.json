@@ -1,0 +1,147 @@
+{
+  "repository": "ggaction/ggaction",
+  "job": {
+    "id": 122940358960,
+    "run_id": 40723472877,
+    "workflow_name": "CI",
+    "head_branch": "main",
+    "run_url": "https://api.github.com/repos/ggaction/ggaction/actions/runs/40723472877",
+    "run_attempt": 1,
+    "node_id": "CR_kwDOTVRtts8AAAAcn9EBMA",
+    "head_sha": "72855612447cf391defdbf6a121a26cc503bb9ce",
+    "url": "https://api.github.com/repos/ggaction/ggaction/actions/jobs/122940358960",
+    "html_url": "https://github.com/ggaction/ggaction/actions/runs/40723472877/job/122940358960",
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-10-28T16:11:18Z",
+    "started_at": "2026-10-28T16:11:22Z",
+    "completed_at": "2026-10-28T16:31:43Z",
+    "name": "coverage",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-10-28T16:11:23Z",
+        "completed_at": "2026-10-28T16:11:24Z"
+      },
+      {
+        "name": "Check out repository",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-10-28T16:11:24Z",
+        "completed_at": "2026-10-28T16:11:32Z"
+      },
+      {
+        "name": "Set up Node.js",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-10-28T16:11:32Z",
+        "completed_at": "2026-10-28T16:11:35Z"
+      },
+      {
+        "name": "Install dependencies",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-10-28T16:11:35Z",
+        "completed_at": "2026-10-28T16:11:38Z"
+      },
+      {
+        "name": "Install Chromium for documentation source tests",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-10-28T16:11:38Z",
+        "completed_at": "2026-10-28T16:12:17Z"
+      },
+      {
+        "name": "Enforce coverage thresholds",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-10-28T16:12:17Z",
+        "completed_at": "2026-10-28T16:31:38Z"
+      },
+      {
+        "name": "Retain complete coverage evidence",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-10-28T16:31:38Z",
+        "completed_at": "2026-10-28T16:31:40Z"
+      },
+      {
+        "name": "Collect bounded failure evidence",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 8,
+        "started_at": "2026-10-28T16:31:40Z",
+        "completed_at": "2026-10-28T16:31:40Z"
+      },
+      {
+        "name": "Upload failure evidence",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 9,
+        "started_at": "2026-10-28T16:31:40Z",
+        "completed_at": "2026-10-28T16:31:40Z"
+      },
+      {
+        "name": "Post Set up Node.js",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 17,
+        "started_at": "2026-10-28T16:31:40Z",
+        "completed_at": "2026-10-28T16:31:40Z"
+      },
+      {
+        "name": "Post Check out repository",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 18,
+        "started_at": "2026-10-28T16:31:40Z",
+        "completed_at": "2026-10-28T16:31:40Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 19,
+        "started_at": "2026-10-28T16:31:40Z",
+        "completed_at": "2026-10-28T16:31:40Z"
+      }
+    ],
+    "check_run_url": "https://api.github.com/repos/ggaction/ggaction/check-runs/122940358960",
+    "labels": [
+      "ubuntu-latest"
+    ],
+    "runner_id": 1000007307,
+    "runner_name": "GitHub Actions 1000007307",
+    "runner_group_id": 0,
+    "runner_group_name": "GitHub Actions"
+  },
+  "artifact": {
+    "id": 12833201683,
+    "node_id": "MDg6QXJ0aWZhY3QxMjgzMzIwMTY4Mw==",
+    "name": "coverage-coverage-1",
+    "size_in_bytes": 278684,
+    "url": "https://api.github.com/repos/ggaction/ggaction/actions/artifacts/12833201683",
+    "archive_download_url": "https://api.github.com/repos/ggaction/ggaction/actions/artifacts/12833201683/zip",
+    "expired": false,
+    "digest": "sha256:28ebcff15aaa6a1036868b629cb887477d2618bbb55eb6b471a14ff846d49f83",
+    "created_at": "2026-10-28T16:31:40Z",
+    "updated_at": "2026-10-28T16:31:40Z",
+    "expires_at": "2026-11-11T16:31:38Z",
+    "workflow_run": {
+      "id": 40723472877,
+      "repository_id": 1297378742,
+      "head_repository_id": 1297378742,
+      "head_branch": "main",
+      "head_sha": "72855612447cf391defdbf6a121a26cc503bb9ce"
+    }
+  }
+}

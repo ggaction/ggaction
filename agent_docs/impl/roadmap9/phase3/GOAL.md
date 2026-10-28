@@ -1,6 +1,6 @@
 # Phase 3 — 안전한 AST v2와 데이터 입력
 
-상태: **공개 AST v2/parameter 제품 checkpoint 검증 완료; G-DATA 공개 연결 구현 후 최종 통합 검증 중**. [이전 제품 증거](product-implementation.json)와 [STEP3](STEP3.md)를 보존하고 [STEP6](STEP6.md)가 최신 데이터 갱신 진행 상태를 소유한다. AT-16 공개 실행을 검증했으며 전체 aggregate와 STEP-013 closeout은 진행 중이다. Phase 0–2/STEP-001–012는 완료 상태를 유지한다.
+상태: **STEP-013–015 제품 통합과 개별 종료 검증 완료**. 최신 근거는 [STEP8](STEP8.md)과 progress records에 있다. 공개 AST/parameter/prepared source·pivot·quadratic LOESS·calendar completion을 같은 구현 commit에서 검증했다. STEP-016 및 전체 STEP-077 후행 범위는 계속 진행한다. 아래 최초 설계·준비 기록은 당시 상태를 보존한 역사 자료다.
 
 사용자 “검토하자” 뒤 기존 AST 보존과 v2 도입 방향을 제안했고, “진행”(2026-10-28)으로 구체화를 요청받았다.
 [G-EXPR](G-EXPR.json)은 이 방향을 재질문하지 않고 정확한 신규 계약 D2–D6만 구분한다.

@@ -226,7 +226,7 @@ function instantiateProgram(state, ProgramClass) {
   });
 }
 
-function createDeferredProgram(program) {
+export function createDeferredEncodingProgram(program) {
   return instantiateProgram(
     programState(program),
     deferredProgramClass(program.constructor)
@@ -340,7 +340,7 @@ function finalMaterializationPlan(program, target, scaleIds) {
 
 function applyEncodingDraft(program, target, requests) {
   let draft = stageFinalPositionRoles(
-    createDeferredProgram(program),
+    createDeferredEncodingProgram(program),
     target,
     requests
   );

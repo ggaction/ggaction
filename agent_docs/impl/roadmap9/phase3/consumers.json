@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "product-consumers-verified-integration-closeout-pending",
+  "status": "verified-at-integrated-closeout",
   "cells": [
     {
       "consumer": "normalization-and-evaluation",
@@ -62,7 +62,7 @@
       "consumer": "docs-and-current-contracts",
       "contract": "D1–D6",
       "status": "passed",
-      "reason": "현재 계약/공개 문서/생성 metadata 동기화와 built150pages 및 1210LLM artifacts를 확인했다.",
+      "reason": "현재 계약/공개 문서/생성 metadata 동기화와 built150pages 및 1218LLM artifacts를 확인했다.",
       "evidence": "test/docs/documented-behavior.test.js"
     },
     {
@@ -90,7 +90,7 @@
   "newVisualTarget": false,
   "rendererPolicy": "Renderers consume materialized graphicSpec; no AST evaluation.",
   "coreEvidence": "agent_docs/impl/roadmap9/phase3/core-implementation.json",
-  "integrationRemaining": [
-    "최종 source/evidence commit 및 원격 DATA CI"
-  ]
+  "integrationRemaining": [],
+  "implementationCommit": "72855612447cf391defdbf6a121a26cc503bb9ce",
+  "closeout": "STEP8.md"
 }

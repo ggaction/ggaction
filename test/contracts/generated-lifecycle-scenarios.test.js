@@ -192,6 +192,11 @@ test("retains direct action effects in final semantic and graphic state", () => 
   assert.equal(resources.semanticSpec.resources.some(resource =>
     resource.kind === "parameter" && resource.id === "unusedLifecycleParameter"
   ), false);
+  const parameterFiltered = currentDerivedDataset(resources, "filter", "parameterFiltered");
+  assert.deepEqual(parameterFiltered.values.map(row => row.x), [3, 4]);
+  assert.equal(parameterFiltered.transform[0].where.version, 2);
+  assert.deepEqual(parameterFiltered.transform[0].parameterInputs,
+    [{ kind: "parameter", id: "computedOffset", revision: 1 }]);
   const parameterComputed = currentDerivedDataset(resources, "computed", "parameterComputed");
   assert.deepEqual(parameterComputed.values.map(row => row.adjusted), [3, 4, 5, 6]);
   assert.equal(parameterComputed.transform[0].expression.version, 2);
@@ -281,6 +286,10 @@ test("retains direct action effects in final semantic and graphic state", () => 
   assertRenderedItems(resources, "resourcePoints");
 
   const appearance = buildLifecycleRecipe("action-direct-point-text");
+  const conditional = semanticResource(appearance, "layers", "conditionalPoints");
+  assert.deepEqual(Object.keys(conditional.conditionals).sort(),
+    ["angle", "color", "opacity", "shape", "size", "stroke", "strokeWidth"]);
+  assert.deepEqual(assertRenderedItems(appearance, "conditionalPoints").map(item => item.properties.opacity), [1, 0]);
   const points = assertRenderedItems(appearance, "appearancePoints");
   assert.ok(points.every(item => item.properties.radius === 3));
   assert.ok(points.every(item => item.properties.opacity >= 0.2));
@@ -297,6 +306,8 @@ test("retains direct action effects in final semantic and graphic state", () => 
 
   const ranges = buildLifecycleRecipe("action-direct-ranged-marks");
   const ruleLayer = semanticResource(ranges, "layers", "directRules");
+  assert.deepEqual(ruleLayer.conditionals.strokeDash.conditions[0].value, { value: [3, 2] });
+  assert.deepEqual(ruleLayer.conditionals.strokeDash.otherwise, { value: [1, 1] });
   assert.deepEqual(
     Object.keys(ruleLayer.encoding).sort(),
     ["strokeWidth", "x", "x2", "y", "y2"]

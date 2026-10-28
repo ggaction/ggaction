@@ -1757,6 +1757,12 @@
     "editPivotData": {
       "target": "wide",
       "op": "count"
+    },
+    "encodeColor": {
+      "field": "group"
+    },
+    "encodeSize": {
+      "field": "value"
     }
   },
   "callPatternOverrides": {
@@ -1833,8 +1839,8 @@
       "createGradientPlot({ id?, data? })"
     ],
     "filterData": [
-      "filterData({ id, field, predicate })",
-      "filterData({ id, field, oneOf | range })"
+      "filterData({ id, source?, where })",
+      "filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })"
     ],
     "filterMarks": [
       "filterMarks({ field | channel | property, op, ...operands })",
@@ -1856,7 +1862,8 @@
     ],
     "encodeAngle": [
       "encodeAngle({ target?, value })",
-      "encodeAngle({ target?, field, fieldType? })"
+      "encodeAngle({ target?, field, fieldType? })",
+      "encodeAngle({ target?, conditions: [{ when, value }], otherwise })"
     ],
     "createHistogram": [
       "createHistogram({ field, maxBins? | binStep? | binBoundaries? })",
@@ -1965,13 +1972,48 @@
     ],
     "createStatisticalReference": [
       "createStatisticalReference({ source, axis, statistic?, statistics? })"
+    ],
+    "editFilteredData": [
+      "editFilteredData({ target, where, dependents? })",
+      "editFilteredData({ target, field?, oneOf | noneOf | predicate | range, nulls?, dependents? })"
+    ],
+    "encodeColor": [
+      "encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })",
+      "encodeColor({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeStroke": [
+      "encodeStroke({ value, target? })",
+      "encodeStroke({ field, target?, fieldType?, temporalUnit?, scale? })",
+      "encodeStroke({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeSize": [
+      "encodeSize({ field, target?, fieldType?, scale? })",
+      "encodeSize({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeShape": [
+      "encodeShape({ field, target?, fieldType?, scale? })",
+      "encodeShape({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeOpacity": [
+      "encodeOpacity({ value, target? })",
+      "encodeOpacity({ field, target?, fieldType?, scale? })",
+      "encodeOpacity({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeStrokeWidth": [
+      "encodeStrokeWidth({ value, target? })",
+      "encodeStrokeWidth({ field, target?, fieldType?, scale? })",
+      "encodeStrokeWidth({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeStrokeDash": [
+      "encodeStrokeDash(",
+      "encodeStrokeDash({ target?, conditions: [{ when, value }], otherwise })"
     ]
   },
   "errorOverrides": {
     "filterData": [
       {
-        "error": "More or fewer than one of oneOf, predicate, and range is supplied.",
-        "fix": "Choose exactly one filter mode."
+        "error": "The where predicate is combined with field filter options, or a field mode is missing.",
+        "fix": "Supply only where, or supply field and exactly one of oneOf, noneOf, predicate, or range."
       }
     ],
     "encodeAngle": [

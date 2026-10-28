@@ -1219,6 +1219,22 @@
   {
     "file": "api/data/filtering.md",
     "block": 4,
+    "heading": "Filter with a parameter",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"observations\"",
+      "data: \"selected\"",
+      "target: \"minimum\""
+    ],
+    "prerequisites": "Standalone ES module with a Canvas, all observations and imports included. Inspect each immutable filtered dataset.",
+    "sha256": "20bb394ac1db1195891bc67fe5385685dfd49e3824752740595738b6dd96a944",
+    "executable": true
+  },
+  {
+    "file": "api/data/filtering.md",
+    "block": 5,
     "heading": "`filterMarks({ target?, mode?, ...selector })` {#filter-marks}",
     "mode": "complete",
     "environment": "node-esm",
@@ -1230,7 +1246,7 @@
   },
   {
     "file": "api/data/filtering.md",
-    "block": 5,
+    "block": 6,
     "heading": "`filterMarks({ target?, mode?, ...selector })` {#filter-marks}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1246,7 +1262,7 @@
   },
   {
     "file": "api/data/filtering.md",
-    "block": 6,
+    "block": 7,
     "heading": "`filterMarks({ target?, mode?, ...selector })` {#filter-marks}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1262,7 +1278,7 @@
   },
   {
     "file": "api/data/filtering.md",
-    "block": 7,
+    "block": 8,
     "heading": "`removeMarkFilter({ target? } = {})`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1652,6 +1668,20 @@
   {
     "file": "api/encodings.md",
     "block": 1,
+    "heading": "Choose appearance with conditions",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"minimum\""
+    ],
+    "prerequisites": "The displayed program imports chart and supplies its inline data and parameter.",
+    "sha256": "0ea350c16712226c8a4804e1b797d865174de0a1039c66bbd8cf9745846cff6b",
+    "executable": true
+  },
+  {
+    "file": "api/encodings.md",
+    "block": 2,
     "heading": "Fixed or variable appearance",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1663,7 +1693,7 @@
   },
   {
     "file": "api/encodings.md",
-    "block": 2,
+    "block": 3,
     "heading": "Direction",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1677,7 +1707,7 @@
   },
   {
     "file": "api/encodings.md",
-    "block": 3,
+    "block": 4,
     "heading": "Removing an encoding",
     "mode": "fragment",
     "environment": "esm-context",

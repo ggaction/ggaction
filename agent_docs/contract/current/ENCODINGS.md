@@ -2,6 +2,61 @@
 
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
 
+## Conditional appearance
+
+Implemented for `encodeColor`, `encodeStroke`, `encodeSize`, `encodeShape`,
+`encodeOpacity`, `encodeStrokeWidth`, `encodeStrokeDash`, and `encodeAngle`, also
+inside `encodeChannels`. `ConditionalEncodingOptions<OrdinaryOptions>` accepts
+`target?`, `conditions: [{when,value}, ...]`, and mandatory `otherwise`. Each value
+is the existing encoder payload without target. This assignment is exclusive with
+ordinary encoding fields and constant mark config for the same channel.
+Basic supports conditionals on its existing color/size/shape methods; this adds
+no Full-only action to the Basic entry.
+
+- First-match input order; strict boolean ExpressionV2 or `{selection: UserId}`.
+  No truthiness, callbacks or JS source. A zero-valued branch remains zero.
+- All branch shapes, fields, types, scale definitions and exact parameter/selection
+  references validate before output. Inactive invalid branches reject atomically.
+- Existing mark capability, constant/field restrictions and aggregate owners apply.
+  Color includes continuous Tick fields; conditional Tick color/stroke remain exclusive.
+  Paths and aggregate marks evaluate at their final item grain. Non-unique raw fields
+  reject instead of choosing one row. A branch cannot change grouping, stack or layout.
+- `layer.conditionals[channel]` is the sole semantic owner: normalized conditions,
+  otherwise, ordered exact `parameterInputs` and `selectionInputs`. Otherwise is not
+  copied into ordinary encoding or materialization config. Reassignment clears the
+  previous owner. Branch field scales get stable target/channel/branch IDs when omitted;
+  reassignment preserves the previous branch ID. Explicit scale sharing retains the
+  ordinary compatibility and edit rules.
+- Every distinct field/type/scale branch binding contributes its full final-item
+  population to automatic domains, including inactive branches. Predicate truth does
+  not filter statistical input. Detached contributions refresh surviving consumers.
+  `emptyDomain` follows the existing explicit preserve/require-explicit policy.
+- One unique field/type/scale binding can drive an existing legend. Multiple bindings
+  are explicitly ambiguous; assigning them with an existing affected legend rejects
+  atomically. Remove that legend first. Constant-only replacement also requires its
+  existing legend to be removed. No implicit first branch or new branch-scale guide API.
+- Point size/shape/angle and Tick angle apply before geometry. Overlay points use their
+  final aggregate item values; linked lines follow conditional glyph anchors. Other
+  appearance is applied by the existing explicit mark output materializer. Identity keys
+  retain the correct conditional value when highlights reorder concrete output.
+- Parameter/selection edits update exact revisions and rematerialize dependent marks
+  in dependency order, including transitive selection-property consumers. Feedback
+  cycles reject. All references stay live for removal and inspection. Derived-output
+  renames update predicate field nodes and branch field bindings, never string literals.
+- Facets share or independently resolve all branch scales using the existing channel
+  policy; repeats and explicitly scoped concat children retain local resources.
+- Persistence validates closed shapes, exact references, field existence, compatible
+  scale roles, duplicate owners and cycles without evaluating predicates. Full restores
+  and edits both Full and Basic snapshots. Renderers consume concrete graphicSpec only.
+- Bounds: 1–64 conditions, 4,096 aggregate predicate nodes, existing 10,000,000 row-work
+  limit, and bounded conditional selection dependency graph. Getter/prototype and cyclic
+  payloads fail through the shared descriptor-safe grammar boundary.
+
+Evidence: `test/unit/actions/conditional-encoding.test.js`,
+`test/contracts/conditional-encoding-types.test.js` and installed conditional consumer.
+Position, offset, pointRadius, text and topology channels are not part of this
+appearance checkpoint; their existing ordinary contract remains unchanged here.
+
 ## Position changes and derived alignment
 
 When `encodeX`/`encodeY` replaces an Area's completed independent key, it binds
@@ -32,7 +87,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   `shape`, `strokeDash`, `xOffset`, `yOffset`)을 사용한다.
 - `type`: Implemented. compatible quantitative position은 `linear | log | pow | sqrt | symlog`, temporal position은 `time`, discrete position은 `band | point`; categorical color/dash/offset과 nominal shape은
   `ordinal`, continuous point/aggregate-bar/rect color는 `sequential`, quantitative point/aggregate-bar/rect color는 추가로
-  `quantize | quantile | threshold`, size는 `linear`만 허용한다.
+  `quantize | quantile | threshold`를 지원한다. Size의 정량·범주 type vocabulary는
+  아래 `encodeSize`의 Formal values가 소유한다.
 - `domain`: Implemented. `"auto"` 또는 type에 맞는 explicit array. explicit domain은 data inference,
   `zero`, `nice`보다 우선한다. Quantitative transformed auto domain이 finite constant로 축약되면 log는
   zero를 건너지 않는 multiplicative pair, pow/sqrt/symlog는 표현 가능한 경우 transform-space 중심을

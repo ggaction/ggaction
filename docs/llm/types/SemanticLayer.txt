@@ -9,5 +9,6 @@ export interface SemanticLayer {
     overlay?: Readonly<{ source: string; basis: "visibleItems"; mode: "follow"; series: "source" | "total";
       missing: "break" | "connect"; orderBy?: "x" | "y"; inheritColor: boolean }> }>;
   readonly encoding?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
+  readonly conditionals?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
   readonly [key: string]: unknown;
 }

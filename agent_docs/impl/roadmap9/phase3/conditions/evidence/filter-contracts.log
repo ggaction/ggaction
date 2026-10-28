@@ -1,0 +1,190 @@
+TAP version 13
+# Subtest: deferred chart owner cards distinguish creation from completed geometry
+ok 1 - deferred chart owner cards distinguish creation from completed geometry
+  ---
+  duration_ms: 6.406917
+  type: 'test'
+  ...
+# Subtest: compact action cards are generated from the current action contract
+ok 2 - compact action cards are generated from the current action contract
+  ---
+  duration_ms: 1574.324541
+  type: 'test'
+  ...
+# Subtest: compact action cards satisfy the bounded typed public schema projection
+ok 3 - compact action cards satisfy the bounded typed public schema projection
+  ---
+  duration_ms: 41.648541
+  type: 'test'
+  ...
+# Subtest: action-card hierarchy is generated from the executable direct-child trace
+ok 4 - action-card hierarchy is generated from the executable direct-child trace
+  ---
+  duration_ms: 5192.562875
+  type: 'test'
+  ...
+# Subtest: scale spacing units agree across every generic and focused editor
+ok 5 - scale spacing units agree across every generic and focused editor
+  ---
+  duration_ms: 5.7835
+  type: 'test'
+  ...
+# Subtest: Cartesian title cards retain numeric and relative gap logical-pixel units
+ok 6 - Cartesian title cards retain numeric and relative gap logical-pixel units
+  ---
+  duration_ms: 2.04
+  type: 'test'
+  ...
+# Subtest: action cards separate entry support, units, inference, and completion
+ok 7 - action cards separate entry support, units, inference, and completion
+  ---
+  duration_ms: 2.21425
+  type: 'test'
+  ...
+# Subtest: every compact snippet type-checks against the exact ChartProgram declaration
+ok 8 - every compact snippet type-checks against the exact ChartProgram declaration
+  ---
+  duration_ms: 129.163625
+  type: 'test'
+  ...
+# Subtest: imputation call patterns preserve method-specific requirements
+ok 9 - imputation call patterns preserve method-specific requirements
+  ---
+  duration_ms: 2.407166
+  type: 'test'
+  ...
+# Subtest: call pattern validation rejects unsupported top-level keys without confusing nested keys
+ok 10 - call pattern validation rejects unsupported top-level keys without confusing nested keys
+  ---
+  duration_ms: 0.518167
+  type: 'test'
+  ...
+# Subtest: advertised bar calls execute and direction-only guide branches retain their exact meaning
+ok 11 - advertised bar calls execute and direction-only guide branches retain their exact meaning
+  ---
+  duration_ms: 53.309875
+  type: 'test'
+  ...
+# Subtest: expression filter declarations admit closed predicates and reject mixed legacy modes
+ok 12 - expression filter declarations admit closed predicates and reject mixed legacy modes
+  ---
+  duration_ms: 179.108583
+  type: 'test'
+  ...
+# Subtest: Full rejects unknown primitive options without changing the source
+ok 13 - Full rejects unknown primitive options without changing the source
+  ---
+  duration_ms: 3.563125
+  type: 'test'
+  ...
+# Subtest: Full rejects sparse rows at both source data boundaries
+ok 14 - Full rejects sparse rows at both source data boundaries
+  ---
+  duration_ms: 5.448292
+  type: 'test'
+  ...
+# Subtest: Full refuses mutable function cells without freezing caller values
+ok 15 - Full refuses mutable function cells without freezing caller values
+  ---
+  duration_ms: 0.27275
+  type: 'test'
+  ...
+# Subtest: Basic rejects unknown primitive options without changing the source
+ok 16 - Basic rejects unknown primitive options without changing the source
+  ---
+  duration_ms: 0.372709
+  type: 'test'
+  ...
+# Subtest: Basic rejects sparse rows at both source data boundaries
+ok 17 - Basic rejects sparse rows at both source data boundaries
+  ---
+  duration_ms: 0.580459
+  type: 'test'
+  ...
+# Subtest: Basic refuses mutable function cells without freezing caller values
+ok 18 - Basic refuses mutable function cells without freezing caller values
+  ---
+  duration_ms: 0.307917
+  type: 'test'
+  ...
+# Subtest: extension callbacks remain executable without entering immutable trace state
+ok 19 - extension callbacks remain executable without entering immutable trace state
+  ---
+  duration_ms: 0.214292
+  type: 'test'
+  ...
+# Subtest: parameter and expression declarations preserve typed closed calls in Full and Basic
+ok 20 - parameter and expression declarations preserve typed closed calls in Full and Basic
+  ---
+  duration_ms: 307.36
+  type: 'test'
+  ...
+# Subtest: keeps source imports inside their architectural boundaries
+ok 21 - keeps source imports inside their architectural boundaries
+  ---
+  duration_ms: 80.280125
+  type: 'test'
+  ...
+# Subtest: the compact source-action vocabulary matches public default action metadata
+ok 22 - the compact source-action vocabulary matches public default action metadata
+  ---
+  duration_ms: 1.010709
+  type: 'test'
+  ...
+# Subtest: parses static, re-exported, and dynamic module references
+ok 23 - parses static, re-exported, and dynamic module references
+  ---
+  duration_ms: 0.110333
+  type: 'test'
+  ...
+# Subtest: resolves extensionless files and directory entry points
+ok 24 - resolves extensionless files and directory entry points
+  ---
+  duration_ms: 0.093875
+  type: 'test'
+  ...
+# Subtest: keeps the local source import graph acyclic
+ok 25 - keeps the local source import graph acyclic
+  ---
+  duration_ms: 52.948209
+  type: 'test'
+  ...
+# Subtest: keeps semantic and graphic cloning inside primitive actions
+ok 26 - keeps semantic and graphic cloning inside primitive actions
+  ---
+  duration_ms: 158.085458
+  type: 'test'
+  ...
+# Subtest: routes exact named semantic resource lookup through selectors
+ok 27 - routes exact named semantic resource lookup through selectors
+  ---
+  duration_ms: 239.064875
+  type: 'test'
+  ...
+# Subtest: keeps cross-cutting planners independent from concrete mark names
+ok 28 - keeps cross-cutting planners independent from concrete mark names
+  ---
+  duration_ms: 0.22275
+  type: 'test'
+  ...
+# Subtest: keeps every ordinary mark family behind a stable directory entry
+ok 29 - keeps every ordinary mark family behind a stable directory entry
+  ---
+  duration_ms: 0.432209
+  type: 'test'
+  ...
+# Subtest: architectural syntax checks ignore comments and recognize direct bracket and optional access
+ok 30 - architectural syntax checks ignore comments and recognize direct bracket and optional access
+  ---
+  duration_ms: 0.534375
+  type: 'test'
+  ...
+1..30
+# tests 30
+# suites 0
+# pass 30
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7461.449292

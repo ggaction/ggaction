@@ -128,12 +128,12 @@ interface ChartProgramActions {
   encodeTheta(options: TargetedOptions<ThetaEncodingOptions>): ChartProgram;
   encodeR(options: TargetedOptions<RadialEncodingOptions>): ChartProgram;
   encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
-  encodeColor(options: TargetedOptions<ColorEncodingOptions>): ChartProgram;
-  encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions>): ChartProgram;
-  encodeSize(options: TargetedOptions<SizeEncodingOptions>): ChartProgram;
-  encodeShape(options: TargetedOptions<ShapeEncodingOptions>): ChartProgram;
-  encodeAngle(options: TargetedOptions<AngleEncodingOptions>): ChartProgram;
-  encodeOpacity(options: TargetedOptions<OpacityEncodingOptions>): ChartProgram;
+  encodeColor(options: TargetedOptions<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>): ChartProgram;
+  encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>): ChartProgram;
+  encodeSize(options: TargetedOptions<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>): ChartProgram;
+  encodeShape(options: TargetedOptions<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>): ChartProgram;
+  encodeAngle(options: TargetedOptions<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>): ChartProgram;
+  encodeOpacity(options: TargetedOptions<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>): ChartProgram;
   encodeRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
   encodePointRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
   removePointRadius(options?: TargetedOptions<{ target?: string }>): ChartProgram;
@@ -159,8 +159,8 @@ interface ChartProgramActions {
   encodeHorizon(options?: TargetedOptions<HorizonEncodingOptions>): ChartProgram;
   editHorizon(options: TargetedOptions<EditHorizonOptions>): ChartProgram;
   encodeBarWidth(options?: TargetedOptions<BarWidthOptions>): ChartProgram;
-  encodeStroke(options: TargetedOptions<StrokeEncodingOptions>): ChartProgram;
-  encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions>): ChartProgram;
+  encodeStroke(options: TargetedOptions<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>): ChartProgram;
+  encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>): ChartProgram;
   encodeChannels(options: TargetedOptions<EncodeChannelsOptions>): ChartProgram;
   createRegression(options?: TargetedOptions<RegressionOptions>): ChartProgram;
   editRegression(options: TargetedOptions<EditRegressionOptions>): ChartProgram;
@@ -2456,6 +2456,39 @@ export interface ComputedExpressionV2 {
 
 Related types: [`ExpressionNode`](#type-expressionnode).
 
+### `ConditionalEncodingBranch` {#type-conditionalencodingbranch}
+
+<details markdown="1">
+<summary>Expand ConditionalEncodingBranch</summary>
+
+```typescript
+interface ConditionalEncodingBranch<Value> {
+  when: ComputedExpressionV2 | { selection: string };
+  value: WithoutEncodingTarget<Value>;
+}
+```
+
+</details>
+
+Related types: [`ComputedExpressionV2`](#type-computedexpressionv2) · [`WithoutEncodingTarget`](#type-withoutencodingtarget).
+
+### `ConditionalEncodingOptions` {#type-conditionalencodingoptions}
+
+<details markdown="1">
+<summary>Expand ConditionalEncodingOptions</summary>
+
+```typescript
+export type ConditionalEncodingOptions<Value> = {
+  target?: string;
+  conditions: readonly ConditionalEncodingBranch<Value>[];
+  otherwise: WithoutEncodingTarget<Value>;
+};
+```
+
+</details>
+
+Related types: [`ConditionalEncodingBranch`](#type-conditionalencodingbranch) · [`WithoutEncodingTarget`](#type-withoutencodingtarget).
+
 ### `ConfidenceIntervalMethod` {#type-confidenceintervalmethod}
 
 <details markdown="1">
@@ -3754,6 +3787,11 @@ export interface DashScaleOptions {
   range?: "auto" | readonly (DashStyle | DashPattern)[];
   unknown?: DashStyle | DashPattern;
 }
+
+/** Ordered first-match predicates; otherwise is required. All branches are validated.
+ * Each value uses the existing encoder payload without target. Selection predicates
+ * reference stored logical selection IDs. Legends require one unique field/scale binding.
+ */
 ```
 
 </details>
@@ -4157,7 +4195,7 @@ Related types: [`ECDFOutputFields`](#type-ecdfoutputfields) · [`DatasetECDFReso
 <summary>Expand DatasetFilterTransform</summary>
 
 ```typescript
-export type DatasetFilterTransform = {
+export type DatasetFilterTransform = ({
   type: "filter";
   field: string;
   nulls?: "include" | "exclude";
@@ -4166,12 +4204,12 @@ export type DatasetFilterTransform = {
   | { oneOf?: never; noneOf: readonly DatasetScalar[]; predicate?: never; range?: never }
   | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
   | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRange }
-);
+)) | ({ type: "filter" } & ExpressionFilterOptions);
 ```
 
 </details>
 
-Related types: [`DatasetScalar`](#type-datasetscalar) · [`FilterComparison`](#type-filtercomparison) · [`FilterRange`](#type-filterrange).
+Related types: [`DatasetScalar`](#type-datasetscalar) · [`FilterComparison`](#type-filtercomparison) · [`FilterRange`](#type-filterrange) · [`ExpressionFilterOptions`](#type-expressionfilteroptions).
 
 ### `DatasetFlattenTransform` {#type-datasetflattentransform}
 
@@ -5661,17 +5699,18 @@ export type EditFacetSourceOptions =
 <summary>Expand EditFilteredDataOptions</summary>
 
 ```typescript
-export type EditFilteredDataOptions = FilterModePatch & {
+export type EditFilteredDataOptions = (FilterModePatch & {
+  where?: never;
   target: string;
   field?: string;
   nulls?: "include" | "exclude" | false;
   dependents?: DerivedDataDependents;
-};
+}) | (ExpressionFilterOptions & { target: string; dependents?: DerivedDataDependents });
 ```
 
 </details>
 
-Related types: [`FilterModePatch`](#type-filtermodepatch) · [`DerivedDataDependents`](#type-deriveddatadependents).
+Related types: [`FilterModePatch`](#type-filtermodepatch) · [`DerivedDataDependents`](#type-deriveddatadependents) · [`ExpressionFilterOptions`](#type-expressionfilteroptions).
 
 ### `EditFlattenDataOptions` {#type-editflattendataoptions}
 
@@ -6722,14 +6761,14 @@ export interface EncodingChannelAssignments {
   yOffset?: WithoutEncodingTarget<YOffsetEncodingOptions>;
   group?: WithoutEncodingTarget<GroupEncodingOptions>;
   pathOrder?: WithoutEncodingTarget<PathOrderEncodingOptions>;
-  color?: WithoutEncodingTarget<ColorEncodingOptions>;
-  stroke?: WithoutEncodingTarget<StrokeEncodingOptions>;
-  size?: WithoutEncodingTarget<SizeEncodingOptions>;
-  shape?: WithoutEncodingTarget<ShapeEncodingOptions>;
-  opacity?: WithoutEncodingTarget<OpacityEncodingOptions>;
-  strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions>;
-  strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions>;
-  angle?: WithoutEncodingTarget<AngleEncodingOptions>;
+  color?: WithoutEncodingTarget<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>;
+  stroke?: WithoutEncodingTarget<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>;
+  size?: WithoutEncodingTarget<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>;
+  shape?: WithoutEncodingTarget<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>;
+  opacity?: WithoutEncodingTarget<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>;
+  strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>;
+  strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>;
+  angle?: WithoutEncodingTarget<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>;
   text?: WithoutEncodingTarget<TextEncodingOptions>;
   dx?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
   dy?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
@@ -6738,7 +6777,7 @@ export interface EncodingChannelAssignments {
 
 </details>
 
-Related types: [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`PositionEncodingOptions`](#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](#type-thetaencodingoptions) · [`RadialEncodingOptions`](#type-radialencodingoptions) · [`XOffsetEncodingOptions`](#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](#type-groupencodingoptions) · [`PathOrderEncodingOptions`](#type-pathorderencodingoptions) · [`ColorEncodingOptions`](#type-colorencodingoptions) · [`StrokeEncodingOptions`](#type-strokeencodingoptions) · [`SizeEncodingOptions`](#type-sizeencodingoptions) · [`ShapeEncodingOptions`](#type-shapeencodingoptions) · [`OpacityEncodingOptions`](#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](#type-strokedashencodingoptions) · [`AngleEncodingOptions`](#type-angleencodingoptions) · [`TextEncodingOptions`](#type-textencodingoptions) · [`TextOffsetEncodingOptions`](#type-textoffsetencodingoptions).
+Related types: [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`PositionEncodingOptions`](#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](#type-thetaencodingoptions) · [`RadialEncodingOptions`](#type-radialencodingoptions) · [`XOffsetEncodingOptions`](#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](#type-groupencodingoptions) · [`PathOrderEncodingOptions`](#type-pathorderencodingoptions) · [`ColorEncodingOptions`](#type-colorencodingoptions) · [`ConditionalEncodingOptions`](#type-conditionalencodingoptions) · [`StrokeEncodingOptions`](#type-strokeencodingoptions) · [`SizeEncodingOptions`](#type-sizeencodingoptions) · [`ShapeEncodingOptions`](#type-shapeencodingoptions) · [`OpacityEncodingOptions`](#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](#type-strokedashencodingoptions) · [`AngleEncodingOptions`](#type-angleencodingoptions) · [`TextEncodingOptions`](#type-textencodingoptions) · [`TextOffsetEncodingOptions`](#type-textoffsetencodingoptions).
 
 ### `EndpointCategoryChannel` {#type-endpointcategorychannel}
 
@@ -7102,6 +7141,27 @@ export type ExpressionCall =
 
 Related types: [`ExpressionNode`](#type-expressionnode).
 
+### `ExpressionFilterOptions` {#type-expressionfilteroptions}
+
+<details markdown="1">
+<summary>Expand ExpressionFilterOptions</summary>
+
+```typescript
+export type ExpressionFilterOptions = {
+  where: ComputedExpressionV2;
+  field?: never;
+  nulls?: never;
+  oneOf?: never;
+  noneOf?: never;
+  predicate?: never;
+  range?: never;
+};
+```
+
+</details>
+
+Related types: [`ComputedExpressionV2`](#type-computedexpressionv2).
+
 ### `ExpressionNode` {#type-expressionnode}
 
 <details markdown="1">
@@ -7461,17 +7521,15 @@ export type FilterComparison =
 <summary>Expand FilterDataOptions</summary>
 
 ```typescript
-export type FilterDataOptions = {
-  id: string;
-  source?: string;
-  field: string;
-  nulls?: "include" | "exclude";
-} & FilterModeOptions;
+export type FilterDataOptions = { id: string; source?: string } & (
+  | ({ field: string; nulls?: "include" | "exclude"; where?: never } & FilterModeOptions)
+  | ExpressionFilterOptions
+);
 ```
 
 </details>
 
-Related types: [`FilterModeOptions`](#type-filtermodeoptions).
+Related types: [`FilterModeOptions`](#type-filtermodeoptions) · [`ExpressionFilterOptions`](#type-expressionfilteroptions).
 
 ### `FilterMarksOptions` {#type-filtermarksoptions}
 

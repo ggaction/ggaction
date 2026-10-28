@@ -82,7 +82,15 @@
       },
       {
         "type": "file",
+        "path": "contracts/conditional-bar-blend.test.js"
+      },
+      {
+        "type": "file",
         "path": "browser/bar-blend.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/conditional-rendering.browser.js"
       },
       {
         "type": "prefix",

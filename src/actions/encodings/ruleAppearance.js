@@ -46,7 +46,7 @@ const encodeStrokeWidth = /* @__PURE__ */ action(
         const appearance = layer.mark.type === "bar" ? { ...config.barAppearance } : config;
         // Width authoring enables an absent outline; existing constant or
         // field-driven strokes keep their color and scale ownership.
-        const needsStroke = !layer.encoding?.stroke && (appearance.stroke === false ||
+        const needsStroke = !layer.encoding?.stroke && !layer.conditionals?.stroke && (appearance.stroke === false ||
           (["point", "area"].includes(layer.mark.type) && appearance.stroke === undefined));
         if (needsStroke) appearance.stroke = "#000000";
         appearance.strokeWidth = args.value;

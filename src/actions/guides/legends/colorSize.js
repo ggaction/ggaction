@@ -1,3 +1,4 @@
+import { conditionalLegendLayer } from "../../../materialization/legendEncodings.js";
 import {findLayer} from '../../../selectors/layers.js';
 import {prepareLegendSpacingEdit} from '../../../grammar/legendSpacing.js';
 import {findCoordinate} from '../../../selectors/coordinates.js';
@@ -21,7 +22,7 @@ import {resolveEffectiveLegendBlockConfig} from './blocks.js';
 import {applyLegendClipGraphics} from '../../../materialization/legendClip.js';
 
 export function resolveColorSizeOwner(program,target,combine='color-size',channels) {
- const candidates=(target===undefined?program.semanticSpec.layers:[findLayer(program,target)]).filter(layer=>layer?.mark?.type==='point'&&
+ const candidates=(target===undefined?program.semanticSpec.layers.map(layer => conditionalLegendLayer(layer)):[findLayer(program,target)]).filter(layer=>layer?.mark?.type==='point'&&
   (layer.encoding?.color||combine==='color-size-shape'&&layer.encoding?.stroke)&&layer.encoding?.size);
  const mapping=layer=>resolveColorSizeMapping({layer,scales:program.resolvedScales,pointConfig:program.markConfigs[layer.id],
   coordinate:findCoordinate(program,layer.coordinate),combine,channels});

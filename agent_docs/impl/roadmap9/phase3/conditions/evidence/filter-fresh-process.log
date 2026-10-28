@@ -1,0 +1,64 @@
+TAP version 13
+# Subtest: parameter filters retain row order, identity, schema and exact input revisions
+ok 1 - parameter filters retain row order, identity, schema and exact input revisions
+  ---
+  duration_ms: 20.929416
+  type: 'test'
+  ...
+# Subtest: parameter filter closure rematerializes summaries, scales, guides and marks
+ok 2 - parameter filter closure rematerializes summaries, scales, guides and marks
+  ---
+  duration_ms: 35.879084
+  type: 'test'
+  ...
+# Subtest: empty inferred domains fail atomically and explicit policies govern empty materialization
+ok 3 - empty inferred domains fail atomically and explicit policies govern empty materialization
+  ---
+  duration_ms: 76.792375
+  type: 'test'
+  ...
+# Subtest: all predicate branches validate even for empty input and inactive parameter references stay live
+ok 4 - all predicate branches validate even for empty input and inactive parameter references stay live
+  ---
+  duration_ms: 2.353125
+  type: 'test'
+  ...
+# Subtest: filter edits switch between expression and legacy modes and release detached dependencies
+ok 5 - filter edits switch between expression and legacy modes and release detached dependencies
+  ---
+  duration_ms: 5.172959
+  type: 'test'
+  ...
+# Subtest: authoring cannot forge exact references and restore rejects malformed or stale filter bindings
+ok 6 - authoring cannot forge exact references and restore rejects malformed or stale filter bindings
+  ---
+  duration_ms: 2.415708
+  type: 'test'
+  ...
+# Subtest: shared parameter roots form one filter/computed lookup diamond and raw revisions replay predicates
+ok 7 - shared parameter roots form one filter/computed lookup diamond and raw revisions replay predicates
+  ---
+  duration_ms: 9.641667
+  type: 'test'
+  ...
+# Subtest: nullable predicates reject candidate edits atomically and zero-rows still validate references
+ok 8 - nullable predicates reject candidate edits atomically and zero-rows still validate references
+  ---
+  duration_ms: 1.353791
+  type: 'test'
+  ...
+# Subtest: a fresh process restores a parameter filter and revises it without evaluating during restoration
+ok 9 - a fresh process restores a parameter filter and revises it without evaluating during restoration
+  ---
+  duration_ms: 237.541041
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 649.590042

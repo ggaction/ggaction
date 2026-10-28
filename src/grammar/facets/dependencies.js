@@ -4,6 +4,7 @@ import { findTransformPolicy } from "../transforms.js";
 import { BAR_GRAINS, resolveBarGrain } from "../bars/policy.js";
 import { resolveRectMode } from "../rects.js";
 import { resolveRuleMode } from "../rules.js";
+import { conditionalValues } from "../conditionalState.js";
 
 const CARTESIAN_MARKS = new Set([
   "point", "line", "area", "bar", "rule", "tick", "rect", "text"
@@ -90,9 +91,11 @@ export function collectFacetScaleBindings(semanticSpec) {
   const bindings = [];
   for (const layer of semanticSpec.layers) {
     for (const [policyKey, semanticChannel] of ORDINARY_SCALE_CHANNELS) {
-      const scaleId = layer.encoding?.[semanticChannel]?.scale;
-      if (scaleId === undefined) continue;
-      bindings.push({ layerId: layer.id, scaleId, policyKey, semanticChannel });
+      const encodings = layer.conditionals?.[semanticChannel] === undefined ? [layer.encoding?.[semanticChannel]]
+        : conditionalValues(layer.conditionals[semanticChannel]);
+      for (const scaleId of new Set(encodings.map(encoding => encoding?.scale).filter(id => id !== undefined))) {
+        bindings.push({ layerId: layer.id, scaleId, policyKey, semanticChannel });
+      }
     }
     for (const [dimensionIndex, dimension] of
       (layer.encoding?.parallel?.dimensions ?? []).entries()) {

@@ -1,0 +1,9 @@
+export type ExpressionFilterOptions = {
+  where: ComputedExpressionV2;
+  field?: never;
+  nulls?: never;
+  oneOf?: never;
+  noneOf?: never;
+  predicate?: never;
+  range?: never;
+};

@@ -1,0 +1,63 @@
+{
+  "step": "STEP-016",
+  "checkpoint": "predicate-filter",
+  "status": "verified-partial",
+  "basis": "c0f0f7147f62a9da671b632eb5dbaf03188cd575",
+  "branch": "codex/roadmap9-conditions",
+  "date": "2026-10-28",
+  "authorization": "../../../AUTHORIZATION.json",
+  "results": {
+    "unit": {
+      "passed": 423,
+      "failed": 0,
+      "log": "filter-unit.log"
+    },
+    "contracts": {
+      "passed": 30,
+      "failed": 0,
+      "log": "filter-contracts.log"
+    },
+    "docs": {
+      "passed": 160,
+      "failed": 0,
+      "log": "filter-docs.log"
+    },
+    "freshProcess": {
+      "passed": 9,
+      "failed": 0,
+      "includedInUnit": true,
+      "log": "filter-fresh-process.log"
+    },
+    "installed": {
+      "runtime": "v22.23.1",
+      "artifactSha256": "4efadcb57278eb78dd8777ca797c5cd2f67e2ce6fb7e6af0f39b2c2a49b83a16",
+      "groups": 7,
+      "passed": 7,
+      "report": "filter-installed-qualification.json"
+    },
+    "sizeMatrix": [
+      "filter-size-node20.json",
+      "filter-size-node22.json",
+      "filter-size-node24.json"
+    ]
+  },
+  "scope": [
+    "strict boolean ExpressionV2 filter",
+    "exact parameter references and complete dataset revision closure",
+    "immutable failure and fresh-process restore",
+    "private ordered conditional kernel",
+    "types, current contracts, docs and installed examples"
+  ],
+  "remaining": [
+    "public conditional encoders and all-branch scale/resource references",
+    "selection and conditional-only parameter rematerialization",
+    "complete consumer matrix and renderer/browser acceptance",
+    "G-DATA prepared source integration after root merge"
+  ],
+  "notClaimed": [
+    "full STEP-016 completion",
+    "complete repository coverage",
+    "full realistic suite",
+    "conditional public renderer/browser parity"
+  ]
+}

@@ -10,11 +10,11 @@ import {
 } from "./common.js";
 
 function rectSelectionProperties(graphic, index) {
-  const item = graphic.items[index];
+  const item = graphic?.items?.[index];
   return {
     ...concreteProperties(item?.properties),
     ...(readRectItemGeometry({
-      type: item?.type ?? graphic.type,
+      type: item?.type ?? graphic?.type,
       properties: item?.properties
     }) ?? {})
   };
@@ -43,8 +43,8 @@ export function resolveRectItems(program, layer, dataset, grain, resolveItems, s
   const compatibleCollection = rounded && graphic?.type === "collection" &&
     graphic.items?.every(item => ["rect", "path"].includes(item.type));
   if (
-    (graphic?.type !== "rect" && !compatibleCollection) ||
-    !Array.isArray(graphic.items)
+    !selectionResolvers?.sourceOnly && ((graphic?.type !== "rect" && !compatibleCollection) ||
+    !Array.isArray(graphic.items))
   ) {
     throw new Error(`Rect mark "${layer.id}" is incomplete for selection.`);
   }

@@ -1,3 +1,4 @@
+import { conditionalLegendLayer } from "../../../../materialization/legendEncodings.js";
 import {resolveColorSizeConfig,createColorSizeLegendFromConfig,materializeColorSizeLegend,resolveColorSizeLayout} from "../colorSize.js";
 import {resetLegendClipGraphics,applyLegendClipGraphics,restoreLegendClipContext}from"../../../../materialization/legendClip.js";
 import {validateLegendCombine,resolveSizeShapeCreation} from "../combine.js";
@@ -17,7 +18,7 @@ import { normalizeRecipe, resolveLegendSymbol } from "./recipes.js";
 import { validateLegendChannels } from "../target.js";
 import { createCategoricalLegendFromConfig, reconcileCategoricalSymbols,
   resolveCategoricalLegendRevision, removeLegendKinds } from "../lifecycle.js";
-import { findLayer } from "../../../../selectors/layers.js";
+import { findLegendLayer as findLayer } from "../../../../materialization/legendEncodings.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
 import { isSizeLegendPoint, resolveSizeLegendConfig } from "../size.js";
 import { isStrokeWidthLegendLayer } from "../strokeWidth.js";
@@ -277,7 +278,7 @@ export const createCategoricalLegend = /* @__PURE__ */ action(
   })
 );
 
-function resolveRawLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers, internalChannels) {
+function resolveRawLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers.map(layer => conditionalLegendLayer(layer)), internalChannels) {
   if (Object.hasOwn(args, "combine")) {
     validateLegendCombine(args.combine);
     if (["color-size","color-size-shape"].includes(args.combine)) {
@@ -519,7 +520,9 @@ function resolveRawLegendCreationPlan(program, args = {}, layers = program.seman
   return { steps: [{ op: "createCategoricalLegend", args }], finish: "auto" };
 }
 
-export function resolveLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers, internalChannels) {
+export function resolveLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers.map(layer => conditionalLegendLayer(layer)), internalChannels) {
+  layers = layers.map(layer => conditionalLegendLayer(layer, args.target === undefined || args.target === layer.id
+    ? args.channels ?? Object.keys(layer.conditionals ?? {}) : []));
   validateLegendGroupOptions(args);
   const { blockLayout: _layout, at: _at, alongOffset: _along, ...raw } = args;
   const groups = program.guideConfigs.legendGroups ?? {};

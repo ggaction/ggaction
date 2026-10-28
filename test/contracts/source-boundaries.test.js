@@ -93,7 +93,7 @@ test("keeps source imports inside their architectural boundaries", () => {
     for (const dependency of localImports(file)) {
       assert.equal(
         allowed[owner].has(layer(dependency)) || (
-          (owner === "persistence" && [path.join("actions", "primitives", "semantic.js"), path.join("materialization", "resourceState.js"), path.join("materialization", "computedInputs.js"), path.join("materialization", "dataSourceState.js")].includes(path.relative(root, dependency))) ||
+          (owner === "persistence" && [path.join("actions", "primitives", "semantic.js"), path.join("materialization", "resourceState.js"), path.join("materialization", "expressionInputs.js"), path.join("materialization", "dataSourceState.js")].includes(path.relative(root, dependency))) ||
           ([path.join("actions", "data", "sourceCreate.js"), path.join("actions", "data", "sourceEdit.js")].includes(path.relative(root, file)) &&
             path.relative(root, dependency) === path.join("resources", "dataUpdate.js")) ||
           (path.relative(root, file) === path.join("resources", "dataUpdate.js") &&

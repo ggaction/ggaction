@@ -1,0 +1,242 @@
+TAP version 13
+# Subtest: conditional appearance is first-match with required otherwise and an exact zero
+ok 1 - conditional appearance is first-match with required otherwise and an exact zero
+  ---
+  duration_ms: 80.915042
+  type: 'test'
+  ...
+# Subtest: all inactive fields, values and resource references are checked before state changes
+ok 2 - all inactive fields, values and resource references are checked before state changes
+  ---
+  duration_ms: 19.958709
+  type: 'test'
+  ...
+# Subtest: all branch fields contribute scale domains and references without filtering the population
+ok 3 - all branch fields contribute scale domains and references without filtering the population
+  ---
+  duration_ms: 21.217875
+  type: 'test'
+  ...
+# Subtest: conditional-only parameter edits and fresh-process-compatible restoration rebind exact revisions
+ok 4 - conditional-only parameter edits and fresh-process-compatible restoration rebind exact revisions
+  ---
+  duration_ms: 53.250333
+  type: 'test'
+  ...
+# Subtest: explicit selections revise conditionals and cannot be removed while referenced
+ok 5 - explicit selections revise conditionals and cannot be removed while referenced
+  ---
+  duration_ms: 30.101834
+  type: 'test'
+  ...
+# Subtest: a conditional cannot read its own output through a selection predicate
+ok 6 - a conditional cannot read its own output through a selection predicate
+  ---
+  duration_ms: 14.882416
+  type: 'test'
+  ...
+# Subtest: point size shape and angle use selected values before concrete geometry
+ok 7 - point size shape and angle use selected values before concrete geometry
+  ---
+  duration_ms: 31.144125
+  type: 'test'
+  ...
+# Subtest: unique conditional bindings create legends and ambiguous replacements fail atomically
+ok 8 - unique conditional bindings create legends and ambiguous replacements fail atomically
+  ---
+  duration_ms: 71.123459
+  type: 'test'
+  ...
+# Subtest: parameter filters refresh aggregate scales, legends and conditional appearance together
+ok 9 - parameter filters refresh aggregate scales, legends and conditional appearance together
+  ---
+  duration_ms: 48.967
+  type: 'test'
+  ...
+# Subtest: grouped line and aggregate bar conditionals use their final item grain
+ok 10 - grouped line and aggregate bar conditionals use their final item grain
+  ---
+  duration_ms: 54.268292
+  type: 'test'
+  ...
+# Subtest: channel selections inspect the chosen raw branch value and reject feedback cycles
+ok 11 - channel selections inspect the chosen raw branch value and reject feedback cycles
+  ---
+  duration_ms: 25.646833
+  type: 'test'
+  ...
+# Subtest: conditional selection dependencies refresh transitively in dependency order
+ok 12 - conditional selection dependencies refresh transitively in dependency order
+  ---
+  duration_ms: 68.514167
+  type: 'test'
+  ...
+# Subtest: named dash branches normalize through the ordinary dash owner
+ok 13 - named dash branches normalize through the ordinary dash owner
+  ---
+  duration_ms: 33.941625
+  type: 'test'
+  ...
+# Subtest: discretized size branches retain numeric scale roles across creation and mixed scale reassignment
+ok 14 - discretized size branches retain numeric scale roles across creation and mixed scale reassignment
+  ---
+  duration_ms: 96.907458
+  type: 'test'
+  ...
+# Subtest: conditional values retain item identity after highlighted items move to the front
+ok 15 - conditional values retain item identity after highlighted items move to the front
+  ---
+  duration_ms: 21.510125
+  type: 'test'
+  ...
+# Subtest: restore rejects duplicate channel owners and incompatible inactive branch scale roles
+ok 16 - restore rejects duplicate channel owners and incompatible inactive branch scale roles
+  ---
+  duration_ms: 41.298416
+  type: 'test'
+  ...
+# Subtest: derived field renames rebind branch fields and predicates while retaining string literals
+ok 17 - derived field renames rebind branch fields and predicates while retaining string literals
+  ---
+  duration_ms: 18.517958
+  type: 'test'
+  ...
+# Subtest: continuous Tick color supports conditional branch fields and explicit selection references remain inspectable
+ok 18 - continuous Tick color supports conditional branch fields and explicit selection references remain inspectable
+  ---
+  duration_ms: 19.921458
+  type: 'test'
+  ...
+# Subtest: conditional branch reassignment retains its scale id and follows ordinary scale edit semantics
+ok 19 - conditional branch reassignment retains its scale id and follows ordinary scale edit semantics
+  ---
+  duration_ms: 47.170125
+  type: 'test'
+  ...
+# Subtest: empty conditional branch domains require explicit policy and recover when a filter refills
+ok 20 - empty conditional branch domains require explicit policy and recover when a filter refills
+  ---
+  duration_ms: 34.482292
+  type: 'test'
+  ...
+# Subtest: linked overlays use conditional glyph anchors and preserve their aggregate item values
+ok 21 - linked overlays use conditional glyph anchors and preserve their aggregate item values
+  ---
+  duration_ms: 111.815417
+  type: 'test'
+  ...
+# Subtest: conditional temporal color, aggregate color and stroke width share ordinary channel units
+ok 22 - conditional temporal color, aggregate color and stroke width share ordinary channel units
+  ---
+  duration_ms: 54.88925
+  type: 'test'
+  ...
+# Subtest: conditional parameters retain their scope through facets, repeats and explicit concat child targets
+ok 23 - conditional parameters retain their scope through facets, repeats and explicit concat child targets
+  ---
+  duration_ms: 162.486667
+  type: 'test'
+  ...
+# Subtest: replacing a conditional releases its shared domain contribution and refreshes surviving consumers
+ok 24 - replacing a conditional releases its shared domain contribution and refreshes surviving consumers
+  ---
+  duration_ms: 22.606
+  type: 'test'
+  ...
+# Subtest: optional missing fields retain expression and explicit scale unknown semantics
+ok 25 - optional missing fields retain expression and explicit scale unknown semantics
+  ---
+  duration_ms: 15.821167
+  type: 'test'
+  ...
+# Subtest: ordered predicates choose the first match and required otherwise without dropping zero
+ok 26 - ordered predicates choose the first match and required otherwise without dropping zero
+  ---
+  duration_ms: 7.333708
+  type: 'test'
+  ...
+# Subtest: inactive branches are statically checked and their values are all normalized
+ok 27 - inactive branches are statically checked and their values are all normalized
+  ---
+  duration_ms: 2.280208
+  type: 'test'
+  ...
+# Subtest: later predicates run only for unmatched items and do not produce lazy-domain diagnostics
+ok 28 - later predicates run only for unmatched items and do not produce lazy-domain diagnostics
+  ---
+  duration_ms: 0.478042
+  type: 'test'
+  ...
+# Subtest: stored selections are explicit identities with complete boolean membership
+ok 29 - stored selections are explicit identities with complete boolean membership
+  ---
+  duration_ms: 0.740125
+  type: 'test'
+  ...
+# Subtest: conditional boundaries reject malformed structures, accessors, cycles and oversized work
+ok 30 - conditional boundaries reject malformed structures, accessors, cycles and oversized work
+  ---
+  duration_ms: 132.728
+  type: 'test'
+  ...
+# Subtest: predicate roots require actual booleans, while comparisons preserve null and missing behavior
+ok 31 - predicate roots require actual booleans, while comparisons preserve null and missing behavior
+  ---
+  duration_ms: 0.633583
+  type: 'test'
+  ...
+# Subtest: inactive stored branches cannot change channel units or field and scale roles
+ok 32 - inactive stored branches cannot change channel units or field and scale roles
+  ---
+  duration_ms: 5.188584
+  type: 'test'
+  ...
+# Subtest: stored selection dependency vectors require the exact declared identity and revision shape
+ok 33 - stored selection dependency vectors require the exact declared identity and revision shape
+  ---
+  duration_ms: 1.706916
+  type: 'test'
+  ...
+# Subtest: conditional dependency chains are bounded before recursive materialization
+ok 34 - conditional dependency chains are bounded before recursive materialization
+  ---
+  duration_ms: 18.392209
+  type: 'test'
+  ...
+# Subtest: stale conditional selection references fail even when their branch cannot execute
+ok 35 - stale conditional selection references fail even when their branch cannot execute
+  ---
+  duration_ms: 1.260833
+  type: 'test'
+  ...
+1..35
+# tests 35
+# suites 0
+# pass 35
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1703.961125
+# start of coverage report
+# ---------------------------------------------------------------------------
+# file                       | line % | branch % | funcs % | uncovered lines
+# ---------------------------------------------------------------------------
+# src                        |        |          |         | 
+#  actions                   |        |          |         | 
+#   encodings                |        |          |         | 
+#    conditional.js          |  97.33 |    86.11 |  100.00 | 98-99 116-117
+#  grammar                   |        |          |         | 
+#   conditionalEncoding.js   | 100.00 |   100.00 |  100.00 | 
+#   conditionalState.js      |  96.97 |    88.89 |  100.00 | 90 92-93
+#  materialization           |        |          |         | 
+#   conditionalMapping.js    | 100.00 |    81.08 |  100.00 | 
+#   conditionalSelection.js  | 100.00 |   100.00 |  100.00 | 
+#   conditionalState.js      | 100.00 |    86.14 |  100.00 | 
+#   conditionalValues.js     | 100.00 |   100.00 |  100.00 | 
+#   legendEncodings.js       | 100.00 |    94.12 |  100.00 | 
+#   overlayGeometry.js       | 100.00 |    87.50 |  100.00 | 
+# ---------------------------------------------------------------------------
+# all files                  |  98.95 |    88.94 |  100.00 | 
+# ---------------------------------------------------------------------------
+# end of coverage report

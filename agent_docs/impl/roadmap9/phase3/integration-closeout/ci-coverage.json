@@ -1,0 +1,32 @@
+{
+  "label": "ci-coverage",
+  "command": "node",
+  "args": [
+    ".artifacts/validation/verify-integrated-coverage.mjs"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 259,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T16:34:50.416Z",
+  "finishedAt": "2026-10-28T16:34:50.675Z",
+  "source": {
+    "available": true,
+    "commit": "72855612447cf391defdbf6a121a26cc503bb9ce",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "72855612447cf391defdbf6a121a26cc503bb9ce",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "7a3ae4abfff54f8f53f2951f675cd0341c58b2febd1c829b5a0b5c872a700a44",
+  "bytes": 1477781,
+  "retainedBytes": 1477781,
+  "truncated": false
+}

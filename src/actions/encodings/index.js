@@ -1,3 +1,4 @@
+import { registerConditionalEncodingActions } from "./conditional.js";
 import { registerSeriesLayoutAction } from "./seriesLayout.js";
 import { registerDensityEncodingAction } from "./density.js";
 import { registerPathOrderEncodingActions } from "./pathOrder.js";
@@ -38,4 +39,5 @@ export function registerEncodingActions(ProgramClass) {
   registerParallelEncodingAction(ProgramClass);
   registerEncodingRemovalAction(ProgramClass);
   registerAtomicEncodingAction(ProgramClass);
+  registerConditionalEncodingActions(ProgramClass);
 }
