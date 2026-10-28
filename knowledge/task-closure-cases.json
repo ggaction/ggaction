@@ -502,9 +502,7 @@
         },
         {
           "id": "action.encodeTheta",
-          "options": [
-            "field"
-          ]
+          "options": []
         },
         {
           "id": "action.encodeR",

@@ -2,7 +2,7 @@ import { assertIndependentOverlayGeometry } from "../../../grammar/overlay.js";
 import { closedAction } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 
-import { normalizePointPackingPolicy } from "../../../grammar/pointPacking.js";
+import { hasPointPackingBindings, normalizePointPackingPolicy } from "../../../grammar/pointPacking.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
 import { resolveEligibleLayer } from "../../../selectors/layers.js";
 
@@ -12,12 +12,8 @@ const OPTIONS = Object.freeze([
 const REMOVE_OPTIONS = Object.freeze(["target"]);
 
 function isPackablePoint(program, layer, channel) {
-  const packed = layer.encoding?.[channel];
-  const fixed = layer.encoding?.[channel === "x" ? "y" : "x"];
   return layer.mark?.type === "point" &&
-    ["nominal", "ordinal"].includes(packed?.fieldType) &&
-    ["quantitative", "temporal"].includes(fixed?.fieldType) &&
-    packed.scale !== undefined && fixed.scale !== undefined &&
+    hasPointPackingBindings(layer, channel) &&
     findCoordinate(program, layer.coordinate)?.type === "cartesian";
 }
 

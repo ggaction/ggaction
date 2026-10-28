@@ -121,5 +121,41 @@ export const cases = [
       const sceneCanvas = createCanvas(1, 1), sceneContext = sceneCanvas.getContext("2d"); renderTransitionScene(scene, sceneContext);
       assert.deepEqual(sceneContext.getImageData(0, 0, sceneCanvas.width, sceneCanvas.height).data, context.getImageData(0, 0, canvas.width, canvas.height).data);
     }
+  } },
+  { id: "conditional-encoding/position-text-lifecycle", async run() {
+    const when = expression(binary("and", parameter("alternate"), binary("gt", field("x"), literal(1))));
+    const choose = (value, otherwise) => ({ conditions: [{ when, value }], otherwise });
+    const original = chart().createCanvas({ width: 300, height: 200, margin: 20 })
+      .createData({ id: "rows", values: [{ x: 1, y: 1, other: 3, label: "A" }, { x: 3, y: 3, other: 1, label: "B" }] })
+      .createParameter({ id: "alternate", value: true })
+      .createPointMark({ id: "points" }).encodeX({ field: "x", scale: { domain: [0, 4], nice: false } })
+      .encodeY({ field: "y", scale: { domain: [0, 4], nice: false } })
+      .encodeX(choose({ field: "other" }, { field: "x" })).encodeY(choose({ datum: 0 }, { field: "y" }))
+      .encodePointRadius(choose({ value: 0 }, { value: 6 }))
+      .createTextMark({ id: "text", data: "rows" }).encodeX({ field: "x", scale: { domain: [0, 4], nice: false } })
+      .encodeY({ field: "y", scale: { domain: [0, 4], nice: false } })
+      .encodeChannels({ target: "text", channels: { text: choose({ value: "Selected" }, { field: "label" }), dx: choose({ value: 8 }, { value: 0 }), dy: choose({ value: -4 }, { value: 0 }) } });
+    const points = program => program.graphicSpec.objects.points.items.map(item => [item.properties.x, item.properties.y, item.properties.radius]);
+    const labels = program => program.graphicSpec.objects.text.items.map(item => [item.properties.text, item.properties.x, item.properties.y]);
+    assert.deepEqual(points(original), [[85, 140, 6], [85, 180, 0]]);
+    assert.deepEqual(labels(original), [["A", 85, 140], ["Selected", 223, 56]]);
+    const output = execFileSync(process.execPath, ["--input-type=module", "-e", `
+      import { readFileSync } from "node:fs";
+      import { deserializeProgram, serializeProgram } from "ggaction/persistence";
+      process.stdout.write(serializeProgram(deserializeProgram(readFileSync(0, "utf8")).editParameter({ target: "alternate", value: false })));
+    `], { input: serializeProgram(original), encoding: "utf8", timeout: 30000 });
+    const changed = deserializeProgram(output);
+    assert.deepEqual(points(changed), [[85, 140, 6], [215, 60, 6]]);
+    assert.deepEqual(labels(changed), [["A", 85, 140], ["B", 215, 60]]);
+    const graphic = deserializeGraphic(serializeGraphic(original));
+    assert.equal(renderToSVG(graphic), renderToSVG(original));
+    const png = await renderToPNGBuffer(original), restoredPNG = await renderToPNGBuffer(graphic);
+    assert.deepEqual(restoredPNG.buffer, png.buffer);
+    const canvas = createCanvas(1, 1), context = canvas.getContext("2d"); render(graphic, context);
+    const image = await loadImage(png.buffer), decoded = createCanvas(png.width, png.height);
+    decoded.getContext("2d").drawImage(image, 0, 0);
+    assert.deepEqual(context.getImageData(0, 0, canvas.width, canvas.height).data, decoded.getContext("2d").getImageData(0, 0, png.width, png.height).data);
+    assert.deepEqual(pdfStreams((await renderToPDFBuffer(original)).buffer), pdfStreams((await renderToPDFBuffer(graphic)).buffer));
+    assert.deepEqual(createTransitionScene(original, { format: "canvas" }), createTransitionScene(graphic, { format: "canvas" }));
   } }
 ];

@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 738, // Combined image, paint, graph and hierarchy private owners.
-  packedBytes: 1_098_000, // Combined Node20/24 observed maximum: 1,097,419 bytes.
-  unpackedBytes: 5_054_000 // Combined runtime, declarations and knowledge: 5,053,657 bytes.
+  entries: 755, // Conditional consumers plus image, paint, graph and hierarchy owners.
+  packedBytes: 1_118_000, // Node20/24 measured maximum: 1,117,945 bytes.
+  unpackedBytes: 5_160_000 // Combined runtime, declarations and knowledge: 5,159,396 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -78,7 +78,7 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/lineSeries.js",
   "src/grammar/pathSeries.js",
   "src/grammar/scales/colorConsumers.js",
-  "src/actions/encodings/position/policies/line.js",
+  "src/grammar/positionPolicies/line.js",
   "src/inspection.js",
   "src/grammar/regression/derive.js",
   "src/grammar/areaSeries.js",

@@ -3,8 +3,8 @@
   "name": "encodeRadius",
   "layer": "user-facing",
   "domain": "encodings",
-  "summary": "Apply a constant point radius.",
-  "signature": "encodeRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;",
+  "summary": "Apply a constant or conditionally selected point pixel radius, separate from Polar distance.",
+  "signature": "encodeRadius(options: TargetedOptions<{ value: number; target?: string } | ConditionalEncodingOptions<{ value: number }>>): ChartProgram;",
   "intents": [
     "encode radius",
     "encode",
@@ -54,20 +54,30 @@
   },
   "options": [
     {
-      "name": "value",
-      "required": true,
-      "type": "number"
-    },
-    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<{ value: number }>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<{ value: number }>[\"otherwise\"]"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "number"
     }
   ],
   "callPatterns": [
-    "encodeRadius({ value, target? })"
+    "encodeRadius({ target?, conditions?, otherwise?, value? })"
   ],
-  "snippet": "program.encodeRadius({ value: 1 })",
+  "snippet": "program.encodeRadius({ value: 4 })",
   "errors": [],
   "route": "/reference/actions/encodings/#encoderadius"
 }

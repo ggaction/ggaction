@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Assign exactly one field, constant value, or semantic content to a text mark.",
-  "signature": "encodeText(options: TargetedOptions<TextEncodingOptions>): ChartProgram;",
+  "signature": "encodeText(options: TargetedOptions<TextEncodingOptions | ConditionalEncodingOptions<TextEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode text",
     "encode",
@@ -63,6 +63,16 @@
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<TextEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<TextEncodingOptions>[\"otherwise\"]"
+    },
+    {
       "name": "format",
       "required": false,
       "type": "ValueFormat | undefined"
@@ -70,7 +80,7 @@
     {
       "name": "field",
       "required": false,
-      "type": "string | undefined"
+      "type": "string"
     },
     {
       "name": "value",
@@ -80,7 +90,7 @@
     {
       "name": "content",
       "required": false,
-      "type": "\"category\" | \"share\" | \"value\" | undefined"
+      "type": "\"category\" | \"value\""
     },
     {
       "name": "normalizeBy",
@@ -89,7 +99,7 @@
     }
   ],
   "callPatterns": [
-    "encodeText({ target?, format?, field?, value?, content?, normalizeBy? })"
+    "encodeText({ target?, conditions?, otherwise?, format?, field?, value?, content?, normalizeBy? })"
   ],
   "snippet": "program.encodeText({ field: \"label\" })",
   "errors": [],

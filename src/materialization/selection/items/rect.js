@@ -51,7 +51,7 @@ export function resolveRectItems(program, layer, dataset, grain, resolveItems, s
   if (program.markConfigs[layer.id]?.gradientPlot?.materialized === true) {
     return resolveGradientPlotItems(program, layer, dataset, selectionResolvers);
   }
-  const rows = resolveRectRows(program, layer, dataset);
+  const rows = resolveRectRows(program, layer, dataset, selectionResolvers);
   const hasField = rectUsesFields(layer);
   const definitions = rows.map((item, graphicIndex) => ({
     ...(hasField ? { rowKey: dataset.rowKeys[item.sourceIndex] } : { semanticIdentity: ["constant"] }),
@@ -67,4 +67,14 @@ export function resolveRectItems(program, layer, dataset, grain, resolveItems, s
     definitions,
     rounded ? ["rect", "path"] : "rect"
   , { selectionResolvers });
+}
+
+export function resolveConditionalRectSourceItems(program, layer, dataset) {
+  const hasField = rectUsesFields(layer);
+  const rows = hasField ? dataset.values : dataset.values.slice(0, 1);
+  return rows.map((row, index) => ({
+    ...(hasField ? { rowKey: dataset.rowKeys[index] } : { semanticIdentity: ["constant"] }),
+    fields: hasField ? ownFields(row) : uniqueFields(dataset.values),
+    channels: channelMapFromRow(row, layer), members: hasField ? [row] : dataset.values
+  }));
 }

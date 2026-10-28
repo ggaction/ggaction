@@ -1,8 +1,17 @@
+import { positionBindings } from "../core/encodingBindings.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { validateNonEmptyString } from "../core/validation.js";
 import { resolveJitterSlotWidth } from "./jitter.js";
 
 export const POINT_PACKING_ALGORITHM = "point-pack-greedy-v1";
+
+export function hasPointPackingBindings(layer, channel) {
+  const packed = positionBindings(layer, channel);
+  const fixed = positionBindings(layer, channel === "x" ? "y" : "x");
+  return packed.length > 0 && fixed.length > 0 &&
+    packed.every(binding => ["nominal", "ordinal"].includes(binding.fieldType) && binding.scale !== undefined) &&
+    fixed.every(binding => ["quantitative", "temporal"].includes(binding.fieldType) && binding.scale !== undefined);
+}
 
 export function normalizePointPackingPolicy(options = {}) {
   if (!isPlainObject(options)) {
@@ -82,6 +91,7 @@ export function resolvePointPacking({
   target,
   policy,
   scale,
+  scales = [scale],
   entries,
   plotMinimum,
   plotMaximum
@@ -91,11 +101,19 @@ export function resolvePointPacking({
   if (!Number.isFinite(plotMinimum) || !Number.isFinite(plotMaximum) || plotMaximum < plotMinimum) {
     throw new RangeError("Point packing plot bounds are invalid.");
   }
-  const slotWidth = resolveJitterSlotWidth(scale);
-  if (slotWidth === undefined) {
-    throw new Error("Point packing requires a categorical position scale with a positive slot.");
+  function requireSlotWidth(current) {
+    const width = resolveJitterSlotWidth(current);
+    if (width === undefined) {
+      throw new Error("Point packing requires a categorical position scale with a positive slot.");
+    }
+    return width;
   }
-  const maximumOffset = offsetLimit(policy, slotWidth);
+  // Keep the scalar diagnostics as upper bounds while each entry uses its own
+  // native slot. Empty populations summarize all validated branch scales.
+  const branchWidth = scales.reduce((maximum, current) =>
+    Math.max(maximum, requireSlotWidth(current)), 0);
+  let slotWidth = entries.length === 0 ? branchWidth : 0;
+  let maximumOffset = entries.length === 0 ? offsetLimit(policy, branchWidth) : 0;
   const seenIndices = new Set();
   const seenIdentities = new Set();
   const ordered = entries.map((entry, offset) => {
@@ -117,7 +135,11 @@ export function resolvePointPacking({
     }
     seenIndices.add(entry.index);
     seenIdentities.add(entry.identity);
-    return { ...entry };
+    const itemSlotWidth = requireSlotWidth(entry.scale ?? scale);
+    const itemMaximumOffset = offsetLimit(policy, itemSlotWidth);
+    slotWidth = Math.max(slotWidth, itemSlotWidth);
+    maximumOffset = Math.max(maximumOffset, itemMaximumOffset);
+    return { ...entry, slotWidth: itemSlotWidth, maximumOffset: itemMaximumOffset };
   }).sort((left, right) =>
     left.fixed - right.fixed ||
     (left.identity < right.identity ? -1 : left.identity > right.identity ? 1 : 0)
@@ -126,13 +148,13 @@ export function resolvePointPacking({
   for (const entry of ordered) {
     const minimum = Math.max(
       plotMinimum + entry.halfExtent,
-      entry.base - slotWidth / 2 + entry.halfExtent,
-      entry.base - maximumOffset
+      entry.base - entry.slotWidth / 2 + entry.halfExtent,
+      entry.base - entry.maximumOffset
     );
     const maximum = Math.min(
       plotMaximum - entry.halfExtent,
-      entry.base + slotWidth / 2 - entry.halfExtent,
-      entry.base + maximumOffset
+      entry.base + entry.slotWidth / 2 - entry.halfExtent,
+      entry.base + entry.maximumOffset
     );
     if (minimum > maximum) {
       if (policy.overflow === "error") {

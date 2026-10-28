@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Encode a quantitative field as Polar radial distance.",
-  "signature": "encodeR(options: TargetedOptions<RadialEncodingOptions>): ChartProgram;",
+  "signature": "encodeR(options: TargetedOptions<RadialEncodingOptions | ConditionalEncodingOptions<RadialEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode radial",
     "encode",
@@ -75,6 +75,16 @@
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<RadialEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<RadialEncodingOptions>[\"otherwise\"]"
+    },
+    {
       "name": "fieldType",
       "required": false,
       "type": "\"quantitative\" | undefined"
@@ -87,26 +97,31 @@
     {
       "name": "field",
       "required": false,
-      "type": "string | undefined"
+      "type": "string"
+    },
+    {
+      "name": "datum",
+      "required": false,
+      "type": "number"
     },
     {
       "name": "mapping",
       "required": false,
-      "type": "false | RadialMapping | undefined"
+      "type": "false | undefined"
     },
     {
       "name": "aggregate",
       "required": false,
-      "type": "\"count\" | \"sum\" | undefined"
+      "type": "\"sum\""
     },
     {
       "name": "scale",
       "required": false,
-      "type": "RadiusScaleOptions | MeasuredRadiusScaleOptions | undefined"
+      "type": "RadiusScaleOptions | undefined"
     }
   ],
   "callPatterns": [
-    "encodeR({ target?, coordinate?, scale?, fieldType?, field?, mapping?, aggregate? })"
+    "encodeR({ target?, coordinate?, scale?, conditions?, otherwise?, fieldType?, field?, datum? })"
   ],
   "snippet": "program.encodeR({ field: \"value\" })",
   "errors": [],

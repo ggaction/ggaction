@@ -2,14 +2,17 @@
 
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
 
-## Conditional appearance
+## Conditional encodings
 
 Implemented for `encodeColor`, `encodeStroke`, `encodeSize`, `encodeShape`,
-`encodeOpacity`, `encodeStrokeWidth`, `encodeStrokeDash`, and `encodeAngle`, also
-inside `encodeChannels`. `ConditionalEncodingOptions<OrdinaryOptions>` accepts
+`encodeOpacity`, `encodeStrokeWidth`, `encodeStrokeDash`, `encodeAngle`, the existing
+`encodeX`/`encodeY`/`encodeX2`/`encodeY2`/`encodeTheta`/`encodeR`/`encodeXOffset`/`encodeYOffset`,
+`encodeText`/`encodeDx`/`encodeDy`, and `encodePointRadius`/`encodeRadius`. Existing
+`encodeChannels` channel names accept the same forms; pointRadius remains a focused action. `ConditionalEncodingOptions<OrdinaryOptions>` accepts
 `target?`, `conditions: [{when,value}, ...]`, and mandatory `otherwise`. Each value
 is the existing encoder payload without target. This assignment is exclusive with
-ordinary encoding fields and constant mark config for the same channel.
+ordinary encoding fields for the same channel. Appearance also excludes duplicate
+constant mark config; text dx/dy retain the ordinary dormant mark-style fallback.
 Basic supports conditionals on its existing color/size/shape methods; this adds
 no Full-only action to the Basic entry.
 
@@ -54,8 +57,39 @@ no Full-only action to the Basic entry.
 
 Evidence: `test/unit/actions/conditional-encoding.test.js`,
 `test/contracts/conditional-encoding-types.test.js` and installed conditional consumer.
-Position, offset, pointRadius, text and topology channels are not part of this
-appearance checkpoint; their existing ordinary contract remains unchanged here.
+Position and text evidence also lives in `test/unit/actions/conditional-position.test.js`,
+`conditional-area-position.test.js`, `conditional-bar-position.test.js`,
+`conditional-text.test.js`, and `conditional-point-radius.test.js` in the same directory.
+
+### Conditional positions, text and glyph radius
+
+- Point/Tick/independent Text use source rows. Rule and Rect preserve their existing
+  endpoint/span topology. Line/Area preserve existing vertices or aggregate groups;
+  a branch can select another measure or aggregate without introducing new groups,
+  bins, stacks, coordinates, or path order. Bar retains its category/group/bin/item
+  membership; Arc retains its row/category membership and native total validation.
+- Position branches use their own validated scale. Coupled endpoints share the native
+  primary/secondary scale, and proportional Arc theta uses one common angular scale.
+  Position axes/grids require one unique binding; ambiguous replacements reject atomically.
+  Source-owned Text position authoring remains unsupported.
+- `encodeText` branches accept the existing field/value/content/normalizeBy/format
+  payload, including category/value/share labels at the source's final item grain.
+  Shares use the entire source population, not just the selected branch's items.
+  Every branch validates native formatting. Reassignment preserves the same branch's
+  format when omitted; the first conditional assignment inherits ordinary text format.
+  Null/undefined/empty field content produces no glyph, as for ordinary text.
+- `encodeDx`/`encodeDy` accept native finite pixel constants or numeric fields, without
+  scales, and remain exclusive to independent Text. Conditional removal restores the
+  dormant constant mark style. Field branches or row/selection predicates establish
+  row grain; entirely constant content/position/offsets keep one glyph.
+- Point pixel radius is stored as `conditionals.pointRadius`, separate from Polar
+  `conditionals.radius`. Both public radius aliases normalize the same constant-only
+  branch payload. The selected radius becomes area before shape, packing and jitter
+  geometry. It cannot coexist with size. Assigning size replaces the pixel radius;
+  assigning pixel radius while size is bound rejects until size is removed.
+  `removePointRadius` removes this conditional owner and restores the theme default.
+- Topology authoring (`group`, `pathOrder`) remains ordinary. Conditions do not introduce
+  new mark families, rendering primitives, fonts, or callbacks.
 
 ## Position changes and derived alignment
 
@@ -222,7 +256,7 @@ Evidence: `test/unit/actions/encodings/basic-scale-reassignment.test.js`, `test/
 
 - Implemented: `encodeChannels(options: EncodeChannelsOptions)` where `EncodeChannelsOptions.target` is a
   required `UserId` and `channels` is `AtLeastOne<EncodingChannelAssignments>`.
-- `EncodingChannelAssignments` is a closed 19-key interface. Each optional value is the distributive
+- `EncodingChannelAssignments` is a closed 21-key interface. Each optional value is the distributive
   `WithoutEncodingTarget<FocusedOptions>` union, preserving field/datum/value exclusivity while excluding
   direct `target` and `coordinate`.
 - Proposed (NOT IMPLEMENTED): multi-mark transactions, coordinate-family conversion, range aliases,
@@ -230,7 +264,7 @@ Evidence: `test/unit/actions/encodings/basic-scale-reassignment.test.js`, `test/
 
 ### Value coverage — `encodeChannels`
 
-- ✅ Covered: Full/Basic boundary, all 19 declaration keys, required target, nonempty channels, closed aliases,
+- ✅ Covered: Full/Basic boundary, all 21 declaration keys, required target, nonempty channels, closed aliases,
   payload shape and direct-key injection.
 - ✅ Covered: one-channel focused parity, key permutation determinism, x/y swap, x/x2/y/y2 final pairs,
   parent band plus offset, aggregate Bar x/y role와 axis family transpose, group plus path order, theta plus public
@@ -1602,7 +1636,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeTheta`
 
-- Signature: `encodeTheta({ field, target?, fieldType?, scale?, coordinate?, aggregate?, weight? })`
+- Signature: `encodeTheta({ field, target?, fieldType?, scale?, coordinate?, aggregate?, weight? })`. Point also accepts `datum` instead of field without aggregate/weight; it uses the same type and scale policies.
 - Public angle unit은 degree다. 0°는 12시 방향이고 양의 방향은 clockwise다.
 - `fieldType`은 quantitative, temporal, ordinal, nominal을 지원한다. Quantitative는 linear, temporal은 time,
   discrete 값은 point/band scale을 사용한다.
@@ -1623,7 +1657,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeTheta`
 
-- Implemented: `encodeTheta({ field: FieldName; target?: UserId; fieldType?: FieldType; scale?: ThetaScaleOptions; coordinate?: UserId; aggregate?: "count" | "sum"; weight?: FieldName })`
+- Implemented: `encodeTheta({ field: FieldName; target?: UserId; fieldType?: FieldType; scale?: ThetaScaleOptions; coordinate?: UserId; aggregate?: "count" | "sum"; weight?: FieldName })`; Point datum alternative follows the shared position datum value/type contract.
 - Theta scale type: `"linear" | "time" | "point" | "band"`.
 - Range: `"auto" | readonly [Finite, Finite]`, with absolute span `<= 360`.
 - Proposed (NOT IMPLEMENTED): —
@@ -1641,6 +1675,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ## `encodeR`
 
 - Signature: `encodeR({ field?, aggregate?: "count" | "sum", mapping?: "area" | "radius-length" | false, target?, fieldType?: "quantitative", scale?, coordinate? })`
+- Point also accepts finite numeric `datum` instead of field, with optional quantitative fieldType and RadiusScaleOptions, without aggregate/mapping.
 - Radius is semantic Polar position, distinct from graphical `encodeRadius`/`encodePointRadius` glyph size.
 - Auto range is `[0, min(plotWidth, plotHeight) / 2]`. Explicit range values are non-negative logical Canvas
   pixels and must fit current plot bounds.

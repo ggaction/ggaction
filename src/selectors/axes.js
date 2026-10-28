@@ -1,3 +1,8 @@
+function layerScaleIds(layer, channel) {
+  const conditional = layer.conditionals?.[channel];
+  return conditional === undefined ? [layer.encoding?.[channel]?.scale]
+    : [...conditional.conditions.map(condition => condition.value.scale), conditional.otherwise.scale];
+}
 
 const CARTESIAN_CHANNELS = Object.freeze(["x", "y"]);
 const COMPONENTS = Object.freeze(["line", "ticks", "labels", "title"]);
@@ -17,7 +22,7 @@ export function cartesianAxisOwners(program) {
     const channel = CARTESIAN_CHANNELS.includes(id) ? id : semantic?.channel;
     if (!CARTESIAN_CHANNELS.includes(channel)) return [];
     const coordinates = [...new Set((program.semanticSpec.layers ?? []).filter(layer =>
-      layer.encoding?.[channel]?.scale === semantic?.scale).map(layer => layer.coordinate).filter(Boolean))];
+      layerScaleIds(layer, channel).includes(semantic?.scale)).map(layer => layer.coordinate).filter(Boolean))];
     return [{ id, channel, semantic, config, scale: semantic?.scale,
       coordinate: semantic?.coordinate ?? (coordinates.length === 1 ? coordinates[0] : undefined), named: id !== channel,
       sides: [...new Set(id !== channel ? [semantic.position] : COMPONENTS
@@ -50,7 +55,7 @@ export function selectCartesianAxis(program, channel, args = {}, { create = fals
   const id = owner?.id ?? channel;
   if (!owner?.named && options.position !== undefined && owners.some(candidate => candidate.named)) {
     const coordinates = [...new Set((program.semanticSpec.layers ?? []).filter(layer =>
-      layer.encoding?.[channel]?.scale === (options.scale ?? owner?.scale ?? channel))
+      layerScaleIds(layer, channel).includes(options.scale ?? owner?.scale ?? channel))
       .map(layer => layer.coordinate).filter(Boolean))];
     assertCartesianAxisSideAvailable(program, { id, channel,
       coordinate: owner?.coordinate ?? (coordinates.length === 1 ? coordinates[0] : undefined), position: options.position });

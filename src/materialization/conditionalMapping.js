@@ -1,56 +1,55 @@
+import { selectConditionalBranches, uniqueConditionalItemField } from "./conditionalBranches.js";
+import { resolveTextSourceBindings, textEncodingValues } from "./textContent.js";
+import { normalizePositionDatum } from "../grammar/positionDatum.js";
+import { mapOrdinalOffsetValues, mapOrdinalPositionValues } from "../grammar/scales/index.js";
+import { OFFSET_POSITION_CHANNELS, POSITION_ENCODING_CHANNELS } from "../core/vocabulary.js";
 import { requireSemanticScale } from "../selectors/scales.js";
-import { evaluateConditionalEncoding } from "../grammar/conditionalEncoding.js";
-import { conditionalValues, validateStoredConditional } from "../grammar/conditionalState.js";
 import { aggregateRows } from "../grammar/aggregate.js";
 import { readScaleField } from "../grammar/scales/index.js";
 import { mapScaleConsumerValues } from "./scales/map.js";
-import { resolveConditionalEnvironment } from "./conditionalState.js";
-
-function uniqueItemField(item, field) {
-  // A uniformly missing optional source field is a valid missing value. A
-  // field that differs within one aggregate/path item has no scalar meaning.
-  return Object.hasOwn(item.fields, field) || item.members.every(row => !Object.hasOwn(row, field));
-}
 
 export function conditionalFieldRows(items, encoding) {
   return items.map(item => {
     if (encoding.aggregate !== undefined) return { [encoding.field]: aggregateRows(item.members, encoding.field, encoding.aggregate) };
-    if (!uniqueItemField(item, encoding.field)) throw new Error(`Conditional field "${encoding.field}" is not uniquely defined at the final item grain.`);
+    if (!uniqueConditionalItemField(item, encoding.field)) throw new Error(`Conditional field "${encoding.field}" is not uniquely defined at the final item grain.`);
     return item.fields;
   });
 }
 
-export function mapConditionalValues(program, layer, channel, items, membership, { mapped = true } = {}) {
-  const definition = layer.conditionals?.[channel];
-  if (definition === undefined) return undefined;
-  const environment = resolveConditionalEnvironment(program, layer, channel, definition);
-  const branches = conditionalValues(definition);
+export function mapConditionalValues(program, layer, channel, items, membership, { mapped = true, includeScale = false, includeBinding = false, allowMissing = false, branchValues, resolvers } = {}) {
+  const selected = selectConditionalBranches(program, layer, channel, items, membership);
+  if (selected === undefined) return undefined;
+  const { branches, indices } = selected;
+  const textSources = channel === "text" ? resolveTextSourceBindings(program, layer, items, resolvers) : undefined;
+  const textValues = channel === "text" ? branches.map(branch => textEncodingValues(program, layer, branch, items, textSources, { mapped, resolvers })) : undefined;
   // Validation remains eager. Mapping only runs for chosen branch rows.
-  for (const branch of branches) if (branch.field !== undefined) {
+  for (const [branchIndex, branch] of branches.entries()) if (branch.field !== undefined && channel !== "text") {
     const scale = branch.scale === undefined ? {} : (program.resolvedScales[branch.scale] ?? (!mapped ? requireSemanticScale(program, branch.scale) : undefined));
     if (scale === undefined) throw new Error(`Conditional encoding requires resolved scale "${branch.scale}".`);
-    readScaleField(conditionalFieldRows(items, branch), branch.field, branch.fieldType, {
+    readScaleField(branchValues === undefined ? conditionalFieldRows(items, branch) : branchValues[branchIndex].filter(value => !allowMissing || value != null).map(value => ({ value })), branchValues === undefined ? branch.field : "value", branch.fieldType, {
       allowUnknown: Object.hasOwn(scale, "unknown"), temporalUnit: branch.temporalUnit
     });
   }
-  const fields = validateStoredConditional(channel, definition).fields;
-  for (const item of items) for (const field of fields) {
-    if (!uniqueItemField(item, field)) throw new Error(`Conditional predicate field "${field}" is not uniquely defined at the final item grain.`);
-  }
-  const rows = items.map(item => item.fields);
-  const evaluated = evaluateConditionalEncoding({ conditions: definition.conditions, otherwise: definition.otherwise }, rows, environment, membership);
   const values = Array(items.length);
   branches.forEach((branch, index) => {
-    const indexes = evaluated.indices.flatMap((selected, row) => (selected === index || (selected === -1 && index === branches.length - 1)) ? [row] : []);
+    const indexes = indices.flatMap((selected, row) => (selected === index || (selected === -1 && index === branches.length - 1)) ? [row] : []);
     if (!indexes.length) return;
-    if (Object.hasOwn(branch, "value")) indexes.forEach(row => { values[row] = branch.value; });
+    if (textValues !== undefined) indexes.forEach(row => { values[row] = textValues[index][row]; });
+    else if (Object.hasOwn(branch, "value")) indexes.forEach(row => { values[row] = branch.value; });
     else {
-      const raw = readScaleField(conditionalFieldRows(indexes.map(row => items[row]), branch), branch.field, branch.fieldType, {
+      const raw = branchValues !== undefined ? indexes.map(row => branchValues[index][row]) : Object.hasOwn(branch, "datum") ? Array(indexes.length).fill(["dx", "dy"].includes(channel) ? branch.datum : normalizePositionDatum(branch.datum, branch.fieldType, channel, branch.temporalUnit)) : readScaleField(conditionalFieldRows(indexes.map(row => items[row]), branch), branch.field, branch.fieldType, {
         allowUnknown: branch.scale !== undefined && Object.hasOwn(program.resolvedScales[branch.scale] ?? requireSemanticScale(program, branch.scale), "unknown"), temporalUnit: branch.temporalUnit
       });
-      const output = !mapped || branch.scale === undefined ? raw : mapScaleConsumerValues(raw, program.resolvedScales[branch.scale], channel);
-      indexes.forEach((row, offset) => { values[row] = output[offset]; });
+      const output = !mapped || branch.scale === undefined ? raw : mapConditionalBranchValues(raw, branch, program.resolvedScales[branch.scale], channel);
+      indexes.forEach((row, offset) => { values[row] = includeScale || includeBinding ? { value: output[offset], ...(includeScale ? { scale: program.resolvedScales[branch.scale] } : {}), ...(includeBinding ? { binding: branch } : {}) } : output[offset]; });
     }
   });
   return values;
+}
+
+export function mapConditionalBranchValues(values, encoding, scale, channel) {
+  if (["nominal", "ordinal"].includes(encoding.fieldType) && POSITION_ENCODING_CHANNELS.includes(channel)) {
+    return OFFSET_POSITION_CHANNELS.includes(channel) ? mapOrdinalOffsetValues(values, scale) : mapOrdinalPositionValues(values, scale);
+  }
+  return mapScaleConsumerValues(values, scale, channel);
 }

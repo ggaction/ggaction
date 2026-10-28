@@ -1,3 +1,4 @@
+import { positionBindings } from "../../core/encodingBindings.js";
 import { resolveScaleRange } from "../../grammar/scales/index.js";
 import { resolvePolarFrame } from "../../grammar/polar.js";
 import { resolveArcAutoPositionRange, validateMeasuredRadiusConsumers } from "../../materialization/scales/policies/arc.js";
@@ -68,7 +69,7 @@ function resolveScalePreviewAtBounds(program, id, bounds) {
       ? undefined : bounds,
     resolvedScales: program.resolvedScales, markConfigs: program.markConfigs, polarFrame,
     thetaScales: scale.radialMapping === undefined ? undefined : Object.fromEntries(consumers.map(({ layer }) =>
-      [layer.id, findSemanticScale(program, layer.encoding?.theta?.scale)])) });
+      [layer.id, positionBindings(layer, "theta").map(binding => findSemanticScale(program, binding.scale))])) });
   return { channel, consumers, valuesByConsumer, resolvedScale };
 }
 

@@ -1,3 +1,4 @@
+import { positionBindings } from "../core/encodingBindings.js";
 import { cartesianAxisOwners } from "../selectors/axes.js";
 import { isSourceOwnedText } from "../grammar/text.js";
 import { resolvePolarFrame } from "../grammar/polar.js";
@@ -186,7 +187,7 @@ export function resolveGuideCoordinateBounds(program, {
     const candidates = new Set();
     for (const layer of program.semanticSpec.layers) {
       if (isSourceOwnedText(layer)) continue;
-      if (layer.encoding?.[channel]?.scale === scale) {
+      if (positionBindings(layer, channel).some(binding => binding.scale === scale)) {
         candidates.add(layer.coordinate);
       }
     }
