@@ -895,5 +895,18 @@
         "statements": 5
       }
     ]
+  },
+  {
+    "file": "images.mjs",
+    "cases": [
+      {
+        "id": "images/resource-lifecycle",
+        "statements": 12
+      },
+      {
+        "id": "images/renderer-scene-offline",
+        "statements": 14
+      }
+    ]
   }
 ]

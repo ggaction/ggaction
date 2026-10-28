@@ -23,7 +23,7 @@ const analysisChartEditorNames = new Set([
 
 const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot", "createLayerPlot"]);
 const coreH3Names = new Set([
-  "applyDataUpdate",
+  "applyDataUpdate", "createImageResource", "replaceImageResource", "removeResource",
   "applyTextMetrics",
   "removeTextMetrics",
   "reviseData",
@@ -61,6 +61,9 @@ const explicitFacadeEditors = Object.freeze({
 
 const explicitLifecycleEditors = Object.freeze({
   applyDataUpdate: ["applyDataUpdate", "reviseData", "removeData"],
+  createImageResource: ["replaceImageResource", "removeResource"],
+  replaceImageResource: ["replaceImageResource"],
+  createImageMark: ["editImageMark", "removeMark"],
   applyTheme: ["applyTheme", "removeTheme"],
   removeTheme: ["applyTheme"],
   bindMarkData: ["bindMarkData"],

@@ -485,7 +485,7 @@ test("rejects invalid options and incomplete concrete graphics", () => {
   });
   assert.throws(
     () => renderToSVG({ graphicSpec: unsupported }),
-    /does not support "image" yet/
+    /image.properties requires/
   );
 });
 

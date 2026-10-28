@@ -2482,5 +2482,45 @@
     ],
     "layer": "user-facing",
     "domain": "composition"
+  },
+  "createImageResource": {
+    "operation": "create",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "replaceImageResource": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "createImageMark": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editImageMark": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "removeResource": {
+    "operation": "remove",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
   }
 }

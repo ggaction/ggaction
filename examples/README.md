@@ -618,6 +618,12 @@ Fill marks with repeated patterns or object-bound radial gradients.
 
 Representative actions: `createRectMark`, `editRectMark`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/).
 
+### [Retained image placement](./image-assets/)
+
+Prepare one source, place an image mark, and render from retained bytes.
+
+Representative actions: `createImageResource`, `createImageMark`, `editImageMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/image-assets/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

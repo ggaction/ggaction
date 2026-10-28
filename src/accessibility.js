@@ -67,6 +67,7 @@ function finalRows(program, layer) {
   if (program.graphicSpec.objects[layer.id] === undefined) {
     unsupported(layer.id, "the owner is not materialized");
   }
+  if (layer.mark.type === "image") return [{ series: {}, values: { alt: layer.alt } }];
   if (layer.derivedBindings?.overlay) {
     return resolveOverlaySeries(program, layer.derivedBindings.overlay, { geometry: false }).flatMap(group =>
       group.points.map(point => ({
@@ -93,8 +94,8 @@ function finalRows(program, layer) {
 }
 
 function column(layer, key) {
-  const dimension = layer.encoding.parallel?.dimensions.find(item => item.field === key);
-  const encoding = dimension ?? layer.encoding[key] ?? layer.encoding[key.replace(/2$/, "")];
+  const dimension = layer.encoding?.parallel?.dimensions.find(item => item.field === key);
+  const encoding = dimension ?? layer.encoding?.[key] ?? layer.encoding?.[key.replace(/2$/, "")];
   const temporal = encoding?.fieldType === "temporal";
   return {
     key,

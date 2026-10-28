@@ -1002,5 +1002,12 @@
     "editSource": "docs/api/axes/complete.md",
     "description": "Use underlay: true when the complete Cartesian axis should be painted before ordinary marks. The plot border accepts the same choice.",
     "image": "/assets/images/cars-line-chart.png"
+  },
+  "/tutorials/image-assets/": {
+    "title": "Image Assets Tutorial",
+    "source": "docs/tutorials/image-assets.md",
+    "editSource": "examples/image-assets/program.js",
+    "description": "Prepare image bytes explicitly, then use one image mark to control its fit, alignment, viewport and alternative text.",
+    "image": "/assets/images/image-assets.png"
   }
 }

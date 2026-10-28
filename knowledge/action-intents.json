@@ -959,6 +959,18 @@
       "grouped pivot data",
       "category columns",
       "long to wide data"
+    ],
+    "ImageResource": [
+      "retained image source",
+      "embedded image bytes"
+    ],
+    "ImageMark": [
+      "image placement",
+      "image fit and clipping"
+    ],
+    "Resource": [
+      "typed stored resource",
+      "resource deletion"
     ]
   },
   "summaryOverrides": {
@@ -1778,6 +1790,30 @@
     },
     "encodeYOffset": {
       "field": "series"
+    },
+    "createImageResource": {
+      "prepared": {
+        "$code": "preparedImageCreate"
+      },
+      "requestToken": "current"
+    },
+    "replaceImageResource": {
+      "prepared": {
+        "$code": "preparedImageReplace"
+      },
+      "requestToken": "current"
+    },
+    "createImageMark": {
+      "image": "logo",
+      "alt": "Logo"
+    },
+    "editImageMark": {
+      "target": "image",
+      "fit": "cover"
+    },
+    "removeResource": {
+      "kind": "image",
+      "id": "logo"
     }
   },
   "callPatternOverrides": {

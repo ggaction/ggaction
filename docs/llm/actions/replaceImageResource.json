@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 3,
+  "name": "replaceImageResource",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Replaces retained image source while preserving its composition slot and order.",
+  "signature": "replaceImageResource(options: ApplyImageResourceOptions<\"replace\">): ChartProgram;",
+  "intents": [
+    "replace image resource",
+    "replace",
+    "swap child",
+    "chart setup",
+    "data and scales",
+    "retained image source",
+    "embedded image bytes"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing retained image source"
+    ],
+    "owns": [],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "replaceImageResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing retained image source"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "prepared",
+      "required": true,
+      "type": "PreparedImageResource<\"replace\">"
+    },
+    {
+      "name": "requestToken",
+      "required": true,
+      "type": "string"
+    }
+  ],
+  "callPatterns": [
+    "replaceImageResource({ prepared, requestToken })"
+  ],
+  "snippet": "program.replaceImageResource({ prepared: preparedImageReplace, requestToken: \"current\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#replaceimageresource"
+}

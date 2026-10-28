@@ -1,3 +1,6 @@
+import { layerResourceBindings } from "./core/resourceReferences.js";
+import { STORED_RESOURCE_KINDS } from "./core/resourceReference.js";
+import { findStoredResource } from "./selectors/resources.js";
 import { namespaceItemKey } from "./grammar/schemas/graphicIdentity.js";
 import { conditionalValues } from "./grammar/conditionalState.js";
 import { resolveMarkItems } from "./materialization/selection/policies/index.js";
@@ -43,7 +46,7 @@ export function getExpressionFunctions(options = {}) {
   return EXPRESSION_FUNCTIONS;
 }
 
-const KINDS = new Set(["data", "mark", "scale", "coordinate", "guide"]);
+const KINDS = new Set(["data", "mark", "scale", "coordinate", "guide", ...STORED_RESOURCE_KINDS]);
 const ACTION_DESCRIPTORS = new Map(BUILTIN_ACTION_DESCRIPTOR_RECORDS.map(
   ([name, options, idOptions, prerequisites, entryPoints]) => [name, {
     options: options.map(([path, required, kind, choices, unit]) => ({
@@ -94,7 +97,7 @@ function findResource(program, target) {
   if (target.kind === "mark") return findLayer(current, target.id);
   if (target.kind === "scale") return findSemanticScale(current, target.id);
   if (target.kind === "coordinate") return findCoordinate(current, target.id);
-  return current.semanticSpec.guides[target.id];
+  return target.kind === "guide" ? current.semanticSpec.guides[target.id] : findStoredResource(current, target.kind, target.id);
 }
 
 function resourceRef(kind, id, childPath) {
@@ -242,7 +245,7 @@ export function describeAction(program, { action, target, options = {} } = {}) {
           : "editOverlay requires a linked overlay target." });
     } else if (action === "createOverlay" && layer.mark.type === "point" && options.type !== "point" && !options.orderBy) missing.push("orderBy");
   }
-  if (targetResource !== undefined && target.kind === "mark") {
+  if (targetResource !== undefined && target.kind === "mark" && targetResource.data !== undefined) {
     const scoped = atChildPath(program, target.childPath);
     // Plot editors address source roles, whereas encoding actions address the
     // mark's materialized rows. Inspect the same data owner as the public call.
@@ -334,6 +337,7 @@ function equalValue(a, b) {
 }
 
 function resources(program, childPath = [], output = []) {
+  for (const value of program.semanticSpec.resources) output.push({ ref: resourceRef(value.kind, value.id, childPath), value });
   for (const value of program.semanticSpec.datasets) output.push({ ref: resourceRef("data", value.id, childPath), value });
   for (const [orderIndex, value] of program.semanticSpec.layers.entries()) output.push({
     ref: resourceRef("mark", value.id, childPath),
@@ -356,7 +360,7 @@ function resources(program, childPath = [], output = []) {
 }
 
 function refKey(ref) { return `${ref.childPath?.join("/") ?? ""}|${ref.kind}|${ref.id}`; }
-function effect(kind) { return kind === "data" ? "data" : kind === "scale" ? "scale" : kind === "guide" ? "guide" : ["coordinate", "canvas", "composition"].includes(kind) ? "structure" : "style"; }
+function effect(kind) { return kind === "data" ? "data" : kind === "scale" ? "scale" : kind === "guide" ? "guide" : ["coordinate", "canvas", "composition", ...STORED_RESOURCE_KINDS].includes(kind) ? "structure" : "style"; }
 function changeEffect(a, b, kind) {
   if (kind !== "mark" || a === undefined || b === undefined) return effect(kind);
   if (a.value.orderIndex !== b.value.orderIndex) return "structure";
@@ -403,6 +407,10 @@ export function comparePrograms(before, after, { target } = {}) {
           const consumes = [...connected].some(connectedKey => {
             const source = map.get(connectedKey);
             if (source === undefined || canonical(source.ref.childPath ?? []) !== path) return false;
+            if (STORED_RESOURCE_KINDS.includes(source.ref.kind)) {
+              return candidate.ref.kind === "mark" && layerResourceBindings(candidate.value.semantic)
+                .some(({ ref }) => ref.kind === source.ref.kind && ref.id === source.ref.id);
+            }
             if (source.ref.kind === "data") {
               return candidate.ref.kind === "data"
                 ? candidate.value.source === source.ref.id
@@ -451,7 +459,7 @@ function itemBounds(properties, type) {
     return { x: properties.x - properties.radius, y: properties.y - properties.radius,
       width: properties.radius * 2, height: properties.radius * 2 };
   }
-  if (type === "rect") {
+  if (type === "rect" || type === "image") {
     if (![properties.x, properties.y, properties.width, properties.height].every(Number.isFinite)) return null;
     return { x: Math.min(properties.x, properties.x + properties.width),
       y: Math.min(properties.y, properties.y + properties.height),
@@ -477,7 +485,7 @@ function itemBounds(properties, type) {
 function inspectMark(program, layer, childPath) {
   const graphic = program.graphicSpec.objects[layer.id];
   const dataset = findDataset(program, layer.data);
-  const boundedTypes = new Set(["circle", "rect", "line", "path"]);
+  const boundedTypes = new Set(["circle", "rect", "line", "path", "image"]);
   const items = graphic?.items ?? (graphic?.properties ? [{ properties: graphic.properties }] : []);
   const concreteTypes = items.map(item => item.type ?? graphic?.type);
   const logicalSupported = graphic !== undefined && concreteTypes.every(type =>
@@ -521,6 +529,7 @@ function inspectMark(program, layer, childPath) {
     ],
     bounds: union,
     sourceRefs: [
+      ...layerResourceBindings(layer).map(({ ref }) => resourceRef(ref.kind, ref.id, childPath)),
       ...(dataset === undefined ? [] : [resourceRef("data", dataset.id, childPath)]),
       ...(layer.derivedBindings?.overlay ? [resourceRef("mark", layer.derivedBindings.overlay.source, childPath)] : [])
     ],
@@ -618,7 +627,7 @@ export function inspectProgram(program, { target } = {}) {
       if (canonical(view.owner.childPath ?? []) !== canonical(target.childPath ?? [])) return false;
       if (target.kind === "mark") return view.owner.id === target.id;
       const layer = findLayer(current, view.owner.id);
-      if (target.kind === "data") return layer?.data === targetResource.id;
+      if (target.kind === "data" || STORED_RESOURCE_KINDS.includes(target.kind)) return view.sourceRefs.some(ref => ref.kind === target.kind && ref.id === (target.kind === "data" ? targetResource.id : target.id));
       if (target.kind === "coordinate") return layer?.coordinate === target.id;
       if (target.kind === "scale") return Object.values(layer?.encoding ?? {}).some(
         encoding => encoding?.scale === target.id || encoding?.dimensions?.some(dimension => dimension.scale === target.id)
@@ -655,7 +664,7 @@ export function getMarkItems(program, { target, grain = 'item' } = {}) {
   requireProgram(program);
   const view = typeof target === 'object' ? atChildPath(program, target.childPath) : program;
   const requested = typeof target === 'object' ? target.id : target;
-  const layer = requested ?? resolveEligibleLayer(view, { label: 'mark items', predicate: l => l.data !== undefined }).id;
+  const layer = requested ?? resolveEligibleLayer(view, { label: 'mark items', predicate: l => l.data !== undefined || l.mark?.type === 'image' }).id;
   let stored = markItemInspections.get(program);
   if (!stored) markItemInspections.set(program, stored = new Map());
   const path = typeof target === "object" ? target.childPath ?? [] : [];
@@ -679,9 +688,10 @@ export function getMarkItems(program, { target, grain = 'item' } = {}) {
       if (g.type === 'rect') return {left:p.x,top:p.y,right:p.x+p.width,bottom:p.y+p.height};
       return unionConcreteGraphicBounds({objects:{item:g},order:['item']}, ['item'], view.materializationConfigs.textMetrics);
     }).filter(Boolean);
+    const visible = item.markType === "image" ? unionConcreteGraphicBounds(view.graphicSpec, item.graphicIds) : undefined;
     return { key:scopedKey(item.key), target:item.layer, markType:item.markType, grain, fields:item.fields,
       channels:item.channels, properties:item.properties, rows:item.rows, geometry,
-      bounds:bounds.length ? {left:Math.min(...bounds.map(b=>b.left)),top:Math.min(...bounds.map(b=>b.top)),right:Math.max(...bounds.map(b=>b.right)),bottom:Math.max(...bounds.map(b=>b.bottom))}:null };
+      bounds:visible ?? (bounds.length ? {left:Math.min(...bounds.map(b=>b.left)),top:Math.min(...bounds.map(b=>b.top)),right:Math.max(...bounds.map(b=>b.right)),bottom:Math.max(...bounds.map(b=>b.bottom))}:null) };
   })));
   stored.set(key,result); return result;
 }

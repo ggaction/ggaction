@@ -1,4 +1,5 @@
 import { ownRecord } from "../../core/ownData.js";
+import { validateImagePayload } from "../imagePayload.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { validateFontStyle } from "../../core/font.js";
 import { isOwned, isPlainObject } from "../../core/immutable.js";
@@ -38,6 +39,7 @@ export function validateConcreteGraphicValue(type, property, value) {
       throw new TypeError("Text fillBounds require finite ordered left/right/top/bottom coordinates.");
     }
   }
+  if (property === "image") validateImagePayload(value);
   if (property === "lines") {
     if (!Array.isArray(value) || value.length === 0 || value.some(line =>
       !isPlainObject(line) || Object.keys(line).some(key => !["text", "x", "y"].includes(key)) ||
@@ -117,6 +119,9 @@ export function validateConcreteGraphicProperties(type, properties) {
   }
   if (type === "text" && typeof properties.fill === "object" && properties.fillBounds === undefined) {
     throw new TypeError("Structured Text fill requires concrete fillBounds.");
+  }
+  if (type === "image" && ["image", "x", "y", "width", "height"].some(key => !Object.hasOwn(properties, key))) {
+    throw new TypeError("image.properties requires image, x, y, width, and height.");
   }
   for (const [property, value] of Object.entries(properties)) {
     validateGraphicProperty(type, property);

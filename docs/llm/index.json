@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageVersion": "0.0.26",
-  "contractId": "sha256:21011e3510c481df0d0ec084c4ce84827823ed2c58d327f96b8a230fd01182ab",
+  "contractId": "sha256:35f62d3bbb994a279e1ad23c44c011475ae1cf1a8d54b26d948938ae6d2efc38",
   "identityPolicy": "Match contractId and artifact hashes before mixing page, card, type, or MCP resource data. Task packets must come from the same installed card/resource set; packageVersion alone is insufficient.",
   "artifacts": [
     {
       "path": "actions.json",
-      "sha256": "ff327d6594c43b342d8bf651160b589dafc7e73acc182d1473c55353a4b73c1a",
-      "bytes": 993196
+      "sha256": "f28cfb2f3db354e9282baa0c5e92416b816e3fcea9030a510bb5dfac1207d38f",
+      "bytes": 1004523
     },
     {
       "path": "mcp-resources.json",
@@ -16,8 +16,8 @@
     },
     {
       "path": "intent-taxonomy.json",
-      "sha256": "636d283f7a83dac1862e72c00360db82ca3b58117f9846d4e217e428dae98bb8",
-      "bytes": 60471
+      "sha256": "6db1079e32c2520fb0811bf89b57af8bb118001c1e2b84ab259ae3aa693925c4",
+      "bytes": 60467
     },
     {
       "path": "schemas/task-packet.schema.json",
@@ -31,28 +31,28 @@
     },
     {
       "path": "types/program.d.ts",
-      "sha256": "04f4e41ec473054e95fb66272ec2619497d604629abd82d5264127026658cb15",
-      "bytes": 230496
+      "sha256": "52387ebaca5c27349873b124e77a0c354b779352b78d9b2bbdc771e0521a0e69",
+      "bytes": 234831
     }
   ],
   "catalogs": {
     "pages": {
-      "count": 150,
+      "count": 151,
       "path": "llm/pages.json",
-      "bytes": 37466,
-      "sha256": "7034d08e8164cfe9db11a2129f30648128373e12f7454c05b2424d0741f52843"
+      "bytes": 37728,
+      "sha256": "4096385aab66a322268da7c7de39f3f52c5eb3a77e249dd88ac128d6e6958ed1"
     },
     "actions": {
-      "count": 304,
+      "count": 309,
       "path": "llm/actions.json",
-      "bytes": 86316,
-      "sha256": "c2ab75f4fc0ea47c10f2236a850422071cc9edd8e7399d8b106cb7a2d85fc146"
+      "bytes": 87697,
+      "sha256": "aa728c5ffb401d33f0d93fb25b7932978fca907128dbdf5f4cb98e6b095a1d3a"
     },
     "types": {
-      "count": 769,
+      "count": 787,
       "path": "llm/types.json",
-      "bytes": 174101,
-      "sha256": "25b6628d66bdb0fbc4d435b66f22a4a1b03951b6db8e40ca1dbc893738b19565"
+      "bytes": 177705,
+      "sha256": "c5067723f8f393fc412f1310c913421b93664a7bf47d150983b4b24bcc4463d1"
     }
   },
   "paths": {

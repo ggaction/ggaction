@@ -1,4 +1,6 @@
 import { validateFillPaint } from "../grammar/paint.js";
+import { normalizeImageMarkConfig, IMAGE_MARK_CONFIG_KEYS } from "../grammar/imageMark.js";
+import { validateImageBinding } from "../materialization/imageState.js";
 import { validateConditionalDependencies } from "../materialization/resourceState.js";
 import { resolveFilterEnvironment } from "../materialization/expressionInputs.js";
 import { validateLegacyPathCommands } from "../grammar/pathCommands.js";
@@ -256,7 +258,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       if (kind === "dataset" && !legacy && resource.source === undefined && Array.isArray(resource.values)) {
         validateSourceIdentity(resource);
       }
-      if (kind === "layer") validateTickColorChannels(resource);
+      if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource); }
       if (kind === "layer" && ["dx", "dy"].some(channel => resource.encoding?.[channel] !== undefined)) {
         const dataset = semantic.datasets.find(item => item.id === resource.data);
         if (dataset === undefined) throw new Error("Numeric text offsets require an existing dataset.");
@@ -616,8 +618,14 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       normalizeTextOverrides(program.markConfigs[id].textOverrides);
     }
     validateRegressionPlacement(program.markConfigs[id].regression?.placement);
-    requestedMarkClip(program.markConfigs[id]);
-    validateMarkClipCoordinate(program, resources.get("mark").get(id), program.markConfigs[id].clip);
+    if (resources.get("mark").get(id)?.mark.type === "image") {
+      const config = program.markConfigs[id];
+      exactKeys(config, IMAGE_MARK_CONFIG_KEYS, `${path}.materializationConfigs.marks.${id}`);
+      if (canonicalJSON(normalizeImageMarkConfig(config)) !== canonicalJSON(config)) throw invalidSnapshot("Image mark configuration must be normalized.", path);
+    } else {
+      requestedMarkClip(program.markConfigs[id]);
+      validateMarkClipCoordinate(program, resources.get("mark").get(id), program.markConfigs[id].clip);
+    }
     if (!resources.get("mark").has(id)) throw invalidSnapshot(`Mark config "${id}" has no layer owner.`, path);
     if (resources.get("mark").get(id).mark.type === "point" && program.markConfigs[id].shape !== undefined) {
       validatePointShape(program.markConfigs[id].shape);

@@ -1,3 +1,5 @@
+import { validateInputReference } from "../../../core/resourceReference.js";
+import { requireStoredResource } from "../../../selectors/resources.js";
 import { validateStoredConditional } from "../../../grammar/conditionalState.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -56,6 +58,16 @@ export function validateLayerSemanticValue(
   } = {}
 ) {
   const property = parsed.path.join(".");
+  const layer = findLayer(program, parsed.id);
+  if (property === "image") {
+    validateInputReference(value);
+    if (layer?.mark?.type !== "image" || value.kind !== "image") throw new TypeError("Image binding requires an image mark and resource.");
+    requireStoredResource(program, value);
+  }
+  if (property === "alt" && (layer?.mark?.type !== "image" || typeof value !== "string")) throw new TypeError("Image alternative text requires an image mark and string.");
+  if (layer?.mark?.type === "image" && (["data", "source", "coordinate", "transform"].includes(property) || /^(encoding|conditionals)\./.test(property))) {
+    throw new TypeError("Image marks do not support data, coordinates or field encodings.");
+  }
   if (parsed.path[0] === "conditionals") {
     validateStoredConditional(parsed.path[1], value);
     return;

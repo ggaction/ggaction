@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `prepareImageResource`, `createImageResource`, `replaceImageResource`, `removeResource`, `createImageMark`, `editImageMark`, and `prepareImageRendering` for Full image resource preparation, immutable authoring, and image marks with contain/cover/fill, alignment, clipping and alternative text. Preserve embedded bytes through offline snapshots, selection, composition and scenes; prepare browser Canvas explicitly and export the same data through SVG, PNG and PDF.
+
 - Add `prepareDataUpdate` and `applyDataUpdate` for explicit host-loaded CSV/JSON, named and inline sources. Retain received-data receipts for offline restoration, reject stale preparations, and atomically refresh URL sources with parameter-dependent charts. Full supports source and parameter revisions; Basic supports creation.
 
 - Add `createParameter`, `editParameter`, and `removeParameter` for immutable scalar inputs with exact revision references and atomic dependent-data and chart updates. Full supports the complete lifecycle; Basic supports creation.

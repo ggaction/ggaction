@@ -4228,6 +4228,110 @@ compatible meaning and scale mapping. Canonical child settings remain intact; se
 channel false restores independent domain inference. This edit is atomic.
 
 
+## `createImageResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
+```
+
+Named option contracts: [`ApplyImageResourceOptions`](./../types.md#type-applyimageresourceoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedImageResource<"create">` |
+| `requestToken` | Required | `string` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+createImageResource({ prepared, requestToken })
+```
+
+Commit an authentic create handle from `prepareImageResource` on its exact original
+receiver. Full-only; source bytes, MIME, hash and decoded dimensions are validated
+before synchronous authoring. [Preparation and rendering](../../api/rendering.md#embedded-images).
+
+
+## `replaceImageResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+```
+
+Named option contracts: [`ApplyImageResourceOptions`](./../types.md#type-applyimageresourceoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedImageResource<"replace">` |
+| `requestToken` | Required | `string` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+replaceImageResource({ prepared, requestToken })
+```
+
+Commit a prepared replacement, increment the image revision and rematerialize all
+referencing image marks while preserving item identity and highlight intent.
+
+
+## `removeResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+removeResource(options: RemoveStoredResourceOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveStoredResourceOptions`](./../types.md#type-removestoredresourceoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `kind` | Required | `StoredResourceKind` |
+| `id` | Required | `string` |
+| `cascade` | Optional / branch-dependent | `boolean \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+removeResource({ kind, id, cascade? })
+```
+
+Remove an unused typed stored resource. Default restrict rejects live references.
+Explicit image cascade removes its image marks before removing the source.
+
+
 ## Focused core data editing
 
 ```javascript

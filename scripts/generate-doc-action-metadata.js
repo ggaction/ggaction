@@ -25,6 +25,7 @@ function operation(name) {
     name === "layoutSeries" ||
     name === "orderCategories" ||
     name === "replaceCompositionChild" ||
+    name === "replaceImageResource" ||
     name === "insertCompositionChild" ||
     name === "reorderCompositionChildren"
   ) return "edit";

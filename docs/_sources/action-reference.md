@@ -3302,6 +3302,54 @@ removeTitle()
 
 Remove the complete chart title and subtitle resource. [Titles](../api/titles.md)
 
+### `createImageResource`
+
+```js
+createImageResource({ prepared, requestToken })
+```
+
+Commit an authentic create handle from `prepareImageResource` on its exact original
+receiver. Full-only; source bytes, MIME, hash and decoded dimensions are validated
+before synchronous authoring. [Preparation and rendering](../api/rendering.md#embedded-images).
+
+### `replaceImageResource`
+
+```js
+replaceImageResource({ prepared, requestToken })
+```
+
+Commit a prepared replacement, increment the image revision and rematerialize all
+referencing image marks while preserving item identity and highlight intent.
+
+### `removeResource`
+
+```js
+removeResource({ kind, id, cascade? })
+```
+
+Remove an unused typed stored resource. Default restrict rejects live references.
+Explicit image cascade removes its image marks before removing the source.
+
+### `createImageMark`
+
+```js
+createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip? } = {})
+```
+
+Create one resource-backed image item. Unique source inference and the first `image`
+role are supported. Viewport defaults to the plot, fit to contain and align to center.
+The [image tutorial](../tutorials/image-assets.md) shares its public program with all
+four renderer tests.
+
+### `editImageMark`
+
+```js
+editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })
+```
+
+Edit an existing image mark; omission preserves options. `viewport:"auto"` resets
+to the plot. Explicit geometry adds clipping to the always-clipped viewport.
+
 ## Advanced Chart API
 
 Use these actions for explicit semantic resources or focused axis control.

@@ -1424,3 +1424,38 @@ Evidence: `test/unit/grammar/steffen-curve.test.js`, `test/unit/actions/marks/st
   복원한다. `inheritColor:"fill"`은 source의 유일하게 정해지는 concrete paint도 상속한다.
 - Evidence: `test/unit/grammar/structured-paint.test.js`, `test/unit/actions/marks/structured-fill.test.js`,
   `test/contracts/structured-paint-rendering.test.js`, `test/contracts/structured-paint-types.test.js`.
+## `createImageMark`
+
+- Signature: `createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })`.
+- Full-only resource mark with one item and no dataset/field/scale/coordinate. ID defaults to the first `image` role; another mark of that type requires explicit ID. Omitted image requires exactly one stored image resource. Exact image revision and alternative text are semantic state; placement options belong to materialization config.
+- Viewport defaults to `"auto"` (current plot); explicit `{x,y,width,height}` uses finite plot-local coordinates and positive dimensions. Fit is `contain|cover|fill`, default contain. Align is two numbers in [0,1], default [.5,.5]. Opacity defaults 1, alt defaults empty string. Explicit null is invalid. Viewport clipping always applies; additional `clip` is false or the shared explicit rectangle/path geometry in plot coordinates.
+- Produces a self-contained concrete image draw rectangle with original bytes/dimensions/hash; renderers never calculate fit or fetch. Stable key is tied to the mark role and retained on resource replacement. Canvas resizing recomputes auto viewports, preserves explicit viewport dimensions and moves both with plot margins.
+- Item selection/opacity highlight, clipped rectangular bounds, accessible alt, scenes, editable/graphic-only restore and explicit concat children are supported. Facet/repeat images decorate each native data plot without contributing a partition anchor or consuming the repeated field. Image-only facets still require a data-backed primary chart. Data encodings and non-opacity image highlight styles reject explicitly.
+
+### Formal values — `createImageMark`
+
+- Implemented: `createImageMark(options?: CreateImageMarkOptions): ChartProgram`.
+- Planned: 없음.
+- Proposed (NOT IMPLEMENTED): pixel-alpha hit testing, per-row image encoding.
+
+### Value coverage — `createImageMark`
+
+- ✅ Covered: shortest inference/ambiguity, all fit modes/align boundaries, auto/explicit viewport, clipping/opacity/alt, identity/selection/accessibility/composition, four renderer paths and primitive/public equality.
+- Evidence: `test/unit/resources/image-resource-lifecycle.test.js`, `test/charts/image-assets/public.test.js`, `test/charts/image-assets/png.render.js`.
+
+## `editImageMark`
+
+- Signature: `editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })`.
+- Omitted target requires exactly one image mark. Explicit target supports normal childPath dispatch. At least one edit is required. Omitted options preserve existing values; `viewport:"auto"` resets inference and `clip:false` removes only the additional clip. Rebinding requires a live image ID. All geometry and compatibility checks precede writes.
+- Updates semantic image ref/alt and materialization config, then invokes wrapped image rematerialization and replays existing highlights. `removeMark` removes the image item and its owned clip wrapper while retaining the shared image resource.
+
+### Formal values — `editImageMark`
+
+- Implemented: `editImageMark(options: EditImageMarkOptions): ChartProgram`.
+- Planned: 없음.
+- Proposed (NOT IMPLEMENTED): per-pixel editing.
+
+### Value coverage — `editImageMark`
+
+- ✅ Covered: explicit/inferred target, invalid/empty edits, viewport reset and resize, independent child scope, opacity selection, immutable failures, removal and offline restoration.
+- Evidence: `test/unit/resources/image-resource-lifecycle.test.js`, `test/contracts/image-types.test.js`.

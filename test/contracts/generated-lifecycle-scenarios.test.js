@@ -124,11 +124,12 @@ test("calls every user-facing action directly from a generated scenario root", (
     directTraceOperations(buildScenario(descriptor), directOperations);
   }
 
-  assert.equal(publicActions.length, 297);
+  assert.equal(publicActions.length, 302);
   for (const operation of [
     "removeData", "removeScale", "removeCoordinate",
     "createParameter", "editParameter", "removeParameter", "applyDataUpdate",
-    "createPivotData", "editPivotData"
+    "createPivotData", "editPivotData", "createImageResource", "replaceImageResource",
+    "createImageMark", "editImageMark", "removeResource"
   ]) {
     assert.equal(publicActions.includes(operation), true, operation);
     assert.equal(directOperations.has(operation), true, operation);

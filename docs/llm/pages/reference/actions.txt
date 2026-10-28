@@ -60,6 +60,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createHistogram`](../../../reference/actions/charts-data/#createhistogram) | H0, H1 | user-facing | charts |
 | [`createHorizonPlot`](../../../reference/actions/statistics/#createhorizonplot) | H0, H1 | user-facing | statistics |
 | [`createHorizontalGrid`](../../../reference/actions/guides/#createhorizontalgrid) | H3 | user-facing | grid |
+| [`createImageMark`](../../../reference/actions/marks/#createimagemark) | H2 | user-facing | marks |
+| [`createImageResource`](../../../reference/actions/charts-data/#createimageresource) | H3 | user-facing | core |
 | [`createImputedData`](../../../reference/actions/statistics/#createimputeddata) | H1 | user-facing | statistics |
 | [`createIntervalData`](../../../reference/actions/statistics/#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](../../../reference/actions/charts-data/#createintervalplot) | H0, H1 | user-facing | charts |
@@ -170,6 +172,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editGrid`](../../../reference/actions/guides/#editgrid) | H3 | user-facing | grid |
 | [`editHorizon`](../../../reference/actions/encodings/#edithorizon) | H2, H3 | user-facing | encodings |
 | [`editHorizontalGrid`](../../../reference/actions/guides/#edithorizontalgrid) | H3 | user-facing | grid |
+| [`editImageMark`](../../../reference/actions/marks/#editimagemark) | H3 | user-facing | marks |
 | [`editImputedData`](../../../reference/actions/statistics/#editimputeddata) | H1, H3 | user-facing | statistics |
 | [`editIntervalData`](../../../reference/actions/statistics/#editintervaldata) | H1, H3 | user-facing | statistics |
 | [`editLegend`](../../../reference/actions/guides/#editlegend) | H3 | user-facing | legend_and_title |
@@ -312,6 +315,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removePointPacking`](../../../reference/actions/marks/#removepointpacking) | H3 | user-facing | marks |
 | [`removePointRadius`](../../../reference/actions/encodings/#removepointradius) | H2, H3 | user-facing | encodings |
 | [`removeRadialAxis`](../../../reference/actions/guides/#removeradialaxis) | H3 | user-facing | axes |
+| [`removeResource`](../../../reference/actions/charts-data/#removeresource) | H3 | user-facing | core |
 | [`removeScale`](../../../reference/actions/charts-data/#removescale) | H2 | user-facing | core |
 | [`removeTextMetrics`](../../../reference/actions/charts-data/#removetextmetrics) | H3 | user-facing | core |
 | [`removeTheme`](../../../reference/actions/charts-data/#removetheme) | H3 | user-facing | core |
@@ -322,5 +326,6 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`reorderCompositionChildren`](../../../reference/actions/charts-data/#reordercompositionchildren) | H3 | user-facing | composition |
 | [`repeatCharts`](../../../reference/actions/charts-data/#repeatcharts) | H0 | user-facing | composition |
 | [`replaceCompositionChild`](../../../reference/actions/charts-data/#replacecompositionchild) | H3 | user-facing | composition |
+| [`replaceImageResource`](../../../reference/actions/charts-data/#replaceimageresource) | H3 | user-facing | core |
 | [`reviseData`](../../../reference/actions/charts-data/#revisedata) | H3 | user-facing | core |
 | [`selectMarks`](../../../reference/actions/advanced/#selectmarks) | H3 | advanced | mark-selection |

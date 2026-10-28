@@ -5510,6 +5510,96 @@
         "file": "agent_docs/contract/current/COMPOSITION.md",
         "anchor": "editcompositionscales"
       }
+    },
+    {
+      "name": "createImageResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Replace prepared bytes with replaceImageResource; remove with removeResource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createimageresource"
+      }
+    },
+    {
+      "name": "replaceImageResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Prepare a new exact receiver replacement and rematerialize every image consumer",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "replaceimageresource"
+      }
+    },
+    {
+      "name": "createImageMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edit placement and binding with editImageMark; remove with removeMark",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createimagemark"
+      }
+    },
+    {
+      "name": "editImageMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Preserve omitted image options and explicitly reset the viewport with auto",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "editimagemark"
+      }
+    },
+    {
+      "name": "removeResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Remove only unused stored resources by default; explicit cascade removes dependent owned consumers",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "removeresource"
+      }
     }
   ],
   "plannedActions": [],
@@ -5594,7 +5684,8 @@
       "rematerializeTitle",
       "rematerializeVerticalGrid",
       "materializeSortedData",
-      "rematerializeOverlay"
+      "rematerializeOverlay",
+      "rematerializeImageMark"
     ],
     "guideComponents": [
       "createLegendBackground",

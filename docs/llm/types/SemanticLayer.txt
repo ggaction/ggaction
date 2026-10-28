@@ -1,5 +1,7 @@
 export interface SemanticLayer {
   readonly id: string;
+  readonly image?: ImageRef;
+  readonly alt?: string;
   readonly data?: string;
   readonly source?: string;
   readonly coordinate?: string;

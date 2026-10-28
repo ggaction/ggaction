@@ -24,6 +24,13 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](../types/index.d.ts)
 
 ```typescript
+export type { RemoveStoredResourceOptions } from "./program.js";
+export type { ImageResourceSource, CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost,
+  PreparedImageResource, ApplyImageResourceOptions, ImageRef, ImageResource, ImageMarkOptions, CreateImageMarkOptions, EditImageMarkOptions } from "./program.js";
+import type { CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost, PreparedImageResource } from "./program.js";
+import type { CanvasTransitionScene } from "./scene.js";
+export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
+import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
@@ -523,8 +530,15 @@ export function vconcat(options: CompositionOptions): ChartProgram;
 export function render(
   program: Pick<ChartProgram, "graphicSpec">,
   context: CanvasRenderingContext2D,
-  options?: { pixelRatio?: number }
+  options?: CanvasRenderOptions
 ): void;
+
+export function prepareImageRendering(program: Pick<ChartProgram, "graphicSpec">, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+
+export function prepareImageResource(program: ChartProgram, request: CreateImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"create">>;
+export function prepareImageResource(program: ChartProgram, request: ReplaceImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"replace">>;
+export function prepareImageResource(program: ChartProgram, request: ImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource>;
 ```
 
 #### `ggaction/basic`
@@ -533,6 +547,9 @@ export function render(
 
 ```typescript
 export type { FillPaint, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
+import type { CanvasTransitionScene } from "./scene.js";
+export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
+import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./program.js";
@@ -680,8 +697,11 @@ export function prepareDataUpdate(
 export function render(
   program: Pick<BasicChartProgram, "graphicSpec">,
   context: CanvasRenderingContext2D,
-  options?: { pixelRatio?: number }
+  options?: CanvasRenderOptions
 ): void;
+
+export function prepareImageRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
 ```
 
 #### `ggaction/extension`
@@ -911,10 +931,10 @@ export function exportAccessibleData(program: ChartProgram | BasicChartProgram, 
 
 ```typescript
 import type { BasicChartProgram } from "./basic.js";
-import type { ChartProgram, DatasetSchema, InputRowRef } from "./program.js";
+import type { ChartProgram, DatasetSchema, InputRowRef, StoredResourceKind } from "./program.js";
 export type ProgramInput = ChartProgram | BasicChartProgram;
-export interface ResourceRef { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | "canvas" | "composition"; readonly id: string; readonly childPath?: readonly string[]; }
-export interface InspectionTarget { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide"; readonly id: string; readonly childPath?: readonly string[]; }
+export interface ResourceRef { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | "canvas" | "composition" | StoredResourceKind; readonly id: string; readonly childPath?: readonly string[]; }
+export interface InspectionTarget { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | StoredResourceKind; readonly id: string; readonly childPath?: readonly string[]; }
 export interface Finding { readonly severity: "error" | "warning" | "info"; readonly code: string; readonly reason: string; readonly message: string; readonly resource?: ResourceRef; readonly optionPath?: string; }
 export interface CheckResult { readonly name: string; readonly status: "not_run" | "passed" | "failed" | "not_applicable"; readonly evidencePaths: readonly string[]; readonly findings: readonly Finding[]; }
 export interface ParameterDefinition { readonly path: string; readonly kind: "field" | "enum" | "number" | "string" | "boolean" | "range" | "array" | "object" | "resource"; readonly required: boolean; readonly active: boolean; readonly choices?: readonly (string | number | boolean | null)[]; readonly minimum?: number; readonly maximum?: number; readonly unit?: string; readonly fieldRole?: string; }
@@ -978,7 +998,7 @@ export function getExpressionFunctions(options?: { readonly registry?: "standard
 [Complete declaration and relative dependencies](../types/scene.d.ts)
 
 ```typescript
-import type { ChartProgram, GraphicObject, GraphicClipPath } from './program.js';
+import type { ChartProgram, GraphicObject, GraphicClipPath, CanvasRenderOptions } from './program.js';
 export interface TransitionNode {
   readonly key: string;
   readonly type: string;
@@ -996,7 +1016,7 @@ export interface TransitionScene {
 }
 export interface CanvasTransitionNode {
   readonly key: string;
-  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text';
+  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image';
   readonly topology: string;
   readonly properties: Readonly<NonNullable<GraphicObject['properties']>>;
   /** Explicit outer-to-inner global clip frames; the root physical viewport is implicit. */
@@ -1012,7 +1032,7 @@ export interface CanvasTransitionScene {
 }
 export declare function createTransitionScene(program: ChartProgram, options?: {format?: 'svg'}): TransitionScene;
 export declare function createTransitionScene(program: ChartProgram, options: {format: 'canvas'}): CanvasTransitionScene;
-export declare function renderTransitionScene(scene: CanvasTransitionScene, context: CanvasRenderingContext2D, options?: {pixelRatio?: number}): void;
+export declare function renderTransitionScene(scene: CanvasTransitionScene, context: CanvasRenderingContext2D, options?: CanvasRenderOptions): void;
 ```
 
 <!-- END GENERATED RUNTIME SIGNATURES -->

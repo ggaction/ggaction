@@ -21,6 +21,7 @@ interface ChartProgramActions {
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
   applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
+  removeResource(options: RemoveStoredResourceOptions): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeCoordinate(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -40,6 +41,10 @@ interface ChartProgramActions {
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
   createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
+  createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
+  replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+  createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
+  editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
@@ -483,6 +488,18 @@ export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] =
 ```
 
 Related types: [`DataUpdateRequest`](../../../reference/types/#type-dataupdaterequest) · [`PreparedDataUpdate`](../../../reference/types/#type-prepareddataupdate).
+
+### `ApplyImageResourceOptions` {#type-applyimageresourceoptions}
+
+ Expand ApplyImageResourceOptions
+
+```typescript
+export interface ApplyImageResourceOptions<Kind extends "create" | "replace"> {
+  prepared: PreparedImageResource<Kind>; requestToken: string;
+}
+```
+
+Related types: [`PreparedImageResource`](../../../reference/types/#type-preparedimageresource).
 
 ### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
 
@@ -2108,6 +2125,26 @@ export interface ComputedExpressionV2 {
 
 Related types: [`ExpressionNode`](../../../reference/types/#type-expressionnode).
 
+### `ConcretePathCommand` {#type-concretepathcommand}
+
+ Expand ConcretePathCommand
+
+```typescript
+export type ConcretePathCommand =
+  | { readonly op: "M"; readonly x: number; readonly y: number }
+  | { readonly op: "L"; readonly x: number; readonly y: number }
+  | {
+      readonly op: "C";
+      readonly x1: number;
+      readonly y1: number;
+      readonly x2: number;
+      readonly y2: number;
+      readonly x: number;
+      readonly y: number;
+    }
+  | { readonly op: "Z" };
+```
+
 ### `ConditionalEncodingBranch` {#type-conditionalencodingbranch}
 
  Expand ConditionalEncodingBranch
@@ -2602,6 +2639,16 @@ export interface CreateHorizonPlotOptions {
 ```
 
 Related types: [`HorizonXEncoding`](../../../reference/types/#type-horizonxencoding) · [`HorizonYEncoding`](../../../reference/types/#type-horizonyencoding) · [`HorizonResolution`](../../../reference/types/#type-horizonresolution) · [`HorizonMissingPolicy`](../../../reference/types/#type-horizonmissingpolicy) · [`HorizonOverflowPolicy`](../../../reference/types/#type-horizonoverflowpolicy) · [`HorizonPaletteOptions`](../../../reference/types/#type-horizonpaletteoptions) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`CurveInterpolation`](../../../reference/types/#type-curveinterpolation) · [`HorizonPlotGuideOptions`](../../../reference/types/#type-horizonplotguideoptions).
+
+### `CreateImageMarkOptions` {#type-createimagemarkoptions}
+
+ Expand CreateImageMarkOptions
+
+```typescript
+export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; }
+```
+
+Related types: [`ImageMarkOptions`](../../../reference/types/#type-imagemarkoptions).
 
 ### `CreateIntervalPlotOptions` {#type-createintervalplotoptions}
 
@@ -4985,6 +5032,16 @@ export interface EditHorizonOptions
 
 Related types: [`HorizonEncodingOptions`](../../../reference/types/#type-horizonencodingoptions).
 
+### `EditImageMarkOptions` {#type-editimagemarkoptions}
+
+ Expand EditImageMarkOptions
+
+```typescript
+export interface EditImageMarkOptions extends ImageMarkOptions { target?: string; }
+```
+
+Related types: [`ImageMarkOptions`](../../../reference/types/#type-imagemarkoptions).
+
 ### `EditImputedDataOptions` {#type-editimputeddataoptions}
 
  Expand EditImputedDataOptions
@@ -6689,6 +6746,40 @@ export type GradientPlotPositionChannel = BoxPlotPositionChannel;
 
 Related types: [`BoxPlotPositionChannel`](../../../reference/types/#type-boxplotpositionchannel).
 
+### `GraphicClip` {#type-graphicclip}
+
+ Expand GraphicClip
+
+```typescript
+export type GraphicClip = GraphicClipRect | GraphicClipPath;
+```
+
+Related types: [`GraphicClipRect`](../../../reference/types/#type-graphiccliprect) · [`GraphicClipPath`](../../../reference/types/#type-graphicclippath).
+
+### `GraphicClipPath` {#type-graphicclippath}
+
+ Expand GraphicClipPath
+
+```typescript
+export interface GraphicClipPath {
+  readonly type: "path";
+  readonly commands: readonly ConcretePathCommand[];
+  readonly fillRule?: PathFillRule;
+}
+```
+
+Related types: [`ConcretePathCommand`](../../../reference/types/#type-concretepathcommand) · [`PathFillRule`](../../../reference/types/#type-pathfillrule).
+
+### `GraphicClipRect` {#type-graphiccliprect}
+
+ Expand GraphicClipRect
+
+```typescript
+export interface GraphicClipRect {
+  readonly x: number; readonly y: number; readonly width: number; readonly height: number;
+}
+```
+
 ### `GraphicType` {#type-graphictype}
 
  Expand GraphicType
@@ -6701,7 +6792,8 @@ export type GraphicType =
   | "rect"
   | "line"
   | "text"
-  | "path";
+  | "path"
+  | "image";
 ```
 
 ### `GridDirectionOptions` {#type-griddirectionoptions}
@@ -7015,6 +7107,22 @@ export type HorizonYScaleOptions = ScaleFields<"id" | "clamp" | "reverse"> & {
 ```
 
 Related types: [`ScaleFields`](../../../reference/types/#type-scalefields).
+
+### `ImageMarkOptions` {#type-imagemarkoptions}
+
+ Expand ImageMarkOptions
+
+```typescript
+export interface ImageMarkOptions {
+  image?: string;
+  viewport?: "auto" | { x: number; y: number; width: number; height: number };
+  fit?: "contain" | "cover" | "fill";
+  align?: readonly [number, number];
+  opacity?: number; alt?: string; clip?: false | GraphicClip;
+}
+```
+
+Related types: [`GraphicClip`](../../../reference/types/#type-graphicclip).
 
 ### `ImputedDataBaseOptions` {#type-imputeddatabaseoptions}
 
@@ -8532,6 +8640,14 @@ Related types: [`ConfidenceIntervalMethod`](../../../reference/types/#type-confi
 export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 ```
 
+### `PathFillRule` {#type-pathfillrule}
+
+ Expand PathFillRule
+
+```typescript
+export type PathFillRule = "nonzero" | "evenodd";
+```
+
 ### `PathLegendOptions` {#type-pathlegendoptions}
 
  Expand PathLegendOptions
@@ -9095,6 +9211,18 @@ export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = Dat
 ```
 
 Related types: [`DataUpdateRequest`](../../../reference/types/#type-dataupdaterequest) · [`DataUpdateDescriptors`](../../../reference/types/#type-dataupdatedescriptors).
+
+### `PreparedImageResource` {#type-preparedimageresource}
+
+ Expand PreparedImageResource
+
+```typescript
+export interface PreparedImageResource<Kind extends "create" | "replace" = "create" | "replace"> {
+  readonly [preparedImageResourceBrand]: Kind;
+  readonly kind: "image-resource";
+  readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+```
 
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
@@ -9941,6 +10069,16 @@ export interface RemoveResourceOptions {
 }
 ```
 
+### `RemoveStoredResourceOptions` {#type-removestoredresourceoptions}
+
+ Expand RemoveStoredResourceOptions
+
+```typescript
+export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }
+```
+
+Related types: [`StoredResourceKind`](../../../reference/types/#type-storedresourcekind).
+
 ### `ReorderCompositionChildrenOptions` {#type-reordercompositionchildrenoptions}
 
  Expand ReorderCompositionChildrenOptions
@@ -10610,6 +10748,14 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
   : T extends readonly (infer Value)[] ? readonly StoredCell<Value>[]
   : T extends object ? { readonly [Key in keyof T]: StoredCell<T[Key]> }
   : T;
+```
+
+### `StoredResourceKind` {#type-storedresourcekind}
+
+ Expand StoredResourceKind
+
+```typescript
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "image";
 ```
 
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}

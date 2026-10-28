@@ -480,3 +480,7 @@
 - title: Complete Axes and Labels
   url: /api/axes/complete/
   parent: /api/axes/
+
+- title: Image Assets Tutorial
+  url: /tutorials/image-assets/
+  parent: /tutorials/

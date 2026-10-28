@@ -38,14 +38,27 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 현재 한도는 package/consumer/search 검사의 상수와 현재 실행 결과가 기준이다.
 아래 설명에 남은 과거 checkpoint 수치를 현재 제한으로 해석하지 않는다.
 
-## Private asset preparation 경계
+## 명시 asset preparation 경계
 
-Image와 font의 명시 host load·abort·bytes hash·budget은 `resources/assetPreparation.js`가
-공유한다. `resolveAssets.js`는 SVG allowlist/decoded image dimensions를, `resolveFonts.js`는
-font identity와 같은 font/provider의 측정 batch를 검증한다. 모두 private preparation이며
-public resource/action/schema와 renderer 경계는 아직 바꾸지 않았다. Host callback, decoder
-object와 mutable byte buffer는 저장 결과에 들어가지 않는다. 공개 연결 전의 근거와 남은 범위는
-[image](impl/roadmap9/phase4/images/PRIVATE.md)와 [font](impl/roadmap9/phase4/fonts/PRIVATE.md)에 있다.
+Image와 font의 bytes/hash/host callback 준비는 `resources/assetPreparation.js`가 공유하며,
+abort와 callback lifetime은 core의 순수 host 경계가 소유한다. Image의 closed request와 embedded
+payload/static SVG 검증은 grammar에 있어 persistence와 renderers가 loader를 import하지 않는다.
+Full image resource preparation은 exact original receiver/token에 묶인 private WeakMap handle을
+반환한다. 동기 wrapped create/replace action은 authored snapshot을 쓰고 image consumers를 명시적으로
+materialize한다. Callback, decoder object, signal은 semantic/graphic state나 trace에 저장하지 않는다.
+
+Image mark는 dataset 없는 단일 resource item이며 typed resource lineage를 사용한다. Shared selection
+policy의 resourceBacked capability가 데이터 조회를 분리하고 existing selector/inspection/scene가 같은
+concrete item을 소비한다. Image ref/alt는 semantic layer, fit/viewport/align/opacity/extra clip은 materialization
+config, resolved rectangle/clip/embedded payload는 graphicSpec만 소유한다. Facet/repeat의 data anchor에는
+image overlay를 포함하지 않으며 자식 plot마다 같은 resource 의미를 명시 rematerialize한다.
+
+Canvas renderer preparation은 graphicSpec만 읽어 content hash별 decoded backend image를 private handle에
+보유한다. SVG는 embedded data URI, PNG/PDF는 native byte decoder를 사용하며 renderer fetch는 없다.
+Canvas scene preparation과 rendering은 하나의 concrete compiler를 공유한다. Mutable scene은 own-data
+content digest가 바뀌면 새 compiled snapshot을 만들고 이전 preparation을 context 변경 전에 거부한다.
+Font의 public resource 연결과 최종 export bundle은 별도 단계다. 정확 API와 한도는 Current 및 rendering
+reference가 소유한다.
 
 ## Private builtin resource validation
 
@@ -55,8 +68,8 @@ freeze하며 상위 constructor의 권한을 상속하지 않는다. Public plug
 공통 resource owner는 envelope·typed refs·graph를 먼저 검사하고 등록 owner의 저장값 및 binding
 검증만 호출한다. Plain preview는 원래 constructor를 명시하며, 미등록 class/Basic는 추가 kind를
 거부한다. Persistence도 실제 복원 constructor의 같은 경계를 사용하고 계산을 실행하지 않는다.
-이 준비 checkpoint는 handler 연결점만 추가하며 Full assembly의 hierarchy/layout/image 등록과
-각 public authoring consumer는 후속 구현이다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이
+Full assembly는 image handler와 public image authoring consumer를 등록한다.
+Hierarchy/layout의 public 연결은 별도 capability 구현이 소유한다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이
 승인·검증과 후행 연결 의무를 보존한다.
 이 owner1개를 더한 지원 Node20/22/24 staging은739entries, packed최대1,098,083,
 unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
@@ -734,8 +747,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 557,000 bytes |
-| `ggaction/basic` | 333,000 bytes |
+| `ggaction` | 564,000 bytes |
+| `ggaction/basic` | 338,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
