@@ -95,6 +95,11 @@
       "name": "sequence",
       "required": false,
       "type": "{ start: number; end: number; step: number; } | undefined"
+    },
+    {
+      "name": "calendar",
+      "required": false,
+      "type": "CalendarDayDomain | undefined"
     }
   ],
   "callPatterns": [

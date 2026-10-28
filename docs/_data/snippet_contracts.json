@@ -1264,7 +1264,7 @@
   {
     "file": "api/data/missing-data.md",
     "block": 1,
-    "heading": "`createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}",
+    "heading": "`createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1280,6 +1280,20 @@
   {
     "file": "api/data/missing-data.md",
     "block": 2,
+    "heading": "Complete a calendar day range",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "data: \"days\""
+    ],
+    "prerequisites": "Standalone ES module with ggaction installed; the sample declares all input events.",
+    "sha256": "6cb96ffba7f2e362fb4f5451544f3226a5eb6b29a469be47246f1c657f465257",
+    "executable": true
+  },
+  {
+    "file": "api/data/missing-data.md",
+    "block": 3,
     "heading": "`createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}",
     "mode": "fragment",
     "environment": "esm-context",

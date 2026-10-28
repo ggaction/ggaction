@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:84dcb9c9eaecdfbf4d03be1c42ae30064283c3411b70ab82cfbb4e151935b2a8. Status: development. Runtime source: 1059ba42282d5d2b95782f66a054448b844e69e8. Release baseline: v0.0.13.
+Contract: sha256:b15ddfa6ac0a004b1f95e6e96483019398667ead1564bc9b62743058c3b33319. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/1059ba42282d5d2b95782f66a054448b844e69e8/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/1059ba42282d5d2b95782f66a054448b844e69e8/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -5088,7 +5088,7 @@ corresponding higher-level action when the library should materialize values:
 | `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, weight?, resolved? }` | `createBinData` |
 | `"computed"` | `{ type, as, expression }` | `createComputedData` |
 | `"normalize"` | `{ type, field, as, groupBy, method, ...methodPolicies }` | `createNormalizedData` |
-| `"complete"` | `{ type, key, groupBy, values? or sequence?, fill, members? }` | `createCompleteData` |
+| `"complete"` | `{ type, key, groupBy, values? or sequence? or calendar?, fill, members? }` | `createCompleteData` |
 | `"impute"` | `{ type, fields, groupBy, sortBy, method, value?, edges, maxGap? }` | `createImputedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"lookup"` | `{ type, field, lookup: { data, key, fields, as } }` | `createLookupData` |
@@ -5215,7 +5215,7 @@ See [Expressions and Normalization](./api/data/expressions-and-normalization/#cr
 
 See [Expressions and Normalization](./api/data/expressions-and-normalization/#createnormalizeddata-id-source-field-as-groupby-method) for this contract and its examples.
 
-## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
+## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
 
 See [Missing Keys and Values](./api/data/missing-data/#createcompletedata-id-source-key-groupby-values-sequence-fill-members) for this contract and its examples.
 
@@ -5720,8 +5720,10 @@ Non-hour offsets and skipped civil dates follow the same rule; a boundary that
 cannot be represented in the bucket or by JavaScript `Date` is an error. Results
 never depend on the host process time zone or locale.
 
-Locale calendar selection, aggregation, resampling, and missing-period
-completion are separate concerns. Create another immutable dataset when a
+Aggregate repeated dates explicitly with `createSummaryData`, then fill a day
+range with [`createCompleteData({ calendar: ... })`](./api/data/missing-data/#complete-a-calendar-day-range).
+Use the same explicit zone for both actions. Locale calendar selection and
+resampling are separate concerns. Create another immutable dataset when a
 different unit or output field is needed.
 
 ## Related
@@ -24805,16 +24807,19 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `members` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `sequence` | Optional / branch-dependent | `{ start: number; end: number; step: number; } \| undefined` |
+| `calendar` | Optional / branch-dependent | `CalendarDayDomain \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })
+createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })
 ```
 
 Complete one typed key domain independently inside every observed group, with
-explicit fill and source-membership provenance for synthesized rows.
+explicit fill and source-membership provenance for synthesized rows. A civil-day
+`calendar` uses inclusive strict dates and an explicit UTC or IANA zone; it is
+exclusive with `values` and `sequence`.
 [Source and Derived Data](./api/data/source-and-derived/#createcompletedata-id-source-key-groupby-values-sequence-fill-members)
 
 ## `createImputedData`
@@ -25253,6 +25258,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `members` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `sequence` | Optional / branch-dependent | `{ start: number; end: number; step: number; } \| undefined` |
+| `calendar` | Optional / branch-dependent | `CalendarDayDomain \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
 
@@ -26212,7 +26218,7 @@ editStackData({ target, category?, group?, value?, mode?, as?, dependents? })
 editIntervalData({ target, field?, groupBy?, center?, extent?, method?, level?, as?, dependents? })
 editECDFData({ target, field?, groupBy?, weight?, missing?, as?, dependents? })
 editNormalizedData({ target, field?, as?, groupBy?, method?, variance?, zeroDenominator?, baseline?, sortBy?, dependents? })
-editCompleteData({ target, key?, groupBy?, values? | sequence?, fill?, members?, dependents? })
+editCompleteData({ target, key?, groupBy?, values? | sequence? | calendar?, fill?, members?, dependents? })
 editImputedData({ target, fields?, groupBy?, sortBy?, method?, value?, edges?, maxGap?, dependents? })
 ```
 
@@ -29752,6 +29758,7 @@ export type {
   ComputedDataOptions,
   ComputedExpression,
   CompleteDataOptions,
+  CalendarDayDomain,
   ImputedDataOptions,
   NormalizedDataOptions,
   NormalizeBaseline,
@@ -31978,6 +31985,21 @@ type CPathGuides = Omit<CartesianPathGuideOptions, "axes"> & {
 
 Related types: [`CartesianPathGuideOptions`](./reference/types/#type-cartesianpathguideoptions) · [`CAxes`](./reference/types/#type-caxes).
 
+### `CalendarDayDomain` {#type-calendardaydomain}
+
+ Expand CalendarDayDomain
+
+```typescript
+export interface CalendarDayDomain {
+  readonly unit: "day";
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly start: string;
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly end: string;
+  readonly timeZone: string;
+}
+```
+
 ### `CanvasOptions` {#type-canvasoptions}
 
  Expand CanvasOptions
@@ -32520,16 +32542,18 @@ Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar).
 
 ```typescript
 export type CompleteDataOptions = CompleteDataBaseOptions & (
-  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never }
+  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never; calendar?: never }
   | {
       values?: never;
       sequence: { start: number; end: number; step: number };
+      calendar?: never;
     }
-  | { values?: never; sequence?: never }
+  | { calendar: CalendarDayDomain; values?: never; sequence?: never }
+  | { values?: never; sequence?: never; calendar?: never }
 );
 ```
 
-Related types: [`CompleteDataBaseOptions`](./reference/types/#type-completedatabaseoptions) · [`DatasetScalar`](./reference/types/#type-datasetscalar).
+Related types: [`CompleteDataBaseOptions`](./reference/types/#type-completedatabaseoptions) · [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`CalendarDayDomain`](./reference/types/#type-calendardaydomain).
 
 ### `CompletePolarAxisOptions` {#type-completepolaraxisoptions}
 
@@ -33881,16 +33905,18 @@ export type DatasetCompleteTransform = {
   readonly fill: Readonly<Record<string, DatasetScalar>>;
   readonly members?: string;
 } & (
-  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never }
+  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never; readonly calendar?: never }
   | {
       readonly sequence: { readonly start: number; readonly end: number; readonly step: number };
       readonly values?: never;
+      readonly calendar?: never;
     }
-  | { readonly values?: never; readonly sequence?: never }
+  | { readonly calendar: CalendarDayDomain; readonly values?: never; readonly sequence?: never }
+  | { readonly values?: never; readonly sequence?: never; readonly calendar?: never }
 );
 ```
 
-Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar).
+Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`CalendarDayDomain`](./reference/types/#type-calendardaydomain).
 
 ### `DatasetComputedTransform` {#type-datasetcomputedtransform}
 
@@ -42342,12 +42368,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/1059ba42282d5d2b95782f66a054448b844e69e8/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/1059ba42282d5d2b95782f66a054448b844e69e8/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -42886,7 +42912,7 @@ keeps group calculations independent.
 
 [Family overview](./api/data/source-and-derived/) · [Exact action lookup](./reference/actions/)
 
-## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
+## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
 
 Materialize missing keys inside each observed group without silently turning
 absence into zero:
@@ -42905,7 +42931,7 @@ const completed = program.createCompleteData({
 });
 ```
 
-`values` and `sequence` are mutually exclusive. If both are omitted, the action
+`values`, `sequence`, and `calendar` are mutually exclusive. If all are omitted, the action
 uses the key values observed anywhere in the source, preserving typed identity
 and first appearance. A numeric sequence uses finite `start`, `end`, and
 positive `step`. Only observed group tuples are completed; the action does not
@@ -42918,6 +42944,73 @@ the group and key values, then `fill` values or `null` for the other source fiel
 When `members` is present, original rows contain their source index and synthetic
 rows contain `[]`. Output follows group first appearance and key-domain order and
 is capped at 10,000 rows, including repeated observations, before allocation.
+
+### Complete a calendar day range
+
+Use `calendar: { unit: "day", start, end, timeZone }` for a contiguous range of
+civil dates. Both endpoints are included. `start` and `end` are strict Gregorian
+`YYYY-MM-DD` strings, and `timeZone` is required: use `"UTC"` or an IANA name.
+For example, `2024-01-01` through `2024-12-31` contains 366 days.
+
+First bucket timestamps in the same zone and explicitly aggregate repeated
+observations. This complete ES module preserves a missing day as `null` and an
+observed zero as `0`:
+
+> **Executable complete.** Standalone ES module with ggaction installed; the sample declares all input events.
+
+```javascript
+import { chart } from "ggaction";
+
+const dayRange = {
+  unit: "day", start: "2024-11-02", end: "2024-11-04",
+  timeZone: "America/New_York"
+};
+const daily = chart()
+  .createData({ id: "events", values: [
+    { at: "2024-11-03T05:30:00Z", amount: 2 },
+    { at: "2024-11-03T06:30:00Z", amount: 3 },
+    { at: "2024-11-04T12:00:00Z", amount: 0 }
+  ] })
+  .createTimeUnitData({
+    id: "buckets", field: "at", unit: "day", as: "day",
+    timeZone: dayRange.timeZone
+  })
+  .createSummaryData({
+    id: "totals", groupBy: "day",
+    aggregates: [{ op: "sum", field: "amount", as: "total" }]
+  })
+  .createCompleteData({
+    id: "days", key: "day", calendar: dayRange,
+    fill: { total: null }, members: "sourceRows"
+  });
+
+const dailyPlot = daily.createCanvas()
+  .createPointMark({ data: "days", missing: "skip" })
+  .encodeX({ field: "day", fieldType: "temporal" })
+  .encodeY({ field: "total" });
+```
+
+The two repeated clock-hour events sum to `5` on November 3. Day starts are
+stored as epoch milliseconds; neighboring starts can be 23 or 25 hours apart.
+A midnight gap uses the first valid instant of that day. A civil date removed
+by a zone transition is an error. Results do not depend on the process time zone.
+
+Source keys must exactly match the generated numeric day starts. Completion
+does not parse strings, floor midday timestamps, or convert keys from another
+zone. It keeps repeated rows unless you aggregate them first. Synthetic rows
+have no contributing input rows. An empty ungrouped source creates the requested
+days; an empty grouped source creates no groups. Declare the key and group
+fields in the source schema when creating an empty source.
+
+The domain and total output each have a 10,000-item limit. Calendar completion
+also preflights a 10,000,000-unit work budget covering source cells, zone boundary
+resolution, group expansion, output cells, and row provenance. A wide source or
+many groups can reach this limit before the row limit.
+
+`editCompleteData({ target: "days", calendar: { ...dayRange, end: "2024-11-05" } })`
+replaces the whole calendar policy. Supplying `values` or `sequence` switches
+domain mode; omitting all three preserves the current policy. Source revisions
+recompute the pipeline and reject newly observed dates outside the range.
 
 ## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
 
@@ -45021,7 +45114,7 @@ or weight policy.
 | [Fold](./api/data/summaries-and-shaping/) | Ordered fields of one primitive type | Source row × selected field | Missing and mixed-type cells reject; original fields remain. |
 | [Computed](./api/data/expressions-and-normalization/) | Serializable expression over each row | Same rows with a new scalar field | A present undefined cell becomes null; an absent field name rejects. Branches are structurally checked even when short-circuited. |
 | [Normalize](./api/data/expressions-and-normalization/) | Per-group calculations; baseline methods need stable ordering or an explicit value | Same rows in source order | Finite numeric input; zero denominator rejects unless an explicit null/zero policy applies. Share rejects negative input. |
-| [Complete](./api/data/missing-data/) | At most one row per observed group/key; explicit or observed key domain | Observed group × key domain | Adds synthetic rows with null/fill cells; no Cartesian expansion of unrelated grouping values. Empty grouped input creates no groups. |
+| [Complete](./api/data/missing-data/) | Preserves repeated observations; explicit values, numeric sequence, civil-day calendar, or observed key domain | Observed group × key domain, retaining duplicates | Adds synthetic rows with null/fill cells; no Cartesian expansion of unrelated grouping values. Empty grouped input creates no groups. |
 | [Impute](./api/data/missing-data/) | Existing rows, groups, and method-specific stable order | Same rows in source order | Fills null/undefined only. Linear uses numeric/time distance. Edges and max-gap are explicit policies; NaN/infinity reject. |
 | [Stack](./api/data/summaries-and-shaping/) | Unique category/group pairs | Same rows plus endpoints and share | No missing-cell synthesis. Stack/fill/center require nonnegative values; diverging separates signs; zero has zero share. |
 | [Window](./api/data/window/) | Explicit sort/partition decisions for ordered operations | Same rows in source order | Stable ordering governs windows; frame and per-operation rules determine edges. No rows are synthesized. |
@@ -45184,9 +45277,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:84dcb9c9eaecdfbf4d03be1c42ae30064283c3411b70ab82cfbb4e151935b2a8` |
+| Contract fingerprint | `sha256:b15ddfa6ac0a004b1f95e6e96483019398667ead1564bc9b62743058c3b33319` |
 | Example and dataset source | `b8f9668133b278974c9cfe7324402a18282c9f4b` |
-| Runtime source commit | `1059ba42282d5d2b95782f66a054448b844e69e8` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 300 |
 | Declared actions in that release | 234 |

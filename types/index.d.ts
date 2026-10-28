@@ -101,6 +101,7 @@ export type {
   ComputedDataOptions,
   ComputedExpression,
   CompleteDataOptions,
+  CalendarDayDomain,
   ImputedDataOptions,
   NormalizedDataOptions,
   NormalizeBaseline,

@@ -2091,3 +2091,10 @@ chart().editRegression({ method: "loess", degree: 2 });
 chart().createRegression({ method: "loess", degree: 3 });
 // @ts-expect-error local quadratic fits do not produce intervals
 chart().createRegressionData({ id: "fit", x: "x", y: "y", method: "loess", degree: 2, interval: false });
+
+const calendarDomain: import("ggaction").CalendarDayDomain = {unit:"day",start:"2024-01-01",end:"2024-12-31",timeZone:"UTC"};
+chart().createCompleteData({id:"days",key:"day",calendar:calendarDomain}).editCompleteData({target:"days",calendar:calendarDomain});
+// @ts-expect-error calendar and sequence are mutually exclusive
+chart().createCompleteData({id:"days",key:"day",calendar:calendarDomain,sequence:{start:0,end:1,step:1}});
+// @ts-expect-error named time zone is required
+chart().editCompleteData({target:"days",calendar:{unit:"day",start:"2024-01-01",end:"2024-12-31"}});

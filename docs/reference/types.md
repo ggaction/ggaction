@@ -1555,6 +1555,24 @@ type CPathGuides = Omit<CartesianPathGuideOptions, "axes"> & {
 
 Related types: [`CartesianPathGuideOptions`](#type-cartesianpathguideoptions) · [`CAxes`](#type-caxes).
 
+### `CalendarDayDomain` {#type-calendardaydomain}
+
+<details markdown="1">
+<summary>Expand CalendarDayDomain</summary>
+
+```typescript
+export interface CalendarDayDomain {
+  readonly unit: "day";
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly start: string;
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly end: string;
+  readonly timeZone: string;
+}
+```
+
+</details>
+
 ### `CanvasOptions` {#type-canvasoptions}
 
 <details markdown="1">
@@ -2203,18 +2221,20 @@ Related types: [`DatasetScalar`](#type-datasetscalar).
 
 ```typescript
 export type CompleteDataOptions = CompleteDataBaseOptions & (
-  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never }
+  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never; calendar?: never }
   | {
       values?: never;
       sequence: { start: number; end: number; step: number };
+      calendar?: never;
     }
-  | { values?: never; sequence?: never }
+  | { calendar: CalendarDayDomain; values?: never; sequence?: never }
+  | { values?: never; sequence?: never; calendar?: never }
 );
 ```
 
 </details>
 
-Related types: [`CompleteDataBaseOptions`](#type-completedatabaseoptions) · [`DatasetScalar`](#type-datasetscalar).
+Related types: [`CompleteDataBaseOptions`](#type-completedatabaseoptions) · [`DatasetScalar`](#type-datasetscalar) · [`CalendarDayDomain`](#type-calendardaydomain).
 
 ### `CompletePolarAxisOptions` {#type-completepolaraxisoptions}
 
@@ -3795,18 +3815,20 @@ export type DatasetCompleteTransform = {
   readonly fill: Readonly<Record<string, DatasetScalar>>;
   readonly members?: string;
 } & (
-  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never }
+  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never; readonly calendar?: never }
   | {
       readonly sequence: { readonly start: number; readonly end: number; readonly step: number };
       readonly values?: never;
+      readonly calendar?: never;
     }
-  | { readonly values?: never; readonly sequence?: never }
+  | { readonly calendar: CalendarDayDomain; readonly values?: never; readonly sequence?: never }
+  | { readonly values?: never; readonly sequence?: never; readonly calendar?: never }
 );
 ```
 
 </details>
 
-Related types: [`DatasetScalar`](#type-datasetscalar).
+Related types: [`DatasetScalar`](#type-datasetscalar) · [`CalendarDayDomain`](#type-calendardaydomain).
 
 ### `DatasetComputedTransform` {#type-datasetcomputedtransform}
 

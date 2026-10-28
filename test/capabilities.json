@@ -63,6 +63,24 @@
         "path": "unit/support/visual-variants.test.js"
       }
     ],
+    "calendar": [
+      {
+        "type": "file",
+        "path": "unit/grammar/calendar-days.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/calendar-completion.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/calendar-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/calendar-types.test.js"
+      }
+    ],
     "center-stack": [
       {
         "type": "prefix",

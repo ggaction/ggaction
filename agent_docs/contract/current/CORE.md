@@ -840,14 +840,19 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 
 ## `createCompleteData`
 
-- Signature: `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })`
+- Signature: `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })`
 - Lifecycle: Full-only immutable create action이다. 새 dataset ID를 만들며 source 또는 기존 consumer를 수정하지 않는다.
   `source` 생략은 현재 dataset을 안전하게 하나로 추론할 수 있을 때만 허용한다.
 - `key`: 모든 source row에 있는 non-empty field다. `groupBy`와 겹치지 않아야 한다. `groupBy`는
   field 하나 또는 field 배열이고 기본은 `[]`다.
-- Domain: `values`와 `sequence`는 배타다. `values`는 하나의 scalar type으로 구성된 non-empty unique
+- Domain: `values`, `sequence`, `calendar`는 배타다. `values`는 하나의 scalar type으로 구성된 non-empty unique
   array다. `sequence`는 finite `start <= end`, positive `step`을 받고 `start + i * step <= end`를 생성한다.
-  둘 다 없으면 source 전체 key의 typed first-appearance domain을 사용한다.
+  셋 다 없으면 source 전체 key의 typed first-appearance domain을 사용한다.
+- Calendar: `{ unit: "day", start, end, timeZone }`는 strict Gregorian `YYYY-MM-DD` 양 끝을 포함한다.
+  명시 `UTC` 또는 IANA zone의 civil-day 시작 epoch milliseconds를 생성한다. UTC/IANA의 gap은 기존 time-unit
+  boundary policy를 쓰며 civil date 자체가 사라진 경우 오류다. source key는 생성된 number와 정확히 같아야 한다.
+  문자열, null, midday, 다른 zone의 day key를 자동 변환하지 않는다. `createTimeUnitData`와 명시 `createSummaryData`
+  뒤에 적용한다. 저장 transform은 authored calendar object만 소유하고 expanded values를 중복 저장하지 않는다.
 - Group semantics: 실제 관측된 group tuple만 사용하고 group field별 Cartesian product를 만들지 않는다.
   동일 group×key의 반복 관측은 입력 순서와 원본 cell을 각각 보존하며 자동 집계하지 않는다.
   해당 pair가 하나도 없을 때만 합성 row 하나를 만든다. explicit domain 밖의 관측 key는 오류다.
@@ -858,6 +863,10 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
   기존 source field와 충돌하면 오류다.
 - Bounds and replay: 반복 관측과 합성 row를 모두 포함해 allocation 전에 output 10,000-row 한도를 검사한다. `complete`는 statistical facet
   topology라 각 child의 local source rows에서 domain/group completion을 다시 계산한다.
+- Calendar bounds: domain도 최대10,000일이며 input/field validation, fixed timezone boundary probes, group×domain/output cells,
+  lineage 재계산을 포함한 보수적 work estimate가10,000,000을 넘으면 domain/output 확장 전에 오류다.
+  빈 ungrouped source는 domain의 합성 row를 만들고 빈 grouped source는 `[]`다. 빈 source에는 key/group을 선언한 schema가 필요하다.
+  Calendar output schema는 numeric key와 fill/members fields를 빈 grouped 결과에도 보존한다. 합성 row는 input row refs가 없다.
 - Errors: invalid/duplicate ID, unknown/ambiguous source, unknown option, missing field, mixed/non-scalar key,
   duplicate domain, invalid sequence/fill/members, field collision와 output budget 초과를 첫 state change
   전에 거부한다.
@@ -865,9 +874,11 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 ### Formal values — `createCompleteData`
 
 - Implemented: `createCompleteData(options: CompleteDataOptions): ChartProgram` (Full only).
-- Implemented domain modes: observed typed domain, explicit typed values, finite numeric sequence.
+- Implemented domain modes: observed typed domain, explicit typed values, finite numeric sequence, explicit zoned civil-day calendar.
 - Proposed (NOT IMPLEMENTED): multi-key completion, group Cartesian expansion, automatic duplicate aggregation,
-  calendar-month sequence와 source replacement/edit revision.
+  calendar-month sequence와 source replacement.
+- Evidence: `test/unit/actions/data/calendar-completion.test.js`, `test/unit/actions/data/calendar-lifecycle.test.js`,
+  `test/unit/grammar/calendar-days.test.js`, `test/contracts/calendar-types.test.js`.
 
 ### Value coverage — `createCompleteData`
 
@@ -1476,19 +1487,21 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 
 ## `editCompleteData`
 
-- Signature: `editCompleteData({ target, key?, groupBy?, values? | sequence?, fill?, members?, dependents? })`.
-- `values` 또는 `sequence`를 제공하면 이전 domain mode를 제거한다. `values`는 materialized rows가 아니라 Complete의
+- Signature: `editCompleteData({ target, key?, groupBy?, values? | sequence? | calendar?, fill?, members?, dependents? })`.
+- `values`, `sequence` 또는 `calendar`를 제공하면 이전 domain mode를 제거한다. `values`는 materialized rows가 아니라 Complete의
   requested typed domain이다. `fill`은 whole-map replacement다.
+- Calendar도 whole-object replacement다. 생략은 현재 정책을 보존하며 모든 required fields를 제공한 새 정책만 받는다.
+  source revision은 기존 TimeUnit/Summary/Complete dependency를 재계산하고 새 source의 domain 밖 key를 원자적으로 거부한다.
 
 ### Formal values — `editCompleteData`
 
 - Implemented: `editCompleteData(options: EditCompleteDataOptions): ChartProgram`.
-- Proposed (NOT IMPLEMENTED): source 교체와 values/sequence 병합.
+- Proposed (NOT IMPLEMENTED): source 교체와 domain mode 병합.
 
 ### Value coverage — `editCompleteData`
 
-- ✅ Covered: observed/values/sequence domain 전환, Complete values 허용, fill/members/grouping validation.
-- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+- ✅ Covered: observed/values/sequence/calendar domain 전환, Complete values 허용, fill/members/grouping validation, calendar restore/source revision/facet/selection.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`, `test/unit/actions/data/calendar-lifecycle.test.js`.
 
 ## `editImputedData`
 

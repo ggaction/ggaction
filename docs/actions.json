@@ -2340,6 +2340,11 @@
           "type": "{ start: number; end: number; step: number; } | undefined"
         },
         {
+          "name": "calendar",
+          "required": false,
+          "type": "CalendarDayDomain | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "ActionTargetList | ScopedActionTarget"
@@ -5591,6 +5596,11 @@
           "name": "sequence",
           "required": false,
           "type": "{ start: number; end: number; step: number; } | undefined"
+        },
+        {
+          "name": "calendar",
+          "required": false,
+          "type": "CalendarDayDomain | undefined"
         }
       ],
       "callPatterns": [

@@ -162,7 +162,7 @@ function normalizeCompleteEdit(transform, patch) {
   const base = replaceExclusive(
     requestedOptions(transform),
     patch,
-    ["values", "sequence"]
+    ["values", "sequence", "calendar"]
   );
   return normalizeCompleteTransform({ ...base, ...patch });
 }

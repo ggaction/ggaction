@@ -371,6 +371,17 @@ export function deriveTransformSchema(inputSchema, transform, values, { sourceId
     push(generatedField(transform.as.probability, "number", definition, "probability", [transform.field]));
   } else if (transform.type === "computed") {
     push(generatedField(transform.as, "unknown", definition, "value", expressionFields(transform.expression)));
+  } else if (transform.type === "complete" && transform.calendar !== undefined) {
+    push({ ...inheritedField(input, transform.key), name: transform.key, storageType: "number" });
+    for (const [name, value] of Object.entries(transform.fill)) {
+      if (!fields.some(field => field.name === name)) {
+        const field = generatedField(name, value === null ? "unknown" : typeof value, definition, `fill:${name}`);
+        field.nullable = value === null;
+        field.optional = true;
+        push(field);
+      }
+    }
+    if (transform.members !== undefined) push(generatedField(transform.members, "array", definition, "members"));
   } else if (transform.type === "timeUnit") {
     push(generatedField(transform.as, "number", definition, "value", [transform.field]));
   } else if (transform.type === "window") {

@@ -36,6 +36,11 @@ export function normalizeCalendarDayDomain(options) {
   return cloneAndFreeze({ unit: "day", start: options.start, end: options.end, timeZone: options.timeZone });
 }
 
+export function calendarDayDomainMetrics(options) {
+  const { count } = prepareCalendarDayDomain(options);
+  return Object.freeze({ count, work: count * (CALENDAR_BOUNDARY_WORK + 1) });
+}
+
 export function deriveCalendarDayDomain(options) {
   const { start, count } = prepareCalendarDayDomain(options);
   const cursor = new Date(start), values = [];

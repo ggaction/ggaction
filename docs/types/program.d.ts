@@ -1027,6 +1027,14 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
     } & DatasetNormalizeBaselineTransform)
   | ({ readonly method: "change" } & DatasetNormalizeBaselineTransform)
 );
+export interface CalendarDayDomain {
+  readonly unit: "day";
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly start: string;
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly end: string;
+  readonly timeZone: string;
+}
 export type DatasetCompleteTransform = {
   readonly type: "complete";
   readonly key: string;
@@ -1034,12 +1042,14 @@ export type DatasetCompleteTransform = {
   readonly fill: Readonly<Record<string, DatasetScalar>>;
   readonly members?: string;
 } & (
-  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never }
+  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never; readonly calendar?: never }
   | {
       readonly sequence: { readonly start: number; readonly end: number; readonly step: number };
       readonly values?: never;
+      readonly calendar?: never;
     }
-  | { readonly values?: never; readonly sequence?: never }
+  | { readonly calendar: CalendarDayDomain; readonly values?: never; readonly sequence?: never }
+  | { readonly values?: never; readonly sequence?: never; readonly calendar?: never }
 );
 type DatasetImputedBaseTransform = {
   readonly type: "impute";
@@ -2851,12 +2861,14 @@ type CompleteDataBaseOptions = {
   members?: string;
 };
 export type CompleteDataOptions = CompleteDataBaseOptions & (
-  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never }
+  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never; calendar?: never }
   | {
       values?: never;
       sequence: { start: number; end: number; step: number };
+      calendar?: never;
     }
-  | { values?: never; sequence?: never }
+  | { calendar: CalendarDayDomain; values?: never; sequence?: never }
+  | { values?: never; sequence?: never; calendar?: never }
 );
 type ImputedDataBaseOptions = {
   id: string;

@@ -1,8 +1,10 @@
 export type CompleteDataOptions = CompleteDataBaseOptions & (
-  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never }
+  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never; calendar?: never }
   | {
       values?: never;
       sequence: { start: number; end: number; step: number };
+      calendar?: never;
     }
-  | { values?: never; sequence?: never }
+  | { calendar: CalendarDayDomain; values?: never; sequence?: never }
+  | { values?: never; sequence?: never; calendar?: never }
 );

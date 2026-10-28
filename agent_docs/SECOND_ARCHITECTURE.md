@@ -94,7 +94,7 @@ Pivot 준비 이후 private math owner2개를 더한 당시 Node22.23.1/npm10.9.
 설치 Full/Basic/SVG gzip509,588/285,851/8,111과 search857,752bytes는 기존 한도 안이다.
 이 값도 main의 다른 승인 변경을 통합한 뒤 누적 실측을 대체하지 않는다.
 
-## Private civil-day domain 준비
+## Civil-day completion integration
 
 `grammar/calendarDay.js`는 명시 day/start/end/timeZone을 받아 inclusive civil-day domain을 만드는 pure owner다.
 Strict lexical guard 뒤 기존 `parseTimeValue`로 Gregorian 날짜를 검증하고 `setUTCDate`로 civil date를 증가시킨다.
@@ -102,15 +102,25 @@ Strict lexical guard 뒤 기존 `parseTimeValue`로 Gregorian 날짜를 검증�
 더하지 않으며 존재하지 않는 civil date는 오류다. 기존 resolver의 probe 범위와 간격에 이름을 붙여 최대
 roundtrip 작업량50을 같은 owner에서 공유한다. General time-unit의 연산과 결과는 바꾸지 않았다.
 새 domain은 최대10,000일이며 Intl 작업과 output allocation 전에 공통 generated/work 한도를 확인한다.
-아직 complete transform, action, declaration, persistence 또는 renderer에 연결하지 않았다.
-State/materialization 경계와 공개 지원은 유지하며 재현 및 남은 통합은
-[private checkpoint](impl/roadmap9/phase3/calendar/CALENDAR_DAY_KERNEL.md)에 기록한다.
+Full의 기존 complete transform이 이 owner의 domain과 count/work estimate를 소비한다.
+Values/sequence/calendar의 authored domain은 기존 transform 한 곳에 저장하며 expanded domain은 저장하지 않는다.
+기존 explicit data materializer와 row lineage가 각각 pure completion을 호출하므로 calendar work preflight는
+두 계산과 입력 검증·group/output cells의 누적 비용을 예약한다. Generic primitive에 새 계산을 넣지 않는다.
+Schema owner는 빈 grouped 결과에도 numeric key와 fill/members fields를 유지한다. Renderer와 resource/state 경계는 그대로다.
+정확한 공개 계약은 [Current CORE](contract/current/CORE.md#createcompletedata), 초기 pure 검증은
+[private checkpoint](impl/roadmap9/phase3/calendar/CALENDAR_DAY_KERNEL.md), 공개 lifecycle과 남은 범위는
+[public checkpoint](impl/roadmap9/phase3/calendar/CALENDAR_PUBLIC.md)가 소유한다.
 
 새 pure module 한 개를 더한 Node22.23.1/npm10.9.8 공식 staging 실측은682entries,
 1,013,735packed, 4,726,245unpacked bytes다. 이전681entries/1,013,000/4,723,000을 초과해
 최소682entries/1,014,000/4,727,000으로만 변경했다. 이 수치는 독립 branch의 누적 측정이며
 main integration의 package 증거를 대체하지 않는다. 설치 Full/Basic gzip507,597/285,702bytes는
 기존508,000/286,000 한도 안이다.
+
+공개 calendar 연결의 Node22.23.1/npm10.9.8 누적 실측은683entries/1,016,672packed/4,741,042unpacked bytes다.
+기존 entry cap683은 유지하고 byte caps만1,017,000/4,742,000으로 올렸다. Full/Basic gzip510,544/287,705는
+최소1,000byte 경계511,000/288,000으로 갱신했다. Basic 증가는 shared lineage import graph 비용이며
+Basic의 direct/generic complete 미지원 경계를 바꾸지 않는다. Search858,646bytes는859,000 cap으로 갱신했다.
 
 ## 범례 항목 이동 소유권
 

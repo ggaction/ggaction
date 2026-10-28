@@ -1350,6 +1350,21 @@ type CPathGuides = Omit<CartesianPathGuideOptions, "axes"> & {
 
 Related types: [`CartesianPathGuideOptions`](../../../reference/types/#type-cartesianpathguideoptions) · [`CAxes`](../../../reference/types/#type-caxes).
 
+### `CalendarDayDomain` {#type-calendardaydomain}
+
+ Expand CalendarDayDomain
+
+```typescript
+export interface CalendarDayDomain {
+  readonly unit: "day";
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly start: string;
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly end: string;
+  readonly timeZone: string;
+}
+```
+
 ### `CanvasOptions` {#type-canvasoptions}
 
  Expand CanvasOptions
@@ -1892,16 +1907,18 @@ Related types: [`DatasetScalar`](../../../reference/types/#type-datasetscalar).
 
 ```typescript
 export type CompleteDataOptions = CompleteDataBaseOptions & (
-  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never }
+  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never; calendar?: never }
   | {
       values?: never;
       sequence: { start: number; end: number; step: number };
+      calendar?: never;
     }
-  | { values?: never; sequence?: never }
+  | { calendar: CalendarDayDomain; values?: never; sequence?: never }
+  | { values?: never; sequence?: never; calendar?: never }
 );
 ```
 
-Related types: [`CompleteDataBaseOptions`](../../../reference/types/#type-completedatabaseoptions) · [`DatasetScalar`](../../../reference/types/#type-datasetscalar).
+Related types: [`CompleteDataBaseOptions`](../../../reference/types/#type-completedatabaseoptions) · [`DatasetScalar`](../../../reference/types/#type-datasetscalar) · [`CalendarDayDomain`](../../../reference/types/#type-calendardaydomain).
 
 ### `CompletePolarAxisOptions` {#type-completepolaraxisoptions}
 
@@ -3253,16 +3270,18 @@ export type DatasetCompleteTransform = {
   readonly fill: Readonly<Record<string, DatasetScalar>>;
   readonly members?: string;
 } & (
-  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never }
+  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never; readonly calendar?: never }
   | {
       readonly sequence: { readonly start: number; readonly end: number; readonly step: number };
       readonly values?: never;
+      readonly calendar?: never;
     }
-  | { readonly values?: never; readonly sequence?: never }
+  | { readonly calendar: CalendarDayDomain; readonly values?: never; readonly sequence?: never }
+  | { readonly values?: never; readonly sequence?: never; readonly calendar?: never }
 );
 ```
 
-Related types: [`DatasetScalar`](../../../reference/types/#type-datasetscalar).
+Related types: [`DatasetScalar`](../../../reference/types/#type-datasetscalar) · [`CalendarDayDomain`](../../../reference/types/#type-calendardaydomain).
 
 ### `DatasetComputedTransform` {#type-datasetcomputedtransform}
 

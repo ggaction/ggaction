@@ -400,6 +400,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `members` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `sequence` | Optional / branch-dependent | `{ start: number; end: number; step: number; } \| undefined` |
+| `calendar` | Optional / branch-dependent | `CalendarDayDomain \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
@@ -407,11 +408,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })
+createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })
 ```
 
 Complete one typed key domain independently inside every observed group, with
-explicit fill and source-membership provenance for synthesized rows.
+explicit fill and source-membership provenance for synthesized rows. A civil-day
+`calendar` uses inclusive strict dates and an explicit UTC or IANA zone; it is
+exclusive with `values` and `sequence`.
 [Source and Derived Data](../../api/data/source-and-derived.md#createcompletedata-id-source-key-groupby-values-sequence-fill-members)
 
 
@@ -920,6 +923,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `members` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `sequence` | Optional / branch-dependent | `{ start: number; end: number; step: number; } \| undefined` |
+| `calendar` | Optional / branch-dependent | `CalendarDayDomain \| undefined` |
 
 </details>
 
@@ -1978,7 +1982,7 @@ editStackData({ target, category?, group?, value?, mode?, as?, dependents? })
 editIntervalData({ target, field?, groupBy?, center?, extent?, method?, level?, as?, dependents? })
 editECDFData({ target, field?, groupBy?, weight?, missing?, as?, dependents? })
 editNormalizedData({ target, field?, as?, groupBy?, method?, variance?, zeroDenominator?, baseline?, sortBy?, dependents? })
-editCompleteData({ target, key?, groupBy?, values? | sequence?, fill?, members?, dependents? })
+editCompleteData({ target, key?, groupBy?, values? | sequence? | calendar?, fill?, members?, dependents? })
 editImputedData({ target, fields?, groupBy?, sortBy?, method?, value?, edges?, maxGap?, dependents? })
 ```
 

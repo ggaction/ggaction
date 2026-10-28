@@ -527,7 +527,7 @@ export const editNormalizedData = /* @__PURE__ */ focusedEditor(
 );
 export const editCompleteData = /* @__PURE__ */ focusedEditor(
   "editCompleteData", "complete", [
-    "key", "groupBy", "values", "sequence", "fill", "members"
+    "key", "groupBy", "values", "sequence", "calendar", "fill", "members"
   ]
 );
 export const editPivotData = /* @__PURE__ */ focusedEditor(

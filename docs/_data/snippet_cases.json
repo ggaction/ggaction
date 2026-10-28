@@ -215,5 +215,15 @@
     "result": "quadraticFit",
     "prerequisites": "Standalone ES module with ggaction installed; all observations are declared in the sample.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "calendar-day-completion",
+    "file": "api/data/missing-data.md",
+    "contains": "const dayRange = {",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "dailyPlot",
+    "prerequisites": "Standalone ES module with ggaction installed; the sample declares all input events.",
+    "rendering": "authoring-only"
   }
 ]
