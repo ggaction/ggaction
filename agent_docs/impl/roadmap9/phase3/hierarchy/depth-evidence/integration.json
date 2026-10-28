@@ -1,0 +1,32 @@
+{
+  "sourceCommit": "3f7fa8619",
+  "status": "passed",
+  "focused": 39,
+  "contracts": 17,
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 792,
+    "packedBytes": 1174980,
+    "unpackedBytes": 5396933
+  },
+  "evidence": [
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/hierarchy-depth-integration.log.gz",
+      "sha256": "a82ede2682580008d259ec28a93c8c39455fd3be380def7217231180917b40d5"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/hierarchy-depth-contracts.log.gz",
+      "sha256": "c4c384efe9ff78cec77a00d6b5266a1ee5afcf4354b242cd13fbefd928d4f9e0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/hierarchy-depth-bundle20.log.gz",
+      "sha256": "834b9f3906b19c6dfd520a46e5907e86b043b42bdca782b196c8aaae114f2738"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/depth-evidence/hierarchy-depth-package20.json.gz",
+      "sha256": "a3fa3811c9db10c52b8c0905418b3a071ee2457a5020438e5f1fff20816c0750"
+    }
+  ]
+}
