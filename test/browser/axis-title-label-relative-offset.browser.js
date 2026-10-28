@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 import { startStaticServer } from "../support/static-server.js";
 import { closeBrowserWithEvidence, saveBrowserContextEvidence } from "../support/browser.js";
+import { createVariantMetadata } from "../support/artifact-paths.js";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 let server, browser, temporary;
@@ -63,11 +64,16 @@ test("four independent title widths exactly match the numeric public reference i
     assert(result.records[1].axes.every(axis => axis.offset.from === "labels" && axis.offset.gap === 3.421875));
     const out = path.join(root, ".artifacts/test/png/charts/guides/axis-title-label-relative-offset/four-independent-label-widths");
     await mkdir(out, { recursive: true });
-    for (const [i, name] of ["primitive", "public"].entries()) {
+    for (const [i, name] of ["primitive", "user-facing"].entries()) {
       await writeFile(path.join(out, name + ".png"), Buffer.from(result.records[i].png, "base64"));
     }
-    await writeFile(path.join(out, "variant.json"), JSON.stringify({ capability: "guides", chart: "axis-title-label-relative-offset",
-      variant: "four-independent-label-widths", displayTitle: "Axis titles follow independent label widths",
+    const source = await readFile(path.join(root, "test/support/axis-title-label-relative.js"), "utf8");
+    await writeFile(path.join(out, "variant.json"), JSON.stringify(createVariantMetadata({
+      scope: "charts", capability: "guides", chart: "axis-title-label-relative-offset",
+      variant: "four-independent-label-widths", kind: "user-facing", title: "Axis titles follow independent label widths",
+      userFacingCallChain: source.slice(source.indexOf("export function buildRelativeTitleFacet"))
+    }), null, 2) + "\n");
+    await writeFile(path.join(out, "evidence.json"), JSON.stringify({
       publicTargetSource: "test/support/axis-title-label-relative.js#buildRelativeTitleFacet", width: 1016, height: 302,
       exactDecodedRGBA: true, differingChannels: result.differences, plotInk: result.plotInk,
       axes: result.records[1].axes, imagesInspected: false }, null, 2) + "\n");
