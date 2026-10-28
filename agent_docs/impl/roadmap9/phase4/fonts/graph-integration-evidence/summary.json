@@ -1,0 +1,81 @@
+{
+  "sourceCommit": "e412fe55e9aa5c0a6be4858c58019368ff1c260f",
+  "parents": [
+    "21f5c80ebeb8cc3624989dfe6522900662870708",
+    "af05c7dd8b14eff41217ddd3d88bad1a11bf0aa4"
+  ],
+  "artifactSha256": "0ab70b40e7ea3e16ab7543c6f33c1d6992e6662b096d857d19673b3e3b49ae0c",
+  "artifact": {
+    "entries": 821,
+    "packedBytesNode22": 1205559,
+    "packedBytesNode20": 1208302,
+    "unpackedBytes": 5551125
+  },
+  "checks": {
+    "mergeFocused": 68,
+    "fontAndResourceLifecycle": 53,
+    "changedSourceCoverageTests": 42,
+    "sourceTypesDiscovery": 41,
+    "packageAndActionHierarchy": 16,
+    "themeTypographyRegressions": 51,
+    "installedNode22Cases": 215,
+    "installedTutorials": 76,
+    "otherInstalledQualificationGroups": 6,
+    "firstDocs": {
+      "passed": 130,
+      "failed": 1,
+      "reason": "new example absent from precommit branch ref"
+    },
+    "pinnedDocumentation": 21
+  },
+  "coverageScope": "Three changed materialization owners only; original whole font/graph evidence retained without a synthetic aggregate.",
+  "realistic": "Parent owns the final common three-file run after Flow/Partition integration; this checkpoint derives the exact union inventory only.",
+  "inventory": {
+    "publicActions": 317,
+    "topLevelOptionPaths": 2940,
+    "nestedOptionPaths": 25059,
+    "optionPaths": 27999,
+    "requiredOptionPaths": 18851,
+    "excludedOptionPaths": 9148,
+    "topLevelCategoricalPaths": 1001,
+    "topLevelLiteralValues": 3881,
+    "literalFamilies": 233,
+    "pathLiteralRequirements": 13994,
+    "familyLiteralRequirements": 525,
+    "pathDiversityRequirements": 488,
+    "ledger": 33693
+  },
+  "files": {
+    "bundles20.json.gz": "a3400e6f7f9fff5fd167b326c9ec6b9ced4fba22124fa7ea668d096630bddf17",
+    "changed-floors.json.gz": "40ef47074158bc9f637801724b3631c36ecb56cea742c91ac2a2434f029d6564",
+    "contracts-focused.log.gz": "4476b1c680038bbd9f6a474eb23df92c4f27b39d80c94a9bae48ef5af433f781",
+    "coverage-labels.log.gz": "be1de5ab1c01288f3152581eb19bd8eb1246dd05e98fa33445aa85110117dde6",
+    "docs-focused.log.gz": "1e3537cfb15f80634ea8625f414bbd9888a2f681d2f587a4de260543e8740554",
+    "docs-pinned.log.gz": "dd5c405565a6e1208fab4a7f7e1c17d94672f4412c94c1076958bb0d6efcba91",
+    "focused-corrected.log.gz": "c0145e201fe4e365a96a0862e7af762f1aa6687db662d0fee2177058a9e01fc7",
+    "focused-labels-final.log.gz": "1ca3ef4d50d030abc2c1310b2b465ad7366bc60b56ff242e7da5850486d2c2cf",
+    "generate-corrected.log.gz": "5f5456e1ac5efa45f582210acdf7648288caa681993424bd834db88564e1afd0",
+    "generate-initial.log.gz": "9560687a4e68eb0e919a0b24f3dc382fff16830cd98ccdb31371b091551fc15c",
+    "generate-pinned.log.gz": "efd898d72734f5de3f96cc79bdc67d710664ceba41a235c86013db1159b8d86a",
+    "generate-union-complete.log.gz": "efd898d72734f5de3f96cc79bdc67d710664ceba41a235c86013db1159b8d86a",
+    "generate-union.log.gz": "3743d0b30d57afd7b630db1975834648f0f9023984fec9b4b222d7273432b789",
+    "installed22-final-node-cases.json.gz": "bde11bf3a5a3f3083214818656ed5750712923a52807e526e3de2eec1485c283",
+    "installed22-final.log.gz": "7f6615592c633a210faafc1b8b0e4383a834412ad090ed3cc5d4110f95c80cb5",
+    "installed22-first-node-cases.json.gz": "2e308803066c881a651fd35d7f78e73809f901e19cbc7486a535a3bad0a2717b",
+    "installed22-first-qualification.json.gz": "a842bd64b5f456bdd114d599b5b5b80a8e6ed27577b4dcf33c7ac272128e2d79",
+    "installed22-first-tutorials.json.gz": "d2dab0c1043e810ffd44ecd478f4ac411ce09a07ae05bde1cd2cd2f330ff3f4b",
+    "installed22.log.gz": "23bad53e1db930b56f6f66f37d4f0199a683ce5a27e35facf5da8834debf8623",
+    "inventory-full.json.gz": "d38d5639498fbd094f70ff93054a41803d40c16b85685763f40bca4bff120f9f",
+    "inventory.json.gz": "b62909813d37de0d4df3ca47280b6e2eab7d6c4501acd788fcae606c882726a5",
+    "measurement-first20.json.gz": "acf60ea66f7c5b9ed76388090fadb9e8b76dc25e2c905c27155dfffe7dd63639",
+    "measurement-first22.json.gz": "95e086ecdd8d5086765389b93517b7b6a3369c887b17a3ef3909b4f4cd1e77df",
+    "pack-first20.log.gz": "9ad489ce9c11e168b4c8953fd03b9b6acf2d491a1a481aa76dffe898074eab59",
+    "pack-first22.stderr.log.gz": "bafb2261952ffeb525b23b587d958252a0dc3fe391956d56c5a76a57b6c18407",
+    "package-contracts.log.gz": "1e6f72de96d9eaa6e62458680c16df33f2dff0bc9de85dfed7ec8f21d44a1ac1",
+    "package-final22.json.gz": "1b2fffaddba34eb0d8d20c63fb515120ac2b8e3cf16ad511f2079655b1b404cd",
+    "resource-labels-initial.log.gz": "167783c909741903d6ad92947ec02b10e2f3c318daa16c662a5c6b93dbd75a15",
+    "runtime-inputs.json.gz": "48e2d2a78db7dce348f599c8769f0ab42adc498c38cc3ba612c7b51108e10078",
+    "typography-theme-regressions.log.gz": "6231357cdc9a6dde5e5fea4a1cf7ab8f36b487d6cb6b0cb119ae3e2924fa1a54"
+  },
+  "runtimeDeltaAfterGeneration": []
+}

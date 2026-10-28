@@ -5,8 +5,9 @@
 - [x] Font 통합 `21f5c80eb`와 GraphPlot `af05c7dd8`의 runtime/type/Current/문서 합집합 보존
 - [x] Tree/treemap/graph label의 exact font 연결과 typography dependency closure 검증
 - [x] 새 layout 계산 없이 font 교체·제거·codec·renderer 소비 검증
-- [ ] Source commit 고정 및 canonical provenance 재생성
-- [ ] 고정 artifact의 최종 설치 증거와 remote checkpoint 기록
+- [x] Source `e412fe55e9aa5c0a6be4858c58019368ff1c260f` 고정
+- [x] Canonical provenance 재생성 및 owning21/21 검사
+- [x] 고정 artifact의 최종 설치 증거와 remote source checkpoint 기록
 
 기존 blanket 승인 `b758b912` 범위의 통합이다. 새 API나 저장 필드를 추가하지 않으며,
 STEP033–035 theme 작업은 이 checkpoint에 포함하지 않는다. Main 통합은 parent가 소유한다.
@@ -32,7 +33,7 @@ font 교체 뒤에도 resource-backed label을 갱신하지 못했다. 각 mater
 - Source/type/discovery/compact action card 41/41, package 및 action hierarchy 16/16.
 - 기존 theme/composition/scoped typography 회귀 51/51.
 - Public docs 최초 131개 중 130 통과. 유일 실패는 source commit 전 branch에 새 GraphPlot
-  example이 없어 exact source-link를 찾지 못한 것으로, commit 후 owning 검사로 다시 검증한다.
+  example이 없어 exact source-link를 찾지 못한 것으로, commit 후 canonical 재생성 및 owning21/21로 검증했다.
 - 같은 고정 tar Node22: 최종215/215 Node 사례,76/76 tutorials, 나머지6 qualification group 통과.
 - 공개 union inventory는317 actions /27,999 option paths / renderer 제외33,693 ledger entries다.
 - 전체 font와 GraphPlot source 검사는 각 원 checkpoint의 증거를 유지한다. 부분 검사를
@@ -51,3 +52,8 @@ Node20 Full/Basic/SVG gzip600,160/348,432/19,199 bytes에 맞춰601,000/349,000/
 `load`를 넣어 closed record 검증에서 거부되었다. Fixture만 고치고 같은 tar의 Node 사례를
 다시 실행하여215/215 통과했다. 첫 실행의 나머지6 qualification group과76 tutorial은 통과했으며 최초 오류와
 수정 후 증거를 분리한다. 생성 과정의 불완전 합집합 실패도 로그로 보존한다.
+
+[summary.json](graph-integration-evidence/summary.json)은 입력 hash·각 검증 범위·초기 실패를 연결한다.
+
+Postcommit 문서 생성 뒤815개 runtime/type/index 입력의 hash delta는 빈 배열이다. 고정 tar와
+source 검증은 유효하며 metadata-only closeout은 이미 검증한 runtime을 바꾸지 않는다.
