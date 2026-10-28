@@ -1,0 +1,93 @@
+{
+  "base": "d29d17622",
+  "scope": "theme collection identity preservation",
+  "sourceFiles": {
+    "src/actions/theme/reconcile.js": "a8ce45d88b526f43a67bc4361c595113ccec0176caac0b83a331d5c550472b04",
+    "test/unit/actions/theme-item-identity.test.js": "8f977740ad08f000c5337c4155760a75ecb666838009d24f8bd58e8bdc793459",
+    "test/capabilities.json": "987c944f385d34f343363cb7ad89c0f4a762b2d4188ee03f6037c1244d429254",
+    "agent_docs/contract/current/CORE.md": "70acdf93eaa578f313c6081c6e72764c7400a967236fc7c6e7fffe40f9948597"
+  },
+  "verification": {
+    "regression": {
+      "before": 0,
+      "after": 3,
+      "total": 3
+    },
+    "focused": {
+      "passed": 94,
+      "failed": 0
+    },
+    "contracts": {
+      "passed": 33,
+      "failed": 0
+    },
+    "docs": {
+      "passed": 172,
+      "failed": 0
+    },
+    "coverage": {
+      "file": "actions/theme/reconcile.js",
+      "lines": 94.93,
+      "branches": 92.62,
+      "functions": 96.1,
+      "wholeSource": false
+    },
+    "installed": {
+      "node": "v20.20.2",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/theme-identity/package/ggaction-0.0.26.tgz",
+      "tests": 3,
+      "passed": 3,
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 732,
+          "minifiedBytes": 2138673,
+          "gzipBytes": 601984
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 494,
+          "minifiedBytes": 1201220,
+          "gzipBytes": 350038
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 34,
+          "minifiedBytes": 56009,
+          "gzipBytes": 19199
+        }
+      }
+    }
+  },
+  "artifact": {
+    "sha256": "cb83aded543ef7ca43b153cb8ba67cd58ee945c7824c5a428dfb64fe1a7cae96",
+    "entries": 823,
+    "packed": 1208357,
+    "unpacked": 5561025
+  },
+  "commands": {
+    "focused": "node --test --experimental-test-coverage test/unit/actions/theme-item-identity.test.js test/unit/actions/theme-typography.test.js test/unit/actions/theme-resource-plots.test.js test/unit/actions/theme.test.js test/unit/actions/theme-composition.test.js test/unit/theme/defaults.test.js test/contracts/theme.test.js test/unit/actions/guides/parallel-axis-resolution.test.js test/unit/actions/guides/parallel-axis-reencoding.test.js test/unit/actions/guides/parallel-axis-lifecycle.test.js",
+    "contracts": "node --test test/contracts/source-boundaries.test.js test/contracts/package-boundaries.test.js test/contracts/test-discovery.test.js",
+    "docs": "npm run docs:generate && node scripts/run-tests.js docs",
+    "installed": "PATH=<node20-bin>:$PATH node .artifacts/theme-identity/installed.mjs"
+  },
+  "logs": {
+    ".artifacts/theme-identity/before.log": "5175ff2262000830825234c9197c802309b3af1eacea67609c4de2d4df2c5de8",
+    ".artifacts/theme-identity/before-correct-fixture.log": "8f8f7bc7fd8c5c5a6c5274c1197f4389e1da9c2a0843bf6bad600cfd88003d7b",
+    ".artifacts/theme-identity/after.log": "bb22d75ee7a49a1f8ba13ace841f554a512a807b4fe82675a0c683f3c7ba126c",
+    ".artifacts/theme-identity/focused.log": "9680c6e020ac28aaa001a8854a47324d5773b59e7f25c10546768df3e90c08ad",
+    ".artifacts/theme-identity/contracts.log": "8ff7b0ce524654e5b869061070b202016a90ecb730e5a65cb639eec0d8737ef1",
+    ".artifacts/theme-identity/docs-generate.log": "1307dec0cf9b84cbb6a4b82770b4b0901ba785935ba357f6a4134c30391fa34e",
+    ".artifacts/theme-identity/docs.log": "3f24e94c8da08598cef00d992e42ce57d3009c68d37885d42d3b73ff6682ca7d",
+    ".artifacts/theme-identity/installed.log": "f46eebdd83736d87a1390982a4dd8771b77c85e0b36be168d951c000e148e01a"
+  },
+  "notRun": [
+    "whole source coverage",
+    "full realistic corpus",
+    "all installed cases on three Node versions",
+    "new pixel comparison"
+  ]
+}

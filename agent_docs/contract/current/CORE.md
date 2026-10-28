@@ -270,6 +270,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Layout와 semantic boundary
   - ✅ Covered: font-dependent resource rematerialization, composition snapshot/layout rebuild, semantic spec,
     resolved scales, statistics, ordering과 caller program immutability.
+  - ✅ Covered: collection 색상 교체는 기존 item identity/key/lineage/topology와 owner clip을 보존하며,
+    codec 복원·Canvas/SVG transition scene·named highlight에서도 유지한다. `test/unit/actions/theme-item-identity.test.js`.
 - Visual boundary
   - ✅ Covered: `dark-theme-scatterplot`의 explicit low-level style primitive와 public `applyTheme`
     program 사이 exact graphic/renderer/decoded PNG pixel equivalence.

@@ -338,7 +338,8 @@ function recolorGraphic(
       item.id
     );
     changed ||= mapped.changed;
-    return { type, properties: mapped.properties };
+    return { type, properties: mapped.properties,
+      ...(item.identity === undefined ? {} : { identity: item.identity }) };
   });
   return changed
     ? program.editGraphics({ target: id, property: "items", value: items })
