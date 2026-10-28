@@ -7,7 +7,7 @@ import { indexHierarchyModel } from "./model.js";
 export function layoutHierarchyPartition(model, options = {}) {
   ownRecord(options, "Hierarchy partition options");
   rejectUnknownProperties(options, ["maxNodes"], "hierarchy partition");
-  const { nodes, indexes, work } = indexHierarchyModel(model, options.maxNodes);
+  const { nodes, indexes, work } = indexHierarchyModel(model, Object.hasOwn(options, "maxNodes") ? options.maxNodes : undefined);
   validateWorkLimit(work + nodes.length * 48, "Hierarchy partition work");
   const intervals = Array(nodes.length);
   if (nodes.length) intervals[0] = [0, model.totalValue === 0 ? 0 : 1];

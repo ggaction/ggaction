@@ -288,6 +288,10 @@
       },
       {
         "type": "file",
+        "path": "unit/grammar/hierarchy-validation.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/grammar/hierarchy-tree.test.js"
       },
       {

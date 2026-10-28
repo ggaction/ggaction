@@ -9,13 +9,13 @@ import { indexHierarchyModel } from "./model.js";
 // Encoded node identities are never decoded or used to infer source fields.
 export function orderHierarchyModel(model, options, sortValues) {
   ownRecord(options, "Hierarchy order options");
-  const by = options.by;
+  const by = Object.hasOwn(options, "by") ? options.by : undefined;
   if (!["input", "value", "key", "field"].includes(by)) throw new Error("Hierarchy order requires an explicit input, value, key or field mode.");
   rejectUnknownProperties(options, by === "input" ? ["by", "maxNodes"]
     : by === "field" ? ["by", "direction", "nulls", "temporalUnit", "maxNodes"]
       : ["by", "direction", "maxNodes"], "hierarchy order");
-  if (by !== "input" && !["ascending", "descending"].includes(options.direction)) throw new Error("Hierarchy sort direction must be explicit.");
-  const { nodes, indexes, work: initialWork } = indexHierarchyModel(model, options.maxNodes);
+  if (by !== "input" && (!Object.hasOwn(options, "direction") || !["ascending", "descending"].includes(options.direction))) throw new Error("Hierarchy sort direction must be explicit.");
+  const { nodes, indexes, work: initialWork } = indexHierarchyModel(model, Object.hasOwn(options, "maxNodes") ? options.maxNodes : undefined);
   let work = initialWork;
   const charge = amount => validateWorkLimit(work += amount, "Hierarchy ordering work");
   charge(nodes.length * 32);
@@ -25,7 +25,7 @@ export function orderHierarchyModel(model, options, sortValues) {
     sortValues.forEach((value, index) => {
       const comparisons = Math.ceil(Math.log2(Math.max(2, nodes[index].parentKey === null ? 1 : nodes[indexes.get(nodes[index].parentKey)].childrenKeys.length)));
       if (typeof value === "string") charge(value.length * comparisons * 4);
-      if (by === "key" && !nodes[index].synthetic) {
+      if (by === "key" && !Object.hasOwn(nodes[index], "synthetic")) {
         if (Array.isArray(value)) throw new TypeError("Hierarchy order keys must be typed scalars.");
         const token = encodeRowKey(value, "Hierarchy order key");
         charge(token.length * comparisons * 4);

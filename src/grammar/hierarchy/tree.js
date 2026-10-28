@@ -13,13 +13,15 @@ function nonnegative(value, label) {
 function parameters(options) {
   ownRecord(options, "Hierarchy tree options");
   rejectUnknownProperties(options, ["nodeSize", "siblingGap", "depthGap", "orientation", "radius", "startAngle", "sweep", "maxNodes"], "hierarchy tree");
+  if (["nodeSize", "siblingGap", "depthGap", "orientation"].some(field => !Object.hasOwn(options, field))) throw new TypeError("Hierarchy tree requires all own layout options.");
+  if (!Array.isArray(options.nodeSize) || options.nodeSize.length !== 2) throw new Error("Hierarchy tree nodeSize requires breadth and depth sizes.");
   ownArray(options.nodeSize, "Hierarchy tree nodeSize");
-  if (options.nodeSize.length !== 2) throw new Error("Hierarchy tree nodeSize requires breadth and depth sizes.");
   options.nodeSize.forEach(value => nonnegative(value, "Hierarchy tree node size"));
   nonnegative(options.siblingGap, "Hierarchy tree sibling gap");
   nonnegative(options.depthGap, "Hierarchy tree depth gap");
   if (!["vertical", "horizontal", "radial"].includes(options.orientation)) throw new Error("Hierarchy tree orientation must be explicit.");
   if (options.orientation === "radial") {
+    if (["radius", "startAngle", "sweep"].some(field => !Object.hasOwn(options, field))) throw new TypeError("Radial tree requires own radius, startAngle and sweep options.");
     nonnegative(options.radius, "Hierarchy tree radius");
     if (!Number.isFinite(options.startAngle) || !Number.isFinite(options.sweep) || options.sweep <= 0 || options.sweep > 360) {
       throw new RangeError("Radial tree requires finite startAngle and sweep in (0,360] degrees.");
@@ -68,7 +70,7 @@ function overlay(primary, secondary, charge) {
 }
 
 export function layoutHierarchyTree(model, options) {
-  const resolved = parameters(options), indexed = indexHierarchyModel(model, resolved.maxNodes);
+  const resolved = parameters(options), indexed = indexHierarchyModel(model, Object.hasOwn(resolved, "maxNodes") ? resolved.maxNodes : undefined);
   const { nodes, indexes } = indexed;
   let work = indexed.work;
   const charge = amount => validateWorkLimit(work += amount, "Hierarchy tree work");
@@ -100,7 +102,7 @@ export function layoutHierarchyTree(model, options) {
     const y = requireFiniteResult(node.depth * depthStep, "Tree depth position");
     xValues.push(x); minimum = Math.min(minimum, x); maximum = Math.max(maximum, x); maxDepth = Math.max(maxDepth, node.depth);
     positions.push({ key: node.key, parentKey: node.parentKey, depth: node.depth, x, y,
-      ...(node.synthetic ? { synthetic: true } : {}) });
+      ...(Object.hasOwn(node, "synthetic") ? { synthetic: true } : {}) });
   });
   if (resolved.orientation === "horizontal") positions.forEach(point => { [point.x, point.y] = [point.y, point.x]; });
   if (resolved.orientation === "radial" && positions.length > 0) {

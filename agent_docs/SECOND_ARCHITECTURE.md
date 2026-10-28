@@ -56,6 +56,10 @@ Inclusive model 검증은 normalizer가 저장한 차액 식을 그대로 검사
 이 검증 보수의 package 실측4,908,179bytes가 기존 unpacked4,908,000을179bytes 초과해 최소1,000byte 단위
 4,909,000으로 조정했다. Entry710/packed1,061,000와 browser 한도는 유지하며 상세 재현·검증은
 [inclusive model 감사](impl/roadmap9/phase3/hierarchy/INCLUSIVE_VALIDATION.md)에 둔다.
+이어진 own-data 경계 보수는 hierarchy의 required fields와 optional maxNodes/synthetic 읽기를 검사하고
+필수 차원 배열의 arity를 descriptor 검사 전에 제한한다. Public/import/renderer 경계는 그대로이며
+unpacked 실측4,909,964bytes에 맞춰 cap만4,910,000으로 조정했다.
+[입력 검증 감사](impl/roadmap9/phase3/hierarchy/OWN_DATA_VALIDATION.md)가 반례와 coverage 증거를 소유한다.
 
 ## Private observed graph normalization
 
