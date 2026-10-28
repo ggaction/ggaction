@@ -8,6 +8,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "transform-input": { prefix: "grammar/transformInput", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Shared data input validation must remain safe before dispatch in Full and Basic." },
   "expression-kernel": { prefix: "grammar/expression", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Closed AST evaluation, explicit types, lazy diagnostics and resource budgets must remain exercised." },
   "path-geometry": { prefix: "grammar/path", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Concrete path validation, topology and numeric geometry must remain exercised." },
+  "pattern-kernel": { prefix: "grammar/patterns", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Shared vector tile normalization, periodic coverage and bounded geometry must remain exercised." },
   "resource-state": { prefix: "materialization/resourceState", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Stored resource revisions and dependency validation must remain exercised." },
   "row-lineage": { prefix: "grammar/rowLineage", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Every transform must preserve exact contributing rows." },
   "core-state": { prefix: "core/", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "State and action boundaries must remain exercised." },

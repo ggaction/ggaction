@@ -97,7 +97,7 @@ test("requires every source file or an explicit subprocess exclusion", async () 
  assert.doesNotThrow(() => assertSourceCoverage(report, ["core/immutable.js"], {}));
  assert.throws(() => assertSourceCoverage(report, ["new/unloaded.js"], {}), /missing/);
  assert.throws(() => assertSourceCoverage(report, [], { "removed.js":"A documented but stale exclusion" }), /Invalid/);
- for (const file of ["core/new.js", "renderers/svg/new.js", "selectors/new.js", "mcp/new.js", "inspection/new.js", "scene/new.js"]) {
+ for (const file of ["core/new.js", "renderers/svg/new.js", "selectors/new.js", "mcp/new.js", "inspection/new.js", "scene/new.js", "grammar/patterns.js"]) {
   assert.ok(coverageFloorsForFiles([file], CRITICAL_COVERAGE_FAMILIES, {})[file], file);
  }
 });
