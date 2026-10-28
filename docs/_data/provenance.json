@@ -5,7 +5,7 @@
   "contractId": "sha256:c845d54beef0a9e670f791f9acf4de7709eaf119cb16b3f12e9bb40bb46fcff5",
   "sourceCommit": "ad9825105b7d47d46c07cc322f3e59f451294ea1",
   "sourceRef": "ad9825105b7d47d46c07cc322f3e59f451294ea1",
-  "exampleSourceRef": "codex/roadmap9-paints",
+  "exampleSourceRef": "88322383e2816ecb3e8e078d4baad6585dd55fce",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",

@@ -72,7 +72,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-paints/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/88322383e2816ecb3e8e078d4baad6585dd55fce/data/cars.json --output public/cars.json
 ```
 
 ## Complete program

@@ -34,7 +34,8 @@
       ],
       "desktopMobileAxeIncludesVersion": true,
       "keyboardSearchNoJavaScript": true
-    }
+    },
+    "committedProvenanceContracts": 18
   },
   "firstUnit": {
     "passed": 5666,
@@ -111,5 +112,7 @@
     "Image/H/Partition/GraphPlot P2 consumer integration",
     "STEP017 completion and STEP047-049/STEP077 scope"
   ],
-  "fullSuiteGreen": false
+  "fullSuiteGreen": false,
+  "metadataQualification": "88322383e2816ecb3e8e078d4baad6585dd55fce",
+  "provenanceCloseout": "Regenerated example source references to committed 88322383e, then built 154 pages/1310 LLM artifacts. Runtime/CSS/JS/images unchanged from passing browser run."
 }
