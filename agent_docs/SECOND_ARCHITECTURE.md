@@ -504,8 +504,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 508,000 bytes |
-| `ggaction/basic` | 286,000 bytes |
+| `ggaction` | 517,000 bytes |
+| `ggaction/basic` | 298,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -689,6 +689,26 @@ Action 경계가 생성 namespace를 준비하고 kernel이 source snapshot iden
 `materialization/markOutput.js`는 final item resolver의 key·topology·lineage ref를 wrapped graphic primitive로 저장한다.
 통계 reference의 값과 lineage는 `materialization/statisticalPopulation.js`의 같은 population boundary를 사용한다.
 공개 옵션과 저장 형식의 현재 지원 범위는 [CORE](contract/current/CORE.md)가 소유한다.
+
+## Parameter와 computed 입력 경계
+
+`semanticSpec.resources`의 authored parameter가 scalar 값과 revision을 소유한다.
+`grammar/parameter.js`와 expression grammar는 명시 값을 받아 순수 검증·계산하며,
+`actions/data/computedBinding.js`가 현재 parameter를 exact revision vector에 바인딩한다.
+`materialization/computedInputs.js`는 공통 schema와 exact resource lookup을 사용해 저장된
+computed 입력을 검증한다. Persistence는 이 read-only validator를 재사용하고 AST를 재평가하지 않는다.
+Named lookup 자체는 계속 `selectors/resources.js`가 소유한다.
+
+Parameter domain action은 해당 parameter를 읽는 모든 computed snapshot을 root로 모은 뒤 기존
+dataset DAG의 합집합을 한 번 순회한다. 합류점은 모든 입력 revision 이후 한 번만 materialize하며,
+기존 data revision owner가 layer·scale·guide·selection을 갱신한다. Primitive resource write는
+계산식을 평가하지 않는다. Facet/repeat 편집은 retained source의 revision을 composition recipe에
+다시 적용하고 concat은 명시 child scope를 따른다. 구체적인 lifecycle은 [CORE](contract/current/CORE.md)가 소유한다.
+
+입력 자료의 순수 파싱은 `grammar/dataSource.js`, 명시 host callback을 호출하는 비동기 준비는
+`resources/resolveData.js`가 소유한다. 준비 결과는 실제 source와 provenance를 보존하고
+request token/input hash로 stale response를 거부한다. 이 private 준비 경계의 공개 action·저장 연결은
+아직 진행 중이며 renderer에 I/O 또는 semantic 해석을 추가하지 않는다.
 
 ## Immutability와 ownership
 
@@ -2833,3 +2853,10 @@ Installed Full browser gzip은 Node24 CI에서507,419bytes로 기존507,000 한�
 508,000으로만 조정한다. Basic286,000/SVG25,000 한도는 유지한다. 해당 기능·타입 consumer들은
 통과했으며 크기 실패는 [CI run40578989389](https://github.com/ggaction/ggaction/actions/runs/40578989389)에 보존한다.
 일반·수치·pixel·coverage 검사는 완화하지 않는다.
+
+Parameter/computed v2 통합의 동일 staged artifact는 Node 20.20.2·22.23.2·24.22.1에서
+685 entries, packed 1,025,570/unpacked 4,771,436 bytes였다. 같은 minified browser bytes의
+최대 gzip은 Full 516,039, Basic 297,089, SVG 8,130 bytes다. 실제 증가분을 반영해
+최소 1,000 bytes 단위 package/browser ceiling을 갱신했다. Basic은 생성 경로만 추가하고
+parameter revision planner를 import하지 않는다. 이전 Node22 compressor 차이로 인한
+기존 ceiling 실패도 이 지원 matrix 측정으로 해결했다.

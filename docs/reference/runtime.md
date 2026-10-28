@@ -24,6 +24,7 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](../types/index.d.ts)
 
 ```typescript
+export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 import type { ChartProgram, CompositionOptions } from "./program.js";
 
@@ -513,6 +514,7 @@ export function render(
 [Complete declaration and relative dependencies](../types/basic.d.ts)
 
 ```typescript
+export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./program.js";
 import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget } from "./program.js";
 
@@ -588,6 +590,8 @@ type BasicMethodKey =
   | "applyTheme"
   | "removeTheme"
   | "createData"
+  | "createParameter"
+  | "createComputedData"
   | "createFlattenData"
   | "createLookupData"
   | "createPointMark"
@@ -927,6 +931,16 @@ export interface MarkItemInspection {
   readonly bounds: Readonly<{left:number;top:number;right:number;bottom:number}> | null;
 }
 export function getMarkItems(program: ProgramInput, options?: {target?: string | {childPath?:readonly string[];id:string};grain?:"item"|"stack"}): readonly MarkItemInspection[];
+export interface ExpressionFunctionDescriptor {
+  readonly name: import("./program.js").ExpressionCall["name"];
+  readonly min: number;
+  readonly max: number;
+  readonly inputs: readonly ("number" | "string" | "boolean" | "array")[];
+  readonly output: "number" | "string" | "boolean" | "unknown";
+  readonly options?: "angle" | "parse" | "part" | "floor";
+  readonly lazy?: true;
+}
+export function getExpressionFunctions(options?: { readonly registry?: "standard@1" }): readonly ExpressionFunctionDescriptor[];
 ```
 
 #### `ggaction/scene`

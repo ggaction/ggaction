@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 3,
+  "name": "removeParameter",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Remove an existing parameter only after all stored references have been removed.",
+  "signature": "removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;",
+  "intents": [
+    "remove parameter",
+    "remove",
+    "delete",
+    "chart setup",
+    "data and scales",
+    "scalar parameter",
+    "named expression input"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing scalar parameter"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing scalar parameter"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "removeParameter({ id, target? })"
+  ],
+  "snippet": "program.removeParameter({ id: \"factor\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#removeparameter"
+}

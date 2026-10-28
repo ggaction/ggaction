@@ -124,8 +124,11 @@ test("calls every user-facing action directly from a generated scenario root", (
     directTraceOperations(buildScenario(descriptor), directOperations);
   }
 
-  assert.equal(publicActions.length, 291);
-  for (const operation of ["removeData", "removeScale", "removeCoordinate"]) {
+  assert.equal(publicActions.length, 294);
+  for (const operation of [
+    "removeData", "removeScale", "removeCoordinate",
+    "createParameter", "editParameter", "removeParameter"
+  ]) {
     assert.equal(publicActions.includes(operation), true, operation);
     assert.equal(directOperations.has(operation), true, operation);
   }
@@ -157,6 +160,19 @@ test("retains direct action effects in final semantic and graphic state", () => 
       .values.map(row => row.computed),
     [2, 3, 4, 5]
   );
+  const parameter = resources.semanticSpec.resources.find(resource =>
+    resource.kind === "parameter" && resource.id === "computedOffset"
+  );
+  assert.equal(parameter.result.value, 2);
+  assert.equal(parameter.revision, 1);
+  assert.equal(resources.semanticSpec.resources.some(resource =>
+    resource.kind === "parameter" && resource.id === "unusedLifecycleParameter"
+  ), false);
+  const parameterComputed = currentDerivedDataset(resources, "computed", "parameterComputed");
+  assert.deepEqual(parameterComputed.values.map(row => row.adjusted), [3, 4, 5, 6]);
+  assert.equal(parameterComputed.transform[0].expression.version, 2);
+  assert.deepEqual(parameterComputed.transform[0].parameterInputs,
+    [{ kind: "parameter", id: "computedOffset", revision: 1 }]);
   assert.deepEqual(
     currentDerivedDataset(resources, "filter", "editFiltered")
       .values.map(row => row.group),

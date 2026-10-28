@@ -1,0 +1,35 @@
+{
+  "status": "passed-final",
+  "artifact": "ggaction-0.0.26.tgz",
+  "sha256": "01e6bd2486ae320ce0171c8a933005c821d9342f2c03842116df8a1c674cf551",
+  "bytes": 1025570,
+  "node": "v22.23.2",
+  "qualification": {
+    "passed": 7,
+    "failed": 0
+  },
+  "nodeCases": {
+    "passed": 189,
+    "failed": 0
+  },
+  "browser": {
+    "passed": 2,
+    "failed": 0,
+    "ratios": [
+      1,
+      2
+    ]
+  },
+  "commands": [
+    {
+      "command": "node scripts/package-consumer.js /Users/hyeonjeon/Projects/ggactionnewbrand/.artifacts/consumers/parameters-final/ggaction-0.0.26.tgz",
+      "exitCode": 0,
+      "log": "consumer.log"
+    },
+    {
+      "command": "GGACTION_PACKAGE_SPEC=/Users/hyeonjeon/Projects/ggactionnewbrand/.artifacts/consumers/parameters-final/ggaction-0.0.26.tgz node scripts/run-tests.js browser browser/parameter-rendering.browser.js",
+      "exitCode": 0,
+      "log": "browser.log"
+    }
+  ]
+}

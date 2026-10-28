@@ -1,0 +1,58 @@
+{
+  "label": "suite-realistic",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "--import",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/scripts/test-file-metrics.js",
+    "--max-old-space-size=512",
+    "--test",
+    "--test-concurrency=2",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/generated-scenario-effective-factors.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-combined-legend-witness.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-complete-chart-facades.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-data-color-contracts.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-facet-raster-bounds.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-hierarchical-facade-matrix.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-layer-plot.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-legend-option-witness.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 479904,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T11:55:26.328Z",
+  "finishedAt": "2026-10-28T12:03:26.233Z",
+  "source": {
+    "available": true,
+    "commit": "8685719fb2937ef6653bd14cfabcc3edc7a4c701",
+    "clean": false,
+    "statusSha256": "45cf71f62ea5950012f89f6f4d12ffd473437138f36ebef2bbaa4478acb5fae0"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "bc83c93a583fdc15b2428bbd97004e523799a844",
+    "clean": false,
+    "statusSha256": "81eaf05de65072fcf6d3ddc3773bd913a1c30976eb240ac0c6806d041376022b"
+  },
+  "logSha256": "3e0b76a62ddca8dd03b7562504c3c30f64d9091b47965ab6441098a7fdc1b29d",
+  "discovery": {
+    "suite": "realistic",
+    "selectors": [],
+    "files": [
+      "test/contracts/generated-scenario-effective-factors.test.js",
+      "test/contracts/realistic-combined-legend-witness.test.js",
+      "test/contracts/realistic-complete-chart-facades.test.js",
+      "test/contracts/realistic-data-color-contracts.test.js",
+      "test/contracts/realistic-facet-raster-bounds.test.js",
+      "test/contracts/realistic-hierarchical-facade-matrix.test.js",
+      "test/contracts/realistic-layer-plot.test.js",
+      "test/contracts/realistic-legend-option-witness.test.js"
+    ]
+  },
+  "bytes": 23233,
+  "retainedBytes": 23233,
+  "truncated": false
+}

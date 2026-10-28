@@ -4,6 +4,9 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add `createParameter`, `editParameter`, and `removeParameter` for immutable scalar inputs with exact revision references and atomic dependent-data and chart updates. Full supports the complete lifecycle; Basic supports creation.
+- Support explicit version 2 computed expressions with a closed function registry, distinct missing-value diagnostics, parameter bindings, and saved-program validation. Keep existing v1 expression behavior and expose immutable registry descriptors through `getExpressionFunctions`.
+
 - Prevent action trace summaries from invoking getters; reject executable computed-expression properties before evaluation while preserving existing formula results.
 
 - Support compound M/L/C/Z paths, nonzero/evenodd fills and path owner clips across SVG, Canvas, PNG, PDF, transition scenes and saved programs. Preserve open strokes with implicitly closed fills and share subpath-aware bounds and adaptive geometry calculations.

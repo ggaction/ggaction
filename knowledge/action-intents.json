@@ -944,6 +944,11 @@
       "layered chart",
       "independent plot layer",
       "shared coordinates"
+    ],
+    "Parameter": [
+      "scalar parameter",
+      "named expression input",
+      "reusable scalar value"
     ]
   },
   "summaryOverrides": {
@@ -1712,6 +1717,17 @@
     },
     "encodeShape": {
       "value": "circle"
+    },
+    "createParameter": {
+      "id": "factor",
+      "value": 2
+    },
+    "editParameter": {
+      "target": "factor",
+      "value": 3
+    },
+    "removeParameter": {
+      "id": "factor"
     }
   },
   "callPatternOverrides": {

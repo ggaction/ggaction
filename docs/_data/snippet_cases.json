@@ -195,5 +195,19 @@
     "result": "program",
     "prerequisites": "Standalone ES module with ggaction installed.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "parameter-computed-revision",
+    "file": "api/data/expressions-and-normalization.md",
+    "contains": "const original = chart().createCanvas()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "original, updated",
+    "prerequisites": "Run this standalone ES module; all data and imports are included. Both immutable programs own a Canvas and materialized point chart.",
+    "rendering": "authoring-only",
+    "expect": {
+      "mark": "points",
+      "items": 2
+    }
   }
 ]

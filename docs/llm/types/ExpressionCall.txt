@@ -1,0 +1,6 @@
+export type ExpressionCall =
+  | { readonly type: "call"; readonly name: "abs" | "sqrt" | "log" | "exp" | "round" | "floor" | "ceil" | "min" | "max" | "pow" | "toNumber" | "lower" | "upper" | "length" | "substring" | "replace" | "concat" | "isNull" | "isMissing" | "isFinite" | "coalesce" | "arrayLength" | "at"; readonly args: readonly ExpressionNode[] }
+  | { readonly type: "call"; readonly name: "sin" | "cos" | "tan" | "atan2"; readonly args: readonly ExpressionNode[]; readonly options: { readonly angleUnit: "radians" | "degrees" } }
+  | { readonly type: "call"; readonly name: "parseTime"; readonly args: readonly ExpressionNode[]; readonly options: { readonly format: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso-offset" } }
+  | { readonly type: "call"; readonly name: "datePart"; readonly args: readonly ExpressionNode[]; readonly options: { readonly part: "year" | "quarter" | "month" | "day" | "weekday" | "hour" | "minute" | "second" | "millisecond"; readonly timeZone: string } }
+  | { readonly type: "call"; readonly name: "timeFloor"; readonly args: readonly ExpressionNode[]; readonly options: { readonly timeZone: string } & ({ readonly unit: "week"; readonly weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | { readonly unit: "year" | "quarter" | "month" | "day" | "hour" | "minute" | "second" }) };

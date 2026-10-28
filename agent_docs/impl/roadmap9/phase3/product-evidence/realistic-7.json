@@ -1,0 +1,56 @@
+{
+  "label": "suite-realistic",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "--import",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/scripts/test-file-metrics.js",
+    "--max-old-space-size=512",
+    "--test",
+    "--test-concurrency=2",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-data-mark-recipes.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-encoding-coverage-recipes.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-facet-column-factors.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-lifecycle-factor-effects.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-lifecycle-provenance.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-row-selection.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-scenario-runner.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 286008,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T12:09:41.089Z",
+  "finishedAt": "2026-10-28T12:14:27.098Z",
+  "source": {
+    "available": true,
+    "commit": "bc83c93a583fdc15b2428bbd97004e523799a844",
+    "clean": false,
+    "statusSha256": "81eaf05de65072fcf6d3ddc3773bd913a1c30976eb240ac0c6806d041376022b"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "bc83c93a583fdc15b2428bbd97004e523799a844",
+    "clean": false,
+    "statusSha256": "81eaf05de65072fcf6d3ddc3773bd913a1c30976eb240ac0c6806d041376022b"
+  },
+  "logSha256": "1c8ca037c0dfa106ade98c82b54fc1f51a498fc2f6896f8a2ebf64fc47e282f9",
+  "discovery": {
+    "suite": "realistic",
+    "selectors": [],
+    "files": [
+      "test/contracts/realistic-data-mark-recipes.test.js",
+      "test/contracts/realistic-encoding-coverage-recipes.test.js",
+      "test/contracts/realistic-facet-column-factors.test.js",
+      "test/contracts/realistic-lifecycle-factor-effects.test.js",
+      "test/contracts/realistic-lifecycle-provenance.test.js",
+      "test/contracts/realistic-row-selection.test.js",
+      "test/contracts/realistic-scenario-runner.test.js"
+    ]
+  },
+  "bytes": 15290,
+  "retainedBytes": 15290,
+  "truncated": false
+}

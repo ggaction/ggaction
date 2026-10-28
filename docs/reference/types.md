@@ -45,6 +45,9 @@ interface ChartProgramActions {
   createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
+  createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
+  removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
   createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;
   createCompleteData(options: TargetedOptions<CompleteDataOptions>): ChartProgram;
@@ -2329,7 +2332,20 @@ Related types: [`ComputedExpression`](#type-computedexpression).
 <summary>Expand ComputedExpression</summary>
 
 ```typescript
-export type ComputedExpression =
+export type ComputedExpression = ComputedExpressionV1 | ComputedExpressionV2;
+```
+
+</details>
+
+Related types: [`ComputedExpressionV1`](#type-computedexpressionv1) · [`ComputedExpressionV2`](#type-computedexpressionv2).
+
+### `ComputedExpressionV1` {#type-computedexpressionv1}
+
+<details markdown="1">
+<summary>Expand ComputedExpressionV1</summary>
+
+```typescript
+export type ComputedExpressionV1 =
   | { readonly field: string }
   | { readonly constant: number | string | boolean | null }
   | {
@@ -2339,50 +2355,67 @@ export type ComputedExpression =
     }
   | {
       readonly op: "replaceLiteral";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly search: string;
       readonly replacement: string;
     }
   | {
       readonly op: "datePart";
       readonly part: "year";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly timeZone?: string;
     }
   | {
       readonly op: "parseTime";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly format?: ParseTimeFormat;
     }
   | {
       readonly op: "negate" | "absolute" | "log" | "sqrt" | "floor" | "not" | "isNull" | "toNumber";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
     }
   | {
       readonly op: "add" | "subtract" | "multiply" | "divide" |
         "eq" | "neq" | "lt" | "lte" | "gt" | "gte";
-      readonly left: ComputedExpression;
-      readonly right: ComputedExpression;
+      readonly left: ComputedExpressionV1;
+      readonly right: ComputedExpressionV1;
     }
   | {
       readonly op: "and" | "or" | "coalesce";
-      readonly operands: readonly [ComputedExpression, ComputedExpression, ...ComputedExpression[]];
+      readonly operands: readonly [ComputedExpressionV1, ComputedExpressionV1, ...ComputedExpressionV1[]];
     }
   | {
       readonly op: "concat";
-      readonly operands: readonly [ComputedExpression, ...ComputedExpression[]];
+      readonly operands: readonly [ComputedExpressionV1, ...ComputedExpressionV1[]];
     }
   | {
       readonly op: "if";
-      readonly condition: ComputedExpression;
-      readonly then: ComputedExpression;
-      readonly else: ComputedExpression;
+      readonly condition: ComputedExpressionV1;
+      readonly then: ComputedExpressionV1;
+      readonly else: ComputedExpressionV1;
     };
 ```
 
 </details>
 
 Related types: [`ParseTimeFormat`](#type-parsetimeformat).
+
+### `ComputedExpressionV2` {#type-computedexpressionv2}
+
+<details markdown="1">
+<summary>Expand ComputedExpressionV2</summary>
+
+```typescript
+export interface ComputedExpressionV2 {
+  readonly version: 2;
+  readonly registry: "standard@1";
+  readonly root: ExpressionNode;
+}
+```
+
+</details>
+
+Related types: [`ExpressionNode`](#type-expressionnode).
 
 ### `ConfidenceIntervalMethod` {#type-confidenceintervalmethod}
 
@@ -3082,6 +3115,21 @@ export interface CreateParallelCoordinatesOptions {
 </details>
 
 Related types: [`ParallelDimension`](#type-paralleldimension) · [`ParallelMissingPolicy`](#type-parallelmissingpolicy) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`NonCartesianStrokeDashChannel`](#type-noncartesianstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ParallelGuideOptions`](#type-parallelguideoptions).
+
+### `CreateParameterOptions` {#type-createparameteroptions}
+
+<details markdown="1">
+<summary>Expand CreateParameterOptions</summary>
+
+```typescript
+export type CreateParameterOptions = { readonly id: string } & (
+  ParameterDefinition<"number", number> | ParameterDefinition<"string", string> | ParameterDefinition<"boolean", boolean>
+);
+```
+
+</details>
+
+Related types: [`ParameterDefinition`](#type-parameterdefinition).
 
 ### `CreatePiePlotOptions` {#type-createpieplotoptions}
 
@@ -5680,7 +5728,7 @@ Related types: [`LegendChannel`](#type-legendchannel).
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  extends Omit<LegendOptions, "channels" | "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
   visible?: boolean;
   /** Body offset in pixels; auto resets. */
   itemsOffset?: { x?: number; y?: number } | "auto";
@@ -5890,6 +5938,19 @@ export type EditParallelScaleOptions = {
 </details>
 
 Related types: [`WithoutScaleId`](#type-withoutscaleid) · [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`CategoricalPositionScaleOptions`](#type-categoricalpositionscaleoptions).
+
+### `EditParameterOptions` {#type-editparameteroptions}
+
+<details markdown="1">
+<summary>Expand EditParameterOptions</summary>
+
+```typescript
+export interface EditParameterOptions { readonly target: string; readonly value: ParameterValue; }
+```
+
+</details>
+
+Related types: [`ParameterValue`](#type-parametervalue).
 
 ### `EditPolarAxisOptions` {#type-editpolaraxisoptions}
 
@@ -6801,6 +6862,45 @@ type ExistingSizeScaleEditPatch = {
 ```
 
 </details>
+
+### `ExpressionCall` {#type-expressioncall}
+
+<details markdown="1">
+<summary>Expand ExpressionCall</summary>
+
+```typescript
+export type ExpressionCall =
+  | { readonly type: "call"; readonly name: "abs" | "sqrt" | "log" | "exp" | "round" | "floor" | "ceil" | "min" | "max" | "pow" | "toNumber" | "lower" | "upper" | "length" | "substring" | "replace" | "concat" | "isNull" | "isMissing" | "isFinite" | "coalesce" | "arrayLength" | "at"; readonly args: readonly ExpressionNode[] }
+  | { readonly type: "call"; readonly name: "sin" | "cos" | "tan" | "atan2"; readonly args: readonly ExpressionNode[]; readonly options: { readonly angleUnit: "radians" | "degrees" } }
+  | { readonly type: "call"; readonly name: "parseTime"; readonly args: readonly ExpressionNode[]; readonly options: { readonly format: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso-offset" } }
+  | { readonly type: "call"; readonly name: "datePart"; readonly args: readonly ExpressionNode[]; readonly options: { readonly part: "year" | "quarter" | "month" | "day" | "weekday" | "hour" | "minute" | "second" | "millisecond"; readonly timeZone: string } }
+  | { readonly type: "call"; readonly name: "timeFloor"; readonly args: readonly ExpressionNode[]; readonly options: { readonly timeZone: string } & ({ readonly unit: "week"; readonly weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | { readonly unit: "year" | "quarter" | "month" | "day" | "hour" | "minute" | "second" }) };
+```
+
+</details>
+
+Related types: [`ExpressionNode`](#type-expressionnode).
+
+### `ExpressionNode` {#type-expressionnode}
+
+<details markdown="1">
+<summary>Expand ExpressionNode</summary>
+
+```typescript
+export type ExpressionNode =
+  | { readonly type: "literal"; readonly value: number | string | boolean | null }
+  | { readonly type: "field"; readonly name: string }
+  | { readonly type: "fieldPath"; readonly root: string; readonly path: readonly [string, ...string[]] }
+  | { readonly type: "parameter"; readonly id: string }
+  | { readonly type: "unary"; readonly op: "negate" | "not"; readonly operand: ExpressionNode }
+  | { readonly type: "binary"; readonly op: "add" | "subtract" | "multiply" | "divide" | "eq" | "neq" | "lt" | "lte" | "gt" | "gte" | "and" | "or"; readonly left: ExpressionNode; readonly right: ExpressionNode }
+  | { readonly type: "if"; readonly condition: ExpressionNode; readonly then: ExpressionNode; readonly else: ExpressionNode }
+  | ExpressionCall;
+```
+
+</details>
+
+Related types: [`ExpressionCall`](#type-expressioncall).
 
 ### `FacadePositionChannel` {#type-facadepositionchannel}
 
@@ -9617,6 +9717,43 @@ export type ParallelMissingPolicy = "break" | "drop-row" | "error";
 
 </details>
 
+### `ParameterDefinition` {#type-parameterdefinition}
+
+<details markdown="1">
+<summary>Expand ParameterDefinition</summary>
+
+```typescript
+type ParameterDefinition<T extends ParameterType, V> =
+  | { readonly type?: T; readonly value: V; readonly nullable?: boolean }
+  | { readonly type: T; readonly value: null; readonly nullable: true };
+```
+
+</details>
+
+Related types: [`ParameterType`](#type-parametertype).
+
+### `ParameterType` {#type-parametertype}
+
+<details markdown="1">
+<summary>Expand ParameterType</summary>
+
+```typescript
+export type ParameterType = "number" | "string" | "boolean";
+```
+
+</details>
+
+### `ParameterValue` {#type-parametervalue}
+
+<details markdown="1">
+<summary>Expand ParameterValue</summary>
+
+```typescript
+export type ParameterValue = number | string | boolean | null;
+```
+
+</details>
+
 ### `ParameterizedAggregateOperation` {#type-parameterizedaggregateoperation}
 
 <details markdown="1">
@@ -11194,6 +11331,17 @@ export interface RemoveMarkSelectionOptions {
 
 ```typescript
 export interface RemoveParallelAxisOptions { field: string; target?: string; }
+```
+
+</details>
+
+### `RemoveParameterOptions` {#type-removeparameteroptions}
+
+<details markdown="1">
+<summary>Expand RemoveParameterOptions</summary>
+
+```typescript
+export interface RemoveParameterOptions { readonly id: string; }
 ```
 
 </details>

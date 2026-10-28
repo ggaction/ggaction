@@ -796,5 +796,18 @@
         "statements": 11
       }
     ]
+  },
+  {
+    "file": "parameters.mjs",
+    "cases": [
+      {
+        "id": "parameters/fresh-process-lifecycle",
+        "statements": 18
+      },
+      {
+        "id": "parameters/renderers-and-scene",
+        "statements": 24
+      }
+    ]
   }
 ]

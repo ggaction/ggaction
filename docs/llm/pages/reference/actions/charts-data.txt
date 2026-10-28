@@ -499,6 +499,101 @@ Create an immutable named derived dataset using exactly one membership,
 comparison, or range filter. The source defaults to current data.
 [Data](../../../../api/data/)
 
+## `createParameter`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`CreateParameterOptions`](../../../../reference/types/#type-createparameteroptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `type` | Optional / branch-dependent | `"boolean" \| "number" \| "string" \| undefined` |
+| `value` | Required | `string \| number \| boolean \| null` |
+| `nullable` | Optional / branch-dependent | `boolean \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createParameter({ id, value, type?, nullable? })
+```
+
+Create a named number, string, or boolean input for version 2 computed expressions.
+A null initial value requires an explicit type and `nullable: true`.
+Available in Full and Basic. [Parameters](../../../../api/data/expressions-and-normalization/#parameters)
+
+## `editParameter`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`EditParameterOptions`](../../../../reference/types/#type-editparameteroptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
+| `value` | Required | `ParameterValue` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editParameter({ target, value })
+```
+
+Atomically revise a parameter value, dependent datasets, and their chart consumers.
+Type and nullability remain fixed. Available in Full.
+[Parameters](../../../../api/data/expressions-and-normalization/#parameters)
+
+## `removeParameter`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RemoveParameterOptions`](../../../../reference/types/#type-removeparameteroptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+removeParameter({ id })
+```
+
+Remove an existing parameter only after all stored references have been removed.
+Available in Full. [Parameters](../../../../api/data/expressions-and-normalization/#parameters)
+
 ## `createDensityData`
 
 **API layer:** user-facing. **Authoring roles:** H2.

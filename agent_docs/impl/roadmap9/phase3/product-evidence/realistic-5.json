@@ -1,0 +1,52 @@
+{
+  "label": "suite-realistic",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "--import",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/scripts/test-file-metrics.js",
+    "--max-old-space-size=512",
+    "--test",
+    "--test-concurrency=2",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/dataset-fixtures.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/generated-scenarios.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-axis-facet-owner-witness.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-facade-option-recipes.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-statistical-facade-coverage-recipes.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 358273,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T11:56:43.158Z",
+  "finishedAt": "2026-10-28T12:02:41.432Z",
+  "source": {
+    "available": true,
+    "commit": "bc83c93a583fdc15b2428bbd97004e523799a844",
+    "clean": false,
+    "statusSha256": "81eaf05de65072fcf6d3ddc3773bd913a1c30976eb240ac0c6806d041376022b"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "bc83c93a583fdc15b2428bbd97004e523799a844",
+    "clean": false,
+    "statusSha256": "81eaf05de65072fcf6d3ddc3773bd913a1c30976eb240ac0c6806d041376022b"
+  },
+  "logSha256": "cbfaa72d4b8f633a7a52fda99d3c37868415d1d584261fd0d31523130a74d25e",
+  "discovery": {
+    "suite": "realistic",
+    "selectors": [],
+    "files": [
+      "test/contracts/dataset-fixtures.test.js",
+      "test/contracts/generated-scenarios.test.js",
+      "test/contracts/realistic-axis-facet-owner-witness.test.js",
+      "test/contracts/realistic-facade-option-recipes.test.js",
+      "test/contracts/realistic-statistical-facade-coverage-recipes.test.js"
+    ]
+  },
+  "bytes": 8794,
+  "retainedBytes": 8794,
+  "truncated": false
+}

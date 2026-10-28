@@ -62,7 +62,7 @@ const PUBLIC_ENTRIES = Object.freeze({
     runtime: "./src/inspection.js",
     types: "./types/inspection.d.ts",
     values: Object.freeze([
-      "comparePrograms", "describeAction", "getDatasetSchema", "getMarkItems", "getPlotComposition", "inspectProgram"
+      "comparePrograms", "describeAction", "getDatasetSchema", "getExpressionFunctions", "getMarkItems", "getPlotComposition", "inspectProgram"
     ])
   }),
   "./svg": Object.freeze({

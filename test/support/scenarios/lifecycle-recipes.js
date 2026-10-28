@@ -1025,6 +1025,24 @@ function addDirectDerivedDataEdits(program) {
   ];
   return program
     .createData({ id: "editSource", values })
+    .createParameter({ id: "computedOffset", type: "number", value: 1, nullable: false })
+    .createComputedData({
+      id: "parameterComputed",
+      source: "editSource",
+      as: "adjusted",
+      expression: {
+        version: 2,
+        registry: "standard@1",
+        root: {
+          type: "binary", op: "add",
+          left: { type: "field", name: "x" },
+          right: { type: "parameter", id: "computedOffset" }
+        }
+      }
+    })
+    .editParameter({ target: "computedOffset", value: 2 })
+    .createParameter({ id: "unusedLifecycleParameter", type: "boolean", value: null, nullable: true })
+    .removeParameter({ id: "unusedLifecycleParameter" })
     .createComputedData({
       id: "editComputed",
       source: "editSource",
@@ -2119,6 +2137,7 @@ function lifecycleSignature(base, factors) {
     "action-direct-data-resources": [
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale",
       "removeData", "removeScale", "removeCoordinate",
+      "createParameter", "editParameter", "removeParameter",
       "createNormalizedData", "createCompleteData", "createImputedData", "editDerivedData",
       "editComputedData", "editFilteredData", "editFoldData", "editSummaryData",
       "editBinData", "editTimeUnitData", "editWindowData", "createSortedData", "editSortedData", "editDensityData",
@@ -2374,6 +2393,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
   "reviseData", "applyTextMetrics", "removeTextMetrics",
+  "createParameter", "editParameter", "removeParameter",
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createSortedData", "editSortedData",
   "createIntervalData", "createTickMark", "editTickMark", "removeMark",

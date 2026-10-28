@@ -1,0 +1,31 @@
+{
+  "beforeSha256": "01e6bd2486ae320ce0171c8a933005c821d9342f2c03842116df8a1c674cf551",
+  "afterSha256": "53e6c5d76913ab00a7d4cda3ae6e782ae595142bf9e7f4094fc2809dc4ef6384",
+  "files": 685,
+  "added": [],
+  "removed": [],
+  "changed": [
+    {
+      "path": "package/README.md",
+      "before": {
+        "bytes": 12327,
+        "sha256": "9cbd5aa5a89f9656c26266179bbc44d383d0448b9a22003bac33fa017a879fe7"
+      },
+      "after": {
+        "bytes": 12327,
+        "sha256": "df20bd71abeaf42a1ba0d6540f8adf5f4ed978544ac117ec23ec4f2c99ce5b0c"
+      }
+    }
+  ],
+  "runtimeEntryContentsIdentical": true,
+  "browserEvidenceReuse": {
+    "receipt": "../parameters-final/receipt.json",
+    "log": "../parameters-final/browser.log",
+    "passed": 2,
+    "ratios": [
+      1,
+      2
+    ],
+    "reason": "README.md is the only changed tar entry content; installed runtime, package metadata, and all browser import contents are byte-identical."
+  }
+}

@@ -8,6 +8,7 @@ import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { action, closedAction, getWrappedActionMetadata } from "../../core/action.js";
 import { registerFacetDataRevision, reviseUnitData } from "../data/revise.js";
+import { registerFacetParameterRevision, reviseUnitParameter } from "../parameters/edit.js";
 import { applyMaterializationPlan } from "../../materialization/dependencies.js";
 import { getMarkMaterializationStep } from "../../materialization/marks/index.js";
 import { buildMaterializationPlan } from "../../materialization/planner.js";
@@ -450,9 +451,10 @@ function resolveRepeatDefinition(program, args) {
   }
   const layer = findLayer(program, target);
   const dataset = findDataset(program, layer.data);
-  // Lookup has already preserved the primary grain and materialized its fields.
+  // Lookup and computed transforms preserve the primary row grain and have
+  // already materialized their fields.
   // Repeating an output field changes only the encoding, never either input table.
-  if (dataset?.transform?.length > 0 && dataset.transform[0].type!=="lookup") {
+  if (dataset?.transform?.length > 0 && !["lookup", "computed"].includes(dataset.transform[0].type)) {
     throw new Error("repeatCharts does not rewrite a derived dataset dependency.");
   }
   const encoding = parallelChannel
@@ -856,6 +858,26 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
 );
 
 export function registerFacetActions(ProgramClass) {
+  registerFacetParameterRevision((program, args) => {
+    const template = facetUnitTemplate(program);
+    const revisionSource = template.semanticSpec.title.text === undefined
+      ? template : template.removeTitle();
+    const { program: unit, plan } = reviseUnitParameter(revisionSource, args);
+    const current = program.compositionSpec;
+    const revised = new program.constructor({
+      ...unit,
+      semanticSpec: { ...unit.semanticSpec, title: program.semanticSpec.title },
+      graphicSpec: program.graphicSpec,
+      children: program.children,
+      materializationConfigs: { ...unit.materializationConfigs,
+        facets: program.materializationConfigs.facets,
+        ...(program.titleConfig === undefined ? {} : { title: program.titleConfig }) },
+      actionSequence: unit._actionSequence,
+      compositionSpec: { ...current, facet: { ...current.facet,
+        data: plan.replacements.get(current.facet.data) ?? current.facet.data } }
+    });
+    return rederiveFacet(revised, current.facet);
+  });
   registerFacetDataRevision((program, args) => {
     const template = facetUnitTemplate(program);
     // A parent title belongs to the composition, not the retained child unit.

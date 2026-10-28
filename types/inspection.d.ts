@@ -49,3 +49,13 @@ export interface MarkItemInspection {
   readonly bounds: Readonly<{left:number;top:number;right:number;bottom:number}> | null;
 }
 export function getMarkItems(program: ProgramInput, options?: {target?: string | {childPath?:readonly string[];id:string};grain?:"item"|"stack"}): readonly MarkItemInspection[];
+export interface ExpressionFunctionDescriptor {
+  readonly name: import("./program.js").ExpressionCall["name"];
+  readonly min: number;
+  readonly max: number;
+  readonly inputs: readonly ("number" | "string" | "boolean" | "array")[];
+  readonly output: "number" | "string" | "boolean" | "unknown";
+  readonly options?: "angle" | "parse" | "part" | "floor";
+  readonly lazy?: true;
+}
+export function getExpressionFunctions(options?: { readonly registry?: "standard@1" }): readonly ExpressionFunctionDescriptor[];

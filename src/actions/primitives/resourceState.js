@@ -2,11 +2,12 @@ import { requireDataset } from "../../selectors/datasets.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { annotateError } from "../../core/diagnostics.js";
 import { findStoredResource, requireStoredResource, resolveInputReference, dataInputReference } from "../../selectors/resources.js";
-import { validateResourceGraph, validateStoredResource, resourceDependencies, orderResourceDependencies, planStoredResourceRemoval } from "../../materialization/resourceState.js";
+import { validateResourceGraph, validateStoredResource, resourceDependencies, orderResourceDependencies, planStoredResourceRemoval, collectParameterInputReferences } from "../../materialization/resourceState.js";
 
 const same = (a, b) => a.kind === b.kind && a.id === b.id;
 
 export function replaceStoredResource(program, parsed, value) {
+  validateStoredResource(value);
   if (value.kind !== parsed.resourceKind || value.id !== parsed.id) throw new Error("Resource identity must match its semantic path.");
   const previous = findStoredResource(program, value.kind, value.id);
   if (value.revision !== (previous === undefined ? 0 : previous.revision + 1)) {
@@ -14,7 +15,6 @@ export function replaceStoredResource(program, parsed, value) {
       code: previous === undefined ? "missing-resource" : value.revision === 0 ? "duplicate-id" : "stale-result", resourceId: value.id
     });
   }
-  validateStoredResource(value);
   // Check the caller's exact inputs before rebinding existing dependents.
   for (const ref of resourceDependencies(value)) {
     if (!same(ref, value)) resolveInputReference(program, ref);
@@ -59,10 +59,20 @@ export function removeStoredResource(program, parsed) {
 // closure. Data projections follow explicit IDs; keys keep their old logical
 // namespace, so an unrelated replacement cannot acquire an old row selection.
 export function adoptSelectionResources(program, source, selections) {
-  const retained = new Map(), pending = Object.values(selections ?? {}).map(definition => definition.resource);
+  const retained = new Map(), pending = [
+    ...Object.values(selections ?? {}).map(definition => definition.resource),
+    ...collectParameterInputReferences(program).filter(ref => ref.scope.length === 0)
+      .map(({ kind, id, revision }) => ({ kind, id, revision }))
+  ];
   while (pending.length) {
     const ref = pending.pop(), key = JSON.stringify([ref.kind, ref.id]);
     if (retained.has(key)) continue;
+    // A replacement unit owns its parameters. Adopt only a missing exact
+    // dependency; never overwrite a current authored value with an older cell.
+    if (ref.kind === "parameter" && findStoredResource(program, ref.kind, ref.id) !== undefined) {
+      requireStoredResource(program, ref);
+      continue;
+    }
     const resource = requireStoredResource(source, ref);
     retained.set(key, resource);
     pending.push(...resourceDependencies(resource).filter(input => input.kind !== "data"));

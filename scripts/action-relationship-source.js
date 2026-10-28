@@ -517,6 +517,8 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
+    chart().createParameter({ id: "factor", value: 2 })
+      .editParameter({ target: "factor", value: 3 }).removeParameter({ id: "factor" }),
     chart().createData({id:"people",values:[{name:"A",age:25}]}).createData({id:"groups",values:[{person:"A"}]})
       .createLookupData({id:"ages",field:"person",lookup:{data:"people",key:"name",fields:["age"]}})
       .editLookupData({target:"ages",lookup:{data:"people",key:"name",fields:["age"],as:["years"]}}),

@@ -171,10 +171,10 @@ function sourceSections(source) {
 }
 
 function summary(text) {
-  if (text.length <= 210) return text;
-  const shortened = text.slice(0, 199);
+  if (text.length <= 200) return text;
+  const shortened = text.slice(0, 189);
   const boundary = shortened.lastIndexOf(" ");
-  return `${shortened.slice(0, boundary > 150 ? boundary : 199)}…`;
+  return `${shortened.slice(0, boundary > 140 ? boundary : 189)}…`;
 }
 
 export async function buildDocSearchIndex() {

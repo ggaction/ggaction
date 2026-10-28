@@ -35,16 +35,16 @@ function environmentValues(environment) {
   return Object.freeze({ fields: Object.freeze(copy.fields), parameters: Object.freeze(copy.parameters) });
 }
 
-export function normalizeExpressionV2(expression, environment = {}) {
+function normalize(expression, environment, bind) {
   record(expression, ["version", "registry", "root"]);
   if (expression.version !== 2 || expression.registry !== "standard@1") throw new TypeError("Unsupported expression version or registry.");
   const resolved = environmentValues(environment);
   const state = { nodes: 0, ancestors: new WeakSet(), fields: new Set(), parameters: new Set() };
   function resource(kind, id) {
     name(id, `${kind} reference`);
-    if (!Object.hasOwn(resolved[kind], id)) throw new TypeError(`Unknown expression ${kind} reference.`);
+    if (bind && !Object.hasOwn(resolved[kind], id)) throw new TypeError(`Unknown expression ${kind} reference.`);
     state[kind].add(id);
-    return resolved[kind][id].type;
+    return bind ? resolved[kind][id].type : "unknown";
   }
   function visit(node, depth) {
     limit(depth, EXPRESSION_LIMITS.depth, "depth");
@@ -124,4 +124,13 @@ export function normalizeExpressionV2(expression, environment = {}) {
     environment: resolved, nodes: state.nodes,
     fields: Object.freeze([...state.fields]), parameters: Object.freeze([...state.parameters])
   });
+}
+
+export function normalizeExpressionV2(expression, environment = {}) {
+  return normalize(expression, environment, true);
+}
+
+// Validate the complete AST before a program resolves its named inputs.
+export function inspectExpressionV2(expression) {
+  return normalize(expression, {}, false);
 }

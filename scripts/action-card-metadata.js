@@ -26,6 +26,8 @@ const coreH3Names = new Set([
   "applyTextMetrics",
   "removeTextMetrics",
   "reviseData",
+  "editParameter",
+  "removeParameter",
   "createCanvas",
   "editCanvas",
   "fitCanvas",

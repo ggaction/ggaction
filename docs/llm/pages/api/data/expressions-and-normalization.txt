@@ -4,7 +4,9 @@
 
 ## `createComputedData({ id, source?, as, expression })` {#createcomputeddata-id-source-as-expression}
 
-Add a typed primitive or null field to every source row with a serializable formula:
+Add a scalar field to every source row with a serializable formula. Full and Basic
+support both existing v1 expressions and [explicit v2 expressions](../../../../api/data/expressions-and-normalization/#version-2-expressions).
+The following legacy syntax and rules describe v1:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -82,6 +84,110 @@ Arithmetic remains finite and strictly numeric. Other operations do not coerce
 types. Undefined scalar cells normalize to null; ordinary field references still reject missing row keys. The explicit `getPath` missing-root policy above applies only to that operation.
 Non-null results must have one primitive type across all rows. Expressions are
 bounded to depth 16 and 128 nodes, with at most 10,000,000 row-nodes.
+
+## Version 2 expressions
+
+Choose `expression: { version: 2, registry: "standard@1", root }` explicitly.
+The existing v1 syntax retains its results, limits, and errors. Version 2 uses
+eight node kinds:
+
+| Node | Shape |
+| --- | --- |
+| Literal | `{ type: "literal", value }` |
+| Literal field name | `{ type: "field", name }` |
+| Nested field | `{ type: "fieldPath", root, path }` |
+| Named scalar input | `{ type: "parameter", id }` |
+| Unary operation | `{ type: "unary", op, operand }` |
+| Binary operation | `{ type: "binary", op, left, right }` |
+| Conditional | `{ type: "if", condition, then, else }` |
+| Registry function | `{ type: "call", name, args, options? }` |
+
+Unary operations are `negate` and `not`. Binary operations are `add`, `subtract`,
+`multiply`, `divide`, `eq`, `neq`, `lt`, `lte`, `gt`, `gte`, `and`, and `or`.
+The closed function registry covers numeric, string, array, and calendar
+operations. Use [getExpressionFunctions](../../../../inspection/#expression-functions)
+to inspect names, argument limits, input/output types, and option families.
+Trigonometric calls require `options.angleUnit` (`radians` or `degrees`).
+`parseTime` requires an explicit `format` (`%Y-%m-%d`, `%d/%m/%Y`, `%m/%d/%Y`,
+or `iso-offset`). `datePart` requires `part` and `timeZone`; `timeFloor` requires
+`unit` and `timeZone`, plus `weekStartsOn` from 0 (Sunday) to 6 for a week.
+
+Every branch is validated before evaluation, including inactive references and
+known field types. `if`, `and`, `or`, and `coalesce` evaluate only their selected
+values. Conditions require booleans. A field name containing dots remains one
+literal column name; `fieldPath` traverses up to eight own record keys and
+produces missing when an optional path is absent.
+
+Missing (`undefined`) and `null` remain distinct. Nullish arithmetic and numeric
+domain failures produce missing; nullish comparisons return false. Invalid operand
+types still reject the complete action. Computed outputs must have one scalar
+type among non-null, non-missing values. Materialization reports include evaluated
+and missing row counts plus numeric/domain/bounds diagnostics; read them through
+[program inspection](../../../../inspection/). No invalid source row is silently removed.
+
+Version 2 limits depth to 64, nodes to 4,096, arguments per call to 64, and
+row-node work to 10,000,000. Strings have at most 1,048,576 UTF-16 units,
+arrays at most 100,000 elements, and cumulative value work at most 10,000,000.
+Callback functions, source strings, regular expressions, custom registries,
+getters, and executable objects are unsupported.
+
+## Parameters
+
+`createParameter({ id, value, type?, nullable? })` creates a named scalar input.
+The ID is required. Type is inferred from a non-null number, string, or boolean;
+numbers must be finite. The default `nullable` is false. To start at null, supply
+both the intended `type` and `nullable: true`. Zero, negative zero, false, and
+an empty string remain valid values. Undefined, objects, arrays, and Date values
+are invalid; convert dates to epoch milliseconds explicitly when needed.
+
+This complete ES module creates a computed column, then updates its parameter:
+
+> **Executable complete.** Run this standalone ES module; all data and imports are included. Both immutable programs own a Canvas and materialized point chart.
+
+```javascript
+import { chart } from "ggaction";
+
+const original = chart().createCanvas()
+  .createData({ id: "sales", values: [{ amount: 10 }, { amount: 20 }] })
+  .createParameter({ id: "factor", value: 2 })
+  .createComputedData({
+    id: "adjusted", as: "adjustedAmount",
+    expression: {
+      version: 2, registry: "standard@1",
+      root: {
+        type: "binary", op: "multiply",
+        left: { type: "field", name: "amount" },
+        right: { type: "parameter", id: "factor" }
+      }
+    }
+  })
+  .createScatterPlot({ id: "points", data: "adjusted", x: "amount", y: "adjustedAmount" });
+const updated = original.editParameter({ target: "factor", value: 3 });
+console.log(original.semanticSpec.datasets.at(-1).values.map(row => row.adjustedAmount)); // [20, 40]
+console.log(updated.semanticSpec.datasets.at(-1).values.map(row => row.adjustedAmount)); // [30, 60]
+```
+
+`editParameter({ target, value })` preserves the parameter's type and nullability.
+An edit has a total work limit of 10,000,000 input row operations across its
+dependent transforms; computed transforms count one operation per AST node per
+input row. The count uses the new rows after filtering. Exceeding the limit rejects
+the edit and preserves the earlier program.
+It revises all dependent datasets and chart consumers atomically, including shared
+lookup dependencies, scales, guides, and highlights. Unrelated branches stay shared.
+An unchanged value preserves revisions; negative zero and zero are distinct edits.
+A failed computation or consumer validation leaves the original program unchanged.
+
+`removeParameter({ id })` requires an existing, unreferenced parameter. Remove or
+rewrite every consuming expression first; retained datasets also count as references.
+Deletion has no cascade or force mode. Creation and v2 computed creation are available
+in Full and Basic; parameter editing and removal require Full.
+
+Parameters belong to one unit. Use an explicit `childPath` when editing a concat
+child. Facet and repeated-chart parent edits update their retained source and
+rebuild the dependent children. [Editable snapshots](../../../../data-updates/#save-and-restore-snapshots)
+preserve the parameter values and exact revisions without rerunning expressions
+when restored. Earlier runtimes reject snapshots containing unsupported parameter
+or expression versions.
 
 ## `createNormalizedData({ id, source?, field, as, groupBy?, method, ... })` {#createnormalizeddata-id-source-field-as-groupby-method}
 
