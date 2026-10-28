@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "contour-grammar": { prefix: "grammar/contour/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Grid topology, density values and closed ring boundaries require independent numeric and malformed-input evidence." },
+  "density-kernels": { prefix: "grammar/densityKernels.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "One-dimensional and contour density share the same finite kernel definitions." },
   "layout-action-dispatch": { prefix: "actions/layouts/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Shared layout edits must retain exact domain routing and atomic validation." },
   "layout-state-dispatch": { prefix: "materialization/layoutState.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored layouts must validate only their explicit owning input domain." },
   "layout-selection": { prefix: "selectors/layouts.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Layout inference must reject ambiguity and incompatible domains." },

@@ -139,6 +139,16 @@
         "path": "charts/"
       }
     ],
+    "contour": [
+      {
+        "type": "file",
+        "path": "unit/contour-layouts.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/contour-density.test.js"
+      }
+    ],
     "data": [
       {
         "type": "prefix",
