@@ -33,3 +33,5 @@ node scripts/package-consumer.js /absolute/path/to/ggaction-0.0.26.tgz
 ```
 
 정확한 source revision·hash·원 로그·독립 expected/actual와 package 정보는 [manifest](integration-evidence/manifest.json)에 고정한다. 전체 coverage/realistic·H public consumer·STEP021–031 및 Roadmap77 완료를 주장하지 않는다. Force/component packing과 domain resource·revision·codec·inspection·selection/renderer 통합은 여전히 후행 의무다.
+
+최종 source는 `dfa492dabf18a779271466a952c0ce04fde0f14e`이며, 그 revision으로 numeric/primitive receipt와 docs166/166을 다시 고정했다. 이후 변경은 생성 문서와 검증 기록뿐이므로 위 설치 검증의 정확한 tarball을 재사용한다.
