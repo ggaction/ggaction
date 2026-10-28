@@ -1,0 +1,148 @@
+{
+  "state": "focused-verified",
+  "sourceRevision": null,
+  "parents": [
+    "e3381daea85efaa2e010483769c3d0ba36204304",
+    "b1544b7c150bad7a16a43cb3c97d40f17c4b3575"
+  ],
+  "immutablePatchAlreadyIdentical": true,
+  "newRuntimeEditsForIntegration": false,
+  "inputs": {
+    "src/grammar/graph/edgeIdentity.js": "262bb327e0298334dcc27975ab8849ebd12393a9da76719b2d4101aa1c45ebbe",
+    "src/grammar/graph/metricPolicy.js": "91a44285a273ec6f772e2d7a33cd41ee7e4b0b783a73903e0d106ccdc7cf5514",
+    "src/grammar/graph/metrics.js": "8e4d6e4269043b327f449b3e93b954e54a201072d0d37e3618647b9270abd2de",
+    "src/grammar/graph/neighbors.js": "163cbc6509350231386f5cc1706d322244ab217da937f155b5e7acb42aeb8a24",
+    "src/grammar/graph/preprocess.js": "9ab13f279fc49130d30e8ecb8d1409134792166d44823430919739f488595f82",
+    "src/grammar/graph/spanning.js": "3806daae9d02ddebbbbf78572fad92f0167b8cf6a42afaac07c5d7370b9a6206",
+    "src/core/immutable.js": "b4c55131e8532a71a875387cb56dc68856fd4620e3a8d3a0defae6361c346a0c",
+    "test/unit/immutable-calculation-reuse.test.js": "0de927d55f0fc64aec7a25b704cc2acddc744efd1f36c3c14afa31de039c15c4"
+  },
+  "checks": {
+    "coreNode20": 43,
+    "coreNode22": 43,
+    "coreNode24": 43,
+    "sourcePackageDiscovery": 33,
+    "packageArtifact": 7,
+    "coveragePolicy": 7,
+    "docsPrecommit": 166,
+    "failures": 0
+  },
+  "coverage": {
+    "edgeIdentity.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "metricPolicy.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "metrics.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "neighbors.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "preprocess.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "spanning.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "entryCount": 728,
+    "size": 1081878,
+    "unpackedSize": 4995960,
+    "sha256": "cbfa66353cffc6b9a14f8518efa902d27b4df2ea75896c79247c06c4ebc5fb00",
+    "packingNode": "v20.20.2"
+  },
+  "packageMatrix": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 728,
+      "packedBytes": 1081878,
+      "unpackedBytes": 4995960
+    },
+    "22": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 728,
+      "packedBytes": 1079765,
+      "unpackedBytes": 4995960
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 728,
+      "packedBytes": 1081878,
+      "unpackedBytes": 4995960
+    }
+  },
+  "logs": {
+    "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/contracts.log.gz": {
+      "rawSha256": "b85a314b014aa323e086e17b7c5533c9339df265bdb063d90ab9727d8a65e2cc",
+      "gzipSha256": "782ae495ff2a8c9f0e84d70387739fa39f14960e7fa1b352103c5b375aa85a2e"
+    },
+    "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/coverage-node22.log.gz": {
+      "rawSha256": "ddc2b22a27607d58e14cbacf4a4c4beeb39c5a6795d881fd20c706d0f916e062",
+      "gzipSha256": "57a0fedc3ee61a5f0cd06d745739042fe4b378a6d7fdc3e833cd50f2de80e497"
+    },
+    "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/coverage-policy.log.gz": {
+      "rawSha256": "63e4dc04d1ff243f7328318c2f1e0e0d0cfb84aa60c83412245d4fa7474d4222",
+      "gzipSha256": "5bc21ca83200e52283519c785bb1907a20613fadf35db55c7446e07ea1371713"
+    },
+    "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/docs-generate.log.gz": {
+      "rawSha256": "a53d98ad394f31ebe30cdb71451a2d8e43548774cea70011cacd1b0c85ac3ca0",
+      "gzipSha256": "a1961c63fad3d33868d4d5fcd140961503829feb7e10cff3a7f5915782c86f07"
+    },
+    "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/docs-precommit.log.gz": {
+      "rawSha256": "d5ea55424fde1bd89cb56011979d7b60343d41bc6c3a1426a04aeffd89e00bba",
+      "gzipSha256": "c984f435ba7484c5e77abcede9dd521a207e9366d4e686802e0af573d98b592d"
+    },
+    "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/package-contracts.log.gz": {
+      "rawSha256": "c0d7fe1d3d013d61d1410d46a9da26358bb18c017125fc46fefa67cf0df19661",
+      "gzipSha256": "08888c88018787997cffb4a7c0026cd547ee6db735d7644c2c1800727876279b"
+    },
+    "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/package-node20.log.gz": {
+      "rawSha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "gzipSha256": "c7d8be0d040f54da51c0db9b9f42d8720156751c12573270338f37feb9b19ba8"
+    },
+    "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/package-node22.log.gz": {
+      "rawSha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "gzipSha256": "c7d8be0d040f54da51c0db9b9f42d8720156751c12573270338f37feb9b19ba8"
+    },
+    "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/package-node24.log.gz": {
+      "rawSha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "gzipSha256": "c7d8be0d040f54da51c0db9b9f42d8720156751c12573270338f37feb9b19ba8"
+    },
+    "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/unit-node20.log.gz": {
+      "rawSha256": "2d36e4bafa949ddb0a6e7a90fe357a4a21c643a8c8e53bdb4345b465d7bb528d",
+      "gzipSha256": "4315a94f873f188b3bd1eefae3f05bafd6db0592ef980ee61ffbcb7df9a41339"
+    },
+    "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/unit-node24.log.gz": {
+      "rawSha256": "9e811177d3ed3d9bc7bf09ea84681ceea996c57f88f21cadb3bc2d69dc522cbe",
+      "gzipSha256": "0f64b9ffb00e274460ded3f31d2f26d50d0a62dbe0b764da5c186e2e550a96d9"
+    }
+  },
+  "notClaimed": [
+    "Public graph API/resource/renderer support",
+    "Global coverage or realistic sweep",
+    "New installed consumer qualification"
+  ]
+}

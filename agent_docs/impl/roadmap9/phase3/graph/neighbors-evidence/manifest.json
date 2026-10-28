@@ -1,0 +1,159 @@
+{
+  "baseCommit": "a32f544a7611f3d5d1abddd98512de3e1e1582ff",
+  "environment": {
+    "platform": "darwin-arm64",
+    "node": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ]
+  },
+  "scope": "Private exact kNN/radius/similarity kernel; public STEP-030 remains open",
+  "commands": [
+    "node --test test/unit/grammar/graph/*.test.js",
+    "node --experimental-test-coverage --test-coverage-include=src/grammar/graph/*.js --test test/unit/grammar/graph/*.test.js",
+    "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js",
+    "node scripts/package-artifact.js --check"
+  ],
+  "inputs": {
+    "src/grammar/graph/neighbors.js": "87f3e0847548c68bd4eb4418537b447774c6120dc2743c5891416b6dd3cfea10",
+    "test/unit/grammar/graph/neighbors.test.js": "d56e99798276766d574f62af12be9fdafc05e879221d3a3a445165ebfeb84571",
+    "test/oracles/graphNeighbors.js": "f0ba6671be5c17e3f9d75a7c143a0682d5e9e6015773c302ad1faff3e52405a3",
+    "scripts/package-artifact.js": "4c0778dd96bed0351ea0f886ad2dbd2fb8d460d5fe913349a36ccaba06e506c3"
+  },
+  "checks": [
+    {
+      "log": "graph-neighbors-contracts.log.gz",
+      "status": "passed",
+      "rawSha256": "1044656a70d1af0e34816bd00f05ca8a4f04af68f828d96200b127be58ed4202",
+      "gzipSha256": "ec0cc42f4a0bc7619acbf4d8805a4b4799999f43be5ed021d51d08279eeeb59d",
+      "tests": {
+        "tests": 40,
+        "pass": 40,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "graph-neighbors-coverage-2.log.gz",
+      "status": "failed; null-options assertion used incorrect error wording, runtime unchanged",
+      "rawSha256": "f5f6d839595274835b85090dfe523dd072795af066b3cd97811c305bc9194a00",
+      "gzipSha256": "9b62e2ba399ed85f9c9b3d41a6e64dd5fa6aa8edcf01cb4d758aa3777744ff21",
+      "tests": {
+        "tests": 27,
+        "pass": 26,
+        "fail": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "graph-neighbors-coverage-final.log.gz",
+      "status": "passed",
+      "rawSha256": "441bc0e99afe59aeeed4cb9a117bd7155076f5791e398fcae19cc0fc929a733f",
+      "gzipSha256": "4d7d6c70f6e734741e050a53437d23ac6581042a2f3ab039f719dee359e191a5",
+      "tests": {
+        "tests": 27,
+        "pass": 27,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "graph-neighbors-coverage.log.gz",
+      "status": "passed",
+      "rawSha256": "805ce530fb71dd261d5189abcc847a33d4e1f38b3f41430b30e4c456e95e6c47",
+      "gzipSha256": "afc3a886cbd1eb77c312edbcada49851a71bec0eee9904d0fbec551186bea3d0",
+      "tests": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "graph-neighbors-package-entry.log.gz",
+      "status": "failed previous package ceiling; preserved measurement",
+      "rawSha256": "81e4dc1cb25147999a678fcba10592dd63056acc4d44ea384ee8c903a6ad37d3",
+      "gzipSha256": "c618bfabb24e03777810146523e656da1cce5d1455c2eee17b4dbfa6d5d7b8b5",
+      "tests": {}
+    },
+    {
+      "log": "graph-neighbors-package-initial.log.gz",
+      "status": "failed previous package ceiling; preserved measurement",
+      "rawSha256": "ee115aba3ce59b0c24f7dc6283af050fb147145a2847c805b23b5606908125f1",
+      "gzipSha256": "1ef10a2ddfc94009767c20238a078317e0a1e4f2501d7bb56193ea511b934eec",
+      "tests": {}
+    },
+    {
+      "log": "graph-neighbors-package-node20-old-ceiling.log.gz",
+      "status": "failed previous package ceiling; preserved measurement",
+      "rawSha256": "82ecc843b3c3d017bf179ca732e475ac4302d206d5cbc407f53659d216fa2a8b",
+      "gzipSha256": "44e4a358dd950cb08cb276977fcb05136d4907e5656c6252ae503e1d24e5aa83",
+      "tests": {}
+    },
+    {
+      "log": "graph-neighbors-package-node20.log.gz",
+      "status": "passed",
+      "rawSha256": "f264a1deb5cb1b373d6147ec5db472fff19b41318af299fa4172c9c64c27177b",
+      "gzipSha256": "f120c99c13cb22cf8151b8e4363f3b90eb1ccff4a6c62c4501e4f51f299f3aa9",
+      "tests": {}
+    },
+    {
+      "log": "graph-neighbors-package-node22.log.gz",
+      "status": "passed",
+      "rawSha256": "6cd6ff77a9370ea5bfc9c4a78df049924e265be7fdce7b3eebc1c87a10057752",
+      "gzipSha256": "8de672d817f8d6632ae4d3ca38f6e8e37aab1c1b2b307327fbee48f59da7c31d",
+      "tests": {}
+    },
+    {
+      "log": "graph-neighbors-package-node24-old-ceiling.log.gz",
+      "status": "failed previous package ceiling; preserved measurement",
+      "rawSha256": "aa08b82ba61a72e33803d9d9f67855370124a6f86adcf8ed95e631593350a502",
+      "gzipSha256": "eab101ef4c3c6b1dcee61deb647b371ef86bc0b6d7d537649d6ee02b7387753c",
+      "tests": {}
+    },
+    {
+      "log": "graph-neighbors-package-node24.log.gz",
+      "status": "passed",
+      "rawSha256": "f264a1deb5cb1b373d6147ec5db472fff19b41318af299fa4172c9c64c27177b",
+      "gzipSha256": "f120c99c13cb22cf8151b8e4363f3b90eb1ccff4a6c62c4501e4f51f299f3aa9",
+      "tests": {}
+    },
+    {
+      "log": "graph-neighbors-unit-node20.log.gz",
+      "status": "passed",
+      "rawSha256": "e05a7c03581f92f9e477cb026e2c8765f5889453edb1e3c3300e374477e48b5a",
+      "gzipSha256": "362af7b30eb38c2c5083cc88db6e79134c00ec103653b3203a6bd117db9c6f4c",
+      "tests": {
+        "tests": 27,
+        "pass": 27,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "graph-neighbors-unit-node24.log.gz",
+      "status": "passed",
+      "rawSha256": "973bb316bb59007a27143554cc7976f6043bff0877cc6ba350101b16d5796e51",
+      "gzipSha256": "0dc6a3e54819517c7b1be0951789af674ccfb5514fdc586fd8b15000cac4aab1",
+      "tests": {
+        "tests": 27,
+        "pass": 27,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "graph-neighbors-unit.log.gz",
+      "status": "passed",
+      "rawSha256": "13d1ee3b9905cc774ac2dbdb8564171f41faa542ba8b9e74a038b8f1a460abb8",
+      "gzipSha256": "47ff053e6a0f84c81fa82f8e3f7aa25a8ab01db486dd1895847e3debb4bc9636",
+      "tests": {
+        "tests": 27,
+        "pass": 27,
+        "fail": 0,
+        "skipped": 0
+      }
+    }
+  ]
+}

@@ -71,6 +71,21 @@ geometry를 소유한다. Polygon/circle contour는 한 nonzero compound fill로
 stored graphic schema, action 또는 renderer에 연결하지 않았으며 별도 registry를 만들지 않는다.
 숫자·방향·경계 증거는 capability test `test/unit/grammar/patterns.test.js`가 소유한다.
 
+## 내부 graph metric 계산 경계
+
+`grammar/graph/metricPolicy.js`는 metric과 입력 vector의 닫힌 정규형,
+`metrics.js`는 거리·유사도 계산, `preprocess.js`는 결측 정책과 수치 전처리 통계,
+`edgeIdentity.js`는 명시 rule/typed endpoint에서 inferred edge identity를 만드는 순수 owner다.
+기존 typed item identity, descriptor 검사, finite sum과 자원 한도를 공유한다.
+이 owner들은 명시 입력만 받고 frozen 결과를 반환하며, 공개 entry나 ChartProgram state,
+materialization 또는 renderer에 연결하지 않았다. Field 추출, graph resource와 kNN/threshold
+토폴로지의 공개 통합은 별도 domain owner의 남은 작업이다. `neighbors.js`는 정규화된 feature에서
+kNN/radius/similarity의 exact pair를 고르고 raw source index와 stable endpoint identity를 반환한다.
+`spanning.js`는 같은 metric preparation으로 complete graph 또는 명시 weighted candidate에서
+deterministic Kruskal tree/forest와 component/cost를 계산한다. 원격 자원이나 layout을 해석하지 않는다.
+공통 graph model이나 source row provenance를 중복 생성하지 않으며 domain adapter가 이를 연결한다. 검증 범위는
+[metric kernel checkpoint](impl/roadmap9/phase3/graph/METRICS_KERNEL.md)에 기록한다.
+
 ## Pivot data lifecycle
 
 `grammar/pivot.js`는 명시 typed columns와 group tuple을 받아 수치 cell을 계산하는 pure owner다.

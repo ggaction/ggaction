@@ -13,6 +13,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "svg-image-validation": { prefix: "resources/svgImage", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Static SVG parsing, local resource identity and decoder budgets must reject active content before host work." },
   "image-preparation": { prefix: "resources/resolveAssets", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Asset bytes, identity, abort and export eligibility must remain exercised before host callbacks." },
   "image-placement": { prefix: "materialization/image", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image fit and viewport clipping must share finite, aspect-preserving concrete geometry." },
+  "graph": { prefix: "grammar/graph/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Typed graph metrics and preprocessing must preserve finite values, missing policies and bounded work." },
   "source-preparation": { prefix: "resources/", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Host input, opaque preparation and freshness must be validated before application." },
   "source-grammar": { prefix: "grammar/dataSource", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Parsing, retained payload and request proofs must agree without host execution." },
   "source-actions": { prefix: "actions/data/source", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Prepared source planning and exact child contexts preserve atomic application." },
