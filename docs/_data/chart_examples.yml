@@ -1706,6 +1706,22 @@
   actions: createRectMark · editRectMark
   tasks: appearance
   url: /api/appearance/mark-style/
+
+- id: mark-outlines
+  example: /examples/mark-outlines/
+  title: Outlines and text halos
+  image: /assets/images/mark-outlines.png
+  alt: A blue rectangle with a purple outline on a pale background
+  width: 560
+  height: 400
+  thumbnail: /assets/images/mark-outlines-thumb.png
+  thumbnail_width: 560
+  thumbnail_height: 400
+  caption: The outline is painted before the fill and preserves the original data item.
+  summary: Add pre-fill outlines and text halos to filled marks.
+  actions: createRectMark · createTextMark · editTextMark
+  tasks: appearance
+  url: /api/appearance/mark-style/
 - id: image-assets
   example: /examples/image-assets/
   title: Retained image placement

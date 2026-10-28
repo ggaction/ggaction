@@ -48,17 +48,17 @@ interface ChartProgramActions {
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
-  createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: { target?: string; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editPointMark(options: { target?: string; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: { target?: string; blend?: "normal" | "difference"; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
-  createAreaMark(options?: { id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
-  createArcMark(options?: { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editArcMark(options: { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  createBarMark(options?: { id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: { target?: string; blend?: "normal" | "difference"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+  createAreaMark(options?: { id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
+  createArcMark(options?: { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editArcMark(options: { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
@@ -73,7 +73,7 @@ interface ChartProgramActions {
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
-  editAreaMark(options: { target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
+  editAreaMark(options: { target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeY(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
@@ -1488,7 +1488,7 @@ belong only to the previous mode before validating the final definition.
 ### `createPointMark`
 
 ```javascript
-createPointMark({ clip?, id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ clip?, id?, data?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a point mark using fourteen named shapes or polygons with area/radius normalization.
@@ -1497,7 +1497,7 @@ Create a point mark using fourteen named shapes or polygons with area/radius nor
 ### `editPointMark`
 
 ```javascript
-editPointMark({ clip?, target?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? })
+editPointMark({ clip?, target?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
@@ -1599,7 +1599,7 @@ concrete path commands without changing field encodings. [Marks](../api/marks.md
 ### `createBarMark`
 
 ```javascript
-createBarMark({ clip?, id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createBarMark({ clip?, id?, data?, orientation?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection.
@@ -1613,7 +1613,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `editBarMark`
 
 ```javascript
-editBarMark({ clip?, target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
+editBarMark({ clip?, target?, blend?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit whole-bar appearance and rematerialize every concrete rectangle.
@@ -1633,7 +1633,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `createAreaMark`
 
 ```javascript
-createAreaMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
+createAreaMark({ clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
@@ -1646,7 +1646,7 @@ Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured e
 ### `editAreaMark`
 
 ```javascript
-editAreaMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
+editAreaMark({ clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 ```
 
 Edit constant area appearance. `stroke: false` removes an existing outline.
@@ -1655,7 +1655,7 @@ Edit constant area appearance. `stroke: false` removes an existing outline.
 ### `createArcMark`
 
 ```javascript
-createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic arc mark and empty closed-path collection. Direct
@@ -1666,7 +1666,7 @@ radial sectors. [Marks](../api/marks/line-area.md#arc-marks)
 ### `editArcMark`
 
 ```javascript
-editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? })
+editArcMark({ target?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit arc geometry or appearance and rematerialize complete sector paths.
@@ -1695,7 +1695,7 @@ accepts the same styles. [Rule marks](../api/marks/rule.md)
 ### `createRectMark`
 
 ```javascript
-createRectMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createRectMark({ clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic rect mark and empty rect collection. Two discrete x/y bands
@@ -1711,7 +1711,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `editRectMark`
 
 ```javascript
-editRectMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth? })
+editRectMark({ clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit rect appearance and rematerialize complete cells. Constant fill conflicts
@@ -1906,7 +1906,7 @@ Omit `layout` or pass `false` to retain the exact anchor. A layout object accept
 ### `createTextMark`
 
 ```javascript
-createTextMark({ clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -1931,7 +1931,7 @@ centers the entire block vertically. Empty internal lines are retained.
 ### `editTextMark`
 
 ```javascript
-editTextMark({ clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+editTextMark({ clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
 ```
 
 Edit text typography and graphical offsets without changing its semantic

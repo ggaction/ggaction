@@ -103,6 +103,11 @@
       "type": "FillPaint | undefined"
     },
     {
+      "name": "outline",
+      "required": false,
+      "type": "false | MarkOutline | undefined"
+    },
+    {
       "name": "opacity",
       "required": false,
       "type": "number | undefined"
@@ -164,7 +169,7 @@
     }
   ],
   "callPatterns": [
-    "createRectMark({ id?, data?, target?, clip?, missing?, fill?, opacity?, stroke? })"
+    "createRectMark({ id?, data?, target?, clip?, missing?, fill?, outline?, opacity? })"
   ],
   "snippet": "program.createRectMark({})",
   "errors": [],

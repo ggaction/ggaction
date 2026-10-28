@@ -1,3 +1,4 @@
+import { requestedMarkOutline } from "../../../grammar/markOutline.js";
 import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
 import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
 import { getLayerScaleIds } from "../../../materialization/marks/index.js";
@@ -43,7 +44,7 @@ import {
 } from "../../../grammar/strokeStyle.js";
 
 const AREA_OPTIONS = Object.freeze([
-  "clip", "fill", "opacity", "stroke", "strokeWidth", "curve",
+  "clip", "fill", "opacity", "outline", "stroke", "strokeWidth", "curve",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...AREA_OPTIONS]);
@@ -114,7 +115,8 @@ const createAreaMark = /* @__PURE__ */ action(
         opacity,
         ...(Object.hasOwn(args, "curve") ? { curve } : {}),
         ...(stroke === undefined ? {} : { stroke, strokeWidth }),
-        ...strokeDetails
+        ...strokeDetails,
+        ...requestedMarkOutline(args)
       });
     return materializeInheritedMark(created, id);
   }
@@ -247,7 +249,7 @@ const editAreaMark = /* @__PURE__ */ action(
     requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "editAreaMark");
     const changes = [
-      "clip", "fill", "opacity", "stroke", "strokeWidth", "curve", "missing",
+      "clip", "fill", "opacity", "outline", "stroke", "strokeWidth", "curve", "missing",
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!changes.some(key => Object.hasOwn(args, key))) {
@@ -282,7 +284,7 @@ const editAreaMark = /* @__PURE__ */ action(
 
     validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
     let config = { ...this.markConfigs[layer.id], ...requestedMarkClip(args) };
-    Object.assign(config, strokeDetails);
+    Object.assign(config, strokeDetails, requestedMarkOutline(args));
     if (Object.hasOwn(args, "fill")) {
       config.fill = validateFillPaint(args.fill, "Area fill");
       if (config.errorBand !== undefined) config.errorBand = { ...config.errorBand, fill: config.fill };

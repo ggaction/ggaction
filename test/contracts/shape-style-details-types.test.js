@@ -155,8 +155,10 @@ p.createArcMark({ cornerRadius: 2 });
 p.createRuleMark({ cornerRadius: 2 });
 // @ts-expect-error corner radius belongs only to Bar and Rect families
 p.createTickMark({ cornerRadius: 2 });
-// @ts-expect-error Text has no stroke-detail contract
-p.createTextMark({ lineJoin: "round" });
+// Text outline uses the same closed stroke-detail vocabulary.
+p.createTextMark({ outline: { color: "white", width: 3 }, lineJoin: "round" });
+// @ts-expect-error closed line-join vocabulary also applies to Text
+p.createTextMark({ lineJoin: "sharp" });
 // @ts-expect-error Text has no corner-radius contract
 p.editTextMark({ cornerRadius: 2 });
 // @ts-expect-error gradient center is a Rule family, not a Rect family

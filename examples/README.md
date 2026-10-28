@@ -618,6 +618,12 @@ Fill marks with repeated patterns or object-bound radial gradients.
 
 Representative actions: `createRectMark`, `editRectMark`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/).
 
+### [Outlines and text halos](./mark-outlines/)
+
+Add pre-fill outlines and text halos to filled marks.
+
+Representative actions: `createRectMark`, `createTextMark`, `editTextMark`. [Documentation](https://ggaction.github.io/ggaction/api/appearance/mark-style/).
+
 ### [Retained image placement](./image-assets/)
 
 Prepare one source, place an image mark, and render from retained bytes.

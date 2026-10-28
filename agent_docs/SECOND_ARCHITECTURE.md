@@ -3167,3 +3167,29 @@ paint resource를 소비한다. 정확한 값/제한/출력 차이는 current/MA
 최소 한도는803/1,184,000/5,438,000으로 조정했다. Full gzip590,274는591,000으로만
 변경하고 Basic342,113은343,000 한도 안이다. Search900,853bytes는901,000 한도로 반영한다.
 이전 한도 통과로 보고하지 않는다.
+### Pre-fill outline ownership
+
+외곽선 요청은 기존 mark appearance config 한 곳에 저장하고 `grammar/markOutline.js`가 닫힌 값을 검증한다.
+각 domain materializer가 호출하는 기존 final mark-output 단계에서 concrete outline을 명시적으로 적용한다.
+일반 stroke 값은 복원을 위해 유지하며 renderer가 outline 우선순위와 contour→fill 순서를 소비한다.
+Selection의 명시적인 stroke highlight만 일시적으로 outline을 제거한다. Point packing/jitter는 동일한
+가시 edge 폭을 배치 전에 사용하고, 범례·라벨은 완성된 owner에서 경계를 읽는다. Text는 기존 glyph
+line/origin을 유지하며 partial opacity isolation은 visible frame 안의 실제 글자를 보존한다. 공유 image
+schema나 새 semantic compiler를 도입하지 않는다. 정확한 공개 계약과 소비자 차이는
+[MARKS](contract/current/MARKS.md#pre-fill-outlines-and-halos)가 소유한다.
+
+이 outline checkpoint의 runtime owner2개로 packed entries761→763을 실측했다. Canonical staging 최대값은
+Node20/24 packed1,131,929, unpacked5,212,872bytes이며 한도는763/1,132,000/5,213,000으로 최소 조정한다.
+지원 Node의 설치 bundle 최대 실측 Full556,491/Basic333,073bytes에 따라 한도는557,000/334,000이다.
+SVG25,000은 유지하며 기존 한도의 최초 실패와 실제 소비 archive는
+[OUTLINE](impl/roadmap9/phase4/paints/OUTLINE.md)에 보존한다.
+
+Outline과 image/H 통합(기준 `02e2f63ef`)은 양쪽 owner를 유지한다. 같은 chart에 hierarchy resource,
+outline mark, retained image를 두고 source revision·codec·prepared image stale preflight·Canvas scene을
+교차 검증한다. 합산 canonical packed entry794, Node20 packed1,177,323/unpacked5,410,308bytes에 맞춰
+한도는794/1,178,000/5,411,000이다. 합산 Full gzip581,143은 기존581,000을143bytes 초과하여582,000만
+허용하고 Basic342,894/SVG는 기존343,000/25,000 안에 있다. 개별 기능의 이전 측정을 합산 결과로 대신하지 않는다.
+
+통합 search-index 실측896,003bytes는 이전896,000을3bytes 초과한다. 현재 모든 페이지/액션을 유지하며
+공유 canonical search cap만 최소1000단위897,000으로 조정한다. 최초 source2개 및 built 링크 검사 실패와
+해당 입력 수정 뒤 재검증 결과는 outline 통합 evidence가 보존한다.

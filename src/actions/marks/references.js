@@ -39,7 +39,7 @@ const LINE_STYLE = Object.freeze([
   "stroke", "strokeWidth", "strokeDash", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const BAND_STYLE = Object.freeze([
-  "fill", "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
+  "fill", "opacity", "outline", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
 ]);
 const MATERIALIZE_OPTIONS = Object.freeze(["id"]);
 

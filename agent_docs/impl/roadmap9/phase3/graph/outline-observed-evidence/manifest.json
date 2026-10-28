@@ -1,0 +1,267 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-28",
+  "status": "verified-integration-checkpoint",
+  "scope": "Observed graphs with retained image, hierarchy and outline; Roadmap9 remains incomplete",
+  "runtimeSourceCommit": "c8db2bae74c5f70214a82657ee07b30d8888d9d5",
+  "parents": [
+    "085ad6994",
+    "20fbe3819"
+  ],
+  "results": {
+    "contractsPassed": 722,
+    "focused": {
+      "initialPassed": 64,
+      "initialFailed": 1,
+      "reason": "Expected discovered test count 33 changed to 34; repaired canonical count",
+      "mixedAndDiscoveryFinalPassed": 18
+    },
+    "realistic": {
+      "initialPassed": 29,
+      "initialFailed": 1,
+      "reason": "Combined public option inventory changed; regenerated exact counts",
+      "inventoryFinalPassed": 7
+    },
+    "docs": {
+      "initialPassed": 168,
+      "initialFailed": 1,
+      "reason": "Merged snippet registry omitted approved outline example; restored canonical entry",
+      "affectedFinalPassed": 18,
+      "builtPages": 153,
+      "selectiveArtifacts": 1294,
+      "responsiveWidths": [
+        320,
+        390,
+        768
+      ],
+      "desktopSearchAndAxePassed": true
+    },
+    "installed": [
+      {
+        "nodeMajor": 20,
+        "namedChecks": 69,
+        "browserBundles": {
+          "full": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 705,
+            "minifiedBytes": 2085415,
+            "gzipBytes": 585905
+          },
+          "basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 475,
+            "minifiedBytes": 1178026,
+            "gzipBytes": 342904
+          },
+          "svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 31,
+            "minifiedBytes": 53088,
+            "gzipBytes": 18248
+          }
+        },
+        "peerMode": "locked"
+      },
+      {
+        "nodeMajor": 22,
+        "namedChecks": 69,
+        "browserBundles": {
+          "full": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 705,
+            "minifiedBytes": 2085415,
+            "gzipBytes": 585190
+          },
+          "basic": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 475,
+            "minifiedBytes": 1178026,
+            "gzipBytes": 342152
+          },
+          "svg": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 31,
+            "minifiedBytes": 53088,
+            "gzipBytes": 18122
+          }
+        },
+        "peerMode": "locked"
+      }
+    ],
+    "fullUnitAndCoverageRepeated": false,
+    "node24Repeated": false
+  },
+  "reuse": {
+    "observed": "../observed-public-evidence/manifest.json",
+    "outline": "../../../phase4/paints/outline-integration-evidence/manifest.json",
+    "note": "Parent capability, renderer and coverage evidence is retained. This integration reruns combined contracts, realistic lifecycle, mixed renderers and two installed Node versions; it does not claim a fresh full release matrix."
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 798,
+    "packedBytes": 1178619,
+    "unpackedBytes": 5428405,
+    "sha1": "3ad3be77ef0a442206fd02a5aa3e317cd9fff36c",
+    "sha256": "ad687eb573086a42d52c40af19cd66ef5d5ce17061427e83546378973e4359ba",
+    "packedBytesNode20": 1180640,
+    "limits": {
+      "entries": 798,
+      "packedBytes": 1181000,
+      "unpackedBytes": 5429000,
+      "fullGzip": 586000,
+      "basicGzip": 343000,
+      "svgGzip": 25000
+    }
+  },
+  "mixedLifecycle": "One source updates observed graph and hierarchy once; tree/treemap, outlined points and retained images preserve lineage, exact render/scene, codec and stale preparation rules.",
+  "logs": [
+    {
+      "file": "outline-observed-browser.log.gz",
+      "sha256": "b3cd704e2c59feee4afeb77aeff6a8746f1cdfca7d74619229979efdf7bb0819",
+      "uncompressedBytes": 157
+    },
+    {
+      "file": "outline-observed-build.log.gz",
+      "sha256": "b1528beb6ad02d95aa42014da46c4915f87b57f757498e6135ef36bfb8244b3f",
+      "uncompressedBytes": 420
+    },
+    {
+      "file": "outline-observed-built.log.gz",
+      "sha256": "e733d8c50b17c3c43dd0cd48709768ea06982dcf8f5ff892e7a0ff74b253c3ae",
+      "uncompressedBytes": 179
+    },
+    {
+      "file": "outline-observed-bundle20.log.gz",
+      "sha256": "f1b5bf097df7465ccf6acef50f6dcec7e9331919ff1bc710069c380f21adc0a9",
+      "uncompressedBytes": 559
+    },
+    {
+      "file": "outline-observed-consumer20-stderr.log.gz",
+      "sha256": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837",
+      "uncompressedBytes": 0
+    },
+    {
+      "file": "outline-observed-consumer20.log.gz",
+      "sha256": "1659ca57454283b6458f08855f2d439d7aaa3ff25589d5bdb9f3f958a1d28c48",
+      "uncompressedBytes": 2881
+    },
+    {
+      "file": "outline-observed-consumer22-stderr.log.gz",
+      "sha256": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837",
+      "uncompressedBytes": 0
+    },
+    {
+      "file": "outline-observed-consumer22.log.gz",
+      "sha256": "66d8a671bbdbdfcaddbd837a48bd0eab8cd6c259e2b1fcef150320a5fea14c91",
+      "uncompressedBytes": 2881
+    },
+    {
+      "file": "outline-observed-contracts.log.gz",
+      "sha256": "73e9fb7792d7777183ffc48822fd88f4479eb1703232907b3fde2b8cc2c3e9ac",
+      "uncompressedBytes": 153678
+    },
+    {
+      "file": "outline-observed-docs-coverage-final.log.gz",
+      "sha256": "69df4ef3486d9db6793e33813bffe1e214fa9c3ea1f4caba2be8563f077d446a",
+      "uncompressedBytes": 4239
+    },
+    {
+      "file": "outline-observed-docs.log.gz",
+      "sha256": "216e954ac2c9c83272a0947248fa983d7f6385c0e2f7c4325aaebf0b56f0a59e",
+      "uncompressedBytes": 39876
+    },
+    {
+      "file": "outline-observed-final-generate.log.gz",
+      "sha256": "fcfadc08ba0e39ba61bbcd0b6d34c2174e47871f2fde5e8f054bd0a2e7437838",
+      "uncompressedBytes": 208
+    },
+    {
+      "file": "outline-observed-final-inventory-tests.log.gz",
+      "sha256": "f158c6d0e7f7733c018b08a38d8825d8c32fecfb9acdcef09a6d556a37cfc544",
+      "uncompressedBytes": 1722
+    },
+    {
+      "file": "outline-observed-final-package22-stderr.log.gz",
+      "sha256": "4d3620aac5dce3b4de660cec821323c2b66fa4a11dc17553d036a24b1996ae4c",
+      "uncompressedBytes": 208
+    },
+    {
+      "file": "outline-observed-final-package22.json.gz",
+      "sha256": "9034b54d6cd6a7c356453fd4c7be01a5fd619a97141fcfca719d4c91781aeeb5",
+      "uncompressedBytes": 418
+    },
+    {
+      "file": "outline-observed-focused.log.gz",
+      "sha256": "3b84b8be36cc1db0562afed5b3228a0611038e2fdd8c79a9d7a7c75e0206d954",
+      "uncompressedBytes": 15497
+    },
+    {
+      "file": "outline-observed-generate.log.gz",
+      "sha256": "8f3eda8c229e7d9bcf1c8d75a6712e70cab8d45b4c2b4ce68a0d43552195ce54",
+      "uncompressedBytes": 10583
+    },
+    {
+      "file": "outline-observed-inventory.json.gz",
+      "sha256": "5ccb60c3bbd4670812ca6fb483cab7a993a12290cc6463bbc492354924e6fcce",
+      "uncompressedBytes": 467
+    },
+    {
+      "file": "outline-observed-measure20-stderr.log.gz",
+      "sha256": "4d3620aac5dce3b4de660cec821323c2b66fa4a11dc17553d036a24b1996ae4c",
+      "uncompressedBytes": 208
+    },
+    {
+      "file": "outline-observed-measure20.json.gz",
+      "sha256": "b9cc5639439033881ab88ce1497663913bf66f99af48a53a30c9669a59734c8f",
+      "uncompressedBytes": 65
+    },
+    {
+      "file": "outline-observed-merge.log.gz",
+      "sha256": "5ffba96cbe75d751d5d76e75913ab7160caea186dd623a3a1bac9887551663ec",
+      "uncompressedBytes": 3012
+    },
+    {
+      "file": "outline-observed-mixed-final.log.gz",
+      "sha256": "8792c36f786aca1b0ac07cc467319261fc5eee23b3d581165f3658f7e0efd223",
+      "uncompressedBytes": 3763
+    },
+    {
+      "file": "outline-observed-package22-stderr.log.gz",
+      "sha256": "4d3620aac5dce3b4de660cec821323c2b66fa4a11dc17553d036a24b1996ae4c",
+      "uncompressedBytes": 208
+    },
+    {
+      "file": "outline-observed-package22.json.gz",
+      "sha256": "9034b54d6cd6a7c356453fd4c7be01a5fd619a97141fcfca719d4c91781aeeb5",
+      "uncompressedBytes": 418
+    },
+    {
+      "file": "outline-observed-realistic.log.gz",
+      "sha256": "0e318becb7a8623771b0f52daa2e73ed3fe4a227e49bc9725bc3d172d16d051e",
+      "uncompressedBytes": 7592
+    },
+    {
+      "file": "outline-observed-snippet-generate.log.gz",
+      "sha256": "fe079106d22b1d109fd2c34e8822079e1e053d0ac1c86907f46cad0cd1f73ad1",
+      "uncompressedBytes": 222
+    },
+    {
+      "file": "outline-observed-navigation.log.gz",
+      "sha256": "7ea73562bd39bc9b4736535a85e4c2bb437a0640089eacb80c72d9e9843c749b",
+      "uncompressedBytes": 1497
+    }
+  ],
+  "remaining": [
+    "Graph layout and graph plot public integration",
+    "Blend, shadow, fonts and Partition follow-up checkpoints",
+    "Roadmap9 through STEP-077"
+  ]
+}

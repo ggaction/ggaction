@@ -1161,7 +1161,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editPointMark` and encoding actions; shared structured fill paint follows the owning mark editor",
+      "update": "`editPointMark` and encoding actions; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1341,7 +1341,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editTextMark` and `encodeText`; shared structured fill paint follows the owning mark editor",
+      "update": "`editTextMark` and `encodeText`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1359,7 +1359,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits typography, alignment, rotation, and offsets",
+      "update": "Edits typography, alignment, rotation, and offsets; pre-fill outline removal restores stored ordinary stroke",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1413,7 +1413,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits constant point shape and appearance",
+      "update": "Edits constant point shape and appearance; pre-fill outline removal restores stored ordinary stroke",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1575,7 +1575,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editBarMark`; shared structured fill paint follows the owning mark editor",
+      "update": "`editBarMark`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1593,7 +1593,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits whole-bar appearance and normal, multiply, screen, or difference compositing",
+      "update": "Edits whole-bar appearance and normal, multiply, screen, or difference compositing; pre-fill outline removal restores stored ordinary stroke",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1611,7 +1611,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editAreaMark`; shared structured fill paint follows the owning mark editor",
+      "update": "`editAreaMark`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1665,7 +1665,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits constant area appearance",
+      "update": "Edits constant area appearance; pre-fill outline removal restores stored ordinary stroke",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4149,7 +4149,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editArcMark`; shared structured fill paint follows the owning mark editor",
+      "update": "`editArcMark`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4167,7 +4167,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits arc geometry and appearance",
+      "update": "Edits arc geometry and appearance; pre-fill outline removal restores stored ordinary stroke",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -5301,7 +5301,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editRectMark` and position/color encodings; shared structured fill paint follows the owning mark editor",
+      "update": "`editRectMark` and position/color encodings; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -5319,7 +5319,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits rect appearance",
+      "update": "Edits rect appearance; pre-fill outline removal restores stored ordinary stroke",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

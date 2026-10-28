@@ -1,0 +1,9122 @@
+[
+  {
+    "variant": "circle-halo",
+    "primitivePublicPair": true,
+    "nativeMaximumDifference": 0,
+    "browserMaximumDifference": 0,
+    "fontSHA256": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+    "nativeAdvance": 84,
+    "browserAdvance": 84,
+    "group": null,
+    "pdfRasterImages": 0,
+    "bounds": [
+      {
+        "backend": "Native Canvas / PNG",
+        "expected": {
+          "left": 96,
+          "right": 184,
+          "top": 66,
+          "bottom": 154
+        },
+        "inkPixels": 6169,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser Canvas",
+        "expected": {
+          "left": 96,
+          "right": 184,
+          "top": 66,
+          "bottom": 154
+        },
+        "inkPixels": 6166,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser SVG",
+        "expected": {
+          "left": 96,
+          "right": 184,
+          "top": 66,
+          "bottom": 154
+        },
+        "inkPixels": 6166,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Native PDF",
+        "expected": {
+          "left": 96,
+          "right": 184,
+          "top": 66,
+          "bottom": 154
+        },
+        "inkPixels": 6180,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PNG",
+        "expected": {
+          "left": 96,
+          "right": 184,
+          "top": 66,
+          "bottom": 154
+        },
+        "inkPixels": 6169,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "expected": {
+          "left": 96,
+          "right": 184,
+          "top": 66,
+          "bottom": 154
+        },
+        "inkPixels": 6166,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public SVG",
+        "expected": {
+          "left": 96,
+          "right": 184,
+          "top": 66,
+          "bottom": 154
+        },
+        "inkPixels": 6166,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PDF",
+        "expected": {
+          "left": 96,
+          "right": 184,
+          "top": 66,
+          "bottom": 154
+        },
+        "inkPixels": 6180,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      }
+    ],
+    "checks": [
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          140,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          140,
+          151
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          140,
+          158
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          181,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          100,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          140,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          140,
+          151
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          140,
+          158
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          181,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          100,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          140,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          140,
+          151
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          140,
+          158
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          181,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          100,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          140,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          140,
+          151
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          140,
+          158
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          181,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          100,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          140,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          140,
+          151
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          140,
+          158
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          181,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          100,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          140,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          140,
+          151
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          140,
+          158
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          181,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          100,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          140,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          140,
+          151
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          140,
+          158
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          181,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          100,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          140,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          140,
+          151
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          140,
+          158
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          181,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          100,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      }
+    ]
+  },
+  {
+    "variant": "clip",
+    "primitivePublicPair": true,
+    "nativeMaximumDifference": 0,
+    "browserMaximumDifference": 0,
+    "fontSHA256": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+    "nativeAdvance": 84,
+    "browserAdvance": 84,
+    "group": null,
+    "pdfRasterImages": 0,
+    "bounds": [
+      {
+        "backend": "Native Canvas / PNG",
+        "expected": {
+          "left": 90,
+          "right": 195,
+          "top": 76,
+          "bottom": 140
+        },
+        "inkPixels": 6720,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser Canvas",
+        "expected": {
+          "left": 90,
+          "right": 195,
+          "top": 76,
+          "bottom": 140
+        },
+        "inkPixels": 6720,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser SVG",
+        "expected": {
+          "left": 90,
+          "right": 195,
+          "top": 76,
+          "bottom": 140
+        },
+        "inkPixels": 6720,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Native PDF",
+        "expected": {
+          "left": 90,
+          "right": 195,
+          "top": 76,
+          "bottom": 140
+        },
+        "inkPixels": 6784,
+        "boundaryTouchPixels": 64,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PNG",
+        "expected": {
+          "left": 90,
+          "right": 195,
+          "top": 76,
+          "bottom": 140
+        },
+        "inkPixels": 6720,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "expected": {
+          "left": 90,
+          "right": 195,
+          "top": 76,
+          "bottom": 140
+        },
+        "inkPixels": 6720,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public SVG",
+        "expected": {
+          "left": 90,
+          "right": 195,
+          "top": 76,
+          "bottom": 140
+        },
+        "inkPixels": 6720,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PDF",
+        "expected": {
+          "left": 90,
+          "right": 195,
+          "top": 76,
+          "bottom": 140
+        },
+        "inkPixels": 6784,
+        "boundaryTouchPixels": 64,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      }
+    ],
+    "checks": [
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          95,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          85,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          192,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          198,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          95,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          95,
+          142
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          95,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          85,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          192,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          198,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          95,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          95,
+          142
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          95,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          85,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          192,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          198,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          95,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          95,
+          142
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          95,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          85,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          192,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          198,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          95,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          95,
+          142
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          95,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          85,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          192,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          198,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          95,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          95,
+          142
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          95,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          85,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          192,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          198,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          95,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          95,
+          142
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          95,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          85,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          192,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          198,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          95,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          95,
+          142
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          95,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          85,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          192,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          198,
+          100
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          95,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          95,
+          142
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      }
+    ]
+  },
+  {
+    "variant": "path-outline",
+    "primitivePublicPair": true,
+    "nativeMaximumDifference": 0,
+    "browserMaximumDifference": 0,
+    "fontSHA256": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+    "nativeAdvance": 84,
+    "browserAdvance": 84,
+    "group": null,
+    "pdfRasterImages": 0,
+    "bounds": [
+      {
+        "backend": "Native Canvas / PNG",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 66,
+          "bottom": 144
+        },
+        "inkPixels": 5582,
+        "boundaryTouchPixels": 4,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser Canvas",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 66,
+          "bottom": 144
+        },
+        "inkPixels": 5582,
+        "boundaryTouchPixels": 4,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser SVG",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 66,
+          "bottom": 144
+        },
+        "inkPixels": 5582,
+        "boundaryTouchPixels": 4,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Native PDF",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 66,
+          "bottom": 144
+        },
+        "inkPixels": 5721,
+        "boundaryTouchPixels": 121,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PNG",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 66,
+          "bottom": 144
+        },
+        "inkPixels": 5582,
+        "boundaryTouchPixels": 4,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 66,
+          "bottom": 144
+        },
+        "inkPixels": 5582,
+        "boundaryTouchPixels": 4,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public SVG",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 66,
+          "bottom": 144
+        },
+        "inkPixels": 5582,
+        "boundaryTouchPixels": 4,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PDF",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 66,
+          "bottom": 144
+        },
+        "inkPixels": 5721,
+        "boundaryTouchPixels": 121,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      }
+    ],
+    "checks": [
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          140,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          140,
+          67
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          140,
+          63
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          140,
+          142
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          205,
+          140
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          140,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          140,
+          67
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          140,
+          63
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          140,
+          142
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          205,
+          140
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          140,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          140,
+          67
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          140,
+          63
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          140,
+          142
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          205,
+          140
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          140,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          140,
+          67
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          140,
+          63
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          140,
+          142
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          205,
+          140
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          140,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          140,
+          67
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          140,
+          63
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          140,
+          142
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          205,
+          140
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          140,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          140,
+          67
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          140,
+          63
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          140,
+          142
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          205,
+          140
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          140,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          140,
+          67
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          140,
+          63
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          140,
+          142
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          205,
+          140
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          140,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          140,
+          67
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          140,
+          63
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          140,
+          142
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          205,
+          140
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      }
+    ]
+  },
+  {
+    "variant": "rectangle-outline",
+    "primitivePublicPair": true,
+    "nativeMaximumDifference": 0,
+    "browserMaximumDifference": 0,
+    "fontSHA256": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+    "nativeAdvance": 84,
+    "browserAdvance": 84,
+    "group": null,
+    "pdfRasterImages": 0,
+    "bounds": [
+      {
+        "backend": "Native Canvas / PNG",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 76,
+          "bottom": 144
+        },
+        "inkPixels": 8700,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser Canvas",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 76,
+          "bottom": 144
+        },
+        "inkPixels": 8700,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser SVG",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 76,
+          "bottom": 144
+        },
+        "inkPixels": 8700,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Native PDF",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 76,
+          "bottom": 144
+        },
+        "inkPixels": 8700,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PNG",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 76,
+          "bottom": 144
+        },
+        "inkPixels": 8700,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 76,
+          "bottom": 144
+        },
+        "inkPixels": 8700,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public SVG",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 76,
+          "bottom": 144
+        },
+        "inkPixels": 8700,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PDF",
+        "expected": {
+          "left": 76,
+          "right": 204,
+          "top": 76,
+          "bottom": 144
+        },
+        "inkPixels": 8700,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      }
+    ],
+    "checks": [
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      }
+    ]
+  },
+  {
+    "variant": "text-halo",
+    "primitivePublicPair": true,
+    "nativeMaximumDifference": 0,
+    "browserMaximumDifference": 0,
+    "fontSHA256": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+    "nativeAdvance": 84,
+    "browserAdvance": 84,
+    "group": null,
+    "pdfRasterImages": 0,
+    "bounds": [
+      {
+        "backend": "Native Canvas / PNG",
+        "expected": {
+          "left": 75,
+          "right": 169,
+          "top": 80,
+          "bottom": 138
+        },
+        "inkPixels": 5416,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser Canvas",
+        "expected": {
+          "left": 75,
+          "right": 169,
+          "top": 80,
+          "bottom": 138
+        },
+        "inkPixels": 5512,
+        "boundaryTouchPixels": 92,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser SVG",
+        "expected": {
+          "left": 75,
+          "right": 169,
+          "top": 80,
+          "bottom": 138
+        },
+        "inkPixels": 5512,
+        "boundaryTouchPixels": 92,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Native PDF",
+        "expected": {
+          "left": 75,
+          "right": 169,
+          "top": 80,
+          "bottom": 138
+        },
+        "inkPixels": 5540,
+        "boundaryTouchPixels": 144,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PNG",
+        "expected": {
+          "left": 75,
+          "right": 169,
+          "top": 80,
+          "bottom": 138
+        },
+        "inkPixels": 5416,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "expected": {
+          "left": 75,
+          "right": 169,
+          "top": 80,
+          "bottom": 138
+        },
+        "inkPixels": 5512,
+        "boundaryTouchPixels": 92,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public SVG",
+        "expected": {
+          "left": 75,
+          "right": 169,
+          "top": 80,
+          "bottom": 138
+        },
+        "inkPixels": 5512,
+        "boundaryTouchPixels": 92,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PDF",
+        "expected": {
+          "left": 75,
+          "right": 169,
+          "top": 80,
+          "bottom": 138
+        },
+        "inkPixels": 5540,
+        "boundaryTouchPixels": 144,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      }
+    ],
+    "checks": [
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "actual": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      }
+    ]
+  },
+  {
+    "variant": "text-opacity",
+    "primitivePublicPair": true,
+    "nativeMaximumDifference": 1,
+    "browserMaximumDifference": 1,
+    "fontSHA256": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+    "nativeAdvance": 84,
+    "browserAdvance": 84,
+    "group": {
+      "x": 70,
+      "y": 70,
+      "width": 100,
+      "height": 70,
+      "sha256": "73206f568cbfdd27b0dadfc3b3591d1ab53fbc67ddfb145c72f9e0545196c524",
+      "opacity": 0.5,
+      "policy": "paint stroke+fill at opacity1, then attenuate glyph alpha once"
+    },
+    "pdfRasterImages": 2,
+    "bounds": [
+      {
+        "backend": "Native Canvas / PNG",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4296,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser Canvas",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4296,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser SVG",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4296,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Native PDF",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4433,
+        "boundaryTouchPixels": 134,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PNG",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4296,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4388,
+        "boundaryTouchPixels": 92,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public SVG",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4388,
+        "boundaryTouchPixels": 92,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PDF",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4433,
+        "boundaryTouchPixels": 134,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      }
+    ],
+    "checks": [
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          129,
+          185,
+          209,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          158,
+          136,
+          177,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          158,
+          136,
+          177,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          129,
+          185,
+          209,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          129,
+          185,
+          209,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          185,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          159,
+          137,
+          177,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          159,
+          137,
+          177,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          185,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          185,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          129,
+          185,
+          209,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          158,
+          136,
+          177,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          158,
+          136,
+          177,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          129,
+          185,
+          209,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          129,
+          185,
+          209,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          185,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          159,
+          137,
+          177,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          159,
+          137,
+          178,
+          255
+        ],
+        "actual": [
+          159,
+          137,
+          177,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          185,
+          210,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          130,
+          186,
+          210,
+          255
+        ],
+        "actual": [
+          130,
+          185,
+          210,
+          255
+        ],
+        "passed": true
+      }
+    ]
+  },
+  {
+    "variant": "text-outline",
+    "primitivePublicPair": true,
+    "nativeMaximumDifference": 0,
+    "browserMaximumDifference": 0,
+    "fontSHA256": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+    "nativeAdvance": 84,
+    "browserAdvance": 84,
+    "group": null,
+    "pdfRasterImages": 0,
+    "bounds": [
+      {
+        "backend": "Native Canvas / PNG",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4296,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser Canvas",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4388,
+        "boundaryTouchPixels": 92,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser SVG",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4388,
+        "boundaryTouchPixels": 92,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Native PDF",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4442,
+        "boundaryTouchPixels": 152,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PNG",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4296,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4388,
+        "boundaryTouchPixels": 92,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public SVG",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4388,
+        "boundaryTouchPixels": 92,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PDF",
+        "expected": {
+          "left": 79,
+          "right": 165,
+          "top": 84,
+          "bottom": 134
+        },
+        "inkPixels": 4442,
+        "boundaryTouchPixels": 152,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      }
+    ],
+    "checks": [
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          90,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          81,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          76,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          116,
+          110
+        ],
+        "expected": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "actual": [
+          92,
+          42,
+          115,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          125,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          166,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          84,
+          110
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      }
+    ]
+  },
+  {
+    "variant": "zero-width",
+    "primitivePublicPair": true,
+    "nativeMaximumDifference": 0,
+    "browserMaximumDifference": 0,
+    "fontSHA256": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+    "nativeAdvance": 84,
+    "browserAdvance": 84,
+    "group": null,
+    "pdfRasterImages": 0,
+    "bounds": [
+      {
+        "backend": "Native Canvas / PNG",
+        "expected": {
+          "left": 80,
+          "right": 200,
+          "top": 80,
+          "bottom": 140
+        },
+        "inkPixels": 7200,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser Canvas",
+        "expected": {
+          "left": 80,
+          "right": 200,
+          "top": 80,
+          "bottom": 140
+        },
+        "inkPixels": 7200,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Browser SVG",
+        "expected": {
+          "left": 80,
+          "right": 200,
+          "top": 80,
+          "bottom": 140
+        },
+        "inkPixels": 7200,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Native PDF",
+        "expected": {
+          "left": 80,
+          "right": 200,
+          "top": 80,
+          "bottom": 140
+        },
+        "inkPixels": 7200,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PNG",
+        "expected": {
+          "left": 80,
+          "right": 200,
+          "top": 80,
+          "bottom": 140
+        },
+        "inkPixels": 7200,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "expected": {
+          "left": 80,
+          "right": 200,
+          "top": 80,
+          "bottom": 140
+        },
+        "inkPixels": 7200,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public SVG",
+        "expected": {
+          "left": 80,
+          "right": 200,
+          "top": 80,
+          "bottom": 140
+        },
+        "inkPixels": 7200,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      },
+      {
+        "backend": "Public PDF",
+        "expected": {
+          "left": 80,
+          "right": 200,
+          "top": 80,
+          "bottom": 140
+        },
+        "inkPixels": 7200,
+        "boundaryTouchPixels": 0,
+        "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+        "outsidePixels": 0
+      }
+    ],
+    "checks": [
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native Canvas / PNG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser Canvas",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Browser SVG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Native PDF",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PNG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public Browser Canvas",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public SVG",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          100,
+          100
+        ],
+        "expected": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "actual": [
+          34,
+          139,
+          180,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          77,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          74,
+          110
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          85,
+          77
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          75,
+          75
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      },
+      {
+        "backend": "Public PDF",
+        "pixel": [
+          220,
+          160
+        ],
+        "expected": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "actual": [
+          226,
+          232,
+          240,
+          255
+        ],
+        "passed": true
+      }
+    ]
+  }
+]

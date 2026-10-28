@@ -186,6 +186,11 @@
       "type": "FillPaint | undefined"
     },
     {
+      "name": "outline",
+      "required": false,
+      "type": "false | MarkOutline | undefined"
+    },
+    {
       "name": "opacity",
       "required": false,
       "type": "number | undefined"

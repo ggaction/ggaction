@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a semantic area mark and empty path collection.",
-  "signature": "createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
+  "signature": "createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
   "intents": [
     "create area mark",
     "create",
@@ -109,6 +109,11 @@
       "name": "fill",
       "required": false,
       "type": "FillPaint | undefined"
+    },
+    {
+      "name": "outline",
+      "required": false,
+      "type": "false | MarkOutline | undefined"
     },
     {
       "name": "opacity",

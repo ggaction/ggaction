@@ -588,7 +588,27 @@
     "outline-paints": [
       {
         "type": "prefix",
-        "path": "gates/outline-paints/"
+        "path": "charts/mark-outlines/"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-outline.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/mark-outline.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/mark-outline-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/mark-outline-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-mark-outlines.test.js"
       }
     ],
     "package": [

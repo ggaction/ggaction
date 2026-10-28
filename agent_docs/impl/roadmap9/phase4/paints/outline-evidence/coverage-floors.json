@@ -1,0 +1,112 @@
+{
+  "files": [
+    "grammar/markOutline.js",
+    "grammar/schemas/graphicBounds.js",
+    "materialization/markOutput.js",
+    "renderers/canvas/circle.js",
+    "renderers/canvas/isolated.js",
+    "renderers/canvas/outline.js",
+    "renderers/canvas/path.js",
+    "renderers/canvas/rect.js",
+    "renderers/canvas/text.js"
+  ],
+  "coverage": {
+    "grammar/markOutline.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/schemas/graphicBounds.js": {
+      "lines": 97.95,
+      "branches": 90.18,
+      "functions": 100
+    },
+    "materialization/markOutput.js": {
+      "lines": 100,
+      "branches": 88.24,
+      "functions": 100
+    },
+    "renderers/canvas/circle.js": {
+      "lines": 86.15,
+      "branches": 66.67,
+      "functions": 100
+    },
+    "renderers/canvas/isolated.js": {
+      "lines": 96.51,
+      "branches": 94.5,
+      "functions": 100
+    },
+    "renderers/canvas/outline.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "renderers/canvas/path.js": {
+      "lines": 80,
+      "branches": 80.56,
+      "functions": 100
+    },
+    "renderers/canvas/rect.js": {
+      "lines": 92.21,
+      "branches": 88.46,
+      "functions": 100
+    },
+    "renderers/canvas/text.js": {
+      "lines": 88.18,
+      "branches": 77.5,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 94.49,
+      "branches": 88.74,
+      "functions": 100
+    }
+  },
+  "floors": {
+    "grammar/markOutline.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/schemas/graphicBounds.js": {
+      "lines": 85,
+      "branches": 75,
+      "functions": 90
+    },
+    "materialization/markOutput.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "renderers/canvas/circle.js": {
+      "lines": 75,
+      "branches": 60,
+      "functions": 80
+    },
+    "renderers/canvas/isolated.js": {
+      "lines": 75,
+      "branches": 60,
+      "functions": 80
+    },
+    "renderers/canvas/outline.js": {
+      "lines": 75,
+      "branches": 60,
+      "functions": 80
+    },
+    "renderers/canvas/path.js": {
+      "lines": 75,
+      "branches": 60,
+      "functions": 80
+    },
+    "renderers/canvas/rect.js": {
+      "lines": 75,
+      "branches": 60,
+      "functions": 80
+    },
+    "renderers/canvas/text.js": {
+      "lines": 75,
+      "branches": 60,
+      "functions": 80
+    }
+  }
+}

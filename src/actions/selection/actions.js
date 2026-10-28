@@ -28,6 +28,7 @@ import {
 } from "../../materialization/selection/policies/index.js";
 import {
   normalizeDimOthers,
+  highlightSourceProperties,
   validateUnitInterval
 } from "../../materialization/selection/styles.js";
 import {
@@ -399,6 +400,7 @@ export const applyPointHighlight = /* @__PURE__ */ closedAction(
 );
 
 function transformRectangularProperties(properties, style, offset = false) {
+  properties = highlightSourceProperties(properties, style);
   if (!offset || style.offset === undefined) {
     return { ...properties, ...style };
   }

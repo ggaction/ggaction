@@ -1,3 +1,4 @@
+import { drawCanvasOutline } from "./outline.js";
 import { tracePath } from "./pathTrace.js";
 export { tracePath } from "./pathTrace.js";
 import { requireFiniteProperty } from "./validation.js";
@@ -56,6 +57,7 @@ function drawPath(context, child, collectionId) {
   context.beginPath();
   tracePath(context, commands);
 
+  drawCanvasOutline(context, properties, () => context.stroke());
   if (hasFill) {
     const bounds = resolvePathCommandBounds(commands);
     if (bounds === undefined) {
@@ -64,7 +66,7 @@ function drawPath(context, child, collectionId) {
     fillCanvasPath(context, properties.fill, bounds, graphicId,
       () => tracePath(context, commands), properties.fillRule);
   }
-  if (hasStroke && strokeWidth > 0) {
+  if (hasStroke && strokeWidth > 0 && properties.outline === undefined) {
     applyCanvasStroke(context, properties, strokeDash);
     context.stroke();
   }
