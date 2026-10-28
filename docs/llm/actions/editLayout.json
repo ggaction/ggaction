@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 3,
+  "name": "editLayout",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Change a layout order or method-specific options and refresh its plot consumers.",
+  "signature": "editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;",
+  "intents": [
+    "edit layout",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "stored hierarchy layout",
+    "node positions"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing stored hierarchy layout"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editLayout",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing stored hierarchy layout"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "order",
+      "required": false,
+      "type": "HierarchyOrder | undefined"
+    },
+    {
+      "name": "options",
+      "required": false,
+      "type": "Partial<...> | { maxNodes?: number | undefined; } | Partial<...> | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editLayout({ target?, order?, options? })"
+  ],
+  "snippet": "program.editLayout({ target: \"tree-layout\", order: { by: \"value\", direction: \"descending\" } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editlayout"
+}

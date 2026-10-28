@@ -358,11 +358,35 @@
       },
       {
         "type": "prefix",
-        "path": "gates/tree-layouts/"
+        "path": "charts/tree-layouts/"
       },
       {
         "type": "prefix",
-        "path": "gates/treemap-layouts/"
+        "path": "charts/treemap-layouts/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/hierarchy-resources.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/hierarchy-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/hierarchy-consumers.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/hierarchy-validation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/facet-source-identity.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/hierarchy-types.test.js"
       }
     ],
     "horizon": [

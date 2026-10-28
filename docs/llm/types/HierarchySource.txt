@@ -1,0 +1,4 @@
+export type HierarchySource =
+  | { key: string; parent: string; value: string; children?: never; groupFields?: never; valueMode?: HierarchyValueMode; forest?: boolean; missingCategory?: never }
+  | { key: string; children: string; value: string; parent?: never; groupFields?: never; valueMode?: HierarchyValueMode; forest?: boolean; missingCategory?: never }
+  | { groupFields: readonly string[]; value: string; key?: never; parent?: never; children?: never; valueMode?: "leaf-sum"; forest?: never; missingCategory?: "error" | "include" };

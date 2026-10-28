@@ -1,0 +1,1 @@
+export interface HierarchyTreeResult { readonly nodes: readonly { readonly key: string; readonly parentKey: string | null; readonly depth: number; readonly x: number; readonly y: number; readonly theta?: number; readonly radius?: number; readonly synthetic?: true }[]; }

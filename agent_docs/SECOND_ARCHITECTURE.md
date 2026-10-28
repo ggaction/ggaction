@@ -55,9 +55,9 @@ freeze하며 상위 constructor의 권한을 상속하지 않는다. Public plug
 공통 resource owner는 envelope·typed refs·graph를 먼저 검사하고 등록 owner의 저장값 및 binding
 검증만 호출한다. Plain preview는 원래 constructor를 명시하며, 미등록 class/Basic는 추가 kind를
 거부한다. Persistence도 실제 복원 constructor의 같은 경계를 사용하고 계산을 실행하지 않는다.
-이 준비 checkpoint는 handler 연결점만 추가하며 Full assembly의 hierarchy/layout/image 등록과
-각 public authoring consumer는 후속 구현이다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이
-승인·검증과 후행 연결 의무를 보존한다.
+Full assembly는 hierarchy와 hierarchy layout의 닫힌 handler를 등록하며 Basic에는 등록하지 않는다.
+Image와 graph의 독립 공개 구현은 같은 경계를 사용한다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이
+초기 승인·검증과 연결 경계를 보존한다.
 이 owner1개를 더한 지원 Node20/22/24 staging은739entries, packed최대1,098,083,
 unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
 Full/Basic/SVG browser gzip최대535,560/313,517/8,185는 기존 한도 안이며 그대로 유지한다.
@@ -87,7 +87,7 @@ packed최대1,098,660/unpacked5,059,006bytes다. 기존 packed 한도를 유지�
 최소1,000byte 단위인5,060,000으로 조정했다. 동일 minified browser bytes의 최대gzip은
 Full535,875/Basic313,870/SVG8,185로 기존 한도 안이다.
 
-## Private hierarchy normalization
+## Hierarchy normalization and explicit materialization
 
 `grammar/hierarchy/normalize.js`는 명시 node records의 typed identity, parent/children topology,
 iterative preorder/postorder와 세 가지 value aggregation을 한 번 검증하는 pure owner다.
@@ -103,8 +103,17 @@ iterative preorder/postorder와 세 가지 value aggregation을 한 번 검증�
 padding을 뺀 content와 own-value reserved rectangle을 분리해 보존한다.
 `grammar/hierarchy/order.js`는 명시 input/value/key/field 순서를 공통 model에 반영한다. Key는 기존 typed
 identity comparator, field는 기존 sort transform 정책을 재사용하며 원본 field 해결은 semantic caller의 책임이다.
-현재는 private 계산만 있고 hierarchy/layout resource 저장, public
-action, renderer 또는 새 시각 target과 연결하지 않았다.
+`materialization/hierarchy/resources.js`는 입력 dataset의 exact revision과 실제 row membership을
+hierarchy resource에 보존하고, layout resource는 정확히 하나의 hierarchy 입력을 참조한다.
+`actions/hierarchy/resources.js`는 source 수정과 명시 layout 편집에서 필요한 수치 결과를 먼저
+계산·검증하고 primitive를 통해 교체한다. `materialization/hierarchy/state.js`는 복원 시 저장된
+topology·value·좌표·binding을 검사하며 layout 알고리즘을 다시 실행하지 않는다.
+Tree/treemap facade는 `materialization/hierarchy/plot.js`의 concrete link/node/label 결과를
+wrapped materialize action으로 기록한다. Renderer는 기존 path/circle/rect/text만 소비한다.
+Node selection은 layout resource lineage와 실제 원본 row membership을 공유하고, label override는
+typed node key에 결박되어 원본 노드가 사라질 때 orphan 진단을 남긴다. Data revision과 facet source
+replacement는 같은 명시 hierarchy→layout→plot closure를 사용한다. 자세한 공개 계약은
+[HIERARCHY](contract/current/HIERARCHY.md)가 소유한다.
 상세 범위·후속 의무와 실측 package 증거는 [normalizer](impl/roadmap9/phase3/hierarchy/NORMALIZE_KERNEL.md)와
 [input adapter](impl/roadmap9/phase3/hierarchy/INPUT_KERNEL.md), [tree 계산](impl/roadmap9/phase3/hierarchy/TREE_KERNEL.md),
 [partition 계산](impl/roadmap9/phase3/hierarchy/PARTITION_KERNEL.md), [treemap 계산](impl/roadmap9/phase3/hierarchy/TREEMAP_KERNEL.md),
@@ -710,8 +719,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 549,000 bytes |
-| `ggaction/basic` | 325,000 bytes |
+| `ggaction` | 567,000 bytes |
+| `ggaction/basic` | 331,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 

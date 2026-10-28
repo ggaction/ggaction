@@ -1,3 +1,4 @@
+import { reviseDataResources } from "../data/resourceRevision.js";
 import { freezeOwned } from "../../core/immutable.js";
 import { resolveHistogramBins } from "../../grammar/histogram.js";
 import { readQuantitativeField } from "../../grammar/scales/index.js";
@@ -123,13 +124,14 @@ function buildFacetCellCandidate(
         statisticalReference: { ...statistical, dataId: data }
       });
     }
-    child = child.rebindLayerData({ id: layer.id, data });
+    if (requireLayer(child, layer.id).hierarchyBinding === undefined) child = child.rebindLayerData({ id: layer.id, data });
     child = applySharedHistogramBoundaries(
       child,
       layer.id,
       histogramBoundaries.get(layer.id)
     );
   }
+  child = reviseDataResources(child, datasets);
   for (const [id, markConfig] of Object.entries(base.markConfigs)) {
     const gradientPlot = markConfig.gradientPlot;
     if (gradientPlot?.materialized !== true) continue;

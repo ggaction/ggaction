@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add Full-only `createHierarchyData`, `editHierarchyData`, `layoutHierarchy`, `editLayout`, `removeResource`, `createTreePlot`, `editTreePlot`, `createTreemapPlot`, and `editTreemapPlot`. Preserve typed node identity, exact source contributions, stored layout geometry, labels and selections through edits, facets and offline restoration. Tree and treemap views use the same concrete graphics across Canvas, SVG, PNG and PDF.
+
 - Add `prepareDataUpdate` and `applyDataUpdate` for explicit host-loaded CSV/JSON, named and inline sources. Retain received-data receipts for offline restoration, reject stale preparations, and atomically refresh URL sources with parameter-dependent charts. Full supports source and parameter revisions; Basic supports creation.
 
 - Add `createParameter`, `editParameter`, and `removeParameter` for immutable scalar inputs with exact revision references and atomic dependent-data and chart updates. Full supports the complete lifecycle; Basic supports creation.

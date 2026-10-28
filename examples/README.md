@@ -612,6 +612,36 @@ Author compound paths and path clips through extension primitives.
 
 Representative actions: `createGraphics`, `editGraphics`. [Documentation](https://ggaction.github.io/ggaction/extension/primitives/).
 
+### [Tree layout](./tree-layouts/)
+
+Create a hierarchy resource, compute an explicit vertical layout, and draw its nodes.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreePlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchy/).
+
+### [Horizontal tree](./tree-horizontal/)
+
+Create a hierarchy resource, compute an explicit horizontal layout, and draw its nodes.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreePlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchy/).
+
+### [Radial tree](./tree-radial/)
+
+Create a hierarchy resource, compute an explicit radial layout, and draw its nodes.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreePlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchy/).
+
+### [Treemap layout](./treemap-layouts/)
+
+Create a hierarchy resource, compute an explicit slice-dice layout, and draw its nodes.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreemapPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchy/).
+
+### [Squarified treemap](./treemap-squarify/)
+
+Create a hierarchy resource, compute an explicit squarify layout, and draw its nodes.
+
+Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreemapPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchy/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

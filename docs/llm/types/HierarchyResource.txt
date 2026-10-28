@@ -1,0 +1,6 @@
+export interface HierarchyResource {
+  readonly kind: "hierarchy"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly Extract<InputRef, { readonly kind: "data" }>[];
+  readonly options: Readonly<HierarchySource & { format: "flat" | "nested" | "groups"; maxNodes: number }>;
+  readonly result: HierarchyModel; readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly InputRowRef[] };
+}

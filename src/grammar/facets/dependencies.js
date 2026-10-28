@@ -30,6 +30,10 @@ function coordinateType(semanticSpec, layer) {
 
 function classifyPrimaryLayer(semanticSpec, layer) {
   const type = layer.mark?.type;
+  if (["tree", "treemap"].includes(type)) {
+    if (!layer.hierarchyBinding?.layout) throw new Error("Hierarchy facets require a complete layout binding.");
+    return "hierarchy";
+  }
   const parallel = layer.encoding?.parallel;
   if (parallel !== undefined || coordinateType(semanticSpec, layer) === "parallel") {
     const complete = type === "line" && Array.isArray(parallel?.dimensions) &&

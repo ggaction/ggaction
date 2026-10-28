@@ -189,12 +189,15 @@ function actionResources(action, optionNames, intentSource) {
   const { operation, subject } = operationAndSubject(action.name);
   const aliases = aliasesForSubject(intentSource, subject);
   const resource = aliases[0];
+  const hierarchyPlot = /^(?:create|edit)(?:Tree|Treemap)Plot$/.test(action.name);
   const prerequisites = [];
   if (action.name === "createRegressionStatisticsData" || action.name === "editRegressionStatisticsData") {
     prerequisites.push("materialized linear regression dataset");
   }
 
-  if (action.name === "createMarkLabels") {
+  if (action.name === "layoutHierarchy") {
+    prerequisites.push("existing hierarchy resource");
+  } else if (action.name === "createMarkLabels") {
     prerequisites.push("existing eligible source mark");
   } else if (action.name === "editMarkLabelSelection") {
     prerequisites.push("attached label");
@@ -209,7 +212,9 @@ function actionResources(action, optionNames, intentSource) {
     prerequisites.push("target mark");
     if (optionNames.includes("field")) prerequisites.push("field mode: dataset field");
   }
-  if (action.domain === "charts") prerequisites.push("canvas and dataset context");
+  if (action.domain === "charts") prerequisites.push(hierarchyPlot
+    ? `canvas and ${action.name.includes("Treemap") ? "treemap" : "tree"} layout resource`
+    : "canvas and dataset context");
   if (action.domain === "marks" && operation === "create" && action.name !== "createMarkLabels") {
     prerequisites.push("dataset and coordinate context");
   }
@@ -241,7 +246,9 @@ function actionResources(action, optionNames, intentSource) {
   return {
     prerequisites: unique(prerequisites).slice(0, 4),
     owns: unique(owns).slice(0, 3),
-    idOptions: optionNames.filter(name => idOptionNames.has(name))
+    idOptions: optionNames.filter(name => idOptionNames.has(name) ||
+      (name === "hierarchy" && action.name === "layoutHierarchy") ||
+      (name === "layout" && hierarchyPlot))
   };
 }
 

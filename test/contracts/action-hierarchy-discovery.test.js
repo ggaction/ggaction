@@ -39,6 +39,8 @@ const completeChartActions = [
   "createScatterPlot",
   "createStripPlot",
   "createTextPlot",
+  "createTreePlot",
+  "createTreemapPlot",
   "createViolinPlot",
   "facet",
   "facetGrid",
@@ -93,6 +95,19 @@ test("complete-chart discovery reaches semantic and primitive authoring layers",
       continue;
     }
     const descendants = [...reachableActions(card, byName)].map(child => byName.get(child));
+    if (["createTreePlot", "createTreemapPlot"].includes(name)) {
+      assert.deepEqual(card.wraps, ["editSemantic"]);
+      const base = fullChart().createCanvas().createData({ values: [{ id: "root", parent: null, value: 1 }] })
+        .createHierarchyData({ id: "h", key: "id", parent: "parent", value: "value" });
+      const tree = name === "createTreePlot";
+      const program = base.layoutHierarchy({ id: "l", method: tree ? "tree" : "treemap", options: tree
+        ? { nodeSize: [10, 10], siblingGap: 10, depthGap: 10, orientation: "vertical" }
+        : { size: [100, 100], padding: 0, method: "slice-dice" } })[name]({});
+      const materialize = program.trace.children.at(-1).children.find(child => child.op === (tree ? "materializeTreePlot" : "materializeTreemapPlot"));
+      assert.ok(materialize.children.some(child => child.op === "createGraphics"));
+      assert.ok(materialize.children.some(child => child.op === "editGraphics"));
+      continue;
+    }
     assert.ok(descendants.some(child => child.authoringRoles.includes("H2")), `${name} -> H2`);
     assert.ok(descendants.some(child => child.authoringRoles.includes("H4")), `${name} -> H4`);
   }
@@ -110,9 +125,9 @@ test("discovery separates completion from resource validity", async () => {
     state,
     entries.length
   ])), {
-    contextual: actionCards.length - 37,
+    contextual: actionCards.length - 39,
     deferred: 2,
-    complete: 32,
+    complete: 34,
     "not-applicable": 3
   });
   assert.deepEqual(byState.deferred.map(card => card.name), [

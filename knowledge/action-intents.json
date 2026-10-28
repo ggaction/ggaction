@@ -959,6 +959,32 @@
       "grouped pivot data",
       "category columns",
       "long to wide data"
+    ],
+    "HierarchyData": [
+      "typed hierarchy",
+      "parent child data",
+      "nested node data"
+    ],
+    "Hierarchy": [
+      "tree layout",
+      "treemap layout",
+      "normalized partition"
+    ],
+    "Layout": [
+      "stored hierarchy layout",
+      "node positions"
+    ],
+    "Resource": [
+      "stored named resource",
+      "resource dependencies"
+    ],
+    "TreePlot": [
+      "hierarchy node link chart",
+      "tidy tree"
+    ],
+    "TreemapPlot": [
+      "nested rectangle chart",
+      "proportional hierarchy"
     ]
   },
   "summaryOverrides": {
@@ -1778,6 +1804,63 @@
     },
     "encodeYOffset": {
       "field": "series"
+    },
+    "createHierarchyData": {
+      "id": "hierarchy",
+      "key": "id",
+      "parent": "parent",
+      "value": "value"
+    },
+    "editHierarchyData": {
+      "target": "hierarchy",
+      "valueMode": "inclusive"
+    },
+    "layoutHierarchy": {
+      "id": "tree-layout",
+      "hierarchy": "hierarchy",
+      "method": "tree",
+      "options": {
+        "nodeSize": [
+          20,
+          10
+        ],
+        "siblingGap": 10,
+        "depthGap": 20,
+        "orientation": "vertical"
+      }
+    },
+    "editLayout": {
+      "target": "tree-layout",
+      "order": {
+        "by": "value",
+        "direction": "descending"
+      }
+    },
+    "removeResource": {
+      "kind": "layout",
+      "id": "tree-layout"
+    },
+    "createTreePlot": {
+      "id": "tree",
+      "layout": "tree-layout",
+      "labels": {}
+    },
+    "editTreePlot": {
+      "target": "tree",
+      "nodes": {
+        "radius": 8
+      }
+    },
+    "createTreemapPlot": {
+      "id": "treemap",
+      "layout": "treemap-layout",
+      "labels": {}
+    },
+    "editTreemapPlot": {
+      "target": "treemap",
+      "cells": {
+        "opacity": 0.8
+      }
     }
   },
   "callPatternOverrides": {

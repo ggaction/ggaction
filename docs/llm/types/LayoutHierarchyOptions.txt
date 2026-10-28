@@ -1,0 +1,5 @@
+export type LayoutHierarchyOptions = { id: string; hierarchy?: string; order?: HierarchyOrder } &
+  ({ method: "partition"; options?: { maxNodes?: number } }
+  | { method: "tree"; options: HierarchyTreeOptions }
+  | { method: "treemap"; options: HierarchyTreemapOptions });
+/** The method remains fixed; supplied options patch its existing layout intent. */

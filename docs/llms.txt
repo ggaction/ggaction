@@ -214,3 +214,5 @@ requirements after resolving each part.
 - Data Grain and Statistical Policies: ./api/data/policies/
 - Choose a Chart: ./api/chart-picker/
 - Complete Axes and Labels: ./api/axes/complete/
+- Hierarchy Resources and Plots: ./api/hierarchy/
+- Hierarchy Tutorial: ./tutorials/hierarchy/

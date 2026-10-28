@@ -1002,5 +1002,19 @@
     "editSource": "docs/api/axes/complete.md",
     "description": "Use underlay: true when the complete Cartesian axis should be painted before ordinary marks. The plot border accepts the same choice.",
     "image": "/assets/images/cars-line-chart.png"
+  },
+  "/api/hierarchy/": {
+    "title": "Hierarchy Resources and Plots",
+    "source": "docs/api/hierarchy.md",
+    "editSource": "docs/api/hierarchy.md",
+    "description": "Build, arrange, revise and inspect trees and treemaps from typed hierarchy data.",
+    "image": "/assets/images/tree-layouts.png"
+  },
+  "/tutorials/hierarchy/": {
+    "title": "Hierarchy Tutorial",
+    "source": "docs/tutorials/hierarchy.md",
+    "editSource": "examples/tree-layouts/program.js",
+    "description": "Build one typed hierarchy and reuse it in tree and treemap layouts.",
+    "image": "/assets/images/tree-layouts.png"
   }
 }

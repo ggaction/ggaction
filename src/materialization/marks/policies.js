@@ -12,6 +12,8 @@ import {
 } from "./capabilities.js";
 
 const MARK_MATERIALIZATION_POLICIES = Object.freeze({
+  tree: Object.freeze({ canMaterialize: (_program, layer) => layer.hierarchyBinding !== undefined, op: "materializeTreePlot", scaleApplication: Object.freeze({ default: "defer" }) }),
+  treemap: Object.freeze({ canMaterialize: (_program, layer) => layer.hierarchyBinding !== undefined, op: "materializeTreemapPlot", scaleApplication: Object.freeze({ default: "defer" }) }),
   point: Object.freeze({
     canMaterialize: canMaterializePoint,
     op: "rematerializePointMark",

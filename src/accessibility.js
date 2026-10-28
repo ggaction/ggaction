@@ -78,6 +78,9 @@ function finalRows(program, layer) {
         values: { ...channelMapFromRow(point.fields, layer), x: point.channels.x, y: point.channels.y }
       })));
   }
+  if (["tree", "treemap"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
+    series: {}, values: { key: item.key, value: item.fields.value, depth: item.fields.depth, children: item.fields.children }
+  }));
   if (["line", "area"].includes(layer.mark.type)) return pathRows(program, layer);
   if (!["point", "bar", "arc", "rule", "tick", "rect"].includes(layer.mark.type)) {
     unsupported(layer.id, `unsupported ${layer.mark.type} owner`);
@@ -93,8 +96,8 @@ function finalRows(program, layer) {
 }
 
 function column(layer, key) {
-  const dimension = layer.encoding.parallel?.dimensions.find(item => item.field === key);
-  const encoding = dimension ?? layer.encoding[key] ?? layer.encoding[key.replace(/2$/, "")];
+  const dimension = layer.encoding?.parallel?.dimensions.find(item => item.field === key);
+  const encoding = dimension ?? layer.encoding?.[key] ?? layer.encoding?.[key.replace(/2$/, "")];
   const temporal = encoding?.fieldType === "temporal";
   return {
     key,

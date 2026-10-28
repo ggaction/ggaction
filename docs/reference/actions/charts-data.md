@@ -4228,6 +4228,357 @@ compatible meaning and scale mapping. Canonical child settings remain intact; se
 channel false restores independent domain inference. This edit is atomic.
 
 
+## `createHierarchyData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateHierarchyDataOptions`](./../types.md#type-createhierarchydataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `key` | Optional / branch-dependent | `string \| undefined` |
+| `parent` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Required | `string` |
+| `children` | Optional / branch-dependent | `string \| undefined` |
+| `groupFields` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `valueMode` | Optional / branch-dependent | `HierarchyValueMode \| undefined` |
+| `forest` | Optional / branch-dependent | `boolean \| undefined` |
+| `missingCategory` | Optional / branch-dependent | `"error" \| "include" \| undefined` |
+| `id` | Required | `string` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createHierarchyData({ id, data?, key?, parent?, children?, groupFields?, value, valueMode?, forest?, missingCategory?, maxNodes? })
+```
+
+Create a typed hierarchy from flat parent rows, nested children, or grouped paths. Full only.
+[Hierarchy resources and plots](../../api/hierarchy.md#createhierarchydata)
+
+
+## `editHierarchyData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editHierarchyData(options: TargetedOptions<EditHierarchyDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditHierarchyDataOptions`](./../types.md#type-edithierarchydataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `key` | Optional / branch-dependent | `string \| undefined` |
+| `parent` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `children` | Optional / branch-dependent | `string \| undefined` |
+| `groupFields` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `valueMode` | Optional / branch-dependent | `HierarchyValueMode \| undefined` |
+| `forest` | Optional / branch-dependent | `boolean \| undefined` |
+| `missingCategory` | Optional / branch-dependent | `"error" \| "include" \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editHierarchyData({ target?, data?, key?, parent?, children?, groupFields?, value?, valueMode?, forest?, missingCategory?, maxNodes? })
+```
+
+Revise hierarchy input options and refresh every dependent layout and plot atomically. Full only.
+[Hierarchy resources and plots](../../api/hierarchy.md#edithierarchydata)
+
+
+## `layoutHierarchy`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`LayoutHierarchyOptions`](./../types.md#type-layouthierarchyoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `hierarchy` | Optional / branch-dependent | `string \| undefined` |
+| `order` | Optional / branch-dependent | `HierarchyOrder \| undefined` |
+| `method` | Required | `"partition" \| "tree" \| "treemap"` |
+| `options` | Optional / branch-dependent | `HierarchyTreemapOptions \| { maxNodes?: number \| undefined; } \| HierarchyTreeOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+layoutHierarchy({ id, hierarchy?, method, order?, options? })
+```
+
+Compute an explicit tree, treemap, or normalized partition layout from a named hierarchy. Full only.
+[Hierarchy resources and plots](../../api/hierarchy.md#layouthierarchy)
+
+
+## `editLayout`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditLayoutOptions`](./../types.md#type-editlayoutoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `order` | Optional / branch-dependent | `HierarchyOrder \| undefined` |
+| `options` | Optional / branch-dependent | `Partial<...> \| { maxNodes?: number \| undefined; } \| Partial<...> \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editLayout({ target?, order?, options? })
+```
+
+Change a layout order or method-specific options and refresh its plot consumers. Full only.
+[Hierarchy resources and plots](../../api/hierarchy.md#editlayout)
+
+
+## `removeResource`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+removeResource(options: RemoveStoredResourceOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveStoredResourceOptions`](./../types.md#type-removestoredresourceoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `kind` | Required | `StoredResourceKind` |
+| `id` | Required | `string` |
+| `cascade` | Optional / branch-dependent | `boolean \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+removeResource({ kind, id, cascade? })
+```
+
+Remove a named stored resource after checking exact dependencies. Full only.
+[Hierarchy resources and plots](../../api/hierarchy.md#removeresource)
+
+
+## `createTreePlot`
+
+**API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`TreePlotOptions`](./../types.md#type-treeplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `nodes` | Optional / branch-dependent | `(HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] \| undefined; }) \| undefined` |
+| `links` | Optional / branch-dependent | `false \| { stroke?: string \| undefined; strokeWidth?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| HierarchyLabelsOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createTreePlot({ id?, layout?, origin?, clip?, nodes?, links?, labels? })
+```
+
+Draw hierarchy nodes and parent links from a stored tree layout. Full only.
+[Hierarchy resources and plots](../../api/hierarchy.md#createtreeplot)
+
+
+## `editTreePlot`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditTreePlotOptions`](./../types.md#type-edittreeplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `nodes` | Optional / branch-dependent | `(HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] \| undefined; }) \| undefined` |
+| `links` | Optional / branch-dependent | `false \| { stroke?: string \| undefined; strokeWidth?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| HierarchyLabelsOptions \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editTreePlot({ target?, layout?, origin?, clip?, nodes?, links?, labels? })
+```
+
+Edit tree nodes, links, labels, placement, or the bound tree layout. Full only.
+[Hierarchy resources and plots](../../api/hierarchy.md#edittreeplot)
+
+
+## `createTreemapPlot`
+
+**API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`TreemapPlotOptions`](./../types.md#type-treemapplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] \| undefined; }) \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| HierarchyLabelsOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createTreemapPlot({ id?, layout?, origin?, clip?, cells?, labels? })
+```
+
+Draw nested rectangles from a stored treemap layout. Full only.
+[Hierarchy resources and plots](../../api/hierarchy.md#createtreemapplot)
+
+
+## `editTreemapPlot`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditTreemapPlotOptions`](./../types.md#type-edittreemapplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] \| undefined; }) \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| HierarchyLabelsOptions \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editTreemapPlot({ target?, layout?, origin?, clip?, cells?, labels? })
+```
+
+Edit treemap cells, labels, placement, or the bound treemap layout. Full only.
+[Hierarchy resources and plots](../../api/hierarchy.md#edittreemapplot)
+
+
 ## Focused core data editing
 
 ```javascript
