@@ -32,6 +32,10 @@
       },
       {
         "type": "file",
+        "path": "unit/immutable-depth.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/graphic-lookup-reuse.test.js"
       },
       {
