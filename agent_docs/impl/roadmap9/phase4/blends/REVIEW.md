@@ -6,10 +6,14 @@
 - [x] Native opaque blend와 공통 isolated group 실행 source
 - [x] Canvas·SVG·PNG·PDF의 출력 및 bounded payload 증거
 - [x] 검증된 source/evidence를 원격 checkpoint로 보존
-- [ ] 사용자 rendered target 확인
+- [x] 사용자 rendered target 확인
 - [ ] 공개 paint/action/renderer flow 연결
 
-상태 `ready-for-review`. Roadmap 9 전체 실행 승인과 부모 agent의 private 조사 위임으로 준비했다. 일반 구현 승인을 이 새로운 rendered target의 시각 승인으로 기록하지 않는다. STEP-017 완료가 아니다. 기존 공개 `normal`/`difference`의 지원 범위도 변경하지 않았다.
+상태 `approved`. Roadmap 9 전체 실행 승인과 부모 agent의 private 조사 위임으로 준비했다. 일반 구현 승인을 이 새로운 rendered target의 시각 승인으로 기록하지 않는다. STEP-017 완료가 아니다. 기존 공개 `normal`/`difference`의 지원 범위도 변경하지 않았다.
+
+## 사용자 승인 기록
+
+현재 대화에서 사용자가 **“두 검토 대상 모두 승인”**라고 명시 승인했다. Parent `/root`가 해당 답변과 정확한 대상 revision `90f5f67ec080003dd3606ed78bbb9bfbfd3beafe`을 전달했다. 이 기록은 그 rendered target과 설명한 처리 방식의 승인이다. 앞의 private 구현 범위 설명은 해당 source checkpoint의 사실이며, 현재 Gate 상태는 approved다. 같은 시각 목표의 중복 승인을 요청하지 않고 공개 연결을 진행한다. 공개 API·persisted schema의 아직 정해지지 않은 중요한 선택은 별도 명시하며 STEP017 전체 완료로 기록하지 않는다.
 
 ## 정확한 실행 source와 대상
 

@@ -1,5 +1,5 @@
 {
-  "state": "ready-for-review",
+  "state": "approved",
   "visualApproval": "pending",
   "publicPaintIntegration": "pending",
   "codeBase": "50d837c1",
@@ -437,5 +437,10 @@
   ],
   "codeRevision": "57f70fbcaec0883bb08e9142dc9de0a7daa2d7dc",
   "evidenceRevision": "57f70fbcaec0883bb08e9142dc9de0a7daa2d7dc",
-  "metadataOnlyRevisionNote": "This recording commit fixes the source/evidence revision; only REVIEW.md and its receipt hash change."
+  "metadataOnlyRevisionNote": "This recording commit fixes the source/evidence revision; only REVIEW.md and its receipt hash change.",
+  "approval": {
+    "source": "Explicit user response in current conversation, relayed by parent /root",
+    "text": "이 렌더링 승인, 구현 계속",
+    "sourceEvidenceRevision": "57f70fbcaec0883bb08e9142dc9de0a7daa2d7dc"
+  }
 }

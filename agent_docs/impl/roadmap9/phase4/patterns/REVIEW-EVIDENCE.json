@@ -1,5 +1,5 @@
 {
-  "state": "ready-for-review",
+  "state": "approved",
   "visualApproval": "pending",
   "publicPaintIntegration": "pending",
   "codeBase": "c0a86eb2",
@@ -361,5 +361,10 @@
   },
   "codeRevision": "4cd8917e8a912de51164669439820f7d7fff4e82",
   "evidenceRevision": "4cd8917e8a912de51164669439820f7d7fff4e82",
-  "metadataNote": "Revision-only follow-up; executable source and rendered artifact hashes are unchanged."
+  "metadataNote": "Revision-only follow-up; executable source and rendered artifact hashes are unchanged.",
+  "approval": {
+    "source": "Explicit user response in current conversation, relayed by parent /root",
+    "text": "이 렌더링 승인, 구현 계속",
+    "sourceEvidenceRevision": "4cd8917e8a912de51164669439820f7d7fff4e82"
+  }
 }

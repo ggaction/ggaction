@@ -6,10 +6,14 @@
 - [x] 동일한 font bytes의 native/browser strokeText·SVG text stroke·PDF probe
 - [x] Mark/text outline·halo·opacity·clip·zero-width의 실행 source와 이미지
 - [x] 검증된 review source/evidence의 원격 checkpoint
-- [ ] 사용자의 rendered target 확인
+- [x] 사용자의 rendered target 확인
 - [ ] 공개 text stroke/schema/bounds/action 연결
 
-상태 `ready-for-review`. Roadmap 9 전체 실행 승인과 부모 agent의 private 조사 위임으로 준비했다. 이 이미지의 시각 승인이나 STEP-017 완료를 뜻하지 않는다. Pattern/radial/shadow/blend 검토의 승인도 별도다.
+상태 `approved`. Roadmap 9 전체 실행 승인과 부모 agent의 private 조사 위임으로 준비했다. 이 이미지의 시각 승인이나 STEP-017 완료를 뜻하지 않는다. Pattern/radial/shadow/blend 검토의 승인도 별도다.
+
+## 사용자 승인 기록
+
+현재 대화에서 사용자가 **“두 검토 대상 모두 승인”**라고 명시 승인했다. Parent `/root`가 해당 답변과 정확한 대상 revision `ca0649475025a253af82e9be0dcbec1ffecd5504`을 전달했다. 이 기록은 그 rendered target과 설명한 처리 방식의 승인이다. 앞의 private 구현 범위 설명은 해당 source checkpoint의 사실이며, 현재 Gate 상태는 approved다. 같은 시각 목표의 중복 승인을 요청하지 않고 공개 연결을 진행한다. 공개 API·persisted schema의 아직 정해지지 않은 중요한 선택은 별도 명시하며 STEP017 전체 완료로 기록하지 않는다.
 
 ## 실행 source와 시각 의미
 

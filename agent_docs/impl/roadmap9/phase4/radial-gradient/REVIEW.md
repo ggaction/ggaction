@@ -6,10 +6,14 @@
 - [x] 기존 linear gradient stop 검증의 단일 owner 재사용
 - [x] 6종 native primitive와 Canvas/SVG/PNG/PDF 검토 이미지
 - [x] 실패한 PDF 후보와 수정된 vector shading의 차이를 수치로 보존
-- [ ] exact visual target 사용자 승인
+- [x] exact visual target 사용자 승인
 - [ ] 공개 paint schema 및 전체 소비자 연결
 
-상태는 `ready-for-review`다. Roadmap 9 전체 실행과 부모 agent의 독립 private 위임에 따라 준비했다. 공개 radial paint, STEP-017, AT-13 완료가 아니며 unseen visual target 승인을 가정하지 않는다. Source/evidence revision: `57f70fbcaec0883bb08e9142dc9de0a7daa2d7dc`. 이 revision의 실행 source와 rendered target을 검토한다. 뒤의 metadata-only 기록은 source와 출력 내용을 바꾸지 않는다.
+상태는 `approved`다. Roadmap 9 전체 실행과 부모 agent의 독립 private 위임에 따라 준비했다. 공개 radial paint, STEP-017, AT-13 완료가 아니며 unseen visual target 승인을 가정하지 않는다. Source/evidence revision: `57f70fbcaec0883bb08e9142dc9de0a7daa2d7dc`. 이 revision의 실행 source와 rendered target을 검토한다. 뒤의 metadata-only 기록은 source와 출력 내용을 바꾸지 않는다.
+
+## 사용자 승인 기록
+
+현재 대화에서 사용자가 **“이 렌더링 승인, 구현 계속”**라고 명시 승인했다. Parent `/root`가 해당 답변과 정확한 대상 revision `57f70fbcaec0883bb08e9142dc9de0a7daa2d7dc`을 전달했다. 이 기록은 그 rendered target과 설명한 처리 방식의 승인이다. 앞의 private 구현 범위 설명은 해당 source checkpoint의 사실이며, 현재 Gate 상태는 approved다. 같은 시각 목표의 중복 승인을 요청하지 않고 공개 연결을 진행한다. 공개 API·persisted schema의 아직 정해지지 않은 중요한 선택은 별도 명시하며 STEP017 전체 완료로 기록하지 않는다.
 
 ## Private kernel의 정확한 범위
 

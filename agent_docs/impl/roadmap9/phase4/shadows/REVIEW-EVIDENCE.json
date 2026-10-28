@@ -1,5 +1,5 @@
 {
-  "state": "ready-for-review",
+  "state": "approved",
   "visualApproval": "pending",
   "publicPaintIntegration": "pending",
   "codeBase": "1028b202291a941ab8f02b9e2df10950a6e81d59",
@@ -372,5 +372,10 @@
     "result": "Zero/soft/negative offset shadows, one-time glyph opacity, clip, circle silhouette and separate vector sibling visible. User approval pending."
   },
   "codeRevision": "10f04609160998a54e969ea909b89b48cf42aa3e",
-  "evidenceRevision": "10f04609160998a54e969ea909b89b48cf42aa3e"
+  "evidenceRevision": "10f04609160998a54e969ea909b89b48cf42aa3e",
+  "approval": {
+    "source": "Explicit user response in current conversation, relayed by parent /root",
+    "text": "표시한 그림자와 처리 방식 승인",
+    "sourceEvidenceRevision": "10f04609160998a54e969ea909b89b48cf42aa3e"
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "state": "ready-for-review",
+  "state": "approved",
   "visualApproval": "pending",
   "publicPaintIntegration": "pending",
   "codeBase": "a9fbf6a973c65f82533732f4722dd58b94ed5f6d",
@@ -190,5 +190,10 @@
     "unpackedBytes": 4727468
   },
   "sourceEvidenceRevision": "90f5f67ec080003dd3606ed78bbb9bfbfd3beafe",
-  "metadataOnlyRecording": true
+  "metadataOnlyRecording": true,
+  "approval": {
+    "source": "Explicit user response in current conversation, relayed by parent /root",
+    "text": "두 검토 대상 모두 승인",
+    "sourceEvidenceRevision": "90f5f67ec080003dd3606ed78bbb9bfbfd3beafe"
+  }
 }

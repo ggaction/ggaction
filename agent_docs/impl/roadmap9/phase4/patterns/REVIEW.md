@@ -6,14 +6,18 @@
 - [x] 실행 가능한 primitive source와 단일 입력 manifest 준비
 - [x] 7 styles × Canvas/SVG/PNG/PDF 출력과 독립 interior 값 비교
 - [x] alpha·phase·plot/object 원점·clip 검토 이미지 준비
-- [ ] 사용자 visual target 승인
+- [x] 사용자 visual target 승인
 - [ ] 공개 paint API와 전체 소비자 연결
 
 검토 source와 최초 evidence revision은 `4cd8917e` (`codex/roadmap9-paints`)다. 이 revision 표시는 metadata 후속 기록이며 검증된 실행 source는 바꾸지 않는다.
 
-Gate 상태는 `ready-for-review`다. Roadmap 전체 구현 승인은 작업 진행 근거지만 이 이미지의 시각적 승인을 뜻하지 않는다. 이번 checkpoint는 public paint API나 renderer runtime을 수정하지 않는다. STEP-017 및 AT-13 완료도 아니다. Private kernel 계약과 이전 수치 검증은 [PRIVATE.md](PRIVATE.md)가 소유한다.
+Gate 상태는 `approved`다. Roadmap 전체 구현 승인은 작업 진행 근거지만 이 이미지의 시각적 승인을 뜻하지 않는다. 이번 checkpoint는 public paint API나 renderer runtime을 수정하지 않는다. STEP-017 및 AT-13 완료도 아니다. Private kernel 계약과 이전 수치 검증은 [PRIVATE.md](PRIVATE.md)가 소유한다.
 
 기준 카드는 현재 병행 DATA checkout에서 읽은 `study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-017-paint-resources.ko.md`와 `roadmap/contracts/geometry-design.ko.md`다. 이 paints branch에는 study 자료가 없으므로 새 복제 계약을 만들지 않았다.
+
+## 사용자 승인 기록
+
+현재 대화에서 사용자가 **“이 렌더링 승인, 구현 계속”**라고 명시 승인했다. Parent `/root`가 해당 답변과 정확한 대상 revision `4cd8917e8a912de51164669439820f7d7fff4e82`을 전달했다. 이 기록은 그 rendered target과 설명한 처리 방식의 승인이다. 앞의 private 구현 범위 설명은 해당 source checkpoint의 사실이며, 현재 Gate 상태는 approved다. 같은 시각 목표의 중복 승인을 요청하지 않고 공개 연결을 진행한다. 공개 API·persisted schema의 아직 정해지지 않은 중요한 선택은 별도 명시하며 STEP017 전체 완료로 기록하지 않는다.
 
 ## 검토 대상과 실행 source
 

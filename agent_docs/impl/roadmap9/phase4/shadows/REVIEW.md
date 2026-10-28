@@ -6,10 +6,14 @@
 - [x] Blur·offset·alpha·clip·circle의 실행 source/manifest
 - [x] 동일 sublayer PNG와 PDF 내부 payload 검증
 - [x] 최종 검증·source/evidence revision 원격 기록
-- [ ] 사용자의 rendered target 확인
+- [x] 사용자의 rendered target 확인
 - [ ] 공개 paint/action/renderer flow 연결
 
-상태 `ready-for-review`. Roadmap 9 전체 실행 승인과 부모 agent의 private 구현 위임으로 준비했다. 새 시각 목표를 승인한 것으로 기록하지 않는다. STEP-017과 AT-13 완료가 아니다. Pattern/radial의 승인과도 별도다.
+상태 `approved`. Roadmap 9 전체 실행 승인과 부모 agent의 private 구현 위임으로 준비했다. 새 시각 목표를 승인한 것으로 기록하지 않는다. STEP-017과 AT-13 완료가 아니다. Pattern/radial의 승인과도 별도다.
+
+## 사용자 승인 기록
+
+현재 대화에서 사용자가 **“표시한 그림자와 처리 방식 승인”**라고 명시 승인했다. Parent `/root`가 해당 답변과 정확한 대상 revision `10f04609160998a54e969ea909b89b48cf42aa3e`을 전달했다. 이 기록은 그 rendered target과 설명한 처리 방식의 승인이다. 앞의 private 구현 범위 설명은 해당 source checkpoint의 사실이며, 현재 Gate 상태는 approved다. 같은 시각 목표의 중복 승인을 요청하지 않고 공개 연결을 진행한다. 공개 API·persisted schema의 아직 정해지지 않은 중요한 선택은 별도 명시하며 STEP017 전체 완료로 기록하지 않는다.
 
 ## 승인 대상의 정확한 source
 
