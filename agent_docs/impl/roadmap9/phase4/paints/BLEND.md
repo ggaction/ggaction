@@ -8,8 +8,8 @@
 - [x] 독립 native/browser 픽셀 및 공개/primitive 동일 출력, 실제 데이터 5개 × 3 recipes
 - [x] shared policy·action·compositing과 final materialization/renderer의 정본 coverage floor
 - [x] 전체 unit5,564/5,564, contracts734/735와 유일한 ledger 수정3/3, data/mark realistic14/14
-- [ ] 지원 Node 설치 결과의 최종 기록
-- [ ] 커밋한 canonical example을 가리키는 provenance와 최종 문서 증거
+- [x] 동일 최종 archive로 Node20/22/24 각각214개 설치 사례 +7개 qualification 통과
+- [x] 커밋한 canonical example의 provenance, 변경8개 문서 assertions, built153pages/1,285LLM,4폭 axe/containment
 - [ ] P2 shadow와 Image/H/Partition의 남은 공통 paint 소비자 통합
 
 이 체크포인트는 blend이며 STEP017 또는 Roadmap9 전체 완료가 아니다. 승인 정본은
@@ -60,11 +60,12 @@ Canonical runner와 pinned cache를 사용해 15/15 통과했다. 기존 data/ma
 
 ## 크기와 설치
 
-신규 source owner 2개 때문에 package entries 794→796, unpacked 실측 5,417,405bytes로 cap 5,411,000→5,418,000만
-조정했다. Node22 packed 1,176,024bytes는 기존 1,178,000 이내였으나 Node20의 1,178,070bytes가70bytes를 초과해
-packed cap을1,179,000으로 올렸다. Full/Basic gzip Node22는580,617/342,310bytes, Node20은581,372/343,054다.
+신규 source owner 2개 때문에 package entries 794→796, 최종 unpacked 실측 5,417,436bytes로 cap 5,411,000→5,418,000만
+조정했다. 최종 Node22 packed는1,176,036bytes, Node20/24는1,178,080bytes다. 첫 Node20 측정1,178,070bytes가
+기존 한도를70bytes 초과해 packed cap을1,179,000으로 올렸다. 최종 Full/Basic gzip Node22는580,621/342,310bytes,
+Node20/24는581,376/343,054다.
 Full582,000은 유지하고 Basic343,000을54bytes 초과하여344,000으로 최소 조정했다. 추가 supported Node와
-동일 archive 설치 결과는 최종 evidence에 보존한다.
+동일 archive 설치 결과는 최종 evidence에 보존했다.
 
 새 BlendMode union으로 증가한 세 compact card만 최소 cap을 올렸다. ReferenceBand 3,732→3,740,
 MarkLabels 3,988→3,990, Annotation 3,982→3,990bytes이며 전체 median 2,034, max 4,681bytes다.
@@ -86,4 +87,17 @@ fixture만 실패했다. 그 expectation을 실제9종 계약으로 바꾼 뒤 �
 closed whitelist가 새 blend를 거부함을 발견했다. 기존 Text domain action 전달만3owner에서 열고
 21/21 focused 회귀 및 같은5×3 realistic matrix에 다섯 facade를 추가했다. 새 의미나 저장 위치는 없다.
 앞선 전체 unit/contracts는 이3줄 후속 연결 전 결과로 보존하며 전체 반복으로 표시하지 않는다.
-최종 source-free archive는 후속 연결 뒤 별도로 고정하고 이전15fa644a archive 결과와 구분한다.
+최종 source-free archive는 후속 연결 뒤 고정한 SHA256
+`158ef7bd2defb14f0b0baeaf3dcdd8fc9dccc39a800854983412447f04d2b8d1`이며
+이전15fa644a archive 결과와 구분한다. 이 동일 파일로 Node20.20.2/22.23.1/24.22.1 모두214/214 사례와
+7/7 qualification을 통과했다. source commit은 `d0b3f763c4c02be85bb9e023a85a46286121d674`다.
+그 뒤 변경은 provenance와 검증 기록뿐이다. [manifest.json](blend-evidence/manifest.json)에 원본 로그와 측정 경계를 기록한다.
+
+문서는 최초 source170개 중169개가 통과했고 미커밋 example-ref 한 건을 실제 source commit 이후 수정했다.
+최종 source commit 뒤 관련8개 assertion이 통과했다. 최종 built153pages/1,285LLM와 변경 페이지의
+1280/320/390/768px axe·가로 넘침 검사를 모두 통과했다. 앞선 전체 UI/검색/키보드 검증은 구조 입력이
+변하지 않았으므로 outline 통합 증거를 재사용하며 이번에 전체 browser sweep을 반복했다고 표시하지 않는다.
+
+추가 타입 상속 감사에서 endpoint/ECDF labels의 기존 outline 허용 누락도 확인했다. 이는 이번 blend
+키 전달과 별개의 이전 outline 소비자 누락으로, 다음 P2 shadow/공통 paint 소비자 checkpoint에서
+기존 Text 옵션 전달 경로를 재사용해 닫는다. 이 항목이 남아 있으므로 P2 전체 완료를 선언하지 않는다.

@@ -54,6 +54,12 @@
     "sha256": "b5d04b9d485bf5a7861d1ece0e2a309ea5f5c27da59b893462790fa69e4b67f0"
   },
   {
+    "file": "blend-commit.log.gz",
+    "source": ".artifacts/blend-commit.log",
+    "bytes": 9038,
+    "sha256": "4615263213080f21c25cf77599ce37a273085427c779a01653ff6f74574abbde"
+  },
+  {
     "file": "blend-consumer-node22-final.log.gz",
     "source": ".artifacts/blend-consumer-node22-final.log",
     "bytes": 2456,
@@ -84,10 +90,28 @@
     "sha256": "66a249c0c6c88e1aa21dca924454d4cc495c9cf8c1f44fc32aaa68e4ba19c5fe"
   },
   {
+    "file": "blend-doc-page-final.log.gz",
+    "source": ".artifacts/blend-doc-page-final.log",
+    "bytes": 311,
+    "sha256": "64a6057cfcefa8a9b69a592ef37fe0ebe9434cc88a5e8fb0b2641811aef14558"
+  },
+  {
     "file": "blend-doc-page.log.gz",
     "source": ".artifacts/blend-doc-page.log",
     "bytes": 311,
     "sha256": "64a6057cfcefa8a9b69a592ef37fe0ebe9434cc88a5e8fb0b2641811aef14558"
+  },
+  {
+    "file": "blend-docs-build-final-source.log.gz",
+    "source": ".artifacts/blend-docs-build-final-source.log",
+    "bytes": 420,
+    "sha256": "26aa59a2b094c05f995bb6e6d29c3f7dc22d8602938fa8985fcf3ef83c136542"
+  },
+  {
+    "file": "blend-docs-build-final.log.gz",
+    "source": ".artifacts/blend-docs-build-final.log",
+    "bytes": 420,
+    "sha256": "e4fe95acba82f7d38e087754ae599d4bef0e143767537ed36c5c02fd3ac38814"
   },
   {
     "file": "blend-docs-build.log.gz",
@@ -96,10 +120,34 @@
     "sha256": "4edbb4ce3562f13f67402eaedb72fcbcf8f5bc3d00344769401e71a2bd221807"
   },
   {
+    "file": "blend-docs-built-final-source.log.gz",
+    "source": ".artifacts/blend-docs-built-final-source.log",
+    "bytes": 102,
+    "sha256": "8d4be97850bce3db144efd2ccadf8e9978387ddd7385508a24a96accbcae33cb"
+  },
+  {
+    "file": "blend-docs-built-final.log.gz",
+    "source": ".artifacts/blend-docs-built-final.log",
+    "bytes": 102,
+    "sha256": "8d4be97850bce3db144efd2ccadf8e9978387ddd7385508a24a96accbcae33cb"
+  },
+  {
     "file": "blend-docs-built.log.gz",
     "source": ".artifacts/blend-docs-built.log",
     "bytes": 102,
     "sha256": "8d4be97850bce3db144efd2ccadf8e9978387ddd7385508a24a96accbcae33cb"
+  },
+  {
+    "file": "blend-docs-committed.log.gz",
+    "source": ".artifacts/blend-docs-committed.log",
+    "bytes": 1845,
+    "sha256": "dcf2da3341112f6382e5da48c67bd5e6bfb2687a9b2b54a5ac874462b6794c2a"
+  },
+  {
+    "file": "blend-docs-final-source.log.gz",
+    "source": ".artifacts/blend-docs-final-source.log",
+    "bytes": 1845,
+    "sha256": "514455ee7747da283c1103659c1e8b098c7eb0c3e9ae1b5341c10941244d8e66"
   },
   {
     "file": "blend-docs-fixed.log.gz",
@@ -130,6 +178,24 @@
     "source": ".artifacts/blend-docs-source.log",
     "bytes": 49729,
     "sha256": "93604cbacb705e1d6ec5156d0ea5722a46dc199e50d389aa0ca3135fedc279db"
+  },
+  {
+    "file": "blend-facade-commit.log.gz",
+    "source": ".artifacts/blend-facade-commit.log",
+    "bytes": 616,
+    "sha256": "19c13df97f7d48a1e81ae1518c0bb7d9bbb36da3b3dd66fca635d275dc833bbc"
+  },
+  {
+    "file": "blend-facade-focus.log.gz",
+    "source": ".artifacts/blend-facade-focus.log",
+    "bytes": 5177,
+    "sha256": "6626a8995a345a9ab292a355b1e5aef989e29fc14393cf3a3d9c2317547b659b"
+  },
+  {
+    "file": "blend-facade-regression.log.gz",
+    "source": ".artifacts/blend-facade-regression.log",
+    "bytes": 346,
+    "sha256": "ffae6d7a3d48e6fc6bdf42c78ce359c63f34bd5cd0b48a3a69aa538336bdf404"
   },
   {
     "file": "blend-final-metadata-contracts.log.gz",
@@ -168,6 +234,24 @@
     "sha256": "37b77f0dbf1d80daf2836b3bb79ca5bc2cba2f50c1c55222d25c23cc1af8d2fa"
   },
   {
+    "file": "blend-installed-node20.log.gz",
+    "source": ".artifacts/blend-installed-node20.log",
+    "bytes": 2880,
+    "sha256": "07c0b1cd9759e1c32852f65a9785477d5e9c3c33719a03d90f72f075b2b1d348"
+  },
+  {
+    "file": "blend-installed-node22.log.gz",
+    "source": ".artifacts/blend-installed-node22.log",
+    "bytes": 2880,
+    "sha256": "524fad64558ac0f9cc83cde05ddd7402f63e9589c281d8bcd46b6d6d970de92f"
+  },
+  {
+    "file": "blend-installed-node24.log.gz",
+    "source": ".artifacts/blend-installed-node24.log",
+    "bytes": 2880,
+    "sha256": "7a73cf83f83c65129c2a1d774544b1fd180609c601f77b8a43332f0318b299d0"
+  },
+  {
     "file": "blend-lifecycle-final.log.gz",
     "source": ".artifacts/blend-lifecycle-final.log",
     "bytes": 5140,
@@ -186,8 +270,26 @@
     "sha256": "7a33c9183abda2f4f157e23b89f411c71c91086fdc5350534aae95f997bde53a"
   },
   {
+    "file": "blend-llms-committed.log.gz",
+    "source": ".artifacts/blend-llms-committed.log",
+    "bytes": 139,
+    "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+  },
+  {
     "file": "blend-llms-doc-final.log.gz",
     "source": ".artifacts/blend-llms-doc-final.log",
+    "bytes": 139,
+    "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+  },
+  {
+    "file": "blend-llms-facades.log.gz",
+    "source": ".artifacts/blend-llms-facades.log",
+    "bytes": 139,
+    "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+  },
+  {
+    "file": "blend-llms-final-source.log.gz",
+    "source": ".artifacts/blend-llms-final-source.log",
     "bytes": 139,
     "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
   },
@@ -204,8 +306,26 @@
     "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
   },
   {
+    "file": "blend-machine-committed.log.gz",
+    "source": ".artifacts/blend-machine-committed.log",
+    "bytes": 127,
+    "sha256": "f5db0c4c6f33b9dba27703b4d87d65b217cd8a18ec73cf0d9bcb41b504f748ae"
+  },
+  {
     "file": "blend-machine-doc-final.log.gz",
     "source": ".artifacts/blend-machine-doc-final.log",
+    "bytes": 127,
+    "sha256": "f5db0c4c6f33b9dba27703b4d87d65b217cd8a18ec73cf0d9bcb41b504f748ae"
+  },
+  {
+    "file": "blend-machine-facades.log.gz",
+    "source": ".artifacts/blend-machine-facades.log",
+    "bytes": 127,
+    "sha256": "f5db0c4c6f33b9dba27703b4d87d65b217cd8a18ec73cf0d9bcb41b504f748ae"
+  },
+  {
+    "file": "blend-machine-final-source.log.gz",
+    "source": ".artifacts/blend-machine-final-source.log",
     "bytes": 127,
     "sha256": "f5db0c4c6f33b9dba27703b4d87d65b217cd8a18ec73cf0d9bcb41b504f748ae"
   },
@@ -234,6 +354,12 @@
     "sha256": "aff1d71af047f4424ae2c4be88240ca8d2f40063d1ef3beb172e7ef9194cd619"
   },
   {
+    "file": "blend-pack-facades.log.gz",
+    "source": ".artifacts/blend-pack-facades.log",
+    "bytes": 621,
+    "sha256": "52c49267e5e604af68b7e2af0247867e6ca59316b0e291329fd81d28633be851"
+  },
+  {
     "file": "blend-pack.log.gz",
     "source": ".artifacts/blend-pack.log",
     "bytes": 621,
@@ -258,10 +384,40 @@
     "sha256": "a7bd3b8465f399d600c195addfd4022d41f84b842c19916dcb1d0f351762fd54"
   },
   {
+    "file": "blend-package-node20-final.log.gz",
+    "source": ".artifacts/blend-package-node20-final.log",
+    "bytes": 368,
+    "sha256": "5e53869f194f8e5fc664faa5a20f544c52872b2e17109dfba8046251a9c01ec2"
+  },
+  {
     "file": "blend-package-node20.log.gz",
     "source": ".artifacts/blend-package-node20.log",
     "bytes": 1117,
     "sha256": "e94c91f11376c3f0378e4e27d9dc17eefb173434b634d9f88540ed91fc4345e3"
+  },
+  {
+    "file": "blend-package-node24-final.log.gz",
+    "source": ".artifacts/blend-package-node24-final.log",
+    "bytes": 368,
+    "sha256": "5e53869f194f8e5fc664faa5a20f544c52872b2e17109dfba8046251a9c01ec2"
+  },
+  {
+    "file": "blend-package-node24.log.gz",
+    "source": ".artifacts/blend-package-node24.log",
+    "bytes": 368,
+    "sha256": "69fc3d7917195c4556efc7208bd35a4bc82787807da5e4d7325354a3b9f33fdd"
+  },
+  {
+    "file": "blend-provenance-committed.log.gz",
+    "source": ".artifacts/blend-provenance-committed.log",
+    "bytes": 69,
+    "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5"
+  },
+  {
+    "file": "blend-provenance-final-source.log.gz",
+    "source": ".artifacts/blend-provenance-final-source.log",
+    "bytes": 69,
+    "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5"
   },
   {
     "file": "blend-provenance-final.log.gz",
@@ -286,6 +442,12 @@
     "source": ".artifacts/blend-realistic-data-mark.log",
     "bytes": 3157,
     "sha256": "e72d59b4c8900779abd1fa446e5e896497100ae37b838f810fe0f5192d1db89f"
+  },
+  {
+    "file": "blend-realistic-facades.log.gz",
+    "source": ".artifacts/blend-realistic-facades.log",
+    "bytes": 4054,
+    "sha256": "b4c47a8f2f643415e322f368b4e480c7c6a6123bc41f1a97ca44ee93e60d3c71"
   },
   {
     "file": "blend-realistic-final.log.gz",
@@ -328,6 +490,12 @@
     "source": ".artifacts/blend-rendering.log",
     "bytes": 15338,
     "sha256": "936d72750fbbea6d60fdddc1ebde1d1912fb3d309ea654d279a4be56a1df1af7"
+  },
+  {
+    "file": "blend-search-facades.log.gz",
+    "source": ".artifacts/blend-search-facades.log",
+    "bytes": 121,
+    "sha256": "6eadafbe91cb6766c787ba78a1958acfdbccf42241bd1e1ee05a61bc12773574"
   },
   {
     "file": "blend-search-final.log.gz",
