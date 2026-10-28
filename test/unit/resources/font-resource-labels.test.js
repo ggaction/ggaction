@@ -26,11 +26,15 @@ const labelProperties = program => program.graphicSpec.objects.plot.items.filter
 function plot(kind) {
   const p = chart().createCanvas({ width: 240, height: 160, margin: 0, background: "white" });
   const labels = { fontFamily: family, fontSize: 20, fontWeight: 400 };
-  if (kind === "graph") return p.createData({ id: "nodes", keyField: "id", values: [{ id: "r", label: "AB" }, { id: "a", label: "AB" }] })
-    .createData({ id: "edges", values: [{ from: "r", to: "a" }] })
-    .createGraphData({ id: "source", nodes: "nodes", edges: "edges", nodeKey: "id", source: "from", target: "to", attributes: ["label"] })
-    .layoutGraph({ id: "layout", method: "force", options: { seed: 3, iterations: 2 } })
+  if (["graph", "inferredGraph"].includes(kind)) {
+    const graph = p.createData({ id: "nodes", keyField: "id", values: [{ id: "r", label: "AB" }, { id: "a", label: "AB" }] })
+      .createData({ id: "edges", values: [{ from: "r", to: "a" }] });
+    const withGraph = kind === "graph"
+      ? graph.createGraphData({ id: "source", nodes: "nodes", edges: "edges", nodeKey: "id", source: "from", target: "to", attributes: ["label"] })
+      : graph.createInferredGraphData({ id: "source", data: "nodes", nodeKey: "id", ruleId: "sameLabel", rule: "group", attributes: ["label"], options: { fields: ["label"] } });
+    return withGraph.layoutGraph({ id: "layout", method: "force", options: { seed: 3, iterations: 2 } })
     .createGraphPlot({ id: "plot", labels: { ...labels, field: "label" } });
+  }
   return p.createData({ id: "nodes", keyField: "id", values: [{ id: "r", parent: null, value: 2 }, { id: "a", parent: "r", value: 1 }] })
     .createHierarchyData({ id: "source", key: "id", parent: "parent", value: "value" })
     .layoutHierarchy({ id: "layout", method: kind, options: kind === "partition" ? {} : kind === "tree" ? { nodeSize: [20, 20], siblingGap: 30, depthGap: 40, orientation: "vertical" }
@@ -45,15 +49,19 @@ async function bound(kind) {
   assert.ok(queried.includes("AB"), "Resource labels participate in exact width query preparation");
   return p.applyTextMetrics({ prepared: metrics, requestToken: "current" });
 }
-for (const kind of ["graph", "tree", "treemap", "partition"]) {
+for (const kind of ["graph", "inferredGraph", "tree", "treemap", "partition"]) {
   test(`${kind} labels bind exact fonts without recalculating their resource layout`, async () => {
     const p = await bound(kind), before = serializeProgram(p), layout = p.semanticSpec.resources.find(resource => resource.kind === "layout");
     const coordinates = structuredClone(layout.result);
     assert.ok(labelProperties(p).length > 0);
     assert.ok(labelProperties(p).every(properties => properties.font.contentHash === expectedHash));
-    const edit = { graph: "editGraphPlot", tree: "editTreePlot", treemap: "editTreemapPlot", partition: "editPartitionPlot" }[kind];
+    const edit = { graph: "editGraphPlot", inferredGraph: "editGraphPlot", tree: "editTreePlot", treemap: "editTreemapPlot", partition: "editPartitionPlot" }[kind];
     assert.throws(() => p[edit]({ target: "plot", labels: { overrides: [{ key: "a", text: "BBBB" }] } }), error => error.assetCode === "metrics-required");
     assert.equal(serializeProgram(p), before);
+    if (kind === "inferredGraph") {
+      assert.throws(() => p.reviseData({ source: "nodes", id: "nextNodes", values: [{ id: "r", label: "BBBB" }, { id: "a", label: "AB" }] }), error => error.assetCode === "metrics-required");
+      assert.equal(serializeProgram(p), before);
+    }
     const replacement = await prepareFontResource(p, { kind: "replace", target: "font", ...source, metricsProviderVersion: "fixture@2" }, host);
     const q = p.replaceFontResource({ prepared: replacement, requestToken: "current" });
     assert.equal(q.semanticSpec.resources.find(resource => resource.kind === "layout"), layout);

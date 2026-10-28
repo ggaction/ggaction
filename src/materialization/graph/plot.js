@@ -47,6 +47,8 @@ export function resolveGraphPlot(program, layer, config) {
     degrees.set(edge.sourceKey, degrees.get(edge.sourceKey) + 1);
     degrees.set(edge.targetKey, degrees.get(edge.targetKey) + 1);
   }
+  const inference = graph.provenance.origin === "inferred" ? { rule: graph.options.definition.rule,
+    ruleId: graph.options.definition.ruleId, metric: graph.options.definition.metric ?? null } : {};
   const rawKeys = new Map(model.nodes.map(node => [node.key, originalKey(nodesData, node, graph.options.definition)]));
   const memberItem = (source, dataset) => ({ members: source.sourceRows.map(index => dataset.values[index]),
     memberKeys: source.sourceRows.map(index => dataset.rowKeys[index]), dataset });
@@ -62,12 +64,12 @@ export function resolveGraphPlot(program, layer, config) {
       graphics.push({ type: "path", properties: { commands: arrowCommands, fill: edgeStyle.stroke, stroke: "none", strokeWidth: 0, opacity: edgeStyle.opacity }, identity: { key, topology, role: "arrow", lineage } });
     }
     items.push({ key, topology, role: "edge", properties, graphicIndices, graphicRoles, ...memberItem(edge, edgesData),
-      fields: { kind: "edge", key: edge.key, sourceKey: rawKeys.get(edge.sourceKey), targetKey: rawKeys.get(edge.targetKey), weight: edge.weight, origin: edge.origin, directed: edge.directed, ruleId: edge.ruleId } });
+      fields: { ...inference, kind: "edge", key: edge.key, sourceKey: rawKeys.get(edge.sourceKey), targetKey: rawKeys.get(edge.targetKey), weight: edge.weight, origin: edge.origin, directed: edge.directed, ruleId: edge.ruleId } });
   }
   model.nodes.forEach((node, index) => {
     const key = graphItemKey(layer, graph, "node", node.key), properties = { ...located.get(node.key), ...bodyStyle(config.nodes, nodeStyles, node.key) };
     const item = { key, topology: "", role: "node", properties, graphicIndices: [graphics.length], graphicRoles: ["body"], ...memberItem(node, nodesData),
-      fields: { ...Object.fromEntries(Object.entries(node.attributes).map(([name, value]) => [`attribute:${name}`, value])), kind: "node", key: rawKeys.get(node.key),
+      fields: { ...inference, ...Object.fromEntries(Object.entries(node.attributes).map(([name, value]) => [`attribute:${name}`, value])), kind: "node", key: rawKeys.get(node.key),
         degree: degrees.get(node.key), incoming: model.adjacency[index].incoming.length, outgoing: model.adjacency[index].outgoing.length, origin: graph.provenance.origin } };
     graphics.push({ type: "circle", properties, identity: { key, topology: "", role: "body", lineage } });
     items.push(item); nodeItems.set(node.key, item);

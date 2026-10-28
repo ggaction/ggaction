@@ -12,7 +12,7 @@ test("observed graph declarations distinguish source target columns from graph e
   try {
     const file = path.join(directory, "consumer.mts");
     await writeFile(file, `
-import { chart, type GraphResource, type GraphLayoutResource, type CreateGraphDataOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import { chart, type ObservedGraphResource, type GraphLayoutResource, type CreateGraphDataOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import { chart as basicChart } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 const definition: CreateGraphDataOptions = { id: "graph", nodes: "nodes", edges: "edges", nodeKey: ["family", "id"], source: "from", target: ["tf", "tn"], weight: "weight" };
 const program = chart().createGraphData(definition).editGraphData({ target: "graph", definition: { target: "to", directed: true } });
@@ -50,7 +50,7 @@ program.layoutGraph({ id: "circular", method: "circular", options: { seed: 2 } }
 program.editLayout({ options: { iterations: 2 }, order: "input" });
 // @ts-expect-error explicit undefined is not omission
 program.layoutGraph({ id: "force", method: "force", options: undefined });
-const resource = program.semanticSpec.resources.find((value): value is GraphResource => value.kind === "graph");
+const resource = program.semanticSpec.resources.find((value): value is ObservedGraphResource => value.kind === "graph" && value.provenance.origin === "observed");
 if (resource) {
   const inputKind: "data" = resource.inputs[0].kind;
   const diagnostics: null = resource.result.diagnostics;

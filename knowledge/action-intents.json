@@ -1019,6 +1019,12 @@
       "icicle chart",
       "sunburst chart",
       "focused hierarchy partition"
+    ],
+    "InferredGraphData": [
+      "inferred graph data",
+      "nearest neighbor network",
+      "similarity and spanning graph",
+      "group and sequence connections"
     ]
   },
   "summaryOverrides": {
@@ -1972,6 +1978,25 @@
         2,
         3
       ]
+    },
+    "createInferredGraphData": {
+      "id": "neighbors",
+      "data": "points",
+      "nodeKey": "id",
+      "ruleId": "nearest",
+      "rule": "knn",
+      "features": [
+        "x"
+      ],
+      "metric": "euclidean"
+    },
+    "editInferredGraphData": {
+      "target": "neighbors",
+      "definition": {
+        "options": {
+          "k": 2
+        }
+      }
     }
   },
   "callPatternOverrides": {

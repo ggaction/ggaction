@@ -183,6 +183,22 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "editInferredGraphData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "createInferredGraphData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "createParameter": {
     "operation": "create",
     "authoringRoles": [

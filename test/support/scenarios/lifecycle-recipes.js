@@ -1311,6 +1311,9 @@ function buildDirectDataResources(factors) {
     .editGraphPlot({ target: "directGraphPlot", nodes: { radius: 4 }, edges: { strokeWidth: 1 } })
     .editLayout({ target: "directGraphLayout", options: { startAngle: 30 } })
     .editGraphData({ target: "directGraph", definition: { directed: true } })
+    .createInferredGraphData({ id: "directInferredGraph", data: "directSource", nodeKey: "id", ruleId: "source-order",
+      rule: "sequence", options: { orderField: "x", groupBy: ["category"] } })
+    .editInferredGraphData({ target: "directInferredGraph", definition: { options: { orderField: "x", groupBy: ["category"], lag: 2 } } })
     .createHierarchyData({ id: "directHierarchy", data: "directSource", groupFields: ["category"], value: "positive" })
     .editHierarchyData({ target: "directHierarchy", maxNodes: 1000 })
     .layoutHierarchy({ id: "directTreeLayout", hierarchy: "directHierarchy", method: "tree", options: { nodeSize: [10, 10], siblingGap: 8, depthGap: 30, orientation: "vertical" } })

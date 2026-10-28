@@ -454,6 +454,42 @@
       }
     },
     {
+      "name": "editInferredGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Rebuilds inferred graph dependencies and refreshes each affected layout and plot",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "editinferredgraphdata"
+      }
+    },
+    {
+      "name": "createInferredGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Revise inferred graph rules and source inputs with `editInferredGraphData`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "createinferredgraphdata"
+      }
+    },
+    {
       "name": "createParameter",
       "layer": "user-facing",
       "domain": "core",

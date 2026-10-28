@@ -690,6 +690,89 @@ Revise an existing observed graph. The graph ID is `target`; the edge endpoint
 column belongs in `definition.target`. See [observed graph data](../../api/data/source-and-derived.md#observed-graph-data).
 
 
+## `editInferredGraphData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditInferredGraphDataOptions`](./../types.md#type-editinferredgraphdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `candidateGraph` | Optional / branch-dependent | `string \| null \| undefined` |
+| `definition` | Optional / branch-dependent | `Partial<GraphCandidateMstDefinition \| (InferredGraphSource & { readonly metric: "cosine" \| "euclidean" \| "manhattan"; readonly features: readonly string[]; readonly preprocess?: "minmax" \| ... 2 more ... \| undefined; } & { ...; }) \| ... 11 more ... \| (InferredGraphSource & ... 1 more ... & { ...; })> \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editInferredGraphData({ target?, data?, candidateGraph?, definition? })
+```
+
+Revise an inferred graph and its dependent layouts and plots. Use
+`candidateGraph: null` to remove a spanning-tree candidate input.
+See [graph inference](../../api/graphs.md#graph-inference).
+
+
+## `createInferredGraphData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateInferredGraphDataOptions`](./../types.md#type-createinferredgraphdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `nodeKey` | Required | `GraphKeyField` |
+| `ruleId` | Required | `string` |
+| `attributes` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+| `maxEdges` | Optional / branch-dependent | `number \| undefined` |
+| `rule` | Required | `"group" \| "knn" \| "mst" \| "radius" \| "sequence" \| "similarity"` |
+| `options` | Optional / branch-dependent | `{ readonly forest?: boolean \| undefined; } \| { readonly fields: readonly string[]; readonly missing?: "error" \| "include" \| "omit-node" \| undefined; readonly mode?: "clique" \| "star" \| undefined; readonly hubKey?: RowKey \| undefined; readonly hubs?: readonly { ...; }[] \| undefined; } \| ... 5 more ... \| undefined` |
+| `features` | Optional / branch-dependent | `readonly string[] \| { readonly set: string; } \| { readonly longitude: string; readonly latitude: string; } \| undefined` |
+| `metric` | Optional / branch-dependent | `"cosine" \| "euclidean" \| "great-circle" \| "jaccard" \| "manhattan" \| undefined` |
+| `preprocess` | Optional / branch-dependent | `"minmax" \| "none" \| "standardize" \| undefined` |
+| `candidateGraph` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges? })
+```
+
+Infer a graph using nearest neighbors, radius, similarity, a spanning tree,
+groups, or ordered sequences. Metric and structural rules have distinct options.
+See [graph inference](../../api/graphs.md#graph-inference).
+
+
 ## `createParameter`
 
 **API layer:** user-facing. **Authoring roles:** H2.

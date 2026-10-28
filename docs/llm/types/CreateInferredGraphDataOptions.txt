@@ -1,0 +1,3 @@
+export type CreateInferredGraphDataOptions = { readonly id: string; readonly data?: string } & (
+  (GraphNeighborDefinition | GraphMetricMstDefinition | GraphStructuralDefinition) & { readonly candidateGraph?: never } |
+  GraphCandidateMstDefinition & { readonly candidateGraph: string });

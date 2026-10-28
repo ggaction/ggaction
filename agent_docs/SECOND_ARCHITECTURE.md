@@ -163,8 +163,9 @@ renderer는 다음 통합 경계다. 수치·검증·실측 package 경계는
 검증한다. DATA revision owner는 등록된 graph 갱신 함수를 명시적으로 호출한다. Basic과 renderer는
 graph resource를 읽지 않으며 automatic compiler는 없다. `createGraphData.target`은 endpoint 열이므로
 기존 unit-local creation dispatch를 사용한다. 수정 target은 별도의 resource selector다.
-Full의 graph layout과 plot은 같은 typed resource 경계를 사용한다. `actions/graphs/layouts.js`가 변경될 graph→layout→plot closure를 먼저 계산·검증한 뒤 wrapped semantic replacement와 plot materialization을 명시 호출한다.
-`materialization/graph/geometry.js`는 finite cubic route·parallel offset·self-loop·endpoint trimming을, plot owner는 concrete circle/path/text·paint·source-row identity를 소유한다. 공통 selection policy는 node와 edge를 별도 logical item으로 유지하며 arrow/label을 같은 item에 결박한다. Renderer는 기존 concrete primitives만 읽는다. Inference 공개 연결은 후속 domain owner다.
+Full의 graph layout과 plot은 같은 typed resource 경계를 사용한다. `actions/graphs/layouts.js`가 변경될 graph→inferred graph→layout→plot closure를 먼저 계산·검증한 뒤 wrapped semantic replacement와 plot materialization을 명시 호출한다.
+`materialization/graph/geometry.js`는 finite cubic route·parallel offset·self-loop·endpoint trimming을, plot owner는 concrete circle/path/text·paint·source-row identity를 소유한다. 공통 selection policy는 node와 edge를 별도 logical item으로 유지하며 arrow/label을 같은 item에 결박한다. Renderer는 기존 concrete primitives만 읽는다. Inference는 Full의 `actions/graphs/inference.js`가 명시적으로 호출한다. 입력 dataset과 선택 candidate graph의 typed revision을 저장하며, source 갱신은 공통 resource DAG 순서로 각 graph/layout을 한 번씩 갱신한다.
+`materialization/graph/inferredState.js`는 저장 model·source binding·진단의 정합성을 검사하며 pair search나 spanning solver를 재실행하지 않는다. Prepared resource context는 exact receiver/primitive argument에만 graph와 data-reference 교체 권한을 결박하고 작업 종료 때 제거한다.
 정확한 공개·저장 계약은 [GRAPHS.md](contract/current/GRAPHS.md)가 소유한다.
 상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
 
@@ -779,7 +780,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 596,000 bytes |
+| `ggaction` | 613,000 bytes |
 | `ggaction/basic` | 346,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -3260,3 +3261,10 @@ Node20/22 canonical staging은 동일821 entries/5,551,125 unpacked bytes이며 
 1,208,302 bytes였다. 통합 한도는 최소821/1,209,000/5,552,000으로 조정한다. Node20 browser
 gzip Full600,160/Basic348,432 bytes에 따라601,000/349,000만 적용하고 SVG25,000과
 수치·coverage 한도는 유지한다. 초기 한도 초과를 integration evidence에 보존한다.
+### 그래프 추론 공개 연결의 package 경계
+
+관측 graph와 같은 model로 연결한 여섯 inference rule, exact/approximate search, 저장 검증과
+source/candidate revision closure가 Full bundle에 포함된다. Node20 실측은 Full612,463/Basic345,748gzip bytes다.
+Full 한도를596,000에서613,000으로 최소 조정하며 Basic346,000과 SVG25,000은 유지한다.
+패키지 실측814entries/unpacked5,535,332bytes이며 packed는 Node22 1,200,162,
+Node20 1,203,209bytes다. 이 실측에 맞춰814/1,204,000/5,536,000 한도를 적용한다. Basic은 inference action과 resource를 등록하지 않는다.

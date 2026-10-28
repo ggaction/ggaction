@@ -3,6 +3,9 @@ import path from "node:path";
 import { root, run, npmCommand, tscCommand } from "./runtime.js";
 
 export async function testTypeScriptConsumer(directory) {
+  const graphFile = path.join(directory, "graph-inference.mts");
+  await writeFile(graphFile, await readFile(new URL("./fixtures/graph-inference.ts", import.meta.url), "utf8"));
+  run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", graphFile], directory);
   const formatsFile=path.join(directory,"value-formats.mts");
   await writeFile(formatsFile,await readFile(new URL("./fixtures/types-1.ts", import.meta.url), "utf8"));
   run(process.execPath,[tscCommand,"--noEmit","--strict","--skipLibCheck","--target","ES2022","--module","NodeNext","--moduleResolution","NodeNext",formatsFile],directory);

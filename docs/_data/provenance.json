@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:81b823cab7718228a1caaecfee74f51df8217a858bbcb9fe2e3656f9044b4ac0",
+  "contractId": "sha256:0bd4889bc74de3234e804427e2494ccd0abd29d1d1bb458d3eea7316617a1ef2",
   "sourceCommit": null,
   "sourceRef": "main",
-  "exampleSourceRef": "codex/roadmap9-resource-integration",
+  "exampleSourceRef": "5718a0be59bd3e0383b44e1bd8b130a9e78be52b",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 326,
+  "actionCount": 328,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -191,6 +191,14 @@
       "status": "development"
     },
     "createGraphData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createInferredGraphData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editInferredGraphData": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

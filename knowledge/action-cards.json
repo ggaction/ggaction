@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 326,
+  "count": 328,
   "cards": [
     {
       "schemaVersion": 3,
@@ -2230,6 +2230,233 @@
       "snippet": "program.editGraphData({ target: \"network\", definition: { directed: true } })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editgraphdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editInferredGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Revise an inferred graph and its dependent layouts and plots.",
+      "signature": "editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;",
+      "intents": [
+        "edit inferred graph data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "inferred graph data",
+        "nearest neighbor network"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing inferred graph"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "data",
+          "candidateGraph"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editInferredGraphData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing inferred graph"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "candidateGraph",
+          "required": false,
+          "type": "string | null | undefined"
+        },
+        {
+          "name": "definition",
+          "required": false,
+          "type": "Partial<GraphCandidateMstDefinition | (InferredGraphSource & { readonly metric: \"cosine\" | \"euclidean\" | \"manhattan\"; readonly features: readonly string[]; readonly preprocess?: \"minmax\" | ... 2 more ... | undefined; } & { ...; }) | ... 11 more ... | (InferredGraphSource & ... 1 more ... & { ...; })> | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editInferredGraphData({ target?, data?, candidateGraph?, definition? })"
+      ],
+      "snippet": "program.editInferredGraphData({ target: \"neighbors\", definition: { options: { k: 2 } } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editinferredgraphdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createInferredGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Infer a graph using nearest neighbors, radius, similarity, a spanning tree, groups, or ordered sequences.",
+      "signature": "createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;",
+      "intents": [
+        "create inferred graph data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "inferred graph data",
+        "nearest neighbor network"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "materialized source dataset"
+        ],
+        "owns": [
+          "graph resource"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "candidateGraph"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editInferredGraphData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "materialized source dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "nodeKey",
+          "required": true,
+          "type": "GraphKeyField"
+        },
+        {
+          "name": "ruleId",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "attributes",
+          "required": false,
+          "type": "readonly string[] | undefined"
+        },
+        {
+          "name": "maxNodes",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "maxEdges",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "rule",
+          "required": true,
+          "type": "\"group\" | \"knn\" | \"mst\" | \"radius\" | \"sequence\" | \"similarity\""
+        },
+        {
+          "name": "options",
+          "required": false,
+          "type": "{ readonly forest?: boolean | undefined; } | { readonly fields: readonly string[]; readonly missing?: \"error\" | \"include\" | \"omit-node\" | undefined; readonly mode?: \"clique\" | \"star\" | undefined; readonly hubKey?: RowKey | undefined; readonly hubs?: readonly { ...; }[] | undefined; } | ... 5 more ... | undefined"
+        },
+        {
+          "name": "features",
+          "required": false,
+          "type": "readonly string[] | { readonly set: string; } | { readonly longitude: string; readonly latitude: string; } | undefined"
+        },
+        {
+          "name": "metric",
+          "required": false,
+          "type": "\"cosine\" | \"euclidean\" | \"great-circle\" | \"jaccard\" | \"manhattan\" | undefined"
+        },
+        {
+          "name": "preprocess",
+          "required": false,
+          "type": "\"minmax\" | \"none\" | \"standardize\" | undefined"
+        },
+        {
+          "name": "candidateGraph",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createInferredGraphData({ id, nodeKey, ruleId, rule, data?, attributes?, maxNodes?, maxEdges? })"
+      ],
+      "snippet": "program.createInferredGraphData({ id: \"neighbors\", data: \"points\", nodeKey: \"id\", ruleId: \"nearest\", rule: \"knn\", features: [\"x\"], metric: \"euclidean\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createinferredgraphdata"
     },
     {
       "schemaVersion": 3,
