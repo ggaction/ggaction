@@ -1,3 +1,4 @@
+import { materializeMarkEffectProperties } from "../markEffects.js";
 import { bindTextFontProperties } from "../textFont.js";
 import { contentDigest } from "../../core/contentDigest.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
@@ -59,7 +60,7 @@ export function resolveFlowPlot(program, layer, config) {
     }
   });
   validateGeneratedItemLimit(graphics.length, "Flow plot graphic count");
-  const concrete = materializeFillItems(program, layer, graphics);
+  const concrete = materializeFillItems(program, layer, graphics.map(graphic => ({ ...graphic, properties: materializeMarkEffectProperties(graphic.properties) })));
   for (const graphic of concrete) validateConcreteGraphicProperties(graphic.type, graphic.properties);
   const known = new Set(records.map(record => record.key)), targets = new Set([...overrides.keys(), ...labelOverrides.keys(), ...labelText.keys()]);
   return { graphics: concrete, items, frame, graph, layout, dataset,

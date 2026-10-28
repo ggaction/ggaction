@@ -350,7 +350,7 @@ export type {
   EditStrokeDashScaleOptions,
   EditSemanticOptions,
   FieldType,
-  FillPaint, MarkOutline,
+  FillPaint, MarkOutline, MarkShadow, BlendMode,
   PatternPaint,
   RadialGradientPaint,
   FacetCompositionSpec,
@@ -558,6 +558,10 @@ export function prepareFontRendering(program: Pick<ChartProgram, "graphicSpec">,
 export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
 
 export type { GraphMetric, GraphFeatures, GraphSearchOptions, GraphFeaturePolicy, InferredGraphSource, GraphMetricDefinition, GraphNeighborDefinition, GraphMetricMstDefinition, GraphCandidateMstDefinition, GraphStructuralDefinition, InferredGraphDefinition, CreateInferredGraphDataOptions, EditInferredGraphDataOptions, GraphInferenceDiagnostics, ObservedGraphResource, InferredGraphResource } from "./program.js";
+export type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
+import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
+export function prepareShadowRendering(program: Pick<ChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
+export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
 ```
 
 #### `ggaction/basic`
@@ -565,7 +569,7 @@ export type { GraphMetric, GraphFeatures, GraphSearchOptions, GraphFeaturePolicy
 [Complete declaration and relative dependencies](../types/basic.d.ts)
 
 ```typescript
-export type { FillPaint, MarkOutline, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
+export type { FillPaint, MarkOutline, MarkShadow, BlendMode, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
@@ -725,6 +729,11 @@ export type { FontIdentity, FontMimeType, ConcreteFont, PreparedFontRendering, F
 import type { PreparedFontRendering, FontRenderingHost } from "./program.js";
 export function prepareFontRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
 export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
+
+export type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
+import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
+export function prepareShadowRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
+export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
 ```
 
 #### `ggaction/extension`
@@ -738,7 +747,7 @@ import { ChartProgram } from "./program.js";
 export { ChartProgram };
 export type {
   InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
-  FillPaint, MarkOutline,
+  FillPaint, MarkOutline, MarkShadow,
   PatternPaint,
   RadialGradientPaint,
   LinearGradientPaint,
@@ -855,6 +864,7 @@ export function renderToPDFBuffer(
 
 ```typescript
 export interface SVGRenderOptions {
+  readonly shadows?: PreparedShadowRendering;
   readonly title?: string;
   readonly description?: string;
   readonly resourceNamespace?: string;
@@ -1032,7 +1042,7 @@ export function getExpressionFunctions(options?: { readonly registry?: "standard
 [Complete declaration and relative dependencies](../types/scene.d.ts)
 
 ```typescript
-import type { ChartProgram, GraphicObject, GraphicClipPath, CanvasRenderOptions } from './program.js';
+import type { ChartProgram, GraphicObject, GraphicClipPath, CanvasRenderOptions, PreparedShadowRendering } from './program.js';
 export interface TransitionNode {
   readonly key: string;
   readonly type: string;
@@ -1064,7 +1074,7 @@ export interface CanvasTransitionScene {
   readonly height: number;
   readonly nodes: readonly CanvasTransitionNode[];
 }
-export declare function createTransitionScene(program: ChartProgram, options?: {format?: 'svg'}): TransitionScene;
+export declare function createTransitionScene(program: ChartProgram, options?: {format?: 'svg'; shadows?: PreparedShadowRendering}): TransitionScene;
 export declare function createTransitionScene(program: ChartProgram, options: {format: 'canvas'}): CanvasTransitionScene;
 export declare function renderTransitionScene(scene: CanvasTransitionScene, context: CanvasRenderingContext2D, options?: CanvasRenderOptions): void;
 ```
@@ -1079,6 +1089,18 @@ complete Browser Canvas, SVG, Node PNG, and vector PDF examples.
 
 
 Shared mark fill options follow [Pattern and gradient fills](../api/appearance/mark-style.md#pattern-and-gradient-fills). Point, Rect, Bar, Area, Arc, and Text constructors and editors accept the complete FillPaint union; strokes remain solid colors.
+
+The `blend` option on Point, Bar, Rect, Area, Arc, Text, Line, Rule, and Tick mark
+creation/editing accepts normal, multiply, screen, or difference. It applies once
+per final glyph and is preserved through rematerialization. See
+[Mark Style](../api/appearance/mark-style.md#blending-each-mark-item) for ordering and output behavior.
+
+
+The `shadow` option on Point, Bar, Rect, Area, Arc, Text, Line, Rule and Tick create/edit actions adds
+`{color, offsetX?, offsetY?, blurRadius?}`; edit with `shadow: false` to remove it. Defaults are zero offsets
+and zero blur. [Mark Style](../api/appearance/mark-style.md#shadows) explains source opacity and selection;
+[Rendering](../api/rendering.md#prepared-shadows) specifies explicit Canvas/SVG preparation and automatic
+native PNG/PDF preparation. Text requires exact prepared embedded fonts.
 
 ## Internal trace operations
 

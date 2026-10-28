@@ -4648,7 +4648,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `order` | Optional / branch-dependent | `HierarchyOrder \| undefined` |
-| `options` | Optional / branch-dependent | `GraphCircularOptions \| GraphForceOptions \| Partial<...> \| Partial<...> \| { ...; } \| Partial<...> \| undefined` |
+| `options` | Optional / branch-dependent | `FlowLayoutOptions \| GraphCircularOptions \| GraphForceOptions \| Partial<...> \| Partial<...> \| { ...; } \| Partial<...> \| undefined` |
 
 </details>
 
@@ -4686,7 +4686,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `nodes` | Optional / branch-dependent | `(HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] \| undefined; }) \| undefined` |
-| `links` | Optional / branch-dependent | `false \| { stroke?: string \| undefined; strokeWidth?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
+| `links` | Optional / branch-dependent | `false \| { stroke?: string \| undefined; strokeWidth?: number \| undefined; opacity?: number \| undefined; shadow?: false \| MarkShadow \| undefined; } \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| HierarchyLabelsOptions \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
@@ -4726,7 +4726,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `nodes` | Optional / branch-dependent | `(HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] \| undefined; }) \| undefined` |
-| `links` | Optional / branch-dependent | `false \| { stroke?: string \| undefined; strokeWidth?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
+| `links` | Optional / branch-dependent | `false \| { stroke?: string \| undefined; strokeWidth?: number \| undefined; opacity?: number \| undefined; shadow?: false \| MarkShadow \| undefined; } \| undefined` |
 | `labels` | Optional / branch-dependent | `false \| HierarchyLabelsOptions \| undefined` |
 
 </details>
@@ -5096,6 +5096,124 @@ editPartitionPlot({ target?, layout?, coordinate?, focus?, rootVisible?, prunedS
 
 Edit an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity. Full only.
 [Partition plots](../../api/partition.md#editpartitionplot)
+
+
+## `createFlowData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createFlowData(options: CreateFlowDataOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateFlowDataOptions`](./../types.md#type-createflowdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `nodes` | Required | `string` |
+| `edges` | Required | `string` |
+| `nodeKey` | Required | `GraphKeyField` |
+| `source` | Required | `GraphKeyField` |
+| `target` | Required | `GraphKeyField` |
+| `edgeKey` | Optional / branch-dependent | `GraphKeyField \| undefined` |
+| `attributes` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `selfLoops` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+| `maxEdges` | Optional / branch-dependent | `number \| undefined` |
+| `value` | Required | `string` |
+| `balance` | Optional / branch-dependent | `"allow" \| "strict" \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createFlowData({ id, nodes, edges, nodeKey, source, target, value, edgeKey?, attributes?, selfLoops?, balance?, maxNodes?, maxEdges? })
+```
+
+Store directed flow values and an explicit balance policy. Full only.
+[Flow data and Sankey layouts](../../api/flows.md#createflowdata)
+
+
+## `editFlowData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editFlowData(options: TargetedOptions<EditFlowDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditFlowDataOptions`](./../types.md#type-editflowdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `nodes` | Optional / branch-dependent | `string \| undefined` |
+| `edges` | Optional / branch-dependent | `string \| undefined` |
+| `definition` | Optional / branch-dependent | `Partial<FlowDefinition> \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editFlowData({ target?, nodes?, edges?, definition? })
+```
+
+Revise flow data and refresh dependent layouts, nodes, links, labels and selections. Full only.
+[Flow data and Sankey layouts](../../api/flows.md#editflowdata)
+
+
+## `layoutFlow`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+layoutFlow(options: TargetedOptions<LayoutFlowOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`LayoutFlowOptions`](./../types.md#type-layoutflowoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `graph` | Optional / branch-dependent | `string \| undefined` |
+| `method` | Required | `"cyclic" \| "dag"` |
+| `options` | Optional / branch-dependent | `FlowLayoutOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+layoutFlow({ id, graph?, method, options? })
+```
+
+Store a DAG or cyclic Sankey layout while preserving every edge. Full only.
+[Flow data and Sankey layouts](../../api/flows.md#layoutflow)
 
 
 ## Focused core data editing

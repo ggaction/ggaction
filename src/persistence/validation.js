@@ -626,7 +626,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     validateRegressionPlacement(program.markConfigs[id].regression?.placement);
     if (resources.get("mark").get(id)?.mark.type === "image") {
       const config = program.markConfigs[id];
-      exactKeys(config, IMAGE_MARK_CONFIG_KEYS, `${path}.materializationConfigs.marks.${id}`);
+      exactKeys(config, IMAGE_MARK_CONFIG_KEYS.filter(key => key !== "shadow" || Object.hasOwn(config, key)), `${path}.materializationConfigs.marks.${id}`);
       if (canonicalJSON(normalizeImageMarkConfig(config)) !== canonicalJSON(config)) throw invalidSnapshot("Image mark configuration must be normalized.", path);
     } else {
       requestedMarkClip(program.markConfigs[id]);

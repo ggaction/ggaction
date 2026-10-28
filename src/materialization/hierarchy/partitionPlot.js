@@ -1,3 +1,4 @@
+import { materializeMarkEffectProperties } from "../markEffects.js";
 import { bindTextFontProperties } from "../textFont.js";
 import { materializeFillItems } from "../fillPaint.js";
 import { resolveHierarchyLayerResources } from "../../selectors/hierarchy.js";
@@ -81,7 +82,7 @@ export function resolvePartitionPlot(program, layer, config) {
     item.graphicIndices.push(graphics.length); item.graphicRoles.push("label"); graphics.push(graphic);
   }
   validateGeneratedItemLimit(graphics.length, "Partition graphic count");
-  const concrete = materializeFillItems(program, layer, graphics);
+  const concrete = materializeFillItems(program, layer, graphics.map(graphic => ({ ...graphic, properties: materializeMarkEffectProperties(graphic.properties) })));
   for (const graphic of concrete) validateConcreteGraphicProperties(graphic.type, graphic.properties);
   const targets = new Set([...bodyOverrides.keys(), ...labelOverrides.keys(), ...texts.keys()]);
   return { graphics: concrete, items, dataset, layout, hierarchy, frame, view: { ...view, ...(layer.partitionView.recovery ? { recovery: layer.partitionView.recovery } : {}) },

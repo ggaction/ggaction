@@ -2,7 +2,7 @@ import { ownRecord } from "../core/ownData.js";
 import { validateKeys, validateNonNegativeFinite } from "../core/validation.js";
 import { parsePaintColor } from "./color.js";
 
-export const MARK_SHADOW_TYPES = Object.freeze(["point", "bar", "rect", "area", "arc", "text", "line", "rule", "tick"]);
+export const MARK_SHADOW_TYPES = Object.freeze(["point", "bar", "rect", "area", "arc", "text", "line", "rule", "tick", "image"]);
 
 export function normalizeMarkShadow(value, label = "Mark shadow") {
   if (value === false) return false;

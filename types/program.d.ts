@@ -162,7 +162,7 @@ export interface ShadowRenderingHost {
     readonly width: number; readonly height: number;
     getContext(type: "2d"): CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | null;
   };
-  /** Required for Canvas output; SVG embeds the prepared bytes directly. */
+  /** Required for Canvas output and image source masks; SVG embeds the prepared bytes directly. */
   decode?: ImageRenderingHost["decode"];
   /** Exact font preparation is required for Text shadows. */
   fonts?: PreparedFontRendering;
@@ -206,7 +206,7 @@ export interface ImageMarkOptions {
   viewport?: "auto" | { x: number; y: number; width: number; height: number };
   fit?: "contain" | "cover" | "fill";
   align?: readonly [number, number];
-  opacity?: number; alt?: string; clip?: false | GraphicClip;
+  opacity?: number; alt?: string; clip?: false | GraphicClip; shadow?: MarkShadow | false;
 }
 export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; }
 export interface EditImageMarkOptions extends ImageMarkOptions { target?: string; }
@@ -1811,9 +1811,9 @@ export interface InferredGraphResource {
 }
 export type GraphResource = ObservedGraphResource | InferredGraphResource;
 export interface GraphPosition { readonly key: RowKey; readonly x: number; readonly y: number; }
-export interface GraphNodePaint { radius?: number; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
-export interface GraphEdgePaint { stroke?: string; strokeWidth?: number; opacity?: number; parallelGap?: number; loopRadius?: number; arrowSize?: number; arrows?: "auto" | boolean; }
-export interface GraphLabelPaint { fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface GraphNodePaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; radius?: number; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface GraphEdgePaint { shadow?: MarkShadow | false; stroke?: string; strokeWidth?: number; opacity?: number; parallelGap?: number; loopRadius?: number; arrowSize?: number; arrows?: "auto" | boolean; }
+export interface GraphLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
 export interface GraphLabelsOptions extends GraphLabelPaint {
   field?: string; offset?: readonly [number, number]; overrides?: readonly (GraphLabelPaint & { key: RowKey; text?: string })[];
 }
@@ -1903,8 +1903,8 @@ export interface FlowLayoutResource extends Omit<GraphLayoutResource, "options" 
     readonly bounds: { readonly left: number; readonly top: number; readonly right: number; readonly bottom: number };
   };
 }
-export interface FlowBodyPaint { readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; }
-export interface FlowLabelPaint { readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number; }
+export interface FlowBodyPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; }
+export interface FlowLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number; }
 export interface FlowLabelsOptions extends FlowLabelPaint {
   readonly content?: "key" | "value" | { readonly field: string }; readonly offset?: readonly [number, number];
   readonly overrides?: readonly (FlowLabelPaint & { readonly key: RowKey; readonly text?: string })[];
@@ -1985,16 +1985,16 @@ export type HierarchyLayoutResource = {
   | { readonly options: { readonly method: "partition"; readonly order: HierarchyOrder; readonly options: { readonly maxNodes?: number } }; readonly result: HierarchyPartitionResult }
   | { readonly options: { readonly method: "treemap"; readonly order: HierarchyOrder; readonly options: Readonly<HierarchyTreemapOptions> }; readonly result: HierarchyTreemapResult });
 export type HierarchyNodeTarget = { key: RowKeyScalar; path?: never } | { path: readonly (RowKeyScalar | null)[]; key?: never };
-export interface HierarchyBodyPaint { fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface HierarchyBodyPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
 export interface HierarchyNodePaint extends HierarchyBodyPaint { radius?: number; }
-export interface HierarchyLabelPaint { fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface HierarchyLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
 export interface HierarchyLabelsOptions extends HierarchyLabelPaint {
   content?: "value"; offset?: readonly [number, number]; overrides?: readonly (HierarchyNodeTarget & HierarchyLabelPaint & { text?: string })[];
 }
 export interface TreePlotOptions {
   id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
   nodes?: HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] };
-  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number }; labels?: false | HierarchyLabelsOptions;
+  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number; shadow?: MarkShadow | false }; labels?: false | HierarchyLabelsOptions;
 }
 export interface EditTreePlotOptions extends Omit<TreePlotOptions, "id"> { target?: string; }
 export interface TreemapPlotOptions {

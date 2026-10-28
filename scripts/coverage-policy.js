@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "resource-mark-effects": { prefix: "grammar/markEffects.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Role effects must share normalized authoring and strict stored validation without mutating input." },
+  "concrete-mark-effects": { prefix: "materialization/markEffects.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Per-item effect overrides must remove false reset values before concrete rendering." },
   "resource-plot-theme": { prefix: "actions/theme/resourcePlots.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Resource plot appearance must retain explicit authored styles while restoring each family's defaults without rerunning layout." },
   "mark-shadow": { prefix: "grammar/markShadow", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared visual effects must preserve exact input, bounded work, immutable source and backend parity." },
   "shadow-composite": { prefix: "grammar/shadowComposite", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared visual effects must preserve exact input, bounded work, immutable source and backend parity." },

@@ -780,8 +780,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 613,000 bytes |
-| `ggaction/basic` | 346,000 bytes |
+| `ggaction` | 635,000 bytes |
+| `ggaction/basic` | 360,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -3307,3 +3307,22 @@ unpacked5,522,719bytes로 측정되어 한도를819/1,201,000/5,523,000으로 �
 동일 minified JS의 Node20/22/24 gzip을 비교해 Full 최대601,073, Basic344,083bytes를
 확인하고 한도를602,000/345,000으로 갱신했다. SVG25,000과 기존 coverage floor는 유지한다.
 Flow 두 문서 및7action의 검색 색인은913,578bytes여서914,000으로 갱신했다.
+
+### Resource role effects and image source masks
+
+Graph/H/Partition/Flow의 기존 role appearance config가 outline/shadow intent를 단독 소유한다.
+공통 pure effect 정규화와 concrete false 제거를 재사용하지만 각 domain materializer가 명시적으로
+실행한다. Layout 계산이나 semantic compiler를 추가하지 않는다. Image shadow preparation은
+한도 검증 후 exact source payload를 기존 image decoder로 읽고 실제 alpha를 같은 glyph 합성기에
+넘긴다. 준비된 pixel mask는 ephemeral하며 image resource·원래 item identity·hit geometry를 바꾸지 않는다.
+
+### Integrated resource effect consumer budget
+
+The combined inference, Flow, prepared glyph shadows and P2 resource/image consumer source
+contains 863 published entries. Canonical staging measured 1,258,299 packed and 5,801,784
+unpacked bytes on Node20/22/24 before the equal-length README ceiling correction.
+The installed archive measured Full634,881/Basic359,550/SVG20,196 gzip bytes on Node20
+and Full633,808/Basic358,837/SVG20,055 on Node22. The current budgets therefore become
+863 entries, packed1,259,000/unpacked5,802,000 and Full635,000/Basic360,000/SVG25,000.
+These retain every module and public option; the final fixed archive receives installed
+consumer qualification separately from this measurement.

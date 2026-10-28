@@ -8020,12 +8020,12 @@ export interface FlattenDataOptions {
 <summary>Expand FlowBodyPaint</summary>
 
 ```typescript
-export interface FlowBodyPaint { readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; }
+export interface FlowBodyPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; }
 ```
 
 </details>
 
-Related types: [`FillPaint`](#type-fillpaint).
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint).
 
 ### `FlowDefinition` {#type-flowdefinition}
 
@@ -8049,12 +8049,12 @@ Related types: [`ObservedGraphDefinition`](#type-observedgraphdefinition).
 <summary>Expand FlowLabelPaint</summary>
 
 ```typescript
-export interface FlowLabelPaint { readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number; }
+export interface FlowLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number; }
 ```
 
 </details>
 
-Related types: [`FillPaint`](#type-fillpaint).
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint).
 
 ### `FlowLabelsOptions` {#type-flowlabelsoptions}
 
@@ -8365,10 +8365,12 @@ Related types: [`GraphLayoutLimits`](#type-graphlayoutlimits).
 <summary>Expand GraphEdgePaint</summary>
 
 ```typescript
-export interface GraphEdgePaint { stroke?: string; strokeWidth?: number; opacity?: number; parallelGap?: number; loopRadius?: number; arrowSize?: number; arrows?: "auto" | boolean; }
+export interface GraphEdgePaint { shadow?: MarkShadow | false; stroke?: string; strokeWidth?: number; opacity?: number; parallelGap?: number; loopRadius?: number; arrowSize?: number; arrows?: "auto" | boolean; }
 ```
 
 </details>
+
+Related types: [`MarkShadow`](#type-markshadow).
 
 ### `GraphFeaturePolicy` {#type-graphfeaturepolicy}
 
@@ -8428,12 +8430,12 @@ export type GraphKeyField = string | readonly string[];
 <summary>Expand GraphLabelPaint</summary>
 
 ```typescript
-export interface GraphLabelPaint { fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface GraphLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
 ```
 
 </details>
 
-Related types: [`FillPaint`](#type-fillpaint).
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint).
 
 ### `GraphLabelsOptions` {#type-graphlabelsoptions}
 
@@ -8510,12 +8512,12 @@ Related types: [`InferredGraphSource`](#type-inferredgraphsource) · [`GraphMetr
 <summary>Expand GraphNodePaint</summary>
 
 ```typescript
-export interface GraphNodePaint { radius?: number; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface GraphNodePaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; radius?: number; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
 ```
 
 </details>
 
-Related types: [`FillPaint`](#type-fillpaint).
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint).
 
 ### `GraphPin` {#type-graphpin}
 
@@ -8772,12 +8774,12 @@ Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionsc
 <summary>Expand HierarchyBodyPaint</summary>
 
 ```typescript
-export interface HierarchyBodyPaint { fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface HierarchyBodyPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
 ```
 
 </details>
 
-Related types: [`FillPaint`](#type-fillpaint).
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint).
 
 ### `HierarchyLabelPaint` {#type-hierarchylabelpaint}
 
@@ -8785,12 +8787,12 @@ Related types: [`FillPaint`](#type-fillpaint).
 <summary>Expand HierarchyLabelPaint</summary>
 
 ```typescript
-export interface HierarchyLabelPaint { fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface HierarchyLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
 ```
 
 </details>
 
-Related types: [`FillPaint`](#type-fillpaint).
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint).
 
 ### `HierarchyLabelsOptions` {#type-hierarchylabelsoptions}
 
@@ -9163,13 +9165,13 @@ export interface ImageMarkOptions {
   viewport?: "auto" | { x: number; y: number; width: number; height: number };
   fit?: "contain" | "cover" | "fill";
   align?: readonly [number, number];
-  opacity?: number; alt?: string; clip?: false | GraphicClip;
+  opacity?: number; alt?: string; clip?: false | GraphicClip; shadow?: MarkShadow | false;
 }
 ```
 
 </details>
 
-Related types: [`GraphicClip`](#type-graphicclip).
+Related types: [`GraphicClip`](#type-graphicclip) · [`MarkShadow`](#type-markshadow).
 
 ### `ImputedDataBaseOptions` {#type-imputeddatabaseoptions}
 
@@ -14455,13 +14457,13 @@ export interface TitleTextStyleOptions {
 export interface TreePlotOptions {
   id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
   nodes?: HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] };
-  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number }; labels?: false | HierarchyLabelsOptions;
+  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number; shadow?: MarkShadow | false }; labels?: false | HierarchyLabelsOptions;
 }
 ```
 
 </details>
 
-Related types: [`HierarchyNodePaint`](#type-hierarchynodepaint) · [`HierarchyNodeTarget`](#type-hierarchynodetarget) · [`HierarchyLabelsOptions`](#type-hierarchylabelsoptions).
+Related types: [`HierarchyNodePaint`](#type-hierarchynodepaint) · [`HierarchyNodeTarget`](#type-hierarchynodetarget) · [`MarkShadow`](#type-markshadow) · [`HierarchyLabelsOptions`](#type-hierarchylabelsoptions).
 
 ### `TreemapPlotOptions` {#type-treemapplotoptions}
 

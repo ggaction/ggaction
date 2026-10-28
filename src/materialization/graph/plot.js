@@ -1,3 +1,4 @@
+import { materializeMarkEffectProperties } from "../markEffects.js";
 import { bindTextFontProperties } from "../textFont.js";
 import { contentDigest } from "../../core/contentDigest.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
@@ -56,12 +57,12 @@ export function resolveGraphPlot(program, layer, config) {
   const routes = graphEdgeGeometry(model, located, radii, { ...edgeStyle, arrows: edgeStyle.arrows === "auto" ? model.directed : edgeStyle.arrows });
   for (const { edge, commands, arrowCommands } of routes) {
     const key = graphItemKey(layer, graph, "edge", edge.key), topology = contentDigest(JSON.stringify([edge.sourceKey, edge.targetKey]));
-    const properties = { commands, fill: "none", stroke: edgeStyle.stroke, strokeWidth: edgeStyle.strokeWidth, opacity: edgeStyle.opacity };
+    const properties = { commands, fill: "none", stroke: edgeStyle.stroke, strokeWidth: edgeStyle.strokeWidth, opacity: edgeStyle.opacity, ...(edgeStyle.shadow === undefined ? {} : { shadow: edgeStyle.shadow }) };
     const graphicIndices = [graphics.length], graphicRoles = ["body"];
     graphics.push({ type: "path", properties, identity: { key, topology, role: "body", lineage } });
     if (arrowCommands) {
       graphicIndices.push(graphics.length); graphicRoles.push("arrow");
-      graphics.push({ type: "path", properties: { commands: arrowCommands, fill: edgeStyle.stroke, stroke: "none", strokeWidth: 0, opacity: edgeStyle.opacity }, identity: { key, topology, role: "arrow", lineage } });
+      graphics.push({ type: "path", properties: { commands: arrowCommands, fill: edgeStyle.stroke, stroke: "none", strokeWidth: 0, opacity: edgeStyle.opacity, ...(edgeStyle.shadow === undefined ? {} : { shadow: edgeStyle.shadow }) }, identity: { key, topology, role: "arrow", lineage } });
     }
     items.push({ key, topology, role: "edge", properties, graphicIndices, graphicRoles, ...memberItem(edge, edgesData),
       fields: { ...inference, kind: "edge", key: edge.key, sourceKey: rawKeys.get(edge.sourceKey), targetKey: rawKeys.get(edge.targetKey), weight: edge.weight, origin: edge.origin, directed: edge.directed, ruleId: edge.ruleId } });
@@ -87,7 +88,7 @@ export function resolveGraphPlot(program, layer, config) {
   }
   const known = new Set(model.nodes.map(node => node.key));
   const targets = new Set([...nodeStyles.keys(), ...labelStyles.keys(), ...(labels === false ? [] : labels.overrides.map(entry => entry.key))]);
-  const concrete = materializeFillItems(program, layer, graphics);
+  const concrete = materializeFillItems(program, layer, graphics.map(graphic => ({ ...graphic, properties: materializeMarkEffectProperties(graphic.properties) })));
   for (const graphic of concrete) validateConcreteGraphicProperties(graphic.type, graphic.properties);
   return { graphics: concrete, items, frame, layout, graph, nodesData, edgesData,
     diagnostics: [...targets].filter(key => !known.has(key)).map(key => ({ code: "orphan-style", key })) };

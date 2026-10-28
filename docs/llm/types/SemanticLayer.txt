@@ -3,6 +3,8 @@ export interface SemanticLayer {
   readonly image?: ImageRef;
   readonly alt?: string;
   readonly partitionView?: PartitionViewState;
+  readonly flowBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
+  readonly flowLabels?: false | { readonly content: "key" | "value" | { readonly field: string }; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly hierarchyBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly hierarchyLabels?: false | { readonly content: "value"; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly graphBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };

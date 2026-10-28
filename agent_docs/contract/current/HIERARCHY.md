@@ -144,3 +144,9 @@ Authored hierarchy/layout dependent와 live hierarchy plot은 먼저 명시적�
 
 
 Body and label `fill` accepts the shared `FillPaint` contract: solid color, linear gradient, pattern or radial gradient. Pattern origins are materialized in object or plot coordinates, and text fills retain concrete glyph bounds. Layout, Canvas and data revisions recompute those bounds while preserving the authored fill. Stroke remains a solid color. Partition cells and labels use the same paint owner.
+
+## Resource plot appearance effects
+
+The existing body and label style records accept optional `outline:MarkOutline|false` and `shadow:MarkShadow|false`, including keyed overrides. Reuse the closed values, defaults, glyph order, preparation, source-geometry hit boundary and backend behavior in [MARKS.md](MARKS.md#prepared-per-item-shadows). Create omission has no effect; edit omission preserves; false removes or suppresses inherited effect. Same-patch outline and stroke reject. Stored ordinary stroke remains available beneath an outline. Effects stay in the existing role appearance configuration; false is removed when constructing concrete graphics. Stored shadows require resolved offsets and blur radius. Per-item style changes retain layout resource identity, original source rows, selection keys and glyph roles. Tree links and graph edge/arrow components accept shadow; ordinary stroke owns their contour, with no outline option. Flow ribbons are filled bodies and support both effects.
+
+Evidence: `test/unit/resources/resource-plot-effects.test.js`, `test/unit/resources/font-resource-labels.test.js`.

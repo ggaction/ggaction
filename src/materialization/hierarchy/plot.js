@@ -1,3 +1,4 @@
+import { materializeMarkEffectProperties } from "../markEffects.js";
 import { bindTextFontProperties } from "../textFont.js";
 import { materializeFillItems } from "../fillPaint.js";
 import { resolvePartitionPlot } from "./partitionPlot.js";
@@ -71,7 +72,7 @@ export function resolveHierarchyPlot(program, layer, config) {
   }
   const known = new Set(nodes.map(node => node.key)), targets = new Set([...bodyOverrides.keys(), ...labelOverrides.keys(), ...labelText.keys()]);
   validateGeneratedItemLimit(graphics.length, "Hierarchy plot graphic count");
-  const concrete = materializeFillItems(program, layer, graphics);
+  const concrete = materializeFillItems(program, layer, graphics.map(graphic => ({ ...graphic, properties: materializeMarkEffectProperties(graphic.properties) })));
   for (const graphic of concrete) validateConcreteGraphicProperties(graphic.type, graphic.properties);
   return { graphics: concrete, items, dataset, layout, hierarchy, frame,
     diagnostics: [...targets].filter(key => !known.has(key)).map(key => ({ code: "orphan-style", key })) };

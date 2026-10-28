@@ -1500,7 +1500,7 @@ Evidence: `test/unit/grammar/steffen-curve.test.js`, `test/unit/actions/marks/st
   `test/contracts/structured-paint-rendering.test.js`, `test/contracts/structured-paint-types.test.js`.
 ## `createImageMark`
 
-- Signature: `createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })`.
+- Signature: `createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip?, shadow? })`.
 - Full-only resource mark with one item and no dataset/field/scale/coordinate. ID defaults to the first `image` role; another mark of that type requires explicit ID. Omitted image requires exactly one stored image resource. Exact image revision and alternative text are semantic state; placement options belong to materialization config.
 - Viewport defaults to `"auto"` (current plot); explicit `{x,y,width,height}` uses finite plot-local coordinates and positive dimensions. Fit is `contain|cover|fill`, default contain. Align is two numbers in [0,1], default [.5,.5]. Opacity defaults 1, alt defaults empty string. Explicit null is invalid. Viewport clipping always applies; additional `clip` is false or the shared explicit rectangle/path geometry in plot coordinates.
 - Produces a self-contained concrete image draw rectangle with original bytes/dimensions/hash; renderers never calculate fit or fetch. Stable key is tied to the mark role and retained on resource replacement. Canvas resizing recomputes auto viewports, preserves explicit viewport dimensions and moves both with plot margins.
@@ -1519,7 +1519,7 @@ Evidence: `test/unit/grammar/steffen-curve.test.js`, `test/unit/actions/marks/st
 
 ## `editImageMark`
 
-- Signature: `editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })`.
+- Signature: `editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip?, shadow? })`.
 - Omitted target requires exactly one image mark. Explicit target supports normal childPath dispatch. At least one edit is required. Omitted options preserve existing values; `viewport:"auto"` resets inference and `clip:false` removes only the additional clip. Rebinding requires a live image ID. All geometry and compatibility checks precede writes.
 - Updates semantic image ref/alt and materialization config, then invokes wrapped image rematerialization and replays existing highlights. `removeMark` removes the image item and its owned clip wrapper while retaining the shared image resource.
 
@@ -1557,3 +1557,9 @@ Unsupported mode, unsupported mark owner, unsafe property descriptors는 오류�
 
 Evidence: `test/unit/actions/marks/mark-blend.test.js`, `test/unit/grammar/mark-blend.test.js`,
 `test/contracts/mark-blend-rendering.test.js`, `test/contracts/realistic-mark-blends.test.js`.
+
+### Image source-alpha shadows
+
+Image marks accept `shadow:MarkShadow|false` with the same omission, replacement, normalization and removal rules as other mark shadows. The mask uses decoded image RGBA, including transparent pixels, and applies mark opacity once after source/shadow composition. The existing image viewport and optional outer clip constrain the final output. An image shadow requires an explicit decoder even for SVG preparation; no URI is fetched by rendering. Preparation verifies all effect frames and aggregate work before decoding/rasterization and rechecks exact graphic identity afterward. Resource replacement, placement edits and scenes require preparation for their new graphicSpec. Image outline is not applicable: this API provides no vector contour for retained pixel data. Image selection remains the clipped source rectangle and preserves its stable key.
+
+Evidence: `test/unit/resources/image-shadow.test.js`, `test/unit/resources/image-resource-lifecycle.test.js`.

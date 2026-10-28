@@ -1037,5 +1037,18 @@
         "statements": 1
       }
     ]
+  },
+  {
+    "file": "resource-effects.mjs",
+    "cases": [
+      {
+        "id": "paint/resource-role-effects",
+        "statements": 1
+      },
+      {
+        "id": "paint/image-alpha-shadow",
+        "statements": 7
+      }
+    ]
   }
 ]

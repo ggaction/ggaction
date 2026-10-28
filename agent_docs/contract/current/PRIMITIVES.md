@@ -265,3 +265,5 @@ editable/graphic codec에서 같은 schema로 검증된다. Shape geometry나 ro
 ### Concrete pre-fill outlines
 
 Circle, Rect, Path and Text concrete properties accept the immutable closed `outline:{color,width}` defined in [Marks](MARKS.md#pre-fill-outlines-and-halos). Collections may supply it to compatible children. Concrete false is invalid; removal deletes the property. The outline owns the rendered edge while retaining ordinary stroke properties for restoration. Shared bounds include half the width and existing cap/join/miter rules; renderer opacity applies to the complete glyph once. Text permits the same lineCap/lineJoin/miterLimit details. Line primitives reject outline.
+
+Image concrete properties also accept the same fully resolved `shadow` object as other drawable primitives. Its source mask is decoded pixel alpha; synchronous output requires exact prepared shadow/image handles. Concrete `shadow:false` remains invalid.

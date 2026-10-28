@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 328,
+  "actionCount": 335,
   "relationships": [
     {
       "name": "createCanvas",
@@ -2218,8 +2218,8 @@
     {
       "name": "createPartitionPlot",
       "wraps": [
-        "createCoordinate",
-        "editSemantic"
+        "editSemantic",
+        "createCoordinate"
       ]
     },
     {
@@ -2227,6 +2227,49 @@
       "wraps": [
         "editSemantic",
         "editMarkSelection"
+      ]
+    },
+    {
+      "name": "createFlowData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editFlowData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "layoutFlow",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createFlowNodes",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editFlowNodes",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createFlowLinks",
+      "wraps": [
+        "createCoordinate",
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editFlowLinks",
+      "wraps": [
+        "editSemantic"
       ]
     }
   ]

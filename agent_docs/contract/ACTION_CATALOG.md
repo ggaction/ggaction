@@ -336,6 +336,13 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`replaceFontResource`](current/CORE.md#replacefontresource) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createPartitionPlot`](current/PARTITION.md#createpartitionplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editPartitionPlot`](current/PARTITION.md#editpartitionplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createFlowData`](current/FLOWS.md#createflowdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editFlowData`](current/FLOWS.md#editflowdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`layoutFlow`](current/FLOWS.md#layoutflow) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createFlowNodes`](current/FLOWS.md#createflownodes) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editFlowNodes`](current/FLOWS.md#editflownodes) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createFlowLinks`](current/FLOWS.md#createflowlinks) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editFlowLinks`](current/FLOWS.md#editflowlinks) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

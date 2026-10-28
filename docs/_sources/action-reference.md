@@ -3396,7 +3396,7 @@ Explicit image cascade removes its image marks before removing the source.
 ### `createImageMark`
 
 ```js
-createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip? } = {})
+createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip?, shadow? } = {})
 ```
 
 Create one resource-backed image item. Unique source inference and the first `image`
@@ -3407,7 +3407,7 @@ four renderer tests.
 ### `editImageMark`
 
 ```js
-editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })
+editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip?, shadow? })
 ```
 
 Edit an existing image mark; omission preserves options. `viewport:"auto"` resets

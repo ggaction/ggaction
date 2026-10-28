@@ -107,3 +107,9 @@ features in the same edit when switching to a complete metric MST.
 Inference supports the Full entry point. Resource-backed graph plots currently
 reject automatic facet partitioning and mark filtering. Create an explicitly
 filtered dataset and a separate inferred graph when you need recomputation.
+
+## Outlines and shadows
+
+Body and label styles accept `outline:{color,width}|false` and `shadow:{color,offsetX?,offsetY?,blurRadius?}|false`, including per-item overrides. Omission preserves an effect during edits; false removes it, including an inherited role effect. Effects reuse the [mark appearance contract](../../../api/appearance/mark-style/). An authored outline and stroke in the same style patch conflict; an existing stroke is retained underneath the outline and returns when it is removed. Each effect preserves its original item identity and source geometry. Style edits, resize, highlight replay and offline restore do not rerun the stored layout.
+
+Graph edges accept shadow on both the path and its arrow. Edge outlines are unsupported; edit their ordinary stroke.

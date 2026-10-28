@@ -326,5 +326,12 @@
   "createFontResource": "/reference/actions/charts-data/#createfontresource",
   "replaceFontResource": "/reference/actions/charts-data/#replacefontresource",
   "createPartitionPlot": "/reference/actions/charts-data/#createpartitionplot",
-  "editPartitionPlot": "/reference/actions/charts-data/#editpartitionplot"
+  "editPartitionPlot": "/reference/actions/charts-data/#editpartitionplot",
+  "createFlowData": "/reference/actions/charts-data/#createflowdata",
+  "editFlowData": "/reference/actions/charts-data/#editflowdata",
+  "layoutFlow": "/reference/actions/charts-data/#layoutflow",
+  "createFlowNodes": "/reference/actions/marks/#createflownodes",
+  "editFlowNodes": "/reference/actions/marks/#editflownodes",
+  "createFlowLinks": "/reference/actions/marks/#createflowlinks",
+  "editFlowLinks": "/reference/actions/marks/#editflowlinks"
 }

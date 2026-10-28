@@ -1,1 +1,1 @@
-export interface HierarchyBodyPaint { fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface HierarchyBodyPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }

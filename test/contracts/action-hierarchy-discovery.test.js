@@ -110,7 +110,8 @@ test("complete-chart discovery reaches semantic and primitive authoring layers",
     }
     if (["createTreePlot", "createTreemapPlot", "createPartitionPlot"].includes(name)) {
       const partition = name === "createPartitionPlot";
-      assert.deepEqual(card.wraps, partition ? ["createCoordinate", "editSemantic"] : ["editSemantic"]);
+      // Discovery lists reachable actions; the program trace below owns execution order.
+      assert.deepEqual([...card.wraps].sort(), partition ? ["createCoordinate", "editSemantic"] : ["editSemantic"]);
       const base = fullChart().createCanvas().createData({ values: [{ id: "root", parent: null, value: 1 }] })
         .createHierarchyData({ id: "h", key: "id", parent: "parent", value: "value" });
       const tree = name === "createTreePlot";

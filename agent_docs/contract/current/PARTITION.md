@@ -47,3 +47,9 @@ Cartesian orientation is horizontal (value along x, depth along y) or vertical (
 
 - ✅ Covered: focus/reset, keep-hidden/drop, source focus recovery, layout order, coordinate/Canvas edits, malformed restore and immutable failure.
 - Evidence: `test/unit/resources/partition-plots.test.js`, `test/charts/partition-layouts/public.test.js`, `test/contracts/hierarchy-types.test.js`.
+
+## Resource plot appearance effects
+
+The existing body and label style records accept optional `outline:MarkOutline|false` and `shadow:MarkShadow|false`, including keyed overrides. Reuse the closed values, defaults, glyph order, preparation, source-geometry hit boundary and backend behavior in [MARKS.md](MARKS.md#prepared-per-item-shadows). Create omission has no effect; edit omission preserves; false removes or suppresses inherited effect. Same-patch outline and stroke reject. Stored ordinary stroke remains available beneath an outline. Effects stay in the existing role appearance configuration; false is removed when constructing concrete graphics. Stored shadows require resolved offsets and blur radius. Per-item style changes retain layout resource identity, original source rows, selection keys and glyph roles. Tree links and graph edge/arrow components accept shadow; ordinary stroke owns their contour, with no outline option. Flow ribbons are filled bodies and support both effects.
+
+Evidence: `test/unit/resources/resource-plot-effects.test.js`, `test/unit/resources/font-resource-labels.test.js`.

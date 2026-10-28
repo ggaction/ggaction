@@ -1821,6 +1821,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `alt` | Optional / branch-dependent | `string \| undefined` |
 | `clip` | Optional / branch-dependent | `false \| GraphicClip \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
@@ -1828,7 +1829,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```js
-createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip? } = {})
+createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip?, shadow? } = {})
 ```
 
 Create one resource-backed image item. Unique source inference and the first `image`
@@ -1864,13 +1865,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `alt` | Optional / branch-dependent | `string \| undefined` |
 | `clip` | Optional / branch-dependent | `false \| GraphicClip \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 
 </details>
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```js
-editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })
+editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip?, shadow? })
 ```
 
 Edit an existing image mark; omission preserves options. `viewport:"auto"` resets

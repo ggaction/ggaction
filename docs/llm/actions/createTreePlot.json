@@ -95,7 +95,7 @@
     {
       "name": "links",
       "required": false,
-      "type": "false | { stroke?: string | undefined; strokeWidth?: number | undefined; opacity?: number | undefined; } | undefined"
+      "type": "false | { stroke?: string | undefined; strokeWidth?: number | undefined; opacity?: number | undefined; shadow?: false | MarkShadow | undefined; } | undefined"
     },
     {
       "name": "labels",

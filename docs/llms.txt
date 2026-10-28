@@ -222,3 +222,5 @@ requirements after resolving each part.
 - Graph Tutorial: ./tutorials/graphs/
 - Partition Plots: ./api/partition/
 - Partition Tutorial: ./tutorials/partition/
+- Flow Data and Sankey Layouts: ./api/flows/
+- Draw Conserved Flows: ./tutorials/flows/

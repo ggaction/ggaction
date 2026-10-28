@@ -17,6 +17,16 @@ import type { MarkShadow as ExtensionShadow } from ${JSON.stringify(path.join(ro
 import { renderToSVG } from ${JSON.stringify(path.join(root, "types/svg.js"))};
 import { createTransitionScene, renderTransitionScene } from ${JSON.stringify(path.join(root, "types/scene.js"))};
 const p=chart(); const shadow: MarkShadow={color:'blue',offsetX:3,offsetY:2,blurRadius:4};const e:ExtensionShadow=shadow;
+p.createImageMark({shadow});p.editImageMark({shadow:false});
+p.createTreePlot({nodes:{outline:{color:'white',width:2},shadow},links:{shadow},labels:{outline:false,shadow}});
+p.editTreemapPlot({cells:{shadow:false},labels:{outline:{color:'white',width:2}}});
+p.createPartitionPlot({cells:{shadow},labels:{shadow}});
+p.editGraphPlot({nodes:{shadow,outline:{color:'white',width:2}},edges:{shadow},labels:{shadow}});
+p.createFlowNodes({nodes:{shadow},labels:{shadow}});p.editFlowLinks({links:{outline:{color:'white',width:2},shadow}});
+// @ts-expect-error image has no authored vector contour
+p.createImageMark({outline:{color:'red',width:2}});
+// @ts-expect-error graph edge contour uses ordinary stroke
+p.editGraphPlot({edges:{outline:{color:'red',width:2}}});
 p.createPointMark({shadow});p.editPointMark({shadow:false});p.createBarMark({shadow});p.editBarMark({shadow});
 p.createAreaMark({shadow});p.editAreaMark({shadow});p.createArcMark({shadow});p.editArcMark({shadow});
 p.createRectMark({shadow});p.editRectMark({shadow});p.createTextMark({shadow});p.editTextMark({shadow});
