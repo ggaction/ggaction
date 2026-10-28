@@ -363,6 +363,16 @@
         "path": "unit/support/npm-command.test.js"
       }
     ],
+    "pattern-paints": [
+      {
+        "type": "file",
+        "path": "unit/grammar/patterns.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/pattern-paints/"
+      }
+    ],
     "persistence": [
       {
         "type": "prefix",
