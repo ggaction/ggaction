@@ -62,6 +62,20 @@ freeze하며 상위 constructor의 권한을 상속하지 않는다. Public plug
 unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
 Full/Basic/SVG browser gzip최대535,560/313,517/8,185는 기존 한도 안이며 그대로 유지한다.
 
+Typed layer binding의 닫힌 경로(`image`, `hierarchyBinding.layout`)는
+`core/resourceReferences.js`가 수집과 immutable rebind를 함께 소유한다. 공통 exact ref shape는
+`core/resourceReference.js`에 두어 core 수집기와 grammar/materialization이 같은 kind vocabulary를
+사용한다. Primitive resource replacement는 해당 리소스 revision과 live layer reference를 같은
+semantic candidate에서 갱신하고, generic graph validation은 handler보다 먼저 exact kind/revision을
+검사한다. 실제 그래픽 재생성은 계속 domain action의 책임이다. 삭제 계획은 live mark 참조가
+남으면 거부하며, public cascade owner가 필요한 mark 제거를 명시적으로 먼저 수행한다.
+Persistence는 이 typed reference도 공통 stored-resource selector로 확인한다.
+
+Typed binding checkpoint는 같은 staging을 Node20/22/24에서 측정해739entries,
+packed최대1,098,660/unpacked5,059,006bytes다. 기존 packed 한도를 유지하고 unpacked 한도만
+최소1,000byte 단위인5,060,000으로 조정했다. 동일 minified browser bytes의 최대gzip은
+Full535,875/Basic313,870/SVG8,185로 기존 한도 안이다.
+
 ## Private hierarchy normalization
 
 `grammar/hierarchy/normalize.js`는 명시 node records의 typed identity, parent/children topology,

@@ -11,10 +11,11 @@ import { resolveInputReference, resolveRowReference } from "../selectors/resourc
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { validateParameterResource } from "../grammar/parameter.js";
 import { validateDataSourceResource } from "./dataSourceState.js";
-import { STORED_RESOURCE_KINDS, validateInputReference, validateResourceRevision } from "../grammar/resourceReference.js";
+import { STORED_RESOURCE_KINDS, validateInputReference, validateResourceRevision } from "../core/resourceReference.js";
 import { getBuiltinResourceKindHandler } from "./resourceKinds.js";
+import { layerResourceBindings } from "../core/resourceReferences.js";
 
-export { STORED_RESOURCE_KINDS, validateInputReference } from "../grammar/resourceReference.js";
+export { STORED_RESOURCE_KINDS, validateInputReference } from "../core/resourceReference.js";
 const identity = ref => JSON.stringify([ref.kind, ref.id]);
 
 function error(message, code = "invalid-value", details = {}) {
@@ -99,6 +100,12 @@ export function validateResourceGraph(program, ProgramClass = program.constructo
     resolveInputReference(program, ref);
   }
   orderResourceDependencies(resources);
+  for (const layer of program.semanticSpec.layers ?? []) for (const { kind, ref } of layerResourceBindings(layer)) {
+    validateWorkLimit(++work, "Resource dependency work");
+    validateInputReference(ref);
+    if (ref.kind !== kind) throw error("Layer binding has an incompatible resource kind.", "incompatible-resource", { ownerId: layer.id });
+    resolveInputReference(program, ref);
+  }
   for (const resource of resources) getBuiltinResourceKindHandler(ProgramClass, resource.kind)?.validateBindings(program, resource);
 }
 
@@ -226,5 +233,10 @@ export function planStoredResourceRemoval(program, requested, { cascade = false 
       remove.add(identity(resource)); changed = true;
     }
   } while (changed);
+  for (const layer of program.semanticSpec.layers) {
+    if (layerResourceBindings(layer).some(({ ref }) => remove.has(identity(ref)))) {
+      throw error("Resource is referenced by a live mark.", "resource-in-use", { resourceId: requested.id, dependencies: [layer.id] });
+    }
+  }
   return resources.filter(resource => remove.has(identity(resource)));
 }
