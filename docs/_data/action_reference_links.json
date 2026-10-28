@@ -7,6 +7,7 @@
   "applyTheme": "/reference/actions/charts-data/#applytheme",
   "removeTheme": "/reference/actions/charts-data/#removetheme",
   "createData": "/reference/actions/charts-data/#createdata",
+  "applyDataUpdate": "/reference/actions/charts-data/#applydataupdate",
   "reviseData": "/reference/actions/charts-data/#revisedata",
   "removeData": "/reference/actions/charts-data/#removedata",
   "removeScale": "/reference/actions/charts-data/#removescale",
@@ -19,6 +20,9 @@
   "createFlattenData": "/reference/actions/statistics/#createflattendata",
   "createFoldData": "/reference/actions/statistics/#createfolddata",
   "createPivotData": "/reference/actions/statistics/#createpivotdata",
+  "createParameter": "/reference/actions/charts-data/#createparameter",
+  "editParameter": "/reference/actions/charts-data/#editparameter",
+  "removeParameter": "/reference/actions/charts-data/#removeparameter",
   "createComputedData": "/reference/actions/statistics/#createcomputeddata",
   "createNormalizedData": "/reference/actions/statistics/#createnormalizeddata",
   "createSortedData": "/reference/actions/statistics/#createsorteddata",
@@ -298,5 +302,14 @@
   "editOverlay": "/reference/actions/marks/#editoverlay",
   "createLayerPlot": "/reference/actions/charts-data/#createlayerplot",
   "createAdjacentPlot": "/reference/actions/charts-data/#createadjacentplot",
-  "editCompositionScales": "/reference/actions/charts-data/#editcompositionscales"
+  "editCompositionScales": "/reference/actions/charts-data/#editcompositionscales",
+  "createHierarchyData": "/reference/actions/charts-data/#createhierarchydata",
+  "editHierarchyData": "/reference/actions/charts-data/#edithierarchydata",
+  "layoutHierarchy": "/reference/actions/charts-data/#layouthierarchy",
+  "editLayout": "/reference/actions/charts-data/#editlayout",
+  "removeResource": "/reference/actions/charts-data/#removeresource",
+  "createTreePlot": "/reference/actions/charts-data/#createtreeplot",
+  "editTreePlot": "/reference/actions/charts-data/#edittreeplot",
+  "createTreemapPlot": "/reference/actions/charts-data/#createtreemapplot",
+  "editTreemapPlot": "/reference/actions/charts-data/#edittreemapplot"
 }

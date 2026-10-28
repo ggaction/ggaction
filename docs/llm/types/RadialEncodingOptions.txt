@@ -3,7 +3,9 @@ export type RadialEncodingOptions = {
   fieldType?: "quantitative";
   coordinate?: string;
 } & (
-  | { field: string; mapping?: false; aggregate?: never; scale?: RadiusScaleOptions }
+  | { field: string; datum?: never; mapping?: false; aggregate?: never; scale?: RadiusScaleOptions }
+  /** Constant polar distances are supported by Point marks. */
+  | { field?: never; datum: number; mapping?: never; aggregate?: never; scale?: RadiusScaleOptions }
   | { field: string; mapping?: never; aggregate: "sum"; scale?: RadiusScaleOptions }
   | { field?: never; mapping?: never; aggregate: "count"; scale?: RadiusScaleOptions }
   | { field: string; mapping?: RadialMapping; aggregate: "sum"; scale?: MeasuredRadiusScaleOptions }

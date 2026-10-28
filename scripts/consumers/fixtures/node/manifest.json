@@ -415,7 +415,7 @@
       },
       {
         "id": "encodings/blended-bar",
-        "statements": 11
+        "statements": 12
       },
       {
         "id": "encodings/resource-cleanup",
@@ -821,6 +821,78 @@
       {
         "id": "data-transforms/calendar-completion",
         "statements": 15
+      }
+    ]
+  },
+  {
+    "file": "parameters.mjs",
+    "cases": [
+      {
+        "id": "parameters/fresh-process-lifecycle",
+        "statements": 18
+      },
+      {
+        "id": "parameters/renderers-and-scene",
+        "statements": 24
+      }
+    ]
+  },
+  {
+    "file": "prepared-data.mjs",
+    "cases": [
+      {
+        "id": "prepared-data/full-and-basic-create",
+        "statements": 1
+      },
+      {
+        "id": "prepared-data/fresh-process-offline-refresh",
+        "statements": 14
+      },
+      {
+        "id": "prepared-data/authenticity-and-freshness",
+        "statements": 18
+      },
+      {
+        "id": "prepared-data/renderers-and-scene",
+        "statements": 34
+      }
+    ]
+  },
+  {
+    "file": "conditional-encoding.mjs",
+    "cases": [
+      {
+        "id": "conditional-encoding/fresh-process-lifecycle",
+        "statements": 10
+      },
+      {
+        "id": "conditional-encoding/renderers-and-scene",
+        "statements": 22
+      },
+      {
+        "id": "conditional-encoding/bar-blend-lifecycle",
+        "statements": 1
+      },
+      {
+        "id": "conditional-encoding/position-text-lifecycle",
+        "statements": 23
+      }
+    ]
+  },
+  {
+    "file": "hierarchy.mjs",
+    "cases": [
+      {
+        "id": "hierarchy/full-basic-lifecycle",
+        "statements": 17
+      },
+      {
+        "id": "hierarchy/fresh-process-edit-revise",
+        "statements": 9
+      },
+      {
+        "id": "hierarchy/renderers-and-scene",
+        "statements": 1
       }
     ]
   }

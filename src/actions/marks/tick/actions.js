@@ -1,3 +1,6 @@
+import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
+import { hasPositionBinding } from "../../../core/encodingBindings.js";
+import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -218,19 +221,19 @@ export const rematerializeTickMark = /* @__PURE__ */ action(
     }
     const dataset = applyItemMissingPolicy(layer, sourceDataset);
     if (
-      layer.encoding?.x?.scale === undefined ||
-      layer.encoding?.y?.scale === undefined
+      !hasPositionBinding(layer, "x") ||
+      !hasPositionBinding(layer, "y")
     ) {
       return graphic.items.length === 0
         ? this
         : this.editGraphics({ target: id, property: "length", value: 0 });
     }
 
-    const x = resolveRowEncodingValues(this, layer, dataset, "x");
-    const y = resolveRowEncodingValues(this, layer, dataset, "y");
+    const x = resolveRowEncodingValues(this, layer, dataset, "x", { resolveMarkItems, resolveMarkSourceItems });
+    const y = resolveRowEncodingValues(this, layer, dataset, "y", { resolveMarkItems, resolveMarkSourceItems });
     const stroke = resolveRowEncodingValues(this, layer, dataset,
       layer.encoding?.color === undefined ? "stroke" : "color");
-    const angles = resolveDirectionValues(dataset.values, layer.encoding?.angle);
+    const angles = resolveConditionalValues(this, layer, "angle") ?? resolveDirectionValues(dataset.values, layer.encoding?.angle);
     const config = validateTickConfig({}, {
       ...DEFAULT_TICK_CONFIG,
       ...this.markConfigs[id]

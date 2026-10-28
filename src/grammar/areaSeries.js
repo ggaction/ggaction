@@ -37,16 +37,16 @@ export function deriveAreaSeries(rows, layer, options = {}) {
   const orientation = vertical ? "vertical" : "horizontal";
   const independent = vertical ? x : y;
   const categorical = ["nominal", "ordinal"].includes(independent.fieldType);
-  const independentValues = categorical ? readNominalField(rows, independent.field) : independent.fieldType === "temporal"
+  const independentValues = options.positionValues?.[vertical ? "x" : "y"] ?? (categorical ? readNominalField(rows, independent.field) : independent.fieldType === "temporal"
     ? readTemporalField(rows, independent.field, independent.temporalUnit)
-    : readQuantitativeField(rows, independent.field);
+    : readQuantitativeField(rows, independent.field));
   if (Object.hasOwn(independent, "datum")) throw new Error("Area independent position requires a field.");
   const primary = vertical ? y : x;
   const secondary = vertical ? y2 : x2;
   validateAreaEndpointPair(primary, secondary);
   const missing = layer.mark.missing ?? "error";
-  const lower = readAreaEndpoint(rows, primary, missing);
-  const upper = readAreaEndpoint(rows, secondary, missing);
+  const lower = options.positionValues?.[vertical ? "y" : "x"] ?? readAreaEndpoint(rows, primary, missing);
+  const upper = options.positionValues?.[vertical ? "y2" : "x2"] ?? readAreaEndpoint(rows, secondary, missing);
   const categoryOrder = categorical ? options[vertical ? "xDomain" : "yDomain"] ?? [...new Set(independentValues)] : undefined;
   const ranks = new Map(categoryOrder?.map((value, index) => [value, index]));
   if (categorical && independentValues.some(value => !ranks.has(value))) throw new Error("Area categorical domain must contain every observed position.");
@@ -158,10 +158,10 @@ export function deriveCenteredAreaSeries(rows, layer, options = {}) {
   }
   validatePathSeriesAppearance(rows, layer);
   const categorical = ["nominal", "ordinal"].includes(x.fieldType);
-  const xValues = categorical ? readNominalField(rows, x.field) : x.fieldType === "temporal"
+  const xValues = options.positionValues?.x ?? (categorical ? readNominalField(rows, x.field) : x.fieldType === "temporal"
     ? readTemporalField(rows, x.field, x.temporalUnit)
-    : readQuantitativeField(rows, x.field);
-  const yValues = readQuantitativeField(rows, y.field);
+    : readQuantitativeField(rows, x.field));
+  const yValues = options.positionValues?.y ?? readQuantitativeField(rows, y.field);
   const groups = readNominalField(rows, group.field);
   const groupOrder = [];
   const positions = new Set();
@@ -251,7 +251,7 @@ export function deriveDensityAreaSeries(rows, layer, transform, options = {}) {
     throw new Error(`Area mark "${layer.id}" requires density provenance.`);
   }
   if (transform.placement?.type === "category") {
-    return deriveCategoricalDensitySeries(rows, layer, transform);
+    return deriveCategoricalDensitySeries(rows, layer, transform, options);
   }
   const { x, y, group } = layer.encoding ?? {};
   if (
@@ -286,8 +286,8 @@ export function deriveDensityAreaSeries(rows, layer, transform, options = {}) {
     );
   }
 
-  const xValues = readQuantitativeField(rows, x.field);
-  const yValues = readQuantitativeField(rows, y.field);
+  const xValues = options.positionValues?.x ?? readQuantitativeField(rows, x.field);
+  const yValues = options.positionValues?.y ?? readQuantitativeField(rows, y.field);
   const groupValues = transform.groupBy === undefined
     ? rows.map(() => undefined)
     : readNominalField(rows, transform.groupBy);

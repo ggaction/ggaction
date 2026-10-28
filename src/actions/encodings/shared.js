@@ -91,7 +91,7 @@ export function applyEncodingScale(
 
   const patch = { id: definition.id };
   for (const property of [
-    "domain", "range", "nice", "zero", "clamp", "reverse",
+    "domain", "range", "emptyDomain", "nice", "zero", "clamp", "reverse",
     "base", "exponent", "constant", "paddingInner", "paddingOuter",
     "padding", "align", "unknown", "interpolate", "whitePoint", "gamma", "radialMapping"
   ]) {

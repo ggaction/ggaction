@@ -1,0 +1,1382 @@
+
+> ggaction@0.0.26 docs:verify
+> npm run docs:preflight && npm run docs:generate && npm run test:docs && npm run docs:build && npm run test:docs:built && npm run test:docs:browser
+
+
+> ggaction@0.0.26 docs:preflight
+> node scripts/check-docs-environment.js
+
+Recommended toolchain:
+- Ruby 3.2.11 meets preflight only if dependencies resolve; CI uses 3.2.6. Use the pinned version to reproduce CI exactly.
+documentation environment is ready
+
+> ggaction@0.0.26 docs:generate
+> npm run contracts:relations && npm run docs:reference && npm run contracts:cards && npm run inspection:descriptors && npm run docs:provenance && npm run docs:workflows && npm run examples:index && npm run docs:capabilities && npm run docs:picker && npm run docs:scale-editors && npm run docs:actions && npm run docs:signatures && npm run docs:snippets && npm run docs:metadata && npm run docs:search && npm run docs:images && npm run docs:machine && npm run docs:llms
+
+
+> ggaction@0.0.26 contracts:relations
+> node scripts/generate-action-relationships.js
+
+
+> ggaction@0.0.26 docs:reference
+> node scripts/generate-doc-action-reference.js
+
+generated split action reference
+
+> ggaction@0.0.26 contracts:cards
+> node scripts/generate-action-cards.js
+
+304 compact action cards; max 4681 bytes; median 1972 bytes
+
+> ggaction@0.0.26 inspection:descriptors
+> node scripts/generate-inspection-descriptors.js
+
+
+> ggaction@0.0.26 docs:provenance
+> node scripts/doc-provenance.js
+
+
+> ggaction@0.0.26 docs:workflows
+> node scripts/generate-doc-workflows.js
+
+
+> ggaction@0.0.26 examples:index
+> node scripts/generate-examples-readme.js
+
+generated examples/README.md
+
+> ggaction@0.0.26 docs:capabilities
+> node scripts/generate-doc-capabilities.js
+
+generated action capability documentation
+
+> ggaction@0.0.26 docs:picker
+> node scripts/generate-doc-chart-picker.js
+
+
+> ggaction@0.0.26 docs:scale-editors
+> node scripts/generate-doc-scale-editors.js
+
+
+> ggaction@0.0.26 docs:actions
+> node scripts/generate-doc-action-metadata.js
+
+generated documentation action metadata
+
+> ggaction@0.0.26 docs:signatures
+> node scripts/generate-doc-signatures.js
+
+generated action and runtime reference TypeScript signatures
+
+> ggaction@0.0.26 docs:snippets
+> node scripts/generate-doc-snippet-contracts.js
+
+
+> ggaction@0.0.26 docs:metadata
+> node scripts/generate-doc-page-metadata.js
+
+generated documentation page metadata
+
+> ggaction@0.0.26 docs:search
+> node scripts/generate-doc-search-index.js
+
+generated compact documentation search index
+
+> ggaction@0.0.26 docs:images
+> node scripts/generate-doc-images.js
+
+generated centered-area-stream.png
+generated centered-area-stream-thumb.png
+generated ordered-category-bar.png
+generated ordered-category-bar-thumb.png
+generated program-composition.png
+generated program-composition-thumb.png
+generated facet-grid.png
+generated facet-grid-thumb.png
+generated lookup-data.png
+generated lookup-data-thumb.png
+generated linear-nice-count.png
+generated linear-nice-count-thumb.png
+generated linear-nearest-ticks.png
+generated linear-nearest-ticks-thumb.png
+generated facet-field-titles.png
+generated facet-field-titles-thumb.png
+generated facet-header-rotation.png
+generated facet-header-rotation-thumb.png
+generated repeat-charts.png
+generated repeat-charts-thumb.png
+generated cars-origin-scatterplot-facet.png
+generated cars-origin-scatterplot-facet-thumb.png
+generated cars-scatterplot.png
+generated cars-scatterplot-thumb.png
+generated cars-parallel-coordinates.png
+generated cars-parallel-coordinates-thumb.png
+generated annotated-imdb-scatterplot.png
+generated annotated-imdb-scatterplot-thumb.png
+generated fitted-long-labels.png
+generated fitted-long-labels-thumb.png
+generated gapminder-life-expectancy-heatmap.png
+generated gapminder-life-expectancy-heatmap-thumb.png
+generated gapminder-development-trajectories.png
+generated gapminder-development-trajectories-thumb.png
+generated cars-polar-scatterplot.png
+generated cars-polar-scatterplot-thumb.png
+generated cars-polar-guides.png
+generated cars-polar-guides-thumb.png
+generated gapminder-polar-trends.png
+generated gapminder-polar-trends-thumb.png
+generated jobs-radar-chart.png
+generated jobs-radar-chart-thumb.png
+generated cars-origin-donut.png
+generated cars-origin-donut-thumb.png
+generated gapminder-population-donut.png
+generated gapminder-population-donut-thumb.png
+generated nightingale-rose-chart.png
+generated nightingale-rose-chart-thumb.png
+generated gapminder-radial-bars.png
+generated gapminder-radial-bars-thumb.png
+generated cars-line-chart.png
+generated cars-line-chart-thumb.png
+generated cars-temporal-bar-line.png
+generated cars-temporal-bar-line-thumb.png
+generated cars-histogram.png
+generated cars-histogram-thumb.png
+generated jobs-grouped-bar.png
+generated jobs-grouped-bar-thumb.png
+generated jobs-horizontal-grouped-bar.png
+generated jobs-horizontal-grouped-bar-thumb.png
+generated cars-regression-scatterplot.png
+generated cars-regression-scatterplot-thumb.png
+generated cars-multi-legend-layout.png
+generated cars-multi-legend-layout-thumb.png
+generated cars-density-area.png
+generated cars-density-area-thumb.png
+generated gapminder-horizon.png
+generated gapminder-horizon-thumb.png
+generated cars-acceleration-violins.png
+generated cars-acceleration-violins-thumb.png
+generated cars-error-bar.png
+generated cars-error-bar-thumb.png
+generated cars-gradient-plot.png
+generated cars-gradient-plot-thumb.png
+generated cars-box-plot.png
+generated cars-box-plot-thumb.png
+generated gapminder-error-band.png
+generated gapminder-error-band-thumb.png
+generated compound-path.png
+generated compound-path-thumb.png
+generated bootstrap-mean-ci.png
+generated bootstrap-mean-ci-thumb.png
+generated continuous-area-color.png
+generated continuous-area-color-thumb.png
+generated shared-adjacent.png
+generated shared-adjacent-thumb.png
+generated linked-overlay.png
+generated linked-overlay-thumb.png
+generated named-shapes.png
+generated named-shapes-thumb.png
+generated axis-owners.png
+generated axis-owners-thumb.png
+generated shared-facet-owner.png
+generated shared-facet-owner-thumb.png
+generated color-controls.png
+generated color-controls-thumb.png
+generated color-white-point.png
+generated color-white-point-thumb.png
+generated bar-compositing.png
+generated bar-compositing-thumb.png
+generated cars-origin-histogram-facet.png
+generated cars-origin-histogram-facet-thumb.png
+generated cars-weighted-rules.png
+generated cars-weighted-rules-thumb.png
+generated raincloud-plot.png
+generated raincloud-plot-thumb.png
+generated beeswarm-plot.png
+generated beeswarm-plot-thumb.png
+generated dot-plot.png
+generated dot-plot-thumb.png
+generated lollipop-plot.png
+generated lollipop-plot-thumb.png
+generated dumbbell-plot.png
+generated dumbbell-plot-thumb.png
+generated ecdf-plot.png
+generated ecdf-plot-thumb.png
+generated color-transitions.png
+generated color-transitions-thumb.png
+generated color-midpoint.png
+generated color-midpoint-thumb.png
+generated radial-sectors.png
+generated radial-sectors-thumb.png
+generated theta-legend-order.png
+generated theta-legend-order-thumb.png
+generated combined-legends.png
+generated combined-legends-thumb.png
+generated legend-layout.png
+generated legend-layout-thumb.png
+generated legend-recipe-opacity.png
+generated legend-recipe-opacity-thumb.png
+generated legend-appearance.png
+generated legend-appearance-thumb.png
+generated legend-content-spacing.png
+generated legend-content-spacing-thumb.png
+generated plot-guide-underlays.png
+generated plot-guide-underlays-thumb.png
+generated facet-shared-top-lane.png
+generated facet-shared-top-lane-thumb.png
+generated symbol-window.png
+generated symbol-window-thumb.png
+generated area-layout.png
+generated area-layout-thumb.png
+generated horizon-plot.png
+generated horizon-plot-thumb.png
+generated density-plot.png
+generated density-plot-thumb.png
+generated pie-plot.png
+generated pie-plot-thumb.png
+generated temporal-input.png
+generated temporal-input-thumb.png
+generated series-identity.png
+generated series-identity-thumb.png
+generated directional-tick-plot.png
+generated directional-tick-plot-thumb.png
+generated cars-binned-heatmap.png
+generated cars-binned-heatmap-thumb.png
+generated time-unit-data.png
+generated time-unit-data-thumb.png
+generated airline-passenger-moving-windows.png
+generated airline-passenger-moving-windows-thumb.png
+generated cars-window-rank-scatterplot.png
+generated cars-window-rank-scatterplot-thumb.png
+generated cross-feature-dashboard.png
+generated cross-feature-dashboard-thumb.png
+generated cars-origin-jitter.png
+generated cars-origin-jitter-thumb.png
+generated gapminder-cluster-jitter.png
+generated gapminder-cluster-jitter-thumb.png
+generated dark-theme-scatterplot.png
+generated dark-theme-scatterplot-thumb.png
+generated gapminder-country-labels.png
+generated gapminder-country-labels-thumb.png
+generated gapminder-continuous-color-bars.png
+generated gapminder-continuous-color-bars-thumb.png
+generated gapminder-discretized-color-scales.png
+generated gapminder-discretized-color-scales-thumb.png
+generated gapminder-temporal-discrete-scales.png
+generated gapminder-temporal-discrete-scales-thumb.png
+generated gapminder-transformed-scales.png
+generated gapminder-transformed-scales-thumb.png
+generated mark-selection-points.png
+generated mark-selection-points-thumb.png
+generated mark-selection-bars.png
+generated mark-selection-bars-thumb.png
+generated mark-selection-lines.png
+generated mark-selection-lines-thumb.png
+generated hierarchical-authoring.png
+generated hierarchical-authoring-thumb.png
+generated remove-dependent-resources.png
+generated remove-dependent-resources-thumb.png
+generated edit-facet-source.png
+generated edit-facet-source-thumb.png
+generated apply-custom-theme.png
+generated apply-custom-theme-thumb.png
+generated edit-selected-labels.png
+generated edit-selected-labels-thumb.png
+generated edit-scales-and-guides.png
+generated edit-scales-and-guides-thumb.png
+generated switch-encoding-modes.png
+generated switch-encoding-modes-thumb.png
+generated compare-weighted-distributions.png
+generated compare-weighted-distributions-thumb.png
+generated repair-missing-observations.png
+generated repair-missing-observations-thumb.png
+generated getting-started.png
+generated getting-started-thumb.png
+generated docs image manifest
+
+> ggaction@0.0.26 docs:machine
+> node scripts/generate-doc-machine-artifacts.js
+
+generated 21 documentation machine artifacts
+
+> ggaction@0.0.26 docs:llms
+> node scripts/generate-llm-docs.js
+
+generated docs/llms.txt, docs/llms-full.txt, and docs/llms-manifest.json
+
+> ggaction@0.0.26 test:docs
+> node scripts/run-tests.js docs
+
+TAP version 13
+# Subtest: keeps the generated capability pages synchronized
+ok 1 - keeps the generated capability pages synchronized
+  ---
+  duration_ms: 12.814167
+  type: 'test'
+  ...
+# Subtest: matches primary position capability rows to runtime compatibility
+ok 2 - matches primary position capability rows to runtime compatibility
+  ---
+  duration_ms: 1.208125
+  type: 'test'
+  ...
+# Subtest: matches documented highlight marks to runtime policies
+ok 3 - matches documented highlight marks to runtime policies
+  ---
+  duration_ms: 0.078167
+  type: 'test'
+  ...
+# Subtest: smokes rect and arc position-color capabilities
+ok 4 - smokes rect and arc position-color capabilities
+  ---
+  duration_ms: 42.448542
+  type: 'test'
+  ...
+# Subtest: smokes bar highlight and continuous legend capabilities
+ok 5 - smokes bar highlight and continuous legend capabilities
+  ---
+  duration_ms: 30.673625
+  type: 'test'
+  ...
+# Subtest: smokes complete Cartesian axis editing
+ok 6 - smokes complete Cartesian axis editing
+  ---
+  duration_ms: 23.85025
+  type: 'test'
+  ...
+# Subtest: verifies independent stroke and legend support for every documented mark
+ok 7 - verifies independent stroke and legend support for every documented mark
+  ---
+  duration_ms: 144.0595
+  type: 'test'
+  ...
+# Subtest: uses point opacity samples for Line and Area consumers and rejects Rule opacity legends
+ok 8 - uses point opacity samples for Line and Area consumers and rejects Rule opacity legends
+  ---
+  duration_ms: 31.618375
+  type: 'test'
+  ...
+# Subtest: gives every declared action one exact anchor, classification, and complete option table
+ok 9 - gives every declared action one exact anchor, classification, and complete option table
+  ---
+  duration_ms: 4793.86025
+  type: 'test'
+  ...
+# Subtest: indexes each exact action at its canonical destination within the bounded search payload
+ok 10 - indexes each exact action at its canonical destination within the bounded search payload
+  ---
+  duration_ms: 10.632667
+  type: 'test'
+  ...
+# Subtest: current architecture source module references resolve in this repository
+ok 11 - current architecture source module references resolve in this repository
+  ---
+  duration_ms: 3.893459
+  type: 'test'
+  ...
+# Subtest: escaped code examples do not become real fragment targets or duplicate ids
+ok 12 - escaped code examples do not become real fragment targets or duplicate ids
+  ---
+  duration_ms: 2.936875
+  type: 'test'
+  ...
+# Subtest: actual duplicate element ids remain observable by the built checker
+ok 13 - actual duplicate element ids remain observable by the built checker
+  ---
+  duration_ms: 0.341584
+  type: 'test'
+  ...
+# Subtest: comments, raw text and quoted attribute examples cannot supply fragment targets
+ok 14 - comments, raw text and quoted attribute examples cannot supply fragment targets
+  ---
+  duration_ms: 0.168291
+  type: 'test'
+  ...
+# Subtest: element ids support quoted and unquoted attributes without mistaking data-id
+ok 15 - element ids support quoted and unquoted attributes without mistaking data-id
+  ---
+  duration_ms: 0.099125
+  type: 'test'
+  ...
+# Subtest: covers every maintained chart program or an explicit documentation-only exclusion
+ok 16 - covers every maintained chart program or an explicit documentation-only exclusion
+  ---
+  duration_ms: 39.759167
+  type: 'test'
+  ...
+# Subtest: matches the public derived-transform union to its one normative tag table
+ok 17 - matches the public derived-transform union to its one normative tag table
+  ---
+  duration_ms: 5.072333
+  type: 'test'
+  ...
+# Subtest: keeps the chart picker, workflow programs, snippet contracts, and provenance fresh
+ok 18 - keeps the chart picker, workflow programs, snippet contracts, and provenance fresh
+  ---
+  duration_ms: 780.089125
+  type: 'test'
+  ...
+# Subtest: release provenance requires the matching version and exact runtime fingerprint
+ok 19 - release provenance requires the matching version and exact runtime fingerprint
+  ---
+  duration_ms: 1577.143292
+  type: 'test'
+  ...
+# Subtest: keeps the hierarchical lesson geometrically equivalent before intentional styling
+ok 20 - keeps the hierarchical lesson geometrically equivalent before intentional styling
+  ---
+  duration_ms: 53.510083
+  type: 'test'
+  ...
+# Subtest: anchors completion, imputation, and window prose to literal expected values
+ok 21 - anchors completion, imputation, and window prose to literal expected values
+  ---
+  duration_ms: 43.009
+  type: 'test'
+  ...
+# Subtest: distinguishes required runtime failures from CI-version recommendations
+ok 22 - distinguishes required runtime failures from CI-version recommendations
+  ---
+  duration_ms: 1.924416
+  type: 'test'
+  ...
+# Subtest: the resource cleanup recipe demonstrates rejection before dependency-safe removal
+ok 23 - the resource cleanup recipe demonstrates rejection before dependency-safe removal
+  ---
+  duration_ms: 23.199209
+  type: 'test'
+  ...
+# Subtest: Related navigation remains the final section of public documentation
+ok 24 - Related navigation remains the final section of public documentation
+  ---
+  duration_ms: 46.097958
+  type: 'test'
+  ...
+# Subtest: every authoring workflow has exact-code execution metadata and a browser entry
+ok 25 - every authoring workflow has exact-code execution metadata and a browser entry
+  ---
+  duration_ms: 0.752459
+  type: 'test'
+  ...
+# Subtest: example source links resolve to the exact checked-in canonical programs
+ok 26 - example source links resolve to the exact checked-in canonical programs
+  ---
+  duration_ms: 2053.781083
+  type: 'test'
+  ...
+# Subtest: weighted distribution recipes preserve mass and separate density from cumulative probability
+ok 27 - weighted distribution recipes preserve mass and separate density from cumulative probability
+  ---
+  duration_ms: 50.27275
+  type: 'test'
+  ...
+# Subtest: every public JavaScript block is executable, generated, or a reviewed hash-pinned contextual exception
+ok 28 - every public JavaScript block is executable, generated, or a reviewed hash-pinned contextual exception
+  ---
+  duration_ms: 60.532666
+  type: 'test'
+  ...
+# Subtest: selective LLM artifacts retain current content, dependency routes, and shared identity
+ok 29 - selective LLM artifacts retain current content, dependency routes, and shared identity
+  ---
+  duration_ms: 1147.356959
+  type: 'test'
+  ...
+# Subtest: all published declarations compile in isolation without skipLibCheck
+ok 30 - all published declarations compile in isolation without skipLibCheck
+  ---
+  duration_ms: 343.880459
+  type: 'test'
+  ...
+# Subtest: each manifest module has an exact runtime reference and architecture owner
+ok 31 - each manifest module has an exact runtime reference and architecture owner
+  ---
+  duration_ms: 2.177208
+  type: 'test'
+  ...
+# Subtest: compatibility guidance follows the CI Node and browser matrix
+ok 32 - compatibility guidance follows the CI Node and browser matrix
+  ---
+  duration_ms: 1.625792
+  type: 'test'
+  ...
+# Subtest: page editing links resolve to maintained sources including generated workflow owners
+ok 33 - page editing links resolve to maintained sources including generated workflow owners
+  ---
+  duration_ms: 63.3285
+  type: 'test'
+  ...
+# Subtest: keeps every local Markdown link and anchor valid
+ok 34 - keeps every local Markdown link and anchor valid
+  ---
+  duration_ms: 979.870125
+  type: 'test'
+  ...
+# Subtest: keeps navigation and page order complete
+ok 35 - keeps navigation and page order complete
+  ---
+  duration_ms: 13.376625
+  type: 'test'
+  ...
+# Subtest: keeps public facade and stabilization guidance cumulative
+ok 36 - keeps public facade and stabilization guidance cumulative
+  ---
+  duration_ms: 0.823583
+  type: 'test'
+  ...
+# Subtest: keeps the chart-example catalog strict and routable
+ok 37 - keeps the chart-example catalog strict and routable
+  ---
+  duration_ms: 30.122042
+  type: 'test'
+  ...
+# Subtest: generates the public example index from the chart catalog
+ok 38 - generates the public example index from the chart catalog
+  ---
+  duration_ms: 13.333875
+  type: 'test'
+  ...
+# Subtest: keeps every Markdown page structurally readable
+ok 39 - keeps every Markdown page structurally readable
+  ---
+  duration_ms: 20.970625
+  type: 'test'
+  ...
+# Subtest: keeps documentation styles split by stable UI responsibility
+ok 40 - keeps documentation styles split by stable UI responsibility
+  ---
+  duration_ms: 1.756583
+  type: 'test'
+  ...
+# Subtest: generates unique page metadata and canonical social tags
+ok 41 - generates unique page metadata and canonical social tags
+  ---
+  duration_ms: 210.309541
+  type: 'test'
+  ...
+# Subtest: reports documentation environment prerequisites before building
+ok 42 - reports documentation environment prerequisites before building
+  ---
+  duration_ms: 0.950583
+  type: 'test'
+  ...
+# Subtest: keeps repository source links and raw images verifiable
+ok 43 - keeps repository source links and raw images verifiable
+  ---
+  duration_ms: 15.861834
+  type: 'test'
+  ...
+# Subtest: keeps the published documentation version aligned with the package
+ok 44 - keeps the published documentation version aligned with the package
+  ---
+  duration_ms: 0.455709
+  type: 'test'
+  ...
+# Subtest: documents sequential palette count consistently across scale surfaces
+ok 45 - documents sequential palette count consistently across scale surfaces
+  ---
+  duration_ms: 0.14325
+  type: 'test'
+  ...
+# Subtest: keeps the strict TypeScript extension example executable by package CI
+ok 46 - keeps the strict TypeScript extension example executable by package CI
+  ---
+  duration_ms: 0.621417
+  type: 'test'
+  ...
+# Subtest: keeps task pages visual and chart figures canonical
+ok 47 - keeps task pages visual and chart figures canonical
+  ---
+  duration_ms: 16.764542
+  type: 'test'
+  ...
+# Subtest: keeps tutorial action flows aligned with public examples
+ok 48 - keeps tutorial action flows aligned with public examples
+  ---
+  duration_ms: 0.967792
+  type: 'test'
+  ...
+# Subtest: routes entry documentation to the canonical example indexes
+ok 49 - routes entry documentation to the canonical example indexes
+  ---
+  duration_ms: 2.337834
+  type: 'test'
+  ...
+# Subtest: keeps the README and documentation home positioning aligned
+ok 50 - keeps the README and documentation home positioning aligned
+  ---
+  duration_ms: 0.204334
+  type: 'test'
+  ...
+# Subtest: keeps complete tutorial programs portable to package consumers
+ok 51 - keeps complete tutorial programs portable to package consumers
+  ---
+  duration_ms: 0.443834
+  type: 'test'
+  ...
+# Subtest: keeps every primary recipe snippet labeled and syntactically runnable
+ok 52 - keeps every primary recipe snippet labeled and syntactically runnable
+  ---
+  duration_ms: 1970.518333
+  type: 'test'
+  ...
+# Subtest: documents one shared numeric font-weight rendering policy
+ok 53 - documents one shared numeric font-weight rendering policy
+  ---
+  duration_ms: 0.871541
+  type: 'test'
+  ...
+# Subtest: indexes documentation headings for section search
+ok 54 - indexes documentation headings for section search
+  ---
+  duration_ms: 3.859209
+  type: 'test'
+  ...
+# Subtest: keeps the compact search index generated and action-aware
+ok 55 - keeps the compact search index generated and action-aware
+  ---
+  duration_ms: 280.485792
+  type: 'test'
+  ...
+# Subtest: keeps every public action available to documentation interactions
+ok 56 - keeps every public action available to documentation interactions
+  ---
+  duration_ms: 5.8155
+  type: 'test'
+  ...
+# Subtest: publishes schemas, typed action cards, and declarations from canonical sources
+ok 57 - publishes schemas, typed action cards, and declarations from canonical sources
+  ---
+  duration_ms: 13.065875
+  type: 'test'
+  ...
+# Subtest: keeps point legend support consistent across public guidance
+ok 58 - keeps point legend support consistent across public guidance
+  ---
+  duration_ms: 0.496583
+  type: 'test'
+  ...
+# Subtest: classifies every declared ChartProgram action in the reference
+ok 59 - classifies every declared ChartProgram action in the reference
+  ---
+  duration_ms: 4469.154042
+  type: 'test'
+  ...
+# Subtest: keeps rendering guidance executable and aligned with the Canvas contract
+ok 60 - keeps rendering guidance executable and aligned with the Canvas contract
+  ---
+  duration_ms: 334.80825
+  type: 'test'
+  ...
+# Subtest: does not repeat identical includes in one documentation position
+ok 61 - does not repeat identical includes in one documentation position
+  ---
+  duration_ms: 16.171875
+  type: 'test'
+  ...
+# Subtest: keeps concise and full LLM documentation synchronized
+ok 62 - keeps concise and full LLM documentation synchronized
+  ---
+  duration_ms: 2351.493083
+  type: 'test'
+  ...
+# Subtest: the documented adjacent group example adds a full-width row and retains both original panels
+ok 63 - the documented adjacent group example adds a full-width row and retains both original panels
+  ---
+  duration_ms: 130.792334
+  type: 'test'
+  ...
+# Subtest: the README authoring sequence completes with the repository cars data and its legend
+ok 64 - the README authoring sequence completes with the repository cars data and its legend
+  ---
+  duration_ms: 491.764
+  type: 'test'
+  ...
+# Subtest: the documented empty filter preserves its source and stores the named empty result
+ok 65 - the documented empty filter preserves its source and stores the named empty result
+  ---
+  duration_ms: 2.012875
+  type: 'test'
+  ...
+# Subtest: the documented prepared source workflow refreshes the current chart and retains received rows
+ok 66 - the documented prepared source workflow refreshes the current chart and retains received rows
+  ---
+  duration_ms: 23.199666
+  type: 'test'
+  ...
+# Subtest: the LLM task fragments independently build histogram and regression programs
+ok 67 - the LLM task fragments independently build histogram and regression programs
+  ---
+  duration_ms: 46.473208
+  type: 'test'
+  ...
+# Subtest: the extension JavaScript example creates its target before editing it
+ok 68 - the extension JavaScript example creates its target before editing it
+  ---
+  duration_ms: 7.543708
+  type: 'test'
+  ...
+# Subtest: numeric lines, points with default radius, and bars with default width materialize
+ok 69 - numeric lines, points with default radius, and bars with default width materialize
+  ---
+  duration_ms: 5.338125
+  type: 'test'
+  ...
+# Subtest: card preconditions distinguish constant encodings, title-only charts, and empty filtered results
+ok 70 - card preconditions distinguish constant encodings, title-only charts, and empty filtered results
+  ---
+  duration_ms: 5.420375
+  type: 'test'
+  ...
+# Subtest: documented defaults agree with point strokes, time-unit aliases, and quartile interpolation
+ok 71 - documented defaults agree with point strokes, time-unit aliases, and quartile interpolation
+  ---
+  duration_ms: 48.901625
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/annotations.md [primary] against its stated inputs
+ok 72 - executes documented recipes/annotations.md [primary] against its stated inputs
+  ---
+  duration_ms: 355.286375
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/bar-chart.md [primary] against its stated inputs
+ok 73 - executes documented recipes/bar-chart.md [primary] against its stated inputs
+  ---
+  duration_ms: 53.731625
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/box-plot.md [primary] against its stated inputs
+ok 74 - executes documented recipes/box-plot.md [primary] against its stated inputs
+  ---
+  duration_ms: 74.151917
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/composition.md [primary] against its stated inputs
+ok 75 - executes documented recipes/composition.md [primary] against its stated inputs
+  ---
+  duration_ms: 28.878416
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/density-area.md [primary] against its stated inputs
+ok 76 - executes documented recipes/density-area.md [primary] against its stated inputs
+  ---
+  duration_ms: 78.785666
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/error-band.md [primary] against its stated inputs
+ok 77 - executes documented recipes/error-band.md [primary] against its stated inputs
+  ---
+  duration_ms: 244.311208
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/error-bar.md [primary] against its stated inputs
+ok 78 - executes documented recipes/error-bar.md [primary] against its stated inputs
+  ---
+  duration_ms: 73.628958
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/facet.md [primary] against its stated inputs
+ok 79 - executes documented recipes/facet.md [primary] against its stated inputs
+  ---
+  duration_ms: 105.207667
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/gradient-plot.md [primary] against its stated inputs
+ok 80 - executes documented recipes/gradient-plot.md [primary] against its stated inputs
+  ---
+  duration_ms: 41.397916
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/heatmap.md [primary] against its stated inputs
+ok 81 - executes documented recipes/heatmap.md [primary] against its stated inputs
+  ---
+  duration_ms: 33.998875
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/histogram.md [primary] against its stated inputs
+ok 82 - executes documented recipes/histogram.md [primary] against its stated inputs
+  ---
+  duration_ms: 23.419542
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/horizon.md [primary] against its stated inputs
+ok 83 - executes documented recipes/horizon.md [primary] against its stated inputs
+  ---
+  duration_ms: 15.022667
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/line-chart.md [primary] against its stated inputs
+ok 84 - executes documented recipes/line-chart.md [primary] against its stated inputs
+  ---
+  duration_ms: 17.841958
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/parallel-coordinates.md [primary] against its stated inputs
+ok 85 - executes documented recipes/parallel-coordinates.md [primary] against its stated inputs
+  ---
+  duration_ms: 48.204416
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/path-ordering.md [primary] against its stated inputs
+ok 86 - executes documented recipes/path-ordering.md [primary] against its stated inputs
+  ---
+  duration_ms: 20.278583
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/regression-scatterplot.md [primary] against its stated inputs
+ok 87 - executes documented recipes/regression-scatterplot.md [primary] against its stated inputs
+  ---
+  duration_ms: 306.232959
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/rose-chart.md [primary] against its stated inputs
+ok 88 - executes documented recipes/rose-chart.md [primary] against its stated inputs
+  ---
+  duration_ms: 23.065875
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/scatterplot.md [primary] against its stated inputs
+ok 89 - executes documented recipes/scatterplot.md [primary] against its stated inputs
+  ---
+  duration_ms: 18.576041
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/violin-plot.md [primary] against its stated inputs
+ok 90 - executes documented recipes/violin-plot.md [primary] against its stated inputs
+  ---
+  duration_ms: 20.580334
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/area-layout.md [primary] against its stated inputs
+ok 91 - executes documented tutorials/area-layout.md [primary] against its stated inputs
+  ---
+  duration_ms: 51.269584
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/density-area.md [primary] against its stated inputs
+ok 92 - executes documented tutorials/density-area.md [primary] against its stated inputs
+  ---
+  duration_ms: 51.938625
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/ecdf.md [primary] against its stated inputs
+ok 93 - executes documented tutorials/ecdf.md [primary] against its stated inputs
+  ---
+  duration_ms: 25.809584
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/endpoint-plots.md [primary] against its stated inputs
+ok 94 - executes documented tutorials/endpoint-plots.md [primary] against its stated inputs
+  ---
+  duration_ms: 51.7385
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/error-band.md [primary] against its stated inputs
+ok 95 - executes documented tutorials/error-band.md [primary] against its stated inputs
+  ---
+  duration_ms: 124.514833
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/error-bar.md [primary] against its stated inputs
+ok 96 - executes documented tutorials/error-bar.md [primary] against its stated inputs
+  ---
+  duration_ms: 324.120334
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/grouped-bar.md [primary] against its stated inputs
+ok 97 - executes documented tutorials/grouped-bar.md [primary] against its stated inputs
+  ---
+  duration_ms: 472.04025
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/histogram.md [primary] against its stated inputs
+ok 98 - executes documented tutorials/histogram.md [primary] against its stated inputs
+  ---
+  duration_ms: 58.021917
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/horizon.md [primary] against its stated inputs
+ok 99 - executes documented tutorials/horizon.md [primary] against its stated inputs
+  ---
+  duration_ms: 50.083125
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/line-chart.md [primary] against its stated inputs
+ok 100 - executes documented tutorials/line-chart.md [primary] against its stated inputs
+  ---
+  duration_ms: 37.979833
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/mark-selection.md [primary] against its stated inputs
+ok 101 - executes documented tutorials/mark-selection.md [primary] against its stated inputs
+  ---
+  duration_ms: 213.8935
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/polar-arcs.md [primary] against its stated inputs
+ok 102 - executes documented tutorials/polar-arcs.md [primary] against its stated inputs
+  ---
+  duration_ms: 20.010166
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/polar-lines.md [primary] against its stated inputs
+ok 103 - executes documented tutorials/polar-lines.md [primary] against its stated inputs
+  ---
+  duration_ms: 27.863333
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/polar-points.md [primary] against its stated inputs
+ok 104 - executes documented tutorials/polar-points.md [primary] against its stated inputs
+  ---
+  duration_ms: 48.189458
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/regression-scatterplot.md [primary] against its stated inputs
+ok 105 - executes documented tutorials/regression-scatterplot.md [primary] against its stated inputs
+  ---
+  duration_ms: 435.057291
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/scatterplot.md [primary] against its stated inputs
+ok 106 - executes documented tutorials/scatterplot.md [primary] against its stated inputs
+  ---
+  duration_ms: 160.859833
+  type: 'test'
+  ...
+# Subtest: executes documented api/data/filtering.md [primary] against its stated inputs
+ok 107 - executes documented api/data/filtering.md [primary] against its stated inputs
+  ---
+  duration_ms: 207.208791
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/repair-missing-observations.md [primary] against its stated inputs
+ok 108 - executes documented recipes/repair-missing-observations.md [primary] against its stated inputs
+  ---
+  duration_ms: 81.607958
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/compare-weighted-distributions.md [primary] against its stated inputs
+ok 109 - executes documented recipes/compare-weighted-distributions.md [primary] against its stated inputs
+  ---
+  duration_ms: 71.854041
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/switch-encoding-modes.md [primary] against its stated inputs
+ok 110 - executes documented recipes/switch-encoding-modes.md [primary] against its stated inputs
+  ---
+  duration_ms: 25.768459
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/edit-scales-and-guides.md [primary] against its stated inputs
+ok 111 - executes documented recipes/edit-scales-and-guides.md [primary] against its stated inputs
+  ---
+  duration_ms: 44.4835
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/edit-selected-labels.md [primary] against its stated inputs
+ok 112 - executes documented recipes/edit-selected-labels.md [primary] against its stated inputs
+  ---
+  duration_ms: 44.746875
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/apply-custom-theme.md [primary] against its stated inputs
+ok 113 - executes documented recipes/apply-custom-theme.md [primary] against its stated inputs
+  ---
+  duration_ms: 38.529708
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/edit-facet-source.md [primary] against its stated inputs
+ok 114 - executes documented recipes/edit-facet-source.md [primary] against its stated inputs
+  ---
+  duration_ms: 146.065834
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/remove-dependent-resources.md [primary] against its stated inputs
+ok 115 - executes documented recipes/remove-dependent-resources.md [primary] against its stated inputs
+  ---
+  duration_ms: 66.878125
+  type: 'test'
+  ...
+# Subtest: executes documented tutorials/hierarchical-authoring.md [primary] against its stated inputs
+ok 116 - executes documented tutorials/hierarchical-authoring.md [primary] against its stated inputs
+  ---
+  duration_ms: 56.186166
+  type: 'test'
+  ...
+# Subtest: executes documented api/marks/line-area.md [primary] against its stated inputs
+ok 117 - executes documented api/marks/line-area.md [primary] against its stated inputs
+  ---
+  duration_ms: 18.7455
+  type: 'test'
+  ...
+# Subtest: executes documented api/marks/bar.md [canvas-layout-1] against its stated inputs
+ok 118 - executes documented api/marks/bar.md [canvas-layout-1] against its stated inputs
+  ---
+  duration_ms: 16.50675
+  type: 'test'
+  ...
+# Subtest: executes documented api/marks/line-area.md [canvas-layout-2] against its stated inputs
+ok 119 - executes documented api/marks/line-area.md [canvas-layout-2] against its stated inputs
+  ---
+  duration_ms: 23.922792
+  type: 'test'
+  ...
+# Subtest: executes documented api/marks/line-area.md [canvas-layout-3] against its stated inputs
+ok 120 - executes documented api/marks/line-area.md [canvas-layout-3] against its stated inputs
+  ---
+  duration_ms: 23.30125
+  type: 'test'
+  ...
+# Subtest: executes documented api/marks/line-area.md [canvas-layout-4] against its stated inputs
+ok 121 - executes documented api/marks/line-area.md [canvas-layout-4] against its stated inputs
+  ---
+  duration_ms: 8.607708
+  type: 'test'
+  ...
+# Subtest: executes documented api/marks/line-area.md [canvas-layout-5] against its stated inputs
+ok 122 - executes documented api/marks/line-area.md [canvas-layout-5] against its stated inputs
+  ---
+  duration_ms: 14.608916
+  type: 'test'
+  ...
+# Subtest: executes documented api/marks/point.md [canvas-layout-6] against its stated inputs
+ok 123 - executes documented api/marks/point.md [canvas-layout-6] against its stated inputs
+  ---
+  duration_ms: 50.798375
+  type: 'test'
+  ...
+# Subtest: executes documented recipes/line-chart.md [canvas-layout-7] against its stated inputs
+ok 124 - executes documented recipes/line-chart.md [canvas-layout-7] against its stated inputs
+  ---
+  duration_ms: 10.105667
+  type: 'test'
+  ...
+# {
+#   data: 'sales',
+#   schema: {
+#     version: 1,
+#     completeness: 'known',
+#     origin: 'inferred',
+#     fields: [ [Object], [Object] ]
+#   }
+# } {
+#   version: 1,
+#   equivalence: 'different',
+#   completeProgramComparison: true,
+#   changes: [
+#     {
+#       resource: [Object],
+#       operation: 'modify',
+#       effect: 'style',
+#       roles: []
+#     }
+#   ],
+#   affected: [ { kind: 'mark', id: 'points' } ],
+#   findings: []
+# } {
+#   version: 1,
+#   views: [
+#     {
+#       owner: [Object],
+#       grain: 'item',
+#       rawRows: 2,
+#       logicalDataItems: 2,
+#       drawablePrimitives: 2,
+#       visibleCandidates: 2,
+#       flags: [Array],
+#       bounds: [Object],
+#       sourceRefs: [Array],
+#       checks: [Array]
+#     }
+#   ],
+#   calculations: [],
+#   checks: [
+#     {
+#       name: 'pixel-visibility',
+#       status: 'not_run',
+#       evidencePaths: [],
+#       findings: []
+#     }
+#   ],
+#   findings: [],
+#   coverage: { partial: true, unsupported: [] }
+# }
+# false
+# true
+# Subtest: executes documented inspection.md [inspection-roundtrip] against its stated inputs
+ok 125 - executes documented inspection.md [inspection-roundtrip] against its stated inputs
+  ---
+  duration_ms: 31.495125
+  type: 'test'
+  ...
+# Subtest: executes documented api/rendering.md [render-first] against its stated inputs
+ok 126 - executes documented api/rendering.md [render-first] against its stated inputs
+  ---
+  duration_ms: 18.479208
+  type: 'test'
+  ...
+# Subtest: executes documented ../README.md [readme-quick-start] against its stated inputs
+ok 127 - executes documented ../README.md [readme-quick-start] against its stated inputs
+  ---
+  duration_ms: 27.9935
+  type: 'test'
+  ...
+# false
+# createScatterPlot
+# editPointMark
+# Subtest: executes documented ../README.md [readme-immutable-branches] against its stated inputs
+ok 128 - executes documented ../README.md [readme-immutable-branches] against its stated inputs
+  ---
+  duration_ms: 15.913125
+  type: 'test'
+  ...
+# Subtest: executes documented api/composition/facets.md [facet-axis-gaps] against its stated inputs
+ok 129 - executes documented api/composition/facets.md [facet-axis-gaps] against its stated inputs
+  ---
+  duration_ms: 33.362875
+  type: 'test'
+  ...
+# Subtest: executes documented api/axes.md [axis-title-label-relative-gap] against its stated inputs
+ok 130 - executes documented api/axes.md [axis-title-label-relative-gap] against its stated inputs
+  ---
+  duration_ms: 11.939417
+  type: 'test'
+  ...
+# Subtest: executes documented api/composition/editing.md [adjacent-group-placement] against its stated inputs
+ok 131 - executes documented api/composition/editing.md [adjacent-group-placement] against its stated inputs
+  ---
+  duration_ms: 52.232583
+  type: 'test'
+  ...
+# Subtest: executes documented api/legends.md [legend-fine-positioning] against its stated inputs
+ok 132 - executes documented api/legends.md [legend-fine-positioning] against its stated inputs
+  ---
+  duration_ms: 13.957666
+  type: 'test'
+  ...
+# Subtest: executes documented api/composition/editing.md [native-layer-composition] against its stated inputs
+ok 133 - executes documented api/composition/editing.md [native-layer-composition] against its stated inputs
+  ---
+  duration_ms: 331.728708
+  type: 'test'
+  ...
+# Subtest: executes documented api/legends.md [three-channel-interval-legend] against its stated inputs
+ok 134 - executes documented api/legends.md [three-channel-interval-legend] against its stated inputs
+  ---
+  duration_ms: 19.347292
+  type: 'test'
+  ...
+# Subtest: executes documented api/data/summaries-and-shaping.md [pivot-data] against its stated inputs
+ok 135 - executes documented api/data/summaries-and-shaping.md [pivot-data] against its stated inputs
+  ---
+  duration_ms: 15.5075
+  type: 'test'
+  ...
+# Subtest: executes documented api/regression.md [quadratic-loess] against its stated inputs
+ok 136 - executes documented api/regression.md [quadratic-loess] against its stated inputs
+  ---
+  duration_ms: 18.896167
+  type: 'test'
+  ...
+# Subtest: executes documented api/data/missing-data.md [calendar-day-completion] against its stated inputs
+ok 137 - executes documented api/data/missing-data.md [calendar-day-completion] against its stated inputs
+  ---
+  duration_ms: 43.395125
+  type: 'test'
+  ...
+# [ 20, 40 ]
+# [ 30, 60 ]
+# Subtest: executes documented api/data/expressions-and-normalization.md [parameter-computed-revision] against its stated inputs
+ok 138 - executes documented api/data/expressions-and-normalization.md [parameter-computed-revision] against its stated inputs
+  ---
+  duration_ms: 34.262792
+  type: 'test'
+  ...
+# Subtest: executes documented data-updates.md [prepared-source-refresh] against its stated inputs
+ok 139 - executes documented data-updates.md [prepared-source-refresh] against its stated inputs
+  ---
+  duration_ms: 28.541
+  type: 'test'
+  ...
+# Subtest: marks tutorial and recipe snippets with explicit execution contracts
+ok 140 - marks tutorial and recipe snippets with explicit execution contracts
+  ---
+  duration_ms: 0.692667
+  type: 'test'
+  ...
+# Subtest: prepares a distinct packed consumer source for every registered snippet
+ok 141 - prepares a distinct packed consumer source for every registered snippet
+  ---
+  duration_ms: 631.24025
+  type: 'test'
+  ...
+# Subtest: extracts long and indented fences without closing on shorter embedded fences
+ok 142 - extracts long and indented fences without closing on shorter embedded fences
+  ---
+  duration_ms: 0.305041
+  type: 'test'
+  ...
+# Subtest: documentation mocks reject incorrect URLs/selectors and missing rendering
+ok 143 - documentation mocks reject incorrect URLs/selectors and missing rendering
+  ---
+  duration_ms: 0.929375
+  type: 'test'
+  ...
+# Subtest: snippet execution evidence must match the current code hash and pass status
+ok 144 - snippet execution evidence must match the current code hash and pass status
+  ---
+  duration_ms: 0.880625
+  type: 'test'
+  ...
+# Subtest: keeps one generated gallery image for every public chart
+ok 145 - keeps one generated gallery image for every public chart
+  ---
+  duration_ms: 6.515458
+  type: 'test'
+  ...
+# Subtest: keeps the generated Getting Started image aligned with its exact program
+ok 146 - keeps the generated Getting Started image aligned with its exact program
+  ---
+  duration_ms: 0.644042
+  type: 'test'
+  ...
+# Subtest: keeps generated mark-selection tutorial images canonical and fresh
+ok 147 - keeps generated mark-selection tutorial images canonical and fresh
+  ---
+  duration_ms: 0.350125
+  type: 'test'
+  ...
+# Subtest: keeps the composition asset legible as two distinct child panels
+ok 148 - keeps the composition asset legible as two distinct child panels
+  ---
+  duration_ms: 42.817333
+  type: 'test'
+  ...
+# Subtest: keeps the first chart identifiable without color alone
+ok 149 - keeps the first chart identifiable without color alone
+  ---
+  duration_ms: 244.891459
+  type: 'test'
+  ...
+# Subtest: search recovers from a failed request and routes every exact action with correct keyboard boundaries
+ok 150 - search recovers from a failed request and routes every exact action with correct keyboard boundaries
+  ---
+  duration_ms: 7109.820584
+  type: 'test'
+  ...
+# Subtest: action filtering updates TOC visibility and counts and a hidden hash target can be revealed
+ok 151 - action filtering updates TOC visibility and counts and a hidden hash target can be revealed
+  ---
+  duration_ms: 274.842917
+  type: 'test'
+  ...
+# Subtest: search handles zero, one, two, and eight results without stale active options
+ok 152 - search handles zero, one, two, and eight results without stale active options
+  ---
+  duration_ms: 244.149834
+  type: 'test'
+  ...
+# Subtest: typing after a completed failed prefetch waits for an explicit retry
+ok 153 - typing after a completed failed prefetch waits for an explicit retry
+  ---
+  duration_ms: 188.906667
+  type: 'test'
+  ...
+# Subtest: each retry makes one request after consecutive failures and pending searches respect cancellation
+ok 154 - each retry makes one request after consecutive failures and pending searches respect cancellation
+  ---
+  duration_ms: 667.033458
+  type: 'test'
+  ...
+# Subtest: natural task queries reach their canonical guide among the first three results
+ok 155 - natural task queries reach their canonical guide among the first three results
+  ---
+  duration_ms: 296.08525
+  type: 'test'
+  ...
+# Subtest: keeps the Quarto example pinned, responsive, and accessible
+ok 156 - keeps the Quarto example pinned, responsive, and accessible
+  ---
+  duration_ms: 4.706958
+  type: 'test'
+  ...
+# Subtest: executes the example program against the package source
+ok 157 - executes the example program against the package source
+  ---
+  duration_ms: 369.293291
+  type: 'test'
+  ...
+# Subtest: builds the ordered immutable README authoring sequence
+ok 158 - builds the ordered immutable README authoring sequence
+  ---
+  duration_ms: 828.793708
+  type: 'test'
+  ...
+# Subtest: handles zero-variance R-squared input explicitly
+ok 159 - handles zero-variance R-squared input explicitly
+  ---
+  duration_ms: 0.127541
+  type: 'test'
+  ...
+# Subtest: keeps generated README GIF and PNG valid and referenced
+ok 160 - keeps generated README GIF and PNG valid and referenced
+  ---
+  duration_ms: 1.448459
+  type: 'test'
+  ...
+# Subtest: the paper rose sequence retains each revision and materializes its final palette
+ok 161 - the paper rose sequence retains each revision and materializes its final palette
+  ---
+  duration_ms: 78.114375
+  type: 'test'
+  ...
+# Subtest: the README leads with the paper GIF, then installation and a complete first chart
+ok 162 - the README leads with the paper GIF, then installation and a complete first chart
+  ---
+  duration_ms: 0.198209
+  type: 'test'
+  ...
+# Subtest: keeps the README revision branches immutable and independently traced
+ok 163 - keeps the README revision branches immutable and independently traced
+  ---
+  duration_ms: 93.194542
+  type: 'test'
+  ...
+# Subtest: keeps the executable revision example immediately after Quick Start
+ok 164 - keeps the executable revision example immediately after Quick Start
+  ---
+  duration_ms: 0.243084
+  type: 'test'
+  ...
+1..164
+# tests 164
+# suites 0
+# pass 164
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 15130.551375
+
+> ggaction@0.0.26 docs:build
+> bundle exec jekyll build --source docs --destination _site --baseurl /ggaction
+
+Configuration file: docs/_config.yml
+            Source: docs
+       Destination: _site
+ Incremental build: disabled. Enable with --incremental
+      Generating... 
+       Jekyll Feed: Generating feed for posts
+                    done in 7.627 seconds.
+ Auto-regeneration: disabled. Use --watch to enable.
+
+> ggaction@0.0.26 test:docs:built
+> node scripts/check-built-docs.js _site
+
+verified 1218 selective LLM artifacts and their identity hashes
+checked 150 built documentation pages
+
+> ggaction@0.0.26 test:docs:browser
+> node scripts/test-built-docs.js _site
+
+verified desktop search and all documentation pages at 320px, 390px, and 768px

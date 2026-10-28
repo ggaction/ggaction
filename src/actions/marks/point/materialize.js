@@ -1,3 +1,6 @@
+import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
+import { hasPositionBinding, positionBindings } from "../../../core/encodingBindings.js";
+import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
 import { materializeMarkOutput } from "../../../materialization/markOutput.js";
 import { validateGraphicItemLimit, validateWorkLimit } from "../../../core/validation.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
@@ -15,6 +18,7 @@ import {
   resolvePointJitter
 } from "../../../grammar/jitter.js";
 import {
+  hasPointPackingBindings,
   normalizePointPackingPolicy,
   resolvePointPacking
 } from "../../../grammar/pointPacking.js";
@@ -50,16 +54,16 @@ const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 const DEFAULT_POINT_FILL = DEFAULT_COLORS.mark;
 
 function resolvePointPositions(program, layer, dataset) {
-  const hasPolar = layer.encoding?.theta !== undefined ||
-    layer.encoding?.radius !== undefined;
+  const resolvers = { resolveMarkItems, resolveMarkSourceItems };
+  const hasPolar = hasPositionBinding(layer, "theta") || hasPositionBinding(layer, "radius");
   if (!hasPolar) {
     return {
-      x: resolveRowPositionValues(program, layer, dataset, "x"),
-      y: resolveRowPositionValues(program, layer, dataset, "y")
+      x: resolveRowPositionValues(program, layer, dataset, "x", resolvers),
+      y: resolveRowPositionValues(program, layer, dataset, "y", resolvers)
     };
   }
-  const theta = resolveRowEncodingValues(program, layer, dataset, "theta");
-  const radius = resolveRowEncodingValues(program, layer, dataset, "radius");
+  const theta = resolveRowEncodingValues(program, layer, dataset, "theta", resolvers);
+  const radius = resolveRowEncodingValues(program, layer, dataset, "radius", resolvers);
   if (theta === undefined || radius === undefined) {
     return { x: undefined, y: undefined };
   }
@@ -74,6 +78,24 @@ function resolvePointPositions(program, layer, dataset) {
     x: positions.map(position => position.x),
     y: positions.map(position => position.y)
   };
+}
+
+// Scales are transient inputs to layout. The selected branch remains owned by
+// row encoding; no field or scale is inferred from the first conditional branch.
+function resolvePointLayoutScales(program, layer, dataset, channel, label) {
+  const scales = positionBindings(layer, channel).map(binding => {
+    const scale = program.resolvedScales[binding.scale];
+    if (scale === undefined) {
+      throw new Error(`${label} on "${layer.id}" requires a resolved ${channel} scale.`);
+    }
+    return scale;
+  });
+  if (scales.length === 0) {
+    throw new Error(`${label} on "${layer.id}" requires a resolved ${channel} scale.`);
+  }
+  const rows = resolveRowEncodingValues(program, layer, dataset, channel,
+    { resolveMarkItems, resolveMarkSourceItems }, { includeScale: true, mapped: false });
+  return { scales, rows: rows.map(item => item.scale) };
 }
 
 function compactProperties(properties) {
@@ -128,9 +150,11 @@ function resolveJitterEntries({
   area,
   shapes,
   angles,
+  strokeWidths,
   config,
   graphic,
-  existingChildren
+  existingChildren,
+  scales
 }) {
   const seen = new Set();
   return dataset.values.flatMap((row, index) => {
@@ -158,14 +182,13 @@ function resolveJitterEntries({
     const extent = resolvePointShapeExtent({
       shape: shapes[index],
       area: resolvedArea,
-      strokeWidth: typeof config.stroke === "string"
-        ? config.strokeWidth ?? 1
-        : 0,
+      strokeWidth: strokeWidths[index],
       angle: angles?.[index]
     });
     return [{
       index,
       identity,
+      scale: scales[index],
       base: policy.channel === "x" ? x[index] : y[index],
       halfExtent: extent[policy.channel]
     }];
@@ -181,6 +204,7 @@ function applyPointJitter(program, {
   area,
   shapes,
   angles,
+  strokeWidths,
   config,
   graphic,
   existingChildren
@@ -192,19 +216,18 @@ function applyPointJitter(program, {
   const channels = policy.channel === "both" ? ["x", "y"] : [policy.channel];
   const resolutions = {}, positions = { x, y };
   for (const channel of channels) {
-    const scale = program.resolvedScales[layer.encoding?.[channel]?.scale];
-    if (scale === undefined) {
-      throw new Error(`Point jitter on "${id}" requires a resolved ${channel} scale.`);
-    }
+    const { scales, rows: rowScales } = resolvePointLayoutScales(
+      program, layer, dataset, channel, "Point jitter"
+    );
     // Resolve from the same unjittered positions, using each axis in the stable
     // hash. Both is exactly the independent X and Y assignments together.
     const axisPolicy = { ...policy, channel };
     const entries = resolveJitterEntries({
-      policy: axisPolicy, dataset, x, y, area, shapes, angles,
-      config, graphic, existingChildren
+      policy: axisPolicy, dataset, x, y, area, shapes, angles, strokeWidths,
+      config, graphic, existingChildren, scales: rowScales
     });
     const resolution = resolvePointJitter({
-      target: id, policy: axisPolicy, scale, entries,
+      target: id, policy: axisPolicy, scales, entries,
       plotMinimum: channel === "x" ? bounds.x : bounds.y,
       plotMaximum: channel === "x" ? bounds.x + bounds.width : bounds.y + bounds.height
     });
@@ -234,6 +257,7 @@ function applyPointPacking(program, {
   area,
   shapes,
   angles,
+  strokeWidths,
   config,
   graphic,
   existingChildren
@@ -241,11 +265,12 @@ function applyPointPacking(program, {
   const stored = program.materializationConfigs.pointPacking?.[id];
   if (stored === undefined) return { program, x, y };
   const policy = normalizePointPackingPolicy(stored);
-  const encoding = layer.encoding?.[policy.channel];
-  const scale = program.resolvedScales[encoding?.scale];
-  if (scale === undefined) {
-    throw new Error(`Point packing on "${id}" requires a resolved ${policy.channel} scale.`);
+  if (!hasPointPackingBindings(layer, policy.channel)) {
+    throw new Error(`Point packing on "${id}" requires a categorical position and a quantitative or temporal opposite position.`);
   }
+  const { scales, rows: rowScales } = resolvePointLayoutScales(
+    program, layer, dataset, policy.channel, "Point packing"
+  );
   const seen = new Set();
   const entries = dataset.values.flatMap((row, index) => {
     if (!Number.isFinite(x?.[index]) || !Number.isFinite(y?.[index])) return [];
@@ -266,12 +291,13 @@ function applyPointPacking(program, {
     const extent = resolvePointShapeExtent({
       shape: shapes[index],
       area: resolvedArea,
-      strokeWidth: typeof config.stroke === "string" ? config.strokeWidth ?? 1 : 0,
+      strokeWidth: strokeWidths[index],
       angle: angles?.[index]
     });
     return [{
       index,
       identity,
+      scale: rowScales[index],
       base: policy.channel === "x" ? x[index] : y[index],
       fixed: policy.channel === "x" ? y[index] : x[index],
       halfExtent: extent[policy.channel],
@@ -282,7 +308,7 @@ function applyPointPacking(program, {
   const resolution = resolvePointPacking({
     target: id,
     policy,
-    scale,
+    scales,
     entries,
     plotMinimum: policy.channel === "x" ? bounds.x : bounds.y,
     plotMaximum: policy.channel === "x" ? bounds.x + bounds.width : bounds.y + bounds.height
@@ -349,18 +375,23 @@ export const rematerializePointMark = /* @__PURE__ */ action(
 
     const positions = resolvePointPositions(resolved, layer, dataset);
     const mappedFill = resolveRowEncodingValues(resolved, layer, dataset, "color");
-    const mappedStroke = resolveRowEncodingValues(resolved, layer, dataset, "stroke");
-    const area = resolveRowEncodingValues(resolved, layer, dataset, "size");
-    const encodedShape = resolveRowEncodingValues(resolved, layer, dataset, "shape");
+    const mappedStroke = resolveConditionalValues(resolved, layer, "stroke") ?? resolveRowEncodingValues(resolved, layer, dataset, "stroke");
+    const mappedStrokeWidths = resolveConditionalValues(resolved, layer, "strokeWidth") ?? resolveRowEncodingValues(resolved, layer, dataset, "strokeWidth");
+    const pointRadii = resolveConditionalValues(resolved, layer, "pointRadius");
+    const area = pointRadii?.map(radius => Math.PI * radius ** 2) ?? resolveConditionalValues(resolved, layer, "size") ?? resolveRowEncodingValues(resolved, layer, dataset, "size");
+    const encodedShape = resolveConditionalValues(resolved, layer, "shape") ?? resolveRowEncodingValues(resolved, layer, dataset, "shape");
     const encodedOpacity = resolveRowEncodingValues(
       resolved,
       layer,
       dataset,
       "opacity"
     );
-    const angles = resolveDirectionValues(dataset.values, layer.encoding?.angle);
+    const angles = resolveConditionalValues(resolved, layer, "angle") ?? resolveDirectionValues(dataset.values, layer.encoding?.angle);
     const config = resolved.markConfigs[id] ?? {};
     const strokeDetails = requestedStrokeDetails(config, "Point mark");
+    const strokeWidths = dataset.values.map((_, index) =>
+      typeof (mappedStroke?.[index] ?? config.stroke) === "string"
+        ? mappedStrokeWidths?.[index] ?? config.strokeWidth ?? 1 : 0);
     const fill = mappedFill ?? config.fill ?? DEFAULT_POINT_FILL;
     const shapes = encodedShape ?? dataset.values.map(() => config.shape ?? "circle");
     validateWorkLimit(shapes.reduce((sum, shape) => sum +
@@ -388,6 +419,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
       area,
       shapes,
       angles,
+      strokeWidths,
       config,
       graphic,
       existingChildren
@@ -401,6 +433,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
       area,
       shapes,
       angles,
+      strokeWidths,
       config,
       graphic,
       existingChildren
@@ -547,7 +580,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
       next = next.editGraphics({
         target: id,
         property: "strokeWidth",
-        value: config.strokeWidth
+        value: config.strokeWidth ?? 1
       });
     }
     for (const [property, value] of Object.entries(strokeDetails)) {

@@ -1,0 +1,199 @@
+{
+  "state": "approved",
+  "visualApproval": "pending",
+  "publicPaintIntegration": "pending",
+  "codeBase": "a9fbf6a973c65f82533732f4722dd58b94ed5f6d",
+  "recordedAt": "2026-10-28T15:37:18.965Z",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "inputs": {
+    "test/oracles/compositing.js": "0d5711ae18abd39eaa1748b9733f64a8423211c17a3a06de5974ac5b8910e12c",
+    "test/capabilities.json": "adebb2acc0a00902cc0ecf7703964561e4ce455157d352c1fac7849c61a72abb",
+    "test/gates/blend-paints/backends.render.js": "c88763e8c470007ce9b301e4acbf5c16e29f4eca9024fd184794800466194056",
+    "test/gates/blend-paints/browser.html": "6eca2f19c15e6511f53f92d0354d9b78d98d102d539edf61db3ac99b6ced55b3",
+    "test/gates/blend-paints/fixture.js": "22c644d8e0660c41f1e052696a85fa8b785ceb2dab01b8a80082d8006072bfc5",
+    "test/gates/blend-paints/group-png.js": "ff68fecb0d0c1e6ddaad999e9ad61a3644d3e7347652e9dc7cacead7900db24f",
+    "test/gates/blend-paints/lowered-group.js": "ef9f3a936ab04c27fbb44a3cd0a11287821766d460f7e6b5455433bcd78d40e8",
+    "test/gates/blend-paints/manifest.js": "5c4fd99d6431c3f504f62cbbecfd61bb858f33746c2dd996ab4ff2bcd478d0c5",
+    "test/gates/blend-paints/primitive.program.js": "79382eb162a6ed8b430063b8b75f5cbb6221b1b924e55679c8b6402f2024822f",
+    "test/gates/blend-paints/primitive.test.js": "d59209ce25bd930f2ebc5dafcd7d3123e87b5c8229920baf7a004597c71382a3",
+    "test/gates/blend-paints/reference.js": "fddd0e74cf46c81278d29c8be7d34e21f67f552196693fc8c1f0eb789319ff11"
+  },
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js gates gates/blend-paints/primitive.test.js",
+      "exit": 0,
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "log": ".artifacts/blend-review/primitive-final.log",
+      "sha256": "404f40405fb86b5016bdb261fc558a9a42ba7c140c2bfb52471367fa0ea4468e"
+    },
+    {
+      "command": "node scripts/run-tests.js render gates/blend-paints/backends.render.js",
+      "exit": 0,
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "log": ".artifacts/blend-review/render-final.log",
+      "sha256": "e16fb7c0a3d6967778d2cf7a1a602a1924322ed7d17acc0f71981798a232444e"
+    },
+    {
+      "command": "node scripts/run-tests.js unit unit/renderers/normal-glyph-opacity.test.js",
+      "exit": 0,
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "log": ".artifacts/blend-review/unit-final.log",
+      "sha256": "c51c4f6be721adb0605534a7ea5d457137472725f945907226703d2584c5bf43"
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js contracts/bar-blend.test.js",
+      "exit": 0,
+      "tests": 50,
+      "pass": 50,
+      "fail": 0,
+      "log": ".artifacts/blend-review/contracts-final.log",
+      "sha256": "2acc33fc2333800786798c4ccd5e56c99a29d84a4fc7bf83f1d9bf5319736919"
+    },
+    {
+      "command": "npm run package:check",
+      "exit": 0,
+      "log": ".artifacts/blend-review/package-final.log",
+      "sha256": "f226aeb3bfc1ab906b3a910c5d2d3bd9951d524add8eab15616ac198d414c1a0"
+    }
+  ],
+  "outputRoot": ".artifacts/test/png/review/blend-paints",
+  "outputs": {
+    ".artifacts/test/png/review/blend-paints/contact-sheet.png": "bbb439f27e72e3c1ef91993e8c69fb4898ad7b615f5c493ea8326dda13d6e6ca",
+    ".artifacts/test/png/review/blend-paints/difference/browser-canvas.png": "ec7926677c487bde04cfd30f9d37d2a13627174420cdf93735d1ec6cac1ff3c9",
+    ".artifacts/test/png/review/blend-paints/difference/browser-isolated-group.png": "1b498048dbdf4f5c85da7ee10941cf2e66f229dd8bdf36c5196bf3e55254fc17",
+    ".artifacts/test/png/review/blend-paints/difference/browser-svg.png": "ec7926677c487bde04cfd30f9d37d2a13627174420cdf93735d1ec6cac1ff3c9",
+    ".artifacts/test/png/review/blend-paints/difference/evidence.json": "a9eaf18a136432b3e81c89dd47380ce453adf944e8625dd720f9a092a10e66e9",
+    ".artifacts/test/png/review/blend-paints/difference/isolated-group.png": "d8c78c469720bbb0411c33ac31b6bafb6b886a567f06132a5e12428805893e8c",
+    ".artifacts/test/png/review/blend-paints/difference/native-isolated-group.png": "04fce29ec1779f24e6150f4c9f4dc1aa028359a7f1fe9a2f52d413fc578a7d76",
+    ".artifacts/test/png/review/blend-paints/difference/pdf.png": "832ea5452c091d40d6f30c05303f57170a434467ee541d9d8cc9721fb1cea253",
+    ".artifacts/test/png/review/blend-paints/difference/primitive.pdf": "91b30bdc5fbfd53096738931b6a8ed9dda4a1f948c1156c697612a137e4524e8",
+    ".artifacts/test/png/review/blend-paints/difference/primitive.png": "c3ec7b50eb4929688c7516004a98c2ca8269698766397947ed4db78cdb27af85",
+    ".artifacts/test/png/review/blend-paints/difference/primitive.svg": "e1d73601fc69aea3b0d6ec7ae27e95e1b4e721a7d427090fd71ccbca9f6b4d2f",
+    ".artifacts/test/png/review/blend-paints/difference/variant.json": "e5001b3c20e7703e043815046772ab96915971c51fd15173dbf39f2af52f34d6",
+    ".artifacts/test/png/review/blend-paints/group-opacity/browser-canvas.png": "b817e96749a71d6b3bff94eecce01bb967ed8448a4b70eaca48c1afde70d35de",
+    ".artifacts/test/png/review/blend-paints/group-opacity/browser-isolated-group.png": "55c085a9d9ba00f87e398dc624ec85d891eeed867d4c115c4f93e8730e4d33d8",
+    ".artifacts/test/png/review/blend-paints/group-opacity/browser-svg.png": "b817e96749a71d6b3bff94eecce01bb967ed8448a4b70eaca48c1afde70d35de",
+    ".artifacts/test/png/review/blend-paints/group-opacity/evidence.json": "892b3cc6ea2e1805290d3cd753b63b0e549ff62da0886490fc9ee06d19007ca6",
+    ".artifacts/test/png/review/blend-paints/group-opacity/isolated-group.png": "a83eaf43810317967fdfb644d048cea6b045ea6d5ddb2aa7a12a71e8b233ad4e",
+    ".artifacts/test/png/review/blend-paints/group-opacity/native-isolated-group.png": "82ad3b2b9445e23377116f1de74378730ae99f614e9dc6ad60be2a8f53cbf9f4",
+    ".artifacts/test/png/review/blend-paints/group-opacity/pdf.png": "e554a2fa6dac8082cde7abd1987580449d8c6cc2af89a32fef856e1d96b3c118",
+    ".artifacts/test/png/review/blend-paints/group-opacity/primitive.pdf": "b529da727d7bb6adfbd60129209dd32cdefa151b531b41cca081a8ca240472d3",
+    ".artifacts/test/png/review/blend-paints/group-opacity/primitive.png": "12fb8f6b44cc3c6eafa1bf03a4c21ddb3885f08c99eb97521b283135cddb3872",
+    ".artifacts/test/png/review/blend-paints/group-opacity/primitive.svg": "f3271b5776ace64ea7d06cf4f44e8abf997aeb31f2490f7869511ddef8e0934d",
+    ".artifacts/test/png/review/blend-paints/group-opacity/variant.json": "8a7123fc793e52c769b995393f3c0e134371def44f65dd20ca7da8c3fc6ab1ad",
+    ".artifacts/test/png/review/blend-paints/multiply/browser-canvas.png": "b796a69dddbc7728d5af926f116ac3e206614d8e9a421e651826cd15b7df7a22",
+    ".artifacts/test/png/review/blend-paints/multiply/browser-isolated-group.png": "fb10ef871fc46d139d139851170c2b19a77722126373c260f593ff2373bdb765",
+    ".artifacts/test/png/review/blend-paints/multiply/browser-svg.png": "b796a69dddbc7728d5af926f116ac3e206614d8e9a421e651826cd15b7df7a22",
+    ".artifacts/test/png/review/blend-paints/multiply/evidence.json": "f645e56ec744fa88d7703f2c39671d94f5086ab426241e507d391a245902a59a",
+    ".artifacts/test/png/review/blend-paints/multiply/isolated-group.png": "5983ae5a703784ea82150b5454d05bfed65541660b8fb7b8a1a04651589c9575",
+    ".artifacts/test/png/review/blend-paints/multiply/native-isolated-group.png": "74175c60421d9348caf268093ea0e2cde7e2a9f1944a988a26a7a839368fec5d",
+    ".artifacts/test/png/review/blend-paints/multiply/pdf.png": "b0d288b871b1bb2a084e99664c706ff49ddf3201832de98a96de242ce4323a3e",
+    ".artifacts/test/png/review/blend-paints/multiply/primitive.pdf": "89132d0ddadf1740eba79442cb18f0089df023f596a85f0010f59fddfb732c74",
+    ".artifacts/test/png/review/blend-paints/multiply/primitive.png": "6a865418cfae7c99645e984d42ba0d261688ea19898eadc19361aeac0ca74885",
+    ".artifacts/test/png/review/blend-paints/multiply/primitive.svg": "965a9a5b16eafa51c754ed06f12a5e83152ecc9fbbe2bd68a75677e9ae3c03d8",
+    ".artifacts/test/png/review/blend-paints/multiply/variant.json": "902db852a5674187841ec497ad6877b48765effdab727cd45ad05ef2132a0c83",
+    ".artifacts/test/png/review/blend-paints/multiply-reversed/browser-canvas.png": "089b932d3e2d86672907436444c362cec003de6fa4a7aa951b0eda35e6638478",
+    ".artifacts/test/png/review/blend-paints/multiply-reversed/browser-isolated-group.png": "fb10ef871fc46d139d139851170c2b19a77722126373c260f593ff2373bdb765",
+    ".artifacts/test/png/review/blend-paints/multiply-reversed/browser-svg.png": "089b932d3e2d86672907436444c362cec003de6fa4a7aa951b0eda35e6638478",
+    ".artifacts/test/png/review/blend-paints/multiply-reversed/evidence.json": "f93224de25ff4e342aa67df38de36fe905147e7b1d01ae58822ff1e703577cb7",
+    ".artifacts/test/png/review/blend-paints/multiply-reversed/isolated-group.png": "5983ae5a703784ea82150b5454d05bfed65541660b8fb7b8a1a04651589c9575",
+    ".artifacts/test/png/review/blend-paints/multiply-reversed/native-isolated-group.png": "74175c60421d9348caf268093ea0e2cde7e2a9f1944a988a26a7a839368fec5d",
+    ".artifacts/test/png/review/blend-paints/multiply-reversed/pdf.png": "2984c745e86444280b14f6f1ec4ba70117d1a81d0ce897654f5c1e513d1d925e",
+    ".artifacts/test/png/review/blend-paints/multiply-reversed/primitive.pdf": "4401d559f47c1eb4c1a7ea33132f6d5ca9c2be29df03e78cc6885bffc537e594",
+    ".artifacts/test/png/review/blend-paints/multiply-reversed/primitive.png": "d282d4986fc85b90cb97ffca56288e4ba77fa58e117f6334e1fd26095cf7ffd5",
+    ".artifacts/test/png/review/blend-paints/multiply-reversed/primitive.svg": "5635eb32b4601179559ba949fb585a57a30a6068f8e6163b7e9b67d19802686c",
+    ".artifacts/test/png/review/blend-paints/multiply-reversed/variant.json": "f46e747a8790ac8de0a6719f500f01a54bd12a6f35b4648f1c2b567b751f7307",
+    ".artifacts/test/png/review/blend-paints/results.json": "2e5393a14986cfcbf42267d6f6494cd139ebb13d9bf3ee067dea2ba289b2bb8c",
+    ".artifacts/test/png/review/blend-paints/screen/browser-canvas.png": "b9f433744960a9204282250e383c6159e05968dba476c1120c7e13f667642876",
+    ".artifacts/test/png/review/blend-paints/screen/browser-isolated-group.png": "55c085a9d9ba00f87e398dc624ec85d891eeed867d4c115c4f93e8730e4d33d8",
+    ".artifacts/test/png/review/blend-paints/screen/browser-svg.png": "b9f433744960a9204282250e383c6159e05968dba476c1120c7e13f667642876",
+    ".artifacts/test/png/review/blend-paints/screen/evidence.json": "8dab69f2305868971084e2a9eb7ea4c9d7fb8dd326a8a9c07e93099c312ad3c0",
+    ".artifacts/test/png/review/blend-paints/screen/isolated-group.png": "c730599c945012acd63098c49d5dbf8fadb755c4fb8f3c005b8f67280d1b9096",
+    ".artifacts/test/png/review/blend-paints/screen/native-isolated-group.png": "82ad3b2b9445e23377116f1de74378730ae99f614e9dc6ad60be2a8f53cbf9f4",
+    ".artifacts/test/png/review/blend-paints/screen/pdf.png": "cfacc6ffeb89d115ad0ee91bb0fb5147a57641e5e32c13bd15af6efecbd6557a",
+    ".artifacts/test/png/review/blend-paints/screen/primitive.pdf": "9b73950785eb814171db691574b31cde0e706f84eb83e34fb94ea838532f4919",
+    ".artifacts/test/png/review/blend-paints/screen/primitive.png": "e4aa3c4c2a75a11fff21c25c695af7b70af0e7b55ffb11eef8153e6e082fcf52",
+    ".artifacts/test/png/review/blend-paints/screen/primitive.svg": "327478cd4a7b98c8dfe273e016f71990e3945fb91fa98eaa072edbf946eb64da",
+    ".artifacts/test/png/review/blend-paints/screen/variant.json": "845fff63beb4da2e650187a0d3e65444bd7dbbaefc425e3a1b75a4de792340bc",
+    ".artifacts/test/png/review/blend-paints/source-over/browser-canvas.png": "d51b506832cbea8eb8b1ab2b64920a4fd9c4e5aeb036e0832ad779537437205f",
+    ".artifacts/test/png/review/blend-paints/source-over/browser-isolated-group.png": "6e2591e13c4da2ed77c9359f14c5ba585e2bdc91ebf85b5bfa8572dd3bfd067a",
+    ".artifacts/test/png/review/blend-paints/source-over/browser-svg.png": "d51b506832cbea8eb8b1ab2b64920a4fd9c4e5aeb036e0832ad779537437205f",
+    ".artifacts/test/png/review/blend-paints/source-over/evidence.json": "b806168a1bc3f316a070e0e6f158b8680b73a585d8b39e75f8a559b7efe3a712",
+    ".artifacts/test/png/review/blend-paints/source-over/isolated-group.png": "81056ed1aa06d45b1a8f426abd9c29b38ad55ace4ce1019860c3af569757e853",
+    ".artifacts/test/png/review/blend-paints/source-over/native-isolated-group.png": "80b27c0f88af7b18bf344403f6599f60bc57ec767b7270ba1ac9e9f5f6e5db3c",
+    ".artifacts/test/png/review/blend-paints/source-over/pdf.png": "d8f4945b63bbc6f41964908a379c6db79f9f9d27a80a360f0e9a2d8cf7ded22a",
+    ".artifacts/test/png/review/blend-paints/source-over/primitive.pdf": "80f05024c6d60cbcc42ef4d29e2fbc31d928a8d0afb6b5a74337cd2e1da10d4a",
+    ".artifacts/test/png/review/blend-paints/source-over/primitive.png": "d92d8108365bb1c3e379810f2eb6b90a2650bf4cc5b73aea014d80730d7ef6c4",
+    ".artifacts/test/png/review/blend-paints/source-over/primitive.svg": "19e67ddb5112c8a7428f003f0a57156ee4acb0332db1b10534a1311a720884ee",
+    ".artifacts/test/png/review/blend-paints/source-over/variant.json": "e7f9f38c6920e572e2cba69ba8bdeedb84cc002aaef889c083f2f6675c63488b",
+    ".artifacts/test/png/review/blend-paints/source-over-reversed/browser-canvas.png": "d982164c4adccef812c8eaaf4e6cb585ff8c6a0c196751271e9c95522b117c4d",
+    ".artifacts/test/png/review/blend-paints/source-over-reversed/browser-isolated-group.png": "bc463d3170ec5b2913b0aa23a2b1a22851a09aa0c6ec86fab72113feed22cb40",
+    ".artifacts/test/png/review/blend-paints/source-over-reversed/browser-svg.png": "d982164c4adccef812c8eaaf4e6cb585ff8c6a0c196751271e9c95522b117c4d",
+    ".artifacts/test/png/review/blend-paints/source-over-reversed/evidence.json": "c4a0adee6ca3f222e18363e6e5e1ffe67c24349fe6f4599106a4700e0a40669a",
+    ".artifacts/test/png/review/blend-paints/source-over-reversed/isolated-group.png": "a5ae5fb65b309136b052d80c1739b17d4e12dfa8339b9a5b685f7765933a905c",
+    ".artifacts/test/png/review/blend-paints/source-over-reversed/native-isolated-group.png": "d643fd8b880c447b493e7175e9e784fe81ea87da4ad6eab4aad1527a7c4b0712",
+    ".artifacts/test/png/review/blend-paints/source-over-reversed/pdf.png": "f6822b88c1c5c4426dbc76fc971cbb4e7f072f70a8e01d57b8913a5799c34462",
+    ".artifacts/test/png/review/blend-paints/source-over-reversed/primitive.pdf": "18430c240d4ee045f0eef4dd779bd3e87d985426539135bea660e79b52eee1f4",
+    ".artifacts/test/png/review/blend-paints/source-over-reversed/primitive.png": "ddc4d0268d1e8a8c3daa4c952bab0ad218df14f451ce2f1abf1bf3de9bb6ce1d",
+    ".artifacts/test/png/review/blend-paints/source-over-reversed/primitive.svg": "16886edcadb270b8f4245d78f010d589ef159b2d51dd7bb1b42f1a4002d26e73",
+    ".artifacts/test/png/review/blend-paints/source-over-reversed/variant.json": "b2ea28f90e8a4ecb152d268b6df42a78135db9971270f3979e2b02a8d48fbee5"
+  },
+  "preservedFailures": {
+    ".artifacts/blend-review/first-render/render.log": "f1a3440b97351b3a4a7759e9b970f644e751bcf13297d9cfa0817d45c6798125",
+    ".artifacts/blend-review/first-render/results.json": "f00e015d9228152d9fc8b8ec5142751945aefeb557806c522471b735f9f57ccd",
+    ".artifacts/blend-review/first-lowered-render/render.log": "ef43a86627d5237cdfdd7515f8630403346768c066ad223f6f146096626e6e28",
+    ".artifacts/blend-review/first-lowered-render/results.json": "aa5117d980b17310010682389ec2188e3d299ffe8f120b69a681d1b43e0a203f",
+    ".artifacts/blend-review/unquantized-final-oracle/render.log": "8f06032ce9d4ce4269a4b1347346a54e0fe41ae0588738e9c35801f93487e0ae",
+    ".artifacts/blend-review/unquantized-final-oracle/results.json": "efa816ffb2bd705bb4eaed7984754e9b9aaf73abf62e1f5b9c938160b5d46c0b"
+  },
+  "acceptedFinalSamples": 280,
+  "rawGroupDiagnostics": {
+    "total": 70,
+    "failed": [
+      {
+        "variant": "difference",
+        "backend": "Native Canvas",
+        "pixel": [
+          120,
+          50
+        ],
+        "expected": [
+          0.48695161517844543,
+          0.4231908590774439,
+          0.5642544787699252,
+          0.6950000000000001
+        ],
+        "actual": [
+          124,
+          109,
+          146,
+          177
+        ],
+        "passed": false
+      }
+    ]
+  },
+  "pdfAlphaBytes": 163800,
+  "package": {
+    "entryCount": 681,
+    "packedBytes": 1014128,
+    "unpackedBytes": 4727468
+  },
+  "sourceEvidenceRevision": "90f5f67ec080003dd3606ed78bbb9bfbfd3beafe",
+  "metadataOnlyRecording": true,
+  "approval": {
+    "source": "Explicit user response in current conversation, relayed by parent /root",
+    "text": "두 검토 대상 모두 승인",
+    "sourceEvidenceRevision": "90f5f67ec080003dd3606ed78bbb9bfbfd3beafe"
+  }
+}

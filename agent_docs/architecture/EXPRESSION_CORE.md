@@ -1,7 +1,7 @@
 # 내부 expression core
 
-현재 pure kernel은 package export에 없는 내부 구현이다. Public computed는 기존 implicit v1이며
-v2 envelope 또는 registry inspection 함수를 아직 제공하지 않는다. 이 파일은 내부 호출 경계를
+현재 pure evaluator는 package export에 없는 내부 구현이다. Public computed는 기존 implicit v1과
+v2 envelope를 지원하며 `ggaction/inspection`은 읽기 전용 registry 조회를 제공한다. 이 파일은 내부 호출 경계를
 설명하며 공개 action 계약과 저장 schema를 대체하지 않는다.
 
 - `normalizeExpressionV2(expression, environment)`는 `{version:2,registry:"standard@1",root}`를
@@ -33,5 +33,8 @@ v2 envelope 또는 registry inspection 함수를 아직 제공하지 않는다. 
 
 검증은 `test/unit/grammar/expression-*.test.js`가 소유한다. 정상 v1 computed/trace 회귀는 기존 action
 suite와 함께 실행한다. `expression-kernel` coverage family는 신규 파일에도 자동 적용한다.
-Public create/edit/revise, persistence, schema/lineage, parameter lifecycle, resolver와 registry query의
-통합 완료를 이 내부 kernel의 통과만으로 주장하지 않는다.
+Public create/edit/revise, persistence, schema/lineage, parameter lifecycle와 registry query의
+통합은 해당 capability의 action·persistence·renderer·installed consumer 시험으로 검증한다.
+`materialization/expressionInputs.js`가 저장된 exact parameter vector와 schema를 검증하고,
+action binding은 현재 revision을 명시적으로 저장한다. Persistence는 재평가하지 않는다.
+CSV/JSON resolver kernel의 공개 commit·offline source lifecycle 연결은 별도 진행 범위다.

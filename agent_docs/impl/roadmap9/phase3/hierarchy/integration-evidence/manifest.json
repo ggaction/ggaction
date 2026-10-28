@@ -1,0 +1,330 @@
+{
+  "state": "focused-verified",
+  "sourceRevision": "dfa492dabf18a779271466a952c0ce04fde0f14e",
+  "parents": [
+    "596cb008f9bd7c12bcfc0547a327c22ce5656ba2",
+    "5757e83e8cede000c776d86845aef17e87844171"
+  ],
+  "newRuntimeEditsForIntegration": false,
+  "inputs": {
+    "src/grammar/graph/edgeIdentity.js": "262bb327e0298334dcc27975ab8849ebd12393a9da76719b2d4101aa1c45ebbe",
+    "src/grammar/graph/layout.js": "7aaf599d76515600a70b13369eb620102b08f8137c9e18352fb2cb2d0561a5f8",
+    "src/grammar/graph/metricPolicy.js": "91a44285a273ec6f772e2d7a33cd41ee7e4b0b783a73903e0d106ccdc7cf5514",
+    "src/grammar/graph/metrics.js": "8e4d6e4269043b327f449b3e93b954e54a201072d0d37e3618647b9270abd2de",
+    "src/grammar/graph/model.js": "4f979b8846526fde006a75b46b2bd7b7aa66764743e27528bdbce5c6e638974f",
+    "src/grammar/graph/neighbors.js": "163cbc6509350231386f5cc1706d322244ab217da937f155b5e7acb42aeb8a24",
+    "src/grammar/graph/normalize.js": "da4ed0120643d631458e7b3ac8f08a4db5e444ffbffc205758fd8cffe487649d",
+    "src/grammar/graph/preprocess.js": "9ab13f279fc49130d30e8ecb8d1409134792166d44823430919739f488595f82",
+    "src/grammar/graph/spanning.js": "3806daae9d02ddebbbbf78572fad92f0167b8cf6a42afaac07c5d7370b9a6206",
+    "src/grammar/hierarchy/input.js": "cafee4bf5c202e3ee4cf6fe02dc8ed23f648a8389fc6f4392091a9bdfb71469c",
+    "src/grammar/hierarchy/model.js": "35785c7e2a2f269ed2fa22ae70495196477efbafee7d313cdb6456c92ee4405a",
+    "src/grammar/hierarchy/normalize.js": "20cd194fa20f1bc0fa1c5306394f1ef4751901b0d52b23037b1a1f6bcd0fef42",
+    "src/grammar/hierarchy/order.js": "749a99b2852183f2909431127959f6d8a6f1bd775c0565a9a11be661963c1a99",
+    "src/grammar/hierarchy/partition.js": "e408a8ccb3b31cd086277cfae5503f90d2ae7261c409edcfe9ffe18cc4135e21",
+    "src/grammar/hierarchy/tree.js": "ead398031377b24d0f44fc9506927ff05336a92cd6613cf792aa58c8245e5357",
+    "src/grammar/hierarchy/treemap.js": "1efd446f7b579949e9481941b7e7309803258d463c54d9491ac6721c42795950",
+    "src/grammar/numeric.js": "97f65492ffe9ecf98878323f82af7a8c6008323568da69e4d876c31aabcc2c6c",
+    "src/core/immutable.js": "b4c55131e8532a71a875387cb56dc68856fd4620e3a8d3a0defae6361c346a0c",
+    "test/unit/grammar/graph/metric-layout.test.js": "86a540e6b8c1ffd2576237fa2510b8251c3de9272f5a2b29b3989e344ca2b102"
+  },
+  "checks": {
+    "coreNode20": 134,
+    "coreNode22": 134,
+    "coreNode24": 134,
+    "newInferenceModelLayoutCrossCases": 2,
+    "defaultNumericRegressions": 29,
+    "sourcePackageDiscovery": 33,
+    "packageDiscoveryFinal": 23,
+    "coveragePolicy": 7,
+    "hierarchyFixtures": 19,
+    "observedGraphFixtures": 2,
+    "graphLayoutFixtures": 3,
+    "primitiveContracts": 7,
+    "render": 5,
+    "renderedPrimitiveVariants": 5,
+    "docsPrecommit": 166,
+    "installedNode": 199,
+    "qualificationGroups": 7,
+    "failures": 0,
+    "docsFinal": 166
+  },
+  "coverage": {
+    "edgeIdentity.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "layout.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "metricPolicy.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "metrics.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "model.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "neighbors.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "normalize.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "preprocess.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "spanning.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "hierarchy/input.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "hierarchy/model.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "hierarchy/normalize.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "hierarchy/order.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "hierarchy/partition.js": {
+      "lines": 100,
+      "branches": 94.44,
+      "functions": 100
+    },
+    "hierarchy/tree.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "hierarchy/treemap.js": {
+      "lines": 100,
+      "branches": 97.53,
+      "functions": 100
+    }
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "entryCount": 738,
+    "size": 1097419,
+    "unpackedSize": 5053657,
+    "sha256": "f8cd63b92b0b337aa67d16a2f37bd589c8289d1a9cbf9687e29875b59b331397",
+    "packingNode": "v20.20.2"
+  },
+  "packageMatrix": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 738,
+      "packedBytes": 1097419,
+      "unpackedBytes": 5053657
+    },
+    "22": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 738,
+      "packedBytes": 1094753,
+      "unpackedBytes": 5053657
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 738,
+      "packedBytes": 1097419,
+      "unpackedBytes": 5053657
+    }
+  },
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 638,
+      "minifiedBytes": 1920648,
+      "gzipBytes": 534736
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 434,
+      "minifiedBytes": 1084346,
+      "gzipBytes": 312639
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 21,
+      "minifiedBytes": 25670,
+      "gzipBytes": 8166
+    }
+  },
+  "resolvedPeers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "logs": {
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/contracts.log.gz": {
+      "rawSha256": "cb4534208a56f68ca5618a0ff30bd26503898cabe1fba808bdbcf63bdd7c0a1d",
+      "gzipSha256": "9f7b6a2049031f5ea3a82396e64e8bbf7e3ad3171ca96b018b3cb41935184f33"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/coverage-node22.log.gz": {
+      "rawSha256": "655ac59fb3a2707c618a0cd9b26c3877eec4a84576fef6aabca97f84a9a8abba",
+      "gzipSha256": "9043a96dfdcff09a2ce9a357d90b712d2c1c78f26ee313e7df3bdd342ed3606d"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/coverage-policy.log.gz": {
+      "rawSha256": "e8b64f544275b27910a7b3661037dcf9b7a5a30ed71e3739a783cc6ad4672515",
+      "gzipSha256": "86bc21e533b91a76432c1c7a2478010f902e6b007c49ed01209e8d7d156224d5"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/default-numeric-regressions.log.gz": {
+      "rawSha256": "178db1055d7e6781f77bc34c07862945f8f20b986f0d6e930375ae76ebfd52c5",
+      "gzipSha256": "6fc49ba6a40308e8b49f8a77920982344d4aecce590514b4cc34e472d3b7b22b"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/docs-generate.log.gz": {
+      "rawSha256": "a53d98ad394f31ebe30cdb71451a2d8e43548774cea70011cacd1b0c85ac3ca0",
+      "gzipSha256": "a1961c63fad3d33868d4d5fcd140961503829feb7e10cff3a7f5915782c86f07"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/docs-precommit.log.gz": {
+      "rawSha256": "6103749c8204003eb7b6d542dfb3966614edd5b422af5e1e018a070f578140e7",
+      "gzipSha256": "0fdee48ca0eea1a17457ee92b7b203939eae77161b162511a9ac466b8e5c2e30"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/graph-fixtures.log.gz": {
+      "rawSha256": "a99be452f5c8124c087daca492280fea937254e8d998e9dbb50c5b206bbacf0e",
+      "gzipSha256": "69a778ab95d0612aa280cf7067457a8bb10cce5bfa4afccb9451a1a9757bf33f"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/hierarchy-fixtures.log.gz": {
+      "rawSha256": "cc3604ffec5360d978ceec95d45de229a2ba9655a3495230d3c31da754b6ec60",
+      "gzipSha256": "e8b990d11704967b785ab5abaaa61ea36b955809e46f69fbe6f04a49b042a1e2"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/installed.log.gz": {
+      "rawSha256": "ea1f1ea9c24b73d131197fcefccf4ae921c7e4bc4ce8bb2af418b91ece039eeb",
+      "gzipSha256": "68236a86f9cb9e690d03919d90afa62f3b28fd34a3b887816bb1db191ba02246"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/layout-fixtures.log.gz": {
+      "rawSha256": "feb649a34414bf5715e4dc37620916486f76935cbdad94f95494d3fbb2c253d4",
+      "gzipSha256": "88ccd9fe53bb8996dbbb5aa9d5c565832b988055a80eb2096d64905d0b0a3491"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/package-contracts.log.gz": {
+      "rawSha256": "b000888aca1573796bfc3ffcfa89cebd60f80865c02d1e735e5fd5be5648d384",
+      "gzipSha256": "73b88e8cf2d5b33b51d92c6dbbdeb70bdd7ed65686da95f50f91d5f0de4f4cb8"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/package-node20.log.gz": {
+      "rawSha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "gzipSha256": "c7d8be0d040f54da51c0db9b9f42d8720156751c12573270338f37feb9b19ba8"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/package-node22.log.gz": {
+      "rawSha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "gzipSha256": "c7d8be0d040f54da51c0db9b9f42d8720156751c12573270338f37feb9b19ba8"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/package-node24.log.gz": {
+      "rawSha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "gzipSha256": "c7d8be0d040f54da51c0db9b9f42d8720156751c12573270338f37feb9b19ba8"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/primitive-contracts.log.gz": {
+      "rawSha256": "b90b553e727ce5c9055d21b8c4afc6a8bb1e626e0badaeb7650207da159de3c7",
+      "gzipSha256": "9103791d1fe7c3d9f20c657e7c4fc2bb7264757e17ad5781c1f693071bc0b732"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/primitive-receipt.log.gz": {
+      "rawSha256": "a41d960779365754c53da2d6ba64f49fc87952db19e6f4a33c760b1d1f7a8c55",
+      "gzipSha256": "c4f2e6fc74d223109540564db71f6761ff100d75f75a6c0b835f79c9a8d11f13"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/render.log.gz": {
+      "rawSha256": "37de43159cd04748d03ecc0ba615c7dd684ef54d556b2175758b0bda3dc1b1ee",
+      "gzipSha256": "aec629ca3e8c60b8dffd8afe720e23102cd860dacf6bbf1c322c7cd6228463ee"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/unit-node20.log.gz": {
+      "rawSha256": "820aaab39fba2f2c8e3bf07ab1a300a22a47f55a081b47f632b33527fc1739ae",
+      "gzipSha256": "40fcfad27657a268fa045e9d5f5a5b437af24d6e16858979147b7923475412b7"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/unit-node24.log.gz": {
+      "rawSha256": "a819a93c2f3343ad6cc39cc25519fc2d0e8ea78e88c2dce71a905176a4a90eb6",
+      "gzipSha256": "960b526949605165d54882c613cb6553a278e3f8f0fa961443da5b80e16a548a"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/qualification.json": {
+      "sha256": "1e7950c393cbb87fe5df5c90b161920946e8fa70b758588504d5da9bd1a094b7"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/node-cases.json": {
+      "sha256": "7dd11ea9352835c725e07622f68757e041e1db8c54286914cd5d37010c9a8c23"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/docs-final.log.gz": {
+      "rawSha256": "c2041cb90907cb6c25725602a895953a4da9cd29be962d249c25306ad89b3524",
+      "gzipSha256": "d388188ab1037bd52d4a96e3b377c39c653eb37bac89052cab6bafbc9b625df2"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/provenance-final.log.gz": {
+      "rawSha256": "33b6a1c8d6a2b6d3e7dd98ab9422011aba8a95cd23403482399b38ad6f564b28",
+      "gzipSha256": "bac7d54248b8f894e7c6142318896027cda5d175d93128f002d3853d48824cec"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/hierarchy-fixtures-final.log.gz": {
+      "rawSha256": "cc3604ffec5360d978ceec95d45de229a2ba9655a3495230d3c31da754b6ec60",
+      "gzipSha256": "e8b990d11704967b785ab5abaaa61ea36b955809e46f69fbe6f04a49b042a1e2"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/graph-fixtures-final.log.gz": {
+      "rawSha256": "a99be452f5c8124c087daca492280fea937254e8d998e9dbb50c5b206bbacf0e",
+      "gzipSha256": "69a778ab95d0612aa280cf7067457a8bb10cce5bfa4afccb9451a1a9757bf33f"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/layout-fixtures-final.log.gz": {
+      "rawSha256": "feb649a34414bf5715e4dc37620916486f76935cbdad94f95494d3fbb2c253d4",
+      "gzipSha256": "88ccd9fe53bb8996dbbb5aa9d5c565832b988055a80eb2096d64905d0b0a3491"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/primitive-receipt-final.log.gz": {
+      "rawSha256": "a41d960779365754c53da2d6ba64f49fc87952db19e6f4a33c760b1d1f7a8c55",
+      "gzipSha256": "c4f2e6fc74d223109540564db71f6761ff100d75f75a6c0b835f79c9a8d11f13"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/hierarchy-fixtures.json.gz": {
+      "rawSha256": "d1117f40a9431d47b7e17f390f66ac1287e04ca20e8dc185f53c58e0f3a6d89f",
+      "gzipSha256": "c8aa408121bddbe702470196ca3e66b396e23080ea7191e95ba5adedffaebd40"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/observed-graph-fixtures.json.gz": {
+      "rawSha256": "cfe8dc61d3ffdcf3c9168d50340e57104ad48f44b42a1446d04b358fd6cc23d9",
+      "gzipSha256": "664cc41bd8623dbd0ae81864cdd5d74d662385b681a7edcb3d6d9bbfed401d72"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/graph-layout-fixtures.json.gz": {
+      "rawSha256": "b765bb624830db706ef4b6db400cd1c0e78644f2bfd973e1a4cb6b04d2c6e856",
+      "gzipSha256": "bd4206d4d4d778b3402201583879fcbed9cd7ac7ff67f6191a66054cd918087c"
+    },
+    "agent_docs/impl/roadmap9/phase3/hierarchy/integration-evidence/primitive-review.json.gz": {
+      "rawSha256": "87d9b8ae878b7edf228c9bfcd8ec93edf6717a8f1d4919218a527fd0b220d608",
+      "gzipSha256": "142e016fe19679c555b4c071354c76b1aa2470070c6f679bc6924db314ea8f73"
+    }
+  },
+  "notClaimed": [
+    "H public API approval or implementation",
+    "Graph public resource/renderer support",
+    "Global coverage or realistic sweep",
+    "Force/component-packing completion"
+  ],
+  "metadataFinalization": {
+    "sourceAndPackagedInputsUnchanged": true,
+    "artifactReused": true,
+    "reason": "Only generated documentation and integration evidence changed after the tested source commit."
+  }
+}

@@ -5,13 +5,14 @@ import { isDiscretizedColorScaleType } from "./types.js";
 
 export function validateTickColorChannels(layer, requestedChannel) {
   if (layer.mark?.type !== "tick") return;
-  const { color, stroke } = layer.encoding ?? {};
+  const color = layer.encoding?.color ?? layer.conditionals?.color;
+  const stroke = layer.encoding?.stroke ?? layer.conditionals?.stroke;
   if (color !== undefined && stroke !== undefined ||
       requestedChannel === "color" && stroke !== undefined ||
       requestedChannel === "stroke" && color !== undefined) {
     throw new Error("Tick color and stroke cannot coexist; remove the existing encoding before switching channels.");
   }
-  if (color !== undefined && !["quantitative", "temporal"].includes(color.fieldType)) {
+  if (layer.encoding?.color !== undefined && !["quantitative", "temporal"].includes(color.fieldType)) {
     throw new Error("Tick color requires a quantitative or temporal field.");
   }
 }

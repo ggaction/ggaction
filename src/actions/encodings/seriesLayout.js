@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { conditionalPositionTemplate, positionBindings, uniquePositionBinding } from "../../core/encodingBindings.js";
 import { validateColorLayout } from "../../grammar/seriesLayout.js";
 import { deriveAreaSeries, deriveDensityAreaSeries, layoutDensityAreaSeries } from "../../grammar/areaSeries.js";
 import { readSeriesIdentity } from "../../grammar/pathSeries.js";
@@ -19,7 +20,14 @@ export const layoutSeries = /* @__PURE__ */ action({ op: "layoutSeries", descrip
   validateOptions(args, ["target", "mode"], "layoutSeries");
   const mode = validateColorLayout(args.mode);
   const { id: target, layer, dataset } = resolveTarget(this, args.target, ["bar", "area"], "series mark");
-  const encoding = Object.fromEntries(Object.entries(layer.encoding ?? {}).map(([key, value]) => [key, { ...value }]));
+  const positions = ["x", "y", "x2", "y2", "xOffset", "yOffset"];
+  const conditionals = Object.fromEntries(Object.entries(layer.conditionals ?? {}).map(([channel, definition]) => {
+    if (!["x", "y"].includes(channel)) return [channel, definition];
+    const withoutStack = ({ stack: _stack, ...value }) => value;
+    return [channel, { ...definition, conditions: definition.conditions.map(condition => ({ ...condition, value: withoutStack(condition.value) })), otherwise: withoutStack(definition.otherwise) }];
+  }));
+  const template = conditionalPositionTemplate({ ...layer, conditionals }, positions);
+  const encoding = Object.fromEntries(Object.entries(template.encoding ?? {}).map(([key, value]) => [key, { ...value }]));
   const group = encoding.group;
   const color = encoding.color;
   if (group === undefined && color?.field !== undefined && ["nominal", "ordinal"].includes(color.fieldType)) {
@@ -27,7 +35,7 @@ export const layoutSeries = /* @__PURE__ */ action({ op: "layoutSeries", descrip
   }
   for (const channel of ["x", "y"]) if (encoding[channel]) delete encoding[channel].stack;
   if (color) delete color.layout;
-  const updated = { ...layer, layout: { mode }, encoding };
+  const updated = { ...layer, conditionals, layout: { mode }, encoding };
   const density = findUpstreamTransform(this, dataset, "density");
   const horizon = findUpstreamTransform(this, dataset, "horizon");
   let endpoint, offset, offsetScale, offsetChannel;
@@ -54,24 +62,30 @@ export const layoutSeries = /* @__PURE__ */ action({ op: "layoutSeries", descrip
       if (encoding.group === undefined) throw new Error("Grouped bars require a group encoding.");
       readSeriesIdentity(dataset.values, updated);
       offsetChannel = `${channels.category}Offset`;
-      offsetScale = resolveOffsetScaleDefinition(this, { id: encoding[offsetChannel]?.scale ?? offsetChannel }, offsetChannel);
+      const existingOffset = layer.conditionals?.[offsetChannel] === undefined ? encoding[offsetChannel] : uniquePositionBinding(layer, offsetChannel);
+      offsetScale = resolveOffsetScaleDefinition(this, { id: existingOffset?.scale ?? offsetChannel }, offsetChannel);
       offset = { ...(encoding.group.field === undefined ? {} : { field: encoding.group.field }), fieldType: encoding[offsetChannel]?.fieldType ?? "nominal", scale: offsetScale.id };
       encoding[offsetChannel] = offset;
     } else for (const channel of ["xOffset", "yOffset"]) delete encoding[channel];
   }
   const scales = offsetScale === undefined ? this.semanticSpec.scales
     : [...this.semanticSpec.scales.filter(scale => scale.id !== offsetScale.id), offsetScale];
+  const storedUpdated = { ...updated, encoding: Object.fromEntries(Object.entries(encoding).filter(([channel]) => conditionals[channel] === undefined)),
+    conditionals: Object.fromEntries(Object.entries(conditionals).filter(([channel]) => !["xOffset", "yOffset"].includes(channel) || channel === offsetChannel)) };
   const preview = { ...this, markConfigs: this.markConfigs, canvasConfig: this.canvasConfig,
     resolvedScales: { ...this.resolvedScales },
     semanticSpec: { ...this.semanticSpec, scales,
-      layers: this.semanticSpec.layers.map(item => item.id === target ? updated : item) } };
-  for (const id of new Set([encoding.x?.scale, encoding.y?.scale, offset?.scale].filter(Boolean))) {
+      layers: this.semanticSpec.layers.map(item => item.id === target ? storedUpdated : item) } };
+  for (const id of new Set(positions.flatMap(channel => positionBindings(storedUpdated, channel).map(binding => binding.scale)).filter(Boolean))) {
     preview.resolvedScales[id] = resolveScalePreview(preview, id).resolvedScale;
   }
   let next = this.editSemantic({ property: `layer[${target}].layout.mode`, value: mode });
   if (group === undefined && encoding.group !== undefined) next = setEncodingProperties(next, target, "group", encoding.group);
   for (const channel of ["x", "y"]) if (Object.hasOwn(layer.encoding?.[channel] ?? {}, "stack")) {
     next = next.editSemantic({ property: `layer[${target}].encoding.${channel}.stack`, remove: true });
+  }
+  for (const channel of ["x", "y"]) if (layer.conditionals?.[channel] !== undefined) {
+    next = next.editSemantic({ property: `layer[${target}].conditionals.${channel}`, value: conditionals[channel] });
   }
   if (color && Object.hasOwn(layer.encoding.color, "layout")) next = next.editSemantic({ property: `layer[${target}].encoding.color.layout`, remove: true });
   if (endpoint !== undefined) {
@@ -80,15 +94,16 @@ export const layoutSeries = /* @__PURE__ */ action({ op: "layoutSeries", descrip
   if (layer.mark.type === "bar") {
     for (const channel of ["xOffset", "yOffset"]) {
       if (layer.encoding?.[channel] !== undefined) next = next.editSemantic({ property: `layer[${target}].encoding.${channel}`, remove: true });
+      if (layer.conditionals?.[channel] !== undefined && channel !== offsetChannel) next = next.editSemantic({ property: `layer[${target}].conditionals.${channel}`, remove: true });
       if (channel !== offsetChannel) next = next._withoutMaterializationConfig(["marks", target, channel]);
     }
-    if (offset !== undefined) {
+    if (offset !== undefined && layer.conditionals?.[offsetChannel] === undefined) {
       next = offset.field === undefined
         ? setEncodingProperties(next, target, offsetChannel, offset).createScale(offsetScale)
         : next[offsetChannel === "xOffset" ? "encodeXOffset" : "encodeYOffset"]({ target, field: offset.field, fieldType: offset.fieldType, scale: offsetScale });
       next = next._withoutMaterializationConfig(["marks", target, offsetChannel]);
       if (findSemanticScale(this, offsetScale.id) === undefined) next = next._withMarkConfig(target, { ...next.markConfigs[target], seriesOffsetScale: offsetScale.id });
-    } else {
+    } else if (offset === undefined) {
       const owned = next.markConfigs[target]?.seriesOffsetScale;
       if (owned !== undefined) {
         const referenced = hasSemanticScaleReferences(next.semanticSpec, owned);

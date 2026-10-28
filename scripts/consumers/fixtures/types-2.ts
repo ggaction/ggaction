@@ -131,11 +131,11 @@ import {
     // @ts-expect-error inspection grain is closed
     getMarkItems(chart(), { grain: "series" });
 
-    chart().editBarMark({blend:"difference"}).editBarMark({blend:"normal"});
+    chart().editBarMark({blend:"difference"}).editBarMark({blend:"multiply"}).editBarMark({blend:"screen"}).editBarMark({blend:"normal"});
     // @ts-expect-error only the bar editor owns blend
     chart().createBarMark({blend:"difference"});
     // @ts-expect-error blend is a closed vocabulary
-    chart().editBarMark({blend:"multiply"});
+    chart().editBarMark({blend:"overlay"});
     // @ts-expect-error Basic does not expose appearance editing
     basicChart().editBarMark({blend:"difference"});
 
@@ -2078,6 +2078,17 @@ const compoundOwner: import("ggaction").GraphicObject = {type:"path",clip:clipUn
 const invalidClip: import("ggaction").GraphicClipPath = {...compoundClip,fillRule:"alternate"};
 const compoundSceneClip: NonNullable<import("ggaction/scene").CanvasTransitionNode["clips"]>[number] = compoundClip;
 
+// Expression filters reuse the closed v2 AST and exclude legacy field options.
+const predicateFilter = chart().createData({ id: "predicate-input", values: [{ x: 1 }] })
+  .createParameter({ id: "threshold", value: 0 })
+  .filterData({ id: "predicate-output", where: { version: 2, registry: "standard@1", root: {
+    type: "binary", op: "gte", left: { type: "field", name: "x" }, right: { type: "parameter", id: "threshold" }
+  } } });
+predicateFilter.editFilteredData({ target: "predicate-output", where: { version: 2, registry: "standard@1", root: { type: "literal", value: false } } });
+// @ts-expect-error Expression filters cannot combine legacy field options.
+predicateFilter.filterData({ id: "mixed-predicate", field: "x", where: { version: 2, registry: "standard@1", root: { type: "literal", value: true } } });
+// @ts-expect-error Filter predicates require the closed v2 AST, not callbacks.
+predicateFilter.filterData({ id: "callback-predicate", where: () => true });
 const pivotConsumer = chart().createData({ id: "pivotRaw", values: [{ key: "a", value: 2 }] })
   .createPivotData({ id: "pivotWide", field: "key", value: "value" })
   .editPivotData({ target: "pivotWide", op: "count" });

@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Radial gradient primitive review</title><body><h1>Radial gradient native primitive review</h1><p id="status">Loading</p>
+<script type="module">
+import { frame, styles, radialFixture } from './fixture.js';
+import { drawRadialPrimitive, radialPrimitiveSVG } from './primitive.program.js';
+for (const style of styles) {
+  const canvas = document.createElement('canvas');canvas.id=style;canvas.width=frame.width;canvas.height=frame.height;canvas.setAttribute('aria-label',style+' radial gradient primitive');
+  drawRadialPrimitive(canvas.getContext('2d'),radialFixture(style),{lowerOpacity:true,clipCone:true});document.body.append(canvas);
+  const svg=new DOMParser().parseFromString(radialPrimitiveSVG(radialFixture(style)),'image/svg+xml').documentElement;document.body.append(document.importNode(svg,true));
+}
+document.querySelector('#status').textContent='Ready';
+</script></body></html>

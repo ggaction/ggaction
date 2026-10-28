@@ -36,7 +36,10 @@ import {
   materializeBin2DData
 } from "./bin2d.js";
 import { createData } from "./create.js";
+import { createParameter } from "../parameters/create.js";
+import { editParameter, removeParameter } from "../parameters/edit.js";
 import { reviseData } from "./revise.js";
+import { applyDataUpdate } from "./sourceEdit.js";
 import { createWindowData, materializeWindowData } from "./window.js";
 import { createSummaryData, materializeSummaryData } from "./summary.js";
 import { createBinData, materializeBinData } from "./bin.js";
@@ -59,7 +62,11 @@ import { createBoxSummaryData, createBoxOutlierData, materializeBoxSummaryData, 
 export function registerDataActions(ProgramClass) {
   Object.assign(ProgramClass.prototype, EDIT_DERIVED_DATA_ACTIONS, {
     createData,
+    createParameter,
+    editParameter,
+    removeParameter,
     reviseData,
+    applyDataUpdate,
     createDerivedData,
     bindMarkData,
     releaseDerivedData,

@@ -862,7 +862,7 @@
     "title": "Expressions and Normalization",
     "source": "docs/api/data/expressions-and-normalization.md",
     "editSource": "docs/api/data/expressions-and-normalization.md",
-    "description": "Add a typed primitive or null field to every source row with a serializable formula:",
+    "description": "Add a scalar field to every source row with a serializable formula. Full and Basic support both existing v1 expressions and explicit v2 expressions.",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/api/data/missing-data/": {
@@ -1002,5 +1002,19 @@
     "editSource": "docs/api/axes/complete.md",
     "description": "Use underlay: true when the complete Cartesian axis should be painted before ordinary marks. The plot border accepts the same choice.",
     "image": "/assets/images/cars-line-chart.png"
+  },
+  "/api/hierarchy/": {
+    "title": "Hierarchy Resources and Plots",
+    "source": "docs/api/hierarchy.md",
+    "editSource": "docs/api/hierarchy.md",
+    "description": "Build, arrange, revise and inspect trees and treemaps from typed hierarchy data.",
+    "image": "/assets/images/tree-layouts.png"
+  },
+  "/tutorials/hierarchy/": {
+    "title": "Hierarchy Tutorial",
+    "source": "docs/tutorials/hierarchy.md",
+    "editSource": "examples/tree-layouts/program.js",
+    "description": "Build one typed hierarchy and reuse it in tree and treemap layouts.",
+    "image": "/assets/images/tree-layouts.png"
   }
 }

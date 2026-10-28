@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create or compatibly replace point fill, line-series color, grouped area fill, bar color, rect fill, or arc-sector fill.",
-  "signature": "encodeColor(options: TargetedOptions<ColorEncodingOptions>): ChartProgram;",
+  "signature": "encodeColor(options: TargetedOptions<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode color",
     "encode",
@@ -71,29 +71,39 @@
   },
   "options": [
     {
-      "name": "value",
-      "required": false,
-      "type": "string | undefined"
-    },
-    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<ColorEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<ColorEncodingOptions>[\"otherwise\"]"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "string"
+    },
+    {
       "name": "field",
       "required": false,
-      "type": "string | undefined"
+      "type": "string"
     },
     {
       "name": "fieldType",
       "required": false,
-      "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+      "type": "\"quantitative\""
     },
     {
       "name": "scale",
       "required": false,
-      "type": "ContinuousColorScaleOptions | DiscretizedColorScaleOptions | CategoricalColorScaleOptions | (Omit<...> & { ...; }) | undefined"
+      "type": "ContinuousColorScaleOptions | DiscretizedColorScaleOptions | undefined"
     },
     {
       "name": "palette",
@@ -117,9 +127,10 @@
     }
   ],
   "callPatterns": [
-    "encodeColor({ target?, scale?, value?, field?, fieldType?, palette?, layout?, aggregate? })"
+    "encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })",
+    "encodeColor({ target?, conditions: [{ when, value }], otherwise })"
   ],
-  "snippet": "program.encodeColor({ value: \"value\" })",
+  "snippet": "program.encodeColor({ field: \"group\" })",
   "errors": [],
   "route": "/reference/actions/encodings/#encodecolor"
 }

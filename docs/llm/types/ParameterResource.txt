@@ -1,0 +1,8 @@
+export interface ParameterResource extends ParameterRef {
+  readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly [];
+  readonly options: { readonly type: ParameterType; readonly nullable: boolean };
+  readonly result: { readonly value: ParameterValue };
+  readonly provenance: { readonly origin: "authored" };
+}

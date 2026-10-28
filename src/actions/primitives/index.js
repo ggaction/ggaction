@@ -2,6 +2,7 @@ import { createSemanticValueValidator } from "./semanticValidation/index.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateBin2DTransform } from "../../grammar/bin2d.js";
 import { validateFlattenTransform } from "../../grammar/flatten.js";
+import { validateComputedTransform } from "../../grammar/computed.js";
 import {validateLookupTransform} from "../../grammar/lookup.js";
 import { registerSemanticPrimitiveAction } from "./semantic.js";
 import { registerEditGraphicsAction } from "./editGraphics.js";
@@ -16,6 +17,10 @@ function validateBasicDatasetTransforms(value) {
   }
   if (value[0].type === "flatten") {
     validateFlattenTransform(value[0]);
+    return;
+  }
+  if (value[0].type === "computed") {
+    validateComputedTransform(value[0]);
     return;
   }
   if(value[0].type==="lookup"){

@@ -1,0 +1,446 @@
+{
+  "state": "approved",
+  "visualApproval": "pending",
+  "publicPaintIntegration": "pending",
+  "codeBase": "50d837c1",
+  "recordedAt": "2026-10-28T14:40:23.283Z",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "playwright": "1.63.0",
+    "nativeCanvas": "1.0.9",
+    "poppler": "pdftoppm version 26.08.0"
+  },
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js unit unit/grammar/paint.test.js unit/grammar/patterns.test.js unit/grammar/radial-gradient.test.js unit/renderers/canvas-path-renderer.test.js unit/renderers/canvas-renderer.test.js unit/renderers/svg-renderer.test.js unit/renderers/png-renderer.test.js unit/renderers/pdf-renderer.test.js unit/support/coverage-policy.test.js",
+      "exit": 0,
+      "log": ".artifacts/radial-review/regressions.log",
+      "sha256": "1eb75fb1642788de82e688baaa3b43f6b4a5696ac852cbe634209e76910b8790",
+      "tests": 87,
+      "pass": 87,
+      "fail": 0
+    },
+    {
+      "command": "node scripts/run-tests.js gates gates/radial-gradient/primitive.test.js",
+      "exit": 0,
+      "log": ".artifacts/radial-review/primitive.log",
+      "sha256": "2814a3fde8b1fc3afaef836aef3c3babf078f2f2efd3b93ab840ffb029e1c262",
+      "tests": 2,
+      "pass": 2,
+      "fail": 0
+    },
+    {
+      "command": "node scripts/run-tests.js render gates/radial-gradient/backends.render.js",
+      "exit": 0,
+      "log": ".artifacts/radial-review/render.log",
+      "sha256": "97addcb13c151370f78bc68dfa1a8dffc0914968576b3881a78168ca72de867b",
+      "tests": 1,
+      "pass": 1,
+      "fail": 0
+    },
+    {
+      "command": "node --experimental-test-coverage --test-coverage-include=src/grammar/radialGradient.js --test test/unit/grammar/radial-gradient.test.js",
+      "exit": 0,
+      "log": ".artifacts/radial-review/coverage.log",
+      "sha256": "30873131635da88090e6858b4d2af9e1faa89e6544e400550aa4b2d480d014aa",
+      "tests": 6,
+      "pass": 6,
+      "fail": 0
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js",
+      "exit": 0,
+      "log": ".artifacts/radial-review/contracts.log",
+      "sha256": "92fef3e2ee49f65f2986c6a2d3c842ed16079c2145da467338d44f0ce07c9ce8",
+      "tests": 38,
+      "pass": 38,
+      "fail": 0
+    },
+    {
+      "command": "npm run package:check",
+      "exit": 0,
+      "log": ".artifacts/radial-review/package.log",
+      "sha256": "8371a2a1860c2e43cb9e6625ce75d4113e0fcac8e68f12177bc1062164dd8974"
+    },
+    {
+      "command": "npm run package:bundle",
+      "exit": 0,
+      "log": ".artifacts/radial-review/browser-bundle.log",
+      "sha256": "2f35bdf36bdb3ccbc50314b23eb9933354c62c2d07df5aca1e47da3084050221"
+    }
+  ],
+  "inputs": {
+    "src/grammar/radialGradient.js": "c38b18037e8cf8aba625834680adddd6cdc561c0990f66a1c178bb54215abc7c",
+    "src/grammar/paint.js": "18706716695a9fb1f948a0cc264b5a34eba2e9eae7d8eb5b6b595d52ac6b4779",
+    "scripts/coverage-policy.js": "ca4ef27312e10064ccecdb357c036992f5738470fd6a27b1033437c2da6b12d8",
+    "scripts/package-artifact.js": "ff0fbd33b2e3b28359fb0af82c6907dd20379044af05af6990001bc16c0d58bc",
+    "test/capabilities.json": "daf9e9d8436ca083eaee4b610c0387b828597084bccae7bfa350dcdeb5ab227b",
+    "test/unit/grammar/radial-gradient.test.js": "4623daeb7f91d26151b642aad79e3e57c2d6fa4b276a57fe8beb2c2ca807d26f",
+    "test/oracles/radial-gradient.js": "98074955b8bcd1565d02fd4041efaa58560c5d2fdfd862dc3b05a629680eddd6",
+    "test/gates/radial-gradient/backends.render.js": "18f95a443e97cf5d573396803b7009f97518dd0e4a4be06d8849c7c072c8d619",
+    "test/gates/radial-gradient/browser.html": "5af7a60371d1412e37526f425a1e77d4a44884952d15fefc9367f457bde663df",
+    "test/gates/radial-gradient/fixture.js": "aae382a076fd577cb9d095c48f6792345f6e64742399ec65d3a197efbc2d869b",
+    "test/gates/radial-gradient/manifest.js": "ff03f39ad7ff5f77e05303dd69c00a8351ea56a1bb8d46063fbcf528af435ea3",
+    "test/gates/radial-gradient/primitive.program.js": "d82c83e6666dbfcf8675eb498ff165c7b011c97465fe97cc47631c0e32ed25f1",
+    "test/gates/radial-gradient/primitive.test.js": "d9c41a9440fb09201a281fd9aa42037a5faa1252f73b55cce8a1ab0ac10ce011",
+    "test/gates/radial-gradient/reference.js": "ffad8e00e3cb0126c24c4fce10c4790f71bb2ace8b3fea7fac4d62fe7ee0538b",
+    "test/gates/radial-gradient/vector.program.js": "d0fc4f53c8fdaf88ce3ccc24e0a5a76e8235835a205d37967433fd8370e0b2d5",
+    "agent_docs/impl/roadmap9/phase4/radial-gradient/REVIEW.md": "3bc1554e28d8999565c6a6ad0ab59ab35864698d633752f84ba3815eca599282"
+  },
+  "artifactRoot": ".artifacts/test/png/review/radial-gradient/",
+  "outputs": {
+    "contact-sheet.png": {
+      "sha256": "e5a4f5308813a5fdd9d980d9a9fda4282d8f5b6254221e50cf4823a83fb6da76",
+      "bytes": 62611
+    },
+    "results.json": {
+      "sha256": "206dc15e255f1b97ecf917c018019917f7f8041eac3fc008c055b3bf35329649",
+      "bytes": 181372
+    },
+    "centered/browser-canvas.png": {
+      "sha256": "9cd9aa7837b1153482802ef78450d0bdfa9aa5dfc866143fc909e0be052ece39",
+      "bytes": 21202
+    },
+    "centered/browser-svg.png": {
+      "sha256": "9cd9aa7837b1153482802ef78450d0bdfa9aa5dfc866143fc909e0be052ece39",
+      "bytes": 21202
+    },
+    "centered/evidence.json": {
+      "sha256": "a60207e13f889b9c378ddc778c18149c5d0d45cb82b8ac2d6e8661b83d011891",
+      "bytes": 24178
+    },
+    "centered/native-unlowered.pdf": {
+      "sha256": "ecc80b6483432ed37c9020b0366dedcb412fda957a6f8a8d0329000c980fe795",
+      "bytes": 10850
+    },
+    "centered/native-unlowered.png": {
+      "sha256": "1a6cc5466fb72fb5ed044d1a7e0cd4fa7ec307b1c2c8638744583a430e861823",
+      "bytes": 10677
+    },
+    "centered/pdf.png": {
+      "sha256": "1a6cc5466fb72fb5ed044d1a7e0cd4fa7ec307b1c2c8638744583a430e861823",
+      "bytes": 10677
+    },
+    "centered/primitive.pdf": {
+      "sha256": "ecc80b6483432ed37c9020b0366dedcb412fda957a6f8a8d0329000c980fe795",
+      "bytes": 10850
+    },
+    "centered/primitive.png": {
+      "sha256": "9ae1207a71c5a039cb36662959758b2bab776d6f2aa41b81f24e26fa9963971f",
+      "bytes": 11638
+    },
+    "centered/primitive.svg": {
+      "sha256": "6dc214460ac6a28a1e2e4aa1e7e0d13c5d6916cadb6d98d00d7fa9eaa5e09bc2",
+      "bytes": 729
+    },
+    "centered/rejected-annuli.pdf": {
+      "sha256": "84d16f5c6d182231dc8dc90f89efcc20d3979be02934afe0772aaf10deb2de79",
+      "bytes": 313372
+    },
+    "centered/rejected-annuli.png": {
+      "sha256": "c6bea2393f4f11fe39f077a2584f03bd3029387cc57800b4daa7034e63fc306a",
+      "bytes": 18664
+    },
+    "centered/variant.json": {
+      "sha256": "54a8382084eb938777db26417c1fe03983fe8632d64f9de01744aaeda1622514",
+      "bytes": 243
+    },
+    "offset-focus/browser-canvas.png": {
+      "sha256": "110b1837029bbc7ab37577ae55bc461ef68e8045690db5fabeac54f25394f3ef",
+      "bytes": 22542
+    },
+    "offset-focus/browser-svg.png": {
+      "sha256": "110b1837029bbc7ab37577ae55bc461ef68e8045690db5fabeac54f25394f3ef",
+      "bytes": 22542
+    },
+    "offset-focus/evidence.json": {
+      "sha256": "c1dcadaabc2464b741a941ab740a55f2bd9fc470105c6af5996377bbed0d7b2e",
+      "bytes": 24198
+    },
+    "offset-focus/native-unlowered.pdf": {
+      "sha256": "37cfdf0aecf6ae44ee84f5a905c9f78d8c96f15c9466f27c45785fcec8e8ab94",
+      "bytes": 11787
+    },
+    "offset-focus/native-unlowered.png": {
+      "sha256": "1bed270327acb3ca6119cbf9e4efc9714809119a82a2a952fa7e1e3b5b19263e",
+      "bytes": 10573
+    },
+    "offset-focus/pdf.png": {
+      "sha256": "1bed270327acb3ca6119cbf9e4efc9714809119a82a2a952fa7e1e3b5b19263e",
+      "bytes": 10573
+    },
+    "offset-focus/primitive.pdf": {
+      "sha256": "37cfdf0aecf6ae44ee84f5a905c9f78d8c96f15c9466f27c45785fcec8e8ab94",
+      "bytes": 11787
+    },
+    "offset-focus/primitive.png": {
+      "sha256": "4f28f4b8641a8b92077cc1756bd27a99dba565cfc5826d70e39ed8e4b8a56fce",
+      "bytes": 11937
+    },
+    "offset-focus/primitive.svg": {
+      "sha256": "9e0b02b996f161a355b2e42372bf6654d2e2cd581d2be5496355ead10ace4c11",
+      "bytes": 744
+    },
+    "offset-focus/rejected-annuli.pdf": {
+      "sha256": "25363f2c22041739c727e6cf7f4104008aa86934a5f7ad5792e227e729bbde38",
+      "bytes": 350783
+    },
+    "offset-focus/rejected-annuli.png": {
+      "sha256": "47c24b18774ec49411bad1338621fdb7d1b972beca6dc1e882b5f18404d6c658",
+      "bytes": 18703
+    },
+    "offset-focus/variant.json": {
+      "sha256": "dc8a656a3c459068179f5589e9cea086a45f635de3d4d1f6ecaeaa3a50a2d95a",
+      "bytes": 255
+    },
+    "hard-stop/browser-canvas.png": {
+      "sha256": "8c7b269b5bb2c2ecb960ea0b2aba8784569b53836b68f1982d4f90d852c5f4f3",
+      "bytes": 3905
+    },
+    "hard-stop/browser-svg.png": {
+      "sha256": "8c7b269b5bb2c2ecb960ea0b2aba8784569b53836b68f1982d4f90d852c5f4f3",
+      "bytes": 3905
+    },
+    "hard-stop/evidence.json": {
+      "sha256": "1371506ebf0ce2823207aeaa9d5e1e55a2a921638afaadaacb14bb18eb993a2e",
+      "bytes": 24154
+    },
+    "hard-stop/native-unlowered.pdf": {
+      "sha256": "437679d4504f9009f7dd2d99329c8fdefb18f534b2dfc47fbbd9b014df1c14c2",
+      "bytes": 12453
+    },
+    "hard-stop/native-unlowered.png": {
+      "sha256": "b47d54fcc37f27dea7972761c271dd45295856ca580653063e480a5a42dc2575",
+      "bytes": 3044
+    },
+    "hard-stop/pdf.png": {
+      "sha256": "b47d54fcc37f27dea7972761c271dd45295856ca580653063e480a5a42dc2575",
+      "bytes": 3044
+    },
+    "hard-stop/primitive.pdf": {
+      "sha256": "437679d4504f9009f7dd2d99329c8fdefb18f534b2dfc47fbbd9b014df1c14c2",
+      "bytes": 12453
+    },
+    "hard-stop/primitive.png": {
+      "sha256": "ab74c3b613a901593ba101bee5bd51b6df0f4a77fcca52bdb670666c22f99a7e",
+      "bytes": 2465
+    },
+    "hard-stop/primitive.svg": {
+      "sha256": "bc97f2018edf2fa77b8e4f8ce17d02e451ab8b56acf4be9056ac725823be2465",
+      "bytes": 815
+    },
+    "hard-stop/rejected-annuli.pdf": {
+      "sha256": "1d1075465d6e496ad27c9d99dcd6cb008c8e6eeb98b6b6e58da57f72f1247b08",
+      "bytes": 310915
+    },
+    "hard-stop/rejected-annuli.png": {
+      "sha256": "d90b3274bdb043ed6038329b788b4c4db0be7b1839073ef2cc96bb351c9bb964",
+      "bytes": 16584
+    },
+    "hard-stop/variant.json": {
+      "sha256": "87a4bb1b431150e64d8d6b0ac7ee52f165569c96335fdf51d227a0952e5d1e34",
+      "bytes": 246
+    },
+    "alpha-clip/browser-canvas.png": {
+      "sha256": "7cc7bdcb5efe12107634c9a96a7f026709497d198781ad7d179e188ba28a2a7b",
+      "bytes": 19074
+    },
+    "alpha-clip/browser-svg.png": {
+      "sha256": "0c723bda5ec3cf7f814abd71a1dcb24d959e5d1b41ed595049fca03f6334bbe5",
+      "bytes": 19182
+    },
+    "alpha-clip/evidence.json": {
+      "sha256": "f659cfe71a2a990efd6a673b6c73fe858226e05a624516b23581cdc442e5a044",
+      "bytes": 24280
+    },
+    "alpha-clip/native-unlowered.pdf": {
+      "sha256": "77cd16ec4c6eb68b3926f53b5d7b521b023d56b147c236f1edb6da138d99985f",
+      "bytes": 12520
+    },
+    "alpha-clip/native-unlowered.png": {
+      "sha256": "03624894b6397715e82ef0fb70eb70718fb9a23f0048ff7c913118bea625b317",
+      "bytes": 9917
+    },
+    "alpha-clip/pdf.png": {
+      "sha256": "eb45b872f497b0434c693c2fc8ae3ef2af875e1ded89c05a39815aa2e3317b4a",
+      "bytes": 9219
+    },
+    "alpha-clip/primitive.pdf": {
+      "sha256": "bd463cdf10069aaa5dbd54b7ba04142475d44d10be0e4eba3d7b62ead5618fe9",
+      "bytes": 12445
+    },
+    "alpha-clip/primitive.png": {
+      "sha256": "4cd8bb81b99c629e01b6295c818313285b996f1dc602bae582df027dda0a2c13",
+      "bytes": 10947
+    },
+    "alpha-clip/primitive.svg": {
+      "sha256": "89f48126e7967e9f76f3ea182c5e41920a5fccd6f17c276e19990945ff748031",
+      "bytes": 808
+    },
+    "alpha-clip/rejected-annuli.pdf": {
+      "sha256": "30b59acb899ffcd78ee9e4659d875cc9cdaa009d4b67a925fd0c64f0b3e25a06",
+      "bytes": 313953
+    },
+    "alpha-clip/rejected-annuli.png": {
+      "sha256": "3818c2f6d122b87fdfd2f975218a410af7bb7ac7b0a66471fc8bec1f643e4273",
+      "bytes": 17911
+    },
+    "alpha-clip/variant.json": {
+      "sha256": "ec96e88fd39029df3e861f257485ccd5389315120275427aacaea679c8ed5c48",
+      "bytes": 249
+    },
+    "edge-focus/browser-canvas.png": {
+      "sha256": "28fe2115c791de94671e6d99adc814f2b25c6b678fbac90e5ae23d4b400d3b21",
+      "bytes": 23132
+    },
+    "edge-focus/browser-svg.png": {
+      "sha256": "28fe2115c791de94671e6d99adc814f2b25c6b678fbac90e5ae23d4b400d3b21",
+      "bytes": 23132
+    },
+    "edge-focus/evidence.json": {
+      "sha256": "6ae92f96ce7344afebce921ac8985a375452b8e4280d7c2717821f6aaff2e88a",
+      "bytes": 24180
+    },
+    "edge-focus/native-unlowered.pdf": {
+      "sha256": "eecbff882587c9b45137e718b99c2e92f39183140435aa8cff7fd785ab8bc1ce",
+      "bytes": 12282
+    },
+    "edge-focus/native-unlowered.png": {
+      "sha256": "bde55de48941992ea937cb39f414b0bf10393eea4516267c64ae50e81b3d5f5a",
+      "bytes": 10622
+    },
+    "edge-focus/pdf.png": {
+      "sha256": "fc01c6171e59b86f228a1e06fe32fe53f0424ad89ad9755ff05b79f84f67a79f",
+      "bytes": 10628
+    },
+    "edge-focus/primitive.pdf": {
+      "sha256": "619d7b9435ec1a7d8942ed797820d562357963442ab2d56a47bf02547e8a1783",
+      "bytes": 12297
+    },
+    "edge-focus/primitive.png": {
+      "sha256": "94e1dd901660909bca614316a7a2eba4f0e505e1c00c369b730e9660aa91a3eb",
+      "bytes": 12080
+    },
+    "edge-focus/primitive.svg": {
+      "sha256": "9df62421dfa4710cd93a23a790c902d169dc8cefcd158afdca43fc24c5dd0f12",
+      "bytes": 736
+    },
+    "edge-focus/rejected-annuli.pdf": {
+      "sha256": "3b4f1d6602dae0793a794de6df74d04ef5aca3fbbfcd1b8c7bcfed5e98077986",
+      "bytes": 343112
+    },
+    "edge-focus/rejected-annuli.png": {
+      "sha256": "f0561c1ee22677a26f1458a069afa6854dddd94e8afcd11425207ce49f3081f5",
+      "bytes": 20030
+    },
+    "edge-focus/variant.json": {
+      "sha256": "fb548995461cfec9ef5826d0cc76c2db152c6ed43491db5a111b9f54b7b00ae4",
+      "bytes": 249
+    },
+    "varying-alpha/browser-canvas.png": {
+      "sha256": "ccf0c3b794b676817612df72458734036e3ec87d83ad676ca97d4fbeecca0882",
+      "bytes": 23314
+    },
+    "varying-alpha/browser-svg.png": {
+      "sha256": "4adf006d62cdbf2518b66ba82c1870da56b1c5009bef293180c03af179ffa97b",
+      "bytes": 23978
+    },
+    "varying-alpha/evidence.json": {
+      "sha256": "a42217ad7f9f3e3d4c0154e8d98bfb8151c559c42fed9145ab168a58c078ffaa",
+      "bytes": 24283
+    },
+    "varying-alpha/native-unlowered.pdf": {
+      "sha256": "59634956dd1e06f893b1e0eb17dbe6c326fdcfe992ff22a68945b72e1e24a21d",
+      "bytes": 13777
+    },
+    "varying-alpha/native-unlowered.png": {
+      "sha256": "8219ffaa385c7b25b279b6721a749c36f9d8fef05404d3881a73678182713840",
+      "bytes": 13408
+    },
+    "varying-alpha/pdf.png": {
+      "sha256": "55d8c742e53009d05abde97b2743dfd9e8d7f4c1f5e17f6b4125f0cb144bd83d",
+      "bytes": 11269
+    },
+    "varying-alpha/primitive.pdf": {
+      "sha256": "cddbbed14a50c669ea2bbaa69e8605edcafb8f3686801c27cc91d08a9ddd2d19",
+      "bytes": 13716
+    },
+    "varying-alpha/primitive.png": {
+      "sha256": "f4ab30fa317dfbfd0c1f3786fcd02cd9c179b43331aac68f8541060a974e70eb",
+      "bytes": 13448
+    },
+    "varying-alpha/primitive.svg": {
+      "sha256": "62eac7eb31a27ba0704752204bb7ab4535e853183015a802cdb7165f9dd93b98",
+      "bytes": 779
+    },
+    "varying-alpha/rejected-annuli.pdf": {
+      "sha256": "dbe02784782b1e2e15e4dabe6b63b48cf63cc605f7325a8f93306225da495095",
+      "bytes": 323115
+    },
+    "varying-alpha/rejected-annuli.png": {
+      "sha256": "d7d4537fa23729e904f007650f1a263e55e1a1d0599517b8e1970abbee2891b2",
+      "bytes": 21230
+    },
+    "varying-alpha/variant.json": {
+      "sha256": "fe6d1c87339dc51999fb54f3c133a0e9e8511af60ad765f102aac89207b59440",
+      "bytes": 258
+    }
+  },
+  "assertionSummary": {
+    "variants": 6,
+    "samplesPerVariant": 7,
+    "outputPaths": 4,
+    "passedSamples": 168,
+    "failedSamples": 0,
+    "pdfVectorShadingType": 3,
+    "pdfImageFallback": false,
+    "pdfPolicy": "Nine analytic samples across each logical unit-pixel footprint, plus one RGB byte; alpha exact",
+    "otherPolicy": "Analytic center plus one RGB byte; alpha exact",
+    "diagnosticFailures": {
+      "native-unlowered": 13,
+      "rejected-annuli": 28
+    },
+    "rejectedAnnuliBands": 512
+  },
+  "coverage": {
+    "file": "src/grammar/radialGradient.js",
+    "lines": 100,
+    "branches": 100,
+    "functions": 100,
+    "floor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    }
+  },
+  "package": {
+    "entries": 680,
+    "packedBytes": 1012696,
+    "unpackedBytes": 4722593
+  },
+  "browserBundle": {
+    "fullGzipBytes": 507594,
+    "basicGzipBytes": 285716
+  },
+  "manualInspection": {
+    "images": [
+      "contact-sheet.png",
+      "alpha-clip/pdf.png"
+    ],
+    "result": "Centered/offset focus, hard edge, opacity clip, edge cone exterior and varying alpha visible; user approval pending."
+  },
+  "sources": [
+    "https://html.spec.whatwg.org/multipage/canvas.html#fill-and-stroke-styles",
+    "https://www.w3.org/TR/SVG/latest/pservers.html#RadialGradients"
+  ],
+  "codeRevision": "57f70fbcaec0883bb08e9142dc9de0a7daa2d7dc",
+  "evidenceRevision": "57f70fbcaec0883bb08e9142dc9de0a7daa2d7dc",
+  "metadataOnlyRevisionNote": "This recording commit fixes the source/evidence revision; only REVIEW.md and its receipt hash change.",
+  "approval": {
+    "source": "Explicit user response in current conversation, relayed by parent /root",
+    "text": "이 렌더링 승인, 구현 계속",
+    "sourceEvidenceRevision": "57f70fbcaec0883bb08e9142dc9de0a7daa2d7dc"
+  }
+}

@@ -1,3 +1,4 @@
+import { conditionalLegendLayer } from "../../../../materialization/legendEncodings.js";
 import { resolveSizeShapeMapping } from "../../../../grammar/legendCombinations.js";
 import { requireDataset } from "../../../../selectors/datasets.js";
 import { readNominalField } from "../../../../grammar/scales/fields.js";
@@ -9,7 +10,7 @@ import {
 } from "../../../../core/validation.js";
 import { CHANNELS } from "./options.js";
 import { nonEmptyString } from "./validation.js";
-import { findLayer } from "../../../../selectors/layers.js";
+import { findLegendLayer as findLayer } from "../../../../materialization/legendEncodings.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
 import { horizonLegendPresentation } from "../../../../grammar/horizon.js";
 
@@ -38,7 +39,7 @@ export function resolveTarget(program, requested) {
 
   const current = findLayer(program, program.context.currentMark);
   if (isCategoricalTarget(current)) return current;
-  const candidates = program.semanticSpec.layers.filter(isCategoricalTarget);
+  const candidates = program.semanticSpec.layers.map(layer => conditionalLegendLayer(layer)).filter(isCategoricalTarget);
   if (candidates.length !== 1) {
     throw new Error(
       "createLegend requires target when the categorical mark is ambiguous."

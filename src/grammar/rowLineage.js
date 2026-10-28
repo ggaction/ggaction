@@ -133,6 +133,7 @@ function transformMapping(source, values, t, context) {
           : t.type === "stack" ? stackContributions(source.values, t) : undefined;
     return preserve(values.map((_, index) => index)).map((item, index) => contributions ? { ...item, indices: contributions[index] } : item);
   }
+  if (t.type === "filter" && t.where !== undefined) return preserve(retainedIndices(source.values, values));
   if (t.type === "filter" || t.type === "sort") {
     return preserve(retainedIndices(source.values, (t.type === "filter" ? deriveFilteredRows : deriveSortedRows)(source.values, t)));
   }

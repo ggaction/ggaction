@@ -1,0 +1,8 @@
+{
+  "sourceCheckpoint": "ed0eff54a9a87380b9ee7ceb9300a24744755664",
+  "incomingMain": "c0f0f7147f62a9da671b632eb5dbaf03188cd575",
+  "packageInputChanges": [],
+  "relationshipFixture": "Reuse the deterministic main parameter fixture and retain prepared-source relationship execution.",
+  "affectedContracts": 51,
+  "failures": 0
+}

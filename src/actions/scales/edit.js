@@ -78,6 +78,7 @@ function planMarkRematerialization(program, consumers) {
     if (step === undefined || seen.has(consumer.layer.id)) continue;
     const pointHandledByScale =
       consumer.layer.mark?.type === "point" &&
+      consumer.layer.conditionals?.[consumer.channel] === undefined &&
       !["size", "shape"].includes(consumer.channel) &&
       program.graphicSpec.objects[consumer.layer.id]?.type !== "collection";
     if (pointHandledByScale) continue;

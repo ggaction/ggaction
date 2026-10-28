@@ -4,6 +4,14 @@
 > [`architecture/README.md`](architecture/README.md)의 작업별 경로에서 시작한다. 이 파일은 현재
 > macro-architecture의 canonical 원문으로 유지한다.
 
+### Boolean filter 의존성
+
+AST filter는 computed와 같은 closed v2 expression 및 exact parameter-reference 검증을
+사용한다. 읽기 전용 `materialization/expressionInputs.js`가 action materialization과
+editable restore에 schema/parameter 환경을 공급하며 restore는 predicate를 실행하지 않는다.
+Parameter edit는 공통 dataset DAG와 기존 mark/scale/guide plan을 명시적으로 실행한다.
+필터는 원본 행의 순서·식별자·lineage를 유지한다.
+
 ## 현재 구조 빠른 지도
 
 이 지도는 현재 `package.json.exports`와 대응한다. 기본 authoring은 domain action →
@@ -30,7 +38,56 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 현재 한도는 package/consumer/search 검사의 상수와 현재 실행 결과가 기준이다.
 아래 설명에 남은 과거 checkpoint 수치를 현재 제한으로 해석하지 않는다.
 
-## Private hierarchy normalization
+## Private asset preparation 경계
+
+Image와 font의 명시 host load·abort·bytes hash·budget은 `resources/assetPreparation.js`가
+공유한다. `resolveAssets.js`는 SVG allowlist/decoded image dimensions를, `resolveFonts.js`는
+font identity와 같은 font/provider의 측정 batch를 검증한다. 모두 private preparation이며
+public resource/action/schema와 renderer 경계는 아직 바꾸지 않았다. Host callback, decoder
+object와 mutable byte buffer는 저장 결과에 들어가지 않는다. 공개 연결 전의 근거와 남은 범위는
+[image](impl/roadmap9/phase4/images/PRIVATE.md)와 [font](impl/roadmap9/phase4/fonts/PRIVATE.md)에 있다.
+
+## Private builtin resource validation
+
+승인된 Full-only hierarchy/layout/image 연결을 위해 `materialization/resourceKinds.js`가 exact
+program constructor별 검증 handler를 한 번 등록한다. 복사한 null-prototype record와 handler를
+freeze하며 상위 constructor의 권한을 상속하지 않는다. Public plugin 또는 renderer registry가 아니다.
+공통 resource owner는 envelope·typed refs·graph를 먼저 검사하고 등록 owner의 저장값 및 binding
+검증만 호출한다. Plain preview는 원래 constructor를 명시하며, 미등록 class/Basic는 추가 kind를
+거부한다. Persistence도 실제 복원 constructor의 같은 경계를 사용하고 계산을 실행하지 않는다.
+Full assembly는 hierarchy와 hierarchy layout의 닫힌 handler를 등록하며 Basic에는 등록하지 않는다.
+Image와 graph의 독립 공개 구현은 같은 경계를 사용한다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이
+초기 승인·검증과 연결 경계를 보존한다.
+이 owner1개를 더한 지원 Node20/22/24 staging은739entries, packed최대1,098,083,
+unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
+Full/Basic/SVG browser gzip최대535,560/313,517/8,185는 기존 한도 안이며 그대로 유지한다.
+
+Typed layer binding의 닫힌 경로(`image`, `hierarchyBinding.layout`)는
+`core/resourceReferences.js`가 수집과 immutable rebind를 함께 소유한다. 공통 exact ref shape는
+`core/resourceReference.js`에 두어 core 수집기와 grammar/materialization이 같은 kind vocabulary를
+사용한다. Primitive resource replacement는 해당 리소스 revision과 live layer reference를 같은
+semantic candidate에서 갱신하고, generic graph validation은 handler보다 먼저 exact kind/revision을
+검사한다. 실제 그래픽 재생성은 계속 domain action의 책임이다. 삭제 계획은 live mark 참조가
+남으면 거부하며, public cascade owner가 필요한 mark 제거를 명시적으로 먼저 수행한다.
+Persistence는 이 typed reference도 공통 stored-resource selector로 확인한다.
+
+의존 resource result를 함께 바꿔야 하는 쓰기는 private
+`actions/primitives/preparedResourceContext.js`가 exact receiver와 exact primitive args에만
+precomputed 결과를 결박한다. 중첩/실패/정상 종료마다 권한을 복원하거나 제거하며, primitive는
+허용된 원인 관계와 options 불변·next revision vector를 검증한 최종 resource envelope만 적용한다.
+DATA의 parameter→source 결과와 hierarchy→layout 결과가 같은 경계를 공유하되 kind별 검증은
+등록 validator에 남는다. `actions/data/resourceRevision.js`는 exact constructor별 한 번 등록한
+도메인 갱신 함수로 data-backed resource의 재계산을 위임한다. 등록된 kind는 generic data-ref
+치환에서 제외하고 같은 revision plan의 명시 domain action으로 갱신한다. Basic 또는 미등록 class는
+등록 함수를 상속하지 않으며 자동 compiler나 public registry는 없다.
+
+
+Typed binding checkpoint는 같은 staging을 Node20/22/24에서 측정해739entries,
+packed최대1,098,660/unpacked5,059,006bytes다. 기존 packed 한도를 유지하고 unpacked 한도만
+최소1,000byte 단위인5,060,000으로 조정했다. 동일 minified browser bytes의 최대gzip은
+Full535,875/Basic313,870/SVG8,185로 기존 한도 안이다.
+
+## Hierarchy normalization and explicit materialization
 
 `grammar/hierarchy/normalize.js`는 명시 node records의 typed identity, parent/children topology,
 iterative preorder/postorder와 세 가지 value aggregation을 한 번 검증하는 pure owner다.
@@ -43,11 +100,47 @@ iterative preorder/postorder와 세 가지 value aggregation을 한 번 검증�
 `grammar/hierarchy/partition.js`도 같은 model 경계를 소비하여 depth와 정규화 구간·reserved residual tail을 만든다.
 계층의 합계와 prefix는 기존 numeric owner의 명시 compensated 정책을 공유하며 기존 호출 기본 계산은 유지한다.
 `grammar/hierarchy/treemap.js`는 같은 model에서 slice-dice/squarify rectangle을 계산하고,
-padding을 뺀 content와 own-value reserved rectangle을 분리해 보존한다. 현재는 private 계산만 있고 hierarchy/layout resource 저장, public
-action, renderer 또는 새 시각 target과 연결하지 않았다.
+padding을 뺀 content와 own-value reserved rectangle을 분리해 보존한다.
+`grammar/hierarchy/order.js`는 명시 input/value/key/field 순서를 공통 model에 반영한다. Key는 기존 typed
+identity comparator, field는 기존 sort transform 정책을 재사용하며 원본 field 해결은 semantic caller의 책임이다.
+`materialization/hierarchy/resources.js`는 입력 dataset의 exact revision과 실제 row membership을
+hierarchy resource에 보존하고, layout resource는 정확히 하나의 hierarchy 입력을 참조한다.
+`actions/hierarchy/resources.js`는 source 수정과 명시 layout 편집에서 필요한 수치 결과를 먼저
+계산·검증하고 primitive를 통해 교체한다. `materialization/hierarchy/state.js`는 복원 시 저장된
+topology·value·좌표·binding을 검사하며 layout 알고리즘을 다시 실행하지 않는다.
+Tree/treemap facade는 `materialization/hierarchy/plot.js`의 concrete link/node/label 결과를
+wrapped materialize action으로 기록한다. Renderer는 기존 path/circle/rect/text만 소비한다.
+Node selection은 layout resource lineage와 실제 원본 row membership을 공유하고, label override는
+typed node key에 결박되어 원본 노드가 사라질 때 orphan 진단을 남긴다. Data revision과 facet source
+replacement는 같은 명시 hierarchy→layout→plot closure를 사용한다. 자세한 공개 계약은
+[HIERARCHY](contract/current/HIERARCHY.md)가 소유한다.
 상세 범위·후속 의무와 실측 package 증거는 [normalizer](impl/roadmap9/phase3/hierarchy/NORMALIZE_KERNEL.md)와
 [input adapter](impl/roadmap9/phase3/hierarchy/INPUT_KERNEL.md), [tree 계산](impl/roadmap9/phase3/hierarchy/TREE_KERNEL.md),
-[partition 계산](impl/roadmap9/phase3/hierarchy/PARTITION_KERNEL.md), [treemap 계산](impl/roadmap9/phase3/hierarchy/TREEMAP_KERNEL.md) 기록이 소유한다.
+[partition 계산](impl/roadmap9/phase3/hierarchy/PARTITION_KERNEL.md), [treemap 계산](impl/roadmap9/phase3/hierarchy/TREEMAP_KERNEL.md),
+[sibling 정렬](impl/roadmap9/phase3/hierarchy/ORDER_KERNEL.md) 기록이 소유한다.
+Inclusive model 검증은 normalizer가 저장한 차액 식을 그대로 검사하여 역연산 반올림으로 유효 값을 거부하지 않는다.
+이 검증 보수의 package 실측4,908,179bytes가 기존 unpacked4,908,000을179bytes 초과해 최소1,000byte 단위
+4,909,000으로 조정했다. Entry710/packed1,061,000와 browser 한도는 유지하며 상세 재현·검증은
+[inclusive model 감사](impl/roadmap9/phase3/hierarchy/INCLUSIVE_VALIDATION.md)에 둔다.
+이어진 own-data 경계 보수는 hierarchy의 required fields와 optional maxNodes/synthetic 읽기를 검사하고
+필수 차원 배열의 arity를 descriptor 검사 전에 제한한다. Public/import/renderer 경계는 그대로이며
+unpacked 실측4,909,964bytes에 맞춰 cap만4,910,000으로 조정했다.
+[입력 검증 감사](impl/roadmap9/phase3/hierarchy/OWN_DATA_VALIDATION.md)가 반례와 coverage 증거를 소유한다.
+
+## Private observed graph normalization
+
+`grammar/graph/normalize.js`는 명시 node/edge records의 raw typed key를 기존 identity owner로 한 번
+정규화한다. Caller가 이미 보관한 occurrence key를 받으며 row index로 edge identity를 추정하지 않는다.
+`grammar/graph/model.js`는 opaque node/edge key, endpoint·direction·origin·source membership과
+bounded plain-data attributes를 검증하고 stable incoming/outgoing/weak-neighbor adjacency를 만든다.
+Layout 소비자는 같은 model owner로 저장 adjacency의 일관성을 확인하며 topology를 다시 추론하지 않는다.
+`grammar/graph/layout.js`는 opaque key에 명시한 fixed 좌표 또는 stable model 순서의 circular 좌표만 만든다.
+Circular 계산은 기존 polarToCartesian의 clockwise degree owner를 사용하며 model과 layout work를 합산한다.
+Resource 저장·공개 action·force solver·component packing을 포함하지 않는다. 수치·검증·실측 package 경계는
+[fixed/circular private checkpoint](impl/roadmap9/phase3/graph/LAYOUT_KERNEL.md)가 소유한다.
+현재는 private 계산이며 public GraphResource, source field adapter, graph action, layout/renderer에는
+연결하지 않았다. 별도 graph metric/preprocessing 작업과 상태를 섞지 않는다.
+상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
 
 ## Private partition view and mapping
 
@@ -67,10 +160,35 @@ nearest surviving ancestor와 navigation metadata를 계산한다. Canonical key
 `core/ownData.js`는 descriptor 검증을 공유하고 action summary는 getter를 호출하지 않는다.
 `grammar/transformInput.js`는 dispatch 전 transform 배열 검증을 Full/Basic에서 공유하며
 큰 transform policy 모듈을 Basic 입력 경계로 끌어오지 않는다.
-현재 kernel은 private이며 public authoring, 저장 schema, parameter resource lifecycle과
-renderer에는 연결하지 않았다. 기존 computed v1의 의미와 직접 materialization 경계는 유지한다.
+이 pure kernel은 공개 computed v2, where filter, conditional encoding, parameter와 prepared data source의
+명시 계산에서 재사용한다. 공개 연결과 저장 검증 경계는 아래 각 domain integration 절이 소유한다.
+Renderer는 AST를 읽거나 평가하지 않으며 기존 computed v1의 의미와 명시 materialization을 유지한다.
 상세 내부 계약은 [expression core](architecture/EXPRESSION_CORE.md), 공개 computed는
 [CORE](contract/current/CORE.md), action trace는 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
+
+## 내부 pattern kernel 경계
+
+`grammar/patterns.js`는 닫힌 pattern 옵션과 phase/origin의 순수 정규화 및 bounded unit tile
+geometry를 소유한다. Polygon/circle contour는 한 nonzero compound fill로 낮추도록 정의하며,
+물리적 pitch 적용과 tile/mark clip, opacity 합성은 후속 materialization·renderer의 책임이다.
+색 문자열의 검사는 기존 `grammar/paint.js`를 재사용한다. 현재 private kernel은 public paint,
+stored graphic schema, action 또는 renderer에 연결하지 않았으며 별도 registry를 만들지 않는다.
+숫자·방향·경계 증거는 capability test `test/unit/grammar/patterns.test.js`가 소유한다.
+
+## 내부 graph metric 계산 경계
+
+`grammar/graph/metricPolicy.js`는 metric과 입력 vector의 닫힌 정규형,
+`metrics.js`는 거리·유사도 계산, `preprocess.js`는 결측 정책과 수치 전처리 통계,
+`edgeIdentity.js`는 명시 rule/typed endpoint에서 inferred edge identity를 만드는 순수 owner다.
+기존 typed item identity, descriptor 검사, finite sum과 자원 한도를 공유한다.
+이 owner들은 명시 입력만 받고 frozen 결과를 반환하며, 공개 entry나 ChartProgram state,
+materialization 또는 renderer에 연결하지 않았다. Field 추출, graph resource와 kNN/threshold
+토폴로지의 공개 통합은 별도 domain owner의 남은 작업이다. `neighbors.js`는 정규화된 feature에서
+kNN/radius/similarity의 exact pair를 고르고 raw source index와 stable endpoint identity를 반환한다.
+`spanning.js`는 같은 metric preparation으로 complete graph 또는 명시 weighted candidate에서
+deterministic Kruskal tree/forest와 component/cost를 계산한다. 원격 자원이나 layout을 해석하지 않는다.
+공통 graph model이나 source row provenance를 중복 생성하지 않으며 domain adapter가 이를 연결한다. 검증 범위는
+[metric kernel checkpoint](impl/roadmap9/phase3/graph/METRICS_KERNEL.md)에 기록한다.
 
 ## Pivot data lifecycle
 
@@ -610,8 +728,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 508,000 bytes |
-| `ggaction/basic` | 286,000 bytes |
+| `ggaction` | 567,000 bytes |
+| `ggaction/basic` | 331,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -795,6 +913,34 @@ Action 경계가 생성 namespace를 준비하고 kernel이 source snapshot iden
 `materialization/markOutput.js`는 final item resolver의 key·topology·lineage ref를 wrapped graphic primitive로 저장한다.
 통계 reference의 값과 lineage는 `materialization/statisticalPopulation.js`의 같은 population boundary를 사용한다.
 공개 옵션과 저장 형식의 현재 지원 범위는 [CORE](contract/current/CORE.md)가 소유한다.
+
+## Parameter와 computed 입력 경계
+
+`semanticSpec.resources`의 authored parameter가 scalar 값과 revision을 소유한다.
+`grammar/parameter.js`와 expression grammar는 명시 값을 받아 순수 검증·계산하며,
+`actions/data/computedBinding.js`가 현재 parameter를 exact revision vector에 바인딩한다.
+`materialization/expressionInputs.js`는 공통 schema와 exact resource lookup을 사용해 저장된
+computed 입력을 검증한다. Persistence는 이 read-only validator를 재사용하고 AST를 재평가하지 않는다.
+Named lookup 자체는 계속 `selectors/resources.js`가 소유한다.
+
+Parameter domain action은 해당 parameter를 읽는 모든 computed snapshot을 root로 모은 뒤 기존
+dataset DAG의 합집합을 한 번 순회한다. 합류점은 모든 입력 revision 이후 한 번만 materialize하며,
+기존 data revision owner가 layer·scale·guide·selection을 갱신한다. Primitive resource write는
+계산식을 평가하지 않는다. Facet/repeat 편집은 retained source의 revision을 composition recipe에
+다시 적용하고 concat은 명시 child scope를 따른다. 구체적인 lifecycle은 [CORE](contract/current/CORE.md)가 소유한다.
+
+입력 자료의 순수 파싱·request proof·retained payload 검증은 `grammar/dataSource*.js`가,
+명시 host callback을 호출하는 비동기 준비는 `resources/resolveData.js`와 `dataUpdate*.js`가 소유한다.
+공개 prepare helper는 payload를 opaque handle의 private evidence로 보관하고,
+`actions/data/sourcePlan.js`가 고정한 source/computed union을 `applyDataUpdate`가 기존 domain actions로 적용한다.
+Live source intent와 current output은 typed data-source resource, 당시 실제 수신 자료는 immutable dataset receipt가 소유한다.
+`materialization/dataSourceState.js`는 이 둘의 read-only 일관성을 검증하며 persistence도 같은 검증을 사용한다.
+Restore는 URL AST·host callback을 실행하지 않는다. Basic은 공통 create 경계만 import한다.
+
+`core/action.js`의 transient source-identity와 exact-argument summary context는 wrapped invocation에만 유효하다.
+Prepared action이 clone 이전 receiver를 검증할 수 있게 하고 source primitive가 payload를 semantic state에만 보존하도록 한다.
+어느 context도 program property·codec state·public extension hook이 아니다. Renderer의 graphic-only 경계는 유지한다.
+구체적인 source/host/receipt 계약은 [CORE의 applyDataUpdate](contract/current/CORE.md#applydataupdate)가 소유한다.
 
 ## Immutability와 ownership
 
@@ -2939,3 +3085,33 @@ Installed Full browser gzip은 Node24 CI에서507,419bytes로 기존507,000 한�
 508,000으로만 조정한다. Basic286,000/SVG25,000 한도는 유지한다. 해당 기능·타입 consumer들은
 통과했으며 크기 실패는 [CI run40578989389](https://github.com/ggaction/ggaction/actions/runs/40578989389)에 보존한다.
 일반·수치·pixel·coverage 검사는 완화하지 않는다.
+
+Parameter/computed v2 통합의 동일 staged artifact는 Node 20.20.2·22.23.2·24.22.1에서
+685 entries, packed 1,025,570/unpacked 4,771,436 bytes였다. 같은 minified browser bytes의
+최대 gzip은 Full 516,039, Basic 297,089, SVG 8,130 bytes다. 실제 증가분을 반영해
+최소 1,000 bytes 단위 package/browser ceiling을 갱신했다. Basic은 생성 경로만 추가하고
+parameter revision planner를 import하지 않는다. 이전 Node22 compressor 차이로 인한
+기존 ceiling 실패도 이 지원 matrix 측정으로 해결했다.
+
+### 조건부 인코딩과 명시적인 소비자 갱신
+
+조건부 position·text·appearance는 `layer.conditionals[channel]` 한 곳에 branch intent와 exact
+parameter/selection refs를 보존한다. 일반 encoding/config에 otherwise를 복제하지 않는다.
+기존 encoder의 deferred normalization을 재사용하고, topology와 final item grain을 검증한
+뒤 domain action이 scale/mark/guide materialization을 명시 호출한다. Selection property로
+연결된 mark dependency는 cycle을 거부하고 정렬된 영향 closure로 갱신한다. Facet scale
+collector와 resource reference collector는 비활성 branch도 live consumer로 취급한다.
+Point glyph의 geometry 이전 mapping과 나머지 appearance의 기존 mark output 단계는
+같은 first-match grammar를 사용한다. Selection은 chosen raw channel value를 검사하고
+실제 그래픽 identity로 drawing-order 변경에 대응한다. Renderer 경계는 변하지 않는다.
+정확한 지원 채널, 단일 binding 범례와 empty-domain 규칙은 current/ENCODINGS가 소유한다.
+
+
+위치의 pure 허용 정책은 `grammar/positionPolicies`가 한 번 소유하고 action preview와
+stored branch 검증이 같은 정책을 사용한다. `materialization/positionPolicy`는 program의
+명시적인 mark 설정을 pure 정책에 전달하는 경계다. Primitive renderer는 조건식을 읽지 않는다.
+Native item/vertex 계산이 각 branch 값을 검증한 뒤 선택된 값을 기존 stack·radial·path 계산에
+공급한다. 라벨과 overlay는 그 item에 선택된 binding의 일시적인 view를 사용하며, 이 view를
+새 semantic state나 graphic state로 저장하지 않는다. Source-label·interval bounds·point layout의
+selection 의존성까지 scale 계산 전에 순환을 검사한다. 정확한 조건부 채널/원점/단위/오류와
+진단 의미는 [ENCODINGS](contract/current/ENCODINGS.md)와 [MARKS](contract/current/MARKS.md)가 소유한다.

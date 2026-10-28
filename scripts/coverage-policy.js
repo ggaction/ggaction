@@ -5,7 +5,24 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "png-byte-encoding": { prefix: "core/pngEncoding", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Bounded glyph PNG bytes must preserve RGBA and reject unsafe inputs before allocation." },
+  "conditional-grammar": { prefix: "grammar/conditional", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Ordered predicates and stored branch contracts must reject inactive malformed inputs." },
+  "conditional-materialization": { prefix: "materialization/conditional", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Final item grain, exact dependencies and conditional rematerialization must remain exercised." },
+  "asset-preparation": { prefix: "resources/assetPreparation", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image and font preparation share exact bytes, host errors and abort cleanup." },
+  "font-preparation": { prefix: "resources/resolveFonts", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared font bytes and measured widths must bind the same explicit font identity and provider." },
+  "svg-image-validation": { prefix: "resources/svgImage", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Static SVG parsing, local resource identity and decoder budgets must reject active content before host work." },
+  "image-preparation": { prefix: "resources/resolveAssets", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Asset bytes, identity, abort and export eligibility must remain exercised before host callbacks." },
+  "image-placement": { prefix: "materialization/image", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image fit and viewport clipping must share finite, aspect-preserving concrete geometry." },
+  "graph": { prefix: "grammar/graph/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph topology, metrics and finite geometry must preserve typed identity, missing policies and bounded work." },
   "hierarchy-grammar": { prefix: "grammar/hierarchy/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Hierarchy identity, topology, aggregation and bounded layout must preserve exact node meaning." },
+  "hierarchy-materialization": { prefix: "materialization/hierarchy/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored hierarchy resources and concrete plots must preserve exact lineage and validate every revision." },
+  "hierarchy-actions": { prefix: "actions/hierarchy/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Hierarchy revisions must preflight all dependent layouts and plots before wrapped transitions." },
+  "source-preparation": { prefix: "resources/", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Host input, opaque preparation and freshness must be validated before application." },
+  "source-grammar": { prefix: "grammar/dataSource", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Parsing, retained payload and request proofs must agree without host execution." },
+  "data-resource-revision": { prefix: "actions/data/resourceRevision", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Exact-class data-backed resource dispatch must preserve immutable registration and Basic isolation." },
+  "source-actions": { prefix: "actions/data/source", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Prepared source planning and exact child contexts preserve atomic application." },
+  "source-state": { prefix: "materialization/dataSourceState", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Historic receipts and live source revisions have distinct validated owners." },
+  "source-primitive-context": { prefix: "actions/primitives/preparedResourceContext", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Prepared replacement authority must expire on every exit." },
   "complete-grammar": { prefix: "grammar/complete", floor: { lines: 90, branches: 85, functions: 100 }, rationale: "Completion must preserve observed rows and explicitly bound calendar expansion, grouping and work." },
   "pivot-actions": { prefix: "actions/data/pivot", floor: { lines: 90, branches: 85, functions: 100 }, rationale: "Pivot inference, ownership and explicit materialization must remain exercised." },
   "calendar-day": { prefix: "grammar/calendarDay", floor: { lines: 90, branches: 85, functions: 100 }, rationale: "Civil-day domains must preserve strict parsing, explicit zones, DST boundaries and bounded output." },
@@ -13,7 +30,12 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "transform-input": { prefix: "grammar/transformInput", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Shared data input validation must remain safe before dispatch in Full and Basic." },
   "expression-kernel": { prefix: "grammar/expression", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Closed AST evaluation, explicit types, lazy diagnostics and resource budgets must remain exercised." },
   "path-geometry": { prefix: "grammar/path", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Concrete path validation, topology and numeric geometry must remain exercised." },
+  "radial-gradient-kernel": { prefix: "grammar/radialGradient", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Shared radial geometry, focal containment and ordered stop validation must remain exercised." },
+  "shadow-kernel": { prefix: "grammar/shadow", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Deterministic alpha-mask convolution, finite bounds and allocation preflight must remain exercised." },
+  "compositing-kernel": { prefix: "grammar/compositing", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Premultiplied blend equations, one group attenuation and bounded quantization must remain exercised." },
+  "pattern-kernel": { prefix: "grammar/patterns", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Shared vector tile normalization, periodic coverage and bounded geometry must remain exercised." },
   "resource-state": { prefix: "materialization/resourceState", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Stored resource revisions and dependency validation must remain exercised." },
+  "builtin-resource-kinds": { prefix: "materialization/resourceKinds", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Class-specific builtin validation must reject unsafe records, inheritance and repeated registration." },
   "row-lineage": { prefix: "grammar/rowLineage", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Every transform must preserve exact contributing rows." },
   "core-state": { prefix: "core/", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "State and action boundaries must remain exercised." },
   "all-renderers": { prefix: "renderers/", floor: { lines: 50, branches: 60, functions: 80 }, rationale: "Includes the lazy native loader; Canvas and explicit overrides retain stricter floors." },
@@ -52,7 +74,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
     rationale: "Coordinate ownership and inference must reject ambiguity consistently."
   }),
   "position-policies": Object.freeze({
-    prefix: "actions/encodings/position/policies/",
+    prefix: "grammar/positionPolicies/",
     floor: Object.freeze({ lines: 50, branches: 30, functions: 80 }),
     rationale: "Every positional mark policy must remain executable through shared encodings."
   }),
@@ -74,6 +96,9 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
 });
 
 export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
+  "actions/encodings/conditional.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "materialization/legendEncodings.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "materialization/overlayGeometry.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "core/valueEncoding.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "layout/facetHeaderTitles.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "actions/data/regressionStatistics.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
@@ -146,7 +171,7 @@ export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
     branches: 75,
     functions: 100
   }),
-  "actions/encodings/position/policies/index.js": Object.freeze({
+  "grammar/positionPolicies/index.js": Object.freeze({
     lines: 90,
     branches: 75,
     functions: 100

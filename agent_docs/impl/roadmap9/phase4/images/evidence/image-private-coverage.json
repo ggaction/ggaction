@@ -1,0 +1,37 @@
+{
+  "label": "image-private-coverage",
+  "command": "node",
+  "args": [
+    "--experimental-test-coverage",
+    "--test",
+    "test/unit/resources/image-preparation.test.js",
+    "test/unit/materialization/image-placement.test.js",
+    "test/unit/resources/data-source-resolution.test.js",
+    "test/unit/core/content-digest.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 408,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T14:06:17.360Z",
+  "finishedAt": "2026-10-28T14:06:17.769Z",
+  "source": {
+    "available": true,
+    "commit": "c0f0f7147f62a9da671b632eb5dbaf03188cd575",
+    "clean": false,
+    "statusSha256": "a9a3679e7180d9328271e82767f5f6d0d8badf5347c4f96a91f5cdfb04c16931"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "c0f0f7147f62a9da671b632eb5dbaf03188cd575",
+    "clean": false,
+    "statusSha256": "a9a3679e7180d9328271e82767f5f6d0d8badf5347c4f96a91f5cdfb04c16931"
+  },
+  "logSha256": "30ae0498fe45e1f48e2f93077c2df6d0d72cf20446964065710bc1a2b09e8e18",
+  "bytes": 10661,
+  "retainedBytes": 10661,
+  "truncated": false
+}

@@ -348,6 +348,36 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
   `test/contracts/source-data-types.test.js`.
 - ✅ Covered: 빈/공백 원본 키의 추론·명시 schema, nullable/optional/중복·미선언·타입 실패, 입력/이전 프로그램 불변성, 행 보존/투영, source revision, Full/Basic persistence·정상 이름의 동일 SVG, facet. Evidence: `test/unit/actions/data/raw-row-keys.test.js`.
 
+## `applyDataUpdate`
+
+- Signature: `applyDataUpdate({ prepared, requestToken })`. 동기 action이며 같은 entry의 비동기 `prepareDataUpdate(program, request, host)`가 만든 opaque handle만 받는다. Full은 create/revise/parameter, Basic은 create만 지원한다.
+- Helper는 명시적인 `requestToken`과 필요한 `load` 또는 `resolveNamed` callback을 받는다. 자동 fetch, 전역 pending/cache, implicit dataset/source 선택은 없다. Optional `baseURL`은 absolute URL이고 신규 URL source에만 저장된다. `signal`은 실제 AbortSignal이며 준비 전·host 응답 후·반환 전·적용 때 abort를 검사한다.
+- Request는 세 닫힌 모양이다. Create `{kind:"create",id,source,keyField?|keyFields?}`는 explicit fresh ID의 dataset과 동명 data-source resource를 만든다. Revise `{kind:"revise",target,id,rowMap?}`는 명시 source binding과 fresh dataset ID를 사용한다. Parameter `{kind:"parameter",target,value}`는 type/nullable을 유지하고 URL source와 computed closure를 함께 갱신한다. 별도 keys 배열, source intent 교체, target dispatch는 지원하지 않는다.
+- Source는 inline rows `{kind:"inline",values}`, inline text `{kind:"inline",text,format,delimiter?}`, named `{kind:"named",name,format,delimiter?}`, URL `{kind:"url",url,format,delimiter?}`다. 공통 `parse`와 `schema`를 지원한다. Format은 csv/json, delimiter는 CSV의 한 글자이며 quote/newline/BOM은 거부한다. URL은 문자열 또는 standard@1 v2 scalar AST이며 field access는 불가하고 최종 값은 nonempty string이어야 한다. Relative URL에는 explicit absolute baseURL이 필요하다.
+- Source rows는 dense plain-object array이며 finite JSON cell만 허용한다. Getter, hidden/symbol property, reserved prototype key, undefined, bigint, Date, executable/class/cycle은 거부한다. CSV는 unique nonempty header와 동일 cell 수, quoted delimiter/newline/doubled quote를 지원하며 malformed quote를 거부한다. JSON은 object row array여야 한다.
+- `parse`는 field→directive다. Type은 string/number/boolean/date, nullable 기본 false다. Number는 finite decimal/exponent, boolean은 boolean 또는 정확한 true/false 문자열이다. Date는 explicit UTC/IANA `timeZone`이 필요하며 format은 `%Y-%m-%d`(기본), `%d/%m/%Y`, `%m/%d/%Y`, `iso`다. 결과는 epoch milliseconds이며 rollover, gap/ambiguous local time 및 불일치 offset/zone을 거부한다. Optional schema는 기존 closed source schema다. Empty typed source도 field meaning을 유지한다.
+- Host callback은 frozen `{url,signal?}` 또는 `{name,signal?}`만 받고 `{text|bytes,mimeType,encoding:"utf-8"}`를 동기 또는 Promise로 반환한다. Bytes는 Uint8Array다. 정확히 한 payload를 요구하며 malformed UTF-8/MIME/charset을 거부한다. CSV는 text/csv 또는 application/csv, JSON은 application/json 또는 application/*+json이다. 임의 object/Response를 자동 해석하지 않는다.
+- 모든 source의 현재 state와 미래 URL/input refs를 load 전에 검증한다. 여러 source는 각각 한 번 준비하고 완료 순서와 무관하게 원래 dependency 순서를 유지한다. Load/parse/identity/consumer 하나라도 실패하면 이전 program과 trace는 그대로다. 준비와 적용 사이에 callback을 재실행하지 않는다.
+- Handle에는 kind와 작은 request descriptor만 보이며 raw source, parameter value, rowMap, callback, signal, payload와 authority는 private다. 복제/JSON round trip/구조적 위조 handle을 거부한다. Apply의 현재 token은 prepare token과 같아야 하고 receiver는 prepare한 정확한 program instance여야 한다. 다른 action 또는 제거→재생성 이후의 같은 ID/revision도 stale이다. Host가 최신 program과 token 변수를 전달해야 한다. 오래된 immutable base에 의도적으로 적용하면 별도 branch이며 라이브러리가 host의 최신 변수를 추측하지 않는다.
+- Parameter source들과 기존 computed roots의 transitive union을 stable topological order로 replay한다. Diamond는 모든 입력이 바뀐 뒤 한 번 계산하며 raw snapshot/row identity는 speculative/actual 적용을 통틀어 한 번 배정한다. 기존 10,000,000 parameter work budget을 공유한다. Same-value parameter는 no-load/no-revision이다. URL consumer가 있는 direct editParameter 값 변경은 prepared-data-required다.
+- `semanticSpec.resources`의 authored `data-source`는 revision, normalized source/baseURL/key policy, exact parameter inputs, current output data ref와 inputHash를 소유한다. Original dataset의 `sourceReceipt`는 sourceId, parsing, 당시 resolvedURL/name, 실제 original text/rows, parserVersion/contentHash/MIME/encoding/byteLength를 소유한다. 과거 receipts는 당시 자료를 보존하고 현재 parameter에 재결합하지 않는다.
+- Explicit revise는 과거 raw snapshot을 보존하고 binding revision을 한 번 증가시킨다. Key field/tuple은 유지하며 generated keys의 rowMap은 기존 reviseData 규칙이다. 직접 reviseData rows 편집은 성공 전 전체 consumer를 검증하고 해당 live binding을 해제한다. 새 rows에 과거 URL receipt를 붙이지 않는다. removeData는 외부 consumer가 없는 live output의 binding을 먼저 제거하며 removeParameter는 URL resource inputs도 live consumer로 계산한다.
+- Unit namespace만 사용한다. Facet/repeat는 retained source와 recipe를 갱신하고 children은 필요한 exact refs를 채택한다. Concat은 명시 child에서 prepare/apply한 뒤 replaceCompositionChild를 호출한다. Parent/다른 child에 handle을 적용할 수 없다.
+- Full snapshot은 source resources와 receipt를 저장하며 fresh process/offline 복원이 가능하다. 복원은 retained source를 pure parser로 대조하고 live inputs/hash/output을 검증한다. URL AST 실행, load, action replay 또는 graphic materialization은 없다. Graphic snapshot, renderer와 scene은 계속 graphicSpec만 사용한다.
+- Trace는 applyDataUpdate→createData/reviseData/editParameter와 실제 primitive/materialization children을 보존한다. Stored original text와 source text는 primitive trace에서 길이로 요약하고 arrays는 count로 기록한다. 완료 trace의 token/descriptor는 pending authority가 아니다.
+
+### Formal values — `applyDataUpdate`
+
+- Implemented: `applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram`; `prepareDataUpdate(program, request: DataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate>`.
+- Basic: request kind/create handle만 받으며 revision orchestration을 import하지 않는다.
+- Planned: 없음.
+- Proposed (NOT IMPLEMENTED): automatic fetch, streaming/append, editable source intent, host pending persistence.
+
+### Value coverage — `applyDataUpdate`
+
+- Evidence: `test/unit/resources/data-update-preparation.test.js`, `test/unit/resources/data-update-full-preparation.test.js`, `test/unit/resources/prepared-data-public.test.js`, `test/unit/resources/prepared-data-lifecycle.test.js`, `test/unit/core/data-source-resource-state.test.js`, `test/contracts/prepared-data-types.test.js`, `scripts/consumers/fixtures/node/prepared-data.mjs`.
+- ✅ Covered: inline/text/named/URL, exact token/base/ABA/abort, immutable receipts and output refs, Full/Basic boundary, source/computed union, source detach, facet/repeat/concat and offline restore; installed renderer and scene consumer fixture uses the same public boundary.
+
 ## `reviseData`
 
 - Signature: `reviseData({ source, id, values, schema?, keys?, rowMap? })`. Full 전용 immutable source revision이다.
@@ -492,7 +522,7 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 
 ## `filterData`
 
-- Signature: `filterData({ id, source?, field, oneOf?, predicate?, range? })`
+- Signature: `filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })` or `filterData({ id, source?, where: ExpressionV2 })`.
 - `id`: Implemented, 필수 derived dataset ID. 새 ID여야 한다.
 - `source`: Implemented, dataset ID. 생략하면 current data를 사용하며 유일하게 추론되지 않으면 오류다.
 - `field`: Implemented, 비어 있지 않은 필드 이름. 각 row에 값이 없어도 비교 결과가 false일 수 있다.
@@ -509,9 +539,16 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 - Coverage: `test/unit/actions/data/filter-data.test.js`가 source inference, scalar types,
   ownership, invalid options와 primitive equivalence를 검증한다.
 
+- Expression predicates use the closed `ExpressionV2` registry and require a boolean result; numeric or string truthiness is rejected. Comparisons keep the expression null/missing policy.
+- `where` is exclusive with every field-filter option. All fields, parameter references, and known types are checked in every AST branch before evaluation, including empty inputs.
+- Stored expression filters record ordered exact `parameterInputs`; authors cannot supply these bindings. Parameter edits revise every dependent filter, statistic, scale, mark and guide through the existing dataset DAG. Unaffected datasets retain identity.
+- Filtering preserves source order, row keys, lineage and schema, including empty outputs. Automatic empty scale domains reject unless a fixed domain or the existing explicit `emptyDomain: "preserve"` policy is supplied. Failed edits preserve the old program and trace.
+- Editable restoration validates predicate shape, source field types and exact parameter revisions without evaluating the AST. Referenced parameters cannot be removed until their filter dependency is detached.
+- Evidence: `test/unit/actions/data/expression-filter.test.js` and `test/unit/grammar/conditional-encoding.test.js`.
+
 ### Formal values — `filterData`
 
-- Implemented: `filterData({ id: UserId; source?: UserId; field: FieldName } & ({ oneOf: readonly unknown[] } | { predicate: FilterComparison } | { range: FilterRange }))`
+- Implemented: `filterData(options: FilterDataOptions): ChartProgram`. `FilterDataOptions` is the exclusive union of the field filter modes and `{ id; source?; where: ComputedExpressionV2 }`.
 - `FilterComparison = { op: "eq" | "neq"; value: unknown } | { op: "lt" | "lte" | "gt" | "gte"; value: Finite | string }`
 - `FilterRange = { min: Finite | string; max: Finite | string; inclusive?: boolean }`
 - Planned (NOT IMPLEMENTED): —
@@ -729,6 +766,65 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 - ✅ Covered: field/output uniqueness, source collision, 64-field and 10,000-row bounds, immutable rejection.
 - Evidence: `test/unit/actions/data/fold-data.test.js`.
 
+## `createParameter`
+
+- Signature: `createParameter({ id, value, type?, nullable? })`.
+- 명시 user ID는 `[A-Za-z0-9_-]+`이며 같은 parameter ID의 중복 생성은 거부한다. Dataset과 parameter ID는 별도 namespace다.
+- type은 `number | string | boolean`이다. Non-null value에서 type을 추론하며 nullable 기본값은 false다. 초기 null은 명시 type과 nullable:true가 필요하다.
+- Finite number, 빈 string, false, 0, -0을 허용한다. String은 최대 1,048,576 UTF-16 units다. Undefined/missing, array, object, Date, bigint, function과 비유한 숫자는 거부한다. Optional 옵션의 명시 undefined도 거부한다.
+- Options는 enumerable own data만 허용하며 accessor/symbol/hidden key/unknown key는 읽기 전에 거부한다. Caller-owned 입력과 기존 program은 불변이다.
+- 생성은 semanticSpec.resources에 authored parameter snapshot 하나를 저장한다. Revision은 0이며 type/nullable은 options, 값은 result.value만 소유한다. Parameter 자체의 inputs는 빈 배열이다. Graphics는 생성하지 않는다.
+- Full/Basic 모두 생성 가능하다. Parameter는 unit-local이며 concat에서는 기존 childPath scope를 명시한다.
+
+### Formal values — `createParameter`
+
+- Implemented: `createParameter(options: CreateParameterOptions): ChartProgram`.
+- Planned: 없음.
+- Proposed (NOT IMPLEMENTED): type 변경, formula parameter, UI control 제약.
+
+### Value coverage — `createParameter`
+
+- ✅ Covered: scalar/type/null/empty/zero/length limits, duplicate IDs, immutable state, getter zero calls, Full/Basic creation.
+- Evidence: `test/unit/grammar/parameter.test.js`, `test/unit/core/parameter-resource-state.test.js`, `test/unit/actions/data/parameter-lifecycle.test.js`.
+
+## `editParameter`
+
+- Signature: `editParameter({ target, value })`.
+- 명시 target과 value가 필요하며 기존 type/nullable/ID는 유지한다. Value는 생성 때와 같은 scalar 규칙을 따른다.
+- Object.is로 같은 값이면 resource revision과 dataset identity/calculation을 유지하고 정상 top-level action trace만 추가한다. -0→0은 변경이다. Revision은 nonnegative safe integer이며 overflow는 원자적으로 거부한다.
+- 값 변경은 해당 parameter를 읽는 모든 저장 computed snapshot을 시작점으로 dataset DAG 전체 closure를 stable topological order로 갱신한다. Lookup diamond는 한 번만 재계산하며 영향 없는 sibling은 공유한다. 같은 결과라도 다른 parameter revision을 읽으면 새 data provenance를 만든다.
+- Graph는 호출 스택에 의존하지 않는 bounded iterative 순회다. 전체 재계산 비용은 각 transform의 실제 새 source 행 수를 합산하며 computed는 AST node 수를 곱한다. 합계 10,000,000을 넘으면 resource-limit으로 거부한다. Filter 확장/축소 이후의 행 수를 사용하고 기존 snapshot의 행 수로 추정하지 않는다.
+- 새 immutable dataset revision에 exact parameterInputs를 결합하고 logical owners/layer/selection/statistical references를 재결합한 뒤 기존 scales→marks→guides→layout→highlights materialization을 수행한다. Speculative immutable branch의 전 과정을 검증한 뒤 반환하므로 실패 시 기존 program/trace/graphics는 유지된다. Dependents/force/cascade 옵션은 없다.
+- Facet/repeat parent는 retained source를 수정한 뒤 children/shared guides/layout을 재생성한다. Concat는 명시 childPath가 필요하며 같은 ID의 sibling에 전파하지 않는다. Full 전용이다.
+
+### Formal values — `editParameter`
+
+- Implemented: `editParameter(options: EditParameterOptions): ChartProgram`.
+- Planned: 없음.
+- URL consumer가 있는 값 변경은 `prepareDataUpdate`의 parameter request와 `applyDataUpdate`를 사용한다. 준비 없는 직접 변경은 prepared-data-required이며 같은 값은 기존 no-op이다.
+- Proposed (NOT IMPLEMENTED): parameter ID/type/nullable 변경, conditional encoding, automatic network loading.
+
+### Value coverage — `editParameter`
+
+- ✅ Covered: immutable multi-root/lookup diamond revisions, unaffected siblings, no-op/signed zero, numeric and consumer failure atomicity, selectors/highlights, facet/repeat/concat scope, restore/edit/revise lifecycle.
+- Evidence: `test/unit/actions/data/parameter-lifecycle.test.js`, `test/unit/actions/data/computed-v2.test.js`.
+
+## `removeParameter`
+
+- Signature: `removeParameter({ id })`.
+- 존재하는 명시 ID의 미참조 parameter만 제거한다. Stored computed snapshot, resource input, retained source 중 live reference가 있으면 resource-in-use이며 consumer 정보를 포함한다. Primitive removal도 동일 restrict 규칙을 적용한다.
+- 수식 또는 consumer를 먼저 제거해야 한다. Cascade/force는 지원하지 않는다. 삭제 후 같은 ID를 생성하면 revision0이며 이전 program snapshot에는 이전 resource가 유지된다. Full 전용이다.
+
+### Formal values — `removeParameter`
+
+- Implemented: `removeParameter(options: RemoveParameterOptions): ChartProgram`.
+- Planned: 없음.
+- Proposed (NOT IMPLEMENTED): cascade/force 삭제.
+
+### Value coverage — `removeParameter`
+
+- ✅ Covered: explicit identity, missing resource, restrict errors, primitive bypass rejection, immutable removal/recreation.
+- Evidence: `test/unit/core/parameter-resource-state.test.js`, `test/unit/actions/data/parameter-lifecycle.test.js`.
 ## `createPivotData`
 
 - Signature: `createPivotData({ id, source?, field, value?, groupBy?, columns?, op?, fill? })`.
@@ -765,7 +861,7 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 - `id`, `source`: 새 immutable derived dataset ID와 existing materialized source다. `source` 생략 시
   current data를 사용한다.
 - `as`: 모든 source row에서 아직 존재하지 않는 non-empty output field다.
-- `expression`: callback/string/eval이 아닌 recursive typed data AST다. Leaf는 `{ field }` 또는 finite
+- `expression`: v1의 기존 recursive typed data AST 또는 아래 explicit v2 envelope다. Callback/string/eval은 허용하지 않는다. 다음 기존 규칙은 v1에 적용한다. Leaf는 `{ field }` 또는 finite
   number/string/boolean/null `{ constant }`다. 산술, 비교, boolean, `if`, `coalesce`, `concat`,
   `log`, `sqrt`의 닫힌 node union을 지원한다. `if`·`and`·`or`·`coalesce`는 값 평가를
   short-circuit하지만 모든 branch의 구조와 field 존재는 먼저 검증한다.
@@ -785,6 +881,19 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
   첫 state change 전에 거부한다. Expression은 depth 16, 128 nodes, `rows × nodes` 10,000,000 work로 제한한다.
 - Coverage: `test/unit/actions/data/computed-data.test.js`가 기존 산술, nullable/string/boolean,
   conditional short-circuit, Unicode code-point ordering, ownership, mark consumption과 invalid matrix를 검증한다.
+
+### Explicit v2 expressions
+
+- `expression:{version:2,registry:"standard@1",root}`는 literal/field/fieldPath/parameter/unary/binary/if/call의 닫힌 8-node union이다. Literal top-level field name과 nested fieldPath는 구별하며 path는 최대8개 literal own-data keys다. Reserved keys/prototype/getter/regex/callback/eval은 허용하지 않는다.
+- `call`은 `standard@1`의 30개 닫힌 함수만 사용한다. `ggaction/inspection`의 `getExpressionFunctions({registry?})`가 immutable name/arity/input/output/options descriptors를 반환하며 registry 생략은 standard@1이다. Unknown registry/option과 명시 undefined는 오류다. 평가 함수나 사용자 registry 등록은 공개하지 않는다.
+- 모든 branch의 shape, 참조와 알려진 type을 먼저 검증하고 if/and/or/coalesce의 실제 값만 lazy 평가한다. Boolean 조건은 strict boolean이며 implicit coercion은 없다. Missing과 null은 별개다. Nullish arithmetic과 domain/division/nonfinite/date-range/array-bounds failures는 undefined 결과와 계산 report를 만들며 invalid type은 오류다. Nullish 비교는 false다. Non-null/nonmissing output은 한 scalar type이어야 한다.
+- Source schema가 field type과 optional 여부를 제공한다. Empty data도 unknown field/parameter와 static type mismatch를 거부한다. Array는 arrayLength/at 등 명시 call 입력으로만 쓰며 최종 output은 scalar다.
+- Parameter 값은 resource.result.value에서만 읽고 transform에는 normalized AST와 `parameterInputs:[{kind:"parameter",id,revision}]`를 저장한다. AST 첫 출현 순서, 중복 제거, inactive branches 포함이다. Parameter 없는 v2는 [], v1에는 해당 속성이 없다. 사용자 create/edit/derived 요청은 vector를 직접 지정하지 않는다. Stored vector의 missing/extra/duplicate/order/type/stale ref는 거부한다.
+- v2 계산 report는 algorithm:expression@2, registry, evaluatedRows, missingRows, divideByZero/domain/nonFinite/dateRange/arrayBounds counts와 parameterInputs를 포함한다. Data row/field lineage에는 parameter를 섞지 않는다.
+- v2 한도: depth64, node4096, call args64, path8, rows×nodes10,000,000, string1,048,576 UTF-16 units, array100,000, cumulative value work10,000,000. v1 limits와 numeric/error/missing behavior는 그대로 유지한다.
+- Full/Basic 모두 v2 computed 생성 가능하다. Full editComputedData는 v1↔v2 교체와 source revise replay를 지원하며 dependency closure는 기존 명시 dependents 정책을 따른다. EditParameter는 항상 전체 closure를 갱신한다.
+- Editable schema4는 parameter resource와 v2 exact bindings를 보존하며 restore는 validators만 실행하고 계산·fetch·action replay를 하지 않는다. Legacy1–3는 위장한 신규 payload를 거부한다. Graphic-only snapshot schema와 renderer 계약은 바뀌지 않는다.
+- Evidence: `test/unit/actions/data/computed-v2.test.js`, `test/unit/actions/data/parameter-lifecycle.test.js`, `test/unit/grammar/expression-validation.test.js`, `test/unit/grammar/expression-functions.test.js`, `test/unit/grammar/expression-limits.test.js`.
 
 ### Formal values — `createComputedData`
 
@@ -1224,7 +1333,8 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 
 ## `editFilteredData`
 
-- Signature: `editFilteredData({ target, field?, oneOf? | predicate? | range?, dependents? })`.
+- Signature: `editFilteredData({ target, field?, oneOf? | noneOf? | predicate? | range?, nulls?, dependents? })` or `editFilteredData({ target, where: ExpressionV2, dependents? })`.
+- A complete `where` switches from a legacy field mode; a complete field/mode pair switches back. Expression edits rebind all parameter inputs, including inactive branches. `where` cannot be mixed with `field` or `nulls`.
 - Filter mode option을 제공하면 이전 mode keys를 모두 제거한 뒤 exactly-one mode를 검증한다. `field`만 편집하면
   현재 mode를 유지한다.
 

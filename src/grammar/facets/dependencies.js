@@ -1,9 +1,11 @@
+import { hasPositionBinding } from "../../core/encodingBindings.js";
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { findTransformPolicy } from "../transforms.js";
 import { BAR_GRAINS, resolveBarGrain } from "../bars/policy.js";
 import { resolveRectMode } from "../rects.js";
 import { resolveRuleMode } from "../rules.js";
+import { conditionalValues } from "../conditionalState.js";
 
 const CARTESIAN_MARKS = new Set([
   "point", "line", "area", "bar", "rule", "tick", "rect", "text"
@@ -28,6 +30,10 @@ function coordinateType(semanticSpec, layer) {
 
 function classifyPrimaryLayer(semanticSpec, layer) {
   const type = layer.mark?.type;
+  if (["tree", "treemap"].includes(type)) {
+    if (!layer.hierarchyBinding?.layout) throw new Error("Hierarchy facets require a complete layout binding.");
+    return "hierarchy";
+  }
   const parallel = layer.encoding?.parallel;
   if (parallel !== undefined || coordinateType(semanticSpec, layer) === "parallel") {
     const complete = type === "line" && Array.isArray(parallel?.dimensions) &&
@@ -71,8 +77,8 @@ function classifyPrimaryLayer(semanticSpec, layer) {
     throw new Error(`Facet text layer "${layer.id}" requires a text encoding.`);
   }
   const complete = (
-    layer.encoding?.x?.scale !== undefined &&
-    layer.encoding?.y?.scale !== undefined
+    hasPositionBinding(layer, "x") &&
+    hasPositionBinding(layer, "y")
   ) || (type === "rule" && resolveRuleMode(layer) !== undefined) ||
     (type === "rect" && resolveRectMode(layer) !== undefined);
   if (!complete) {
@@ -90,9 +96,11 @@ export function collectFacetScaleBindings(semanticSpec) {
   const bindings = [];
   for (const layer of semanticSpec.layers) {
     for (const [policyKey, semanticChannel] of ORDINARY_SCALE_CHANNELS) {
-      const scaleId = layer.encoding?.[semanticChannel]?.scale;
-      if (scaleId === undefined) continue;
-      bindings.push({ layerId: layer.id, scaleId, policyKey, semanticChannel });
+      const encodings = layer.conditionals?.[semanticChannel] === undefined ? [layer.encoding?.[semanticChannel]]
+        : conditionalValues(layer.conditionals[semanticChannel]);
+      for (const scaleId of new Set(encodings.map(encoding => encoding?.scale).filter(id => id !== undefined))) {
+        bindings.push({ layerId: layer.id, scaleId, policyKey, semanticChannel });
+      }
     }
     for (const [dimensionIndex, dimension] of
       (layer.encoding?.parallel?.dimensions ?? []).entries()) {

@@ -27,7 +27,7 @@ function seriesSide(placement, splitValue) {
   return index === 0 ? "top" : "bottom";
 }
 
-export function deriveCategoricalDensitySeries(rows, layer, transform) {
+export function deriveCategoricalDensitySeries(rows, layer, transform, options = {}) {
   const placement = transform?.placement;
   if (layer?.mark?.type !== "area" || placement?.type !== "category") {
     throw new Error("Categorical density series require a category-placed area.");
@@ -45,8 +45,8 @@ export function deriveCategoricalDensitySeries(rows, layer, transform) {
       `Categorical density area mark "${layer.id}" requires its category and value encodings.`
     );
   }
-  const categories = readNominalField(rows, placement.categoryField);
-  const values = readQuantitativeField(rows, transform.as[0]);
+  const categories = options.positionValues?.[placement.channel] ?? readNominalField(rows, placement.categoryField);
+  const values = options.positionValues?.[valueChannel] ?? readQuantitativeField(rows, transform.as[0]);
   const densities = readQuantitativeField(rows, transform.as[1]);
   const splits = placement.split === undefined
     ? rows.map(() => undefined)
@@ -73,7 +73,8 @@ export function deriveCategoricalDensitySeries(rows, layer, transform) {
     }
     current.values.push({
       value: values[index],
-      density: densities[index]
+      density: densities[index],
+      sourceIndex: index
     });
   }
   if (series.length === 0) {
@@ -92,11 +93,12 @@ export function deriveCategoricalDensitySeries(rows, layer, transform) {
   return cloneAndFreeze({
     mode: placement.channel === "x" ? "category-x" : "category-y",
     placement: resolvedPlacement,
-    series: series.map(item => ({
-      ...item,
-      side: seriesSide(resolvedPlacement, item.split),
-      values: item.values.sort((left, right) => left.value - right.value)
-    }))
+    series: series.map(item => {
+      const values = item.values.sort((left, right) => left.value - right.value);
+      return { ...item, side: seriesSide(resolvedPlacement, item.split),
+        values: values.map(({ sourceIndex: _sourceIndex, ...value }) => value),
+        ...(options.lineage ? { sourceIndices: values.map(value => value.sourceIndex) } : {}) };
+    })
   });
 }
 
@@ -119,12 +121,12 @@ function maximumFor(derived, series) {
   return maximum;
 }
 
-function pathBoundaries(series, center, halfWidth, maximum, valueScale, channel) {
-  const valuePositions = mapContinuousScaleValues(
+function pathBoundaries(series, center, halfWidth, maximum, valueScale, channel, positions, widthBand) {
+  const valuePositions = positions?.map(value => value.value) ?? mapContinuousScaleValues(
     series.values.map(value => value.value),
     valueScale
   );
-  const widths = series.values.map(value => halfWidth * value.density / maximum);
+  const widths = series.values.map((value, index) => (positions === undefined ? halfWidth : positions[index].bandwidth * widthBand / 2) * value.density / maximum);
   const horizontal = channel === "x";
   const direction = {
     left: -1,
@@ -132,18 +134,18 @@ function pathBoundaries(series, center, halfWidth, maximum, valueScale, channel)
     top: -1,
     bottom: 1
   }[series.side];
-  const point = (valuePosition, width) => horizontal
-    ? { x: center + width, y: valuePosition }
-    : { x: valuePosition, y: center + width };
+  const point = (valuePosition, width, index) => horizontal
+    ? { x: (positions?.[index].category ?? center) + width, y: valuePosition }
+    : { x: valuePosition, y: (positions?.[index].category ?? center) + width };
   if (series.side === "both") {
     return {
-      lower: valuePositions.map((value, index) => point(value, -widths[index])),
-      upper: valuePositions.map((value, index) => point(value, widths[index]))
+      lower: valuePositions.map((value, index) => point(value, -widths[index], index)),
+      upper: valuePositions.map((value, index) => point(value, widths[index], index))
     };
   }
-  const baseline = valuePositions.map(value => point(value, 0));
+  const baseline = valuePositions.map((value, index) => point(value, 0, index));
   const outer = valuePositions.map((value, index) =>
-    point(value, direction * widths[index])
+    point(value, direction * widths[index], index)
   );
   return {
     lower: baseline,
@@ -154,7 +156,7 @@ function pathBoundaries(series, center, halfWidth, maximum, valueScale, channel)
 
 export function buildCategoricalDensityPaths(
   derived,
-  { categoryScale, valueScale, curve = "linear" } = {}
+  { categoryScale, valueScale, curve = "linear", positions } = {}
 ) {
   if (!Number.isFinite(categoryScale?.bandwidth) || categoryScale.bandwidth <= 0) {
     throw new Error("Categorical density placement requires a positive band scale.");
@@ -171,7 +173,9 @@ export function buildCategoricalDensityPaths(
       halfWidth,
       maximumFor(derived, series),
       valueScale,
-      derived.placement.channel
+      derived.placement.channel,
+      positions?.[index],
+      derived.placement.width.band
     );
     if (curve !== "linear") {
       return buildAreaCurvePathCommands(

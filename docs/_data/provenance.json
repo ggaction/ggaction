@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:b15ddfa6ac0a004b1f95e6e96483019398667ead1564bc9b62743058c3b33319",
-  "sourceCommit": "982c53a2587d5747b0865e6f68f47ee79a13fd27",
-  "sourceRef": "982c53a2587d5747b0865e6f68f47ee79a13fd27",
-  "exampleSourceRef": "b8f9668133b278974c9cfe7324402a18282c9f4b",
+  "contractId": "sha256:3dc52180271f91b5d55c7516fe8559334985a7bd2fdf9b231aee2229adb61646",
+  "sourceCommit": "92a9d22123c8817303df936836a7baab5470ac2e",
+  "sourceRef": "92a9d22123c8817303df936836a7baab5470ac2e",
+  "exampleSourceRef": "92a9d22123c8817303df936836a7baab5470ac2e",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 300,
+  "actionCount": 313,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -38,6 +38,10 @@
     },
     "createData": {
       "availableBy": "v0.0.13"
+    },
+    "applyDataUpdate": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
     },
     "reviseData": {
       "introducedAfter": "v0.0.13",
@@ -105,6 +109,54 @@
     },
     "createFoldData": {
       "availableBy": "v0.0.13"
+    },
+    "createHierarchyData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editHierarchyData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "layoutHierarchy": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editLayout": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "removeResource": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createTreePlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editTreePlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createTreemapPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editTreemapPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createParameter": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editParameter": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "removeParameter": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
     },
     "createComputedData": {
       "availableBy": "v0.0.13"

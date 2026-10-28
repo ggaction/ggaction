@@ -1,4 +1,4 @@
-import { chart, hconcat } from "../../../src/index.js";
+import { chart, hconcat, prepareDataUpdate } from "../../../src/index.js";
 
 import { loadZooDataset } from "../datasets/zoo.js";
 import {
@@ -9,6 +9,16 @@ import {
   realisticLifecycleRows,
   realisticSourceFields
 } from "./realistic-data.js";
+
+// Prepare once, then keep every recipe build synchronous on the exact immutable
+// receiver. This unused source fixture is separate from the chart's source rows.
+const preparedSourceBase = chart();
+const preparedSourceToken = "lifecycle-source";
+const preparedSource = await prepareDataUpdate(preparedSourceBase, {
+  kind: "create",
+  id: "unusedPreparedLifecycleSource",
+  source: { kind: "inline", values: [{ fixture: "prepared-source", value: 1 }] }
+}, { requestToken: preparedSourceToken });
 
 const CARTESIAN_CANVAS = Object.freeze({
   width: 920,
@@ -1025,6 +1035,32 @@ function addDirectDerivedDataEdits(program) {
   ];
   return program
     .createData({ id: "editSource", values })
+    .createParameter({ id: "computedOffset", type: "number", value: 1, nullable: false })
+    .createComputedData({
+      id: "parameterComputed",
+      source: "editSource",
+      as: "adjusted",
+      expression: {
+        version: 2,
+        registry: "standard@1",
+        root: {
+          type: "binary", op: "add",
+          left: { type: "field", name: "x" },
+          right: { type: "parameter", id: "computedOffset" }
+        }
+      }
+    })
+    .filterData({ id: "parameterFiltered", source: "editSource", where: {
+      version: 2, registry: "standard@1", root: { type: "binary", op: "gte",
+        left: { type: "field", name: "x" }, right: { type: "parameter", id: "computedOffset" } }
+    } })
+    .editParameter({ target: "computedOffset", value: 2 })
+    .editFilteredData({ target: "parameterFiltered", where: {
+      version: 2, registry: "standard@1", root: { type: "binary", op: "gt",
+        left: { type: "field", name: "x" }, right: { type: "parameter", id: "computedOffset" } }
+    } })
+    .createParameter({ id: "unusedLifecycleParameter", type: "boolean", value: null, nullable: true })
+    .removeParameter({ id: "unusedLifecycleParameter" })
     .createComputedData({
       id: "editComputed",
       source: "editSource",
@@ -1074,6 +1110,10 @@ function addDirectDerivedDataEdits(program) {
       target: "editSummary",
       aggregates: [{ op: "sum", field: "value", as: "summaryValue" }]
     })
+    .createPivotData({
+      id: "editPivot", source: "editSource", field: "category", value: "value", op: "sum"
+    })
+    .editPivotData({ target: "editPivot", op: "mean", groupBy: "group" })
     .createBinData({
       id: "editBin",
       source: "editSource",
@@ -1217,7 +1257,10 @@ function buildDirectDataResources(factors) {
   const bandwidth = factors.dataset.startsWith("tt-")
     ? spread * factors.bandwidth
     : factors.bandwidth;
-  let program = chart()
+  let program = preparedSourceBase.applyDataUpdate({
+    prepared: preparedSource,
+    requestToken: preparedSourceToken
+  })
     .createCanvas(cartesianCanvas(factors))
     .editCanvas({
       width,
@@ -1231,6 +1274,18 @@ function buildDirectDataResources(factors) {
     .removeScale({ id: "unusedLifecycleScale" })
     .removeCoordinate({ id: "unusedLifecycleCoordinate" });
   program = addDirectDerivedDataEdits(program);
+  program = program
+    .createHierarchyData({ id: "directHierarchy", data: "directSource", groupFields: ["category"], value: "positive" })
+    .editHierarchyData({ target: "directHierarchy", maxNodes: 1000 })
+    .layoutHierarchy({ id: "directTreeLayout", hierarchy: "directHierarchy", method: "tree", options: { nodeSize: [10, 10], siblingGap: 8, depthGap: 30, orientation: "vertical" } })
+    .editLayout({ target: "directTreeLayout", order: { by: "value", direction: "descending" } })
+    .createTreePlot({ id: "directTree", layout: "directTreeLayout", labels: {} })
+    .editTreePlot({ target: "directTree", nodes: { radius: 4 }, links: { strokeWidth: 1 } })
+    .layoutHierarchy({ id: "directMapLayout", hierarchy: "directHierarchy", method: "treemap", options: { size: [160, 120], padding: 4, method: "squarify" } })
+    .createTreemapPlot({ id: "directMap", layout: "directMapLayout", labels: {} })
+    .editTreemapPlot({ target: "directMap", cells: { opacity: .7 } })
+    .layoutHierarchy({ id: "unusedHierarchyLayout", hierarchy: "directHierarchy", method: "partition" })
+    .removeResource({ kind: "layout", id: "unusedHierarchyLayout" });
   return program
     .createDensityData({
       id: "directDensity",
@@ -1329,9 +1384,28 @@ function buildDirectDataResources(factors) {
     .createTitle({ text: lifecycleTitle(factors, "Derived resource analysis") });
 }
 
+function appendConditionalPoints(program) {
+  const when = { version: 2, registry: "standard@1", root: {
+    type: "binary", op: "gte", left: { type: "field", name: "x" }, right: { type: "literal", value: 2 }
+  } };
+  const options = (value, otherwise) => ({ target: "conditionalPoints",
+    conditions: [{ when, value: { value } }], otherwise: { value: otherwise } });
+  return program.createData({ id: "conditionalRows", values: [{ x: 1, y: 2 }, { x: 3, y: 4 }] })
+    .createPointMark({ id: "conditionalPoints", data: "conditionalRows" })
+    .encodeX({ target: "conditionalPoints", field: "x", scale: { id: "conditionalX" } })
+    .encodeY({ target: "conditionalPoints", field: "y", scale: { id: "conditionalY" } })
+    .encodeColor(options("red", "blue"))
+    .encodeStroke(options("#111111", "#222222"))
+    .encodeSize(options(36, 16))
+    .encodeShape(options("square", "circle"))
+    .encodeAngle(options(45, 0))
+    .encodeOpacity(options(0, 1))
+    .encodeStrokeWidth(options(2, 1));
+}
+
 function buildDirectPointText(factors) {
   const rows = styleRows(factors.dataset).map(row => ({ ...row, label: row.shape }));
-  return chart()
+  const program = chart()
     .createCanvas(cartesianCanvas(factors))
     .createData({ id: "appearanceRows", values: rows })
     .createPointMark({ id: "appearancePoints" })
@@ -1396,6 +1470,7 @@ function buildDirectPointText(factors) {
     .createRadarPlot({id:"appearanceRadarPlot",data:"radarAppearanceRows",coordinate:"appearanceRadar",wide:{fields:["x","positive","opacity"]},groupBy:"seriesKey",guides:false})
     .editRadarPlot({target:"appearanceRadarPlot",wide:{fields:["positive","opacity","x"]}})
     .removeMark({target:"appearanceRadarPlot"});
+  return appendConditionalPoints(program);
 }
 
 function directRangeRows(dataset) {
@@ -1441,6 +1516,10 @@ function buildDirectRangedMarks(factors) {
     .editStrokeWidthScale({ target: "directRules", range: [1, 4] })
     .encodeOpacity({ target: "directRules", value: factors.opacity })
     .editRuleMark({ target: "directRules", stroke: factors.stroke, opacity: factors.opacity })
+    .encodeStrokeDash({ target: "directRules", conditions: [{ when: {
+      version: 2, registry: "standard@1", root: { type: "binary", op: "gt",
+        left: { type: "field", name: "position" }, right: { type: "literal", value: 0 } }
+    }, value: { value: [3, 2] } }], otherwise: { value: [1, 1] } })
     .createRectMark({ id: "directRects", data: "directRanges", opacity: 0.12 })
     .encodeX({ target: "directRects", field: "lower", scale: { id: "x" } })
     .encodeX2({ target: "directRects", field: "upper" })
@@ -2117,9 +2196,12 @@ function lifecycleSignature(base, factors) {
     "action-facet-grid-lifecycle": ["facetGrid", "editFacetSource"],
     "action-repeat-charts-lifecycle": ["repeatCharts"],
     "action-direct-data-resources": [
+      "applyDataUpdate",
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale",
       "removeData", "removeScale", "removeCoordinate",
-      "createNormalizedData", "createCompleteData", "createImputedData", "editDerivedData",
+      "createParameter", "editParameter", "removeParameter",
+      "createNormalizedData", "createCompleteData", "createImputedData",
+      "createPivotData", "editPivotData", "editDerivedData",
       "editComputedData", "editFilteredData", "editFoldData", "editSummaryData",
       "editBinData", "editTimeUnitData", "editWindowData", "createSortedData", "editSortedData", "editDensityData",
       "editStackData", "editRegressionData", "createRegressionStatisticsData", "editRegressionStatisticsData", "editIntervalData", "editECDFData",
@@ -2373,11 +2455,13 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
-  "reviseData", "applyTextMetrics", "removeTextMetrics",
+  "reviseData", "applyDataUpdate", "applyTextMetrics", "removeTextMetrics",
+  "createParameter", "editParameter", "removeParameter",
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createSortedData", "editSortedData",
   "createIntervalData", "createTickMark", "editTickMark", "removeMark",
   "createNormalizedData", "createCompleteData", "createImputedData",
+  "createPivotData", "editPivotData",
   "editDerivedData", "editComputedData", "editFilteredData", "editFoldData",
   "editSummaryData", "editBinData", "editTimeUnitData", "editWindowData",
   "editDensityData", "editStackData", "editRegressionData", "createRegressionStatisticsData", "editRegressionStatisticsData", "editIntervalData",

@@ -1,0 +1,31 @@
+{
+  "command": [
+    "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+    "scripts/run-tests.js",
+    "realistic"
+  ],
+  "code": 143,
+  "signal": null,
+  "node": "v22.23.1",
+  "startedAt": "2026-10-28T13:18:18.638Z",
+  "finishedAt": "2026-10-28T13:20:58.775Z",
+  "durationMs": 160137,
+  "discoveredFiles": 29,
+  "counts": {
+    "tests": null,
+    "suites": null,
+    "pass": null,
+    "fail": null,
+    "cancelled": null,
+    "skipped": null,
+    "todo": null,
+    "duration_ms": null
+  },
+  "inputSha256Before": "ba638f92b62ea3367a7537d2f91cd2afa247ac100959f985a371e19540057416",
+  "inputSha256After": "8cf848ab00095ed88514977f75a9e3fb1e9af600cc2a610dce6b834da8ba3547",
+  "changedInputs": [
+    "scripts/consumers/fixtures/types-1.ts",
+    "test/contracts/compact-action-cards.test.js"
+  ],
+  "logSha256": "07b5156bdbbf4d98c73ca8a8a4bba93e55cd2f18b3631b7176d235ae322c98d1"
+}

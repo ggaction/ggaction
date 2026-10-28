@@ -35,16 +35,16 @@ function environmentValues(environment) {
   return Object.freeze({ fields: Object.freeze(copy.fields), parameters: Object.freeze(copy.parameters) });
 }
 
-export function normalizeExpressionV2(expression, environment = {}) {
+function normalize(expression, environment, bind, predicate = false) {
   record(expression, ["version", "registry", "root"]);
   if (expression.version !== 2 || expression.registry !== "standard@1") throw new TypeError("Unsupported expression version or registry.");
   const resolved = environmentValues(environment);
   const state = { nodes: 0, ancestors: new WeakSet(), fields: new Set(), parameters: new Set() };
   function resource(kind, id) {
     name(id, `${kind} reference`);
-    if (!Object.hasOwn(resolved[kind], id)) throw new TypeError(`Unknown expression ${kind} reference.`);
+    if (bind && !Object.hasOwn(resolved[kind], id)) throw new TypeError(`Unknown expression ${kind} reference.`);
     state[kind].add(id);
-    return resolved[kind][id].type;
+    return bind ? resolved[kind][id].type : "unknown";
   }
   function visit(node, depth) {
     limit(depth, EXPRESSION_LIMITS.depth, "depth");
@@ -119,9 +119,43 @@ export function normalizeExpressionV2(expression, environment = {}) {
   }
   const root = visit(expression.root, 1);
   checkType(root.types, scalarTypes, "Expression output");
+  if (predicate) booleanType(root.types);
   return Object.freeze({
     expression: Object.freeze({ version: 2, registry: "standard@1", root: root.node }),
     environment: resolved, nodes: state.nodes,
     fields: Object.freeze([...state.fields]), parameters: Object.freeze([...state.parameters])
   });
+}
+
+export function normalizeExpressionV2(expression, environment = {}) {
+  return normalize(expression, environment, true);
+}
+
+// Validate the complete AST before a program resolves its named inputs.
+export function inspectExpressionV2(expression) {
+  return normalize(expression, {}, false);
+}
+
+export function normalizePredicateExpression(expression, environment = {}) {
+  return normalize(expression, environment, true, true);
+}
+
+export function inspectPredicateExpression(expression) {
+  return normalize(expression, {}, false, true);
+}
+
+// Rebind field references only. Literals, function options and parameter IDs
+// are values with different owners even when their strings match a field name.
+export function rebindExpressionFields(expression, changed) {
+  const inspected = inspectExpressionV2(expression);
+  function visit(node) {
+    if (node.type === "field") return { ...node, name: changed(node.name) };
+    if (node.type === "fieldPath") return { ...node, root: changed(node.root) };
+    if (node.type === "unary") return { ...node, operand: visit(node.operand) };
+    if (node.type === "binary") return { ...node, left: visit(node.left), right: visit(node.right) };
+    if (node.type === "if") return { ...node, condition: visit(node.condition), then: visit(node.then), else: visit(node.else) };
+    if (node.type === "call") return { ...node, args: node.args.map(visit) };
+    return node;
+  }
+  return inspectExpressionV2({ ...inspected.expression, root: visit(inspected.expression.root) }).expression;
 }

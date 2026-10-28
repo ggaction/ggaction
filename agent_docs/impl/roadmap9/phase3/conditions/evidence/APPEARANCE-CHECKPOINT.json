@@ -1,0 +1,162 @@
+{
+  "step": "STEP-016",
+  "checkpoint": "conditional-appearance",
+  "status": "verified-partial",
+  "basis": "6a005903229fc2b54edd7e7eb05a1e181d2247eb",
+  "branch": "codex/roadmap9-conditions",
+  "authorization": "../../../AUTHORIZATION.json",
+  "date": "2026-10-28",
+  "commands": [
+    {
+      "command": "node scripts/run-tests.js coverage",
+      "exit": 0,
+      "tests": 6572,
+      "passed": 6572,
+      "failed": 0,
+      "lines": 96,
+      "branches": 93.58,
+      "functions": 98.75,
+      "criticalFloors": 213,
+      "receipt": "appearance-coverage-receipt.json",
+      "metrics": "appearance-coverage-metrics.json",
+      "report": "appearance-coverage-report.log.gz",
+      "uncompressedReportSha256": "71b06b1b5016f5116380269347a2ebc3a9f7ba6b387e7b8517be062d9b959583"
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/nested-scale-role-contract.test.js",
+      "exit": 0,
+      "tests": 4,
+      "passed": 4,
+      "log": "appearance-nested-scales.log"
+    },
+    {
+      "command": "npm run test:package",
+      "exit": 0,
+      "groups": 7,
+      "passed": 7,
+      "nodeCases": 191,
+      "artifactSha256": "2fc54e7f8ca45be5cca7c715b4b8c61b7fb6b14645074fa71af1396ebf7ad78a",
+      "report": "appearance-installed-qualification.json"
+    },
+    {
+      "command": "GGACTION_PACKAGE_SPEC=<measured Node22 tgz> node scripts/run-tests.js browser browser/conditional-rendering.browser.js",
+      "exit": 0,
+      "tests": 2,
+      "passed": 2,
+      "log": "appearance-browser.log"
+    },
+    {
+      "command": "node scripts/run-tests.js docs",
+      "exit": 0,
+      "tests": 161,
+      "passed": 161,
+      "log": "appearance-docs.log"
+    },
+    {
+      "command": "PATH=/opt/homebrew/opt/ruby@3.2/bin:$PATH npm run docs:build",
+      "exit": 0,
+      "log": "appearance-docs-build.log"
+    },
+    {
+      "command": "npm run test:docs:built",
+      "exit": 0,
+      "pages": 150,
+      "machineArtifacts": 1193,
+      "log": "appearance-docs-built.log"
+    },
+    {
+      "command": "npm run test:docs:browser",
+      "exit": 0,
+      "viewports": [
+        "desktop",
+        320,
+        390,
+        768
+      ],
+      "log": "appearance-docs-browser.log"
+    }
+  ],
+  "coveragePolicy": {
+    "existingGlobalFloors": {
+      "lines": 94,
+      "branches": 89,
+      "functions": 98
+    },
+    "existingFloorsLowered": false,
+    "newAutomaticFamilies": [
+      "grammar/conditional",
+      "materialization/conditional"
+    ],
+    "newFamilyFloors": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "focusedOwnerOnlyMeasurement": {
+      "tests": 35,
+      "lines": 98.95,
+      "branches": 88.94,
+      "functions": 100,
+      "isGlobalMeasurement": false
+    }
+  },
+  "packageCeilings": {
+    "entries": 696,
+    "packedBytes": 1042000,
+    "unpackedBytes": 4841000,
+    "browserGzip": {
+      "ggaction": 525000,
+      "ggaction/basic": 306000,
+      "ggaction/svg": 25000
+    }
+  },
+  "remaining": [
+    "positional x/y/x2/y2/theta/r and offset/pointRadius/text matrix",
+    "G-DATA prepared raw/computed/where closure integration after current main update",
+    "conditional exact references in current source adoption",
+    "statistics output schema and rename integration",
+    "generated lifecycle direct-call/option inventory coordination with pivot repair"
+  ],
+  "notClaimed": [
+    "STEP-016 or AT-18 completion",
+    "full realistic sweep",
+    "full render sweep",
+    "G-DATA integration qualification"
+  ],
+  "failureRecords": [
+    {
+      "log": ".artifacts/conditions/conditional-nested-final.log",
+      "cause": "test reused array-summarized trace payload; changed witness to original observed public arguments"
+    },
+    {
+      "log": ".artifacts/conditions/conditional-nested-final-2.log",
+      "cause": "conditional numeric discretized size had no semantic consumer when normalized; binding and new scales now precede existing scale edits"
+    },
+    {
+      "log": ".artifacts/conditions/conditional-installed-repaired.log",
+      "cause": "fixture called Full-only opacity on Basic; Basic now exercises its existing conditional color action"
+    },
+    {
+      "log": ".artifacts/conditions/conditional-coverage.log",
+      "cause": "concurrent iteration and untracked node_modules symlink prevented successful final receipt; stable final run passed, local Git exclude ignores symlink only"
+    }
+  ],
+  "evidenceSha256": {
+    "appearance-browser.log": "009b8452f3686f70c3b7e1bb22501d7d57ab63ea37dbc195ddf4f4a2d9d83e7d",
+    "appearance-coverage-metrics.json": "dddc8cc8da48bba215c950d0c496cb944360ae35206d43887dbf103626a6c6ea",
+    "appearance-coverage-receipt.json": "f460cf117c4586ff3a3f2049b1d4c947aac441930306a20756311aa3d8dc6bdf",
+    "appearance-coverage-report.log.gz": "164cb0396d7c2b782ec13f5cbde20de07f170c14095b1a09463d853078f245f6",
+    "appearance-docs-browser.log": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3",
+    "appearance-docs-build.log": "4de8e2363077977da221cd487ab9d924a67042d2c3f4bca7a1691c05d4d7de6f",
+    "appearance-docs-built.log": "a2c2c820a9dd3bf44fac20bd9d4a03ea2cf66a7387c19399b09ebdd8ef245391",
+    "appearance-docs.log": "3a5fcdee601348c3a35984d571ba2575c5087f19c0359bc93e00da8d26faf7db",
+    "appearance-focused-coverage.log": "5804f08e1df16e673925e9dff8411f72540dc0ed8138670e0196c5f32dbd5bd7",
+    "appearance-installed-node.json": "22b09489f524453d47805c4c098dba921d5eb895ad3cb481142871ecd0da3551",
+    "appearance-installed-qualification.json": "41403826a9f034a30841371fd719258e6958c042a78f7cdda8a8a2e0cb8eade8",
+    "appearance-installed-tutorials.json": "082ab8a8d2e71e0b3f32224f18d6dc18ed095f55e3e044aa9be42b4a8d101de0",
+    "appearance-nested-scales.log": "08636e5880131cf883048a21ab85fa8ed9873f35b288bd3f409084051b25390f",
+    "appearance-size-node20.json": "29f46ebd747278bae0381ab4f71f6a9b7667643d9c8e72e0a163b351c6891675",
+    "appearance-size-node22.json": "bca37b0e2bde5c003e4e171edac7b1cfa19953665940dc6f6284c98d18156060",
+    "appearance-size-node24.json": "298e105ab7dbc6f00487b1e8018ba55ecba8fda693ff06fea5eb480ea3249948"
+  }
+}

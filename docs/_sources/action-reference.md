@@ -567,6 +567,20 @@ createData({ id?, values })
 
 Create one immutable named dataset. [Data](../api/data.md)
 
+### `applyDataUpdate`
+
+```javascript
+applyDataUpdate({ prepared, requestToken })
+```
+
+Apply an opaque result of `await prepareDataUpdate(program, request, host)` to
+its exact immutable base with the application's current request token. Full
+supports creating, refreshing, and parameter-dependent source updates; Basic
+supports creation. Hosts provide explicit CSV/JSON loaders. All source and
+computed consumers update atomically. See the
+[prepared data reference](../api/data/source-and-derived.md#prepared-data-updates)
+and [refresh workflow](../data-updates.md#prepare-and-apply-source-data).
+
 ### `reviseData`
 
 ```javascript
@@ -662,6 +676,34 @@ createFoldData({ id, source?, fields, as? })
 Materialize selected wide fields as stable key/value rows while preserving
 every source cell. [Source and Derived Data](../api/data/source-and-derived.md#createfolddata-id-source-fields-as)
 
+### `createParameter`
+
+```javascript
+createParameter({ id, value, type?, nullable? })
+```
+
+Create a named number, string, or boolean input for version 2 computed expressions.
+A null initial value requires an explicit type and `nullable: true`.
+Available in Full and Basic. [Parameters](../api/data/expressions-and-normalization.md#parameters)
+
+### `editParameter`
+
+```javascript
+editParameter({ target, value })
+```
+
+Atomically revise a parameter value, dependent datasets, and their chart consumers.
+Type and nullability remain fixed. Available in Full.
+[Parameters](../api/data/expressions-and-normalization.md#parameters)
+
+### `removeParameter`
+
+```javascript
+removeParameter({ id })
+```
+
+Remove an existing parameter only after all stored references have been removed.
+Available in Full. [Parameters](../api/data/expressions-and-normalization.md#parameters)
 ### `createPivotData`
 
 ```javascript
@@ -678,9 +720,9 @@ require an explicit aggregation operation. Full only.
 createComputedData({ id, source?, as, expression })
 ```
 
-Materialize a typed primitive or null field from a serializable, closed
-expression, including explicit nested scalar `getPath` and first-occurrence
-`replaceLiteral` operations. [Source and Derived Data](../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
+Materialize a scalar field from a serializable, closed v1 or explicit v2
+expression. Version 2 adds named parameter inputs, a closed function registry,
+and missing-value diagnostics while preserving existing v1 behavior. [Source and Derived Data](../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
 
 ### `createNormalizedData`
 
@@ -1178,11 +1220,13 @@ local scales and axes. Only `dimensions` is required.
 ### `filterData`
 
 ```javascript
+filterData({ id, source?, where })
 filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })
 ```
 
-Create an immutable named derived dataset using exactly one membership,
-comparison, or range filter. The source defaults to current data.
+Create an immutable named dataset using a field filter or a strict boolean expression predicate.
+The source defaults to current data. `where` uses the closed v2 AST and excludes all field
+filter options. Parameter edits revise dependent filters and their chart resources.
 [Data](../api/data.md)
 
 ### `createSortedData`
@@ -1375,6 +1419,7 @@ rebind direct visual consumers, and safely release the prior revision.
 
 ```javascript
 editDerivedData({ target, definition, dependents? })
+editFilteredData({ target, where, dependents? })
 editFilteredData({ target, field?, oneOf? | noneOf? | predicate? | range?, nulls?, dependents? })
 editSortedData({ target, sortBy, dependents? })
 editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })
@@ -1952,6 +1997,7 @@ from `ggaction`; use the focused encoding actions from `ggaction/basic`.
 ```javascript
 encodeX({ field, target?, fieldType?, aggregate?, stack?, coordinate?, bin?, scale? })
 encodeX({ datum, target?, fieldType?, coordinate?, scale? }) // rule, rect, area, independent text
+encodeX({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or compatibly replace an x encoding for the supported mark/type pairs in
@@ -1963,11 +2009,15 @@ rules require an explicit field type. All-constant independent Text materializes
 once; any field-bound x, y, or text encoding selects row grain.
 [Position encodings](../api/position-encodings.md)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeY`
 
 ```javascript
 encodeY({ field?, target?, fieldType?, aggregate?, stack?, coordinate?, scale? })
 encodeY({ datum, target?, fieldType?, coordinate?, scale? }) // rule, rect, area, independent text
+encodeY({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or compatibly replace a y encoding. With bar marks, a quantitative y
@@ -1982,11 +2032,15 @@ Rules, Rects, and independent Text use the same datum inference as x. Attached
 source-owned Text continues to reject direct position replacement.
 [Position encodings](../api/position-encodings.md)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeY2`
 
 ```javascript
 encodeY2({ field, target?, fieldType, scale?, coordinate? })
 encodeY2({ datum, target?, fieldType?, scale?, coordinate? }) // rule
+encodeY2({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign an area, ranged-bar, or rect upper edge, or a rule secondary y endpoint.
@@ -1995,11 +2049,15 @@ A rule numeric datum defaults to `fieldType: "quantitative"` and must be finite.
 Rule field endpoints and nonnumeric datum endpoints require an explicit matching type.
 [Position encodings](../api/position-encodings.md)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeX2`
 
 ```javascript
 encodeX2({ field, target?, fieldType, scale?, coordinate? })
 encodeX2({ datum, target?, fieldType?, scale?, coordinate? })
+encodeX2({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign an area, ranged-bar, or rect upper edge, or a rule secondary x endpoint.
@@ -2007,6 +2065,9 @@ It requires an existing x and shares its scale and coordinate.
 A rule numeric datum defaults to `fieldType: "quantitative"` and must be finite.
 Rule field endpoints and nonnumeric datum endpoints require an explicit matching type.
 [Position encodings](../api/position-encodings.md)
+
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](../api/encodings.md#choose-appearance-with-conditions).
 
 ### `encodeYRange`
 
@@ -2107,6 +2168,7 @@ retained; incomplete marks remain empty until later encoding completion.
 ```javascript
 encodeAngle({ target?, value })
 encodeAngle({ target?, field, fieldType? })
+encodeAngle({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Rotate point or Tick glyphs with direct clockwise degrees: `0` points up and
@@ -2114,10 +2176,13 @@ no scale or legend is created. Reassignment replaces the prior constant/field
 branch; remove it with `removeEncoding({ channel: "angle" })`.
 [Encodings](../api/encodings.md#direction)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeText`
 
 ```javascript
-encodeText({ target?, field?, value?, format? })
+encodeText({ target?, field?, value?, content?, normalizeBy?, format? })
+encodeText({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign exactly one field, constant value, or semantic content to a text mark.
@@ -2125,11 +2190,15 @@ Assign exactly one field, constant value, or semantic content to a text mark.
 pattern composed from `%Y`, `%m`, `%d`, `%b`, `%%`, and literals. Reassignment
 replaces the previous content branch. [Text marks](../api/marks/text.md)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeDx`
 
 ```javascript
 encodeDx({ target?, field })
 encodeDx({ target?, value })
+encodeDx({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Move each independent Text glyph horizontally by finite signed logical pixels.
@@ -2139,11 +2208,15 @@ offsets participate in row grain and the Text missing-row policy. Full only;
 source-owned labels and other marks are rejected.
 [Text offsets](../api/marks/text.md#numeric-pixel-offsets)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeDy`
 
 ```javascript
 encodeDy({ target?, field })
 encodeDy({ target?, value })
+encodeDy({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 The corresponding independent Text vertical offset; positive values move down.
@@ -2151,12 +2224,16 @@ It preserves dx and follows the same field/constant, removal, row-grain and atom
 validation rules. Set both through existing `encodeChannels({target,channels})`.
 [Text offsets](../api/marks/text.md#numeric-pixel-offsets)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeXOffset`
 
 ```javascript
 encodeXOffset({
   field, target?, fieldType?, scale?, paddingInner?, paddingOuter?
 })
+encodeXOffset({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or compatibly update a categorical sub-slot scale within a bar, point, or
@@ -2165,12 +2242,16 @@ Padding defaults to zero and is preserved on a later same-field call. Grouped
 bar color layout normally invokes this action automatically.
 [Position encodings](../api/position-encodings.md)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeYOffset`
 
 ```javascript
 encodeYOffset({
   field, target?, fieldType?, scale?, paddingInner?, paddingOuter?
 })
+encodeYOffset({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or compatibly update the corresponding categorical offset scale within
@@ -2178,6 +2259,9 @@ a bar, point, or rule y category. Horizontal grouped bar color invokes this
 action as a wrapped child; explicit domain order, reversed range, and padding
 follow the same contract as `encodeXOffset`.
 [Position encodings](../api/position-encodings.md)
+
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](../api/encodings.md#choose-appearance-with-conditions).
 
 ### `encodeHistogram`
 
@@ -2273,6 +2357,7 @@ removes grouping.
 
 ```javascript
 encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })
+encodeColor({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or compatibly replace point fill, line-series color, grouped area fill,
@@ -2323,6 +2408,8 @@ scale of the same type, updating every consumer atomically. Generic/focused
 scale editors and legend editors remain Full-only; scale-type transitions use
 Full or a new scale ID in Basic. [Encoding reassignment](../api/encodings.md#reassign-an-existing-encoding)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeStrokeDash`
 
 ```javascript
@@ -2330,6 +2417,7 @@ encodeStrokeDash(
   { field, target?, fieldType?, scale? }
   | { value, target? }
 )
+encodeStrokeDash({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or replace nominal/ordinal line-series or rule dash patterns, or apply one
@@ -2339,18 +2427,25 @@ pattern for valid categories outside a domain; missing categories remain errors,
 and domain, legend and raw series identities stay unchanged.
 [Series encodings](../api/series-encodings.md)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeRadius`
 
 ```javascript
 encodeRadius({ value, target? })
+encodeRadius({ target?, conditions: [{ when, value }], otherwise })
 ```
 
-Apply a constant point radius. [Constant appearance](../api/appearance.md)
+Apply a constant or conditionally selected point pixel radius, separate from Polar distance. [Constant appearance](../api/appearance.md)
+
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](../api/encodings.md#choose-appearance-with-conditions).
 
 ### `encodeTheta`
 
 ```javascript
 encodeTheta({ field, target?, fieldType?, aggregate?, weight?, scale?, coordinate? })
+encodeTheta({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Encode Polar angle in clockwise degrees from 12 o'clock. Quantitative,
@@ -2359,16 +2454,22 @@ For arc marks, an aggregate-free quantitative field directly determines each
 row's proportional sector angle. Nominal or ordinal arc fields support
 `aggregate: "count"`, `aggregate: "sum"` plus `weight`, or categorical theta
 bands paired with radius. The default scale ID is `theta` and its automatic
-range is `[0, 360]`.
+range is `[0, 360]`. Point also accepts a constant `datum` instead of field,
+using the same field type and scale rules without aggregate or weight.
 [Polar positions](../api/position-encodings.md#polar-positions)
+
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](../api/encodings.md#choose-appearance-with-conditions).
 
 ### `encodeR`
 
 ```javascript
 encodeR({ field?, aggregate?, mapping?, target?, fieldType?, scale?, coordinate? })
+encodeR({ target?, conditions: [{ when, value }], otherwise })
 ```
 
-Encode a quantitative field as Polar radial distance. The default `radius`
+Encode a quantitative field as Polar radial distance. Point also accepts a finite
+numeric `datum` instead of field, without aggregate or mapping. The default `radius`
 scale fits the current plot bounds and rematerializes after Canvas edits.
 Proportional arcs accept independent ordinary radius scales: quantitative theta
 uses row values, while categorical count/sum theta accepts a consistent radius
@@ -2380,15 +2481,23 @@ Measured Arc radius accepts count/sum with `mapping: "area"` or
 replace a measured category aggregate with ordinary row-level radial length.
 [Polar positions](../api/position-encodings.md#polar-positions)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodePointRadius`
 
 ```javascript
 encodePointRadius({ value, target? })
+encodePointRadius({ target?, conditions: [{ when, value }], otherwise })
 ```
 
-Apply a constant point glyph radius through a traced `encodeRadius` child. This
+Apply a point glyph radius. Ordinary assignment calls a traced `encodeRadius` child;
+conditional assignment stores one point-radius branch definition. This
 does not assign semantic Polar radial position.
 [Constant appearance](../api/appearance.md)
+
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](../api/encodings.md#choose-appearance-with-conditions).
 
 ### `removePointRadius`
 
@@ -2396,7 +2505,7 @@ does not assign semantic Polar radial position.
 removePointRadius({ target? } = {})
 ```
 
-Remove an explicit constant point glyph radius and restore the theme default.
+Remove an explicit constant or conditional point glyph radius and restore the theme default.
 Semantic Polar radial position is unchanged.
 [Point appearance](../api/appearance/point.md)
 
@@ -2404,6 +2513,7 @@ Semantic Polar radial position is unchanged.
 
 ```javascript
 encodeSize({ field, target?, fieldType?, scale? })
+encodeSize({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Encode point size as area; radius-normalized polygons use reference-circle area. The automatic area range
@@ -2411,21 +2521,27 @@ is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 `pow` mappings plus discrete `quantize`, `quantile`, and `threshold` mappings.
 [Appearance encodings](../api/appearance.md)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeShape`
 
 ```javascript
 encodeShape({ field, target?, fieldType?, scale? })
+encodeShape({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.
 Explicit ranges may repeat shapes; provide one entry per domain value. Automatic ranges remain distinct.
 [Appearance encodings](../api/appearance.md)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeOpacity`
 
 ```javascript
 encodeOpacity({ value, target? })
 encodeOpacity({ field, target?, fieldType?, scale? })
+encodeOpacity({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Apply a constant point/rule/line/bar/rect opacity from `0` to `1`, or map a quantitative field
@@ -2435,11 +2551,14 @@ series and support sampled opacity legends. Constant mode clears its field and
 owned opacity legend and rejects fieldType/scale or selections using that channel.
 [Appearance encodings](../api/appearance.md)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeStroke`
 
 ```javascript
 encodeStroke({ value, target? })
 encodeStroke({ field, target?, fieldType?, temporalUnit?, scale? })
+encodeStroke({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign a constant non-empty stroke color or map a categorical, quantitative, or
@@ -2449,11 +2568,14 @@ mode clears the field binding and its own legend; field mode clears the constant
 override. Text outlines are outside this action.
 [Appearance encodings](../api/appearance.md)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeStrokeWidth`
 
 ```javascript
 encodeStrokeWidth({ value, target? })
 encodeStrokeWidth({ field, target?, fieldType?, scale? })
+encodeStrokeWidth({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect. Field mode
@@ -2461,6 +2583,8 @@ maps one quantitative value per rule/rect row or complete line series. Constant 
 clears the field and its own sampled width legend; fieldType/scale are invalid in
 constant mode. Active channel selections must be removed before replacement.
 [Appearance encodings](../api/appearance.md)
+
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
 
 ### `encodeBarWidth`
 
@@ -3177,6 +3301,87 @@ removeTitle()
 ```
 
 Remove the complete chart title and subtitle resource. [Titles](../api/titles.md)
+
+### `createHierarchyData`
+
+```javascript
+createHierarchyData({ id, data?, key?, parent?, children?, groupFields?, value, valueMode?, forest?, missingCategory?, maxNodes? })
+```
+
+Create a typed hierarchy from flat parent rows, nested children, or grouped paths. Full only.
+[Hierarchy resources and plots](../api/hierarchy.md#createhierarchydata)
+
+### `editHierarchyData`
+
+```javascript
+editHierarchyData({ target?, data?, key?, parent?, children?, groupFields?, value?, valueMode?, forest?, missingCategory?, maxNodes? })
+```
+
+Revise hierarchy input options and refresh every dependent layout and plot atomically. Full only.
+[Hierarchy resources and plots](../api/hierarchy.md#edithierarchydata)
+
+### `layoutHierarchy`
+
+```javascript
+layoutHierarchy({ id, hierarchy?, method, order?, options? })
+```
+
+Compute an explicit tree, treemap, or normalized partition layout from a named hierarchy. Full only.
+[Hierarchy resources and plots](../api/hierarchy.md#layouthierarchy)
+
+### `editLayout`
+
+```javascript
+editLayout({ target?, order?, options? })
+```
+
+Change a layout order or method-specific options and refresh its plot consumers. Full only.
+[Hierarchy resources and plots](../api/hierarchy.md#editlayout)
+
+### `removeResource`
+
+```javascript
+removeResource({ kind, id, cascade? })
+```
+
+Remove a named stored resource after checking exact dependencies. Full only.
+[Hierarchy resources and plots](../api/hierarchy.md#removeresource)
+
+### `createTreePlot`
+
+```javascript
+createTreePlot({ id?, layout?, origin?, clip?, nodes?, links?, labels? })
+```
+
+Draw hierarchy nodes and parent links from a stored tree layout. Full only.
+[Hierarchy resources and plots](../api/hierarchy.md#createtreeplot)
+
+### `editTreePlot`
+
+```javascript
+editTreePlot({ target?, layout?, origin?, clip?, nodes?, links?, labels? })
+```
+
+Edit tree nodes, links, labels, placement, or the bound tree layout. Full only.
+[Hierarchy resources and plots](../api/hierarchy.md#edittreeplot)
+
+### `createTreemapPlot`
+
+```javascript
+createTreemapPlot({ id?, layout?, origin?, clip?, cells?, labels? })
+```
+
+Draw nested rectangles from a stored treemap layout. Full only.
+[Hierarchy resources and plots](../api/hierarchy.md#createtreemapplot)
+
+### `editTreemapPlot`
+
+```javascript
+editTreemapPlot({ target?, layout?, origin?, clip?, cells?, labels? })
+```
+
+Edit treemap cells, labels, placement, or the bound treemap layout. Full only.
+[Hierarchy resources and plots](../api/hierarchy.md#edittreemapplot)
 
 ## Advanced Chart API
 

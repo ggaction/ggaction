@@ -1,3 +1,9 @@
+import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
+import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
+import { getLayerScaleIds } from "../../../materialization/marks/index.js";
+import { hasConditionalAreaPosition, AREA_POSITION_CHANNELS } from "../../../materialization/conditionalAreaStructure.js";
+import { conditionalAreaValues } from "../../../materialization/conditionalAreaValues.js";
+import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { validateFillPaint } from "../../../grammar/paint.js";
 import { validateAreaPaintConfig } from "../../../grammar/areaPaint.js";
@@ -162,7 +168,9 @@ const rematerializeAreaMark = /* @__PURE__ */ action(
       resetValue: 0
     });
     if (highlighted !== undefined) return highlighted;
-    const layer = findLayer(this, id);
+    const storedLayer = findLayer(this, id);
+    const conditionalPosition = storedLayer !== undefined && hasConditionalAreaPosition(storedLayer);
+    const layer = conditionalPosition ? conditionalPositionTemplate(storedLayer, AREA_POSITION_CHANNELS) : storedLayer;
     const dataset = findDataset(this, layer?.data);
     if (layer?.mark?.type !== "area" || this.graphicSpec.objects[id]?.type !== "path") {
       throw new Error(`Unknown area mark "${id}".`);
@@ -192,31 +200,19 @@ const rematerializeAreaMark = /* @__PURE__ */ action(
           : `Density area mark "${id}" requires x and y scales.`
       );
     }
-    const colorEncoding = layer.encoding?.color;
-    const strokeEncoding = layer.encoding?.stroke;
-    const opacityEncoding = layer.encoding?.opacity;
-    let resolved = args.scales === false
-      ? this
-      : this
-          .rematerializeScale({ id: xScaleId })
-          .rematerializeScale({ id: yScaleId });
-    if (args.scales !== false && colorEncoding?.scale !== undefined) {
-      resolved = resolved.rematerializeScale({ id: colorEncoding.scale });
-    }
-    if (args.scales !== false && strokeEncoding?.scale !== undefined) {
-      resolved = resolved.rematerializeScale({ id: strokeEncoding.scale });
-    }
-    if (args.scales !== false && opacityEncoding?.scale !== undefined) {
-      resolved = resolved.rematerializeScale({ id: opacityEncoding.scale });
-    }
+    let resolved = this;
+    if (args.scales !== false) for (const scale of getLayerScaleIds(storedLayer)) resolved = resolved.rematerializeScale({ id: scale });
     const config = validateAreaPaintConfig(this.markConfigs[id]);
-    const { paths, fills, strokes, opacities } = resolveAreaMaterialization({
+    const { paths, fills: ordinaryFills, strokes: ordinaryStrokes, opacities } = resolveAreaMaterialization({
       rows: dataset.values,
       layer,
       densityTransform,
       resolvedScales: resolved.resolvedScales,
-      config
+      config,
+      ...(conditionalPosition ? { conditional: conditionalAreaValues(resolved, storedLayer, dataset, { resolveMarkItems, resolveMarkSourceItems }) } : {})
     });
+    const fills = resolveConditionalValues(resolved, storedLayer, "color") ?? ordinaryFills;
+    const strokes = resolveConditionalValues(resolved, storedLayer, "stroke") ?? ordinaryStrokes;
     const existingChildren = resolved.graphicSpec.objects[id].items ?? [];
     const hasOutline = strokes !== undefined || config.stroke !== undefined ||
       config.strokeFromFill === true;

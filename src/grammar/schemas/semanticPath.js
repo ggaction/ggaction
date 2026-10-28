@@ -1,3 +1,4 @@
+import { CONDITIONAL_CHANNELS } from "../conditionalState.js";
 import { USER_ID_SOURCE } from "../../core/identifiers.js";
 import {
   AXIS_RESOURCE_CHANNELS,
@@ -50,13 +51,13 @@ const ENCODING_PATHS = Object.freeze([
 const ENTITY_PATHS = Object.freeze({
   dataset: {
     collection: "datasets",
-    properties: new Set(["source", "transform", "schema", "values"])
+    properties: new Set(["source", "transform", "schema", "sourceReceipt", "values"])
   },
   layer: {
     collection: "layers",
     removableContainers: new Set(
       [...ENCODING_CHANNELS.map(channel => `encoding.${channel}`),
-        "encoding.parallel", "layout"]
+        "encoding.parallel", "layout", ...CONDITIONAL_CHANNELS.map(channel => `conditionals.${channel}`)]
     ),
     properties: new Set([
       "data",
@@ -64,12 +65,15 @@ const ENTITY_PATHS = Object.freeze({
       "coordinate",
       "transform",
       "mark.type",
+      "hierarchyBinding",
+      "hierarchyLabels",
       "mark.missing",
       "mark.orientation",
       "mark.blend",
       "derivedBindings.regression",
       "derivedBindings.overlay",
       "layout.mode",
+      ...CONDITIONAL_CHANNELS.map(channel => `conditionals.${channel}`),
       ...ENCODING_PATHS
     ])
   },

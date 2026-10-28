@@ -8,6 +8,9 @@ export function indexHierarchyModel(model, maxNodes = 10_000) {
   if (!Number.isSafeInteger(maxNodes) || maxNodes < 1) throw new RangeError("Hierarchy maxNodes must be a positive safe integer.");
   ownRecord(model, "Hierarchy model");
   rejectUnknownProperties(model, ["nodes", "rootKey", "valueMode", "totalValue", "diagnostics"], "hierarchy model");
+  if (["nodes", "rootKey", "valueMode", "totalValue", "diagnostics"].some(field => !Object.hasOwn(model, field))) {
+    throw new TypeError("Hierarchy models require all own fields.");
+  }
   if (!["leaf-sum", "inclusive", "own-plus-children"].includes(model.valueMode)) throw new Error("Unsupported hierarchy value mode.");
   const nodes = model.nodes;
   let work = 0;
@@ -21,6 +24,9 @@ export function indexHierarchyModel(model, maxNodes = 10_000) {
   nodes.forEach((node, index) => {
     ownRecord(node, "Hierarchy model node");
     rejectUnknownProperties(node, ["key", "parentKey", "childrenKeys", "depth", "ownValue", "totalValue", "residual", "sourceRows", "synthetic"], "hierarchy model node");
+    if (["key", "parentKey", "childrenKeys", "depth", "ownValue", "totalValue", "residual", "sourceRows"].some(field => !Object.hasOwn(node, field))) {
+      throw new TypeError("Hierarchy model nodes require all own fields.");
+    }
     if (typeof node.key !== "string" || node.key.length === 0 || indexes.has(node.key)) throw new Error("Hierarchy model node keys must be unique non-empty strings.");
     if (node.parentKey !== null && (typeof node.parentKey !== "string" || node.parentKey.length === 0)) throw new Error("Hierarchy model parent keys must be strings or null.");
     if (!Number.isSafeInteger(node.depth) || node.depth < 0) throw new Error("Hierarchy model depths must be nonnegative safe integers.");
@@ -59,7 +65,12 @@ export function indexHierarchyModel(model, maxNodes = 10_000) {
       seen.add(key); children.push(child);
     }
     const childTotal = stableFiniteSum(children.map(child => nodes[child].totalValue), "Hierarchy model child total", { compensated: true });
-    if (stableFiniteSum([node.ownValue, childTotal], "Hierarchy model total", { compensated: true }) !== node.totalValue ||
+    // Inclusive values preserve the authored total and its computed difference.
+    // Reversing subtraction can round differently (0.9 - 0.2 + 0.2 !== 0.9).
+    const consistentTotal = model.valueMode === "inclusive"
+      ? childTotal <= node.totalValue && node.ownValue === node.totalValue - childTotal
+      : stableFiniteSum([node.ownValue, childTotal], "Hierarchy model total", { compensated: true }) === node.totalValue;
+    if (!consistentTotal ||
         (model.valueMode === "leaf-sum" && children.length > 0 && node.ownValue !== 0)) {
       throw new Error("Hierarchy model child values disagree with its total.");
     }
@@ -68,6 +79,9 @@ export function indexHierarchyModel(model, maxNodes = 10_000) {
   if (visited !== nodes.length) throw new Error("Hierarchy model contains unreachable nodes.");
   const diagnostics = ownRecord(model.diagnostics, "Hierarchy model diagnostics");
   rejectUnknownProperties(diagnostics, ["emptyHierarchy", "emptyValue", "ignoredInternalValues"], "hierarchy model diagnostics");
+  if (["emptyHierarchy", "emptyValue", "ignoredInternalValues"].some(field => !Object.hasOwn(diagnostics, field))) {
+    throw new TypeError("Hierarchy diagnostics require all own fields.");
+  }
   if (diagnostics.emptyHierarchy !== (nodes.length === 0) || diagnostics.emptyValue !== (model.totalValue === 0)) throw new Error("Hierarchy model empty diagnostics are inconsistent.");
   if (Array.isArray(diagnostics.ignoredInternalValues)) charge(diagnostics.ignoredInternalValues.length * 4);
   ownArray(diagnostics.ignoredInternalValues, "Hierarchy ignored internal values");
@@ -75,8 +89,9 @@ export function indexHierarchyModel(model, maxNodes = 10_000) {
   for (const item of diagnostics.ignoredInternalValues) {
     ownRecord(item, "Hierarchy ignored internal value");
     rejectUnknownProperties(item, ["key", "value"], "hierarchy ignored value");
+    if (!Object.hasOwn(item, "key") || !Object.hasOwn(item, "value")) throw new TypeError("Hierarchy ignored values require own key and value fields.");
     const index = indexes.get(item.key);
-    if (model.valueMode !== "leaf-sum" || index === undefined || nodes[index].synthetic || nodes[index].childrenKeys.length === 0 ||
+    if (model.valueMode !== "leaf-sum" || index === undefined || Object.hasOwn(nodes[index], "synthetic") || nodes[index].childrenKeys.length === 0 ||
         ignored.has(item.key) || !Number.isFinite(item.value) || item.value < 0) throw new Error("Hierarchy ignored internal value is inconsistent.");
     ignored.add(item.key);
   }

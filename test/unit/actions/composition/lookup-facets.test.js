@@ -25,7 +25,10 @@ test("lookup compositions update primary revisions without partitioning referenc
  const p=source().facet({data:"groups",field:"group"}),next=p.reviseData({source:"groups",id:"groupsV2",values:[{person:"B",group:"G1"},{person:"A",group:"G2"}]});
  assert.equal(visibleRows(next).length,2);assert.deepEqual(visibleRows(next).map(r=>r.age),[32,25]);for(const child of Object.values(next.children))assert.deepEqual(child.semanticSpec.datasets.find(d=>d.id==="people").values,people);
 });
-test("lookup repeat rejects invalid fields atomically and retains the prior derived restriction",()=>{
+test("lookup repeat rejects invalid fields atomically and accepts materialized computed columns",()=>{
  const p=source(),before=serializeProgram(p);assert.throws(()=>p.repeatCharts({target:"scatterPlot",channel:"y",fields:["age","absent"]}));assert.equal(serializeProgram(p),before);
- const q=p.createComputedData({id:"extra",as:"number",expression:{constant:1}}).bindMarkData({target:"scatterPlot",data:"extra"});assert.throws(()=>q.repeatCharts({target:"scatterPlot",channel:"y",fields:["age","height"]}),/derived dataset/);
+ const q=p.createComputedData({id:"extra",as:"number",expression:{constant:1}}).bindMarkData({target:"scatterPlot",data:"extra"});
+ const repeated=q.repeatCharts({target:"scatterPlot",channel:"y",fields:["age","height"]});assert.equal(visibleRows(repeated).length,8);
+ const filtered=p.filterData({id:"subset",field:"person",oneOf:["A"]}).bindMarkData({target:"scatterPlot",data:"subset"});
+ assert.throws(()=>filtered.repeatCharts({target:"scatterPlot",channel:"y",fields:["age","height"]}),/derived dataset/);
 });

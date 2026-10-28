@@ -1,0 +1,40 @@
+[
+  {
+    "label": "suite-unit",
+    "startedAt": "2026-10-28T14:57:21.019Z",
+    "finishedAt": "2026-10-28T14:59:36.839Z",
+    "exitCode": 0,
+    "signal": null,
+    "source": {
+      "available": true,
+      "commit": "2810a8e2cb346afaedbb2809cf7859578c5c088e",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sourceAfter": {
+      "available": true,
+      "commit": "2810a8e2cb346afaedbb2809cf7859578c5c088e",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "suite-contracts",
+    "startedAt": "2026-10-28T14:59:36.839Z",
+    "finishedAt": "2026-10-28T15:02:00.679Z",
+    "exitCode": 1,
+    "signal": null,
+    "source": {
+      "available": true,
+      "commit": "2810a8e2cb346afaedbb2809cf7859578c5c088e",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sourceAfter": {
+      "available": true,
+      "commit": "2810a8e2cb346afaedbb2809cf7859578c5c088e",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+]

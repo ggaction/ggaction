@@ -1,3 +1,4 @@
+import { registerConditionalEncodingActions } from "./conditional.js";
 import { registerSeriesLayoutAction } from "./seriesLayout.js";
 import { registerBasicAppearanceEncodingActions } from "./appearance.js";
 import { registerBarWidthEncodingAction } from "./barWidth.js";
@@ -20,4 +21,5 @@ export function registerBasicEncodingActions(ProgramClass) {
   registerOffsetEncodingAction(ProgramClass);
   registerHistogramEncodingAction(ProgramClass);
   registerBarWidthEncodingAction(ProgramClass);
+  registerConditionalEncodingActions(ProgramClass);
 }

@@ -1,3 +1,4 @@
+import { normalizeConditionalEncoding } from "./conditionalEncoding.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { schemaField } from "./datasetSchema.js";
 import { readQuantitativeField } from "./scales/fields.js";
@@ -10,6 +11,16 @@ import {
   validateValueFormat
 } from "./valueFormat.js";
 import { resolveRotation } from "./rotation.js";
+
+export function conditionalTextUsesRows(layer) {
+  return ["text", "dx", "dy"].some(channel => {
+    const definition = layer.conditionals?.[channel];
+    if (definition === undefined) return false;
+    const normalized = normalizeConditionalEncoding({ conditions: definition.conditions, otherwise: definition.otherwise });
+    return normalized.fields.length > 0 || normalized.selections.length > 0 ||
+      [...definition.conditions.map(condition => condition.value), definition.otherwise].some(value => value.field !== undefined);
+  });
+}
 
 export function isSourceOwnedText(layer) {
   return layer?.mark?.type === "text" && layer.source !== undefined;

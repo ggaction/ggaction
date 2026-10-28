@@ -5,9 +5,10 @@ import {chart, render} from "../../src/index.js";
 import {renderToSVG} from "../../src/renderers/svg.js";
 import {renderToPNGBuffer} from "../../src/renderers/png.js";
 import {renderToPDFBuffer} from "../../src/renderers/pdf.js";
-import {serializeProgram, deserializeProgram} from "../../src/persistence.js";
+import {serializeProgram, deserializeProgram, serializeGraphic, deserializeGraphic} from "../../src/persistence.js";
+import {createTransitionScene,renderTransitionScene} from "../../src/scene.js";
 import {createMockCanvasContext} from "../support/canvas.js";
-import {differenceOver} from "../oracles/compositing.js";
+import {differenceOver,blendOver} from "../oracles/compositing.js";
 
 function bars() {
   return chart().createCanvas({width:200,height:200,margin:40})
@@ -27,18 +28,18 @@ test("anchors the independent difference equation with opaque and transparent co
   assert.deepEqual(differenceOver([0,0,0,0],[0,0,0,0]),[0,0,0,0]);
 });
 
-test("bar blend is a single optional semantic intent with exact normal reset",()=>{
-  const p=bars(),before=serializeProgram(p),q=p.editBarMark({blend:"difference"});
-  assert.equal(q.semanticSpec.layers[0].mark.blend,"difference");
+for(const mode of ["difference","multiply","screen"])test(`bar blend is a single optional semantic intent with exact normal reset (${mode})`,()=>{
+  const p=bars(),before=serializeProgram(p),q=p.editBarMark({blend:mode});
+  assert.equal(q.semanticSpec.layers[0].mark.blend,mode);
   assert.equal(q.markConfigs.barPlot?.barAppearance?.blend,undefined);
-  assert.equal(q.graphicSpec.objects.barPlot.items[0].properties.blend,"difference");
+  assert.equal(q.graphicSpec.objects.barPlot.items[0].properties.blend,mode);
   const reset=q.editBarMark({blend:"normal"});
   assert.deepEqual(reset.semanticSpec,p.semanticSpec);assert.deepEqual(reset.graphicSpec,p.graphicSpec);
   assert.deepEqual(reset.markConfigs,p.markConfigs);assert.deepEqual(p.editBarMark({blend:"normal"}).markConfigs,p.markConfigs);
   assert.equal(renderToSVG(reset),renderToSVG(p));assert.equal(serializeProgram(p),before);
   assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec,q.graphicSpec);
   assert.deepEqual(q.editBarMark({fill:"red"}).semanticSpec,q.semanticSpec);
-  assert.match(renderToSVG(q),/mix-blend-mode:difference/);assert.match(renderToSVG(q),/isolation:isolate/);
+  assert.match(renderToSVG(q),new RegExp(`mix-blend-mode:${mode}`));assert.match(renderToSVG(q),/isolation:isolate/);
   assert.doesNotMatch(renderToSVG(p),/isolation:|mix-blend/);
 });
 
@@ -54,24 +55,24 @@ test("difference combines one bar fill and outline before applying mark opacity"
   }
 });
 
-test("rounded, gradient and transparent bars preserve concrete blend through replay",async()=>{
-  const q=bars().editBarMark({blend:"difference",cornerRadius:12,stroke:false,fill:{type:"linear-gradient",from:{x:0,y:0},to:{x:1,y:0},stops:[{offset:0,color:"red"},{offset:1,color:"blue"}]}});
+for(const mode of ["difference","multiply","screen"])test(`rounded, gradient and transparent bars preserve concrete blend through replay (${mode})`,async()=>{
+  const q=bars().editBarMark({blend:mode,cornerRadius:12,stroke:false,fill:{type:"linear-gradient",from:{x:0,y:0},to:{x:1,y:0},stops:[{offset:0,color:"red"},{offset:1,color:"blue"}]}});
   assert.equal(q.graphicSpec.objects.barPlot.type,"collection");
   assert.equal(q.graphicSpec.objects.barPlot.items[0].type,"path");
   for(const replay of [q.editCanvas({width:240}),q.editBarMark({opacity:.4}),q.editYScale({domain:[0,2]})]){
-    assert.equal(replay.graphicSpec.objects.barPlot.items[0].properties.blend,"difference");
+    assert.equal(replay.graphicSpec.objects.barPlot.items[0].properties.blend,mode);
     assert.ok((await renderToPNGBuffer(replay)).buffer.length>100);
     assert.deepEqual(deserializeProgram(serializeProgram(replay)).graphicSpec,replay.graphicSpec);
   }
   assert.ok((await renderToPDFBuffer(q)).buffer.length>100);
-  const transparent=bars().editCanvas({background:"none"}).editBarMark({blend:"difference",fill:"red",stroke:false});
+  const transparent=bars().editCanvas({background:"none"}).editBarMark({blend:mode,fill:"red",stroke:false});
   assert.deepEqual(pixel(paint(transparent),100,100),[255,0,0,255]);
   assert.deepEqual(pixel(paint(transparent,2),200,200),[255,0,0,255]);
 });
 
 test("blend rejects invalid inputs and unsupported concrete types atomically",()=>{
   const p=bars(),before=serializeProgram(p);
-  for(const blend of ["multiply","",null,undefined,1])assert.throws(()=>p.editBarMark({blend}),/blend/);
+  for(const blend of ["overlay","source-over","",null,undefined,1])assert.throws(()=>p.editBarMark({blend}),/blend/);
   assert.throws(()=>p.createBarMark({id:"second",blend:"difference"}),/blend/);
   assert.equal(p.editGraphics({target:p.graphicSpec.objects.barPlot.items[0].id,property:"blend",value:"normal"}).graphicSpec.objects.barPlot.items[0].properties.blend,"normal");
   const points=chart().createCanvas().createData({values:[{x:1,y:2}]}).createScatterPlot({x:"x",y:"y",guides:false});
@@ -89,7 +90,7 @@ test("missing isolated surface capability is rejected before clear or canvas res
   assert.throws(()=>render(bars().editBarMark({blend:"difference"}),mock),/compatible Canvas surface/);
   assert.deepEqual(mock.calls,[]);assert.deepEqual(mock.canvas,original);
   const invalid=structuredClone(bars().editBarMark({blend:"difference"}).graphicSpec);
-  invalid.objects.barPlot.items[0].properties.blend="multiply";
+  invalid.objects.barPlot.items[0].properties.blend="overlay";
   assert.throws(()=>render({graphicSpec:invalid},mock),/blend/);assert.deepEqual(mock.calls,[]);
 });
 
@@ -152,7 +153,7 @@ test("malformed stored blend is rejected by shared graphic and semantic validati
   const p=bars().editBarMark({blend:"difference"});
   for(const mutate of [
     state=>{state.semanticSpec.layers[0].mark.blend="normal";},
-    state=>{state.graphicSpec.objects.barPlot.items[0].properties.blend="multiply";},
+    state=>{state.graphicSpec.objects.barPlot.items[0].properties.blend="overlay";},
     state=>{state.semanticSpec.layers[0].mark.type="point";}
   ]){
     const envelope=JSON.parse(serializeProgram(p)),state=decodeValue(envelope.payload);mutate(state);envelope.payload=encodeValue(state);
@@ -160,20 +161,51 @@ test("malformed stored blend is rejected by shared graphic and semantic validati
   }
 });
 
-test("ranged horizontal and vertical bars retain blend through data, themes, highlights and facets",async()=>{
+for(const mode of ["difference","multiply","screen"])test(`ranged horizontal and vertical bars retain blend through data, themes, highlights and facets (${mode})`,async()=>{
   const rows=[{category:"a",group:"east",lower:1,upper:4},{category:"b",group:"west",lower:2,upper:6}];
   for(const horizontal of [false,true]){
     const p=chart().createCanvas({width:360,height:300,margin:60}).createData({values:rows})
       .createBarPlot(horizontal?{x:{lower:"lower",upper:"upper"},y:"category",guides:false}:{x:"category",y:{lower:"lower",upper:"upper"},guides:false})
-      .editBarMark({blend:"difference"});
+      .editBarMark({blend:mode});
     const variants=[p.applyTheme({theme:"dark"}),p.reviseData({source:"data",id:"revised",values:rows.map(row=>({...row,upper:row.upper+1}))}),p.highlightMarks({target:"barPlot",select:{grain:"item",field:"category",op:"eq",value:"a"},color:"blue"}),p.editCanvas({width:400})];
     for(const q of variants){
-      assert.ok(q.graphicSpec.objects.barPlot.items.every(item=>item.properties.blend==="difference"));
+      assert.ok(q.graphicSpec.objects.barPlot.items.every(item=>item.properties.blend===mode));
       assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec,q.graphicSpec);
       assert.ok((await renderToPNGBuffer(q)).buffer.length>100);
     }
     const facet=p.facet({field:"group"});
-    for(const child of Object.values(facet.children))assert.ok(child.graphicSpec.objects.barPlot.items.every(item=>item.properties.blend==="difference"));
+    for(const child of Object.values(facet.children))assert.ok(child.graphicSpec.objects.barPlot.items.every(item=>item.properties.blend===mode));
     assert.ok((await renderToPNGBuffer(facet)).buffer.length>100);
+  }
+});
+
+for(const mode of ["multiply","screen"])test(`${mode} applies opacity once after fill and outline composition`,()=>{
+  const backdrop=[.2,.4,.6,1];
+  for(const opacity of [0,.4,1]){
+    const q=bars().editCanvas({background:"#336699"})
+      .editBarMark({blend:mode,fill:"red",stroke:"blue",strokeWidth:8,opacity});
+    const c=paint(q);
+    for(const [x,y,color] of [[100,100,[1,0,0]],[100,42,[0,0,1]],[100,37,[0,0,1]]]){
+      const expected=blendOver([...color,opacity],backdrop,mode).map(value=>Math.round(value*255));
+      const actual=pixel(c,x,y);
+      actual.forEach((value,i)=>assert.ok(Math.abs(value-expected[i])<=(i===3?0:1),JSON.stringify({mode,opacity,actual,expected})));
+    }
+  }
+});
+
+for(const mode of ["difference","multiply","screen"])test(`${mode} survives graphic-only restore and scene endpoint rendering`,()=>{
+  const before=bars().editBarMark({fill:"#f00000",stroke:"#ffff00",strokeWidth:8,opacity:.5});
+  const program=before.editCanvas({background:"#336699"}).editBarMark({blend:mode});
+  const restored=deserializeGraphic(serializeGraphic(program));
+  assert.equal(renderToSVG(restored),renderToSVG(program));
+  const scene=createTransitionScene(restored,{format:"canvas"});
+  assert.deepEqual(scene.nodes.map(node=>node.key),createTransitionScene(before,{format:"canvas"}).nodes.map(node=>node.key));
+  assert.equal(scene.nodes.filter(node=>node.properties.blend===mode).length,1);
+  assert.equal(createTransitionScene(restored).nodes.filter(node=>node.svg.includes(`mix-blend-mode:${mode}`)).length,1);
+  for(const pixelRatio of [1,2]){
+    const surface=createCanvas(1,1),context=surface.getContext("2d");
+    renderTransitionScene(scene,context,{pixelRatio});
+    const expected=paint(program,pixelRatio),size=200*pixelRatio;
+    assert.deepEqual(context.getImageData(0,0,size,size).data,expected.getImageData(0,0,size,size).data);
   }
 });

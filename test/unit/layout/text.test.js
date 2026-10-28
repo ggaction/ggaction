@@ -88,7 +88,7 @@ test("wraps words greedily and falls back for an oversized token", () => {
   }), ["acceleratio", "n-density-e", "stimate"]);
 });
 
-test("wraps character mode on Unicode code-point boundaries", () => {
+test("wraps character mode on Unicode grapheme boundaries", () => {
   const lines = wrapText("차트제목ABC", {
     maxWidth: 30,
     mode: "character",
@@ -118,4 +118,20 @@ test("validates text measurement and wrapping inputs", () => {
     text: "i",
     fontSize: 1e308
   }), /finite numeric range/);
+});
+
+
+test("keeps combining accents, decomposed Hangul, emoji joins, modifiers and flags intact", () => {
+  const clusters = ["e\u0301", "\u1112\u1161\u11ab", "👩🏽‍💻", "🇩🇰", "1️⃣"];
+  for (const mode of ["word", "character"]) {
+    assert.deepEqual(wrapText(clusters.join(""), { maxWidth: 1, mode, style }), clusters);
+    assert.deepEqual(wrapText("A" + clusters[2] + "B", { maxWidth: 1, mode, style }), ["A", clusters[2], "B"]);
+  }
+});
+
+test("preserves hard breaks and blank lines while wrapping each line independently", () => {
+  for (const mode of ["word", "character"]) {
+    assert.deepEqual(wrapText("A\r\n\rB\n", { maxWidth: 100, mode, style }), ["A", "", "B", ""]);
+    assert.deepEqual(wrapText("e\u0301e\u0301\n👩🏽‍💻", { maxWidth: 1, mode, style }), ["e\u0301", "e\u0301", "👩🏽‍💻"]);
+  }
 });

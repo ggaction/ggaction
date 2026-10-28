@@ -6,9 +6,34 @@ import { ownDataProperties } from "./ownData.js";
 
 const metadataByWrappedAction = new WeakMap();
 const implementationByWrappedAction = new WeakMap();
+const sourceByEnteredAction = new WeakMap();
+const summariesByArguments = new WeakMap();
 let actionCompletionHook;
 const targetDispatchers = new WeakMap();
-const UNSCOPED_PRIMITIVES = new Set(["createGraphics", "editGraphics", "editSemantic", "createData"]);
+const UNSCOPED_PRIMITIVES = new Set(["createGraphics", "editGraphics", "editSemantic", "createData", "applyDataUpdate"]);
+
+// Prepared updates must compare their base with the caller's receiver, before
+// _enterAction creates the immutable trace branch. This evidence is valid only
+// during this invocation; it is never copied to program state or trace.
+export function actionSource(program) {
+  const source = sourceByEnteredAction.get(program);
+  if (source === undefined) throw new TypeError("Action source requires an active wrapped invocation.");
+  return source;
+}
+
+// Internal source writers retain payloads in semantic state, while their
+// primitive trace records only a bounded description of that exact argument.
+// This authority is transient and never becomes an action option.
+export function withActionArgumentSummary(args, summary, operation) {
+  ownDataProperties(args, "Action arguments");
+  const previous = summariesByArguments.get(args);
+  summariesByArguments.set(args, summarizeArgs(summary));
+  try { return operation(args); }
+  finally {
+    if (previous === undefined) summariesByArguments.delete(args);
+    else summariesByArguments.set(args, previous);
+  }
+}
 export function registerActionTargetDispatcher(ProgramClass, dispatcher) {
   targetDispatchers.set(ProgramClass, dispatcher);
 }
@@ -248,29 +273,34 @@ export function action(metadata, implementation) {
       if (!dispatch && scope === "unit") this._assertUnitProgram(ownedMetadata.op);
       if (!dispatch && scope === "composition") this._assertCompositionProgram(ownedMetadata.op);
   
-      const summarizedArgs = summarizeArgs(args);
+      const summarizedArgs = summariesByArguments.get(args) ?? summarizeArgs(args);
       const entered = this._enterAction({
         ...ownedMetadata,
         args: summarizedArgs
       });
-      let result = dispatch ? dispatch(entered, wrappedAction, args) : implementation.call(entered, args);
+      sourceByEnteredAction.set(entered, this);
+      try {
+        let result = dispatch ? dispatch(entered, wrappedAction, args) : implementation.call(entered, args);
   
-      if (!(result instanceof this.constructor)) {
-        throw new TypeError(`${ownedMetadata.op} must return a ChartProgram.`);
-      }
-  
-      if (this.actionStack.length === 0 && actionCompletionHook !== undefined) {
-        result = actionCompletionHook(result, {
-          source: this,
-          metadata: ownedMetadata,
-          args: summarizedArgs
-        });
         if (!(result instanceof this.constructor)) {
-          throw new TypeError("Action completion hook must return a ChartProgram.");
+          throw new TypeError(`${ownedMetadata.op} must return a ChartProgram.`);
         }
+
+        if (this.actionStack.length === 0 && actionCompletionHook !== undefined) {
+          result = actionCompletionHook(result, {
+            source: this,
+            metadata: ownedMetadata,
+            args: summarizedArgs
+          });
+          if (!(result instanceof this.constructor)) {
+            throw new TypeError("Action completion hook must return a ChartProgram.");
+          }
+        }
+
+        return result._exitAction();
+      } finally {
+        sourceByEnteredAction.delete(entered);
       }
-  
-      return result._exitAction();
     } catch (error) {
       throw annotateError(error, { code: "action-failed", operation: ownedMetadata.op });
     }

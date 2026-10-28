@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Assign a constant non-empty stroke color or map a categorical, quantitative, or temporal field to the outline of a Point, Line, Area, Bar, Rect, Arc, Rule, or Tick.",
-  "signature": "encodeStroke(options: TargetedOptions<StrokeEncodingOptions>): ChartProgram;",
+  "signature": "encodeStroke(options: TargetedOptions<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode stroke",
     "encode",
@@ -74,19 +74,29 @@
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<StrokeEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<StrokeEncodingOptions>[\"otherwise\"]"
+    },
+    {
       "name": "value",
       "required": false,
-      "type": "string | undefined"
+      "type": "string"
     },
     {
       "name": "field",
       "required": false,
-      "type": "string | undefined"
+      "type": "string"
     },
     {
       "name": "fieldType",
       "required": false,
-      "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+      "type": "\"nominal\" | \"ordinal\" | undefined"
     },
     {
       "name": "temporalUnit",
@@ -96,11 +106,13 @@
     {
       "name": "scale",
       "required": false,
-      "type": "ContinuousColorScaleOptions | DiscretizedColorScaleOptions | CategoricalColorScaleOptions | (Omit<...> & { ...; }) | undefined"
+      "type": "CategoricalColorScaleOptions | undefined"
     }
   ],
   "callPatterns": [
-    "encodeStroke({ target?, scale?, value?, field?, fieldType?, temporalUnit? })"
+    "encodeStroke({ value, target? })",
+    "encodeStroke({ field, target?, fieldType?, temporalUnit?, scale? })",
+    "encodeStroke({ target?, conditions: [{ when, value }], otherwise })"
   ],
   "snippet": "program.encodeStroke({ value: \"#222222\" })",
   "errors": [],

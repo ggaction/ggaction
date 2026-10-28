@@ -26,6 +26,7 @@ interface ChartProgramActions {
   applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
+  applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -46,6 +47,18 @@ interface ChartProgramActions {
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
   createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
+  createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;
+  editHierarchyData(options: TargetedOptions<EditHierarchyDataOptions>): ChartProgram;
+  layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
+  editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
+  removeResource(options: RemoveStoredResourceOptions): ChartProgram;
+  createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+  editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+  createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
+  editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
+  createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
+  removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
   createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;
   createCompleteData(options: TargetedOptions<CompleteDataOptions>): ChartProgram;
@@ -92,7 +105,7 @@ interface ChartProgramActions {
   createLineMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
   editLineMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
   createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "multiply" | "screen" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
   createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
   editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
@@ -119,23 +132,23 @@ interface ChartProgramActions {
   layoutLabels(options?: TargetedOptions<LabelLayoutOptions>): ChartProgram;
   removeLabelLayout(options?: TargetedOptions<RemoveLabelLayoutOptions>): ChartProgram;
   editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
-  encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;
-  encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;
-  encodeTheta(options: TargetedOptions<ThetaEncodingOptions>): ChartProgram;
-  encodeR(options: TargetedOptions<RadialEncodingOptions>): ChartProgram;
-  encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
-  encodeColor(options: TargetedOptions<ColorEncodingOptions>): ChartProgram;
-  encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions>): ChartProgram;
-  encodeSize(options: TargetedOptions<SizeEncodingOptions>): ChartProgram;
-  encodeShape(options: TargetedOptions<ShapeEncodingOptions>): ChartProgram;
-  encodeAngle(options: TargetedOptions<AngleEncodingOptions>): ChartProgram;
-  encodeOpacity(options: TargetedOptions<OpacityEncodingOptions>): ChartProgram;
-  encodeRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
-  encodePointRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
+  encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
+  encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
+  encodeTheta(options: TargetedOptions<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>): ChartProgram;
+  encodeR(options: TargetedOptions<RadialEncodingOptions | ConditionalEncodingOptions<RadialEncodingOptions>>): ChartProgram;
+  encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>): ChartProgram;
+  encodeColor(options: TargetedOptions<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>): ChartProgram;
+  encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>): ChartProgram;
+  encodeSize(options: TargetedOptions<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>): ChartProgram;
+  encodeShape(options: TargetedOptions<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>): ChartProgram;
+  encodeAngle(options: TargetedOptions<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>): ChartProgram;
+  encodeOpacity(options: TargetedOptions<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>): ChartProgram;
+  encodeRadius(options: TargetedOptions<{ value: number; target?: string } | ConditionalEncodingOptions<{ value: number }>>): ChartProgram;
+  encodePointRadius(options: TargetedOptions<{ value: number; target?: string } | ConditionalEncodingOptions<{ value: number }>>): ChartProgram;
   removePointRadius(options?: TargetedOptions<{ target?: string }>): ChartProgram;
-  encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions>): ChartProgram;
-  encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions>): ChartProgram;
-  encodeY2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
+  encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions | ConditionalEncodingOptions<XOffsetEncodingOptions>>): ChartProgram;
+  encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions | ConditionalEncodingOptions<YOffsetEncodingOptions>>): ChartProgram;
+  encodeY2(options: TargetedOptions<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>): ChartProgram;
   encodeYRange(options: TargetedOptions<RangePositionEncodingOptions>): ChartProgram;
   encodeXRange(options: TargetedOptions<RangePositionEncodingOptions>): ChartProgram;
   encodeGroup(options: TargetedOptions<GroupEncodingOptions>): ChartProgram;
@@ -146,17 +159,17 @@ interface ChartProgramActions {
   removePathOrder(options?: TargetedOptions<RemovePathOrderOptions>): ChartProgram;
   removeCategoryOrder(options: TargetedOptions<RemoveCategoryOrderOptions>): ChartProgram;
   removeEncoding(options: TargetedOptions<{ target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy"; }>): ChartProgram;
-  encodeText(options: TargetedOptions<TextEncodingOptions>): ChartProgram;
-  encodeDx(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
-  encodeDy(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
+  encodeText(options: TargetedOptions<TextEncodingOptions | ConditionalEncodingOptions<TextEncodingOptions>>): ChartProgram;
+  encodeDx(options: TargetedOptions<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>): ChartProgram;
+  encodeDy(options: TargetedOptions<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>): ChartProgram;
   encodeHistogram(options: TargetedOptions<HistogramEncodingOptions>): ChartProgram;
   encodeDensity(options: TargetedOptions<DensityEncodingOptions>): ChartProgram;
   editDensity(options: TargetedOptions<EditDensityOptions>): ChartProgram;
   encodeHorizon(options?: TargetedOptions<HorizonEncodingOptions>): ChartProgram;
   editHorizon(options: TargetedOptions<EditHorizonOptions>): ChartProgram;
   encodeBarWidth(options?: TargetedOptions<BarWidthOptions>): ChartProgram;
-  encodeStroke(options: TargetedOptions<StrokeEncodingOptions>): ChartProgram;
-  encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions>): ChartProgram;
+  encodeStroke(options: TargetedOptions<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>): ChartProgram;
+  encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>): ChartProgram;
   encodeChannels(options: TargetedOptions<EncodeChannelsOptions>): ChartProgram;
   createRegression(options?: TargetedOptions<RegressionOptions>): ChartProgram;
   editRegression(options: TargetedOptions<EditRegressionOptions>): ChartProgram;
@@ -495,6 +508,22 @@ type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "t
 
 Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`TextFormat`](#type-textformat) · [`LabelLayoutOptions`](#type-labellayoutoptions).
 
+### `ApplyDataUpdateOptions` {#type-applydataupdateoptions}
+
+<details markdown="1">
+<summary>Expand ApplyDataUpdateOptions</summary>
+
+```typescript
+export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly prepared: PreparedDataUpdate<Kind>;
+  readonly requestToken: string;
+}
+```
+
+</details>
+
+Related types: [`DataUpdateRequest`](#type-dataupdaterequest) · [`PreparedDataUpdate`](#type-prepareddataupdate).
+
 ### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
 
 <details markdown="1">
@@ -609,6 +638,7 @@ export interface AxisLabelLayoutOptions {
   rotation?: RotationInput;
   /** Wrap each label to this measured width; false removes an existing wrap policy. */
   maxWidth?: number | false;
+  /** Both modes keep grapheme clusters intact; hard breaks preserve line spacing. */
   wrap?: "word" | "character";
   lineHeight?: number;
   /** Defaults to error; allow stores an intentional label-label overlap policy. */
@@ -2351,7 +2381,20 @@ Related types: [`ComputedExpression`](#type-computedexpression).
 <summary>Expand ComputedExpression</summary>
 
 ```typescript
-export type ComputedExpression =
+export type ComputedExpression = ComputedExpressionV1 | ComputedExpressionV2;
+```
+
+</details>
+
+Related types: [`ComputedExpressionV1`](#type-computedexpressionv1) · [`ComputedExpressionV2`](#type-computedexpressionv2).
+
+### `ComputedExpressionV1` {#type-computedexpressionv1}
+
+<details markdown="1">
+<summary>Expand ComputedExpressionV1</summary>
+
+```typescript
+export type ComputedExpressionV1 =
   | { readonly field: string }
   | { readonly constant: number | string | boolean | null }
   | {
@@ -2361,50 +2404,100 @@ export type ComputedExpression =
     }
   | {
       readonly op: "replaceLiteral";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly search: string;
       readonly replacement: string;
     }
   | {
       readonly op: "datePart";
       readonly part: "year";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly timeZone?: string;
     }
   | {
       readonly op: "parseTime";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly format?: ParseTimeFormat;
     }
   | {
       readonly op: "negate" | "absolute" | "log" | "sqrt" | "floor" | "not" | "isNull" | "toNumber";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
     }
   | {
       readonly op: "add" | "subtract" | "multiply" | "divide" |
         "eq" | "neq" | "lt" | "lte" | "gt" | "gte";
-      readonly left: ComputedExpression;
-      readonly right: ComputedExpression;
+      readonly left: ComputedExpressionV1;
+      readonly right: ComputedExpressionV1;
     }
   | {
       readonly op: "and" | "or" | "coalesce";
-      readonly operands: readonly [ComputedExpression, ComputedExpression, ...ComputedExpression[]];
+      readonly operands: readonly [ComputedExpressionV1, ComputedExpressionV1, ...ComputedExpressionV1[]];
     }
   | {
       readonly op: "concat";
-      readonly operands: readonly [ComputedExpression, ...ComputedExpression[]];
+      readonly operands: readonly [ComputedExpressionV1, ...ComputedExpressionV1[]];
     }
   | {
       readonly op: "if";
-      readonly condition: ComputedExpression;
-      readonly then: ComputedExpression;
-      readonly else: ComputedExpression;
+      readonly condition: ComputedExpressionV1;
+      readonly then: ComputedExpressionV1;
+      readonly else: ComputedExpressionV1;
     };
 ```
 
 </details>
 
 Related types: [`ParseTimeFormat`](#type-parsetimeformat).
+
+### `ComputedExpressionV2` {#type-computedexpressionv2}
+
+<details markdown="1">
+<summary>Expand ComputedExpressionV2</summary>
+
+```typescript
+export interface ComputedExpressionV2 {
+  readonly version: 2;
+  readonly registry: "standard@1";
+  readonly root: ExpressionNode;
+}
+```
+
+</details>
+
+Related types: [`ExpressionNode`](#type-expressionnode).
+
+### `ConditionalEncodingBranch` {#type-conditionalencodingbranch}
+
+<details markdown="1">
+<summary>Expand ConditionalEncodingBranch</summary>
+
+```typescript
+interface ConditionalEncodingBranch<Value> {
+  when: ComputedExpressionV2 | { selection: string };
+  value: WithoutEncodingTarget<Value>;
+}
+```
+
+</details>
+
+Related types: [`ComputedExpressionV2`](#type-computedexpressionv2) · [`WithoutEncodingTarget`](#type-withoutencodingtarget).
+
+### `ConditionalEncodingOptions` {#type-conditionalencodingoptions}
+
+<details markdown="1">
+<summary>Expand ConditionalEncodingOptions</summary>
+
+```typescript
+export type ConditionalEncodingOptions<Value> = {
+  target?: string;
+  conditions: readonly ConditionalEncodingBranch<Value>[];
+  otherwise: WithoutEncodingTarget<Value>;
+};
+```
+
+</details>
+
+Related types: [`ConditionalEncodingBranch`](#type-conditionalencodingbranch) · [`WithoutEncodingTarget`](#type-withoutencodingtarget).
 
 ### `ConfidenceIntervalMethod` {#type-confidenceintervalmethod}
 
@@ -2713,6 +2806,21 @@ export type CreateDataOptions<Row extends object> = DataKeyOptions & {
 
 Related types: [`DataKeyOptions`](#type-datakeyoptions) · [`StoredCell`](#type-storedcell) · [`SourceSchemaInput`](#type-sourceschemainput).
 
+### `CreateDataUpdateRequest` {#type-createdataupdaterequest}
+
+<details markdown="1">
+<summary>Expand CreateDataUpdateRequest</summary>
+
+```typescript
+export type CreateDataUpdateRequest = DataSourceKeys & {
+  readonly kind: "create"; readonly id: string; readonly source: DataSource;
+};
+```
+
+</details>
+
+Related types: [`DataSourceKeys`](#type-datasourcekeys) · [`DataSource`](#type-datasource).
+
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
 <details markdown="1">
@@ -2880,6 +2988,20 @@ export type CreateHeatmapOptions =
 </details>
 
 Related types: [`PreGriddedHeatmapOptions`](#type-pregriddedheatmapoptions) · [`BinnedHeatmapOptions`](#type-binnedheatmapoptions).
+
+### `CreateHierarchyDataOptions` {#type-createhierarchydataoptions}
+
+<details markdown="1">
+<summary>Expand CreateHierarchyDataOptions</summary>
+
+```typescript
+export type CreateHierarchyDataOptions = HierarchySource & { id: string; data?: string; maxNodes?: number };
+/** Omitted fields preserve the existing source form; every edit must change at least one option. */
+```
+
+</details>
+
+Related types: [`HierarchySource`](#type-hierarchysource).
 
 ### `CreateHistogramOptions` {#type-createhistogramoptions}
 
@@ -3104,6 +3226,21 @@ export interface CreateParallelCoordinatesOptions {
 </details>
 
 Related types: [`ParallelDimension`](#type-paralleldimension) · [`ParallelMissingPolicy`](#type-parallelmissingpolicy) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`NonCartesianStrokeDashChannel`](#type-noncartesianstrokedashchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ParallelGuideOptions`](#type-parallelguideoptions).
+
+### `CreateParameterOptions` {#type-createparameteroptions}
+
+<details markdown="1">
+<summary>Expand CreateParameterOptions</summary>
+
+```typescript
+export type CreateParameterOptions = { readonly id: string } & (
+  ParameterDefinition<"number", number> | ParameterDefinition<"string", string> | ParameterDefinition<"boolean", boolean>
+);
+```
+
+</details>
+
+Related types: [`ParameterDefinition`](#type-parameterdefinition).
 
 ### `CreatePiePlotOptions` {#type-createpieplotoptions}
 
@@ -3674,6 +3811,11 @@ export interface DashScaleOptions {
   range?: "auto" | readonly (DashStyle | DashPattern)[];
   unknown?: DashStyle | DashPattern;
 }
+
+/** Ordered first-match predicates; otherwise is required. All branches are validated.
+ * Each value uses the existing encoder payload without target. Selection predicates
+ * reference stored logical selection IDs. Legends require one unique field/scale binding.
+ */
 ```
 
 </details>
@@ -3707,6 +3849,135 @@ export type DataKeyOptions =
 </details>
 
 Related types: [`RowKey`](#type-rowkey).
+
+### `DataParse` {#type-dataparse}
+
+<details markdown="1">
+<summary>Expand DataParse</summary>
+
+```typescript
+export type DataParse = Readonly<Record<string, DataParseDirective>>;
+```
+
+</details>
+
+Related types: [`DataParseDirective`](#type-dataparsedirective).
+
+### `DataParseDirective` {#type-dataparsedirective}
+
+<details markdown="1">
+<summary>Expand DataParseDirective</summary>
+
+```typescript
+export type DataParseDirective =
+  | { readonly type: "string" | "number" | "boolean"; readonly nullable?: boolean; readonly format?: never; readonly timeZone?: never }
+  | { readonly type: "date"; readonly nullable?: boolean; readonly timeZone: string;
+      readonly format?: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso" };
+```
+
+</details>
+
+### `DataSource` {#type-datasource}
+
+<details markdown="1">
+<summary>Expand DataSource</summary>
+
+```typescript
+export type DataSource = DataSourceParsing & (
+  | { readonly kind: "inline"; readonly values: readonly Readonly<Record<string, DataSourceValue>>[];
+      readonly text?: never; readonly format?: never; readonly delimiter?: never }
+  | (DataSourceFormat & { readonly kind: "inline"; readonly text: string; readonly values?: never })
+  | (DataSourceFormat & { readonly kind: "url"; readonly url: string | ComputedExpressionV2 })
+  | (DataSourceFormat & { readonly kind: "named"; readonly name: string })
+);
+```
+
+</details>
+
+Related types: [`DataSourceParsing`](#type-datasourceparsing) · [`DataSourceValue`](#type-datasourcevalue) · [`DataSourceFormat`](#type-datasourceformat) · [`ComputedExpressionV2`](#type-computedexpressionv2).
+
+### `DataSourceFormat` {#type-datasourceformat}
+
+<details markdown="1">
+<summary>Expand DataSourceFormat</summary>
+
+```typescript
+type DataSourceFormat = { readonly format: "csv"; readonly delimiter?: string }
+  | { readonly format: "json"; readonly delimiter?: never };
+```
+
+</details>
+
+### `DataSourceKeys` {#type-datasourcekeys}
+
+<details markdown="1">
+<summary>Expand DataSourceKeys</summary>
+
+```typescript
+type DataSourceKeys =
+  | { readonly keyField?: never; readonly keyFields?: never }
+  | { readonly keyField: string; readonly keyFields?: never }
+  | { readonly keyField?: never; readonly keyFields: readonly string[] };
+```
+
+</details>
+
+### `DataSourceParsing` {#type-datasourceparsing}
+
+<details markdown="1">
+<summary>Expand DataSourceParsing</summary>
+
+```typescript
+type DataSourceParsing = { readonly parse?: DataParse; readonly schema?: SourceSchemaInput };
+```
+
+</details>
+
+Related types: [`DataParse`](#type-dataparse) · [`SourceSchemaInput`](#type-sourceschemainput).
+
+### `DataSourceValue` {#type-datasourcevalue}
+
+<details markdown="1">
+<summary>Expand DataSourceValue</summary>
+
+```typescript
+export type DataSourceValue = null | boolean | number | string
+  | readonly DataSourceValue[] | { readonly [key: string]: DataSourceValue };
+```
+
+</details>
+
+### `DataUpdateDescriptors` {#type-dataupdatedescriptors}
+
+<details markdown="1">
+<summary>Expand DataUpdateDescriptors</summary>
+
+```typescript
+interface DataUpdateDescriptors {
+  create: { readonly kind: "create"; readonly id: string; readonly sourceKind: DataSource["kind"]; readonly format?: "csv" | "json" };
+  revise: { readonly kind: "revise"; readonly target: string; readonly id: string };
+  parameter: { readonly kind: "parameter"; readonly target: string };
+}
+declare const preparedDataUpdate: unique symbol;
+/** Opaque preparation evidence. Only prepareDataUpdate can create a valid handle. */
+```
+
+</details>
+
+Related types: [`DataSource`](#type-datasource).
+
+### `DataUpdateRequest` {#type-dataupdaterequest}
+
+<details markdown="1">
+<summary>Expand DataUpdateRequest</summary>
+
+```typescript
+export type DataUpdateRequest = CreateDataUpdateRequest | ReviseDataUpdateRequest | ParameterDataUpdateRequest;
+```
+
+</details>
+
+Related types: [`CreateDataUpdateRequest`](#type-createdataupdaterequest) · [`ReviseDataUpdateRequest`](#type-revisedataupdaterequest) · [`ParameterDataUpdateRequest`](#type-parameterdataupdaterequest).
 
 ### `DatasetBin2DOutputFields` {#type-datasetbin2doutputfields}
 
@@ -3948,7 +4219,7 @@ Related types: [`ECDFOutputFields`](#type-ecdfoutputfields) · [`DatasetECDFReso
 <summary>Expand DatasetFilterTransform</summary>
 
 ```typescript
-export type DatasetFilterTransform = {
+export type DatasetFilterTransform = ({
   type: "filter";
   field: string;
   nulls?: "include" | "exclude";
@@ -3957,12 +4228,12 @@ export type DatasetFilterTransform = {
   | { oneOf?: never; noneOf: readonly DatasetScalar[]; predicate?: never; range?: never }
   | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
   | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRange }
-);
+)) | ({ type: "filter" } & ExpressionFilterOptions);
 ```
 
 </details>
 
-Related types: [`DatasetScalar`](#type-datasetscalar) · [`FilterComparison`](#type-filtercomparison) · [`FilterRange`](#type-filterrange).
+Related types: [`DatasetScalar`](#type-datasetscalar) · [`FilterComparison`](#type-filtercomparison) · [`FilterRange`](#type-filterrange) · [`ExpressionFilterOptions`](#type-expressionfilteroptions).
 
 ### `DatasetFlattenTransform` {#type-datasetflattentransform}
 
@@ -5452,17 +5723,18 @@ export type EditFacetSourceOptions =
 <summary>Expand EditFilteredDataOptions</summary>
 
 ```typescript
-export type EditFilteredDataOptions = FilterModePatch & {
+export type EditFilteredDataOptions = (FilterModePatch & {
+  where?: never;
   target: string;
   field?: string;
   nulls?: "include" | "exclude" | false;
   dependents?: DerivedDataDependents;
-};
+}) | (ExpressionFilterOptions & { target: string; dependents?: DerivedDataDependents });
 ```
 
 </details>
 
-Related types: [`FilterModePatch`](#type-filtermodepatch) · [`DerivedDataDependents`](#type-deriveddatadependents).
+Related types: [`FilterModePatch`](#type-filtermodepatch) · [`DerivedDataDependents`](#type-deriveddatadependents) · [`ExpressionFilterOptions`](#type-expressionfilteroptions).
 
 ### `EditFlattenDataOptions` {#type-editflattendataoptions}
 
@@ -5570,6 +5842,19 @@ export interface EditGridOptions {
 
 Related types: [`CartesianGuideDashMap`](#type-cartesianguidedashmap) · [`CategoryValue`](#type-categoryvalue).
 
+### `EditHierarchyDataOptions` {#type-edithierarchydataoptions}
+
+<details markdown="1">
+<summary>Expand EditHierarchyDataOptions</summary>
+
+```typescript
+export type EditHierarchyDataOptions = Partial<HierarchySource> & { target?: string; data?: string; maxNodes?: number };
+```
+
+</details>
+
+Related types: [`HierarchySource`](#type-hierarchysource).
+
 ### `EditHorizonOptions` {#type-edithorizonoptions}
 
 <details markdown="1">
@@ -5611,6 +5896,19 @@ export type EditIntervalDataOptions = FocusedDerivedDataEdit<IntervalDataOptions
 </details>
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`IntervalDataOptions`](#type-intervaldataoptions).
+
+### `EditLayoutOptions` {#type-editlayoutoptions}
+
+<details markdown="1">
+<summary>Expand EditLayoutOptions</summary>
+
+```typescript
+export interface EditLayoutOptions { target?: string; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number }; }
+```
+
+</details>
+
+Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 
@@ -5727,7 +6025,7 @@ Related types: [`LegendChannel`](#type-legendchannel).
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  extends Omit<LegendOptions, "channels" | "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
   visible?: boolean;
   /** Body offset in pixels; auto resets. */
   itemsOffset?: { x?: number; y?: number } | "auto";
@@ -5937,6 +6235,19 @@ export type EditParallelScaleOptions = {
 </details>
 
 Related types: [`WithoutScaleId`](#type-withoutscaleid) · [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`CategoricalPositionScaleOptions`](#type-categoricalpositionscaleoptions).
+
+### `EditParameterOptions` {#type-editparameteroptions}
+
+<details markdown="1">
+<summary>Expand EditParameterOptions</summary>
+
+```typescript
+export interface EditParameterOptions { readonly target: string; readonly value: ParameterValue; }
+```
+
+</details>
+
+Related types: [`ParameterValue`](#type-parametervalue).
 
 ### `EditPivotDataOptions` {#type-editpivotdataoptions}
 
@@ -6378,6 +6689,32 @@ export interface EditTitleOptions
 
 Related types: [`TitleOptions`](#type-titleoptions).
 
+### `EditTreePlotOptions` {#type-edittreeplotoptions}
+
+<details markdown="1">
+<summary>Expand EditTreePlotOptions</summary>
+
+```typescript
+export interface EditTreePlotOptions extends Omit<TreePlotOptions, "id"> { target?: string; }
+```
+
+</details>
+
+Related types: [`TreePlotOptions`](#type-treeplotoptions).
+
+### `EditTreemapPlotOptions` {#type-edittreemapplotoptions}
+
+<details markdown="1">
+<summary>Expand EditTreemapPlotOptions</summary>
+
+```typescript
+export interface EditTreemapPlotOptions extends Omit<TreemapPlotOptions, "id"> { target?: string; }
+```
+
+</details>
+
+Related types: [`TreemapPlotOptions`](#type-treemapplotoptions).
+
 ### `EditViolinPlotOptions` {#type-editviolinplotoptions}
 
 <details markdown="1">
@@ -6490,33 +6827,33 @@ Related types: [`AtLeastOne`](#type-atleastone) · [`EncodingChannelAssignments`
 
 ```typescript
 export interface EncodingChannelAssignments {
-  x?: WithoutEncodingTarget<PositionEncodingOptions | DatumPositionEncodingOptions>;
-  y?: WithoutEncodingTarget<YPositionEncodingOptions | DatumPositionEncodingOptions>;
-  x2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions>;
-  y2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions>;
-  theta?: WithoutEncodingTarget<ThetaEncodingOptions>;
-  r?: WithoutEncodingTarget<RadialEncodingOptions>;
-  xOffset?: WithoutEncodingTarget<XOffsetEncodingOptions>;
-  yOffset?: WithoutEncodingTarget<YOffsetEncodingOptions>;
+  x?: WithoutEncodingTarget<PositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>>;
+  y?: WithoutEncodingTarget<YPositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>>;
+  x2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>;
+  y2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>;
+  theta?: WithoutEncodingTarget<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>;
+  r?: WithoutEncodingTarget<RadialEncodingOptions | ConditionalEncodingOptions<RadialEncodingOptions>>;
+  xOffset?: WithoutEncodingTarget<XOffsetEncodingOptions | ConditionalEncodingOptions<XOffsetEncodingOptions>>;
+  yOffset?: WithoutEncodingTarget<YOffsetEncodingOptions | ConditionalEncodingOptions<YOffsetEncodingOptions>>;
   group?: WithoutEncodingTarget<GroupEncodingOptions>;
   pathOrder?: WithoutEncodingTarget<PathOrderEncodingOptions>;
-  color?: WithoutEncodingTarget<ColorEncodingOptions>;
-  stroke?: WithoutEncodingTarget<StrokeEncodingOptions>;
-  size?: WithoutEncodingTarget<SizeEncodingOptions>;
-  shape?: WithoutEncodingTarget<ShapeEncodingOptions>;
-  opacity?: WithoutEncodingTarget<OpacityEncodingOptions>;
-  strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions>;
-  strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions>;
-  angle?: WithoutEncodingTarget<AngleEncodingOptions>;
-  text?: WithoutEncodingTarget<TextEncodingOptions>;
-  dx?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
-  dy?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
+  color?: WithoutEncodingTarget<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>;
+  stroke?: WithoutEncodingTarget<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>;
+  size?: WithoutEncodingTarget<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>;
+  shape?: WithoutEncodingTarget<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>;
+  opacity?: WithoutEncodingTarget<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>;
+  strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>;
+  strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>;
+  angle?: WithoutEncodingTarget<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>;
+  text?: WithoutEncodingTarget<TextEncodingOptions | ConditionalEncodingOptions<TextEncodingOptions>>;
+  dx?: WithoutEncodingTarget<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>;
+  dy?: WithoutEncodingTarget<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>;
 }
 ```
 
 </details>
 
-Related types: [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`PositionEncodingOptions`](#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](#type-thetaencodingoptions) · [`RadialEncodingOptions`](#type-radialencodingoptions) · [`XOffsetEncodingOptions`](#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](#type-groupencodingoptions) · [`PathOrderEncodingOptions`](#type-pathorderencodingoptions) · [`ColorEncodingOptions`](#type-colorencodingoptions) · [`StrokeEncodingOptions`](#type-strokeencodingoptions) · [`SizeEncodingOptions`](#type-sizeencodingoptions) · [`ShapeEncodingOptions`](#type-shapeencodingoptions) · [`OpacityEncodingOptions`](#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](#type-strokedashencodingoptions) · [`AngleEncodingOptions`](#type-angleencodingoptions) · [`TextEncodingOptions`](#type-textencodingoptions) · [`TextOffsetEncodingOptions`](#type-textoffsetencodingoptions).
+Related types: [`WithoutEncodingTarget`](#type-withoutencodingtarget) · [`PositionEncodingOptions`](#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](#type-datumpositionencodingoptions) · [`ConditionalEncodingOptions`](#type-conditionalencodingoptions) · [`YPositionEncodingOptions`](#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](#type-thetaencodingoptions) · [`RadialEncodingOptions`](#type-radialencodingoptions) · [`XOffsetEncodingOptions`](#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](#type-groupencodingoptions) · [`PathOrderEncodingOptions`](#type-pathorderencodingoptions) · [`ColorEncodingOptions`](#type-colorencodingoptions) · [`StrokeEncodingOptions`](#type-strokeencodingoptions) · [`SizeEncodingOptions`](#type-sizeencodingoptions) · [`ShapeEncodingOptions`](#type-shapeencodingoptions) · [`OpacityEncodingOptions`](#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](#type-strokedashencodingoptions) · [`AngleEncodingOptions`](#type-angleencodingoptions) · [`TextEncodingOptions`](#type-textencodingoptions) · [`TextOffsetEncodingOptions`](#type-textoffsetencodingoptions).
 
 ### `EndpointCategoryChannel` {#type-endpointcategorychannel}
 
@@ -6862,6 +7199,66 @@ type ExistingSizeScaleEditPatch = {
 
 </details>
 
+### `ExpressionCall` {#type-expressioncall}
+
+<details markdown="1">
+<summary>Expand ExpressionCall</summary>
+
+```typescript
+export type ExpressionCall =
+  | { readonly type: "call"; readonly name: "abs" | "sqrt" | "log" | "exp" | "round" | "floor" | "ceil" | "min" | "max" | "pow" | "toNumber" | "lower" | "upper" | "length" | "substring" | "replace" | "concat" | "isNull" | "isMissing" | "isFinite" | "coalesce" | "arrayLength" | "at"; readonly args: readonly ExpressionNode[] }
+  | { readonly type: "call"; readonly name: "sin" | "cos" | "tan" | "atan2"; readonly args: readonly ExpressionNode[]; readonly options: { readonly angleUnit: "radians" | "degrees" } }
+  | { readonly type: "call"; readonly name: "parseTime"; readonly args: readonly ExpressionNode[]; readonly options: { readonly format: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso-offset" } }
+  | { readonly type: "call"; readonly name: "datePart"; readonly args: readonly ExpressionNode[]; readonly options: { readonly part: "year" | "quarter" | "month" | "day" | "weekday" | "hour" | "minute" | "second" | "millisecond"; readonly timeZone: string } }
+  | { readonly type: "call"; readonly name: "timeFloor"; readonly args: readonly ExpressionNode[]; readonly options: { readonly timeZone: string } & ({ readonly unit: "week"; readonly weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | { readonly unit: "year" | "quarter" | "month" | "day" | "hour" | "minute" | "second" }) };
+```
+
+</details>
+
+Related types: [`ExpressionNode`](#type-expressionnode).
+
+### `ExpressionFilterOptions` {#type-expressionfilteroptions}
+
+<details markdown="1">
+<summary>Expand ExpressionFilterOptions</summary>
+
+```typescript
+export type ExpressionFilterOptions = {
+  where: ComputedExpressionV2;
+  field?: never;
+  nulls?: never;
+  oneOf?: never;
+  noneOf?: never;
+  predicate?: never;
+  range?: never;
+};
+```
+
+</details>
+
+Related types: [`ComputedExpressionV2`](#type-computedexpressionv2).
+
+### `ExpressionNode` {#type-expressionnode}
+
+<details markdown="1">
+<summary>Expand ExpressionNode</summary>
+
+```typescript
+export type ExpressionNode =
+  | { readonly type: "literal"; readonly value: number | string | boolean | null }
+  | { readonly type: "field"; readonly name: string }
+  | { readonly type: "fieldPath"; readonly root: string; readonly path: readonly [string, ...string[]] }
+  | { readonly type: "parameter"; readonly id: string }
+  | { readonly type: "unary"; readonly op: "negate" | "not"; readonly operand: ExpressionNode }
+  | { readonly type: "binary"; readonly op: "add" | "subtract" | "multiply" | "divide" | "eq" | "neq" | "lt" | "lte" | "gt" | "gte" | "and" | "or"; readonly left: ExpressionNode; readonly right: ExpressionNode }
+  | { readonly type: "if"; readonly condition: ExpressionNode; readonly then: ExpressionNode; readonly else: ExpressionNode }
+  | ExpressionCall;
+```
+
+</details>
+
+Related types: [`ExpressionCall`](#type-expressioncall).
+
 ### `FacadePositionChannel` {#type-facadepositionchannel}
 
 <details markdown="1">
@@ -7200,17 +7597,15 @@ export type FilterComparison =
 <summary>Expand FilterDataOptions</summary>
 
 ```typescript
-export type FilterDataOptions = {
-  id: string;
-  source?: string;
-  field: string;
-  nulls?: "include" | "exclude";
-} & FilterModeOptions;
+export type FilterDataOptions = { id: string; source?: string } & (
+  | ({ field: string; nulls?: "include" | "exclude"; where?: never } & FilterModeOptions)
+  | ExpressionFilterOptions
+);
 ```
 
 </details>
 
-Related types: [`FilterModeOptions`](#type-filtermodeoptions).
+Related types: [`FilterModeOptions`](#type-filtermodeoptions) · [`ExpressionFilterOptions`](#type-expressionfilteroptions).
 
 ### `FilterMarksOptions` {#type-filtermarksoptions}
 
@@ -7701,6 +8096,133 @@ export type HeatmapCategoryPositionChannel =
 </details>
 
 Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionscaleoptions).
+
+### `HierarchyBodyPaint` {#type-hierarchybodypaint}
+
+<details markdown="1">
+<summary>Expand HierarchyBodyPaint</summary>
+
+```typescript
+export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidth?: number; opacity?: number; }
+```
+
+</details>
+
+### `HierarchyLabelPaint` {#type-hierarchylabelpaint}
+
+<details markdown="1">
+<summary>Expand HierarchyLabelPaint</summary>
+
+```typescript
+export interface HierarchyLabelPaint { fill?: string; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+```
+
+</details>
+
+### `HierarchyLabelsOptions` {#type-hierarchylabelsoptions}
+
+<details markdown="1">
+<summary>Expand HierarchyLabelsOptions</summary>
+
+```typescript
+export interface HierarchyLabelsOptions extends HierarchyLabelPaint {
+  content?: "value"; offset?: readonly [number, number]; overrides?: readonly (HierarchyNodeTarget & HierarchyLabelPaint & { text?: string })[];
+}
+```
+
+</details>
+
+Related types: [`HierarchyLabelPaint`](#type-hierarchylabelpaint) · [`HierarchyNodeTarget`](#type-hierarchynodetarget).
+
+### `HierarchyNodePaint` {#type-hierarchynodepaint}
+
+<details markdown="1">
+<summary>Expand HierarchyNodePaint</summary>
+
+```typescript
+export interface HierarchyNodePaint extends HierarchyBodyPaint { radius?: number; }
+```
+
+</details>
+
+Related types: [`HierarchyBodyPaint`](#type-hierarchybodypaint).
+
+### `HierarchyNodeTarget` {#type-hierarchynodetarget}
+
+<details markdown="1">
+<summary>Expand HierarchyNodeTarget</summary>
+
+```typescript
+export type HierarchyNodeTarget = { key: RowKeyScalar; path?: never } | { path: readonly (RowKeyScalar | null)[]; key?: never };
+```
+
+</details>
+
+Related types: [`RowKeyScalar`](#type-rowkeyscalar).
+
+### `HierarchyOrder` {#type-hierarchyorder}
+
+<details markdown="1">
+<summary>Expand HierarchyOrder</summary>
+
+```typescript
+export type HierarchyOrder = "input"
+  | { by: "value" | "key"; direction: "ascending" | "descending" }
+  | { by: "field"; field: string; direction: "ascending" | "descending"; nulls?: "first" | "last"; temporalUnit?: "year" | "timestamp" };
+```
+
+</details>
+
+### `HierarchySource` {#type-hierarchysource}
+
+<details markdown="1">
+<summary>Expand HierarchySource</summary>
+
+```typescript
+export type HierarchySource =
+  | { key: string; parent: string; value: string; children?: never; groupFields?: never; valueMode?: HierarchyValueMode; forest?: boolean; missingCategory?: never }
+  | { key: string; children: string; value: string; parent?: never; groupFields?: never; valueMode?: HierarchyValueMode; forest?: boolean; missingCategory?: never }
+  | { groupFields: readonly string[]; value: string; key?: never; parent?: never; children?: never; valueMode?: "leaf-sum"; forest?: never; missingCategory?: "error" | "include" };
+```
+
+</details>
+
+Related types: [`HierarchyValueMode`](#type-hierarchyvaluemode).
+
+### `HierarchyTreeOptions` {#type-hierarchytreeoptions}
+
+<details markdown="1">
+<summary>Expand HierarchyTreeOptions</summary>
+
+```typescript
+export type HierarchyTreeOptions = { nodeSize: readonly [number, number]; siblingGap: number; depthGap: number; maxNodes?: number } &
+  ({ orientation: "vertical" | "horizontal"; radius?: never; startAngle?: never; sweep?: never }
+  | { orientation: "radial"; radius: number; startAngle: number; sweep: number });
+```
+
+</details>
+
+### `HierarchyTreemapOptions` {#type-hierarchytreemapoptions}
+
+<details markdown="1">
+<summary>Expand HierarchyTreemapOptions</summary>
+
+```typescript
+export interface HierarchyTreemapOptions { size: readonly [number, number]; padding: number; method: "slice-dice" | "squarify"; maxNodes?: number; }
+```
+
+</details>
+
+### `HierarchyValueMode` {#type-hierarchyvaluemode}
+
+<details markdown="1">
+<summary>Expand HierarchyValueMode</summary>
+
+```typescript
+export type HierarchyValueMode = "leaf-sum" | "inclusive" | "own-plus-children";
+```
+
+</details>
 
 ### `HighlightMarksOptions` {#type-highlightmarksoptions}
 
@@ -8256,6 +8778,23 @@ export type LayerPlotSpecification = {
 </details>
 
 Related types: [`AdjacentPlotSpecification`](#type-adjacentplotspecification).
+
+### `LayoutHierarchyOptions` {#type-layouthierarchyoptions}
+
+<details markdown="1">
+<summary>Expand LayoutHierarchyOptions</summary>
+
+```typescript
+export type LayoutHierarchyOptions = { id: string; hierarchy?: string; order?: HierarchyOrder } &
+  ({ method: "partition"; options?: { maxNodes?: number } }
+  | { method: "tree"; options: HierarchyTreeOptions }
+  | { method: "treemap"; options: HierarchyTreemapOptions });
+/** The method remains fixed; supplied options patch its existing layout intent. */
+```
+
+</details>
+
+Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions).
 
 ### `LegendBlockSymbolPatch` {#type-legendblocksymbolpatch}
 
@@ -9677,6 +10216,58 @@ export type ParallelMissingPolicy = "break" | "drop-row" | "error";
 
 </details>
 
+### `ParameterDataUpdateRequest` {#type-parameterdataupdaterequest}
+
+<details markdown="1">
+<summary>Expand ParameterDataUpdateRequest</summary>
+
+```typescript
+export interface ParameterDataUpdateRequest {
+  readonly kind: "parameter"; readonly target: string; readonly value: ParameterValue;
+}
+```
+
+</details>
+
+Related types: [`ParameterValue`](#type-parametervalue).
+
+### `ParameterDefinition` {#type-parameterdefinition}
+
+<details markdown="1">
+<summary>Expand ParameterDefinition</summary>
+
+```typescript
+type ParameterDefinition<T extends ParameterType, V> =
+  | { readonly type?: T; readonly value: V; readonly nullable?: boolean }
+  | { readonly type: T; readonly value: null; readonly nullable: true };
+```
+
+</details>
+
+Related types: [`ParameterType`](#type-parametertype).
+
+### `ParameterType` {#type-parametertype}
+
+<details markdown="1">
+<summary>Expand ParameterType</summary>
+
+```typescript
+export type ParameterType = "number" | "string" | "boolean";
+```
+
+</details>
+
+### `ParameterValue` {#type-parametervalue}
+
+<details markdown="1">
+<summary>Expand ParameterValue</summary>
+
+```typescript
+export type ParameterValue = number | string | boolean | null;
+```
+
+</details>
+
 ### `ParameterizedAggregateOperation` {#type-parameterizedaggregateoperation}
 
 <details markdown="1">
@@ -10353,6 +10944,23 @@ export interface PreGriddedHeatmapOptions extends HeatmapBaseOptions {
 
 Related types: [`HeatmapBaseOptions`](#type-heatmapbaseoptions) · [`HeatmapCategoryPositionChannel`](#type-heatmapcategorypositionchannel) · [`RectColorChannel`](#type-rectcolorchannel).
 
+### `PreparedDataUpdate` {#type-prepareddataupdate}
+
+<details markdown="1">
+<summary>Expand PreparedDataUpdate</summary>
+
+```typescript
+export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly [preparedDataUpdate]: Kind;
+  readonly kind: "data-update";
+  readonly request: DataUpdateDescriptors[Kind];
+}
+```
+
+</details>
+
+Related types: [`DataUpdateRequest`](#type-dataupdaterequest) · [`DataUpdateDescriptors`](#type-dataupdatedescriptors).
+
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
 <details markdown="1">
@@ -10541,7 +11149,9 @@ export type RadialEncodingOptions = {
   fieldType?: "quantitative";
   coordinate?: string;
 } & (
-  | { field: string; mapping?: false; aggregate?: never; scale?: RadiusScaleOptions }
+  | { field: string; datum?: never; mapping?: false; aggregate?: never; scale?: RadiusScaleOptions }
+  /** Constant polar distances are supported by Point marks. */
+  | { field?: never; datum: number; mapping?: never; aggregate?: never; scale?: RadiusScaleOptions }
   | { field: string; mapping?: never; aggregate: "sum"; scale?: RadiusScaleOptions }
   | { field?: never; mapping?: never; aggregate: "count"; scale?: RadiusScaleOptions }
   | { field: string; mapping?: RadialMapping; aggregate: "sum"; scale?: MeasuredRadiusScaleOptions }
@@ -11307,6 +11917,17 @@ export interface RemoveParallelAxisOptions { field: string; target?: string; }
 
 </details>
 
+### `RemoveParameterOptions` {#type-removeparameteroptions}
+
+<details markdown="1">
+<summary>Expand RemoveParameterOptions</summary>
+
+```typescript
+export interface RemoveParameterOptions { readonly id: string; }
+```
+
+</details>
+
 ### `RemovePathOrderOptions` {#type-removepathorderoptions}
 
 <details markdown="1">
@@ -11345,6 +11966,19 @@ export interface RemoveResourceOptions {
 ```
 
 </details>
+
+### `RemoveStoredResourceOptions` {#type-removestoredresourceoptions}
+
+<details markdown="1">
+<summary>Expand RemoveStoredResourceOptions</summary>
+
+```typescript
+export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }
+```
+
+</details>
+
+Related types: [`StoredResourceKind`](#type-storedresourcekind).
 
 ### `ReorderCompositionChildrenOptions` {#type-reordercompositionchildrenoptions}
 
@@ -11447,6 +12081,20 @@ export type ReviseDataOptions<Row extends object> = ({ keys?: never; rowMap?: re
 </details>
 
 Related types: [`RowKey`](#type-rowkey) · [`StoredCell`](#type-storedcell) · [`SourceSchemaInput`](#type-sourceschemainput).
+
+### `ReviseDataUpdateRequest` {#type-revisedataupdaterequest}
+
+<details markdown="1">
+<summary>Expand ReviseDataUpdateRequest</summary>
+
+```typescript
+export interface ReviseDataUpdateRequest {
+  readonly kind: "revise"; readonly target: string; readonly id: string;
+  readonly rowMap?: readonly (number | null)[];
+}
+```
+
+</details>
 
 ### `RotationInput` {#type-rotationinput}
 
@@ -12138,6 +12786,17 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
 
 </details>
 
+### `StoredResourceKind` {#type-storedresourcekind}
+
+<details markdown="1">
+<summary>Expand StoredResourceKind</summary>
+
+```typescript
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image";
+```
+
+</details>
+
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}
 
 <details markdown="1">
@@ -12659,17 +13318,15 @@ Related types: [`PolarLabelOptions`](#type-polarlabeloptions) · [`DisplayLabelO
 
 ```typescript
 export type ThetaEncodingOptions = {
-  /**
-   * Arc marks interpret an aggregate-free quantitative field as per-row sector
-   * weights. Categorical arc theta retains the count and weighted-sum modes.
-   */
-  field: string;
   target?: string;
   scale?: ThetaScaleOptions;
   coordinate?: string;
-  aggregate?: "count" | "sum";
-  weight?: string;
 } & (
+  /** Arc quantitative fields are sector weights; categorical fields support count or sum. */
+  | { field: string; datum?: never; aggregate?: "count" | "sum"; weight?: string }
+  /** Constant polar angles are supported by Point marks. */
+  | { field?: never; datum: unknown; aggregate?: never; weight?: never }
+) & (
   | { fieldType?: Exclude<FieldType, "temporal">; temporalUnit?: never }
   | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
 );
@@ -12834,6 +13491,7 @@ export interface TitleOptions {
   alongOffset?: number;
   gap?: number;
   maxWidth?: number;
+  /** Both modes keep grapheme clusters intact; hard breaks preserve line spacing. */
   wrap?: "word" | "character";
   lineHeight?: number;
   /** Subtitle-only line spacing; overrides lineHeight without requiring maxWidth. */
@@ -12865,6 +13523,39 @@ export interface TitleTextStyleOptions {
 ```
 
 </details>
+
+### `TreePlotOptions` {#type-treeplotoptions}
+
+<details markdown="1">
+<summary>Expand TreePlotOptions</summary>
+
+```typescript
+export interface TreePlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  nodes?: HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] };
+  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number }; labels?: false | HierarchyLabelsOptions;
+}
+```
+
+</details>
+
+Related types: [`HierarchyNodePaint`](#type-hierarchynodepaint) · [`HierarchyNodeTarget`](#type-hierarchynodetarget) · [`HierarchyLabelsOptions`](#type-hierarchylabelsoptions).
+
+### `TreemapPlotOptions` {#type-treemapplotoptions}
+
+<details markdown="1">
+<summary>Expand TreemapPlotOptions</summary>
+
+```typescript
+export interface TreemapPlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] }; labels?: false | HierarchyLabelsOptions;
+}
+```
+
+</details>
+
+Related types: [`HierarchyBodyPaint`](#type-hierarchybodypaint) · [`HierarchyNodeTarget`](#type-hierarchynodetarget) · [`HierarchyLabelsOptions`](#type-hierarchylabelsoptions).
 
 ### `UtcFormatString` {#type-utcformatstring}
 

@@ -1,0 +1,55 @@
+{
+  "state": "approved",
+  "sourceEvidenceRevision": "06e9eba80a9495f161480785f458e7eb4121e240",
+  "approvedOriginalTargetRevision": "57f70fbc",
+  "normal": {
+    "passed": 9,
+    "failed": 0
+  },
+  "render": {
+    "passed": 2,
+    "failed": 0
+  },
+  "contracts": {
+    "passed": 33,
+    "failed": 0
+  },
+  "ellipseSamples": {
+    "passed": 36,
+    "failed": 0
+  },
+  "oldOutputsCompared": 30,
+  "oldOutputChanges": [],
+  "runtimeChanged": false,
+  "packageEvidenceReused": "ffd35916",
+  "visualInspection": "Native PNG inspected: non-square ellipse matches explicit 110/70 radii",
+  "inputs": {
+    "test/gates/radial-gradient/ellipse-reference.js": "8838b0da95046d51513538ef0162091ffd2e3347da97b7d0f6e0debee1d64d1f",
+    "test/gates/radial-gradient/ellipse.html": "3bbb75a88b4fe166c53b856992a203858c7769c776e33f8b6ad9409086c7e53e",
+    "test/gates/radial-gradient/ellipse.manifest.js": "9cde41d9602ae09c79b90c40f2f211df1db5871c23d6f33939faba92fd58c205",
+    "test/gates/radial-gradient/ellipse.render.js": "03de5f190f04c8e254beb4a3498fe3ba2398a6f22d26dc2d70db19c59be515d5",
+    "test/gates/radial-gradient/ellipse.test.js": "6ec777a67d63a71006f2621b6c41107c51200fb24c6d22d9e56b5980ce20e792",
+    "test/gates/radial-gradient/primitive.program.js": "8457515a219325d7b949661f093c726e7c6d8e932ebf07243431bcccc94ffa1f"
+  },
+  "logs": {
+    ".artifacts/paint-public-integration/ellipse-contracts.log": "6b244cf85c352607272290665f0178e492a2729bddeaee8bfcd6122763408a49",
+    ".artifacts/paint-public-integration/ellipse-normal.log": "04bedc02a9428cc42f81aa9ed8f06e4f48a6ebc0eedcbef2bda99a9ea2f1c80f",
+    ".artifacts/paint-public-integration/ellipse-original-output-comparison.json": "182018569199a63d9024ad4df88c43a85266022722cbd11792daf607d7e45ada",
+    ".artifacts/paint-public-integration/ellipse-render-first.log": "ab302bc26219171bc76d3b8a69338b6ed3aac4af72ae100f415f3aa74121cf2a"
+  },
+  "artifacts": {
+    ".artifacts/test/png/review/radial-gradient/object-bounds-ellipse/browser-canvas.png": "c78e07f45bffc82bd4ec7447ff924a58edd9e22d17ddf4ae556a842f6c9afb8c",
+    ".artifacts/test/png/review/radial-gradient/object-bounds-ellipse/browser-svg.png": "c78e07f45bffc82bd4ec7447ff924a58edd9e22d17ddf4ae556a842f6c9afb8c",
+    ".artifacts/test/png/review/radial-gradient/object-bounds-ellipse/evidence.json": "cd1f5ad0b077deb2b23e7b80bd9d5facd1f17f5511379170f1cb741707e83ad7",
+    ".artifacts/test/png/review/radial-gradient/object-bounds-ellipse/pdf.png": "cc8f78cfea7c98524d7353c63e5bfee7b7617d98b21f4fcc6b0f15cba0ae07a6",
+    ".artifacts/test/png/review/radial-gradient/object-bounds-ellipse/primitive.pdf": "41e1ddd27a2a266ca77429d17e3899aabcefcab0d5d53a13dd2d51881eaa9a74",
+    ".artifacts/test/png/review/radial-gradient/object-bounds-ellipse/primitive.png": "fa0721709d9f116e41ea5d3258643db900e534ce757c48dcee0c80acb6ec1e5d",
+    ".artifacts/test/png/review/radial-gradient/object-bounds-ellipse/primitive.svg": "dc238b92a665c4e93e42504c47e28b23bfa590c687beeb4412add956f5b11387",
+    ".artifacts/test/png/review/radial-gradient/object-bounds-ellipse/variant.json": "47f42249073136be0c30b0dd147445314c4f6dbc724c62fd608405505f94d299"
+  },
+  "approval": {
+    "reviewRevision": "06e9eba8",
+    "answer": "추가 시각 대상 모두 승인, 구현 계속",
+    "record": "../../PUBLIC_APPROVALS_20261028.json"
+  }
+}

@@ -17,6 +17,7 @@ import { STROKE_STYLE_PROPERTIES } from
 import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import { validateFillPaint } from "../../../grammar/paint.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
+import { isBlendMode } from "../../../grammar/compositing.js";
 
 const EDIT_OPTIONS = Object.freeze([
   "target", "clip", "missing", "blend", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
@@ -68,8 +69,8 @@ export const editBarMark = /* @__PURE__ */ action(
       );
     }
 
-    if (Object.hasOwn(args, "blend") && !["normal", "difference"].includes(args.blend)) {
-      throw new Error("Bar blend must be normal or difference.");
+    if (Object.hasOwn(args, "blend") && !isBlendMode(args.blend)) {
+      throw new Error("Bar blend must be normal, multiply, screen, or difference.");
     }
     const missing = Object.hasOwn(args, "missing")
       ? validateItemMissing(args.missing, "Bar missing") : undefined;
@@ -112,8 +113,8 @@ export const editBarMark = /* @__PURE__ */ action(
       property: `layer[${layer.id}].mark.missing`, value: missing
     });
     if (Object.hasOwn(args, "blend")) {
-      if (args.blend === "difference") {
-        semantic = semantic.editSemantic({property: `layer[${layer.id}].mark.blend`, value: "difference"});
+      if (args.blend !== "normal") {
+        semantic = semantic.editSemantic({property: `layer[${layer.id}].mark.blend`, value: args.blend});
       } else if (layer.mark.blend !== undefined) {
         semantic = semantic.editSemantic({property: `layer[${layer.id}].mark.blend`, remove: true});
       }

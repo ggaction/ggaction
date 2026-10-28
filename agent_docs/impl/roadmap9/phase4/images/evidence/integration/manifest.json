@@ -1,0 +1,132 @@
+{
+  "parents": [
+    "8ce13e2d",
+    "72855612"
+  ],
+  "checks": [
+    {
+      "log": "package-initial.log.gz",
+      "sha256": "ca2a4458433d3e15525ce80d2a6a3e0c73876c25d0da0bb35fcbadccc5f63b44",
+      "gzipSha256": "699dc6fbcfeb72ee89bcc231d1ab81a6e26bd3858fc99357c99bc92bc9a3001e",
+      "status": "initial ceiling measurement; retained failure",
+      "tests": {}
+    },
+    {
+      "log": "render.log.gz",
+      "sha256": "afb20eef6dc77e9b111ffbb002821ce9b78e1398a6b2cb714f0f550e2e1be49e",
+      "gzipSha256": "88f9a4cb72c5aee16f13f80311789241104fca3c75ac9912d63fb76df07a9c76",
+      "status": "passed",
+      "tests": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "package-node20.log.gz",
+      "sha256": "f8543ff1a9a984287d77fa51d96d4a08551e71334f446eeb52f2fdd9fb15550b",
+      "gzipSha256": "1cbc2aa7075503ab67d55eb6777c0d10901fe18efee3642da27eade88b165be8",
+      "status": "passed",
+      "tests": {}
+    },
+    {
+      "log": "package-node24.log.gz",
+      "sha256": "f8543ff1a9a984287d77fa51d96d4a08551e71334f446eeb52f2fdd9fb15550b",
+      "gzipSha256": "1cbc2aa7075503ab67d55eb6777c0d10901fe18efee3642da27eade88b165be8",
+      "status": "passed",
+      "tests": {}
+    },
+    {
+      "log": "contracts.log.gz",
+      "sha256": "be147cac7fd16bb274e45b6a51bbc4a69b83bb8f5518d0880a4eb5eef3b5bae4",
+      "gzipSha256": "91d1248a0bfc756e4596e03f0874825720588b6e867dd21ba2c1c9332b99aaeb",
+      "status": "passed",
+      "tests": {
+        "tests": 33,
+        "pass": 33,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "font-text.log.gz",
+      "sha256": "658b523d0a3577699fc9a1090b3df6918b10c323458b9af28783d4b4fc282df5",
+      "gzipSha256": "2a57e73f393bcff24adf343d90f016b5b8af9c8da679afcc45e2900ffadc348c",
+      "status": "passed",
+      "tests": {
+        "tests": 14,
+        "pass": 14,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "images.log.gz",
+      "sha256": "f244c5f8cdee21c170b724491f3bc6b287fef88de50119fee699e7fa5ea0c4fd",
+      "gzipSha256": "8b33a2c070be3c3751eb1cf1e814698cfecbe6a5d9ace07ae35089c88a7535a7",
+      "status": "passed",
+      "tests": {
+        "tests": 28,
+        "pass": 28,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "package-node20-old-ceiling.log.gz",
+      "sha256": "8e7359c8e8f92a297aa76a9ea40328250c1a1f1279483bf9705f79de19ced4d5",
+      "gzipSha256": "b3e992e018b5d35d3ac62b55f4258de381acea68c902743d5333fe340eadd7e9",
+      "status": "initial ceiling measurement; retained failure",
+      "tests": {}
+    },
+    {
+      "log": "docs.log.gz",
+      "sha256": "0e3dfcffec4678c9bac827204483bbf94ae242c72cbb2b0f42fa7d404b3776d4",
+      "gzipSha256": "5554228918d148bd604a6aa399b3420fe795ac1bc65c9641e946156da3a0404a",
+      "status": "passed",
+      "tests": {
+        "tests": 164,
+        "pass": 164,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "package-packed.log.gz",
+      "sha256": "8fcbed1650161df11bce43a63e6b73c6cd9ca1ce3648439651898d62c03a155f",
+      "gzipSha256": "974c2416563e45cf2d54804d02911fa64631a71734cb2ad5614e907405bc9c2a",
+      "status": "initial ceiling measurement; retained failure",
+      "tests": {}
+    },
+    {
+      "log": "bundle.log.gz",
+      "sha256": "a0b22b76973c4b0836e98d97834c093990e6e37285b332e8869bfa56258187f0",
+      "gzipSha256": "fbf65e16585a2da0ef7be1bc58183765d0119fd209600d09640f7d092b66208a",
+      "status": "passed",
+      "tests": {}
+    },
+    {
+      "log": "package-node24-old-ceiling.log.gz",
+      "sha256": "1d237a51305035ae19c88c98cabbfa9d523753d0f50880e22dcdce502f172ec6",
+      "gzipSha256": "03ffbcdf3d408e42673a1921c9242e71d6a54052e719bebb12558e770fd8230f",
+      "status": "initial ceiling measurement; retained failure",
+      "tests": {}
+    },
+    {
+      "log": "generate.log.gz",
+      "sha256": "13c291cc490cce9ab648d1ee01aa35496c06bd71b5b7e661df002974c8ee4b34",
+      "gzipSha256": "0d35ea56550bd1274132fa9cca72b02246fecd2e08c6ead5e88a5db099e91538",
+      "status": "passed",
+      "tests": {}
+    },
+    {
+      "log": "package-entry.log.gz",
+      "sha256": "119bec8c60a8039d7cf1b8f15beb542bdd7ab11aee9fb1650cd76c570ec03019",
+      "gzipSha256": "2888ee7994e9d74dadd1afd80655c5bae0081e0bb004e066ae9ae8e5f14be27b",
+      "status": "initial ceiling measurement; retained failure",
+      "tests": {}
+    }
+  ],
+  "note": "Generated docs were regenerated from merged canonical sources; both resource coverage families preserved. No new public image API."
+}

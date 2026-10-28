@@ -1,3 +1,5 @@
+import { positionBindings } from "../../../core/encodingBindings.js";
+import { positionGuideLayers } from "../../../materialization/positionGuides.js";
 import { withGuideLayoutTransaction } from "../../../materialization/guides/layout.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { action } from "../../../core/action.js";
@@ -54,20 +56,20 @@ export function validateAxesArgs(args) {
 
 function inspectChannels(layers) {
   const cartesianLayers = layers.filter(
-    layer => layer.encoding?.x !== undefined || layer.encoding?.y !== undefined
+    layer => positionBindings(layer, "x").length > 0 || positionBindings(layer, "y").length > 0
   );
   const polarLayers = layers.filter(
     layer =>
-      layer.encoding?.theta !== undefined || layer.encoding?.radius !== undefined
+      positionBindings(layer, "theta").length > 0 || positionBindings(layer, "radius").length > 0
   );
   const parallelLayers = layers.filter(
     layer => layer.encoding?.parallel !== undefined
   );
   const hasMixedLayer = layers.some(layer => {
     const hasCartesian =
-      layer.encoding?.x !== undefined || layer.encoding?.y !== undefined;
+      positionBindings(layer, "x").length > 0 || positionBindings(layer, "y").length > 0;
     const hasPolar =
-      layer.encoding?.theta !== undefined || layer.encoding?.radius !== undefined;
+      positionBindings(layer, "theta").length > 0 || positionBindings(layer, "radius").length > 0;
     return hasCartesian && hasPolar;
   });
 
@@ -203,7 +205,7 @@ const createAxes = /* @__PURE__ */ action(
   function (args = {}) {
     const coordinateDescriptor = validateAxesArgs(args);
     const { cartesianLayers, polarLayers, parallelLayers } = inspectChannels(
-      this.semanticSpec.layers.filter(layer => !isSourceOwnedText(layer))
+      positionGuideLayers(this, ["x", "y", "theta", "radius"].filter(channel => args[channel] !== false), { coordinate: coordinateDescriptor.id }).filter(layer => !isSourceOwnedText(layer))
     );
     const requestedCoordinateType = coordinateDescriptor.id === undefined
       ? undefined

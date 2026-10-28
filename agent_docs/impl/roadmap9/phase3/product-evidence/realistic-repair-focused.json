@@ -1,0 +1,58 @@
+{
+  "label": "suite-realistic",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "--import",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/scripts/test-file-metrics.js",
+    "--max-old-space-size=512",
+    "--test",
+    "--test-concurrency=2",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/generated-lifecycle-scenarios.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/generated-scenario-feature-coverage.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/generated-scenarios.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-lifecycle-factor-effects.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-scenario-generator.test.js"
+  ],
+  "code": 1,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 417855,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T12:15:30.224Z",
+  "finishedAt": "2026-10-28T12:22:28.080Z",
+  "source": {
+    "available": true,
+    "commit": "bc83c93a583fdc15b2428bbd97004e523799a844",
+    "clean": false,
+    "statusSha256": "025febc3f6f35c2d05fb0a5ad1db4c5020b2e1c1ed29fd69984d8d69f1f65c95"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "bc83c93a583fdc15b2428bbd97004e523799a844",
+    "clean": false,
+    "statusSha256": "025febc3f6f35c2d05fb0a5ad1db4c5020b2e1c1ed29fd69984d8d69f1f65c95"
+  },
+  "logSha256": "d1202e7908c885d2a1835ed8f9e32342832f8471102bd6a69be75d7b61b1f130",
+  "discovery": {
+    "suite": "realistic",
+    "selectors": [
+      "test/contracts/generated-lifecycle-scenarios.test.js",
+      "test/contracts/generated-scenario-feature-coverage.test.js",
+      "test/contracts/generated-scenarios.test.js",
+      "test/contracts/realistic-lifecycle-factor-effects.test.js",
+      "test/contracts/realistic-scenario-generator.test.js"
+    ],
+    "files": [
+      "test/contracts/generated-lifecycle-scenarios.test.js",
+      "test/contracts/generated-scenario-feature-coverage.test.js",
+      "test/contracts/generated-scenarios.test.js",
+      "test/contracts/realistic-lifecycle-factor-effects.test.js",
+      "test/contracts/realistic-scenario-generator.test.js"
+    ]
+  },
+  "bytes": 9106,
+  "retainedBytes": 9106,
+  "truncated": false
+}

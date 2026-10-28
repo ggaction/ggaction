@@ -1,3 +1,6 @@
+import { conditionalValues } from "../../../grammar/conditionalState.js";
+import { canonicalJSON } from "../../../core/contentDigest.js";
+import { readConditionalConsumerValues } from "../../conditionalValues.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { readSeriesIdentity, validatePathSeriesAppearance } from "../../../grammar/pathSeries.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
@@ -9,7 +12,7 @@ import { findDataset } from "../../../selectors/datasets.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
 import { SCALED_ENCODING_CHANNELS } from "../../../core/vocabulary.js";
 import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
-import { resolveOverlaySeries } from "../../overlayItems.js";
+import { resolveOverlayGeometry } from "../../overlayGeometry.js";
 import { uniqueFields } from "../../selection/items/common.js";
 
 export function findScale(program, id) {
@@ -25,6 +28,13 @@ export function findScaleConsumers(program, id) {
       if (layer.derivedBindings?.overlay?.inheritColor && channel === "color") continue;
       const encoding = layer.encoding?.[channel];
       if (encoding?.scale === id) consumers.push({ layer, channel, encoding });
+      const bindings = new Set();
+      for (const branch of layer.conditionals?.[channel] === undefined ? [] : conditionalValues(layer.conditionals[channel])) {
+        if (branch.scale !== id) continue;
+        const key = canonicalJSON(branch);
+        if (!bindings.has(key)) consumers.push({ layer, channel, encoding: branch, role: "conditional" });
+        bindings.add(key);
+      }
     }
     for (const dimension of layer.encoding?.parallel?.dimensions ?? []) {
       if (dimension.scale === id) {
@@ -62,9 +72,10 @@ export function readConsumerFieldValues(
   dataset,
   scale = findScale(program, consumer.encoding.scale)
 ) {
+  if (consumer.role === "conditional") return readConditionalConsumerValues(program, consumer.layer, consumer.encoding, scale, consumer.channel);
   const { field, fieldType, temporalUnit } = consumer.encoding;
   if (consumer.layer.derivedBindings?.overlay) {
-    const groups = resolveOverlaySeries(program, consumer.layer.derivedBindings.overlay, { geometry: false });
+    const groups = resolveOverlayGeometry(program, consumer.layer.derivedBindings.overlay, { geometry: false });
     const rows = consumer.layer.mark.type === "point" ? groups.flatMap(group => group.points.map(point => point.fields))
       : groups.map(group => uniqueFields(group.points.map(point => point.fields)));
     return readScaleField(rows, field, fieldType, { allowUnknown: Object.hasOwn(scale, "unknown"), temporalUnit });

@@ -1,18 +1,17 @@
+import { positionBindings } from "../../../core/encodingBindings.js";
 import { normalizeOffsetScalePolicy } from "../../../grammar/bars/geometry.js";
 
 function resolveParentSlot(consumer, resolvedScales, parentChannel) {
   if (parentChannel === "x" && consumer.layer.encoding?.x?.bin !== undefined) {
     return 1;
   }
-  const parentScaleId = consumer.layer.encoding?.[parentChannel]?.scale;
-  const parentScale = resolvedScales[parentScaleId];
-  if (Number.isFinite(parentScale?.bandwidth) && parentScale.bandwidth > 0) {
-    return parentScale.bandwidth;
-  }
-  if (parentScale?.type === "point" && Number.isFinite(parentScale.step)) {
-    return Math.abs(parentScale.step);
-  }
-  return undefined;
+  const bindings = positionBindings(consumer.layer, parentChannel);
+  return (bindings.length ? bindings : [{}]).map(binding => {
+    const parentScale = resolvedScales[binding.scale];
+    if (Number.isFinite(parentScale?.bandwidth) && parentScale.bandwidth > 0) return parentScale.bandwidth;
+    if (parentScale?.type === "point" && Number.isFinite(parentScale.step)) return Math.abs(parentScale.step);
+    return undefined;
+  });
 }
 
 export function resolveOffsetScalePolicy({
@@ -24,7 +23,7 @@ export function resolveOffsetScalePolicy({
   channel
 }) {
   const parentChannel = channel === "xOffset" ? "x" : "y";
-  const slots = consumers.map(consumer =>
+  const slots = consumers.flatMap(consumer =>
     resolveParentSlot(consumer, resolvedScales, parentChannel)
   );
   if (

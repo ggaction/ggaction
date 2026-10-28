@@ -1,0 +1,7 @@
+{
+  "capturedAt": "2026-10-28T13:20:15.076Z",
+  "changed": [
+    "scripts/consumers/fixtures/types-1.ts",
+    "test/contracts/compact-action-cards.test.js"
+  ]
+}

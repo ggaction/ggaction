@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 692, // Adds private partition view, mapping and bend owners.
-  packedBytes: 1_031_000, // Partition view/mapping/bend: measured 1,030,205 bytes.
-  unpackedBytes: 4_789_000 // Partition view/mapping/bend: measured 4,788,507 bytes.
+  entries: 767, // Public hierarchy resources, explicit layouts and plot consumers.
+  packedBytes: 1_140_000, // Node20/24 measured maximum: 1,119,757 bytes.
+  unpackedBytes: 5_260_000 // Combined runtime, declarations and knowledge: 5,167,303 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -78,7 +78,7 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/lineSeries.js",
   "src/grammar/pathSeries.js",
   "src/grammar/scales/colorConsumers.js",
-  "src/actions/encodings/position/policies/line.js",
+  "src/grammar/positionPolicies/line.js",
   "src/inspection.js",
   "src/grammar/regression/derive.js",
   "src/grammar/areaSeries.js",

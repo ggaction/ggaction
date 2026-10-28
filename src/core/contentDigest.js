@@ -13,7 +13,14 @@ const ROUND = new Uint32Array([
 const rotate = (value, bits) => (value >>> bits) | (value << (32 - bits));
 
 export function contentDigest(text) {
-  const input = new TextEncoder().encode(text);
+  return digestBytes(new TextEncoder().encode(text));
+}
+
+export function contentBytesDigest(input) {
+  return digestBytes(copyContentBytes(input));
+}
+
+function digestBytes(input) {
   const bytes = new Uint8Array(Math.ceil((input.length + 9) / 64) * 64);
   bytes.set(input); bytes[input.length] = 0x80;
   const view = new DataView(bytes.buffer);
@@ -36,6 +43,17 @@ export function contentDigest(text) {
     [a,b,c,d,e,f,g,h].forEach((value, i) => { hash[i] += value; });
   }
   return [...hash].map(value => value.toString(16).padStart(8, "0")).join("");
+}
+
+export function copyContentBytes(input, maxBytes = Infinity) {
+  if (!(input instanceof Uint8Array)) throw new TypeError("Content digest requires bytes.");
+  const prototype = Object.getPrototypeOf(Uint8Array.prototype);
+  const read = key => Object.getOwnPropertyDescriptor(prototype, key).get.call(input);
+  const length = read("byteLength"), buffer = read("buffer"), offset = read("byteOffset");
+  // Shared memory cannot provide a stable offline identity while another writer runs.
+  Object.getOwnPropertyDescriptor(ArrayBuffer.prototype, "byteLength").get.call(buffer);
+  if (length > maxBytes) throw new RangeError("Content bytes exceed the declared limit.");
+  return new Uint8Array(new Uint8Array(buffer, offset, length));
 }
 
 export function canonicalJSON(value) {

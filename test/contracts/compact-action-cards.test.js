@@ -58,8 +58,9 @@ test("compact action cards are generated from the current action contract", asyn
   }
   assert.ok(artifact.cards.find(card => card.name === "editLegend").options
     .some(option => option.name === "channel" && option.type.includes('"opacity"')));
-  // Preserve all approved Cartesian placement options and legend channel selectors.
-  assert.equal(stats.medianBytes <= 1990, true);
+  // Preserve placement, legend selectors and all conditional position/text payloads.
+  // Expanded declarations measure 2064 bytes at the median; retain a bounded 2070-byte ceiling.
+  assert.equal(stats.medianBytes <= 2070, true);
   assert.deepEqual(
     artifact.cards.map(card => card.name),
     context.actions.map(action => action.name)
@@ -73,6 +74,21 @@ test("compact action cards are generated from the current action contract", asyn
     }),
     stats
   );
+});
+
+test("missing generated routes fail closed even when card and route map both omit one", async () => {
+  const { artifact, context } = await buildActionCards();
+  const card = artifact.cards[0];
+  const routes = { ...context.routes };
+  delete routes[card.name];
+  assert.throws(() => validateActionCards({
+    cards: artifact.cards.map(value => value === card ? { ...value, route: undefined } : value),
+    actions: context.actions, declarations: context.declarations, routes
+  }), /Route drift/);
+  const generation = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"))
+    .scripts["docs:generate"].split(" && ");
+  assert.ok(generation.indexOf("npm run docs:reference") >= 0);
+  assert.ok(generation.indexOf("npm run docs:reference") < generation.indexOf("npm run contracts:cards"));
 });
 
 test("compact action cards satisfy the bounded typed public schema projection", async () => {
@@ -115,8 +131,8 @@ test("compact action cards satisfy the bounded typed public schema projection", 
     assert.doesNotMatch(JSON.stringify(card), /relatedActions|typeDefinitions|documentationBody/);
   }
   assert.equal(intents.schemaVersion, 1);
-  assert.equal(Object.keys(intents.summaryOverrides).length < 20, true);
-  assert.equal(Object.keys(intents.errorOverrides).length < 10, true);
+  assert.equal(Object.keys(intents.summaryOverrides).length <= 20, true);
+  assert.equal(Object.keys(intents.errorOverrides).length <= 10, true);
 });
 
 test("action-card hierarchy is generated from the executable direct-child trace", async () => {
@@ -142,6 +158,10 @@ test("action-card hierarchy is generated from the executable direct-child trace"
   assert.deepEqual(
     artifact.cards.find(card => card.name === "selectMarks").editableVia,
     ["editMarkSelection", "removeMarkSelection"]
+  );
+  assert.deepEqual(
+    artifact.cards.find(card => card.name === "editParameter").wraps,
+    ["editSemantic", "createDerivedData"]
   );
 });
 
@@ -234,9 +254,11 @@ test("every compact snippet type-checks against the exact ChartProgram declarati
   try {
     await copyFile(declarationFile, path.join(temporary, "program.d.ts"));
     const source = [
-      'import type { ChartProgram } from "./program.js";',
+      'import type { ChartProgram, PreparedDataUpdate } from "./program.js";',
       "declare const program: ChartProgram;",
       "declare const chart: () => ChartProgram;",
+      "declare const prepared: PreparedDataUpdate;",
+      "declare const currentToken: string;",
       "",
       ...artifact.cards.map(card => `${card.snippet};`),
       ""

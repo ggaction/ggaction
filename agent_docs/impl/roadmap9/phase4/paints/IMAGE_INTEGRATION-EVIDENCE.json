@@ -1,0 +1,211 @@
+{
+  "state": "integration-verified",
+  "sourceRevision": "ed274ed15c8b3428945ed2ee1c3a816b66a0aa0b",
+  "parents": {
+    "integration": "b90b3042aebaeb5e1fdccd338f22a98003b056cc",
+    "paints": "bb5ef35066ce3b061cb7f933af5d5577f3098cfa"
+  },
+  "inputs": {
+    "src/core/immutable.js": "b4c55131e8532a71a875387cb56dc68856fd4620e3a8d3a0defae6361c346a0c",
+    "src/core/pngEncoding.js": "ffc7f34ee85f6816f6c70b4df300807f0a9ac0b2ffd22c9d238ea29a74b07dcb",
+    "src/resources/assetPreparation.js": "b0e2e00c20bfe6f54b86a257773872bbb5ef44bdcc5b449df0e83b0f3a05529d",
+    "src/resources/resolveAssets.js": "d5ae5de485b417af5f0ebe71c4330160604c6814fc41911d2f82ba0a29c3249b",
+    "src/resources/resolveFonts.js": "1f9a58e4a13d2e8f00b6664eab79521d003b81cde44a6e7180c3cd862b63b01d",
+    "src/materialization/image.js": "10ea6e4d19ea8776d8abee167466dce35b1b4855be2f7f6a75b2f159ce8f04d4",
+    "test/unit/resources/paint-image-preparation.test.js": "f389ec96266b865aa485658a7898100a86602ee169596e4003d7118894f00838",
+    "test/contracts/conditional-bar-blend.test.js": "95f0323c747a93b3901cee92d9456ca1e9df9766f172ff2fe9b8f80a207d1541",
+    "scripts/coverage-policy.js": "9fce1bdb33a6ac66849d7680a89acaa987b3e344c8e82392f4239f2fafc25548",
+    "scripts/package-artifact.js": "f51c3ad97cd1b5e82efba134ad376f2e1e1c07f126ab8510f7ff92765c5a9294"
+  },
+  "newRuntimeEditsForIntegration": false,
+  "checks": {
+    "assetPaintUnits": {
+      "passed": 57,
+      "failed": 0,
+      "newCrossCases": 2
+    },
+    "paintConditionalUnits": {
+      "passed": 57,
+      "failed": 0
+    },
+    "focusedContracts": {
+      "passed": 64,
+      "failed": 0
+    },
+    "packageDiscovery": {
+      "passed": 23,
+      "failed": 0
+    },
+    "render": {
+      "passed": 3,
+      "failed": 0,
+      "imageVariants": 6,
+      "barPrimitivePublicPairs": 16
+    },
+    "browser": {
+      "passed": 6,
+      "failed": 0
+    },
+    "documentationPrecommit": {
+      "passed": 165,
+      "failed": 1,
+      "reason": "Uncommitted canonical bar-compositing source is absent from previous revision; source pin required."
+    },
+    "installedNode": {
+      "passed": 199,
+      "failed": 0,
+      "qualificationGroups": 7
+    },
+    "documentationFinal": {
+      "passed": 166,
+      "failed": 0,
+      "sourceRef": "ed274ed15c8b3428945ed2ee1c3a816b66a0aa0b"
+    },
+    "criticalCoveragePolicy": {
+      "passed": 7,
+      "failed": 0
+    },
+    "packageFinal": {
+      "sha256": "b17a864887335a468dc0da7945662c2d0636a2bfaaa99469691cd0edba1b392e",
+      "packingNode": "v20.20.2",
+      "installedArtifactBytesUnchanged": true
+    }
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 722,
+    "size": 1074671,
+    "unpackedSize": 4970578,
+    "sha256": "b17a864887335a468dc0da7945662c2d0636a2bfaaa99469691cd0edba1b392e",
+    "packingNode": "v20.20.2"
+  },
+  "packageMatrix": {
+    "20": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 722,
+      "packedBytes": 1074671,
+      "unpackedBytes": 4970578
+    },
+    "22": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 722,
+      "packedBytes": 1072238,
+      "unpackedBytes": 4970578
+    },
+    "24": {
+      "name": "ggaction",
+      "version": "0.0.26",
+      "filename": "ggaction-0.0.26.tgz",
+      "entryCount": 722,
+      "packedBytes": 1074671,
+      "unpackedBytes": 4970578
+    }
+  },
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 638,
+      "minifiedBytes": 1920391,
+      "gzipBytes": 534671
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 434,
+      "minifiedBytes": 1084089,
+      "gzipBytes": 312527
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 21,
+      "minifiedBytes": 25670,
+      "gzipBytes": 8166
+    }
+  },
+  "resolvedPeers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "logs": {
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/browser.log.gz": {
+      "rawSha256": "184343744915ecdbcbc5d495305c4d20db7d11bb03e09c982f987f2c2afb21cd",
+      "gzipSha256": "ad0eeb2ef9414084c51bbde85321be2c0672c34e7e2f57643543374843d44fc8"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/contracts.log.gz": {
+      "rawSha256": "b75cc297dcbd86ed4c92b6a2f5224fe84e14a69c8c45ec0209621a2d4dc44980",
+      "gzipSha256": "a54b948812fcb3483db39c953b648d5c932b5a1257f3cbaecb0983634334faff"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/coverage-policy.log.gz": {
+      "rawSha256": "ef4df328edf843ccfcecd0efd63c8eb5421a5016047d3e47e11f9b8d2e4dea46",
+      "gzipSha256": "3578bd3055a15c5e7ee5d0a264790fcf5ef671bb8b066e29510cad8bfe3db063"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/docs-generate.log.gz": {
+      "rawSha256": "a53d98ad394f31ebe30cdb71451a2d8e43548774cea70011cacd1b0c85ac3ca0",
+      "gzipSha256": "a1961c63fad3d33868d4d5fcd140961503829feb7e10cff3a7f5915782c86f07"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/docs-precommit.log.gz": {
+      "rawSha256": "7d3e4917fe5374852337e169cb324e064d7c97058c208b240b1cd7560f120c5c",
+      "gzipSha256": "023858b33e834d69a2f1c56b2a18516add28847b9de6f6734e2683115f6bd7dd"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/installed.log.gz": {
+      "rawSha256": "11b54ed01acb0741af52f8fc91d82b25c9f4afa0303849f150a4b7e5d73e3d38",
+      "gzipSha256": "4ffa8f05a78edd03649725ee704fbfec6ff399bf32caf50df0aeb03023808280"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/package-contracts.log.gz": {
+      "rawSha256": "d00ec12ceb3a418867fb5339546a532c474748570816293a331e674fdd92711c",
+      "gzipSha256": "8cfe448eb03d7fd76c0df889e0453b3f56b5ac1a421c73e30c30e6687602b067"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/package-node20.log.gz": {
+      "rawSha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "gzipSha256": "c7d8be0d040f54da51c0db9b9f42d8720156751c12573270338f37feb9b19ba8"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/package-node22.log.gz": {
+      "rawSha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "gzipSha256": "c7d8be0d040f54da51c0db9b9f42d8720156751c12573270338f37feb9b19ba8"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/package-node24.log.gz": {
+      "rawSha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "gzipSha256": "c7d8be0d040f54da51c0db9b9f42d8720156751c12573270338f37feb9b19ba8"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/paint-conditional-units.log.gz": {
+      "rawSha256": "a07b94708a42267bc3d8efe963624e9a922b296a6aa95699d9c24c5a1c7ca2e4",
+      "gzipSha256": "df2fef157a3ce003f6fd8e802c8475bfce3f7c0f79e78a616f45ca34fa72397f"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/render.log.gz": {
+      "rawSha256": "2678c80e3f91d6cb8f00e89bbdbff4f4c18ea07af44dd720dd8c2ec8cd66c0c5",
+      "gzipSha256": "6cbcc1ba47208a0c6aa057186add42bafb1466e4d28dd42824a44d91225e5776"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/units.log.gz": {
+      "rawSha256": "46267d880c7146db25ef63568309db24715c790647f399fd42126bfb6b7b7477",
+      "gzipSha256": "a6ee0635d7c2f242ee6a2cdf5be7f91d832748250c4148b4a40023c929f1aaca"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/qualification.json": {
+      "sha256": "ed2b54df95d0a9d3e09e79d68b883f44207b67ef59faf0c711ccf101968f3789"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/node-cases.json": {
+      "sha256": "5b6ccd59a80f9b765258adc0bdbeee38517e9a9780a838192ca2ea3e858a325c"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/docs-final.log.gz": {
+      "rawSha256": "0fbef16389e845dc8b556f2f4c68cd493f1f24a35e2b14c3ad40a2707a386585",
+      "gzipSha256": "3748ce31786d807ba5e136a3d886a9ec5ad0d2509c474a0323b08f2d4180de68"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/provenance-final.log.gz": {
+      "rawSha256": "33b6a1c8d6a2b6d3e7dd98ab9422011aba8a95cd23403482399b38ad6f564b28",
+      "gzipSha256": "bac7d54248b8f894e7c6142318896027cda5d175d93128f002d3853d48824cec"
+    }
+  },
+  "remaining": [
+    "Pending I1-I4 public image design and runtime integration",
+    "Pending P1/P2 and additional ellipse visual design",
+    "No new full coverage/realistic claim",
+    "No STEP017/018/019 completion claim"
+  ]
+}

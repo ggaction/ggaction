@@ -1,4 +1,5 @@
 import { MAX_RASTER_DIMENSION, MAX_RASTER_PIXELS } from "./limits.js";
+import { isBlendMode } from "../../grammar/compositing.js";
 import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { prepareIsolatedGlyphs, drawIsolatedGlyph } from "./isolated.js";
 import { resolveCanvasSolidPaint } from "./fill.js";
@@ -284,7 +285,7 @@ function drawConcreteGraphic(context, id, graphic, isolated, options) {
   if (draw === undefined) {
     throw new Error(`Canvas renderer does not support "${graphic.type}" yet.`);
   }
-  if (["normal","difference"].includes(graphic.properties?.blend)) {
+  if (isBlendMode(graphic.properties?.blend)) {
     drawIsolatedGlyph(context, id, graphic, draw, isolated);
   } else {
     draw(context, id, graphic, options);

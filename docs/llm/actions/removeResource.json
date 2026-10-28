@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 3,
+  "name": "removeResource",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Remove a named stored resource after checking exact dependencies.",
+  "signature": "removeResource(options: RemoveStoredResourceOptions): ChartProgram;",
+  "intents": [
+    "remove resource",
+    "remove",
+    "delete",
+    "chart setup",
+    "data and scales",
+    "stored named resource",
+    "resource dependencies"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing stored named resource"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing stored named resource"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "kind",
+      "required": true,
+      "type": "StoredResourceKind"
+    },
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "cascade",
+      "required": false,
+      "type": "boolean | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removeResource({ kind, id, cascade? })"
+  ],
+  "snippet": "program.removeResource({ kind: \"layout\", id: \"tree-layout\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#removeresource"
+}

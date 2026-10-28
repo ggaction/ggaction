@@ -1,5 +1,6 @@
 import { requireSemanticScale } from "../../selectors/scales.js";
-import { resolveOverlaySeries, overlaySegments } from "../../materialization/overlayItems.js";
+import { overlaySegments } from "../../materialization/overlayItems.js";
+import { resolveOverlayGeometry } from "../../materialization/overlayGeometry.js";
 import { resolveCoordinateBounds } from "../../materialization/coordinateBounds.js";
 import { requireLayer } from "../../selectors/layers.js";
 
@@ -14,7 +15,7 @@ function availableName(base, taken) {
 // coordinates retain offsets/dodging exactly and still respond to Canvas resize.
 export function detachOverlay(program, layer) {
   const binding = layer.derivedBindings.overlay;
-  const groups = resolveOverlaySeries(program, binding);
+  const groups = resolveOverlayGeometry(program, binding);
   const frame = resolveCoordinateBounds(program, layer.coordinate);
   const fields = new Set(groups.flatMap(group => group.points.flatMap(point => Object.keys(point.fields))));
   const x = availableName("__overlay_x", fields), y = availableName("__overlay_y", fields);
@@ -28,7 +29,7 @@ export function detachOverlay(program, layer) {
     .editSemantic({ property: `layer[${layer.id}].derivedBindings.overlay`, remove: true })
     .editSemantic({ property: `layer[${layer.id}].data`, value: data });
   for (const channel of ["x", "y", "group"]) {
-    if (requireLayer(next, layer.id).encoding[channel]) next = next.editSemantic({ property: `layer[${layer.id}].encoding.${channel}`, remove: true });
+    if (requireLayer(next, layer.id).encoding?.[channel]) next = next.editSemantic({ property: `layer[${layer.id}].encoding.${channel}`, remove: true });
   }
   // Appearance shares no mutable scale identity with the former source.
   for (const [channel, encoding] of Object.entries(layer.encoding)) {

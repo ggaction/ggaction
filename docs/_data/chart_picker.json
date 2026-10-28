@@ -42,5 +42,9 @@
     "repeatCharts": "One eligible mark role and an ordered field list",
     "createAdjacentPlot": "One complete chart plus a new independent chart; explicit shared scales and aligned plot frames",
     "createLayerPlot": "Independent native plot on compatible existing coordinates and measurement units"
+  },
+  "Hierarchies": {
+    "createTreePlot": "Typed hierarchy and an explicit tree layout",
+    "createTreemapPlot": "Typed hierarchy and an explicit rectangular layout"
   }
 }

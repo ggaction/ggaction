@@ -945,10 +945,46 @@
       "independent plot layer",
       "shared coordinates"
     ],
+    "Parameter": [
+      "scalar parameter",
+      "named expression input",
+      "reusable scalar value"
+    ],
+    "DataUpdate": [
+      "prepared data update",
+      "CSV and JSON sources",
+      "atomic source refresh"
+    ],
     "PivotData": [
       "grouped pivot data",
       "category columns",
       "long to wide data"
+    ],
+    "HierarchyData": [
+      "typed hierarchy",
+      "parent child data",
+      "nested node data"
+    ],
+    "Hierarchy": [
+      "tree layout",
+      "treemap layout",
+      "normalized partition"
+    ],
+    "Layout": [
+      "stored hierarchy layout",
+      "node positions"
+    ],
+    "Resource": [
+      "stored named resource",
+      "resource dependencies"
+    ],
+    "TreePlot": [
+      "hierarchy node link chart",
+      "tidy tree"
+    ],
+    "TreemapPlot": [
+      "nested rectangle chart",
+      "proportional hierarchy"
     ]
   },
   "summaryOverrides": {
@@ -970,7 +1006,8 @@
     "editSemantic": "Sets or removes one semantic property inside an extension action.",
     "createGraphics": "Creates one backend-neutral concrete graphic resource inside an extension action.",
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action.",
-    "encodeChannels": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state."
+    "encodeChannels": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state.",
+    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token."
   },
   "sampleOverrides": {
     "createStackData": {
@@ -1718,6 +1755,25 @@
     "encodeShape": {
       "value": "circle"
     },
+    "createParameter": {
+      "id": "factor",
+      "value": 2
+    },
+    "editParameter": {
+      "target": "factor",
+      "value": 3
+    },
+    "removeParameter": {
+      "id": "factor"
+    },
+    "applyDataUpdate": {
+      "prepared": {
+        "$code": "prepared"
+      },
+      "requestToken": {
+        "$code": "currentToken"
+      }
+    },
     "createPivotData": {
       "id": "wide",
       "field": "category",
@@ -1727,6 +1783,84 @@
     "editPivotData": {
       "target": "wide",
       "op": "count"
+    },
+    "encodeColor": {
+      "field": "group"
+    },
+    "encodeSize": {
+      "field": "value"
+    },
+    "encodeTheta": {
+      "field": "category"
+    },
+    "encodeRadius": {
+      "value": 4
+    },
+    "encodePointRadius": {
+      "value": 4
+    },
+    "encodeXOffset": {
+      "field": "series"
+    },
+    "encodeYOffset": {
+      "field": "series"
+    },
+    "createHierarchyData": {
+      "id": "hierarchy",
+      "key": "id",
+      "parent": "parent",
+      "value": "value"
+    },
+    "editHierarchyData": {
+      "target": "hierarchy",
+      "valueMode": "inclusive"
+    },
+    "layoutHierarchy": {
+      "id": "tree-layout",
+      "hierarchy": "hierarchy",
+      "method": "tree",
+      "options": {
+        "nodeSize": [
+          20,
+          10
+        ],
+        "siblingGap": 10,
+        "depthGap": 20,
+        "orientation": "vertical"
+      }
+    },
+    "editLayout": {
+      "target": "tree-layout",
+      "order": {
+        "by": "value",
+        "direction": "descending"
+      }
+    },
+    "removeResource": {
+      "kind": "layout",
+      "id": "tree-layout"
+    },
+    "createTreePlot": {
+      "id": "tree",
+      "layout": "tree-layout",
+      "labels": {}
+    },
+    "editTreePlot": {
+      "target": "tree",
+      "nodes": {
+        "radius": 8
+      }
+    },
+    "createTreemapPlot": {
+      "id": "treemap",
+      "layout": "treemap-layout",
+      "labels": {}
+    },
+    "editTreemapPlot": {
+      "target": "treemap",
+      "cells": {
+        "opacity": 0.8
+      }
     }
   },
   "callPatternOverrides": {
@@ -1803,8 +1937,8 @@
       "createGradientPlot({ id?, data? })"
     ],
     "filterData": [
-      "filterData({ id, field, predicate })",
-      "filterData({ id, field, oneOf | range })"
+      "filterData({ id, source?, where })",
+      "filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })"
     ],
     "filterMarks": [
       "filterMarks({ field | channel | property, op, ...operands })",
@@ -1826,7 +1960,8 @@
     ],
     "encodeAngle": [
       "encodeAngle({ target?, value })",
-      "encodeAngle({ target?, field, fieldType? })"
+      "encodeAngle({ target?, field, fieldType? })",
+      "encodeAngle({ target?, conditions: [{ when, value }], otherwise })"
     ],
     "createHistogram": [
       "createHistogram({ field, maxBins? | binStep? | binBoundaries? })",
@@ -1935,13 +2070,48 @@
     ],
     "createStatisticalReference": [
       "createStatisticalReference({ source, axis, statistic?, statistics? })"
+    ],
+    "editFilteredData": [
+      "editFilteredData({ target, where, dependents? })",
+      "editFilteredData({ target, field?, oneOf | noneOf | predicate | range, nulls?, dependents? })"
+    ],
+    "encodeColor": [
+      "encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })",
+      "encodeColor({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeStroke": [
+      "encodeStroke({ value, target? })",
+      "encodeStroke({ field, target?, fieldType?, temporalUnit?, scale? })",
+      "encodeStroke({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeSize": [
+      "encodeSize({ field, target?, fieldType?, scale? })",
+      "encodeSize({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeShape": [
+      "encodeShape({ field, target?, fieldType?, scale? })",
+      "encodeShape({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeOpacity": [
+      "encodeOpacity({ value, target? })",
+      "encodeOpacity({ field, target?, fieldType?, scale? })",
+      "encodeOpacity({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeStrokeWidth": [
+      "encodeStrokeWidth({ value, target? })",
+      "encodeStrokeWidth({ field, target?, fieldType?, scale? })",
+      "encodeStrokeWidth({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeStrokeDash": [
+      "encodeStrokeDash(",
+      "encodeStrokeDash({ target?, conditions: [{ when, value }], otherwise })"
     ]
   },
   "errorOverrides": {
     "filterData": [
       {
-        "error": "More or fewer than one of oneOf, predicate, and range is supplied.",
-        "fix": "Choose exactly one filter mode."
+        "error": "The where predicate is combined with field filter options, or a field mode is missing.",
+        "fix": "Supply only where, or supply field and exactly one of oneOf, noneOf, predicate, or range."
       }
     ],
     "encodeAngle": [
@@ -1998,6 +2168,16 @@
       {
         "error": "range, type, or order is supplied.",
         "fix": "Use domain for subgroup order; the parent category slot owns the concrete range and the scale type is ordinal."
+      }
+    ],
+    "applyDataUpdate": [
+      {
+        "error": "A copied handle, changed receiver or stale request token cannot be applied.",
+        "fix": "Prepare against the latest program and pass the unchanged handle with the current host token."
+      },
+      {
+        "error": "Basic accepts create preparations only.",
+        "fix": "Use the default entry point for prepared revisions and parameter updates."
       }
     ]
   }

@@ -1,3 +1,5 @@
+import { hasPositionBinding, commonPositionBinding, uniquePositionBinding } from "../../core/encodingBindings.js";
+import { hierarchyFacetSource } from "../../selectors/hierarchy.js";
 import { adoptSelectionResources } from "../primitives/resourceState.js";
 import { normalizeFacetAxes, validateFacetAxisPolicy } from "../../core/facetAxisPolicy.js";
 import { DEFAULT_ACTION_METHODS } from "../../core/vocabulary.js";
@@ -8,6 +10,7 @@ import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { action, closedAction, getWrappedActionMetadata } from "../../core/action.js";
 import { registerFacetDataRevision, reviseUnitData } from "../data/revise.js";
+import { registerFacetParameterRevision, reviseUnitParameter } from "../parameters/edit.js";
 import { applyMaterializationPlan } from "../../materialization/dependencies.js";
 import { getMarkMaterializationStep } from "../../materialization/marks/index.js";
 import { buildMaterializationPlan } from "../../materialization/planner.js";
@@ -23,7 +26,7 @@ import {
   resolveFacetDefinition,
   resolveFacetGridDefinition
 } from "../../grammar/facets/index.js";
-import { collectFacetScaleBindings, resolveFacetFamily } from
+import { collectFacetScaleBindings, resolveFacetFamily, planFacetDependencies } from
   "../../grammar/facets/dependencies.js";
 import {
   FACET_SCALE_CHANNELS,
@@ -38,7 +41,7 @@ import { replayDerivedData } from "./replay.js";
 import { composeFacetGuides } from "./guides.js";
 import { applyCompositionState } from "../composition/actions.js";
 import { replayCompositionThemeState } from "../theme/composition.js";
-import { findDataset } from "../../selectors/datasets.js";
+import { findDataset, requireDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { normalizeDisplayLabelMap } from "../../grammar/displayLabels.js";
@@ -165,13 +168,13 @@ function rederiveFacet(program, { scales, guides }) {
     }, current.children);
   }
   const definition = current.facet.grid === undefined
-    ? resolveFacetDefinition(program.semanticSpec, {
+    ? resolveFacetDefinition(hierarchyFacetSource(program), {
         id: current.id,
         data: current.facet.data,
         field: current.facet.field,
         values: current.facet.values
       })
-    : resolveFacetGridDefinition(program.semanticSpec, {
+    : resolveFacetGridDefinition(hierarchyFacetSource(program), {
         id: current.id,
         data: current.facet.data,
         rows: current.facet.grid.rows,
@@ -344,7 +347,7 @@ function partitionFacetAction(op, description, definitionResolver) {
   return closedAction({ op, description }, op === "facet" ? FACET_OPTIONS : FACET_GRID_OPTIONS,
     function (args = {}) {
       const guides = normalizeGuides(args.guides);
-      const definition = definitionResolver(this.semanticSpec, args);
+      const definition = definitionResolver(hierarchyFacetSource(this), args);
       validateFacetAxisPolicy(guides.axes, definition.family);
       const scalePolicies = normalizeFacetScalePolicies(this.semanticSpec, args.scales ?? {});
       const derived = deriveFacetChildren(this, definition, {
@@ -403,15 +406,15 @@ function resolveRepeatDefinition(program, args) {
     }
     if (["x", "y"].includes(args.channel)) {
       return family === "cartesian" &&
-        layer.encoding?.x?.scale !== undefined &&
-        layer.encoding?.y?.scale !== undefined &&
-        layer.encoding?.[args.channel]?.field !== undefined &&
+        hasPositionBinding(layer, "x") &&
+        hasPositionBinding(layer, "y") &&
+        commonPositionBinding(layer, args.channel)?.field !== undefined &&
         ["point", "line", "area", "bar", "rule", "tick", "rect"].includes(layer.mark?.type);
     }
     const role = program.markConfigs[layer.id]?.compositionRole;
     if (family !== "polar" || ["pie", "radar"].includes(role)) return false;
     return ["point", "line", "arc"].includes(layer.mark?.type) &&
-      layer.encoding?.[semanticChannel]?.field !== undefined;
+      commonPositionBinding(layer, semanticChannel)?.field !== undefined;
   });
   let target;
   if (args.target !== undefined) {
@@ -450,14 +453,15 @@ function resolveRepeatDefinition(program, args) {
   }
   const layer = findLayer(program, target);
   const dataset = findDataset(program, layer.data);
-  // Lookup has already preserved the primary grain and materialized its fields.
+  // Lookup and computed transforms preserve the primary row grain and have
+  // already materialized their fields.
   // Repeating an output field changes only the encoding, never either input table.
-  if (dataset?.transform?.length > 0 && dataset.transform[0].type!=="lookup") {
+  if (dataset?.transform?.length > 0 && !["lookup", "computed"].includes(dataset.transform[0].type)) {
     throw new Error("repeatCharts does not rewrite a derived dataset dependency.");
   }
   const encoding = parallelChannel
     ? layer.encoding.parallel
-    : layer.encoding[semanticChannel];
+    : uniquePositionBinding(layer, semanticChannel);
   const dimensionIndex = parallelChannel
     ? encoding.dimensions.findIndex(
         dimension => dimension.field === args.channel.parallelDimension
@@ -531,7 +535,10 @@ function deriveRepeatedProgram(template, definition, field) {
     theta: "encodeTheta",
     r: "encodeR"
   }[definition.channel];
-  return template[operation](repeatEncodingArgs(definition, field));
+  const conditional = findLayer(template, definition.target).conditionals?.[definition.channel === "r" ? "radius" : definition.channel];
+  if (conditional === undefined) return template[operation](repeatEncodingArgs(definition, field));
+  const { target, ...value } = repeatEncodingArgs(definition, field);
+  return template[operation]({ target, conditions: conditional.conditions.map(condition => ({ when: condition.when, value })), otherwise: value });
 }
 
 function deriveRepeatChildren(base, definition, scales, closeInheritedAction) {
@@ -713,6 +720,24 @@ function adoptUnitState(program, actionOwner, preferSource = false) {
   });
 }
 
+// Retained source revisions preserve the authored partition identity even when
+// its physical snapshot id changes. Only active common ancestors are eligible.
+function revisedPartitionAnchor(previous, source) {
+  const facet = previous.compositionSpec.facet, original = requireDataset(previous, facet.data);
+  const view = hierarchyFacetSource(source), field = facet.field ?? facet.grid.rows.field;
+  resolveFacetFamily(view);
+  try { planFacetDependencies(view, { field, data: facet.data }); return facet.data; }
+  catch { /* A source revision may have replaced the physical anchor id. */ }
+  const candidates = source.semanticSpec.datasets.filter(dataset => dataset.logicalId === original.logicalId);
+  const eligible = [];
+  for (const candidate of candidates) {
+    try { planFacetDependencies(view, { field, data: candidate.id }); eligible.push(candidate.id); }
+    catch { /* A retained historical snapshot is not an active common ancestor. */ }
+  }
+  if (eligible.length !== 1) throw new Error("Facet source replacement requires one common partition dataset with the same logical identity.");
+  return eligible[0];
+}
+
 export const editFacetSource = /* @__PURE__ */ closedAction(
   {
     op: "editFacetSource",
@@ -785,10 +810,11 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
     // the existing physical scale rather than conflict with a stale default.
     const scales = usedFacetScalePolicies(base,
       usedFacetScalePolicies(this, current.facet.scales));
+    const anchor = current.facet.repeat === undefined ? revisedPartitionAnchor(this, base) : current.facet.data;
     if (current.facet.grid !== undefined) {
       revised = base.facetGrid({
         id: current.id,
-        data: current.facet.data,
+        data: anchor,
         rows: current.facet.grid.rows,
         columns: current.facet.grid.columns,
         combinations: current.facet.grid.combinations,
@@ -816,7 +842,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
     } else {
       revised = base.facet({
         id: current.id,
-        data: current.facet.data,
+        data: anchor,
         field: current.facet.field,
         values: current.facet.values,
         columns: current.columns,
@@ -856,6 +882,26 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
 );
 
 export function registerFacetActions(ProgramClass) {
+  registerFacetParameterRevision((program, args) => {
+    const template = facetUnitTemplate(program);
+    const revisionSource = template.semanticSpec.title.text === undefined
+      ? template : template.removeTitle();
+    const { program: unit, plan } = reviseUnitParameter(revisionSource, args);
+    const current = program.compositionSpec;
+    const revised = new program.constructor({
+      ...unit,
+      semanticSpec: { ...unit.semanticSpec, title: program.semanticSpec.title },
+      graphicSpec: program.graphicSpec,
+      children: program.children,
+      materializationConfigs: { ...unit.materializationConfigs,
+        facets: program.materializationConfigs.facets,
+        ...(program.titleConfig === undefined ? {} : { title: program.titleConfig }) },
+      actionSequence: unit._actionSequence,
+      compositionSpec: { ...current, facet: { ...current.facet,
+        data: plan.replacements.get(current.facet.data) ?? current.facet.data } }
+    });
+    return rederiveFacet(revised, current.facet);
+  });
   registerFacetDataRevision((program, args) => {
     const template = facetUnitTemplate(program);
     // A parent title belongs to the composition, not the retained child unit.

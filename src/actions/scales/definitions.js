@@ -26,6 +26,7 @@ import {
   normalizeScaleDefinition,
   SCALE_ROLES,
   validateScalePropertyForType,
+  validateEmptyDomainPolicy,
   validateScaleTypeForRole,
   isDiscretePositionScaleType,
   normalizeSizeScaleDefinition,
@@ -92,6 +93,8 @@ function assignOptions(scale, options, existing, properties) {
     const value = options[property] ?? existing?.[property];
     if (value !== undefined) scale[property] = value;
   }
+  const emptyDomain = options.emptyDomain ?? existing?.emptyDomain;
+  if (emptyDomain !== undefined) scale.emptyDomain = validateEmptyDomainPolicy(emptyDomain);
   return scale;
 }
 

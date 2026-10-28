@@ -6,11 +6,13 @@ import { indexHierarchyModel } from "./model.js";
 
 const precise = Object.freeze({ compensated: true });
 
-function parameters(options) {
+export function normalizeTreemapOptions(options) {
   ownRecord(options, "Hierarchy treemap options");
   rejectUnknownProperties(options, ["size", "padding", "method", "maxNodes"], "hierarchy treemap");
+  if (["size", "padding", "method"].some(field => !Object.hasOwn(options, field))) throw new TypeError("Hierarchy treemap requires all own layout options.");
+  if (!Array.isArray(options.size) || options.size.length !== 2) throw new RangeError("Hierarchy treemap size requires two finite nonnegative dimensions.");
   ownArray(options.size, "Hierarchy treemap size");
-  if (options.size.length !== 2 || !options.size.every(value => Number.isFinite(value) && value >= 0)) throw new RangeError("Hierarchy treemap size requires two finite nonnegative dimensions.");
+  if (!options.size.every(value => Number.isFinite(value) && value >= 0)) throw new RangeError("Hierarchy treemap size requires two finite nonnegative dimensions.");
   if (!Number.isFinite(options.padding) || options.padding < 0) throw new RangeError("Hierarchy treemap padding must be finite and nonnegative.");
   if (!["slice-dice", "squarify"].includes(options.method)) throw new Error("Hierarchy treemap method must be explicit.");
   requireFiniteResult(options.size[0] * options.size[1], "Hierarchy treemap area");
@@ -88,7 +90,7 @@ function squarify(rect, children, nodes, rectangles, charge) {
 }
 
 export function layoutHierarchyTreemap(model, options) {
-  const resolved = parameters(options), indexed = indexHierarchyModel(model, resolved.maxNodes);
+  const resolved = normalizeTreemapOptions(options), indexed = indexHierarchyModel(model, Object.hasOwn(resolved, "maxNodes") ? resolved.maxNodes : undefined);
   const { nodes, indexes } = indexed;
   let work = indexed.work;
   const charge = amount => validateWorkLimit(work += amount, "Hierarchy treemap work");

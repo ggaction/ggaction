@@ -9,6 +9,10 @@ import { withGuideLayoutTransaction } from "../../materialization/guides/layout.
 import { assertFieldsAvailable } from "../../grammar/datasetSchema.js";
 import { reviseSourceIdentity } from "../../core/itemIdentity.js";
 import { newDatasetNamespace, withPreparedDatasetIdentity } from "../primitives/datasetIdentity.js";
+import { detachDataSourceBindings } from "../primitives/resourceState.js";
+import { createDataSourceResource } from "../../materialization/dataSourceState.js";
+import { createPreparedSource } from "./sourceCreate.js";
+import { preparedSourceUpdate, writeSourceResource } from "./sourceContext.js";
 
 let reviseFacet;
 
@@ -34,17 +38,26 @@ export function registerFacetDataRevision(handler) {
   reviseFacet = handler;
 }
 
-export function reviseUnitData(program, { source, id, values, schema, identity }) {
-  const plan = buildSourceRevisionPlan(program, source, id);
+export function reviseUnitData(program, { source, id, values, schema, identity, sourceUpdate }) {
+  const plan = sourceUpdate?.revisionPlan ?? buildSourceRevisionPlan(program, source, id);
   const original = requireDataset(program, source);
   const inheritedSchema = schema ?? (original.schema?.origin === "declared"
     ? { fields: original.schema.fields.map(({ name, storageType, nullable, optional }) => ({
         name, storageType, nullable, optional
       })) }
     : undefined);
-  const created = withPreparedDatasetIdentity(
+  let created = sourceUpdate === undefined ? withPreparedDatasetIdentity(
     { id, values, ...(inheritedSchema === undefined ? {} : { schema: inheritedSchema }) }, identity,
-    args => program.createData(args));
+    args => program.createData(args)) : createPreparedSource(program, {
+      id, prepared: sourceUpdate.prepared, identity, sourceId: sourceUpdate.resource.id
+    });
+  if (sourceUpdate === undefined) created = detachDataSourceBindings(created, original);
+  else {
+    const resource = createDataSourceResource({ id: sourceUpdate.resource.id,
+      revision: sourceUpdate.resource.revision + 1, options: sourceUpdate.resource.options,
+      prepared: sourceUpdate.prepared, dataset: requireDataset(created, id) });
+    created = writeSourceResource(created, resource);
+  }
   const revisedSource = requireDataset(created, id);
   for (const layer of program.semanticSpec.layers.filter(layer => layer.data === source)) {
     assertFieldsAvailable(revisedSource.schema, layerInputFields(layer), {
@@ -74,10 +87,11 @@ export const reviseData = /* @__PURE__ */ closedAction(
     if (original.source !== undefined || !Array.isArray(original.values)) {
       throw new Error(`Source "${source}" must be a materialized original dataset.`);
     }
-    const identity = reviseSourceIdentity(original, args.values, args, newDatasetNamespace());
+    const sourceUpdate = preparedSourceUpdate(args);
+    const identity = sourceUpdate?.identity ?? reviseSourceIdentity(original, args.values, args, newDatasetNamespace());
     const apply = this.compositionSpec === undefined
-      ? program => reviseUnitData(program, { source, id, values: args.values, schema: args.schema, identity }).program
-      : program => reviseFacet(program, { source, id, values: args.values, schema: args.schema, identity });
+      ? program => reviseUnitData(program, { source, id, values: args.values, schema: args.schema, identity, sourceUpdate }).program
+      : program => reviseFacet(program, { source, id, values: args.values, schema: args.schema, identity, sourceUpdate });
     // The entire dependent materialization must succeed before returning a revision.
     apply(this);
     return apply(this);

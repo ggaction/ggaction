@@ -22,7 +22,15 @@ const read = file => readFile(path.join(root, file), "utf8");
 test("covers every maintained chart program or an explicit documentation-only exclusion", async () => {
   const catalog = readDocChartCatalog(await read("docs/_data/chart_examples.yml"));
   const publicDirectories = [...new Set(publicExamples().map(chart => path.basename(path.dirname(fileURLToPath(chart.programFile)))))].sort();
-  assert.deepEqual(catalog.map(entry => entry.example.split("/").at(-2)).sort(), publicDirectories);
+  const examplesById = new Map(publicExamples().map(example => [example.id, example]));
+  const catalogDirectories = catalog.map(entry => {
+    const directory = entry.example.split("/").at(-2);
+    if (publicDirectories.includes(directory)) return directory;
+    const example = examplesById.get(directory);
+    assert.ok(example, `${entry.id} needs a maintained public program or registered variant`);
+    return path.basename(path.dirname(fileURLToPath(example.programFile)));
+  });
+  assert.deepEqual([...new Set(catalogDirectories)].sort(), publicDirectories);
   const directories = [];
   for (const entry of await readdir(path.join(root, "examples"), { withFileTypes: true })) {
     if (entry.isDirectory() && (await readdir(path.join(root, "examples", entry.name))).includes("program.js")) directories.push(entry.name);

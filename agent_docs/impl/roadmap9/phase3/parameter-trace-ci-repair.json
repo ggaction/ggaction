@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "status": "focused-ci-repair-verified",
+  "baseCommit": "00c28e81cb5f7314d2714fd1803bbd6747fff91e",
+  "originalRun": "https://github.com/ggaction/ggaction/actions/runs/40688721113",
+  "approval": "../AUTHORIZATION.json",
+  "cause": "Lifecycle recipe 보강 뒤 action 관계와 card 생성물이 갱신되지 않아 저장된 editParameter.wraps에서 createDerivedData가 누락됐다. Main에서 동일한 계약 검사 실패를 재현했다.",
+  "change": "Literal data와 computed dependent가 있는 고정 parameter edit 예제를 추가하고 공개 관계/card, machine/LLM/search 산출물을 canonical generator로 재생성했다. 기존 계약 검사에 정확한 direct-child 관계 assertion을 추가했다.",
+  "scope": {
+    "runtime": false,
+    "types": false,
+    "packageConfiguration": false,
+    "publicBehavior": false,
+    "metadataCorrection": "editParameter wraps createDerivedData"
+  },
+  "directExample": {
+    "input": {
+      "value": 2,
+      "factor": 2
+    },
+    "edit": {
+      "factor": 3
+    },
+    "output": [
+      {
+        "value": 2,
+        "scaled": 6
+      }
+    ],
+    "publicDirectChildren": [
+      "editSemantic",
+      "createDerivedData"
+    ]
+  },
+  "verification": {
+    "originalFocused": {
+      "tests": 11,
+      "passed": 10,
+      "failed": 1
+    },
+    "firstRepair": {
+      "tests": 100,
+      "passed": 99,
+      "failed": 1,
+      "remaining": "docs/search-index.json freshness; regenerated before final run"
+    },
+    "finalFocused": {
+      "tests": 100,
+      "passed": 100,
+      "failed": 0,
+      "receipt": "agent_docs/impl/roadmap9/phase3/product-evidence/parameter-trace-final.json"
+    },
+    "generatorChecks": [
+      "node scripts/generate-action-relationships.js --check",
+      "node scripts/generate-action-cards.js --check",
+      "node scripts/generate-inspection-descriptors.js --check",
+      "node scripts/generate-doc-machine-artifacts.js --check",
+      "node scripts/generate-doc-search-index.js --check"
+    ],
+    "packageCheck": {
+      "command": "node scripts/package-artifact.js --check",
+      "exitCode": 0,
+      "entryCount": 685,
+      "packedBytes": 1025577,
+      "unpackedBytes": 4771456
+    },
+    "remoteUnchangedJobs": {
+      "passed": 18,
+      "failed": [
+        "test",
+        "coverage"
+      ],
+      "details": "두 실패 job은 같은 action-card 관계 freshness assertion이다."
+    }
+  },
+  "reuse": "Runtime/types와 realistic generator recipe는 바꾸지 않았다. 관계 generator를 사용하는 7개 검사 파일을 모두 재실행하고 MCP/inspection/docs 소비자도 확인했다. 이전 전체·renderer·browser·realistic 검증은 해당 입력이 바뀌지 않은 범위에서만 재사용한다. 수정 commit의 전체 원격 CI는 이 기록 시점에 pending이다.",
+  "inputs": [
+    {
+      "path": "docs/actions.json",
+      "sha256": "6a00e4626db7a5e313bb503fc6db476da9f8b1c508facd0cd402027cdc58d8c6"
+    },
+    {
+      "path": "docs/llm/actions.json",
+      "sha256": "e82b8c324c7a92ea41d93a0f3133c538b182ff8971d8caf50efc21f16d6af213"
+    },
+    {
+      "path": "docs/llm/actions/editParameter.json",
+      "sha256": "4468db5c887d0b4b6822f908aa8923b81803eaa84361da024d34b38608ef5e3a"
+    },
+    {
+      "path": "docs/llm/index.json",
+      "sha256": "81af7baf6d184e9247956c1aad745e6eeba1cbfe3d98c40c0fb701a2e8e5ad58"
+    },
+    {
+      "path": "docs/search-index.json",
+      "sha256": "8f27d0879efa026656a9a13e273ea3fad450b4815ed38d60d0ee740e45ed9e6c"
+    },
+    {
+      "path": "knowledge/action-cards.json",
+      "sha256": "6a00e4626db7a5e313bb503fc6db476da9f8b1c508facd0cd402027cdc58d8c6"
+    },
+    {
+      "path": "knowledge/action-relationships.json",
+      "sha256": "227a7c0e1b15dade515a8f64b6cceadd37835d9e53e0804169f788c9ab8e3fa5"
+    },
+    {
+      "path": "scripts/action-relationship-source.js",
+      "sha256": "fec970dc523a11a985b65959cbee85c62c43b612ed60b14c12e41b5609f45962"
+    },
+    {
+      "path": "test/contracts/compact-action-cards.test.js",
+      "sha256": "24a86e9770163c56d0067bb7eda1a13a3620a6adb25d7b3dd82b8aadefde8619"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/product-evidence/parameter-trace-before.log.gz",
+      "source": ".artifacts/ci-parameter-trace-before.log",
+      "sha256": "bd206e51cc7d17afd2b275526b0eb632105f9fc501929168af277dbbbbdeca02",
+      "encoding": "gzip",
+      "decodedSha256": "db7a45dd10bb6eee54278a45cff5be6c96c78df797137d2804b0cfd803340919"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/product-evidence/parameter-trace-after.log.gz",
+      "source": ".artifacts/ci-parameter-trace-after.log",
+      "sha256": "732348e2f8cd673d4f4338014f5f867623aa98358e743c338355ade47ddd27ee",
+      "encoding": "gzip",
+      "decodedSha256": "9e26872971de6fece371b867d495369127f37743bfa43921ab927afebac2483c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/product-evidence/parameter-trace-final.log.gz",
+      "source": ".artifacts/ci-parameter-trace-final.log",
+      "sha256": "e68ccb975b418fd98531360cc79ec5f0922e44677297bb935ee9f0a4c6677751",
+      "encoding": "gzip",
+      "decodedSha256": "6509f8c04a098c3b19a5238031df7b71f1afd706f34ab9c1ca4c461d8ce60eb6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/product-evidence/parameter-trace-final.json",
+      "sha256": "d5a906532df8abe6e9e177a8d2f48304c4c086495d27b31c6ad172e4609eb18f"
+    }
+  ]
+}

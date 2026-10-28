@@ -1,0 +1,61 @@
+{
+  "parents": [
+    "a59e3c59",
+    "9742199b"
+  ],
+  "scope": "Own-property asset input hardening with immutable inherited-setter prevention",
+  "checks": [
+    {
+      "log": "contracts.log.gz",
+      "rawSha256": "44a4b2c8adacb9f10996ebfedab7f8bf063c0e7ae019996b4460822baf15d164",
+      "gzipSha256": "029ba97c6c16210ab6ea918ac981df59bc74243e1b1b14aa3a407c1fb11fb480",
+      "status": "passed",
+      "tests": {
+        "tests": 686,
+        "pass": 686,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "metadata.log.gz",
+      "rawSha256": "795dd208b8c58e44015d36a6d75d7b26bf5661c5e8c07a4b442bb215e7e219f5",
+      "gzipSha256": "2970ceb3830b3ae8923e2ae3212fd9dd7870e970c2d964c7c4b8f05d27fbefe3",
+      "status": "passed",
+      "tests": {}
+    },
+    {
+      "log": "package-node20.log.gz",
+      "rawSha256": "40651f1aa81373f305b9dc29afd8872ad6c3d15da35f0818c7c6996b73298290",
+      "gzipSha256": "46c04d13a91761cd46cceb1436135002c95a8c6dd908ba3df7fd40bf978d177c",
+      "status": "passed",
+      "tests": {}
+    },
+    {
+      "log": "unit.log.gz",
+      "rawSha256": "41feb22c4ac4c173c023573a1e953b26f4c3d0b6991017f546d773e31e0ec9f1",
+      "gzipSha256": "4bee88ca174478a41bd757e9ed54be34d2c48f7c5b83f0007f6469fccc6f6b98",
+      "status": "passed",
+      "tests": {
+        "tests": 5119,
+        "pass": 5119,
+        "fail": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "package": {
+    "entries": 717,
+    "node20PackedBytes": 1067661,
+    "unpackedBytes": 4949246,
+    "caps": [
+      717,
+      1068000,
+      4950000
+    ]
+  },
+  "notClaimed": [
+    "all-CI success: base a9ecf107 realistic7 failures remain under repair",
+    "public image design approval"
+  ]
+}

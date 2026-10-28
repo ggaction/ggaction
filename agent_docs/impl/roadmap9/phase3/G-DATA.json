@@ -1,0 +1,25 @@
+{
+  "id": "G-DATA",
+  "state": "approved",
+  "scope": [
+    "Roadmap9 STEP-013 CSV/JSON source preparation and subsequent public lifecycle integration"
+  ],
+  "proposal": "agent_docs/impl/roadmap9/phase3/data/PUBLIC.md",
+  "kernelContract": "agent_docs/impl/roadmap9/phase3/data/DESIGN.md",
+  "authorization": {
+    "record": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+    "userMessage": "야 승인한다. 그리고 이번 계획 모두 승인할테니까 그냥 끝까지 밀어버려. 병렬로 작업할수있는건 탭을 병렬로 띄우든 에이전트를 뜨는 그래서 끝까지 밀어",
+    "mode": "전체 계획 실행 승인에 따라 계획 안의 구체적인 계약을 기록하고 구현한다. 개별 새 문서를 사용자가 별도로 검토했다고 주장하지 않는다."
+  },
+  "implementationStatus": "public-integration-verified",
+  "adoptedDecisions": [
+    "Closed create/revise/parameter prepareDataUpdate request and synchronous applyDataUpdate action; Basic supports create only",
+    "Typed data-source owns current intent/output; immutable dataset receipt owns historical received content and parser provenance",
+    "Exact original receiver plus host current request token, input hashes and revisions reject stale completion and ABA",
+    "Manual rows revision detaches its live source; field/generated row identity rules remain explicit",
+    "Private prepared context preserves editParameter's approved target/value shape and one atomic dependency closure"
+  ],
+  "remaining": [
+    "STEP-013 exact-commit 종료 증거와 원격 DATA CI"
+  ]
+}

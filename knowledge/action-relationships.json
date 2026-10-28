@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 300,
+  "actionCount": 313,
   "relationships": [
     {
       "name": "createCanvas",
@@ -53,6 +53,13 @@
     {
       "name": "createData",
       "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "applyDataUpdate",
+      "wraps": [
+        "createData",
         "editSemantic"
       ]
     },
@@ -124,6 +131,25 @@
       "name": "createPivotData",
       "wraps": [
         "createDerivedData"
+      ]
+    },
+    {
+      "name": "createParameter",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editParameter",
+      "wraps": [
+        "editSemantic",
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "removeParameter",
+      "wraps": [
+        "editSemantic"
       ]
     },
     {
@@ -2053,6 +2079,60 @@
     {
       "name": "editCompositionScales",
       "wraps": []
+    },
+    {
+      "name": "createHierarchyData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editHierarchyData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "layoutHierarchy",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editLayout",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "removeResource",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createTreePlot",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editTreePlot",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createTreemapPlot",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editTreemapPlot",
+      "wraps": [
+        "editSemantic"
+      ]
     }
   ]
 }

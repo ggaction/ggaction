@@ -68,6 +68,7 @@ function encodeAppearanceField(program, channel, args, operation) {
     allowUnknown: Object.hasOwn(scale, "unknown")
   });
 
+  if (channel === "size" && layer.conditionals?.pointRadius !== undefined) program = program.editSemantic({ property: `layer[${target}].conditionals.pointRadius`, remove: true });
   const baseline = channel === "size"
     ? program._withoutMaterializationConfig(["marks", target, "radius"])
     : program;
@@ -105,10 +106,11 @@ const encodeRadius = /* @__PURE__ */ action(
     }
 
     const layer = findLayer(this, target);
-    if (layer.encoding?.size !== undefined) {
+    if (layer.encoding?.size !== undefined || layer.conditionals?.size !== undefined) {
       throw new Error("encodeRadius cannot be combined with a size encoding.");
     }
-    return this
+    const baseline = layer.conditionals?.pointRadius === undefined ? this : this.editSemantic({ property: `layer[${target}].conditionals.pointRadius`, remove: true });
+    return baseline
       ._withMarkConfig(target, {
         ...this.markConfigs[target],
         radius: args.value
@@ -141,11 +143,11 @@ const removePointRadius = /* @__PURE__ */ action(
       target: requested,
       predicate: candidate =>
         candidate.mark?.type === "point" &&
-        this.markConfigs[candidate.id]?.radius !== undefined,
+        (this.markConfigs[candidate.id]?.radius !== undefined || candidate.conditionals?.pointRadius !== undefined),
       label: "point mark with an explicit radius"
     });
-    const next = this
-      ._withoutMaterializationConfig(["marks", layer.id, "radius"]);
+    const without = layer.conditionals?.pointRadius === undefined ? this : this.editSemantic({ property: `layer[${layer.id}].conditionals.pointRadius`, remove: true });
+    const next = without._withoutMaterializationConfig(["marks", layer.id, "radius"]);
     const baseline = clearMarkGraphic(next, layer.id);
     return baseline.rematerializePointMark({ id: layer.id });
   }

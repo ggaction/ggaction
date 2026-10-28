@@ -1,3 +1,4 @@
+import { resolveComputedEnvironment } from "../../materialization/expressionInputs.js";
 import {
   deriveComputedRows,
   normalizeComputedTransform
@@ -10,7 +11,9 @@ export const materializeComputedData = /* @__PURE__ */ derivedMaterializer(
   "materializeComputedData",
   "Materialize one immutable row-level typed expression dataset.",
   "computed",
-  deriveComputedRows
+  deriveComputedRows,
+  undefined,
+  { environment: resolveComputedEnvironment }
 );
 
 export const createComputedData = /* @__PURE__ */ derivedCreator(
@@ -19,6 +22,6 @@ export const createComputedData = /* @__PURE__ */ derivedCreator(
   OPTIONS,
   "Computed dataset id",
   "Computed source dataset id",
-  normalizeComputedTransform,
+  options => normalizeComputedTransform(options),
   "materializeComputedData"
 );

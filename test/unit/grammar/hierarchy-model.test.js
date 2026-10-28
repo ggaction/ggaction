@@ -2,6 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { normalizeHierarchyNodes } from "../../../src/grammar/hierarchy/normalize.js";
 import { indexHierarchyModel } from "../../../src/grammar/hierarchy/model.js";
+import { orderHierarchyModel } from "../../../src/grammar/hierarchy/order.js";
+import { layoutHierarchyTree } from "../../../src/grammar/hierarchy/tree.js";
+import { layoutHierarchyPartition } from "../../../src/grammar/hierarchy/partition.js";
+import { layoutHierarchyTreemap } from "../../../src/grammar/hierarchy/treemap.js";
 import { hierarchyRows } from "../../oracles/hierarchy.js";
 
 const make = () => normalizeHierarchyNodes(hierarchyRows);
@@ -20,6 +24,46 @@ test("shared hierarchy model indexing accepts canonical modes, empty values and 
   }
   const forest = normalizeHierarchyNodes([{ key: "a", parentKey: null, value: 1 }, { key: "b", parentKey: null, value: 2 }], { forest: true });
   assert.equal(indexHierarchyModel(forest).nodes.length, 3);
+});
+
+test("inclusive validation preserves subtraction-rounded residuals across ordering and layouts", () => {
+  for (const [total, child, residual] of [[0.9, 0.2, 0.7], [9e307, 2e307, 7e307], [9e-307, 2e-307, 7e-307]]) {
+    const rows = [{ key: "r", parentKey: null, value: total }, { key: "c", parentKey: "r", value: child }];
+    const before = structuredClone(rows);
+    const model = normalizeHierarchyNodes(rows, { valueMode: "inclusive" });
+    assert.equal(model.nodes[0].residual, residual);
+    assert.equal(model.totalValue, total);
+    assert.equal(indexHierarchyModel(model).nodes.length, 2);
+    const ordered = orderHierarchyModel(model, { by: "value", direction: "ascending" });
+    const tree = layoutHierarchyTree(ordered, { nodeSize: [2, 2], siblingGap: 1, depthGap: 1, orientation: "vertical" });
+    assert.deepEqual(tree.nodes.map(({ x, y }) => [x, y]), [[0, 0], [0, 3]]);
+    const partition = layoutHierarchyPartition(ordered);
+    assert.equal(partition.nodes[0].u1, 1);
+    assert.ok(Math.abs(partition.nodes[1].u1 - 2 / 9) < 1e-16);
+    for (const method of ["slice-dice", "squarify"]) {
+      const treemap = layoutHierarchyTreemap(ordered, { size: [90, 30], padding: 0, method });
+      const rect = treemap.nodes[1].rect;
+      assert.ok(Math.abs((rect.x1 - rect.x0) * (rect.y1 - rect.y0) - 600) < 1e-12);
+      assert.equal(treemap.nodes[0].totalValue, total);
+    }
+    assert.deepEqual(rows, before);
+    assert.deepEqual(model, ordered);
+  }
+  assert.notEqual(0.7 + 0.2, 0.9);
+});
+
+test("inclusive model validation still rejects altered residuals and excessive child totals exactly", () => {
+  const model = normalizeHierarchyNodes([{ key: "r", parentKey: null, value: 0.9 },
+    { key: "c", parentKey: "r", value: 0.2 }], { valueMode: "inclusive" });
+  for (const mutate of [
+    candidate => { candidate.nodes[0].ownValue = candidate.nodes[0].residual = 0.7000000000000001; },
+    candidate => { candidate.nodes[0].totalValue = candidate.totalValue = 0.1; }
+  ]) {
+    const candidate = structuredClone(model); mutate(candidate);
+    const before = structuredClone(candidate);
+    assert.throws(() => indexHierarchyModel(candidate), /child values/);
+    assert.deepEqual(candidate, before);
+  }
 });
 
 test("hierarchy model rejects forged keys, values, source references and root metadata", () => {

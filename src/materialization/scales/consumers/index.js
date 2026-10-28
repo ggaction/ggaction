@@ -1,3 +1,5 @@
+import { resolveConditionalAreaConsumer, resolveConditionalBarConsumer, resolveConditionalArcConsumer } from "../../conditionalValues.js";
+import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
 import { normalizeRuleDatum } from "../../../grammar/rules.js";
 import { normalizePositionDatum } from "../../../grammar/positionDatum.js";
@@ -19,6 +21,14 @@ export {
 } from "./seriesLayout.js";
 
 export function resolveConsumerValuesForDataset(program, consumer, dataset) {
+  const arc = resolveConditionalArcConsumer(program, consumer.layer, consumer.encoding, consumer.channel);
+  if (arc !== undefined) return arc;
+  const bar = resolveConditionalBarConsumer(program, consumer.layer, consumer.encoding, consumer.channel);
+  if (bar !== undefined) return bar.values;
+  const area = resolveConditionalAreaConsumer(program, consumer.layer, consumer.encoding, consumer.channel);
+  if (area !== undefined) return area.values;
+  if (consumer.role === "conditional") return readConsumerFieldValues(program, consumer, dataset);
+  if (["line", "bar", "arc"].includes(consumer.layer.mark.type) && consumer.layer.conditionals !== undefined) consumer = { ...consumer, layer: conditionalPositionTemplate(consumer.layer, ["x", "y", "x2", "y2", "xOffset", "yOffset", "theta", "radius"]) };
   if (consumer.layer.mark.type === "rect") return resolveMarkFamilyConsumerValues(program, consumer, dataset).values;
   if (Object.hasOwn(consumer.encoding, "datum")) {
     if (consumer.layer.mark.type === "area") {

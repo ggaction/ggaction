@@ -1,7 +1,7 @@
 import {
   legendGraphicIds, legendResourcePolicy, legendResourcePolicies
 } from "../../../materialization/guides/resources.js";
-import { findLayer } from "../../../selectors/layers.js";
+import { findLegendLayer as findLayer } from "../../../materialization/legendEncodings.js";
 import { resolveDefinition } from "./categorical/resolve.js";
 import { normalizeRecipe, resolveLegendSymbol } from "./categorical/recipes.js";
 import { resolveLayout, symbolGraphic } from "./categorical/layout.js";

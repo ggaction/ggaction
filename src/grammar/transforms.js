@@ -18,6 +18,7 @@ import {
   validateECDFTransform
 } from "./ecdf.js";
 import {
+  isExpressionV2,
   normalizeComputedTransform,
   validateComputedTransform
 } from "./computed.js";
@@ -26,8 +27,8 @@ import {
   validateCompleteTransform
 } from "./complete.js";
 import {
-  normalizeFilterTransformEdit,
   normalizeFilterTransform,
+  normalizeFilterTransformEdit,
   validateFilterTransform
 } from "./filter.js";
 import { normalizeFoldTransform, validateFoldTransform } from "./fold.js";
@@ -82,15 +83,29 @@ function requestedTransform(transform) {
 
 const requestedDensityTransform = requestedTransform;
 
+function requestedFilterTransform(transform) {
+  ownRecord(transform, "Filter transform");
+  if (transform.where === undefined) return requestedTransform(transform);
+  if (Object.hasOwn(transform, "parameterInputs")) validateFilterTransform(transform);
+  else if (Object.keys(transform).some(key => !["type", "where"].includes(key))) {
+    throw new TypeError("Filter transform has unknown properties.");
+  }
+  return normalizeFilterTransform({ where: transform.where });
+}
+
 function requestedComputedTransform(transform) {
   ownRecord(transform, "Computed transform");
   const { resolved: _resolved, ...requested } = transform;
-  validateComputedTransform(requested);
-  return cloneAndFreeze(requested);
+  if (!isExpressionV2(requested.expression) || Object.hasOwn(requested, "parameterInputs")) {
+    validateComputedTransform(requested);
+  } else if (Object.keys(requested).some(key => !["type", "as", "expression"].includes(key))) {
+    throw new TypeError("Computed transform has unknown properties.");
+  }
+  return normalizeComputedTransform({ as: requested.as, expression: requested.expression });
 }
 
 function requestedOptions(transform) {
-  const { type: _type, resolved: _resolved, ...options } = transform;
+  const { type: _type, resolved: _resolved, parameterInputs: _parameterInputs, ...options } = transform;
   return options;
 }
 
@@ -405,7 +420,7 @@ const TRANSFORM_POLICIES = Object.freeze({
     ...findTransformTopology("filter"),
     validate: validateFilterTransform,
     materializeOp: "materializeFilteredData",
-    replayTransform: requestedTransform,
+    replayTransform: requestedFilterTransform,
     editable: true,
     normalizeEdit: normalizeFilterTransformEdit,
     outputRoles: () => ({})

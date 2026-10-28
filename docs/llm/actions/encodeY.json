@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create or compatibly replace a y encoding.",
-  "signature": "encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;",
+  "signature": "encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode y",
     "encode",
@@ -78,14 +78,29 @@
   },
   "options": [
     {
-      "name": "field",
-      "required": false,
-      "type": "string | undefined"
-    },
-    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>[\"otherwise\"]"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "datum",
+      "required": false,
+      "type": "unknown"
     },
     {
       "name": "coordinate",
@@ -95,17 +110,12 @@
     {
       "name": "fieldType",
       "required": false,
-      "type": "FieldType | undefined"
+      "type": "\"quantitative\" | undefined"
     },
     {
       "name": "scale",
       "required": false,
-      "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | QuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | TemporalPositionScaleOptions | undefined"
-    },
-    {
-      "name": "datum",
-      "required": false,
-      "type": "unknown"
+      "type": "NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | undefined"
     },
     {
       "name": "aggregate",
@@ -124,7 +134,7 @@
     }
   ],
   "callPatterns": [
-    "encodeY({ target?, coordinate?, scale?, field?, fieldType?, datum?, aggregate?, stack? })"
+    "encodeY({ target?, coordinate?, scale?, conditions?, otherwise?, field?, datum?, fieldType? })"
   ],
   "snippet": "program.encodeY({ field: \"y\" })",
   "errors": [],

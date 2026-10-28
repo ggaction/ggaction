@@ -138,6 +138,7 @@ function collectionBounds(program, items) {
 }
 
 export function finalizeItems(program, layer, grain, definitions, graphicType, { reorder = true, selectionResolvers } = {}) {
+  if (selectionResolvers?.sourceOnly) return identifyItems(program, layer, grain, definitions);
   const graphic = requireResolvedGraphic(program, layer, graphicType);
   const referenced = definitions.flatMap((definition, index) =>
     definition.graphicIndices ?? [index]

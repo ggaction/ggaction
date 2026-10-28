@@ -1,0 +1,146 @@
+{
+  "state": "implementation-verified",
+  "sourceRevision": "da1de34460983705b2fb7e2d04b766a6123d1c1a",
+  "visualApproval": {
+    "revision": "90f5f67e",
+    "quote": "두 검토 대상 모두 승인",
+    "scope": "기존 bar glyph source에 승인한 multiply/screen 합성; 새 P1/P2 옵션 미포함"
+  },
+  "checks": {
+    "contracts": {
+      "passed": 90,
+      "failed": 0
+    },
+    "lifecycleIncludingScenes": {
+      "passed": 23,
+      "failed": 0
+    },
+    "unit": {
+      "passed": 17,
+      "failed": 0
+    },
+    "publicPrimitive": {
+      "variants": 16,
+      "graphicsOrderCanvasCallsRGBA": "exact"
+    },
+    "browser": {
+      "combinations": 96,
+      "DOMOffscreenPrimitive": "exact",
+      "SVGPrimitive": "exact",
+      "interiorSamples": 288,
+      "CanvasSVG": "exact"
+    },
+    "pdf": {
+      "combinations": 24,
+      "samples": 72,
+      "opaqueAlpha": "exact",
+      "translucentRGBToleranceBytes": 1
+    },
+    "png": {
+      "pairs": 16,
+      "decodedRGBA": "exact"
+    },
+    "publicAdapters": {
+      "passed": 2,
+      "failed": 0
+    },
+    "criticalCoverage": {
+      "testCount": 37,
+      "files": {
+        "grammar/compositing.js": [
+          100,
+          100,
+          100
+        ],
+        "renderers/canvas/isolated.js": [
+          100,
+          100,
+          100
+        ]
+      }
+    },
+    "installedConsumer": {
+      "passed": 196,
+      "failed": 0,
+      "groups": [
+        {
+          "id": "node",
+          "status": "passed",
+          "durationMs": 16977.925834
+        },
+        {
+          "id": "mcp",
+          "status": "passed",
+          "durationMs": 621.8692080000001
+        },
+        {
+          "id": "types",
+          "status": "passed",
+          "durationMs": 370.70708399999785
+        },
+        {
+          "id": "tutorials",
+          "status": "passed",
+          "durationMs": 44268.758208
+        },
+        {
+          "id": "bundle-full",
+          "status": "passed",
+          "durationMs": 1613.814459000001
+        },
+        {
+          "id": "bundle-basic",
+          "status": "passed",
+          "durationMs": 985.4068330000009
+        },
+        {
+          "id": "bundle-svg",
+          "status": "passed",
+          "durationMs": 36.71970799998962
+        }
+      ]
+    },
+    "documentation": {
+      "passed": 164,
+      "failed": 0,
+      "sourceRef": "da1de34460983705b2fb7e2d04b766a6123d1c1a",
+      "firstFailure": "Precommit canonical example link was stale; source commit then generated provenance resolved it without runtime changes."
+    }
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 705,
+    "packedBytes": 1047939,
+    "unpackedBytes": 4873522,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "c01048fbca6e02c57446dd1e39ee6930d829d54e",
+    "sha256": "697e691aa27e250b50e3075725377cb4bd201eac30da7d83d1ac6e046855cab5"
+  },
+  "logs": {
+    ".artifacts/paint-public-integration/bar-blend-final-contracts.log": "b87970be78c9df55e86941443748d6f36f346d3416e5e8128a12de6676dda995",
+    ".artifacts/paint-public-integration/bar-blend-final-lifecycle.log": "6f66e511b4fcff6054437b45363af7ce3218a25a22c0ad0d0ed28e148c44f9cf",
+    ".artifacts/paint-public-integration/bar-blend-unit.log": "10bc61f28a4611e8e8ad11ed9da2bcc0b2d2e080e70a9fa1bf8856a3cc785acf",
+    ".artifacts/paint-public-integration/bar-blend-equivalence.log": "4e866087d0d97dc617e68bb0f5b4141ce5ee2e34d29e162042b5dee1261583a8",
+    ".artifacts/paint-public-integration/bar-blend-browser.log": "27499f1e62dcd75be68557b3f76573b88474cd6cc49251565d109ea0fde88687",
+    ".artifacts/paint-public-integration/bar-blend-pdf.log": "7d4a498a326ecabc77cdc05d6032aba52a0e325fa27b010b297cad8b100f69c5",
+    ".artifacts/paint-public-integration/bar-blend-png.log": "2e0c32648f7f644db05fbbf3a5850198ccf72ef57a4de59fcdcd5c3cb09ad456",
+    ".artifacts/paint-public-integration/bar-blend-adapters.log": "dc2a6ef8893363292cce3425c7cfd8ee10fc4ba0d1ffb946db8c59017424faae",
+    ".artifacts/paint-public-integration/bar-blend-coverage.log": "8c6e57b33119967f04a119217eff67c457ece33cc8234067ffd009aa86ec9c52",
+    ".artifacts/paint-public-integration/bar-blend-package-contracts.log": "9be95f8319421963a85bc407accc10cf291d3b79f1ec2303e6e9400b042cbea6",
+    ".artifacts/paint-public-integration/bar-blend-installed.log": "75a5788b1dcfff07297967e1000a0a8eb179fd32a32d541c3a796e3990ad9899",
+    ".artifacts/paint-public-integration/bar-blend-docs-final.log": "11da2a1c6b495d07559308003aaa28abb6cd536781525db1b17d7ae3628e9aec",
+    ".artifacts/paint-public-integration/bar-blend-package-final.json": "c4b5ec72d506be9ae98c41d846f7d11274bbc09e9b5959b99688feca45709cd8"
+  },
+  "remaining": [
+    "P1/P2 및 ellipse 승인 대기",
+    "전체 STEP017의 추가 mark/effect consumer 연결",
+    "승인된 transparent isolated group의 공통 Float64 RGBA8 PNG lowering"
+  ],
+  "notes": [
+    "Package unpacked limit measured from 4873000 to 4874000; measured artifact4873522. Packed limit unchanged1048000.",
+    "Canonical example and runtime references are pinned to the implementation commit; docs164/164 passed.",
+    "No package publication, documentation deployment, or PR."
+  ]
+}

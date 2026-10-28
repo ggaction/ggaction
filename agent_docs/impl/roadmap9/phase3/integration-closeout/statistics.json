@@ -1,0 +1,4637 @@
+{
+  "schemaVersion": 1,
+  "command": "node scripts/check-statistical-fixtures.js",
+  "exitCode": 0,
+  "runtimeCommit": "b84b54b536bfb3c282dc6301d72e105aea665e35",
+  "testedHead": "72855612447cf391defdbf6a121a26cc503bb9ce",
+  "node": "v22.23.1",
+  "tolerance": {
+    "absolute": 1e-9,
+    "relative": 1e-9
+  },
+  "oracle": "test/oracles/statistical-fixtures.js",
+  "oracleSha256": "5fd327caa092f6e2402763193f473135e261b23f82dcae65ba8357205fe8187e",
+  "cases": [
+    {
+      "id": "summary-variance",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "v": 1
+          },
+          {
+            "v": 2
+          },
+          {
+            "v": 3
+          }
+        ],
+        "calls": [
+          [
+            "createSummaryData",
+            {
+              "id": "result",
+              "aggregates": [
+                {
+                  "op": "mean",
+                  "field": "v",
+                  "as": "mean"
+                },
+                {
+                  "op": "variance",
+                  "field": "v",
+                  "as": "sample"
+                },
+                {
+                  "op": "varianceP",
+                  "field": "v",
+                  "as": "population"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"v\":1},{\"v\":2},{\"v\":3}]}).createSummaryData({\"id\":\"result\",\"aggregates\":[{\"op\":\"mean\",\"field\":\"v\",\"as\":\"mean\"},{\"op\":\"variance\",\"field\":\"v\",\"as\":\"sample\"},{\"op\":\"varianceP\",\"field\":\"v\",\"as\":\"population\"}]})",
+      "expected": [
+        [
+          2,
+          1,
+          0.6666666666666666
+        ]
+      ],
+      "actual": [
+        [
+          2,
+          1,
+          0.6666666666666666
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "835aaff75edf92eb71298c98cb2847c6f509285e43cb03bb11cc03c29017fc0e",
+        "expected": "a593e60f3f6e90873eccb6f4834ebd0498827d335435a87185f4cf72a312c23c",
+        "actual": "a593e60f3f6e90873eccb6f4834ebd0498827d335435a87185f4cf72a312c23c",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "summary",
+          "groupBy": [],
+          "aggregates": [
+            {
+              "op": "mean",
+              "field": "v",
+              "as": "mean"
+            },
+            {
+              "op": "variance",
+              "field": "v",
+              "as": "sample"
+            },
+            {
+              "op": "varianceP",
+              "field": "v",
+              "as": "population"
+            }
+          ]
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "mean",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "mean"
+            }
+          },
+          {
+            "name": "sample",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "variance"
+            }
+          },
+          {
+            "name": "population",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "varianceP"
+            }
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "v": 2
+          },
+          {
+            "v": 4
+          },
+          {
+            "v": 6
+          }
+        ],
+        "expected": [
+          [
+            4,
+            4,
+            2.6666666666666665
+          ]
+        ],
+        "actual": [
+          [
+            4,
+            4,
+            2.6666666666666665
+          ]
+        ],
+        "contributors": [
+          [
+            0,
+            1,
+            2
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "90fd2689fc00a948ae34d6d8ca5d8cacae55bae5591dd3670d3d8465c7905006",
+          "expected": "39960eac6172068cfac61a17636e818b63188aaed45c106f0c74c0b5ee638e46",
+          "actual": "39960eac6172068cfac61a17636e818b63188aaed45c106f0c74c0b5ee638e46",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "linear-quantiles",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "v": 1
+          },
+          {
+            "v": 2
+          },
+          {
+            "v": 3
+          },
+          {
+            "v": 4
+          }
+        ],
+        "calls": [
+          [
+            "createSummaryData",
+            {
+              "id": "result",
+              "aggregates": [
+                {
+                  "op": {
+                    "op": "quantile",
+                    "probability": 0
+                  },
+                  "field": "v",
+                  "as": "q0"
+                },
+                {
+                  "op": {
+                    "op": "quantile",
+                    "probability": 0.25
+                  },
+                  "field": "v",
+                  "as": "q1"
+                },
+                {
+                  "op": {
+                    "op": "quantile",
+                    "probability": 0.5
+                  },
+                  "field": "v",
+                  "as": "q2"
+                },
+                {
+                  "op": {
+                    "op": "quantile",
+                    "probability": 1
+                  },
+                  "field": "v",
+                  "as": "q3"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"v\":1},{\"v\":2},{\"v\":3},{\"v\":4}]}).createSummaryData({\"id\":\"result\",\"aggregates\":[{\"op\":{\"op\":\"quantile\",\"probability\":0},\"field\":\"v\",\"as\":\"q0\"},{\"op\":{\"op\":\"quantile\",\"probability\":0.25},\"field\":\"v\",\"as\":\"q1\"},{\"op\":{\"op\":\"quantile\",\"probability\":0.5},\"field\":\"v\",\"as\":\"q2\"},{\"op\":{\"op\":\"quantile\",\"probability\":1},\"field\":\"v\",\"as\":\"q3\"}]})",
+      "expected": [
+        [
+          1,
+          1.75,
+          2.5,
+          4
+        ]
+      ],
+      "actual": [
+        [
+          1,
+          1.75,
+          2.5,
+          4
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "acb0c7df39908f46fdbb4a6d11f60f66dc372c9bb3a061a616670c75ff0fa02b",
+        "expected": "897db95f8322889a092cd742d0d673bbda0ff1be5ad8d974057987db19d9772e",
+        "actual": "897db95f8322889a092cd742d0d673bbda0ff1be5ad8d974057987db19d9772e",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "summary",
+          "groupBy": [],
+          "aggregates": [
+            {
+              "op": {
+                "op": "quantile",
+                "probability": 0
+              },
+              "field": "v",
+              "as": "q0"
+            },
+            {
+              "op": {
+                "op": "quantile",
+                "probability": 0.25
+              },
+              "field": "v",
+              "as": "q1"
+            },
+            {
+              "op": {
+                "op": "quantile",
+                "probability": 0.5
+              },
+              "field": "v",
+              "as": "q2"
+            },
+            {
+              "op": {
+                "op": "quantile",
+                "probability": 1
+              },
+              "field": "v",
+              "as": "q3"
+            }
+          ]
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "q0",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "quantile"
+            }
+          },
+          {
+            "name": "q1",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "quantile"
+            }
+          },
+          {
+            "name": "q2",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "quantile"
+            }
+          },
+          {
+            "name": "q3",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "quantile"
+            }
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "v": 2
+          },
+          {
+            "v": 4
+          },
+          {
+            "v": 6
+          },
+          {
+            "v": 8
+          }
+        ],
+        "expected": [
+          [
+            2,
+            3.5,
+            5,
+            8
+          ]
+        ],
+        "actual": [
+          [
+            2,
+            3.5,
+            5,
+            8
+          ]
+        ],
+        "contributors": [
+          [
+            0,
+            1,
+            2,
+            3
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "992875e72f352d06494c8653fd25788591fb4180ec810b521a42fab17edd3edd",
+          "expected": "9c214db82e22284ed777a7c664e5166be970ef3d27d45e09186a6f098d695325",
+          "actual": "9c214db82e22284ed777a7c664e5166be970ef3d27d45e09186a6f098d695325",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "histogram-final-boundary",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "v": 0
+          },
+          {
+            "v": 1
+          },
+          {
+            "v": 2
+          },
+          {
+            "v": 3
+          }
+        ],
+        "calls": [
+          [
+            "createBinData",
+            {
+              "id": "result",
+              "field": "v",
+              "boundaries": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "includeEmpty": true,
+              "as": {
+                "lower": "lo",
+                "upper": "hi",
+                "count": "count"
+              }
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"v\":0},{\"v\":1},{\"v\":2},{\"v\":3}]}).createBinData({\"id\":\"result\",\"field\":\"v\",\"boundaries\":[0,1,2,3],\"includeEmpty\":true,\"as\":{\"lower\":\"lo\",\"upper\":\"hi\",\"count\":\"count\"}})",
+      "expected": [
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          1,
+          2,
+          1
+        ],
+        [
+          2,
+          3,
+          2
+        ]
+      ],
+      "actual": [
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          1,
+          2,
+          1
+        ],
+        [
+          2,
+          3,
+          2
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "0df58377de025c80b24ca5bad45519b8f5dc5c43723e8defe7bd8e6d90aeab86",
+        "expected": "92896a116355311bd2407d10ea346643b63886e2448be4f542daecc26aa1aa2a",
+        "actual": "92896a116355311bd2407d10ea346643b63886e2448be4f542daecc26aa1aa2a",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "bin",
+          "field": "v",
+          "bin": {
+            "boundaries": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "extent": "auto",
+          "nice": true,
+          "zero": false,
+          "includeEmpty": true,
+          "members": false,
+          "as": {
+            "lower": "lo",
+            "upper": "hi",
+            "count": "count"
+          },
+          "resolved": {
+            "domain": [
+              0,
+              3
+            ],
+            "boundaries": [
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "lo",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "lower"
+            }
+          },
+          {
+            "name": "hi",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "upper"
+            }
+          },
+          {
+            "name": "count",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "count"
+            }
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "v": 0
+          },
+          {
+            "v": 0
+          },
+          {
+            "v": 1
+          },
+          {
+            "v": 3
+          }
+        ],
+        "expected": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            1,
+            2,
+            1
+          ],
+          [
+            2,
+            3,
+            1
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            1,
+            2,
+            1
+          ],
+          [
+            2,
+            3,
+            1
+          ]
+        ],
+        "contributors": [
+          [
+            0,
+            1
+          ],
+          [
+            2
+          ],
+          [
+            3
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "7f18a08ba271071891a14f25580f04f8132424230e5615cf8332f83317f82910",
+          "expected": "81f40bb2fad447b980f87b9127644749a36797b95c3e40df3afcc13dc7ffdf18",
+          "actual": "81f40bb2fad447b980f87b9127644749a36797b95c3e40df3afcc13dc7ffdf18",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "bin2d-corners",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "calls": [
+          [
+            "createBin2DData",
+            {
+              "id": "result",
+              "x": "x",
+              "y": "y",
+              "bins": {
+                "x": 2,
+                "y": 2
+              },
+              "extent": {
+                "x": [
+                  0,
+                  2
+                ],
+                "y": [
+                  0,
+                  2
+                ]
+              },
+              "includeEmpty": true,
+              "as": {
+                "x0": "x0",
+                "x1": "x1",
+                "y0": "y0",
+                "y1": "y1",
+                "count": "count"
+              }
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"x\":0,\"y\":0},{\"x\":2,\"y\":0},{\"x\":0,\"y\":2},{\"x\":2,\"y\":2}]}).createBin2DData({\"id\":\"result\",\"x\":\"x\",\"y\":\"y\",\"bins\":{\"x\":2,\"y\":2},\"extent\":{\"x\":[0,2],\"y\":[0,2]},\"includeEmpty\":true,\"as\":{\"x0\":\"x0\",\"x1\":\"x1\",\"y0\":\"y0\",\"y1\":\"y1\",\"count\":\"count\"}})",
+      "expected": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "actual": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          1,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "9d89939fc10a395196518c5f04ff9701b6bfffec1c7718df2f6c0ef702a7e584",
+        "expected": "2c546abe31e13f45f0f407aa9fdf59cf5e78a02e5ce95a45c55b7ed8b3582b8b",
+        "actual": "2c546abe31e13f45f0f407aa9fdf59cf5e78a02e5ce95a45c55b7ed8b3582b8b",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "bin2d",
+          "x": "x",
+          "y": "y",
+          "bins": {
+            "x": 2,
+            "y": 2
+          },
+          "extent": {
+            "x": [
+              0,
+              2
+            ],
+            "y": [
+              0,
+              2
+            ]
+          },
+          "includeEmpty": true,
+          "members": false,
+          "as": {
+            "x0": "x0",
+            "x1": "x1",
+            "y0": "y0",
+            "y1": "y1",
+            "count": "count"
+          },
+          "resolved": {
+            "extent": {
+              "x": [
+                0,
+                2
+              ],
+              "y": [
+                0,
+                2
+              ]
+            },
+            "edges": {
+              "x": [
+                0,
+                1,
+                2
+              ],
+              "y": [
+                0,
+                1,
+                2
+              ]
+            },
+            "eligibleCount": 4,
+            "occupiedCount": 4
+          }
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "x0",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "x"
+                }
+              ],
+              "owner": "result",
+              "role": "x0"
+            }
+          },
+          {
+            "name": "x1",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "x"
+                }
+              ],
+              "owner": "result",
+              "role": "x1"
+            }
+          },
+          {
+            "name": "y0",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "y"
+                }
+              ],
+              "owner": "result",
+              "role": "y0"
+            }
+          },
+          {
+            "name": "y1",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "y"
+                }
+              ],
+              "owner": "result",
+              "role": "y1"
+            }
+          },
+          {
+            "name": "count",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "x"
+                },
+                {
+                  "data": "raw",
+                  "field": "y"
+                }
+              ],
+              "owner": "result",
+              "role": "count"
+            }
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 2
+          }
+        ],
+        "expected": [
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            1
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            0,
+            2
+          ],
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            1,
+            1
+          ]
+        ],
+        "contributors": [
+          [
+            0,
+            1
+          ],
+          [],
+          [],
+          [
+            2
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "5cf0f8bf8fbd1c5657d1278b78763c3891fae9363a9b4522e5a7861e0da93721",
+          "expected": "416195170f076e9d6b11419c6336c7a40aa9aab99a51b99ef2245b1e5476a60f",
+          "actual": "416195170f076e9d6b11419c6336c7a40aa9aab99a51b99ef2245b1e5476a60f",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "diverging-stack",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "c": "A",
+            "g": "one",
+            "v": 2
+          },
+          {
+            "c": "A",
+            "g": "two",
+            "v": 3
+          },
+          {
+            "c": "A",
+            "g": "negative",
+            "v": -2
+          }
+        ],
+        "calls": [
+          [
+            "createStackData",
+            {
+              "id": "result",
+              "category": "c",
+              "group": "g",
+              "value": "v",
+              "mode": "diverging",
+              "as": {
+                "start": "start",
+                "end": "end",
+                "value": "value",
+                "share": "share"
+              }
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"c\":\"A\",\"g\":\"one\",\"v\":2},{\"c\":\"A\",\"g\":\"two\",\"v\":3},{\"c\":\"A\",\"g\":\"negative\",\"v\":-2}]}).createStackData({\"id\":\"result\",\"category\":\"c\",\"group\":\"g\",\"value\":\"v\",\"mode\":\"diverging\",\"as\":{\"start\":\"start\",\"end\":\"end\",\"value\":\"value\",\"share\":\"share\"}})",
+      "expected": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          0,
+          -2
+        ]
+      ],
+      "actual": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          0,
+          -2
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "904d4442af94b1fbbce461906eb42cea1038fcd59a04909b746cfc5fcea5d7d2",
+        "expected": "4069b82c52cf3d0dc996277ed7eaac811fd039815a4825b426febc1b7ee06caf",
+        "actual": "4069b82c52cf3d0dc996277ed7eaac811fd039815a4825b426febc1b7ee06caf",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "stack",
+          "category": "c",
+          "group": "g",
+          "value": "v",
+          "mode": "diverging",
+          "as": {
+            "start": "start",
+            "end": "end",
+            "value": "value",
+            "share": "share"
+          }
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "c",
+            "storageType": "string",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "g",
+            "storageType": "string",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "v",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "start",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [],
+              "owner": "result",
+              "role": "start"
+            }
+          },
+          {
+            "name": "end",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [],
+              "owner": "result",
+              "role": "end"
+            }
+          },
+          {
+            "name": "value",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [],
+              "owner": "result",
+              "role": "value"
+            }
+          },
+          {
+            "name": "share",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [],
+              "owner": "result",
+              "role": "share"
+            }
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "c": "A",
+            "g": "one",
+            "v": 4
+          },
+          {
+            "c": "A",
+            "g": "two",
+            "v": 6
+          },
+          {
+            "c": "A",
+            "g": "negative",
+            "v": -4
+          }
+        ],
+        "expected": [
+          [
+            0,
+            4
+          ],
+          [
+            4,
+            10
+          ],
+          [
+            0,
+            -4
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            4
+          ],
+          [
+            4,
+            10
+          ],
+          [
+            0,
+            -4
+          ]
+        ],
+        "contributors": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            2
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "86365ba23642dc1f4ca152b652d477dcdca285780eb185b6c952b4c9bdc02673",
+          "expected": "9475a6488e92b70a9ffc99b213eb80f97c9595944d76d4eb1da09f0b87c75a95",
+          "actual": "9475a6488e92b70a9ffc99b213eb80f97c9595944d76d4eb1da09f0b87c75a95",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "trailing-window",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "t": 0,
+            "v": 1
+          },
+          {
+            "t": 1,
+            "v": 2
+          },
+          {
+            "t": 2,
+            "v": 3
+          }
+        ],
+        "calls": [
+          [
+            "createWindowData",
+            {
+              "id": "result",
+              "sortBy": [
+                {
+                  "field": "t"
+                }
+              ],
+              "operations": [
+                {
+                  "op": "movingMean",
+                  "field": "v",
+                  "as": "mean",
+                  "frame": {
+                    "preceding": 1,
+                    "following": 0
+                  }
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"t\":0,\"v\":1},{\"t\":1,\"v\":2},{\"t\":2,\"v\":3}]}).createWindowData({\"id\":\"result\",\"sortBy\":[{\"field\":\"t\"}],\"operations\":[{\"op\":\"movingMean\",\"field\":\"v\",\"as\":\"mean\",\"frame\":{\"preceding\":1,\"following\":0}}]})",
+      "expected": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1.5
+        ],
+        [
+          2,
+          2.5
+        ]
+      ],
+      "actual": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1.5
+        ],
+        [
+          2,
+          2.5
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "18f28bf7a54b9a8089f898348e9c9f84273c40f277b1c31f3f9a757920109f96",
+        "expected": "3d2aebbb1fd7ee9b5aa4c96da722d4fe0c0f9dc8697eade4dd63dc5f27fdc493",
+        "actual": "3d2aebbb1fd7ee9b5aa4c96da722d4fe0c0f9dc8697eade4dd63dc5f27fdc493",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "window",
+          "partitionBy": [],
+          "sortBy": [
+            {
+              "field": "t",
+              "order": "ascending"
+            }
+          ],
+          "operations": [
+            {
+              "op": "movingMean",
+              "field": "v",
+              "as": "mean",
+              "frame": {
+                "preceding": 1,
+                "following": 0
+              },
+              "minPeriods": 1,
+              "missing": "error"
+            }
+          ]
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "t",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "v",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "mean",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "movingMean"
+            }
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "t": 0,
+            "v": 2
+          },
+          {
+            "t": 1,
+            "v": 4
+          },
+          {
+            "t": 2,
+            "v": 6
+          }
+        ],
+        "expected": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            5
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            5
+          ]
+        ],
+        "contributors": [
+          [
+            0
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "2f52aae6d05cc1e18e82471902200f8591681ba31afb4ec699aa81ab14669f18",
+          "expected": "b1bb85759e5c9a6e5133c7183e1eb79b51f286f5e454dd5314369e78d7de8ed2",
+          "actual": "b1bb85759e5c9a6e5133c7183e1eb79b51f286f5e454dd5314369e78d7de8ed2",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "pivot-duplicates",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "g": "A",
+            "key": "x",
+            "v": 1
+          },
+          {
+            "g": "A",
+            "key": "x",
+            "v": 2
+          }
+        ],
+        "calls": [
+          [
+            "createPivotData",
+            {
+              "id": "result",
+              "groupBy": "g",
+              "field": "key",
+              "value": "v",
+              "op": "sum",
+              "columns": [
+                {
+                  "value": "x",
+                  "as": "x"
+                },
+                {
+                  "value": "y",
+                  "as": "y"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"g\":\"A\",\"key\":\"x\",\"v\":1},{\"g\":\"A\",\"key\":\"x\",\"v\":2}]}).createPivotData({\"id\":\"result\",\"groupBy\":\"g\",\"field\":\"key\",\"value\":\"v\",\"op\":\"sum\",\"columns\":[{\"value\":\"x\",\"as\":\"x\"},{\"value\":\"y\",\"as\":\"y\"}]})",
+      "expected": [
+        [
+          3,
+          null
+        ]
+      ],
+      "actual": [
+        [
+          3,
+          null
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "8abacd005524c3d483cbd061fb8ace1b8ff610986af8df2838734f16c977e014",
+        "expected": "e5bc92871f3f7196a247bb1d4d4d90ebc822cbbe5cf90c46f30fa5179309ea00",
+        "actual": "e5bc92871f3f7196a247bb1d4d4d90ebc822cbbe5cf90c46f30fa5179309ea00",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0,
+          1
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "pivot",
+          "field": "key",
+          "groupBy": [
+            "g"
+          ],
+          "columns": [
+            {
+              "value": "x",
+              "as": "x"
+            },
+            {
+              "value": "y",
+              "as": "y"
+            }
+          ],
+          "op": "sum",
+          "fill": null,
+          "value": "v"
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "g",
+            "storageType": "string",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "x",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "g"
+                },
+                {
+                  "data": "raw",
+                  "field": "key"
+                },
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "column:string:1:x"
+            }
+          },
+          {
+            "name": "y",
+            "storageType": "number",
+            "nullable": true,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "g"
+                },
+                {
+                  "data": "raw",
+                  "field": "key"
+                },
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "column:string:1:y"
+            }
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "g": "A",
+            "key": "x",
+            "v": 2
+          },
+          {
+            "g": "A",
+            "key": "x",
+            "v": 4
+          }
+        ],
+        "expected": [
+          [
+            6,
+            null
+          ]
+        ],
+        "actual": [
+          [
+            6,
+            null
+          ]
+        ],
+        "contributors": [
+          [
+            0,
+            1
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "964a2b69c22357e7b994a5b15cc13b71f844f1e108c174e10a22ceb39cf82486",
+          "expected": "115a0b35f43ef04b3c9619846eb445632bc94748b57397a9ad54e248a23084fe",
+          "actual": "115a0b35f43ef04b3c9619846eb445632bc94748b57397a9ad54e248a23084fe",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "fold-row-order",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "a": 2,
+            "b": 3
+          },
+          {
+            "a": 0,
+            "b": 4
+          }
+        ],
+        "calls": [
+          [
+            "createFoldData",
+            {
+              "id": "result",
+              "fields": [
+                "b",
+                "a"
+              ],
+              "as": {
+                "key": "key",
+                "value": "value"
+              }
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"a\":2,\"b\":3},{\"a\":0,\"b\":4}]}).createFoldData({\"id\":\"result\",\"fields\":[\"b\",\"a\"],\"as\":{\"key\":\"key\",\"value\":\"value\"}})",
+      "expected": [
+        [
+          3,
+          "b"
+        ],
+        [
+          2,
+          "a"
+        ],
+        [
+          4,
+          "b"
+        ],
+        [
+          0,
+          "a"
+        ]
+      ],
+      "actual": [
+        [
+          3,
+          "b"
+        ],
+        [
+          2,
+          "a"
+        ],
+        [
+          4,
+          "b"
+        ],
+        [
+          0,
+          "a"
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "6c37f99ee571a41308f44373338dfebd753248778f9540d8bda1bf2007ffdd44",
+        "expected": "2af336ad5ed4d0e757b26e6568bac263a8902066df1c38fe8b935db0fe57a148",
+        "actual": "2af336ad5ed4d0e757b26e6568bac263a8902066df1c38fe8b935db0fe57a148",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          1
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "fold",
+          "fields": [
+            "b",
+            "a"
+          ],
+          "as": {
+            "key": "key",
+            "value": "value"
+          }
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "key",
+            "storageType": "string",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "b"
+                },
+                {
+                  "data": "raw",
+                  "field": "a"
+                }
+              ],
+              "owner": "result",
+              "role": "key"
+            }
+          },
+          {
+            "name": "value",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "b"
+                },
+                {
+                  "data": "raw",
+                  "field": "a"
+                }
+              ],
+              "owner": "result",
+              "role": "value"
+            }
+          },
+          {
+            "name": "a",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "b",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "a": 4,
+            "b": 6
+          },
+          {
+            "a": 0,
+            "b": 8
+          }
+        ],
+        "expected": [
+          [
+            6,
+            "b"
+          ],
+          [
+            4,
+            "a"
+          ],
+          [
+            8,
+            "b"
+          ],
+          [
+            0,
+            "a"
+          ]
+        ],
+        "actual": [
+          [
+            6,
+            "b"
+          ],
+          [
+            4,
+            "a"
+          ],
+          [
+            8,
+            "b"
+          ],
+          [
+            0,
+            "a"
+          ]
+        ],
+        "contributors": [
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            1
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "0c97f692675a1a8fa06b7bd6d5bb30e5549a779063b28b58fb9c751598ac65ea",
+          "expected": "cf135b2ea312191a438283b4f9bd5f6b7e8ea57c3a39778ffdc8105d6b3b5b1a",
+          "actual": "cf135b2ea312191a438283b4f9bd5f6b7e8ea57c3a39778ffdc8105d6b3b5b1a",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "flatten-aligned-arrays",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "a": [
+              1,
+              2
+            ],
+            "b": [
+              "x"
+            ]
+          },
+          {
+            "a": [],
+            "b": []
+          },
+          {
+            "a": [
+              0
+            ],
+            "b": [
+              "y"
+            ]
+          }
+        ],
+        "calls": [
+          [
+            "createFlattenData",
+            {
+              "id": "result",
+              "fields": [
+                "a",
+                "b"
+              ],
+              "as": [
+                "value",
+                "label"
+              ]
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"a\":[1,2],\"b\":[\"x\"]},{\"a\":[],\"b\":[]},{\"a\":[0],\"b\":[\"y\"]}]}).createFlattenData({\"id\":\"result\",\"fields\":[\"a\",\"b\"],\"as\":[\"value\",\"label\"]})",
+      "expected": [
+        [
+          1,
+          "x"
+        ],
+        [
+          2,
+          null
+        ],
+        [
+          0,
+          "y"
+        ]
+      ],
+      "actual": [
+        [
+          1,
+          "x"
+        ],
+        [
+          2,
+          null
+        ],
+        [
+          0,
+          "y"
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "d2ab194a8289179766353e48683300e672c0571f0536625f6b3dee3189f6614c",
+        "expected": "4c31c84c4f76baa55a8fc0e0eeb41be9889f976ecbdeb2548e31b1f3a9240683",
+        "actual": "4c31c84c4f76baa55a8fc0e0eeb41be9889f976ecbdeb2548e31b1f3a9240683",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          2
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "flatten",
+          "fields": [
+            "a",
+            "b"
+          ],
+          "as": [
+            "value",
+            "label"
+          ]
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "a",
+            "storageType": "array",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "b",
+            "storageType": "array",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "value",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "a"
+                }
+              ],
+              "owner": "result",
+              "role": "value:a"
+            }
+          },
+          {
+            "name": "label",
+            "storageType": "string",
+            "nullable": true,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "b"
+                }
+              ],
+              "owner": "result",
+              "role": "value:b"
+            }
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "a": [
+              2,
+              4
+            ],
+            "b": [
+              "x"
+            ]
+          },
+          {
+            "a": [],
+            "b": []
+          },
+          {
+            "a": [
+              0
+            ],
+            "b": [
+              "y"
+            ]
+          }
+        ],
+        "expected": [
+          [
+            2,
+            "x"
+          ],
+          [
+            4,
+            null
+          ],
+          [
+            0,
+            "y"
+          ]
+        ],
+        "actual": [
+          [
+            2,
+            "x"
+          ],
+          [
+            4,
+            null
+          ],
+          [
+            0,
+            "y"
+          ]
+        ],
+        "contributors": [
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            2
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "29bfe171d273295fede60159f966c3409140cb4877136c95d70110cab20b781b",
+          "expected": "c6bc49aeb1208b91bf31f8868f56451a8b176617b5459ccfa8e6ddbf776b9c7f",
+          "actual": "c6bc49aeb1208b91bf31f8868f56451a8b176617b5459ccfa8e6ddbf776b9c7f",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "lookup-left-multiplicity",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "key": 1
+          },
+          {
+            "key": 1
+          },
+          {
+            "key": 2
+          }
+        ],
+        "secondary": {
+          "id": "right",
+          "values": [
+            {
+              "key": 1,
+              "value": 5
+            }
+          ]
+        },
+        "calls": [
+          [
+            "createLookupData",
+            {
+              "id": "result",
+              "source": "raw",
+              "field": "key",
+              "lookup": {
+                "data": "right",
+                "key": "key",
+                "fields": [
+                  "value"
+                ]
+              }
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"key\":1},{\"key\":1},{\"key\":2}]}).createData({\"id\":\"right\",\"values\":[{\"key\":1,\"value\":5}]}).createLookupData({\"id\":\"result\",\"source\":\"raw\",\"field\":\"key\",\"lookup\":{\"data\":\"right\",\"key\":\"key\",\"fields\":[\"value\"]}})",
+      "expected": [
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          null
+        ]
+      ],
+      "actual": [
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          null
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "ee793e0f4b107557d72f117bf5e4d9b0ff8b104bdc2fd4b92bccb0c7e041d4d7",
+        "expected": "f3e8c9e06c3c2a9c5c356e793445fc0af2fb43b01417ca2daca63215788fcb6a",
+        "actual": "f3e8c9e06c3c2a9c5c356e793445fc0af2fb43b01417ca2daca63215788fcb6a",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      "secondaryContributors": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        []
+      ],
+      "storedTransform": [
+        {
+          "type": "lookup",
+          "field": "key",
+          "lookup": {
+            "data": "right",
+            "key": "key",
+            "fields": [
+              "value"
+            ],
+            "as": [
+              "value"
+            ]
+          }
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "key",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "value",
+            "storageType": "number",
+            "nullable": true,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "key"
+                },
+                {
+                  "data": "right",
+                  "field": "key"
+                },
+                {
+                  "data": "right",
+                  "field": "value"
+                }
+              ],
+              "owner": "result",
+              "role": "lookup:value"
+            }
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "key": 1
+          },
+          {
+            "key": 2
+          },
+          {
+            "key": 1
+          }
+        ],
+        "expected": [
+          [
+            1,
+            5
+          ],
+          [
+            2,
+            null
+          ],
+          [
+            1,
+            5
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            5
+          ],
+          [
+            2,
+            null
+          ],
+          [
+            1,
+            5
+          ]
+        ],
+        "contributors": [
+          [
+            0
+          ],
+          [
+            1
+          ],
+          [
+            2
+          ]
+        ],
+        "secondaryContributors": [
+          [
+            0
+          ],
+          [],
+          [
+            0
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "0cd8567e03f576a794181b9f8547ad7e7ad649083b4a7c6c04558d644e9561c0",
+          "expected": "702e8b3e98f5a0d2b3548a7111f6539919886655ba096e6fffe545110d628ed2",
+          "actual": "702e8b3e98f5a0d2b3548a7111f6539919886655ba096e6fffe545110d628ed2",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "linear-imputation",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "t": 0,
+            "v": 2
+          },
+          {
+            "t": 1,
+            "v": null
+          },
+          {
+            "t": 4,
+            "v": 10
+          }
+        ],
+        "calls": [
+          [
+            "createImputedData",
+            {
+              "id": "result",
+              "fields": "v",
+              "sortBy": [
+                {
+                  "field": "t"
+                }
+              ],
+              "method": "linear"
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"t\":0,\"v\":2},{\"t\":1,\"v\":null},{\"t\":4,\"v\":10}]}).createImputedData({\"id\":\"result\",\"fields\":\"v\",\"sortBy\":[{\"field\":\"t\"}],\"method\":\"linear\"})",
+      "expected": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          4,
+          10
+        ]
+      ],
+      "actual": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          4,
+          10
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "6bee11c0230b21e4ed7284078f6f182ddafc197c286137c46a62d8e765ae7336",
+        "expected": "4b6790f11be811b907134a8560c078bdbdbc5f1b8d1e7dc81aae7bf160b1fc98",
+        "actual": "4b6790f11be811b907134a8560c078bdbdbc5f1b8d1e7dc81aae7bf160b1fc98",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          2
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "impute",
+          "fields": [
+            "v"
+          ],
+          "groupBy": [],
+          "sortBy": [
+            {
+              "field": "t",
+              "order": "ascending"
+            }
+          ],
+          "method": "linear",
+          "edges": "keep"
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "t",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "v",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "t": 0,
+            "v": 4
+          },
+          {
+            "t": 1,
+            "v": null
+          },
+          {
+            "t": 4,
+            "v": 20
+          }
+        ],
+        "expected": [
+          [
+            0,
+            4
+          ],
+          [
+            1,
+            8
+          ],
+          [
+            4,
+            20
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            4
+          ],
+          [
+            1,
+            8
+          ],
+          [
+            4,
+            20
+          ]
+        ],
+        "contributors": [
+          [
+            0
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            2
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "527dcdfcc22d6151d39d06e711c5ee24566d2c8c0c3ac7d8936c4c21e70da543",
+          "expected": "a81a26c8287d7409f4e17ebed059c1f53baabe3d31456f7f70aa575ae5306550",
+          "actual": "a81a26c8287d7409f4e17ebed059c1f53baabe3d31456f7f70aa575ae5306550",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "linear-regression-coefficients",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 5
+          }
+        ],
+        "calls": [
+          [
+            "createRegressionData",
+            {
+              "id": "fit",
+              "x": "x",
+              "y": "y",
+              "method": "linear",
+              "interval": false
+            }
+          ],
+          [
+            "createRegressionStatisticsData",
+            {
+              "id": "result",
+              "source": "fit"
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"x\":0,\"y\":1},{\"x\":1,\"y\":3},{\"x\":2,\"y\":5}]}).createRegressionData({\"id\":\"fit\",\"x\":\"x\",\"y\":\"y\",\"method\":\"linear\",\"interval\":false}).createRegressionStatisticsData({\"id\":\"result\",\"source\":\"fit\"})",
+      "expected": [
+        [
+          3,
+          2,
+          1,
+          1
+        ]
+      ],
+      "actual": [
+        [
+          3,
+          2,
+          1,
+          1
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "e8c23e93af0df3c428a85badd667211bab73f8d580425d9b017fe7027940fe53",
+        "expected": "ca27e5a7bd137e9cf8371ca752836f48c33271d5ab6ef1717a5787f804fe67b2",
+        "actual": "ca27e5a7bd137e9cf8371ca752836f48c33271d5ab6ef1717a5787f804fe67b2",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "regressionStatistics"
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "count",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [],
+              "owner": "result",
+              "role": "count"
+            }
+          },
+          {
+            "name": "intercept",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [],
+              "owner": "result",
+              "role": "intercept"
+            }
+          },
+          {
+            "name": "slope",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [],
+              "owner": "result",
+              "role": "slope"
+            }
+          },
+          {
+            "name": "rSquared",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [],
+              "owner": "result",
+              "role": "rSquared"
+            }
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 6
+          },
+          {
+            "x": 2,
+            "y": 10
+          }
+        ],
+        "expected": [
+          [
+            3,
+            4,
+            2,
+            1
+          ]
+        ],
+        "actual": [
+          [
+            3,
+            4,
+            2,
+            1
+          ]
+        ],
+        "contributors": [
+          [
+            0,
+            1,
+            2
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "22fcfe0d032b8d46c018cec194f579d5965220434b0b8651486b18881317d714",
+          "expected": "80f5e8139a229790a2e8d2bdf04a0db96d87b1ea04a99a41bcd45e7e1a18da1f",
+          "actual": "80f5e8139a229790a2e8d2bdf04a0db96d87b1ea04a99a41bcd45e7e1a18da1f",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "loess-degree-1",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 5
+          },
+          {
+            "x": 3,
+            "y": 7
+          },
+          {
+            "x": 4,
+            "y": 9
+          },
+          {
+            "x": 5,
+            "y": 11
+          },
+          {
+            "x": 6,
+            "y": 13
+          },
+          {
+            "x": 7,
+            "y": 15
+          },
+          {
+            "x": 8,
+            "y": 17
+          }
+        ],
+        "calls": [
+          [
+            "createRegressionData",
+            {
+              "id": "result",
+              "x": "x",
+              "y": "y",
+              "method": "loess",
+              "degree": 1,
+              "span": 1,
+              "robustIterations": 2
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"x\":0,\"y\":1},{\"x\":1,\"y\":3},{\"x\":2,\"y\":5},{\"x\":3,\"y\":7},{\"x\":4,\"y\":9},{\"x\":5,\"y\":11},{\"x\":6,\"y\":13},{\"x\":7,\"y\":15},{\"x\":8,\"y\":17}]}).createRegressionData({\"id\":\"result\",\"x\":\"x\",\"y\":\"y\",\"method\":\"loess\",\"degree\":1,\"span\":1,\"robustIterations\":2})",
+      "expected": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          5,
+          11
+        ],
+        [
+          6,
+          13
+        ],
+        [
+          7,
+          15
+        ],
+        [
+          8,
+          17
+        ]
+      ],
+      "actual": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2.9999999999999987
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          6.999999999999998
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          5,
+          11
+        ],
+        [
+          6,
+          13.000000000000002
+        ],
+        [
+          7,
+          15.000000000000004
+        ],
+        [
+          8,
+          17
+        ]
+      ],
+      "differences": [
+        {
+          "path": "$[1][1]",
+          "actual": 2.9999999999999987,
+          "expected": 3,
+          "delta": -1.3322676295501878e-15,
+          "allowed": 4e-9,
+          "pass": true
+        },
+        {
+          "path": "$[3][1]",
+          "actual": 6.999999999999998,
+          "expected": 7,
+          "delta": -1.7763568394002505e-15,
+          "allowed": 8e-9,
+          "pass": true
+        },
+        {
+          "path": "$[6][1]",
+          "actual": 13.000000000000002,
+          "expected": 13,
+          "delta": 1.7763568394002505e-15,
+          "allowed": 1.4000000000000003e-8,
+          "pass": true
+        },
+        {
+          "path": "$[7][1]",
+          "actual": 15.000000000000004,
+          "expected": 15,
+          "delta": 3.552713678800501e-15,
+          "allowed": 1.6000000000000004e-8,
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "input": "5c1fa02f29041cd89b8e3fa19162d5e8a307b778df2ec24151c8e69bea02b685",
+        "expected": "3732c639b5f80715235889bd0840fec293b579677511d1f9ab74ee6910e04bb1",
+        "actual": "34bf9c96119277b41e79d0ba86159d27bb6332febb32f5db289800f82847159e",
+        "differences": "cd35ffeeb56c5fb231f14c4917af090bf41f704ed4d3edeaf9d06e2e11dedee5"
+      },
+      "contributors": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "regression",
+          "method": "loess",
+          "x": "x",
+          "y": "y",
+          "span": 1,
+          "robustIterations": 2
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "x",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "y",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 6
+          },
+          {
+            "x": 2,
+            "y": 10
+          },
+          {
+            "x": 3,
+            "y": 14
+          },
+          {
+            "x": 4,
+            "y": 18
+          },
+          {
+            "x": 5,
+            "y": 22
+          },
+          {
+            "x": 6,
+            "y": 26
+          },
+          {
+            "x": 7,
+            "y": 30
+          },
+          {
+            "x": 8,
+            "y": 34
+          }
+        ],
+        "expected": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            6
+          ],
+          [
+            2,
+            10
+          ],
+          [
+            3,
+            14
+          ],
+          [
+            4,
+            18
+          ],
+          [
+            5,
+            22
+          ],
+          [
+            6,
+            26
+          ],
+          [
+            7,
+            30
+          ],
+          [
+            8,
+            34
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            5.999999999999997
+          ],
+          [
+            2,
+            10
+          ],
+          [
+            3,
+            13.999999999999996
+          ],
+          [
+            4,
+            18
+          ],
+          [
+            5,
+            22
+          ],
+          [
+            6,
+            26.000000000000004
+          ],
+          [
+            7,
+            30.000000000000007
+          ],
+          [
+            8,
+            34
+          ]
+        ],
+        "contributors": [
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "differences": [
+          {
+            "path": "$[1][1]",
+            "actual": 5.999999999999997,
+            "expected": 6,
+            "delta": -2.6645352591003757e-15,
+            "allowed": 7.000000000000001e-9,
+            "pass": true
+          },
+          {
+            "path": "$[3][1]",
+            "actual": 13.999999999999996,
+            "expected": 14,
+            "delta": -3.552713678800501e-15,
+            "allowed": 1.5000000000000002e-8,
+            "pass": true
+          },
+          {
+            "path": "$[6][1]",
+            "actual": 26.000000000000004,
+            "expected": 26,
+            "delta": 3.552713678800501e-15,
+            "allowed": 2.7000000000000004e-8,
+            "pass": true
+          },
+          {
+            "path": "$[7][1]",
+            "actual": 30.000000000000007,
+            "expected": 30,
+            "delta": 7.105427357601002e-15,
+            "allowed": 3.100000000000001e-8,
+            "pass": true
+          }
+        ],
+        "hashes": {
+          "input": "db6868ab36acf1b36e3e9126630e3e6974d7e284382f689021f54fd29728092a",
+          "expected": "93a8696456f010e556797939dc3d67671a700a178c2939f20b72a10cf5ded851",
+          "actual": "e9043c626e2c78b576f294f5b4f188fa0d16b793d81fce302211577f5b8327f5",
+          "differences": "a11bc55833a616360406d4cb1f4fdf7848c6b8076bc5cedf261beefcf7209cb1"
+        }
+      }
+    },
+    {
+      "id": "loess-degree-2",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "x": 0,
+            "y": 1
+          },
+          {
+            "x": 1,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 5
+          },
+          {
+            "x": 3,
+            "y": 7
+          },
+          {
+            "x": 4,
+            "y": 9
+          },
+          {
+            "x": 5,
+            "y": 11
+          },
+          {
+            "x": 6,
+            "y": 13
+          },
+          {
+            "x": 7,
+            "y": 15
+          },
+          {
+            "x": 8,
+            "y": 17
+          }
+        ],
+        "calls": [
+          [
+            "createRegressionData",
+            {
+              "id": "result",
+              "x": "x",
+              "y": "y",
+              "method": "loess",
+              "degree": 2,
+              "span": 1,
+              "robustIterations": 2
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"x\":0,\"y\":1},{\"x\":1,\"y\":3},{\"x\":2,\"y\":5},{\"x\":3,\"y\":7},{\"x\":4,\"y\":9},{\"x\":5,\"y\":11},{\"x\":6,\"y\":13},{\"x\":7,\"y\":15},{\"x\":8,\"y\":17}]}).createRegressionData({\"id\":\"result\",\"x\":\"x\",\"y\":\"y\",\"method\":\"loess\",\"degree\":2,\"span\":1,\"robustIterations\":2})",
+      "expected": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          5,
+          11
+        ],
+        [
+          6,
+          13
+        ],
+        [
+          7,
+          15
+        ],
+        [
+          8,
+          17
+        ]
+      ],
+      "actual": [
+        [
+          0,
+          1.0000000000000033
+        ],
+        [
+          1,
+          2.9999999999999987
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          6.999999999999994
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          5,
+          10.999999999999996
+        ],
+        [
+          6,
+          12.999999999999996
+        ],
+        [
+          7,
+          15
+        ],
+        [
+          8,
+          17
+        ]
+      ],
+      "differences": [
+        {
+          "path": "$[0][1]",
+          "actual": 1.0000000000000033,
+          "expected": 1,
+          "delta": 3.3306690738754696e-15,
+          "allowed": 2.0000000000000034e-9,
+          "pass": true
+        },
+        {
+          "path": "$[1][1]",
+          "actual": 2.9999999999999987,
+          "expected": 3,
+          "delta": -1.3322676295501878e-15,
+          "allowed": 4e-9,
+          "pass": true
+        },
+        {
+          "path": "$[3][1]",
+          "actual": 6.999999999999994,
+          "expected": 7,
+          "delta": -6.217248937900877e-15,
+          "allowed": 8e-9,
+          "pass": true
+        },
+        {
+          "path": "$[5][1]",
+          "actual": 10.999999999999996,
+          "expected": 11,
+          "delta": -3.552713678800501e-15,
+          "allowed": 1.2000000000000002e-8,
+          "pass": true
+        },
+        {
+          "path": "$[6][1]",
+          "actual": 12.999999999999996,
+          "expected": 13,
+          "delta": -3.552713678800501e-15,
+          "allowed": 1.4000000000000001e-8,
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "input": "f2e035f13ca09068ad5fd3e20661651e9dc5b29bd0cd481edbbfc2c5c315baee",
+        "expected": "3732c639b5f80715235889bd0840fec293b579677511d1f9ab74ee6910e04bb1",
+        "actual": "ac07c6d0579e64dc97f867aaab93a83b46f654e77b42fb9c23e92bb34ebd9fd4",
+        "differences": "da07c94b045cc544f5d0573e899800c2fbb93153219a7c9fb5dd817e24a65b01"
+      },
+      "contributors": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "regression",
+          "method": "loess",
+          "x": "x",
+          "y": "y",
+          "degree": 2,
+          "span": 1,
+          "robustIterations": 2
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "x",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "y",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "x": 0,
+            "y": 2
+          },
+          {
+            "x": 1,
+            "y": 6
+          },
+          {
+            "x": 2,
+            "y": 10
+          },
+          {
+            "x": 3,
+            "y": 14
+          },
+          {
+            "x": 4,
+            "y": 18
+          },
+          {
+            "x": 5,
+            "y": 22
+          },
+          {
+            "x": 6,
+            "y": 26
+          },
+          {
+            "x": 7,
+            "y": 30
+          },
+          {
+            "x": 8,
+            "y": 34
+          }
+        ],
+        "expected": [
+          [
+            0,
+            2
+          ],
+          [
+            1,
+            6
+          ],
+          [
+            2,
+            10
+          ],
+          [
+            3,
+            14
+          ],
+          [
+            4,
+            18
+          ],
+          [
+            5,
+            22
+          ],
+          [
+            6,
+            26
+          ],
+          [
+            7,
+            30
+          ],
+          [
+            8,
+            34
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            2.0000000000000067
+          ],
+          [
+            1,
+            5.999999999999997
+          ],
+          [
+            2,
+            10
+          ],
+          [
+            3,
+            13.999999999999988
+          ],
+          [
+            4,
+            18
+          ],
+          [
+            5,
+            21.999999999999993
+          ],
+          [
+            6,
+            25.999999999999993
+          ],
+          [
+            7,
+            30
+          ],
+          [
+            8,
+            34
+          ]
+        ],
+        "contributors": [
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        ],
+        "differences": [
+          {
+            "path": "$[0][1]",
+            "actual": 2.0000000000000067,
+            "expected": 2,
+            "delta": 6.661338147750939e-15,
+            "allowed": 3.000000000000007e-9,
+            "pass": true
+          },
+          {
+            "path": "$[1][1]",
+            "actual": 5.999999999999997,
+            "expected": 6,
+            "delta": -2.6645352591003757e-15,
+            "allowed": 7.000000000000001e-9,
+            "pass": true
+          },
+          {
+            "path": "$[3][1]",
+            "actual": 13.999999999999988,
+            "expected": 14,
+            "delta": -1.2434497875801753e-14,
+            "allowed": 1.5000000000000002e-8,
+            "pass": true
+          },
+          {
+            "path": "$[5][1]",
+            "actual": 21.999999999999993,
+            "expected": 22,
+            "delta": -7.105427357601002e-15,
+            "allowed": 2.3e-8,
+            "pass": true
+          },
+          {
+            "path": "$[6][1]",
+            "actual": 25.999999999999993,
+            "expected": 26,
+            "delta": -7.105427357601002e-15,
+            "allowed": 2.7e-8,
+            "pass": true
+          }
+        ],
+        "hashes": {
+          "input": "db6868ab36acf1b36e3e9126630e3e6974d7e284382f689021f54fd29728092a",
+          "expected": "93a8696456f010e556797939dc3d67671a700a178c2939f20b72a10cf5ded851",
+          "actual": "8fc93ff8a087c8a999b50ef6b0b5bfd3728051e5005be396781f7b7ee3268b4f",
+          "differences": "f737d0cfc46464f42acf0de1538813a769d17bf3ce0f7fad03f0223a30f04caf"
+        }
+      }
+    },
+    {
+      "id": "gaussian-unit-density",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "v": 0
+          }
+        ],
+        "calls": [
+          [
+            "createDensityData",
+            {
+              "id": "result",
+              "field": "v",
+              "kernel": "gaussian",
+              "bandwidth": 1,
+              "normalization": "unit",
+              "extent": [
+                -1,
+                1
+              ],
+              "steps": 3,
+              "as": [
+                "x",
+                "density"
+              ]
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"v\":0}]}).createDensityData({\"id\":\"result\",\"field\":\"v\",\"kernel\":\"gaussian\",\"bandwidth\":1,\"normalization\":\"unit\",\"extent\":[-1,1],\"steps\":3,\"as\":[\"x\",\"density\"]})",
+      "expected": [
+        [
+          -1,
+          0.24197072451914337
+        ],
+        [
+          0,
+          0.3989422804014327
+        ],
+        [
+          1,
+          0.24197072451914337
+        ]
+      ],
+      "actual": [
+        [
+          -1,
+          0.24197072451914337
+        ],
+        [
+          0,
+          0.3989422804014327
+        ],
+        [
+          1,
+          0.24197072451914337
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "7faf2135b80f1023fa16d7cf3923f8d6fbd5ffe3b68418d88add24579f268f8a",
+        "expected": "c6faca42ec3206a891a5a127a5de91c987dad41cd3c93af32ae2a3e13fb34329",
+        "actual": "c6faca42ec3206a891a5a127a5de91c987dad41cd3c93af32ae2a3e13fb34329",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "density",
+          "field": "v",
+          "bandwidth": 1,
+          "extent": [
+            -1,
+            1
+          ],
+          "steps": 3,
+          "kernel": "gaussian",
+          "normalization": "unit",
+          "as": [
+            "x",
+            "density"
+          ],
+          "resolve": "shared",
+          "resolved": {
+            "bandwidth": 1,
+            "extent": [
+              -1,
+              1
+            ]
+          }
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "x",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "value"
+            }
+          },
+          {
+            "name": "density",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "density"
+            }
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "v": 1
+          }
+        ],
+        "expected": [
+          [
+            -1,
+            0.05399096651318806
+          ],
+          [
+            0,
+            0.24197072451914337
+          ],
+          [
+            1,
+            0.3989422804014327
+          ]
+        ],
+        "actual": [
+          [
+            -1,
+            0.05399096651318806
+          ],
+          [
+            0,
+            0.24197072451914337
+          ],
+          [
+            1,
+            0.3989422804014327
+          ]
+        ],
+        "contributors": [
+          [
+            0
+          ],
+          [
+            0
+          ],
+          [
+            0
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "2f82c48b76c854095c5ff86fd0568fee6ea2cf16f807ca7d9dc73da5adff183d",
+          "expected": "68d9ac1586d36baafd81375631a70694ef65adfaeb3b64aae720cd0b722c556c",
+          "actual": "68d9ac1586d36baafd81375631a70694ef65adfaeb3b64aae720cd0b722c556c",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "ecdf-right-continuity",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "v": 1
+          },
+          {
+            "v": 1
+          },
+          {
+            "v": 3
+          }
+        ],
+        "calls": [
+          [
+            "createECDFData",
+            {
+              "id": "result",
+              "field": "v",
+              "as": {
+                "value": "x",
+                "cumulative": "n",
+                "probability": "p"
+              }
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"v\":1},{\"v\":1},{\"v\":3}]}).createECDFData({\"id\":\"result\",\"field\":\"v\",\"as\":{\"value\":\"x\",\"cumulative\":\"n\",\"probability\":\"p\"}})",
+      "expected": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          0.6666666666666666
+        ],
+        [
+          3,
+          3,
+          1
+        ]
+      ],
+      "actual": [
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          2,
+          0.666666666667
+        ],
+        [
+          3,
+          3,
+          1
+        ]
+      ],
+      "differences": [
+        {
+          "path": "$[1][2]",
+          "actual": 0.666666666667,
+          "expected": 0.6666666666666666,
+          "delta": 3.333999742949345e-13,
+          "allowed": 1.666666666667e-9,
+          "pass": true
+        }
+      ],
+      "hashes": {
+        "input": "29d577617b29b4583b141ca3ca27230fd7dd699d5debe5613aa2193190854a02",
+        "expected": "aaad2b0c0a6b011df20e00025636e89519fb47e2d8c5874d49a9b6aaa85383bb",
+        "actual": "478e32f06cc76927a68412e5df2ab3a1b8a02391334a7dcdd8f633c2a6d6ac41",
+        "differences": "77c7cd426ce55107bc0607fb1bb3400b8209514bb1ddf0a4b82991f1d7c781de"
+      },
+      "contributors": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "ecdf",
+          "field": "v",
+          "groupBy": [],
+          "missing": "drop",
+          "as": {
+            "value": "x",
+            "cumulative": "n",
+            "probability": "p"
+          },
+          "resolved": {
+            "groups": [
+              {
+                "keys": {},
+                "denominator": 3,
+                "validCount": 3
+              }
+            ]
+          }
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "x",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "value"
+            }
+          },
+          {
+            "name": "n",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "cumulative"
+            }
+          },
+          {
+            "name": "p",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "v"
+                }
+              ],
+              "owner": "result",
+              "role": "probability"
+            }
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "v": 1
+          },
+          {
+            "v": 3
+          },
+          {
+            "v": 3
+          }
+        ],
+        "expected": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            0.3333333333333333
+          ],
+          [
+            3,
+            3,
+            1
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            0.333333333333
+          ],
+          [
+            3,
+            3,
+            1
+          ]
+        ],
+        "contributors": [
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            2
+          ],
+          [
+            0,
+            1,
+            2
+          ]
+        ],
+        "differences": [
+          {
+            "path": "$[1][2]",
+            "actual": 0.333333333333,
+            "expected": 0.3333333333333333,
+            "delta": -3.33288951992472e-13,
+            "allowed": 1.3333333333333333e-9,
+            "pass": true
+          }
+        ],
+        "hashes": {
+          "input": "0bfbda68b3d957dd6656df082454e91261e2f71684fadf265e63d0beb0a0d95d",
+          "expected": "42035a3a3edace72a00c2bf398886952febe8c6ad69c10a95f2c2ed1f47afc35",
+          "actual": "24b326d0c925d8ad79858924057db8f57d935210abb5471b9e30ad1ba536f290",
+          "differences": "9bb13c62602c3915e669df480e5560e1b8e3a2feae2e548be8a840e8e6ff7ce2"
+        }
+      }
+    },
+    {
+      "id": "time-unit-fold",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "at": "2024-11-03T05:30:00Z"
+          },
+          {
+            "at": "2024-11-03T06:30:00Z"
+          }
+        ],
+        "calls": [
+          [
+            "createTimeUnitData",
+            {
+              "id": "result",
+              "field": "at",
+              "unit": "day",
+              "as": "day",
+              "timeZone": "America/New_York"
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"at\":\"2024-11-03T05:30:00Z\"},{\"at\":\"2024-11-03T06:30:00Z\"}]}).createTimeUnitData({\"id\":\"result\",\"field\":\"at\",\"unit\":\"day\",\"as\":\"day\",\"timeZone\":\"America/New_York\"})",
+      "expected": [
+        [
+          1730606400000
+        ],
+        [
+          1730606400000
+        ]
+      ],
+      "actual": [
+        [
+          1730606400000
+        ],
+        [
+          1730606400000
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "609321b5e8b231db2fafa5726d97e3a8e6502e13ceb030851a535bb68f55d87a",
+        "expected": "a4e6a49dc5d6772259a169e880cbb5d9c3c4f763ffdd9cd398ade1e6a69c9bec",
+        "actual": "a4e6a49dc5d6772259a169e880cbb5d9c3c4f763ffdd9cd398ade1e6a69c9bec",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [
+          0
+        ],
+        [
+          1
+        ]
+      ],
+      "storedTransform": [
+        {
+          "type": "timeUnit",
+          "field": "at",
+          "unit": "day",
+          "as": "day",
+          "timeZone": "America/New_York"
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "at",
+            "storageType": "string",
+            "nullable": false,
+            "optional": false
+          },
+          {
+            "name": "day",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false,
+            "lineage": {
+              "inputs": [
+                {
+                  "data": "raw",
+                  "field": "at"
+                }
+              ],
+              "owner": "result",
+              "role": "value"
+            }
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "at": "2024-11-04T12:00:00Z"
+          },
+          {
+            "at": "2024-11-03T06:30:00Z"
+          }
+        ],
+        "expected": [
+          [
+            1730696400000
+          ],
+          [
+            1730606400000
+          ]
+        ],
+        "actual": [
+          [
+            1730696400000
+          ],
+          [
+            1730606400000
+          ]
+        ],
+        "contributors": [
+          [
+            0
+          ],
+          [
+            1
+          ]
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "4222f4b4590007c8f1b8423786c62ff0e7a24e76d7de12452c4a7529b52eac0f",
+          "expected": "70a468ebdda645189f7c9672b9af64dda8a0caf51d3cc9017334ea07c93cfe1c",
+          "actual": "70a468ebdda645189f7c9672b9af64dda8a0caf51d3cc9017334ea07c93cfe1c",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    {
+      "id": "calendar-synthetic-day",
+      "status": "passed",
+      "input": {
+        "values": [
+          {
+            "day": 1730606400000,
+            "total": 0
+          }
+        ],
+        "calls": [
+          [
+            "createCompleteData",
+            {
+              "id": "result",
+              "key": "day",
+              "calendar": {
+                "unit": "day",
+                "start": "2024-11-02",
+                "end": "2024-11-04",
+                "timeZone": "America/New_York"
+              },
+              "fill": {
+                "total": null
+              }
+            }
+          ]
+        ]
+      },
+      "publicCall": "chart().createData({\"id\":\"raw\",\"values\":[{\"day\":1730606400000,\"total\":0}]}).createCompleteData({\"id\":\"result\",\"key\":\"day\",\"calendar\":{\"unit\":\"day\",\"start\":\"2024-11-02\",\"end\":\"2024-11-04\",\"timeZone\":\"America/New_York\"},\"fill\":{\"total\":null}})",
+      "expected": [
+        [
+          1730520000000,
+          null
+        ],
+        [
+          1730606400000,
+          0
+        ],
+        [
+          1730696400000,
+          null
+        ]
+      ],
+      "actual": [
+        [
+          1730520000000,
+          null
+        ],
+        [
+          1730606400000,
+          0
+        ],
+        [
+          1730696400000,
+          null
+        ]
+      ],
+      "differences": [],
+      "hashes": {
+        "input": "6973a7b728e72192b44f096ed500fe41dd8a717920869af331ce518a0f982174",
+        "expected": "df1ce1e91a7fe9a713c518851db8c7bcb243bd382c6bf86a6a82a3525ddaa7ad",
+        "actual": "df1ce1e91a7fe9a713c518851db8c7bcb243bd382c6bf86a6a82a3525ddaa7ad",
+        "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "contributors": [
+        [],
+        [
+          0
+        ],
+        []
+      ],
+      "storedTransform": [
+        {
+          "type": "complete",
+          "key": "day",
+          "groupBy": [],
+          "fill": {
+            "total": null
+          },
+          "calendar": {
+            "unit": "day",
+            "start": "2024-11-02",
+            "end": "2024-11-04",
+            "timeZone": "America/New_York"
+          }
+        }
+      ],
+      "schema": {
+        "version": 1,
+        "completeness": "known",
+        "origin": "derived",
+        "fields": [
+          {
+            "name": "total",
+            "storageType": "number",
+            "nullable": true,
+            "optional": false
+          },
+          {
+            "name": "day",
+            "storageType": "number",
+            "nullable": false,
+            "optional": false
+          }
+        ]
+      },
+      "revision": {
+        "input": [
+          {
+            "day": 1730606400000,
+            "total": 7
+          }
+        ],
+        "expected": [
+          [
+            1730520000000,
+            null
+          ],
+          [
+            1730606400000,
+            7
+          ],
+          [
+            1730696400000,
+            null
+          ]
+        ],
+        "actual": [
+          [
+            1730520000000,
+            null
+          ],
+          [
+            1730606400000,
+            7
+          ],
+          [
+            1730696400000,
+            null
+          ]
+        ],
+        "contributors": [
+          [],
+          [
+            0
+          ],
+          []
+        ],
+        "differences": [],
+        "hashes": {
+          "input": "0abdf7128d296c4bddf345e1efa84e29e2035e6462fc44adfef083814fbf8ddc",
+          "expected": "c04ebd49bf60d15cbf573932ec6c17f5b6ebfa7872c51e70219fff987afd3ffe",
+          "actual": "c04ebd49bf60d15cbf573932ec6c17f5b6ebfa7872c51e70219fff987afd3ffe",
+          "differences": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    }
+  ]
+}

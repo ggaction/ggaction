@@ -1,3 +1,5 @@
+import { rebindConditionalInputs, orderConditionalMarkIds } from "../../materialization/conditionalState.js";
+import { applyLayerDataRematerialization } from "../../materialization/dependencies.js";
 import { requireDataset } from "../../selectors/datasets.js";
 import { highlightTargets } from "../../selectors/selectionTargets.js";
 import { storedSelectionSelector } from "../../selectors/selectionResources.js";
@@ -297,6 +299,9 @@ export const editMarkSelection = /* @__PURE__ */ closedAction(
     );
     let next = writeSelectionState(this, current.id, current.definition.target, replacement.selector)
       ._withContext({ currentSelection: current.id });
+    const conditionals = rebindConditionalInputs(next, { selection: next.materializationConfigs.selections[current.id].resource.id });
+    next = conditionals.program;
+    for (const target of orderConditionalMarkIds(next, conditionals.targets)) next = applyLayerDataRematerialization(next, target);
     const consumers = Object.entries(next.materializationConfigs.selections).filter(([, definition]) =>
       definition.resource.kind === next.materializationConfigs.selections[current.id].resource.kind &&
       definition.resource.id === next.materializationConfigs.selections[current.id].resource.id);
@@ -341,6 +346,10 @@ export const removeMarkSelection = /* @__PURE__ */ closedAction(
   function (args = {}) {
     const current = resolveStoredSelection(this, args.selection);
     const componentDependents = Object.entries(this.materializationConfigs.selections ?? {}).filter(([, definition]) => definition.sourceSelection === current.id);
+    const removing = new Set([current.id, ...componentDependents.map(([id]) => id)]);
+    if (this.semanticSpec.layers.some(layer => Object.values(layer.conditionals ?? {}).some(definition => definition.selectionInputs.some(input => removing.has(input.selection))))) {
+      throw new Error(`Selection "${current.id}" is referenced by conditional encodings.`);
+    }
     const labelDependents = [current.id, ...componentDependents.map(([id]) => id)]
       .flatMap(id => namedLabelDependents(this, id));
     if (labelDependents.length > 0) {

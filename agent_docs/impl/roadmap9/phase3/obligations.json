@@ -7,22 +7,25 @@
       "id": "AST-PRODUCT",
       "owner": "STEP-013",
       "gate": "G-EXPR",
-      "status": "partial",
-      "requirement": "AST private pure kernel 구현·독립 시험 완료; 공개 computed consumer 통합은 G-PARAM/G-DATA 이후"
+      "status": "verified",
+      "requirement": "AST v2 공개 computed 생성/편집/재생과 registry 조회 및 현재 소비자 검증 완료; 후속 resolver 연결은 DATA-RESOLVER에 보존",
+      "evidence": "product-implementation.json"
     },
     {
       "id": "PARAMETER-RESOURCE",
       "owner": "STEP-013",
       "gate": "G-PARAM",
-      "status": "open",
-      "requirement": "Parameter create/edit/remove, typed options, exact revision binding, computed dependencies and fresh-process lifecycle"
+      "status": "verified",
+      "requirement": "CRUD, exact refs, multi-root DAG, facet/repeat, 복원 및 네 renderer와 설치 패키지 검증 완료; URL 의존성은 DATA-RESOLVER에 보존",
+      "evidence": "product-implementation.json"
     },
     {
       "id": "DATA-RESOLVER",
       "owner": "STEP-013",
       "gate": "G-DATA",
-      "status": "open",
-      "requirement": "Inline/named/URL and relative URL CSV/JSON; host baseURL/load, parse directives, hashes, schema, prepared result, stale/abort/offline rules"
+      "status": "verified",
+      "requirement": "CSV/JSON prepared source 공개 적용, immutable receipt, parameter URL closure와 offline lifecycle 및 전체 통합 검증 완료",
+      "evidence": "data-implementation.json"
     },
     {
       "id": "DATAFLOW-INTEGRATION",
@@ -35,15 +38,17 @@
       "id": "CALENDAR-INTEGRATION",
       "owner": "STEP-015",
       "gate": null,
-      "status": "open",
-      "requirement": "Calendar/day completion, DST/year/week aggregation fixtures; registry date rules remain in STEP-013"
+      "status": "verified",
+      "requirement": "Calendar/day completion, DST/year/week aggregation fixtures; registry date rules remain in STEP-013",
+      "evidence": "STEP8.md"
     },
     {
       "id": "STEP-013-CLOSEOUT",
       "owner": "STEP-013",
       "gate": null,
-      "status": "open",
-      "requirement": "AT-16 actual/expected/diff, consumer matrix, package/types/docs, CI coverage and full integration"
+      "status": "verified",
+      "requirement": "AT-16 actual/expected/diff, consumer matrix, package/types/docs, CI coverage and full integration",
+      "evidence": "STEP8.md"
     }
   ]
 }

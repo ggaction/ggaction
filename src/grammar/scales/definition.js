@@ -82,6 +82,11 @@ function validatePointParameters(definition, previous, patch, defaults, typeChan
   Object.assign(definition, { padding, align });
 }
 
+export function validateEmptyDomainPolicy(value) {
+  if (!["preserve", "require-explicit"].includes(value)) throw new Error('Scale emptyDomain must be "preserve" or "require-explicit".');
+  return value;
+}
+
 export function normalizeScaleDefinition({
   type,
   color = false,
@@ -113,10 +118,7 @@ export function normalizeScaleDefinition({
   };
   const emptyDomain = retainedValue(previous, patch, defaults, "emptyDomain", typeChanged);
   if (emptyDomain !== undefined) {
-    if (!["preserve", "require-explicit"].includes(emptyDomain)) {
-      throw new Error('Scale emptyDomain must be "preserve" or "require-explicit".');
-    }
-    definition.emptyDomain = emptyDomain;
+    definition.emptyDomain = validateEmptyDomainPolicy(emptyDomain);
   }
 
   for (const property of COMMON_SCALE_PROPERTIES) {

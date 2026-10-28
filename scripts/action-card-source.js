@@ -189,12 +189,15 @@ function actionResources(action, optionNames, intentSource) {
   const { operation, subject } = operationAndSubject(action.name);
   const aliases = aliasesForSubject(intentSource, subject);
   const resource = aliases[0];
+  const hierarchyPlot = /^(?:create|edit)(?:Tree|Treemap)Plot$/.test(action.name);
   const prerequisites = [];
   if (action.name === "createRegressionStatisticsData" || action.name === "editRegressionStatisticsData") {
     prerequisites.push("materialized linear regression dataset");
   }
 
-  if (action.name === "createMarkLabels") {
+  if (action.name === "layoutHierarchy") {
+    prerequisites.push("existing hierarchy resource");
+  } else if (action.name === "createMarkLabels") {
     prerequisites.push("existing eligible source mark");
   } else if (action.name === "editMarkLabelSelection") {
     prerequisites.push("attached label");
@@ -209,7 +212,9 @@ function actionResources(action, optionNames, intentSource) {
     prerequisites.push("target mark");
     if (optionNames.includes("field")) prerequisites.push("field mode: dataset field");
   }
-  if (action.domain === "charts") prerequisites.push("canvas and dataset context");
+  if (action.domain === "charts") prerequisites.push(hierarchyPlot
+    ? `canvas and ${action.name.includes("Treemap") ? "treemap" : "tree"} layout resource`
+    : "canvas and dataset context");
   if (action.domain === "marks" && operation === "create" && action.name !== "createMarkLabels") {
     prerequisites.push("dataset and coordinate context");
   }
@@ -241,7 +246,9 @@ function actionResources(action, optionNames, intentSource) {
   return {
     prerequisites: unique(prerequisites).slice(0, 4),
     owns: unique(owns).slice(0, 3),
-    idOptions: optionNames.filter(name => idOptionNames.has(name))
+    idOptions: optionNames.filter(name => idOptionNames.has(name) ||
+      (name === "hierarchy" && action.name === "layoutHierarchy") ||
+      (name === "layout" && hierarchyPlot))
   };
 }
 
@@ -298,6 +305,8 @@ export async function declaredActionMetadata(actions) {
         throw new Error(`${action.name} has more than one public parameter.`);
       }
       const options = [];
+      const exactSignature = exactSignatureFromSource(source, action.name);
+      const conditional = exactSignature.match(/ConditionalEncodingOptions<([^>]+)>/u)?.[0];
       if (parameters.length === 1) {
         const parameter = parameters[0];
         const declaration = parameter.valueDeclaration?.resolve(project);
@@ -323,13 +332,15 @@ export async function declaredActionMetadata(actions) {
             name: property.name,
             required: commonProperty !== undefined &&
               (commonProperty.flags & SymbolFlags.Optional) === 0,
-            type: checker.typeToString(
+            // Keep the exact named public payload instead of an expanded,
+            // truncated Omit union for conditional branches.
+            type: conditional && ["conditions", "otherwise"].includes(property.name)
+              ? `${conditional}["${property.name}"]` : checker.typeToString(
               checker.getTypeOfSymbolAtLocation(commonProperty ?? property, propertyDeclaration)
             )
           });
         }
       }
-      const exactSignature = exactSignatureFromSource(source, action.name);
       return { name: action.name, signature: exactSignature, options };
     });
   } finally {
@@ -548,7 +559,8 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
     if (JSON.stringify(card.options) !== JSON.stringify(expectedOptions)) {
       throw new Error(`Option drift in compact card ${card.name}.`);
     }
-    if (card.route !== routes[card.name]) throw new Error(`Route drift in compact card ${card.name}.`);
+    if (typeof card.route !== "string" || !card.route.startsWith("/reference/") ||
+      card.route !== routes[card.name]) throw new Error(`Route drift in compact card ${card.name}.`);
     if (card.errors.length > 2) throw new Error(`${card.name} has more than two errors.`);
     if (card.summary.length < 20 || card.summary.length > 420) {
       throw new Error(`${card.name} summary is outside the compact schema bounds.`);

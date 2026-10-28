@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "state": "approved",
+  "date": "2026-10-28",
+  "source": "Explicit user reply in the current task",
+  "designReply": "세 설계안 모두 승인, 구현 계속",
+  "visualReply": "추가 시각 대상 모두 승인, 구현 계속",
+  "approvedDesigns": [
+    {
+      "id": "I1-I4",
+      "revision": "990315b7",
+      "document": "phase4/images/PUBLIC_DESIGN.md"
+    },
+    {
+      "id": "P1-P2",
+      "revision": "06e9eba8",
+      "document": "phase4/paints/PUBLIC.md"
+    },
+    {
+      "id": "H",
+      "revision": "928fba48",
+      "document": "chart/hierarchy-plots.md"
+    }
+  ],
+  "approvedVisuals": [
+    {
+      "id": "partition-14",
+      "revision": "0343a078",
+      "document": "phase3/partition/REVIEW.md"
+    },
+    {
+      "id": "radial-object-bounds-ellipse",
+      "revision": "06e9eba8",
+      "document": "phase4/radial-gradient/ELLIPSE_REVIEW.md"
+    }
+  ],
+  "scope": "Exact proposed public APIs, persisted schemas and internal resource registration boundary, plus the reviewed visual targets. Prior six visual approvals remain valid.",
+  "remainingObligations": [
+    "Implement and verify the approved public consumers and package contracts.",
+    "Implement general partition direction transformation, current-frame hit testing, reduced motion and topology crossfade.",
+    "Completion is not implied by approval; continue through STEP-077."
+  ]
+}

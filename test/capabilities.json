@@ -63,6 +63,48 @@
         "path": "unit/support/visual-variants.test.js"
       }
     ],
+    "blend-paints": [
+      {
+        "type": "file",
+        "path": "unit/grammar/png-encoding.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/png-byte-encoding.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/compositing.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/bar-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/conditional-bar-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/bar-blend.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/conditional-rendering.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/bar-compositing/"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/blend-paints/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/paint-image-preparation.test.js"
+      }
+    ],
     "calendar": [
       {
         "type": "file",
@@ -127,6 +169,16 @@
         "path": "charts/lookup-data/"
       }
     ],
+    "data-sources": [
+      {
+        "type": "prefix",
+        "path": "unit/resources/"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/data-source-parsing.test.js"
+      }
+    ],
     "documentation": [
       {
         "type": "prefix",
@@ -135,6 +187,24 @@
       {
         "type": "file",
         "path": "contracts/documentation-truth.test.js"
+      }
+    ],
+    "expressions": [
+      {
+        "type": "file",
+        "path": "unit/expression-registry.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/computed-v2.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/parameter-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/parameter-expression-types.test.js"
       }
     ],
     "facet-field-titles": [
@@ -201,6 +271,24 @@
         "path": "charts/compound-path/"
       }
     ],
+    "graph": [
+      {
+        "type": "file",
+        "path": "unit/grammar/graph-layout.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/graph-model.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/graph-normalize.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/grammar/graph/"
+      }
+    ],
     "guides": [
       {
         "type": "prefix",
@@ -235,6 +323,72 @@
         "path": "contracts/facade-legend-combination-types.test.js"
       }
     ],
+    "hierarchy": [
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-normalize.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-input.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-model.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-validation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-tree.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-treemap.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-order.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/tree-layouts/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/treemap-layouts/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/hierarchy-resources.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/hierarchy-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/hierarchy-consumers.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/hierarchy-validation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/facet-source-identity.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/hierarchy-types.test.js"
+      }
+    ],
     "horizon": [
       {
         "type": "file",
@@ -255,6 +409,28 @@
       {
         "type": "prefix",
         "path": "charts/gapminder-horizon/"
+      }
+    ],
+    "image-assets": [
+      {
+        "type": "prefix",
+        "path": "gates/image-assets/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/image-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/svg-images.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/materialization/image-placement.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/paint-image-preparation.test.js"
       }
     ],
     "inspection": [
@@ -385,6 +561,12 @@
         "path": "unit/oracles/"
       }
     ],
+    "outline-paints": [
+      {
+        "type": "prefix",
+        "path": "gates/outline-paints/"
+      }
+    ],
     "package": [
       {
         "type": "prefix",
@@ -423,6 +605,16 @@
       {
         "type": "prefix",
         "path": "gates/partition-layouts/"
+      }
+    ],
+    "pattern-paints": [
+      {
+        "type": "file",
+        "path": "unit/grammar/patterns.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/pattern-paints/"
       }
     ],
     "persistence": [
@@ -491,6 +683,16 @@
       {
         "type": "file",
         "path": "contracts/composition-integration.test.js"
+      }
+    ],
+    "radial-gradient": [
+      {
+        "type": "file",
+        "path": "unit/grammar/radial-gradient.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/radial-gradient/"
       }
     ],
     "realistic": [
@@ -573,6 +775,16 @@
       {
         "type": "prefix",
         "path": "unit/selectors/"
+      }
+    ],
+    "shadow-paints": [
+      {
+        "type": "file",
+        "path": "unit/grammar/shadow.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/shadow-paints/"
       }
     ],
     "statistical-fixtures": [

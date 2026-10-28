@@ -10,11 +10,11 @@ import {
 } from "./common.js";
 
 function rectSelectionProperties(graphic, index) {
-  const item = graphic.items[index];
+  const item = graphic?.items?.[index];
   return {
     ...concreteProperties(item?.properties),
     ...(readRectItemGeometry({
-      type: item?.type ?? graphic.type,
+      type: item?.type ?? graphic?.type,
       properties: item?.properties
     }) ?? {})
   };
@@ -43,15 +43,15 @@ export function resolveRectItems(program, layer, dataset, grain, resolveItems, s
   const compatibleCollection = rounded && graphic?.type === "collection" &&
     graphic.items?.every(item => ["rect", "path"].includes(item.type));
   if (
-    (graphic?.type !== "rect" && !compatibleCollection) ||
-    !Array.isArray(graphic.items)
+    !selectionResolvers?.sourceOnly && ((graphic?.type !== "rect" && !compatibleCollection) ||
+    !Array.isArray(graphic.items))
   ) {
     throw new Error(`Rect mark "${layer.id}" is incomplete for selection.`);
   }
   if (program.markConfigs[layer.id]?.gradientPlot?.materialized === true) {
     return resolveGradientPlotItems(program, layer, dataset, selectionResolvers);
   }
-  const rows = resolveRectRows(program, layer, dataset);
+  const rows = resolveRectRows(program, layer, dataset, selectionResolvers);
   const hasField = rectUsesFields(layer);
   const definitions = rows.map((item, graphicIndex) => ({
     ...(hasField ? { rowKey: dataset.rowKeys[item.sourceIndex] } : { semanticIdentity: ["constant"] }),
@@ -67,4 +67,14 @@ export function resolveRectItems(program, layer, dataset, grain, resolveItems, s
     definitions,
     rounded ? ["rect", "path"] : "rect"
   , { selectionResolvers });
+}
+
+export function resolveConditionalRectSourceItems(program, layer, dataset) {
+  const hasField = rectUsesFields(layer);
+  const rows = hasField ? dataset.values : dataset.values.slice(0, 1);
+  return rows.map((row, index) => ({
+    ...(hasField ? { rowKey: dataset.rowKeys[index] } : { semanticIdentity: ["constant"] }),
+    fields: hasField ? ownFields(row) : uniqueFields(dataset.values),
+    channels: channelMapFromRow(row, layer), members: hasField ? [row] : dataset.values
+  }));
 }

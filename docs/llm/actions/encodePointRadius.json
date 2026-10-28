@@ -3,8 +3,8 @@
   "name": "encodePointRadius",
   "layer": "user-facing",
   "domain": "encodings",
-  "summary": "Apply a constant point glyph radius through a traced encodeRadius child.",
-  "signature": "encodePointRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;",
+  "summary": "Apply a point glyph radius.",
+  "signature": "encodePointRadius(options: TargetedOptions<{ value: number; target?: string } | ConditionalEncodingOptions<{ value: number }>>): ChartProgram;",
   "intents": [
     "encode point radius",
     "encode",
@@ -57,20 +57,30 @@
   },
   "options": [
     {
-      "name": "value",
-      "required": true,
-      "type": "number"
-    },
-    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<{ value: number }>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<{ value: number }>[\"otherwise\"]"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "number"
     }
   ],
   "callPatterns": [
-    "encodePointRadius({ value, target? })"
+    "encodePointRadius({ target?, conditions?, otherwise?, value? })"
   ],
-  "snippet": "program.encodePointRadius({ value: 1 })",
+  "snippet": "program.encodePointRadius({ value: 4 })",
   "errors": [],
   "route": "/reference/actions/encodings/#encodepointradius"
 }

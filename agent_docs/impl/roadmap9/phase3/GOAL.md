@@ -1,10 +1,10 @@
 # Phase 3 — 안전한 AST v2와 데이터 입력
 
-상태: **G-EXPR D2–D6 승인 완료; AST private core 구현·검증 완료**. 공개 제품 통합과 AT-16은 미완료다. Phase 0–2/STEP-001–012는 완료 상태를 유지한다.
+상태: **STEP-013–015 제품 통합과 개별 종료 검증 완료**. 최신 근거는 [STEP8](STEP8.md)과 progress records에 있다. 공개 AST/parameter/prepared source·pivot·quadratic LOESS·calendar completion을 같은 구현 commit에서 검증했다. STEP-016 및 전체 STEP-077 후행 범위는 계속 진행한다. 아래 최초 설계·준비 기록은 당시 상태를 보존한 역사 자료다.
 
 사용자 “검토하자” 뒤 기존 AST 보존과 v2 도입 방향을 제안했고, “진행”(2026-10-28)으로 구체화를 요청받았다.
 [G-EXPR](G-EXPR.json)은 이 방향을 재질문하지 않고 정확한 신규 계약 D2–D6만 구분한다.
-이번 검토 checkpoint는 AST core이며, 남은 원안 범위는 [obligations.json](obligations.json)에 보존한다.
+아래의 최초 검토·core checkpoint 수치는 역사 기록이며 현재 제품 검증과 구분한다. 남은 원안 범위는 [obligations.json](obligations.json)에 보존한다.
 
 - [설계안](DESIGN.md): 노드, null/missing, 함수, 비용, 저장 및 통합 경계
 - [진행 상태](STEP1.md): 준비와 제품 구현 구별
@@ -13,6 +13,9 @@
 - [검토 실행계획](review-plan.json): 승인 전에 요구하는 실행 증거
 - [G-PARAM 검토](parameter/DESIGN.md): 신규 scalar resource와 exact computed binding 제안
 - [Parameter 진행 상태](STEP2.md): 검토 패키지와 실제 제품 구현 구별
+- [공개 제품 통합](STEP3.md): v2/parameter, CSV/JSON kernel 및 누적 검증
+- [Prepared source 제품 통합](STEP6.md): 실제 원본 receipt, URL parameter, offline lifecycle과 최종 검증
+- [전체 실행 승인](../AUTHORIZATION.json): STEP-077까지 승인된 범위를 이어간다.
 
 ## 승인과 검증 경계
 
@@ -99,9 +102,12 @@ Runtime commit은 `3a022aea`다. Commit 후 source reference를 갱신한 공개
 모두 통과했다. 증거 receipt의 pre-commit working tree를 clean 실행이라고 바꾸지 않았으며,
 기록한 source/test/script 2,386개 hash와 이 commit의 동일성을 별도로 확인했다.
 
-## G-PARAM resource 검토 준비
+## G-PARAM resource 검토 준비 — 승인 전 기록
 
 [STEP2](STEP2.md)의 P1–P6 계약 패키지는 검증·push 완료이며 [G-PARAM](G-PARAM.json)은
 ready-for-review다. 아직 parameter 제품 구현이나 공개 v2 통합 완료를 뜻하지 않는다.
 기존 core와 같은 Node22.23.1에서 normal suite6,449개가 통과했고, 현재 Node22.23.2 압축 한도와
 기존 stricter TypeScript 선언 한계는 [compatibility](parameter/compatibility.md)에 별도로 보존했다.
+
+이 단락은 승인 전 검토 상태다. 이후 사용자의 전체 실행 승인과 P1–P6 승인은
+[G-PARAM](G-PARAM.json)에 기록했으며 현재 구현·검증 상태는 [STEP3](STEP3.md)가 소유한다.

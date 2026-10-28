@@ -16,6 +16,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`applyTheme`](current/CORE.md#applytheme) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeTheme`](current/CORE.md#removetheme) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createData`](current/CORE.md#createdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`applyDataUpdate`](current/CORE.md#applydataupdate) | core | Immutable create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`reviseData`](current/CORE.md#revisedata) | core | Immutable create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeData`](current/CORE.md#removedata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeScale`](current/CORE.md#removescale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -28,6 +29,9 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createFlattenData`](current/CORE.md#createflattendata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createFoldData`](current/CORE.md#createfolddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createPivotData`](current/CORE.md#createpivotdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createParameter`](current/CORE.md#createparameter) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editParameter`](current/CORE.md#editparameter) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeParameter`](current/CORE.md#removeparameter) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createComputedData`](current/CORE.md#createcomputeddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createNormalizedData`](current/CORE.md#createnormalizeddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createSortedData`](current/CORE.md#createsorteddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -308,6 +312,15 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createLayerPlot`](current/COMPOSITION.md#createlayerplot) | composition | Structural create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createAdjacentPlot`](current/COMPOSITION.md#createadjacentplot) | composition | Structural create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`editCompositionScales`](current/COMPOSITION.md#editcompositionscales) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createHierarchyData`](current/HIERARCHY.md#createhierarchydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editHierarchyData`](current/HIERARCHY.md#edithierarchydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`layoutHierarchy`](current/HIERARCHY.md#layouthierarchy) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editLayout`](current/HIERARCHY.md#editlayout) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeResource`](current/HIERARCHY.md#removeresource) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createTreePlot`](current/HIERARCHY.md#createtreeplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editTreePlot`](current/HIERARCHY.md#edittreeplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createTreemapPlot`](current/HIERARCHY.md#createtreemapplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editTreemapPlot`](current/HIERARCHY.md#edittreemapplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

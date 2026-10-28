@@ -1,3 +1,6 @@
+import { registerHierarchyPlotActions } from "./hierarchy/plots.js";
+import { registerDataResourceRevision } from "./data/resourceRevision.js";
+import { registerHierarchyResourceActions, reviseHierarchyInputs } from "./hierarchy/resources.js";
 import { registerPrimitiveActions } from "./primitives/index.js";
 import { registerCanvasActions } from "./canvas/index.js";
 import { registerBasicCoordinateActions } from "./coordinates/actions.js";
@@ -56,5 +59,8 @@ export function registerActions(ProgramClass) {
   registerCategoryOrderActions(ProgramClass);
   registerSelectionActions(ProgramClass);
   registerResourceActions(ProgramClass);
+  registerHierarchyResourceActions(ProgramClass);
+  registerHierarchyPlotActions(ProgramClass);
+  registerDataResourceRevision(ProgramClass, Object.freeze({ kinds: Object.freeze(["hierarchy"]), revise: reviseHierarchyInputs }));
   registerTextMetricActions(ProgramClass);
 }

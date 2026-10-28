@@ -1,0 +1,2728 @@
+{
+  "files": [
+    {
+      "file": "knowledge/action-cards.json",
+      "sha256": "15a75497b718376fd1eb8ab3421f014ddf4d1d54487fb5a05b2b527c121a4db1"
+    },
+    {
+      "file": "src/AGENTS.md",
+      "sha256": "517a3a2223b4cd3676e6f4dd60e93975a2ba5efc09df4a86a53b52bfbfbec37e"
+    },
+    {
+      "file": "src/BasicChartProgram.js",
+      "sha256": "bc2e6af0f45bd19c9ee328f913d619d18752447b455793c4c4def93fc4211faa"
+    },
+    {
+      "file": "src/ChartProgram.js",
+      "sha256": "82dea44d5fd7c545e774f4fdd1a8394d5637964f0fd053397a55ff3c3f504c56"
+    },
+    {
+      "file": "src/accessibility.js",
+      "sha256": "b850f330ba23ef1e48c38ace60bf0ce8490f9657c41f7d3a009ab77499101637"
+    },
+    {
+      "file": "src/actions/AGENTS.md",
+      "sha256": "04e6b79b598b7881194455e51d61ad88048a0582c8fdb60d3d5be9c86f25d489"
+    },
+    {
+      "file": "src/actions/basic.js",
+      "sha256": "351d9915c88481057b019ef769b300cfc9e1a768a40294c830259c263d1f568d"
+    },
+    {
+      "file": "src/actions/boxPlots/components.js",
+      "sha256": "31f87d364e55bba81d7d46e895948b978f1d66eb6b84d34409c4374c9389b764"
+    },
+    {
+      "file": "src/actions/boxPlots/create.js",
+      "sha256": "24d358c400cef4b271b66108583f5ac0cd0964f7fb65dfb6fdd6daa0c230f089"
+    },
+    {
+      "file": "src/actions/boxPlots/edit.js",
+      "sha256": "067b272c87256544d8d78332ed3ce226eb20e249cf345944b407ad74c56af37a"
+    },
+    {
+      "file": "src/actions/boxPlots/index.js",
+      "sha256": "bb73b0e7ef84b8efc34a621d58ac5f4fe13d3644b316e2919009ee89c91b1e5c"
+    },
+    {
+      "file": "src/actions/boxPlots/materialize.js",
+      "sha256": "050aa688de5da2e6684d485d14da5c8441dabdb1706a12a5fc9d66dbcbe9135e"
+    },
+    {
+      "file": "src/actions/boxPlots/options.js",
+      "sha256": "31df0c4c8c122136ba4df997965457c73d3f640d86648e46b58970da0d9b4cfa"
+    },
+    {
+      "file": "src/actions/boxPlots/resolve.js",
+      "sha256": "094ecb9f3885006fb1107a45b3f86dfa5d10cbbbb45f9095827d9086c60bed4e"
+    },
+    {
+      "file": "src/actions/canvas/actions.js",
+      "sha256": "2b3b55d9c10cd2607e4e70600fe6ef51b497a9d6ed10a020aa3a7f92ed5daa89"
+    },
+    {
+      "file": "src/actions/canvas/fitting.js",
+      "sha256": "4be6ae77b9169173ee51db2695c537c6938cf2c0411ff4da1fe6fbd533c981c9"
+    },
+    {
+      "file": "src/actions/canvas/index.js",
+      "sha256": "10089ee8ba9a56318363d2eea14f01146e912334c0173967ad3ddec8fd3a9b7f"
+    },
+    {
+      "file": "src/actions/canvas/plotBorder.js",
+      "sha256": "a95db6fc7a0b7c92d70af6a556d570989891974b8cfa0c7e63a09d77011d182a"
+    },
+    {
+      "file": "src/actions/canvas/plotOrder.js",
+      "sha256": "c8c7ce33fb9f2d298c08179f841ccb3d98820383f0c931a71a706b9fd84ef420"
+    },
+    {
+      "file": "src/actions/categoryOrder/index.js",
+      "sha256": "247cedb79e3f614629441b0964e4f1c4d4d2e428bf1144df47a7fd51d97c1270"
+    },
+    {
+      "file": "src/actions/charts/area.js",
+      "sha256": "8810e897740a09bd76a968876efbd33473778496bd4e10d41e31992e74c8abee"
+    },
+    {
+      "file": "src/actions/charts/bar.js",
+      "sha256": "3cecd3ad19f242f278273f61111d49e136cb6cec3397fd97056af7a6040e28b2"
+    },
+    {
+      "file": "src/actions/charts/basic.js",
+      "sha256": "0b8a00c6628113b50390a1038e85f64f70371da52f1495f19ba70498e9a1070d"
+    },
+    {
+      "file": "src/actions/charts/beeswarm.js",
+      "sha256": "795b57834023c94cb5efc725307f05254a0a89def3b2dbd5a5ea1b73b768a9c1"
+    },
+    {
+      "file": "src/actions/charts/density.js",
+      "sha256": "fb5eeb02d971458b5ec12793ca6207a08690986ba843c80c446f90916e0db855"
+    },
+    {
+      "file": "src/actions/charts/ecdf.js",
+      "sha256": "07750e8ae9745788389a39a3dd1d821926f32f28215f67c9571c3a7aae74f4fe"
+    },
+    {
+      "file": "src/actions/charts/endpoints.js",
+      "sha256": "38fb7b1b99c4f9d0abb95f7c9e7a62d1e3ad94e699786b321abbe1a44842e248"
+    },
+    {
+      "file": "src/actions/charts/heatmap.js",
+      "sha256": "e071cd33831d4050e92141c93903739d1963531a0c450188611d831a64b83162"
+    },
+    {
+      "file": "src/actions/charts/histogram.js",
+      "sha256": "b86a61c98b5fd10972ddd0886f7097b67840f9f77c2899972d7ef4eb4cf2cff8"
+    },
+    {
+      "file": "src/actions/charts/horizon.js",
+      "sha256": "cc450cc3f2693e374ad4f3ecbd2e309835a85228afddc05666104170879c9b80"
+    },
+    {
+      "file": "src/actions/charts/index.js",
+      "sha256": "eebb70180ffd4b244e9bc44f4e5225cb010f808393171d61679b39ce426ec62b"
+    },
+    {
+      "file": "src/actions/charts/interval-regression.js",
+      "sha256": "26ddf91f8170896abc7d1ae881ab78195640a3af451907c2e77be261302ca415"
+    },
+    {
+      "file": "src/actions/charts/line.js",
+      "sha256": "6c4290f9e30d5c5bd8215cbe3fb5eb6d3524b98fbb4b850cd93bffe34516b786"
+    },
+    {
+      "file": "src/actions/charts/missing.js",
+      "sha256": "023cd4c4bfec591ff172039f479fb062358e688f7b13a096347ad2832ae62adb"
+    },
+    {
+      "file": "src/actions/charts/parallel.js",
+      "sha256": "62c33410da357f12b2f6352538a81200c86fcf5e99d0d84d114a7b4fb4468884"
+    },
+    {
+      "file": "src/actions/charts/pie.js",
+      "sha256": "3f86147e9a5064b7317f3534ed361bbbba8beb11b6be1ead995c4ed8b6f4d85e"
+    },
+    {
+      "file": "src/actions/charts/polar.js",
+      "sha256": "c9381d1676851dea313a31205310dfa99143321c60427f3000bfe96e6baea25f"
+    },
+    {
+      "file": "src/actions/charts/radar.js",
+      "sha256": "2b06a4ba44ab7867daf29cd5305c251a3b6a8c879c7081fcb076d4d3dc68a621"
+    },
+    {
+      "file": "src/actions/charts/radial.js",
+      "sha256": "2fd041d8a5b2baecaf46d41931f881efa0cef56f240975e7678b83026413b637"
+    },
+    {
+      "file": "src/actions/charts/raincloud.js",
+      "sha256": "64f9b4495a95f73e5656cc7868120dd42f412fa0f22e655444afb9b4de0dbce0"
+    },
+    {
+      "file": "src/actions/charts/rug-strip.js",
+      "sha256": "6eb66198b4b0c4ac84df5c20d77d0341b1ed5dd2c786084e8e65db87e48407a7"
+    },
+    {
+      "file": "src/actions/charts/scatter.js",
+      "sha256": "39ce25ad4f46fadfec7ae562ff8363d07fd30e92ebd6a5acf2b22962f4d017c4"
+    },
+    {
+      "file": "src/actions/charts/shared.js",
+      "sha256": "469824eee3198ff0a6fe8d9db66defbe59b0f181ff78fc2ff1b378861141a71e"
+    },
+    {
+      "file": "src/actions/charts/text.js",
+      "sha256": "f88072878fb74c9d27074fe62fe69438f2e5bb6519302e7448530c916768af1e"
+    },
+    {
+      "file": "src/actions/composition/actions.js",
+      "sha256": "2be2f5a188272c82c05bf27cae9565bccf71e5961ade7a79611b42ec3bf71738"
+    },
+    {
+      "file": "src/actions/composition/adjacent.js",
+      "sha256": "fbbe54c1a91f6bca429d79d341fc88576af08461d776f458aa1b580d24e8ec2a"
+    },
+    {
+      "file": "src/actions/composition/index.js",
+      "sha256": "031f1a3c1905896b0f5d2e9069da14e3dcf0abe43c63b53557cf8a6e957410ac"
+    },
+    {
+      "file": "src/actions/composition/layer.js",
+      "sha256": "08bebb2989b2bb0b23a6853feff531261d662ac81ee5e7def0afc71be37b7c50"
+    },
+    {
+      "file": "src/actions/composition/layerPlan.js",
+      "sha256": "558ec593fa4f8763e0020f79d8b58889b3c59ab1ac1c36a9b2373bb1632d4190"
+    },
+    {
+      "file": "src/actions/composition/targets.js",
+      "sha256": "c2b65c6f56387e0a68ff50847db87d44b20917d9127974baa3b9c55b48f34da1"
+    },
+    {
+      "file": "src/actions/coordinates/actions.js",
+      "sha256": "9d6596fcbf719d2743cc2ee54eaeec529b4a641aa25ebabec43e2a0219b566b9"
+    },
+    {
+      "file": "src/actions/coordinates/edit.js",
+      "sha256": "887e9b30c30677f98871b6e147b04f11a0e1a54fe1cb0708c312d6aee4e6caa5"
+    },
+    {
+      "file": "src/actions/coordinates/parallel.js",
+      "sha256": "fa7042945b20ac0e5fb1cd0a850a4126879a67cc197682433b175d2305acd138"
+    },
+    {
+      "file": "src/actions/data/basic.js",
+      "sha256": "5d1b72a5ef1c1bbc0c184a6fcc020679f020dda232861ed402e1f6c1e471485b"
+    },
+    {
+      "file": "src/actions/data/basicBin2d.js",
+      "sha256": "3e49cdde95884a25df31913f887b9cb168ddbaa6898b91b8b42e24328f1adea7"
+    },
+    {
+      "file": "src/actions/data/bin.js",
+      "sha256": "ee04af0d35bf4771d795595f738eb9edee1be22cbab7305387414e7bdbfd9c31"
+    },
+    {
+      "file": "src/actions/data/bin2d.js",
+      "sha256": "8efa2abc2b2bc28cd787b5e6aab0c8244269d4231923e99b5ea09d9fd972a9d3"
+    },
+    {
+      "file": "src/actions/data/bin2dMaterialize.js",
+      "sha256": "e4ebe5cd4a40873b0831f32cad58e850c5d762bd674cd1f98a46848cd4429f27"
+    },
+    {
+      "file": "src/actions/data/box.js",
+      "sha256": "ce946487187492bb02a0d1a2a24209ddb7de4ddb28ffcf5530b5bb650a283914"
+    },
+    {
+      "file": "src/actions/data/complete.js",
+      "sha256": "6c1348a4af3774b85d88a1306fdcebda8ba96b6d0facec2eac74c27b910239da"
+    },
+    {
+      "file": "src/actions/data/computed.js",
+      "sha256": "8572ce545fd976ec56415a03bb7c9c62852ad57f2b69b41c28903c684a3a5862"
+    },
+    {
+      "file": "src/actions/data/computedBinding.js",
+      "sha256": "02b66f9df243fbc979fb78bbaa1d1ca37b6732f601df46d3825db21e2694e95c"
+    },
+    {
+      "file": "src/actions/data/create.js",
+      "sha256": "793850c19baf5ec85e6e17fe27577ad7bbe9facdd7d163a52914a4f8f04c182f"
+    },
+    {
+      "file": "src/actions/data/density.js",
+      "sha256": "c7e0a305c774b4fcf9b957360957b8fef499bf17f7d0c6618711cb9d125b6b00"
+    },
+    {
+      "file": "src/actions/data/derived.js",
+      "sha256": "7c3b4eedd1d0283f144565ee135c775a5a79ae7e1b2a8e878854a0dd7a79ddb7"
+    },
+    {
+      "file": "src/actions/data/ecdf.js",
+      "sha256": "92d125eb3b92a9e96fbd316b968c1f6395f92cab7af4b3def4a7bf7c0af8a47f"
+    },
+    {
+      "file": "src/actions/data/edit.js",
+      "sha256": "823d80502b0fe87ff35e519afc02b5a8d5b1a69b701c31166a1a2c66d58afa46"
+    },
+    {
+      "file": "src/actions/data/filter.js",
+      "sha256": "2f4fe593b6d6e708619b37a2477cbedb8db0eb9bd9969f1121e9892f0c76e826"
+    },
+    {
+      "file": "src/actions/data/filterBinding.js",
+      "sha256": "610f35767845c703d527d9126daae4364a92a1ba73e9c5ee3e20215799b06de3"
+    },
+    {
+      "file": "src/actions/data/flatten.js",
+      "sha256": "691b5423193b11f12e5d07007ba63f7b67c2caae3e842f93a49170eecd330729"
+    },
+    {
+      "file": "src/actions/data/fold.js",
+      "sha256": "9af5b8f9006c7ee706f8d5a6aac1538267569ce55a6fcfe05092a6c57663ef72"
+    },
+    {
+      "file": "src/actions/data/gradientProfile.js",
+      "sha256": "62e790cb5551248b9ca8a2d02ed1d1785f59c157e7583154e23d9932809d27f6"
+    },
+    {
+      "file": "src/actions/data/horizon.js",
+      "sha256": "b31e9df7c47289ba40760396dd239304a0849a9a5c71057d04a65a591ee6a6ea"
+    },
+    {
+      "file": "src/actions/data/impute.js",
+      "sha256": "dc9f8ddad76f97e9aab54edbf225e0ceced740a6123cb4735a103797fbd13644"
+    },
+    {
+      "file": "src/actions/data/index.js",
+      "sha256": "7b12265b8d1613f033a2546eb8a8353a5529ca358d248242da4ee311055aa22a"
+    },
+    {
+      "file": "src/actions/data/interval.js",
+      "sha256": "aeb53c2c4750a818b4c626493ded953666a5066329f749fffb50357c097e5589"
+    },
+    {
+      "file": "src/actions/data/intervalEdit.js",
+      "sha256": "2a18da16139525eccfa3e83c4366171a5b3dee7cef8af8249f6fca663e271cf2"
+    },
+    {
+      "file": "src/actions/data/lookup.js",
+      "sha256": "8a0e0838cc82bf920faba8e77ef327ccc25cdc6af1e62a64fc3f01463bca458b"
+    },
+    {
+      "file": "src/actions/data/normalize.js",
+      "sha256": "4301c332ac22ada84c802faeb568fb2b7b8c22eee76fb0ddf98881bc37a388ab"
+    },
+    {
+      "file": "src/actions/data/raincloudFilter.js",
+      "sha256": "9aae06c89c006f44b287da7997766cf268f9ba4d2a520083bf003edf3a9c8cad"
+    },
+    {
+      "file": "src/actions/data/regression.js",
+      "sha256": "1a327998f0d539c2df5bcb33688fa7a6709a29f4f3aa709ed9d7e58be29fb485"
+    },
+    {
+      "file": "src/actions/data/regressionStatistics.js",
+      "sha256": "a17a6ed3c82e1fb3d6f206e8040a37fa313066f2b84e5a638f89f2a20b2b02c5"
+    },
+    {
+      "file": "src/actions/data/revise.js",
+      "sha256": "448e2745b18578555a08b7995e33540e56669c6724bc61db7ff6c51171bd94f1"
+    },
+    {
+      "file": "src/actions/data/revisionBindings.js",
+      "sha256": "9c5b408b71a8b889ed5c642b537a3ac5dfc5f2d4264a16be1c3b6b61fa3415db"
+    },
+    {
+      "file": "src/actions/data/shared.js",
+      "sha256": "d0b7ff8c90527b2586c603d1eeafd70d32ad5aa27d4d4ddd5f8d88684caf453d"
+    },
+    {
+      "file": "src/actions/data/sort.js",
+      "sha256": "4f6a8bb17585ea9e683908ece9526723bc20bd315e9b868848959c166ebc2163"
+    },
+    {
+      "file": "src/actions/data/stack.js",
+      "sha256": "37387161af41881d98ab1ac9009d55ae7696d99ed4b83fee8a427ccdbb16f482"
+    },
+    {
+      "file": "src/actions/data/summary.js",
+      "sha256": "6fce939abd8cbc8f953d5a5c90192daeefbaaa353fcf38ef9511e9df744a0bca"
+    },
+    {
+      "file": "src/actions/data/timeUnit.js",
+      "sha256": "56e69e2d5288ae93231764f9df4ed7a53a8a2b6972dce08c5e47ee992f71d516"
+    },
+    {
+      "file": "src/actions/data/window.js",
+      "sha256": "c426d34218aa2eaeb0621d72a00119cc90e7945da6ec05d222fa0c81c0a4af9a"
+    },
+    {
+      "file": "src/actions/distributions/revision.js",
+      "sha256": "97a6eb5f2b66a7e9cca453a68585aa03c26de4f71b25b9691115f1f8b1420972"
+    },
+    {
+      "file": "src/actions/encodings/angle.js",
+      "sha256": "e7cd996b27d8993ac0bdc259d25ffda5c9ec82c7600a2e1725d104eb46d47de4"
+    },
+    {
+      "file": "src/actions/encodings/appearance.js",
+      "sha256": "d9d37f88ebda398e5edab9c79aaaa548463af93c12690d5789162b531d3fbc6b"
+    },
+    {
+      "file": "src/actions/encodings/barWidth.js",
+      "sha256": "aa236a4d9e2b2484fcdc7a3e20fd665080d186729528e2a96062b603b884823f"
+    },
+    {
+      "file": "src/actions/encodings/basic.js",
+      "sha256": "d8774ac7bbac8948223a1de35c2bd31fba0cdac6308e2fdab97c2b24fd47ea66"
+    },
+    {
+      "file": "src/actions/encodings/channels.js",
+      "sha256": "99f138ef729300746988893917a61eefb3f60c2469a08aa1eca6591b75a11842"
+    },
+    {
+      "file": "src/actions/encodings/color/continuous.js",
+      "sha256": "7fb107f1d14670bf0d10d86ba597d4b16b752b41e5ec22be02eedb040ff0aafd"
+    },
+    {
+      "file": "src/actions/encodings/color/index.js",
+      "sha256": "e97d4631a7d251c919e69c4f0fc20b859d64d7523546232658bc1b2fc488058a"
+    },
+    {
+      "file": "src/actions/encodings/color/layout.js",
+      "sha256": "98cf8187e0236911e39d4ae9b1adf2489ee8ac3dc3849febd16a6fff5e4c74e2"
+    },
+    {
+      "file": "src/actions/encodings/color/policy.js",
+      "sha256": "7cb76172089372c8dd93ad9050aeda072557fdcc2600e928d62689224aced10d"
+    },
+    {
+      "file": "src/actions/encodings/density.js",
+      "sha256": "d34dbad09a96588319856670f10a99829f296845a5b4143bebc1437e24df9d03"
+    },
+    {
+      "file": "src/actions/encodings/density/resolve.js",
+      "sha256": "ea4c11b191b30342db329fb866debe755358047687d5366679f4ea0d533c6e94"
+    },
+    {
+      "file": "src/actions/encodings/histogram.js",
+      "sha256": "61dc63ef6ab27fc3cac71d60be2d18dcd6b8e2a718267d810c6dc34a441545ce"
+    },
+    {
+      "file": "src/actions/encodings/horizon.js",
+      "sha256": "76729a09b74226044789093ef6d7f45a125e338b592ce5c87ff4f6345afd905b"
+    },
+    {
+      "file": "src/actions/encodings/horizon/resolve.js",
+      "sha256": "ea51b53f48555f994231a2aaec691e5bdf07b37a24b38edea5777315dc8682c7"
+    },
+    {
+      "file": "src/actions/encodings/index.js",
+      "sha256": "e6e955059e55a03f26854e5da65e80184eb45ccd80231cfa0ab09edde7c6a7d9"
+    },
+    {
+      "file": "src/actions/encodings/offset.js",
+      "sha256": "5557b9be0164617b68c165ce1e04928068afaf083800a601ce4f5dbca5ca84eb"
+    },
+    {
+      "file": "src/actions/encodings/parallel.js",
+      "sha256": "141401600958dd76797374eaf5b541b202efcf706c798a723be3123a72716d3a"
+    },
+    {
+      "file": "src/actions/encodings/pathOrder.js",
+      "sha256": "7de5a8be1af7b158ffd951abd526811b8e13005aaceaf51b75caf67c99149970"
+    },
+    {
+      "file": "src/actions/encodings/position/apply.js",
+      "sha256": "07bf19dec688ad235ecead0399ae3a312a3f2c60399482577436a4d8e15595ba"
+    },
+    {
+      "file": "src/actions/encodings/position/areaAlignment.js",
+      "sha256": "0c6ec83a90e049b0a0c4d6e566aa7bb31841590d86863e55462b7c26fbf248b5"
+    },
+    {
+      "file": "src/actions/encodings/position/index.js",
+      "sha256": "12bcc68ba16ade4899455d57113be65b3eaeee766e174e16685f647d645deb31"
+    },
+    {
+      "file": "src/actions/encodings/position/policies/arc.js",
+      "sha256": "d0c6d23a72f99161919eea73907a9d471f7fefc4568239d4471fc1490c18d393"
+    },
+    {
+      "file": "src/actions/encodings/position/policies/area.js",
+      "sha256": "6cffe38a7db0d97612f18262799c4ce6f16caf2ddb844e00f6cd29f1dc55870f"
+    },
+    {
+      "file": "src/actions/encodings/position/policies/bar.js",
+      "sha256": "2976d5fb9050bde22e6ce3cf9a8fe5a08228a62acb206bf8e40cc9938a8206b0"
+    },
+    {
+      "file": "src/actions/encodings/position/policies/common.js",
+      "sha256": "d3e1626853cf4496ff84f640f8e13b8a39d97eca7399b2e35229c0cf26b0a216"
+    },
+    {
+      "file": "src/actions/encodings/position/policies/index.js",
+      "sha256": "9772782a9b6ab081be502e62bdb0667f82dcd384e3c7a8cfd674dbadabe51436"
+    },
+    {
+      "file": "src/actions/encodings/position/policies/line.js",
+      "sha256": "a6a81ae3833c853304e7c5034ebed9fc08ceb8961dd806eb9e581054f5c85c6f"
+    },
+    {
+      "file": "src/actions/encodings/position/policies/point.js",
+      "sha256": "c45409e81e5a5a9b6489f9cae5ff2c5a2e28df5df74bfc64e4c7e8cd68cc825b"
+    },
+    {
+      "file": "src/actions/encodings/position/policies/rule.js",
+      "sha256": "da81e92753a99414b5fec6ee18dab9e922d93237691ec2b488d64a3b399170d9"
+    },
+    {
+      "file": "src/actions/encodings/position/policies/tick.js",
+      "sha256": "bb0bec323220bcc9ae4daeda4d86500c663148980b35d90e87a23f0befef717a"
+    },
+    {
+      "file": "src/actions/encodings/position/resolve.js",
+      "sha256": "f7bec92e6bd9f36335eff3ab57a67d64af260dec9a5a425cd933ebfcd8e4f7e2"
+    },
+    {
+      "file": "src/actions/encodings/ranged.js",
+      "sha256": "60e7858dba70f29f12b71a7f0bdec2db75a341507ea201da4f4b53741a827a1c"
+    },
+    {
+      "file": "src/actions/encodings/remove.js",
+      "sha256": "8acd7a86708af73f8685dcd37bd201294aeffb0d0fb9a1f53a043d687e113682"
+    },
+    {
+      "file": "src/actions/encodings/ruleAppearance.js",
+      "sha256": "da245d92c990c217fcc2578e72418f6dab798a680d43d70918368d9d3c761ed7"
+    },
+    {
+      "file": "src/actions/encodings/seriesLayout.js",
+      "sha256": "90b5c080f80e7bc36eed371018c2a8ae230d87d08a70484976e27d411ff28325"
+    },
+    {
+      "file": "src/actions/encodings/shared.js",
+      "sha256": "6219b7ffaf92a856bd594781db6277509367a9b31fb105117cdd1d667e89a0ef"
+    },
+    {
+      "file": "src/actions/encodings/stroke.js",
+      "sha256": "27cecc40621c0e6a8d068eececfdcb9b010cc183e6a98e511e1d9ad537eb00f5"
+    },
+    {
+      "file": "src/actions/encodings/strokeDash.js",
+      "sha256": "a7b85b03199cbad8391f6c24a2b4e02b9bdd1857ccb735e79f0399d8a06eacc7"
+    },
+    {
+      "file": "src/actions/encodings/temporal.js",
+      "sha256": "0e7f2ca947ffd703591a730e6d250f66d757913158e44a014889c1d1b75121e2"
+    },
+    {
+      "file": "src/actions/encodings/text.js",
+      "sha256": "7827c99fe803a9b3069b7e2305993d38a9d46110ffdc948240e47410c254ec86"
+    },
+    {
+      "file": "src/actions/errorBands/create.js",
+      "sha256": "a7bbd12ca76da0169ce4c17e80499d6e80518e86798b534404fb8b417621b62c"
+    },
+    {
+      "file": "src/actions/errorBands/edit.js",
+      "sha256": "23856225e227c64be26012fa1863ed14c205f860aeec56e32ce8e22f9f0d5c53"
+    },
+    {
+      "file": "src/actions/errorBands/index.js",
+      "sha256": "038bf6c891b7591ab81615f4ee418e757f3b1a96627e69b92b8ddbc408e65391"
+    },
+    {
+      "file": "src/actions/errorBars/create.js",
+      "sha256": "dda0eb1730c3a3e999fab514a3986577f42fadae9997efd5999e4d66705ea152"
+    },
+    {
+      "file": "src/actions/errorBars/edit.js",
+      "sha256": "3acdd3d4098aaac490e08e30692f6e019bf5249363d615c3926d717541b4df8c"
+    },
+    {
+      "file": "src/actions/errorBars/index.js",
+      "sha256": "0773af39cc03613c5e10841103b3833401eb672e7a4dcd3cde6801d77ccc009a"
+    },
+    {
+      "file": "src/actions/facets/actions.js",
+      "sha256": "60c2315947a295d2f945a802b4a8133739c73b85251433cb763af7f702402e73"
+    },
+    {
+      "file": "src/actions/facets/derive.js",
+      "sha256": "1637e46b19c8436ea7e09ac88d8f37f4d1db63a20b8ebdb58c93d19e7d597290"
+    },
+    {
+      "file": "src/actions/facets/guides.js",
+      "sha256": "9deaa6e779ef7a823a6919d34279d33af2c97c48d2087d7caf0d1c38deb3171a"
+    },
+    {
+      "file": "src/actions/facets/index.js",
+      "sha256": "1144b4d28c919710637f9292c8255f15939116255a40f938929e21f532248c1b"
+    },
+    {
+      "file": "src/actions/facets/replay.js",
+      "sha256": "f642ff7563404c7ead1f7696dec9b3933cb623209d02b64a51377673afcff0fa"
+    },
+    {
+      "file": "src/actions/gradientPlots/components.js",
+      "sha256": "e2d3f4cff47af78ce2e60caceed539853ccc2fd11e0c6b808a350a25ddf67a73"
+    },
+    {
+      "file": "src/actions/gradientPlots/create.js",
+      "sha256": "6588cb4389719ddfd150a9363ba5a84943111a3fe0990d8173d5b2083f6b1638"
+    },
+    {
+      "file": "src/actions/gradientPlots/edit.js",
+      "sha256": "6ebee72fef4b73ccb4ab61fd01eae85f997832f3b39531c7df3940743a330999"
+    },
+    {
+      "file": "src/actions/gradientPlots/index.js",
+      "sha256": "e617666b0e1bdd3c05fa5189d002157249f37e09d186401d4ff0ec21626434ac"
+    },
+    {
+      "file": "src/actions/gradientPlots/materialize.js",
+      "sha256": "f07cc7b4792e157a797a3406a4f01f16d8f3bd100a4439f1ffd421c670c69aa8"
+    },
+    {
+      "file": "src/actions/gradientPlots/options.js",
+      "sha256": "80619f25e91de7df9767267e1a83f451b17e450f8d0a34c47139091086535237"
+    },
+    {
+      "file": "src/actions/gradientPlots/paint.js",
+      "sha256": "c6530c1ac3c7cdfa2c4f489a284962b7272af71d3fa2cfdddce59dd63a27639e"
+    },
+    {
+      "file": "src/actions/gradientPlots/rebind.js",
+      "sha256": "46d9e0722f8b241a54874fbf8f8895deeed860183ddfd8ecd32fe63799106e99"
+    },
+    {
+      "file": "src/actions/gradientPlots/resolve.js",
+      "sha256": "d6a6c75527e18953ae16b56c3ded13a9726b1b75431f23fd93ea14edc8aacd7f"
+    },
+    {
+      "file": "src/actions/guides/applicability.js",
+      "sha256": "44af93bc090bd78bcbeda21e397c01c8d4a88a2ad2e5c2e14f7f1641840e2738"
+    },
+    {
+      "file": "src/actions/guides/axes/axes.js",
+      "sha256": "fef2862dcfa98370768756c3a0ac539fbbb65ff394be6f547dc86788603c4959"
+    },
+    {
+      "file": "src/actions/guides/axes/axis.js",
+      "sha256": "e960587f9b9eb39362df30d142ab09f859087c3cc6b0d8c33f2ec9a9c848915f"
+    },
+    {
+      "file": "src/actions/guides/axes/components.js",
+      "sha256": "e1db8206c71a18a0b3eced7b1d09abcf2b36268ef5f057a233c5eb21df4a3708"
+    },
+    {
+      "file": "src/actions/guides/axes/edit.js",
+      "sha256": "db30493f39283d8751478f1f75054921f7470965cf4c6c79fc9ed2ac1e7dc4e6"
+    },
+    {
+      "file": "src/actions/guides/axes/index.js",
+      "sha256": "1132ad739beae1755f1e2b15a41736e59c8ddee30ebe45808f5db7ec07b1c72a"
+    },
+    {
+      "file": "src/actions/guides/axes/labels.js",
+      "sha256": "aa3aca15b22e63f5dd5f17dc6dc4321480c1250b4621ffafc12cba432c5b5685"
+    },
+    {
+      "file": "src/actions/guides/axes/lines.js",
+      "sha256": "40702c13a5f7426e539a85f6498ffb77c858b1ecf56a63c83fad4320eae4c648"
+    },
+    {
+      "file": "src/actions/guides/axes/parallel.js",
+      "sha256": "393cb272d306c639a6c879cb62de88e5de18831b13dc18f5bcfad1545c84d5a6"
+    },
+    {
+      "file": "src/actions/guides/axes/parallel/lifecycle.js",
+      "sha256": "967d225b3406aed41740f59739d7819747cd4d0a99e7a43bf72613599afecade"
+    },
+    {
+      "file": "src/actions/guides/axes/parallel/policy.js",
+      "sha256": "a07c5d120862d8708b0eb220057e6ecaa289f4f4efb7d4bcf79e08853bcab07a"
+    },
+    {
+      "file": "src/actions/guides/axes/parallel/resolve.js",
+      "sha256": "1812e8cdc9afce063518811733822e4e022fb0b12ff93baa17657aeb9bbefee4"
+    },
+    {
+      "file": "src/actions/guides/axes/policy.js",
+      "sha256": "d9e5fc701675da1250cd3abfae0b9d2cf039d3bae9f173719eab289a46349d2e"
+    },
+    {
+      "file": "src/actions/guides/axes/remove.js",
+      "sha256": "b0aae7de83d122ef9d2164d59228977888d27079bac43daa8cc9c5976160d9e7"
+    },
+    {
+      "file": "src/actions/guides/axes/tickGroups.js",
+      "sha256": "183874451fe1d37ca8c5f1beef4c7653f7f64f7a26801493fda832975c38a0a5"
+    },
+    {
+      "file": "src/actions/guides/axes/ticks.js",
+      "sha256": "1730cad0f9f1ae6ed3b3974c05255dcf87eec61543cf9742f84f9fcb8b735299"
+    },
+    {
+      "file": "src/actions/guides/axes/titles.js",
+      "sha256": "f985ddd6d461fc5ccb6b604b117f3e295a0f4eeabff64a696d6e7abe10087910"
+    },
+    {
+      "file": "src/actions/guides/basic.js",
+      "sha256": "82e1d5cd1778094e60eeaa38c595a342d80c0b90162d592ddc6d795abfc59dd1"
+    },
+    {
+      "file": "src/actions/guides/facade.js",
+      "sha256": "8e076e755d064104b414c78710de232bfc59d96ede2c42803ec9d9fe3869dc9b"
+    },
+    {
+      "file": "src/actions/guides/facadeAxes.js",
+      "sha256": "ad094859688de0d2ea48f94b927b5f05ce0dcf7807a6d54c686a8f2a49e3592d"
+    },
+    {
+      "file": "src/actions/guides/facadeLegend.js",
+      "sha256": "65b1be5d747920a310643e283fb498c9d8202fa85b6333843e61733f436a9532"
+    },
+    {
+      "file": "src/actions/guides/grids/grid.js",
+      "sha256": "57a3e1c13849bf3a74cbcf563172c3239bbac985dad82679d71ef1a091947dba"
+    },
+    {
+      "file": "src/actions/guides/grids/index.js",
+      "sha256": "0a77929ccc53b8ea8bc30692b3d42bb2092994f5213deccf1cda29c468f06489"
+    },
+    {
+      "file": "src/actions/guides/grids/resolve.js",
+      "sha256": "6c23b91c8202c5edb0d2ebbe25929173fbee303126fb4b324644789b927c7fad"
+    },
+    {
+      "file": "src/actions/guides/guides.js",
+      "sha256": "b8f93b6aa3f6ae2833887a232f05692bf1e7e172ceb0376c8c007866c7e2ccbf"
+    },
+    {
+      "file": "src/actions/guides/index.js",
+      "sha256": "155ad1d6099184864662187019fe67c177697258f311a2d204334c1a1ea37ede"
+    },
+    {
+      "file": "src/actions/guides/legends/automatic.js",
+      "sha256": "cc39fb334a40414af86fca498b75f966147bd2319411f8ab90ba56d463cb409e"
+    },
+    {
+      "file": "src/actions/guides/legends/blocks.js",
+      "sha256": "64a1c9ac9a95004027b42981e5e8850a491201b650f1f4e33d6e36a4489a5b14"
+    },
+    {
+      "file": "src/actions/guides/legends/categorical/actions.js",
+      "sha256": "24da30ad31b012503ec830566a7d90cba4f5ae005ba370dc2bd1b02d047c7b47"
+    },
+    {
+      "file": "src/actions/guides/legends/categorical/components.js",
+      "sha256": "b5b266f38bee41ad69d1c35182e0e33ebbb2044f05ef4587aa1232e291cfc220"
+    },
+    {
+      "file": "src/actions/guides/legends/categorical/index.js",
+      "sha256": "8464890d6c89ec3564c8618b16bfcc07fafdf5086c402eaaab730a51c2244040"
+    },
+    {
+      "file": "src/actions/guides/legends/categorical/layout.js",
+      "sha256": "8136b039fd56f77d888a25f1784168a0afa8272c17efd98b9f170ad41e2b2f81"
+    },
+    {
+      "file": "src/actions/guides/legends/categorical/options.js",
+      "sha256": "717a48d126bf6c5f6014d00fdcdb31a6707f1e2fd3e56610dcd4418dccb6d85a"
+    },
+    {
+      "file": "src/actions/guides/legends/categorical/recipes.js",
+      "sha256": "042fbda4cf57b2e7e47993ccd1c5ba5844eade2843d3f37a07b38c5fbefe7c76"
+    },
+    {
+      "file": "src/actions/guides/legends/categorical/resolve.js",
+      "sha256": "916d48fa6745a4ad0d48df0f396ba3f9734b1ce30a8350ccb0fd26859de6aea2"
+    },
+    {
+      "file": "src/actions/guides/legends/categorical/symbols.js",
+      "sha256": "70fc13ba633973d826a363bf8315e109d7fb90ba8669194124333ea0624b6eed"
+    },
+    {
+      "file": "src/actions/guides/legends/categorical/validation.js",
+      "sha256": "80fe7426976ecf5ecee2ddbbeaa796374d1225f15bd0230cad187dd150a433d1"
+    },
+    {
+      "file": "src/actions/guides/legends/colorSize.js",
+      "sha256": "72fd89a02899187f4cf4a6e4802c83c0a5b37e6aed213aad7f430a9cce51ad09"
+    },
+    {
+      "file": "src/actions/guides/legends/combine.js",
+      "sha256": "42066991c2259b6c52143f3c529030c8cc4e7995001fe48d241928ff3aa8054a"
+    },
+    {
+      "file": "src/actions/guides/legends/continuous/colorSymbols.js",
+      "sha256": "355f2efb0ba856827dc0dc45b1d0d35941fd75fecffe9b27e9b4bbd62bff2393"
+    },
+    {
+      "file": "src/actions/guides/legends/continuous/common.js",
+      "sha256": "4d8d2082df74c31a94dfa0fdcd93d106a4e502227cdb2324e9a5323554f40436"
+    },
+    {
+      "file": "src/actions/guides/legends/continuous/gradient.js",
+      "sha256": "c02dc7367a96a45a5b03a5b8fe83a3a716c020a9ed881c6838621c9ef8059845"
+    },
+    {
+      "file": "src/actions/guides/legends/continuous/index.js",
+      "sha256": "a1ee41e4bb6d5a2b7ddcc0299adbb515ecf9a780cf086e39b0daf88ff9b68ef0"
+    },
+    {
+      "file": "src/actions/guides/legends/continuous/interval.js",
+      "sha256": "45b95e525c141df25d05c8fdf8606aaea48bb16a5ce4c37112330ba4b92b70ec"
+    },
+    {
+      "file": "src/actions/guides/legends/continuous/opacity.js",
+      "sha256": "3db7bdb0b5edf08559e165f5a0d94c04c3a339b5d080ee98feb55fc7092fad64"
+    },
+    {
+      "file": "src/actions/guides/legends/continuous/stroke.js",
+      "sha256": "17c82c36996ddbe0d303c9177d6c1518143d8d7bd05182ee81b57af2b25506d1"
+    },
+    {
+      "file": "src/actions/guides/legends/creation.js",
+      "sha256": "8a099e8bdb721b5a9864916275ca7d98402981be4e50984dc424673bc6843da2"
+    },
+    {
+      "file": "src/actions/guides/legends/edit.js",
+      "sha256": "e808d4e49df031d1ab63487f863cd78b28e6d6721d8be1da2e1af9e36339c6a2"
+    },
+    {
+      "file": "src/actions/guides/legends/focused.js",
+      "sha256": "524bba430a00bef809a1c1230ff1d4c704a2c305431519c39303b6372b180ffb"
+    },
+    {
+      "file": "src/actions/guides/legends/group.js",
+      "sha256": "ed4f7174c27e3e72058526a826a980e0f325859be919960f1a7ab6a9e6f7dc09"
+    },
+    {
+      "file": "src/actions/guides/legends/index.js",
+      "sha256": "4c609321bb38925f1b6478131b7287d489694e43ce81aeb46d05539356ab6adf"
+    },
+    {
+      "file": "src/actions/guides/legends/lane.js",
+      "sha256": "ac3e7b4a0795c9c4f77f124f6c8924941aa4e724208771e2e6a91d318f437065"
+    },
+    {
+      "file": "src/actions/guides/legends/lifecycle.js",
+      "sha256": "d05aa1609836d5a9cb18694597df9d19883ca9b4e1f520f4472e0be4c31f62bf"
+    },
+    {
+      "file": "src/actions/guides/legends/remove.js",
+      "sha256": "c54758ef5b2a23b3344d81505acce21d3c82e284ab67e358701a8f7784f7a85d"
+    },
+    {
+      "file": "src/actions/guides/legends/sampling.js",
+      "sha256": "1dac3014a33820b873c7dacf121fc050733a9a69a857d0b789c20c2b96af558f"
+    },
+    {
+      "file": "src/actions/guides/legends/size.js",
+      "sha256": "8448320d7c088192e0f4104c1414cbe687b0db887e7f2e48376bb69f08bf3474"
+    },
+    {
+      "file": "src/actions/guides/legends/strokeWidth.js",
+      "sha256": "3f93a8fcb02e75dfdf45f801f7bb3d74ce051d46c65d0252f7de64dd9d13a40a"
+    },
+    {
+      "file": "src/actions/guides/legends/target.js",
+      "sha256": "25267b3970e0c879f22f5c769e5765ab99882641c6b9ea1d29d89a1caf709747"
+    },
+    {
+      "file": "src/actions/guides/legends/transition.js",
+      "sha256": "54e75d0a3e2ec0ad3af0f521eb95d4afb43ce948418759f1cab35cf1f141a927"
+    },
+    {
+      "file": "src/actions/guides/polar/axes/facade.js",
+      "sha256": "c4d08cde29f2a68de625b7a9eb8511582e3c9fd998e79be38225207fb13e1710"
+    },
+    {
+      "file": "src/actions/guides/polar/axes/index.js",
+      "sha256": "4b8a32871a8f61846d8f3b2583f432a4b1e0b80047f4bc5041ebe22436a3f4f2"
+    },
+    {
+      "file": "src/actions/guides/polar/axes/labels.js",
+      "sha256": "73d51ab1e6f8e8b28bb34e9a4e7f28d44d362ea419bcc797bb71894899f940ce"
+    },
+    {
+      "file": "src/actions/guides/polar/axes/lines.js",
+      "sha256": "f45b795fcd4fee1d56c4e38fde41de9036c5ee36eeb273b5917436674fd7c4e7"
+    },
+    {
+      "file": "src/actions/guides/polar/axes/shared.js",
+      "sha256": "e7ebf943b056ddea2acad94b0d345c32a932e29d4df0acc89844dd4d09412a71"
+    },
+    {
+      "file": "src/actions/guides/polar/axes/ticks.js",
+      "sha256": "072baa959c7de8cb4f88b15fd3c4a091da387408038df1301e92cf6c4215d11e"
+    },
+    {
+      "file": "src/actions/guides/polar/axes/titles.js",
+      "sha256": "073693f0ed0fe8b1d1274be32f47ceea6a4a0fc36e7773e5de04a07e28d0d9f4"
+    },
+    {
+      "file": "src/actions/guides/polar/grids.js",
+      "sha256": "c720a9e2213c3ec91114ac529db7176959af099beb51a0f2d0521db32860575c"
+    },
+    {
+      "file": "src/actions/guides/polar/index.js",
+      "sha256": "ee5ebba5d71ed9993cd15830b5820ff3035c03a6a0ad4fef5d4cc049b295d4e7"
+    },
+    {
+      "file": "src/actions/guides/polar/resolve.js",
+      "sha256": "e28fbaa54fdc1dff6c08bd93ad0883210e345b8fcc161ae83f56ac8e84051836"
+    },
+    {
+      "file": "src/actions/guides/reuse.js",
+      "sha256": "b695ce8f39d73596f073dcb520d639a43ebfbdc99bdfc38751470c3ee40efa9b"
+    },
+    {
+      "file": "src/actions/guides/tickValues.js",
+      "sha256": "e179c4c50d1e6df17b9ceb0e9150656bd46f05e9b7cbf5f5b3875e2248432178"
+    },
+    {
+      "file": "src/actions/index.js",
+      "sha256": "37d02fc33e971a867ac2d2fb44aab1b69026a6549e6c85a93f56aaa9a6fa8338"
+    },
+    {
+      "file": "src/actions/intervals/resolve.js",
+      "sha256": "9baafafb3466b461fe53b952d6a67e739877ecefbf2e24701c6287a3da108ab8"
+    },
+    {
+      "file": "src/actions/intervals/revision.js",
+      "sha256": "1754b42856e0611756321b1f7f39b972997c96813bff51eeee4c78209ae00a6b"
+    },
+    {
+      "file": "src/actions/marks/arc/actions.js",
+      "sha256": "5d4eecd89e21166975a8a299df29454245b028fd965257c35ca14d6e2f25db5b"
+    },
+    {
+      "file": "src/actions/marks/arc/index.js",
+      "sha256": "785f4e0563088412e6099097ba98452c4a5679906e42cdf8fe3c257c0cbadc7a"
+    },
+    {
+      "file": "src/actions/marks/area/actions.js",
+      "sha256": "e2ea561c79742ed2b5f9a5ac8dcc91cd3cc5df4d37980e58c0031038c994b996"
+    },
+    {
+      "file": "src/actions/marks/area/index.js",
+      "sha256": "2483dd1a593344e80463b273c481709784aa4136309d0b449c056169af74f044"
+    },
+    {
+      "file": "src/actions/marks/area/materialize.js",
+      "sha256": "cd26e0698263290b872ef4e657fd851e272527b790bd9e95a4a9b68b12002d67"
+    },
+    {
+      "file": "src/actions/marks/bar/create.js",
+      "sha256": "37ea29e2fe2b70bf662e2cb3be727df77dac65a32e5ec2731f3da79c20f0ecfe"
+    },
+    {
+      "file": "src/actions/marks/bar/edit.js",
+      "sha256": "bf2aadc31861b2736a8c4c6300965aacd5de3781d442b9943e3f812a2103a95f"
+    },
+    {
+      "file": "src/actions/marks/bar/index.js",
+      "sha256": "c88acf336a12c155ea35b03c3eac82e37d819d2171129768fccbab4944cefe45"
+    },
+    {
+      "file": "src/actions/marks/bar/materialize.js",
+      "sha256": "31ed3ede4fca17310042f95a87da5ad96dfbbfe2b3349c9a879b93ffe8190801"
+    },
+    {
+      "file": "src/actions/marks/basic.js",
+      "sha256": "a9edd096d2b6f48b77cf0d80c1653425e8b6cfb3e4a8303e5787b759f71e36f4"
+    },
+    {
+      "file": "src/actions/marks/dependentReferences.js",
+      "sha256": "f19bf98ce753d09efbfa11b31c70ddc3ca1308bcef8173a199419be9ad61ea68"
+    },
+    {
+      "file": "src/actions/marks/index.js",
+      "sha256": "29cca176424e6a725c991200c69cefda5ad0046ed88d48654176c7d953af654b"
+    },
+    {
+      "file": "src/actions/marks/lifecycle.js",
+      "sha256": "dff638e4dd71837467b9117832786a2226767b2764f060121f8437a0a963880b"
+    },
+    {
+      "file": "src/actions/marks/line/actions.js",
+      "sha256": "8431b626277bd969bf083784effb9ec1a90c1f4009c41a5287b41253d1b24525"
+    },
+    {
+      "file": "src/actions/marks/line/index.js",
+      "sha256": "1f12fc70b4842466126952b4b488984c1bdc17f99c8ee2bc7d964b151ad213a6"
+    },
+    {
+      "file": "src/actions/marks/line/materialize.js",
+      "sha256": "b90b577e1f9dc3f2a6efb281e092247597749d20b5d7345dd5878b746749099e"
+    },
+    {
+      "file": "src/actions/marks/point/create.js",
+      "sha256": "3c1bbcfbd5f64f7b4c6a5ed957aa68613f616bfd9fd87935959bb6813df53b23"
+    },
+    {
+      "file": "src/actions/marks/point/edit.js",
+      "sha256": "8c3f4b016891c2e6acda02ba795837fa024fbaa923b3e805f6a058756292e90c"
+    },
+    {
+      "file": "src/actions/marks/point/index.js",
+      "sha256": "4b049803f92678fcc8de56c97c6a15b9281a9891e51fe57b38ea7ea37e76a663"
+    },
+    {
+      "file": "src/actions/marks/point/jitter.js",
+      "sha256": "a2afefd2d6b48a2cc74472d3e02dac98a559b6b913da73a5adeb2df527ef1206"
+    },
+    {
+      "file": "src/actions/marks/point/materialize.js",
+      "sha256": "abedae054725a3b313b894219a9a947321c35ae1f61ddc5e5b373c8389df3c17"
+    },
+    {
+      "file": "src/actions/marks/point/packing.js",
+      "sha256": "e4389bb8bb8140d1bb65cf4d37aafc6cbe008c1af1d04fd06eee5874e1628bb4"
+    },
+    {
+      "file": "src/actions/marks/rect/actions.js",
+      "sha256": "7a4cb9c813c54410a467776d9755aaad86f47bdcc028132c92231293e35a974b"
+    },
+    {
+      "file": "src/actions/marks/rect/index.js",
+      "sha256": "f9d5ec1ad3ad045aede20e2e7fdbb60aae79534c3b98be213a1776c8e8fa5e7b"
+    },
+    {
+      "file": "src/actions/marks/references.js",
+      "sha256": "128235e36726bc417b196d72e94dc27586bd7b3d8150ec82d02b178201c1ad1a"
+    },
+    {
+      "file": "src/actions/marks/remove.js",
+      "sha256": "a66727f395151422c316fa48a5790c3c1eac77e5fb5f4a6ab3377131d13b1b26"
+    },
+    {
+      "file": "src/actions/marks/rule/actions.js",
+      "sha256": "1475f89d3f6a3208a313ef107d5847274e04d350cb2c957da62c9678c528d08c"
+    },
+    {
+      "file": "src/actions/marks/rule/appearance.js",
+      "sha256": "d696ce667ddab4e1c7fb8b1158771a521544d56c9b5c5dbe3540449cc4b35eb1"
+    },
+    {
+      "file": "src/actions/marks/rule/index.js",
+      "sha256": "c876100b5b99e21e0174dd0cb55b923acb8a4a5d8cf586d4c6355d0112cb524f"
+    },
+    {
+      "file": "src/actions/marks/shared.js",
+      "sha256": "876309a07a837160e2942f123c68dae0fc0fcf7f840b2985b77b01d9e67b6f16"
+    },
+    {
+      "file": "src/actions/marks/text/actions.js",
+      "sha256": "c561d27529fbe7d17249e233d029944a12bcf2a1430b0bc40d6368a957e41518"
+    },
+    {
+      "file": "src/actions/marks/text/index.js",
+      "sha256": "0f536be4674d1ab1c4b8ead236c20e75e749dc353cdaa65a65413e3037420f00"
+    },
+    {
+      "file": "src/actions/marks/text/layout.js",
+      "sha256": "eb5dde120328e4cb0644fef103c9e9a2d91d60a7eaa8d368612c0defb902fce9"
+    },
+    {
+      "file": "src/actions/marks/text/removal.js",
+      "sha256": "f90571719d4bda9a559a5c4d8fcb7e4cd181dcc9d7ce961a4f2beef0ab3d4ec5"
+    },
+    {
+      "file": "src/actions/marks/text/selection.js",
+      "sha256": "bc2a7fcb5fa03a844b57f48fb7b67bb8fb01f5a5870d51a17a759c41d4a3d6ea"
+    },
+    {
+      "file": "src/actions/marks/tick/actions.js",
+      "sha256": "aa8e29d73275abe7354beee91d64959d28dbc2ac06b60321fdc58d6ffefa2c5b"
+    },
+    {
+      "file": "src/actions/marks/tick/index.js",
+      "sha256": "d5e7159d7bd8da769ffe26b35a6fa618b50262e432d5d8ae62fd975bac9a9c1a"
+    },
+    {
+      "file": "src/actions/overlays/index.js",
+      "sha256": "37ce84cd05f5d556ba2efd56cccfcb68f2ad4be3240829d0b1d2814bb69b0c23"
+    },
+    {
+      "file": "src/actions/overlays/snapshot.js",
+      "sha256": "77b90fb1264518b976ae7bae0dfa6bdc0af7737b38fe39fe12164d8514db5fb8"
+    },
+    {
+      "file": "src/actions/parameters/create.js",
+      "sha256": "ffe9b33a59e5da4f2d80713128b0f65e6e272cc1901fb0e63b9fafafe4d34edb"
+    },
+    {
+      "file": "src/actions/parameters/edit.js",
+      "sha256": "698eaa002864e647052a8204fa22232471cfb423078cb9359ecbcd8e64b26d87"
+    },
+    {
+      "file": "src/actions/primitives/createGraphics.js",
+      "sha256": "d7e61e6f7604b1b176a5c4f2dcd8d1da9777cc2422976efe2d10bf6cad968e90"
+    },
+    {
+      "file": "src/actions/primitives/datasetIdentity.js",
+      "sha256": "6c2f21ddc40447d32e6f0090631a4212f7132c3ae3db96700da021fb3f4ed24d"
+    },
+    {
+      "file": "src/actions/primitives/editGraphics.js",
+      "sha256": "a925c50a4c7eb20a6465a783d32665f5fd2b704aa114722130cf71b3a4324582"
+    },
+    {
+      "file": "src/actions/primitives/graphicProperties.js",
+      "sha256": "c480f6d70c7ea5788aa9cc6198b504e3f79d69b6745ff0e61263903023427866"
+    },
+    {
+      "file": "src/actions/primitives/index.js",
+      "sha256": "e2f062037e7bb8ec0c3e0ab89eaed8ae4ca3acc456fe067b331b94bf3a97cca9"
+    },
+    {
+      "file": "src/actions/primitives/resourceState.js",
+      "sha256": "6ed165dd280343245363142b8a1491906d48f2a1df2a88a4de1c4118b1427fa6"
+    },
+    {
+      "file": "src/actions/primitives/semantic.js",
+      "sha256": "9aaa86c3177a2ac408d598c00712deef31758679ed409f4cc455ba4a35394c2f"
+    },
+    {
+      "file": "src/actions/primitives/semanticAction.js",
+      "sha256": "7a9b3d50bc27a32687e8da17df5ab3753afc6749a85a808b9456f203f963161f"
+    },
+    {
+      "file": "src/actions/primitives/semanticValidation/dataset.js",
+      "sha256": "8a2db7e6353835c29f371655eda2a5ccbc5cd0886279bad865080724d1f59834"
+    },
+    {
+      "file": "src/actions/primitives/semanticValidation/guide.js",
+      "sha256": "f1f17404591f501e60aee5c3dff3cbc5fd9a75a95f5e7963847491895d5bf4ff"
+    },
+    {
+      "file": "src/actions/primitives/semanticValidation/index.js",
+      "sha256": "c4f2ca413506ec49a505522d82b57ebc3acf9d4496de847492d72c8e857441c5"
+    },
+    {
+      "file": "src/actions/primitives/semanticValidation/layer.js",
+      "sha256": "3c2e03c09a3c2c1477c88cea53a6a6f96b5d3951313135bf4c0c938c121583b7"
+    },
+    {
+      "file": "src/actions/primitives/semanticValidation/scale.js",
+      "sha256": "705993e843a55d9767f673e2b50464369bbb8aab856f8687f83f17da8a7ed551"
+    },
+    {
+      "file": "src/actions/primitives/semanticValidation/shared.js",
+      "sha256": "0dbbaa11420a001966ffd47e2f96956bf1dcc97b707d04624254459e2eddf4f9"
+    },
+    {
+      "file": "src/actions/regression/components.js",
+      "sha256": "df484565673f4664ff1eecb5072d443b281f796ef2216fce0282cba02ca10203"
+    },
+    {
+      "file": "src/actions/regression/create.js",
+      "sha256": "971caa4edc1c0baf2e1ea1b9cb31f6d0da9493c5c7f85643db88e479e7f98a94"
+    },
+    {
+      "file": "src/actions/regression/edit.js",
+      "sha256": "5f45e276e4da89fe66f379a04b0fd912df6e3ea033ed56f8351cc2812b2a4fbd"
+    },
+    {
+      "file": "src/actions/regression/follow.js",
+      "sha256": "1adc229a4df7f6ffc85a5228c9cfb6454fb426ff62f3bc2e70bf1ef5cf0e250c"
+    },
+    {
+      "file": "src/actions/regression/index.js",
+      "sha256": "d3e87cca7b2a4750f3bc5a67281da16d7af854e47e5bb8af0db10c02f92a6ddc"
+    },
+    {
+      "file": "src/actions/regression/resolve.js",
+      "sha256": "8360e9928381ff404b1d5f269965a25fe0e9be6541773e01bc00d41f2abc238e"
+    },
+    {
+      "file": "src/actions/resources/index.js",
+      "sha256": "5a048b1514d3917fd47a100d2d20cbbb5e349af39e4972433a02f1438135394b"
+    },
+    {
+      "file": "src/actions/resources/remove.js",
+      "sha256": "49083e330c8e64c9fa7506af725609b269237e5bc838770599df343f51529ef7"
+    },
+    {
+      "file": "src/actions/scales/channels.js",
+      "sha256": "551b7fa372fe36ed884b4ecf3455d0d5886d72419a29db6a81e128f5ccb5d5f2"
+    },
+    {
+      "file": "src/actions/scales/create.js",
+      "sha256": "98d10265247610b6781f73b4e5ca805afd4f35bf6a476ddc3723d831787f8e81"
+    },
+    {
+      "file": "src/actions/scales/definitions.js",
+      "sha256": "e54fe488f60958e00f2893ccdf76db8d45dbe08f65066396ec0f121f6cbddfca"
+    },
+    {
+      "file": "src/actions/scales/edit.js",
+      "sha256": "b03d6313a429bc82705ce1f7bc3d17822a43eec8e651707ebd167b55001bd6a2"
+    },
+    {
+      "file": "src/actions/scales/editPolicy.js",
+      "sha256": "d92dd75b50f3b759e3353497d181c3766fe52d397e0b8dba1fe346bea1684312"
+    },
+    {
+      "file": "src/actions/scales/index.js",
+      "sha256": "9d9b92ef70054ac1099c6f2158463c50a3ed4df42246481cebcc0672bb1ac9e7"
+    },
+    {
+      "file": "src/actions/scales/materialize.js",
+      "sha256": "f95f6f4eb54e4be0344c7fad9bded7011981dc3e0174bab7450202b85322d5cb"
+    },
+    {
+      "file": "src/actions/scales/offset.js",
+      "sha256": "65c1d3562b442b1bbfaad895503267832e6f7edf163a89033c81834743205fe6"
+    },
+    {
+      "file": "src/actions/scales/parallel.js",
+      "sha256": "4e09f3e251f88b8643c47591b4177c2b1218908fb76790b2a663125080efc062"
+    },
+    {
+      "file": "src/actions/scales/patch.js",
+      "sha256": "dfe484b653d46dc4f4716998c79d6dbac80969508434f25737abe264d296840f"
+    },
+    {
+      "file": "src/actions/scales/preview.js",
+      "sha256": "959144789112a8349affdbc5cfcd3781b33f49deb53dc948dbd29f7a878733ce"
+    },
+    {
+      "file": "src/actions/scales/quantitativeColor.js",
+      "sha256": "853130b24dffa63e78aea9b739b1f69637e2f82b47e6608caeb571d8b04307c5"
+    },
+    {
+      "file": "src/actions/selection/actions.js",
+      "sha256": "5b02e0f3cf87efbf10dd2d160e993662b682c4f2e7c01c189d46e37b6e41c5b7"
+    },
+    {
+      "file": "src/actions/selection/index.js",
+      "sha256": "de5f9106a26bf8e84af2622728398c6ec74d515ac6a3e1db1465dc179cfa7b20"
+    },
+    {
+      "file": "src/actions/selection/resources.js",
+      "sha256": "2ad633e8bdb38d804926390132ba9b7cdefae6b422f500e32eb3a80924a77d19"
+    },
+    {
+      "file": "src/actions/textMetrics/index.js",
+      "sha256": "5fe316c051c6bc89d4d0a9f18815e2b32142a4a1eae11c120d95e30e6541bba3"
+    },
+    {
+      "file": "src/actions/theme/actions.js",
+      "sha256": "301d4357f276f0d935499245e5720083cddd23fa1a3b7177ff130bbfc27499f0"
+    },
+    {
+      "file": "src/actions/theme/composition.js",
+      "sha256": "4e20776ab5f479dd9cc6c8dc94810acedef46dbe7a786642753d8994fc41da56"
+    },
+    {
+      "file": "src/actions/theme/index.js",
+      "sha256": "e9078a7a975daec3a7b411299b7f06c02dcb9e05a3efd5f0e7361c0cc8772bc9"
+    },
+    {
+      "file": "src/actions/theme/reconcile.js",
+      "sha256": "8ce8632fa87d565d70405c7781a3ff6af27e08bf6d72e8f64bfae88ae3704496"
+    },
+    {
+      "file": "src/actions/theme/state.js",
+      "sha256": "648caa20bf83bd54301adc3e40bca4550b366710ffdb7e50d5c634b7bfba6cd0"
+    },
+    {
+      "file": "src/actions/titles/actions.js",
+      "sha256": "502dd787eec091f9f7a950dd3298100b6366c281ce40eca483e13b6135c2cc89"
+    },
+    {
+      "file": "src/actions/titles/index.js",
+      "sha256": "2db2c9b4b0e0f90cbc994ece65ffc8d772ddd5c0fb87967dd792373154ebe417"
+    },
+    {
+      "file": "src/actions/titles/resolve.js",
+      "sha256": "2f2d9eb712eeeea5ce045f198bf6a9129ec2fc52e0d6197b2a0b691307844c63"
+    },
+    {
+      "file": "src/actions/violinPlots/create.js",
+      "sha256": "cda3b80e5363c85136555b6dc55f61974da227462d9890d2cc5d730e9194a146"
+    },
+    {
+      "file": "src/actions/violinPlots/edit.js",
+      "sha256": "2d983c4cd350deff6477be1e6494488ef6c2c8f6815f4e9bb34a00cb7248d764"
+    },
+    {
+      "file": "src/actions/violinPlots/index.js",
+      "sha256": "13889531c7f6ea16a72e1b07d2b84b43c98fa077426b3939c2de847c44574c7f"
+    },
+    {
+      "file": "src/basic.js",
+      "sha256": "583e35dbc186bcabdb6a0697a3940cfbbfba31f7ab215a7534f9d270dd309c3b"
+    },
+    {
+      "file": "src/composition.js",
+      "sha256": "c1d2dd3cb4afb2a18b1c20e7998eb44dd78aaf51727a824f98b86ac09a9f8171"
+    },
+    {
+      "file": "src/core/ChartProgram.js",
+      "sha256": "37ac348127ebef217a8c4d3215a40a10ccc8e7e9a9f2d68aea2241ee9add5608"
+    },
+    {
+      "file": "src/core/action.js",
+      "sha256": "952b5e057a6a75398702d3d6819a98512c5334db7f868fc4af7f1029f79d3ecc"
+    },
+    {
+      "file": "src/core/compositionScales.js",
+      "sha256": "1583cdc2c6097ded41321249fcade51341165a01f1dfa530c42bc3c6bf9ef81f"
+    },
+    {
+      "file": "src/core/compositionState.js",
+      "sha256": "065815628f9e11dc75a96afefad2ab4aacebeb438cf36fed2f2a73c6c3c81d67"
+    },
+    {
+      "file": "src/core/contentDigest.js",
+      "sha256": "1c3cad06241b0c762bbe3ebae883e67f004bdd3ff08fe33301040a86bee27130"
+    },
+    {
+      "file": "src/core/datasetReferences.js",
+      "sha256": "f2dfbfd570b99105ea896b7b6567e16a65720ec4b71160467b848d7835da0f11"
+    },
+    {
+      "file": "src/core/diagnostics.js",
+      "sha256": "895870a8e6886619143fb292ea4dfb0e9e1ecc767feb6697d7e6c6d5b66e26f1"
+    },
+    {
+      "file": "src/core/extensionRegistry.js",
+      "sha256": "dcb98a64d7437e9bf4df8a73473add25f8bc3c3a4888a6c09427e4d19f02fdcd"
+    },
+    {
+      "file": "src/core/facetAxisPolicy.js",
+      "sha256": "f918db2863c3924a58b917a9582d6630e699c125b3bd47cc42f845b4a2265fd4"
+    },
+    {
+      "file": "src/core/facetGap.js",
+      "sha256": "ae69db45d5e49bd41fedfeb02e32ce81915d029c646a8bed314f16b634526cb9"
+    },
+    {
+      "file": "src/core/font.js",
+      "sha256": "0839259748e0a34906410c57fc5bdadfd8d218b42f82fd8a309b097c600d55a6"
+    },
+    {
+      "file": "src/core/graphicProperties.js",
+      "sha256": "8e470108439b9ff1d26ae80ba54eaf4faac69ca98dbe937b7974dda32b426b11"
+    },
+    {
+      "file": "src/core/identifiers.js",
+      "sha256": "3714bedf2aaac5df312342ce71e1a83a9d5bc540960b6a67cccdbbb4b3f7e989"
+    },
+    {
+      "file": "src/core/immutable.js",
+      "sha256": "d15cce7ea9b9cec94d143fd90966ef1cadcfc84166214ecee4278bc230c66355"
+    },
+    {
+      "file": "src/core/itemIdentity.js",
+      "sha256": "d2cd216d62c7ce587ce048005c207cae1b0232db7d7bdd83689c668d67b80683"
+    },
+    {
+      "file": "src/core/materializationState.js",
+      "sha256": "83c161d426ab3ae14a036b62c77f8fd524d8d7fc55a249fc3b5054282d574b71"
+    },
+    {
+      "file": "src/core/optionRequirements.js",
+      "sha256": "dfd86f09a9b9bb89f0b91196122c190213629ab545e15e8714ccf6934a99fb32"
+    },
+    {
+      "file": "src/core/ownData.js",
+      "sha256": "fa81e2edca5037e2c1f13a82240e5d70097e292073b05e3bbe682b68358dad7d"
+    },
+    {
+      "file": "src/core/programState.js",
+      "sha256": "c88ea90e2d9b2609b7a7d7d76ebebb728de532f69f4c530c5990d47753e0e779"
+    },
+    {
+      "file": "src/core/resourceReferences.js",
+      "sha256": "fa3af9fbd3dbfe504de44f5fcc0e11fdb3a45fc182f445a46fba02e07b52612b"
+    },
+    {
+      "file": "src/core/rowReference.js",
+      "sha256": "4b82d3d6b939be2d2dbcb9cd263fd948764aa70b32947753fd4abdbb56df198d"
+    },
+    {
+      "file": "src/core/specs.js",
+      "sha256": "59f6cca9abe578755bbde9819a3ab34b01ede4494746496b7b75f3eef7884863"
+    },
+    {
+      "file": "src/core/textMetricProfile.js",
+      "sha256": "b89d5a02128674a30037faca84fdc1d6970f6d70f67c6c93dbbe57aa3befeb54"
+    },
+    {
+      "file": "src/core/textMetrics.js",
+      "sha256": "3f1105c05cef2b3ad686a7e5454da25ade4bf90144d3569b2be3b088bc91a826"
+    },
+    {
+      "file": "src/core/validation.js",
+      "sha256": "21c32af580a7ac10dd50a76f48f6311bb8bebab0fb3255924342ccda6dfdfdbe"
+    },
+    {
+      "file": "src/core/valueEncoding.js",
+      "sha256": "09af680c92693885b0afc9f5ce2475a2fbd7c0537df80b830596482bf0b398ac"
+    },
+    {
+      "file": "src/core/vocabulary.js",
+      "sha256": "292f02d4b01bc41e413ea2e07a49af8746bc6e76e765bfbcba410d71283c2760"
+    },
+    {
+      "file": "src/diagnostics.js",
+      "sha256": "f18160f2af8b4610657a1782235fd4d3ad37663b4993ccf45ab13a85aae9d153"
+    },
+    {
+      "file": "src/extension.js",
+      "sha256": "f886a6b859c7b28cfef5cfcbbd36a257126d93b563eab38f91c64bc491d02c13"
+    },
+    {
+      "file": "src/grammar/AGENTS.md",
+      "sha256": "92dd3f3c88a8c9cd4da5f7c57adfd923a2ccad2fb696e718dced786dde0d5a8f"
+    },
+    {
+      "file": "src/grammar/actionTargets.js",
+      "sha256": "e4d1b24702d6fa9047bc82029cd898a1b0e8f46218662022b8226fcac986a667"
+    },
+    {
+      "file": "src/grammar/aggregate.js",
+      "sha256": "51c98291c3020db606302aa38ec199c1371a74745b4817bede71cd55418611eb"
+    },
+    {
+      "file": "src/grammar/arcs.js",
+      "sha256": "e51d82d0fb5affe0cf3606f20e0b52009280a22ad492c5716843d1562276a863"
+    },
+    {
+      "file": "src/grammar/areaEndpoints.js",
+      "sha256": "baf440c885ea1d4f284f8f8580f2df10d068c1ccbf1213053d4e6db8dce60e0b"
+    },
+    {
+      "file": "src/grammar/areaPaint.js",
+      "sha256": "a6380fcf452bf520c3c69cc161ff1b4f479c48e029b4d71d1dfa9258a4d71d0a"
+    },
+    {
+      "file": "src/grammar/areaSeries.js",
+      "sha256": "65de2ad5cdea41f58815eed5b39e3c7d365d82494a41ccc0dba1b6b682acd255"
+    },
+    {
+      "file": "src/grammar/axisTextPlacement.js",
+      "sha256": "9fef124fafae26274f1a9e8dcb636ccb433e57b2f1b817481868a08cd9d0c00c"
+    },
+    {
+      "file": "src/grammar/bars/aggregate.js",
+      "sha256": "ed9b2a00f8060b99d29bd73d3fe44b64af2e9c485ddc2325ac1297780fdb5aa7"
+    },
+    {
+      "file": "src/grammar/bars/geometry.js",
+      "sha256": "87441fa1832fc9743aaec3509b327b6d84345b909cc03e1a86dca5222d5a2e55"
+    },
+    {
+      "file": "src/grammar/bars/policy.js",
+      "sha256": "9455e188fb2af706b773bf0cb24c6526ef97c8fd3e54f51bd1c8f1740b82d994"
+    },
+    {
+      "file": "src/grammar/bin.js",
+      "sha256": "b629657912917aed7ed68c5f6976bf136d6e1023a2659755e8f1fa3dea619176"
+    },
+    {
+      "file": "src/grammar/bin2d.js",
+      "sha256": "d1820bda0f780bf4a0fcb440932bd69f538c5d0d3cf094256db08e4577d84a8e"
+    },
+    {
+      "file": "src/grammar/boxPlot.js",
+      "sha256": "2770422dac5b43e5303762df2c2b82285a1a7c0313bac68b957ff43219d4190d"
+    },
+    {
+      "file": "src/grammar/categoricalDensity.js",
+      "sha256": "656ae4153fcbf691bdf374faef6676c47a046c253b25177316bb16629047700e"
+    },
+    {
+      "file": "src/grammar/categoryOrder.js",
+      "sha256": "b3ba6fbfbce29c510f45afacb466fcfb1e2f3823d8433b33435d4f6e907d5095"
+    },
+    {
+      "file": "src/grammar/colorSizeLegend.js",
+      "sha256": "9ddc5b5d8f642598694d70f34760440ecb845fcda57001caefc2a0e401dc5418"
+    },
+    {
+      "file": "src/grammar/complete.js",
+      "sha256": "b70759ad5f9e75f3313a643ebe1568935047e3cc33acc94058bcc186ca6b7900"
+    },
+    {
+      "file": "src/grammar/computed.js",
+      "sha256": "2be4d4a84ba7911d363728da82585271c295ab87d5eb5a4839d634fdd909e4a5"
+    },
+    {
+      "file": "src/grammar/conditionalEncoding.js",
+      "sha256": "e91fb3f0157bcc6c1eaf93de56b8de612f9199f59815d6b4ce36d6a97d832b85"
+    },
+    {
+      "file": "src/grammar/coordinates.js",
+      "sha256": "79ed242011f7a583d75a3d730f762b0e85821c429beb81e49c1c77730ab4dd12"
+    },
+    {
+      "file": "src/grammar/curveCommands.js",
+      "sha256": "f0bfc3f268af3d50bd127e9925d7644d802c9ec187580e2c013fed5273a618e7"
+    },
+    {
+      "file": "src/grammar/dataSource.js",
+      "sha256": "3ecf54d17d1d23d66ac72523d409debb461ce551737fd885e72cd09f7df7a0b1"
+    },
+    {
+      "file": "src/grammar/datasetDependencies.js",
+      "sha256": "46bd1f9b64f36d93d1b2eade7ee5c7dfd90683c2ac269cb421ed8030114ef229"
+    },
+    {
+      "file": "src/grammar/datasetSchema.js",
+      "sha256": "2a5d6da3bf7b75dd554fdf37fc40a60ae31c35a2fc48444b52d4690e75f72fb4"
+    },
+    {
+      "file": "src/grammar/density.js",
+      "sha256": "1ff674e985a301d9c5b53640fdbb20c373346ebb1a70398d1050551203faa31f"
+    },
+    {
+      "file": "src/grammar/direction.js",
+      "sha256": "619ed68fb722bc8edfa77ec8872aaf2c66ed7df389d6b072fa4c3c532c65c049"
+    },
+    {
+      "file": "src/grammar/displayLabels.js",
+      "sha256": "3012f274f30d149896dee1e10696fedf42225f5764f38200e4bbe98b4c41501c"
+    },
+    {
+      "file": "src/grammar/ecdf.js",
+      "sha256": "5110860ce35479f6d29773c0f9b0e58422545de3bc812fc768aea7d1ecc23fa2"
+    },
+    {
+      "file": "src/grammar/expressionAst.js",
+      "sha256": "fd45e4001b3c7dff0d88c61e1681fe79555b69f764eff3f1be39fb485d28d55e"
+    },
+    {
+      "file": "src/grammar/expressionEvaluate.js",
+      "sha256": "3225045cff7971639eaee9d7d91c09ccb53588a9a5f790701e1a5ed5aa29c619"
+    },
+    {
+      "file": "src/grammar/expressionFunctions.js",
+      "sha256": "73b2f539800ea0164b7edaefb7c8021e3478d1b04a57ac6d65d138e5cd91cb72"
+    },
+    {
+      "file": "src/grammar/expressionInputs.js",
+      "sha256": "54ac76c9e7f4e16527f9aa396a2aad622e0a2cc99009ebeccc7aac2e807fadf7"
+    },
+    {
+      "file": "src/grammar/expressionValues.js",
+      "sha256": "bc84c2dfc902d92e9d86afb147457781661932b5d84cb30200f214a281aa6ebc"
+    },
+    {
+      "file": "src/grammar/facetHeaders.js",
+      "sha256": "275ac854e292d1a94c0a3d71a1dc9c068ecaec7b5a89ed1bc734af58dc1709f0"
+    },
+    {
+      "file": "src/grammar/facets/dependencies.js",
+      "sha256": "6640ae13e4af9661289f37bbd8f787594a4adf3351d4bd45ac721388eaaebb4e"
+    },
+    {
+      "file": "src/grammar/facets/guides.js",
+      "sha256": "fce200cc923fa28e7fbb9ddb9a9e3a2606b3a2e98fff81a8f97c2e32b25b85f3"
+    },
+    {
+      "file": "src/grammar/facets/index.js",
+      "sha256": "a91f11f43a891366ed91d4c0777c12b274c62bfdcf119221e8d5a750a44c23c4"
+    },
+    {
+      "file": "src/grammar/facets/legendIntent.js",
+      "sha256": "46490b7922bc01f6cdb2992ac096b1a85b1eaa96c6498f07fc1790758e296f20"
+    },
+    {
+      "file": "src/grammar/facets/scales.js",
+      "sha256": "43afa7fbd4f9e993090db1f386089c3a6d5cf37e734e162c948d9f63957d3f9e"
+    },
+    {
+      "file": "src/grammar/filter.js",
+      "sha256": "9a688b3a613d9ffc5ba4c41fa5877154cfaa2d3e2305cd1a5f89517b96bfa2f3"
+    },
+    {
+      "file": "src/grammar/flatten.js",
+      "sha256": "0c04cbe0ad2fd97e03c18bdeb724c94495cd68419495a76da037b605bed2cb02"
+    },
+    {
+      "file": "src/grammar/fold.js",
+      "sha256": "331e9e6952f1ce8d2594aa727366bd13c828a338236eab2b2794e07c8d8e2983"
+    },
+    {
+      "file": "src/grammar/gradientProfile.js",
+      "sha256": "61af8fedf41a1d0dbbb6a128e4bb3fb71c0774e99a3d37ea6ea3a322aa8f7adf"
+    },
+    {
+      "file": "src/grammar/guideDash.js",
+      "sha256": "c06ee5d8df478d93b26b4c53a9adbce8405e43119543ac201d5a163f9e2ce4c4"
+    },
+    {
+      "file": "src/grammar/histogram.js",
+      "sha256": "9e61211ee5b4f0d1583ad79812e3310e570e18118915d9173edeeeaa373d875b"
+    },
+    {
+      "file": "src/grammar/horizon.js",
+      "sha256": "0598773b2679c1467103660b9533265bd8213e2e5f52c1cd3ebc4b548950f4d7"
+    },
+    {
+      "file": "src/grammar/impute.js",
+      "sha256": "03cae35f6e4839e3f15455a4ef1d376e8d5b3ca6f989f9c03cbf59e0dbc53d47"
+    },
+    {
+      "file": "src/grammar/interval.js",
+      "sha256": "62106463a07bc5b4b6a67d47bac19629fdcb9b3ef0baa983d7613ff99c46fbc1"
+    },
+    {
+      "file": "src/grammar/itemMissing.js",
+      "sha256": "b667a4c8b865f39b4da079eb305a7f4fc3e26ca0840b4f1ef4b987767d1ce869"
+    },
+    {
+      "file": "src/grammar/jitter.js",
+      "sha256": "6d6368f716dcea2e15b7f3ac63712bef34fd342e5673c0496af5d66fef93f216"
+    },
+    {
+      "file": "src/grammar/legendBlocks.js",
+      "sha256": "13c4d5a1786305c09661d91626c884708df56891964c14ef212d50d69b445a9c"
+    },
+    {
+      "file": "src/grammar/legendBorder.js",
+      "sha256": "dd928b28f4bf7948d9d2e41995cb656315751e9bd6f8a732c62fb4efff3a446c"
+    },
+    {
+      "file": "src/grammar/legendClip.js",
+      "sha256": "58ad29aacff7a803b2f97e20b381fbd9953107a42a3a69b517e51c4d86b13875"
+    },
+    {
+      "file": "src/grammar/legendCombinations.js",
+      "sha256": "e366260d7ca9bc4e35e90509132e2834d31427afd2ee3e6254a9489a11da623e"
+    },
+    {
+      "file": "src/grammar/legendGradient.js",
+      "sha256": "dc60b49e54133f70753f08535ca4c5aff7bb7f3de1dc02621716814468d0a462"
+    },
+    {
+      "file": "src/grammar/legendGroups.js",
+      "sha256": "04e08809a20d5493caa33754afc76300dbc388fac3bff7f26c026e2c88d95ae2"
+    },
+    {
+      "file": "src/grammar/legendItemsOffset.js",
+      "sha256": "171381945f75df3c33136cc8557108ba3848fd5e7fe9548dedea41c595f38ebe"
+    },
+    {
+      "file": "src/grammar/legendOpacity.js",
+      "sha256": "615b304e7e9b5b8e676e11e8d580d7d56e3968ed29ba1efa35254a5e5aabc52b"
+    },
+    {
+      "file": "src/grammar/legendOverflow.js",
+      "sha256": "b8a93abe248d6869cbb94b01e6e924cf5656d358222a8c4814b73ec7cc0952e9"
+    },
+    {
+      "file": "src/grammar/legendSpacing.js",
+      "sha256": "91213764b7654bc126734e01a77cf4c5d683a3029f79756136f854d38c389a3b"
+    },
+    {
+      "file": "src/grammar/legendTitleStyle.js",
+      "sha256": "ec60412a235ed0f53dedae6739a232978e9fb228a024ad96ff4ec4713bbed73a"
+    },
+    {
+      "file": "src/grammar/lineMissing.js",
+      "sha256": "a172d6b964c56e0b8c188b7612e42416add98ce5de6f288ef9d3b599daf7f01d"
+    },
+    {
+      "file": "src/grammar/lineSeries.js",
+      "sha256": "6eec604a1f75dcdd71d5f706ec44124323478f6dcd645f636e06288a832ec469"
+    },
+    {
+      "file": "src/grammar/lookup.js",
+      "sha256": "6122e092eb39554d670852071ee0f6c39e6e1ac07579f95373cc609979df8e79"
+    },
+    {
+      "file": "src/grammar/markFilter.js",
+      "sha256": "f7a89963878d2ea9777b08e8ce24a6a9ea461ecd45bd6730d5ba429064ce153d"
+    },
+    {
+      "file": "src/grammar/markLabelSelection.js",
+      "sha256": "fe499d930df60cd04f38db0e67d30c9461e59a2e951e27ee9e59a4e8314627e2"
+    },
+    {
+      "file": "src/grammar/markLabels.js",
+      "sha256": "f8a62ad0cef00c735602d5af8398e72f60a15f215a5c15234b1627384a827782"
+    },
+    {
+      "file": "src/grammar/markSelection.js",
+      "sha256": "45c1fe2f822636bc2dc46f942c7befecb5c1f530e81199a7777da5bcb051c2e5"
+    },
+    {
+      "file": "src/grammar/normalize.js",
+      "sha256": "c536efb3800e71a985d2a3c780707c42bb6d75675396c5e80d0551d8534a319d"
+    },
+    {
+      "file": "src/grammar/numeric.js",
+      "sha256": "e6e3ecb86316724bb7eeafaeff04012093e11aa33aa10067e10d614e3687a373"
+    },
+    {
+      "file": "src/grammar/overlay.js",
+      "sha256": "973741e136eddbba655ee3e4cafc9220f8365ad3744358e41d9676fd3d1b8e90"
+    },
+    {
+      "file": "src/grammar/paint.js",
+      "sha256": "e46e0b4f655a0292eb5ffe030ec03a7ac20b5f54e581f2d765d67c00f444d8fd"
+    },
+    {
+      "file": "src/grammar/palettes.js",
+      "sha256": "b891fa1ed49054b68896a388771125b097cb50360e2cdbf3e0a98c460816528e"
+    },
+    {
+      "file": "src/grammar/parallelAxisTitles.js",
+      "sha256": "99f7dc46235bc4a699651a9eec9f51a7bd1ccbe6935bef196669f78ff88dac31"
+    },
+    {
+      "file": "src/grammar/parallelCoordinates.js",
+      "sha256": "876102070f23a073a4ea543edcb88e1244856611f818f00d06e96787a80d08c9"
+    },
+    {
+      "file": "src/grammar/parameter.js",
+      "sha256": "bd7ff19760d0bf7c3cdd8a79757272aed411f4df9b2c65b44f7eedda8e396d5a"
+    },
+    {
+      "file": "src/grammar/parseTime.js",
+      "sha256": "c42817b6bcc456b6500387ff5eec071ed6b66e1c78d8f8d680b147bb235d7009"
+    },
+    {
+      "file": "src/grammar/pathCommands.js",
+      "sha256": "74d7714a976c0ebc804c0c2bf9e77189ccfada7fe1d426f98de247f1e2974a8e"
+    },
+    {
+      "file": "src/grammar/pathGeometry.js",
+      "sha256": "e51560b23062a63de3d9618220560af2acffa79f7fed3bd67f32b35dfa2c9b53"
+    },
+    {
+      "file": "src/grammar/pathOrder.js",
+      "sha256": "baec84f19788255e001992f28b57123c01146de8f29572e5eecb57a6a2931d2e"
+    },
+    {
+      "file": "src/grammar/pathSeries.js",
+      "sha256": "9b397887a5dbcc4c1c9fc54b48e17f8761610ba39c321a1d7575444e0f4ddb06"
+    },
+    {
+      "file": "src/grammar/pathTopology.js",
+      "sha256": "423fb56a06ce1940e28636c5450468e1ed09f5eb50d4fedfceac30216c109e32"
+    },
+    {
+      "file": "src/grammar/plotComposition.js",
+      "sha256": "5be4b901b0f2a938a4aff95cb0f741aec37f958a94ec639560e8f7161fffeae9"
+    },
+    {
+      "file": "src/grammar/pointPacking.js",
+      "sha256": "c13cec682252ec5364994ac251dd45fd010ba01fa478a8666ecb36f38e33f025"
+    },
+    {
+      "file": "src/grammar/pointPolygon.js",
+      "sha256": "d367b7652db8f9a203bca1312c931c7f9b6a9e64d0e94285e1fbe3fd4585f183"
+    },
+    {
+      "file": "src/grammar/pointShapes.js",
+      "sha256": "af14ebf7ba6d45c1c4a73b41e0f37b7692db41d26fcf46330a4fec98dd0171d9"
+    },
+    {
+      "file": "src/grammar/polar.js",
+      "sha256": "c74ceb6fe8734ab75c6c7df123d1b7ffc8b047b45822ba329daafd1bb2bc5aa5"
+    },
+    {
+      "file": "src/grammar/polarGuides.js",
+      "sha256": "40bc73ff254886923f4f5765bd46ed5961600742d9d08269aee32ef2ee1f1f76"
+    },
+    {
+      "file": "src/grammar/polarLineCommands.js",
+      "sha256": "5535f946de93a6ce5029c1e075aee9ab26707213590608edde187bc1138528a1"
+    },
+    {
+      "file": "src/grammar/polarPaths.js",
+      "sha256": "86ecf49f29badd8858778ab2931783dffc9148965d0f59ae280dd6f1fd7cff4f"
+    },
+    {
+      "file": "src/grammar/positionCompatibility.js",
+      "sha256": "052eacad8172c247bee852413b61f5b1071616fde73424655b01a1f40e96ab10"
+    },
+    {
+      "file": "src/grammar/positionDatum.js",
+      "sha256": "ece65fcaf3c1dcb0587eeda8d56e123064dff47e90c97c59c07593088d0b599b"
+    },
+    {
+      "file": "src/grammar/rects.js",
+      "sha256": "98ac2227577f9060f496f04b943b9c3385dfd2df038d927859662fd203b77d55"
+    },
+    {
+      "file": "src/grammar/regression/derive.js",
+      "sha256": "4d280ebee6baa326227f1e62d0f0f4a10fb7a1ead6823df0149a396ad43a75b2"
+    },
+    {
+      "file": "src/grammar/regression/index.js",
+      "sha256": "02d35fd647eec426f990ac857c9c583e5ef00452504a4f82bd0ec0e28b28bac6"
+    },
+    {
+      "file": "src/grammar/regression/models.js",
+      "sha256": "e94a43f5e6ef2cd6c809db7b2a67568469e33ae0e687d71bc9eb6944a3fec43d"
+    },
+    {
+      "file": "src/grammar/regression/parameters.js",
+      "sha256": "55b4861aa92f2320c8c0d8250bea88370e6798a92f82a3dc2560c9e6a17b438e"
+    },
+    {
+      "file": "src/grammar/regression/statistics.js",
+      "sha256": "04cc1afc95754ae2c02d69d24c4c3d5e0b153ef2892c4c8513a6c1bfd188cccc"
+    },
+    {
+      "file": "src/grammar/rotation.js",
+      "sha256": "714e60bbe82783d4ee64b7a2a1f501d8efb01e15da1bee9194116925bbff99e8"
+    },
+    {
+      "file": "src/grammar/roundedRect.js",
+      "sha256": "e17c3bc3bcd686dbcefdbf17814ff1cf8cb8cc75d71b7e1b9c6b0fe89f9f8aaa"
+    },
+    {
+      "file": "src/grammar/rowLineage.js",
+      "sha256": "c3be941cfeeecf4d90229c536c894badf41e8c4d9fb7de9154fd2a4a29651e13"
+    },
+    {
+      "file": "src/grammar/ruleAppearance.js",
+      "sha256": "eea64e376e5293fc9633d67b4885f83dd4eb45bbc7f769f3716682419ccd7301"
+    },
+    {
+      "file": "src/grammar/rules.js",
+      "sha256": "2e9445c6c5a5f37636facc563dcc8eacb7c7b5cba3704d89aa8e907f58006d67"
+    },
+    {
+      "file": "src/grammar/scales/appearance.js",
+      "sha256": "0d0c5001dfde8675612c19e80ea12ef615ed6d30dfc06418951937cec107b941"
+    },
+    {
+      "file": "src/grammar/scales/color.js",
+      "sha256": "3e7378c78be4785b9b52e64d24916bca78fab104e0a202fde732899a7cf21abf"
+    },
+    {
+      "file": "src/grammar/scales/colorConsumers.js",
+      "sha256": "c21d60475f9a6675b211f1ea029a94e876178f7accc024b4b43ef226430ffa81"
+    },
+    {
+      "file": "src/grammar/scales/continuous.js",
+      "sha256": "97ad380ba556ceb332241d42c0a79297aec128d7551d97afe4e80d17ee03de13"
+    },
+    {
+      "file": "src/grammar/scales/definition.js",
+      "sha256": "c70c5ed9ad87ca551f663e1561a6b2605d0885febd4f9d21be2715ffd581d874"
+    },
+    {
+      "file": "src/grammar/scales/discretized.js",
+      "sha256": "817f0610760b8dbdd17b75595ad99d0aebdbc7254f90aa9596ae3ab8ed03a464"
+    },
+    {
+      "file": "src/grammar/scales/fields.js",
+      "sha256": "955cda69fcc13da2c3d8b993d73bceb397e222a68fdbaccb31ea869eac4b79a2"
+    },
+    {
+      "file": "src/grammar/scales/index.js",
+      "sha256": "36d1a3b564d9f437f2b2bd1a62e6871e6e0b4587efdd89a39ccd2bf07289093b"
+    },
+    {
+      "file": "src/grammar/scales/mapping.js",
+      "sha256": "abd6f57612c14c1137f2fc7f013dc225ea3b713fd517a3b9c755b83967f65d95"
+    },
+    {
+      "file": "src/grammar/scales/ordinal.js",
+      "sha256": "6364a2d66ecf1413835c2b0af993133266b887c40a81bb83fdc3990f3fffc071"
+    },
+    {
+      "file": "src/grammar/scales/policies.js",
+      "sha256": "2062bba0a559ecf252b7a1d9c4b69c5b6d1f83d0acbbc3b0294e572756d1a6ed"
+    },
+    {
+      "file": "src/grammar/scales/radial.js",
+      "sha256": "a868c1824f7f2ea0fbc654cf01f1934360fdce7a634eb9bddea37780db93db94"
+    },
+    {
+      "file": "src/grammar/scales/size.js",
+      "sha256": "f2bc2ad5c13b4e4725c23f9b81397d6d012e8c2603c32391ba6881fdd217b266"
+    },
+    {
+      "file": "src/grammar/scales/temporal.js",
+      "sha256": "f84f909edb1068cbe275cf7461a2ad2302fea23fbf86555d1b0593d704602029"
+    },
+    {
+      "file": "src/grammar/scales/transformed.js",
+      "sha256": "b939a3e5276718a977caa4e4def86c44208dc06700aabcaf4b7335eddcc8e8e1"
+    },
+    {
+      "file": "src/grammar/scales/types.js",
+      "sha256": "d6ab4bb1a0e81d49fee907e84a828c753811c6166157114012f1acbffb089408"
+    },
+    {
+      "file": "src/grammar/scales/validation.js",
+      "sha256": "61db631fa7c01f36fe329939587568a4402314552e0d6b3722c0ac07722f6ba6"
+    },
+    {
+      "file": "src/grammar/schemas/concreteGraphic.js",
+      "sha256": "b2c7d6402f4e88e4267f6ddd4ac5d039851638375fee6e0340996009683eb21b"
+    },
+    {
+      "file": "src/grammar/schemas/graphic.js",
+      "sha256": "f092ef19a518e7d0774d8d1b3f8ea2501904635bac9cbd095f5c98161c452636"
+    },
+    {
+      "file": "src/grammar/schemas/graphicBounds.js",
+      "sha256": "f1efc93e5f1eba7635b7b32da12d6a962a940012b6785a123d71e0562add18f3"
+    },
+    {
+      "file": "src/grammar/schemas/graphicClip.js",
+      "sha256": "a2970f56eeb1ae3e1f36a7085ba5e93dd4fabef7af976adf323e5bdea573704f"
+    },
+    {
+      "file": "src/grammar/schemas/graphicIdentity.js",
+      "sha256": "7b22c249df148664b73acb0d57884c78b68b3b008161f9ff56d40317eee0e854"
+    },
+    {
+      "file": "src/grammar/schemas/graphicTree.js",
+      "sha256": "5564854a8cd2a166e83c43fba41980510de51ef4a7f6111e974979a6b0269240"
+    },
+    {
+      "file": "src/grammar/schemas/mark.js",
+      "sha256": "04c9379a9f9b77f09e9fb11b24aaca608136f52f3f525f4645bf524d794f7934"
+    },
+    {
+      "file": "src/grammar/schemas/semanticPath.js",
+      "sha256": "38ff35c9101e7430ba207c788c89e6fdd8714ee7544dd0825205d89bac7e80a4"
+    },
+    {
+      "file": "src/grammar/seriesLayout.js",
+      "sha256": "8c41b5510c9608933eb0ddaacf7b6a1898109e12d3479db926cfa7e7c28e65fb"
+    },
+    {
+      "file": "src/grammar/sort.js",
+      "sha256": "c36539280d304c36e9c237e8a4231313fefbff0c8925ed34e884490b225604e4"
+    },
+    {
+      "file": "src/grammar/stack.js",
+      "sha256": "a9272503268a3d33dbd87f948db70c5bb39c7c56adc57bc659d6da5d920c491c"
+    },
+    {
+      "file": "src/grammar/statisticalReference.js",
+      "sha256": "83e6ca3cd20113929db0ad450c18fd2e455974327ab5c37b1bcfd415c311e433"
+    },
+    {
+      "file": "src/grammar/statistics/confidenceInterval.js",
+      "sha256": "4e94c5b93063475119ef5b1cbbdc6c495e52799b73feeca493a29db3a5934953"
+    },
+    {
+      "file": "src/grammar/statistics/studentT.js",
+      "sha256": "7aff1ca658429d233758accd818c772f42cfb03b0bbca5fee8aa9d56bea59c08"
+    },
+    {
+      "file": "src/grammar/strokeStyle.js",
+      "sha256": "4cd58243dd15f024be8e630a94ac97f33e2c1ad901f385264e6c3601cabc3a4b"
+    },
+    {
+      "file": "src/grammar/summary.js",
+      "sha256": "5c14e4b9319143d1a38c72c0a5102f9db955a99ef12764f0554ccfa9faabfe21"
+    },
+    {
+      "file": "src/grammar/text.js",
+      "sha256": "5d8c60f828e520552dd0960ec27441f84227baacf0d949871b210f54c8244a3f"
+    },
+    {
+      "file": "src/grammar/ticks.js",
+      "sha256": "a29e62fc7cb9510248542d6ece4e14e28cfaf5e0502b91bdd203685fa229532c"
+    },
+    {
+      "file": "src/grammar/timeUnit.js",
+      "sha256": "f0cd75f586f1a5f169c3b5b63b81a225aeec6329200e413b9237e88f94a98d8f"
+    },
+    {
+      "file": "src/grammar/transformInput.js",
+      "sha256": "415dd7e1fbc0453d4c4b122225d3f004e92cee8347c64eee132a2f060d3fb9ed"
+    },
+    {
+      "file": "src/grammar/transformKeys.js",
+      "sha256": "b3b0ff24c21028cae552fad3c3c34cb4c7929433aa2c45657a6c6b9992bf604e"
+    },
+    {
+      "file": "src/grammar/transformTopology.js",
+      "sha256": "e63d2dafc1f73a043b7fe15912682bccaa107f98a660ac46e0652f6e710ff012"
+    },
+    {
+      "file": "src/grammar/transforms.js",
+      "sha256": "fb59aeaf952f027914a04e469afea688f9599f48d1170a3e2e8c5e68ac53cc04"
+    },
+    {
+      "file": "src/grammar/valueFormat.js",
+      "sha256": "6e86cc3ba0c6b080708a72d6f11d4afa0ac6ccb6b3fde0aa0f896b0a277563e4"
+    },
+    {
+      "file": "src/grammar/weightedStatistics.js",
+      "sha256": "9b77b2ec70921a6cae37eee6bf7f71ea4a12ee01e9c12ce3e2fe4b3a8f7592d6"
+    },
+    {
+      "file": "src/grammar/window.js",
+      "sha256": "599e1ad6c302d8fc5533d4e1533cf2c6a8915e28c6a4899b4e1386171f699727"
+    },
+    {
+      "file": "src/index.js",
+      "sha256": "8fabd0d109f61b419075572ee058fb42f2e828486a2be0d9f3516f9a684f7c36"
+    },
+    {
+      "file": "src/inspection.js",
+      "sha256": "7e855201115d0641d4c4e318156042e2d973cbda37364e3f6cde006e9082d9f9"
+    },
+    {
+      "file": "src/inspectionDescriptors.js",
+      "sha256": "4404b1b322d635b2fa3e66edf183ecc8cf05a1e96aba3a739f5441d21eb90535"
+    },
+    {
+      "file": "src/layout/AGENTS.md",
+      "sha256": "8963d5248516cf8637e80e7940ce08d1a57aca920847b2801d05a46aa3e26e5e"
+    },
+    {
+      "file": "src/layout/aspect.js",
+      "sha256": "995213ef7f33ffc115fc248e9bd88aa3020e9b34009769add2dcefa0d0582918"
+    },
+    {
+      "file": "src/layout/canvas.js",
+      "sha256": "85ce0f37632e982d5a03076726dffacc7058011eccfbd93516bc15e7d2f3ff5d"
+    },
+    {
+      "file": "src/layout/composition.js",
+      "sha256": "57d7f67bf53b568ae5ffc37c00072278c2361c77698655d133de39210bcf8700"
+    },
+    {
+      "file": "src/layout/compositionLegend.js",
+      "sha256": "4acf4cd6847141961917ab6615c68d3d484f4e7cdc96ed0d04a061845612ec87"
+    },
+    {
+      "file": "src/layout/facetContentFlow.js",
+      "sha256": "be17209881f3c50d354426f99e58d44626fa4dc4a919a7da82cd3a13223a8000"
+    },
+    {
+      "file": "src/layout/facetHeaderTitles.js",
+      "sha256": "386f136ee8df7210a28049c1490a3df8fe0e11851f26977a346b3222b5051489"
+    },
+    {
+      "file": "src/layout/facetTopLane.js",
+      "sha256": "bbe4b65e104c01d9aa55007d1f12824c3dbbfb5ef53b28e0b0a3acfeb9804d14"
+    },
+    {
+      "file": "src/layout/facets.js",
+      "sha256": "c93ef8048206904fb6137066bf44dae9d647c90b265e41442f7a8bd82a9e4a22"
+    },
+    {
+      "file": "src/layout/grid.js",
+      "sha256": "c541dc5bbb87a6cd29c4f19234aaf7fc97c7dd545ddc16931d103a325d30fc92"
+    },
+    {
+      "file": "src/layout/guideCollisions.js",
+      "sha256": "faeeb49141ef721257cd414b267d52f1e2c536840820eaa53524412b1561e880"
+    },
+    {
+      "file": "src/layout/labels.js",
+      "sha256": "8f6544e90b19615a341a24eb917553fd441f7cd99c98e656bac86748fb36eef9"
+    },
+    {
+      "file": "src/layout/legend.js",
+      "sha256": "ceba04d94deb278f818c3cdadfbff6ce91eba6cd0a731d4606e3576fb8cfa765"
+    },
+    {
+      "file": "src/layout/legendGroup.js",
+      "sha256": "65b962f9c9c6a036ec12da17df2c1b0bb83cb64f27adf2b0648384df20df4b5e"
+    },
+    {
+      "file": "src/layout/legendItems.js",
+      "sha256": "69809f09e04a7ec5179a5e98ca7d2d6fe9cf91186d8580feae6e09e488af4fd1"
+    },
+    {
+      "file": "src/layout/legendLane.js",
+      "sha256": "54b3c6fad4f191ebc8cbfc0141487ea4870265c25c9e8add991c5f628b0e2fc7"
+    },
+    {
+      "file": "src/layout/legendSpacing.js",
+      "sha256": "dcf4f104aebb62579173f5f25da3213a92155e2e7d9913cc6b3fc0bd939cb125"
+    },
+    {
+      "file": "src/layout/legendText.js",
+      "sha256": "2f94c4ca45c401f2100ebf5f116ad21a612b455940c8802a5e19866af06943b4"
+    },
+    {
+      "file": "src/layout/plotDrawOrder.js",
+      "sha256": "16615f11aaf8bc2a88e62aec35c218a6714109230ad1ba52726105659aaeea9e"
+    },
+    {
+      "file": "src/layout/text.js",
+      "sha256": "00eae037b5b57d4dd62589a5aa636bee843045724886d7c232782854f4275544"
+    },
+    {
+      "file": "src/layout/title.js",
+      "sha256": "617ebf0cc9a08621f0bf9346e2fecac4d705e3850f1a61805748ad7cdce37695"
+    },
+    {
+      "file": "src/materialization/AGENTS.md",
+      "sha256": "36fde68643ffdb269390372b21555ffeeaadb379fae4962b870aef1df94cc9ef"
+    },
+    {
+      "file": "src/materialization/adjacentSource.js",
+      "sha256": "de1b4b227ca14e25f87a5000eb30c5b84de47308c7b015045b46fb92e3a7e25a"
+    },
+    {
+      "file": "src/materialization/bars/aggregate.js",
+      "sha256": "5449c0057fcbdc54f384f80eeb373fdea0bc7ffd8d1f876b769256b1937cbf23"
+    },
+    {
+      "file": "src/materialization/bars/histogram.js",
+      "sha256": "24662db16fe8657660f5eb0abc5ffc911908cabb054326a876598e3ea1982e5d"
+    },
+    {
+      "file": "src/materialization/bars/ranged.js",
+      "sha256": "051386e2e6a5d913d52b2b0a9822db541906685b75eb5e75d1422d8ee15ce369"
+    },
+    {
+      "file": "src/materialization/bars/resolve.js",
+      "sha256": "94388254651b43ca1e82967bb70385b6f797cd8296783e38f83b9e9222d2c5ec"
+    },
+    {
+      "file": "src/materialization/categorySlotOffset.js",
+      "sha256": "9d8348c69edf72601b2bcd06261cb283e0d0303f3881be178d352ecef4b4d390"
+    },
+    {
+      "file": "src/materialization/composition.js",
+      "sha256": "aac44aa2a7266683da3bd67eabd43646cd785959f57d9cf7a482d34abe0cefe7"
+    },
+    {
+      "file": "src/materialization/compositionLegends.js",
+      "sha256": "8fe37000418b89ee201d5eb10cf39da823ef6c13857d33e4c90a93c79730005e"
+    },
+    {
+      "file": "src/materialization/compositionScales.js",
+      "sha256": "102b52c4d5b146d34a862e0d975afdd8ed8539057e175edb24ef95701b467af2"
+    },
+    {
+      "file": "src/materialization/compositionSnapshot.js",
+      "sha256": "0b08539ed027441f893343eac434a1f030d2afdcbdc9ea372dee7a123bd5f647"
+    },
+    {
+      "file": "src/materialization/compositionTitle.js",
+      "sha256": "4d194c8bf360178541c3bcfa8b9c3e4e3bd2b91d8a2872be09497225893c2201"
+    },
+    {
+      "file": "src/materialization/coordinateBounds.js",
+      "sha256": "72b32285cb0a1c570f062be90d21146feaa27332aef13f6bbb50377ec18c4a97"
+    },
+    {
+      "file": "src/materialization/dataProvenance.js",
+      "sha256": "1639d69a7177836e7f77701494b096346f22c48dd74e798c6a820c09581ee738"
+    },
+    {
+      "file": "src/materialization/density.js",
+      "sha256": "13d6764254df6230f70dfa6157d7148708e788b58bb3614437f49e49ab2acb29"
+    },
+    {
+      "file": "src/materialization/dependencies.js",
+      "sha256": "4d68439ed75b3f1ff13b819722cf9077e259b1ee1b20fcb27aabaafb529c5a1f"
+    },
+    {
+      "file": "src/materialization/encodings.js",
+      "sha256": "32669ec1bd34a4c67a8b2ea82e205d81c26c1add4387bd03c30d0a2486b140ef"
+    },
+    {
+      "file": "src/materialization/expressionInputs.js",
+      "sha256": "0533d5ba3c60c8eba0ccd386db6dc15224b4dc52df1b55bba691f32af5ae6d2d"
+    },
+    {
+      "file": "src/materialization/facetContentBounds.js",
+      "sha256": "8d03e5f891c3cee371d487fe0862c9890a6ab9c2a82c58cb7299cc8e4f51aeb2"
+    },
+    {
+      "file": "src/materialization/facetGuides/edit.js",
+      "sha256": "1134cd5b9ea0fd3657141fd7000886a58b71dee65752b60c6ef5235e63ab44c2"
+    },
+    {
+      "file": "src/materialization/facetGuides/index.js",
+      "sha256": "1c9c62b7e178a7aea4e4072d01ddc5ff6203199c55f6009ebe1e8821467672d5"
+    },
+    {
+      "file": "src/materialization/facetGuides/layout.js",
+      "sha256": "ee0ca28490ad5a7f8509e2c01b9be6c108156a0b3e8fa61cae9dfc0a8516b764"
+    },
+    {
+      "file": "src/materialization/facetGuides/legacyCategorical.js",
+      "sha256": "fba886e05679181283f34fc8fb17e801664ac8b485476aa8625d33eb7dbe0e63"
+    },
+    {
+      "file": "src/materialization/facetGuides/owner.js",
+      "sha256": "1eee94768442455b7812697dc2d5bb1ea7ca24dbabd9c3abd292d180b351e743"
+    },
+    {
+      "file": "src/materialization/facetGuides/ownerLayout.js",
+      "sha256": "72c1432c792cc56c79c70173b76820d1ad1c99bbb32c742f0bb16ad4ac5d4010"
+    },
+    {
+      "file": "src/materialization/facetGuides/placement.js",
+      "sha256": "7fa7aa1bf899aed2bd155b5c4b074d141239ced11b1d649072df6760d58bebf7"
+    },
+    {
+      "file": "src/materialization/facetGuides/preparation.js",
+      "sha256": "d889156dd3c6c2b54e1285b21639427dab8f31a634c2a675db4cb20eb33d1469"
+    },
+    {
+      "file": "src/materialization/facetHeaders.js",
+      "sha256": "5a0a69d3c06a6ed0db2346f9949536c7102cde9c1f3c9a01f71a45b02841d706"
+    },
+    {
+      "file": "src/materialization/facetTopLane.js",
+      "sha256": "5fa2a3afeaf0d59435d56ff66ac4ac340871be72aea7c2d2be8d50ce8db0127c"
+    },
+    {
+      "file": "src/materialization/facets.js",
+      "sha256": "6622fdad2015dd9cf09ca6b7f19d8bf951554acef8dd60ff2f7cc7882fc24f4b"
+    },
+    {
+      "file": "src/materialization/graphicHierarchy.js",
+      "sha256": "841328f8341d5ed6ee03dc10797b94b86250ddbd377fda0b309c078df4a9edec"
+    },
+    {
+      "file": "src/materialization/graphicTranslation.js",
+      "sha256": "411d68bb50bff2482255e83a773be3e12f4be9fed3900d6958958ebadab58fcb"
+    },
+    {
+      "file": "src/materialization/guides/layout.js",
+      "sha256": "ae568176e5409b759164bd79dc6359c3aaf6dde29c6a28208a49f25ca9098f41"
+    },
+    {
+      "file": "src/materialization/guides/resources.js",
+      "sha256": "1a0a91a8eb9a2daa002c959d1412068a2c3bd804193abff41509734f1ded62cf"
+    },
+    {
+      "file": "src/materialization/guides/visibility.js",
+      "sha256": "3c65da24f03c5ca14185072935eba3564e1ff7e71a511a4e2165602ffad0bc86"
+    },
+    {
+      "file": "src/materialization/horizon.js",
+      "sha256": "bdf8cf806ad23da59efee39114c197f03dba1080dcc509573ca8218842e12a59"
+    },
+    {
+      "file": "src/materialization/layout.js",
+      "sha256": "ac2d90c9f204df0dd56f72ede63ac5a88a0809fb5bb2c12ab5588bcce849c4fb"
+    },
+    {
+      "file": "src/materialization/legendBorder.js",
+      "sha256": "7e82babed1d4f4bb007b9bae726c1e464415d8eeed006bbfe8e27187a7b073f3"
+    },
+    {
+      "file": "src/materialization/legendClip.js",
+      "sha256": "e52bc90e5c36bfe9f8ecd9e24caf978aaed25b4176d304c8fc733b769a5ec8bd"
+    },
+    {
+      "file": "src/materialization/legendGroups.js",
+      "sha256": "e2cd351d44a40829014fb4be14d4330add8dcba8d7e623d38b085c46879202f1"
+    },
+    {
+      "file": "src/materialization/legendItemsOffset.js",
+      "sha256": "e6b1a1da5e055a7dc5ff4765924ceafb241ad707fd7c3c50fb9e5b54b566c25b"
+    },
+    {
+      "file": "src/materialization/legendSuppression.js",
+      "sha256": "46f409dff208db1ad38e21ad62a66a11398862747d4749927ef39740cc93f048"
+    },
+    {
+      "file": "src/materialization/legendText.js",
+      "sha256": "7529a26a9421dfc524153b21e20a90d6c435f172868cd40e6b33321fe08e7520"
+    },
+    {
+      "file": "src/materialization/legends.js",
+      "sha256": "17e45ef80fc1fbb6637522d37b5bc451d16acb5ffaedf8431ad4ca1ad41783c2"
+    },
+    {
+      "file": "src/materialization/markClip.js",
+      "sha256": "9087b87c546e6f35d84238c694067b1777de5ceaf7a5dd73b5198b5deb5a5d8a"
+    },
+    {
+      "file": "src/materialization/markOutput.js",
+      "sha256": "b301d319f786c3469ea97ae1ccf57464e2f17c501a1dc8cca51119b13167c6a3"
+    },
+    {
+      "file": "src/materialization/marks/capabilities.js",
+      "sha256": "0bc5de4341b91c8f15e3a49a723a62f2cdc1c8294fc373d3672b9c490138460a"
+    },
+    {
+      "file": "src/materialization/marks/grouping.js",
+      "sha256": "dd2696c55fb796b57e9155c16bff441133763515804f2de370e5a5250abafeb5"
+    },
+    {
+      "file": "src/materialization/marks/index.js",
+      "sha256": "0299a9aeec69b46ddca741c9e819d42e8d56c8bed4ec79707f886f6a1b4da6ea"
+    },
+    {
+      "file": "src/materialization/marks/pathOrder.js",
+      "sha256": "fd73adee66f4b9ecad7bbb604a75d7704a8e7cd01b91c73a7bcfde2885a43899"
+    },
+    {
+      "file": "src/materialization/marks/policies.js",
+      "sha256": "eb698b739b68ecd9a9e25a0bb1e0f55a327caa339d1c5eeb9d68476e010b4972"
+    },
+    {
+      "file": "src/materialization/overlayItems.js",
+      "sha256": "6d317be2fa47f84b0083a16476b89da828c99386cc750b915456a85ffc45034b"
+    },
+    {
+      "file": "src/materialization/planner.js",
+      "sha256": "aef0bf9382bb6daddfac0a0db126c6c225efea670ec2e9e732eba196ef03dcb0"
+    },
+    {
+      "file": "src/materialization/plotDrawOrder.js",
+      "sha256": "a5557dcfc8789705c38f5c4f30794506be782e4f9650859f661324dc97072f64"
+    },
+    {
+      "file": "src/materialization/rect.js",
+      "sha256": "60ca3e87ae56cba679d4f3b353270fa358e0d775909f5a5c557a9b4dc8429eda"
+    },
+    {
+      "file": "src/materialization/rectConfig.js",
+      "sha256": "56842932b79b6bbf3cbbda53b8eb3b3c05bb642ce658209851dde059ece16b2a"
+    },
+    {
+      "file": "src/materialization/resourceState.js",
+      "sha256": "ea0ea7c6d0eab6d86817f8059db4f1b31fc64bb65b098a07a11b1a3a25179f3c"
+    },
+    {
+      "file": "src/materialization/revisionIdentity.js",
+      "sha256": "d0e23090117b9e2866cece4fe1d38ec1e27b847f710192c36d0022556f462276"
+    },
+    {
+      "file": "src/materialization/rowEncoding.js",
+      "sha256": "1165b4227a87f9f79e5bde204f32b52f0012c4c0044dbf12ee99903e0b1145e4"
+    },
+    {
+      "file": "src/materialization/scaleGuideDependencies.js",
+      "sha256": "6a120b39349f1d4b5e5fa900cfb47fe0dae196f0b53fee250e406a6310a2d68a"
+    },
+    {
+      "file": "src/materialization/scales/consumers/common.js",
+      "sha256": "cffdfa5ac88d5d9cb495751be42f4f5764d262d0ace2d3daf06c80fef785b25e"
+    },
+    {
+      "file": "src/materialization/scales/consumers/families.js",
+      "sha256": "e0017d4249ddea5b6e1a9bd0c464c6a2c2bc4053fb1006336530f07bdc3b40e2"
+    },
+    {
+      "file": "src/materialization/scales/consumers/index.js",
+      "sha256": "ca8283d212226ba94a732ae0c82076e735de0d1dcb4ebff10e18c9a3df514506"
+    },
+    {
+      "file": "src/materialization/scales/consumers/seriesLayout.js",
+      "sha256": "31c5506015d079a6619612f3b8630ff68a395bdd05c39e3dc2ffb8aca2972406"
+    },
+    {
+      "file": "src/materialization/scales/map.js",
+      "sha256": "723b367a7c3ddf3eb5f4fe9275f7a7bb448054dd44096d0097b060aaeb9ba8ee"
+    },
+    {
+      "file": "src/materialization/scales/policies/arc.js",
+      "sha256": "59d66a290edd08b2f7aeaa4cc5f50bd959b1e1fc5096139636dbdc2c4f2c147a"
+    },
+    {
+      "file": "src/materialization/scales/policies/bar.js",
+      "sha256": "1e5914f86283f45d62c78a1403b420d858129e30006951c8ff8fc7d2a1405e01"
+    },
+    {
+      "file": "src/materialization/scales/policies/binnedPosition.js",
+      "sha256": "c2a00a3b82826e1f54b51dbda62658528a44e6fc7b78fcfd19e21defe38f23d3"
+    },
+    {
+      "file": "src/materialization/scales/policies/offset.js",
+      "sha256": "59846ce18feae111b9753213a8db9a146fd0f7292a7e9c032af5c28bae26ed86"
+    },
+    {
+      "file": "src/materialization/scales/policies/series.js",
+      "sha256": "ad9fd9e9fc94b0f51bf66f6c676b70902e0dea7f25aa73e526837ace46793c35"
+    },
+    {
+      "file": "src/materialization/scales/resolve.js",
+      "sha256": "4698cd53a163a13d65198c0e87018a8a82fd131068ec69807400bca98dd63b39"
+    },
+    {
+      "file": "src/materialization/selection/compatibility.js",
+      "sha256": "f13739a0b33847120bc24e3db0fba6370a5f9266608349bc77ed5860e2b12153"
+    },
+    {
+      "file": "src/materialization/selection/filter.js",
+      "sha256": "5177625038c212c3c2eb841ffba175798fb32a2c827d0bd6ef1842f5a78c8a57"
+    },
+    {
+      "file": "src/materialization/selection/items/arc.js",
+      "sha256": "246875591a620d0b655027865ed5159faa24764d21c05b838726b001246fbb4b"
+    },
+    {
+      "file": "src/materialization/selection/items/bar.js",
+      "sha256": "5b58e94f36f7fbdb9bb982ca8ed4537dba8fee7bcf9574d63f2935a60466442b"
+    },
+    {
+      "file": "src/materialization/selection/items/common.js",
+      "sha256": "e6a330e5d99219c890c2a91b6907d45dc7d9015f14e51bd1fa293f4c7fa1d46b"
+    },
+    {
+      "file": "src/materialization/selection/items/index.js",
+      "sha256": "1136d390468657628000fb1aaa9d2d5ab11ea4218e181af88511dea2205ed36c"
+    },
+    {
+      "file": "src/materialization/selection/items/overlay.js",
+      "sha256": "a6c548f13b2613973713d73ab22d5e5414d03cbb3689bf1ceb2d55ad5e3357b8"
+    },
+    {
+      "file": "src/materialization/selection/items/path.js",
+      "sha256": "95a04a29aec58c0a1c80b2ae30d86bb3ceef19261540987e1e453621e3435e4c"
+    },
+    {
+      "file": "src/materialization/selection/items/point.js",
+      "sha256": "dc26d0910abd4290b3fb725d416c6738697c48c324980d64890d438e2b221c43"
+    },
+    {
+      "file": "src/materialization/selection/items/rect.js",
+      "sha256": "97254fabdc784080e67dc29fa70cb4b29ec1ade20f07add38987140318c490ea"
+    },
+    {
+      "file": "src/materialization/selection/items/rule.js",
+      "sha256": "a474f5933b9c26083ab38dc151e074dbccb3c91ce3974b6104ba398c728a319e"
+    },
+    {
+      "file": "src/materialization/selection/items/tick.js",
+      "sha256": "c491630acca6542211f6eab2297d4fdad414de6d0c6c506f1aa50caad532872c"
+    },
+    {
+      "file": "src/materialization/selection/path.js",
+      "sha256": "efe4b65d39e3a68911bb299d8e6a2012c1d612747a46f8331c0a3b0ccf8c08f7"
+    },
+    {
+      "file": "src/materialization/selection/point.js",
+      "sha256": "d49e6d1a4418f9d57b579b7fa3632c4949123ee8d64b054ccfcd2d0b7bd9716d"
+    },
+    {
+      "file": "src/materialization/selection/policies/arc.js",
+      "sha256": "ce31f259b59e7dd66082dad5789542f24203536044e8b25051866ac870b769f2"
+    },
+    {
+      "file": "src/materialization/selection/policies/area.js",
+      "sha256": "7b92688672a111462aec41ef34f73a345aafbb8df9c7df4b05958fd5bc7e49ba"
+    },
+    {
+      "file": "src/materialization/selection/policies/bar.js",
+      "sha256": "d2375dd4b101b461747f3aee9e0e01370a395f5df231528996b2de29a83eb770"
+    },
+    {
+      "file": "src/materialization/selection/policies/index.js",
+      "sha256": "c9cad49ffb626df5e2794700e08c124544285ea33359bd9e584a839a268880da"
+    },
+    {
+      "file": "src/materialization/selection/policies/line.js",
+      "sha256": "a03845258a3f93755307c7ea78556e4bd310ca467c35fb47b0954438667dd7f1"
+    },
+    {
+      "file": "src/materialization/selection/policies/point.js",
+      "sha256": "93d2bf3edc3be133feccdaded5796e0f540951748a1b0eed3989b89e16a87c15"
+    },
+    {
+      "file": "src/materialization/selection/policies/rect.js",
+      "sha256": "982f946a97af3c566188bd85cf136f25c5356e98505293ab6ccbed33e73d359f"
+    },
+    {
+      "file": "src/materialization/selection/policies/rule.js",
+      "sha256": "9414df1272b2e568beb0ecd4c1fbdd7da322fd5b4601280e691014f1e9e08654"
+    },
+    {
+      "file": "src/materialization/selection/policies/text.js",
+      "sha256": "a4ff66f0eb2c27b5b06d54bbcaa041f21a490f0fac63b62f382db468d5f5a36e"
+    },
+    {
+      "file": "src/materialization/selection/policies/tick.js",
+      "sha256": "94653714070a75541397f3e47b3aff2c757ef577c90444f4e2a1522ee990f664"
+    },
+    {
+      "file": "src/materialization/selection/predicate.js",
+      "sha256": "d87787e4f2e7587c743d8882c60726bcdc0c2ab145cbc7b11addfd31767e30b8"
+    },
+    {
+      "file": "src/materialization/selection/rows.js",
+      "sha256": "4745a43c98bdfaa5b0a1357285b4346f509ea3af803b87bc5ce945e7a7c1e151"
+    },
+    {
+      "file": "src/materialization/selection/state.js",
+      "sha256": "47b68640ba5616872bf1fc27e4f5b55a8f26ba34c1fa7a71246bb80d0faa2816"
+    },
+    {
+      "file": "src/materialization/selection/styles.js",
+      "sha256": "23609302667a5d251bb51f3a84dde0cca2722076c0613a5daec1caad470aa4ae"
+    },
+    {
+      "file": "src/materialization/statisticalPopulation.js",
+      "sha256": "daf6b261bdd76ffe30df1e724bdbf5ece918c246666ed3c5ccf3212921078dcf"
+    },
+    {
+      "file": "src/materialization/text.js",
+      "sha256": "53e5e5db57427f0a52aa9a48ac72a58e4bca02d3222383b8dc7f6eb2f6000ee0"
+    },
+    {
+      "file": "src/materialization/textGeometry.js",
+      "sha256": "d0674225215dd129e2a194304608a1b164446f205e16b1dc62e88c77c6db86b3"
+    },
+    {
+      "file": "src/materialization/textLines.js",
+      "sha256": "a261594e1ec75b0e6b084dd6316822b898c2076f15ac9023a02d14c61ca0b35a"
+    },
+    {
+      "file": "src/materialization/typography.js",
+      "sha256": "53d2935bf61ba31fcd63b03f9d3bfc9263ee1e03a8b5226ee53552e7356d09f7"
+    },
+    {
+      "file": "src/mcp/adapter.js",
+      "sha256": "9383395cbfec7ee3216bbb4e6c8395a9a436e037236ac286bd4157cd42808b7e"
+    },
+    {
+      "file": "src/mcp/cli.js",
+      "sha256": "a0fc372450d3d61f3ae38de204949e0e88875c060cc45e9962d2131f0dd9e22f"
+    },
+    {
+      "file": "src/mcp/server.js",
+      "sha256": "21456f7101dd15cd398b1eff5c3ebf88adb7d9ff3dcad5ea3aff299a90b9111f"
+    },
+    {
+      "file": "src/persistence.js",
+      "sha256": "f0df5446953896fa41b98cf8286cd45042394b5e8d0b50680741cd422c074c01"
+    },
+    {
+      "file": "src/persistence/codec.js",
+      "sha256": "8536870fa5e75e369b8235505f5fb135f159e5b9d9bdbbecbf3370224c74c20d"
+    },
+    {
+      "file": "src/persistence/legacyValues.js",
+      "sha256": "1ad9105a195825d33156f694b405081014fb864637d45706fb521146fdf4e2f2"
+    },
+    {
+      "file": "src/persistence/validation.js",
+      "sha256": "645e9dfc66a9a32f946332021eb69fe94bf60485ec5f3512e3e7cd30db1e086c"
+    },
+    {
+      "file": "src/renderers/AGENTS.md",
+      "sha256": "7810b281452d6d8fe33b0e4b6a1987a0dd69370fc9aab4cfe97105190d00073f"
+    },
+    {
+      "file": "src/renderers/canvas/circle.js",
+      "sha256": "3eb0c4d844a0f53bd8e67f4285ed04bc8f02d8afa40f75dee2a5c6a4f7c05377"
+    },
+    {
+      "file": "src/renderers/canvas/fill.js",
+      "sha256": "904aaf61c5c723110bff6a2fb43eb4e8f0aea22bbeaeab9d02b535a31461e484"
+    },
+    {
+      "file": "src/renderers/canvas/index.js",
+      "sha256": "3011134d8a5bb03e59c14ac1222d97bff0eacbb493f88f76d2fb21057e83d4f2"
+    },
+    {
+      "file": "src/renderers/canvas/isolated.js",
+      "sha256": "efc9073b97f19815a6fbf5de0e0a85109f962ba27bebfbdedfcc88082edd6ae4"
+    },
+    {
+      "file": "src/renderers/canvas/limits.js",
+      "sha256": "63ee0d01eb923582738cb52869e76c9d390cd8a3cebf0a30612a41a6692ac46d"
+    },
+    {
+      "file": "src/renderers/canvas/line.js",
+      "sha256": "39c54613a31611a2708acde8fe9dfbbb03c77622aaedd2ac4243375011d0f2dc"
+    },
+    {
+      "file": "src/renderers/canvas/native.js",
+      "sha256": "d1e989f57fb99d9882749fd89f28b41e7b9db990fe1fdbeb2d168c7193c94b00"
+    },
+    {
+      "file": "src/renderers/canvas/path.js",
+      "sha256": "c2f938e4fbf62c869b56e1e33eb62880e1a8e3c847a6e2a57cef8f52d4288e29"
+    },
+    {
+      "file": "src/renderers/canvas/rect.js",
+      "sha256": "2982a3cd16592539bdb713f04b277394b4101674462eda1d236e3706b82cd250"
+    },
+    {
+      "file": "src/renderers/canvas/scene.js",
+      "sha256": "82f37e7190b5f75d2104894808d09565cc8742edc1ae00fd6fe0d03d847e800a"
+    },
+    {
+      "file": "src/renderers/canvas/stroke.js",
+      "sha256": "6da3b87a48e57c4556e3101333550d0effc82665e076bf0e5038dabdd46d11e8"
+    },
+    {
+      "file": "src/renderers/canvas/text.js",
+      "sha256": "7e393934669794c223e12574146b1c0a9115e79e19bea7cf12b74774fdd5655f"
+    },
+    {
+      "file": "src/renderers/canvas/validation.js",
+      "sha256": "39977d14fdf5a2020e2d7cd1377977277d1e0c6391595efc56434c314ced4d38"
+    },
+    {
+      "file": "src/renderers/nativeBackend.js",
+      "sha256": "b394d4be6cd6f0c4582bdba0b60f4205d712121c3f210ad3243a1a92fd36bfc5"
+    },
+    {
+      "file": "src/renderers/options.js",
+      "sha256": "7e756934296d1951ee6c091ba57bd474efbe668b420e300283b8dd1ab222ebc5"
+    },
+    {
+      "file": "src/renderers/pdf.js",
+      "sha256": "aa0bf4b56bb1bd076907021d5eb690592a1a14ae92acc715a9241779ac1c02df"
+    },
+    {
+      "file": "src/renderers/png.js",
+      "sha256": "9d4ffd81b8b93d863ed7a57d2721ffc64c274f0b1d0f3464e56902e2ac7c0b1c"
+    },
+    {
+      "file": "src/renderers/svg.js",
+      "sha256": "35a2db221d9cdcc4b243418dfd4e4356774b118bbd6ddbc9120c219c42b5ee58"
+    },
+    {
+      "file": "src/renderers/svgSerialization.js",
+      "sha256": "64034552e93f029b09aca09f203114812f18b1a9f5cce0a2537e276c81902ed2"
+    },
+    {
+      "file": "src/renderers/text.js",
+      "sha256": "8ec7821d7c54883b29f1463341adbd0724734ee0fa06729712bb08d34d6ef3ac"
+    },
+    {
+      "file": "src/renderers/transitionScene.js",
+      "sha256": "78eafae6bc43e45f11061fc9c26c6b8aad9f37ce907ec75fc7103213ef1280e0"
+    },
+    {
+      "file": "src/resources/resolveData.js",
+      "sha256": "02431f6abf150b7b9c72d08e61fccf5847088839d922130e2a0a06aaf17fbbf4"
+    },
+    {
+      "file": "src/scene.js",
+      "sha256": "c256c16a787ae09329e7491172fa8d178212ed65684c6e603edaeb2a1a2c1833"
+    },
+    {
+      "file": "src/selectors/axes.js",
+      "sha256": "0794a6efc1caa070a4563c14db0899a49700912cac7496e29690c822a6bfb7ac"
+    },
+    {
+      "file": "src/selectors/coordinates.js",
+      "sha256": "e6e08eae3d7c533ccddf58cb8e8f22a525a634de83b026e9424f91bcdf737d6c"
+    },
+    {
+      "file": "src/selectors/datasets.js",
+      "sha256": "08438818cc8d8d60168fb6e595104f27c778e64f11188a96ff161f953e8b3756"
+    },
+    {
+      "file": "src/selectors/graphicCapacity.js",
+      "sha256": "e064d39bdf316b73bb6893a428c79f4ac56fa3a372a713d7901e36db74f66884"
+    },
+    {
+      "file": "src/selectors/grids.js",
+      "sha256": "6a2e80bc3e6f178a30d5b685729c9d520c19a22f752b53d9224a544f08055b54"
+    },
+    {
+      "file": "src/selectors/index.js",
+      "sha256": "d7705220f7fe344a724d76fd07681296866a954919b59db08c176debdaf20eb0"
+    },
+    {
+      "file": "src/selectors/layers.js",
+      "sha256": "088abcf2477efccadee7693d7e3c8a7de33b0a0b63bdfdd7c5966d4f654467a1"
+    },
+    {
+      "file": "src/selectors/markClip.js",
+      "sha256": "aaf004c9b2e762fbc99a5649fc3db6f7acc28f2ef22c3f92be031c508db35976"
+    },
+    {
+      "file": "src/selectors/markOwners.js",
+      "sha256": "ec6a5ab497e2f3f389eced76a7c126395504c4bc769f7ae3428108980acb6a16"
+    },
+    {
+      "file": "src/selectors/plotComposition.js",
+      "sha256": "eaf49465dee10dbdac1b22b3d16ebb83edc813a6217083d343dc730fe5354a05"
+    },
+    {
+      "file": "src/selectors/raincloud.js",
+      "sha256": "893121cb2c709d756535e67e44961098345f57f335462f0383b6f4e13f7c44e0"
+    },
+    {
+      "file": "src/selectors/resources.js",
+      "sha256": "dd422d6fe1c89905ecab93e7a2f782a6176000d59eae00ff81015e6ffb8053ac"
+    },
+    {
+      "file": "src/selectors/scales.js",
+      "sha256": "a943b319e51bc6c4b2b269034a7620926229ca7839886aebe5015e76185890f6"
+    },
+    {
+      "file": "src/selectors/selectionResources.js",
+      "sha256": "7702b3663e4dbd7230eacb5e4acdda39704d4a4a9d872b0a729fc875e7394039"
+    },
+    {
+      "file": "src/selectors/selectionTargets.js",
+      "sha256": "dd69799f448a58f9e1df5fa65ecf4f5e155ace47215f7727db2f3742c0a04de4"
+    },
+    {
+      "file": "src/theme/defaults.js",
+      "sha256": "312d427dd1c6f2cc3c6ff9068ee82e5ec8ab06b9ea4d7e01c52c54f7ca80bbf8"
+    },
+    {
+      "file": "src/version.js",
+      "sha256": "263b26aa000577beec5eae6577a141d881eb3092ccea4a1a1ea38e3c200e4c18"
+    },
+    {
+      "file": "types/accessibility.d.ts",
+      "sha256": "7e823e0f516403633f4d83ec37fcecc379b7371d4b149f4cdc036aed93a708e6"
+    },
+    {
+      "file": "types/basic.d.ts",
+      "sha256": "c4f18c3ea811b73336a5504a92aa64015351965af56af02c141991b4547e171a"
+    },
+    {
+      "file": "types/diagnostics.d.ts",
+      "sha256": "3d8ee6cdb96952d5c099680744e8ae3d3540020ae89a70d622bc89a3b47658f4"
+    },
+    {
+      "file": "types/extension.d.ts",
+      "sha256": "5f4ed9aaea20b0d2c80913bcbbba38366ef50e979cc63883c1d5e42933065ef3"
+    },
+    {
+      "file": "types/index.d.ts",
+      "sha256": "f17710de24758a6046304deea72a5fe569a04ec9272b62696f60df046d64d717"
+    },
+    {
+      "file": "types/inspection.d.ts",
+      "sha256": "c1a8878018c7ee7957cce247cd0ef147542142d4182b5b444efad461a1c46b3d"
+    },
+    {
+      "file": "types/pdf.d.ts",
+      "sha256": "9f760779f66e7f5e6d4ec61981e0890fcf8f826e7adf0cf60cae78720e7d8f1f"
+    },
+    {
+      "file": "types/persistence.d.ts",
+      "sha256": "ba5d81d0db3adede49e858f52e3e2e10f8f5b0487f0c3c08165c3b8275442c33"
+    },
+    {
+      "file": "types/png.d.ts",
+      "sha256": "81196d554632978152ffb1359f520fee96997de7db7d70872737a7c0a79a45cc"
+    },
+    {
+      "file": "types/program.d.ts",
+      "sha256": "beae00cb626eb1b13613e6cecb2582fd4e8bb8d293b8c474096481103b8d7be7"
+    },
+    {
+      "file": "types/scene.d.ts",
+      "sha256": "947b817c30dbccf3d9af41729c835680e6e01862d9bbb28ec34fdd4a1d99e62d"
+    },
+    {
+      "file": "types/svg.d.ts",
+      "sha256": "8960ff3551c10dab1f146fdd776ea7d161b2d39b7b43d6f2ca42efbd71c91668"
+    }
+  ]
+}

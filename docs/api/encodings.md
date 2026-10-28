@@ -28,6 +28,78 @@ Scale-type transitions require Full, or a new scale ID in Basic. Saving a Basic
 program preserves its internal actions; restoring it returns the existing
 editable Full program. See [Saved programs](../data-updates.md#save-and-restore-snapshots).
 
+## Choose appearance with conditions
+
+`encodeColor`, `encodeStroke`, `encodeSize`, `encodeShape`, `encodeOpacity`,
+`encodeStrokeWidth`, `encodeStrokeDash`, `encodeAngle`, the position encoders,
+`encodeText`, `encodeDx`, `encodeDy`, and `encodePointRadius`/`encodeRadius` accept ordered
+`conditions` and a required `otherwise`. Each branch contains the corresponding
+encoder's usual payload without `target`. The first true predicate wins; opacity
+`0` remains fully transparent. Every branch is validated, including inactive ones.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** The displayed program imports chart and supplies its inline data and parameter.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const initial = chart().createCanvas({ width: 360, height: 240, margin: 40 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }, { x: 3, y: 3 }] })
+  .createParameter({ id: "minimum", value: 2 })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+  .encodeOpacity({
+    conditions: [{
+      when: { version: 2, registry: "standard@1", root: {
+        type: "binary", op: "gte",
+        left: { type: "field", name: "x" },
+        right: { type: "parameter", id: "minimum" }
+      } },
+      value: { value: 1 }
+    }],
+    otherwise: { value: 0 }
+  });
+const updated = initial.editParameter({ target: "minimum", value: 3 });
+```
+
+A predicate is a boolean expression or an explicit `{ selection: "selectionId" }`
+created with `selectMarks`. Parameter and selection edits refresh the affected
+marks and their dependent output. A selection cannot depend on the same
+conditional output that reads it. Referenced parameters, selections, and branch
+scales stay live until the encoding is replaced or removed.
+
+Field branches contribute their complete final-item populations to automatic
+scale domains. Conditions select values without filtering the input population. Use a
+[parameterized data filter](../data-updates.md) to change statistical input.
+Appearance on paths and aggregate marks requires one branch value and one predicate result per
+final item; provide the existing grouping or aggregate when needed. Branches
+cannot introduce different grouping, stacking, or layout policies.
+
+Position conditions preserve the existing row, vertex, category, or bin membership.
+Each branch uses its own scale, subject to the existing coupled endpoint and
+proportional Arc rules. Axes and grids require one unique branch binding.
+Grouping, path order, stacking, and layout stay explicit ordinary authoring steps.
+
+Text branches choose the usual field, value, or semantic source content and format.
+Share labels retain the full source denominator. Independent Text offsets choose
+finite pixel values or fields without a scale; removal restores the constant mark
+style. Conditional point radius is measured in pixels and is separate from Polar
+radial position. It uses the existing equal-area shape geometry and excludes size.
+Use `removePointRadius` to restore the default glyph radius.
+
+A legend can use a conditional channel when its field branches share one exact
+field/type/scale binding. Different bindings are ambiguous: remove the affected
+legend before assigning them, and use a unique binding before creating a legend.
+Constants do not create legend entries. Existing empty-domain rules apply,
+including explicit `emptyDomain: "preserve"`; there is no implicit domain fallback.
+
+Replace a conditional with the same encoder, or use `removeEncoding` to remove
+it (use `removePointRadius` for pixel radius). Full and Basic support conditional
+authoring on their existing methods; editing parameters or selections
+after authoring uses Full, including a restored Basic program.
+
 ## Choose a family
 
 <div class="docs-entry-grid docs-entry-grid--two">

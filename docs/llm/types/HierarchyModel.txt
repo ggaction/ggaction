@@ -1,0 +1,4 @@
+export interface HierarchyModel {
+  readonly nodes: readonly HierarchyNode[]; readonly rootKey: string | null; readonly valueMode: HierarchyValueMode; readonly totalValue: number;
+  readonly diagnostics: { readonly emptyHierarchy: boolean; readonly emptyValue: boolean; readonly ignoredInternalValues: readonly { readonly key: string; readonly value: number }[] };
+}

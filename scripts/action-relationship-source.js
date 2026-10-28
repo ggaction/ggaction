@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { chart } from "../src/index.js";
+import { chart, prepareDataUpdate } from "../src/index.js";
 import {
   buildScenario,
   generateScenarioDescriptors
@@ -429,7 +429,10 @@ export async function buildActionRelationships() {
   const directNames = new Set(actionNames);
   const relationships = new Map(actionNames.map(name => [name, new Set()]));
   const observed = new Set();
-  const programs = [...buildActionRelationshipPrograms(), chart()
+  const preparedBase = chart();
+  const prepared = await prepareDataUpdate(preparedBase, { kind: "create", id: "received",
+    source: { kind: "inline", values: [{ x: 1 }] } }, { requestToken: "received" });
+  const programs = [preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
     .createCanvas({ width: 500, height: 400, margin: 70 })
     .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
     .createScatterPlot({ x: "x", y: "y" })
@@ -519,6 +522,33 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
+    chart().createCanvas().createData({ id: "hierarchyRows", values: [{ id: "root", parent: null, value: 3 }, { id: "a", parent: "root", value: 3 }] })
+      .createHierarchyData({ id: "hierarchy", key: "id", parent: "parent", value: "value" })
+      .layoutHierarchy({ id: "tree-layout", method: "tree", options: { nodeSize: [20, 10], siblingGap: 10, depthGap: 20, orientation: "vertical" } })
+      .createTreePlot({ id: "tree", labels: {} }).editTreePlot({ nodes: { radius: 8 } })
+      .editHierarchyData({ target: "hierarchy", valueMode: "inclusive" })
+      .editLayout({ target: "tree-layout", options: { siblingGap: 12 } })
+      .layoutHierarchy({ id: "treemap-layout", hierarchy: "hierarchy", method: "treemap", options: { size: [200, 100], padding: 3, method: "squarify" } })
+      .createTreemapPlot({ id: "treemap", layout: "treemap-layout", labels: {} }).editTreemapPlot({ cells: { opacity: .8 } })
+      .removeMark({ target: "tree" }).removeMark({ target: "treemap" })
+      .removeResource({ kind: "layout", id: "tree-layout" }).removeResource({ kind: "layout", id: "treemap-layout" })
+      .removeResource({ kind: "hierarchy", id: "hierarchy" }),
+    chart().createParameter({ id: "factor", value: 2 })
+      .editParameter({ target: "factor", value: 3 }).removeParameter({ id: "factor" }),
+    chart().createData({ id: "parameterSource", values: [{ value: 2 }] })
+      .createParameter({ id: "factor", value: 2 })
+      .createComputedData({
+        id: "parameterComputed", source: "parameterSource", as: "scaled",
+        expression: {
+          version: 2, registry: "standard@1",
+          root: {
+            type: "binary", op: "multiply",
+            left: { type: "field", name: "value" },
+            right: { type: "parameter", id: "factor" }
+          }
+        }
+      })
+      .editParameter({ target: "factor", value: 3 }),
     chart().createData({id:"people",values:[{name:"A",age:25}]}).createData({id:"groups",values:[{person:"A"}]})
       .createLookupData({id:"ages",field:"person",lookup:{data:"people",key:"name",fields:["age"]}})
       .editLookupData({target:"ages",lookup:{data:"people",key:"name",fields:["age"],as:["years"]}}),

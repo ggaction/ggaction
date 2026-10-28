@@ -52,6 +52,18 @@ test("the documented empty filter preserves its source and stores the named empt
   assert.equal(original.semanticSpec.datasets.length, 1);
 });
 
+test("the documented prepared source workflow refreshes the current chart and retains received rows", async () => {
+  const snippet = (await blocks("data-updates.md")).find(block => block.code.includes("async function refreshSales"));
+  assert.ok(snippet);
+  const { program } = await module("prepared-source-refresh", `${snippet.code}\nexport { program };`);
+  const source = program.semanticSpec.resources.find(resource => resource.kind === "data-source");
+  assert.equal(source.result.data.id, "salesUpdated");
+  assert.deepEqual(program.semanticSpec.datasets.find(dataset => dataset.id === "salesUpdated").values,
+    [{ quarter: "Q1", revenue: 15 }, { quarter: "Q2", revenue: 20 }]);
+  assert.equal(program.semanticSpec.datasets.find(dataset => dataset.id === "sales").values[0].revenue, 12);
+  assert.ok(program.semanticSpec.layers.every(layer => layer.data === "salesUpdated"));
+});
+
 test("the LLM task fragments independently build histogram and regression programs", async () => {
   const code = await blocks("llm-authoring.md");
   const bootstrap = code.find(block => block.heading === "Complete program bootstrap").code;

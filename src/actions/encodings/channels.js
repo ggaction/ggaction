@@ -226,7 +226,7 @@ function instantiateProgram(state, ProgramClass) {
   });
 }
 
-function createDeferredProgram(program) {
+export function createDeferredEncodingProgram(program) {
   return instantiateProgram(
     programState(program),
     deferredProgramClass(program.constructor)
@@ -340,12 +340,12 @@ function finalMaterializationPlan(program, target, scaleIds) {
 
 function applyEncodingDraft(program, target, requests) {
   let draft = stageFinalPositionRoles(
-    createDeferredProgram(program),
+    createDeferredEncodingProgram(program),
     target,
     requests
   );
   if (isIndependentText(findLayer(draft, target))) {
-    const offsets = requests.filter(request => ["dx", "dy"].includes(request.channel));
+    const offsets = requests.filter(request => ["dx", "dy"].includes(request.channel) && !Object.hasOwn(request.payload, "conditions") && !Object.hasOwn(request.payload, "otherwise"));
     if (offsets.length) {
       draft = withPreviewLayerEncodings(draft, { id: target, encodings: Object.fromEntries(
         offsets.map(({ channel, payload }) => [channel, normalizeTextOffsetAssignment(payload, channel)])

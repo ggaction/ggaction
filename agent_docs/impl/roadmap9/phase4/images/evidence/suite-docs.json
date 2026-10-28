@@ -1,0 +1,67 @@
+{
+  "label": "suite-docs",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/action-capabilities.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/action-reference.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/architecture-paths.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/built-html-ids.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/documentation-coverage.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/documentation.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/documented-behavior.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/executable-programs.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/generated-images.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/getting-started.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/interaction-regressions.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/quarto-ojs-example.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/readme-authoring-sequence.test.js",
+    "/Users/hyeonjeon/.codex/worktrees/roadmap9-images/ggactionnewbrand/test/docs/readme-immutable-revisions.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 14792,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T14:06:17.908Z",
+  "finishedAt": "2026-10-28T14:06:32.702Z",
+  "source": {
+    "available": true,
+    "commit": "c0f0f7147f62a9da671b632eb5dbaf03188cd575",
+    "clean": false,
+    "statusSha256": "a9a3679e7180d9328271e82767f5f6d0d8badf5347c4f96a91f5cdfb04c16931"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "c0f0f7147f62a9da671b632eb5dbaf03188cd575",
+    "clean": false,
+    "statusSha256": "a9a3679e7180d9328271e82767f5f6d0d8badf5347c4f96a91f5cdfb04c16931"
+  },
+  "logSha256": "eaaba78addb7afca94b8a97207cd821dac5fd7949bf7134ca81ee0021027293a",
+  "discovery": {
+    "suite": "docs",
+    "selectors": [],
+    "files": [
+      "test/docs/action-capabilities.test.js",
+      "test/docs/action-reference.test.js",
+      "test/docs/architecture-paths.test.js",
+      "test/docs/built-html-ids.test.js",
+      "test/docs/documentation-coverage.test.js",
+      "test/docs/documentation.test.js",
+      "test/docs/documented-behavior.test.js",
+      "test/docs/executable-programs.test.js",
+      "test/docs/generated-images.test.js",
+      "test/docs/getting-started.test.js",
+      "test/docs/interaction-regressions.test.js",
+      "test/docs/quarto-ojs-example.test.js",
+      "test/docs/readme-authoring-sequence.test.js",
+      "test/docs/readme-immutable-revisions.test.js"
+    ]
+  },
+  "bytes": 36572,
+  "retainedBytes": 36572,
+  "truncated": false
+}

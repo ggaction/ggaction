@@ -174,7 +174,6 @@
         {
           "id": "action.filterData",
           "options": [
-            "field",
             "id"
           ]
         },
@@ -503,9 +502,7 @@
         },
         {
           "id": "action.encodeTheta",
-          "options": [
-            "field"
-          ]
+          "options": []
         },
         {
           "id": "action.encodeR",

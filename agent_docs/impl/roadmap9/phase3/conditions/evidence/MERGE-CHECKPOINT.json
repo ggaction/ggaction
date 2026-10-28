@@ -1,0 +1,47 @@
+{
+  "checkpoint": "integration-of-approved-appearance-and-where",
+  "status": "verified-partial",
+  "parents": [
+    "e758872d",
+    "77503d44"
+  ],
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js unit",
+      "tests": 5073,
+      "pass": 5073,
+      "fail": 0,
+      "skip": 0,
+      "log": "merge-unit.log.gz"
+    },
+    {
+      "command": "node scripts/run-tests.js contracts",
+      "tests": 686,
+      "pass": 686,
+      "fail": 0,
+      "skip": 0,
+      "log": "merge-contracts.log.gz"
+    },
+    {
+      "command": "npm run docs:machine:check",
+      "exit": 0
+    }
+  ],
+  "sourceDifferenceFromValidatedBranch": "Only SECOND_ARCHITECTURE prose conflict resolved; no runtime edits.",
+  "notClaimed": [
+    "STEP-016 completion",
+    "new all-CI success for the merged commit"
+  ],
+  "files": {
+    "merge-unit.log.gz": {
+      "sha256": "490f6b5f2bb912b432df1ff69cf2e11bbf842e81852a751a959b55ada27f1cb8",
+      "bytes": 185193,
+      "decodedSha256": "171c2cb2b8db9111252b1833e8cd0045d98b3daf80df334ffc0f813f5c2e4c37"
+    },
+    "merge-contracts.log.gz": {
+      "sha256": "e08648ec2a6cf238b0a36826abf9000b32c77d82626128980d104d40e94bbc5f",
+      "bytes": 27638,
+      "decodedSha256": "dfe3c8aa896a3dbeb5881ae50e62926a477fcb6e2dbec71d02493af61c97fc01"
+    }
+  }
+}

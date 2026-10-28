@@ -1,0 +1,1 @@
+export interface HierarchyTreemapResult extends Omit<HierarchyModel, "nodes"> { readonly nodes: readonly (HierarchyNode & { readonly rect: HierarchyRectangle; readonly content: HierarchyRectangle; readonly residualRect: HierarchyRectangle; readonly childOrder: readonly string[]; readonly area: number })[]; }

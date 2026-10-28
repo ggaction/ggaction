@@ -1,0 +1,1 @@
+export interface EditParameterOptions { readonly target: string; readonly value: ParameterValue; }

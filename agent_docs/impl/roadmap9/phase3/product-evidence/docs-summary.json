@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "parameter and computed-v2 documentation checkpoint",
+  "generatedAt": "2026-10-28T11:28:48.548Z",
+  "contractId": "sha256:c7c982f46a51b3f2f571de5bac1a3cfaef65ca4c568eae828204bda13f57c923",
+  "baseCommit": "8685719fb2937ef6653bd14cfabcc3edc7a4c701",
+  "environment": {
+    "node": "22.23.2",
+    "ruby": "3.2.11",
+    "rubyPath": "/opt/homebrew/opt/ruby@3.2/bin",
+    "ciRuby": "3.2.6",
+    "note": "Ruby preflight and locked dependencies pass; patch differs from CI."
+  },
+  "checks": [
+    {
+      "name": "preflight",
+      "status": "passed",
+      "log": "preflight-ruby32.log"
+    },
+    {
+      "name": "canonical generators including image manifest",
+      "status": "passed",
+      "log": "final-generate.log"
+    },
+    {
+      "name": "documentation source and executable examples",
+      "status": "passed",
+      "tests": 159,
+      "failed": 0,
+      "log": "final-docs-tests.log"
+    },
+    {
+      "name": "Jekyll build",
+      "status": "passed",
+      "log": "final-build.log"
+    },
+    {
+      "name": "built links assets and selective LLM identity",
+      "status": "passed",
+      "pages": 150,
+      "llmArtifacts": 1190,
+      "log": "final-built-links.log"
+    },
+    {
+      "name": "full browser suite",
+      "status": "passed",
+      "widths": [
+        320,
+        390,
+        768
+      ],
+      "log": "browser.log",
+      "reuse": "Full sweep preceded final runtime-only planner/resolver guard fixes; UI unchanged. Final changed parameter page was checked after rebuild."
+    },
+    {
+      "name": "final parameter page browser and axe",
+      "status": "passed",
+      "widths": [
+        1440,
+        390
+      ],
+      "violations": 0,
+      "log": "final-parameter-page-browser.log",
+      "screenshots": [
+        "parameters-1440.png",
+        "parameters-390.png"
+      ]
+    }
+  ],
+  "limitations": [
+    "This validates the current parameter/computed-v2 checkpoint, not completion of Roadmap 9 or publication."
+  ]
+}

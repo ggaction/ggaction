@@ -22,6 +22,20 @@ function ownValue(row, field, required = true) {
 // Adapters only lower authored structure to explicit nodes. Topology and value
 // validation remain in normalizeHierarchyNodes; all work shares its final limit.
 export function normalizeHierarchyInput(input, options) {
+  return resolveInput(input, options, false);
+}
+
+// Source metadata is transient: nested nodes retain their actual authored
+// object and member path, never a guessed top-level row or decoded key.
+export function resolveHierarchyInput(input, options) {
+  return resolveInput(input, options, true);
+}
+
+export function hierarchyInputSources(input, options) {
+  return resolveInput(input, options, true, false);
+}
+
+function resolveInput(input, options, includeSources, normalizeModel = true) {
   ownRecord(options, "Hierarchy input options");
   const format = Object.hasOwn(options, "format") ? options.format : undefined;
   if (typeof format !== "string" || !Object.hasOwn(FORMATS, format)) throw new Error("Hierarchy input format must be flat, nested or groups.");
@@ -48,7 +62,19 @@ export function normalizeHierarchyInput(input, options) {
     validateGeneratedItemLimit(input.length + (read("forest") && input.length > 0 ? 1 : 0), "Hierarchy input node count", maxNodes);
   }
   array(input, "Hierarchy input rows");
-  const nodes = [];
+  const nodes = [], sources = new Map();
+  const remember = (key, detail) => {
+    if (!includeSources) return;
+    const token = encodeRowKey(key, "Hierarchy source key");
+    charge(token.length + 4);
+    if (sources.has(token)) throw new Error("Hierarchy source node keys must be unique.");
+    sources.set(token, detail);
+  };
+  const finish = (explicit, settings) => {
+    if (!normalizeModel) return sources;
+    const model = normalizeHierarchyNodes(explicit, settings, work);
+    return includeSources ? { model, sources } : model;
+  };
   const push = node => {
     validateGeneratedItemLimit(nodes.length + 1, "Hierarchy input node count", maxNodes);
     charge(8);
@@ -70,7 +96,7 @@ export function normalizeHierarchyInput(input, options) {
       row(source);
       const value = ownValue(source, valueField);
       if (!Number.isFinite(value) || value < 0) throw new TypeError("Hierarchy grouped weights must be nonnegative finite numbers.");
-      const parts = [];
+      const parts = [], path = [];
       let parentKey = null;
       fields.forEach((field, depth) => {
         const category = ownValue(source, field);
@@ -80,6 +106,7 @@ export function normalizeHierarchyInput(input, options) {
         const token = category === null ? null : encodeRowKey(category, "Hierarchy category");
         if (token !== null) charge(token.length);
         parts.push(token);
+        path.push(category);
         const key = JSON.stringify(["group-path", parts]);
         charge(key.length);
         let node = groups.get(key);
@@ -87,40 +114,44 @@ export function normalizeHierarchyInput(input, options) {
           node = { key, parentKey, sourceRows: [], values: depth === fields.length - 1 ? [] : null };
           groups.set(key, node);
           push(node);
+          remember(key, { key, parentKey, path: [...path], rows: node.sourceRows });
         }
         node.sourceRows.push(index);
         if (node.values) node.values.push(value);
         parentKey = key;
       });
     });
+    if (!normalizeModel) return sources;
     const explicit = nodes.map(({ key, parentKey, sourceRows, values }) => ({ key, parentKey, sourceRows,
       ...(values ? { value: stableFiniteSum(values, "Hierarchy grouped leaf total", { compensated: true }) } : {}) }));
-    return normalizeHierarchyNodes(explicit, { ...normalizedOptions, forest: true }, work);
+    return finish(explicit, { ...normalizedOptions, forest: true });
   }
   const keyField = requireStringValue(read("key"), "Hierarchy key field");
   const structuralField = requireStringValue(read(format === "flat" ? "parent" : "children"), "Hierarchy structural field");
   if (format === "flat") {
     input.forEach((source, index) => {
       row(source);
+      remember(ownValue(source, keyField), { key: ownValue(source, keyField), object: source, parentKey: ownValue(source, structuralField), row: index, member: { index } });
       push({ key: ownValue(source, keyField), parentKey: ownValue(source, structuralField),
         ...(Object.hasOwn(source, valueField) ? { value: source[valueField] } : {}), sourceRows: [index] });
     });
   } else {
-    const seen = new WeakSet(), pending = input.map((source, index) => ({ source, index, parentKey: null })).reverse();
+    const seen = new WeakSet(), pending = input.map((source, index) => ({ source, index, parentKey: null, member: { index } })).reverse();
     while (pending.length > 0) {
-      const { source, index, parentKey } = pending.pop();
+      const { source, index, parentKey, member } = pending.pop();
       row(source);
       if (seen.has(source)) throw new Error("Nested hierarchy nodes cannot be cyclic or shared.");
       seen.add(source);
       const key = ownValue(source, keyField);
+      remember(key, { key, object: source, parentKey, row: index, member });
       push({ key, parentKey, ...(Object.hasOwn(source, valueField) ? { value: source[valueField] } : {}), sourceRows: [index] });
       const children = ownValue(source, structuralField, false);
       if (children !== undefined) {
         if (Array.isArray(children)) validateGeneratedItemLimit(nodes.length + pending.length + children.length, "Hierarchy input node count", maxNodes);
         array(children, "Hierarchy nested children");
-        for (let child = children.length - 1; child >= 0; child--) pending.push({ source: children[child], index, parentKey: key });
+        for (let child = children.length - 1; child >= 0; child--) pending.push({ source: children[child], index, parentKey: key, member: includeSources ? { parent: member, field: structuralField, index: child } : undefined });
       }
     }
   }
-  return normalizeHierarchyNodes(nodes, normalizedOptions, work);
+  return finish(nodes, normalizedOptions);
 }

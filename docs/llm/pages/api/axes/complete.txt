@@ -264,7 +264,10 @@ Cartesian label styles accept `rotation`, `maxWidth`, `wrap`, `lineHeight`, and
 facades. Numeric rotations are radians; `{ value, unit }` accepts radians or
 degrees. Setting a positive `maxWidth` stores deterministic word or character
 wrapping as concrete text lines. Word wrapping is the default, and an oversized
-word is split by Unicode code point. `lineHeight` defaults to `fontSize * 1.2`
+word is split only between Unicode grapheme clusters using `Intl.Segmenter`.
+Combining marks, Hangul sequences, and emoji clusters stay intact, even when a
+single cluster exceeds `maxWidth`. LF, CRLF, and CR breaks preserve separate
+lines and blank-line spacing. `lineHeight` defaults to `fontSize * 1.2`
 and cannot be smaller than the font size.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.

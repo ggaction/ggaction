@@ -32,6 +32,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 | Action | Authoring role | API layer | Domain |
 | --- | --- | --- | --- |
+| [`applyDataUpdate`](./actions/charts-data.md#applydataupdate) | H3 | user-facing | core |
 | [`applyTextMetrics`](./actions/charts-data.md#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](./actions/charts-data.md#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](./actions/charts-data.md#bindmarkdata) | H2 | user-facing | core |
@@ -68,6 +69,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createGrid`](./actions/guides.md#creategrid) | H3 | user-facing | grid |
 | [`createGuides`](./actions/guides.md#createguides) | H3 | user-facing | legend_and_title |
 | [`createHeatmap`](./actions/charts-data.md#createheatmap) | H0 | user-facing | charts |
+| [`createHierarchyData`](./actions/charts-data.md#createhierarchydata) | H2 | user-facing | core |
 | [`createHistogram`](./actions/charts-data.md#createhistogram) | H0, H1 | user-facing | charts |
 | [`createHorizonPlot`](./actions/statistics.md#createhorizonplot) | H0, H1 | user-facing | statistics |
 | [`createHorizontalGrid`](./actions/guides.md#createhorizontalgrid) | H3 | user-facing | grid |
@@ -86,6 +88,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createParallelAxes`](./actions/guides.md#createparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](./actions/guides.md#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](./actions/charts-data.md#createparallelcoordinates) | H0 | user-facing | charts |
+| [`createParameter`](./actions/charts-data.md#createparameter) | H2 | user-facing | core |
 | [`createPiePlot`](./actions/charts-data.md#createpieplot) | H0 | user-facing | charts |
 | [`createPivotData`](./actions/statistics.md#createpivotdata) | H1 | user-facing | statistics |
 | [`createPointMark`](./actions/marks.md#createpointmark) | H2 | user-facing | marks |
@@ -130,6 +133,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTickMark`](./actions/marks.md#createtickmark) | H2 | user-facing | marks |
 | [`createTimeUnitData`](./actions/charts-data.md#createtimeunitdata) | H2 | user-facing | core |
 | [`createTitle`](./actions/guides.md#createtitle) | H3 | user-facing | legend_and_title |
+| [`createTreemapPlot`](./actions/charts-data.md#createtreemapplot) | H0, H1 | user-facing | charts |
+| [`createTreePlot`](./actions/charts-data.md#createtreeplot) | H0, H1 | user-facing | charts |
 | [`createVerticalGrid`](./actions/guides.md#createverticalgrid) | H3 | user-facing | grid |
 | [`createViolinPlot`](./actions/statistics.md#createviolinplot) | H0, H1 | user-facing | statistics |
 | [`createWindowData`](./actions/charts-data.md#createwindowdata) | H2 | user-facing | core |
@@ -178,10 +183,12 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphics`](./actions/extension.md#editgraphics) | H4 | primitive | primitives |
 | [`editGrid`](./actions/guides.md#editgrid) | H3 | user-facing | grid |
+| [`editHierarchyData`](./actions/charts-data.md#edithierarchydata) | H2 | user-facing | core |
 | [`editHorizon`](./actions/encodings.md#edithorizon) | H2, H3 | user-facing | encodings |
 | [`editHorizontalGrid`](./actions/guides.md#edithorizontalgrid) | H3 | user-facing | grid |
 | [`editImputedData`](./actions/statistics.md#editimputeddata) | H1, H3 | user-facing | statistics |
 | [`editIntervalData`](./actions/statistics.md#editintervaldata) | H1, H3 | user-facing | statistics |
+| [`editLayout`](./actions/charts-data.md#editlayout) | H2 | user-facing | core |
 | [`editLegend`](./actions/guides.md#editlegend) | H3 | user-facing | legend_and_title |
 | [`editLegendBlock`](./actions/guides.md#editlegendblock) | H3 | user-facing | legend_and_title |
 | [`editLegendBorder`](./actions/guides.md#editlegendborder) | H3 | user-facing | legend_and_title |
@@ -199,6 +206,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editOverlay`](./actions/marks.md#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](./actions/guides.md#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./actions/charts-data.md#editparallelscale) | H2 | user-facing | core |
+| [`editParameter`](./actions/charts-data.md#editparameter) | H3 | user-facing | core |
 | [`editPivotData`](./actions/statistics.md#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
 | [`editRadarPlot`](./actions/charts-data.md#editradarplot) | H1, H3 | user-facing | charts |
@@ -238,6 +246,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editTickMark`](./actions/marks.md#edittickmark) | H3 | user-facing | marks |
 | [`editTimeUnitData`](./actions/charts-data.md#edittimeunitdata) | H2 | user-facing | core |
 | [`editTitle`](./actions/guides.md#edittitle) | H3 | user-facing | legend_and_title |
+| [`editTreemapPlot`](./actions/charts-data.md#edittreemapplot) | H1, H3 | user-facing | charts |
+| [`editTreePlot`](./actions/charts-data.md#edittreeplot) | H1, H3 | user-facing | charts |
 | [`editVerticalGrid`](./actions/guides.md#editverticalgrid) | H3 | user-facing | grid |
 | [`editViolinPlot`](./actions/statistics.md#editviolinplot) | H1, H3 | user-facing | statistics |
 | [`editWindowData`](./actions/charts-data.md#editwindowdata) | H2 | user-facing | core |
@@ -296,6 +306,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](./actions/charts-data.md#highlightmarks) | H3 | user-facing | mark-selection |
 | [`insertCompositionChild`](./actions/charts-data.md#insertcompositionchild) | H3 | user-facing | composition |
 | [`jitterPoints`](./actions/marks.md#jitterpoints) | H3 | user-facing | marks |
+| [`layoutHierarchy`](./actions/charts-data.md#layouthierarchy) | H2 | user-facing | core |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | H3 | user-facing | marks |
 | [`layoutSeries`](./actions/encodings.md#layoutseries) | H2 | user-facing | encodings |
 | [`orderCategories`](./actions/encodings.md#ordercategories) | H2 | user-facing | encodings |
@@ -316,10 +327,12 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeMarkSelection`](./actions/advanced.md#removemarkselection) | H3 | advanced | mark-selection |
 | [`removeParallelAxes`](./actions/guides.md#removeparallelaxes) | H3 | user-facing | axes |
 | [`removeParallelAxis`](./actions/guides.md#removeparallelaxis) | H3 | user-facing | axes |
+| [`removeParameter`](./actions/charts-data.md#removeparameter) | H3 | user-facing | core |
 | [`removePathOrder`](./actions/encodings.md#removepathorder) | H2, H3 | user-facing | encodings |
 | [`removePointPacking`](./actions/marks.md#removepointpacking) | H3 | user-facing | marks |
 | [`removePointRadius`](./actions/encodings.md#removepointradius) | H2, H3 | user-facing | encodings |
 | [`removeRadialAxis`](./actions/guides.md#removeradialaxis) | H3 | user-facing | axes |
+| [`removeResource`](./actions/charts-data.md#removeresource) | H2 | user-facing | core |
 | [`removeScale`](./actions/charts-data.md#removescale) | H2 | user-facing | core |
 | [`removeTextMetrics`](./actions/charts-data.md#removetextmetrics) | H3 | user-facing | core |
 | [`removeTheme`](./actions/charts-data.md#removetheme) | H3 | user-facing | core |

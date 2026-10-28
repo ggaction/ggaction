@@ -1,0 +1,381 @@
+{
+  "state": "approved",
+  "visualApproval": "pending",
+  "publicPaintIntegration": "pending",
+  "codeBase": "1028b202291a941ab8f02b9e2df10950a6e81d59",
+  "recordedAt": "2026-10-28T15:14:29.767Z",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "inputs": {
+    "src/grammar/shadow.js": "111e61c486ad798535cc29ef73abd1c61ff51fc69030b8d36be4cc1bbe8fa4f5",
+    "test/oracles/shadow.js": "60a0ffb6f6d52b887c426582e62003faef327369a87ac35ccb9ba35b5ecd99f6",
+    "test/unit/grammar/shadow.test.js": "18ddb78943d8eaa9c42636cc1032077f885e9a746105868aa47650292274f5e5",
+    "test/capabilities.json": "0f593fcea81268dd912374096bfff4ce92e6f401141df20a9bac990365c88e6e",
+    "test/gates/shadow-paints/backends.render.js": "743b23b0ff6756f710f16a0215894e4b1638a14b564e38c97012ed94c8ab7966",
+    "test/gates/shadow-paints/browser.html": "2ef5096cc8ca9f396e8e1bcaa26f51cc948c309121067df761d2fe0f8bba2909",
+    "test/gates/shadow-paints/fixture.js": "f16b38c86c4a330eddb2a78620a6755fe132743f42ee88e38a74130cf09e2b3c",
+    "test/gates/shadow-paints/manifest.js": "f6ca564c1b56362c597a077b6c7f36f6f74244fe3ae87865561006ac487f2529",
+    "test/gates/shadow-paints/primitive.program.js": "a72a22b486e896e0298fbe312299f9724bc133c6735632db6fc6756d635c3f18",
+    "test/gates/shadow-paints/primitive.test.js": "d69d5325dd821310a7d8055f3387ea87f1ed93834a10cad68684601e0d08f5a4",
+    "test/gates/shadow-paints/reference.js": "3395fdea9bfc3d153ccda91bd6ae9d1e6deae210cff6a43c2e298dc62a7ef3bd",
+    "agent_docs/impl/roadmap9/phase4/shadows/REVIEW.md": "c1f35c4264de743470596e06384e52cfe2e21b26b7b4462416f94461af9dd5bc"
+  },
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js unit unit/grammar/shadow.test.js unit/grammar/paint.test.js unit/grammar/patterns.test.js unit/grammar/radial-gradient.test.js unit/support/coverage-policy.test.js",
+      "exit": 0,
+      "tests": 37,
+      "pass": 37,
+      "fail": 0,
+      "log": ".artifacts/shadow-review/unit-final.log",
+      "sha256": "d800c70df8bc2624be0842b3a564e28bdadca6b2cf88b90cf85ec52219d0283c"
+    },
+    {
+      "command": "node scripts/run-tests.js gates gates/shadow-paints/primitive.test.js",
+      "exit": 0,
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "log": ".artifacts/shadow-review/primitive-final.log",
+      "sha256": "41aa13b849ca3e8594e7f750f9c619d2dcffe8aa476a720c0b9445a4fe4bcfbc"
+    },
+    {
+      "command": "node scripts/run-tests.js render gates/shadow-paints/backends.render.js",
+      "exit": 0,
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "log": ".artifacts/shadow-review/render-final.log",
+      "sha256": "a6bc020e100daacec1311c38075a60cdf50a7f08c086a007831479e450788cb0"
+    },
+    {
+      "command": "node --experimental-test-coverage --test-coverage-include=src/grammar/shadow.js --test test/unit/grammar/shadow.test.js",
+      "exit": 0,
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "log": ".artifacts/shadow-review/coverage-final.log",
+      "sha256": "7b1dcfd37346493ec124682d04e79755ff902e163e31a2c53bcc4e1bbd469cae"
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js",
+      "exit": 0,
+      "tests": 38,
+      "pass": 38,
+      "fail": 0,
+      "log": ".artifacts/shadow-review/review-contracts.log",
+      "sha256": "40c142436f78fb9c69951c643d50a29bf14403407a05483a2195150d416c36a5"
+    },
+    {
+      "command": "npm run package:check",
+      "exit": 0,
+      "log": ".artifacts/shadow-review/review-package.log",
+      "sha256": "f226aeb3bfc1ab906b3a910c5d2d3bd9951d524add8eab15616ac198d414c1a0"
+    }
+  ],
+  "outputRoot": ".artifacts/test/png/review/shadow-paints/",
+  "outputs": {
+    "alpha-once/browser-canvas.png": {
+      "sha256": "cb4c1816f2dde897d85d246e5441b7bd4dd7a3fe488f679316c7fd264ecb2feb",
+      "bytes": 5826
+    },
+    "alpha-once/browser-svg.png": {
+      "sha256": "cb4c1816f2dde897d85d246e5441b7bd4dd7a3fe488f679316c7fd264ecb2feb",
+      "bytes": 5826
+    },
+    "alpha-once/evidence.json": {
+      "sha256": "04f529303f13552d95fdc8985c0311e2a9470227f64d9f9888df8c1b47be5344",
+      "bytes": 14158
+    },
+    "alpha-once/pdf-4x.png": {
+      "sha256": "b574214a63d2a0cb4b5be8e960c71b9a276b95a7d921a24aaf4719d873f8ef1e",
+      "bytes": 11662
+    },
+    "alpha-once/pdf.png": {
+      "sha256": "d0eb177341001f9530449579be830da297e79417a865db1bfd6459de3e71ab78",
+      "bytes": 3558
+    },
+    "alpha-once/primitive.pdf": {
+      "sha256": "e8f6d55a8b775df30ccb6cef4433fa8181102b36ea3924f09c912362f0890c86",
+      "bytes": 14325
+    },
+    "alpha-once/primitive.png": {
+      "sha256": "cd2df63ff214b329d17ac3c79e7d55095ad83295aa038399776363b3dde7dcd4",
+      "bytes": 3867
+    },
+    "alpha-once/primitive.svg": {
+      "sha256": "76a5d93459021a046a40493fff268468aba4c934f843ed6a10fc2be4a7488f0b",
+      "bytes": 3465
+    },
+    "alpha-once/sublayer.png": {
+      "sha256": "e75bcd19bc260bb02a5e3d953e324fc5e18a98e843e30aeb62010a90d0d1f27d",
+      "bytes": 2267
+    },
+    "alpha-once/variant.json": {
+      "sha256": "f862c37a6b6e568f24363a497aebc7e8ef7ddc995dfee403a3da4caa4fc4dfdc",
+      "bytes": 269
+    },
+    "circle/browser-canvas.png": {
+      "sha256": "48a88c66da6264244d664f25bc9e50ca4088416d725f385ad61162d82d93f692",
+      "bytes": 7828
+    },
+    "circle/browser-svg.png": {
+      "sha256": "48a88c66da6264244d664f25bc9e50ca4088416d725f385ad61162d82d93f692",
+      "bytes": 7828
+    },
+    "circle/evidence.json": {
+      "sha256": "0b4991848951c612b51b7eb190b460a065b746bef4616500f964ea5064c8a61e",
+      "bytes": 14135
+    },
+    "circle/pdf-4x.png": {
+      "sha256": "b4be40ea942c16989b373a1dbd62825d69e2872c9410f00738b10a28f172925b",
+      "bytes": 12084
+    },
+    "circle/pdf.png": {
+      "sha256": "e286b2576a5107c6f8d01ceab1dcbd00f62d066766c7096a0b9f443c4f74410f",
+      "bytes": 5122
+    },
+    "circle/primitive.pdf": {
+      "sha256": "b7b0beff472fdd805cf5c847a6de4698ff9606a2b2d0b9c7368ab4d8382b93d0",
+      "bytes": 14615
+    },
+    "circle/primitive.png": {
+      "sha256": "9b7e5ac7f5befcf476565c9924d6cb2db13251b7fa3aeb6759b6f464086c4b63",
+      "bytes": 5635
+    },
+    "circle/primitive.svg": {
+      "sha256": "2bcceb802a2c250c40b80889c62497a77fb6d7f378c96816f5c0bb8f202243cd",
+      "bytes": 6893
+    },
+    "circle/sublayer.png": {
+      "sha256": "3d25acfe28bc57cc109daeff48facba47cccabfac2257631fa62e305fbc233d3",
+      "bytes": 4841
+    },
+    "circle/variant.json": {
+      "sha256": "0cf9363ae31394d8dffc992bc4eae7d4702a128f60862bbecf655954782d9013",
+      "bytes": 253
+    },
+    "clip/browser-canvas.png": {
+      "sha256": "e4cb1a303c01ca59ea583fed0fce1de490d74f8b6f0690e64a4e44119ba52fca",
+      "bytes": 2978
+    },
+    "clip/browser-svg.png": {
+      "sha256": "e4cb1a303c01ca59ea583fed0fce1de490d74f8b6f0690e64a4e44119ba52fca",
+      "bytes": 2978
+    },
+    "clip/evidence.json": {
+      "sha256": "9e553558e92983b39a84950e59e2de2145f4e3d1594cdae60a94615e7c2517b0",
+      "bytes": 14132
+    },
+    "clip/pdf-4x.png": {
+      "sha256": "ae2a73860c0dbff43e85f9ca51e18a798eab10091f6f3da6cf67b7753cd2a266",
+      "bytes": 6066
+    },
+    "clip/pdf.png": {
+      "sha256": "c03ada1c35add6bb638392eaab06c808da9cd54dac8d2886f8fbffe6ebe106f8",
+      "bytes": 1306
+    },
+    "clip/primitive.pdf": {
+      "sha256": "2c3d3945fa6e0a48e5faba6210e9f6a32e48d9e8b273b83ac66528f9e9253638",
+      "bytes": 12564
+    },
+    "clip/primitive.png": {
+      "sha256": "ccd7f44bcb95147b4c78c84d740602a4222f37925956cce981d16001e0cc3633",
+      "bytes": 1506
+    },
+    "clip/primitive.svg": {
+      "sha256": "2fae45220175fd1ce4db3be323640c347cbb3e53acd6576c6c66f373f2f3faf0",
+      "bytes": 3846
+    },
+    "clip/sublayer.png": {
+      "sha256": "48021b1bec9c165fed333541e102513a2ae04a209ccafaee8cfeee9f26914ae2",
+      "bytes": 2475
+    },
+    "clip/variant.json": {
+      "sha256": "70e61b0642012158d3e436ead1689ed9c6bd841baea6c1221ceeb2a74e789b3d",
+      "bytes": 245
+    },
+    "contact-sheet.png": {
+      "sha256": "bc942c39be4424cf069456b992207c504deb98912c27e0f9321bb329e81147bf",
+      "bytes": 19488
+    },
+    "negative-offset/browser-canvas.png": {
+      "sha256": "5575b55a1de4a014a65ff7aa6be3baf1ebfbddbd00876c215342e9b42e4b8de3",
+      "bytes": 6598
+    },
+    "negative-offset/browser-svg.png": {
+      "sha256": "5575b55a1de4a014a65ff7aa6be3baf1ebfbddbd00876c215342e9b42e4b8de3",
+      "bytes": 6598
+    },
+    "negative-offset/evidence.json": {
+      "sha256": "1f42cbfd6d226ca145d2f15b00aa277278121e052d8251635431b6a57b094452",
+      "bytes": 14126
+    },
+    "negative-offset/pdf-4x.png": {
+      "sha256": "b9f01738093cae89e717c6d6c28fd0f4fe8387489a82d825e22abb9b70350b1c",
+      "bytes": 13945
+    },
+    "negative-offset/pdf.png": {
+      "sha256": "836459a3ab4e4f5425606d96b3512ec477985c7074585a2a0c3d753567146f48",
+      "bytes": 4190
+    },
+    "negative-offset/primitive.pdf": {
+      "sha256": "f96d5ab0c4f68e4dfd60555a844e70896251b6877b65ffbcdc84ca4cc8b28e4f",
+      "bytes": 15613
+    },
+    "negative-offset/primitive.png": {
+      "sha256": "0cd1c93172022ee6a4f17eb24bccc173b2c392de640d9679b6cc5b1a991c2e19",
+      "bytes": 4761
+    },
+    "negative-offset/primitive.svg": {
+      "sha256": "7b00656f688ffa45e643ad98a87d7e495f9fdb7504bce2c2fdf90357b5f241ab",
+      "bytes": 3642
+    },
+    "negative-offset/sublayer.png": {
+      "sha256": "4a82ec0dee0c3881e6694962eb13635269da39d5aae4d07bb6f3bf0c785a67e5",
+      "bytes": 2396
+    },
+    "negative-offset/variant.json": {
+      "sha256": "ca0f83130b366db7413b1dd42fa24856664a2ea166131a0214a0bccb9129805d",
+      "bytes": 289
+    },
+    "results.json": {
+      "sha256": "b331b77d17ffbb2921d5edc502e55f76ce2666a43244caebc0f249e1d5553db5",
+      "bytes": 108478
+    },
+    "soft-shadow/browser-canvas.png": {
+      "sha256": "c03dafde4aa0241119908f00bbe3ec654b18807e82c010f6b32b8f848ccf1b8c",
+      "bytes": 6339
+    },
+    "soft-shadow/browser-svg.png": {
+      "sha256": "c03dafde4aa0241119908f00bbe3ec654b18807e82c010f6b32b8f848ccf1b8c",
+      "bytes": 6339
+    },
+    "soft-shadow/evidence.json": {
+      "sha256": "63d8c5c660c70de86b392d80cbb1d609231fc8251755e1c675879b21900c5a4f",
+      "bytes": 14120
+    },
+    "soft-shadow/pdf-4x.png": {
+      "sha256": "0b7726458799e3f11ab339290e9807faa93b3cefafde0f2ffa8b2b15d3dbc04c",
+      "bytes": 13045
+    },
+    "soft-shadow/pdf.png": {
+      "sha256": "c2ce0bc16ef3cef1e24b0e660767781805ffbaa6e950a2694615689063e7f67e",
+      "bytes": 4000
+    },
+    "soft-shadow/primitive.pdf": {
+      "sha256": "1b93b3df2be31502fed4a6ba9d078392dcb5694961e55ab0fac4f254acb1bf7f",
+      "bytes": 15479
+    },
+    "soft-shadow/primitive.png": {
+      "sha256": "4debf5f2fec59830fd56b560d907938753f0fd024f212a5e99dd3ebedaf9eebb",
+      "bytes": 4491
+    },
+    "soft-shadow/primitive.svg": {
+      "sha256": "bd86cd13ff973c4a3f1d0637f0c1ba41aebc48d2ad6caa48289db66967f6445a",
+      "bytes": 3742
+    },
+    "soft-shadow/sublayer.png": {
+      "sha256": "48021b1bec9c165fed333541e102513a2ae04a209ccafaee8cfeee9f26914ae2",
+      "bytes": 2475
+    },
+    "soft-shadow/variant.json": {
+      "sha256": "9cb4fd4456ab6a1f3d9bf36f47939266d33bb96b39ac39f018c09c4a63ffba9a",
+      "bytes": 273
+    },
+    "zero-blur/browser-canvas.png": {
+      "sha256": "50c1792c455b17bc799fbea3da46be645a9f8864edc49eb2e4272e6bbe8f71eb",
+      "bytes": 3362
+    },
+    "zero-blur/browser-svg.png": {
+      "sha256": "50c1792c455b17bc799fbea3da46be645a9f8864edc49eb2e4272e6bbe8f71eb",
+      "bytes": 3362
+    },
+    "zero-blur/evidence.json": {
+      "sha256": "7badf7d0981acbb7237e0abb00cf5d601aed2af29abe7dea0895006375263e35",
+      "bytes": 14116
+    },
+    "zero-blur/pdf-4x.png": {
+      "sha256": "beaaf57dfea90a71cd6c8ac8e4f9716bf7af436e11ad5490201d484079b8c5f8",
+      "bytes": 8124
+    },
+    "zero-blur/pdf.png": {
+      "sha256": "91da5dba72a36d60590f9721c32b16d0a12927fa160561563e339e8139d64461",
+      "bytes": 1746
+    },
+    "zero-blur/primitive.pdf": {
+      "sha256": "0a971bea928e2e8485ea92c9acbb114ffff26b42d1d112acc5a012b01d44f7b0",
+      "bytes": 12021
+    },
+    "zero-blur/primitive.png": {
+      "sha256": "79e10888c1c90405cb24cdeb2814077d707a2dd5693f57a5e8202b86d2208be0",
+      "bytes": 1902
+    },
+    "zero-blur/primitive.svg": {
+      "sha256": "103427ecb2c9a5a10e63f0073f7b0ce34c392c88585db186f6c4dba78901c403",
+      "bytes": 848
+    },
+    "zero-blur/sublayer.png": {
+      "sha256": "4228374bee318793a1f2af1c0be41bd0f3586f782d549f489f8a25f5a8e8cb70",
+      "bytes": 306
+    },
+    "zero-blur/variant.json": {
+      "sha256": "10b35bdd7301002bb7e562855aaeaa286fb511fb924d14ad05e084f6665843e7",
+      "bytes": 265
+    }
+  },
+  "assertionSummary": {
+    "variants": 6,
+    "samplesPerVariant": 8,
+    "outputPaths": 4,
+    "acceptedSamples": 192,
+    "failedAcceptedSamples": 0,
+    "pdfAlphaExactBytes": 46200,
+    "pdfVisibleRGB": "exact decoded common PNG bytes",
+    "pdfRasterScope": "effect glyph only; image and mask dimensions validated",
+    "pdfSamplePolicy": "288dpi at physical (4x+2,4y+2), same analytic RGB ±1 and exact alpha",
+    "pdf72dpiDiagnosticFailures": 2,
+    "no72dpiPixelEqualityClaim": true
+  },
+  "diagnostics": {
+    "firstRenderLog": {
+      "path": ".artifacts/shadow-review/first-render/render.log",
+      "sha256": "7dbdc6d56e28b5990278e5a0dd2bf50e7deb4aeb34bf90e440095eaf6b9c6f6d"
+    },
+    "firstRenderResults": {
+      "path": ".artifacts/shadow-review/first-render/results.json",
+      "sha256": "88eb8d59a67ada470e0c1d7d828c72d1baef45b7d093ae3d38e816af04920554"
+    },
+    "noSmoothingLog": {
+      "path": ".artifacts/shadow-review/render-no-smoothing.log",
+      "sha256": "102f471c43fb8012779905bc5073be4cb2e9b0b7e71acc2d0ea7bd9c66eb5e31"
+    }
+  },
+  "coverage": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "package": {
+    "entries": 681,
+    "packedBytes": 1014128,
+    "unpackedBytes": 4727468
+  },
+  "manualInspection": {
+    "images": [
+      "contact-sheet.png",
+      "alpha-once/pdf-4x.png"
+    ],
+    "result": "Zero/soft/negative offset shadows, one-time glyph opacity, clip, circle silhouette and separate vector sibling visible. User approval pending."
+  },
+  "codeRevision": "10f04609160998a54e969ea909b89b48cf42aa3e",
+  "evidenceRevision": "10f04609160998a54e969ea909b89b48cf42aa3e",
+  "approval": {
+    "source": "Explicit user response in current conversation, relayed by parent /root",
+    "text": "표시한 그림자와 처리 방식 승인",
+    "sourceEvidenceRevision": "10f04609160998a54e969ea909b89b48cf42aa3e"
+  }
+}
