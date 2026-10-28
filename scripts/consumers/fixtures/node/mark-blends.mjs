@@ -10,6 +10,20 @@ import { createCanvas, loadImage } from "@napi-rs/canvas";
 const base = factory => factory().createCanvas({ width: 200, height: 160, margin: 0, background: "#336699" })
   .createData({ id: "rows", values: [{ x: 100, y: 80, text: "AB" }] });
 export const cases = [
+  { id: "paint/blend-facade-text-and-rule", run() {
+    const p = base(chart), labels = { value: "Label", blend: "screen" };
+    for (const q of [p.createTextPlot({ x: "x", y: "y", text: "text", style: { blend: "screen" }, guides: false }),
+      p.createDotPlot({ category: "text", value: "y", labels, guides: false }),
+      p.createLollipopPlot({ category: "text", value: "y", labels, stem: { blend: "screen" }, guides: false }),
+      p.createDumbbellPlot({ category: "text", start: "x", end: "y", labels, connector: { blend: "screen" }, guides: false }),
+      p.createECDFPlot({ field: "y", labels, guides: false })]) {
+      for (const layer of q.semanticSpec.layers.filter(layer => ["text", "rule"].includes(layer.mark.type))) {
+        assert.equal(layer.mark.blend, "screen");
+        assert.ok(q.graphicSpec.objects[layer.id].items.every(item => item.properties.blend === "screen"));
+      }
+      assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec, q.graphicSpec);
+    }
+  } },
   { id: "paint/blend-nine-owners-and-basic", run() {
     for (const name of ["Point", "Bar", "Rect", "Area", "Arc", "Text", "Line", "Rule", "Tick"]) {
       const p = base(chart)[`create${name}Mark`]({ blend: "screen" });

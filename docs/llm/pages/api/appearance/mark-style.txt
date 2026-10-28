@@ -283,7 +283,8 @@ Point, Bar, Rect, Area, Arc, Text, Line, Rule, and Tick create/edit options acce
 `blend: "normal" | "multiply" | "screen" | "difference"`. Create omission means
 normal painting; edit omission preserves the mode. `blend: "normal"` restores it.
 The option also reaches attached labels, annotations, reference marks, Lollipop
-stems, and Dumbbell connectors through their existing style objects.
+stems, and Dumbbell connectors through their existing style objects. Text plot
+styles and Dot, Lollipop, Dumbbell, and ECDF labels accept it as well.
 
 For each non-normal item, the renderer combines its fill and stroke or outline,
 applies opacity once, and blends that source over earlier content. Normal restores

@@ -25,6 +25,24 @@ for (const dataset of datasets) for (const recipe of ["vertical", "horizontal", 
     try {
       const { rows, provenance, program: base } = structuredPaintRecordBase(dataset);
       assert.equal(provenance.sourceDataset, dataset); assert.match(provenance.sourceSelectionSha256, /^[a-f0-9]{64}$/u); assert.ok(rows.length >= 8);
+      const field = recipe === "magnitude" ? "magnitude" : "value", orientation = recipe === "horizontal" ? "horizontal" : "vertical";
+      for (const blend of ["normal", "multiply", "screen", "difference"]) {
+        const endpoint = { category: "category", value: field, summary: "mean", orientation, guides: false, labels: { value: "Label", blend } };
+        for (const q of [base.createDotPlot(endpoint), base.createLollipopPlot({ ...endpoint, stem: { blend } }),
+          base.createDumbbellPlot({ category: "category", start: "index", end: field, summary: "mean", orientation, guides: false, labels: { value: "Label", blend, endpoint: "both" }, connector: { blend } }),
+          base.createECDFPlot({ field, guides: false, labels: { value: "Label", blend } }),
+          base.createTextPlot({ x: "index", y: field, text: "category", style: { blend }, guides: false })]) {
+          const layers = q.semanticSpec.layers.filter(layer => ["text", "rule"].includes(layer.mark.type));
+          assert.ok(layers.some(layer => layer.mark.type === "text"));
+          for (const layer of layers) {
+            assert.equal(layer.mark.blend, blend === "normal" ? undefined : blend);
+            assert.ok(q.graphicSpec.objects[layer.id].items.every(item => item.properties.blend === (blend === "normal" ? undefined : blend)));
+          }
+          const resized = q.editCanvas({ width: 390 });
+          assertGraphicIntegrity(resized, `${dataset}/${recipe}/facade`);
+          assert.deepEqual(deserializeProgram(serializeProgram(resized)).graphicSpec, resized.graphicSpec);
+        }
+      }
       for (const owner of owners) {
         const suffix = owner[0].toUpperCase() + owner.slice(1), create = `create${suffix}Mark`, edit = `edit${suffix}Mark`;
         const options = {};

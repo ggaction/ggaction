@@ -43,7 +43,7 @@ const RULE_OPTIONS = Object.freeze([
   "blend", "clip", "stroke", "strokeWidth", "strokeDash", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const LABEL_OPTIONS = Object.freeze([
-  "clip",   "endpoint", "field", "value", "content", "normalizeBy", "format", "layout",
+  "blend",   "clip",   "endpoint", "field", "value", "content", "normalizeBy", "format", "layout",
   "fill", "opacity", "fontSize", "fontFamily", "fontWeight", "align", "baseline",
   "rotation", "dx", "dy"
 ]);

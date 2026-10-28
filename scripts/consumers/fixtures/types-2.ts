@@ -2146,3 +2146,9 @@ async function imageConsumer() {
   // @ts-expect-error resource authoring requires authentic preparation
   base.createImageResource({prepared: {kind: "image-resource", request: {kind: "create", id: "logo"}}, requestToken: "now"});
 }
+
+chart().createTextPlot({ x: "x", y: "y", text: "text", style: { blend: "screen" } });
+chart().createDotPlot({ category: "c", value: "y", labels: { blend: "screen" } });
+chart().createLollipopPlot({ category: "c", value: "y", stem: { blend: "multiply" }, labels: { blend: "screen" } });
+chart().createDumbbellPlot({ category: "c", start: "x", end: "y", connector: { blend: "difference" }, labels: { blend: "screen" } });
+chart().createECDFPlot({ field: "y", labels: { blend: "screen" } });

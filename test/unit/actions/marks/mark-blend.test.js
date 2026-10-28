@@ -96,3 +96,31 @@ test("blend survives conditional opacity, selection restoration and composition 
     for (const child of Object.values(next.children)) assert.ok(child.graphicSpec.objects.point.items.every(item => item.properties.blend === "difference"));
   }
 });
+
+
+test("facade Text styles and endpoint Rule styles forward their declared blend intent", () => {
+  for (const blend of ["normal", "multiply", "screen", "difference"]) {
+    const p = base();
+    const options = { category: "c", value: "y", summary: "mean", guides: false, labels: { value: "Label", blend } };
+    const programs = [
+      p.createDotPlot(options), p.createLollipopPlot({ ...options, stem: { blend } }),
+      p.createDumbbellPlot({ category: "c", start: "x", end: "y", guides: false, labels: { value: "Label", blend, endpoint: "both" }, connector: { blend } }),
+      p.createECDFPlot({ field: "y", guides: false, labels: { value: "Label", blend } }),
+      p.createTextPlot({ x: "x", y: "y", text: "text", guides: false, style: { blend } })
+    ];
+    for (const q of programs) {
+      const labels = q.semanticSpec.layers.filter(layer => layer.mark.type === "text");
+      assert.ok(labels.length > 0);
+      for (const layer of q.semanticSpec.layers.filter(layer => ["text", "rule"].includes(layer.mark.type))) {
+        assert.equal(layer.mark.blend, blend === "normal" ? undefined : blend);
+        assert.ok(q.graphicSpec.objects[layer.id].items.every(item => item.properties.blend === (blend === "normal" ? undefined : blend)));
+      }
+      assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec, q.graphicSpec);
+    }
+  }
+  const p = base(), before = serializeProgram(p);
+  for (const build of [() => p.createTextPlot({ x: "x", y: "y", text: "text", style: { blend: "overlay" } }),
+    () => p.createDotPlot({ category: "c", value: "y", labels: { blend: "overlay" } }),
+    () => p.createECDFPlot({ field: "y", labels: { blend: "overlay" } })]) assert.throws(build, /blend/);
+  assert.equal(serializeProgram(p), before);
+});

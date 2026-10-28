@@ -81,3 +81,9 @@ paint 소비자는 각 owner와 합산하고, STEP047–049와 전체 STEP077 �
 getter 회귀14개를 별도로 실행했으므로, 전체 suite를 최종 source hash에서 다시 실행했다고 주장하지 않는다.
 Node22 source-free213/213 및6개 qualification은 통과했고, 새로 허용한 createBar blend를 금지하던 옛 타입
 fixture만 실패했다. 그 expectation을 실제9종 계약으로 바꾼 뒤 같은 설치 디렉터리의 tsc가 exit0으로 통과했다.
+
+최종 facade 감사에서 TextMarkOptions를 상속하는 TextPlot.style 및 Dot/Lollipop/Dumbbell/ECDF labels의
+closed whitelist가 새 blend를 거부함을 발견했다. 기존 Text domain action 전달만3owner에서 열고
+21/21 focused 회귀 및 같은5×3 realistic matrix에 다섯 facade를 추가했다. 새 의미나 저장 위치는 없다.
+앞선 전체 unit/contracts는 이3줄 후속 연결 전 결과로 보존하며 전체 반복으로 표시하지 않는다.
+최종 source-free archive는 후속 연결 뒤 별도로 고정하고 이전15fa644a archive 결과와 구분한다.

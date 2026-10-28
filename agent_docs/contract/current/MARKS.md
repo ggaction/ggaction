@@ -1501,7 +1501,7 @@ Shared final mark-output materialization은 각 concrete circle/rect/path/line/t
 Style config에는 blend를 복제하지 않는다. Data/scale/Canvas/revision/selection/highlight/facet/repeat/concat
 갱신은 같은 intent를 보존한다. Normal 복원은 기존 geometry·ordinary stroke·outline과 identity를 보존한다.
 Text/Rect/Rule 옵션을 상속하는 labels/annotations/reference bands/lines와 Lollipop stem/Dumbbell connector도
-같은 값을 전달한다. 범례의 authored 색 의미는 그대로이며 mark backdrop의 합성 결과를 색상으로 저장하지 않는다.
+같은 값을 전달한다. TextPlot.style 및 Dot/Lollipop/Dumbbell/ECDF labels도 기존 TextMarkOptions 상속으로 전달한다. 범례의 authored 색 의미는 그대로이며 mark backdrop의 합성 결과를 색상으로 저장하지 않는다.
 Basic은 기존 Point/Bar/Rect/Line 생성 범위에서 지원하며 Full editor 가용성은 기존 package 계약을 따른다.
 
 Canvas/PNG/PDF는 bounded isolated glyph를 사용한다. SVG는 동일 concrete glyph의 mix-blend-mode와 root
