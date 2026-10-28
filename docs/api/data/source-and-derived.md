@@ -74,6 +74,96 @@ The most recently created dataset becomes the default for `createPointMark`,
 `createLineMark`, or `createBarMark`. Creating data records semantic state only
 and produces no graphics.
 
+## Prepared data updates {#prepared-data-updates}
+
+`prepareDataUpdate(program, request, host)` is an asynchronous chart-authoring
+helper exported by `ggaction` and `ggaction/basic`. It prepares data without
+changing the program. `program.applyDataUpdate({ prepared, requestToken })`
+applies its opaque result synchronously to that exact program instance.
+
+| Request | Fields | Availability |
+| --- | --- | --- |
+| Create | `{ kind: "create", id, source, keyField?, keyFields? }` | Full and Basic |
+| Refresh | `{ kind: "revise", target, id, rowMap? }` | Full |
+| Parameter change | `{ kind: "parameter", target, value }` | Full |
+
+Create requires a fresh explicit dataset ID and creates a source binding with
+the same ID. Refresh targets that binding and needs a fresh snapshot ID.
+Parameter changes load every affected URL source and update the combined
+source/computed dependency graph once. The existing parameter type and
+nullability remain fixed. Same-value parameter updates load nothing.
+
+Choose one source shape:
+
+| Source | Required fields | Optional fields |
+| --- | --- | --- |
+| Inline rows | `{ kind: "inline", values }` | `parse`, `schema` |
+| Inline text | `{ kind: "inline", text, format }` | `delimiter`, `parse`, `schema` |
+| Named text | `{ kind: "named", name, format }` | `delimiter`, `parse`, `schema` |
+| URL text | `{ kind: "url", url, format }` | `delimiter`, `parse`, `schema` |
+
+Formats are `"csv"` and `"json"`. CSV defaults to a comma and accepts a single
+nonquote, nonnewline delimiter. It supports quoted cells, doubled quotes and
+embedded newlines, with unique nonempty headers and consistent row widths.
+JSON must contain an array of plain row objects. Source rows accept finite JSON
+values, including nested arrays/objects; executable values, undefined, bigint,
+Date objects, cycles, accessors and reserved prototype keys are rejected.
+
+`parse` maps field names to `{ type, nullable? }`, with types `string`, `number`,
+`boolean`, and `date`. Nullable defaults to false. Numeric parsing accepts finite
+decimal and exponent forms; boolean text must be exactly `"true"` or `"false"`.
+Dates require an explicit `timeZone` (`"UTC"` or an IANA name). Their optional
+`format` is `%Y-%m-%d` (default), `%d/%m/%Y`, `%m/%d/%Y`, or `iso`. Dates become
+epoch milliseconds. Invalid calendar dates and ambiguous or nonexistent local
+times fail. Optional `schema` uses the closed source schema above; empty parsed
+data keeps declared or typed field meaning.
+
+A URL can be a string or a `ComputedExpressionV2` using scalar parameters from
+the same unit. Field access is unavailable in URL expressions. Every branch is
+validated; the selected result must be a nonempty string. Relative URLs require
+an absolute `host.baseURL`. A binding retains its base URL for later refreshes.
+
+The host object requires a nonempty string `requestToken`. It may also provide
+`baseURL`, an `AbortSignal` as `signal`, and these callbacks:
+
+| Host callback | Input | Result |
+| --- | --- | --- |
+| `load` | `{ url, signal? }` | CSV/JSON payload or a promise for it |
+| `resolveNamed` | `{ name, signal? }` | CSV/JSON payload or a promise for it |
+
+A payload contains exactly one of `text` or `bytes` (`Uint8Array`), plus
+`mimeType` and `encoding: "utf-8"`. CSV accepts `text/csv` or `application/csv`;
+JSON accepts `application/json` or `application/*+json`. A UTF-8 charset parameter
+is accepted. Invalid Unicode, MIME/format mismatches, and other encodings fail.
+The library never invokes fetch automatically and does not unwrap a Response.
+
+Choose at most one key policy, `keyField` or ordered `keyFields`. Generated keys
+are the default. Explicit key arrays are unavailable for prepared sources.
+Refresh preserves a field/tuple key policy. For generated keys, optional
+`rowMap` follows [the source revision rules](./revisions-and-removal.md).
+
+All source requests are validated before loading starts. Results may arrive in
+any order; application waits for all of them. A failed load, parse, key mapping
+or consumer update preserves the original program and its trace. Aborted,
+forged, copied or serialized handles cannot be applied. Applying to a different
+program instance or with a different token reports `stale-result`.
+
+Use the application's **current program and current request token** when applying.
+An old immutable program is a valid intentional branch; the library cannot
+observe which variable the application considers current. See the complete
+[refresh workflow](../../data-updates.md#prepare-and-apply-source-data).
+
+Full snapshots retain original received text/rows and parsing receipts for
+offline restoration. Old snapshots preserve their historical receipts. Restore
+validates stored data without loading or evaluating URL expressions. Canvas,
+SVG, PNG, PDF and scenes continue to use concrete graphics only.
+
+Facet/repeat updates rebuild their retained source and existing recipe. For
+concat, prepare and apply in an explicit child, then replace that child. A live
+source is a consumer of its URL parameters, so removing those parameters is
+restricted until the binding is gone. Direct manual row revisions detach the
+binding as described in [data revisions](./revisions-and-removal.md).
+
 ## `createDerivedData({ id, source, transform })` {#create-derived-data}
 
 `createDerivedData` is the advanced provenance-assembly action behind the
@@ -117,12 +207,13 @@ corresponding higher-level action when the library should materialize values:
 | `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, weight?, resolved? }` | `createBinData` |
 | `"computed"` | `{ type, as, expression }` | `createComputedData` |
 | `"normalize"` | `{ type, field, as, groupBy, method, ...methodPolicies }` | `createNormalizedData` |
-| `"complete"` | `{ type, key, groupBy, values? or sequence?, fill, members? }` | `createCompleteData` |
+| `"complete"` | `{ type, key, groupBy, values? or sequence? or calendar?, fill, members? }` | `createCompleteData` |
 | `"impute"` | `{ type, fields, groupBy, sortBy, method, value?, edges, maxGap? }` | `createImputedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }`, or `{ type, where }` | `filterData` |
 | `"lookup"` | `{ type, field, lookup: { data, key, fields, as } }` | `createLookupData` |
 | `"flatten"` | `{ type, fields, as }` | `createFlattenData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
+| `"pivot"` | `{ type, field, value?, groupBy, columns, op, fill }` | `createPivotData` (Full only) |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
 | `"regressionStatistics"` | `{ type }`, with an existing linear fit as source | `createRegressionStatisticsData` |
 | `"sort"` | `{ type, sortBy }` | `createSortedData` |
@@ -251,7 +342,7 @@ See [Expressions and Normalization](./expressions-and-normalization.md#createcom
 
 See [Expressions and Normalization](./expressions-and-normalization.md#createnormalizeddata-id-source-field-as-groupby-method) for this contract and its examples.
 
-## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
+## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
 
 See [Missing Keys and Values](./missing-data.md#createcompletedata-id-source-key-groupby-values-sequence-fill-members) for this contract and its examples.
 

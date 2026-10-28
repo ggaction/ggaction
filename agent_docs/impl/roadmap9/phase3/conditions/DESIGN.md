@@ -9,6 +9,7 @@
 - [x] Appearance 조건부 encoder와 parameter/selection/scale dependency 연결
 - [x] Appearance empty domain·cycle·inactive branch·zero·atomic failure 통합 시험
 - [x] Appearance 타입·Current·공개 문서·generated metadata·설치 소비자 동기화
+- [x] Prepared-source/main statistics 통합, lifecycle 직접 증거와 설치·문서 검증
 - [ ] Positional·offset·pointRadius·text 및 topology matrix 종료
 - [ ] 전체 조건부 checkpoint commit/push와 AT-18 인계
 
@@ -177,3 +178,54 @@ owner만 측정한 98.95/88.94/100은 별도 집중 결과이며 global 결과�
 Generated lifecycle/scenario inventory의 새 조건 옵션에 대한 direct-call 및 option inventory
 동기화는 Root의 pivot repair와 같은 파일을 소유하므로 최신 main 통합 직후 연결한다.
 이번 증거는 full realistic sweep, 전체 render sweep 또는 G-DATA 통합 완료를 주장하지 않는다.
+
+## Prepared-source 통합 checkpoint
+
+Appearance checkpoint 뒤 main `72855612`의 prepared source/pivot/LOESS/calendar를 이 branch에
+병합했다. `reviseUnitParameter`는 준비된 raw revision plan을 그대로 재사용하면서 조건부 exact
+parameter refs를 먼저 갱신하고, union DAG 이후 데이터가 그대로인 conditional-only mark도
+명시적으로 물질화한다. Filter는 이미 공유 planner의 parameterInputs를 통해 raw/computed와
+동일 union에 들어가므로 sourcePlan의 별도 predicate 목록이나 두 번째 DAG owner는 만들지 않는다.
+
+실제 공개 API 회귀는 URL parameter→raw/filter/computed/lookup diamond, raw refresh→selection
+조건, inactive field 실패, inferred empty-domain 실패, facet/repeat의 exact refs와 최신 source
+binding을 확인한다. 기존 resource adoption은 현재 replacement source binding을 유지하며
+과거 독립 source를 다시 채택하지 않는다. 이 checkpoint의 결과는 통합 evidence에 별도 기록한다.
+
+Lifecycle 직접 사례는 8개 appearance 조건부 호출과 where filter create/edit를 포함한다.
+옵션 inventory는 조건 배열의 존재와 otherwise payload를 실제 direct trace로 증명하고,
+배열 내부는 기존 redacted-trace 정책을 유지한다. Source/renderer의 증거 없는 가짜 trace는 없다.
+
+## 다음 positional 구현 계약
+
+기존 `ConditionalEncodingOptions`와 단일 `layer.conditionals[channel]` owner를 유지한다.
+각 branch는 해당 기존 action의 field/datum/scale/coordinate/aggregate 계약으로 정규화하고,
+일반 encoding을 otherwise 복사본으로 영구 저장하지 않는다. `r`의 저장 channel은 기존처럼
+`radius`다. 화면 단위가 필요한 pointRadius는 polar radius와 구분한다.
+
+| 기존 소비자 | 조건 적용 grain과 범위 | topology/guide 제약 |
+| --- | --- | --- |
+| point/tick/text | 기존 source row의 Cartesian 값; point는 theta/r도 포함 | 동일 coordinate family; source-owned text 위치는 기존 금지 유지 |
+| rule/rect | 기존 행의 start/end 각 endpoint | 기존 ranged/span 모드 유지, x2/y2는 기존 동반 축 정책 사용 |
+| line/area | 기존 vertex; aggregate path는 기존 independent position group | group/bin/stack/coordinate가 분기마다 달라지는 새 topology를 숨겨 생성하지 않음 |
+| bar | 기존 category/group/histogram/ranged item의 값 | category/bin/series grain을 고정하고 measure와 scale mapping을 조건에 따라 선택 |
+| arc | 기존 category/row item의 theta/r 값 | 기존 aggregate/weight/radial mapping 의미와 total 검증 유지 |
+| xOffset/yOffset | 기존 category slot 안의 subgroup 값 | parent band geometry 및 동일 grouping 의미 필요 |
+| dx/dy | 기존 text row/label item의 pixel displacement | source-owned position 자체를 변경하지 않음 |
+| pointRadius | 기존 point item의 pixel radius | area-based size와 배타적, 기존 shape geometry 사용 |
+| text | 기존 text item의 content/format | font/layout owner를 그대로 사용, 임의 callback 없음 |
+| group/pathOrder | 기존 고정된 topology authoring 유지 | 조건부 scalar mapping이 새 grouping/order API를 암묵 도입하지 않음; 최종 cookbook/acceptance 대조 필요 |
+
+모든 positional branch의 field/scale refs와 domain contribution은 비활성 상태에도 유효하다.
+한 binding만 명확하면 기존 axis/grid와 scale editor inference를 사용한다. 서로 다른 binding으로
+기존 guide 의미가 모호해지면 전체 action을 원자적으로 거부한다. 여러 branch 중 첫 scale을
+선택하지 않으며 새 guide 선택 API를 추가하지 않는다. 실제 path/aggregate grain의 predicate가
+유일한 값을 갖지 못하면 임의 source row를 선택하지 않는다. 위 matrix는 다음 구현의 구체
+계약이며 아직 지원 완료를 뜻하지 않는다.
+
+
+Prepared-source 통합 검증은 [INTEGRATION-CHECKPOINT.json](evidence/INTEGRATION-CHECKPOINT.json)에
+보존했다. Unit 50/50, contracts 24/24, focused realistic 10/10, installed Node 198/198 및
+qualification 7/7, browser 2/2, docs 166/166, build/built/browser를 통과했다.
+동일 tar와 minified bytes의 Node 20/22/24 크기를 측정했고 global/critical coverage floor는
+그대로 유지했다. 이 통합에서 새 full coverage/full realistic sweep을 수행했다고 주장하지 않는다.

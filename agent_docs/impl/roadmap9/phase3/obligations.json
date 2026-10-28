@@ -23,8 +23,9 @@
       "id": "DATA-RESOLVER",
       "owner": "STEP-013",
       "gate": "G-DATA",
-      "status": "partial",
-      "requirement": "CSV/JSON parser와 host preparation kernel 검증 완료; 공개 commit/source provenance/parameter URL invalidation/offline lifecycle 통합 남음"
+      "status": "verified",
+      "requirement": "CSV/JSON prepared source 공개 적용, immutable receipt, parameter URL closure와 offline lifecycle 및 전체 통합 검증 완료",
+      "evidence": "data-implementation.json"
     },
     {
       "id": "DATAFLOW-INTEGRATION",

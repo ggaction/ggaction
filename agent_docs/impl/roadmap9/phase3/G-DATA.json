@@ -11,7 +11,7 @@
     "userMessage": "야 승인한다. 그리고 이번 계획 모두 승인할테니까 그냥 끝까지 밀어버려. 병렬로 작업할수있는건 탭을 병렬로 띄우든 에이전트를 뜨는 그래서 끝까지 밀어",
     "mode": "전체 계획 실행 승인에 따라 계획 안의 구체적인 계약을 기록하고 구현한다. 개별 새 문서를 사용자가 별도로 검토했다고 주장하지 않는다."
   },
-  "implementationStatus": "private-kernel-verified-public-contract-adopted",
+  "implementationStatus": "public-integration-verified",
   "adoptedDecisions": [
     "Closed create/revise/parameter prepareDataUpdate request and synchronous applyDataUpdate action; Basic supports create only",
     "Typed data-source owns current intent/output; immutable dataset receipt owns historical received content and parser provenance",
@@ -20,8 +20,6 @@
     "Private prepared context preserves editParameter's approved target/value shape and one atomic dependency closure"
   ],
   "remaining": [
-    "Public host prepare/commit and exact current request token protocol",
-    "Source-free persistence and parameter-dependent URL invalidation",
-    "Installed package and public declarations/docs for resolver"
+    "STEP-013 exact-commit 종료 증거와 원격 DATA CI"
   ]
 }

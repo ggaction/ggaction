@@ -1,0 +1,9 @@
+export interface DataSourceResource {
+  readonly kind: "data-source"; readonly id: string; readonly revision: number;
+  readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly ParameterRef[];
+  readonly options: DataSourceKeys & { readonly source: DataSource; readonly baseURL?: string };
+  readonly result: { readonly data: Extract<InputRef, { readonly kind: "data" }>; readonly inputHash: string };
+  readonly provenance: { readonly origin: "authored" };
+}

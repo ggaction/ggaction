@@ -16,6 +16,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`applyTheme`](current/CORE.md#applytheme) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeTheme`](current/CORE.md#removetheme) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createData`](current/CORE.md#createdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`applyDataUpdate`](current/CORE.md#applydataupdate) | core | Immutable create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`reviseData`](current/CORE.md#revisedata) | core | Immutable create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeData`](current/CORE.md#removedata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeScale`](current/CORE.md#removescale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -27,6 +28,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createLookupData`](current/CORE.md#createlookupdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createFlattenData`](current/CORE.md#createflattendata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createFoldData`](current/CORE.md#createfolddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createPivotData`](current/CORE.md#createpivotdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createParameter`](current/CORE.md#createparameter) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editParameter`](current/CORE.md#editparameter) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeParameter`](current/CORE.md#removeparameter) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -49,6 +51,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editLookupData`](current/CORE.md#editlookupdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFlattenData`](current/CORE.md#editflattendata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFoldData`](current/CORE.md#editfolddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editPivotData`](current/CORE.md#editpivotdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editSummaryData`](current/CORE.md#editsummarydata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editBinData`](current/CORE.md#editbindata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTimeUnitData`](current/CORE.md#edittimeunitdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |

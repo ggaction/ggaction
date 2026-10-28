@@ -2089,3 +2089,23 @@ predicateFilter.editFilteredData({ target: "predicate-output", where: { version:
 predicateFilter.filterData({ id: "mixed-predicate", field: "x", where: { version: 2, registry: "standard@1", root: { type: "literal", value: true } } });
 // @ts-expect-error Filter predicates require the closed v2 AST, not callbacks.
 predicateFilter.filterData({ id: "callback-predicate", where: () => true });
+const pivotConsumer = chart().createData({ id: "pivotRaw", values: [{ key: "a", value: 2 }] })
+  .createPivotData({ id: "pivotWide", field: "key", value: "value" })
+  .editPivotData({ target: "pivotWide", op: "count" });
+// @ts-expect-error count has no numeric value input
+chart().createPivotData({id:"badPivot",field:"key",op:"count",value:"amount"});
+
+chart().createRegressionPlot({ x: "x", y: "y", method: "loess", degree: 2, robustIterations: 2 });
+chart().createRegressionData({ id: "fit", x: "x", y: "y", method: "loess", degree: 1 });
+chart().editRegression({ method: "loess", degree: 2 });
+// @ts-expect-error local polynomial degree is bounded
+chart().createRegression({ method: "loess", degree: 3 });
+// @ts-expect-error local quadratic fits do not produce intervals
+chart().createRegressionData({ id: "fit", x: "x", y: "y", method: "loess", degree: 2, interval: false });
+
+const calendarDomain: import("ggaction").CalendarDayDomain = {unit:"day",start:"2024-01-01",end:"2024-12-31",timeZone:"UTC"};
+chart().createCompleteData({id:"days",key:"day",calendar:calendarDomain}).editCompleteData({target:"days",calendar:calendarDomain});
+// @ts-expect-error calendar and sequence are mutually exclusive
+chart().createCompleteData({id:"days",key:"day",calendar:calendarDomain,sequence:{start:0,end:1,step:1}});
+// @ts-expect-error named time zone is required
+chart().editCompleteData({target:"days",calendar:{unit:"day",start:"2024-01-01",end:"2024-12-31"}});

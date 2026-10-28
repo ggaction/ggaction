@@ -994,12 +994,14 @@ test("every supported constraint and design-fixture authoring step type-checks",
       await copyFile(path.join(typesRoot, name), path.join(temporary, name));
     }
     const source = [
-      'import type { ChartProgram } from "./program.js";',
+      'import type { ChartProgram, PreparedDataUpdate } from "./program.js";',
       'import { chart, hconcat, render, vconcat } from "./index.js";',
       'import { renderToSVG } from "./svg.js";',
       'import { renderToPNG } from "./png.js";',
       'import { renderToPDF } from "./pdf.js";',
       "declare let program: ChartProgram;",
+      "declare const prepared: PreparedDataUpdate;",
+      "declare const currentToken: string;",
       "declare const context: CanvasRenderingContext2D;",
       "declare const values: readonly Record<string, unknown>[];",
       "async function verifyCompactCalls() {",

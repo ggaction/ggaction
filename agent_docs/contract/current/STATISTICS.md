@@ -315,14 +315,15 @@ without naming generated child layers.
   Evidence: `test/unit/actions/regression/placement.test.js`.
 
 
-- Signature: `createRegression({ target?, x?, y?, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval?, band?, line? })`
+- Signature: `createRegression({ target?, x?, y?, groupBy?, method?, degree?, span?, robustIterations?, confidenceMethod?, level?, confidence?, interval?, band?, line? })`
 - `target`: quantitative x/y point mark ID. 생략하면 current mark, 아니면 유일한 eligible point를 추론한다.
 - `x`, `y`: non-empty field names. 생략하면 target의 x/y encoding field를 사용한다.
 - `groupBy`: nominal field, false, or legacy explicit undefined. Omission infers one matching color/shape field;
   ambiguous candidates fail. False requests one ungrouped model and survives JSON serialization. Explicit undefined
   keeps its existing JavaScript opt-out. Editors preserve omission, reject undefined and clear with false.
 - `method`, `degree`, `span`, `robustIterations`: Implemented regression method contract를 child `createRegressionData`에 전달한다.
-  Polynomial degree는 `1..32`이며 derived output/work limits도 child data contract와 동일하다.
+  Polynomial degree는 `1..32`, LOESS degree는 `1|2`(기본1)이며 derived output/work limits도
+  child data contract와 동일하다. Degree2는 기존 line만 materialize하며 confidence band를 추가하지 않는다.
 - `confidenceMethod`, `level`: `"normal" | "student-t"`와 `(0, 1)` finite number. 기본은
   Student-t와 `0.95`. 회귀 모델 선택의 `method`와 이름 충돌을 피하기 위해 CI method는
   `confidenceMethod`로 드러낸다. `confidence`는 `level`의 compatibility alias이며 함께 주면 같아야 한다.
@@ -347,7 +348,7 @@ without naming generated child layers.
 
 ### Formal values — `createRegression`
 
-- Implemented: `createRegression({ target?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName | false; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "loess"; span?: UnitIntervalExclusiveZero; robustIterations?: NonNegativeInteger; band?: false } | { method: "exp"; interval?: false; band?: false }))`
+- Implemented: `createRegression({ target?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName | false; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "loess"; degree?: 1 | 2; span?: UnitIntervalExclusiveZero; robustIterations?: NonNegativeInteger; band?: false } | { method: "exp"; interval?: false; band?: false }))`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -366,13 +367,15 @@ without naming generated child layers.
 - ✅ Covered: band outline/curve and line curve forwarding through corresponding component actions.
 - ✅ Covered: polynomial/LOESS method forwarding, linear/polynomial prediction interval, method-specific
   band creation/opt-out와 child trace hierarchy.
+- ✅ Covered: degree2 facade, immutable degree reset, follow-source, facet와 restored geometry in
+  `test/unit/actions/data/loess-lifecycle.test.js`.
 - Evidence: `test/unit/actions/regression/create-regression.test.js` and regression chart tests.
 
 ## `editRegression`
 
 - `placement`는 create와 같은 closed vocabulary다. 생략 시 현재 정책 유지, 명시하면 source/plot-last로 재배치한다.
 
-- Signature: `editRegression({ target?, data?, x?, y?, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval?, band?, line? })`.
+- Signature: `editRegression({ target?, data?, x?, y?, groupBy?, method?, degree?, span?, robustIterations?, confidenceMethod?, level?, confidence?, interval?, band?, line? })`.
 - `target` is the stable point owner passed to or inferred by `createRegression`; generated band and line IDs are not
   ordinary targets. Omission resolves the current owner, then one unique regression owner, and rejects ambiguity.
 - `data`, `x`, and `y` partially replace fitted-data provenance. `groupBy` accepts a field or `false` to remove

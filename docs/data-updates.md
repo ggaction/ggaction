@@ -13,10 +13,63 @@ dependent chart, or rebuild a program from application-owned rows.
 
 | Change | Action or workflow | Prerequisite |
 | --- | --- | --- |
+| CSV/JSON, named, or URL data | `prepareDataUpdate` then `applyDataUpdate` | Explicit host loader and current request token |
 | New rows with compatible fields | `reviseData({ source, id, values })` | Existing source ID and fresh revision ID; dependent transforms remain valid |
 | Field names, types, or chart topology change | Rebuild from application-owned rows | Update affected encodings and transform definitions together |
 | Transform parameters change | The owning `edit*Data` action | Existing logical transform ID and valid options |
 | One mark should use independent data | `createData` then the mark's data editor | Explicit target and a compatible replacement schema |
+
+## Prepare and apply source data {#prepare-and-apply-source-data}
+
+This complete ES module prepares inline CSV, builds a chart, and refreshes its
+source. The host supplies text explicitly; the same callback boundary can load
+application-owned files or network responses.
+
+```javascript
+import { chart, prepareDataUpdate } from "ggaction";
+
+let program = chart();
+let currentToken = "initial";
+const initial = await prepareDataUpdate(program, {
+  kind: "create", id: "sales", keyField: "quarter",
+  source: {
+    kind: "named", name: "sales-table", format: "csv",
+    parse: { revenue: { type: "number" } }
+  }
+}, {
+  requestToken: currentToken,
+  resolveNamed: () => ({ text: "quarter,revenue\nQ1,12", mimeType: "text/csv", encoding: "utf-8" })
+});
+program = program.applyDataUpdate({ prepared: initial, requestToken: currentToken })
+  .createCanvas()
+  .createBarPlot({ data: "sales", x: "quarter", y: "revenue", guides: false });
+
+async function refreshSales(text, token, snapshotId) {
+  currentToken = token;
+  const prepared = await prepareDataUpdate(program, {
+    kind: "revise", target: "sales", id: snapshotId
+  }, {
+    requestToken: token,
+    resolveNamed: () => ({ text, mimeType: "text/csv", encoding: "utf-8" })
+  });
+  program = program.applyDataUpdate({ prepared, requestToken: currentToken });
+}
+
+await refreshSales("quarter,revenue\nQ1,15\nQ2,20", "refresh-1", "salesUpdated");
+```
+
+Each request uses a fresh application token and snapshot ID. The final line of
+`refreshSales` reads the current variables after awaiting. If another request
+or chart action has advanced them, the older result fails instead of replacing
+the latest chart. Catch that failure in the host when stale requests are expected.
+
+Full supports source refresh and parameter requests; Basic supports creation.
+A parameter request has `{ kind: "parameter", target, value }` and refreshes
+all URL sources that use it together with their computed consumers. The host
+must supply `load` for URL data and `resolveNamed` for named data. URL response
+bytes are never fetched implicitly. See the
+[prepared data reference](./api/data/source-and-derived.md#prepared-data-updates)
+for parsing, callback payloads, keys, abort and scope rules.
 
 ## Revise a source and its dependent chart
 

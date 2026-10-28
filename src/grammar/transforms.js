@@ -32,6 +32,8 @@ import {
   validateFilterTransform
 } from "./filter.js";
 import { normalizeFoldTransform, validateFoldTransform } from "./fold.js";
+import { normalizePivotTransform, validatePivotTransform } from "./pivot.js";
+import { scalarKey } from "./transformKeys.js";
 import { normalizeFlattenTransform, validateFlattenTransform } from "./flatten.js";
 import {normalizeLookupTransform,validateLookupTransform} from "./lookup.js";
 import {
@@ -175,9 +177,15 @@ function normalizeCompleteEdit(transform, patch) {
   const base = replaceExclusive(
     requestedOptions(transform),
     patch,
-    ["values", "sequence"]
+    ["values", "sequence", "calendar"]
   );
   return normalizeCompleteTransform({ ...base, ...patch });
+}
+
+function normalizePivotEdit(transform, patch) {
+  const options = mergedOptions(transform, patch);
+  if (patch.op === "count" && !Object.hasOwn(patch, "value")) delete options.value;
+  return normalizePivotTransform(options);
 }
 
 function normalizeImputeEdit(transform, patch) {
@@ -225,7 +233,7 @@ function normalizeRegressionEdit(transform, patch) {
   if (patch.predict === false) delete base.predict;
   const method = patch.method ?? base.method;
   if (method !== base.method) {
-    if (method !== "polynomial") delete base.degree;
+    delete base.degree;
     if (method !== "loess") {
       delete base.span;
       delete base.robustIterations;
@@ -320,6 +328,16 @@ function facetHorizonTransform(transform, { scales = {} } = {}) {
 }
 
 const TRANSFORM_POLICIES = Object.freeze({
+  pivot: Object.freeze({
+    ...findTransformTopology("pivot"),
+    validate: validatePivotTransform,
+    materializeOp: "materializePivotData",
+    replayTransform: requestedTransform,
+    editable: true,
+    normalizeEdit: normalizePivotEdit,
+    outputRoles: transform => Object.fromEntries(transform.columns.map(column =>
+      [`column:${scalarKey(column.value, "Pivot column value")}`, column.as]))
+  }),
   bin: Object.freeze({
     ...findTransformTopology("bin"),
     validate: validateBinTransform,

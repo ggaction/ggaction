@@ -1,0 +1,15 @@
+{
+  "reportedBy": "parent agent /root",
+  "recordedAt": "2026-10-28T13:31:53.500Z",
+  "scope": "Concurrent normal coverage repairs",
+  "changes": [
+    {
+      "owner": "scripts/run-tests.js",
+      "reason": "Coverage-only receipt hashing now handles an untracked node_modules symlink without readFileSync(EISDIR). Parent reports no realistic runner behavior change; current process loaded the start version."
+    },
+    {
+      "owner": "normal contract tests and agent_docs/contract/current/CORE.md",
+      "reason": "Current coverage marker, original receiver for opaque handle replay, and prepared/token snippet type fixtures were synchronized. Parent reports no runtime modifications."
+    }
+  ]
+}

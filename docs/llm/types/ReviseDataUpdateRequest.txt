@@ -1,0 +1,4 @@
+export interface ReviseDataUpdateRequest {
+  readonly kind: "revise"; readonly target: string; readonly id: string;
+  readonly rowMap?: readonly (number | null)[];
+}

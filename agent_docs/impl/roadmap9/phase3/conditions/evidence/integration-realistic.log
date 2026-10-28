@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: executes deterministic lifecycle recipes through integrity and SVG oracles
+ok 1 - executes deterministic lifecycle recipes through integrity and SVG oracles
+  ---
+  duration_ms: 6862.911083
+  type: 'test'
+  ...
+# Subtest: calls every user-facing action directly from a generated scenario root
+ok 2 - calls every user-facing action directly from a generated scenario root
+  ---
+  duration_ms: 5042.52775
+  type: 'test'
+  ...
+# Subtest: retains direct action effects in final semantic and graphic state
+ok 3 - retains direct action effects in final semantic and graphic state
+  ---
+  duration_ms: 521.973542
+  type: 'test'
+  ...
+# Subtest: derives a bounded public option inventory without runtime prototype paths
+ok 4 - derives a bounded public option inventory without runtime prototype paths
+  ---
+  duration_ms: 68461.982833
+  type: 'test'
+  ...
+# Subtest: passes only trace-backed action and recursive option evidence plus observed extras
+ok 5 - passes only trace-backed action and recursive option evidence plus observed extras
+  ---
+  duration_ms: 1.37275
+  type: 'test'
+  ...
+# Subtest: observes collection and named-axis array parents through recursive trace count aliases
+ok 6 - observes collection and named-axis array parents through recursive trace count aliases
+  ---
+  duration_ms: 69514.680625
+  type: 'test'
+  ...
+# Subtest: hard-gates explicit distribution minima and reports exact scoped waivers
+ok 7 - hard-gates explicit distribution minima and reports exact scoped waivers
+  ---
+  duration_ms: 1.511459
+  type: 'test'
+  ...
+# Subtest: does not let descriptors, transitive calls, duplicates, or option claims inflate coverage
+ok 8 - does not let descriptors, transitive calls, duplicates, or option claims inflate coverage
+  ---
+  duration_ms: 0.434958
+  type: 'test'
+  ...
+# Subtest: validates explicit and compact source lineage without reporting raw indexes
+ok 9 - validates explicit and compact source lineage without reporting raw indexes
+  ---
+  duration_ms: 0.796833
+  type: 'test'
+  ...
+# Subtest: reports dataset, tier, recipe, and chart-family concentration failures
+ok 10 - reports dataset, tier, recipe, and chart-family concentration failures
+  ---
+  duration_ms: 0.273
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 138402.631167

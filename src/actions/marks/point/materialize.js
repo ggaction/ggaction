@@ -548,7 +548,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
       next = next.editGraphics({
         target: id,
         property: "strokeWidth",
-        value: config.strokeWidth
+        value: config.strokeWidth ?? 1
       });
     }
     for (const [property, value] of Object.entries(strokeDetails)) {

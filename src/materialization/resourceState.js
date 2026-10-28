@@ -10,8 +10,10 @@ import { encodeValue } from "../core/valueEncoding.js";
 import { resolveInputReference, resolveRowReference } from "../selectors/resources.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { validateParameterResource } from "../grammar/parameter.js";
+import { validateDataSourceResource } from "./dataSourceState.js";
+import { STORED_RESOURCE_KINDS, validateInputReference, validateResourceRevision } from "../grammar/resourceReference.js";
 
-export const STORED_RESOURCE_KINDS = Object.freeze(["persistent-selection", "parameter"]);
+export { STORED_RESOURCE_KINDS, validateInputReference } from "../grammar/resourceReference.js";
 const identity = ref => JSON.stringify([ref.kind, ref.id]);
 
 function error(message, code = "invalid-value", details = {}) {
@@ -25,23 +27,10 @@ function exact(value, keys, label) {
   }
 }
 
-function revision(value) {
-  if (!Number.isSafeInteger(value) || value < 0) throw error("Resource revision requires a non-negative safe integer.");
-}
-
-export function validateInputReference(ref) {
-  ownRecord(ref, "Input reference");
-  exact(ref, ref?.kind === "data" ? ["kind", "id", "logicalId", "revision"] : ["kind", "id", "revision"], "Input reference");
-  if (ref.kind !== "data" && !STORED_RESOURCE_KINDS.includes(ref.kind)) throw error("Unsupported resource kind.", "unsupported-format");
-  validateUserId(ref.id, "Input resource id"); revision(ref.revision);
-  if (ref.kind === "data" && (typeof ref.logicalId !== "string" || !ref.logicalId)) throw error("Data input requires logical identity.");
-  return ref;
-}
-
 export function validateStoredResource(resource) {
   exact(resource, ["kind", "id", "revision", "algorithmVersion", "ownership", "inputs", "options", "result", "provenance"], "Resource");
   if (!STORED_RESOURCE_KINDS.includes(resource.kind)) throw error("Unsupported resource kind.", "unsupported-format");
-  validateUserId(resource.id, "Resource id"); revision(resource.revision);
+  validateUserId(resource.id, "Resource id"); validateResourceRevision(resource.revision);
   if (resource.algorithmVersion !== "1") throw error("Unsupported resource algorithm version.", "unsupported-format");
   const ownership = resource.ownership;
   ownRecord(ownership, "Resource ownership");
@@ -53,6 +42,7 @@ export function validateStoredResource(resource) {
   resource.inputs.forEach(validateInputReference);
   if (new Set(resource.inputs.map(identity)).size !== resource.inputs.length) throw error("Duplicate resource input.", "ambiguous-identity");
   if (resource.kind === "parameter") return validateParameterResource(resource);
+  if (resource.kind === "data-source") return validateDataSourceResource(resource);
   exact(resource.result, [], "Persistent selection result");
   const options = resource.options;
   if (options?.mode === "predicate") {
@@ -85,6 +75,7 @@ export function validateResourceGraph(program) {
   const byId = new Map();
   for (const resource of resources) {
     validateStoredResource(resource);
+    if (resource.kind === "data-source") resolveInputReference(program, resource.result.data);
     resource.provenance.sourceRows?.forEach(ref => resolveRowReference(program, ref));
     const key = identity(resource);
     if (byId.has(key)) throw error("Duplicate resource identity.", "duplicate-id", { resourceId: resource.id });
@@ -151,6 +142,16 @@ export function collectParameterInputReferences(program) {
   while (pending.length) {
     const { program: unit, scope } = pending.pop();
     validateWorkLimit(++work, "Parameter dependency work");
+    for (const [resourceIndex, resource] of unit.semanticSpec.resources.entries()) {
+      validateWorkLimit(++work, "Parameter dependency work");
+      if (resource.kind !== "data-source") continue;
+      for (const [inputIndex, ref] of resource.inputs.entries()) {
+        validateWorkLimit(++work, "Parameter dependency work");
+        validateInputReference(ref);
+        references.push(freezeOwned({ ...ref, ownerId: resource.id, ownerKind: "data-source", scope: freezeOwned([...scope]),
+          path: freezeOwned(["semanticSpec", "resources", resourceIndex, "inputs", inputIndex]) }));
+      }
+    }
     for (const [datasetIndex, dataset] of unit.semanticSpec.datasets.entries()) {
       validateWorkLimit(++work, "Parameter dependency work");
       for (const [transformIndex, transform] of (dataset.transform ?? []).entries()) {

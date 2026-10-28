@@ -348,6 +348,36 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
   `test/contracts/source-data-types.test.js`.
 - ✅ Covered: 빈/공백 원본 키의 추론·명시 schema, nullable/optional/중복·미선언·타입 실패, 입력/이전 프로그램 불변성, 행 보존/투영, source revision, Full/Basic persistence·정상 이름의 동일 SVG, facet. Evidence: `test/unit/actions/data/raw-row-keys.test.js`.
 
+## `applyDataUpdate`
+
+- Signature: `applyDataUpdate({ prepared, requestToken })`. 동기 action이며 같은 entry의 비동기 `prepareDataUpdate(program, request, host)`가 만든 opaque handle만 받는다. Full은 create/revise/parameter, Basic은 create만 지원한다.
+- Helper는 명시적인 `requestToken`과 필요한 `load` 또는 `resolveNamed` callback을 받는다. 자동 fetch, 전역 pending/cache, implicit dataset/source 선택은 없다. Optional `baseURL`은 absolute URL이고 신규 URL source에만 저장된다. `signal`은 실제 AbortSignal이며 준비 전·host 응답 후·반환 전·적용 때 abort를 검사한다.
+- Request는 세 닫힌 모양이다. Create `{kind:"create",id,source,keyField?|keyFields?}`는 explicit fresh ID의 dataset과 동명 data-source resource를 만든다. Revise `{kind:"revise",target,id,rowMap?}`는 명시 source binding과 fresh dataset ID를 사용한다. Parameter `{kind:"parameter",target,value}`는 type/nullable을 유지하고 URL source와 computed closure를 함께 갱신한다. 별도 keys 배열, source intent 교체, target dispatch는 지원하지 않는다.
+- Source는 inline rows `{kind:"inline",values}`, inline text `{kind:"inline",text,format,delimiter?}`, named `{kind:"named",name,format,delimiter?}`, URL `{kind:"url",url,format,delimiter?}`다. 공통 `parse`와 `schema`를 지원한다. Format은 csv/json, delimiter는 CSV의 한 글자이며 quote/newline/BOM은 거부한다. URL은 문자열 또는 standard@1 v2 scalar AST이며 field access는 불가하고 최종 값은 nonempty string이어야 한다. Relative URL에는 explicit absolute baseURL이 필요하다.
+- Source rows는 dense plain-object array이며 finite JSON cell만 허용한다. Getter, hidden/symbol property, reserved prototype key, undefined, bigint, Date, executable/class/cycle은 거부한다. CSV는 unique nonempty header와 동일 cell 수, quoted delimiter/newline/doubled quote를 지원하며 malformed quote를 거부한다. JSON은 object row array여야 한다.
+- `parse`는 field→directive다. Type은 string/number/boolean/date, nullable 기본 false다. Number는 finite decimal/exponent, boolean은 boolean 또는 정확한 true/false 문자열이다. Date는 explicit UTC/IANA `timeZone`이 필요하며 format은 `%Y-%m-%d`(기본), `%d/%m/%Y`, `%m/%d/%Y`, `iso`다. 결과는 epoch milliseconds이며 rollover, gap/ambiguous local time 및 불일치 offset/zone을 거부한다. Optional schema는 기존 closed source schema다. Empty typed source도 field meaning을 유지한다.
+- Host callback은 frozen `{url,signal?}` 또는 `{name,signal?}`만 받고 `{text|bytes,mimeType,encoding:"utf-8"}`를 동기 또는 Promise로 반환한다. Bytes는 Uint8Array다. 정확히 한 payload를 요구하며 malformed UTF-8/MIME/charset을 거부한다. CSV는 text/csv 또는 application/csv, JSON은 application/json 또는 application/*+json이다. 임의 object/Response를 자동 해석하지 않는다.
+- 모든 source의 현재 state와 미래 URL/input refs를 load 전에 검증한다. 여러 source는 각각 한 번 준비하고 완료 순서와 무관하게 원래 dependency 순서를 유지한다. Load/parse/identity/consumer 하나라도 실패하면 이전 program과 trace는 그대로다. 준비와 적용 사이에 callback을 재실행하지 않는다.
+- Handle에는 kind와 작은 request descriptor만 보이며 raw source, parameter value, rowMap, callback, signal, payload와 authority는 private다. 복제/JSON round trip/구조적 위조 handle을 거부한다. Apply의 현재 token은 prepare token과 같아야 하고 receiver는 prepare한 정확한 program instance여야 한다. 다른 action 또는 제거→재생성 이후의 같은 ID/revision도 stale이다. Host가 최신 program과 token 변수를 전달해야 한다. 오래된 immutable base에 의도적으로 적용하면 별도 branch이며 라이브러리가 host의 최신 변수를 추측하지 않는다.
+- Parameter source들과 기존 computed roots의 transitive union을 stable topological order로 replay한다. Diamond는 모든 입력이 바뀐 뒤 한 번 계산하며 raw snapshot/row identity는 speculative/actual 적용을 통틀어 한 번 배정한다. 기존 10,000,000 parameter work budget을 공유한다. Same-value parameter는 no-load/no-revision이다. URL consumer가 있는 direct editParameter 값 변경은 prepared-data-required다.
+- `semanticSpec.resources`의 authored `data-source`는 revision, normalized source/baseURL/key policy, exact parameter inputs, current output data ref와 inputHash를 소유한다. Original dataset의 `sourceReceipt`는 sourceId, parsing, 당시 resolvedURL/name, 실제 original text/rows, parserVersion/contentHash/MIME/encoding/byteLength를 소유한다. 과거 receipts는 당시 자료를 보존하고 현재 parameter에 재결합하지 않는다.
+- Explicit revise는 과거 raw snapshot을 보존하고 binding revision을 한 번 증가시킨다. Key field/tuple은 유지하며 generated keys의 rowMap은 기존 reviseData 규칙이다. 직접 reviseData rows 편집은 성공 전 전체 consumer를 검증하고 해당 live binding을 해제한다. 새 rows에 과거 URL receipt를 붙이지 않는다. removeData는 외부 consumer가 없는 live output의 binding을 먼저 제거하며 removeParameter는 URL resource inputs도 live consumer로 계산한다.
+- Unit namespace만 사용한다. Facet/repeat는 retained source와 recipe를 갱신하고 children은 필요한 exact refs를 채택한다. Concat은 명시 child에서 prepare/apply한 뒤 replaceCompositionChild를 호출한다. Parent/다른 child에 handle을 적용할 수 없다.
+- Full snapshot은 source resources와 receipt를 저장하며 fresh process/offline 복원이 가능하다. 복원은 retained source를 pure parser로 대조하고 live inputs/hash/output을 검증한다. URL AST 실행, load, action replay 또는 graphic materialization은 없다. Graphic snapshot, renderer와 scene은 계속 graphicSpec만 사용한다.
+- Trace는 applyDataUpdate→createData/reviseData/editParameter와 실제 primitive/materialization children을 보존한다. Stored original text와 source text는 primitive trace에서 길이로 요약하고 arrays는 count로 기록한다. 완료 trace의 token/descriptor는 pending authority가 아니다.
+
+### Formal values — `applyDataUpdate`
+
+- Implemented: `applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram`; `prepareDataUpdate(program, request: DataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate>`.
+- Basic: request kind/create handle만 받으며 revision orchestration을 import하지 않는다.
+- Planned: 없음.
+- Proposed (NOT IMPLEMENTED): automatic fetch, streaming/append, editable source intent, host pending persistence.
+
+### Value coverage — `applyDataUpdate`
+
+- Evidence: `test/unit/resources/data-update-preparation.test.js`, `test/unit/resources/data-update-full-preparation.test.js`, `test/unit/resources/prepared-data-public.test.js`, `test/unit/resources/prepared-data-lifecycle.test.js`, `test/unit/core/data-source-resource-state.test.js`, `test/contracts/prepared-data-types.test.js`, `scripts/consumers/fixtures/node/prepared-data.mjs`.
+- ✅ Covered: inline/text/named/URL, exact token/base/ABA/abort, immutable receipts and output refs, Full/Basic boundary, source/computed union, source detach, facet/repeat/concat and offline restore; installed renderer and scene consumer fixture uses the same public boundary.
+
 ## `reviseData`
 
 - Signature: `reviseData({ source, id, values, schema?, keys?, rowMap? })`. Full 전용 immutable source revision이다.
@@ -771,7 +801,8 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 
 - Implemented: `editParameter(options: EditParameterOptions): ChartProgram`.
 - Planned: 없음.
-- Proposed (NOT IMPLEMENTED): parameter ID/type/nullable 변경, conditional encoding 또는 URL consumer 자동 갱신.
+- URL consumer가 있는 값 변경은 `prepareDataUpdate`의 parameter request와 `applyDataUpdate`를 사용한다. 준비 없는 직접 변경은 prepared-data-required이며 같은 값은 기존 no-op이다.
+- Proposed (NOT IMPLEMENTED): parameter ID/type/nullable 변경, conditional encoding, automatic network loading.
 
 ### Value coverage — `editParameter`
 
@@ -794,6 +825,35 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 
 - ✅ Covered: explicit identity, missing resource, restrict errors, primitive bypass rejection, immutable removal/recreation.
 - Evidence: `test/unit/core/parameter-resource-state.test.js`, `test/unit/actions/data/parameter-lifecycle.test.js`.
+## `createPivotData`
+
+- Signature: `createPivotData({ id, source?, field, value?, groupBy?, columns?, op?, fill? })`.
+- Full-only. `id`는 필수 새 dataset ID, `source` 생략 시 current data를 사용한다. `groupBy` 기본은 `[]`이며 string 또는 unique field 배열이다.
+- `field`는 열 category를 가리킨다. `columns`는1..64개의 `{value: string|number|boolean|null, as: nonempty string}`이다. Typed key와 output 이름은 각각 고유하고 group field와 충돌할 수 없다. `-0`과0은 같은 key다.
+- Columns 생략은 모든 관측 key가 nonempty string일 때 first-appearance 순서로 추론한다. Empty input 또는 non-string key는 explicit columns가 필요하다. 추론 결과를 저장하며 revision/replay는 다시 추론하지 않는다. 선언하지 않은 관측 key는 오류다.
+- `op`는 `none`(기본), `sum`, `mean`, `min`, `max`, `count`다. `none`은 group×column당 한 행만 허용한다. 중복은 명시 aggregate가 필요하다. Count만 `value`를 받지 않으며 행 수를 센다. 나머지는 `value` field를 요구하고 finite number/null만 받는다. Absent/undefined/nonnumeric/nonfinite input과 결과 overflow는 오류다.
+- `none`은 관측 null을 보존한다. 수치 aggregate는 null을 제외하고 all-null cell의 sum은0, mean/min/max는 null이다. 관측 없는 cell만 `fill`(기본 null, finite number 또는 null)을 사용한다.
+- Output은 first-observed group tuple 순서의 group fields와 column aliases뿐이다. Empty output은`[]`이며 빈 입력은 기존 field validation에 필요한 declared source schema와 explicit columns를 사용한다. Columns의 number schema와 nullable intent가 보존된다.
+- Canonical transform은 `{type:"pivot",field,groupBy:[],columns:[{value,as}],op:"none",fill:null,value}`다. Count는 value를 저장하지 않는다. Row lineage는 group의 실제 input rows 전체이며 fictitious missing-cell reference가 없다. Column lineage는 group fields와 field/value를 참조하고 typed column value가 stable output role이다.
+- `createDerivedData`와 `materializePivotData` child를 명시 호출한다. Source/consumer revision은 기존 logical identity와 dependency plan을 사용한다. Facet은 source partition에서 statistical replay한다. Repeat는 statistical dataset을 거부한다. Renderer는 materialized graphicSpec만 읽는다.
+- Columns64/output rows10,000/work10,000,000을 allocation 전에 검사한다. Input validation/grouping 및 group×column output 작업을 포함한다. Unknown option, getter, collision, invalid key, duplicate/no-op, missing field와 resource limit 실패는 immutable하다.
+- Persistence는 closed transform, source field/schema 및 lineage를 검증하고 저장된 rows/graphics를 복원한다. 복원 시 pivot 계산이나 materialization을 다시 실행하지 않는다.
+
+### Formal values — `createPivotData`
+
+- Implemented: `createPivotData(options: PivotDataOptions): ChartProgram` (Full only).
+- Numeric branch: `{value: FieldName, op?: "none"|"sum"|"mean"|"min"|"max"}`; count branch: `{op:"count",value?:never}`.
+- Defaults: `groupBy:[]`, `op:"none"`, `fill:null`; columns infer once or are explicit typed keys.
+- Proposed (NOT IMPLEMENTED): No proposal in this contract.
+
+### Value coverage — `createPivotData`
+
+- Evidence: `test/unit/actions/data/pivot-data.test.js`, `test/unit/grammar/pivot.test.js`.
+
+- ✅ Covered: typed keys, independent numeric/null/overflow/work oracles in `test/unit/grammar/pivot.test.js`.
+- ✅ Covered: immutable create, exact trace/schema/lineage, empty schema, Basic rejection, revision and lookup diamond in `test/unit/actions/data/pivot-data.test.js`.
+- ✅ Covered: facet/repeat boundary, selections, composition and concrete renderers in `test/unit/actions/data/pivot-consumers.test.js`, `scripts/consumers/fixtures/node/pivot.mjs`.
+- ✅ Covered: positive/negative declarations in `test/contracts/pivot-types.test.js`.
 
 ## `createComputedData`
 
@@ -889,14 +949,19 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 
 ## `createCompleteData`
 
-- Signature: `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })`
+- Signature: `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })`
 - Lifecycle: Full-only immutable create action이다. 새 dataset ID를 만들며 source 또는 기존 consumer를 수정하지 않는다.
   `source` 생략은 현재 dataset을 안전하게 하나로 추론할 수 있을 때만 허용한다.
 - `key`: 모든 source row에 있는 non-empty field다. `groupBy`와 겹치지 않아야 한다. `groupBy`는
   field 하나 또는 field 배열이고 기본은 `[]`다.
-- Domain: `values`와 `sequence`는 배타다. `values`는 하나의 scalar type으로 구성된 non-empty unique
+- Domain: `values`, `sequence`, `calendar`는 배타다. `values`는 하나의 scalar type으로 구성된 non-empty unique
   array다. `sequence`는 finite `start <= end`, positive `step`을 받고 `start + i * step <= end`를 생성한다.
-  둘 다 없으면 source 전체 key의 typed first-appearance domain을 사용한다.
+  셋 다 없으면 source 전체 key의 typed first-appearance domain을 사용한다.
+- Calendar: `{ unit: "day", start, end, timeZone }`는 strict Gregorian `YYYY-MM-DD` 양 끝을 포함한다.
+  명시 `UTC` 또는 IANA zone의 civil-day 시작 epoch milliseconds를 생성한다. UTC/IANA의 gap은 기존 time-unit
+  boundary policy를 쓰며 civil date 자체가 사라진 경우 오류다. source key는 생성된 number와 정확히 같아야 한다.
+  문자열, null, midday, 다른 zone의 day key를 자동 변환하지 않는다. `createTimeUnitData`와 명시 `createSummaryData`
+  뒤에 적용한다. 저장 transform은 authored calendar object만 소유하고 expanded values를 중복 저장하지 않는다.
 - Group semantics: 실제 관측된 group tuple만 사용하고 group field별 Cartesian product를 만들지 않는다.
   동일 group×key의 반복 관측은 입력 순서와 원본 cell을 각각 보존하며 자동 집계하지 않는다.
   해당 pair가 하나도 없을 때만 합성 row 하나를 만든다. explicit domain 밖의 관측 key는 오류다.
@@ -907,6 +972,10 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
   기존 source field와 충돌하면 오류다.
 - Bounds and replay: 반복 관측과 합성 row를 모두 포함해 allocation 전에 output 10,000-row 한도를 검사한다. `complete`는 statistical facet
   topology라 각 child의 local source rows에서 domain/group completion을 다시 계산한다.
+- Calendar bounds: domain도 최대10,000일이며 input/field validation, fixed timezone boundary probes, group×domain/output cells,
+  lineage 재계산을 포함한 보수적 work estimate가10,000,000을 넘으면 domain/output 확장 전에 오류다.
+  빈 ungrouped source는 domain의 합성 row를 만들고 빈 grouped source는 `[]`다. 빈 source에는 key/group을 선언한 schema가 필요하다.
+  Calendar output schema는 numeric key와 fill/members fields를 빈 grouped 결과에도 보존한다. 합성 row는 input row refs가 없다.
 - Errors: invalid/duplicate ID, unknown/ambiguous source, unknown option, missing field, mixed/non-scalar key,
   duplicate domain, invalid sequence/fill/members, field collision와 output budget 초과를 첫 state change
   전에 거부한다.
@@ -914,9 +983,11 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 ### Formal values — `createCompleteData`
 
 - Implemented: `createCompleteData(options: CompleteDataOptions): ChartProgram` (Full only).
-- Implemented domain modes: observed typed domain, explicit typed values, finite numeric sequence.
+- Implemented domain modes: observed typed domain, explicit typed values, finite numeric sequence, explicit zoned civil-day calendar.
 - Proposed (NOT IMPLEMENTED): multi-key completion, group Cartesian expansion, automatic duplicate aggregation,
-  calendar-month sequence와 source replacement/edit revision.
+  calendar-month sequence와 source replacement.
+- Evidence: `test/unit/actions/data/calendar-completion.test.js`, `test/unit/actions/data/calendar-lifecycle.test.js`,
+  `test/unit/grammar/calendar-days.test.js`, `test/contracts/calendar-types.test.js`.
 
 ### Value coverage — `createCompleteData`
 
@@ -1012,7 +1083,9 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
   생략/false interval은 `false`로 저장하고 CI columns를 만들지 않는다. Degree/span/robustIterations,
   confidenceMethod/level/confidence 및 mean/prediction interval은 명시적으로 거부한다.
 - `degree`, `span`: Implemented method-specific parameter다. polynomial degree 기본값은 `2`, LOESS
-  span 기본값은 `0.75`이며 다른 method와 함께 주면 오류다. Degree는 `1..32`다.
+  span 기본값은 `0.75`다. Polynomial degree는 `1..32`, LOESS degree는 `1|2`이며 기본 `1`이다.
+  LOESS degree 생략/1은 기존 local-linear 계산과 저장 shape를 유지하고 degree2만 `degree:2`를 저장한다.
+  Degree는 linear/exp, span은 LOESS 외 method에서 거부한다.
 - `robustIterations`: LOESS 전용 정수 `0..32`, 기본 `0`. 양수만 provenance에 저장한다.
   각 반복은 group별 정규화 absolute residual 중앙값의 6배를 cutoff로 bisquare weight를
   tricube weight에 곱한다. Cutoff가 `64*Number.EPSILON` 이하이면 그 tolerance 안쪽만 weight 1이다.
@@ -1027,19 +1100,25 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
   기본값은 `"mean"`이다. 첫 LOESS 계약에서는 confidence/interval output을 만들지 않는다.
 - Effect: source, fields, grouping과 resolved method defaults를 transform provenance에 저장하고 observed
   unique x별 fitted row를 materialize한다. Polynomial은 normalized basis의 stable least squares를 사용하고
-  LOESS는 source-order tie를 가진 tricube local-linear neighbors를 사용한다. Linear/polynomial은
+  LOESS는 source-order tie를 가진 tricube neighborhood에서 degree1의 local-linear 또는 degree2의
+  centered/scaled quadratic fit을 사용한다. 이웃 수는 `min(n,max(degree+1,ceil(span*n)))`이다.
+  Degree2의 scaled design rank 판정은 partial-pivot tolerance `1e-12`이고 singular일 때 동일 이웃의
+  weighted constant mean으로 fallback한다. 이웃을 확대하지 않는다. n<2 또는 varying x가 없으면
+  오류이고 n=2의 degree2는 local constant fallback을 사용한다. Linear/polynomial은
   lower/upper를 만들고 LOESS는 fitted y만 만든다. Finite extreme input은 centered/scaled arithmetic으로
   계산하며 fitted value, model coefficient 또는 interval endpoint가 finite number로 표현될 수 없으면
   materialization 전에 명확히 거부한다. 전체 unique group/x output은 최대 `10,000` rows다.
   Polynomial work `sum(n*(degree+1)^2+(degree+1)^3)`와 LOESS work
-  `sum(n*(uniqueX*(1+robustIterations)+newPredictionX)*ceil(log2(n+1)))`는 각각 `10,000,000`을 넘기 전에 거부한다. graphic은 직접 만들지 않는다.
+  `sum(n*(uniqueX*(1+robustIterations)+newPredictionX)*ceil(log2(n+1)))`에 degree2만 local fit마다
+  `32*neighborCount+27`을 더한다. Descriptor/value 검증과 moment/solve 비용까지 포함한 보수적 한도다.
+  모든 group·robust pass·새 prediction의 누적 work는 `10,000,000`을 넘기 전에 거부한다. Graphic은 직접 만들지 않는다.
 - Coverage: `test/unit/actions/data/regression-data.test.js`와
   `test/charts/cars-regression-scatterplot/reference-values.test.js`가 grouped/ungrouped 값,
   confidence bounds와 invalid/degenerate groups를 검증한다. 여러 confidence 대표값 coverage는 부분적이다.
 
 ### Formal values — `createRegressionData`
 
-- Implemented: `createRegressionData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; groupBy?: FieldName } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "loess"; span?: UnitIntervalExclusiveZero; robustIterations?: NonNegativeInteger } | { method: "exp"; interval?: false }))`
+- Implemented: `createRegressionData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; groupBy?: FieldName } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "loess"; degree?: 1 | 2; span?: UnitIntervalExclusiveZero; robustIterations?: NonNegativeInteger } | { method: "exp"; interval?: false }))`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -1049,6 +1128,10 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
   - ✅ Covered: inferred/explicit source, grouped/ungrouped, missing fields, non-finite data와 degenerate groups.
 - `method`
   - ✅ Covered: all four methods, unknown rejection, degree/span defaults and boundaries, deterministic provenance/output ordering.
+  - ✅ Covered: LOESS degree2 literal quadratic/affine fits, independent weighted-system oracle, scale/translation,
+    singular/tied/all-zero robust neighborhoods, grouped cumulative work, degree1 exact compatibility와
+    create/edit/revise/facet/follow-source/persistence in `test/unit/actions/data/loess-degree.test.js` and
+    `test/unit/actions/data/loess-lifecycle.test.js`.
   - ✅ Covered: exponential response weighting, positive-pair checks, no-interval normalization,
     prediction positions and immutable source/edit/facade/persistence lifecycle in `exponential-regression.test.js`.
 - `confidenceMethod`, `level`, `confidence`
@@ -1431,6 +1514,8 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 - Signature: `editRegressionData({ target, x?, y?, groupBy?, method?, degree?, span?, robustIterations?, confidenceMethod?, level?, confidence?, interval?, dependents? })`.
 - Linear↔polynomial은 공통 confidence/interval을 보존하고 degree만 mode에 맞게 추가/제거한다. Loess 전환은
   confidence/interval을 제거하며 loess 밖으로 전환할 때 해당 defaults를 다시 정규화한다.
+  Method를 바꾸면 inherited degree를 제거하고 새 method 기본값을 쓴다. 명시 degree는 새 method로 검증하며
+  같은 LOESS에서 degree1 편집은 저장 degree를 제거하고 local-linear 결과로 복원한다.
 
 ### Formal values — `editRegressionData`
 
@@ -1489,21 +1574,44 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 - ✅ Covered: share/zscore/minmax/baseline family cleanup, zero-denominator policy와 output rename.
 - Evidence: `test/unit/actions/data/derived-editing.test.js`.
 
+## `editPivotData`
+
+- Signature: `editPivotData({ target, field?, value?, groupBy?, columns?, op?, fill?, dependents? })`.
+- Full-only focused editor for a standalone pivot owner. Target is the logical ID or current dataset snapshot; omitted transform options are preserved and arrays replace the whole value. Columns are never re-inferred by an edit.
+- Count 전환 시 이전 value를 제거하며 count에서 numeric op로 전환할 때 value가 필요하다. Count와 value를 함께 지정하면 오류다. `op:"none"`은 aggregation을 제거하고 duplicate cells가 있으면 실패한다.
+- Same typed column key의 as 변경은 직접 encoding/selection field를 새 alias로 rebind한다. Key 제거·교체로 필요한 consumer output이 없어지면 거부한다. `dependents` 기본 reject이며 recompute는 모든 downstream dataset을 stable topological order로 한 번씩 재계산한다.
+- 새 immutable revision을 만들고 logical identity, group-grain row identity와 source lineage를 보존한다. Invalid child, field, column, selector, guide 또는 output capacity는 이전 program과 trace를 보존한다.
+
+### Formal values — `editPivotData`
+
+- Implemented: `editPivotData(options: EditPivotDataOptions): ChartProgram`.
+- Existing focused editor의 explicit target, nonempty patch, closed options와 `dependents:"reject"|"recompute"` 규칙을 공유한다.
+- Proposed (NOT IMPLEMENTED): No proposal in this contract.
+
+### Value coverage — `editPivotData`
+
+- Evidence: `test/unit/actions/data/pivot-data.test.js`, `test/unit/actions/data/pivot-consumers.test.js`.
+
+- ✅ Covered: count/mean/none transitions, aliases, dependent recompute, source revisions, selection and restored editing in `test/unit/actions/data/pivot-data.test.js` and `test/unit/actions/data/pivot-consumers.test.js`.
+- ✅ Covered: declaration boundaries in `test/contracts/pivot-types.test.js`; installed package in `scripts/consumers/fixtures/node/pivot.mjs`.
+
 ## `editCompleteData`
 
-- Signature: `editCompleteData({ target, key?, groupBy?, values? | sequence?, fill?, members?, dependents? })`.
-- `values` 또는 `sequence`를 제공하면 이전 domain mode를 제거한다. `values`는 materialized rows가 아니라 Complete의
+- Signature: `editCompleteData({ target, key?, groupBy?, values? | sequence? | calendar?, fill?, members?, dependents? })`.
+- `values`, `sequence` 또는 `calendar`를 제공하면 이전 domain mode를 제거한다. `values`는 materialized rows가 아니라 Complete의
   requested typed domain이다. `fill`은 whole-map replacement다.
+- Calendar도 whole-object replacement다. 생략은 현재 정책을 보존하며 모든 required fields를 제공한 새 정책만 받는다.
+  source revision은 기존 TimeUnit/Summary/Complete dependency를 재계산하고 새 source의 domain 밖 key를 원자적으로 거부한다.
 
 ### Formal values — `editCompleteData`
 
 - Implemented: `editCompleteData(options: EditCompleteDataOptions): ChartProgram`.
-- Proposed (NOT IMPLEMENTED): source 교체와 values/sequence 병합.
+- Proposed (NOT IMPLEMENTED): source 교체와 domain mode 병합.
 
 ### Value coverage — `editCompleteData`
 
-- ✅ Covered: observed/values/sequence domain 전환, Complete values 허용, fill/members/grouping validation.
-- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+- ✅ Covered: observed/values/sequence/calendar domain 전환, Complete values 허용, fill/members/grouping validation, calendar restore/source revision/facet/selection.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`, `test/unit/actions/data/calendar-lifecycle.test.js`.
 
 ## `editImputedData`
 

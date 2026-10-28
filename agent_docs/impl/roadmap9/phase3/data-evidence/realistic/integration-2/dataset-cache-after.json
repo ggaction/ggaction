@@ -1,0 +1,209 @@
+{
+  "capturedAt": "2026-10-28T14:13:22.127Z",
+  "cacheRoot": "/Users/hyeonjeon/Projects/ggactionnewbrand/.artifacts/datasets/tidytuesday",
+  "files": {
+    "tt-penguins": {
+      "sha256": "f204db2c753b0937caac3cb35258562c14f073e4bbc76be24b4c51ce22767a93",
+      "bytes": 15241
+    },
+    "tt-global-temperatures": {
+      "sha256": "e3dd3aadca1ae73333cb3463904ce8dc7d07db0b01179422e12b2b6a09859f46",
+      "bytes": 14924
+    },
+    "tt-london-marathon-winners": {
+      "sha256": "7fa3c2456340d28f7af3872e5c32b8927be6e38e33be44c76aa560270f1bcf0b",
+      "bytes": 8151
+    },
+    "tt-himalayan-peaks": {
+      "sha256": "8515d9d239647b1912846ddfe1ce61e4901920c621004a40d0d7eb17be5bb890",
+      "bytes": 29251
+    },
+    "tt-us-tornadoes": {
+      "sha256": "aa14d5b76953d9b077deb9927059edeca966d9e6dcb25a5aacbc0023768e538c",
+      "bytes": 9525333
+    },
+    "tt-fast-food-nutrition": {
+      "sha256": "b5be2f92cd319d8bb515f0d07caf092d048e58f652e128154874ec1e4dc94c0f",
+      "bytes": 49629
+    },
+    "tt-cats-vs-dogs": {
+      "sha256": "31891b4206f739425cdecb7d6acb520e6c6f3ff1c4a301bd03af7f87a3592573",
+      "bytes": 3431
+    },
+    "tt-us-births": {
+      "sha256": "dfb9f4e0518bbb255cc24f1fdad496a1098ee24cd66509fe8ced7ac5e3d17fb2",
+      "bytes": 96748
+    },
+    "tt-college-graduates": {
+      "sha256": "754566bc1b3717e03d0da656971dacee733e45e2f6a30a902f8260cc536b0f37",
+      "bytes": 26872
+    },
+    "tt-movie-profit": {
+      "sha256": "c0e12dd39368dc097114a34dcabd8da1a5a7d8112cafdba9a48738659715ca03",
+      "bytes": 312621
+    },
+    "tt-voter-turnout": {
+      "sha256": "011fd801d6fbc2d62543c0637eec15de77642b189d072a60aebe3148ab96ca34",
+      "bytes": 40037
+    },
+    "tt-tv-ratings": {
+      "sha256": "ead10d34ab5dea34f987ec73ea9f34009834e1380219c358cbfc7464b512e440",
+      "bytes": 153384
+    },
+    "tt-space-launches": {
+      "sha256": "0c98c503e3f91d8c1ef699c9cb3847eb8f85c4d7cb730e30aeedf8b6877eb2bb",
+      "bytes": 430817
+    },
+    "tt-meteorites": {
+      "sha256": "dea9a2f630c660d0d9d53cfbcb49eecb376bfe756199013c007d8846a540856b",
+      "bytes": 3698313
+    },
+    "tt-video-games": {
+      "sha256": "fbd2b8077a14218cc35ceebddf9f808a9737c2beb5b20e55b0677c7dfd6f0dc1",
+      "bytes": 2694338
+    },
+    "tt-nuclear-explosions": {
+      "sha256": "74d6524edd5f9f0ead254aed059ea0c5a001b45e20aecc09fede9f35e4c6c98f",
+      "bytes": 158546
+    },
+    "tt-nyc-squirrels": {
+      "sha256": "4d1f479e8b778aab6bfc34640def6f23b64928b475c057cbc681262acb3d6d26",
+      "bytes": 814652
+    },
+    "tt-christmas-songs": {
+      "sha256": "5e29e0468e2a2ef615fe743f4c9f8f043fc923cefbafa2fa502bf7fc5041211c",
+      "bytes": 63106
+    },
+    "tt-spotify-songs": {
+      "sha256": "9902920cfe4940f0914ebb6716801a42f7f19ac88fbd6693eaae7e2822b16845",
+      "bytes": 7971379
+    },
+    "tt-food-consumption": {
+      "sha256": "612c2e1baa20ed5324e4494ac1dda54c0e8bd4aa7f1e20f4e07d4357652790e3",
+      "bytes": 52254
+    },
+    "tt-tuition-costs": {
+      "sha256": "3e43f999b73978234f82a230e9d0a18820950833150dc134bbb68c70940feec8",
+      "bytes": 243625
+    },
+    "tt-tour-de-france-winners": {
+      "sha256": "2568ec22aab95469dc8a8dc0dc09a9ba6caec1e88c0cf5ab46cedd781eb38b24",
+      "bytes": 18896
+    },
+    "tt-volcanoes": {
+      "sha256": "3ab7c7b02f813d68512a360d1f2da23098409b564a70f0e84610db8fdad9f8f8",
+      "bytes": 254788
+    },
+    "tt-coffee-ratings": {
+      "sha256": "ae6fdd58f4a7f77397c11c2657e22be8aa8f746bdc5a74cf479e981bd3c25d5e",
+      "bytes": 603612
+    },
+    "tt-astronauts": {
+      "sha256": "75842a4d15b7c16a88c046c75463475f01e2dea23b6c1ebcca817ede2fbca69e",
+      "bytes": 219060
+    },
+    "tt-datasaurus": {
+      "sha256": "febad7f618c51699815060a075ba80f13f6f1474e24e11d52ad5599ee269cc51",
+      "bytes": 64110
+    },
+    "tt-wind-turbines": {
+      "sha256": "b912dd4033b47f6c92022a8b480971a448f6466cd602ba62d2ca7e72305829b7",
+      "bytes": 829926
+    },
+    "tt-big-mac": {
+      "sha256": "32305f2e9a5a800dfdf9e7b9d9704505df31897e2bcf503660f17a7c865b9f69",
+      "bytes": 190822
+    },
+    "tt-transit-costs": {
+      "sha256": "e60571138fad5a7d7d08df14c797a03b1a95fb475ef91e72a94a87c9e504505d",
+      "bytes": 104678
+    },
+    "tt-plastics": {
+      "sha256": "1328708e9dd2997ba9994e3a3619f6e4b5cdf007a22b218c2049727fb3f34265",
+      "bytes": 742005
+    },
+    "tt-bechdel-movies": {
+      "sha256": "20be53c83d0f62caa4376bfd5efbce1c14ff9005cea41220667f0bb49d108cb0",
+      "bytes": 1081230
+    },
+    "tt-animal-rescues": {
+      "sha256": "3b7fa5d1ae10243181ef56468bf7dd503024a7ac233576e50a86c535f0707c31",
+      "bytes": 2658632
+    },
+    "tt-formula-one-races": {
+      "sha256": "2d7f7c23d9f26d5cdb07fabea90957af8626f3cf0f0586ad696738dc229d50fd",
+      "bytes": 116857
+    },
+    "tt-nurses": {
+      "sha256": "dbff4c894319c5520cfe91112bf612d0e4534d533e5e0a41ed10678ccfb40d5c",
+      "bytes": 167257
+    },
+    "tt-spiders": {
+      "sha256": "ff4855f2b9628abd51a0b205c963176dbdb74c529fc75a701e404bc74b27a109",
+      "bytes": 5364298
+    },
+    "tt-bee-colonies": {
+      "sha256": "43c7d2cf8826ca74722873ecad4a92d764d79841aa3c4ca6040138e374d4580d",
+      "bytes": 72358
+    },
+    "tt-chocolate-ratings": {
+      "sha256": "356e2639eccb6859407a1202c15e1e444cf5c22e0da128c889824cfcb647127d",
+      "bytes": 258425
+    },
+    "tt-dog-breed-traits": {
+      "sha256": "f7094ea40e20bece2919d1df7d48b6a44017d454b2c6158324a6191ee55eb150",
+      "bytes": 11883
+    },
+    "tt-new-zealand-names": {
+      "sha256": "9970d6e461b5a004744ad0ee63376d942af104e0e9e24d182e0e835c0896c20e",
+      "bytes": 1459557
+    },
+    "tt-eurovision": {
+      "sha256": "b78f5b18cc49e49134703e21540259c7b3c7ae183536da5aa29822b392d9e45c",
+      "bytes": 509716
+    },
+    "tt-frogs": {
+      "sha256": "a5bd6f32fb72cf2aaba6f9ebaff5e856c87f760dcb4be4e3dbaa205191dc4310",
+      "bytes": 43500
+    },
+    "tt-world-cup-matches": {
+      "sha256": "14582a1c1ecab922c1d3fd6382cd12270d12ecc5c7474c944d280de147c14a3f",
+      "bytes": 88375
+    },
+    "tt-cats-uk": {
+      "sha256": "459812c3790571f00e55c35a7990fcf688b1419cf8afcd5d3a05bfba496e965f",
+      "bytes": 2073557
+    },
+    "tt-stock-prices": {
+      "sha256": "cb6d83535f2df947a982299bc30a9b532c7ffed9642733c6f5fb3657c4a457fc",
+      "bytes": 3217735
+    },
+    "tt-life-expectancy": {
+      "sha256": "449c5675c31813737aed0bf5832732f798536bbcf0a1fc783db9fee46bea70ca",
+      "bytes": 576850
+    },
+    "tt-haunted-places": {
+      "sha256": "c70a62159fe3432d7526f463c497f953109fbe51364c66e1c9b1e7369e029adc",
+      "bytes": 5375565
+    },
+    "tt-groundhogs": {
+      "sha256": "1b22d0982ee5e1028d61c3039afbd7b277f19e24d65e07c0b045e79b6aba6482",
+      "bytes": 56336
+    },
+    "tt-trash-wheel": {
+      "sha256": "f9c02fbfbac7dedef2d04e65ce839382bd45248fc1d53c3e23dfc2aa4d6eb05c",
+      "bytes": 92586
+    },
+    "tt-outer-space-objects": {
+      "sha256": "d059d7121b6f7e9781ea5033cc0599f62c0ead24f26f10ddbe2f06737dcf8dc2",
+      "bytes": 23821
+    },
+    "tt-pride-index": {
+      "sha256": "4004fe32aab55ba9e92a713fd2f9d9200ad61b2e60d6c398296b2294a488cc14",
+      "bytes": 15184
+    }
+  },
+  "count": 50,
+  "totalBytes": 52694271,
+  "unchanged": true
+}

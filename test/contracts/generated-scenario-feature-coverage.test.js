@@ -17,6 +17,8 @@ import {
   EXCLUDED_OPTION_PATH_SEGMENTS,
   TRACE_OPTION_EVIDENCE_ALIASES
 } from "../support/scenarios/coverage-inventory.js";
+import { LIFECYCLE_SCENARIO_RECIPES } from "../support/scenarios/lifecycle-recipes.js";
+import { datasetDefinition } from "../support/datasets/catalog.js";
 
 const actionCards = JSON.parse(readFileSync(
   new URL("../../knowledge/action-cards.json", import.meta.url),
@@ -214,12 +216,12 @@ function smallPolicy(overrides = {}) {
 test("derives a bounded public option inventory without runtime prototype paths", async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
 
-  assert.equal(inventory.counts.publicActions, 294);
-  assert.equal(inventory.counts.topLevelOptionPaths, 2718);
-  assert.equal(inventory.counts.nestedOptionPaths, 21857);
-  assert.equal(inventory.counts.optionPaths, 24575);
-  assert.equal(inventory.counts.requiredOptionPaths, 16999);
-  assert.equal(inventory.counts.excludedOptionPaths, 7576);
+  assert.equal(inventory.counts.publicActions, 297);
+  assert.equal(inventory.counts.topLevelOptionPaths, 2757);
+  assert.equal(inventory.counts.nestedOptionPaths, 22585);
+  assert.equal(inventory.counts.optionPaths, 25342);
+  assert.equal(inventory.counts.requiredOptionPaths, 17264);
+  assert.equal(inventory.counts.excludedOptionPaths, 8078);
   assert.deepEqual(inventory.optionPaths.filter(option =>
     ["createData", "reviseData"].includes(option.action) && option.topLevel &&
     ["keyField", "keyFields", "keys", "rowMap"].includes(option.path)
@@ -232,12 +234,31 @@ test("derives a bounded public option inventory without runtime prototype paths"
       "option-path:createTitle.subtitleLineHeight",
       "option-path:editTitle.subtitleLineHeight"
     ]);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 934);
-  assert.equal(inventory.counts.topLevelLiteralValues, 3753);
-  assert.equal(inventory.counts.literalFamilies, 214);
-  assert.equal(inventory.counts.pathLiteralRequirements, 12778);
-  assert.equal(inventory.counts.familyLiteralRequirements, 524);
-  assert.equal(inventory.counts.pathDiversityRequirements, 463);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 937);
+  assert.equal(inventory.counts.topLevelLiteralValues, 3767);
+  assert.equal(inventory.counts.literalFamilies, 216);
+  assert.equal(inventory.counts.pathLiteralRequirements, 13026);
+  assert.equal(inventory.counts.familyLiteralRequirements, 525);
+  assert.equal(inventory.counts.pathDiversityRequirements, 485);
+  for (const action of ["createPivotData", "editPivotData"]) {
+    const options = inventory.optionPaths.filter(option => option.action === action && option.topLevel);
+    assert.deepEqual(options.map(option => option.path), action === "createPivotData"
+      ? ["columns", "field", "fill", "groupBy", "id", "op", "source", "target", "value"]
+      : ["columns", "dependents", "field", "fill", "groupBy", "op", "target", "value"]);
+    assert.ok(options.every(option => option.required && option.evidence === "direct-trace"));
+    assert.deepEqual(options.find(option => option.path === "op").values,
+      ["count", "max", "mean", "min", "none", "sum"].map(value => `string:${value}`));
+  }
+  assert.deepEqual(inventory.optionPaths.find(option =>
+    option.id === "option-path:editPivotData.dependents").values,
+  ["string:recompute", "string:reject"]);
+  for (const action of ["createCompleteData", "editCompleteData"]) {
+    for (const path of ["calendar", "calendar.end", "calendar.start", "calendar.timeZone", "calendar.unit"]) {
+      const option = inventory.optionPaths.find(option => option.id === `option-path:${action}.${path}`);
+      assert.ok(option?.required && option.evidence === "direct-trace", `${action}.${path}`);
+      assert.deepEqual(option.values, path === "calendar.unit" ? ["string:day"] : []);
+    }
+  }
   const bootstrapMethodRoots = [
     "createDerivedData.transform[].aggregates[].op.method",
     "createDerivedData.transform[].method",
@@ -326,6 +347,15 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const otherNine = inventory.literalFamilies.find(family => family.values.some(value => value.key==="string:weekday") && family.size===9);
   assert.equal(otherNine.policy,"family-values","the general threshold remains eight");
   const optionById = new Map(inventory.optionPaths.map(option => [option.id, option]));
+  for (const path of ["prepared", "requestToken"]) {
+    const option = optionById.get(`option-path:applyDataUpdate.${path}`);
+    assert.equal(option?.required, true, path);
+    assert.equal(option?.evidence, "direct-trace", path);
+    assert.equal(option?.topLevel, true, path);
+  }
+  assert.deepEqual(inventory.optionPaths.filter(option => option.action === "applyDataUpdate")
+    .map(option => option.path), ["prepared", "requestToken"],
+  "opaque handles expose inspection descriptors without adding nested authoring options");
   assert.deepEqual(inventory.publicActions.filter(action =>
     ["createParameter", "editParameter", "removeParameter"].includes(action.name)
   ), ["createParameter", "editParameter", "removeParameter"].map(name => ({
@@ -466,7 +496,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 7576 }
+    { "redacted-array": 8078 }
   );
   const values = id => optionById.get(id)?.values ?? [];
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);
@@ -494,23 +524,74 @@ test("derives a bounded public option inventory without runtime prototype paths"
     option.required &&
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
-  assert.equal(scaleTypePaths.length, 192);
-  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 897);
+  assert.equal(scaleTypePaths.length, 199);
+  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 931);
   assert.equal(inventory.excludedOptionPaths.every(option =>
     optionById.get(option.replacement)?.required === true
   ), true);
   assert.equal(inventory.optionPaths.filter(option => option.required).every(option =>
     option.evidence === "direct-trace"
   ), true);
+  for (const action of ["encodeColor", "encodeStroke", "encodeSize", "encodeShape", "encodeOpacity", "encodeStrokeWidth", "encodeStrokeDash", "encodeAngle"]) {
+    for (const path of ["conditions", "otherwise", "otherwise.value"]) {
+      const option = optionById.get(`option-path:${action}.${path}`);
+      assert.equal(option?.required, true, `${action}.${path}`);
+      assert.equal(option?.evidence, "direct-trace", `${action}.${path}`);
+    }
+    assert.equal(optionById.get(`option-path:${action}.conditions[].when`)?.evidence, "redacted-trace");
+  }
+  for (const action of ["filterData", "editFilteredData"]) for (const path of ["where", "where.version", "where.registry", "where.root.type"]) {
+    assert.equal(optionById.get(`option-path:${action}.${path}`)?.evidence, "direct-trace");
+  }
   const ledger = createScenarioCoverageLedger({
     publicInventory: inventory,
     rendererFeatures: []
   });
+  const preparedRecipe = LIFECYCLE_SCENARIO_RECIPES.find(recipe =>
+    recipe.id === "action-direct-data-resources");
+  const preparedProgram = preparedRecipe.build({ dataset: preparedRecipe.datasets[0],
+    ...Object.fromEntries(Object.entries(preparedRecipe.factors).map(([name, values]) =>
+      [name, values[0]])) });
+  const directTrace = preparedProgram.trace.children.map(({ op, args }) => ({ op, args }));
+  const preparedReport = summarizeScenarioFeatureCoverage({
+    results: [{ id: "prepared-source-options", recipe: preparedRecipe.id,
+      dataset: preparedRecipe.datasets[0],
+      operations: directTrace.map(node => node.op),
+      directOperations: directTrace.map(node => node.op), directTrace,
+      metadata: { chartFamily: "scatter", complexity: "advanced", activeFeatures: [],
+        dataOperations: [] }, effectiveFeatures: [], renderers: ["svg"] }],
+    datasetCorpus: { datasets: [datasetDefinition(preparedRecipe.datasets[0])] }, ledger
+  });
+  for (const id of ["action:applyDataUpdate", "option-path:applyDataUpdate.prepared",
+    "option-path:applyDataUpdate.requestToken",
+    "action:createPivotData", "action:editPivotData",
+    "option-path:createPivotData.source", "option-path:createPivotData.field",
+    "option-path:createPivotData.value", "option-path:createPivotData.op",
+    "option-path:editPivotData.op", "option-path:editPivotData.groupBy",
+    "option-path:filterData.where", "option-path:editFilteredData.where"]) {
+    assert.equal(preparedReport.requirements.find(requirement => requirement.id === id)?.occurrences,
+      1, `${id} must be observed from an executed public action`);
+  }
+  const conditionalResults = ["action-direct-point-text", "action-direct-ranged-marks"].map(id => {
+    const recipe = LIFECYCLE_SCENARIO_RECIPES.find(item => item.id === id);
+    const program = recipe.build({ dataset: recipe.datasets[0], ...Object.fromEntries(Object.entries(recipe.factors).map(([name, values]) => [name, values[0]])) });
+    const directTrace = program.trace.children.map(({ op, args }) => ({ op, args }));
+    return { id, recipe: id, dataset: recipe.datasets[0], operations: directTrace.map(node => node.op),
+      directOperations: directTrace.map(node => node.op), directTrace, metadata: { chartFamily: "scatter", complexity: "advanced", activeFeatures: [], dataOperations: [] }, effectiveFeatures: [], renderers: ["svg"] };
+  });
+  const conditionalReport = summarizeScenarioFeatureCoverage({ results: conditionalResults,
+    datasetCorpus: { datasets: conditionalResults.map(result => datasetDefinition(result.dataset)) }, ledger });
+  for (const action of ["encodeColor", "encodeStroke", "encodeSize", "encodeShape", "encodeOpacity", "encodeStrokeWidth", "encodeStrokeDash", "encodeAngle"]) {
+    for (const path of ["conditions", "otherwise", "otherwise.value"]) {
+      const id = `option-path:${action}.${path}`;
+      assert.equal(conditionalReport.requirements.find(requirement => requirement.id === id)?.occurrences, 1, id);
+    }
+  }
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 30601);
+  assert.equal(ledger.requirements.length, 31118);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

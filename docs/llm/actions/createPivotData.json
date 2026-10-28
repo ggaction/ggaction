@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 3,
+  "name": "createPivotData",
+  "layer": "user-facing",
+  "domain": "statistics",
+  "summary": "Turn category cells into numeric columns within observed groups.",
+  "signature": "createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;",
+  "intents": [
+    "create pivot data",
+    "create",
+    "add",
+    "statistical layer",
+    "statistical transform",
+    "grouped pivot data",
+    "category columns"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "grouped pivot data"
+    ],
+    "idOptions": [
+      "id",
+      "source",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H1"
+  ],
+  "wraps": [
+    "createDerivedData"
+  ],
+  "editableVia": [
+    "editPivotData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "source",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "groupBy",
+      "required": false,
+      "type": "string | readonly string[] | undefined"
+    },
+    {
+      "name": "columns",
+      "required": false,
+      "type": "readonly PivotColumn[] | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "number | null | undefined"
+    },
+    {
+      "name": "op",
+      "required": false,
+      "type": "\"count\" | PivotNumericOperation | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createPivotData({ id, field, source?, target?, groupBy?, columns?, fill?, op? })"
+  ],
+  "snippet": "program.createPivotData({ id: \"wide\", field: \"category\", value: \"amount\", op: \"sum\" })",
+  "errors": [],
+  "route": "/reference/actions/statistics/#createpivotdata"
+}

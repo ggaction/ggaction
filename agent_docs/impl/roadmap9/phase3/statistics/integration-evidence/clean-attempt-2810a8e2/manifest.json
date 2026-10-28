@@ -1,0 +1,37 @@
+{
+  "status": "failed-then-fixed",
+  "implementationCommit": "2810a8e2cb346afaedbb2809cf7859578c5c088e",
+  "failure": "Documented browser limits retained prior values; focused repair passed 10 cases. Fresh clean checks still required.",
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/clean-attempt-2810a8e2/results.json",
+      "sha256": "91b4bae596af3e36bba6a688d3eec9045ff55766a3b08eab1492ab0d0d45afda",
+      "originalSha256": "91b4bae596af3e36bba6a688d3eec9045ff55766a3b08eab1492ab0d0d45afda"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/clean-attempt-2810a8e2/suite-unit.json",
+      "sha256": "9a0725b34598204e5cc04e98f593c40c1d28b6b1ed6903e8952deadabf2cf4ea",
+      "originalSha256": "9a0725b34598204e5cc04e98f593c40c1d28b6b1ed6903e8952deadabf2cf4ea"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/clean-attempt-2810a8e2/suite-unit.log.gz",
+      "sha256": "6901b37198e9213de5082988dc0001318a9511876706debc0367ca1106608c6c",
+      "originalSha256": "746485ceefa231e43b91f07d1e0dfe12b4c03189f0f35cb94c68345df453db41"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/clean-attempt-2810a8e2/suite-contracts.json",
+      "sha256": "e872d2ec23dc84e2a6a2310fe4e5174628e900411a39d3a7815a9f9ae87ecfeb",
+      "originalSha256": "e872d2ec23dc84e2a6a2310fe4e5174628e900411a39d3a7815a9f9ae87ecfeb"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/clean-attempt-2810a8e2/suite-contracts.log.gz",
+      "sha256": "b5601ec2cf90bfdbc4e23c03fa38238149bfc1b9636f63239c8c6d9b78a4807d",
+      "originalSha256": "bfcee7e454d139553809f3e8ac1ba8ab29d3fb9a93465cc382ad6d7849945f99"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/statistics/integration-evidence/clean-attempt-2810a8e2/budget-docs-repair.log.gz",
+      "sha256": "e3971cb814ed9534014863eed81176f5495e05cc77a8b7b92802a237d57303ba",
+      "originalSha256": "4e558b673f95b5e1902153d30761d120910d30d9c76aa0fd7d9255e018664e2b"
+    }
+  ]
+}

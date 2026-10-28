@@ -1,0 +1,4 @@
+export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly prepared: PreparedDataUpdate<Kind>;
+  readonly requestToken: string;
+}

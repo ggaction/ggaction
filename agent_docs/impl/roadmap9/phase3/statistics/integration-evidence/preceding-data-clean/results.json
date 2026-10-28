@@ -1,0 +1,116 @@
+[
+  {
+    "label": "suite-unit",
+    "startedAt": "2026-10-28T14:22:07.058Z",
+    "finishedAt": "2026-10-28T14:24:13.518Z",
+    "exitCode": 0,
+    "signal": null,
+    "source": {
+      "available": true,
+      "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sourceAfter": {
+      "available": true,
+      "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "suite-contracts",
+    "startedAt": "2026-10-28T14:24:13.518Z",
+    "finishedAt": "2026-10-28T14:26:32.063Z",
+    "exitCode": 0,
+    "signal": null,
+    "source": {
+      "available": true,
+      "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sourceAfter": {
+      "available": true,
+      "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "expression-acceptance",
+    "startedAt": "2026-10-28T14:26:32.063Z",
+    "finishedAt": "2026-10-28T14:26:32.610Z",
+    "exitCode": 0,
+    "signal": null,
+    "source": {
+      "available": true,
+      "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sourceAfter": {
+      "available": true,
+      "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "metadata-check",
+    "startedAt": "2026-10-28T14:26:32.611Z",
+    "finishedAt": "2026-10-28T14:26:32.927Z",
+    "exitCode": 0,
+    "signal": null,
+    "source": {
+      "available": true,
+      "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sourceAfter": {
+      "available": true,
+      "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "package-check",
+    "startedAt": "2026-10-28T14:26:32.927Z",
+    "finishedAt": "2026-10-28T14:26:34.638Z",
+    "exitCode": 0,
+    "signal": null,
+    "source": {
+      "available": true,
+      "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sourceAfter": {
+      "available": true,
+      "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  {
+    "label": "docs-verify",
+    "startedAt": "2026-10-28T14:26:34.638Z",
+    "finishedAt": "2026-10-28T14:31:38.780Z",
+    "exitCode": 0,
+    "signal": null,
+    "source": {
+      "available": true,
+      "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sourceAfter": {
+      "available": true,
+      "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+      "clean": true,
+      "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+]

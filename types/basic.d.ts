@@ -1,7 +1,11 @@
 export type { ConditionalEncodingOptions } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./program.js";
-import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget } from "./program.js";
+export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
+  DataSourceResponse, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions,
+  DataSourceProvenance, DataSourceReceipt, DataSourceResource } from "./program.js";
+import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget,
+  CreateDataUpdateRequest, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions } from "./program.js";
 
 export type {
   LinearNiceCountOptions,
@@ -131,9 +135,13 @@ export type BasicChartProgram =
   Pick<ChartProgram, BasicStateKey> &
   { readonly [Key in Exclude<BasicMethodKey, "createData">]: RebindMethod<ChartProgram[Key]> } &
   { createData<Row extends object>(options: CreateDataOptions<Row>): BasicChartProgram } &
+  { applyDataUpdate(options: ApplyDataUpdateOptions<"create">): BasicChartProgram } &
   { readonly layoutSeries: (options: BasicSeriesLayoutOptions) => BasicChartProgram };
 
 export function chart(): BasicChartProgram;
+export function prepareDataUpdate(
+  program: BasicChartProgram, request: CreateDataUpdateRequest, host: DataUpdateHost
+): Promise<PreparedDataUpdate<"create">>;
 export function render(
   program: Pick<BasicChartProgram, "graphicSpec">,
   context: CanvasRenderingContext2D,

@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 525_000, // Conditional appearance Node 20/22/24 maximum: 523773.
-  "ggaction/basic": 306_000, // Same minified bytes across the runtime matrix: 304733.
+  ggaction: 537_000, // Prepared source, statistics and conditional owners: 535,138 gzip bytes.
+  "ggaction/basic": 315_000, // Integrated create-only source and conditional owners: 313,064 gzip bytes.
   "ggaction/svg": 25_000
 });
 

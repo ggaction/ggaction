@@ -1,0 +1,154 @@
+TAP version 13
+# Subtest: deferred chart owner cards distinguish creation from completed geometry
+ok 1 - deferred chart owner cards distinguish creation from completed geometry
+  ---
+  duration_ms: 7.099583
+  type: 'test'
+  ...
+# Subtest: compact action cards are generated from the current action contract
+ok 2 - compact action cards are generated from the current action contract
+  ---
+  duration_ms: 1440.838833
+  type: 'test'
+  ...
+# Subtest: missing generated routes fail closed even when card and route map both omit one
+ok 3 - missing generated routes fail closed even when card and route map both omit one
+  ---
+  duration_ms: 1403.342125
+  type: 'test'
+  ...
+# Subtest: compact action cards satisfy the bounded typed public schema projection
+ok 4 - compact action cards satisfy the bounded typed public schema projection
+  ---
+  duration_ms: 44.095375
+  type: 'test'
+  ...
+# Subtest: action-card hierarchy is generated from the executable direct-child trace
+ok 5 - action-card hierarchy is generated from the executable direct-child trace
+  ---
+  duration_ms: 5241.485375
+  type: 'test'
+  ...
+# Subtest: scale spacing units agree across every generic and focused editor
+ok 6 - scale spacing units agree across every generic and focused editor
+  ---
+  duration_ms: 4.922708
+  type: 'test'
+  ...
+# Subtest: Cartesian title cards retain numeric and relative gap logical-pixel units
+ok 7 - Cartesian title cards retain numeric and relative gap logical-pixel units
+  ---
+  duration_ms: 2.810833
+  type: 'test'
+  ...
+# Subtest: action cards separate entry support, units, inference, and completion
+ok 8 - action cards separate entry support, units, inference, and completion
+  ---
+  duration_ms: 3.077125
+  type: 'test'
+  ...
+# Subtest: every compact snippet type-checks against the exact ChartProgram declaration
+ok 9 - every compact snippet type-checks against the exact ChartProgram declaration
+  ---
+  duration_ms: 167.482625
+  type: 'test'
+  ...
+# Subtest: imputation call patterns preserve method-specific requirements
+ok 10 - imputation call patterns preserve method-specific requirements
+  ---
+  duration_ms: 2.146042
+  type: 'test'
+  ...
+# Subtest: call pattern validation rejects unsupported top-level keys without confusing nested keys
+ok 11 - call pattern validation rejects unsupported top-level keys without confusing nested keys
+  ---
+  duration_ms: 0.211709
+  type: 'test'
+  ...
+# Subtest: advertised bar calls execute and direction-only guide branches retain their exact meaning
+ok 12 - advertised bar calls execute and direction-only guide branches retain their exact meaning
+  ---
+  duration_ms: 43.734792
+  type: 'test'
+  ...
+# Subtest: conditional encoder declarations preserve each branch contract and require otherwise
+ok 13 - conditional encoder declarations preserve each branch contract and require otherwise
+  ---
+  duration_ms: 137.460666
+  type: 'test'
+  ...
+# Subtest: keeps source imports inside their architectural boundaries
+ok 14 - keeps source imports inside their architectural boundaries
+  ---
+  duration_ms: 73.928417
+  type: 'test'
+  ...
+# Subtest: the compact source-action vocabulary matches public default action metadata
+ok 15 - the compact source-action vocabulary matches public default action metadata
+  ---
+  duration_ms: 0.947375
+  type: 'test'
+  ...
+# Subtest: Basic source preparation excludes Full revision and facet orchestration
+ok 16 - Basic source preparation excludes Full revision and facet orchestration
+  ---
+  duration_ms: 30.591833
+  type: 'test'
+  ...
+# Subtest: parses static, re-exported, and dynamic module references
+ok 17 - parses static, re-exported, and dynamic module references
+  ---
+  duration_ms: 0.199042
+  type: 'test'
+  ...
+# Subtest: resolves extensionless files and directory entry points
+ok 18 - resolves extensionless files and directory entry points
+  ---
+  duration_ms: 0.222625
+  type: 'test'
+  ...
+# Subtest: keeps the local source import graph acyclic
+ok 19 - keeps the local source import graph acyclic
+  ---
+  duration_ms: 47.472292
+  type: 'test'
+  ...
+# Subtest: keeps semantic and graphic cloning inside primitive actions
+ok 20 - keeps semantic and graphic cloning inside primitive actions
+  ---
+  duration_ms: 151.375209
+  type: 'test'
+  ...
+# Subtest: routes exact named semantic resource lookup through selectors
+ok 21 - routes exact named semantic resource lookup through selectors
+  ---
+  duration_ms: 237.99625
+  type: 'test'
+  ...
+# Subtest: keeps cross-cutting planners independent from concrete mark names
+ok 22 - keeps cross-cutting planners independent from concrete mark names
+  ---
+  duration_ms: 0.319458
+  type: 'test'
+  ...
+# Subtest: keeps every ordinary mark family behind a stable directory entry
+ok 23 - keeps every ordinary mark family behind a stable directory entry
+  ---
+  duration_ms: 0.30375
+  type: 'test'
+  ...
+# Subtest: architectural syntax checks ignore comments and recognize direct bracket and optional access
+ok 24 - architectural syntax checks ignore comments and recognize direct bracket and optional access
+  ---
+  duration_ms: 0.234083
+  type: 'test'
+  ...
+1..24
+# tests 24
+# suites 0
+# pass 24
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8735.459083

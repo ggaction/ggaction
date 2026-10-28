@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "render": {
+    "passed": 272,
+    "failed": 0,
+    "approvedGalleryVariants": 216,
+    "reviewGalleryVariants": 0
+  },
+  "browser": {
+    "passed": 299,
+    "failed": 0
+  },
+  "docs": {
+    "pages": 150,
+    "selectiveLlmArtifacts": 1210,
+    "widths": [
+      320,
+      390,
+      768
+    ],
+    "desktopSearch": true,
+    "browserExit": 0,
+    "ruby": "3.2.11",
+    "ciRuby": "3.2.6"
+  },
+  "checks": [
+    {
+      "label": "suite-render",
+      "code": 0,
+      "node": "v22.23.1",
+      "durationMs": 90786,
+      "receipt": ".artifacts/validation/data-final/suite-render.json",
+      "receiptSha256": "30484a52794f0dbb149fc8b9cd97a664454f7b2673e4cdef03fcc1970fdfb9ba",
+      "log": ".artifacts/validation/data-final/suite-render.log",
+      "logSha256": "76f35ddb347d523e433fc31d60663929ac3c460ac9de26b6af9769afcfb526b8"
+    },
+    {
+      "label": "render-stage-0",
+      "code": 0,
+      "node": "v22.23.1",
+      "durationMs": 91111,
+      "receipt": ".artifacts/validation/data-final/render-stage-0.json",
+      "receiptSha256": "0439b33ebda0e35c95dd97e8dd996b467fab54268e998b4a56b2cc6b7783d79b",
+      "log": ".artifacts/validation/data-final/render-stage-0.log",
+      "logSha256": "76f35ddb347d523e433fc31d60663929ac3c460ac9de26b6af9769afcfb526b8"
+    },
+    {
+      "label": "render-stage-1",
+      "code": 0,
+      "node": "v22.23.1",
+      "durationMs": 195,
+      "receipt": ".artifacts/validation/data-final/render-stage-1.json",
+      "receiptSha256": "6b5607c01b56b71f634a1072d3354371386c4fd68bafee3e0afbbb2d4eb56b40",
+      "log": ".artifacts/validation/data-final/render-stage-1.log",
+      "logSha256": "3aecaee5da4f3630e60f3b5d625b2c8dc6cca8a0d5f51ab13e8e7dcf056b88da"
+    },
+    {
+      "label": "render-stage-2",
+      "code": 0,
+      "node": "v22.23.1",
+      "durationMs": 13873,
+      "receipt": ".artifacts/validation/data-final/render-stage-2.json",
+      "receiptSha256": "db9f0631c96a9920cee1200970afc1ad78e3bbdd9125e3f70f21795051a3a894",
+      "log": ".artifacts/validation/data-final/render-stage-2.log",
+      "logSha256": "8c877165637e75ff93594b408df5f1d7a31632de8b84885fc13092eed2d33e39"
+    },
+    {
+      "label": "suite-browser",
+      "code": 0,
+      "node": "v22.23.1",
+      "durationMs": 150214,
+      "receipt": ".artifacts/validation/data-final/suite-browser.json",
+      "receiptSha256": "e362d264041fa842c0e4edcee09d56e624c029d02efd98869dea6c98716bd43f",
+      "log": ".artifacts/validation/data-final/suite-browser.log",
+      "logSha256": "95779a71f6b9cbab3ad0f15baf7d9fb31a9baa001f506f124ffe8a61574fef68"
+    },
+    {
+      "label": "data-docs-preflight",
+      "code": 0,
+      "node": "v22.23.1",
+      "durationMs": 1324,
+      "receipt": ".artifacts/validation/data-final/data-docs-preflight.json",
+      "receiptSha256": "1451b8681523ca62284200155995fb94bc408e0496e96f60c5f80c1a81622dad",
+      "log": ".artifacts/validation/data-final/data-docs-preflight.log",
+      "logSha256": "4264122012a6b28dea31f2560e823021bdb4c4da3a7f6db5a2c7e479fb8a3659"
+    },
+    {
+      "label": "data-docs-build",
+      "code": 0,
+      "node": "v22.23.1",
+      "durationMs": 25652,
+      "receipt": ".artifacts/validation/data-final/data-docs-build.json",
+      "receiptSha256": "f57995b73b20ae17505eb12fffd5332b807da8352d09fba2a3569ac7c5b52d44",
+      "log": ".artifacts/validation/data-final/data-docs-build.log",
+      "logSha256": "99f359d8b614dd3a39ac3ed975f1abc646b5053d7632c932b73212a52c5fe925"
+    },
+    {
+      "label": "data-docs-built-links",
+      "code": 0,
+      "node": "v22.23.1",
+      "durationMs": 2578,
+      "receipt": ".artifacts/validation/data-final/data-docs-built-links.json",
+      "receiptSha256": "60317c4df406d7b0b4d7449e151570608574b1bfa9c9ea0d7b5a09939e9c8ea5",
+      "log": ".artifacts/validation/data-final/data-docs-built-links.log",
+      "logSha256": "47739d6ad3dbaac2384f90c48e0c3a856882a013e09910c30c804a987a7333f5"
+    },
+    {
+      "label": "data-docs-browser",
+      "code": 0,
+      "node": "v22.23.1",
+      "durationMs": 267210,
+      "receipt": ".artifacts/validation/data-final/data-docs-browser.json",
+      "receiptSha256": "8d00e209b9c5eda119741c33e46b933a3dbaf912368729f758edc0f3dcf41351",
+      "log": ".artifacts/validation/data-final/data-docs-browser.log",
+      "logSha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
+    }
+  ],
+  "inputDeltas": {
+    "render": {
+      "capturedAt": "2026-10-28T13:18:47.286Z",
+      "changed": [
+        "scripts/consumers/fixtures/types-1.ts"
+      ]
+    },
+    "browser": {
+      "capturedAt": "2026-10-28T13:20:15.076Z",
+      "changed": [
+        "scripts/consumers/fixtures/types-1.ts",
+        "test/contracts/compact-action-cards.test.js"
+      ]
+    },
+    "docs": {
+      "changed": []
+    }
+  },
+  "inputNotes": "Render/browser 중 변경된 types consumer fixture와 compact action card test는 해당 suite에서 import하지 않는다. Runtime/renderer/browser test 입력은 동일하다.",
+  "sourceEdits": []
+}

@@ -567,7 +567,7 @@ export type DatasetRegressionTransform = {
       method: "loess";
       span: number;
       robustIterations?: number;
-      degree?: never;
+      degree?: 2;
       confidenceMethod?: never;
       level?: never;
       confidence?: never;
@@ -1055,6 +1055,14 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
     } & DatasetNormalizeBaselineTransform)
   | ({ readonly method: "change" } & DatasetNormalizeBaselineTransform)
 );
+export interface CalendarDayDomain {
+  readonly unit: "day";
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly start: string;
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly end: string;
+  readonly timeZone: string;
+}
 export type DatasetCompleteTransform = {
   readonly type: "complete";
   readonly key: string;
@@ -1062,12 +1070,14 @@ export type DatasetCompleteTransform = {
   readonly fill: Readonly<Record<string, DatasetScalar>>;
   readonly members?: string;
 } & (
-  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never }
+  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never; readonly calendar?: never }
   | {
       readonly sequence: { readonly start: number; readonly end: number; readonly step: number };
       readonly values?: never;
+      readonly calendar?: never;
     }
-  | { readonly values?: never; readonly sequence?: never }
+  | { readonly calendar: CalendarDayDomain; readonly values?: never; readonly sequence?: never }
+  | { readonly values?: never; readonly sequence?: never; readonly calendar?: never }
 );
 type DatasetImputedBaseTransform = {
   readonly type: "impute";
@@ -1113,7 +1123,34 @@ interface DatasetStatisticalReferenceTransform {
   readonly type: "statisticalReference";
   readonly target: string;
 }
+export interface PivotColumn {
+  readonly value: string | number | boolean | null;
+  readonly as: string;
+}
+export type PivotNumericOperation = "none" | "sum" | "mean" | "min" | "max";
+export type DatasetPivotTransform = {
+  readonly type: "pivot";
+  readonly field: string;
+  readonly groupBy: readonly string[];
+  readonly columns: readonly PivotColumn[];
+  readonly fill: number | null;
+} & (
+  | { readonly op: PivotNumericOperation; readonly value: string }
+  | { readonly op: "count"; readonly value?: never }
+);
+export type PivotDataOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string | readonly string[];
+  columns?: readonly PivotColumn[];
+  fill?: number | null;
+} & (
+  | { op?: PivotNumericOperation; value: string }
+  | { op: "count"; value?: never }
+);
 export type DatasetTransform =
+  | DatasetPivotTransform
   | DatasetBinTransform
   | DatasetBin2DTransform
   | DatasetCompleteTransform
@@ -1416,7 +1453,92 @@ export interface ParameterResource extends ParameterRef {
   readonly result: { readonly value: ParameterValue };
   readonly provenance: { readonly origin: "authored" };
 }
-export type StoredResourceKind = "persistent-selection" | "parameter";
+export type DataSourceValue = null | boolean | number | string
+  | readonly DataSourceValue[] | { readonly [key: string]: DataSourceValue };
+export type DataParseDirective =
+  | { readonly type: "string" | "number" | "boolean"; readonly nullable?: boolean; readonly format?: never; readonly timeZone?: never }
+  | { readonly type: "date"; readonly nullable?: boolean; readonly timeZone: string;
+      readonly format?: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso" };
+export type DataParse = Readonly<Record<string, DataParseDirective>>;
+type DataSourceParsing = { readonly parse?: DataParse; readonly schema?: SourceSchemaInput };
+type DataSourceFormat = { readonly format: "csv"; readonly delimiter?: string }
+  | { readonly format: "json"; readonly delimiter?: never };
+export type DataSource = DataSourceParsing & (
+  | { readonly kind: "inline"; readonly values: readonly Readonly<Record<string, DataSourceValue>>[];
+      readonly text?: never; readonly format?: never; readonly delimiter?: never }
+  | (DataSourceFormat & { readonly kind: "inline"; readonly text: string; readonly values?: never })
+  | (DataSourceFormat & { readonly kind: "url"; readonly url: string | ComputedExpressionV2 })
+  | (DataSourceFormat & { readonly kind: "named"; readonly name: string })
+);
+type DataSourceKeys =
+  | { readonly keyField?: never; readonly keyFields?: never }
+  | { readonly keyField: string; readonly keyFields?: never }
+  | { readonly keyField?: never; readonly keyFields: readonly string[] };
+export type CreateDataUpdateRequest = DataSourceKeys & {
+  readonly kind: "create"; readonly id: string; readonly source: DataSource;
+};
+export interface ReviseDataUpdateRequest {
+  readonly kind: "revise"; readonly target: string; readonly id: string;
+  readonly rowMap?: readonly (number | null)[];
+}
+export interface ParameterDataUpdateRequest {
+  readonly kind: "parameter"; readonly target: string; readonly value: ParameterValue;
+}
+export type DataUpdateRequest = CreateDataUpdateRequest | ReviseDataUpdateRequest | ParameterDataUpdateRequest;
+export type DataSourceResponse = { readonly encoding: "utf-8"; readonly mimeType: string } & (
+  | { readonly text: string; readonly bytes?: never }
+  | { readonly bytes: Uint8Array; readonly text?: never }
+);
+export interface DataUpdateHost {
+  /** Supply the application's current request token again when applying. */
+  readonly requestToken: string;
+  /** Absolute URL for resolving a newly created relative URL source. */
+  readonly baseURL?: string;
+  readonly signal?: AbortSignal;
+  readonly load?: (request: Readonly<{ url: string; signal?: AbortSignal }>) => DataSourceResponse | PromiseLike<DataSourceResponse>;
+  readonly resolveNamed?: (request: Readonly<{ name: string; signal?: AbortSignal }>) => DataSourceResponse | PromiseLike<DataSourceResponse>;
+}
+interface DataUpdateDescriptors {
+  create: { readonly kind: "create"; readonly id: string; readonly sourceKind: DataSource["kind"]; readonly format?: "csv" | "json" };
+  revise: { readonly kind: "revise"; readonly target: string; readonly id: string };
+  parameter: { readonly kind: "parameter"; readonly target: string };
+}
+declare const preparedDataUpdate: unique symbol;
+/** Opaque preparation evidence. Only prepareDataUpdate can create a valid handle. */
+export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly [preparedDataUpdate]: Kind;
+  readonly kind: "data-update";
+  readonly request: DataUpdateDescriptors[Kind];
+}
+export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly prepared: PreparedDataUpdate<Kind>;
+  readonly requestToken: string;
+}
+export type DataSourceProvenance =
+  | { readonly parserVersion: "rows@1"; readonly format: "rows"; readonly contentHash: string; readonly hashKind: "encoded-rows" }
+  | { readonly parserVersion: "csv@1" | "json@1"; readonly format: "csv" | "json";
+      readonly contentHash: string; readonly hashKind: "utf8-bytes"; readonly mimeType: string;
+      readonly encoding: "utf-8"; readonly byteLength: number };
+export interface DataSourceReceipt {
+  readonly sourceId: string;
+  readonly parsing: { readonly parse: DataParse; readonly format?: "csv" | "json";
+    readonly delimiter?: string; readonly schema?: SourceSchemaInput };
+  readonly resolvedURL?: string;
+  readonly name?: string;
+  readonly original: { readonly kind: "text"; readonly text: string }
+    | { readonly kind: "rows"; readonly values: readonly Readonly<Record<string, DataSourceValue>>[] };
+  readonly provenance: DataSourceProvenance;
+}
+export interface DataSourceResource {
+  readonly kind: "data-source"; readonly id: string; readonly revision: number;
+  readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly ParameterRef[];
+  readonly options: DataSourceKeys & { readonly source: DataSource; readonly baseURL?: string };
+  readonly result: { readonly data: Extract<InputRef, { readonly kind: "data" }>; readonly inputHash: string };
+  readonly provenance: { readonly origin: "authored" };
+}
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source";
 export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
   | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
 export interface PersistentSelectionResource {
@@ -1439,6 +1561,7 @@ export interface SemanticDataset {
   readonly rowKeys?: readonly string[];
   readonly nextGeneratedKey?: number;
   readonly lineage?: RowLineage;
+  readonly sourceReceipt?: DataSourceReceipt;
   readonly schema: DatasetSchema;
   readonly values?: readonly Readonly<Record<string, unknown>>[];
   readonly source?: string;
@@ -1548,7 +1671,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -2872,12 +2995,14 @@ type CompleteDataBaseOptions = {
   members?: string;
 };
 export type CompleteDataOptions = CompleteDataBaseOptions & (
-  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never }
+  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never; calendar?: never }
   | {
       values?: never;
       sequence: { start: number; end: number; step: number };
+      calendar?: never;
     }
-  | { values?: never; sequence?: never }
+  | { calendar: CalendarDayDomain; values?: never; sequence?: never }
+  | { values?: never; sequence?: never; calendar?: never }
 );
 type ImputedDataBaseOptions = {
   id: string;
@@ -2976,6 +3101,7 @@ export type EditFilteredDataOptions = (FilterModePatch & {
 }) | (ExpressionFilterOptions & { target: string; dependents?: DerivedDataDependents });
 export type EditFlattenDataOptions = FocusedDerivedDataEdit<FlattenDataOptions>;
 export type EditLookupDataOptions = FocusedDerivedDataEdit<LookupDataOptions>;
+export type EditPivotDataOptions = FocusedDerivedDataEdit<PivotDataOptions>;
 export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 export type EditSummaryDataOptions = FocusedWeightedDerivedDataEdit<
   SummaryDataOptions,
@@ -5058,7 +5184,8 @@ type RegressionParameterOptions =
     }
   | {
       method: "loess";
-      degree?: never;
+      /** Local polynomial degree; default 1. */
+      degree?: 1 | 2;
       span?: number;
       /** Residual reweighting passes, integer 0..32; default 0. */
       robustIterations?: number;
@@ -5558,6 +5685,7 @@ export class ChartProgram {
   applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
+  applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -5576,6 +5704,7 @@ export class ChartProgram {
   createBinData(options: TargetedOptions<BinDataOptions>): ChartProgram;
   createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
+  createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
@@ -5599,6 +5728,7 @@ export class ChartProgram {
   editFilteredData(options: TargetedOptions<EditFilteredDataOptions>): ChartProgram;
   editFlattenData(options: TargetedOptions<EditFlattenDataOptions>): ChartProgram;
   editLookupData(options: TargetedOptions<EditLookupDataOptions>): ChartProgram;
+  editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;
   editFoldData(options: TargetedOptions<EditFoldDataOptions>): ChartProgram;
   editSummaryData(options: TargetedOptions<EditSummaryDataOptions>): ChartProgram;
   editBinData(options: TargetedOptions<EditBinDataOptions>): ChartProgram;

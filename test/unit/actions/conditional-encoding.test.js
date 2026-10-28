@@ -17,6 +17,20 @@ function base() { return chart().createCanvas({ width: 400, height: 300, margin:
   .createData({ id: "raw", values: [{ id: "a", x: 1, y: 2, group: "A" }, { id: "b", x: 2, y: 4, group: "B" }, { id: "c", x: 3, y: 6, group: "C" }], keyField: "id" })
   .createScatterPlot({ id: "points", data: "raw", x: "x", y: "y" }); }
 
+test("constant and conditional stroke widths preserve an existing conditional stroke owner", () => {
+  const original = base().encodeStroke(condition({ value: "red" }, { value: "blue" }));
+  for (const result of [original.encodeStrokeWidth({ value: 2 }),
+    original.encodeStrokeWidth(condition({ value: 2 }, { value: 1 }))]) {
+    assert.equal(result.markConfigs.points.stroke, undefined);
+    assert.deepEqual(items(result).map(item => item.properties.stroke), ["blue", "red", "red"]);
+    assert.doesNotThrow(() => deserializeProgram(serializeProgram(result)));
+  }
+  const reverse = base().encodeStrokeWidth(condition({ value: 2 }, { value: 1 }))
+    .encodeStroke(condition({ value: "red" }, { value: "blue" }));
+  assert.deepEqual(items(reverse).map(item => item.properties.strokeWidth), [1, 2, 2]);
+  assert.equal(reverse.markConfigs.points.stroke, undefined);
+});
+
 test("conditional appearance is first-match with required otherwise and an exact zero", () => {
   const original = base(), saved = serializeProgram(original);
   const result = original.encodeOpacity({ target: "points", conditions: [

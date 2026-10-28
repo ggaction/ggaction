@@ -184,6 +184,24 @@
       }
     },
     {
+      "name": "applyDataUpdate",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Prepare another source or parameter revision; remove unused live sources through removeData",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "applydataupdate"
+      }
+    },
+    {
       "name": "reviseData",
       "layer": "user-facing",
       "domain": "core",
@@ -379,6 +397,24 @@
       "contract": {
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "createfolddata"
+      }
+    },
+    {
+      "name": "createPivotData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical pivot owner; revise it with editPivotData",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createpivotdata"
       }
     },
     {
@@ -775,6 +811,24 @@
       "contract": {
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "editfolddata"
+      }
+    },
+    {
+      "name": "editPivotData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revise a standalone grouped pivot dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editpivotdata"
       }
     },
     {
@@ -5482,6 +5536,7 @@
       "materializeLookupData",
       "materializeFlattenData",
       "materializeFoldData",
+      "materializePivotData",
       "materializeMarkFilteredData",
       "materializeIntervalData",
       "materializeNormalizedData",

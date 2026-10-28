@@ -5,7 +5,7 @@ import {
 import { derivedCreator, derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
-  "id", "source", "key", "groupBy", "values", "sequence", "fill", "members"
+  "id", "source", "key", "groupBy", "values", "sequence", "calendar", "fill", "members"
 ]);
 
 export const materializeCompleteData = /* @__PURE__ */ derivedMaterializer(

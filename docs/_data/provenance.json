@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:7e91183255a0e69248c33f18b8319fe10382f10e2cd338a86109e6dfd1f95231",
-  "sourceCommit": "3c00095f6c3c6173004f463efce787e75c69c7b7",
-  "sourceRef": "3c00095f6c3c6173004f463efce787e75c69c7b7",
+  "contractId": "sha256:02365ee2d0c5170388865da7dc9f00a8526488a7e5f705830ae0b048cddb04d8",
+  "sourceCommit": null,
+  "sourceRef": "main",
   "exampleSourceRef": "b8f9668133b278974c9cfe7324402a18282c9f4b",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 301,
+  "actionCount": 304,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -38,6 +38,10 @@
     },
     "createData": {
       "availableBy": "v0.0.13"
+    },
+    "applyDataUpdate": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
     },
     "reviseData": {
       "introducedAfter": "v0.0.13",
@@ -96,6 +100,10 @@
       "status": "development"
     },
     "createLookupData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createPivotData": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
@@ -179,6 +187,10 @@
       "status": "development"
     },
     "editLookupData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editPivotData": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

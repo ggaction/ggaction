@@ -552,7 +552,8 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
     if (JSON.stringify(card.options) !== JSON.stringify(expectedOptions)) {
       throw new Error(`Option drift in compact card ${card.name}.`);
     }
-    if (card.route !== routes[card.name]) throw new Error(`Route drift in compact card ${card.name}.`);
+    if (typeof card.route !== "string" || !card.route.startsWith("/reference/") ||
+      card.route !== routes[card.name]) throw new Error(`Route drift in compact card ${card.name}.`);
     if (card.errors.length > 2) throw new Error(`${card.name} has more than two errors.`);
     if (card.summary.length < 20 || card.summary.length > 420) {
       throw new Error(`${card.name} summary is outside the compact schema bounds.`);

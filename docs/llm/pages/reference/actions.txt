@@ -20,6 +20,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 | Action | Authoring role | API layer | Domain |
 | --- | --- | --- | --- |
+| [`applyDataUpdate`](../../../reference/actions/charts-data/#applydataupdate) | H3 | user-facing | core |
 | [`applyTextMetrics`](../../../reference/actions/charts-data/#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](../../../reference/actions/charts-data/#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](../../../reference/actions/charts-data/#bindmarkdata) | H2 | user-facing | core |
@@ -76,6 +77,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createParallelCoordinates`](../../../reference/actions/charts-data/#createparallelcoordinates) | H0 | user-facing | charts |
 | [`createParameter`](../../../reference/actions/charts-data/#createparameter) | H2 | user-facing | core |
 | [`createPiePlot`](../../../reference/actions/charts-data/#createpieplot) | H0 | user-facing | charts |
+| [`createPivotData`](../../../reference/actions/statistics/#createpivotdata) | H1 | user-facing | statistics |
 | [`createPointMark`](../../../reference/actions/marks/#createpointmark) | H2 | user-facing | marks |
 | [`createPolarLinePlot`](../../../reference/actions/charts-data/#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](../../../reference/actions/charts-data/#createpolarscatterplot) | H0 | user-facing | charts |
@@ -188,6 +190,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editParallelAxis`](../../../reference/actions/guides/#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](../../../reference/actions/charts-data/#editparallelscale) | H2 | user-facing | core |
 | [`editParameter`](../../../reference/actions/charts-data/#editparameter) | H3 | user-facing | core |
+| [`editPivotData`](../../../reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](../../../reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editRadarPlot`](../../../reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](../../../reference/actions/guides/#editradialaxis) | H3 | user-facing | axes |

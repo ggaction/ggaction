@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "design-approved-public-integration-pending",
+  "status": "public-product-integrated-final-closeout-pending",
   "candidates": [
     {
       "id": "expression-v2",
@@ -9,22 +9,24 @@
         "createComputedData",
         "editComputedData"
       ],
-      "status": "design-approved-integration-pending",
+      "status": "implemented",
       "decision": "D2–D5"
     },
     {
       "id": "getExpressionFunctions",
       "kind": "query-export",
       "entry": "ggaction/inspection",
-      "status": "design-approved-integration-pending",
+      "status": "implemented",
       "decision": "D4"
     }
   ],
-  "publicInventoryPromotion": false,
+  "publicInventoryPromotion": true,
   "newDomainActions": [],
   "privateCoreImplemented": true,
   "integrationGates": [
     "G-PARAM",
     "G-DATA"
-  ]
+  ],
+  "implementationEvidence": "product-implementation.json",
+  "remainingIntegrationEvidence": "STEP4.md"
 }
