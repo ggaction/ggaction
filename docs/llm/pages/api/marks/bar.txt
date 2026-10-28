@@ -105,8 +105,9 @@ overrides, so resetting the global radius alone does not clear them.
 After creating a bar chart, call `program.editBarMark({ blend: "difference" })`.
 Each bar combines its fill and outline first, then applies its opacity and
 composites that source once over the existing plot, grid, and earlier marks.
-Bars retain their drawing order. The RGB operation is the absolute difference
-between the source and backdrop colors. This changes paint, never data or sizes.
+Bars retain their drawing order. Use `"multiply"` to multiply the source and
+backdrop RGB channels, `"screen"` for their complementary product, or `"difference"`
+for their absolute difference. This changes paint, never data or sizes.
 
 Use `blend: "normal"` to return to ordinary source-over painting. Omission preserves
 the current mode. This refinement belongs to the Full bar editor; creation,

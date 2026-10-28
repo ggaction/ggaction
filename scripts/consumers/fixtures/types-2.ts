@@ -131,11 +131,11 @@ import {
     // @ts-expect-error inspection grain is closed
     getMarkItems(chart(), { grain: "series" });
 
-    chart().editBarMark({blend:"difference"}).editBarMark({blend:"normal"});
+    chart().editBarMark({blend:"difference"}).editBarMark({blend:"multiply"}).editBarMark({blend:"screen"}).editBarMark({blend:"normal"});
     // @ts-expect-error only the bar editor owns blend
     chart().createBarMark({blend:"difference"});
     // @ts-expect-error blend is a closed vocabulary
-    chart().editBarMark({blend:"multiply"});
+    chart().editBarMark({blend:"overlay"});
     // @ts-expect-error Basic does not expose appearance editing
     basicChart().editBarMark({blend:"difference"});
 

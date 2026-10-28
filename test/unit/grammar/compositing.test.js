@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import {compositeRGBA,quantizeRGBA} from "../../../src/grammar/compositing.js";
+import {compositeRGBA,quantizeRGBA,isBlendMode} from "../../../src/grammar/compositing.js";
 import {blendOver} from "../../oracles/compositing.js";
 
 const close=(actual,expected)=>actual.forEach((value,i)=>assert.ok(Math.abs(value-expected[i])<2e-14,`${value} ~= ${expected[i]}`));
@@ -52,4 +52,9 @@ test("rejects malformed channels and unsafe descriptors before reading inputs",(
   assert.throws(()=>compositeRGBA(valid,valid,{get mode(){reads++;return"normal";}}));assert.equal(reads,0);
   const symbol=[0,0,0,1];symbol[Symbol()]=1;assert.throws(()=>compositeRGBA(symbol,valid));
   assert.throws(()=>compositeRGBA([0,,0,1],valid));
+});
+
+test("shares the closed blend vocabulary without treating names as native aliases",()=>{
+  for(const mode of ["normal","multiply","screen","difference"])assert.equal(isBlendMode(mode),true);
+  for(const mode of [undefined,null,"source-over","overlay","",{},1])assert.equal(isBlendMode(mode),false);
 });

@@ -52,9 +52,9 @@ basic.createScatterPlot({x:"x",y:"y",point:{shape:"wedge"}});
 // @ts-expect-error directional shapes remain a closed named vocabulary
 p.editPointMark({shape:"arbitrary-arrow"});
 p.createTickMark(stroke).editTickMark(stroke);
-p.editBarMark({blend:"difference"}).editBarMark({blend:"normal"});
+p.editBarMark({blend:"difference"}).editBarMark({blend:"multiply"}).editBarMark({blend:"screen"}).editBarMark({blend:"normal"});
 // @ts-expect-error blend is a closed vocabulary
-p.editBarMark({blend:"multiply"});
+p.editBarMark({blend:"overlay"});
 // @ts-expect-error blend refines an existing bar, not mark creation
 p.createBarMark({blend:"difference"});
 // @ts-expect-error other families do not expose bar compositing

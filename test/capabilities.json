@@ -69,6 +69,18 @@
         "path": "unit/grammar/compositing.test.js"
       },
       {
+        "type": "file",
+        "path": "contracts/bar-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/bar-blend.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/bar-compositing/"
+      },
+      {
         "type": "prefix",
         "path": "gates/blend-paints/"
       }

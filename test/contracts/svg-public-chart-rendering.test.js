@@ -35,8 +35,8 @@ test("renders every public chart through the SVG concrete schema", () => {
     assert.match(svg, /<(?:circle|rect|line|path|text)\b/, chart.id);
     assert.match(svg, new RegExp(`<title>${chart.id}</title>`), chart.id);
     assert.equal(svg.endsWith("</svg>"), true, chart.id);
-    const hasDifference = Object.values(program.graphicSpec.objects).some(object =>
-      [object, ...(object.items ?? [])].some(item => item.properties?.blend === "difference"));
-    assert.equal(svg.includes('style="isolation:isolate"'), hasDifference, chart.id);
+    const hasBlend = Object.values(program.graphicSpec.objects).some(object =>
+      [object, ...(object.items ?? [])].some(item => ["multiply", "screen", "difference"].includes(item.properties?.blend)));
+    assert.equal(svg.includes('style="isolation:isolate"'), hasBlend, chart.id);
   }
 });

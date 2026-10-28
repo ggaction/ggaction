@@ -24,6 +24,7 @@ import { ITEM_MISSING_MARK_TYPES, validateItemMissing } from
 import { isIndependentText, validateTextOffsetEncoding } from "../../../grammar/text.js";
 import { validateLineMissing, validateLineMissingScope } from "../../../grammar/lineMissing.js";
 import { normalizeOverlayBinding } from "../../../grammar/overlay.js";
+import { isBlendMode } from "../../../grammar/compositing.js";
 
 function validateLayerSource(program, parsed, value, sourceMarkTypes) {
   validateUserId(value, "Layer source id");
@@ -98,8 +99,8 @@ export function validateLayerSemanticValue(
     throw new Error("Bar orientation must be vertical or horizontal.");
   }
   if (property === "mark.blend" &&
-      (findLayer(program, parsed.id)?.mark?.type !== "bar" || value !== "difference")) {
-    throw new Error("Bar blend must be difference; remove the optional intent for normal painting.");
+      (findLayer(program, parsed.id)?.mark?.type !== "bar" || !isBlendMode(value) || value === "normal")) {
+    throw new Error("Bar blend must be multiply, screen, or difference; remove the optional intent for normal painting.");
   }
   if (property === "derivedBindings.regression") {
     if (!value || typeof value !== "object" || Array.isArray(value) ||

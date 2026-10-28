@@ -1557,7 +1557,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits whole-bar appearance and optional per-bar compositing",
+      "update": "Edits whole-bar appearance and normal, multiply, screen, or difference compositing",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
