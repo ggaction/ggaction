@@ -1,6 +1,6 @@
 {
   "id": "G-EXPR",
-  "state": "planned",
+  "state": "ready-for-review",
   "scope": [
     "STEP-013 AST core only"
   ],
@@ -34,5 +34,9 @@
   "remaining": [
     "D2–D6 정확한 AST core 계약 승인"
   ],
-  "notice": "검토 준비이며 STEP-013 완료가 아니다. Parameter와 CSV/JSON resolver 계약은 별도 미해결 의무로 보존한다."
+  "notice": "검토 준비이며 STEP-013 완료가 아니다. Parameter와 CSV/JSON resolver 계약은 별도 미해결 의무로 보존한다.",
+  "codeRevision": "c555ec14f36aa55ae5590ce2ac4f68d04df806fd",
+  "evidenceRevision": "sha256:5bc064c9ba4c3a8a3383445af9e738fde8388f577164483b58f4e20fa9ce20a0",
+  "evidenceManifest": "agent_docs/impl/roadmap9/phase3/preparation.json",
+  "proposalSha256": "1699b6cea4847f92ccb2681af544a1b5311357fef591b37e710cc51f0590521b"
 }

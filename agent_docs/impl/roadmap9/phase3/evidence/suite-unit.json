@@ -1,0 +1,52 @@
+{
+  "label": "suite-unit",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/unit/actions/data/computed-access-and-replacement.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/unit/actions/data/computed-calendar-year.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/unit/actions/data/computed-data.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/unit/actions/data/computed-floor.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 835,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T08:14:59.806Z",
+  "finishedAt": "2026-10-28T08:15:00.642Z",
+  "source": {
+    "available": true,
+    "commit": "c555ec14f36aa55ae5590ce2ac4f68d04df806fd",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "c555ec14f36aa55ae5590ce2ac4f68d04df806fd",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "7999e118d09a9ce7b40d7e6016daf25216d5df8398dfe7b288f575ab50149acc",
+  "discovery": {
+    "suite": "unit",
+    "selectors": [
+      "unit/actions/data/computed-data.test.js",
+      "unit/actions/data/computed-access-and-replacement.test.js",
+      "unit/actions/data/computed-calendar-year.test.js",
+      "unit/actions/data/computed-floor.test.js"
+    ],
+    "files": [
+      "test/unit/actions/data/computed-access-and-replacement.test.js",
+      "test/unit/actions/data/computed-calendar-year.test.js",
+      "test/unit/actions/data/computed-data.test.js",
+      "test/unit/actions/data/computed-floor.test.js"
+    ]
+  },
+  "bytes": 5411,
+  "retainedBytes": 5411,
+  "truncated": false
+}

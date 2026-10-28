@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "scope": "Review preparation, not v2 product qualification",
+  "commit": "c555ec14f36aa55ae5590ce2ac4f68d04df806fd",
+  "checks": 28,
+  "sourceHashes": {
+    "src/grammar/computed.js": "c6289890cda6b51cfe2e6600f0133f2ff36efd304edf71476e6857a4663296b3",
+    "src/core/action.js": "06ee9bca7d8cba0ec3e1bf5899ddfbd415d59e39f3bf137827afbd09422c4f92",
+    "src/grammar/datasetSchema.js": "99019554fbcafc76006e1446cd2791a1c32cfc8a48e62045aa11c826daf23a21",
+    "src/persistence/codec.js": "8536870fa5e75e369b8235505f5fb135f159e5b9d9bdbbecbf3370224c74c20d",
+    "types/program.d.ts": "906b3df2cb548dd67d5f87c20290ee75d4225f746169426fb0f2aadfbafe82b0"
+  },
+  "reports": [
+    {
+      "name": "legacy division remains an atomic error",
+      "status": "passed"
+    },
+    {
+      "name": "legacy selected branch skips domain evaluation",
+      "status": "passed"
+    },
+    {
+      "name": "legacy mixed equality remains an error",
+      "status": "passed"
+    },
+    {
+      "name": "legacy null comparison differs from v2 proposal",
+      "status": "passed"
+    },
+    {
+      "name": "legacy unselected unknown fields still fail preflight",
+      "status": "passed"
+    },
+    {
+      "name": "accessor exposure is recorded as a baseline defect",
+      "status": "passed",
+      "getterCalls": 3,
+      "securityVerdict": "known-gap-not-fixed"
+    },
+    {
+      "name": "proposed descriptor snapshot rejects accessors without executing them",
+      "status": "passed"
+    },
+    {
+      "name": "descriptor experiment rejects cycles and hidden keys and owns descendants",
+      "status": "passed"
+    },
+    {
+      "name": "public editable codec preserves missing and null separately",
+      "status": "passed",
+      "output": [
+        {
+          "kind": "missing"
+        },
+        null,
+        2
+      ]
+    },
+    {
+      "name": "current product rejects the proposed envelope",
+      "status": "passed"
+    },
+    {
+      "name": "registry has 30 unique closed signatures",
+      "status": "passed"
+    },
+    {
+      "name": "unapproved candidates are absent from current inventory and exports",
+      "status": "passed"
+    },
+    {
+      "name": "independent reference: divide-zero",
+      "status": "passed",
+      "actual": {
+        "kind": "missing"
+      },
+      "expected": {
+        "kind": "missing"
+      },
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: divide-finite",
+      "status": "passed",
+      "actual": 0.25,
+      "expected": 0.25,
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: typed-eq",
+      "status": "passed",
+      "actual": false,
+      "expected": false,
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: null-eq",
+      "status": "passed",
+      "actual": false,
+      "expected": false,
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: null-neq",
+      "status": "passed",
+      "actual": false,
+      "expected": false,
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: unicode-length",
+      "status": "passed",
+      "actual": 3,
+      "expected": 3,
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: unicode-substring",
+      "status": "passed",
+      "actual": "😀",
+      "expected": "😀",
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: literal-replace",
+      "status": "passed",
+      "actual": "a$&b.a",
+      "expected": "a$&b.a",
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: degrees-sin",
+      "status": "passed",
+      "actual": 0.49999999999999994,
+      "expected": 0.5,
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: degrees-atan2",
+      "status": "passed",
+      "actual": 90,
+      "expected": 90,
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: negative-floor",
+      "status": "passed",
+      "actual": -2,
+      "expected": -2,
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: negative-round",
+      "status": "passed",
+      "actual": -1,
+      "expected": -1,
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: utc-leap",
+      "status": "passed",
+      "actual": 1709164800000,
+      "expected": 1709164800000,
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: copenhagen-fold-day",
+      "status": "passed",
+      "actual": 1729980000000,
+      "expected": 1729980000000,
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: array-outside",
+      "status": "passed",
+      "actual": {
+        "kind": "missing"
+      },
+      "expected": {
+        "kind": "missing"
+      },
+      "evidenceKind": "numeric-reference-only"
+    },
+    {
+      "name": "independent reference: array-null",
+      "status": "passed",
+      "actual": null,
+      "expected": null,
+      "evidenceKind": "numeric-reference-only"
+    }
+  ],
+  "productV2Status": "not-implemented",
+  "accessorSafety": "current-product-gap; isolated-experiment-passed"
+}

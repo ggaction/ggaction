@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "scope": "AST core review preparation only",
+  "codeRevision": "c555ec14f36aa55ae5590ce2ac4f68d04df806fd",
+  "productBaseline": "374222f94860f44ed8c174d0c12b740bc7c3a8a4",
+  "productSourceChanges": 0,
+  "reviewChecks": 28,
+  "tests": {
+    "suite-unit": {
+      "tests": 23,
+      "pass": 23,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "suite-contracts": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "suite-all": {
+      "tests": 6392,
+      "pass": 6392,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    }
+  },
+  "declarationCheck": "passed",
+  "metadataCheck": "passed",
+  "knownGap": "Current public AST still invokes getters; isolated descriptor experiment passed; product fix awaits implementation.",
+  "productV2Status": "not-implemented",
+  "checks": [
+    {
+      "label": "expression-review",
+      "code": 0,
+      "node": "v22.23.1",
+      "seconds": 0.411
+    },
+    {
+      "label": "expression-types",
+      "code": 0,
+      "node": "v22.23.1",
+      "seconds": 0.428
+    },
+    {
+      "label": "suite-unit",
+      "code": 0,
+      "node": "v22.23.1",
+      "seconds": 0.835
+    },
+    {
+      "label": "suite-contracts",
+      "code": 0,
+      "node": "v22.23.1",
+      "seconds": 0.462
+    },
+    {
+      "label": "suite-all",
+      "code": 0,
+      "node": "v22.23.1",
+      "seconds": 276.544
+    },
+    {
+      "label": "machine-docs",
+      "code": 0,
+      "node": "v22.23.1",
+      "seconds": 0.346
+    }
+  ]
+}

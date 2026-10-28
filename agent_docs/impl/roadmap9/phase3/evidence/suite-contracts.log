@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: keeps one optional active roadmap and an explicit completed owner
+ok 1 - keeps one optional active roadmap and an explicit completed owner
+  ---
+  duration_ms: 1.182542
+  type: 'test'
+  ...
+# Subtest: keeps human entry points synchronized with roadmap activity
+ok 2 - keeps human entry points synchronized with roadmap activity
+  ---
+  duration_ms: 0.95525
+  type: 'test'
+  ...
+# Subtest: keeps the active or last completed phase linked to its roadmap
+ok 3 - keeps the active or last completed phase linked to its roadmap
+  ---
+  duration_ms: 0.108542
+  type: 'test'
+  ...
+# Subtest: links current and historical roadmap roots to their canonical owner
+ok 4 - links current and historical roadmap roots to their canonical owner
+  ---
+  duration_ms: 3.664667
+  type: 'test'
+  ...
+# Subtest: routes architecture work without duplicating the canonical record
+ok 5 - routes architecture work without duplicating the canonical record
+  ---
+  duration_ms: 1.598042
+  type: 'test'
+  ...
+# Subtest: keeps the contract landing page lightweight and action-directed
+ok 6 - keeps the contract landing page lightweight and action-directed
+  ---
+  duration_ms: 0.563209
+  type: 'test'
+  ...
+# Subtest: keeps current agent-documentation routes and anchors valid
+ok 7 - keeps current agent-documentation routes and anchors valid
+  ---
+  duration_ms: 207.188834
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 318.499709

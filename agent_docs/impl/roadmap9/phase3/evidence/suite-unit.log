@@ -1,0 +1,148 @@
+TAP version 13
+# Subtest: nested scalar access preserves raw records, optional roots, literal dotted keys and root dependencies
+ok 1 - nested scalar access preserves raw records, optional roots, literal dotted keys and root dependencies
+  ---
+  duration_ms: 17.016125
+  type: 'test'
+  ...
+# Subtest: nested access rejects unsafe shapes and never invokes property getters
+ok 2 - nested access rejects unsafe shapes and never invokes property getters
+  ---
+  duration_ms: 1.988791
+  type: 'test'
+  ...
+# Subtest: literal replacement replaces first exact substring and treats Unicode, regex and dollar text literally
+ok 3 - literal replacement replaces first exact substring and treats Unicode, regex and dollar text literally
+  ---
+  duration_ms: 0.70675
+  type: 'test'
+  ...
+# Subtest: literal replacement validates all branches, preserves laziness, limits and failure atomicity
+ok 4 - literal replacement validates all branches, preserves laziness, limits and failure atomicity
+  ---
+  duration_ms: 1.718083
+  type: 'test'
+  ...
+# Subtest: new expressions replay through edits, persistence, filtered marks and faceted categories
+ok 5 - new expressions replay through edits, persistence, filtered marks and faceted categories
+  ---
+  duration_ms: 124.340792
+  type: 'test'
+  ...
+# Subtest: calendar years use explicit parsing, UTC, nulls and exact calendar duration
+ok 6 - calendar years use explicit parsing, UTC, nulls and exact calendar duration
+  ---
+  duration_ms: 44.355958
+  type: 'test'
+  ...
+# Subtest: year boundaries are time-zone explicit and astronomical years remain signed
+ok 7 - year boundaries are time-zone explicit and astronomical years remain signed
+  ---
+  duration_ms: 8.757959
+  type: 'test'
+  ...
+# Subtest: calendar input and closed AST errors reject atomically including empty sources
+ok 8 - calendar input and closed AST errors reject atomically including empty sources
+  ---
+  duration_ms: 9.005875
+  type: 'test'
+  ...
+# Subtest: year and floor expressions replay into derived consumers and facet children
+ok 9 - year and floor expressions replay into derived consumers and facet children
+  ---
+  duration_ms: 61.909625
+  type: 'test'
+  ...
+# Subtest: createComputedData preserves row grain and materializes closed arithmetic
+ok 10 - createComputedData preserves row grain and materializes closed arithmetic
+  ---
+  duration_ms: 14.478292
+  type: 'test'
+  ...
+# Subtest: createComputedData composes binary, unary, field, and finite constants
+ok 11 - createComputedData composes binary, unary, field, and finite constants
+  ---
+  duration_ms: 1.940042
+  type: 'test'
+  ...
+# Subtest: createComputedData rejects malformed and non-finite calculations atomically
+ok 12 - createComputedData rejects malformed and non-finite calculations atomically
+  ---
+  duration_ms: 4.403291
+  type: 'test'
+  ...
+# Subtest: createComputedData owns expressions and feeds quantitative encodings
+ok 13 - createComputedData owns expressions and feeds quantitative encodings
+  ---
+  duration_ms: 27.946208
+  type: 'test'
+  ...
+# Subtest: createComputedData evaluates conditionals lazily while preflighting every field
+ok 14 - createComputedData evaluates conditionals lazily while preflighting every field
+  ---
+  duration_ms: 2.1255
+  type: 'test'
+  ...
+# Subtest: createComputedData supports null handling, string composition, and boolean logic
+ok 15 - createComputedData supports null handling, string composition, and boolean logic
+  ---
+  duration_ms: 2.826917
+  type: 'test'
+  ...
+# Subtest: createComputedData uses code-point ordering and short-circuits boolean branches
+ok 16 - createComputedData uses code-point ordering and short-circuits boolean branches
+  ---
+  duration_ms: 1.738458
+  type: 'test'
+  ...
+# Subtest: createComputedData rejects typed-expression violations atomically
+ok 17 - createComputedData rejects typed-expression violations atomically
+  ---
+  duration_ms: 1.99525
+  type: 'test'
+  ...
+# Subtest: computed strings feed nominal encodings while computed nulls remain invalid quantitatively
+ok 18 - computed strings feed nominal encodings while computed nulls remain invalid quantitatively
+  ---
+  duration_ms: 21.718625
+  type: 'test'
+  ...
+# Subtest: facets preserve computed provenance and filter its row-preserving output
+ok 19 - facets preserve computed provenance and filter its row-preserving output
+  ---
+  duration_ms: 26.843125
+  type: 'test'
+  ...
+# Subtest: explicit decimal conversion preserves raw text and supports typed chart positions
+ok 20 - explicit decimal conversion preserves raw text and supports typed chart positions
+  ---
+  duration_ms: 15.98225
+  type: 'test'
+  ...
+# Subtest: floor preserves independent rows, signed zero and immutable provenance
+ok 21 - floor preserves independent rows, signed zero and immutable provenance
+  ---
+  duration_ms: 19.625333
+  type: 'test'
+  ...
+# Subtest: floor rejects invalid operands and preserves lazy evaluation and existing bounds
+ok 22 - floor rejects invalid operands and preserves lazy evaluation and existing bounds
+  ---
+  duration_ms: 3.8105
+  type: 'test'
+  ...
+# Subtest: floor derives all 20000 interval endpoints without aggregating 5000 observations
+ok 23 - floor derives all 20000 interval endpoints without aggregating 5000 observations
+  ---
+  duration_ms: 167.699458
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 23
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 666.206958
