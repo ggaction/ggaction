@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "parent": "b44647634",
+  "status": "passed",
+  "commands": [
+    {
+      "command": "node --test test/unit/grammar/graph/input.test.js",
+      "node": "22",
+      "exit": 1,
+      "phase": "initial",
+      "tests": 7,
+      "passed": 6
+    },
+    {
+      "command": "node --test --experimental-test-coverage --test-coverage-include='src/grammar/graph/*.js' test/unit/grammar/graph/*.test.js test/unit/grammar/graph-*.test.js",
+      "node": "22",
+      "exit": 0,
+      "tests": 105
+    },
+    {
+      "command": "assertCriticalCoverage(output, graphFamilyFloors)",
+      "exit": 0,
+      "floors": 16
+    },
+    {
+      "command": "node --test test/unit/grammar/graph/input.test.js",
+      "node": "20",
+      "exit": 0,
+      "tests": 9
+    },
+    {
+      "command": "node --test test/unit/grammar/graph/input.test.js",
+      "node": "24",
+      "exit": 0,
+      "tests": 9
+    },
+    {
+      "command": "node --test test/contracts/source-boundaries.test.js test/contracts/test-discovery.test.js test/contracts/agent-docs-navigation.test.js test/contracts/package-artifact.test.js",
+      "node": "22",
+      "exit": 0,
+      "tests": 41
+    }
+  ],
+  "coverage": {
+    "scope": "grammar/graph/",
+    "lines": 100,
+    "branches": 99.58,
+    "functions": 100,
+    "newOwners": {
+      "input.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "fields.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      }
+    }
+  },
+  "package": {
+    "entries": 764,
+    "unpackedBytes": 5216817,
+    "packedBytes": {
+      "node20": 1134226,
+      "node22": 1131490,
+      "node24": 1134226
+    },
+    "ceilings": {
+      "entries": 764,
+      "unpackedBytes": 5217000,
+      "packedBytes": 1135000
+    }
+  },
+  "publicStatus": "Private field adapter only; public actions, resource persistence, revision and plot consumers remain open.",
+  "evidence": [
+    {
+      "path": "graph-input-first.log.gz",
+      "sha256": "e22e24a6966819b1b23f5c0325273d68af1ece77450bb76a46da528470644f69",
+      "bytes": 2587
+    },
+    {
+      "path": "graph-input-coverage.log.gz",
+      "sha256": "f5667c8bb178e3e8c433d343722ce64ce48aeea68f4d160aea1fdf824b5ff719",
+      "bytes": 2458
+    },
+    {
+      "path": "graph-input-all-coverage.log.gz",
+      "sha256": "d8deda5aa52975bcc1f8e884b12667a246cada04f925ca2dccfbc6ccfcafdb0c",
+      "bytes": 25905
+    },
+    {
+      "path": "graph-input-floors.log.gz",
+      "sha256": "d24eaebf2a3a1fc7a714dc06582e5021f89a27d17bc908f76251fd36163fc449",
+      "bytes": 32
+    },
+    {
+      "path": "graph-input-contracts.log.gz",
+      "sha256": "a44f93a462a55ec290b907f6c7adf566f8817f84f4dad9e4546d7678eb367e76",
+      "bytes": 8481
+    },
+    {
+      "path": "graph-input-node20.log.gz",
+      "sha256": "0625b3b54922820f440903c7ad94b41eabc670506f9dc68d04404ecef45c5a52",
+      "bytes": 2126
+    },
+    {
+      "path": "graph-input-node24.log.gz",
+      "sha256": "98c79cd0ac82947b0b547403780ec1eaee53e06edc291514045bdaa2a4e13d27",
+      "bytes": 1036
+    },
+    {
+      "path": "graph-input-package20.json.gz",
+      "sha256": "3c9d99282ea0a1ceae9953e401c732a6d15f52fd1f79673cd018b04caae1b8f6",
+      "bytes": 78
+    },
+    {
+      "path": "graph-input-package22.json.gz",
+      "sha256": "3bb60a09dde2d6b9a10b39921b0b58397426ec104b444f0f165d26b515a9f259",
+      "bytes": 78
+    },
+    {
+      "path": "graph-input-package24.json.gz",
+      "sha256": "3c9d99282ea0a1ceae9953e401c732a6d15f52fd1f79673cd018b04caae1b8f6",
+      "bytes": 78
+    }
+  ]
+}

@@ -132,8 +132,12 @@ Circular 계산은 기존 polarToCartesian의 clockwise degree owner를 사용�
 renderer는 다음 통합 경계다. 수치·검증·실측 package 경계는
 [fixed/circular private checkpoint](impl/roadmap9/phase3/graph/LAYOUT_KERNEL.md)와
 [force checkpoint](impl/roadmap9/phase3/graph/FORCE_KERNEL.md)가 소유한다.
-현재는 private 계산이며 public GraphResource, source field adapter, graph action, layout/renderer에는
-연결하지 않았다. 별도 graph metric/preprocessing 작업과 상태를 섞지 않는다.
+`grammar/graph/fields.js`는 명시 열·복합 key·metric별 feature 읽기를,
+`grammar/graph/input.js`는 관측 table과 여섯 inference rule을 동일한 model로 낮추는
+순수 adapter를 소유한다. 관측 parallel edge는 caller가 전달한 persisted row key 또는
+명시 edgeKey만 사용하며 행 위치는 lineage로만 남긴다. Inference owner의 진단·전처리·검색
+증거를 그대로 반환하고 node/edge sourceRows는 원본 행 위치를 유지한다.
+현재 private 계산이며 public GraphResource, graph action, layout/renderer에는 연결하지 않았다.
 상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
 
 ## 내부 expression kernel 경계
@@ -167,7 +171,7 @@ stored graphic schema, action 또는 renderer에 연결하지 않았으며 별�
 `edgeIdentity.js`는 명시 rule/typed endpoint에서 inferred edge identity를 만드는 순수 owner다.
 기존 typed item identity, descriptor 검사, finite sum과 자원 한도를 공유한다.
 이 owner들은 명시 입력만 받고 frozen 결과를 반환하며, 공개 entry나 ChartProgram state,
-materialization 또는 renderer에 연결하지 않았다. Field 추출, graph resource와 kNN/threshold
+materialization 또는 renderer에 연결하지 않았다. Field 추출은 위 input adapter가 소유하고 graph resource와 kNN/threshold
 토폴로지의 공개 통합은 별도 domain owner의 남은 작업이다. `neighbors.js`는 정규화된 feature에서
 kNN/radius/similarity의 exact pair를 고르고 raw source index와 stable endpoint identity를 반환한다.
 `search.js`는 명시 exact KD-tree 또는 radius grid 후보만 줄이며 metric, typed tie와 edge ordering은
