@@ -6,7 +6,7 @@
 - [x] Treemap slice-dice·squarify 2종의 명시 primitive chain과 독립 사각형
 - [x] Normal 7·render 5·discovery/source/package boundary 31 검증
 - [x] 5개 PNG 시각 검사와 실행 소스·trace·graphicSpec·PNG hash 영수증
-- [ ] 명시 rendered primitive 승인 (`ready-for-review`)
+- [x] 명시 rendered primitive 승인 (`approved`, tree3+treemap2)
 - [ ] Public resource/action lifecycle·primitive/public 동등성·전체 consumer
 - [ ] STEP-020·AT-22·STEP-077 전체 완료
 
@@ -14,16 +14,19 @@
 검토 소스·테스트 revision은 `ec0484613ff1c91e243a9097ff42c4a5cd72138f`이며 원격 `codex/roadmap9-hierarchy`에 push했다.
 이후 기록만 고정하는 metadata commit은 실행 소스와 PNG를 바꾸지 않는다.
 승인된 전체 계획과 parent의 위임에 따라 private 계산과 이 검토 자료를 준비했다.
-Gate 상태는 **ready-for-review**이며 공개 action이나 승인 완료를 주장하지 않는다.
+Gate 상태는 **approved**다. 사용자 답변 “5개 대상 모두 승인”이 parent `/root`를 통해 전달되었다.
+승인 대상은 아래 source revision의 tree3+treemap2이며 public action의 구현 완료를 뜻하지 않는다.
 Partition mapping/bend와 그 primitive 검토는 별도 담당자가 진행한다.
 
 [승인 규칙](../../../AGENTS.md)의 직접 적용 범위는 다음 문장이다.
 
 > A new visual target requires explicit confirmation of its rendered graphical primitive before its public action flow is implemented.
 
-이전 전체 구현 승인은 아직 보지 않은 이 렌더링의 승인이 아니다. 이 Gate는 새 visual public flow만
-보류하며 독립 수치 계산과 다른 승인된 작업을 멈추지 않는다. 리뷰 소스 revision은 아래 검증 영수증의
-`testedHead`와 원격 체크포인트 기록으로 고정한다. 승인 이후 이 기록을 먼저 갱신한다.
+이전 전체 구현 승인과 별도로 정확한 렌더링에 대한 위 답변을 승인 근거로 기록했다.
+승인 source revision은 `ec048461`(아래 영수증의 전체 `testedHead`)이며
+[승인 기록](primitive-approval.json)이 5개 variant와 정확한 revision을 고정한다.
+이 기록을 먼저 commit/push한 뒤 새 public hierarchy flow를 시작한다. 기존 `primitive-evidence.json`의
+`ready-for-review` 상태는 승인 직전 증거 캡처 시점의 역사적 상태로 보존한다.
 
 ## 검토할 의미와 실행 소스
 
