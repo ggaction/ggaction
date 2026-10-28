@@ -76,3 +76,11 @@ Cap은557,000/334,000, SVG25,000은 유지한다. 이전 한도가 통과했다�
 세 지원 Node는 동일한 archive SHA256 `56357b832921cd551dd4026795f3d7b05ef8998a67b81cfe1d390d3f4131fc26`를
 소비한다. 최종 실행 결과와 Node24 측정은 evidence에 기록한다. 로컬 패키지 검증은 publish/deploy를 뜻하지 않는다.
 문서 환경은 Ruby3.2와 Node22를 사용한다. 기본 shell Ruby2.6의 preflight 실패도 원 로그로 남긴다.
+
+최종 외곽선 source commit은 `4f1b96e143c713627a7ff297eec80dd1e547d0c6`이다.
+동일 archive에서 Node20.20.2/22.23.1/24.22.1 각각205/205 cases와7/7 qualification이 통과했다.
+Node24 gzip은 Node20과 동일했다. 수정한 chart/type/inventory/discovery33/33, 승격 경로의 render9/9,
+최종 문서 source167/167 및 built150pages/1224 selective artifacts가 통과했다. 앞서 통과한 전체 문서
+responsive320/390/768px·검색·axe sweep은 이후 provenance metadata만 바뀌어 재사용했다.
+승인 review PNG34개가 stable 결과와 모두 byte 동일함을 확인하고 완료한 outline review subtree만 제거했다.
+원본 승인 기록, source, native literal oracle와 원 실패 로그는 그대로 보존한다.

@@ -3,9 +3,9 @@
   "status": "development",
   "packageVersion": "0.0.26",
   "contractId": "sha256:51bbeccb84ad502f58fb301591e51012ec2b0070a2ecfd3bd830d1ec6cc5600d",
-  "sourceCommit": null,
-  "sourceRef": "main",
-  "exampleSourceRef": "codex/roadmap9-paints",
+  "sourceCommit": "4f1b96e143c713627a7ff297eec80dd1e547d0c6",
+  "sourceRef": "4f1b96e143c713627a7ff297eec80dd1e547d0c6",
+  "exampleSourceRef": "4f1b96e143c713627a7ff297eec80dd1e547d0c6",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
