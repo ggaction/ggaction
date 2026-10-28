@@ -130,6 +130,9 @@ stored graphic schema, action 또는 renderer에 연결하지 않았으며 별�
 materialization 또는 renderer에 연결하지 않았다. Field 추출, graph resource와 kNN/threshold
 토폴로지의 공개 통합은 별도 domain owner의 남은 작업이다. `neighbors.js`는 정규화된 feature에서
 kNN/radius/similarity의 exact pair를 고르고 raw source index와 stable endpoint identity를 반환한다.
+`search.js`는 명시 exact KD-tree 또는 radius grid 후보만 줄이며 metric, typed tie와 edge ordering은
+기존 owner를 공유한다. 계산량과 output 한도는 후보 탐색 중에도 누적 검사한다. 기본 brute-force를
+유지하며 가속 경로를 명시한 경우에만 algorithm/version/실제 distance 횟수를 결과에 기록한다.
 `spanning.js`는 같은 metric preparation으로 complete graph 또는 명시 weighted candidate에서
 deterministic Kruskal tree/forest와 component/cost를 계산한다. `structural.js`는 같은 typed key와
 grouping identity owner를 사용해 group clique/star 및 grouped sequence lag/maxGap 연결을 만든다.

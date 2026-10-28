@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "baseCommit": "bb07373189749dbf4116bd57ec72a109a42bbf04",
+  "scope": "Private exact accelerators only; approximate and public graph integration remain open.",
+  "results": {
+    "graphTests": 87,
+    "fixtures": 100,
+    "comparisonsPerFixture": 6,
+    "searchCoverage": {
+      "lines": 100,
+      "branches": 99.07,
+      "functions": 100
+    },
+    "criticalGraphFloors": 12,
+    "node20": 7,
+    "node24": 7,
+    "boundaryTests": 24,
+    "packageTests": 7
+  },
+  "package": {
+    "entries": 758,
+    "unpackedBytes": 5188050,
+    "maxPackedBytes": 1126325,
+    "ceilings": {
+      "entries": 758,
+      "unpackedBytes": 5189000,
+      "packedBytes": 1127000
+    }
+  },
+  "inputs": {
+    "src/grammar/graph/search.js": "b4b69db248ebb5d8b97eb0e3c4500272f8c085655613fb6fe77ada4e17778fce",
+    "src/grammar/graph/neighbors.js": "0da02abcc759ccd798304e9a23610484128ce1232df941d07dab1a951595bfe4",
+    "src/grammar/graph/metrics.js": "8e4d6e4269043b327f449b3e93b954e54a201072d0d37e3618647b9270abd2de",
+    "src/grammar/graph/preprocess.js": "9ab13f279fc49130d30e8ecb8d1409134792166d44823430919739f488595f82",
+    "test/unit/grammar/graph/search.test.js": "94ad4ebce49e000d9787ca45dcb8e10ecc06929f352ef9ba23d59920afec7046",
+    "scripts/package-artifact.js": "c5e9b34809a2442f06a51c43e48a95867fc41005f1d95366e26547e4bf314430"
+  },
+  "evidence": [
+    {
+      "path": "graph-search-before.log.gz",
+      "source": ".artifacts/graph-search-before.log",
+      "sha256": "d5be92e185327b258aa4171066da61d9e26a86346babec58eadd54a92c181fe0",
+      "bytes": 8129
+    },
+    {
+      "path": "graph-search-first.log.gz",
+      "source": ".artifacts/graph-search-first.log",
+      "sha256": "9dd015c8597470ab08baac685964a98c463c78df12f1ce9f713e8f68563b5c81",
+      "bytes": 1247
+    },
+    {
+      "path": "graph-search-coverage.log.gz",
+      "source": ".artifacts/graph-search-coverage.log",
+      "sha256": "88e0fbaf8a6ce678183e4be7f8d0f6843d17c59534924e9dd94f8d2828eb020f",
+      "bytes": 21442
+    },
+    {
+      "path": "graph-search-floors.log.gz",
+      "source": ".artifacts/graph-search-floors.log",
+      "sha256": "eb2bf51596253055441674840715bf18c5531a894ec9bf308048be2f76c70bb0",
+      "bytes": 32
+    },
+    {
+      "path": "graph-search-node20.log.gz",
+      "source": ".artifacts/graph-search-node20.log",
+      "sha256": "3564dbf6de73b85b2a651b3553b79934735260c94683136828d2945bf3ea6e64",
+      "bytes": 1628
+    },
+    {
+      "path": "graph-search-node24.log.gz",
+      "source": ".artifacts/graph-search-node24.log",
+      "sha256": "a1bb695347b29a41a8b7a08bb4133465a8bd2abba25f01c90d05512fa3d57c70",
+      "bytes": 804
+    },
+    {
+      "path": "graph-search-boundaries.log.gz",
+      "source": ".artifacts/graph-search-boundaries.log",
+      "sha256": "48453488853c7db93894a8e8aa615e53d7e8aa5fa8304a4efc6ef0db03644c2b",
+      "bytes": 4752
+    },
+    {
+      "path": "graph-search-package-before.log.gz",
+      "source": ".artifacts/graph-search-package-before.log",
+      "sha256": "1c3aef4b9e447f9bdabcb2dea4d3921b703ed805cd4d3ea19d5cd0409ecd1a2d",
+      "bytes": 1143
+    },
+    {
+      "path": "graph-search-package-tests.log.gz",
+      "source": ".artifacts/graph-search-package-tests.log",
+      "sha256": "dbb4938a969367a2e8332f521ebab51ac6ed535f4abdab7a0b0adb61d1bb2ece",
+      "bytes": 1719
+    },
+    {
+      "path": "graph-search-package20-measure.json.gz",
+      "source": ".artifacts/graph-search-package20-measure.json",
+      "sha256": "90806e9b366a5147163b840bd49a5d0f1ffa3baa0faaae859610e01bc81e3e51",
+      "bytes": 160
+    },
+    {
+      "path": "graph-search-package22-measure.json.gz",
+      "source": ".artifacts/graph-search-package22-measure.json",
+      "sha256": "b90bd8d5618ef5e339c06af66d6c2861c957641f4bea3f520d326086ef19c351",
+      "bytes": 160
+    },
+    {
+      "path": "graph-search-package24-measure.json.gz",
+      "source": ".artifacts/graph-search-package24-measure.json",
+      "sha256": "90806e9b366a5147163b840bd49a5d0f1ffa3baa0faaae859610e01bc81e3e51",
+      "bytes": 160
+    },
+    {
+      "path": "graph-search-package-final.json.gz",
+      "source": ".artifacts/graph-search-package-final.json",
+      "sha256": "90806e9b366a5147163b840bd49a5d0f1ffa3baa0faaae859610e01bc81e3e51",
+      "bytes": 160
+    }
+  ]
+}
