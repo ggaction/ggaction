@@ -3249,3 +3249,10 @@ CSS transform·clip·opacity와 filled geometry 판정을 소유한다. 기존 p
 viewport로 제한하고 scene adapter/index/frame은 후속 경계다. 자세한 범위는 같은 STEP047 기록에 둔다.
 두 파일을 추가한 package는818 entries/5,541,801unpacked, packed 최대1,208,456bytes로 측정했으며
 cap을818/1,209,000/5,542,000으로 최소 갱신했다. Public entry와 browser import graph는 변하지 않는다.
+
+
+`grammar/hitIndex.js`는 현재 owned CanvasScene identity와 명시 node/semantic mapping을 결합하는 private
+순수 공간 인덱스다. BVH broad phase와 기존 hitShapes narrow phase를 분리하고 누적 work를 제한한다.
+Row/resource lineage는 입력의 exact ref를 보존하며 의미 중복만 합친다. Renderer/semantic state/codec에는
+새 저장 값을 추가하지 않는다. Guide materializer와 public runtime 연결은 [STEP048](impl/roadmap9/interaction/STEP048.md)에 남긴다.
+실측819 entries/5,552,006unpacked/최대1,210,811packed bytes에 cap819/1,211,000/5,553,000을 적용했다.

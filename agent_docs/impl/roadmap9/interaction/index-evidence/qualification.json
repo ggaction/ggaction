@@ -1,0 +1,70 @@
+{
+  "status": "private-index-qualified",
+  "base": "7d2c03228",
+  "publicApiAdded": false,
+  "tests": {
+    "node20": 38,
+    "node22Coverage": 38,
+    "node24": 38,
+    "boundaries": 33
+  },
+  "coverage": {
+    "hitIndex": [
+      100,
+      100,
+      100
+    ],
+    "hitShapes": [
+      100,
+      93.79,
+      100
+    ],
+    "hitCoordinates": [
+      100,
+      100,
+      100
+    ],
+    "hitStroke": [
+      100,
+      94.59,
+      100
+    ],
+    "floor": [
+      95,
+      90,
+      100
+    ]
+  },
+  "independentOracle": {
+    "rectangles": 4096,
+    "queries": 40,
+    "visitedPerQuery": "less than 100",
+    "narrowPhasesPerQuery": "at most 1"
+  },
+  "package": {
+    "entries": 819,
+    "unpackedBytes": 5552006,
+    "node22PackedBytes": 1208540,
+    "node20And24PackedBytes": 1210811,
+    "caps": {
+      "entries": 819,
+      "packedBytes": 1211000,
+      "unpackedBytes": 5553000
+    }
+  },
+  "failuresPreserved": [
+    "test imported incorrect program path; corrected to existing ChartProgram owner",
+    "819 entries exceeded prior818 cap"
+  ],
+  "sources": {
+    "src/grammar/hitIndex.js": "cc63134503f8255ef4284e22bc0867a8dc4090399aaf7f78c37c3bfaaddaec73",
+    "src/grammar/hitShapes.js": "6d9547ba5dd7b160ed43f11815aa904fba14abd8980e413c478c2aebf72e854b",
+    "test/unit/grammar/hit-index.test.js": "abf96e828aad0231c3e320eb985460815e004d2a70e292ba44ffeaeb36ff9d84"
+  },
+  "remaining": [
+    "concrete scene metadata adapter and all guide materializer connections",
+    "STEP035 nested composition",
+    "current frame bridge",
+    "public interaction entry/types/browser event consumers and AT33/34"
+  ]
+}

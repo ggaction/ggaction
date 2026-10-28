@@ -158,8 +158,16 @@ export function prepareHitShape(input) {
     if (!Object.values(bounds).every(Number.isFinite)) throw new RangeError("Hit bounds overflow.");
   }
   const result = cloneAndFreeze({ type: input.geometry.type, bounds, diagnostics });
-  states.set(result, cloneAndFreeze({ fill, strokes, clips, opacity: paint.opacity }));
+  states.set(result, cloneAndFreeze({ fill, strokes, clips, opacity: paint.opacity, transform: input.transform,
+    work: 1 + 4 * budget.value + fill.length + strokes.length + clips.length }));
   return result;
+}
+
+/** Conservative narrow-phase work, used by the bounded current-scene index. */
+export function hitShapeWork(prepared) {
+  const state = states.get(prepared);
+  if (!state) throw new TypeError("Hit shape requires its prepared geometry.");
+  return state.work;
 }
 
 export function normalizeHitQuery(options = {}) {
@@ -186,5 +194,7 @@ export function hitShape(prepared, point, options = {}) {
     else for (const part of state.strokes) distance = Math.min(distance, boundaryDistance(part, point));
     hit ||= distance <= query.slop;
   }
-  return freezeOwned({ hit, distance, diagnostics: prepared.diagnostics });
+  const mapped = hit ? coordinate(point, state.transform) : null;
+  return freezeOwned({ hit: hit && mapped.localPoint !== null, distance, localPoint: mapped?.localPoint ?? null,
+    diagnostics: mapped?.diagnostics.length ? mapped.diagnostics : prepared.diagnostics });
 }
