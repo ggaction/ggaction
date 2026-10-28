@@ -87,7 +87,7 @@
     "test/gates/radial-gradient/primitive.test.js": "d9c41a9440fb09201a281fd9aa42037a5faa1252f73b55cce8a1ab0ac10ce011",
     "test/gates/radial-gradient/reference.js": "ffad8e00e3cb0126c24c4fce10c4790f71bb2ace8b3fea7fac4d62fe7ee0538b",
     "test/gates/radial-gradient/vector.program.js": "d0fc4f53c8fdaf88ce3ccc24e0a5a76e8235835a205d37967433fd8370e0b2d5",
-    "agent_docs/impl/roadmap9/phase4/radial-gradient/REVIEW.md": "83d123ffa5434851d52de7834fa2e454127cf88ac6dc860bc1fc62af164254cf"
+    "agent_docs/impl/roadmap9/phase4/radial-gradient/REVIEW.md": "3bc1554e28d8999565c6a6ad0ab59ab35864698d633752f84ba3815eca599282"
   },
   "artifactRoot": ".artifacts/test/png/review/radial-gradient/",
   "outputs": {
@@ -434,5 +434,8 @@
   "sources": [
     "https://html.spec.whatwg.org/multipage/canvas.html#fill-and-stroke-styles",
     "https://www.w3.org/TR/SVG/latest/pservers.html#RadialGradients"
-  ]
+  ],
+  "codeRevision": "57f70fbcaec0883bb08e9142dc9de0a7daa2d7dc",
+  "evidenceRevision": "57f70fbcaec0883bb08e9142dc9de0a7daa2d7dc",
+  "metadataOnlyRevisionNote": "This recording commit fixes the source/evidence revision; only REVIEW.md and its receipt hash change."
 }

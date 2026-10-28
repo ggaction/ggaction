@@ -9,7 +9,7 @@
 - [ ] exact visual target 사용자 승인
 - [ ] 공개 paint schema 및 전체 소비자 연결
 
-상태는 `ready-for-review`다. Roadmap 9 전체 실행과 부모 agent의 독립 private 위임에 따라 준비했다. 공개 radial paint, STEP-017, AT-13 완료가 아니며 unseen visual target 승인을 가정하지 않는다. Source/evidence revision은 완료 후 metadata 기록으로 고정한다.
+상태는 `ready-for-review`다. Roadmap 9 전체 실행과 부모 agent의 독립 private 위임에 따라 준비했다. 공개 radial paint, STEP-017, AT-13 완료가 아니며 unseen visual target 승인을 가정하지 않는다. Source/evidence revision: `57f70fbcaec0883bb08e9142dc9de0a7daa2d7dc`. 이 revision의 실행 source와 rendered target을 검토한다. 뒤의 metadata-only 기록은 source와 출력 내용을 바꾸지 않는다.
 
 ## Private kernel의 정확한 범위
 
