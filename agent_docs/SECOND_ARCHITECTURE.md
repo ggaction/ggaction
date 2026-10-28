@@ -434,6 +434,8 @@ rematerialization plan이 이 binding을 읽어 명시 domain·coordinate bounds
 Axis 전용 typography는 기존 theme frame의 partial token을 사용한다. 초기 축 layout 전에
 active font 기본값을 읽고, theme 변경 시 기존 guide config와 concrete text bounds를 함께
 갱신한다. Facet 초기 header 스타일은 기존 header config에 정규화하며 editor와 같은 검증을 사용한다.
+Global typography의 role 기본값은 기존 family defaults와 wrapped Text 생성 의도에서 읽는다. Theme frame과
+authored override 수집을 계속 재사용하며 별도 복원 snapshot이나 provenance history를 저장하지 않는다.
 
 > 과거 checkpoint 수치 포함. 현재 한도는 실행 검사에서 확인한다.
 

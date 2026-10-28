@@ -21,7 +21,7 @@ import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues
 } from "../../../grammar/scales/index.js";
-import { AXIS_TITLE_FONT_SIZE, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
+import { AXIS_TITLE_FONT_WEIGHT, AXIS_TITLE_FONT_SIZE, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findUpstreamTransform } from "../../../materialization/dataProvenance.js";
@@ -164,7 +164,7 @@ const DEFAULTS = {
   color: DEFAULT_COLORS.text,
   fontSize: AXIS_TITLE_FONT_SIZE,
   fontFamily: DEFAULT_FONT_FAMILY,
-  fontWeight: 600
+  fontWeight: AXIS_TITLE_FONT_WEIGHT
 };
 
 function validateText(text) {

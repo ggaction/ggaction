@@ -218,10 +218,15 @@ test("derives a bounded public option inventory without runtime prototype paths"
 
   assert.equal(inventory.counts.publicActions, 317);
   assert.equal(inventory.counts.topLevelOptionPaths, 2940);
-  assert.equal(inventory.counts.nestedOptionPaths, 25059);
-  assert.equal(inventory.counts.optionPaths, 27999);
-  assert.equal(inventory.counts.requiredOptionPaths, 18851);
+  assert.equal(inventory.counts.nestedOptionPaths, 25061);
+  assert.equal(inventory.counts.optionPaths, 28001);
+  assert.equal(inventory.counts.requiredOptionPaths, 18853);
   assert.equal(inventory.counts.excludedOptionPaths, 9148);
+  for (const path of ["theme.tokens.fontSize", "theme.tokens.fontWeight"]) {
+    const option = inventory.optionPaths.find(option => option.action === "applyTheme" && option.path === path);
+    assert.equal(option?.required, true, path);
+    assert.equal(option?.evidence, "direct-trace", path);
+  }
   assert.deepEqual(inventory.optionPaths.filter(option =>
     ["createData", "reviseData"].includes(option.action) && option.topLevel &&
     ["keyField", "keyFields", "keys", "rowMap"].includes(option.path)
@@ -607,7 +612,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 33693);
+  assert.equal(ledger.requirements.length, 33695);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

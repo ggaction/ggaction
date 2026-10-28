@@ -6,7 +6,7 @@ import {
   validateNonNegativeFinite,
   validateOptionObject
 } from "../../../../core/validation.js";
-import { AXIS_LABEL_FONT_SIZES, AXIS_TITLE_FONT_SIZE, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../../../../theme/defaults.js";
+import { AXIS_LABEL_FONT_WEIGHT, AXIS_LABEL_FONT_SIZES, AXIS_TITLE_FONT_WEIGHT, AXIS_TITLE_FONT_SIZE, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../../../../theme/defaults.js";
 import { validateAxisTextStyle } from "../labels.js";
 import { validateAxisFormat } from "../policy.js";
 import { axisGraphicIds } from "../../../../selectors/axes.js";
@@ -26,9 +26,9 @@ export function defaultParallelAxis(field, theme) {
     line: { color: DEFAULT_COLORS.axis, lineWidth: 1.25 },
     ticks: { mode: "auto", length: 8, color: DEFAULT_COLORS.mutedText, lineWidth: 1 },
     labels: { mode: "auto", offset: 9, format: "auto", color: DEFAULT_COLORS.axis,
-      fontSize: AXIS_LABEL_FONT_SIZES.parallel, fontFamily: DEFAULT_FONT_FAMILY, fontWeight: "normal", ...axisThemeTypography(theme, "labels") },
+      fontSize: AXIS_LABEL_FONT_SIZES.parallel, fontFamily: DEFAULT_FONT_FAMILY, fontWeight: AXIS_LABEL_FONT_WEIGHT, ...axisThemeTypography(theme, "labels") },
     title: { offset: 20, color: DEFAULT_COLORS.axisTitle,
-      fontSize: AXIS_TITLE_FONT_SIZE, fontFamily: DEFAULT_FONT_FAMILY, fontWeight: 600, ...axisThemeTypography(theme, "title") }
+      fontSize: AXIS_TITLE_FONT_SIZE, fontFamily: DEFAULT_FONT_FAMILY, fontWeight: AXIS_TITLE_FONT_WEIGHT, ...axisThemeTypography(theme, "title") }
   };
 }
 

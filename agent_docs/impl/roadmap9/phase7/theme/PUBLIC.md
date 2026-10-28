@@ -10,7 +10,8 @@
 - [ ] 타입·Current·public docs·generated inventory 동기화 및 checkpoint
 
 기준은 font/GraphPlot 통합 source `e412fe55e`, evidence `36349d6b1`다.
-아래 token 확장과 inspection은 미구현 계획이며 Current 기능으로 표시하지 않는다. 먼저 기존 token의
+아래 guide·palette token 확장과 inspection은 미구현 계획이며 Current 기능으로 표시하지 않는다. Global
+`fontSize`/`fontWeight`는 [typography checkpoint](TYPOGRAPHY.md)로 구현·검증한다. 먼저 기존 token의
 Graph/Tree/Treemap role 적용과 descriptor safety를 별도 [기반 checkpoint](RESOURCE_PLOTS.md)로 검증한다. STEP-034/035의 responsive solver와
 nested guide 배치까지 별도 후속 의무로 유지한다.
 

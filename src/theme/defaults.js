@@ -5,6 +5,8 @@ export { DEFAULT_FONT_FAMILY };
 export const DEFAULT_POINT_RADIUS = 3;
 export const AXIS_LABEL_FONT_SIZES = Object.freeze({ cartesian: 12, polar: 11, parallel: 11 });
 export const AXIS_TITLE_FONT_SIZE = 13;
+export const AXIS_LABEL_FONT_WEIGHT = "normal";
+export const AXIS_TITLE_FONT_WEIGHT = 600;
 export const DEFAULT_VERTICAL_LEGEND_ITEM_GAP = 18;
 
 export const DEFAULT_COLORS = Object.freeze({
@@ -47,7 +49,7 @@ export const THEME_TOKEN_KEYS = Object.freeze([
   "gradientCenter",
   "highlight",
   "fontFamily", "axisLabel", "axisLabelFontFamily", "axisTitleFontFamily",
-  "axisLabelFontSize", "axisTitleFontSize"
+  "axisLabelFontSize", "axisTitleFontSize", "fontSize", "fontWeight"
 ]);
 
 const THEME_DEFINITION_KEYS = Object.freeze(["base", "tokens"]);
@@ -115,8 +117,12 @@ function normalizeThemeTokens(tokens) {
   validateKeys(tokens, THEME_TOKEN_KEYS, "applyTheme theme.tokens");
   const normalized = {};
   for (const [key, value] of Object.entries(tokens)) {
-    if (key.endsWith("FontSize")) {
+    if (key.endsWith("FontSize") || key === "fontSize") {
       if (!Number.isFinite(value) || value <= 0) throw new RangeError(`applyTheme theme.tokens.${key} must be positive and finite.`);
+    } else if (key === "fontWeight") {
+      if (!Number.isFinite(value) && !(typeof value === "string" && value.length > 0)) {
+        throw new TypeError("applyTheme theme.tokens.fontWeight must be a non-empty string or finite number.");
+      }
     } else validateNonEmptyString(value, `applyTheme theme.tokens.${key}`);
     normalized[key] = value;
   }

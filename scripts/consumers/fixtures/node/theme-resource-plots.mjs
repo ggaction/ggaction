@@ -21,8 +21,10 @@ export const cases = [{ id: "theme/resource-plot-renderer-lifecycle", async run(
         ? { nodeSize: [20, 20], siblingGap: 30, depthGap: 40, orientation: "vertical" }
         : { size: [180, 100], padding: 5, method: "slice-dice" } })
       [kind === "tree" ? "createTreePlot" : "createTreemapPlot"]({ id: "plot", labels: {} });
-    const themed = base.applyTheme({ theme: "dark" });
+    const themed = base.applyTheme({ theme: { base: "dark", tokens: { fontSize: 17, fontWeight: 700 } } });
     assert.equal(themed.semanticSpec.resources, base.semanticSpec.resources);
+    assert.ok(themed.graphicSpec.objects.plot.items.filter(item => item.type === "text")
+      .every(item => item.properties.fontSize === 17 && item.properties.fontWeight === 700));
     assert.deepEqual(themed.removeTheme().graphicSpec, base.graphicSpec);
     const restored = deserializeProgram(serializeProgram(themed));
     assert.deepEqual(restored.graphicSpec, themed.graphicSpec);

@@ -1,0 +1,33 @@
+{
+  "node": "v20.20.2",
+  "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/theme-typography/package-final/ggaction-0.0.26.tgz",
+  "case": "theme/resource-plot-renderer-lifecycle",
+  "status": "passed",
+  "durationMs": 4137.820625,
+  "bundles": {
+    "ggaction": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 732,
+      "minifiedBytes": 2138625,
+      "gzipBytes": 601972,
+      "limit": 602000
+    },
+    "ggaction/basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 494,
+      "minifiedBytes": 1201172,
+      "gzipBytes": 350018,
+      "limit": 351000
+    },
+    "ggaction/svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 34,
+      "minifiedBytes": 56009,
+      "gzipBytes": 19199,
+      "limit": 25000
+    }
+  }
+}

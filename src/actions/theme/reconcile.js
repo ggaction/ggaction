@@ -1,3 +1,4 @@
+import { themeTypographyValue } from "./typographyRoles.js";
 import { resourcePlotThemeOwner, resourcePlotThemeProperty, addResourcePlotThemeOverrides, clearResourcePlotThemeOverrides } from "./resourcePlots.js";
 import { applyMaterializationPlan, buildMaterializationPlan } from "../../materialization/planner.js";
 import { synchronizeFacetLegendAppearance } from "../../materialization/facetGuides/owner.js";
@@ -26,7 +27,7 @@ const THEME_STYLE_PROPERTIES = Object.freeze([
   "background",
   "fill",
   "stroke",
-  "fontFamily", "fontSize"
+  "fontFamily", "fontSize", "fontWeight"
 ]);
 const COLOR_TOKENS = Object.freeze([
   "mark",
@@ -74,8 +75,8 @@ function roleToken(tokens, role, family = "cartesian") {
   if (tokens[role] !== undefined) return tokens[role];
   if (role === "axisLabel") return family === "parallel" ? tokens.axis : tokens.text;
   if (["axisLabelFontFamily", "axisTitleFontFamily"].includes(role)) return tokens.fontFamily;
-  if (role === "axisLabelFontSize") return AXIS_LABEL_FONT_SIZES[family];
-  if (role === "axisTitleFontSize") return AXIS_TITLE_FONT_SIZE;
+  if (role === "axisLabelFontSize") return tokens.fontSize ?? AXIS_LABEL_FONT_SIZES[family];
+  if (role === "axisTitleFontSize") return tokens.fontSize ?? AXIS_TITLE_FONT_SIZE;
   return undefined;
 }
 
@@ -418,7 +419,7 @@ function recolorConfig(
   }
   if (value === null || typeof value !== "object") {
     const property = path.at(-1);
-    if (!["color", "fill", "stroke", "background", "fontFamily", "fontSize"]
+    if (!["color", "fill", "stroke", "background", "fontFamily", "fontSize", "fontWeight"]
       .includes(property)) {
       return { changed: false, value };
     }
@@ -431,9 +432,11 @@ function recolorConfig(
     const resource = resourcePlotThemeProperty(path);
     if (resource?.explicit) return { changed: false, value };
     if (resource !== undefined) {
-      const target = themeActive ? targetTokens[resource.token] : resource.defaultValue;
+      const target = themeActive ? targetTokens[resource.token] ?? resource.defaultValue : resource.defaultValue;
       return { changed: value !== target, value: target };
     }
+    const typography = themeTypographyValue(program, path, targetTokens, sourceTokens);
+    if (typography !== undefined) return { changed: typography !== value, value: typography };
     const role = configRole(program, path);
     return role === undefined
       ? mapColorValue(value, sourceTokens, targetTokens)
@@ -483,7 +486,7 @@ function addMarkOverrides(overrides, program, op, args) {
     (op.startsWith("create") ? type : undefined) ??
     (candidates.length === 1 ? candidates[0].id : program.context.currentMark);
   if (typeof id !== "string") return;
-  for (const property of ["fill", "stroke", "fontFamily"]) {
+  for (const property of ["fill", "stroke", "fontFamily", "fontSize", "fontWeight"]) {
     if (!Object.hasOwn(args, property)) continue;
     addMarkPropertyOverrides(overrides, id, property);
   }
@@ -548,12 +551,15 @@ function resolveConfiguredOwner(program, key, requested, defaultId) {
 }
 
 function addTextFacadeOverrides(overrides, node) {
-  if (!["createAnnotation", "createMarkLabels"].includes(node.op)) return;
-  const id = findDescendant(node, "createTextMark")?.args.id ?? node.args.id;
-  if (typeof id !== "string") return;
-  for (const property of ["fill", "fontFamily"]) {
-    if (!Object.hasOwn(node.args, property)) continue;
-    addMarkPropertyOverrides(overrides, id, property);
+  const style = ["createAnnotation", "createMarkLabels"].includes(node.op) ? node.args
+    : node.op === "createTextPlot" ? node.args.style : node.args.labels;
+  if (style === null || typeof style !== "object") return;
+  const ids = new Set();
+  visitTrace(node, child => {
+    if (child.op === "createTextMark" && typeof child.args.id === "string") ids.add(child.args.id);
+  });
+  for (const id of ids) for (const property of ["fill", "fontFamily", "fontSize", "fontWeight"]) {
+    if (Object.hasOwn(style, property)) addMarkPropertyOverrides(overrides, id, property);
   }
 }
 
@@ -812,7 +818,7 @@ function addAxisOverrides(overrides, op, args, node) {
       `g:${axisId === channel ? `${idPrefix}Axis` : `axis_${axisId}__`}${match[2]}.${component === "line" || component === "ticks" ? "stroke" : "fill"}`
     );
   }
-  for (const property of ["fontFamily", "fontSize"]) {
+  for (const property of ["fontFamily", "fontSize", "fontWeight"]) {
     if (["labels", "title"].includes(component) && Object.hasOwn(args, property)) {
       overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
       overrides.add(`g:${axisId === channel ? `${idPrefix}Axis` : `axis_${axisId}__`}${match[2]}.${property}`);
@@ -842,7 +848,7 @@ function addCompleteAxisOverride(overrides, name, args, node) {
         `g:${axisId === channel ? `${idPrefix}Axis` : `axis_${axisId}__`}${suffix}.${component === "line" || component === "ticks" ? "stroke" : "fill"}`
       );
     }
-    for (const property of ["fontFamily", "fontSize"]) {
+    for (const property of ["fontFamily", "fontSize", "fontWeight"]) {
       if (["labels", "title"].includes(component) && Object.hasOwn(options ?? {}, property)) {
         overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
         overrides.add(`g:${axisId === channel ? `${idPrefix}Axis` : `axis_${axisId}__`}${suffix}.${property}`);
@@ -894,9 +900,10 @@ function addTitleOverrides(overrides, args) {
       overrides.add(`c:title.${option}.color`);
       overrides.add(`g:${id}.fill`);
     }
-    if (Object.hasOwn(args[option] ?? {}, "fontFamily")) {
-      overrides.add(`c:title.${option}.fontFamily`);
-      overrides.add(`g:${id}.fontFamily`);
+    for (const property of ["fontFamily", "fontSize", "fontWeight"]) {
+      if (!Object.hasOwn(args[option] ?? {}, property)) continue;
+      overrides.add(`c:title.${option}.${property}`);
+      overrides.add(`g:${id}.${property}`);
     }
   }
 }
@@ -922,7 +929,7 @@ function addParallelOverrides(overrides, program, op, args) {
         `c:guides.axis.parallel.axes.dimensions.${index}.${component}.color`
       );
     }
-    for (const property of ["fontFamily", "fontSize"]) {
+    for (const property of ["fontFamily", "fontSize", "fontWeight"]) {
       if (["labels", "title"].includes(component) && Object.hasOwn(options ?? {}, property)) {
         overrides.add(`c:guides.axis.parallel.axes.dimensions.${index}.${component}.${property}`);
       }
@@ -936,8 +943,12 @@ function addLegendOverrides(overrides, program, args) {
     for (const [option, suffix, property, graphicProperty] of [
       ["labels", "Labels", "color", "fill"],
       ["labels", "Labels", "fontFamily", "fontFamily"],
+      ["labels", "Labels", "fontSize", "fontSize"],
+      ["labels", "Labels", "fontWeight", "fontWeight"],
       ["titleStyle", "Title", "color", "fill"],
       ["titleStyle", "Title", "fontFamily", "fontFamily"],
+      ["titleStyle", "Title", "fontSize", "fontSize"],
+      ["titleStyle", "Title", "fontWeight", "fontWeight"],
       ["border", "Background", "color", "stroke"]
     ]) {
       if (!Object.hasOwn(args[option] ?? {}, property)) continue;
@@ -978,7 +989,9 @@ function addLegendBlockOverrides(overrides, program, args) {
     const graphic = legendPrefix(kind);
     for (const [property, graphicProperty] of [
       ["color", "fill"],
-      ["fontFamily", "fontFamily"]
+      ["fontFamily", "fontFamily"],
+      ["fontSize", "fontSize"],
+      ["fontWeight", "fontWeight"]
     ]) {
       if (!Object.hasOwn(args.text ?? {}, property)) continue;
       overrides.add(`${prefix}.text.${property}`);
@@ -1006,7 +1019,9 @@ function addFacetOverrides(overrides, program, args) {
     : args.role;
   for (const [property, graphicProperty] of [
     ["color", "fill"],
-    ["fontFamily", "fontFamily"]
+    ["fontFamily", "fontFamily"],
+    ["fontSize", "fontSize"],
+    ["fontWeight", "fontWeight"]
   ]) {
     if (Object.hasOwn(args.title ?? {}, property)) {
       overrides.add(`c:facets.${id}.headers.${owner}.title.${property}`);
@@ -1022,7 +1037,7 @@ function explicitOverrides(program, node) {
   const overrides = new Set();
   if (op === "editGraphics" &&
       typeof args.target === "string" &&
-      ["background", "fill", "stroke", "fontFamily", "fontSize"].includes(args.property)) {
+      ["background", "fill", "stroke", "fontFamily", "fontSize", "fontWeight"].includes(args.property)) {
     overrides.add(`g:${args.target}.${args.property}`);
   }
   if (["createCanvas", "editCanvas"].includes(op) &&
@@ -1061,8 +1076,7 @@ function explicitOverrides(program, node) {
   if (op === "editLegendBlock") {
     addLegendBlockOverrides(overrides, program, args);
   }
-  const parentLegendOptions = op === "editFacetGuides" ? args.legend
-    : ["facet", "facetGrid", "repeatCharts"].includes(op) ? args.guides?.legend : undefined;
+  const parentLegendOptions = ["createGuides", "editFacetGuides"].includes(op) ? args.legend : args.guides?.legend;
   if (parentLegendOptions !== null && typeof parentLegendOptions === "object") {
     addLegendOverrides(overrides, program, parentLegendOptions);
   }
@@ -1096,7 +1110,7 @@ function collectOverrides(program) {
 
 function axisTypographyChanged(before, after) {
   if (before === after || after === null || typeof after !== "object") return false;
-  return Object.entries(after).some(([key, value]) => ["fontFamily", "fontSize"].includes(key)
+  return Object.entries(after).some(([key, value]) => ["fontFamily", "fontSize", "fontWeight"].includes(key)
     ? value !== before?.[key] : axisTypographyChanged(before?.[key], value));
 }
 
@@ -1157,8 +1171,8 @@ export function reconcileProgramTheme(program, { source, metadata }) {
 
   const facetsChanged = configs.value.facets !==
     themed.materializationConfigs.facets;
-  const typographyChanged = sourceTokens.fontFamily !== targetTokens.fontFamily ||
-    axisTypographyChanged(themed.guideConfigs.axis, configs.value.guides.axis);
+  const typographyChanged = ["fontFamily", "fontSize", "fontWeight"].some(key => sourceTokens[key] !== targetTokens[key]) ||
+    axisTypographyChanged(themed.materializationConfigs, configs.value);
   if (facetsChanged && next.compositionSpec?.type === "facet") {
     next = next.materializeComposition();
   } else if (typographyChanged) {

@@ -205,10 +205,11 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     `strongText`, `mutedText`, `axis`, `axisTitle`, `grid`, `border`, `sizeSymbol`,
     `regressionBand`, `boxLine`, `boxMedian`, `referenceLine`, `referenceBand`,
     `gradientCenter`, `highlight`, `fontFamily`, `axisLabel`, `axisLabelFontFamily`,
-    `axisTitleFontFamily`, `axisLabelFontSize`, `axisTitleFontSize`의 closed vocabulary다.
-    FontSize token은 positive finite number이며 나머지는 non-empty string이다.
+    `axisTitleFontFamily`, `axisLabelFontSize`, `axisTitleFontSize`, `fontSize`, `fontWeight`의 closed vocabulary다.
+    FontSize token은 positive finite number이고, fontWeight는 finite number 또는 non-empty string이며
+    나머지는 non-empty string이다. `fontWeight: 0`도 명시값으로 보존한다.
   - Axis 전용 token은 Cartesian/Polar/Parallel 축에만 적용한다. Role font family 미지정은
-    global fontFamily, size 미지정은 family 기본값(label 12/11/11, title 13)으로 돌아간다.
+    global fontFamily, size 미지정은 global fontSize, 그것도 없으면 family 기본값(label 12/11/11, title 13)으로 돌아간다.
     axisLabel 미지정은 Cartesian/Polar text, Parallel axis 색을 사용한다.
     초기 guide 공간 검사부터 active font를 적용하며 explicit role style이 우선한다.
   - Partial token은 base 위에 한 번만 overlay한다. 다음 `applyTheme`은 이전 partial token과 merge하지
@@ -224,17 +225,20 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   덮어쓰지 않고 아래에 보존하므로 parent removal 뒤 newest child frame이 복원된다. Field-driven
   palette, categorical legend symbol, semantic state, resolved scale, grouping, 통계와 order는 보존한다.
   기본 highlight paint는 active `highlight` token을 사용하고 explicit highlight paint는 보존한다.
-  `fontFamily` 변경은 Text, axis, legend, title, facet header를 다시 materialize해 text bounds와
-  composition layout을 검증한다.
+  `fontFamily`, `fontSize`, `fontWeight` 변경은 Text, axis, legend, title, facet header를 다시 materialize해 text bounds와
+  composition layout을 검증한다. Global size/weight는 optional이며 생략하거나 마지막 frame을 제거하면
+  각 native family의 기본값으로 돌아간다. Plot style, guide facade의 role style, legend block, header style와
+  named highlight는 theme보다 우선한다. Exact font profile에 새 크기의 측정이 없으면 `metrics-required`,
+  새 family/style/weight binding이 없으면 `unresolved-font`로 전체 변경을 거부한다.
   Graph/Tree/Treemap plot의 기본 node/cell fill은 `mark`, 경계선은 `background`, edge/link는
-  `mutedText`, label은 `text`/`fontFamily`를 따른다. 명시한 역할별 style과 node별 overrides는
+  `mutedText`, label은 `text`/`fontFamily` 및 optional `fontSize`/`fontWeight`를 따른다. 명시한 역할별 style과 node별 overrides는
   theme보다 우선한다. 마지막 frame을 제거하면 각 plot family의 기본값을 복원하며, 저장된
   graph/hierarchy/layout 결과·revision·item key는 변경하거나 재계산하지 않는다.
 - 상태와 불변성: request는 owner/scope/base/partial token frame으로 immutable하게 저장한다. Full
   resolved token object와 계산된 layout을 theme request state에 저장하지 않는다. Composition 전파는
   retained child input을 변경하지 않고 postorder로 새 snapshots를 만든다.
 - 오류: non-object/empty options, unknown root/token key, missing `base`/`tokens`, invalid theme/scope,
-  잘못된 font size, empty 또는 non-string 색/font family token을 거부한다. 전체 candidate materialization이 실패하면 receiver와 caller
+  잘못된 font size/weight, empty 또는 non-string 색/font family token을 거부한다. 전체 candidate materialization이 실패하면 receiver와 caller
   input은 변경되지 않는다.
   Custom definition/token object의 getter, symbol, 숨겨진 property, 사용자 prototype은 읽기 전에 거부한다.
 - Coverage: `test/unit/theme/defaults.test.js`, `test/unit/theme/state.test.js`,
@@ -245,13 +249,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `applyTheme`
 
 - Implemented: `applyTheme({ theme: ThemeName | { base: ThemeName; tokens: Partial<ThemeTokens> }; scope?: "self" | "descendants" }): ChartProgram`
-- `ThemeName = "light" | "dark"`이며 `ThemeTokens`는 위 18개 required string property와 5개 optional axis role property다.
+- `ThemeName = "light" | "dark"`이며 `ThemeTokens`는 위 18개 required string property, 5개 optional axis role property, optional global `fontSize`/`fontWeight`다.
 - Proposed (NOT IMPLEMENTED): No proposal. Theme creation/import와 arbitrary token vocabulary는 현재 범위 밖이다.
 
 ### Value coverage — `applyTheme`
 
 - Theme definition
-  - ✅ Covered: built-in light/dark, custom partial, closed 23-token vocabulary, input ownership/freeze,
+  - ✅ Covered: built-in light/dark, custom partial, closed 25-token vocabulary, input ownership/freeze,
     replacement without partial merge, malformed/unknown values와 atomic rejection.
 - Scope와 lifecycle
   - ✅ Covered: unit normalization, composition default descendants, explicit self, nested concat/facet,
@@ -261,6 +265,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     facet headers, statistical/reference components, field-driven palettes와 default/explicit highlight.
   - ✅ Covered: Graph/Tree/Treemap role defaults, same-valued authored style, per-node overrides,
     disabled/reset labels/links, named highlight baseline, nested scope and family-default restoration.
+  - ✅ Covered: global size/weight, axis role override, facade/block/header authored values including numeric zero,
+    inherited nested typography, exact-profile atomic rejection; `test/unit/actions/theme-typography.test.js`.
 - Layout와 semantic boundary
   - ✅ Covered: font-dependent resource rematerialization, composition snapshot/layout rebuild, semantic spec,
     resolved scales, statistics, ordering과 caller program immutability.

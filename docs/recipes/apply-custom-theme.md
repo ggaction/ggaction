@@ -59,6 +59,8 @@ Theme defaults and explicit mark properties have separate precedence. Removing a
 
 Graph, tree, and treemap plots also follow theme defaults for their bodies, links, and labels. Explicit role styles and per-node overrides stay in place. Removing the final theme restores each plot family's defaults, while the stored layout and item identities remain unchanged.
 
+Optional `fontSize` and `fontWeight` tokens set text defaults across marks, labels, guides, titles, and facet headers. Axis-specific size tokens override the global size. Authored role styles and named highlights keep priority, including an explicit numeric zero where the original style option accepts it. Removing or replacing a theme restores the native role defaults for omitted tokens. If an exact font profile is active, prepare the required font and measurements before changing typography; missing preparation rejects the whole change.
+
 ## Related
 
 [Authoring conventions](../concepts/authoring-conventions.md) · [Data policies](../api/data/policies.md) ·

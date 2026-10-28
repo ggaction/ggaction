@@ -20,7 +20,7 @@ export function resourcePlotThemeProperty(path) {
   const [, , family, role, property] = path;
   const defaults = family === "graphPlot" ? GRAPH_PLOT_DEFAULTS : HIERARCHY_PLOT_DEFAULTS;
   let token;
-  if (role === "labels") token = property === "fill" ? "text" : property === "fontFamily" ? "fontFamily" : undefined;
+  if (role === "labels") token = property === "fill" ? "text" : ["fontFamily", "fontSize", "fontWeight"].includes(property) ? property : undefined;
   else if (["nodes", "cells"].includes(role)) token = property === "fill" ? "mark" : property === "stroke" ? "background" : undefined;
   else if (["edges", "links"].includes(role) && property === "stroke") token = "mutedText";
   return token === undefined ? undefined : { token, defaultValue: defaults[role][property] };

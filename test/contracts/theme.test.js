@@ -42,6 +42,8 @@ test("publishes program theme lifecycle in runtime, types, and the Current catal
   const rootTypes = read("types/index.d.ts");
   assert.match(program, /^export type ThemeName = "light" \| "dark";$/m);
   assert.match(program, /^export interface ThemeTokens \{$/m);
+  assert.match(program, /^  fontSize\?: number;$/m);
+  assert.match(program, /^  fontWeight\?: string \| number;$/m);
   assert.match(program, /^export type ThemeDefinition =$/m);
   assert.match(program, /^export interface ApplyThemeOptions \{$/m);
   assert.match(program, /^  applyTheme\(options: TargetedOptions<ApplyThemeOptions>\): ChartProgram;$/m);
@@ -145,4 +147,16 @@ test("applies the dark theme to every public unit chart without semantic drift",
     assert.equal(JSON.stringify(themed.graphicSpec.order), order, definition.id);
   }
   assert.equal(unitCount > 0, true);
+});
+
+
+test("Basic applies global typography to its existing native axis owners", () => {
+  const base = basicChart().createCanvas({ width: 350, height: 280, margin: 80 })
+    .createData({ values: [{ x: 1, y: 2 }] }).createPointMark()
+    .encodeX({ field: "x" }).encodeY({ field: "y" }).createXAxis();
+  const themed = base.applyTheme({ theme: { base: "light", tokens: { fontSize: 18, fontWeight: 700 } } });
+  assert.equal(themed.guideConfigs.axis.x.labels.fontSize, 18);
+  assert.equal(themed.graphicSpec.objects.xAxisTitle.properties.fontWeight, 700);
+  assert.equal(themed.removeTheme().graphicSpec.objects.xAxisTitle.properties.fontSize, 13);
+  assert.equal(themed.removeTheme().guideConfigs.axis.x.labels.fontSize, 12);
 });

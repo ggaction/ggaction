@@ -1136,6 +1136,10 @@
     "theme": [
       {
         "type": "file",
+        "path": "unit/actions/theme-typography.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/actions/theme-resource-plots.test.js"
       },
       {

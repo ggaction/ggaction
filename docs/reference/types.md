@@ -13776,6 +13776,8 @@ export type ThemeName = "light" | "dark";
 
 ```typescript
 export interface ThemeTokens {
+  fontSize?: number;
+  fontWeight?: string | number;
   axisLabel?: string;
   axisLabelFontFamily?: string;
   axisTitleFontFamily?: string;
