@@ -7,6 +7,7 @@ const MAX_BYTES = 16 * 1024 * 1024;
 export function exactAssetRecord(value, keys, label) {
   ownRecord(value, label);
   if (Object.keys(value).some(key => !keys.includes(key))) throw new TypeError(`${label} contains unsupported properties.`);
+  return Object.assign(Object.create(null), value);
 }
 
 export function assetError(code, message, cause, kind = "Image") {
@@ -68,7 +69,7 @@ export function assetBase64(bytes) {
 
 
 export function normalizeAssetRequest(input, keys, mimes, kind) {
-  exactAssetRecord(input, ["uri", "expectedHash", "mimeType", "maxBytes", "license", "attribution", ...keys], `${kind} request`);
+  input = exactAssetRecord(input, ["uri", "expectedHash", "mimeType", "maxBytes", "license", "attribution", ...keys], `${kind} request`);
   if (typeof input.uri !== "string" || !input.uri.trim()) throw new TypeError(`${kind} URI must be a nonempty string.`);
   if (typeof input.expectedHash !== "string" || !/^[a-f0-9]{64}$/.test(input.expectedHash)) throw new TypeError(`${kind} expectedHash must be a lowercase SHA256 digest.`);
   if (!mimes.includes(input.mimeType)) throw assetError("unsupported-format", `${kind} MIME must be ${mimes.join(", ")}.`, undefined, kind);
@@ -79,9 +80,9 @@ export function normalizeAssetRequest(input, keys, mimes, kind) {
 }
 
 export async function prepareAssetBytes(request, load, signal, matchesMime, kind) {
-  const response = await assetHostStage(load, Object.freeze({ ...request, ...(signal === undefined ? {} : { signal }) }), signal, "load-error", kind);
+  let response = await assetHostStage(load, Object.freeze({ ...request, ...(signal === undefined ? {} : { signal }) }), signal, "load-error", kind);
   assertAssetActive(signal, kind);
-  exactAssetRecord(response, ["bytes", "mimeType"], `${kind} response`);
+  response = exactAssetRecord(response, ["bytes", "mimeType"], `${kind} response`);
   if (!(response.bytes instanceof Uint8Array)) throw new TypeError(`${kind} response bytes must be Uint8Array.`);
   let bytes;
   try { bytes = copyContentBytes(response.bytes, request.maxBytes); }

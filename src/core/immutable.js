@@ -51,7 +51,7 @@ export function cloneAndFreeze(value, ancestors = new WeakSet(), path = "state")
     // allocating a second entries array and a pair for every stored property.
     for (const [key, item] of Object.entries(value)) {
       const child = cloneAndFreeze(item, ancestors, `${path}.${key}`);
-      if (key === "__proto__") {
+      if (key in Object.prototype) {
         Object.defineProperty(clone, key, {
           value: child, enumerable: true, writable: true, configurable: true
         });

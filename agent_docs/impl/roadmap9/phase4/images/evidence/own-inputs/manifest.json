@@ -1,0 +1,146 @@
+{
+  "baseCommit": "990315b7",
+  "corePatchOrigin": "b1544b7c",
+  "scope": "Own-data preparation inputs and shared immutable field preservation; no new public API",
+  "commands": [
+    "node --test test/unit/resources/asset-own-inputs.test.js",
+    "node --experimental-test-coverage --test-coverage-include=src/resources/assetPreparation.js --test-coverage-include=src/resources/resolveAssets.js --test-coverage-include=src/resources/resolveFonts.js --test test/unit/resources/asset-own-inputs.test.js test/unit/resources/image-preparation.test.js test/unit/resources/font-preparation.test.js test/unit/resources/svg-images.test.js",
+    "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js",
+    "node scripts/run-tests.js contracts contracts/package-artifact.test.js",
+    "node scripts/package-artifact.js --check",
+    "npm run package:bundle"
+  ],
+  "inputs": {
+    "src/core/immutable.js": "b4c55131e8532a71a875387cb56dc68856fd4620e3a8d3a0defae6361c346a0c",
+    "src/resources/assetPreparation.js": "b0e2e00c20bfe6f54b86a257773872bbb5ef44bdcc5b449df0e83b0f3a05529d",
+    "src/resources/resolveAssets.js": "d5ae5de485b417af5f0ebe71c4330160604c6814fc41911d2f82ba0a29c3249b",
+    "src/resources/resolveFonts.js": "1f9a58e4a13d2e8f00b6664eab79521d003b81cde44a6e7180c3cd862b63b01d",
+    "test/unit/immutable-calculation-reuse.test.js": "0de927d55f0fc64aec7a25b704cc2acddc744efd1f36c3c14afa31de039c15c4",
+    "test/unit/resources/asset-own-inputs.test.js": "64ccdfefb76f870603f6e8a9a8e9b646256080e21715e69a9f0d296520e8bfcf",
+    "scripts/package-artifact.js": "dea6d183553367df98c8c8580d780c23946a83568561c7248ef0c7376b27803c"
+  },
+  "checks": [
+    {
+      "log": "baseline.log.gz",
+      "status": "failed: inherited request, host and result fields accepted",
+      "rawSha256": "6ab489f89e675738b304df140b2d091b52d7bcf164ca18bf123738108bafde6f",
+      "gzipSha256": "51abd3ba631b6f1b0e011532d8b2951e8731cec96b880a1dd196d0be8ac5ad16",
+      "tests": {
+        "tests": 4,
+        "pass": 0,
+        "fail": 4,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "bundle.log.gz",
+      "status": "passed",
+      "rawSha256": "2520b2e656abcbafb6a2f8e963357804625e88a85f03072f3ae49ea732923454",
+      "gzipSha256": "5ce8fb1698d57db74383e5afb9323080d1c319ced913a9f91b376e691501c53f",
+      "tests": {}
+    },
+    {
+      "log": "contracts.log.gz",
+      "status": "failed previous unpacked ceiling by 63 bytes; other 39 contracts passed",
+      "rawSha256": "201e69cc3563a02110af9dd7e50e67fb05aaaa643d5b6d3024fc7f07d1a5476a",
+      "gzipSha256": "15440988b9b87b1c8b203b0f2deb59441f906a52fe8f2eadf38e4343143f4153",
+      "tests": {
+        "tests": 40,
+        "pass": 39,
+        "fail": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "coverage.log.gz",
+      "status": "passed",
+      "rawSha256": "e40faf78f8199c7cf578cc87eadb4531ce9ccedd150a48cdbd2cb08aa64238e9",
+      "gzipSha256": "742c17dcc39e4522552f036708c20a53e0c31c625a63b66bac8c7780dd4f7326",
+      "tests": {
+        "tests": 34,
+        "pass": 34,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "node20.log.gz",
+      "status": "passed",
+      "rawSha256": "b884d6dccc01c4eda3377243da8034ef8dad292145d815ee2cd148820ee3af12",
+      "gzipSha256": "d59e213b6d3d6ea0133d173ec98a02a695cd174f238ee23e01d3f0edc6af67ad",
+      "tests": {
+        "tests": 34,
+        "pass": 34,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "node24.log.gz",
+      "status": "passed",
+      "rawSha256": "16ceb89f5ebcc2a0c49ea35bf79f9b4a153a54ce326ae8c76fd9296d3d770bea",
+      "gzipSha256": "49f5b94265cd95273405f82a22e984ecc036bde3fe000ff0ac8909b4c631f980",
+      "tests": {}
+    },
+    {
+      "log": "package-contracts.log.gz",
+      "status": "passed",
+      "rawSha256": "8302a72ae7d3935b7e1004a8909c022e75742ccd2781f50a0fac5e43e65cd4df",
+      "gzipSha256": "14af1ac8e93b475de96cc8cec9d758ab3185e06e7f1f108e1dc8838f866f2a98",
+      "tests": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "package-node20-final.log.gz",
+      "status": "passed",
+      "rawSha256": "bce13af771f7400fa9a447365d4e46630329ee36eeb4a4ab20f38097368304c1",
+      "gzipSha256": "fdfbbe04b907d8cb425a011f2ccd9012e6eb970d1531583ccb4bcbb0680fbba1",
+      "tests": {}
+    },
+    {
+      "log": "package-node20.log.gz",
+      "status": "failed previous unpacked ceiling by 63 bytes; other 39 contracts passed",
+      "rawSha256": "8aec60b0cde6c6592aef28d438f6445ceab18565b45ad781a4d552a8d672f562",
+      "gzipSha256": "8551858359e3afeea9c3924f0d15009495bb5cd9d6ae8d790250b4624371dd6c",
+      "tests": {}
+    },
+    {
+      "log": "package-node24-final.log.gz",
+      "status": "passed",
+      "rawSha256": "bce13af771f7400fa9a447365d4e46630329ee36eeb4a4ab20f38097368304c1",
+      "gzipSha256": "fdfbbe04b907d8cb425a011f2ccd9012e6eb970d1531583ccb4bcbb0680fbba1",
+      "tests": {}
+    }
+  ],
+  "coverage": {
+    "assetPreparation": [
+      100,
+      98.72,
+      100
+    ],
+    "resolveAssets": [
+      100,
+      100,
+      100
+    ],
+    "resolveFonts": [
+      100,
+      100,
+      100
+    ]
+  },
+  "package": {
+    "entries": 706,
+    "node20And24PackedBytes": 1052695,
+    "unpackedBytes": 4881063,
+    "fullGzip": 527106,
+    "basicGzip": 304934
+  },
+  "reusedEvidence": {
+    "sharedImmutable": "b1544b7c whole-unit 5063/5063; exact identical core source and regression patch"
+  }
+}
