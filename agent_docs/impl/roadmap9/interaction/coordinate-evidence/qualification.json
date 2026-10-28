@@ -45,5 +45,12 @@
   "sources": {
     "src/grammar/hitCoordinates.js": "068294f0c0d13b6f375710e699a1d7ad67d8df596b7cbf9e9763fd0df4831453",
     "test/unit/grammar/hit-coordinates.test.js": "00f588ee8866020fc088444df402f516afda2b73abdf3bf7dee8abeb9c7cdd0b"
+  },
+  "sourceCommit": "23a493c48",
+  "documentation": {
+    "sourceChecks": 19,
+    "builtPages": 154,
+    "selectiveLlmArtifacts": 1310,
+    "browserReuse": "only runtime provenance identity changed; CSS/JS/images and rendered layout unchanged from ccbce6a6b browser pass"
   }
 }

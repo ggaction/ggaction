@@ -6,7 +6,7 @@
 - [x] [전체 승인](../AUTHORIZATION.json)을 재사용한 private 좌표 kernel
 - [x] 회전·음수 scale·중첩 행렬·변환 clip의 독립 literal과 수치 경계
 - [x] Node20/22/24 각8개, source/discovery/package33개와 owner100% coverage
-- [ ] private source commit에 맞춘 provenance 고정·push
+- [x] private source `23a493c48`에 맞춘 provenance·docs19/19·built154/1310 고정
 - [ ] geometry별 exact hit와 current scene index, 의미 role/lineage 연결
 - [ ] STEP035 중첩 composition과 공개 interaction entry·선언·소비자 통합
 - [ ] STEP048 broad phase/guide roles 및 STEP049 synthetic/current frame bridge
