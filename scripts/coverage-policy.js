@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "image-preparation": { prefix: "resources/resolveAssets", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Asset bytes, identity, abort and export eligibility must remain exercised before host callbacks." },
+  "image-placement": { prefix: "materialization/image", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image fit and viewport clipping must share finite, aspect-preserving concrete geometry." },
   "transform-input": { prefix: "grammar/transformInput", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Shared data input validation must remain safe before dispatch in Full and Basic." },
   "expression-kernel": { prefix: "grammar/expression", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Closed AST evaluation, explicit types, lazy diagnostics and resource budgets must remain exercised." },
   "path-geometry": { prefix: "grammar/path", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Concrete path validation, topology and numeric geometry must remain exercised." },
