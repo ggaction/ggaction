@@ -1,0 +1,6 @@
+export interface FlowLayoutOptions extends GraphLayoutLimits {
+  readonly width?: number; readonly height?: number; readonly nodeWidth?: number; readonly nodePadding?: number;
+  readonly align?: "left" | "right" | "center" | "justify";
+  readonly order?: "input" | "barycentric" | readonly RowKey[];
+  readonly iterations?: number; readonly laneGap?: number; readonly orientation?: "horizontal" | "vertical";
+}

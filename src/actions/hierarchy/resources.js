@@ -1,3 +1,6 @@
+import { recoverPartitionFocus } from "../../grammar/hierarchy/partitionView.js";
+import { hierarchyLayoutModel } from "../../grammar/hierarchy/model.js";
+import { prunePartitionSelections } from "./partition.js";
 import { ownRecord } from "../../core/ownData.js";
 import { closedAction } from "../../core/action.js";
 import { annotateError } from "../../core/diagnostics.js";
@@ -12,7 +15,20 @@ import { resolveHierarchyPlot } from "../../materialization/hierarchy/plot.js";
 
 function preflightLayouts(program, resources, layouts) {
   const replacements = new Map(layouts.map(layout => [layout.id, layout]));
-  const layers = mapLayerResourceBindings(program.semanticSpec.layers, ref => {
+  const views = new Map();
+  const originals = new Map(program.semanticSpec.resources.filter(resource => resource.kind === "layout").map(resource => [resource.id, resource]));
+  for (const layer of program.semanticSpec.layers) {
+    if (layer.mark.type !== "partition" || layer.partitionView.focusKey === null) continue;
+    const replacement = replacements.get(layer.hierarchyBinding.layout.id);
+    if (!replacement) continue;
+    const previous = originals.get(replacement.id);
+    const recovery = recoverPartitionFocus(hierarchyLayoutModel(previous.result), hierarchyLayoutModel(replacement.result), layer.partitionView.focusKey);
+    if (recovery.reason === "retained") continue;
+    const focusKey = recovery.reason === "ancestor" ? recovery.focusKey : null;
+    views.set(layer.id, { ...layer.partitionView, focusKey, recovery: { previousFocusKey: recovery.previousFocusKey, reason: recovery.reason } });
+  }
+  const proposedLayers = program.semanticSpec.layers.map(layer => views.has(layer.id) ? { ...layer, partitionView: views.get(layer.id) } : layer);
+  const layers = mapLayerResourceBindings(proposedLayers, ref => {
     const replacement = ref.kind === "layout" ? replacements.get(ref.id) : undefined;
     return replacement === undefined ? ref : { ...ref, revision: replacement.revision };
   });
@@ -20,6 +36,13 @@ function preflightLayouts(program, resources, layouts) {
   for (const layer of layers) if (replacements.has(layer.hierarchyBinding?.layout.id)) {
     resolveHierarchyPlot(preview, layer, program.materializationConfigs.marks[layer.id].hierarchyPlot);
   }
+  return views;
+}
+
+function applyPartitionViews(program, views) {
+  let next = program;
+  for (const [id, view] of views) next = next.editSemantic({ property: `layer[${id}].partitionView`, value: view });
+  return next;
 }
 
 function requireMissing(program, kind, id) {
@@ -41,11 +64,12 @@ export function writeHierarchyResource(program, resource) {
   const replacements = layouts.map(layout => ({ previous: { kind: "layout", id: layout.id, revision: layout.revision },
     resource: createHierarchyLayoutResource({ id: layout.id, revision: layout.revision + 1, hierarchy: resource, options: layout.options, program: preview }) }));
   const nextLayouts = new Map(replacements.map(({ resource }) => [resource.id, resource]));
-  preflightLayouts(program, preview.semanticSpec.resources.map(candidate => candidate.kind === "layout"
+  const views = preflightLayouts(program, preview.semanticSpec.resources.map(candidate => candidate.kind === "layout"
     ? nextLayouts.get(candidate.id) ?? candidate : candidate), [...nextLayouts.values()]);
-  const next = withPreparedResourceResults(program, { property: `resource[hierarchy:${resource.id}]`, value: resource }, replacements,
-    args => program.editSemantic(args));
-  return materializeLayouts(next, new Set(layouts.map(layout => layout.id)));
+  const entered = applyPartitionViews(program, views);
+  const next = withPreparedResourceResults(entered, { property: `resource[hierarchy:${resource.id}]`, value: resource }, replacements,
+    args => entered.editSemantic(args));
+  return materializeLayouts(next, new Set(layouts.map(layout => layout.id)), program);
 }
 
 export const createHierarchyData = /* @__PURE__ */ closedAction(
@@ -75,9 +99,8 @@ export const layoutHierarchy = /* @__PURE__ */ closedAction(
     return this.editSemantic({ property: `resource[layout:${args.id}]`, value: resource });
   });
 
-export const editLayout = /* @__PURE__ */ closedAction(
-  { op: "editLayout", description: "Revise a stored hierarchy layout." }, ["target", "order", "options"], function (args = {}) {
-    const previous = resolveHierarchyResource(this, "layout", args.target), patch = patchOptions(args, ["target"]);
+export function editHierarchyLayout(program, args, previous) {
+    const patch = patchOptions(args, ["target"]);
     if (patch.options !== undefined) ownRecord(patch.options, "Hierarchy layout options");
     const priorOptions = { ...previous.options.options };
     if (patch.options?.orientation !== undefined && patch.options.orientation !== "radial") {
@@ -85,13 +108,13 @@ export const editLayout = /* @__PURE__ */ closedAction(
     }
     const options = { ...previous.options, ...patch, options: { ...priorOptions, ...patch.options } };
     const resource = createHierarchyLayoutResource({ id: previous.id, revision: previous.revision + 1,
-      hierarchy: resolveInputReference(this, previous.inputs[0]), options, program: this });
-    preflightLayouts(this, this.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate), [resource]);
-    return materializeLayouts(this.editSemantic({ property: `resource[layout:${resource.id}]`, value: resource }), new Set([resource.id]));
-  });
+      hierarchy: resolveInputReference(program, previous.inputs[0]), options, program });
+    const views = preflightLayouts(program, program.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate), [resource]);
+    return materializeLayouts(applyPartitionViews(program, views).editSemantic({ property: `resource[layout:${resource.id}]`, value: resource }), new Set([resource.id]), program);
+}
 
 export function registerHierarchyResourceActions(ProgramClass) {
-  Object.assign(ProgramClass.prototype, { createHierarchyData, editHierarchyData, layoutHierarchy, editLayout });
+  Object.assign(ProgramClass.prototype, { createHierarchyData, editHierarchyData, layoutHierarchy });
 }
 
 export function reviseHierarchyInputs(program, replacements) {
@@ -104,10 +127,11 @@ export function reviseHierarchyInputs(program, replacements) {
   return next;
 }
 
-function materializeLayouts(program, ids) {
+function materializeLayouts(program, ids, previousProgram) {
   let next = program;
   for (const layer of program.semanticSpec.layers) if (ids.has(layer.hierarchyBinding?.layout.id)) {
-    next = next[layer.mark.type === "tree" ? "materializeTreePlot" : "materializeTreemapPlot"]({ id: layer.id });
+    next = next[layer.mark.type === "tree" ? "materializeTreePlot" : layer.mark.type === "partition" ? "materializePartitionPlot" : "materializeTreemapPlot"]({ id: layer.id });
+    if (layer.mark.type === "partition") next = prunePartitionSelections(next, layer.id, resolveHierarchyPlot(next, layer, next.markConfigs[layer.id].hierarchyPlot), previousProgram);
   }
   return next;
 }

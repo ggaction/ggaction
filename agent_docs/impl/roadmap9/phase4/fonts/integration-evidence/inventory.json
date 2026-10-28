@@ -1,0 +1,14 @@
+{
+  "publicActions": 314,
+  "topLevelOptionPaths": 2920,
+  "nestedOptionPaths": 24689,
+  "optionPaths": 27609,
+  "requiredOptionPaths": 18667,
+  "excludedOptionPaths": 8942,
+  "topLevelCategoricalPaths": 994,
+  "topLevelLiteralValues": 3870,
+  "literalFamilies": 231,
+  "pathLiteralRequirements": 13926,
+  "familyLiteralRequirements": 525,
+  "pathDiversityRequirements": 488
+}

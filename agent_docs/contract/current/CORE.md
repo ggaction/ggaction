@@ -160,7 +160,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - 목적과 필수 state: Full unit/composition에서 host가 측정한 text width를 저작용 배치에 적용한다. Canvas 이전에도 적용할 수 있다. Renderer는 기존 concrete text만 그린다.
 - Profile: `{ schemaVersion: 1, id: NonEmptyUserId, measurements: TextMeasurement[] }`. 각 measurement는 정확한 `{ text: string, fontFamily: NonEmptyString, fontSize: PositiveFinite, fontWeight: 100|200|300|400|500|600|700|800|900, fontStyle?: "normal"|"italic", width: NonNegativeFinite }`다. 빈 문자열/빈 measurement 배열/0 width는 유효하다. Root/measurement key는 closed이며 tuple 조합의 중복, 희소 배열, 잘못된 값은 거부한다.
 - 매칭: text/family/size/normalized weight/style의 exact match다. 생략 style은 normal이며 italic과 별도 측정된다. 생략 family는 shared sans-serif, weight는 normal=400, bold=700; numeric weight는 renderer의 100 단위 rounding/clamping을 공유한다. 지원되는 numeric string도 같은 weight다. 미일치 font/text 조합과 그 외 CSS relative weight는 기존 deterministic estimate를 사용한다.
-- 효과: canonical `materializationConfigs.textMetrics`에 clone/freeze한 profile만 저장한다. Private immutable-key cache는 측정 lookup 비용만 줄인다. Typography, source data와 scale mapping을 바꾸지 않는다. Text mark/label placement·collision layout, Cartesian/Polar/Parallel guides, 범례와 title의 기존 wrapped rematerialization과 전체 guide collision 검증을 수행한다.
+- 효과: canonical `materializationConfigs.textMetrics`에 clone/freeze한 profile만 저장한다. Private immutable-key cache는 측정 lookup 비용만 줄인다. Typography, source data와 scale mapping을 바꾸지 않는다. Text mark/label placement·collision layout, tree/treemap/graph의 resource-backed labels, Cartesian/Polar/Parallel guides, 범례와 title의 기존 wrapped rematerialization과 전체 guide collision 검증을 수행한다.
 - Composition: root와 모든 현재 nested child에 같은 profile을 적용하고 ancestor layout/header/shared guide를 재계산한다. Basic child는 같은 state의 Full snapshot으로 채택한다. 이전 child profile을 history frame으로 보관하지 않는다. 이후 concat child replacement/insertion과 retained facet/repeat replay는 현재 parent profile을 사용한다.
 - 실패 원자성: 모든 candidate와 descendant materialization이 성공한 새 program만 반환한다. overflow/collision 등 기존 배치 규칙의 실패는 이전 program과 caller profile을 변경하지 않는다.
 - 지속성: 일반 domain edit, Canvas 변경과 source revision이 같은 policy를 소비한다. Editable persistence는 profile을 보존·검증한다. Render-only snapshot은 이미 계산된 graphic tree만 저장한다. Backend/font callback은 저장하지 않는다.
@@ -174,6 +174,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Value coverage — `applyTextMetrics`
 
 - ✅ Covered: exact/normalized match, 0 width, unmatched fallback, Unicode text, closed keys/schema/duplicate/invalid values, owned input, trace, pre-authoring application, title rewrap, Canvas/edit persistence, retained composition, whole action corpus empty-profile equality and editable persistence.
+- ✅ Covered: tree/treemap/graph labels의 exact query 준비·font 교체·제거·offline 복원 및 Canvas/SVG/PNG/PDF/scene 소비. 저장된 layout resource와 계산 결과를 유지하며 layout solver를 다시 실행하지 않는다. Evidence: `test/unit/resources/font-resource-labels.test.js`.
 - ✅ Covered: exact font/profile preparation, no-estimate missing query, stale/token/abort, font revision, nested resource adoption, Cartesian/Polar/Parallel/facet/repeat closure, actual Korean/combining/emoji and four output paths. Evidence: `test/unit/resources/font-public-preparation.test.js`, `test/unit/resources/font-layout-lifecycle.test.js`, `test/charts/font-assets/`.
 
 ## `removeTextMetrics`
@@ -225,12 +226,17 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   기본 highlight paint는 active `highlight` token을 사용하고 explicit highlight paint는 보존한다.
   `fontFamily` 변경은 Text, axis, legend, title, facet header를 다시 materialize해 text bounds와
   composition layout을 검증한다.
+  Graph/Tree/Treemap plot의 기본 node/cell fill은 `mark`, 경계선은 `background`, edge/link는
+  `mutedText`, label은 `text`/`fontFamily`를 따른다. 명시한 역할별 style과 node별 overrides는
+  theme보다 우선한다. 마지막 frame을 제거하면 각 plot family의 기본값을 복원하며, 저장된
+  graph/hierarchy/layout 결과·revision·item key는 변경하거나 재계산하지 않는다.
 - 상태와 불변성: request는 owner/scope/base/partial token frame으로 immutable하게 저장한다. Full
   resolved token object와 계산된 layout을 theme request state에 저장하지 않는다. Composition 전파는
   retained child input을 변경하지 않고 postorder로 새 snapshots를 만든다.
 - 오류: non-object/empty options, unknown root/token key, missing `base`/`tokens`, invalid theme/scope,
   잘못된 font size, empty 또는 non-string 색/font family token을 거부한다. 전체 candidate materialization이 실패하면 receiver와 caller
   input은 변경되지 않는다.
+  Custom definition/token object의 getter, symbol, 숨겨진 property, 사용자 prototype은 읽기 전에 거부한다.
 - Coverage: `test/unit/theme/defaults.test.js`, `test/unit/theme/state.test.js`,
   `test/unit/actions/theme.test.js`, `test/unit/actions/theme-composition.test.js`가 schema, frame ordering,
   custom replacement, explicit provenance, highlight/font, self/descendant 전파, nested removal과 facet replay를
@@ -239,13 +245,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `applyTheme`
 
 - Implemented: `applyTheme({ theme: ThemeName | { base: ThemeName; tokens: Partial<ThemeTokens> }; scope?: "self" | "descendants" }): ChartProgram`
-- `ThemeName = "light" | "dark"`이며 `ThemeTokens`는 위 18개 required string property다.
+- `ThemeName = "light" | "dark"`이며 `ThemeTokens`는 위 18개 required string property와 5개 optional axis role property다.
 - Proposed (NOT IMPLEMENTED): No proposal. Theme creation/import와 arbitrary token vocabulary는 현재 범위 밖이다.
 
 ### Value coverage — `applyTheme`
 
 - Theme definition
-  - ✅ Covered: built-in light/dark, custom partial, exact 18-token vocabulary, input ownership/freeze,
+  - ✅ Covered: built-in light/dark, custom partial, closed 23-token vocabulary, input ownership/freeze,
     replacement without partial merge, malformed/unknown values와 atomic rejection.
 - Scope와 lifecycle
   - ✅ Covered: unit normalization, composition default descendants, explicit self, nested concat/facet,
@@ -253,6 +259,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Explicit precedence
   - ✅ Covered: mark/Canvas, Cartesian/Polar/Parallel guides, title/subtitle, legend root/block,
     facet headers, statistical/reference components, field-driven palettes와 default/explicit highlight.
+  - ✅ Covered: Graph/Tree/Treemap role defaults, same-valued authored style, per-node overrides,
+    disabled/reset labels/links, named highlight baseline, nested scope and family-default restoration.
 - Layout와 semantic boundary
   - ✅ Covered: font-dependent resource rematerialization, composition snapshot/layout rebuild, semantic spec,
     resolved scales, statistics, ordering과 caller program immutability.
@@ -260,7 +268,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: `dark-theme-scatterplot`의 explicit low-level style primitive와 public `applyTheme`
     program 사이 exact graphic/renderer/decoded PNG pixel equivalence.
 - Evidence: `test/unit/theme/`, `test/unit/actions/theme.test.js`,
-  `test/unit/actions/theme-composition.test.js`, `test/contracts/theme.test.js`,
+  `test/unit/actions/theme-composition.test.js`, `test/unit/actions/theme-resource-plots.test.js`, `test/contracts/theme.test.js`,
   `test/charts/dark-theme-scatterplot/`.
 
 ## `removeTheme`

@@ -44,7 +44,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "fillRule",
     "opacity"
   ]),
-  image: new Set(["image", "x", "y", "width", "height", "opacity", "length"]),
+  image: new Set(["image", "x", "y", "width", "height", "opacity", "shadow", "length"]),
   circle: new Set([
     "x",
     "y",
@@ -96,10 +96,10 @@ const GRAPHIC_PROPERTIES = Object.freeze({
   ]),
   text: new Set([
     "fillBounds",
+    "font",
     "lineCap",
     "lineJoin",
     "miterLimit",
-    "font",
     "x",
     "y",
     "text",

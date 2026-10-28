@@ -1,0 +1,220 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "d5e6272f0",
+  "runtimeCommit": "e103977bc",
+  "status": "passed",
+  "results": {
+    "wholeSuite": 7294,
+    "focusedCoverage": 26,
+    "identityComparison": 5,
+    "realistic": 15,
+    "node20": 14,
+    "node24": 14,
+    "docs": 169,
+    "builtPages": 153,
+    "selectiveArtifacts": 1293,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ]
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 796,
+    "packedBytes": 1176157,
+    "unpackedBytes": 5415030,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-statistics/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "0bf536e269fa4bb75b7eeac6840c33b5566f0b4a",
+    "sha256": "2bb09a3684da1df37794d2d1a4e67d09456b5c977562409968effedd67e6e7ee"
+  },
+  "consumers": {
+    "20": {
+      "checks": 69,
+      "sha256": "2bb09a3684da1df37794d2d1a4e67d09456b5c977562409968effedd67e6e7ee",
+      "browserBundles": {
+        "full": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 703,
+          "minifiedBytes": 2082163,
+          "gzipBytes": 585091
+        },
+        "basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 473,
+          "minifiedBytes": 1175003,
+          "gzipBytes": 342108
+        },
+        "svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 30,
+          "minifiedBytes": 52513,
+          "gzipBytes": 18070
+        }
+      }
+    },
+    "22": {
+      "checks": 69,
+      "sha256": "2bb09a3684da1df37794d2d1a4e67d09456b5c977562409968effedd67e6e7ee",
+      "browserBundles": {
+        "full": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 703,
+          "minifiedBytes": 2082163,
+          "gzipBytes": 584417
+        },
+        "basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 473,
+          "minifiedBytes": 1175003,
+          "gzipBytes": 341349
+        },
+        "svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 30,
+          "minifiedBytes": 52513,
+          "gzipBytes": 17939
+        }
+      }
+    },
+    "24": {
+      "checks": 69,
+      "sha256": "2bb09a3684da1df37794d2d1a4e67d09456b5c977562409968effedd67e6e7ee",
+      "browserBundles": {
+        "full": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 703,
+          "minifiedBytes": 2082163,
+          "gzipBytes": 585091
+        },
+        "basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 473,
+          "minifiedBytes": 1175003,
+          "gzipBytes": 342108
+        },
+        "svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 30,
+          "minifiedBytes": 52513,
+          "gzipBytes": 18070
+        }
+      }
+    }
+  },
+  "evidence": [
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-all.log.gz",
+      "sha256": "48e26bfd228205d086d7b763d39409238420ea0d53b1c1f8f7b846e0c32ce111",
+      "uncompressedSha256": "123087e6bfb7c493a37f09c6e9f45e08494a82d4a81a1ad0c1f1a433312fc798"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-focused-coverage.log.gz",
+      "sha256": "5568b7274bbe6470f0003ef97a4b8e40677d323818505608ae02459bd13387e7",
+      "uncompressedSha256": "b9c6619cd29d6016cf9dfdfe4648ab0069f66f65b17ef60399f0983a80655cdd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-floors.json.gz",
+      "sha256": "c60ac941d4945f89b34c2db3ed5fbd46b422431f1e86a1fb762e2ddb2133c3fc",
+      "uncompressedSha256": "cad318feb0131452f38ff2d6d993c0c765b015d135c44b835efd94cc7803e548"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-node20.log.gz",
+      "sha256": "2cb6111ee3dd4a92298234798ad0008ab14bc087640bc31acd137b89a72a680a",
+      "uncompressedSha256": "5e33f0a99fd9fead730ea22ed0b47b204a031391abf9cd479abf6064c688206b"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-node24.log.gz",
+      "sha256": "8a2630c545995182fdebea8bc1245590fcb0ba186d867797271e715ed77f6b31",
+      "uncompressedSha256": "1f240f9e4000676791bb94c2ec21544a1db0fd921a0e97b1c9ea2baac80f9914"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-identity-comparison.log.gz",
+      "sha256": "fb6a687a739e8406ba329ad8ae7285e837a5a8d0c3fecb451bcdfa1ba8f216d7",
+      "uncompressedSha256": "b5fbb5105446f5def81a56252de80721e1bcdcc5f7595cb0d6bdde55ee2e96e4"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-realistic.log.gz",
+      "sha256": "5f8550109b742b4a1699eb97de08eb0cb3b72a9625d4452c558d6bcfc6e5fac0",
+      "uncompressedSha256": "ba194c787868aac83505f9f19b18c72b886bbbff380adfca187b2aa8a1ed803d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-integrated-inventory.json.gz",
+      "sha256": "ca2ecd17cbe2af12c31f14a2fd2ca43f889845b0172a4e0611223c949d9a97d4",
+      "uncompressedSha256": "f87cc7c1a0ebfb066ed5960d67fe1e6e086dee4075fb6313c5455edd275045c1"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-docs.log.gz",
+      "sha256": "01ab7e0c9e2c30e4261bb626eaa27167bb299cca29d9a824b09d05a2dc0c3de2",
+      "uncompressedSha256": "1b558aa6b8b10133d49fd465d2fa7e0b438e55e03f09acf1713dc1058bef1b5c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-docs-build.log.gz",
+      "sha256": "e7147066fb74056ddd64655857f6dea2027d72aedb5a6c3ecbf599ab1bd90635",
+      "uncompressedSha256": "7e5315d238e1e549aa0e591646467e636c7c8ee0af3981f9e673094e06a5d484"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-docs-built.log.gz",
+      "sha256": "196f081b7696f1c28122ac9795326153b8e676b5acece1d94bf916fb60b2342c",
+      "uncompressedSha256": "726f8c0bbe75ae5f8dfa9c9b7be2c2b2d70bd7b51ec14ab600764a190e880171"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-docs-browser.log.gz",
+      "sha256": "cd654be1f98e3f682806dd2e5a9c5bad4ed6c1af9a34607bf405621dc743420e",
+      "uncompressedSha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-package20.json.gz",
+      "sha256": "957ec4d906bd926e3a817cd068fa678273c5754592e39ca46569bd8324fdffee",
+      "uncompressedSha256": "240ccf5df36af2a24770995653b62ed17b0fbb3dbdecf787cb37d5ec01c6cae6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-package22.json.gz",
+      "sha256": "276405182f2251fa9edb0ee070640f1c2d5e6f118ef425322db1a59e7eb92e57",
+      "uncompressedSha256": "82811cdef415788487569eaf784501c5722359d2de1f3f50109b0ed9ad699567"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-package24.json.gz",
+      "sha256": "957ec4d906bd926e3a817cd068fa678273c5754592e39ca46569bd8324fdffee",
+      "uncompressedSha256": "240ccf5df36af2a24770995653b62ed17b0fbb3dbdecf787cb37d5ec01c6cae6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-consumer20.log.gz",
+      "sha256": "eb2e805c20800739b826f13f5b967d2b4e388767a5ac179486cefbf655d09e96",
+      "uncompressedSha256": "b2f67ba7ac4edf37c1f8ba027f968b087e6b651fe42275d9e5cc6f9bcd30929d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-consumer22.log.gz",
+      "sha256": "521202f5b9344f033b1a82959723b2137de85cf1c0a93f35e32569b3bb58a383",
+      "uncompressedSha256": "920d305677d092a61927b3c9b575ec3b0b224ce61d84fe4da57aa477469bf685"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-final-consumer24.log.gz",
+      "sha256": "a8ffd3a1a4c2051289f92d38dee32c390421d99ed414d015603ffad6a06dde4f",
+      "uncompressedSha256": "e9ddbe0109268a5576a8c7050325052b566716656d423a586cd9e43e5d30016d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-postcommit-generate.log.gz",
+      "sha256": "83a492981d2ea5f1c9453131a303472235b887a2c4399176f06ca7bda06810ba",
+      "uncompressedSha256": "ee459806f2c60c707e2a610eb925d2fa6e024898aad84e2190b57e13e74bee84"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/graph/observed-public-evidence/observed-graph-postcommit-package22.json.gz",
+      "sha256": "276405182f2251fa9edb0ee070640f1c2d5e6f118ef425322db1a59e7eb92e57",
+      "uncompressedSha256": "82811cdef415788487569eaf784501c5722359d2de1f3f50109b0ed9ad699567"
+    }
+  ],
+  "coverageScope": "The four observed graph source files pass focused critical floors at 100 percent lines, branches and functions. Parent coverage is retained for unchanged source; no new whole-source coverage claim.",
+  "wholeSuiteScope": "Runtime frozen throughout 7294 passing tests. Afterwards only graph identity comparison support, its regression, inventory expectations, generated provenance and bundle comments changed; comparison and all three realistic files were rerun and passed."
+}

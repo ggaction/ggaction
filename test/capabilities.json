@@ -1,5 +1,4 @@
 {
-  "version": 2,
   "capabilities": {
     "accessibility": [
       {
@@ -281,6 +280,40 @@
         "path": "unit/renderers/empty-text-renderer.test.js"
       }
     ],
+    "flow": [
+      {
+        "type": "file",
+        "path": "unit/flow-layouts.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/flow-layouts/"
+      },
+      {
+        "type": "file",
+        "path": "browser/flow-layouts.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/flow-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/flow-resources.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/flow-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/flow-consumers.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/flow-state.test.js"
+      }
+    ],
     "font-assets": [
       {
         "type": "prefix",
@@ -293,6 +326,10 @@
       {
         "type": "file",
         "path": "unit/resources/font-layout-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-outline-integration.test.js"
       },
       {
         "type": "file",
@@ -321,6 +358,10 @@
       {
         "type": "file",
         "path": "unit/resources/font-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-resource-labels.test.js"
       }
     ],
     "grammar": [
@@ -349,6 +390,46 @@
       {
         "type": "prefix",
         "path": "unit/grammar/graph/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/graph-plots/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-plots.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/materialization/graph/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-observed-graphs.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/graph-output.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/inferred-graph.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/inferred-graph-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/inferred-graph-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/core/graph-prepared-revisions.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-inferred-graphs.test.js"
       }
     ],
     "guides": [
@@ -687,6 +768,28 @@
         "path": "unit/support/npm-command.test.js"
       }
     ],
+    "partition": [
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition-view.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition-mapping.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hierarchy-partition-bend.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/partition-layouts/"
+      }
+    ],
     "pattern-paints": [
       {
         "type": "file",
@@ -795,6 +898,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-legend-option-witness.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-inferred-graphs.test.js"
       }
     ],
     "rendering": [
@@ -1151,6 +1258,10 @@
     ],
     "theme": [
       {
+        "type": "file",
+        "path": "unit/actions/theme-resource-plots.test.js"
+      },
+      {
         "type": "prefix",
         "path": "unit/theme/"
       },
@@ -1167,5 +1278,6 @@
         "path": "contracts/theme.test.js"
       }
     ]
-  }
+  },
+  "version": 2
 }

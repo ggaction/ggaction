@@ -1303,6 +1303,27 @@ function buildDirectDataResources(factors) {
     .removeCoordinate({ id: "unusedLifecycleCoordinate" });
   program = addDirectDerivedDataEdits(program);
   program = program
+    .createData({ id: "directGraphNodes", values: [...new Set(rows.map(row => row.category))].map(category => ({ category })) })
+    .createGraphData({ id: "directGraph", nodes: "directGraphNodes", edges: "directSource", nodeKey: "category",
+      source: "category", target: "category", weight: "positive", selfLoops: true })
+    .layoutGraph({ id: "directGraphLayout", graph: "directGraph", method: "circular", options: { radius: 25 } })
+    .createGraphPlot({ id: "directGraphPlot", layout: "directGraphLayout", labels: {} })
+    .editGraphPlot({ target: "directGraphPlot", nodes: { radius: 4 }, edges: { strokeWidth: 1 } })
+    .editLayout({ target: "directGraphLayout", options: { startAngle: 30 } })
+    .editGraphData({ target: "directGraph", definition: { directed: true } })
+    .createInferredGraphData({ id: "directInferredGraph", data: "directSource", nodeKey: "id", ruleId: "source-order",
+      rule: "sequence", options: { orderField: "x", groupBy: ["category"] } })
+    .editInferredGraphData({ target: "directInferredGraph", definition: { options: { orderField: "x", groupBy: ["category"], lag: 2 } } })
+    .createData({ id: "directFlowEdges", values: [...new Set(rows.map(row => row.category))].map(category => ({
+      category, value: rows.filter(row => row.category === category).reduce((sum, row) => sum + row.positive, 0)
+    })) })
+    .createFlowData({ id: "directFlow", nodes: "directGraphNodes", edges: "directFlowEdges", nodeKey: "category", source: "category", target: "category", edgeKey: "category", value: "value", selfLoops: true, balance: "strict" })
+    .layoutFlow({ id: "directFlowLayout", graph: "directFlow", method: "cyclic", options: { iterations: 0, nodePadding: 0 } })
+    .createFlowLinks({ id: "directFlowLinks", layout: "directFlowLayout" })
+    .createFlowNodes({ id: "directFlowNodes", layout: "directFlowLayout", labels: {} })
+    .editFlowLinks({ target: "directFlowLinks", links: { opacity: .4 } })
+    .editFlowNodes({ target: "directFlowNodes", nodes: { opacity: .8 } })
+    .editFlowData({ target: "directFlow", definition: { balance: "allow" } })
     .createHierarchyData({ id: "directHierarchy", data: "directSource", groupFields: ["category"], value: "positive" })
     .editHierarchyData({ target: "directHierarchy", maxNodes: 1000 })
     .layoutHierarchy({ id: "directTreeLayout", hierarchy: "directHierarchy", method: "tree", options: { nodeSize: [10, 10], siblingGap: 8, depthGap: 30, orientation: "vertical" } })
@@ -1313,6 +1334,9 @@ function buildDirectDataResources(factors) {
     .createTreemapPlot({ id: "directMap", layout: "directMapLayout", labels: {} })
     .editTreemapPlot({ target: "directMap", cells: { opacity: .7 } })
     .layoutHierarchy({ id: "unusedHierarchyLayout", hierarchy: "directHierarchy", method: "partition" })
+    .createPartitionPlot({ id: "directPartition", layout: "unusedHierarchyLayout", padding: [2, 3], labels: {} })
+    .editPartitionPlot({ target: "directPartition", rootVisible: false, reverseU: true, prunedSelection: "drop", labels: { minWidth: 8 } })
+    .removeMark({ target: "directPartition" })
     .removeResource({ kind: "layout", id: "unusedHierarchyLayout" });
   return program
     .createDensityData({

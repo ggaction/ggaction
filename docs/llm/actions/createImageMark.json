@@ -112,6 +112,11 @@
       "type": "false | GraphicClip | undefined"
     },
     {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "target",
       "required": false,
       "type": "ActionTargetList | ScopedActionTarget"

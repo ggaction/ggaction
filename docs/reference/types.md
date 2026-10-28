@@ -59,10 +59,26 @@ interface ChartProgramActions {
   layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
   editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+  createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
+  editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+  createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
+  editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createFlowData(options: CreateFlowDataOptions): ChartProgram;
+  editFlowData(options: TargetedOptions<EditFlowDataOptions>): ChartProgram;
+  layoutFlow(options: TargetedOptions<LayoutFlowOptions>): ChartProgram;
+  createFlowNodes(options?: TargetedOptions<FlowNodesOptions>): ChartProgram;
+  editFlowNodes(options: TargetedOptions<EditFlowNodesOptions>): ChartProgram;
+  createFlowLinks(options?: TargetedOptions<FlowLinksOptions>): ChartProgram;
+  editFlowLinks(options: TargetedOptions<EditFlowLinksOptions>): ChartProgram;
+  createGraphData(options: CreateGraphDataOptions): ChartProgram;
+  createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
+  editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
+  editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
+  layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
@@ -3009,6 +3025,36 @@ export interface CreateECDFPlotOptions {
 
 Related types: [`ECDFOutputFields`](#type-ecdfoutputfields) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`EndpointLabelOptions`](#type-endpointlabeloptions) · [`CartesianPathGuideOptions`](#type-cartesianpathguideoptions).
 
+### `CreateFlowDataOptions` {#type-createflowdataoptions}
+
+<details markdown="1">
+<summary>Expand CreateFlowDataOptions</summary>
+
+```typescript
+export interface CreateFlowDataOptions extends FlowDefinition {
+  readonly id: string; readonly nodes: string; readonly edges: string;
+}
+```
+
+</details>
+
+Related types: [`FlowDefinition`](#type-flowdefinition).
+
+### `CreateGraphDataOptions` {#type-creategraphdataoptions}
+
+<details markdown="1">
+<summary>Expand CreateGraphDataOptions</summary>
+
+```typescript
+export interface CreateGraphDataOptions extends ObservedGraphDefinition {
+  readonly id: string; readonly nodes: string; readonly edges: string;
+}
+```
+
+</details>
+
+Related types: [`ObservedGraphDefinition`](#type-observedgraphdefinition).
+
 ### `CreateGridOptions` {#type-creategridoptions}
 
 <details markdown="1">
@@ -3144,6 +3190,21 @@ export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; 
 </details>
 
 Related types: [`ImageMarkOptions`](#type-imagemarkoptions).
+
+### `CreateInferredGraphDataOptions` {#type-createinferredgraphdataoptions}
+
+<details markdown="1">
+<summary>Expand CreateInferredGraphDataOptions</summary>
+
+```typescript
+export type CreateInferredGraphDataOptions = { readonly id: string; readonly data?: string } & (
+  (GraphNeighborDefinition | GraphMetricMstDefinition | GraphStructuralDefinition) & { readonly candidateGraph?: never } |
+  GraphCandidateMstDefinition & { readonly candidateGraph: string });
+```
+
+</details>
+
+Related types: [`GraphNeighborDefinition`](#type-graphneighbordefinition) · [`GraphMetricMstDefinition`](#type-graphmetricmstdefinition) · [`GraphStructuralDefinition`](#type-graphstructuraldefinition) · [`GraphCandidateMstDefinition`](#type-graphcandidatemstdefinition).
 
 ### `CreateIntervalPlotOptions` {#type-createintervalplotoptions}
 
@@ -5832,6 +5893,48 @@ export type EditFlattenDataOptions = FocusedDerivedDataEdit<FlattenDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`FlattenDataOptions`](#type-flattendataoptions).
 
+### `EditFlowDataOptions` {#type-editflowdataoptions}
+
+<details markdown="1">
+<summary>Expand EditFlowDataOptions</summary>
+
+```typescript
+export interface EditFlowDataOptions {
+  readonly target?: string; readonly nodes?: string; readonly edges?: string;
+  readonly definition?: Partial<FlowDefinition>;
+}
+```
+
+</details>
+
+Related types: [`FlowDefinition`](#type-flowdefinition).
+
+### `EditFlowLinksOptions` {#type-editflowlinksoptions}
+
+<details markdown="1">
+<summary>Expand EditFlowLinksOptions</summary>
+
+```typescript
+export interface EditFlowLinksOptions extends Omit<FlowLinksOptions, "id"> { readonly target?: string; }
+```
+
+</details>
+
+Related types: [`FlowLinksOptions`](#type-flowlinksoptions).
+
+### `EditFlowNodesOptions` {#type-editflownodesoptions}
+
+<details markdown="1">
+<summary>Expand EditFlowNodesOptions</summary>
+
+```typescript
+export interface EditFlowNodesOptions extends Omit<FlowNodesOptions, "id"> { readonly target?: string; }
+```
+
+</details>
+
+Related types: [`FlowNodesOptions`](#type-flownodesoptions).
+
 ### `EditFoldDataOptions` {#type-editfolddataoptions}
 
 <details markdown="1">
@@ -5866,6 +5969,35 @@ export interface EditGradientPlotOptions {
 </details>
 
 Related types: [`GradientPlotPositionChannel`](#type-gradientplotpositionchannel) · [`GradientPlotDensityOptions`](#type-gradientplotdensityoptions) · [`GradientPlotAppearanceOptions`](#type-gradientplotappearanceoptions) · [`GradientPlotCenterOptions`](#type-gradientplotcenteroptions).
+
+### `EditGraphDataOptions` {#type-editgraphdataoptions}
+
+<details markdown="1">
+<summary>Expand EditGraphDataOptions</summary>
+
+```typescript
+export interface EditGraphDataOptions {
+  readonly target?: string; readonly nodes?: string; readonly edges?: string;
+  readonly definition?: Partial<ObservedGraphDefinition>;
+}
+```
+
+</details>
+
+Related types: [`ObservedGraphDefinition`](#type-observedgraphdefinition).
+
+### `EditGraphPlotOptions` {#type-editgraphplotoptions}
+
+<details markdown="1">
+<summary>Expand EditGraphPlotOptions</summary>
+
+```typescript
+export interface EditGraphPlotOptions extends Omit<GraphPlotOptions, "id"> { target?: string; }
+```
+
+</details>
+
+Related types: [`GraphPlotOptions`](#type-graphplotoptions).
 
 ### `EditGraphicsOptions` {#type-editgraphicsoptions}
 
@@ -5980,6 +6112,22 @@ export type EditImputedDataOptions = FocusedDerivedDataEdit<ImputedDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`ImputedDataOptions`](#type-imputeddataoptions).
 
+### `EditInferredGraphDataOptions` {#type-editinferredgraphdataoptions}
+
+<details markdown="1">
+<summary>Expand EditInferredGraphDataOptions</summary>
+
+```typescript
+export interface EditInferredGraphDataOptions {
+  readonly target?: string; readonly data?: string; readonly candidateGraph?: string | null;
+  readonly definition?: Partial<InferredGraphDefinition>;
+}
+```
+
+</details>
+
+Related types: [`InferredGraphDefinition`](#type-inferredgraphdefinition).
+
 ### `EditIntervalDataOptions` {#type-editintervaldataoptions}
 
 <details markdown="1">
@@ -5999,12 +6147,14 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Int
 <summary>Expand EditLayoutOptions</summary>
 
 ```typescript
-export interface EditLayoutOptions { target?: string; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number }; }
+export type EditLayoutOptions = { target?: string } & (
+  { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
+  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions });
 ```
 
 </details>
 
-Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions).
+Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions) · [`GraphFixedOptions`](#type-graphfixedoptions) · [`GraphCircularOptions`](#type-graphcircularoptions) · [`GraphForceOptions`](#type-graphforceoptions) · [`FlowLayoutOptions`](#type-flowlayoutoptions).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 
@@ -6344,6 +6494,19 @@ export interface EditParameterOptions { readonly target: string; readonly value:
 </details>
 
 Related types: [`ParameterValue`](#type-parametervalue).
+
+### `EditPartitionPlotOptions` {#type-editpartitionplotoptions}
+
+<details markdown="1">
+<summary>Expand EditPartitionPlotOptions</summary>
+
+```typescript
+export interface EditPartitionPlotOptions extends Omit<PartitionPlotOptions, "id"> { target?: string; }
+```
+
+</details>
+
+Related types: [`PartitionPlotOptions`](#type-partitionplotoptions).
 
 ### `EditPivotDataOptions` {#type-editpivotdataoptions}
 
@@ -7851,6 +8014,115 @@ export interface FlattenDataOptions {
 
 </details>
 
+### `FlowBodyPaint` {#type-flowbodypaint}
+
+<details markdown="1">
+<summary>Expand FlowBodyPaint</summary>
+
+```typescript
+export interface FlowBodyPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; }
+```
+
+</details>
+
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint).
+
+### `FlowDefinition` {#type-flowdefinition}
+
+<details markdown="1">
+<summary>Expand FlowDefinition</summary>
+
+```typescript
+export interface FlowDefinition extends Omit<ObservedGraphDefinition, "weight" | "directed"> {
+  readonly value: string;
+  readonly balance?: "allow" | "strict";
+}
+```
+
+</details>
+
+Related types: [`ObservedGraphDefinition`](#type-observedgraphdefinition).
+
+### `FlowLabelPaint` {#type-flowlabelpaint}
+
+<details markdown="1">
+<summary>Expand FlowLabelPaint</summary>
+
+```typescript
+export interface FlowLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number; }
+```
+
+</details>
+
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint).
+
+### `FlowLabelsOptions` {#type-flowlabelsoptions}
+
+<details markdown="1">
+<summary>Expand FlowLabelsOptions</summary>
+
+```typescript
+export interface FlowLabelsOptions extends FlowLabelPaint {
+  readonly content?: "key" | "value" | { readonly field: string }; readonly offset?: readonly [number, number];
+  readonly overrides?: readonly (FlowLabelPaint & { readonly key: RowKey; readonly text?: string })[];
+}
+```
+
+</details>
+
+Related types: [`FlowLabelPaint`](#type-flowlabelpaint) · [`RowKey`](#type-rowkey).
+
+### `FlowLayoutOptions` {#type-flowlayoutoptions}
+
+<details markdown="1">
+<summary>Expand FlowLayoutOptions</summary>
+
+```typescript
+export interface FlowLayoutOptions extends GraphLayoutLimits {
+  readonly width?: number; readonly height?: number; readonly nodeWidth?: number; readonly nodePadding?: number;
+  readonly align?: "left" | "right" | "center" | "justify";
+  readonly order?: "input" | "barycentric" | readonly RowKey[];
+  readonly iterations?: number; readonly laneGap?: number; readonly orientation?: "horizontal" | "vertical";
+}
+```
+
+</details>
+
+Related types: [`GraphLayoutLimits`](#type-graphlayoutlimits) · [`RowKey`](#type-rowkey).
+
+### `FlowLinksOptions` {#type-flowlinksoptions}
+
+<details markdown="1">
+<summary>Expand FlowLinksOptions</summary>
+
+```typescript
+export interface FlowLinksOptions {
+  readonly id?: string; readonly layout?: string; readonly coordinate?: string; readonly clip?: boolean;
+  readonly links?: FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey })[] };
+}
+```
+
+</details>
+
+Related types: [`FlowBodyPaint`](#type-flowbodypaint) · [`RowKey`](#type-rowkey).
+
+### `FlowNodesOptions` {#type-flownodesoptions}
+
+<details markdown="1">
+<summary>Expand FlowNodesOptions</summary>
+
+```typescript
+export interface FlowNodesOptions {
+  readonly id?: string; readonly layout?: string; readonly coordinate?: string; readonly clip?: boolean;
+  readonly nodes?: FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey })[] };
+  readonly labels?: false | FlowLabelsOptions;
+}
+```
+
+</details>
+
+Related types: [`FlowBodyPaint`](#type-flowbodypaint) · [`RowKey`](#type-rowkey) · [`FlowLabelsOptions`](#type-flowlabelsoptions).
+
 ### `FocusedDerivedDataEdit` {#type-focusedderiveddataedit}
 
 <details markdown="1">
@@ -8061,6 +8333,265 @@ export type GradientPlotPositionChannel = BoxPlotPositionChannel;
 
 Related types: [`BoxPlotPositionChannel`](#type-boxplotpositionchannel).
 
+### `GraphCandidateMstDefinition` {#type-graphcandidatemstdefinition}
+
+<details markdown="1">
+<summary>Expand GraphCandidateMstDefinition</summary>
+
+```typescript
+export type GraphCandidateMstDefinition = InferredGraphSource & { readonly rule: "mst"; readonly options?: { readonly forest?: boolean }; readonly features?: never; readonly metric?: never; readonly preprocess?: never };
+```
+
+</details>
+
+Related types: [`InferredGraphSource`](#type-inferredgraphsource).
+
+### `GraphCircularOptions` {#type-graphcircularoptions}
+
+<details markdown="1">
+<summary>Expand GraphCircularOptions</summary>
+
+```typescript
+export interface GraphCircularOptions extends GraphLayoutLimits { readonly center?: readonly [number, number]; readonly radius?: number; readonly startAngle?: number; }
+```
+
+</details>
+
+Related types: [`GraphLayoutLimits`](#type-graphlayoutlimits).
+
+### `GraphEdgePaint` {#type-graphedgepaint}
+
+<details markdown="1">
+<summary>Expand GraphEdgePaint</summary>
+
+```typescript
+export interface GraphEdgePaint { shadow?: MarkShadow | false; stroke?: string; strokeWidth?: number; opacity?: number; parallelGap?: number; loopRadius?: number; arrowSize?: number; arrows?: "auto" | boolean; }
+```
+
+</details>
+
+Related types: [`MarkShadow`](#type-markshadow).
+
+### `GraphFeaturePolicy` {#type-graphfeaturepolicy}
+
+<details markdown="1">
+<summary>Expand GraphFeaturePolicy</summary>
+
+```typescript
+export interface GraphFeaturePolicy { readonly missing?: "error" | "omit-node"; readonly zeroVector?: "error" | "zero-similarity"; }
+```
+
+</details>
+
+### `GraphFixedOptions` {#type-graphfixedoptions}
+
+<details markdown="1">
+<summary>Expand GraphFixedOptions</summary>
+
+```typescript
+export interface GraphFixedOptions extends GraphLayoutLimits { readonly positions: readonly GraphPosition[]; }
+```
+
+</details>
+
+Related types: [`GraphLayoutLimits`](#type-graphlayoutlimits) · [`GraphPosition`](#type-graphposition).
+
+### `GraphForceOptions` {#type-graphforceoptions}
+
+<details markdown="1">
+<summary>Expand GraphForceOptions</summary>
+
+```typescript
+export interface GraphForceOptions extends GraphLayoutLimits {
+  readonly seed?: number; readonly iterations?: number; readonly linkDistance?: number; readonly repulsion?: number;
+  readonly collisionRadius?: number; readonly damping?: number; readonly center?: readonly [number, number];
+  readonly componentGap?: number; readonly initialPositions?: readonly GraphPosition[]; readonly pinned?: readonly GraphPin[];
+}
+```
+
+</details>
+
+Related types: [`GraphLayoutLimits`](#type-graphlayoutlimits) · [`GraphPosition`](#type-graphposition) · [`GraphPin`](#type-graphpin).
+
+### `GraphKeyField` {#type-graphkeyfield}
+
+<details markdown="1">
+<summary>Expand GraphKeyField</summary>
+
+```typescript
+export type GraphKeyField = string | readonly string[];
+```
+
+</details>
+
+### `GraphLabelPaint` {#type-graphlabelpaint}
+
+<details markdown="1">
+<summary>Expand GraphLabelPaint</summary>
+
+```typescript
+export interface GraphLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+```
+
+</details>
+
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint).
+
+### `GraphLabelsOptions` {#type-graphlabelsoptions}
+
+<details markdown="1">
+<summary>Expand GraphLabelsOptions</summary>
+
+```typescript
+export interface GraphLabelsOptions extends GraphLabelPaint {
+  field?: string; offset?: readonly [number, number]; overrides?: readonly (GraphLabelPaint & { key: RowKey; text?: string })[];
+}
+```
+
+</details>
+
+Related types: [`GraphLabelPaint`](#type-graphlabelpaint) · [`RowKey`](#type-rowkey).
+
+### `GraphLayoutLimits` {#type-graphlayoutlimits}
+
+<details markdown="1">
+<summary>Expand GraphLayoutLimits</summary>
+
+```typescript
+export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
+```
+
+</details>
+
+### `GraphMetricDefinition` {#type-graphmetricdefinition}
+
+<details markdown="1">
+<summary>Expand GraphMetricDefinition</summary>
+
+```typescript
+export type GraphMetricDefinition =
+  { readonly metric: "euclidean" | "manhattan" | "cosine"; readonly features: readonly string[]; readonly preprocess?: "none" | "standardize" | "minmax" } |
+  { readonly metric: "jaccard"; readonly features: readonly string[] | { readonly set: string }; readonly preprocess?: "none" } |
+  { readonly metric: "great-circle"; readonly features: readonly string[] | { readonly longitude: string; readonly latitude: string }; readonly preprocess?: "none" };
+```
+
+</details>
+
+### `GraphMetricMstDefinition` {#type-graphmetricmstdefinition}
+
+<details markdown="1">
+<summary>Expand GraphMetricMstDefinition</summary>
+
+```typescript
+export type GraphMetricMstDefinition = InferredGraphSource & GraphMetricDefinition & { readonly rule: "mst"; readonly options?: GraphFeaturePolicy & { readonly forest?: boolean } };
+```
+
+</details>
+
+Related types: [`InferredGraphSource`](#type-inferredgraphsource) · [`GraphMetricDefinition`](#type-graphmetricdefinition) · [`GraphFeaturePolicy`](#type-graphfeaturepolicy).
+
+### `GraphNeighborDefinition` {#type-graphneighbordefinition}
+
+<details markdown="1">
+<summary>Expand GraphNeighborDefinition</summary>
+
+```typescript
+export type GraphNeighborDefinition = InferredGraphSource & GraphMetricDefinition & (
+  { readonly rule: "knn"; readonly options?: GraphFeaturePolicy & { readonly k?: number; readonly symmetrize?: "directed" | "union" | "mutual"; readonly search?: GraphSearchOptions } } |
+  { readonly rule: "radius"; readonly options: GraphFeaturePolicy & { readonly radius: number; readonly directed?: boolean; readonly search?: Extract<GraphSearchOptions, { readonly mode?: "exact" }> } } |
+  { readonly rule: "similarity"; readonly metric: "cosine" | "jaccard"; readonly options: GraphFeaturePolicy & { readonly threshold: number; readonly directed?: boolean; readonly search?: { readonly mode?: "exact"; readonly algorithm?: "brute-force" } } });
+```
+
+</details>
+
+Related types: [`InferredGraphSource`](#type-inferredgraphsource) · [`GraphMetricDefinition`](#type-graphmetricdefinition) · [`GraphFeaturePolicy`](#type-graphfeaturepolicy) · [`GraphSearchOptions`](#type-graphsearchoptions).
+
+### `GraphNodePaint` {#type-graphnodepaint}
+
+<details markdown="1">
+<summary>Expand GraphNodePaint</summary>
+
+```typescript
+export interface GraphNodePaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; radius?: number; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
+```
+
+</details>
+
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint).
+
+### `GraphPin` {#type-graphpin}
+
+<details markdown="1">
+<summary>Expand GraphPin</summary>
+
+```typescript
+export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly fy: number; }
+```
+
+</details>
+
+Related types: [`RowKey`](#type-rowkey).
+
+### `GraphPlotOptions` {#type-graphplotoptions}
+
+<details markdown="1">
+<summary>Expand GraphPlotOptions</summary>
+
+```typescript
+export interface GraphPlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
+  edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
+}
+```
+
+</details>
+
+Related types: [`GraphNodePaint`](#type-graphnodepaint) · [`RowKey`](#type-rowkey) · [`GraphEdgePaint`](#type-graphedgepaint) · [`GraphLabelsOptions`](#type-graphlabelsoptions).
+
+### `GraphPosition` {#type-graphposition}
+
+<details markdown="1">
+<summary>Expand GraphPosition</summary>
+
+```typescript
+export interface GraphPosition { readonly key: RowKey; readonly x: number; readonly y: number; }
+```
+
+</details>
+
+Related types: [`RowKey`](#type-rowkey).
+
+### `GraphSearchOptions` {#type-graphsearchoptions}
+
+<details markdown="1">
+<summary>Expand GraphSearchOptions</summary>
+
+```typescript
+export type GraphSearchOptions = { readonly mode?: "exact"; readonly algorithm?: "brute-force" | "kd-tree" | "grid" } |
+  { readonly mode: "approximate"; readonly algorithm?: "projection-forest"; readonly seed: number; readonly trees?: number;
+    readonly projections?: 1; readonly leafSize?: number; readonly searchLeaves?: number; readonly fallback?: "error" | "exact"; readonly minRecall?: number };
+```
+
+</details>
+
+### `GraphStructuralDefinition` {#type-graphstructuraldefinition}
+
+<details markdown="1">
+<summary>Expand GraphStructuralDefinition</summary>
+
+```typescript
+export type GraphStructuralDefinition = InferredGraphSource & { readonly features?: never; readonly metric?: never; readonly preprocess?: never } & (
+  { readonly rule: "group"; readonly options: { readonly fields: readonly string[]; readonly missing?: "error" | "omit-node" | "include"; readonly mode?: "clique" | "star";
+    readonly hubKey?: RowKey; readonly hubs?: readonly { readonly group: readonly unknown[]; readonly key: RowKey }[] } } |
+  { readonly rule: "sequence"; readonly options: { readonly orderField: string; readonly groupBy?: readonly string[]; readonly missing?: "error" | "omit-node";
+    readonly lag?: number; readonly maxGap?: number; readonly temporalUnit?: TemporalInputUnit } });
+```
+
+</details>
+
+Related types: [`InferredGraphSource`](#type-inferredgraphsource) · [`RowKey`](#type-rowkey) · [`TemporalInputUnit`](#type-temporalinputunit).
+
 ### `GraphicClip` {#type-graphicclip}
 
 <details markdown="1">
@@ -8243,10 +8774,12 @@ Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionsc
 <summary>Expand HierarchyBodyPaint</summary>
 
 ```typescript
-export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface HierarchyBodyPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
 ```
 
 </details>
+
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint).
 
 ### `HierarchyLabelPaint` {#type-hierarchylabelpaint}
 
@@ -8254,10 +8787,12 @@ export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidt
 <summary>Expand HierarchyLabelPaint</summary>
 
 ```typescript
-export interface HierarchyLabelPaint { fill?: string; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface HierarchyLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
 ```
 
 </details>
+
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`FillPaint`](#type-fillpaint).
 
 ### `HierarchyLabelsOptions` {#type-hierarchylabelsoptions}
 
@@ -8630,13 +9165,13 @@ export interface ImageMarkOptions {
   viewport?: "auto" | { x: number; y: number; width: number; height: number };
   fit?: "contain" | "cover" | "fill";
   align?: readonly [number, number];
-  opacity?: number; alt?: string; clip?: false | GraphicClip;
+  opacity?: number; alt?: string; clip?: false | GraphicClip; shadow?: MarkShadow | false;
 }
 ```
 
 </details>
 
-Related types: [`GraphicClip`](#type-graphicclip).
+Related types: [`GraphicClip`](#type-graphicclip) · [`MarkShadow`](#type-markshadow).
 
 ### `ImputedDataBaseOptions` {#type-imputeddatabaseoptions}
 
@@ -8685,6 +9220,35 @@ export type ImputedDataOptions = ImputedDataBaseOptions & (
 </details>
 
 Related types: [`ImputedDataBaseOptions`](#type-imputeddatabaseoptions) · [`WindowSort`](#type-windowsort) · [`DatasetScalar`](#type-datasetscalar).
+
+### `InferredGraphDefinition` {#type-inferredgraphdefinition}
+
+<details markdown="1">
+<summary>Expand InferredGraphDefinition</summary>
+
+```typescript
+export type InferredGraphDefinition = GraphNeighborDefinition | GraphMetricMstDefinition | GraphCandidateMstDefinition | GraphStructuralDefinition;
+```
+
+</details>
+
+Related types: [`GraphNeighborDefinition`](#type-graphneighbordefinition) · [`GraphMetricMstDefinition`](#type-graphmetricmstdefinition) · [`GraphCandidateMstDefinition`](#type-graphcandidatemstdefinition) · [`GraphStructuralDefinition`](#type-graphstructuraldefinition).
+
+### `InferredGraphSource` {#type-inferredgraphsource}
+
+<details markdown="1">
+<summary>Expand InferredGraphSource</summary>
+
+```typescript
+export interface InferredGraphSource {
+  readonly nodeKey: GraphKeyField; readonly ruleId: string; readonly attributes?: readonly string[];
+  readonly maxNodes?: number; readonly maxEdges?: number;
+}
+```
+
+</details>
+
+Related types: [`GraphKeyField`](#type-graphkeyfield).
 
 ### `InferredRuleDatumPositionEncodingOptions` {#type-inferredruledatumpositionencodingoptions}
 
@@ -8937,6 +9501,37 @@ export type LayerPlotSpecification = {
 </details>
 
 Related types: [`AdjacentPlotSpecification`](#type-adjacentplotspecification).
+
+### `LayoutFlowOptions` {#type-layoutflowoptions}
+
+<details markdown="1">
+<summary>Expand LayoutFlowOptions</summary>
+
+```typescript
+export interface LayoutFlowOptions {
+  readonly id: string; readonly graph?: string; readonly method: "dag" | "cyclic"; readonly options?: FlowLayoutOptions;
+}
+```
+
+</details>
+
+Related types: [`FlowLayoutOptions`](#type-flowlayoutoptions).
+
+### `LayoutGraphOptions` {#type-layoutgraphoptions}
+
+<details markdown="1">
+<summary>Expand LayoutGraphOptions</summary>
+
+```typescript
+export type LayoutGraphOptions = { readonly id: string; readonly graph?: string } &
+  ({ readonly method: "fixed"; readonly options: GraphFixedOptions }
+  | { readonly method: "circular"; readonly options?: GraphCircularOptions }
+  | { readonly method: "force"; readonly options?: GraphForceOptions });
+```
+
+</details>
+
+Related types: [`GraphFixedOptions`](#type-graphfixedoptions) · [`GraphCircularOptions`](#type-graphcircularoptions) · [`GraphForceOptions`](#type-graphforceoptions).
 
 ### `LayoutHierarchyOptions` {#type-layouthierarchyoptions}
 
@@ -9997,6 +10592,30 @@ export type NumericFormatString =
 
 Related types: [`ValueFormatPrecision`](#type-valueformatprecision).
 
+### `ObservedGraphDefinition` {#type-observedgraphdefinition}
+
+<details markdown="1">
+<summary>Expand ObservedGraphDefinition</summary>
+
+```typescript
+export interface ObservedGraphDefinition {
+  readonly nodeKey: GraphKeyField;
+  readonly source: GraphKeyField;
+  readonly target: GraphKeyField;
+  readonly edgeKey?: GraphKeyField;
+  readonly weight?: string;
+  readonly attributes?: readonly string[];
+  readonly directed?: boolean;
+  readonly selfLoops?: boolean;
+  readonly maxNodes?: number;
+  readonly maxEdges?: number;
+}
+```
+
+</details>
+
+Related types: [`GraphKeyField`](#type-graphkeyfield).
+
 ### `OffsetEncodingOptions` {#type-offsetencodingoptions}
 
 <details markdown="1">
@@ -10483,6 +11102,28 @@ export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 ```
 
 </details>
+
+### `PartitionPlotOptions` {#type-partitionplotoptions}
+
+<details markdown="1">
+<summary>Expand PartitionPlotOptions</summary>
+
+```typescript
+export interface PartitionPlotOptions {
+  id?: string; layout?: string; coordinate?: string; focus?: HierarchyNodeTarget | null;
+  rootVisible?: boolean; prunedSelection?: "keep-hidden" | "drop";
+  orientation?: "horizontal" | "vertical"; reverseU?: boolean; reverseV?: boolean;
+  padding?: number | readonly [number, number]; innerRadius?: number; outerRadius?: number | "auto";
+  startAngle?: number; sweep?: number; direction?: "clockwise" | "counterclockwise";
+  radiusPolicy?: "equal-depth" | "equal-depth-area"; clip?: boolean;
+  cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] };
+  labels?: false | (HierarchyLabelsOptions & { minWidth?: number; minArcLength?: number });
+}
+```
+
+</details>
+
+Related types: [`HierarchyNodeTarget`](#type-hierarchynodetarget) · [`HierarchyBodyPaint`](#type-hierarchybodypaint) · [`HierarchyLabelsOptions`](#type-hierarchylabelsoptions).
 
 ### `PathFillRule` {#type-pathfillrule}
 
@@ -13072,7 +13713,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
 <summary>Expand StoredResourceKind</summary>
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "font";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font";
 ```
 
 </details>
@@ -13816,13 +14457,13 @@ export interface TitleTextStyleOptions {
 export interface TreePlotOptions {
   id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
   nodes?: HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] };
-  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number }; labels?: false | HierarchyLabelsOptions;
+  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number; shadow?: MarkShadow | false }; labels?: false | HierarchyLabelsOptions;
 }
 ```
 
 </details>
 
-Related types: [`HierarchyNodePaint`](#type-hierarchynodepaint) · [`HierarchyNodeTarget`](#type-hierarchynodetarget) · [`HierarchyLabelsOptions`](#type-hierarchylabelsoptions).
+Related types: [`HierarchyNodePaint`](#type-hierarchynodepaint) · [`HierarchyNodeTarget`](#type-hierarchynodetarget) · [`MarkShadow`](#type-markshadow) · [`HierarchyLabelsOptions`](#type-hierarchylabelsoptions).
 
 ### `TreemapPlotOptions` {#type-treemapplotoptions}
 

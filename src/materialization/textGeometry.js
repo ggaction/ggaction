@@ -1,5 +1,5 @@
-import { requestedStrokeDetails } from "../grammar/strokeStyle.js";
 import { bindTextFontProperties } from "./textFont.js";
+import { requestedStrokeDetails } from "../grammar/strokeStyle.js";
 import { hasPositionBinding } from "../core/encodingBindings.js";
 import { contentValue, resolveTextSourceBindings } from "./textContent.js";
 export { sourceValue } from "./textContent.js";

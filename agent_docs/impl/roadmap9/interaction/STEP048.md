@@ -55,3 +55,10 @@ Package는819 entries/5,552,006unpacked, 최대1,210,811packed bytes로 cap819/1
 
 Source `ce5de4d8b` provenance/machine/LLM 고정 후 docs19/19와 built154pages/1310artifacts를 통과했다.
 Browser CSS/JS/images/layout은 같아 ccbce6a6b의 desktop/mobile/Axe 증거를 재사용한다.
+
+## 최신 공개 baseline 통합
+
+안정 main `f1800607d`를48 private checkpoint 뒤 병합했다. Source conflict는 없었으며 architecture/coverage는
+양쪽 owner를 보존하고 generated provenance는 다시 생성한다. Hit/scene44개와 boundary33개를 통과했고
+합산867 entries/5,837,672unpacked/최대1,270,493packed에 cap867/1,271,000/5,838,000을 적용한다.
+Root의 기존 공개 installed/critical381 증거는 해당 main checkpoint의 결과이며 여기서 재실행한 것으로 표기하지 않는다.

@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 3,
+  "name": "createGraphData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Store a graph from explicit node and edge tables, preserving typed endpoint keys and parallel-edge identity.",
+  "signature": "createGraphData(options: CreateGraphDataOptions): ChartProgram;",
+  "intents": [
+    "create graph data",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "observed graph data",
+    "node and edge tables"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "explicit materialized node and edge datasets"
+    ],
+    "owns": [
+      "graph resource"
+    ],
+    "idOptions": [
+      "id",
+      "nodes",
+      "edges"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editGraphData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "explicit materialized node and edge datasets"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "nodes",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "edges",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "nodeKey",
+      "required": true,
+      "type": "GraphKeyField"
+    },
+    {
+      "name": "source",
+      "required": true,
+      "type": "GraphKeyField"
+    },
+    {
+      "name": "target",
+      "required": true,
+      "type": "GraphKeyField"
+    },
+    {
+      "name": "edgeKey",
+      "required": false,
+      "type": "GraphKeyField | undefined"
+    },
+    {
+      "name": "weight",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "attributes",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "directed",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "selfLoops",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "maxNodes",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "maxEdges",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createGraphData({ id, nodes, edges, nodeKey, source, target, edgeKey?, weight? })"
+  ],
+  "snippet": "program.createGraphData({ id: \"network\", nodes: \"nodes\", edges: \"edges\", nodeKey: \"name\", source: \"from\", target: \"to\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#creategraphdata"
+}

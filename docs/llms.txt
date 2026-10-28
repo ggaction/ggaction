@@ -218,3 +218,9 @@ requirements after resolving each part.
 - Prepared Fonts Tutorial: ./tutorials/font-assets/
 - Hierarchy Resources and Plots: ./api/hierarchy/
 - Hierarchy Tutorial: ./tutorials/hierarchy/
+- Graph Plots: ./api/graphs/
+- Graph Tutorial: ./tutorials/graphs/
+- Partition Plots: ./api/partition/
+- Partition Tutorial: ./tutorials/partition/
+- Flow Data and Sankey Layouts: ./api/flows/
+- Draw Conserved Flows: ./tutorials/flows/

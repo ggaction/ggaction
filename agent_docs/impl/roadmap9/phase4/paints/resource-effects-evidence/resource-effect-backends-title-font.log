@@ -1,0 +1,32 @@
+TAP version 13
+# Subtest: resource role effects match explicit concrete appearance across Canvas, SVG, PNG and PDF
+not ok 1 - resource role effects match explicit concrete appearance across Canvas, SVG, PNG and PDF
+  ---
+  duration_ms: 4414.831667
+  type: 'test'
+  location: '/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/test/charts/mark-shadows/resource-consumers.render.js:24:1'
+  failureType: 'testCodeFailure'
+  error: 'Shadow scene work must not exceed 10000000.'
+  code: 'ERR_TEST_FAILURE'
+  name: 'RangeError'
+  stack: |-
+    validateGeneratedItemLimit (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/core/validation.js:25:25)
+    validateWorkLimit (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/core/validation.js:31:10)
+    file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/shadowRendering.js:70:5
+    Object.item (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/paintFrames.js:27:35)
+    visitNamed (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/schemas/graphicTree.js:120:20)
+    visitNamed (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/schemas/graphicTree.js:130:5)
+    visitNamed (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/schemas/graphicTree.js:130:5)
+    walkGraphicTreeEvents (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/grammar/schemas/graphicTree.js:147:5)
+    walkGraphicPaintItems (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/paintFrames.js:9:3)
+    prepareShadowRendering (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/src/renderers/shadowRendering.js:58:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5167.13675

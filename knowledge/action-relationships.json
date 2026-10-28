@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 319,
+  "actionCount": 335,
   "relationships": [
     {
       "name": "createCanvas",
@@ -131,6 +131,30 @@
       "name": "createPivotData",
       "wraps": [
         "createDerivedData"
+      ]
+    },
+    {
+      "name": "createGraphData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editGraphData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editInferredGraphData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createInferredGraphData",
+      "wraps": [
+        "editSemantic"
       ]
     },
     {
@@ -2162,6 +2186,24 @@
       ]
     },
     {
+      "name": "layoutGraph",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createGraphPlot",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editGraphPlot",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
       "name": "createFontResource",
       "wraps": [
         "editSemantic"
@@ -2169,6 +2211,63 @@
     },
     {
       "name": "replaceFontResource",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createPartitionPlot",
+      "wraps": [
+        "editSemantic",
+        "createCoordinate"
+      ]
+    },
+    {
+      "name": "editPartitionPlot",
+      "wraps": [
+        "editSemantic",
+        "editMarkSelection"
+      ]
+    },
+    {
+      "name": "createFlowData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editFlowData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "layoutFlow",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createFlowNodes",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editFlowNodes",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createFlowLinks",
+      "wraps": [
+        "createCoordinate",
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editFlowLinks",
       "wraps": [
         "editSemantic"
       ]

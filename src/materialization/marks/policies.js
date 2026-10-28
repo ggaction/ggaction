@@ -13,12 +13,16 @@ import {
 } from "./capabilities.js";
 
 const MARK_MATERIALIZATION_POLICIES = Object.freeze({
+  graph: Object.freeze({ canMaterialize: (_program, layer) => layer.graphBinding !== undefined, op: "materializeGraphPlot", scaleApplication: Object.freeze({ default: "defer" }) }),
   image: Object.freeze({ canMaterialize: (_program, layer) => layer.image !== undefined,
     op: "rematerializeImageMark", graphicOwner: imageClipOwner,
     positionEncoding: Object.freeze({ incomplete: "mark", scaleFirst: false }),
     scaleApplication: Object.freeze({ default: "defer" }) }),
   tree: Object.freeze({ canMaterialize: (_program, layer) => layer.hierarchyBinding !== undefined, op: "materializeTreePlot", scaleApplication: Object.freeze({ default: "defer" }) }),
+  partition: Object.freeze({ canMaterialize: (_program, layer) => layer.hierarchyBinding !== undefined && layer.coordinate !== undefined, op: "materializePartitionPlot", scaleApplication: Object.freeze({ default: "defer" }) }),
   treemap: Object.freeze({ canMaterialize: (_program, layer) => layer.hierarchyBinding !== undefined, op: "materializeTreemapPlot", scaleApplication: Object.freeze({ default: "defer" }) }),
+  "flow-node": Object.freeze({ canMaterialize: (_program, layer) => layer.flowBinding !== undefined, op: "materializeFlowNodes", scaleApplication: Object.freeze({ default: "defer" }) }),
+  "flow-link": Object.freeze({ canMaterialize: (_program, layer) => layer.flowBinding !== undefined, op: "materializeFlowLinks", scaleApplication: Object.freeze({ default: "defer" }) }),
   point: Object.freeze({
     canMaterialize: canMaterializePoint,
     op: "rematerializePointMark",

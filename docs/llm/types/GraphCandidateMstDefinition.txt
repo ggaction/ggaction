@@ -1,0 +1,1 @@
+export type GraphCandidateMstDefinition = InferredGraphSource & { readonly rule: "mst"; readonly options?: { readonly forest?: boolean }; readonly features?: never; readonly metric?: never; readonly preprocess?: never };

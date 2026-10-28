@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 3,
+  "name": "createFlowData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Store directed flow values and an explicit balance policy.",
+  "signature": "createFlowData(options: CreateFlowDataOptions): ChartProgram;",
+  "intents": [
+    "create flow data",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "flow graph",
+    "directed flow values"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "explicit materialized node and edge datasets"
+    ],
+    "owns": [
+      "graph resource"
+    ],
+    "idOptions": [
+      "id",
+      "nodes",
+      "edges"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editFlowData",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "source",
+      "strategy": "explicit"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "explicit materialized node and edge datasets"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "nodes",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "edges",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "nodeKey",
+      "required": true,
+      "type": "GraphKeyField"
+    },
+    {
+      "name": "source",
+      "required": true,
+      "type": "GraphKeyField"
+    },
+    {
+      "name": "target",
+      "required": true,
+      "type": "GraphKeyField"
+    },
+    {
+      "name": "edgeKey",
+      "required": false,
+      "type": "GraphKeyField | undefined"
+    },
+    {
+      "name": "attributes",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "selfLoops",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "maxNodes",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "maxEdges",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "value",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "balance",
+      "required": false,
+      "type": "\"allow\" | \"strict\" | undefined"
+    }
+  ],
+  "callPatterns": [
+    "createFlowData({ id, nodes, edges, nodeKey, source, target, value, edgeKey? })"
+  ],
+  "snippet": "program.createFlowData({ id: \"flow\", nodes: \"nodes\", edges: \"edges\", nodeKey: \"name\", source: \"from\", target: \"to\", value: \"amount\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createflowdata"
+}

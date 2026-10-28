@@ -1,12 +1,12 @@
 # Place a retained image
 
 Prepare image bytes explicitly, then use one image mark to control its fit,
-alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/88322383e2816ecb3e8e078d4baad6585dd55fce/examples/image-assets/)
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/b63c5f8739681aae0603281f97d065a26d564efa/examples/image-assets/)
 uses one pinned SVG asset for six placements and retains the bytes for offline export.
 
 ## Prepare and place
 
-The canonical [example program](https://github.com/ggaction/ggaction/blob/88322383e2816ecb3e8e078d4baad6585dd55fce/examples/image-assets/program.js) loads its
+The canonical [example program](https://github.com/ggaction/ggaction/blob/b63c5f8739681aae0603281f97d065a26d564efa/examples/image-assets/program.js) loads its
 inline asset through `prepareImageResource` and applies the returned handle to the
 same immutable program. Its application-owned decoder reports the source dimensions.
 The synchronous `createImageResource` action stores the validated bytes. Then
@@ -101,3 +101,7 @@ const program = createImageExample();
 const images = await prepareImageRendering(program, {decode: decodeImage});
 render(program, document.querySelector("#chart").getContext("2d"), {images});
 ```
+
+## Add a pixel-alpha shadow
+
+Use `editImageMark({target:"image",shadow:{color:"#0008",offsetX:4,offsetY:4,blurRadius:6}})` after creating an image mark. Use `shadow:false` to remove it. The actual image transparency shapes the shadow, and the image viewport clips the result. PNG and PDF prepare it automatically. For Canvas or SVG, call `prepareShadowRendering` with a Canvas factory and the image decoder, then pass the returned `shadows` handle to the renderer. Canvas also needs `prepareImageRendering` as above. Dispose the shadow handle when done and prepare again after editing the chart. See [rendering](../../../api/rendering/) for the complete host contract.

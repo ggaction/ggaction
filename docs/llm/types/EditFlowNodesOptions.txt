@@ -1,0 +1,1 @@
+export interface EditFlowNodesOptions extends Omit<FlowNodesOptions, "id"> { readonly target?: string; }

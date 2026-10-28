@@ -3,7 +3,7 @@ import test from "node:test";
 import { normalizeMarkShadow, requestedMarkShadow, MARK_SHADOW_TYPES } from "../../../src/grammar/markShadow.js";
 
 test("normalizes one closed immutable shadow style and preserves explicit zero removal", () => {
-  assert.deepEqual(MARK_SHADOW_TYPES, ["point", "bar", "rect", "area", "arc", "text", "line", "rule", "tick"]);
+  assert.deepEqual(MARK_SHADOW_TYPES, ["point", "bar", "rect", "area", "arc", "text", "line", "rule", "tick", "image"]);
   const source = { color: "rgba(20,40,60,.5)" };
   const style = normalizeMarkShadow(source);
   assert.deepEqual(style, { color: source.color, offsetX: 0, offsetY: 0, blurRadius: 0 });

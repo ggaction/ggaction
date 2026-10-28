@@ -44,3 +44,4 @@ export function action<TOptions extends ActionOptions = ActionOptions>(
 export function registerExtension<
   TActions extends Readonly<Record<string, RegisteredExtensionAction>>
 >(definition: ExtensionDefinition<TActions>): void;
+export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";

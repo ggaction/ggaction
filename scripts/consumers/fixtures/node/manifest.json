@@ -914,15 +914,41 @@
     "cases": [
       {
         "id": "hierarchy/full-basic-lifecycle",
-        "statements": 17
+        "statements": 14
       },
       {
         "id": "hierarchy/fresh-process-edit-revise",
-        "statements": 9
+        "statements": 1
       },
       {
         "id": "hierarchy/renderers-and-scene",
         "statements": 1
+      }
+    ]
+  },
+  {
+    "file": "fonts.mjs",
+    "cases": [
+      {
+        "id": "fonts/resource-metrics-offline",
+        "statements": 15
+      },
+      {
+        "id": "fonts/renderers-scene-handles",
+        "statements": 6
+      },
+      {
+        "id": "fonts/resource-backed-labels",
+        "statements": 1
+      }
+    ]
+  },
+  {
+    "file": "observed-graphs.mjs",
+    "cases": [
+      {
+        "id": "data/observed-graph-lifecycle",
+        "statements": 16
       }
     ]
   },
@@ -944,6 +970,24 @@
     ]
   },
   {
+    "file": "theme-resource-plots.mjs",
+    "cases": [
+      {
+        "id": "theme/resource-plot-renderer-lifecycle",
+        "statements": 2
+      }
+    ]
+  },
+  {
+    "file": "inferred-graphs.mjs",
+    "cases": [
+      {
+        "id": "data/inferred-graph-lifecycle",
+        "statements": 22
+      }
+    ]
+  },
+  {
     "file": "mark-blends.mjs",
     "cases": [
       {
@@ -961,19 +1005,6 @@
     ]
   },
   {
-    "file": "fonts.mjs",
-    "cases": [
-      {
-        "id": "fonts/resource-metrics-offline",
-        "statements": 15
-      },
-      {
-        "id": "fonts/renderers-scene-handles",
-        "statements": 6
-      }
-    ]
-  },
-  {
     "file": "mark-shadows.mjs",
     "cases": [
       {
@@ -987,6 +1018,36 @@
       {
         "id": "paint/shadow-stale-density-fresh-process",
         "statements": 3
+      }
+    ]
+  },
+  {
+    "file": "flows.mjs",
+    "cases": [
+      {
+        "id": "flow/full-basic-lifecycle",
+        "statements": 13
+      },
+      {
+        "id": "flow/fresh-process-source-revision",
+        "statements": 9
+      },
+      {
+        "id": "flow/renderers-scene-codec",
+        "statements": 1
+      }
+    ]
+  },
+  {
+    "file": "resource-effects.mjs",
+    "cases": [
+      {
+        "id": "paint/resource-role-effects",
+        "statements": 1
+      },
+      {
+        "id": "paint/image-alpha-shadow",
+        "statements": 7
       }
     ]
   }

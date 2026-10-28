@@ -1,3 +1,8 @@
+import { materializeMarkEffectProperties } from "../markEffects.js";
+import { bindTextFontProperties } from "../textFont.js";
+import { materializeFillItems } from "../fillPaint.js";
+import { resolvePartitionPlot } from "./partitionPlot.js";
+import { hierarchyNodeItemKey } from "./items.js";
 import { hierarchyInputSources } from "../../grammar/hierarchy/input.js";
 import { contentDigest } from "../../core/contentDigest.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
@@ -6,9 +11,6 @@ import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
 import { uniqueFields } from "../selection/items/common.js";
 
-export function hierarchyNodeItemKey(layer, hierarchy, node) {
-  return JSON.stringify([[], layer.id, "node", [hierarchy.id, node.key]]);
-}
 function boundsOf(nodes, method) {
   if (!nodes.length) return { x0: 0, x1: 0, y0: 0, y1: 0 };
   let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
@@ -20,6 +22,7 @@ function boundsOf(nodes, method) {
 }
 
 export function resolveHierarchyPlot(program, layer, config) {
+  if (layer.mark.type === "partition") return resolvePartitionPlot(program, layer, config);
   const { layout, hierarchy, dataset } = resolveHierarchyLayerResources(program, layer), method = layer.mark.type;
   const frame = resolveGraphicBounds(program), nodes = layout.result.nodes.filter(node => !node.synthetic);
   const bounds = boundsOf(nodes, method), origin = config.origin === "auto"
@@ -61,15 +64,16 @@ export function resolveHierarchyPlot(program, layer, config) {
       const x = method === "tree" ? node.x : (node.rect.x0 + node.rect.x1) / 2;
       const y = method === "tree" ? node.y : source.childrenKeys.length ? (node.rect.y0 + node.content.y0) / 2 : (node.rect.y0 + node.rect.y1) / 2;
       item.graphicIndices.push(graphics.length); item.graphicRoles.push("label");
-      graphics.push({ type: "text", properties: { x: origin[0] + x + offset[0], y: origin[1] + y + offset[1],
+      graphics.push({ type: "text", properties: bindTextFontProperties(program, { x: origin[0] + x + offset[0], y: origin[1] + y + offset[1],
         text: labelText.get(node.key) ?? String(source.totalValue), ...labelPaint, ...labelOverrides.get(node.key),
-        textAlign: "center", textBaseline: "middle", ...(method === "treemap" && source.childrenKeys.length && node.content.y0 === node.rect.y0 ? { opacity: 0 } : {}) },
+        textAlign: "center", textBaseline: "middle", ...(method === "treemap" && source.childrenKeys.length && node.content.y0 === node.rect.y0 ? { opacity: 0 } : {}) }),
       identity: { key: item.key, topology: "", role: "label", lineage } });
     });
   }
   const known = new Set(nodes.map(node => node.key)), targets = new Set([...bodyOverrides.keys(), ...labelOverrides.keys(), ...labelText.keys()]);
   validateGeneratedItemLimit(graphics.length, "Hierarchy plot graphic count");
-  for (const graphic of graphics) validateConcreteGraphicProperties(graphic.type, graphic.properties);
-  return { graphics, items, dataset, layout, hierarchy, frame,
+  const concrete = materializeFillItems(program, layer, graphics.map(graphic => ({ ...graphic, properties: materializeMarkEffectProperties(graphic.properties) })));
+  for (const graphic of concrete) validateConcreteGraphicProperties(graphic.type, graphic.properties);
+  return { graphics: concrete, items, dataset, layout, hierarchy, frame,
     diagnostics: [...targets].filter(key => !known.has(key)).map(key => ({ code: "orphan-style", key })) };
 }

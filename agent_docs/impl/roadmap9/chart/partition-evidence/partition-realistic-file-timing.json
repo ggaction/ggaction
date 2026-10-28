@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "file": "contracts/realistic-partition-lifecycle.test.js",
+  "durationMs": 5081.181791999999,
+  "maxRssKiB": 148128,
+  "status": "passed",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "runner": "local"
+  },
+  "run": null,
+  "attempt": null
+}

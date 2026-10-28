@@ -1,0 +1,5 @@
+export interface GraphNode {
+  readonly key: string;
+  readonly sourceRows: readonly number[];
+  readonly attributes: Readonly<Record<string, unknown>>;
+}

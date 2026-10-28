@@ -1,0 +1,156 @@
+# Draw conserved flows
+
+Start with a node table and an edge table whose values have one shared unit.
+A flow graph validates the endpoints and values, a layout stores their positions,
+and two marks draw the ribbons and nodes.
+
+This runnable Full example sends six units from one source and four from another
+to a total of ten. The layout preserves a common thickness scale.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({
+    "width": 640,
+    "height": 500,
+    "margin": {
+      "left": 40,
+      "right": 40,
+      "top": 80,
+      "bottom": 40
+    },
+    "background": "#ffffff"
+  })
+  .createData({
+    "id": "nodes",
+    "values": [
+      {
+        "id": "Supply A"
+      },
+      {
+        "id": "Supply B"
+      },
+      {
+        "id": "Total"
+      }
+    ],
+    "keyField": "id"
+  })
+  .createData({
+    "id": "edges",
+    "values": [
+      {
+        "id": "a",
+        "from": "Supply A",
+        "to": "Total",
+        "value": 6
+      },
+      {
+        "id": "b",
+        "from": "Supply B",
+        "to": "Total",
+        "value": 4
+      }
+    ],
+    "keyField": "id"
+  })
+  .createFlowData({
+    "id": "flow",
+    "nodes": "nodes",
+    "edges": "edges",
+    "nodeKey": "id",
+    "source": "from",
+    "target": "to",
+    "edgeKey": "id",
+    "value": "value",
+    "balance": "strict"
+  })
+  .layoutFlow({
+    "id": "layout",
+    "method": "dag",
+    "options": {
+      "width": 400,
+      "height": 240,
+      "nodeWidth": 20,
+      "nodePadding": 20,
+      "iterations": 0,
+      "laneGap": 10,
+      "orientation": "horizontal"
+    }
+  })
+  .createFlowLinks({
+    "links": {
+      "opacity": 0.55,
+      "overrides": [
+        {
+          "key": "a",
+          "fill": "#2563eb"
+        },
+        {
+          "key": "b",
+          "fill": "#f59e0b"
+        }
+      ]
+    }
+  })
+  .createFlowNodes({
+    "nodes": {
+      "overrides": [
+        {
+          "key": "Supply A",
+          "fill": "#2563eb"
+        },
+        {
+          "key": "Supply B",
+          "fill": "#f59e0b"
+        },
+        {
+          "key": "Total",
+          "fill": "#0d9488"
+        }
+      ]
+    },
+    "labels": {
+      "content": "value",
+      "fill": "#ffffff",
+      "fontSize": 14,
+      "fontWeight": 600
+    }
+  })
+  .createTitle({
+    "text": "Flow · two sources, one total",
+    "subtitle": "Ribbon thickness preserves the explicit source values",
+    "align": "left",
+    "alongOffset": 0,
+    "offset": 2,
+    "gap": 8,
+    "titleStyle": {
+      "color": "#0f172a",
+      "fontSize": 20,
+      "fontFamily": "sans-serif",
+      "fontWeight": 600
+    },
+    "subtitleStyle": {
+      "color": "#64748b",
+      "fontSize": 12,
+      "fontFamily": "sans-serif",
+      "fontWeight": 400
+    }
+  });
+```
+
+Draw links first so node bodies cover the attachments. `balance: "strict"`
+checks internal nodes; sources and sinks may have a net flow. A source revision
+updates the graph, layout and both marks together, or rejects the entire change
+if it would invalidate an endpoint or conservation rule.
+
+For feedback, select `method: "cyclic"`. All edges remain represented, including
+self-loops when the flow graph explicitly enables them. Outside lanes are part
+of the stored bounds, so fitting and clipping include their full extent.
+
+The [shared example source](https://github.com/ggaction/ggaction/blob/b63c5f8739681aae0603281f97d065a26d564efa/examples/flow-layouts/program.js)
+also demonstrates vertical flow and typed per-item colors. The browser example,
+primitive comparisons and generated figures use that one program.
+See [Flow Data and Sankey Layouts](../../../api/flows/) for exact options, selection
+fields, defaults and lifecycle behavior.

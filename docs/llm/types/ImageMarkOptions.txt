@@ -3,5 +3,5 @@ export interface ImageMarkOptions {
   viewport?: "auto" | { x: number; y: number; width: number; height: number };
   fit?: "contain" | "cover" | "fill";
   align?: readonly [number, number];
-  opacity?: number; alt?: string; clip?: false | GraphicClip;
+  opacity?: number; alt?: string; clip?: false | GraphicClip; shadow?: MarkShadow | false;
 }

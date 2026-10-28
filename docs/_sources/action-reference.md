@@ -571,6 +571,44 @@ createData({ id?, values })
 
 Create one immutable named dataset. [Data](../api/data.md)
 
+### `createGraphData`
+
+```javascript
+createGraphData({ id, nodes, edges, nodeKey, source, target, edgeKey?, weight?, attributes?, directed?, selfLoops?, maxNodes?, maxEdges? })
+```
+
+Store a graph from explicit node and edge tables, preserving typed endpoint keys
+and parallel-edge identity. See [observed graph data](../api/data/source-and-derived.md#observed-graph-data).
+
+### `editGraphData`
+
+```javascript
+editGraphData({ target?, nodes?, edges?, definition? })
+```
+
+Revise an existing observed graph. The graph ID is `target`; the edge endpoint
+column belongs in `definition.target`. See [observed graph data](../api/data/source-and-derived.md#observed-graph-data).
+
+### `createInferredGraphData`
+
+```javascript
+createInferredGraphData({ id, data?, nodeKey, ruleId, rule, features?, metric?, preprocess?, attributes?, options?, candidateGraph?, maxNodes?, maxEdges? })
+```
+
+Infer a graph using nearest neighbors, radius, similarity, a spanning tree,
+groups, or ordered sequences. Metric and structural rules have distinct options.
+See [graph inference](../api/graphs.md#graph-inference).
+
+### `editInferredGraphData`
+
+```javascript
+editInferredGraphData({ target?, data?, candidateGraph?, definition? })
+```
+
+Revise an inferred graph and its dependent layouts and plots. Use
+`candidateGraph: null` to remove a spanning-tree candidate input.
+See [graph inference](../api/graphs.md#graph-inference).
+
 ### `applyDataUpdate`
 
 ```javascript
@@ -3358,7 +3396,7 @@ Explicit image cascade removes its image marks before removing the source.
 ### `createImageMark`
 
 ```js
-createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip? } = {})
+createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip?, shadow? } = {})
 ```
 
 Create one resource-backed image item. Unique source inference and the first `image`
@@ -3369,11 +3407,19 @@ four renderer tests.
 ### `editImageMark`
 
 ```js
-editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })
+editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip?, shadow? })
 ```
 
 Edit an existing image mark; omission preserves options. `viewport:"auto"` resets
 to the plot. Explicit geometry adds clipping to the always-clipped viewport.
+### `createGraphPlot`
+
+Draw stored graph nodes, edge routes and optional labels. See [Graph plots](../api/graphs.md#creategraphplot) for full defaults, typed overrides and supported consumers.
+
+### `editGraphPlot`
+
+Apply a nonempty graph appearance or layout-binding patch and rebuild its logical items atomically. See [Graph plot edits](../api/graphs.md#editgraphplot).
+
 ### `createHierarchyData`
 
 ```javascript
@@ -3407,7 +3453,7 @@ Compute an explicit tree, treemap, or normalized partition layout from a named h
 editLayout({ target?, order?, options? })
 ```
 
-Change a layout order or method-specific options and refresh its plot consumers. Full only.
+Patch a stored hierarchy or graph layout and refresh its existing consumers. Full only.
 [Hierarchy resources and plots](../api/hierarchy.md#editlayout)
 
 ### `createTreePlot`
@@ -3445,6 +3491,95 @@ editTreemapPlot({ target?, layout?, origin?, clip?, cells?, labels? })
 
 Edit treemap cells, labels, placement, or the bound treemap layout. Full only.
 [Hierarchy resources and plots](../api/hierarchy.md#edittreemapplot)
+
+### `layoutGraph`
+
+```javascript
+layoutGraph({ id, graph?, method, options? })
+```
+
+Store a fixed, circular, or deterministic force layout of an existing graph. Full only.
+[Graph data and layouts](../api/data/source-and-derived.md#layoutgraph)
+
+### `createPartitionPlot`
+
+```javascript
+createPartitionPlot({ id?, layout?, coordinate?, focus?, rootVisible?, prunedSelection?, orientation?, reverseU?, reverseV?, padding?, innerRadius?, outerRadius?, startAngle?, sweep?, direction?, radiusPolicy?, clip?, cells?, labels? })
+```
+
+Draw an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity. Full only.
+[Partition plots](../api/partition.md#createpartitionplot)
+
+### `editPartitionPlot`
+
+```javascript
+editPartitionPlot({ target?, layout?, coordinate?, focus?, rootVisible?, prunedSelection?, orientation?, reverseU?, reverseV?, padding?, innerRadius?, outerRadius?, startAngle?, sweep?, direction?, radiusPolicy?, clip?, cells?, labels? })
+```
+
+Edit an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity. Full only.
+[Partition plots](../api/partition.md#editpartitionplot)
+### `createFlowData`
+
+```javascript
+createFlowData({ id, nodes, edges, nodeKey, source, target, value, edgeKey?, attributes?, selfLoops?, balance?, maxNodes?, maxEdges? })
+```
+
+Store directed flow values and an explicit balance policy. Full only.
+[Flow data and Sankey layouts](../api/flows.md#createflowdata)
+
+### `editFlowData`
+
+```javascript
+editFlowData({ target?, nodes?, edges?, definition? })
+```
+
+Revise flow data and refresh dependent layouts, nodes, links, labels and selections. Full only.
+[Flow data and Sankey layouts](../api/flows.md#editflowdata)
+
+### `layoutFlow`
+
+```javascript
+layoutFlow({ id, graph?, method, options? })
+```
+
+Store a DAG or cyclic Sankey layout while preserving every edge. Full only.
+[Flow data and Sankey layouts](../api/flows.md#layoutflow)
+
+### `createFlowNodes`
+
+```javascript
+createFlowNodes({ id?, layout?, coordinate?, clip?, nodes?, labels? })
+```
+
+Create flow node rectangles and optional labels from a stored layout. Full only.
+[Flow data and Sankey layouts](../api/flows.md#createflownodes)
+
+### `editFlowNodes`
+
+```javascript
+editFlowNodes({ target?, layout?, coordinate?, clip?, nodes?, labels? })
+```
+
+Edit flow node styling, labels or layout binding. Full only.
+[Flow data and Sankey layouts](../api/flows.md#editflownodes)
+
+### `createFlowLinks`
+
+```javascript
+createFlowLinks({ id?, layout?, coordinate?, clip?, links? })
+```
+
+Create closed flow ribbons from a stored layout. Full only.
+[Flow data and Sankey layouts](../api/flows.md#createflowlinks)
+
+### `editFlowLinks`
+
+```javascript
+editFlowLinks({ target?, layout?, coordinate?, clip?, links? })
+```
+
+Edit flow ribbon styling or layout binding. Full only.
+[Flow data and Sankey layouts](../api/flows.md#editflowlinks)
 
 ## Advanced Chart API
 

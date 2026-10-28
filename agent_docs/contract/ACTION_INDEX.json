@@ -418,6 +418,78 @@
       }
     },
     {
+      "name": "createGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Revise observed graph inputs and definitions with `editGraphData`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "creategraphdata"
+      }
+    },
+    {
+      "name": "editGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Rebuilds the observed graph with exact source revisions and immutable endpoint identity",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "editgraphdata"
+      }
+    },
+    {
+      "name": "editInferredGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Rebuilds inferred graph dependencies and refreshes each affected layout and plot",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "editinferredgraphdata"
+      }
+    },
+    {
+      "name": "createInferredGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Revise inferred graph rules and source inputs with `editInferredGraphData`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "createinferredgraphdata"
+      }
+    },
+    {
       "name": "createParameter",
       "layer": "user-facing",
       "domain": "core",
@@ -5669,7 +5741,7 @@
         "tests": "complete"
       },
       "contract": {
-        "file": "agent_docs/contract/current/HIERARCHY.md",
+        "file": "agent_docs/contract/current/LAYOUTS.md",
         "anchor": "editlayout"
       }
     },
@@ -5746,6 +5818,60 @@
       }
     },
     {
+      "name": "layoutGraph",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editLayout`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "layoutgraph"
+      }
+    },
+    {
+      "name": "createGraphPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editGraphPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "creategraphplot"
+      }
+    },
+    {
+      "name": "editGraphPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits or removes the named resource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "editgraphplot"
+      }
+    },
+    {
       "name": "createFontResource",
       "layer": "user-facing",
       "domain": "core",
@@ -5779,6 +5905,168 @@
       "contract": {
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "replacefontresource"
+      }
+    },
+    {
+      "name": "createPartitionPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editPartitionPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/PARTITION.md",
+        "anchor": "createpartitionplot"
+      }
+    },
+    {
+      "name": "editPartitionPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits or removes the named resource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/PARTITION.md",
+        "anchor": "editpartitionplot"
+      }
+    },
+    {
+      "name": "createFlowData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editFlowData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "createflowdata"
+      }
+    },
+    {
+      "name": "editFlowData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editFlowData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "editflowdata"
+      }
+    },
+    {
+      "name": "layoutFlow",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editLayout`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "layoutflow"
+      }
+    },
+    {
+      "name": "createFlowNodes",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editFlowNodes`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "createflownodes"
+      }
+    },
+    {
+      "name": "editFlowNodes",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editFlowNodes`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "editflownodes"
+      }
+    },
+    {
+      "name": "createFlowLinks",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editFlowLinks`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "createflowlinks"
+      }
+    },
+    {
+      "name": "editFlowLinks",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editFlowLinks`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "editflowlinks"
       }
     }
   ],
@@ -5867,7 +6155,11 @@
       "rematerializeOverlay",
       "rematerializeImageMark",
       "materializeTreePlot",
-      "materializeTreemapPlot"
+      "materializeTreemapPlot",
+      "materializeGraphPlot",
+      "materializePartitionPlot",
+      "materializeFlowNodes",
+      "materializeFlowLinks"
     ],
     "guideComponents": [
       "createLegendBackground",

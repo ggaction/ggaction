@@ -114,6 +114,11 @@
     ]
   },
   "termAliases": {
+    "GraphData": [
+      "observed graph data",
+      "node and edge tables",
+      "network topology"
+    ],
     "Theme": [
       "program theme",
       "light or dark visual defaults"
@@ -985,7 +990,7 @@
       "normalized partition"
     ],
     "Layout": [
-      "stored hierarchy layout",
+      "stored layout",
       "node positions"
     ],
     "TreePlot": [
@@ -1000,6 +1005,46 @@
       "embedded font bytes",
       "measured font identity",
       "retained font source"
+    ],
+    "Graph": [
+      "graph layout",
+      "node positions"
+    ],
+    "GraphPlot": [
+      "graph plot",
+      "network plot",
+      "nodes and edges"
+    ],
+    "PartitionPlot": [
+      "icicle chart",
+      "sunburst chart",
+      "focused hierarchy partition"
+    ],
+    "InferredGraphData": [
+      "inferred graph data",
+      "nearest neighbor network",
+      "similarity and spanning graph",
+      "group and sequence connections"
+    ],
+    "FlowData": [
+      "flow graph",
+      "directed flow values",
+      "conservation"
+    ],
+    "Flow": [
+      "Sankey layout",
+      "DAG flow",
+      "cyclic flow"
+    ],
+    "FlowNodes": [
+      "flow nodes",
+      "flow rectangles",
+      "flow labels"
+    ],
+    "FlowLinks": [
+      "flow links",
+      "flow ribbons",
+      "feedback lanes"
     ]
   },
   "summaryOverrides": {
@@ -1820,6 +1865,20 @@
     "encodeYOffset": {
       "field": "series"
     },
+    "createGraphData": {
+      "id": "network",
+      "nodes": "nodes",
+      "edges": "edges",
+      "nodeKey": "name",
+      "source": "from",
+      "target": "to"
+    },
+    "editGraphData": {
+      "target": "network",
+      "definition": {
+        "directed": true
+      }
+    },
     "createImageResource": {
       "prepared": {
         "$code": "preparedImageCreate"
@@ -1908,6 +1967,65 @@
         "$code": "preparedFontReplace"
       },
       "requestToken": "current"
+    },
+    "layoutGraph": {
+      "id": "network-layout",
+      "graph": "network",
+      "method": "circular"
+    },
+    "createGraphPlot": {
+      "id": "networkPlot",
+      "layout": "network-layout",
+      "labels": {}
+    },
+    "editGraphPlot": {
+      "target": "networkPlot",
+      "nodes": {
+        "radius": 8
+      }
+    },
+    "createPartitionPlot": {
+      "id": "partition",
+      "layout": "partition-layout",
+      "labels": {}
+    },
+    "editPartitionPlot": {
+      "target": "partition",
+      "focus": {
+        "key": "a"
+      },
+      "padding": [
+        2,
+        3
+      ]
+    },
+    "createInferredGraphData": {
+      "id": "neighbors",
+      "data": "points",
+      "nodeKey": "id",
+      "ruleId": "nearest",
+      "rule": "knn",
+      "features": [
+        "x"
+      ],
+      "metric": "euclidean"
+    },
+    "editInferredGraphData": {
+      "target": "neighbors",
+      "definition": {
+        "options": {
+          "k": 2
+        }
+      }
+    },
+    "createFlowData": {
+      "id": "flow",
+      "nodes": "nodes",
+      "edges": "edges",
+      "nodeKey": "name",
+      "source": "from",
+      "target": "to",
+      "value": "amount"
     }
   },
   "callPatternOverrides": {

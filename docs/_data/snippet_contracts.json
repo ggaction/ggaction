@@ -1437,6 +1437,22 @@
   {
     "file": "api/data/source-and-derived.md",
     "block": 2,
+    "heading": "Observed graph data {#observed-graph-data}",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"from\"",
+      "target: \"to\"",
+      "target: \"network\""
+    ],
+    "prerequisites": "Imports and both source tables are included. This data-only example creates a semantic graph and no Canvas.",
+    "sha256": "4621d7bed7384142f48eae7fbb2cbb9e8ee06dd90e6bc0bc7257ab05e01b313b",
+    "executable": true
+  },
+  {
+    "file": "api/data/source-and-derived.md",
+    "block": 3,
     "heading": "`createDerivedData({ id, source, transform })` {#create-derived-data}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1450,7 +1466,7 @@
   },
   {
     "file": "api/data/source-and-derived.md",
-    "block": 3,
+    "block": 4,
     "heading": "`createSortedData({ id, source?, sortBy })` {#create-sorted-data}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1462,7 +1478,7 @@
   },
   {
     "file": "api/data/source-and-derived.md",
-    "block": 4,
+    "block": 5,
     "heading": "`bindMarkData({ target, data })` {#bindmarkdata-target-data}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2014,6 +2030,18 @@
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `edited`. Resource selectors used here: `data: \"observations\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "ac8b15058855aad7823d3e1a3349bc761ac8da6960c7984b2dabbe3f891047b1",
     "executable": false
+  },
+  {
+    "file": "api/graphs.md",
+    "block": 1,
+    "heading": "Graph inference",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "763a08ab408e0e4ebc51c3c1aee83c4c9e841ff22d1ab03e1017dbf6617a2726",
+    "executable": true
   },
   {
     "file": "api/grids.md",

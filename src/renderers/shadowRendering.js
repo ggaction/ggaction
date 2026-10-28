@@ -21,7 +21,7 @@ const OPTIONS = ["createCanvas", "decode", "fonts", "pixelRatio", "signal"];
 const MAX_BYTES = 64 * 1024 * 1024;
 const MAX_PIXELS = 16_777_216;
 
-function sourcePixels(item, plan, createCanvas) {
+function sourcePixels(item, plan, createCanvas, images) {
   const { shadow, blend, opacity, ...properties } = item.object.properties;
   void shadow; void blend; void opacity;
   const width = plan.composite.blur.sourceWidth, height = plan.composite.blur.sourceHeight;
@@ -33,7 +33,7 @@ function sourcePixels(item, plan, createCanvas) {
     glyph: { type: item.type, properties: { ...properties, opacity: 1 } } }, order: ["canvas", "glyph"] };
   context.scale(plan.pixelRatio, plan.pixelRatio);
   context.translate(-plan.left, -plan.top);
-  drawResolvedGraphicSpec(resolveGraphicRenderTarget(source), context, { createCanvas, pixelRatio: plan.pixelRatio });
+  drawResolvedGraphicSpec(resolveGraphicRenderTarget(source), context, { createCanvas, images, pixelRatio: plan.pixelRatio });
   const rgba = context.getImageData(0, 0, width, height).data;
   if (!(rgba instanceof Uint8ClampedArray) || rgba.length !== width * height * 4) throw new TypeError("Shadow surface returned invalid RGBA bytes.");
   return Array.from(rgba);
@@ -71,6 +71,11 @@ export async function prepareShadowRendering(program, options) {
     validateGeneratedItemLimit(pixels, "Shadow scene pixels", MAX_PIXELS);
     validateGeneratedItemLimit(bytes, "Shadow scene RGBA bytes", MAX_BYTES);
   });
+  const imageObjects = Object.fromEntries([...plans].filter(([id, plan]) => plan && items.get(id).type === "image")
+    .map(([id]) => [id, { type: "image", properties: items.get(id).object.properties }]));
+  const imageProgram = { graphicSpec: { objects: imageObjects, order: Object.keys(imageObjects) } };
+  const sourceImages = imageProgram.graphicSpec.order.length === 0 ? new Map()
+    : readPreparedImages(imageProgram.graphicSpec, await prepareImageRendering(imageProgram, { decode, signal }));
   const glyphs = new Map(), objects = Object.create(null), order = [];
   // All resolved source frames and aggregate work limits precede raster callbacks.
   for (const [id, plan] of plans) {
@@ -80,7 +85,7 @@ export async function prepareShadowRendering(program, options) {
     const rgba = item.type === "text"
       ? Array.from(prepareTextGlyphMask(resolved, item.object, { left: plan.left, top: plan.top,
         width: plan.width, height: plan.height, pixelRatio }, { fonts: options.fonts, createCanvas }).rgba)
-      : sourcePixels(item, plan, createCanvas);
+      : sourcePixels(item, plan, createCanvas, sourceImages);
     const composite = compositeShadowPixels(rgba, { width: plan.composite.blur.sourceWidth, height: plan.composite.blur.sourceHeight,
       pixelRatio, ...item.object.properties.shadow });
     const png = encodeRGBA8PNG({ width: composite.width, height: composite.height, rgba: composite.rgba });

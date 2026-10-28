@@ -105,11 +105,14 @@ test("keeps source imports inside their architectural boundaries", () => {
           (path.relative(root, file) === path.join("actions", "textMetrics", "index.js") && path.relative(root, dependency) === path.join("resources", "textMetrics.js")) ||
           (path.relative(root, file) === path.join("resources", "textMetricsFull.js") && path.relative(root, dependency) === path.join("actions", "textMetrics", "index.js")) ||
           (owner === "renderers" && path.relative(root, dependency) === path.join("core", "immutable.js")) ||
+          (path.relative(root, file) === path.join("selectors", "graphs.js") &&
+            path.relative(root, dependency) === path.join("core", "vocabulary.js")) ||
           (["imageRendering.js", "canvasScene.js", "fontRendering.js", "fonts.js", "textGlyphMask.js", "textInkBounds.js"].some(name => path.relative(root, file) === path.join("renderers", name)) &&
             ["assetHost.js", "ownData.js", "contentDigest.js"].some(name => path.relative(root, dependency) === path.join("core", name))) ||
           (["imageRendering.js", "canvasScene.js", "shadowRendering.js", "shadowState.js"].some(name => path.relative(root, file) === path.join("renderers", name)) &&
             ["assetHost.js", "ownData.js", "contentDigest.js", "pngEncoding.js", "validation.js"].some(name => path.relative(root, dependency) === path.join("core", name))) ||
           (["renderers", "theme"].includes(owner) && path.relative(root, dependency) === path.join("core", "font.js")) ||
+          (owner === "theme" && path.relative(root, dependency) === path.join("core", "ownData.js")) ||
           (["renderers", "selectors"].includes(owner) && path.relative(root, dependency) === path.join("core", "diagnostics.js"))
         ),
         true,

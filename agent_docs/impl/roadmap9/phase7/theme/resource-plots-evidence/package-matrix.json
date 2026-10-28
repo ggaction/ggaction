@@ -1,0 +1,20 @@
+{
+  "22": {
+    "sha256": "2de81b8cbdd14bbee57416721a1628b7a55261e31650b6e6171851442ea9fafc",
+    "entries": 822,
+    "packed": 1207008,
+    "unpacked": 5555782
+  },
+  "20": {
+    "sha256": "368ab32155d0ae9e99a963e92322e9d10a2f35dfe1cac486e60bb44e417f6ef4",
+    "entries": 822,
+    "packed": 1209615,
+    "unpacked": 5555782
+  },
+  "24": {
+    "sha256": "368ab32155d0ae9e99a963e92322e9d10a2f35dfe1cac486e60bb44e417f6ef4",
+    "entries": 822,
+    "packed": 1209615,
+    "unpacked": 5555782
+  }
+}

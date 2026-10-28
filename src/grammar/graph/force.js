@@ -9,7 +9,7 @@ import { createGraphRandom } from "./random.js";
 const required = ["seed", "iterations", "linkDistance", "repulsion", "collisionRadius", "damping", "center", "componentGap"];
 const finite = value => requireFiniteResult(value, "Force graph layout");
 
-function optionsFor(input) {
+export function normalizeForceOptions(input) {
   ownRecord(input, "Force graph options");
   rejectUnknownProperties(input, [...required, "initialPositions", "pinned", "maxNodes", "maxEdges"], "force graph");
   if (required.some(key => !Object.hasOwn(input, key))) throw new TypeError("Force graph layout requires all resolved options.");
@@ -136,7 +136,7 @@ function pack(nodes, components, pins, options) {
 }
 
 export function layoutGraphForce(model, input) {
-  const options = optionsFor(input), limits = { maxNodes: options.maxNodes, maxEdges: options.maxEdges };
+  const options = normalizeForceOptions(input), limits = { maxNodes: options.maxNodes, maxEdges: options.maxEdges };
   const indexed = indexGraphModel(model, limits), count = indexed.nodes.length;
   const initialWork = Object.hasOwn(input, "initialPositions")
     ? indexed.work + indexed.nodes.reduce((work, node) => work + 32 + node.key.length * 4, 0) : 0;

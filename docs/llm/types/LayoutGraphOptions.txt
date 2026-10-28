@@ -1,0 +1,4 @@
+export type LayoutGraphOptions = { readonly id: string; readonly graph?: string } &
+  ({ readonly method: "fixed"; readonly options: GraphFixedOptions }
+  | { readonly method: "circular"; readonly options?: GraphCircularOptions }
+  | { readonly method: "force"; readonly options?: GraphForceOptions });

@@ -1,5 +1,7 @@
 import { imageSelectionPolicy } from "./image.js";
-import { treeSelectionPolicy, treemapSelectionPolicy } from "./hierarchy.js";
+import { graphSelectionPolicy } from "./graph.js";
+import { treeSelectionPolicy, treemapSelectionPolicy, partitionSelectionPolicy } from "./hierarchy.js";
+import { flowNodeSelectionPolicy, flowLinkSelectionPolicy } from "./flow.js";
 import { mapConditionalValues } from "../../conditionalMapping.js";
 import { conditionalSelectionMembership } from "../../conditionalSelection.js";
 import { identifyItems } from "../items/common.js";
@@ -19,8 +21,10 @@ import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
 import { resolveOverlayItems } from "../items/overlay.js";
 
 const POLICIES = Object.freeze({
+  graph: graphSelectionPolicy,
   image: imageSelectionPolicy,
-  tree: treeSelectionPolicy, treemap: treemapSelectionPolicy,
+  tree: treeSelectionPolicy, treemap: treemapSelectionPolicy, partition: partitionSelectionPolicy,
+  "flow-node": flowNodeSelectionPolicy, "flow-link": flowLinkSelectionPolicy,
   text: textSelectionPolicy,
   arc: arcSelectionPolicy,
   area: areaSelectionPolicy,

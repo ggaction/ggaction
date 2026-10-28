@@ -1,10 +1,11 @@
 import { annotateError } from "../core/diagnostics.js";
 import { requireMaterializedDataset } from "./datasets.js";
 import { requireStoredResource, resolveInputReference } from "./resources.js";
+import { resolveLayoutResource } from "./layouts.js";
 
 export function resolveHierarchyResource(program, kind, requested, method) {
+  if (kind === "layout") return resolveLayoutResource(program, requested, "hierarchy", method);
   const eligible = resource => resource.kind === kind &&
-    (kind !== "layout" || resource.inputs.length === 1 && resource.inputs[0].kind === "hierarchy") &&
     (method === undefined || resource.options.method === method);
   if (requested !== undefined) {
     const resource = requireStoredResource(program, { kind, id: requested });

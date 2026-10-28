@@ -1,0 +1,7 @@
+export interface FlowLayoutEdge {
+  readonly key: string; readonly sourceKey: string; readonly targetKey: string; readonly value: number; readonly thickness: number;
+  readonly source: { readonly x: number; readonly y: number }; readonly target: { readonly x: number; readonly y: number };
+  readonly route: "forward" | "feedback" | "loop";
+  /** Lane coordinates use the canonical horizontal layout frame. */
+  readonly lane: null | { readonly side: "top" | "bottom"; readonly index: number; readonly center: number; readonly sourceX: number; readonly targetX: number };
+}

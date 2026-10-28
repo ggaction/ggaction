@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:e118f1fcc2c1e973ce7a8c746313de0577dd120d7a4e32477ba35f1a2bbf31a1",
-  "sourceCommit": "ce5de4d8b839e88c5d7b726ef1184ae64e31ca19",
-  "sourceRef": "ce5de4d8b839e88c5d7b726ef1184ae64e31ca19",
-  "exampleSourceRef": "88322383e2816ecb3e8e078d4baad6585dd55fce",
+  "contractId": "sha256:05371a3230cb6786b798bcee7199bb60fb82567e6997e3ae2dfb704bc4bd2646",
+  "sourceCommit": null,
+  "sourceRef": "main",
+  "exampleSourceRef": "b63c5f8739681aae0603281f97d065a26d564efa",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 319,
+  "actionCount": 335,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -158,7 +158,23 @@
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
+    "createGraphPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGraphPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
     "editTreePlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createPartitionPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editPartitionPlot": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
@@ -171,6 +187,54 @@
       "status": "development"
     },
     "createParameter": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createFlowData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editFlowData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "layoutFlow": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createFlowNodes": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editFlowNodes": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createFlowLinks": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editFlowLinks": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGraphData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createInferredGraphData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editInferredGraphData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGraphData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "layoutGraph": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

@@ -77,7 +77,8 @@ const rematerializeImageMark = /* @__PURE__ */ closedAction(
     return this.editGraphics({ target: imageClipOwner(layer.id), property: "clip", value: clip })
       .editGraphics({ target: layer.id, property: "clip", value: placement.clip })
       .editGraphics({ target: layer.id, property: "items", value: [{ type: "image", properties: {
-        image: concreteImageValue(image), x, y, width, height, opacity: config.opacity
+        image: concreteImageValue(image), x, y, width, height, opacity: config.opacity,
+        ...(config.shadow === undefined || config.shadow === false ? {} : { shadow: config.shadow })
       }, identity: { key: imageItemKey(layer.id), topology: "", role: "body", lineage: { kind: "resource", resource: layer.image } } }] });
   }
 );

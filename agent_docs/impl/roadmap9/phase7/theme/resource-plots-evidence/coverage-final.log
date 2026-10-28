@@ -1,0 +1,647 @@
+TAP version 13
+# Subtest: creates a reusable selection without changing graphics
+ok 1 - creates a reusable selection without changing graphics
+  ---
+  duration_ms: 137.258083
+  type: 'test'
+  ...
+# Subtest: supports explicit targets, ids, and every point selector family
+ok 2 - supports explicit targets, ids, and every point selector family
+  ---
+  duration_ms: 14.410958
+  type: 'test'
+  ...
+# Subtest: selects final bar and series items without changing their graphics
+ok 3 - selects final bar and series items without changing their graphics
+  ---
+  duration_ms: 1318.036833
+  type: 'test'
+  ...
+# Subtest: weighted histogram selections use positive-weight final members
+ok 4 - weighted histogram selections use positive-weight final members
+  ---
+  duration_ms: 4.852167
+  type: 'test'
+  ...
+# Subtest: highlights inline and reusable selections through wrapped point actions
+ok 5 - highlights inline and reusable selections through wrapped point actions
+  ---
+  duration_ms: 15.068625
+  type: 'test'
+  ...
+# Subtest: uses the default point recipe and can replace an existing assignment
+ok 6 - uses the default point recipe and can replace an existing assignment
+  ---
+  duration_ms: 4.765792
+  type: 'test'
+  ...
+# Subtest: keeps an empty point highlight graphical no-op unless complement dimming is requested
+ok 7 - keeps an empty point highlight graphical no-op unless complement dimming is requested
+  ---
+  duration_ms: 8.341167
+  type: 'test'
+  ...
+# Subtest: scales existing rect and path point geometry without changing shape
+ok 8 - scales existing rect and path point geometry without changing shape
+  ---
+  duration_ms: 16.983833
+  type: 'test'
+  ...
+# Subtest: reapplies selection and highlight intent after point rematerialization
+ok 9 - reapplies selection and highlight intent after point rematerialization
+  ---
+  duration_ms: 164.859708
+  type: 'test'
+  ...
+# Subtest: validates selection and point highlight options atomically
+ok 10 - validates selection and point highlight options atomically
+  ---
+  duration_ms: 3.834875
+  type: 'test'
+  ...
+# Subtest: highlights one bar item or one complete stack from the same y2 channel
+ok 11 - highlights one bar item or one complete stack from the same y2 channel
+  ---
+  duration_ms: 320.337
+  type: 'test'
+  ...
+# Subtest: validates bar-specific highlight appearance before creating selection state
+ok 12 - validates bar-specific highlight appearance before creating selection state
+  ---
+  duration_ms: 155.658125
+  type: 'test'
+  ...
+# Subtest: highlights complete area paths and preserves logical offsets after resize
+ok 13 - highlights complete area paths and preserves logical offsets after resize
+  ---
+  duration_ms: 1042.031
+  type: 'test'
+  ...
+# Subtest: highlights rule items with stroke recipes and translated endpoints
+ok 14 - highlights rule items with stroke recipes and translated endpoints
+  ---
+  duration_ms: 3.366208
+  type: 'test'
+  ...
+# Subtest: rejects mark-incompatible path and rule highlight options atomically
+ok 15 - rejects mark-incompatible path and rule highlight options atomically
+  ---
+  duration_ms: 638.044958
+  type: 'test'
+  ...
+# Subtest: row identity distinguishes duplicate observations and follows filtered source rows
+ok 16 - row identity distinguishes duplicate observations and follows filtered source rows
+  ---
+  duration_ms: 526.7445
+  type: 'test'
+  ...
+# Subtest: explicit highlight ID atomically replaces predicate and appearance
+ok 17 - explicit highlight ID atomically replaces predicate and appearance
+  ---
+  duration_ms: 141.69225
+  type: 'test'
+  ...
+# Subtest: box selection includes whiskers, caps and median through provenance
+ok 18 - box selection includes whiskers, caps and median through provenance
+  ---
+  duration_ms: 588.478958
+  type: 'test'
+  ...
+# Subtest: text highlights survive canvas rematerialization and removal
+ok 19 - text highlights survive canvas rematerialization and removal
+  ---
+  duration_ms: 175.975084
+  type: 'test'
+  ...
+# Subtest: compound highlights retain creation semantics unless an explicit ID is supplied
+ok 20 - compound highlights retain creation semantics unless an explicit ID is supplied
+  ---
+  duration_ms: 335.458125
+  type: 'test'
+  ...
+# Subtest: text inspection follows emitted labels rather than raw dataset cardinality
+ok 21 - text inspection follows emitted labels rather than raw dataset cardinality
+  ---
+  duration_ms: 29.512291
+  type: 'test'
+  ...
+# Subtest: ranked compound highlights reevaluate dependent members after role changes
+ok 22 - ranked compound highlights reevaluate dependent members after role changes
+  ---
+  duration_ms: 347.717791
+  type: 'test'
+  ...
+# Subtest: stack-grain picking retains category membership after bringing one stack to front
+ok 23 - stack-grain picking retains category membership after bringing one stack to front
+  ---
+  duration_ms: 85.952375
+  type: 'test'
+  ...
+# Subtest: runs every selector operator through reusable action state
+ok 24 - runs every selector operator through reusable action state
+  ---
+  duration_ms: 316.346583
+  type: 'test'
+  ...
+# Subtest: resolves explicit, current, unique, and ambiguous mark targets
+ok 25 - resolves explicit, current, unique, and ambiguous mark targets
+  ---
+  duration_ms: 44.124292
+  type: 'test'
+  ...
+# Subtest: keeps multiple highlight assignments independent when one is replaced
+ok 26 - keeps multiple highlight assignments independent when one is replaced
+  ---
+  duration_ms: 194.162625
+  type: 'test'
+  ...
+# Subtest: converges across color encoding, scale, Canvas, and filter order
+ok 27 - converges across color encoding, scale, Canvas, and filter order
+  ---
+  duration_ms: 394.945958
+  type: 'test'
+  ...
+# Subtest: replays homogeneous point highlights after direct appearance scale edits
+ok 28 - replays homogeneous point highlights after direct appearance scale edits
+  ---
+  duration_ms: 65.586166
+  type: 'test'
+  ...
+# Subtest: preserves selected-last order and encoded-style precedence after rematerialization
+ok 29 - preserves selected-last order and encoded-style precedence after rematerialization
+  ---
+  duration_ms: 142.176625
+  type: 'test'
+  ...
+# Subtest: uses every supported point shape as a highlighted replacement
+ok 30 - uses every supported point shape as a highlighted replacement
+  ---
+  duration_ms: 426.301917
+  type: 'test'
+  ...
+# Subtest: rejects invalid aggregate options without mutating program or caller input
+ok 31 - rejects invalid aggregate options without mutating program or caller input
+  ---
+  duration_ms: 20.152792
+  type: 'test'
+  ...
+# Subtest: applies a descendant theme without mutating composition inputs
+ok 32 - applies a descendant theme without mutating composition inputs
+  ---
+  duration_ms: 157.385375
+  type: 'test'
+  ...
+# Subtest: limits composition self themes to the root Canvas
+ok 33 - limits composition self themes to the root Canvas
+  ---
+  duration_ms: 75.544709
+  type: 'test'
+  ...
+# Subtest: removes only the parent frame and restores nested child themes
+ok 34 - removes only the parent frame and restores nested child themes
+  ---
+  duration_ms: 28.994833
+  type: 'test'
+  ...
+# Subtest: preserves a later child theme below a reapplied parent policy
+ok 35 - preserves a later child theme below a reapplied parent policy
+  ---
+  duration_ms: 26.169291
+  type: 'test'
+  ...
+# Subtest: removes the most recent direct composition scope first
+ok 36 - removes the most recent direct composition scope first
+  ---
+  duration_ms: 259.101542
+  type: 'test'
+  ...
+# Subtest: replays descendant themes after editing a facet source
+ok 37 - replays descendant themes after editing a facet source
+  ---
+  duration_ms: 178.835
+  type: 'test'
+  ...
+# Subtest: replays descendant themes after editing a repeat source
+ok 38 - replays descendant themes after editing a repeat source
+  ---
+  duration_ms: 68.342791
+  type: 'test'
+  ...
+# Subtest: propagates one ancestor theme through nested facet and repeat compositions
+ok 39 - propagates one ancestor theme through nested facet and repeat compositions
+  ---
+  duration_ms: 192.663083
+  type: 'test'
+  ...
+# Subtest: themes default facet headers and preserves explicit header styles
+ok 40 - themes default facet headers and preserves explicit header styles
+  ---
+  duration_ms: 218.872875
+  type: 'test'
+  ...
+# Subtest: keeps facet-owned headers unchanged for a self theme
+ok 41 - keeps facet-owned headers unchanged for a self theme
+  ---
+  duration_ms: 13.227041
+  type: 'test'
+  ...
+# Subtest: applies stored descendant policy to inserted and replaced concat children
+ok 42 - applies stored descendant policy to inserted and replaced concat children
+  ---
+  duration_ms: 63.757375
+  type: 'test'
+  ...
+# Subtest: graph theme paint changes preserve stored layouts and final item identity
+ok 43 - graph theme paint changes preserve stored layouts and final item identity
+  ---
+  duration_ms: 385.609084
+  type: 'test'
+  ...
+# Subtest: graph same-as-default authored paint and per-item styles outrank a theme
+ok 44 - graph same-as-default authored paint and per-item styles outrank a theme
+  ---
+  duration_ms: 95.803042
+  type: 'test'
+  ...
+# Subtest: tree theme paint changes preserve stored layouts and final item identity
+ok 45 - tree theme paint changes preserve stored layouts and final item identity
+  ---
+  duration_ms: 29.919625
+  type: 'test'
+  ...
+# Subtest: tree same-as-default authored paint and per-item styles outrank a theme
+ok 46 - tree same-as-default authored paint and per-item styles outrank a theme
+  ---
+  duration_ms: 113.944833
+  type: 'test'
+  ...
+# Subtest: treemap theme paint changes preserve stored layouts and final item identity
+ok 47 - treemap theme paint changes preserve stored layouts and final item identity
+  ---
+  duration_ms: 67.97675
+  type: 'test'
+  ...
+# Subtest: treemap same-as-default authored paint and per-item styles outrank a theme
+ok 48 - treemap same-as-default authored paint and per-item styles outrank a theme
+  ---
+  duration_ms: 4.555625
+  type: 'test'
+  ...
+# Subtest: resource plot themes keep disabled roles and inferred targets during editing
+ok 49 - resource plot themes keep disabled roles and inferred targets during editing
+  ---
+  duration_ms: 66.861417
+  type: 'test'
+  ...
+# Subtest: resource label typography changes rematerialize once without altering layout resources
+ok 50 - resource label typography changes rematerialize once without altering layout resources
+  ---
+  duration_ms: 12.50425
+  type: 'test'
+  ...
+# Subtest: scoped resource themes preserve child-local requests and restore family defaults
+ok 51 - scoped resource themes preserve child-local requests and restore family defaults
+  ---
+  duration_ms: 153.6115
+  type: 'test'
+  ...
+# Subtest: graph theme follows label reset and preserves a named highlight baseline
+ok 52 - graph theme follows label reset and preserves a named highlight baseline
+  ---
+  duration_ms: 137.276833
+  type: 'test'
+  ...
+# Subtest: tree theme follows label reset and preserves a named highlight baseline
+ok 53 - tree theme follows label reset and preserves a named highlight baseline
+  ---
+  duration_ms: 117.757292
+  type: 'test'
+  ...
+# Subtest: treemap theme follows label reset and preserves a named highlight baseline
+ok 54 - treemap theme follows label reset and preserves a named highlight baseline
+  ---
+  duration_ms: 26.982375
+  type: 'test'
+  ...
+# Subtest: applies, swaps, and removes persistent theme defaults immutably
+ok 55 - applies, swaps, and removes persistent theme defaults immutably
+  ---
+  duration_ms: 368.836167
+  type: 'test'
+  ...
+# Subtest: applies custom partial tokens and resets omitted tokens to the new base
+ok 56 - applies custom partial tokens and resets omitted tokens to the new base
+  ---
+  duration_ms: 67.000542
+  type: 'test'
+  ...
+# Subtest: preserves explicit font families under a custom font token
+ok 57 - preserves explicit font families under a custom font token
+  ---
+  duration_ms: 74.143833
+  type: 'test'
+  ...
+# Subtest: rematerializes font-dependent text resources before returning
+ok 58 - rematerializes font-dependent text resources before returning
+  ---
+  duration_ms: 27.687334
+  type: 'test'
+  ...
+# Subtest: resolves default highlight paint from the active theme
+ok 59 - resolves default highlight paint from the active theme
+  ---
+  duration_ms: 13.130167
+  type: 'test'
+  ...
+# Subtest: preserves explicit highlight paint across theme changes
+ok 60 - preserves explicit highlight paint across theme changes
+  ---
+  duration_ms: 125.562667
+  type: 'test'
+  ...
+# Subtest: infers theme-owned paint when replaying legacy highlight state
+ok 61 - infers theme-owned paint when replaying legacy highlight state
+  ---
+  duration_ms: 8.442667
+  type: 'test'
+  ...
+# Subtest: themes resources created later and supports the Basic entry
+ok 62 - themes resources created later and supports the Basic entry
+  ---
+  duration_ms: 95.77975
+  type: 'test'
+  ...
+# Subtest: preserves custom and same-as-default local overrides
+ok 63 - preserves custom and same-as-default local overrides
+  ---
+  duration_ms: 75.884167
+  type: 'test'
+  ...
+# Subtest: preserves same-value styles authored through complete axis and legend facades
+ok 64 - preserves same-value styles authored through complete axis and legend facades
+  ---
+  duration_ms: 45.991041
+  type: 'test'
+  ...
+# Subtest: preserves explicit legend block text under custom theme tokens
+ok 65 - preserves explicit legend block text under custom theme tokens
+  ---
+  duration_ms: 202.146375
+  type: 'test'
+  ...
+# Subtest: preserves field-driven mark and categorical legend appearance
+ok 66 - preserves field-driven mark and categorical legend appearance
+  ---
+  duration_ms: 15.8075
+  type: 'test'
+  ...
+# Subtest: updates Parallel guide roles without changing semantic state
+ok 67 - updates Parallel guide roles without changing semantic state
+  ---
+  duration_ms: 101.632458
+  type: 'test'
+  ...
+# Subtest: preserves one Parallel field override while theming the other axes
+ok 68 - preserves one Parallel field override while theming the other axes
+  ---
+  duration_ms: 86.069625
+  type: 'test'
+  ...
+# Subtest: themes Polar guides, chart titles, and multiple legend families
+ok 69 - themes Polar guides, chart titles, and multiple legend families
+  ---
+  duration_ms: 118.497417
+  type: 'test'
+  ...
+# Subtest: validates theme lifecycle and keeps failures atomic
+ok 70 - validates theme lifecycle and keeps failures atomic
+  ---
+  duration_ms: 0.367709
+  type: 'test'
+  ...
+# Subtest: is idempotent for an unchanged theme
+ok 71 - is idempotent for an unchanged theme
+  ---
+  duration_ms: 28.906875
+  type: 'test'
+  ...
+# Subtest: preserves a local edit made after applying a theme across later lifecycle changes
+ok 72 - preserves a local edit made after applying a theme across later lifecycle changes
+  ---
+  duration_ms: 8.037625
+  type: 'test'
+  ...
+# Subtest: themes text marks while preserving their content and position
+ok 73 - themes text marks while preserving their content and position
+  ---
+  duration_ms: 19.739792
+  type: 'test'
+  ...
+# Subtest: themes continuous legend chrome without recoloring data gradients
+ok 74 - themes continuous legend chrome without recoloring data gradients
+  ---
+  duration_ms: 78.537542
+  type: 'test'
+  ...
+# Subtest: does not change regression values, domains, ordering, or palette assignments
+ok 75 - does not change regression values, domains, ordering, or palette assignments
+  ---
+  duration_ms: 254.47025
+  type: 'test'
+  ...
+# Subtest: makes legacy dark component defaults readable and preserves explicit equivalents
+ok 76 - makes legacy dark component defaults readable and preserves explicit equivalents
+  ---
+  duration_ms: 312.996834
+  type: 'test'
+  ...
+# Subtest: themes reference defaults and keeps explicitly authored reference colors
+ok 77 - themes reference defaults and keeps explicitly authored reference colors
+  ---
+  duration_ms: 183.443709
+  type: 'test'
+  ...
+# Subtest: drops a removed mark's local binding before the same id is recreated
+ok 78 - drops a removed mark's local binding before the same id is recreated
+  ---
+  duration_ms: 30.813667
+  type: 'test'
+  ...
+# Subtest: honors a low-level graphic item override without freezing its siblings
+ok 79 - honors a low-level graphic item override without freezing its siblings
+  ---
+  duration_ms: 6.747292
+  type: 'test'
+  ...
+# Subtest: preserves same-value appearance authored through a chart facade
+ok 80 - preserves same-value appearance authored through a chart facade
+  ---
+  duration_ms: 2.399708
+  type: 'test'
+  ...
+# Subtest: preserves explicit component colors authored at composite action boundaries
+ok 81 - preserves explicit component colors authored at composite action boundaries
+  ---
+  duration_ms: 151.055542
+  type: 'test'
+  ...
+# Subtest: preserves an explicit regression band color at the high-level facade
+ok 82 - preserves an explicit regression band color at the high-level facade
+  ---
+  duration_ms: 118.3685
+  type: 'test'
+  ...
+# Subtest: drops stale guide and component bindings when their resources are reset
+ok 83 - drops stale guide and component bindings when their resources are reset
+  ---
+  duration_ms: 83.604292
+  type: 'test'
+  ...
+# Subtest: cached trace removals preserve theme resets across branching and restored histories
+ok 84 - cached trace removals preserve theme resets across branching and restored histories
+  ---
+  duration_ms: 1310.534708
+  type: 'test'
+  ...
+# Subtest: hierarchy inspection distinguishes nodes from links and labels and exposes exact resource dependencies
+ok 85 - hierarchy inspection distinguishes nodes from links and labels and exposes exact resource dependencies
+  ---
+  duration_ms: 89.874292
+  type: 'test'
+  ...
+# Subtest: hierarchy facets partition complete subtrees and revise retained source resources
+ok 86 - hierarchy facets partition complete subtrees and revise retained source resources
+  ---
+  duration_ms: 593.885541
+  type: 'test'
+  ...
+# Subtest: hierarchy topology partition and repeat encoding changes fail atomically
+ok 87 - hierarchy topology partition and repeat encoding changes fail atomically
+  ---
+  duration_ms: 71.093625
+  type: 'test'
+  ...
+# Subtest: hierarchy concat scopes stable identities and keeps same-name siblings independent
+ok 88 - hierarchy concat scopes stable identities and keeps same-name siblings independent
+  ---
+  duration_ms: 151.562959
+  type: 'test'
+  ...
+# Subtest: nested undefined style and nonscalar targets fail without changing an existing plot
+ok 89 - nested undefined style and nonscalar targets fail without changing an existing plot
+  ---
+  duration_ms: 72.169958
+  type: 'test'
+  ...
+# Subtest: tree emits links before nodes before labels with exact resource identities
+ok 90 - tree emits links before nodes before labels with exact resource identities
+  ---
+  duration_ms: 201.91925
+  type: 'test'
+  ...
+# Subtest: tree appearance edits preserve layout and remove optional graphics explicitly
+ok 91 - tree appearance edits preserve layout and remove optional graphics explicitly
+  ---
+  duration_ms: 18.700375
+  type: 'test'
+  ...
+# Subtest: tree orientation and Canvas edits distinguish stored layout from auto placement
+ok 92 - tree orientation and Canvas edits distinguish stored layout from auto placement
+  ---
+  duration_ms: 193.380375
+  type: 'test'
+  ...
+# Subtest: node highlight includes its label, preserves links and restores its baseline
+ok 93 - node highlight includes its label, preserves links and restores its baseline
+  ---
+  duration_ms: 59.293583
+  type: 'test'
+  ...
+# Subtest: row selections follow exact source keys through revision and cannot move to a replacement node
+ok 94 - row selections follow exact source keys through revision and cannot move to a replacement node
+  ---
+  duration_ms: 123.982375
+  type: 'test'
+  ...
+# Subtest: dormant key styles survive source removal and return only to their own key
+ok 95 - dormant key styles survive source removal and return only to their own key
+  ---
+  duration_ms: 16.4445
+  type: 'test'
+  ...
+# Subtest: treemap uses stored cells, keeps zero padding internal labels hidden and supports grouped targets
+ok 96 - treemap uses stored cells, keeps zero padding internal labels hidden and supports grouped targets
+  ---
+  duration_ms: 135.3725
+  type: 'test'
+  ...
+# Subtest: resource removal requires explicit plot removal and preserves shared resource state
+ok 97 - resource removal requires explicit plot removal and preserves shared resource state
+  ---
+  duration_ms: 64.026459
+  type: 'test'
+  ...
+# Subtest: malformed hierarchy plot restoration fails before graphic or source interpretation
+ok 98 - malformed hierarchy plot restoration fails before graphic or source interpretation
+  ---
+  duration_ms: 10.056209
+  type: 'test'
+  ...
+# Subtest: normalizes built-in and custom theme requests into owned partial definitions
+ok 99 - normalizes built-in and custom theme requests into owned partial definitions
+  ---
+  duration_ms: 1.782958
+  type: 'test'
+  ...
+# Subtest: resolves base tokens and the closed optional axis typography vocabulary
+ok 100 - resolves base tokens and the closed optional axis typography vocabulary
+  ---
+  duration_ms: 0.41525
+  type: 'test'
+  ...
+# Subtest: replaces custom partial tokens instead of merging consecutive definitions
+ok 101 - replaces custom partial tokens instead of merging consecutive definitions
+  ---
+  duration_ms: 0.170916
+  type: 'test'
+  ...
+# Subtest: rejects malformed custom theme definitions and token values
+ok 102 - rejects malformed custom theme definitions and token values
+  ---
+  duration_ms: 0.931334
+  type: 'test'
+  ...
+# Subtest: rejects executable and hidden theme descriptors before reading them
+ok 103 - rejects executable and hidden theme descriptors before reading them
+  ---
+  duration_ms: 0.355417
+  type: 'test'
+  ...
+1..103
+# tests 103
+# suites 0
+# pass 103
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6687.361333
+# start of coverage report
+# ---------------------------------------------------------------------
+# file                 | line % | branch % | funcs % | uncovered lines
+# ---------------------------------------------------------------------
+# src                  |        |          |         | 
+#  actions             |        |          |         | 
+#   theme              |        |          |         | 
+#    resourcePlots.js  | 100.00 |    94.74 |  100.00 | 
+#  materialization     |        |          |         | 
+#   selection          |        |          |         | 
+#    path.js           | 100.00 |   100.00 |  100.00 | 
+#    policies          |        |          |         | 
+#     hierarchy.js     | 100.00 |    81.82 |  100.00 | 
+#  theme               |        |          |         | 
+#   defaults.js        |  99.34 |    96.15 |  100.00 | 119
+# ---------------------------------------------------------------------
+# all files            |  99.66 |    94.50 |  100.00 | 
+# ---------------------------------------------------------------------
+# end of coverage report

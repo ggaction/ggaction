@@ -1,0 +1,18 @@
+export type GraphLayoutResource = {
+  readonly kind: "layout"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly { readonly kind: "graph"; readonly id: string; readonly revision: number }[];
+  readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+  readonly result: {
+    readonly nodes: readonly { readonly key: string; readonly x: number; readonly y: number }[];
+    readonly algorithm: "fixed@1" | "circular@1" | "exact-pair-spring@1";
+    readonly packing: null | { readonly method: "horizontal"; readonly gap: number; readonly components: readonly {
+      readonly nodeIndices: readonly number[]; readonly pinned: boolean;
+      readonly bounds: { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number };
+    }[] };
+  };
+} & { readonly options:
+  { readonly method: "fixed"; readonly options: Readonly<Required<GraphFixedOptions>> }
+  | { readonly method: "circular"; readonly options: Readonly<Required<GraphCircularOptions>> }
+  | { readonly method: "force"; readonly options: Readonly<Required<Omit<GraphForceOptions, "initialPositions">> & Pick<GraphForceOptions, "initialPositions">> }
+};
+/** Directed observed flow: value is a required finite nonnegative edge column. */

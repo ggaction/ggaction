@@ -46,9 +46,9 @@ Chart authoring. Compute an explicit tree, treemap, or normalized partition layo
 editLayout(options: EditLayoutOptions): ChartProgram
 ```
 
-Chart authoring. Change a layout order or method-specific options and refresh its plot consumers.
+Chart authoring. Patch a stored hierarchy or graph layout and refresh its existing consumers.
 
-The existing layout method remains fixed. `options` is a partial patch of that method. Changing a radial tree to vertical/horizontal removes its radial-only options. The proposed geometry and every plot are checked before state-changing child actions. Layout numeric intent has one owner and is independent of Canvas placement.
+The existing layout method remains fixed. `options` is a partial patch of that method. Graph layouts require nonempty options and reject hierarchy-only `order`; see [graph layouts](data/source-and-derived.md#layoutgraph). Omitted targets select the current layout, then a unique layout, and reject ambiguity across both families. Changing a radial tree to vertical/horizontal removes its radial-only options. The proposed geometry and every plot are checked before state-changing child actions. Layout numeric intent has one owner and is independent of Canvas placement.
 
 ## removeResource
 
@@ -111,3 +111,11 @@ Authoring rejects unknown or duplicate targets. When a source revision removes a
 Source and parameter revisions refresh dependent hierarchy resources, layouts and plots in order. Invalid topology, layout or concrete output leaves the original program unchanged. Concat children retain separate identities. Facets support complete subtree partitions; a partition that separates a child from its parent fails. Repeat positional field changes are not applicable.
 
 Editable serialization retains layout geometry and exact source refs. Restore validates that state without running a layout algorithm. Canvas, SVG, PNG and PDF read the same concrete graphics. Empty sources produce empty models; zero totals produce finite zero-area partitions and an inspection diagnostic.
+
+Body and label `fill` accepts the shared `FillPaint` contract: solid color, linear gradient, pattern or radial gradient. Pattern origins are materialized in object or plot coordinates, and text fills retain concrete glyph bounds. Layout, Canvas and data revisions recompute those bounds while preserving the authored fill. Stroke remains a solid color. Partition cells and labels use the same paint owner.
+
+## Outlines and shadows
+
+Body and label styles accept `outline:{color,width}|false` and `shadow:{color,offsetX?,offsetY?,blurRadius?}|false`, including per-item overrides. Omission preserves an effect during edits; false removes it, including an inherited role effect. Effects reuse the [mark appearance contract](appearance/mark-style.md). An authored outline and stroke in the same style patch conflict; an existing stroke is retained underneath the outline and returns when it is removed. Each effect preserves its original item identity and source geometry. Style edits, resize, highlight replay and offline restore do not rerun the stored layout.
+
+Tree links accept shadow, while their ordinary stroke remains the link appearance.

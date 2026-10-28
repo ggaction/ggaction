@@ -1,0 +1,4 @@
+export interface FlowLinksOptions {
+  readonly id?: string; readonly layout?: string; readonly coordinate?: string; readonly clip?: boolean;
+  readonly links?: FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey })[] };
+}

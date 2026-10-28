@@ -61,22 +61,9 @@ Selection operates on final nodes and selects body plus label; links are exclude
 - ✅ Covered: explicit and inferred identity, closed options, immutable lifecycle, exact references, stored validation and dependent concrete output.
 - Evidence: `test/unit/resources/hierarchy-resources.test.js`, `test/unit/resources/hierarchy-plots.test.js`, `test/unit/resources/hierarchy-consumers.test.js`, `test/unit/resources/hierarchy-validation.test.js`, `test/contracts/hierarchy-types.test.js`, `test/charts/tree-layouts/public.test.js`, `test/charts/treemap-layouts/public.test.js`.
 
-## `editLayout`
+## 공통 배치 편집
 
-- Signature: `editLayout({ target?, order?, options? })`.
-- Change a layout order or method-specific options and refresh its plot consumers.
-- The existing layout method remains fixed. `options` is a partial patch of that method. Changing a radial tree to vertical/horizontal removes its radial-only options. The proposed geometry and every plot are checked before state-changing child actions. Layout numeric intent has one owner and is independent of Canvas placement.
-
-### Formal values — `editLayout`
-
-- Implemented: `editLayout(options: EditLayoutOptions): ChartProgram` (Full only).
-- Planned: 없음.
-- Proposed (NOT IMPLEMENTED): No additional options.
-
-### Value coverage — `editLayout`
-
-- ✅ Covered: explicit and inferred identity, closed options, immutable lifecycle, exact references, stored validation and dependent concrete output.
-- Evidence: `test/unit/resources/hierarchy-resources.test.js`, `test/unit/resources/hierarchy-plots.test.js`, `test/unit/resources/hierarchy-consumers.test.js`, `test/unit/resources/hierarchy-validation.test.js`, `test/contracts/hierarchy-types.test.js`, `test/charts/tree-layouts/public.test.js`, `test/charts/treemap-layouts/public.test.js`.
+Hierarchy와 graph가 공유하는 `editLayout` 계약은 [LAYOUTS.md](LAYOUTS.md#editlayout)가 소유한다.
 
 ## 계층 리소스 제거
 
@@ -90,6 +77,7 @@ Authored hierarchy/layout dependent와 live hierarchy plot은 먼저 명시적�
 
 - Signature: `createTreePlot({ id?, layout?, origin?, clip?, nodes?, links?, labels? })`.
 - Draw hierarchy nodes and parent links from a stored tree layout.
+- Item highlights apply fill, opacity and offset to the node body and label; stroke and strokeWidth apply only to the node body. Text labels retain their existing text appearance contract. Theme changes rebuild the unhighlighted baseline before reapplying named highlights.
 - The omitted first ID is `treePlot`; another tree plot needs an explicit ID. The layout must use method tree. Omitted layout uses current eligible context, then the unique eligible resource; ambiguity fails. Nodes default to radius 6, fill #2563eb, stroke #ffffff, width 1 and opacity 1. Links default to #94a3b8, width 1.5 and opacity 1; false disables them. `origin:"auto"` centers stored bounds in the plot frame; explicit `[x,y]` is plot-local. `clip:false` is default.
 
 ### Formal values — `createTreePlot`
@@ -154,3 +142,11 @@ Authored hierarchy/layout dependent와 live hierarchy plot은 먼저 명시적�
 - ✅ Covered: explicit and inferred identity, closed options, immutable lifecycle, exact references, stored validation and dependent concrete output.
 - Evidence: `test/unit/resources/hierarchy-resources.test.js`, `test/unit/resources/hierarchy-plots.test.js`, `test/unit/resources/hierarchy-consumers.test.js`, `test/unit/resources/hierarchy-validation.test.js`, `test/contracts/hierarchy-types.test.js`, `test/charts/tree-layouts/public.test.js`, `test/charts/treemap-layouts/public.test.js`.
 
+
+Body and label `fill` accepts the shared `FillPaint` contract: solid color, linear gradient, pattern or radial gradient. Pattern origins are materialized in object or plot coordinates, and text fills retain concrete glyph bounds. Layout, Canvas and data revisions recompute those bounds while preserving the authored fill. Stroke remains a solid color. Partition cells and labels use the same paint owner.
+
+## Resource plot appearance effects
+
+The existing body and label style records accept optional `outline:MarkOutline|false` and `shadow:MarkShadow|false`, including keyed overrides. Reuse the closed values, defaults, glyph order, preparation, source-geometry hit boundary and backend behavior in [MARKS.md](MARKS.md#prepared-per-item-shadows). Create omission has no effect; edit omission preserves; false removes or suppresses inherited effect. Same-patch outline and stroke reject. Stored ordinary stroke remains available beneath an outline. Effects stay in the existing role appearance configuration; false is removed when constructing concrete graphics. Stored shadows require resolved offsets and blur radius. Per-item style changes retain layout resource identity, original source rows, selection keys and glyph roles. Tree links and graph edge/arrow components accept shadow; ordinary stroke owns their contour, with no outline option. Flow ribbons are filled bodies and support both effects.
+
+Evidence: `test/unit/resources/resource-plot-effects.test.js`, `test/unit/resources/font-resource-labels.test.js`.

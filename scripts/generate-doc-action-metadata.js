@@ -15,7 +15,7 @@ function operation(name) {
     if (name.startsWith(candidate)) return candidate;
   }
   if (["facet", "facetGrid", "repeatCharts"].includes(name)) return "compose";
-  if (name === "layoutHierarchy") return "create";
+  if (["layoutHierarchy", "layoutGraph", "layoutFlow"].includes(name)) return "create";
   if (
     name === "reviseData" ||
     name === "bindMarkData" ||

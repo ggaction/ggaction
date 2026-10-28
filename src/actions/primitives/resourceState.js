@@ -5,7 +5,7 @@ import { findStoredResource, requireStoredResource, resolveInputReference, dataI
 import { validateResourceGraph, validateStoredResource, resourceDependencies, orderResourceDependencies, planStoredResourceRemoval, collectParameterInputReferences } from "../../materialization/resourceState.js";
 import { dataSourceValueHash } from "../../grammar/dataSourcePayload.js";
 import { dataSourcesForDataset, validateDataSourceState } from "../../materialization/dataSourceState.js";
-import { preparedResourceResults } from "./preparedResourceContext.js";
+import { preparedResourceResults, preparedResourceDataReplacements } from "./preparedResourceContext.js";
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 
 const same = (a, b) => a.kind === b.kind && a.id === b.id;
@@ -24,20 +24,41 @@ export function replaceStoredResource(program, parsed, value, args) {
     if (!same(ref, value)) resolveInputReference(program, ref);
   }
   const replacements = new Map();
+  const affected = new Set([JSON.stringify([value.kind, value.id])]);
+  const allowed = new Set();
+  for (const candidate of orderResourceDependencies(program.semanticSpec.resources)) {
+    const owns = candidate.kind === "data-source" && value.kind === "parameter" ||
+      candidate.kind === "layout" && ["hierarchy", "graph"].includes(value.kind) ||
+      candidate.kind === "graph" && candidate.provenance.origin === "inferred" && value.kind === "graph";
+    if (owns && candidate.inputs.some(ref => affected.has(JSON.stringify([ref.kind, ref.id])))) {
+      const key = JSON.stringify([candidate.kind, candidate.id]); affected.add(key); allowed.add(key);
+    }
+  }
   for (const entry of preparedResourceResults(args, program) ?? []) {
     const old = requireStoredResource(program, entry.previous);
-    if ((old.kind === "data-source" ? value.kind !== "parameter" : old.kind !== "layout" || value.kind !== "hierarchy") || !old.inputs.some(ref => same(ref, value)) ||
+    if (!allowed.has(JSON.stringify([old.kind, old.id])) ||
         dataSourceValueHash(old.options) !== dataSourceValueHash(entry.resource.options)) {
-      throw annotateError(new Error("Prepared resource replacement does not belong to this parameter write."), { code: "stale-result", resourceId: old.id });
+      throw annotateError(new Error("Prepared resource replacement does not belong to this resource write."), { code: "stale-result", resourceId: old.id });
     }
     replacements.set(JSON.stringify([old.kind, old.id]), entry.resource);
+  }
+  const dataReplacements = new Map();
+  for (const entry of preparedResourceDataReplacements(args, program)) {
+    resolveInputReference(program, entry.previous); resolveInputReference(program, entry.next);
+    dataReplacements.set(entry.previous.id, entry);
   }
   const supplied = previous === undefined ? [...program.semanticSpec.resources, value]
     : program.semanticSpec.resources.map(resource => same(resource, value) ? value : resource);
   const updated = new Map(), revisions = new Map();
   for (const resource of orderResourceDependencies(supplied)) {
     const key = JSON.stringify([resource.kind, resource.id]);
+    const replacement = replacements.get(key);
     const rebind = ref => {
+      if (replacement !== undefined && ref.kind === "data" && dataReplacements.has(ref.id)) {
+        const entry = dataReplacements.get(ref.id);
+        if (dataSourceValueHash(ref) !== dataSourceValueHash(entry.previous)) throw new TypeError("Prepared graph data input has a stale source revision.");
+        return entry.next;
+      }
       const revised = updated.get(JSON.stringify([ref.kind, ref.id]));
       return revised === undefined || revised.revision === ref.revision ? ref : { ...ref, revision: revised.revision };
     };
@@ -45,7 +66,6 @@ export function replaceStoredResource(program, parsed, value, args) {
     const ownership = resource.ownership.mode === "generated" ? { ...resource.ownership, owner: rebind(resource.ownership.owner) } : resource.ownership;
     const changed = inputs.some((ref, index) => ref !== resource.inputs[index]) || ownership.owner !== resource.ownership.owner;
     let next = changed ? { ...resource, revision: resource.revision + (same(resource, value) ? 0 : 1), inputs, ownership } : resource;
-    const replacement = replacements.get(key);
     if (replacement !== undefined) {
       if (!changed || replacement.revision !== next.revision ||
           dataSourceValueHash(replacement.inputs) !== dataSourceValueHash(inputs) ||

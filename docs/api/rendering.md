@@ -16,11 +16,12 @@ the optional native backend with `npm install ggaction @napi-rs/canvas`.
 Importing the PNG/PDF entry works without the backend; calling it then reports
 the required installation command. No dependency is installed automatically.
 
-Node PNG/PDF keep the requested font families first and append installed common
-CJK, Unicode, and emoji fallback families for missing glyphs. Text and layout
-remain unchanged; fonts are never downloaded. Install an appropriate font on the
-export host for the scripts you use, or specify your own ordered font-family list.
-Browser Canvas and SVG use the browser's font resolution.
+Canvas, PNG, and PDF keep the requested font families first and share one ordered
+list of common CJK, Unicode, and emoji fallback families. The drawing host skips
+unavailable families. Exact embedded font bindings use only their prepared alias.
+Text and layout remain unchanged; fonts are never downloaded. Install an
+appropriate font on the drawing host for the scripts you use, or specify your own
+ordered font-family list. SVG uses the browser's font resolution.
 
 ## At a glance
 
@@ -672,7 +673,8 @@ An exact profile requires a unique resource for each family/style/weight tuple.
 New labels or typography may require new measurements. Such edits fail atomically;
 use `removeTextMetrics()`, make the edit, then prepare and apply the new layout.
 Replacing a bound font prepares its new measurement closure before committing
-the resource and all affected text. Existing schema 1 profiles retain their
+the resource and all affected text, including tree, treemap, and graph labels.
+These labels reuse their stored layout coordinates when typography changes. Existing schema 1 profiles retain their
 documented estimate behavior for unmatched queries.
 
 Canvas uses `prepareFontRendering(programOrCanvasScene,{register,signal?})` from

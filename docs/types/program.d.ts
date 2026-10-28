@@ -162,7 +162,7 @@ export interface ShadowRenderingHost {
     readonly width: number; readonly height: number;
     getContext(type: "2d"): CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | null;
   };
-  /** Required for Canvas output; SVG embeds the prepared bytes directly. */
+  /** Required for Canvas output and image source masks; SVG embeds the prepared bytes directly. */
   decode?: ImageRenderingHost["decode"];
   /** Exact font preparation is required for Text shadows. */
   fonts?: PreparedFontRendering;
@@ -206,7 +206,7 @@ export interface ImageMarkOptions {
   viewport?: "auto" | { x: number; y: number; width: number; height: number };
   fit?: "contain" | "cover" | "fill";
   align?: readonly [number, number];
-  opacity?: number; alt?: string; clip?: false | GraphicClip;
+  opacity?: number; alt?: string; clip?: false | GraphicClip; shadow?: MarkShadow | false;
 }
 export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; }
 export interface EditImageMarkOptions extends ImageMarkOptions { target?: string; }
@@ -1712,7 +1712,215 @@ export interface DataSourceResource {
   readonly result: { readonly data: Extract<InputRef, { readonly kind: "data" }>; readonly inputHash: string };
   readonly provenance: { readonly origin: "authored" };
 }
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "font";
+export type GraphKeyField = string | readonly string[];
+export interface ObservedGraphDefinition {
+  readonly nodeKey: GraphKeyField;
+  readonly source: GraphKeyField;
+  readonly target: GraphKeyField;
+  readonly edgeKey?: GraphKeyField;
+  readonly weight?: string;
+  readonly attributes?: readonly string[];
+  readonly directed?: boolean;
+  readonly selfLoops?: boolean;
+  readonly maxNodes?: number;
+  readonly maxEdges?: number;
+}
+export interface CreateGraphDataOptions extends ObservedGraphDefinition {
+  readonly id: string; readonly nodes: string; readonly edges: string;
+}
+export interface EditGraphDataOptions {
+  readonly target?: string; readonly nodes?: string; readonly edges?: string;
+  readonly definition?: Partial<ObservedGraphDefinition>;
+}
+export type GraphMetric = "euclidean" | "manhattan" | "cosine" | "jaccard" | "great-circle";
+export type GraphFeatures = readonly string[] | { readonly set: string } | { readonly longitude: string; readonly latitude: string };
+export type GraphSearchOptions = { readonly mode?: "exact"; readonly algorithm?: "brute-force" | "kd-tree" | "grid" } |
+  { readonly mode: "approximate"; readonly algorithm?: "projection-forest"; readonly seed: number; readonly trees?: number;
+    readonly projections?: 1; readonly leafSize?: number; readonly searchLeaves?: number; readonly fallback?: "error" | "exact"; readonly minRecall?: number };
+export interface GraphFeaturePolicy { readonly missing?: "error" | "omit-node"; readonly zeroVector?: "error" | "zero-similarity"; }
+export interface InferredGraphSource {
+  readonly nodeKey: GraphKeyField; readonly ruleId: string; readonly attributes?: readonly string[];
+  readonly maxNodes?: number; readonly maxEdges?: number;
+}
+export type GraphMetricDefinition =
+  { readonly metric: "euclidean" | "manhattan" | "cosine"; readonly features: readonly string[]; readonly preprocess?: "none" | "standardize" | "minmax" } |
+  { readonly metric: "jaccard"; readonly features: readonly string[] | { readonly set: string }; readonly preprocess?: "none" } |
+  { readonly metric: "great-circle"; readonly features: readonly string[] | { readonly longitude: string; readonly latitude: string }; readonly preprocess?: "none" };
+export type GraphNeighborDefinition = InferredGraphSource & GraphMetricDefinition & (
+  { readonly rule: "knn"; readonly options?: GraphFeaturePolicy & { readonly k?: number; readonly symmetrize?: "directed" | "union" | "mutual"; readonly search?: GraphSearchOptions } } |
+  { readonly rule: "radius"; readonly options: GraphFeaturePolicy & { readonly radius: number; readonly directed?: boolean; readonly search?: Extract<GraphSearchOptions, { readonly mode?: "exact" }> } } |
+  { readonly rule: "similarity"; readonly metric: "cosine" | "jaccard"; readonly options: GraphFeaturePolicy & { readonly threshold: number; readonly directed?: boolean; readonly search?: { readonly mode?: "exact"; readonly algorithm?: "brute-force" } } });
+export type GraphMetricMstDefinition = InferredGraphSource & GraphMetricDefinition & { readonly rule: "mst"; readonly options?: GraphFeaturePolicy & { readonly forest?: boolean } };
+export type GraphCandidateMstDefinition = InferredGraphSource & { readonly rule: "mst"; readonly options?: { readonly forest?: boolean }; readonly features?: never; readonly metric?: never; readonly preprocess?: never };
+export type GraphStructuralDefinition = InferredGraphSource & { readonly features?: never; readonly metric?: never; readonly preprocess?: never } & (
+  { readonly rule: "group"; readonly options: { readonly fields: readonly string[]; readonly missing?: "error" | "omit-node" | "include"; readonly mode?: "clique" | "star";
+    readonly hubKey?: RowKey; readonly hubs?: readonly { readonly group: readonly unknown[]; readonly key: RowKey }[] } } |
+  { readonly rule: "sequence"; readonly options: { readonly orderField: string; readonly groupBy?: readonly string[]; readonly missing?: "error" | "omit-node";
+    readonly lag?: number; readonly maxGap?: number; readonly temporalUnit?: TemporalInputUnit } });
+export type InferredGraphDefinition = GraphNeighborDefinition | GraphMetricMstDefinition | GraphCandidateMstDefinition | GraphStructuralDefinition;
+export type CreateInferredGraphDataOptions = { readonly id: string; readonly data?: string } & (
+  (GraphNeighborDefinition | GraphMetricMstDefinition | GraphStructuralDefinition) & { readonly candidateGraph?: never } |
+  GraphCandidateMstDefinition & { readonly candidateGraph: string });
+export interface EditInferredGraphDataOptions {
+  readonly target?: string; readonly data?: string; readonly candidateGraph?: string | null;
+  readonly definition?: Partial<InferredGraphDefinition>;
+}
+export interface GraphInferenceDiagnostics {
+  readonly options: Readonly<Record<string, unknown>>;
+  readonly preparation?: { readonly metric: GraphMetric; readonly preprocess: "none" | "standardize" | "minmax";
+    readonly missing: "error" | "omit-node"; readonly zeroVector?: "error" | "zero-similarity";
+    readonly sourceIndices: readonly number[]; readonly omitted: readonly { readonly index: number; readonly feature: number; readonly reason: "missing-value" }[];
+    readonly statistics: readonly { readonly scale: number; readonly center: number; readonly spread: number }[] };
+  readonly sourceIndices?: readonly number[]; readonly omitted?: readonly { readonly index: number; readonly reason: "missing-group" | "missing-order" }[];
+  readonly search?: Readonly<Record<string, unknown>>; readonly effectiveK?: number; readonly pairCount?: number;
+  readonly cost?: number; readonly components?: number; readonly componentNodes?: readonly (readonly number[])[]; readonly candidateCount?: number;
+}
+export interface GraphNode {
+  readonly key: string;
+  readonly sourceRows: readonly number[];
+  readonly attributes: Readonly<Record<string, unknown>>;
+}
+export interface GraphEdge<Origin extends "observed" | "inferred" = "observed" | "inferred"> {
+  readonly key: string; readonly sourceKey: string; readonly targetKey: string;
+  readonly directed: boolean; readonly weight: number;
+  readonly origin: Origin; readonly ruleId: Origin extends "observed" ? null : string; readonly sourceRows: readonly number[];
+}
+export interface GraphModel<Origin extends "observed" | "inferred" = "observed" | "inferred"> {
+  readonly nodes: readonly GraphNode[]; readonly edges: readonly GraphEdge<Origin>[];
+  readonly directed: boolean; readonly selfLoops: boolean;
+  readonly adjacency: readonly { readonly key: string; readonly incoming: readonly string[];
+    readonly outgoing: readonly string[]; readonly neighbors: readonly string[] }[];
+}
+export interface ObservedGraphResource {
+  readonly kind: "graph"; readonly id: string; readonly revision: number;
+  readonly algorithmVersion: "1"; readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly Extract<InputRef, { readonly kind: "data" }>[];
+  readonly options: { readonly roles: { readonly nodes: 0; readonly edges: 0 | 1 };
+    readonly definition: ObservedGraphDefinition & Required<Pick<ObservedGraphDefinition, "attributes" | "directed" | "selfLoops" | "maxNodes" | "maxEdges">> };
+  readonly result: { readonly model: GraphModel<"observed">; readonly diagnostics: null };
+  readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly InputRowRef[] };
+}
+export interface InferredGraphResource {
+  readonly kind: "graph"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly [Extract<InputRef, { readonly kind: "data" }>, ...Extract<InputRef, { readonly kind: "graph" }>[]];
+  readonly options: { readonly roles: { readonly nodes: 0; readonly edges: 0 }; readonly definition: InferredGraphDefinition &
+    Required<Pick<InferredGraphSource, "attributes" | "maxNodes" | "maxEdges">> & { readonly options: Readonly<Record<string, unknown>> } };
+  readonly result: { readonly model: GraphModel<"inferred">; readonly diagnostics: GraphInferenceDiagnostics };
+  readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+}
+export type GraphResource = ObservedGraphResource | InferredGraphResource;
+export interface GraphPosition { readonly key: RowKey; readonly x: number; readonly y: number; }
+export interface GraphNodePaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; radius?: number; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface GraphEdgePaint { shadow?: MarkShadow | false; stroke?: string; strokeWidth?: number; opacity?: number; parallelGap?: number; loopRadius?: number; arrowSize?: number; arrows?: "auto" | boolean; }
+export interface GraphLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface GraphLabelsOptions extends GraphLabelPaint {
+  field?: string; offset?: readonly [number, number]; overrides?: readonly (GraphLabelPaint & { key: RowKey; text?: string })[];
+}
+export interface GraphPlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
+  edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
+}
+export interface EditGraphPlotOptions extends Omit<GraphPlotOptions, "id"> { target?: string; }
+export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly fy: number; }
+export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
+export interface GraphFixedOptions extends GraphLayoutLimits { readonly positions: readonly GraphPosition[]; }
+export interface GraphCircularOptions extends GraphLayoutLimits { readonly center?: readonly [number, number]; readonly radius?: number; readonly startAngle?: number; }
+export interface GraphForceOptions extends GraphLayoutLimits {
+  readonly seed?: number; readonly iterations?: number; readonly linkDistance?: number; readonly repulsion?: number;
+  readonly collisionRadius?: number; readonly damping?: number; readonly center?: readonly [number, number];
+  readonly componentGap?: number; readonly initialPositions?: readonly GraphPosition[]; readonly pinned?: readonly GraphPin[];
+}
+export type LayoutGraphOptions = { readonly id: string; readonly graph?: string } &
+  ({ readonly method: "fixed"; readonly options: GraphFixedOptions }
+  | { readonly method: "circular"; readonly options?: GraphCircularOptions }
+  | { readonly method: "force"; readonly options?: GraphForceOptions });
+export type GraphLayoutResource = {
+  readonly kind: "layout"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly { readonly kind: "graph"; readonly id: string; readonly revision: number }[];
+  readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+  readonly result: {
+    readonly nodes: readonly { readonly key: string; readonly x: number; readonly y: number }[];
+    readonly algorithm: "fixed@1" | "circular@1" | "exact-pair-spring@1";
+    readonly packing: null | { readonly method: "horizontal"; readonly gap: number; readonly components: readonly {
+      readonly nodeIndices: readonly number[]; readonly pinned: boolean;
+      readonly bounds: { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number };
+    }[] };
+  };
+} & { readonly options:
+  { readonly method: "fixed"; readonly options: Readonly<Required<GraphFixedOptions>> }
+  | { readonly method: "circular"; readonly options: Readonly<Required<GraphCircularOptions>> }
+  | { readonly method: "force"; readonly options: Readonly<Required<Omit<GraphForceOptions, "initialPositions">> & Pick<GraphForceOptions, "initialPositions">> }
+};
+/** Directed observed flow: value is a required finite nonnegative edge column. */
+export interface FlowDefinition extends Omit<ObservedGraphDefinition, "weight" | "directed"> {
+  readonly value: string;
+  readonly balance?: "allow" | "strict";
+}
+export interface CreateFlowDataOptions extends FlowDefinition {
+  readonly id: string; readonly nodes: string; readonly edges: string;
+}
+export interface EditFlowDataOptions {
+  readonly target?: string; readonly nodes?: string; readonly edges?: string;
+  readonly definition?: Partial<FlowDefinition>;
+}
+export interface FlowNodeTotals {
+  readonly key: string; readonly incoming: number; readonly outgoing: number;
+  readonly throughput: number; readonly imbalance: number;
+}
+export interface FlowResource extends Omit<ObservedGraphResource, "options" | "result"> {
+  readonly options: ObservedGraphResource["options"] & { readonly flow: { readonly balance: "allow" | "strict" } };
+  readonly result: { readonly model: GraphModel; readonly diagnostics: { readonly flow: { readonly nodes: readonly FlowNodeTotals[] } } };
+}
+/** Layout dimensions are independent of Canvas size; marks fit the stored bounds uniformly. */
+export interface FlowLayoutOptions extends GraphLayoutLimits {
+  readonly width?: number; readonly height?: number; readonly nodeWidth?: number; readonly nodePadding?: number;
+  readonly align?: "left" | "right" | "center" | "justify";
+  readonly order?: "input" | "barycentric" | readonly RowKey[];
+  readonly iterations?: number; readonly laneGap?: number; readonly orientation?: "horizontal" | "vertical";
+}
+export interface LayoutFlowOptions {
+  readonly id: string; readonly graph?: string; readonly method: "dag" | "cyclic"; readonly options?: FlowLayoutOptions;
+}
+export interface FlowLayoutNode extends FlowNodeTotals {
+  readonly x: number; readonly y: number; readonly width: number; readonly height: number;
+  readonly rank: number; readonly order: number;
+}
+export interface FlowLayoutEdge {
+  readonly key: string; readonly sourceKey: string; readonly targetKey: string; readonly value: number; readonly thickness: number;
+  readonly source: { readonly x: number; readonly y: number }; readonly target: { readonly x: number; readonly y: number };
+  readonly route: "forward" | "feedback" | "loop";
+  /** Lane coordinates use the canonical horizontal layout frame. */
+  readonly lane: null | { readonly side: "top" | "bottom"; readonly index: number; readonly center: number; readonly sourceX: number; readonly targetX: number };
+}
+export interface FlowLayoutResource extends Omit<GraphLayoutResource, "options" | "result"> {
+  readonly options: { readonly method: "dag" | "cyclic"; readonly options: Readonly<Required<FlowLayoutOptions>> };
+  readonly result: {
+    readonly algorithm: "sankey@1"; readonly nodes: readonly FlowLayoutNode[]; readonly edges: readonly FlowLayoutEdge[]; readonly scale: number;
+    readonly columns: readonly { readonly rank: number; readonly keys: readonly string[] }[];
+    readonly components: readonly { readonly rank: number; readonly keys: readonly string[] }[];
+    readonly bounds: { readonly left: number; readonly top: number; readonly right: number; readonly bottom: number };
+  };
+}
+export interface FlowBodyPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; }
+export interface FlowLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number; }
+export interface FlowLabelsOptions extends FlowLabelPaint {
+  readonly content?: "key" | "value" | { readonly field: string }; readonly offset?: readonly [number, number];
+  readonly overrides?: readonly (FlowLabelPaint & { readonly key: RowKey; readonly text?: string })[];
+}
+export interface FlowNodesOptions {
+  readonly id?: string; readonly layout?: string; readonly coordinate?: string; readonly clip?: boolean;
+  readonly nodes?: FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey })[] };
+  readonly labels?: false | FlowLabelsOptions;
+}
+export interface FlowLinksOptions {
+  readonly id?: string; readonly layout?: string; readonly coordinate?: string; readonly clip?: boolean;
+  readonly links?: FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey })[] };
+}
+export interface EditFlowNodesOptions extends Omit<FlowNodesOptions, "id"> { readonly target?: string; }
+export interface EditFlowLinksOptions extends Omit<FlowLinksOptions, "id"> { readonly target?: string; }
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font";
 export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
   | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
 export interface PersistentSelectionResource {
@@ -1747,7 +1955,9 @@ export type LayoutHierarchyOptions = { id: string; hierarchy?: string; order?: H
   | { method: "tree"; options: HierarchyTreeOptions }
   | { method: "treemap"; options: HierarchyTreemapOptions });
 /** The method remains fixed; supplied options patch its existing layout intent. */
-export interface EditLayoutOptions { target?: string; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number }; }
+export type EditLayoutOptions = { target?: string } & (
+  { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
+  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions });
 export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }
 export interface HierarchyNode {
   readonly key: string; readonly parentKey: string | null; readonly childrenKeys: readonly string[]; readonly depth: number;
@@ -1775,16 +1985,16 @@ export type HierarchyLayoutResource = {
   | { readonly options: { readonly method: "partition"; readonly order: HierarchyOrder; readonly options: { readonly maxNodes?: number } }; readonly result: HierarchyPartitionResult }
   | { readonly options: { readonly method: "treemap"; readonly order: HierarchyOrder; readonly options: Readonly<HierarchyTreemapOptions> }; readonly result: HierarchyTreemapResult });
 export type HierarchyNodeTarget = { key: RowKeyScalar; path?: never } | { path: readonly (RowKeyScalar | null)[]; key?: never };
-export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface HierarchyBodyPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
 export interface HierarchyNodePaint extends HierarchyBodyPaint { radius?: number; }
-export interface HierarchyLabelPaint { fill?: string; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface HierarchyLabelPaint { outline?: MarkOutline | false; shadow?: MarkShadow | false; fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
 export interface HierarchyLabelsOptions extends HierarchyLabelPaint {
   content?: "value"; offset?: readonly [number, number]; overrides?: readonly (HierarchyNodeTarget & HierarchyLabelPaint & { text?: string })[];
 }
 export interface TreePlotOptions {
   id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
   nodes?: HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] };
-  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number }; labels?: false | HierarchyLabelsOptions;
+  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number; shadow?: MarkShadow | false }; labels?: false | HierarchyLabelsOptions;
 }
 export interface EditTreePlotOptions extends Omit<TreePlotOptions, "id"> { target?: string; }
 export interface TreemapPlotOptions {
@@ -1792,6 +2002,22 @@ export interface TreemapPlotOptions {
   cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] }; labels?: false | HierarchyLabelsOptions;
 }
 export interface EditTreemapPlotOptions extends Omit<TreemapPlotOptions, "id"> { target?: string; }
+
+export interface PartitionPlotOptions {
+  id?: string; layout?: string; coordinate?: string; focus?: HierarchyNodeTarget | null;
+  rootVisible?: boolean; prunedSelection?: "keep-hidden" | "drop";
+  orientation?: "horizontal" | "vertical"; reverseU?: boolean; reverseV?: boolean;
+  padding?: number | readonly [number, number]; innerRadius?: number; outerRadius?: number | "auto";
+  startAngle?: number; sweep?: number; direction?: "clockwise" | "counterclockwise";
+  radiusPolicy?: "equal-depth" | "equal-depth-area"; clip?: boolean;
+  cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] };
+  labels?: false | (HierarchyLabelsOptions & { minWidth?: number; minArcLength?: number });
+}
+export interface EditPartitionPlotOptions extends Omit<PartitionPlotOptions, "id"> { target?: string; }
+export interface PartitionViewState {
+  readonly focusKey: string | null; readonly rootVisible: boolean; readonly prunedSelection: "keep-hidden" | "drop";
+  readonly recovery?: { readonly previousFocusKey: string | null; readonly reason: "ancestor" | "root" | "empty" };
+}
 
 export interface SemanticDataset {
   readonly id: string;
@@ -1852,8 +2078,13 @@ export interface SemanticLayer {
   readonly id: string;
   readonly image?: ImageRef;
   readonly alt?: string;
+  readonly partitionView?: PartitionViewState;
+  readonly flowBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
+  readonly flowLabels?: false | { readonly content: "key" | "value" | { readonly field: string }; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly hierarchyBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
   readonly hierarchyLabels?: false | { readonly content: "value"; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
+  readonly graphBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
+  readonly graphLabels?: false | { readonly field?: string; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly data?: string;
   readonly source?: string;
   readonly coordinate?: string;
@@ -1916,7 +2147,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | FontResource | HierarchyResource | HierarchyLayoutResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -5973,10 +6204,26 @@ export class ChartProgram {
   layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
   editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+  createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
+  editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+  createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
+  editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createFlowData(options: CreateFlowDataOptions): ChartProgram;
+  editFlowData(options: TargetedOptions<EditFlowDataOptions>): ChartProgram;
+  layoutFlow(options: TargetedOptions<LayoutFlowOptions>): ChartProgram;
+  createFlowNodes(options?: TargetedOptions<FlowNodesOptions>): ChartProgram;
+  editFlowNodes(options: TargetedOptions<EditFlowNodesOptions>): ChartProgram;
+  createFlowLinks(options?: TargetedOptions<FlowLinksOptions>): ChartProgram;
+  editFlowLinks(options: TargetedOptions<EditFlowLinksOptions>): ChartProgram;
+  createGraphData(options: CreateGraphDataOptions): ChartProgram;
+  createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
+  editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
+  editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
+  layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;

@@ -1,0 +1,53 @@
+{
+  "sourceCommit": "fdb0ea51f91b76638d0db297342a3a027d0e2336",
+  "parents": [
+    "efcf2ca9b",
+    "7501da344"
+  ],
+  "tar": {
+    "sha256": "da944f9e6950081353f3c3146064e8c24af755cadc93a81a34b26fa4252820ab",
+    "entries": 809,
+    "packedBytes": 1192990,
+    "unpackedBytes": 5490271
+  },
+  "normal": {
+    "mergedFocused": 72,
+    "mixed": 1,
+    "fallbackFocused": 32,
+    "fallbackInstrumented": 41,
+    "boundaries": 36
+  },
+  "installed": {
+    "node22": {
+      "cases": 214,
+      "tutorials": 75,
+      "groups": 7
+    },
+    "node20": {
+      "orderedFocusedCases": 4
+    },
+    "node24": {
+      "orderedFocusedCases": 4
+    }
+  },
+  "realistic": {
+    "featureLedger": 7,
+    "entries": 33438
+  },
+  "reuse": {
+    "fontSource": "ad538d08d195a2d9aac4e29a130149a4c5227bf0",
+    "fontEvidence": "efcf2ca9b",
+    "fullCoverageRerun": false
+  },
+  "initialFailures": [
+    "Merged installed generic Canvas/PNG diverged after exact font registration; fixed common fallback owner.",
+    "Docs source links needed the merge commit and postcommit canonical generation.",
+    "Node20 focused setup initially omitted optional peers; corrected through canonical optional-peer helper.",
+    "First package cap check measured additive graph/outline entries; limits minimally adjusted."
+  ],
+  "docs": {
+    "originalTotal": 171,
+    "originalPassed": 170,
+    "postcommitOwnedPassed": 28
+  }
+}

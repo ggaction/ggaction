@@ -22,6 +22,17 @@ const p = chart().createData({ values: [{ id: 'a', parent: null, v: 3 }] })
  .editTreePlot({ links: false, origin: 'auto' })
  .editLayout({ options: { orientation: 'horizontal' } })
  .editHierarchyData({ valueMode: 'leaf-sum' });
+p.layoutHierarchy({ id: 'partition', method: 'partition' }).createPartitionPlot({ focus: { key: 'a' }, rootVisible: false,
+  padding: [3, 4], direction: 'counterclockwise', startAngle: 90, radiusPolicy: 'equal-depth-area', labels: { minWidth: 20, minArcLength: 12 } })
+ .editPartitionPlot({ focus: null, outerRadius: 'auto', prunedSelection: 'drop' });
+// @ts-expect-error Basic does not register partition plot actions
+basicChart().createPartitionPlot();
+// @ts-expect-error padding requires exactly two gaps
+p.createPartitionPlot({ padding: [1, 2, 3] });
+// @ts-expect-error focus accepts exact typed hierarchy targets
+p.editPartitionPlot({ focus: 'a' });
+p.editTreePlot({ nodes: { fill: { type: 'pattern', style: 'cross', pitch: 12 } }, labels: { fill: { type: 'radial-gradient', center: {x:.5,y:.5}, radius:.5, stops:[{offset:0,color:'red'},{offset:1,color:'blue'}] } } });
+p.editPartitionPlot({ cells: { fill: {type:'linear-gradient',from:{x:0,y:0},to:{x:1,y:0},stops:[{offset:0,color:'red'},{offset:1,color:'blue'}]} } });
 p.removeResource({ kind: 'layout', id: 'l' });
 chart().createHierarchyData({ id: 'nested', key: 'id', children: 'children', value: 'v' });
 chart().createHierarchyData({ id: 'groups', groupFields: ['a', 'b'], value: 'v', missingCategory: 'include' })
@@ -31,7 +42,7 @@ inspectProgram(p, { target: { kind: 'hierarchy', id: 'h' } });
 comparePrograms(p, p, { target: { kind: 'layout', id: 'l' } });
 for (const r of p.semanticSpec.resources) {
  if (r.kind === 'hierarchy') { const h: HierarchyResource = r; h.result.nodes.map(n => n.totalValue); }
- if (r.kind === 'layout') { const l: HierarchyLayoutResource = r; l.inputs[0].revision; }
+ if (r.kind === 'layout') { r.inputs[0].revision; }
 }
 // @ts-expect-error Basic does not register hierarchy actions
 basicChart().createHierarchyData({ id: 'h', key: 'id', parent: 'p', value: 'v' });

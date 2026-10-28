@@ -1,4 +1,6 @@
 import { registerImageResourceActions } from "./images/index.js";
+import { registerLayoutActions } from "./layouts/index.js";
+import { registerGraphPlotActions } from "./graphs/plots.js";
 import { registerHierarchyPlotActions } from "./hierarchy/plots.js";
 import { registerDataResourceRevision } from "./data/resourceRevision.js";
 import { registerHierarchyResourceActions, reviseHierarchyInputs } from "./hierarchy/resources.js";
@@ -23,6 +25,9 @@ import { registerChartActions } from "./charts/index.js";
 import { registerCategoryOrderActions } from "./categoryOrder/index.js";
 import { registerSelectionActions } from "./selection/index.js";
 import { registerResourceActions } from "./resources/index.js";
+import { registerGraphActions, reviseGraphInputs } from "./graphs/resources.js";
+import { registerFlowActions } from "./flow/resources.js";
+import { registerFlowPlotActions } from "./flow/plots.js";
 import { registerTextMetricActions } from "./textMetrics/index.js";
 import { registerCompositionActions } from "./composition/index.js";
 import { registerFacetActions } from "./facets/index.js";
@@ -63,8 +68,14 @@ export function registerActions(ProgramClass) {
   registerCategoryOrderActions(ProgramClass);
   registerSelectionActions(ProgramClass);
   registerResourceActions(ProgramClass);
+  registerGraphActions(ProgramClass);
+  registerGraphPlotActions(ProgramClass);
+  registerFlowActions(ProgramClass);
+  registerFlowPlotActions(ProgramClass);
   registerHierarchyResourceActions(ProgramClass);
+  registerLayoutActions(ProgramClass);
   registerHierarchyPlotActions(ProgramClass);
-  registerDataResourceRevision(ProgramClass, Object.freeze({ kinds: Object.freeze(["hierarchy"]), revise: reviseHierarchyInputs }));
+  registerDataResourceRevision(ProgramClass, { kinds: ["hierarchy", "graph"],
+    revise: (program, replacements) => reviseGraphInputs(reviseHierarchyInputs(program, replacements), replacements) });
   registerTextMetricActions(ProgramClass);
 }

@@ -30,7 +30,7 @@ function coordinateType(semanticSpec, layer) {
 
 function classifyPrimaryLayer(semanticSpec, layer) {
   const type = layer.mark?.type;
-  if (["tree", "treemap"].includes(type)) {
+  if (["tree", "treemap", "partition"].includes(type)) {
     if (!layer.hierarchyBinding?.layout) throw new Error("Hierarchy facets require a complete layout binding.");
     return "hierarchy";
   }

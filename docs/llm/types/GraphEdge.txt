@@ -1,0 +1,5 @@
+export interface GraphEdge<Origin extends "observed" | "inferred" = "observed" | "inferred"> {
+  readonly key: string; readonly sourceKey: string; readonly targetKey: string;
+  readonly directed: boolean; readonly weight: number;
+  readonly origin: Origin; readonly ruleId: Origin extends "observed" ? null : string; readonly sourceRows: readonly number[];
+}

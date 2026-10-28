@@ -1,0 +1,1 @@
+export interface EditPartitionPlotOptions extends Omit<PartitionPlotOptions, "id"> { target?: string; }

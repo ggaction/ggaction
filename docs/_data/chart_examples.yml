@@ -1706,22 +1706,6 @@
   actions: createRectMark · editRectMark
   tasks: appearance
   url: /api/appearance/mark-style/
-
-- id: mark-outlines
-  example: /examples/mark-outlines/
-  title: Outlines and text halos
-  image: /assets/images/mark-outlines.png
-  alt: A blue rectangle with a purple outline on a pale background
-  width: 560
-  height: 400
-  thumbnail: /assets/images/mark-outlines-thumb.png
-  thumbnail_width: 560
-  thumbnail_height: 400
-  caption: The outline is painted before the fill and preserves the original data item.
-  summary: Add pre-fill outlines and text halos to filled marks.
-  actions: createRectMark · createTextMark · editTextMark
-  tasks: appearance
-  url: /api/appearance/mark-style/
 - id: font-assets
   example: /examples/font-assets/
   title: Prepared Korean and emoji fonts
@@ -1738,6 +1722,22 @@
   tasks: fonts text layout
   url: /tutorials/font-assets/
   tutorial_order: 171
+
+- id: mark-outlines
+  example: /examples/mark-outlines/
+  title: Outlines and text halos
+  image: /assets/images/mark-outlines.png
+  alt: A blue rectangle with a purple outline on a pale background
+  width: 560
+  height: 400
+  thumbnail: /assets/images/mark-outlines-thumb.png
+  thumbnail_width: 560
+  thumbnail_height: 400
+  caption: The outline is painted before the fill and preserves the original data item.
+  summary: Add pre-fill outlines and text halos to filled marks.
+  actions: createRectMark · createTextMark · editTextMark
+  tasks: appearance
+  url: /api/appearance/mark-style/
 - id: image-assets
   example: /examples/image-assets/
   title: Retained image placement
@@ -1830,6 +1830,83 @@
   actions: createHierarchyData · layoutHierarchy · createTreemapPlot
   tasks: hierarchy layout
   url: /tutorials/hierarchy/
+- id: graph-plots
+  example: /examples/graph-plots/
+  title: Directed graph
+  image: /assets/images/graph-plots.png
+  alt: Two labeled nodes linked by a directed edge
+  width: 600
+  height: 480
+  thumbnail: /assets/images/graph-plots-thumb.png
+  thumbnail_width: 300
+  thumbnail_height: 240
+  caption: Explicit graph topology and stored coordinates retain each node and edge identity.
+  summary: Draw a stored graph layout with independently identifiable nodes and connections.
+  actions: createGraphData · layoutGraph · createGraphPlot
+  tasks: graph network layout
+  url: /tutorials/graphs/
+  tutorial_order: 220
+- id: graph-parallel
+  example: /examples/graph-parallel/
+  title: Parallel edges
+  image: /assets/images/graph-parallel.png
+  alt: Two separate directed curves between the same labeled nodes
+  width: 600
+  height: 480
+  thumbnail: /assets/images/graph-parallel-thumb.png
+  thumbnail_width: 300
+  thumbnail_height: 240
+  caption: Explicit graph topology and stored coordinates retain each node and edge identity.
+  summary: Draw a stored graph layout with independently identifiable nodes and connections.
+  actions: createGraphData · layoutGraph · createGraphPlot
+  tasks: graph network layout
+  url: /tutorials/graphs/
+- id: graph-self-loop
+  example: /examples/graph-self-loop/
+  title: Self-loop
+  image: /assets/images/graph-self-loop.png
+  alt: One labeled node with a retained loop
+  width: 600
+  height: 480
+  thumbnail: /assets/images/graph-self-loop-thumb.png
+  thumbnail_width: 300
+  thumbnail_height: 240
+  caption: Explicit graph topology and stored coordinates retain each node and edge identity.
+  summary: Draw a stored graph layout with independently identifiable nodes and connections.
+  actions: createGraphData · layoutGraph · createGraphPlot
+  tasks: graph network layout
+  url: /tutorials/graphs/
+- id: partition-layouts
+  tutorial_order: 250
+  example: /examples/partition-layouts/
+  title: Icicle partition
+  image: /assets/images/partition-layouts.png
+  alt: Hierarchy root and two branches with five visible nodes and stable colors
+  width: 960
+  height: 720
+  thumbnail: /assets/images/partition-layouts-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: Normalized hierarchy intervals become rectangular value and depth bands.
+  summary: Normalized hierarchy intervals become rectangular value and depth bands.
+  actions: createHierarchyData · layoutHierarchy · createPartitionPlot
+  tasks: hierarchy partition focus
+  url: /tutorials/partition/
+- id: partition-sunburst
+  example: /examples/partition-sunburst/
+  title: Sunburst partition
+  image: /assets/images/partition-sunburst.png
+  alt: Hierarchy root and two branches with five visible nodes and stable colors
+  width: 960
+  height: 720
+  thumbnail: /assets/images/partition-sunburst-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: The same hierarchy intervals become angular value and radial depth bands.
+  summary: The same hierarchy intervals become angular value and radial depth bands.
+  actions: createHierarchyData · layoutHierarchy · createPartitionPlot
+  tasks: hierarchy partition focus
+  url: /tutorials/partition/
 - id: mark-shadows
   example: /examples/mark-shadows/
   title: Bounded mark shadows
@@ -1860,3 +1937,64 @@
   actions: createTextMark · createFontResource · applyTextMetrics
   tasks: appearance shadows
   url: /api/appearance/mark-style/#shadows
+- id: flow-layouts
+  tutorial_order: 200
+  example: /examples/flow-layouts/
+  title: Conserved flows
+  image: /assets/images/flow-layouts.png
+  alt: Two sources contribute six and four units to a shared total
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/flow-layouts-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: Two sources contribute six and four units to a shared total.
+  summary: Validate a directed flow graph, store its layout, then draw links and nodes.
+  actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
+  tasks: flow conservation
+  url: /tutorials/flows/
+- id: flow-vertical
+  example: /examples/flow-vertical/
+  title: Vertical flows
+  image: /assets/images/flow-vertical.png
+  alt: The same conserved quantities flow from top to bottom
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/flow-vertical-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: The same conserved quantities flow from top to bottom.
+  summary: Validate a directed flow graph, store its layout, then draw links and nodes.
+  actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
+  tasks: flow conservation
+  url: /tutorials/flows/
+- id: flow-cyclic
+  example: /examples/flow-cyclic/
+  title: Cyclic flows
+  image: /assets/images/flow-cyclic.png
+  alt: Both directions remain visible in separate feedback lanes
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/flow-cyclic-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: Both directions remain visible in separate feedback lanes.
+  summary: Validate a directed flow graph, store its layout, then draw links and nodes.
+  actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
+  tasks: flow conservation
+  url: /tutorials/flows/
+- id: flow-cyclic-vertical
+  example: /examples/flow-cyclic-vertical/
+  title: Vertical feedback
+  image: /assets/images/flow-cyclic-vertical.png
+  alt: Feedback lanes and node attachments transpose together
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/flow-cyclic-vertical-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: Feedback lanes and node attachments transpose together.
+  summary: Validate a directed flow graph, store its layout, then draw links and nodes.
+  actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
+  tasks: flow conservation
+  url: /tutorials/flows/

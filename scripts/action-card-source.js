@@ -186,10 +186,24 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (action.name === "createInferredGraphData" || action.name === "editInferredGraphData") return {
+    prerequisites: action.name === "createInferredGraphData" ? ["materialized source dataset"] : ["existing inferred graph"],
+    owns: action.name === "createInferredGraphData" ? ["graph resource"] : [],
+    idOptions: action.name === "createInferredGraphData" ? ["id", "data", "candidateGraph"] : ["target", "data", "candidateGraph"]
+  };
+  if (["layoutGraph", "layoutFlow"].includes(action.name)) return { prerequisites: ["existing graph resource"], owns: ["layout resource"], idOptions: ["id", "graph"] };
+  if (["createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks"].includes(action.name)) return {
+    prerequisites: ["stored DAG or cyclic flow layout"], owns: ["flow mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "layout", "coordinate"]
+  };
+  if (["createGraphData", "editGraphData", "createFlowData", "editFlowData"].includes(action.name)) return {
+    prerequisites: action.name.startsWith("create") ? ["explicit materialized node and edge datasets"] : ["existing observed graph"],
+    owns: action.name.startsWith("create") ? ["graph resource"] : [],
+    idOptions: action.name.startsWith("create") ? ["id", "nodes", "edges"] : ["target", "nodes", "edges"]
+  };
   const { operation, subject } = operationAndSubject(action.name);
   const aliases = aliasesForSubject(intentSource, subject);
   const resource = aliases[0];
-  const hierarchyPlot = /^(?:create|edit)(?:Tree|Treemap)Plot$/.test(action.name);
+  const hierarchyPlot = /^(?:create|edit)(?:Tree|Treemap|Partition)Plot$/.test(action.name);
   const prerequisites = [];
   if (action.name === "createRegressionStatisticsData" || action.name === "editRegressionStatisticsData") {
     prerequisites.push("materialized linear regression dataset");
@@ -213,7 +227,7 @@ function actionResources(action, optionNames, intentSource) {
     if (optionNames.includes("field")) prerequisites.push("field mode: dataset field");
   }
   if (action.domain === "charts") prerequisites.push(hierarchyPlot
-    ? `canvas and ${action.name.includes("Treemap") ? "treemap" : "tree"} layout resource`
+    ? `canvas and ${action.name.includes("Partition") ? "partition" : action.name.includes("Treemap") ? "treemap" : "tree"} layout resource`
     : "canvas and dataset context");
   if (action.domain === "marks" && operation === "create" && action.name !== "createMarkLabels") {
     prerequisites.push("dataset and coordinate context");

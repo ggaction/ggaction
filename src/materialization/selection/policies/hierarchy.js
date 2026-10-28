@@ -3,6 +3,7 @@ import { resolveHierarchyPlot } from "../../hierarchy/plot.js";
 import { concreteProperties } from "../items/common.js";
 import { memberRowReferences } from "../rows.js";
 import { normalizeAreaHighlightStyle } from "../styles.js";
+import { transformLabeledPathHighlightChild } from "../path.js";
 
 function sourceItems(program, layer) {
   const resolved = resolveHierarchyPlot(program, layer, program.markConfigs[layer.id]?.hierarchyPlot);
@@ -20,8 +21,8 @@ function resolveItems(program, layer) {
   return resolved.items.map(item => {
     const children = item.graphicRoles.map(role => byIdentity.get(JSON.stringify([item.key, role])));
     if (children.some(child => child === undefined)) throw new Error("Hierarchy selection has stale concrete identity.");
-    return cloneAndFreeze({ key: item.key, topology: "", role: "node", layer: layer.id, markType: layer.mark.type,
-      fields: item.fields, channels: {}, properties: concreteProperties(children[0].properties), members: item.members,
+    return cloneAndFreeze({ ...(item.visible === undefined ? {} : { visible: item.visible, navigation: item.navigation }), key: item.key, topology: "", role: "node", layer: layer.id, markType: layer.mark.type,
+      fields: item.fields, channels: {}, properties: concreteProperties(children[0]?.properties ?? item.properties), members: item.members,
       rows: memberRowReferences(program, item.members, resolved.dataset.id, item.memberKeys), rowKeys: item.memberKeys,
       graphicRoles: item.graphicRoles, graphicIds: children.map(child => child.id),
       lineage: { kind: "resource", resource: layer.hierarchyBinding.layout } });
@@ -30,7 +31,10 @@ function resolveItems(program, layer) {
 export const hierarchySelectionPolicy = Object.freeze({
   resourceBacked: true, supportedGrains: Object.freeze(["item"]), resolveItems, resolveSourceItems: sourceItems,
   normalizeHighlightStyle: normalizeAreaHighlightStyle,
+  transformHighlightChild: transformLabeledPathHighlightChild,
   applyHighlightOp: "applyPathHighlight"
 });
 export const treeSelectionPolicy = Object.freeze({ ...hierarchySelectionPolicy, rematerializeOp: "materializeTreePlot" });
 export const treemapSelectionPolicy = Object.freeze({ ...hierarchySelectionPolicy, rematerializeOp: "materializeTreemapPlot" });
+
+export const partitionSelectionPolicy = Object.freeze({ ...hierarchySelectionPolicy, rematerializeOp: "materializePartitionPlot" });

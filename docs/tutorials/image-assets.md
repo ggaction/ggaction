@@ -108,3 +108,7 @@ const program = createImageExample();
 const images = await prepareImageRendering(program, {decode: decodeImage});
 render(program, document.querySelector("#chart").getContext("2d"), {images});
 ```
+
+## Add a pixel-alpha shadow
+
+Use `editImageMark({target:"image",shadow:{color:"#0008",offsetX:4,offsetY:4,blurRadius:6}})` after creating an image mark. Use `shadow:false` to remove it. The actual image transparency shapes the shadow, and the image viewport clips the result. PNG and PDF prepare it automatically. For Canvas or SVG, call `prepareShadowRendering` with a Canvas factory and the image decoder, then pass the returned `shadows` handle to the renderer. Canvas also needs `prepareImageRendering` as above. Dispose the shadow handle when done and prepare again after editing the chart. See [rendering](../api/rendering.md) for the complete host contract.

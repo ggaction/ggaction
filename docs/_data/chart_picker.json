@@ -43,8 +43,10 @@
     "createAdjacentPlot": "One complete chart plus a new independent chart; explicit shared scales and aligned plot frames",
     "createLayerPlot": "Independent native plot on compatible existing coordinates and measurement units"
   },
-  "Hierarchies": {
+  "Hierarchies and networks": {
     "createTreePlot": "Typed hierarchy and an explicit tree layout",
-    "createTreemapPlot": "Typed hierarchy and an explicit rectangular layout"
+    "createTreemapPlot": "Typed hierarchy and an explicit rectangular layout",
+    "createGraphPlot": "Explicit node and edge tables with a stored graph layout",
+    "createPartitionPlot": "Typed hierarchy and a partition layout projected as rectangles or sectors"
   }
 }

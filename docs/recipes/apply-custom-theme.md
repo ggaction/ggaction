@@ -57,6 +57,8 @@ The first panel uses a lavender background and purple default marks. The second 
 
 Theme defaults and explicit mark properties have separate precedence. Removing a theme does not undo the user's local override. On a composition, choose the documented `scope` deliberately; this example themes independent child programs before composition. Unknown token names fail without changing the input.
 
+Graph, tree, and treemap plots also follow theme defaults for their bodies, links, and labels. Explicit role styles and per-node overrides stay in place. Removing the final theme restores each plot family's defaults, while the stored layout and item identities remain unchanged.
+
 ## Related
 
 [Authoring conventions](../concepts/authoring-conventions.md) · [Data policies](../api/data/policies.md) ·

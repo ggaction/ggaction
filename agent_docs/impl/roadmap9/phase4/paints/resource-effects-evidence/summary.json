@@ -1,0 +1,137 @@
+{
+  "baseRevision": "b63c5f8739681aae0603281f97d065a26d564efa",
+  "archive": {
+    "file": ".artifacts/resource-effects-final/ggaction-0.0.26.tgz",
+    "sha256": "097587bad545225bd0b9afa0e040e3ab27e8ff9a0d06db6ffffc89c4e7ebaf79",
+    "entries": 863,
+    "packed": 1258299,
+    "unpacked": 5801784
+  },
+  "inputManifestSha256": "e4f8d9142d9437125364405824b768f3fda6f3869a5810d62b086656c1c469d4",
+  "commands": {
+    "native-browser-pairs": {
+      "file": "resource-effect-backends-visible-labels.log",
+      "sha256": "49a699ec420fa5ba8649e0c7d9794d152e11b22859ff8d8ff63de0447cd5c844"
+    },
+    "docs": {
+      "file": "resource-effects-docs-final.log",
+      "sha256": "5c25d71445dc6beb6b1827d3125a2d0ba5fb89e41f95159480132dc01286d619"
+    },
+    "docs-build": {
+      "file": "resource-effects-docs-build.log",
+      "sha256": "396ba8f6482062a48288e7497252eea4739a61efc3bc5b072998fb15353945a0"
+    },
+    "docs-built": {
+      "file": "resource-effects-built-check.log",
+      "sha256": "eaf13e28e49a4a075ea84bb88248bacc03d20998719d6ad522858af943c3261a"
+    },
+    "docs-browser": {
+      "file": "resource-effects-docs-browser.log",
+      "sha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
+    },
+    "realistic": {
+      "file": "resource-effects-realistic.log",
+      "sha256": "feadbeb3c1895821fb1157cf48ebaf2eec9ae7045b639223a3c78424ad31af94"
+    },
+    "new-plot-regression": {
+      "file": "resource-effects-normalized-pattern.log",
+      "sha256": "87652d753a1f3a29b578878127399f7677ff02e36ab990bae8149fa5ffe5fe55"
+    }
+  },
+  "installed": {
+    "20": {
+      "node-cases": {
+        "count": 228,
+        "passed": 228,
+        "sha256": "d4626a0556731d6fcf74b44472c6aee67d4cf10863e27fa85185221f31ed039e"
+      },
+      "tutorials": {
+        "count": 81,
+        "passed": 81,
+        "sha256": "b85a7a3840a73813d768364e8b0650bb9ed67002d91153ed57d19a3ec096c461"
+      },
+      "qualification": {
+        "count": 7,
+        "passed": 7,
+        "sha256": "12324948a0d1f6320d02e066c2d800cebcc8b7eba5cda5e17071d293aaf6626a"
+      }
+    },
+    "22": {
+      "node-cases": {
+        "count": 228,
+        "passed": 228,
+        "sha256": "114a3c4cd60330ed0cb8f20db310f56a30da1b20805a5f17c57e0022077c38e4"
+      },
+      "tutorials": {
+        "count": 81,
+        "passed": 81,
+        "sha256": "aea62ab424823d2d57e99107cec5ab38b6586871806afcde6c40ea5a98d94e4e"
+      },
+      "qualification": {
+        "count": 7,
+        "passed": 7,
+        "sha256": "12cf883d537798f6d5b1764f4b8af3d3387da2af3a6c7e1959855a00490d4c79"
+      }
+    },
+    "24": {
+      "node-cases": {
+        "count": 228,
+        "passed": 228,
+        "sha256": "2e2610d9a68b9cbc6bb597d8998819300176b6b2e3f8d27d6ecda8a24c787d57"
+      },
+      "tutorials": {
+        "count": 81,
+        "passed": 81,
+        "sha256": "13ded8eef25dcf05b5043365bd29810a8a95dff6469c0e09164fcc232a162927"
+      },
+      "qualification": {
+        "count": 7,
+        "passed": 7,
+        "sha256": "e01b9d6a3f1b1ff545bd7ea89c61f4feaa9857ab8566c2102f59367fb5e668ce"
+      }
+    }
+  },
+  "inventory": {
+    "counts": {
+      "publicActions": 328,
+      "topLevelOptionPaths": 3089,
+      "nestedOptionPaths": 26926,
+      "optionPaths": 30015,
+      "requiredOptionPaths": 19975,
+      "excludedOptionPaths": 10040,
+      "topLevelCategoricalPaths": 1080,
+      "topLevelLiteralValues": 4060,
+      "literalFamilies": 251,
+      "pathLiteralRequirements": 14617,
+      "familyLiteralRequirements": 525,
+      "pathDiversityRequirements": 488
+    },
+    "ledger": 35451
+  },
+  "coverage": {
+    "tests": 7697,
+    "initialPassed": 7694,
+    "initialFailed": 3,
+    "initialFailures": [
+      "action-hierarchy-discovery: reachable action order",
+      "chart-variant-structure: Flow baseline ordering",
+      "test-discovery: capability ordering"
+    ],
+    "metrics": {
+      "floors": 381,
+      "all": {
+        "lines": 96.54,
+        "branches": 94.41,
+        "functions": 98.95
+      },
+      "completeSourceCoverage": true,
+      "criticalFloors": "passed"
+    },
+    "followup": "resource-effects-metadata-fixes.log",
+    "fullSuiteRerunAfterMetadataOnlyFixes": false,
+    "reportSha256": "a806c9b0ab1cc2f489ff172bf6f2d751d9df61954bc5d252085c64251a47890e",
+    "compressedReportSha256": "bd4444c869d9aaed2bf53f5651012aa3057b407e72e3f7cf61edad1039a63bf5",
+    "followupTests": 22,
+    "followupPassed": 22
+  }
+}

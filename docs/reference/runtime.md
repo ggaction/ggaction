@@ -24,14 +24,19 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](../types/index.d.ts)
 
 ```typescript
+export type { FlowDefinition, CreateFlowDataOptions, EditFlowDataOptions, FlowNodeTotals, FlowResource, FlowLayoutOptions, LayoutFlowOptions, FlowLayoutNode, FlowLayoutEdge, FlowLayoutResource, FlowBodyPaint, FlowLabelPaint, FlowLabelsOptions, FlowNodesOptions, FlowLinksOptions, EditFlowNodesOptions, EditFlowLinksOptions } from "./program.js";
 export type { ImageResourceSource, CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost,
   PreparedImageResource, ApplyImageResourceOptions, ImageRef, ImageResource, ImageMarkOptions, CreateImageMarkOptions, EditImageMarkOptions } from "./program.js";
 import type { CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost, PreparedImageResource } from "./program.js";
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
+export type { PartitionPlotOptions, EditPartitionPlotOptions, PartitionViewState } from "./program.js";
 export type { HierarchyValueMode, HierarchySource, CreateHierarchyDataOptions, EditHierarchyDataOptions, HierarchyOrder, HierarchyTreeOptions, HierarchyTreemapOptions, LayoutHierarchyOptions, EditLayoutOptions, RemoveStoredResourceOptions, HierarchyNode, HierarchyModel, HierarchyResource, HierarchyRectangle, HierarchyTreeResult, HierarchyPartitionResult, HierarchyTreemapResult, HierarchyLayoutResource, HierarchyNodeTarget, HierarchyBodyPaint, HierarchyNodePaint, HierarchyLabelPaint, HierarchyLabelsOptions, TreePlotOptions, EditTreePlotOptions, TreemapPlotOptions, EditTreemapPlotOptions } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
+export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
+export type { GraphPosition, GraphPin, GraphLayoutLimits, GraphFixedOptions, GraphCircularOptions, GraphForceOptions, LayoutGraphOptions, GraphLayoutResource } from "./program.js";
+export type { GraphNodePaint, GraphEdgePaint, GraphLabelPaint, GraphLabelsOptions, GraphPlotOptions, EditGraphPlotOptions } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
@@ -552,6 +557,7 @@ export function prepareTextMetrics(program: ChartProgram, request: TextMetricsRe
 export function prepareFontRendering(program: Pick<ChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
 export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
 
+export type { GraphMetric, GraphFeatures, GraphSearchOptions, GraphFeaturePolicy, InferredGraphSource, GraphMetricDefinition, GraphNeighborDefinition, GraphMetricMstDefinition, GraphCandidateMstDefinition, GraphStructuralDefinition, InferredGraphDefinition, CreateInferredGraphDataOptions, EditInferredGraphDataOptions, GraphInferenceDiagnostics, ObservedGraphResource, InferredGraphResource } from "./program.js";
 export type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
 import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
 export function prepareShadowRendering(program: Pick<ChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
@@ -781,6 +787,7 @@ export function action<TOptions extends ActionOptions = ActionOptions>(
 export function registerExtension<
   TActions extends Readonly<Record<string, RegisteredExtensionAction>>
 >(definition: ExtensionDefinition<TActions>): void;
+export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 ```
 
 #### `ggaction/png`
@@ -958,7 +965,7 @@ export function exportAccessibleData(program: ChartProgram | BasicChartProgram, 
 
 ```typescript
 import type { BasicChartProgram } from "./basic.js";
-import type { ChartProgram, DatasetSchema, InputRowRef, StoredResourceKind } from "./program.js";
+import type { ChartProgram, DatasetSchema, InputRowRef, StoredResourceKind, PartitionViewState } from "./program.js";
 export type ProgramInput = ChartProgram | BasicChartProgram;
 export interface ResourceRef { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | "canvas" | "composition" | StoredResourceKind; readonly id: string; readonly childPath?: readonly string[]; }
 export interface InspectionTarget { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | StoredResourceKind; readonly id: string; readonly childPath?: readonly string[]; }
@@ -968,7 +975,16 @@ export interface ParameterDefinition { readonly path: string; readonly kind: "fi
 export interface ActionDescription { readonly version: 1; readonly action: string; readonly applicability: "supported" | "needs-input" | "incompatible" | "unsupported" | "unverified"; readonly parameterDefinitions: readonly ParameterDefinition[]; readonly requirements: readonly { readonly reason: string; readonly optionPath?: string }[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; }
 export interface Change { readonly resource: ResourceRef; readonly operation: "add" | "remove" | "modify"; readonly effect: "data" | "binding" | "structure" | "scale" | "guide" | "style"; readonly roles: readonly string[]; }
 export interface ProgramComparison { readonly version: 1; readonly equivalence: "equal" | "different" | "unknown"; readonly completeProgramComparison: boolean; readonly changes: readonly Change[]; readonly affected: readonly ResourceRef[]; readonly findings: readonly Finding[]; }
-export interface OwnerInspection { readonly owner: ResourceRef; readonly grain: "item" | "series" | "composite" | "unknown"; readonly rawRows: number | null; readonly logicalDataItems: number | null; readonly drawablePrimitives: number | null; readonly visibleCandidates: number | null; readonly flags: readonly { readonly reason: "opacity-zero" | "zero-size" | "outside-clip" | "missing-skipped"; readonly count: number | null }[]; readonly bounds: Readonly<{x:number;y:number;width:number;height:number}> | null; readonly sourceRefs: readonly ResourceRef[]; readonly checks: readonly CheckResult[]; }
+export interface PartitionInspection {
+  readonly focusKey: string | null; readonly breadcrumbKeys: readonly string[]; readonly levels: number;
+  readonly diagnostics: Readonly<{emptyHierarchy:boolean;emptyValue:boolean;emptyChildrenView:boolean}>;
+  readonly recovery?: PartitionViewState["recovery"];
+}
+export interface PartitionNavigation {
+  readonly key: string; readonly parent: string | null; readonly firstChild: string | null;
+  readonly previousSibling: string | null; readonly nextSibling: string | null; readonly root: string | null;
+}
+export interface OwnerInspection { readonly partition?: PartitionInspection; readonly owner: ResourceRef; readonly grain: "item" | "series" | "composite" | "unknown"; readonly rawRows: number | null; readonly logicalDataItems: number | null; readonly drawablePrimitives: number | null; readonly visibleCandidates: number | null; readonly flags: readonly { readonly reason: "opacity-zero" | "zero-size" | "outside-clip" | "missing-skipped"; readonly count: number | null }[]; readonly bounds: Readonly<{x:number;y:number;width:number;height:number}> | null; readonly sourceRefs: readonly ResourceRef[]; readonly checks: readonly CheckResult[]; }
 export interface ProgramInspection { readonly version: 1; readonly views: readonly OwnerInspection[]; readonly calculations: readonly unknown[]; readonly checks: readonly CheckResult[]; readonly findings: readonly Finding[]; readonly coverage: Readonly<{partial:boolean;unsupported:readonly ResourceRef[]}>; }
 export function getDatasetSchema(program: ProgramInput, options: {readonly data:string;readonly childPath?:readonly string[]}): Readonly<{data:string;schema:DatasetSchema}>;
 export function describeAction(program: ProgramInput, options: {readonly action:string;readonly target?:InspectionTarget;readonly options?:Readonly<Record<string,unknown>>}): ActionDescription;
@@ -1000,6 +1016,7 @@ export interface PlotComposition {
 export function getPlotComposition(program: ProgramInput, options?: { readonly target?: string | { readonly childPath: readonly string[]; readonly id: string }; readonly childPath?: readonly string[] }): PlotComposition;
 
 export interface MarkItemInspection {
+  readonly visible?: boolean; readonly navigation?: PartitionNavigation;
   readonly key: string; readonly target: string; readonly markType: string; readonly grain: "item" | "stack";
   readonly fields: Readonly<Record<string, unknown>>; readonly channels: Readonly<Record<string, unknown>>;
   readonly properties: Readonly<Record<string, unknown>>;

@@ -1,3 +1,4 @@
+import { ownRecord } from "../core/ownData.js";
 import { DEFAULT_FONT_FAMILY } from "../core/font.js";
 export { DEFAULT_FONT_FAMILY };
 
@@ -50,14 +51,6 @@ export const THEME_TOKEN_KEYS = Object.freeze([
 ]);
 
 const THEME_DEFINITION_KEYS = Object.freeze(["base", "tokens"]);
-
-function isPlainObject(value) {
-  if (value === null || typeof value !== "object" || Array.isArray(value)) {
-    return false;
-  }
-  const prototype = Object.getPrototypeOf(value);
-  return prototype === Object.prototype || prototype === null;
-}
 
 function own(value) {
   return Object.freeze({ ...value });
@@ -118,9 +111,7 @@ function validateThemeName(value, label) {
 }
 
 function normalizeThemeTokens(tokens) {
-  if (!isPlainObject(tokens)) {
-    throw new TypeError("applyTheme theme.tokens must be a plain object.");
-  }
+  ownRecord(tokens, "applyTheme theme.tokens");
   validateKeys(tokens, THEME_TOKEN_KEYS, "applyTheme theme.tokens");
   const normalized = {};
   for (const [key, value] of Object.entries(tokens)) {
@@ -139,11 +130,7 @@ export function normalizeThemeDefinition(definition) {
       tokens: own({})
     });
   }
-  if (!isPlainObject(definition)) {
-    throw new TypeError(
-      "applyTheme theme must be a built-in name or a plain { base, tokens } object."
-    );
-  }
+  ownRecord(definition, "applyTheme theme");
   validateKeys(definition, THEME_DEFINITION_KEYS, "applyTheme theme");
   if (!Object.hasOwn(definition, "base") ||
       !Object.hasOwn(definition, "tokens")) {
