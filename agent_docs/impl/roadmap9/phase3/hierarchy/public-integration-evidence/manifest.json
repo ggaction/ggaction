@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "b6291b4db",
+  "parents": [
+    "586acd8ce",
+    "dcb52897f3ee56b79b54b1fad5d8008503139465"
+  ],
+  "status": "passed",
+  "results": {
+    "focused": 51,
+    "mixedLifecycle": 1,
+    "boundaries": 46,
+    "discovery": 16,
+    "realistic": 10,
+    "docs": 168,
+    "builtPages": 153,
+    "selectiveArtifacts": 1283,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ],
+    "installedChecks": 69
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 792,
+    "packedBytes": 1172521,
+    "unpackedBytes": 5396467,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "22c3a64a10238e7f3c95bdb9f31af7163c0bb0d4",
+    "sha256": "cc0b1ac0361daff87838330165147dca835d395f4596dccc24fb1b94a963b2d6"
+  },
+  "evidence": [
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-image-integration-contracts.log.gz",
+      "sha256": "e4301eb19c0bd1028ab7f4292852c3fce8910b6f1a4c9ab44627e91fe6581dd0",
+      "uncompressedSha256": "360d3fb5052a03d00c21a2db852ac302bc7d40c12286cb1078560bfb0e43e006"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-image-integration-discovery-final.log.gz",
+      "sha256": "31908dec7aa0037d0b7ec427968b73b4622456d7f2559716f6cbac53473f0c90",
+      "uncompressedSha256": "77d60eb7438dd4c57a8c5d05fc2ae1bd9465ae938384df4197dcb144b5d66131"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-image-integration-focused-final.log.gz",
+      "sha256": "aaf450ede84c6fd89515e6df230978814d6e17f266c88b99e994488a55dc6471",
+      "uncompressedSha256": "dff0d52bfd46ce4d10051eab647ba7d229b07d245b1a9cd1a9b8949bd5c97f09"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-image-integration-focused.log.gz",
+      "sha256": "aebe5bcdbd96bf9368544de824b9a0d03c77e15fb2b5cf95333dd907f8aa5287",
+      "uncompressedSha256": "85ddf0706a0eec36bf4d291681a2cd8041240fb7fdb34427f988e7185b3e73aa"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-image-integration-independent.log.gz",
+      "sha256": "c6770710d20bacdc0342576f4586800bceeb1e3b194f3013fd6cf4c43fa536ba",
+      "uncompressedSha256": "45af1f4d2cc4e1727fa9e48f4710a819262eec0065314a8fb0f2b834b242948a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-image-integration-inventory.json.gz",
+      "sha256": "36f599b97d5ccc8b89f631a51686c14523cdd805af561a8d9d3bf9a84f3ddb21",
+      "uncompressedSha256": "cd96bb7e26fc5a5dc5cd41002f3976d86a4fd1264d809cab7a7219b88e358683"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-image-integration-mixed-final.log.gz",
+      "sha256": "5b21fce7a7d9f5a77785e116e7505984fbc9bea13443efa513e99818bb8cb99c",
+      "uncompressedSha256": "72e171986356617fbb0efee86d203d39925ba535a68614f24c0249e369f62a5e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-image-integration-mixed-pass.log.gz",
+      "sha256": "d3d74a1f70d633a70746e9e0db4b610e965fa0a7ad59d7c6e1bc5663458d9941",
+      "uncompressedSha256": "4f8c30a6af80b37228fe5bb20f6540925364b7db59c6eb72b60de2e9884a0a34"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-image-integration-mixed-verified.log.gz",
+      "sha256": "da069dc770d153f0056811586de7fbece0061d3c15551bb88d7c78d142ffb646",
+      "uncompressedSha256": "d0d16b8fee23a5d454bc79f94c43de83daa51fe2453a64de4967ee9d0749bc69"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-image-integration-mixed.log.gz",
+      "sha256": "363fecc467b6ad291e51ac33ae8edafebe16d21b2f87c2a21f240336e7925409",
+      "uncompressedSha256": "69008736093f22b3ca42a4588b4c716c5ddeee8f4936a54b61b017f4d118d592"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-image-integration-realistic.log.gz",
+      "sha256": "665170a835c3a34b6f6b9c9abacd934158a722139b021138ed46389f8f7ffafb",
+      "uncompressedSha256": "8823ae6d6feae283235cddd7084edb7b1ca2f57ebfaccc94c9fe4c4c52c36a84"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-image-integration-realistic.receipt.json.gz",
+      "sha256": "3096c6c2c3962e1588a6bda982bc89c496fcba7f06a73d43db957c9401c63e1d",
+      "uncompressedSha256": "1d6dea2ddb228977d995e38d0a381d409904e23c08192a2f372d046fa05dc601"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-boundaries.log.gz",
+      "sha256": "56c5552af626e0359b29ea1c1db13fb5634516b777f5bb5b14356e13d31d0e6a",
+      "uncompressedSha256": "97004d0704cb42cf25ad81c0dc4a828cb217201c898a8573d1d73b384f56bc82"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-catalog.log.gz",
+      "sha256": "d42316ab1a20c8cada78fdc51c1edf460eb036e1f6d38ec5566c47d8ffb69121",
+      "uncompressedSha256": "b5d04b9d485bf5a7861d1ece0e2a309ea5f5c27da59b893462790fa69e4b67f0"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-consumer22.log.gz",
+      "sha256": "f8a7435549eeeb9eff857f328d95569b5bf8bab083c660a6bfbea1c19da45584",
+      "uncompressedSha256": "b4226201e02e43394ca6f05f2ab568b06701120c995cc9fa1cbf526143c22685"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-docs-browser.log.gz",
+      "sha256": "cd654be1f98e3f682806dd2e5a9c5bad4ed6c1af9a34607bf405621dc743420e",
+      "uncompressedSha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-docs-build.log.gz",
+      "sha256": "71dc912cf67515721a7340afa9eaeb987a10d3a321f20a6d562b2efe9092b7a9",
+      "uncompressedSha256": "93b2d96446e74ef697e14c770197a19fca88b0790b20b3144c79230cd2eee286"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-docs-built.log.gz",
+      "sha256": "877725f13e1059a3274ed954ceefccf8857d2f68d8a8839d876adc4537b4f0d9",
+      "uncompressedSha256": "d9a415aae9feed782db134a086b2f5535db125754d50593ab11c1abcd34166ea"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-docs-generate-final.log.gz",
+      "sha256": "1568e52ebd82f30b0d7f03bc04a47d31b37e2475f499960925ef4f6d30bc8f00",
+      "uncompressedSha256": "b180658a53b3d1b42d0c8ae4df78e275b9d7f0f4481aa940c7a0d83f5eeb8ce6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-docs-generate.log.gz",
+      "sha256": "7b809505bf2f7f168d2cdf074beca794853dd883b3f7e0da4587a02e7bb8c016",
+      "uncompressedSha256": "3aa603d0b43ef3798f2ad7e96f3998dcf3ba83e61321f0ab15651910ab47a4ee"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-docs-source.log.gz",
+      "sha256": "d0782bbb05dfb9c81e86fadcd0d0a2dc990d347a012224a44febf83e6d2f5244",
+      "uncompressedSha256": "7d57d07bec28a7391eccad5fbe2500a3d53be66721d661742ef0fffc27220a58"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-final-package22.json.gz",
+      "sha256": "717ca03cf0af1d0162de4df8a6b29ebbf911f0625122b81d11f54b650fad1ac7",
+      "uncompressedSha256": "c0f354bcbd76b386c740b0e11f3e1970ae76b6fa79db44d0e8cbfbc999a5288f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-measure20.json.gz",
+      "sha256": "e455579a75ad22b0960820d1f7f80bb1ee0f06fe4cf29d42c6f35555885eb5d2",
+      "uncompressedSha256": "9abb9081ebf8b9e07bf61bfb79e15847c96d5539b0d3eaa0385c723b5e5b34cd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-measure20.log.gz",
+      "sha256": "c34223c51192ac9a7edf83a448963841ca5764663ae4b6f6b3fd0c225d82f545",
+      "uncompressedSha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-measure22.json.gz",
+      "sha256": "3df44f84993fdde1d2849482d91124692f82a9814ee9d62be59caeb142f3cfc1",
+      "uncompressedSha256": "a250c30e3aff17e7a9870e30c836c1b9c1e569ad23f08f00e6984e511626f85d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-measure22.log.gz",
+      "sha256": "c34223c51192ac9a7edf83a448963841ca5764663ae4b6f6b3fd0c225d82f545",
+      "uncompressedSha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-measure24.json.gz",
+      "sha256": "e455579a75ad22b0960820d1f7f80bb1ee0f06fe4cf29d42c6f35555885eb5d2",
+      "uncompressedSha256": "9abb9081ebf8b9e07bf61bfb79e15847c96d5539b0d3eaa0385c723b5e5b34cd"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-measure24.log.gz",
+      "sha256": "c34223c51192ac9a7edf83a448963841ca5764663ae4b6f6b3fd0c225d82f545",
+      "uncompressedSha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-postcommit-generate.log.gz",
+      "sha256": "1568e52ebd82f30b0d7f03bc04a47d31b37e2475f499960925ef4f6d30bc8f00",
+      "uncompressedSha256": "b180658a53b3d1b42d0c8ae4df78e275b9d7f0f4481aa940c7a0d83f5eeb8ce6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-preflight.log.gz",
+      "sha256": "9d47135d2561c027deaf16e720d64974cf552ac3d951ea969da392572442ebdf",
+      "uncompressedSha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/hierarchy/public-integration-evidence/hierarchy-integrated-repack.json.gz",
+      "sha256": "717ca03cf0af1d0162de4df8a6b29ebbf911f0625122b81d11f54b650fad1ac7",
+      "uncompressedSha256": "c0f354bcbd76b386c740b0e11f3e1970ae76b6fa79db44d0e8cbfbc999a5288f"
+    }
+  ],
+  "coverageReuse": "Unchanged hierarchy/image/paint parent source coverage is reused; this integration does not claim a new full-source coverage run."
+}
