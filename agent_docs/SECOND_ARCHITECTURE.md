@@ -38,6 +38,15 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 현재 한도는 package/consumer/search 검사의 상수와 현재 실행 결과가 기준이다.
 아래 설명에 남은 과거 checkpoint 수치를 현재 제한으로 해석하지 않는다.
 
+## Private asset preparation 경계
+
+Image와 font의 명시 host load·abort·bytes hash·budget은 `resources/assetPreparation.js`가
+공유한다. `resolveAssets.js`는 SVG allowlist/decoded image dimensions를, `resolveFonts.js`는
+font identity와 같은 font/provider의 측정 batch를 검증한다. 모두 private preparation이며
+public resource/action/schema와 renderer 경계는 아직 바꾸지 않았다. Host callback, decoder
+object와 mutable byte buffer는 저장 결과에 들어가지 않는다. 공개 연결 전의 근거와 남은 범위는
+[image](impl/roadmap9/phase4/images/PRIVATE.md)와 [font](impl/roadmap9/phase4/fonts/PRIVATE.md)에 있다.
+
 ## 내부 expression kernel 경계
 
 `grammar/expressionAst.js`는 versioned AST의 정규화·정적 검사·명시 dependency 추출,

@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "status": "private-kernel-verified",
+  "baseCommit": "c0f0f7147f62a9da671b632eb5dbaf03188cd575",
+  "clean": false,
+  "scope": "Private kernel only; STEP-018 public integration and visual target remain open.",
+  "evidence": [
+    {
+      "source": ".artifacts/validation/images-private/boundaries.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/boundaries.log.gz",
+      "sha256": "577196c733c755620baf03cb025f52a3efc5f7c05b50f18846755c676897d896",
+      "decodedSha256": "2d06d91377ba1c79c41810426c7141c51d3af544b6d0ecf2a7e9b3778d151b76"
+    },
+    {
+      "source": ".artifacts/validation/images-private/bundle-final.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/bundle-final.log.gz",
+      "sha256": "17c271e34da224b7c219b55299c523001fca5075376376173d40eb47d119b5cc",
+      "decodedSha256": "e5c2337af283632c09547d884b97c794a295479a9b4aa53fe610f3c89267d8e5"
+    },
+    {
+      "source": ".artifacts/validation/images-private/bundle.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/bundle.log.gz",
+      "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "decodedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": ".artifacts/validation/images-private/contracts.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/contracts.log.gz",
+      "sha256": "edb4741a066eceae957504aa8e4718c790f785237ed512e92a05be2096bb2d7c",
+      "decodedSha256": "c5a104716fa5b5dd09eda723b9f851f070242b4a13eb9932daa5a34d442015ab"
+    },
+    {
+      "source": ".artifacts/validation/images-private/coverage-command.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/coverage-command.log.gz",
+      "sha256": "65c7afa227b92725ab06a3702d7fd9f4fe5d9c530cc28b37530303744a64d438",
+      "decodedSha256": "30ae0498fe45e1f48e2f93077c2df6d0d72cf20446964065710bc1a2b09e8e18"
+    },
+    {
+      "source": ".artifacts/validation/images-private/coverage-final.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/coverage-final.log.gz",
+      "sha256": "5f917687541f023b5b8677ebb284aa33da827bf3cb79be118df2da475fc6d437",
+      "decodedSha256": "0c48e7406bebb1a67a1fbe17b46a69ef96e68943c1e9dbc56d5d57c28ee81746"
+    },
+    {
+      "source": ".artifacts/validation/images-private/coverage.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/coverage.log.gz",
+      "sha256": "8de4d658a77fbd3e3dad1e4087ff18772014dce1f2f7758ad252c6c51a07021a",
+      "decodedSha256": "c35b9f6b509244d953465125df5a34cac879971ffb246496cb744f8257f9cca2"
+    },
+    {
+      "source": ".artifacts/validation/images-private/docs-generate.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/docs-generate.log.gz",
+      "sha256": "dc88f6b905a297e6dd82a3c351a8002acac49b4fb70e22a3f32d8a762e065252",
+      "decodedSha256": "48d0ca888ea54a2c917fc21aaabda0c2e09392e285f41482482e99417eb26a65"
+    },
+    {
+      "source": ".artifacts/validation/images-private/docs.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/docs.log.gz",
+      "sha256": "ece8902229d651367ba45f048da7f9b8e0263c3b1427bbfbecab79f9e2b03405",
+      "decodedSha256": "eaaba78addb7afca94b8a97207cd821dac5fd7949bf7134ca81ee0021027293a"
+    },
+    {
+      "source": ".artifacts/validation/images-private/first-focused.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/first-focused.log.gz",
+      "sha256": "a2afdc08af412a7619fce6116daebed215db60a9b392ef1eaecd5425788c07c8",
+      "decodedSha256": "a146a147d23c9b1c07c8eeb4176202c918a5607cc291bc248a0be1589944c9a6"
+    },
+    {
+      "source": ".artifacts/validation/images-private/package-entry.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/package-entry.log.gz",
+      "sha256": "26e4d6570a32a82113f8044b952e01f14f71ed1847a6b7d78f815c2d25dda6fc",
+      "decodedSha256": "2ba764e239a68c4b64e5a8556fbf319c96bd96c284e062681e90d72b5fe2b9ae"
+    },
+    {
+      "source": ".artifacts/validation/images-private/package-final.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/package-final.log.gz",
+      "sha256": "65a45ca1d247c3babcf6769af72493e1b8bdcb099e206248ea71b502260441f9",
+      "decodedSha256": "2609eb7245abd7c294d3ff5d0b8ff73a4341e50cb2da53f407f04efaf0649f82"
+    },
+    {
+      "source": ".artifacts/validation/images-private/package-packed.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/package-packed.log.gz",
+      "sha256": "1e37d4d35d2f6c0b7b577ecad39af8d02f029409e2381e3b786c1afef87cfbd7",
+      "decodedSha256": "96b9cf772b743d814f23a3d9318fb43acccb6bcf10396f174e9bb1d7abad8a3a"
+    },
+    {
+      "source": ".artifacts/validation/images-private/package.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/package.log.gz",
+      "sha256": "14b71c81f0440ca115818b5e9a25bad5c9d41cc9e4b938d92e192bd10be58b4f",
+      "decodedSha256": "cb996386e1e16afb4979733e790308ca4669795bfeb2880065d8e7bce50e9637"
+    },
+    {
+      "source": ".artifacts/checks/image-private-coverage.json",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/image-private-coverage.json",
+      "sha256": "3a075cb25b12b40709434393b8f9a7a79d2e6415c9b0c85778ecf795539a6639",
+      "decodedSha256": "3a075cb25b12b40709434393b8f9a7a79d2e6415c9b0c85778ecf795539a6639"
+    },
+    {
+      "source": ".artifacts/checks/image-private-coverage.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/image-private-coverage.log.gz",
+      "sha256": "65c7afa227b92725ab06a3702d7fd9f4fe5d9c530cc28b37530303744a64d438",
+      "decodedSha256": "30ae0498fe45e1f48e2f93077c2df6d0d72cf20446964065710bc1a2b09e8e18"
+    },
+    {
+      "source": ".artifacts/checks/suite-docs.json",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/suite-docs.json",
+      "sha256": "31dafe8d1427f1f4675b1655e00082858b685e1089b71c1f72739b298bcf9c51",
+      "decodedSha256": "31dafe8d1427f1f4675b1655e00082858b685e1089b71c1f72739b298bcf9c51"
+    },
+    {
+      "source": ".artifacts/checks/suite-docs.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/suite-docs.log.gz",
+      "sha256": "ece8902229d651367ba45f048da7f9b8e0263c3b1427bbfbecab79f9e2b03405",
+      "decodedSha256": "eaaba78addb7afca94b8a97207cd821dac5fd7949bf7134ca81ee0021027293a"
+    },
+    {
+      "source": ".artifacts/checks/suite-contracts.json",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/suite-contracts.json",
+      "sha256": "636009b9e16fedb06d5b06a96f88180dc969690e30e060b51aedd2194f6d9920",
+      "decodedSha256": "636009b9e16fedb06d5b06a96f88180dc969690e30e060b51aedd2194f6d9920"
+    },
+    {
+      "source": ".artifacts/checks/suite-contracts.log",
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/suite-contracts.log.gz",
+      "sha256": "edb4741a066eceae957504aa8e4718c790f785237ed512e92a05be2096bb2d7c",
+      "decodedSha256": "c5a104716fa5b5dd09eda723b9f851f070242b4a13eb9932daa5a34d442015ab"
+    }
+  ],
+  "inputs": {
+    "src/core/contentDigest.js": "4e3392fbf2c9e3a335f6e55405c2c07326bda07f7004b66aef703be270a3b7b5",
+    "src/materialization/image.js": "10ea6e4d19ea8776d8abee167466dce35b1b4855be2f7f6a75b2f159ce8f04d4",
+    "src/resources/resolveAssets.js": "a549f7dfeae35a6140c9078edd6389d10cd986cfae8323a689560d7cb3827d32",
+    "test/unit/materialization/image-placement.test.js": "e4d390b07e935d6b3b82b6d0412e95f5b630bbdbfb388773d3c22db4d62d300b",
+    "test/unit/resources/image-preparation.test.js": "0f91bed1021fafaa213f5b6c6089ec4ca68155800e58f18779fd3870f95c4dc6",
+    "test/unit/resources/data-source-resolution.test.js": "205d377f73472bcbf975d2b9d2089a2e2546fa47c38f2024e8799d8c4a576e44",
+    "test/unit/core/content-digest.test.js": "254fbb6e5fc8416508c9baae60d1022e8a50c0d21a0c5d1e2048ebb5ecbdbe93",
+    "scripts/coverage-policy.js": "7b9d7b8f1385b7a8e429cddd838862610571a08248873f5656b87fd1d68d8481",
+    "scripts/package-artifact.js": "a2d2853692b269414f64925d25a85e4d6465c68785ccb8d567398eae92b3d244"
+  }
+}

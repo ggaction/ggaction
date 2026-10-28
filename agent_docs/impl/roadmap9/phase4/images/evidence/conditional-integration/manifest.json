@@ -1,0 +1,140 @@
+{
+  "parents": [
+    "a9ecf10787016aa8098536f96ebf18d58da2a301",
+    "990315b7"
+  ],
+  "scope": "Conditional data integration with image/font preparation and grapheme wrapping; image public design still pending",
+  "runtimeConflicts": [],
+  "generatedConflicts": "Canonical docs regeneration retained both sources; critical coverage families combined.",
+  "checks": [
+    {
+      "log": "images-bundle.log.gz",
+      "status": "passed",
+      "rawSha256": "dd204af6c13b051ba2f415ebabc6cac00cc318b5bc8a9a7ccf2331ac95033877",
+      "gzipSha256": "8a31e6994333b45e564d14ec61831219d0bc686b8ad6008802788d8f64f47586",
+      "tests": {}
+    },
+    {
+      "log": "images-contracts.log.gz",
+      "status": "passed",
+      "rawSha256": "2a53b5d453ffbcee14a4566385b897fd6416a48a0448030bd52ef93ccee0c598",
+      "gzipSha256": "b308b9de8f9035e2b15a54c3019bda740cbb55383a9c2df6b69df6eb34c13749",
+      "tests": {
+        "tests": 40,
+        "pass": 40,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "images-docs-generate.log.gz",
+      "status": "passed",
+      "rawSha256": "a53d98ad394f31ebe30cdb71451a2d8e43548774cea70011cacd1b0c85ac3ca0",
+      "gzipSha256": "a1961c63fad3d33868d4d5fcd140961503829feb7e10cff3a7f5915782c86f07",
+      "tests": {}
+    },
+    {
+      "log": "images-docs.log.gz",
+      "status": "passed",
+      "rawSha256": "7a37f7e264edd841d7d1d1136092812095d85ce934f0e900304c4d5ebf50f862",
+      "gzipSha256": "2f872760982a48c3b2523a9a19f2470da30896eaacb0e6843d25cc9ff44e6f49",
+      "tests": {
+        "tests": 166,
+        "pass": 166,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "images-installed.log.gz",
+      "status": "passed",
+      "rawSha256": "88a0ba047a4c07fab748154b774abd9fc839a2f9e39759bf721b7ca9ed8764c0",
+      "gzipSha256": "a0a0f2384a07a744cd25895b66ee80ca88e38b32509293b8ec94f0170d918bcb",
+      "tests": {}
+    },
+    {
+      "log": "images-metadata.log.gz",
+      "status": "passed",
+      "rawSha256": "795dd208b8c58e44015d36a6d75d7b26bf5661c5e8c07a4b442bb215e7e219f5",
+      "gzipSha256": "2970ceb3830b3ae8923e2ae3212fd9dd7870e970c2d964c7c4b8f05d27fbefe3",
+      "tests": {}
+    },
+    {
+      "log": "images-pack-measure.log.gz",
+      "status": "failed prior package entry cap; physical staged archive used for combined measurement",
+      "rawSha256": "16d2caab38f2a943f374579205c3d47d4117a6c295e188ab2126f8ea4fce9376",
+      "gzipSha256": "ece20ca4172fca072cbbacb89a8f426734676be644d9c46d38c913d809173d75",
+      "tests": {}
+    },
+    {
+      "log": "images-package-final.log.gz",
+      "status": "passed",
+      "rawSha256": "6306867790cfff89427ee7281ab7db880b82c5415f87c1815a8df4e1a3a34729",
+      "gzipSha256": "ebf3f893a9e561903989607509b6618d32ae6fac175babe1fc9dc63779e618e2",
+      "tests": {}
+    },
+    {
+      "log": "images-package-initial.log.gz",
+      "status": "failed prior package entry cap; physical staged archive used for combined measurement",
+      "rawSha256": "2afec337492ac1554f761d36e428ca96da0d1bffe56f1221f465afe053227fd9",
+      "gzipSha256": "286a2594c1aafb0affae1be5a65db1baac833e30be8aee16bdcfeb4a24864fcf",
+      "tests": {}
+    },
+    {
+      "log": "images-package-node20.log.gz",
+      "status": "passed",
+      "rawSha256": "e479921bc3310b2795d621aa51ec54865247a36dfe790bd3cb1df6372a1a0052",
+      "gzipSha256": "dfa079b4a72bd189d9bc26d0f02a00168c7e93f61a5bc02903361dc702b04058",
+      "tests": {}
+    },
+    {
+      "log": "images-package-node24.log.gz",
+      "status": "passed",
+      "rawSha256": "e479921bc3310b2795d621aa51ec54865247a36dfe790bd3cb1df6372a1a0052",
+      "gzipSha256": "dfa079b4a72bd189d9bc26d0f02a00168c7e93f61a5bc02903361dc702b04058",
+      "tests": {}
+    },
+    {
+      "log": "images-render.log.gz",
+      "status": "passed",
+      "rawSha256": "c14c33f47753d5043a44856e954a4c97214c3d5f053fae27c16700d62e602441",
+      "gzipSha256": "d5b753ce745049f668d936b094aa6b912e37c0b777e36ee40fa61e5d5b29c74a",
+      "tests": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "images-unit.log.gz",
+      "status": "passed",
+      "rawSha256": "493d68ac01719cfa7feb7578f916e69af01987b1d787d85af5fc8554960412c4",
+      "gzipSha256": "85db39930f2cb151251d8a2d297674ed20478657b64f350c29839a7b9bfd77d1",
+      "tests": {
+        "tests": 46,
+        "pass": 46,
+        "fail": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "installed": {
+    "nodeCases": 198,
+    "qualificationGroups": 7,
+    "artifactSha256": "4c67f504a3d9957265f93fa74f8ec87906fe3dbbceaa18cfb563e7c3d27ed4b2"
+  },
+  "package": {
+    "entries": 717,
+    "node22PackedBytes": 1065171,
+    "node20And24PackedBytes": 1067584,
+    "unpackedBytes": 4948831,
+    "fullGzip": 534627,
+    "basicGzip": 312463
+  },
+  "notClaimed": [
+    "STEP-018/019 completion",
+    "I1-I4 design approval",
+    "all-CI success: base a9 realistic7 inventory failure under separate repair"
+  ]
+}

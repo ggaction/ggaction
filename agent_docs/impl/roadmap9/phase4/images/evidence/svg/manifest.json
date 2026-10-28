@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "status": "private-kernel-verified",
+  "publicFeatureComplete": false,
+  "baseCommit": "b8e4250d9292ec983ac0ba55457393522e4b2821",
+  "testedInputs": {
+    "src/resources/svgImage.js": "6f85b82f50f7b4cccb4feedd1a53485e921f2a47a20f85f17e41ed31fea57081",
+    "src/resources/resolveAssets.js": "cd90a2ee33b424f4a302f4b33a78eebcbea8bd8d8bce14f2e0ca40a3fa0bb945",
+    "test/unit/resources/svg-images.test.js": "b49e9e20d318449e6d9d9c967f820398be8891e364c59f46249a9ff4bcbdeab4",
+    "test/unit/resources/image-preparation.test.js": "0f91bed1021fafaa213f5b6c6089ec4ca68155800e58f18779fd3870f95c4dc6",
+    "scripts/coverage-policy.js": "9cfd80fb08e0ee6567dc56b43a6a56d8a4bed05bd978c1a55c55d1baac242692",
+    "scripts/package-artifact.js": "3a0a38de61f69ba468250637e4b9c1fa898f6620cf9b75334eb6c075eec276ae"
+  },
+  "checks": {
+    "focused": {
+      "passed": 19,
+      "failed": 0
+    },
+    "contracts": {
+      "passed": 38,
+      "failed": 0
+    },
+    "docs": {
+      "passed": 159,
+      "failed": 0
+    },
+    "svgCoverage": {
+      "lines": 100,
+      "branches": 97.12,
+      "functions": 100
+    },
+    "resolverCoverage": {
+      "lines": 100,
+      "branches": 99.03,
+      "functions": 100
+    },
+    "package": {
+      "entries": 688,
+      "packedBytes": 1029429,
+      "unpackedBytes": 4788996
+    }
+  },
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/svg/svg-images-unit.log.gz",
+      "sha256": "dc4169736d57659cdb93909860c5170993bb59f435277bb65e293ad1018411ba",
+      "originalSha256": "fecf3b0dc769efb1d72fc60b8cd2b22e05764fd50e38de41b30a516f55acfcad"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/svg/svg-images-coverage.log.gz",
+      "sha256": "aa91a3d41b3bb83dd1e5d721ff496c717440513a5a3945d7ccee90e6d9302e66",
+      "originalSha256": "8238651c30a6f6f688e6d69ff6552eca1930e4dced767fc6db9e61059067b3a3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/svg/svg-images-contracts.log.gz",
+      "sha256": "b65d3e094c4624bad7609ec90d3e4214c2bc9acad36d7e7d2ea3b1a408ed4aa7",
+      "originalSha256": "93e476ab67bcd02da3fdad2409fed4ee09d2f62f0e1395931d1cb9fc69abfd42"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/svg/svg-images-docs.log.gz",
+      "sha256": "81c1117e3f55b650508fbd9136ec6d53a788e99bc724fbfb9e3df445014dce83",
+      "originalSha256": "74db54ef1446f3c8d0f537252b555d5711d8a970523a3c98dc5cd5606e65cbd6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/svg/svg-images-package-final.log.gz",
+      "sha256": "a67985c5f173473573f217bd9f5fdcd1adbabf7b9fe69a6fff3c3e199345fb26",
+      "originalSha256": "b3b258503b536d6fb8985415747c682589907582674118bb675ca6c21876e6cc"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase4/images/evidence/svg/svg-images-package-initial.json",
+      "sha256": "0061fc76175f17ab3c368c3e79cebb1b87ccf7c85b10045ebdd2563b6280dc9e",
+      "originalSha256": "0061fc76175f17ab3c368c3e79cebb1b87ccf7c85b10045ebdd2563b6280dc9e"
+    }
+  ]
+}

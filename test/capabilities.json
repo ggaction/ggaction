@@ -285,6 +285,24 @@
         "path": "charts/gapminder-horizon/"
       }
     ],
+    "image-assets": [
+      {
+        "type": "prefix",
+        "path": "gates/image-assets/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/image-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/svg-images.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/materialization/image-placement.test.js"
+      }
+    ],
     "inspection": [
       {
         "type": "file",

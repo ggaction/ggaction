@@ -5,14 +5,16 @@ export {
   resolveTextBounds
 } from "../core/textMetrics.js";
 
-function wrapCodePoints(text, maxWidth, style, profile) {
+const graphemeSegmenter = new Intl.Segmenter("en", { granularity: "grapheme" });
+
+function wrapGraphemes(text, maxWidth, style, profile) {
   const lines = [];
   let line = "";
-  for (const codePoint of [...text]) {
-    const candidate = line + codePoint;
+  for (const { segment } of graphemeSegmenter.segment(text)) {
+    const candidate = line + segment;
     if (line !== "" && measureTextWidth(candidate, style, profile) > maxWidth) {
       lines.push(line);
-      line = codePoint;
+      line = segment;
     } else {
       line = candidate;
     }
@@ -30,7 +32,7 @@ function wrapWords(text, maxWidth, style, profile) {
         lines.push(line);
         line = "";
       }
-      const fragments = wrapCodePoints(word, maxWidth, style, profile);
+      const fragments = wrapGraphemes(word, maxWidth, style, profile);
       lines.push(...fragments.slice(0, -1));
       line = fragments.at(-1);
       continue;
@@ -60,7 +62,10 @@ export function wrapText(text, {
   if (!["word", "character"].includes(mode)) {
     throw new Error(`Unsupported text wrap mode "${mode}".`);
   }
-  return mode === "word"
-    ? wrapWords(text, maxWidth, style, profile)
-    : wrapCodePoints(text, maxWidth, style, profile);
+  const wrapLine = line => mode === "word"
+    ? wrapWords(line, maxWidth, style, profile)
+    : wrapGraphemes(line, maxWidth, style, profile);
+  const hardLines = text.split(/\r\n|\r|\n/u);
+  return hardLines.length === 1 ? wrapLine(text)
+    : hardLines.flatMap(line => line === "" ? [""] : wrapLine(line));
 }

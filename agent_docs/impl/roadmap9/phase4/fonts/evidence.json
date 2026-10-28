@@ -1,0 +1,168 @@
+{
+  "status": "private-font-preparation-verified",
+  "publicFontIntegration": "pending",
+  "runtimeBase": "cb455eab",
+  "commands": [
+    {
+      "command": "node scripts/run-tests.js unit unit/resources/font-preparation.test.js unit/resources/image-preparation.test.js unit/resources/svg-images.test.js",
+      "exit": 0,
+      "log": "evidence/font-assets-unit.log.gz",
+      "rawSha256": "148ec4745b0a97a1aabe4225064244908fbafdd21576337b5156d093014638e5",
+      "gzipSha256": "386ed38819f1cea4ac5c590af2137313657916917bca0a14f2c0cc65012e7ae6",
+      "counts": {
+        "tests": "30",
+        "pass": "30",
+        "fail": "0",
+        "skipped": "0"
+      }
+    },
+    {
+      "command": "node --experimental-test-coverage --test-coverage-include=src/resources/assetPreparation.js --test-coverage-include=src/resources/resolveAssets.js --test-coverage-include=src/resources/resolveFonts.js --test test/unit/resources/font-preparation.test.js test/unit/resources/image-preparation.test.js test/unit/resources/svg-images.test.js",
+      "exit": 0,
+      "log": "evidence/font-assets-coverage.log.gz",
+      "rawSha256": "94f7a4f6b5d80b7843d85883fe3c0e96a350b31fef4e4c593dabd3db641afc70",
+      "gzipSha256": "d3f1ce672b9f4fb74c299851844aa2f5d17ac438dcf3ed4e04322a14376a2631",
+      "counts": {
+        "tests": "30",
+        "pass": "30",
+        "fail": "0",
+        "skipped": "0"
+      }
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js",
+      "exit": 0,
+      "log": "evidence/font-assets-contracts.log.gz",
+      "rawSha256": "b4611dd9ef0a7ef1c2a2f8a1adeb071f1556228bc14ad1dfc4f76612864c0a26",
+      "gzipSha256": "87fb9c08a53e004003c2e99ee12b1c64f59116016a5c9fa1322b40379d256ab0",
+      "counts": {
+        "tests": "38",
+        "pass": "38",
+        "fail": "0",
+        "skipped": "0"
+      }
+    },
+    {
+      "command": "node scripts/package-artifact.js --check",
+      "exit": 0,
+      "log": "evidence/font-assets-package.log.gz",
+      "rawSha256": "49fcc17cec803f93d3e5207e302fb5bb5c1053171f8226b20a5e74d0ace53a17",
+      "gzipSha256": "1e554f276822b20c944b2b3d2439ec676e2ea786ad67c09d992646cf0e4743e2",
+      "counts": {}
+    },
+    {
+      "command": "npm run package:bundle",
+      "exit": 0,
+      "log": "evidence/font-assets-bundle.log.gz",
+      "rawSha256": "e5c2337af283632c09547d884b97c794a295479a9b4aa53fe610f3c89267d8e5",
+      "gzipSha256": "17c271e34da224b7c219b55299c523001fca5075376376173d40eb47d119b5cc",
+      "counts": {}
+    },
+    {
+      "command": "npm run docs:generate",
+      "exit": 0,
+      "log": "evidence/font-assets-docs-generate.log.gz",
+      "rawSha256": "48d0ca888ea54a2c917fc21aaabda0c2e09392e285f41482482e99417eb26a65",
+      "gzipSha256": "dc88f6b905a297e6dd82a3c351a8002acac49b4fb70e22a3f32d8a762e065252",
+      "counts": {}
+    },
+    {
+      "command": "node scripts/run-tests.js docs",
+      "exit": 0,
+      "log": "evidence/font-assets-docs.log.gz",
+      "rawSha256": "e0acc35be603dd92332cf58a0324f9c5fbb9541246de67b916dc2e7bb3fd3e20",
+      "gzipSha256": "a9f793a4b2599d3df73097701f4ff041fe24b9aca409830f177f9f9ef45e7c8a",
+      "counts": {
+        "tests": "159",
+        "pass": "159",
+        "fail": "0",
+        "skipped": "0"
+      }
+    },
+    {
+      "command": "npm run docs:machine:check",
+      "exit": 0,
+      "log": "evidence/font-assets-machine.log.gz",
+      "rawSha256": "795dd208b8c58e44015d36a6d75d7b26bf5661c5e8c07a4b442bb215e7e219f5",
+      "gzipSha256": "2970ceb3830b3ae8923e2ae3212fd9dd7870e970c2d964c7c4b8f05d27fbefe3",
+      "counts": {}
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/agent-docs-navigation.test.js",
+      "exit": 0,
+      "log": "evidence/font-assets-navigation.log.gz",
+      "rawSha256": "faac522ce93f8a88b83ee28b80ff2af42d59595d8f47cc37ea7fd9e685e173aa",
+      "gzipSha256": "67a4eee067d90f451ee0b0d65de4c29208e9826d26911be26edcabf52039fb4f",
+      "counts": {
+        "tests": "7",
+        "pass": "7",
+        "fail": "0",
+        "skipped": "0"
+      }
+    }
+  ],
+  "inputs": {
+    "src/resources/assetPreparation.js": "bfdab86c7ca265685b8906b62fff6699dbf670fccca0c4e49d31f496d0a6e32d",
+    "src/resources/resolveAssets.js": "7294e9d0997133d3ff21e2d5378de2fb008fe75a1b72ce2608f00942f88c2ef5",
+    "src/resources/resolveFonts.js": "c49968e00a36a5f32620c8bea749dee3043179f4cf4061c0c46316f1ba6b8c5f",
+    "src/core/contentDigest.js": "4e3392fbf2c9e3a335f6e55405c2c07326bda07f7004b66aef703be270a3b7b5",
+    "test/unit/resources/font-preparation.test.js": "416d431fa90ded3e88bb09d8ad7061255774db1b49e50305f8f8afe48e80c194",
+    "test/unit/resources/image-preparation.test.js": "0f91bed1021fafaa213f5b6c6089ec4ca68155800e58f18779fd3870f95c4dc6",
+    "test/unit/resources/svg-images.test.js": "b49e9e20d318449e6d9d9c967f820398be8891e364c59f46249a9ff4bcbdeab4",
+    "scripts/coverage-policy.js": "beb16f12037c576cfd779ffa548d8d686f9f7aeae946bacdfa49fab40e403f1e",
+    "scripts/package-artifact.js": "e828d82a1d62d4da51f31987b1955f762114c017d5369c7d08ac7c40e07f2d67",
+    "test/fixtures/fonts/generate.py": "e0a8a1b1aea6a1964cf6d3eec431051fde1dc46fed1e18da8f3237b3a61de4a7",
+    "test/fixtures/fonts/metric-fixture.ttf": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+    "test/fixtures/fonts/README.md": "31e7951ea61e2c4fc29bf5988db1b99c99638c4259f1eff3d2e90095fbd9678c"
+  },
+  "coverage": {
+    "assetPreparation.js": {
+      "lines": 100,
+      "branches": 98.67,
+      "functions": 100
+    },
+    "resolveAssets.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "resolveFonts.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "package": {
+    "entries": 690,
+    "packedBytes": 1031109,
+    "unpackedBytes": 4795329
+  },
+  "fontFixture": {
+    "family": "ggaction Metric Fixture",
+    "sha256": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+    "unitsPerEm": 1000,
+    "advances": {
+      "A": 600,
+      "B": 800,
+      "space": 250,
+      "combiningAcute": 0
+    },
+    "actualAt20px": [
+      28,
+      0,
+      12
+    ],
+    "expectedAt20px": [
+      28,
+      0,
+      12
+    ]
+  },
+  "remaining": [
+    "public resources and editable codec",
+    "actual bundled render font binding",
+    "stale program revision rejection and explicit dependency rematerialization",
+    "grapheme boundaries and final line origins",
+    "AT-04/AT-15 and STEP-019 completion"
+  ]
+}

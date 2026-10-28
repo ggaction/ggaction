@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:02365ee2d0c5170388865da7dc9f00a8526488a7e5f705830ae0b048cddb04d8. Status: development. Runtime source: 698f926b3b155cdf19fa27df1141d35c207a5b7d. Release baseline: v0.0.13.
+Contract: sha256:96bec2db92676870412700ffff80551c367ef189adeeaf28695ab4910ee5821a. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/698f926b3b155cdf19fa27df1141d35c207a5b7d/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/698f926b3b155cdf19fa27df1141d35c207a5b7d/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -9729,9 +9729,11 @@ clockwise; top and bottom titles remain horizontal.
 
 Set `maxWidth` to wrap text before edge rotation. Word wrapping prefers
 whitespace and falls back to Unicode-safe character wrapping for an oversized
-word. Character wrapping always splits on Unicode code-point boundaries. The
-library uses deterministic text metrics so the same program produces the same
-line breaks in browsers and Node. Renderers draw the concrete lines already in
+word. Both modes preserve whole Unicode grapheme clusters, including combining
+marks, Hangul syllable sequences, and emoji sequences. A single cluster wider
+than `maxWidth` stays intact on its own line. Layout uses `Intl.Segmenter`
+grapheme boundaries and deterministic text metrics; Unicode boundary rules
+follow the runtime's Unicode version. Renderers draw the concrete lines already in
 `graphicSpec`; they do not wrap text again. Title and subtitle strings accept
 explicit newline characters. Each hard line wraps independently when `maxWidth`
 is set. Leading, interior, and trailing blank lines reserve vertical spacing
@@ -31692,6 +31694,7 @@ export interface AxisLabelLayoutOptions {
   rotation?: RotationInput;
   /** Wrap each label to this measured width; false removes an existing wrap policy. */
   maxWidth?: number | false;
+  /** Both modes keep grapheme clusters intact; hard breaks preserve line spacing. */
   wrap?: "word" | "character";
   lineHeight?: number;
   /** Defaults to error; allow stores an intentional label-label overlap policy. */
@@ -42282,6 +42285,7 @@ export interface TitleOptions {
   alongOffset?: number;
   gap?: number;
   maxWidth?: number;
+  /** Both modes keep grapheme clusters intact; hard breaks preserve line spacing. */
   wrap?: "word" | "character";
   lineHeight?: number;
   /** Subtitle-only line spacing; overrides lineHeight without requiring maxWidth. */
@@ -43181,12 +43185,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/698f926b3b155cdf19fa27df1141d35c207a5b7d/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/698f926b3b155cdf19fa27df1141d35c207a5b7d/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -46214,9 +46218,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:02365ee2d0c5170388865da7dc9f00a8526488a7e5f705830ae0b048cddb04d8` |
+| Contract fingerprint | `sha256:96bec2db92676870412700ffff80551c367ef189adeeaf28695ab4910ee5821a` |
 | Example and dataset source | `b8f9668133b278974c9cfe7324402a18282c9f4b` |
-| Runtime source commit | `698f926b3b155cdf19fa27df1141d35c207a5b7d` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 304 |
 | Declared actions in that release | 234 |
@@ -46525,7 +46529,10 @@ Cartesian label styles accept `rotation`, `maxWidth`, `wrap`, `lineHeight`, and
 facades. Numeric rotations are radians; `{ value, unit }` accepts radians or
 degrees. Setting a positive `maxWidth` stores deterministic word or character
 wrapping as concrete text lines. Word wrapping is the default, and an oversized
-word is split by Unicode code point. `lineHeight` defaults to `fontSize * 1.2`
+word is split only between Unicode grapheme clusters using `Intl.Segmenter`.
+Combining marks, Hangul sequences, and emoji clusters stay intact, even when a
+single cluster exceeds `maxWidth`. LF, CRLF, and CR breaks preserve separate
+lines and blank-line spacing. `lineHeight` defaults to `fontSize * 1.2`
 and cannot be smaller than the font size.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
