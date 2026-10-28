@@ -349,6 +349,8 @@ export function collectResourceReferences(program, { kind, id }) {
 
 export function collectAllResourceReferences(program) {
   return [
+    ...(program.semanticSpec.resources ?? []).filter(resource => resource.kind === "data-source")
+      .map(resource => reference("data", resource.result.data.id, "resource", resource.id, ["result", "data"])),
     ...(program.semanticSpec.resources ?? []).flatMap(resource => [
       ...resource.inputs,
       ...(resource.ownership.mode === "generated" ? [resource.ownership.owner] : [])

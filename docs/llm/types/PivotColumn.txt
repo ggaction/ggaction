@@ -1,0 +1,4 @@
+export interface PivotColumn {
+  readonly value: string | number | boolean | null;
+  readonly as: string;
+}

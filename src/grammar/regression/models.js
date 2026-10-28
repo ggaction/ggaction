@@ -7,6 +7,8 @@ import {
   stableFiniteMean,
   stableFiniteSquareSum
 } from "../numeric.js";
+import { trySolveLinearSystem } from "./linearSystem.js";
+import { predictLocalQuadratic } from "./localQuadratic.js";
 
 function restoreFiniteRatio(value, numeratorScale, denominatorScale, label) {
   if (value === 0) return 0;
@@ -165,34 +167,9 @@ function fitLinearGroup(rows, {
 }
 
 function solveLinearSystem(matrix, vector) {
-  const size = matrix.length;
-  const augmented = matrix.map((row, index) => [...row, vector[index]]);
-  for (let column = 0; column < size; column += 1) {
-    let pivot = column;
-    for (let row = column + 1; row < size; row += 1) {
-      if (Math.abs(augmented[row][column]) > Math.abs(augmented[pivot][column])) {
-        pivot = row;
-      }
-    }
-    if (Math.abs(augmented[pivot][column]) < 1e-12) {
-      throw new Error("Polynomial regression design is singular.");
-    }
-    [augmented[column], augmented[pivot]] = [
-      augmented[pivot], augmented[column]
-    ];
-    const divisor = augmented[column][column];
-    for (let index = column; index <= size; index += 1) {
-      augmented[column][index] /= divisor;
-    }
-    for (let row = 0; row < size; row += 1) {
-      if (row === column) continue;
-      const factor = augmented[row][column];
-      for (let index = column; index <= size; index += 1) {
-        augmented[row][index] -= factor * augmented[column][index];
-      }
-    }
-  }
-  return augmented.map(row => row[size]);
+  const result = trySolveLinearSystem(matrix, vector);
+  if (result === undefined) throw new Error("Polynomial regression design is singular.");
+  return result;
 }
 
 function invertSymmetricMatrix(matrix) {
@@ -388,7 +365,7 @@ function applyResidualWeights(neighbors, residualWeights) {
 }
 
 function loessPrediction(rows, {
-  x, y, xValue, xScale, yScale, neighborCount, residualWeights, scaled = false
+  x, y, xValue, xScale, yScale, neighborCount, residualWeights, degree, scaled = false
 }, label) {
   const rawDistances = rows.map(row => Math.abs(row[x] - xValue));
   const scaledDistances = scaled || rawDistances.some(value => !Number.isFinite(value));
@@ -412,6 +389,12 @@ function loessPrediction(rows, {
       : (1 - (neighbor.distance / radius) ** 3) ** 3
   }));
   weighted = applyResidualWeights(weighted, residualWeights);
+  if (degree === 2) return {
+    prediction: predictLocalQuadratic(weighted.map(item => ({
+      x: item.row[x], y: item.row[y], weight: item.weight
+    })), xValue),
+    neighborIndices: weighted.map(item => item.index)
+  };
   const ordinary = weightedPrediction(weighted, x, y, xValue);
   return {
     prediction: Number.isFinite(ordinary)
@@ -425,7 +408,11 @@ function loessPrediction(rows, {
   };
 }
 
-function fitLoessGroup(rows, { x, y, group, span, robustIterations = 0 }) {
+export function loessNeighborCount(rowCount, { degree, span }) {
+  return Math.min(rowCount, Math.max(degree === 2 ? 3 : 2, Math.ceil(span * rowCount)));
+}
+
+function fitLoessGroup(rows, { x, y, group, span, degree, robustIterations = 0 }) {
   const groupLabel = group === undefined ? "all" : String(group);
   const label = `LOESS regression group "${groupLabel}"`;
   if (rows.length < 2 || new Set(rows.map(row => row[x])).size < 2) {
@@ -434,7 +421,7 @@ function fitLoessGroup(rows, { x, y, group, span, robustIterations = 0 }) {
       "and varying x values."
     );
   }
-  const neighborCount = Math.max(2, Math.ceil(span * rows.length));
+  const neighborCount = loessNeighborCount(rows.length, { degree, span });
   const xValues = [...new Set(rows.map(row => row[x]))]
     .sort((left, right) => left - right);
   const xScale = maximumMagnitude(rows.map(row => row[x])) || 1;
@@ -442,7 +429,7 @@ function fitLoessGroup(rows, { x, y, group, span, robustIterations = 0 }) {
   const fitAtObserved = residualWeights => xValues.map(xValue => ({
     x: xValue,
     ...loessPrediction(rows, {
-      x, y, xValue, xScale, yScale, neighborCount, residualWeights
+      x, y, xValue, xScale, yScale, neighborCount, residualWeights, degree
     }, `${label} prediction`)
   }));
   let fits = fitAtObserved();
@@ -466,6 +453,7 @@ function fitLoessGroup(rows, { x, y, group, span, robustIterations = 0 }) {
     fits = fitAtObserved(residualWeights);
   }
   return { count: rows.length, span, neighborCount, fits, rows, x, y, xScale, yScale,
+    ...(degree === 2 ? { degree: 2 } : {}),
     ...(robustIterations === 0 ? {} : { robustIterations, residualWeights: residualWeights ?? rows.map(() => 1) }) };
 }
 
@@ -555,7 +543,7 @@ export function fitRegressionGroup(rows, { x, y, group, parameters }) {
     });
   }
   return fitLoessGroup(rows, { x, y, group, span: parameters.span,
-    robustIterations: parameters.robustIterations });
+    degree: parameters.degree, robustIterations: parameters.robustIterations });
 }
 
 export function predictRegressionAt(model, xValue, parameters) {

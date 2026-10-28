@@ -335,7 +335,7 @@ test("requires explicit choices for ambiguous targets and groups", () => {
   );
   assert.throws(
     () => pointProgram().createRegression({ method: "linear", degree: 2 }),
-    /degree requires the polynomial method/
+    /degree requires the polynomial or loess method/
   );
 });
 

@@ -63,8 +63,8 @@ export function normalizeRegressionParameters({
     return cloneAndFreeze({ method, interval: false });
   }
   if (method === "loess") {
-    if (degree !== undefined) {
-      throw new Error("Regression degree requires the polynomial method.");
+    if (degree !== undefined && degree !== 1 && degree !== 2) {
+      throw new RangeError("Regression LOESS degree must be 1 or 2.");
     }
     if (
       confidenceMethod !== undefined || level !== undefined ||
@@ -83,6 +83,7 @@ export function normalizeRegressionParameters({
       throw new RangeError("LOESS robustIterations must be an integer in [0, 32].");
     }
     return cloneAndFreeze({ method, span: resolvedSpan,
+      ...(degree === 2 ? { degree: 2 } : {}),
       ...(iterations === 0 ? {} : { robustIterations: iterations }) });
   }
   if (robustIterations !== undefined) {
@@ -103,7 +104,7 @@ export function normalizeRegressionParameters({
       validateGeneratedItemLimit(resolvedDegree, "Regression polynomial degree", MAX_POLYNOMIAL_DEGREE);
       return cloneAndFreeze({ method, degree: resolvedDegree, interval: false });
     }
-    if (degree !== undefined) throw new Error("Regression degree requires the polynomial method.");
+    if (degree !== undefined) throw new Error("Regression degree requires the polynomial or loess method.");
     return cloneAndFreeze({ method, interval: false });
   }
   if (level !== undefined && confidence !== undefined && level !== confidence) {
@@ -143,7 +144,7 @@ export function normalizeRegressionParameters({
     });
   }
   if (degree !== undefined) {
-    throw new Error("Regression degree requires the polynomial method.");
+    throw new Error("Regression degree requires the polynomial or loess method.");
   }
   return cloneAndFreeze({
     method,
@@ -216,7 +217,7 @@ export function normalizeRegressionTransform(args = {}) {
     x: args.x,
     y: args.y,
     ...(args.groupBy === undefined ? {} : { groupBy: args.groupBy }),
-    ...(parameters.method === "polynomial"
+    ...(parameters.degree !== undefined
       ? { degree: parameters.degree }
       : {}),
     ...(parameters.method === "loess"

@@ -1,6 +1,11 @@
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
-import type { ChartProgram, CompositionOptions } from "./program.js";
+export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
+  ReviseDataUpdateRequest, ParameterDataUpdateRequest, DataUpdateRequest, DataSourceResponse,
+  DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions, DataSourceProvenance,
+  DataSourceReceipt, DataSourceResource } from "./program.js";
+import type { ChartProgram, CompositionOptions, DataUpdateRequest, CreateDataUpdateRequest,
+  ReviseDataUpdateRequest, ParameterDataUpdateRequest, DataUpdateHost, PreparedDataUpdate } from "./program.js";
 
 export type {
   CreateOverlayOptions,
@@ -54,6 +59,11 @@ export type {
   RemoveResourceOptions,
   CanvasOptions,
   FitCanvasOptions,
+  PivotColumn,
+  PivotNumericOperation,
+  PivotDataOptions,
+  DatasetPivotTransform,
+  EditPivotDataOptions,
   FoldDataOptions,
   FoldDataOutputFields,
   CategoricalEncodingOptions,
@@ -97,6 +107,7 @@ export type {
   ComputedDataOptions,
   ComputedExpression,
   CompleteDataOptions,
+  CalendarDayDomain,
   ImputedDataOptions,
   NormalizedDataOptions,
   NormalizeBaseline,
@@ -474,6 +485,10 @@ export type {
 } from "./program.js";
 
 export function chart(): ChartProgram;
+export function prepareDataUpdate(program: ChartProgram, request: CreateDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"create">>;
+export function prepareDataUpdate(program: ChartProgram, request: ReviseDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"revise">>;
+export function prepareDataUpdate(program: ChartProgram, request: ParameterDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"parameter">>;
+export function prepareDataUpdate(program: ChartProgram, request: DataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate>;
 export function hconcat(options: CompositionOptions): ChartProgram;
 export function vconcat(options: CompositionOptions): ChartProgram;
 export function render(

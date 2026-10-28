@@ -3,6 +3,7 @@ import { requireStringValue as requireName } from "../core/validation.js";
 import { annotateError } from "../core/diagnostics.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { requireRegressionStatisticsSource, REGRESSION_STATISTIC_FIELDS } from "./regression/statistics.js";
+import { scalarKey } from "./transformKeys.js";
 
 const STORAGE_TYPES = new Set([
   "number", "string", "boolean", "array", "object", "unknown", "mixed"
@@ -305,7 +306,16 @@ export function deriveTransformSchema(inputSchema, transform, values, { sourceId
     fields = fields.filter(item => item.name !== field.name);
     fields.push(field);
   };
-  if (transform.type === "summary") {
+  if (transform.type === "pivot") {
+    fields = transform.groupBy.map(name => inheritedField(input, name)).filter(Boolean);
+    const inputs = [...new Set([...transform.groupBy, transform.field, transform.value])];
+    for (const column of transform.columns) {
+      const field = generatedField(column.as, "number", definition,
+        `column:${scalarKey(column.value, "Pivot column value")}`, inputs);
+      field.nullable = transform.fill === null || !["sum", "count"].includes(transform.op);
+      push(field);
+    }
+  } else if (transform.type === "summary") {
     fields = transform.groupBy.map(name => inheritedField(input, name)).filter(Boolean);
     for (const item of transform.aggregates) {
       const op = typeof item.op === "string" ? item.op : item.op.op;
@@ -363,6 +373,17 @@ export function deriveTransformSchema(inputSchema, transform, values, { sourceId
     push(generatedField(transform.as.probability, "number", definition, "probability", [transform.field]));
   } else if (transform.type === "computed") {
     push(generatedField(transform.as, "unknown", definition, "value", expressionFields(transform.expression)));
+  } else if (transform.type === "complete" && transform.calendar !== undefined) {
+    push({ ...inheritedField(input, transform.key), name: transform.key, storageType: "number" });
+    for (const [name, value] of Object.entries(transform.fill)) {
+      if (!fields.some(field => field.name === name)) {
+        const field = generatedField(name, value === null ? "unknown" : typeof value, definition, `fill:${name}`);
+        field.nullable = value === null;
+        field.optional = true;
+        push(field);
+      }
+    }
+    if (transform.members !== undefined) push(generatedField(transform.members, "array", definition, "members"));
   } else if (transform.type === "timeUnit") {
     push(generatedField(transform.as, "number", definition, "value", [transform.field]));
   } else if (transform.type === "window") {
@@ -406,7 +427,7 @@ export function deriveTransformSchema(inputSchema, transform, values, { sourceId
       if (planned.lineage === undefined && !["complete", "impute"].includes(transform.type)) {
         return planned;
       }
-      return { ...planned, storageType: ["regressionStatistics", "timeUnit"].includes(transform.type) && planned.storageType === "number"
+      return { ...planned, storageType: ["regressionStatistics", "timeUnit", "pivot"].includes(transform.type) && planned.storageType === "number"
         ? "number" : field.storageType, nullable: field.nullable, optional: field.optional };
     });
     for (const field of inferred.fields) {

@@ -33,3 +33,25 @@ test("independent allocation comparisons ignore namespaces while retaining value
   reordered.graphicSpec.objects.points.items.reverse();
   assert.throws(() => assertEquivalentMeaning(first, reordered), assert.AssertionError);
 });
+
+test("allocation comparisons normalize only data references proven by matching datasets", () => {
+  const semantic = logicalId => ({
+    datasets: [{ id: "rows", logicalId, revision: 1, values: [{ value: 2 }] }],
+    resources: [{ kind: "data-source", id: "source", revision: 0,
+      result: { data: { kind: "data", id: "rows", logicalId, revision: 1 } } }]
+  });
+  const first = semantic("first");
+  assertEquivalentMeaning(first, semantic("second"));
+  for (const patch of [{ logicalId: "orphan" }, { id: "other" }, { revision: 2 },
+    { kind: "parameter" }, { extra: true }]) {
+    const changed = semantic("second");
+    Object.assign(changed.resources[0].result.data, patch);
+    assert.throws(() => assertEquivalentMeaning(first, changed), assert.AssertionError);
+  }
+  const reference = first.resources[0].result.data;
+  assert.throws(() => assertEquivalentMeaning(reference, { ...reference, logicalId: "second" }),
+    assert.AssertionError, "standalone references have no dataset proof");
+  const changedReceipt = semantic("second");
+  changedReceipt.resources[0].revision = 1;
+  assert.throws(() => assertEquivalentMeaning(first, changedReceipt), assert.AssertionError);
+});

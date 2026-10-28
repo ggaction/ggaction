@@ -1,0 +1,1 @@
+export type PivotNumericOperation = "none" | "sum" | "mean" | "min" | "max";

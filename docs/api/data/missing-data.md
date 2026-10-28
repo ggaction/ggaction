@@ -9,7 +9,7 @@ title: Missing Keys and Values
 
 [Family overview](./source-and-derived.md) · [Exact action lookup](./../../reference/actions.md)
 
-## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
+## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
 
 Materialize missing keys inside each observed group without silently turning
 absence into zero:
@@ -32,7 +32,7 @@ const completed = program.createCompleteData({
 });
 ```
 
-`values` and `sequence` are mutually exclusive. If both are omitted, the action
+`values`, `sequence`, and `calendar` are mutually exclusive. If all are omitted, the action
 uses the key values observed anywhere in the source, preserving typed identity
 and first appearance. A numeric sequence uses finite `start`, `end`, and
 positive `step`. Only observed group tuples are completed; the action does not
@@ -45,6 +45,77 @@ the group and key values, then `fill` values or `null` for the other source fiel
 When `members` is present, original rows contain their source index and synthetic
 rows contain `[]`. Output follows group first appearance and key-domain order and
 is capped at 10,000 rows, including repeated observations, before allocation.
+
+### Complete a calendar day range
+
+Use `calendar: { unit: "day", start, end, timeZone }` for a contiguous range of
+civil dates. Both endpoints are included. `start` and `end` are strict Gregorian
+`YYYY-MM-DD` strings, and `timeZone` is required: use `"UTC"` or an IANA name.
+For example, `2024-01-01` through `2024-12-31` contains 366 days.
+
+First bucket timestamps in the same zone and explicitly aggregate repeated
+observations. This complete ES module preserves a missing day as `null` and an
+observed zero as `0`:
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Standalone ES module with ggaction installed; the sample declares all input events.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const dayRange = {
+  unit: "day", start: "2024-11-02", end: "2024-11-04",
+  timeZone: "America/New_York"
+};
+const daily = chart()
+  .createData({ id: "events", values: [
+    { at: "2024-11-03T05:30:00Z", amount: 2 },
+    { at: "2024-11-03T06:30:00Z", amount: 3 },
+    { at: "2024-11-04T12:00:00Z", amount: 0 }
+  ] })
+  .createTimeUnitData({
+    id: "buckets", field: "at", unit: "day", as: "day",
+    timeZone: dayRange.timeZone
+  })
+  .createSummaryData({
+    id: "totals", groupBy: "day",
+    aggregates: [{ op: "sum", field: "amount", as: "total" }]
+  })
+  .createCompleteData({
+    id: "days", key: "day", calendar: dayRange,
+    fill: { total: null }, members: "sourceRows"
+  });
+
+const dailyPlot = daily.createCanvas()
+  .createPointMark({ data: "days", missing: "skip" })
+  .encodeX({ field: "day", fieldType: "temporal" })
+  .encodeY({ field: "total" });
+```
+
+The two repeated clock-hour events sum to `5` on November 3. Day starts are
+stored as epoch milliseconds; neighboring starts can be 23 or 25 hours apart.
+A midnight gap uses the first valid instant of that day. A civil date removed
+by a zone transition is an error. Results do not depend on the process time zone.
+
+Source keys must exactly match the generated numeric day starts. Completion
+does not parse strings, floor midday timestamps, or convert keys from another
+zone. It keeps repeated rows unless you aggregate them first. Synthetic rows
+have no contributing input rows. An empty ungrouped source creates the requested
+days; an empty grouped source creates no groups. Declare the key and group
+fields in the source schema when creating an empty source.
+
+The domain and total output each have a 10,000-item limit. Calendar completion
+also preflights a 10,000,000-unit work budget covering source cells, zone boundary
+resolution, group expansion, output cells, and row provenance. A wide source or
+many groups can reach this limit before the row limit.
+
+`editCompleteData({ target: "days", calendar: { ...dayRange, end: "2024-11-05" } })`
+replaces the whole calendar policy. Supplying `values` or `sequence` switches
+domain mode; omitting all three preserves the current policy. Source revisions
+recompute the pipeline and reject newly observed dates outside the range.
 
 ## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
 

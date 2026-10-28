@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { chart } from "../src/index.js";
+import { chart, prepareDataUpdate } from "../src/index.js";
 import {
   buildScenario,
   generateScenarioDescriptors
@@ -333,6 +333,8 @@ function derivedEditingPrograms() {
       as: { key: "foldKey", value: "foldValue" }
     })
     .editFoldData({ target: "editFold", fields: ["a"] })
+    .createPivotData({ id: "editPivot", source: "editSource", field: "category", groupBy: "group", value: "value", op: "sum" })
+    .editPivotData({ target: "editPivot", op: "mean" })
     .createSummaryData({
       id: "editSummary", source: "editSource",
       aggregates: [{ op: "mean", field: "value", as: "mean" }]
@@ -427,7 +429,10 @@ export async function buildActionRelationships() {
   const directNames = new Set(actionNames);
   const relationships = new Map(actionNames.map(name => [name, new Set()]));
   const observed = new Set();
-  const programs = [...buildActionRelationshipPrograms(), chart()
+  const preparedBase = chart();
+  const prepared = await prepareDataUpdate(preparedBase, { kind: "create", id: "received",
+    source: { kind: "inline", values: [{ x: 1 }] } }, { requestToken: "received" });
+  const programs = [preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
     .createCanvas({ width: 500, height: 400, margin: 70 })
     .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
     .createScatterPlot({ x: "x", y: "y" })

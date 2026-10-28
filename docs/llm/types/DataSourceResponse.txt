@@ -1,0 +1,4 @@
+export type DataSourceResponse = { readonly encoding: "utf-8"; readonly mimeType: string } & (
+  | { readonly text: string; readonly bytes?: never }
+  | { readonly bytes: Uint8Array; readonly text?: never }
+);

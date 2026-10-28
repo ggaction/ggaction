@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 690, // Shared asset preparation and the private font identity owner.
-  packedBytes: 1_034_000, // Measured 1,029,429 bytes plus observed CI pack variation.
-  unpackedBytes: 4_796_000 // Private image/font preparation owners: 4,795,329 bytes.
+  entries: 706, // Integrated prepared data plus five private image/font owners.
+  packedBytes: 1_053_000, // Integrated Node20/24 observed 1,052,617 bytes.
+  unpackedBytes: 4_881_000 // Combined runtime measured 4,880,648 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

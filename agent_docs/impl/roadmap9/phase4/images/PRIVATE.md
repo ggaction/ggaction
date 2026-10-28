@@ -79,3 +79,14 @@ alpha0/내부alpha255도 검사했다. Package688entries, packed1029429/unpacked
 이 source는 여전히 private이며 공개 renderer의 SVG image 지원 완료와 구별한다.
 
 SVG checkpoint의 입력과 실행 evidence는 [별도 manifest](evidence/svg/manifest.json)에 보존한다.
+
+## 최신 기반 통합
+
+2026-10-28 main `72855612`를 통합했다. 기존 image/font 준비와 grapheme wrapping을
+prepared data, pivot, calendar, quadratic regression과 함께 보존한다. 문서는 두 canonical
+source에서 재생성했고 coverage의 두 resource family를 모두 유지했다. Image28, font/text14,
+경계33, docs164 및 승인된6종 render1이 통과했다. 검증 로그는
+[evidence/integration/manifest.json](evidence/integration/manifest.json)에 보존한다.
+Package706entries, unpacked4,880,648bytes, packed Node22 1,050,411/Node20·24 1,052,617bytes에
+맞춰706/1,053,000/4,881,000 한도를 적용했다. 이전 한도 실패도 남겼다. Full/Basic gzip
+527,107/304,940bytes는 기존529,000/307,000 안이며 유지한다. Public image lifecycle은 후속 구현이다.

@@ -25,6 +25,16 @@ p.createIntervalPlot({ x: { center: "center", lower: "low", upper: "high" }, y: 
 p.createRegressionPlot({ x: "x", y: "y", groupBy: false });
 p.createRegressionPlot({ x: { field: "x", scale: { zero: false } }, y: "y", method: "polynomial", degree: 2, interval: "prediction", band: false });
 p.createRegressionPlot({ x: "x", y: "y", method: "loess", span: 0.4, band: false });
+p.createRegressionPlot({ x: "x", y: "y", method: "loess", degree: 2, robustIterations: 2 });
+p.createRegressionData({ id: "fit", x: "x", y: "y", method: "loess", degree: 1 });
+p.createRegression({ method: "loess", degree: 2 });
+p.editRegressionData({ target: "fit", method: "loess", degree: 2 });
+p.editRegression({ degree: 1 });
+p.createDerivedData({ id: "fit", source: "raw", transform: [{ type: "regression", method: "loess", x: "x", y: "y", span: .75, degree: 2 }] });
+// @ts-expect-error local degree is bounded to 1 or 2
+p.createRegressionData({ id: "fit", x: "x", y: "y", method: "loess", degree: 3 });
+// @ts-expect-error quadratic LOESS still rejects intervals
+p.createRegression({ method: "loess", degree: 2, interval: "mean" });
 p.createRegressionPlot({ x: "x", y: "y", method: "exp", interval: false });
 p.createRegressionData({ id: "exp", x: "x", y: "y", method: "exp" });
 p.createRegression({ method: "exp", band: false });

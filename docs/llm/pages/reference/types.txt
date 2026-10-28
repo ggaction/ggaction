@@ -19,6 +19,7 @@ interface ChartProgramActions {
   applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
+  applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -37,6 +38,7 @@ interface ChartProgramActions {
   createBinData(options: TargetedOptions<BinDataOptions>): ChartProgram;
   createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
+  createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
@@ -60,6 +62,7 @@ interface ChartProgramActions {
   editFilteredData(options: TargetedOptions<EditFilteredDataOptions>): ChartProgram;
   editFlattenData(options: TargetedOptions<EditFlattenDataOptions>): ChartProgram;
   editLookupData(options: TargetedOptions<EditLookupDataOptions>): ChartProgram;
+  editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;
   editFoldData(options: TargetedOptions<EditFoldDataOptions>): ChartProgram;
   editSummaryData(options: TargetedOptions<EditSummaryDataOptions>): ChartProgram;
   editBinData(options: TargetedOptions<EditBinDataOptions>): ChartProgram;
@@ -467,6 +470,19 @@ type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "t
 ```
 
 Related types: [`TextMarkOptions`](../../../reference/types/#type-textmarkoptions) · [`TextFormat`](../../../reference/types/#type-textformat) · [`LabelLayoutOptions`](../../../reference/types/#type-labellayoutoptions).
+
+### `ApplyDataUpdateOptions` {#type-applydataupdateoptions}
+
+ Expand ApplyDataUpdateOptions
+
+```typescript
+export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly prepared: PreparedDataUpdate<Kind>;
+  readonly requestToken: string;
+}
+```
+
+Related types: [`DataUpdateRequest`](../../../reference/types/#type-dataupdaterequest) · [`PreparedDataUpdate`](../../../reference/types/#type-prepareddataupdate).
 
 ### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
 
@@ -1352,6 +1368,21 @@ type CPathGuides = Omit<CartesianPathGuideOptions, "axes"> & {
 
 Related types: [`CartesianPathGuideOptions`](../../../reference/types/#type-cartesianpathguideoptions) · [`CAxes`](../../../reference/types/#type-caxes).
 
+### `CalendarDayDomain` {#type-calendardaydomain}
+
+ Expand CalendarDayDomain
+
+```typescript
+export interface CalendarDayDomain {
+  readonly unit: "day";
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly start: string;
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly end: string;
+  readonly timeZone: string;
+}
+```
+
 ### `CanvasOptions` {#type-canvasoptions}
 
  Expand CanvasOptions
@@ -1894,16 +1925,18 @@ Related types: [`DatasetScalar`](../../../reference/types/#type-datasetscalar).
 
 ```typescript
 export type CompleteDataOptions = CompleteDataBaseOptions & (
-  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never }
+  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never; calendar?: never }
   | {
       values?: never;
       sequence: { start: number; end: number; step: number };
+      calendar?: never;
     }
-  | { values?: never; sequence?: never }
+  | { calendar: CalendarDayDomain; values?: never; sequence?: never }
+  | { values?: never; sequence?: never; calendar?: never }
 );
 ```
 
-Related types: [`CompleteDataBaseOptions`](../../../reference/types/#type-completedatabaseoptions) · [`DatasetScalar`](../../../reference/types/#type-datasetscalar).
+Related types: [`CompleteDataBaseOptions`](../../../reference/types/#type-completedatabaseoptions) · [`DatasetScalar`](../../../reference/types/#type-datasetscalar) · [`CalendarDayDomain`](../../../reference/types/#type-calendardaydomain).
 
 ### `CompletePolarAxisOptions` {#type-completepolaraxisoptions}
 
@@ -2333,6 +2366,18 @@ export type CreateDataOptions<Row extends object> = DataKeyOptions & {
 ```
 
 Related types: [`DataKeyOptions`](../../../reference/types/#type-datakeyoptions) · [`StoredCell`](../../../reference/types/#type-storedcell) · [`SourceSchemaInput`](../../../reference/types/#type-sourceschemainput).
+
+### `CreateDataUpdateRequest` {#type-createdataupdaterequest}
+
+ Expand CreateDataUpdateRequest
+
+```typescript
+export type CreateDataUpdateRequest = DataSourceKeys & {
+  readonly kind: "create"; readonly id: string; readonly source: DataSource;
+};
+```
+
+Related types: [`DataSourceKeys`](../../../reference/types/#type-datasourcekeys) · [`DataSource`](../../../reference/types/#type-datasource).
 
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
@@ -3194,6 +3239,108 @@ export type DataKeyOptions =
 
 Related types: [`RowKey`](../../../reference/types/#type-rowkey).
 
+### `DataParse` {#type-dataparse}
+
+ Expand DataParse
+
+```typescript
+export type DataParse = Readonly<Record<string, DataParseDirective>>;
+```
+
+Related types: [`DataParseDirective`](../../../reference/types/#type-dataparsedirective).
+
+### `DataParseDirective` {#type-dataparsedirective}
+
+ Expand DataParseDirective
+
+```typescript
+export type DataParseDirective =
+  | { readonly type: "string" | "number" | "boolean"; readonly nullable?: boolean; readonly format?: never; readonly timeZone?: never }
+  | { readonly type: "date"; readonly nullable?: boolean; readonly timeZone: string;
+      readonly format?: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso" };
+```
+
+### `DataSource` {#type-datasource}
+
+ Expand DataSource
+
+```typescript
+export type DataSource = DataSourceParsing & (
+  | { readonly kind: "inline"; readonly values: readonly Readonly<Record<string, DataSourceValue>>[];
+      readonly text?: never; readonly format?: never; readonly delimiter?: never }
+  | (DataSourceFormat & { readonly kind: "inline"; readonly text: string; readonly values?: never })
+  | (DataSourceFormat & { readonly kind: "url"; readonly url: string | ComputedExpressionV2 })
+  | (DataSourceFormat & { readonly kind: "named"; readonly name: string })
+);
+```
+
+Related types: [`DataSourceParsing`](../../../reference/types/#type-datasourceparsing) · [`DataSourceValue`](../../../reference/types/#type-datasourcevalue) · [`DataSourceFormat`](../../../reference/types/#type-datasourceformat) · [`ComputedExpressionV2`](../../../reference/types/#type-computedexpressionv2).
+
+### `DataSourceFormat` {#type-datasourceformat}
+
+ Expand DataSourceFormat
+
+```typescript
+type DataSourceFormat = { readonly format: "csv"; readonly delimiter?: string }
+  | { readonly format: "json"; readonly delimiter?: never };
+```
+
+### `DataSourceKeys` {#type-datasourcekeys}
+
+ Expand DataSourceKeys
+
+```typescript
+type DataSourceKeys =
+  | { readonly keyField?: never; readonly keyFields?: never }
+  | { readonly keyField: string; readonly keyFields?: never }
+  | { readonly keyField?: never; readonly keyFields: readonly string[] };
+```
+
+### `DataSourceParsing` {#type-datasourceparsing}
+
+ Expand DataSourceParsing
+
+```typescript
+type DataSourceParsing = { readonly parse?: DataParse; readonly schema?: SourceSchemaInput };
+```
+
+Related types: [`DataParse`](../../../reference/types/#type-dataparse) · [`SourceSchemaInput`](../../../reference/types/#type-sourceschemainput).
+
+### `DataSourceValue` {#type-datasourcevalue}
+
+ Expand DataSourceValue
+
+```typescript
+export type DataSourceValue = null | boolean | number | string
+  | readonly DataSourceValue[] | { readonly [key: string]: DataSourceValue };
+```
+
+### `DataUpdateDescriptors` {#type-dataupdatedescriptors}
+
+ Expand DataUpdateDescriptors
+
+```typescript
+interface DataUpdateDescriptors {
+  create: { readonly kind: "create"; readonly id: string; readonly sourceKind: DataSource["kind"]; readonly format?: "csv" | "json" };
+  revise: { readonly kind: "revise"; readonly target: string; readonly id: string };
+  parameter: { readonly kind: "parameter"; readonly target: string };
+}
+declare const preparedDataUpdate: unique symbol;
+/** Opaque preparation evidence. Only prepareDataUpdate can create a valid handle. */
+```
+
+Related types: [`DataSource`](../../../reference/types/#type-datasource).
+
+### `DataUpdateRequest` {#type-dataupdaterequest}
+
+ Expand DataUpdateRequest
+
+```typescript
+export type DataUpdateRequest = CreateDataUpdateRequest | ReviseDataUpdateRequest | ParameterDataUpdateRequest;
+```
+
+Related types: [`CreateDataUpdateRequest`](../../../reference/types/#type-createdataupdaterequest) · [`ReviseDataUpdateRequest`](../../../reference/types/#type-revisedataupdaterequest) · [`ParameterDataUpdateRequest`](../../../reference/types/#type-parameterdataupdaterequest).
+
 ### `DatasetBin2DOutputFields` {#type-datasetbin2doutputfields}
 
  Expand DatasetBin2DOutputFields
@@ -3291,16 +3438,18 @@ export type DatasetCompleteTransform = {
   readonly fill: Readonly<Record<string, DatasetScalar>>;
   readonly members?: string;
 } & (
-  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never }
+  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never; readonly calendar?: never }
   | {
       readonly sequence: { readonly start: number; readonly end: number; readonly step: number };
       readonly values?: never;
+      readonly calendar?: never;
     }
-  | { readonly values?: never; readonly sequence?: never }
+  | { readonly calendar: CalendarDayDomain; readonly values?: never; readonly sequence?: never }
+  | { readonly values?: never; readonly sequence?: never; readonly calendar?: never }
 );
 ```
 
-Related types: [`DatasetScalar`](../../../reference/types/#type-datasetscalar).
+Related types: [`DatasetScalar`](../../../reference/types/#type-datasetscalar) · [`CalendarDayDomain`](../../../reference/types/#type-calendardaydomain).
 
 ### `DatasetComputedTransform` {#type-datasetcomputedtransform}
 
@@ -3643,6 +3792,25 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
 
 Related types: [`DatasetNormalizedBaseTransform`](../../../reference/types/#type-datasetnormalizedbasetransform) · [`NormalizeZeroDenominator`](../../../reference/types/#type-normalizezerodenominator) · [`DatasetNormalizeBaselineTransform`](../../../reference/types/#type-datasetnormalizebaselinetransform).
 
+### `DatasetPivotTransform` {#type-datasetpivottransform}
+
+ Expand DatasetPivotTransform
+
+```typescript
+export type DatasetPivotTransform = {
+  readonly type: "pivot";
+  readonly field: string;
+  readonly groupBy: readonly string[];
+  readonly columns: readonly PivotColumn[];
+  readonly fill: number | null;
+} & (
+  | { readonly op: PivotNumericOperation; readonly value: string }
+  | { readonly op: "count"; readonly value?: never }
+);
+```
+
+Related types: [`PivotColumn`](../../../reference/types/#type-pivotcolumn) · [`PivotNumericOperation`](../../../reference/types/#type-pivotnumericoperation).
+
 ### `DatasetRegressionStatisticsTransform` {#type-datasetregressionstatisticstransform}
 
  Expand DatasetRegressionStatisticsTransform
@@ -3696,7 +3864,7 @@ export type DatasetRegressionTransform = {
       method: "loess";
       span: number;
       robustIterations?: number;
-      degree?: never;
+      degree?: 2;
       confidenceMethod?: never;
       level?: never;
       confidence?: never;
@@ -3836,6 +4004,7 @@ Related types: [`TemporalInputUnit`](../../../reference/types/#type-temporalinpu
 
 ```typescript
 export type DatasetTransform =
+  | DatasetPivotTransform
   | DatasetBinTransform
   | DatasetBin2DTransform
   | DatasetCompleteTransform
@@ -3860,7 +4029,7 @@ export type DatasetTransform =
   | DatasetWindowTransform;
 ```
 
-Related types: [`DatasetBinTransform`](../../../reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](../../../reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](../../../reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](../../../reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](../../../reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](../../../reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](../../../reference/types/#type-datasetfiltertransform) · [`DatasetFlattenTransform`](../../../reference/types/#type-datasetflattentransform) · [`DatasetLookupTransform`](../../../reference/types/#type-datasetlookuptransform) · [`DatasetFoldTransform`](../../../reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](../../../reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](../../../reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](../../../reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](../../../reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](../../../reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](../../../reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](../../../reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](../../../reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](../../../reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](../../../reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](../../../reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](../../../reference/types/#type-datasetwindowtransform).
+Related types: [`DatasetPivotTransform`](../../../reference/types/#type-datasetpivottransform) · [`DatasetBinTransform`](../../../reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](../../../reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](../../../reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](../../../reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](../../../reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](../../../reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](../../../reference/types/#type-datasetfiltertransform) · [`DatasetFlattenTransform`](../../../reference/types/#type-datasetflattentransform) · [`DatasetLookupTransform`](../../../reference/types/#type-datasetlookuptransform) · [`DatasetFoldTransform`](../../../reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](../../../reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](../../../reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](../../../reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](../../../reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](../../../reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](../../../reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](../../../reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](../../../reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](../../../reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](../../../reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](../../../reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](../../../reference/types/#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -5090,6 +5259,16 @@ export interface EditParameterOptions { readonly target: string; readonly value:
 ```
 
 Related types: [`ParameterValue`](../../../reference/types/#type-parametervalue).
+
+### `EditPivotDataOptions` {#type-editpivotdataoptions}
+
+ Expand EditPivotDataOptions
+
+```typescript
+export type EditPivotDataOptions = FocusedDerivedDataEdit<PivotDataOptions>;
+```
+
+Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focusedderiveddataedit) · [`PivotDataOptions`](../../../reference/types/#type-pivotdataoptions).
 
 ### `EditPolarAxisOptions` {#type-editpolaraxisoptions}
 
@@ -8235,6 +8414,18 @@ Related types: [`PathLegendOptions`](../../../reference/types/#type-pathlegendop
 export type ParallelMissingPolicy = "break" | "drop-row" | "error";
 ```
 
+### `ParameterDataUpdateRequest` {#type-parameterdataupdaterequest}
+
+ Expand ParameterDataUpdateRequest
+
+```typescript
+export interface ParameterDataUpdateRequest {
+  readonly kind: "parameter"; readonly target: string; readonly value: ParameterValue;
+}
+```
+
+Related types: [`ParameterValue`](../../../reference/types/#type-parametervalue).
+
 ### `ParameterDefinition` {#type-parameterdefinition}
 
  Expand ParameterDefinition
@@ -8383,6 +8574,45 @@ export type PieRadiusChannel = string | {
 ```
 
 Related types: [`RadiusScaleOptions`](../../../reference/types/#type-radiusscaleoptions).
+
+### `PivotColumn` {#type-pivotcolumn}
+
+ Expand PivotColumn
+
+```typescript
+export interface PivotColumn {
+  readonly value: string | number | boolean | null;
+  readonly as: string;
+}
+```
+
+### `PivotDataOptions` {#type-pivotdataoptions}
+
+ Expand PivotDataOptions
+
+```typescript
+export type PivotDataOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string | readonly string[];
+  columns?: readonly PivotColumn[];
+  fill?: number | null;
+} & (
+  | { op?: PivotNumericOperation; value: string }
+  | { op: "count"; value?: never }
+);
+```
+
+Related types: [`PivotColumn`](../../../reference/types/#type-pivotcolumn) · [`PivotNumericOperation`](../../../reference/types/#type-pivotnumericoperation).
+
+### `PivotNumericOperation` {#type-pivotnumericoperation}
+
+ Expand PivotNumericOperation
+
+```typescript
+export type PivotNumericOperation = "none" | "sum" | "mean" | "min" | "max";
+```
 
 ### `PointFacadePositionChannel` {#type-pointfacadepositionchannel}
 
@@ -8785,6 +9015,20 @@ export interface PreGriddedHeatmapOptions extends HeatmapBaseOptions {
 ```
 
 Related types: [`HeatmapBaseOptions`](../../../reference/types/#type-heatmapbaseoptions) · [`HeatmapCategoryPositionChannel`](../../../reference/types/#type-heatmapcategorypositionchannel) · [`RectColorChannel`](../../../reference/types/#type-rectcolorchannel).
+
+### `PreparedDataUpdate` {#type-prepareddataupdate}
+
+ Expand PreparedDataUpdate
+
+```typescript
+export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly [preparedDataUpdate]: Kind;
+  readonly kind: "data-update";
+  readonly request: DataUpdateDescriptors[Kind];
+}
+```
+
+Related types: [`DataUpdateRequest`](../../../reference/types/#type-dataupdaterequest) · [`DataUpdateDescriptors`](../../../reference/types/#type-dataupdatedescriptors).
 
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
@@ -9368,7 +9612,8 @@ type RegressionParameterOptions =
     }
   | {
       method: "loess";
-      degree?: never;
+      /** Local polynomial degree; default 1. */
+      degree?: 1 | 2;
       span?: number;
       /** Residual reweighting passes, integer 0..32; default 0. */
       robustIterations?: number;
@@ -9695,6 +9940,17 @@ export type ReviseDataOptions<Row extends object> = ({ keys?: never; rowMap?: re
 ```
 
 Related types: [`RowKey`](../../../reference/types/#type-rowkey) · [`StoredCell`](../../../reference/types/#type-storedcell) · [`SourceSchemaInput`](../../../reference/types/#type-sourceschemainput).
+
+### `ReviseDataUpdateRequest` {#type-revisedataupdaterequest}
+
+ Expand ReviseDataUpdateRequest
+
+```typescript
+export interface ReviseDataUpdateRequest {
+  readonly kind: "revise"; readonly target: string; readonly id: string;
+  readonly rowMap?: readonly (number | null)[];
+}
+```
 
 ### `RotationInput` {#type-rotationinput}
 

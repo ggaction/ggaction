@@ -1,0 +1,32 @@
+{
+  "label": "expression-acceptance",
+  "command": "node",
+  "args": [
+    "scripts/qualify-expression.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 445,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T14:26:32.119Z",
+  "finishedAt": "2026-10-28T14:26:32.564Z",
+  "source": {
+    "available": true,
+    "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "19d14da4beb24e35f77925a8d6121a38124217aa",
+    "clean": true,
+    "statusSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "logSha256": "50568cc88586853749131a90bae590a2fe906ca23b13fc61c04199e30901a3ec",
+  "bytes": 386,
+  "retainedBytes": 386,
+  "truncated": false
+}

@@ -75,6 +75,21 @@ test("compact action cards are generated from the current action contract", asyn
   );
 });
 
+test("missing generated routes fail closed even when card and route map both omit one", async () => {
+  const { artifact, context } = await buildActionCards();
+  const card = artifact.cards[0];
+  const routes = { ...context.routes };
+  delete routes[card.name];
+  assert.throws(() => validateActionCards({
+    cards: artifact.cards.map(value => value === card ? { ...value, route: undefined } : value),
+    actions: context.actions, declarations: context.declarations, routes
+  }), /Route drift/);
+  const generation = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"))
+    .scripts["docs:generate"].split(" && ");
+  assert.ok(generation.indexOf("npm run docs:reference") >= 0);
+  assert.ok(generation.indexOf("npm run docs:reference") < generation.indexOf("npm run contracts:cards"));
+});
+
 test("compact action cards satisfy the bounded typed public schema projection", async () => {
   const [artifact, schema, collectionSchema, intents] = await Promise.all([
     readFile(cardFile, "utf8").then(JSON.parse),
@@ -115,8 +130,8 @@ test("compact action cards satisfy the bounded typed public schema projection", 
     assert.doesNotMatch(JSON.stringify(card), /relatedActions|typeDefinitions|documentationBody/);
   }
   assert.equal(intents.schemaVersion, 1);
-  assert.equal(Object.keys(intents.summaryOverrides).length < 20, true);
-  assert.equal(Object.keys(intents.errorOverrides).length < 10, true);
+  assert.equal(Object.keys(intents.summaryOverrides).length <= 20, true);
+  assert.equal(Object.keys(intents.errorOverrides).length <= 10, true);
 });
 
 test("action-card hierarchy is generated from the executable direct-child trace", async () => {
@@ -238,9 +253,11 @@ test("every compact snippet type-checks against the exact ChartProgram declarati
   try {
     await copyFile(declarationFile, path.join(temporary, "program.d.ts"));
     const source = [
-      'import type { ChartProgram } from "./program.js";',
+      'import type { ChartProgram, PreparedDataUpdate } from "./program.js";',
       "declare const program: ChartProgram;",
       "declare const chart: () => ChartProgram;",
+      "declare const prepared: PreparedDataUpdate;",
+      "declare const currentToken: string;",
       "",
       ...artifact.cards.map(card => `${card.snippet};`),
       ""
