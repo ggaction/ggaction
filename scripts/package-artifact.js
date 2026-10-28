@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 681, // Adds shared regression solve and private local quadratic owners.
-  packedBytes: 1_013_000, // Private local quadratic checkpoint: measured 1,012,717 bytes.
-  unpackedBytes: 4_723_000 // Private local quadratic checkpoint: measured 4,722,952 bytes.
+  entries: 682, // Adds the private calendar day domain owner.
+  packedBytes: 1_014_000, // Private calendar day checkpoint: measured 1,013,735 bytes.
+  unpackedBytes: 4_727_000 // Private calendar day checkpoint: measured 4,726,245 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

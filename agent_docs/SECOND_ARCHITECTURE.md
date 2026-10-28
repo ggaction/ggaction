@@ -74,6 +74,24 @@ Pivot 준비 이후 private math owner2개를 더한 Node22.23.1/npm10.9.8 stagi
 최소681entries/1,013,000/4,723,000으로 변경했다. Full gzip507,618, Basic285,702bytes는 기존
 508,000/286,000 한도를 유지한다. 이 역시 독립 branch의 누적 측정이며 main 통합 시 다시 실측한다.
 
+## Private civil-day domain 준비
+
+`grammar/calendarDay.js`는 명시 day/start/end/timeZone을 받아 inclusive civil-day domain을 만드는 pure owner다.
+Strict lexical guard 뒤 기존 `parseTimeValue`로 Gregorian 날짜를 검증하고 `setUTCDate`로 civil date를 증가시킨다.
+각 IANA 경계는 기존 `resolveCalendarBoundary`와 `calendarParts`를 재사용한다. Day instant에 고정24시간을
+더하지 않으며 존재하지 않는 civil date는 오류다. 기존 resolver의 probe 범위와 간격에 이름을 붙여 최대
+roundtrip 작업량50을 같은 owner에서 공유한다. General time-unit의 연산과 결과는 바꾸지 않았다.
+새 domain은 최대10,000일이며 Intl 작업과 output allocation 전에 공통 generated/work 한도를 확인한다.
+아직 complete transform, action, declaration, persistence 또는 renderer에 연결하지 않았다.
+State/materialization 경계와 공개 지원은 유지하며 재현 및 남은 통합은
+[private checkpoint](impl/roadmap9/phase3/calendar/CALENDAR_DAY_KERNEL.md)에 기록한다.
+
+새 pure module 한 개를 더한 Node22.23.1/npm10.9.8 공식 staging 실측은682entries,
+1,013,735packed, 4,726,245unpacked bytes다. 이전681entries/1,013,000/4,723,000을 초과해
+최소682entries/1,014,000/4,727,000으로만 변경했다. 이 수치는 독립 branch의 누적 측정이며
+main integration의 package 증거를 대체하지 않는다. 설치 Full/Basic gzip507,597/285,702bytes는
+기존508,000/286,000 한도 안이다.
+
 ## 범례 항목 이동 소유권
 
 범례 항목의 독립 이동 의도는 기존 `guideConfigs.legend`가 소유하고,
