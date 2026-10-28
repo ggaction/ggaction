@@ -85,3 +85,6 @@ Basic의 shared rowLineage→complete import 경로가 calendar owner를 포함�
 
 다음 단계는 STEP-014/015 전체 카드와 AT-17의 기존 통계 수치·lineage·revision·consumer fixture를 감사하여
 미검증 칸을 닫는 것이다. 별도 primitive review 없이 calendar 전용 시각화 액션을 추가하지 않는다.
+
+후속 비시각 수치·소비자 감사 결과는 [STATISTICS_AUDIT](../statistics/STATISTICS_AUDIT.md)에 기록했다.
+Main 통합·최종 qualification과 calendar 전용 시각화는 계속 남은 의무다.

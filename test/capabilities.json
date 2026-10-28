@@ -553,6 +553,192 @@
         "path": "unit/selectors/"
       }
     ],
+    "statistical-fixtures": [
+      {
+        "type": "file",
+        "path": "unit/actions/data/statistical-fixtures.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/summary-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/summary-capacity.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/bin-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/bin2d-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/bin2d-assignment.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/stack-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/window-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/fold-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/flatten-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/lookup-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/complete-impute-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/regression-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/regression-prediction.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/regression-statistics.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/robust-loess.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/loess-degree.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/loess-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/density-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/ecdf-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/pivot-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/pivot-consumers.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/time-unit-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/time-unit-missing.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/calendar-completion.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/calendar-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/row-lineage.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/derived-editing.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/source-revision.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/transforms/quantile-policies.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/transforms/window.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/transforms/ecdf.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/transforms/bin2d.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/lookup.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/pivot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/calendar-days.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/transforms/time-unit.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/derived-editing-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/ecdf-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/interval-regression-facade-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/bin2d-lifecycle-render.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/advanced-authoring-integration.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/calendar-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/pivot-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/inspection-descriptors.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/public-state-inspection.test.js"
+      }
+    ],
     "statistics": [
       {
         "type": "prefix",

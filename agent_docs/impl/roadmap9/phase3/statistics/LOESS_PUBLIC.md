@@ -88,3 +88,6 @@ Parent가 최신 main parameter/v2와 G-DATA 변경을 통합하고 누적 packa
 이 branch의 검증은 그 통합 또는 전체 source coverage/realistic corpus를 대신하지 않는다.
 Pivot과 LOESS 공개 통합 이후에도 STEP-014의 공통 통계 oracle closeout, STEP-015 public calendar
 completion/geometry와 STEP-077까지의 나머지 요구는 아직 미완료다.
+
+이후 calendar completion은 [CALENDAR_PUBLIC](../calendar/CALENDAR_PUBLIC.md), 공통 통계 수치·소비자
+감사는 [STATISTICS_AUDIT](STATISTICS_AUDIT.md)에서 검증했다. 위 문단은 이 checkpoint 당시의 인계 상태다.

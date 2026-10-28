@@ -77,3 +77,5 @@ Packed runtime hash는 `6bdea30c6f703250a7bd4656abfaecfa68cf09b1b6a3a6972dfd133f
 Full browser gzip509,064는508,000을 넘어서510,000으로 조정했다. Basic285,851와 SVG8,111은
 기존286,000/25,000을 유지한다. 새 action2개를 포함한 search index857,741은857,000을 넘어서858,000으로 조정했다.
 모든 측정은 이 독립 branch 기준이며 main의 parameter/v2/resolver 변경을 합칠 때 누적 package 한도를 다시 측정한다.
+
+후속 전체 통계·시간 수치 및 소비자 감사는 [STATISTICS_AUDIT](STATISTICS_AUDIT.md)가 소유한다.
