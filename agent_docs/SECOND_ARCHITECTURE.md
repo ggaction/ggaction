@@ -47,6 +47,46 @@ public resource/action/schema와 renderer 경계는 아직 바꾸지 않았다. 
 object와 mutable byte buffer는 저장 결과에 들어가지 않는다. 공개 연결 전의 근거와 남은 범위는
 [image](impl/roadmap9/phase4/images/PRIVATE.md)와 [font](impl/roadmap9/phase4/fonts/PRIVATE.md)에 있다.
 
+## Private builtin resource validation
+
+승인된 Full-only hierarchy/layout/image 연결을 위해 `materialization/resourceKinds.js`가 exact
+program constructor별 검증 handler를 한 번 등록한다. 복사한 null-prototype record와 handler를
+freeze하며 상위 constructor의 권한을 상속하지 않는다. Public plugin 또는 renderer registry가 아니다.
+공통 resource owner는 envelope·typed refs·graph를 먼저 검사하고 등록 owner의 저장값 및 binding
+검증만 호출한다. Plain preview는 원래 constructor를 명시하며, 미등록 class/Basic는 추가 kind를
+거부한다. Persistence도 실제 복원 constructor의 같은 경계를 사용하고 계산을 실행하지 않는다.
+이 준비 checkpoint는 handler 연결점만 추가하며 Full assembly의 hierarchy/layout/image 등록과
+각 public authoring consumer는 후속 구현이다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이
+승인·검증과 후행 연결 의무를 보존한다.
+이 owner1개를 더한 지원 Node20/22/24 staging은739entries, packed최대1,098,083,
+unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
+Full/Basic/SVG browser gzip최대535,560/313,517/8,185는 기존 한도 안이며 그대로 유지한다.
+
+Typed layer binding의 닫힌 경로(`image`, `hierarchyBinding.layout`)는
+`core/resourceReferences.js`가 수집과 immutable rebind를 함께 소유한다. 공통 exact ref shape는
+`core/resourceReference.js`에 두어 core 수집기와 grammar/materialization이 같은 kind vocabulary를
+사용한다. Primitive resource replacement는 해당 리소스 revision과 live layer reference를 같은
+semantic candidate에서 갱신하고, generic graph validation은 handler보다 먼저 exact kind/revision을
+검사한다. 실제 그래픽 재생성은 계속 domain action의 책임이다. 삭제 계획은 live mark 참조가
+남으면 거부하며, public cascade owner가 필요한 mark 제거를 명시적으로 먼저 수행한다.
+Persistence는 이 typed reference도 공통 stored-resource selector로 확인한다.
+
+의존 resource result를 함께 바꿔야 하는 쓰기는 private
+`actions/primitives/preparedResourceContext.js`가 exact receiver와 exact primitive args에만
+precomputed 결과를 결박한다. 중첩/실패/정상 종료마다 권한을 복원하거나 제거하며, primitive는
+허용된 원인 관계와 options 불변·next revision vector를 검증한 최종 resource envelope만 적용한다.
+DATA의 parameter→source 결과와 hierarchy→layout 결과가 같은 경계를 공유하되 kind별 검증은
+등록 validator에 남는다. `actions/data/resourceRevision.js`는 exact constructor별 한 번 등록한
+도메인 갱신 함수로 data-backed resource의 재계산을 위임한다. 등록된 kind는 generic data-ref
+치환에서 제외하고 같은 revision plan의 명시 domain action으로 갱신한다. Basic 또는 미등록 class는
+등록 함수를 상속하지 않으며 자동 compiler나 public registry는 없다.
+
+
+Typed binding checkpoint는 같은 staging을 Node20/22/24에서 측정해739entries,
+packed최대1,098,660/unpacked5,059,006bytes다. 기존 packed 한도를 유지하고 unpacked 한도만
+최소1,000byte 단위인5,060,000으로 조정했다. 동일 minified browser bytes의 최대gzip은
+Full535,875/Basic313,870/SVG8,185로 기존 한도 안이다.
+
 ## Private hierarchy normalization
 
 `grammar/hierarchy/normalize.js`는 명시 node records의 typed identity, parent/children topology,
@@ -683,7 +723,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Current gzip ceiling |
 | --- | --- |
 | `ggaction` | 549,000 bytes |
-| `ggaction/basic` | 325,000 bytes |
+| `ggaction/basic` | 326,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 

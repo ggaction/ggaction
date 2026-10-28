@@ -1,0 +1,78 @@
+{
+  "base": "c0c2afb6",
+  "scope": "Private constructor-bound builtin resource validation; no public builtin kind registrations yet.",
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js unit test/unit/core/builtin-resource-kinds.test.js test/unit/core/resource-state.test.js test/unit/core/parameter-resource-state.test.js test/unit/core/data-source-resource-state.test.js test/unit/persistence test/unit/actions/primitives/edit-semantic.test.js test/unit/actions/primitives/semantic-value-validation.test.js test/unit/resources/prepared-data-public.test.js test/unit/resources/prepared-data-lifecycle.test.js",
+      "tests": 102,
+      "fail": 0
+    },
+    {
+      "command": "node scripts/run-tests.js contracts test/contracts/source-boundaries.test.js test/contracts/coverage-policy.test.js test/contracts/package-boundaries.test.js",
+      "tests": 17,
+      "fail": 0
+    },
+    {
+      "command": "node scripts/run-tests.js contracts test/contracts/package-artifact.test.js",
+      "tests": 7,
+      "fail": 0
+    },
+    {
+      "command": "node --test --experimental-test-coverage --test-coverage-include='src/materialization/resourceKinds.js' test/unit/core/builtin-resource-kinds.test.js",
+      "tests": 6,
+      "fail": 0,
+      "coverage": [
+        100,
+        100,
+        100
+      ]
+    }
+  ],
+  "files": [
+    {
+      "file": "builtin-resource-kinds.log.gz",
+      "sha256": "8ea4ba4144cc4b37cf5b22073d6161d7d5721ecc2bb7427825bf37d97ef90855",
+      "bytes": 1826
+    },
+    {
+      "file": "builtin-resource-kinds-coverage.log.gz",
+      "sha256": "83c92a9319baf8d116b63c6dde01e5433d82cbf08845339f0473afb05143654f",
+      "bytes": 616
+    },
+    {
+      "file": "builtin-resource-regressions.log.gz",
+      "sha256": "6708982e3292b515b6ada0264bdd34a4117851c426b688f136976390467905a6",
+      "bytes": 4658
+    },
+    {
+      "file": "builtin-resource-contracts.log.gz",
+      "sha256": "e91fbd3f399c64625b2bfa158d7b3722425a3301a10925c692840c195551c0cc",
+      "bytes": 943
+    },
+    {
+      "file": "builtin-resource-package-initial.log.gz",
+      "sha256": "5517e9a4b1e626f94283051c0355aaca4a1cbcc252bc69c9fd7ee93480a568d4",
+      "bytes": 509
+    },
+    {
+      "file": "builtin-resource-package-final.log.gz",
+      "sha256": "442b2306e72a8284317fece748ee80a34d8f4d01d51b8e765da66c192bf00ea9",
+      "bytes": 631
+    },
+    {
+      "file": "node20.json",
+      "sha256": "5eae6e17325353496bcf07f14715e752d00a44e8ee2b131698bb95a5e27c43a1",
+      "bytes": 989
+    },
+    {
+      "file": "node22.json",
+      "sha256": "d5c36171315531b1513993dd77cb79e9207a318e30e713f3435e3bb55a9d3844",
+      "bytes": 982
+    },
+    {
+      "file": "node24.json",
+      "sha256": "4f27081f61de8d3c08d59c719970634e36e860beed3b55a03ff574660f6bcc68",
+      "bytes": 998
+    }
+  ]
+}

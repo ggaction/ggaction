@@ -1,10 +1,39 @@
 import { freezeOwned, isPlainObject } from "./immutable.js";
 import { validateUserId } from "./identifiers.js";
 import {datasetInputReferences} from "./datasetReferences.js";
+import { STORED_RESOURCE_KINDS } from "./resourceReference.js";
 
 export const RESOURCE_KINDS = Object.freeze([
-  "data", "scale", "coordinate", "mark", "selection"
+  "data", "scale", "coordinate", "mark", "selection", ...STORED_RESOURCE_KINDS
 ]);
+
+const LAYER_RESOURCE_BINDINGS = Object.freeze([
+  Object.freeze({ path: Object.freeze(["image"]), kind: "image" }),
+  Object.freeze({ path: Object.freeze(["hierarchyBinding", "layout"]), kind: "layout" })
+]);
+
+export function layerResourceBindings(layer) {
+  return LAYER_RESOURCE_BINDINGS.flatMap(binding => {
+    const ref = binding.path.reduce((value, part) => value?.[part], layer);
+    return ref === undefined ? [] : [{ ...binding, ref }];
+  });
+}
+
+export function mapLayerResourceBindings(layers, mapReference) {
+  let changed = false;
+  const mapped = layers.map(layer => {
+    let next = layer;
+    for (const { path, ref } of layerResourceBindings(layer)) {
+      const replacement = mapReference(ref);
+      if (replacement === ref) continue;
+      next = path.length === 1 ? { ...next, [path[0]]: replacement }
+        : { ...next, [path[0]]: { ...next[path[0]], [path[1]]: replacement } };
+      changed = true;
+    }
+    return next;
+  });
+  return changed ? mapped : layers;
+}
 
 const DATA_VALUE_KEYS = new Set([
   "data", "dataset", "dataId", "filteredData", "originalData",
@@ -363,12 +392,14 @@ export function collectResourceReferences(program, { kind, id }) {
 
 export function collectAllResourceReferences(program) {
   return [
+    ...program.semanticSpec.layers.flatMap(layer => layerResourceBindings(layer).map(({ ref, path }) =>
+      reference(ref.kind, ref.id, "layer", layer.id, path))),
     ...(program.semanticSpec.resources ?? []).filter(resource => resource.kind === "data-source")
       .map(resource => reference("data", resource.result.data.id, "resource", resource.id, ["result", "data"])),
     ...(program.semanticSpec.resources ?? []).flatMap(resource => [
       ...resource.inputs,
       ...(resource.ownership.mode === "generated" ? [resource.ownership.owner] : [])
-    ].filter(input => input.kind === "data").map(input => reference("data", input.id, "resource", resource.id, ["inputs"]))),
+    ].map(input => reference(input.kind, input.id, "resource", resource.id, ["inputs"]))),
     ...(program.semanticSpec.resources ?? []).flatMap(resource =>
       (resource.provenance.sourceRows ?? []).map(ref => reference("data", ref.data, "resource", resource.id, ["provenance", "sourceRows"]))),
     ...collectSemanticDataReferences(program),

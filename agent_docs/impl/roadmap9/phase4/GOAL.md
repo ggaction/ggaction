@@ -4,8 +4,8 @@
 
 - [x] [전체 실행 승인](../AUTHORIZATION.json)과 개별 공개 설계·시각 승인 기록 재사용
 - [x] [Phase 3 종료](../phase3/progress/STEP-016.json): STEP-001–016 main 통합
-- [ ] STEP-017 이미지 준비·생성·편집·저장 및 모든 소비자 통합
-- [ ] STEP-018 패턴·방사형 그라데이션·outline·shadow·blend 통합
+- [ ] STEP-017 패턴·방사형 그라데이션·outline·shadow·blend 통합
+- [ ] STEP-018 이미지 준비·생성·편집·저장 및 모든 소비자 통합
 - [ ] STEP-019 폰트 resource와 exact metrics·준비·렌더러 통합
 - [ ] 전체 통합 검증, Current·선언·문서와 개별 progress 고정
 

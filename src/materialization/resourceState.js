@@ -11,9 +11,11 @@ import { resolveInputReference, resolveRowReference } from "../selectors/resourc
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { validateParameterResource } from "../grammar/parameter.js";
 import { validateDataSourceResource } from "./dataSourceState.js";
-import { STORED_RESOURCE_KINDS, validateInputReference, validateResourceRevision } from "../grammar/resourceReference.js";
+import { STORED_RESOURCE_KINDS, validateInputReference, validateResourceRevision } from "../core/resourceReference.js";
+import { getBuiltinResourceKindHandler } from "./resourceKinds.js";
+import { layerResourceBindings } from "../core/resourceReferences.js";
 
-export { STORED_RESOURCE_KINDS, validateInputReference } from "../grammar/resourceReference.js";
+export { STORED_RESOURCE_KINDS, validateInputReference } from "../core/resourceReference.js";
 const identity = ref => JSON.stringify([ref.kind, ref.id]);
 
 function error(message, code = "invalid-value", details = {}) {
@@ -27,7 +29,7 @@ function exact(value, keys, label) {
   }
 }
 
-export function validateStoredResource(resource) {
+export function validateStoredResource(resource, ProgramClass) {
   exact(resource, ["kind", "id", "revision", "algorithmVersion", "ownership", "inputs", "options", "result", "provenance"], "Resource");
   if (!STORED_RESOURCE_KINDS.includes(resource.kind)) throw error("Unsupported resource kind.", "unsupported-format");
   validateUserId(resource.id, "Resource id"); validateResourceRevision(resource.revision);
@@ -43,6 +45,13 @@ export function validateStoredResource(resource) {
   if (new Set(resource.inputs.map(identity)).size !== resource.inputs.length) throw error("Duplicate resource input.", "ambiguous-identity");
   if (resource.kind === "parameter") return validateParameterResource(resource);
   if (resource.kind === "data-source") return validateDataSourceResource(resource);
+  if (resource.kind !== "persistent-selection") {
+    const handler = getBuiltinResourceKindHandler(ProgramClass, resource.kind);
+    if (handler === undefined) throw error("Resource kind is not registered for this program constructor.", "unsupported-format");
+    validateResourceProvenance(resource);
+    handler.validateStored(resource);
+    return resource;
+  }
   exact(resource.result, [], "Persistent selection result");
   const options = resource.options;
   if (options?.mode === "predicate") {
@@ -57,24 +66,28 @@ export function validateStoredResource(resource) {
       throw error("Selection requires unique row keys and logical data identity.");
     }
   } else throw error("Unsupported persistent selection mode.");
+  validateResourceProvenance(resource);
+  return resource;
+}
+
+function validateResourceProvenance(resource) {
   exact(resource.provenance, Object.hasOwn(resource.provenance ?? {}, "sourceRows") ? ["origin", "sourceRows"] : ["origin"], "Resource provenance");
   if (!["authored", "observed", "inferred"].includes(resource.provenance.origin)) throw error("Unsupported resource provenance origin.");
   if (resource.provenance.sourceRows !== undefined && !Array.isArray(resource.provenance.sourceRows)) throw error("Resource sourceRows must be an array.");
   resource.provenance.sourceRows?.forEach(validateRowReference);
-  return resource;
 }
 
 export function resourceDependencies(resource) {
   return [...resource.inputs, ...(resource.ownership.mode === "generated" ? [resource.ownership.owner] : [])];
 }
 
-export function validateResourceGraph(program) {
+export function validateResourceGraph(program, ProgramClass = program.constructor) {
   const resources = program.semanticSpec.resources;
   if (!Array.isArray(resources)) throw error("Semantic resources must be an array.");
   validateWorkLimit(resources.length, "Resource count");
   const byId = new Map();
   for (const resource of resources) {
-    validateStoredResource(resource);
+    validateStoredResource(resource, ProgramClass);
     if (resource.kind === "data-source") resolveInputReference(program, resource.result.data);
     resource.provenance.sourceRows?.forEach(ref => resolveRowReference(program, ref));
     const key = identity(resource);
@@ -87,6 +100,13 @@ export function validateResourceGraph(program) {
     resolveInputReference(program, ref);
   }
   orderResourceDependencies(resources);
+  for (const layer of program.semanticSpec.layers ?? []) for (const { kind, ref } of layerResourceBindings(layer)) {
+    validateWorkLimit(++work, "Resource dependency work");
+    validateInputReference(ref);
+    if (ref.kind !== kind) throw error("Layer binding has an incompatible resource kind.", "incompatible-resource", { ownerId: layer.id });
+    resolveInputReference(program, ref);
+  }
+  for (const resource of resources) getBuiltinResourceKindHandler(ProgramClass, resource.kind)?.validateBindings(program, resource);
 }
 
 // Iterative postorder keeps a valid deep DAG within the work budget and avoids
@@ -118,19 +138,22 @@ function inputFingerprint(program, refs) {
 }
 
 export function prepareResourceResult(program, resource) {
-  validateStoredResource(resource);
+  validateStoredResource(resource, program.constructor);
   const sourceRevisionVector = cloneAndFreeze(resourceDependencies(resource));
-  return cloneAndFreeze({ resource, sourceRevisionVector, inputHash: inputFingerprint(program, sourceRevisionVector) });
+  const inputHash = inputFingerprint(program, sourceRevisionVector);
+  getBuiltinResourceKindHandler(program.constructor, resource.kind)?.validateBindings(program, resource);
+  return cloneAndFreeze({ resource, sourceRevisionVector, inputHash });
 }
 
 export function validatePreparedResource(program, prepared) {
-  validateStoredResource(prepared.resource);
+  validateStoredResource(prepared.resource, program.constructor);
   if (canonicalJSON(resourceDependencies(prepared.resource)) !== canonicalJSON(prepared.sourceRevisionVector)) {
     throw error("Prepared resource dependency vector does not match its inputs.", "stale-result", { ownerId: prepared.resource.id });
   }
   if (inputFingerprint(program, prepared.sourceRevisionVector) !== prepared.inputHash) {
     throw error("Prepared resource inputs have changed.", "stale-result", { ownerId: prepared.resource.id });
   }
+  getBuiltinResourceKindHandler(program.constructor, prepared.resource.kind)?.validateBindings(program, prepared.resource);
   return prepared.resource;
 }
 
@@ -210,5 +233,10 @@ export function planStoredResourceRemoval(program, requested, { cascade = false 
       remove.add(identity(resource)); changed = true;
     }
   } while (changed);
+  for (const layer of program.semanticSpec.layers) {
+    if (layerResourceBindings(layer).some(({ ref }) => remove.has(identity(ref)))) {
+      throw error("Resource is referenced by a live mark.", "resource-in-use", { resourceId: requested.id, dependencies: [layer.id] });
+    }
+  }
   return resources.filter(resource => remove.has(identity(resource)));
 }
