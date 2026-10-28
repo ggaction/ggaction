@@ -22,6 +22,7 @@ import {
 } from "../support/datasets/tidytuesday.js";
 import { buildPublicOptionInventory } from "../support/scenarios/coverage-inventory.js";
 import { runScenario } from "../support/scenarios/engine.js";
+import { structuredPaintRecordBase, structuredPaintVariants } from "../support/scenarios/structured-paints.js";
 import {
   REALISTIC_DATA_MARK_COUNTS,
   REALISTIC_DATA_MARK_INTERACTIONS,
@@ -870,16 +871,31 @@ test("materializes analytic and SVG output with compact truthful lineage", () =>
 });
 
 test("directly covers every newly targeted action option and broad maximal paths", async () => {
-  const inventory = await buildPublicOptionInventory(actionCards);
+  const targetActions = new Set([...NEW_DIRECT_ACTIONS, ...TARGET_ACTIONS]);
+  const inventory = await buildPublicOptionInventory(actionCards.cards.filter(card => targetActions.has(card.name)));
   const pixelRadiusWitness = chart()
     .createCanvas({ width: 200, height: 200, margin: 20 })
     .createData({ values: [{ category: "A", value: 1 }, { category: "B", value: 2 }] })
     .createArcMark({ id: "pixelRadiusArc" })
     .encodeTheta({ target: "pixelRadiusArc", field: "category", aggregate: "sum", weight: "value" })
     .editArcMark({ target: "pixelRadiusArc", innerRadius: { unit: "px", value: 20 } });
+  const paintPrograms = [];
+  try {
+    const { program: paintBase } = structuredPaintRecordBase("tt-penguins");
+    const points = paintBase.createPointMark({ id: "paintPoints" })
+      .encodeX({ target: "paintPoints", field: "index" })
+      .encodeY({ target: "paintPoints", field: "value" });
+    const arcs = paintBase.createArcMark({ id: "paintArcs" })
+      .encodeTheta({ target: "paintArcs", field: "category", aggregate: "count" });
+    for (const { fill } of structuredPaintVariants) {
+      paintPrograms.push(points.editPointMark({ target: "paintPoints", fill }));
+      paintPrograms.push(arcs.editArcMark({ target: "paintArcs", fill }));
+    }
+  } finally { releaseTidyTuesdaySourceCache("tt-penguins"); }
   const entries = [
     ...buildWitnesses().flatMap(({ program }) => program.trace.children ?? []),
-    ...(pixelRadiusWitness.trace.children ?? [])
+    ...(pixelRadiusWitness.trace.children ?? []),
+    ...paintPrograms.flatMap(program => program.trace.children ?? [])
   ];
   const directActions = new Set(entries.map(entry => entry.op));
   assert.deepEqual(
@@ -896,7 +912,7 @@ test("directly covers every newly targeted action option and broad maximal paths
     // Nested routing is covered by realistic-scoped-composition.test.js.
     !option.path.startsWith("target.")
   );
-  assert.equal(newActionOptions.length, 76);
+  assert.equal(newActionOptions.length, 120);
   assert.deepEqual(
     newActionOptions.filter(option => !directlyObserves(entries, option)).map(option => option.id),
     []

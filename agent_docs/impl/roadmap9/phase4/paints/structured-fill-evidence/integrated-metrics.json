@@ -1,0 +1,112 @@
+{
+  "scope": "Ten affected paint owners; not full-repository coverage",
+  "metrics": {
+    "grammar/color.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/gradientStops.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "grammar/paint.js": {
+      "lines": 96.03,
+      "branches": 95.77,
+      "functions": 100
+    },
+    "grammar/patterns.js": {
+      "lines": 99.1,
+      "branches": 95.38,
+      "functions": 100
+    },
+    "grammar/radialGradient.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "materialization/fillPaint.js": {
+      "lines": 100,
+      "branches": 94.74,
+      "functions": 100
+    },
+    "renderers/canvas/fill.js": {
+      "lines": 84,
+      "branches": 78.38,
+      "functions": 100
+    },
+    "renderers/canvas/pathTrace.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "renderers/canvas/surfaceFactory.js": {
+      "lines": 94.12,
+      "branches": 90.91,
+      "functions": 100
+    },
+    "renderers/canvas/textPaint.js": {
+      "lines": 100,
+      "branches": 90.74,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 97.24,
+      "branches": 95.07,
+      "functions": 100
+    }
+  },
+  "floors": {
+    "grammar/color.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/gradientStops.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/paint.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/patterns.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "grammar/radialGradient.js": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "materialization/fillPaint.js": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "renderers/canvas/fill.js": {
+      "lines": 75,
+      "branches": 60,
+      "functions": 80
+    },
+    "renderers/canvas/pathTrace.js": {
+      "lines": 75,
+      "branches": 60,
+      "functions": 80
+    },
+    "renderers/canvas/surfaceFactory.js": {
+      "lines": 75,
+      "branches": 60,
+      "functions": 80
+    },
+    "renderers/canvas/textPaint.js": {
+      "lines": 75,
+      "branches": 60,
+      "functions": 80
+    }
+  }
+}

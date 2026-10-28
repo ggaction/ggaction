@@ -19,7 +19,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-paints/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/dac51879a5e3d41b475ea0060bed6ca153f77998/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation

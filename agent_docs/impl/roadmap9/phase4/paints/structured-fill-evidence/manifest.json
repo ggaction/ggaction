@@ -1,0 +1,527 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-implementation-checkpoint",
+  "scope": "P1 structured fills; P2 and STEP017 remain incomplete",
+  "date": "2026-10-28",
+  "integrationBase": "a561ae1c5",
+  "runtimeSourceCommit": "dac51879a5e3d41b475ea0060bed6ca153f77998",
+  "branch": "codex/roadmap9-paints",
+  "environment": {
+    "platform": "macOS arm64",
+    "node": "22.23.1",
+    "installedNodes": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "nativeCanvas": "1.0.9",
+    "mcpSdk": "1.32.1"
+  },
+  "results": {
+    "unit": {
+      "passed": 5404,
+      "failed": 0
+    },
+    "contracts": {
+      "firstRunPassed": 710,
+      "firstRunFailed": 1,
+      "failure": "README/architecture bundle ceiling truth; corrected metadata",
+      "focusedRepairPassed": 3,
+      "fullSuiteRepeated": false
+    },
+    "affectedCoverage": {
+      "testsPassed": 70,
+      "owners": 10,
+      "canonicalFloorsPassed": true,
+      "metrics": {
+        "grammar/color.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "grammar/gradientStops.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "grammar/paint.js": {
+          "lines": 96.03,
+          "branches": 95.77,
+          "functions": 100
+        },
+        "grammar/patterns.js": {
+          "lines": 99.1,
+          "branches": 95.38,
+          "functions": 100
+        },
+        "grammar/radialGradient.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "materialization/fillPaint.js": {
+          "lines": 100,
+          "branches": 94.74,
+          "functions": 100
+        },
+        "renderers/canvas/fill.js": {
+          "lines": 84,
+          "branches": 78.38,
+          "functions": 100
+        },
+        "renderers/canvas/pathTrace.js": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "renderers/canvas/surfaceFactory.js": {
+          "lines": 94.12,
+          "branches": 90.91,
+          "functions": 100
+        },
+        "renderers/canvas/textPaint.js": {
+          "lines": 100,
+          "branches": 90.74,
+          "functions": 100
+        },
+        "all files": {
+          "lines": 97.24,
+          "branches": 95.07,
+          "functions": 100
+        }
+      },
+      "fullRepositoryCoverage": false
+    },
+    "conditionalCross": {
+      "passed": 39
+    },
+    "render": {
+      "passed": 12
+    },
+    "browser": {
+      "passed": 3
+    },
+    "realistic": {
+      "passed": 15,
+      "datasets": 5,
+      "recipes": 3,
+      "ownersPerRecipe": 2,
+      "totalOwners": 6,
+      "paintVariants": 10,
+      "lifecycle": "create/edit, lineage, resize, SVG, codec"
+    },
+    "directOptions": {
+      "requiredPaths": 120,
+      "addedFillPaths": 44,
+      "witness": "actual Point/Arc public edits on pinned penguin rows; no fabricated traces",
+      "firstRun": "120 != 76",
+      "focusedRepairPassed": 1,
+      "inventoryScope": "exact union of the test NEW_DIRECT_ACTIONS and TARGET_ACTIONS; all required assertions retained"
+    },
+    "docs": {
+      "sourceTests": 166,
+      "builtPages": 150,
+      "selectiveLlmArtifacts": 1223,
+      "browserDesktopSearchAxe": true,
+      "responsiveWidths": [
+        320,
+        390,
+        768
+      ],
+      "browserReuse": "Only sourceRef metadata changed after browser sweep; final build and built links rechecked."
+    },
+    "installed": {
+      "sameArchiveNodeCases": {
+        "20": 203,
+        "22": 203,
+        "24": 203
+      },
+      "qualification": {
+        "22": "7/7",
+        "24": "7/7",
+        "20": "5/7 first run; only bundle caps failed; 3/3 bundle recheck passed after minimal cap update"
+      },
+      "archiveComparison": "final-artifact-comparison.json",
+      "finalPackByteIdenticalToQualified": false
+    },
+    "approvedReviewPromotion": {
+      "patternPngFiles": 36,
+      "radialPngFiles": 41,
+      "sameBytes": true,
+      "ownedReviewSubtreesRemoved": true
+    }
+  },
+  "reproductionCommands": {
+    "unit": "node scripts/run-tests.js unit",
+    "contracts": "node scripts/run-tests.js contracts",
+    "documentationTruth": "node --test test/contracts/documentation-truth.test.js",
+    "coverage": "node --test --experimental-test-coverage --test-coverage-include=src/grammar/color.js --test-coverage-include=src/grammar/gradientStops.js --test-coverage-include=src/grammar/paint.js --test-coverage-include=src/grammar/patterns.js --test-coverage-include=src/grammar/radialGradient.js --test-coverage-include=src/materialization/fillPaint.js --test-coverage-include=src/renderers/canvas/fill.js --test-coverage-include=src/renderers/canvas/pathTrace.js --test-coverage-include=src/renderers/canvas/surfaceFactory.js --test-coverage-include=src/renderers/canvas/textPaint.js --test-coverage-include=src/all files test/contracts/structured-paint-rendering.test.js test/unit/actions/marks/structured-fill.test.js test/unit/grammar/color.test.js test/unit/grammar/paint.test.js test/unit/grammar/patterns.test.js test/unit/grammar/radial-gradient.test.js test/unit/grammar/structured-paint.test.js test/unit/renderers/canvas-path-renderer.test.js test/unit/renderers/canvas-text-renderer.test.js test/unit/renderers/normal-glyph-opacity.test.js",
+    "criticalFloors": "Use parseCoverageTable and assertCriticalCoverage from scripts/coverage-policy.js on the ten affected rows; select their existing canonical floor entries without overrides.",
+    "realistic": "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT=<pinned-cache> node scripts/run-tests.js realistic test/contracts/realistic-structured-paints.test.js",
+    "directOptions": "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT=<pinned-cache> node --max-old-space-size=512 --test --test-concurrency=2 --import ./scripts/test-file-metrics.js --test-name-pattern=\"directly covers every newly targeted action option\" test/contracts/realistic-data-mark-recipes.test.js",
+    "package": "node scripts/package-artifact.js --pack",
+    "installed": "For each Node, prepend its bin directory to PATH; node scripts/package-consumer.js <the-qualified-tarball>",
+    "docsSource": "node scripts/run-tests.js docs",
+    "docsBuild": "PATH=/opt/homebrew/opt/ruby@3.2/bin:/opt/homebrew/lib/ruby/gems/3.2.0/bin:/opt/homebrew/Cellar/node@22/22.23.1/bin:$PATH npm run docs:build",
+    "docsBuilt": "npm run test:docs:built",
+    "docsBrowser": "npm run test:docs:browser"
+  },
+  "sourceSha256": {
+    "knowledge/action-cards.json": "ff327d6594c43b342d8bf651160b589dafc7e73acc182d1473c55353a4b73c1a",
+    "src/actions/guides/legends/categorical/layout.js": "634116f1217c43d2c54178b9c068853f0f578a0ce899071ffe83c58e83d11a5e",
+    "src/actions/guides/legends/categorical/symbols.js": "8935d89a493044156cd7d2afef2f3c4181efb30492bafdeb9ae4e7f7d5ee0444",
+    "src/actions/marks/arc/actions.js": "92d8de1f4fff776320ca082ac154affbb26ed02afc1ddbfb6d6f2a89b66436cc",
+    "src/actions/marks/bar/materialize.js": "5969b1a28a7393eb70a911e90bcdb9704cfacf36f327a57e41e2e635e041035d",
+    "src/actions/marks/point/edit.js": "0a215941197632963aef16b8a3197ba1b01285a9ff59af535bb9b5c8a3943d70",
+    "src/actions/marks/point/materialize.js": "8a51d5fcffbeca9b6d006efcea72077a57299a1c336e82e6f6624eb688a95895",
+    "src/actions/marks/shared.js": "7e8b7b7d4d91b285f4f5e392c75fc50d15a15ec35417ce1502ff82aa76d004c3",
+    "src/actions/marks/text/layout.js": "3ea4e8b447ba8b939ea701d71bded358fa25b8b71a4e5d2b8d1849756bdb866a",
+    "src/grammar/areaPaint.js": "06dc04825e633afa05f641c68ff9feb4dc4ac516bc0d9df4feb2610294413a06",
+    "src/grammar/color.js": "1b712c5bb58a5e0c7cdc035327ab2a0a9004f821a0c52c7f7dcf922da28698cb",
+    "src/grammar/gradientStops.js": "09a2e988df8edf3043ba341d70f94c47447199beb666fc2ef4d10403ddcfc7b5",
+    "src/grammar/paint.js": "e165f16070d7c06d9d177f4a1067d8683bc6b525783d659bb282be59e68cf127",
+    "src/grammar/patterns.js": "2e0447599a5d9c1b04cb33290c45def3d6ef515a41a51027e9cd42ffa31e87a2",
+    "src/grammar/pointShapes.js": "537b6215817fe2c92bc4576c755a161d1fb20dbcf5641041d4e71bb4a2d47897",
+    "src/grammar/radialGradient.js": "d99842471aa49c805aa56221291c86469661df5e9f37392d50f74a6c7d495eb9",
+    "src/grammar/scales/color.js": "3ce911765d930b9246c185d0e2990558cf27968cd4169bca08ab91d1a950dc2b",
+    "src/grammar/schemas/concreteGraphic.js": "39b06cfa9ceceb97c9ebf2fdba9cbe3cffa49d9046781498f21db318e55412ad",
+    "src/grammar/schemas/graphic.js": "39e888006167019ed3401da96dae6f2e192c97ca99ff9c406318fb351c0dd4b8",
+    "src/grammar/text.js": "0def2c45ba7c5766e616c33d86e7f7c6e6b08d3531ab7d7b0cc1dba2b40bb8e2",
+    "src/inspectionDescriptors.js": "38d01f04bcc9a86ab1691934eadde661b0b5ff4e91114c8946fa1b47f927be19",
+    "src/materialization/fillPaint.js": "b51e7194be78d7fa2e180e96545bcff01ee7a188400dcb36c44412813bb4a7fb",
+    "src/materialization/graphicTranslation.js": "11d0dda36afce5b81b4d1e54d54c77529dbf75892715730db94a5b94d2c9e136",
+    "src/materialization/rect.js": "8d0e5f6bd23812af6cb8a15040d4d394a4121cdbc4016421534e29829921f6cd",
+    "src/materialization/rectConfig.js": "d9a834faf230d98936ede07de67d9e254e641919ae8de39db51ffb6bc670b2f6",
+    "src/materialization/text.js": "8ccd3f847710350b13b87f26f32a30b7759dfe058a37fa6b54fe1e37cf86756b",
+    "src/materialization/textGeometry.js": "39802df22a14ee1799b934ec98875c27fe45b68c943159df8ef5ae46c8783c54",
+    "src/persistence/validation.js": "c34bae063e4182fccf286b21bb72904254a959628f5e64d58a12321224a6634c",
+    "src/renderers/canvas/circle.js": "29ddaac52ca31dd47a918b08f8d74d6a8ff0bcf52f566b0e78217375139c9431",
+    "src/renderers/canvas/fill.js": "8c79cc49a3ba38b389d445d6726678516feb6054023f22fc0d2318546195d491",
+    "src/renderers/canvas/index.js": "12f5ed3d79595d03016edd299f326235a3adaf6dbaa9799e85cb092f8c211d4f",
+    "src/renderers/canvas/isolated.js": "7f7d9d61543f9f441a22c1bd58ffe0d9fe19bb9e524381a3d8b2ed7f75eb73cc",
+    "src/renderers/canvas/native.js": "86e582570ae91b0bfb3191c634672dc54c6eaf3ca988308de40781045e719332",
+    "src/renderers/canvas/path.js": "a28a7f41d2ae7a2aea6683935790358a7e04543a5ffbcb2cbf140418021534d2",
+    "src/renderers/canvas/pathTrace.js": "e529a0c56a28a1028493ed83a84eef63250b23db750425cec27560a8a174f89e",
+    "src/renderers/canvas/rect.js": "a32d5923cc6d145225c1761c7545c5696722766a61c44f3f9da6a7ccbfaf7913",
+    "src/renderers/canvas/scene.js": "cb62b2d5e9c761acd2de49d0176a2b29de07a4bf459306e424369729a1faa084",
+    "src/renderers/canvas/surfaceFactory.js": "3b1ce33b53702955b4b30f5b7273aa31c48c04bed37ae255fa50f02a1969bfe0",
+    "src/renderers/canvas/text.js": "4478341c08ce5d68ecc431e96b9cb2c9c584ba7b5a2e8eed2b4a2ccd25852d83",
+    "src/renderers/canvas/textPaint.js": "9edc82da6b1fe194d01e0182d3da4108616aae3ea05778bb3ab4a77f62aa4b6d",
+    "src/renderers/svgSerialization.js": "3d268b16e6db578f6d10a5357725529806e5b4d02c6b8846e6fbcdbbb897f6b3",
+    "types/basic.d.ts": "29f9104c7510cde17e7a0a169a389bec3fcafb0fca9ea0a72dc9bc3905c6689b",
+    "types/extension.d.ts": "f6ae5e1e8f93741d0e7fe305850ba3eb9e61135233e08122532973b25c86f9f9",
+    "types/index.d.ts": "df35d6e7e2c8dca0c6caee9d1afb7368342959dbcf22b9dd316827cca2bc1d29",
+    "types/program.d.ts": "04f4e41ec473054e95fb66272ec2619497d604629abd82d5264127026658cb15"
+  },
+  "evidence": [
+    {
+      "file": "unit.log.gz",
+      "originalLog": ".artifacts/structured-paint-integrated-unit.log",
+      "sha256": "94e95c51b956bbad25eaede52371ae440cf5f88984c6fd93a89efdaeae194c2e",
+      "compressedSha256": "4f10f642a0424725b4eef9b27d8d863b30d398520d1954a90a683231157d64b9",
+      "bytes": 1163252,
+      "tests": 5404,
+      "pass": 5404,
+      "fail": 0,
+      "duration_ms": 1022645.780209
+    },
+    {
+      "file": "contracts-first.log.gz",
+      "originalLog": ".artifacts/structured-paint-integrated-contracts.log",
+      "sha256": "6abe82e8dc16944cad4a7a0b6b0455746e43ddb1f67a7676251c3640a83bebb3",
+      "compressedSha256": "c147dca13dfb28dd4718326ec8e43d1073ae574db128938b55cc48b7d6dd8cce",
+      "bytes": 152678,
+      "tests": 711,
+      "pass": 710,
+      "fail": 1,
+      "duration_ms": 828062.742584
+    },
+    {
+      "file": "documentation-truth-fixed.log.gz",
+      "originalLog": ".artifacts/structured-paint-documentation-truth-fixed.log",
+      "sha256": "4a68d9107fb61f2c6c7b566573eb5a9a48707dd735d53761aa023cbd2145b627",
+      "compressedSha256": "a24fb3d1067b51fc0b0f4247c2636425a47b69fa8f2f11dc683432f7f3f57b68",
+      "bytes": 760,
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "duration_ms": 603.045291
+    },
+    {
+      "file": "coverage-affected.log.gz",
+      "originalLog": ".artifacts/structured-paint-integrated-coverage.log",
+      "sha256": "7848474b13d733f3ba7eb2ff87bdf4cf4dd1490ae53a5f6dcdde2f79f94dfd01",
+      "compressedSha256": "7f2f03645982c140b01ad8a87814156aa296aff1954964783cb1b22ae4a948cb",
+      "bytes": 16643,
+      "tests": 70,
+      "pass": 70,
+      "fail": 0,
+      "duration_ms": 12917.794125
+    },
+    {
+      "file": "critical-floors.log.gz",
+      "originalLog": ".artifacts/structured-paint-integrated-floors.log",
+      "sha256": "c8dabe2e13ecb70d4923573a8dfb885f8f9fd154fb809e9817cf17b8ddb9e552",
+      "compressedSha256": "d807745caa2638710b16b21d9f559577eb025ffedaa89e0c2e753bff2e564532",
+      "bytes": 50
+    },
+    {
+      "file": "conditional-cross.log.gz",
+      "originalLog": ".artifacts/structured-paint-conditional-fixed.log",
+      "sha256": "8bf03414475be7a4f5949872f4d5fae5c8ccdfc92d77c39fd821ddd47d2d85fc",
+      "compressedSha256": "311d04a25cdf9e2c5dc51a0391f676583814fbe83821a4c5d28125e27ae2898c",
+      "bytes": 9597,
+      "tests": 39,
+      "pass": 39,
+      "fail": 0,
+      "duration_ms": 9183.138917
+    },
+    {
+      "file": "render.log.gz",
+      "originalLog": ".artifacts/structured-paint-integrated-render.log",
+      "sha256": "bb02671357bd4559c57a8ae95a738326073e21216955bcf9898d7ec01f1b96e0",
+      "compressedSha256": "1cba446130610ac1c334520b03dc8d5b06ae9403e83e5191cc64c565e27fbc80",
+      "bytes": 2018,
+      "tests": 12,
+      "pass": 12,
+      "fail": 0,
+      "duration_ms": 3979.542083
+    },
+    {
+      "file": "browser.log.gz",
+      "originalLog": ".artifacts/structured-paint-integrated-browser.log",
+      "sha256": "ce6cb1a785f078cfc42e106bf903cffa73df6d119c3e09aecdf1def68b899fc2",
+      "compressedSha256": "59b144f801ea59f2192a849af1c1f19e74ee38dabf698e0c41ef244b916ade8c",
+      "bytes": 750,
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "duration_ms": 4333.108458
+    },
+    {
+      "file": "docs-source.log.gz",
+      "originalLog": ".artifacts/structured-paint-integrated-docs-source.log",
+      "sha256": "0c74b1fc9e5c6c1d64f8ec1b9422fccfe7c309a464e57cfa07ce0ba8acebf20d",
+      "compressedSha256": "06e31f660988c65490b50132b57975dde2e4c14869908eb70f2aea30a6b58936",
+      "bytes": 38488,
+      "tests": 166,
+      "pass": 166,
+      "fail": 0,
+      "duration_ms": 47010.556875
+    },
+    {
+      "file": "docs-build.log.gz",
+      "originalLog": ".artifacts/structured-paint-docs-build-final.log",
+      "sha256": "704ca68579ffefeb247df60f67d331eee7e9a9580881e95112ccbb0dd7574187",
+      "compressedSha256": "068acd4f840361bd03c622134a54bcfc7e34f32dfe0758ad6bd796fc588b8507",
+      "bytes": 420
+    },
+    {
+      "file": "docs-built.log.gz",
+      "originalLog": ".artifacts/structured-paint-docs-built-final.log",
+      "sha256": "f086051d9294734866b6de87c110fbf9016328eab80f6cf87edd072bf52c8d54",
+      "compressedSha256": "7a53e052f8c90e2cec8951dbb1eac567cd8af1af2be33fb66fcb1f9da368c40d",
+      "bytes": 179
+    },
+    {
+      "file": "docs-browser.log.gz",
+      "originalLog": ".artifacts/structured-paint-integrated-docs-browser.log",
+      "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3",
+      "compressedSha256": "a0ac0a6d4a3941eb57dcdcca7f46a3c1e0f3e0939fe3b04bf5e1226db2cb5257",
+      "bytes": 157
+    },
+    {
+      "file": "realistic.log.gz",
+      "originalLog": ".artifacts/structured-paint-realistic-final.log",
+      "sha256": "1e6275ce3e55147c56e160df5de890f59532d5843c0140ed49b575865aede0eb",
+      "compressedSha256": "12affcd96012a4930633c81585c96d335e5b15bc6f187fe3e84a83f1783fc700",
+      "bytes": 3729,
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "duration_ms": 184875.629333
+    },
+    {
+      "file": "realistic-inventory-first.log.gz",
+      "originalLog": ".artifacts/structured-paint-realistic-inventory-first.log",
+      "sha256": "a2c237a6ad28b1eb03811052a29f900073094789a4d183ca9fea6766324a42ae",
+      "compressedSha256": "d08e41f950eb4455a38d625b1be3b87fe53eeefbf837b2d255f3a045e580277c",
+      "bytes": 1016,
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "duration_ms": 536205.222959
+    },
+    {
+      "file": "realistic-inventory-fixed.log.gz",
+      "originalLog": ".artifacts/structured-paint-realistic-inventory-final.log",
+      "sha256": "786791e5ee5c842b3f9a9fde90cfe0806f22094c0ec42b26305e322e15841b17",
+      "compressedSha256": "c1b1713ebe34fb253d484a19fdef3fbb8e1f8929cf051b9f2807382566363cb8",
+      "bytes": 344,
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "duration_ms": 27172.922666
+    },
+    {
+      "file": "discovery.log.gz",
+      "originalLog": ".artifacts/structured-paint-final-discovery.log",
+      "sha256": "b04f32f88b7a546be96d66f596bbac81e82937f2734f3ffbcef4a28ffea7e5ad",
+      "compressedSha256": "edd91128491d3bc70ec32b82de50eda2b15099d70da484afe490a8ed7d95a00d",
+      "bytes": 3296,
+      "tests": 16,
+      "pass": 16,
+      "fail": 0,
+      "duration_ms": 15231.296209
+    },
+    {
+      "file": "sharding.log.gz",
+      "originalLog": ".artifacts/structured-paint-final-sharding.log",
+      "sha256": "cc20ec140e6595c39d5afdd2694e723e3be6f4c3b08d1590fc15aec073bac22f",
+      "compressedSha256": "a1cf39c9f9ef25f9055ce10ffb4c3fb97da88f35285fd6e8542444ef1aa42012",
+      "bytes": 1004,
+      "tests": 4,
+      "pass": 4,
+      "fail": 0,
+      "duration_ms": 174.808125
+    },
+    {
+      "file": "package-first.log.gz",
+      "originalLog": ".artifacts/structured-paint-integrated-package.log",
+      "sha256": "abd53ea91c7ac9f9b47bc0545133f7875315ba704ce7c651ba9dd868aa93342b",
+      "compressedSha256": "11edf36c1add14d426615e8203c1413edaf02e42272c0de6ea1ba1c367c9cd55",
+      "bytes": 1204
+    },
+    {
+      "file": "package-node20-first.log.gz",
+      "originalLog": ".artifacts/structured-paint-package-node20.log",
+      "sha256": "bb5374b82739f7667e66ef1a9e26a2e8d5c61ba4a3fc23384f86dc4daab11f00",
+      "compressedSha256": "36547513e72b9b2d783789a213fea492f84e95457446bfb9b6cfff0697863da0",
+      "bytes": 1117
+    },
+    {
+      "file": "package-final.log.gz",
+      "originalLog": ".artifacts/structured-paint-final-package.log",
+      "sha256": "5e424fc12e3664813f735cf4c820596105ebb6aedd4a98716cd312fedfca663e",
+      "compressedSha256": "666305426e40e67bcc65b8392451ce9bcba6ab5b6220f4fbfb57701fa0dcf333",
+      "bytes": 621
+    },
+    {
+      "file": "installed-node20-first.log.gz",
+      "originalLog": ".artifacts/structured-paint-installed-node20.log",
+      "sha256": "8c70ec1ea4c8778d0a2f0007ded922ff8d9e6ad49684ba6e47f543740bc26b1f",
+      "compressedSha256": "d12d7009b48ef21dffd2de39ba68071c4c8cb112de13536b656846972a325dff",
+      "bytes": 3157
+    },
+    {
+      "file": "installed-node20-bundles-fixed.log.gz",
+      "originalLog": ".artifacts/structured-paint-node20-bundles-final.log",
+      "sha256": "19db91f63aa79df0f89bb6cf6fd384234a91db2eca42dc1e357a1098b3fddc78",
+      "compressedSha256": "89fd77e812b9227441f3810a187950229203cccf6112ec40afeb8df9a4b1cc4a",
+      "bytes": 608
+    },
+    {
+      "file": "installed-node22.log.gz",
+      "originalLog": ".artifacts/structured-paint-installed-node22.log",
+      "sha256": "6b126de610450a064d2d8fbaf033474d872c3691721df06690e524e33ddefd5c",
+      "compressedSha256": "d1a704d86c33d18600ed9239fcede1dd7d0c96ab94027d05d77ed72ee5917306",
+      "bytes": 3147
+    },
+    {
+      "file": "installed-node24.log.gz",
+      "originalLog": ".artifacts/structured-paint-installed-node24.log",
+      "sha256": "b10f1126f1d5e068a9e83a4ff77157b2a7c14e8b0ce6c79772f1bf2b5918dc69",
+      "compressedSha256": "c7623ebfd65e636c86a1b6deceda6bc3ea2a750a3138ad309c2a34ba42c6f829",
+      "bytes": 2879
+    },
+    {
+      "file": "conditional-first.log.gz",
+      "originalLog": ".artifacts/structured-paint-conditional-integration.log",
+      "sha256": "b97526790ad618b229e354d920b28e3ef432511356f48cf26a71fc3902650141",
+      "compressedSha256": "321739d1828ccd610b32fda043bdd9f14ff1bbc65702cae17b654e3b05c93488",
+      "bytes": 33932,
+      "tests": 125,
+      "pass": 122,
+      "fail": 3,
+      "duration_ms": 3384.715041
+    },
+    {
+      "file": "docs-built-first.log.gz",
+      "originalLog": ".artifacts/structured-paint-integrated-docs-built.log",
+      "sha256": "54e07aea678b3dfaa9e900ccec5e1761b77b4a1b14367332ff5e040790bedf16",
+      "compressedSha256": "29bbbfad6b185199091313f1c0ba050d9fc4e610a550853a9e24c478ab9e96f8",
+      "bytes": 503
+    },
+    {
+      "file": "integrated-metrics.json",
+      "sha256": "b37f805a0df4d69235439240d56516e91ea8fd8e0cc9703c15343676ac2c7061",
+      "bytes": 2345
+    },
+    {
+      "file": "final-artifact-comparison.json",
+      "sha256": "018f7ce7543a2173c9edf659ba4768a24b46db23fad58f52c9829dbff7274e7c",
+      "bytes": 506
+    },
+    {
+      "file": "review-promotion.json",
+      "sha256": "85cb52facb5be627fd3562c4c385a05fda133c12bb36a48f7ef180a77abf9cf9",
+      "bytes": 238
+    },
+    {
+      "file": "option-path-audit.json",
+      "sha256": "cb1121ada9dffd1a61016098dd61b17631cf49e066f486131b237f3a8c42b8af",
+      "bytes": 1873
+    },
+    {
+      "file": "node20-node-cases.json",
+      "sha256": "28b588b37750175c035e280f48a1f3172e67c9e5485b87f6a0db24a007be7763",
+      "bytes": 22086
+    },
+    {
+      "file": "node20-qualification.json",
+      "sha256": "0fdb2855bcdc8f4c540173c3117a2b9161ab1a121cd77ac91a21b8324218a57c",
+      "bytes": 1985
+    },
+    {
+      "file": "node20-tutorials.json",
+      "sha256": "dd9dfb7c7a13b4a11128353ee4cb4d980a4f1ab0fe70c96155c9472f980f6f34",
+      "bytes": 22143
+    },
+    {
+      "file": "node22-node-cases.json",
+      "sha256": "b1b4da38da5e53a8882994588dc908ec71e5bfbe001ed9c6e99c666784ceaf9c",
+      "bytes": 22110
+    },
+    {
+      "file": "node22-qualification.json",
+      "sha256": "0ad55181caae570fc9529263e3c8edcd4685d2a1dbde9edf199f7eb425028a37",
+      "bytes": 769
+    },
+    {
+      "file": "node22-tutorials.json",
+      "sha256": "65bdd4c2dfd80fda305704cc62b1d8af422948a5706e63407f0b00c0bd2bad6d",
+      "bytes": 22166
+    },
+    {
+      "file": "node24-node-cases.json",
+      "sha256": "61cc91b5b533ba88a352c4f9a9997cb0fa1fed37de7babd8c18a736693a26442",
+      "bytes": 22113
+    },
+    {
+      "file": "node24-qualification.json",
+      "sha256": "019f117817dc8eebaf638e757bb244a88f94ef18438b82f752e8b735e672910b",
+      "bytes": 768
+    },
+    {
+      "file": "node24-tutorials.json",
+      "sha256": "f38eba717136b1c6f6afefe76fa5c08f0b3f6fa246dfbdf0affe25459de34ffe",
+      "bytes": 22149
+    }
+  ],
+  "remaining": [
+    "P2 outline/halo and shared blend integration",
+    "P2 shadow concrete image integration and actual Text glyph preparation",
+    "Combined integration full coverage and exact final artifact qualification owned by root",
+    "Roadmap9 through STEP077 remains in progress"
+  ]
+}
