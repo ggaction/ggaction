@@ -1,83 +1,96 @@
 {
   "schemaVersion": 1,
-  "status": "private-core-implemented-integration-pending",
+  "status": "product-consumers-verified-integration-closeout-pending",
   "cells": [
     {
       "consumer": "normalization-and-evaluation",
       "contract": "D2–D5",
       "status": "passed",
-      "reason": "private pure kernel의 8종 node, 30함수, 타입/지연 평가/진단/비용/시간대 시험 통과.",
-      "evidence": "test/unit/grammar/expression-evaluation.test.js"
+      "reason": "정규화·순수 계산과 30함수 공개 computed 실행의 독립 기대값 및 actual/diff를 확인했다.",
+      "evidence": "scripts/qualify-expression.js"
     },
     {
       "consumer": "create-edit-revise",
       "contract": "D1–D3",
-      "status": "not-run",
-      "reason": "D6에 따라 공개 v2 통합 시 검증한다. private kernel checkpoint의 통과로 대체하지 않는다."
+      "status": "passed",
+      "reason": "공개 v2 생성·편집·source revision과 prepared source 적용이 기존 immutable 경계에서 동작한다.",
+      "evidence": "test/unit/actions/data/computed-v2.test.js"
     },
     {
       "consumer": "schema-and-lineage",
       "contract": "D2–D3",
-      "status": "not-run",
-      "reason": "D6에 따라 공개 v2 통합 시 검증한다. private kernel checkpoint의 통과로 대체하지 않는다."
+      "status": "passed",
+      "reason": "optional/null scalar schema, field lineage, source row identity와 revision replay를 확인했다.",
+      "evidence": "test/unit/actions/data/computed-v2.test.js"
     },
     {
       "consumer": "dependency-collector",
       "contract": "D2/G-PARAM",
-      "status": "partial",
-      "reason": "정규화된 field/fieldPath/parameter dependency는 검증됨. 실제 parameter resource binding은 G-PARAM 이후."
+      "status": "passed",
+      "reason": "Parameter/source exact references와 multi-root union, diamond once, stale 참조 거부를 확인했다.",
+      "evidence": "test/unit/resources/prepared-data-lifecycle.test.js"
     },
     {
       "consumer": "action-summary-accessors",
       "contract": "D5",
       "status": "passed",
-      "reason": "summary·전용 및 범용 computed create/edit의 getter 실행 0회와 atomic rejection 검증.",
-      "evidence": "test/unit/grammar/expression-validation.test.js"
+      "reason": "AST와 옵션 getter 실행 0회, 실패 뒤 원본/trace 불변, source text 길이 요약을 확인했다.",
+      "evidence": "test/unit/resources/prepared-data-public.test.js"
     },
     {
       "consumer": "calculation-inspection",
       "contract": "D3–D4",
-      "status": "not-run",
-      "reason": "D6에 따라 공개 v2 통합 시 검증한다. private kernel checkpoint의 통과로 대체하지 않는다."
+      "status": "passed",
+      "reason": "공개 registry 30함수 및 materialized 계산 진단을 확인했다.",
+      "evidence": "scripts/qualify-expression.js"
     },
     {
       "consumer": "codec-and-legacy-reader",
       "contract": "D1–D3",
-      "status": "not-run",
-      "reason": "D6에 따라 공개 v2 통합 시 검증한다. private kernel checkpoint의 통과로 대체하지 않는다."
+      "status": "passed",
+      "reason": "v1/v2 의미 구분, missing/null, source receipt offline restore와 stored ref 검증을 확인했다.",
+      "evidence": "test/unit/core/data-source-resource-state.test.js"
     },
     {
       "consumer": "full-basic-types-package",
       "contract": "D2–D4",
-      "status": "partial",
-      "reason": "private 경계와 현재 v1 안전성 변경을 검증·문서화. 공개 v2 타입/조회/예제는 D6 통합 이후."
+      "status": "passed",
+      "reason": "Full create/revise/parameter와 Basic create 경계, opaque 타입 및 설치 artifact Node20/22/24를 확인했다.",
+      "evidence": "scripts/consumers/fixtures/types-1.ts"
     },
     {
       "consumer": "docs-and-current-contracts",
       "contract": "D1–D6",
-      "status": "partial",
-      "reason": "private 경계와 현재 v1 안전성 변경을 검증·문서화. 공개 v2 타입/조회/예제는 D6 통합 이후."
+      "status": "passed",
+      "reason": "현재 계약/공개 문서/생성 metadata 동기화와 built150pages 및 1210LLM artifacts를 확인했다.",
+      "evidence": "test/docs/documented-behavior.test.js"
     },
     {
       "consumer": "parameter-resource-lifecycle",
       "contract": "G-PARAM",
-      "status": "not-run",
-      "reason": "D6에 따라 공개 v2 통합 시 검증한다. private kernel checkpoint의 통과로 대체하지 않는다."
+      "status": "passed",
+      "reason": "CRUD와 same-value no-op, prepared URL parameter invalidation, removal consumer 보호를 확인했다.",
+      "evidence": "test/unit/actions/data/parameter-lifecycle.test.js"
     },
     {
       "consumer": "data-source-resolution",
       "contract": "G-DATA",
-      "status": "not-run",
-      "reason": "D6에 따라 공개 v2 통합 시 검증한다. private kernel checkpoint의 통과로 대체하지 않는다."
+      "status": "passed",
+      "reason": "inline/named/URL CSV/JSON, exact base/token/abort, immutable receipt, source detach 및 offline lifecycle을 확인했다.",
+      "evidence": "test/unit/resources/prepared-data-public.test.js"
     },
     {
       "consumer": "renderers-and-scenes",
       "contract": "D6",
-      "status": "not-run",
-      "reason": "D6에 따라 공개 v2 통합 시 검증한다. private kernel checkpoint의 통과로 대체하지 않는다."
+      "status": "passed",
+      "reason": "같은 concrete output의 Canvas/SVG/PNG/PDF/scene 소비 및 기존 전체render272/browser299 회귀를 확인했다.",
+      "evidence": "scripts/consumers/fixtures/node/prepared-data.mjs"
     }
   ],
   "newVisualTarget": false,
   "rendererPolicy": "Renderers consume materialized graphicSpec; no AST evaluation.",
-  "coreEvidence": "agent_docs/impl/roadmap9/phase3/core-implementation.json"
+  "coreEvidence": "agent_docs/impl/roadmap9/phase3/core-implementation.json",
+  "integrationRemaining": [
+    "최종 source/evidence commit 및 원격 DATA CI"
+  ]
 }

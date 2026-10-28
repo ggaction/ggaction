@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageVersion": "0.0.26",
-  "contractId": "sha256:da14c6fa784ad71e53dc994c51fea71f353ef3f309f08a7ced70625e3711f8e4",
+  "contractId": "sha256:40ba83f1722b03c6c309334ccf013fc94a37d861a49d5dd55402dfbbb3c56f94",
   "identityPolicy": "Match contractId and artifact hashes before mixing page, card, type, or MCP resource data. Task packets must come from the same installed card/resource set; packageVersion alone is insufficient.",
   "artifacts": [
     {
       "path": "actions.json",
-      "sha256": "de1d576f1a6d073b804bfce8b47fcf32a88be1baa4646bcbda0e9f91657e467a",
-      "bytes": 970227
+      "sha256": "380306b1970295c8cddaf1515c8fd83ad13ebce4e54bcb7080606de495d518e4",
+      "bytes": 984333
     },
     {
       "path": "mcp-resources.json",
@@ -31,28 +31,28 @@
     },
     {
       "path": "types/program.d.ts",
-      "sha256": "906b3df2cb548dd67d5f87c20290ee75d4225f746169426fb0f2aadfbafe82b0",
-      "bytes": 215236
+      "sha256": "e840b576e561075d635f025abf08611e6854bccc82c3621fe92fd5341621324d",
+      "bytes": 225961
     }
   ],
   "catalogs": {
     "pages": {
       "count": 150,
       "path": "llm/pages.json",
-      "bytes": 37463,
-      "sha256": "bcd336e712372996ff8b5442fc16827a42888622c13e9fbc7a1eaaf7a5914c5e"
+      "bytes": 37465,
+      "sha256": "e4aff21164e319dd102445fd036cf3fd944429172e53b0fa44da30fd883ff3e8"
     },
     "actions": {
-      "count": 298,
+      "count": 304,
       "path": "llm/actions.json",
-      "bytes": 83997,
-      "sha256": "47f26a0186eb6266ce25229cd927c804b384ab4d8e83b6628a1fdd3fe0dc5d79"
+      "bytes": 85659,
+      "sha256": "1261ca7a0dfaca1b4293583dca7573315430d147222ef27e3ee3cdc090209016"
     },
     "types": {
-      "count": 727,
+      "count": 764,
       "path": "llm/types.json",
-      "bytes": 165341,
-      "sha256": "0a0f6a3829d7fa454610c4612486894ee0a106dcba716a939eb4ea5514a92bab"
+      "bytes": 172816,
+      "sha256": "d3979a434876b7d55f42f0f8567c53df647c493bf07233f54b36feeda45601f0"
     }
   },
   "paths": {

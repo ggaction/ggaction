@@ -1,3 +1,4 @@
+import { bindComputedTransform } from "./computedBinding.js";
 import { validateDatasetTransformInput } from "../../grammar/transformInput.js";
 import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import {resolveDatasetTransformInputs} from "./shared.js";
@@ -54,9 +55,12 @@ export const createDerivedData = /* @__PURE__ */ closedAction(
       throw new Error(`Unknown source dataset "${source}".`);
     }
     validateDatasetTransformInput(args.transform);
-    const transforms=args.transform?.[0]?.type==="lookup"
-      ? [resolveDatasetTransformInputs(this,args.transform[0])]
-      : args.transform;
+    const requestedTransform = args.transform[0];
+    const transforms = requestedTransform.type === "lookup"
+      ? [resolveDatasetTransformInputs(this, requestedTransform)]
+      : requestedTransform.type === "computed"
+        ? [bindComputedTransform(this, resolveDatasetReference(this, source, "Source dataset"), requestedTransform)]
+        : args.transform;
     const withSource = this.editSemantic({ property: `dataset[${id}].source`, value: source });
     const created = withPreparedDatasetIdentity(
       { property: `dataset[${id}].transform`, value: transforms }, preparedDatasetIdentity(args),

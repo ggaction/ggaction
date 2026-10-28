@@ -1,0 +1,44 @@
+{
+  "label": "suite-realistic",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "--import",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/scripts/test-file-metrics.js",
+    "--max-old-space-size=512",
+    "--test",
+    "--test-concurrency=2",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-direct-lifecycle-coverage-recipes.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 1694470,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T11:28:28.464Z",
+  "finishedAt": "2026-10-28T11:56:42.936Z",
+  "source": {
+    "available": true,
+    "commit": "8685719fb2937ef6653bd14cfabcc3edc7a4c701",
+    "clean": false,
+    "statusSha256": "4005607405901a86ac529ede9ae277ace88c1d9fe5e02810731ddbf6ceb5ae8a"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "bc83c93a583fdc15b2428bbd97004e523799a844",
+    "clean": false,
+    "statusSha256": "81eaf05de65072fcf6d3ddc3773bd913a1c30976eb240ac0c6806d041376022b"
+  },
+  "logSha256": "ac02c81e087b0bef2621be014ca4f3b79d282701035865ee55b1c99cf2cc0c7d",
+  "discovery": {
+    "suite": "realistic",
+    "selectors": [],
+    "files": [
+      "test/contracts/realistic-direct-lifecycle-coverage-recipes.test.js"
+    ]
+  },
+  "bytes": 4201,
+  "retainedBytes": 4201,
+  "truncated": false
+}

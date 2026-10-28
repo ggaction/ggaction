@@ -1,0 +1,1 @@
+export type DataParse = Readonly<Record<string, DataParseDirective>>;

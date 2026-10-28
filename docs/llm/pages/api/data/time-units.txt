@@ -92,8 +92,10 @@ Non-hour offsets and skipped civil dates follow the same rule; a boundary that
 cannot be represented in the bucket or by JavaScript `Date` is an error. Results
 never depend on the host process time zone or locale.
 
-Locale calendar selection, aggregation, resampling, and missing-period
-completion are separate concerns. Create another immutable dataset when a
+Aggregate repeated dates explicitly with `createSummaryData`, then fill a day
+range with [`createCompleteData({ calendar: ... })`](../../../../api/data/missing-data/#complete-a-calendar-day-range).
+Use the same explicit zone for both actions. Locale calendar selection and
+resampling are separate concerns. Create another immutable dataset when a
 different unit or output field is needed.
 
 ## Related

@@ -1148,6 +1148,21 @@
   {
     "file": "api/data/expressions-and-normalization.md",
     "block": 2,
+    "heading": "Parameters",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "data: \"adjusted\"",
+      "target: \"factor\""
+    ],
+    "prerequisites": "Run this standalone ES module; all data and imports are included. Both immutable programs own a Canvas and materialized point chart.",
+    "sha256": "3c2cb03189872bed79f4be602c76d1ac9251c14ebe6a599667fe5482729cedba",
+    "executable": true
+  },
+  {
+    "file": "api/data/expressions-and-normalization.md",
+    "block": 3,
     "heading": "`createNormalizedData({ id, source?, field, as, groupBy?, method, ... })` {#createnormalizeddata-id-source-field-as-groupby-method}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1264,7 +1279,7 @@
   {
     "file": "api/data/missing-data.md",
     "block": 1,
-    "heading": "`createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}",
+    "heading": "`createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}",
     "mode": "fragment",
     "environment": "esm-context",
     "receivers": [
@@ -1280,6 +1295,20 @@
   {
     "file": "api/data/missing-data.md",
     "block": 2,
+    "heading": "Complete a calendar day range",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "data: \"days\""
+    ],
+    "prerequisites": "Standalone ES module with ggaction installed; the sample declares all input events.",
+    "sha256": "6cb96ffba7f2e362fb4f5451544f3226a5eb6b29a469be47246f1c657f465257",
+    "executable": true
+  },
+  {
+    "file": "api/data/missing-data.md",
+    "block": 3,
     "heading": "`createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1499,6 +1528,20 @@
   {
     "file": "api/data/summaries-and-shaping.md",
     "block": 3,
+    "heading": "Group categories into columns {#createpivotdata}",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"wide\""
+    ],
+    "prerequisites": "The complete snippet imports chart and declares its input rows.",
+    "sha256": "5b7b53dd9ac042e268a19860af98e51f61b55d4c26319996ea3f9a32020df91e",
+    "executable": true
+  },
+  {
+    "file": "api/data/summaries-and-shaping.md",
+    "block": 4,
     "heading": "`createFoldData({ id, source?, fields, as? })` {#createfolddata-id-source-fields-as}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1514,7 +1557,7 @@
   },
   {
     "file": "api/data/summaries-and-shaping.md",
-    "block": 4,
+    "block": 5,
     "heading": "`createStackData({ id?, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1530,7 +1573,7 @@
   },
   {
     "file": "api/data/summaries-and-shaping.md",
-    "block": 5,
+    "block": 6,
     "heading": "`createFlattenData({ id, source?, fields, as? })` {#createflattendata-id-source-fields-as}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1542,7 +1585,7 @@
   },
   {
     "file": "api/data/summaries-and-shaping.md",
-    "block": 6,
+    "block": 7,
     "heading": "Named table lookup",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3547,6 +3590,18 @@
   {
     "file": "api/regression.md",
     "block": 1,
+    "heading": "Regression",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Standalone ES module with ggaction installed; all observations are declared in the sample.",
+    "sha256": "37b98fc3011280746fba67d97db1d8aaf46065a0e35036d9b6b07b90cd2da523",
+    "executable": true
+  },
+  {
+    "file": "api/regression.md",
+    "block": 2,
     "heading": "`createRegression(options?)`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3560,7 +3615,7 @@
   },
   {
     "file": "api/regression.md",
-    "block": 2,
+    "block": 3,
     "heading": "`createRegression(options?)`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3574,7 +3629,7 @@
   },
   {
     "file": "api/regression.md",
-    "block": 3,
+    "block": 4,
     "heading": "`createRegression(options?)`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3588,7 +3643,7 @@
   },
   {
     "file": "api/regression.md",
-    "block": 4,
+    "block": 5,
     "heading": "Editing a regression",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3604,7 +3659,7 @@
   },
   {
     "file": "api/regression.md",
-    "block": 5,
+    "block": 6,
     "heading": "Editing a regression",
     "mode": "fragment",
     "environment": "esm-context",
@@ -3620,7 +3675,7 @@
   },
   {
     "file": "api/regression.md",
-    "block": 6,
+    "block": 7,
     "heading": "Editing generated components",
     "mode": "fragment",
     "environment": "esm-context",

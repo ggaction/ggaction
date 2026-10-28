@@ -862,7 +862,7 @@
     "title": "Expressions and Normalization",
     "source": "docs/api/data/expressions-and-normalization.md",
     "editSource": "docs/api/data/expressions-and-normalization.md",
-    "description": "Add a typed primitive or null field to every source row with a serializable formula:",
+    "description": "Add a scalar field to every source row with a serializable formula. Full and Basic support both existing v1 expressions and explicit v2 expressions.",
     "image": "/assets/images/cars-regression-scatterplot.png"
   },
   "/api/data/missing-data/": {

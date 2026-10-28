@@ -18,6 +18,7 @@ import {
   validateECDFTransform
 } from "./ecdf.js";
 import {
+  isExpressionV2,
   normalizeComputedTransform,
   validateComputedTransform
 } from "./computed.js";
@@ -31,6 +32,8 @@ import {
   validateFilterTransform
 } from "./filter.js";
 import { normalizeFoldTransform, validateFoldTransform } from "./fold.js";
+import { normalizePivotTransform, validatePivotTransform } from "./pivot.js";
+import { scalarKey } from "./transformKeys.js";
 import { normalizeFlattenTransform, validateFlattenTransform } from "./flatten.js";
 import {normalizeLookupTransform,validateLookupTransform} from "./lookup.js";
 import {
@@ -83,12 +86,16 @@ const requestedDensityTransform = requestedTransform;
 function requestedComputedTransform(transform) {
   ownRecord(transform, "Computed transform");
   const { resolved: _resolved, ...requested } = transform;
-  validateComputedTransform(requested);
-  return cloneAndFreeze(requested);
+  if (!isExpressionV2(requested.expression) || Object.hasOwn(requested, "parameterInputs")) {
+    validateComputedTransform(requested);
+  } else if (Object.keys(requested).some(key => !["type", "as", "expression"].includes(key))) {
+    throw new TypeError("Computed transform has unknown properties.");
+  }
+  return normalizeComputedTransform({ as: requested.as, expression: requested.expression });
 }
 
 function requestedOptions(transform) {
-  const { type: _type, resolved: _resolved, ...options } = transform;
+  const { type: _type, resolved: _resolved, parameterInputs: _parameterInputs, ...options } = transform;
   return options;
 }
 
@@ -160,9 +167,15 @@ function normalizeCompleteEdit(transform, patch) {
   const base = replaceExclusive(
     requestedOptions(transform),
     patch,
-    ["values", "sequence"]
+    ["values", "sequence", "calendar"]
   );
   return normalizeCompleteTransform({ ...base, ...patch });
+}
+
+function normalizePivotEdit(transform, patch) {
+  const options = mergedOptions(transform, patch);
+  if (patch.op === "count" && !Object.hasOwn(patch, "value")) delete options.value;
+  return normalizePivotTransform(options);
 }
 
 function normalizeImputeEdit(transform, patch) {
@@ -210,7 +223,7 @@ function normalizeRegressionEdit(transform, patch) {
   if (patch.predict === false) delete base.predict;
   const method = patch.method ?? base.method;
   if (method !== base.method) {
-    if (method !== "polynomial") delete base.degree;
+    delete base.degree;
     if (method !== "loess") {
       delete base.span;
       delete base.robustIterations;
@@ -305,6 +318,16 @@ function facetHorizonTransform(transform, { scales = {} } = {}) {
 }
 
 const TRANSFORM_POLICIES = Object.freeze({
+  pivot: Object.freeze({
+    ...findTransformTopology("pivot"),
+    validate: validatePivotTransform,
+    materializeOp: "materializePivotData",
+    replayTransform: requestedTransform,
+    editable: true,
+    normalizeEdit: normalizePivotEdit,
+    outputRoles: transform => Object.fromEntries(transform.columns.map(column =>
+      [`column:${scalarKey(column.value, "Pivot column value")}`, column.as]))
+  }),
   bin: Object.freeze({
     ...findTransformTopology("bin"),
     validate: validateBinTransform,

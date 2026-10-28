@@ -1,6 +1,8 @@
-import { createTestOutputCapture } from "../../scripts/run-tests.js";
+import { createTestOutputCapture, hashUntrackedInputs } from "../../scripts/run-tests.js";
 import assert from "node:assert/strict";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, readlinkSync, readdirSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -340,4 +342,17 @@ test("coverage capture preserves UTF-8 markers across every byte boundary", () =
   for (const byte of bytes) { stdout.write(Buffer.from([byte])); stderr.write("diagnostic\n"); }
   assert.equal(stdout.toString(), report);
   assert.equal(stderr.toString(), "diagnostic\n".repeat(bytes.length));
+});
+
+test("coverage provenance hashes untracked symlinks without reading their directory", () => {
+  const directory = mkdtempSync(path.join(tmpdir(), "ggaction-coverage-inputs-"));
+  try {
+    writeFileSync(path.join(directory, "source.js"), "export const value = 1;\n");
+    symlinkSync(directory, path.join(directory, "dependencies"), "junction");
+    const hash = value => createHash("sha256").update(value).digest("hex");
+    assert.deepEqual(hashUntrackedInputs(["source.js", "dependencies"], directory), {
+      "source.js": hash("export const value = 1;\n"),
+      dependencies: hash(`symlink\0${readlinkSync(path.join(directory, "dependencies"))}`)
+    });
+  } finally { rmSync(directory, { recursive: true, force: true }); }
 });

@@ -1,6 +1,7 @@
 import { validateUserId } from "../../../core/identifiers.js";
 import { validateDataRows } from "../../../core/validation.js";
 import { findDataset, hasDataset } from "../../../selectors/datasets.js";
+import { validateDataSourceReceipt } from "../../../materialization/dataSourceState.js";
 import {
   validateDatasetSchema,
   validateRowsAgainstSchema
@@ -13,6 +14,13 @@ export function validateDatasetSemanticValue(
   validateTransforms
 ) {
   const property = parsed.path[0];
+  if (property === "sourceReceipt") {
+    validateDataSourceReceipt(value, findDataset(program, parsed.id));
+    return;
+  }
+  if (["source", "transform"].includes(property) && findDataset(program, parsed.id)?.sourceReceipt !== undefined) {
+    throw new TypeError("Source receipts belong only to original datasets.");
+  }
   if (property === "values") {
     validateDataRows(value, `Dataset "${parsed.id}"`);
     const schema = findDataset(program, parsed.id)?.schema;

@@ -1,5 +1,56 @@
 import { datasetInputIds } from "../core/datasetReferences.js";
+import { validateWorkLimit } from "../core/validation.js";
 export { datasetInputReferences, datasetInputIds, rebindTransformDatasetInputs } from "../core/datasetReferences.js";
+
+// Iterative union traversal keeps a deep or shared multi-root dependency graph
+// independent from the host call stack. Its passes are linear in vertices/edges.
+export function orderedDatasetClosure(datasets, roots, { skip = () => false } = {}) {
+  let work = 0;
+  const charge = () => validateWorkLimit(++work, "Dataset dependency work");
+  const byId = new Map(), children = new Map(), indegree = new Map();
+  for (const dataset of datasets) {
+    charge();
+    if (byId.has(dataset.id)) throw new Error("Dataset dependency graph contains duplicate ids.");
+    byId.set(dataset.id, dataset);
+  }
+  for (const dataset of datasets) {
+    const inputs = datasetInputIds(dataset);
+    indegree.set(dataset.id, inputs.length);
+    for (const input of inputs) {
+      charge();
+      if (!byId.has(input)) throw new Error(`Dataset "${dataset.id}" references missing input "${input}".`);
+      if (!children.has(input)) children.set(input, []);
+      children.get(input).push(dataset.id);
+    }
+  }
+  const affected = new Set(), pending = [];
+  for (const root of roots) {
+    charge();
+    if (!byId.has(root)) throw new Error(`Dataset dependency graph has no root "${root}".`);
+    if (!affected.has(root)) { affected.add(root); pending.push(root); }
+  }
+  for (let index = 0; index < pending.length; index += 1) {
+    for (const child of children.get(pending[index]) ?? []) {
+      charge();
+      if (affected.has(child) || skip(byId.get(child))) continue;
+      affected.add(child); pending.push(child);
+    }
+  }
+  const ready = datasets.filter(dataset => indegree.get(dataset.id) === 0).map(dataset => dataset.id);
+  const result = [];
+  for (let index = 0; index < ready.length; index += 1) {
+    const id = ready[index]; charge();
+    if (affected.has(id)) result.push(byId.get(id));
+    for (const child of children.get(id) ?? []) {
+      charge();
+      const count = indegree.get(child) - 1;
+      indegree.set(child, count);
+      if (count === 0) ready.push(child);
+    }
+  }
+  if (ready.length !== datasets.length) throw new Error("Dataset dependency graph contains a cycle.");
+  return result;
+}
 
 export function orderedDatasetAncestors(datasets, root) {
   const byId = new Map(datasets.map(dataset => [dataset.id, dataset]));

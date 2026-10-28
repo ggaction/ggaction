@@ -45,7 +45,7 @@ export function requireDerivedDataset(program, id, type) {
   return { id: validatedId, dataset, source, transform: dataset.transform[0] };
 }
 
-export function derivedMaterializer(op, description, type, derive, resolve, { before, after } = {}) {
+export function derivedMaterializer(op, description, type, derive, resolve, { before, after, environment } = {}) {
   return action({ op, description }, function (args = {}) {
     validateKeys(args, MATERIALIZE_OPTIONS, op);
     const existing = before?.(this, args);
@@ -59,7 +59,7 @@ export function derivedMaterializer(op, description, type, derive, resolve, { be
       data: source.id,
       operation: op
     });
-    const result = derive(source.values, transform);
+    const result = derive(source.values, transform, environment?.(this, source, transform));
     const values = Array.isArray(result) ? result : result.values;
     const schema = deriveTransformSchema(source.schema, transform, values, {
       sourceId: source.id,

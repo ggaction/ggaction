@@ -1,9 +1,12 @@
 import { rejectUnknownProperties as rejectUnknownKeys } from "../core/validation.js";
 import { requireStringValue as requireField } from "../core/validation.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { ownArray, ownRecord } from "../core/ownData.js";
+import { validateWorkLimit } from "../core/validation.js";
+import { calendarDayDomainMetrics, deriveCalendarDayDomain, normalizeCalendarDayDomain } from "./calendarDay.js";
 
 const TRANSFORM_KEYS = Object.freeze([
-  "type", "key", "groupBy", "values", "sequence", "fill", "members"
+  "type", "key", "groupBy", "values", "sequence", "calendar", "fill", "members"
 ]);
 const SEQUENCE_KEYS = Object.freeze(["start", "end", "step"]);
 const MAX_OUTPUT_ROWS = 10_000;
@@ -100,11 +103,13 @@ export function validateCompleteTransform(transform) {
   validateGroupBy(transform.groupBy, key);
   const hasValues = Object.hasOwn(transform, "values");
   const hasSequence = Object.hasOwn(transform, "sequence");
-  if (hasValues && hasSequence) {
-    throw new Error("Complete values and sequence are mutually exclusive.");
+  const hasCalendar = Object.hasOwn(transform, "calendar");
+  if (Number(hasValues) + Number(hasSequence) + Number(hasCalendar) > 1) {
+    throw new Error("Complete values, sequence and calendar are mutually exclusive.");
   }
   if (hasValues) validateValues(transform.values);
   if (hasSequence) validateSequence(transform.sequence);
+  if (hasCalendar) calendarDayDomainMetrics(transform.calendar);
   const members = Object.hasOwn(transform, "members")
     ? requireField(transform.members, "Complete members field")
     : undefined;
@@ -125,6 +130,7 @@ export function normalizeCompleteTransform(args = {}) {
   if (Object.hasOwn(args, "sequence")) {
     transform.sequence = isPlainObject(args.sequence) ? { ...args.sequence } : args.sequence;
   }
+  if (Object.hasOwn(args, "calendar")) transform.calendar = normalizeCalendarDayDomain(args.calendar);
   if (Object.hasOwn(args, "members")) transform.members = args.members;
   validateCompleteTransform(transform);
   return cloneAndFreeze(transform);
@@ -169,7 +175,7 @@ function observedDomain(rows, key) {
   return domain;
 }
 
-function validateRows(rows, transform) {
+function validateRows(rows, transform, budget) {
   if (!Array.isArray(rows) || !rows.every(isPlainObject)) {
     throw new TypeError("Complete source rows must be plain objects.");
   }
@@ -178,7 +184,10 @@ function validateRows(rows, transform) {
   const fields = [];
   const fieldSet = new Set();
   rows.forEach((row, index) => {
-    Object.keys(row).forEach(field => {
+    if (budget) ownRecord(row, "Calendar completion row");
+    const rowFields = Object.keys(row);
+    budget?.add(rowFields.length + required.length);
+    rowFields.forEach(field => {
       if (!fieldSet.has(field)) {
         fieldSet.add(field);
         fields.push(field);
@@ -230,15 +239,43 @@ function syntheticRow(fields, group, keyValue, transform) {
 
 export function deriveCompleteRows(rows, transform) {
   validateCompleteTransform(transform);
-  const fields = validateRows(rows, transform);
-  const domain = transform.values !== undefined
+  const calendar = transform.calendar === undefined ? undefined : calendarDayDomainMetrics(transform.calendar);
+  let budget, calendarGroups;
+  if (calendar) {
+    if (Array.isArray(rows) && rows.length > MAX_OUTPUT_ROWS) {
+      throw new RangeError(`Complete output cannot exceed ${MAX_OUTPUT_ROWS} rows.`);
+    }
+    ownArray(rows, "Calendar completion rows");
+    // Complete lineage repeats this pure calculation with an internal members
+    // field. Reserve both passes and row correspondence before domain expansion.
+    let work = 2 * (calendar.work + rows.length * (transform.groupBy.length + 8));
+    budget = { add(value) { work += 2 * value; validateWorkLimit(work, "Calendar completion work"); } };
+    budget.add(0);
+  }
+  const fields = validateRows(rows, transform, budget);
+  if (calendar) {
+    calendarGroups = groupRows(rows, transform);
+    const minimum = calendarGroups.length * calendar.count;
+    const duplicates = calendarGroups.reduce((count, group) => count + group.values.length -
+      new Set(group.values.map(entry => scalarKey(entry.row[transform.key], "Calendar completion key"))).size, 0);
+    if (minimum + duplicates > MAX_OUTPUT_ROWS) {
+      throw new RangeError(`Complete output cannot exceed ${MAX_OUTPUT_ROWS} rows.`);
+    }
+    budget.add((minimum + duplicates) * (fields.length + Object.keys(transform.fill).length + transform.groupBy.length + 8));
+  }
+  const domain = calendar ? deriveCalendarDayDomain(transform.calendar) : transform.values !== undefined
     ? [...transform.values]
     : transform.sequence !== undefined
       ? sequenceDomain(transform.sequence)
       : observedDomain(rows, transform.key);
   if (domain.length > 0) validateValues(domain);
   const allowed = new Set(domain.map(value => scalarKey(value, "Complete domain value")));
-  const groups = groupRows(rows, transform);
+  const groups = calendarGroups ?? groupRows(rows, transform);
+  if (calendar) rows.forEach((row, index) => {
+    if (!allowed.has(scalarKey(row[transform.key], "Calendar completion key"))) {
+      throw new Error(`Complete observed key is outside the requested domain at row ${index}.`);
+    }
+  });
   if (groups.length !== 0 && domain.length > Math.floor(MAX_OUTPUT_ROWS / groups.length)) {
     throw new RangeError(`Complete output cannot exceed ${MAX_OUTPUT_ROWS} rows.`);
   }

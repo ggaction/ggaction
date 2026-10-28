@@ -1,0 +1,46 @@
+{
+  "label": "suite-realistic",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "--import",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/scripts/test-file-metrics.js",
+    "--max-old-space-size=512",
+    "--test",
+    "--test-concurrency=2",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-scenario-generator.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/realistic-scoped-composition.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 498188,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T11:47:07.956Z",
+  "finishedAt": "2026-10-28T11:55:26.145Z",
+  "source": {
+    "available": true,
+    "commit": "8685719fb2937ef6653bd14cfabcc3edc7a4c701",
+    "clean": false,
+    "statusSha256": "45cf71f62ea5950012f89f6f4d12ffd473437138f36ebef2bbaa4478acb5fae0"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "8685719fb2937ef6653bd14cfabcc3edc7a4c701",
+    "clean": false,
+    "statusSha256": "45cf71f62ea5950012f89f6f4d12ffd473437138f36ebef2bbaa4478acb5fae0"
+  },
+  "logSha256": "4fe3c9ad5a9b493a59da7a5c7faa2cd208f3c0535eb47ad2a3852b30e0b5bc3d",
+  "discovery": {
+    "suite": "realistic",
+    "selectors": [],
+    "files": [
+      "test/contracts/realistic-scenario-generator.test.js",
+      "test/contracts/realistic-scoped-composition.test.js"
+    ]
+  },
+  "bytes": 5765,
+  "retainedBytes": 5765,
+  "truncated": false
+}

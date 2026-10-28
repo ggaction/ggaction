@@ -81,6 +81,7 @@ const allowed = Object.freeze({
     "core", "grammar", "layout", "materialization", "selectors", "theme"
   ]),
   renderers: new Set(["grammar", "renderers"]),
+  resources: new Set(["resources", "core", "grammar", "materialization", "selectors"]),
   selectors: new Set(["selectors"]),
   theme: new Set(["theme"])
 });
@@ -92,7 +93,13 @@ test("keeps source imports inside their architectural boundaries", () => {
     for (const dependency of localImports(file)) {
       assert.equal(
         allowed[owner].has(layer(dependency)) || (
-          (owner === "persistence" && [path.join("actions", "primitives", "semantic.js"), path.join("materialization", "resourceState.js")].includes(path.relative(root, dependency))) ||
+          (owner === "persistence" && [path.join("actions", "primitives", "semantic.js"), path.join("materialization", "resourceState.js"), path.join("materialization", "computedInputs.js"), path.join("materialization", "dataSourceState.js")].includes(path.relative(root, dependency))) ||
+          ([path.join("actions", "data", "sourceCreate.js"), path.join("actions", "data", "sourceEdit.js")].includes(path.relative(root, file)) &&
+            path.relative(root, dependency) === path.join("resources", "dataUpdate.js")) ||
+          (path.relative(root, file) === path.join("resources", "dataUpdate.js") &&
+            path.relative(root, dependency) === path.join("actions", "primitives", "datasetIdentity.js")) ||
+          (path.relative(root, file) === path.join("resources", "dataUpdateFull.js") &&
+            path.relative(root, dependency) === path.join("actions", "data", "sourcePlan.js")) ||
           (owner === "renderers" && path.relative(root, dependency) === path.join("core", "immutable.js")) ||
           (["renderers", "theme"].includes(owner) && path.relative(root, dependency) === path.join("core", "font.js")) ||
           (["renderers", "selectors"].includes(owner) && path.relative(root, dependency) === path.join("core", "diagnostics.js"))
@@ -108,6 +115,20 @@ test("the compact source-action vocabulary matches public default action metadat
   assert.deepEqual(DEFAULT_ACTION_METHODS, BUILTIN_ACTION_DESCRIPTOR_RECORDS
     .filter(record => record[4].includes("default")).map(record => record[0]));
   assert.equal(Object.isFrozen(DEFAULT_ACTION_METHODS), true);
+});
+
+test("Basic source preparation excludes Full revision and facet orchestration", () => {
+  const pending = [path.join(root, "basic.js")], visited = new Set();
+  while (pending.length) {
+    const file = pending.pop();
+    if (visited.has(file)) continue;
+    visited.add(file);
+    pending.push(...localImports(file));
+  }
+  assert.ok(visited.has(path.join(root, "resources", "dataUpdate.js")));
+  for (const file of ["resources/dataUpdateFull.js", "actions/data/sourceEdit.js", "actions/data/sourcePlan.js", "actions/parameters/edit.js"]) {
+    assert.equal(visited.has(path.join(root, file)), false, file);
+  }
 });
 
 test("parses static, re-exported, and dynamic module references", () => {

@@ -1,5 +1,5 @@
 import { validateRowReference } from "../core/rowReference.js";
-import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { annotateError } from "../core/diagnostics.js";
 import { validateUserId } from "../core/identifiers.js";
 import { validateWorkLimit } from "../core/validation.js";
@@ -7,8 +7,12 @@ import { canonicalJSON, contentDigest } from "../core/contentDigest.js";
 import { normalizeMarkSelector } from "../grammar/markSelection.js";
 import { encodeValue } from "../core/valueEncoding.js";
 import { resolveInputReference, resolveRowReference } from "../selectors/resources.js";
+import { ownArray, ownRecord } from "../core/ownData.js";
+import { validateParameterResource } from "../grammar/parameter.js";
+import { validateDataSourceResource } from "./dataSourceState.js";
+import { STORED_RESOURCE_KINDS, validateInputReference, validateResourceRevision } from "../grammar/resourceReference.js";
 
-export const STORED_RESOURCE_KINDS = Object.freeze(["persistent-selection"]);
+export { STORED_RESOURCE_KINDS, validateInputReference } from "../grammar/resourceReference.js";
 const identity = ref => JSON.stringify([ref.kind, ref.id]);
 
 function error(message, code = "invalid-value", details = {}) {
@@ -16,35 +20,28 @@ function error(message, code = "invalid-value", details = {}) {
 }
 
 function exact(value, keys, label) {
-  if (!isPlainObject(value) || Object.keys(value).length !== keys.length || keys.some(key => !Object.hasOwn(value, key))) {
+  ownRecord(value, label);
+  if (Object.keys(value).length !== keys.length || keys.some(key => !Object.hasOwn(value, key))) {
     throw error(`${label} requires its exact stored fields.`);
   }
-}
-
-function revision(value) {
-  if (!Number.isSafeInteger(value) || value < 0) throw error("Resource revision requires a non-negative safe integer.");
-}
-
-export function validateInputReference(ref) {
-  exact(ref, ref?.kind === "data" ? ["kind", "id", "logicalId", "revision"] : ["kind", "id", "revision"], "Input reference");
-  if (ref.kind !== "data" && !STORED_RESOURCE_KINDS.includes(ref.kind)) throw error("Unsupported resource kind.", "unsupported-format");
-  validateUserId(ref.id, "Input resource id"); revision(ref.revision);
-  if (ref.kind === "data" && (typeof ref.logicalId !== "string" || !ref.logicalId)) throw error("Data input requires logical identity.");
-  return ref;
 }
 
 export function validateStoredResource(resource) {
   exact(resource, ["kind", "id", "revision", "algorithmVersion", "ownership", "inputs", "options", "result", "provenance"], "Resource");
   if (!STORED_RESOURCE_KINDS.includes(resource.kind)) throw error("Unsupported resource kind.", "unsupported-format");
-  validateUserId(resource.id, "Resource id"); revision(resource.revision);
+  validateUserId(resource.id, "Resource id"); validateResourceRevision(resource.revision);
   if (resource.algorithmVersion !== "1") throw error("Unsupported resource algorithm version.", "unsupported-format");
   const ownership = resource.ownership;
+  ownRecord(ownership, "Resource ownership");
   exact(ownership, ownership?.mode === "generated" ? ["mode", "owner"] : ["mode"], "Resource ownership");
   if (!["authored", "generated"].includes(ownership.mode)) throw error("Unsupported resource ownership.");
   if (ownership.mode === "generated") validateInputReference(ownership.owner);
   if (!Array.isArray(resource.inputs)) throw error("Resource inputs must be an array.");
+  ownArray(resource.inputs, "Resource inputs");
   resource.inputs.forEach(validateInputReference);
   if (new Set(resource.inputs.map(identity)).size !== resource.inputs.length) throw error("Duplicate resource input.", "ambiguous-identity");
+  if (resource.kind === "parameter") return validateParameterResource(resource);
+  if (resource.kind === "data-source") return validateDataSourceResource(resource);
   exact(resource.result, [], "Persistent selection result");
   const options = resource.options;
   if (options?.mode === "predicate") {
@@ -77,6 +74,7 @@ export function validateResourceGraph(program) {
   const byId = new Map();
   for (const resource of resources) {
     validateStoredResource(resource);
+    if (resource.kind === "data-source") resolveInputReference(program, resource.result.data);
     resource.provenance.sourceRows?.forEach(ref => resolveRowReference(program, ref));
     const key = identity(resource);
     if (byId.has(key)) throw error("Duplicate resource identity.", "duplicate-id", { resourceId: resource.id });
@@ -135,7 +133,53 @@ export function validatePreparedResource(program, prepared) {
   return prepared.resource;
 }
 
+// Facet and repeat retain source snapshots in their child units. Concat child
+// resources have independent namespaces and are deliberately not traversed.
+export function collectParameterInputReferences(program) {
+  const references = [], pending = [{ program, scope: [] }];
+  let work = 0;
+  while (pending.length) {
+    const { program: unit, scope } = pending.pop();
+    validateWorkLimit(++work, "Parameter dependency work");
+    for (const [resourceIndex, resource] of unit.semanticSpec.resources.entries()) {
+      validateWorkLimit(++work, "Parameter dependency work");
+      if (resource.kind !== "data-source") continue;
+      for (const [inputIndex, ref] of resource.inputs.entries()) {
+        validateWorkLimit(++work, "Parameter dependency work");
+        validateInputReference(ref);
+        references.push(freezeOwned({ ...ref, ownerId: resource.id, ownerKind: "data-source", scope: freezeOwned([...scope]),
+          path: freezeOwned(["semanticSpec", "resources", resourceIndex, "inputs", inputIndex]) }));
+      }
+    }
+    for (const [datasetIndex, dataset] of unit.semanticSpec.datasets.entries()) {
+      validateWorkLimit(++work, "Parameter dependency work");
+      for (const [transformIndex, transform] of (dataset.transform ?? []).entries()) {
+        for (const [inputIndex, ref] of (transform.parameterInputs ?? []).entries()) {
+          validateWorkLimit(++work, "Parameter dependency work");
+          validateInputReference(ref);
+          if (ref.kind !== "parameter") throw error("Computed parameter inputs require parameter references.");
+          references.push(freezeOwned({ ...ref, ownerId: dataset.id, scope: freezeOwned([...scope]),
+            path: freezeOwned(["semanticSpec", "datasets", datasetIndex, "transform", transformIndex, "parameterInputs", inputIndex]) }));
+        }
+      }
+    }
+    if (unit.compositionSpec?.type === "facet") {
+      for (const id of [...unit.compositionSpec.children].reverse()) {
+        const child = unit.children[id];
+        if (child !== undefined) pending.push({ program: child, scope: [...scope, id] });
+      }
+    }
+  }
+  return freezeOwned(references);
+}
+
 export function planStoredResourceRemoval(program, requested, { cascade = false } = {}) {
+  if (requested.kind === "parameter") {
+    const references = collectParameterInputReferences(program).filter(ref => ref.id === requested.id);
+    if (references.length) throw error("Parameter is referenced by live computed datasets.", "resource-in-use", {
+      resourceId: requested.id, dependencies: [...new Set(references.map(ref => [...ref.scope, ref.ownerId].join("/")))].slice(0, 16)
+    });
+  }
   const remove = new Set([identity(requested)]), resources = program.semanticSpec.resources;
   let changed;
   do {

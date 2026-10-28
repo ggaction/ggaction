@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 298,
+  "count": 304,
   "cards": [
     {
       "schemaVersion": 3,
@@ -697,6 +697,82 @@
       "snippet": "program.createData({ values: [{ category: \"A\", value: 1 }] })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "applyDataUpdate",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Apply prepared source or parameter data to the exact immutable base with the current host token.",
+      "signature": "applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;",
+      "intents": [
+        "apply data update",
+        "apply",
+        "set defaults",
+        "chart setup",
+        "data and scales",
+        "prepared data update",
+        "CSV and JSON sources"
+      ],
+      "lifecycle": "Immutable create-only",
+      "resources": {
+        "prerequisites": [],
+        "owns": [
+          "prepared data update"
+        ],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "createData",
+        "editSemantic"
+      ],
+      "editableVia": [
+        "applyDataUpdate",
+        "reviseData",
+        "removeData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "prepared",
+          "required": true,
+          "type": "PreparedDataUpdate<\"create\" | \"parameter\" | \"revise\">"
+        },
+        {
+          "name": "requestToken",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "applyDataUpdate({ prepared, requestToken })"
+      ],
+      "snippet": "program.applyDataUpdate({ prepared: prepared, requestToken: currentToken })",
+      "errors": [
+        {
+          "error": "A copied handle, changed receiver or stale request token cannot be applied.",
+          "fix": "Prepare against the latest program and pass the unchanged handle with the current host token."
+        },
+        {
+          "error": "Basic accepts create preparations only.",
+          "fix": "Use the default entry point for prepared revisions and parameter updates."
+        }
+      ],
+      "route": "/reference/actions/charts-data/#applydataupdate"
     },
     {
       "schemaVersion": 3,
@@ -1797,10 +1873,369 @@
     },
     {
       "schemaVersion": 3,
+      "name": "createPivotData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Turn category cells into numeric columns within observed groups.",
+      "signature": "createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;",
+      "intents": [
+        "create pivot data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "grouped pivot data",
+        "category columns"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "grouped pivot data"
+        ],
+        "idOptions": [
+          "id",
+          "source",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [
+        "editPivotData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "columns",
+          "required": false,
+          "type": "readonly PivotColumn[] | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "op",
+          "required": false,
+          "type": "\"count\" | PivotNumericOperation | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createPivotData({ id, field, source?, target?, groupBy?, columns?, fill?, op? })"
+      ],
+      "snippet": "program.createPivotData({ id: \"wide\", field: \"category\", value: \"amount\", op: \"sum\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createpivotdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createParameter",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Create a named number, string, or boolean input for version 2 computed expressions.",
+      "signature": "createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;",
+      "intents": [
+        "create parameter",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "scalar parameter",
+        "named expression input"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [],
+        "owns": [
+          "scalar parameter"
+        ],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editParameter",
+        "removeParameter"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default",
+          "basic"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"boolean\" | \"number\" | \"string\" | undefined"
+        },
+        {
+          "name": "value",
+          "required": true,
+          "type": "string | number | boolean | null"
+        },
+        {
+          "name": "nullable",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createParameter({ id, value, target?, type?, nullable? })"
+      ],
+      "snippet": "program.createParameter({ id: \"factor\", value: 2 })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createparameter"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editParameter",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Atomically revise a parameter value, dependent datasets, and their chart consumers.",
+      "signature": "editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;",
+      "intents": [
+        "edit parameter",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "scalar parameter",
+        "named expression input"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing scalar parameter"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic",
+        "createDerivedData"
+      ],
+      "editableVia": [
+        "editParameter"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing scalar parameter"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string | ActionTargetList | ScopedActionTarget"
+        },
+        {
+          "name": "value",
+          "required": true,
+          "type": "ParameterValue"
+        }
+      ],
+      "callPatterns": [
+        "editParameter({ target, value })"
+      ],
+      "snippet": "program.editParameter({ target: \"factor\", value: 3 })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editparameter"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "removeParameter",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Remove an existing parameter only after all stored references have been removed.",
+      "signature": "removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;",
+      "intents": [
+        "remove parameter",
+        "remove",
+        "delete",
+        "chart setup",
+        "data and scales",
+        "scalar parameter",
+        "named expression input"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing scalar parameter"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing scalar parameter"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "removeParameter({ id, target? })"
+      ],
+      "snippet": "program.removeParameter({ id: \"factor\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#removeparameter"
+    },
+    {
+      "schemaVersion": 3,
       "name": "createComputedData",
       "layer": "user-facing",
       "domain": "statistics",
-      "summary": "Materialize a typed primitive or null field from a serializable, closed expression, including explicit nested scalar getPath and first-occurrence replaceLiteral operations.",
+      "summary": "Materialize a scalar field from a serializable, closed v1 or explicit v2 expression.",
       "signature": "createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;",
       "intents": [
         "create computed data",
@@ -1836,7 +2271,8 @@
       ],
       "supports": {
         "entryPoints": [
-          "default"
+          "default",
+          "basic"
         ]
       },
       "units": [],
@@ -2218,6 +2654,11 @@
           "name": "sequence",
           "required": false,
           "type": "{ start: number; end: number; step: number; } | undefined"
+        },
+        {
+          "name": "calendar",
+          "required": false,
+          "type": "CalendarDayDomain | undefined"
         },
         {
           "name": "target",
@@ -3920,6 +4361,112 @@
     },
     {
       "schemaVersion": 3,
+      "name": "editPivotData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits grouped pivot data, including settings for category columns.",
+      "signature": "editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;",
+      "intents": [
+        "edit pivot data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "grouped pivot data",
+        "category columns"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing grouped pivot data",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editPivotData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing grouped pivot data",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string | ActionTargetList | ScopedActionTarget"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "columns",
+          "required": false,
+          "type": "readonly PivotColumn[] | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "op",
+          "required": false,
+          "type": "\"count\" | PivotNumericOperation | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editPivotData({ target, dependents?, field?, groupBy?, columns?, fill?, op?, value? })"
+      ],
+      "snippet": "program.editPivotData({ target: \"wide\", op: \"count\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#editpivotdata"
+    },
+    {
+      "schemaVersion": 3,
       "name": "editSummaryData",
       "layer": "user-facing",
       "domain": "statistics",
@@ -5365,6 +5912,11 @@
           "name": "sequence",
           "required": false,
           "type": "{ start: number; end: number; step: number; } | undefined"
+        },
+        {
+          "name": "calendar",
+          "required": false,
+          "type": "CalendarDayDomain | undefined"
         }
       ],
       "callPatterns": [

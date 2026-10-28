@@ -567,6 +567,20 @@ createData({ id?, values })
 
 Create one immutable named dataset. [Data](../api/data.md)
 
+### `applyDataUpdate`
+
+```javascript
+applyDataUpdate({ prepared, requestToken })
+```
+
+Apply an opaque result of `await prepareDataUpdate(program, request, host)` to
+its exact immutable base with the application's current request token. Full
+supports creating, refreshing, and parameter-dependent source updates; Basic
+supports creation. Hosts provide explicit CSV/JSON loaders. All source and
+computed consumers update atomically. See the
+[prepared data reference](../api/data/source-and-derived.md#prepared-data-updates)
+and [refresh workflow](../data-updates.md#prepare-and-apply-source-data).
+
 ### `reviseData`
 
 ```javascript
@@ -662,15 +676,53 @@ createFoldData({ id, source?, fields, as? })
 Materialize selected wide fields as stable key/value rows while preserving
 every source cell. [Source and Derived Data](../api/data/source-and-derived.md#createfolddata-id-source-fields-as)
 
+### `createParameter`
+
+```javascript
+createParameter({ id, value, type?, nullable? })
+```
+
+Create a named number, string, or boolean input for version 2 computed expressions.
+A null initial value requires an explicit type and `nullable: true`.
+Available in Full and Basic. [Parameters](../api/data/expressions-and-normalization.md#parameters)
+
+### `editParameter`
+
+```javascript
+editParameter({ target, value })
+```
+
+Atomically revise a parameter value, dependent datasets, and their chart consumers.
+Type and nullability remain fixed. Available in Full.
+[Parameters](../api/data/expressions-and-normalization.md#parameters)
+
+### `removeParameter`
+
+```javascript
+removeParameter({ id })
+```
+
+Remove an existing parameter only after all stored references have been removed.
+Available in Full. [Parameters](../api/data/expressions-and-normalization.md#parameters)
+### `createPivotData`
+
+```javascript
+createPivotData({ id, source?, field, value?, groupBy?, columns?, op?, fill? })
+```
+
+Turn category cells into numeric columns within observed groups. Duplicate cells
+require an explicit aggregation operation. Full only.
+[Grouped pivot data](../api/data/summaries-and-shaping.md#createpivotdata)
+
 ### `createComputedData`
 
 ```javascript
 createComputedData({ id, source?, as, expression })
 ```
 
-Materialize a typed primitive or null field from a serializable, closed
-expression, including explicit nested scalar `getPath` and first-occurrence
-`replaceLiteral` operations. [Source and Derived Data](../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
+Materialize a scalar field from a serializable, closed v1 or explicit v2
+expression. Version 2 adds named parameter inputs, a closed function registry,
+and missing-value diagnostics while preserving existing v1 behavior. [Source and Derived Data](../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
 
 ### `createNormalizedData`
 
@@ -685,11 +737,13 @@ percent-change values independently within each group.
 ### `createCompleteData`
 
 ```javascript
-createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })
+createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })
 ```
 
 Complete one typed key domain independently inside every observed group, with
-explicit fill and source-membership provenance for synthesized rows.
+explicit fill and source-membership provenance for synthesized rows. A civil-day
+`calendar` uses inclusive strict dates and an explicit UTC or IANA zone; it is
+exclusive with `values` and `sequence`.
 [Source and Derived Data](../api/data/source-and-derived.md#createcompletedata-id-source-key-groupby-values-sequence-fill-members)
 
 ### `createImputedData`
@@ -1247,7 +1301,7 @@ createRegressionData({
 
 Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
-LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
+LOESS is line-only, with `degree: 1` (default) or `degree: 2` for a local quadratic fit. Optional `robustIterations` (integer `0..32`, default `0`)
 adds residual reweighting; see [regression](../api/regression.md) for the estimator policy.
 [Data](../api/data.md)
 
@@ -1391,13 +1445,14 @@ editComputedData({ target, as?, expression?, dependents? })
 editLookupData({ target, field?, lookup?, dependents? })
 editFlattenData({ target, fields?, as?, dependents? })
 editFoldData({ target, fields?, as?, dependents? })
+editPivotData({ target, field?, value?, groupBy?, columns?, op?, fill?, dependents? })
 editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
 editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })
 editStackData({ target, category?, group?, value?, mode?, as?, dependents? })
 editIntervalData({ target, field?, groupBy?, center?, extent?, method?, level?, as?, dependents? })
 editECDFData({ target, field?, groupBy?, weight?, missing?, as?, dependents? })
 editNormalizedData({ target, field?, as?, groupBy?, method?, variance?, zeroDenominator?, baseline?, sortBy?, dependents? })
-editCompleteData({ target, key?, groupBy?, values? | sequence?, fill?, members?, dependents? })
+editCompleteData({ target, key?, groupBy?, values? | sequence? | calendar?, fill?, members?, dependents? })
 editImputedData({ target, fields?, groupBy?, sortBy?, method?, value?, edges?, maxGap?, dependents? })
 ```
 
@@ -2476,7 +2531,8 @@ createRegression({
 
 Infer an eligible point layer and create immutable fitted data, optional grouped
 interval-band paths, and grouped line paths. Method defaults to `"linear"`;
-polynomial degree to `2`; LOESS span to `0.75` and `robustIterations` to `0`.
+polynomial degree to `2`; LOESS degree to `1`, span to `0.75`, and `robustIterations` to `0`.
+Set LOESS `degree: 2` for local quadratic fits.
 [Regression](../api/regression.md)
 
 ### `editRegression`

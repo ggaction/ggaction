@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 508_000, // Compound paths: CI Node 24 measured 507419.
-  "ggaction/basic": 286_000, // Shared lineage and concrete identity: Node 22.23.2 measured 285190.
+  ggaction: 529_000, // Combined prepared source and statistical owners measured at 526996 gzip bytes.
+  "ggaction/basic": 307_000, // Combined create-only source and statistical owners measured at 304841 gzip bytes.
   "ggaction/svg": 25_000
 });
 

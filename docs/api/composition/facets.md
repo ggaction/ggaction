@@ -468,6 +468,11 @@ for a 2 × 3 full grid with one missing source pair.
 
 {% include chart-example.html id="repeat-charts" %}
 
+`repeatCharts` accepts direct materialized lookup and computed datasets as well as
+ordinary source data. It changes the selected encoding field without rewriting
+expressions or lookup inputs. A parent `editParameter` rebuilds repeated children
+from the retained source when a repeated computed field depends on that parameter.
+
 `repeatCharts` compares several fields without copying the complete unit recipe:
 
 <!-- snippet-context:start -->

@@ -398,8 +398,10 @@ Evidence: `test/unit/layout/facet-top-lane.test.js`, `test/unit/actions/composit
 
 - A row-preserving lookup may be faceted by a primary or copied field. Partition only the primary
   branch, retain its complete reference table, and replay both-input revisions atomically.
-- `repeat` accepts a direct materialized lookup dataset and changes only the selected encoding
-  fields. It does not rewrite lookup inputs. Other derived-data repeat restrictions remain.
+- `repeat` accepts a direct materialized lookup or computed dataset and changes only the selected encoding
+  fields. It does not rewrite lookup inputs or computed expressions. Other derived-data repeat restrictions remain.
+- Parameter-dependent computed fields retain their exact resource bindings in facet/repeat source snapshots. Parent editParameter revises that source and rebuilds children/shared guides/layout.
+- Parameter evidence: `test/unit/actions/data/parameter-lifecycle.test.js`.
 - Evidence: `test/unit/actions/composition/lookup-facets.test.js`.
 
 ## `editFacetScales`

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:da14c6fa784ad71e53dc994c51fea71f353ef3f309f08a7ced70625e3711f8e4. Status: development. Runtime source: 3a022aea4d297c63659a37446ce0a39e3e86a3b2. Release baseline: v0.0.13.
+Contract: sha256:40ba83f1722b03c6c309334ccf013fc94a37d861a49d5dd55402dfbbb3c56f94. Status: development. Runtime source: b84b54b536bfb3c282dc6301d72e105aea665e35. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/3a022aea4d297c63659a37446ce0a39e3e86a3b2/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/b84b54b536bfb3c282dc6301d72e105aea665e35/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/3a022aea4d297c63659a37446ce0a39e3e86a3b2/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/b84b54b536bfb3c282dc6301d72e105aea665e35/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4231,6 +4231,9 @@ all dependent marks and guides are validated and updated together. It does not
 expose the Full `editScale`, focused scale editors, or legend editors. Use Full
 for scale-type transitions, or create a new scale ID in Basic. See
 [Encoding reassignment](./api/encodings/#reassign-an-existing-encoding).
+Basic also supports `createParameter` and `createComputedData`, including explicit
+version 2 expressions. Parameter editing/removal and derived-data editing remain
+Full actions. [Expressions and parameters](./api/data/expressions-and-normalization/)
 
 ## Shared behavior
 
@@ -4944,6 +4947,7 @@ operation; marks and renderers never mutate source values.
 | Family | Actions | Use |
 | --- | --- | --- |
 | [Source and derived data](./api/data/source-and-derived/) | `createData`, `createDerivedData` | Store source rows or explicit transform provenance |
+| [Prepared sources](./api/data/source-and-derived/#prepared-data-updates) | `prepareDataUpdate`, `applyDataUpdate` | Prepare CSV/JSON or named data, then apply an immutable update |
 | [Safe resource removal](./api/data/revisions-and-removal/#removedata-id) | `removeData` | Delete one named dataset only after all live consumers are gone |
 | [Reusable summaries](./api/data/summaries-and-shaping/#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./api/data/summaries-and-shaping/#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
@@ -5049,6 +5053,96 @@ The most recently created dataset becomes the default for `createPointMark`,
 `createLineMark`, or `createBarMark`. Creating data records semantic state only
 and produces no graphics.
 
+## Prepared data updates {#prepared-data-updates}
+
+`prepareDataUpdate(program, request, host)` is an asynchronous chart-authoring
+helper exported by `ggaction` and `ggaction/basic`. It prepares data without
+changing the program. `program.applyDataUpdate({ prepared, requestToken })`
+applies its opaque result synchronously to that exact program instance.
+
+| Request | Fields | Availability |
+| --- | --- | --- |
+| Create | `{ kind: "create", id, source, keyField?, keyFields? }` | Full and Basic |
+| Refresh | `{ kind: "revise", target, id, rowMap? }` | Full |
+| Parameter change | `{ kind: "parameter", target, value }` | Full |
+
+Create requires a fresh explicit dataset ID and creates a source binding with
+the same ID. Refresh targets that binding and needs a fresh snapshot ID.
+Parameter changes load every affected URL source and update the combined
+source/computed dependency graph once. The existing parameter type and
+nullability remain fixed. Same-value parameter updates load nothing.
+
+Choose one source shape:
+
+| Source | Required fields | Optional fields |
+| --- | --- | --- |
+| Inline rows | `{ kind: "inline", values }` | `parse`, `schema` |
+| Inline text | `{ kind: "inline", text, format }` | `delimiter`, `parse`, `schema` |
+| Named text | `{ kind: "named", name, format }` | `delimiter`, `parse`, `schema` |
+| URL text | `{ kind: "url", url, format }` | `delimiter`, `parse`, `schema` |
+
+Formats are `"csv"` and `"json"`. CSV defaults to a comma and accepts a single
+nonquote, nonnewline delimiter. It supports quoted cells, doubled quotes and
+embedded newlines, with unique nonempty headers and consistent row widths.
+JSON must contain an array of plain row objects. Source rows accept finite JSON
+values, including nested arrays/objects; executable values, undefined, bigint,
+Date objects, cycles, accessors and reserved prototype keys are rejected.
+
+`parse` maps field names to `{ type, nullable? }`, with types `string`, `number`,
+`boolean`, and `date`. Nullable defaults to false. Numeric parsing accepts finite
+decimal and exponent forms; boolean text must be exactly `"true"` or `"false"`.
+Dates require an explicit `timeZone` (`"UTC"` or an IANA name). Their optional
+`format` is `%Y-%m-%d` (default), `%d/%m/%Y`, `%m/%d/%Y`, or `iso`. Dates become
+epoch milliseconds. Invalid calendar dates and ambiguous or nonexistent local
+times fail. Optional `schema` uses the closed source schema above; empty parsed
+data keeps declared or typed field meaning.
+
+A URL can be a string or a `ComputedExpressionV2` using scalar parameters from
+the same unit. Field access is unavailable in URL expressions. Every branch is
+validated; the selected result must be a nonempty string. Relative URLs require
+an absolute `host.baseURL`. A binding retains its base URL for later refreshes.
+
+The host object requires a nonempty string `requestToken`. It may also provide
+`baseURL`, an `AbortSignal` as `signal`, and these callbacks:
+
+| Host callback | Input | Result |
+| --- | --- | --- |
+| `load` | `{ url, signal? }` | CSV/JSON payload or a promise for it |
+| `resolveNamed` | `{ name, signal? }` | CSV/JSON payload or a promise for it |
+
+A payload contains exactly one of `text` or `bytes` (`Uint8Array`), plus
+`mimeType` and `encoding: "utf-8"`. CSV accepts `text/csv` or `application/csv`;
+JSON accepts `application/json` or `application/*+json`. A UTF-8 charset parameter
+is accepted. Invalid Unicode, MIME/format mismatches, and other encodings fail.
+The library never invokes fetch automatically and does not unwrap a Response.
+
+Choose at most one key policy, `keyField` or ordered `keyFields`. Generated keys
+are the default. Explicit key arrays are unavailable for prepared sources.
+Refresh preserves a field/tuple key policy. For generated keys, optional
+`rowMap` follows [the source revision rules](./api/data/revisions-and-removal/).
+
+All source requests are validated before loading starts. Results may arrive in
+any order; application waits for all of them. A failed load, parse, key mapping
+or consumer update preserves the original program and its trace. Aborted,
+forged, copied or serialized handles cannot be applied. Applying to a different
+program instance or with a different token reports `stale-result`.
+
+Use the application's **current program and current request token** when applying.
+An old immutable program is a valid intentional branch; the library cannot
+observe which variable the application considers current. See the complete
+[refresh workflow](./data-updates/#prepare-and-apply-source-data).
+
+Full snapshots retain original received text/rows and parsing receipts for
+offline restoration. Old snapshots preserve their historical receipts. Restore
+validates stored data without loading or evaluating URL expressions. Canvas,
+SVG, PNG, PDF and scenes continue to use concrete graphics only.
+
+Facet/repeat updates rebuild their retained source and existing recipe. For
+concat, prepare and apply in an explicit child, then replace that child. A live
+source is a consumer of its URL parameters, so removing those parameters is
+restricted until the binding is gone. Direct manual row revisions detach the
+binding as described in [data revisions](./api/data/revisions-and-removal/).
+
 ## `createDerivedData({ id, source, transform })` {#create-derived-data}
 
 `createDerivedData` is the advanced provenance-assembly action behind the
@@ -5088,12 +5182,13 @@ corresponding higher-level action when the library should materialize values:
 | `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, weight?, resolved? }` | `createBinData` |
 | `"computed"` | `{ type, as, expression }` | `createComputedData` |
 | `"normalize"` | `{ type, field, as, groupBy, method, ...methodPolicies }` | `createNormalizedData` |
-| `"complete"` | `{ type, key, groupBy, values? or sequence?, fill, members? }` | `createCompleteData` |
+| `"complete"` | `{ type, key, groupBy, values? or sequence? or calendar?, fill, members? }` | `createCompleteData` |
 | `"impute"` | `{ type, fields, groupBy, sortBy, method, value?, edges, maxGap? }` | `createImputedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"lookup"` | `{ type, field, lookup: { data, key, fields, as } }` | `createLookupData` |
 | `"flatten"` | `{ type, fields, as }` | `createFlattenData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
+| `"pivot"` | `{ type, field, value?, groupBy, columns, op, fill }` | `createPivotData` (Full only) |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
 | `"regressionStatistics"` | `{ type }`, with an existing linear fit as source | `createRegressionStatisticsData` |
 | `"sort"` | `{ type, sortBy }` | `createSortedData` |
@@ -5214,7 +5309,7 @@ See [Expressions and Normalization](./api/data/expressions-and-normalization/#cr
 
 See [Expressions and Normalization](./api/data/expressions-and-normalization/#createnormalizeddata-id-source-field-as-groupby-method) for this contract and its examples.
 
-## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
+## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
 
 See [Missing Keys and Values](./api/data/missing-data/#createcompletedata-id-source-key-groupby-values-sequence-fill-members) for this contract and its examples.
 
@@ -5719,8 +5814,10 @@ Non-hour offsets and skipped civil dates follow the same rule; a boundary that
 cannot be represented in the bucket or by JavaScript `Date` is an error. Results
 never depend on the host process time zone or locale.
 
-Locale calendar selection, aggregation, resampling, and missing-period
-completion are separate concerns. Create another immutable dataset when a
+Aggregate repeated dates explicitly with `createSummaryData`, then fill a day
+range with [`createCompleteData({ calendar: ... })`](./api/data/missing-data/#complete-a-calendar-day-range).
+Use the same explicit zone for both actions. Locale calendar selection and
+resampling are separate concerns. Create another immutable dataset when a
 different unit or output field is needed.
 
 ## Related
@@ -7828,6 +7925,24 @@ programs. Later independently authored marks follow ordinary authoring order;
 editing a plot-last regression reapplies its placement. `createRegressionPlot`
 accepts the same option.
 
+For a complete quadratic example:
+
+> **Executable complete.** Standalone ES module with ggaction installed; all observations are declared in the sample.
+
+```javascript
+import { chart } from "ggaction";
+
+const observations = Array.from({ length: 11 }, (_, x) => ({ x, y: x * x }));
+const quadraticFit = chart()
+  .createCanvas({ width: 480, height: 320, margin: 50 })
+  .createData({ values: observations })
+  .createRegressionPlot({
+    x: "x", y: "y", method: "loess", degree: 2, span: 1
+  });
+```
+
+The fitted values match the quadratic observations within floating-point precision.
+
 ## At a glance
 
 | Action | Required decision | Inferred or default behavior |
@@ -7873,7 +7988,7 @@ program.createRegression({
 | `x`, `y` | quantitative field names | target x/y fields |
 | `groupBy` | nominal field name or `false` (legacy explicit `undefined` also supported) | unique color/shape field |
 | `method` | `"linear"`, `"polynomial"`, `"loess"`, or `"exp"` | `"linear"` |
-| `degree` | integer from `1` through `32` for polynomial | `2` |
+| `degree` | polynomial: integer `1..32`; LOESS: `1` or `2` | polynomial: `2`; LOESS: `1` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `robustIterations` | LOESS residual reweighting passes, integer `0..32` | `0` |
 | `confidenceMethod` | `"normal"` or `"student-t"` | `"student-t"` |
@@ -7928,9 +8043,16 @@ used at creation. `"follow"` refits when `reviseData` advances that logical
 source. Appearance-only edits preserve fitted rows. Statistical, field, or
 prediction-grid edits create one new immutable fitted dataset.
 
-LOESS defaults to an ordinary local-linear fit. Set `robustIterations: 2`
+LOESS defaults to an ordinary local-linear fit. Set `degree: 2` for local quadratic
+fits, or `degree: 1` to restore local-linear fitting. The quadratic fit centers and
+scales x at each prediction location; a rank-deficient neighborhood uses its weighted
+constant mean without adding more neighbors. A two-row group therefore remains valid.
+All groups still need at least two rows and two distinct x values. Omitted degree
+and explicit degree 1 retain the existing stored transform; only degree 2 is stored.
+
+Set `robustIterations: 2`
 for two residual reweighting passes. Each neighborhood contains
-`max(2, ceil(span * groupRowCount))` rows; equal distances use source order,
+`min(groupRowCount, max(degree + 1, ceil(span * groupRowCount)))` rows; equal distances use source order,
 and duplicate x values share one prediction. If all neighbors lie at the
 tricube boundary (all distance weights zero), equal weights resolve the tied
 sample. Each pass multiplies the tricube distance
@@ -7946,7 +8068,8 @@ its persisted transform; positive counts are stored in provenance.
 
 Each regression produces at most 10,000 group/x rows. Polynomial and LOESS
 inputs whose estimated fitting work exceeds 10,000,000 units throw a
-`RangeError` before the expensive fit begins.
+`RangeError` before the expensive fit begins. Quadratic LOESS includes the extra
+local solves in that cumulative limit across groups, robust passes, and prediction positions.
 
 The action keeps each fitted dataset, band, and line associated with its target
 point mark, so multiple point layers can add independent regressions in one
@@ -16163,10 +16286,63 @@ dependent chart, or rebuild a program from application-owned rows.
 
 | Change | Action or workflow | Prerequisite |
 | --- | --- | --- |
+| CSV/JSON, named, or URL data | `prepareDataUpdate` then `applyDataUpdate` | Explicit host loader and current request token |
 | New rows with compatible fields | `reviseData({ source, id, values })` | Existing source ID and fresh revision ID; dependent transforms remain valid |
 | Field names, types, or chart topology change | Rebuild from application-owned rows | Update affected encodings and transform definitions together |
 | Transform parameters change | The owning `edit*Data` action | Existing logical transform ID and valid options |
 | One mark should use independent data | `createData` then the mark's data editor | Explicit target and a compatible replacement schema |
+
+## Prepare and apply source data {#prepare-and-apply-source-data}
+
+This complete ES module prepares inline CSV, builds a chart, and refreshes its
+source. The host supplies text explicitly; the same callback boundary can load
+application-owned files or network responses.
+
+```javascript
+import { chart, prepareDataUpdate } from "ggaction";
+
+let program = chart();
+let currentToken = "initial";
+const initial = await prepareDataUpdate(program, {
+  kind: "create", id: "sales", keyField: "quarter",
+  source: {
+    kind: "named", name: "sales-table", format: "csv",
+    parse: { revenue: { type: "number" } }
+  }
+}, {
+  requestToken: currentToken,
+  resolveNamed: () => ({ text: "quarter,revenue\nQ1,12", mimeType: "text/csv", encoding: "utf-8" })
+});
+program = program.applyDataUpdate({ prepared: initial, requestToken: currentToken })
+  .createCanvas()
+  .createBarPlot({ data: "sales", x: "quarter", y: "revenue", guides: false });
+
+async function refreshSales(text, token, snapshotId) {
+  currentToken = token;
+  const prepared = await prepareDataUpdate(program, {
+    kind: "revise", target: "sales", id: snapshotId
+  }, {
+    requestToken: token,
+    resolveNamed: () => ({ text, mimeType: "text/csv", encoding: "utf-8" })
+  });
+  program = program.applyDataUpdate({ prepared, requestToken: currentToken });
+}
+
+await refreshSales("quarter,revenue\nQ1,15\nQ2,20", "refresh-1", "salesUpdated");
+```
+
+Each request uses a fresh application token and snapshot ID. The final line of
+`refreshSales` reads the current variables after awaiting. If another request
+or chart action has advanced them, the older result fails instead of replacing
+the latest chart. Catch that failure in the host when stale requests are expected.
+
+Full supports source refresh and parameter requests; Basic supports creation.
+A parameter request has `{ kind: "parameter", target, value }` and refreshes
+all URL sources that use it together with their computed consumers. The host
+must supply `load` for URL data and `resolveNamed` for named data. URL response
+bytes are never fetched implicitly. See the
+[prepared data reference](./api/data/source-and-derived/#prepared-data-updates)
+for parsing, callback payloads, keys, abort and scope rules.
 
 ## Revise a source and its dependent chart
 
@@ -16359,6 +16535,11 @@ Compound paths, explicit fill rules and path owner clips round-trip unchanged in
 current editable and graphic snapshots. Legacy editable versions 1–3 retain
 their historical single-subpath grammar and reject these newer features.
 Older runtimes are not forward-compatible with the extended concrete grammar.
+Parameter resources and version 2 expressions also require editable schema 4.
+Restoration checks their scalar types, expression fields, and exact parameter
+revision vectors without evaluating expressions or making resource requests.
+Malformed, missing, duplicate, extra, and stale parameter inputs reject; legacy
+versions 1–3 cannot carry these newer parameter or expression payloads.
 `packageVersion` records the producer version; `schemaVersion` determines the
 format. Other schema versions are rejected. `extensions` contains the exact
 registered extension names required by the editable action traces, including
@@ -16463,6 +16644,22 @@ physical revision. The result reports the resolved ID and normalized schema.
 `completeness: "unknown"` means the library cannot prove field availability;
 it is different from a known schema whose `fields` array is empty. Use
 `childPath` to address a dataset inside a composition.
+
+## Expression functions
+
+`getExpressionFunctions({ registry? })` reads the immutable closed expression
+registry without a program or evaluator. The default and only supported registry
+is `standard@1`. Each descriptor provides `name`, minimum/maximum argument counts
+(`min`/`max`), input and output types, and any option family. Unknown registry names,
+unknown options, and an explicitly undefined registry reject.
+
+Import `getExpressionFunctions` from `ggaction/inspection`, then call
+`getExpressionFunctions().find(item => item.name === "sqrt")`. The descriptor
+has `min: 1`, `max: 1`, `inputs: ["number"]`, and `output: "number"`.
+
+[Version 2 expressions](./api/data/expressions-and-normalization/#version-2-expressions)
+use these names. Computed calculation reports include their registry, evaluated and
+missing row counts, numeric failure counts, and exact parameter input revisions.
 
 ## Preflight an action
 
@@ -17283,6 +17480,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 | Action | Authoring role | API layer | Domain |
 | --- | --- | --- | --- |
+| [`applyDataUpdate`](./reference/actions/charts-data/#applydataupdate) | H3 | user-facing | core |
 | [`applyTextMetrics`](./reference/actions/charts-data/#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](./reference/actions/charts-data/#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](./reference/actions/charts-data/#bindmarkdata) | H2 | user-facing | core |
@@ -17337,7 +17535,9 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createParallelAxes`](./reference/actions/guides/#createparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](./reference/actions/guides/#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](./reference/actions/charts-data/#createparallelcoordinates) | H0 | user-facing | charts |
+| [`createParameter`](./reference/actions/charts-data/#createparameter) | H2 | user-facing | core |
 | [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | H0 | user-facing | charts |
+| [`createPivotData`](./reference/actions/statistics/#createpivotdata) | H1 | user-facing | statistics |
 | [`createPointMark`](./reference/actions/marks/#createpointmark) | H2 | user-facing | marks |
 | [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](./reference/actions/charts-data/#createpolarscatterplot) | H0 | user-facing | charts |
@@ -17449,6 +17649,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editOverlay`](./reference/actions/marks/#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](./reference/actions/guides/#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./reference/actions/charts-data/#editparallelscale) | H2 | user-facing | core |
+| [`editParameter`](./reference/actions/charts-data/#editparameter) | H3 | user-facing | core |
+| [`editPivotData`](./reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editRadarPlot`](./reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](./reference/actions/guides/#editradialaxis) | H3 | user-facing | axes |
@@ -17565,6 +17767,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeMarkSelection`](./reference/actions/advanced/#removemarkselection) | H3 | advanced | mark-selection |
 | [`removeParallelAxes`](./reference/actions/guides/#removeparallelaxes) | H3 | user-facing | axes |
 | [`removeParallelAxis`](./reference/actions/guides/#removeparallelaxis) | H3 | user-facing | axes |
+| [`removeParameter`](./reference/actions/charts-data/#removeparameter) | H3 | user-facing | core |
 | [`removePathOrder`](./reference/actions/encodings/#removepathorder) | H2, H3 | user-facing | encodings |
 | [`removePointPacking`](./reference/actions/marks/#removepointpacking) | H3 | user-facing | marks |
 | [`removePointRadius`](./reference/actions/encodings/#removepointradius) | H2, H3 | user-facing | encodings |
@@ -17881,6 +18084,41 @@ createData({ id?, values })
 
 Create one immutable named dataset. [Data](./api/data/)
 
+## `applyDataUpdate`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
+```
+
+Named option contracts: [`ApplyDataUpdateOptions`](./reference/types/#type-applydataupdateoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedDataUpdate<"create" \| "parameter" \| "revise">` |
+| `requestToken` | Required | `string` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+applyDataUpdate({ prepared, requestToken })
+```
+
+Apply an opaque result of `await prepareDataUpdate(program, request, host)` to
+its exact immutable base with the application's current request token. Full
+supports creating, refreshing, and parameter-dependent source updates; Basic
+supports creation. Hosts provide explicit CSV/JSON loaders. All source and
+computed consumers update atomically. See the
+[prepared data reference](./api/data/source-and-derived/#prepared-data-updates)
+and [refresh workflow](./data-updates/#prepare-and-apply-source-data).
+
 ## `reviseData`
 
 **API layer:** user-facing. **Authoring roles:** H3.
@@ -18085,6 +18323,101 @@ Create an immutable named derived dataset using exactly one membership,
 comparison, or range filter. The source defaults to current data.
 [Data](./api/data/)
 
+## `createParameter`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateParameterOptions`](./reference/types/#type-createparameteroptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `type` | Optional / branch-dependent | `"boolean" \| "number" \| "string" \| undefined` |
+| `value` | Required | `string \| number \| boolean \| null` |
+| `nullable` | Optional / branch-dependent | `boolean \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createParameter({ id, value, type?, nullable? })
+```
+
+Create a named number, string, or boolean input for version 2 computed expressions.
+A null initial value requires an explicit type and `nullable: true`.
+Available in Full and Basic. [Parameters](./api/data/expressions-and-normalization/#parameters)
+
+## `editParameter`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditParameterOptions`](./reference/types/#type-editparameteroptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
+| `value` | Required | `ParameterValue` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editParameter({ target, value })
+```
+
+Atomically revise a parameter value, dependent datasets, and their chart consumers.
+Type and nullability remain fixed. Available in Full.
+[Parameters](./api/data/expressions-and-normalization/#parameters)
+
+## `removeParameter`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`RemoveParameterOptions`](./reference/types/#type-removeparameteroptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+removeParameter({ id })
+```
+
+Remove an existing parameter only after all stored references have been removed.
+Available in Full. [Parameters](./api/data/expressions-and-normalization/#parameters)
+
 ## `createDensityData`
 
 **API layer:** user-facing. **Authoring roles:** H2.
@@ -18177,7 +18510,7 @@ createRegressionData({
 
 Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
-LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
+LOESS is line-only, with `degree: 1` (default) or `degree: 2` for a local quadratic fit. Optional `robustIterations` (integer `0..32`, default `0`)
 adds residual reweighting; see [regression](./api/regression/) for the estimator policy.
 [Data](./api/data/)
 
@@ -24605,6 +24938,44 @@ createFoldData({ id, source?, fields, as? })
 Materialize selected wide fields as stable key/value rows while preserving
 every source cell. [Source and Derived Data](./api/data/source-and-derived/#createfolddata-id-source-fields-as)
 
+## `createPivotData`
+
+**API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`PivotDataOptions`](./reference/types/#type-pivotdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `field` | Required | `string` |
+| `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
+| `columns` | Optional / branch-dependent | `readonly PivotColumn[] \| undefined` |
+| `fill` | Optional / branch-dependent | `number \| null \| undefined` |
+| `op` | Optional / branch-dependent | `"count" \| PivotNumericOperation \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createPivotData({ id, source?, field, value?, groupBy?, columns?, op?, fill? })
+```
+
+Turn category cells into numeric columns within observed groups. Duplicate cells
+require an explicit aggregation operation. Full only.
+[Grouped pivot data](./api/data/summaries-and-shaping/#createpivotdata)
+
 ## `createComputedData`
 
 **API layer:** user-facing. **Authoring roles:** H1.
@@ -24635,9 +25006,9 @@ The following call patterns are abbreviated examples; the declaration above owns
 createComputedData({ id, source?, as, expression })
 ```
 
-Materialize a typed primitive or null field from a serializable, closed
-expression, including explicit nested scalar `getPath` and first-occurrence
-`replaceLiteral` operations. [Source and Derived Data](./api/data/source-and-derived/#createcomputeddata-id-source-as-expression)
+Materialize a scalar field from a serializable, closed v1 or explicit v2
+expression. Version 2 adds named parameter inputs, a closed function registry,
+and missing-value diagnostics while preserving existing v1 behavior. [Source and Derived Data](./api/data/source-and-derived/#createcomputeddata-id-source-as-expression)
 
 ## `createNormalizedData`
 
@@ -24738,16 +25109,19 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `members` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `sequence` | Optional / branch-dependent | `{ start: number; end: number; step: number; } \| undefined` |
+| `calendar` | Optional / branch-dependent | `CalendarDayDomain \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })
+createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })
 ```
 
 Complete one typed key domain independently inside every observed group, with
-explicit fill and source-membership provenance for synthesized rows.
+explicit fill and source-membership provenance for synthesized rows. A civil-day
+`calendar` uses inclusive strict dates and an explicit UTC or IANA zone; it is
+exclusive with `values` and `sequence`.
 [Source and Derived Data](./api/data/source-and-derived/#createcompletedata-id-source-key-groupby-values-sequence-fill-members)
 
 ## `createImputedData`
@@ -24922,6 +25296,35 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `fields` | Optional / branch-dependent | `readonly string[] \| undefined` |
 | `as` | Optional / branch-dependent | `FoldDataOutputFields \| undefined` |
+
+Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
+
+## `editPivotData`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditPivotDataOptions`](./reference/types/#type-editpivotdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
+| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
+| `columns` | Optional / branch-dependent | `readonly PivotColumn[] \| undefined` |
+| `fill` | Optional / branch-dependent | `number \| null \| undefined` |
+| `op` | Optional / branch-dependent | `"count" \| PivotNumericOperation \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
 
@@ -25157,6 +25560,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `members` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `sequence` | Optional / branch-dependent | `{ start: number; end: number; step: number; } \| undefined` |
+| `calendar` | Optional / branch-dependent | `CalendarDayDomain \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
 
@@ -25318,7 +25722,8 @@ createRegression({
 
 Infer an eligible point layer and create immutable fitted data, optional grouped
 interval-band paths, and grouped line paths. Method defaults to `"linear"`;
-polynomial degree to `2`; LOESS span to `0.75` and `robustIterations` to `0`.
+polynomial degree to `2`; LOESS degree to `1`, span to `0.75`, and `robustIterations` to `0`.
+Set LOESS `degree: 2` for local quadratic fits.
 [Regression](./api/regression/)
 
 ## `editRegression`
@@ -26108,13 +26513,14 @@ editComputedData({ target, as?, expression?, dependents? })
 editLookupData({ target, field?, lookup?, dependents? })
 editFlattenData({ target, fields?, as?, dependents? })
 editFoldData({ target, fields?, as?, dependents? })
+editPivotData({ target, field?, value?, groupBy?, columns?, op?, fill?, dependents? })
 editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
 editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })
 editStackData({ target, category?, group?, value?, mode?, as?, dependents? })
 editIntervalData({ target, field?, groupBy?, center?, extent?, method?, level?, as?, dependents? })
 editECDFData({ target, field?, groupBy?, weight?, missing?, as?, dependents? })
 editNormalizedData({ target, field?, as?, groupBy?, method?, variance?, zeroDenominator?, baseline?, sortBy?, dependents? })
-editCompleteData({ target, key?, groupBy?, values? | sequence?, fill?, members?, dependents? })
+editCompleteData({ target, key?, groupBy?, values? | sequence? | calendar?, fill?, members?, dependents? })
 editImputedData({ target, fields?, groupBy?, sortBy?, method?, value?, edges?, maxGap?, dependents? })
 ```
 
@@ -29551,8 +29957,14 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](./types/index.d.ts)
 
 ```typescript
+export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
-import type { ChartProgram, CompositionOptions } from "./program.js";
+export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
+  ReviseDataUpdateRequest, ParameterDataUpdateRequest, DataUpdateRequest, DataSourceResponse,
+  DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions, DataSourceProvenance,
+  DataSourceReceipt, DataSourceResource } from "./program.js";
+import type { ChartProgram, CompositionOptions, DataUpdateRequest, CreateDataUpdateRequest,
+  ReviseDataUpdateRequest, ParameterDataUpdateRequest, DataUpdateHost, PreparedDataUpdate } from "./program.js";
 
 export type {
   CreateOverlayOptions,
@@ -29606,6 +30018,11 @@ export type {
   RemoveResourceOptions,
   CanvasOptions,
   FitCanvasOptions,
+  PivotColumn,
+  PivotNumericOperation,
+  PivotDataOptions,
+  DatasetPivotTransform,
+  EditPivotDataOptions,
   FoldDataOptions,
   FoldDataOutputFields,
   CategoricalEncodingOptions,
@@ -29649,6 +30066,7 @@ export type {
   ComputedDataOptions,
   ComputedExpression,
   CompleteDataOptions,
+  CalendarDayDomain,
   ImputedDataOptions,
   NormalizedDataOptions,
   NormalizeBaseline,
@@ -30026,6 +30444,10 @@ export type {
 } from "./program.js";
 
 export function chart(): ChartProgram;
+export function prepareDataUpdate(program: ChartProgram, request: CreateDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"create">>;
+export function prepareDataUpdate(program: ChartProgram, request: ReviseDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"revise">>;
+export function prepareDataUpdate(program: ChartProgram, request: ParameterDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"parameter">>;
+export function prepareDataUpdate(program: ChartProgram, request: DataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate>;
 export function hconcat(options: CompositionOptions): ChartProgram;
 export function vconcat(options: CompositionOptions): ChartProgram;
 export function render(
@@ -30040,8 +30462,13 @@ export function render(
 [Complete declaration and relative dependencies](./types/basic.d.ts)
 
 ```typescript
+export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./program.js";
-import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget } from "./program.js";
+export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
+  DataSourceResponse, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions,
+  DataSourceProvenance, DataSourceReceipt, DataSourceResource } from "./program.js";
+import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget,
+  CreateDataUpdateRequest, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions } from "./program.js";
 
 export type {
   LinearNiceCountOptions,
@@ -30115,6 +30542,8 @@ type BasicMethodKey =
   | "applyTheme"
   | "removeTheme"
   | "createData"
+  | "createParameter"
+  | "createComputedData"
   | "createFlattenData"
   | "createLookupData"
   | "createPointMark"
@@ -30169,9 +30598,13 @@ export type BasicChartProgram =
   Pick<ChartProgram, BasicStateKey> &
   { readonly [Key in Exclude<BasicMethodKey, "createData">]: RebindMethod<ChartProgram[Key]> } &
   { createData<Row extends object>(options: CreateDataOptions<Row>): BasicChartProgram } &
+  { applyDataUpdate(options: ApplyDataUpdateOptions<"create">): BasicChartProgram } &
   { readonly layoutSeries: (options: BasicSeriesLayoutOptions) => BasicChartProgram };
 
 export function chart(): BasicChartProgram;
+export function prepareDataUpdate(
+  program: BasicChartProgram, request: CreateDataUpdateRequest, host: DataUpdateHost
+): Promise<PreparedDataUpdate<"create">>;
 export function render(
   program: Pick<BasicChartProgram, "graphicSpec">,
   context: CanvasRenderingContext2D,
@@ -30454,6 +30887,16 @@ export interface MarkItemInspection {
   readonly bounds: Readonly<{left:number;top:number;right:number;bottom:number}> | null;
 }
 export function getMarkItems(program: ProgramInput, options?: {target?: string | {childPath?:readonly string[];id:string};grain?:"item"|"stack"}): readonly MarkItemInspection[];
+export interface ExpressionFunctionDescriptor {
+  readonly name: import("./program.js").ExpressionCall["name"];
+  readonly min: number;
+  readonly max: number;
+  readonly inputs: readonly ("number" | "string" | "boolean" | "array")[];
+  readonly output: "number" | "string" | "boolean" | "unknown";
+  readonly options?: "angle" | "parse" | "part" | "floor";
+  readonly lazy?: true;
+}
+export function getExpressionFunctions(options?: { readonly registry?: "standard@1" }): readonly ExpressionFunctionDescriptor[];
 ```
 
 #### `ggaction/scene`
@@ -30544,6 +30987,7 @@ interface ChartProgramActions {
   applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
+  applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -30562,7 +31006,11 @@ interface ChartProgramActions {
   createBinData(options: TargetedOptions<BinDataOptions>): ChartProgram;
   createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
+  createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
+  createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
+  removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
   createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;
   createCompleteData(options: TargetedOptions<CompleteDataOptions>): ChartProgram;
@@ -30582,6 +31030,7 @@ interface ChartProgramActions {
   editFilteredData(options: TargetedOptions<EditFilteredDataOptions>): ChartProgram;
   editFlattenData(options: TargetedOptions<EditFlattenDataOptions>): ChartProgram;
   editLookupData(options: TargetedOptions<EditLookupDataOptions>): ChartProgram;
+  editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;
   editFoldData(options: TargetedOptions<EditFoldDataOptions>): ChartProgram;
   editSummaryData(options: TargetedOptions<EditSummaryDataOptions>): ChartProgram;
   editBinData(options: TargetedOptions<EditBinDataOptions>): ChartProgram;
@@ -30989,6 +31438,19 @@ type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "t
 ```
 
 Related types: [`TextMarkOptions`](./reference/types/#type-textmarkoptions) · [`TextFormat`](./reference/types/#type-textformat) · [`LabelLayoutOptions`](./reference/types/#type-labellayoutoptions).
+
+### `ApplyDataUpdateOptions` {#type-applydataupdateoptions}
+
+ Expand ApplyDataUpdateOptions
+
+```typescript
+export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly prepared: PreparedDataUpdate<Kind>;
+  readonly requestToken: string;
+}
+```
+
+Related types: [`DataUpdateRequest`](./reference/types/#type-dataupdaterequest) · [`PreparedDataUpdate`](./reference/types/#type-prepareddataupdate).
 
 ### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
 
@@ -31873,6 +32335,21 @@ type CPathGuides = Omit<CartesianPathGuideOptions, "axes"> & {
 
 Related types: [`CartesianPathGuideOptions`](./reference/types/#type-cartesianpathguideoptions) · [`CAxes`](./reference/types/#type-caxes).
 
+### `CalendarDayDomain` {#type-calendardaydomain}
+
+ Expand CalendarDayDomain
+
+```typescript
+export interface CalendarDayDomain {
+  readonly unit: "day";
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly start: string;
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly end: string;
+  readonly timeZone: string;
+}
+```
+
 ### `CanvasOptions` {#type-canvasoptions}
 
  Expand CanvasOptions
@@ -32415,16 +32892,18 @@ Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar).
 
 ```typescript
 export type CompleteDataOptions = CompleteDataBaseOptions & (
-  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never }
+  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never; calendar?: never }
   | {
       values?: never;
       sequence: { start: number; end: number; step: number };
+      calendar?: never;
     }
-  | { values?: never; sequence?: never }
+  | { calendar: CalendarDayDomain; values?: never; sequence?: never }
+  | { values?: never; sequence?: never; calendar?: never }
 );
 ```
 
-Related types: [`CompleteDataBaseOptions`](./reference/types/#type-completedatabaseoptions) · [`DatasetScalar`](./reference/types/#type-datasetscalar).
+Related types: [`CompleteDataBaseOptions`](./reference/types/#type-completedatabaseoptions) · [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`CalendarDayDomain`](./reference/types/#type-calendardaydomain).
 
 ### `CompletePolarAxisOptions` {#type-completepolaraxisoptions}
 
@@ -32519,7 +32998,17 @@ Related types: [`ComputedExpression`](./reference/types/#type-computedexpression
  Expand ComputedExpression
 
 ```typescript
-export type ComputedExpression =
+export type ComputedExpression = ComputedExpressionV1 | ComputedExpressionV2;
+```
+
+Related types: [`ComputedExpressionV1`](./reference/types/#type-computedexpressionv1) · [`ComputedExpressionV2`](./reference/types/#type-computedexpressionv2).
+
+### `ComputedExpressionV1` {#type-computedexpressionv1}
+
+ Expand ComputedExpressionV1
+
+```typescript
+export type ComputedExpressionV1 =
   | { readonly field: string }
   | { readonly constant: number | string | boolean | null }
   | {
@@ -32529,48 +33018,62 @@ export type ComputedExpression =
     }
   | {
       readonly op: "replaceLiteral";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly search: string;
       readonly replacement: string;
     }
   | {
       readonly op: "datePart";
       readonly part: "year";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly timeZone?: string;
     }
   | {
       readonly op: "parseTime";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
       readonly format?: ParseTimeFormat;
     }
   | {
       readonly op: "negate" | "absolute" | "log" | "sqrt" | "floor" | "not" | "isNull" | "toNumber";
-      readonly operand: ComputedExpression;
+      readonly operand: ComputedExpressionV1;
     }
   | {
       readonly op: "add" | "subtract" | "multiply" | "divide" |
         "eq" | "neq" | "lt" | "lte" | "gt" | "gte";
-      readonly left: ComputedExpression;
-      readonly right: ComputedExpression;
+      readonly left: ComputedExpressionV1;
+      readonly right: ComputedExpressionV1;
     }
   | {
       readonly op: "and" | "or" | "coalesce";
-      readonly operands: readonly [ComputedExpression, ComputedExpression, ...ComputedExpression[]];
+      readonly operands: readonly [ComputedExpressionV1, ComputedExpressionV1, ...ComputedExpressionV1[]];
     }
   | {
       readonly op: "concat";
-      readonly operands: readonly [ComputedExpression, ...ComputedExpression[]];
+      readonly operands: readonly [ComputedExpressionV1, ...ComputedExpressionV1[]];
     }
   | {
       readonly op: "if";
-      readonly condition: ComputedExpression;
-      readonly then: ComputedExpression;
-      readonly else: ComputedExpression;
+      readonly condition: ComputedExpressionV1;
+      readonly then: ComputedExpressionV1;
+      readonly else: ComputedExpressionV1;
     };
 ```
 
 Related types: [`ParseTimeFormat`](./reference/types/#type-parsetimeformat).
+
+### `ComputedExpressionV2` {#type-computedexpressionv2}
+
+ Expand ComputedExpressionV2
+
+```typescript
+export interface ComputedExpressionV2 {
+  readonly version: 2;
+  readonly registry: "standard@1";
+  readonly root: ExpressionNode;
+}
+```
+
+Related types: [`ExpressionNode`](./reference/types/#type-expressionnode).
 
 ### `ConfidenceIntervalMethod` {#type-confidenceintervalmethod}
 
@@ -32830,6 +33333,18 @@ export type CreateDataOptions<Row extends object> = DataKeyOptions & {
 ```
 
 Related types: [`DataKeyOptions`](./reference/types/#type-datakeyoptions) · [`StoredCell`](./reference/types/#type-storedcell) · [`SourceSchemaInput`](./reference/types/#type-sourceschemainput).
+
+### `CreateDataUpdateRequest` {#type-createdataupdaterequest}
+
+ Expand CreateDataUpdateRequest
+
+```typescript
+export type CreateDataUpdateRequest = DataSourceKeys & {
+  readonly kind: "create"; readonly id: string; readonly source: DataSource;
+};
+```
+
+Related types: [`DataSourceKeys`](./reference/types/#type-datasourcekeys) · [`DataSource`](./reference/types/#type-datasource).
 
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
@@ -33168,6 +33683,18 @@ export interface CreateParallelCoordinatesOptions {
 ```
 
 Related types: [`ParallelDimension`](./reference/types/#type-paralleldimension) · [`ParallelMissingPolicy`](./reference/types/#type-parallelmissingpolicy) · [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`NonCartesianStrokeDashChannel`](./reference/types/#type-noncartesianstrokedashchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ParallelGuideOptions`](./reference/types/#type-parallelguideoptions).
+
+### `CreateParameterOptions` {#type-createparameteroptions}
+
+ Expand CreateParameterOptions
+
+```typescript
+export type CreateParameterOptions = { readonly id: string } & (
+  ParameterDefinition<"number", number> | ParameterDefinition<"string", string> | ParameterDefinition<"boolean", boolean>
+);
+```
+
+Related types: [`ParameterDefinition`](./reference/types/#type-parameterdefinition).
 
 ### `CreatePiePlotOptions` {#type-createpieplotoptions}
 
@@ -33679,6 +34206,108 @@ export type DataKeyOptions =
 
 Related types: [`RowKey`](./reference/types/#type-rowkey).
 
+### `DataParse` {#type-dataparse}
+
+ Expand DataParse
+
+```typescript
+export type DataParse = Readonly<Record<string, DataParseDirective>>;
+```
+
+Related types: [`DataParseDirective`](./reference/types/#type-dataparsedirective).
+
+### `DataParseDirective` {#type-dataparsedirective}
+
+ Expand DataParseDirective
+
+```typescript
+export type DataParseDirective =
+  | { readonly type: "string" | "number" | "boolean"; readonly nullable?: boolean; readonly format?: never; readonly timeZone?: never }
+  | { readonly type: "date"; readonly nullable?: boolean; readonly timeZone: string;
+      readonly format?: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso" };
+```
+
+### `DataSource` {#type-datasource}
+
+ Expand DataSource
+
+```typescript
+export type DataSource = DataSourceParsing & (
+  | { readonly kind: "inline"; readonly values: readonly Readonly<Record<string, DataSourceValue>>[];
+      readonly text?: never; readonly format?: never; readonly delimiter?: never }
+  | (DataSourceFormat & { readonly kind: "inline"; readonly text: string; readonly values?: never })
+  | (DataSourceFormat & { readonly kind: "url"; readonly url: string | ComputedExpressionV2 })
+  | (DataSourceFormat & { readonly kind: "named"; readonly name: string })
+);
+```
+
+Related types: [`DataSourceParsing`](./reference/types/#type-datasourceparsing) · [`DataSourceValue`](./reference/types/#type-datasourcevalue) · [`DataSourceFormat`](./reference/types/#type-datasourceformat) · [`ComputedExpressionV2`](./reference/types/#type-computedexpressionv2).
+
+### `DataSourceFormat` {#type-datasourceformat}
+
+ Expand DataSourceFormat
+
+```typescript
+type DataSourceFormat = { readonly format: "csv"; readonly delimiter?: string }
+  | { readonly format: "json"; readonly delimiter?: never };
+```
+
+### `DataSourceKeys` {#type-datasourcekeys}
+
+ Expand DataSourceKeys
+
+```typescript
+type DataSourceKeys =
+  | { readonly keyField?: never; readonly keyFields?: never }
+  | { readonly keyField: string; readonly keyFields?: never }
+  | { readonly keyField?: never; readonly keyFields: readonly string[] };
+```
+
+### `DataSourceParsing` {#type-datasourceparsing}
+
+ Expand DataSourceParsing
+
+```typescript
+type DataSourceParsing = { readonly parse?: DataParse; readonly schema?: SourceSchemaInput };
+```
+
+Related types: [`DataParse`](./reference/types/#type-dataparse) · [`SourceSchemaInput`](./reference/types/#type-sourceschemainput).
+
+### `DataSourceValue` {#type-datasourcevalue}
+
+ Expand DataSourceValue
+
+```typescript
+export type DataSourceValue = null | boolean | number | string
+  | readonly DataSourceValue[] | { readonly [key: string]: DataSourceValue };
+```
+
+### `DataUpdateDescriptors` {#type-dataupdatedescriptors}
+
+ Expand DataUpdateDescriptors
+
+```typescript
+interface DataUpdateDescriptors {
+  create: { readonly kind: "create"; readonly id: string; readonly sourceKind: DataSource["kind"]; readonly format?: "csv" | "json" };
+  revise: { readonly kind: "revise"; readonly target: string; readonly id: string };
+  parameter: { readonly kind: "parameter"; readonly target: string };
+}
+declare const preparedDataUpdate: unique symbol;
+/** Opaque preparation evidence. Only prepareDataUpdate can create a valid handle. */
+```
+
+Related types: [`DataSource`](./reference/types/#type-datasource).
+
+### `DataUpdateRequest` {#type-dataupdaterequest}
+
+ Expand DataUpdateRequest
+
+```typescript
+export type DataUpdateRequest = CreateDataUpdateRequest | ReviseDataUpdateRequest | ParameterDataUpdateRequest;
+```
+
+Related types: [`CreateDataUpdateRequest`](./reference/types/#type-createdataupdaterequest) · [`ReviseDataUpdateRequest`](./reference/types/#type-revisedataupdaterequest) · [`ParameterDataUpdateRequest`](./reference/types/#type-parameterdataupdaterequest).
+
 ### `DatasetBin2DOutputFields` {#type-datasetbin2doutputfields}
 
  Expand DatasetBin2DOutputFields
@@ -33776,16 +34405,18 @@ export type DatasetCompleteTransform = {
   readonly fill: Readonly<Record<string, DatasetScalar>>;
   readonly members?: string;
 } & (
-  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never }
+  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never; readonly calendar?: never }
   | {
       readonly sequence: { readonly start: number; readonly end: number; readonly step: number };
       readonly values?: never;
+      readonly calendar?: never;
     }
-  | { readonly values?: never; readonly sequence?: never }
+  | { readonly calendar: CalendarDayDomain; readonly values?: never; readonly sequence?: never }
+  | { readonly values?: never; readonly sequence?: never; readonly calendar?: never }
 );
 ```
 
-Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar).
+Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`CalendarDayDomain`](./reference/types/#type-calendardaydomain).
 
 ### `DatasetComputedTransform` {#type-datasetcomputedtransform}
 
@@ -34128,6 +34759,25 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
 
 Related types: [`DatasetNormalizedBaseTransform`](./reference/types/#type-datasetnormalizedbasetransform) · [`NormalizeZeroDenominator`](./reference/types/#type-normalizezerodenominator) · [`DatasetNormalizeBaselineTransform`](./reference/types/#type-datasetnormalizebaselinetransform).
 
+### `DatasetPivotTransform` {#type-datasetpivottransform}
+
+ Expand DatasetPivotTransform
+
+```typescript
+export type DatasetPivotTransform = {
+  readonly type: "pivot";
+  readonly field: string;
+  readonly groupBy: readonly string[];
+  readonly columns: readonly PivotColumn[];
+  readonly fill: number | null;
+} & (
+  | { readonly op: PivotNumericOperation; readonly value: string }
+  | { readonly op: "count"; readonly value?: never }
+);
+```
+
+Related types: [`PivotColumn`](./reference/types/#type-pivotcolumn) · [`PivotNumericOperation`](./reference/types/#type-pivotnumericoperation).
+
 ### `DatasetRegressionStatisticsTransform` {#type-datasetregressionstatisticstransform}
 
  Expand DatasetRegressionStatisticsTransform
@@ -34181,7 +34831,7 @@ export type DatasetRegressionTransform = {
       method: "loess";
       span: number;
       robustIterations?: number;
-      degree?: never;
+      degree?: 2;
       confidenceMethod?: never;
       level?: never;
       confidence?: never;
@@ -34321,6 +34971,7 @@ Related types: [`TemporalInputUnit`](./reference/types/#type-temporalinputunit).
 
 ```typescript
 export type DatasetTransform =
+  | DatasetPivotTransform
   | DatasetBinTransform
   | DatasetBin2DTransform
   | DatasetCompleteTransform
@@ -34345,7 +34996,7 @@ export type DatasetTransform =
   | DatasetWindowTransform;
 ```
 
-Related types: [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFlattenTransform`](./reference/types/#type-datasetflattentransform) · [`DatasetLookupTransform`](./reference/types/#type-datasetlookuptransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](./reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
+Related types: [`DatasetPivotTransform`](./reference/types/#type-datasetpivottransform) · [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFlattenTransform`](./reference/types/#type-datasetflattentransform) · [`DatasetLookupTransform`](./reference/types/#type-datasetlookuptransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](./reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -35390,7 +36041,7 @@ Related types: [`LegendChannel`](./reference/types/#type-legendchannel).
 
 ```typescript
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
+  extends Omit<LegendOptions, "channels" | "labels" | "title" | "values" | "titleStyle" | "direction" | "position" | "clipHeight" | "rowPadding" | "titlePadding"> {
   visible?: boolean;
   /** Body offset in pixels; auto resets. */
   itemsOffset?: { x?: number; y?: number } | "auto";
@@ -35565,6 +36216,26 @@ export type EditParallelScaleOptions = {
 ```
 
 Related types: [`WithoutScaleId`](./reference/types/#type-withoutscaleid) · [`QuantitativePositionScaleOptions`](./reference/types/#type-quantitativepositionscaleoptions) · [`CategoricalPositionScaleOptions`](./reference/types/#type-categoricalpositionscaleoptions).
+
+### `EditParameterOptions` {#type-editparameteroptions}
+
+ Expand EditParameterOptions
+
+```typescript
+export interface EditParameterOptions { readonly target: string; readonly value: ParameterValue; }
+```
+
+Related types: [`ParameterValue`](./reference/types/#type-parametervalue).
+
+### `EditPivotDataOptions` {#type-editpivotdataoptions}
+
+ Expand EditPivotDataOptions
+
+```typescript
+export type EditPivotDataOptions = FocusedDerivedDataEdit<PivotDataOptions>;
+```
+
+Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`PivotDataOptions`](./reference/types/#type-pivotdataoptions).
 
 ### `EditPolarAxisOptions` {#type-editpolaraxisoptions}
 
@@ -36326,6 +36997,39 @@ type ExistingSizeScaleEditPatch = {
   exponent?: number;
 };
 ```
+
+### `ExpressionCall` {#type-expressioncall}
+
+ Expand ExpressionCall
+
+```typescript
+export type ExpressionCall =
+  | { readonly type: "call"; readonly name: "abs" | "sqrt" | "log" | "exp" | "round" | "floor" | "ceil" | "min" | "max" | "pow" | "toNumber" | "lower" | "upper" | "length" | "substring" | "replace" | "concat" | "isNull" | "isMissing" | "isFinite" | "coalesce" | "arrayLength" | "at"; readonly args: readonly ExpressionNode[] }
+  | { readonly type: "call"; readonly name: "sin" | "cos" | "tan" | "atan2"; readonly args: readonly ExpressionNode[]; readonly options: { readonly angleUnit: "radians" | "degrees" } }
+  | { readonly type: "call"; readonly name: "parseTime"; readonly args: readonly ExpressionNode[]; readonly options: { readonly format: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso-offset" } }
+  | { readonly type: "call"; readonly name: "datePart"; readonly args: readonly ExpressionNode[]; readonly options: { readonly part: "year" | "quarter" | "month" | "day" | "weekday" | "hour" | "minute" | "second" | "millisecond"; readonly timeZone: string } }
+  | { readonly type: "call"; readonly name: "timeFloor"; readonly args: readonly ExpressionNode[]; readonly options: { readonly timeZone: string } & ({ readonly unit: "week"; readonly weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 } | { readonly unit: "year" | "quarter" | "month" | "day" | "hour" | "minute" | "second" }) };
+```
+
+Related types: [`ExpressionNode`](./reference/types/#type-expressionnode).
+
+### `ExpressionNode` {#type-expressionnode}
+
+ Expand ExpressionNode
+
+```typescript
+export type ExpressionNode =
+  | { readonly type: "literal"; readonly value: number | string | boolean | null }
+  | { readonly type: "field"; readonly name: string }
+  | { readonly type: "fieldPath"; readonly root: string; readonly path: readonly [string, ...string[]] }
+  | { readonly type: "parameter"; readonly id: string }
+  | { readonly type: "unary"; readonly op: "negate" | "not"; readonly operand: ExpressionNode }
+  | { readonly type: "binary"; readonly op: "add" | "subtract" | "multiply" | "divide" | "eq" | "neq" | "lt" | "lte" | "gt" | "gte" | "and" | "or"; readonly left: ExpressionNode; readonly right: ExpressionNode }
+  | { readonly type: "if"; readonly condition: ExpressionNode; readonly then: ExpressionNode; readonly else: ExpressionNode }
+  | ExpressionCall;
+```
+
+Related types: [`ExpressionCall`](./reference/types/#type-expressioncall).
 
 ### `FacadePositionChannel` {#type-facadepositionchannel}
 
@@ -38677,6 +39381,46 @@ Related types: [`PathLegendOptions`](./reference/types/#type-pathlegendoptions) 
 export type ParallelMissingPolicy = "break" | "drop-row" | "error";
 ```
 
+### `ParameterDataUpdateRequest` {#type-parameterdataupdaterequest}
+
+ Expand ParameterDataUpdateRequest
+
+```typescript
+export interface ParameterDataUpdateRequest {
+  readonly kind: "parameter"; readonly target: string; readonly value: ParameterValue;
+}
+```
+
+Related types: [`ParameterValue`](./reference/types/#type-parametervalue).
+
+### `ParameterDefinition` {#type-parameterdefinition}
+
+ Expand ParameterDefinition
+
+```typescript
+type ParameterDefinition<T extends ParameterType, V> =
+  | { readonly type?: T; readonly value: V; readonly nullable?: boolean }
+  | { readonly type: T; readonly value: null; readonly nullable: true };
+```
+
+Related types: [`ParameterType`](./reference/types/#type-parametertype).
+
+### `ParameterType` {#type-parametertype}
+
+ Expand ParameterType
+
+```typescript
+export type ParameterType = "number" | "string" | "boolean";
+```
+
+### `ParameterValue` {#type-parametervalue}
+
+ Expand ParameterValue
+
+```typescript
+export type ParameterValue = number | string | boolean | null;
+```
+
 ### `ParameterizedAggregateOperation` {#type-parameterizedaggregateoperation}
 
  Expand ParameterizedAggregateOperation
@@ -38797,6 +39541,45 @@ export type PieRadiusChannel = string | {
 ```
 
 Related types: [`RadiusScaleOptions`](./reference/types/#type-radiusscaleoptions).
+
+### `PivotColumn` {#type-pivotcolumn}
+
+ Expand PivotColumn
+
+```typescript
+export interface PivotColumn {
+  readonly value: string | number | boolean | null;
+  readonly as: string;
+}
+```
+
+### `PivotDataOptions` {#type-pivotdataoptions}
+
+ Expand PivotDataOptions
+
+```typescript
+export type PivotDataOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string | readonly string[];
+  columns?: readonly PivotColumn[];
+  fill?: number | null;
+} & (
+  | { op?: PivotNumericOperation; value: string }
+  | { op: "count"; value?: never }
+);
+```
+
+Related types: [`PivotColumn`](./reference/types/#type-pivotcolumn) · [`PivotNumericOperation`](./reference/types/#type-pivotnumericoperation).
+
+### `PivotNumericOperation` {#type-pivotnumericoperation}
+
+ Expand PivotNumericOperation
+
+```typescript
+export type PivotNumericOperation = "none" | "sum" | "mean" | "min" | "max";
+```
 
 ### `PointFacadePositionChannel` {#type-pointfacadepositionchannel}
 
@@ -39199,6 +39982,20 @@ export interface PreGriddedHeatmapOptions extends HeatmapBaseOptions {
 ```
 
 Related types: [`HeatmapBaseOptions`](./reference/types/#type-heatmapbaseoptions) · [`HeatmapCategoryPositionChannel`](./reference/types/#type-heatmapcategorypositionchannel) · [`RectColorChannel`](./reference/types/#type-rectcolorchannel).
+
+### `PreparedDataUpdate` {#type-prepareddataupdate}
+
+ Expand PreparedDataUpdate
+
+```typescript
+export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly [preparedDataUpdate]: Kind;
+  readonly kind: "data-update";
+  readonly request: DataUpdateDescriptors[Kind];
+}
+```
+
+Related types: [`DataUpdateRequest`](./reference/types/#type-dataupdaterequest) · [`DataUpdateDescriptors`](./reference/types/#type-dataupdatedescriptors).
 
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
@@ -39782,7 +40579,8 @@ type RegressionParameterOptions =
     }
   | {
       method: "loess";
-      degree?: never;
+      /** Local polynomial degree; default 1. */
+      degree?: 1 | 2;
       span?: number;
       /** Residual reweighting passes, integer 0..32; default 0. */
       robustIterations?: number;
@@ -39988,6 +40786,14 @@ export interface RemoveMarkSelectionOptions {
 export interface RemoveParallelAxisOptions { field: string; target?: string; }
 ```
 
+### `RemoveParameterOptions` {#type-removeparameteroptions}
+
+ Expand RemoveParameterOptions
+
+```typescript
+export interface RemoveParameterOptions { readonly id: string; }
+```
+
 ### `RemovePathOrderOptions` {#type-removepathorderoptions}
 
  Expand RemovePathOrderOptions
@@ -40101,6 +40907,17 @@ export type ReviseDataOptions<Row extends object> = ({ keys?: never; rowMap?: re
 ```
 
 Related types: [`RowKey`](./reference/types/#type-rowkey) · [`StoredCell`](./reference/types/#type-storedcell) · [`SourceSchemaInput`](./reference/types/#type-sourceschemainput).
+
+### `ReviseDataUpdateRequest` {#type-revisedataupdaterequest}
+
+ Expand ReviseDataUpdateRequest
+
+```typescript
+export interface ReviseDataUpdateRequest {
+  readonly kind: "revise"; readonly target: string; readonly id: string;
+  readonly rowMap?: readonly (number | null)[];
+}
+```
 
 ### `RotationInput` {#type-rotationinput}
 
@@ -42167,12 +42984,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3a022aea4d297c63659a37446ce0a39e3e86a3b2/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b84b54b536bfb3c282dc6301d72e105aea665e35/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3a022aea4d297c63659a37446ce0a39e3e86a3b2/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b84b54b536bfb3c282dc6301d72e105aea665e35/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -42392,6 +43209,58 @@ and members use positive-weight rows, while zero-weight rows are still validated
 Frequency weights require non-negative safe integers; reliability weights require
 non-negative finite numbers.
 
+## Group categories into columns {#createpivotdata}
+
+Use `createPivotData` from the Full entry when each group needs one numeric
+column per category. For the exact contract, see
+[`createPivotData`](./reference/actions/statistics/#createpivotdata) and
+[`editPivotData`](./reference/actions/statistics/#editpivotdata).
+
+> **Executable complete.** The complete snippet imports chart and declares its input rows.
+
+```javascript
+import { chart } from "ggaction";
+
+const wide = chart()
+  .createData({ id: "sales", values: [
+    { store: "A", product: "apples", amount: 2 },
+    { store: "A", product: "apples", amount: 3 },
+    { store: "B", product: "pears", amount: 4 }
+  ] })
+  .createPivotData({
+    id: "wide", groupBy: "store", field: "product", value: "amount", op: "sum"
+  });
+// [{ store: "A", apples: 5, pears: null },
+//  { store: "B", apples: null, pears: 4 }]
+
+const counts = wide.editPivotData({ target: "wide", op: "count", fill: 0 });
+// [{ store: "A", apples: 2, pears: 0 },
+//  { store: "B", apples: 0, pears: 1 }]
+
+const plot = counts.createCanvas()
+  .createBarPlot({ x: "store", y: "apples", guides: false });
+```
+
+The default `op: "none"` accepts one row per group and category; duplicates are
+errors. Choose `sum`, `mean`, `min`, `max`, or `count` explicitly to aggregate.
+Count omits `value`; the other operations require a numeric or null value field.
+Only absent cells use `fill` (default null). An observed null remains null with
+`none`; all-null numeric cells yield zero for sum and null for mean/min/max.
+
+Nonempty string categories infer column names once in first appearance order.
+For numeric, boolean, null, renamed, unobserved, or empty-input categories,
+provide `columns: [{ value, as }]`. Typed keys stay distinct and aliases must be
+unique and different from grouping fields. Empty input also needs a declared
+source schema for its referenced fields. It produces no rows and retains the
+declared output columns. At most 64 columns and 10,000 output groups are allowed.
+
+Source revisions preserve the stored columns and reject new categories until
+you explicitly edit the columns. Edits retain omitted options and replace a
+provided columns array. Renaming an alias for the same typed category updates
+direct visual consumers. Use `dependents: "recompute"` to update downstream
+datasets. Facets recompute their partition; repeat does not accept pivot data.
+Basic does not expose pivot creation or editing.
+
 ## `createFoldData({ id, source?, fields, as? })` {#createfolddata-id-source-fields-as}
 
 Turn selected fields in a wide dataset into reusable key/value rows:
@@ -42543,7 +43412,9 @@ the same complete normalized lookup definition. See [data revisions](./api/data/
 
 ## `createComputedData({ id, source?, as, expression })` {#createcomputeddata-id-source-as-expression}
 
-Add a typed primitive or null field to every source row with a serializable formula:
+Add a scalar field to every source row with a serializable formula. Full and Basic
+support both existing v1 expressions and [explicit v2 expressions](./api/data/expressions-and-normalization/#version-2-expressions).
+The following legacy syntax and rules describe v1:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `source: "sales"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -42622,6 +43493,116 @@ types. Undefined scalar cells normalize to null; ordinary field references still
 Non-null results must have one primitive type across all rows. Expressions are
 bounded to depth 16 and 128 nodes, with at most 10,000,000 row-nodes.
 
+## Version 2 expressions
+
+Choose `expression: { version: 2, registry: "standard@1", root }` explicitly.
+The existing v1 syntax retains its results, limits, and errors. Version 2 uses
+eight node kinds:
+
+| Node | Shape |
+| --- | --- |
+| Literal | `{ type: "literal", value }` |
+| Literal field name | `{ type: "field", name }` |
+| Nested field | `{ type: "fieldPath", root, path }` |
+| Named scalar input | `{ type: "parameter", id }` |
+| Unary operation | `{ type: "unary", op, operand }` |
+| Binary operation | `{ type: "binary", op, left, right }` |
+| Conditional | `{ type: "if", condition, then, else }` |
+| Registry function | `{ type: "call", name, args, options? }` |
+
+Unary operations are `negate` and `not`. Binary operations are `add`, `subtract`,
+`multiply`, `divide`, `eq`, `neq`, `lt`, `lte`, `gt`, `gte`, `and`, and `or`.
+The closed function registry covers numeric, string, array, and calendar
+operations. Use [getExpressionFunctions](./inspection/#expression-functions)
+to inspect names, argument limits, input/output types, and option families.
+Trigonometric calls require `options.angleUnit` (`radians` or `degrees`).
+`parseTime` requires an explicit `format` (`%Y-%m-%d`, `%d/%m/%Y`, `%m/%d/%Y`,
+or `iso-offset`). `datePart` requires `part` and `timeZone`; `timeFloor` requires
+`unit` and `timeZone`, plus `weekStartsOn` from 0 (Sunday) to 6 for a week.
+
+Every branch is validated before evaluation, including inactive references and
+known field types. `if`, `and`, `or`, and `coalesce` evaluate only their selected
+values. Conditions require booleans. A field name containing dots remains one
+literal column name; `fieldPath` traverses up to eight own record keys and
+produces missing when an optional path is absent.
+
+Missing (`undefined`) and `null` remain distinct. Nullish arithmetic and numeric
+domain failures produce missing; nullish comparisons return false. Invalid operand
+types still reject the complete action. Computed outputs must have one scalar
+type among non-null, non-missing values. Materialization reports include evaluated
+and missing row counts plus numeric/domain/bounds diagnostics; read them through
+[program inspection](./inspection/). No invalid source row is silently removed.
+
+Version 2 limits depth to 64, nodes to 4,096, arguments per call to 64, and
+row-node work to 10,000,000. Strings have at most 1,048,576 UTF-16 units,
+arrays at most 100,000 elements, and cumulative value work at most 10,000,000.
+Callback functions, source strings, regular expressions, custom registries,
+getters, and executable objects are unsupported.
+
+## Parameters
+
+`createParameter({ id, value, type?, nullable? })` creates a named scalar input.
+The ID is required. Type is inferred from a non-null number, string, or boolean;
+numbers must be finite. The default `nullable` is false. To start at null, supply
+both the intended `type` and `nullable: true`. Zero, negative zero, false, and
+an empty string remain valid values. Undefined, objects, arrays, and Date values
+are invalid; convert dates to epoch milliseconds explicitly when needed.
+
+This complete ES module creates a computed column, then updates its parameter:
+
+> **Executable complete.** Run this standalone ES module; all data and imports are included. Both immutable programs own a Canvas and materialized point chart.
+
+```javascript
+import { chart } from "ggaction";
+
+const original = chart().createCanvas()
+  .createData({ id: "sales", values: [{ amount: 10 }, { amount: 20 }] })
+  .createParameter({ id: "factor", value: 2 })
+  .createComputedData({
+    id: "adjusted", as: "adjustedAmount",
+    expression: {
+      version: 2, registry: "standard@1",
+      root: {
+        type: "binary", op: "multiply",
+        left: { type: "field", name: "amount" },
+        right: { type: "parameter", id: "factor" }
+      }
+    }
+  })
+  .createScatterPlot({ id: "points", data: "adjusted", x: "amount", y: "adjustedAmount" });
+const updated = original.editParameter({ target: "factor", value: 3 });
+console.log(original.semanticSpec.datasets.at(-1).values.map(row => row.adjustedAmount)); // [20, 40]
+console.log(updated.semanticSpec.datasets.at(-1).values.map(row => row.adjustedAmount)); // [30, 60]
+```
+
+`editParameter({ target, value })` preserves the parameter's type and nullability.
+An edit has a total work limit of 10,000,000 input row operations across its
+dependent transforms; computed transforms count one operation per AST node per
+input row. The count uses the new rows after filtering. Exceeding the limit rejects
+the edit and preserves the earlier program.
+It revises all dependent datasets and chart consumers atomically, including shared
+lookup dependencies, scales, guides, and highlights. Unrelated branches stay shared.
+An unchanged value preserves revisions; negative zero and zero are distinct edits.
+A failed computation or consumer validation leaves the original program unchanged.
+
+If a parameter is used by a live data source URL, a changed value requires
+[`prepareDataUpdate` and `applyDataUpdate`](./api/data/source-and-derived/#prepared-data-updates).
+A direct changed-value `editParameter` reports `prepared-data-required`.
+An unchanged value still needs no loading or revision. The prepared path updates
+all affected source tables and computed consumers together.
+
+`removeParameter({ id })` requires an existing, unreferenced parameter. Remove or
+rewrite every consuming expression first; retained datasets also count as references.
+Deletion has no cascade or force mode. Creation and v2 computed creation are available
+in Full and Basic; parameter editing and removal require Full.
+
+Parameters belong to one unit. Use an explicit `childPath` when editing a concat
+child. Facet and repeated-chart parent edits update their retained source and
+rebuild the dependent children. [Editable snapshots](./data-updates/#save-and-restore-snapshots)
+preserve the parameter values and exact revisions without rerunning expressions
+when restored. Earlier runtimes reject snapshots containing unsupported parameter
+or expression versions.
+
 ## `createNormalizedData({ id, source?, field, as, groupBy?, method, ... })` {#createnormalizeddata-id-source-field-as-groupby-method}
 
 Materialize common row-preserving comparisons without manually joining group
@@ -42659,7 +43640,7 @@ keeps group calculations independent.
 
 [Family overview](./api/data/source-and-derived/) · [Exact action lookup](./reference/actions/)
 
-## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
+## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
 
 Materialize missing keys inside each observed group without silently turning
 absence into zero:
@@ -42678,7 +43659,7 @@ const completed = program.createCompleteData({
 });
 ```
 
-`values` and `sequence` are mutually exclusive. If both are omitted, the action
+`values`, `sequence`, and `calendar` are mutually exclusive. If all are omitted, the action
 uses the key values observed anywhere in the source, preserving typed identity
 and first appearance. A numeric sequence uses finite `start`, `end`, and
 positive `step`. Only observed group tuples are completed; the action does not
@@ -42691,6 +43672,73 @@ the group and key values, then `fill` values or `null` for the other source fiel
 When `members` is present, original rows contain their source index and synthetic
 rows contain `[]`. Output follows group first appearance and key-domain order and
 is capped at 10,000 rows, including repeated observations, before allocation.
+
+### Complete a calendar day range
+
+Use `calendar: { unit: "day", start, end, timeZone }` for a contiguous range of
+civil dates. Both endpoints are included. `start` and `end` are strict Gregorian
+`YYYY-MM-DD` strings, and `timeZone` is required: use `"UTC"` or an IANA name.
+For example, `2024-01-01` through `2024-12-31` contains 366 days.
+
+First bucket timestamps in the same zone and explicitly aggregate repeated
+observations. This complete ES module preserves a missing day as `null` and an
+observed zero as `0`:
+
+> **Executable complete.** Standalone ES module with ggaction installed; the sample declares all input events.
+
+```javascript
+import { chart } from "ggaction";
+
+const dayRange = {
+  unit: "day", start: "2024-11-02", end: "2024-11-04",
+  timeZone: "America/New_York"
+};
+const daily = chart()
+  .createData({ id: "events", values: [
+    { at: "2024-11-03T05:30:00Z", amount: 2 },
+    { at: "2024-11-03T06:30:00Z", amount: 3 },
+    { at: "2024-11-04T12:00:00Z", amount: 0 }
+  ] })
+  .createTimeUnitData({
+    id: "buckets", field: "at", unit: "day", as: "day",
+    timeZone: dayRange.timeZone
+  })
+  .createSummaryData({
+    id: "totals", groupBy: "day",
+    aggregates: [{ op: "sum", field: "amount", as: "total" }]
+  })
+  .createCompleteData({
+    id: "days", key: "day", calendar: dayRange,
+    fill: { total: null }, members: "sourceRows"
+  });
+
+const dailyPlot = daily.createCanvas()
+  .createPointMark({ data: "days", missing: "skip" })
+  .encodeX({ field: "day", fieldType: "temporal" })
+  .encodeY({ field: "total" });
+```
+
+The two repeated clock-hour events sum to `5` on November 3. Day starts are
+stored as epoch milliseconds; neighboring starts can be 23 or 25 hours apart.
+A midnight gap uses the first valid instant of that day. A civil date removed
+by a zone transition is an error. Results do not depend on the process time zone.
+
+Source keys must exactly match the generated numeric day starts. Completion
+does not parse strings, floor midday timestamps, or convert keys from another
+zone. It keeps repeated rows unless you aggregate them first. Synthetic rows
+have no contributing input rows. An empty ungrouped source creates the requested
+days; an empty grouped source creates no groups. Declare the key and group
+fields in the source schema when creating an empty source.
+
+The domain and total output each have a 10,000-item limit. Calendar completion
+also preflights a 10,000,000-unit work budget covering source cells, zone boundary
+resolution, group expansion, output cells, and row provenance. A wide source or
+many groups can reach this limit before the row limit.
+
+`editCompleteData({ target: "days", calendar: { ...dayRange, end: "2024-11-05" } })`
+replaces the whole calendar policy. Supplying `values` or `sequence` switches
+domain mode; omitting all three preserves the current policy. Source revisions
+recompute the pipeline and reject newly observed dates outside the range.
 
 ## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
 
@@ -42753,6 +43801,13 @@ contains its old row index or `null` for a new row. The array must match the new
 row count and cannot repeat old indices. Keyed sources reject `rowMap`.
 Independent branches allocate distinct identities for new rows. Earlier
 programs remain unchanged, and invalid mappings reject the whole revision.
+
+For a live source created with `prepareDataUpdate`, use a prepared `revise`
+request to reload its URL or name while retaining that binding. A direct
+`reviseData` call with application-owned rows detaches the live binding after
+consumer validation succeeds. The original snapshot retains its receipt; the
+new rows are not recorded as a response from the old URL. An unused live output
+can be removed with `removeData`, which also removes its binding.
 
 ## Editing derived data {#editing-derived-data}
 
@@ -43349,6 +44404,11 @@ See the [runnable grid example](https://github.com/ggaction/ggaction/tree/b8f966
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
+
+`repeatCharts` accepts direct materialized lookup and computed datasets as well as
+ordinary source data. It changes the selected encoding field without rewriting
+expressions or lookup inputs. A parent `editParameter` rebuilds repeated children
+from the retained source when a repeated computed field depends on that parameter.
 
 `repeatCharts` compares several fields without copying the complete unit recipe:
 
@@ -44794,7 +45854,7 @@ or weight policy.
 | [Fold](./api/data/summaries-and-shaping/) | Ordered fields of one primitive type | Source row × selected field | Missing and mixed-type cells reject; original fields remain. |
 | [Computed](./api/data/expressions-and-normalization/) | Serializable expression over each row | Same rows with a new scalar field | A present undefined cell becomes null; an absent field name rejects. Branches are structurally checked even when short-circuited. |
 | [Normalize](./api/data/expressions-and-normalization/) | Per-group calculations; baseline methods need stable ordering or an explicit value | Same rows in source order | Finite numeric input; zero denominator rejects unless an explicit null/zero policy applies. Share rejects negative input. |
-| [Complete](./api/data/missing-data/) | At most one row per observed group/key; explicit or observed key domain | Observed group × key domain | Adds synthetic rows with null/fill cells; no Cartesian expansion of unrelated grouping values. Empty grouped input creates no groups. |
+| [Complete](./api/data/missing-data/) | Preserves repeated observations; explicit values, numeric sequence, civil-day calendar, or observed key domain | Observed group × key domain, retaining duplicates | Adds synthetic rows with null/fill cells; no Cartesian expansion of unrelated grouping values. Empty grouped input creates no groups. |
 | [Impute](./api/data/missing-data/) | Existing rows, groups, and method-specific stable order | Same rows in source order | Fills null/undefined only. Linear uses numeric/time distance. Edges and max-gap are explicit policies; NaN/infinity reject. |
 | [Stack](./api/data/summaries-and-shaping/) | Unique category/group pairs | Same rows plus endpoints and share | No missing-cell synthesis. Stack/fill/center require nonnegative values; diverging separates signs; zero has zero share. |
 | [Window](./api/data/window/) | Explicit sort/partition decisions for ordered operations | Same rows in source order | Stable ordering governs windows; frame and per-operation rules determine edges. No rows are synthesized. |
@@ -44957,11 +46017,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:da14c6fa784ad71e53dc994c51fea71f353ef3f309f08a7ced70625e3711f8e4` |
+| Contract fingerprint | `sha256:40ba83f1722b03c6c309334ccf013fc94a37d861a49d5dd55402dfbbb3c56f94` |
 | Example and dataset source | `b8f9668133b278974c9cfe7324402a18282c9f4b` |
-| Runtime source commit | `3a022aea4d297c63659a37446ce0a39e3e86a3b2` |
+| Runtime source commit | `b84b54b536bfb3c282dc6301d72e105aea665e35` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 298 |
+| Declared actions here | 304 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

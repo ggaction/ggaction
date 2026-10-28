@@ -411,6 +411,11 @@ for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
 
+`repeatCharts` accepts direct materialized lookup and computed datasets as well as
+ordinary source data. It changes the selected encoding field without rewriting
+expressions or lookup inputs. A parent `editParameter` rebuilds repeated children
+from the retained source when a repeated computed field depends on that parameter.
+
 `repeatCharts` compares several fields without copying the complete unit recipe:
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `unit`. Resource selectors used here: `target: "product"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.

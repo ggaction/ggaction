@@ -1,4 +1,5 @@
 const TRANSFORM_TOPOLOGY = Object.freeze({
+  pivot: Object.freeze({ facetTopology: "statistical" }),
   bin: Object.freeze({ facetTopology: "statistical" }),
   bin2d: Object.freeze({ facetTopology: "statistical" }),
   computed: Object.freeze({ facetTopology: "rowPreserving" }),

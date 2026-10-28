@@ -1,0 +1,70 @@
+{
+  "label": "suite-all",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/action-input-matrix.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/compact-action-cards.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/compact-mcp.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/contracts/inspection-descriptors.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/documentation.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/unit/accessibility/data.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/unit/actions/data/row-lineage.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/unit/actions/data/source-revision.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/unit/actions/text-metrics.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/unit/persistence/program.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 25372,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T13:12:36.430Z",
+  "finishedAt": "2026-10-28T13:13:01.803Z",
+  "source": {
+    "available": true,
+    "commit": "00c28e81cb5f7314d2714fd1803bbd6747fff91e",
+    "clean": false,
+    "statusSha256": "39526a0cfe898ab3aef56a0d76263f0861b686e9c4b978168b068fef429e32a5"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "00c28e81cb5f7314d2714fd1803bbd6747fff91e",
+    "clean": false,
+    "statusSha256": "39526a0cfe898ab3aef56a0d76263f0861b686e9c4b978168b068fef429e32a5"
+  },
+  "logSha256": "6509f8c04a098c3b19a5238031df7b71f1afd706f34ab9c1ca4c461d8ce60eb6",
+  "discovery": {
+    "suite": "all",
+    "selectors": [
+      "test/contracts/compact-action-cards.test.js",
+      "test/contracts/action-input-matrix.test.js",
+      "test/contracts/compact-mcp.test.js",
+      "test/contracts/inspection-descriptors.test.js",
+      "test/unit/accessibility/data.test.js",
+      "test/unit/actions/data/row-lineage.test.js",
+      "test/unit/actions/data/source-revision.test.js",
+      "test/unit/actions/text-metrics.test.js",
+      "test/unit/persistence/program.test.js",
+      "test/docs/documentation.test.js"
+    ],
+    "files": [
+      "test/contracts/action-input-matrix.test.js",
+      "test/contracts/compact-action-cards.test.js",
+      "test/contracts/compact-mcp.test.js",
+      "test/contracts/inspection-descriptors.test.js",
+      "test/docs/documentation.test.js",
+      "test/unit/accessibility/data.test.js",
+      "test/unit/actions/data/row-lineage.test.js",
+      "test/unit/actions/data/source-revision.test.js",
+      "test/unit/actions/text-metrics.test.js",
+      "test/unit/persistence/program.test.js"
+    ]
+  },
+  "bytes": 21907,
+  "retainedBytes": 21907,
+  "truncated": false
+}

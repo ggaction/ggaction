@@ -1,0 +1,9 @@
+export interface DataUpdateHost {
+  /** Supply the application's current request token again when applying. */
+  readonly requestToken: string;
+  /** Absolute URL for resolving a newly created relative URL source. */
+  readonly baseURL?: string;
+  readonly signal?: AbortSignal;
+  readonly load?: (request: Readonly<{ url: string; signal?: AbortSignal }>) => DataSourceResponse | PromiseLike<DataSourceResponse>;
+  readonly resolveNamed?: (request: Readonly<{ name: string; signal?: AbortSignal }>) => DataSourceResponse | PromiseLike<DataSourceResponse>;
+}

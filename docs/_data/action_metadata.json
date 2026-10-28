@@ -63,6 +63,14 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "applyDataUpdate": {
+    "operation": "apply",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "reviseData": {
     "operation": "edit",
     "authoringRoles": [
@@ -150,6 +158,38 @@
     ],
     "layer": "user-facing",
     "domain": "statistics"
+  },
+  "createPivotData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H1"
+    ],
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
+  "createParameter": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "editParameter": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "removeParameter": {
+    "operation": "remove",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
   },
   "createComputedData": {
     "operation": "create",
@@ -299,6 +339,15 @@
     "domain": "statistics"
   },
   "editFoldData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H1",
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
+  "editPivotData": {
     "operation": "edit",
     "authoringRoles": [
       "H1",

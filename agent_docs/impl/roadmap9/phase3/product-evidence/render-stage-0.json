@@ -1,0 +1,33 @@
+{
+  "label": "render-stage-0",
+  "command": "/Users/hyeonjeon/.hermes/node/bin/node",
+  "args": [
+    "scripts/run-tests.js",
+    "render"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 143592,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T11:38:02.154Z",
+  "finishedAt": "2026-10-28T11:40:25.748Z",
+  "source": {
+    "available": true,
+    "commit": "8685719fb2937ef6653bd14cfabcc3edc7a4c701",
+    "clean": false,
+    "statusSha256": "be8e6c8add6705ede3a5d5fa1c4558e96adf3713092c62446d3ef5364ab0410e"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "8685719fb2937ef6653bd14cfabcc3edc7a4c701",
+    "clean": false,
+    "statusSha256": "6c1559b95810c58aef05f09c28b856a551acbf2ea4f899bce1a56babcbf0f2a6"
+  },
+  "logSha256": "fefa9fbbf0231eb73561d0be1a9ae786c09de0c2340770b7490657c79a80d502",
+  "bytes": 45979,
+  "retainedBytes": 45979,
+  "truncated": false
+}

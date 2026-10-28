@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 857_000; // Bounded public API index; clip excerpts while preserving action names and routes.
+export const SEARCH_INDEX_MAX_BYTES = 865_000; // Prepared-source and statistical contracts: 862,901 bytes; preserve bounded excerpts.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");
@@ -171,10 +171,10 @@ function sourceSections(source) {
 }
 
 function summary(text) {
-  if (text.length <= 210) return text;
-  const shortened = text.slice(0, 199);
+  if (text.length <= 200) return text;
+  const shortened = text.slice(0, 189);
   const boundary = shortened.lastIndexOf(" ");
-  return `${shortened.slice(0, boundary > 150 ? boundary : 199)}…`;
+  return `${shortened.slice(0, boundary > 140 ? boundary : 189)}…`;
 }
 
 export async function buildDocSearchIndex() {

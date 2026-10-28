@@ -1,0 +1,33 @@
+{
+  "label": "data-docs-browser",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "scripts/test-built-docs.js",
+    "_site"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 267210,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T13:20:34.139Z",
+  "finishedAt": "2026-10-28T13:25:01.349Z",
+  "source": {
+    "available": true,
+    "commit": "00c28e81cb5f7314d2714fd1803bbd6747fff91e",
+    "clean": false,
+    "statusSha256": "243bd22cd807eebfc0df1bb8652df621f7ef27e259b6594589e65a7331ad38a7"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "00c28e81cb5f7314d2714fd1803bbd6747fff91e",
+    "clean": false,
+    "statusSha256": "e820e704c3523a5c66f8ca8b09772d27896c68024f065260ad20b67f2f91935f"
+  },
+  "logSha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d",
+  "bytes": 79,
+  "retainedBytes": 79,
+  "truncated": false
+}

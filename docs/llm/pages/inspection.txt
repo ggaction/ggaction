@@ -51,6 +51,22 @@ physical revision. The result reports the resolved ID and normalized schema.
 it is different from a known schema whose `fields` array is empty. Use
 `childPath` to address a dataset inside a composition.
 
+## Expression functions
+
+`getExpressionFunctions({ registry? })` reads the immutable closed expression
+registry without a program or evaluator. The default and only supported registry
+is `standard@1`. Each descriptor provides `name`, minimum/maximum argument counts
+(`min`/`max`), input and output types, and any option family. Unknown registry names,
+unknown options, and an explicitly undefined registry reject.
+
+Import `getExpressionFunctions` from `ggaction/inspection`, then call
+`getExpressionFunctions().find(item => item.name === "sqrt")`. The descriptor
+has `min: 1`, `max: 1`, `inputs: ["number"]`, and `output: "number"`.
+
+[Version 2 expressions](../../api/data/expressions-and-normalization/#version-2-expressions)
+use these names. Computed calculation reports include their registry, evaluated and
+missing row counts, numeric failure counts, and exact parameter input revisions.
+
 ## Preflight an action
 
 ```javascript

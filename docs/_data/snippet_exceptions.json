@@ -672,11 +672,11 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`removeMarkFilter({ target? } = {})`\" on docs/api/data/filtering.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/data/missing-data.md#-createcompletedata-id-source-key-groupby-values-sequence-fill-members-createcompletedata-id-source-key-groupby-values-sequence-fill-members-:1",
+    "id": "docs/api/data/missing-data.md#-createcompletedata-id-source-key-groupby-values-sequence-calendar-fill-members-createcompletedata-id-source-key-groupby-values-sequence-fill-members-:1",
     "sha256": "53adcaf14434454120a956e9285d1ca57228a4d0116535a9427ba3c48fe50d76",
     "mode": "contextual-fragment",
     "owner": "docs/api/data/missing-data.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}\" on docs/api/data/missing-data.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
+    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"`createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}\" on docs/api/data/missing-data.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
     "id": "docs/api/data/missing-data.md#-createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap-createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap-:1",
