@@ -1,6 +1,6 @@
 {
-  "state": "runtime-verified-awaiting-provenance",
-  "sourceRevision": null,
+  "state": "integration-verified",
+  "sourceRevision": "ed274ed15c8b3428945ed2ee1c3a816b66a0aa0b",
   "parents": {
     "integration": "b90b3042aebaeb5e1fdccd338f22a98003b056cc",
     "paints": "bb5ef35066ce3b061cb7f933af5d5577f3098cfa"
@@ -55,6 +55,20 @@
       "passed": 199,
       "failed": 0,
       "qualificationGroups": 7
+    },
+    "documentationFinal": {
+      "passed": 166,
+      "failed": 0,
+      "sourceRef": "ed274ed15c8b3428945ed2ee1c3a816b66a0aa0b"
+    },
+    "criticalCoveragePolicy": {
+      "passed": 7,
+      "failed": 0
+    },
+    "packageFinal": {
+      "sha256": "b17a864887335a468dc0da7945662c2d0636a2bfaaa99469691cd0edba1b392e",
+      "packingNode": "v20.20.2",
+      "installedArtifactBytesUnchanged": true
     }
   },
   "package": {
@@ -178,6 +192,14 @@
     },
     "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/node-cases.json": {
       "sha256": "5b6ccd59a80f9b765258adc0bdbeee38517e9a9780a838192ca2ea3e858a325c"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/docs-final.log.gz": {
+      "rawSha256": "0fbef16389e845dc8b556f2f4c68cd493f1f24a35e2b14c3ad40a2707a386585",
+      "gzipSha256": "3748ce31786d807ba5e136a3d886a9ec5ad0d2509c474a0323b08f2d4180de68"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/image-integration-evidence/provenance-final.log.gz": {
+      "rawSha256": "33b6a1c8d6a2b6d3e7dd98ab9422011aba8a95cd23403482399b38ad6f564b28",
+      "gzipSha256": "bac7d54248b8f894e7c6142318896027cda5d175d93128f002d3853d48824cec"
     }
   },
   "remaining": [
