@@ -15,6 +15,9 @@
 기준은 `9edbc5b887e0043f5582f1f1b7ced1528a350d21`, branch는 `codex/roadmap9-statistics`다.
 Main과 G-DATA worktree 파일을 복사하거나 수정하지 않고 이 branch의 기존 lifecycle을 사용했다.
 담당자가 Basic 생성으로 잘못 확장한 작업 문구를 철회했으며 승인된 STEP4의 **Full-only** 범위를 유지했다.
+구현 commit은 `028157707ba1a55080fd00607f2569de4568aeff`다. 이 commit 뒤 provenance와 LLM
+산출물을 그 source revision으로 고정하고159개 docs 검사 및150페이지 build/built 검사를 다시 통과했다.
+Browser evidence는 UI 변경이 없는 동일 source/content에서 완료한 sweep을 사용한다.
 
 ## 책임과 소비자
 
