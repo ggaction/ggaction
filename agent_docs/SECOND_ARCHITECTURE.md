@@ -699,8 +699,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 537,000 bytes |
-| `ggaction/basic` | 315,000 bytes |
+| `ggaction` | 549,000 bytes |
+| `ggaction/basic` | 325,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -3066,7 +3066,7 @@ parameter revision planner를 import하지 않는다. 이전 Node22 compressor �
 
 ### 조건부 인코딩과 명시적인 소비자 갱신
 
-조건부 appearance는 `layer.conditionals[channel]` 한 곳에 branch intent와 exact
+조건부 position·text·appearance는 `layer.conditionals[channel]` 한 곳에 branch intent와 exact
 parameter/selection refs를 보존한다. 일반 encoding/config에 otherwise를 복제하지 않는다.
 기존 encoder의 deferred normalization을 재사용하고, topology와 final item grain을 검증한
 뒤 domain action이 scale/mark/guide materialization을 명시 호출한다. Selection property로
@@ -3076,3 +3076,13 @@ Point glyph의 geometry 이전 mapping과 나머지 appearance의 기존 mark ou
 같은 first-match grammar를 사용한다. Selection은 chosen raw channel value를 검사하고
 실제 그래픽 identity로 drawing-order 변경에 대응한다. Renderer 경계는 변하지 않는다.
 정확한 지원 채널, 단일 binding 범례와 empty-domain 규칙은 current/ENCODINGS가 소유한다.
+
+
+위치의 pure 허용 정책은 `grammar/positionPolicies`가 한 번 소유하고 action preview와
+stored branch 검증이 같은 정책을 사용한다. `materialization/positionPolicy`는 program의
+명시적인 mark 설정을 pure 정책에 전달하는 경계다. Primitive renderer는 조건식을 읽지 않는다.
+Native item/vertex 계산이 각 branch 값을 검증한 뒤 선택된 값을 기존 stack·radial·path 계산에
+공급한다. 라벨과 overlay는 그 item에 선택된 binding의 일시적인 view를 사용하며, 이 view를
+새 semantic state나 graphic state로 저장하지 않는다. Source-label·interval bounds·point layout의
+selection 의존성까지 scale 계산 전에 순환을 검사한다. 정확한 조건부 채널/원점/단위/오류와
+진단 의미는 [ENCODINGS](contract/current/ENCODINGS.md)와 [MARKS](contract/current/MARKS.md)가 소유한다.

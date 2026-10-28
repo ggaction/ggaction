@@ -1,3 +1,4 @@
+import { hasPositionBinding } from "../../../core/encodingBindings.js";
 import {
   channelMapFromRow,
   concreteProperties,
@@ -15,11 +16,11 @@ export function resolvePointSourceItems(program, layer, dataset) {
 export function resolvePointItems(program, layer, dataset, grain, resolveItems, selectionResolvers) {
   const graphic = program.graphicSpec.objects[layer.id];
   const completePosition = (
-    layer.encoding?.x?.scale !== undefined &&
-    layer.encoding?.y?.scale !== undefined
+    hasPositionBinding(layer, "x") &&
+    hasPositionBinding(layer, "y")
   ) || (
-    layer.encoding?.theta?.scale !== undefined &&
-    layer.encoding?.radius?.scale !== undefined
+    hasPositionBinding(layer, "theta") &&
+    hasPositionBinding(layer, "radius")
   );
   if (
     !Array.isArray(graphic?.items) ||

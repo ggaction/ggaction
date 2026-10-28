@@ -1,3 +1,4 @@
+import { positionGuideLayers } from "../../../materialization/positionGuides.js";
 import { compositionChannel } from "../../../selectors/plotComposition.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
@@ -181,7 +182,7 @@ function validateConfig(channel, config) {
 export function inferAxisTitleText(program, channel, scaleId) {
   const titles = new Set();
   const primaryTitles = new Set();
-  for (const layer of program.semanticSpec.layers) {
+  for (const layer of positionGuideLayers(program, [channel])) {
     if (isSourceOwnedText(layer)) continue;
     // Linked overlays consume the source's resolved positions, not a second axis meaning.
     if (layer.derivedBindings?.overlay) continue;
@@ -238,7 +239,7 @@ export function inferAxisTitleText(program, channel, scaleId) {
   if (primaryTitles.size === 1) return [...primaryTitles][0];
   if (titles.size === 0 && axisScaleBindings(program, scaleId).some(binding => binding.channel === channel)) return scaleId;
   if (titles.size > 1) {
-    const meanings = program.semanticSpec.layers.filter(l => l.encoding?.[channel]?.scale === scaleId)
+    const meanings = positionGuideLayers(program, [channel]).filter(l => l.encoding?.[channel]?.scale === scaleId)
       .map(l => compositionChannel(program, l.encoding[channel], l.data)).filter(Boolean);
     const names = new Set(meanings.map(m => JSON.stringify([m.field ?? m.fields, m.measurement.unit])));
     if (meanings.length && names.size === 1) return meanings[0].field ?? (meanings[0].measurement.unit === 'dimensions' ? 'Dimension' : 'Value');
@@ -246,7 +247,7 @@ export function inferAxisTitleText(program, channel, scaleId) {
     // axis. Name every original measure instead of choosing a consumer or
     // exposing generated summary aliases while its compound is being built.
     if (meanings.length && meanings.every(meaning=>meaning.field && meaning.measurement.unit==='value') &&
-        !program.semanticSpec.layers.some(layer=>layer.encoding?.[channel]?.scale===scaleId &&
+        !positionGuideLayers(program, [channel]).some(layer=>layer.encoding?.[channel]?.scale===scaleId &&
           layer.encoding[channel].title!==undefined &&
           layer.encoding[channel].title!==compositionChannel(program,layer.encoding[channel],layer.data)?.field))
       return [...new Set(meanings.map(meaning=>meaning.field))].join(' / ');

@@ -1,9 +1,10 @@
+import { conditionalPositionUsesRows } from "../../../grammar/conditionalPosition.js";
 import { deriveRuleValues } from "../../../grammar/rules.js";
 import { finalizeItems, ownFields, uniqueFields } from "./common.js";
 
 export function resolveRuleItems(program, layer, dataset, grain, resolveItems, selectionResolvers) {
   const derived = deriveRuleValues(dataset.values, layer);
-  const hasField = Object.values(layer.encoding ?? {}).some(encoding =>
+  const hasField = conditionalPositionUsesRows(layer) || Object.values(layer.encoding ?? {}).some(encoding =>
     Object.hasOwn(encoding, "field")
   );
   const definitions = Array.from({ length: derived.length }, (_, index) => {

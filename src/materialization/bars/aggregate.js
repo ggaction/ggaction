@@ -1,3 +1,5 @@
+import { canonicalJSON } from "../../core/contentDigest.js";
+import { mapOrdinalOffsetValues } from "../../grammar/scales/index.js";
 import { resolveBarCellOpacities } from "./resolve.js";
 import { deriveSeriesBarCells } from "../../grammar/bars/aggregate.js";
 import { resolveBarChannels, resolveBarColorLayout, resolveBarOffsetChannel } from "../../grammar/bars/policy.js";
@@ -21,8 +23,8 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
   const offsetScale = resolved.resolvedScales[layer.encoding[resolveBarOffsetChannel(layer)]?.scale];
   if (grouped && offsetScale === undefined) throw new Error("Grouped bar requires a resolved offset scale.");
   const temporal = categoryScale.type === "time";
-  const segments = deriveSeriesBarCells(dataset.values, layer, temporal ? undefined : categoryScale.domain,
-    grouped ? offsetScale.domain : layer.encoding.group === undefined && color?.fieldType !== "quantitative" ? colorScale?.domain : undefined);
+  const segments = required.conditional?.segments ?? deriveSeriesBarCells(dataset.values, layer, required.conditional !== undefined || temporal ? undefined : categoryScale.domain,
+    grouped ? offsetScale.domain : layer.encoding.group === undefined && color?.fieldType !== "quantitative" ? colorScale?.domain : undefined, required.conditional?.cells);
   const fills = color === undefined ? undefined : mapScaleConsumerValues(segments.map(segment => segment.cell.color), colorScale, "color");
   const stroke = layer.encoding?.stroke;
   const strokeValues = stroke === undefined ? undefined : segments.map(segment => {
@@ -46,9 +48,15 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
   const config = resolved.markConfigs[layer.id] ?? {};
   const existing = resolved.graphicSpec.objects[layer.id].items;
   if (widthConfig?.interval !== undefined && (grouped || !temporal)) throw new Error("Bar interval width requires ungrouped aggregate temporal categories.");
-  const defaultWidth = widthConfig?.interval === undefined ? resolveBarWidth(widthConfig, grouped ? offsetScale.bandwidth : Math.abs(categoryScale.bandwidth ?? categoryScale.step)) : undefined;
-  const indices = new Map(categoryScale.domain.map((value, index) => [value, index]));
   return segments.map(({ cell, start, end, seriesIndex }, index) => {
+    const selected = required.conditional?.bindings.get(canonicalJSON(cell.sourceIndices));
+    const categoryScale = resolved.resolvedScales[selected?.[channels.category]?.binding.scale ?? layer.encoding[channels.category].scale];
+    const measureScale = resolved.resolvedScales[selected?.[channels.measure]?.binding.scale ?? layer.encoding[channels.measure].scale];
+    const offset = selected?.[resolveBarOffsetChannel(layer)];
+    const offsetScale = resolved.resolvedScales[offset?.binding.scale ?? layer.encoding[resolveBarOffsetChannel(layer)]?.scale];
+    const temporal = categoryScale.type === "time";
+    const defaultWidth = widthConfig?.interval === undefined ? resolveBarWidth(widthConfig, grouped ? offsetScale.bandwidth : Math.abs(categoryScale.bandwidth ?? categoryScale.step)) : undefined;
+    const indices = new Map(categoryScale.domain.map((value, index) => [value, index]));
     const categoryValue = cell[channels.category];
     const interval = widthConfig?.interval === undefined ? undefined : resolveBarInterval(widthConfig, categoryValue, categoryScale);
     const width = interval?.width ?? defaultWidth;
@@ -58,8 +66,8 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
       : categoryCenter - width / 2);
     if (grouped) {
       const direction = Math.sign(categoryScale.step ?? categoryScale.range[1] - categoryScale.range[0]) || 1;
-      const offsetCenter = offsetScale.start + seriesIndex * offsetScale.step + (Math.sign(offsetScale.step) || 1) * offsetScale.bandwidth / 2;
-      if (vertical && direction > 0 && offsetScale.step > 0) {
+      const offsetCenter = offset === undefined ? offsetScale.start + seriesIndex * offsetScale.step + (Math.sign(offsetScale.step) || 1) * offsetScale.bandwidth / 2 : mapOrdinalOffsetValues([offset.value], offsetScale)[0];
+      if (offset === undefined && vertical && direction > 0 && offsetScale.step > 0) {
         const categoryStart = temporal ? categoryCenter - categoryScale.bandwidth / 2
           : (categoryScale.start ?? categoryScale.range[0]) + indices.get(categoryValue) * categoryScale.step;
         position = categoryStart + offsetScale.start + seriesIndex * offsetScale.step + (offsetScale.bandwidth - width) / 2;

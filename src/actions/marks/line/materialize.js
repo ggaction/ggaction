@@ -93,7 +93,8 @@ export function resolvePositionedLineMaterialization({
   existingChildren,
   polar,
   polarFrame,
-  defaults
+  defaults,
+  conditional
 }) {
   const xScaleId = layer.encoding?.x?.scale;
   const yScaleId = layer.encoding?.y?.scale;
@@ -102,8 +103,11 @@ export function resolvePositionedLineMaterialization({
   const lineOptions = polar
     ? { thetaDomain: resolvedScales[thetaScaleId].domain }
     : { xBinBoundaries, xDomain: resolvedScales[xScaleId].domain, yDomain: resolvedScales[yScaleId].domain };
-  const derived = deriveLineSeries(rows, layer, { ...lineOptions, scales: resolvedScales });
-  const commands = polar
+  const derived = conditional?.derived ?? deriveLineSeries(rows, layer, { ...lineOptions, scales: resolvedScales });
+  const commands = conditional !== undefined ? conditional.positions.map(position => polar
+    ? buildMappedPolarLinePathCommands({ theta: position.theta, radius: position.radius, frame: polarFrame ?? resolvePolarFrame(bounds), closed: config.closed ?? false })
+    : position.x.length === 1 ? [{ op: "M", x: position.x[0], y: position.y[0] }]
+    : buildCurvePathCommands(position.x.map((x, index) => ({ x, y: position.y[index] })), config.curve ?? "linear", config.tension)) : polar
     ? derived.series.map(series => buildPolarLinePathCommands({
         series: series.values,
         thetaFieldType: derived.thetaFieldType,

@@ -1,3 +1,8 @@
+import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
+import { conditionalLinePositions } from "../../../materialization/conditionalLineValues.js";
+import { hasConditionalLinePosition, LINE_POSITION_CHANNELS } from "../../../materialization/conditionalLineStructure.js";
+import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
+import { getLayerScaleIds } from "../../../materialization/marks/index.js";
 import { assertIndependentOverlayGeometry } from "../../../grammar/overlay.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
@@ -219,7 +224,9 @@ const rematerializeLineMark = /* @__PURE__ */ action(
       resetValue: 0
     });
     if (highlighted !== undefined) return highlighted;
-    const { dataset, layer } = requireLine(this, id);
+    const { dataset, layer: storedLayer } = requireLine(this, id);
+    const conditional = hasConditionalLinePosition(storedLayer);
+    const layer = conditional ? conditionalPositionTemplate(storedLayer, LINE_POSITION_CHANNELS) : storedLayer;
     validateLineMissingScope(layer);
     const existingChildren = this.graphicSpec.objects[id].items;
     const parallel = layer.encoding?.parallel;
@@ -244,7 +251,7 @@ const rematerializeLineMark = /* @__PURE__ */ action(
     if (args.scales !== false) {
       const appearance = ["color", "stroke", "strokeDash", "strokeWidth", "opacity"]
         .map(channel => layer.encoding?.[channel]?.scale).filter(scale => scale !== undefined);
-      for (const scale of [...positions, ...appearance]) {
+      for (const scale of (conditional ? [...new Set(getLayerScaleIds(storedLayer))] : [...positions, ...appearance])) {
         resolved = resolved.rematerializeScale({ id: scale });
       }
     }
@@ -261,6 +268,7 @@ const rematerializeLineMark = /* @__PURE__ */ action(
 
     const materialization = resolvePositionedLineMaterialization({
       ...shared,
+      ...(conditional ? { conditional: conditionalLinePositions(resolved, storedLayer, dataset, { resolveMarkItems, resolveMarkSourceItems }) } : {}),
       xBinBoundaries: layer.encoding?.x?.bin === undefined
         ? undefined
         : resolveLineBins(

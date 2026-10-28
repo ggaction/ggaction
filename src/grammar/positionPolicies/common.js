@@ -1,5 +1,5 @@
-import { STACK_MODES } from "../../../../core/vocabulary.js";
-import { normalizeHistogramBin } from "../../../../grammar/histogram.js";
+import { STACK_MODES } from "../../core/vocabulary.js";
+import { normalizeHistogramBin } from "../histogram.js";
 
 export function resolveBin(bin) {
   return normalizeHistogramBin(bin);

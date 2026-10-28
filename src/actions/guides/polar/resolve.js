@@ -1,3 +1,4 @@
+import { positionGuideLayers } from "../../../materialization/positionGuides.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   validateGeneratedItemLimit,
@@ -97,7 +98,7 @@ export function resolvePolarGuideResources(program, kind, args, operation) {
   const requestedScale = args.scale === undefined
     ? undefined
     : validateUserId(args.scale, `${operation} scale id`);
-  let layers = program.semanticSpec.layers.filter(layer =>
+  let layers = positionGuideLayers(program, [channel]).filter(layer =>
     layer.encoding?.[channel]?.scale !== undefined
   );
   if (requestedCoordinate !== undefined) {

@@ -1,20 +1,20 @@
 import {
   validateAggregate,
   validateAggregateFieldType
-} from "../../../../grammar/aggregate.js";
+} from "../aggregate.js";
 import {
   BAR_ORIENTATIONS,
   BAR_GRAINS,
   resolveBarGrain,
   resolveBarOffsetChannel,
   resolveBarOrientation
-} from "../../../../grammar/bars/policy.js";
+} from "../bars/policy.js";
 import { resolveBin, validateStack } from "./common.js";
 import { normalizeStatisticalWeight } from
-  "../../../../grammar/weightedStatistics.js";
+  "../weightedStatistics.js";
 
 function resolveBarChannelPolicy({
-  program,
+  markConfig = {},
   layer,
   channel,
   args,
@@ -26,7 +26,7 @@ function resolveBarChannelPolicy({
   let stack;
   const xEncoding = layer.encoding?.x;
   const opposite = layer.encoding?.[channel === "x" ? "y" : "x"];
-  const pendingRange = program.markConfigs[layer.id]?.boxPlot !== undefined ||
+  const pendingRange = markConfig.boxPlot !== undefined ||
     layer.encoding?.[`${channel}2`] !== undefined;
 
   if (layer.mark?.orientation !== undefined) {
@@ -114,11 +114,11 @@ function resolveBarChannelPolicy({
 }
 
 export function resolveBarPositionPolicy(context) {
-  const { program, layer, channel, field, fieldType } = context;
+  const { markConfig = {}, layer, channel, field, fieldType } = context;
   const policy = resolveBarChannelPolicy(context);
   const oppositeChannel = channel === "x" ? "y" : "x";
   const opposite = layer.encoding?.[oppositeChannel];
-  const pendingRange = program.markConfigs[layer.id]?.boxPlot !== undefined ||
+  const pendingRange = markConfig.boxPlot !== undefined ||
     layer.encoding?.[`${channel}2`] !== undefined;
   const candidate = {
     ...layer,
@@ -168,7 +168,7 @@ export function resolveBarPositionPolicy(context) {
     );
   }
   if (
-    program.markConfigs[layer.id]?.barWidth !== undefined &&
+    markConfig.barWidth !== undefined &&
     resolveBarGrain(candidate) === BAR_GRAINS.histogram
   ) {
     throw new Error("A saved Bar width requires an aggregate or ranged category slot and cannot be applied to histogram bins.");

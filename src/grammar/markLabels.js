@@ -91,17 +91,20 @@ function categoryKey(source, item) {
     : [categoryValue(source, item)]);
 }
 
-export function resolveMarkLabelValues(source, items, options) {
+export function resolveMarkLabelValues(source, items, options, { sources } = {}) {
+  if (sources !== undefined && sources.length !== items.length) throw new Error("Source label bindings must match final items.");
+  const itemSource = index => sources?.[index] ?? source;
+  if (sources !== undefined) sources.forEach(source => normalizeMarkLabelContent(source, options));
   const config = normalizeMarkLabelContent(source, options);
-  if (config.content === "category") return items.map(item => categoryValue(source, item));
-  const values = items.map(item => itemValue(source, item));
+  if (config.content === "category") return items.map((item, index) => categoryValue(itemSource(index), item));
+  const values = items.map((item, index) => itemValue(itemSource(index), item));
   if (config.content === "value" || items.length === 0) return values;
   if (values.some(value => !Number.isFinite(value) || value < 0)) {
     throw new Error("Share labels require finite non-negative source values.");
   }
   const groups = new Map();
   items.forEach((item, index) => {
-    const key = config.normalizeBy === "source" ? "source" : categoryKey(source, item);
+    const key = config.normalizeBy === "source" ? "source" : categoryKey(itemSource(index), item);
     const group = groups.get(key) ?? [];
     group.push(index);
     groups.set(key, group);

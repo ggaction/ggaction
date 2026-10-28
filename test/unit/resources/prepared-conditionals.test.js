@@ -104,3 +104,36 @@ test("prepared facet and repeat refresh retain current source bindings with cond
     assert.doesNotThrow(() => deserializeProgram(serializeProgram(revised)));
   }
 });
+
+test("prepared parameter filter and computed revisions update positional conditions and retained guides", async () => {
+  const original = (await sourceProgram())
+    .filterData({ id: "selected", source: "raw", where: expression(binary("gte", field("x"), { type: "if", condition: north, then: literal(1), else: literal(3) })) })
+    .createComputedData({ id: "scaled", source: "raw", as: "scaledY", expression: expression(binary("multiply", field("y"), { type: "if", condition: north, then: literal(2), else: literal(3) })) })
+    .createLookupData({ id: "joined", source: "selected", field: "id", lookup: { data: "scaled", key: "id", fields: ["scaledY"] } })
+    .createScatterPlot({ id: "points", data: "joined", x: "x", y: { field: "scaledY", scale: { id: "measure", domain: [0, 40] } }, guides: false })
+    .encodeY({ target: "points", conditions: [{ when: expression(north), value: { field: "scaledY", scale: { id: "measure", domain: [0, 40] } } }], otherwise: { field: "x", scale: { id: "measure", domain: [0, 40] } } })
+    .createAxes({ x: { title: false }, y: false });
+  const saved = serializeProgram(original), revised = await parameterUpdate(deserializeProgram(saved));
+  assert.deepEqual(getMarkItems(revised, { target: "points" }).map(item => item.channels.y), [4]);
+  assert.equal(revised.graphicSpec.objects.points.items[0].properties.y, 204);
+  assert.notDeepEqual(revised.graphicSpec.objects.xAxisLabels, original.graphicSpec.objects.xAxisLabels);
+  assert.equal(revised.semanticSpec.layers[0].conditionals.y.parameterInputs[0].revision, 1);
+  const trace = operations(revised.trace.children.at(-1));
+  for (const op of ["createData", "materializeFilteredData", "materializeComputedData", "materializeLookupData"]) assert.equal(trace.filter(value => value === op).length, 1, op);
+  assert.equal(serializeProgram(original), saved);
+});
+
+test("prepared facet and repeat retain positional conditional references through source refresh", async () => {
+  const binding = { field: "x", scale: { id: "x", domain: [0, 10] } };
+  const unit = (await sourceProgram()).createScatterPlot({ id: "points", data: "raw", x: binding, y: "y", guides: false })
+    .encodeX({ target: "points", conditions: [{ when: expression(north), value: binding }], otherwise: { datum: 0, scale: { id: "x", domain: [0, 10] } } });
+  for (const original of [unit.facet({ id: "panels", field: "id" }), unit.repeatCharts({ id: "metrics", target: "points", channel: "y", fields: ["x", "y"] })]) {
+    const saved = serializeProgram(original), revised = await parameterUpdate(deserializeProgram(saved));
+    for (const child of Object.values(revised.children)) {
+      const layer = child.semanticSpec.layers.find(layer => layer.id === "points");
+      assert.equal(layer.conditionals.x.parameterInputs[0].revision, 1);
+      assert.deepEqual(getMarkItems(child, { target: "points" }).map(item => item.channels.x), Array(child.graphicSpec.objects.points.items.length).fill(0));
+    }
+    assert.equal(serializeProgram(original), saved);
+  }
+});

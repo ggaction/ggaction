@@ -971,6 +971,20 @@ function buildOrderedLine(factors) {
       fieldType: "quantitative",
       order: factors.pathOrder
     });
+  const condition = { version: 2, registry: "standard@1",
+    root: { type: "literal", value: false } };
+  program = program.encodeStrokeDash({
+    target: "orderedTrend",
+    conditions: [{ when: condition, value: { value: "solid" } }],
+    otherwise: { field: "group", fieldType: "nominal", scale: {
+      id: "trendDash", type: "ordinal", domain: "auto",
+      range: dashRange(factors.dashStyle), unknown: "dotted"
+    } }
+  }).encodeStrokeDash({
+    target: "orderedTrend",
+    conditions: [{ when: condition, value: { value: "solid" } }],
+    otherwise: { value: factors.dashStyle }
+  });
   program = factors.dashMode === "field"
     ? program.encodeStrokeDash({
         target: "orderedTrend",

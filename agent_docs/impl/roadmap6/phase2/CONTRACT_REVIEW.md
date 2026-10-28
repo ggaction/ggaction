@@ -403,7 +403,7 @@ Box의 pending range와 기존 ranged bar·offset·grouped layout 조건도 전�
 trace를 byte-equal로 만들지 않는다. 기록은 실제 순서를 보존한다. 기존 aggregate/explicit sum/count를
 다시 mean으로 덮어쓰지 않으며 missing field 오류를 incomplete-state라는 이유로 미루지 않는다.
 
-소유 코드: [Bar position policy](../../../../src/actions/encodings/position/policies/bar.js),
+소유 코드: [Bar position policy](../../../../src/grammar/positionPolicies/bar.js),
 [position apply](../../../../src/actions/encodings/position/apply.js),
 [Bar width](../../../../src/actions/encodings/barWidth.js),
 [width grammar](../../../../src/grammar/bars/geometry.js).

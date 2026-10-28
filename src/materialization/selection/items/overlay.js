@@ -4,7 +4,7 @@ import { finalizeItems, uniqueFields, channelMapFromRow } from "./common.js";
 export function resolveOverlayItems(program, layer, selectionResolvers) {
   const binding = layer.derivedBindings.overlay;
   const series = resolveOverlaySeries(program, binding, { geometry: !selectionResolvers?.sourceOnly,
-    pointAppearance: selectionResolvers?.pointAppearance });
+    pointAppearance: selectionResolvers?.pointAppearance, resolvers: selectionResolvers });
   let graphicIndex = 0;
   const definitions = layer.mark.type === "point" ? series.flatMap(group => group.points.map(point => ({ ...point, semanticIdentity: ["point", point.key] })))
     : series.map(group => {
