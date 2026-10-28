@@ -990,7 +990,7 @@
       "normalized partition"
     ],
     "Layout": [
-      "stored hierarchy layout",
+      "stored layout",
       "node positions"
     ],
     "TreePlot": [
@@ -1005,6 +1005,15 @@
       "embedded font bytes",
       "measured font identity",
       "retained font source"
+    ],
+    "Graph": [
+      "graph layout",
+      "node positions"
+    ],
+    "GraphPlot": [
+      "graph plot",
+      "network plot",
+      "nodes and edges"
     ]
   },
   "summaryOverrides": {
@@ -1927,6 +1936,22 @@
         "$code": "preparedFontReplace"
       },
       "requestToken": "current"
+    },
+    "layoutGraph": {
+      "id": "network-layout",
+      "graph": "network",
+      "method": "circular"
+    },
+    "createGraphPlot": {
+      "id": "networkPlot",
+      "layout": "network-layout",
+      "labels": {}
+    },
+    "editGraphPlot": {
+      "target": "networkPlot",
+      "nodes": {
+        "radius": 8
+      }
     }
   },
   "callPatternOverrides": {

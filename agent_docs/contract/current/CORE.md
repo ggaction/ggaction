@@ -160,7 +160,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - 목적과 필수 state: Full unit/composition에서 host가 측정한 text width를 저작용 배치에 적용한다. Canvas 이전에도 적용할 수 있다. Renderer는 기존 concrete text만 그린다.
 - Profile: `{ schemaVersion: 1, id: NonEmptyUserId, measurements: TextMeasurement[] }`. 각 measurement는 정확한 `{ text: string, fontFamily: NonEmptyString, fontSize: PositiveFinite, fontWeight: 100|200|300|400|500|600|700|800|900, fontStyle?: "normal"|"italic", width: NonNegativeFinite }`다. 빈 문자열/빈 measurement 배열/0 width는 유효하다. Root/measurement key는 closed이며 tuple 조합의 중복, 희소 배열, 잘못된 값은 거부한다.
 - 매칭: text/family/size/normalized weight/style의 exact match다. 생략 style은 normal이며 italic과 별도 측정된다. 생략 family는 shared sans-serif, weight는 normal=400, bold=700; numeric weight는 renderer의 100 단위 rounding/clamping을 공유한다. 지원되는 numeric string도 같은 weight다. 미일치 font/text 조합과 그 외 CSS relative weight는 기존 deterministic estimate를 사용한다.
-- 효과: canonical `materializationConfigs.textMetrics`에 clone/freeze한 profile만 저장한다. Private immutable-key cache는 측정 lookup 비용만 줄인다. Typography, source data와 scale mapping을 바꾸지 않는다. Text mark/label placement·collision layout, Cartesian/Polar/Parallel guides, 범례와 title의 기존 wrapped rematerialization과 전체 guide collision 검증을 수행한다.
+- 효과: canonical `materializationConfigs.textMetrics`에 clone/freeze한 profile만 저장한다. Private immutable-key cache는 측정 lookup 비용만 줄인다. Typography, source data와 scale mapping을 바꾸지 않는다. Text mark/label placement·collision layout, tree/treemap/graph의 resource-backed labels, Cartesian/Polar/Parallel guides, 범례와 title의 기존 wrapped rematerialization과 전체 guide collision 검증을 수행한다.
 - Composition: root와 모든 현재 nested child에 같은 profile을 적용하고 ancestor layout/header/shared guide를 재계산한다. Basic child는 같은 state의 Full snapshot으로 채택한다. 이전 child profile을 history frame으로 보관하지 않는다. 이후 concat child replacement/insertion과 retained facet/repeat replay는 현재 parent profile을 사용한다.
 - 실패 원자성: 모든 candidate와 descendant materialization이 성공한 새 program만 반환한다. overflow/collision 등 기존 배치 규칙의 실패는 이전 program과 caller profile을 변경하지 않는다.
 - 지속성: 일반 domain edit, Canvas 변경과 source revision이 같은 policy를 소비한다. Editable persistence는 profile을 보존·검증한다. Render-only snapshot은 이미 계산된 graphic tree만 저장한다. Backend/font callback은 저장하지 않는다.
@@ -174,6 +174,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Value coverage — `applyTextMetrics`
 
 - ✅ Covered: exact/normalized match, 0 width, unmatched fallback, Unicode text, closed keys/schema/duplicate/invalid values, owned input, trace, pre-authoring application, title rewrap, Canvas/edit persistence, retained composition, whole action corpus empty-profile equality and editable persistence.
+- ✅ Covered: tree/treemap/graph labels의 exact query 준비·font 교체·제거·offline 복원 및 Canvas/SVG/PNG/PDF/scene 소비. 저장된 layout resource와 계산 결과를 유지하며 layout solver를 다시 실행하지 않는다. Evidence: `test/unit/resources/font-resource-labels.test.js`.
 - ✅ Covered: exact font/profile preparation, no-estimate missing query, stale/token/abort, font revision, nested resource adoption, Cartesian/Polar/Parallel/facet/repeat closure, actual Korean/combining/emoji and four output paths. Evidence: `test/unit/resources/font-public-preparation.test.js`, `test/unit/resources/font-layout-lifecycle.test.js`, `test/charts/font-assets/`.
 
 ## `removeTextMetrics`

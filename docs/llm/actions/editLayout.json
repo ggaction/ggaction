@@ -3,7 +3,7 @@
   "name": "editLayout",
   "layer": "user-facing",
   "domain": "core",
-  "summary": "Change a layout order or method-specific options and refresh its plot consumers.",
+  "summary": "Patch a stored hierarchy or graph layout and refresh its existing consumers.",
   "signature": "editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;",
   "intents": [
     "edit layout",
@@ -11,13 +11,13 @@
     "change",
     "chart setup",
     "data and scales",
-    "stored hierarchy layout",
+    "stored layout",
     "node positions"
   ],
   "lifecycle": "Mutable resource",
   "resources": {
     "prerequisites": [
-      "existing stored hierarchy layout"
+      "existing stored layout"
     ],
     "owns": [],
     "idOptions": [
@@ -49,7 +49,7 @@
   "completionRequirements": {
     "state": "contextual",
     "requires": [
-      "existing stored hierarchy layout"
+      "existing stored layout"
     ],
     "allowsEmpty": false
   },
@@ -67,7 +67,7 @@
     {
       "name": "options",
       "required": false,
-      "type": "Partial<...> | { maxNodes?: number | undefined; } | Partial<...> | undefined"
+      "type": "GraphCircularOptions | GraphForceOptions | Partial<...> | Partial<...> | { ...; } | Partial<...> | undefined"
     }
   ],
   "callPatterns": [

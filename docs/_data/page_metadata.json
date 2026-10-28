@@ -1030,5 +1030,19 @@
     "editSource": "examples/tree-layouts/program.js",
     "description": "Build one typed hierarchy and reuse it in tree and treemap layouts.",
     "image": "/assets/images/tree-layouts.png"
+  },
+  "/api/graphs/": {
+    "title": "Graph Plots",
+    "source": "docs/api/graphs.md",
+    "editSource": "docs/api/graphs.md",
+    "description": "Draw and revise nodes, directed edges, parallel edges and self-loops from an explicit graph layout.",
+    "image": "/assets/images/graph-plots.png"
+  },
+  "/tutorials/graphs/": {
+    "title": "Graph Tutorial",
+    "source": "docs/tutorials/graphs.md",
+    "editSource": "examples/graph-plots/program.js",
+    "description": "Keep observed connections separate from the positions used to draw them.",
+    "image": "/assets/images/graph-plots.png"
   }
 }

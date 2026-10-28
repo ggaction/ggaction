@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:979c2a020d7c324c2a7269eb223fb2b42a172a1a387446ff681c797b788cb954",
-  "sourceCommit": "fdb0ea51f91b76638d0db297342a3a027d0e2336",
-  "sourceRef": "fdb0ea51f91b76638d0db297342a3a027d0e2336",
-  "exampleSourceRef": "fdb0ea51f91b76638d0db297342a3a027d0e2336",
+  "contractId": "sha256:445ce9a1e8cbd4b7096fb47c1b632ce00bf5a65bae7e934f620d94e5c02c9840",
+  "sourceCommit": null,
+  "sourceRef": "main",
+  "exampleSourceRef": "codex/roadmap9-theme",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 321,
+  "actionCount": 324,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -158,6 +158,14 @@
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
+    "createGraphPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGraphPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
     "editTreePlot": {
       "introducedAfter": "v0.0.13",
       "status": "development"
@@ -179,6 +187,10 @@
       "status": "development"
     },
     "editGraphData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "layoutGraph": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

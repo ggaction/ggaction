@@ -1,0 +1,5 @@
+export interface GraphForceOptions extends GraphLayoutLimits {
+  readonly seed?: number; readonly iterations?: number; readonly linkDistance?: number; readonly repulsion?: number;
+  readonly collisionRadius?: number; readonly damping?: number; readonly center?: readonly [number, number];
+  readonly componentGap?: number; readonly initialPositions?: readonly GraphPosition[]; readonly pinned?: readonly GraphPin[];
+}

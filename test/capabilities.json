@@ -309,6 +309,10 @@
       {
         "type": "file",
         "path": "unit/resources/font-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/font-resource-labels.test.js"
       }
     ],
     "grammar": [
@@ -337,6 +341,26 @@
       {
         "type": "prefix",
         "path": "unit/grammar/graph/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/graph-plots/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/graph-plots.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/materialization/graph/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-observed-graphs.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/graph-output.browser.js"
       }
     ],
     "guides": [

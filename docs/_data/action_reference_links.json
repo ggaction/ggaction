@@ -318,6 +318,9 @@
   "editTreePlot": "/reference/actions/charts-data/#edittreeplot",
   "createTreemapPlot": "/reference/actions/charts-data/#createtreemapplot",
   "editTreemapPlot": "/reference/actions/charts-data/#edittreemapplot",
+  "layoutGraph": "/reference/actions/charts-data/#layoutgraph",
+  "createGraphPlot": "/reference/actions/charts-data/#creategraphplot",
+  "editGraphPlot": "/reference/actions/charts-data/#editgraphplot",
   "createFontResource": "/reference/actions/charts-data/#createfontresource",
   "replaceFontResource": "/reference/actions/charts-data/#replacefontresource"
 }

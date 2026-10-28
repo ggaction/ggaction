@@ -52,12 +52,15 @@ interface ChartProgramActions {
   layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
   editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+  createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
+  editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createGraphData(options: CreateGraphDataOptions): ChartProgram;
   editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
+  layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
@@ -5030,6 +5033,16 @@ export interface EditGraphDataOptions {
 
 Related types: [`ObservedGraphDefinition`](../../../reference/types/#type-observedgraphdefinition).
 
+### `EditGraphPlotOptions` {#type-editgraphplotoptions}
+
+ Expand EditGraphPlotOptions
+
+```typescript
+export interface EditGraphPlotOptions extends Omit<GraphPlotOptions, "id"> { target?: string; }
+```
+
+Related types: [`GraphPlotOptions`](../../../reference/types/#type-graphplotoptions).
+
 ### `EditGraphicsOptions` {#type-editgraphicsoptions}
 
  Expand EditGraphicsOptions
@@ -5137,10 +5150,12 @@ Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focused
  Expand EditLayoutOptions
 
 ```typescript
-export interface EditLayoutOptions { target?: string; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number }; }
+export type EditLayoutOptions = { target?: string } & (
+  { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
+  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions });
 ```
 
-Related types: [`HierarchyOrder`](../../../reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](../../../reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](../../../reference/types/#type-hierarchytreemapoptions).
+Related types: [`HierarchyOrder`](../../../reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](../../../reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](../../../reference/types/#type-hierarchytreemapoptions) · [`GraphFixedOptions`](../../../reference/types/#type-graphfixedoptions) · [`GraphCircularOptions`](../../../reference/types/#type-graphcircularoptions) · [`GraphForceOptions`](../../../reference/types/#type-graphforceoptions).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 
@@ -6846,6 +6861,48 @@ export type GradientPlotPositionChannel = BoxPlotPositionChannel;
 
 Related types: [`BoxPlotPositionChannel`](../../../reference/types/#type-boxplotpositionchannel).
 
+### `GraphCircularOptions` {#type-graphcircularoptions}
+
+ Expand GraphCircularOptions
+
+```typescript
+export interface GraphCircularOptions extends GraphLayoutLimits { readonly center?: readonly [number, number]; readonly radius?: number; readonly startAngle?: number; }
+```
+
+Related types: [`GraphLayoutLimits`](../../../reference/types/#type-graphlayoutlimits).
+
+### `GraphEdgePaint` {#type-graphedgepaint}
+
+ Expand GraphEdgePaint
+
+```typescript
+export interface GraphEdgePaint { stroke?: string; strokeWidth?: number; opacity?: number; parallelGap?: number; loopRadius?: number; arrowSize?: number; arrows?: "auto" | boolean; }
+```
+
+### `GraphFixedOptions` {#type-graphfixedoptions}
+
+ Expand GraphFixedOptions
+
+```typescript
+export interface GraphFixedOptions extends GraphLayoutLimits { readonly positions: readonly GraphPosition[]; }
+```
+
+Related types: [`GraphLayoutLimits`](../../../reference/types/#type-graphlayoutlimits) · [`GraphPosition`](../../../reference/types/#type-graphposition).
+
+### `GraphForceOptions` {#type-graphforceoptions}
+
+ Expand GraphForceOptions
+
+```typescript
+export interface GraphForceOptions extends GraphLayoutLimits {
+  readonly seed?: number; readonly iterations?: number; readonly linkDistance?: number; readonly repulsion?: number;
+  readonly collisionRadius?: number; readonly damping?: number; readonly center?: readonly [number, number];
+  readonly componentGap?: number; readonly initialPositions?: readonly GraphPosition[]; readonly pinned?: readonly GraphPin[];
+}
+```
+
+Related types: [`GraphLayoutLimits`](../../../reference/types/#type-graphlayoutlimits) · [`GraphPosition`](../../../reference/types/#type-graphposition) · [`GraphPin`](../../../reference/types/#type-graphpin).
+
 ### `GraphKeyField` {#type-graphkeyfield}
 
  Expand GraphKeyField
@@ -6853,6 +6910,80 @@ Related types: [`BoxPlotPositionChannel`](../../../reference/types/#type-boxplot
 ```typescript
 export type GraphKeyField = string | readonly string[];
 ```
+
+### `GraphLabelPaint` {#type-graphlabelpaint}
+
+ Expand GraphLabelPaint
+
+```typescript
+export interface GraphLabelPaint { fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+```
+
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint).
+
+### `GraphLabelsOptions` {#type-graphlabelsoptions}
+
+ Expand GraphLabelsOptions
+
+```typescript
+export interface GraphLabelsOptions extends GraphLabelPaint {
+  field?: string; offset?: readonly [number, number]; overrides?: readonly (GraphLabelPaint & { key: RowKey; text?: string })[];
+}
+```
+
+Related types: [`GraphLabelPaint`](../../../reference/types/#type-graphlabelpaint) · [`RowKey`](../../../reference/types/#type-rowkey).
+
+### `GraphLayoutLimits` {#type-graphlayoutlimits}
+
+ Expand GraphLayoutLimits
+
+```typescript
+export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
+```
+
+### `GraphNodePaint` {#type-graphnodepaint}
+
+ Expand GraphNodePaint
+
+```typescript
+export interface GraphNodePaint { radius?: number; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
+```
+
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint).
+
+### `GraphPin` {#type-graphpin}
+
+ Expand GraphPin
+
+```typescript
+export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly fy: number; }
+```
+
+Related types: [`RowKey`](../../../reference/types/#type-rowkey).
+
+### `GraphPlotOptions` {#type-graphplotoptions}
+
+ Expand GraphPlotOptions
+
+```typescript
+export interface GraphPlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
+  edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
+}
+```
+
+Related types: [`GraphNodePaint`](../../../reference/types/#type-graphnodepaint) · [`RowKey`](../../../reference/types/#type-rowkey) · [`GraphEdgePaint`](../../../reference/types/#type-graphedgepaint) · [`GraphLabelsOptions`](../../../reference/types/#type-graphlabelsoptions).
+
+### `GraphPosition` {#type-graphposition}
+
+ Expand GraphPosition
+
+```typescript
+export interface GraphPosition { readonly key: RowKey; readonly x: number; readonly y: number; }
+```
+
+Related types: [`RowKey`](../../../reference/types/#type-rowkey).
 
 ### `GraphicClip` {#type-graphicclip}
 
@@ -7577,6 +7708,19 @@ export type LayerPlotSpecification = {
 ```
 
 Related types: [`AdjacentPlotSpecification`](../../../reference/types/#type-adjacentplotspecification).
+
+### `LayoutGraphOptions` {#type-layoutgraphoptions}
+
+ Expand LayoutGraphOptions
+
+```typescript
+export type LayoutGraphOptions = { readonly id: string; readonly graph?: string } &
+  ({ readonly method: "fixed"; readonly options: GraphFixedOptions }
+  | { readonly method: "circular"; readonly options?: GraphCircularOptions }
+  | { readonly method: "force"; readonly options?: GraphForceOptions });
+```
+
+Related types: [`GraphFixedOptions`](../../../reference/types/#type-graphfixedoptions) · [`GraphCircularOptions`](../../../reference/types/#type-graphcircularoptions) · [`GraphForceOptions`](../../../reference/types/#type-graphforceoptions).
 
 ### `LayoutHierarchyOptions` {#type-layouthierarchyoptions}
 

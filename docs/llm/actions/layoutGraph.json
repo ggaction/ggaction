@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 3,
+  "name": "layoutGraph",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Store a fixed, circular, or deterministic force layout of an existing graph.",
+  "signature": "layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;",
+  "intents": [
+    "layout graph",
+    "layout",
+    "avoid overlap",
+    "chart setup",
+    "data and scales",
+    "graph layout",
+    "node positions"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing graph resource"
+    ],
+    "owns": [
+      "layout resource"
+    ],
+    "idOptions": [
+      "id",
+      "graph"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editLayout",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing graph resource"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "graph",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "method",
+      "required": true,
+      "type": "\"circular\" | \"fixed\" | \"force\""
+    },
+    {
+      "name": "options",
+      "required": false,
+      "type": "GraphCircularOptions | GraphFixedOptions | GraphForceOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "layoutGraph({ id, method, target?, graph?, options? })"
+  ],
+  "snippet": "program.layoutGraph({ id: \"network-layout\", graph: \"network\", method: \"circular\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#layoutgraph"
+}

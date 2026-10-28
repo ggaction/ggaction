@@ -218,3 +218,5 @@ requirements after resolving each part.
 - Prepared Fonts Tutorial: ./tutorials/font-assets/
 - Hierarchy Resources and Plots: ./api/hierarchy/
 - Hierarchy Tutorial: ./tutorials/hierarchy/
+- Graph Plots: ./api/graphs/
+- Graph Tutorial: ./tutorials/graphs/

@@ -68,12 +68,12 @@ freeze하며 상위 constructor의 권한을 상속하지 않는다. Public plug
 공통 resource owner는 envelope·typed refs·graph를 먼저 검사하고 등록 owner의 저장값 및 binding
 검증만 호출한다. Plain preview는 원래 constructor를 명시하며, 미등록 class/Basic는 추가 kind를
 거부한다. Persistence도 실제 복원 constructor의 같은 경계를 사용하고 계산을 실행하지 않는다.
-Full assembly는 image, hierarchy, hierarchy layout의 닫힌 handler와 public consumer를 등록하며 Basic에는 등록하지 않는다. Graph의 독립 공개 구현은 같은 경계를 사용한다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이 초기 승인·검증과 연결 경계를 보존한다.
+Full assembly는 image, hierarchy, graph와 layout의 닫힌 handler를 등록하며 Basic에는 등록하지 않는다. `materialization/layoutState.js`는 단일 input.kind의 hierarchy/graph owner로 저장 검증을 전달한다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이 초기 승인·검증과 연결 경계를 보존한다.
 이 owner1개를 더한 지원 Node20/22/24 staging은739entries, packed최대1,098,083,
 unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
 Full/Basic/SVG browser gzip최대535,560/313,517/8,185는 기존 한도 안이며 그대로 유지한다.
 
-Typed layer binding의 닫힌 경로(`image`, `hierarchyBinding.layout`)는
+Typed layer binding의 닫힌 경로(`image`, `hierarchyBinding.layout`, `graphBinding.layout`)는
 `core/resourceReferences.js`가 수집과 immutable rebind를 함께 소유한다. 공통 exact ref shape는
 `core/resourceReference.js`에 두어 core 수집기와 grammar/materialization이 같은 kind vocabulary를
 사용한다. Primitive resource replacement는 해당 리소스 revision과 live layer reference를 같은
@@ -86,7 +86,7 @@ Persistence는 이 typed reference도 공통 stored-resource selector로 확인�
 `actions/primitives/preparedResourceContext.js`가 exact receiver와 exact primitive args에만
 precomputed 결과를 결박한다. 중첩/실패/정상 종료마다 권한을 복원하거나 제거하며, primitive는
 허용된 원인 관계와 options 불변·next revision vector를 검증한 최종 resource envelope만 적용한다.
-DATA의 parameter→source 결과와 hierarchy→layout 결과가 같은 경계를 공유하되 kind별 검증은
+DATA의 parameter→source 결과와 hierarchy/graph→layout 결과가 같은 경계를 공유하되 kind별 검증은
 등록 validator에 남는다. `actions/data/resourceRevision.js`는 exact constructor별 한 번 등록한
 도메인 갱신 함수로 data-backed resource의 재계산을 위임한다. 등록된 kind는 generic data-ref
 치환에서 제외하고 같은 revision plan의 명시 domain action으로 갱신한다. Basic 또는 미등록 class는
@@ -163,7 +163,8 @@ renderer는 다음 통합 경계다. 수치·검증·실측 package 경계는
 검증한다. DATA revision owner는 등록된 graph 갱신 함수를 명시적으로 호출한다. Basic과 renderer는
 graph resource를 읽지 않으며 automatic compiler는 없다. `createGraphData.target`은 endpoint 열이므로
 기존 unit-local creation dispatch를 사용한다. 수정 target은 별도의 resource selector다.
-현재 관측 data lifecycle만 공개하며 inference·layout·plot의 공개 연결은 별도 구현 영역이다.
+Full의 graph layout과 plot은 같은 typed resource 경계를 사용한다. `actions/graphs/layouts.js`가 변경될 graph→layout→plot closure를 먼저 계산·검증한 뒤 wrapped semantic replacement와 plot materialization을 명시 호출한다.
+`materialization/graph/geometry.js`는 finite cubic route·parallel offset·self-loop·endpoint trimming을, plot owner는 concrete circle/path/text·paint·source-row identity를 소유한다. 공통 selection policy는 node와 edge를 별도 logical item으로 유지하며 arrow/label을 같은 item에 결박한다. Renderer는 기존 concrete primitives만 읽는다. Inference 공개 연결은 후속 domain owner다.
 정확한 공개·저장 계약은 [GRAPHS.md](contract/current/GRAPHS.md)가 소유한다.
 상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
 
@@ -761,7 +762,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 591,000 bytes |
+| `ggaction` | 596,000 bytes |
 | `ggaction/basic` | 346,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -1027,7 +1028,7 @@ action chain이 subclass type을 유지한다.
 
 Host 측정값은 `materializationConfigs.textMetrics`의 immutable profile이 소유한다. Pure layout과 concrete bounds 함수는 해당 profile을 명시적인 인자로 받아 exact match 또는 기존 estimate를 선택한다. 전역 mutable font provider와 backend 객체를 사용하지 않는다. Shared `core/font.js`가 기본 font family와 numeric weight 정규화를 소유하며 renderer와 authoring measurement가 이를 공유한다.
 
-`materialization/typography.js`는 측정 profile 변경과 theme font 변경의 공통 text-owner rematerialization 경계다. 기존 text mark, guide, legend, title의 wrapped domain action을 순서대로 실행하고 final guide collision을 검증한다. Composition은 child snapshot을 먼저 갱신하고 parent header/shared guide/placement를 재계산한다. Exact 공개 계약은 [CORE](contract/current/CORE.md#applytextmetrics)가 소유한다. Renderer는 profile을 읽지 않고 이미 배치된 text graphics만 그린다.
+`materialization/typography.js`는 측정 profile 변경과 theme font 변경의 공통 text-owner rematerialization 경계다. 기존 text mark, resource-backed tree/treemap/graph label, guide, legend, title의 wrapped domain action을 순서대로 실행하고 final guide collision을 검증한다. Composition은 child snapshot을 먼저 갱신하고 parent header/shared guide/placement를 재계산한다. Exact 공개 계약은 [CORE](contract/current/CORE.md#applytextmetrics)가 소유한다. Resource-backed label은 저장된 layout을 소비하는 기존 materializer만 호출하며 layout solver를 다시 실행하지 않는다. Renderer는 profile을 읽지 않고 이미 배치된 text graphics만 그린다.
 
 ## 구조화된 진단 경계
 
@@ -3179,6 +3180,14 @@ family로 필터링하며, exact font binding의 준비된 별칭은 이 경로�
 이 정책은 concrete text나 semantic layout을 다시 계산하지 않는다.
 정확한 public shape/상한/오류/생활주기는 [CORE](contract/current/CORE.md)와 rendering 문서가 소유한다.
 
+## Graph layout ownership
+
+`actions/graphs/layouts.js`는 명시 graph layout 계산과 graph revision의 dependent layout closure를 소유한다. `actions/layouts/index.js`의 공통 editLayout은 source domain의 편집 body로 전달한다. Pure fixed/circular/force kernel은 topology를 보존하며, `materialization/graph/layoutResource.js`가 exact graph input과 resolved intent·결과를 저장한다. 복원 validator는 stored coordinates·node membership·pins·component bounds와 provenance만 검사하며 force solver를 재실행하지 않는다. Source revision은 계산한 모든 layout 결과를 기존 prepared primitive 경계로 원자적으로 교체한다. 정확 API는 [GRAPHS](contract/current/GRAPHS.md)와 [LAYOUTS](contract/current/LAYOUTS.md)가 소유한다.
+
+공개 graph layout 추가 뒤 Node20 실측은803entries/1,183,611packed/5,437,539unpacked bytes다.
+최소 한도는803/1,184,000/5,438,000으로 조정했다. Full gzip590,274는591,000으로만
+변경하고 Basic342,113은343,000 한도 안이다. Search900,853bytes는901,000 한도로 반영한다.
+이전 한도 통과로 보고하지 않는다.
 ### Pre-fill outline ownership
 
 외곽선 요청은 기존 mark appearance config 한 곳에 저장하고 `grammar/markOutline.js`가 닫힌 값을 검증한다.
@@ -3205,3 +3214,27 @@ outline mark, retained image를 두고 source revision·codec·prepared image st
 통합 search-index 실측896,003bytes는 이전896,000을3bytes 초과한다. 현재 모든 페이지/액션을 유지하며
 공유 canonical search cap만 최소1000단위897,000으로 조정한다. 최초 source2개 및 built 링크 검사 실패와
 해당 입력 수정 뒤 재검증 결과는 outline 통합 evidence가 보존한다.
+
+GraphPlot 입력 layout의 닫힌 method vocabulary는 core/vocabulary.js 한 곳이 소유한다. Graph selector와 grammar normalizer가 이를 함께 읽으며 selector는 layout 계산기를 import하지 않는다.
+Node20 canonical graph-plot staging810entries, packed1,193,083/unpacked5,488,863bytes에 맞춰 package cap810/1,194,000/5,489,000으로 최소 조정한다.
+
+
+null/default 및 복원 limit 검증을 보강한 최종 graph-layout source는 Node20에서
+1,183,749packed/5,438,055unpacked bytes다. Packed 한도는 유지하고 unpacked만5,439,000으로
+최소 조정한다. 이전5,438,000 한도 초과55bytes를 통과로 표시하지 않는다.
+
+동일 final archive의 Node20 browser 실측은 Full590,307/Basic342,113bytes이며 두 기존 한도591,000/343,000 안이다.
+
+GraphPlot와 outline을 합친 source7659f0f7f archive의 Node20 bundle은 Full595,806/Basic345,437bytes다. 기존591,000/343,000 한도를 초과하여 실제값 기준 최소596,000/346,000으로 조정하고 README와 현재 표를 동기화했다.
+
+
+### Exact font and resource-backed label integration
+
+Font와 GraphPlot의 결합에서 tree/treemap/graph label의 concrete Text도 기존 font binder를
+호출한다. 공통 typography rematerialization은 저장된 layout resource를 소비하는 domain
+materializer만 실행하며 layout/force 계산은 재실행하지 않는다. Font 교체·제거·codec와
+Canvas/SVG/PNG/PDF/scene 교차는 `font-resource-labels.test.js`가 소유한다.
+Node20/22 canonical staging은 동일821 entries/5,551,125 unpacked bytes이며 packed 최대값은
+1,208,302 bytes였다. 통합 한도는 최소821/1,209,000/5,552,000으로 조정한다. Node20 browser
+gzip Full600,160/Basic348,432 bytes에 따라601,000/349,000만 적용하고 SVG25,000과
+수치·coverage 한도는 유지한다. 초기 한도 초과를 integration evidence에 보존한다.

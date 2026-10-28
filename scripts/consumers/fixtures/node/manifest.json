@@ -936,6 +936,10 @@
       {
         "id": "fonts/renderers-scene-handles",
         "statements": 6
+      },
+      {
+        "id": "fonts/resource-backed-labels",
+        "statements": 1
       }
     ]
   },

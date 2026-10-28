@@ -608,7 +608,8 @@ An exact profile requires a unique resource for each family/style/weight tuple.
 New labels or typography may require new measurements. Such edits fail atomically;
 use `removeTextMetrics()`, make the edit, then prepare and apply the new layout.
 Replacing a bound font prepares its new measurement closure before committing
-the resource and all affected text. Existing schema 1 profiles retain their
+the resource and all affected text, including tree, treemap, and graph labels.
+These labels reuse their stored layout coordinates when typography changes. Existing schema 1 profiles retain their
 documented estimate behavior for unmatched queries.
 
 Canvas uses `prepareFontRendering(programOrCanvasScene,{register,signal?})` from

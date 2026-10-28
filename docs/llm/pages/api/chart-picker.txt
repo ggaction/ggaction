@@ -67,12 +67,13 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 | One complete chart plus a new independent chart; explicit shared scales and aligned plot frames | [`createAdjacentPlot`](../../../reference/actions/charts-data/#createadjacentplot) | default | [`editCompositionLayout`](../../../reference/actions/charts-data/#editcompositionlayout) · [`editCompositionScales`](../../../reference/actions/charts-data/#editcompositionscales) · [`replaceCompositionChild`](../../../reference/actions/charts-data/#replacecompositionchild) |
 | Independent native plot on compatible existing coordinates and measurement units | [`createLayerPlot`](../../../reference/actions/charts-data/#createlayerplot) | default | [`encodeColor`](../../../reference/actions/encodings/#encodecolor) · [`encodeOpacity`](../../../reference/actions/encodings/#encodeopacity) · [`removeMark`](../../../reference/actions/marks/#removemark) |
 
-## Hierarchies
+## Hierarchies and networks
 
 | Task / input | Chart action | Package entry | Direct editor |
 | --- | --- | --- | --- |
 | Typed hierarchy and an explicit tree layout | [`createTreePlot`](../../../reference/actions/charts-data/#createtreeplot) | default | [`editTreePlot`](../../../reference/actions/charts-data/#edittreeplot) · [`removeMark`](../../../reference/actions/marks/#removemark) |
 | Typed hierarchy and an explicit rectangular layout | [`createTreemapPlot`](../../../reference/actions/charts-data/#createtreemapplot) | default | [`editTreemapPlot`](../../../reference/actions/charts-data/#edittreemapplot) · [`removeMark`](../../../reference/actions/marks/#removemark) |
+| Explicit node and edge tables with a stored graph layout | [`createGraphPlot`](../../../reference/actions/charts-data/#creategraphplot) | default | [`editGraphPlot`](../../../reference/actions/charts-data/#editgraphplot) · [`removeMark`](../../../reference/actions/marks/#removemark) |
 
 ## Compose or refine
 

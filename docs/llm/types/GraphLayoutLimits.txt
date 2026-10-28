@@ -1,0 +1,1 @@
+export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }

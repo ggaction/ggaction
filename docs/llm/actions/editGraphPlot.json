@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 3,
+  "name": "editGraphPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Edits graph plot, including settings for network plot.",
+  "signature": "editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;",
+  "intents": [
+    "edit graph plot",
+    "edit",
+    "change",
+    "complete chart",
+    "chart facade",
+    "graph plot",
+    "network plot"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing graph plot",
+      "canvas and dataset context"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editGraphPlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "origin",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing graph plot",
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "origin",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "nodes",
+      "required": false,
+      "type": "(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] | undefined; }) | undefined"
+    },
+    {
+      "name": "edges",
+      "required": false,
+      "type": "GraphEdgePaint | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | GraphLabelsOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editGraphPlot({ target?, layout?, origin?, clip?, nodes?, edges?, labels? })"
+  ],
+  "snippet": "program.editGraphPlot({ target: \"networkPlot\", nodes: { radius: 8 } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editgraphplot"
+}

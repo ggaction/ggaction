@@ -68,6 +68,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createGradientPlot`](./actions/statistics.md#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphData`](./actions/charts-data.md#creategraphdata) | H2 | user-facing | core |
 | [`createGraphics`](./actions/extension.md#creategraphics) | H4 | primitive | primitives |
+| [`createGraphPlot`](./actions/charts-data.md#creategraphplot) | H0, H1 | user-facing | charts |
 | [`createGrid`](./actions/guides.md#creategrid) | H3 | user-facing | grid |
 | [`createGuides`](./actions/guides.md#createguides) | H3 | user-facing | legend_and_title |
 | [`createHeatmap`](./actions/charts-data.md#createheatmap) | H0 | user-facing | charts |
@@ -187,6 +188,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphData`](./actions/charts-data.md#editgraphdata) | H3 | user-facing | core |
 | [`editGraphics`](./actions/extension.md#editgraphics) | H4 | primitive | primitives |
+| [`editGraphPlot`](./actions/charts-data.md#editgraphplot) | H1, H3 | user-facing | charts |
 | [`editGrid`](./actions/guides.md#editgrid) | H3 | user-facing | grid |
 | [`editHierarchyData`](./actions/charts-data.md#edithierarchydata) | H2 | user-facing | core |
 | [`editHorizon`](./actions/encodings.md#edithorizon) | H2, H3 | user-facing | encodings |
@@ -312,6 +314,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](./actions/charts-data.md#highlightmarks) | H3 | user-facing | mark-selection |
 | [`insertCompositionChild`](./actions/charts-data.md#insertcompositionchild) | H3 | user-facing | composition |
 | [`jitterPoints`](./actions/marks.md#jitterpoints) | H3 | user-facing | marks |
+| [`layoutGraph`](./actions/charts-data.md#layoutgraph) | H2 | user-facing | core |
 | [`layoutHierarchy`](./actions/charts-data.md#layouthierarchy) | H2 | user-facing | core |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | H3 | user-facing | marks |
 | [`layoutSeries`](./actions/encodings.md#layoutseries) | H2 | user-facing | encodings |

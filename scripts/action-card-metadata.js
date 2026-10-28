@@ -14,6 +14,7 @@ const analysisChartNames = new Set([
   "createDensityPlot",
   "createHorizonPlot",
   "createTreePlot",
+  "createGraphPlot",
   "createTreemapPlot"
 ]);
 const analysisChartEditorNames = new Set([
@@ -22,6 +23,7 @@ const analysisChartEditorNames = new Set([
   "editRadarPlot",
   "editRaincloudPlot",
   "editTreePlot",
+  "editGraphPlot",
   "editTreemapPlot"
 ]);
 
@@ -67,9 +69,12 @@ const explicitLifecycleEditors = Object.freeze({
   createHierarchyData: ["editHierarchyData", "removeResource"],
   editHierarchyData: ["editHierarchyData", "removeResource"],
   layoutHierarchy: ["editLayout", "removeResource"],
+  layoutGraph: ["editLayout", "removeResource"],
   editLayout: ["editLayout", "removeResource"],
   removeResource: ["removeResource"],
   createTreePlot: ["editTreePlot", "removeMark"],
+  createGraphPlot: ["editGraphPlot", "removeMark"],
+  editGraphPlot: ["editGraphPlot", "removeMark"],
   editTreePlot: ["editTreePlot", "removeMark"],
   createTreemapPlot: ["editTreemapPlot", "removeMark"],
   editTreemapPlot: ["editTreemapPlot", "removeMark"],
@@ -144,6 +149,7 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "layoutGraph",
   "createGraphData",
   "editGraphData",
   "filterData",

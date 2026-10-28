@@ -1,0 +1,100 @@
+# Draw an observed network
+
+Create two node rows and one observed directed edge. A fixed layout determines positions; the plot adds circles, an arrow and readable labels. This is the canonical graph example's action flow.
+
+```javascript
+import { chart, render } from "ggaction";
+
+const program = chart()
+  .createCanvas({
+    "width": 300,
+    "height": 240,
+    "margin": 0,
+    "background": "#ffffff"
+  })
+  .createData({
+    "id": "nodes",
+    "values": [
+      {
+        "id": "A"
+      },
+      {
+        "id": "B"
+      }
+    ],
+    "keyField": "id"
+  })
+  .createData({
+    "id": "edges",
+    "values": [
+      {
+        "source": "A",
+        "target": "B"
+      }
+    ]
+  })
+  .createGraphData({
+    "id": "network",
+    "nodes": "nodes",
+    "edges": "edges",
+    "nodeKey": "id",
+    "source": "source",
+    "target": "target",
+    "directed": true,
+    "selfLoops": true
+  })
+  .layoutGraph({
+    "id": "positions",
+    "graph": "network",
+    "method": "fixed",
+    "options": {
+      "positions": [
+        {
+          "key": "A",
+          "x": 60,
+          "y": 120
+        },
+        {
+          "key": "B",
+          "x": 240,
+          "y": 120
+        }
+      ]
+    }
+  })
+  .createGraphPlot({
+    "id": "networkPlot",
+    "layout": "positions",
+    "origin": [
+      0,
+      0
+    ],
+    "nodes": {
+      "radius": 10
+    },
+    "edges": {
+      "stroke": "#64748b",
+      "strokeWidth": 2,
+      "parallelGap": 90,
+      "loopRadius": 32
+    },
+    "labels": {
+      "offset": [
+        0,
+        24
+      ],
+      "fontSize": 14
+    }
+  });
+render(program, document.querySelector("#chart").getContext("2d"));
+```
+
+## Preserve separate connections
+
+The parallel example contains two observed edges with the same endpoints. Both survive as distinct paths and selections. The self-loop example retains an edge whose endpoints name the same node. Neither view infers new connections from position.
+
+## Revise the view
+
+Continue from `program` with `program.editGraphPlot({target:"networkPlot",nodes:{radius:14}})` to change node size. Use `editLayout` to change fixed positions, or create a separate circular/force layout and explicitly rebind the plot. Source revisions update dependent layouts and plots together. The original program remains available.
+
+See [Graph plots](../../../api/graphs/) for full defaults, typed overrides, label attributes, selection and output behavior.

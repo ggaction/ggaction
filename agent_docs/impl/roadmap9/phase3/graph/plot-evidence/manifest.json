@@ -1,0 +1,394 @@
+{
+  "sourceCommit": "7659f0f7f",
+  "documentationSourceCommit": "fda41f628",
+  "authorization": "../../AUTHORIZATION.json",
+  "packageSha256": "bedcfc949b82a557d8136c94abb4a61cb843811043ee2b2116f25b1a084b74ce",
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "runtimeCases": 212,
+      "tutorials": 75,
+      "qualificationCases": 7,
+      "exitCode": 0
+    },
+    {
+      "node": "v22.23.1",
+      "runtimeCases": 212,
+      "tutorials": 75,
+      "qualificationCases": 7,
+      "exitCode": 0
+    },
+    {
+      "node": "v24.22.1",
+      "runtimeCases": 212,
+      "tutorials": 75,
+      "qualificationCases": 7,
+      "exitCode": 0
+    }
+  ],
+  "sourceHashes": {
+    "src/ChartProgram.js": "78dbf7ab84f4e23b8c20b5e99c76cb2e67e1c25131d0f4041a64b37ab556d8c0",
+    "src/accessibility.js": "5c46c9db092507441628eba1ace7a2aa15f52210e557de89d435727e174ce520",
+    "src/actions/graphs/layouts.js": "f0b4ed5ebb017edebaf88b8e490f2ec8a4594591fd86bd5e470e7cbd1038d131",
+    "src/actions/graphs/plots.js": "c3689b2126d1e3e1c1458246735042ab15af8f2d60d48a8f5cd58642a051a07c",
+    "src/actions/graphs/resources.js": "3e86779364ecb7d23579a0a8d02f073c976eb05fd5cd60e75b63d521d5919f61",
+    "src/actions/hierarchy/resources.js": "67463e5b01adacbe2ebade9a408f93815b0b7c43c956ae0562cace389e7c4ca9",
+    "src/actions/index.js": "09a9f8b6e966a78cc8f8aeb79fd820d9a0e129f66765d2c3b9652aa12b00b392",
+    "src/actions/layouts/index.js": "c96d6cd1dc2dd9b21780d28e7634c22805a84d09726f8ef6a030c3bf5431c998",
+    "src/actions/primitives/resourceState.js": "113e2c4155cbeae241a83d6ed69b4c7c3428bda2c4bdf115b2297b52ae880fd8",
+    "src/actions/selection/actions.js": "e2d6e3b6c42b09e9b7457e9f6eb900d053ffa5cfbd23a5ac95716a9f1f630733",
+    "src/core/resourceReferences.js": "236bd6c58e7548b3f3ae7d2e0a2be26a0b57cbbd3bbaa96a75549d5cb42ce314",
+    "src/core/vocabulary.js": "356c5d6b650caa078d5ef448be0d5323a900fc49987e47b6c9f7125932656c3b",
+    "src/grammar/graph/force.js": "f2ee59d13b4160daf3cdf226bcc8739f8a0ff27c0a4022938d480fb3fb87c66d",
+    "src/grammar/graph/layoutOptions.js": "e1e10819733a18b74be29bae7f538d2a26bf3ace3dfa07f0b6a701ceb67a8389",
+    "src/grammar/graph/plot.js": "f89a1934b5cea2a5f9383dfdb998ffd9b27ea7a96d1e22b1f6e0967d5388a4c5",
+    "src/grammar/schemas/semanticPath.js": "cfd98015985143388b297cf970fb2f536bd62ad2e8b78372549a4ad37f2b2856",
+    "src/inspection.js": "c2af3c33f895e553d8bb0e96f2068e2c24aae38010d3dc2cddbafb1810e1a853",
+    "src/inspectionDescriptors.js": "47bc08a2f83c5059ca2c4a1b0cd04290298b534f08bb82e6fe7eec2a2c98ac9d",
+    "src/materialization/graph/geometry.js": "8d07f29b5038474ffcbe3043fddd7d87b809b7e19280f8ea1409ce034c630430",
+    "src/materialization/graph/layoutResource.js": "60cfc306a20419be1944718d5542d35da84d08d65aeb566b0e2a4dc3db05f6da",
+    "src/materialization/graph/layoutState.js": "9c8a7482ee92178e49a422641fac576330dcc4fa9c409e74a00d4ea9dba54d67",
+    "src/materialization/graph/plot.js": "aeb93c335e86fc35c52127a9116d0a737b7892c190576a35c840eb0bd12f6a09",
+    "src/materialization/layoutState.js": "96b63fedd188c0ab69e0a8245413c9728fde30106dcdc97dfcf69fb23b20091c",
+    "src/materialization/marks/policies.js": "c31275ad102c7eb704b3a83e53093b719d8661faecf3edec18db0a54e2ce59a6",
+    "src/materialization/selection/policies/graph.js": "10f5172b2cd0cbbbb9a7491b599153615535b833df8300d989a343d4da258704",
+    "src/materialization/selection/policies/index.js": "0602e20db76be1b43baffd22d084b0903639c96606760042dac7857c4a368622",
+    "src/selectors/graphs.js": "fd7cfc4564343277a7913c965870e367a5e62726c026ee98bb4095284c3ab21f",
+    "src/selectors/hierarchy.js": "6dbb423f16e5abc191e5c9548b0d40b1d82e7d5e12212ce5fa2ebc553f4bce00",
+    "src/selectors/layouts.js": "fbe63642698e366c3fbfd607733575ae6126d8b02239113dfd4b47dfe2d6ea7d",
+    "types/index.d.ts": "7478c677eaa0d025d763b43d2328ae078b458207b043e9d9413772007dec9313",
+    "types/program.d.ts": "d876fc01f8d1c5e7e393ed854c45ae925e7b7c1ab0ad1bbd1d188978c2911210"
+  },
+  "records": [
+    {
+      "source": ".artifacts/graph-plot-boundary-final.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-boundary-final.log.gz",
+      "sha256": "d5d9aaf0d8c4fe3532a4136eadc1495433778af5b2eaa251abb527df2c0768b2"
+    },
+    {
+      "source": ".artifacts/graph-plot-browser-examples.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-browser-examples.log.gz",
+      "sha256": "058df76154f1a20de0f3bed588c4d39c7ffd31eb30af39b7070dc52fd9bf1bb1"
+    },
+    {
+      "source": ".artifacts/graph-plot-browser-final.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-browser-final.log.gz",
+      "sha256": "d2331fdb238e85e20ac4a003ee1269bed73be93c8c6e1fc595c4ddd17cfdc153"
+    },
+    {
+      "source": ".artifacts/graph-plot-bundles20-stderr.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-bundles20-stderr.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": ".artifacts/graph-plot-bundles20.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-bundles20.json.gz",
+      "sha256": "47b578478ee68afb04329f0d28d3db0c47cb0f4837ff38b540e6ae7658988e1b"
+    },
+    {
+      "source": ".artifacts/graph-plot-closure-coverage.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-closure-coverage.log.gz",
+      "sha256": "10ec7dec5ddaead0b7544894a391db8607a965a3b70f9b17b2a1d529e5729be1"
+    },
+    {
+      "source": ".artifacts/graph-plot-closure-floors.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-closure-floors.json.gz",
+      "sha256": "37784b021f8e42b4814a8f4bf8a800482ddd0a3e625f04fe25967f136b3f1d01"
+    },
+    {
+      "source": ".artifacts/graph-plot-contracts.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-contracts.log.gz",
+      "sha256": "f6f5369ec54e081a6723c921a3148d42bd8bf3c3045a18c8c5299365f402b790"
+    },
+    {
+      "source": ".artifacts/graph-plot-corrections.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-corrections.log.gz",
+      "sha256": "4c823df462b6129d9c68076fdfcb52572a72bc2163ef6acc0dd1ff6ca8a664ef"
+    },
+    {
+      "source": ".artifacts/graph-plot-coverage-final.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-coverage-final.log.gz",
+      "sha256": "3befcf7de42f5be8079b09477d91ea8a8b918694af3102c1a0928b255f2f5dd2"
+    },
+    {
+      "source": ".artifacts/graph-plot-coverage-first.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-coverage-first.log.gz",
+      "sha256": "85a8c93332d6b4cea50186f4715b75d0a037dad5648a9a4d639bd939bad24939"
+    },
+    {
+      "source": ".artifacts/graph-plot-coverage-second.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-coverage-second.log.gz",
+      "sha256": "a09559e729c20fd19c59f4fc1db82fa57669c2a0161e6b3b83a0ba6b97b1ad95"
+    },
+    {
+      "source": ".artifacts/graph-plot-doc-browser.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-doc-browser.log.gz",
+      "sha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d"
+    },
+    {
+      "source": ".artifacts/graph-plot-doc-build.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-doc-build.log.gz",
+      "sha256": "67bb1fbbedbd28cbca69353b82fa14c5fe4f3e078d0ba96c8b77b111e3420865"
+    },
+    {
+      "source": ".artifacts/graph-plot-doc-built.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-doc-built.log.gz",
+      "sha256": "1abdc2cd5da2e9d02d0a9e7f9fc9c4063649765f65ec9eee4c2fc817981de1ed"
+    },
+    {
+      "source": ".artifacts/graph-plot-docs-final.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-docs-final.log.gz",
+      "sha256": "5b82420ccb8b9b26c9819b4799d580b401cbd8ca85fd55b0d11435282c411257"
+    },
+    {
+      "source": ".artifacts/graph-plot-docs.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-docs.log.gz",
+      "sha256": "90615c1ac0824e008e32382359c5bd1074863b065fad116fa3d3d8f60e5190be"
+    },
+    {
+      "source": ".artifacts/graph-plot-exact-final.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-exact-final.log.gz",
+      "sha256": "5c3def0544b52118da496602c4840c0a9b7b46ac38b445027a462ce1b3975ce3"
+    },
+    {
+      "source": ".artifacts/graph-plot-exact-structure-final.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-exact-structure-final.log.gz",
+      "sha256": "adf265b38a8cc0d08c5e452b2bc1108030a487397e4ec5509d6dff0c04233c69"
+    },
+    {
+      "source": ".artifacts/graph-plot-exact-structure-verified.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-exact-structure-verified.log.gz",
+      "sha256": "666a3bb4fbd6f70ca872d5cd176f2c9675c31fc6132fb06efc44228956bc323b"
+    },
+    {
+      "source": ".artifacts/graph-plot-exact-structure.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-exact-structure.log.gz",
+      "sha256": "a609951f3d4c7574231ab73b84011e166009b665c352682e29af0653f0d2de83"
+    },
+    {
+      "source": ".artifacts/graph-plot-exact.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-exact.log.gz",
+      "sha256": "4bbf267971b9dec18cc68d65a4bccd15c051e23dbde3e114673ea2022fa11ca8"
+    },
+    {
+      "source": ".artifacts/graph-plot-floors.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-floors.json.gz",
+      "sha256": "6bd80be83f902c77407178add1fe88f4de0b19f43beda5af34482bed369aab9d"
+    },
+    {
+      "source": ".artifacts/graph-plot-generation-complete.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-generation-complete.log.gz",
+      "sha256": "218a4c6f836c4b38a510f9c4ec2fa4e488b91fb4796caa3219e0cef9bb1acd6d"
+    },
+    {
+      "source": ".artifacts/graph-plot-generation-final.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-generation-final.log.gz",
+      "sha256": "ffad05d6a301c9443cfd3f12b32063ebe18cb32f56f7376e2497c9acbf68c69d"
+    },
+    {
+      "source": ".artifacts/graph-plot-generation-pinned.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-generation-pinned.log.gz",
+      "sha256": "218a4c6f836c4b38a510f9c4ec2fa4e488b91fb4796caa3219e0cef9bb1acd6d"
+    },
+    {
+      "source": ".artifacts/graph-plot-generation-second.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-generation-second.log.gz",
+      "sha256": "784cdfeeea733b77b894b07f59a3bbd7912ec4f51f53b5104d9307b9b759cd70"
+    },
+    {
+      "source": ".artifacts/graph-plot-generation-third.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-generation-third.log.gz",
+      "sha256": "dab7486161c5cf313c8cfa297b8d4ae3c098abef95d8d14274b1764725b7db76"
+    },
+    {
+      "source": ".artifacts/graph-plot-generation.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-generation.log.gz",
+      "sha256": "4b267797a0524b3556fa026a100607bc10a3a4618a879f1e02e02f5efbb0d603"
+    },
+    {
+      "source": ".artifacts/graph-plot-geometry.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-geometry.log.gz",
+      "sha256": "f1239f454ace3be2d752efa2b9ef96733711376bb295bb439104d7f1659860d0"
+    },
+    {
+      "source": ".artifacts/graph-plot-installed20-node-cases.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-installed20-node-cases.json.gz",
+      "sha256": "b7a20b5523f45a2c3ca074f1d7e16735d72eeac1ba10e627e4dbd666cc0c76e2"
+    },
+    {
+      "source": ".artifacts/graph-plot-installed20-qualification.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-installed20-qualification.json.gz",
+      "sha256": "e8641d408390438ee1f90ef7e3789c0f2cc1fe43b8966061910bdc7b6af26b7b"
+    },
+    {
+      "source": ".artifacts/graph-plot-installed20-tutorials.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-installed20-tutorials.json.gz",
+      "sha256": "a40552808a7c3ba4f9cca0cf7540646a0c8d817911ed5b31646161deed58f8c1"
+    },
+    {
+      "source": ".artifacts/graph-plot-installed20.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-installed20.log.gz",
+      "sha256": "f44f8c3cb6c3c4d0c8f6f3c0f9df67a00e88bb80bbe897cb78fddd7f153741e2"
+    },
+    {
+      "source": ".artifacts/graph-plot-installed22-node-cases.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-installed22-node-cases.json.gz",
+      "sha256": "7d7d5b54f6fbbf3ca943fac57e05b3fea101d5846ba982cd26a6bc2ac2fc28d2"
+    },
+    {
+      "source": ".artifacts/graph-plot-installed22-qualification.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-installed22-qualification.json.gz",
+      "sha256": "10094f496c49a81716b46d9d7b4e47488760d29da6a9e5fad686dd29112246ef"
+    },
+    {
+      "source": ".artifacts/graph-plot-installed22-tutorials.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-installed22-tutorials.json.gz",
+      "sha256": "eae676d210c1f25d6440e3db2f793df4d9141c25265db3ae99dc1bfacc6f1da0"
+    },
+    {
+      "source": ".artifacts/graph-plot-installed22.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-installed22.log.gz",
+      "sha256": "8e7121fa43257b5857a14762a51f6ca9fc1dd983d033523e9efd53932eb9b3ff"
+    },
+    {
+      "source": ".artifacts/graph-plot-installed24-node-cases.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-installed24-node-cases.json.gz",
+      "sha256": "9abcc1319d430d0eb2d7889702378967c660c3ec5f5b8b471187f956e85bb112"
+    },
+    {
+      "source": ".artifacts/graph-plot-installed24-qualification.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-installed24-qualification.json.gz",
+      "sha256": "b77225addefb424736111a853c55129d94b8e82e7e831b07692367d759eab183"
+    },
+    {
+      "source": ".artifacts/graph-plot-installed24-tutorials.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-installed24-tutorials.json.gz",
+      "sha256": "9b3931eca2dee3943fa180ad130cd4815cb29d39b1d3d94ad7586112cb44fb59"
+    },
+    {
+      "source": ".artifacts/graph-plot-installed24.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-installed24.log.gz",
+      "sha256": "ab194470778f7645de0ae2aceda4705ecb9cfc5548828c228eb6d441a30c4549"
+    },
+    {
+      "source": ".artifacts/graph-plot-inventory-full.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-inventory-full.json.gz",
+      "sha256": "ac698cc06713d21fc67f467317808ff05d6f09efdefb4c33e96fe01a9d968922"
+    },
+    {
+      "source": ".artifacts/graph-plot-inventory.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-inventory.json.gz",
+      "sha256": "4ae687bdc142a93168b770597b19fe9a18fd4f79a6d865c965ede6a9a5d7c620"
+    },
+    {
+      "source": ".artifacts/graph-plot-ledger-correction.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-ledger-correction.log.gz",
+      "sha256": "f060764e0be8752ec602ae9259f2032f3debebf4c5e136e0f2ab7acfcef48bb3"
+    },
+    {
+      "source": ".artifacts/graph-plot-ledger.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-ledger.log.gz",
+      "sha256": "aa4c1dbf747e55470d8093a0650df2d45e0d5540b75e75e003da0c7aed516af3"
+    },
+    {
+      "source": ".artifacts/graph-plot-output-parity.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-output-parity.log.gz",
+      "sha256": "cf4e0ae6ad18265dc9aea7d06e3b997e1db0d128e9eb313d73acf7c129accebb"
+    },
+    {
+      "source": ".artifacts/graph-plot-pack-final-stderr.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-pack-final-stderr.log.gz",
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    {
+      "source": ".artifacts/graph-plot-pack-final.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-pack-final.json.gz",
+      "sha256": "a3152fc3702d8b6e061b62cbe747b6f756aa03f6231523c75198f4f7a0cd6c26"
+    },
+    {
+      "source": ".artifacts/graph-plot-pack-first-stderr.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-pack-first-stderr.log.gz",
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    {
+      "source": ".artifacts/graph-plot-pack-first.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-pack-first.json.gz",
+      "sha256": "436a852bea1fda1ffacd676b404ea4821d60460f3983348d5f58848feee9a352"
+    },
+    {
+      "source": ".artifacts/graph-plot-package-measure.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-package-measure.json.gz",
+      "sha256": "3279ad823cb6da15b775c8771323fc5905c0ab3556091070d7f194fabcac38ab"
+    },
+    {
+      "source": ".artifacts/graph-plot-package-measure20.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-package-measure20.json.gz",
+      "sha256": "a297002fcf0e0a47cdf518d499d60f90129cd983475bb9437fb4791f6a7c9940"
+    },
+    {
+      "source": ".artifacts/graph-plot-primitives.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-primitives.log.gz",
+      "sha256": "30668f72f4857e0ffbd62b28d962ec5cceaaf2afe15a89cf369631f32e7f1c76"
+    },
+    {
+      "source": ".artifacts/graph-plot-public-first.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-public-first.log.gz",
+      "sha256": "7c6eb51890c7d8f14fdb60c0ffe1fa43e957963d115a132d8a0b6b825e5cde97"
+    },
+    {
+      "source": ".artifacts/graph-plot-public-second.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-public-second.log.gz",
+      "sha256": "6b9ef07dcd0ef73a3955eac9009944927a5fea9028d367bb1fb861d315578814"
+    },
+    {
+      "source": ".artifacts/graph-plot-public-third.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-public-third.log.gz",
+      "sha256": "eae3a3c45d654198696b59f7ef338cb6023f1059641a5bf008829416bb63c6bb"
+    },
+    {
+      "source": ".artifacts/graph-plot-realistic-focused.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-realistic-focused.log.gz",
+      "sha256": "561c5d5734a3c98d2d681cb6264cef7d29c32729cedff9c4a933ec47823a6843"
+    },
+    {
+      "source": ".artifacts/graph-plot-shared-realistic.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-shared-realistic.log.gz",
+      "sha256": "69b4d7df7a1ce24fdf4584aba48dd1194492c0ca12da64b4cf04273793444e69"
+    },
+    {
+      "source": ".artifacts/graph-plot-types-final.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-types-final.log.gz",
+      "sha256": "054216241d416dc8a219ef9843596664842c197e710cf50725b89b7ad630a852"
+    },
+    {
+      "source": ".artifacts/graph-plot-types-unit.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-types-unit.log.gz",
+      "sha256": "15e0be88720f62225cf54668fe94aaa50ba667c92b581081ce3c27cd23914f43"
+    },
+    {
+      "source": ".artifacts/graph-plot-unit-first.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-unit-first.log.gz",
+      "sha256": "2da45ce00a8c7bc9445408ebfab7a2073c0d1af138c418ca8bf9673cb79f2d2f"
+    },
+    {
+      "source": ".artifacts/graph-plot-unit-second.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-unit-second.log.gz",
+      "sha256": "3c171cf853bcf0256a473757d5ebe7fd8548f8c40a5faa8d56c699989b35eee8"
+    },
+    {
+      "source": ".artifacts/graph-plot-unit.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-unit.log.gz",
+      "sha256": "741584e394026a2c2dee80a2237e733d2f4a69e98308e3cc31010f6836f09957"
+    },
+    {
+      "source": ".artifacts/graph-plot-final-cap-check.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-final-cap-check.log.gz",
+      "sha256": "6d487e8e36a6165a38d49284f5cf792557ddf96fb26006ebaedb5213cea4c070"
+    },
+    {
+      "source": ".artifacts/graph-plot-final-cap-verified.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/graph-plot-final-cap-verified.log.gz",
+      "sha256": "d075b4634e3336f1de19a1a8e9aea9747611536203bde826ed81bc003430c044"
+    }
+  ]
+}

@@ -5,6 +5,9 @@ All notable changes to `ggaction` are recorded in this file.
 ## Unreleased
 
 - Add `prepareFontResource`, `createFontResource`, `replaceFontResource`, `prepareTextMetrics`, and `prepareFontRendering` for explicit font loading, exact measured layout and immutable resource replacement. Preserve embedded font bytes through offline snapshots and Canvas/SVG/PNG/PDF/scene output; reject missing widths, stale preparation and disposed rendering handles.
+- Add Full-only `createGraphPlot` and `editGraphPlot` for explicit graph layouts, with directed arrows, separate parallel edges, self-loops, typed node styles and labels. Preserve node and edge source rows through selections, graph/layout revisions, scoped composition and offline snapshots across Canvas, SVG, PNG and PDF.
+
+- Add Full-only `layoutGraph` for stored fixed, circular, and seeded force layouts. Share `editLayout` with hierarchy layouts and preserve graph bindings, pins, component packing and limits through data revisions and offline restoration.
 
 - Add Full-only `createGraphData` and `editGraphData` for observed node and edge tables, with typed keys, stable parallel-edge identity, exact source revisions, and validated offline snapshots.
 - Add `prepareImageResource`, `createImageResource`, `replaceImageResource`, `removeResource`, `createImageMark`, `editImageMark`, and `prepareImageRendering` for Full image resource preparation, immutable authoring, and image marks with contain/cover/fill, alignment, clipping and alternative text. Preserve embedded bytes through offline snapshots, selection, composition and scenes; prepare browser Canvas explicitly and export the same data through SVG, PNG and PDF.

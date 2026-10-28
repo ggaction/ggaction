@@ -451,5 +451,16 @@
       "fonts/KOREAN-OFL.txt": "examples/font-assets/fonts/KOREAN-OFL.txt",
       "fonts/EMOJI-OFL.txt": "examples/font-assets/fonts/EMOJI-OFL.txt"
     }
+  },
+  "tutorials/graphs.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/graph-plots/program.js",
+      "exported": "createGraph"
+    },
+    "rendering": "renders-canvas"
   }
 }

@@ -84,5 +84,39 @@ export const cases = [
     try { renderTransitionScene(scene, canvas.getContext("2d"), { fonts: prepared });
       assert.deepEqual(canvas.toBuffer("image/png"), (await renderToPNGBuffer(restored)).buffer); }
     finally { prepared.dispose(); }
+  } },
+  { id: "fonts/resource-backed-labels", async run() {
+    for (const kind of ["graph", "tree", "treemap"]) {
+      let base = chart().createCanvas({ width: 240, height: 160, margin: 0, background: "white" })
+        .createData({ id: "nodes", keyField: "id", values: [{ id: "r", parent: null, value: 2, label: "AB" }, { id: "a", parent: "r", value: 1, label: "AB" }] });
+      const labelStyle = { fontFamily: family, fontSize: 20, fontWeight: 400 };
+      if (kind === "graph") base = base.createData({ id: "edges", values: [{ from: "r", to: "a" }] })
+        .createGraphData({ id: "source", nodes: "nodes", edges: "edges", nodeKey: "id", source: "from", target: "to", attributes: ["label"] })
+        .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: "r", x: 40, y: 40 }, { key: "a", x: 140, y: 80 }] } })
+        .createGraphPlot({ id: "plot", labels: { ...labelStyle, field: "label" } });
+      else base = base.createHierarchyData({ id: "source", key: "id", parent: "parent", value: "value" })
+        .layoutHierarchy({ id: "layout", method: kind, options: kind === "tree" ? { nodeSize: [20, 20], siblingGap: 30, depthGap: 40, orientation: "vertical" }
+          : { size: [180, 100], padding: 5, method: "slice-dice" } })
+        [kind === "tree" ? "createTreePlot" : "createTreemapPlot"]({ id: "plot", labels: { ...labelStyle,
+          overrides: [{ key: "r", text: "AB" }, { key: "a", text: "AB" }] } });
+      const font = base.createFontResource({ prepared: await prepareFontResource(base, { kind: "create", id: "font", ...source }, host), requestToken: "current" });
+      const program = font.applyTextMetrics({ prepared: await prepareTextMetrics(font, { id: "exact", fonts: ["font"] }, { requestToken: "current", decode, measure }), requestToken: "current" });
+      const layout = program.semanticSpec.resources.find(resource => resource.kind === "layout");
+      const labels = p => p.graphicSpec.objects.plot.items.filter(item => item.type === "text");
+      assert.ok(labels(program).length > 0);
+      assert.ok(labels(program).every(item => item.properties.font.contentHash === expectedHash));
+      const next = program.replaceFontResource({ prepared: await prepareFontResource(program,
+        { kind: "replace", target: "font", ...source, metricsProviderVersion: "installed@2" }, host), requestToken: "current" });
+      assert.equal(next.semanticSpec.resources.find(resource => resource.kind === "layout"), layout);
+      assert.ok(labels(next).every(item => item.properties.font.metricsProviderVersion === "installed@2"));
+      const restored = deserializeProgram(serializeProgram(next)), fonts = await prepareFontRendering(restored, { register });
+      try {
+        const canvas = createCanvas(1, 1); render(restored, canvas.getContext("2d"), { fonts });
+        assert.deepEqual(canvas.toBuffer("image/png"), (await renderToPNGBuffer(restored)).buffer);
+        assert.match(renderToSVG(restored), /@font-face/);
+        assert.match((await renderToPDFBuffer(restored)).buffer.toString("latin1"), /\/ToUnicode/);
+      } finally { fonts.dispose(); }
+      assert.ok(labels(next.removeTextMetrics()).every(item => item.properties.font === undefined));
+    }
   } }
 ];

@@ -56,6 +56,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createGradientPlot`](../../../reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphData`](../../../reference/actions/charts-data/#creategraphdata) | H2 | user-facing | core |
 | [`createGraphics`](../../../reference/actions/extension/#creategraphics) | H4 | primitive | primitives |
+| [`createGraphPlot`](../../../reference/actions/charts-data/#creategraphplot) | H0, H1 | user-facing | charts |
 | [`createGrid`](../../../reference/actions/guides/#creategrid) | H3 | user-facing | grid |
 | [`createGuides`](../../../reference/actions/guides/#createguides) | H3 | user-facing | legend_and_title |
 | [`createHeatmap`](../../../reference/actions/charts-data/#createheatmap) | H0 | user-facing | charts |
@@ -175,6 +176,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editGradientPlot`](../../../reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphData`](../../../reference/actions/charts-data/#editgraphdata) | H3 | user-facing | core |
 | [`editGraphics`](../../../reference/actions/extension/#editgraphics) | H4 | primitive | primitives |
+| [`editGraphPlot`](../../../reference/actions/charts-data/#editgraphplot) | H1, H3 | user-facing | charts |
 | [`editGrid`](../../../reference/actions/guides/#editgrid) | H3 | user-facing | grid |
 | [`editHierarchyData`](../../../reference/actions/charts-data/#edithierarchydata) | H2 | user-facing | core |
 | [`editHorizon`](../../../reference/actions/encodings/#edithorizon) | H2, H3 | user-facing | encodings |
@@ -300,6 +302,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](../../../reference/actions/charts-data/#highlightmarks) | H3 | user-facing | mark-selection |
 | [`insertCompositionChild`](../../../reference/actions/charts-data/#insertcompositionchild) | H3 | user-facing | composition |
 | [`jitterPoints`](../../../reference/actions/marks/#jitterpoints) | H3 | user-facing | marks |
+| [`layoutGraph`](../../../reference/actions/charts-data/#layoutgraph) | H2 | user-facing | core |
 | [`layoutHierarchy`](../../../reference/actions/charts-data/#layouthierarchy) | H2 | user-facing | core |
 | [`layoutLabels`](../../../reference/actions/marks/#layoutlabels) | H3 | user-facing | marks |
 | [`layoutSeries`](../../../reference/actions/encodings/#layoutseries) | H2 | user-facing | encodings |

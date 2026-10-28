@@ -1,0 +1,1 @@
+export interface GraphLabelPaint { fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }

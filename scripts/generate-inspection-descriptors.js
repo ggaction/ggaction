@@ -10,6 +10,7 @@ const vocabularyFile = path.join(root, "src/core/vocabulary.js");
 
 function optionKind(name, type, action) {
   if (name === "hierarchy" && action === "layoutHierarchy") return "resource";
+  if (name === "graph" && action === "layoutGraph") return "resource";
   if (/^(?:create|edit)(?:Tree|Treemap)Plot$/.test(action)) {
     if (name === "layout") return "resource";
     if (["nodes", "cells", "labels"].includes(name)) return "object";

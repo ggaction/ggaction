@@ -1,0 +1,1 @@
+export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly fy: number; }

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageVersion": "0.0.26",
-  "contractId": "sha256:979c2a020d7c324c2a7269eb223fb2b42a172a1a387446ff681c797b788cb954",
+  "contractId": "sha256:445ce9a1e8cbd4b7096fb47c1b632ce00bf5a65bae7e934f620d94e5c02c9840",
   "identityPolicy": "Match contractId and artifact hashes before mixing page, card, type, or MCP resource data. Task packets must come from the same installed card/resource set; packageVersion alone is insufficient.",
   "artifacts": [
     {
       "path": "actions.json",
-      "sha256": "c485fffa5ddc8dcbcef25794818ffca91599d234e865454d2126e336a04989b2",
-      "bytes": 1041564
+      "sha256": "5771dd5670856b69a91b5f1814633c5f2d27c6f02934b6dc584e1c853d55b469",
+      "bytes": 1049661
     },
     {
       "path": "mcp-resources.json",
@@ -31,28 +31,28 @@
     },
     {
       "path": "types/program.d.ts",
-      "sha256": "7b083c5846a1a5b97d4ede2ea1b93c3dccfc975da93fd0f38b7c4f815b2248d6",
-      "bytes": 250205
+      "sha256": "28ea61d0bc60630a119e4214577831f5831777672eeefab8dd0c4d718def1167",
+      "bytes": 254422
     }
   ],
   "catalogs": {
     "pages": {
-      "count": 154,
+      "count": 156,
       "path": "llm/pages.json",
-      "bytes": 38463,
-      "sha256": "49670feb18b64d4b42342824276ae2eb40e80fac199f4637fcf460373756bff2"
+      "bytes": 38917,
+      "sha256": "2af2459a888c7a5a8ae9ceda58b25056ec028f82ab45099207ab1815a97d71cc"
     },
     "actions": {
-      "count": 321,
+      "count": 324,
       "path": "llm/actions.json",
-      "bytes": 91146,
-      "sha256": "30669e2dc3614d2456bb3c3d29d74de022f6a56876c3321063cd0329ded5e201"
+      "bytes": 91968,
+      "sha256": "da3b1e90f71f446eed61db57412138671f97dc9542bbad3a3fa9270a65f1d31e"
     },
     "types": {
-      "count": 841,
+      "count": 855,
       "path": "llm/types.json",
-      "bytes": 188837,
-      "sha256": "5a6a5138b4964715ece8854208ba9384714239dd97b26912345e7de7278e11b9"
+      "bytes": 191742,
+      "sha256": "77006ecd8b8aa6f1e485c6928fffbdda258aeed317ba4323cf7099ac16b6eb55"
     }
   },
   "paths": {

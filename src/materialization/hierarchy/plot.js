@@ -1,3 +1,4 @@
+import { bindTextFontProperties } from "../textFont.js";
 import { hierarchyInputSources } from "../../grammar/hierarchy/input.js";
 import { contentDigest } from "../../core/contentDigest.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
@@ -61,9 +62,9 @@ export function resolveHierarchyPlot(program, layer, config) {
       const x = method === "tree" ? node.x : (node.rect.x0 + node.rect.x1) / 2;
       const y = method === "tree" ? node.y : source.childrenKeys.length ? (node.rect.y0 + node.content.y0) / 2 : (node.rect.y0 + node.rect.y1) / 2;
       item.graphicIndices.push(graphics.length); item.graphicRoles.push("label");
-      graphics.push({ type: "text", properties: { x: origin[0] + x + offset[0], y: origin[1] + y + offset[1],
+      graphics.push({ type: "text", properties: bindTextFontProperties(program, { x: origin[0] + x + offset[0], y: origin[1] + y + offset[1],
         text: labelText.get(node.key) ?? String(source.totalValue), ...labelPaint, ...labelOverrides.get(node.key),
-        textAlign: "center", textBaseline: "middle", ...(method === "treemap" && source.childrenKeys.length && node.content.y0 === node.rect.y0 ? { opacity: 0 } : {}) },
+        textAlign: "center", textBaseline: "middle", ...(method === "treemap" && source.childrenKeys.length && node.content.y0 === node.rect.y0 ? { opacity: 0 } : {}) }),
       identity: { key: item.key, topology: "", role: "label", lineage } });
     });
   }

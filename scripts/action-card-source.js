@@ -186,6 +186,7 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (action.name === "layoutGraph") return { prerequisites: ["existing graph resource"], owns: ["layout resource"], idOptions: ["id", "graph"] };
   if (action.name === "createGraphData" || action.name === "editGraphData") return {
     prerequisites: action.name === "createGraphData" ? ["explicit materialized node and edge datasets"] : ["existing observed graph"],
     owns: action.name === "createGraphData" ? ["graph resource"] : [],

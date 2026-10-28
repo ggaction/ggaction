@@ -133,7 +133,7 @@ Creation is local to a unit because its `target` names an endpoint field. Create
 graphs in their child units before composing charts. Editing supports the
 standard [scoped targets](../composition/editing.md#target-one-view-one-mark-or-several-marks). Source data revisions
 rebuild each affected graph once, updating exact input references and row
-provenance. A referenced source cannot be removed. Editable snapshots retain
+provenance. Bound layouts and [graph plots](../graphs.md) update in the same explicit action. A referenced source cannot be removed. Editable snapshots retain
 the graph model and validate its structure and source bindings on restoration.
 These actions and graph snapshots require the Full entry.
 
@@ -424,6 +424,25 @@ See [Data Revisions and Removal](./revisions-and-removal.md#editing-derived-data
 ## `removeData({ id })` {#removedata-id}
 
 See [Data Revisions and Removal](./revisions-and-removal.md#removedata-id) for this contract and its examples.
+
+
+## layoutGraph
+
+```typescript
+layoutGraph(options: LayoutGraphOptions): ChartProgram
+```
+
+Chart authoring, Full only. Compute numeric positions from an existing graph without changing its relationships. Choose `method:"fixed"`, `"circular"`, or `"force"`. The layout ID is required; omit `graph` only when the current or unique graph identifies it.
+
+Fixed layouts require `options.positions`, an array of `{key,x,y}` covering every node exactly once. Keys are original typed source keys, including compound arrays. Coordinates must be finite.
+
+Circular layouts default to `center:[0,0]`, `radius:100`, and `startAngle:0`. Angles use degrees clockwise from the top. A single node is placed at the center; empty graphs remain empty.
+
+Force layouts default to `seed:1`, `iterations:300`, `linkDistance:30`, `repulsion:100`, `collisionRadius:4`, `damping:0.9`, `center:[0,0]`, `componentGap:16`, and `pinned:[]`. Optional `initialPositions` must cover every node. Each pin is `{key,fx,fy}` and remains fixed when disconnected components are packed. Results are deterministic for the same graph and options.
+
+Every method accepts positive integer `maxNodes` and `maxEdges`, each defaulting to 10000. Work limits reject oversized computations. Explicit null, undefined, and unknown options fail.
+
+Use [editLayout](../hierarchy.md#editlayout) to patch options. Graph or source edits update dependent layouts once and reject incompatible fixed positions or pins atomically. Serialization retains the computed results; restoration validates them without running the force solver. These resource actions do not draw marks.
 
 ## Related
 

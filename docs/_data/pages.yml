@@ -493,3 +493,9 @@
 - title: Hierarchy Tutorial
   url: /tutorials/hierarchy/
   parent: /tutorials/
+- title: Graph Plots
+  url: /api/graphs/
+  parent: /api/
+- title: Graph Tutorial
+  url: /tutorials/graphs/
+  parent: /tutorials/

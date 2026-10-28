@@ -1,0 +1,41 @@
+# Graph plots
+
+Create [observed graph data and a layout](../../../api/data/source-and-derived/#observed-graph-data), then draw the stored node positions. Full supports fixed, circular and deterministic force layouts. The [graph tutorial](../../../tutorials/graphs/) uses the same program as the browser and renderer examples.
+
+## createGraphPlot
+
+```typescript
+createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram
+```
+
+Chart authoring. Draw circles, edge paths and optional labels from one graph layout. The first omitted ID is `graphPlot`; additional plots need explicit IDs. An omitted layout uses the current eligible graph layout, then the unique eligible layout. Missing or ambiguous inputs fail.
+
+`origin:"auto"` centers the stored node bounds in the plot frame without scaling coordinates. An explicit `[x,y]` translates by plot-local pixels. `clip:false` is the default; true clips to the plot frame. Resizing the Canvas updates placement while preserving the layout result.
+
+Nodes accept `radius`, `fill`, `stroke`, `strokeWidth`, `opacity`, and `overrides`. Defaults are radius 6, fill #2563eb, stroke #ffffff, width 1 and opacity 1. Fill accepts the shared structured paint values. Each override combines the same optional style fields with a required original typed node `key`.
+
+Edges accept `stroke`, `strokeWidth`, `opacity`, `parallelGap`, `loopRadius`, `arrowSize`, and `arrows`. Defaults are #94a3b8, 1.5, 1, 16, 20, 8 and `"auto"`. Auto arrows follow graph direction; true forces arrows and false hides them. Dimensions are nonnegative finite pixel values. Opacity is in [0,1]. Parallel edges retain separate curved routes in source order; self-loops remain visible. A directed edge and its arrow share one logical identity.
+
+## editGraphPlot
+
+```typescript
+editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram
+```
+
+Chart authoring. Apply a nonempty patch to layout binding, placement, node/edge appearance, or labels. Omitted target selects the current eligible mark, then a unique graph plot; ambiguity fails. Omitted fields preserve stored intent. Override arrays replace their previous array. Null, undefined, unknown fields and invalid values fail before changing the program.
+
+## Labels and identity
+
+Labels are disabled by default. `labels:{}` displays original node keys; `labels:false` removes them. Defaults are fill #0f172a, 12px sans-serif normal, and offset `[0,14]`. Set `field` to one retained node attribute. Scalar values become strings, null/undefined become empty strings, and object/array values fail. Label overrides accept a typed key, optional text, and optional fill/font style; offset is shared by the plot.
+
+Overrides must initially name existing distinct keys. A later source revision can make a stored override dormant. Inspection reports `orphan-style`, and only the same typed key can regain that style. Number `1` and string `"1"` remain different.
+
+Selection fields include `kind:"node"|"edge"`, `key`, and node attributes as `attribute:<name>`. Edges additionally expose sourceKey, targetKey, weight, origin, directed and ruleId. Node degree/incoming/outgoing fields describe retained adjacency. Exact source rows distinguish the node and edge tables. An edge selection includes its arrow; a node selection includes its label.
+
+Highlight `color` or `stroke` changes node borders, edge paths and arrow fill; label paint stays readable. Opacity and offset affect every component of the selected item. Fill, size, shape, fontSize and strokeDash highlights are unsupported. Use node style edits to change node fill or radius. Removing a highlight restores the current baseline.
+
+## Updates, removal and outputs
+
+Data, graph and layout revisions preflight all dependent plots, then update exact revisions and materialize nodes, edges, arrows and labels explicitly. Failure preserves the previous program and trace. Concat supports explicitly scoped plot/layout edits. Raw position encodings, axes and scale legends do not apply to these stored layout coordinates. Graph facet/repeat and induced filtering are not currently supported.
+
+Remove a plot with `removeMark` before removing its bound layout or graph. Resource cascade does not silently remove live graph marks. Editable serialization validates stored data, layout and style without rerunning force simulation. Canvas, SVG, PNG and PDF consume the same concrete primitives. Inspection and accessible export count each node or edge once rather than counting its label or arrow again.
