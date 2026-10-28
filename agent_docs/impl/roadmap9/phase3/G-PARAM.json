@@ -1,6 +1,6 @@
 {
   "id": "G-PARAM",
-  "state": "ready-for-review",
+  "state": "approved",
   "scope": [
     "STEP-013 parameter resource lifecycle and computed binding contract"
   ],
@@ -21,7 +21,13 @@
       "covered": "G-PARAM 작업과 구체적인 검토 패키지 준비",
       "notCovered": "아직 제시하지 않은 P1-P6의 정확한 공개/저장 계약"
     },
-    "reusedApproval": "G-EXPR.json designApproval; D1-D6 변경 없음"
+    "reusedApproval": "G-EXPR.json designApproval; D1-D6 변경 없음",
+    "designApproval": {
+      "date": "2026-10-28",
+      "userMessage": "야 승인한다. 그리고 이번 계획 모두 승인할테니까 그냥 끝까지 밀어버려. 병렬로 작업할수있는건 탭을 병렬로 띄우든 에이전트를 뜨는 그래서 끝까지 밀어",
+      "scope": "P1–P6 및 Roadmap9 STEP-077까지 실행",
+      "record": "agent_docs/impl/roadmap9/AUTHORIZATION.json"
+    }
   },
   "requiredChecks": [
     "parameter-review",
@@ -32,11 +38,9 @@
     "parameter-all",
     "parameter-machine"
   ],
-  "remaining": [
-    "explicit approval of P1-P6"
-  ],
+  "remaining": [],
   "baselineCommit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
-  "notice": "Review material only. No public parameter API, resource schema or STEP-013/AT-18 completion.",
+  "notice": "P1–P6 approved. Product implementation and STEP-013 acceptance remain in progress.",
   "evidenceManifest": "agent_docs/impl/roadmap9/phase3/parameter/evidence/summary.json",
   "evidenceRevision": "sha256:57cd7aa23a0f567a5467bfe39929b570d06200e0852e4ccc5760f42172eac11f",
   "reviewSourceRevision": "sha256:399ec3063d351c1b63fcfb541a141a4001f103b92b067a348cef9b11e8e2c659",
@@ -48,8 +52,7 @@
   },
   "knownBaselineLimitations": "agent_docs/impl/roadmap9/phase3/parameter/compatibility.md",
   "supplementalDecisionsPending": [
-    "STEP-016 conditional dataflow policy remains outside P1-P6; obligation retained",
-    "G-DATA contract and public v2 integration remain required"
+    "STEP-016 conditional dataflow policy and G-DATA contract are required dependent work under AUTHORIZATION.json; implementation evidence remains open."
   ],
   "codeRevision": "49f6bb9283e6ba34dba78508118b9d321a8417f5",
   "reviewPackagePushed": true

@@ -6,7 +6,7 @@
 - [x] P1–P6 계약, 제안 타입과 검토 전용 reference model 작성
 - [x] focused·누적 suite·타입·metadata 검증과 evidence 고정
 - [x] 검증된 패키지 commit/push
-- [ ] G-PARAM P1–P6 승인
+- [x] G-PARAM P1–P6 승인 — [전체 실행 승인](../AUTHORIZATION.json)
 - [ ] 승인 범위의 내부 구현과 안정 시험
 - [ ] G-DATA 이후 공개 v2/parameter 통합 및 제품 lifecycle 검증
 
@@ -50,7 +50,7 @@ Clean commit에서 실행했다고 바꾸어 기록하지 않는다.
 현재 기본 Node22.23.2의 package ceiling 실패와 기존 exactOptionalPropertyTypes 범례 충돌은
 [호환성 기록](parameter/compatibility.md)에 남아 있다. 전자는 동일 tar bytes의 compressor 차이로
 확인했고 이번 검토에서 한도를 바꾸지 않았다. 제품 통합 전 해결해야 하는 제한이며 baseline 성공으로
-상쇄하지 않는다. P1–P6 승인, 실제 parameter lifecycle 및 STEP-013/AT-18 완료는 아직 아니다.
+상쇄하지 않는다. P1–P6은 후속 사용자 메시지로 승인했다. 실제 parameter lifecycle 및 STEP-013/AT-18 완료는 아직 아니다.
 
 검토 source/evidence commit: `49f6bb9283e6ba34dba78508118b9d321a8417f5` (`main` push 완료). 후속 Gate metadata 기록은
-검증한 제안 코드·타입·모델·evidence bytes를 변경하지 않는다. G-PARAM은 ready-for-review이며 승인 전이다.
+검증한 제안 코드·타입·모델·evidence bytes를 변경하지 않는다. 후속 사용자 승인은 G-PARAM 및 전체 실행 승인 기록에 연결했다.
