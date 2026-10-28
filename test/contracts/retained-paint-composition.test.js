@@ -20,6 +20,7 @@ async function program(method) {
   const base = chart().createCanvas({ width: 260, height: 200, margin: 0 })
     .createData({ id: "rows", values: rows, keyField: "id" })
     .createHierarchyData({ id: "h", key: "id", parent: "parent", value: "value" })
+    .createGraphData({ id: "g", nodes: "rows", edges: "rows", nodeKey: "id", source: "id", target: "id", weight: "value", attributes: ["x"], selfLoops: true })
     .layoutHierarchy({ id: "layout", method, options: method === "tree" ?
       { nodeSize: [24, 10], siblingGap: 30, depthGap: 40, orientation: "vertical" } :
       { size: [160, 90], padding: 5, method: "squarify" } });
@@ -40,6 +41,11 @@ for (const method of ["tree", "treemap"]) test(`${method}, retained image and ou
   assert.equal(revised.semanticSpec.resources.find(resource => resource.kind === "hierarchy").revision, 1);
   assert.equal(revised.semanticSpec.resources.find(resource => resource.kind === "layout").revision, 1);
   assert.equal(revised.semanticSpec.resources.find(resource => resource.kind === "image").revision, 0);
+  const graph = revised.semanticSpec.resources.find(resource => resource.kind === "graph");
+  assert.equal(graph.revision, 1);
+  assert.deepEqual(graph.result.model.edges.map(edge => edge.weight), rows.map(row => row.value * 2));
+  assert.deepEqual(graph.result.model.nodes.map(node => node.attributes.x), rows.map(row => row.x + 5));
+  assert.ok(graph.provenance.sourceRows.every(row => row.data === "next" && row.revision === 1));
   const revisedItems = getMarkItems(revised, { target: "dots" });
   assert.deepEqual(revisedItems.map(item => item.key), originalItems.map(item => item.key));
   assert.deepEqual(revisedItems.map(item => item.rows.map(row => row.rowKey)), originalItems.map(item => item.rows.map(row => row.rowKey)));

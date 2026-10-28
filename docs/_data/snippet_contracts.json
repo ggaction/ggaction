@@ -3,13 +3,13 @@
     "file": "api/appearance/mark-style.md",
     "block": 1,
     "heading": "Outlines and text halos",
-    "mode": "fragment",
-    "environment": "esm-context",
+    "mode": "complete",
+    "environment": "node-esm",
     "receivers": [],
     "resources": [],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "prerequisites": "Run this complete ES module with ggaction installed; the inline row supplies the position and label fields.",
     "sha256": "99ee0fea80de0162bfb84d017210e2bcc3196cfc3e11434b8ca659611aa3bf79",
-    "executable": false
+    "executable": true
   },
   {
     "file": "api/appearance/mark-style.md",

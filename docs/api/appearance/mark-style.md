@@ -91,7 +91,7 @@ accept the same Text option.
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Run this complete ES module with ggaction installed; the inline row supplies the position and label fields.
 
 <!-- snippet-context:end -->
 

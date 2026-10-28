@@ -74,7 +74,7 @@ Point, Bar, Rect, Area, Arc, and Text create/edit options accept
 or actual letters and is painted before the fill. Attached labels and annotations
 accept the same Text option.
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Run this complete ES module with ggaction installed; the inline row supplies the position and label fields.
 
 ```javascript
 import { chart } from "ggaction";
