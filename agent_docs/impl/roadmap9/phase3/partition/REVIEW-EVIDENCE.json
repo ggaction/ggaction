@@ -1,6 +1,6 @@
 {
   "status": "ready-for-review",
-  "sourceEvidenceRevision": null,
+  "sourceEvidenceRevision": "0343a07877c2db37d94de92883d5cdabcec4d7b7",
   "baseline": "329eb81da4075eeb8de1ec35df37c75fe12a030c",
   "branch": "codex/roadmap9-partition",
   "runtimeChanged": false,

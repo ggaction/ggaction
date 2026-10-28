@@ -89,3 +89,5 @@ npm run package:check
 
 Root의 전체 Roadmap9 구현 승인을 재사용하여 이 private review를 준비했다. 이 새 시각 대상의 별도 확인은 아직 없다.
 이후 승인된 paint 공개 연결 작업을 우선하며, 현재 partition branch와 검토 증거는 독립적으로 보존한다.
+
+Source/evidence revision은 `0343a07877c2db37d94de92883d5cdabcec4d7b7`다. 후속 revision 기록은 metadata-only이며 검증 입력을 바꾸지 않는다.
