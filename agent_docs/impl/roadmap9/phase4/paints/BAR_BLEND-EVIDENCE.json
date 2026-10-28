@@ -1,6 +1,6 @@
 {
   "state": "implementation-verified",
-  "sourceRevision": null,
+  "sourceRevision": "da1de34460983705b2fb7e2d04b766a6123d1c1a",
   "visualApproval": {
     "revision": "90f5f67e",
     "quote": "두 검토 대상 모두 승인",
@@ -8,7 +8,7 @@
   },
   "checks": {
     "contracts": {
-      "passed": 87,
+      "passed": 90,
       "failed": 0
     },
     "lifecycleIncludingScenes": {
@@ -101,9 +101,10 @@
       ]
     },
     "documentation": {
-      "precommitPassed": 163,
-      "precommitFailed": 1,
-      "remaining": "canonical example source ref requires the committed source; regenerate and rerun before checkpoint push"
+      "passed": 164,
+      "failed": 0,
+      "sourceRef": "da1de34460983705b2fb7e2d04b766a6123d1c1a",
+      "firstFailure": "Precommit canonical example link was stale; source commit then generated provenance resolved it without runtime changes."
     }
   },
   "package": {
@@ -118,7 +119,7 @@
     "sha256": "697e691aa27e250b50e3075725377cb4bd201eac30da7d83d1ac6e046855cab5"
   },
   "logs": {
-    ".artifacts/paint-public-integration/bar-blend-final-contracts.log": "0224867053c120625d1b08bb2969d5e718e7dc9886bb8d44162a7befd773e8b3",
+    ".artifacts/paint-public-integration/bar-blend-final-contracts.log": "b87970be78c9df55e86941443748d6f36f346d3416e5e8128a12de6676dda995",
     ".artifacts/paint-public-integration/bar-blend-final-lifecycle.log": "6f66e511b4fcff6054437b45363af7ce3218a25a22c0ad0d0ed28e148c44f9cf",
     ".artifacts/paint-public-integration/bar-blend-unit.log": "10bc61f28a4611e8e8ad11ed9da2bcc0b2d2e080e70a9fa1bf8856a3cc785acf",
     ".artifacts/paint-public-integration/bar-blend-equivalence.log": "4e866087d0d97dc617e68bb0f5b4141ce5ee2e34d29e162042b5dee1261583a8",
@@ -128,7 +129,9 @@
     ".artifacts/paint-public-integration/bar-blend-adapters.log": "dc2a6ef8893363292cce3425c7cfd8ee10fc4ba0d1ffb946db8c59017424faae",
     ".artifacts/paint-public-integration/bar-blend-coverage.log": "8c6e57b33119967f04a119217eff67c457ece33cc8234067ffd009aa86ec9c52",
     ".artifacts/paint-public-integration/bar-blend-package-contracts.log": "9be95f8319421963a85bc407accc10cf291d3b79f1ec2303e6e9400b042cbea6",
-    ".artifacts/paint-public-integration/bar-blend-installed.log": "75a5788b1dcfff07297967e1000a0a8eb179fd32a32d541c3a796e3990ad9899"
+    ".artifacts/paint-public-integration/bar-blend-installed.log": "75a5788b1dcfff07297967e1000a0a8eb179fd32a32d541c3a796e3990ad9899",
+    ".artifacts/paint-public-integration/bar-blend-docs-final.log": "11da2a1c6b495d07559308003aaa28abb6cd536781525db1b17d7ae3628e9aec",
+    ".artifacts/paint-public-integration/bar-blend-package-final.json": "c4b5ec72d506be9ae98c41d846f7d11274bbc09e9b5959b99688feca45709cd8"
   },
   "remaining": [
     "P1/P2 및 ellipse 승인 대기",
@@ -137,7 +140,7 @@
   ],
   "notes": [
     "Package unpacked limit measured from 4873000 to 4874000; measured artifact4873522. Packed limit unchanged1048000.",
-    "Docs source pin failure is retained separately from runtime verification.",
+    "Canonical example and runtime references are pinned to the implementation commit; docs164/164 passed.",
     "No package publication, documentation deployment, or PR."
   ]
 }

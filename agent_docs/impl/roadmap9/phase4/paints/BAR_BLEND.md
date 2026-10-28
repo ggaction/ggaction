@@ -6,6 +6,7 @@
 - [x] 기존 `editBarMark`에 multiply/screen 추가, normal reset 및 semantic 단일 소유 유지
 - [x] Concrete rect/path, Browser Canvas·SVG·Node PNG·PDF 연결
 - [x] 독립 수식, 기존 primitive/public exact, 저장·재계산·facet 및 declaration 검사
+- [x] Contracts 90/90, 문서 164/164, 설치 소비자 196/196 및 최종 artifact 검증
 - [ ] 전체 STEP017 consumer 및 transparent isolated group의 공통 PNG lowering — 다음 연결 의무
 
 이 checkpoint는 새 action·group schema·effect 옵션을 만들지 않는다. 기존 P1/P2 공개 제안과 별도로 이미 승인한
