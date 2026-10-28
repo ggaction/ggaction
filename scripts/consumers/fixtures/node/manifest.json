@@ -798,6 +798,33 @@
     ]
   },
   {
+    "file": "pivot.mjs",
+    "cases": [
+      {
+        "id": "data-transforms/pivot",
+        "statements": 16
+      }
+    ]
+  },
+  {
+    "file": "loess-degree.mjs",
+    "cases": [
+      {
+        "id": "regression/quadratic-loess",
+        "statements": 16
+      }
+    ]
+  },
+  {
+    "file": "calendar-completion.mjs",
+    "cases": [
+      {
+        "id": "data-transforms/calendar-completion",
+        "statements": 15
+      }
+    ]
+  },
+  {
     "file": "parameters.mjs",
     "cases": [
       {

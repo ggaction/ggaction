@@ -8,6 +8,9 @@ All notable changes to `ggaction` are recorded in this file.
 
 - Add `createParameter`, `editParameter`, and `removeParameter` for immutable scalar inputs with exact revision references and atomic dependent-data and chart updates. Full supports the complete lifecycle; Basic supports creation.
 - Support explicit version 2 computed expressions with a closed function registry, distinct missing-value diagnostics, parameter bindings, and saved-program validation. Keep existing v1 expression behavior and expose immutable registry descriptors through `getExpressionFunctions`.
+- Add local quadratic LOESS with `degree: 2` across regression data, plots and editors, preserving the default local-linear result and supporting robust fitting and prediction grids.
+
+- Add Full-only `createPivotData` and `editPivotData` with typed columns, explicit duplicate aggregation, stable schema and lineage, and immutable revision of dependent data and chart consumers.
 
 - Prevent action trace summaries from invoking getters; reject executable computed-expression properties before evaluation while preserving existing formula results.
 

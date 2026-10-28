@@ -75,6 +75,21 @@ test("compact action cards are generated from the current action contract", asyn
   );
 });
 
+test("missing generated routes fail closed even when card and route map both omit one", async () => {
+  const { artifact, context } = await buildActionCards();
+  const card = artifact.cards[0];
+  const routes = { ...context.routes };
+  delete routes[card.name];
+  assert.throws(() => validateActionCards({
+    cards: artifact.cards.map(value => value === card ? { ...value, route: undefined } : value),
+    actions: context.actions, declarations: context.declarations, routes
+  }), /Route drift/);
+  const generation = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"))
+    .scripts["docs:generate"].split(" && ");
+  assert.ok(generation.indexOf("npm run docs:reference") >= 0);
+  assert.ok(generation.indexOf("npm run docs:reference") < generation.indexOf("npm run contracts:cards"));
+});
+
 test("compact action cards satisfy the bounded typed public schema projection", async () => {
   const [artifact, schema, collectionSchema, intents] = await Promise.all([
     readFile(cardFile, "utf8").then(JSON.parse),

@@ -5,10 +5,12 @@ export type DatasetCompleteTransform = {
   readonly fill: Readonly<Record<string, DatasetScalar>>;
   readonly members?: string;
 } & (
-  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never }
+  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never; readonly calendar?: never }
   | {
       readonly sequence: { readonly start: number; readonly end: number; readonly step: number };
       readonly values?: never;
+      readonly calendar?: never;
     }
-  | { readonly values?: never; readonly sequence?: never }
+  | { readonly calendar: CalendarDayDomain; readonly values?: never; readonly sequence?: never }
+  | { readonly values?: never; readonly sequence?: never; readonly calendar?: never }
 );

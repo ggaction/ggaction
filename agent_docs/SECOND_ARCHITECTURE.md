@@ -44,6 +44,84 @@ renderer에는 연결하지 않았다. 기존 computed v1의 의미와 직접 ma
 상세 내부 계약은 [expression core](architecture/EXPRESSION_CORE.md), 공개 computed는
 [CORE](contract/current/CORE.md), action trace는 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
 
+## Pivot data lifecycle
+
+`grammar/pivot.js`는 명시 typed columns와 group tuple을 받아 수치 cell을 계산하는 pure owner다.
+열 추론은 별도 normalize 호출에서 끝나고 derive는 저장할 정규형만 소비한다. Shared own-data validation,
+typed scalar identity, finite aggregate와 generated/work limit 정책을 재사용한다. Full의 `createPivotData`가
+관측 columns를 한 번 정규화하고 `createDerivedData`→`materializePivotData` child로 계산을 명시 호출한다.
+`editPivotData`는 기존 immutable revision plan과 typed-column output role을 사용한다. Group row grain과
+실제 source row lineage, 빈 numeric schema를 기존 dataset owner가 저장한다. Facet은 source partition을
+재계산하며 repeat의 statistical restriction은 유지한다. Basic은 direct/generic pivot 모두 지원하지 않는다.
+Persistence는 저장 정의/source schema/lineage를 검증하고 rows/graphics를 재계산하지 않고 복원한다.
+새 state/resource/renderer 종류는 없다. 정확한 공개 계약은 [CORE](contract/current/CORE.md#createpivotdata),
+검증과 통합 범위는 [public checkpoint](impl/roadmap9/phase3/statistics/PIVOT_PUBLIC.md)가 소유한다.
+아래 수치는 [private 준비 checkpoint](impl/roadmap9/phase3/statistics/PIVOT_KERNEL.md)의 보존 기록이다.
+
+이 독립 checkpoint는 기준 `8685719f`에 private module 한 개를 더한다. Node22.23.1/npm10.9.8의 공식
+staging 실측은 679entries, 1,011,694packed, 4,719,770unpacked bytes다. 이전 678entries 및
+1,010,000/4,713,000bytes 한도는 통과하지 못했다. 모듈 수와 최소1,000bytes 올림에 맞춰
+679entries 및 1,012,000/4,720,000bytes로만 변경했다. Full/Basic gzip은 기존과 같은
+507,597/285,702bytes로 508,000/286,000 한도를 유지한다. 이 수치는 해당 기준 branch의 측정이며
+다른 통합 checkpoint의 누적 한도를 대체하지 않는다.
+
+Public action owner 한 개와 declarations/descriptors를 연결한 독립 branch 실측은683entries,
+1,015,469packed/4,735,980unpacked bytes다. 이전682/1,014,000/4,727,000을 초과해
+683/1,016,000/4,736,000으로 최소 조정한다. 설치 Full gzip509,064는508,000을 초과해510,000으로
+올리고 Basic285,851 및 SVG는 기존286,000/25,000 한도를 유지한다. 정확 action2개와 설명을 더한
+search index857,741bytes는857,000을 초과해858,000으로만 조정한다. 모든 값은 main 통합 때 재측정한다.
+
+## LOESS local quadratic integration
+
+`grammar/regression/localQuadratic.js`는 이미 선택한 이웃의 x/y와 최종 weight만 받아 local quadratic
+prediction을 계산한다. Coordinate/response/weight scale을 정규화하고 singular local design은 동일 이웃의
+weighted constant mean으로 처리한다. 이웃 선택과 all-zero robust weight fallback은 기존 LOESS owner에 남는다.
+기존 polynomial의 partial-pivot linear solve와1e-12 rank 판정을 `regression/linearSystem.js`로 옮겨 공유하며,
+polynomial의 오류와 연산 순서 및 기존 LOESS local-linear 코드는 유지한다. 기존 공통 regression parameter
+owner가 공개 degree1/2를 정규화하며 기존 fit/robust/prediction 경로에서 degree2만 quadratic kernel로 dispatch한다.
+이웃 수는 fit과 work preflight가 같은 policy를 소비하고 모든 group의 추가 계산을 누적한다.
+새 action, materialization owner 또는 renderer 분기는 없다. 정확한 동작은 Current CORE와 STATISTICS가 소유한다.
+Private 준비 재현은 [private checkpoint](impl/roadmap9/phase3/statistics/LOCAL_QUADRATIC.md),
+공개 lifecycle 검증과 남은 범위는 [public checkpoint](impl/roadmap9/phase3/statistics/LOESS_PUBLIC.md)가 기록한다.
+
+Pivot 준비 이후 private math owner2개를 더한 당시 Node22.23.1/npm10.9.8 staging 실측은681entries,
+1,012,717packed, 4,722,952unpacked bytes다. 이전679entries/1,012,000/4,720,000 한도를 넘으므로
+최소681entries/1,013,000/4,723,000으로 변경했다. Full gzip507,618, Basic285,702bytes는 기존
+508,000/286,000 한도를 유지한다. 이 역시 독립 branch의 누적 측정이며 main 통합 시 다시 실측한다.
+
+공개 LOESS degree2 연결 뒤 동일 branch의 실측은683entries, 1,015,796packed/4,737,028unpacked bytes다.
+기존683entries와1,016,000packed 한도를 유지하며 unpacked만4,736,000을 넘어서4,738,000으로 최소 조정했다.
+설치 Full/Basic/SVG gzip509,588/285,851/8,111과 search857,752bytes는 기존 한도 안이다.
+이 값도 main의 다른 승인 변경을 통합한 뒤 누적 실측을 대체하지 않는다.
+
+## Civil-day completion integration
+
+`grammar/calendarDay.js`는 명시 day/start/end/timeZone을 받아 inclusive civil-day domain을 만드는 pure owner다.
+Strict lexical guard 뒤 기존 `parseTimeValue`로 Gregorian 날짜를 검증하고 `setUTCDate`로 civil date를 증가시킨다.
+각 IANA 경계는 기존 `resolveCalendarBoundary`와 `calendarParts`를 재사용한다. Day instant에 고정24시간을
+더하지 않으며 존재하지 않는 civil date는 오류다. 기존 resolver의 probe 범위와 간격에 이름을 붙여 최대
+roundtrip 작업량50을 같은 owner에서 공유한다. General time-unit의 연산과 결과는 바꾸지 않았다.
+새 domain은 최대10,000일이며 Intl 작업과 output allocation 전에 공통 generated/work 한도를 확인한다.
+Full의 기존 complete transform이 이 owner의 domain과 count/work estimate를 소비한다.
+Values/sequence/calendar의 authored domain은 기존 transform 한 곳에 저장하며 expanded domain은 저장하지 않는다.
+기존 explicit data materializer와 row lineage가 각각 pure completion을 호출하므로 calendar work preflight는
+두 계산과 입력 검증·group/output cells의 누적 비용을 예약한다. Generic primitive에 새 계산을 넣지 않는다.
+Schema owner는 빈 grouped 결과에도 numeric key와 fill/members fields를 유지한다. Renderer와 resource/state 경계는 그대로다.
+정확한 공개 계약은 [Current CORE](contract/current/CORE.md#createcompletedata), 초기 pure 검증은
+[private checkpoint](impl/roadmap9/phase3/calendar/CALENDAR_DAY_KERNEL.md), 공개 lifecycle과 남은 범위는
+[public checkpoint](impl/roadmap9/phase3/calendar/CALENDAR_PUBLIC.md)가 소유한다.
+
+새 pure module 한 개를 더한 Node22.23.1/npm10.9.8 공식 staging 실측은682entries,
+1,013,735packed, 4,726,245unpacked bytes다. 이전681entries/1,013,000/4,723,000을 초과해
+최소682entries/1,014,000/4,727,000으로만 변경했다. 이 수치는 독립 branch의 누적 측정이며
+main integration의 package 증거를 대체하지 않는다. 설치 Full/Basic gzip507,597/285,702bytes는
+기존508,000/286,000 한도 안이다.
+
+공개 calendar 연결의 Node22.23.1/npm10.9.8 누적 실측은683entries/1,016,672packed/4,741,042unpacked bytes다.
+기존 entry cap683은 유지하고 byte caps만1,017,000/4,742,000으로 올렸다. Full/Basic gzip510,544/287,705는
+최소1,000byte 경계511,000/288,000으로 갱신했다. Basic 증가는 shared lineage import graph 비용이며
+Basic의 direct/generic complete 미지원 경계를 바꾸지 않는다. Search858,646bytes는859,000 cap으로 갱신했다.
+
 ## 범례 항목 이동 소유권
 
 범례 항목의 독립 이동 의도는 기존 `guideConfigs.legend`가 소유하고,

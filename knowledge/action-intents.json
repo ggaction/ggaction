@@ -954,6 +954,11 @@
       "prepared data update",
       "CSV and JSON sources",
       "atomic source refresh"
+    ],
+    "PivotData": [
+      "grouped pivot data",
+      "category columns",
+      "long to wide data"
     ]
   },
   "summaryOverrides": {
@@ -1742,6 +1747,16 @@
       "requestToken": {
         "$code": "currentToken"
       }
+    },
+    "createPivotData": {
+      "id": "wide",
+      "field": "category",
+      "value": "amount",
+      "op": "sum"
+    },
+    "editPivotData": {
+      "target": "wide",
+      "op": "count"
     }
   },
   "callPatternOverrides": {

@@ -560,7 +560,7 @@ export type DatasetRegressionTransform = {
       method: "loess";
       span: number;
       robustIterations?: number;
-      degree?: never;
+      degree?: 2;
       confidenceMethod?: never;
       level?: never;
       confidence?: never;
@@ -1048,6 +1048,14 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
     } & DatasetNormalizeBaselineTransform)
   | ({ readonly method: "change" } & DatasetNormalizeBaselineTransform)
 );
+export interface CalendarDayDomain {
+  readonly unit: "day";
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly start: string;
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly end: string;
+  readonly timeZone: string;
+}
 export type DatasetCompleteTransform = {
   readonly type: "complete";
   readonly key: string;
@@ -1055,12 +1063,14 @@ export type DatasetCompleteTransform = {
   readonly fill: Readonly<Record<string, DatasetScalar>>;
   readonly members?: string;
 } & (
-  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never }
+  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never; readonly calendar?: never }
   | {
       readonly sequence: { readonly start: number; readonly end: number; readonly step: number };
       readonly values?: never;
+      readonly calendar?: never;
     }
-  | { readonly values?: never; readonly sequence?: never }
+  | { readonly calendar: CalendarDayDomain; readonly values?: never; readonly sequence?: never }
+  | { readonly values?: never; readonly sequence?: never; readonly calendar?: never }
 );
 type DatasetImputedBaseTransform = {
   readonly type: "impute";
@@ -1106,7 +1116,34 @@ interface DatasetStatisticalReferenceTransform {
   readonly type: "statisticalReference";
   readonly target: string;
 }
+export interface PivotColumn {
+  readonly value: string | number | boolean | null;
+  readonly as: string;
+}
+export type PivotNumericOperation = "none" | "sum" | "mean" | "min" | "max";
+export type DatasetPivotTransform = {
+  readonly type: "pivot";
+  readonly field: string;
+  readonly groupBy: readonly string[];
+  readonly columns: readonly PivotColumn[];
+  readonly fill: number | null;
+} & (
+  | { readonly op: PivotNumericOperation; readonly value: string }
+  | { readonly op: "count"; readonly value?: never }
+);
+export type PivotDataOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string | readonly string[];
+  columns?: readonly PivotColumn[];
+  fill?: number | null;
+} & (
+  | { op?: PivotNumericOperation; value: string }
+  | { op: "count"; value?: never }
+);
 export type DatasetTransform =
+  | DatasetPivotTransform
   | DatasetBinTransform
   | DatasetBin2DTransform
   | DatasetCompleteTransform
@@ -2950,12 +2987,14 @@ type CompleteDataBaseOptions = {
   members?: string;
 };
 export type CompleteDataOptions = CompleteDataBaseOptions & (
-  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never }
+  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never; calendar?: never }
   | {
       values?: never;
       sequence: { start: number; end: number; step: number };
+      calendar?: never;
     }
-  | { values?: never; sequence?: never }
+  | { calendar: CalendarDayDomain; values?: never; sequence?: never }
+  | { values?: never; sequence?: never; calendar?: never }
 );
 type ImputedDataBaseOptions = {
   id: string;
@@ -3053,6 +3092,7 @@ export type EditFilteredDataOptions = FilterModePatch & {
 };
 export type EditFlattenDataOptions = FocusedDerivedDataEdit<FlattenDataOptions>;
 export type EditLookupDataOptions = FocusedDerivedDataEdit<LookupDataOptions>;
+export type EditPivotDataOptions = FocusedDerivedDataEdit<PivotDataOptions>;
 export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 export type EditSummaryDataOptions = FocusedWeightedDerivedDataEdit<
   SummaryDataOptions,
@@ -5121,7 +5161,8 @@ type RegressionParameterOptions =
     }
   | {
       method: "loess";
-      degree?: never;
+      /** Local polynomial degree; default 1. */
+      degree?: 1 | 2;
       span?: number;
       /** Residual reweighting passes, integer 0..32; default 0. */
       robustIterations?: number;
@@ -5640,6 +5681,7 @@ export class ChartProgram {
   createBinData(options: TargetedOptions<BinDataOptions>): ChartProgram;
   createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
+  createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
@@ -5663,6 +5705,7 @@ export class ChartProgram {
   editFilteredData(options: TargetedOptions<EditFilteredDataOptions>): ChartProgram;
   editFlattenData(options: TargetedOptions<EditFlattenDataOptions>): ChartProgram;
   editLookupData(options: TargetedOptions<EditLookupDataOptions>): ChartProgram;
+  editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;
   editFoldData(options: TargetedOptions<EditFoldDataOptions>): ChartProgram;
   editSummaryData(options: TargetedOptions<EditSummaryDataOptions>): ChartProgram;
   editBinData(options: TargetedOptions<EditBinDataOptions>): ChartProgram;

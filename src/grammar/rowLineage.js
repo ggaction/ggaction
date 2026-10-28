@@ -15,6 +15,7 @@ import { normalizedRowContributions } from "./normalize.js";
 import { imputedRowContributions } from "./impute.js";
 
 export const LINEAGE_TRANSFORMS = Object.freeze([
+  "pivot",
   "bin", "bin2d", "computed", "complete", "boxOutlier", "boxSummary", "density", "ecdf", "filter",
   "flatten", "lookup", "fold", "gradientProfile", "horizon", "interval", "impute", "markFilter",
   "normalize", "regression", "regressionStatistics", "sort", "summary", "stack", "statisticalReference", "timeUnit", "window"

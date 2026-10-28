@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:5a2fd3438d26a7a169de50f18044300ed7498b4d68dc254b739c1d3e9a741061",
-  "sourceCommit": "ed0eff54a9a87380b9ee7ceb9300a24744755664",
-  "sourceRef": "ed0eff54a9a87380b9ee7ceb9300a24744755664",
+  "contractId": "sha256:40ba83f1722b03c6c309334ccf013fc94a37d861a49d5dd55402dfbbb3c56f94",
+  "sourceCommit": null,
+  "sourceRef": "main",
   "exampleSourceRef": "b8f9668133b278974c9cfe7324402a18282c9f4b",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 302,
+  "actionCount": 304,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -103,6 +103,10 @@
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
+    "createPivotData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
     "createFoldData": {
       "availableBy": "v0.0.13"
     },
@@ -183,6 +187,10 @@
       "status": "development"
     },
     "editLookupData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editPivotData": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

@@ -721,7 +721,7 @@ createRegressionData({
 
 Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
-LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
+LOESS is line-only, with `degree: 1` (default) or `degree: 2` for a local quadratic fit. Optional `robustIterations` (integer `0..32`, default `0`)
 adds residual reweighting; see [regression](../../../../api/regression/) for the estimator policy.
 [Data](../../../../api/data/)
 

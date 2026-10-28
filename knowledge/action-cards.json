@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 302,
+  "count": 304,
   "cards": [
     {
       "schemaVersion": 3,
@@ -1873,6 +1873,126 @@
     },
     {
       "schemaVersion": 3,
+      "name": "createPivotData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Turn category cells into numeric columns within observed groups.",
+      "signature": "createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;",
+      "intents": [
+        "create pivot data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "grouped pivot data",
+        "category columns"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "grouped pivot data"
+        ],
+        "idOptions": [
+          "id",
+          "source",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [
+        "editPivotData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "columns",
+          "required": false,
+          "type": "readonly PivotColumn[] | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "op",
+          "required": false,
+          "type": "\"count\" | PivotNumericOperation | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createPivotData({ id, field, source?, target?, groupBy?, columns?, fill?, op? })"
+      ],
+      "snippet": "program.createPivotData({ id: \"wide\", field: \"category\", value: \"amount\", op: \"sum\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createpivotdata"
+    },
+    {
+      "schemaVersion": 3,
       "name": "createParameter",
       "layer": "user-facing",
       "domain": "core",
@@ -2534,6 +2654,11 @@
           "name": "sequence",
           "required": false,
           "type": "{ start: number; end: number; step: number; } | undefined"
+        },
+        {
+          "name": "calendar",
+          "required": false,
+          "type": "CalendarDayDomain | undefined"
         },
         {
           "name": "target",
@@ -4236,6 +4361,112 @@
     },
     {
       "schemaVersion": 3,
+      "name": "editPivotData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits grouped pivot data, including settings for category columns.",
+      "signature": "editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;",
+      "intents": [
+        "edit pivot data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "grouped pivot data",
+        "category columns"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing grouped pivot data",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editPivotData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing grouped pivot data",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string | ActionTargetList | ScopedActionTarget"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "columns",
+          "required": false,
+          "type": "readonly PivotColumn[] | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "op",
+          "required": false,
+          "type": "\"count\" | PivotNumericOperation | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editPivotData({ target, dependents?, field?, groupBy?, columns?, fill?, op?, value? })"
+      ],
+      "snippet": "program.editPivotData({ target: \"wide\", op: \"count\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#editpivotdata"
+    },
+    {
+      "schemaVersion": 3,
       "name": "editSummaryData",
       "layer": "user-facing",
       "domain": "statistics",
@@ -5681,6 +5912,11 @@
           "name": "sequence",
           "required": false,
           "type": "{ start: number; end: number; step: number; } | undefined"
+        },
+        {
+          "name": "calendar",
+          "required": false,
+          "type": "CalendarDayDomain | undefined"
         }
       ],
       "callPatterns": [

@@ -44,6 +44,7 @@ import { createWindowData, materializeWindowData } from "./window.js";
 import { createSummaryData, materializeSummaryData } from "./summary.js";
 import { createBinData, materializeBinData } from "./bin.js";
 import { createFoldData, materializeFoldData } from "./fold.js";
+import { createPivotData, materializePivotData } from "./pivot.js";
 import { createFlattenData, materializeFlattenData } from "./flatten.js";
 import {createLookupData,materializeLookupData} from "./lookup.js";
 import { createComputedData, materializeComputedData } from "./computed.js";
@@ -104,6 +105,8 @@ export function registerDataActions(ProgramClass) {
     materializeLookupData,
     createFoldData,
     materializeFoldData,
+    createPivotData,
+    materializePivotData,
     createComputedData,
     materializeComputedData,
     createNormalizedData,

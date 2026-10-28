@@ -333,6 +333,8 @@ function derivedEditingPrograms() {
       as: { key: "foldKey", value: "foldValue" }
     })
     .editFoldData({ target: "editFold", fields: ["a"] })
+    .createPivotData({ id: "editPivot", source: "editSource", field: "category", groupBy: "group", value: "value", op: "sum" })
+    .editPivotData({ target: "editPivot", op: "mean" })
     .createSummaryData({
       id: "editSummary", source: "editSource",
       aggregates: [{ op: "mean", field: "value", as: "mean" }]

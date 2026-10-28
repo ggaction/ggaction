@@ -14,7 +14,8 @@
 - [x] 최종 전체 coverage·normal: 6,592 tests, 0 failures, 입력 hash 변화 없음
 - [x] Realistic: 29files/275tests 모두 통과, runtime·타입·fixture·발견한 test SHA 불변
 - [x] 검증 evidence와 구현 checkpoint `ed0eff54` commit/push
-- [ ] Main 통합 및 exact-commit STEP-013 종료 기록
+- [x] Main 통합 `19d14da4` 및 clean 로컬 필수 검사
+- [ ] CI package 크기 한도 수정 후 exact-commit STEP-013 종료 기록
 
 현재 구현 계약은 [CORE](../../../contract/current/CORE.md#applydataupdate), 설계 경계는
 [PUBLIC](data/PUBLIC.md), 저장 검증은 [STATE](data/STATE.md)가 소유한다.
@@ -80,3 +81,5 @@ STEP-014/015 통계·달력과 STEP-016 조건부 dataflow 및 STEP-017 이후 �
 검사한다. 제품 통합의 전체 normal/realistic/render/browser/installed matrix와 frozen input hash는
 추가 artifact로 보존한다. 현재 dirty working-tree receipt를 clean commit 증거로 바꾸지 않는다.
 CI는 exact commit을 대조하고, 앞선 parameter commit의 CI20jobs 성공과 이번 DATA 검증을 구분한다.
+
+후속 통계 통합과 CI package 크기 실패/수정은 [STEP7](STEP7.md)에 기록한다.

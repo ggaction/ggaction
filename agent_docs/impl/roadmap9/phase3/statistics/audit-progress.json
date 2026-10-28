@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "taskId": [
+    "STEP-014",
+    "STEP-015"
+  ],
+  "status": "verified-on-isolated-branch",
+  "implementationCommit": "982c53a2587d5747b0865e6f68f47ee79a13fd27",
+  "contractRevision": "c862feae317f55ce677f8e123b8007052736b39c",
+  "gateEvidence": [
+    {
+      "path": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+      "scope": "Existing approved plan through STEP077; no new visual target added"
+    }
+  ],
+  "changedFiles": [
+    "scripts/check-statistical-fixtures.js",
+    "test/oracles/statistical-fixtures.js",
+    "test/support/statistical-fixtures.js",
+    "test/unit/actions/data/statistical-fixtures.test.js",
+    "test/capabilities.json",
+    "agent_docs/impl/roadmap9/phase3/statistics/STATISTICS_AUDIT.md",
+    "agent_docs/impl/roadmap9/phase3/statistics/audit-progress.json",
+    "agent_docs/impl/roadmap9/phase3/statistics/PIVOT_PUBLIC.md",
+    "agent_docs/impl/roadmap9/phase3/statistics/LOESS_PUBLIC.md",
+    "agent_docs/impl/roadmap9/phase3/calendar/CALENDAR_PUBLIC.md"
+  ],
+  "commands": [
+    {
+      "command": "node scripts/run-tests.js unit capability:statistical-fixtures",
+      "exitCode": 0,
+      "passed": 340,
+      "log": ".artifacts/validation/statistical-fixtures/unit.log"
+    },
+    {
+      "command": "node scripts/run-tests.js contracts capability:statistical-fixtures contracts/test-discovery.test.js contracts/source-boundaries.test.js",
+      "exitCode": 0,
+      "passed": 42,
+      "log": ".artifacts/validation/statistical-fixtures/contracts.log"
+    },
+    {
+      "command": "node scripts/run-tests.js unit unit/actions/data/statistical-fixtures.test.js",
+      "exitCode": 0,
+      "passed": 20,
+      "log": ".artifacts/validation/statistical-fixtures/focused.log"
+    },
+    {
+      "command": "node scripts/check-statistical-fixtures.js",
+      "exitCode": 0,
+      "passed": 18,
+      "log": ".artifacts/validation/statistical-fixtures/numeric.log"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": ".artifacts/validation/statistical-fixtures/numeric-evidence.json",
+      "sha256": "033456cea298de309cf9c9a88ae4661243229fa91ba8493f601244a10b16e9af"
+    },
+    {
+      "path": ".artifacts/validation/statistical-fixtures/unit.log",
+      "sha256": "ab4eca320bb8bbcc02dba1f856fca68f3d544ba1a9afab05e6ff4d3fcf6f1558"
+    },
+    {
+      "path": ".artifacts/validation/statistical-fixtures/contracts.log",
+      "sha256": "c2739e0f6dad797823ca4d3e911fafc1d6c2d6c90fe7af0639fe72e4b64ba53e"
+    },
+    {
+      "path": ".artifacts/validation/statistical-fixtures/focused.log",
+      "sha256": "820d08e403766b152dc9216d9aa4da66f41b3fd9b3bf1c9ccdb974f9c9a69f9a"
+    },
+    {
+      "path": ".artifacts/validation/statistical-fixtures/numeric.log",
+      "sha256": "83834f9d6e33786e2565a9b69ec7b980b3ece97be4d71edb2b203afcfef08cc0"
+    }
+  ],
+  "independentOracleReview": {
+    "method": "Independent literal expectations, contributor vectors, Gaussian formula and invariants; no production or roadmap imports in oracle",
+    "oracle": "test/oracles/statistical-fixtures.js",
+    "oracleSha256": "5fd327caa092f6e2402763193f473135e261b23f82dcae65ba8357205fe8187e",
+    "tolerance": {
+      "absolute": 1e-9,
+      "relative": 1e-9
+    },
+    "caseCount": 18
+  },
+  "consumerCells": [
+    {
+      "cell": "numeric-values",
+      "status": "passed",
+      "evidence": "18 independent original and changed-source values; per-case hashes in numeric-evidence.json"
+    },
+    {
+      "cell": "lineage-and-identity",
+      "status": "passed",
+      "evidence": "18 original and revised exact contributor vectors plus complete registered transform corpus"
+    },
+    {
+      "cell": "create-edit-revise-schema",
+      "status": "passed",
+      "evidence": "family data tests and exhaustive focused editor lifecycle"
+    },
+    {
+      "cell": "ref-collector-and-removal",
+      "status": "passed",
+      "evidence": "both lookup sources, diamond deduplication and calendar source protection"
+    },
+    {
+      "cell": "inspection-and-codec",
+      "status": "passed",
+      "evidence": "descriptor/state contracts; immutable semantic and graphic roundtrip"
+    },
+    {
+      "cell": "selection-scene-svg-canvas",
+      "status": "passed",
+      "evidence": "all 18 fixture programs plus focused new capability lifecycle tests"
+    },
+    {
+      "cell": "facet-composition",
+      "status": "passed",
+      "evidence": "existing source partition tests and pivot/LOESS/calendar lifecycle; statistical repeat restrictions retained"
+    },
+    {
+      "cell": "installed-types-png-pdf",
+      "status": "reused-passed",
+      "evidence": "same runtime calendar checkpoint installed node190 and complete snippets66"
+    },
+    {
+      "cell": "docs-and-package",
+      "status": "reused-passed",
+      "evidence": "same runtime docs161, built150pages/1183artifacts, desktop/responsive/axe browser"
+    },
+    {
+      "cell": "critical-coverage",
+      "status": "reused-passed",
+      "evidence": "source unchanged since previously verified calendar, LOESS and pivot critical floors"
+    },
+    {
+      "cell": "async-cleanup",
+      "status": "not-applicable",
+      "evidence": "synchronous pure transforms create no asynchronous resources"
+    },
+    {
+      "cell": "calendar-visual-target",
+      "status": "deferred-in-assigned-step",
+      "evidence": "STEP-024 rendered primitive and public calendar geometry remain required"
+    },
+    {
+      "cell": "combined-main-and-qualification",
+      "status": "pending",
+      "evidence": "parent integrates parameter/G-DATA and later STEP-074 qualification"
+    }
+  ],
+  "openObligations": [
+    "Combined main parameter/v2/G-DATA integration and cumulative validation",
+    "STEP-024 calendar cell/month geometry and rendered primitive approval",
+    "STEP-074 qualification",
+    "Remaining roadmap through STEP077"
+  ],
+  "handoff": {
+    "completed": [
+      "Full pivot, LOESS degree2 and calendar completion public checkpoints",
+      "Existing statistical numeric/edge/weight/capacity and consumer audit",
+      "Source-only independent fixture and changed-source revision evidence"
+    ],
+    "remaining": [
+      "Parent integration and combined package/bundle measurements",
+      "Calendar visual target and final qualification"
+    ],
+    "nextTask": "Parent integration; STEP-024 visual target remains separate"
+  },
+  "notice": "Verified branch evidence, not whole roadmap completion. Runtime files and packed artifact inputs are unchanged by this audit."
+}

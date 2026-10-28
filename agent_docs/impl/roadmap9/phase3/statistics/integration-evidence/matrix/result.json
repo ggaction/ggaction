@@ -1,0 +1,41 @@
+[
+  {
+    "id": "node22",
+    "node": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+    "args": [
+      "scripts/package-consumer.js",
+      "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz"
+    ],
+    "started": "2026-10-28T14:45:26.495Z",
+    "finished": "2026-10-28T14:46:35.331Z",
+    "exitCode": 0,
+    "signal": null,
+    "artifactSha256": "432b9cce9d2017770452934f84526ea56d52fc36e14c85ad9fcf45cd9331d06c"
+  },
+  {
+    "id": "node20",
+    "node": "/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node",
+    "args": [
+      "scripts/package-consumer.js",
+      "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz"
+    ],
+    "started": "2026-10-28T14:46:35.334Z",
+    "finished": "2026-10-28T14:47:39.984Z",
+    "exitCode": 0,
+    "signal": null,
+    "artifactSha256": "432b9cce9d2017770452934f84526ea56d52fc36e14c85ad9fcf45cd9331d06c"
+  },
+  {
+    "id": "node24",
+    "node": "/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+    "args": [
+      "scripts/package-consumer.js",
+      "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz"
+    ],
+    "started": "2026-10-28T14:47:39.986Z",
+    "finished": "2026-10-28T14:48:41.232Z",
+    "exitCode": 0,
+    "signal": null,
+    "artifactSha256": "432b9cce9d2017770452934f84526ea56d52fc36e14c85ad9fcf45cd9331d06c"
+  }
+]

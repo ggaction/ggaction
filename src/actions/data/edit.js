@@ -43,6 +43,7 @@ const CREATOR_BY_TYPE = Object.freeze({
   flatten: "createFlattenData",
   lookup:"createLookupData",
   fold: "createFoldData",
+  pivot: "createPivotData",
   impute: "createImputedData",
   interval: "createIntervalData",
   normalize: "createNormalizedData",
@@ -65,6 +66,7 @@ const REVISION_ROLE = Object.freeze({
   flatten: "FlattenData",
   lookup:"LookupData",
   fold: "FoldData",
+  pivot: "PivotData",
   impute: "ImputedData",
   interval: "IntervalData",
   normalize: "NormalizedData",
@@ -594,8 +596,11 @@ export const editNormalizedData = /* @__PURE__ */ focusedEditor(
 );
 export const editCompleteData = /* @__PURE__ */ focusedEditor(
   "editCompleteData", "complete", [
-    "key", "groupBy", "values", "sequence", "fill", "members"
+    "key", "groupBy", "values", "sequence", "calendar", "fill", "members"
   ]
+);
+export const editPivotData = /* @__PURE__ */ focusedEditor(
+  "editPivotData", "pivot", ["field", "value", "groupBy", "columns", "op", "fill"]
 );
 export const editImputedData = /* @__PURE__ */ focusedEditor(
   "editImputedData", "impute", [
@@ -622,5 +627,6 @@ export const EDIT_DERIVED_DATA_ACTIONS = Object.freeze({
   editECDFData,
   editNormalizedData,
   editCompleteData,
+  editPivotData,
   editImputedData
 });

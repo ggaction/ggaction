@@ -20,6 +20,28 @@ programs. Later independently authored marks follow ordinary authoring order;
 editing a plot-last regression reapplies its placement. `createRegressionPlot`
 accepts the same option.
 
+For a complete quadratic example:
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Standalone ES module with ggaction installed; all observations are declared in the sample.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const observations = Array.from({ length: 11 }, (_, x) => ({ x, y: x * x }));
+const quadraticFit = chart()
+  .createCanvas({ width: 480, height: 320, margin: 50 })
+  .createData({ values: observations })
+  .createRegressionPlot({
+    x: "x", y: "y", method: "loess", degree: 2, span: 1
+  });
+```
+
+The fitted values match the quadratic observations within floating-point precision.
+
 ## At a glance
 
 | Action | Required decision | Inferred or default behavior |
@@ -73,7 +95,7 @@ program.createRegression({
 | `x`, `y` | quantitative field names | target x/y fields |
 | `groupBy` | nominal field name or `false` (legacy explicit `undefined` also supported) | unique color/shape field |
 | `method` | `"linear"`, `"polynomial"`, `"loess"`, or `"exp"` | `"linear"` |
-| `degree` | integer from `1` through `32` for polynomial | `2` |
+| `degree` | polynomial: integer `1..32`; LOESS: `1` or `2` | polynomial: `2`; LOESS: `1` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `robustIterations` | LOESS residual reweighting passes, integer `0..32` | `0` |
 | `confidenceMethod` | `"normal"` or `"student-t"` | `"student-t"` |
@@ -132,9 +154,16 @@ used at creation. `"follow"` refits when `reviseData` advances that logical
 source. Appearance-only edits preserve fitted rows. Statistical, field, or
 prediction-grid edits create one new immutable fitted dataset.
 
-LOESS defaults to an ordinary local-linear fit. Set `robustIterations: 2`
+LOESS defaults to an ordinary local-linear fit. Set `degree: 2` for local quadratic
+fits, or `degree: 1` to restore local-linear fitting. The quadratic fit centers and
+scales x at each prediction location; a rank-deficient neighborhood uses its weighted
+constant mean without adding more neighbors. A two-row group therefore remains valid.
+All groups still need at least two rows and two distinct x values. Omitted degree
+and explicit degree 1 retain the existing stored transform; only degree 2 is stored.
+
+Set `robustIterations: 2`
 for two residual reweighting passes. Each neighborhood contains
-`max(2, ceil(span * groupRowCount))` rows; equal distances use source order,
+`min(groupRowCount, max(degree + 1, ceil(span * groupRowCount)))` rows; equal distances use source order,
 and duplicate x values share one prediction. If all neighbors lie at the
 tricube boundary (all distance weights zero), equal weights resolve the tied
 sample. Each pass multiplies the tricube distance
@@ -150,7 +179,8 @@ its persisted transform; positive counts are stored in provenance.
 
 Each regression produces at most 10,000 group/x rows. Polynomial and LOESS
 inputs whose estimated fitting work exceeds 10,000,000 units throw a
-`RangeError` before the expensive fit begins.
+`RangeError` before the expensive fit begins. Quadratic LOESS includes the extra
+local solves in that cumulative limit across groups, robust passes, and prediction positions.
 
 The action keeps each fitted dataset, band, and line associated with its target
 point mark, so multiple point layers can add independent regressions in one

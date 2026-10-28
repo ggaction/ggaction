@@ -197,6 +197,36 @@
     "rendering": "authoring-only"
   },
   {
+    "id": "pivot-data",
+    "file": "api/data/summaries-and-shaping.md",
+    "contains": "const wide = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "plot",
+    "prerequisites": "The complete snippet imports chart and declares its input rows.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "quadratic-loess",
+    "file": "api/regression.md",
+    "contains": "const observations = Array.from",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "quadraticFit",
+    "prerequisites": "Standalone ES module with ggaction installed; all observations are declared in the sample.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "calendar-day-completion",
+    "file": "api/data/missing-data.md",
+    "contains": "const dayRange = {",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "dailyPlot",
+    "prerequisites": "Standalone ES module with ggaction installed; the sample declares all input events.",
+    "rendering": "authoring-only"
+  },
+  {
     "id": "parameter-computed-revision",
     "file": "api/data/expressions-and-normalization.md",
     "contains": "const original = chart().createCanvas()",

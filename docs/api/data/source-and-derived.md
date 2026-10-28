@@ -207,12 +207,13 @@ corresponding higher-level action when the library should materialize values:
 | `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, weight?, resolved? }` | `createBinData` |
 | `"computed"` | `{ type, as, expression }` | `createComputedData` |
 | `"normalize"` | `{ type, field, as, groupBy, method, ...methodPolicies }` | `createNormalizedData` |
-| `"complete"` | `{ type, key, groupBy, values? or sequence?, fill, members? }` | `createCompleteData` |
+| `"complete"` | `{ type, key, groupBy, values? or sequence? or calendar?, fill, members? }` | `createCompleteData` |
 | `"impute"` | `{ type, fields, groupBy, sortBy, method, value?, edges, maxGap? }` | `createImputedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"lookup"` | `{ type, field, lookup: { data, key, fields, as } }` | `createLookupData` |
 | `"flatten"` | `{ type, fields, as }` | `createFlattenData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
+| `"pivot"` | `{ type, field, value?, groupBy, columns, op, fill }` | `createPivotData` (Full only) |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
 | `"regressionStatistics"` | `{ type }`, with an existing linear fit as source | `createRegressionStatisticsData` |
 | `"sort"` | `{ type, sortBy }` | `createSortedData` |
@@ -341,7 +342,7 @@ See [Expressions and Normalization](./expressions-and-normalization.md#createcom
 
 See [Expressions and Normalization](./expressions-and-normalization.md#createnormalizeddata-id-source-field-as-groupby-method) for this contract and its examples.
 
-## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
+## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
 
 See [Missing Keys and Values](./missing-data.md#createcompletedata-id-source-key-groupby-values-sequence-fill-members) for this contract and its examples.
 

@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 525_000, // Prepared source application and revision planning measured at 523989 gzip bytes.
-  "ggaction/basic": 305_000, // Create-only source preparation measured at 303780 gzip bytes.
+  ggaction: 529_000, // Combined prepared source and statistical owners measured at 526996 gzip bytes.
+  "ggaction/basic": 307_000, // Combined create-only source and statistical owners measured at 304841 gzip bytes.
   "ggaction/svg": 25_000
 });
 

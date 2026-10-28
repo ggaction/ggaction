@@ -134,6 +134,62 @@ and members use positive-weight rows, while zero-weight rows are still validated
 Frequency weights require non-negative safe integers; reliability weights require
 non-negative finite numbers.
 
+## Group categories into columns {#createpivotdata}
+
+Use `createPivotData` from the Full entry when each group needs one numeric
+column per category. For the exact contract, see
+[`createPivotData`](../../reference/actions/statistics.md#createpivotdata) and
+[`editPivotData`](../../reference/actions/statistics.md#editpivotdata).
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** The complete snippet imports chart and declares its input rows.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const wide = chart()
+  .createData({ id: "sales", values: [
+    { store: "A", product: "apples", amount: 2 },
+    { store: "A", product: "apples", amount: 3 },
+    { store: "B", product: "pears", amount: 4 }
+  ] })
+  .createPivotData({
+    id: "wide", groupBy: "store", field: "product", value: "amount", op: "sum"
+  });
+// [{ store: "A", apples: 5, pears: null },
+//  { store: "B", apples: null, pears: 4 }]
+
+const counts = wide.editPivotData({ target: "wide", op: "count", fill: 0 });
+// [{ store: "A", apples: 2, pears: 0 },
+//  { store: "B", apples: 0, pears: 1 }]
+
+const plot = counts.createCanvas()
+  .createBarPlot({ x: "store", y: "apples", guides: false });
+```
+
+The default `op: "none"` accepts one row per group and category; duplicates are
+errors. Choose `sum`, `mean`, `min`, `max`, or `count` explicitly to aggregate.
+Count omits `value`; the other operations require a numeric or null value field.
+Only absent cells use `fill` (default null). An observed null remains null with
+`none`; all-null numeric cells yield zero for sum and null for mean/min/max.
+
+Nonempty string categories infer column names once in first appearance order.
+For numeric, boolean, null, renamed, unobserved, or empty-input categories,
+provide `columns: [{ value, as }]`. Typed keys stay distinct and aliases must be
+unique and different from grouping fields. Empty input also needs a declared
+source schema for its referenced fields. It produces no rows and retains the
+declared output columns. At most 64 columns and 10,000 output groups are allowed.
+
+Source revisions preserve the stored columns and reject new categories until
+you explicitly edit the columns. Edits retain omitted options and replace a
+provided columns array. Renaming an alias for the same typed category updates
+direct visual consumers. Use `dependents: "recompute"` to update downstream
+datasets. Facets recompute their partition; repeat does not accept pivot data.
+Basic does not expose pivot creation or editing.
+
 ## `createFoldData({ id, source?, fields, as? })` {#createfolddata-id-source-fields-as}
 
 Turn selected fields in a wide dataset into reusable key/value rows:

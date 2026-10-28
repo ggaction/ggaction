@@ -159,6 +159,14 @@
     "layer": "user-facing",
     "domain": "statistics"
   },
+  "createPivotData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H1"
+    ],
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
   "createParameter": {
     "operation": "create",
     "authoringRoles": [
@@ -331,6 +339,15 @@
     "domain": "statistics"
   },
   "editFoldData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H1",
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
+  "editPivotData": {
     "operation": "edit",
     "authoringRoles": [
       "H1",

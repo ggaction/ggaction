@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:5a2fd3438d26a7a169de50f18044300ed7498b4d68dc254b739c1d3e9a741061. Status: development. Runtime source: ed0eff54a9a87380b9ee7ceb9300a24744755664. Release baseline: v0.0.13.
+Contract: sha256:40ba83f1722b03c6c309334ccf013fc94a37d861a49d5dd55402dfbbb3c56f94. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/ed0eff54a9a87380b9ee7ceb9300a24744755664/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/ed0eff54a9a87380b9ee7ceb9300a24744755664/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -5182,12 +5182,13 @@ corresponding higher-level action when the library should materialize values:
 | `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, weight?, resolved? }` | `createBinData` |
 | `"computed"` | `{ type, as, expression }` | `createComputedData` |
 | `"normalize"` | `{ type, field, as, groupBy, method, ...methodPolicies }` | `createNormalizedData` |
-| `"complete"` | `{ type, key, groupBy, values? or sequence?, fill, members? }` | `createCompleteData` |
+| `"complete"` | `{ type, key, groupBy, values? or sequence? or calendar?, fill, members? }` | `createCompleteData` |
 | `"impute"` | `{ type, fields, groupBy, sortBy, method, value?, edges, maxGap? }` | `createImputedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"lookup"` | `{ type, field, lookup: { data, key, fields, as } }` | `createLookupData` |
 | `"flatten"` | `{ type, fields, as }` | `createFlattenData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
+| `"pivot"` | `{ type, field, value?, groupBy, columns, op, fill }` | `createPivotData` (Full only) |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
 | `"regressionStatistics"` | `{ type }`, with an existing linear fit as source | `createRegressionStatisticsData` |
 | `"sort"` | `{ type, sortBy }` | `createSortedData` |
@@ -5308,7 +5309,7 @@ See [Expressions and Normalization](./api/data/expressions-and-normalization/#cr
 
 See [Expressions and Normalization](./api/data/expressions-and-normalization/#createnormalizeddata-id-source-field-as-groupby-method) for this contract and its examples.
 
-## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
+## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
 
 See [Missing Keys and Values](./api/data/missing-data/#createcompletedata-id-source-key-groupby-values-sequence-fill-members) for this contract and its examples.
 
@@ -5813,8 +5814,10 @@ Non-hour offsets and skipped civil dates follow the same rule; a boundary that
 cannot be represented in the bucket or by JavaScript `Date` is an error. Results
 never depend on the host process time zone or locale.
 
-Locale calendar selection, aggregation, resampling, and missing-period
-completion are separate concerns. Create another immutable dataset when a
+Aggregate repeated dates explicitly with `createSummaryData`, then fill a day
+range with [`createCompleteData({ calendar: ... })`](./api/data/missing-data/#complete-a-calendar-day-range).
+Use the same explicit zone for both actions. Locale calendar selection and
+resampling are separate concerns. Create another immutable dataset when a
 different unit or output field is needed.
 
 ## Related
@@ -7922,6 +7925,24 @@ programs. Later independently authored marks follow ordinary authoring order;
 editing a plot-last regression reapplies its placement. `createRegressionPlot`
 accepts the same option.
 
+For a complete quadratic example:
+
+> **Executable complete.** Standalone ES module with ggaction installed; all observations are declared in the sample.
+
+```javascript
+import { chart } from "ggaction";
+
+const observations = Array.from({ length: 11 }, (_, x) => ({ x, y: x * x }));
+const quadraticFit = chart()
+  .createCanvas({ width: 480, height: 320, margin: 50 })
+  .createData({ values: observations })
+  .createRegressionPlot({
+    x: "x", y: "y", method: "loess", degree: 2, span: 1
+  });
+```
+
+The fitted values match the quadratic observations within floating-point precision.
+
 ## At a glance
 
 | Action | Required decision | Inferred or default behavior |
@@ -7967,7 +7988,7 @@ program.createRegression({
 | `x`, `y` | quantitative field names | target x/y fields |
 | `groupBy` | nominal field name or `false` (legacy explicit `undefined` also supported) | unique color/shape field |
 | `method` | `"linear"`, `"polynomial"`, `"loess"`, or `"exp"` | `"linear"` |
-| `degree` | integer from `1` through `32` for polynomial | `2` |
+| `degree` | polynomial: integer `1..32`; LOESS: `1` or `2` | polynomial: `2`; LOESS: `1` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
 | `robustIterations` | LOESS residual reweighting passes, integer `0..32` | `0` |
 | `confidenceMethod` | `"normal"` or `"student-t"` | `"student-t"` |
@@ -8022,9 +8043,16 @@ used at creation. `"follow"` refits when `reviseData` advances that logical
 source. Appearance-only edits preserve fitted rows. Statistical, field, or
 prediction-grid edits create one new immutable fitted dataset.
 
-LOESS defaults to an ordinary local-linear fit. Set `robustIterations: 2`
+LOESS defaults to an ordinary local-linear fit. Set `degree: 2` for local quadratic
+fits, or `degree: 1` to restore local-linear fitting. The quadratic fit centers and
+scales x at each prediction location; a rank-deficient neighborhood uses its weighted
+constant mean without adding more neighbors. A two-row group therefore remains valid.
+All groups still need at least two rows and two distinct x values. Omitted degree
+and explicit degree 1 retain the existing stored transform; only degree 2 is stored.
+
+Set `robustIterations: 2`
 for two residual reweighting passes. Each neighborhood contains
-`max(2, ceil(span * groupRowCount))` rows; equal distances use source order,
+`min(groupRowCount, max(degree + 1, ceil(span * groupRowCount)))` rows; equal distances use source order,
 and duplicate x values share one prediction. If all neighbors lie at the
 tricube boundary (all distance weights zero), equal weights resolve the tied
 sample. Each pass multiplies the tricube distance
@@ -8040,7 +8068,8 @@ its persisted transform; positive counts are stored in provenance.
 
 Each regression produces at most 10,000 group/x rows. Polynomial and LOESS
 inputs whose estimated fitting work exceeds 10,000,000 units throw a
-`RangeError` before the expensive fit begins.
+`RangeError` before the expensive fit begins. Quadratic LOESS includes the extra
+local solves in that cumulative limit across groups, robust passes, and prediction positions.
 
 The action keeps each fitted dataset, band, and line associated with its target
 point mark, so multiple point layers can add independent regressions in one
@@ -17508,6 +17537,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createParallelCoordinates`](./reference/actions/charts-data/#createparallelcoordinates) | H0 | user-facing | charts |
 | [`createParameter`](./reference/actions/charts-data/#createparameter) | H2 | user-facing | core |
 | [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | H0 | user-facing | charts |
+| [`createPivotData`](./reference/actions/statistics/#createpivotdata) | H1 | user-facing | statistics |
 | [`createPointMark`](./reference/actions/marks/#createpointmark) | H2 | user-facing | marks |
 | [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](./reference/actions/charts-data/#createpolarscatterplot) | H0 | user-facing | charts |
@@ -17620,6 +17650,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editParallelAxis`](./reference/actions/guides/#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./reference/actions/charts-data/#editparallelscale) | H2 | user-facing | core |
 | [`editParameter`](./reference/actions/charts-data/#editparameter) | H3 | user-facing | core |
+| [`editPivotData`](./reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editRadarPlot`](./reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](./reference/actions/guides/#editradialaxis) | H3 | user-facing | axes |
@@ -18479,7 +18510,7 @@ createRegressionData({
 
 Create immutable linear, polynomial, LOESS, or exponential fitted rows at observed unique x
 values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
-LOESS is line-only. Optional `robustIterations` (integer `0..32`, default `0`)
+LOESS is line-only, with `degree: 1` (default) or `degree: 2` for a local quadratic fit. Optional `robustIterations` (integer `0..32`, default `0`)
 adds residual reweighting; see [regression](./api/regression/) for the estimator policy.
 [Data](./api/data/)
 
@@ -24907,6 +24938,44 @@ createFoldData({ id, source?, fields, as? })
 Materialize selected wide fields as stable key/value rows while preserving
 every source cell. [Source and Derived Data](./api/data/source-and-derived/#createfolddata-id-source-fields-as)
 
+## `createPivotData`
+
+**API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`PivotDataOptions`](./reference/types/#type-pivotdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `field` | Required | `string` |
+| `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
+| `columns` | Optional / branch-dependent | `readonly PivotColumn[] \| undefined` |
+| `fill` | Optional / branch-dependent | `number \| null \| undefined` |
+| `op` | Optional / branch-dependent | `"count" \| PivotNumericOperation \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createPivotData({ id, source?, field, value?, groupBy?, columns?, op?, fill? })
+```
+
+Turn category cells into numeric columns within observed groups. Duplicate cells
+require an explicit aggregation operation. Full only.
+[Grouped pivot data](./api/data/summaries-and-shaping/#createpivotdata)
+
 ## `createComputedData`
 
 **API layer:** user-facing. **Authoring roles:** H1.
@@ -25040,16 +25109,19 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `members` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `sequence` | Optional / branch-dependent | `{ start: number; end: number; step: number; } \| undefined` |
+| `calendar` | Optional / branch-dependent | `CalendarDayDomain \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })
+createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })
 ```
 
 Complete one typed key domain independently inside every observed group, with
-explicit fill and source-membership provenance for synthesized rows.
+explicit fill and source-membership provenance for synthesized rows. A civil-day
+`calendar` uses inclusive strict dates and an explicit UTC or IANA zone; it is
+exclusive with `values` and `sequence`.
 [Source and Derived Data](./api/data/source-and-derived/#createcompletedata-id-source-key-groupby-values-sequence-fill-members)
 
 ## `createImputedData`
@@ -25224,6 +25296,35 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `fields` | Optional / branch-dependent | `readonly string[] \| undefined` |
 | `as` | Optional / branch-dependent | `FoldDataOutputFields \| undefined` |
+
+Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
+
+## `editPivotData`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditPivotDataOptions`](./reference/types/#type-editpivotdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
+| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
+| `columns` | Optional / branch-dependent | `readonly PivotColumn[] \| undefined` |
+| `fill` | Optional / branch-dependent | `number \| null \| undefined` |
+| `op` | Optional / branch-dependent | `"count" \| PivotNumericOperation \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
 
@@ -25459,6 +25560,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `members` | Optional / branch-dependent | `string \| undefined` |
 | `values` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `sequence` | Optional / branch-dependent | `{ start: number; end: number; step: number; } \| undefined` |
+| `calendar` | Optional / branch-dependent | `CalendarDayDomain \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
 
@@ -25620,7 +25722,8 @@ createRegression({
 
 Infer an eligible point layer and create immutable fitted data, optional grouped
 interval-band paths, and grouped line paths. Method defaults to `"linear"`;
-polynomial degree to `2`; LOESS span to `0.75` and `robustIterations` to `0`.
+polynomial degree to `2`; LOESS degree to `1`, span to `0.75`, and `robustIterations` to `0`.
+Set LOESS `degree: 2` for local quadratic fits.
 [Regression](./api/regression/)
 
 ## `editRegression`
@@ -26410,13 +26513,14 @@ editComputedData({ target, as?, expression?, dependents? })
 editLookupData({ target, field?, lookup?, dependents? })
 editFlattenData({ target, fields?, as?, dependents? })
 editFoldData({ target, fields?, as?, dependents? })
+editPivotData({ target, field?, value?, groupBy?, columns?, op?, fill?, dependents? })
 editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
 editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })
 editStackData({ target, category?, group?, value?, mode?, as?, dependents? })
 editIntervalData({ target, field?, groupBy?, center?, extent?, method?, level?, as?, dependents? })
 editECDFData({ target, field?, groupBy?, weight?, missing?, as?, dependents? })
 editNormalizedData({ target, field?, as?, groupBy?, method?, variance?, zeroDenominator?, baseline?, sortBy?, dependents? })
-editCompleteData({ target, key?, groupBy?, values? | sequence?, fill?, members?, dependents? })
+editCompleteData({ target, key?, groupBy?, values? | sequence? | calendar?, fill?, members?, dependents? })
 editImputedData({ target, fields?, groupBy?, sortBy?, method?, value?, edges?, maxGap?, dependents? })
 ```
 
@@ -29914,6 +30018,11 @@ export type {
   RemoveResourceOptions,
   CanvasOptions,
   FitCanvasOptions,
+  PivotColumn,
+  PivotNumericOperation,
+  PivotDataOptions,
+  DatasetPivotTransform,
+  EditPivotDataOptions,
   FoldDataOptions,
   FoldDataOutputFields,
   CategoricalEncodingOptions,
@@ -29957,6 +30066,7 @@ export type {
   ComputedDataOptions,
   ComputedExpression,
   CompleteDataOptions,
+  CalendarDayDomain,
   ImputedDataOptions,
   NormalizedDataOptions,
   NormalizeBaseline,
@@ -30896,6 +31006,7 @@ interface ChartProgramActions {
   createBinData(options: TargetedOptions<BinDataOptions>): ChartProgram;
   createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
+  createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
@@ -30919,6 +31030,7 @@ interface ChartProgramActions {
   editFilteredData(options: TargetedOptions<EditFilteredDataOptions>): ChartProgram;
   editFlattenData(options: TargetedOptions<EditFlattenDataOptions>): ChartProgram;
   editLookupData(options: TargetedOptions<EditLookupDataOptions>): ChartProgram;
+  editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;
   editFoldData(options: TargetedOptions<EditFoldDataOptions>): ChartProgram;
   editSummaryData(options: TargetedOptions<EditSummaryDataOptions>): ChartProgram;
   editBinData(options: TargetedOptions<EditBinDataOptions>): ChartProgram;
@@ -32223,6 +32335,21 @@ type CPathGuides = Omit<CartesianPathGuideOptions, "axes"> & {
 
 Related types: [`CartesianPathGuideOptions`](./reference/types/#type-cartesianpathguideoptions) · [`CAxes`](./reference/types/#type-caxes).
 
+### `CalendarDayDomain` {#type-calendardaydomain}
+
+ Expand CalendarDayDomain
+
+```typescript
+export interface CalendarDayDomain {
+  readonly unit: "day";
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly start: string;
+  /** Inclusive strict Gregorian YYYY-MM-DD date. */
+  readonly end: string;
+  readonly timeZone: string;
+}
+```
+
 ### `CanvasOptions` {#type-canvasoptions}
 
  Expand CanvasOptions
@@ -32765,16 +32892,18 @@ Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar).
 
 ```typescript
 export type CompleteDataOptions = CompleteDataBaseOptions & (
-  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never }
+  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never; calendar?: never }
   | {
       values?: never;
       sequence: { start: number; end: number; step: number };
+      calendar?: never;
     }
-  | { values?: never; sequence?: never }
+  | { calendar: CalendarDayDomain; values?: never; sequence?: never }
+  | { values?: never; sequence?: never; calendar?: never }
 );
 ```
 
-Related types: [`CompleteDataBaseOptions`](./reference/types/#type-completedatabaseoptions) · [`DatasetScalar`](./reference/types/#type-datasetscalar).
+Related types: [`CompleteDataBaseOptions`](./reference/types/#type-completedatabaseoptions) · [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`CalendarDayDomain`](./reference/types/#type-calendardaydomain).
 
 ### `CompletePolarAxisOptions` {#type-completepolaraxisoptions}
 
@@ -34276,16 +34405,18 @@ export type DatasetCompleteTransform = {
   readonly fill: Readonly<Record<string, DatasetScalar>>;
   readonly members?: string;
 } & (
-  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never }
+  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never; readonly calendar?: never }
   | {
       readonly sequence: { readonly start: number; readonly end: number; readonly step: number };
       readonly values?: never;
+      readonly calendar?: never;
     }
-  | { readonly values?: never; readonly sequence?: never }
+  | { readonly calendar: CalendarDayDomain; readonly values?: never; readonly sequence?: never }
+  | { readonly values?: never; readonly sequence?: never; readonly calendar?: never }
 );
 ```
 
-Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar).
+Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`CalendarDayDomain`](./reference/types/#type-calendardaydomain).
 
 ### `DatasetComputedTransform` {#type-datasetcomputedtransform}
 
@@ -34628,6 +34759,25 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
 
 Related types: [`DatasetNormalizedBaseTransform`](./reference/types/#type-datasetnormalizedbasetransform) · [`NormalizeZeroDenominator`](./reference/types/#type-normalizezerodenominator) · [`DatasetNormalizeBaselineTransform`](./reference/types/#type-datasetnormalizebaselinetransform).
 
+### `DatasetPivotTransform` {#type-datasetpivottransform}
+
+ Expand DatasetPivotTransform
+
+```typescript
+export type DatasetPivotTransform = {
+  readonly type: "pivot";
+  readonly field: string;
+  readonly groupBy: readonly string[];
+  readonly columns: readonly PivotColumn[];
+  readonly fill: number | null;
+} & (
+  | { readonly op: PivotNumericOperation; readonly value: string }
+  | { readonly op: "count"; readonly value?: never }
+);
+```
+
+Related types: [`PivotColumn`](./reference/types/#type-pivotcolumn) · [`PivotNumericOperation`](./reference/types/#type-pivotnumericoperation).
+
 ### `DatasetRegressionStatisticsTransform` {#type-datasetregressionstatisticstransform}
 
  Expand DatasetRegressionStatisticsTransform
@@ -34681,7 +34831,7 @@ export type DatasetRegressionTransform = {
       method: "loess";
       span: number;
       robustIterations?: number;
-      degree?: never;
+      degree?: 2;
       confidenceMethod?: never;
       level?: never;
       confidence?: never;
@@ -34821,6 +34971,7 @@ Related types: [`TemporalInputUnit`](./reference/types/#type-temporalinputunit).
 
 ```typescript
 export type DatasetTransform =
+  | DatasetPivotTransform
   | DatasetBinTransform
   | DatasetBin2DTransform
   | DatasetCompleteTransform
@@ -34845,7 +34996,7 @@ export type DatasetTransform =
   | DatasetWindowTransform;
 ```
 
-Related types: [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFlattenTransform`](./reference/types/#type-datasetflattentransform) · [`DatasetLookupTransform`](./reference/types/#type-datasetlookuptransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](./reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
+Related types: [`DatasetPivotTransform`](./reference/types/#type-datasetpivottransform) · [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFlattenTransform`](./reference/types/#type-datasetflattentransform) · [`DatasetLookupTransform`](./reference/types/#type-datasetlookuptransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](./reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -36075,6 +36226,16 @@ export interface EditParameterOptions { readonly target: string; readonly value:
 ```
 
 Related types: [`ParameterValue`](./reference/types/#type-parametervalue).
+
+### `EditPivotDataOptions` {#type-editpivotdataoptions}
+
+ Expand EditPivotDataOptions
+
+```typescript
+export type EditPivotDataOptions = FocusedDerivedDataEdit<PivotDataOptions>;
+```
+
+Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`PivotDataOptions`](./reference/types/#type-pivotdataoptions).
 
 ### `EditPolarAxisOptions` {#type-editpolaraxisoptions}
 
@@ -39381,6 +39542,45 @@ export type PieRadiusChannel = string | {
 
 Related types: [`RadiusScaleOptions`](./reference/types/#type-radiusscaleoptions).
 
+### `PivotColumn` {#type-pivotcolumn}
+
+ Expand PivotColumn
+
+```typescript
+export interface PivotColumn {
+  readonly value: string | number | boolean | null;
+  readonly as: string;
+}
+```
+
+### `PivotDataOptions` {#type-pivotdataoptions}
+
+ Expand PivotDataOptions
+
+```typescript
+export type PivotDataOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string | readonly string[];
+  columns?: readonly PivotColumn[];
+  fill?: number | null;
+} & (
+  | { op?: PivotNumericOperation; value: string }
+  | { op: "count"; value?: never }
+);
+```
+
+Related types: [`PivotColumn`](./reference/types/#type-pivotcolumn) · [`PivotNumericOperation`](./reference/types/#type-pivotnumericoperation).
+
+### `PivotNumericOperation` {#type-pivotnumericoperation}
+
+ Expand PivotNumericOperation
+
+```typescript
+export type PivotNumericOperation = "none" | "sum" | "mean" | "min" | "max";
+```
+
 ### `PointFacadePositionChannel` {#type-pointfacadepositionchannel}
 
  Expand PointFacadePositionChannel
@@ -40379,7 +40579,8 @@ type RegressionParameterOptions =
     }
   | {
       method: "loess";
-      degree?: never;
+      /** Local polynomial degree; default 1. */
+      degree?: 1 | 2;
       span?: number;
       /** Residual reweighting passes, integer 0..32; default 0. */
       robustIterations?: number;
@@ -42783,12 +42984,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ed0eff54a9a87380b9ee7ceb9300a24744755664/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ed0eff54a9a87380b9ee7ceb9300a24744755664/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -43007,6 +43208,58 @@ same bin decisions. Set `includeEmpty: false` to omit zero-count bins and
 and members use positive-weight rows, while zero-weight rows are still validated.
 Frequency weights require non-negative safe integers; reliability weights require
 non-negative finite numbers.
+
+## Group categories into columns {#createpivotdata}
+
+Use `createPivotData` from the Full entry when each group needs one numeric
+column per category. For the exact contract, see
+[`createPivotData`](./reference/actions/statistics/#createpivotdata) and
+[`editPivotData`](./reference/actions/statistics/#editpivotdata).
+
+> **Executable complete.** The complete snippet imports chart and declares its input rows.
+
+```javascript
+import { chart } from "ggaction";
+
+const wide = chart()
+  .createData({ id: "sales", values: [
+    { store: "A", product: "apples", amount: 2 },
+    { store: "A", product: "apples", amount: 3 },
+    { store: "B", product: "pears", amount: 4 }
+  ] })
+  .createPivotData({
+    id: "wide", groupBy: "store", field: "product", value: "amount", op: "sum"
+  });
+// [{ store: "A", apples: 5, pears: null },
+//  { store: "B", apples: null, pears: 4 }]
+
+const counts = wide.editPivotData({ target: "wide", op: "count", fill: 0 });
+// [{ store: "A", apples: 2, pears: 0 },
+//  { store: "B", apples: 0, pears: 1 }]
+
+const plot = counts.createCanvas()
+  .createBarPlot({ x: "store", y: "apples", guides: false });
+```
+
+The default `op: "none"` accepts one row per group and category; duplicates are
+errors. Choose `sum`, `mean`, `min`, `max`, or `count` explicitly to aggregate.
+Count omits `value`; the other operations require a numeric or null value field.
+Only absent cells use `fill` (default null). An observed null remains null with
+`none`; all-null numeric cells yield zero for sum and null for mean/min/max.
+
+Nonempty string categories infer column names once in first appearance order.
+For numeric, boolean, null, renamed, unobserved, or empty-input categories,
+provide `columns: [{ value, as }]`. Typed keys stay distinct and aliases must be
+unique and different from grouping fields. Empty input also needs a declared
+source schema for its referenced fields. It produces no rows and retains the
+declared output columns. At most 64 columns and 10,000 output groups are allowed.
+
+Source revisions preserve the stored columns and reject new categories until
+you explicitly edit the columns. Edits retain omitted options and replace a
+provided columns array. Renaming an alias for the same typed category updates
+direct visual consumers. Use `dependents: "recompute"` to update downstream
+datasets. Facets recompute their partition; repeat does not accept pivot data.
+Basic does not expose pivot creation or editing.
 
 ## `createFoldData({ id, source?, fields, as? })` {#createfolddata-id-source-fields-as}
 
@@ -43387,7 +43640,7 @@ keeps group calculations independent.
 
 [Family overview](./api/data/source-and-derived/) · [Exact action lookup](./reference/actions/)
 
-## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
+## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, calendar?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
 
 Materialize missing keys inside each observed group without silently turning
 absence into zero:
@@ -43406,7 +43659,7 @@ const completed = program.createCompleteData({
 });
 ```
 
-`values` and `sequence` are mutually exclusive. If both are omitted, the action
+`values`, `sequence`, and `calendar` are mutually exclusive. If all are omitted, the action
 uses the key values observed anywhere in the source, preserving typed identity
 and first appearance. A numeric sequence uses finite `start`, `end`, and
 positive `step`. Only observed group tuples are completed; the action does not
@@ -43419,6 +43672,73 @@ the group and key values, then `fill` values or `null` for the other source fiel
 When `members` is present, original rows contain their source index and synthetic
 rows contain `[]`. Output follows group first appearance and key-domain order and
 is capped at 10,000 rows, including repeated observations, before allocation.
+
+### Complete a calendar day range
+
+Use `calendar: { unit: "day", start, end, timeZone }` for a contiguous range of
+civil dates. Both endpoints are included. `start` and `end` are strict Gregorian
+`YYYY-MM-DD` strings, and `timeZone` is required: use `"UTC"` or an IANA name.
+For example, `2024-01-01` through `2024-12-31` contains 366 days.
+
+First bucket timestamps in the same zone and explicitly aggregate repeated
+observations. This complete ES module preserves a missing day as `null` and an
+observed zero as `0`:
+
+> **Executable complete.** Standalone ES module with ggaction installed; the sample declares all input events.
+
+```javascript
+import { chart } from "ggaction";
+
+const dayRange = {
+  unit: "day", start: "2024-11-02", end: "2024-11-04",
+  timeZone: "America/New_York"
+};
+const daily = chart()
+  .createData({ id: "events", values: [
+    { at: "2024-11-03T05:30:00Z", amount: 2 },
+    { at: "2024-11-03T06:30:00Z", amount: 3 },
+    { at: "2024-11-04T12:00:00Z", amount: 0 }
+  ] })
+  .createTimeUnitData({
+    id: "buckets", field: "at", unit: "day", as: "day",
+    timeZone: dayRange.timeZone
+  })
+  .createSummaryData({
+    id: "totals", groupBy: "day",
+    aggregates: [{ op: "sum", field: "amount", as: "total" }]
+  })
+  .createCompleteData({
+    id: "days", key: "day", calendar: dayRange,
+    fill: { total: null }, members: "sourceRows"
+  });
+
+const dailyPlot = daily.createCanvas()
+  .createPointMark({ data: "days", missing: "skip" })
+  .encodeX({ field: "day", fieldType: "temporal" })
+  .encodeY({ field: "total" });
+```
+
+The two repeated clock-hour events sum to `5` on November 3. Day starts are
+stored as epoch milliseconds; neighboring starts can be 23 or 25 hours apart.
+A midnight gap uses the first valid instant of that day. A civil date removed
+by a zone transition is an error. Results do not depend on the process time zone.
+
+Source keys must exactly match the generated numeric day starts. Completion
+does not parse strings, floor midday timestamps, or convert keys from another
+zone. It keeps repeated rows unless you aggregate them first. Synthetic rows
+have no contributing input rows. An empty ungrouped source creates the requested
+days; an empty grouped source creates no groups. Declare the key and group
+fields in the source schema when creating an empty source.
+
+The domain and total output each have a 10,000-item limit. Calendar completion
+also preflights a 10,000,000-unit work budget covering source cells, zone boundary
+resolution, group expansion, output cells, and row provenance. A wide source or
+many groups can reach this limit before the row limit.
+
+`editCompleteData({ target: "days", calendar: { ...dayRange, end: "2024-11-05" } })`
+replaces the whole calendar policy. Supplying `values` or `sequence` switches
+domain mode; omitting all three preserves the current policy. Source revisions
+recompute the pipeline and reject newly observed dates outside the range.
 
 ## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method?, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
 
@@ -45534,7 +45854,7 @@ or weight policy.
 | [Fold](./api/data/summaries-and-shaping/) | Ordered fields of one primitive type | Source row × selected field | Missing and mixed-type cells reject; original fields remain. |
 | [Computed](./api/data/expressions-and-normalization/) | Serializable expression over each row | Same rows with a new scalar field | A present undefined cell becomes null; an absent field name rejects. Branches are structurally checked even when short-circuited. |
 | [Normalize](./api/data/expressions-and-normalization/) | Per-group calculations; baseline methods need stable ordering or an explicit value | Same rows in source order | Finite numeric input; zero denominator rejects unless an explicit null/zero policy applies. Share rejects negative input. |
-| [Complete](./api/data/missing-data/) | At most one row per observed group/key; explicit or observed key domain | Observed group × key domain | Adds synthetic rows with null/fill cells; no Cartesian expansion of unrelated grouping values. Empty grouped input creates no groups. |
+| [Complete](./api/data/missing-data/) | Preserves repeated observations; explicit values, numeric sequence, civil-day calendar, or observed key domain | Observed group × key domain, retaining duplicates | Adds synthetic rows with null/fill cells; no Cartesian expansion of unrelated grouping values. Empty grouped input creates no groups. |
 | [Impute](./api/data/missing-data/) | Existing rows, groups, and method-specific stable order | Same rows in source order | Fills null/undefined only. Linear uses numeric/time distance. Edges and max-gap are explicit policies; NaN/infinity reject. |
 | [Stack](./api/data/summaries-and-shaping/) | Unique category/group pairs | Same rows plus endpoints and share | No missing-cell synthesis. Stack/fill/center require nonnegative values; diverging separates signs; zero has zero share. |
 | [Window](./api/data/window/) | Explicit sort/partition decisions for ordered operations | Same rows in source order | Stable ordering governs windows; frame and per-operation rules determine edges. No rows are synthesized. |
@@ -45697,11 +46017,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5a2fd3438d26a7a169de50f18044300ed7498b4d68dc254b739c1d3e9a741061` |
+| Contract fingerprint | `sha256:40ba83f1722b03c6c309334ccf013fc94a37d861a49d5dd55402dfbbb3c56f94` |
 | Example and dataset source | `b8f9668133b278974c9cfe7324402a18282c9f4b` |
-| Runtime source commit | `ed0eff54a9a87380b9ee7ceb9300a24744755664` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 302 |
+| Declared actions here | 304 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

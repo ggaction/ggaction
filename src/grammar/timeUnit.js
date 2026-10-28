@@ -232,10 +232,15 @@ function sameBucket(candidate, target, unit) {
   return keys.every(key => candidate[key] === target[key]);
 }
 
+const BOUNDARY_PROBE_HOURS = 72;
+const BOUNDARY_PROBE_STEP = 6;
+// At most one roundtrip per probe and per distinct candidate offset.
+export const CALENDAR_BOUNDARY_WORK = 2 * (2 * BOUNDARY_PROBE_HOURS / BOUNDARY_PROBE_STEP + 1);
+
 export function resolveCalendarBoundary(localParts, timeZone, unit) {
   const naive = civilTimestamp(localParts);
   const offsets = new Set();
-  for (let delta = -72; delta <= 72; delta += 6) {
+  for (let delta = -BOUNDARY_PROBE_HOURS; delta <= BOUNDARY_PROBE_HOURS; delta += BOUNDARY_PROBE_STEP) {
     const sample = naive + delta * 3_600_000;
     if (!validTimestamp(sample)) continue;
     offsets.add(civilTimestamp(calendarParts(sample, timeZone)) - sample);
