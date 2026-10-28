@@ -58,6 +58,9 @@ focal containment는 unit square에서 `distance(focal,center)<=radius`로 검�
 
 다른 가능한 선택은 absolute logical-pixel circle 또는 짧은 변 기준 원형 radius다. 두 선택 모두 위 예시와
 resize 결과가 달라지는 중요한 계약이므로 구현자가 조용히 선택하지 않는다. 현재 제안은 **object-bounds ellipse**다.
+220×140 bounds에서 수평/수직 반지름110/70으로 나오는 정확한 새 primitive는
+[타원 추가 검토](../radial-gradient/ELLIPSE_REVIEW.md)에 source와 네 renderer 결과를 함께 준비했다.
+기존 원형6종의 시각 승인은 그대로 유지하며 이 타원 표본은 별도 확인 대상이다.
 
 ### 공통 색 문법
 
@@ -67,6 +70,7 @@ CSS variable/currentColor, host 환경에 의존하는 color, 미지원 함수�
 기존 solid string과 linear gradient의 accepted syntax 및 저장 모양은 유지한다. 새 paint 색에만 공통 canonical RGBA가
 필요하며 invalid string을 backend가 직전 색으로 대신하는 경로는 허용하지 않는다. 이 문법의 사용자 확인 뒤 pure parser를
 한 owner로 두며 scale interpolation의 기존 계산을 복사하지 않는다.
+이 좁은 문법을 기존 fill/stroke/color literal 전체에 소급 적용하지 않는다. 기존에 허용한 색 문자열을 이 새 옵션 때문에 거부하지 않는다.
 
 ## 제안 P2: outline/halo와 shadow는 기존 mark action의 명시 옵션
 
