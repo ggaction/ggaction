@@ -1,6 +1,6 @@
 {
   "state": "focused-verified",
-  "sourceRevision": null,
+  "sourceRevision": "f401a8033a94ec5ad8f9fc1b86485a969c56c20f",
   "parents": [
     "e3381daea85efaa2e010483769c3d0ba36204304",
     "b1544b7c150bad7a16a43cb3c97d40f17c4b3575"
@@ -25,7 +25,8 @@
     "packageArtifact": 7,
     "coveragePolicy": 7,
     "docsPrecommit": 166,
-    "failures": 0
+    "failures": 0,
+    "docsFinal": 166
   },
   "coverage": {
     "edgeIdentity.js": {
@@ -138,11 +139,20 @@
     "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/unit-node24.log.gz": {
       "rawSha256": "9e811177d3ed3d9bc7bf09ea84681ceea996c57f88f21cadb3bc2d69dc522cbe",
       "gzipSha256": "0f64b9ffb00e274460ded3f31d2f26d50d0a62dbe0b764da5c186e2e550a96d9"
+    },
+    "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/docs-final.log.gz": {
+      "rawSha256": "dacb1cf3ba1b268ba2af70bcd0f8a2013fb4cf831953e02c94855f4b83e3e999",
+      "gzipSha256": "0a5be993b889809da394c3484aacbd333fe3091f304a0e2a9c6af4be49fbb86c"
+    },
+    "agent_docs/impl/roadmap9/phase3/graph/integration-evidence/provenance-final.log.gz": {
+      "rawSha256": "33b6a1c8d6a2b6d3e7dd98ab9422011aba8a95cd23403482399b38ad6f564b28",
+      "gzipSha256": "bac7d54248b8f894e7c6142318896027cda5d175d93128f002d3853d48824cec"
     }
   },
   "notClaimed": [
     "Public graph API/resource/renderer support",
     "Global coverage or realistic sweep",
     "New installed consumer qualification"
-  ]
+  ],
+  "metadataScope": "Only generated docs and integration evidence; packed source/type/knowledge inputs unchanged."
 }
