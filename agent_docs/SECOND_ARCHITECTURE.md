@@ -52,7 +52,9 @@ renderer에는 연결하지 않았다. 기존 computed v1의 의미와 직접 ma
 기존 typed item identity, descriptor 검사, finite sum과 자원 한도를 공유한다.
 이 owner들은 명시 입력만 받고 frozen 결과를 반환하며, 공개 entry나 ChartProgram state,
 materialization 또는 renderer에 연결하지 않았다. Field 추출, graph resource와 kNN/threshold
-토폴로지는 별도 domain owner의 남은 작업이다. 검증 범위는
+토폴로지의 공개 통합은 별도 domain owner의 남은 작업이다. `neighbors.js`는 정규화된 feature에서
+kNN/radius/similarity의 exact pair를 고르고 raw source index와 stable endpoint identity를 반환한다.
+공통 graph model이나 source row provenance를 중복 생성하지 않으며 domain adapter가 이를 연결한다. 검증 범위는
 [metric kernel checkpoint](impl/roadmap9/phase3/graph/METRICS_KERNEL.md)에 기록한다.
 
 ## Pivot data lifecycle
