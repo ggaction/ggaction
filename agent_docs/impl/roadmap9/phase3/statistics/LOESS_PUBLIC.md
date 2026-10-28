@@ -10,14 +10,17 @@
 - [x] 마지막 shared neighbor-count 추출 후 coverage와 source 증거 고정
 - [x] Installed package189개·complete snippet65개·types/MCP/optional peers/bundles
 - [x] Docs desktop search와 전 페이지320/390/768px browser 검증
-- [ ] 마지막 built docs 및 commit 후 provenance 고정
-- [ ] Verified conceptual checkpoint commit/push
+- [x] 마지막 built docs 및 commit 후 provenance 고정
+- [x] Verified conceptual checkpoint commit/push
 - [ ] 나머지 STEP-014 통계 oracle evidence와 전체 STEP-077 실행
 
 전체 실행 승인은 [AUTHORIZATION](../../AUTHORIZATION.json)을 재사용한다. 새 visual target 없이 기존
 regression fit 옵션을 확장하며 renderer와 line primitive는 그대로다. 기준은 pivot checkpoint의
 `aecab35eb1010dff6d4d13c70c03e02ab17f084c`, branch는 `codex/roadmap9-statistics`다.
 Main/G-DATA worktree의 파일을 수정하거나 복사하지 않았다. 이 기록은 전체 STEP-014 또는 Roadmap9 완료가 아니다.
+구현 source commit은 `1059ba42282d5d2b95782f66a054448b844e69e8`다. 이 commit으로 provenance를 고정한 뒤
+docs160개와 build150페이지·1182 selective LLM artifacts/identity hashes를 다시 검증했다.
+UI와 문서 내용은 동일하므로 먼저 완료한 browser sweep을 재사용한다.
 
 ## 구현 경계
 
@@ -65,6 +68,7 @@ oracle expected/actual, source/log hashes와 package receipt의 owner다.
 | `node scripts/run-tests.js contracts`의 interval-regression-facade-types/source-boundaries/test-discovery/action-catalog/package-artifact/package-boundaries | 50 passed |
 | `npm run docs:generate` 및 source 변경 뒤 provenance/images/machine/llms 재생성 | passed |
 | `npm run test:docs` | 160 passed |
+| `npm run docs:build`, `npm run test:docs:built` | 150 pages,1182 selective LLM artifact/hash/link 검사 통과 |
 | `npm run test:docs:browser` | desktop 검색, 전 페이지320/390/768px 통과 |
 | `npm run test:package` | installed node189/189, complete snippets65/65, types/MCP/optional peers/bundles 통과 |
 
