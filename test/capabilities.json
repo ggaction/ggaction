@@ -515,6 +515,12 @@
         "path": "unit/selectors/"
       }
     ],
+    "shadow-paints": [
+      {
+        "type": "file",
+        "path": "unit/grammar/shadow.test.js"
+      }
+    ],
     "statistics": [
       {
         "type": "prefix",

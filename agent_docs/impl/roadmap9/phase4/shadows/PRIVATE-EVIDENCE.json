@@ -1,0 +1,487 @@
+{
+  "state": "private-kernel-verified",
+  "publicIntegration": "pending",
+  "visualApproval": "pending",
+  "codeBase": "94ea9156dbd7ac87b1b65e876214b4e770a66b27",
+  "recordedAt": "2026-10-28T15:02:07.843Z",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "inputs": {
+    "src/grammar/shadow.js": "111e61c486ad798535cc29ef73abd1c61ff51fc69030b8d36be4cc1bbe8fa4f5",
+    "test/oracles/shadow.js": "46562c27b4f21154d7112ff90c4ed17df1ec9e988330335cb8376f0d23dab016",
+    "test/unit/grammar/shadow.test.js": "18ddb78943d8eaa9c42636cc1032077f885e9a746105868aa47650292274f5e5",
+    "scripts/coverage-policy.js": "0a55d40cf9a32587b84957b7a2359c5ad9adcdbd9031654680194383e7105431",
+    "scripts/package-artifact.js": "cc25b67d61a5e02de3a378d7dafc52fe4d1acecb8299fe70866bd1e5c52a6e90",
+    "test/capabilities.json": "2764a60e9b80fbc72e46f69f3aeeb679a3d9c9bc30fa6dfaf443a244fd05743b",
+    "agent_docs/impl/roadmap9/phase4/shadows/PRIVATE.md": "71464933fd52545d3ece429e5de4f61bd8dc5afb75fe55e999046da217746156"
+  },
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js unit unit/grammar/shadow.test.js unit/grammar/paint.test.js unit/grammar/patterns.test.js unit/grammar/radial-gradient.test.js unit/support/coverage-policy.test.js",
+      "exit": 0,
+      "tests": 37,
+      "pass": 37,
+      "fail": 0,
+      "log": ".artifacts/shadow-review/unit.log",
+      "sha256": "0ff062bd46d66fbe57909ddf1a66c1b84a0d50c63684542285c9c6cbb4a77117"
+    },
+    {
+      "command": "node --experimental-test-coverage --test-coverage-include=src/grammar/shadow.js --test test/unit/grammar/shadow.test.js",
+      "exit": 0,
+      "tests": 6,
+      "pass": 6,
+      "fail": 0,
+      "log": ".artifacts/shadow-review/coverage.log",
+      "sha256": "bf7f0f737daedea82d1a4f774de52e363d1b238fc9b581c9906cf7a0f165815e"
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js",
+      "exit": 0,
+      "tests": 38,
+      "pass": 38,
+      "fail": 0,
+      "log": ".artifacts/shadow-review/contracts-final.log",
+      "sha256": "c1ef65dc6f3ff7933afc1165cce2a4819c561add7292da1b84c6a661418a5f70"
+    },
+    {
+      "command": "npm run package:check",
+      "exit": 0,
+      "log": ".artifacts/shadow-review/package.log",
+      "sha256": "f226aeb3bfc1ab906b3a910c5d2d3bd9951d524add8eab15616ac198d414c1a0"
+    }
+  ],
+  "coverage": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "package": {
+    "entries": 681,
+    "packedBytes": 1014128,
+    "unpackedBytes": 4727468
+  },
+  "diagnosticProbe": {
+    "claim": "Investigation only, no public support or accepted visual target",
+    "command": "node .artifacts/paint-effects-study/probe.mjs",
+    "sourcePath": ".artifacts/paint-effects-study/probe.mjs",
+    "source": "import {createCanvas,loadImage,PDFDocument} from '@napi-rs/canvas';\nimport {chromium} from 'playwright';\nimport {readFile,writeFile} from 'node:fs/promises';\nimport {execFileSync} from 'node:child_process';\nimport {startStaticServer} from '../../test/support/static-server.js';\nimport {openBrowserPage,assertNoBrowserErrors,closeBrowserWithEvidence,saveBrowserEvidence} from '../../test/support/browser.js';\nconst dir=new URL('./',import.meta.url),width=120,height=100;\nconst variants=[...['source-over','multiply','screen','difference'].map(mode=>({id:mode,kind:'blend',mode})),... [0,8].map(blur=>({id:`shadow-${blur}`,kind:'shadow',blur}))];\nfunction draw(context,v){\n context.fillStyle='white';context.fillRect(0,0,120,100);context.save();\n if(v.kind==='blend'){\n  context.fillStyle='rgba(40,150,200,0.55)';context.fillRect(10,10,75,75);\n  context.globalCompositeOperation=v.mode;context.globalAlpha=.65;context.fillStyle='rgba(210,70,45,0.6)';context.fillRect(40,30,70,60);\n }else{\n  context.shadowColor='rgba(30,60,90,0.5)';context.shadowOffsetX=15;context.shadowOffsetY=8;context.shadowBlur=v.blur;\n  context.globalAlpha=.65;context.fillStyle='rgba(210,70,45,0.6)';context.fillRect(20,20,40,40);\n }\n context.restore();\n}\nfunction expected(mode){\n const background=[40,150,200].map(c=>c*.55+255*.45),source=[210,70,45],alpha=.6*.65;\n return [...source.map((c,i)=>{\n  const b=background[i],mixed=mode==='multiply'?b*c/255:mode==='screen'?b+c-b*c/255:mode==='difference'?Math.abs(b-c):c;\n  return Math.round(alpha*mixed+(1-alpha)*b);\n }),255];\n}\nfunction rgba(canvas,x,y){return [...canvas.getContext('2d').getImageData(x,y,1,1).data];}\nasync function decoded(buffer){const canvas=createCanvas(width,height);canvas.getContext('2d').drawImage(await loadImage(buffer),0,0);return canvas;}\nconst html=`<!doctype html><title>Private effect probe</title><div id=\"status\">Ready</div><script>window.draw=${draw};</script>`;\nawait writeFile(new URL('index.html',dir),html);let server,browser;const results=[];\ntry{\n server=await startStaticServer(new URL('../../',import.meta.url).pathname);browser=await chromium.launch({headless:true});\n const opened=await openBrowserPage(browser,`${server.baseUrl}.artifacts/paint-effects-study/index.html`,{waitFor:()=>document.getElementById('status').textContent==='Ready'});\n for(const variant of variants){\n  const canvas=createCanvas(width,height);draw(canvas.getContext('2d'),variant);const png=canvas.toBuffer('image/png');await writeFile(new URL(`${variant.id}.png`,dir),png);\n  const doc=new PDFDocument(),context=doc.beginPage(width,height);draw(context,variant);doc.endPage();const pdf=doc.close();await writeFile(new URL(`${variant.id}.pdf`,dir),pdf);\n  execFileSync('pdftoppm',['-r','72','-singlefile','-png',new URL(`${variant.id}.pdf`,dir).pathname,new URL(`${variant.id}-pdf`,dir).pathname],{stdio:'pipe'});\n  const pdfCanvas=await decoded(await readFile(new URL(`${variant.id}-pdf.png`,dir)));\n  const data=await opened.page.evaluate(v=>{const c=document.createElement('canvas');c.width=120;c.height=100;window.draw(c.getContext('2d'),v);return c.toDataURL();},variant);\n  const browserPNG=Buffer.from(data.split(',')[1],'base64');await writeFile(new URL(`${variant.id}-browser.png`,dir),browserPNG);const browserCanvas=await decoded(browserPNG);\n  const points=variant.kind==='blend'?[[50,50]]:[[70,50],[64,64],[74,50],[80,50],[50,72]];\n  const pixels=points.map(([x,y])=>({x,y,native:rgba(canvas,x,y),browser:rgba(browserCanvas,x,y),pdf:rgba(pdfCanvas,x,y),...(variant.kind==='blend'?{expected:expected(variant.mode)}:{})}));\n  const native=canvas.getContext('2d').getImageData(0,0,width,height).data,browse=browserCanvas.getContext('2d').getImageData(0,0,width,height).data;\n  let mismatchPixels=0,maxChannelDelta=0;for(let i=0;i<native.length;i+=4){let difference=false;for(let j=0;j<4;j++){const delta=Math.abs(native[i+j]-browse[i+j]);difference ||= delta!==0;maxChannelDelta=Math.max(maxChannelDelta,delta);}mismatchPixels+=difference;}\n  results.push({...variant,pixels,nativeVsBrowser:{mismatchPixels,maxChannelDelta},pdfContainsImage:/\\/Subtype\\s*\\/Image\\b/.test(pdf.toString('latin1'))});\n }\n assertNoBrowserErrors(opened.errors,'Paint effects private probe');await opened.page.close();\n await writeFile(new URL('results.json',dir),JSON.stringify({privateInvestigation:true,publicSupport:false,width,height,results},null,2)+'\\n');\n console.log(JSON.stringify(results,null,2));\n}catch(error){await saveBrowserEvidence(browser,error);throw error;}finally{await closeBrowserWithEvidence(browser);await server?.close();}\n",
+    "sourceSHA256": "148aaf9d80088342c4e2fb20de199ce43b693b01be868e06bfa36bdf7249c9a7",
+    "resultPath": ".artifacts/paint-effects-study/results.json",
+    "resultSHA256": "5378246313a4f592327a7a35c94f407ff861ae455d91247b6899b172f6326bb2",
+    "results": {
+      "privateInvestigation": true,
+      "publicSupport": false,
+      "width": 120,
+      "height": 100,
+      "results": [
+        {
+          "id": "source-over",
+          "kind": "blend",
+          "mode": "source-over",
+          "pixels": [
+            {
+              "x": 50,
+              "y": 50,
+              "native": [
+                166,
+                148,
+                155,
+                255
+              ],
+              "browser": [
+                166,
+                147,
+                154,
+                255
+              ],
+              "pdf": [
+                164,
+                147,
+                154,
+                255
+              ],
+              "expected": [
+                165,
+                148,
+                155,
+                255
+              ]
+            }
+          ],
+          "nativeVsBrowser": {
+            "mismatchPixels": 2475,
+            "maxChannelDelta": 1
+          },
+          "pdfContainsImage": false
+        },
+        {
+          "id": "multiply",
+          "kind": "blend",
+          "mode": "multiply",
+          "pixels": [
+            {
+              "x": 50,
+              "y": 50,
+              "native": [
+                128,
+                141,
+                153,
+                255
+              ],
+              "browser": [
+                128,
+                141,
+                154,
+                255
+              ],
+              "pdf": [
+                126,
+                141,
+                152,
+                255
+              ],
+              "expected": [
+                127,
+                141,
+                153,
+                255
+              ]
+            }
+          ],
+          "nativeVsBrowser": {
+            "mismatchPixels": 4200,
+            "maxChannelDelta": 1
+          },
+          "pdfContainsImage": false
+        },
+        {
+          "id": "screen",
+          "kind": "blend",
+          "mode": "screen",
+          "pixels": [
+            {
+              "x": 50,
+              "y": 50,
+              "native": [
+                175,
+                203,
+                227,
+                255
+              ],
+              "browser": [
+                175,
+                203,
+                227,
+                255
+              ],
+              "pdf": [
+                174,
+                203,
+                226,
+                255
+              ],
+              "expected": [
+                175,
+                203,
+                227,
+                255
+              ]
+            }
+          ],
+          "nativeVsBrowser": {
+            "mismatchPixels": 0,
+            "maxChannelDelta": 0
+          },
+          "pdfContainsImage": false
+        },
+        {
+          "id": "difference",
+          "kind": "blend",
+          "mode": "difference",
+          "pixels": [
+            {
+              "x": 50,
+              "y": 50,
+              "native": [
+                113,
+                170,
+                208,
+                255
+              ],
+              "browser": [
+                113,
+                170,
+                207,
+                255
+              ],
+              "pdf": [
+                111,
+                169,
+                206,
+                255
+              ],
+              "expected": [
+                112,
+                170,
+                207,
+                255
+              ]
+            }
+          ],
+          "nativeVsBrowser": {
+            "mismatchPixels": 4200,
+            "maxChannelDelta": 1
+          },
+          "pdfContainsImage": false
+        },
+        {
+          "id": "shadow-0",
+          "kind": "shadow",
+          "blur": 0,
+          "pixels": [
+            {
+              "x": 70,
+              "y": 50,
+              "native": [
+                212,
+                218,
+                223,
+                255
+              ],
+              "browser": [
+                211,
+                217,
+                223,
+                255
+              ],
+              "pdf": [
+                211,
+                217,
+                223,
+                255
+              ]
+            },
+            {
+              "x": 64,
+              "y": 64,
+              "native": [
+                212,
+                218,
+                223,
+                255
+              ],
+              "browser": [
+                211,
+                217,
+                223,
+                255
+              ],
+              "pdf": [
+                211,
+                217,
+                223,
+                255
+              ]
+            },
+            {
+              "x": 74,
+              "y": 50,
+              "native": [
+                212,
+                218,
+                223,
+                255
+              ],
+              "browser": [
+                211,
+                217,
+                223,
+                255
+              ],
+              "pdf": [
+                211,
+                217,
+                223,
+                255
+              ]
+            },
+            {
+              "x": 80,
+              "y": 50,
+              "native": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "browser": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "pdf": [
+                255,
+                255,
+                255,
+                255
+              ]
+            },
+            {
+              "x": 50,
+              "y": 72,
+              "native": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "browser": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "pdf": [
+                255,
+                255,
+                255,
+                255
+              ]
+            }
+          ],
+          "nativeVsBrowser": {
+            "mismatchPixels": 1600,
+            "maxChannelDelta": 1
+          },
+          "pdfContainsImage": false
+        },
+        {
+          "id": "shadow-8",
+          "kind": "shadow",
+          "blur": 8,
+          "pixels": [
+            {
+              "x": 70,
+              "y": 50,
+              "native": [
+                218,
+                223,
+                228,
+                255
+              ],
+              "browser": [
+                217,
+                222,
+                227,
+                255
+              ],
+              "pdf": [
+                217,
+                222,
+                227,
+                255
+              ]
+            },
+            {
+              "x": 64,
+              "y": 64,
+              "native": [
+                221,
+                226,
+                230,
+                255
+              ],
+              "browser": [
+                219,
+                224,
+                229,
+                255
+              ],
+              "pdf": [
+                217,
+                222,
+                227,
+                255
+              ]
+            },
+            {
+              "x": 74,
+              "y": 50,
+              "native": [
+                231,
+                235,
+                237,
+                255
+              ],
+              "browser": [
+                231,
+                234,
+                237,
+                255
+              ],
+              "pdf": [
+                228,
+                232,
+                235,
+                255
+              ]
+            },
+            {
+              "x": 80,
+              "y": 50,
+              "native": [
+                252,
+                252,
+                253,
+                255
+              ],
+              "browser": [
+                251,
+                252,
+                252,
+                255
+              ],
+              "pdf": [
+                248,
+                249,
+                250,
+                255
+              ]
+            },
+            {
+              "x": 50,
+              "y": 72,
+              "native": [
+                249,
+                250,
+                250,
+                255
+              ],
+              "browser": [
+                248,
+                249,
+                250,
+                255
+              ],
+              "pdf": [
+                246,
+                247,
+                248,
+                255
+              ]
+            }
+          ],
+          "nativeVsBrowser": {
+            "mismatchPixels": 2663,
+            "maxChannelDelta": 2
+          },
+          "pdfContainsImage": true
+        }
+      ]
+    }
+  }
+}
