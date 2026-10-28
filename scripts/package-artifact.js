@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 683, // Adds the public pivot action owner.
-  packedBytes: 1_017_000, // Calendar completion: measured 1,016,672 bytes.
-  unpackedBytes: 4_742_000 // Calendar completion: measured 4,741,042 bytes.
+  entries: 684, // Adds the private hierarchy normalization owner.
+  packedBytes: 1_019_000, // Hierarchy normalization: measured 1,018,879 bytes.
+  unpackedBytes: 4_748_000 // Hierarchy normalization: measured 4,747,892 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
