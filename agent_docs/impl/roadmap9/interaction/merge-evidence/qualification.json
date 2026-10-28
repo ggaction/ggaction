@@ -26,5 +26,12 @@
       "unpackedBytes": 5838000
     }
   },
-  "priorPublicEvidence": "Root f1800607d public installed and critical381 evidence remains owned by that checkpoint; not rerun or claimed here."
+  "priorPublicEvidence": "Root f1800607d public installed and critical381 evidence remains owned by that checkpoint; not rerun or claimed here.",
+  "mergeSource": "75d23783e",
+  "documentation": {
+    "sourceChecks": 19,
+    "builtPages": 160,
+    "selectiveLlmArtifacts": 1390,
+    "browserReuse": "Stable main f1800607d UI assets/layout; private hit sources add no visual changes."
+  }
 }
