@@ -200,3 +200,12 @@ export function normalizeTextHighlightStyle(args) {
     ...(args.opacity === undefined ? {} : { opacity: validateUnitInterval(args.opacity, 'Text highlight opacity') }),
     ...(args.fontSize === undefined ? {} : { fontSize: validatePositiveFinite(args.fontSize, 'Text highlight fontSize') }), offset: normalizeOffset(args.offset) };
 }
+
+// A requested highlight stroke temporarily owns the edge. Other highlight
+// changes retain the source outline; removing the highlight restores baseline.
+export function highlightSourceProperties(properties, style) {
+  if (style.stroke === undefined || properties.outline === undefined) return properties;
+  const { outline, ...source } = properties;
+  void outline;
+  return source;
+}

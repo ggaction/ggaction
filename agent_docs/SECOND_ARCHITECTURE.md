@@ -678,8 +678,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 556,000 bytes |
-| `ggaction/basic` | 333,000 bytes |
+| `ggaction` | 557,000 bytes |
+| `ggaction/basic` | 334,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -3075,3 +3075,20 @@ Native radial output은 affine frame을 실제 fill까지 유지한다. Text는 
 paint texture를 준비하고 기존 native glyph에 적용한다. Native glyph overhang 때문에 gradient texture는
 viewport의 역회전 범위를 덮으며 glyph shape를 bounds rectangle으로 바꾸지 않는다. SVG text는 vector
 paint resource를 소비한다. 정확한 값/제한/출력 차이는 current/MARKS.md의 shared structured fill이 소유한다.
+
+### Pre-fill outline ownership
+
+외곽선 요청은 기존 mark appearance config 한 곳에 저장하고 `grammar/markOutline.js`가 닫힌 값을 검증한다.
+각 domain materializer가 호출하는 기존 final mark-output 단계에서 concrete outline을 명시적으로 적용한다.
+일반 stroke 값은 복원을 위해 유지하며 renderer가 outline 우선순위와 contour→fill 순서를 소비한다.
+Selection의 명시적인 stroke highlight만 일시적으로 outline을 제거한다. Point packing/jitter는 동일한
+가시 edge 폭을 배치 전에 사용하고, 범례·라벨은 완성된 owner에서 경계를 읽는다. Text는 기존 glyph
+line/origin을 유지하며 partial opacity isolation은 visible frame 안의 실제 글자를 보존한다. 공유 image
+schema나 새 semantic compiler를 도입하지 않는다. 정확한 공개 계약과 소비자 차이는
+[MARKS](contract/current/MARKS.md#pre-fill-outlines-and-halos)가 소유한다.
+
+이 outline checkpoint의 runtime owner2개로 packed entries761→763을 실측했다. Canonical staging 최대값은
+Node20/24 packed1,131,929, unpacked5,212,872bytes이며 한도는763/1,132,000/5,213,000으로 최소 조정한다.
+지원 Node의 설치 bundle 최대 실측 Full556,491/Basic333,073bytes에 따라 한도는557,000/334,000이다.
+SVG25,000은 유지하며 기존 한도의 최초 실패와 실제 소비 archive는
+[OUTLINE](impl/roadmap9/phase4/paints/OUTLINE.md)에 보존한다.

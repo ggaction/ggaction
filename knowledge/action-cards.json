@@ -6299,7 +6299,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a point mark using fourteen named shapes or polygons with area/radius normalization.",
-      "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "create point mark",
         "create",
@@ -6416,6 +6416,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -6776,6 +6781,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "strokeDash",
@@ -7193,6 +7203,11 @@
           "type": "FillPaint | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -7347,6 +7362,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -7385,6 +7415,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -7845,6 +7880,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -7873,6 +7923,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -8131,6 +8186,11 @@
           "type": "FillPaint | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -8172,6 +8232,21 @@
         },
         {
           "name": "dy",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
           "required": false,
           "type": "number | undefined"
         },
@@ -8273,6 +8348,21 @@
           "type": "\"auto\" | readonly TextOverride[] | undefined"
         },
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "clip",
           "required": false,
           "type": "boolean | undefined"
@@ -8301,6 +8391,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -8349,7 +8444,7 @@
         }
       ],
       "callPatterns": [
-        "editTextMark({ target?, textOverrides?, clip?, lineHeight?, blockAlign?, inheritColor?, missing?, fill? })"
+        "editTextMark({ target?, textOverrides?, lineCap?, lineJoin?, miterLimit?, clip?, lineHeight?, blockAlign? })"
       ],
       "snippet": "program.editTextMark({ textOverrides: \"auto\" })",
       "errors": [],
@@ -8526,7 +8621,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.",
-      "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "edit point mark",
         "edit",
@@ -8621,6 +8716,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -9445,7 +9545,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic bar mark and empty rect collection.",
-      "signature": "createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: \"vertical\" | \"horizontal\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: \"vertical\" | \"horizontal\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "create bar mark",
         "create",
@@ -9589,6 +9689,11 @@
           "type": "FillPaint | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -9622,7 +9727,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit whole-bar appearance and rematerialize every concrete rectangle.",
-      "signature": "editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: \"normal\" | \"multiply\" | \"screen\" | \"difference\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: \"normal\" | \"multiply\" | \"screen\" | \"difference\"; missing?: \"error\" | \"skip\"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "edit bar mark",
         "edit",
@@ -9744,6 +9849,11 @@
           "type": "FillPaint | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -9772,7 +9882,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic area mark and empty path collection.",
-      "signature": "createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
+      "signature": "createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
       "intents": [
         "create area mark",
         "create",
@@ -9877,6 +9987,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",
@@ -10193,7 +10308,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit constant area appearance.",
-      "signature": "editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
+      "signature": "editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
       "intents": [
         "edit area mark",
         "edit",
@@ -10280,6 +10395,11 @@
           "type": "FillPaint | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -10306,7 +10426,7 @@
         }
       ],
       "callPatterns": [
-        "editAreaMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, fill?, opacity?, stroke? })"
+        "editAreaMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, fill?, outline?, opacity? })"
       ],
       "snippet": "program.editAreaMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -27883,7 +28003,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic arc mark and empty closed-path collection.",
-      "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "create arc mark",
         "create",
@@ -28007,6 +28127,11 @@
           "type": "FillPaint | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -28040,7 +28165,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit arc geometry or appearance and rematerialize complete sector paths.",
-      "signature": "editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "edit arc mark",
         "edit",
@@ -28144,6 +28269,11 @@
           "type": "FillPaint | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -28160,7 +28290,7 @@
         }
       ],
       "callPatterns": [
-        "editArcMark({ target?, lineCap?, lineJoin?, miterLimit?, innerRadius?, padAngle?, fill?, opacity? })"
+        "editArcMark({ target?, lineCap?, lineJoin?, miterLimit?, innerRadius?, padAngle?, fill?, outline? })"
       ],
       "snippet": "program.editArcMark({ lineCap: \"butt\" })",
       "errors": [],
@@ -36155,6 +36285,11 @@
           "type": "FillPaint | undefined"
         },
         {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
@@ -36216,7 +36351,7 @@
         }
       ],
       "callPatterns": [
-        "createRectMark({ id?, data?, target?, clip?, missing?, fill?, opacity?, stroke? })"
+        "createRectMark({ id?, data?, target?, clip?, missing?, fill?, outline?, opacity? })"
       ],
       "snippet": "program.createRectMark({})",
       "errors": [],
@@ -36343,6 +36478,11 @@
           "name": "fill",
           "required": false,
           "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
         },
         {
           "name": "opacity",

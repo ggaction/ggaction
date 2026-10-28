@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";import test from "node:test";
 import {readFileSync} from "node:fs";import {createHash} from "node:crypto";
-import {resolvePrimitiveGraphicBounds} from "../../../src/grammar/schemas/graphicBounds.js";
-import {validateConcreteGraphicProperties} from "../../../src/grammar/schemas/concreteGraphic.js";
+import {resolvePrimitiveGraphicBounds} from "../../../../../src/grammar/schemas/graphicBounds.js";
+import {validateConcreteGraphicProperties} from "../../../../../src/grammar/schemas/concreteGraphic.js";
 import {variants} from "./manifest.js";import {fontSHA256} from "./fixture.js";
 import {expectedColor,samplePoints,expectedBounds} from "./reference.js";
 test("reuses explicit mark stroke bounds and anchors outside ink numerically",()=>{
@@ -12,7 +12,7 @@ test("reuses explicit mark stroke bounds and anchors outside ink numerically",()
  for(const v of variants)for(const[x,y]of samplePoints(v.fixture))assert.ok(expectedColor(v.fixture,x,y).every(c=>Number.isInteger(c)&&c>=0&&c<=255));
 });
 test("keeps the exact geometric font and group opacity independent from public text support",()=>{
- assert.equal(createHash("sha256").update(readFileSync(new URL("../../fixtures/fonts/metric-fixture.ttf",import.meta.url))).digest("hex"),fontSHA256);
+ assert.equal(createHash("sha256").update(readFileSync(new URL("../../../../fixtures/fonts/metric-fixture.ttf",import.meta.url))).digest("hex"),fontSHA256);
  const opacity=variants.find(v=>v.variant==="text-opacity").fixture;
  assert.deepEqual(expectedBounds(opacity),{left:79,right:165,top:84,bottom:134});
  assert.deepEqual(expectedColor(opacity,84,110),[130,186,210,255]);

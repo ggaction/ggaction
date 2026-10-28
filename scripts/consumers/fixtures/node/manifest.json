@@ -895,5 +895,18 @@
         "statements": 5
       }
     ]
+  },
+  {
+    "file": "mark-outlines.mjs",
+    "cases": [
+      {
+        "id": "paint/outline-basic-and-codec",
+        "statements": 8
+      },
+      {
+        "id": "paint/outline-text-and-fresh-edit",
+        "statements": 9
+      }
+    ]
   }
 ]

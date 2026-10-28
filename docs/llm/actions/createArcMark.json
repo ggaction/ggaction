@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Create a semantic arc mark and empty closed-path collection.",
-  "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
+  "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
   "intents": [
     "create arc mark",
     "create",
@@ -126,6 +126,11 @@
       "name": "fill",
       "required": false,
       "type": "FillPaint | undefined"
+    },
+    {
+      "name": "outline",
+      "required": false,
+      "type": "false | MarkOutline | undefined"
     },
     {
       "name": "opacity",

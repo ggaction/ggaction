@@ -3,7 +3,7 @@ export const fontFamily="ggaction Metric Fixture";
 export const fontSHA256="cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878";
 export const styles=Object.freeze(["rectangle-outline","circle-halo","path-outline","text-outline","text-halo","text-opacity","clip","zero-width"]);
 export function outlineFixture(style){
- if(!styles.includes(style))throw new TypeError("Unknown outline review variant.");
+ if(!styles.includes(style))throw new TypeError("Unknown outline variant.");
  const text=style.startsWith("text"),halo=style.includes("halo");
  return{style,title:style.replaceAll("-"," "),kind:text?"text":style.startsWith("circle")?"circle":style.startsWith("path")?"path":"rect",
   fill:[34,139,180],stroke:halo?[255,255,255]:[92,42,115],strokeWidth:style==="zero-width"?0:halo?16:8,opacity:style==="text-opacity"?.5:1,

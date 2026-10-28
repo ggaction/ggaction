@@ -1,3 +1,4 @@
+import { normalizeMarkOutline } from "../markOutline.js";
 import { ownRecord } from "../../core/ownData.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { validateFontStyle } from "../../core/font.js";
@@ -30,6 +31,10 @@ const TEXT_BASELINES = new Set([
 const validatedProperties = new WeakMap();
 
 export function validateConcreteGraphicValue(type, property, value) {
+  if (property === "outline") {
+    if (value === false) throw new TypeError("Concrete outline must be an object.");
+    normalizeMarkOutline(value, `${type}.outline`);
+  }
   if (property === "fillBounds") {
     ownRecord(value, "Text fillBounds");
     if (!isPlainObject(value) || Object.keys(value).length !== 4 ||

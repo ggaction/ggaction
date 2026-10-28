@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 761, // Structured paint normalization, fill materialization and Canvas preparation owners.
-  packedBytes: 1_130_000, // Integrated structured paints Node20 maximum: 1,129,521 bytes.
-  unpackedBytes: 5_200_000 // Integrated runtime, declarations and knowledge: 5,199,497 bytes.
+  entries: 763, // Shared outline normalization and Canvas contour drawing owners.
+  packedBytes: 1_132_000, // Outline checkpoint Node20/24 maximum: 1,131,929 bytes.
+  unpackedBytes: 5_213_000 // Outline runtime, declarations and knowledge: 5,212,872 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

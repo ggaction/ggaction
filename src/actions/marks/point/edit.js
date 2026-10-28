@@ -1,3 +1,4 @@
+import { requestedMarkOutline } from "../../../grammar/markOutline.js";
 import { validateFillPaint } from "../../../grammar/paint.js";
 import { assertIndependentOverlayGeometry } from "../../../grammar/overlay.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
@@ -19,7 +20,7 @@ import { validateMarkOptions } from "../shared.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const OPTIONS = Object.freeze([
-  "target", "clip", "missing", "shape", "fill", "opacity", "stroke", "strokeWidth",
+  "target", "clip", "missing", "shape", "fill", "opacity", "outline", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -33,7 +34,7 @@ export const editPointMark = /* @__PURE__ */ action(
     requestedMarkClip(args);
     const strokeDetails = requestedStrokeDetails(args, "editPointMark");
     const editable = [
-      "clip", "missing", "shape", "fill", "opacity", "stroke", "strokeWidth",
+      "clip", "missing", "shape", "fill", "opacity", "outline", "stroke", "strokeWidth",
       ...STROKE_STYLE_PROPERTIES
     ];
     if (!editable.some(property => Object.hasOwn(args, property))) {
@@ -75,7 +76,7 @@ export const editPointMark = /* @__PURE__ */ action(
         })
       : this;
     const config = { ...semantic.markConfigs[id], ...requestedMarkClip(args) };
-    Object.assign(config, strokeDetails);
+    Object.assign(config, strokeDetails, requestedMarkOutline(args));
     if (Object.hasOwn(args, "shape")) {
       config.shape = validatePointShape(args.shape);
     }

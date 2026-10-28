@@ -4,7 +4,7 @@ import { ChartProgram } from "./program.js";
 export { ChartProgram };
 export type {
   InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
-  FillPaint,
+  FillPaint, MarkOutline,
   PatternPaint,
   RadialGradientPaint,
   LinearGradientPaint,

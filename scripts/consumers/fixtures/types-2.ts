@@ -2109,3 +2109,11 @@ chart().createCompleteData({id:"days",key:"day",calendar:calendarDomain}).editCo
 chart().createCompleteData({id:"days",key:"day",calendar:calendarDomain,sequence:{start:0,end:1,step:1}});
 // @ts-expect-error named time zone is required
 chart().editCompleteData({target:"days",calendar:{unit:"day",start:"2024-01-01",end:"2024-12-31"}});
+
+// Shared pre-fill outline and actual Text glyph style on the installed surface.
+const outlineProgram = chart().createCanvas({width:240,height:180}).createData({values:[{x:1,y:2}]})
+  .createPointMark({outline:{color:"white",width:8}}).encodeX({field:"x"}).encodeY({field:"y"})
+  .editPointMark({outline:false});
+outlineProgram.createTextMark({outline:{color:"white",width:4},lineJoin:"round",miterLimit:2});
+// @ts-expect-error outline replacement requires a color
+outlineProgram.editPointMark({outline:{width:8}});

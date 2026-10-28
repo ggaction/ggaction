@@ -338,7 +338,7 @@ export type {
   EditStrokeDashScaleOptions,
   EditSemanticOptions,
   FieldType,
-  FillPaint,
+  FillPaint, MarkOutline,
   PatternPaint,
   RadialGradientPaint,
   FacetCompositionSpec,
@@ -532,7 +532,7 @@ export function render(
 [Complete declaration and relative dependencies](../types/basic.d.ts)
 
 ```typescript
-export type { FillPaint, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
+export type { FillPaint, MarkOutline, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./program.js";
@@ -695,7 +695,7 @@ import { ChartProgram } from "./program.js";
 export { ChartProgram };
 export type {
   InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
-  FillPaint,
+  FillPaint, MarkOutline,
   PatternPaint,
   RadialGradientPaint,
   LinearGradientPaint,

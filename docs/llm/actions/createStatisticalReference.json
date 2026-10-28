@@ -180,6 +180,11 @@
       "type": "FillPaint | undefined"
     },
     {
+      "name": "outline",
+      "required": false,
+      "type": "false | MarkOutline | undefined"
+    },
+    {
       "name": "strokeDash",
       "required": false,
       "type": "DashPattern | DashStyle | undefined"

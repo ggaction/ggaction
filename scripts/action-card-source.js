@@ -612,9 +612,11 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
 
 export function compactActionCardByteLimit(name) {
   // Full action cards now include the common explicit-target selector and typed wrapper.
+  // Outline and Text stroke-detail inheritance measure ReferenceBand 3667,
+  // MarkLabels 3923, Annotation 3917 bytes; ceilings round up by at most 7.
   // Legend cards also retain the closed overflow summary-symbol policy and three-channel combination literal.
-  return 180 + ({editLegend: 4505, createLegend: 3873, createMarkLabels: 3420,
-    createAnnotation: 3420, createRegressionPlot: 3460, createReferenceBand: 3450}[name] ?? 3360);
+  return 180 + ({editLegend: 4505, createLegend: 3873, createMarkLabels: 3750,
+    createAnnotation: 3740, createRegressionPlot: 3460, createReferenceBand: 3490}[name] ?? 3360);
 }
 
 export async function buildActionCards() {

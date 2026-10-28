@@ -1,3 +1,4 @@
+import { requestedStrokeDetails } from "../grammar/strokeStyle.js";
 import { hasPositionBinding } from "../core/encodingBindings.js";
 import { contentValue, resolveTextSourceBindings } from "./textContent.js";
 export { sourceValue } from "./textContent.js";
@@ -255,6 +256,7 @@ function concreteTextItem(config, position, text, { offsets = true } = {}) {
       x: x + (offsets ? config.dx : 0),
       y: y + (offsets ? config.dy : 0),
       text,
+      ...requestedStrokeDetails(config),
       ...(lines === undefined ? {} : { lines }),
       fill: config.fill,
       opacity: config.opacity,

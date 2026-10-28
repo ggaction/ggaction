@@ -34,7 +34,8 @@
     "contracts/realistic-scenario-runner.test.js": 99611,
     "contracts/realistic-scoped-composition.test.js": 843,
     "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
-    "contracts/realistic-structured-paints.test.js": 184876
+    "contracts/realistic-structured-paints.test.js": 184876,
+    "contracts/realistic-mark-outlines.test.js": 2594
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -60,6 +61,10 @@
     "contracts/realistic-data-mark-recipes.test.js": {
       "environment": "macOS arm64, Node 22.23.1, max-old-space-size=512, test-concurrency=2",
       "measurement": "Sum of successful canonical realistic runner per-test durations 147130.165289 ms, rounded upward. Five pinned datasets; actual direct/atomic conditional option witnesses, with no source coverage instrumentation. Scheduling estimate only."
+    },
+    "contracts/realistic-mark-outlines.test.js": {
+      "environment": "macOS arm64, Node22.23.1, max-old-space-size512, test-concurrency2",
+      "measurement": "Sum of 15 successful canonical realistic runner test durations 2593.948835ms, rounded upward. Five pinned datasets, three recipes and six filled mark owners with full, zero-width and removed outline options. Scheduling estimate only."
     }
   },
   "localMeasurements": {

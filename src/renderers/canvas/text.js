@@ -1,3 +1,4 @@
+import { drawCanvasOutline } from "./outline.js";
 import { applyCanvasFill } from "./fill.js";
 import { applyCanvasTextPattern } from "./textPaint.js";
 import { requireFiniteProperty, requireStringProperty } from "./validation.js";
@@ -86,6 +87,10 @@ function drawText(context, child, collectionId, { resolveFontFamily, textPaint }
     const localBounds = bounds && { left: bounds.left - x, right: bounds.right - x, top: bounds.top - y, bottom: bounds.bottom - y };
     if (fill?.type === "pattern" || fill?.type === "radial-gradient") applyCanvasTextPattern(context, fill, bounds, properties, graphicId, textPaint);
     else applyCanvasFill(context, fill, localBounds, graphicId);
+    drawCanvasOutline(context, properties, () => {
+      if (properties.lines === undefined) context.strokeText(text, 0, 0);
+      else for (const line of properties.lines) context.strokeText(line.text, line.x, line.y);
+    });
     if (properties.lines === undefined) context.fillText(text, 0, 0);
     else for (const line of properties.lines) context.fillText(line.text, line.x, line.y);
   } finally {

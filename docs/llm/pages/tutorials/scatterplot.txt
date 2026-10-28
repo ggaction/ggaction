@@ -3,15 +3,15 @@
 ![Horsepower versus miles per gallon](../../../assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/dac51879a5e3d41b475ea0060bed6ca153f77998/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/dac51879a5e3d41b475ea0060bed6ca153f77998/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-paints/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-paints/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](../../../getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/dac51879a5e3d41b475ea0060bed6ca153f77998/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-paints/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -156,7 +156,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/dac51879a5e3d41b475ea0060bed6ca153f77998/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-paints/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](../../../api/encodings/),
  [Guides](../../../api/guides/), and the
  [Basic Chart contract](../../../api/basic-charts/#createscatterplot).

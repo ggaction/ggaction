@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "mark-output": { prefix: "materialization/markOutput.js", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Final conditional values, outline appearance and stable item identity must be applied by the same explicit owner." },
+  "mark-outline": { prefix: "grammar/markOutline.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Closed pre-fill outline values and atomic stroke conflicts must retain strict validation." },
   "structured-paint": { prefix: "grammar/paint.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Authored and concrete fill contracts must preserve normalized coordinate frames and reject unsafe values." },
   "gradient-stops": { prefix: "grammar/gradientStops.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Ordered stops and hard transitions share one complete validation owner." },
   "fill-materialization": { prefix: "materialization/fillPaint.js", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Explicit fill origins, glyph bounds and cumulative pattern work must remain exercised." },

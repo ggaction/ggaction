@@ -80,6 +80,9 @@ function preflightGraphic(id, graphic, scale, type, offset) {
     scale,
     offset
   );
+  if (properties.outline !== undefined) {
+    requireCanvasNativeValue(properties.outline.width, `${label} outline width`, scale);
+  }
   if (properties.rotation !== undefined) {
     requireCanvasNativeValue(properties.rotation, label);
   }

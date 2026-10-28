@@ -312,7 +312,7 @@ export type {
   EditStrokeDashScaleOptions,
   EditSemanticOptions,
   FieldType,
-  FillPaint,
+  FillPaint, MarkOutline,
   PatternPaint,
   RadialGradientPaint,
   FacetCompositionSpec,
