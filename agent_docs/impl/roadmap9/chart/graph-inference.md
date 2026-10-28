@@ -6,7 +6,7 @@
 - [x] 공개 API와 저장·수정 경계 구체화
 - [x] createInferredGraphData / editInferredGraphData 연결
 - [x] source/candidate graph revision→inference→layout→plot 원자적 갱신
-- [ ] 저장 검증·선택·inspection·접근성·타입·설치·문서
+- [x] 저장 검증·선택·inspection·접근성·타입·설치·문서 ([공개 checkpoint](../phase3/graph/INFERENCE_PUBLIC.md))
 - [ ] induced-view filter와 explicit recompute 소비자 통합
 
 [전체 남은 결정 승인](../AUTHORIZATION.json)을 적용한다. 새 시각 도형은 추가하지 않으며 [graph-plots](graph-plots.md)의 승인된 node/edge/label 표시를 소비한다. 아래 기록은 구현 완료 증거를 대신하지 않는다.
@@ -42,9 +42,9 @@ origin/rule/metric과 정확한 source rows를 inspection·logical items·access
 - 공개 lifecycle·저장 검증·private 갱신 context·기존 graph/layout consumer의 집중 검사64개 통과.
 - 변경된 선언과 vocabulary/contract/source 경계까지 최종 source 검사43개 통과.
 - 실제 dataset5종×knn/MST/sequence3종, canonical bounded runner15개 통과.
-- 새 inference/state/context owner의 실행 줄·함수100%, inferred state branch93.23%; selector 포함 전체99.78/94.48/100.
+- 새 inference/state/context owner의 실행 줄·함수100%, 최종 inferred state branch92.89%; selector 포함 전체99.78/94.23/100.
 - candidate 해제, rule 전환, typed tie와 missing, explicit star hub, negative cosine,
   geographic meter, exact/approximate counter·holdout·recall, source-chain 단일 revision을 검사했다.
 - 원본 dataset의 immutable source row와 inspection/accessibility의 inferred origin/rule/metric을 유지한다.
-- 전체 unit/contracts, 설치3Node, 최종 문서/공통 realistic 통합은 동결 뒤 qualification으로 남긴다.
+- 단독 설치3Node·문서·inventory qualification과 전체 unit/contracts의 메타데이터 보정은 공개 checkpoint에 기록했다. 공통 realistic 및 교차 통합은 후행 의무로 남긴다.
   이 source checkpoint를 STEP-029–032 또는 전체 Roadmap9의 완료로 보고하지 않는다.
