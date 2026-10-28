@@ -1,0 +1,185 @@
+{
+  "state": "integration-verified",
+  "sourceRevision": "2e9580a7c51ff20f3a14850e5b5829a7a48aadfe",
+  "parents": {
+    "paints": "53678726bfbf027e392aeb205d41dbb9506ecc3e",
+    "main": "a9ecf10787016aa8098536f96ebf18d58da2a301"
+  },
+  "sourceTree": {
+    "scope": [
+      "src",
+      "types",
+      "knowledge"
+    ],
+    "trackedFileCount": 723,
+    "algorithm": "SHA256(JSON array of lexicographically git-listed {path,sha256} entries; compact JSON)",
+    "sha256": "003447bf03edada69456c0f44e72f23df261fa7efb6b01051185251754b00d0a"
+  },
+  "runtimeChangesForIntegration": false,
+  "checks": {
+    "crossLifecycle": {
+      "passed": 8,
+      "failed": 0
+    },
+    "focusedContracts": {
+      "passed": 63,
+      "failed": 0
+    },
+    "unit": {
+      "passed": 46,
+      "failed": 0
+    },
+    "sourcePackageDiscoveryBoundaries": {
+      "passed": 40,
+      "failed": 0
+    },
+    "finalDiscovery": {
+      "passed": 16,
+      "failed": 0
+    },
+    "existingBrowser": {
+      "passed": 4,
+      "failed": 0
+    },
+    "installedConditionalBrowser": {
+      "passed": 4,
+      "failed": 0,
+      "crossCases": 2,
+      "physicalDPR": 2,
+      "DOMOffscreenScene": "exact RGBA",
+      "CanvasSVGLiteralInterior": {
+        "rgbToleranceBytes": 1,
+        "alphaToleranceBytes": 0
+      }
+    },
+    "render": {
+      "passed": 2,
+      "failed": 0,
+      "pdfCombinations": 24,
+      "pngPrimitivePublicPairs": 16
+    },
+    "documentation": {
+      "passed": 166,
+      "failed": 0,
+      "sourceRef": "2e9580a7c51ff20f3a14850e5b5829a7a48aadfe"
+    },
+    "installedConsumer": {
+      "passed": 199,
+      "failed": 0,
+      "qualificationGroups": 7
+    },
+    "finalPackageRepack": {
+      "sha256": "4688af46ac96b52a87eda41b2132e9d0f148d7138fc2f5f14aaffaab45acd1df",
+      "installedArtifactBytesUnchanged": true
+    }
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 717,
+    "size": 1064412,
+    "unpackedSize": 4945828,
+    "sha256": "4688af46ac96b52a87eda41b2132e9d0f148d7138fc2f5f14aaffaab45acd1df"
+  },
+  "packageFile": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/paint-public-integration/conditional-merge-package/ggaction-0.0.26.tgz",
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 638,
+      "minifiedBytes": 1920190,
+      "gzipBytes": 534578
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 434,
+      "minifiedBytes": 1083892,
+      "gzipBytes": 312413
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 21,
+      "minifiedBytes": 25670,
+      "gzipBytes": 8166
+    }
+  },
+  "resolvedPeers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "logs": {
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/cross.log.gz": {
+      "sha256": "1deb7f319a95ff55072591e1d19879622c9233e1024756552212a74d1aa9c0a5",
+      "originalSha256": "e3728566962e3212f4333e38e51ac96fc6b5a412e8dd195d9d804e6da235ae71"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/contracts.log.gz": {
+      "sha256": "d728c00471f33410bd6674036624a1777807e509914b6f887bc0cd3cd58e6593",
+      "originalSha256": "4d17575946b8d07d350232c837604d098892347b1c86d0cc9cbb76032ba86fb1"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/unit.log.gz": {
+      "sha256": "531a7f03f154d1fe9296ed4eddcdc1eae15f65162682cfe644f70ccf740093c4",
+      "originalSha256": "f2ccd8f6473000385a99aef6820098170e6217bad5a75509bc17597dc72d376c"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/boundaries.log.gz": {
+      "sha256": "293335d357e87ef384e01a76a955ed371d4fa2c6b5925317142017d59d556591",
+      "originalSha256": "3821c80b14bcb3526946f00a3b6276dddcf99f00c45157c58586e36739f57fb8"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/browser.log.gz": {
+      "sha256": "a6bff8b50b95d747dea1d9aa2824241dd804a87b71781cbb659e092c337054b0",
+      "originalSha256": "dd00a16edcc30696e8f00ac99709d7ace5e4a174d2cb39eabcc420cec28284f1"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/cross-browser.log.gz": {
+      "sha256": "a63df4280c04a79062fea5f75c9ea7d76d608f2cecb6ca29e1643fa4798b858a",
+      "originalSha256": "2baf708cf621d10f4524d7ab3a599341c62dd1ab6905386e06c384360b081570"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/render.log.gz": {
+      "sha256": "cd1e907999ed933220db6dc5b5357b36e1bf11048be049c7a4863c9582a1df63",
+      "originalSha256": "d03925311dcd9acc56311a7edc4052e7401ef9d55b75314a21c2ad04348b698c"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/docs-precommit.log.gz": {
+      "sha256": "ade6c9196b440dbfa7c57b6d50322b55dc1e2110da85616e57932b183370d1f9",
+      "originalSha256": "4cd95e0588396d11b652962caa8df4cbe8088e607b51dd408b1faf2490433225"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/installed.log.gz": {
+      "sha256": "97db730ad7eabb89a2a3f2c36d08e7123a035fb2174c5379df546a6b9b6fedd1",
+      "originalSha256": "d16028e629922b937f14baf807e044f1f88aa7662dd5b669693128cc6395f8e1"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/discovery-final.log.gz": {
+      "sha256": "83a652fb6419cee59000f0946f34e87f906efe330868daf91e2d8e98af90e326",
+      "originalSha256": "967e4e89881c11cfe84b126e1a1145fbd2e393d1ed0a13040947c12cbfdbf5c1"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/qualification.json": {
+      "sha256": "2cb3b6a9d46960f23ea7abe586e7c4bc82a0209a969a302afe1c137040ebac19"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/node-cases.json": {
+      "sha256": "5233a07e8715fd2cc7194ce886d66575b6ef2484c972adfcb76df999bb255cec"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/docs-final.log.gz": {
+      "sha256": "75c7cdeaee2f0b097fb564270f82496dde51fe02475cb1afc9c653d36c466f77",
+      "originalSha256": "e07822c97c0a994c3b844ef0c87d44400141140705d22975f1d20d893d30794a"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/provenance-final.log.gz": {
+      "sha256": "bac7d54248b8f894e7c6142318896027cda5d175d93128f002d3853d48824cec",
+      "originalSha256": "33b6a1c8d6a2b6d3e7dd98ab9422011aba8a95cd23403482399b38ad6f564b28"
+    }
+  },
+  "firstFailure": {
+    "checks": 2,
+    "reason": "Test expected old aggregate item order after explicit reversed data revision. Output follows revised rows and retains correct chosen identity.",
+    "resolution": "Expect reversed order and assert exact reversed item keys and lineage revisions. No runtime edits."
+  },
+  "remaining": [
+    "P1/P2 structured paints and outline/shadow APIs pending exact design approval",
+    "Additional ellipse visual target pending approval",
+    "Image I3 shared payload pending approval",
+    "Full STEP017 consumers/effects still incomplete",
+    "No new full coverage/realistic run claimed by this focused integration"
+  ],
+  "evidenceNotes": [
+    "Main a9ecf107 tracked historical raw logs include trailing spaces; these evidence bytes were retained unchanged. Newly authored source/test/docs pass whitespace checks.",
+    "Metadata-only source pin does not change package bytes; final package SHA256 equals the artifact exercised by installed Node and Chromium consumers."
+  ]
+}

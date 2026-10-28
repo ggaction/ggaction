@@ -82,5 +82,44 @@ export const cases = [
     assert.deepEqual(scene.nodes.filter(node => node.type === "circle").map(node => [node.properties.x, node.properties.y, node.properties.opacity]), [[60, 95, 1], [140, 45, 0]]);
     const sceneCanvas = createCanvas(1, 1), sceneContext = sceneCanvas.getContext("2d"); renderTransitionScene(scene, sceneContext);
     assert.deepEqual(sceneContext.getImageData(0, 0, sceneCanvas.width, sceneCanvas.height).data, pixels);
+  } },
+  { id: "conditional-encoding/bar-blend-lifecycle", async run() {
+    for (const mode of ["multiply", "screen"]) {
+      const original = chart().createCanvas({ width: 300, height: 240, margin: 30, background: "#336699" })
+        .createData({ id: "rows", values: [{ category: "a", group: "east", y: 1 }, { category: "b", group: "west", y: 2 }] })
+        .createParameter({ id: "warm", value: true })
+        .createBarPlot({ id: "bars", x: "category", y: { field: "y", aggregate: "sum" }, guides: false })
+        .editBarMark({ blend: mode, stroke: false })
+        .encodeColor({ conditions: [{ when: expression(parameter("warm")), value: { value: "#ff0000" } }], otherwise: { value: "#0000ff" } })
+        .selectMarks({ id: "chosen", target: "bars", grain: "item", field: "category", op: "eq", value: "a" })
+        .encodeOpacity({ conditions: [{ when: { selection: "chosen" }, value: { value: 0.5 } }], otherwise: { value: 1 } });
+      const program = deserializeProgram(serializeProgram(original)).editParameter({ target: "warm", value: false })
+        .editMarkSelection({ selection: "chosen", field: "category", op: "eq", value: "b" });
+      const bars = program.graphicSpec.objects.bars.items;
+      assert.deepEqual(bars.map(item => [item.properties.blend, item.properties.fill, item.properties.opacity]), [[mode, "#0000ff", 1], [mode, "#0000ff", 0.5]]);
+      assert.equal(program.semanticSpec.layers[0].conditionals.color.parameterInputs[0].revision, 1);
+      assert.equal(program.semanticSpec.layers[0].conditionals.opacity.selectionInputs[0].revision, 1);
+      const facets = program.facet({ id: "panels", field: "group" });
+      assert.ok(Object.values(facets.children).every(child => child.graphicSpec.objects.bars.items.every(item => item.properties.blend === mode)));
+      const reset = program.editBarMark({ blend: "normal" });
+      assert.equal(reset.semanticSpec.layers[0].mark.blend, undefined);
+      assert.deepEqual(reset.semanticSpec.layers[0].conditionals, program.semanticSpec.layers[0].conditionals);
+      const graphic = deserializeGraphic(serializeGraphic(program));
+      assert.equal(renderToSVG(graphic), renderToSVG(program));
+      assert.match(renderToSVG(graphic), new RegExp(`mix-blend-mode:${mode}`));
+      assert.deepEqual((await renderToPNGBuffer(graphic)).buffer, (await renderToPNGBuffer(program)).buffer);
+      assert.deepEqual(pdfStreams((await renderToPDFBuffer(graphic)).buffer), pdfStreams((await renderToPDFBuffer(program)).buffer));
+      const canvas = createCanvas(1, 1), context = canvas.getContext("2d"); render(graphic, context);
+      const expected = mode === "multiply" ? [[0, 0, 153, 255], [26, 51, 153, 255]] : [[51, 102, 255, 255], [51, 102, 204, 255]];
+      bars.forEach((item, index) => {
+        const { x, y, width, height } = item.properties;
+        const actual = [...context.getImageData(Math.floor(x + width / 2), Math.floor(y + height / 2), 1, 1).data];
+        actual.forEach((value, channel) => assert.ok(Math.abs(value - expected[index][channel]) <= (channel === 3 ? 0 : 1)));
+      });
+      const scene = createTransitionScene(graphic, { format: "canvas" });
+      assert.deepEqual(scene, createTransitionScene(program, { format: "canvas" }));
+      const sceneCanvas = createCanvas(1, 1), sceneContext = sceneCanvas.getContext("2d"); renderTransitionScene(scene, sceneContext);
+      assert.deepEqual(sceneContext.getImageData(0, 0, sceneCanvas.width, sceneCanvas.height).data, context.getImageData(0, 0, canvas.width, canvas.height).data);
+    }
   } }
 ];

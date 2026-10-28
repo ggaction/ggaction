@@ -1,0 +1,625 @@
+{
+  "state": "approved",
+  "visualApproval": "pending",
+  "publicPaintIntegration": "pending",
+  "codeBase": "4f2df10a7566ba792b52233254c540a0ae5b0727",
+  "recordedAt": "2026-10-28T15:48:36.870Z",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "inputs": {
+    "src/grammar/strokeStyle.js": "4cd58243dd15f024be8e630a94ac97f33e2c1ad901f385264e6c3601cabc3a4b",
+    "src/grammar/schemas/graphicBounds.js": "f1efc93e5f1eba7635b7b32da12d6a962a940012b6785a123d71e0562add18f3",
+    "src/grammar/schemas/concreteGraphic.js": "b2c7d6402f4e88e4267f6ddd4ac5d039851638375fee6e0340996009683eb21b",
+    "test/capabilities.json": "4114d5ee2e2f0884461abe1842f00ae4f14e36d0af21cbc4331dd19b310c0cb9",
+    "test/gates/outline-paints/backends.render.js": "c4d20120e9b62ce58fc1e2a258c2ee006a0cf3963ada43f1bdffb4d48296c987",
+    "test/gates/outline-paints/browser.html": "97aa8857125c4df7ca77c2d035327bd4dc3a2cc5f6a60b495d98a5d8f3ca0d76",
+    "test/gates/outline-paints/fixture.js": "96a01f49a4eff7d447db5d6724f58beec1c7d401923c3194d4d417112e21ce43",
+    "test/gates/outline-paints/manifest.js": "8555e1258f80e31386bad59797397ad0503844ad47f887845c81887a9c125ac5",
+    "test/gates/outline-paints/primitive.program.js": "d29610ff1058653b3d139b8053f07879b6fff7480814d68fca9c9ceb4dca965a",
+    "test/gates/outline-paints/primitive.test.js": "b81e42a9a5ee6db7a9c4912e8afb0d2e5adc5f4808abf89fdee94898f33e2b48",
+    "test/gates/outline-paints/reference.js": "4a0748aa6d955ed40713071a9650e0a1045b76ba23c83c5b575e011f532cff9c",
+    "test/fixtures/fonts/README.md": "31e7951ea61e2c4fc29bf5988db1b99c99638c4259f1eff3d2e90095fbd9678c",
+    "test/fixtures/fonts/generate.py": "e0a8a1b1aea6a1964cf6d3eec431051fde1dc46fed1e18da8f3237b3a61de4a7",
+    "test/fixtures/fonts/metric-fixture.ttf": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878"
+  },
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js gates gates/outline-paints/primitive.test.js",
+      "exit": 0,
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "log": ".artifacts/outline-review/primitive-final.log",
+      "sha256": "fdb170e030e6c4953b21781c909aeec64d693f9fc3f6f3d5d20864edd4ffd591"
+    },
+    {
+      "command": "node scripts/run-tests.js render gates/outline-paints/backends.render.js",
+      "exit": 0,
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "log": ".artifacts/outline-review/render-final.log",
+      "sha256": "06d11f5e25cc4ec75574fc6ab07cd7ac446e0fbf2f28874a646a8f17415c5f95"
+    },
+    {
+      "command": "node scripts/run-tests.js unit unit/grammar/graphic-bounds.test.js unit/grammar/stroke-style.test.js unit/renderers/canvas-stroke-details.test.js unit/renderers/normal-glyph-opacity.test.js",
+      "exit": 0,
+      "tests": 16,
+      "pass": 16,
+      "fail": 0,
+      "log": ".artifacts/outline-review/unit-final.log",
+      "sha256": "bd77674f3100d4426515d3090ed0cc992d6fbb660120a68bbcc7c1d5fdbb02e9"
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js",
+      "exit": 0,
+      "tests": 38,
+      "pass": 38,
+      "fail": 0,
+      "log": ".artifacts/outline-review/contracts-final.log",
+      "sha256": "1e004675c234d1d3221833888466081a92b8dfca6785c1bf09f3b99ca36267cd"
+    },
+    {
+      "command": "npm run package:check",
+      "exit": 0,
+      "log": ".artifacts/outline-review/package-final.log",
+      "sha256": "f226aeb3bfc1ab906b3a910c5d2d3bd9951d524add8eab15616ac198d414c1a0"
+    }
+  ],
+  "outputRoot": ".artifacts/test/png/review/outline-paints",
+  "outputs": {
+    ".artifacts/test/png/review/outline-paints/circle-halo/browser-canvas.png": "b4f9ef4ad26783117682fd96d6e69b7040986ebae8e86e1833cb68ad20deab20",
+    ".artifacts/test/png/review/outline-paints/circle-halo/browser-svg.png": "acd3af2ddefa845f52263ea10aedfb41a1aac0c9329d522bfce20ffe29b60e78",
+    ".artifacts/test/png/review/outline-paints/circle-halo/evidence.json": "bce1c8a20c646f657cfa329d689ef87e47b6c8cfcfbb0850d393fa26252b9015",
+    ".artifacts/test/png/review/outline-paints/circle-halo/pdf.png": "fc0e87315824d28167d2933ecd9899f04f827c29542244882333ecc9fabee56d",
+    ".artifacts/test/png/review/outline-paints/circle-halo/primitive.pdf": "884ba5bf9a1fa3dee86526d7cd0e048213d4135d5a0603bb360faddc844129dd",
+    ".artifacts/test/png/review/outline-paints/circle-halo/primitive.png": "c1403caa4fcaee9b0a96921b7dc56d1d226b324c5041cd88c4dc5805e24f52d2",
+    ".artifacts/test/png/review/outline-paints/circle-halo/primitive.svg": "ca2ebb91b3db67a022b29eed8f8b53a39800595c43c9549b3794f2bf3efe6f6f",
+    ".artifacts/test/png/review/outline-paints/circle-halo/variant.json": "b9e20187b211eb2fd112e48ff055b8f4999dcf26d8f27eaec74d173d51ed350e",
+    ".artifacts/test/png/review/outline-paints/clip/browser-canvas.png": "9ddd67760bea833d4479835ce8439df1cdfe40076b7fa159c302f4f6f3f48482",
+    ".artifacts/test/png/review/outline-paints/clip/browser-svg.png": "9ddd67760bea833d4479835ce8439df1cdfe40076b7fa159c302f4f6f3f48482",
+    ".artifacts/test/png/review/outline-paints/clip/evidence.json": "6e574e5378cc250ec1c9bb8b3d4d18e15319663bc540bba9d8e3d459c14396bb",
+    ".artifacts/test/png/review/outline-paints/clip/pdf.png": "0389851cade77395cc31e05474c8e7301d9175a4a5b655dc2ac9cb2f2c3c7af1",
+    ".artifacts/test/png/review/outline-paints/clip/primitive.pdf": "46e08a1cde8e90cacacc86fca00479fa01982441b95e2a29d5a44fe612787dbd",
+    ".artifacts/test/png/review/outline-paints/clip/primitive.png": "1e64b939935c4bc82422ffd8a5f9d06f1b2bf25ff58955231c52f6c49537ab12",
+    ".artifacts/test/png/review/outline-paints/clip/primitive.svg": "0901b947c7928b4f8090ac042a0e67502ac8d1b2b6b92ca4349a4373d19bc6ba",
+    ".artifacts/test/png/review/outline-paints/clip/variant.json": "15823576d54c04c25febcb5d6f521c6816bcd64efd3c0d2b8827a11236010473",
+    ".artifacts/test/png/review/outline-paints/contact-sheet.png": "da94fb0865dfd715547fc3450f75fdead9d03e0958af2566017a96f2d97efb1c",
+    ".artifacts/test/png/review/outline-paints/path-outline/browser-canvas.png": "9b27c42dbd5ab243bc0c28b70d1287f9a553079b276f2193335b966a4a6a0921",
+    ".artifacts/test/png/review/outline-paints/path-outline/browser-svg.png": "9b27c42dbd5ab243bc0c28b70d1287f9a553079b276f2193335b966a4a6a0921",
+    ".artifacts/test/png/review/outline-paints/path-outline/evidence.json": "a199f25e628f6f39388d3ebfd79f9a3cc9786fce5cf535fb1b211a21da79dee2",
+    ".artifacts/test/png/review/outline-paints/path-outline/pdf.png": "05f71749afb38abd88d7f062a1199d0b1d5f4a557d1179e642318d34e04a4b0b",
+    ".artifacts/test/png/review/outline-paints/path-outline/primitive.pdf": "f68c87b273e2b9970494eda66b8b3bb49679f5972723ae5c3adc436e4a1fb000",
+    ".artifacts/test/png/review/outline-paints/path-outline/primitive.png": "a7a866620e3e74b9dbeebd1e9e340d328a5d6e0c38671b5bc04e8ce028f68f2a",
+    ".artifacts/test/png/review/outline-paints/path-outline/primitive.svg": "a8dc660512052e8d49b8e5cf579fc2b7ab892cd96f4324c371741dd71543c1e6",
+    ".artifacts/test/png/review/outline-paints/path-outline/variant.json": "8592a45327ea891b628b9e99edfdff60c6ccdd88fcc5a0cb5c3b928d84bddd20",
+    ".artifacts/test/png/review/outline-paints/rectangle-outline/browser-canvas.png": "6b400c36bc7e932b498f6a595e7cfb768ce7e900b46d74d442bee6736024d355",
+    ".artifacts/test/png/review/outline-paints/rectangle-outline/browser-svg.png": "6b400c36bc7e932b498f6a595e7cfb768ce7e900b46d74d442bee6736024d355",
+    ".artifacts/test/png/review/outline-paints/rectangle-outline/evidence.json": "4e59e47a19e950791ebf20faf1c931775c4aaef896a14174bb8171302ca023dd",
+    ".artifacts/test/png/review/outline-paints/rectangle-outline/pdf.png": "57f6022c2441d0f85f041c8373e86d2fc2d804748263d3089c9c757250e239cc",
+    ".artifacts/test/png/review/outline-paints/rectangle-outline/primitive.pdf": "f4315cacae3ac3d46244073112e07682d574708b010df04be7b680240b7a0818",
+    ".artifacts/test/png/review/outline-paints/rectangle-outline/primitive.png": "4267a6cabf6f49dabf8d85883b8784260c99d77f37def9db44949fc13aa2d284",
+    ".artifacts/test/png/review/outline-paints/rectangle-outline/primitive.svg": "f0ae33fa722299185bb078f8db5a6c130249d9cd4932134ec23b07cb88d35ebb",
+    ".artifacts/test/png/review/outline-paints/rectangle-outline/variant.json": "62f533dd3932f6db7672be6991931acb9f9ec03987ed2f9d3902e42a143a1eab",
+    ".artifacts/test/png/review/outline-paints/results.json": "a5dee2db06d2aa5d40933840dbc383ecb0b85978cac3c4e8bf9c131a752dca93",
+    ".artifacts/test/png/review/outline-paints/text-halo/browser-canvas.png": "75d1d46ca34fef12394f48d002304f26db55e3f0371b2b5c9fe9f47785f840f1",
+    ".artifacts/test/png/review/outline-paints/text-halo/browser-svg.png": "75d1d46ca34fef12394f48d002304f26db55e3f0371b2b5c9fe9f47785f840f1",
+    ".artifacts/test/png/review/outline-paints/text-halo/evidence.json": "4bae0a996e86f4b388332dbf706baf8a876b5072f8eef1d69ae01e19ec76d3b3",
+    ".artifacts/test/png/review/outline-paints/text-halo/pdf.png": "e49e701d9193aace2965021bbe9472b4261ed7e415f74ae18b7c26d519e3802f",
+    ".artifacts/test/png/review/outline-paints/text-halo/primitive.pdf": "ff8f59a4512a6dc64c214c849d188975ef61490bee75f8bf748e647963bc7238",
+    ".artifacts/test/png/review/outline-paints/text-halo/primitive.png": "09170c8a4760cecb4cda53b2b1d5292e6eb0c65aac9ba89c478d1c4cada73e0c",
+    ".artifacts/test/png/review/outline-paints/text-halo/primitive.svg": "2e4db80b73ce32b400843ee211b22483ecf874880ca6ecc86afb094cbbf65771",
+    ".artifacts/test/png/review/outline-paints/text-halo/variant.json": "fbce9499ec2332cd3d1d7f47a3bd3a44b93a246f79064ffcdfd2e369f7253dfc",
+    ".artifacts/test/png/review/outline-paints/text-opacity/browser-canvas.png": "ce18e2faedf93ea9308993ad3c627198189f687001973607371cb9c21234d7fe",
+    ".artifacts/test/png/review/outline-paints/text-opacity/browser-svg.png": "ce18e2faedf93ea9308993ad3c627198189f687001973607371cb9c21234d7fe",
+    ".artifacts/test/png/review/outline-paints/text-opacity/evidence.json": "f6ae1c5c987eaf65e4ea097d7d9740d19199c66a02a8ce6a2ac3c628db6dda5a",
+    ".artifacts/test/png/review/outline-paints/text-opacity/isolated-glyph.png": "73206f568cbfdd27b0dadfc3b3591d1ab53fbc67ddfb145c72f9e0545196c524",
+    ".artifacts/test/png/review/outline-paints/text-opacity/pdf.png": "c1265c83547a4e89e45707394b2198003b133218b8031a9c97929010b1ad4462",
+    ".artifacts/test/png/review/outline-paints/text-opacity/primitive.pdf": "d960c76518efd4f77d51470d22e0bb98d30b1d27a63426eb013e048ba1ac9e03",
+    ".artifacts/test/png/review/outline-paints/text-opacity/primitive.png": "bbbdaa20700b032247fe5544c697876ffb1b02dccbabebc96d5fb9287bf86962",
+    ".artifacts/test/png/review/outline-paints/text-opacity/primitive.svg": "155cf237c30bd1e38d4bdcb25f8e9e36f6dcba195a9c365c9c736722ce2e7ae7",
+    ".artifacts/test/png/review/outline-paints/text-opacity/variant.json": "234bb6a31ecbca3a2e0df7b5a708ad344a30a50145715c28760f4761f8a1972e",
+    ".artifacts/test/png/review/outline-paints/text-outline/browser-canvas.png": "4d8a3a35cbd456540292eb48d9f50d772aa4d772e45d68181d92e98964e303fd",
+    ".artifacts/test/png/review/outline-paints/text-outline/browser-svg.png": "4d8a3a35cbd456540292eb48d9f50d772aa4d772e45d68181d92e98964e303fd",
+    ".artifacts/test/png/review/outline-paints/text-outline/evidence.json": "cb289f0ec718604bcf68ba41c186b33c9f952aafaead07de6418848dd5d3f995",
+    ".artifacts/test/png/review/outline-paints/text-outline/pdf.png": "be0edfa12193613628f2ddc437c1432adb04cdc47fc5d73c967084b194dc6b78",
+    ".artifacts/test/png/review/outline-paints/text-outline/primitive.pdf": "efad6d3aa9fb37cd4b8a781d3246a8786fa4707129c1d2ab113dadce224b2b1f",
+    ".artifacts/test/png/review/outline-paints/text-outline/primitive.png": "31f37d57ad94e1546c4e9ed970d8bb68597c79d49d81cc8ec0d073fd2625e80e",
+    ".artifacts/test/png/review/outline-paints/text-outline/primitive.svg": "64f78728b1b3b395fcfde05816bf6f4a7fcaf9c70eb8bca6ed42b89ec7dfa2a8",
+    ".artifacts/test/png/review/outline-paints/text-outline/variant.json": "498db800b0eb648b335857385f44c04fe34c52246a091ea6672fc248b039ae39",
+    ".artifacts/test/png/review/outline-paints/zero-width/browser-canvas.png": "31b980ea18d257ea2ec8a758f2e86b72d43761b0332e3025176f1f3eec4ea579",
+    ".artifacts/test/png/review/outline-paints/zero-width/browser-svg.png": "31b980ea18d257ea2ec8a758f2e86b72d43761b0332e3025176f1f3eec4ea579",
+    ".artifacts/test/png/review/outline-paints/zero-width/evidence.json": "276ab015fdac0c2b7981f2d503b717cfb54d03799bb47f8d6ca012e4c2815d02",
+    ".artifacts/test/png/review/outline-paints/zero-width/pdf.png": "f8b67d1c7d82fc2cd50b87297cad77c49e856af2fed9ac5b5b9a466c51d7c8bd",
+    ".artifacts/test/png/review/outline-paints/zero-width/primitive.pdf": "97ae371464f3536e501877212ecbc2736322000af3bb88ca758c36a1c144267c",
+    ".artifacts/test/png/review/outline-paints/zero-width/primitive.png": "b496f930d633124bbfb1dbff7c7c0409c07ef8bfd1d1e11c14fc86941045da5b",
+    ".artifacts/test/png/review/outline-paints/zero-width/primitive.svg": "27c3834999dbffd04eb8ddb15a1acbc9dc99918079267b98f3eb001ab6f7ef9d",
+    ".artifacts/test/png/review/outline-paints/zero-width/variant.json": "36792ed8474de46f85dad57c987f3a67c5abe3a8fb84b0093829fc336e473988"
+  },
+  "preservedFailures": {
+    ".artifacts/outline-review/first-bounds-render/render.log": "09e8ed15a40723c500ee53c9a2bcd6d0dd421665f4e67ec29c64abfe2b995a93"
+  },
+  "acceptedSamples": 204,
+  "fontSHA256": "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+  "bounds": [
+    {
+      "variant": "rectangle-outline",
+      "bounds": [
+        {
+          "backend": "Native Canvas / PNG",
+          "expected": {
+            "left": 76,
+            "right": 204,
+            "top": 76,
+            "bottom": 144
+          },
+          "inkPixels": 8700,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser Canvas",
+          "expected": {
+            "left": 76,
+            "right": 204,
+            "top": 76,
+            "bottom": 144
+          },
+          "inkPixels": 8700,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser SVG",
+          "expected": {
+            "left": 76,
+            "right": 204,
+            "top": 76,
+            "bottom": 144
+          },
+          "inkPixels": 8700,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Native PDF",
+          "expected": {
+            "left": 76,
+            "right": 204,
+            "top": 76,
+            "bottom": 144
+          },
+          "inkPixels": 8700,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        }
+      ],
+      "pdfRasterImages": 0
+    },
+    {
+      "variant": "circle-halo",
+      "bounds": [
+        {
+          "backend": "Native Canvas / PNG",
+          "expected": {
+            "left": 96,
+            "right": 184,
+            "top": 66,
+            "bottom": 154
+          },
+          "inkPixels": 6169,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser Canvas",
+          "expected": {
+            "left": 96,
+            "right": 184,
+            "top": 66,
+            "bottom": 154
+          },
+          "inkPixels": 6166,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser SVG",
+          "expected": {
+            "left": 96,
+            "right": 184,
+            "top": 66,
+            "bottom": 154
+          },
+          "inkPixels": 6166,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Native PDF",
+          "expected": {
+            "left": 96,
+            "right": 184,
+            "top": 66,
+            "bottom": 154
+          },
+          "inkPixels": 6180,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        }
+      ],
+      "pdfRasterImages": 0
+    },
+    {
+      "variant": "path-outline",
+      "bounds": [
+        {
+          "backend": "Native Canvas / PNG",
+          "expected": {
+            "left": 76,
+            "right": 204,
+            "top": 66,
+            "bottom": 144
+          },
+          "inkPixels": 5582,
+          "boundaryTouchPixels": 4,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser Canvas",
+          "expected": {
+            "left": 76,
+            "right": 204,
+            "top": 66,
+            "bottom": 144
+          },
+          "inkPixels": 5582,
+          "boundaryTouchPixels": 4,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser SVG",
+          "expected": {
+            "left": 76,
+            "right": 204,
+            "top": 66,
+            "bottom": 144
+          },
+          "inkPixels": 5582,
+          "boundaryTouchPixels": 4,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Native PDF",
+          "expected": {
+            "left": 76,
+            "right": 204,
+            "top": 66,
+            "bottom": 144
+          },
+          "inkPixels": 5721,
+          "boundaryTouchPixels": 121,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        }
+      ],
+      "pdfRasterImages": 0
+    },
+    {
+      "variant": "text-outline",
+      "bounds": [
+        {
+          "backend": "Native Canvas / PNG",
+          "expected": {
+            "left": 79,
+            "right": 165,
+            "top": 84,
+            "bottom": 134
+          },
+          "inkPixels": 4296,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser Canvas",
+          "expected": {
+            "left": 79,
+            "right": 165,
+            "top": 84,
+            "bottom": 134
+          },
+          "inkPixels": 4388,
+          "boundaryTouchPixels": 92,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser SVG",
+          "expected": {
+            "left": 79,
+            "right": 165,
+            "top": 84,
+            "bottom": 134
+          },
+          "inkPixels": 4388,
+          "boundaryTouchPixels": 92,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Native PDF",
+          "expected": {
+            "left": 79,
+            "right": 165,
+            "top": 84,
+            "bottom": 134
+          },
+          "inkPixels": 4442,
+          "boundaryTouchPixels": 152,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        }
+      ],
+      "pdfRasterImages": 0
+    },
+    {
+      "variant": "text-halo",
+      "bounds": [
+        {
+          "backend": "Native Canvas / PNG",
+          "expected": {
+            "left": 75,
+            "right": 169,
+            "top": 80,
+            "bottom": 138
+          },
+          "inkPixels": 5416,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser Canvas",
+          "expected": {
+            "left": 75,
+            "right": 169,
+            "top": 80,
+            "bottom": 138
+          },
+          "inkPixels": 5512,
+          "boundaryTouchPixels": 92,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser SVG",
+          "expected": {
+            "left": 75,
+            "right": 169,
+            "top": 80,
+            "bottom": 138
+          },
+          "inkPixels": 5512,
+          "boundaryTouchPixels": 92,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Native PDF",
+          "expected": {
+            "left": 75,
+            "right": 169,
+            "top": 80,
+            "bottom": 138
+          },
+          "inkPixels": 5540,
+          "boundaryTouchPixels": 144,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        }
+      ],
+      "pdfRasterImages": 0
+    },
+    {
+      "variant": "text-opacity",
+      "bounds": [
+        {
+          "backend": "Native Canvas / PNG",
+          "expected": {
+            "left": 79,
+            "right": 165,
+            "top": 84,
+            "bottom": 134
+          },
+          "inkPixels": 4296,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser Canvas",
+          "expected": {
+            "left": 79,
+            "right": 165,
+            "top": 84,
+            "bottom": 134
+          },
+          "inkPixels": 4296,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser SVG",
+          "expected": {
+            "left": 79,
+            "right": 165,
+            "top": 84,
+            "bottom": 134
+          },
+          "inkPixels": 4296,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Native PDF",
+          "expected": {
+            "left": 79,
+            "right": 165,
+            "top": 84,
+            "bottom": 134
+          },
+          "inkPixels": 4433,
+          "boundaryTouchPixels": 134,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        }
+      ],
+      "pdfRasterImages": 2
+    },
+    {
+      "variant": "clip",
+      "bounds": [
+        {
+          "backend": "Native Canvas / PNG",
+          "expected": {
+            "left": 90,
+            "right": 195,
+            "top": 76,
+            "bottom": 140
+          },
+          "inkPixels": 6720,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser Canvas",
+          "expected": {
+            "left": 90,
+            "right": 195,
+            "top": 76,
+            "bottom": 140
+          },
+          "inkPixels": 6720,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser SVG",
+          "expected": {
+            "left": 90,
+            "right": 195,
+            "top": 76,
+            "bottom": 140
+          },
+          "inkPixels": 6720,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Native PDF",
+          "expected": {
+            "left": 90,
+            "right": 195,
+            "top": 76,
+            "bottom": 140
+          },
+          "inkPixels": 6784,
+          "boundaryTouchPixels": 64,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        }
+      ],
+      "pdfRasterImages": 0
+    },
+    {
+      "variant": "zero-width",
+      "bounds": [
+        {
+          "backend": "Native Canvas / PNG",
+          "expected": {
+            "left": 80,
+            "right": 200,
+            "top": 80,
+            "bottom": 140
+          },
+          "inkPixels": 7200,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser Canvas",
+          "expected": {
+            "left": 80,
+            "right": 200,
+            "top": 80,
+            "bottom": 140
+          },
+          "inkPixels": 7200,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Browser SVG",
+          "expected": {
+            "left": 80,
+            "right": 200,
+            "top": 80,
+            "bottom": 140
+          },
+          "inkPixels": 7200,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        },
+        {
+          "backend": "Native PDF",
+          "expected": {
+            "left": 80,
+            "right": 200,
+            "top": 80,
+            "bottom": 140
+          },
+          "inkPixels": 7200,
+          "boundaryTouchPixels": 0,
+          "pixelPolicy": "closed pixel cell intersects exact geometric bounds",
+          "outsidePixels": 0
+        }
+      ],
+      "pdfRasterImages": 0
+    }
+  ],
+  "package": {
+    "entryCount": 681,
+    "packedBytes": 1014128,
+    "unpackedBytes": 4727468
+  },
+  "sourceEvidenceRevision": "ca0649475025a253af82e9be0dcbec1ffecd5504",
+  "metadataOnlyRecording": true,
+  "approval": {
+    "source": "Explicit user response in current conversation, relayed by parent /root",
+    "text": "두 검토 대상 모두 승인",
+    "sourceEvidenceRevision": "ca0649475025a253af82e9be0dcbec1ffecd5504"
+  }
+}

@@ -1,0 +1,5 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Radial ellipse review</title></head><body><p id="status">Loading</p><canvas aria-label="Radial object bounds ellipse"></canvas><script type="module">
+import {ellipseVariant} from "./ellipse.manifest.js";
+const canvas=document.querySelector("canvas");canvas.width=ellipseVariant.width;canvas.height=ellipseVariant.height;ellipseVariant.primitive(canvas.getContext("2d"),ellipseVariant.fixture,{lowerOpacity:true,clipCone:true});
+document.getElementById("status").textContent="Ready";
+</script></body></html>

@@ -415,7 +415,7 @@
       },
       {
         "id": "encodings/blended-bar",
-        "statements": 11
+        "statements": 12
       },
       {
         "id": "encodings/resource-cleanup",
@@ -868,6 +868,10 @@
       {
         "id": "conditional-encoding/renderers-and-scene",
         "statements": 22
+      },
+      {
+        "id": "conditional-encoding/bar-blend-lifecycle",
+        "statements": 1
       }
     ]
   }

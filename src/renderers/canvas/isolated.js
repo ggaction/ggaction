@@ -2,6 +2,7 @@ import { resolvePrimitiveGraphicBounds } from "../../grammar/schemas/graphicBoun
 import { graphicClipBounds, intersectClipBounds, validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { walkGraphicTreeEvents } from "../../grammar/schemas/graphicTree.js";
 import { MAX_RASTER_DIMENSION, MAX_RASTER_PIXELS } from "./limits.js";
+import { isBlendMode } from "../../grammar/compositing.js";
 
 function canvasFactory(context, supplied) {
   if (supplied !== undefined) return supplied;
@@ -33,8 +34,8 @@ function requireSurface(surface) {
 // This is renderer-private state: no surface or backend object enters graphicSpec.
 export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createCanvas } = {}) {
   const requested = Object.values(target.graphicSpec.objects).some(object =>
-    ["normal","difference"].includes(object.properties?.blend) ||
-    object.items?.some(item => ["normal","difference"].includes(item.properties?.blend)));
+    isBlendMode(object.properties?.blend) ||
+    object.items?.some(item => isBlendMode(item.properties?.blend)));
   if (!requested) return undefined;
   if (typeof context.drawImage !== "function" || typeof context.globalCompositeOperation !== "string") {
     throw new TypeError("Isolated glyph painting requires Canvas drawImage and compositing support.");
@@ -46,7 +47,7 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
     const source = requireSurface(surface);
     const hasGradient = Object.values(target.graphicSpec.objects).some(object =>
       [object, ...(object.items ?? [])].some(item =>
-        ["normal","difference"].includes(item.properties?.blend) && item.properties.fill?.type === "linear-gradient"));
+        isBlendMode(item.properties?.blend) && item.properties.fill?.type === "linear-gradient"));
     const normal=Object.values(target.graphicSpec.objects).some(object=>
       [object,...(object.items??[])].some(item=>item.properties?.blend==="normal"));
     if(normal){
@@ -83,7 +84,7 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
   const frames = [{offset:[0,0],clip:{left:0,top:0,right:target.width,bottom:target.height}}];
   function plan(id, object, type) {
     const properties = object.properties;
-    if (!["normal","difference"].includes(properties?.blend)) return;
+    if (!isBlendMode(properties?.blend)) return;
     const bounds = resolvePrimitiveGraphicBounds(type, properties);
     if (!bounds) throw new Error(`Graphic "${id}" requires finite isolated paint bounds.`);
     const {offset: [x, y], clip} = frames.at(-1);

@@ -106,6 +106,21 @@ blendContext.drawImage(await blendImage(blendPNG.buffer),0,0);
 assert.deepEqual([...blendContext.getImageData(100,100,1,1).data],[15,255,255,255]);
 assert.ok((await renderToPDFBuffer(blendedBar)).buffer.length>100);
 assert.equal(blendedBar.editBarMark({blend:"normal"}).semanticSpec.layers[0].mark.blend,undefined);
+for(const [mode,expected] of [["multiply",[48,0,0,255]],["screen",[243,102,153,255]]]){
+  const current=blendedBar.editCanvas({background:"#336699"}).editBarMark({blend:mode});
+  assert.equal(current.semanticSpec.layers[0].mark.blend,mode);
+  assert.equal(current.graphicSpec.objects.barPlot.items[0].properties.blend,mode);
+  assert.deepEqual(deserializeProgram(serializeProgram(current)).graphicSpec,current.graphicSpec);
+  const restored=deserializeGraphic(serializeGraphic(current));
+  assert.match(renderToSVG(restored),new RegExp(`mix-blend-mode:${mode}`));
+  assert.deepEqual(createTransitionScene(current,{format:"canvas"}).nodes.map(node=>node.properties),createTransitionScene(restored,{format:"canvas"}).nodes.map(node=>node.properties));
+  const png=await renderToPNGBuffer(restored),surface=blendCanvas(200,200).getContext("2d");
+  surface.drawImage(await blendImage(png.buffer),0,0);
+  assert.deepEqual([...surface.getImageData(100,100,1,1).data],expected);
+  assert.match((await renderToPDFBuffer(restored)).buffer.toString("latin1"),new RegExp(`/BM /${mode[0].toUpperCase()+mode.slice(1)}\\b`));
+  assert.equal(current.editBarMark({blend:"normal"}).semanticSpec.layers[0].mark.blend,undefined);
+}
+
   } },
   { id: "encodings/resource-cleanup", async run() {
 const resourceCleanup = chart()

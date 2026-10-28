@@ -148,7 +148,7 @@ Canvas and PNG preflight the complete allocation before changing the backing
 store: each physical side is limited to `32767` pixels and the complete image
 to `16777216` pixels.
 
-An explicit bar `blend: "difference"` also allocates one transparent glyph source
+An explicit bar `blend: "multiply"`, `"screen"`, or `"difference"` also allocates one transparent glyph source
 within its visible stroke bounds. It obeys the same per-surface limits, including
 pixel ratio and nested clips, and is reused while painting individual bars.
 Unsupported custom Canvas contexts fail before resizing or clearing the chart;
@@ -269,7 +269,7 @@ strings plus an array of non-empty `keywords`.
 
 Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
 opacity, dashes, and linear gradients remain vector output. An explicit bar
-`blend: "difference"` or explicit legend recipe-layer opacity rasterizes only
+`blend: "multiply"`, `"screen"`, or `"difference"`, or explicit legend recipe-layer opacity rasterizes only
 that glyph's fill-and-outline source for native PDF compositing; the rest of the
 page stays vector. The adapter does not
 rasterize the complete chart or accept `pixelRatio`. Nested Canvas translations apply to

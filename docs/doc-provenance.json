@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:96bec2db92676870412700ffff80551c367ef189adeeaf28695ab4910ee5821a",
+  "contractId": "sha256:38aedeb6b46bb261ed49aea92557710ded4f8b8f1e72b39d2c6af9d79d7b80b0",
   "sourceCommit": null,
   "sourceRef": "main",
-  "exampleSourceRef": "b8f9668133b278974c9cfe7324402a18282c9f4b",
+  "exampleSourceRef": "codex/roadmap9-integration",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",

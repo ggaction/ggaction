@@ -1,0 +1,33 @@
+{
+  "mainRevision": "72855612",
+  "previousPaintRevision": "434031f0",
+  "conflictsResolved": [
+    "agent_docs/SECOND_ARCHITECTURE.md: both ownership records retained",
+    "test/capabilities.json: union of explicit selectors",
+    "scripts/package-artifact.js: cumulative measured entry/unpacked caps"
+  ],
+  "tests": {
+    "focused": 38,
+    "contracts": 33,
+    "render": 5,
+    "failed": 0
+  },
+  "package": {
+    "entries": 704,
+    "packedBytes": 1046955,
+    "unpackedBytes": 4870949,
+    "limits": {
+      "entries": 704,
+      "packedBytes": 1047000,
+      "unpackedBytes": 4871000
+    }
+  },
+  "runtimeBehaviorChanged": false,
+  "logs": {
+    ".artifacts/paint-public-integration/merge-contracts.log": "0fa81949b1827d6ba5a235b54c298eceb850fb5591228fbd817cf8a3acd5ec10",
+    ".artifacts/paint-public-integration/merge-focused.log": "cbdd2c8e96c119177afb294e513218b3dd9724363871bf492e7176a7beddeddb",
+    ".artifacts/paint-public-integration/merge-package-final.log": "1b07da3e01c3662eaa650459c6992f875966ade51ccaecf5687a482479c2b9cc",
+    ".artifacts/paint-public-integration/merge-package-first.log": "3c47a21befb12080883f17f650d043fcaa7a1c269438f414b9113e9015ed332f",
+    ".artifacts/paint-public-integration/merge-render.log": "fa970f2f381d2c7293a0201d2b1460f9dd83d30b71359195f3520d23ba8eec67"
+  }
+}

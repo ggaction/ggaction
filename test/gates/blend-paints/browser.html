@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Private blend primitive review</title></head><body><p id="status">Loading</p><main></main><script type="module">
+import {drawBlendGroup,drawBlendPrimitive} from "./primitive.program.js";
+window.renderBlend=async({fixture,samples,dataURL})=>{
+ const group=document.createElement("canvas");group.width=fixture.group.width;group.height=fixture.group.height;drawBlendGroup(group.getContext("2d"),fixture,{isolated:true});
+ const image=new Image();image.src=dataURL;await image.decode();
+ const canvas=document.createElement("canvas");canvas.width=300;canvas.height=280;canvas.setAttribute("aria-label",`Private blend primitive: ${fixture.style}`);document.querySelector("main").append(canvas);drawBlendPrimitive(canvas.getContext("2d"),fixture,image);
+ return{canvas:canvas.toDataURL(),group:group.toDataURL(),samples:samples.map(([x,y])=>[...group.getContext("2d").getImageData(x,y,1,1).data])};
+};document.getElementById("status").textContent="Ready";
+</script></body></html>

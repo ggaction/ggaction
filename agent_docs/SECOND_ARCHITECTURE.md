@@ -62,6 +62,15 @@ Renderer는 AST를 읽거나 평가하지 않으며 기존 computed v1의 의미
 상세 내부 계약은 [expression core](architecture/EXPRESSION_CORE.md), 공개 computed는
 [CORE](contract/current/CORE.md), action trace는 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
 
+## 내부 pattern kernel 경계
+
+`grammar/patterns.js`는 닫힌 pattern 옵션과 phase/origin의 순수 정규화 및 bounded unit tile
+geometry를 소유한다. Polygon/circle contour는 한 nonzero compound fill로 낮추도록 정의하며,
+물리적 pitch 적용과 tile/mark clip, opacity 합성은 후속 materialization·renderer의 책임이다.
+색 문자열의 검사는 기존 `grammar/paint.js`를 재사용한다. 현재 private kernel은 public paint,
+stored graphic schema, action 또는 renderer에 연결하지 않았으며 별도 registry를 만들지 않는다.
+숫자·방향·경계 증거는 capability test `test/unit/grammar/patterns.test.js`가 소유한다.
+
 ## Pivot data lifecycle
 
 `grammar/pivot.js`는 명시 typed columns와 group tuple을 받아 수치 cell을 계산하는 pure owner다.

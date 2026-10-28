@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "png-byte-encoding": { prefix: "core/pngEncoding", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Bounded glyph PNG bytes must preserve RGBA and reject unsafe inputs before allocation." },
   "conditional-grammar": { prefix: "grammar/conditional", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Ordered predicates and stored branch contracts must reject inactive malformed inputs." },
   "conditional-materialization": { prefix: "materialization/conditional", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Final item grain, exact dependencies and conditional rematerialization must remain exercised." },
   "asset-preparation": { prefix: "resources/assetPreparation", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image and font preparation share exact bytes, host errors and abort cleanup." },
@@ -24,6 +25,10 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "transform-input": { prefix: "grammar/transformInput", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Shared data input validation must remain safe before dispatch in Full and Basic." },
   "expression-kernel": { prefix: "grammar/expression", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Closed AST evaluation, explicit types, lazy diagnostics and resource budgets must remain exercised." },
   "path-geometry": { prefix: "grammar/path", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Concrete path validation, topology and numeric geometry must remain exercised." },
+  "radial-gradient-kernel": { prefix: "grammar/radialGradient", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Shared radial geometry, focal containment and ordered stop validation must remain exercised." },
+  "shadow-kernel": { prefix: "grammar/shadow", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Deterministic alpha-mask convolution, finite bounds and allocation preflight must remain exercised." },
+  "compositing-kernel": { prefix: "grammar/compositing", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Premultiplied blend equations, one group attenuation and bounded quantization must remain exercised." },
+  "pattern-kernel": { prefix: "grammar/patterns", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Shared vector tile normalization, periodic coverage and bounded geometry must remain exercised." },
   "resource-state": { prefix: "materialization/resourceState", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Stored resource revisions and dependency validation must remain exercised." },
   "row-lineage": { prefix: "grammar/rowLineage", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Every transform must preserve exact contributing rows." },
   "core-state": { prefix: "core/", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "State and action boundaries must remain exercised." },

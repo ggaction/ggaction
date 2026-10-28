@@ -22,6 +22,7 @@ import {
 } from "./canvas/validation.js";
 import { normalizeRendererFontWeight } from "./text.js";
 import { validateRendererOptions } from "./options.js";
+import { isBlendMode } from "../grammar/compositing.js";
 
 const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 const SVG_OPTIONS = new Set(["title", "description", "resourceNamespace"]);
@@ -274,7 +275,7 @@ function serializeRect(state, graphicId, properties) {
     ["stroke-width", formatNumber(strokeWidth)],
     ...strokeDetailAttributes(properties, strokeWidth),
     ["opacity", formatNumber(requireOpacity(properties, graphicId))],
-    ["style", properties.blend === "difference" ? "mix-blend-mode:difference" : undefined]
+    ["style", properties.blend && properties.blend !== "normal" ? `mix-blend-mode:${properties.blend}` : undefined]
   ]);
 }
 
@@ -370,7 +371,7 @@ function serializePath(state, graphicId, properties) {
       ? undefined
       : strokeDash.map(formatNumber).join(" ")],
     ["opacity", formatNumber(requireOpacity(properties, graphicId))],
-    ["style", properties.blend === "difference" ? "mix-blend-mode:difference" : undefined]
+    ["style", properties.blend && properties.blend !== "normal" ? `mix-blend-mode:${properties.blend}` : undefined]
   ]);
 }
 
@@ -605,9 +606,9 @@ export function renderToSVG(program, options = {}) {
   walkGraphicTreeEvents(graphicSpec, {
     enter({object}) {
       if (object.clip !== undefined) validateGraphicClip(object.clip, object.type);
-      if (object.properties?.blend === "difference") state.hasBlend = true;
+      if (isBlendMode(object.properties?.blend) && object.properties.blend !== "normal") state.hasBlend = true;
     },
-    item({object}) { if (object.properties?.blend === "difference") state.hasBlend = true; }
+    item({object}) { if (isBlendMode(object.properties?.blend) && object.properties.blend !== "normal") state.hasBlend = true; }
   });
   const body = serializeBody(
     graphicSpec,

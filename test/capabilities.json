@@ -63,6 +63,48 @@
         "path": "unit/support/visual-variants.test.js"
       }
     ],
+    "blend-paints": [
+      {
+        "type": "file",
+        "path": "unit/grammar/png-encoding.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/png-byte-encoding.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/compositing.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/bar-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/conditional-bar-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/bar-blend.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/conditional-rendering.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/bar-compositing/"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/blend-paints/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/paint-image-preparation.test.js"
+      }
+    ],
     "calendar": [
       {
         "type": "file",
@@ -301,6 +343,10 @@
       {
         "type": "file",
         "path": "unit/materialization/image-placement.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/paint-image-preparation.test.js"
       }
     ],
     "inspection": [
@@ -431,6 +477,12 @@
         "path": "unit/oracles/"
       }
     ],
+    "outline-paints": [
+      {
+        "type": "prefix",
+        "path": "gates/outline-paints/"
+      }
+    ],
     "package": [
       {
         "type": "prefix",
@@ -447,6 +499,16 @@
       {
         "type": "file",
         "path": "unit/support/npm-command.test.js"
+      }
+    ],
+    "pattern-paints": [
+      {
+        "type": "file",
+        "path": "unit/grammar/patterns.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/pattern-paints/"
       }
     ],
     "persistence": [
@@ -515,6 +577,16 @@
       {
         "type": "file",
         "path": "contracts/composition-integration.test.js"
+      }
+    ],
+    "radial-gradient": [
+      {
+        "type": "file",
+        "path": "unit/grammar/radial-gradient.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/radial-gradient/"
       }
     ],
     "realistic": [
@@ -597,6 +669,16 @@
       {
         "type": "prefix",
         "path": "unit/selectors/"
+      }
+    ],
+    "shadow-paints": [
+      {
+        "type": "file",
+        "path": "unit/grammar/shadow.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/shadow-paints/"
       }
     ],
     "statistical-fixtures": [
