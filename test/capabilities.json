@@ -351,6 +351,12 @@
         "path": "unit/oracles/"
       }
     ],
+    "outline-paints": [
+      {
+        "type": "prefix",
+        "path": "gates/outline-paints/"
+      }
+    ],
     "package": [
       {
         "type": "prefix",
