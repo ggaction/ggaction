@@ -16,7 +16,7 @@
     "scripts/coverage-policy.js": "0a55d40cf9a32587b84957b7a2359c5ad9adcdbd9031654680194383e7105431",
     "scripts/package-artifact.js": "cc25b67d61a5e02de3a378d7dafc52fe4d1acecb8299fe70866bd1e5c52a6e90",
     "test/capabilities.json": "2764a60e9b80fbc72e46f69f3aeeb679a3d9c9bc30fa6dfaf443a244fd05743b",
-    "agent_docs/impl/roadmap9/phase4/shadows/PRIVATE.md": "71464933fd52545d3ece429e5de4f61bd8dc5afb75fe55e999046da217746156"
+    "agent_docs/impl/roadmap9/phase4/shadows/PRIVATE.md": "8daf89cb46dca9a09c5e8065a480f5da937ff9067c676c3d21f2f0449034ddc2"
   },
   "checks": [
     {
@@ -483,5 +483,7 @@
         }
       ]
     }
-  }
+  },
+  "codeRevision": "91a973fcbb67a0452f2f5f2ef55a569bca1924e5",
+  "evidenceRevision": "91a973fcbb67a0452f2f5f2ef55a569bca1924e5"
 }

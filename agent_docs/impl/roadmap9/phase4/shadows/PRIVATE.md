@@ -5,7 +5,7 @@
 - [x] 현행 paint·stroke·text·bounds owner와 계약 확인
 - [x] Native blur 차이의 독립 probe와 실패 증거 보존
 - [x] 순수 alpha-mask kernel과 독립 2D convolution oracle
-- [ ] 현재 checkpoint 검사·commit·push 기록
+- [x] 현재 checkpoint 검사·commit·push 기록
 - [ ] 같은 sublayer를 사용한 4개 출력 primitive 검토
 - [ ] 사용자 시각 확인 및 공개 flow 연결
 
@@ -47,4 +47,4 @@ Halo/outline/blend/shadow의 public schema·strict color·ref/inspection·bounds
 
 ## Private checkpoint 검증
 
-Node22.23.1/macOS arm64에서 focused unit37/37, source boundary/discovery/package 계약38/38, 새 shadow module coverage100/100/100, canonical package check가 통과했다. Critical floor95/90/100을 추가했다. Package 실측은681 entries/packed1,014,128/unpacked4,727,468 bytes, branch 한도는681/1,015,000/4,729,000이다. Main 통합 시 이 branch 한도로 최신 한도를 덮어쓰지 말고 최종 tree를 재측정한다. 자세한 명령·입력 hash·실행 probe source는 [PRIVATE-EVIDENCE.json](PRIVATE-EVIDENCE.json)에 있다. Private kernel의 원격 revision은 metadata 기록에서 고정한다.
+Node22.23.1/macOS arm64에서 focused unit37/37, source boundary/discovery/package 계약38/38, 새 shadow module coverage100/100/100, canonical package check가 통과했다. Critical floor95/90/100을 추가했다. Package 실측은681 entries/packed1,014,128/unpacked4,727,468 bytes, branch 한도는681/1,015,000/4,729,000이다. Main 통합 시 이 branch 한도로 최신 한도를 덮어쓰지 말고 최종 tree를 재측정한다. 자세한 명령·입력 hash·실행 probe source는 [PRIVATE-EVIDENCE.json](PRIVATE-EVIDENCE.json)에 있다. Private kernel source/evidence revision은 `91a973fcbb67a0452f2f5f2ef55a569bca1924e5`다. 후속 metadata-only 기록은 계산 source를 바꾸지 않는다.
