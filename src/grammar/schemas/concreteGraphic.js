@@ -1,3 +1,4 @@
+import { validateImagePayload } from "../imagePayload.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { validateFontStyle } from "../../core/font.js";
 import { isOwned, isPlainObject } from "../../core/immutable.js";
@@ -29,6 +30,7 @@ const TEXT_BASELINES = new Set([
 const validatedProperties = new WeakMap();
 
 export function validateConcreteGraphicValue(type, property, value) {
+  if (property === "image") validateImagePayload(value);
   if (property === "lines") {
     if (!Array.isArray(value) || value.length === 0 || value.some(line =>
       !isPlainObject(line) || Object.keys(line).some(key => !["text", "x", "y"].includes(key)) ||
@@ -105,6 +107,9 @@ export function validateConcreteGraphicProperties(type, properties) {
   if (validatedTypes?.has(type)) return properties;
   if (!isPlainObject(properties)) {
     throw new TypeError(`${type}.properties must be a plain object.`);
+  }
+  if (type === "image" && ["image", "x", "y", "width", "height"].some(key => !Object.hasOwn(properties, key))) {
+    throw new TypeError("image.properties requires image, x, y, width, and height.");
   }
   for (const [property, value] of Object.entries(properties)) {
     validateGraphicProperty(type, property);

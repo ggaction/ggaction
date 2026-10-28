@@ -312,6 +312,11 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createLayerPlot`](current/COMPOSITION.md#createlayerplot) | composition | Structural create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createAdjacentPlot`](current/COMPOSITION.md#createadjacentplot) | composition | Structural create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`editCompositionScales`](current/COMPOSITION.md#editcompositionscales) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createImageResource`](current/CORE.md#createimageresource) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`replaceImageResource`](current/CORE.md#replaceimageresource) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createImageMark`](current/MARKS.md#createimagemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editImageMark`](current/MARKS.md#editimagemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeResource`](current/CORE.md#removeresource) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

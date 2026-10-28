@@ -3,7 +3,8 @@ const PRIMITIVE_DRAWABLE_TYPES = new Set([
   "rect",
   "line",
   "text",
-  "path"
+  "path",
+  "image"
 ]);
 const DRAWABLE_TYPES = new Set([
   ...PRIMITIVE_DRAWABLE_TYPES,
@@ -42,6 +43,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "fillRule",
     "opacity"
   ]),
+  image: new Set(["image", "x", "y", "width", "height", "opacity", "length"]),
   circle: new Set([
     "x",
     "y",

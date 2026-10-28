@@ -612,6 +612,12 @@ Author compound paths and path clips through extension primitives.
 
 Representative actions: `createGraphics`, `editGraphics`. [Documentation](https://ggaction.github.io/ggaction/extension/primitives/).
 
+### [Retained image placement](./image-assets/)
+
+Prepare one source, place an image mark, and render from retained bytes.
+
+Representative actions: `createImageResource`, `createImageMark`, `editImageMark`. [Documentation](https://ggaction.github.io/ggaction/tutorials/image-assets/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

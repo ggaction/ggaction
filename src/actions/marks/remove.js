@@ -1,3 +1,4 @@
+import { markGraphicOwner } from "../../materialization/marks/policies.js";
 import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
 import { ownedChildren, ownership } from "../../selectors/markOwners.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
@@ -230,6 +231,7 @@ export const removeMark = /* @__PURE__ */ closedAction(
       );
     }
     const previousLayers = ids.map(id => findLayer(this, id));
+    const graphicOwners = new Map(previousLayers.map(layer => [layer.id, markGraphicOwner(layer)]));
     const derived = ownedDerivedData(this, ids);
     const ownedScales = new Set(ids.map(id => this.markConfigs[id]?.seriesOffsetScale).filter(Boolean));
     const positionScales = usedPositionScales(this, ids);
@@ -270,8 +272,9 @@ export const removeMark = /* @__PURE__ */ closedAction(
       if (findLayer(next, id) !== undefined) {
         next = next.editSemantic({ property: `layer[${id}]`, remove: true });
       }
-      if (next.graphicSpec.objects[id] !== undefined) {
-        next = next.editGraphics({ target: id, remove: true });
+      const graphicOwner = graphicOwners.get(id);
+      if (next.graphicSpec.objects[graphicOwner] !== undefined) {
+        next = next.editGraphics({ target: graphicOwner, remove: true });
       }
       next = next._withoutMaterializationConfig(["guides", "legendGroups", id]);
       next = next._withoutMaterializationConfig(["guides", "suppressedLegends", id]);

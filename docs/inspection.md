@@ -134,7 +134,10 @@ exact font ink bounds; those checks remain `not_run` and make
 reported as a valid partial result.
 
 Targets use `{ kind, id, childPath? }`, where `kind` is `data`, `mark`, `scale`,
-`coordinate`, or `guide`. IDs from different resource kinds never alias, and
+`coordinate`, `guide`, or a `StoredResourceKind` such as `image` or `parameter`.
+Stored resources participate in comparison even before a mark consumes them. Image
+resource targets include their bound marks, and image mark views expose the named
+resource in `sourceRefs`. IDs from different resource kinds never alias, and
 `childPath` is resolved from the outer program inward.
 
 ## Related

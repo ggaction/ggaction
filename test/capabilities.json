@@ -390,7 +390,7 @@
     "image-assets": [
       {
         "type": "prefix",
-        "path": "gates/image-assets/"
+        "path": "charts/image-assets/"
       },
       {
         "type": "file",
@@ -407,6 +407,26 @@
       {
         "type": "file",
         "path": "unit/resources/paint-image-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/image-resource-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/image-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/core/resource-graphic-identity.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/image-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/persistence/image-resources.test.js"
       }
     ],
     "inspection": [

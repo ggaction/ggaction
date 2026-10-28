@@ -6,7 +6,7 @@
 - [x] 독립 literal rectangle 및 pixel oracle와 실제 4개 출력 경로
 - [x] focused28, renderer1, source/package/discovery38, docs159 통과
 - [x] 실행 source·입력/출력 hash·최초 실패를 검토 package에 보존
-- [ ] 사용자의 rendered primitive 승인
+- [x] 사용자의 rendered primitive 승인
 - [ ] 공개 asset action·저장 schema·renderer 자원 준비·소비자 연결
 
 상태는 **approved**다. 2026-10-28 사용자가 revision `3853bdb1`의 6종 배치에
@@ -81,3 +81,11 @@ decode/cache와 export preflight, image mark/fit/align/clip/opacity, revise/rema
 inspection/scene, Full/Basic/types/exports 및 public/primitive exact equivalence를 구현해야 한다.
 Renderer의 network fetch나 실패한 image의 silent placeholder는 허용하지 않는다.
 AT-04/AT-14의 후행 소비자와 STEP-018 전체 종료는 별도 미완료 상태로 유지한다.
+
+## Public 연결 이후 보존 위치
+
+승인 source revision과 기존 evidence hash는 역사 기록 그대로 보존한다. 실행 slice는 `test/charts/image-assets/`,
+공개 정본은 `examples/image-assets/program.js`로 졸업했다. 새 네 backend 증거는 같은 실행 public/primitive
+전체 픽셀 일치와 기존 독립 interior oracle을 분리한다. 추가 원형 clip은 기존 M/C/Z concrete vocabulary의
+4개 cubic segment로 낮추며, native arc와 경계 픽셀의 완전 일치를 주장하지 않는다.
+현재 공개 연결의 구현·검증 상태는 [PUBLIC_IMPLEMENTATION.md](PUBLIC_IMPLEMENTATION.md)를 따른다.

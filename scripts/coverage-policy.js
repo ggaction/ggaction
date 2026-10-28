@@ -5,12 +5,24 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "image-payload": { prefix: "grammar/imagePayload", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image preparation, immutable ownership and concrete consumers require guarded lifecycle coverage." },
+  "image-mark-options": { prefix: "grammar/imageMark", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image preparation, immutable ownership and concrete consumers require guarded lifecycle coverage." },
+  "asset-request": { prefix: "grammar/assetRequest", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image preparation, immutable ownership and concrete consumers require guarded lifecycle coverage." },
+  "asset-host": { prefix: "core/assetHost", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image preparation, immutable ownership and concrete consumers require guarded lifecycle coverage." },
+  "image-resource-preparation": { prefix: "resources/imageResource", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image preparation, immutable ownership and concrete consumers require guarded lifecycle coverage." },
+  "image-resource-actions": { prefix: "actions/images/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image preparation, immutable ownership and concrete consumers require guarded lifecycle coverage." },
+  "image-mark-actions": { prefix: "actions/marks/image/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image preparation, immutable ownership and concrete consumers require guarded lifecycle coverage." },
+  "image-rendering": { prefix: "renderers/imageRendering", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image preparation, immutable ownership and concrete consumers require guarded lifecycle coverage." },
+  "canvas-scene-compiler": { prefix: "renderers/canvasScene", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image preparation, immutable ownership and concrete consumers require guarded lifecycle coverage." },
+  "image-drawing": { prefix: "renderers/canvas/image", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image preparation, immutable ownership and concrete consumers require guarded lifecycle coverage." },
+  "image-selection": { prefix: "materialization/selection/policies/image", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image preparation, immutable ownership and concrete consumers require guarded lifecycle coverage." },
+
   "png-byte-encoding": { prefix: "core/pngEncoding", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Bounded glyph PNG bytes must preserve RGBA and reject unsafe inputs before allocation." },
   "conditional-grammar": { prefix: "grammar/conditional", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Ordered predicates and stored branch contracts must reject inactive malformed inputs." },
   "conditional-materialization": { prefix: "materialization/conditional", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Final item grain, exact dependencies and conditional rematerialization must remain exercised." },
   "asset-preparation": { prefix: "resources/assetPreparation", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image and font preparation share exact bytes, host errors and abort cleanup." },
   "font-preparation": { prefix: "resources/resolveFonts", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Prepared font bytes and measured widths must bind the same explicit font identity and provider." },
-  "svg-image-validation": { prefix: "resources/svgImage", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Static SVG parsing, local resource identity and decoder budgets must reject active content before host work." },
+  "svg-image-validation": { prefix: "grammar/svgImage", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Static SVG parsing, local resource identity and decoder budgets must reject active content before host work." },
   "image-preparation": { prefix: "resources/resolveAssets", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Asset bytes, identity, abort and export eligibility must remain exercised before host callbacks." },
   "image-placement": { prefix: "materialization/image", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Image fit and viewport clipping must share finite, aspect-preserving concrete geometry." },
   "graph": { prefix: "grammar/graph/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph topology, metrics and finite geometry must preserve typed identity, missing policies and bounded work." },

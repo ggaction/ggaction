@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:1bffa6c41f68d64a210cc679194b8b4a4542fb79636319ad864e582d2931157c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:ae9cb7c02f4ebaf8e851eff6cab0a4112c7520363f731426238f55e649ead7dd. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -213,11 +213,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -652,15 +652,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/da1de34460983705b2fb7e2d04b766a6123d1c1a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -805,7 +805,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -823,7 +823,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/da1de34460983705b2fb7e2d04b766a6123d1c1a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -936,7 +936,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/da1de34460983705b2fb7e2d04b766a6123d1c1a/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1106,7 +1106,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/da1de34460983705b2fb7e2d04b766a6123d1c1a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1328,15 +1328,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/da1de34460983705b2fb7e2d04b766a6123d1c1a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1472,7 +1472,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1486,15 +1486,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/da1de34460983705b2fb7e2d04b766a6123d1c1a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1592,7 +1592,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1606,15 +1606,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/da1de34460983705b2fb7e2d04b766a6123d1c1a/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1723,7 +1723,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1739,15 +1739,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/da1de34460983705b2fb7e2d04b766a6123d1c1a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1872,7 +1872,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1947,7 +1947,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1957,15 +1957,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/da1de34460983705b2fb7e2d04b766a6123d1c1a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2090,7 +2090,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2123,7 +2123,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2134,8 +2134,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2231,15 +2231,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/da1de34460983705b2fb7e2d04b766a6123d1c1a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2336,15 +2336,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/da1de34460983705b2fb7e2d04b766a6123d1c1a/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2450,8 +2450,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2460,7 +2460,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/da1de34460983705b2fb7e2d04b766a6123d1c1a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-images/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2760,7 +2760,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -6002,7 +6002,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -10366,6 +10366,61 @@ participate in identity, so moving an item to another child produces enter/exit.
 SVG scene version 1 and Canvas scene version 2 keep their existing shapes.
 Graphic-only snapshots retain the same scene identities.
 
+## Embedded images
+
+Full authoring uses `prepareImageResource(program, request, host)` followed by
+`program.createImageResource({prepared, requestToken})` or
+`program.replaceImageResource({prepared, requestToken})`. The host explicitly loads
+bytes and reports decoded dimensions. The synchronous action requires the exact
+prepared receiver and current request token. Keep the token in application state
+and change it when a request is superseded. `createImageMark` and `editImageMark`
+place one named image; [the image example](./tutorials/image-assets/) shows
+contain, cover, fill, alignment and clipping from one retained source.
+
+For browser Canvas, prepare embedded bytes with an application-owned decoder:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `URL`, `canvas`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+import { prepareImageRendering, render } from "ggaction";
+
+// Fragment: program already contains materialized image graphics; canvas is an HTML canvas.
+const images = await prepareImageRendering(program, {
+  async decode({bytes, mimeType}) {
+    const url = URL.createObjectURL(new Blob([bytes], {type: mimeType}));
+    try {
+      const image = new Image();
+      image.src = url;
+      await image.decode();
+      return {image, width: image.width, height: image.height, originClean: true};
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+});
+render(program, canvas.getContext("2d"), {images});
+```
+
+`prepareImageRendering(programOrCanvasScene, {decode, signal?})` is available from
+Full and Basic. The decoder returns an ephemeral Canvas image object, exact stored
+width/height and `originClean:true`. A preparation holds at most 64 MiB of unique
+encoded bytes and 64 MiPixels of unique decoded pixels; every hash and total is
+validated before the first decoder call. One source is limited to 16 MiB and
+64 MiPixels. PNG, JPEG, WebP and restricted static SVG are supported. Hash mismatches,
+unsafe SVG, decode errors, tainted results, aborts and stale preparations reject
+explicitly. Missing/stale preparations fail before Canvas resize or clear.
+
+A handle belongs to the exact `graphicSpec`; prepare again after a changed program.
+For a Canvas transition scene, pass that scene to `prepareImageRendering` and then
+pass the handle to `renderTransitionScene(scene, context, {images})`. Changing a
+mutable scene invalidates its handle. Cloned handles cannot be used.
+
+SVG emits self-contained data URIs. Node PNG and PDF decode the same retained bytes
+internally before output. They do not fetch the source URI, and other graphic nodes
+remain vector in SVG/PDF. Editable and graphic-only snapshots retain image payloads
+and validate them offline; decoder objects and preparation handles are never saved.
+Image selection and inspection use the clipped rectangle, not pixel alpha.
+
 ## Related
 
 [Canvas](./api/canvas/) · [Semantic and graphical state](./concepts/semantic-and-graphics/) ·
@@ -10405,7 +10460,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -10471,7 +10526,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -10873,7 +10928,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -11471,7 +11526,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -16841,7 +16896,10 @@ exact font ink bounds; those checks remain `not_run` and make
 reported as a valid partial result.
 
 Targets use `{ kind, id, childPath? }`, where `kind` is `data`, `mark`, `scale`,
-`coordinate`, or `guide`. IDs from different resource kinds never alias, and
+`coordinate`, `guide`, or a `StoredResourceKind` such as `image` or `parameter`.
+Stored resources participate in comparison even before a mark consumes them. Image
+resource targets include their bound marks, and image mark views expose the named
+resource in `sourceRefs`. IDs from different resource kinds never alias, and
 `childPath` is resolved from the outer program inward.
 
 ## Related
@@ -17638,6 +17696,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createHistogram`](./reference/actions/charts-data/#createhistogram) | H0, H1 | user-facing | charts |
 | [`createHorizonPlot`](./reference/actions/statistics/#createhorizonplot) | H0, H1 | user-facing | statistics |
 | [`createHorizontalGrid`](./reference/actions/guides/#createhorizontalgrid) | H3 | user-facing | grid |
+| [`createImageMark`](./reference/actions/marks/#createimagemark) | H2 | user-facing | marks |
+| [`createImageResource`](./reference/actions/charts-data/#createimageresource) | H3 | user-facing | core |
 | [`createImputedData`](./reference/actions/statistics/#createimputeddata) | H1 | user-facing | statistics |
 | [`createIntervalData`](./reference/actions/statistics/#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](./reference/actions/charts-data/#createintervalplot) | H0, H1 | user-facing | charts |
@@ -17748,6 +17808,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editGrid`](./reference/actions/guides/#editgrid) | H3 | user-facing | grid |
 | [`editHorizon`](./reference/actions/encodings/#edithorizon) | H2, H3 | user-facing | encodings |
 | [`editHorizontalGrid`](./reference/actions/guides/#edithorizontalgrid) | H3 | user-facing | grid |
+| [`editImageMark`](./reference/actions/marks/#editimagemark) | H3 | user-facing | marks |
 | [`editImputedData`](./reference/actions/statistics/#editimputeddata) | H1, H3 | user-facing | statistics |
 | [`editIntervalData`](./reference/actions/statistics/#editintervaldata) | H1, H3 | user-facing | statistics |
 | [`editLegend`](./reference/actions/guides/#editlegend) | H3 | user-facing | legend_and_title |
@@ -17890,6 +17951,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removePointPacking`](./reference/actions/marks/#removepointpacking) | H3 | user-facing | marks |
 | [`removePointRadius`](./reference/actions/encodings/#removepointradius) | H2, H3 | user-facing | encodings |
 | [`removeRadialAxis`](./reference/actions/guides/#removeradialaxis) | H3 | user-facing | axes |
+| [`removeResource`](./reference/actions/charts-data/#removeresource) | H3 | user-facing | core |
 | [`removeScale`](./reference/actions/charts-data/#removescale) | H2 | user-facing | core |
 | [`removeTextMetrics`](./reference/actions/charts-data/#removetextmetrics) | H3 | user-facing | core |
 | [`removeTheme`](./reference/actions/charts-data/#removetheme) | H3 | user-facing | core |
@@ -17900,6 +17962,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`reorderCompositionChildren`](./reference/actions/charts-data/#reordercompositionchildren) | H3 | user-facing | composition |
 | [`repeatCharts`](./reference/actions/charts-data/#repeatcharts) | H0 | user-facing | composition |
 | [`replaceCompositionChild`](./reference/actions/charts-data/#replacecompositionchild) | H3 | user-facing | composition |
+| [`replaceImageResource`](./reference/actions/charts-data/#replaceimageresource) | H3 | user-facing | core |
 | [`reviseData`](./reference/actions/charts-data/#revisedata) | H3 | user-facing | core |
 | [`selectMarks`](./reference/actions/advanced/#selectmarks) | H3 | advanced | mark-selection |
 
@@ -21712,6 +21775,98 @@ color, stroke, size, shape, opacity, strokeWidth and strokeDash. Shared channels
 compatible meaning and scale mapping. Canonical child settings remain intact; setting a
 channel false restores independent domain inference. This edit is atomic.
 
+## `createImageResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
+```
+
+Named option contracts: [`ApplyImageResourceOptions`](./reference/types/#type-applyimageresourceoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedImageResource<"create">` |
+| `requestToken` | Required | `string` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+createImageResource({ prepared, requestToken })
+```
+
+Commit an authentic create handle from `prepareImageResource` on its exact original
+receiver. Full-only; source bytes, MIME, hash and decoded dimensions are validated
+before synchronous authoring. [Preparation and rendering](./api/rendering/#embedded-images).
+
+## `replaceImageResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+```
+
+Named option contracts: [`ApplyImageResourceOptions`](./reference/types/#type-applyimageresourceoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedImageResource<"replace">` |
+| `requestToken` | Required | `string` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+replaceImageResource({ prepared, requestToken })
+```
+
+Commit a prepared replacement, increment the image revision and rematerialize all
+referencing image marks while preserving item identity and highlight intent.
+
+## `removeResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+removeResource(options: RemoveStoredResourceOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveStoredResourceOptions`](./reference/types/#type-removestoredresourceoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `kind` | Required | `StoredResourceKind` |
+| `id` | Required | `string` |
+| `cascade` | Optional / branch-dependent | `boolean \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+removeResource({ kind, id, cascade? })
+```
+
+Remove an unused typed stored resource. Default restrict rejects live references.
+Explicit image cascade removes its image marks before removing the source.
+
 ## Focused core data editing
 
 ```javascript
@@ -23356,6 +23511,81 @@ editOverlay({ target?, source?, series?, missing?, orderBy?, follow? })
 ```
 
 Change an overlay's dependency or gap policy. `follow: false` freezes current result geometry as an independent, normalized plot snapshot; it cannot be combined with other edits. Edit the source to change a following overlay's positions. Ordinary mark and encoding actions change its appearance.
+
+## `createImageMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateImageMarkOptions`](./reference/types/#type-createimagemarkoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `image` | Optional / branch-dependent | `string \| undefined` |
+| `viewport` | Optional / branch-dependent | `"auto" \| { x: number; y: number; width: number; height: number; } \| undefined` |
+| `fit` | Optional / branch-dependent | `"contain" \| "cover" \| "fill" \| undefined` |
+| `align` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `alt` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `false \| GraphicClip \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip? } = {})
+```
+
+Create one resource-backed image item. Unique source inference and the first `image`
+role are supported. Viewport defaults to the plot, fit to contain and align to center.
+The [image tutorial](./tutorials/image-assets/) shares its public program with all
+four renderer tests.
+
+## `editImageMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditImageMarkOptions`](./reference/types/#type-editimagemarkoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `image` | Optional / branch-dependent | `string \| undefined` |
+| `viewport` | Optional / branch-dependent | `"auto" \| { x: number; y: number; width: number; height: number; } \| undefined` |
+| `fit` | Optional / branch-dependent | `"contain" \| "cover" \| "fill" \| undefined` |
+| `align` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `alt` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `false \| GraphicClip \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })
+```
+
+Edit an existing image mark; omission preserves options. `viewport:"auto"` resets
+to the plot. Explicit geometry adds clipping to the always-clipped viewport.
 
 ## Related
 
@@ -30203,6 +30433,13 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](./types/index.d.ts)
 
 ```typescript
+export type { RemoveStoredResourceOptions } from "./program.js";
+export type { ImageResourceSource, CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost,
+  PreparedImageResource, ApplyImageResourceOptions, ImageRef, ImageResource, ImageMarkOptions, CreateImageMarkOptions, EditImageMarkOptions } from "./program.js";
+import type { CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost, PreparedImageResource } from "./program.js";
+import type { CanvasTransitionScene } from "./scene.js";
+export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
+import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
@@ -30700,8 +30937,15 @@ export function vconcat(options: CompositionOptions): ChartProgram;
 export function render(
   program: Pick<ChartProgram, "graphicSpec">,
   context: CanvasRenderingContext2D,
-  options?: { pixelRatio?: number }
+  options?: CanvasRenderOptions
 ): void;
+
+export function prepareImageRendering(program: Pick<ChartProgram, "graphicSpec">, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+
+export function prepareImageResource(program: ChartProgram, request: CreateImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"create">>;
+export function prepareImageResource(program: ChartProgram, request: ReplaceImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"replace">>;
+export function prepareImageResource(program: ChartProgram, request: ImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource>;
 ```
 
 #### `ggaction/basic`
@@ -30709,6 +30953,9 @@ export function render(
 [Complete declaration and relative dependencies](./types/basic.d.ts)
 
 ```typescript
+import type { CanvasTransitionScene } from "./scene.js";
+export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
+import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./program.js";
@@ -30856,8 +31103,11 @@ export function prepareDataUpdate(
 export function render(
   program: Pick<BasicChartProgram, "graphicSpec">,
   context: CanvasRenderingContext2D,
-  options?: { pixelRatio?: number }
+  options?: CanvasRenderOptions
 ): void;
+
+export function prepareImageRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
 ```
 
 #### `ggaction/extension`
@@ -31085,10 +31335,10 @@ export function exportAccessibleData(program: ChartProgram | BasicChartProgram, 
 
 ```typescript
 import type { BasicChartProgram } from "./basic.js";
-import type { ChartProgram, DatasetSchema, InputRowRef } from "./program.js";
+import type { ChartProgram, DatasetSchema, InputRowRef, StoredResourceKind } from "./program.js";
 export type ProgramInput = ChartProgram | BasicChartProgram;
-export interface ResourceRef { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | "canvas" | "composition"; readonly id: string; readonly childPath?: readonly string[]; }
-export interface InspectionTarget { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide"; readonly id: string; readonly childPath?: readonly string[]; }
+export interface ResourceRef { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | "canvas" | "composition" | StoredResourceKind; readonly id: string; readonly childPath?: readonly string[]; }
+export interface InspectionTarget { readonly kind: "data" | "mark" | "scale" | "coordinate" | "guide" | StoredResourceKind; readonly id: string; readonly childPath?: readonly string[]; }
 export interface Finding { readonly severity: "error" | "warning" | "info"; readonly code: string; readonly reason: string; readonly message: string; readonly resource?: ResourceRef; readonly optionPath?: string; }
 export interface CheckResult { readonly name: string; readonly status: "not_run" | "passed" | "failed" | "not_applicable"; readonly evidencePaths: readonly string[]; readonly findings: readonly Finding[]; }
 export interface ParameterDefinition { readonly path: string; readonly kind: "field" | "enum" | "number" | "string" | "boolean" | "range" | "array" | "object" | "resource"; readonly required: boolean; readonly active: boolean; readonly choices?: readonly (string | number | boolean | null)[]; readonly minimum?: number; readonly maximum?: number; readonly unit?: string; readonly fieldRole?: string; }
@@ -31152,7 +31402,7 @@ export function getExpressionFunctions(options?: { readonly registry?: "standard
 [Complete declaration and relative dependencies](./types/scene.d.ts)
 
 ```typescript
-import type { ChartProgram, GraphicObject, GraphicClipPath } from './program.js';
+import type { ChartProgram, GraphicObject, GraphicClipPath, CanvasRenderOptions } from './program.js';
 export interface TransitionNode {
   readonly key: string;
   readonly type: string;
@@ -31170,7 +31420,7 @@ export interface TransitionScene {
 }
 export interface CanvasTransitionNode {
   readonly key: string;
-  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text';
+  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image';
   readonly topology: string;
   readonly properties: Readonly<NonNullable<GraphicObject['properties']>>;
   /** Explicit outer-to-inner global clip frames; the root physical viewport is implicit. */
@@ -31186,7 +31436,7 @@ export interface CanvasTransitionScene {
 }
 export declare function createTransitionScene(program: ChartProgram, options?: {format?: 'svg'}): TransitionScene;
 export declare function createTransitionScene(program: ChartProgram, options: {format: 'canvas'}): CanvasTransitionScene;
-export declare function renderTransitionScene(scene: CanvasTransitionScene, context: CanvasRenderingContext2D, options?: {pixelRatio?: number}): void;
+export declare function renderTransitionScene(scene: CanvasTransitionScene, context: CanvasRenderingContext2D, options?: CanvasRenderOptions): void;
 ```
 
 ## Rendering functions
@@ -31237,6 +31487,7 @@ interface ChartProgramActions {
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
   applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
+  removeResource(options: RemoveStoredResourceOptions): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeCoordinate(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -31256,6 +31507,10 @@ interface ChartProgramActions {
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
   createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
+  createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
+  replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+  createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
+  editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
@@ -31699,6 +31954,18 @@ export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] =
 ```
 
 Related types: [`DataUpdateRequest`](./reference/types/#type-dataupdaterequest) · [`PreparedDataUpdate`](./reference/types/#type-prepareddataupdate).
+
+### `ApplyImageResourceOptions` {#type-applyimageresourceoptions}
+
+ Expand ApplyImageResourceOptions
+
+```typescript
+export interface ApplyImageResourceOptions<Kind extends "create" | "replace"> {
+  prepared: PreparedImageResource<Kind>; requestToken: string;
+}
+```
+
+Related types: [`PreparedImageResource`](./reference/types/#type-preparedimageresource).
 
 ### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
 
@@ -33324,6 +33591,26 @@ export interface ComputedExpressionV2 {
 
 Related types: [`ExpressionNode`](./reference/types/#type-expressionnode).
 
+### `ConcretePathCommand` {#type-concretepathcommand}
+
+ Expand ConcretePathCommand
+
+```typescript
+export type ConcretePathCommand =
+  | { readonly op: "M"; readonly x: number; readonly y: number }
+  | { readonly op: "L"; readonly x: number; readonly y: number }
+  | {
+      readonly op: "C";
+      readonly x1: number;
+      readonly y1: number;
+      readonly x2: number;
+      readonly y2: number;
+      readonly x: number;
+      readonly y: number;
+    }
+  | { readonly op: "Z" };
+```
+
 ### `ConditionalEncodingBranch` {#type-conditionalencodingbranch}
 
  Expand ConditionalEncodingBranch
@@ -33818,6 +34105,16 @@ export interface CreateHorizonPlotOptions {
 ```
 
 Related types: [`HorizonXEncoding`](./reference/types/#type-horizonxencoding) · [`HorizonYEncoding`](./reference/types/#type-horizonyencoding) · [`HorizonResolution`](./reference/types/#type-horizonresolution) · [`HorizonMissingPolicy`](./reference/types/#type-horizonmissingpolicy) · [`HorizonOverflowPolicy`](./reference/types/#type-horizonoverflowpolicy) · [`HorizonPaletteOptions`](./reference/types/#type-horizonpaletteoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation) · [`HorizonPlotGuideOptions`](./reference/types/#type-horizonplotguideoptions).
+
+### `CreateImageMarkOptions` {#type-createimagemarkoptions}
+
+ Expand CreateImageMarkOptions
+
+```typescript
+export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; }
+```
+
+Related types: [`ImageMarkOptions`](./reference/types/#type-imagemarkoptions).
 
 ### `CreateIntervalPlotOptions` {#type-createintervalplotoptions}
 
@@ -36201,6 +36498,16 @@ export interface EditHorizonOptions
 
 Related types: [`HorizonEncodingOptions`](./reference/types/#type-horizonencodingoptions).
 
+### `EditImageMarkOptions` {#type-editimagemarkoptions}
+
+ Expand EditImageMarkOptions
+
+```typescript
+export interface EditImageMarkOptions extends ImageMarkOptions { target?: string; }
+```
+
+Related types: [`ImageMarkOptions`](./reference/types/#type-imagemarkoptions).
+
 ### `EditImputedDataOptions` {#type-editimputeddataoptions}
 
  Expand EditImputedDataOptions
@@ -37905,6 +38212,40 @@ export type GradientPlotPositionChannel = BoxPlotPositionChannel;
 
 Related types: [`BoxPlotPositionChannel`](./reference/types/#type-boxplotpositionchannel).
 
+### `GraphicClip` {#type-graphicclip}
+
+ Expand GraphicClip
+
+```typescript
+export type GraphicClip = GraphicClipRect | GraphicClipPath;
+```
+
+Related types: [`GraphicClipRect`](./reference/types/#type-graphiccliprect) · [`GraphicClipPath`](./reference/types/#type-graphicclippath).
+
+### `GraphicClipPath` {#type-graphicclippath}
+
+ Expand GraphicClipPath
+
+```typescript
+export interface GraphicClipPath {
+  readonly type: "path";
+  readonly commands: readonly ConcretePathCommand[];
+  readonly fillRule?: PathFillRule;
+}
+```
+
+Related types: [`ConcretePathCommand`](./reference/types/#type-concretepathcommand) · [`PathFillRule`](./reference/types/#type-pathfillrule).
+
+### `GraphicClipRect` {#type-graphiccliprect}
+
+ Expand GraphicClipRect
+
+```typescript
+export interface GraphicClipRect {
+  readonly x: number; readonly y: number; readonly width: number; readonly height: number;
+}
+```
+
 ### `GraphicType` {#type-graphictype}
 
  Expand GraphicType
@@ -37917,7 +38258,8 @@ export type GraphicType =
   | "rect"
   | "line"
   | "text"
-  | "path";
+  | "path"
+  | "image";
 ```
 
 ### `GridDirectionOptions` {#type-griddirectionoptions}
@@ -38231,6 +38573,22 @@ export type HorizonYScaleOptions = ScaleFields<"id" | "clamp" | "reverse"> & {
 ```
 
 Related types: [`ScaleFields`](./reference/types/#type-scalefields).
+
+### `ImageMarkOptions` {#type-imagemarkoptions}
+
+ Expand ImageMarkOptions
+
+```typescript
+export interface ImageMarkOptions {
+  image?: string;
+  viewport?: "auto" | { x: number; y: number; width: number; height: number };
+  fit?: "contain" | "cover" | "fill";
+  align?: readonly [number, number];
+  opacity?: number; alt?: string; clip?: false | GraphicClip;
+}
+```
+
+Related types: [`GraphicClip`](./reference/types/#type-graphicclip).
 
 ### `ImputedDataBaseOptions` {#type-imputeddatabaseoptions}
 
@@ -39748,6 +40106,14 @@ Related types: [`ConfidenceIntervalMethod`](./reference/types/#type-confidencein
 export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 ```
 
+### `PathFillRule` {#type-pathfillrule}
+
+ Expand PathFillRule
+
+```typescript
+export type PathFillRule = "nonzero" | "evenodd";
+```
+
 ### `PathLegendOptions` {#type-pathlegendoptions}
 
  Expand PathLegendOptions
@@ -40294,6 +40660,18 @@ export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = Dat
 ```
 
 Related types: [`DataUpdateRequest`](./reference/types/#type-dataupdaterequest) · [`DataUpdateDescriptors`](./reference/types/#type-dataupdatedescriptors).
+
+### `PreparedImageResource` {#type-preparedimageresource}
+
+ Expand PreparedImageResource
+
+```typescript
+export interface PreparedImageResource<Kind extends "create" | "replace" = "create" | "replace"> {
+  readonly [preparedImageResourceBrand]: Kind;
+  readonly kind: "image-resource";
+  readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+```
 
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
@@ -41124,6 +41502,16 @@ export interface RemoveResourceOptions {
 }
 ```
 
+### `RemoveStoredResourceOptions` {#type-removestoredresourceoptions}
+
+ Expand RemoveStoredResourceOptions
+
+```typescript
+export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }
+```
+
+Related types: [`StoredResourceKind`](./reference/types/#type-storedresourcekind).
+
 ### `ReorderCompositionChildrenOptions` {#type-reordercompositionchildrenoptions}
 
  Expand ReorderCompositionChildrenOptions
@@ -41793,6 +42181,14 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
   : T extends readonly (infer Value)[] ? readonly StoredCell<Value>[]
   : T extends object ? { readonly [Key in keyof T]: StoredCell<T[Key]> }
   : T;
+```
+
+### `StoredResourceKind` {#type-storedresourcekind}
+
+ Expand StoredResourceKind
+
+```typescript
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "image";
 ```
 
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}
@@ -43215,9 +43611,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -44400,7 +44796,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -44453,7 +44849,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -44699,7 +45095,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -44751,7 +45147,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/repeat-charts).
 
 ## Space between plots
 
@@ -45426,7 +45822,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/da1de34460983705b2fb7e2d04b766a6123d1c1a/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -46316,11 +46712,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:1bffa6c41f68d64a210cc679194b8b4a4542fb79636319ad864e582d2931157c` |
-| Example and dataset source | `da1de34460983705b2fb7e2d04b766a6123d1c1a` |
+| Contract fingerprint | `sha256:ae9cb7c02f4ebaf8e851eff6cab0a4112c7520363f731426238f55e649ead7dd` |
+| Example and dataset source | `codex/roadmap9-images` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 304 |
+| Declared actions here | 309 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -46818,3 +47214,109 @@ For individual lines, ticks, labels, and titles, see
 Numeric labels also accept `","` for grouped integers and `",.0f"` through `",.12f"` for grouped fixed decimals. UTC formats accept `%a` for an English weekday abbreviation, such as `%a %d` → `Mon 01`. These formats use the shared axis, legend and text formatter.
 
 An explicit Cartesian `labelMap` entry with `label: ""` hides only that displayed label. Tick marks, stored tick values and scale domains stay unchanged. Empty labels remain suppressed after Canvas/scale replay; clear the map with `"auto"` to restore the normal formatter.
+
+<!-- Source: /tutorials/image-assets/ -->
+
+# Place a retained image
+
+Prepare image bytes explicitly, then use one image mark to control its fit,
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-images/examples/image-assets/)
+uses one pinned SVG asset for six placements and retains the bytes for offline export.
+
+## Prepare and place
+
+The canonical [example program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-images/examples/image-assets/program.js) loads its
+inline asset through `prepareImageResource` and applies the returned handle to the
+same immutable program. Its application-owned decoder reports the source dimensions.
+The synchronous `createImageResource` action stores the validated bytes. Then
+`createImageMark` places that resource in a square viewport.
+
+```js
+// Fragment after the exact prepared resource has been committed.
+program = program.createImageMark({
+  image: "logo",
+  viewport: { x: 50, y: 60, width: 100, height: 100 },
+  fit: "contain",
+  align: [0.5, 0.5],
+  alt: "Four colored quadrants with a white center"
+});
+```
+
+`contain` preserves the whole source; `cover` fills the viewport and clips overflow;
+`fill` scales both dimensions independently. `editImageMark` preserves omitted
+options. Set `viewport:"auto"` to follow the plot size after resizing.
+
+## Render and preserve
+
+Browser Canvas uses `prepareImageRendering` with an explicit decoder and passes the
+result as `render(program, context, {images})`. SVG, PNG and PDF export the retained
+bytes without fetching the source URI. See [rendering](./api/rendering/#embedded-images)
+for the decoder and resource budgets. The example's public program, explicit primitive,
+and four backend tests share the same placement inputs.
+
+Use `replaceImageResource` with a newly prepared replacement to update every image
+mark that references the resource. Item keys and alternative text remain stable.
+`removeMark` removes a placement while retaining the shared image source.
+
+## Complete program
+
+Run this browser ES module with `ggaction` installed and a `<canvas id="chart">` element.
+The decoder also supports Node with the optional native Canvas peer.
+The decoration primitives reproduce the example title and viewport background.
+
+```js
+import { chart, prepareImageResource, prepareImageRendering, render } from "ggaction";
+const frame = { width: 200, height: 210 };
+const viewport = { x: 50, y: 60, width: 100, height: 100 };
+const fixtures = [{ title: "contain · center", fit: "contain", align: [0.5, 0.5] }];
+const imageClip = false;
+const assetSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100"><rect width="200" height="100" fill="#de5b49"/><rect x="100" width="100" height="50" fill="#397bb8"/><rect y="50" width="100" height="50" fill="#259782"/><rect x="100" y="50" width="100" height="50" fill="#edbd46"/><circle cx="100" cy="50" r="16" fill="white"/></svg>';
+const assetHash = '97f99c97b9a4d34f5c4914c2cf9cd7a2df05e55ec2b9dbd08081609b808718c6';
+async function decodeImage({ bytes, mimeType }) {
+  let image;
+  if (typeof globalThis.Image === "function") {
+    const url = URL.createObjectURL(new Blob([bytes], { type: mimeType }));
+    try { image = new Image(); image.src = url; await image.decode(); }
+    finally { URL.revokeObjectURL(url); }
+  } else {
+    const nativeModule = "@napi-rs/canvas";
+    image = await (await import(/* @vite-ignore */ nativeModule)).loadImage(bytes);
+  }
+  return { image, width: image.width, height: image.height, originClean: true };
+}
+const base = chart().createCanvas({ width: frame.width, height: frame.height, margin: 0 });
+const requestToken = "example-image";
+const prepared = await prepareImageResource(base, {
+  kind: "create", id: "logo", uri: "fixture:quadrants", expectedHash: assetHash, mimeType: "image/svg+xml"
+}, { requestToken, load: () => ({ bytes: new TextEncoder().encode(assetSVG), mimeType: "image/svg+xml" }),
+  decode: async request => { const { width, height, originClean } = await decodeImage(request); return { width, height, originClean }; } });
+
+function createImageExample(fixture = fixtures[0]) {
+  return base.createImageResource({ prepared, requestToken })
+    .createGraphics({ id: "label", type: "text", parent: "plot-main" })
+    .editGraphics({ target: "label", property: "x", value: 12 })
+    .editGraphics({ target: "label", property: "y", value: 25 })
+    .editGraphics({ target: "label", property: "text", value: fixture.title })
+    .editGraphics({ target: "label", property: "fontSize", value: 14 })
+    .editGraphics({ target: "label", property: "fontFamily", value: "Arial" })
+    .editGraphics({ target: "label", property: "fontWeight", value: "normal" })
+    .editGraphics({ target: "label", property: "textAlign", value: "left" })
+    .editGraphics({ target: "label", property: "textBaseline", value: "alphabetic" })
+    .editGraphics({ target: "label", property: "fill", value: "#243447" })
+    .createGraphics({ id: "backdrop", type: "rect", parent: "plot-main" })
+    .editGraphics({ target: "backdrop", property: "x", value: 50 })
+    .editGraphics({ target: "backdrop", property: "y", value: 60 })
+    .editGraphics({ target: "backdrop", property: "width", value: 100 })
+    .editGraphics({ target: "backdrop", property: "height", value: 100 })
+    .editGraphics({ target: "backdrop", property: "fill", value: "#e2e8f0" })
+    .editGraphics({ target: "backdrop", property: "stroke", value: "none" })
+    .editGraphics({ target: "backdrop", property: "strokeWidth", value: 0 })
+    .createImageMark({ image: "logo", viewport, fit: fixture.fit, align: fixture.align,
+      opacity: fixture.opacity ?? 1, clip: fixture.circleClip ? imageClip : false,
+      alt: "Four colored quadrants with a white center" });
+}
+
+const program = createImageExample();
+const images = await prepareImageRendering(program, {decode: decodeImage});
+render(program, document.querySelector("#chart").getContext("2d"), {images});
+```

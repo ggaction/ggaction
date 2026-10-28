@@ -51,6 +51,7 @@ export function resolveGraphicLineage(program, identity) {
     }
     scope = scope.children[children[0]];
   }
+  if (identity.lineage.kind === "resource") return requireStoredResource(scope, identity.lineage.resource);
   const { data, logicalDataId, revision, rowKeys: keys } = identity.lineage;
   const dataset = resolveInputReference(scope, { kind: "data", id: data, logicalId: logicalDataId, revision });
   if (keys.some(key => !hasRowKey(dataset, key))) throw annotateError(new Error("Graphic lineage input row no longer exists."), {

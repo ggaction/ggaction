@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 304,
+  "actionCount": 309,
   "relationships": [
     {
       "name": "createCanvas",
@@ -2079,6 +2079,38 @@
     {
       "name": "editCompositionScales",
       "wraps": []
+    },
+    {
+      "name": "createImageResource",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "replaceImageResource",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createImageMark",
+      "wraps": [
+        "editSemantic",
+        "createGraphics"
+      ]
+    },
+    {
+      "name": "editImageMark",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "removeResource",
+      "wraps": [
+        "removeMark",
+        "editSemantic"
+      ]
     }
   ]
 }

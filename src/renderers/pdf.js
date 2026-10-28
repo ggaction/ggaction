@@ -1,7 +1,8 @@
+import { readPreparedImages } from "./imageRendering.js";
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
-import { loadNativeBackend, nativeFontResolver } from "./nativeBackend.js";
+import { loadNativeBackend, nativeFontResolver, prepareNativeImages } from "./nativeBackend.js";
 
 import {
   drawResolvedGraphicSpec,
@@ -73,10 +74,11 @@ export async function renderToPDFBuffer(program, options = {}) {
   const target = resolveGraphicRenderTarget(graphicSpec);
   requirePDFPageDimensions(target);
   preflightCanvasGraphicSpec(target);
-  const { PDFDocument, createCanvas, GlobalFonts } = await loadNativeBackend();
+  const { PDFDocument, createCanvas, GlobalFonts, loadImage } = await loadNativeBackend();
+  const images = readPreparedImages(graphicSpec, await prepareNativeImages(program, loadImage));
   const document = new PDFDocument(metadata);
   const context = document.beginPage(target.width, target.height);
-  drawResolvedGraphicSpec(target, context, {createCanvas, resolveFontFamily: nativeFontResolver(GlobalFonts)});
+  drawResolvedGraphicSpec(target, context, {createCanvas, images, resolveFontFamily: nativeFontResolver(GlobalFonts)});
   document.endPage();
   const buffer = document.close();
   return Object.freeze({

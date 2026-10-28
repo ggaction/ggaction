@@ -12,6 +12,7 @@ const NATIVE_PROPERTIES = {
   canvas: ["x", "y", "width", "height"],
   circle: ["x", "y", "radius", "strokeWidth", "miterLimit"],
   rect: ["x", "y", "width", "height", "strokeWidth", "miterLimit"],
+  image: ["x", "y", "width", "height"],
   line: ["x1", "y1", "x2", "y2", "strokeWidth", "miterLimit"],
   path: ["strokeWidth", "miterLimit"],
   text: ["x", "y", "fontSize"]
@@ -85,10 +86,14 @@ function preflightGraphic(id, graphic, scale, type, offset) {
   if (Array.isArray(properties.strokeDash)) {
     requireValues(properties.strokeDash, label, scale);
   }
+  if (type === "image" && !Array.isArray(graphic.items)) {
+    requireValues([properties.x, properties.y, properties.width, properties.height], label, scale);
+    if (properties.width < 0 || properties.height < 0) throw new RangeError(`${label} dimensions must not be negative.`);
+  }
   const gradient = properties.fill?.type === "linear-gradient";
 
   let bounds;
-  if (type === "canvas" || type === "rect" || type === "circle") {
+  if (type === "canvas" || type === "rect" || type === "image" || type === "circle") {
     const circle = type === "circle";
     const width = circle ? properties.radius : properties.width;
     const height = circle ? properties.radius : properties.height;
@@ -117,7 +122,7 @@ function preflightGraphic(id, graphic, scale, type, offset) {
   if (gradient && bounds) {
     resolveCanvasGradientCoordinates(properties.fill, bounds, id, scale);
   }
-  if (NATIVE_PROPERTIES[type] !== undefined) {
+  if (NATIVE_PROPERTIES[type] !== undefined && !(type === "image" && Array.isArray(graphic.items))) {
     validateConcreteGraphicProperties(type, properties);
   }
 }

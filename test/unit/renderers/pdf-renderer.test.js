@@ -361,7 +361,7 @@ test("rejects invalid options and metadata before writing output", async t => {
   });
   await assert.rejects(
     renderToPDF({ graphicSpec: malformed }, { output }),
-    /does not support "image" yet/
+    /native geometry must be finite/
   );
   assert.equal(await readFile(output, "utf8"), "existing");
 

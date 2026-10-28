@@ -1690,3 +1690,20 @@
   actions: createGraphics · editGraphics
   tasks: extension
   url: /extension/primitives/
+
+- id: image-assets
+  example: /examples/image-assets/
+  title: Retained image placement
+  image: /assets/images/image-assets.png
+  alt: Four colored image quadrants fitted into a square viewport
+  width: 400
+  height: 420
+  thumbnail: /assets/images/image-assets-thumb.png
+  thumbnail_width: 610
+  thumbnail_height: 640
+  caption: One prepared image retains its bytes through fit, clipping and offline export.
+  summary: Prepare one source, place an image mark, and render from retained bytes.
+  actions: createImageResource · createImageMark · editImageMark
+  tasks: image assets
+  url: /tutorials/image-assets/
+  tutorial_order: 170

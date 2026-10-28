@@ -433,7 +433,7 @@ function resolveRepeatDefinition(program, args) {
     );
   }
   const unrelatedLayers = program.semanticSpec.layers.filter(layer => {
-    if (layer.id === target) return false;
+    if (layer.id === target || layer.mark?.type === "image") return false;
     const attachedLabel = layer.mark?.type === "text" && layer.source === target;
     const statisticalReference = program.markConfigs[layer.id]
       ?.statisticalReference?.source === target;

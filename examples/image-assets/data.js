@@ -11,3 +11,14 @@ export const fixtures = Object.freeze([
   { id: 'fill', title: 'fill', fit: 'fill', align: [0.5, 0.5], rect: [50, 60, 100, 100] },
   { id: 'clip-opacity', title: 'cover · clip · alpha .5', fit: 'cover', align: [0.5, 0.5], rect: [0, 60, 200, 100], circleClip: true, opacity: 0.5 }
 ].map(value => Object.freeze({ ...value, align: Object.freeze(value.align), rect: Object.freeze(value.rect) })));
+
+export const assetHash = '97f99c97b9a4d34f5c4914c2cf9cd7a2df05e55ec2b9dbd08081609b808718c6';
+// Four cubic segments use the existing concrete path vocabulary.
+export const imageClip = Object.freeze({ type: "path", commands: Object.freeze([
+  { op: "M", x: 145, y: 110 },
+  { op: "C", x1: 145, y1: 134.8528137423857, x2: 124.8528137423857, y2: 155, x: 100, y: 155 },
+  { op: "C", x1: 75.1471862576143, y1: 155, x2: 55, y2: 134.8528137423857, x: 55, y: 110 },
+  { op: "C", x1: 55, y1: 85.1471862576143, x2: 75.1471862576143, y2: 65, x: 100, y: 65 },
+  { op: "C", x1: 124.8528137423857, y1: 65, x2: 145, y2: 85.1471862576143, x: 145, y: 110 },
+  { op: "Z" }
+].map(Object.freeze)) });

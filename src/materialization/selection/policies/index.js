@@ -1,3 +1,4 @@
+import { imageSelectionPolicy } from "./image.js";
 import { mapConditionalValues } from "../../conditionalMapping.js";
 import { conditionalSelectionMembership } from "../../conditionalSelection.js";
 import { identifyItems } from "../items/common.js";
@@ -17,6 +18,7 @@ import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
 import { resolveOverlayItems } from "../items/overlay.js";
 
 const POLICIES = Object.freeze({
+  image: imageSelectionPolicy,
   text: textSelectionPolicy,
   arc: arcSelectionPolicy,
   area: areaSelectionPolicy,
@@ -59,11 +61,11 @@ function resolveItems(program, target, grain, identityOnly, options) {
     const items = resolveOverlayItems(program, layer, resolvers);
     return identityOnly ? items : withConditionalChannels(program, layer, items, options);
   }
+  const policy = requireSelectionPolicy(layer.mark?.type);
   const dataset = findDataset(program, layer.data);
-  if (dataset === undefined) {
+  if (dataset === undefined && !policy.resourceBacked) {
     throw new Error(`Mark "${target}" requires an existing dataset for selection.`);
   }
-  const policy = requireSelectionPolicy(layer.mark?.type);
   if (!policy.supportedGrains.includes(grain)) {
     throw new Error(`Mark "${target}" does not support ${grain} selection grain.`);
   }

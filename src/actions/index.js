@@ -1,3 +1,4 @@
+import { registerImageResourceActions } from "./images/index.js";
 import { registerPrimitiveActions } from "./primitives/index.js";
 import { registerCanvasActions } from "./canvas/index.js";
 import { registerBasicCoordinateActions } from "./coordinates/actions.js";
@@ -34,6 +35,7 @@ export function registerActions(ProgramClass) {
     remove: removeCompositionTheme
   });
   registerPrimitiveActions(ProgramClass);
+  registerImageResourceActions(ProgramClass);
   registerCompositionActions(ProgramClass);
   registerFacetActions(ProgramClass);
   registerCanvasActions(ProgramClass);

@@ -58,7 +58,71 @@ export type GraphicType =
   | "rect"
   | "line"
   | "text"
-  | "path";
+  | "path"
+  | "image";
+export type ImageMimeType = "image/png" | "image/jpeg" | "image/webp" | "image/svg+xml";
+export interface ConcreteImage {
+  readonly contentHash: string;
+  readonly mimeType: ImageMimeType;
+  readonly byteLength: number;
+  readonly width: number;
+  readonly height: number;
+  readonly payload: { readonly encoding: "base64"; readonly data: string };
+}
+declare const preparedImageRenderingBrand: unique symbol;
+export interface PreparedImageRendering {
+  readonly [preparedImageRenderingBrand]: true;
+  readonly kind: "image-rendering";
+  readonly imageCount: number;
+}
+export interface ImageRenderingHost {
+  decode(request: Readonly<{ bytes: Uint8Array; mimeType: ImageMimeType; contentHash: string;
+    width: number; height: number; signal?: AbortSignal }>):
+    Promise<Readonly<{ image: object; width: number; height: number; originClean: true }>> |
+    Readonly<{ image: object; width: number; height: number; originClean: true }>;
+  signal?: AbortSignal;
+}
+export interface CanvasRenderOptions { pixelRatio?: number; images?: PreparedImageRendering; }
+export interface ImageResourceSource {
+  uri: string; expectedHash: string; mimeType: ImageMimeType; maxBytes?: number; license?: string; attribution?: string;
+}
+export type CreateImageResourceRequest = ImageResourceSource & { kind: "create"; id: string };
+export type ReplaceImageResourceRequest = ImageResourceSource & { kind: "replace"; target: string };
+export type ImageResourceRequest = CreateImageResourceRequest | ReplaceImageResourceRequest;
+export interface ImageResourceHost {
+  requestToken: string;
+  load(request: Readonly<ImageResourceSource & { maxBytes: number; signal?: AbortSignal }>):
+    Promise<Readonly<{ bytes: Uint8Array; mimeType: ImageMimeType }>> | Readonly<{ bytes: Uint8Array; mimeType: ImageMimeType }>;
+  decode(request: Readonly<{ bytes: Uint8Array; mimeType: ImageMimeType; maxPixels: number; signal?: AbortSignal }>):
+    Promise<Readonly<{ width: number; height: number; originClean: true }>> | Readonly<{ width: number; height: number; originClean: true }>;
+  signal?: AbortSignal;
+}
+declare const preparedImageResourceBrand: unique symbol;
+export interface PreparedImageResource<Kind extends "create" | "replace" = "create" | "replace"> {
+  readonly [preparedImageResourceBrand]: Kind;
+  readonly kind: "image-resource";
+  readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+export interface ApplyImageResourceOptions<Kind extends "create" | "replace"> {
+  prepared: PreparedImageResource<Kind>; requestToken: string;
+}
+export interface ImageRef { readonly kind: "image"; readonly id: string; readonly revision: number; }
+export interface ImageResource {
+  readonly kind: "image"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly never[];
+  readonly options: Readonly<ImageResourceSource & { maxBytes: number }>;
+  readonly result: Pick<ConcreteImage, "width" | "height" | "byteLength" | "payload">;
+  readonly provenance: { readonly origin: "authored" };
+}
+export interface ImageMarkOptions {
+  image?: string;
+  viewport?: "auto" | { x: number; y: number; width: number; height: number };
+  fit?: "contain" | "cover" | "fill";
+  align?: readonly [number, number];
+  opacity?: number; alt?: string; clip?: false | GraphicClip;
+}
+export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; }
+export interface EditImageMarkOptions extends ImageMarkOptions { target?: string; }
 export type ConcretePathCommand =
   | { readonly op: "M"; readonly x: number; readonly y: number }
   | { readonly op: "L"; readonly x: number; readonly y: number }
@@ -1228,6 +1292,8 @@ export interface BindMarkDataOptions {
   data: string;
 }
 
+export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }
+
 export interface RemoveResourceOptions {
   readonly id: string;
 }
@@ -1538,7 +1604,7 @@ export interface DataSourceResource {
   readonly result: { readonly data: Extract<InputRef, { readonly kind: "data" }>; readonly inputHash: string };
   readonly provenance: { readonly origin: "authored" };
 }
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "image";
 export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
   | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
 export interface PersistentSelectionResource {
@@ -1609,6 +1675,8 @@ export interface SourceSchemaInput {
 
 export interface SemanticLayer {
   readonly id: string;
+  readonly image?: ImageRef;
+  readonly alt?: string;
   readonly data?: string;
   readonly source?: string;
   readonly coordinate?: string;
@@ -1671,7 +1739,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -1680,9 +1748,9 @@ export interface SemanticSpec {
   readonly title: Readonly<Record<string, unknown>>;
 }
 
-export interface GraphicLineageRef {
+export type GraphicLineageRef = {
   readonly data: string; readonly logicalDataId: string; readonly revision: number; readonly rowKeys: readonly string[];
-}
+} | { readonly kind: "resource"; readonly resource: { readonly kind: "image" | "hierarchy" | "layout"; readonly id: string; readonly revision: number } };
 
 export interface GraphicIdentity {
   readonly key: string; readonly topology: string; readonly role: string; readonly lineage: GraphicLineageRef;
@@ -5689,6 +5757,7 @@ export class ChartProgram {
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
   applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
+  removeResource(options: RemoveStoredResourceOptions): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeCoordinate(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -5708,6 +5777,10 @@ export class ChartProgram {
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
   createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
+  createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
+  replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+  createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
+  editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
