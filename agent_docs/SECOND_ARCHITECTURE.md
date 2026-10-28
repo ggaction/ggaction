@@ -133,6 +133,10 @@ kNN/radius/similarity의 exact pair를 고르고 raw source index와 stable endp
 `search.js`는 명시 exact KD-tree 또는 radius grid 후보만 줄이며 metric, typed tie와 edge ordering은
 기존 owner를 공유한다. 계산량과 output 한도는 후보 탐색 중에도 누적 검사한다. 기본 brute-force를
 유지하며 가속 경로를 명시한 경우에만 algorithm/version/실제 distance 횟수를 결과에 기록한다.
+`approximate.js`는 명시 opt-in kNN의 seeded projection forest 후보를 기존 exact metric으로 재정렬하고,
+같은 호출의 exhaustive holdout으로 recall을 측정한다. 명시 threshold 미달은 결과를 반환하지 않는다.
+Candidate 부족 시 error/exact fallback 정책과 원본 source index, seed·resolved preset·후보 수를 보존한다.
+`random.js`는 force layout과 search가 공유하는 고정 uint32 생성기이며 각 algorithm version은 각 owner에 남는다.
 `spanning.js`는 같은 metric preparation으로 complete graph 또는 명시 weighted candidate에서
 deterministic Kruskal tree/forest와 component/cost를 계산한다. `structural.js`는 같은 typed key와
 grouping identity owner를 사용해 group clique/star 및 grouped sequence lag/maxGap 연결을 만든다.

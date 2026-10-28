@@ -7,6 +7,7 @@ import { prepareGraphMetricVectors } from "./preprocess.js";
 import { graphMetricPair } from "./metrics.js";
 import { inferredGraphEdgeIdentity } from "./edgeIdentity.js";
 import { normalizeGraphSearch, searchExactGraph } from "./search.js";
+import { searchApproximateGraph } from "./approximate.js";
 
 function normalize(options) {
   ownRecord(options, "Graph neighbor options");
@@ -83,7 +84,9 @@ export function inferGraphNeighbors(keys, vectors, options) {
     ...(Object.hasOwn(preparation, "zeroVector") ? { zeroVector: preparation.zeroVector } : {}) };
   let searchResult;
   if (searchPolicy.algorithm !== "brute-force") {
-    const found = searchExactGraph(preparation, policy, ranks, searchPolicy);
+    const found = searchPolicy.mode === "approximate"
+      ? searchApproximateGraph(preparation, policy, ranks, searchPolicy)
+      : searchExactGraph(preparation, policy, ranks, searchPolicy);
     searchResult = found.search;
     if (neighbors) found.rows.forEach((row, i) => { neighbors[i] = row; });
     else for (const { a, b, distance } of found.pairs) { add(a, b, distance); if (policy.directed) add(b, a, distance); }

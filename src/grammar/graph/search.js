@@ -1,10 +1,12 @@
 import { ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
 import { graphMetricPair } from "./metrics.js";
+import { normalizeApproximateGraphSearch } from "./approximate.js";
 
 export function normalizeGraphSearch(input, policy, preparation) {
   if (input === undefined) return { mode: "exact", algorithm: "brute-force" };
   ownRecord(input, "Graph search options");
+  if (Object.hasOwn(input, "mode") && input.mode === "approximate") return normalizeApproximateGraphSearch(input, policy);
   rejectUnknownProperties(input, ["mode", "algorithm"], "graph search");
   input = Object.assign(Object.create(null), input);
   const mode = input.mode === undefined ? "exact" : input.mode, algorithm = input.algorithm === undefined ? "brute-force" : input.algorithm;

@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "baseCommit": "0b80acaa3b8e214cf259fb2600dd6dbf6f473262",
+  "scope": "Private opt-in seeded approximate search and shared deterministic random generator. Public graph resource and revision integration remain open.",
+  "results": {
+    "graphTests": 96,
+    "approximateCoverage": {
+      "lines": 100,
+      "branches": 97.25,
+      "functions": 100
+    },
+    "criticalGraphFloors": 14,
+    "node20": 17,
+    "node24": 17,
+    "boundaryTests": 24,
+    "finalSourcePackageNavigationTests": 25,
+    "recall": 0.984375,
+    "candidateCount": 5416,
+    "oracleExpectedSha256": "2c6f474afcb9496acfd6a8511f8253e28cdda9e4578ec97735db262338bcd241",
+    "oracleActualSha256": "2c6f474afcb9496acfd6a8511f8253e28cdda9e4578ec97735db262338bcd241",
+    "diff": []
+  },
+  "package": {
+    "entries": 760,
+    "unpackedBytes": 5197374,
+    "maxPackedBytes": 1129661,
+    "ceilings": {
+      "entries": 760,
+      "unpackedBytes": 5198000,
+      "packedBytes": 1130000
+    }
+  },
+  "inputs": {
+    "src/grammar/graph/approximate.js": "3f37da48a5b4ba33005fd2246956481d97d7a6526e035415d54c7ed800b4885a",
+    "src/grammar/graph/random.js": "23ca194ae8c9fdc6b052c10d734c6e51b400e785d89a666a165f17dc2082cbbb",
+    "src/grammar/graph/search.js": "41825afed6ceba1dc4809d7d1127917116eaecfa07ef4ca55a7b7bc4f849f2e1",
+    "src/grammar/graph/neighbors.js": "e81fe9646e29b8ad6eb66e9601fddfb816b5ca78e016e9864837a4a493d2e735",
+    "src/grammar/graph/force.js": "108879fa268de52c4dacabd0335c27c002ddbf4d38b1b799fd89c8181eb71e6b",
+    "test/unit/grammar/graph/approximate.test.js": "3e05b78447373e9e02ed91aa34ae1a4a60e77882c52baf427f658d2f65ee1a99",
+    "test/oracles/graphSearch.js": "2bbf7b31a08b4020cfd93a77e5698a95b93b2c8b911c13d23086df0b06a4b9f6",
+    "scripts/check-graph-search-fixtures.js": "dfdc0840d46d8e6477876633e81cca29aa7bd8dbec0179695db545b1f31a60ef",
+    "scripts/package-artifact.js": "dbcd4d5ae75d95bc8ccf18619f1925f45876257c32d43766a96bc8f1681da404"
+  },
+  "evidence": [
+    {
+      "path": "graph-approximate-before.log.gz",
+      "source": ".artifacts/graph-approximate-before.log",
+      "sha256": "94eaf5cac19ca4b84cc61ec025ba7ef1ad179e57e13a1a53aba39206a69bdb7d",
+      "bytes": 11303
+    },
+    {
+      "path": "graph-approximate-first.log.gz",
+      "source": ".artifacts/graph-approximate-first.log",
+      "sha256": "33463c6b2edbcad1160e72a1fbcf8360000ac16534264a211b1658981b504e84",
+      "bytes": 3437
+    },
+    {
+      "path": "graph-approximate-oracle-coverage.log.gz",
+      "source": ".artifacts/graph-approximate-oracle-coverage.log",
+      "sha256": "a8edb0f946aae6f39e2778783ff2495eb9fb35faad82a1f17123f5df7fc120e2",
+      "bytes": 23625
+    },
+    {
+      "path": "graph-approximate-floors.log.gz",
+      "source": ".artifacts/graph-approximate-floors.log",
+      "sha256": "12aa4040b34465283edc2d70352d213e88b1507ef335e279b322bfcfc11df308",
+      "bytes": 32
+    },
+    {
+      "path": "graph-approximate-node20.log.gz",
+      "source": ".artifacts/graph-approximate-node20.log",
+      "sha256": "9020aafc14e0ff3bc7039ec1fca649b87ae97b06ac3d03505249b104f1f8b34e",
+      "bytes": 3679
+    },
+    {
+      "path": "graph-approximate-node24.log.gz",
+      "source": ".artifacts/graph-approximate-node24.log",
+      "sha256": "4b6b54091b06be6a9cb7827d3758949d130422b64989ae79a930b2f9e6fe8171",
+      "bytes": 1724
+    },
+    {
+      "path": "graph-approximate-boundaries.log.gz",
+      "source": ".artifacts/graph-approximate-boundaries.log",
+      "sha256": "07fc13a04a7f72d5f14df7fc521ecd4f7d1d5b7f205090d96784a7c4c9f5e23a",
+      "bytes": 4757
+    },
+    {
+      "path": "graph-approximate-final-contracts.log.gz",
+      "source": ".artifacts/graph-approximate-final-contracts.log",
+      "sha256": "d4367e6155b4f282a75a20483f159bfe2c6ff4c25627602e37b7ada821074762",
+      "bytes": 5309
+    },
+    {
+      "path": "graph-approximate-package20-measure.json.gz",
+      "source": ".artifacts/graph-approximate-package20-measure.json",
+      "sha256": "4aed356ed1e7e90072e49ee0f96bec5cf15771e5f47abbfdcf53d3f01d60e841",
+      "bytes": 160
+    },
+    {
+      "path": "graph-approximate-package22-measure.json.gz",
+      "source": ".artifacts/graph-approximate-package22-measure.json",
+      "sha256": "2e6e07fc4d88d23872072c68995059dca4e967af36d0043612edc4135497c891",
+      "bytes": 160
+    },
+    {
+      "path": "graph-approximate-package24-measure.json.gz",
+      "source": ".artifacts/graph-approximate-package24-measure.json",
+      "sha256": "4aed356ed1e7e90072e49ee0f96bec5cf15771e5f47abbfdcf53d3f01d60e841",
+      "bytes": 160
+    },
+    {
+      "path": "graph-approximate-package-final.json.gz",
+      "source": ".artifacts/graph-approximate-package-final.json",
+      "sha256": "4aed356ed1e7e90072e49ee0f96bec5cf15771e5f47abbfdcf53d3f01d60e841",
+      "bytes": 160
+    },
+    {
+      "path": "graph-approximate-oracle.log.gz",
+      "source": ".artifacts/graph-approximate-oracle.log",
+      "sha256": "21da75f8eb33744c33a88f5612ae05b6b585824ca234b80eb1cdbd5d1845f111",
+      "bytes": 218
+    },
+    {
+      "path": "graph-approximate-oracle-node20.log.gz",
+      "source": ".artifacts/graph-approximate-oracle-node20.log",
+      "sha256": "21da75f8eb33744c33a88f5612ae05b6b585824ca234b80eb1cdbd5d1845f111",
+      "bytes": 218
+    },
+    {
+      "path": "graph-approximate-oracle-node24.log.gz",
+      "source": ".artifacts/graph-approximate-oracle-node24.log",
+      "sha256": "21da75f8eb33744c33a88f5612ae05b6b585824ca234b80eb1cdbd5d1845f111",
+      "bytes": 218
+    },
+    {
+      "path": "qualification-node20.json.gz",
+      "source": ".artifacts/graph-search/qualification-node20.json",
+      "sha256": "5e353b31fcb044f4aa85a8daff29f87dde7668dd053a53c2530bc688af0f072f",
+      "bytes": 30889
+    },
+    {
+      "path": "qualification-node24.json.gz",
+      "source": ".artifacts/graph-search/qualification-node24.json",
+      "sha256": "1af7ae3b8b6c2e6acb2da1e181f14f4089c9666d394d0e332ae5a1f8b8cc0b96",
+      "bytes": 30889
+    }
+  ]
+}

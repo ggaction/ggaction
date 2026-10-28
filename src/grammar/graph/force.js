@@ -4,6 +4,7 @@ import { rejectUnknownProperties, validateWorkLimit } from "../../core/validatio
 import { requireFiniteResult } from "../numeric.js";
 import { graphLimits, indexGraphModel } from "./model.js";
 import { layoutGraphFixed } from "./layout.js";
+import { createGraphRandom } from "./random.js";
 
 const required = ["seed", "iterations", "linkDistance", "repulsion", "collisionRadius", "damping", "center", "componentGap"];
 const finite = value => requireFiniteResult(value, "Force graph layout");
@@ -61,13 +62,7 @@ function pinsFor(input, indexed) {
 function initialize(indexed, options, input) {
   if (Object.hasOwn(input, "initialPositions")) return layoutGraphFixed(indexed.model, input.initialPositions,
     { maxNodes: options.maxNodes, maxEdges: options.maxEdges }).nodes.map(node => ({ ...node, vx: 0, vy: 0 }));
-  let state = options.seed;
-  const random = () => {
-    state = (state + 0x6d2b79f5) >>> 0;
-    let value = Math.imul(state ^ state >>> 15, state | 1);
-    value ^= value + Math.imul(value ^ value >>> 7, value | 61);
-    return ((value ^ value >>> 14) >>> 0) / 4294967296;
-  };
+  const random = createGraphRandom(options.seed);
   const spread = Math.max(options.linkDistance, finite(2 * options.collisionRadius), 1);
   return indexed.nodes.map(({ key }) => ({ key,
     x: finite(options.center[0] + (random() - 0.5) * spread),
