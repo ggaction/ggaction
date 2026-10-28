@@ -52,6 +52,10 @@ action, renderer 또는 새 시각 target과 연결하지 않았다.
 [input adapter](impl/roadmap9/phase3/hierarchy/INPUT_KERNEL.md), [tree 계산](impl/roadmap9/phase3/hierarchy/TREE_KERNEL.md),
 [partition 계산](impl/roadmap9/phase3/hierarchy/PARTITION_KERNEL.md), [treemap 계산](impl/roadmap9/phase3/hierarchy/TREEMAP_KERNEL.md),
 [sibling 정렬](impl/roadmap9/phase3/hierarchy/ORDER_KERNEL.md) 기록이 소유한다.
+Inclusive model 검증은 normalizer가 저장한 차액 식을 그대로 검사하여 역연산 반올림으로 유효 값을 거부하지 않는다.
+이 검증 보수의 package 실측4,908,179bytes가 기존 unpacked4,908,000을179bytes 초과해 최소1,000byte 단위
+4,909,000으로 조정했다. Entry710/packed1,061,000와 browser 한도는 유지하며 상세 재현·검증은
+[inclusive model 감사](impl/roadmap9/phase3/hierarchy/INCLUSIVE_VALIDATION.md)에 둔다.
 
 ## Private observed graph normalization
 
