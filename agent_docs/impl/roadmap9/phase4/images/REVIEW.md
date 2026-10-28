@@ -7,13 +7,13 @@
 - [x] focused28, renderer1, source/package/discovery38, docs159 통과
 - [x] 실행 source·입력/출력 hash·최초 실패를 검토 package에 보존
 - [x] 사용자의 rendered primitive 승인
-- [ ] 공개 asset action·저장 schema·renderer 자원 준비·소비자 연결
+- [x] 공개 asset action·저장 schema·renderer 자원 준비·소비자 연결
 
 상태는 **approved**다. 2026-10-28 사용자가 revision `3853bdb1`의 6종 배치에
 “표시한 이미지 배치 승인”이라고 명시 답했다. 정확한 승인 응답과 revision은
 [REVIEW-EVIDENCE.json](REVIEW-EVIDENCE.json)의 `visualApproval`에 기록했다. 전체 계획의 실행 승인은 [AUTHORIZATION](../../AUTHORIZATION.json)에
 기록되어 있다. 새 visual target의 확인은 [시각 검토 규칙](../../../AGENTS.md)에 따라 별도로
-기록한다. 이 자료는 public image 기능이나 STEP-018 완료를 의미하지 않는다.
+기록한다. 이 최초 primitive 자료는 STEP-018 전체 완료를 의미하지 않는다. 공개 I1–I4의 완료 증거는 아래 연결된 구현 기록이 소유한다.
 
 ## 실행 source와 승인 대상
 
@@ -37,7 +37,7 @@
 
 Atlas는 이 순서로 3열×2행이다. 그림자나 필터를 추가하지 않았다.
 SVG는 data URI를 포함하며 PDF는 image 영역만 native image로 쓰고 주변 text/rect는 vector로 남긴다.
-Raw image payload·decoder object를 public ChartProgram에 저장하는 계약은 아직 결정하지 않았다.
+최초 primitive 검토 시점에는 public 저장 계약을 결정하지 않았다. 이후 승인된 concrete bytes와 opaque decoder 준비 계약은 Current와 PUBLIC_IMPLEMENTATION이 소유한다.
 
 ## 검증과 재현
 
@@ -71,14 +71,14 @@ Runtime은 이전 private checkpoint119b7845에서 바뀌지 않았으므로 동
 resolver100/99.03/100%, SVG validator100/97.12/100%, placement100/100/100% 증거를 재사용한다.
 Package688entries, packed1029429/unpacked4788996bytes로 기존 한도 안이다.
 원시 로그, source/output hashes와 환경은 [REVIEW-EVIDENCE.json](REVIEW-EVIDENCE.json)을 참조한다.
-Output은 gitignored `.artifacts/test/png/review/image-assets/` 아래에 있으며 commit한 source로
-재생성할 수 있다.
+최초 output은 gitignored `.artifacts/image-public/approved-primitive-history/image-assets/`에 보존했다.
+현재 output은 `.artifacts/test/png/charts/image-assets/`이며 commit한 source로 재생성할 수 있다.
 
 ## 남은 범위
 
-시각 승인 후 구현할 범위는 asset resource CRUD/ref collector, immutable/offline codec, renderer별
+시각 승인 후의 asset resource CRUD/ref collector, immutable/offline codec, renderer별
 decode/cache와 export preflight, image mark/fit/align/clip/opacity, revise/rematerialization,
-inspection/scene, Full/Basic/types/exports 및 public/primitive exact equivalence를 구현해야 한다.
+inspection/scene, Full/Basic/types/exports 및 public/primitive exact equivalence는 I1–I4에서 연결했다.
 Renderer의 network fetch나 실패한 image의 silent placeholder는 허용하지 않는다.
 AT-04/AT-14의 후행 소비자와 STEP-018 전체 종료는 별도 미완료 상태로 유지한다.
 

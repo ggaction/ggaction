@@ -45,12 +45,18 @@ test('offline image primitives preserve fit, clip and alpha across four output p
       const png=(await renderToPNGBuffer(publicProgram)).buffer,primitivePNG=(await renderToPNGBuffer(primitiveProgram)).buffer,svg=renderToSVG(publicProgram);
       assert.deepEqual((await decode(png)).getContext('2d').getImageData(0,0,frame.width,frame.height).data,(await decode(primitivePNG)).getContext('2d').getImageData(0,0,frame.width,frame.height).data);
       await writeFile(path.join(output,'public.png'),png);await writeFile(path.join(output,'public.svg'),svg);
-      const publicPDF=(await renderToPDFBuffer(publicProgram)).buffer;await writeFile(path.join(output,'public.pdf'),publicPDF);
+      const publicPDF=(await renderToPDFBuffer(publicProgram)).buffer,primitivePDF=(await renderToPDFBuffer(primitiveProgram)).buffer;
+      await writeFile(path.join(output,'public.pdf'),publicPDF);
       
       const document=new PDFDocument(),context=document.beginPage(frame.width,frame.height);variant.native(context,variant.fixture,source);document.endPage();const nativePDF=document.close(),pdf=publicPDF;
-      await writeFile(path.join(output,'primitive.png'),primitivePNG);await writeFile(path.join(output,'native-oracle.pdf'),nativePDF);await writeFile(path.join(output,'primitive.svg'),svg);await writeFile(path.join(output,'primitive.pdf'),pdf);
-      execFileSync('pdftoppm',['-r','72','-singlefile','-png',path.join(output,'primitive.pdf'),path.join(output,'pdf')],{stdio:'pipe'});
+      await writeFile(path.join(output,'primitive.png'),primitivePNG);await writeFile(path.join(output,'native-oracle.pdf'),nativePDF);
+      await writeFile(path.join(output,'primitive.svg'),renderToSVG(primitiveProgram));await writeFile(path.join(output,'primitive.pdf'),primitivePDF);
+      execFileSync('pdftoppm',['-r','72','-singlefile','-png',path.join(output,'public.pdf'),path.join(output,'pdf')],{stdio:'pipe'});
+      execFileSync('pdftoppm',['-r','72','-singlefile','-png',path.join(output,'primitive.pdf'),path.join(output,'primitive-pdf')],{stdio:'pipe'});
       const pdfPNG=await readFile(path.join(output,'pdf.png'));
+      const primitivePdfPNG=await readFile(path.join(output,'primitive-pdf.png'));
+      assert.deepEqual((await decode(pdfPNG)).getContext('2d').getImageData(0,0,frame.width,frame.height).data,
+        (await decode(primitivePdfPNG)).getContext('2d').getImageData(0,0,frame.width,frame.height).data);
       const rendered=await opened.page.evaluate(async({id,svg})=>{
         const source=document.getElementById(id),canvas=document.createElement('canvas'),image=new Image();image.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);await image.decode();canvas.width=image.width;canvas.height=image.height;canvas.getContext('2d').drawImage(image,0,0);
         return{canvas:source.toDataURL(),svg:canvas.toDataURL(),label:source.getAttribute('aria-label'),width:source.width,height:source.height};

@@ -6,8 +6,8 @@
 - [x] resource lineage, selection/highlight, inspection/accessibility, composition, editable/graphic 복원
 - [x] Full/Basic 선언과 공개 예제, Current, 생성 문서 및 source-free 설치 fixture
 - [x] 최신 통합 기준 `a561ae1c` 병합 후 이미지/조건부 위치·텍스트 교차 64개 및 경계 47개 통과
-- [ ] 최종 frozen source의 전체 normal/coverage, realistic inventory, package/설치 검증
-- [ ] 검증된 구현 checkpoint commit/push
+- [x] 최종 frozen source의 전체 normal/coverage, realistic inventory, package/설치 검증
+- [x] 검증된 구현 checkpoint commit/push
 
 승인 정본은 [PUBLIC_APPROVALS_20261028.json](../../PUBLIC_APPROVALS_20261028.json)의 I1–I4
 `990315b7`과 6종 시각 `3853bdb1`이다. 전체 후속 선택은 `b758b912`의 사용자 전면 승인에 속한다.
@@ -55,3 +55,44 @@ browser bundle에 유입된 실패는 명시 browser/native decoder 분리로 �
 `a561ae1c`를 병합한 후 focused 64/64와 source/package/type/discovery 47/47을 통과했다.
 Scene helper는 normal 23/23 및 line/branch/function 각각100%다. 최종 검증의 입력 hash, 명령, 결과 및
 package dimensions는 다음 검증 절에 기록한다. Font resource와 최종 asset bundle은 후속 STEP의 범위다.
+
+## 최종 검증
+
+검증 대상 runtime은 `ee0a90db`, 공개 문서 provenance는 `ac7b2f7b`다. 최종 실행은 그 위에
+브라우저 실측 한도/architecture 표, public·primitive PDF 비교, realistic inventory 기대값의
+네 파일 교정을 포함했다. 전체 실행 전후 추적 입력 7,138개 파일의 SHA256 변화는 `[]`다.
+정확한 입력 목록·최종 결과·압축 로그는 [PUBLIC_EVIDENCE.json](PUBLIC_EVIDENCE.json)과
+`public-evidence/`에 보존했다. 이후 변경은 이 실행 기록과 실측 주석뿐이다.
+
+| 검증 | 결과 |
+| --- | --- |
+| `node scripts/run-tests.js coverage` | normal discovery 1,156 files, 7,148/7,148 tests; lines 96.25%, branches 94.02%, functions 98.85%; critical floors 285/285 |
+| 이미지 + 조건부 위치/텍스트 focused | 64/64 |
+| source/package/types/discovery | 47/47 |
+| Canvas scene focused coverage | 23/23, lines/branches/functions 100/100/100% |
+| generated lifecycle/feature realistic | 10/10 |
+| 이미지 renderer | 6 variants × 11 interiors × 4 backends = 264; public/primitive PNG와 PDF 각각 전체 decoded pixels exact |
+| built documentation | 151 pages, 1,245 selective artifacts; desktop 및 320/390/768 responsive/accessibility 통과 |
+| installed Node 20.20.2 / 22.23.1 / 24.22.1 | 각 202 Node cases, 71 tutorials, 7 qualification groups 통과 |
+| gallery | approved 60 variants, active review 0; 두 gallery 검증 통과 |
+
+Canonical coverage는 `all`과 같은 normal discovery를 실행한다. 중복 normal 실행은 host 부하를 줄이기
+위해 SIGTERM으로 종료했으며 성공 실행으로 세지 않는다. 수정 전 architecture browser 한도를 읽은
+이전 coverage도 종료 기록을 보존하고, 표 교정 후 위 전체 실행을 다시 시작했다. 최종 실행은 실패 0이다.
+Realistic의 총 작성 경로는 26,162개(required 17,493/excluded 8,669), scale type 경로 205개/값 958개,
+ledger 요구 31,526개다. 수를 줄여 통과시키지 않고 실제 public inventory와 일치시켰다.
+
+동일 source-free 설치 artifact의 SHA256은
+`67f853cab90584f8167ad402673d768d5f34b1ea996c2a9f50b92dd3624018fc`다.
+Node 22 pack은 769 entries / 1,128,489 packed / 5,217,216 unpacked bytes이고 독립 재포장도 같은 hash다.
+Node 20/24 pack 실측 최대는 1,131,244 bytes로 승인 범위의 실행환경 차이를 한도에 반영했다.
+세 설치 검증은 새로 서로 다른 artifact를 만들지 않고 위 동일 tarball을 사용했다.
+
+Browser gzip 실측 최대 Full 556,214 / Basic 329,870 bytes에 대해 한도는 557,000 / 330,000이다.
+Node 20의 첫 Full bundle 검사만 임시 556,000 한도를 초과했으며, 그 실패를 보존하고 실측 한도 교정 후
+동일 artifact의 해당 group을 재검증했다. 나머지 여섯 group과 Node cases/tutorials는 최초 실행에서 통과했다.
+전체 renderer 간 edge pixel equality를 주장하지 않으며 과거 edge 실패도 삭제하지 않았다.
+
+재현 명령은 `PUBLIC_EVIDENCE.json`의 각 검증 항목을 따른다. Docs build에는 저장소가 사용하는
+Ruby 3.2 및 Node 22 PATH를 적용했다. STEP-019 font와 후행 export asset bundle/AT-04·AT-14 전체 종료는
+이 이미지 checkpoint의 완료 주장에 포함하지 않는다.
