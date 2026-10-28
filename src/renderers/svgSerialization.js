@@ -252,6 +252,20 @@ function serializeFill(state, fill, bounds, graphicId, explicitBounds = false) {
   return fill;
 }
 
+function serializeImage(state, id, properties) {
+  validateConcreteGraphicProperties("image", properties);
+  const image = properties.image;
+  return element("image", [
+    ["x", formatNumber(requireFiniteProperty(properties, "x", id))],
+    ["y", formatNumber(requireFiniteProperty(properties, "y", id))],
+    ["width", formatNumber(requireFiniteProperty(properties, "width", id))],
+    ["height", formatNumber(requireFiniteProperty(properties, "height", id))],
+    ["opacity", formatNumber(requireOpacity(properties, id))],
+    ["preserveAspectRatio", "none"],
+    ["href", `data:${image.mimeType};base64,${image.payload.data}`]
+  ]);
+}
+
 function serializeCircle(state, graphicId, properties) {
   validateConcreteGraphicProperties("circle", properties);
   const x = requireFiniteProperty(properties, "x", graphicId);
@@ -500,6 +514,7 @@ function serializeConcreteGraphic(state, id, graphic) {
   if (graphic.type === "path") {
     return serializePath(state, id, properties);
   }
+  if (graphic.type === "image") return serializeImage(state, id, properties);
   if (graphic.type === "text") {
     return serializeText(state, id, properties);
   }

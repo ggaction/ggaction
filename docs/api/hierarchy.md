@@ -1,0 +1,113 @@
+---
+layout: default
+title: Hierarchy Resources and Plots
+description: Build, arrange, revise and inspect trees and treemaps from typed hierarchy data.
+---
+
+# Hierarchy resources and plots
+
+Create hierarchy data, compute an explicit layout, then draw a tree or treemap. These actions require the Full entry point. The [hierarchy tutorial](../tutorials/hierarchy.md) uses the same public programs as the examples and renderer tests.
+
+{% include chart-example.html id="tree-layouts" %}
+
+## createHierarchyData
+
+```typescript
+createHierarchyData(options: CreateHierarchyDataOptions): ChartProgram
+```
+
+Chart authoring. Create a typed hierarchy from flat parent rows, nested children, or grouped paths.
+
+Exactly one source form is required: `key + parent`, `key + children`, or `groupFields`. Typed keys distinguish numbers, strings and booleans. Values are finite and nonnegative. `leaf-sum` is the default; `inclusive` validates parent totals, and `own-plus-children` adds each own value to its children. Groups support only leaf sums. `forest:false`, `missingCategory:"error"` for groups, and `maxNodes:10000` are the defaults. An enabled forest or grouped source uses a synthetic root with no source contribution. Missing parents, cycles, duplicate keys and invalid values fail. Nested lineage retains the actual source member path.
+
+## editHierarchyData
+
+```typescript
+editHierarchyData(options: EditHierarchyDataOptions): ChartProgram
+```
+
+Chart authoring. Revise hierarchy input options and refresh every dependent layout and plot atomically.
+
+Omitted options retain stored intent; the source form cannot change. A nonempty patch is required. A new data binding must resolve to a materialized dataset. Every dependent layout receives one new revision; its plots, labels and selections refresh. Raw and computed source revisions follow the same closure. Input programs and traces remain unchanged when any consumer fails.
+
+## layoutHierarchy
+
+```typescript
+layoutHierarchy(options: LayoutHierarchyOptions): ChartProgram
+```
+
+Chart authoring. Compute an explicit tree, treemap, or normalized partition layout from a named hierarchy.
+
+`method` is `tree`, `treemap`, or `partition`. Tree requires finite nonnegative `nodeSize:[breadth,depth]`, `siblingGap`, `depthGap` and `orientation:"vertical"|"horizontal"|"radial"`. Radial additionally requires nonnegative `radius`, finite `startAngle` and `sweep` in `(0,360]` degrees. Treemap requires positive finite `size:[width,height]`, nonnegative `padding`, and `method:"slice-dice"|"squarify"`. Partition accepts only optional `maxNodes`. Input order is default; key/value ordering requires an explicit ascending/descending direction, and field ordering additionally requires a field, with optional nulls first/last and year/timestamp temporal unit. Ambiguous grouped sort fields fail. Layout results retain exact hierarchy revisions and numerical geometry.
+
+## editLayout
+
+```typescript
+editLayout(options: EditLayoutOptions): ChartProgram
+```
+
+Chart authoring. Change a layout order or method-specific options and refresh its plot consumers.
+
+The existing layout method remains fixed. `options` is a partial patch of that method. Changing a radial tree to vertical/horizontal removes its radial-only options. The proposed geometry and every plot are checked before state-changing child actions. Layout numeric intent has one owner and is independent of Canvas placement.
+
+## removeResource
+
+```typescript
+removeResource(options: RemoveStoredResourceOptions): ChartProgram
+```
+
+Chart authoring. Remove a named stored resource after checking exact dependencies.
+
+`kind` identifies a stored resource; data, scale and coordinate use their existing dedicated removers. Restrict is default. `cascade:true` may remove generated dependents; authored dependents and live hierarchy plots still require explicit removal first. `removeMark` releases a plot while retaining its hierarchy/layout for reuse. Basic does not expose this method.
+
+## createTreePlot
+
+```typescript
+createTreePlot(options: TreePlotOptions): ChartProgram
+```
+
+Chart authoring. Draw hierarchy nodes and parent links from a stored tree layout.
+
+The omitted first ID is `treePlot`; another tree plot needs an explicit ID. The layout must use method tree. Omitted layout uses current eligible context, then the unique eligible resource; ambiguity fails. Nodes default to radius 6, fill #2563eb, stroke #ffffff, width 1 and opacity 1. Links default to #94a3b8, width 1.5 and opacity 1; false disables them. `origin:"auto"` centers stored bounds in the plot frame; explicit `[x,y]` is plot-local. `clip:false` is default.
+
+## editTreePlot
+
+```typescript
+editTreePlot(options: EditTreePlotOptions): ChartProgram
+```
+
+Chart authoring. Edit tree nodes, links, labels, placement, or the bound tree layout.
+
+A nonempty patch is required. Omitted values preserve style, meaning and placement; `links:{}` reenables links with stored/default style. New layout bindings require method tree. Unchanged node keys retain selection identity when geometry or order changes.
+
+## createTreemapPlot
+
+```typescript
+createTreemapPlot(options: TreemapPlotOptions): ChartProgram
+```
+
+Chart authoring. Draw nested rectangles from a stored treemap layout.
+
+The omitted first ID is `treemapPlot`; another owner needs an explicit ID. The layout must use method treemap. Cells default to fill #3b82f6, stroke #ffffff, width 1 and opacity 1. Origin and clipping match tree plots. Internal labels are hidden when padding leaves no label band; zero-value rectangles retain finite zero-area geometry.
+
+## editTreemapPlot
+
+```typescript
+editTreemapPlot(options: EditTreemapPlotOptions): ChartProgram
+```
+
+Chart authoring. Edit treemap cells, labels, placement, or the bound treemap layout.
+
+A nonempty patch is required. Omission preserves prior values; a new layout must use method treemap. Cell overrides and label identity follow the exact typed node keys, independently from rectangle order.
+
+## Labels, overrides and retained identity
+
+Labels are disabled by default. `labels:{}` displays each node total in 12px sans-serif; tree labels use offset `[0,14]`, treemap labels `[0,0]`. `labels:false` removes them. Set `content:"value"`, `fill`, `fontSize`, `fontFamily`, `fontWeight`, `offset` and optional `overrides`. Override text with `{key:"A",text:"Branch A"}` or `{path:["Europe","Denmark"],text:"Denmark"}` for grouped data. Body overrides use the same targets and their own paint fields. Arrays replace the prior override array.
+
+Authoring rejects unknown or duplicate targets. When a source revision removes a previously styled node, its override becomes dormant and inspection reports `orphan-style`; the style returns only for the same typed key. String `"1"` and number `1` are different keys. Selection includes the node body and label, while links remain structural.
+
+## Revising and restoring
+
+Source and parameter revisions refresh dependent hierarchy resources, layouts and plots in order. Invalid topology, layout or concrete output leaves the original program unchanged. Concat children retain separate identities. Facets support complete subtree partitions; a partition that separates a child from its parent fails. Repeat positional field changes are not applicable.
+
+Editable serialization retains layout geometry and exact source refs. Restore validates that state without running a layout algorithm. Canvas, SVG, PNG and PDF read the same concrete graphics. Empty sources produce empty models; zero totals produce finite zero-area partitions and an inspection diagnostic.

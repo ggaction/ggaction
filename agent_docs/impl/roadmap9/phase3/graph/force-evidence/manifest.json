@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "baseCommit": "b758b91255650c06ebbbb6a4f910d3c84232a697",
+  "createdAt": "2026-10-28T18:48:11.891931+00:00",
+  "scope": "Private exact force and component packing; public graph integration remains open.",
+  "tests": {
+    "graphNode22": 69,
+    "forceCoverage": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "graphFloors": 10,
+    "node20": 16,
+    "node24": 16,
+    "boundaries": 33,
+    "package": 7,
+    "numericFixtures": 6
+  },
+  "inputs": {
+    "src/grammar/graph/force.js": "4e24a4a3b5849ca6baed1ed3d4e49e3745695344d7bc89336762132d227123b8",
+    "src/grammar/graph/layout.js": "7aaf599d76515600a70b13369eb620102b08f8137c9e18352fb2cb2d0561a5f8",
+    "src/grammar/graph/model.js": "4f979b8846526fde006a75b46b2bd7b7aa66764743e27528bdbce5c6e638974f",
+    "src/grammar/graph/normalize.js": "da4ed0120643d631458e7b3ac8f08a4db5e444ffbffc205758fd8cffe487649d",
+    "test/unit/grammar/graph-force.test.js": "f260233db69e3bc240b6745e8b5b68f68be85f77f57e9a198fc508e02d738c91",
+    "test/oracles/graph-force.js": "6bc874e9bcc1939eef61d8c8b23c737ed104c8ac9294533bf04db3e168db115a",
+    "scripts/check-graph-layout-fixtures.js": "c8ee36a9a5979dea7c6c5f7ba13767779560f4ea54e76e41262230c82d0522ad",
+    "scripts/package-artifact.js": "a8eedc7819f0d2c2cd5b8d97187ca8adf2e4ba7dee34bb6721d9b9094bc162b5"
+  },
+  "evidence": [
+    {
+      "path": "graph-force-first.log.gz",
+      "source": ".artifacts/graph-force-first.log",
+      "bytes": 5112,
+      "sha256": "eb18c3dbd98b36c91797d3ba70b45c958671bc5d0420478d3167f7b34f8a0e61"
+    },
+    {
+      "path": "graph-force-coverage-final.log.gz",
+      "source": ".artifacts/graph-force-coverage-final.log",
+      "bytes": 20842,
+      "sha256": "1963af7606c4ee9a565f9544371243332a1d573bafcd5110a77d3f2c2a3c00d4"
+    },
+    {
+      "path": "graph-force-floors.log.gz",
+      "source": ".artifacts/graph-force-floors.log",
+      "bytes": 32,
+      "sha256": "82ecb4e70260d6078cb94848a5e3f93ad8e41f64a19d58295db9f1722241c7b8"
+    },
+    {
+      "path": "graph-force-contracts.log.gz",
+      "source": ".artifacts/graph-force-contracts.log",
+      "bytes": 6535,
+      "sha256": "0662fbbb488c6792577a15d272df6185d2b1485ecd6c86089eff80e0d0664a90"
+    },
+    {
+      "path": "graph-force-final-package-contracts.log.gz",
+      "source": ".artifacts/graph-force-final-package-contracts.log",
+      "bytes": 1717,
+      "sha256": "3fb38af94fe4f90b2c84192ae4c86f214cfd93e7e157b17df5c87dd68ff8e059"
+    },
+    {
+      "path": "graph-force-package-initial.log.gz",
+      "source": ".artifacts/graph-force-package-initial.log",
+      "bytes": 1143,
+      "sha256": "953908c06a065bf0f5894358b0137803f17958e36903d926645a8d7736971eb2"
+    },
+    {
+      "path": "graph-force-final-package-node20.json.gz",
+      "source": ".artifacts/graph-force-final-package-node20.json",
+      "bytes": 160,
+      "sha256": "76bfa0104cbb46fb28089fdbec44051e5767ccb9ab40889858f7b6aae2e37eec"
+    },
+    {
+      "path": "graph-force-final-package-node22.json.gz",
+      "source": ".artifacts/graph-force-final-package-node22.json",
+      "bytes": 160,
+      "sha256": "d29de3e01260275c99b6b96278ac0cc6154d01310209968ad49bc46041d195e3"
+    },
+    {
+      "path": "graph-force-final-package-node24.json.gz",
+      "source": ".artifacts/graph-force-final-package-node24.json",
+      "bytes": 160,
+      "sha256": "76bfa0104cbb46fb28089fdbec44051e5767ccb9ab40889858f7b6aae2e37eec"
+    },
+    {
+      "path": "graph-force-final-node20.log.gz",
+      "source": ".artifacts/graph-force-final-node20.log",
+      "bytes": 3533,
+      "sha256": "f1a1396652c14190d2439a2409bf174aacb05ea7844760a7bdc6858ba197e83e"
+    },
+    {
+      "path": "graph-force-final-node24.log.gz",
+      "source": ".artifacts/graph-force-final-node24.log",
+      "bytes": 1654,
+      "sha256": "4107ba3a59cc1f097c5e47da9fe059776bbbb33c728bde585fe1d300b96cbe7a"
+    },
+    {
+      "path": "numeric-evidence.json.gz",
+      "source": ".artifacts/validation/graph-layout/numeric-evidence.json",
+      "bytes": 12739,
+      "sha256": "e3bc16674829110e9f6f227fad65ca71b8f97f9cc6716471abaf20d90a6a81ac"
+    }
+  ]
+}

@@ -519,6 +519,61 @@ participate in identity, so moving an item to another child produces enter/exit.
 SVG scene version 1 and Canvas scene version 2 keep their existing shapes.
 Graphic-only snapshots retain the same scene identities.
 
+## Embedded images
+
+Full authoring uses `prepareImageResource(program, request, host)` followed by
+`program.createImageResource({prepared, requestToken})` or
+`program.replaceImageResource({prepared, requestToken})`. The host explicitly loads
+bytes and reports decoded dimensions. The synchronous action requires the exact
+prepared receiver and current request token. Keep the token in application state
+and change it when a request is superseded. `createImageMark` and `editImageMark`
+place one named image; [the image example](../../../tutorials/image-assets/) shows
+contain, cover, fill, alignment and clipping from one retained source.
+
+For browser Canvas, prepare embedded bytes with an application-owned decoder:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `URL`, `canvas`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+import { prepareImageRendering, render } from "ggaction";
+
+// Fragment: program already contains materialized image graphics; canvas is an HTML canvas.
+const images = await prepareImageRendering(program, {
+  async decode({bytes, mimeType}) {
+    const url = URL.createObjectURL(new Blob([bytes], {type: mimeType}));
+    try {
+      const image = new Image();
+      image.src = url;
+      await image.decode();
+      return {image, width: image.width, height: image.height, originClean: true};
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+});
+render(program, canvas.getContext("2d"), {images});
+```
+
+`prepareImageRendering(programOrCanvasScene, {decode, signal?})` is available from
+Full and Basic. The decoder returns an ephemeral Canvas image object, exact stored
+width/height and `originClean:true`. A preparation holds at most 64 MiB of unique
+encoded bytes and 64 MiPixels of unique decoded pixels; every hash and total is
+validated before the first decoder call. One source is limited to 16 MiB and
+64 MiPixels. PNG, JPEG, WebP and restricted static SVG are supported. Hash mismatches,
+unsafe SVG, decode errors, tainted results, aborts and stale preparations reject
+explicitly. Missing/stale preparations fail before Canvas resize or clear.
+
+A handle belongs to the exact `graphicSpec`; prepare again after a changed program.
+For a Canvas transition scene, pass that scene to `prepareImageRendering` and then
+pass the handle to `renderTransitionScene(scene, context, {images})`. Changing a
+mutable scene invalidates its handle. Cloned handles cannot be used.
+
+SVG emits self-contained data URIs. Node PNG and PDF decode the same retained bytes
+internally before output. They do not fetch the source URI, and other graphic nodes
+remain vector in SVG/PDF. Editable and graphic-only snapshots retain image payloads
+and validate them offline; decoder objects and preparation handles are never saved.
+Image selection and inspection use the clipped rectangle, not pixel alpha.
+
 ## Related
 
 [Canvas](../../../api/canvas/) · [Semantic and graphical state](../../../concepts/semantic-and-graphics/) ·

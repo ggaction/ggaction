@@ -1,0 +1,1 @@
+export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }

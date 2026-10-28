@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:51bbeccb84ad502f58fb301591e51012ec2b0070a2ecfd3bd830d1ec6cc5600d",
-  "sourceCommit": "4f1b96e143c713627a7ff297eec80dd1e547d0c6",
-  "sourceRef": "4f1b96e143c713627a7ff297eec80dd1e547d0c6",
-  "exampleSourceRef": "4f1b96e143c713627a7ff297eec80dd1e547d0c6",
+  "contractId": "sha256:306e3dad7ccff9c98e9fb8310d1c702e072ec2852e0b116b731dac5e63fef97a",
+  "sourceCommit": null,
+  "sourceRef": "main",
+  "exampleSourceRef": "codex/roadmap9-paints",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 304,
+  "actionCount": 317,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -44,6 +44,10 @@
       "status": "development"
     },
     "reviseData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "removeResource": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
@@ -109,6 +113,54 @@
     },
     "createFoldData": {
       "availableBy": "v0.0.13"
+    },
+    "createImageResource": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "replaceImageResource": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createImageMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editImageMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createHierarchyData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editHierarchyData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "layoutHierarchy": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editLayout": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createTreePlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editTreePlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createTreemapPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editTreemapPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
     },
     "createParameter": {
       "introducedAfter": "v0.0.13",

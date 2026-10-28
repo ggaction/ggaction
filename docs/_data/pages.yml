@@ -480,3 +480,13 @@
 - title: Complete Axes and Labels
   url: /api/axes/complete/
   parent: /api/axes/
+
+- title: Image Assets Tutorial
+  url: /tutorials/image-assets/
+  parent: /tutorials/
+- title: Hierarchy Resources and Plots
+  url: /api/hierarchy/
+  parent: /api/
+- title: Hierarchy Tutorial
+  url: /tutorials/hierarchy/
+  parent: /tutorials/

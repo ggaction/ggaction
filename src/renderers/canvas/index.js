@@ -1,6 +1,8 @@
 import { preflightCanvasOutlineCapabilities } from "./outline.js";
 import { prepareTextPaints } from "./textPaint.js";
 import { preflightCanvasFillCapabilities } from "./fill.js";
+import { readPreparedImages } from "../imageRendering.js";
+import { drawImageGraphic } from "./image.js";
 import { MAX_RASTER_DIMENSION, MAX_RASTER_PIXELS } from "./limits.js";
 import { validateGraphicClip } from "../../grammar/schemas/graphicClip.js";
 import { prepareIsolatedGlyphs, drawIsolatedGlyph, requiresIsolatedGlyph } from "./isolated.js";
@@ -26,7 +28,8 @@ const DRAWERS = Object.freeze({
   rect: drawRectGraphic,
   line: drawLineGraphic,
   text: drawTextGraphic,
-  path: drawPathGraphic
+  path: drawPathGraphic,
+  image: drawImageGraphic
 });
 
 // Keep preparation local to one render, including completed empty plans. Direct
@@ -164,6 +167,7 @@ export function resolveGraphicRenderTarget(graphicSpec) {
 export function drawResolvedGraphicSpec(target, context, options = {}) {
   requireDrawingContext(context);
   const { graphicSpec, canvasId, canvas, width, height } = target;
+  if (options.images?.size > 0) requireContextMethod(context, "drawImage", "Image graphic");
   const { isolated, textPaint } = options.painting ?? prepareCanvasPainting(target, context, options);
   options = { ...options, textPaint };
 
@@ -217,7 +221,7 @@ export function drawResolvedGraphicSpec(target, context, options = {}) {
   });
 }
 
-export function renderCanvasProgram(program, context, { pixelRatio = 1 } = {}, createCanvas, drawingOptions = {}) {
+export function renderCanvasProgram(program, context, { pixelRatio = 1, images } = {}, createCanvas, drawingOptions = {}) {
   const graphicSpec = requireProgramGraphicSpec(program);
 
   requireCanvasContext(context);
@@ -255,6 +259,8 @@ export function renderCanvasProgram(program, context, { pixelRatio = 1 } = {}, c
     ), { code: "resource-limit", operation: "render", optionPath: "physicalPixels", limit: MAX_RASTER_PIXELS, actual: physicalWidth * physicalHeight });
   }
   preflightCanvasGraphicSpec(target, pixelRatio);
+  const decodedImages = readPreparedImages(graphicSpec, images);
+  if (decodedImages.size > 0) requireContextMethod(context, "drawImage", "Image graphic");
   if (Object.values(graphicSpec.objects).some(object => object.clip !== undefined)) {
     requireContextMethod(context, "rect", "Graphic clip");
     requireContextMethod(context, "clip", "Graphic clip");
@@ -276,7 +282,7 @@ export function renderCanvasProgram(program, context, { pixelRatio = 1 } = {}, c
     context.scale(pixelRatio, pixelRatio);
     context.clearRect(0, 0, width, height);
     drawResolvedGraphicSpec(target, context, {
-      ...drawingOptions, painting, pixelRatio, createCanvas
+      ...drawingOptions, images: decodedImages, painting, pixelRatio, createCanvas
     });
   } finally {
     context.restore();

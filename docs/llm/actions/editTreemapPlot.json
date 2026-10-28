@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 3,
+  "name": "editTreemapPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Edit treemap cells, labels, placement, or the bound treemap layout.",
+  "signature": "editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;",
+  "intents": [
+    "edit treemap plot",
+    "edit",
+    "change",
+    "complete chart",
+    "chart facade",
+    "nested rectangle chart",
+    "proportional hierarchy"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing nested rectangle chart",
+      "canvas and treemap layout resource"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "layout"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editTreemapPlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "origin",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing nested rectangle chart",
+      "canvas and treemap layout resource"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "origin",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "cells",
+      "required": false,
+      "type": "(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] | undefined; }) | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | HierarchyLabelsOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editTreemapPlot({ target?, layout?, origin?, clip?, cells?, labels? })"
+  ],
+  "snippet": "program.editTreemapPlot({ target: \"treemap\", cells: { opacity: 0.8 } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#edittreemapplot"
+}

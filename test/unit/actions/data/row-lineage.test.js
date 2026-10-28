@@ -8,6 +8,7 @@ import { LINEAGE_TRANSFORMS } from "../../../../src/grammar/rowLineage.js";
 import { buildActionRelationshipPrograms } from "../../../../scripts/action-relationship-source.js";
 import { memberRowReferences } from "../../../../src/materialization/selection/rows.js";
 import { resolveMarkItems } from "../../../../src/materialization/selection/policies/index.js";
+import { resolveGraphicLineage } from "../../../../src/selectors/resources.js";
 
 const data = (program, id) => program.semanticSpec.datasets.find(dataset => dataset.id === id);
 const contributing = (program, id) => {
@@ -65,7 +66,12 @@ test("every registered transform emits unique row keys and exact resolvable line
           assert.equal(identity.key, item.key);
           assert.equal(identity.topology, item.topology);
           assert.equal(identity.role, item.graphicRoles[index]);
-          assert.deepEqual(identity.lineage.rowKeys, rowKeys);
+          if (identity.lineage.kind === "resource") {
+            const resource = resolveGraphicLineage(program, identity);
+            assert.equal(resource.kind, "layout");
+            assert.equal(resource.revision, identity.lineage.resource.revision);
+            assert.ok(item.rows.every(ref => data(program, ref.data).rowKeys.includes(ref.rowKey)));
+          } else assert.deepEqual(identity.lineage.rowKeys, rowKeys);
         }
       }
     }

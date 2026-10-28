@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "d24eb2bd1",
+  "parents": [
+    "f5982555e",
+    "f33ffb684"
+  ],
+  "status": "passed",
+  "results": {
+    "focused": 33,
+    "mixedScene": 3,
+    "sceneCoverageTests": 25,
+    "sceneCoverage": {
+      "lines": 98.96,
+      "branches": 98.59,
+      "functions": 100
+    },
+    "boundaries": 55,
+    "finalContracts": 26,
+    "docs": 167,
+    "builtPages": 151,
+    "selectiveArtifacts": 1247,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ],
+    "installedNode22": 205,
+    "qualificationGroupsNode22": 7
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 783,
+    "packedBytes": 1154562,
+    "unpackedBytes": 5309386,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "af1b7a31a78066a8cef3e3b5f09e762d0d789591",
+    "sha256": "63e0b0a8fca3b1047b00b69aa67ce0490d0d436e81269f7912ddf06f7d6ab4ea"
+  },
+  "ceilings": {
+    "entries": 783,
+    "packedBytes": 1158000,
+    "unpackedBytes": 5310000,
+    "fullGzipBytes": 564000,
+    "basicGzipBytes": 338000,
+    "svgGzipBytes": 25000
+  },
+  "coverage": {
+    "status": "reused-plus-focused",
+    "sources": [
+      "../PUBLIC_EVIDENCE.json",
+      "../../paints/structured-fill-evidence/manifest.json"
+    ],
+    "reason": "Only conflicting scene translation was relocated into the shared compiler; fresh coverage and mixed image/paint pixel equality cover that change. The two source checkpoints retain their original whole-suite evidence."
+  },
+  "evidence": [
+    {
+      "path": "image-paint-integration-focused.log.gz",
+      "sha256": "a1a7c95cf22f48e373d385652530d600d6769cf2e86add2d64afd84aa6a77aeb",
+      "bytes": 1702
+    },
+    {
+      "path": "image-paint-integration-mixed-scene.log.gz",
+      "sha256": "0a901c83ddac5c2d6e31caa274930d9a08c9f6759decdfa9a6c8b11a01db6ee6",
+      "bytes": 302
+    },
+    {
+      "path": "image-integrated-scene-coverage.log.gz",
+      "sha256": "f10900a3e8164f0aa44233ce2124dee89f5662038f3de5e9bf570f6ee375fe63",
+      "bytes": 1636
+    },
+    {
+      "path": "image-integrated-boundaries.log.gz",
+      "sha256": "78d11327eb0be8508fec1ef13c6ce97d75155b5161646fd9eb7177719e6a4412",
+      "bytes": 2606
+    },
+    {
+      "path": "image-integrated-final-contracts.log.gz",
+      "sha256": "f2704e9805f37e5c834ee0e6e6c6c8994a43b7593360ba3f315d3c4c23a6980a",
+      "bytes": 1522
+    },
+    {
+      "path": "image-integrated-docs.log.gz",
+      "sha256": "bc0ffee5734b6d56fb46d63c9a1782117b5ca389ac5f06d3b717df731adf835a",
+      "bytes": 7406
+    },
+    {
+      "path": "image-integrated-docs-final.log.gz",
+      "sha256": "70bc790d4a992c2d383c4b82ac18974e92546572067e715a4aabf246d46dc0e3",
+      "bytes": 6995
+    },
+    {
+      "path": "image-integrated-docs-build.log.gz",
+      "sha256": "9aa298cd2b08b8d4d6182ff8d9e68d4211bf279bd43dc4f5feace69cec3d4406",
+      "bytes": 258
+    },
+    {
+      "path": "image-integrated-docs-built.log.gz",
+      "sha256": "3671482ab9508bfc7c1c175781ad0837b0859f6e9effa63d9a2cfb35bb984015",
+      "bytes": 158
+    },
+    {
+      "path": "image-integrated-docs-browser.log.gz",
+      "sha256": "cd654be1f98e3f682806dd2e5a9c5bad4ed6c1af9a34607bf405621dc743420e",
+      "bytes": 146
+    },
+    {
+      "path": "image-integrated-consumer22.log.gz",
+      "sha256": "375d6989cc78e7541b530b6c8af59d1373869e8722ed9e8028bdc97de2b1bafc",
+      "bytes": 1194
+    },
+    {
+      "path": "image-integrated-final-package22.json.gz",
+      "sha256": "56d4f047eeda60a0a41aae34bb74f9bd8a4ea153c6d40b1b2b44a031d3710873",
+      "bytes": 279
+    },
+    {
+      "path": "image-integrated-repack22.json.gz",
+      "sha256": "56d4f047eeda60a0a41aae34bb74f9bd8a4ea153c6d40b1b2b44a031d3710873",
+      "bytes": 279
+    },
+    {
+      "path": "image-integrated-measure20.json.gz",
+      "sha256": "41b29f53cc6da7153f7df5fc0ea5dc5033982a7964d368b603c1b333c174bf44",
+      "bytes": 229
+    },
+    {
+      "path": "image-integrated-measure22.json.gz",
+      "sha256": "ce8da1a6399d2576632093602e2025368735e40bb7a6005033011036d490f590",
+      "bytes": 225
+    },
+    {
+      "path": "image-integrated-measure24.json.gz",
+      "sha256": "41b29f53cc6da7153f7df5fc0ea5dc5033982a7964d368b603c1b333c174bf44",
+      "bytes": 229
+    },
+    {
+      "path": "consumers-node-cases.json.gz",
+      "sha256": "b72ee276c1a313475a5be250d9b678c22a8180a0fedb18ad371e9fe710ed020c",
+      "bytes": 3841
+    },
+    {
+      "path": "consumers-qualification.json.gz",
+      "sha256": "07c6c9aeb339ac3dc0fcce1a7e9cffb3abbef070364a20b36d28fa3ca989c991",
+      "bytes": 256
+    },
+    {
+      "path": "consumers-tutorials.json.gz",
+      "sha256": "5e7cc27b95067d0f29020b697009ac64432706711eb614918f08919cceeb1e82",
+      "bytes": 5380
+    }
+  ]
+}

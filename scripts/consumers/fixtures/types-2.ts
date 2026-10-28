@@ -2117,3 +2117,23 @@ const outlineProgram = chart().createCanvas({width:240,height:180}).createData({
 outlineProgram.createTextMark({outline:{color:"white",width:4},lineJoin:"round",miterLimit:2});
 // @ts-expect-error outline replacement requires a color
 outlineProgram.editPointMark({outline:{width:8}});
+// Embedded image preparations retain their package-only opaque authority.
+async function imageConsumer() {
+  const {prepareImageResource, prepareImageRendering} = await import("ggaction");
+  const {prepareImageRendering: prepareBasicImages} = await import("ggaction/basic");
+  const {createTransitionScene, renderTransitionScene} = await import("ggaction/scene");
+  const base = chart().createCanvas();
+  const source = {uri: "fixture:logo", expectedHash: "a".repeat(64), mimeType: "image/png" as const};
+  const host = {requestToken: "now", load: () => ({bytes: new Uint8Array(), mimeType: source.mimeType}), decode: () => ({width: 20, height: 10, originClean: true as const})};
+  const prepared = await prepareImageResource(base, {kind: "create", id: "logo", ...source}, host);
+  const program = base.createImageResource({prepared, requestToken: "now"})
+    .createImageMark({image: "logo", fit: "contain", alt: "Logo"}).editImageMark({opacity: 0.5});
+  const decode = () => ({image: {}, width: 20, height: 10, originClean: true as const});
+  const images = await prepareImageRendering(program, {decode});
+  render(program, {} as CanvasRenderingContext2D, {images});
+  const scene = createTransitionScene(program, {format: "canvas"});
+  renderTransitionScene(scene, {} as CanvasRenderingContext2D, {images: await prepareBasicImages(scene, {decode})});
+  program.removeResource({kind: "image", id: "logo", cascade: true});
+  // @ts-expect-error resource authoring requires authentic preparation
+  base.createImageResource({prepared: {kind: "image-resource", request: {kind: "create", id: "logo"}}, requestToken: "now"});
+}

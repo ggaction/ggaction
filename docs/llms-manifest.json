@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:51bbeccb84ad502f58fb301591e51012ec2b0070a2ecfd3bd830d1ec6cc5600d",
-    "sourceCommit": "4f1b96e143c713627a7ff297eec80dd1e547d0c6",
+    "contractId": "sha256:306e3dad7ccff9c98e9fb8310d1c702e072ec2852e0b116b731dac5e63fef97a",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -14,7 +14,7 @@
     "manifest": "doc-provenance.json"
   },
   "bundle": "llms-full.txt",
-  "sectionCount": 150,
+  "sectionCount": 153,
   "sections": [
     {
       "order": 1,
@@ -46,8 +46,8 @@
         "runnable-repository-examples",
         "next"
       ],
-      "bytes": 6213,
-      "sha256": "e76389abd55368e92f158dde64245fc82d0a9a15439f50263c54fd0b8f95c665"
+      "bytes": 6175,
+      "sha256": "d9f1e0200b200104e067de644b3c45b36efe4c3ff636668018f755a2b9fc1857"
     },
     {
       "order": 3,
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "2904100617c42647d5d27fceb48377a63bc82c7c229046dcf51ba2c2d254b0c1"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -109,8 +109,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 5473,
-      "sha256": "ed517f0df8301b2af54de718b5e4c2278dc5b345474204eaf34be903d047747c"
+      "bytes": 5397,
+      "sha256": "dbe711746a28257ed69278bc35ef87576e63ec4d7137b154dde17c63038f8d8f"
     },
     {
       "order": 7,
@@ -125,8 +125,8 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 3562,
-      "sha256": "29e4eb06215852f49176ee63f7f5b0a5031564f0e216effbcfe1a76f76424234"
+      "bytes": 3543,
+      "sha256": "4f8e104718e50d41c850e2e9f032f964a61707efc0bd98a839f83b52cfa506a7"
     },
     {
       "order": 8,
@@ -140,8 +140,8 @@
         "closed-radar-paths",
         "related"
       ],
-      "bytes": 3449,
-      "sha256": "f40587c51ba10a90002f75ba3fd481e7b0f6b062699e1e540145e08d9a23349b"
+      "bytes": 3430,
+      "sha256": "55533410f3293acf260d30d149c257883a60f1df3a9ff5a597f3e23ad8d2732f"
     },
     {
       "order": 9,
@@ -161,8 +161,8 @@
         "editing-an-arc",
         "related"
       ],
-      "bytes": 9986,
-      "sha256": "a3c6370909abdaead24512e0c913e5f9464ff28ed0d0be8a2774cdc288304773"
+      "bytes": 9967,
+      "sha256": "1ee14eeab8e89ba84c2f8ed48758df814353095e12d33a6701ae0197c195a712"
     },
     {
       "order": 10,
@@ -178,8 +178,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4781,
-      "sha256": "35881e7e6caa3cc5810daf3c6e5b0bdb480966030fc76b96ca6afd4a80779325"
+      "bytes": 4705,
+      "sha256": "66b2d1c8a9bb970c38e039d66b07bd01d3b30eb67e95e7e80f10c9a6ff38dcee"
     },
     {
       "order": 11,
@@ -193,8 +193,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4380,
-      "sha256": "c404eded4ea758a09b82793574149f358c198e0b460435430d3d9d56e9504a15"
+      "bytes": 4304,
+      "sha256": "2af2eaae230e06e5e545195f3708297da4b4757b76204b81fda5de69bfdc3827"
     },
     {
       "order": 12,
@@ -209,8 +209,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4153,
-      "sha256": "92f664dad626115aff4eefbd149f3bead680331cfdaeec7269635c07e9397616"
+      "bytes": 4077,
+      "sha256": "d3da8b49ce3ee7c1a6007e60a7195f5ced160605edc371548878ca60e5929f9e"
     },
     {
       "order": 13,
@@ -224,8 +224,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4216,
-      "sha256": "fdc50ba338228ff7f2425fc1f99aff6877a4e28c1d1867333c742e05b46c543b"
+      "bytes": 4159,
+      "sha256": "d8b15208861c47d80683173dff31185ded2add42e6c7317c3828e779fef2ed02"
     },
     {
       "order": 14,
@@ -239,8 +239,8 @@
         "separate-series-identity-placement-and-color",
         "keep-gaps-explicit"
       ],
-      "bytes": 3527,
-      "sha256": "11cb145be2949be2508cbf88e82fe00ad9a7f372794f6db9272c9cba9f00360e"
+      "bytes": 3508,
+      "sha256": "e9ec7acf9f080df908a94bc7bb0c60f0625c66c3475fbd542fba4073f719fcfd"
     },
     {
       "order": 15,
@@ -256,8 +256,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 6267,
-      "sha256": "8c37dbd211d77cd722ff870099b58402728e88611ea875a004eb5857fb5980a6"
+      "bytes": 6172,
+      "sha256": "3aaa81067e899ee35cb6f735a7b2423a4bee4fbf205192480b1345f26476de8e"
     },
     {
       "order": 16,
@@ -272,8 +272,8 @@
         "revise-without-mutation",
         "key-action-trace"
       ],
-      "bytes": 4650,
-      "sha256": "a1bef652981a0ef496fdf2d1418516de6c9163353566b9e99ab81db95627b3b5"
+      "bytes": 4593,
+      "sha256": "6e8b0540606e3a0e668b449ba7125eb780f32a2cfdef2cf5dfa28a639ffa0bce"
     },
     {
       "order": 17,
@@ -288,8 +288,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3587,
-      "sha256": "aa562c0a7c1b5ecdd992ea615e7e23c22b0b99616537d6a42abc5f52bb84b5ee"
+      "bytes": 3530,
+      "sha256": "8faa44cc69ff4b9cdeb8785c3c6914cf74d6c4451a28fbfba42a9bde20b832c9"
     },
     {
       "order": 18,
@@ -304,8 +304,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3811,
-      "sha256": "506292c72fcfbf1a1d23cab37fce71c9dc44c5b259e8018fbdfc827fe5b660f6"
+      "bytes": 3754,
+      "sha256": "0ec77d6b01ba43dc1efe6eec1db57e7fb775306d0c44daf7a02a6876a52d11c7"
     },
     {
       "order": 19,
@@ -321,8 +321,8 @@
         "choose-filtering-reusable-selection-or-highlighting",
         "run-and-continue"
       ],
-      "bytes": 6372,
-      "sha256": "310702ba196c6223039b78e001c3db4056aff17dd5127bcc4594195b6a962f5d"
+      "bytes": 6315,
+      "sha256": "e68fb562b6769721f186183da4516fb894d3216ed8013f53821ad371769351d7"
     },
     {
       "order": 20,
@@ -348,8 +348,8 @@
         "missing-values-and-grouping",
         "revise-the-statistical-source"
       ],
-      "bytes": 3958,
-      "sha256": "c1208d4037e94e0a6adfb5eab5df49e1cd5a82aec5d213b5cf3d01d27347f54b"
+      "bytes": 3939,
+      "sha256": "2ef60d5eb742c4f2f7fbd31321f518acebef90c261b202d66260a8725f5beacd"
     },
     {
       "order": 22,
@@ -871,8 +871,8 @@
         "createwindowdata-id-source-partitionby-sortby-operations-temporalunit",
         "related"
       ],
-      "bytes": 5887,
-      "sha256": "bee08a8ccecbf027e35c4e32dbea7d54be9b384174881c525b1fc7571276e8f2"
+      "bytes": 5868,
+      "sha256": "f41443690135a9fb28a98f4d086bf9a65e525bc456b33bd0a25e53435cadeb7d"
     },
     {
       "order": 55,
@@ -1218,10 +1218,11 @@
         "canvas-transition-scenes",
         "measured-text-layout",
         "identity-across-revisions",
+        "embedded-images",
         "related"
       ],
-      "bytes": 27414,
-      "sha256": "8d96c8851b6a37c69ffbba2cae83a47859c540a84bf8d6825962a602d4468bdc"
+      "bytes": 30391,
+      "sha256": "83ecd45eb35bfec65e5d8e3d07df3ab679561da3725af67b0380d7928324d3b4"
     },
     {
       "order": 73,
@@ -1245,8 +1246,8 @@
         "path-layer-color",
         "shared-color-legends"
       ],
-      "bytes": 8499,
-      "sha256": "4d6d79bf065a0aa70da60458cd7a3e771235a2c5694d58875aa2e2dde12a864d"
+      "bytes": 8461,
+      "sha256": "4a6b3cb6539bbe7633af14d501bfcdb96674f25668cfebbf2985f4ea5c7d7930"
     },
     {
       "order": 74,
@@ -1297,8 +1298,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 7299,
-      "sha256": "641e0fec82fb67136d062c9181a1f5b09e0e4b8d6d610f43b6676dc68bfa5123"
+      "bytes": 7280,
+      "sha256": "932298d2e6b87d40d68e004f87bf3a6c2ba320ad41bc387b9c41f3ce1e80f4d4"
     },
     {
       "order": 77,
@@ -1379,8 +1380,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 5794,
-      "sha256": "dd00fe419360228a94b9489dec494a526334d22d900b0fb324a5e8aa6a90ee90"
+      "bytes": 5775,
+      "sha256": "5f3988fafc5af8591bbb2a8e9742a7d04cbb92eb70715ad0866c06e61564c5c5"
     },
     {
       "order": 82,
@@ -1870,8 +1871,8 @@
         "inspect-concrete-results",
         "related"
       ],
-      "bytes": 6554,
-      "sha256": "a12b5c6ff5782415cc0723e86135d560872a9480ee7dbc1f58de2dd3f296fcf4"
+      "bytes": 6800,
+      "sha256": "a637942bcace965389d408ca361f5bafc927837bc5ef4eaf674c6d296803254a"
     },
     {
       "order": 111,
@@ -1984,8 +1985,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 32659,
-      "sha256": "6db7cbda1745ade7d150741fdc46415bc5486c3dfb7da7015a5b8c3193a043fb"
+      "bytes": 33983,
+      "sha256": "28ac14937df43d5345974998c8fe546966a350f80988ebeaf81be09eca9b5628"
     },
     {
       "order": 118,
@@ -2092,12 +2093,23 @@
         "createlayerplot",
         "createadjacentplot",
         "editcompositionscales",
+        "createimageresource",
+        "replaceimageresource",
+        "removeresource",
+        "createhierarchydata",
+        "edithierarchydata",
+        "layouthierarchy",
+        "editlayout",
+        "createtreeplot",
+        "edittreeplot",
+        "createtreemapplot",
+        "edittreemapplot",
         "focused-core-data-editing",
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 201692,
-      "sha256": "16474de75c7704f95fdc4767a26942aab179bb36045be8ea620ccf24c8d61ca8"
+      "bytes": 218268,
+      "sha256": "0ca6cca0fcc73d80d7183498ae23f037beaf0c1cf2195c3e38e3c60e15f067e7"
     },
     {
       "order": 119,
@@ -2142,10 +2154,12 @@
         "editrectmark",
         "createoverlay",
         "editoverlay",
+        "createimagemark",
+        "editimagemark",
         "related"
       ],
-      "bytes": 89484,
-      "sha256": "2602ee12d4b054296d479c8f88f92c9cd497f5dcaaed96f5ecd65ac6f78fc20d"
+      "bytes": 93049,
+      "sha256": "da938bd5448f085f0c57f21e44bc4ad9f69fb7257dc0d2775768e681291d075b"
     },
     {
       "order": 120,
@@ -2423,8 +2437,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 34414,
-      "sha256": "d0253e8298401337d0ed0890256d677b3e84143d51ab660425b6d65fdaa695a0"
+      "bytes": 37173,
+      "sha256": "c9417218ec131d8206e7cf4a270b63d143ef86e1caeb89e6bff2bdd071eb04e6"
     },
     {
       "order": 126,
@@ -2443,6 +2457,7 @@
         "type-annotationanchor",
         "type-annotationbaseoptions",
         "type-applydataupdateoptions",
+        "type-applyimageresourceoptions",
         "type-applytextmetricsoptions",
         "type-applythemeoptions",
         "type-arcinnerradius",
@@ -2549,6 +2564,7 @@
         "type-computedexpression",
         "type-computedexpressionv1",
         "type-computedexpressionv2",
+        "type-concretepathcommand",
         "type-conditionalencodingbranch",
         "type-conditionalencodingoptions",
         "type-confidenceintervalmethod",
@@ -2576,8 +2592,10 @@
         "type-creategridoptions",
         "type-createguidesoptions",
         "type-createheatmapoptions",
+        "type-createhierarchydataoptions",
         "type-createhistogramoptions",
         "type-createhorizonplotoptions",
+        "type-createimagemarkoptions",
         "type-createintervalplotoptions",
         "type-createlayerplotoptions",
         "type-createlineplotoptions",
@@ -2715,9 +2733,12 @@
         "type-editgraphicsoptions",
         "type-editgriddirectionsoptions",
         "type-editgridoptions",
+        "type-edithierarchydataoptions",
         "type-edithorizonoptions",
+        "type-editimagemarkoptions",
         "type-editimputeddataoptions",
         "type-editintervaldataoptions",
+        "type-editlayoutoptions",
         "type-editlegendblockoptions",
         "type-editlegendborderoptions",
         "type-editlegendlabelsoptions",
@@ -2761,6 +2782,8 @@
         "type-editthetascaleoptions",
         "type-edittimeunitdataoptions",
         "type-edittitleoptions",
+        "type-edittreeplotoptions",
+        "type-edittreemapplotoptions",
         "type-editviolinplotoptions",
         "type-editwindowdataoptions",
         "type-editxoffsetscaleoptions",
@@ -2833,6 +2856,9 @@
         "type-gradientplotguideoptions",
         "type-gradientplotoptions",
         "type-gradientplotpositionchannel",
+        "type-graphicclip",
+        "type-graphicclippath",
+        "type-graphiccliprect",
         "type-graphictype",
         "type-griddirectionoptions",
         "type-groupencodingoptions",
@@ -2840,6 +2866,16 @@
         "type-heatmapbaseoptions",
         "type-heatmapbinoptions",
         "type-heatmapcategorypositionchannel",
+        "type-hierarchybodypaint",
+        "type-hierarchylabelpaint",
+        "type-hierarchylabelsoptions",
+        "type-hierarchynodepaint",
+        "type-hierarchynodetarget",
+        "type-hierarchyorder",
+        "type-hierarchysource",
+        "type-hierarchytreeoptions",
+        "type-hierarchytreemapoptions",
+        "type-hierarchyvaluemode",
         "type-highlightmarksoptions",
         "type-histogramcategoricalcolorchannel",
         "type-histogramencodingoptions",
@@ -2853,6 +2889,7 @@
         "type-horizonxencoding",
         "type-horizonyencoding",
         "type-horizonyscaleoptions",
+        "type-imagemarkoptions",
         "type-imputeddatabaseoptions",
         "type-imputeddataoptions",
         "type-inferredruledatumpositionencodingoptions",
@@ -2870,6 +2907,7 @@
         "type-labellayoutoptions",
         "type-labelleaderoptions",
         "type-layerplotspecification",
+        "type-layouthierarchyoptions",
         "type-legendblocksymbolpatch",
         "type-legendblocktextpatch",
         "type-legendborderoptions",
@@ -2951,6 +2989,7 @@
         "type-parametervalue",
         "type-parameterizedaggregateoperation",
         "type-parsetimeformat",
+        "type-pathfillrule",
         "type-pathlegendoptions",
         "type-pathorderencodingoptions",
         "type-patternpaint",
@@ -2989,6 +3028,7 @@
         "type-positionscalebranches",
         "type-pregriddedheatmapoptions",
         "type-prepareddataupdate",
+        "type-preparedimageresource",
         "type-quantilecolorscaleoptions",
         "type-quantitativebarcolorchannel",
         "type-quantitativepositionscaleoptions",
@@ -3049,6 +3089,7 @@
         "type-removepathorderoptions",
         "type-removepointpackingoptions",
         "type-removeresourceoptions",
+        "type-removestoredresourceoptions",
         "type-reordercompositionchildrenoptions",
         "type-repeatchartsoptions",
         "type-replacecompositionchildoptions",
@@ -3094,6 +3135,7 @@
         "type-stackmode",
         "type-statisticalweight",
         "type-storedcell",
+        "type-storedresourcekind",
         "type-stripbandjitteroptions",
         "type-stripcategorychannel",
         "type-strippixeljitteroptions",
@@ -3131,6 +3173,8 @@
         "type-timeunitdataoptions",
         "type-titleoptions",
         "type-titletextstyleoptions",
+        "type-treeplotoptions",
+        "type-treemapplotoptions",
         "type-utcformatstring",
         "type-valueformat",
         "type-valueformatdigit",
@@ -3160,8 +3204,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 407442,
-      "sha256": "0a009bab77f9267135087903bcefa2e132adcb69797678652c12ae70a3538ca3"
+      "bytes": 419521,
+      "sha256": "58165de648fed2ae4436935427e9d8ee75d1581dd77d7776c16a8bf40bcfd38a"
     },
     {
       "order": 127,
@@ -3195,8 +3239,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "1b65c3f0943d41a4c8e5eccef22684f5c8e922bdb13223e27fbb7f9d9f403419"
+      "bytes": 20870,
+      "sha256": "48dfc894187e7083eadc05d7269d1644315c9ea6c0fc24aebafaf56ab63cd297"
     },
     {
       "order": 129,
@@ -3279,8 +3323,8 @@
         "name-the-complete-facet-field",
         "independently-packed-panels"
       ],
-      "bytes": 30024,
-      "sha256": "1055db2339d8009792e4c5e42f33dfd50d00edf7e34586c20d76fb64bee674f0"
+      "bytes": 29948,
+      "sha256": "a5075e728dc0c80741ab4e9d63ecf441fe68cb84a6fd6b122db81724c537aa20"
     },
     {
       "order": 134,
@@ -3326,8 +3370,8 @@
         "layoutlabelsoptions",
         "removelabellayoutoptions"
       ],
-      "bytes": 2614,
-      "sha256": "29d13578554e1dc8da86dad9ab3ef4b3aa79e0a75103b21482fc1e77eb25bc82"
+      "bytes": 2595,
+      "sha256": "e0663de91c547b3494f14e9a35b811447f75854298146907a2a780bf34005c85"
     },
     {
       "order": 137,
@@ -3517,12 +3561,13 @@
         "distributions",
         "parts-radial-values-and-dense-samples",
         "multiple-views",
+        "hierarchies",
         "compose-or-refine",
         "three-independent-choices",
         "related"
       ],
-      "bytes": 10790,
-      "sha256": "5a21b3a8de34955890fa1a4e88d96a7d04ceb57778feabb371242dd6b24732c6"
+      "bytes": 11418,
+      "sha256": "f8b1d268ae454ecb06c436ac4edb29f9dd089819b3cf7ec489bdd30577664800"
     },
     {
       "order": 149,
@@ -3534,8 +3579,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "086c553f9e700bf3331a9699dc883b53a77b89ff1649aa2ba68b7f6f186452cf"
+      "bytes": 2981,
+      "sha256": "35fa49c7f0679fe096147cfb314d875a2ae088e84bae68ef6508c0d52da17dfd"
     },
     {
       "order": 150,
@@ -3553,6 +3598,57 @@
       ],
       "bytes": 26010,
       "sha256": "00ec11a979904779530700eb206ff7b65695104ef33590e180a7daade2ea8679"
+    },
+    {
+      "order": 151,
+      "title": "Image Assets Tutorial",
+      "route": "/tutorials/image-assets/",
+      "source": "tutorials/image-assets.md",
+      "headings": [
+        "place-a-retained-image",
+        "prepare-and-place",
+        "render-and-preserve",
+        "complete-program"
+      ],
+      "bytes": 5972,
+      "sha256": "8200ca8c92a53ee50d27b4ea3e61a2cb8f5b25411d58421ba00a5b75b429eea3"
+    },
+    {
+      "order": 152,
+      "title": "Hierarchy Resources and Plots",
+      "route": "/api/hierarchy/",
+      "source": "api/hierarchy.md",
+      "headings": [
+        "hierarchy-resources-and-plots",
+        "createhierarchydata",
+        "edithierarchydata",
+        "layouthierarchy",
+        "editlayout",
+        "removeresource",
+        "createtreeplot",
+        "edittreeplot",
+        "createtreemapplot",
+        "edittreemapplot",
+        "labels-overrides-and-retained-identity",
+        "revising-and-restoring"
+      ],
+      "bytes": 7360,
+      "sha256": "b453e6934b91e7e4eccf23fa2d219c2964ec2d43545db80d992bdd5a0d2103ab"
+    },
+    {
+      "order": 153,
+      "title": "Hierarchy Tutorial",
+      "route": "/tutorials/hierarchy/",
+      "source": "tutorials/hierarchy.md",
+      "headings": [
+        "hierarchy-tutorial",
+        "run-the-maintained-examples",
+        "change-geometry-while-retaining-meaning",
+        "compare-rectangle-layouts",
+        "edit-data-and-remove-views"
+      ],
+      "bytes": 5448,
+      "sha256": "8bc4d4a28b26e36791557ade4359f57461209d81772ab444cf0c0eb5eba2cf28"
     }
   ]
 }

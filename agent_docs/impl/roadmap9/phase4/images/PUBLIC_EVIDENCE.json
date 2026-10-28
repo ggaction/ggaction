@@ -1,0 +1,387 @@
+{
+  "formatVersion": 1,
+  "date": "2026-10-28",
+  "scope": "Public image I1-I4; font and later export-bundle acceptance remain separate.",
+  "approval": {
+    "record": "../../PUBLIC_APPROVALS_20261028.json",
+    "designRevision": "990315b7",
+    "visualRevision": "3853bdb1",
+    "wholePlanApproval": "b758b912"
+  },
+  "source": {
+    "runtimeCommit": "ee0a90db",
+    "documentationProvenanceCommit": "ac7b2f7b1339d19e817c2b17f9e2f58982396d0b",
+    "verifiedWorkingTree": [
+      "M agent_docs/SECOND_ARCHITECTURE.md",
+      " M scripts/browser-bundle-size.js",
+      " M test/charts/image-assets/png.render.js",
+      " M test/contracts/generated-scenario-feature-coverage.test.js"
+    ],
+    "trackedDiffSha256": "12ad8e8247131b39ad46698770338c94dbc74e4644712f268785ff8228cd27cc",
+    "inputFiles": 7138,
+    "inputSnapshot": "public-evidence/final-inputs-before.json.gz",
+    "inputDelta": [],
+    "afterVerificationChanges": "Completion records and package/browser measurement comments only."
+  },
+  "coverage": {
+    "command": "node scripts/run-tests.js coverage",
+    "status": 0,
+    "normalDiscoveryFiles": 1156,
+    "tests": 7148,
+    "passed": 7148,
+    "failed": 0,
+    "metrics": {
+      "lines": 96.25,
+      "branches": 94.02,
+      "functions": 98.85
+    },
+    "criticalFloorsPassed": 285,
+    "durationMs": 1253247.264083,
+    "normalCoverageRelationship": "coverage and all use the same NORMAL_SUITES discovery; redundant normal was terminated, not counted as passed."
+  },
+  "focused": {
+    "imageAndConditional": {
+      "passed": 64
+    },
+    "boundariesTypesDiscovery": {
+      "passed": 47
+    },
+    "sceneCoverage": {
+      "passed": 23,
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "realistic": {
+    "command": "node scripts/run-tests.js realistic contracts/generated-lifecycle-scenarios.test.js contracts/generated-scenario-feature-coverage.test.js",
+    "passed": 10,
+    "failed": 0,
+    "inventory": {
+      "counts": {
+        "publicActions": 302,
+        "topLevelOptionPaths": 2809,
+        "nestedOptionPaths": 23353,
+        "optionPaths": 26162,
+        "requiredOptionPaths": 17493,
+        "excludedOptionPaths": 8669,
+        "topLevelCategoricalPaths": 945,
+        "topLevelLiteralValues": 3785,
+        "literalFamilies": 221,
+        "pathLiteralRequirements": 13200,
+        "familyLiteralRequirements": 525,
+        "pathDiversityRequirements": 488
+      },
+      "scaleTypePaths": 205,
+      "scaleTypeValues": 958,
+      "ledgerRequirements": 31526
+    }
+  },
+  "render": {
+    "command": "node scripts/run-tests.js render charts/image-assets/png.render.js",
+    "variants": 6,
+    "interiorsPerVariant": 11,
+    "backends": 4,
+    "sampleChecks": 264,
+    "rgbTolerance": 1,
+    "alphaExact": true,
+    "sameRunPublicPrimitiveWholePixels": [
+      "PNG",
+      "PDF decoded at 72dpi"
+    ],
+    "crossBackendWholeEdgeEqualityClaimed": false,
+    "source": "test/charts/image-assets/png.render.js",
+    "publicSource": "examples/image-assets/program.js",
+    "atlas": ".artifacts/test/png/charts/image-assets/contact-sheet.png"
+  },
+  "package": {
+    "sourceFreeArtifact": ".artifacts/release/ggaction-0.0.26.tgz",
+    "sha256": "67f853cab90584f8167ad402673d768d5f34b1ea996c2a9f50b92dd3624018fc",
+    "identicalIndependentNode22Repack": true,
+    "entries": 769,
+    "packedNode22": 1128489,
+    "packedNode20And24": 1131244,
+    "unpacked": 5217216,
+    "caps": {
+      "entries": 769,
+      "packed": 1132000,
+      "unpacked": 5220000
+    },
+    "consumerCommand": "node scripts/package-consumer.js <absolute-path-to-the-same-artifact>",
+    "consumers": [
+      {
+        "node": "v20.20.2",
+        "cases": 202,
+        "tutorials": 71,
+        "qualificationGroups": 7,
+        "result": "passed",
+        "note": "Full bundle rerun passed after measured cap update; initial other six groups passed."
+      },
+      {
+        "node": "v22.23.1",
+        "cases": 202,
+        "tutorials": 71,
+        "qualificationGroups": 7,
+        "result": "passed",
+        "note": "All seven groups passed in one run."
+      },
+      {
+        "node": "v24.22.1",
+        "cases": 202,
+        "tutorials": 71,
+        "qualificationGroups": 7,
+        "result": "passed",
+        "note": "All seven groups passed in one run."
+      }
+    ],
+    "browserGzipMaximum": {
+      "full": 556214,
+      "basic": 329870
+    },
+    "browserCaps": {
+      "full": 557000,
+      "basic": 330000
+    }
+  },
+  "docs": {
+    "commands": [
+      "npm run docs:build",
+      "npm run test:docs:built",
+      "npm run test:docs:browser"
+    ],
+    "pathPrefix": "/opt/homebrew/opt/ruby@3.2/bin:/opt/homebrew/lib/ruby/gems/3.2.0/bin:/opt/homebrew/Cellar/node@22/22.23.1/bin",
+    "pages": 151,
+    "selectiveArtifacts": 1245,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ],
+    "desktopAndAccessibilityPassed": true
+  },
+  "gallery": {
+    "approvedVariants": 60,
+    "activeReviewVariants": 0,
+    "passed": true
+  },
+  "preservedEarlierResults": [
+    "Initial coverage 7043/7051: eight documentation/provenance failures; not final evidence.",
+    "Initial realistic stale expected counts: corrected to measured public inventory; final 10/10.",
+    "Initial tutorial native import entered browser bundle: corrected decoder host imports; final 71/71.",
+    "Redundant normal and pre-correction architecture coverage terminated by SIGTERM; neither counted as passed.",
+    "Node20 Full bundle 556214 exceeded temporary 556000 cap; same-artifact Full group passed after cap 557000.",
+    "Original PDF edge-probe failures remain in REVIEW-EVIDENCE; no cross-backend whole-edge equality claim."
+  ],
+  "artifacts": [
+    {
+      "path": "public-evidence/final-coverage-report.log.gz",
+      "sourcePath": ".artifacts/image-public/final-coverage-report.log",
+      "sourceSha256": "29f51f7484cdc70fbc3ce23236aa5b22e1fcbe5f579bfa521bd0ae6f0a93a501",
+      "sha256": "e0d9f654860dbceb9dd703e188640b6fb2d2e1d9c48143112ba6279bce2f6449",
+      "bytes": 273119
+    },
+    {
+      "path": "public-evidence/final-coverage-receipt.json.gz",
+      "sourcePath": ".artifacts/image-public/final-coverage-receipt.json",
+      "sourceSha256": "de37ea1c65b25b12ffbada389cfd76e22a0f047c1cd1850dcb34b3d2ee521211",
+      "sha256": "7ca9d391dda4a0d3b044456e17aa7e58c4284ea78b907d8d4cca577a98d4462e",
+      "bytes": 8493
+    },
+    {
+      "path": "public-evidence/final-coverage-metrics.json.gz",
+      "sourcePath": ".artifacts/image-public/final-coverage-metrics.json",
+      "sourceSha256": "90ffed52cadde87cc344ed1b731ab99ae4d6d4bac639095b63d05f69c6dee391",
+      "sha256": "4f1dd954309ec271ccc314ac76c955b33fed796cbdfda9f2b542371a9faa6c3e",
+      "bytes": 7896
+    },
+    {
+      "path": "public-evidence/final-inputs-before.json.gz",
+      "sourcePath": ".artifacts/image-public/final-inputs-before.json",
+      "sourceSha256": "05653f76348925c5dbafbee258b783e1ebb4ec6c297c983340f30d2d48c83d58",
+      "sha256": "fae511b0cd81275c7427d03d6883ce62736072e11d1f2cf9e0ba1431b4ca4a9a",
+      "bytes": 331546
+    },
+    {
+      "path": "public-evidence/final-input-delta.json.gz",
+      "sourcePath": ".artifacts/image-public/final-input-delta.json",
+      "sourceSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "sha256": "abc129be8d26e8d4afe9ce45f9d5a73c8ed9aa62810ca24ee789fe4581dc4a80",
+      "bytes": 23
+    },
+    {
+      "path": "public-evidence/frozen-realistic.log.gz",
+      "sourcePath": ".artifacts/image-public/frozen-realistic.log",
+      "sourceSha256": "9f38e6fd16c58cf806360e1a61827548a3b3d66310b06c3cb71d187fde3329a2",
+      "sha256": "d31eb5d687b54eb0cfc5752ada19433670049849a1fefc662c7ca1215c2e9494",
+      "bytes": 760
+    },
+    {
+      "path": "public-evidence/final-realistic-receipt.json.gz",
+      "sourcePath": ".artifacts/image-public/final-realistic-receipt.json",
+      "sourceSha256": "b79bcdd748500e432538c1165e77c685fe3719a88ee4d879ac63bea9a21b0a1f",
+      "sha256": "d48e223946f0f5ab336009330abda917ec9b3c78aac5b2fdb9d6bc13562cb7f0",
+      "bytes": 716
+    },
+    {
+      "path": "public-evidence/frozen-render.log.gz",
+      "sourcePath": ".artifacts/image-public/frozen-render.log",
+      "sourceSha256": "f0209aa69ace915c0b492f5c633cbd153d15bc0df1dd037cffd93866d0f5d5ac",
+      "sha256": "59a32fa3a2faf89ddcc18553c5e7bc21b7abf10043dc1a9c31aaf8d47f0ddc14",
+      "bytes": 219
+    },
+    {
+      "path": "public-evidence/final-render-receipt.json.gz",
+      "sourcePath": ".artifacts/image-public/final-render-receipt.json",
+      "sourceSha256": "f94a9a94a11adc250383a28821c4c61e9d82439f77c371c5e8ad8f75364756c8",
+      "sha256": "0623e15f6a53b4ed2c5ea26c0a10eb8c77dafe67ab5add47472c2ae5ea7be087",
+      "bytes": 583
+    },
+    {
+      "path": "public-evidence/final-gallery.log.gz",
+      "sourcePath": ".artifacts/image-public/final-gallery.log",
+      "sourceSha256": "3aa09beecbada1b8a7d6838b22ecea9639e99c9ad7e446a02ac4568914a67f7f",
+      "sha256": "7b6099a80a50191f68ce7d12e889f813af69f60e89415c8db514e05ae68b238b",
+      "bytes": 192
+    },
+    {
+      "path": "public-evidence/integration-focused.log.gz",
+      "sourcePath": ".artifacts/image-public/integration-focused.log",
+      "sourceSha256": "c64a48e071f383bce1302b01cc4a10f06cc84b68e5e8bc36621b6ee9d58baa77",
+      "sha256": "664e1100476baaa07e9d158325593828015c86a3eaa6ffd615b31c9e73950c92",
+      "bytes": 3261
+    },
+    {
+      "path": "public-evidence/integration-boundaries.log.gz",
+      "sourcePath": ".artifacts/image-public/integration-boundaries.log",
+      "sourceSha256": "81b227ca2931181e5d7ab5d5dbaf816e4850a892e3cbde560c480765767f83bc",
+      "sha256": "cf11dc967cc3df75f844ce4718b954d09b26e0f9fcc4309d814335facd268990",
+      "bytes": 2342
+    },
+    {
+      "path": "public-evidence/integration-scene-coverage.log.gz",
+      "sourcePath": ".artifacts/image-public/integration-scene-coverage.log",
+      "sourceSha256": "7745e795e8d6425230f47c97904e0e9853f34a8d89f81ec11de80ee5f8b57682",
+      "sha256": "1ad0659e37d7d60f444ca1fc1c193d8e6f86dbe9efac38b568c3c560768b9380",
+      "bytes": 1531
+    },
+    {
+      "path": "public-evidence/frozen-docs-built.log.gz",
+      "sourcePath": ".artifacts/image-public/frozen-docs-built.log",
+      "sourceSha256": "7372bfbf0df46ee1e75ffb64fee2abf209b772a0b5e48dc28e41ead9c3c52877",
+      "sha256": "dfa458fd7c38d073754f55bfdf3149ed5b2cf0744d11ca8c804ba6d05b93adf9",
+      "bytes": 158
+    },
+    {
+      "path": "public-evidence/frozen-docs-browser.log.gz",
+      "sourcePath": ".artifacts/image-public/frozen-docs-browser.log",
+      "sourceSha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3",
+      "sha256": "a0ac0a6d4a3941eb57dcdcca7f46a3c1e0f3e0939fe3b04bf5e1226db2cb5257",
+      "bytes": 146
+    },
+    {
+      "path": "public-evidence/frozen-docs-build-final.log.gz",
+      "sourcePath": ".artifacts/image-public/frozen-docs-build-final.log",
+      "sourceSha256": "15ccef3e8e77464da4198a7b67a57423430a9fe45dcb96c8d53a784120f551e4",
+      "sha256": "95e66537478312a36742612ad0d06ef3a86beb6eab55a9bfee783b5cb94f7568",
+      "bytes": 259
+    },
+    {
+      "path": "public-evidence/installed20-first-qualification.json.gz",
+      "sourcePath": ".artifacts/image-public/installed20-first-qualification.json",
+      "sourceSha256": "324e43480180499ebf49f4adb45ed54802569059843e120d85c9d7872a9aa47c",
+      "sha256": "e3c842e07b956c682eb23a66d5f3dca141639793aa16d595d540778799c2edcd",
+      "bytes": 446
+    },
+    {
+      "path": "public-evidence/installed20-bundle-final.json.gz",
+      "sourcePath": ".artifacts/image-public/installed20-bundle-final.json",
+      "sourceSha256": "23ba54db3cde370ba41bc1cf357b2fde7b24ddd2e82ab0bedeafcd6d8b6c89f2",
+      "sha256": "2bec38627feae14ada02bab0559516861f4b69b3431edad86146033b5ba5728f",
+      "bytes": 144
+    },
+    {
+      "path": "public-evidence/installed22-qualification.json.gz",
+      "sourcePath": ".artifacts/image-public/installed22-qualification.json",
+      "sourceSha256": "c0e646fb30b56bec9007dca8097777492475d990ae858eacc965af0b670c1b73",
+      "sha256": "715d2b73d6b467ef8a6c1d31c58cf99e14f083623a1dc7e3ac5519d1b9e70e7c",
+      "bytes": 253
+    },
+    {
+      "path": "public-evidence/installed24-qualification.json.gz",
+      "sourcePath": ".artifacts/image-public/installed24-qualification.json",
+      "sourceSha256": "1c04b705abaa020ccd9c7511232a6f17e5b7e0b93b10214b0dc3aced2acb9a88",
+      "sha256": "aa6d0166a3a182429c59122a043161756e6c61c112f5f597def8c0c2571e3f3b",
+      "bytes": 255
+    },
+    {
+      "path": "public-evidence/installed20-node-cases.json.gz",
+      "sourcePath": ".artifacts/image-public/installed20-node-cases.json",
+      "sourceSha256": "3f80ddfb31ef5cd8e43bdcd756385163b1d980d86422b2c8997c8e1b658d7dce",
+      "sha256": "803d6caf72178f6ef2468df53ab65bc932d032744912e74bb46fec9b93854331",
+      "bytes": 3676
+    },
+    {
+      "path": "public-evidence/installed22-node-cases.json.gz",
+      "sourcePath": ".artifacts/image-public/installed22-node-cases.json",
+      "sourceSha256": "bf6c1d97553c17dc6c538d069c677e2251f48ffce39c7c4b2423ff4225763677",
+      "sha256": "7a5ab8e371c18bf045ad8c208e543575d710af35beb3c7356388a8531a4fe9db",
+      "bytes": 3573
+    },
+    {
+      "path": "public-evidence/installed24-node-cases.json.gz",
+      "sourcePath": ".artifacts/image-public/installed24-node-cases.json",
+      "sourceSha256": "af09c67bea4e2ff207c03d284336326996382d99150d345508a2baf9946e5c6a",
+      "sha256": "dc08d19d0c15473b66fe2132e56b731f8ee93a114ad0d0d3661841bfb980e3ef",
+      "bytes": 3730
+    },
+    {
+      "path": "public-evidence/installed20-tutorials.json.gz",
+      "sourcePath": ".artifacts/image-public/installed20-tutorials.json",
+      "sourceSha256": "f36d1b8e6942606b56d8cc7e5d370476f3d784b8444a2177e5408a2b40b87789",
+      "sha256": "e7539c36c461d436c82545bd1731a7fcd0c458c995260422c5370f31af5a8778",
+      "bytes": 5360
+    },
+    {
+      "path": "public-evidence/installed22-tutorials.json.gz",
+      "sourcePath": ".artifacts/image-public/installed22-tutorials.json",
+      "sourceSha256": "f57de837afe03ca6dde35f33c59097aadb4c96c4bca55610b418f8ef4681b115",
+      "sha256": "0860fcaa679b2af6104381319fb963297c0c5004a6cd9db27559d7ecee808e8f",
+      "bytes": 5291
+    },
+    {
+      "path": "public-evidence/installed24-tutorials.json.gz",
+      "sourcePath": ".artifacts/image-public/installed24-tutorials.json",
+      "sourceSha256": "a341e3a38f9601736b1aafd3d652bbf361e2602be641d5598fce013037505c3b",
+      "sha256": "6bc60714fbe83bb5dc39ed6149b238bb50c8ea0179eff2e9e4a97703e7f930a8",
+      "bytes": 5391
+    },
+    {
+      "path": "public-evidence/normal-duplicate-terminated-receipt.json.gz",
+      "sourcePath": ".artifacts/image-public/normal-duplicate-terminated-receipt.json",
+      "sourceSha256": "973d4da95131f7f0f29cf46e6107ebc84e7d6d75b2b3d2df8f17a39766fcd58c",
+      "sha256": "5d6aa6bb508420bc7d43686da562ad0afb01c62bbbb5b26f01435e1e95828eee",
+      "bytes": 17776
+    },
+    {
+      "path": "public-evidence/coverage-stale-docs-terminated-receipt.json.gz",
+      "sourcePath": ".artifacts/image-public/coverage-stale-docs-terminated-receipt.json",
+      "sourceSha256": "709bf9d3a996f476a5ac6a94d209bed51436308bf460e64be0cf08d885c0eea1",
+      "sha256": "6f6994679a43ebfd5dd2397cdf4dcafb8a4605ff4bc470bcae72386fee996e63",
+      "bytes": 8495
+    },
+    {
+      "path": "public-evidence/integration-inventory-detailed.json.gz",
+      "sourcePath": ".artifacts/image-public/integration-inventory-detailed.json",
+      "sourceSha256": "dd56fa8f3ca50952725d50fe7df1bdc827626d8677f02db6f66d20201978ad0a",
+      "sha256": "05ef19a0431fcbdf7f34a06569e8c6f3038082f7eb114652669df6f889cfeb2d",
+      "bytes": 251
+    },
+    {
+      "path": "public-evidence/render-results.json.gz",
+      "sourcePath": ".artifacts/test/png/charts/image-assets/results.json",
+      "sourceSha256": "a8c8e66b5234559af42da11eeffbfb6ca07e7f1f6dcc0437441205d153dc1097",
+      "sha256": "d95f56b090a73010cb8462265d2aa6dd81a5c0c9f1b0349fd31b2d8794b07f0c",
+      "bytes": 2963
+    }
+  ]
+}

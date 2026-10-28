@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "parents": [
+    "be231a51",
+    "eab0c26b"
+  ],
+  "status": "passed",
+  "results": {
+    "graph": 80,
+    "boundaries": 24,
+    "packageTests": 7
+  },
+  "package": {
+    "entries": 757,
+    "unpackedBytes": 5180779,
+    "maxPackedBytes": 1123769,
+    "ceilings": {
+      "entries": 757,
+      "unpackedBytes": 5181000,
+      "packedBytes": 1124000
+    }
+  },
+  "evidence": [
+    {
+      "path": "graph-integrated-all-graph.log.gz",
+      "sha256": "6f7fb32e1ae1eee9c18c12259241d681334985bd08074780c7e3d88650b0c38b",
+      "bytes": 18531
+    },
+    {
+      "path": "graph-integrated-boundaries.log.gz",
+      "sha256": "2f196036757061d5858553f65e7bc951c3cba3f6cb24c05fd2b9da638a2fd969",
+      "bytes": 4748
+    },
+    {
+      "path": "graph-integrated-package-tests.log.gz",
+      "sha256": "ff5387109628e492eab2d0edf2962745631fd34672d2f6ace6ee7c0fa3cb6d5b",
+      "bytes": 1713
+    },
+    {
+      "path": "graph-integrated-package20.json.gz",
+      "sha256": "92e67901f646cd0bd7ecb84f0ac12e0e8f15292f9094af4f2df172c12394a5cb",
+      "bytes": 160
+    },
+    {
+      "path": "graph-integrated-package22.json.gz",
+      "sha256": "1b73a42f9927fe47b219a60e0045f74cfd89504df2391e482caec18311b0f0fa",
+      "bytes": 160
+    },
+    {
+      "path": "graph-integrated-package24.json.gz",
+      "sha256": "92e67901f646cd0bd7ecb84f0ac12e0e8f15292f9094af4f2df172c12394a5cb",
+      "bytes": 160
+    }
+  ]
+}

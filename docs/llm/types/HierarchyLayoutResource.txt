@@ -1,0 +1,7 @@
+export type HierarchyLayoutResource = {
+  readonly kind: "layout"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly { readonly kind: "hierarchy"; readonly id: string; readonly revision: number }[];
+  readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+} & ({ readonly options: { readonly method: "tree"; readonly order: HierarchyOrder; readonly options: Readonly<HierarchyTreeOptions> }; readonly result: HierarchyTreeResult }
+  | { readonly options: { readonly method: "partition"; readonly order: HierarchyOrder; readonly options: { readonly maxNodes?: number } }; readonly result: HierarchyPartitionResult }
+  | { readonly options: { readonly method: "treemap"; readonly order: HierarchyOrder; readonly options: Readonly<HierarchyTreemapOptions> }; readonly result: HierarchyTreemapResult });

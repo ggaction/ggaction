@@ -1,0 +1,81 @@
+{
+  "base": "660baab8",
+  "scope": "Private typed resource layer references and atomic primitive rebind; no public kind registrations.",
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js unit test/unit/core/builtin-resource-kinds.test.js test/unit/core/resource-references.test.js test/unit/core/resource-state.test.js test/unit/core/parameter-resource-state.test.js test/unit/core/data-source-resource-state.test.js test/unit/persistence",
+      "tests": 72,
+      "fail": 0
+    },
+    {
+      "command": "node scripts/run-tests.js contracts test/contracts/source-boundaries.test.js test/contracts/coverage-policy.test.js test/contracts/package-boundaries.test.js",
+      "tests": 17,
+      "fail": 0
+    },
+    {
+      "command": "node scripts/run-tests.js contracts test/contracts/package-artifact.test.js",
+      "tests": 7,
+      "fail": 0
+    },
+    {
+      "command": "node --test --experimental-test-coverage --test-coverage-include='src/core/resourceReference.js' --test-coverage-include='src/core/resourceReferences.js' test/unit/core/builtin-resource-kinds.test.js test/unit/core/resource-references.test.js test/unit/core/resource-state.test.js test/unit/core/parameter-resource-state.test.js test/unit/core/data-source-resource-state.test.js",
+      "tests": 40,
+      "fail": 0,
+      "coverage": {
+        "resourceReference": [
+          100,
+          100,
+          100
+        ],
+        "resourceReferences": [
+          95.42,
+          89.1,
+          90.7
+        ]
+      }
+    }
+  ],
+  "initialFailure": "builtin-resource-bindings.log.gz records the corrected persistence collector branch before its final passing regressions.",
+  "files": [
+    {
+      "file": "builtin-resource-bindings.log.gz",
+      "sha256": "4f14e893fc01f5749156745e7bd6b7b00010e5ef74bd6601714c5325c2f81c2f",
+      "bytes": 2911
+    },
+    {
+      "file": "builtin-bindings-regressions.log.gz",
+      "sha256": "cd5036624de25023f1ae51daa55d4a6aa383ac5170ea6b8e17b93cb10f5e2810",
+      "bytes": 3463
+    },
+    {
+      "file": "builtin-bindings-contracts.log.gz",
+      "sha256": "162214fe2cec98c35afbc5ec8c3e1194d96c0c71027d4ead3bfea8d771e0aa70",
+      "bytes": 936
+    },
+    {
+      "file": "builtin-bindings-coverage.log.gz",
+      "sha256": "dea64a65071c0c2f7ac12ae0ac2ac7f2545d682b5b50ebfc464c7ecce1e43fbd",
+      "bytes": 2350
+    },
+    {
+      "file": "builtin-bindings-package-final.log.gz",
+      "sha256": "6649f63bc26be847d38398f130950c9aae570052f9bddf281110c4e8f707278e",
+      "bytes": 632
+    },
+    {
+      "file": "node20.json",
+      "sha256": "8f9303f656aac19e1e301e0cb7607fb21643e07acd80f46b79b16b61e88c482e",
+      "bytes": 989
+    },
+    {
+      "file": "node22.json",
+      "sha256": "01fb47d427d992e958491ebaaafebd071aaadec034a454627448cbfe6041ec93",
+      "bytes": 982
+    },
+    {
+      "file": "node24.json",
+      "sha256": "11f1bdf962e5cf8da9d91c34392e0d82a10bb65a86ab49898d7bde0921d476c4",
+      "bytes": 998
+    }
+  ]
+}

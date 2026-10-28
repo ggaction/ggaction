@@ -1,3 +1,4 @@
+import { hasDataResourceRevision } from "./resourceRevision.js";
 import { collectDataOwnerReferences, collectMarkConfigReferences } from "../../core/resourceReferences.js";
 import { datasetTransformOutputRoles } from "../../grammar/transforms.js";
 import { requireLayer } from "../../selectors/layers.js";
@@ -134,6 +135,7 @@ export function rebindMaterializationDataReferences(program, replacements) {
   if (replacements.size === 0) return program;
   let next = program;
   for (const resource of program.semanticSpec.resources) {
+    if (hasDataResourceRevision(program, resource.kind)) continue;
     if (![...resource.inputs, ...(resource.ownership.mode === "generated" ? [resource.ownership.owner] : [])]
       .some(input => input.kind === "data" && replacements.has(input.id))) continue;
     const current = requireStoredResource(next, { kind: resource.kind, id: resource.id });

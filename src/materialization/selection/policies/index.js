@@ -1,3 +1,5 @@
+import { imageSelectionPolicy } from "./image.js";
+import { treeSelectionPolicy, treemapSelectionPolicy } from "./hierarchy.js";
 import { mapConditionalValues } from "../../conditionalMapping.js";
 import { conditionalSelectionMembership } from "../../conditionalSelection.js";
 import { identifyItems } from "../items/common.js";
@@ -17,6 +19,8 @@ import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
 import { resolveOverlayItems } from "../items/overlay.js";
 
 const POLICIES = Object.freeze({
+  image: imageSelectionPolicy,
+  tree: treeSelectionPolicy, treemap: treemapSelectionPolicy,
   text: textSelectionPolicy,
   arc: arcSelectionPolicy,
   area: areaSelectionPolicy,
@@ -59,11 +63,11 @@ function resolveItems(program, target, grain, identityOnly, options) {
     const items = resolveOverlayItems(program, layer, resolvers);
     return identityOnly ? items : withConditionalChannels(program, layer, items, options);
   }
+  const policy = requireSelectionPolicy(layer.mark?.type);
   const dataset = findDataset(program, layer.data);
-  if (dataset === undefined) {
+  if (dataset === undefined && !policy.resourceBacked) {
     throw new Error(`Mark "${target}" requires an existing dataset for selection.`);
   }
-  const policy = requireSelectionPolicy(layer.mark?.type);
   if (!policy.supportedGrains.includes(grain)) {
     throw new Error(`Mark "${target}" does not support ${grain} selection grain.`);
   }
@@ -75,6 +79,7 @@ function resolveItems(program, target, grain, identityOnly, options) {
 // finished rebuilding. Each owning policy supplies its same final semantic grain.
 export function resolveMarkSourceItems(program, target, grain = 'item', options = { channels: [] }) {
   const layer = requireLayer(program, target), policy = requireSelectionPolicy(layer.mark.type);
+  if (!policy.supportedGrains.includes(grain)) throw new Error(`Mark "${target}" does not support ${grain} selection grain.`);
   const dataset = applyItemMissingPolicy(layer, findDataset(program, layer.data));
   if (layer.derivedBindings?.overlay && grain !== "item") throw new Error(`Overlay "${target}" supports item selection grain.`);
   const definitions = layer.derivedBindings?.overlay ? resolveOverlayItems(program, layer, { sourceOnly: true, resolveMarkItems, resolveMarkSourceItems })
@@ -83,7 +88,7 @@ export function resolveMarkSourceItems(program, target, grain = 'item', options 
   const items = definitions.every(item => item.key !== undefined) ? definitions : identifyItems(program, layer, grain, definitions);
   return withConditionalChannels(program, layer, items.map(item => ({
     ...item, properties: item.properties ?? {},
-    rows: memberRowReferences(program, item.members, layer.data, item.memberKeys)
+    rows: item.rows ?? memberRowReferences(program, item.members, layer.data, item.memberKeys)
   })), options);
 }
 

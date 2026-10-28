@@ -31,3 +31,21 @@ test("covers every registered built-in action without descriptor evasion", () =>
     assert.notEqual(description.applicability, "unsupported", action);
   }
 });
+
+test("hierarchy discovery describes stored layout prerequisites and object paint options", async () => {
+  const cards = JSON.parse(await readFile(new URL("../../knowledge/action-cards.json", import.meta.url), "utf8")).cards;
+  assert.deepEqual(cards.find(card => card.name === "layoutHierarchy").resources.prerequisites,
+    ["existing hierarchy resource"]);
+  const layout = describeAction(chart(), { action: "layoutHierarchy" });
+  assert.equal(layout.parameterDefinitions.find(option => option.path === "hierarchy").kind, "resource");
+  for (const action of ["createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot"]) {
+    const prerequisites = cards.find(card => card.name === action).resources.prerequisites;
+    assert.equal(prerequisites.includes("canvas and dataset context"), false);
+    assert.equal(prerequisites.includes(`canvas and ${action.includes("Treemap") ? "treemap" : "tree"} layout resource`), true);
+    const description = describeAction(chart(), { action });
+    assert.equal(description.parameterDefinitions.find(option => option.path === "layout").kind, "resource");
+    for (const name of [action.includes("Treemap") ? "cells" : "nodes", "labels"]) {
+      assert.equal(description.parameterDefinitions.find(option => option.path === name).kind, "object");
+    }
+  }
+});

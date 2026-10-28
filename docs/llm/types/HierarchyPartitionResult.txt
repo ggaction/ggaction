@@ -1,0 +1,1 @@
+export interface HierarchyPartitionResult extends Omit<HierarchyModel, "nodes"> { readonly nodes: readonly (HierarchyNode & { readonly u0: number; readonly u1: number; readonly residualStart: number })[]; }

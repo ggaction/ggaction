@@ -1,0 +1,9 @@
+export interface ImageResourceHost {
+  requestToken: string;
+  load(request: Readonly<ImageResourceSource & { maxBytes: number; signal?: AbortSignal }>):
+    Promise<Readonly<{ bytes: Uint8Array; mimeType: ImageMimeType }>> | Readonly<{ bytes: Uint8Array; mimeType: ImageMimeType }>;
+  decode(request: Readonly<{ bytes: Uint8Array; mimeType: ImageMimeType; maxPixels: number; signal?: AbortSignal }>):
+    Promise<Readonly<{ width: number; height: number; originClean: true }>> | Readonly<{ width: number; height: number; originClean: true }>;
+  signal?: AbortSignal;
+}
+declare const preparedImageResourceBrand: unique symbol;

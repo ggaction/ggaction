@@ -1,0 +1,287 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "92a9d22123c8817303df936836a7baab5470ac2e",
+  "status": "passed",
+  "scope": "Hierarchy resources and tree/treemap public consumers; partition public adapters remain subsequent work.",
+  "checks": {
+    "coverage": {
+      "command": "node scripts/run-tests.js coverage",
+      "path": ".artifacts/coverage/report.log",
+      "sha256": "a66df084598ea673fbb364880f3fa860b7dff60a884d6e9d2d24356b2ffc74dd",
+      "bytes": 1591890,
+      "tests": 7154,
+      "pass": 7154,
+      "fail": 0,
+      "lines": 96.27,
+      "branches": 94.02,
+      "functions": 98.81,
+      "criticalFloors": 283
+    },
+    "browser": {
+      "command": "node scripts/run-tests.js browser",
+      "path": ".artifacts/hierarchy-browser-final.log",
+      "sha256": "4a8e2fe775e74fe22f738d987b9096f41f2a32d7dc3581a8657f0ecc90beb895",
+      "bytes": 59798,
+      "tests": 310,
+      "pass": 310,
+      "fail": 0
+    },
+    "docs": {
+      "command": "node scripts/run-tests.js docs",
+      "path": ".artifacts/hierarchy-docs-verified.log",
+      "sha256": "8808abf04a074c8788ea57ccdfe5b51ccaf073e7b9b3ad628a58e5ebaefba040",
+      "bytes": 38588,
+      "tests": 167,
+      "pass": 167,
+      "fail": 0
+    },
+    "hierarchyRealistic": {
+      "command": "node scripts/run-tests.js realistic test/contracts/realistic-hierarchy-lifecycle.test.js",
+      "path": ".artifacts/hierarchy-realistic2.log",
+      "sha256": "066912351f519b62e25a366f70151a2aaaaa8af52ef9ab64ab78e954b1f6f1b4",
+      "bytes": 4139,
+      "tests": 16,
+      "pass": 16,
+      "fail": 0
+    },
+    "generatedLifecycle": {
+      "command": "node scripts/run-tests.js realistic test/contracts/generated-lifecycle-scenarios.test.js",
+      "path": ".artifacts/hierarchy-lifecycle-repair.log",
+      "sha256": "1b2b9240585594ed3a79619c91836408ef1157a10e674cf685ed149ed2fa770b",
+      "bytes": 764,
+      "tests": 3,
+      "pass": 3,
+      "fail": 0
+    },
+    "featureInventory": {
+      "command": "node scripts/run-tests.js realistic test/contracts/generated-scenario-feature-coverage.test.js",
+      "path": ".artifacts/hierarchy-feature-coverage-verified.log",
+      "sha256": "cc72e3d73f226d0d33e0e92a2b27e7f9e5f0abd8b26d03e1bd6c28b1b89d8585",
+      "bytes": 1722,
+      "tests": 7,
+      "pass": 7,
+      "fail": 0
+    },
+    "renderPairs": {
+      "command": "node scripts/run-tests.js render test/charts/tree-layouts/png.render.js test/charts/treemap-layouts/png.render.js",
+      "path": ".artifacts/hierarchy-render-final.log",
+      "sha256": "b898c0097e488b9ed85a187295aa5efa1c2ee275ca5cd569e739a83b698917c5",
+      "bytes": 803,
+      "tests": 5,
+      "pass": 5,
+      "fail": 0
+    }
+  },
+  "builtDocs": {
+    "pages": 152,
+    "selectiveArtifacts": 1259,
+    "logs": [
+      {
+        "path": ".artifacts/hierarchy-docs-build-verified.log",
+        "sha256": "3884cb561560d6db2c44efb162128fcafa7db536e7e49fdd1212b6cfc004d0ec",
+        "bytes": 420
+      },
+      {
+        "path": ".artifacts/hierarchy-docs-built-verified.log",
+        "sha256": "e5185541101a99bdc623c1293a86d5fb945c73af836041377ae1809bc064e915",
+        "bytes": 179
+      },
+      {
+        "path": ".artifacts/hierarchy-docs-browser-verified.log",
+        "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3",
+        "bytes": 157
+      }
+    ],
+    "widths": [
+      320,
+      390,
+      768
+    ]
+  },
+  "package": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-hierarchy/ggactionnewbrand/.artifacts/hierarchy-release-final/ggaction-0.0.26.tgz",
+    "sha256": "6c6e0e413efdea10fc81b7e91736272f0486e75aadafd65d4ac61e0d7185472c",
+    "entries": 767,
+    "packedBytes": 1136705,
+    "unpackedBytes": 5259209
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "cases": 203,
+      "qualification": 7,
+      "artifactSha256": "6c6e0e413efdea10fc81b7e91736272f0486e75aadafd65d4ac61e0d7185472c",
+      "nodeReceipt": {
+        "path": ".artifacts/hierarchy-installed/verified/node20/node-cases.json",
+        "sha256": "1cf4423abb8962ad01d03c31abb31bad8475365c1a841d56b9404a52372823aa",
+        "bytes": 22117
+      },
+      "qualificationReceipt": {
+        "path": ".artifacts/hierarchy-installed/verified/node20/qualification.json",
+        "sha256": "1a8faf8f047c0fbac121dfac8ce0334e23d7e82892080090579395558c4417aa",
+        "bytes": 769
+      }
+    },
+    {
+      "node": "v22.23.1",
+      "cases": 203,
+      "qualification": 7,
+      "artifactSha256": "6c6e0e413efdea10fc81b7e91736272f0486e75aadafd65d4ac61e0d7185472c",
+      "nodeReceipt": {
+        "path": ".artifacts/hierarchy-installed/verified/node22/node-cases.json",
+        "sha256": "5d32ac90e9e9ed6d75c9af13d5591d50e2227c8fa2117f0a2d042dee59cb96c8",
+        "bytes": 22091
+      },
+      "qualificationReceipt": {
+        "path": ".artifacts/hierarchy-installed/verified/node22/qualification.json",
+        "sha256": "bdbaac854a3cb7ea4dfda9493e3ed77851589aed8942eeaa46ec8f32f2e37cce",
+        "bytes": 771
+      }
+    },
+    {
+      "node": "v24.22.1",
+      "cases": 203,
+      "qualification": 7,
+      "artifactSha256": "6c6e0e413efdea10fc81b7e91736272f0486e75aadafd65d4ac61e0d7185472c",
+      "nodeReceipt": {
+        "path": ".artifacts/hierarchy-installed/verified/node24/node-cases.json",
+        "sha256": "ade04f08c1317bb5b1357fd8c99422f8afc35bb984e81b5315688252fefe8a39",
+        "bytes": 22139
+      },
+      "qualificationReceipt": {
+        "path": ".artifacts/hierarchy-installed/verified/node24/qualification.json",
+        "sha256": "ff2fda484a7f00df58b156376129cb9c4dcf4b5466dccd16f91f059e0d6ca9be",
+        "bytes": 769
+      }
+    }
+  ],
+  "sameStagingMeasurements": [
+    {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "npm": "10.9.8",
+      "entries": 767,
+      "unpackedBytes": 5259209,
+      "packedBytes": 1139101,
+      "tarBytes": 5857792,
+      "tarSha256": "5ba9feba809a32ba4dfe10ac2a0caf100614b4ecd32280f7467cd5728e68772c",
+      "artifactSha256": "09803fdf2fc316975227dca7e6e61addb2f177dd305d68f4c9a0b9a1906380b9",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "minifiedBytes": 2021404,
+          "gzipBytes": 566357,
+          "chunkHashes": [
+            "6c0a5e2fa92105b23f6b8f9e39f8b8d3d6c11e90244b0336fbc08310e5c017ff"
+          ]
+        },
+        {
+          "specifier": "ggaction/basic",
+          "minifiedBytes": 1139748,
+          "gzipBytes": 330313,
+          "chunkHashes": [
+            "33ca6d69e3d73488cb28ac31bcb73d859d884792eaf1d910a18b145c3134414b"
+          ]
+        },
+        {
+          "specifier": "ggaction/svg",
+          "minifiedBytes": 25670,
+          "gzipBytes": 8185,
+          "chunkHashes": [
+            "16c86f32bb00ccf9752d490a6e2a658282f85eb226553376d54e8f3a4b640da0"
+          ]
+        }
+      ]
+    },
+    {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "npm": "10.9.8",
+      "entries": 767,
+      "unpackedBytes": 5259209,
+      "packedBytes": 1136705,
+      "tarBytes": 5857792,
+      "tarSha256": "5ba9feba809a32ba4dfe10ac2a0caf100614b4ecd32280f7467cd5728e68772c",
+      "artifactSha256": "6c6e0e413efdea10fc81b7e91736272f0486e75aadafd65d4ac61e0d7185472c",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "minifiedBytes": 2021404,
+          "gzipBytes": 565600,
+          "chunkHashes": [
+            "6c0a5e2fa92105b23f6b8f9e39f8b8d3d6c11e90244b0336fbc08310e5c017ff"
+          ]
+        },
+        {
+          "specifier": "ggaction/basic",
+          "minifiedBytes": 1139748,
+          "gzipBytes": 329598,
+          "chunkHashes": [
+            "33ca6d69e3d73488cb28ac31bcb73d859d884792eaf1d910a18b145c3134414b"
+          ]
+        },
+        {
+          "specifier": "ggaction/svg",
+          "minifiedBytes": 25670,
+          "gzipBytes": 8166,
+          "chunkHashes": [
+            "16c86f32bb00ccf9752d490a6e2a658282f85eb226553376d54e8f3a4b640da0"
+          ]
+        }
+      ]
+    },
+    {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "npm": "10.9.8",
+      "entries": 767,
+      "unpackedBytes": 5259209,
+      "packedBytes": 1139101,
+      "tarBytes": 5857792,
+      "tarSha256": "5ba9feba809a32ba4dfe10ac2a0caf100614b4ecd32280f7467cd5728e68772c",
+      "artifactSha256": "09803fdf2fc316975227dca7e6e61addb2f177dd305d68f4c9a0b9a1906380b9",
+      "bundles": [
+        {
+          "specifier": "ggaction",
+          "minifiedBytes": 2021404,
+          "gzipBytes": 566357,
+          "chunkHashes": [
+            "6c0a5e2fa92105b23f6b8f9e39f8b8d3d6c11e90244b0336fbc08310e5c017ff"
+          ]
+        },
+        {
+          "specifier": "ggaction/basic",
+          "minifiedBytes": 1139748,
+          "gzipBytes": 330313,
+          "chunkHashes": [
+            "33ca6d69e3d73488cb28ac31bcb73d859d884792eaf1d910a18b145c3134414b"
+          ]
+        },
+        {
+          "specifier": "ggaction/svg",
+          "minifiedBytes": 25670,
+          "gzipBytes": 8185,
+          "chunkHashes": [
+            "16c86f32bb00ccf9752d490a6e2a658282f85eb226553376d54e8f3a4b640da0"
+          ]
+        }
+      ]
+    }
+  ],
+  "knownIntegrationIssue": {
+    "owner": "root integration",
+    "boundary": "createData input clone before hierarchy actions",
+    "reproduction": {
+      "path": ".artifacts/hierarchy-review/nested-source-depth.mjs",
+      "sha256": "fcc8c766f1b9f63f4738e61315ebab765cd5c36303fdb50127f20c66c490f8ab",
+      "bytes": 628
+    },
+    "actual": "RangeError Maximum call stack size exceeded for a 5000-level nested children row",
+    "required": "bounded immutable input processing; existing flat iterative hierarchy checks remain separate"
+  },
+  "validationNotes": [
+    "Initial unit/contracts inventory and dataset-only lineage assertions failed and were repaired; canonical coverage subsequently passed all 7154 tests.",
+    "Runtime, declarations, and packaged action metadata remained unchanged after sourceCommit. Source-link provenance and explicit realistic inventory assertions were synchronized afterwards.",
+    "The initial package artifact before the final inspection metadata repair was retained separately; final installed evidence uses sha256 6c6e0e413efdea10fc81b7e91736272f0486e75aadafd65d4ac61e0d7185472c only."
+  ]
+}

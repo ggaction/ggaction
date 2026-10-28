@@ -1,5 +1,8 @@
 import { createMarkOutlineExample } from "./mark-outlines/program.js";
 import { createStructuredPaintExample } from "./structured-paints/program.js";
+import { createImageExample } from "./image-assets/program.js";
+import { createTree } from "./tree-layouts/program.js";
+import { createTreemap } from "./treemap-layouts/program.js";
 import { createCompoundPathExample } from "./compound-path/program.js";
 import { createSharedAdjacent } from "./shared-adjacent/program.js";
 import { createLinkedOverlay } from "./linked-overlay/program.js";
@@ -179,6 +182,8 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "mark-outlines/", canvas: "#chart" } }),
   example({ id: "structured-paints", data: {}, width: 260, height: 180, docsGroup: "tutorials", createProgram: () => createStructuredPaintExample(),
     browser: { path: "structured-paints/", canvas: "#chart" } }),
+  example({ id: "image-assets", data: {}, width: 200, height: 210, docsGroup: "tutorials", createProgram: () => createImageExample(),
+    browser: { path: "image-assets/", canvas: "#contain-center" } }),
   example({ id:"compound-path",data:{},width:400,height:304,docsGroup:"tutorials",createProgram:()=>createCompoundPathExample(),
     browser:{path:"compound-path/",canvas:"#chart",state:{global:"__ggactionExample",expected:{id:"compound-path",width:400,height:304}}}}),
   example({ id: "bootstrap-mean-ci", data: {}, width: 320, height: 220, docsGroup: "tutorials", createProgram: createBootstrapMeanCI,
@@ -282,6 +287,31 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createAreaSimple(),
     browser: { path: "area-layout/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
+  }),
+  example({ id: "tree-layouts", programDirectory: "tree-layouts", testDirectory: "tree-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createTree("vertical"),
+    browser: { path: "browser-host/?chart=tree-layouts", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "tree-layouts", width: 640, height: 500 } } }
+  }),
+  example({ id: "tree-horizontal", programDirectory: "tree-layouts", testDirectory: "tree-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createTree("horizontal"),
+    browser: { path: "browser-host/?chart=tree-horizontal", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "tree-horizontal", width: 640, height: 500 } } }
+  }),
+  example({ id: "tree-radial", programDirectory: "tree-layouts", testDirectory: "tree-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createTree("radial"),
+    browser: { path: "browser-host/?chart=tree-radial", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "tree-radial", width: 640, height: 500 } } }
+  }),
+  example({ id: "treemap-layouts", programDirectory: "treemap-layouts", testDirectory: "treemap-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createTreemap("slice-dice"),
+    browser: { path: "browser-host/?chart=treemap-layouts", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "treemap-layouts", width: 640, height: 500 } } }
+  }),
+  example({ id: "treemap-squarify", programDirectory: "treemap-layouts", testDirectory: "treemap-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createTreemap("squarify"),
+    browser: { path: "browser-host/?chart=treemap-squarify", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "treemap-squarify", width: 640, height: 500 } } }
   }),
   example({
     id: "horizon-plot", data: {}, width: 1000, height: 700, docsGroup: "tutorials",

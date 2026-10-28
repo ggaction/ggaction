@@ -7,7 +7,7 @@
 - `materialization/dataSourceState.js`가 `normalizeDataSourceOptions`, receipt/resource factory, receipt 검증과 최종 `validateDataSourceState`를 소유한다. Key 정책은 기존 `core/itemIdentity.js`의 `createSourceIdentity`를 재사용한다.
 - `grammar/dataSourcePayload.js`는 retained text/rows와 parser version, MIME, encoding, byte length, content hash, parsed rows/schema의 일치 검사를 공유한다. UTF-8 text와 authored rows를 구분하며 rows의 signed zero는 기존 tagged value codec으로 보존한다.
 - A의 `grammar/dataSourceRequest.js`가 request 생성과 digest를 소유한다. B의 복원 검증은 이 digest와 AST 정규화·의존성 검사만 사용하며 URL AST를 평가하거나 loader를 호출하지 않는다.
-- `grammar/resourceReference.js`가 exact typed ref의 닫힌 모양과 revision 검사를 소유한다. 기존 materialization resource owner는 이를 재export한다. 이 분리로 source validator와 generic resource validator의 순환 import를 제거했다.
+- `core/resourceReference.js`가 exact typed ref의 닫힌 모양과 revision 검사를 소유한다. 기존 materialization resource owner는 이를 재export한다. 이 분리로 source validator와 generic resource validator의 순환 import를 제거했다.
 
 기존 private request digest는 상대 URL 계산에 사용한 `baseURL`을 hash 본문에 포함하지 않았다. 공개 저장 연결에서는 source intent의 일부인 canonical absolute `baseURL`도 digest에 포함하도록 root와 A/B가 합의했다. Receipt의 확정 `resolvedURL`, 현재 source/options와 exact parameter refs/scalars가 같은 digest에 결박된다. Factory도 stored options와 prepared request의 source/baseURL 불일치를 거부한다. 이 보완은 새 G-DATA checkpoint에만 적용하며 이전 parameter checkpoint의 검증 기록을 변경하지 않는다.
 

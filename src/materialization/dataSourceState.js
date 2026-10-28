@@ -10,7 +10,7 @@ import { dataSourceRequestHash } from "../grammar/dataSourceRequest.js";
 import { inspectExpressionV2, normalizeExpressionV2 } from "../grammar/expressionAst.js";
 import { parameterEnvironment } from "../grammar/parameter.js";
 import { dataInputReference, resolveInputReference } from "../selectors/resources.js";
-import { validateInputReference } from "../grammar/resourceReference.js";
+import { validateInputReference } from "../core/resourceReference.js";
 
 function record(value, required, optional, label) {
   ownRecord(value, label);

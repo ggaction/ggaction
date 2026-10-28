@@ -10,7 +10,7 @@ import { applyRevisionPlan, buildParameterRevisionPlan } from "../data/edit.js";
 import { withGuideLayoutTransaction } from "../../materialization/guides/layout.js";
 import { createDataSourceResource } from "../../materialization/dataSourceState.js";
 import { requireDataset } from "../../selectors/datasets.js";
-import { withPreparedSourceResources } from "../primitives/dataSourceContext.js";
+import { withPreparedResourceResults } from "../primitives/preparedResourceContext.js";
 import { createPreparedSource } from "../data/sourceCreate.js";
 import { preparedSourceUpdate } from "../data/sourceContext.js";
 
@@ -31,7 +31,7 @@ export function reviseUnitParameter(program, { resource, value, preparedPlan }) 
       revision: source.resource.revision }, resource: updated });
     retain.add(source.old);
   }
-  next = withPreparedSourceResources({ property: `resource[parameter:${resource.id}]`,
+  next = withPreparedResourceResults(next, { property: `resource[parameter:${resource.id}]`,
     value: { ...resource, revision: resource.revision + 1, result: { value } } },
   replacements, args => next.editSemantic(args));
   const conditionals = rebindConditionalInputs(next, { parameter: resource.id });

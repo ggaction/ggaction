@@ -4,7 +4,7 @@
 
 ## 현재 상태
 
-- 현재 활성 Roadmap 9는 **Phase 3**에서 AST v2 계약을 검토 중이다. 마지막 제품 검증 checkpoint는 **Phase 2**의 [복합 경로 완료 기록](roadmap9/phase2/GOAL.md)다. Phase 0–2를 완료했고 STEP-013–077은 미완료 범위다. [Phase 3 검토](roadmap9/phase3/GOAL.md)를 확인한다. 마지막 완료 Roadmap은 Roadmap 8 Phase 7이다.
+- 현재 활성 Roadmap 9는 **Phase 4**의 이미지·페인트·폰트 구현을 진행 중이다. **Phase 0–3 / STEP-001–016**을 완료했다. [최신 통합 검증](roadmap9/phase3/progress/STEP-016.json)과 [Phase 4 진행 상태](roadmap9/phase4/GOAL.md)를 확인한다. STEP-017–077은 남은 범위이며 마지막 완료 Roadmap은 Roadmap 8 Phase 7이다.
 - [`roadmap9/ROADMAP.md`](roadmap9/ROADMAP.md) — native 확장과 실행 의존성
 - [`roadmap9/phase0/GOAL.md`](roadmap9/phase0/GOAL.md) — baseline·독립 oracle·검증 증거 구현
 - [`roadmap9/phase1/GOAL.md`](roadmap9/phase1/GOAL.md) — ID·리소스·저장 형식 검토와 구현 경계

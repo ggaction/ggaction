@@ -11,7 +11,7 @@
 - [x] Appearance 타입·Current·공개 문서·generated metadata·설치 소비자 동기화
 - [x] Prepared-source/main statistics 통합, lifecycle 직접 증거와 설치·문서 검증
 - [x] Positional·offset·pointRadius·text 및 topology matrix 종료
-- [ ] 전체 조건부 checkpoint commit/push와 AT-18 인계
+- [x] 전체 조건부 checkpoint commit/push와 [AT-18 인계](../progress/STEP-016.json)
 
 기준은 `c0f0f7147f62a9da671b632eb5dbaf03188cd575`다. 사용자의 전체 Roadmap9 실행·병렬
 작업 승인은 [AUTHORIZATION](../../AUTHORIZATION.json)에 기록되어 있다. Root가 지정한

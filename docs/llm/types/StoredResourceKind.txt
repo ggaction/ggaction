@@ -1,1 +1,1 @@
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image";

@@ -1749,6 +1749,89 @@ editOverlay({ target?, source?, series?, missing?, orderBy?, follow? })
 Change an overlay's dependency or gap policy. `follow: false` freezes current result geometry as an independent, normalized plot snapshot; it cannot be combined with other edits. Edit the source to change a following overlay's positions. Ordinary mark and encoding actions change its appearance.
 
 
+## `createImageMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateImageMarkOptions`](./../types.md#type-createimagemarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `image` | Optional / branch-dependent | `string \| undefined` |
+| `viewport` | Optional / branch-dependent | `"auto" \| { x: number; y: number; width: number; height: number; } \| undefined` |
+| `fit` | Optional / branch-dependent | `"contain" \| "cover" \| "fill" \| undefined` |
+| `align` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `alt` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `false \| GraphicClip \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+createImageMark({ id?, image?, viewport?, fit?, align?, opacity?, alt?, clip? } = {})
+```
+
+Create one resource-backed image item. Unique source inference and the first `image`
+role are supported. Viewport defaults to the plot, fit to contain and align to center.
+The [image tutorial](../../tutorials/image-assets.md) shares its public program with all
+four renderer tests.
+
+
+## `editImageMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditImageMarkOptions`](./../types.md#type-editimagemarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `image` | Optional / branch-dependent | `string \| undefined` |
+| `viewport` | Optional / branch-dependent | `"auto" \| { x: number; y: number; width: number; height: number; } \| undefined` |
+| `fit` | Optional / branch-dependent | `"contain" \| "cover" \| "fill" \| undefined` |
+| `align` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `alt` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `false \| GraphicClip \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })
+```
+
+Edit an existing image mark; omission preserves options. `viewport:"auto"` resets
+to the plot. Explicit geometry adds clipping to the always-clipped viewport.
+
+
 ## Related
 
 [Action Reference](../actions.md) · [Chart API](../../api/index.md) · [Supported Features](../../supported-features.md)

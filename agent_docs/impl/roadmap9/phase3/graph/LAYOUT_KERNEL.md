@@ -6,7 +6,7 @@
 - [x] Exact opaque-key fixed 좌표와 stable-order circular 계산
 - [x] 독립 literal/rotation oracle·identity·adjacency·finite/work/immutable 검증
 - [x] Critical graph floor와 source/package/discovery 경계 검증
-- [ ] Seeded force·fixed iterations·pinned nodes·component packing
+- [x] Seeded force·fixed iterations·pinned nodes·component packing: [후속 계산 checkpoint](FORCE_KERNEL.md)
 - [ ] GraphResource/NodeLayout public action·revision·codec·inspection·선택·consumer 통합
 - [ ] Rendered primitive 검토 및 public visual flow
 - [ ] STEP-021·AT-23·전체 STEP-077 완료

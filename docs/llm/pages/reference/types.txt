@@ -21,6 +21,7 @@ interface ChartProgramActions {
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
   applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
+  removeResource(options: RemoveStoredResourceOptions): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeCoordinate(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -40,6 +41,18 @@ interface ChartProgramActions {
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
   createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
+  createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
+  replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+  createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
+  editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
+  createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;
+  editHierarchyData(options: TargetedOptions<EditHierarchyDataOptions>): ChartProgram;
+  layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
+  editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
+  createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+  editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+  createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
+  editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
@@ -483,6 +496,18 @@ export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] =
 ```
 
 Related types: [`DataUpdateRequest`](../../../reference/types/#type-dataupdaterequest) · [`PreparedDataUpdate`](../../../reference/types/#type-prepareddataupdate).
+
+### `ApplyImageResourceOptions` {#type-applyimageresourceoptions}
+
+ Expand ApplyImageResourceOptions
+
+```typescript
+export interface ApplyImageResourceOptions<Kind extends "create" | "replace"> {
+  prepared: PreparedImageResource<Kind>; requestToken: string;
+}
+```
+
+Related types: [`PreparedImageResource`](../../../reference/types/#type-preparedimageresource).
 
 ### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
 
@@ -2108,6 +2133,26 @@ export interface ComputedExpressionV2 {
 
 Related types: [`ExpressionNode`](../../../reference/types/#type-expressionnode).
 
+### `ConcretePathCommand` {#type-concretepathcommand}
+
+ Expand ConcretePathCommand
+
+```typescript
+export type ConcretePathCommand =
+  | { readonly op: "M"; readonly x: number; readonly y: number }
+  | { readonly op: "L"; readonly x: number; readonly y: number }
+  | {
+      readonly op: "C";
+      readonly x1: number;
+      readonly y1: number;
+      readonly x2: number;
+      readonly y2: number;
+      readonly x: number;
+      readonly y: number;
+    }
+  | { readonly op: "Z" };
+```
+
 ### `ConditionalEncodingBranch` {#type-conditionalencodingbranch}
 
  Expand ConditionalEncodingBranch
@@ -2550,6 +2595,17 @@ export type CreateHeatmapOptions =
 
 Related types: [`PreGriddedHeatmapOptions`](../../../reference/types/#type-pregriddedheatmapoptions) · [`BinnedHeatmapOptions`](../../../reference/types/#type-binnedheatmapoptions).
 
+### `CreateHierarchyDataOptions` {#type-createhierarchydataoptions}
+
+ Expand CreateHierarchyDataOptions
+
+```typescript
+export type CreateHierarchyDataOptions = HierarchySource & { id: string; data?: string; maxNodes?: number };
+/** Omitted fields preserve the existing source form; every edit must change at least one option. */
+```
+
+Related types: [`HierarchySource`](../../../reference/types/#type-hierarchysource).
+
 ### `CreateHistogramOptions` {#type-createhistogramoptions}
 
  Expand CreateHistogramOptions
@@ -2602,6 +2658,16 @@ export interface CreateHorizonPlotOptions {
 ```
 
 Related types: [`HorizonXEncoding`](../../../reference/types/#type-horizonxencoding) · [`HorizonYEncoding`](../../../reference/types/#type-horizonyencoding) · [`HorizonResolution`](../../../reference/types/#type-horizonresolution) · [`HorizonMissingPolicy`](../../../reference/types/#type-horizonmissingpolicy) · [`HorizonOverflowPolicy`](../../../reference/types/#type-horizonoverflowpolicy) · [`HorizonPaletteOptions`](../../../reference/types/#type-horizonpaletteoptions) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`CurveInterpolation`](../../../reference/types/#type-curveinterpolation) · [`HorizonPlotGuideOptions`](../../../reference/types/#type-horizonplotguideoptions).
+
+### `CreateImageMarkOptions` {#type-createimagemarkoptions}
+
+ Expand CreateImageMarkOptions
+
+```typescript
+export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; }
+```
+
+Related types: [`ImageMarkOptions`](../../../reference/types/#type-imagemarkoptions).
 
 ### `CreateIntervalPlotOptions` {#type-createintervalplotoptions}
 
@@ -4972,6 +5038,16 @@ export interface EditGridOptions {
 
 Related types: [`CartesianGuideDashMap`](../../../reference/types/#type-cartesianguidedashmap) · [`CategoryValue`](../../../reference/types/#type-categoryvalue).
 
+### `EditHierarchyDataOptions` {#type-edithierarchydataoptions}
+
+ Expand EditHierarchyDataOptions
+
+```typescript
+export type EditHierarchyDataOptions = Partial<HierarchySource> & { target?: string; data?: string; maxNodes?: number };
+```
+
+Related types: [`HierarchySource`](../../../reference/types/#type-hierarchysource).
+
 ### `EditHorizonOptions` {#type-edithorizonoptions}
 
  Expand EditHorizonOptions
@@ -4984,6 +5060,16 @@ export interface EditHorizonOptions
 ```
 
 Related types: [`HorizonEncodingOptions`](../../../reference/types/#type-horizonencodingoptions).
+
+### `EditImageMarkOptions` {#type-editimagemarkoptions}
+
+ Expand EditImageMarkOptions
+
+```typescript
+export interface EditImageMarkOptions extends ImageMarkOptions { target?: string; }
+```
+
+Related types: [`ImageMarkOptions`](../../../reference/types/#type-imagemarkoptions).
 
 ### `EditImputedDataOptions` {#type-editimputeddataoptions}
 
@@ -5004,6 +5090,16 @@ export type EditIntervalDataOptions = FocusedDerivedDataEdit<IntervalDataOptions
 ```
 
 Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focusedderiveddataedit) · [`IntervalDataOptions`](../../../reference/types/#type-intervaldataoptions).
+
+### `EditLayoutOptions` {#type-editlayoutoptions}
+
+ Expand EditLayoutOptions
+
+```typescript
+export interface EditLayoutOptions { target?: string; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number }; }
+```
+
+Related types: [`HierarchyOrder`](../../../reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](../../../reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](../../../reference/types/#type-hierarchytreemapoptions).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 
@@ -5654,6 +5750,26 @@ export interface EditTitleOptions
 ```
 
 Related types: [`TitleOptions`](../../../reference/types/#type-titleoptions).
+
+### `EditTreePlotOptions` {#type-edittreeplotoptions}
+
+ Expand EditTreePlotOptions
+
+```typescript
+export interface EditTreePlotOptions extends Omit<TreePlotOptions, "id"> { target?: string; }
+```
+
+Related types: [`TreePlotOptions`](../../../reference/types/#type-treeplotoptions).
+
+### `EditTreemapPlotOptions` {#type-edittreemapplotoptions}
+
+ Expand EditTreemapPlotOptions
+
+```typescript
+export interface EditTreemapPlotOptions extends Omit<TreemapPlotOptions, "id"> { target?: string; }
+```
+
+Related types: [`TreemapPlotOptions`](../../../reference/types/#type-treemapplotoptions).
 
 ### `EditViolinPlotOptions` {#type-editviolinplotoptions}
 
@@ -6689,6 +6805,40 @@ export type GradientPlotPositionChannel = BoxPlotPositionChannel;
 
 Related types: [`BoxPlotPositionChannel`](../../../reference/types/#type-boxplotpositionchannel).
 
+### `GraphicClip` {#type-graphicclip}
+
+ Expand GraphicClip
+
+```typescript
+export type GraphicClip = GraphicClipRect | GraphicClipPath;
+```
+
+Related types: [`GraphicClipRect`](../../../reference/types/#type-graphiccliprect) · [`GraphicClipPath`](../../../reference/types/#type-graphicclippath).
+
+### `GraphicClipPath` {#type-graphicclippath}
+
+ Expand GraphicClipPath
+
+```typescript
+export interface GraphicClipPath {
+  readonly type: "path";
+  readonly commands: readonly ConcretePathCommand[];
+  readonly fillRule?: PathFillRule;
+}
+```
+
+Related types: [`ConcretePathCommand`](../../../reference/types/#type-concretepathcommand) · [`PathFillRule`](../../../reference/types/#type-pathfillrule).
+
+### `GraphicClipRect` {#type-graphiccliprect}
+
+ Expand GraphicClipRect
+
+```typescript
+export interface GraphicClipRect {
+  readonly x: number; readonly y: number; readonly width: number; readonly height: number;
+}
+```
+
 ### `GraphicType` {#type-graphictype}
 
  Expand GraphicType
@@ -6701,7 +6851,8 @@ export type GraphicType =
   | "rect"
   | "line"
   | "text"
-  | "path";
+  | "path"
+  | "image";
 ```
 
 ### `GridDirectionOptions` {#type-griddirectionoptions}
@@ -6799,6 +6950,103 @@ export type HeatmapCategoryPositionChannel =
 ```
 
 Related types: [`NonPointBandPositionScaleOptions`](../../../reference/types/#type-nonpointbandpositionscaleoptions).
+
+### `HierarchyBodyPaint` {#type-hierarchybodypaint}
+
+ Expand HierarchyBodyPaint
+
+```typescript
+export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidth?: number; opacity?: number; }
+```
+
+### `HierarchyLabelPaint` {#type-hierarchylabelpaint}
+
+ Expand HierarchyLabelPaint
+
+```typescript
+export interface HierarchyLabelPaint { fill?: string; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+```
+
+### `HierarchyLabelsOptions` {#type-hierarchylabelsoptions}
+
+ Expand HierarchyLabelsOptions
+
+```typescript
+export interface HierarchyLabelsOptions extends HierarchyLabelPaint {
+  content?: "value"; offset?: readonly [number, number]; overrides?: readonly (HierarchyNodeTarget & HierarchyLabelPaint & { text?: string })[];
+}
+```
+
+Related types: [`HierarchyLabelPaint`](../../../reference/types/#type-hierarchylabelpaint) · [`HierarchyNodeTarget`](../../../reference/types/#type-hierarchynodetarget).
+
+### `HierarchyNodePaint` {#type-hierarchynodepaint}
+
+ Expand HierarchyNodePaint
+
+```typescript
+export interface HierarchyNodePaint extends HierarchyBodyPaint { radius?: number; }
+```
+
+Related types: [`HierarchyBodyPaint`](../../../reference/types/#type-hierarchybodypaint).
+
+### `HierarchyNodeTarget` {#type-hierarchynodetarget}
+
+ Expand HierarchyNodeTarget
+
+```typescript
+export type HierarchyNodeTarget = { key: RowKeyScalar; path?: never } | { path: readonly (RowKeyScalar | null)[]; key?: never };
+```
+
+Related types: [`RowKeyScalar`](../../../reference/types/#type-rowkeyscalar).
+
+### `HierarchyOrder` {#type-hierarchyorder}
+
+ Expand HierarchyOrder
+
+```typescript
+export type HierarchyOrder = "input"
+  | { by: "value" | "key"; direction: "ascending" | "descending" }
+  | { by: "field"; field: string; direction: "ascending" | "descending"; nulls?: "first" | "last"; temporalUnit?: "year" | "timestamp" };
+```
+
+### `HierarchySource` {#type-hierarchysource}
+
+ Expand HierarchySource
+
+```typescript
+export type HierarchySource =
+  | { key: string; parent: string; value: string; children?: never; groupFields?: never; valueMode?: HierarchyValueMode; forest?: boolean; missingCategory?: never }
+  | { key: string; children: string; value: string; parent?: never; groupFields?: never; valueMode?: HierarchyValueMode; forest?: boolean; missingCategory?: never }
+  | { groupFields: readonly string[]; value: string; key?: never; parent?: never; children?: never; valueMode?: "leaf-sum"; forest?: never; missingCategory?: "error" | "include" };
+```
+
+Related types: [`HierarchyValueMode`](../../../reference/types/#type-hierarchyvaluemode).
+
+### `HierarchyTreeOptions` {#type-hierarchytreeoptions}
+
+ Expand HierarchyTreeOptions
+
+```typescript
+export type HierarchyTreeOptions = { nodeSize: readonly [number, number]; siblingGap: number; depthGap: number; maxNodes?: number } &
+  ({ orientation: "vertical" | "horizontal"; radius?: never; startAngle?: never; sweep?: never }
+  | { orientation: "radial"; radius: number; startAngle: number; sweep: number });
+```
+
+### `HierarchyTreemapOptions` {#type-hierarchytreemapoptions}
+
+ Expand HierarchyTreemapOptions
+
+```typescript
+export interface HierarchyTreemapOptions { size: readonly [number, number]; padding: number; method: "slice-dice" | "squarify"; maxNodes?: number; }
+```
+
+### `HierarchyValueMode` {#type-hierarchyvaluemode}
+
+ Expand HierarchyValueMode
+
+```typescript
+export type HierarchyValueMode = "leaf-sum" | "inclusive" | "own-plus-children";
+```
 
 ### `HighlightMarksOptions` {#type-highlightmarksoptions}
 
@@ -7015,6 +7263,22 @@ export type HorizonYScaleOptions = ScaleFields<"id" | "clamp" | "reverse"> & {
 ```
 
 Related types: [`ScaleFields`](../../../reference/types/#type-scalefields).
+
+### `ImageMarkOptions` {#type-imagemarkoptions}
+
+ Expand ImageMarkOptions
+
+```typescript
+export interface ImageMarkOptions {
+  image?: string;
+  viewport?: "auto" | { x: number; y: number; width: number; height: number };
+  fit?: "contain" | "cover" | "fill";
+  align?: readonly [number, number];
+  opacity?: number; alt?: string; clip?: false | GraphicClip;
+}
+```
+
+Related types: [`GraphicClip`](../../../reference/types/#type-graphicclip).
 
 ### `ImputedDataBaseOptions` {#type-imputeddatabaseoptions}
 
@@ -7264,6 +7528,20 @@ export type LayerPlotSpecification = {
 ```
 
 Related types: [`AdjacentPlotSpecification`](../../../reference/types/#type-adjacentplotspecification).
+
+### `LayoutHierarchyOptions` {#type-layouthierarchyoptions}
+
+ Expand LayoutHierarchyOptions
+
+```typescript
+export type LayoutHierarchyOptions = { id: string; hierarchy?: string; order?: HierarchyOrder } &
+  ({ method: "partition"; options?: { maxNodes?: number } }
+  | { method: "tree"; options: HierarchyTreeOptions }
+  | { method: "treemap"; options: HierarchyTreemapOptions });
+/** The method remains fixed; supplied options patch its existing layout intent. */
+```
+
+Related types: [`HierarchyOrder`](../../../reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](../../../reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](../../../reference/types/#type-hierarchytreemapoptions).
 
 ### `LegendBlockSymbolPatch` {#type-legendblocksymbolpatch}
 
@@ -8540,6 +8818,14 @@ Related types: [`ConfidenceIntervalMethod`](../../../reference/types/#type-confi
 export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 ```
 
+### `PathFillRule` {#type-pathfillrule}
+
+ Expand PathFillRule
+
+```typescript
+export type PathFillRule = "nonzero" | "evenodd";
+```
+
 ### `PathLegendOptions` {#type-pathlegendoptions}
 
  Expand PathLegendOptions
@@ -9103,6 +9389,18 @@ export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = Dat
 ```
 
 Related types: [`DataUpdateRequest`](../../../reference/types/#type-dataupdaterequest) · [`DataUpdateDescriptors`](../../../reference/types/#type-dataupdatedescriptors).
+
+### `PreparedImageResource` {#type-preparedimageresource}
+
+ Expand PreparedImageResource
+
+```typescript
+export interface PreparedImageResource<Kind extends "create" | "replace" = "create" | "replace"> {
+  readonly [preparedImageResourceBrand]: Kind;
+  readonly kind: "image-resource";
+  readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+```
 
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
@@ -9951,6 +10249,16 @@ export interface RemoveResourceOptions {
 }
 ```
 
+### `RemoveStoredResourceOptions` {#type-removestoredresourceoptions}
+
+ Expand RemoveStoredResourceOptions
+
+```typescript
+export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }
+```
+
+Related types: [`StoredResourceKind`](../../../reference/types/#type-storedresourcekind).
+
 ### `ReorderCompositionChildrenOptions` {#type-reordercompositionchildrenoptions}
 
  Expand ReorderCompositionChildrenOptions
@@ -10622,6 +10930,14 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
   : T;
 ```
 
+### `StoredResourceKind` {#type-storedresourcekind}
+
+ Expand StoredResourceKind
+
+```typescript
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image";
+```
+
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}
 
  Expand StripBandJitterOptions
@@ -11238,6 +11554,33 @@ export interface TitleTextStyleOptions {
   fontWeight?: string | number;
 }
 ```
+
+### `TreePlotOptions` {#type-treeplotoptions}
+
+ Expand TreePlotOptions
+
+```typescript
+export interface TreePlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  nodes?: HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] };
+  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number }; labels?: false | HierarchyLabelsOptions;
+}
+```
+
+Related types: [`HierarchyNodePaint`](../../../reference/types/#type-hierarchynodepaint) · [`HierarchyNodeTarget`](../../../reference/types/#type-hierarchynodetarget) · [`HierarchyLabelsOptions`](../../../reference/types/#type-hierarchylabelsoptions).
+
+### `TreemapPlotOptions` {#type-treemapplotoptions}
+
+ Expand TreemapPlotOptions
+
+```typescript
+export interface TreemapPlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] }; labels?: false | HierarchyLabelsOptions;
+}
+```
+
+Related types: [`HierarchyBodyPaint`](../../../reference/types/#type-hierarchybodypaint) · [`HierarchyNodeTarget`](../../../reference/types/#type-hierarchynodetarget) · [`HierarchyLabelsOptions`](../../../reference/types/#type-hierarchylabelsoptions).
 
 ### `UtcFormatString` {#type-utcformatstring}
 

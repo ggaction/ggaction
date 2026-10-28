@@ -2,7 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { renderCanvasProgram } from "./canvas/index.js";
 import { validateRendererOptions } from "./options.js";
-import { loadNativeBackend, nativeFontResolver } from "./nativeBackend.js";
+import { loadNativeBackend, nativeFontResolver, prepareNativeImages } from "./nativeBackend.js";
 
 const PNG_OPTIONS = new Set(["output", "pixelRatio"]);
 const BUFFER_OPTIONS = new Set(["pixelRatio"]);
@@ -10,9 +10,10 @@ const BUFFER_OPTIONS = new Set(["pixelRatio"]);
 export async function renderToPNGBuffer(program, options = {}) {
   validateRendererOptions(options, BUFFER_OPTIONS, "renderToPNGBuffer options");
   const { pixelRatio = 1 } = options;
-  const { createCanvas, GlobalFonts } = await loadNativeBackend();
+  const { createCanvas, GlobalFonts, loadImage } = await loadNativeBackend();
+  const images = await prepareNativeImages(program, loadImage);
   const canvas = createCanvas(1, 1);
-  renderCanvasProgram(program, canvas.getContext("2d"), { pixelRatio }, createCanvas,
+  renderCanvasProgram(program, canvas.getContext("2d"), { pixelRatio, images }, createCanvas,
     { resolveFontFamily: nativeFontResolver(GlobalFonts) });
   // Canvas drawing is synchronous; encoding uses the native async worker.
   const buffer = await canvas.encode("png");

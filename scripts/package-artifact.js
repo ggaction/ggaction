@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 763, // Shared outline normalization and Canvas contour drawing owners.
-  packedBytes: 1_132_000, // Outline checkpoint Node20/24 maximum: 1,131,929 bytes.
-  unpackedBytes: 5_213_000 // Outline runtime, declarations and knowledge: 5,212,872 bytes.
+  entries: 794,
+  packedBytes: 1_178_000,
+  unpackedBytes: 5_411_000
 });
 
 const REQUIRED_FILES = Object.freeze([

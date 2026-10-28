@@ -1,0 +1,3 @@
+export interface HierarchyLabelsOptions extends HierarchyLabelPaint {
+  content?: "value"; offset?: readonly [number, number]; overrides?: readonly (HierarchyNodeTarget & HierarchyLabelPaint & { text?: string })[];
+}

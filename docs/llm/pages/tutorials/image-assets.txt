@@ -1,0 +1,103 @@
+# Place a retained image
+
+Prepare image bytes explicitly, then use one image mark to control its fit,
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-paints/examples/image-assets/)
+uses one pinned SVG asset for six placements and retains the bytes for offline export.
+
+## Prepare and place
+
+The canonical [example program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-paints/examples/image-assets/program.js) loads its
+inline asset through `prepareImageResource` and applies the returned handle to the
+same immutable program. Its application-owned decoder reports the source dimensions.
+The synchronous `createImageResource` action stores the validated bytes. Then
+`createImageMark` places that resource in a square viewport.
+
+```js
+// Fragment after the exact prepared resource has been committed.
+program = program.createImageMark({
+  image: "logo",
+  viewport: { x: 50, y: 60, width: 100, height: 100 },
+  fit: "contain",
+  align: [0.5, 0.5],
+  alt: "Four colored quadrants with a white center"
+});
+```
+
+`contain` preserves the whole source; `cover` fills the viewport and clips overflow;
+`fill` scales both dimensions independently. `editImageMark` preserves omitted
+options. Set `viewport:"auto"` to follow the plot size after resizing.
+
+## Render and preserve
+
+Browser Canvas uses `prepareImageRendering` with an explicit decoder and passes the
+result as `render(program, context, {images})`. SVG, PNG and PDF export the retained
+bytes without fetching the source URI. See [rendering](../../../api/rendering/#embedded-images)
+for the decoder and resource budgets. The example's public program, explicit primitive,
+and four backend tests share the same placement inputs.
+
+Use `replaceImageResource` with a newly prepared replacement to update every image
+mark that references the resource. Item keys and alternative text remain stable.
+`removeMark` removes a placement while retaining the shared image source.
+
+## Complete program
+
+Run this browser ES module with `ggaction` installed and a `<canvas id="chart">` element.
+The decoder also supports Node with the optional native Canvas peer.
+The decoration primitives reproduce the example title and viewport background.
+
+```js
+import { chart, prepareImageResource, prepareImageRendering, render } from "ggaction";
+const frame = { width: 200, height: 210 };
+const viewport = { x: 50, y: 60, width: 100, height: 100 };
+const fixtures = [{ title: "contain · center", fit: "contain", align: [0.5, 0.5] }];
+const imageClip = false;
+const assetSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100"><rect width="200" height="100" fill="#de5b49"/><rect x="100" width="100" height="50" fill="#397bb8"/><rect y="50" width="100" height="50" fill="#259782"/><rect x="100" y="50" width="100" height="50" fill="#edbd46"/><circle cx="100" cy="50" r="16" fill="white"/></svg>';
+const assetHash = '97f99c97b9a4d34f5c4914c2cf9cd7a2df05e55ec2b9dbd08081609b808718c6';
+async function decodeImage({ bytes, mimeType }) {
+  let image;
+  if (typeof globalThis.Image === "function") {
+    const url = URL.createObjectURL(new Blob([bytes], { type: mimeType }));
+    try { image = new Image(); image.src = url; await image.decode(); }
+    finally { URL.revokeObjectURL(url); }
+  } else {
+    const nativeModule = "@napi-rs/canvas";
+    image = await (await import(/* @vite-ignore */ nativeModule)).loadImage(bytes);
+  }
+  return { image, width: image.width, height: image.height, originClean: true };
+}
+const base = chart().createCanvas({ width: frame.width, height: frame.height, margin: 0 });
+const requestToken = "example-image";
+const prepared = await prepareImageResource(base, {
+  kind: "create", id: "logo", uri: "fixture:quadrants", expectedHash: assetHash, mimeType: "image/svg+xml"
+}, { requestToken, load: () => ({ bytes: new TextEncoder().encode(assetSVG), mimeType: "image/svg+xml" }),
+  decode: async request => { const { width, height, originClean } = await decodeImage(request); return { width, height, originClean }; } });
+
+function createImageExample(fixture = fixtures[0]) {
+  return base.createImageResource({ prepared, requestToken })
+    .createGraphics({ id: "label", type: "text", parent: "plot-main" })
+    .editGraphics({ target: "label", property: "x", value: 12 })
+    .editGraphics({ target: "label", property: "y", value: 25 })
+    .editGraphics({ target: "label", property: "text", value: fixture.title })
+    .editGraphics({ target: "label", property: "fontSize", value: 14 })
+    .editGraphics({ target: "label", property: "fontFamily", value: "Arial" })
+    .editGraphics({ target: "label", property: "fontWeight", value: "normal" })
+    .editGraphics({ target: "label", property: "textAlign", value: "left" })
+    .editGraphics({ target: "label", property: "textBaseline", value: "alphabetic" })
+    .editGraphics({ target: "label", property: "fill", value: "#243447" })
+    .createGraphics({ id: "backdrop", type: "rect", parent: "plot-main" })
+    .editGraphics({ target: "backdrop", property: "x", value: 50 })
+    .editGraphics({ target: "backdrop", property: "y", value: 60 })
+    .editGraphics({ target: "backdrop", property: "width", value: 100 })
+    .editGraphics({ target: "backdrop", property: "height", value: 100 })
+    .editGraphics({ target: "backdrop", property: "fill", value: "#e2e8f0" })
+    .editGraphics({ target: "backdrop", property: "stroke", value: "none" })
+    .editGraphics({ target: "backdrop", property: "strokeWidth", value: 0 })
+    .createImageMark({ image: "logo", viewport, fit: fixture.fit, align: fixture.align,
+      opacity: fixture.opacity ?? 1, clip: fixture.circleClip ? imageClip : false,
+      alt: "Four colored quadrants with a white center" });
+}
+
+const program = createImageExample();
+const images = await prepareImageRendering(program, {decode: decodeImage});
+render(program, document.querySelector("#chart").getContext("2d"), {images});
+```

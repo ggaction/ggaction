@@ -7,7 +7,7 @@ import { collectResourceReferences } from "../../../src/core/resourceReferences.
 import { prepareDataSource } from "../../../src/resources/resolveData.js";
 import { parameterEnvironment } from "../../../src/grammar/parameter.js";
 import { withPreparedDatasetIdentity } from "../../../src/actions/primitives/datasetIdentity.js";
-import { withPreparedSourceResources, preparedSourceResources } from "../../../src/actions/primitives/dataSourceContext.js";
+import { withPreparedResourceResults, preparedResourceResults } from "../../../src/actions/primitives/preparedResourceContext.js";
 import { adoptSelectionResources, detachDataSourceBindings } from "../../../src/actions/primitives/resourceState.js";
 import { validateStoredResource, validateResourceGraph, collectParameterInputReferences } from "../../../src/materialization/resourceState.js";
 import { createDataSourceReceipt, createDataSourceResource, normalizeDataSourceOptions,
@@ -179,23 +179,24 @@ test("prepared final source envelopes apply exactly once with the parameter prim
   const nextResource = createDataSourceResource({ id: "rows", revision: 1, options, prepared, dataset: staged.semanticSpec.datasets.at(-1) });
   const args = { property: "resource[parameter:region]", value: revised };
   const replacements = [{ previous: { kind: "data-source", id: "rows", revision: 0 }, resource: nextResource }];
-  const changed = withPreparedSourceResources(args, replacements, input => staged.editSemantic(input));
-  assert.equal(preparedSourceResources(args), undefined);
+  const changed = withPreparedResourceResults(staged, args, replacements, input => staged.editSemantic(input));
+  assert.equal(preparedResourceResults(args), undefined);
   assert.equal(validateDataSourceState(changed), changed);
   assert.equal(changed.semanticSpec.resources.find(value => value.kind === "data-source").revision, 1);
   assert.deepEqual(changed.semanticSpec.datasets.at(-1).values, [{ value: 7 }, { value: 8 }]);
   assert.deepEqual(changed.semanticSpec.datasets[0].values, [{ value: 1 }, { value: 2 }]);
   assert.doesNotThrow(() => deserializeProgram(serializeProgram(changed)));
-  assert.throws(() => withPreparedSourceResources(args, replacements, () => { throw new Error("stop"); }), /stop/);
-  assert.equal(preparedSourceResources(args), undefined);
+  assert.throws(() => withPreparedResourceResults(staged, args, replacements, () => { throw new Error("stop"); }), /stop/);
+  assert.equal(preparedResourceResults(args), undefined);
   const copied = { ...args };
-  assert.throws(() => validateDataSourceState(withPreparedSourceResources(args, replacements, () => staged.editSemantic(copied))), code("stale-result"));
-  assert.throws(() => withPreparedSourceResources(args, replacements, input => changed.editSemantic(input)));
+  assert.throws(() => validateDataSourceState(withPreparedResourceResults(staged, args, replacements, () => staged.editSemantic(copied))), code("stale-result"));
+  assert.throws(() => withPreparedResourceResults(staged, args, replacements, input => changed.editSemantic(input)));
+  assert.throws(() => withPreparedResourceResults(staged, args, replacements, input => staged._clone({}).editSemantic(input)), code("stale-result"));
   assert.equal(resource.revision, 0);
 });
 
 test("private source envelopes reject forged authority and restore nested context on every exit", async () => {
-  const { resource } = await liveURL();
+  const { resource, program } = await liveURL();
   const args = { property: "resource[parameter:region]" };
   const valid = { previous: { kind: "data-source", id: "rows", revision: 0 }, resource: { ...resource, revision: 1 } };
   const invalid = [
@@ -207,19 +208,19 @@ test("private source envelopes reject forged authority and restore nested contex
   ];
   let invoked = 0;
   for (const replacements of invalid) {
-    assert.throws(() => withPreparedSourceResources(args, replacements, () => { invoked++; }));
-    assert.equal(preparedSourceResources(args), undefined);
+    assert.throws(() => withPreparedResourceResults(program, args, replacements, () => { invoked++; }));
+    assert.equal(preparedResourceResults(args), undefined);
   }
   assert.equal(invoked, 0);
-  withPreparedSourceResources(args, [valid], () => {
-    const outer = preparedSourceResources(args);
+  withPreparedResourceResults(program, args, [valid], () => {
+    const outer = preparedResourceResults(args);
     assert.ok(Object.isFrozen(outer[0].resource));
-    withPreparedSourceResources(args, [], () => assert.deepEqual(preparedSourceResources(args), []));
-    assert.equal(preparedSourceResources(args), outer);
-    assert.throws(() => withPreparedSourceResources(args, [], () => { throw new Error("nested"); }), /nested/);
-    assert.equal(preparedSourceResources(args), outer);
+    withPreparedResourceResults(program, args, [], () => assert.deepEqual(preparedResourceResults(args), []));
+    assert.equal(preparedResourceResults(args), outer);
+    assert.throws(() => withPreparedResourceResults(program, args, [], () => { throw new Error("nested"); }), /nested/);
+    assert.equal(preparedResourceResults(args), outer);
   });
-  assert.equal(preparedSourceResources(args), undefined);
+  assert.equal(preparedResourceResults(args), undefined);
 });
 
 test("source receipt restore rejects base URL, output, key-policy and parameter proof mismatches", async () => {

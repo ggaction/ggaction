@@ -24,45 +24,42 @@ export function isOwned(value) {
 }
 
 export function cloneAndFreeze(value, ancestors = new WeakSet(), path = "state") {
-  if (typeof value === "function") {
-    throw new TypeError(`Cannot store a function at ${path} in a ChartProgram.`);
+  const pending = [];
+  function copy(input, location) {
+    if (typeof input === "function") throw new TypeError(`Cannot store a function at ${location} in a ChartProgram.`);
+    if (input === null || typeof input !== "object") return input;
+    // A caller's shallow freeze never establishes ownership of descendants.
+    if (isOwned(input)) return input;
+    if (ancestors.has(input)) throw new TypeError("Cannot store cyclic values in a ChartProgram.");
+    const array = Array.isArray(input);
+    if (!array && !isPlainObject(input)) throw new TypeError("ChartProgram state only supports plain objects and arrays.");
+    const clone = array ? new Array(input.length) : {};
+    // Objects snapshot their entries before descent. Arrays retain map's
+    // length snapshot and read each present index when it is visited.
+    const entries = array ? undefined : Object.entries(input);
+    ancestors.add(input);
+    pending.push({ input, clone, array, entries, cursor: 0, length: array ? clone.length : entries.length, location });
+    return clone;
   }
-  if (value === null || typeof value !== "object") {
-    return value;
-  }
-
-  // Only library-owned values are recursively immutable; Object.freeze alone
-  // does not prove ownership of a caller's descendants.
-  if (isOwned(value)) return value;
-
-  if (ancestors.has(value)) {
-    throw new TypeError("Cannot store cyclic values in a ChartProgram.");
-  }
-
-  ancestors.add(value);
-
-  let clone;
-
-  if (Array.isArray(value)) {
-    clone = value.map((item, index) => cloneAndFreeze(item, ancestors, `${path}[${index}]`));
-  } else if (isPlainObject(value)) {
-    clone = {};
-    // Snapshot entries before descending, as with Object.fromEntries, but avoid
-    // allocating a second entries array and a pair for every stored property.
-    for (const [key, item] of Object.entries(value)) {
-      const child = cloneAndFreeze(item, ancestors, `${path}.${key}`);
-      if (key in Object.prototype) {
-        Object.defineProperty(clone, key, {
-          value: child, enumerable: true, writable: true, configurable: true
-        });
-      } else clone[key] = child;
+  const result = copy(value, path);
+  while (pending.length) {
+    const frame = pending.at(-1);
+    if (frame.cursor === frame.length) {
+      freezeOwned(frame.clone);
+      ancestors.delete(frame.input);
+      pending.pop();
+      continue;
     }
-  } else {
-    throw new TypeError("ChartProgram state only supports plain objects and arrays.");
+    const index = frame.cursor++;
+    if (frame.array && !(index in frame.input)) continue;
+    const [key, item] = frame.array ? [index, frame.input[index]] : frame.entries[index];
+    const child = copy(item, frame.array ? `${frame.location}[${key}]` : `${frame.location}.${key}`);
+    if (!frame.array && key in Object.prototype) Object.defineProperty(frame.clone, key, {
+      value: child, enumerable: true, writable: true, configurable: true
+    });
+    else frame.clone[key] = child;
   }
-
-  ancestors.delete(value);
-  return freezeOwned(clone);
+  return result;
 }
 
 export function removeOwnedPath(source, path) {

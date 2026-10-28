@@ -10,7 +10,7 @@ function nonnegative(value, label) {
   return value;
 }
 
-function parameters(options) {
+export function normalizeTreeOptions(options) {
   ownRecord(options, "Hierarchy tree options");
   rejectUnknownProperties(options, ["nodeSize", "siblingGap", "depthGap", "orientation", "radius", "startAngle", "sweep", "maxNodes"], "hierarchy tree");
   if (["nodeSize", "siblingGap", "depthGap", "orientation"].some(field => !Object.hasOwn(options, field))) throw new TypeError("Hierarchy tree requires all own layout options.");
@@ -70,7 +70,7 @@ function overlay(primary, secondary, charge) {
 }
 
 export function layoutHierarchyTree(model, options) {
-  const resolved = parameters(options), indexed = indexHierarchyModel(model, Object.hasOwn(resolved, "maxNodes") ? resolved.maxNodes : undefined);
+  const resolved = normalizeTreeOptions(options), indexed = indexHierarchyModel(model, Object.hasOwn(resolved, "maxNodes") ? resolved.maxNodes : undefined);
   const { nodes, indexes } = indexed;
   let work = indexed.work;
   const charge = amount => validateWorkLimit(work += amount, "Hierarchy tree work");

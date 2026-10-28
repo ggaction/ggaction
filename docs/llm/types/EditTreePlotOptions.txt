@@ -1,0 +1,1 @@
+export interface EditTreePlotOptions extends Omit<TreePlotOptions, "id"> { target?: string; }

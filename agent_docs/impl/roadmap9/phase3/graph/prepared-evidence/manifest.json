@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "parents": [
+    "dc31450c",
+    "d6263c2e"
+  ],
+  "status": "passed",
+  "scope": "Graph kernels plus exact-constructor resource kinds, typed binding collectors and prepared dependent replacement authority. No public graph action is exposed by this checkpoint.",
+  "results": {
+    "focusedUnit": 144,
+    "boundaries": 24,
+    "finalContracts": 10
+  },
+  "package": {
+    "entries": 762,
+    "unpackedBytes": 5205281,
+    "packedBytes": {
+      "node20": 1131413,
+      "node22": 1128584,
+      "node24": 1131413
+    },
+    "ceilings": {
+      "entries": 762,
+      "unpackedBytes": 5206000,
+      "packedBytes": 1132000
+    }
+  },
+  "coverage": {
+    "status": "reused",
+    "sources": [
+      "../approximate-evidence/manifest.json",
+      "../../hierarchy/PREPARED_RESOURCES.md"
+    ],
+    "reason": "No runtime conflict resolution or behavior edit; only package caps and current documentation ceilings changed during this merge."
+  },
+  "evidence": [
+    {
+      "path": "graph-prepared-unit.log.gz",
+      "sha256": "98def41df17d9697ee6758469c56d00c1d27ba4d9c613628e844d74b569d49d6",
+      "bytes": 33883
+    },
+    {
+      "path": "graph-prepared-boundaries.log.gz",
+      "sha256": "fb940203a45210b7cb706da35972d3e34ca21665858bd2dd16f9c4d2ede0fc12",
+      "bytes": 4756
+    },
+    {
+      "path": "graph-prepared-final-contracts.log.gz",
+      "sha256": "69101c2c6a5ed2b43712a7184b5755e9608350c98916f4503d0de9526d64f178",
+      "bytes": 2364
+    },
+    {
+      "path": "graph-prepared-package22-measure.json.gz",
+      "sha256": "cc2909c7373f6b2eb4cfe068c33a37b2377cf443815b3b4cf72fc746443bd0bc",
+      "bytes": 160
+    },
+    {
+      "path": "graph-prepared-package20-measure.json.gz",
+      "sha256": "6be1803119fe68df47902eaaf0f0303b7ffcb423298ebaca60f2d3a805383243",
+      "bytes": 160
+    },
+    {
+      "path": "graph-prepared-package24.json.gz",
+      "sha256": "6be1803119fe68df47902eaaf0f0303b7ffcb423298ebaca60f2d3a805383243",
+      "bytes": 160
+    }
+  ]
+}

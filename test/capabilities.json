@@ -32,6 +32,10 @@
       },
       {
         "type": "file",
+        "path": "unit/immutable-depth.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/graphic-lookup-reuse.test.js"
       },
       {
@@ -358,11 +362,35 @@
       },
       {
         "type": "prefix",
-        "path": "gates/tree-layouts/"
+        "path": "charts/tree-layouts/"
       },
       {
         "type": "prefix",
-        "path": "gates/treemap-layouts/"
+        "path": "charts/treemap-layouts/"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/hierarchy-resources.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/hierarchy-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/hierarchy-consumers.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/hierarchy-validation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/facet-source-identity.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/hierarchy-types.test.js"
       }
     ],
     "horizon": [
@@ -390,7 +418,7 @@
     "image-assets": [
       {
         "type": "prefix",
-        "path": "gates/image-assets/"
+        "path": "charts/image-assets/"
       },
       {
         "type": "file",
@@ -407,6 +435,26 @@
       {
         "type": "file",
         "path": "unit/resources/paint-image-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/image-resource-lifecycle.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/image-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/core/resource-graphic-identity.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/image-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/persistence/image-resources.test.js"
       }
     ],
     "inspection": [

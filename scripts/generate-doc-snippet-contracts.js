@@ -35,7 +35,7 @@ export async function generateDocSnippetContracts({ check = false } = {}) {
       const receivers = receiverNames(block.code);
       const resources = [...new Set([...block.code.matchAll(/\b(target|data|source|selection):\s*["']([^"']+)["']/g)]
         .map(match => `${match[1]}: "${match[2]}"`))];
-      const mode = registered?.mode ?? (/\btry\s*\{/.test(block.code) ? "expected-error" : /\b(?:alternative|each starts)\b/i.test(block.code) ? "alternative" : "fragment");
+      const mode = registered?.mode ?? (/\bcatch\s*(?:\([^)]*\))?\s*\{/.test(block.code) ? "expected-error" : /\b(?:alternative|each starts)\b/i.test(block.code) ? "alternative" : "fragment");
       const prerequisites = registered?.prerequisites ?? [
         "Use an ES module with the imports, data, and prepared resource state described in this section.",
         ...(receivers.length ? [`Caller-provided receivers: ${receivers.map(name => `\`${name}\``).join(", ")}.`] : []),

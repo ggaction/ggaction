@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 3,
+  "name": "layoutHierarchy",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Compute an explicit tree, treemap, or normalized partition layout from a named hierarchy.",
+  "signature": "layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;",
+  "intents": [
+    "layout hierarchy",
+    "layout",
+    "avoid overlap",
+    "chart setup",
+    "data and scales",
+    "tree layout",
+    "treemap layout"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing hierarchy resource"
+    ],
+    "owns": [
+      "tree layout"
+    ],
+    "idOptions": [
+      "id",
+      "hierarchy",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editLayout",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing hierarchy resource"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "hierarchy",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "order",
+      "required": false,
+      "type": "HierarchyOrder | undefined"
+    },
+    {
+      "name": "method",
+      "required": true,
+      "type": "\"partition\" | \"tree\" | \"treemap\""
+    },
+    {
+      "name": "options",
+      "required": false,
+      "type": "HierarchyTreemapOptions | { maxNodes?: number | undefined; } | HierarchyTreeOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "layoutHierarchy({ id, method, target?, hierarchy?, order?, options? })"
+  ],
+  "snippet": "program.layoutHierarchy({ id: \"tree-layout\", hierarchy: \"hierarchy\", method: \"tree\", options: { nodeSize: [20, 10], siblingGap: 10, depthGap: 20, orientation: \"vertical\" } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#layouthierarchy"
+}

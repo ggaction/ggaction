@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "taskId": "STEP-016",
+  "status": "complete",
+  "implementationCommit": "a561ae1c5a2e51c2a5e8b265678c89bbeaa34311",
+  "contractRevision": "approved-roadmap9-execution-through-STEP-077",
+  "gateEvidence": [
+    {
+      "path": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+      "sha256": "e1a4ec38a566c8ee711708b37cc12632fb304b771b21a7469aac80bb221d958b"
+    }
+  ],
+  "commands": [
+    {
+      "command": "node scripts/run-tests.js all",
+      "exitCode": 0,
+      "logPath": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/00-conditional-integration-all.log.gz",
+      "logSha256": "c68f0d2d18bd0509d6d9a174671b6e0f40bb5b3b509e4a76bce5fdf1fd5234c9"
+    },
+    {
+      "command": "node scripts/run-tests.js realistic",
+      "exitCode": 0,
+      "logPath": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/01-conditional-integration-realistic.log.gz",
+      "logSha256": "c0e6438f7d05869e65ba07094b48357fb87961517f724b803336b2ad45d1c978",
+      "environment": {
+        "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT": "/Users/hyeonjeon/Projects/ggactionnewbrand/.artifacts/datasets/tidytuesday"
+      },
+      "bounds": {
+        "heapMiB": 512,
+        "concurrency": 2
+      }
+    },
+    {
+      "command": "node scripts/run-render-tests.js",
+      "exitCode": 0,
+      "logPath": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/02-conditional-integration-render.log.gz",
+      "logSha256": "a8f67e1b31c62421a1a2ac9317d339594cdd7afdcb8a157916f4d430112f149d"
+    },
+    {
+      "command": "node scripts/run-tests.js browser",
+      "exitCode": 0,
+      "logPath": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/03-conditional-integration-browser.log.gz",
+      "logSha256": "f215587f6487aec92031813152e05369255ca08907a851e9cc646cc923a96e18"
+    },
+    {
+      "command": "node scripts/qualify-conditionals.js",
+      "exitCode": 0,
+      "logPath": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/07-conditional-integration-acceptance.log.gz",
+      "logSha256": "1895c6bd26717d29a6229250f56c4b32b3b168344c970e49ad85b26fe3d9c0a8"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/manifest.json",
+      "sha256": "ba7fd17071b8b5722784d7556273da3132dfa4d12045783069aa1076ece55cb6"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/00-conditional-integration-all.log.gz",
+      "sha256": "c68f0d2d18bd0509d6d9a174671b6e0f40bb5b3b509e4a76bce5fdf1fd5234c9"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/01-conditional-integration-realistic.log.gz",
+      "sha256": "c0e6438f7d05869e65ba07094b48357fb87961517f724b803336b2ad45d1c978"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/02-conditional-integration-render.log.gz",
+      "sha256": "a8f67e1b31c62421a1a2ac9317d339594cdd7afdcb8a157916f4d430112f149d"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/03-conditional-integration-browser.log.gz",
+      "sha256": "f215587f6487aec92031813152e05369255ca08907a851e9cc646cc923a96e18"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/04-conditional-integration-docs.log.gz",
+      "sha256": "e2a62855439164f8a5a3ce93b47ffb7a23bb607645596f9a5a6e74efdc2809f1"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/05-conditional-integration-docs-build.log.gz",
+      "sha256": "0c27d2f16eaf016d2587ebe4dffefeb18c94a924ec62b66a63aa73d56b370d08"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/06-conditional-integration-docs-browser.log.gz",
+      "sha256": "a0ac0a6d4a3941eb57dcdcca7f46a3c1e0f3e0939fe3b04bf5e1226db2cb5257"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/07-conditional-integration-acceptance.log.gz",
+      "sha256": "1895c6bd26717d29a6229250f56c4b32b3b168344c970e49ad85b26fe3d9c0a8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/08-conditionals.json.gz",
+      "sha256": "fbedbdd28cf07c436b492e87049f0e1cf9f97f582f139ded9a603ef29292ef5a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/09-conditional-integration-installed-node20.log.gz",
+      "sha256": "57eeb1151baa6133310da173602150bfd7a4737414e4bd83c07e6955d1dc0f83"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/10-conditional-integration-installed-node20-absolute.log.gz",
+      "sha256": "ad593640ffca021333ee01713b882d1791bcb5ecc06cc8794ea25411b2575510"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/11-conditional-integration-installed-node22.log.gz",
+      "sha256": "fdcfa7fb27684f8e1b16dda2d23750af5f0e107373fd77848240f867c2ab5430"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/12-conditional-integration-installed-node24.log.gz",
+      "sha256": "5580acef42c4f34fd8283cecbc5946f91514216ce99cc69697e3907b604f7f5a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/13-conditional-integration-package-node20.json.gz",
+      "sha256": "1dd2d194deb73e11b157826d8ebb42b7df0bfd789af9d7a201fd9516a7991454"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/14-conditional-integration-package-node22.json.gz",
+      "sha256": "df663132b09adc557c6a64cc889692b18890ffee212952766a27354dc9c885b8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/15-conditional-integration-package-node24.json.gz",
+      "sha256": "1dd2d194deb73e11b157826d8ebb42b7df0bfd789af9d7a201fd9516a7991454"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/16-node-cases.json.gz",
+      "sha256": "fd8f21d0c9c394a82acfa72edad55ed2a5d9c67544363233dcac4bc67d353892"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/17-qualification.json.gz",
+      "sha256": "9a14bcc669a08ccdc3fa722114f862df13c4fdd3be5a4d200d4fbd5d9bb49e4e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/18-node-cases.json.gz",
+      "sha256": "220ef2590af80d7b0d3ec1e62c5fc216b7e37bb43ad1003a46f4c3fc8aecbad3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/19-qualification.json.gz",
+      "sha256": "5eebcc1d41047cb156cd322333e8f303f53adea2f2ed68d34665d55bb1b795cb"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/20-node-cases.json.gz",
+      "sha256": "4b1294badc41390ff757d590f9dd685ebd030d963f03f03940d0dc1b560e84d8"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/21-qualification.json.gz",
+      "sha256": "915f6cefc3682799d088d6eaf74b4186fbc88fb1eb91c49337f792d447d57dc3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/22-suite-all.json.gz",
+      "sha256": "52f6a70dace4b768599d26ee01211a2bb0d08bf394bb7fff57cb7e57dec48c6f"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/23-suite-realistic.json.gz",
+      "sha256": "7798e6e1c352ba7182ee3310eea84b8e644e63a7a893911f58d6cea5de7ab276"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/24-suite-browser.json.gz",
+      "sha256": "a8470d919c75891aa5a243cdfa3813cb20d129beed6a5e96e246e3ed234396fb"
+    }
+  ],
+  "independentOracleReview": {
+    "acceptance": "AT-18",
+    "checks": 8,
+    "inputSha256": "4e9d09ac74c579c5925e39ebef114c7a0f0fd0222a3cc93de8e2e34bcba00edc",
+    "expectedSha256": "4a2949292ae96cdaff33c180812640a1c1941d3e7ca204abb711103008e7b60b",
+    "actualSha256": "4a2949292ae96cdaff33c180812640a1c1941d3e7ca204abb711103008e7b60b",
+    "diff": [],
+    "evidence": {
+      "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/08-conditionals.json.gz",
+      "sha256": "fbedbdd28cf07c436b492e87049f0e1cf9f97f582f139ded9a603ef29292ef5a"
+    }
+  },
+  "consumerCells": [
+    {
+      "consumer": "first-match-and-zero",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/manifest.json",
+        "sha256": "ba7fd17071b8b5722784d7556273da3132dfa4d12045783069aa1076ece55cb6"
+      }
+    },
+    {
+      "consumer": "inactive-branch-and-cycle-rejection",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/manifest.json",
+        "sha256": "ba7fd17071b8b5722784d7556273da3132dfa4d12045783069aa1076ece55cb6"
+      }
+    },
+    {
+      "consumer": "parameter-filter-statistics-scale-encoding",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/manifest.json",
+        "sha256": "ba7fd17071b8b5722784d7556273da3132dfa4d12045783069aa1076ece55cb6"
+      }
+    },
+    {
+      "consumer": "empty-domain-and-refill",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/manifest.json",
+        "sha256": "ba7fd17071b8b5722784d7556273da3132dfa4d12045783069aa1076ece55cb6"
+      }
+    },
+    {
+      "consumer": "position-and-text",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/manifest.json",
+        "sha256": "ba7fd17071b8b5722784d7556273da3132dfa4d12045783069aa1076ece55cb6"
+      }
+    },
+    {
+      "consumer": "selection-and-scenes",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/manifest.json",
+        "sha256": "ba7fd17071b8b5722784d7556273da3132dfa4d12045783069aa1076ece55cb6"
+      }
+    },
+    {
+      "consumer": "facet-and-composition",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/manifest.json",
+        "sha256": "ba7fd17071b8b5722784d7556273da3132dfa4d12045783069aa1076ece55cb6"
+      }
+    },
+    {
+      "consumer": "inspection-and-offline-codec",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/manifest.json",
+        "sha256": "ba7fd17071b8b5722784d7556273da3132dfa4d12045783069aa1076ece55cb6"
+      }
+    },
+    {
+      "consumer": "installed-node20-22-24-and-types",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/manifest.json",
+        "sha256": "ba7fd17071b8b5722784d7556273da3132dfa4d12045783069aa1076ece55cb6"
+      }
+    },
+    {
+      "consumer": "canvas-svg-png-pdf",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/manifest.json",
+        "sha256": "ba7fd17071b8b5722784d7556273da3132dfa4d12045783069aa1076ece55cb6"
+      }
+    },
+    {
+      "consumer": "current-contracts-and-public-docs",
+      "status": "passed",
+      "evidence": {
+        "path": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/manifest.json",
+        "sha256": "ba7fd17071b8b5722784d7556273da3132dfa4d12045783069aa1076ece55cb6"
+      }
+    }
+  ],
+  "coverageReuse": {
+    "implementationCommit": "e62e9f38",
+    "evidence": "agent_docs/impl/roadmap9/phase3/conditions/evidence/integrated-position/manifest.json",
+    "note": "Conditional runtime bytes match; generated inspection descriptors differ. Integrated full-source coverage was not rerun; fresh integrated suites are listed separately."
+  },
+  "openObligations": [],
+  "followingScope": [
+    "STEP-017 through STEP-077",
+    "STEP-074 cumulative capability qualification and exact release artifact verification"
+  ]
+}

@@ -5,7 +5,7 @@
 - [x] 위치·텍스트 구현 e62e9f38과 누적 image/paint/graph/hierarchy private 준비 통합
 - [x] 전체 normal·실제 데이터·renderer·browser·설치·문서 검증
 - [x] 원본 실패·재현 명령·hash와 source coverage 재사용 경계 고정
-- [ ] 통합 commit/push 및 main 반영, STEP-016 progress 고정
+- [x] `a561ae1c` 통합 commit/push 및 main 반영, [STEP-016 progress](../progress/STEP-016.json) 고정
 
 [구현 기록](POSITION_IMPLEMENTATION.md), [고정 evidence](evidence/integrated-position/manifest.json)를 따른다.
 Source parent는 b758b912와 e62e9f38이다. 정확한 merge commit은 후속 STEP-016 progress에 기록한다.

@@ -1,6 +1,6 @@
 # Phase 3 — 안전한 AST v2와 데이터 입력
 
-상태: **STEP-013–015 제품 통합과 개별 종료 검증 완료**. 최신 근거는 [STEP8](STEP8.md)과 progress records에 있다. 공개 AST/parameter/prepared source·pivot·quadratic LOESS·calendar completion을 같은 구현 commit에서 검증했다. STEP-016 및 전체 STEP-077 후행 범위는 계속 진행한다. 아래 최초 설계·준비 기록은 당시 상태를 보존한 역사 자료다.
+상태: **STEP-013–016 제품 통합과 개별 종료 검증 완료**. 공개 AST/parameter/prepared source·pivot·quadratic LOESS·calendar completion은 [STEP8](STEP8.md), 조건부 위치·텍스트·외형과 parameter invalidation은 [STEP-016 progress](progress/STEP-016.json)가 검증 근거를 소유한다. 후자는 `a561ae1c`로 main에 반영했다. STEP-017–077 후행 범위는 계속 진행한다. 아래 최초 설계·준비 기록은 당시 상태를 보존한 역사 자료다.
 
 사용자 “검토하자” 뒤 기존 AST 보존과 v2 도입 방향을 제안했고, “진행”(2026-10-28)으로 구체화를 요청받았다.
 [G-EXPR](G-EXPR.json)은 이 방향을 재질문하지 않고 정확한 신규 계약 D2–D6만 구분한다.

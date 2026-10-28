@@ -3878,6 +3878,21 @@
     "executable": false
   },
   {
+    "file": "api/rendering.md",
+    "block": 13,
+    "heading": "Embedded images",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "URL",
+      "canvas"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `URL`, `canvas`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "39234f8fd4e5fc2decc98d29b1674a602a83af0e719deb754c5233cded5ff9fc",
+    "executable": false
+  },
+  {
     "file": "api/scales.md",
     "block": 1,
     "heading": "At a glance",

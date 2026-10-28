@@ -15,6 +15,7 @@ function operation(name) {
     if (name.startsWith(candidate)) return candidate;
   }
   if (["facet", "facetGrid", "repeatCharts"].includes(name)) return "compose";
+  if (name === "layoutHierarchy") return "create";
   if (
     name === "reviseData" ||
     name === "bindMarkData" ||
@@ -25,6 +26,7 @@ function operation(name) {
     name === "layoutSeries" ||
     name === "orderCategories" ||
     name === "replaceCompositionChild" ||
+    name === "replaceImageResource" ||
     name === "insertCompositionChild" ||
     name === "reorderCompositionChildren"
   ) return "edit";
