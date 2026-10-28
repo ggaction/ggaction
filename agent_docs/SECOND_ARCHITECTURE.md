@@ -44,6 +44,17 @@ renderer에는 연결하지 않았다. 기존 computed v1의 의미와 직접 ma
 상세 내부 계약은 [expression core](architecture/EXPRESSION_CORE.md), 공개 computed는
 [CORE](contract/current/CORE.md), action trace는 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
 
+## 내부 graph metric 계산 경계
+
+`grammar/graph/metricPolicy.js`는 metric과 입력 vector의 닫힌 정규형,
+`metrics.js`는 거리·유사도 계산, `preprocess.js`는 결측 정책과 수치 전처리 통계,
+`edgeIdentity.js`는 명시 rule/typed endpoint에서 inferred edge identity를 만드는 순수 owner다.
+기존 typed item identity, descriptor 검사, finite sum과 자원 한도를 공유한다.
+이 owner들은 명시 입력만 받고 frozen 결과를 반환하며, 공개 entry나 ChartProgram state,
+materialization 또는 renderer에 연결하지 않았다. Field 추출, graph resource와 kNN/threshold
+토폴로지는 별도 domain owner의 남은 작업이다. 검증 범위는
+[metric kernel checkpoint](impl/roadmap9/phase3/graph/METRICS_KERNEL.md)에 기록한다.
+
 ## Pivot data lifecycle
 
 `grammar/pivot.js`는 명시 typed columns와 group tuple을 받아 수치 cell을 계산하는 pure owner다.

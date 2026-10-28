@@ -1,0 +1,182 @@
+{
+  "baseCommit": "ade3dd166d108b9b052dec22debb8f22fcc23d1c",
+  "scope": "Private graph metrics/preprocessing/edge identity; STEP-029 remains incomplete",
+  "environment": {
+    "node22": "22.23.1",
+    "node20": "20.20.2",
+    "node24": "24.22.1",
+    "platform": "darwin-arm64",
+    "npm": "10.9.8"
+  },
+  "commands": [
+    "node --test test/unit/grammar/graph/*.test.js",
+    "node --experimental-test-coverage --test-coverage-include=src/grammar/graph/*.js --test test/unit/grammar/graph/*.test.js",
+    "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js",
+    "node scripts/package-artifact.js --check",
+    "npm run package:bundle"
+  ],
+  "inputs": {
+    "src/grammar/graph/edgeIdentity.js": "6497cbade10d0b08aeac3ac009d27c7873b2f866d5509193d7837bdea328d751",
+    "src/grammar/graph/metrics.js": "8e4d6e4269043b327f449b3e93b954e54a201072d0d37e3618647b9270abd2de",
+    "src/grammar/graph/preprocess.js": "67b990a8c7357e9e2011958973a8d49345513f8455e0f9d0b00c405676dc0ab2",
+    "src/grammar/graph/metricPolicy.js": "c26e981f69432dddcf76879751d9a3fc786101c92414017fb1da19c1f8221646",
+    "test/unit/grammar/graph/preprocess.test.js": "cf31625130d970771b25c0bada86664d0af3ecb5456845d0d9f55110b9504936",
+    "test/unit/grammar/graph/edge-identity.test.js": "9a52fce3bec1323de633594a7df452d0569abc651a7a8d9f51a9eb16112070c9",
+    "test/unit/grammar/graph/metrics.test.js": "34348f74df336c7409680c88514a36999d33e617675e3800b8ca5c28fa60eadf",
+    "test/oracles/graphMetrics.js": "85df206e609a069338a4c156d87966dc987d1c66ceecb3d914050cd44a6cb9f3",
+    "scripts/package-artifact.js": "76304396e2ad940407863ead5ed3943f15e22d236ca931fc7e0bcfcc1b1cac9a",
+    "scripts/coverage-policy.js": "7f976d84f84f90deaaafa5566931b3c9d9f002c2d1378cf6b39d7957c416a183"
+  },
+  "checks": [
+    {
+      "source": ".artifacts/graph-metrics-initial.log",
+      "log": "unit-initial.log.gz",
+      "status": "failed; floating oracle comparisons repaired",
+      "sha256": "f19de54d59106f465742d5f4e251da0aa5d422a78bd846652286b5508ddf58e5",
+      "gzipSha256": "b470d24f2479d2d28c10da4aac3f12ba137d9d3d773190d1eda1bd80c3ef2c54",
+      "tests": {
+        "tests": 14,
+        "pass": 11,
+        "fail": 3,
+        "skipped": 0
+      }
+    },
+    {
+      "source": ".artifacts/graph-metrics-unit.log",
+      "log": "unit-node22.log.gz",
+      "status": "passed",
+      "sha256": "2712eebbba66a7831cea533d0e437e414dd4f40c07de0e15b81f7da517fdb3ef",
+      "gzipSha256": "6a84d826830536a786a293be9dd47b1380166d38114df7b4911a0561aaa5ddc0",
+      "tests": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "source": ".artifacts/graph-metrics-coverage.log",
+      "log": "coverage.log.gz",
+      "status": "passed",
+      "sha256": "f626fbf6c3243b3c0e401ee7e3fd5da7776bd627b59061024da8b09fb6be61d8",
+      "gzipSha256": "278a2f0b2cf6bec2d6218c68b9b93e570ed1263de7ca3b145cee48d71e093eb0",
+      "tests": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "source": ".artifacts/validation/graph-metrics/package-node20.log",
+      "log": "package-node20.log.gz",
+      "status": "passed",
+      "sha256": "eed8ad0d7750160468b322415d74e813a9128c2bca26847edb3de63ad3ba7440",
+      "gzipSha256": "85c21d853189e29292832fc03643fbd74b82044801c315d775e1eebacf0539fd",
+      "tests": {}
+    },
+    {
+      "source": ".artifacts/validation/graph-metrics/package-node24.log",
+      "log": "package-node24.log.gz",
+      "status": "passed",
+      "sha256": "eed8ad0d7750160468b322415d74e813a9128c2bca26847edb3de63ad3ba7440",
+      "gzipSha256": "85c21d853189e29292832fc03643fbd74b82044801c315d775e1eebacf0539fd",
+      "tests": {}
+    },
+    {
+      "source": ".artifacts/validation/graph-metrics/contracts-final.log",
+      "log": "contracts-final.log.gz",
+      "status": "passed",
+      "sha256": "71e7c2031eb1935bc1d7c3eb97600ae59248b95cfb87213556fcc0d4f610bcac",
+      "gzipSha256": "84b73657b9d062399b93ee54dc4163161baac18b721857303edd1a2e98111d47",
+      "tests": {
+        "tests": 40,
+        "pass": 40,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "source": ".artifacts/validation/graph-metrics/contracts.log",
+      "log": "contracts.log.gz",
+      "status": "passed",
+      "sha256": "b57f5aacf85658af15c835301f96515faca2e844300c3f861ffeccc2a3daa2e2",
+      "gzipSha256": "0cab45955693b9743c2c83d458d2fcec0bf98e4c6323249015cf7b255449cab9",
+      "tests": {
+        "tests": 40,
+        "pass": 40,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "source": ".artifacts/validation/graph-metrics/package-node20-old-ceiling.log",
+      "log": "package-node20-old-ceiling.log.gz",
+      "status": "failed; retained previous packed ceiling",
+      "sha256": "78282863ef9b203b0f0c4f713b4cb243984c2df53ccc0b876c70e9b4c4467b79",
+      "gzipSha256": "9f4f7be5d9c513a62790483af232d13a698ac4f26af18c9b8103fdd9bc524e04",
+      "tests": {}
+    },
+    {
+      "source": ".artifacts/validation/graph-metrics/unit-node24.log",
+      "log": "unit-node24.log.gz",
+      "status": "passed",
+      "sha256": "5801943e609e83b67a454ed3f8674498be3743d14ce7aac4b61255a14359f15a",
+      "gzipSha256": "89d5536a3dcddde9b90b246e0a30a265db9c87e7f52568a36337331d4f5f18d3",
+      "tests": {}
+    },
+    {
+      "source": ".artifacts/validation/graph-metrics/package-node24-wrapper.log",
+      "log": "package-node24-wrapper.log.gz",
+      "status": "wrapper-only; child npm runtime not pinned",
+      "sha256": "9430a74d46ee38d4f43a9d66f8859c41f04e6c938b98447974232c15ffbb3d63",
+      "gzipSha256": "6feb2536a1e5830c8b880a4d5676d358873b687954ec1e5e23c7f3cf4fbed358",
+      "tests": {}
+    },
+    {
+      "source": ".artifacts/validation/graph-metrics/unit-node20.log",
+      "log": "unit-node20.log.gz",
+      "status": "passed",
+      "sha256": "53e2312c86a330ef040932596cc59bf3a191cecb23f4bdac74e8509fd03bb822",
+      "gzipSha256": "583d53d41eefcb82fa78965950c872d3a0912faa6c43cafecb2468898c868feb",
+      "tests": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "source": ".artifacts/validation/graph-metrics/bundle.log",
+      "log": "bundle.log.gz",
+      "status": "passed",
+      "sha256": "9c656057b54a3bfe04850fc42311235c895f5069a4d3f57d3608a6114b23d03e",
+      "gzipSha256": "ded8168a38a9de851e1302c0f80924ef16c1d5deec81c0dde7efc4c0148e1f70",
+      "tests": {}
+    },
+    {
+      "source": ".artifacts/validation/graph-metrics/package-node24-old-ceiling.log",
+      "log": "package-node24-old-ceiling.log.gz",
+      "status": "failed; retained previous packed ceiling",
+      "sha256": "b716ebc651e022ff0669e5ce6680f566c00e7b7cadbd89728a49cc79cb8dec4a",
+      "gzipSha256": "025b69962947d0d22b4fdae012c096202451c80aac3e9fb178230004c21854c9",
+      "tests": {}
+    },
+    {
+      "source": ".artifacts/validation/graph-metrics/package-node20-wrapper.log",
+      "log": "package-node20-wrapper.log.gz",
+      "status": "wrapper-only; child npm runtime not pinned",
+      "sha256": "9430a74d46ee38d4f43a9d66f8859c41f04e6c938b98447974232c15ffbb3d63",
+      "gzipSha256": "6feb2536a1e5830c8b880a4d5676d358873b687954ec1e5e23c7f3cf4fbed358",
+      "tests": {}
+    },
+    {
+      "source": ".artifacts/validation/graph-metrics/package.log",
+      "log": "package.log.gz",
+      "status": "passed",
+      "sha256": "6d2eef862deb5deac21a2f0f9cdadaf70d054f9d4c55aeb78aa7e2bf0fa6e0f1",
+      "gzipSha256": "bebe1422232a4e51ec1475c85afba3ca8de4d2db9198fca2d55e7bf7e4f227c3",
+      "tests": {}
+    }
+  ]
+}
