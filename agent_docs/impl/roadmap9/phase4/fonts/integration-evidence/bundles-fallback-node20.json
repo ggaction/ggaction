@@ -1,0 +1,24 @@
+{
+  "node": "v20.20.2",
+  "full": {
+    "specifier": "ggaction",
+    "chunks": 1,
+    "modules": 715,
+    "minifiedBytes": 2098703,
+    "gzipBytes": 590159
+  },
+  "basic": {
+    "specifier": "ggaction/basic",
+    "chunks": 1,
+    "modules": 483,
+    "minifiedBytes": 1187072,
+    "gzipBytes": 345880
+  },
+  "svg": {
+    "specifier": "ggaction/svg",
+    "chunks": 1,
+    "modules": 34,
+    "minifiedBytes": 56009,
+    "gzipBytes": 19199
+  }
+}

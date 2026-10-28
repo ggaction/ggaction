@@ -1,0 +1,21 @@
+{
+  "node": "v24.22.1",
+  "records": [
+    {
+      "id": "paint/outline-image-hierarchy-composition",
+      "status": "passed"
+    },
+    {
+      "id": "fonts/resource-metrics-offline",
+      "status": "passed"
+    },
+    {
+      "id": "fonts/renderers-scene-handles",
+      "status": "passed"
+    },
+    {
+      "id": "paint/outline-image-hierarchy-composition",
+      "status": "passed"
+    }
+  ]
+}
