@@ -1,0 +1,158 @@
+{
+  "baseCommit": "75b2d209d81aeb79934e04164b1a0b74bba253ef",
+  "scope": "Own graph inputs and shared immutable copy preservation",
+  "commands": [
+    "node --test test/unit/grammar/graph/own-options.test.js",
+    "node --experimental-test-coverage --test-coverage-include=src/grammar/graph/*.js --test test/unit/grammar/graph/*.test.js test/unit/immutable-calculation-reuse.test.js",
+    "node --experimental-test-coverage --test-coverage-include=src/core/immutable.js --test test/unit/immutable-calculation-reuse.test.js test/unit/actions/primitives/*.test.js",
+    "node scripts/run-tests.js unit",
+    "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js",
+    "npm run package:bundle",
+    "node scripts/package-artifact.js --check"
+  ],
+  "inputs": {
+    "src/core/immutable.js": "b4c55131e8532a71a875387cb56dc68856fd4620e3a8d3a0defae6361c346a0c",
+    "src/grammar/graph/metricPolicy.js": "91a44285a273ec6f772e2d7a33cd41ee7e4b0b783a73903e0d106ccdc7cf5514",
+    "src/grammar/graph/preprocess.js": "9ab13f279fc49130d30e8ecb8d1409134792166d44823430919739f488595f82",
+    "src/grammar/graph/neighbors.js": "163cbc6509350231386f5cc1706d322244ab217da937f155b5e7acb42aeb8a24",
+    "src/grammar/graph/edgeIdentity.js": "262bb327e0298334dcc27975ab8849ebd12393a9da76719b2d4101aa1c45ebbe",
+    "src/grammar/graph/spanning.js": "3806daae9d02ddebbbbf78572fad92f0167b8cf6a42afaac07c5d7370b9a6206",
+    "test/unit/immutable-calculation-reuse.test.js": "0de927d55f0fc64aec7a25b704cc2acddc744efd1f36c3c14afa31de039c15c4",
+    "test/unit/grammar/graph/own-options.test.js": "193f6ac61e047d7cfa953c0fab0112593a4243290bf48e2e46f9f1a894a2afdf",
+    "scripts/package-artifact.js": "313460ce444af6dc9802fa073de24b27e7d20d9f177ae818147d9a519ed6d00a"
+  },
+  "checks": [
+    {
+      "log": "baseline.log.gz",
+      "status": "failed: inherited required/optional options evaluated",
+      "rawSha256": "04d5d133914adb613deff61fe1dfd8a0949c5d08f520e5f76f9c57b2b0901a43",
+      "gzipSha256": "f001d1867b308d9a1a1282e233a0b1e83c102cfc1f7674983d13ef81739a2db2",
+      "tests": {
+        "tests": 2,
+        "pass": 0,
+        "fail": 2,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "bundle.log.gz",
+      "status": "passed",
+      "rawSha256": "e6c379d682b25d1782b3660486446bf05160c604c3cd8c450701a9eff21bec07",
+      "gzipSha256": "54dd4cf3a6cc492d8b853e101efae33bc3b7d0f42e5e7d52bec24b84e907902e",
+      "tests": {}
+    },
+    {
+      "log": "contracts.log.gz",
+      "status": "passed",
+      "rawSha256": "1552d1749619c18263b01cecbbcafc60b33f1ff8923f730d73a43b8cd5c122bd",
+      "gzipSha256": "f3c9485e00febed182f5fe5e9d494da8872bb587916d78c77fbf8433bca5c72d",
+      "tests": {
+        "tests": 40,
+        "pass": 40,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "coverage-final.log.gz",
+      "status": "passed",
+      "rawSha256": "ec49a3b949bd99997c8a737d2e7626d016726336c7b0715bb6f3b601bda8a0a7",
+      "gzipSha256": "795ca87be4ea4d85f4b4fdd4650259e9e9fd4896a10b53b7fdf8749dd572ccd2",
+      "tests": {
+        "tests": 43,
+        "pass": 43,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "coverage.log.gz",
+      "status": "failed: shared immutable copy assigned inherited getter-only property",
+      "rawSha256": "9233fb55fa78e5b6e8988f899d1c92c64c6d7485a345f8ac908371c795f4c285",
+      "gzipSha256": "71c7881b5a0057d1c27c12ecfda522b618365a67281d27dca1b01479d07455af",
+      "tests": {
+        "tests": 38,
+        "pass": 37,
+        "fail": 1,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "immutable-coverage.log.gz",
+      "status": "passed",
+      "rawSha256": "a920c2c7a2f74133c62355c1b6bfc8b3978ad687581bae1f6d0def2e1eac7d87",
+      "gzipSha256": "995da3485871af1371d8de73d57ea4d7e0796a1d7458f4db80f5fa977bd63430",
+      "tests": {
+        "tests": 62,
+        "pass": 62,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "node20.log.gz",
+      "status": "passed",
+      "rawSha256": "c21325f99df0c0f4ff10d3a19c77516d3a5ccaa317b009a8d6858bf1a502394f",
+      "gzipSha256": "1c14bd5d7a12783a5478b019a0f248307fd4d883f170606bba4a46d4af0c17c7",
+      "tests": {
+        "tests": 43,
+        "pass": 43,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "node24.log.gz",
+      "status": "passed",
+      "rawSha256": "a7f9bd3b0e00d79f9e3e6f3030d35bda204b674215e3f17e044265b7f1dd2aa3",
+      "gzipSha256": "c44e3eb14e5a9d8837752ae1f31fbaf4c5050a3f8b7ddf7064ba469da1893bbe",
+      "tests": {}
+    },
+    {
+      "log": "package-node20.log.gz",
+      "status": "passed",
+      "rawSha256": "caf3d6599c6c2f57aeeca3efd2336a784aa7d17440906cb83af3d7116a2536cf",
+      "gzipSha256": "36c22a81ed6439da9f72d12bfb353d3bc76c932eca792342272975363ed8f251",
+      "tests": {}
+    },
+    {
+      "log": "package-node24.log.gz",
+      "status": "passed",
+      "rawSha256": "caf3d6599c6c2f57aeeca3efd2336a784aa7d17440906cb83af3d7116a2536cf",
+      "gzipSha256": "36c22a81ed6439da9f72d12bfb353d3bc76c932eca792342272975363ed8f251",
+      "tests": {}
+    },
+    {
+      "log": "unit-all.log.gz",
+      "status": "passed",
+      "rawSha256": "e1456d3b72dbc7e51afc09c928d637410bf92d081fefff40e22cf80e82a5b5ba",
+      "gzipSha256": "58be1d2dd83d7339a05a7789c05cabe2c8e3bacc7db6053b483267ab6e5d9251",
+      "tests": {
+        "tests": 5063,
+        "pass": 5063,
+        "fail": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "coverage": {
+    "graph": [
+      100,
+      100,
+      100
+    ],
+    "immutableFocused": [
+      92.52,
+      88.37,
+      100
+    ],
+    "globalFullCoverage": "not measured at this partial checkpoint"
+  },
+  "package": {
+    "entries": 707,
+    "unpackedBytes": 4881699,
+    "node20And24PackedBytes": 1052338,
+    "fullGzip": 526993,
+    "basicGzip": 304835
+  }
+}

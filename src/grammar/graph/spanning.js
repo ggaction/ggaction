@@ -107,7 +107,7 @@ export function inferGraphMst(keys, vectors, input) {
     ? 24 + Math.ceil(Math.log2(Math.max(dimension, 2))) : 24);
   candidateWork(n, pairCount, featureWork + metricWork);
   const metricOptions = { metric: preparation.metric,
-    ...(preparation.zeroVector === undefined ? {} : { zeroVector: preparation.zeroVector }) };
+    ...(Object.hasOwn(preparation, "zeroVector") ? { zeroVector: preparation.zeroVector } : {}) };
   const candidates = [];
   for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) {
     candidates.push({ sourceIndex: a, targetIndex: b,

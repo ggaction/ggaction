@@ -9,6 +9,7 @@ import { inferredGraphEdgeIdentity } from "./edgeIdentity.js";
 
 function normalize(options) {
   ownRecord(options, "Graph neighbor options");
+  options = Object.assign(Object.create(null), options);
   const rule = options.rule;
   const extra = rule === "knn" ? ["k", "symmetrize"] : rule === "radius"
     ? ["radius", "directed"] : rule === "similarity" ? ["threshold", "directed"] : [];
@@ -76,7 +77,7 @@ export function inferGraphNeighbors(keys, vectors, options) {
       directed: policy.directed, sourceKey: keys[sourceIndex], targetKey: keys[targetIndex] }), weight });
   }
   const metricOptions = { metric: preparation.metric,
-    ...(preparation.zeroVector === undefined ? {} : { zeroVector: preparation.zeroVector }) };
+    ...(Object.hasOwn(preparation, "zeroVector") ? { zeroVector: preparation.zeroVector } : {}) };
   for (let a = 0; a < n; a++) for (let b = a + 1; b < n; b++) {
     const result = graphMetricPair(preparation.vectors[a], preparation.vectors[b], metricOptions);
     if (neighbors) {

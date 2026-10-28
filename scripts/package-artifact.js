@@ -24,8 +24,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 export const PACKAGE_LIMITS = Object.freeze({
   entries: 707, // Add the pure deterministic spanning tree selector.
-  packedBytes: 1_053_000, // Node20/24 pack 1,052,250 bytes with spanning trees.
-  unpackedBytes: 4_882_000 // Six graph owners measure 4,881,437 unpacked bytes.
+  packedBytes: 1_053_000, // Node20/24 pack 1,052,338 bytes after own-option validation.
+  unpackedBytes: 4_882_000 // Six graph owners measure 4,881,699 unpacked bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

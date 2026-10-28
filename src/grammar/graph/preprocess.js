@@ -26,6 +26,7 @@ function columnStatistics(values, method) {
 export function prepareGraphMetricVectors(vectors, options) {
   ownRecord(options, "Graph feature options");
   rejectUnknownProperties(options, ["metric", "zeroVector", "preprocess", "missing"], "graph feature");
+  options = Object.assign(Object.create(null), options);
   const policy = normalizeGraphMetric({ metric: options.metric,
     ...(Object.hasOwn(options, "zeroVector") ? { zeroVector: options.zeroVector } : {}) });
   const preprocess = options.preprocess === undefined ? "none" : options.preprocess;

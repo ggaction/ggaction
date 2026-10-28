@@ -2,6 +2,22 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { chart } from "../../src/index.js";
 import { cloneAndFreeze, isOwned } from "../../src/core/immutable.js";
+
+test("owned copies define data fields without invoking inherited accessors", () => {
+  let calls = 0;
+  Object.defineProperty(Object.prototype, "inheritedCopyProbe", {
+    configurable: true, get() { calls++; return "unexpected"; }, set() { calls++; }
+  });
+  try {
+    const input = { inheritedCopyProbe: { value: 1 } };
+    const result = cloneAndFreeze(input);
+    assert.ok(Object.hasOwn(result, "inheritedCopyProbe"));
+    assert.deepEqual(result.inheritedCopyProbe, { value: 1 });
+    assert.notEqual(result.inheritedCopyProbe, input.inheritedCopyProbe);
+    assert.ok(Object.isFrozen(result.inheritedCopyProbe));
+    assert.equal(calls, 0);
+  } finally { delete Object.prototype.inheritedCopyProbe; }
+});
 import { validatePathCommands } from "../../src/grammar/pathCommands.js";
 import { resolvePathCommandBounds } from "../../src/grammar/schemas/graphicBounds.js";
 import { validateConcreteGraphicProperties } from "../../src/grammar/schemas/concreteGraphic.js";

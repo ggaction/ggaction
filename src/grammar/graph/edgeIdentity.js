@@ -6,6 +6,7 @@ import { rejectUnknownProperties } from "../../core/validation.js";
 export function inferredGraphEdgeIdentity(options) {
   ownRecord(options, "Inferred graph edge identity");
   rejectUnknownProperties(options, ["ruleId", "sourceKey", "targetKey", "directed"], "inferred edge identity");
+  options = Object.assign(Object.create(null), options);
   const ruleId = validateUserId(options.ruleId, "Graph ruleId");
   if (typeof options.directed !== "boolean") throw new TypeError("Inferred edge directed must be boolean.");
   const order = compareRowKeys(options.sourceKey, options.targetKey);

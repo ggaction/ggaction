@@ -6,18 +6,18 @@ const METRICS = new Set(["euclidean", "manhattan", "cosine", "jaccard", "great-c
 export function normalizeGraphMetric(options) {
   ownRecord(options, "Graph metric options");
   rejectUnknownProperties(options, ["metric", "zeroVector"], "graph metric");
+  options = Object.assign(Object.create(null), options);
   if (!METRICS.has(options.metric)) throw new Error("Unsupported graph metric.");
   if (options.metric !== "cosine" && Object.hasOwn(options, "zeroVector")) {
     throw new Error("Graph zeroVector is only applicable to cosine.");
   }
-  const policy = { metric: options.metric };
-  if (policy.metric === "cosine") {
-    policy.zeroVector = options.zeroVector === undefined ? "error" : options.zeroVector;
-    if (!["error", "zero-similarity"].includes(policy.zeroVector)) {
+  const zeroVector = options.zeroVector === undefined ? "error" : options.zeroVector;
+  if (options.metric === "cosine") {
+    if (!["error", "zero-similarity"].includes(zeroVector)) {
       throw new Error("Unsupported cosine zeroVector policy.");
     }
   }
-  return Object.freeze(policy);
+  return Object.freeze({ metric: options.metric, ...(options.metric === "cosine" ? { zeroVector } : {}) });
 }
 
 export function graphMetricVector(value, metric) {
