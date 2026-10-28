@@ -1,6 +1,6 @@
 {
   "state": "integration-verified",
-  "sourceRevision": null,
+  "sourceRevision": "2e9580a7c51ff20f3a14850e5b5829a7a48aadfe",
   "parents": {
     "paints": "53678726bfbf027e392aeb205d41dbb9506ecc3e",
     "main": "a9ecf10787016aa8098536f96ebf18d58da2a301"
@@ -60,12 +60,17 @@
     },
     "documentation": {
       "passed": 166,
-      "failed": 0
+      "failed": 0,
+      "sourceRef": "2e9580a7c51ff20f3a14850e5b5829a7a48aadfe"
     },
     "installedConsumer": {
       "passed": 199,
       "failed": 0,
       "qualificationGroups": 7
+    },
+    "finalPackageRepack": {
+      "sha256": "4688af46ac96b52a87eda41b2132e9d0f148d7138fc2f5f14aaffaab45acd1df",
+      "installedArtifactBytesUnchanged": true
     }
   },
   "package": {
@@ -151,6 +156,14 @@
     },
     "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/node-cases.json": {
       "sha256": "5233a07e8715fd2cc7194ce886d66575b6ef2484c972adfcb76df999bb255cec"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/docs-final.log.gz": {
+      "sha256": "75c7cdeaee2f0b097fb564270f82496dde51fe02475cb1afc9c653d36c466f77",
+      "originalSha256": "e07822c97c0a994c3b844ef0c87d44400141140705d22975f1d20d893d30794a"
+    },
+    "agent_docs/impl/roadmap9/phase4/paints/integration-evidence/provenance-final.log.gz": {
+      "sha256": "bac7d54248b8f894e7c6142318896027cda5d175d93128f002d3853d48824cec",
+      "originalSha256": "33b6a1c8d6a2b6d3e7dd98ab9422011aba8a95cd23403482399b38ad6f564b28"
     }
   },
   "firstFailure": {
@@ -164,5 +177,9 @@
     "Image I3 shared payload pending approval",
     "Full STEP017 consumers/effects still incomplete",
     "No new full coverage/realistic run claimed by this focused integration"
+  ],
+  "evidenceNotes": [
+    "Main a9ecf107 tracked historical raw logs include trailing spaces; these evidence bytes were retained unchanged. Newly authored source/test/docs pass whitespace checks.",
+    "Metadata-only source pin does not change package bytes; final package SHA256 equals the artifact exercised by installed Node and Chromium consumers."
   ]
 }

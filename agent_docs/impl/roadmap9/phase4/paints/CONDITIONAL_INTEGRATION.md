@@ -31,6 +31,8 @@ node scripts/package-consumer.js /absolute/path/to/ggaction-0.0.26.tgz
 GGACTION_PACKAGE_SPEC=/absolute/path/to/ggaction-0.0.26.tgz node scripts/run-tests.js browser browser/conditional-rendering.browser.js
 ```
 
+최종 검증은 focused contracts 63/63, unit 46/46, boundaries 40/40, discovery 16/16, 기존 browser 4/4, 설치 conditional browser 4/4, render 2/2, docs 166/166, 설치 Node 199/199와 qualification 7/7로 통과했다. 마지막 metadata 고정 후 재팩한 SHA256은 설치 검증에 사용한 `4688af46ac96b52a87eda41b2132e9d0f148d7138fc2f5f14aaffaab45acd1df`와 동일하다.
+
 ## 남은 범위
 
 이 체크포인트는 조건부 appearance와 기존 bar blend의 통합이다. 전체 coverage/realistic sweep을 새로 실행했다고 주장하지 않는다. main의 realistic shard 7 target inventory 보수는 별도 owner가 진행한다. [PUBLIC.md](PUBLIC.md)의 P1/P2, ellipse 추가 시각 대상과 image I3 공유 저장 값의 승인 대기를 유지하며, STEP017 전체 완료로 처리하지 않는다.
