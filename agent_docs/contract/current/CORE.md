@@ -348,6 +348,36 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
   `test/contracts/source-data-types.test.js`.
 - ✅ Covered: 빈/공백 원본 키의 추론·명시 schema, nullable/optional/중복·미선언·타입 실패, 입력/이전 프로그램 불변성, 행 보존/투영, source revision, Full/Basic persistence·정상 이름의 동일 SVG, facet. Evidence: `test/unit/actions/data/raw-row-keys.test.js`.
 
+## `applyDataUpdate`
+
+- Signature: `applyDataUpdate({ prepared, requestToken })`. 동기 action이며 같은 entry의 비동기 `prepareDataUpdate(program, request, host)`가 만든 opaque handle만 받는다. Full은 create/revise/parameter, Basic은 create만 지원한다.
+- Helper는 명시적인 `requestToken`과 필요한 `load` 또는 `resolveNamed` callback을 받는다. 자동 fetch, 전역 pending/cache, implicit dataset/source 선택은 없다. Optional `baseURL`은 absolute URL이고 신규 URL source에만 저장된다. `signal`은 실제 AbortSignal이며 준비 전·host 응답 후·반환 전·적용 때 abort를 검사한다.
+- Request는 세 닫힌 모양이다. Create `{kind:"create",id,source,keyField?|keyFields?}`는 explicit fresh ID의 dataset과 동명 data-source resource를 만든다. Revise `{kind:"revise",target,id,rowMap?}`는 명시 source binding과 fresh dataset ID를 사용한다. Parameter `{kind:"parameter",target,value}`는 type/nullable을 유지하고 URL source와 computed closure를 함께 갱신한다. 별도 keys 배열, source intent 교체, target dispatch는 지원하지 않는다.
+- Source는 inline rows `{kind:"inline",values}`, inline text `{kind:"inline",text,format,delimiter?}`, named `{kind:"named",name,format,delimiter?}`, URL `{kind:"url",url,format,delimiter?}`다. 공통 `parse`와 `schema`를 지원한다. Format은 csv/json, delimiter는 CSV의 한 글자이며 quote/newline/BOM은 거부한다. URL은 문자열 또는 standard@1 v2 scalar AST이며 field access는 불가하고 최종 값은 nonempty string이어야 한다. Relative URL에는 explicit absolute baseURL이 필요하다.
+- Source rows는 dense plain-object array이며 finite JSON cell만 허용한다. Getter, hidden/symbol property, reserved prototype key, undefined, bigint, Date, executable/class/cycle은 거부한다. CSV는 unique nonempty header와 동일 cell 수, quoted delimiter/newline/doubled quote를 지원하며 malformed quote를 거부한다. JSON은 object row array여야 한다.
+- `parse`는 field→directive다. Type은 string/number/boolean/date, nullable 기본 false다. Number는 finite decimal/exponent, boolean은 boolean 또는 정확한 true/false 문자열이다. Date는 explicit UTC/IANA `timeZone`이 필요하며 format은 `%Y-%m-%d`(기본), `%d/%m/%Y`, `%m/%d/%Y`, `iso`다. 결과는 epoch milliseconds이며 rollover, gap/ambiguous local time 및 불일치 offset/zone을 거부한다. Optional schema는 기존 closed source schema다. Empty typed source도 field meaning을 유지한다.
+- Host callback은 frozen `{url,signal?}` 또는 `{name,signal?}`만 받고 `{text|bytes,mimeType,encoding:"utf-8"}`를 동기 또는 Promise로 반환한다. Bytes는 Uint8Array다. 정확히 한 payload를 요구하며 malformed UTF-8/MIME/charset을 거부한다. CSV는 text/csv 또는 application/csv, JSON은 application/json 또는 application/*+json이다. 임의 object/Response를 자동 해석하지 않는다.
+- 모든 source의 현재 state와 미래 URL/input refs를 load 전에 검증한다. 여러 source는 각각 한 번 준비하고 완료 순서와 무관하게 원래 dependency 순서를 유지한다. Load/parse/identity/consumer 하나라도 실패하면 이전 program과 trace는 그대로다. 준비와 적용 사이에 callback을 재실행하지 않는다.
+- Handle에는 kind와 작은 request descriptor만 보이며 raw source, parameter value, rowMap, callback, signal, payload와 authority는 private다. 복제/JSON round trip/구조적 위조 handle을 거부한다. Apply의 현재 token은 prepare token과 같아야 하고 receiver는 prepare한 정확한 program instance여야 한다. 다른 action 또는 제거→재생성 이후의 같은 ID/revision도 stale이다. Host가 최신 program과 token 변수를 전달해야 한다. 오래된 immutable base에 의도적으로 적용하면 별도 branch이며 라이브러리가 host의 최신 변수를 추측하지 않는다.
+- Parameter source들과 기존 computed roots의 transitive union을 stable topological order로 replay한다. Diamond는 모든 입력이 바뀐 뒤 한 번 계산하며 raw snapshot/row identity는 speculative/actual 적용을 통틀어 한 번 배정한다. 기존 10,000,000 parameter work budget을 공유한다. Same-value parameter는 no-load/no-revision이다. URL consumer가 있는 direct editParameter 값 변경은 prepared-data-required다.
+- `semanticSpec.resources`의 authored `data-source`는 revision, normalized source/baseURL/key policy, exact parameter inputs, current output data ref와 inputHash를 소유한다. Original dataset의 `sourceReceipt`는 sourceId, parsing, 당시 resolvedURL/name, 실제 original text/rows, parserVersion/contentHash/MIME/encoding/byteLength를 소유한다. 과거 receipts는 당시 자료를 보존하고 현재 parameter에 재결합하지 않는다.
+- Explicit revise는 과거 raw snapshot을 보존하고 binding revision을 한 번 증가시킨다. Key field/tuple은 유지하며 generated keys의 rowMap은 기존 reviseData 규칙이다. 직접 reviseData rows 편집은 성공 전 전체 consumer를 검증하고 해당 live binding을 해제한다. 새 rows에 과거 URL receipt를 붙이지 않는다. removeData는 외부 consumer가 없는 live output의 binding을 먼저 제거하며 removeParameter는 URL resource inputs도 live consumer로 계산한다.
+- Unit namespace만 사용한다. Facet/repeat는 retained source와 recipe를 갱신하고 children은 필요한 exact refs를 채택한다. Concat은 명시 child에서 prepare/apply한 뒤 replaceCompositionChild를 호출한다. Parent/다른 child에 handle을 적용할 수 없다.
+- Full snapshot은 source resources와 receipt를 저장하며 fresh process/offline 복원이 가능하다. 복원은 retained source를 pure parser로 대조하고 live inputs/hash/output을 검증한다. URL AST 실행, load, action replay 또는 graphic materialization은 없다. Graphic snapshot, renderer와 scene은 계속 graphicSpec만 사용한다.
+- Trace는 applyDataUpdate→createData/reviseData/editParameter와 실제 primitive/materialization children을 보존한다. Stored original text와 source text는 primitive trace에서 길이로 요약하고 arrays는 count로 기록한다. 완료 trace의 token/descriptor는 pending authority가 아니다.
+
+### Formal values — `applyDataUpdate`
+
+- Implemented: `applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram`; `prepareDataUpdate(program, request: DataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate>`.
+- Basic: request kind/create handle만 받으며 revision orchestration을 import하지 않는다.
+- Planned: 없음.
+- Proposed (NOT IMPLEMENTED): automatic fetch, streaming/append, editable source intent, host pending persistence.
+
+### Value coverage — `applyDataUpdate`
+
+- Evidence: `test/unit/resources/data-update-preparation.test.js`, `test/unit/resources/data-update-full-preparation.test.js`, `test/unit/resources/prepared-data-public.test.js`, `test/unit/resources/prepared-data-lifecycle.test.js`, `test/unit/core/data-source-resource-state.test.js`, `test/contracts/prepared-data-types.test.js`, `scripts/consumers/fixtures/node/prepared-data.mjs`.
+- ✅ Covered: inline/text/named/URL, exact token/base/ABA/abort, immutable receipts and output refs, Full/Basic boundary, source/computed union, source detach, facet/repeat/concat and offline restore; installed renderer and scene consumer fixture uses the same public boundary.
+
 ## `reviseData`
 
 - Signature: `reviseData({ source, id, values, schema?, keys?, rowMap? })`. Full 전용 immutable source revision이다.
@@ -764,7 +794,8 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 
 - Implemented: `editParameter(options: EditParameterOptions): ChartProgram`.
 - Planned: 없음.
-- Proposed (NOT IMPLEMENTED): parameter ID/type/nullable 변경, conditional encoding 또는 URL consumer 자동 갱신.
+- URL consumer가 있는 값 변경은 `prepareDataUpdate`의 parameter request와 `applyDataUpdate`를 사용한다. 준비 없는 직접 변경은 prepared-data-required이며 같은 값은 기존 no-op이다.
+- Proposed (NOT IMPLEMENTED): parameter ID/type/nullable 변경, conditional encoding, automatic network loading.
 
 ### Value coverage — `editParameter`
 

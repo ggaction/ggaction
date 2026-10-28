@@ -333,6 +333,45 @@ createData({ id?, values })
 Create one immutable named dataset. [Data](../../api/data.md)
 
 
+## `applyDataUpdate`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
+```
+
+Named option contracts: [`ApplyDataUpdateOptions`](./../types.md#type-applydataupdateoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedDataUpdate<"create" \| "parameter" \| "revise">` |
+| `requestToken` | Required | `string` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+applyDataUpdate({ prepared, requestToken })
+```
+
+Apply an opaque result of `await prepareDataUpdate(program, request, host)` to
+its exact immutable base with the application's current request token. Full
+supports creating, refreshing, and parameter-dependent source updates; Basic
+supports creation. Hosts provide explicit CSV/JSON loaders. All source and
+computed consumers update atomically. See the
+[prepared data reference](../../api/data/source-and-derived.md#prepared-data-updates)
+and [refresh workflow](../../data-updates.md#prepare-and-apply-source-data).
+
+
 ## `reviseData`
 
 **API layer:** user-facing. **Authoring roles:** H3.

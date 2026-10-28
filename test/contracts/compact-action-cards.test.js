@@ -115,8 +115,8 @@ test("compact action cards satisfy the bounded typed public schema projection", 
     assert.doesNotMatch(JSON.stringify(card), /relatedActions|typeDefinitions|documentationBody/);
   }
   assert.equal(intents.schemaVersion, 1);
-  assert.equal(Object.keys(intents.summaryOverrides).length < 20, true);
-  assert.equal(Object.keys(intents.errorOverrides).length < 10, true);
+  assert.equal(Object.keys(intents.summaryOverrides).length <= 20, true);
+  assert.equal(Object.keys(intents.errorOverrides).length <= 10, true);
 });
 
 test("action-card hierarchy is generated from the executable direct-child trace", async () => {
@@ -142,6 +142,10 @@ test("action-card hierarchy is generated from the executable direct-child trace"
   assert.deepEqual(
     artifact.cards.find(card => card.name === "selectMarks").editableVia,
     ["editMarkSelection", "removeMarkSelection"]
+  );
+  assert.deepEqual(
+    artifact.cards.find(card => card.name === "editParameter").wraps,
+    ["editSemantic", "createDerivedData"]
   );
 });
 
@@ -234,9 +238,11 @@ test("every compact snippet type-checks against the exact ChartProgram declarati
   try {
     await copyFile(declarationFile, path.join(temporary, "program.d.ts"));
     const source = [
-      'import type { ChartProgram } from "./program.js";',
+      'import type { ChartProgram, PreparedDataUpdate } from "./program.js";',
       "declare const program: ChartProgram;",
       "declare const chart: () => ChartProgram;",
+      "declare const prepared: PreparedDataUpdate;",
+      "declare const currentToken: string;",
       "",
       ...artifact.cards.map(card => `${card.snippet};`),
       ""

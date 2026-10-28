@@ -19,6 +19,7 @@ interface ChartProgramActions {
   applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
+  applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -467,6 +468,19 @@ type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "t
 ```
 
 Related types: [`TextMarkOptions`](../../../reference/types/#type-textmarkoptions) · [`TextFormat`](../../../reference/types/#type-textformat) · [`LabelLayoutOptions`](../../../reference/types/#type-labellayoutoptions).
+
+### `ApplyDataUpdateOptions` {#type-applydataupdateoptions}
+
+ Expand ApplyDataUpdateOptions
+
+```typescript
+export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly prepared: PreparedDataUpdate<Kind>;
+  readonly requestToken: string;
+}
+```
+
+Related types: [`DataUpdateRequest`](../../../reference/types/#type-dataupdaterequest) · [`PreparedDataUpdate`](../../../reference/types/#type-prepareddataupdate).
 
 ### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
 
@@ -2333,6 +2347,18 @@ export type CreateDataOptions<Row extends object> = DataKeyOptions & {
 
 Related types: [`DataKeyOptions`](../../../reference/types/#type-datakeyoptions) · [`StoredCell`](../../../reference/types/#type-storedcell) · [`SourceSchemaInput`](../../../reference/types/#type-sourceschemainput).
 
+### `CreateDataUpdateRequest` {#type-createdataupdaterequest}
+
+ Expand CreateDataUpdateRequest
+
+```typescript
+export type CreateDataUpdateRequest = DataSourceKeys & {
+  readonly kind: "create"; readonly id: string; readonly source: DataSource;
+};
+```
+
+Related types: [`DataSourceKeys`](../../../reference/types/#type-datasourcekeys) · [`DataSource`](../../../reference/types/#type-datasource).
+
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
  Expand CreateDensityPlotOptions
@@ -3192,6 +3218,108 @@ export type DataKeyOptions =
 ```
 
 Related types: [`RowKey`](../../../reference/types/#type-rowkey).
+
+### `DataParse` {#type-dataparse}
+
+ Expand DataParse
+
+```typescript
+export type DataParse = Readonly<Record<string, DataParseDirective>>;
+```
+
+Related types: [`DataParseDirective`](../../../reference/types/#type-dataparsedirective).
+
+### `DataParseDirective` {#type-dataparsedirective}
+
+ Expand DataParseDirective
+
+```typescript
+export type DataParseDirective =
+  | { readonly type: "string" | "number" | "boolean"; readonly nullable?: boolean; readonly format?: never; readonly timeZone?: never }
+  | { readonly type: "date"; readonly nullable?: boolean; readonly timeZone: string;
+      readonly format?: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso" };
+```
+
+### `DataSource` {#type-datasource}
+
+ Expand DataSource
+
+```typescript
+export type DataSource = DataSourceParsing & (
+  | { readonly kind: "inline"; readonly values: readonly Readonly<Record<string, DataSourceValue>>[];
+      readonly text?: never; readonly format?: never; readonly delimiter?: never }
+  | (DataSourceFormat & { readonly kind: "inline"; readonly text: string; readonly values?: never })
+  | (DataSourceFormat & { readonly kind: "url"; readonly url: string | ComputedExpressionV2 })
+  | (DataSourceFormat & { readonly kind: "named"; readonly name: string })
+);
+```
+
+Related types: [`DataSourceParsing`](../../../reference/types/#type-datasourceparsing) · [`DataSourceValue`](../../../reference/types/#type-datasourcevalue) · [`DataSourceFormat`](../../../reference/types/#type-datasourceformat) · [`ComputedExpressionV2`](../../../reference/types/#type-computedexpressionv2).
+
+### `DataSourceFormat` {#type-datasourceformat}
+
+ Expand DataSourceFormat
+
+```typescript
+type DataSourceFormat = { readonly format: "csv"; readonly delimiter?: string }
+  | { readonly format: "json"; readonly delimiter?: never };
+```
+
+### `DataSourceKeys` {#type-datasourcekeys}
+
+ Expand DataSourceKeys
+
+```typescript
+type DataSourceKeys =
+  | { readonly keyField?: never; readonly keyFields?: never }
+  | { readonly keyField: string; readonly keyFields?: never }
+  | { readonly keyField?: never; readonly keyFields: readonly string[] };
+```
+
+### `DataSourceParsing` {#type-datasourceparsing}
+
+ Expand DataSourceParsing
+
+```typescript
+type DataSourceParsing = { readonly parse?: DataParse; readonly schema?: SourceSchemaInput };
+```
+
+Related types: [`DataParse`](../../../reference/types/#type-dataparse) · [`SourceSchemaInput`](../../../reference/types/#type-sourceschemainput).
+
+### `DataSourceValue` {#type-datasourcevalue}
+
+ Expand DataSourceValue
+
+```typescript
+export type DataSourceValue = null | boolean | number | string
+  | readonly DataSourceValue[] | { readonly [key: string]: DataSourceValue };
+```
+
+### `DataUpdateDescriptors` {#type-dataupdatedescriptors}
+
+ Expand DataUpdateDescriptors
+
+```typescript
+interface DataUpdateDescriptors {
+  create: { readonly kind: "create"; readonly id: string; readonly sourceKind: DataSource["kind"]; readonly format?: "csv" | "json" };
+  revise: { readonly kind: "revise"; readonly target: string; readonly id: string };
+  parameter: { readonly kind: "parameter"; readonly target: string };
+}
+declare const preparedDataUpdate: unique symbol;
+/** Opaque preparation evidence. Only prepareDataUpdate can create a valid handle. */
+```
+
+Related types: [`DataSource`](../../../reference/types/#type-datasource).
+
+### `DataUpdateRequest` {#type-dataupdaterequest}
+
+ Expand DataUpdateRequest
+
+```typescript
+export type DataUpdateRequest = CreateDataUpdateRequest | ReviseDataUpdateRequest | ParameterDataUpdateRequest;
+```
+
+Related types: [`CreateDataUpdateRequest`](../../../reference/types/#type-createdataupdaterequest) · [`ReviseDataUpdateRequest`](../../../reference/types/#type-revisedataupdaterequest) · [`ParameterDataUpdateRequest`](../../../reference/types/#type-parameterdataupdaterequest).
 
 ### `DatasetBin2DOutputFields` {#type-datasetbin2doutputfields}
 
@@ -8234,6 +8362,18 @@ Related types: [`PathLegendOptions`](../../../reference/types/#type-pathlegendop
 export type ParallelMissingPolicy = "break" | "drop-row" | "error";
 ```
 
+### `ParameterDataUpdateRequest` {#type-parameterdataupdaterequest}
+
+ Expand ParameterDataUpdateRequest
+
+```typescript
+export interface ParameterDataUpdateRequest {
+  readonly kind: "parameter"; readonly target: string; readonly value: ParameterValue;
+}
+```
+
+Related types: [`ParameterValue`](../../../reference/types/#type-parametervalue).
+
 ### `ParameterDefinition` {#type-parameterdefinition}
 
  Expand ParameterDefinition
@@ -8784,6 +8924,20 @@ export interface PreGriddedHeatmapOptions extends HeatmapBaseOptions {
 ```
 
 Related types: [`HeatmapBaseOptions`](../../../reference/types/#type-heatmapbaseoptions) · [`HeatmapCategoryPositionChannel`](../../../reference/types/#type-heatmapcategorypositionchannel) · [`RectColorChannel`](../../../reference/types/#type-rectcolorchannel).
+
+### `PreparedDataUpdate` {#type-prepareddataupdate}
+
+ Expand PreparedDataUpdate
+
+```typescript
+export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly [preparedDataUpdate]: Kind;
+  readonly kind: "data-update";
+  readonly request: DataUpdateDescriptors[Kind];
+}
+```
+
+Related types: [`DataUpdateRequest`](../../../reference/types/#type-dataupdaterequest) · [`DataUpdateDescriptors`](../../../reference/types/#type-dataupdatedescriptors).
 
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
@@ -9694,6 +9848,17 @@ export type ReviseDataOptions<Row extends object> = ({ keys?: never; rowMap?: re
 ```
 
 Related types: [`RowKey`](../../../reference/types/#type-rowkey) · [`StoredCell`](../../../reference/types/#type-storedcell) · [`SourceSchemaInput`](../../../reference/types/#type-sourceschemainput).
+
+### `ReviseDataUpdateRequest` {#type-revisedataupdaterequest}
+
+ Expand ReviseDataUpdateRequest
+
+```typescript
+export interface ReviseDataUpdateRequest {
+  readonly kind: "revise"; readonly target: string; readonly id: string;
+  readonly rowMap?: readonly (number | null)[];
+}
+```
 
 ### `RotationInput` {#type-rotationinput}
 

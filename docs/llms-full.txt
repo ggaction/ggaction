@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:c7c982f46a51b3f2f571de5bac1a3cfaef65ca4c568eae828204bda13f57c923. Status: development. Runtime source: 3af6b16ebb62765f942abaee2da7db5dddbe4cc0. Release baseline: v0.0.13.
+Contract: sha256:5a2fd3438d26a7a169de50f18044300ed7498b4d68dc254b739c1d3e9a741061. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/3af6b16ebb62765f942abaee2da7db5dddbe4cc0/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/3af6b16ebb62765f942abaee2da7db5dddbe4cc0/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -4947,6 +4947,7 @@ operation; marks and renderers never mutate source values.
 | Family | Actions | Use |
 | --- | --- | --- |
 | [Source and derived data](./api/data/source-and-derived/) | `createData`, `createDerivedData` | Store source rows or explicit transform provenance |
+| [Prepared sources](./api/data/source-and-derived/#prepared-data-updates) | `prepareDataUpdate`, `applyDataUpdate` | Prepare CSV/JSON or named data, then apply an immutable update |
 | [Safe resource removal](./api/data/revisions-and-removal/#removedata-id) | `removeData` | Delete one named dataset only after all live consumers are gone |
 | [Reusable summaries](./api/data/summaries-and-shaping/#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./api/data/summaries-and-shaping/#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
@@ -5051,6 +5052,96 @@ field names requires a runtime that supports these source keys.
 The most recently created dataset becomes the default for `createPointMark`,
 `createLineMark`, or `createBarMark`. Creating data records semantic state only
 and produces no graphics.
+
+## Prepared data updates {#prepared-data-updates}
+
+`prepareDataUpdate(program, request, host)` is an asynchronous chart-authoring
+helper exported by `ggaction` and `ggaction/basic`. It prepares data without
+changing the program. `program.applyDataUpdate({ prepared, requestToken })`
+applies its opaque result synchronously to that exact program instance.
+
+| Request | Fields | Availability |
+| --- | --- | --- |
+| Create | `{ kind: "create", id, source, keyField?, keyFields? }` | Full and Basic |
+| Refresh | `{ kind: "revise", target, id, rowMap? }` | Full |
+| Parameter change | `{ kind: "parameter", target, value }` | Full |
+
+Create requires a fresh explicit dataset ID and creates a source binding with
+the same ID. Refresh targets that binding and needs a fresh snapshot ID.
+Parameter changes load every affected URL source and update the combined
+source/computed dependency graph once. The existing parameter type and
+nullability remain fixed. Same-value parameter updates load nothing.
+
+Choose one source shape:
+
+| Source | Required fields | Optional fields |
+| --- | --- | --- |
+| Inline rows | `{ kind: "inline", values }` | `parse`, `schema` |
+| Inline text | `{ kind: "inline", text, format }` | `delimiter`, `parse`, `schema` |
+| Named text | `{ kind: "named", name, format }` | `delimiter`, `parse`, `schema` |
+| URL text | `{ kind: "url", url, format }` | `delimiter`, `parse`, `schema` |
+
+Formats are `"csv"` and `"json"`. CSV defaults to a comma and accepts a single
+nonquote, nonnewline delimiter. It supports quoted cells, doubled quotes and
+embedded newlines, with unique nonempty headers and consistent row widths.
+JSON must contain an array of plain row objects. Source rows accept finite JSON
+values, including nested arrays/objects; executable values, undefined, bigint,
+Date objects, cycles, accessors and reserved prototype keys are rejected.
+
+`parse` maps field names to `{ type, nullable? }`, with types `string`, `number`,
+`boolean`, and `date`. Nullable defaults to false. Numeric parsing accepts finite
+decimal and exponent forms; boolean text must be exactly `"true"` or `"false"`.
+Dates require an explicit `timeZone` (`"UTC"` or an IANA name). Their optional
+`format` is `%Y-%m-%d` (default), `%d/%m/%Y`, `%m/%d/%Y`, or `iso`. Dates become
+epoch milliseconds. Invalid calendar dates and ambiguous or nonexistent local
+times fail. Optional `schema` uses the closed source schema above; empty parsed
+data keeps declared or typed field meaning.
+
+A URL can be a string or a `ComputedExpressionV2` using scalar parameters from
+the same unit. Field access is unavailable in URL expressions. Every branch is
+validated; the selected result must be a nonempty string. Relative URLs require
+an absolute `host.baseURL`. A binding retains its base URL for later refreshes.
+
+The host object requires a nonempty string `requestToken`. It may also provide
+`baseURL`, an `AbortSignal` as `signal`, and these callbacks:
+
+| Host callback | Input | Result |
+| --- | --- | --- |
+| `load` | `{ url, signal? }` | CSV/JSON payload or a promise for it |
+| `resolveNamed` | `{ name, signal? }` | CSV/JSON payload or a promise for it |
+
+A payload contains exactly one of `text` or `bytes` (`Uint8Array`), plus
+`mimeType` and `encoding: "utf-8"`. CSV accepts `text/csv` or `application/csv`;
+JSON accepts `application/json` or `application/*+json`. A UTF-8 charset parameter
+is accepted. Invalid Unicode, MIME/format mismatches, and other encodings fail.
+The library never invokes fetch automatically and does not unwrap a Response.
+
+Choose at most one key policy, `keyField` or ordered `keyFields`. Generated keys
+are the default. Explicit key arrays are unavailable for prepared sources.
+Refresh preserves a field/tuple key policy. For generated keys, optional
+`rowMap` follows [the source revision rules](./api/data/revisions-and-removal/).
+
+All source requests are validated before loading starts. Results may arrive in
+any order; application waits for all of them. A failed load, parse, key mapping
+or consumer update preserves the original program and its trace. Aborted,
+forged, copied or serialized handles cannot be applied. Applying to a different
+program instance or with a different token reports `stale-result`.
+
+Use the application's **current program and current request token** when applying.
+An old immutable program is a valid intentional branch; the library cannot
+observe which variable the application considers current. See the complete
+[refresh workflow](./data-updates/#prepare-and-apply-source-data).
+
+Full snapshots retain original received text/rows and parsing receipts for
+offline restoration. Old snapshots preserve their historical receipts. Restore
+validates stored data without loading or evaluating URL expressions. Canvas,
+SVG, PNG, PDF and scenes continue to use concrete graphics only.
+
+Facet/repeat updates rebuild their retained source and existing recipe. For
+concat, prepare and apply in an explicit child, then replace that child. A live
+source is a consumer of its URL parameters, so removing those parameters is
+restricted until the binding is gone. Direct manual row revisions detach the
+binding as described in [data revisions](./api/data/revisions-and-removal/).
 
 ## `createDerivedData({ id, source, transform })` {#create-derived-data}
 
@@ -16166,10 +16257,63 @@ dependent chart, or rebuild a program from application-owned rows.
 
 | Change | Action or workflow | Prerequisite |
 | --- | --- | --- |
+| CSV/JSON, named, or URL data | `prepareDataUpdate` then `applyDataUpdate` | Explicit host loader and current request token |
 | New rows with compatible fields | `reviseData({ source, id, values })` | Existing source ID and fresh revision ID; dependent transforms remain valid |
 | Field names, types, or chart topology change | Rebuild from application-owned rows | Update affected encodings and transform definitions together |
 | Transform parameters change | The owning `edit*Data` action | Existing logical transform ID and valid options |
 | One mark should use independent data | `createData` then the mark's data editor | Explicit target and a compatible replacement schema |
+
+## Prepare and apply source data {#prepare-and-apply-source-data}
+
+This complete ES module prepares inline CSV, builds a chart, and refreshes its
+source. The host supplies text explicitly; the same callback boundary can load
+application-owned files or network responses.
+
+```javascript
+import { chart, prepareDataUpdate } from "ggaction";
+
+let program = chart();
+let currentToken = "initial";
+const initial = await prepareDataUpdate(program, {
+  kind: "create", id: "sales", keyField: "quarter",
+  source: {
+    kind: "named", name: "sales-table", format: "csv",
+    parse: { revenue: { type: "number" } }
+  }
+}, {
+  requestToken: currentToken,
+  resolveNamed: () => ({ text: "quarter,revenue\nQ1,12", mimeType: "text/csv", encoding: "utf-8" })
+});
+program = program.applyDataUpdate({ prepared: initial, requestToken: currentToken })
+  .createCanvas()
+  .createBarPlot({ data: "sales", x: "quarter", y: "revenue", guides: false });
+
+async function refreshSales(text, token, snapshotId) {
+  currentToken = token;
+  const prepared = await prepareDataUpdate(program, {
+    kind: "revise", target: "sales", id: snapshotId
+  }, {
+    requestToken: token,
+    resolveNamed: () => ({ text, mimeType: "text/csv", encoding: "utf-8" })
+  });
+  program = program.applyDataUpdate({ prepared, requestToken: currentToken });
+}
+
+await refreshSales("quarter,revenue\nQ1,15\nQ2,20", "refresh-1", "salesUpdated");
+```
+
+Each request uses a fresh application token and snapshot ID. The final line of
+`refreshSales` reads the current variables after awaiting. If another request
+or chart action has advanced them, the older result fails instead of replacing
+the latest chart. Catch that failure in the host when stale requests are expected.
+
+Full supports source refresh and parameter requests; Basic supports creation.
+A parameter request has `{ kind: "parameter", target, value }` and refreshes
+all URL sources that use it together with their computed consumers. The host
+must supply `load` for URL data and `resolveNamed` for named data. URL response
+bytes are never fetched implicitly. See the
+[prepared data reference](./api/data/source-and-derived/#prepared-data-updates)
+for parsing, callback payloads, keys, abort and scope rules.
 
 ## Revise a source and its dependent chart
 
@@ -17307,6 +17451,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 | Action | Authoring role | API layer | Domain |
 | --- | --- | --- | --- |
+| [`applyDataUpdate`](./reference/actions/charts-data/#applydataupdate) | H3 | user-facing | core |
 | [`applyTextMetrics`](./reference/actions/charts-data/#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](./reference/actions/charts-data/#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](./reference/actions/charts-data/#bindmarkdata) | H2 | user-facing | core |
@@ -17907,6 +18052,41 @@ createData({ id?, values })
 ```
 
 Create one immutable named dataset. [Data](./api/data/)
+
+## `applyDataUpdate`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
+```
+
+Named option contracts: [`ApplyDataUpdateOptions`](./reference/types/#type-applydataupdateoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedDataUpdate<"create" \| "parameter" \| "revise">` |
+| `requestToken` | Required | `string` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+applyDataUpdate({ prepared, requestToken })
+```
+
+Apply an opaque result of `await prepareDataUpdate(program, request, host)` to
+its exact immutable base with the application's current request token. Full
+supports creating, refreshing, and parameter-dependent source updates; Basic
+supports creation. Hosts provide explicit CSV/JSON loaders. All source and
+computed consumers update atomically. See the
+[prepared data reference](./api/data/source-and-derived/#prepared-data-updates)
+and [refresh workflow](./data-updates/#prepare-and-apply-source-data).
 
 ## `reviseData`
 
@@ -29675,7 +29855,12 @@ These blocks are generated from the declaration file owned by each package entry
 ```typescript
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
-import type { ChartProgram, CompositionOptions } from "./program.js";
+export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
+  ReviseDataUpdateRequest, ParameterDataUpdateRequest, DataUpdateRequest, DataSourceResponse,
+  DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions, DataSourceProvenance,
+  DataSourceReceipt, DataSourceResource } from "./program.js";
+import type { ChartProgram, CompositionOptions, DataUpdateRequest, CreateDataUpdateRequest,
+  ReviseDataUpdateRequest, ParameterDataUpdateRequest, DataUpdateHost, PreparedDataUpdate } from "./program.js";
 
 export type {
   CreateOverlayOptions,
@@ -30149,6 +30334,10 @@ export type {
 } from "./program.js";
 
 export function chart(): ChartProgram;
+export function prepareDataUpdate(program: ChartProgram, request: CreateDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"create">>;
+export function prepareDataUpdate(program: ChartProgram, request: ReviseDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"revise">>;
+export function prepareDataUpdate(program: ChartProgram, request: ParameterDataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate<"parameter">>;
+export function prepareDataUpdate(program: ChartProgram, request: DataUpdateRequest, host: DataUpdateHost): Promise<PreparedDataUpdate>;
 export function hconcat(options: CompositionOptions): ChartProgram;
 export function vconcat(options: CompositionOptions): ChartProgram;
 export function render(
@@ -30165,7 +30354,11 @@ export function render(
 ```typescript
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./program.js";
-import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget } from "./program.js";
+export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
+  DataSourceResponse, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions,
+  DataSourceProvenance, DataSourceReceipt, DataSourceResource } from "./program.js";
+import type { ChartProgram, BasicSeriesLayoutOptions, CreateDataOptions, ScopedActionTarget,
+  CreateDataUpdateRequest, DataUpdateHost, PreparedDataUpdate, ApplyDataUpdateOptions } from "./program.js";
 
 export type {
   LinearNiceCountOptions,
@@ -30295,9 +30488,13 @@ export type BasicChartProgram =
   Pick<ChartProgram, BasicStateKey> &
   { readonly [Key in Exclude<BasicMethodKey, "createData">]: RebindMethod<ChartProgram[Key]> } &
   { createData<Row extends object>(options: CreateDataOptions<Row>): BasicChartProgram } &
+  { applyDataUpdate(options: ApplyDataUpdateOptions<"create">): BasicChartProgram } &
   { readonly layoutSeries: (options: BasicSeriesLayoutOptions) => BasicChartProgram };
 
 export function chart(): BasicChartProgram;
+export function prepareDataUpdate(
+  program: BasicChartProgram, request: CreateDataUpdateRequest, host: DataUpdateHost
+): Promise<PreparedDataUpdate<"create">>;
 export function render(
   program: Pick<BasicChartProgram, "graphicSpec">,
   context: CanvasRenderingContext2D,
@@ -30680,6 +30877,7 @@ interface ChartProgramActions {
   applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
+  applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -31128,6 +31326,19 @@ type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "t
 ```
 
 Related types: [`TextMarkOptions`](./reference/types/#type-textmarkoptions) · [`TextFormat`](./reference/types/#type-textformat) · [`LabelLayoutOptions`](./reference/types/#type-labellayoutoptions).
+
+### `ApplyDataUpdateOptions` {#type-applydataupdateoptions}
+
+ Expand ApplyDataUpdateOptions
+
+```typescript
+export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly prepared: PreparedDataUpdate<Kind>;
+  readonly requestToken: string;
+}
+```
+
+Related types: [`DataUpdateRequest`](./reference/types/#type-dataupdaterequest) · [`PreparedDataUpdate`](./reference/types/#type-prepareddataupdate).
 
 ### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
 
@@ -32994,6 +33205,18 @@ export type CreateDataOptions<Row extends object> = DataKeyOptions & {
 
 Related types: [`DataKeyOptions`](./reference/types/#type-datakeyoptions) · [`StoredCell`](./reference/types/#type-storedcell) · [`SourceSchemaInput`](./reference/types/#type-sourceschemainput).
 
+### `CreateDataUpdateRequest` {#type-createdataupdaterequest}
+
+ Expand CreateDataUpdateRequest
+
+```typescript
+export type CreateDataUpdateRequest = DataSourceKeys & {
+  readonly kind: "create"; readonly id: string; readonly source: DataSource;
+};
+```
+
+Related types: [`DataSourceKeys`](./reference/types/#type-datasourcekeys) · [`DataSource`](./reference/types/#type-datasource).
+
 ### `CreateDensityPlotOptions` {#type-createdensityplotoptions}
 
  Expand CreateDensityPlotOptions
@@ -33853,6 +34076,108 @@ export type DataKeyOptions =
 ```
 
 Related types: [`RowKey`](./reference/types/#type-rowkey).
+
+### `DataParse` {#type-dataparse}
+
+ Expand DataParse
+
+```typescript
+export type DataParse = Readonly<Record<string, DataParseDirective>>;
+```
+
+Related types: [`DataParseDirective`](./reference/types/#type-dataparsedirective).
+
+### `DataParseDirective` {#type-dataparsedirective}
+
+ Expand DataParseDirective
+
+```typescript
+export type DataParseDirective =
+  | { readonly type: "string" | "number" | "boolean"; readonly nullable?: boolean; readonly format?: never; readonly timeZone?: never }
+  | { readonly type: "date"; readonly nullable?: boolean; readonly timeZone: string;
+      readonly format?: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso" };
+```
+
+### `DataSource` {#type-datasource}
+
+ Expand DataSource
+
+```typescript
+export type DataSource = DataSourceParsing & (
+  | { readonly kind: "inline"; readonly values: readonly Readonly<Record<string, DataSourceValue>>[];
+      readonly text?: never; readonly format?: never; readonly delimiter?: never }
+  | (DataSourceFormat & { readonly kind: "inline"; readonly text: string; readonly values?: never })
+  | (DataSourceFormat & { readonly kind: "url"; readonly url: string | ComputedExpressionV2 })
+  | (DataSourceFormat & { readonly kind: "named"; readonly name: string })
+);
+```
+
+Related types: [`DataSourceParsing`](./reference/types/#type-datasourceparsing) · [`DataSourceValue`](./reference/types/#type-datasourcevalue) · [`DataSourceFormat`](./reference/types/#type-datasourceformat) · [`ComputedExpressionV2`](./reference/types/#type-computedexpressionv2).
+
+### `DataSourceFormat` {#type-datasourceformat}
+
+ Expand DataSourceFormat
+
+```typescript
+type DataSourceFormat = { readonly format: "csv"; readonly delimiter?: string }
+  | { readonly format: "json"; readonly delimiter?: never };
+```
+
+### `DataSourceKeys` {#type-datasourcekeys}
+
+ Expand DataSourceKeys
+
+```typescript
+type DataSourceKeys =
+  | { readonly keyField?: never; readonly keyFields?: never }
+  | { readonly keyField: string; readonly keyFields?: never }
+  | { readonly keyField?: never; readonly keyFields: readonly string[] };
+```
+
+### `DataSourceParsing` {#type-datasourceparsing}
+
+ Expand DataSourceParsing
+
+```typescript
+type DataSourceParsing = { readonly parse?: DataParse; readonly schema?: SourceSchemaInput };
+```
+
+Related types: [`DataParse`](./reference/types/#type-dataparse) · [`SourceSchemaInput`](./reference/types/#type-sourceschemainput).
+
+### `DataSourceValue` {#type-datasourcevalue}
+
+ Expand DataSourceValue
+
+```typescript
+export type DataSourceValue = null | boolean | number | string
+  | readonly DataSourceValue[] | { readonly [key: string]: DataSourceValue };
+```
+
+### `DataUpdateDescriptors` {#type-dataupdatedescriptors}
+
+ Expand DataUpdateDescriptors
+
+```typescript
+interface DataUpdateDescriptors {
+  create: { readonly kind: "create"; readonly id: string; readonly sourceKind: DataSource["kind"]; readonly format?: "csv" | "json" };
+  revise: { readonly kind: "revise"; readonly target: string; readonly id: string };
+  parameter: { readonly kind: "parameter"; readonly target: string };
+}
+declare const preparedDataUpdate: unique symbol;
+/** Opaque preparation evidence. Only prepareDataUpdate can create a valid handle. */
+```
+
+Related types: [`DataSource`](./reference/types/#type-datasource).
+
+### `DataUpdateRequest` {#type-dataupdaterequest}
+
+ Expand DataUpdateRequest
+
+```typescript
+export type DataUpdateRequest = CreateDataUpdateRequest | ReviseDataUpdateRequest | ParameterDataUpdateRequest;
+```
+
+Related types: [`CreateDataUpdateRequest`](./reference/types/#type-createdataupdaterequest) · [`ReviseDataUpdateRequest`](./reference/types/#type-revisedataupdaterequest) · [`ParameterDataUpdateRequest`](./reference/types/#type-parameterdataupdaterequest).
 
 ### `DatasetBin2DOutputFields` {#type-datasetbin2doutputfields}
 
@@ -38895,6 +39220,18 @@ Related types: [`PathLegendOptions`](./reference/types/#type-pathlegendoptions) 
 export type ParallelMissingPolicy = "break" | "drop-row" | "error";
 ```
 
+### `ParameterDataUpdateRequest` {#type-parameterdataupdaterequest}
+
+ Expand ParameterDataUpdateRequest
+
+```typescript
+export interface ParameterDataUpdateRequest {
+  readonly kind: "parameter"; readonly target: string; readonly value: ParameterValue;
+}
+```
+
+Related types: [`ParameterValue`](./reference/types/#type-parametervalue).
+
 ### `ParameterDefinition` {#type-parameterdefinition}
 
  Expand ParameterDefinition
@@ -39445,6 +39782,20 @@ export interface PreGriddedHeatmapOptions extends HeatmapBaseOptions {
 ```
 
 Related types: [`HeatmapBaseOptions`](./reference/types/#type-heatmapbaseoptions) · [`HeatmapCategoryPositionChannel`](./reference/types/#type-heatmapcategorypositionchannel) · [`RectColorChannel`](./reference/types/#type-rectcolorchannel).
+
+### `PreparedDataUpdate` {#type-prepareddataupdate}
+
+ Expand PreparedDataUpdate
+
+```typescript
+export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = DataUpdateRequest["kind"]> {
+  readonly [preparedDataUpdate]: Kind;
+  readonly kind: "data-update";
+  readonly request: DataUpdateDescriptors[Kind];
+}
+```
+
+Related types: [`DataUpdateRequest`](./reference/types/#type-dataupdaterequest) · [`DataUpdateDescriptors`](./reference/types/#type-dataupdatedescriptors).
 
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
@@ -40355,6 +40706,17 @@ export type ReviseDataOptions<Row extends object> = ({ keys?: never; rowMap?: re
 ```
 
 Related types: [`RowKey`](./reference/types/#type-rowkey) · [`StoredCell`](./reference/types/#type-storedcell) · [`SourceSchemaInput`](./reference/types/#type-sourceschemainput).
+
+### `ReviseDataUpdateRequest` {#type-revisedataupdaterequest}
+
+ Expand ReviseDataUpdateRequest
+
+```typescript
+export interface ReviseDataUpdateRequest {
+  readonly kind: "revise"; readonly target: string; readonly id: string;
+  readonly rowMap?: readonly (number | null)[];
+}
+```
 
 ### `RotationInput` {#type-rotationinput}
 
@@ -42421,12 +42783,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3af6b16ebb62765f942abaee2da7db5dddbe4cc0/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3af6b16ebb62765f942abaee2da7db5dddbe4cc0/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -42970,6 +43332,12 @@ lookup dependencies, scales, guides, and highlights. Unrelated branches stay sha
 An unchanged value preserves revisions; negative zero and zero are distinct edits.
 A failed computation or consumer validation leaves the original program unchanged.
 
+If a parameter is used by a live data source URL, a changed value requires
+[`prepareDataUpdate` and `applyDataUpdate`](./api/data/source-and-derived/#prepared-data-updates).
+A direct changed-value `editParameter` reports `prepared-data-required`.
+An unchanged value still needs no loading or revision. The prepared path updates
+all affected source tables and computed consumers together.
+
 `removeParameter({ id })` requires an existing, unreferenced parameter. Remove or
 rewrite every consuming expression first; retained datasets also count as references.
 Deletion has no cascade or force mode. Creation and v2 computed creation are available
@@ -43113,6 +43481,13 @@ contains its old row index or `null` for a new row. The array must match the new
 row count and cannot repeat old indices. Keyed sources reject `rowMap`.
 Independent branches allocate distinct identities for new rows. Earlier
 programs remain unchanged, and invalid mappings reject the whole revision.
+
+For a live source created with `prepareDataUpdate`, use a prepared `revise`
+request to reload its URL or name while retaining that binding. A direct
+`reviseData` call with application-owned rows detaches the live binding after
+consumer validation succeeds. The original snapshot retains its receipt; the
+new rows are not recorded as a response from the old URL. An unused live output
+can be removed with `removeData`, which also removes its binding.
 
 ## Editing derived data {#editing-derived-data}
 
@@ -45322,11 +45697,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:c7c982f46a51b3f2f571de5bac1a3cfaef65ca4c568eae828204bda13f57c923` |
+| Contract fingerprint | `sha256:5a2fd3438d26a7a169de50f18044300ed7498b4d68dc254b739c1d3e9a741061` |
 | Example and dataset source | `b8f9668133b278974c9cfe7324402a18282c9f4b` |
-| Runtime source commit | `3af6b16ebb62765f942abaee2da7db5dddbe4cc0` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 301 |
+| Declared actions here | 302 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

@@ -504,8 +504,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 517,000 bytes |
-| `ggaction/basic` | 298,000 bytes |
+| `ggaction` | 525,000 bytes |
+| `ggaction/basic` | 305,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -705,10 +705,18 @@ dataset DAG의 합집합을 한 번 순회한다. 합류점은 모든 입력 rev
 계산식을 평가하지 않는다. Facet/repeat 편집은 retained source의 revision을 composition recipe에
 다시 적용하고 concat은 명시 child scope를 따른다. 구체적인 lifecycle은 [CORE](contract/current/CORE.md)가 소유한다.
 
-입력 자료의 순수 파싱은 `grammar/dataSource.js`, 명시 host callback을 호출하는 비동기 준비는
-`resources/resolveData.js`가 소유한다. 준비 결과는 실제 source와 provenance를 보존하고
-request token/input hash로 stale response를 거부한다. 이 private 준비 경계의 공개 action·저장 연결은
-아직 진행 중이며 renderer에 I/O 또는 semantic 해석을 추가하지 않는다.
+입력 자료의 순수 파싱·request proof·retained payload 검증은 `grammar/dataSource*.js`가,
+명시 host callback을 호출하는 비동기 준비는 `resources/resolveData.js`와 `dataUpdate*.js`가 소유한다.
+공개 prepare helper는 payload를 opaque handle의 private evidence로 보관하고,
+`actions/data/sourcePlan.js`가 고정한 source/computed union을 `applyDataUpdate`가 기존 domain actions로 적용한다.
+Live source intent와 current output은 typed data-source resource, 당시 실제 수신 자료는 immutable dataset receipt가 소유한다.
+`materialization/dataSourceState.js`는 이 둘의 read-only 일관성을 검증하며 persistence도 같은 검증을 사용한다.
+Restore는 URL AST·host callback을 실행하지 않는다. Basic은 공통 create 경계만 import한다.
+
+`core/action.js`의 transient source-identity와 exact-argument summary context는 wrapped invocation에만 유효하다.
+Prepared action이 clone 이전 receiver를 검증할 수 있게 하고 source primitive가 payload를 semantic state에만 보존하도록 한다.
+어느 context도 program property·codec state·public extension hook이 아니다. Renderer의 graphic-only 경계는 유지한다.
+구체적인 source/host/receipt 계약은 [CORE의 applyDataUpdate](contract/current/CORE.md#applydataupdate)가 소유한다.
 
 ## Immutability와 ownership
 

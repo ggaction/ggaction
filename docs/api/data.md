@@ -16,6 +16,7 @@ operation; marks and renderers never mutate source values.
 | Family | Actions | Use |
 | --- | --- | --- |
 | [Source and derived data](./data/source-and-derived.md) | `createData`, `createDerivedData` | Store source rows or explicit transform provenance |
+| [Prepared sources](./data/source-and-derived.md#prepared-data-updates) | `prepareDataUpdate`, `applyDataUpdate` | Prepare CSV/JSON or named data, then apply an immutable update |
 | [Safe resource removal](./data/revisions-and-removal.md#removedata-id) | `removeData` | Delete one named dataset only after all live consumers are gone |
 | [Reusable summaries](./data/summaries-and-shaping.md#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./data/summaries-and-shaping.md#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |

@@ -143,7 +143,7 @@ Direct `editParameter({target,value})`가 URL source를 변경하지만 private 
 
 ## Stale response와 ABA 차단
 
-`PreparedDataUpdate`는 library가 만든 frozen handle이다. Handle의 enumerable 값은 `kind: "data-update"`와 normalized `request`뿐이며, private WeakMap에 base program identity·payload·refs·검증 결과를 연결한다. 구조가 같은 plain object를 만들거나 serialize/deserialize한 handle을 적용할 수 없다. Action trace는 기존 argument summarizer로 이 요청과 적용 시 전달된 token을 완료 이력으로 기록한다. Pending payload, authoritative current token, callback 또는 signal은 ChartProgram에 저장하지 않고 이력 token을 복원 후의 pending 상태로 취급하지 않는다.
+`PreparedDataUpdate`는 library가 만든 frozen handle이다. Handle의 enumerable 값은 `kind: "data-update"`와 요청 설명용 `request`뿐이다. 설명은 create `{kind,id,sourceKind,format?}`, revise `{kind,target,id}`, parameter `{kind,target}`의 닫힌 모양이며 정확한 ID를 보존한다. 전체 normalized request·base program identity·payload·refs·검증 결과는 private WeakMap에만 연결한다. 원문 source.text/values, URL/AST, parameter value, rowMap, key policy, loader, signal은 handle에서 노출하지 않는다. 구조가 같은 plain object를 만들거나 serialize/deserialize한 handle을 적용할 수 없다. Action trace는 기존 argument summarizer로 이 요청과 적용 시 전달된 token을 완료 이력으로 기록한다. Pending payload, authoritative current token, callback 또는 signal은 ChartProgram에 저장하지 않고 이력 token을 복원 후의 pending 상태로 취급하지 않는다.
 
 적용할 때 다음을 모두 확인한다.
 
@@ -158,7 +158,7 @@ Direct `editParameter({target,value})`가 URL source를 변경하지만 private 
 
 ### Opaque handle, trace 요약과 scoped dispatch
 
-`summarizeArgs`는 own property descriptor를 읽고 array는 count로 요약한다. Implementation에는 요약본이 아니라 원래 `args`가 전달되므로 valid handle의 WeakMap identity는 보존된다. Frozen handle의 bounded normalized request에는 callback/signal/payload/program을 넣지 않는다. Trace의 요약본은 의미를 설명할 뿐 적용 권한이 없으며 복사·복원한 handle은 registry lookup에서 거부한다. Forged getter는 호출하지 않고, circular argument는 기존 summarizer가 거부한다. Prepared validation 뒤에 callbacks를 재실행하지 않는다.
+`summarizeArgs`는 own property descriptor를 읽고 array는 count로 요약한다. Implementation에는 요약본이 아니라 원래 `args`가 전달되므로 valid handle의 WeakMap identity는 보존된다. Frozen handle의 request descriptor에는 큰 원문을 넣지 않는다. `summarizeArgs`는 배열을 count로 바꾸지만 긴 문자열은 그대로 복사하므로 normalized request 전체를 handle에 넣으면 inline text와 URL literal이 trace로 복제된다. 정확한 normalized request는 private payload에만 두고 trace는 위 descriptor와 호출 시 token만 설명한다. ID/target은 기존 identifier 계약을 유지하며 임의 길이 절삭이나 생략 정책을 추가하지 않는다. Trace의 요약본은 의미를 설명할 뿐 적용 권한이 없으며 복사·복원한 handle은 registry lookup에서 거부한다. Forged getter는 호출하지 않고, circular argument는 기존 summarizer가 거부한다. Prepared validation 뒤에 callbacks를 재실행하지 않는다.
 
 현재 action dispatcher는 top-level `args.target`이 object/array이면 closed implementation의 key 검사보다 먼저 child scope로 전환한다. `applyDataUpdate`에는 `target` 옵션이 없으므로 기존 dispatch 제외 집합 `UNSCOPED_PRIMITIVES`에 이 op를 추가한다. 이 집합은 현재도 domain action `createData`를 포함한다. 새 public dispatch 정책은 만들지 않는다. 잘못 추가한 top-level target은 closed-key 오류가 되고, `prepared.request.target`은 중첩 값이므로 dispatcher에 관여하지 않는다. Concat child를 준비한 handle을 parent에 넣거나, context clone을 만든 scoped dispatcher로 전달하여 원래 child identity를 우회할 수 없다. Host가 정확한 child를 직접 적용한 뒤 교체하는 호출만 사용한다.
 
@@ -189,7 +189,7 @@ Root 검토에서 확정할 consequential 선택은 위에 구체화한 세 가�
 
 | 담당 | 전용 구현 파일 | 책임 |
 |---|---|---|
-| A — host 준비와 원래 receiver | 새 `resources/dataUpdate.js`, 새 `resources/dataUpdateFull.js`; 기존 `resources/resolveData.js`, `core/action.js` | closed request/host 정규화, URL/named load, abort, opaque handle registry, request token/hash/base proof, private actionSource lifetime |
+| A — host 준비 | 새 `resources/dataUpdate.js`, 새 `resources/dataUpdateFull.js`, 새 `grammar/dataSourceRequest.js`; 기존 `resources/resolveData.js` | closed request/host 정규화, URL/named load, abort, opaque handle registry, request token/hash/base proof; core/action.js lifetime은 root 소유 |
 | B — 저장 상태·참조·복원 | 새 `materialization/dataSourceState.js`; 기존 `materialization/resourceState.js`, `actions/primitives/resourceState.js`, `actions/primitives/semanticAction.js`, `grammar/schemas/semanticPath.js`, `actions/primitives/semanticValidation/dataset.js`, `core/resourceReferences.js`, `actions/resources/remove.js`, `persistence/validation.js` | typed source/receipt의 read-only validation, primitive 저장·adoption, 정확한 output ref 수집, 제거와 source-free restore |
 | C — 동기 생성·갱신 closure | 새 `actions/data/sourceCreate.js`, 새 `actions/data/sourceEdit.js`; 기존 `actions/data/create.js`, `actions/data/revise.js`, `actions/data/edit.js`, `actions/parameters/edit.js`, `actions/facets/actions.js`, `actions/data/basic.js`, `actions/data/index.js` | prepared context의 명시 child action 연결, 한 번의 source/parameter DAG 계획, source receipt의 생성 시 저장, manual detach, facet/repeat 재생성, Full/Basic 등록 |
 
@@ -199,8 +199,8 @@ Basic의 `resources/dataUpdate.js`와 `actions/data/sourceCreate.js`는 생성 �
 
 ### 반드시 먼저 합의할 내부 연결
 
-- **A↔B: source proof.** B는 source shape/receipt 파싱 검증과 finalized program의 live source validation을 소유한다. A는 기존 private resolver의 payload proof를 만들고 B가 정한 source/receipt 모양만 반환한다. B의 read-only module은 callback을 호출하는 resolver를 import하지 않고 grammar·digest·selectors를 사용한다. `result.data` 검증은 input DAG와 분리한다.
-- **A↔C: 준비 계획.** C의 Full planner가 정확한 source IDs, baseline refs, parameter 다음 revision, 새 dataset IDs/row identity를 정하고 A가 그 고정 계획에 필요한 payload만 준비한다. Common create helper는 Full planner를 import하지 않는다. A의 private handle lookup은 C의 apply boundary에서만 사용하며 plain object로 넘긴 source 결과를 신뢰하지 않는다.
+- **A↔B: source proof.** B는 source shape/receipt 파싱 검증과 finalized program의 live source validation을 소유한다. A는 `grammar/dataSourceRequest.js`의 `createDataSourceRequest`와 `dataSourceRequestHash`를 공유하며 B가 소유하는 `grammar/dataSourcePayload.js`의 payload proof를 재사용한다. Hash는 canonical baseURL도 포함하고 requestToken/inputHash만 제외한다. B의 restore는 URL AST shape/type/dependency를 검사하되 평가하지 않고 확정 receipt의 resolvedURL로 hash를 재구성한다. B의 read-only module은 callback을 호출하는 resolver를 import하지 않고 grammar·digest·selectors를 사용한다. `result.data` 검증은 input DAG와 분리한다.
+- **A↔C: 준비 계획.** C의 Full planner가 정확한 source IDs, baseline refs, parameter 다음 revision, 새 dataset IDs/row identity를 정하고 A가 그 고정 계획에 필요한 payload만 준비한다. Common create helper는 Full planner를 import하지 않는다. A Full helper가 C의 `planDataUpdate(program,request)` → 모든 source request 고정 → 병렬 load → `finalizeDataUpdatePlan(plan,preparedSources)` 순서를 따른다. Common helper의 `readPreparedDataUpdate(enteredProgram,prepared,requestToken)`은 actionSource의 original receiver·현재 token·abort·payload proof를 검증한 뒤 private payload를 C apply에 반환한다. Create payload는 `{base,request,requestToken,signal?,prepared,identity,options}`, Full 수정은 `{base,request,requestToken,signal?,plan}`이며 options는 B의 normalizeDataSourceOptions 결과다. Plain object로 복제한 handle을 신뢰하지 않는다.
 - **B↔C: receipt를 쓰는 시점.** `semanticPath.js`는 현재 dataset 속성으로 source/transform/schema/values만 허용한다. B가 sourceReceipt 경로·검증을 추가하더라도 materialized dataset의 정의는 이후 편집할 수 없다. C는 `createData`의 중복 ID 검사 뒤, values를 쓰기 전에 exact private prepared argument에 연결된 receipt를 저장한다. 공개 createData 옵션을 늘리거나 완성 후 snapshot을 직접 수정하지 않는다.
 - **B↔C: parameter write의 source revision.** 현재 `replaceStoredResource`는 dependent inputs를 자동 rebind하며 resource revision을 올린다. 새 source를 그 경로에 넣고 다시 일반 replace하면 두 번 증가하고, refs만 최신인 옛 payload를 완성 결과로 오인할 수 있다. C가 새 raw snapshots를 immutable 후보에 먼저 만들고, parameter primitive에 전달할 exact argument object의 private context에 최종 source envelopes를 결박한다. B의 `semanticAction.js`가 원래 args를 private resource writer에 전달하고 그 writer는 envelope의 expected prior identity/revision을 확인하여 dependency rebind 때 함께 저장한다. 한 source revision은 한 번만 증가하며 primitive가 URL을 평가하거나 load하지 않는다. 구체적인 private context helper는 B가 소유하고 C만 호출한다.
 - **Final freshness와 primitive graph.** Generic graph shape/exact dependency 검증과 source request hash/output/receipt의 finalized 검증을 구분한다. Extension primitive의 중간 상태에서 parameter refs만 변경했더라도 이를 새 응답으로 인정하지 않는다. `applyDataUpdate`와 serialize/restore는 B의 최종 validator를 반드시 호출하며 stale payload가 밖으로 성공 반환되지 않게 한다. 과거 receipt는 live parameter ref 검사를 받지 않는다.
@@ -224,3 +224,11 @@ Basic의 `resources/dataUpdate.js`와 `actions/data/sourceCreate.js`는 생성 �
 | Quantile | aggregate/box/scale의 linear 결과 및 서로 다른 invalid-input 정책을 `quantile-policies.test.js`가 이미 고정 | 기존 기본값 변경 없이 q25=1.75/q50=2.5·endpoint·empty fixture와 stats 전체 matrix 보강 |
 | Lookup | `grammar/lookup.js`는 right key 중복을 거부하는 1:1 contract | 현행 1:1/nullable unmatched를 명시하고 1:many는 지원으로 주장하지 않음; 카드 요구와 정확한 추가 범위를 다음 설계에서 확정 |
 | 독립 oracle | `test/oracles/numeric.js`, `bin2d.js`, `window.js`, `regression-statistics.js`, `categorical-density.js` 등이 존재 | 기존 owner에 summary variance, Gaussian f(0), pivot/LOESS 경계 literal을 더하고 production kernel import 없이 계산 |
+
+## 공개 경계 통합 중 확인한 보정
+
+- Source receipt와 inline source text는 저장 상태에 그대로 보존하고 primitive trace에서 textLength로 요약한다. Core의 private exact-argument summary context는 callback/metadata/public action 옵션을 늘리지 않으며 nested·오류 종료 뒤 복원된다.
+- Prepared revise는 준비 단계에서 확정한 iterative union과 revision IDs를 적용 때 재사용한다. 재귀 legacy planner로 다시 선택하여 logical owner 이름과 충돌하거나 깊은 DAG에서 stack overflow가 나는 경로를 제거했다.
+- Facet source 교체에서는 replacement unit의 source bindings가 authoritative하다. Selection/computed의 명시 exact ref closure만 채택하며 이전 child에 raw 역사 snapshot이 남았다는 이유로 독립 data-source를 되살리지 않는다. Manual row revision의 detach는 action/program 두 교체 경로에 유지된다.
+- Type의 opaque handle descriptor와 private brand는 사용자 작성 option이 아니다. Public required prepared/requestToken coverage는 유지하고 nested descriptor를 생성 option inventory로 확장하지 않는다.
+- Focused public/lifecycle·offline installed consumer fixture·문서 예제는 통과했다. 통합 정상 suite/coverage, 실제 설치 artifact, renderer/browser 및 원격 CI 확인은 별도 증거가 완료될 때까지 남아 있다.

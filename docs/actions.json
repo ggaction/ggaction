@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 301,
+  "count": 302,
   "cards": [
     {
       "schemaVersion": 3,
@@ -697,6 +697,82 @@
       "snippet": "program.createData({ values: [{ category: \"A\", value: 1 }] })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "applyDataUpdate",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Apply prepared source or parameter data to the exact immutable base with the current host token.",
+      "signature": "applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;",
+      "intents": [
+        "apply data update",
+        "apply",
+        "set defaults",
+        "chart setup",
+        "data and scales",
+        "prepared data update",
+        "CSV and JSON sources"
+      ],
+      "lifecycle": "Immutable create-only",
+      "resources": {
+        "prerequisites": [],
+        "owns": [
+          "prepared data update"
+        ],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "createData",
+        "editSemantic"
+      ],
+      "editableVia": [
+        "applyDataUpdate",
+        "reviseData",
+        "removeData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "prepared",
+          "required": true,
+          "type": "PreparedDataUpdate<\"create\" | \"parameter\" | \"revise\">"
+        },
+        {
+          "name": "requestToken",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "applyDataUpdate({ prepared, requestToken })"
+      ],
+      "snippet": "program.applyDataUpdate({ prepared: prepared, requestToken: currentToken })",
+      "errors": [
+        {
+          "error": "A copied handle, changed receiver or stale request token cannot be applied.",
+          "fix": "Prepare against the latest program and pass the unchanged handle with the current host token."
+        },
+        {
+          "error": "Basic accepts create preparations only.",
+          "fix": "Use the default entry point for prepared revisions and parameter updates."
+        }
+      ],
+      "route": "/reference/actions/charts-data/#applydataupdate"
     },
     {
       "schemaVersion": 3,
@@ -1918,7 +1994,8 @@
         "H3"
       ],
       "wraps": [
-        "editSemantic"
+        "editSemantic",
+        "createDerivedData"
       ],
       "editableVia": [
         "editParameter"

@@ -32,6 +32,30 @@ const overlapInvalid: Parameters<FullFormatsProgram["createYAxisTitle"]>[0] = {o
 // @ts-expect-error grouped scientific notation remains unsupported
 const invalidGrouped: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {format:",.2e"};
 
+import { chart as preparedChart, prepareDataUpdate, type PreparedDataUpdate } from "ggaction";
+import { chart as preparedBasicChart, prepareDataUpdate as prepareBasicDataUpdate } from "ggaction/basic";
+const preparedBase = preparedChart(), preparedBasicBase = preparedBasicChart();
+const preparedHost = { requestToken: "current" };
+const preparedCreate = await prepareDataUpdate(preparedBase, {
+  kind: "create", id: "source", source: { kind: "inline", values: [{ x: 1 }] }
+}, preparedHost);
+preparedBase.applyDataUpdate({ prepared: preparedCreate, requestToken: "current" });
+const preparedBasicCreate = await prepareBasicDataUpdate(preparedBasicBase, {
+  kind: "create", id: "source", source: { kind: "named", name: "rows", format: "csv" }
+}, { ...preparedHost, resolveNamed: () => ({ text: "x\n1", encoding: "utf-8", mimeType: "text/csv" }) });
+preparedBasicBase.applyDataUpdate({ prepared: preparedBasicCreate, requestToken: "current" });
+const preparedRevision = await prepareDataUpdate(preparedBase, {
+  kind: "revise", target: "source", id: "next"
+}, preparedHost);
+// @ts-expect-error opaque preparations cannot be constructed
+const forgedPreparation: PreparedDataUpdate = { kind: "data-update", request: { kind: "create", id: "source" } };
+// @ts-expect-error Basic cannot apply a revision preparation
+preparedBasicBase.applyDataUpdate({ prepared: preparedRevision, requestToken: "current" });
+// @ts-expect-error the latest host token is required
+preparedBase.applyDataUpdate({ prepared: preparedCreate });
+// @ts-expect-error Basic cannot prepare parameter changes
+await prepareBasicDataUpdate(preparedBasicBase, { kind: "parameter", target: "p", value: 2 }, preparedHost);
+
 const flushThresholdFull: Parameters<FullFormatsProgram["createXAxisLabels"]>[0] = {flush:true,flushThreshold:1};
 const flushThresholdBasic: Parameters<BasicFormatsProgram["createAxes"]>[0] = {x:{ticksAndLabels:{labels:{flush:true,flushThreshold:0}}}};
 fullLookup.editXAxisLabels({flushThreshold:"auto"});

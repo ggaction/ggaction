@@ -40,7 +40,7 @@
   ],
   "remaining": [],
   "baselineCommit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
-  "notice": "P1–P6 approved. Product implementation and STEP-013 acceptance remain in progress.",
+  "notice": "P1–P6 approved; parameter/computed public checkpoint verified. Prepared source final integration and STEP-013 closeout are tracked in STEP4.md.",
   "evidenceManifest": "agent_docs/impl/roadmap9/phase3/parameter/evidence/summary.json",
   "evidenceRevision": "sha256:57cd7aa23a0f567a5467bfe39929b570d06200e0852e4ccc5760f42172eac11f",
   "reviewSourceRevision": "sha256:399ec3063d351c1b63fcfb541a141a4001f103b92b067a348cef9b11e8e2c659",
@@ -52,8 +52,9 @@
   },
   "knownBaselineLimitations": "agent_docs/impl/roadmap9/phase3/parameter/compatibility.md",
   "supplementalDecisionsPending": [
-    "STEP-016 conditional dataflow policy and G-DATA contract are required dependent work under AUTHORIZATION.json; implementation evidence remains open."
+    "STEP-016 conditional dataflow integration remains required under AUTHORIZATION.json. G-DATA public integration is implemented and final verification is tracked in STEP4.md."
   ],
   "codeRevision": "49f6bb9283e6ba34dba78508118b9d321a8417f5",
-  "reviewPackagePushed": true
+  "reviewPackagePushed": true,
+  "implementationEvidence": "agent_docs/impl/roadmap9/phase3/product-implementation.json"
 }

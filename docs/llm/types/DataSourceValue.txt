@@ -1,0 +1,2 @@
+export type DataSourceValue = null | boolean | number | string
+  | readonly DataSourceValue[] | { readonly [key: string]: DataSourceValue };

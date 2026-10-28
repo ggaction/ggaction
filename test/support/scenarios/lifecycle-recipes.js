@@ -1,4 +1,4 @@
-import { chart, hconcat } from "../../../src/index.js";
+import { chart, hconcat, prepareDataUpdate } from "../../../src/index.js";
 
 import { loadZooDataset } from "../datasets/zoo.js";
 import {
@@ -9,6 +9,16 @@ import {
   realisticLifecycleRows,
   realisticSourceFields
 } from "./realistic-data.js";
+
+// Prepare once, then keep every recipe build synchronous on the exact immutable
+// receiver. This unused source fixture is separate from the chart's source rows.
+const preparedSourceBase = chart();
+const preparedSourceToken = "lifecycle-source";
+const preparedSource = await prepareDataUpdate(preparedSourceBase, {
+  kind: "create",
+  id: "unusedPreparedLifecycleSource",
+  source: { kind: "inline", values: [{ fixture: "prepared-source", value: 1 }] }
+}, { requestToken: preparedSourceToken });
 
 const CARTESIAN_CANVAS = Object.freeze({
   width: 920,
@@ -1235,7 +1245,10 @@ function buildDirectDataResources(factors) {
   const bandwidth = factors.dataset.startsWith("tt-")
     ? spread * factors.bandwidth
     : factors.bandwidth;
-  let program = chart()
+  let program = preparedSourceBase.applyDataUpdate({
+    prepared: preparedSource,
+    requestToken: preparedSourceToken
+  })
     .createCanvas(cartesianCanvas(factors))
     .editCanvas({
       width,
@@ -2135,6 +2148,7 @@ function lifecycleSignature(base, factors) {
     "action-facet-grid-lifecycle": ["facetGrid", "editFacetSource"],
     "action-repeat-charts-lifecycle": ["repeatCharts"],
     "action-direct-data-resources": [
+      "applyDataUpdate",
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale",
       "removeData", "removeScale", "removeCoordinate",
       "createParameter", "editParameter", "removeParameter",
@@ -2392,7 +2406,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
-  "reviseData", "applyTextMetrics", "removeTextMetrics",
+  "reviseData", "applyDataUpdate", "applyTextMetrics", "removeTextMetrics",
   "createParameter", "editParameter", "removeParameter",
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createSortedData", "editSortedData",

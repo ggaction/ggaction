@@ -177,6 +177,12 @@ lookup dependencies, scales, guides, and highlights. Unrelated branches stay sha
 An unchanged value preserves revisions; negative zero and zero are distinct edits.
 A failed computation or consumer validation leaves the original program unchanged.
 
+If a parameter is used by a live data source URL, a changed value requires
+[`prepareDataUpdate` and `applyDataUpdate`](../../../../api/data/source-and-derived/#prepared-data-updates).
+A direct changed-value `editParameter` reports `prepared-data-required`.
+An unchanged value still needs no loading or revision. The prepared path updates
+all affected source tables and computed consumers together.
+
 `removeParameter({ id })` requires an existing, unreferenced parameter. Remove or
 rewrite every consuming expression first; retained datasets also count as references.
 Deletion has no cascade or force mode. Creation and v2 computed creation are available

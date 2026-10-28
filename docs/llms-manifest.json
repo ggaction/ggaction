@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:c7c982f46a51b3f2f571de5bac1a3cfaef65ca4c568eae828204bda13f57c923",
-    "sourceCommit": "3af6b16ebb62765f942abaee2da7db5dddbe4cc0",
+    "contractId": "sha256:5a2fd3438d26a7a169de50f18044300ed7498b4d68dc254b739c1d3e9a741061",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "54780295a312e03263febff1ce98e2fce19d2384201daa7cedccb2e77c30edbc"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -783,8 +783,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4319,
-      "sha256": "ce8d1af8707ad7e37b7e88b7f5e54ca86f6a78757260be8e67bdebd32ed69e49"
+      "bytes": 4502,
+      "sha256": "91649b1ea3294dd69a8f8422176e53e2ebeca5e781799ef67c5e96b44405f4d7"
     },
     {
       "order": 50,
@@ -794,6 +794,7 @@
       "headings": [
         "source-and-derived-data",
         "createdata-id-values",
+        "prepared-data-updates",
         "create-derived-data",
         "create-sorted-data",
         "bindmarkdata-target-data",
@@ -810,8 +811,8 @@
         "removedata-id",
         "related"
       ],
-      "bytes": 14667,
-      "sha256": "0e2aa2e440f159dcead6525cc4d82118843fc87eb2c58e46823ef21c7491627d"
+      "bytes": 19886,
+      "sha256": "f2434dc9fe55bc1d4c145e1c440cd47b0c42e71560aaad8ad346b6824a2544c7"
     },
     {
       "order": 51,
@@ -1837,6 +1838,7 @@
       "headings": [
         "data-updates-and-live-refresh",
         "choose-an-update-path",
+        "prepare-and-apply-source-data",
         "revise-a-source-and-its-dependent-chart",
         "rebuild-from-source-rows",
         "what-can-be-revised-in-place",
@@ -1846,8 +1848,8 @@
         "snapshot-formats",
         "related"
       ],
-      "bytes": 12873,
-      "sha256": "ab98da0095fe2d196eef2a8378f99a76d1727446031e1441937ad27a74202cfb"
+      "bytes": 15219,
+      "sha256": "9070ab7d62955f0476d1eaf7524544ce7c9732e86a8fabc26bbab1ee3882510e"
     },
     {
       "order": 110,
@@ -1978,8 +1980,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 32349,
-      "sha256": "5fdaf2b297fa7d7f5e99a472bd24d448646054f0fdaebd111c7fc0ad7e7acd7f"
+      "bytes": 32449,
+      "sha256": "f40a99c40e6db101ed8b1f2196918025b8507d20c798585472b277a6f77893e7"
     },
     {
       "order": 118,
@@ -1996,6 +1998,7 @@
         "applytheme",
         "removetheme",
         "createdata",
+        "applydataupdate",
         "revisedata",
         "removedata",
         "removescale",
@@ -2089,8 +2092,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 199825,
-      "sha256": "f36338d90443ec74ae3c32f290c5d7ae98ea398f844196f437bc3e07a98b67f6"
+      "bytes": 201204,
+      "sha256": "8e6cf27048f3fd7b297a2b42ad350c705dbf9ab136fc98f22345ec765c478817"
     },
     {
       "order": 119,
@@ -2414,8 +2417,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 31989,
-      "sha256": "78298432671e8c83f5726d3553be7394a53c4201888dd5e6b70332efba0b4001"
+      "bytes": 33667,
+      "sha256": "2f35143a0986f4a6dccc8935e249cef41d7279184c293eef66b2a61aa1ab69d0"
     },
     {
       "order": 126,
@@ -2433,6 +2436,7 @@
         "type-angleencodingoptions",
         "type-annotationanchor",
         "type-annotationbaseoptions",
+        "type-applydataupdateoptions",
         "type-applytextmetricsoptions",
         "type-applythemeoptions",
         "type-arcinnerradius",
@@ -2554,6 +2558,7 @@
         "type-createbeeswarmplotoptions",
         "type-createcoordinateoptions",
         "type-createdataoptions",
+        "type-createdataupdaterequest",
         "type-createdensityplotoptions",
         "type-createderiveddataoptions",
         "type-createdotplotoptions",
@@ -2604,6 +2609,15 @@
         "type-dashscaleoptions",
         "type-dashstyle",
         "type-datakeyoptions",
+        "type-dataparse",
+        "type-dataparsedirective",
+        "type-datasource",
+        "type-datasourceformat",
+        "type-datasourcekeys",
+        "type-datasourceparsing",
+        "type-datasourcevalue",
+        "type-dataupdatedescriptors",
+        "type-dataupdaterequest",
         "type-datasetbin2doutputfields",
         "type-datasetbin2dtransform",
         "type-datasetbintransform",
@@ -2918,6 +2932,7 @@
         "type-paralleldimension",
         "type-parallelguideoptions",
         "type-parallelmissingpolicy",
+        "type-parameterdataupdaterequest",
         "type-parameterdefinition",
         "type-parametertype",
         "type-parametervalue",
@@ -2956,6 +2971,7 @@
         "type-positionencodingoptions",
         "type-positionscalebranches",
         "type-pregriddedheatmapoptions",
+        "type-prepareddataupdate",
         "type-quantilecolorscaleoptions",
         "type-quantitativebarcolorchannel",
         "type-quantitativepositionscaleoptions",
@@ -3021,6 +3037,7 @@
         "type-requesteddatasettransform",
         "type-requestedtransform",
         "type-revisedataoptions",
+        "type-revisedataupdaterequest",
         "type-rotationinput",
         "type-rotationunit",
         "type-rowkey",
@@ -3125,8 +3142,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 391796,
-      "sha256": "5b8e5bc6ba1363df0cd922421d65e398089f9a402f791b5ef9cf9a272863ba35"
+      "bytes": 397530,
+      "sha256": "cb952f6ead1b0b7a7b5f3066e5858ecb7c6548e9563871f24209b9cc9f90283d"
     },
     {
       "order": 127,
@@ -3160,8 +3177,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "d192c8954ba0a53b5a765f0763f65a99587cad4126377a284914da10163e216a"
+      "bytes": 20908,
+      "sha256": "3512cd406f4ed3c1b8fae8b7199073b6e16563579e2a629879529ea0a606139b"
     },
     {
       "order": 129,
@@ -3193,8 +3210,8 @@
         "parameters",
         "createnormalizeddata-id-source-field-as-groupby-method"
       ],
-      "bytes": 12727,
-      "sha256": "0b78dc6390c812ecccb439c1978c3b4362e944fe4e8d317c1e55af2acc72924f"
+      "bytes": 13116,
+      "sha256": "12c35f89e2e0932f207e1f563fcb00cbccefc6e8e03e723b0fed541e076a342d"
     },
     {
       "order": 131,
@@ -3221,8 +3238,8 @@
         "edit-sorted-data",
         "removedata-id"
       ],
-      "bytes": 9907,
-      "sha256": "856584c4cbae50df9274fa636edca74cf46ba6864107426c4957f147e17176ef"
+      "bytes": 10358,
+      "sha256": "812635b3919fadced6db46adc0bda50ca2a7deebda3332018cb25b90cc1eca0f"
     },
     {
       "order": 133,
@@ -3497,8 +3514,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "6f7f1d3c71a9bd71385bb2036db85f51c838895a6ef6a13688e9b435342b572a"
+      "bytes": 3000,
+      "sha256": "99be2fea19560c597aba934a5fd299f1dc2b16fc4d49c3bbed3b66e34113c237"
     },
     {
       "order": 150,

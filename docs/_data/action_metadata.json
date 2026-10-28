@@ -63,6 +63,14 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "applyDataUpdate": {
+    "operation": "apply",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "reviseData": {
     "operation": "edit",
     "authoringRoles": [

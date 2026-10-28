@@ -809,5 +809,26 @@
         "statements": 24
       }
     ]
+  },
+  {
+    "file": "prepared-data.mjs",
+    "cases": [
+      {
+        "id": "prepared-data/full-and-basic-create",
+        "statements": 1
+      },
+      {
+        "id": "prepared-data/fresh-process-offline-refresh",
+        "statements": 14
+      },
+      {
+        "id": "prepared-data/authenticity-and-freshness",
+        "statements": 18
+      },
+      {
+        "id": "prepared-data/renderers-and-scene",
+        "statements": 34
+      }
+    ]
   }
 ]

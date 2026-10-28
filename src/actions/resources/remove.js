@@ -11,6 +11,8 @@ import { findCoordinate } from "../../selectors/coordinates.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
+import { dataSourcesForDataset } from "../../materialization/dataSourceState.js";
+import { detachDataSourceBindings } from "../primitives/resourceState.js";
 
 const OPTIONS = Object.freeze(["id"]);
 
@@ -120,11 +122,16 @@ export function planResourceRemoval(program, { kind, id, operation }) {
   const resolved = resolveResourceOwnership(program, { kind, id });
   const actualId = resolved.resource.id;
   const references = collectResourceReferences(program, { kind, id: actualId });
+  const sourceBindings = new Set(kind === "data" && operation === "removeData"
+    ? dataSourcesForDataset(program, resolved.resource).map(source => source.id) : []);
   const live = references.filter(value => value.strength === "live" && !(
     resolved.ownership === "standalone" &&
     value.ownerKind === "dataOwner" &&
     value.ownerId === resolved.dataOwner.owner &&
     value.path.at(-1) === "current"
+  ) && !(
+    value.ownerKind === "resource" && sourceBindings.has(value.ownerId) &&
+    value.path.length === 2 && value.path[0] === "result" && value.path[1] === "data"
   ));
   if (live.length > 0) {
     throw annotateError(new Error(
@@ -153,6 +160,7 @@ function removeResource(kind, operation, description) {
       // The primitive then checks the remaining consumers without mistaking the
       // owner's own replay entry for an independently chart-owned resource.
       let next = releaseNamedResourceOwnership(this, plan);
+      if (kind === "data") next = detachDataSourceBindings(next, findDataset(next, plan.semanticIds[0]));
       const selector = kind === "data" ? "dataset" : kind;
       for (const semanticId of plan.semanticIds) {
         next = next.editSemantic({ property: `${selector}[${semanticId}]`, remove: true });

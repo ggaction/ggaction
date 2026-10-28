@@ -1,0 +1,4 @@
+export type DataParseDirective =
+  | { readonly type: "string" | "number" | "boolean"; readonly nullable?: boolean; readonly format?: never; readonly timeZone?: never }
+  | { readonly type: "date"; readonly nullable?: boolean; readonly timeZone: string;
+      readonly format?: "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y" | "iso" };

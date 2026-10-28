@@ -32,6 +32,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 | Action | Authoring role | API layer | Domain |
 | --- | --- | --- | --- |
+| [`applyDataUpdate`](./actions/charts-data.md#applydataupdate) | H3 | user-facing | core |
 | [`applyTextMetrics`](./actions/charts-data.md#applytextmetrics) | H3 | user-facing | core |
 | [`applyTheme`](./actions/charts-data.md#applytheme) | H3 | user-facing | core |
 | [`bindMarkData`](./actions/charts-data.md#bindmarkdata) | H2 | user-facing | core |

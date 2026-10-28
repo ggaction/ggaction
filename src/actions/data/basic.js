@@ -1,6 +1,7 @@
 import { createFlattenData, materializeFlattenData } from "./flatten.js";
 import {createLookupData,materializeLookupData} from "./lookup.js";
 import { createData } from "./create.js";
+import { applyCreateDataUpdate } from "./sourceCreate.js";
 import { createParameter } from "../parameters/create.js";
 import { createComputedData, materializeComputedData } from "./computed.js";
 import { createDerivedData } from "./derived.js";
@@ -9,6 +10,7 @@ import { materializeBin2DData } from "./bin2dMaterialize.js";
 
 export function registerBasicDataActions(ProgramClass) {
   ProgramClass.prototype.createData = createData;
+  ProgramClass.prototype.applyDataUpdate = applyCreateDataUpdate;
   ProgramClass.prototype.createParameter = createParameter;
   ProgramClass.prototype.createComputedData = createComputedData;
   ProgramClass.prototype.materializeComputedData = materializeComputedData;

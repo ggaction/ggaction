@@ -27,6 +27,13 @@ row count and cannot repeat old indices. Keyed sources reject `rowMap`.
 Independent branches allocate distinct identities for new rows. Earlier
 programs remain unchanged, and invalid mappings reject the whole revision.
 
+For a live source created with `prepareDataUpdate`, use a prepared `revise`
+request to reload its URL or name while retaining that binding. A direct
+`reviseData` call with application-owned rows detaches the live binding after
+consumer validation succeeds. The original snapshot retains its receipt; the
+new rows are not recorded as a response from the old URL. An unused live output
+can be removed with `removeData`, which also removes its binding.
+
 ## Editing derived data {#editing-derived-data}
 
 Every standalone value-producing data action creates a logical dataset owner.

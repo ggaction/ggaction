@@ -13,6 +13,7 @@ import { preparedDatasetIdentity, sourceIdentityFor } from "./datasetIdentity.js
 import { derivedIdentityBase, deriveRowLineage } from "../../grammar/rowLineage.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { replaceStoredResource, removeStoredResource } from "./resourceState.js";
+import { validateDataSourceReceipt } from "../../materialization/dataSourceState.js";
 
 
 const CONTEXT_KEYS = Object.freeze({
@@ -103,6 +104,9 @@ function updateEntity(program, parsed, value, args) {
       : inferDatasetSchema(value);
     validateRowsAgainstSchema(value, schema, `Dataset "${parsed.id}"`);
     updated = setNestedProperty(updated, ["schema"], schema);
+  }
+  if (parsed.kind === "dataset" && parsed.path[0] === "values" && updated.sourceReceipt !== undefined) {
+    validateDataSourceReceipt(updated.sourceReceipt, updated);
   }
   const nextCollection = [...collection];
 
@@ -312,7 +316,7 @@ export function createSemanticPrimitiveAction(validateSemanticValue, planNamedRe
       }
 
       const parsed = parseSemanticPath(property, { allowContainer: remove });
-      if (parsed.kind === "resource") return remove ? removeStoredResource(this, parsed) : replaceStoredResource(this, parsed, value);
+      if (parsed.kind === "resource") return remove ? removeStoredResource(this, parsed) : replaceStoredResource(this, parsed, value, args);
       const removesNamedResource = remove && parsed.path.length === 0 &&
         ["dataset", "scale", "coordinate"].includes(parsed.kind);
       if (this.compositionSpec !== undefined && !(

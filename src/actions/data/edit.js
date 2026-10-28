@@ -370,23 +370,44 @@ export function buildSourceRevisionPlan(program, source, id) {
 // Parameter edits can invalidate several roots of the same dataset DAG. Build
 // one union before allocating revisions so a shared lookup/diamond is replayed
 // once, after every changed input has been replaced.
-export function buildParameterRevisionPlan(program, parameterId) {
+export function buildParameterRevisionPlan(program, parameterId, { sourceRevisions = [] } = {}) {
   const datasets = program.semanticSpec.datasets;
   const roots = datasets.filter(dataset => dataset.transform?.some(transform =>
     transform.parameterInputs?.some(ref => ref.kind === "parameter" && ref.id === parameterId)));
-  const ordered = orderedDatasetClosure(datasets, roots.map(dataset => dataset.id), {
+  const ordered = orderedDatasetClosure(datasets, [...roots.map(dataset => dataset.id), ...sourceRevisions.map(source => source.old)], {
     skip: dataset => dataset.transform?.[0]?.type === "statisticalReference"
   });
   const owners = new Map(), occupied = new Set(datasets.map(dataset => dataset.id));
   for (const [family, records] of Object.entries(program.materializationConfigs.data ?? {})) {
     for (const [owner, config] of Object.entries(records)) {
       if (typeof config?.current !== "string") continue;
+      occupied.add(owner);
       const list = owners.get(config.current) ?? [];
       list.push({ family, owner }); owners.set(config.current, list);
     }
   }
-  const revisions = [], replacements = new Map(), reserved = new Set();
+  const revisions = [], replacements = new Map(), reserved = new Set(), raw = new Map();
+  for (const source of sourceRevisions) {
+    if (raw.has(source.old)) throw new Error(`Source dataset "${source.old}" has multiple revision owners.`);
+    const dataset = findDataset(program, source.old);
+    if (dataset?.source !== undefined || !Array.isArray(dataset?.values)) {
+      throw new Error(`Source "${source.old}" must be a materialized original dataset.`);
+    }
+    const id = source.id === undefined
+      ? nextRevisionId(program, source.owner, "Data", reserved, occupied)
+      : validateUserId(source.id, "Source revision dataset id");
+    if (source.id !== undefined) {
+      if (occupied.has(id) || reserved.has(id)) throw new Error(`Dataset "${id}" already exists.`);
+      reserved.add(id);
+    }
+    raw.set(source.old, { old: source.old, id });
+    replacements.set(source.old, id);
+  }
   for (const dataset of ordered) {
+    if (raw.has(dataset.id)) {
+      revisions.push(raw.get(dataset.id));
+      continue;
+    }
     if (dataset.transform?.length !== 1) throw new Error(`Dataset "${dataset.id}" requires one replayable transform.`);
     const previous = dataset.transform[0], policy = findTransformPolicy(previous.type);
     if (typeof policy?.materializeOp !== "string") throw new Error(`Dataset "${dataset.id}" has no replayable materializer.`);

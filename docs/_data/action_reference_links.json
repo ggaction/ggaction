@@ -7,6 +7,7 @@
   "applyTheme": "/reference/actions/charts-data/#applytheme",
   "removeTheme": "/reference/actions/charts-data/#removetheme",
   "createData": "/reference/actions/charts-data/#createdata",
+  "applyDataUpdate": "/reference/actions/charts-data/#applydataupdate",
   "reviseData": "/reference/actions/charts-data/#revisedata",
   "removeData": "/reference/actions/charts-data/#removedata",
   "removeScale": "/reference/actions/charts-data/#removescale",

@@ -124,10 +124,10 @@ test("calls every user-facing action directly from a generated scenario root", (
     directTraceOperations(buildScenario(descriptor), directOperations);
   }
 
-  assert.equal(publicActions.length, 294);
+  assert.equal(publicActions.length, 295);
   for (const operation of [
     "removeData", "removeScale", "removeCoordinate",
-    "createParameter", "editParameter", "removeParameter"
+    "createParameter", "editParameter", "removeParameter", "applyDataUpdate"
   ]) {
     assert.equal(publicActions.includes(operation), true, operation);
     assert.equal(directOperations.has(operation), true, operation);
@@ -140,6 +140,25 @@ test("calls every user-facing action directly from a generated scenario root", (
 
 test("retains direct action effects in final semantic and graphic state", () => {
   const resources = buildLifecycleRecipe("action-direct-data-resources");
+  const preparedSource = semanticResource(resources, "datasets", "unusedPreparedLifecycleSource");
+  assert.deepEqual(preparedSource.values, [{ fixture: "prepared-source", value: 1 }]);
+  assert.equal(preparedSource.sourceReceipt.sourceId, preparedSource.id);
+  const sourceBinding = semanticResource(resources, "resources", preparedSource.id);
+  assert.equal(sourceBinding.kind, "data-source");
+  assert.equal(sourceBinding.result.data.id, preparedSource.id);
+  const preparedActions = resources.trace.children.filter(node => node.op === "applyDataUpdate");
+  assert.equal(preparedActions.length, 1);
+  assert.equal(preparedActions[0], resources.trace.children[0]);
+  assert.deepEqual(preparedActions[0].args, {
+    prepared: { kind: "data-update", request: {
+      kind: "create", id: "unusedPreparedLifecycleSource", sourceKind: "inline"
+    } },
+    requestToken: "lifecycle-source"
+  });
+  assert.deepEqual(preparedActions[0].children.filter(node => node.op === "createData")
+    .map(node => node.args), [{ id: preparedSource.id, valuesCount: 1 }]);
+  assert.equal(resources.semanticSpec.layers.find(layer => layer.id === "resourcePoints").data,
+    "directSource", "the prepared fixture must not replace the chart's source rows");
   assert.equal(resources.graphicSpec.objects.canvas.properties.width, 920);
   assert.equal(resources.graphicSpec.objects.canvas.properties.background, "#ffffff");
   const statistics = currentDerivedDataset(resources, "regressionStatistics", "editStatistics");

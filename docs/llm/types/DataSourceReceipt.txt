@@ -1,0 +1,10 @@
+export interface DataSourceReceipt {
+  readonly sourceId: string;
+  readonly parsing: { readonly parse: DataParse; readonly format?: "csv" | "json";
+    readonly delimiter?: string; readonly schema?: SourceSchemaInput };
+  readonly resolvedURL?: string;
+  readonly name?: string;
+  readonly original: { readonly kind: "text"; readonly text: string }
+    | { readonly kind: "rows"; readonly values: readonly Readonly<Record<string, DataSourceValue>>[] };
+  readonly provenance: DataSourceProvenance;
+}

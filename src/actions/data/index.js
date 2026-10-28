@@ -39,6 +39,7 @@ import { createData } from "./create.js";
 import { createParameter } from "../parameters/create.js";
 import { editParameter, removeParameter } from "../parameters/edit.js";
 import { reviseData } from "./revise.js";
+import { applyDataUpdate } from "./sourceEdit.js";
 import { createWindowData, materializeWindowData } from "./window.js";
 import { createSummaryData, materializeSummaryData } from "./summary.js";
 import { createBinData, materializeBinData } from "./bin.js";
@@ -64,6 +65,7 @@ export function registerDataActions(ProgramClass) {
     editParameter,
     removeParameter,
     reviseData,
+    applyDataUpdate,
     createDerivedData,
     bindMarkData,
     releaseDerivedData,

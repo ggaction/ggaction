@@ -64,6 +64,7 @@ import { invalidSnapshot } from "./codec.js";
 import { DATA_IDENTITY_FIELDS, validateSourceIdentity } from "../core/itemIdentity.js";
 import { validateDatasetLineage } from "../grammar/rowLineage.js";
 import { validateResourceGraph } from "../materialization/resourceState.js";
+import { validateDataSourceState } from "../materialization/dataSourceState.js";
 import { resolveComputedEnvironment } from "../materialization/computedInputs.js";
 import { canonicalJSON } from "../core/contentDigest.js";
 import { storedSelectionSelector } from "../selectors/selectionResources.js";
@@ -199,7 +200,9 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
   exactKeys(semantic, ["datasets", "layers", "scales", "coordinates", "guides", "title", ...(legacy ? [] : ["resources"])], `${path}.semanticSpec`);
   if (!legacy) validateDatasetLineage(semantic.datasets);
   if (!legacy) validateResourceGraph(program);
+  if (!legacy) validateDataSourceState(program);
   for (const dataset of semantic.datasets) {
+    if (legacy && dataset.sourceReceipt !== undefined) throw invalidSnapshot("Data source receipts require editable snapshot version 4.", path);
     for (const transform of dataset.transform ?? []) {
       if (transform.type !== "computed" || transform.expression?.version !== 2) continue;
       if (legacy) throw invalidSnapshot("Computed v2 requires editable snapshot version 4.", path);

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "status": "data-product-integration-verified",
+  "approval": "../AUTHORIZATION.json",
+  "scope": "Prepared CSV/JSON source creation and revision, parameter URL invalidation, immutable receipts and offline lifecycle. STEP-013 closeout and Roadmap9 remain in progress.",
+  "verification": {
+    "normalTests": 6592,
+    "normalFailures": 0,
+    "coverage": {
+      "lines": 95.98,
+      "branches": 93.6,
+      "functions": 98.8,
+      "criticalFloors": 215
+    },
+    "frozenNormalCoverageInputDelta": [],
+    "expressionAcceptance": {
+      "cases": 49,
+      "functions": 30,
+      "expectedSha256": "ae1f58f158f43d1d07f188ad92bc706d7005b43aa5628d0357a10a4ad92e9c1b",
+      "actualSha256": "ae1f58f158f43d1d07f188ad92bc706d7005b43aa5628d0357a10a4ad92e9c1b",
+      "diff": []
+    },
+    "browserTests": 299,
+    "renderTests": 272,
+    "galleryVariants": 216,
+    "documentationTests": 161,
+    "documentationPages": 150,
+    "llmArtifacts": 1210,
+    "installedNodeCases": 193,
+    "installedTutorialCases": 65,
+    "installedQualificationGroups": 7,
+    "nodeMatrix": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "package": {
+      "sha256": "e7a1b5aad141ab5f10e24a71b85283911e5b456f060ec6f7949e554eee57ccd7",
+      "entries": 696,
+      "packedBytes": 1035817,
+      "unpackedBytes": 4828104
+    },
+    "bundleGzip": {
+      "full": 523989,
+      "basic": 303780,
+      "svg": 8130
+    },
+    "realistic": {
+      "status": "passed",
+      "files": 29,
+      "tests": 275,
+      "passed": 275,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "durationMs": 2996149,
+      "stableInputs": 811,
+      "stableInputSha256": "81280858e868afdcdd965b2b276dcd0542fbad9384c0793c8bc4f5811ee72799",
+      "evidence": "data-evidence/realistic/integration-2/final-verification.json"
+    },
+    "precedingParameterCI": {
+      "commit": "c0f0f7147f62a9da671b632eb5dbaf03188cd575",
+      "run": 40694658697,
+      "jobs": 20,
+      "conclusion": "success"
+    }
+  },
+  "evidenceManifest": "data-evidence/manifest.json",
+  "consumers": "consumers.json",
+  "limitations": [
+    "Working-tree receipts remain honestly dirty; frozen input manifests bind the tested source bytes.",
+    "Final exact-commit clean verification and remote DATA CI remain pending.",
+    "The initial failed coverage and cache-missing realistic attempt are preserved separately.",
+    "Ruby 3.2.11 was used locally; CI pins Ruby 3.2.6.",
+    "STEP-014/015 statistics/calendar, STEP-016 conditional closure, and subsequent STEP-077 scope remain open."
+  ]
+}

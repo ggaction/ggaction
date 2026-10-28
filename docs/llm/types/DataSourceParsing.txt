@@ -1,0 +1,1 @@
+type DataSourceParsing = { readonly parse?: DataParse; readonly schema?: SourceSchemaInput };
