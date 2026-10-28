@@ -1,3 +1,4 @@
+import { requestedMarkOutline } from "../../../grammar/markOutline.js";
 import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
 import { getLayerScaleIds } from "../../../materialization/marks/index.js";
 import { conditionalArcValues } from "../../../materialization/conditionalArcValues.js";
@@ -46,7 +47,7 @@ import {
 } from "../../../grammar/strokeStyle.js";
 
 const ARC_OPTIONS = Object.freeze([
-  "innerRadius", "padAngle", "fill", "opacity", "stroke", "strokeWidth",
+  "innerRadius", "padAngle", "fill", "opacity", "outline", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", ...ARC_OPTIONS]);
@@ -62,6 +63,7 @@ function normalizeConfig(
   let config = {
     ...previous,
     ...strokeDetails,
+    ...requestedMarkOutline(args),
     ...(Object.hasOwn(args, "innerRadius")
       ? { innerRadius: normalizeArcInnerRadius(args.innerRadius), innerRadiusExplicit: true }
       : {}),

@@ -171,6 +171,8 @@ export interface RadialGradientPaint {
   readonly radius: number;
   readonly stops: readonly [LinearGradientStop, LinearGradientStop, ...LinearGradientStop[]];
 }
+/** Stroke painted before the fill; white produces a halo. */
+export interface MarkOutline { color: string; width: number; }
 export type FillPaint = string | LinearGradientPaint | PatternPaint | RadialGradientPaint;
 type FilledMarkStroke = string | false;
 export type CurveInterpolation =
@@ -4771,7 +4773,7 @@ export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 
 export type TextFormat = ValueFormat;
 
-export interface TextMarkOptions {
+export interface TextMarkOptions extends StrokeStyleDetails {
   clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;
@@ -4786,6 +4788,7 @@ export interface TextMarkOptions {
   text?: unknown;
   missing?: "error" | "skip";
   fill?: FillPaint;
+  outline?: MarkOutline | false;
   opacity?: number;
   fontSize?: number;
   fontFamily?: string;
@@ -4859,6 +4862,7 @@ export interface RectMarkOptions extends RectStyleDetails {
   data?: string;
   missing?: "error" | "skip";
   fill?: FillPaint;
+  outline?: MarkOutline | false;
   opacity?: number;
   stroke?: string | false;
   strokeWidth?: number;
@@ -5969,6 +5973,7 @@ export class ChartProgram {
     missing?: "error" | "skip";
     shape?: PointShape;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -5979,6 +5984,7 @@ export class ChartProgram {
     missing?: "error" | "skip";
     shape?: PointShape;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -6036,6 +6042,7 @@ export class ChartProgram {
     orientation?: "vertical" | "horizontal";
     missing?: "error" | "skip";
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -6046,6 +6053,7 @@ export class ChartProgram {
     blend?: "normal" | "multiply" | "screen" | "difference";
     missing?: "error" | "skip";
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -6055,6 +6063,7 @@ export class ChartProgram {
     id?: string;
     data?: string;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: string;
     strokeWidth?: number;
@@ -6067,6 +6076,7 @@ export class ChartProgram {
     innerRadius?: ArcInnerRadius;
     padAngle?: number;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: string;
     strokeWidth?: number;
@@ -6076,6 +6086,7 @@ export class ChartProgram {
     innerRadius?: ArcInnerRadius;
     padAngle?: number;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;
@@ -6106,6 +6117,7 @@ export class ChartProgram {
     clip?: boolean;
     target?: string;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;

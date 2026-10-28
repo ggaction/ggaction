@@ -80,6 +80,50 @@ native PDF vector shading. PNG `pixelRatio` controls texture resolution as well
 as output pixels. Excessively dense patterns or large cumulative texture work
 fail before drawing under the shared output limits.
 
+## Outlines and text halos
+
+{% include chart-example.html id="mark-outlines" %}
+
+Point, Bar, Rect, Area, Arc, and Text create/edit options accept
+`outline: { color, width }`. White produces a halo. The outline follows the shape
+or actual letters and is painted before the fill. Attached labels and annotations
+accept the same Text option.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+const program = chart()
+  .createCanvas({ width: 320, height: 200, margin: 40 })
+  .createData({ values: [{ x: 1, y: 2, label: "North" }] })
+  .createTextMark({ outline: { color: "white", width: 8 }, fontSize: 24 })
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .encodeText({ field: "label" });
+const withoutHalo = program.editTextMark({ outline: false });
+```
+
+Both color and width are required. Width is a finite non-negative number in logical
+pixels; zero keeps the option but draws no edge. Colors use the pattern/radial color
+syntax above. An outline object replaces the complete previous outline. Omitted edit
+options preserve it; `false` removes it. Null and partial objects are errors.
+
+An active outline controls the visible edge. Removing it restores any previously
+authored or encoded stroke. Supplying both an active outline and an explicit stroke
+color in one call is an error. `lineCap`, `lineJoin`, and `miterLimit` control the same
+contour, including Text outlines. Temporary selection stroke highlights override
+outlines until the highlight is removed. Automatic fill/shape legend samples follow
+the mark outline.
+
+Opacity applies once to the combined outline and fill. Canvas, PNG, and PDF may
+isolate a partly transparent glyph as an image; opaque outlines and SVG Text retain
+vector output. Text requires native `strokeText` support. Outline bounds participate
+in spacing and Point packing, while selection still addresses the original data item.
+
 ## Stroke caps, joins, and rounded rectangles
 
 Every strokable mark style accepts `lineCap`, `lineJoin`, and `miterLimit`:

@@ -1,0 +1,176 @@
+{
+  "files": [
+    {
+      "file": "circle-halo/browser-canvas.png",
+      "reviewSha256": "b4f9ef4ad26783117682fd96d6e69b7040986ebae8e86e1833cb68ad20deab20",
+      "stableSha256": "b4f9ef4ad26783117682fd96d6e69b7040986ebae8e86e1833cb68ad20deab20"
+    },
+    {
+      "file": "circle-halo/browser-svg.png",
+      "reviewSha256": "acd3af2ddefa845f52263ea10aedfb41a1aac0c9329d522bfce20ffe29b60e78",
+      "stableSha256": "acd3af2ddefa845f52263ea10aedfb41a1aac0c9329d522bfce20ffe29b60e78"
+    },
+    {
+      "file": "circle-halo/pdf.png",
+      "reviewSha256": "fc0e87315824d28167d2933ecd9899f04f827c29542244882333ecc9fabee56d",
+      "stableSha256": "fc0e87315824d28167d2933ecd9899f04f827c29542244882333ecc9fabee56d"
+    },
+    {
+      "file": "circle-halo/primitive.png",
+      "reviewSha256": "c1403caa4fcaee9b0a96921b7dc56d1d226b324c5041cd88c4dc5805e24f52d2",
+      "stableSha256": "c1403caa4fcaee9b0a96921b7dc56d1d226b324c5041cd88c4dc5805e24f52d2"
+    },
+    {
+      "file": "clip/browser-canvas.png",
+      "reviewSha256": "9ddd67760bea833d4479835ce8439df1cdfe40076b7fa159c302f4f6f3f48482",
+      "stableSha256": "9ddd67760bea833d4479835ce8439df1cdfe40076b7fa159c302f4f6f3f48482"
+    },
+    {
+      "file": "clip/browser-svg.png",
+      "reviewSha256": "9ddd67760bea833d4479835ce8439df1cdfe40076b7fa159c302f4f6f3f48482",
+      "stableSha256": "9ddd67760bea833d4479835ce8439df1cdfe40076b7fa159c302f4f6f3f48482"
+    },
+    {
+      "file": "clip/pdf.png",
+      "reviewSha256": "0389851cade77395cc31e05474c8e7301d9175a4a5b655dc2ac9cb2f2c3c7af1",
+      "stableSha256": "0389851cade77395cc31e05474c8e7301d9175a4a5b655dc2ac9cb2f2c3c7af1"
+    },
+    {
+      "file": "clip/primitive.png",
+      "reviewSha256": "1e64b939935c4bc82422ffd8a5f9d06f1b2bf25ff58955231c52f6c49537ab12",
+      "stableSha256": "1e64b939935c4bc82422ffd8a5f9d06f1b2bf25ff58955231c52f6c49537ab12"
+    },
+    {
+      "file": "contact-sheet.png",
+      "reviewSha256": "da94fb0865dfd715547fc3450f75fdead9d03e0958af2566017a96f2d97efb1c",
+      "stableSha256": "da94fb0865dfd715547fc3450f75fdead9d03e0958af2566017a96f2d97efb1c"
+    },
+    {
+      "file": "path-outline/browser-canvas.png",
+      "reviewSha256": "9b27c42dbd5ab243bc0c28b70d1287f9a553079b276f2193335b966a4a6a0921",
+      "stableSha256": "9b27c42dbd5ab243bc0c28b70d1287f9a553079b276f2193335b966a4a6a0921"
+    },
+    {
+      "file": "path-outline/browser-svg.png",
+      "reviewSha256": "9b27c42dbd5ab243bc0c28b70d1287f9a553079b276f2193335b966a4a6a0921",
+      "stableSha256": "9b27c42dbd5ab243bc0c28b70d1287f9a553079b276f2193335b966a4a6a0921"
+    },
+    {
+      "file": "path-outline/pdf.png",
+      "reviewSha256": "05f71749afb38abd88d7f062a1199d0b1d5f4a557d1179e642318d34e04a4b0b",
+      "stableSha256": "05f71749afb38abd88d7f062a1199d0b1d5f4a557d1179e642318d34e04a4b0b"
+    },
+    {
+      "file": "path-outline/primitive.png",
+      "reviewSha256": "a7a866620e3e74b9dbeebd1e9e340d328a5d6e0c38671b5bc04e8ce028f68f2a",
+      "stableSha256": "a7a866620e3e74b9dbeebd1e9e340d328a5d6e0c38671b5bc04e8ce028f68f2a"
+    },
+    {
+      "file": "rectangle-outline/browser-canvas.png",
+      "reviewSha256": "6b400c36bc7e932b498f6a595e7cfb768ce7e900b46d74d442bee6736024d355",
+      "stableSha256": "6b400c36bc7e932b498f6a595e7cfb768ce7e900b46d74d442bee6736024d355"
+    },
+    {
+      "file": "rectangle-outline/browser-svg.png",
+      "reviewSha256": "6b400c36bc7e932b498f6a595e7cfb768ce7e900b46d74d442bee6736024d355",
+      "stableSha256": "6b400c36bc7e932b498f6a595e7cfb768ce7e900b46d74d442bee6736024d355"
+    },
+    {
+      "file": "rectangle-outline/pdf.png",
+      "reviewSha256": "57f6022c2441d0f85f041c8373e86d2fc2d804748263d3089c9c757250e239cc",
+      "stableSha256": "57f6022c2441d0f85f041c8373e86d2fc2d804748263d3089c9c757250e239cc"
+    },
+    {
+      "file": "rectangle-outline/primitive.png",
+      "reviewSha256": "4267a6cabf6f49dabf8d85883b8784260c99d77f37def9db44949fc13aa2d284",
+      "stableSha256": "4267a6cabf6f49dabf8d85883b8784260c99d77f37def9db44949fc13aa2d284"
+    },
+    {
+      "file": "text-halo/browser-canvas.png",
+      "reviewSha256": "75d1d46ca34fef12394f48d002304f26db55e3f0371b2b5c9fe9f47785f840f1",
+      "stableSha256": "75d1d46ca34fef12394f48d002304f26db55e3f0371b2b5c9fe9f47785f840f1"
+    },
+    {
+      "file": "text-halo/browser-svg.png",
+      "reviewSha256": "75d1d46ca34fef12394f48d002304f26db55e3f0371b2b5c9fe9f47785f840f1",
+      "stableSha256": "75d1d46ca34fef12394f48d002304f26db55e3f0371b2b5c9fe9f47785f840f1"
+    },
+    {
+      "file": "text-halo/pdf.png",
+      "reviewSha256": "e49e701d9193aace2965021bbe9472b4261ed7e415f74ae18b7c26d519e3802f",
+      "stableSha256": "e49e701d9193aace2965021bbe9472b4261ed7e415f74ae18b7c26d519e3802f"
+    },
+    {
+      "file": "text-halo/primitive.png",
+      "reviewSha256": "09170c8a4760cecb4cda53b2b1d5292e6eb0c65aac9ba89c478d1c4cada73e0c",
+      "stableSha256": "09170c8a4760cecb4cda53b2b1d5292e6eb0c65aac9ba89c478d1c4cada73e0c"
+    },
+    {
+      "file": "text-opacity/browser-canvas.png",
+      "reviewSha256": "ce18e2faedf93ea9308993ad3c627198189f687001973607371cb9c21234d7fe",
+      "stableSha256": "ce18e2faedf93ea9308993ad3c627198189f687001973607371cb9c21234d7fe"
+    },
+    {
+      "file": "text-opacity/browser-svg.png",
+      "reviewSha256": "ce18e2faedf93ea9308993ad3c627198189f687001973607371cb9c21234d7fe",
+      "stableSha256": "ce18e2faedf93ea9308993ad3c627198189f687001973607371cb9c21234d7fe"
+    },
+    {
+      "file": "text-opacity/isolated-glyph.png",
+      "reviewSha256": "73206f568cbfdd27b0dadfc3b3591d1ab53fbc67ddfb145c72f9e0545196c524",
+      "stableSha256": "73206f568cbfdd27b0dadfc3b3591d1ab53fbc67ddfb145c72f9e0545196c524"
+    },
+    {
+      "file": "text-opacity/pdf.png",
+      "reviewSha256": "c1265c83547a4e89e45707394b2198003b133218b8031a9c97929010b1ad4462",
+      "stableSha256": "c1265c83547a4e89e45707394b2198003b133218b8031a9c97929010b1ad4462"
+    },
+    {
+      "file": "text-opacity/primitive.png",
+      "reviewSha256": "bbbdaa20700b032247fe5544c697876ffb1b02dccbabebc96d5fb9287bf86962",
+      "stableSha256": "bbbdaa20700b032247fe5544c697876ffb1b02dccbabebc96d5fb9287bf86962"
+    },
+    {
+      "file": "text-outline/browser-canvas.png",
+      "reviewSha256": "4d8a3a35cbd456540292eb48d9f50d772aa4d772e45d68181d92e98964e303fd",
+      "stableSha256": "4d8a3a35cbd456540292eb48d9f50d772aa4d772e45d68181d92e98964e303fd"
+    },
+    {
+      "file": "text-outline/browser-svg.png",
+      "reviewSha256": "4d8a3a35cbd456540292eb48d9f50d772aa4d772e45d68181d92e98964e303fd",
+      "stableSha256": "4d8a3a35cbd456540292eb48d9f50d772aa4d772e45d68181d92e98964e303fd"
+    },
+    {
+      "file": "text-outline/pdf.png",
+      "reviewSha256": "be0edfa12193613628f2ddc437c1432adb04cdc47fc5d73c967084b194dc6b78",
+      "stableSha256": "be0edfa12193613628f2ddc437c1432adb04cdc47fc5d73c967084b194dc6b78"
+    },
+    {
+      "file": "text-outline/primitive.png",
+      "reviewSha256": "31f37d57ad94e1546c4e9ed970d8bb68597c79d49d81cc8ec0d073fd2625e80e",
+      "stableSha256": "31f37d57ad94e1546c4e9ed970d8bb68597c79d49d81cc8ec0d073fd2625e80e"
+    },
+    {
+      "file": "zero-width/browser-canvas.png",
+      "reviewSha256": "31b980ea18d257ea2ec8a758f2e86b72d43761b0332e3025176f1f3eec4ea579",
+      "stableSha256": "31b980ea18d257ea2ec8a758f2e86b72d43761b0332e3025176f1f3eec4ea579"
+    },
+    {
+      "file": "zero-width/browser-svg.png",
+      "reviewSha256": "31b980ea18d257ea2ec8a758f2e86b72d43761b0332e3025176f1f3eec4ea579",
+      "stableSha256": "31b980ea18d257ea2ec8a758f2e86b72d43761b0332e3025176f1f3eec4ea579"
+    },
+    {
+      "file": "zero-width/pdf.png",
+      "reviewSha256": "f8b67d1c7d82fc2cd50b87297cad77c49e856af2fed9ac5b5b9a466c51d7c8bd",
+      "stableSha256": "f8b67d1c7d82fc2cd50b87297cad77c49e856af2fed9ac5b5b9a466c51d7c8bd"
+    },
+    {
+      "file": "zero-width/primitive.png",
+      "reviewSha256": "b496f930d633124bbfb1dbff7c7c0409c07ef8bfd1d1e11c14fc86941045da5b",
+      "stableSha256": "b496f930d633124bbfb1dbff7c7c0409c07ef8bfd1d1e11c14fc86941045da5b"
+    }
+  ],
+  "same": 34,
+  "total": 34
+}

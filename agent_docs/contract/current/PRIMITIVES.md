@@ -261,3 +261,7 @@ semantic origin이나 기본값을 추론하지 않는다. Text의 구조화된 
 finite ordered `{left,right,top,bottom}`이며 회전 전 text anchor와 동일 frame이다. Renderer는 이를
 소비하고 native glyph 자체를 그대로 그린다. 기존 string fill은 fillBounds가 필요 없다. 모든 새 값은
 editable/graphic codec에서 같은 schema로 검증된다. Shape geometry나 row lineage는 paint 때문에 바뀌지 않는다.
+
+### Concrete pre-fill outlines
+
+Circle, Rect, Path and Text concrete properties accept the immutable closed `outline:{color,width}` defined in [Marks](MARKS.md#pre-fill-outlines-and-halos). Collections may supply it to compatible children. Concrete false is invalid; removal deletes the property. The outline owns the rendered edge while retaining ordinary stroke properties for restoration. Shared bounds include half the width and existing cap/join/miter rules; renderer opacity applies to the complete glyph once. Text permits the same lineCap/lineJoin/miterLimit details. Line primitives reject outline.

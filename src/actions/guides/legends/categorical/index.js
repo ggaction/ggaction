@@ -1,3 +1,4 @@
+import { highlightSourceProperties } from "../../../../materialization/selection/styles.js";
 import{hasLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { action } from "../../../../core/action.js";
 import { editLegend } from "../edit.js";
@@ -106,7 +107,7 @@ function createLegendHighlightAction() {
               value: graphic.items.map((child, index) => ({
                 type: child.type ?? graphic.type,
                 properties: states[index]
-                  ? { ...child.properties, ...selectedStyle }
+                  ? { ...highlightSourceProperties(child.properties, selectedStyle), ...selectedStyle }
                   : dimOpacity === undefined
                     ? child.properties
                     : { ...child.properties, opacity: dimOpacity }

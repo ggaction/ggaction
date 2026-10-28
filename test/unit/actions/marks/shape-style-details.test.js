@@ -162,7 +162,7 @@ test("rejects invalid and unsupported shape details before resolving targets", (
     [() => program.createBarMark({ cornerRadius: -1 }), RangeError, /cornerRadius/],
     [() => program.createRectMark({ cornerRadius: Infinity }), TypeError, /cornerRadius/],
     [() => program.createPointMark({ cornerRadius: 2 }), Error, /Unknown createPointMark option/],
-    [() => program.createTextMark({ lineJoin: "round" }), Error, /Unknown createTextMark option/]
+    [() => program.createTextMark({ cornerRadius: 2 }), Error, /Unknown createTextMark option/]
   ]) {
     assert.throws(invoke, error => {
       assert.equal(error instanceof ErrorClass, true);

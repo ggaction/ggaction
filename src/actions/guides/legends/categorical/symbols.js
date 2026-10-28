@@ -117,7 +117,9 @@ function makeEditSymbol(type) {
               opacity: layer.opacity ?? appearance.opacity,
               ...requestedStrokeDetails(layer, "Legend point symbol")
             });
-            return !explicitRecipeOpacity?graphic:{...graphic,properties:{...graphic.properties,blend:"normal"}};
+            return { ...graphic, properties: { ...graphic.properties,
+              ...(layer.outline === undefined ? {} : { outline: layer.outline }),
+              ...(!explicitRecipeOpacity ? {} : { blend: "normal" }) } };
           });
           return next.editGraphics({
             target: id,
@@ -146,6 +148,13 @@ function makeEditSymbol(type) {
         )) {
           next = next.editGraphics({ target: id, property, value });
         }
+        if (layer.outline !== undefined) next = next.editGraphics({ target: id, property: "outline", value: layer.outline });
+        else if (next.graphicSpec.objects[id].items.some(item => item.properties.outline !== undefined)) {
+          next = next.editGraphics({ target: id, property: "items", value: next.graphicSpec.objects[id].items.map(item => {
+            const { outline, ...properties } = item.properties; void outline;
+            return { type: item.type ?? "circle", properties };
+          }) });
+        }
         if (structuredFill) next = next.editGraphics({ target: id, property: "fill", value: materializeFillItems(next, findLayer(next, config.target),
           next.graphicSpec.objects[id].items.map((item, index) => ({ type: "circle", properties: { ...item.properties, fill: pointFills[index] } }))).map(item => item.properties.fill) });
         return applyLayerOpacity(next, id, layer.opacity ?? appearance.opacity, explicitRecipeOpacity);
@@ -172,6 +181,7 @@ function makeEditSymbol(type) {
           fill: fills[index],
           stroke: strokes[index],
           strokeWidth: layer.strokeWidth,
+          ...(layer.outline === undefined ? {} : { outline: layer.outline }),
           ...((layer.opacity ?? appearance.opacity) === undefined ? {} : { opacity: layer.opacity ?? appearance.opacity }),
           ...(!explicitRecipeOpacity?{}:{blend:"normal"}),
           ...requestedStrokeDetails(details, "Legend swatch symbol")

@@ -288,9 +288,9 @@ function hasActiveStroke(properties) {
 }
 
 export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
-  const strokeExtent = hasActiveStroke(properties)
-    ? properties.strokeWidth / 2
-    : 0;
+  const strokeExtent = properties.outline === undefined
+    ? (hasActiveStroke(properties) ? properties.strokeWidth / 2 : 0)
+    : properties.outline.width / 2;
   if (type === "circle") {
     if (![properties.x, properties.y, properties.radius].every(Number.isFinite)) {
       return undefined;
@@ -331,7 +331,10 @@ export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
       !Number.isFinite(properties.fontSize) ||
       typeof properties.text !== "string"
     ) return undefined;
-    return resolveTextBounds(properties, profile);
+    const bounds = resolveTextBounds(properties, profile);
+    return strokeExtent > 0
+      ? box(bounds.left, bounds.right, bounds.top, bounds.bottom, strokeExtent)
+      : bounds;
   }
   if (type === "path") {
     const commands = properties.commands;

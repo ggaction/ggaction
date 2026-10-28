@@ -1,3 +1,4 @@
+import { requestedMarkOutline } from "../../../grammar/markOutline.js";
 import { requestedMarkClip } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import {
@@ -18,7 +19,7 @@ import { STROKE_STYLE_PROPERTIES } from
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const CREATE_OPTIONS = Object.freeze([
-  "clip", "id", "data", "orientation", "missing", "fill", "opacity", "stroke", "strokeWidth",
+  "clip", "id", "data", "orientation", "missing", "fill", "opacity", "outline", "stroke", "strokeWidth",
   ...RECT_RADIUS_PROPERTIES, ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -30,6 +31,7 @@ export const createBarMark = /* @__PURE__ */ action(
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createBarMark");
     requestedMarkClip(args);
+    requestedMarkOutline(args);
     requestedRectStyleDetails(args, "createBarMark");
     if (args.orientation !== undefined && !["vertical", "horizontal"].includes(args.orientation)) {
       throw new Error("Bar orientation must be vertical or horizontal.");
@@ -78,7 +80,7 @@ export const createBarMark = /* @__PURE__ */ action(
     created = materializeInheritedMark(created, id);
     const appearance = Object.fromEntries(
       [
-        "clip", "fill", "opacity", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
+        "clip", "fill", "opacity", "outline", "stroke", "strokeWidth", ...RECT_RADIUS_PROPERTIES,
         ...STROKE_STYLE_PROPERTIES
       ]
         .filter(property => Object.hasOwn(args, property))

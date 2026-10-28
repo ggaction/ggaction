@@ -141,6 +141,11 @@
       "type": "FillPaint | undefined"
     },
     {
+      "name": "outline",
+      "required": false,
+      "type": "false | MarkOutline | undefined"
+    },
+    {
       "name": "opacity",
       "required": false,
       "type": "number | undefined"
@@ -182,6 +187,21 @@
     },
     {
       "name": "dy",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
       "required": false,
       "type": "number | undefined"
     },

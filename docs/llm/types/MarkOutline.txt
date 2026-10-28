@@ -1,0 +1,1 @@
+export interface MarkOutline { color: string; width: number; }

@@ -1,3 +1,4 @@
+import { createMarkOutlineExample } from "./mark-outlines/program.js";
 import { createStructuredPaintExample } from "./structured-paints/program.js";
 import { createImageExample } from "./image-assets/program.js";
 import { createTree } from "./tree-layouts/program.js";
@@ -177,6 +178,8 @@ export const DOCUMENTATION_WORKFLOWS = Object.freeze([
 
 // Chart-family examples retain their independent primitive/public baselines.
 export const PUBLIC_CHARTS = Object.freeze([
+  example({ id: "mark-outlines", data: {}, width: 280, height: 200, docsGroup: "tutorials", createProgram: () => createMarkOutlineExample(),
+    browser: { path: "mark-outlines/", canvas: "#chart" } }),
   example({ id: "structured-paints", data: {}, width: 260, height: 180, docsGroup: "tutorials", createProgram: () => createStructuredPaintExample(),
     browser: { path: "structured-paints/", canvas: "#chart" } }),
   example({ id: "image-assets", data: {}, width: 200, height: 210, docsGroup: "tutorials", createProgram: () => createImageExample(),

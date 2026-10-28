@@ -1,3 +1,4 @@
+import { normalizeMarkOutline, MARK_OUTLINE_TYPES } from "../grammar/markOutline.js";
 import { validateFillPaint } from "../grammar/paint.js";
 import { normalizeImageMarkConfig, IMAGE_MARK_CONFIG_KEYS } from "../grammar/imageMark.js";
 import { validateImageBinding } from "../materialization/imageState.js";
@@ -631,6 +632,14 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       validatePointShape(program.markConfigs[id].shape);
     }
     const markConfig = program.markConfigs[id];
+    const markType = resources.get("mark").get(id).mark.type;
+    if (markConfig.outline !== undefined && (!MARK_OUTLINE_TYPES.includes(markType) || markType === "bar") ||
+        markConfig.barAppearance?.outline !== undefined && markType !== "bar") {
+      throw invalidSnapshot(`Mark config "${id}" has an unsupported outline owner.`, path);
+    }
+    for (const outline of [markConfig.outline, markConfig.barAppearance?.outline]) {
+      if (outline !== undefined) normalizeMarkOutline(outline, "Stored mark outline");
+    }
     for (const fill of [markConfig.fill, markConfig.barAppearance?.fill]) {
       if (fill !== undefined) validateFillPaint(fill, "Stored mark fill");
     }

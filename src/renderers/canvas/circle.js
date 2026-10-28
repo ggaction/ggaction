@@ -1,3 +1,4 @@
+import { drawCanvasOutline } from "./outline.js";
 import { fillCanvasPath } from "./fill.js";
 import { requireFiniteProperty } from "./validation.js";
 import { validateConcreteGraphicProperties } from
@@ -27,6 +28,7 @@ function drawCircle(context, child, collectionId) {
   context.globalAlpha = opacity;
   context.beginPath();
   context.arc(x, y, radius, 0, Math.PI * 2);
+  drawCanvasOutline(context, properties, () => context.stroke());
   fillCanvasPath(context, properties.fill, { left: x - radius, right: x + radius,
     top: y - radius, bottom: y + radius }, graphicId,
     () => context.arc(x, y, radius, 0, Math.PI * 2));
@@ -44,7 +46,7 @@ function drawCircle(context, child, collectionId) {
         `Graphic "${graphicId}" requires a non-negative strokeWidth.`
       );
     }
-    if (strokeWidth > 0) {
+    if (strokeWidth > 0 && properties.outline === undefined) {
       applyCanvasStroke(context, properties);
       context.stroke();
     }

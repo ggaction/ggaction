@@ -1,3 +1,4 @@
+import { drawCanvasOutline } from "./outline.js";
 import { isPatternPaint, isRadialGradientPaint } from "../../grammar/paint.js";
 import { requireFiniteProperty } from "./validation.js";
 import { validateConcreteGraphicProperties } from
@@ -38,6 +39,11 @@ function drawRect(context, child, collectionId) {
 
   context.globalAlpha = opacity;
   const bounds = { left: x, right: x + width, top: y, bottom: y + height };
+  drawCanvasOutline(context, properties, () => {
+    context.beginPath(); context.moveTo(x, y); context.lineTo(x + width, y);
+    context.lineTo(x + width, y + height); context.lineTo(x, y + height);
+    context.closePath(); context.stroke();
+  });
   if (isPatternPaint(properties.fill) || isRadialGradientPaint(properties.fill)) {
     const trace = () => {
       context.moveTo(x, y); context.lineTo(x + width, y);
@@ -50,7 +56,7 @@ function drawRect(context, child, collectionId) {
     context.fillRect(x, y, width, height);
   }
   // Canvas ignores lineWidth = 0 and would retain a previous nonzero width.
-  if (strokeWidth > 0) {
+  if (strokeWidth > 0 && properties.outline === undefined) {
     applyCanvasStroke(context, properties);
     context.beginPath();
     context.moveTo(x, y);

@@ -57,7 +57,7 @@ test("validates the closed stroke detail vocabulary", () => {
 });
 
 test("accepts stroke details only on strokable concrete graphics", () => {
-  for (const type of ["collection", "circle", "rect", "line", "path"]) {
+  for (const type of ["collection", "circle", "rect", "line", "path", "text"]) {
     for (const property of ["lineCap", "lineJoin", "miterLimit"]) {
       assert.equal(validateGraphicProperty(type, property), property);
     }
@@ -67,7 +67,7 @@ test("accepts stroke details only on strokable concrete graphics", () => {
       miterLimit: 2
     });
   }
-  for (const type of ["text", "canvas"]) {
+  for (const type of ["canvas"]) {
     assert.throws(
       () => validateGraphicProperty(type, "lineJoin"),
       new RegExp(`Unknown ${type} graphic property`)

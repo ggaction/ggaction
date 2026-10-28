@@ -132,6 +132,21 @@ function requireStrokeDash(properties, graphicId) {
   return strokeDash;
 }
 
+function outlineAttributes(properties) {
+  const outline = properties.outline;
+  if (outline === undefined) return [];
+  return [["stroke", paintColorCSS(outline.color)], ["stroke-width", formatNumber(outline.width)],
+    ["paint-order", "stroke fill"],
+    ...strokeDetailAttributes({ ...properties, stroke: outline.color }, outline.width)];
+}
+
+function strokeAttributes(properties, strokeWidth) {
+  return properties.outline === undefined
+    ? [["stroke", properties.stroke], ["stroke-width", strokeWidth === undefined ? undefined : formatNumber(strokeWidth)],
+        ...strokeDetailAttributes(properties, strokeWidth)]
+    : outlineAttributes(properties);
+}
+
 function strokeDetailAttributes(properties, strokeWidth) {
   if (typeof properties.stroke !== "string" || !(strokeWidth > 0)) return [];
   return [
@@ -277,11 +292,7 @@ function serializeCircle(state, graphicId, properties) {
     ["cy", formatNumber(y)],
     ["r", formatNumber(radius)],
     ["fill", serializeFill(state, properties.fill, { left: x - radius, right: x + radius, top: y - radius, bottom: y + radius }, graphicId)],
-    ["stroke", properties.stroke],
-    ["stroke-width", strokeWidth === undefined
-      ? undefined
-      : formatNumber(strokeWidth)],
-    ...strokeDetailAttributes(properties, strokeWidth),
+    ...strokeAttributes(properties, strokeWidth),
     ["opacity", formatNumber(requireOpacity(properties, graphicId))]
   ]);
 }
@@ -320,9 +331,7 @@ function serializeRect(state, graphicId, properties) {
     ["width", formatNumber(width)],
     ["height", formatNumber(height)],
     ["fill", fill],
-    ["stroke", properties.stroke],
-    ["stroke-width", formatNumber(strokeWidth)],
-    ...strokeDetailAttributes(properties, strokeWidth),
+    ...strokeAttributes(properties, strokeWidth),
     ["opacity", formatNumber(requireOpacity(properties, graphicId))],
     ["style", properties.blend && properties.blend !== "normal" ? `mix-blend-mode:${properties.blend}` : undefined]
   ]);
@@ -350,9 +359,7 @@ function serializeLine(state, graphicId, properties) {
     ["x2", formatNumber(requireFiniteProperty(properties, "x2", graphicId))],
     ["y2", formatNumber(requireFiniteProperty(properties, "y2", graphicId))],
     ["fill", "none"],
-    ["stroke", properties.stroke],
-    ["stroke-width", formatNumber(strokeWidth)],
-    ...strokeDetailAttributes(properties, strokeWidth),
+    ...strokeAttributes(properties, strokeWidth),
     ["stroke-dasharray", strokeDash.length === 0
       ? undefined
       : strokeDash.map(formatNumber).join(" ")],
@@ -411,11 +418,7 @@ function serializePath(state, graphicId, properties) {
     ["d", serializePathData(commands)],
     ["fill-rule", properties.fillRule],
     ["fill", fill],
-    ["stroke", properties.stroke],
-    ["stroke-width", strokeWidth === undefined
-      ? undefined
-      : formatNumber(strokeWidth)],
-    ...strokeDetailAttributes(properties, strokeWidth),
+    ...strokeAttributes(properties, strokeWidth),
     ["stroke-dasharray", strokeDash.length === 0
       ? undefined
       : strokeDash.map(formatNumber).join(" ")],
@@ -475,6 +478,7 @@ function serializeText(state, graphicId, properties) {
     ["x", formatNumber(x)],
     ["y", formatNumber(y)],
     ["fill", fill],
+    ...outlineAttributes(properties),
     ["font-family", fontFamily],
     ["font-size", formatNumber(fontSize)],
     ["font-weight", normalizeRendererFontWeight(fontWeight)],

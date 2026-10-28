@@ -1,3 +1,4 @@
+import { highlightSourceProperties } from "./styles.js";
 function translateCommand(command, offset) {
   const translated = { ...command };
   for (const key of ["x", "x1", "x2"]) {
@@ -10,6 +11,7 @@ function translateCommand(command, offset) {
 }
 
 export function transformPathHighlightProperties(properties, style) {
+  properties = highlightSourceProperties(properties, style);
   const { offset = { x: 0, y: 0 }, ...appearance } = style;
   return {
     ...properties,

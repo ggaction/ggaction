@@ -1,4 +1,4 @@
-export type { FillPaint, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
+export type { FillPaint, MarkOutline, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
