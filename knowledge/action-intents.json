@@ -995,6 +995,11 @@
     "TreemapPlot": [
       "nested rectangle chart",
       "proportional hierarchy"
+    ],
+    "FontResource": [
+      "embedded font bytes",
+      "measured font identity",
+      "retained font source"
     ]
   },
   "summaryOverrides": {
@@ -1891,6 +1896,18 @@
       "cells": {
         "opacity": 0.8
       }
+    },
+    "createFontResource": {
+      "prepared": {
+        "$code": "preparedFontCreate"
+      },
+      "requestToken": "current"
+    },
+    "replaceFontResource": {
+      "prepared": {
+        "$code": "preparedFontReplace"
+      },
+      "requestToken": "current"
     }
   },
   "callPatternOverrides": {

@@ -1,0 +1,3887 @@
+{
+  "accessibility.js": {
+    "lines": 98.86,
+    "branches": 97.54,
+    "functions": 100
+  },
+  "actions/basic.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/boxPlots/components.js": {
+    "lines": 97.14,
+    "branches": 92.11,
+    "functions": 100
+  },
+  "actions/boxPlots/create.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/boxPlots/edit.js": {
+    "lines": 97.06,
+    "branches": 95.77,
+    "functions": 100
+  },
+  "actions/boxPlots/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/boxPlots/materialize.js": {
+    "lines": 97.18,
+    "branches": 96.15,
+    "functions": 100
+  },
+  "actions/boxPlots/options.js": {
+    "lines": 100,
+    "branches": 98.59,
+    "functions": 100
+  },
+  "actions/boxPlots/resolve.js": {
+    "lines": 91.3,
+    "branches": 93.55,
+    "functions": 100
+  },
+  "actions/canvas/actions.js": {
+    "lines": 98.82,
+    "branches": 98.53,
+    "functions": 100
+  },
+  "actions/canvas/fitting.js": {
+    "lines": 93.33,
+    "branches": 91,
+    "functions": 100
+  },
+  "actions/canvas/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/canvas/plotBorder.js": {
+    "lines": 100,
+    "branches": 91.67,
+    "functions": 100
+  },
+  "actions/canvas/plotOrder.js": {
+    "lines": 100,
+    "branches": 83.33,
+    "functions": 100
+  },
+  "actions/categoryOrder/index.js": {
+    "lines": 98.35,
+    "branches": 92.59,
+    "functions": 100
+  },
+  "actions/charts/area.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/charts/bar.js": {
+    "lines": 95.4,
+    "branches": 94.83,
+    "functions": 100
+  },
+  "actions/charts/basic.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/charts/beeswarm.js": {
+    "lines": 97.18,
+    "branches": 95.35,
+    "functions": 100
+  },
+  "actions/charts/density.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/charts/ecdf.js": {
+    "lines": 98.84,
+    "branches": 98.18,
+    "functions": 100
+  },
+  "actions/charts/endpoints.js": {
+    "lines": 94.97,
+    "branches": 89.94,
+    "functions": 97.22
+  },
+  "actions/charts/heatmap.js": {
+    "lines": 96.98,
+    "branches": 94.12,
+    "functions": 100
+  },
+  "actions/charts/histogram.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/charts/horizon.js": {
+    "lines": 100,
+    "branches": 97.62,
+    "functions": 100
+  },
+  "actions/charts/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/charts/interval-regression.js": {
+    "lines": 97.67,
+    "branches": 94.74,
+    "functions": 100
+  },
+  "actions/charts/line.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/charts/missing.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/charts/parallel.js": {
+    "lines": 93.1,
+    "branches": 87.88,
+    "functions": 100
+  },
+  "actions/charts/pie.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/charts/polar.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/charts/radar.js": {
+    "lines": 94.28,
+    "branches": 86.47,
+    "functions": 86.36
+  },
+  "actions/charts/radial.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/charts/raincloud.js": {
+    "lines": 94.65,
+    "branches": 90.39,
+    "functions": 100
+  },
+  "actions/charts/rug-strip.js": {
+    "lines": 97.88,
+    "branches": 96.92,
+    "functions": 100
+  },
+  "actions/charts/scatter.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/charts/shared.js": {
+    "lines": 94.01,
+    "branches": 93.48,
+    "functions": 100
+  },
+  "actions/charts/text.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/composition/actions.js": {
+    "lines": 96.04,
+    "branches": 92.67,
+    "functions": 100
+  },
+  "actions/composition/adjacent.js": {
+    "lines": 100,
+    "branches": 94.44,
+    "functions": 100
+  },
+  "actions/composition/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/composition/layer.js": {
+    "lines": 100,
+    "branches": 90.63,
+    "functions": 100
+  },
+  "actions/composition/layerPlan.js": {
+    "lines": 97.16,
+    "branches": 87.31,
+    "functions": 100
+  },
+  "actions/composition/targets.js": {
+    "lines": 95.37,
+    "branches": 97.5,
+    "functions": 90.91
+  },
+  "actions/coordinates/actions.js": {
+    "lines": 97.73,
+    "branches": 96.55,
+    "functions": 100
+  },
+  "actions/coordinates/edit.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/coordinates/parallel.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/basic.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/basicBin2d.js": {
+    "lines": 90.48,
+    "branches": 40,
+    "functions": 100
+  },
+  "actions/data/bin.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/bin2d.js": {
+    "lines": 97.12,
+    "branches": 92.98,
+    "functions": 100
+  },
+  "actions/data/bin2dMaterialize.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/box.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/complete.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/computed.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/computedBinding.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/create.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/density.js": {
+    "lines": 93.85,
+    "branches": 93.75,
+    "functions": 100
+  },
+  "actions/data/derived.js": {
+    "lines": 94.71,
+    "branches": 89.13,
+    "functions": 100
+  },
+  "actions/data/ecdf.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/edit.js": {
+    "lines": 96.55,
+    "branches": 93.5,
+    "functions": 100
+  },
+  "actions/data/filter.js": {
+    "lines": 98.48,
+    "branches": 94.17,
+    "functions": 100
+  },
+  "actions/data/filterBinding.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/flatten.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/fold.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/gradientProfile.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/horizon.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/impute.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/interval.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/intervalEdit.js": {
+    "lines": 100,
+    "branches": 95.52,
+    "functions": 100
+  },
+  "actions/data/lookup.js": {
+    "lines": 100,
+    "branches": 70,
+    "functions": 100
+  },
+  "actions/data/normalize.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/pivot.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/raincloudFilter.js": {
+    "lines": 100,
+    "branches": 92.31,
+    "functions": 100
+  },
+  "actions/data/regression.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/regressionStatistics.js": {
+    "lines": 100,
+    "branches": 87.5,
+    "functions": 100
+  },
+  "actions/data/resourceRevision.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/revise.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/revisionBindings.js": {
+    "lines": 97.52,
+    "branches": 95.92,
+    "functions": 100
+  },
+  "actions/data/shared.js": {
+    "lines": 98.46,
+    "branches": 97.62,
+    "functions": 100
+  },
+  "actions/data/sort.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/sourceContext.js": {
+    "lines": 97.3,
+    "branches": 90.91,
+    "functions": 100
+  },
+  "actions/data/sourceCreate.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/sourceEdit.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/sourcePlan.js": {
+    "lines": 95.4,
+    "branches": 91.49,
+    "functions": 100
+  },
+  "actions/data/stack.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/summary.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/timeUnit.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/data/window.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/distributions/revision.js": {
+    "lines": 97.14,
+    "branches": 90.37,
+    "functions": 100
+  },
+  "actions/encodings/angle.js": {
+    "lines": 97.5,
+    "branches": 96.15,
+    "functions": 100
+  },
+  "actions/encodings/appearance.js": {
+    "lines": 100,
+    "branches": 98.32,
+    "functions": 100
+  },
+  "actions/encodings/barWidth.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/encodings/basic.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/encodings/channels.js": {
+    "lines": 98.36,
+    "branches": 95.31,
+    "functions": 100
+  },
+  "actions/encodings/color/continuous.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/encodings/color/index.js": {
+    "lines": 98.22,
+    "branches": 97.78,
+    "functions": 100
+  },
+  "actions/encodings/color/layout.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/encodings/color/policy.js": {
+    "lines": 92.64,
+    "branches": 95.97,
+    "functions": 100
+  },
+  "actions/encodings/conditional.js": {
+    "lines": 98.98,
+    "branches": 97.33,
+    "functions": 100
+  },
+  "actions/encodings/density.js": {
+    "lines": 95.76,
+    "branches": 93.67,
+    "functions": 90
+  },
+  "actions/encodings/density/resolve.js": {
+    "lines": 95.68,
+    "branches": 91.23,
+    "functions": 100
+  },
+  "actions/encodings/histogram.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/encodings/horizon.js": {
+    "lines": 97.86,
+    "branches": 92.93,
+    "functions": 100
+  },
+  "actions/encodings/horizon/resolve.js": {
+    "lines": 91.92,
+    "branches": 89.29,
+    "functions": 96.15
+  },
+  "actions/encodings/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/encodings/offset.js": {
+    "lines": 96.8,
+    "branches": 97.14,
+    "functions": 100
+  },
+  "actions/encodings/parallel.js": {
+    "lines": 92.79,
+    "branches": 92.86,
+    "functions": 100
+  },
+  "actions/encodings/pathOrder.js": {
+    "lines": 99.17,
+    "branches": 92.11,
+    "functions": 100
+  },
+  "actions/encodings/position/apply.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/encodings/position/areaAlignment.js": {
+    "lines": 100,
+    "branches": 93.18,
+    "functions": 100
+  },
+  "actions/encodings/position/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/encodings/position/resolve.js": {
+    "lines": 98.78,
+    "branches": 99.17,
+    "functions": 100
+  },
+  "actions/encodings/ranged.js": {
+    "lines": 99.17,
+    "branches": 97.42,
+    "functions": 100
+  },
+  "actions/encodings/remove.js": {
+    "lines": 96.38,
+    "branches": 96.27,
+    "functions": 100
+  },
+  "actions/encodings/ruleAppearance.js": {
+    "lines": 100,
+    "branches": 97.83,
+    "functions": 100
+  },
+  "actions/encodings/seriesLayout.js": {
+    "lines": 100,
+    "branches": 96.36,
+    "functions": 100
+  },
+  "actions/encodings/shared.js": {
+    "lines": 96.8,
+    "branches": 93.14,
+    "functions": 100
+  },
+  "actions/encodings/stroke.js": {
+    "lines": 96.6,
+    "branches": 96.77,
+    "functions": 100
+  },
+  "actions/encodings/strokeDash.js": {
+    "lines": 100,
+    "branches": 97.3,
+    "functions": 100
+  },
+  "actions/encodings/temporal.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/encodings/text.js": {
+    "lines": 98.41,
+    "branches": 98.46,
+    "functions": 100
+  },
+  "actions/errorBands/create.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/errorBands/edit.js": {
+    "lines": 96.41,
+    "branches": 92.86,
+    "functions": 100
+  },
+  "actions/errorBands/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/errorBars/create.js": {
+    "lines": 97.82,
+    "branches": 95.79,
+    "functions": 100
+  },
+  "actions/errorBars/edit.js": {
+    "lines": 98.3,
+    "branches": 95.58,
+    "functions": 100
+  },
+  "actions/errorBars/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/facets/actions.js": {
+    "lines": 96.79,
+    "branches": 91.74,
+    "functions": 100
+  },
+  "actions/facets/derive.js": {
+    "lines": 97.27,
+    "branches": 91.43,
+    "functions": 96.43
+  },
+  "actions/facets/guides.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/facets/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/facets/replay.js": {
+    "lines": 87.76,
+    "branches": 77.78,
+    "functions": 100
+  },
+  "actions/fonts/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/gradientPlots/components.js": {
+    "lines": 93.01,
+    "branches": 84.44,
+    "functions": 100
+  },
+  "actions/gradientPlots/create.js": {
+    "lines": 95.88,
+    "branches": 94.44,
+    "functions": 100
+  },
+  "actions/gradientPlots/edit.js": {
+    "lines": 94.51,
+    "branches": 94.57,
+    "functions": 100
+  },
+  "actions/gradientPlots/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/gradientPlots/materialize.js": {
+    "lines": 95.59,
+    "branches": 91.95,
+    "functions": 100
+  },
+  "actions/gradientPlots/options.js": {
+    "lines": 95.24,
+    "branches": 95.24,
+    "functions": 100
+  },
+  "actions/gradientPlots/paint.js": {
+    "lines": 96.55,
+    "branches": 88.24,
+    "functions": 100
+  },
+  "actions/gradientPlots/rebind.js": {
+    "lines": 80,
+    "branches": 40,
+    "functions": 100
+  },
+  "actions/gradientPlots/resolve.js": {
+    "lines": 89.39,
+    "branches": 94.87,
+    "functions": 100
+  },
+  "actions/guides/applicability.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/axes/axes.js": {
+    "lines": 97.32,
+    "branches": 97.54,
+    "functions": 100
+  },
+  "actions/guides/axes/axis.js": {
+    "lines": 100,
+    "branches": 98.85,
+    "functions": 100
+  },
+  "actions/guides/axes/components.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/axes/edit.js": {
+    "lines": 98.28,
+    "branches": 99.07,
+    "functions": 100
+  },
+  "actions/guides/axes/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/axes/labels.js": {
+    "lines": 98.92,
+    "branches": 93.98,
+    "functions": 100
+  },
+  "actions/guides/axes/lines.js": {
+    "lines": 97.79,
+    "branches": 92.98,
+    "functions": 100
+  },
+  "actions/guides/axes/parallel.js": {
+    "lines": 100,
+    "branches": 96.81,
+    "functions": 100
+  },
+  "actions/guides/axes/parallel/lifecycle.js": {
+    "lines": 100,
+    "branches": 97.67,
+    "functions": 100
+  },
+  "actions/guides/axes/parallel/policy.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/axes/parallel/resolve.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/axes/policy.js": {
+    "lines": 98.68,
+    "branches": 98.84,
+    "functions": 100
+  },
+  "actions/guides/axes/remove.js": {
+    "lines": 93.85,
+    "branches": 93.55,
+    "functions": 100
+  },
+  "actions/guides/axes/tickGroups.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/axes/ticks.js": {
+    "lines": 100,
+    "branches": 96.15,
+    "functions": 100
+  },
+  "actions/guides/axes/titles.js": {
+    "lines": 100,
+    "branches": 95.38,
+    "functions": 100
+  },
+  "actions/guides/basic.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/facade.js": {
+    "lines": 98.11,
+    "branches": 98.02,
+    "functions": 100
+  },
+  "actions/guides/facadeAxes.js": {
+    "lines": 96.23,
+    "branches": 92.78,
+    "functions": 88.24
+  },
+  "actions/guides/facadeLegend.js": {
+    "lines": 97.22,
+    "branches": 86.96,
+    "functions": 100
+  },
+  "actions/guides/grids/grid.js": {
+    "lines": 95.32,
+    "branches": 94.31,
+    "functions": 100
+  },
+  "actions/guides/grids/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/grids/resolve.js": {
+    "lines": 98.75,
+    "branches": 94.12,
+    "functions": 97.3
+  },
+  "actions/guides/guides.js": {
+    "lines": 100,
+    "branches": 99.09,
+    "functions": 100
+  },
+  "actions/guides/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/legends/automatic.js": {
+    "lines": 86.21,
+    "branches": 87.5,
+    "functions": 80
+  },
+  "actions/guides/legends/blocks.js": {
+    "lines": 95.07,
+    "branches": 89.52,
+    "functions": 100
+  },
+  "actions/guides/legends/categorical/actions.js": {
+    "lines": 98.53,
+    "branches": 98.07,
+    "functions": 96.3
+  },
+  "actions/guides/legends/categorical/components.js": {
+    "lines": 90.6,
+    "branches": 66.67,
+    "functions": 100
+  },
+  "actions/guides/legends/categorical/index.js": {
+    "lines": 100,
+    "branches": 98.08,
+    "functions": 100
+  },
+  "actions/guides/legends/categorical/layout.js": {
+    "lines": 91.03,
+    "branches": 94.79,
+    "functions": 100
+  },
+  "actions/guides/legends/categorical/options.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/legends/categorical/recipes.js": {
+    "lines": 97.47,
+    "branches": 96.51,
+    "functions": 100
+  },
+  "actions/guides/legends/categorical/resolve.js": {
+    "lines": 89.29,
+    "branches": 92,
+    "functions": 100
+  },
+  "actions/guides/legends/categorical/symbols.js": {
+    "lines": 97.53,
+    "branches": 94.57,
+    "functions": 83.33
+  },
+  "actions/guides/legends/categorical/validation.js": {
+    "lines": 90.91,
+    "branches": 66.67,
+    "functions": 100
+  },
+  "actions/guides/legends/colorSize.js": {
+    "lines": 100,
+    "branches": 95.15,
+    "functions": 100
+  },
+  "actions/guides/legends/combine.js": {
+    "lines": 100,
+    "branches": 96.55,
+    "functions": 100
+  },
+  "actions/guides/legends/continuous/colorSymbols.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/legends/continuous/common.js": {
+    "lines": 96.63,
+    "branches": 94.63,
+    "functions": 96.67
+  },
+  "actions/guides/legends/continuous/gradient.js": {
+    "lines": 97.08,
+    "branches": 96.93,
+    "functions": 100
+  },
+  "actions/guides/legends/continuous/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/legends/continuous/interval.js": {
+    "lines": 94.98,
+    "branches": 85,
+    "functions": 100
+  },
+  "actions/guides/legends/continuous/opacity.js": {
+    "lines": 95.79,
+    "branches": 89.09,
+    "functions": 100
+  },
+  "actions/guides/legends/continuous/stroke.js": {
+    "lines": 95.56,
+    "branches": 68.18,
+    "functions": 100
+  },
+  "actions/guides/legends/creation.js": {
+    "lines": 100,
+    "branches": 91.67,
+    "functions": 100
+  },
+  "actions/guides/legends/edit.js": {
+    "lines": 98.41,
+    "branches": 97.19,
+    "functions": 100
+  },
+  "actions/guides/legends/focused.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/legends/group.js": {
+    "lines": 98.6,
+    "branches": 96.53,
+    "functions": 100
+  },
+  "actions/guides/legends/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/legends/lane.js": {
+    "lines": 98.33,
+    "branches": 94.52,
+    "functions": 100
+  },
+  "actions/guides/legends/lifecycle.js": {
+    "lines": 100,
+    "branches": 97.73,
+    "functions": 100
+  },
+  "actions/guides/legends/remove.js": {
+    "lines": 100,
+    "branches": 97.4,
+    "functions": 100
+  },
+  "actions/guides/legends/sampling.js": {
+    "lines": 97.2,
+    "branches": 97.37,
+    "functions": 100
+  },
+  "actions/guides/legends/size.js": {
+    "lines": 96.98,
+    "branches": 95.28,
+    "functions": 100
+  },
+  "actions/guides/legends/strokeWidth.js": {
+    "lines": 92.73,
+    "branches": 75,
+    "functions": 100
+  },
+  "actions/guides/legends/target.js": {
+    "lines": 83.1,
+    "branches": 83.87,
+    "functions": 100
+  },
+  "actions/guides/legends/transition.js": {
+    "lines": 96.81,
+    "branches": 92.57,
+    "functions": 100
+  },
+  "actions/guides/polar/axes/facade.js": {
+    "lines": 98.31,
+    "branches": 96.15,
+    "functions": 100
+  },
+  "actions/guides/polar/axes/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/polar/axes/labels.js": {
+    "lines": 99.14,
+    "branches": 98.67,
+    "functions": 100
+  },
+  "actions/guides/polar/axes/lines.js": {
+    "lines": 100,
+    "branches": 96.97,
+    "functions": 100
+  },
+  "actions/guides/polar/axes/shared.js": {
+    "lines": 97.14,
+    "branches": 96.67,
+    "functions": 100
+  },
+  "actions/guides/polar/axes/ticks.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/polar/axes/titles.js": {
+    "lines": 98.98,
+    "branches": 98.57,
+    "functions": 100
+  },
+  "actions/guides/polar/grids.js": {
+    "lines": 96.11,
+    "branches": 92.21,
+    "functions": 100
+  },
+  "actions/guides/polar/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/guides/polar/resolve.js": {
+    "lines": 91.21,
+    "branches": 87.25,
+    "functions": 100
+  },
+  "actions/guides/reuse.js": {
+    "lines": 95.45,
+    "branches": 97.14,
+    "functions": 100
+  },
+  "actions/guides/tickValues.js": {
+    "lines": 94.51,
+    "branches": 88.68,
+    "functions": 100
+  },
+  "actions/hierarchy/plots.js": {
+    "lines": 100,
+    "branches": 97.83,
+    "functions": 100
+  },
+  "actions/hierarchy/resources.js": {
+    "lines": 100,
+    "branches": 97.1,
+    "functions": 100
+  },
+  "actions/images/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/intervals/resolve.js": {
+    "lines": 92.98,
+    "branches": 93.17,
+    "functions": 100
+  },
+  "actions/intervals/revision.js": {
+    "lines": 100,
+    "branches": 80.43,
+    "functions": 100
+  },
+  "actions/marks/arc/actions.js": {
+    "lines": 94.27,
+    "branches": 85.29,
+    "functions": 100
+  },
+  "actions/marks/arc/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/area/actions.js": {
+    "lines": 94.3,
+    "branches": 91.41,
+    "functions": 100
+  },
+  "actions/marks/area/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/area/materialize.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 92.68
+  },
+  "actions/marks/bar/create.js": {
+    "lines": 100,
+    "branches": 95,
+    "functions": 100
+  },
+  "actions/marks/bar/edit.js": {
+    "lines": 96.99,
+    "branches": 98.31,
+    "functions": 100
+  },
+  "actions/marks/bar/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/bar/materialize.js": {
+    "lines": 98.36,
+    "branches": 96.08,
+    "functions": 100
+  },
+  "actions/marks/basic.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/dependentReferences.js": {
+    "lines": 100,
+    "branches": 87.18,
+    "functions": 100
+  },
+  "actions/marks/image/index.js": {
+    "lines": 100,
+    "branches": 97.44,
+    "functions": 100
+  },
+  "actions/marks/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/lifecycle.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/line/actions.js": {
+    "lines": 97.3,
+    "branches": 95.54,
+    "functions": 100
+  },
+  "actions/marks/line/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/line/materialize.js": {
+    "lines": 100,
+    "branches": 91.55,
+    "functions": 92.59
+  },
+  "actions/marks/point/create.js": {
+    "lines": 100,
+    "branches": 94.12,
+    "functions": 100
+  },
+  "actions/marks/point/edit.js": {
+    "lines": 96.61,
+    "branches": 98.04,
+    "functions": 100
+  },
+  "actions/marks/point/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/point/jitter.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/point/materialize.js": {
+    "lines": 97.98,
+    "branches": 93.6,
+    "functions": 90.32
+  },
+  "actions/marks/point/packing.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/rect/actions.js": {
+    "lines": 91.78,
+    "branches": 86.84,
+    "functions": 100
+  },
+  "actions/marks/rect/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/references.js": {
+    "lines": 94.35,
+    "branches": 94.12,
+    "functions": 100
+  },
+  "actions/marks/remove.js": {
+    "lines": 97.71,
+    "branches": 95.68,
+    "functions": 93.1
+  },
+  "actions/marks/rule/actions.js": {
+    "lines": 93.89,
+    "branches": 91.72,
+    "functions": 100
+  },
+  "actions/marks/rule/appearance.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/rule/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/shared.js": {
+    "lines": 100,
+    "branches": 96.43,
+    "functions": 100
+  },
+  "actions/marks/text/actions.js": {
+    "lines": 97.79,
+    "branches": 95.16,
+    "functions": 100
+  },
+  "actions/marks/text/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/marks/text/layout.js": {
+    "lines": 93.51,
+    "branches": 81.63,
+    "functions": 100
+  },
+  "actions/marks/text/removal.js": {
+    "lines": 97.69,
+    "branches": 91.94,
+    "functions": 100
+  },
+  "actions/marks/text/selection.js": {
+    "lines": 91.78,
+    "branches": 93.75,
+    "functions": 100
+  },
+  "actions/marks/tick/actions.js": {
+    "lines": 94.44,
+    "branches": 89.47,
+    "functions": 100
+  },
+  "actions/marks/tick/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/overlays/index.js": {
+    "lines": 96.13,
+    "branches": 84.11,
+    "functions": 100
+  },
+  "actions/overlays/snapshot.js": {
+    "lines": 100,
+    "branches": 94.44,
+    "functions": 100
+  },
+  "actions/parameters/create.js": {
+    "lines": 89.47,
+    "branches": 66.67,
+    "functions": 100
+  },
+  "actions/parameters/edit.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/primitives/createGraphics.js": {
+    "lines": 98.88,
+    "branches": 95.83,
+    "functions": 100
+  },
+  "actions/primitives/datasetIdentity.js": {
+    "lines": 94.12,
+    "branches": 88.89,
+    "functions": 100
+  },
+  "actions/primitives/editGraphics.js": {
+    "lines": 99.27,
+    "branches": 96.89,
+    "functions": 100
+  },
+  "actions/primitives/graphicProperties.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/primitives/index.js": {
+    "lines": 92,
+    "branches": 80,
+    "functions": 100
+  },
+  "actions/primitives/preparedResourceContext.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/primitives/resourceState.js": {
+    "lines": 100,
+    "branches": 94.05,
+    "functions": 95.45
+  },
+  "actions/primitives/semantic.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/primitives/semanticAction.js": {
+    "lines": 99.51,
+    "branches": 96.54,
+    "functions": 100
+  },
+  "actions/primitives/semanticValidation/dataset.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/primitives/semanticValidation/guide.js": {
+    "lines": 93.75,
+    "branches": 96.3,
+    "functions": 100
+  },
+  "actions/primitives/semanticValidation/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/primitives/semanticValidation/layer.js": {
+    "lines": 91.43,
+    "branches": 93.1,
+    "functions": 100
+  },
+  "actions/primitives/semanticValidation/scale.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/primitives/semanticValidation/shared.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/regression/components.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/regression/create.js": {
+    "lines": 96.05,
+    "branches": 94.34,
+    "functions": 100
+  },
+  "actions/regression/edit.js": {
+    "lines": 93.53,
+    "branches": 90.22,
+    "functions": 100
+  },
+  "actions/regression/follow.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/regression/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/regression/resolve.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/resources/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/resources/remove.js": {
+    "lines": 95.03,
+    "branches": 91.57,
+    "functions": 94.44
+  },
+  "actions/resources/stored.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/scales/channels.js": {
+    "lines": 98.16,
+    "branches": 97.22,
+    "functions": 100
+  },
+  "actions/scales/create.js": {
+    "lines": 94.62,
+    "branches": 94.87,
+    "functions": 100
+  },
+  "actions/scales/definitions.js": {
+    "lines": 97.35,
+    "branches": 97.11,
+    "functions": 100
+  },
+  "actions/scales/edit.js": {
+    "lines": 98.97,
+    "branches": 98.41,
+    "functions": 100
+  },
+  "actions/scales/editPolicy.js": {
+    "lines": 94.39,
+    "branches": 93.87,
+    "functions": 95
+  },
+  "actions/scales/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/scales/materialize.js": {
+    "lines": 95.4,
+    "branches": 94.44,
+    "functions": 100
+  },
+  "actions/scales/offset.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/scales/parallel.js": {
+    "lines": 97.18,
+    "branches": 94.44,
+    "functions": 100
+  },
+  "actions/scales/patch.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/scales/preview.js": {
+    "lines": 95.77,
+    "branches": 96.51,
+    "functions": 100
+  },
+  "actions/scales/quantitativeColor.js": {
+    "lines": 96.08,
+    "branches": 95.83,
+    "functions": 100
+  },
+  "actions/selection/actions.js": {
+    "lines": 97.33,
+    "branches": 90.98,
+    "functions": 100
+  },
+  "actions/selection/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/selection/resources.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/textMetrics/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/theme/actions.js": {
+    "lines": 93.88,
+    "branches": 85,
+    "functions": 100
+  },
+  "actions/theme/composition.js": {
+    "lines": 98.32,
+    "branches": 91.49,
+    "functions": 95
+  },
+  "actions/theme/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/theme/reconcile.js": {
+    "lines": 94.68,
+    "branches": 92.69,
+    "functions": 95.95
+  },
+  "actions/theme/state.js": {
+    "lines": 89.53,
+    "branches": 68.97,
+    "functions": 100
+  },
+  "actions/titles/actions.js": {
+    "lines": 95.18,
+    "branches": 91.11,
+    "functions": 100
+  },
+  "actions/titles/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "actions/titles/resolve.js": {
+    "lines": 96.66,
+    "branches": 95.48,
+    "functions": 100
+  },
+  "actions/violinPlots/create.js": {
+    "lines": 97.48,
+    "branches": 94.68,
+    "functions": 100
+  },
+  "actions/violinPlots/edit.js": {
+    "lines": 94.32,
+    "branches": 86.36,
+    "functions": 83.33
+  },
+  "actions/violinPlots/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "basic.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "BasicChartProgram.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "ChartProgram.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "composition.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/action.js": {
+    "lines": 95.95,
+    "branches": 92.25,
+    "functions": 100
+  },
+  "core/assetHost.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/ChartProgram.js": {
+    "lines": 94.14,
+    "branches": 87.1,
+    "functions": 100
+  },
+  "core/compositionScales.js": {
+    "lines": 100,
+    "branches": 75,
+    "functions": 100
+  },
+  "core/compositionState.js": {
+    "lines": 95.31,
+    "branches": 95.8,
+    "functions": 100
+  },
+  "core/contentDigest.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/datasetReferences.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/diagnostics.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/encodingBindings.js": {
+    "lines": 100,
+    "branches": 96.3,
+    "functions": 100
+  },
+  "core/extensionRegistry.js": {
+    "lines": 84.73,
+    "branches": 75.68,
+    "functions": 100
+  },
+  "core/facetAxisPolicy.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/facetGap.js": {
+    "lines": 100,
+    "branches": 95.83,
+    "functions": 100
+  },
+  "core/font.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/graphicProperties.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/identifiers.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/immutable.js": {
+    "lines": 96.15,
+    "branches": 97.3,
+    "functions": 100
+  },
+  "core/itemIdentity.js": {
+    "lines": 100,
+    "branches": 98.2,
+    "functions": 100
+  },
+  "core/materializationState.js": {
+    "lines": 93.85,
+    "branches": 81.82,
+    "functions": 100
+  },
+  "core/optionRequirements.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/ownData.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/pngEncoding.js": {
+    "lines": 100,
+    "branches": 97.06,
+    "functions": 100
+  },
+  "core/programState.js": {
+    "lines": 97.22,
+    "branches": 93.94,
+    "functions": 100
+  },
+  "core/resourceReference.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/resourceReferences.js": {
+    "lines": 99.53,
+    "branches": 99.49,
+    "functions": 100
+  },
+  "core/rowReference.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/specs.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/textMetricProfile.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/textMetrics.js": {
+    "lines": 98.93,
+    "branches": 98.21,
+    "functions": 100
+  },
+  "core/validation.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/valueEncoding.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "core/vocabulary.js": {
+    "lines": 98.56,
+    "branches": 100,
+    "functions": 83.33
+  },
+  "diagnostics.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "extension.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/actionTargets.js": {
+    "lines": 83.33,
+    "branches": 72.22,
+    "functions": 100
+  },
+  "grammar/aggregate.js": {
+    "lines": 96.13,
+    "branches": 96.52,
+    "functions": 100
+  },
+  "grammar/arcs.js": {
+    "lines": 92.72,
+    "branches": 91.46,
+    "functions": 98.25
+  },
+  "grammar/areaEndpoints.js": {
+    "lines": 95.65,
+    "branches": 93.33,
+    "functions": 100
+  },
+  "grammar/areaPaint.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/areaSeries.js": {
+    "lines": 90,
+    "branches": 91.19,
+    "functions": 100
+  },
+  "grammar/assetPayload.js": {
+    "lines": 100,
+    "branches": 96.43,
+    "functions": 100
+  },
+  "grammar/assetRequest.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/axisTextPlacement.js": {
+    "lines": 100,
+    "branches": 98,
+    "functions": 100
+  },
+  "grammar/bars/aggregate.js": {
+    "lines": 90.16,
+    "branches": 91.55,
+    "functions": 100
+  },
+  "grammar/bars/geometry.js": {
+    "lines": 96.8,
+    "branches": 95.56,
+    "functions": 100
+  },
+  "grammar/bars/policy.js": {
+    "lines": 95.69,
+    "branches": 94.49,
+    "functions": 100
+  },
+  "grammar/bin.js": {
+    "lines": 95.92,
+    "branches": 92.55,
+    "functions": 100
+  },
+  "grammar/bin2d.js": {
+    "lines": 88.92,
+    "branches": 87.2,
+    "functions": 100
+  },
+  "grammar/boxPlot.js": {
+    "lines": 96.81,
+    "branches": 90,
+    "functions": 100
+  },
+  "grammar/calendarDay.js": {
+    "lines": 96.72,
+    "branches": 96.67,
+    "functions": 100
+  },
+  "grammar/categoricalDensity.js": {
+    "lines": 91.84,
+    "branches": 90.91,
+    "functions": 100
+  },
+  "grammar/categoryOrder.js": {
+    "lines": 98.14,
+    "branches": 95.83,
+    "functions": 100
+  },
+  "grammar/color.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/colorSizeLegend.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/complete.js": {
+    "lines": 93.59,
+    "branches": 93.14,
+    "functions": 100
+  },
+  "grammar/compositing.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/computed.js": {
+    "lines": 96.09,
+    "branches": 94.7,
+    "functions": 100
+  },
+  "grammar/conditionalEncoding.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/conditionalPosition.js": {
+    "lines": 93.33,
+    "branches": 85.19,
+    "functions": 100
+  },
+  "grammar/conditionalState.js": {
+    "lines": 100,
+    "branches": 96.84,
+    "functions": 100
+  },
+  "grammar/coordinates.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/curveCommands.js": {
+    "lines": 99.15,
+    "branches": 97.52,
+    "functions": 100
+  },
+  "grammar/datasetDependencies.js": {
+    "lines": 100,
+    "branches": 99.07,
+    "functions": 100
+  },
+  "grammar/datasetSchema.js": {
+    "lines": 97.75,
+    "branches": 93.69,
+    "functions": 98.18
+  },
+  "grammar/dataSource.js": {
+    "lines": 100,
+    "branches": 97.42,
+    "functions": 100
+  },
+  "grammar/dataSourcePayload.js": {
+    "lines": 97.83,
+    "branches": 94.55,
+    "functions": 100
+  },
+  "grammar/dataSourceRequest.js": {
+    "lines": 100,
+    "branches": 93.75,
+    "functions": 100
+  },
+  "grammar/density.js": {
+    "lines": 86.58,
+    "branches": 88.42,
+    "functions": 96.3
+  },
+  "grammar/direction.js": {
+    "lines": 95.65,
+    "branches": 94.12,
+    "functions": 100
+  },
+  "grammar/displayLabels.js": {
+    "lines": 100,
+    "branches": 98.53,
+    "functions": 100
+  },
+  "grammar/ecdf.js": {
+    "lines": 89.01,
+    "branches": 86.75,
+    "functions": 100
+  },
+  "grammar/expressionAst.js": {
+    "lines": 100,
+    "branches": 96.46,
+    "functions": 100
+  },
+  "grammar/expressionEvaluate.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/expressionFunctions.js": {
+    "lines": 98.75,
+    "branches": 98.62,
+    "functions": 100
+  },
+  "grammar/expressionInputs.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/expressionValues.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/facetHeaders.js": {
+    "lines": 93.94,
+    "branches": 93.18,
+    "functions": 100
+  },
+  "grammar/facets/dependencies.js": {
+    "lines": 90.96,
+    "branches": 91.14,
+    "functions": 100
+  },
+  "grammar/facets/guides.js": {
+    "lines": 84.19,
+    "branches": 78.15,
+    "functions": 100
+  },
+  "grammar/facets/index.js": {
+    "lines": 89.32,
+    "branches": 81.97,
+    "functions": 100
+  },
+  "grammar/facets/legendIntent.js": {
+    "lines": 91.55,
+    "branches": 89.58,
+    "functions": 100
+  },
+  "grammar/facets/scales.js": {
+    "lines": 92.7,
+    "branches": 86.75,
+    "functions": 100
+  },
+  "grammar/filter.js": {
+    "lines": 91.72,
+    "branches": 88.95,
+    "functions": 100
+  },
+  "grammar/flatten.js": {
+    "lines": 95.29,
+    "branches": 93.02,
+    "functions": 100
+  },
+  "grammar/fold.js": {
+    "lines": 88.5,
+    "branches": 80.85,
+    "functions": 100
+  },
+  "grammar/fontPayload.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/gradientProfile.js": {
+    "lines": 87.32,
+    "branches": 77.78,
+    "functions": 100
+  },
+  "grammar/gradientStops.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/approximate.js": {
+    "lines": 100,
+    "branches": 97.25,
+    "functions": 100
+  },
+  "grammar/graph/edgeIdentity.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/fields.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/force.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/input.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/layout.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/metricPolicy.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/metrics.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/model.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/neighbors.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/normalize.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/preprocess.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/random.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/search.js": {
+    "lines": 100,
+    "branches": 99.13,
+    "functions": 100
+  },
+  "grammar/graph/spanning.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/graph/structural.js": {
+    "lines": 100,
+    "branches": 99.4,
+    "functions": 100
+  },
+  "grammar/guideDash.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/hierarchy/input.js": {
+    "lines": 100,
+    "branches": 99.02,
+    "functions": 100
+  },
+  "grammar/hierarchy/model.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/hierarchy/normalize.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/hierarchy/options.js": {
+    "lines": 100,
+    "branches": 96.23,
+    "functions": 100
+  },
+  "grammar/hierarchy/order.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/hierarchy/partition.js": {
+    "lines": 100,
+    "branches": 94.44,
+    "functions": 100
+  },
+  "grammar/hierarchy/plot.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/hierarchy/tree.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/hierarchy/treemap.js": {
+    "lines": 100,
+    "branches": 97.53,
+    "functions": 100
+  },
+  "grammar/histogram.js": {
+    "lines": 97.29,
+    "branches": 95.33,
+    "functions": 100
+  },
+  "grammar/horizon.js": {
+    "lines": 89.53,
+    "branches": 85.71,
+    "functions": 100
+  },
+  "grammar/imageMark.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/imagePayload.js": {
+    "lines": 100,
+    "branches": 96.97,
+    "functions": 100
+  },
+  "grammar/impute.js": {
+    "lines": 92.68,
+    "branches": 89.62,
+    "functions": 100
+  },
+  "grammar/interval.js": {
+    "lines": 89.61,
+    "branches": 84.69,
+    "functions": 100
+  },
+  "grammar/itemMissing.js": {
+    "lines": 100,
+    "branches": 97.87,
+    "functions": 100
+  },
+  "grammar/jitter.js": {
+    "lines": 88.24,
+    "branches": 77.78,
+    "functions": 100
+  },
+  "grammar/legendBlocks.js": {
+    "lines": 90.8,
+    "branches": 90.74,
+    "functions": 100
+  },
+  "grammar/legendBorder.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/legendClip.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/legendCombinations.js": {
+    "lines": 100,
+    "branches": 93.94,
+    "functions": 100
+  },
+  "grammar/legendGradient.js": {
+    "lines": 100,
+    "branches": 90.91,
+    "functions": 100
+  },
+  "grammar/legendGroups.js": {
+    "lines": 100,
+    "branches": 90.91,
+    "functions": 100
+  },
+  "grammar/legendItemsOffset.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/legendOpacity.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/legendOverflow.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/legendSpacing.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/legendTitleStyle.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/lineMissing.js": {
+    "lines": 97.78,
+    "branches": 98.15,
+    "functions": 100
+  },
+  "grammar/lineSeries.js": {
+    "lines": 93.46,
+    "branches": 91.71,
+    "functions": 96.3
+  },
+  "grammar/lookup.js": {
+    "lines": 100,
+    "branches": 91.67,
+    "functions": 100
+  },
+  "grammar/markFilter.js": {
+    "lines": 81.82,
+    "branches": 73.91,
+    "functions": 100
+  },
+  "grammar/markLabels.js": {
+    "lines": 100,
+    "branches": 98.94,
+    "functions": 100
+  },
+  "grammar/markLabelSelection.js": {
+    "lines": 92.98,
+    "branches": 92.86,
+    "functions": 100
+  },
+  "grammar/markSelection.js": {
+    "lines": 95.99,
+    "branches": 96.52,
+    "functions": 100
+  },
+  "grammar/normalize.js": {
+    "lines": 89.43,
+    "branches": 83.57,
+    "functions": 100
+  },
+  "grammar/numeric.js": {
+    "lines": 93.83,
+    "branches": 92.45,
+    "functions": 97.37
+  },
+  "grammar/overlay.js": {
+    "lines": 88.24,
+    "branches": 76.92,
+    "functions": 100
+  },
+  "grammar/paint.js": {
+    "lines": 96.03,
+    "branches": 96.34,
+    "functions": 100
+  },
+  "grammar/palettes.js": {
+    "lines": 98.97,
+    "branches": 96.43,
+    "functions": 100
+  },
+  "grammar/parallelAxisTitles.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/parallelCoordinates.js": {
+    "lines": 89.71,
+    "branches": 85.26,
+    "functions": 100
+  },
+  "grammar/parameter.js": {
+    "lines": 100,
+    "branches": 98.04,
+    "functions": 100
+  },
+  "grammar/parseTime.js": {
+    "lines": 97.85,
+    "branches": 95.35,
+    "functions": 100
+  },
+  "grammar/pathCommands.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/pathGeometry.js": {
+    "lines": 97.41,
+    "branches": 95.89,
+    "functions": 100
+  },
+  "grammar/pathOrder.js": {
+    "lines": 94.29,
+    "branches": 94.12,
+    "functions": 100
+  },
+  "grammar/pathSeries.js": {
+    "lines": 96.99,
+    "branches": 97.52,
+    "functions": 100
+  },
+  "grammar/pathTopology.js": {
+    "lines": 100,
+    "branches": 98.18,
+    "functions": 100
+  },
+  "grammar/patterns.js": {
+    "lines": 99.1,
+    "branches": 95.45,
+    "functions": 100
+  },
+  "grammar/pivot.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/plotComposition.js": {
+    "lines": 98.03,
+    "branches": 97.5,
+    "functions": 100
+  },
+  "grammar/pointPacking.js": {
+    "lines": 93.17,
+    "branches": 90.11,
+    "functions": 100
+  },
+  "grammar/pointPolygon.js": {
+    "lines": 100,
+    "branches": 98.51,
+    "functions": 100
+  },
+  "grammar/pointShapes.js": {
+    "lines": 96.88,
+    "branches": 92.63,
+    "functions": 100
+  },
+  "grammar/polar.js": {
+    "lines": 94.68,
+    "branches": 93.18,
+    "functions": 100
+  },
+  "grammar/polarGuides.js": {
+    "lines": 94.24,
+    "branches": 91.78,
+    "functions": 100
+  },
+  "grammar/polarLineCommands.js": {
+    "lines": 95.35,
+    "branches": 92.31,
+    "functions": 100
+  },
+  "grammar/polarPaths.js": {
+    "lines": 96.3,
+    "branches": 87.5,
+    "functions": 100
+  },
+  "grammar/positionCompatibility.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/positionDatum.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/positionPolicies/arc.js": {
+    "lines": 90.7,
+    "branches": 93.75,
+    "functions": 100
+  },
+  "grammar/positionPolicies/area.js": {
+    "lines": 89.09,
+    "branches": 84.62,
+    "functions": 100
+  },
+  "grammar/positionPolicies/bar.js": {
+    "lines": 96.61,
+    "branches": 98.04,
+    "functions": 100
+  },
+  "grammar/positionPolicies/common.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/positionPolicies/index.js": {
+    "lines": 94.44,
+    "branches": 83.33,
+    "functions": 100
+  },
+  "grammar/positionPolicies/line.js": {
+    "lines": 89.77,
+    "branches": 94.79,
+    "functions": 100
+  },
+  "grammar/positionPolicies/point.js": {
+    "lines": 78.95,
+    "branches": 88.89,
+    "functions": 100
+  },
+  "grammar/positionPolicies/rule.js": {
+    "lines": 76.47,
+    "branches": 77.78,
+    "functions": 100
+  },
+  "grammar/positionPolicies/secondary.js": {
+    "lines": 90.91,
+    "branches": 94.74,
+    "functions": 100
+  },
+  "grammar/positionPolicies/source.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/positionPolicies/tick.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/radialGradient.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/rects.js": {
+    "lines": 100,
+    "branches": 96.97,
+    "functions": 100
+  },
+  "grammar/regression/derive.js": {
+    "lines": 98.23,
+    "branches": 97.32,
+    "functions": 100
+  },
+  "grammar/regression/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/regression/linearSystem.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/regression/localQuadratic.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/regression/models.js": {
+    "lines": 97.93,
+    "branches": 96.25,
+    "functions": 100
+  },
+  "grammar/regression/parameters.js": {
+    "lines": 94.24,
+    "branches": 93.75,
+    "functions": 100
+  },
+  "grammar/regression/statistics.js": {
+    "lines": 96.88,
+    "branches": 89.66,
+    "functions": 100
+  },
+  "grammar/rotation.js": {
+    "lines": 93.1,
+    "branches": 94.74,
+    "functions": 100
+  },
+  "grammar/roundedRect.js": {
+    "lines": 95.24,
+    "branches": 90.38,
+    "functions": 100
+  },
+  "grammar/rowLineage.js": {
+    "lines": 99.25,
+    "branches": 95.53,
+    "functions": 100
+  },
+  "grammar/ruleAppearance.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/rules.js": {
+    "lines": 100,
+    "branches": 95.83,
+    "functions": 100
+  },
+  "grammar/scales/appearance.js": {
+    "lines": 96.02,
+    "branches": 98.04,
+    "functions": 96
+  },
+  "grammar/scales/color.js": {
+    "lines": 97.35,
+    "branches": 97.24,
+    "functions": 100
+  },
+  "grammar/scales/colorConsumers.js": {
+    "lines": 89.47,
+    "branches": 93.81,
+    "functions": 100
+  },
+  "grammar/scales/continuous.js": {
+    "lines": 100,
+    "branches": 97.81,
+    "functions": 100
+  },
+  "grammar/scales/definition.js": {
+    "lines": 94.06,
+    "branches": 93.55,
+    "functions": 100
+  },
+  "grammar/scales/discretized.js": {
+    "lines": 94.68,
+    "branches": 94.32,
+    "functions": 100
+  },
+  "grammar/scales/fields.js": {
+    "lines": 97.86,
+    "branches": 98.21,
+    "functions": 100
+  },
+  "grammar/scales/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/scales/mapping.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/scales/ordinal.js": {
+    "lines": 92.7,
+    "branches": 89.74,
+    "functions": 100
+  },
+  "grammar/scales/policies.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/scales/radial.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/scales/size.js": {
+    "lines": 90.99,
+    "branches": 91.58,
+    "functions": 100
+  },
+  "grammar/scales/temporal.js": {
+    "lines": 97.18,
+    "branches": 96.15,
+    "functions": 100
+  },
+  "grammar/scales/transformed.js": {
+    "lines": 94.27,
+    "branches": 91.36,
+    "functions": 100
+  },
+  "grammar/scales/types.js": {
+    "lines": 98.2,
+    "branches": 96.15,
+    "functions": 100
+  },
+  "grammar/scales/validation.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/schemas/concreteGraphic.js": {
+    "lines": 92.96,
+    "branches": 95.19,
+    "functions": 100
+  },
+  "grammar/schemas/graphic.js": {
+    "lines": 98.73,
+    "branches": 92.86,
+    "functions": 100
+  },
+  "grammar/schemas/graphicBounds.js": {
+    "lines": 98.76,
+    "branches": 95.65,
+    "functions": 100
+  },
+  "grammar/schemas/graphicClip.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/schemas/graphicIdentity.js": {
+    "lines": 95,
+    "branches": 94.29,
+    "functions": 100
+  },
+  "grammar/schemas/graphicTree.js": {
+    "lines": 93.97,
+    "branches": 92.86,
+    "functions": 95.24
+  },
+  "grammar/schemas/mark.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/schemas/semanticPath.js": {
+    "lines": 97.68,
+    "branches": 92.31,
+    "functions": 100
+  },
+  "grammar/seriesLayout.js": {
+    "lines": 95.28,
+    "branches": 97.26,
+    "functions": 100
+  },
+  "grammar/shadow.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/sort.js": {
+    "lines": 93.18,
+    "branches": 85.07,
+    "functions": 100
+  },
+  "grammar/stack.js": {
+    "lines": 88.89,
+    "branches": 83.33,
+    "functions": 100
+  },
+  "grammar/statisticalReference.js": {
+    "lines": 83.33,
+    "branches": 83.02,
+    "functions": 100
+  },
+  "grammar/statistics/confidenceInterval.js": {
+    "lines": 94.81,
+    "branches": 94.23,
+    "functions": 100
+  },
+  "grammar/statistics/studentT.js": {
+    "lines": 95.92,
+    "branches": 60,
+    "functions": 100
+  },
+  "grammar/strokeStyle.js": {
+    "lines": 97.59,
+    "branches": 97.06,
+    "functions": 100
+  },
+  "grammar/summary.js": {
+    "lines": 86.42,
+    "branches": 88.31,
+    "functions": 80.77
+  },
+  "grammar/svgImage.js": {
+    "lines": 100,
+    "branches": 98.59,
+    "functions": 100
+  },
+  "grammar/text.js": {
+    "lines": 93.12,
+    "branches": 93.71,
+    "functions": 96.77
+  },
+  "grammar/ticks.js": {
+    "lines": 97.12,
+    "branches": 92.97,
+    "functions": 96.67
+  },
+  "grammar/timeUnit.js": {
+    "lines": 93.91,
+    "branches": 86.34,
+    "functions": 96.3
+  },
+  "grammar/transformInput.js": {
+    "lines": 100,
+    "branches": 90,
+    "functions": 100
+  },
+  "grammar/transformKeys.js": {
+    "lines": 87.23,
+    "branches": 81.82,
+    "functions": 100
+  },
+  "grammar/transforms.js": {
+    "lines": 99.04,
+    "branches": 90.84,
+    "functions": 100
+  },
+  "grammar/transformTopology.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "grammar/valueFormat.js": {
+    "lines": 96.77,
+    "branches": 94.44,
+    "functions": 85.71
+  },
+  "grammar/weightedStatistics.js": {
+    "lines": 94.04,
+    "branches": 85.71,
+    "functions": 92.68
+  },
+  "grammar/window.js": {
+    "lines": 93,
+    "branches": 90.29,
+    "functions": 100
+  },
+  "index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "inspection.js": {
+    "lines": 95.48,
+    "branches": 88.28,
+    "functions": 95.5
+  },
+  "inspectionDescriptors.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "layout/aspect.js": {
+    "lines": 72.5,
+    "branches": 65.22,
+    "functions": 100
+  },
+  "layout/canvas.js": {
+    "lines": 98.82,
+    "branches": 98.55,
+    "functions": 100
+  },
+  "layout/composition.js": {
+    "lines": 90.33,
+    "branches": 87.59,
+    "functions": 100
+  },
+  "layout/compositionLegend.js": {
+    "lines": 100,
+    "branches": 92.31,
+    "functions": 86.67
+  },
+  "layout/facetContentFlow.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "layout/facetHeaderTitles.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "layout/facets.js": {
+    "lines": 97.1,
+    "branches": 96.65,
+    "functions": 100
+  },
+  "layout/facetTopLane.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "layout/grid.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "layout/guideCollisions.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "layout/labels.js": {
+    "lines": 94.16,
+    "branches": 91.02,
+    "functions": 95.31
+  },
+  "layout/legend.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "layout/legendGroup.js": {
+    "lines": 97.5,
+    "branches": 97.18,
+    "functions": 100
+  },
+  "layout/legendItems.js": {
+    "lines": 100,
+    "branches": 99.22,
+    "functions": 100
+  },
+  "layout/legendLane.js": {
+    "lines": 98.67,
+    "branches": 95.29,
+    "functions": 100
+  },
+  "layout/legendSpacing.js": {
+    "lines": 96.97,
+    "branches": 95.16,
+    "functions": 100
+  },
+  "layout/legendText.js": {
+    "lines": 100,
+    "branches": 90,
+    "functions": 100
+  },
+  "layout/plotDrawOrder.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "layout/text.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "layout/title.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/adjacentSource.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/bars/aggregate.js": {
+    "lines": 97.62,
+    "branches": 96.84,
+    "functions": 100
+  },
+  "materialization/bars/histogram.js": {
+    "lines": 93.05,
+    "branches": 94.12,
+    "functions": 96.15
+  },
+  "materialization/bars/ranged.js": {
+    "lines": 93.59,
+    "branches": 89.13,
+    "functions": 100
+  },
+  "materialization/bars/resolve.js": {
+    "lines": 94.34,
+    "branches": 94.23,
+    "functions": 100
+  },
+  "materialization/categorySlotOffset.js": {
+    "lines": 80,
+    "branches": 80,
+    "functions": 100
+  },
+  "materialization/composition.js": {
+    "lines": 96.64,
+    "branches": 89.26,
+    "functions": 92.86
+  },
+  "materialization/compositionLegends.js": {
+    "lines": 100,
+    "branches": 94.25,
+    "functions": 100
+  },
+  "materialization/compositionScales.js": {
+    "lines": 95.2,
+    "branches": 90.43,
+    "functions": 95.83
+  },
+  "materialization/compositionSnapshot.js": {
+    "lines": 95.49,
+    "branches": 90.74,
+    "functions": 100
+  },
+  "materialization/compositionTitle.js": {
+    "lines": 95.83,
+    "branches": 91.84,
+    "functions": 100
+  },
+  "materialization/conditionalArcStructure.js": {
+    "lines": 100,
+    "branches": 94.44,
+    "functions": 100
+  },
+  "materialization/conditionalArcValues.js": {
+    "lines": 100,
+    "branches": 97.37,
+    "functions": 100
+  },
+  "materialization/conditionalAreaStructure.js": {
+    "lines": 100,
+    "branches": 91.89,
+    "functions": 100
+  },
+  "materialization/conditionalAreaValues.js": {
+    "lines": 100,
+    "branches": 97.14,
+    "functions": 100
+  },
+  "materialization/conditionalBarStructure.js": {
+    "lines": 95.65,
+    "branches": 90.91,
+    "functions": 100
+  },
+  "materialization/conditionalBarValues.js": {
+    "lines": 100,
+    "branches": 96.23,
+    "functions": 100
+  },
+  "materialization/conditionalBranches.js": {
+    "lines": 100,
+    "branches": 90.91,
+    "functions": 100
+  },
+  "materialization/conditionalLineStructure.js": {
+    "lines": 95.35,
+    "branches": 95.45,
+    "functions": 100
+  },
+  "materialization/conditionalLineValues.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/conditionalMapping.js": {
+    "lines": 100,
+    "branches": 96.97,
+    "functions": 100
+  },
+  "materialization/conditionalPositionBindings.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/conditionalSelection.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/conditionalState.js": {
+    "lines": 99.22,
+    "branches": 90.06,
+    "functions": 100
+  },
+  "materialization/conditionalValues.js": {
+    "lines": 100,
+    "branches": 94.05,
+    "functions": 100
+  },
+  "materialization/coordinateBounds.js": {
+    "lines": 88.5,
+    "branches": 87.88,
+    "functions": 100
+  },
+  "materialization/dataProvenance.js": {
+    "lines": 94.2,
+    "branches": 94.74,
+    "functions": 100
+  },
+  "materialization/dataSourceState.js": {
+    "lines": 100,
+    "branches": 95.71,
+    "functions": 100
+  },
+  "materialization/density.js": {
+    "lines": 100,
+    "branches": 90.91,
+    "functions": 100
+  },
+  "materialization/dependencies.js": {
+    "lines": 100,
+    "branches": 96.15,
+    "functions": 100
+  },
+  "materialization/encodings.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/expressionInputs.js": {
+    "lines": 100,
+    "branches": 92.86,
+    "functions": 100
+  },
+  "materialization/facetContentBounds.js": {
+    "lines": 100,
+    "branches": 90.28,
+    "functions": 100
+  },
+  "materialization/facetGuides/edit.js": {
+    "lines": 96,
+    "branches": 85.19,
+    "functions": 100
+  },
+  "materialization/facetGuides/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/facetGuides/layout.js": {
+    "lines": 100,
+    "branches": 97.1,
+    "functions": 100
+  },
+  "materialization/facetGuides/legacyCategorical.js": {
+    "lines": 97.04,
+    "branches": 87.5,
+    "functions": 100
+  },
+  "materialization/facetGuides/owner.js": {
+    "lines": 97.62,
+    "branches": 88.33,
+    "functions": 100
+  },
+  "materialization/facetGuides/ownerLayout.js": {
+    "lines": 92.21,
+    "branches": 88.33,
+    "functions": 100
+  },
+  "materialization/facetGuides/placement.js": {
+    "lines": 85.25,
+    "branches": 86.42,
+    "functions": 84.21
+  },
+  "materialization/facetGuides/preparation.js": {
+    "lines": 93.66,
+    "branches": 90.83,
+    "functions": 100
+  },
+  "materialization/facetHeaders.js": {
+    "lines": 94.61,
+    "branches": 95.72,
+    "functions": 98.81
+  },
+  "materialization/facets.js": {
+    "lines": 96.81,
+    "branches": 89.66,
+    "functions": 100
+  },
+  "materialization/facetTopLane.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/fillPaint.js": {
+    "lines": 100,
+    "branches": 94.74,
+    "functions": 100
+  },
+  "materialization/fontState.js": {
+    "lines": 100,
+    "branches": 98.63,
+    "functions": 100
+  },
+  "materialization/graphicHierarchy.js": {
+    "lines": 94.56,
+    "branches": 90.63,
+    "functions": 100
+  },
+  "materialization/graphicTranslation.js": {
+    "lines": 98.77,
+    "branches": 97.3,
+    "functions": 100
+  },
+  "materialization/guides/layout.js": {
+    "lines": 95.45,
+    "branches": 97.1,
+    "functions": 100
+  },
+  "materialization/guides/resources.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/guides/visibility.js": {
+    "lines": 100,
+    "branches": 95.65,
+    "functions": 100
+  },
+  "materialization/hierarchy/plot.js": {
+    "lines": 100,
+    "branches": 98.15,
+    "functions": 100
+  },
+  "materialization/hierarchy/resources.js": {
+    "lines": 100,
+    "branches": 91.43,
+    "functions": 100
+  },
+  "materialization/hierarchy/state.js": {
+    "lines": 100,
+    "branches": 94.29,
+    "functions": 100
+  },
+  "materialization/horizon.js": {
+    "lines": 100,
+    "branches": 62.5,
+    "functions": 100
+  },
+  "materialization/image.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/imageState.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/layout.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/legendBorder.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/legendClip.js": {
+    "lines": 97.37,
+    "branches": 91.36,
+    "functions": 100
+  },
+  "materialization/legendEncodings.js": {
+    "lines": 100,
+    "branches": 94.44,
+    "functions": 100
+  },
+  "materialization/legendGroups.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/legendItemsOffset.js": {
+    "lines": 100,
+    "branches": 92.45,
+    "functions": 100
+  },
+  "materialization/legends.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/legendSuppression.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/legendText.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/markClip.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/markOutput.js": {
+    "lines": 100,
+    "branches": 95.12,
+    "functions": 100
+  },
+  "materialization/marks/capabilities.js": {
+    "lines": 98.08,
+    "branches": 97.27,
+    "functions": 100
+  },
+  "materialization/marks/grouping.js": {
+    "lines": 87.04,
+    "branches": 94.74,
+    "functions": 100
+  },
+  "materialization/marks/index.js": {
+    "lines": 98.95,
+    "branches": 94.41,
+    "functions": 100
+  },
+  "materialization/marks/pathOrder.js": {
+    "lines": 90.14,
+    "branches": 93.94,
+    "functions": 100
+  },
+  "materialization/marks/policies.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 80
+  },
+  "materialization/overlayGeometry.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/overlayItems.js": {
+    "lines": 99.04,
+    "branches": 90.76,
+    "functions": 93.75
+  },
+  "materialization/planner.js": {
+    "lines": 100,
+    "branches": 98.65,
+    "functions": 100
+  },
+  "materialization/plotDrawOrder.js": {
+    "lines": 100,
+    "branches": 97.06,
+    "functions": 100
+  },
+  "materialization/positionGuides.js": {
+    "lines": 100,
+    "branches": 87.5,
+    "functions": 66.67
+  },
+  "materialization/positionPolicy.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/rect.js": {
+    "lines": 97.6,
+    "branches": 97.35,
+    "functions": 100
+  },
+  "materialization/rectConfig.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/resourceKinds.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/resourceState.js": {
+    "lines": 100,
+    "branches": 98.24,
+    "functions": 96
+  },
+  "materialization/revisionIdentity.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/rowEncoding.js": {
+    "lines": 91.3,
+    "branches": 85,
+    "functions": 100
+  },
+  "materialization/scaleGuideDependencies.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/scales/consumers/common.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/scales/consumers/families.js": {
+    "lines": 100,
+    "branches": 98.15,
+    "functions": 100
+  },
+  "materialization/scales/consumers/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/scales/consumers/seriesLayout.js": {
+    "lines": 85.06,
+    "branches": 87.39,
+    "functions": 83.87
+  },
+  "materialization/scales/map.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/scales/policies/arc.js": {
+    "lines": 97.56,
+    "branches": 89.06,
+    "functions": 100
+  },
+  "materialization/scales/policies/bar.js": {
+    "lines": 94.17,
+    "branches": 91.67,
+    "functions": 100
+  },
+  "materialization/scales/policies/binnedPosition.js": {
+    "lines": 100,
+    "branches": 88.89,
+    "functions": 100
+  },
+  "materialization/scales/policies/offset.js": {
+    "lines": 98.95,
+    "branches": 89.19,
+    "functions": 100
+  },
+  "materialization/scales/policies/series.js": {
+    "lines": 98.08,
+    "branches": 97.83,
+    "functions": 100
+  },
+  "materialization/scales/resolve.js": {
+    "lines": 96.77,
+    "branches": 96.74,
+    "functions": 100
+  },
+  "materialization/selection/compatibility.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/filter.js": {
+    "lines": 95,
+    "branches": 83.33,
+    "functions": 100
+  },
+  "materialization/selection/items/arc.js": {
+    "lines": 97.47,
+    "branches": 84.38,
+    "functions": 100
+  },
+  "materialization/selection/items/bar.js": {
+    "lines": 93.5,
+    "branches": 86.11,
+    "functions": 93.55
+  },
+  "materialization/selection/items/common.js": {
+    "lines": 95.32,
+    "branches": 93.53,
+    "functions": 97.92
+  },
+  "materialization/selection/items/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/items/overlay.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/items/path.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/items/point.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/items/rect.js": {
+    "lines": 97.5,
+    "branches": 81.82,
+    "functions": 100
+  },
+  "materialization/selection/items/rule.js": {
+    "lines": 100,
+    "branches": 92.31,
+    "functions": 100
+  },
+  "materialization/selection/items/tick.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/path.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/point.js": {
+    "lines": 92.13,
+    "branches": 94.12,
+    "functions": 100
+  },
+  "materialization/selection/policies/arc.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/policies/area.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/policies/bar.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/policies/hierarchy.js": {
+    "lines": 100,
+    "branches": 81.82,
+    "functions": 100
+  },
+  "materialization/selection/policies/image.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/policies/index.js": {
+    "lines": 98.44,
+    "branches": 95,
+    "functions": 100
+  },
+  "materialization/selection/policies/line.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/policies/point.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/policies/rect.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/policies/rule.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/policies/text.js": {
+    "lines": 100,
+    "branches": 88.89,
+    "functions": 100
+  },
+  "materialization/selection/policies/tick.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/predicate.js": {
+    "lines": 100,
+    "branches": 83.33,
+    "functions": 100
+  },
+  "materialization/selection/rows.js": {
+    "lines": 97.12,
+    "branches": 91.04,
+    "functions": 96.43
+  },
+  "materialization/selection/state.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/selection/styles.js": {
+    "lines": 94.06,
+    "branches": 89.26,
+    "functions": 100
+  },
+  "materialization/statisticalPopulation.js": {
+    "lines": 89.47,
+    "branches": 92.26,
+    "functions": 96.3
+  },
+  "materialization/text.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/textContent.js": {
+    "lines": 90.28,
+    "branches": 81.13,
+    "functions": 100
+  },
+  "materialization/textFont.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "materialization/textGeometry.js": {
+    "lines": 92.79,
+    "branches": 87.73,
+    "functions": 96.15
+  },
+  "materialization/textLines.js": {
+    "lines": 100,
+    "branches": 88.46,
+    "functions": 100
+  },
+  "materialization/typography.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "mcp/adapter.js": {
+    "lines": 93.84,
+    "branches": 78.72,
+    "functions": 100
+  },
+  "mcp/server.js": {
+    "lines": 90.1,
+    "branches": 83.33,
+    "functions": 70
+  },
+  "persistence.js": {
+    "lines": 98.8,
+    "branches": 93.57,
+    "functions": 100
+  },
+  "persistence/codec.js": {
+    "lines": 100,
+    "branches": 98.51,
+    "functions": 100
+  },
+  "persistence/legacyValues.js": {
+    "lines": 100,
+    "branches": 88.89,
+    "functions": 100
+  },
+  "persistence/validation.js": {
+    "lines": 99.71,
+    "branches": 98.52,
+    "functions": 100
+  },
+  "renderers/canvas/circle.js": {
+    "lines": 85.71,
+    "branches": 64.71,
+    "functions": 66.67
+  },
+  "renderers/canvas/fill.js": {
+    "lines": 92.8,
+    "branches": 88.89,
+    "functions": 100
+  },
+  "renderers/canvas/image.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "renderers/canvas/index.js": {
+    "lines": 92.63,
+    "branches": 86.21,
+    "functions": 100
+  },
+  "renderers/canvas/isolated.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "renderers/canvas/limits.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "renderers/canvas/line.js": {
+    "lines": 75.93,
+    "branches": 66.67,
+    "functions": 100
+  },
+  "renderers/canvas/native.js": {
+    "lines": 100,
+    "branches": 99.05,
+    "functions": 100
+  },
+  "renderers/canvas/path.js": {
+    "lines": 79.52,
+    "branches": 78.79,
+    "functions": 75
+  },
+  "renderers/canvas/pathTrace.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "renderers/canvas/rect.js": {
+    "lines": 91.55,
+    "branches": 87.5,
+    "functions": 100
+  },
+  "renderers/canvas/scene.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "renderers/canvas/stroke.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "renderers/canvas/surfaceFactory.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "renderers/canvas/text.js": {
+    "lines": 88.89,
+    "branches": 80.85,
+    "functions": 100
+  },
+  "renderers/canvas/textPaint.js": {
+    "lines": 100,
+    "branches": 94.34,
+    "functions": 100
+  },
+  "renderers/canvas/validation.js": {
+    "lines": 82.61,
+    "branches": 83.33,
+    "functions": 100
+  },
+  "renderers/canvasScene.js": {
+    "lines": 98.96,
+    "branches": 98.63,
+    "functions": 100
+  },
+  "renderers/fontRendering.js": {
+    "lines": 100,
+    "branches": 93.55,
+    "functions": 100
+  },
+  "renderers/fonts.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "renderers/imageRendering.js": {
+    "lines": 100,
+    "branches": 98.36,
+    "functions": 100
+  },
+  "renderers/nativeBackend.js": {
+    "lines": 94.57,
+    "branches": 86.11,
+    "functions": 100
+  },
+  "renderers/options.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "renderers/pdf.js": {
+    "lines": 98.08,
+    "branches": 96.3,
+    "functions": 100
+  },
+  "renderers/png.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "renderers/svg.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "renderers/svgSerialization.js": {
+    "lines": 91.97,
+    "branches": 88.63,
+    "functions": 97.83
+  },
+  "renderers/text.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "renderers/textGlyphMask.js": {
+    "lines": 100,
+    "branches": 97.78,
+    "functions": 100
+  },
+  "renderers/transitionScene.js": {
+    "lines": 88.41,
+    "branches": 82.76,
+    "functions": 87.5
+  },
+  "resources/assetPreparation.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "resources/dataUpdate.js": {
+    "lines": 100,
+    "branches": 97.87,
+    "functions": 100
+  },
+  "resources/dataUpdateFull.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "resources/fontResource.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "resources/imageResource.js": {
+    "lines": 100,
+    "branches": 92.11,
+    "functions": 100
+  },
+  "resources/resolveAssets.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "resources/resolveData.js": {
+    "lines": 100,
+    "branches": 97.14,
+    "functions": 100
+  },
+  "resources/resolveFonts.js": {
+    "lines": 100,
+    "branches": 98.21,
+    "functions": 100
+  },
+  "resources/textMetrics.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "resources/textMetricsFull.js": {
+    "lines": 100,
+    "branches": 95.92,
+    "functions": 100
+  },
+  "scene.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "selectors/axes.js": {
+    "lines": 100,
+    "branches": 97.94,
+    "functions": 100
+  },
+  "selectors/coordinates.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "selectors/datasets.js": {
+    "lines": 93.75,
+    "branches": 89.29,
+    "functions": 83.33
+  },
+  "selectors/graphicCapacity.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "selectors/grids.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "selectors/hierarchy.js": {
+    "lines": 86.96,
+    "branches": 83.33,
+    "functions": 88.89
+  },
+  "selectors/index.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "selectors/layers.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "selectors/markClip.js": {
+    "lines": 85.71,
+    "branches": 92,
+    "functions": 100
+  },
+  "selectors/markOwners.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "selectors/plotComposition.js": {
+    "lines": 100,
+    "branches": 99.32,
+    "functions": 100
+  },
+  "selectors/raincloud.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "selectors/resources.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "selectors/scales.js": {
+    "lines": 100,
+    "branches": 92.86,
+    "functions": 100
+  },
+  "selectors/selectionResources.js": {
+    "lines": 100,
+    "branches": 90,
+    "functions": 100
+  },
+  "selectors/selectionTargets.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "theme/defaults.js": {
+    "lines": 98.78,
+    "branches": 94.87,
+    "functions": 100
+  },
+  "version.js": {
+    "lines": 100,
+    "branches": 100,
+    "functions": 100
+  },
+  "all files": {
+    "lines": 96.39,
+    "branches": 94.2,
+    "functions": 98.86
+  }
+}

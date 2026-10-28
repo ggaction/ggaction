@@ -135,10 +135,10 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 **Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-applyTextMetrics(options: TargetedOptions<ApplyTextMetricsOptions>): ChartProgram;
+applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ApplyTextMetricsOptions`](./../types.md#type-applytextmetricsoptions).
+Named option contracts: [`ApplyTextMetricsOptions`](./../types.md#type-applytextmetricsoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -147,7 +147,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `profile` | Required | `TextMetricsProfile` |
+| `profile` | Optional / branch-dependent | `TextMetricsProfile \| undefined` |
+| `prepared` | Optional / branch-dependent | `PreparedTextMetrics \| undefined` |
+| `requestToken` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
@@ -156,11 +158,15 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 applyTextMetrics({ profile })
+applyTextMetrics({ prepared, requestToken })
 ```
 
 Apply a host-measured width profile to title, axis, legend, label, and composition
 layout. See [Measured text layout](../../api/rendering.md#measured-text-layout) for the
 exact profile format, matching rules, propagation, and executable example.
+The prepared overload binds stored font bytes and measured widths to one exact
+receiver; missing font queries fail instead of using an estimate. See
+[embedded fonts](../../api/rendering.md#embedded-fonts).
 
 
 ## `removeTextMetrics`
@@ -4646,6 +4652,77 @@ editTreemapPlot({ target?, layout?, origin?, clip?, cells?, labels? })
 
 Edit treemap cells, labels, placement, or the bound treemap layout. Full only.
 [Hierarchy resources and plots](../../api/hierarchy.md#edittreemapplot)
+
+
+## `createFontResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createFontResource(options: ApplyFontResourceOptions<"create">): ChartProgram;
+```
+
+Named option contracts: [`ApplyFontResourceOptions`](./../types.md#type-applyfontresourceoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedFontResource<"create">` |
+| `requestToken` | Required | `string` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createFontResource({ prepared, requestToken })
+```
+
+Commit an authentic create handle from `prepareFontResource` on its exact original
+Full receiver. The explicit host loads and validates pinned font bytes. No text
+layout changes until prepared metrics are applied. See
+[embedded fonts](../../api/rendering.md#embedded-fonts).
+
+
+## `replaceFontResource`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+replaceFontResource(options: ApplyFontResourceOptions<"replace">): ChartProgram;
+```
+
+Named option contracts: [`ApplyFontResourceOptions`](./../types.md#type-applyfontresourceoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `prepared` | Required | `PreparedFontResource<"replace">` |
+| `requestToken` | Required | `string` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+replaceFontResource({ prepared, requestToken })
+```
+
+Commit a prepared replacement and atomically refresh any exact measured layout
+that uses the font, including inherited composition children. The preparation
+host must measure the new font before this action can replace a bound resource.
 
 
 ## Focused core data editing

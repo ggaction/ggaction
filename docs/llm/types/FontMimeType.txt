@@ -1,0 +1,1 @@
+export type FontMimeType = "font/ttf" | "font/otf" | "font/woff" | "font/woff2";

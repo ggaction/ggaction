@@ -1,4 +1,5 @@
-import { chart, hconcat, prepareDataUpdate, prepareImageResource } from "../../../src/index.js";
+import { chart, hconcat, prepareDataUpdate, prepareImageResource, prepareFontResource, prepareTextMetrics } from "../../../src/index.js";
+import { readFileSync } from "node:fs";
 
 import { loadZooDataset } from "../datasets/zoo.js";
 import {
@@ -33,8 +34,22 @@ const imageMarked = imageBase.createImageResource({ prepared: imageCreate, reque
     fit: "cover", align: [0, 1], opacity: 0.5, alt: "Lifecycle fixture", clip: { x: 0, y: 0, width: 8, height: 8 } })
   .editImageMark({ target: "unusedImageMark", image: "unusedLifecycleImage", viewport: "auto", fit: "fill", align: [1, 0], opacity: 1, alt: "Updated fixture", clip: false });
 const imageReplacement = await prepareImageResource(imageMarked, { kind: "replace", target: "unusedLifecycleImage", ...imageSource }, imageHost);
-const preparedResourceBase = imageMarked.replaceImageResource({ prepared: imageReplacement, requestToken: imageHost.requestToken })
+const imageResourceBase = imageMarked.replaceImageResource({ prepared: imageReplacement, requestToken: imageHost.requestToken })
   .removeMark({ target: "unusedImageMark" }).removeResource({ kind: "image", id: "unusedLifecycleImage", cascade: false });
+
+const fontBytes = new Uint8Array(readFileSync(new URL("../../fixtures/fonts/metric-fixture.ttf", import.meta.url)));
+const fontSource = { uri: "fixture:lifecycle-font", expectedHash: "cd7546c63196b68eda1205ca5544da143e0626cfb5623aa8a8988bf69b287878",
+  mimeType: "font/ttf", family: "sans-serif", style: "normal", weight: 400, metricsProviderVersion: "lifecycle@1" };
+const fontHost = { requestToken: "lifecycle-font", load: () => ({ bytes: fontBytes, mimeType: "font/ttf" }),
+  decode: value => Object.fromEntries(["contentHash", "family", "style", "weight", "metricsProviderVersion"].map(key => [key, value[key]])),
+  measure: ({ asset, queries }) => ({ contentHash: asset.contentHash, metricsProviderVersion: asset.metricsProviderVersion, widths: queries.map(() => 0) }) };
+const fontCreated = imageResourceBase.createFontResource({ prepared: await prepareFontResource(imageResourceBase,
+  { kind: "create", id: "unusedLifecycleFont", ...fontSource }, fontHost), requestToken: fontHost.requestToken });
+const fontMeasured = fontCreated.applyTextMetrics({ prepared: await prepareTextMetrics(fontCreated, { id: "lifecycle-exact-font", fonts: ["unusedLifecycleFont"] },
+  { requestToken: fontHost.requestToken, decode: fontHost.decode, measure: fontHost.measure }), requestToken: fontHost.requestToken });
+const preparedResourceBase = fontMeasured.replaceFontResource({ prepared: await prepareFontResource(fontMeasured,
+  { kind: "replace", target: "unusedLifecycleFont", ...fontSource }, fontHost), requestToken: fontHost.requestToken })
+  .removeResource({ kind: "font", id: "unusedLifecycleFont", cascade: true });
 
 const CARTESIAN_CANVAS = Object.freeze({
   width: 920,
@@ -2209,7 +2224,7 @@ function lifecycleSignature(base, factors) {
     "action-facet-grid-lifecycle": ["facetGrid", "editFacetSource"],
     "action-repeat-charts-lifecycle": ["repeatCharts"],
     "action-direct-data-resources": [
-      "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "removeResource",
+      "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource",
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale",
       "removeData", "removeScale", "removeCoordinate",
       "createParameter", "editParameter", "removeParameter",
@@ -2468,7 +2483,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createOverlay", "editOverlay", "createLayerPlot", "createAdjacentPlot", "editCompositionScales",
-  "reviseData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "removeResource", "applyTextMetrics", "removeTextMetrics",
+  "reviseData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createImageMark", "editImageMark", "createFontResource", "replaceFontResource", "removeResource", "applyTextMetrics", "removeTextMetrics",
   "createParameter", "editParameter", "removeParameter",
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createSortedData", "editSortedData",

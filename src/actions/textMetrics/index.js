@@ -2,6 +2,8 @@ import { action, closedAction } from "../../core/action.js";
 import { noOptions } from "../../core/validation.js";
 import { normalizeTextMetricProfile } from "../../core/textMetricProfile.js";
 import { rematerializeTypography } from "../../materialization/typography.js";
+import { validateFontMetricBindings, inheritFontMetricResources } from "../../materialization/fontState.js";
+import { readPreparedTextMetrics } from "../../resources/textMetrics.js";
 
 function metricsProgram(parent, child) {
   return typeof child.applyTextMetrics === "function" ? child : new parent.constructor({
@@ -11,10 +13,15 @@ function metricsProgram(parent, child) {
 
 export function inheritTextMetrics(parent, child) {
   const profile = parent.materializationConfigs.textMetrics;
-  return profile === undefined ? child : metricsProgram(parent, child).applyTextMetrics({ profile });
+  if (profile === undefined) return child;
+  child = metricsProgram(parent, child);
+  if (profile.schemaVersion !== 2) return child.applyTextMetrics({ profile });
+  child = inheritFontMetricResources(parent, child, profile);
+  return applyTextMetricProfile(child, profile);
 }
 
-function applyProfile(program, profile) {
+export function applyTextMetricProfile(program, profile) {
+  validateFontMetricBindings(program, profile);
   let next = profile === undefined
     ? program._withoutMaterializationConfig(["textMetrics"])
     : program._withMaterializationConfig(["textMetrics"], profile);
@@ -33,11 +40,14 @@ function applyProfile(program, profile) {
 }
 
 export const applyTextMetrics = /* @__PURE__ */ closedAction(
-  { op: "applyTextMetrics", description: "Apply measured text widths to chart layout.", scope: "any" }, ["profile"],
+  { op: "applyTextMetrics", description: "Apply measured text widths to chart layout.", scope: "any" }, ["profile", "prepared", "requestToken"],
   function (args = {}) {
-    const profile = normalizeTextMetricProfile(args.profile);
-    applyProfile(this, profile);
-    return applyProfile(this, profile);
+    const supplied = Object.hasOwn(args, "profile");
+    if (supplied && (Object.hasOwn(args, "prepared") || Object.hasOwn(args, "requestToken"))) throw new TypeError("Text metrics require either a profile or prepared metrics and requestToken.");
+    const profile = supplied ? normalizeTextMetricProfile(args.profile)
+      : readPreparedTextMetrics(this, args.prepared, args.requestToken);
+    applyTextMetricProfile(this, profile);
+    return applyTextMetricProfile(this, profile);
   }
 );
 
@@ -46,8 +56,8 @@ export const removeTextMetrics = /* @__PURE__ */ action(
   function (args = {}) {
     noOptions(args, "removeTextMetrics");
     if (this.materializationConfigs.textMetrics === undefined) throw new Error("removeTextMetrics requires an active profile.");
-    applyProfile(this, undefined);
-    return applyProfile(this, undefined);
+    applyTextMetricProfile(this, undefined);
+    return applyTextMetricProfile(this, undefined);
   }
 );
 

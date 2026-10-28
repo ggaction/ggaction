@@ -21,7 +21,7 @@ interface ChartProgramActions {
   createCanvas(options?: TargetedOptions<CanvasOptions>): ChartProgram;
   editCanvas(options: TargetedOptions<CanvasOptions>): ChartProgram;
   fitCanvas(options?: TargetedOptions<FitCanvasOptions>): ChartProgram;
-  applyTextMetrics(options: TargetedOptions<ApplyTextMetricsOptions>): ChartProgram;
+  applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
   removeTextMetrics(): ChartProgram;
   applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
@@ -50,6 +50,8 @@ interface ChartProgramActions {
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
   replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+  createFontResource(options: ApplyFontResourceOptions<"create">): ChartProgram;
+  replaceFontResource(options: ApplyFontResourceOptions<"replace">): ChartProgram;
   createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
   editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
   createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;
@@ -528,6 +530,20 @@ export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] =
 
 Related types: [`DataUpdateRequest`](#type-dataupdaterequest) · [`PreparedDataUpdate`](#type-prepareddataupdate).
 
+### `ApplyFontResourceOptions` {#type-applyfontresourceoptions}
+
+<details markdown="1">
+<summary>Expand ApplyFontResourceOptions</summary>
+
+```typescript
+export interface ApplyFontResourceOptions<Kind extends "create" | "replace"> { prepared: PreparedFontResource<Kind>; requestToken: string; }
+declare const preparedTextMetricsBrand: unique symbol;
+```
+
+</details>
+
+Related types: [`PreparedFontResource`](#type-preparedfontresource).
+
 ### `ApplyImageResourceOptions` {#type-applyimageresourceoptions}
 
 <details markdown="1">
@@ -549,12 +565,13 @@ Related types: [`PreparedImageResource`](#type-preparedimageresource).
 <summary>Expand ApplyTextMetricsOptions</summary>
 
 ```typescript
-export interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }
+export type ApplyTextMetricsOptions = TargetedOptions<{ profile: TextMetricsProfile; prepared?: never; requestToken?: never }> |
+  { profile?: never; prepared: PreparedTextMetrics; requestToken: string; target?: never };
 ```
 
 </details>
 
-Related types: [`TextMetricsProfile`](#type-textmetricsprofile).
+Related types: [`TargetedOptions`](#type-targetedoptions) · [`TextMetricsProfile`](#type-textmetricsprofile) · [`PreparedTextMetrics`](#type-preparedtextmetrics).
 
 ### `ApplyThemeOptions` {#type-applythemeoptions}
 
@@ -11145,6 +11162,20 @@ export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = Dat
 
 Related types: [`DataUpdateRequest`](#type-dataupdaterequest) · [`DataUpdateDescriptors`](#type-dataupdatedescriptors).
 
+### `PreparedFontResource` {#type-preparedfontresource}
+
+<details markdown="1">
+<summary>Expand PreparedFontResource</summary>
+
+```typescript
+export interface PreparedFontResource<Kind extends "create" | "replace" = "create" | "replace"> {
+  readonly [preparedFontResourceBrand]: Kind; readonly kind: "font-resource";
+  readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+```
+
+</details>
+
 ### `PreparedImageResource` {#type-preparedimageresource}
 
 <details markdown="1">
@@ -11155,6 +11186,20 @@ export interface PreparedImageResource<Kind extends "create" | "replace" = "crea
   readonly [preparedImageResourceBrand]: Kind;
   readonly kind: "image-resource";
   readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+```
+
+</details>
+
+### `PreparedTextMetrics` {#type-preparedtextmetrics}
+
+<details markdown="1">
+<summary>Expand PreparedTextMetrics</summary>
+
+```typescript
+export interface PreparedTextMetrics {
+  readonly [preparedTextMetricsBrand]: true; readonly kind: "text-metrics";
+  readonly request: Readonly<{ id: string; fonts: readonly string[] }>;
 }
 ```
 
@@ -13014,7 +13059,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
 <summary>Expand StoredResourceKind</summary>
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "font";
 ```
 
 </details>

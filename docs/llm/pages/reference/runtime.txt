@@ -532,6 +532,18 @@ export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageR
 export function prepareImageResource(program: ChartProgram, request: CreateImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"create">>;
 export function prepareImageResource(program: ChartProgram, request: ReplaceImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource<"replace">>;
 export function prepareImageResource(program: ChartProgram, request: ImageResourceRequest, host: ImageResourceHost): Promise<PreparedImageResource>;
+export type { FontIdentity, FontMimeType, ConcreteFont, FontRef, FontMetricsProfile, FontResourceSource, CreateFontResourceRequest,
+  ReplaceFontResourceRequest, FontResourceRequest, FontMeasurementHost, TextMetricsHost, FontResourceHost,
+  PreparedFontResource, ApplyFontResourceOptions, PreparedTextMetrics, TextMetricsRequest, FontResource,
+  PreparedFontRendering, FontRenderingHost } from "./program.js";
+import type { CreateFontResourceRequest, ReplaceFontResourceRequest, FontResourceRequest, FontResourceHost, PreparedFontResource,
+  PreparedTextMetrics, TextMetricsRequest, TextMetricsHost, PreparedFontRendering, FontRenderingHost } from "./program.js";
+export function prepareFontResource(program: ChartProgram, request: CreateFontResourceRequest, host: FontResourceHost): Promise<PreparedFontResource<"create">>;
+export function prepareFontResource(program: ChartProgram, request: ReplaceFontResourceRequest, host: FontResourceHost): Promise<PreparedFontResource<"replace">>;
+export function prepareFontResource(program: ChartProgram, request: FontResourceRequest, host: FontResourceHost): Promise<PreparedFontResource>;
+export function prepareTextMetrics(program: ChartProgram, request: TextMetricsRequest, host: TextMetricsHost): Promise<PreparedTextMetrics>;
+export function prepareFontRendering(program: Pick<ChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
+export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
 ```
 
 #### `ggaction/basic`
@@ -695,6 +707,10 @@ export function render(
 
 export function prepareImageRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: ImageRenderingHost): Promise<PreparedImageRendering>;
 export function prepareImageRendering(scene: CanvasTransitionScene, host: ImageRenderingHost): Promise<PreparedImageRendering>;
+export type { FontIdentity, FontMimeType, ConcreteFont, PreparedFontRendering, FontRenderingHost } from "./program.js";
+import type { PreparedFontRendering, FontRenderingHost } from "./program.js";
+export function prepareFontRendering(program: Pick<BasicChartProgram, "graphicSpec">, host: FontRenderingHost): Promise<PreparedFontRendering>;
+export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
 ```
 
 #### `ggaction/extension`

@@ -5,7 +5,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import test from "node:test";
 
-import { documentationPrograms } from "../../scripts/doc-snippets.js";
+import { documentationPrograms, copyDocumentationSupportFiles } from "../../scripts/doc-snippets.js";
 import { assertDocumentationRendering, documentationEnvironment } from "../support/docs-runtime.js";
 import { docInputs, datasetValues } from "../support/docs-inputs.js";
 
@@ -29,7 +29,10 @@ for (const example of await documentationPrograms()) {
       ...(example.importChart ? ['import { chart } from "ggaction";'] : [])
     ].join("\n");
     const resultNames = example.result.split(",").map(value => value.trim());
-    const moduleFile = path.join(directory, example.file.replaceAll("/", "-") + (example.id ?? "") + ".mjs");
+    const moduleDirectory = path.join(directory, example.file.replaceAll("/", "-") + (example.id ?? ""));
+    await mkdir(moduleDirectory, { recursive: true });
+    await copyDocumentationSupportFiles(example, moduleDirectory);
+    const moduleFile = path.join(moduleDirectory, "main.mjs");
     await writeFile(moduleFile, `${prefix}\n${example.code}\nexport { ${resultNames.join(", ")}, __documentationEnvironment };\n`);
     const result = await import(pathToFileURL(moduleFile));
     for (const name of resultNames) {

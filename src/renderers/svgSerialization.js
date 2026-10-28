@@ -432,6 +432,14 @@ function serializePath(state, graphicId, properties) {
 
 function serializeText(state, graphicId, properties) {
   validateConcreteGraphicProperties("text", properties);
+  if (properties.font !== undefined) {
+    const font = properties.font, alias = fontRenderAlias(font);
+    state.fonts ??= new Set();
+    if (!state.fonts.has(alias)) {
+      state.fonts.add(alias);
+      state.definitions.push(element("style", [], `@font-face{font-family:"${alias}";src:url("data:${font.mimeType};base64,${font.payload.data}");font-style:${font.style};font-weight:${font.weight};}`));
+    }
+  }
   const x = requireFiniteProperty(properties, "x", graphicId);
   const y = requireFiniteProperty(properties, "y", graphicId);
   const fontSize = requireFiniteProperty(properties, "fontSize", graphicId);
@@ -482,7 +490,7 @@ function serializeText(state, graphicId, properties) {
     ["y", formatNumber(y)],
     ["fill", fill],
     ...outlineAttributes(properties),
-    ["font-family", fontFamily],
+    ["font-family", properties.font === undefined ? fontFamily : fontRenderAlias(properties.font)],
     ["font-size", formatNumber(fontSize)],
     ["font-weight", normalizeRendererFontWeight(fontWeight)],
     ["font-style", properties.fontStyle],
@@ -651,6 +659,7 @@ export function renderToSVG(program, options = {}) {
     { nested: false }
   );
   let namespace = resolvedOptions.resourceNamespace;
+  concreteFonts(graphicSpec);
   const state = {
     clipCount: 1,
     definitions: [],
@@ -698,6 +707,7 @@ export function renderToSVG(program, options = {}) {
 
 // Internal adapter: only concrete graphics and opaque correspondence keys enter here.
 export function renderTransitionGraphics(graphicSpec, identities) {
+  concreteFonts(graphicSpec);
   const scene = collectTransitionGraphics(graphicSpec, identities);
   let namespace;
   const state = { definitions: [], gradientCount: 1, clipCount: 1,
@@ -730,3 +740,4 @@ function serializeClip(clip) {
     ? element("path", [["d", serializePathData(clip.commands)], ["clip-rule", clip.fillRule ?? "nonzero"]])
     : element("rect", Object.entries(clip).map(([key, value]) => [key, formatNumber(value)]));
 }
+import { concreteFonts, fontRenderAlias } from "./fonts.js";

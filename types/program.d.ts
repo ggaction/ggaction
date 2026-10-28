@@ -15,7 +15,74 @@ export interface TextMetricsProfile {
   readonly id: string;
   readonly measurements: readonly TextMeasurement[];
 }
-export interface ApplyTextMetricsOptions { profile: TextMetricsProfile; }
+export type ApplyTextMetricsOptions = TargetedOptions<{ profile: TextMetricsProfile; prepared?: never; requestToken?: never }> |
+  { profile?: never; prepared: PreparedTextMetrics; requestToken: string; target?: never };
+export interface FontIdentity {
+  readonly contentHash: string; readonly family: string; readonly style: "normal" | "italic";
+  readonly weight: TextMetricFontWeight; readonly metricsProviderVersion: string;
+}
+export type FontMimeType = "font/ttf" | "font/otf" | "font/woff" | "font/woff2";
+export interface ConcreteFont extends FontIdentity {
+  readonly mimeType: FontMimeType; readonly byteLength: number;
+  readonly payload: { readonly encoding: "base64"; readonly data: string };
+}
+export interface FontRef { readonly kind: "font"; readonly id: string; readonly revision: number; }
+export interface FontMetricsProfile {
+  readonly schemaVersion: 2; readonly id: string;
+  readonly fonts: readonly Readonly<{ resource: FontRef; identity: FontIdentity }>[];
+  readonly measurements: readonly (TextMeasurement & { readonly fontStyle: "normal" | "italic" })[];
+}
+export interface FontResourceSource extends Omit<FontIdentity, "contentHash"> {
+  uri: string; expectedHash: string; mimeType: FontMimeType; maxBytes?: number; license?: string; attribution?: string;
+}
+export type CreateFontResourceRequest = FontResourceSource & { kind: "create"; id: string; target?: never };
+export type ReplaceFontResourceRequest = FontResourceSource & { kind: "replace"; target: string; id?: never };
+export type FontResourceRequest = CreateFontResourceRequest | ReplaceFontResourceRequest;
+export interface FontMeasurementHost {
+  measure(request: Readonly<{ asset: ConcreteFont; queries: readonly Readonly<{ text: string; fontSize: number }>[]; signal?: AbortSignal }>):
+    Readonly<{ contentHash: string; metricsProviderVersion: string; widths: readonly number[] }> |
+    Promise<Readonly<{ contentHash: string; metricsProviderVersion: string; widths: readonly number[] }>>;
+}
+export interface TextMetricsHost extends FontMeasurementHost {
+  requestToken: string; signal?: AbortSignal;
+  decode(request: Readonly<FontIdentity & { bytes: Uint8Array; mimeType: FontMimeType; signal?: AbortSignal }>): FontIdentity | Promise<FontIdentity>;
+}
+export interface FontResourceHost extends Omit<TextMetricsHost, "measure"> {
+  load(request: Readonly<FontResourceSource & { maxBytes: number; signal?: AbortSignal }>):
+    Readonly<{ bytes: Uint8Array; mimeType: FontMimeType }> | Promise<Readonly<{ bytes: Uint8Array; mimeType: FontMimeType }>>;
+  /** Required when replacing a font referenced by an exact metric profile. */
+  measure?: FontMeasurementHost["measure"];
+}
+declare const preparedFontResourceBrand: unique symbol;
+export interface PreparedFontResource<Kind extends "create" | "replace" = "create" | "replace"> {
+  readonly [preparedFontResourceBrand]: Kind; readonly kind: "font-resource";
+  readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+export interface ApplyFontResourceOptions<Kind extends "create" | "replace"> { prepared: PreparedFontResource<Kind>; requestToken: string; }
+declare const preparedTextMetricsBrand: unique symbol;
+export interface PreparedTextMetrics {
+  readonly [preparedTextMetricsBrand]: true; readonly kind: "text-metrics";
+  readonly request: Readonly<{ id: string; fonts: readonly string[] }>;
+}
+export interface TextMetricsRequest { id: string; fonts: readonly string[]; }
+export interface FontResource {
+  readonly kind: "font"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly never[];
+  readonly options: Readonly<FontResourceSource & { maxBytes: number }>;
+  readonly result: Pick<ConcreteFont, "byteLength" | "payload">;
+  readonly provenance: { readonly origin: "authored" };
+}
+declare const preparedFontRenderingBrand: unique symbol;
+export interface PreparedFontRendering {
+  readonly [preparedFontRenderingBrand]: true; readonly kind: "font-rendering"; readonly fontCount: number;
+  /** Invalidates the handle and releases its host registrations. */
+  dispose(): void;
+}
+export interface FontRenderingHost {
+  register(request: Readonly<FontIdentity & { bytes: Uint8Array; mimeType: FontMimeType; sourceFamily: string; signal?: AbortSignal }>):
+    (FontIdentity & { dispose(): void }) | Promise<FontIdentity & { dispose(): void }>;
+  signal?: AbortSignal;
+}
 
 export type ThemeName = "light" | "dark";
 export interface ThemeTokens {
@@ -82,7 +149,7 @@ export interface ImageRenderingHost {
     Readonly<{ image: object; width: number; height: number; originClean: true }>;
   signal?: AbortSignal;
 }
-export interface CanvasRenderOptions { pixelRatio?: number; images?: PreparedImageRendering; }
+export interface CanvasRenderOptions { pixelRatio?: number; images?: PreparedImageRendering; fonts?: PreparedFontRendering; }
 export interface ImageResourceSource {
   uri: string; expectedHash: string; mimeType: ImageMimeType; maxBytes?: number; license?: string; attribution?: string;
 }
@@ -1624,7 +1691,7 @@ export interface DataSourceResource {
   readonly result: { readonly data: Extract<InputRef, { readonly kind: "data" }>; readonly inputHash: string };
   readonly provenance: { readonly origin: "authored" };
 }
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "font";
 export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
   | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
 export interface PersistentSelectionResource {
@@ -1828,7 +1895,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | FontResource | HierarchyResource | HierarchyLayoutResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -5844,7 +5911,7 @@ export class ChartProgram {
   createCanvas(options?: TargetedOptions<CanvasOptions>): ChartProgram;
   editCanvas(options: TargetedOptions<CanvasOptions>): ChartProgram;
   fitCanvas(options?: TargetedOptions<FitCanvasOptions>): ChartProgram;
-  applyTextMetrics(options: TargetedOptions<ApplyTextMetricsOptions>): ChartProgram;
+  applyTextMetrics(options: ApplyTextMetricsOptions): ChartProgram;
   removeTextMetrics(): ChartProgram;
   applyTheme(options: TargetedOptions<ApplyThemeOptions>): ChartProgram;
   removeTheme(): ChartProgram;
@@ -5873,6 +5940,8 @@ export class ChartProgram {
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
   replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+  createFontResource(options: ApplyFontResourceOptions<"create">): ChartProgram;
+  replaceFontResource(options: ApplyFontResourceOptions<"replace">): ChartProgram;
   createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
   editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
   createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;

@@ -1,20 +1,42 @@
 import { validateGeneratedItemLimit } from "./validation.js";
 import { DEFAULT_FONT_FAMILY, textMetricFontWeight, textMetricKey } from "./font.js";
-
-import { isOwned } from "./immutable.js";
+import { assetError } from "./assetHost.js";
+import { cloneAndFreeze, isOwned } from "./immutable.js";
 
 const measurementIndexes = new WeakMap();
+const missingFontQueries = new WeakMap();
+
+// Query text remains private: diagnostics and traces do not duplicate labels.
+export function missingFontMetricQuery(error) {
+  return missingFontQueries.get(error);
+}
+
+export function fontMetricBinding(profile, style) {
+  if (profile?.schemaVersion !== 2) return undefined;
+  const font = profile.fonts.find(binding => binding.identity.family === (style.fontFamily ?? DEFAULT_FONT_FAMILY) &&
+    binding.identity.style === (style.fontStyle ?? "normal") && binding.identity.weight === textMetricFontWeight(style.fontWeight));
+  if (font === undefined) throw assetError("unresolved-font", "Text metrics require one explicit font binding for the exact family, style and weight.", undefined, "Font");
+  return font;
+}
 
 function measuredWidth(profile, text, style) {
   if (profile === undefined) return undefined;
+  const query = { text, fontFamily: style.fontFamily ?? DEFAULT_FONT_FAMILY,
+    fontSize: style.fontSize, fontWeight: textMetricFontWeight(style.fontWeight), fontStyle: style.fontStyle ?? "normal" };
+  const font = fontMetricBinding(profile, style);
   let index = measurementIndexes.get(profile);
   if (index === undefined) {
     index = new Map(profile.measurements.map(measurement =>
       [textMetricKey(measurement), measurement.width]));
     if (isOwned(profile)) measurementIndexes.set(profile, index);
   }
-  return index.get(textMetricKey({ text, fontFamily: style.fontFamily ?? DEFAULT_FONT_FAMILY,
-    fontSize: style.fontSize, fontWeight: textMetricFontWeight(style.fontWeight), fontStyle: style.fontStyle }));
+  const width = index.get(textMetricKey(query));
+  if (width === undefined && font !== undefined) {
+    const error = assetError("metrics-required", "Font-bound text requires an exact prepared measurement.", undefined, "Font");
+    missingFontQueries.set(error, cloneAndFreeze({ resource: font.resource, query }));
+    throw error;
+  }
+  return width;
 }
 
 function codePointWidth(codePoint) {

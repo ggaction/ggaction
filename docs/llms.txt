@@ -215,5 +215,6 @@ requirements after resolving each part.
 - Choose a Chart: ./api/chart-picker/
 - Complete Axes and Labels: ./api/axes/complete/
 - Image Assets Tutorial: ./tutorials/image-assets/
+- Prepared Fonts Tutorial: ./tutorials/font-assets/
 - Hierarchy Resources and Plots: ./api/hierarchy/
 - Hierarchy Tutorial: ./tutorials/hierarchy/

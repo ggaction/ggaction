@@ -1,0 +1,8 @@
+export interface FontResource {
+  readonly kind: "font"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly never[];
+  readonly options: Readonly<FontResourceSource & { maxBytes: number }>;
+  readonly result: Pick<ConcreteFont, "byteLength" | "payload">;
+  readonly provenance: { readonly origin: "authored" };
+}
+declare const preparedFontRenderingBrand: unique symbol;

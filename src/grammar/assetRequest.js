@@ -1,8 +1,9 @@
 import { assetError } from "../core/assetHost.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { ownRecord } from "../core/ownData.js";
+import { ASSET_MAX_BYTES } from "./assetPayload.js";
 
-const MAX_BYTES = 16 * 1024 * 1024;
+const MAX_BYTES = ASSET_MAX_BYTES;
 
 export function exactAssetRecord(value, keys, label) {
   ownRecord(value, label);

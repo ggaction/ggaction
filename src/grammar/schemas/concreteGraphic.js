@@ -1,8 +1,9 @@
 import { normalizeMarkOutline } from "../markOutline.js";
 import { ownRecord } from "../../core/ownData.js";
 import { validateImagePayload } from "../imagePayload.js";
+import { validateFontPayload } from "../fontPayload.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
-import { validateFontStyle } from "../../core/font.js";
+import { validateFontStyle, textMetricFontWeight } from "../../core/font.js";
 import { isOwned, isPlainObject } from "../../core/immutable.js";
 import { validatePathCommands, validatePathFillRule } from "../pathCommands.js";
 import { validateConcreteFillPaint } from "../paint.js";
@@ -44,6 +45,7 @@ export function validateConcreteGraphicValue(type, property, value) {
       throw new TypeError("Text fillBounds require finite ordered left/right/top/bottom coordinates.");
     }
   }
+  if (property === "font") validateFontPayload(value);
   if (property === "image") validateImagePayload(value);
   if (property === "lines") {
     if (!Array.isArray(value) || value.length === 0 || value.some(line =>
@@ -131,6 +133,11 @@ export function validateConcreteGraphicProperties(type, properties) {
   for (const [property, value] of Object.entries(properties)) {
     validateGraphicProperty(type, property);
     validateConcreteGraphicValue(type, property, value);
+  }
+  if (type === "text" && properties.font !== undefined &&
+      (properties.font.family !== properties.fontFamily || properties.font.style !== (properties.fontStyle ?? "normal") ||
+        properties.font.weight !== textMetricFontWeight(properties.fontWeight))) {
+    throw new TypeError("Concrete text font must match its exact family, style and weight.");
   }
   if (isOwned(properties)) {
     if (validatedTypes) validatedTypes.add(type);

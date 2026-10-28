@@ -1,9 +1,10 @@
+import { materializeTextFont } from "./textFont.js";
 import { resolveTextLines } from "../core/textMetrics.js";
 import { freezeOwned } from "../core/immutable.js";
 
 // Reconcile optional derived line geometry without recreating its text graphic.
 // The owning wrapped domain materializer records the transition.
-export function materializeTextLines(program, id, lines) {
+function writeTextLines(program, id, lines) {
   if (lines !== undefined) return program.editGraphics({ target: id, property: "lines", value: lines });
   const graphic = program.graphicSpec.objects[id];
   if (!Object.hasOwn(graphic.properties, "lines")) return program;
@@ -16,7 +17,7 @@ export function materializeTextLines(program, id, lines) {
 }
 
 // Labels retain one semantic item even when their text contains several lines.
-export function materializeHardTextLines(program, id) {
+function writeHardTextLines(program, id) {
   const graphic = program.graphicSpec.objects[id];
   if (!(graphic.items ?? [graphic]).some(item => /[\r\n]/u.test(item.properties.text) || item.properties.lines !== undefined)) return program;
   const update = object => {
@@ -32,4 +33,12 @@ export function materializeHardTextLines(program, id) {
   if (updated === graphic) return program;
   return program._clone({ graphicSpec: freezeOwned({ ...program.graphicSpec,
     objects: freezeOwned({ ...program.graphicSpec.objects, [id]: updated }) }) });
+}
+
+export function materializeTextLines(program, id, lines) {
+  return materializeTextFont(writeTextLines(program, id, lines), id);
+}
+
+export function materializeHardTextLines(program, id) {
+  return materializeTextFont(writeHardTextLines(program, id), id);
 }

@@ -2,6 +2,7 @@ import { normalizeMarkOutline, MARK_OUTLINE_TYPES } from "../grammar/markOutline
 import { validateFillPaint } from "../grammar/paint.js";
 import { normalizeImageMarkConfig, IMAGE_MARK_CONFIG_KEYS } from "../grammar/imageMark.js";
 import { validateImageBinding } from "../materialization/imageState.js";
+import { validateConcreteFontBindings } from "../materialization/fontState.js";
 import { validateConditionalDependencies } from "../materialization/resourceState.js";
 import { resolveFilterEnvironment } from "../materialization/expressionInputs.js";
 import { validateLegacyPathCommands } from "../grammar/pathCommands.js";
@@ -52,7 +53,7 @@ import { normalizeColorInterpolationOptions } from "../grammar/scales/color.js";
 import { normalizeTransformParameters } from "../grammar/scales/transformed.js";
 import { validateLegendGroupState } from "../grammar/legendGroups.js";
 import { normalizeGradientDirection, validateLegendGradient } from "../grammar/legendGradient.js";
-import { normalizeTextMetricProfile } from "../core/textMetricProfile.js";
+import { normalizeTextMetricProfile, normalizeFontMetricProfile } from "../core/textMetricProfile.js";
 import { resolveTextOffsetDataset } from "../grammar/text.js";
 import { isPlainObject } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
@@ -296,7 +297,10 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
   }
   validateGuideVisibilityState(program);
-  if (program.materializationConfigs.textMetrics !== undefined) normalizeTextMetricProfile(program.materializationConfigs.textMetrics);
+  if (program.materializationConfigs.textMetrics !== undefined) {
+    const profile = program.materializationConfigs.textMetrics;
+    (profile.schemaVersion === 2 ? normalizeFontMetricProfile : normalizeTextMetricProfile)(profile);
+  }
   for (const config of [
     ...Object.values(program.guideConfigs.axis ?? {}).map(axis => axis.ticks),
     ...["horizontal", "vertical"].map(direction => program.guideConfigs.grid?.[direction])
@@ -661,6 +665,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     for (const resource of resources.get(kind).values()) visit(resource);
   }
   validateGraphic(program.graphicSpec, `${path}.graphicSpec`, { legacy });
+  validateConcreteFontBindings(program);
   for (const [id, graphic] of Object.entries(program.graphicSpec.objects)) {
     if (!legacy) for (const item of graphic.items ?? []) {
       if (item.identity !== undefined) resolveGraphicLineage(program, item.identity);

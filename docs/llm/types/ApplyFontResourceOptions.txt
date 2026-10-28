@@ -1,0 +1,2 @@
+export interface ApplyFontResourceOptions<Kind extends "create" | "replace"> { prepared: PreparedFontResource<Kind>; requestToken: string; }
+declare const preparedTextMetricsBrand: unique symbol;

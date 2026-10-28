@@ -1,0 +1,49 @@
+{
+  "sourceCommit": "ad538d08d195a2d9aac4e29a130149a4c5227bf0",
+  "mode": "separate evidence on identical runtime sources; not a successful full-suite rerun",
+  "original": {
+    "tests": 7334,
+    "passed": 7333,
+    "failed": 1,
+    "exitCode": 1,
+    "aggregate": {
+      "lines": 96.39,
+      "branches": 94.2,
+      "functions": 98.86
+    },
+    "criticalFloors": 318,
+    "report": "coverage-initial/report.log"
+  },
+  "correction": {
+    "metadataTests": {
+      "passed": 3,
+      "failed": 0,
+      "log": "architecture-ceilings-corrected.log"
+    },
+    "rendererTests": {
+      "passed": 33,
+      "failed": 0,
+      "log": "structured-fill-contours-coverage.log",
+      "metrics": {
+        "renderers/canvas/circle.js": {
+          "lines": 84.13,
+          "branches": 66.67,
+          "functions": 100
+        },
+        "renderers/canvas/path.js": {
+          "lines": 77.11,
+          "branches": 77.14,
+          "functions": 100
+        }
+      },
+      "testOrigin": "bf2a1f1dacca9e9709c99d889ef9bf322df19190"
+    }
+  },
+  "allCriticalFloorsVerified": 320,
+  "sourceCoverageVerified": true,
+  "archivedReports": {
+    "original": "coverage-initial/report.log.gz",
+    "focused": "logs/structured-fill-contours-coverage.log.gz",
+    "metadata": "logs/architecture-ceilings-corrected.log.gz"
+  }
+}

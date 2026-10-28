@@ -484,6 +484,9 @@
 - title: Image Assets Tutorial
   url: /tutorials/image-assets/
   parent: /tutorials/
+- title: Prepared Fonts Tutorial
+  url: /tutorials/font-assets/
+  parent: /tutorials/
 - title: Hierarchy Resources and Plots
   url: /api/hierarchy/
   parent: /api/

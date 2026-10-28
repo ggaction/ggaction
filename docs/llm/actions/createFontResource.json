@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 3,
+  "name": "createFontResource",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Commit an authentic create handle from prepareFontResource on its exact original Full receiver.",
+  "signature": "createFontResource(options: ApplyFontResourceOptions<\"create\">): ChartProgram;",
+  "intents": [
+    "create font resource",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "embedded font bytes",
+    "measured font identity"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [],
+    "owns": [
+      "embedded font bytes"
+    ],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "replaceFontResource",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "prepared",
+      "required": true,
+      "type": "PreparedFontResource<\"create\">"
+    },
+    {
+      "name": "requestToken",
+      "required": true,
+      "type": "string"
+    }
+  ],
+  "callPatterns": [
+    "createFontResource({ prepared, requestToken })"
+  ],
+  "snippet": "program.createFontResource({ prepared: preparedFontCreate, requestToken: \"current\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createfontresource"
+}

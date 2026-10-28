@@ -254,12 +254,14 @@ test("every compact snippet type-checks against the exact ChartProgram declarati
   try {
     await copyFile(declarationFile, path.join(temporary, "program.d.ts"));
     const source = [
-      'import type { ChartProgram, PreparedDataUpdate, PreparedImageResource } from "./program.js";',
+      'import type { ChartProgram, PreparedDataUpdate, PreparedImageResource, PreparedFontResource } from "./program.js";',
       "declare const program: ChartProgram;",
       "declare const chart: () => ChartProgram;",
       "declare const prepared: PreparedDataUpdate;",
       'declare const preparedImageCreate: PreparedImageResource<"create">;',
       'declare const preparedImageReplace: PreparedImageResource<"replace">;',
+      'declare const preparedFontCreate: PreparedFontResource<"create">;',
+      'declare const preparedFontReplace: PreparedFontResource<"replace">;',
       "declare const currentToken: string;",
       "",
       ...artifact.cards.map(card => `${card.snippet};`),

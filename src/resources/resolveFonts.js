@@ -1,49 +1,49 @@
 import { cloneAndFreeze } from "../core/immutable.js";
 import { ownArray } from "../core/ownData.js";
-import { validateFontStyle } from "../core/font.js";
+import { FONT_IDENTITY_KEYS as identityKeys, validateFontIdentity } from "../core/font.js";
+import { FONT_MIME_TYPES, matchesFontMime, fontPayloadBytes } from "../grammar/fontPayload.js";
 import { exactAssetRecord, assetError, assertAssetActive, assetHostStage, assetBase64, normalizeAssetRequest, prepareAssetBytes } from "./assetPreparation.js";
 
-const signatures = Object.freeze({
-  "font/ttf": [0, 1, 0, 0],
-  "font/otf": [79, 84, 84, 79],
-  "font/woff": [119, 79, 70, 70],
-  "font/woff2": [119, 79, 70, 50]
-});
-const identityKeys = ["family", "style", "weight", "metricsProviderVersion"];
 const preparedFonts = new WeakSet();
 const fail = (code, message) => assetError(code, message, undefined, "Font");
 
-function validateIdentity(request) {
-  if (identityKeys.some(key => !Object.hasOwn(request, key))) throw new TypeError("Font identity requires all own fields.");
-  for (const key of ["family", "metricsProviderVersion"]) {
-    if (typeof request[key] !== "string" || !request[key].trim()) throw new TypeError(`Font ${key} must be a nonempty string.`);
+async function decodeFont(bytes, identity, mimeType, decode, signal) {
+  let decoded = await assetHostStage(decode, Object.freeze({
+    bytes: new Uint8Array(bytes), mimeType, ...identity,
+    ...(signal === undefined ? {} : { signal })
+  }), signal, "decode-error", "Font");
+  assertAssetActive(signal, "Font");
+  decoded = exactAssetRecord(decoded, ["contentHash", ...identityKeys], "Decoded font");
+  if (decoded.contentHash !== identity.contentHash || identityKeys.some(key => decoded[key] !== identity[key])) {
+    throw fail("font-identity-mismatch", "Decoded font identity does not match the requested font and metrics provider.");
   }
-  validateFontStyle(request.style, "Font");
-  if (!Number.isInteger(request.weight) || request.weight < 100 || request.weight > 900 || request.weight % 100 !== 0) {
-    throw new RangeError("Font weight must be 100–900 in steps of 100.");
-  }
+}
+
+// Offline stored bytes still need the host's complete decoder before measuring.
+export async function prepareStoredFontAsset(font, host) {
+  const bytes = fontPayloadBytes(font);
+  host = exactAssetRecord(host, ["decode", "signal"], "Stored font host");
+  if (typeof host.decode !== "function") throw new TypeError("Stored font preparation requires a host decode callback.");
+  assertAssetActive(host.signal, "Font");
+  const asset = cloneAndFreeze(font);
+  await decodeFont(bytes, { contentHash: font.contentHash, ...Object.fromEntries(identityKeys.map(key => [key, font[key]])) },
+    font.mimeType, host.decode, host.signal);
+  preparedFonts.add(asset);
+  return asset;
 }
 
 // A host validates the complete font; magic bytes alone do not establish validity.
 export async function prepareFontAsset(input, host) {
-  const request = normalizeAssetRequest(input, identityKeys, Object.keys(signatures), "Font");
-  validateIdentity(request);
+  const request = normalizeAssetRequest(input, identityKeys, FONT_MIME_TYPES, "Font");
+  validateFontIdentity(request);
   host = exactAssetRecord(host, ["load", "decode", "signal"], "Font host");
   if (typeof host.load !== "function" || typeof host.decode !== "function") throw new TypeError("Font preparation requires host load and decode callbacks.");
   const { load, decode, signal } = host;
   assertAssetActive(signal, "Font");
   const { bytes, hash } = await prepareAssetBytes(request, load, signal,
-    (value, mime) => signatures[mime].every((byte, index) => value[index] === byte), "Font");
-  let decoded = await assetHostStage(decode, Object.freeze({
-    bytes: new Uint8Array(bytes), mimeType: request.mimeType, contentHash: hash,
-    ...Object.fromEntries(identityKeys.map(key => [key, request[key]])),
-    ...(signal === undefined ? {} : { signal })
-  }), signal, "decode-error", "Font");
-  assertAssetActive(signal, "Font");
-  decoded = exactAssetRecord(decoded, ["contentHash", ...identityKeys], "Decoded font");
-  if (decoded.contentHash !== hash || identityKeys.some(key => decoded[key] !== request[key])) {
-    throw fail("font-identity-mismatch", "Decoded font identity does not match the requested font and metrics provider.");
-  }
+    matchesFontMime, "Font");
+  await decodeFont(bytes, { contentHash: hash, ...Object.fromEntries(identityKeys.map(key => [key, request[key]])) },
+    request.mimeType, decode, signal);
   const asset = cloneAndFreeze({
     uri: request.uri, mimeType: request.mimeType, contentHash: hash, byteLength: bytes.length,
     ...Object.fromEntries(identityKeys.map(key => [key, request[key]])),

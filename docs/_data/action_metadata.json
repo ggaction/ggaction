@@ -2590,5 +2590,21 @@
     ],
     "layer": "user-facing",
     "domain": "charts"
+  },
+  "createFontResource": {
+    "operation": "create",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "replaceFontResource": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
   }
 }

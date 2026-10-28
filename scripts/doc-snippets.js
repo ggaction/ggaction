@@ -1,9 +1,31 @@
 import { createHash } from "node:crypto";
-import { readFile, readdir } from "node:fs/promises";
+import { readFile, readdir, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
+
+// Explicit example modules/assets accompany a displayed module entry unchanged.
+// Installed consumers receive only these public example files, never library src.
+export async function copyDocumentationSupportFiles(example, destination) {
+  const files = Object.entries(example.supportFiles ?? {}).map(([relative, source]) => {
+    const safe = value => typeof value === "string" && value.length > 0 &&
+      !path.isAbsolute(value) && !value.includes("\\") && value.split("/").every(part => part && part !== "." && part !== "..");
+    if (!safe(relative) || !safe(source) || !source.startsWith("examples/")) {
+      throw new Error("Documentation support files require relative example sources and local destinations.");
+    }
+    return { relative, source };
+  });
+  for (const { relative, source } of files) {
+    const bytes = await readFile(path.join(root, source));
+    if (/\.[cm]?js$/.test(source) && /(?:from\s*|import\s*\()["'][^"']*\bsrc\//.test(bytes.toString("utf8"))) {
+      throw new Error("Documentation support modules must import the public installed package.");
+    }
+    const target = path.join(destination, relative);
+    await mkdir(path.dirname(target), { recursive: true });
+    await writeFile(target, bytes);
+  }
+}
 
 /** Preserve the displayed code and its heading; do not rewrite API calls. */
 export function documentationCodeBlocks(markdown) {

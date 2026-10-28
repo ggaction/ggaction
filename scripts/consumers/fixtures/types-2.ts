@@ -2152,3 +2152,33 @@ chart().createDotPlot({ category: "c", value: "y", labels: { blend: "screen" } }
 chart().createLollipopPlot({ category: "c", value: "y", stem: { blend: "multiply" }, labels: { blend: "screen" } });
 chart().createDumbbellPlot({ category: "c", start: "x", end: "y", connector: { blend: "difference" }, labels: { blend: "screen" } });
 chart().createECDFPlot({ field: "y", labels: { blend: "screen" } });
+import { prepareFontResource, prepareTextMetrics, prepareFontRendering, type FontResourceHost,
+  type TextMetricsHost, type FontRenderingHost, type PreparedFontResource, type PreparedTextMetrics } from "ggaction";
+import { prepareFontRendering as prepareBasicFonts } from "ggaction/basic";
+declare const fontHost: FontResourceHost;
+declare const fontMetricsHost: TextMetricsHost;
+declare const fontRenderHost: FontRenderingHost;
+const fontBase = chart();
+const fontSource = { uri: "fixture:font", expectedHash: "a".repeat(64), mimeType: "font/ttf" as const,
+  family: "Fixture", style: "normal" as const, weight: 400 as const, metricsProviderVersion: "fixture@1" };
+const fontCreate = await prepareFontResource(fontBase, { kind: "create", id: "font", ...fontSource }, fontHost);
+const withFont = fontBase.createFontResource({ prepared: fontCreate, requestToken: "current" });
+const fontReplace = await prepareFontResource(withFont, { kind: "replace", target: "font", ...fontSource }, fontHost);
+withFont.replaceFontResource({ prepared: fontReplace, requestToken: "current" });
+const fontMetrics = await prepareTextMetrics(withFont, { id: "measured", fonts: ["font"] }, fontMetricsHost);
+const exactFontProgram = withFont.applyTextMetrics({ prepared: fontMetrics, requestToken: "current" });
+const preparedFonts = await prepareFontRendering(exactFontProgram, fontRenderHost);
+render(exactFontProgram, {} as CanvasRenderingContext2D, { fonts: preparedFonts });
+preparedFonts.dispose();
+await prepareBasicFonts(basicChart(), fontRenderHost);
+exactFontProgram.removeResource({ kind: "font", id: "font", cascade: true });
+// @ts-expect-error resource preparation handles are opaque
+const forgedFont: PreparedFontResource = { kind: "font-resource", request: { kind: "create", id: "font" } };
+// @ts-expect-error metric preparation handles are opaque
+const forgedFontMetrics: PreparedTextMetrics = { kind: "text-metrics", request: { id: "m", fonts: ["font"] } };
+// @ts-expect-error prepared metrics apply to their exact receiver only
+withFont.applyTextMetrics({ prepared: fontMetrics, requestToken: "current", target: { childPath: ["a"] } });
+// @ts-expect-error Basic has no font resource authoring
+basicChart().createFontResource({ prepared: fontCreate, requestToken: "current" });
+// @ts-expect-error create cannot consume replacement evidence
+fontBase.createFontResource({ prepared: fontReplace, requestToken: "current" });

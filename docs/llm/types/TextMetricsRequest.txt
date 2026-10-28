@@ -1,0 +1,1 @@
+export interface TextMetricsRequest { id: string; fonts: readonly string[]; }

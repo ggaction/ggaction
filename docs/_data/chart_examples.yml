@@ -1722,6 +1722,22 @@
   actions: createRectMark · createTextMark · editTextMark
   tasks: appearance
   url: /api/appearance/mark-style/
+- id: font-assets
+  example: /examples/font-assets/
+  title: Prepared Korean and emoji fonts
+  image: /assets/images/font-assets.png
+  alt: Wrapped Korean title, a combining accent and joined monochrome emoji
+  width: 880
+  height: 440
+  thumbnail: /assets/images/font-assets-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 320
+  caption: The same pinned font bytes determine measured line layout and every output.
+  summary: Prepare fonts and exact widths, then retain the text for offline rendering.
+  actions: createFontResource · applyTextMetrics · replaceFontResource
+  tasks: fonts text layout
+  url: /tutorials/font-assets/
+  tutorial_order: 171
 - id: image-assets
   example: /examples/image-assets/
   title: Retained image placement

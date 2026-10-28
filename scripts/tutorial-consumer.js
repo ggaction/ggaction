@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 import { build, preview } from "vite";
 
-import { documentationPrograms } from "./doc-snippets.js";
+import { documentationPrograms, copyDocumentationSupportFiles } from "./doc-snippets.js";
 import { docInputs } from "../test/support/docs-inputs.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -50,6 +50,7 @@ export async function prepareTutorials(directory) {
     assert.doesNotMatch(source, /from ["']\.\.\/.*src\//, "Examples must import the installed package.");
     const tutorialDirectory = path.join(directory, "tutorials", name);
     await mkdir(tutorialDirectory, { recursive: true });
+    await copyDocumentationSupportFiles(example, tutorialDirectory);
     await writeFile(path.join(tutorialDirectory, "main.js"), source);
     const html = path.join(tutorialDirectory, "index.html");
     await writeFile(html, tutorialHtml(name));

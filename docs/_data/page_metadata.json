@@ -757,7 +757,7 @@
     "title": "Fonts and Text Rendering",
     "source": "docs/fonts.md",
     "editSource": "docs/fonts.md",
-    "description": "ggaction stores a CSS style fontFamily string in concrete text graphics and passes it to the selected rendering backend. The default family is sans serif."
+    "description": "Text uses sans serif and deterministic estimated bounds by default. You can also load explicit font bytes through prepareFontResource, retain them with createFontResource, and…"
   },
   "/typescript/": {
     "title": "TypeScript",
@@ -1009,6 +1009,13 @@
     "editSource": "examples/image-assets/program.js",
     "description": "Prepare image bytes explicitly, then use one image mark to control its fit, alignment, viewport and alternative text.",
     "image": "/assets/images/image-assets.png"
+  },
+  "/tutorials/font-assets/": {
+    "title": "Prepared Fonts Tutorial",
+    "source": "docs/tutorials/font-assets.md",
+    "editSource": "examples/font-assets/program.js",
+    "description": "Keep font loading explicit, measure with the loaded bytes, and save the final text layout for offline output.",
+    "image": "/assets/images/font-assets.png"
   },
   "/api/hierarchy/": {
     "title": "Hierarchy Resources and Plots",

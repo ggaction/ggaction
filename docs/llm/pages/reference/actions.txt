@@ -52,6 +52,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createErrorBar`](../../../reference/actions/statistics/#createerrorbar) | H1 | user-facing | statistics |
 | [`createFlattenData`](../../../reference/actions/statistics/#createflattendata) | H1 | user-facing | statistics |
 | [`createFoldData`](../../../reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
+| [`createFontResource`](../../../reference/actions/charts-data/#createfontresource) | H3 | user-facing | core |
 | [`createGradientPlot`](../../../reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphics`](../../../reference/actions/extension/#creategraphics) | H4 | primitive | primitives |
 | [`createGrid`](../../../reference/actions/guides/#creategrid) | H3 | user-facing | grid |
@@ -334,6 +335,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`reorderCompositionChildren`](../../../reference/actions/charts-data/#reordercompositionchildren) | H3 | user-facing | composition |
 | [`repeatCharts`](../../../reference/actions/charts-data/#repeatcharts) | H0 | user-facing | composition |
 | [`replaceCompositionChild`](../../../reference/actions/charts-data/#replacecompositionchild) | H3 | user-facing | composition |
+| [`replaceFontResource`](../../../reference/actions/charts-data/#replacefontresource) | H3 | user-facing | core |
 | [`replaceImageResource`](../../../reference/actions/charts-data/#replaceimageresource) | H3 | user-facing | core |
 | [`reviseData`](../../../reference/actions/charts-data/#revisedata) | H3 | user-facing | core |
 | [`selectMarks`](../../../reference/actions/advanced/#selectmarks) | H3 | advanced | mark-selection |

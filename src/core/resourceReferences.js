@@ -35,6 +35,13 @@ export function mapLayerResourceBindings(layers, mapReference) {
   return changed ? mapped : layers;
 }
 
+export function fontMetricResourceBindings(program) {
+  const profile = program.materializationConfigs?.textMetrics;
+  return profile?.schemaVersion === 2 ? profile.fonts.map((binding, index) => ({
+    ref: binding.resource, ownerId: profile.id, path: ["textMetrics", "fonts", index, "resource"]
+  })) : [];
+}
+
 const DATA_VALUE_KEYS = new Set([
   "data", "dataset", "dataId", "filteredData", "originalData",
   "outlierDataId", "profileId", "summaryId"
@@ -392,6 +399,8 @@ export function collectResourceReferences(program, { kind, id }) {
 
 export function collectAllResourceReferences(program) {
   return [
+    ...fontMetricResourceBindings(program).map(({ ref, ownerId, path }) =>
+      reference(ref.kind, ref.id, "materialization", ownerId, path)),
     ...program.semanticSpec.layers.flatMap(layer => layerResourceBindings(layer).map(({ ref, path }) =>
       reference(ref?.kind, ref?.id, "layer", layer.id, path))),
     ...(program.semanticSpec.resources ?? []).filter(resource => resource.kind === "data-source")

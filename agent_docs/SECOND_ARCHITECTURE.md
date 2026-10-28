@@ -754,8 +754,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 582,000 bytes |
-| `ggaction/basic` | 343,000 bytes |
+| `ggaction` | 585,000 bytes |
+| `ggaction/basic` | 346,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -3187,3 +3187,25 @@ outline mark, retained image를 두고 source revision·codec·prepared image st
 Bar geometry owner의 중복 blend 처리는 제거한다. Renderer는 같은 concrete glyph를 소비하며 circle/line/text도
 기존 isolated glyph owner 및 SVG serializer를 사용한다. 별도 compiler/group transaction/registry를 추가하지 않는다.
 정확한 값·상속 소비자·렌더링 경계는 [MARKS](contract/current/MARKS.md#per-item-blend-modes)에 둔다.
+
+### Font identity와 explicit measured typography
+
+Font authoring은 다른 retained asset과 동일하게 host 준비와 동기 immutable commit을 나눈다.
+Full registry의 font resource는 source identity와 bytes만 소유한다. Exact text metric profile은
+명시 font refs와 byte/provider identity를 가진 별도 materialization policy이며, 기존 schema 1
+estimate 의미를 바꾸지 않는다. Host 준비는 기존 typography rematerialization을 bounded private
+candidate에서 실행해 필요한 width query closure를 수집하고, 누락 측정은 오류로 유지한다.
+원래 receiver/token에 적용하는 domain action만 resource/profile/graphics를 함께 바꾼다.
+
+Text의 기존 domain owners가 공통 materialization/textFont를 호출해 concrete Text에 실제 font
+payload를 붙인다. Renderer는 semantic resource나 measurement profile을 읽지 않는다. Browser
+Canvas/scene은 ephemeral registration handle, SVG는 embedded font 정의, PNG/PDF는 native
+registration lease로 같은 bytes를 소비한다. Native engine이 같은 bytes의 여러 alias를 공유하므로
+library adapter는 content별 참조 수를 유지해 마지막 출력이 끝날 때 해제한다. 실제 glyph alpha
+준비 역시 공통 concrete Text renderer를 사용하고 bounds rectangle을 glyph로 대체하지 않는다.
+정확한 public shape/상한/오류/생활주기는 [CORE](contract/current/CORE.md)와 rendering 문서가 소유한다.
+
+Font와 outline/blend의 합산 checkpoint는 기존 source owner를 보존한다. Node22 canonical package는
+807 entries / packed 1,190,379 / unpacked 5,479,048bytes이며 cap은807/1,191,000/5,480,000이다.
+동일 source의 installed Vite bundle은 Full584,601 / Basic345,051 gzip bytes로 측정되어
+585,000/346,000 cap을 사용한다. 최종 shadow checkpoint에서 지원 Node별 합산값을 다시 측정한다.

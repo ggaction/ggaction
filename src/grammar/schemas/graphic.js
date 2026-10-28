@@ -96,6 +96,7 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "lineCap",
     "lineJoin",
     "miterLimit",
+    "font",
     "x",
     "y",
     "text",
