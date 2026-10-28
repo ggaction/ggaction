@@ -1,3 +1,4 @@
+import { hasPositionBinding } from "../../core/encodingBindings.js";
 import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { findTransformPolicy } from "../transforms.js";
@@ -72,8 +73,8 @@ function classifyPrimaryLayer(semanticSpec, layer) {
     throw new Error(`Facet text layer "${layer.id}" requires a text encoding.`);
   }
   const complete = (
-    layer.encoding?.x?.scale !== undefined &&
-    layer.encoding?.y?.scale !== undefined
+    hasPositionBinding(layer, "x") &&
+    hasPositionBinding(layer, "y")
   ) || (type === "rule" && resolveRuleMode(layer) !== undefined) ||
     (type === "rect" && resolveRectMode(layer) !== undefined);
   if (!complete) {

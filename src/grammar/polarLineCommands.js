@@ -34,10 +34,10 @@ export function buildPolarLinePathCommands({
     series.map(value => value.radius),
     radiusScale
   );
-  const points = series.map((_, index) => polarToCartesian({
-    theta: theta[index],
-    radius: radius[index],
-    frame
-  }));
+  return buildMappedPolarLinePathCommands({ theta, radius, frame, closed });
+}
+
+export function buildMappedPolarLinePathCommands({ theta, radius, frame, closed = false }) {
+  const points = theta.map((_, index) => polarToCartesian({ theta: theta[index], radius: radius[index], frame }));
   return buildLinearPathCommands(points, { close: closed });
 }

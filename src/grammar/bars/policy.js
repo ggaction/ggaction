@@ -1,3 +1,6 @@
+import { conditionalPositionTemplate } from "../../core/encodingBindings.js";
+
+const POSITION_CHANNELS = ["x", "y", "x2", "y2", "xOffset", "yOffset"];
 import { isAggregate } from "../aggregate.js";
 
 export const BAR_GRAINS = Object.freeze({
@@ -28,6 +31,7 @@ function hasNumericCenters(layer) {
 }
 
 export function resolveBarOrientation(layer) {
+  if (layer?.conditionals !== undefined) layer = conditionalPositionTemplate(layer, POSITION_CHANNELS);
   if (layer?.mark?.type !== "bar") return undefined;
   const x = layer.encoding?.x;
   const y = layer.encoding?.y;
@@ -60,6 +64,7 @@ export function resolveBarOffsetChannel(layer) {
 }
 
 export function resolveBarGrain(layer) {
+  if (layer?.conditionals !== undefined) layer = conditionalPositionTemplate(layer, POSITION_CHANNELS);
   if (layer?.mark?.type !== "bar") return undefined;
   const x = layer.encoding?.x;
   const y = layer.encoding?.y;
@@ -83,6 +88,7 @@ export function resolveBarGrain(layer) {
 }
 
 export function inferBarColorLayout(layer) {
+  if (layer?.conditionals !== undefined) layer = conditionalPositionTemplate(layer, POSITION_CHANNELS);
   if (layer?.layout?.mode !== undefined) return layer.layout.mode;
   if (layer?.encoding?.color?.layout !== undefined) {
     return layer.encoding.color.layout;
@@ -95,6 +101,7 @@ export function inferBarColorLayout(layer) {
 }
 
 export function resolveBarColorLayout(layer) {
+  if (layer?.conditionals !== undefined) layer = conditionalPositionTemplate(layer, POSITION_CHANNELS);
   if (layer?.layout?.mode !== undefined) return layer.layout.mode;
   if (layer?.encoding?.color?.layout !== undefined) {
     return layer.encoding.color.layout;

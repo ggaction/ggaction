@@ -1,3 +1,7 @@
+import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
+import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
+import { getLayerScaleIds } from "../../../materialization/marks/index.js";
+import { positionBindings, hasPositionBinding } from "../../../core/encodingBindings.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -29,7 +33,7 @@ import {
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
-import { applyOffsetPositionValues } from
+import { applyOffsetPositionValues, resolveRowPositionValues } from
   "../../../materialization/rowEncoding.js";
 import { resolveCategorySlotOffset } from
   "../../../materialization/categorySlotOffset.js";
@@ -81,17 +85,12 @@ function requireRule(program, id) {
 }
 
 function validateEndpointBindings(layer) {
-  if (
-    layer.encoding?.x2 !== undefined &&
-    layer.encoding.x2.scale !== layer.encoding?.x?.scale
-  ) {
-    throw new Error(`Rule mark "${layer.id}" requires x and x2 to share one scale.`);
-  }
-  if (
-    layer.encoding?.y2 !== undefined &&
-    layer.encoding.y2.scale !== layer.encoding?.y?.scale
-  ) {
-    throw new Error(`Rule mark "${layer.id}" requires y and y2 to share one scale.`);
+  for (const channel of ["x", "y"]) {
+    const secondary = positionBindings(layer, `${channel}2`);
+    if (secondary.length === 0) continue;
+    const primary = positionBindings(layer, channel);
+    const scales = new Set([...primary, ...secondary].map(binding => binding.scale));
+    if (primary.length === 0 || scales.size !== 1) throw new Error(`Rule mark "${layer.id}" requires ${channel} and ${channel}2 to share one scale.`);
   }
 }
 
@@ -216,8 +215,8 @@ const rematerializeRuleMark = /* @__PURE__ */ action(
     const mode = boxSpan !== undefined
       ? "box-span"
       : fixedSpan !== undefined &&
-      layer.encoding?.x?.scale !== undefined &&
-      layer.encoding?.y?.scale !== undefined
+      hasPositionBinding(layer, "x") &&
+      hasPositionBinding(layer, "y")
       ? "fixed-span"
       : resolveRuleMode(layer);
     if (mode === undefined) {
@@ -226,14 +225,7 @@ const rematerializeRuleMark = /* @__PURE__ */ action(
         : this.editGraphics({ target: id, property: "length", value: 0 });
     }
 
-    const scaleIds = [...new Set(
-      [
-        "x", "y", "x2", "y2", "xOffset", "yOffset",
-        "stroke", "strokeDash", "strokeWidth", "opacity"
-      ]
-        .map(channel => layer.encoding?.[channel]?.scale)
-        .filter(scale => scale !== undefined)
-    )];
+    const scaleIds = [...new Set(getLayerScaleIds(layer))];
     let resolved = this;
     if (args.scales !== false) {
       for (const scaleId of scaleIds) {
@@ -249,6 +241,10 @@ const rematerializeRuleMark = /* @__PURE__ */ action(
     }
     const mapped = {};
     for (const channel of ["x", "y", "x2", "y2"]) {
+      if (layer.conditionals?.[channel] !== undefined) {
+        mapped[channel] = resolveConditionalValues(resolved, layer, channel);
+        continue;
+      }
       const encoding = layer.encoding?.[channel];
       if (encoding === undefined) continue;
       mapped[channel] = mapPosition(
@@ -260,8 +256,13 @@ const rematerializeRuleMark = /* @__PURE__ */ action(
       ["x", "xOffset"],
       ["y", "yOffset"]
     ]) {
+      if (mapped[channel] === undefined) continue;
+      if (layer.conditionals?.[offsetChannel] !== undefined || (layer.conditionals?.[channel] !== undefined && hasPositionBinding(layer, offsetChannel))) {
+        mapped[channel] = resolveRowPositionValues(resolved, layer, dataset, channel, { resolveMarkItems, resolveMarkSourceItems });
+        continue;
+      }
       const encoding = layer.encoding?.[offsetChannel];
-      if (encoding === undefined || mapped[channel] === undefined) continue;
+      if (encoding === undefined) continue;
       const offsetScale = resolved.resolvedScales[encoding.scale];
       const offset = mapOrdinalOffsetValues(
         derived.values[offsetChannel],

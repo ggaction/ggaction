@@ -1,3 +1,5 @@
+import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
+import { getLayerScaleIds } from "../../../materialization/marks/index.js";
 import { materializeMarkOutput } from "../../../materialization/markOutput.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
@@ -142,10 +144,7 @@ const rematerializeRectMark = /* @__PURE__ */ action(
     }
     let next = this;
     if (args.scales !== false) {
-      const ids = new Set(["x", "y", "x2", "y2", "color", "stroke"].flatMap(channel => {
-        const scale = layer.encoding?.[channel]?.scale;
-        return scale === undefined ? [] : [scale];
-      }));
+      const ids = new Set(getLayerScaleIds(layer));
       for (const scale of ids) {
         next = next.rematerializeScale({ id: scale, marks: false });
       }
@@ -154,7 +153,7 @@ const rematerializeRectMark = /* @__PURE__ */ action(
       next,
       id,
       "rect",
-      resolveRectGraphicItems(next, layer, dataset)
+      resolveRectGraphicItems(next, layer, dataset, { resolveMarkItems, resolveMarkSourceItems })
     ), id);
   }
 );

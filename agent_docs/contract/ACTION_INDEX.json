@@ -1647,7 +1647,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces a compatible x field and scale",
+      "update": "Same action replaces its ordinary or ordered conditional assignment",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1665,7 +1665,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces a compatible y field and scale",
+      "update": "Same action replaces its ordinary or ordered conditional assignment",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1701,7 +1701,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the compatible secondary x endpoint",
+      "update": "Same action replaces its ordinary or ordered conditional assignment",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1863,7 +1863,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the constant value",
+      "update": "Same action replaces its ordinary or ordered conditional assignment",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1881,7 +1881,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the field and compatible Polar angle scale binding",
+      "update": "Same action replaces its ordinary or ordered conditional assignment",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1899,7 +1899,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the field and compatible Polar radial scale binding",
+      "update": "Same action replaces its ordinary or ordered conditional assignment",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1917,7 +1917,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Delegates replacement to encodeRadius",
+      "update": "Same action replaces its ordinary or ordered conditional assignment",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1953,7 +1953,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces compatible same-field scale and padding policy",
+      "update": "Same action replaces its ordinary or ordered conditional assignment",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1971,7 +1971,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces compatible same-field scale and padding policy",
+      "update": "Same action replaces its ordinary or ordered conditional assignment",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1989,7 +1989,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces a compatible secondary y endpoint",
+      "update": "Same action replaces its ordinary or ordered conditional assignment",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -2169,7 +2169,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces field or constant text content",
+      "update": "Same action replaces its ordinary or ordered conditional assignment",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -2187,7 +2187,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the complete independent Text pixel offset field or constant",
+      "update": "Same action replaces its ordinary or ordered conditional assignment",
       "audit": "Reassignment and removal fallback - Implemented",
       "coverage": {
         "contract": "complete",
@@ -2205,7 +2205,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the complete independent Text pixel offset field or constant",
+      "update": "Same action replaces its ordinary or ordered conditional assignment",
       "audit": "Reassignment and removal fallback - Implemented",
       "coverage": {
         "contract": "complete",

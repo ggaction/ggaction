@@ -1,3 +1,5 @@
+import { commonPositionBinding, positionBindings } from "../core/encodingBindings.js";
+import { conditionalPositionUsesRows } from "./conditionalPosition.js";
 export const RECT_MODES = Object.freeze({
   discrete: "discrete",
   ranged: "ranged",
@@ -19,8 +21,11 @@ function ranged(primary, secondary) {
 
 export function resolveRectMode(layer) {
   if (layer?.mark?.type !== "rect") return undefined;
-  const { x, y, x2, y2 } = layer.encoding ?? {};
-  if (x2 === undefined && y2 === undefined && categorical(x) && categorical(y)) {
+  const [x, y, x2, y2] = ["x", "y", "x2", "y2"].map(channel => commonPositionBinding(layer, channel));
+  if (x2 === undefined && y2 === undefined && ["x", "y"].every(channel => {
+    const bindings = positionBindings(layer, channel);
+    return bindings.length > 0 && bindings.every(categorical);
+  })) {
     return RECT_MODES.discrete;
   }
   if (ranged(x, x2) && ranged(y, y2)) return RECT_MODES.ranged;
@@ -30,5 +35,5 @@ export function resolveRectMode(layer) {
 }
 
 export function rectUsesFields(layer) {
-  return ["x", "y", "x2", "y2", "color", "stroke", "opacity", "strokeWidth"].some(channel => Object.hasOwn(layer.encoding?.[channel] ?? {}, "field"));
+  return conditionalPositionUsesRows(layer) || ["x", "y", "x2", "y2", "color", "stroke", "opacity", "strokeWidth"].some(channel => Object.hasOwn(layer.encoding?.[channel] ?? {}, "field"));
 }

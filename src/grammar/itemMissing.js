@@ -22,7 +22,12 @@ function collectFields(value, fields, seen) {
 
 export function itemMissingFields(layer) {
   const fields = new Set();
-  collectFields(layer.encoding ?? {}, fields, new Set());
+  const seen = new Set();
+  collectFields(layer.encoding ?? {}, fields, seen);
+  for (const definition of Object.values(layer.conditionals ?? {})) {
+    for (const condition of definition.conditions) collectFields(condition.value, fields, seen);
+    collectFields(definition.otherwise, fields, seen);
+  }
   return [...fields];
 }
 

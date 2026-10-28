@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { resolveMarkPositionPolicy } from
-  "../../../../src/actions/encodings/position/policies/index.js";
+  "../../../../src/grammar/positionPolicies/index.js";
 import { resolveTickPositionPolicy } from
-  "../../../../src/actions/encodings/position/policies/tick.js";
+  "../../../../src/grammar/positionPolicies/tick.js";
 
 function context(mark, channel, fieldType, args = {}, options = {}) {
   return {

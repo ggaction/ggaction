@@ -1,3 +1,4 @@
+import { positionGuideLayers } from "../../../materialization/positionGuides.js";
 import { cartesianAxisOwners } from "../../../selectors/axes.js";
 import { gridNames } from "../../../selectors/grids.js";
 export { gridNames };
@@ -124,7 +125,7 @@ export function validateGridEditArgs(args, operation) {
 
 export function resolveGridResources(program, direction, args) {
   const { channel } = gridNames(direction);
-  let layers = program.semanticSpec.layers.filter(
+  let layers = positionGuideLayers(program, [channel]).filter(
     layer => !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale !== undefined
   );
   const requestedCoordinate = args.coordinate === undefined ? undefined : validateUserId(args.coordinate, "Grid coordinate id");
@@ -153,7 +154,7 @@ export function resolveGridResources(program, direction, args) {
     throw new Error(`${direction} grid requires resolved continuous, band or point scale "${scale}".`);
   }
   const sourceIds = new Set(layers.map(layer => layer.id));
-  const relatedLayers = [...layers, ...program.semanticSpec.layers.filter(layer =>
+  const relatedLayers = [...layers, ...positionGuideLayers(program, [channel]).filter(layer =>
     isSourceOwnedText(layer) && sourceIds.has(layer.source)
   )];
   const related = new Set(relatedLayers.flatMap(layer => {

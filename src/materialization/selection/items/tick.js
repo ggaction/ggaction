@@ -1,3 +1,4 @@
+import { hasPositionBinding } from "../../../core/encodingBindings.js";
 import {
   channelMapFromRow,
   concreteProperties,
@@ -8,8 +9,8 @@ import {
 export function resolveTickItems(program, layer, dataset, grain, resolveItems, selectionResolvers) {
   const graphic = program.graphicSpec.objects[layer.id];
   const completePosition =
-    layer.encoding?.x?.scale !== undefined &&
-    layer.encoding?.y?.scale !== undefined;
+    hasPositionBinding(layer, "x") &&
+    hasPositionBinding(layer, "y");
   if (!selectionResolvers?.sourceOnly && (!Array.isArray(graphic?.items) || !completePosition)) {
     throw new Error(`Tick mark "${layer.id}" is incomplete for selection.`);
   }

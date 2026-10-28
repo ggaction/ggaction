@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:17948fa2077bbd4a4a102d09eb8069b19ff8a089ff9384e61e4c86782558780e. Status: development. Runtime source: dfa492dabf18a779271466a952c0ce04fde0f14e. Release baseline: v0.0.13.
+Contract: sha256:1bffa6c41f68d64a210cc679194b8b4a4542fb79636319ad864e582d2931157c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/dfa492dabf18a779271466a952c0ce04fde0f14e/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/dfa492dabf18a779271466a952c0ce04fde0f14e/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -7696,7 +7696,8 @@ editable Full program. See [Saved programs](./data-updates/#save-and-restore-sna
 ## Choose appearance with conditions
 
 `encodeColor`, `encodeStroke`, `encodeSize`, `encodeShape`, `encodeOpacity`,
-`encodeStrokeWidth`, `encodeStrokeDash`, and `encodeAngle` also accept ordered
+`encodeStrokeWidth`, `encodeStrokeDash`, `encodeAngle`, the position encoders,
+`encodeText`, `encodeDx`, `encodeDy`, and `encodePointRadius`/`encodeRadius` accept ordered
 `conditions` and a required `otherwise`. Each branch contains the corresponding
 encoder's usual payload without `target`. The first true predicate wins; opacity
 `0` remains fully transparent. Every branch is validated, including inactive ones.
@@ -7731,11 +7732,23 @@ conditional output that reads it. Referenced parameters, selections, and branch
 scales stay live until the encoding is replaced or removed.
 
 Field branches contribute their complete final-item populations to automatic
-scale domains. Conditions change appearance without removing rows. Use a
+scale domains. Conditions select values without filtering the input population. Use a
 [parameterized data filter](./data-updates/) to change statistical input.
-Path and aggregate marks require one branch value and one predicate result per
+Appearance on paths and aggregate marks requires one branch value and one predicate result per
 final item; provide the existing grouping or aggregate when needed. Branches
 cannot introduce different grouping, stacking, or layout policies.
+
+Position conditions preserve the existing row, vertex, category, or bin membership.
+Each branch uses its own scale, subject to the existing coupled endpoint and
+proportional Arc rules. Axes and grids require one unique branch binding.
+Grouping, path order, stacking, and layout stay explicit ordinary authoring steps.
+
+Text branches choose the usual field, value, or semantic source content and format.
+Share labels retain the full source denominator. Independent Text offsets choose
+finite pixel values or fields without a scale; removal restores the constant mark
+style. Conditional point radius is measured in pixels and is separate from Polar
+radial position. It uses the existing equal-area shape geometry and excludes size.
+Use `removePointRadius` to restore the default glyph radius.
 
 A legend can use a conditional channel when its field branches share one exact
 field/type/scale binding. Different bindings are ambiguous: remove the affected
@@ -7744,7 +7757,8 @@ Constants do not create legend entries. Existing empty-domain rules apply,
 including explicit `emptyDomain: "preserve"`; there is no implicit domain fallback.
 
 Replace a conditional with the same encoder, or use `removeEncoding` to remove
-it. Full and Basic support conditional authoring; editing parameters or selections
+it (use `removePointRadius` for pixel radius). Full and Basic support conditional
+authoring on their existing methods; editing parameters or selections
 after authoring uses Full, including a restored Basic program.
 
 ## Choose a family
@@ -23360,10 +23374,10 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;
+encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`PositionEncodingOptions`](./reference/types/#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](./reference/types/#type-datumpositionencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`PositionEncodingOptions`](./reference/types/#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](./reference/types/#type-datumpositionencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23371,12 +23385,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `FieldType \| undefined` |
-| `scale` | Optional / branch-dependent | `CategoricalPositionScaleOptions \| NonPointCategoricalPositionScaleOptions \| NonPointQuantitativePositionScaleOptions \| QuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| TemporalPositionScaleOptions \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<PositionEncodingOptions \| DatumPositionEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<PositionEncodingOptions \| DatumPositionEncodingOptions>["otherwise"]` |
+| `field` | Optional / branch-dependent | `string` |
 | `datum` | Optional / branch-dependent | `unknown` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
+| `scale` | Optional / branch-dependent | `NonPointCategoricalPositionScaleOptions \| NonPointQuantitativePositionScaleOptions \| undefined` |
 | `bin` | Optional / branch-dependent | `{ maxBins?: number \| undefined; step?: undefined; boundaries?: undefined; } \| { maxBins?: undefined; step: number; boundaries?: undefined; } \| { maxBins?: undefined; step?: undefined; boundaries: readonly [...]; } \| undefined` |
 | `stack` | Optional / branch-dependent | `StackMode \| undefined` |
 | `aggregate` | Optional / branch-dependent | `AggregateOperation` |
@@ -23387,6 +23403,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 encodeX({ field, target?, fieldType?, aggregate?, stack?, coordinate?, bin?, scale? })
 encodeX({ datum, target?, fieldType?, coordinate?, scale? }) // rule, rect, area, independent text
+encodeX({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or compatibly replace an x encoding for the supported mark/type pairs in
@@ -23398,6 +23415,9 @@ rules require an explicit field type. All-constant independent Text materializes
 once; any field-bound x, y, or text encoding selects row grain.
 [Position encodings](./api/position-encodings/)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](./api/encodings/#choose-appearance-with-conditions).
+
 ## `encodeY`
 
 **API layer:** user-facing. **Authoring roles:** H2.
@@ -23405,10 +23425,10 @@ once; any field-bound x, y, or text encoding selects row grain.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;
+encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`YPositionEncodingOptions`](./reference/types/#type-ypositionencodingoptions) · [`DatumPositionEncodingOptions`](./reference/types/#type-datumpositionencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`YPositionEncodingOptions`](./reference/types/#type-ypositionencodingoptions) · [`DatumPositionEncodingOptions`](./reference/types/#type-datumpositionencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23416,12 +23436,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `FieldType \| undefined` |
-| `scale` | Optional / branch-dependent | `CategoricalPositionScaleOptions \| NonPointCategoricalPositionScaleOptions \| NonPointQuantitativePositionScaleOptions \| QuantitativePositionScaleOptions \| NonPointTemporalPositionScaleOptions \| TemporalPositionScaleOptions \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<YPositionEncodingOptions \| DatumPositionEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<YPositionEncodingOptions \| DatumPositionEncodingOptions>["otherwise"]` |
+| `field` | Optional / branch-dependent | `string` |
 | `datum` | Optional / branch-dependent | `unknown` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
+| `scale` | Optional / branch-dependent | `NonPointCategoricalPositionScaleOptions \| NonPointQuantitativePositionScaleOptions \| undefined` |
 | `aggregate` | Optional / branch-dependent | `AggregateOperation` |
 | `stack` | Optional / branch-dependent | `YStackMode \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
@@ -23431,6 +23453,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 encodeY({ field?, target?, fieldType?, aggregate?, stack?, coordinate?, scale? })
 encodeY({ datum, target?, fieldType?, coordinate?, scale? }) // rule, rect, area, independent text
+encodeY({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or compatibly replace a y encoding. With bar marks, a quantitative y
@@ -23445,6 +23468,9 @@ Rules, Rects, and independent Text use the same datum inference as x. Attached
 source-owned Text continues to reject direct position replacement.
 [Position encodings](./api/position-encodings/)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](./api/encodings/#choose-appearance-with-conditions).
+
 ## `encodeX2`
 
 **API layer:** user-facing. **Authoring roles:** H2.
@@ -23452,10 +23478,10 @@ source-owned Text continues to reject direct position replacement.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
+encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`SecondaryPositionEncodingOptions`](./reference/types/#type-secondarypositionencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`SecondaryPositionEncodingOptions`](./reference/types/#type-secondarypositionencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23463,11 +23489,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `datum` | Optional / branch-dependent | `unknown` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| { id?: string \| undefined; } \| { id?: string \| undefined; } \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<SecondaryPositionEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<SecondaryPositionEncodingOptions>["otherwise"]` |
+| `datum` | Optional / branch-dependent | `unknown` |
+| `field` | Optional / branch-dependent | `string` |
+| `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
+| `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
@@ -23476,6 +23504,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 encodeX2({ field, target?, fieldType, scale?, coordinate? })
 encodeX2({ datum, target?, fieldType?, scale?, coordinate? })
+encodeX2({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign an area, ranged-bar, or rect upper edge, or a rule secondary x endpoint.
@@ -23483,6 +23512,9 @@ It requires an existing x and shares its scale and coordinate.
 A rule numeric datum defaults to `fieldType: "quantitative"` and must be finite.
 Rule field endpoints and nonnumeric datum endpoints require an explicit matching type.
 [Position encodings](./api/position-encodings/)
+
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](./api/encodings/#choose-appearance-with-conditions).
 
 ## `encodeColor`
 
@@ -23879,10 +23911,10 @@ Ordered conditional branches use the same payload contract, with required otherw
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
+encodeRadius(options: TargetedOptions<{ value: number; target?: string } | ConditionalEncodingOptions<{ value: number }>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23890,16 +23922,22 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `value` | Required | `number` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<{ value: number }>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<{ value: number }>["otherwise"]` |
+| `value` | Optional / branch-dependent | `number` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 encodeRadius({ value, target? })
+encodeRadius({ target?, conditions: [{ when, value }], otherwise })
 ```
 
-Apply a constant point radius. [Constant appearance](./api/appearance/)
+Apply a constant or conditionally selected point pixel radius, separate from Polar distance. [Constant appearance](./api/appearance/)
+
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](./api/encodings/#choose-appearance-with-conditions).
 
 ## `encodeTheta`
 
@@ -23908,10 +23946,10 @@ Apply a constant point radius. [Constant appearance](./api/appearance/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeTheta(options: TargetedOptions<ThetaEncodingOptions>): ChartProgram;
+encodeTheta(options: TargetedOptions<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`ThetaEncodingOptions`](./reference/types/#type-thetaencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`ThetaEncodingOptions`](./reference/types/#type-thetaencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23919,19 +23957,23 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Required | `string` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<ThetaEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<ThetaEncodingOptions>["otherwise"]` |
 | `scale` | Optional / branch-dependent | `ThetaScaleOptions \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `field` | Optional / branch-dependent | `string` |
+| `datum` | Optional / branch-dependent | `unknown` |
 | `aggregate` | Optional / branch-dependent | `"count" \| "sum" \| undefined` |
 | `weight` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
+| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 encodeTheta({ field, target?, fieldType?, aggregate?, weight?, scale?, coordinate? })
+encodeTheta({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Encode Polar angle in clockwise degrees from 12 o'clock. Quantitative,
@@ -23940,8 +23982,12 @@ For arc marks, an aggregate-free quantitative field directly determines each
 row's proportional sector angle. Nominal or ordinal arc fields support
 `aggregate: "count"`, `aggregate: "sum"` plus `weight`, or categorical theta
 bands paired with radius. The default scale ID is `theta` and its automatic
-range is `[0, 360]`.
+range is `[0, 360]`. Point also accepts a constant `datum` instead of field,
+using the same field type and scale rules without aggregate or weight.
 [Polar positions](./api/position-encodings/#polar-positions)
+
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](./api/encodings/#choose-appearance-with-conditions).
 
 ## `encodeR`
 
@@ -23950,10 +23996,10 @@ range is `[0, 360]`.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeR(options: TargetedOptions<RadialEncodingOptions>): ChartProgram;
+encodeR(options: TargetedOptions<RadialEncodingOptions | ConditionalEncodingOptions<RadialEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`RadialEncodingOptions`](./reference/types/#type-radialencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`RadialEncodingOptions`](./reference/types/#type-radialencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23962,20 +24008,25 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<RadialEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<RadialEncodingOptions>["otherwise"]` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `mapping` | Optional / branch-dependent | `false \| RadialMapping \| undefined` |
-| `aggregate` | Optional / branch-dependent | `"count" \| "sum" \| undefined` |
-| `scale` | Optional / branch-dependent | `RadiusScaleOptions \| MeasuredRadiusScaleOptions \| undefined` |
+| `field` | Optional / branch-dependent | `string` |
+| `datum` | Optional / branch-dependent | `number` |
+| `mapping` | Optional / branch-dependent | `false \| undefined` |
+| `aggregate` | Optional / branch-dependent | `"sum"` |
+| `scale` | Optional / branch-dependent | `RadiusScaleOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 encodeR({ field?, aggregate?, mapping?, target?, fieldType?, scale?, coordinate? })
+encodeR({ target?, conditions: [{ when, value }], otherwise })
 ```
 
-Encode a quantitative field as Polar radial distance. The default `radius`
+Encode a quantitative field as Polar radial distance. Point also accepts a finite
+numeric `datum` instead of field, without aggregate or mapping. The default `radius`
 scale fits the current plot bounds and rematerializes after Canvas edits.
 Proportional arcs accept independent ordinary radius scales: quantitative theta
 uses row values, while categorical count/sum theta accepts a consistent radius
@@ -23987,6 +24038,9 @@ Measured Arc radius accepts count/sum with `mapping: "area"` or
 replace a measured category aggregate with ordinary row-level radial length.
 [Polar positions](./api/position-encodings/#polar-positions)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](./api/encodings/#choose-appearance-with-conditions).
+
 ## `encodePointRadius`
 
 **API layer:** user-facing. **Authoring roles:** H2.
@@ -23994,10 +24048,10 @@ replace a measured category aggregate with ordinary row-level radial length.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodePointRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
+encodePointRadius(options: TargetedOptions<{ value: number; target?: string } | ConditionalEncodingOptions<{ value: number }>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -24005,18 +24059,25 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `value` | Required | `number` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<{ value: number }>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<{ value: number }>["otherwise"]` |
+| `value` | Optional / branch-dependent | `number` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 encodePointRadius({ value, target? })
+encodePointRadius({ target?, conditions: [{ when, value }], otherwise })
 ```
 
-Apply a constant point glyph radius through a traced `encodeRadius` child. This
+Apply a point glyph radius. Ordinary assignment calls a traced `encodeRadius` child;
+conditional assignment stores one point-radius branch definition. This
 does not assign semantic Polar radial position.
 [Constant appearance](./api/appearance/)
+
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](./api/encodings/#choose-appearance-with-conditions).
 
 ## `removePointRadius`
 
@@ -24044,7 +24105,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 removePointRadius({ target? } = {})
 ```
 
-Remove an explicit constant point glyph radius and restore the theme default.
+Remove an explicit constant or conditional point glyph radius and restore the theme default.
 Semantic Polar radial position is unchanged.
 [Point appearance](./api/appearance/point/)
 
@@ -24055,10 +24116,10 @@ Semantic Polar radial position is unchanged.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions>): ChartProgram;
+encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions | ConditionalEncodingOptions<XOffsetEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`XOffsetEncodingOptions`](./reference/types/#type-xoffsetencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`XOffsetEncodingOptions`](./reference/types/#type-xoffsetencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -24066,8 +24127,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Required | `string` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<XOffsetEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<XOffsetEncodingOptions>["otherwise"]` |
+| `field` | Optional / branch-dependent | `string` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| undefined` |
 | `scale` | Optional / branch-dependent | `OffsetScaleOptions \| undefined` |
 | `paddingInner` | Optional / branch-dependent | `number \| undefined` |
@@ -24079,6 +24142,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 encodeXOffset({
   field, target?, fieldType?, scale?, paddingInner?, paddingOuter?
 })
+encodeXOffset({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or compatibly update a categorical sub-slot scale within a bar, point, or
@@ -24087,6 +24151,9 @@ Padding defaults to zero and is preserved on a later same-field call. Grouped
 bar color layout normally invokes this action automatically.
 [Position encodings](./api/position-encodings/)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](./api/encodings/#choose-appearance-with-conditions).
+
 ## `encodeYOffset`
 
 **API layer:** user-facing. **Authoring roles:** H2.
@@ -24094,10 +24161,10 @@ bar color layout normally invokes this action automatically.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions>): ChartProgram;
+encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions | ConditionalEncodingOptions<YOffsetEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`YOffsetEncodingOptions`](./reference/types/#type-yoffsetencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`YOffsetEncodingOptions`](./reference/types/#type-yoffsetencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -24105,8 +24172,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Required | `string` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<YOffsetEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<YOffsetEncodingOptions>["otherwise"]` |
+| `field` | Optional / branch-dependent | `string` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| undefined` |
 | `scale` | Optional / branch-dependent | `OffsetScaleOptions \| undefined` |
 | `paddingInner` | Optional / branch-dependent | `number \| undefined` |
@@ -24118,6 +24187,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 encodeYOffset({
   field, target?, fieldType?, scale?, paddingInner?, paddingOuter?
 })
+encodeYOffset({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or compatibly update the corresponding categorical offset scale within
@@ -24126,6 +24196,9 @@ action as a wrapped child; explicit domain order, reversed range, and padding
 follow the same contract as `encodeXOffset`.
 [Position encodings](./api/position-encodings/)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](./api/encodings/#choose-appearance-with-conditions).
+
 ## `encodeY2`
 
 **API layer:** user-facing. **Authoring roles:** H2.
@@ -24133,10 +24206,10 @@ follow the same contract as `encodeXOffset`.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeY2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
+encodeY2(options: TargetedOptions<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`SecondaryPositionEncodingOptions`](./reference/types/#type-secondarypositionencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`SecondaryPositionEncodingOptions`](./reference/types/#type-secondarypositionencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -24144,11 +24217,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `datum` | Optional / branch-dependent | `unknown` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| { id?: string \| undefined; } \| { id?: string \| undefined; } \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<SecondaryPositionEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<SecondaryPositionEncodingOptions>["otherwise"]` |
+| `datum` | Optional / branch-dependent | `unknown` |
+| `field` | Optional / branch-dependent | `string` |
+| `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
+| `scale` | Optional / branch-dependent | `{ id?: string \| undefined; } \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
 
@@ -24157,6 +24232,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 encodeY2({ field, target?, fieldType, scale?, coordinate? })
 encodeY2({ datum, target?, fieldType?, scale?, coordinate? }) // rule
+encodeY2({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign an area, ranged-bar, or rect upper edge, or a rule secondary y endpoint.
@@ -24164,6 +24240,9 @@ It requires an existing y and shares its scale and coordinate.
 A rule numeric datum defaults to `fieldType: "quantitative"` and must be finite.
 Rule field endpoints and nonnumeric datum endpoints require an explicit matching type.
 [Position encodings](./api/position-encodings/)
+
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](./api/encodings/#choose-appearance-with-conditions).
 
 ## `encodeYRange`
 
@@ -24474,10 +24553,10 @@ retained; incomplete marks remain empty until later encoding completion.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeText(options: TargetedOptions<TextEncodingOptions>): ChartProgram;
+encodeText(options: TargetedOptions<TextEncodingOptions | ConditionalEncodingOptions<TextEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`TextEncodingOptions`](./reference/types/#type-textencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`TextEncodingOptions`](./reference/types/#type-textencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -24486,22 +24565,28 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<TextEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<TextEncodingOptions>["otherwise"]` |
 | `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
+| `field` | Optional / branch-dependent | `string` |
 | `value` | Optional / branch-dependent | `unknown` |
-| `content` | Optional / branch-dependent | `"category" \| "share" \| "value" \| undefined` |
+| `content` | Optional / branch-dependent | `"category" \| "value"` |
 | `normalizeBy` | Optional / branch-dependent | `"category" \| "source" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-encodeText({ target?, field?, value?, format? })
+encodeText({ target?, field?, value?, content?, normalizeBy?, format? })
+encodeText({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign exactly one field, constant value, or semantic content to a text mark.
 `format` accepts `"auto"`, `.0`–`.12` precision with `f`, `%`, or `e`, or a UTC
 pattern composed from `%Y`, `%m`, `%d`, `%b`, `%%`, and literals. Reassignment
 replaces the previous content branch. [Text marks](./api/marks/text/)
+
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](./api/encodings/#choose-appearance-with-conditions).
 
 ## `encodeDx`
 
@@ -24510,10 +24595,10 @@ replaces the previous content branch. [Text marks](./api/marks/text/)
 **Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeDx(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
+encodeDx(options: TargetedOptions<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`TextOffsetEncodingOptions`](./reference/types/#type-textoffsetencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`TextOffsetEncodingOptions`](./reference/types/#type-textoffsetencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -24522,14 +24607,17 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `value` | Optional / branch-dependent | `number \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<TextOffsetEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<TextOffsetEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `number` |
+| `field` | Optional / branch-dependent | `string` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 encodeDx({ target?, field })
 encodeDx({ target?, value })
+encodeDx({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Move each independent Text glyph horizontally by finite signed logical pixels.
@@ -24539,6 +24627,9 @@ offsets participate in row grain and the Text missing-row policy. Full only;
 source-owned labels and other marks are rejected.
 [Text offsets](./api/marks/text/#numeric-pixel-offsets)
 
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](./api/encodings/#choose-appearance-with-conditions).
+
 ## `encodeDy`
 
 **API layer:** user-facing. **Authoring roles:** H2.
@@ -24546,10 +24637,10 @@ source-owned labels and other marks are rejected.
 **Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeDy(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
+encodeDy(options: TargetedOptions<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`TextOffsetEncodingOptions`](./reference/types/#type-textoffsetencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`TextOffsetEncodingOptions`](./reference/types/#type-textoffsetencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -24558,20 +24649,26 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `value` | Optional / branch-dependent | `number \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<TextOffsetEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<TextOffsetEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `number` |
+| `field` | Optional / branch-dependent | `string` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 encodeDy({ target?, field })
 encodeDy({ target?, value })
+encodeDy({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 The corresponding independent Text vertical offset; positive values move down.
 It preserves dx and follows the same field/constant, removal, row-grain and atomic
 validation rules. Set both through existing `encodeChannels({target,channels})`.
 [Text offsets](./api/marks/text/#numeric-pixel-offsets)
+
+Ordered conditional branches retain the native payload and final item grain. Every branch is validated.
+See [Conditional encodings](./api/encodings/#choose-appearance-with-conditions).
 
 ## `encodeHistogram`
 
@@ -31235,23 +31332,23 @@ interface ChartProgramActions {
   layoutLabels(options?: TargetedOptions<LabelLayoutOptions>): ChartProgram;
   removeLabelLayout(options?: TargetedOptions<RemoveLabelLayoutOptions>): ChartProgram;
   editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
-  encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;
-  encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;
-  encodeTheta(options: TargetedOptions<ThetaEncodingOptions>): ChartProgram;
-  encodeR(options: TargetedOptions<RadialEncodingOptions>): ChartProgram;
-  encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
+  encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
+  encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
+  encodeTheta(options: TargetedOptions<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>): ChartProgram;
+  encodeR(options: TargetedOptions<RadialEncodingOptions | ConditionalEncodingOptions<RadialEncodingOptions>>): ChartProgram;
+  encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>): ChartProgram;
   encodeColor(options: TargetedOptions<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>): ChartProgram;
   encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>): ChartProgram;
   encodeSize(options: TargetedOptions<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>): ChartProgram;
   encodeShape(options: TargetedOptions<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>): ChartProgram;
   encodeAngle(options: TargetedOptions<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>): ChartProgram;
   encodeOpacity(options: TargetedOptions<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>): ChartProgram;
-  encodeRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
-  encodePointRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
+  encodeRadius(options: TargetedOptions<{ value: number; target?: string } | ConditionalEncodingOptions<{ value: number }>>): ChartProgram;
+  encodePointRadius(options: TargetedOptions<{ value: number; target?: string } | ConditionalEncodingOptions<{ value: number }>>): ChartProgram;
   removePointRadius(options?: TargetedOptions<{ target?: string }>): ChartProgram;
-  encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions>): ChartProgram;
-  encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions>): ChartProgram;
-  encodeY2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
+  encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions | ConditionalEncodingOptions<XOffsetEncodingOptions>>): ChartProgram;
+  encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions | ConditionalEncodingOptions<YOffsetEncodingOptions>>): ChartProgram;
+  encodeY2(options: TargetedOptions<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>): ChartProgram;
   encodeYRange(options: TargetedOptions<RangePositionEncodingOptions>): ChartProgram;
   encodeXRange(options: TargetedOptions<RangePositionEncodingOptions>): ChartProgram;
   encodeGroup(options: TargetedOptions<GroupEncodingOptions>): ChartProgram;
@@ -31262,9 +31359,9 @@ interface ChartProgramActions {
   removePathOrder(options?: TargetedOptions<RemovePathOrderOptions>): ChartProgram;
   removeCategoryOrder(options: TargetedOptions<RemoveCategoryOrderOptions>): ChartProgram;
   removeEncoding(options: TargetedOptions<{ target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text" | "dx" | "dy"; }>): ChartProgram;
-  encodeText(options: TargetedOptions<TextEncodingOptions>): ChartProgram;
-  encodeDx(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
-  encodeDy(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;
+  encodeText(options: TargetedOptions<TextEncodingOptions | ConditionalEncodingOptions<TextEncodingOptions>>): ChartProgram;
+  encodeDx(options: TargetedOptions<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>): ChartProgram;
+  encodeDy(options: TargetedOptions<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>): ChartProgram;
   encodeHistogram(options: TargetedOptions<HistogramEncodingOptions>): ChartProgram;
   encodeDensity(options: TargetedOptions<DensityEncodingOptions>): ChartProgram;
   editDensity(options: TargetedOptions<EditDensityOptions>): ChartProgram;
@@ -36864,14 +36961,14 @@ Related types: [`AtLeastOne`](./reference/types/#type-atleastone) · [`EncodingC
 
 ```typescript
 export interface EncodingChannelAssignments {
-  x?: WithoutEncodingTarget<PositionEncodingOptions | DatumPositionEncodingOptions>;
-  y?: WithoutEncodingTarget<YPositionEncodingOptions | DatumPositionEncodingOptions>;
-  x2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions>;
-  y2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions>;
-  theta?: WithoutEncodingTarget<ThetaEncodingOptions>;
-  r?: WithoutEncodingTarget<RadialEncodingOptions>;
-  xOffset?: WithoutEncodingTarget<XOffsetEncodingOptions>;
-  yOffset?: WithoutEncodingTarget<YOffsetEncodingOptions>;
+  x?: WithoutEncodingTarget<PositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>>;
+  y?: WithoutEncodingTarget<YPositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>>;
+  x2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>;
+  y2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>;
+  theta?: WithoutEncodingTarget<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>;
+  r?: WithoutEncodingTarget<RadialEncodingOptions | ConditionalEncodingOptions<RadialEncodingOptions>>;
+  xOffset?: WithoutEncodingTarget<XOffsetEncodingOptions | ConditionalEncodingOptions<XOffsetEncodingOptions>>;
+  yOffset?: WithoutEncodingTarget<YOffsetEncodingOptions | ConditionalEncodingOptions<YOffsetEncodingOptions>>;
   group?: WithoutEncodingTarget<GroupEncodingOptions>;
   pathOrder?: WithoutEncodingTarget<PathOrderEncodingOptions>;
   color?: WithoutEncodingTarget<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>;
@@ -36882,13 +36979,13 @@ export interface EncodingChannelAssignments {
   strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>;
   strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>;
   angle?: WithoutEncodingTarget<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>;
-  text?: WithoutEncodingTarget<TextEncodingOptions>;
-  dx?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
-  dy?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
+  text?: WithoutEncodingTarget<TextEncodingOptions | ConditionalEncodingOptions<TextEncodingOptions>>;
+  dx?: WithoutEncodingTarget<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>;
+  dy?: WithoutEncodingTarget<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>;
 }
 ```
 
-Related types: [`WithoutEncodingTarget`](./reference/types/#type-withoutencodingtarget) · [`PositionEncodingOptions`](./reference/types/#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](./reference/types/#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](./reference/types/#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](./reference/types/#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](./reference/types/#type-thetaencodingoptions) · [`RadialEncodingOptions`](./reference/types/#type-radialencodingoptions) · [`XOffsetEncodingOptions`](./reference/types/#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](./reference/types/#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](./reference/types/#type-groupencodingoptions) · [`PathOrderEncodingOptions`](./reference/types/#type-pathorderencodingoptions) · [`ColorEncodingOptions`](./reference/types/#type-colorencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions) · [`StrokeEncodingOptions`](./reference/types/#type-strokeencodingoptions) · [`SizeEncodingOptions`](./reference/types/#type-sizeencodingoptions) · [`ShapeEncodingOptions`](./reference/types/#type-shapeencodingoptions) · [`OpacityEncodingOptions`](./reference/types/#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](./reference/types/#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](./reference/types/#type-strokedashencodingoptions) · [`AngleEncodingOptions`](./reference/types/#type-angleencodingoptions) · [`TextEncodingOptions`](./reference/types/#type-textencodingoptions) · [`TextOffsetEncodingOptions`](./reference/types/#type-textoffsetencodingoptions).
+Related types: [`WithoutEncodingTarget`](./reference/types/#type-withoutencodingtarget) · [`PositionEncodingOptions`](./reference/types/#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](./reference/types/#type-datumpositionencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions) · [`YPositionEncodingOptions`](./reference/types/#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](./reference/types/#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](./reference/types/#type-thetaencodingoptions) · [`RadialEncodingOptions`](./reference/types/#type-radialencodingoptions) · [`XOffsetEncodingOptions`](./reference/types/#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](./reference/types/#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](./reference/types/#type-groupencodingoptions) · [`PathOrderEncodingOptions`](./reference/types/#type-pathorderencodingoptions) · [`ColorEncodingOptions`](./reference/types/#type-colorencodingoptions) · [`StrokeEncodingOptions`](./reference/types/#type-strokeencodingoptions) · [`SizeEncodingOptions`](./reference/types/#type-sizeencodingoptions) · [`ShapeEncodingOptions`](./reference/types/#type-shapeencodingoptions) · [`OpacityEncodingOptions`](./reference/types/#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](./reference/types/#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](./reference/types/#type-strokedashencodingoptions) · [`AngleEncodingOptions`](./reference/types/#type-angleencodingoptions) · [`TextEncodingOptions`](./reference/types/#type-textencodingoptions) · [`TextOffsetEncodingOptions`](./reference/types/#type-textoffsetencodingoptions).
 
 ### `EndpointCategoryChannel` {#type-endpointcategorychannel}
 
@@ -40352,7 +40449,9 @@ export type RadialEncodingOptions = {
   fieldType?: "quantitative";
   coordinate?: string;
 } & (
-  | { field: string; mapping?: false; aggregate?: never; scale?: RadiusScaleOptions }
+  | { field: string; datum?: never; mapping?: false; aggregate?: never; scale?: RadiusScaleOptions }
+  /** Constant polar distances are supported by Point marks. */
+  | { field?: never; datum: number; mapping?: never; aggregate?: never; scale?: RadiusScaleOptions }
   | { field: string; mapping?: never; aggregate: "sum"; scale?: RadiusScaleOptions }
   | { field?: never; mapping?: never; aggregate: "count"; scale?: RadiusScaleOptions }
   | { field: string; mapping?: RadialMapping; aggregate: "sum"; scale?: MeasuredRadiusScaleOptions }
@@ -42135,17 +42234,15 @@ Related types: [`PolarLabelOptions`](./reference/types/#type-polarlabeloptions) 
 
 ```typescript
 export type ThetaEncodingOptions = {
-  /**
-   * Arc marks interpret an aggregate-free quantitative field as per-row sector
-   * weights. Categorical arc theta retains the count and weighted-sum modes.
-   */
-  field: string;
   target?: string;
   scale?: ThetaScaleOptions;
   coordinate?: string;
-  aggregate?: "count" | "sum";
-  weight?: string;
 } & (
+  /** Arc quantitative fields are sector weights; categorical fields support count or sum. */
+  | { field: string; datum?: never; aggregate?: "count" | "sum"; weight?: string }
+  /** Constant polar angles are supported by Point marks. */
+  | { field?: never; datum: unknown; aggregate?: never; weight?: never }
+) & (
   | { fieldType?: Exclude<FieldType, "temporal">; temporalUnit?: never }
   | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
 );
@@ -43186,12 +43283,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/dfa492dabf18a779271466a952c0ce04fde0f14e/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/dfa492dabf18a779271466a952c0ce04fde0f14e/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -46219,9 +46316,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:17948fa2077bbd4a4a102d09eb8069b19ff8a089ff9384e61e4c86782558780e` |
+| Contract fingerprint | `sha256:1bffa6c41f68d64a210cc679194b8b4a4542fb79636319ad864e582d2931157c` |
 | Example and dataset source | `da1de34460983705b2fb7e2d04b766a6123d1c1a` |
-| Runtime source commit | `dfa492dabf18a779271466a952c0ce04fde0f14e` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 304 |
 | Declared actions in that release | 234 |

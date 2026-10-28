@@ -101,9 +101,9 @@ export function deriveBarAggregates(rows, layer) {
   });
 }
 
-export function deriveSeriesBarCells(rows, layer, categoryDomain, seriesDomain) {
+export function deriveSeriesBarCells(rows, layer, categoryDomain, seriesDomain, selectedValues) {
   const channels = resolveBarChannels(layer);
-  const values = deriveBarAggregates(rows, layer).values;
+  const values = selectedValues ?? deriveBarAggregates(rows, layer).values;
   const identity = readSeriesIdentity(rows, layer);
   const categories = categoryDomain ?? [...new Set(values.map(cell => cell[channels.category]))].sort((a, b) => a - b);
   const seriesKey = cell => layer.encoding.group !== undefined ? cell.series : layer.encoding.color?.fieldType === "quantitative" ? undefined : cell.color;

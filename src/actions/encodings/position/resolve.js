@@ -1,3 +1,5 @@
+import { validatePositionSource } from "../../../grammar/positionPolicies/source.js";
+import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
@@ -33,7 +35,7 @@ import {
   readArcThetaValues,
   readArcThetaWeights
 } from "../../../grammar/arcs.js";
-import { resolveMarkPositionPolicy } from "./policies/index.js";
+import { resolveMarkPositionPolicy } from "../../../materialization/positionPolicy.js";
 import {
   getPositionChannelDefinition,
   positionChannelsForFamily
@@ -55,7 +57,7 @@ function validateCoordinateFamily(layer, channel, operation) {
   const incompatible = positionChannelsForFamily(
     family === "polar" ? "cartesian" : "polar"
   );
-  const existing = incompatible.filter(name => layer.encoding?.[name] !== undefined);
+  const existing = incompatible.filter(name => layer.encoding?.[name] !== undefined || layer.conditionals?.[name] !== undefined);
   if (existing.length > 0) {
     throw new Error(
       `${operation} cannot mix ${channel} with ${existing.join("/")} position encodings on layer "${layer.id}".`
@@ -122,22 +124,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     layer.mark.type === "arc" && channel === "radius" && args.mapping === false;
   const hasField = Object.hasOwn(args, "field");
   const hasDatum = Object.hasOwn(args, "datum");
-  if (["rule", "rect", "text", "point", "tick"].includes(layer.mark.type)) {
-    if (hasField === hasDatum) {
-      throw new Error(`${operation} requires exactly one of field or datum for a ${layer.mark.type} mark.`);
-    }
-    if (layer.mark.type === "rule" && hasField && args.fieldType === undefined) {
-      throw new Error(`${operation} requires fieldType for a rule mark.`);
-    }
-  } else if (layer.mark.type === "area") {
-    if (hasField === hasDatum) throw new Error(`${operation} requires exactly one of field or datum for an area mark.`);
-    if (hasDatum && (!Number.isFinite(args.datum) || (args.fieldType ?? "quantitative") !== "quantitative" ||
-      ["aggregate", "bin", "stack", "temporalUnit"].some(key => Object.hasOwn(args, key)))) {
-      throw new Error("Area datum requires a finite quantitative constant without aggregate, bin, stack, or temporalUnit.");
-    }
-  } else if (hasDatum) {
-    throw new Error(`${operation} does not support datum for a ${layer.mark.type} mark.`);
-  }
+  validatePositionSource(layer, args, operation);
   const mapping = channel === "radius" && layer.mark.type === "arc"
     ? clearRadialMapping
       ? undefined
@@ -205,7 +192,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   }
   const policy = resolveMarkPositionPolicy({
     program,
-    layer,
+    layer: ["line", "area", "bar", "arc"].includes(layer.mark.type) ? conditionalPositionTemplate(layer, ["x", "y", "x2", "y2", "theta", "radius"]) : layer,
     dataset,
     channel,
     args: effectiveArgs,
