@@ -31,7 +31,9 @@
     "removeMark",
     "editSemantic"
   ],
-  "editableVia": [],
+  "editableVia": [
+    "removeResource"
+  ],
   "supports": {
     "entryPoints": [
       "default"

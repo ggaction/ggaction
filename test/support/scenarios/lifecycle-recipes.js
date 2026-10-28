@@ -1287,6 +1287,18 @@ function buildDirectDataResources(factors) {
     .removeScale({ id: "unusedLifecycleScale" })
     .removeCoordinate({ id: "unusedLifecycleCoordinate" });
   program = addDirectDerivedDataEdits(program);
+  program = program
+    .createHierarchyData({ id: "directHierarchy", data: "directSource", groupFields: ["category"], value: "positive" })
+    .editHierarchyData({ target: "directHierarchy", maxNodes: 1000 })
+    .layoutHierarchy({ id: "directTreeLayout", hierarchy: "directHierarchy", method: "tree", options: { nodeSize: [10, 10], siblingGap: 8, depthGap: 30, orientation: "vertical" } })
+    .editLayout({ target: "directTreeLayout", order: { by: "value", direction: "descending" } })
+    .createTreePlot({ id: "directTree", layout: "directTreeLayout", labels: {} })
+    .editTreePlot({ target: "directTree", nodes: { radius: 4 }, links: { strokeWidth: 1 } })
+    .layoutHierarchy({ id: "directMapLayout", hierarchy: "directHierarchy", method: "treemap", options: { size: [160, 120], padding: 4, method: "squarify" } })
+    .createTreemapPlot({ id: "directMap", layout: "directMapLayout", labels: {} })
+    .editTreemapPlot({ target: "directMap", cells: { opacity: .7 } })
+    .layoutHierarchy({ id: "unusedHierarchyLayout", hierarchy: "directHierarchy", method: "partition" })
+    .removeResource({ kind: "layout", id: "unusedHierarchyLayout" });
   return program
     .createDensityData({
       id: "directDensity",

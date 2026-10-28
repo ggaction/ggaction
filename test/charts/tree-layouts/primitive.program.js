@@ -3,7 +3,7 @@ import { canvas, rows, labels, colors, parents, children, variants } from "./ref
 
 export function createTreePrimitive(variantId = "vertical") {
   const variant = variants.find(item => item.id === variantId);
-  if (!variant) throw new Error(`Unknown tree review variant ${variantId}.`);
+  if (!variant) throw new Error(`Unknown tree variant ${variantId}.`);
   const points = variant.positions;
   return chart()
     .createCanvas(canvas)
@@ -15,11 +15,13 @@ export function createTreePrimitive(variantId = "vertical") {
     .editGraphics({ target: "links", property: "y2", value: children.map(index => points[index][1]) })
     .editGraphics({ target: "links", property: "stroke", value: "#94a3b8" })
     .editGraphics({ target: "links", property: "strokeWidth", value: 2 })
+    .editGraphics({ target: "links", property: "opacity", value: 1 })
     .createGraphics({ id: "nodes", type: "circle", length: 5, parent: "plot-main" })
     .editGraphics({ target: "nodes", property: "x", value: points.map(point => point[0]) })
     .editGraphics({ target: "nodes", property: "y", value: points.map(point => point[1]) })
     .editGraphics({ target: "nodes", property: "radius", value: 18 })
     .editGraphics({ target: "nodes", property: "fill", value: colors })
+    .editGraphics({ target: "nodes", property: "opacity", value: 1 })
     .editGraphics({ target: "nodes", property: "stroke", value: "#ffffff" })
     .editGraphics({ target: "nodes", property: "strokeWidth", value: 2 })
     .createGraphics({ id: "labels", type: "text", length: 5, parent: "plot-main" })

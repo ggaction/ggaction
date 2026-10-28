@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:35f62d3bbb994a279e1ad23c44c011475ae1cf1a8d54b26d948938ae6d2efc38",
-  "sourceCommit": "d24eb2bd11616a2ac6022786eb2fe786a1d5e963",
-  "sourceRef": "d24eb2bd11616a2ac6022786eb2fe786a1d5e963",
-  "exampleSourceRef": "d24eb2bd11616a2ac6022786eb2fe786a1d5e963",
+  "contractId": "sha256:ab2a5883d5eba4a1d6eddce8ac72b772d49043b8163dcd909e77e6f58ccf1ac9",
+  "sourceCommit": null,
+  "sourceRef": "main",
+  "exampleSourceRef": "codex/roadmap9-integration",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 309,
+  "actionCount": 317,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -127,6 +127,38 @@
       "status": "development"
     },
     "editImageMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createHierarchyData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editHierarchyData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "layoutHierarchy": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editLayout": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createTreePlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editTreePlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createTreemapPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editTreemapPlot": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

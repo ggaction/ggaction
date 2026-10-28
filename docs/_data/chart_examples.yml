@@ -1722,3 +1722,79 @@
   tasks: image assets
   url: /tutorials/image-assets/
   tutorial_order: 170
+- id: tree-layouts
+  example: /examples/tree-layouts/
+  title: Tree layout
+  image: /assets/images/tree-layouts.png
+  alt: Five typed hierarchy nodes with stable branch colors in a vertical layout
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/tree-layouts-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: One hierarchy retains node identity while explicit layout options determine geometry.
+  summary: Create a hierarchy resource, compute an explicit vertical layout, and draw its nodes.
+  actions: createHierarchyData · layoutHierarchy · createTreePlot
+  tasks: hierarchy layout
+  url: /tutorials/hierarchy/
+  tutorial_order: 180
+- id: tree-horizontal
+  example: /examples/tree-horizontal/
+  title: Horizontal tree
+  image: /assets/images/tree-horizontal.png
+  alt: Five typed hierarchy nodes with stable branch colors in a horizontal layout
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/tree-horizontal-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: One hierarchy retains node identity while explicit layout options determine geometry.
+  summary: Create a hierarchy resource, compute an explicit horizontal layout, and draw its nodes.
+  actions: createHierarchyData · layoutHierarchy · createTreePlot
+  tasks: hierarchy layout
+  url: /tutorials/hierarchy/
+- id: tree-radial
+  example: /examples/tree-radial/
+  title: Radial tree
+  image: /assets/images/tree-radial.png
+  alt: Five typed hierarchy nodes with stable branch colors in a radial layout
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/tree-radial-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: One hierarchy retains node identity while explicit layout options determine geometry.
+  summary: Create a hierarchy resource, compute an explicit radial layout, and draw its nodes.
+  actions: createHierarchyData · layoutHierarchy · createTreePlot
+  tasks: hierarchy layout
+  url: /tutorials/hierarchy/
+- id: treemap-layouts
+  example: /examples/treemap-layouts/
+  title: Treemap layout
+  image: /assets/images/treemap-layouts.png
+  alt: Five typed hierarchy nodes with stable branch colors in a slice-dice layout
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/treemap-layouts-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: One hierarchy retains node identity while explicit layout options determine geometry.
+  summary: Create a hierarchy resource, compute an explicit slice-dice layout, and draw its nodes.
+  actions: createHierarchyData · layoutHierarchy · createTreemapPlot
+  tasks: hierarchy layout
+  url: /tutorials/hierarchy/
+- id: treemap-squarify
+  example: /examples/treemap-squarify/
+  title: Squarified treemap
+  image: /assets/images/treemap-squarify.png
+  alt: Five typed hierarchy nodes with stable branch colors in a squarify layout
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/treemap-squarify-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: One hierarchy retains node identity while explicit layout options determine geometry.
+  summary: Create a hierarchy resource, compute an explicit squarify layout, and draw its nodes.
+  actions: createHierarchyData · layoutHierarchy · createTreemapPlot
+  tasks: hierarchy layout
+  url: /tutorials/hierarchy/

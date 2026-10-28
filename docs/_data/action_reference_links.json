@@ -307,5 +307,13 @@
   "replaceImageResource": "/reference/actions/charts-data/#replaceimageresource",
   "createImageMark": "/reference/actions/marks/#createimagemark",
   "editImageMark": "/reference/actions/marks/#editimagemark",
-  "removeResource": "/reference/actions/charts-data/#removeresource"
+  "removeResource": "/reference/actions/charts-data/#removeresource",
+  "createHierarchyData": "/reference/actions/charts-data/#createhierarchydata",
+  "editHierarchyData": "/reference/actions/charts-data/#edithierarchydata",
+  "layoutHierarchy": "/reference/actions/charts-data/#layouthierarchy",
+  "editLayout": "/reference/actions/charts-data/#editlayout",
+  "createTreePlot": "/reference/actions/charts-data/#createtreeplot",
+  "editTreePlot": "/reference/actions/charts-data/#edittreeplot",
+  "createTreemapPlot": "/reference/actions/charts-data/#createtreemapplot",
+  "editTreemapPlot": "/reference/actions/charts-data/#edittreemapplot"
 }

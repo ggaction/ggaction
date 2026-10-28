@@ -908,5 +908,22 @@
         "statements": 14
       }
     ]
+  },
+  {
+    "file": "hierarchy.mjs",
+    "cases": [
+      {
+        "id": "hierarchy/full-basic-lifecycle",
+        "statements": 17
+      },
+      {
+        "id": "hierarchy/fresh-process-edit-revise",
+        "statements": 9
+      },
+      {
+        "id": "hierarchy/renderers-and-scene",
+        "statements": 1
+      }
+    ]
   }
 ]

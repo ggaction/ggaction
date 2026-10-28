@@ -5600,6 +5600,150 @@
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "removeresource"
       }
+    },
+    {
+      "name": "createHierarchyData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editHierarchyData`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/HIERARCHY.md",
+        "anchor": "createhierarchydata"
+      }
+    },
+    {
+      "name": "editHierarchyData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits or removes the named resource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/HIERARCHY.md",
+        "anchor": "edithierarchydata"
+      }
+    },
+    {
+      "name": "layoutHierarchy",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editLayout`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/HIERARCHY.md",
+        "anchor": "layouthierarchy"
+      }
+    },
+    {
+      "name": "editLayout",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits or removes the named resource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/HIERARCHY.md",
+        "anchor": "editlayout"
+      }
+    },
+    {
+      "name": "createTreePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTreePlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/HIERARCHY.md",
+        "anchor": "createtreeplot"
+      }
+    },
+    {
+      "name": "editTreePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits or removes the named resource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/HIERARCHY.md",
+        "anchor": "edittreeplot"
+      }
+    },
+    {
+      "name": "createTreemapPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editTreemapPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/HIERARCHY.md",
+        "anchor": "createtreemapplot"
+      }
+    },
+    {
+      "name": "editTreemapPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits or removes the named resource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/HIERARCHY.md",
+        "anchor": "edittreemapplot"
+      }
     }
   ],
   "plannedActions": [],
@@ -5685,7 +5829,9 @@
       "rematerializeVerticalGrid",
       "materializeSortedData",
       "rematerializeOverlay",
-      "rematerializeImageMark"
+      "rematerializeImageMark",
+      "materializeTreePlot",
+      "materializeTreemapPlot"
     ],
     "guideComponents": [
       "createLegendBackground",

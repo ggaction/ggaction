@@ -28,4 +28,4 @@ for (const variant of variants) test(`tree primitive ${variant.id} preserves ind
   assert.equal((svg.match(/<line\b/g) ?? []).length, 4);
 });
 
-test("tree review factory rejects unknown variants", () => assert.throws(() => createTreePrimitive("unknown")));
+test("tree primitive factory rejects unknown variants", () => assert.throws(() => createTreePrimitive("unknown")));

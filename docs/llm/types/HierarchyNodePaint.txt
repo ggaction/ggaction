@@ -1,0 +1,1 @@
+export interface HierarchyNodePaint extends HierarchyBodyPaint { radius?: number; }

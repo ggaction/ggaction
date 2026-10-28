@@ -9,6 +9,11 @@ const outputFile = path.join(root, "src/inspectionDescriptors.js");
 const vocabularyFile = path.join(root, "src/core/vocabulary.js");
 
 function optionKind(name, type, action) {
+  if (name === "hierarchy" && action === "layoutHierarchy") return "resource";
+  if (/^(?:create|edit)(?:Tree|Treemap)Plot$/.test(action)) {
+    if (name === "layout") return "resource";
+    if (["nodes", "cells", "labels"].includes(name)) return "object";
+  }
   if (["target", "source", "data", "coordinate", "scale", "id"].includes(name)) return "resource";
   // "value" is a field role only in data-stack and chart value channels.
   // Selection/filter comparisons, imputation and labels accept literal values.

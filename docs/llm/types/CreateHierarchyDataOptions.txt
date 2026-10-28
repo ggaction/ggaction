@@ -1,0 +1,2 @@
+export type CreateHierarchyDataOptions = HierarchySource & { id: string; data?: string; maxNodes?: number };
+/** Omitted fields preserve the existing source form; every edit must change at least one option. */

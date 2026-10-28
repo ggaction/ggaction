@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 3,
+  "name": "editHierarchyData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Revise hierarchy input options and refresh every dependent layout and plot atomically.",
+  "signature": "editHierarchyData(options: TargetedOptions<EditHierarchyDataOptions>): ChartProgram;",
+  "intents": [
+    "edit hierarchy data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "typed hierarchy",
+    "parent child data"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing typed hierarchy",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "parent",
+      "target",
+      "data"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editHierarchyData",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "parent",
+      "strategy": "explicit"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing typed hierarchy",
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "key",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "parent",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "children",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "groupFields",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "valueMode",
+      "required": false,
+      "type": "HierarchyValueMode | undefined"
+    },
+    {
+      "name": "forest",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "missingCategory",
+      "required": false,
+      "type": "\"error\" | \"include\" | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "maxNodes",
+      "required": false,
+      "type": "number | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editHierarchyData({ parent?, target?, data?, key?, value?, children?, groupFields?, valueMode? })"
+  ],
+  "snippet": "program.editHierarchyData({ target: \"hierarchy\", valueMode: \"inclusive\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#edithierarchydata"
+}

@@ -917,5 +917,23 @@
       "src/index.js"
     ],
     "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/tree-layouts/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/treemap-layouts/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
   }
 ]

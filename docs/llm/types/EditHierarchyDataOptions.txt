@@ -1,0 +1,1 @@
+export type EditHierarchyDataOptions = Partial<HierarchySource> & { target?: string; data?: string; maxNodes?: number };

@@ -535,6 +535,17 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
+    chart().createCanvas().createData({ id: "hierarchyRows", values: [{ id: "root", parent: null, value: 3 }, { id: "a", parent: "root", value: 3 }] })
+      .createHierarchyData({ id: "hierarchy", key: "id", parent: "parent", value: "value" })
+      .layoutHierarchy({ id: "tree-layout", method: "tree", options: { nodeSize: [20, 10], siblingGap: 10, depthGap: 20, orientation: "vertical" } })
+      .createTreePlot({ id: "tree", labels: {} }).editTreePlot({ nodes: { radius: 8 } })
+      .editHierarchyData({ target: "hierarchy", valueMode: "inclusive" })
+      .editLayout({ target: "tree-layout", options: { siblingGap: 12 } })
+      .layoutHierarchy({ id: "treemap-layout", hierarchy: "hierarchy", method: "treemap", options: { size: [200, 100], padding: 3, method: "squarify" } })
+      .createTreemapPlot({ id: "treemap", layout: "treemap-layout", labels: {} }).editTreemapPlot({ cells: { opacity: .8 } })
+      .removeMark({ target: "tree" }).removeMark({ target: "treemap" })
+      .removeResource({ kind: "layout", id: "tree-layout" }).removeResource({ kind: "layout", id: "treemap-layout" })
+      .removeResource({ kind: "hierarchy", id: "hierarchy" }),
     chart().createParameter({ id: "factor", value: 2 })
       .editParameter({ target: "factor", value: 3 }).removeParameter({ id: "factor" }),
     chart().createData({ id: "parameterSource", values: [{ value: 2 }] })

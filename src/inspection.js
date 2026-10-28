@@ -1,6 +1,9 @@
 import { layerResourceBindings } from "./core/resourceReferences.js";
 import { STORED_RESOURCE_KINDS } from "./core/resourceReference.js";
 import { findStoredResource } from "./selectors/resources.js";
+import { resolveHierarchyPlot } from "./materialization/hierarchy/plot.js";
+import { hierarchyFacetSource, resolveHierarchyLayerResources } from "./selectors/hierarchy.js";
+import { findSelectionPolicy } from "./materialization/selection/policies/index.js";
 import { namespaceItemKey } from "./grammar/schemas/graphicIdentity.js";
 import { conditionalValues } from "./grammar/conditionalState.js";
 import { resolveMarkItems } from "./materialization/selection/policies/index.js";
@@ -278,7 +281,7 @@ export function describeAction(program, { action, target, options = {} } = {}) {
   if (unknown === undefined && missing.length === 0 &&
       ((action === "facet" && options.field) || (action === "facetGrid" && options.rows && options.columns))) {
     try {
-      (action === "facet" ? resolveFacetDefinition : resolveFacetGridDefinition)(program.semanticSpec, options);
+      (action === "facet" ? resolveFacetDefinition : resolveFacetGridDefinition)(hierarchyFacetSource(program), options);
     } catch (error) {
       fieldFinding.push({ severity: "error", code: "unsupported-combination", reason: "facet-partition",
         message: error.message, optionPath: "data" });
@@ -407,6 +410,7 @@ export function comparePrograms(before, after, { target } = {}) {
           const consumes = [...connected].some(connectedKey => {
             const source = map.get(connectedKey);
             if (source === undefined || canonical(source.ref.childPath ?? []) !== path) return false;
+            if (STORED_RESOURCE_KINDS.includes(candidate.ref.kind) && candidate.value.inputs.some(ref => ref.kind === source.ref.kind && ref.id === source.ref.id)) return true;
             if (STORED_RESOURCE_KINDS.includes(source.ref.kind)) {
               return candidate.ref.kind === "mark" && layerResourceBindings(candidate.value.semantic)
                 .some(({ ref }) => ref.kind === source.ref.kind && ref.id === source.ref.id);
@@ -484,7 +488,8 @@ function itemBounds(properties, type) {
 
 function inspectMark(program, layer, childPath) {
   const graphic = program.graphicSpec.objects[layer.id];
-  const dataset = findDataset(program, layer.data);
+  const hierarchy = layer.hierarchyBinding === undefined ? undefined : resolveHierarchyPlot(program, layer, program.markConfigs[layer.id].hierarchyPlot);
+  const dataset = hierarchy?.dataset ?? findDataset(program, layer.data);
   const boundedTypes = new Set(["circle", "rect", "line", "path", "image"]);
   const items = graphic?.items ?? (graphic?.properties ? [{ properties: graphic.properties }] : []);
   const concreteTypes = items.map(item => item.type ?? graphic?.type);
@@ -513,7 +518,7 @@ function inspectMark(program, layer, childPath) {
   return {
     owner: resourceRef("mark", layer.id, childPath), grain,
     rawRows: dataset?.values?.length ?? null,
-    logicalDataItems: logicalSupported ? items.length : null,
+    logicalDataItems: logicalSupported ? hierarchy?.items.length ?? items.length : null,
     drawablePrimitives: logicalSupported ? items.length : null,
     visibleCandidates: geometrySupported ? Math.max(0, items.length - new Set([
       ...items.map((item, index) => item.properties.opacity === 0 ? index : -1),
@@ -521,6 +526,11 @@ function inspectMark(program, layer, childPath) {
       ...(outsideIndices ?? [])
     ].filter(index => index >= 0)).size) : null,
     flags: [
+      ...(hierarchy === undefined ? [] : [
+        { reason: "synthetic-node", count: hierarchy.hierarchy.result.nodes.filter(node => node.synthetic).length },
+        { reason: "zero-value", count: hierarchy.items.filter(item => item.node.totalValue === 0).length },
+        { reason: "orphan-style", count: hierarchy.diagnostics.length }
+      ]),
       { reason: "opacity-zero", count: opacityZero },
       { reason: "zero-size", count: zeroSize },
       { reason: "outside-clip", count: outside },
@@ -530,6 +540,7 @@ function inspectMark(program, layer, childPath) {
     bounds: union,
     sourceRefs: [
       ...layerResourceBindings(layer).map(({ ref }) => resourceRef(ref.kind, ref.id, childPath)),
+      ...(hierarchy === undefined ? [] : [resourceRef("hierarchy", hierarchy.hierarchy.id, childPath)]),
       ...(dataset === undefined ? [] : [resourceRef("data", dataset.id, childPath)]),
       ...(layer.derivedBindings?.overlay ? [resourceRef("mark", layer.derivedBindings.overlay.source, childPath)] : [])
     ],
@@ -654,7 +665,7 @@ export function inspectProgram(program, { target } = {}) {
     version: 1, views: filtered,
     calculations,
     checks: [{ name: "pixel-visibility", status: "not_run", evidencePaths: [], findings: [] }],
-    findings: [], coverage: { partial: filtered.some(view => view.checks.some(check => check.status !== "passed")), unsupported }
+    findings: filtered.flatMap(view => view.flags.filter(flag => flag.reason === "orphan-style" && flag.count > 0).map(flag => ({ severity: "info", code: "orphan-style", reason: "missing-node", message: `${flag.count} hierarchy style targets are dormant until their exact nodes return.`, resource: view.owner }))), coverage: { partial: filtered.some(view => view.checks.some(check => check.status !== "passed")), unsupported }
   });
 }
 
@@ -664,7 +675,7 @@ export function getMarkItems(program, { target, grain = 'item' } = {}) {
   requireProgram(program);
   const view = typeof target === 'object' ? atChildPath(program, target.childPath) : program;
   const requested = typeof target === 'object' ? target.id : target;
-  const layer = requested ?? resolveEligibleLayer(view, { label: 'mark items', predicate: l => l.data !== undefined || l.mark?.type === 'image' }).id;
+  const layer = requested ?? resolveEligibleLayer(view, { label: 'mark items', predicate: l => findSelectionPolicy(l.mark?.type) !== undefined }).id;
   let stored = markItemInspections.get(program);
   if (!stored) markItemInspections.set(program, stored = new Map());
   const path = typeof target === "object" ? target.childPath ?? [] : [];

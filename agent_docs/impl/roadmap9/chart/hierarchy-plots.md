@@ -1,4 +1,4 @@
-# Hierarchy tree / treemap 공개 연결 검토안
+# Hierarchy tree / treemap 공개 연결 계약
 
 ## 진행 상태
 
@@ -8,17 +8,21 @@
 - [x] 원안의 확정 이름과 새 facade·저장 경계를 구분한 최소 전체 API 제안
 - [x] 새 plot facade·builtin resource validator 경계 revision `928fba48` 승인 (`approved`): “세 설계안 모두 승인, 구현 계속”
   ([승인 정본](../PUBLIC_APPROVALS_20261028.json))
-- [ ] 공개 action·revision·consumer·declarations/current/docs와 installed evidence 구현
-- [ ] STEP-020·AT-22·STEP-077 완료
+- [x] 공개 action·revision·consumer·declarations/current/docs와 installed evidence 구현
+- [x] 최종 전체 coverage 및 Node20/22/24·browser 검증 receipt 고정 ([실행 근거](../phase3/hierarchy/PUBLIC-EVIDENCE.json))
+- [x] STEP-020 hierarchy/tree/treemap 공개 연결 및 해당 AT-22 증거
+- [ ] STEP-025–028 partition 공개 연결과 STEP-077 전체 통합
 
-이 문서는 제안이다. Current 지원이나 source 구현 완료가 아니다. 시각 승인 근거는
+이 문서는 승인된 설계 기록이며 아래 제안 당시의 rationale을 보존한다. 공개 구현과 현재 정확한 지원은
+[HIERARCHY](../../../contract/current/HIERARCHY.md), 검증 상태는
+[공개 구현 기록](../phase3/hierarchy/PUBLIC_IMPLEMENTATION.md)이 소유한다. 시각 승인 근거는
 [정확한 primitive 승인 기록](../phase3/hierarchy/primitive-approval.json)이다.
 원안의 승인된 기능·이름은 [hierarchy 계약](../../../../study/coverage-expansion-2026-10-27/roadmap/contracts/hierarchy-partition.ko.md),
 [core 계약](../../../../study/coverage-expansion-2026-10-27/roadmap/contracts/core.ko.md),
 [통합 cookbook](../../../../study/coverage-expansion-2026-10-27/roadmap/INTEGRATION_COOKBOOK.ko.md)이 소유한다.
 `createHierarchyData`, `editHierarchyData`, `layoutHierarchy`, `editLayout`, `removeResource`를 새 이름처럼 재승인하지 않는다.
 원안에 없던 `createTreePlot` / `createTreemapPlot` facade와 그 editor, layer binding, private builtin registry가
-이번 미해결 public/architecture 결정이다. 승인 전 그 경계에 의존하는 public flow는 구현하지 않는다.
+승인된 public/architecture 결정이다. 아래에서 설명하는 승인 경계는 이미 해소되었다.
 
 ## 사용자가 얻는 차트
 
@@ -148,9 +152,9 @@ Nested style object는 property patch이며 overrides array는 전체 교체다.
 
 ## 검토할 실제 호출 순서
 
-아래는 구현 예정인 public 호출 순서다. 지금 실행 가능한 코드는 승인된
-[tree primitive](../../../../test/gates/tree-layouts/primitive.program.js)와
-[treemap primitive](../../../../test/gates/treemap-layouts/primitive.program.js)이며 public 구현이 존재한다고 주장하지 않는다.
+아래는 구현된 public 호출 순서다. 정확한 실행 예와 primitive/public pair는 승인된
+[tree primitive](../../../../test/charts/tree-layouts/primitive.program.js)와
+[treemap primitive](../../../../test/charts/treemap-layouts/primitive.program.js)다. 승인 뒤 공개 구현과 같은 stable chart slice로 이동했으며 현재 계약은 `contract/current/HIERARCHY.md`가 소유한다.
 
 ```js
 const rows = [
@@ -226,7 +230,7 @@ node key를 보존하고 삭제된 선택 항목은 기존 orphan 정책대로 �
 | Public surface | Full-only actions/types/catalog/docs/LLM metadata, Basic negative tests, installed source-free fixtures |
 | Visual | 승인된5종과 exact properties/order/decoded pixels, 최소 호출·create/edit/remove/revise/restore |
 
-이 표는 아직 통과 결과가 아니다. Source-field facet가 계층 부모를 제거하는 경우 orphan을 자동 root로 바꾸지 않고
+이 표는 설계 의무이며 최종 실행 결과는 공개 구현 기록이 소유한다. Source-field facet가 계층 부모를 제거하는 경우 orphan을 자동 root로 바꾸지 않고
 기존 hierarchy 규칙대로 오류를 내야 한다. Repeat field binding이 source hierarchy schema를 바꾸는 경우도 새 parser를 만들지 않는다.
 
 ## Builtin validator 경계 제안

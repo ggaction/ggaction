@@ -79,6 +79,9 @@ function finalRows(program, layer) {
         values: { ...channelMapFromRow(point.fields, layer), x: point.channels.x, y: point.channels.y }
       })));
   }
+  if (["tree", "treemap"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
+    series: {}, values: { key: item.key, value: item.fields.value, depth: item.fields.depth, children: item.fields.children }
+  }));
   if (["line", "area"].includes(layer.mark.type)) return pathRows(program, layer);
   if (!["point", "bar", "arc", "rule", "tick", "rect"].includes(layer.mark.type)) {
     unsupported(layer.id, `unsupported ${layer.mark.type} owner`);

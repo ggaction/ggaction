@@ -2522,5 +2522,73 @@
     ],
     "layer": "user-facing",
     "domain": "core"
+  },
+  "createHierarchyData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "editHierarchyData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "layoutHierarchy": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "editLayout": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "createTreePlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H0",
+      "H1"
+    ],
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "editTreePlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H1",
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "createTreemapPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H0",
+      "H1"
+    ],
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "editTreemapPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H1",
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "charts"
   }
 }

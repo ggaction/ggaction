@@ -221,10 +221,11 @@ export function planStoredResourceRemoval(program, requested, { cascade = false 
     }
   }
   const remove = new Set([identity(requested)]), resources = program.semanticSpec.resources;
-  let changed;
+  let changed, work = 0;
   do {
     changed = false;
     for (const resource of resources) {
+      validateWorkLimit(++work, "Resource removal work");
       if (remove.has(identity(resource))) continue;
       if (!resourceDependencies(resource).some(ref => remove.has(identity(ref)))) continue;
       if (!cascade || resource.ownership.mode !== "generated" || !remove.has(identity(resource.ownership.owner))) {

@@ -2547,6 +2547,7 @@ Browser-safe `ggaction/persistence`의 네 함수는 action replay 없이 canoni
 - Signature: `removeResource({ kind, id, cascade? })`.
 - Full-only common stored-resource removal requires an explicit typed kind and ID. Same IDs in different resource namespaces are independent. Omitted cascade is restrictive: any live resource or layer reference rejects removal. Cascade must be boolean.
 - Explicit cascade follows the stored ownership/dependency graph; unowned dependent resources remain protected. For an image, first remove every image mark consuming that exact resource through wrapped `removeMark`, then remove the resource. Mark config, owned clip wrappers and selection/highlight projections are removed with their mark. Authored persistent-selection resources remain available. Independent shared resources and unrelated marks are preserved. A speculative complete application validates all consumers before the returned action writes.
+- Authored hierarchy/layout dependents and live hierarchy plots require explicit removal first; `removeMark` releases a plot without deleting its reusable hierarchy or layout. Generated dependents may be removed by the ownership plan.
 - Missing IDs, stale references, unknown kinds, invalid cascade, protected dependents and cyclic graphs reject without mutating the receiver. No loader or decoder is called.
 
 ### Formal values — `removeResource`
@@ -2557,5 +2558,5 @@ Browser-safe `ggaction/persistence`의 네 함수는 action replay 없이 canoni
 
 ### Value coverage — `removeResource`
 
-- ✅ Covered: image restrict/cascade, complete mark/config/clip/selection cleanup, unrelated resource retention and immutable failure.
-- Evidence: `test/unit/resources/image-resource-lifecycle.test.js`, `test/unit/core/builtin-resource-kinds.test.js`.
+- ✅ Covered: image restrict/cascade, hierarchy/layout dependency restrictions, complete mark/config/clip/selection cleanup, unrelated resource retention and immutable failure.
+- Evidence: `test/unit/resources/image-resource-lifecycle.test.js`, `test/unit/resources/hierarchy-resources.test.js`, `test/unit/resources/hierarchy-consumers.test.js`, `test/unit/core/builtin-resource-kinds.test.js`.

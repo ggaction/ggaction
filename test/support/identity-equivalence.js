@@ -13,11 +13,11 @@ function datasetReferenceKey(value) {
   return JSON.stringify([value.id, value.revision, value.logicalId]);
 }
 
-function collectDatasetReferences(value, references = new Set()) {
+function collectDatasetReferences(value, references = new Map()) {
   if (value === null || typeof value !== "object" || value instanceof Date) return references;
   if (isDataset(value)) {
     if (typeof value.logicalId === "string" && Number.isSafeInteger(value.revision)) {
-      references.add(datasetReferenceKey(value));
+      references.set(datasetReferenceKey(value), value);
     }
     return references;
   }
@@ -42,12 +42,17 @@ function normalizeAllocatedIdentity(value, index, references) {
     Object.keys(value).length === dataReferenceKeys.size &&
     Object.keys(value).every(key => dataReferenceKeys.has(key)) &&
     references.has(datasetReferenceKey(value));
+  const rowDataset = references.get(datasetReferenceKey({ id: value.data, logicalId: value.logicalDataId, revision: value.revision }));
+  const rowIndex = rowDataset?.rowKeys?.indexOf(value.rowKey) ?? -1;
+  const rowReference = typeof value.rowKey === "string" && typeof value.role === "string" && rowIndex >= 0;
   const item = typeof value.id === "string" && value.properties !== undefined;
   return Object.fromEntries(Object.entries(value).flatMap(([key, child]) => {
     if (dataset && (datasetIdentity.has(key) || key === "keySpec" && child.mode === "generated") || item && key === "identity") return [];
     // Normalize only references proven to point at a dataset in this comparison.
     // Orphaned or mismatched references retain their identity and remain unequal.
     if (dataReference && key === "logicalId") return [];
+    if (rowReference && key === "logicalDataId") return [];
+    if (rowReference && key === "rowKey" && rowDataset.keySpec?.mode === "generated") return [[key, `row:${rowIndex}`]];
     if (item && key === "id" && Number.isInteger(index)) return [[key, child.replace(/:[a-f0-9]{64}$/, `:${index}`)]];
     return [[key, normalizeAllocatedIdentity(child, undefined, references)]];
   }));

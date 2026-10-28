@@ -420,5 +420,16 @@
       "exported": "createImageExample"
     },
     "rendering": "renders-canvas"
+  },
+  "tutorials/hierarchy.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "vertical",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/tree-layouts/program.js",
+      "exported": "createTree"
+    },
+    "rendering": "renders-canvas"
   }
 }

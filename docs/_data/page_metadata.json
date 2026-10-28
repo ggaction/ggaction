@@ -1009,5 +1009,19 @@
     "editSource": "examples/image-assets/program.js",
     "description": "Prepare image bytes explicitly, then use one image mark to control its fit, alignment, viewport and alternative text.",
     "image": "/assets/images/image-assets.png"
+  },
+  "/api/hierarchy/": {
+    "title": "Hierarchy Resources and Plots",
+    "source": "docs/api/hierarchy.md",
+    "editSource": "docs/api/hierarchy.md",
+    "description": "Build, arrange, revise and inspect trees and treemaps from typed hierarchy data.",
+    "image": "/assets/images/tree-layouts.png"
+  },
+  "/tutorials/hierarchy/": {
+    "title": "Hierarchy Tutorial",
+    "source": "docs/tutorials/hierarchy.md",
+    "editSource": "examples/tree-layouts/program.js",
+    "description": "Build one typed hierarchy and reuse it in tree and treemap layouts.",
+    "image": "/assets/images/tree-layouts.png"
   }
 }

@@ -3,7 +3,7 @@ import { canvas, rows, labels, colors, offset, variants } from "./reference-valu
 
 export function createTreemapPrimitive(variantId = "slice-dice") {
   const variant = variants.find(item => item.id === variantId);
-  if (!variant) throw new Error(`Unknown treemap review variant ${variantId}.`);
+  if (!variant) throw new Error(`Unknown treemap variant ${variantId}.`);
   const boxes = variant.rectangles;
   return chart()
     .createCanvas(canvas)
@@ -14,6 +14,7 @@ export function createTreemapPrimitive(variantId = "slice-dice") {
     .editGraphics({ target: "cells", property: "width", value: boxes.map(box => box[2] - box[0]) })
     .editGraphics({ target: "cells", property: "height", value: boxes.map(box => box[3] - box[1]) })
     .editGraphics({ target: "cells", property: "fill", value: colors })
+    .editGraphics({ target: "cells", property: "opacity", value: 1 })
     .editGraphics({ target: "cells", property: "stroke", value: "#ffffff" })
     .editGraphics({ target: "cells", property: "strokeWidth", value: 2 })
     .createGraphics({ id: "labels", type: "text", length: 5, parent: "plot-main" })

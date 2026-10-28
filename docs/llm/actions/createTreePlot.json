@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 3,
+  "name": "createTreePlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Draw hierarchy nodes and parent links from a stored tree layout.",
+  "signature": "createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;",
+  "intents": [
+    "create tree plot",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "hierarchy node link chart",
+    "tidy tree"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "canvas and tree layout resource"
+    ],
+    "owns": [
+      "hierarchy node link chart"
+    ],
+    "idOptions": [
+      "id",
+      "layout",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H0",
+    "H1"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editTreePlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "origin",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and tree layout resource"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "origin",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "nodes",
+      "required": false,
+      "type": "(HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] | undefined; }) | undefined"
+    },
+    {
+      "name": "links",
+      "required": false,
+      "type": "false | { stroke?: string | undefined; strokeWidth?: number | undefined; opacity?: number | undefined; } | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | HierarchyLabelsOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createTreePlot({ id?, target?, layout?, origin?, clip?, nodes?, links?, labels? })"
+  ],
+  "snippet": "program.createTreePlot({ id: \"tree\", layout: \"tree-layout\", labels: {} })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createtreeplot"
+}

@@ -1,4 +1,5 @@
 import { hasPositionBinding, commonPositionBinding, uniquePositionBinding } from "../../core/encodingBindings.js";
+import { hierarchyFacetSource } from "../../selectors/hierarchy.js";
 import { adoptSelectionResources } from "../primitives/resourceState.js";
 import { normalizeFacetAxes, validateFacetAxisPolicy } from "../../core/facetAxisPolicy.js";
 import { DEFAULT_ACTION_METHODS } from "../../core/vocabulary.js";
@@ -25,7 +26,7 @@ import {
   resolveFacetDefinition,
   resolveFacetGridDefinition
 } from "../../grammar/facets/index.js";
-import { collectFacetScaleBindings, resolveFacetFamily } from
+import { collectFacetScaleBindings, resolveFacetFamily, planFacetDependencies } from
   "../../grammar/facets/dependencies.js";
 import {
   FACET_SCALE_CHANNELS,
@@ -40,7 +41,7 @@ import { replayDerivedData } from "./replay.js";
 import { composeFacetGuides } from "./guides.js";
 import { applyCompositionState } from "../composition/actions.js";
 import { replayCompositionThemeState } from "../theme/composition.js";
-import { findDataset } from "../../selectors/datasets.js";
+import { findDataset, requireDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { normalizeDisplayLabelMap } from "../../grammar/displayLabels.js";
@@ -167,13 +168,13 @@ function rederiveFacet(program, { scales, guides }) {
     }, current.children);
   }
   const definition = current.facet.grid === undefined
-    ? resolveFacetDefinition(program.semanticSpec, {
+    ? resolveFacetDefinition(hierarchyFacetSource(program), {
         id: current.id,
         data: current.facet.data,
         field: current.facet.field,
         values: current.facet.values
       })
-    : resolveFacetGridDefinition(program.semanticSpec, {
+    : resolveFacetGridDefinition(hierarchyFacetSource(program), {
         id: current.id,
         data: current.facet.data,
         rows: current.facet.grid.rows,
@@ -346,7 +347,7 @@ function partitionFacetAction(op, description, definitionResolver) {
   return closedAction({ op, description }, op === "facet" ? FACET_OPTIONS : FACET_GRID_OPTIONS,
     function (args = {}) {
       const guides = normalizeGuides(args.guides);
-      const definition = definitionResolver(this.semanticSpec, args);
+      const definition = definitionResolver(hierarchyFacetSource(this), args);
       validateFacetAxisPolicy(guides.axes, definition.family);
       const scalePolicies = normalizeFacetScalePolicies(this.semanticSpec, args.scales ?? {});
       const derived = deriveFacetChildren(this, definition, {
@@ -719,6 +720,24 @@ function adoptUnitState(program, actionOwner, preferSource = false) {
   });
 }
 
+// Retained source revisions preserve the authored partition identity even when
+// its physical snapshot id changes. Only active common ancestors are eligible.
+function revisedPartitionAnchor(previous, source) {
+  const facet = previous.compositionSpec.facet, original = requireDataset(previous, facet.data);
+  const view = hierarchyFacetSource(source), field = facet.field ?? facet.grid.rows.field;
+  resolveFacetFamily(view);
+  try { planFacetDependencies(view, { field, data: facet.data }); return facet.data; }
+  catch { /* A source revision may have replaced the physical anchor id. */ }
+  const candidates = source.semanticSpec.datasets.filter(dataset => dataset.logicalId === original.logicalId);
+  const eligible = [];
+  for (const candidate of candidates) {
+    try { planFacetDependencies(view, { field, data: candidate.id }); eligible.push(candidate.id); }
+    catch { /* A retained historical snapshot is not an active common ancestor. */ }
+  }
+  if (eligible.length !== 1) throw new Error("Facet source replacement requires one common partition dataset with the same logical identity.");
+  return eligible[0];
+}
+
 export const editFacetSource = /* @__PURE__ */ closedAction(
   {
     op: "editFacetSource",
@@ -791,10 +810,11 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
     // the existing physical scale rather than conflict with a stale default.
     const scales = usedFacetScalePolicies(base,
       usedFacetScalePolicies(this, current.facet.scales));
+    const anchor = current.facet.repeat === undefined ? revisedPartitionAnchor(this, base) : current.facet.data;
     if (current.facet.grid !== undefined) {
       revised = base.facetGrid({
         id: current.id,
-        data: current.facet.data,
+        data: anchor,
         rows: current.facet.grid.rows,
         columns: current.facet.grid.columns,
         combinations: current.facet.grid.combinations,
@@ -822,7 +842,7 @@ export const editFacetSource = /* @__PURE__ */ closedAction(
     } else {
       revised = base.facet({
         id: current.id,
-        data: current.facet.data,
+        data: anchor,
         field: current.facet.field,
         values: current.facet.values,
         columns: current.columns,

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:35f62d3bbb994a279e1ad23c44c011475ae1cf1a8d54b26d948938ae6d2efc38. Status: development. Runtime source: d24eb2bd11616a2ac6022786eb2fe786a1d5e963. Release baseline: v0.0.13.
+Contract: sha256:ab2a5883d5eba4a1d6eddce8ac72b772d49043b8163dcd909e77e6f58ccf1ac9. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -213,11 +213,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -652,15 +652,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -805,7 +805,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -823,7 +823,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -936,7 +936,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-integration/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1106,7 +1106,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1328,15 +1328,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1472,7 +1472,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1486,15 +1486,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1592,7 +1592,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1606,15 +1606,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-integration/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1723,7 +1723,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1739,15 +1739,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1872,7 +1872,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1947,7 +1947,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1957,15 +1957,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2090,7 +2090,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2123,7 +2123,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2134,8 +2134,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2231,15 +2231,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-integration/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2336,15 +2336,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-integration/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2450,8 +2450,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2460,7 +2460,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-integration/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2760,7 +2760,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -6002,7 +6002,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -10470,7 +10470,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -10536,7 +10536,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -10938,7 +10938,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -11536,7 +11536,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -17761,6 +17761,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createGrid`](./reference/actions/guides/#creategrid) | H3 | user-facing | grid |
 | [`createGuides`](./reference/actions/guides/#createguides) | H3 | user-facing | legend_and_title |
 | [`createHeatmap`](./reference/actions/charts-data/#createheatmap) | H0 | user-facing | charts |
+| [`createHierarchyData`](./reference/actions/charts-data/#createhierarchydata) | H2 | user-facing | core |
 | [`createHistogram`](./reference/actions/charts-data/#createhistogram) | H0, H1 | user-facing | charts |
 | [`createHorizonPlot`](./reference/actions/statistics/#createhorizonplot) | H0, H1 | user-facing | statistics |
 | [`createHorizontalGrid`](./reference/actions/guides/#createhorizontalgrid) | H3 | user-facing | grid |
@@ -17826,6 +17827,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTickMark`](./reference/actions/marks/#createtickmark) | H2 | user-facing | marks |
 | [`createTimeUnitData`](./reference/actions/charts-data/#createtimeunitdata) | H2 | user-facing | core |
 | [`createTitle`](./reference/actions/guides/#createtitle) | H3 | user-facing | legend_and_title |
+| [`createTreemapPlot`](./reference/actions/charts-data/#createtreemapplot) | H0, H1 | user-facing | charts |
+| [`createTreePlot`](./reference/actions/charts-data/#createtreeplot) | H0, H1 | user-facing | charts |
 | [`createVerticalGrid`](./reference/actions/guides/#createverticalgrid) | H3 | user-facing | grid |
 | [`createViolinPlot`](./reference/actions/statistics/#createviolinplot) | H0, H1 | user-facing | statistics |
 | [`createWindowData`](./reference/actions/charts-data/#createwindowdata) | H2 | user-facing | core |
@@ -17874,11 +17877,13 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editGradientPlot`](./reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphics`](./reference/actions/extension/#editgraphics) | H4 | primitive | primitives |
 | [`editGrid`](./reference/actions/guides/#editgrid) | H3 | user-facing | grid |
+| [`editHierarchyData`](./reference/actions/charts-data/#edithierarchydata) | H2 | user-facing | core |
 | [`editHorizon`](./reference/actions/encodings/#edithorizon) | H2, H3 | user-facing | encodings |
 | [`editHorizontalGrid`](./reference/actions/guides/#edithorizontalgrid) | H3 | user-facing | grid |
 | [`editImageMark`](./reference/actions/marks/#editimagemark) | H3 | user-facing | marks |
 | [`editImputedData`](./reference/actions/statistics/#editimputeddata) | H1, H3 | user-facing | statistics |
 | [`editIntervalData`](./reference/actions/statistics/#editintervaldata) | H1, H3 | user-facing | statistics |
+| [`editLayout`](./reference/actions/charts-data/#editlayout) | H2 | user-facing | core |
 | [`editLegend`](./reference/actions/guides/#editlegend) | H3 | user-facing | legend_and_title |
 | [`editLegendBlock`](./reference/actions/guides/#editlegendblock) | H3 | user-facing | legend_and_title |
 | [`editLegendBorder`](./reference/actions/guides/#editlegendborder) | H3 | user-facing | legend_and_title |
@@ -17936,6 +17941,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editTickMark`](./reference/actions/marks/#edittickmark) | H3 | user-facing | marks |
 | [`editTimeUnitData`](./reference/actions/charts-data/#edittimeunitdata) | H2 | user-facing | core |
 | [`editTitle`](./reference/actions/guides/#edittitle) | H3 | user-facing | legend_and_title |
+| [`editTreemapPlot`](./reference/actions/charts-data/#edittreemapplot) | H1, H3 | user-facing | charts |
+| [`editTreePlot`](./reference/actions/charts-data/#edittreeplot) | H1, H3 | user-facing | charts |
 | [`editVerticalGrid`](./reference/actions/guides/#editverticalgrid) | H3 | user-facing | grid |
 | [`editViolinPlot`](./reference/actions/statistics/#editviolinplot) | H1, H3 | user-facing | statistics |
 | [`editWindowData`](./reference/actions/charts-data/#editwindowdata) | H2 | user-facing | core |
@@ -17994,6 +18001,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](./reference/actions/charts-data/#highlightmarks) | H3 | user-facing | mark-selection |
 | [`insertCompositionChild`](./reference/actions/charts-data/#insertcompositionchild) | H3 | user-facing | composition |
 | [`jitterPoints`](./reference/actions/marks/#jitterpoints) | H3 | user-facing | marks |
+| [`layoutHierarchy`](./reference/actions/charts-data/#layouthierarchy) | H2 | user-facing | core |
 | [`layoutLabels`](./reference/actions/marks/#layoutlabels) | H3 | user-facing | marks |
 | [`layoutSeries`](./reference/actions/encodings/#layoutseries) | H2 | user-facing | encodings |
 | [`orderCategories`](./reference/actions/encodings/#ordercategories) | H2 | user-facing | encodings |
@@ -21934,6 +21942,290 @@ removeResource({ kind, id, cascade? })
 
 Remove an unused typed stored resource. Default restrict rejects live references.
 Explicit image cascade removes its image marks before removing the source.
+
+## `createHierarchyData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateHierarchyDataOptions`](./reference/types/#type-createhierarchydataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `key` | Optional / branch-dependent | `string \| undefined` |
+| `parent` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Required | `string` |
+| `children` | Optional / branch-dependent | `string \| undefined` |
+| `groupFields` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `valueMode` | Optional / branch-dependent | `HierarchyValueMode \| undefined` |
+| `forest` | Optional / branch-dependent | `boolean \| undefined` |
+| `missingCategory` | Optional / branch-dependent | `"error" \| "include" \| undefined` |
+| `id` | Required | `string` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createHierarchyData({ id, data?, key?, parent?, children?, groupFields?, value, valueMode?, forest?, missingCategory?, maxNodes? })
+```
+
+Create a typed hierarchy from flat parent rows, nested children, or grouped paths. Full only.
+[Hierarchy resources and plots](./api/hierarchy/#createhierarchydata)
+
+## `editHierarchyData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editHierarchyData(options: TargetedOptions<EditHierarchyDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditHierarchyDataOptions`](./reference/types/#type-edithierarchydataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `key` | Optional / branch-dependent | `string \| undefined` |
+| `parent` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `children` | Optional / branch-dependent | `string \| undefined` |
+| `groupFields` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `valueMode` | Optional / branch-dependent | `HierarchyValueMode \| undefined` |
+| `forest` | Optional / branch-dependent | `boolean \| undefined` |
+| `missingCategory` | Optional / branch-dependent | `"error" \| "include" \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editHierarchyData({ target?, data?, key?, parent?, children?, groupFields?, value?, valueMode?, forest?, missingCategory?, maxNodes? })
+```
+
+Revise hierarchy input options and refresh every dependent layout and plot atomically. Full only.
+[Hierarchy resources and plots](./api/hierarchy/#edithierarchydata)
+
+## `layoutHierarchy`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`LayoutHierarchyOptions`](./reference/types/#type-layouthierarchyoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `hierarchy` | Optional / branch-dependent | `string \| undefined` |
+| `order` | Optional / branch-dependent | `HierarchyOrder \| undefined` |
+| `method` | Required | `"partition" \| "tree" \| "treemap"` |
+| `options` | Optional / branch-dependent | `HierarchyTreemapOptions \| { maxNodes?: number \| undefined; } \| HierarchyTreeOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+layoutHierarchy({ id, hierarchy?, method, order?, options? })
+```
+
+Compute an explicit tree, treemap, or normalized partition layout from a named hierarchy. Full only.
+[Hierarchy resources and plots](./api/hierarchy/#layouthierarchy)
+
+## `editLayout`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditLayoutOptions`](./reference/types/#type-editlayoutoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `order` | Optional / branch-dependent | `HierarchyOrder \| undefined` |
+| `options` | Optional / branch-dependent | `Partial<...> \| { maxNodes?: number \| undefined; } \| Partial<...> \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editLayout({ target?, order?, options? })
+```
+
+Change a layout order or method-specific options and refresh its plot consumers. Full only.
+[Hierarchy resources and plots](./api/hierarchy/#editlayout)
+
+## `createTreePlot`
+
+**API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`TreePlotOptions`](./reference/types/#type-treeplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `nodes` | Optional / branch-dependent | `(HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] \| undefined; }) \| undefined` |
+| `links` | Optional / branch-dependent | `false \| { stroke?: string \| undefined; strokeWidth?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| HierarchyLabelsOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createTreePlot({ id?, layout?, origin?, clip?, nodes?, links?, labels? })
+```
+
+Draw hierarchy nodes and parent links from a stored tree layout. Full only.
+[Hierarchy resources and plots](./api/hierarchy/#createtreeplot)
+
+## `editTreePlot`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditTreePlotOptions`](./reference/types/#type-edittreeplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `nodes` | Optional / branch-dependent | `(HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] \| undefined; }) \| undefined` |
+| `links` | Optional / branch-dependent | `false \| { stroke?: string \| undefined; strokeWidth?: number \| undefined; opacity?: number \| undefined; } \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| HierarchyLabelsOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editTreePlot({ target?, layout?, origin?, clip?, nodes?, links?, labels? })
+```
+
+Edit tree nodes, links, labels, placement, or the bound tree layout. Full only.
+[Hierarchy resources and plots](./api/hierarchy/#edittreeplot)
+
+## `createTreemapPlot`
+
+**API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`TreemapPlotOptions`](./reference/types/#type-treemapplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] \| undefined; }) \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| HierarchyLabelsOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createTreemapPlot({ id?, layout?, origin?, clip?, cells?, labels? })
+```
+
+Draw nested rectangles from a stored treemap layout. Full only.
+[Hierarchy resources and plots](./api/hierarchy/#createtreemapplot)
+
+## `editTreemapPlot`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditTreemapPlotOptions`](./reference/types/#type-edittreemapplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `cells` | Optional / branch-dependent | `(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] \| undefined; }) \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| HierarchyLabelsOptions \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editTreemapPlot({ target?, layout?, origin?, clip?, cells?, labels? })
+```
+
+Edit treemap cells, labels, placement, or the bound treemap layout. Full only.
+[Hierarchy resources and plots](./api/hierarchy/#edittreemapplot)
 
 ## Focused core data editing
 
@@ -30501,13 +30793,13 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](./types/index.d.ts)
 
 ```typescript
-export type { RemoveStoredResourceOptions } from "./program.js";
 export type { ImageResourceSource, CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost,
   PreparedImageResource, ApplyImageResourceOptions, ImageRef, ImageResource, ImageMarkOptions, CreateImageMarkOptions, EditImageMarkOptions } from "./program.js";
 import type { CreateImageResourceRequest, ReplaceImageResourceRequest, ImageResourceRequest, ImageResourceHost, PreparedImageResource } from "./program.js";
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
+export type { HierarchyValueMode, HierarchySource, CreateHierarchyDataOptions, EditHierarchyDataOptions, HierarchyOrder, HierarchyTreeOptions, HierarchyTreemapOptions, LayoutHierarchyOptions, EditLayoutOptions, RemoveStoredResourceOptions, HierarchyNode, HierarchyModel, HierarchyResource, HierarchyRectangle, HierarchyTreeResult, HierarchyPartitionResult, HierarchyTreemapResult, HierarchyLayoutResource, HierarchyNodeTarget, HierarchyBodyPaint, HierarchyNodePaint, HierarchyLabelPaint, HierarchyLabelsOptions, TreePlotOptions, EditTreePlotOptions, TreemapPlotOptions, EditTreemapPlotOptions } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
@@ -31586,6 +31878,14 @@ interface ChartProgramActions {
   replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
   createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
   editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
+  createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;
+  editHierarchyData(options: TargetedOptions<EditHierarchyDataOptions>): ChartProgram;
+  layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
+  editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
+  createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+  editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+  createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
+  editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
@@ -34128,6 +34428,17 @@ export type CreateHeatmapOptions =
 
 Related types: [`PreGriddedHeatmapOptions`](./reference/types/#type-pregriddedheatmapoptions) · [`BinnedHeatmapOptions`](./reference/types/#type-binnedheatmapoptions).
 
+### `CreateHierarchyDataOptions` {#type-createhierarchydataoptions}
+
+ Expand CreateHierarchyDataOptions
+
+```typescript
+export type CreateHierarchyDataOptions = HierarchySource & { id: string; data?: string; maxNodes?: number };
+/** Omitted fields preserve the existing source form; every edit must change at least one option. */
+```
+
+Related types: [`HierarchySource`](./reference/types/#type-hierarchysource).
+
 ### `CreateHistogramOptions` {#type-createhistogramoptions}
 
  Expand CreateHistogramOptions
@@ -36560,6 +36871,16 @@ export interface EditGridOptions {
 
 Related types: [`CartesianGuideDashMap`](./reference/types/#type-cartesianguidedashmap) · [`CategoryValue`](./reference/types/#type-categoryvalue).
 
+### `EditHierarchyDataOptions` {#type-edithierarchydataoptions}
+
+ Expand EditHierarchyDataOptions
+
+```typescript
+export type EditHierarchyDataOptions = Partial<HierarchySource> & { target?: string; data?: string; maxNodes?: number };
+```
+
+Related types: [`HierarchySource`](./reference/types/#type-hierarchysource).
+
 ### `EditHorizonOptions` {#type-edithorizonoptions}
 
  Expand EditHorizonOptions
@@ -36602,6 +36923,16 @@ export type EditIntervalDataOptions = FocusedDerivedDataEdit<IntervalDataOptions
 ```
 
 Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`IntervalDataOptions`](./reference/types/#type-intervaldataoptions).
+
+### `EditLayoutOptions` {#type-editlayoutoptions}
+
+ Expand EditLayoutOptions
+
+```typescript
+export interface EditLayoutOptions { target?: string; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number }; }
+```
+
+Related types: [`HierarchyOrder`](./reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](./reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](./reference/types/#type-hierarchytreemapoptions).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 
@@ -37252,6 +37583,26 @@ export interface EditTitleOptions
 ```
 
 Related types: [`TitleOptions`](./reference/types/#type-titleoptions).
+
+### `EditTreePlotOptions` {#type-edittreeplotoptions}
+
+ Expand EditTreePlotOptions
+
+```typescript
+export interface EditTreePlotOptions extends Omit<TreePlotOptions, "id"> { target?: string; }
+```
+
+Related types: [`TreePlotOptions`](./reference/types/#type-treeplotoptions).
+
+### `EditTreemapPlotOptions` {#type-edittreemapplotoptions}
+
+ Expand EditTreemapPlotOptions
+
+```typescript
+export interface EditTreemapPlotOptions extends Omit<TreemapPlotOptions, "id"> { target?: string; }
+```
+
+Related types: [`TreemapPlotOptions`](./reference/types/#type-treemapplotoptions).
 
 ### `EditViolinPlotOptions` {#type-editviolinplotoptions}
 
@@ -38433,6 +38784,103 @@ export type HeatmapCategoryPositionChannel =
 
 Related types: [`NonPointBandPositionScaleOptions`](./reference/types/#type-nonpointbandpositionscaleoptions).
 
+### `HierarchyBodyPaint` {#type-hierarchybodypaint}
+
+ Expand HierarchyBodyPaint
+
+```typescript
+export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidth?: number; opacity?: number; }
+```
+
+### `HierarchyLabelPaint` {#type-hierarchylabelpaint}
+
+ Expand HierarchyLabelPaint
+
+```typescript
+export interface HierarchyLabelPaint { fill?: string; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+```
+
+### `HierarchyLabelsOptions` {#type-hierarchylabelsoptions}
+
+ Expand HierarchyLabelsOptions
+
+```typescript
+export interface HierarchyLabelsOptions extends HierarchyLabelPaint {
+  content?: "value"; offset?: readonly [number, number]; overrides?: readonly (HierarchyNodeTarget & HierarchyLabelPaint & { text?: string })[];
+}
+```
+
+Related types: [`HierarchyLabelPaint`](./reference/types/#type-hierarchylabelpaint) · [`HierarchyNodeTarget`](./reference/types/#type-hierarchynodetarget).
+
+### `HierarchyNodePaint` {#type-hierarchynodepaint}
+
+ Expand HierarchyNodePaint
+
+```typescript
+export interface HierarchyNodePaint extends HierarchyBodyPaint { radius?: number; }
+```
+
+Related types: [`HierarchyBodyPaint`](./reference/types/#type-hierarchybodypaint).
+
+### `HierarchyNodeTarget` {#type-hierarchynodetarget}
+
+ Expand HierarchyNodeTarget
+
+```typescript
+export type HierarchyNodeTarget = { key: RowKeyScalar; path?: never } | { path: readonly (RowKeyScalar | null)[]; key?: never };
+```
+
+Related types: [`RowKeyScalar`](./reference/types/#type-rowkeyscalar).
+
+### `HierarchyOrder` {#type-hierarchyorder}
+
+ Expand HierarchyOrder
+
+```typescript
+export type HierarchyOrder = "input"
+  | { by: "value" | "key"; direction: "ascending" | "descending" }
+  | { by: "field"; field: string; direction: "ascending" | "descending"; nulls?: "first" | "last"; temporalUnit?: "year" | "timestamp" };
+```
+
+### `HierarchySource` {#type-hierarchysource}
+
+ Expand HierarchySource
+
+```typescript
+export type HierarchySource =
+  | { key: string; parent: string; value: string; children?: never; groupFields?: never; valueMode?: HierarchyValueMode; forest?: boolean; missingCategory?: never }
+  | { key: string; children: string; value: string; parent?: never; groupFields?: never; valueMode?: HierarchyValueMode; forest?: boolean; missingCategory?: never }
+  | { groupFields: readonly string[]; value: string; key?: never; parent?: never; children?: never; valueMode?: "leaf-sum"; forest?: never; missingCategory?: "error" | "include" };
+```
+
+Related types: [`HierarchyValueMode`](./reference/types/#type-hierarchyvaluemode).
+
+### `HierarchyTreeOptions` {#type-hierarchytreeoptions}
+
+ Expand HierarchyTreeOptions
+
+```typescript
+export type HierarchyTreeOptions = { nodeSize: readonly [number, number]; siblingGap: number; depthGap: number; maxNodes?: number } &
+  ({ orientation: "vertical" | "horizontal"; radius?: never; startAngle?: never; sweep?: never }
+  | { orientation: "radial"; radius: number; startAngle: number; sweep: number });
+```
+
+### `HierarchyTreemapOptions` {#type-hierarchytreemapoptions}
+
+ Expand HierarchyTreemapOptions
+
+```typescript
+export interface HierarchyTreemapOptions { size: readonly [number, number]; padding: number; method: "slice-dice" | "squarify"; maxNodes?: number; }
+```
+
+### `HierarchyValueMode` {#type-hierarchyvaluemode}
+
+ Expand HierarchyValueMode
+
+```typescript
+export type HierarchyValueMode = "leaf-sum" | "inclusive" | "own-plus-children";
+```
+
 ### `HighlightMarksOptions` {#type-highlightmarksoptions}
 
  Expand HighlightMarksOptions
@@ -38913,6 +39361,20 @@ export type LayerPlotSpecification = {
 ```
 
 Related types: [`AdjacentPlotSpecification`](./reference/types/#type-adjacentplotspecification).
+
+### `LayoutHierarchyOptions` {#type-layouthierarchyoptions}
+
+ Expand LayoutHierarchyOptions
+
+```typescript
+export type LayoutHierarchyOptions = { id: string; hierarchy?: string; order?: HierarchyOrder } &
+  ({ method: "partition"; options?: { maxNodes?: number } }
+  | { method: "tree"; options: HierarchyTreeOptions }
+  | { method: "treemap"; options: HierarchyTreemapOptions });
+/** The method remains fixed; supplied options patch its existing layout intent. */
+```
+
+Related types: [`HierarchyOrder`](./reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](./reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](./reference/types/#type-hierarchytreemapoptions).
 
 ### `LegendBlockSymbolPatch` {#type-legendblocksymbolpatch}
 
@@ -42296,7 +42758,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
  Expand StoredResourceKind
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "image";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image";
 ```
 
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}
@@ -42914,6 +43376,33 @@ export interface TitleTextStyleOptions {
   fontWeight?: string | number;
 }
 ```
+
+### `TreePlotOptions` {#type-treeplotoptions}
+
+ Expand TreePlotOptions
+
+```typescript
+export interface TreePlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  nodes?: HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] };
+  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number }; labels?: false | HierarchyLabelsOptions;
+}
+```
+
+Related types: [`HierarchyNodePaint`](./reference/types/#type-hierarchynodepaint) · [`HierarchyNodeTarget`](./reference/types/#type-hierarchynodetarget) · [`HierarchyLabelsOptions`](./reference/types/#type-hierarchylabelsoptions).
+
+### `TreemapPlotOptions` {#type-treemapplotoptions}
+
+ Expand TreemapPlotOptions
+
+```typescript
+export interface TreemapPlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] }; labels?: false | HierarchyLabelsOptions;
+}
+```
+
+Related types: [`HierarchyBodyPaint`](./reference/types/#type-hierarchybodypaint) · [`HierarchyNodeTarget`](./reference/types/#type-hierarchynodetarget) · [`HierarchyLabelsOptions`](./reference/types/#type-hierarchylabelsoptions).
 
 ### `UtcFormatString` {#type-utcformatstring}
 
@@ -43719,9 +44208,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -43787,12 +44276,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -44904,7 +45393,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -44957,7 +45446,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -45203,7 +45692,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -45255,7 +45744,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/repeat-charts).
 
 ## Space between plots
 
@@ -45930,7 +46419,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -46779,6 +47268,13 @@ can defer roles, so merely calling them does not necessarily produce a complete 
 | One complete chart plus a new independent chart; explicit shared scales and aligned plot frames | [`createAdjacentPlot`](./reference/actions/charts-data/#createadjacentplot) | default | [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) · [`editCompositionScales`](./reference/actions/charts-data/#editcompositionscales) · [`replaceCompositionChild`](./reference/actions/charts-data/#replacecompositionchild) |
 | Independent native plot on compatible existing coordinates and measurement units | [`createLayerPlot`](./reference/actions/charts-data/#createlayerplot) | default | [`encodeColor`](./reference/actions/encodings/#encodecolor) · [`encodeOpacity`](./reference/actions/encodings/#encodeopacity) · [`removeMark`](./reference/actions/marks/#removemark) |
 
+## Hierarchies
+
+| Task / input | Chart action | Package entry | Direct editor |
+| --- | --- | --- | --- |
+| Typed hierarchy and an explicit tree layout | [`createTreePlot`](./reference/actions/charts-data/#createtreeplot) | default | [`editTreePlot`](./reference/actions/charts-data/#edittreeplot) · [`removeMark`](./reference/actions/marks/#removemark) |
+| Typed hierarchy and an explicit rectangular layout | [`createTreemapPlot`](./reference/actions/charts-data/#createtreemapplot) | default | [`editTreemapPlot`](./reference/actions/charts-data/#edittreemapplot) · [`removeMark`](./reference/actions/marks/#removemark) |
+
 ## Compose or refine
 
 `hconcat` and `vconcat` are exported functions for arranging independent complete
@@ -46820,11 +47316,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:35f62d3bbb994a279e1ad23c44c011475ae1cf1a8d54b26d948938ae6d2efc38` |
-| Example and dataset source | `d24eb2bd11616a2ac6022786eb2fe786a1d5e963` |
-| Runtime source commit | `d24eb2bd11616a2ac6022786eb2fe786a1d5e963` |
+| Contract fingerprint | `sha256:ab2a5883d5eba4a1d6eddce8ac72b772d49043b8163dcd909e77e6f58ccf1ac9` |
+| Example and dataset source | `codex/roadmap9-integration` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 309 |
+| Declared actions here | 317 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -47328,12 +47824,12 @@ An explicit Cartesian `labelMap` entry with `label: ""` hides only that displaye
 # Place a retained image
 
 Prepare image bytes explicitly, then use one image mark to control its fit,
-alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/image-assets/)
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/image-assets/)
 uses one pinned SVG asset for six placements and retains the bytes for offline export.
 
 ## Prepare and place
 
-The canonical [example program](https://github.com/ggaction/ggaction/blob/d24eb2bd11616a2ac6022786eb2fe786a1d5e963/examples/image-assets/program.js) loads its
+The canonical [example program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-integration/examples/image-assets/program.js) loads its
 inline asset through `prepareImageResource` and applies the returned handle to the
 same immutable program. Its application-owned decoder reports the source dimensions.
 The synchronous `createImageResource` action stores the validated bytes. Then
@@ -47428,3 +47924,293 @@ const program = createImageExample();
 const images = await prepareImageRendering(program, {decode: decodeImage});
 render(program, document.querySelector("#chart").getContext("2d"), {images});
 ```
+
+<!-- Source: /api/hierarchy/ -->
+
+# Hierarchy resources and plots
+
+Create hierarchy data, compute an explicit layout, then draw a tree or treemap. These actions require the Full entry point. The [hierarchy tutorial](./tutorials/hierarchy/) uses the same public programs as the examples and renderer tests.
+
+## createHierarchyData
+
+```typescript
+createHierarchyData(options: CreateHierarchyDataOptions): ChartProgram
+```
+
+Chart authoring. Create a typed hierarchy from flat parent rows, nested children, or grouped paths.
+
+Exactly one source form is required: `key + parent`, `key + children`, or `groupFields`. Typed keys distinguish numbers, strings and booleans. Values are finite and nonnegative. `leaf-sum` is the default; `inclusive` validates parent totals, and `own-plus-children` adds each own value to its children. Groups support only leaf sums. `forest:false`, `missingCategory:"error"` for groups, and `maxNodes:10000` are the defaults. An enabled forest or grouped source uses a synthetic root with no source contribution. Missing parents, cycles, duplicate keys and invalid values fail. Nested lineage retains the actual source member path.
+
+## editHierarchyData
+
+```typescript
+editHierarchyData(options: EditHierarchyDataOptions): ChartProgram
+```
+
+Chart authoring. Revise hierarchy input options and refresh every dependent layout and plot atomically.
+
+Omitted options retain stored intent; the source form cannot change. A nonempty patch is required. A new data binding must resolve to a materialized dataset. Every dependent layout receives one new revision; its plots, labels and selections refresh. Raw and computed source revisions follow the same closure. Input programs and traces remain unchanged when any consumer fails.
+
+## layoutHierarchy
+
+```typescript
+layoutHierarchy(options: LayoutHierarchyOptions): ChartProgram
+```
+
+Chart authoring. Compute an explicit tree, treemap, or normalized partition layout from a named hierarchy.
+
+`method` is `tree`, `treemap`, or `partition`. Tree requires finite nonnegative `nodeSize:[breadth,depth]`, `siblingGap`, `depthGap` and `orientation:"vertical"|"horizontal"|"radial"`. Radial additionally requires nonnegative `radius`, finite `startAngle` and `sweep` in `(0,360]` degrees. Treemap requires positive finite `size:[width,height]`, nonnegative `padding`, and `method:"slice-dice"|"squarify"`. Partition accepts only optional `maxNodes`. Input order is default; key/value ordering requires an explicit ascending/descending direction, and field ordering additionally requires a field, with optional nulls first/last and year/timestamp temporal unit. Ambiguous grouped sort fields fail. Layout results retain exact hierarchy revisions and numerical geometry.
+
+## editLayout
+
+```typescript
+editLayout(options: EditLayoutOptions): ChartProgram
+```
+
+Chart authoring. Change a layout order or method-specific options and refresh its plot consumers.
+
+The existing layout method remains fixed. `options` is a partial patch of that method. Changing a radial tree to vertical/horizontal removes its radial-only options. The proposed geometry and every plot are checked before state-changing child actions. Layout numeric intent has one owner and is independent of Canvas placement.
+
+## removeResource
+
+```typescript
+removeResource(options: RemoveStoredResourceOptions): ChartProgram
+```
+
+Chart authoring. Remove a named stored resource after checking exact dependencies.
+
+`kind` identifies a stored resource; data, scale and coordinate use their existing dedicated removers. Restrict is default. `cascade:true` may remove generated dependents; authored dependents and live hierarchy plots still require explicit removal first. `removeMark` releases a plot while retaining its hierarchy/layout for reuse. Basic does not expose this method.
+
+## createTreePlot
+
+```typescript
+createTreePlot(options: TreePlotOptions): ChartProgram
+```
+
+Chart authoring. Draw hierarchy nodes and parent links from a stored tree layout.
+
+The omitted first ID is `treePlot`; another tree plot needs an explicit ID. The layout must use method tree. Omitted layout uses current eligible context, then the unique eligible resource; ambiguity fails. Nodes default to radius 6, fill #2563eb, stroke #ffffff, width 1 and opacity 1. Links default to #94a3b8, width 1.5 and opacity 1; false disables them. `origin:"auto"` centers stored bounds in the plot frame; explicit `[x,y]` is plot-local. `clip:false` is default.
+
+## editTreePlot
+
+```typescript
+editTreePlot(options: EditTreePlotOptions): ChartProgram
+```
+
+Chart authoring. Edit tree nodes, links, labels, placement, or the bound tree layout.
+
+A nonempty patch is required. Omitted values preserve style, meaning and placement; `links:{}` reenables links with stored/default style. New layout bindings require method tree. Unchanged node keys retain selection identity when geometry or order changes.
+
+## createTreemapPlot
+
+```typescript
+createTreemapPlot(options: TreemapPlotOptions): ChartProgram
+```
+
+Chart authoring. Draw nested rectangles from a stored treemap layout.
+
+The omitted first ID is `treemapPlot`; another owner needs an explicit ID. The layout must use method treemap. Cells default to fill #3b82f6, stroke #ffffff, width 1 and opacity 1. Origin and clipping match tree plots. Internal labels are hidden when padding leaves no label band; zero-value rectangles retain finite zero-area geometry.
+
+## editTreemapPlot
+
+```typescript
+editTreemapPlot(options: EditTreemapPlotOptions): ChartProgram
+```
+
+Chart authoring. Edit treemap cells, labels, placement, or the bound treemap layout.
+
+A nonempty patch is required. Omission preserves prior values; a new layout must use method treemap. Cell overrides and label identity follow the exact typed node keys, independently from rectangle order.
+
+## Labels, overrides and retained identity
+
+Labels are disabled by default. `labels:{}` displays each node total in 12px sans-serif; tree labels use offset `[0,14]`, treemap labels `[0,0]`. `labels:false` removes them. Set `content:"value"`, `fill`, `fontSize`, `fontFamily`, `fontWeight`, `offset` and optional `overrides`. Override text with `{key:"A",text:"Branch A"}` or `{path:["Europe","Denmark"],text:"Denmark"}` for grouped data. Body overrides use the same targets and their own paint fields. Arrays replace the prior override array.
+
+Authoring rejects unknown or duplicate targets. When a source revision removes a previously styled node, its override becomes dormant and inspection reports `orphan-style`; the style returns only for the same typed key. String `"1"` and number `1` are different keys. Selection includes the node body and label, while links remain structural.
+
+## Revising and restoring
+
+Source and parameter revisions refresh dependent hierarchy resources, layouts and plots in order. Invalid topology, layout or concrete output leaves the original program unchanged. Concat children retain separate identities. Facets support complete subtree partitions; a partition that separates a child from its parent fails. Repeat positional field changes are not applicable.
+
+Editable serialization retains layout geometry and exact source refs. Restore validates that state without running a layout algorithm. Canvas, SVG, PNG and PDF read the same concrete graphics. Empty sources produce empty models; zero totals produce finite zero-area partitions and an inspection diagnostic.
+
+<!-- Source: /tutorials/hierarchy/ -->
+
+# Hierarchy tutorial
+
+A hierarchy describes parent-child meaning. A layout computes positions, and a plot draws those positions. Keeping these steps separate lets two views share the same source while using different layouts.
+
+## Run the maintained examples
+
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-integration/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+
+Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
+
+```javascript
+import { chart, render } from "ggaction";
+
+const vertical = chart()
+  .createCanvas({
+    "width": 640,
+    "height": 500,
+    "margin": {
+      "left": 0,
+      "right": 0,
+      "top": 72,
+      "bottom": 0
+    },
+    "background": "#ffffff"
+  })
+  .createData({
+    "id": "hierarchy-source",
+    "values": [
+      {
+        "id": "Root",
+        "parent": null,
+        "value": 10
+      },
+      {
+        "id": "A",
+        "parent": "Root",
+        "value": 6
+      },
+      {
+        "id": "B",
+        "parent": "Root",
+        "value": 4
+      },
+      {
+        "id": "A1",
+        "parent": "A",
+        "value": 2
+      },
+      {
+        "id": "A2",
+        "parent": "A",
+        "value": 4
+      }
+    ],
+    "keyField": "id"
+  })
+  .createHierarchyData({
+    "id": "hierarchy",
+    "key": "id",
+    "parent": "parent",
+    "value": "value"
+  })
+  .layoutHierarchy({
+    "id": "layout",
+    "method": "tree",
+    "options": {
+      "nodeSize": [
+        48,
+        32
+      ],
+      "siblingGap": 112,
+      "depthGap": 118,
+      "orientation": "vertical"
+    }
+  })
+  .createTreePlot({
+    "origin": [
+      320,
+      28
+    ],
+    "nodes": {
+      "radius": 18,
+      "strokeWidth": 2,
+      "overrides": [
+        {
+          "key": "Root",
+          "fill": "#475569"
+        },
+        {
+          "key": "A",
+          "fill": "#2563eb"
+        },
+        {
+          "key": "A1",
+          "fill": "#60a5fa"
+        },
+        {
+          "key": "A2",
+          "fill": "#60a5fa"
+        },
+        {
+          "key": "B",
+          "fill": "#f59e0b"
+        }
+      ]
+    },
+    "links": {
+      "strokeWidth": 2
+    },
+    "labels": {
+      "offset": [
+        0,
+        32
+      ],
+      "fontSize": 14,
+      "overrides": [
+        {
+          "key": "Root",
+          "text": "Root · 10"
+        },
+        {
+          "key": "A",
+          "text": "A · 6"
+        },
+        {
+          "key": "A1",
+          "text": "A1 · 2"
+        },
+        {
+          "key": "A2",
+          "text": "A2 · 4"
+        },
+        {
+          "key": "B",
+          "text": "B · 4"
+        }
+      ]
+    }
+  })
+  .createTitle({
+    "text": "Tree · vertical",
+    "subtitle": "One hierarchy, five stable nodes and four parent links",
+    "align": "left",
+    "alongOffset": 32,
+    "offset": 2,
+    "gap": 8,
+    "titleStyle": {
+      "color": "#0f172a",
+      "fontSize": 20,
+      "fontFamily": "sans-serif",
+      "fontWeight": 600
+    },
+    "subtitleStyle": {
+      "color": "#64748b",
+      "fontSize": 12,
+      "fontFamily": "sans-serif",
+      "fontWeight": 400
+    }
+  });
+render(vertical, document.querySelector("#chart").getContext("2d"));
+```
+
+Each program uses the same ordered action flow: `createCanvas`, `createData`, `createHierarchyData`, `layoutHierarchy`, then `createTreePlot` or `createTreemapPlot`, and `createTitle` for the heading. Explicit IDs bind the source, hierarchy and layout. Colors and text target typed node keys so a layout change cannot transfer a style to a different node.
+
+## Change geometry while retaining meaning
+
+Continue from `vertical` above with `vertical.editLayout({target:"layout", options:{siblingGap:150}})` to widen sibling spacing. Use `order:{by:"value",direction:"descending"}` in a subsequent layout edit to sort siblings by value. Each call rematerializes the dependent plot and leaves the original program unchanged.
+
+Tree orientation is explicit. The radial variant additionally supplies radius, start angle and sweep. Angles are degrees clockwise from the top. Canvas changes move the stored layout into its plot frame; they do not rerun the hierarchy algorithm.
+
+## Compare rectangle layouts
+
+Slice-dice alternates subdivision directions. Squarify chooses rows to reduce extreme aspect ratios. Both preserve the hierarchy's values and typed node identities. Padding reserves space around children and permits internal labels; an internal label has zero opacity when no padding band remains.
+
+## Edit data and remove views
+
+Use `reviseData` for source values or `editHierarchyData` for hierarchy input policy. Both update the full dependent layout and plot closure. Unknown parents or invalid values reject the revision, leaving the earlier program and trace intact.
+
+Removing a mark keeps its reusable layout. Remove the layout before its hierarchy, and remove the hierarchy before its source dataset. Shared or authored dependents are never silently discarded. See [Hierarchy resources and plots](./api/hierarchy/) for complete signatures, defaults, grouped and nested source forms, labels, sorting and removal rules.

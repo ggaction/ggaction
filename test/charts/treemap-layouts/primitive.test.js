@@ -29,4 +29,4 @@ for (const variant of variants) test(`treemap primitive ${variant.id} preserves 
   assert.ok(svg.includes("A1 · 2") && svg.includes("A2 · 4") && svg.includes("B · 4"));
 });
 
-test("treemap review factory rejects unknown variants", () => assert.throws(() => createTreemapPrimitive("unknown")));
+test("treemap primitive factory rejects unknown variants", () => assert.throws(() => createTreemapPrimitive("unknown")));
