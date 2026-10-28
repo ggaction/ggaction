@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "status": "proposal-only",
+  "newVisualTarget": false,
+  "cells": [
+    {"id": "scalar-normalization", "owners": ["grammar parameter owner", "ownData", "identifiers"], "status": "not-implemented", "reviewEvidence": "reference.mjs and verify.mjs", "acceptance": "type inference, explicit null, finite/size/ID validation, own-data copy, getter zero, immutable snapshots"},
+    {"id": "resource-lifecycle", "owners": ["actions/parameters", "materialization/resourceState.js", "selectors/resources.js"], "status": "not-implemented", "acceptance": "create duplicate, edit missing/empty/same/overflow, domain and primitive restrict removal, typed namespace"},
+    {"id": "computed-binding", "owners": ["expressionAst.js", "transforms.js", "actions/data/computed.js"], "status": "not-implemented", "reviewEvidence": "current private kernel with explicit proposed environment", "acceptance": "exact vector all branches, deduplication, stale/missing/extra, empty rows, fields and typed output"},
+    {"id": "revision-closure", "owners": ["resourceReferences.js", "datasetReferences.js", "actions/data/edit.js"], "status": "not-implemented", "reviewEvidence": "small literal diamond graph only", "acceptance": "multi-root DAG, lookup diamond once, cycle and budgets, unchanged sibling sharing, no stale retained snapshot, failure preserves trace/cache"},
+    {"id": "schema-lineage-inspection", "owners": ["datasetSchema.js", "rowLineage.js", "inspection"], "status": "not-implemented", "acceptance": "parameter provenance from canonical vector, data row identity distinct, report replaced per materialization"},
+    {"id": "composition", "owners": ["facet/repeat retained source", "scoped child routing"], "status": "not-implemented", "acceptance": "local namespace, resource adoption, retained source replay, shared guides/domains/ancestor placement, no sibling propagation"},
+    {"id": "persistence", "owners": ["persistence/validation.js", "persistence/codec.js"], "status": "not-implemented", "reviewEvidence": "tagged scalar fresh-process model only", "acceptance": "Full/Basic restore, legacy 1-3 rejection of new payload, old-reader rejection, restore/edit/revise/serialize with zero replay/fetch during restore"},
+    {"id": "public-surface", "owners": ["Full and Basic registration", "types", "Current contracts", "docs", "package consumer"], "status": "not-implemented", "reviewEvidence": "proposal.d.ts and calls.ts only", "acceptance": "Full CRUD, Basic create, function/method scoped calls, installed types, no private leaks, measured package/bundle budgets"},
+    {"id": "materialization-and-render", "owners": ["planner", "selection/highlight", "Canvas/SVG/PNG/PDF", "scene"], "status": "not-run", "acceptance": "all affected materialized consumers update explicitly; representative backend output, scene and existing styles preserved"},
+    {"id": "conditional-dataflow", "owner": "STEP-016", "status": "deferred-integration-obligation", "acceptance": "ordered first-match/otherwise, parameter/filter/statistics/scale closure, empty-domain and cycle policies; exact policy review remains"},
+    {"id": "url-dependencies", "owner": "G-DATA", "status": "pending-design", "acceptance": "parameter-dependent URL, exact revisions/input hash, stale response, cancellation/offline rules"}
+  ]
+}

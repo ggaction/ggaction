@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "scope": "Review proposal and unchanged current-product baseline only",
+  "status": "passed",
+  "baselineCommit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "generatedAt": "2026-10-28T10:52:43.894Z",
+  "receipts": [
+    {
+      "label": "parameter-review",
+      "exitCode": 0,
+      "receipt": "parameter-review.json",
+      "receiptSha256": "9ebb6384674d0d3eda1c6dd31c736a9413fe5885aaac0a652f95d48c2f5eb48f",
+      "log": "parameter-review.log.gz",
+      "compressedSha256": "5f6e12fcc2bc55ef809a6b847641f7f508d4b9416d91a65a4ad11ddf1c198df8",
+      "rawSha256": "08cc7e35dcb2ecfd77cd23e3502fc5946a8494a9da904ca4465dd1c6261f6c98"
+    },
+    {
+      "label": "parameter-types",
+      "exitCode": 0,
+      "receipt": "parameter-types.json",
+      "receiptSha256": "79dfe9bf2e58a4651c50eb3cc562a056b7ed41e1975ba68a10a5a7c1b72ac3ba",
+      "log": "parameter-types.log.gz",
+      "compressedSha256": "abfbb86f9f5ddfbd9fc1a72c43ab384702ce8bae86b60f3324748485e235e61e",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "parameter-exact-types",
+      "exitCode": 0,
+      "receipt": "parameter-exact-types.json",
+      "receiptSha256": "724bf99956972a47d7eff319114fed33aa1bec3a15a9fca23f2aed223711f7fa",
+      "log": "parameter-exact-types.log.gz",
+      "compressedSha256": "abfbb86f9f5ddfbd9fc1a72c43ab384702ce8bae86b60f3324748485e235e61e",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "parameter-focused",
+      "exitCode": 0,
+      "receipt": "parameter-focused.json",
+      "receiptSha256": "321309808f823a74b4160ed9ebdc47adadb8718cb1a1e65cfe84621d7783da4c",
+      "log": "parameter-focused.log.gz",
+      "compressedSha256": "73ea80ab11b5a1813c150719bf1921da3067a8ab8136bbe6e56b8e13922c1359",
+      "rawSha256": "5fc70c48945607508e4e6b3367b28db0e9282928406ab314e57f1d078d359b17"
+    },
+    {
+      "label": "parameter-navigation",
+      "exitCode": 0,
+      "receipt": "parameter-navigation.json",
+      "receiptSha256": "b97b20ae5d4cd5884558c0e01e974b85b12e067998babea3302520dbeeb801bc",
+      "log": "parameter-navigation.log.gz",
+      "compressedSha256": "dd36f4fd6062f1c86c86f753fbed69d2fb4b456c1ab2de7376edea1d9816d22e",
+      "rawSha256": "07808245602a88e8d1d8f2d2753522b67ac1f938a8dbd6f8ae92bbecb78777aa"
+    },
+    {
+      "label": "parameter-all",
+      "exitCode": 0,
+      "receipt": "parameter-all.json",
+      "receiptSha256": "8753ddf6a30e6804bbc07f33c666177a106b032fd59880161642cf2c307cc792",
+      "log": "parameter-all.log.gz",
+      "compressedSha256": "07db7a2d2affc5e160fffbf9e80b2572457e5cf7b9337a5c1231cb69f54856f0",
+      "rawSha256": "44ef6d8911b3da2cb89261c588eea937e3348995a230976beebb153cd936c7ec"
+    },
+    {
+      "label": "parameter-machine",
+      "exitCode": 0,
+      "receipt": "parameter-machine.json",
+      "receiptSha256": "30492ffb8f69098b243dcdc56688579b75bdebc9fbb3db9b68b3f261c9d117ce",
+      "log": "parameter-machine.log.gz",
+      "compressedSha256": "1350154c3ad03c9fbf2a9207cac83249292dd00ff15fcc8a3c62488c70aa285a",
+      "rawSha256": "795dd208b8c58e44015d36a6d75d7b26bf5661c5e8c07a4b442bb215e7e219f5"
+    }
+  ],
+  "reviewInputsSha256": "399ec3063d351c1b63fcfb541a141a4001f103b92b067a348cef9b11e8e2c659",
+  "productChangedPaths": "",
+  "productImplemented": false,
+  "productIntegrationChecksRun": false
+}

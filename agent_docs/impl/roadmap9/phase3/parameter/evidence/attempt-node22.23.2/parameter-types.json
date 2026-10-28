@@ -1,0 +1,41 @@
+{
+  "label": "parameter-types",
+  "command": "node",
+  "args": [
+    "node_modules/typescript/bin/tsc",
+    "--strict",
+    "--noEmit",
+    "--target",
+    "ES2022",
+    "--module",
+    "NodeNext",
+    "--moduleResolution",
+    "NodeNext",
+    "agent_docs/impl/roadmap9/phase3/parameter/calls.ts"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 239,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T10:40:03.229Z",
+  "finishedAt": "2026-10-28T10:40:03.468Z",
+  "source": {
+    "available": true,
+    "commit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
+    "clean": false,
+    "statusSha256": "14b1e1a1bc2ff4e0d79dd444224639010acc9f82eea8aa824b02cb21afb73ed4"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
+    "clean": false,
+    "statusSha256": "14b1e1a1bc2ff4e0d79dd444224639010acc9f82eea8aa824b02cb21afb73ed4"
+  },
+  "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "bytes": 0,
+  "retainedBytes": 0,
+  "truncated": false
+}

@@ -1,0 +1,42 @@
+{
+  "label": "parameter-exact-types",
+  "command": "node",
+  "args": [
+    "node_modules/typescript/bin/tsc",
+    "--strict",
+    "--exactOptionalPropertyTypes",
+    "--noEmit",
+    "--target",
+    "ES2022",
+    "--module",
+    "NodeNext",
+    "--moduleResolution",
+    "NodeNext",
+    "agent_docs/impl/roadmap9/phase3/parameter/exact-options.ts"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 215,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T10:47:52.567Z",
+  "finishedAt": "2026-10-28T10:47:52.782Z",
+  "source": {
+    "available": true,
+    "commit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
+    "clean": false,
+    "statusSha256": "ddad660372e0994cf9315b0c88fb06437a22f47f1980d21f95447e5d176637be"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
+    "clean": false,
+    "statusSha256": "ddad660372e0994cf9315b0c88fb06437a22f47f1980d21f95447e5d176637be"
+  },
+  "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "bytes": 0,
+  "retainedBytes": 0,
+  "truncated": false
+}

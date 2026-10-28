@@ -1,0 +1,19 @@
+{
+  "scope": "Literal review expectations, not a product result",
+  "rows": [{"amount": 5}, {"amount": 10}, {"amount": 15}, {"amount": 20}],
+  "thresholds": [
+    {"value": 10, "revision": 0, "selected": [false, true, true, true]},
+    {"value": 20, "revision": 1, "selected": [false, false, false, true]}
+  ],
+  "graph": [
+    {"kind": "parameter", "id": "threshold", "inputs": []},
+    {"kind": "data", "id": "threshold", "inputs": []},
+    {"kind": "data", "id": "left", "inputs": [{"kind": "data", "id": "threshold"}, {"kind": "parameter", "id": "threshold"}]},
+    {"kind": "data", "id": "right", "inputs": [{"kind": "parameter", "id": "threshold"}]},
+    {"kind": "data", "id": "joined", "inputs": [{"kind": "data", "id": "left"}, {"kind": "data", "id": "right"}]},
+    {"kind": "data", "id": "summary", "inputs": [{"kind": "data", "id": "joined"}]},
+    {"kind": "data", "id": "unrelated", "inputs": [{"kind": "data", "id": "threshold"}]}
+  ],
+  "closure": ["left", "right", "joined", "summary"],
+  "failureCases": ["missing-resource", "duplicate-id", "invalid-value", "stale-result", "resource-in-use", "cyclic-dependency", "resource-limit"]
+}

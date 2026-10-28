@@ -1,0 +1,32 @@
+{
+  "label": "parameter-all",
+  "command": "npm",
+  "args": [
+    "test"
+  ],
+  "code": 1,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 276587,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T10:40:13.167Z",
+  "finishedAt": "2026-10-28T10:44:49.754Z",
+  "source": {
+    "available": true,
+    "commit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
+    "clean": false,
+    "statusSha256": "94b4ab02ee7663910b7409a21f2aa7519903f69eba237cde777beba91feac7b2"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
+    "clean": false,
+    "statusSha256": "94b4ab02ee7663910b7409a21f2aa7519903f69eba237cde777beba91feac7b2"
+  },
+  "logSha256": "4fe5db818e32106ea16187701ad6a50bd1fe86611568262c13f7b7f28a772a98",
+  "bytes": 1356826,
+  "retainedBytes": 1356826,
+  "truncated": false
+}

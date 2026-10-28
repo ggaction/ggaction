@@ -1,0 +1,40 @@
+{
+  "label": "parameter-focused",
+  "command": "node",
+  "args": [
+    "scripts/run-tests.js",
+    "unit",
+    "unit/grammar/expression-",
+    "unit/core/resource-state.test.js",
+    "unit/core/resource-references.test.js",
+    "unit/actions/data/source-revision.test.js",
+    "unit/actions/data/derived-editing.test.js",
+    "unit/actions/resources/remove.test.js",
+    "unit/persistence/"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 8988,
+  "node": "v22.23.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T10:40:03.733Z",
+  "finishedAt": "2026-10-28T10:40:12.721Z",
+  "source": {
+    "available": true,
+    "commit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
+    "clean": false,
+    "statusSha256": "bbeec8d19f2a743c4cde07908c95b415a34531df5a1f59f49f810c046e9a39de"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
+    "clean": false,
+    "statusSha256": "bbeec8d19f2a743c4cde07908c95b415a34531df5a1f59f49f810c046e9a39de"
+  },
+  "logSha256": "0b8d4cd3b8586a4ce94786cc69e42d08c2fa108c3ef35d78d0a370dc1cb272e0",
+  "bytes": 16730,
+  "retainedBytes": 16730,
+  "truncated": false
+}

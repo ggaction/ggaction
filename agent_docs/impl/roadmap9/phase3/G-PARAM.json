@@ -1,0 +1,55 @@
+{
+  "id": "G-PARAM",
+  "state": "planned",
+  "scope": [
+    "STEP-013 parameter resource lifecycle and computed binding contract"
+  ],
+  "proposal": "agent_docs/impl/roadmap9/phase3/parameter/DESIGN.md",
+  "decisions": [
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6"
+  ],
+  "authorization": {
+    "workRequest": {
+      "date": "2026-10-28",
+      "userMessage": "구현해",
+      "precedingProposal": "G-PARAM 생성/수정/삭제, 타입, exact revision, 의존 갱신, 삭제/저장 정책의 설계안 작성 후 검토",
+      "covered": "G-PARAM 작업과 구체적인 검토 패키지 준비",
+      "notCovered": "아직 제시하지 않은 P1-P6의 정확한 공개/저장 계약"
+    },
+    "reusedApproval": "G-EXPR.json designApproval; D1-D6 변경 없음"
+  },
+  "requiredChecks": [
+    "parameter-review",
+    "parameter-types",
+    "parameter-exact-types",
+    "parameter-focused",
+    "parameter-navigation",
+    "parameter-all",
+    "parameter-machine"
+  ],
+  "remaining": [
+    "complete and push verified review package",
+    "explicit approval of P1-P6"
+  ],
+  "baselineCommit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
+  "notice": "Review material only. No public parameter API, resource schema or STEP-013/AT-18 completion.",
+  "evidenceManifest": "agent_docs/impl/roadmap9/phase3/parameter/evidence/summary.json",
+  "evidenceRevision": "sha256:57cd7aa23a0f567a5467bfe39929b570d06200e0852e4ccc5760f42172eac11f",
+  "reviewSourceRevision": "sha256:399ec3063d351c1b63fcfb541a141a4001f103b92b067a348cef9b11e8e2c659",
+  "qualificationEnvironment": {
+    "node": "22.23.1",
+    "npm": "10.9.8",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "knownBaselineLimitations": "agent_docs/impl/roadmap9/phase3/parameter/compatibility.md",
+  "supplementalDecisionsPending": [
+    "STEP-016 conditional dataflow policy remains outside P1-P6; obligation retained",
+    "G-DATA contract and public v2 integration remain required"
+  ]
+}

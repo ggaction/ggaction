@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "status": "Proposed",
+  "publicInventoryPromotion": false,
+  "candidates": [
+    {"id": "createParameter", "kind": "domain-action", "entries": ["ggaction", "ggaction/basic"], "decision": "P1/P5"},
+    {"id": "editParameter", "kind": "domain-action", "entries": ["ggaction"], "decision": "P1/P3/P5"},
+    {"id": "removeParameter", "kind": "domain-action", "entries": ["ggaction"], "decision": "P1/P4/P5"}
+  ],
+  "storedChanges": ["parameter resource kind", "computed v2 transform.parameterInputs"],
+  "releaseDependency": "G-DATA and existing G-EXPR D6 public integration boundary"
+}

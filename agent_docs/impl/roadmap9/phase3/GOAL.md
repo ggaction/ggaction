@@ -11,6 +11,8 @@
 - [후보 인벤토리](candidates.json): 승인된 설계와 남은 공개 통합; current/planned에 등록하지 않음
 - [consumer matrix](consumers.json): 적용 대상과 후속 검증
 - [검토 실행계획](review-plan.json): 승인 전에 요구하는 실행 증거
+- [G-PARAM 검토](parameter/DESIGN.md): 신규 scalar resource와 exact computed binding 제안
+- [Parameter 진행 상태](STEP2.md): 검토 패키지와 실제 제품 구현 구별
 
 ## 승인과 검증 경계
 

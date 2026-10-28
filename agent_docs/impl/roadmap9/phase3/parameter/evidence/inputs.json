@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "inputs": [
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/parameter/DESIGN.md",
+      "sha256": "12554de1d8c6c182fc0a9dda8109de0ea2af613d6eb937d84c537a69e303b909"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/parameter/calls.ts",
+      "sha256": "dc4d89bc62e7d1d40ce3c37c7fff9787f33ee4894b62cbedfc071d231f940f22"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/parameter/candidates.json",
+      "sha256": "c11088bd819bd269185ba989c41869210437d31a03e80ef65230dff241c0ef7a"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/parameter/compatibility.md",
+      "sha256": "7ed228b49f5401f2e2b7b151f3422e3aa97cc425ee69cd247ed15da22911e579"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/parameter/consumers.json",
+      "sha256": "a4aa7861754b07dd15a8e6aa0de38cc8b8984d6c002f4c8ce83efddb8379fb3c"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/parameter/exact-options.ts",
+      "sha256": "841972553e68e2fe40f8174ba5466e2d9d85ee0bf04eadf4838acb411b4de91e"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/parameter/fixtures.json",
+      "sha256": "2223a6f68e8368c0206fc47b2d87ad5e0e0aba3055a25fae5c24840bdfe7d5bb"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/parameter/proposal.d.ts",
+      "sha256": "ae8b67f99361aabc8afbeeaf2e5ef7705c12f32e9cb4607245842e48a03711a3"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/parameter/qualify.mjs",
+      "sha256": "c52b9c89306d9ad5c0b9c63b3f28e331bd26a36f03c890acf8dba6fbbf2c6523"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/parameter/reference.mjs",
+      "sha256": "324977d6c71bc45254748a4c6b59136f45f06ea9844c9d12d7935173ec2dec94"
+    },
+    {
+      "path": "agent_docs/impl/roadmap9/phase3/parameter/verify.mjs",
+      "sha256": "a6684fab682f9efc8ebdeb8eafa61577d29822b926e56a11c7ede19ce302074b"
+    }
+  ]
+}

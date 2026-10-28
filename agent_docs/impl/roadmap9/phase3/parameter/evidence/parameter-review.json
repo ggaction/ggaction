@@ -1,0 +1,32 @@
+{
+  "label": "parameter-review",
+  "command": "node",
+  "args": [
+    "agent_docs/impl/roadmap9/phase3/parameter/verify.mjs"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 411,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T10:47:51.805Z",
+  "finishedAt": "2026-10-28T10:47:52.217Z",
+  "source": {
+    "available": true,
+    "commit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
+    "clean": false,
+    "statusSha256": "ddad660372e0994cf9315b0c88fb06437a22f47f1980d21f95447e5d176637be"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "7e0f2b4688c7ae8ea26ae9abb7e054c784c034ed",
+    "clean": false,
+    "statusSha256": "ddad660372e0994cf9315b0c88fb06437a22f47f1980d21f95447e5d176637be"
+  },
+  "logSha256": "08cc7e35dcb2ecfd77cd23e3502fc5946a8494a9da904ca4465dd1c6261f6c98",
+  "bytes": 4165,
+  "retainedBytes": 4165,
+  "truncated": false
+}

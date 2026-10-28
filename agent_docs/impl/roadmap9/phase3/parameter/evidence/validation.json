@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "checks": 7,
+  "reviewInputFiles": 11,
+  "inputsSha256": "399ec3063d351c1b63fcfb541a141a4001f103b92b067a348cef9b11e8e2c659",
+  "summarySha256": "57cd7aa23a0f567a5467bfe39929b570d06200e0852e4ccc5760f42172eac11f",
+  "counts": {
+    "parameter-focused": {
+      "tests": 131,
+      "pass": 131,
+      "fail": 0,
+      "skipped": 0
+    },
+    "parameter-navigation": {
+      "tests": 7,
+      "pass": 7,
+      "fail": 0,
+      "skipped": 0
+    },
+    "parameter-all": {
+      "tests": 6449,
+      "pass": 6449,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "productChanged": false,
+  "executionState": "dirty review-only working tree; product bytes equal baseline commit",
+  "knownBaselineLimitations": [
+    "Node22.23.2 packed size exceeds existing ceiling",
+    "Existing EditLegendOptions conflict under exactOptionalPropertyTypes"
+  ]
+}
