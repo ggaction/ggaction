@@ -43,6 +43,12 @@ Graph와 H가 layout kind를 공유할 때 정확히 한 `graph` 또는 `hierarc
 H selector 및 갱신 계획은 method뿐 아니라 input.kind가 hierarchy인 layout만 소비한다.
 별도 persisted discriminator나 공개 registry를 추가하지 않는다.
 
+공통 입력 깊이 문제는 root 통합 수리로 연결했다. 5,000단계 nested children 한 행은
+`createData`의 기존 recursive `core/immutable.js::cloneAndFreeze`에서 stack overflow가 발생하여
+hierarchy action에 도달하지 않는다. 재현 원본은 `.artifacts/hierarchy-review/nested-source-depth.mjs`와
+동명 로그에 보존했다. H pure traversal의 flat depth 검증과 이 공통 입력 경계를 구분하며,
+후속 통합에서 bounded immutable 입력 처리를 확인해야 한다.
+
 STEP025–028 partition view/focus/bend는 이 checkpoint의 tree/treemap 완료와 구별하여 후속으로
 계속 구현한다. 전체 STEP077 완료를 이 기록으로 주장하지 않는다.
 
@@ -50,10 +56,23 @@ STEP025–028 partition view/focus/bend는 이 checkpoint의 tree/treemap 완료
 
 현재 검증 원본은 `.artifacts/hierarchy-*.log`, `.artifacts/consumers/`,
 `.artifacts/validation/hierarchy-primitives/`, `.artifacts/size-study/hierarchy-public/`에 보존한다.
-최종 통과 목록과 입력 hash는 checkpoint 완료 시 별도 receipt에 기록한다.
+최종 통과 목록과 입력 hash는 [PUBLIC-EVIDENCE.json](PUBLIC-EVIDENCE.json)에 기록했다.
+Source checkpoint는 `92a9d22123c8817303df936836a7baab5470ac2e`이며 다음 metadata-only
+기록은 runtime/types/package 입력을 바꾸지 않는다.
+
+- Canonical 전체 coverage: **7,154/7,154**, lines96.27 / branches94.02 / functions98.81, critical283개 통과.
+- 전체 Browser: **310/310**, 승인 primitive/public PNG pair **5/5**, 실제 H lifecycle **16/16**.
+- Generated lifecycle **3/3**, recursive option inventory/trace ledger **7/7**. 새 H9종 direct 호출과
+  typed override 경로를 확인하고 기존 conditional positional scale 경로까지 inventory를 동기화했다.
+- Docs source **167/167**, built152pages/1,259selective artifacts, desktop 검색 및320/390/768px 확인.
+- 최종 동일 tar `6c6e0e413efdea10fc81b7e91736272f0486e75aadafd65d4ac61e0d7185472c`로
+  Node20.20.2/22.23.1/24.22.1 각각 installed203개와 qualification7개 통과.
+
+H9개 action과 tree/treemap 소비자 연결은 완료했다. 전체 현실 데이터 corpus 재실행 및 graph/image/paint
+동시 등록은 후속 통합 체크포인트가 소유하며, 위 알려진 공통 깊이 입력 문제도 root가 수리한다.
 
 동일 staging tar와 동일 minified browser bytes를 Node20.20.2/22.23.1/24.22.1,
-npm10.9.8에서 측정했다. 767 entries, unpacked 5,259,004 bytes, packed 최대 1,139,047 bytes다.
+npm10.9.8에서 측정했다. 767 entries, unpacked 5,259,209 bytes, packed 최대 1,139,101 bytes다.
 Browser 최대 gzip은 Full 566,357, Basic 330,313, SVG 8,185 bytes다. Package 한도는
 767/1,140,000/5,260,000, browser Full/Basic는 567,000/331,000으로 최소 1,000-byte 단위만
 조정하고 SVG 25,000은 유지했다. Search index는 886,377 bytes로 887,000의 bounded ceiling을

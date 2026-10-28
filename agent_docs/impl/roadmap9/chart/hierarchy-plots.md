@@ -9,8 +9,9 @@
 - [x] 새 plot facade·builtin resource validator 경계 revision `928fba48` 승인 (`approved`): “세 설계안 모두 승인, 구현 계속”
   ([승인 정본](../PUBLIC_APPROVALS_20261028.json))
 - [x] 공개 action·revision·consumer·declarations/current/docs와 installed evidence 구현
-- [ ] 최종 전체 coverage 및 Node20/22/24·browser 검증 receipt 고정
-- [ ] STEP-020·AT-22·STEP-077 완료
+- [x] 최종 전체 coverage 및 Node20/22/24·browser 검증 receipt 고정 ([실행 근거](../phase3/hierarchy/PUBLIC-EVIDENCE.json))
+- [x] STEP-020 hierarchy/tree/treemap 공개 연결 및 해당 AT-22 증거
+- [ ] STEP-025–028 partition 공개 연결과 STEP-077 전체 통합
 
 이 문서는 승인된 설계 기록이며 아래 제안 당시의 rationale을 보존한다. 공개 구현과 현재 정확한 지원은
 [HIERARCHY](../../../contract/current/HIERARCHY.md), 검증 상태는
