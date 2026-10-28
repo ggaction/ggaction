@@ -3197,3 +3197,10 @@ outline mark, retained image를 두고 source revision·codec·prepared image st
 
 GraphPlot 입력 layout의 닫힌 method vocabulary는 core/vocabulary.js 한 곳이 소유한다. Graph selector와 grammar normalizer가 이를 함께 읽으며 selector는 layout 계산기를 import하지 않는다.
 Node20 canonical graph-plot staging810entries, packed1,193,083/unpacked5,488,863bytes에 맞춰 package cap810/1,194,000/5,489,000으로 최소 조정한다.
+
+
+null/default 및 복원 limit 검증을 보강한 최종 graph-layout source는 Node20에서
+1,183,749packed/5,438,055unpacked bytes다. Packed 한도는 유지하고 unpacked만5,439,000으로
+최소 조정한다. 이전5,438,000 한도 초과55bytes를 통과로 표시하지 않는다.
+
+동일 final archive의 Node20 browser 실측은 Full590,307/Basic342,113bytes이며 두 기존 한도591,000/343,000 안이다.
