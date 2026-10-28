@@ -340,5 +340,8 @@
       "contact-sheet.png"
     ],
     "result": "Contain preserves aspect; cover crops at selected alignment; fill stretches the circle; clip and alpha visible. User approval remains pending."
-  }
+  },
+  "codeRevision": "3853bdb189e6ffbf60b85fb3fe778cc4d26bb1db",
+  "evidenceRevision": "3853bdb189e6ffbf60b85fb3fe778cc4d26bb1db",
+  "metadataNote": "Revision-only follow-up; runtime, primitive and rendered output hashes are unchanged."
 }
