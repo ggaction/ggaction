@@ -1,5 +1,7 @@
 # Object-bounds radial 타원 추가 검토
 
+> 공개 P1 연결 시 승인된 실행 slice 전체를 `test/charts/structured-paints/variants/radial-gradient/`로 승격했다. 아래 Gate 경로와 미구현 표현은 원 승인 revision의 기록이며 현재 상태는 [P1 구현 기록](../paints/STRUCTURED_FILL.md)을 따른다.
+
 상태: **approved**. revision `06e9eba8`에 대한 “추가 시각 대상 모두 승인, 구현 계속”을
 [승인 정본](../../PUBLIC_APPROVALS_20261028.json)에 기록했다. 기존 원형/offset/focal/alpha6종은 `57f70fbc`에서 승인되었다.
 이 문서는 [공개 제안 P1](../paints/PUBLIC.md)의 비정사각 object-bounds 의미에 해당하는 새 표본 하나만 다룬다.

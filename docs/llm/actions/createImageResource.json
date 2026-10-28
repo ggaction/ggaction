@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 3,
+  "name": "createImageResource",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Creates retained image source for embedded image bytes.",
+  "signature": "createImageResource(options: ApplyImageResourceOptions<\"create\">): ChartProgram;",
+  "intents": [
+    "create image resource",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "retained image source",
+    "embedded image bytes"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [],
+    "owns": [
+      "retained image source"
+    ],
+    "idOptions": []
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "replaceImageResource",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "prepared",
+      "required": true,
+      "type": "PreparedImageResource<\"create\">"
+    },
+    {
+      "name": "requestToken",
+      "required": true,
+      "type": "string"
+    }
+  ],
+  "callPatterns": [
+    "createImageResource({ prepared, requestToken })"
+  ],
+  "snippet": "program.createImageResource({ prepared: preparedImageCreate, requestToken: \"current\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createimageresource"
+}

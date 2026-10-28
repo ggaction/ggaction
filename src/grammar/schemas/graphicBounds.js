@@ -303,7 +303,7 @@ export function resolvePrimitiveGraphicBounds(type, properties = {}, profile) {
       properties.y + radius
     );
   }
-  if (type === "rect") {
+  if (type === "rect" || type === "image") {
     if (![properties.x, properties.y, properties.width, properties.height]
       .every(Number.isFinite)) return undefined;
     return box(

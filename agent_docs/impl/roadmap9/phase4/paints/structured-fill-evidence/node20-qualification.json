@@ -1,0 +1,43 @@
+{
+  "node": "v20.20.2",
+  "platform": "darwin",
+  "records": [
+    {
+      "id": "node",
+      "status": "passed",
+      "durationMs": 118728.37312500001
+    },
+    {
+      "id": "mcp",
+      "status": "passed",
+      "durationMs": 2502.5334999999905
+    },
+    {
+      "id": "types",
+      "status": "passed",
+      "durationMs": 816.6960830000171
+    },
+    {
+      "id": "tutorials",
+      "status": "passed",
+      "durationMs": 61019.63616699999
+    },
+    {
+      "id": "bundle-full",
+      "status": "failed",
+      "durationMs": 6131.467833000002,
+      "error": "Error: ggaction gzip bundle 555702 exceeds 555000.\n    at bundle (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/package-consumer.js:70:43)\n    at async runConsumerCases (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/consumers/runtime.js:37:27)\n    at async testPackageConsumer (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/package-consumer.js:73:21)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/package-consumer.js:98:18"
+    },
+    {
+      "id": "bundle-basic",
+      "status": "failed",
+      "durationMs": 4332.059875000006,
+      "error": "Error: ggaction/basic gzip bundle 332290 exceeds 332000.\n    at bundle (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/package-consumer.js:70:43)\n    at async runConsumerCases (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/consumers/runtime.js:37:27)\n    at async testPackageConsumer (file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/package-consumer.js:73:21)\n    at async file:///Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/scripts/package-consumer.js:98:18"
+    },
+    {
+      "id": "bundle-svg",
+      "status": "passed",
+      "durationMs": 220.16370800000732
+    }
+  ]
+}

@@ -2505,3 +2505,58 @@ Browser-safe `ggaction/persistence`의 네 함수는 action replay 없이 canoni
 
 - ✅ Covered: `target`, `sortBy`, and `dependents` use the shared derived-data lifecycle. Evidence: `test/unit/actions/data/sorted-data.test.js` and `test/unit/actions/data/derived-editing.test.js`.
 - No proposal remains for this action.
+
+## `createImageResource`
+
+- Signature: `createImageResource({ prepared, requestToken })`.
+- Full-only synchronous action commits an authentic create handle from `await prepareImageResource(program, request, host)`. Request is `{kind:"create", id, uri, expectedHash, mimeType, maxBytes?, license?, attribution?}`; host is `{requestToken, load, decode, signal?}`. Exact original receiver, action kind and current token must match. Copied/forged handles, aborted signals and changed receivers fail before writes; intentional branching from the original immutable receiver remains valid.
+- Load returns `{bytes:Uint8Array,mimeType}`; decode returns `{width,height,originClean:true}`. MIME is PNG/JPEG/WebP/static SVG, SHA256 lowercase hex, default and maximum bytes 16 MiB, decoded pixels at most 64 MiPixels. Invalid identities/current bindings fail before loader calls; MIME/hash/decode/CORS/abort errors are distinct. There is no implicit fetch.
+- Stores an authored `image` resource revision 0 with canonical source metadata in options and original dimensions/byteLength/base64 in result. Input refs are empty. Trace includes only the request descriptor and bounded resource metadata; it excludes bytes, URL and token. It creates no graphics. Prepare a unit chart explicitly before composing it; Basic supports concrete rendering only.
+- Editable and graphic-only codecs retain self-contained bytes and verify hash/MIME/static SVG offline without decoding. Rendering preparation is documented in `docs/api/rendering.md`.
+
+### Formal values — `createImageResource`
+
+- Implemented: `createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram`.
+- Planned: 없음.
+- Proposed (NOT IMPLEMENTED): automatic network loading.
+
+### Value coverage — `createImageResource`
+
+- ✅ Covered: opaque handles, exact receiver/token, own descriptors, host failures/abort, duplicate IDs, bounded trace, Full/Basic boundary, immutable state and offline restoration.
+- Evidence: `test/unit/resources/image-resource-lifecycle.test.js`, `test/unit/resources/image-preparation.test.js`, `test/contracts/image-types.test.js`.
+
+## `replaceImageResource`
+
+- Signature: `replaceImageResource({ prepared, requestToken })`.
+- Uses the same explicit preparation boundary as create with request `{kind:"replace", target, uri, expectedHash, mimeType, maxBytes?, license?, attribution?}`. Existing target is required; safe-integer revision overflow fails before loader calls. The source metadata may change; the resource ID is retained.
+- Commits revision +1, atomically updates every exact image layer reference, and invokes wrapped image rematerialization for each live consumer. Item keys, alternative text, selection and highlight intent persist while fit recomputes from the new source dimensions. Other resources and earlier immutable branches retain their values. Generic `removeResource` owns restrictive/cascade deletion.
+
+### Formal values — `replaceImageResource`
+
+- Implemented: `replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram`.
+- Planned: 없음.
+- Proposed (NOT IMPLEMENTED): automatic refresh.
+
+### Value coverage — `replaceImageResource`
+
+- ✅ Covered: exact receiver/action/token, all live refs, changed aspect ratio, stable identity, retained highlight, immutable branches and offline restoration.
+- Evidence: `test/unit/resources/image-resource-lifecycle.test.js`, `test/contracts/image-types.test.js`.
+
+## `removeResource`
+
+- Signature: `removeResource({ kind, id, cascade? })`.
+- Full-only common stored-resource removal requires an explicit typed kind and ID. Same IDs in different resource namespaces are independent. Omitted cascade is restrictive: any live resource or layer reference rejects removal. Cascade must be boolean.
+- Explicit cascade follows the stored ownership/dependency graph; unowned dependent resources remain protected. For an image, first remove every image mark consuming that exact resource through wrapped `removeMark`, then remove the resource. Mark config, owned clip wrappers and selection/highlight projections are removed with their mark. Authored persistent-selection resources remain available. Independent shared resources and unrelated marks are preserved. A speculative complete application validates all consumers before the returned action writes.
+- Authored hierarchy/layout dependents and live hierarchy plots require explicit removal first; `removeMark` releases a plot without deleting its reusable hierarchy or layout. Generated dependents may be removed by the ownership plan.
+- Missing IDs, stale references, unknown kinds, invalid cascade, protected dependents and cyclic graphs reject without mutating the receiver. No loader or decoder is called.
+
+### Formal values — `removeResource`
+
+- Implemented: `removeResource(options: RemoveStoredResourceOptions): ChartProgram`.
+- Planned: 없음.
+- Proposed (NOT IMPLEMENTED): forced dangling references.
+
+### Value coverage — `removeResource`
+
+- ✅ Covered: image restrict/cascade, hierarchy/layout dependency restrictions, complete mark/config/clip/selection cleanup, unrelated resource retention and immutable failure.
+- Evidence: `test/unit/resources/image-resource-lifecycle.test.js`, `test/unit/resources/hierarchy-resources.test.js`, `test/unit/resources/hierarchy-consumers.test.js`, `test/unit/core/builtin-resource-kinds.test.js`.

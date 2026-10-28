@@ -25,6 +25,13 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "structured-paints": ["canvas", "paint"],
+  "image-assets": ["canvas", "plot-main", "label", "backdrop", "image-image-clip", "image"],
+  "tree-layouts": ["canvas", "treePlot", "chartTitle", "chartSubtitle"],
+  "tree-horizontal": ["canvas", "treePlot", "chartTitle", "chartSubtitle"],
+  "tree-radial": ["canvas", "treePlot", "chartTitle", "chartSubtitle"],
+  "treemap-layouts": ["canvas", "treemapPlot", "chartTitle", "chartSubtitle"],
+  "treemap-squarify": ["canvas", "treemapPlot", "chartTitle", "chartSubtitle"],
   "compound-path": ["canvas", "underlay", "shape"],
   "shared-adjacent": [],
   "linked-overlay": ["canvas","horizontalGridLines","bars","trend","xAxisLine","xAxisTicks","xAxisLabels","xAxisTitle","yAxisLine","yAxisTicks","yAxisLabels","yAxisTitle","chartTitle"],
@@ -468,6 +475,13 @@ test("locks the complete public graphic hierarchy inventory", () => {
           : undefined;
       if (expectedDrawLength === undefined) assert.ok(drawOrder.length > 20);
       else assert.equal(drawOrder.length, expectedDrawLength);
+      continue;
+    }
+    if (chart.id === "image-assets") {
+      assert.deepEqual(drawOrder, expected);
+      assert.deepEqual(program.graphicSpec.objects["plot-main"].children, ["label", "backdrop", "image-image-clip"]);
+      assert.deepEqual(program.graphicSpec.objects["image-image-clip"].children, ["image"]);
+      assert.equal(findGraphicParent(program.graphicSpec, "image").id, "image-image-clip");
       continue;
     }
     if (chart.id === "symbol-window") {

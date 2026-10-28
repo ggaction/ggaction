@@ -1,0 +1,3 @@
+export type HierarchyTreeOptions = { nodeSize: readonly [number, number]; siblingGap: number; depthGap: number; maxNodes?: number } &
+  ({ orientation: "vertical" | "horizontal"; radius?: never; startAngle?: never; sweep?: never }
+  | { orientation: "radial"; radius: number; startAngle: number; sweep: number });

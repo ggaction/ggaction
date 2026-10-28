@@ -5,6 +5,8 @@ export { ChartProgram };
 export type {
   InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
   FillPaint,
+  PatternPaint,
+  RadialGradientPaint,
   LinearGradientPaint,
   LinearGradientPoint,
   LinearGradientStop

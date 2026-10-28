@@ -63,7 +63,7 @@ test("resolves finite gradient endpoints across the full numeric range", () => {
 test("rejects malformed paint shapes before rendering", () => {
   for (const [value, message] of [
     ["", /non-empty string/],
-    [{ ...verticalPaint, type: "radial-gradient" }, /Unsupported fill paint type/],
+    [{ ...verticalPaint, type: "conic-gradient" }, /Unsupported fill paint type/],
     [{ ...verticalPaint, extra: true }, /non-empty string or linear gradient/],
     [{ ...verticalPaint, from: { x: -0.1, y: 1 } }, /from\.x/],
     [{ ...verticalPaint, to: verticalPaint.from }, /from and to must differ/],

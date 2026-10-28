@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 3,
+  "name": "createHierarchyData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Create a typed hierarchy from flat parent rows, nested children, or grouped paths.",
+  "signature": "createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;",
+  "intents": [
+    "create hierarchy data",
+    "create",
+    "add",
+    "chart setup",
+    "data and scales",
+    "typed hierarchy",
+    "parent child data"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "source dataset"
+    ],
+    "owns": [
+      "typed hierarchy"
+    ],
+    "idOptions": [
+      "parent",
+      "id",
+      "data",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editHierarchyData",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "parent",
+      "strategy": "explicit"
+    },
+    {
+      "input": "data",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "source dataset"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "key",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "parent",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "value",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "children",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "groupFields",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "valueMode",
+      "required": false,
+      "type": "HierarchyValueMode | undefined"
+    },
+    {
+      "name": "forest",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "missingCategory",
+      "required": false,
+      "type": "\"error\" | \"include\" | undefined"
+    },
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "data",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "maxNodes",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createHierarchyData({ value, id, parent?, data?, target?, key?, children?, groupFields? })"
+  ],
+  "snippet": "program.createHierarchyData({ id: \"hierarchy\", key: \"id\", parent: \"parent\", value: \"value\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createhierarchydata"
+}

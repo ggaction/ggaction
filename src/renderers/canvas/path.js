@@ -1,8 +1,10 @@
+import { tracePath } from "./pathTrace.js";
+export { tracePath } from "./pathTrace.js";
 import { requireFiniteProperty } from "./validation.js";
 import { validateConcreteGraphicProperties } from
   "../../grammar/schemas/concreteGraphic.js";
 import { resolvePathCommandBounds } from "../../grammar/schemas/graphicBounds.js";
-import { applyCanvasFill } from "./fill.js";
+import { fillCanvasPath } from "./fill.js";
 import { applyCanvasStroke } from "./stroke.js";
 
 function drawPath(context, child, collectionId) {
@@ -59,9 +61,8 @@ function drawPath(context, child, collectionId) {
     if (bounds === undefined) {
       throw new Error(`Graphic "${graphicId}" requires finite path fill bounds.`);
     }
-    applyCanvasFill(context, properties.fill, bounds, graphicId);
-    if (properties.fillRule === undefined) context.fill();
-    else context.fill(properties.fillRule);
+    fillCanvasPath(context, properties.fill, bounds, graphicId,
+      () => tracePath(context, commands), properties.fillRule);
   }
   if (hasStroke && strokeWidth > 0) {
     applyCanvasStroke(context, properties, strokeDash);
@@ -80,23 +81,3 @@ export function drawPathGraphic(context, id, graphic) {
   drawPath(context, { id, properties: graphic.properties }, id);
 }
 
-export function tracePath(context, commands) {
-  for (const command of commands) {
-    if (command.op === "M") {
-      context.moveTo(command.x, command.y);
-    } else if (command.op === "L") {
-      context.lineTo(command.x, command.y);
-    } else if (command.op === "C") {
-      context.bezierCurveTo(
-        command.x1,
-        command.y1,
-        command.x2,
-        command.y2,
-        command.x,
-        command.y
-      );
-    } else {
-      context.closePath();
-    }
-  }
-}

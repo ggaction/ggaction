@@ -1,0 +1,9 @@
+export interface ConcreteImage {
+  readonly contentHash: string;
+  readonly mimeType: ImageMimeType;
+  readonly byteLength: number;
+  readonly width: number;
+  readonly height: number;
+  readonly payload: { readonly encoding: "base64"; readonly data: string };
+}
+declare const preparedImageRenderingBrand: unique symbol;

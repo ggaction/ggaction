@@ -2,6 +2,7 @@ import { getLayerScaleIds } from "../../../materialization/marks/index.js";
 import { hasConditionalBarPosition, conditionalBarStructure } from "../../../materialization/conditionalBarStructure.js";
 import { conditionalAggregateBarValues, conditionalHistogramBarValues } from "../../../materialization/conditionalBarValues.js";
 import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
+import { materializeFillItems } from "../../../materialization/fillPaint.js";
 import { materializeMarkOutput } from "../../../materialization/markOutput.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
@@ -25,6 +26,8 @@ import { replaceGraphicItems } from "../../primitives/editGraphics.js";
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 
 function editRectangles(program, id, rectangles) {
+  rectangles = materializeFillItems(program, findLayer(program, id),
+    rectangles.map(properties => ({ type: "rect", properties }))).map(item => item.properties);
   const appearance = program.markConfigs[id]?.barAppearance ?? {};
   const blend = findLayer(program, id)?.mark?.blend;
   if (blend !== undefined) rectangles = rectangles.map(rect => ({...rect, blend}));

@@ -1,4 +1,4 @@
-import { resolveCanvasSolidPaint } from "./fill.js";
+import { fillCanvasPath } from "./fill.js";
 import { requireFiniteProperty } from "./validation.js";
 import { validateConcreteGraphicProperties } from
   "../../grammar/schemas/concreteGraphic.js";
@@ -16,9 +16,7 @@ function drawCircle(context, child, collectionId) {
     throw new Error(`Graphic "${graphicId}" requires a non-negative radius.`);
   }
 
-  if (typeof properties.fill !== "string") {
-    throw new Error(`Graphic "${graphicId}" requires a string fill property.`);
-  }
+  if (properties.fill === undefined) throw new Error(`Graphic "${graphicId}" requires a fill property.`);
 
   const opacity = properties.opacity ?? 1;
 
@@ -26,11 +24,12 @@ function drawCircle(context, child, collectionId) {
     throw new Error(`Graphic "${graphicId}" requires opacity from 0 to 1.`);
   }
 
-  context.fillStyle = resolveCanvasSolidPaint(properties.fill);
   context.globalAlpha = opacity;
   context.beginPath();
   context.arc(x, y, radius, 0, Math.PI * 2);
-  context.fill();
+  fillCanvasPath(context, properties.fill, { left: x - radius, right: x + radius,
+    top: y - radius, bottom: y + radius }, graphicId,
+    () => context.arc(x, y, radius, 0, Math.PI * 2));
   if (properties.stroke !== undefined) {
     if (typeof properties.stroke !== "string") {
       throw new Error(`Graphic "${graphicId}" requires a string stroke property.`);

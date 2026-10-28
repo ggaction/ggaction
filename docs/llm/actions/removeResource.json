@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 3,
+  "name": "removeResource",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Removes typed stored resource while preserving unrelated chart resources.",
+  "signature": "removeResource(options: RemoveStoredResourceOptions): ChartProgram;",
+  "intents": [
+    "remove resource",
+    "remove",
+    "delete",
+    "chart setup",
+    "data and scales",
+    "typed stored resource",
+    "resource deletion"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing typed stored resource"
+    ],
+    "owns": [],
+    "idOptions": [
+      "id"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "removeMark",
+    "editSemantic"
+  ],
+  "editableVia": [
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing typed stored resource"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "kind",
+      "required": true,
+      "type": "StoredResourceKind"
+    },
+    {
+      "name": "id",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "name": "cascade",
+      "required": false,
+      "type": "boolean | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removeResource({ kind, id, cascade? })"
+  ],
+  "snippet": "program.removeResource({ kind: \"image\", id: \"logo\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#removeresource"
+}

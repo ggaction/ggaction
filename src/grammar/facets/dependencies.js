@@ -30,6 +30,10 @@ function coordinateType(semanticSpec, layer) {
 
 function classifyPrimaryLayer(semanticSpec, layer) {
   const type = layer.mark?.type;
+  if (["tree", "treemap"].includes(type)) {
+    if (!layer.hierarchyBinding?.layout) throw new Error("Hierarchy facets require a complete layout binding.");
+    return "hierarchy";
+  }
   const parallel = layer.encoding?.parallel;
   if (parallel !== undefined || coordinateType(semanticSpec, layer) === "parallel") {
     const complete = type === "line" && Array.isArray(parallel?.dimensions) &&
@@ -126,7 +130,7 @@ export function resolveFacetFamily(semanticSpec) {
   const annotations = semanticSpec.layers.filter(layer => layer.mark?.type === 'text' &&
     ['x', 'y', 'text'].every(channel => Object.hasOwn(layer.encoding?.[channel] ?? {}, 'datum')));
   const dataLayers = semanticSpec.layers.filter(layer =>
-    !(layer.mark?.type === 'text' && layer.source !== undefined) && !annotations.includes(layer));
+    layer.mark?.type !== "image" && !(layer.mark?.type === 'text' && layer.source !== undefined) && !annotations.includes(layer));
   const primary = dataLayers.length ? dataLayers : annotations;
   for (const note of annotations) classifyPrimaryLayer(semanticSpec, note);
   if (primary.length === 0) {
@@ -285,7 +289,7 @@ export function planFacetDependencies(semanticSpec, options = {}) {
   const classifications = new Map(
     [...datasets].map(([id, { value }]) => [id, classifyDataset(value)])
   );
-  const layerPaths = [...layers].map(([layerId, { value: layer }]) => {
+  const layerPaths = [...layers].filter(([, { value: layer }]) => layer.mark?.type !== "image").map(([layerId, { value: layer }]) => {
     const data = validateUserId(layer.data, `Facet layer "${layerId}" dataset id`);
     return { layerId, data, path: tracePath(data, datasets, classifications) };
   });

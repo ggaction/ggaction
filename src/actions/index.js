@@ -1,3 +1,7 @@
+import { registerImageResourceActions } from "./images/index.js";
+import { registerHierarchyPlotActions } from "./hierarchy/plots.js";
+import { registerDataResourceRevision } from "./data/resourceRevision.js";
+import { registerHierarchyResourceActions, reviseHierarchyInputs } from "./hierarchy/resources.js";
 import { registerPrimitiveActions } from "./primitives/index.js";
 import { registerCanvasActions } from "./canvas/index.js";
 import { registerBasicCoordinateActions } from "./coordinates/actions.js";
@@ -18,7 +22,7 @@ import { registerChartActions } from "./charts/index.js";
 import { registerCategoryOrderActions } from "./categoryOrder/index.js";
 import { registerSelectionActions } from "./selection/index.js";
 import { registerResourceActions } from "./resources/index.js";
-import { registerGraphActions } from "./graphs/resources.js";
+import { registerGraphActions, reviseGraphInputs } from "./graphs/resources.js";
 import { registerTextMetricActions } from "./textMetrics/index.js";
 import { registerCompositionActions } from "./composition/index.js";
 import { registerFacetActions } from "./facets/index.js";
@@ -35,6 +39,7 @@ export function registerActions(ProgramClass) {
     remove: removeCompositionTheme
   });
   registerPrimitiveActions(ProgramClass);
+  registerImageResourceActions(ProgramClass);
   registerCompositionActions(ProgramClass);
   registerFacetActions(ProgramClass);
   registerCanvasActions(ProgramClass);
@@ -58,5 +63,9 @@ export function registerActions(ProgramClass) {
   registerSelectionActions(ProgramClass);
   registerResourceActions(ProgramClass);
   registerGraphActions(ProgramClass);
+  registerHierarchyResourceActions(ProgramClass);
+  registerHierarchyPlotActions(ProgramClass);
+  registerDataResourceRevision(ProgramClass, { kinds: ["hierarchy", "graph"],
+    revise: (program, replacements) => reviseGraphInputs(reviseHierarchyInputs(program, replacements), replacements) });
   registerTextMetricActions(ProgramClass);
 }

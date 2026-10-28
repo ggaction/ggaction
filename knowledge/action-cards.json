@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 306,
+  "count": 319,
   "cards": [
     {
       "schemaVersion": 3,
@@ -6524,7 +6524,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a point mark using fourteen named shapes or polygons with area/radius normalization.",
-      "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "create point mark",
         "create",
@@ -6640,7 +6640,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -7000,7 +7000,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "strokeDash",
@@ -7415,7 +7415,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -7609,7 +7609,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -8097,7 +8097,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -8353,7 +8353,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -8525,7 +8525,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -8751,7 +8751,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.",
-      "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: \"error\" | \"skip\"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "edit point mark",
         "edit",
@@ -8845,7 +8845,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -28108,7 +28108,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic arc mark and empty closed-path collection.",
-      "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "create arc mark",
         "create",
@@ -28229,7 +28229,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -28265,7 +28265,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit arc geometry or appearance and rematerialize complete sector paths.",
-      "signature": "editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;",
+      "signature": "editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;",
       "intents": [
         "edit arc mark",
         "edit",
@@ -28366,7 +28366,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -36377,7 +36377,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -36567,7 +36567,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "FillPaint | undefined"
         },
         {
           "name": "opacity",
@@ -36708,7 +36708,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: number | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: number | undefined; fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -36855,7 +36855,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -37001,7 +37001,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: ArcInnerRadius | undefined; padAngle?: 0 | undefined; fill?: FillPaint | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -38156,6 +38156,1336 @@
       "snippet": "program.editCompositionScales({ share: { y: true } })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editcompositionscales"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createImageResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Creates retained image source for embedded image bytes.",
+      "signature": "createImageResource(options: ApplyImageResourceOptions<\"create\">): ChartProgram;",
+      "intents": [
+        "create image resource",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "retained image source",
+        "embedded image bytes"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [],
+        "owns": [
+          "retained image source"
+        ],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "replaceImageResource",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "prepared",
+          "required": true,
+          "type": "PreparedImageResource<\"create\">"
+        },
+        {
+          "name": "requestToken",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "createImageResource({ prepared, requestToken })"
+      ],
+      "snippet": "program.createImageResource({ prepared: preparedImageCreate, requestToken: \"current\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createimageresource"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "replaceImageResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Replaces retained image source while preserving its composition slot and order.",
+      "signature": "replaceImageResource(options: ApplyImageResourceOptions<\"replace\">): ChartProgram;",
+      "intents": [
+        "replace image resource",
+        "replace",
+        "swap child",
+        "chart setup",
+        "data and scales",
+        "retained image source",
+        "embedded image bytes"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing retained image source"
+        ],
+        "owns": [],
+        "idOptions": []
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "replaceImageResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing retained image source"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "prepared",
+          "required": true,
+          "type": "PreparedImageResource<\"replace\">"
+        },
+        {
+          "name": "requestToken",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "replaceImageResource({ prepared, requestToken })"
+      ],
+      "snippet": "program.replaceImageResource({ prepared: preparedImageReplace, requestToken: \"current\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#replaceimageresource"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createImageMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Creates image placement for image fit and clipping.",
+      "signature": "createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;",
+      "intents": [
+        "create image mark",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "image placement",
+        "image fit and clipping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "dataset and coordinate context"
+        ],
+        "owns": [
+          "image placement"
+        ],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic",
+        "createGraphics"
+      ],
+      "editableVia": [
+        "editImageMark",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "viewport",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "dataset and coordinate context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "image",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "viewport",
+          "required": false,
+          "type": "\"auto\" | { x: number; y: number; width: number; height: number; } | undefined"
+        },
+        {
+          "name": "fit",
+          "required": false,
+          "type": "\"contain\" | \"cover\" | \"fill\" | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "alt",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "false | GraphicClip | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createImageMark({ id?, target?, image?, viewport?, fit?, align?, opacity?, alt? })"
+      ],
+      "snippet": "program.createImageMark({ image: \"logo\", alt: \"Logo\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#createimagemark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editImageMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edits image placement, including settings for image fit and clipping.",
+      "signature": "editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;",
+      "intents": [
+        "edit image mark",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "image placement",
+        "image fit and clipping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing image placement"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editImageMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "viewport",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing image placement"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "image",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "viewport",
+          "required": false,
+          "type": "\"auto\" | { x: number; y: number; width: number; height: number; } | undefined"
+        },
+        {
+          "name": "fit",
+          "required": false,
+          "type": "\"contain\" | \"cover\" | \"fill\" | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "alt",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "false | GraphicClip | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? })"
+      ],
+      "snippet": "program.editImageMark({ target: \"image\", fit: \"cover\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editimagemark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "removeResource",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Removes typed stored resource while preserving unrelated chart resources.",
+      "signature": "removeResource(options: RemoveStoredResourceOptions): ChartProgram;",
+      "intents": [
+        "remove resource",
+        "remove",
+        "delete",
+        "chart setup",
+        "data and scales",
+        "typed stored resource",
+        "resource deletion"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing typed stored resource"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "removeMark",
+        "editSemantic"
+      ],
+      "editableVia": [
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing typed stored resource"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "kind",
+          "required": true,
+          "type": "StoredResourceKind"
+        },
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "cascade",
+          "required": false,
+          "type": "boolean | undefined"
+        }
+      ],
+      "callPatterns": [
+        "removeResource({ kind, id, cascade? })"
+      ],
+      "snippet": "program.removeResource({ kind: \"image\", id: \"logo\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#removeresource"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createHierarchyData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Create a typed hierarchy from flat parent rows, nested children, or grouped paths.",
+      "signature": "createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;",
+      "intents": [
+        "create hierarchy data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "typed hierarchy",
+        "parent child data"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "typed hierarchy"
+        ],
+        "idOptions": [
+          "parent",
+          "id",
+          "data",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editHierarchyData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "parent",
+          "strategy": "explicit"
+        },
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "key",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "parent",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "value",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "children",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupFields",
+          "required": false,
+          "type": "readonly string[] | undefined"
+        },
+        {
+          "name": "valueMode",
+          "required": false,
+          "type": "HierarchyValueMode | undefined"
+        },
+        {
+          "name": "forest",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "missingCategory",
+          "required": false,
+          "type": "\"error\" | \"include\" | undefined"
+        },
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "maxNodes",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createHierarchyData({ value, id, parent?, data?, target?, key?, children?, groupFields? })"
+      ],
+      "snippet": "program.createHierarchyData({ id: \"hierarchy\", key: \"id\", parent: \"parent\", value: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createhierarchydata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editHierarchyData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Revise hierarchy input options and refresh every dependent layout and plot atomically.",
+      "signature": "editHierarchyData(options: TargetedOptions<EditHierarchyDataOptions>): ChartProgram;",
+      "intents": [
+        "edit hierarchy data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "typed hierarchy",
+        "parent child data"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing typed hierarchy",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "parent",
+          "target",
+          "data"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editHierarchyData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "parent",
+          "strategy": "explicit"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing typed hierarchy",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "key",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "parent",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "children",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupFields",
+          "required": false,
+          "type": "readonly string[] | undefined"
+        },
+        {
+          "name": "valueMode",
+          "required": false,
+          "type": "HierarchyValueMode | undefined"
+        },
+        {
+          "name": "forest",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "missingCategory",
+          "required": false,
+          "type": "\"error\" | \"include\" | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "maxNodes",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editHierarchyData({ parent?, target?, data?, key?, value?, children?, groupFields?, valueMode? })"
+      ],
+      "snippet": "program.editHierarchyData({ target: \"hierarchy\", valueMode: \"inclusive\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#edithierarchydata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "layoutHierarchy",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Compute an explicit tree, treemap, or normalized partition layout from a named hierarchy.",
+      "signature": "layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;",
+      "intents": [
+        "layout hierarchy",
+        "layout",
+        "avoid overlap",
+        "chart setup",
+        "data and scales",
+        "tree layout",
+        "treemap layout"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing hierarchy resource"
+        ],
+        "owns": [
+          "tree layout"
+        ],
+        "idOptions": [
+          "id",
+          "hierarchy",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editLayout",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing hierarchy resource"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "hierarchy",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "order",
+          "required": false,
+          "type": "HierarchyOrder | undefined"
+        },
+        {
+          "name": "method",
+          "required": true,
+          "type": "\"partition\" | \"tree\" | \"treemap\""
+        },
+        {
+          "name": "options",
+          "required": false,
+          "type": "HierarchyTreemapOptions | { maxNodes?: number | undefined; } | HierarchyTreeOptions | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "layoutHierarchy({ id, method, target?, hierarchy?, order?, options? })"
+      ],
+      "snippet": "program.layoutHierarchy({ id: \"tree-layout\", hierarchy: \"hierarchy\", method: \"tree\", options: { nodeSize: [20, 10], siblingGap: 10, depthGap: 20, orientation: \"vertical\" } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#layouthierarchy"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editLayout",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Change a layout order or method-specific options and refresh its plot consumers.",
+      "signature": "editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;",
+      "intents": [
+        "edit layout",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "stored hierarchy layout",
+        "node positions"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing stored hierarchy layout"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editLayout",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing stored hierarchy layout"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "order",
+          "required": false,
+          "type": "HierarchyOrder | undefined"
+        },
+        {
+          "name": "options",
+          "required": false,
+          "type": "Partial<...> | { maxNodes?: number | undefined; } | Partial<...> | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editLayout({ target?, order?, options? })"
+      ],
+      "snippet": "program.editLayout({ target: \"tree-layout\", order: { by: \"value\", direction: \"descending\" } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editlayout"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createTreePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Draw hierarchy nodes and parent links from a stored tree layout.",
+      "signature": "createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;",
+      "intents": [
+        "create tree plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "hierarchy node link chart",
+        "tidy tree"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "canvas and tree layout resource"
+        ],
+        "owns": [
+          "hierarchy node link chart"
+        ],
+        "idOptions": [
+          "id",
+          "layout",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H0",
+        "H1"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editTreePlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "origin",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "complete",
+        "requires": [
+          "canvas and tree layout resource"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "origin",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "nodes",
+          "required": false,
+          "type": "(HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] | undefined; }) | undefined"
+        },
+        {
+          "name": "links",
+          "required": false,
+          "type": "false | { stroke?: string | undefined; strokeWidth?: number | undefined; opacity?: number | undefined; } | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | HierarchyLabelsOptions | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createTreePlot({ id?, target?, layout?, origin?, clip?, nodes?, links?, labels? })"
+      ],
+      "snippet": "program.createTreePlot({ id: \"tree\", layout: \"tree-layout\", labels: {} })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createtreeplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editTreePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Edit tree nodes, links, labels, placement, or the bound tree layout.",
+      "signature": "editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;",
+      "intents": [
+        "edit tree plot",
+        "edit",
+        "change",
+        "complete chart",
+        "chart facade",
+        "hierarchy node link chart",
+        "tidy tree"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing hierarchy node link chart",
+          "canvas and tree layout resource"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "layout"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editTreePlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "origin",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing hierarchy node link chart",
+          "canvas and tree layout resource"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "origin",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "nodes",
+          "required": false,
+          "type": "(HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] | undefined; }) | undefined"
+        },
+        {
+          "name": "links",
+          "required": false,
+          "type": "false | { stroke?: string | undefined; strokeWidth?: number | undefined; opacity?: number | undefined; } | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | HierarchyLabelsOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editTreePlot({ target?, layout?, origin?, clip?, nodes?, links?, labels? })"
+      ],
+      "snippet": "program.editTreePlot({ target: \"tree\", nodes: { radius: 8 } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#edittreeplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createTreemapPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Draw nested rectangles from a stored treemap layout.",
+      "signature": "createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;",
+      "intents": [
+        "create treemap plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "nested rectangle chart",
+        "proportional hierarchy"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "canvas and treemap layout resource"
+        ],
+        "owns": [
+          "nested rectangle chart"
+        ],
+        "idOptions": [
+          "id",
+          "layout",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H0",
+        "H1"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editTreemapPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "origin",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "complete",
+        "requires": [
+          "canvas and treemap layout resource"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "origin",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "cells",
+          "required": false,
+          "type": "(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] | undefined; }) | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | HierarchyLabelsOptions | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createTreemapPlot({ id?, target?, layout?, origin?, clip?, cells?, labels? })"
+      ],
+      "snippet": "program.createTreemapPlot({ id: \"treemap\", layout: \"treemap-layout\", labels: {} })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createtreemapplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editTreemapPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Edit treemap cells, labels, placement, or the bound treemap layout.",
+      "signature": "editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;",
+      "intents": [
+        "edit treemap plot",
+        "edit",
+        "change",
+        "complete chart",
+        "chart facade",
+        "nested rectangle chart",
+        "proportional hierarchy"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing nested rectangle chart",
+          "canvas and treemap layout resource"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "layout"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editTreemapPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "origin",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing nested rectangle chart",
+          "canvas and treemap layout resource"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "origin",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "cells",
+          "required": false,
+          "type": "(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] | undefined; }) | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | HierarchyLabelsOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editTreemapPlot({ target?, layout?, origin?, clip?, cells?, labels? })"
+      ],
+      "snippet": "program.editTreemapPlot({ target: \"treemap\", cells: { opacity: 0.8 } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#edittreemapplot"
     }
   ]
 }

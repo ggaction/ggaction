@@ -1,0 +1,1 @@
+export type HierarchyValueMode = "leaf-sum" | "inclusive" | "own-plus-children";

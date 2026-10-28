@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 3,
+  "name": "editTreePlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Edit tree nodes, links, labels, placement, or the bound tree layout.",
+  "signature": "editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;",
+  "intents": [
+    "edit tree plot",
+    "edit",
+    "change",
+    "complete chart",
+    "chart facade",
+    "hierarchy node link chart",
+    "tidy tree"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing hierarchy node link chart",
+      "canvas and tree layout resource"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "layout"
+    ]
+  },
+  "authoringRoles": [
+    "H1",
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editTreePlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "origin",
+      "strategy": "documented-auto"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing hierarchy node link chart",
+      "canvas and tree layout resource"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "origin",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "nodes",
+      "required": false,
+      "type": "(HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] | undefined; }) | undefined"
+    },
+    {
+      "name": "links",
+      "required": false,
+      "type": "false | { stroke?: string | undefined; strokeWidth?: number | undefined; opacity?: number | undefined; } | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | HierarchyLabelsOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editTreePlot({ target?, layout?, origin?, clip?, nodes?, links?, labels? })"
+  ],
+  "snippet": "program.editTreePlot({ target: \"tree\", nodes: { radius: 8 } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#edittreeplot"
+}

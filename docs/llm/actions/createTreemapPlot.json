@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 3,
+  "name": "createTreemapPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Draw nested rectangles from a stored treemap layout.",
+  "signature": "createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;",
+  "intents": [
+    "create treemap plot",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "nested rectangle chart",
+    "proportional hierarchy"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "canvas and treemap layout resource"
+    ],
+    "owns": [
+      "nested rectangle chart"
+    ],
+    "idOptions": [
+      "id",
+      "layout",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H0",
+    "H1"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editTreemapPlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "origin",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and treemap layout resource"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "origin",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "cells",
+      "required": false,
+      "type": "(HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] | undefined; }) | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | HierarchyLabelsOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createTreemapPlot({ id?, target?, layout?, origin?, clip?, cells?, labels? })"
+  ],
+  "snippet": "program.createTreemapPlot({ id: \"treemap\", layout: \"treemap-layout\", labels: {} })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#createtreemapplot"
+}

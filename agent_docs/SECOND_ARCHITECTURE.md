@@ -38,14 +38,27 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 현재 한도는 package/consumer/search 검사의 상수와 현재 실행 결과가 기준이다.
 아래 설명에 남은 과거 checkpoint 수치를 현재 제한으로 해석하지 않는다.
 
-## Private asset preparation 경계
+## 명시 asset preparation 경계
 
-Image와 font의 명시 host load·abort·bytes hash·budget은 `resources/assetPreparation.js`가
-공유한다. `resolveAssets.js`는 SVG allowlist/decoded image dimensions를, `resolveFonts.js`는
-font identity와 같은 font/provider의 측정 batch를 검증한다. 모두 private preparation이며
-public resource/action/schema와 renderer 경계는 아직 바꾸지 않았다. Host callback, decoder
-object와 mutable byte buffer는 저장 결과에 들어가지 않는다. 공개 연결 전의 근거와 남은 범위는
-[image](impl/roadmap9/phase4/images/PRIVATE.md)와 [font](impl/roadmap9/phase4/fonts/PRIVATE.md)에 있다.
+Image와 font의 bytes/hash/host callback 준비는 `resources/assetPreparation.js`가 공유하며,
+abort와 callback lifetime은 core의 순수 host 경계가 소유한다. Image의 closed request와 embedded
+payload/static SVG 검증은 grammar에 있어 persistence와 renderers가 loader를 import하지 않는다.
+Full image resource preparation은 exact original receiver/token에 묶인 private WeakMap handle을
+반환한다. 동기 wrapped create/replace action은 authored snapshot을 쓰고 image consumers를 명시적으로
+materialize한다. Callback, decoder object, signal은 semantic/graphic state나 trace에 저장하지 않는다.
+
+Image mark는 dataset 없는 단일 resource item이며 typed resource lineage를 사용한다. Shared selection
+policy의 resourceBacked capability가 데이터 조회를 분리하고 existing selector/inspection/scene가 같은
+concrete item을 소비한다. Image ref/alt는 semantic layer, fit/viewport/align/opacity/extra clip은 materialization
+config, resolved rectangle/clip/embedded payload는 graphicSpec만 소유한다. Facet/repeat의 data anchor에는
+image overlay를 포함하지 않으며 자식 plot마다 같은 resource 의미를 명시 rematerialize한다.
+
+Canvas renderer preparation은 graphicSpec만 읽어 content hash별 decoded backend image를 private handle에
+보유한다. SVG는 embedded data URI, PNG/PDF는 native byte decoder를 사용하며 renderer fetch는 없다.
+Canvas scene preparation과 rendering은 하나의 concrete compiler를 공유한다. Mutable scene은 own-data
+content digest가 바뀌면 새 compiled snapshot을 만들고 이전 preparation을 context 변경 전에 거부한다.
+Font의 public resource 연결과 최종 export bundle은 별도 단계다. 정확 API와 한도는 Current 및 rendering
+reference가 소유한다.
 
 ## Private builtin resource validation
 
@@ -55,9 +68,7 @@ freeze하며 상위 constructor의 권한을 상속하지 않는다. Public plug
 공통 resource owner는 envelope·typed refs·graph를 먼저 검사하고 등록 owner의 저장값 및 binding
 검증만 호출한다. Plain preview는 원래 constructor를 명시하며, 미등록 class/Basic는 추가 kind를
 거부한다. Persistence도 실제 복원 constructor의 같은 경계를 사용하고 계산을 실행하지 않는다.
-이 준비 checkpoint는 handler 연결점만 추가하며 Full assembly의 hierarchy/layout/image 등록과
-각 public authoring consumer는 후속 구현이다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이
-승인·검증과 후행 연결 의무를 보존한다.
+Full assembly는 image, hierarchy, hierarchy layout의 닫힌 handler와 public consumer를 등록하며 Basic에는 등록하지 않는다. Graph의 독립 공개 구현은 같은 경계를 사용한다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이 초기 승인·검증과 연결 경계를 보존한다.
 이 owner1개를 더한 지원 Node20/22/24 staging은739entries, packed최대1,098,083,
 unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
 Full/Basic/SVG browser gzip최대535,560/313,517/8,185는 기존 한도 안이며 그대로 유지한다.
@@ -87,7 +98,7 @@ packed최대1,098,660/unpacked5,059,006bytes다. 기존 packed 한도를 유지�
 최소1,000byte 단위인5,060,000으로 조정했다. 동일 minified browser bytes의 최대gzip은
 Full535,875/Basic313,870/SVG8,185로 기존 한도 안이다.
 
-## Private hierarchy normalization
+## Hierarchy normalization and explicit materialization
 
 `grammar/hierarchy/normalize.js`는 명시 node records의 typed identity, parent/children topology,
 iterative preorder/postorder와 세 가지 value aggregation을 한 번 검증하는 pure owner다.
@@ -103,8 +114,17 @@ iterative preorder/postorder와 세 가지 value aggregation을 한 번 검증�
 padding을 뺀 content와 own-value reserved rectangle을 분리해 보존한다.
 `grammar/hierarchy/order.js`는 명시 input/value/key/field 순서를 공통 model에 반영한다. Key는 기존 typed
 identity comparator, field는 기존 sort transform 정책을 재사용하며 원본 field 해결은 semantic caller의 책임이다.
-현재는 private 계산만 있고 hierarchy/layout resource 저장, public
-action, renderer 또는 새 시각 target과 연결하지 않았다.
+`materialization/hierarchy/resources.js`는 입력 dataset의 exact revision과 실제 row membership을
+hierarchy resource에 보존하고, layout resource는 정확히 하나의 hierarchy 입력을 참조한다.
+`actions/hierarchy/resources.js`는 source 수정과 명시 layout 편집에서 필요한 수치 결과를 먼저
+계산·검증하고 primitive를 통해 교체한다. `materialization/hierarchy/state.js`는 복원 시 저장된
+topology·value·좌표·binding을 검사하며 layout 알고리즘을 다시 실행하지 않는다.
+Tree/treemap facade는 `materialization/hierarchy/plot.js`의 concrete link/node/label 결과를
+wrapped materialize action으로 기록한다. Renderer는 기존 path/circle/rect/text만 소비한다.
+Node selection은 layout resource lineage와 실제 원본 row membership을 공유하고, label override는
+typed node key에 결박되어 원본 노드가 사라질 때 orphan 진단을 남긴다. Data revision과 facet source
+replacement는 같은 명시 hierarchy→layout→plot closure를 사용한다. 자세한 공개 계약은
+[HIERARCHY](contract/current/HIERARCHY.md)가 소유한다.
 상세 범위·후속 의무와 실측 package 증거는 [normalizer](impl/roadmap9/phase3/hierarchy/NORMALIZE_KERNEL.md)와
 [input adapter](impl/roadmap9/phase3/hierarchy/INPUT_KERNEL.md), [tree 계산](impl/roadmap9/phase3/hierarchy/TREE_KERNEL.md),
 [partition 계산](impl/roadmap9/phase3/hierarchy/PARTITION_KERNEL.md), [treemap 계산](impl/roadmap9/phase3/hierarchy/TREEMAP_KERNEL.md),
@@ -161,6 +181,14 @@ graph resource를 읽지 않으며 automatic compiler는 없다. `createGraphDat
 Renderer는 AST를 읽거나 평가하지 않으며 기존 computed v1의 의미와 명시 materialization을 유지한다.
 상세 내부 계약은 [expression core](architecture/EXPRESSION_CORE.md), 공개 computed는
 [CORE](contract/current/CORE.md), action trace는 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
+
+## 공유 색상 계산 경계
+
+`grammar/color.js`는 host-independent 색상 채널과 HSL 변환을 공유한다. Continuous scale은 기존
+입력 정책을 명시적으로 사용하여 accepted syntax와 결과를 유지하고, 승인된 structured paint/effect
+준비는 닫힌 RGBA parser를 사용한다. 새 parser는 아직 public fill/schema에 연결하지 않았으며 state,
+resource 또는 renderer 경계는 그대로다. 정확한 내부 범위와 검증은
+[paint 색상 준비](impl/roadmap9/phase4/paints/COLOR_FOUNDATION.md)에 기록한다.
 
 ## 내부 pattern kernel 경계
 
@@ -733,8 +761,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 549,000 bytes |
-| `ggaction/basic` | 326,000 bytes |
+| `ggaction` | 585,000 bytes |
+| `ggaction/basic` | 342,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -1942,8 +1970,8 @@ page를 만들고 Phase 1의 Canvas-compatible concrete drawing target으로 같
 - One chart는 exact logical width/height point의 one page다. Native page box가 조용히
   반올림하거나 clamp하지 않도록 positive integer `<= 16777216`만 backend 진입 전에 허용한다.
 - Canvas와 공유하는 complete native geometry preflight가 PDF document/page 생성보다 먼저 실행된다.
-- Text는 native PDF text operator로 남고 renderer가 glyph outline이나 raster image로
-  바꾸지 않는다.
+- 기본 Text는 native PDF text operator로 남는다. Structured Text paint와 isolated-glyph
+  opacity 처리의 bounded texture 예외는 current/MARKS.md의 shared structured fill이 소유한다.
 - Optional metadata는 title, author, subject와 keyword list만 받는다.
 - PDF document, page, context, gradient와 buffer는 adapter-local ephemeral state다.
 - Complete validation/drawing과 document close 뒤에만 directory/file을 기록한다.
@@ -3120,3 +3148,13 @@ Native item/vertex 계산이 각 branch 값을 검증한 뒤 선택된 값을 �
 새 semantic state나 graphic state로 저장하지 않는다. Source-label·interval bounds·point layout의
 selection 의존성까지 scale 계산 전에 순환을 검사한다. 정확한 조건부 채널/원점/단위/오류와
 진단 의미는 [ENCODINGS](contract/current/ENCODINGS.md)와 [MARKS](contract/current/MARKS.md)가 소유한다.
+### Structured paint materialization and Text output
+
+Paint normalization은 grammar/paint.js, 공통 색상은 grammar/color.js가 소유한다. Mark/guide domain
+materializer가 pattern 기준점과 Text fillBounds를 명시적으로 계산하여 concrete graphic에 저장하며,
+renderer는 semantic coordinate나 text width를 재추론하지 않는다. Pattern foreground의 공통 bounded
+geometry를 Canvas/SVG가 공유하고 여러 alpha layer는 기존 isolated glyph owner로 한 번 감쇠한다.
+Native radial output은 affine frame을 실제 fill까지 유지한다. Text는 concrete bounds로 bounded
+paint texture를 준비하고 기존 native glyph에 적용한다. Native glyph overhang 때문에 gradient texture는
+viewport의 역회전 범위를 덮으며 glyph shape를 bounds rectangle으로 바꾸지 않는다. SVG text는 vector
+paint resource를 소비한다. 정확한 값/제한/출력 차이는 current/MARKS.md의 shared structured fill이 소유한다.

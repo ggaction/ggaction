@@ -46,18 +46,18 @@ Treemap의 padding은 각 부모에 따로 적용된다. 따라서 값4인 A2와
 부모 영역, A1/A2/B의 가운데 label은 leaf 영역을 나타낸다.
 
 정확한 실행 소스는
-[tree primitive](../../../../../test/gates/tree-layouts/primitive.program.js)와
-[treemap primitive](../../../../../test/gates/treemap-layouts/primitive.program.js)다.
+[tree primitive](../../../../../test/charts/tree-layouts/primitive.program.js)와
+[treemap primitive](../../../../../test/charts/treemap-layouts/primitive.program.js)다. 승인 뒤 stable chart slice로 이동했다.
 두 프로그램은 실제 `chart().createCanvas().createData().createGraphics().editGraphics()` 명시 체인이다.
 미구현 public API 이름이나 가상의 호출은 포함하지 않는다. 다음은 repo root에서 실행 가능한 호출이다.
 
 ```js
-import { createTreePrimitive } from "./test/gates/tree-layouts/primitive.program.js";
+import { createTreePrimitive } from "./test/charts/tree-layouts/primitive.program.js";
 createTreePrimitive("vertical"); // "horizontal", "radial"
 ```
 
 ```js
-import { createTreemapPrimitive } from "./test/gates/treemap-layouts/primitive.program.js";
+import { createTreemapPrimitive } from "./test/charts/treemap-layouts/primitive.program.js";
 createTreemapPrimitive("slice-dice"); // "squarify"
 ```
 

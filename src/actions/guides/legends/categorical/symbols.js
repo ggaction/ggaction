@@ -1,3 +1,5 @@
+import { materializeFillItems } from "../../../../materialization/fillPaint.js";
+import { findLayer } from "../../../../selectors/layers.js";
 import{hasLegendClipGraphics,applyLegendClipGraphics}from"../../../../materialization/legendClip.js";
 import { editGraphicProperties } from "../../../primitives/graphicProperties.js";
 import { action } from "../../../../core/action.js";
@@ -120,14 +122,16 @@ function makeEditSymbol(type) {
           return next.editGraphics({
             target: id,
             property: "items",
-            value: items
+            value: materializeFillItems(next, findLayer(next, config.target), items)
           });
         }
+        const pointFills = layer.fill === undefined ? appearance.colors : config.domain.map(() => layer.fill);
+        const structuredFill = pointFills.some(fill => typeof fill === "object");
         next = editGraphicProperties(next, id, {
           x: x,
           y: layout.itemY,
           radius: layer.size,
-          fill: layer.fill ?? appearance.colors
+          ...(structuredFill ? {} : { fill: layer.fill ?? appearance.colors })
         })
           .editGraphics({
             target: id,
@@ -142,6 +146,8 @@ function makeEditSymbol(type) {
         )) {
           next = next.editGraphics({ target: id, property, value });
         }
+        if (structuredFill) next = next.editGraphics({ target: id, property: "fill", value: materializeFillItems(next, findLayer(next, config.target),
+          next.graphicSpec.objects[id].items.map((item, index) => ({ type: "circle", properties: { ...item.properties, fill: pointFills[index] } }))).map(item => item.properties.fill) });
         return applyLayerOpacity(next, id, layer.opacity ?? appearance.opacity, explicitRecipeOpacity);
       }
       const x = layout.symbolX.map(
@@ -158,7 +164,7 @@ function makeEditSymbol(type) {
         next,
         id,
         "rect",
-        config.domain.map((_, index) => materializeRectItem({
+        materializeFillItems(next, findLayer(next, config.target), config.domain.map((_, index) => materializeRectItem({
           x: x[index],
           y: layout.itemY[index] - layer.height / 2,
           width: layer.width,
@@ -169,7 +175,7 @@ function makeEditSymbol(type) {
           ...((layer.opacity ?? appearance.opacity) === undefined ? {} : { opacity: layer.opacity ?? appearance.opacity }),
           ...(!explicitRecipeOpacity?{}:{blend:"normal"}),
           ...requestedStrokeDetails(details, "Legend swatch symbol")
-        }, details))
+        }, details)))
       );
     }
   );

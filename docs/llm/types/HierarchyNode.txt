@@ -1,0 +1,4 @@
+export interface HierarchyNode {
+  readonly key: string; readonly parentKey: string | null; readonly childrenKeys: readonly string[]; readonly depth: number;
+  readonly ownValue: number; readonly totalValue: number; readonly residual: number; readonly sourceRows: readonly number[]; readonly synthetic?: true;
+}

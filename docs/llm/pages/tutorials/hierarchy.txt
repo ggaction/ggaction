@@ -1,0 +1,179 @@
+# Hierarchy tutorial
+
+A hierarchy describes parent-child meaning. A layout computes positions, and a plot draws those positions. Keeping these steps separate lets two views share the same source while using different layouts.
+
+## Run the maintained examples
+
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-graph-metrics/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-graph-metrics/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+
+Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
+
+```javascript
+import { chart, render } from "ggaction";
+
+const vertical = chart()
+  .createCanvas({
+    "width": 640,
+    "height": 500,
+    "margin": {
+      "left": 0,
+      "right": 0,
+      "top": 72,
+      "bottom": 0
+    },
+    "background": "#ffffff"
+  })
+  .createData({
+    "id": "hierarchy-source",
+    "values": [
+      {
+        "id": "Root",
+        "parent": null,
+        "value": 10
+      },
+      {
+        "id": "A",
+        "parent": "Root",
+        "value": 6
+      },
+      {
+        "id": "B",
+        "parent": "Root",
+        "value": 4
+      },
+      {
+        "id": "A1",
+        "parent": "A",
+        "value": 2
+      },
+      {
+        "id": "A2",
+        "parent": "A",
+        "value": 4
+      }
+    ],
+    "keyField": "id"
+  })
+  .createHierarchyData({
+    "id": "hierarchy",
+    "key": "id",
+    "parent": "parent",
+    "value": "value"
+  })
+  .layoutHierarchy({
+    "id": "layout",
+    "method": "tree",
+    "options": {
+      "nodeSize": [
+        48,
+        32
+      ],
+      "siblingGap": 112,
+      "depthGap": 118,
+      "orientation": "vertical"
+    }
+  })
+  .createTreePlot({
+    "origin": [
+      320,
+      28
+    ],
+    "nodes": {
+      "radius": 18,
+      "strokeWidth": 2,
+      "overrides": [
+        {
+          "key": "Root",
+          "fill": "#475569"
+        },
+        {
+          "key": "A",
+          "fill": "#2563eb"
+        },
+        {
+          "key": "A1",
+          "fill": "#60a5fa"
+        },
+        {
+          "key": "A2",
+          "fill": "#60a5fa"
+        },
+        {
+          "key": "B",
+          "fill": "#f59e0b"
+        }
+      ]
+    },
+    "links": {
+      "strokeWidth": 2
+    },
+    "labels": {
+      "offset": [
+        0,
+        32
+      ],
+      "fontSize": 14,
+      "overrides": [
+        {
+          "key": "Root",
+          "text": "Root · 10"
+        },
+        {
+          "key": "A",
+          "text": "A · 6"
+        },
+        {
+          "key": "A1",
+          "text": "A1 · 2"
+        },
+        {
+          "key": "A2",
+          "text": "A2 · 4"
+        },
+        {
+          "key": "B",
+          "text": "B · 4"
+        }
+      ]
+    }
+  })
+  .createTitle({
+    "text": "Tree · vertical",
+    "subtitle": "One hierarchy, five stable nodes and four parent links",
+    "align": "left",
+    "alongOffset": 32,
+    "offset": 2,
+    "gap": 8,
+    "titleStyle": {
+      "color": "#0f172a",
+      "fontSize": 20,
+      "fontFamily": "sans-serif",
+      "fontWeight": 600
+    },
+    "subtitleStyle": {
+      "color": "#64748b",
+      "fontSize": 12,
+      "fontFamily": "sans-serif",
+      "fontWeight": 400
+    }
+  });
+render(vertical, document.querySelector("#chart").getContext("2d"));
+```
+
+Each program uses the same ordered action flow: `createCanvas`, `createData`, `createHierarchyData`, `layoutHierarchy`, then `createTreePlot` or `createTreemapPlot`, and `createTitle` for the heading. Explicit IDs bind the source, hierarchy and layout. Colors and text target typed node keys so a layout change cannot transfer a style to a different node.
+
+## Change geometry while retaining meaning
+
+Continue from `vertical` above with `vertical.editLayout({target:"layout", options:{siblingGap:150}})` to widen sibling spacing. Use `order:{by:"value",direction:"descending"}` in a subsequent layout edit to sort siblings by value. Each call rematerializes the dependent plot and leaves the original program unchanged.
+
+Tree orientation is explicit. The radial variant additionally supplies radius, start angle and sweep. Angles are degrees clockwise from the top. Canvas changes move the stored layout into its plot frame; they do not rerun the hierarchy algorithm.
+
+## Compare rectangle layouts
+
+Slice-dice alternates subdivision directions. Squarify chooses rows to reduce extreme aspect ratios. Both preserve the hierarchy's values and typed node identities. Padding reserves space around children and permits internal labels; an internal label has zero opacity when no padding band remains.
+
+## Edit data and remove views
+
+Use `reviseData` for source values or `editHierarchyData` for hierarchy input policy. Both update the full dependent layout and plot closure. Unknown parents or invalid values reject the revision, leaving the earlier program and trace intact.
+
+Removing a mark keeps its reusable layout. Remove the layout before its hierarchy, and remove the hierarchy before its source dataset. Shared or authored dependents are never silently discarded. See [Hierarchy resources and plots](../../../api/hierarchy/) for complete signatures, defaults, grouped and nested source forms, labels, sorting and removal rules.

@@ -1,3 +1,4 @@
+import { BUILTIN_RESOURCE_KINDS, validateInputReference } from "../../core/resourceReference.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { contentDigest } from "../../core/contentDigest.js";
 
@@ -10,7 +11,11 @@ export function validateGraphicIdentity(value) {
     throw new TypeError("Graphic identity requires key, topology, role and lineage.");
   }
   const lineage = value.lineage;
-  if (Object.keys(lineage).length !== 4 || !["data", "logicalDataId"].every(key => typeof lineage[key] === "string" && lineage[key]) ||
+  if (lineage.kind === "resource") {
+    if (Object.keys(lineage).length !== 2 || !Object.hasOwn(lineage, "resource")) throw new TypeError("Resource lineage requires its exact resource reference.");
+    validateInputReference(lineage.resource);
+    if (!BUILTIN_RESOURCE_KINDS.includes(lineage.resource.kind)) throw new TypeError("Resource lineage requires a builtin resource.");
+  } else if (Object.keys(lineage).length !== 4 || !["data", "logicalDataId"].every(key => typeof lineage[key] === "string" && lineage[key]) ||
       !Number.isSafeInteger(lineage.revision) || lineage.revision < 0 || !Array.isArray(lineage.rowKeys) ||
       lineage.rowKeys.some(key => typeof key !== "string" || !key) || new Set(lineage.rowKeys).size !== lineage.rowKeys.length) {
     throw new TypeError("Graphic lineage requires an exact dataset revision and unique row keys.");

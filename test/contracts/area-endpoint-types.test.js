@@ -56,7 +56,7 @@ program.editErrorBand({ fill });
 program.editErrorBand({ fill: false });
 // @ts-expect-error Stroke is still a solid string, not FillPaint
 program.editAreaMark({ stroke: fill });
-// @ts-expect-error The area extension does not widen arc fill
+// Filled Arc marks share the same public FillPaint contract.
 program.editArcMark({ fill });
 program.createAreaMark({ missing: "break" });
 program.editAreaMark({ missing: "error" });

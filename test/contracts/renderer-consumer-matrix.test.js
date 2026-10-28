@@ -21,7 +21,8 @@ const CONCRETE_TYPES = Object.freeze([
   "rect",
   "line",
   "text",
-  "path"
+  "path",
+  "image"
 ]);
 const PATH_OPERATIONS = Object.freeze(["M", "L", "C", "Z"]);
 const SHARED_BEHAVIORS = Object.freeze([

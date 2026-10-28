@@ -28,6 +28,7 @@ interface ChartProgramActions {
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
   applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
+  removeResource(options: RemoveStoredResourceOptions): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeCoordinate(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -47,6 +48,18 @@ interface ChartProgramActions {
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
   createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
+  createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
+  replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+  createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
+  editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
+  createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;
+  editHierarchyData(options: TargetedOptions<EditHierarchyDataOptions>): ChartProgram;
+  layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
+  editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
+  createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+  editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+  createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
+  editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createGraphData(options: CreateGraphDataOptions): ChartProgram;
   editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
@@ -87,8 +100,8 @@ interface ChartProgramActions {
   editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
   editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
   editBin2DData(options: TargetedOptions<EditBin2DDataOptions>): ChartProgram;
-  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   createTickMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   editTickMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   jitterPoints(options: TargetedOptions<JitterPointsOptions>): ChartProgram;
@@ -100,8 +113,8 @@ interface ChartProgramActions {
   createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "multiply" | "screen" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
-  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
-  editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
+  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
+  editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
   createRectMark(options?: TargetedOptions<RectMarkOptions>): ChartProgram;
   editRectMark(options: TargetedOptions<EditRectMarkOptions>): ChartProgram;
   createRuleMark(options?: TargetedOptions<{ clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions>): ChartProgram;
@@ -516,6 +529,21 @@ export interface ApplyDataUpdateOptions<Kind extends DataUpdateRequest["kind"] =
 </details>
 
 Related types: [`DataUpdateRequest`](#type-dataupdaterequest) · [`PreparedDataUpdate`](#type-prepareddataupdate).
+
+### `ApplyImageResourceOptions` {#type-applyimageresourceoptions}
+
+<details markdown="1">
+<summary>Expand ApplyImageResourceOptions</summary>
+
+```typescript
+export interface ApplyImageResourceOptions<Kind extends "create" | "replace"> {
+  prepared: PreparedImageResource<Kind>; requestToken: string;
+}
+```
+
+</details>
+
+Related types: [`PreparedImageResource`](#type-preparedimageresource).
 
 ### `ApplyTextMetricsOptions` {#type-applytextmetricsoptions}
 
@@ -2459,6 +2487,29 @@ export interface ComputedExpressionV2 {
 
 Related types: [`ExpressionNode`](#type-expressionnode).
 
+### `ConcretePathCommand` {#type-concretepathcommand}
+
+<details markdown="1">
+<summary>Expand ConcretePathCommand</summary>
+
+```typescript
+export type ConcretePathCommand =
+  | { readonly op: "M"; readonly x: number; readonly y: number }
+  | { readonly op: "L"; readonly x: number; readonly y: number }
+  | {
+      readonly op: "C";
+      readonly x1: number;
+      readonly y1: number;
+      readonly x2: number;
+      readonly y2: number;
+      readonly x: number;
+      readonly y: number;
+    }
+  | { readonly op: "Z" };
+```
+
+</details>
+
 ### `ConditionalEncodingBranch` {#type-conditionalencodingbranch}
 
 <details markdown="1">
@@ -2997,6 +3048,20 @@ export type CreateHeatmapOptions =
 
 Related types: [`PreGriddedHeatmapOptions`](#type-pregriddedheatmapoptions) · [`BinnedHeatmapOptions`](#type-binnedheatmapoptions).
 
+### `CreateHierarchyDataOptions` {#type-createhierarchydataoptions}
+
+<details markdown="1">
+<summary>Expand CreateHierarchyDataOptions</summary>
+
+```typescript
+export type CreateHierarchyDataOptions = HierarchySource & { id: string; data?: string; maxNodes?: number };
+/** Omitted fields preserve the existing source form; every edit must change at least one option. */
+```
+
+</details>
+
+Related types: [`HierarchySource`](#type-hierarchysource).
+
 ### `CreateHistogramOptions` {#type-createhistogramoptions}
 
 <details markdown="1">
@@ -3055,6 +3120,19 @@ export interface CreateHorizonPlotOptions {
 </details>
 
 Related types: [`HorizonXEncoding`](#type-horizonxencoding) · [`HorizonYEncoding`](#type-horizonyencoding) · [`HorizonResolution`](#type-horizonresolution) · [`HorizonMissingPolicy`](#type-horizonmissingpolicy) · [`HorizonOverflowPolicy`](#type-horizonoverflowpolicy) · [`HorizonPaletteOptions`](#type-horizonpaletteoptions) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterpolation`](#type-curveinterpolation) · [`HorizonPlotGuideOptions`](#type-horizonplotguideoptions).
+
+### `CreateImageMarkOptions` {#type-createimagemarkoptions}
+
+<details markdown="1">
+<summary>Expand CreateImageMarkOptions</summary>
+
+```typescript
+export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; }
+```
+
+</details>
+
+Related types: [`ImageMarkOptions`](#type-imagemarkoptions).
 
 ### `CreateIntervalPlotOptions` {#type-createintervalplotoptions}
 
@@ -3249,14 +3327,14 @@ export type CreatePiePlotOptions = {
   category: PieCategory;
   color?: false | PieColor;
   radius?: PieRadiusChannel;
-  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 ```
 
 </details>
 
-Related types: [`PieCategory`](#type-piecategory) · [`PieColor`](#type-piecolor) · [`PieRadiusChannel`](#type-pieradiuschannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ArcInnerRadius`](#type-arcinnerradius) · [`PieLegendOptions`](#type-pielegendoptions).
+Related types: [`PieCategory`](#type-piecategory) · [`PieColor`](#type-piecolor) · [`PieRadiusChannel`](#type-pieradiuschannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ArcInnerRadius`](#type-arcinnerradius) · [`FillPaint`](#type-fillpaint) · [`PieLegendOptions`](#type-pielegendoptions).
 
 ### `CreatePolarLinePlotOptions` {#type-createpolarlineplotoptions}
 
@@ -3549,14 +3627,14 @@ Related types: [`RegressionPlotBaseOptions`](#type-regressionplotbaseoptions) ·
 ```typescript
 export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value" | "radius"> & {
   radiusScale?: MeasuredRadiusScaleOptions;
-  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 ```
 
 </details>
 
-Related types: [`CreatePiePlotOptions`](#type-createpieplotoptions) · [`MeasuredRadiusScaleOptions`](#type-measuredradiusscaleoptions) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ArcInnerRadius`](#type-arcinnerradius) · [`MeasuredRadialGuideOptions`](#type-measuredradialguideoptions).
+Related types: [`CreatePiePlotOptions`](#type-createpieplotoptions) · [`MeasuredRadiusScaleOptions`](#type-measuredradiusscaleoptions) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`ArcInnerRadius`](#type-arcinnerradius) · [`FillPaint`](#type-fillpaint) · [`MeasuredRadialGuideOptions`](#type-measuredradialguideoptions).
 
 ### `CreateRugPlotOptions` {#type-createrugplotoptions}
 
@@ -5852,6 +5930,19 @@ export interface EditGridOptions {
 
 Related types: [`CartesianGuideDashMap`](#type-cartesianguidedashmap) · [`CategoryValue`](#type-categoryvalue).
 
+### `EditHierarchyDataOptions` {#type-edithierarchydataoptions}
+
+<details markdown="1">
+<summary>Expand EditHierarchyDataOptions</summary>
+
+```typescript
+export type EditHierarchyDataOptions = Partial<HierarchySource> & { target?: string; data?: string; maxNodes?: number };
+```
+
+</details>
+
+Related types: [`HierarchySource`](#type-hierarchysource).
+
 ### `EditHorizonOptions` {#type-edithorizonoptions}
 
 <details markdown="1">
@@ -5867,6 +5958,19 @@ export interface EditHorizonOptions
 </details>
 
 Related types: [`HorizonEncodingOptions`](#type-horizonencodingoptions).
+
+### `EditImageMarkOptions` {#type-editimagemarkoptions}
+
+<details markdown="1">
+<summary>Expand EditImageMarkOptions</summary>
+
+```typescript
+export interface EditImageMarkOptions extends ImageMarkOptions { target?: string; }
+```
+
+</details>
+
+Related types: [`ImageMarkOptions`](#type-imagemarkoptions).
 
 ### `EditImputedDataOptions` {#type-editimputeddataoptions}
 
@@ -5893,6 +5997,19 @@ export type EditIntervalDataOptions = FocusedDerivedDataEdit<IntervalDataOptions
 </details>
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`IntervalDataOptions`](#type-intervaldataoptions).
+
+### `EditLayoutOptions` {#type-editlayoutoptions}
+
+<details markdown="1">
+<summary>Expand EditLayoutOptions</summary>
+
+```typescript
+export interface EditLayoutOptions { target?: string; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number }; }
+```
+
+</details>
+
+Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 
@@ -6672,6 +6789,32 @@ export interface EditTitleOptions
 </details>
 
 Related types: [`TitleOptions`](#type-titleoptions).
+
+### `EditTreePlotOptions` {#type-edittreeplotoptions}
+
+<details markdown="1">
+<summary>Expand EditTreePlotOptions</summary>
+
+```typescript
+export interface EditTreePlotOptions extends Omit<TreePlotOptions, "id"> { target?: string; }
+```
+
+</details>
+
+Related types: [`TreePlotOptions`](#type-treeplotoptions).
+
+### `EditTreemapPlotOptions` {#type-edittreemapplotoptions}
+
+<details markdown="1">
+<summary>Expand EditTreemapPlotOptions</summary>
+
+```typescript
+export interface EditTreemapPlotOptions extends Omit<TreemapPlotOptions, "id"> { target?: string; }
+```
+
+</details>
+
+Related types: [`TreemapPlotOptions`](#type-treemapplotoptions).
 
 ### `EditViolinPlotOptions` {#type-editviolinplotoptions}
 
@@ -7474,12 +7617,12 @@ export type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";
 <summary>Expand FillPaint</summary>
 
 ```typescript
-export type FillPaint = string | LinearGradientPaint;
+export type FillPaint = string | LinearGradientPaint | PatternPaint | RadialGradientPaint;
 ```
 
 </details>
 
-Related types: [`LinearGradientPaint`](#type-lineargradientpaint).
+Related types: [`LinearGradientPaint`](#type-lineargradientpaint) · [`PatternPaint`](#type-patternpaint) · [`RadialGradientPaint`](#type-radialgradientpaint).
 
 ### `FilledLegendSymbolRecipe` {#type-filledlegendsymbolrecipe}
 
@@ -7934,6 +8077,49 @@ export type GraphKeyField = string | readonly string[];
 
 </details>
 
+### `GraphicClip` {#type-graphicclip}
+
+<details markdown="1">
+<summary>Expand GraphicClip</summary>
+
+```typescript
+export type GraphicClip = GraphicClipRect | GraphicClipPath;
+```
+
+</details>
+
+Related types: [`GraphicClipRect`](#type-graphiccliprect) · [`GraphicClipPath`](#type-graphicclippath).
+
+### `GraphicClipPath` {#type-graphicclippath}
+
+<details markdown="1">
+<summary>Expand GraphicClipPath</summary>
+
+```typescript
+export interface GraphicClipPath {
+  readonly type: "path";
+  readonly commands: readonly ConcretePathCommand[];
+  readonly fillRule?: PathFillRule;
+}
+```
+
+</details>
+
+Related types: [`ConcretePathCommand`](#type-concretepathcommand) · [`PathFillRule`](#type-pathfillrule).
+
+### `GraphicClipRect` {#type-graphiccliprect}
+
+<details markdown="1">
+<summary>Expand GraphicClipRect</summary>
+
+```typescript
+export interface GraphicClipRect {
+  readonly x: number; readonly y: number; readonly width: number; readonly height: number;
+}
+```
+
+</details>
+
 ### `GraphicType` {#type-graphictype}
 
 <details markdown="1">
@@ -7947,7 +8133,8 @@ export type GraphicType =
   | "rect"
   | "line"
   | "text"
-  | "path";
+  | "path"
+  | "image";
 ```
 
 </details>
@@ -8065,6 +8252,133 @@ export type HeatmapCategoryPositionChannel =
 </details>
 
 Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionscaleoptions).
+
+### `HierarchyBodyPaint` {#type-hierarchybodypaint}
+
+<details markdown="1">
+<summary>Expand HierarchyBodyPaint</summary>
+
+```typescript
+export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidth?: number; opacity?: number; }
+```
+
+</details>
+
+### `HierarchyLabelPaint` {#type-hierarchylabelpaint}
+
+<details markdown="1">
+<summary>Expand HierarchyLabelPaint</summary>
+
+```typescript
+export interface HierarchyLabelPaint { fill?: string; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+```
+
+</details>
+
+### `HierarchyLabelsOptions` {#type-hierarchylabelsoptions}
+
+<details markdown="1">
+<summary>Expand HierarchyLabelsOptions</summary>
+
+```typescript
+export interface HierarchyLabelsOptions extends HierarchyLabelPaint {
+  content?: "value"; offset?: readonly [number, number]; overrides?: readonly (HierarchyNodeTarget & HierarchyLabelPaint & { text?: string })[];
+}
+```
+
+</details>
+
+Related types: [`HierarchyLabelPaint`](#type-hierarchylabelpaint) · [`HierarchyNodeTarget`](#type-hierarchynodetarget).
+
+### `HierarchyNodePaint` {#type-hierarchynodepaint}
+
+<details markdown="1">
+<summary>Expand HierarchyNodePaint</summary>
+
+```typescript
+export interface HierarchyNodePaint extends HierarchyBodyPaint { radius?: number; }
+```
+
+</details>
+
+Related types: [`HierarchyBodyPaint`](#type-hierarchybodypaint).
+
+### `HierarchyNodeTarget` {#type-hierarchynodetarget}
+
+<details markdown="1">
+<summary>Expand HierarchyNodeTarget</summary>
+
+```typescript
+export type HierarchyNodeTarget = { key: RowKeyScalar; path?: never } | { path: readonly (RowKeyScalar | null)[]; key?: never };
+```
+
+</details>
+
+Related types: [`RowKeyScalar`](#type-rowkeyscalar).
+
+### `HierarchyOrder` {#type-hierarchyorder}
+
+<details markdown="1">
+<summary>Expand HierarchyOrder</summary>
+
+```typescript
+export type HierarchyOrder = "input"
+  | { by: "value" | "key"; direction: "ascending" | "descending" }
+  | { by: "field"; field: string; direction: "ascending" | "descending"; nulls?: "first" | "last"; temporalUnit?: "year" | "timestamp" };
+```
+
+</details>
+
+### `HierarchySource` {#type-hierarchysource}
+
+<details markdown="1">
+<summary>Expand HierarchySource</summary>
+
+```typescript
+export type HierarchySource =
+  | { key: string; parent: string; value: string; children?: never; groupFields?: never; valueMode?: HierarchyValueMode; forest?: boolean; missingCategory?: never }
+  | { key: string; children: string; value: string; parent?: never; groupFields?: never; valueMode?: HierarchyValueMode; forest?: boolean; missingCategory?: never }
+  | { groupFields: readonly string[]; value: string; key?: never; parent?: never; children?: never; valueMode?: "leaf-sum"; forest?: never; missingCategory?: "error" | "include" };
+```
+
+</details>
+
+Related types: [`HierarchyValueMode`](#type-hierarchyvaluemode).
+
+### `HierarchyTreeOptions` {#type-hierarchytreeoptions}
+
+<details markdown="1">
+<summary>Expand HierarchyTreeOptions</summary>
+
+```typescript
+export type HierarchyTreeOptions = { nodeSize: readonly [number, number]; siblingGap: number; depthGap: number; maxNodes?: number } &
+  ({ orientation: "vertical" | "horizontal"; radius?: never; startAngle?: never; sweep?: never }
+  | { orientation: "radial"; radius: number; startAngle: number; sweep: number });
+```
+
+</details>
+
+### `HierarchyTreemapOptions` {#type-hierarchytreemapoptions}
+
+<details markdown="1">
+<summary>Expand HierarchyTreemapOptions</summary>
+
+```typescript
+export interface HierarchyTreemapOptions { size: readonly [number, number]; padding: number; method: "slice-dice" | "squarify"; maxNodes?: number; }
+```
+
+</details>
+
+### `HierarchyValueMode` {#type-hierarchyvaluemode}
+
+<details markdown="1">
+<summary>Expand HierarchyValueMode</summary>
+
+```typescript
+export type HierarchyValueMode = "leaf-sum" | "inclusive" | "own-plus-children";
+```
+
+</details>
 
 ### `HighlightMarksOptions` {#type-highlightmarksoptions}
 
@@ -8320,6 +8634,25 @@ export type HorizonYScaleOptions = ScaleFields<"id" | "clamp" | "reverse"> & {
 </details>
 
 Related types: [`ScaleFields`](#type-scalefields).
+
+### `ImageMarkOptions` {#type-imagemarkoptions}
+
+<details markdown="1">
+<summary>Expand ImageMarkOptions</summary>
+
+```typescript
+export interface ImageMarkOptions {
+  image?: string;
+  viewport?: "auto" | { x: number; y: number; width: number; height: number };
+  fit?: "contain" | "cover" | "fill";
+  align?: readonly [number, number];
+  opacity?: number; alt?: string; clip?: false | GraphicClip;
+}
+```
+
+</details>
+
+Related types: [`GraphicClip`](#type-graphicclip).
 
 ### `ImputedDataBaseOptions` {#type-imputeddatabaseoptions}
 
@@ -8620,6 +8953,23 @@ export type LayerPlotSpecification = {
 </details>
 
 Related types: [`AdjacentPlotSpecification`](#type-adjacentplotspecification).
+
+### `LayoutHierarchyOptions` {#type-layouthierarchyoptions}
+
+<details markdown="1">
+<summary>Expand LayoutHierarchyOptions</summary>
+
+```typescript
+export type LayoutHierarchyOptions = { id: string; hierarchy?: string; order?: HierarchyOrder } &
+  ({ method: "partition"; options?: { maxNodes?: number } }
+  | { method: "tree"; options: HierarchyTreeOptions }
+  | { method: "treemap"; options: HierarchyTreemapOptions });
+/** The method remains fixed; supplied options patch its existing layout intent. */
+```
+
+</details>
+
+Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions).
 
 ### `LegendBlockSymbolPatch` {#type-legendblocksymbolpatch}
 
@@ -9812,7 +10162,7 @@ Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`CurveInterp
 export interface OverlayPointAppearance extends StrokeStyleDetails {
   clip?: boolean;
   shape?: PointShape;
-  fill?: string;
+  fill?: FillPaint;
   stroke?: FilledMarkStroke;
   strokeWidth?: number;
   opacity?: number;
@@ -9821,7 +10171,7 @@ export interface OverlayPointAppearance extends StrokeStyleDetails {
 
 </details>
 
-Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke).
+Related types: [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FillPaint`](#type-fillpaint) · [`FilledMarkStroke`](#type-filledmarkstroke).
 
 ### `PackPointsOptions` {#type-packpointsoptions}
 
@@ -10152,6 +10502,17 @@ export type ParseTimeFormat = "auto" | "%Y-%m-%d" | "%d/%m/%Y" | "%m/%d/%Y";
 
 </details>
 
+### `PathFillRule` {#type-pathfillrule}
+
+<details markdown="1">
+<summary>Expand PathFillRule</summary>
+
+```typescript
+export type PathFillRule = "nonzero" | "evenodd";
+```
+
+</details>
+
 ### `PathLegendOptions` {#type-pathlegendoptions}
 
 <details markdown="1">
@@ -10185,6 +10546,26 @@ export interface PathOrderEncodingOptions {
   field: string;
   fieldType?: "quantitative";
   order?: "ascending" | "descending";
+}
+```
+
+</details>
+
+### `PatternPaint` {#type-patternpaint}
+
+<details markdown="1">
+<summary>Expand PatternPaint</summary>
+
+```typescript
+export interface PatternPaint {
+  readonly type: "pattern";
+  readonly style?: "solid" | "diagonal" | "antidiagonal" | "horizontal" | "vertical" | "cross" | "dots";
+  readonly pitch?: number;
+  readonly strokeWidth?: number;
+  readonly phase?: readonly [number, number];
+  readonly foreground?: string;
+  readonly background?: string;
+  readonly coordinateSpace?: "plot" | "object";
 }
 ```
 
@@ -10810,6 +11191,21 @@ export interface PreparedDataUpdate<Kind extends DataUpdateRequest["kind"] = Dat
 
 Related types: [`DataUpdateRequest`](#type-dataupdaterequest) · [`DataUpdateDescriptors`](#type-dataupdatedescriptors).
 
+### `PreparedImageResource` {#type-preparedimageresource}
+
+<details markdown="1">
+<summary>Expand PreparedImageResource</summary>
+
+```typescript
+export interface PreparedImageResource<Kind extends "create" | "replace" = "create" | "replace"> {
+  readonly [preparedImageResourceBrand]: Kind;
+  readonly kind: "image-resource";
+  readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+```
+
+</details>
+
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
 <details markdown="1">
@@ -11011,6 +11407,25 @@ export type RadialEncodingOptions = {
 </details>
 
 Related types: [`RadiusScaleOptions`](#type-radiusscaleoptions) · [`RadialMapping`](#type-radialmapping) · [`MeasuredRadiusScaleOptions`](#type-measuredradiusscaleoptions).
+
+### `RadialGradientPaint` {#type-radialgradientpaint}
+
+<details markdown="1">
+<summary>Expand RadialGradientPaint</summary>
+
+```typescript
+export interface RadialGradientPaint {
+  readonly type: "radial-gradient";
+  readonly center: LinearGradientPoint;
+  readonly focal?: LinearGradientPoint;
+  readonly radius: number;
+  readonly stops: readonly [LinearGradientStop, LinearGradientStop, ...LinearGradientStop[]];
+}
+```
+
+</details>
+
+Related types: [`LinearGradientPoint`](#type-lineargradientpoint) · [`LinearGradientStop`](#type-lineargradientstop).
 
 ### `RadialMapping` {#type-radialmapping}
 
@@ -11284,7 +11699,7 @@ export interface RectMarkOptions extends RectStyleDetails {
   id?: string;
   data?: string;
   missing?: "error" | "skip";
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   stroke?: string | false;
   strokeWidth?: number;
@@ -11293,7 +11708,7 @@ export interface RectMarkOptions extends RectStyleDetails {
 
 </details>
 
-Related types: [`RectStyleDetails`](#type-rectstyledetails).
+Related types: [`RectStyleDetails`](#type-rectstyledetails) · [`FillPaint`](#type-fillpaint).
 
 ### `RectStyleDetails` {#type-rectstyledetails}
 
@@ -11815,6 +12230,19 @@ export interface RemoveResourceOptions {
 ```
 
 </details>
+
+### `RemoveStoredResourceOptions` {#type-removestoredresourceoptions}
+
+<details markdown="1">
+<summary>Expand RemoveStoredResourceOptions</summary>
+
+```typescript
+export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }
+```
+
+</details>
+
+Related types: [`StoredResourceKind`](#type-storedresourcekind).
 
 ### `ReorderCompositionChildrenOptions` {#type-reordercompositionchildrenoptions}
 
@@ -12622,6 +13050,17 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
 
 </details>
 
+### `StoredResourceKind` {#type-storedresourcekind}
+
+<details markdown="1">
+<summary>Expand StoredResourceKind</summary>
+
+```typescript
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph";
+```
+
+</details>
+
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}
 
 <details markdown="1">
@@ -12950,7 +13389,7 @@ export interface TextMarkOptions {
   source?: string;
   text?: unknown;
   missing?: "error" | "skip";
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   fontSize?: number;
   fontFamily?: string;
@@ -12965,7 +13404,7 @@ export interface TextMarkOptions {
 
 </details>
 
-Related types: [`RotationInput`](#type-rotationinput).
+Related types: [`FillPaint`](#type-fillpaint) · [`RotationInput`](#type-rotationinput).
 
 ### `TextMeasurement` {#type-textmeasurement}
 
@@ -13348,6 +13787,39 @@ export interface TitleTextStyleOptions {
 ```
 
 </details>
+
+### `TreePlotOptions` {#type-treeplotoptions}
+
+<details markdown="1">
+<summary>Expand TreePlotOptions</summary>
+
+```typescript
+export interface TreePlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  nodes?: HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] };
+  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number }; labels?: false | HierarchyLabelsOptions;
+}
+```
+
+</details>
+
+Related types: [`HierarchyNodePaint`](#type-hierarchynodepaint) · [`HierarchyNodeTarget`](#type-hierarchynodetarget) · [`HierarchyLabelsOptions`](#type-hierarchylabelsoptions).
+
+### `TreemapPlotOptions` {#type-treemapplotoptions}
+
+<details markdown="1">
+<summary>Expand TreemapPlotOptions</summary>
+
+```typescript
+export interface TreemapPlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] }; labels?: false | HierarchyLabelsOptions;
+}
+```
+
+</details>
+
+Related types: [`HierarchyBodyPaint`](#type-hierarchybodypaint) · [`HierarchyNodeTarget`](#type-hierarchynodetarget) · [`HierarchyLabelsOptions`](#type-hierarchylabelsoptions).
 
 ### `UtcFormatString` {#type-utcformatstring}
 

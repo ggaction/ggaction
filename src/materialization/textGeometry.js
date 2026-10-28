@@ -281,10 +281,14 @@ function relativeLuminance(color) {
   return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
 }
 
-function sourceTextConfig(config, source, item) {
+function sourceTextConfig(program, config, source, item) {
   if (config.inheritColor && config.fillExplicit !== true) {
-    const fill = item.properties[config.inheritColor];
-    if (typeof fill !== "string") throw new Error(`Source mark "${source.id}" has no resolved ${config.inheritColor} color.`);
+    let fill = item.properties[config.inheritColor];
+    if (fill === undefined && config.inheritColor === "fill") {
+      const fills = item.graphicIds.map(id => findGraphic(program.graphicSpec, id)?.object.properties?.fill);
+      if (fills.length > 0 && fills.every(value => value !== undefined && JSON.stringify(value) === JSON.stringify(fills[0]))) fill = fills[0];
+    }
+    if (fill === undefined || config.inheritColor === "stroke" && typeof fill !== "string") throw new Error(`Source mark "${source.id}" has no resolved ${config.inheritColor} color.`);
     return { ...config, fill };
   }
   if (
@@ -359,7 +363,7 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
     const itemSource = sourceByKey?.get(item.key) ?? source;
     const identity = identityRecords?.get(item);
     const provenance = members ? { members: item.members, fields: item.fields, channels: item.channels, semanticIdentity: ["label", item.key] } : {};
-    let resolvedConfig = sourceTextConfig(config, itemSource, item);
+    let resolvedConfig = sourceTextConfig(program, config, itemSource, item);
     if (resolvers.skipAppearance && resolvedConfig.fill === undefined) resolvedConfig = { ...resolvedConfig, fill: DEFAULT_TEXT_MARK.fill };
     if (fillByKey !== undefined) resolvedConfig = { ...resolvedConfig, fill: fillByKey.get(item.key), fillExplicit: true };
     const text = overrides.has(item) ? overrides.get(item) : textByKey !== undefined ? textByKey.get(item.key) : formatTextValue(

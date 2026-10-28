@@ -887,5 +887,52 @@
         "statements": 16
       }
     ]
+  },
+  {
+    "file": "structured-paints.mjs",
+    "cases": [
+      {
+        "id": "paint/structured-filled-marks",
+        "statements": 10
+      },
+      {
+        "id": "paint/structured-text",
+        "statements": 7
+      },
+      {
+        "id": "paint/fresh-codec",
+        "statements": 5
+      }
+    ]
+  },
+  {
+    "file": "images.mjs",
+    "cases": [
+      {
+        "id": "images/resource-lifecycle",
+        "statements": 12
+      },
+      {
+        "id": "images/renderer-scene-offline",
+        "statements": 14
+      }
+    ]
+  },
+  {
+    "file": "hierarchy.mjs",
+    "cases": [
+      {
+        "id": "hierarchy/full-basic-lifecycle",
+        "statements": 17
+      },
+      {
+        "id": "hierarchy/fresh-process-edit-revise",
+        "statements": 9
+      },
+      {
+        "id": "hierarchy/renderers-and-scene",
+        "statements": 1
+      }
+    ]
   }
 ]

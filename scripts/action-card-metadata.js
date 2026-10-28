@@ -12,19 +12,22 @@ const analysisChartNames = new Set([
   "createRaincloudPlot",
   "createHistogram",
   "createDensityPlot",
-  "createHorizonPlot"
+  "createHorizonPlot",
+  "createTreePlot",
+  "createTreemapPlot"
 ]);
 const analysisChartEditorNames = new Set([
   "editEndpointPlot",
   "editECDFPlot",
   "editRadarPlot",
-  "editRaincloudPlot"
+  "editRaincloudPlot",
+  "editTreePlot",
+  "editTreemapPlot"
 ]);
 
 const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot", "createLayerPlot"]);
 const coreH3Names = new Set([
-  "editGraphData",
-  "applyDataUpdate",
+  "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "removeResource",
   "applyTextMetrics",
   "removeTextMetrics",
   "reviseData",
@@ -61,7 +64,19 @@ const explicitFacadeEditors = Object.freeze({
 });
 
 const explicitLifecycleEditors = Object.freeze({
+  createHierarchyData: ["editHierarchyData", "removeResource"],
+  editHierarchyData: ["editHierarchyData", "removeResource"],
+  layoutHierarchy: ["editLayout", "removeResource"],
+  editLayout: ["editLayout", "removeResource"],
+  removeResource: ["removeResource"],
+  createTreePlot: ["editTreePlot", "removeMark"],
+  editTreePlot: ["editTreePlot", "removeMark"],
+  createTreemapPlot: ["editTreemapPlot", "removeMark"],
+  editTreemapPlot: ["editTreemapPlot", "removeMark"],
   applyDataUpdate: ["applyDataUpdate", "reviseData", "removeData"],
+  createImageResource: ["replaceImageResource", "removeResource"],
+  replaceImageResource: ["replaceImageResource"],
+  createImageMark: ["editImageMark", "removeMark"],
   applyTheme: ["applyTheme", "removeTheme"],
   removeTheme: ["applyTheme"],
   bindMarkData: ["bindMarkData"],

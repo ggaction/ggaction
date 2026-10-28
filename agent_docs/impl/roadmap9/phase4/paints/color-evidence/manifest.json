@@ -1,0 +1,136 @@
+{
+  "scope": "Private shared paint-color preparation; no public paint registration",
+  "base": "b758b912",
+  "tests": {
+    "node22Focused": 50,
+    "node20Focused": 46,
+    "node24Focused": 46,
+    "boundaryDiscoveryPolicy": 40,
+    "packageContracts": 7,
+    "criticalPolicyFinal": 7
+  },
+  "coverage": {
+    "owner": "grammar/color.js",
+    "lines": 100,
+    "branches": 100,
+    "functions": 100,
+    "required": [
+      95,
+      90,
+      100
+    ]
+  },
+  "package": {
+    "entries": 739,
+    "node22Packed": 1097682,
+    "node20Node24Packed": 1100756,
+    "unpacked": 5062143,
+    "limits": {
+      "entries": 739,
+      "packed": 1101000,
+      "unpacked": 5063000
+    }
+  },
+  "bundle": {
+    "fullGzip": 534744,
+    "basicGzip": 312645,
+    "limitsUnchanged": [
+      537000,
+      315000
+    ]
+  },
+  "sourceHashes": {
+    "src/grammar/color.js": "1b712c5bb58a5e0c7cdc035327ab2a0a9004f821a0c52c7f7dcf922da28698cb",
+    "src/grammar/scales/color.js": "3ce911765d930b9246c185d0e2990558cf27968cd4169bca08ab91d1a950dc2b",
+    "test/unit/grammar/color.test.js": "86755a322ed71a85f8a2f53452361b71202e86ed7432063a2e82cc90b34c79d5",
+    "scripts/coverage-policy.js": "89d36574fa9004ab4f38abb596ee61e1b4607d3e6ad39b901c096116b6962a9f",
+    "scripts/package-artifact.js": "a1015784e98eb2b78afde44e58518caf519b64b57570e05a32fe114edefef3dd"
+  },
+  "logs": [
+    {
+      "path": "color-foundation-bundle-final.log.gz",
+      "sha256": "14be66949a10228afcf3e1a724d83cf65e3744cbc044fb8bd820a4eeb53e01d8",
+      "bytes": 559
+    },
+    {
+      "path": "color-foundation-bundle.log.gz",
+      "sha256": "91b41845d40a57f4e1b96f0d55c65a7b42711ff8ae93fd4b3495cfc17f60a250",
+      "bytes": 1045
+    },
+    {
+      "path": "color-foundation-contracts.log.gz",
+      "sha256": "fa524c8308bc06cb1bcd4537af1bbfe8221e2a4671947043ba16974a45a2ece5",
+      "bytes": 7837
+    },
+    {
+      "path": "color-foundation-coverage.log.gz",
+      "sha256": "a860a06fd7a4db6e01b87d895205a56da02514c1d6915afae51c53dcc896c661",
+      "bytes": 11067
+    },
+    {
+      "path": "color-foundation-floor.log.gz",
+      "sha256": "0f1fb269c0c6b59af24663f7679b87bbf64c0dedb2ce9db456d676ed1265a5c5",
+      "bytes": 35
+    },
+    {
+      "path": "color-foundation-node20.log.gz",
+      "sha256": "b3587fdcbe649d35eecb9716f97f99abce9f1c5e77fdf0408a3dd0bade64a3d0",
+      "bytes": 9095
+    },
+    {
+      "path": "color-foundation-node24.log.gz",
+      "sha256": "c31875761824c4edc7756ca779e7b5f08fb284d1aaab9716c1b5e3c2f199fe43",
+      "bytes": 4079
+    },
+    {
+      "path": "color-foundation-package-contracts.log.gz",
+      "sha256": "2f90630f0c211a09367e5a301892da7db5d24b22e7d3370a39fdd539fb0d1a90",
+      "bytes": 1715
+    },
+    {
+      "path": "color-foundation-package-entry.log.gz",
+      "sha256": "b1edd5e63e3172ad063b307375dcdcfc16422926e90842e7de226e11654861a4",
+      "bytes": 1054
+    },
+    {
+      "path": "color-foundation-package-final.log.gz",
+      "sha256": "afea91fe732699541cb3d3c3929534faf1dc5960305207d7e9f1de00c6cd19c1",
+      "bytes": 368
+    },
+    {
+      "path": "color-foundation-package-node20-final.log.gz",
+      "sha256": "45c136647675ce61451518ed73c82922d60bd5386760241705f235d7098a0cb6",
+      "bytes": 368
+    },
+    {
+      "path": "color-foundation-package-node20.log.gz",
+      "sha256": "e940b584f4b900b48942437889b1c83b9a7e4045f21bf6b038fd4d71ae3bc328",
+      "bytes": 1117
+    },
+    {
+      "path": "color-foundation-package-node24-final.log.gz",
+      "sha256": "45c136647675ce61451518ed73c82922d60bd5386760241705f235d7098a0cb6",
+      "bytes": 368
+    },
+    {
+      "path": "color-foundation-package-node24.log.gz",
+      "sha256": "ce0655108e330bf9aefb7818f02646b86a1837ee1a986ae886e8629ab0ebaf6b",
+      "bytes": 1095
+    },
+    {
+      "path": "color-foundation-package.log.gz",
+      "sha256": "d3ccb18addea0b25f9cea529862c3821350818c5b53fbf168d31f57e457ef9dc",
+      "bytes": 1127
+    },
+    {
+      "path": "color-foundation-policy-final.log.gz",
+      "sha256": "e28488e510d7c5aa0e20fba1d181296d34262073de3cd45c0a8e6f68aa95a898",
+      "bytes": 1392
+    },
+    {
+      "path": "color-foundation.log.gz",
+      "sha256": "feb218b62a11898ac06c3b03a4cfb9d849ab345b24c7dad26f0df1df79c7e75c",
+      "bytes": 10356
+    }
+  ]
+}

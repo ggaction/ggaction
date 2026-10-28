@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "parents": [
+    "1b709c0a4",
+    "b8b0017624d2a2d6be7287a915588bd545db2b9b"
+  ],
+  "status": "passed",
+  "scope": "Structured paint source merged with shared revision authority and private graph kernels. No public graph API.",
+  "results": {
+    "focusedUnit": 43,
+    "finalContracts": 28,
+    "installedConsumerNode22": {
+      "total": 203,
+      "passed": 203
+    },
+    "qualificationNode22": {
+      "node": "v22.23.1",
+      "platform": "darwin",
+      "records": [
+        {
+          "id": "node",
+          "status": "passed",
+          "durationMs": 51783.339583
+        },
+        {
+          "id": "mcp",
+          "status": "passed",
+          "durationMs": 820.9168750000026
+        },
+        {
+          "id": "types",
+          "status": "passed",
+          "durationMs": 479.872540999997
+        },
+        {
+          "id": "tutorials",
+          "status": "passed",
+          "durationMs": 51724.225000000006
+        },
+        {
+          "id": "bundle-full",
+          "status": "passed",
+          "durationMs": 4799.1764159999875
+        },
+        {
+          "id": "bundle-basic",
+          "status": "passed",
+          "durationMs": 1905.1091250000027
+        },
+        {
+          "id": "bundle-svg",
+          "status": "passed",
+          "durationMs": 83.40750000000116
+        }
+      ]
+    }
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 770,
+    "packedBytes": 1143008,
+    "unpackedBytes": 5256918,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "eccc272dc15df6a48c1fdfe10ae9074a4a61c07e",
+    "sha256": "be55fd28e9a9885c88ec07c3569530dd035b341468efef18d8fa7d1289174212"
+  },
+  "ceilings": {
+    "entries": 770,
+    "packedBytes": 1146000,
+    "unpackedBytes": 5257000,
+    "fullGzipBytes": 557000,
+    "basicGzipBytes": 333000,
+    "svgGzipBytes": 25000
+  },
+  "coverage": {
+    "status": "reused",
+    "source": "../structured-fill-evidence/manifest.json",
+    "reason": "No paint runtime edits during merge. Fresh focused cross-resource, package and installed consumer checks are recorded separately."
+  },
+  "evidence": [
+    {
+      "path": "paint-integrated-focused.log.gz",
+      "sha256": "001ea00425aa17432da91e31d7e8ef23662d9b52702919f5a716eeb4526f3f95",
+      "bytes": 2460
+    },
+    {
+      "path": "paint-integrated-final-contracts.log.gz",
+      "sha256": "95f56d587a808515c245d6af093449ac314dd320d34a050c8e2279ef3c0b8184",
+      "bytes": 1603
+    },
+    {
+      "path": "paint-integrated-consumer22.log.gz",
+      "sha256": "d30ffb14ff5864fa15ab4afc2bd21dbbf5268769fe3aff5e9aa3c6a79803ffdf",
+      "bytes": 1191
+    },
+    {
+      "path": "paint-integrated-consumer22-relative-path-error.log.gz",
+      "sha256": "b1623774d68633fe98379a0e2ac650fb33eddf137a8d68e80cfeab9605fa5eef",
+      "bytes": 842
+    },
+    {
+      "path": "paint-integrated-final-package22.json.gz",
+      "sha256": "b09cac23fe28e38f7bf8c2136aa7bdaa24e93ce4bc135ae3eee4169d2a5aebab",
+      "bytes": 279
+    },
+    {
+      "path": "paint-integrated-final-measure24.json.gz",
+      "sha256": "9e237def0241e74a25f2acca69ef8cfbba8b77eaddcb9300d5243340cb0b1eac",
+      "bytes": 307
+    },
+    {
+      "path": "consumers-node-cases.json.gz",
+      "sha256": "a86551a324128d466dafec83f3828ee3b031a4ec568b7a6d601cc864795794be",
+      "bytes": 3801
+    },
+    {
+      "path": "consumers-qualification.json.gz",
+      "sha256": "c18aa63cd4381e3ef99c251caceb24b6dceb3d5e120664bf7d732c9ca4199717",
+      "bytes": 256
+    },
+    {
+      "path": "measure20.json.gz",
+      "sha256": "5cba3afe67bb2279de71dbc6550e44e4b0285cdaa087c5298ba39122abae7321",
+      "bytes": 8745
+    },
+    {
+      "path": "measure22.json.gz",
+      "sha256": "99c8b63e91321ee4eb785f0ef9d8e1b0f3ffe3adb5eb365981289f658cea29f5",
+      "bytes": 8745
+    }
+  ]
+}

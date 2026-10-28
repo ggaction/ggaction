@@ -1,3 +1,4 @@
+import { registerImageMarkActions } from "./image/index.js";
 import { removeMark } from "./remove.js";
 import {
   createStatisticalReference,
@@ -21,6 +22,7 @@ import {
 import { registerTextMarkActions } from "./text/index.js";
 
 export function registerMarkActions(ProgramClass) {
+  registerImageMarkActions(ProgramClass);
   registerPointMarkActions(ProgramClass);
   registerPointJitterActions(ProgramClass);
   registerPointPackingActions(ProgramClass);

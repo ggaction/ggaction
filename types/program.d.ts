@@ -58,7 +58,71 @@ export type GraphicType =
   | "rect"
   | "line"
   | "text"
-  | "path";
+  | "path"
+  | "image";
+export type ImageMimeType = "image/png" | "image/jpeg" | "image/webp" | "image/svg+xml";
+export interface ConcreteImage {
+  readonly contentHash: string;
+  readonly mimeType: ImageMimeType;
+  readonly byteLength: number;
+  readonly width: number;
+  readonly height: number;
+  readonly payload: { readonly encoding: "base64"; readonly data: string };
+}
+declare const preparedImageRenderingBrand: unique symbol;
+export interface PreparedImageRendering {
+  readonly [preparedImageRenderingBrand]: true;
+  readonly kind: "image-rendering";
+  readonly imageCount: number;
+}
+export interface ImageRenderingHost {
+  decode(request: Readonly<{ bytes: Uint8Array; mimeType: ImageMimeType; contentHash: string;
+    width: number; height: number; signal?: AbortSignal }>):
+    Promise<Readonly<{ image: object; width: number; height: number; originClean: true }>> |
+    Readonly<{ image: object; width: number; height: number; originClean: true }>;
+  signal?: AbortSignal;
+}
+export interface CanvasRenderOptions { pixelRatio?: number; images?: PreparedImageRendering; }
+export interface ImageResourceSource {
+  uri: string; expectedHash: string; mimeType: ImageMimeType; maxBytes?: number; license?: string; attribution?: string;
+}
+export type CreateImageResourceRequest = ImageResourceSource & { kind: "create"; id: string };
+export type ReplaceImageResourceRequest = ImageResourceSource & { kind: "replace"; target: string };
+export type ImageResourceRequest = CreateImageResourceRequest | ReplaceImageResourceRequest;
+export interface ImageResourceHost {
+  requestToken: string;
+  load(request: Readonly<ImageResourceSource & { maxBytes: number; signal?: AbortSignal }>):
+    Promise<Readonly<{ bytes: Uint8Array; mimeType: ImageMimeType }>> | Readonly<{ bytes: Uint8Array; mimeType: ImageMimeType }>;
+  decode(request: Readonly<{ bytes: Uint8Array; mimeType: ImageMimeType; maxPixels: number; signal?: AbortSignal }>):
+    Promise<Readonly<{ width: number; height: number; originClean: true }>> | Readonly<{ width: number; height: number; originClean: true }>;
+  signal?: AbortSignal;
+}
+declare const preparedImageResourceBrand: unique symbol;
+export interface PreparedImageResource<Kind extends "create" | "replace" = "create" | "replace"> {
+  readonly [preparedImageResourceBrand]: Kind;
+  readonly kind: "image-resource";
+  readonly request: Kind extends "create" ? Readonly<{ kind: "create"; id: string }> : Readonly<{ kind: "replace"; target: string }>;
+}
+export interface ApplyImageResourceOptions<Kind extends "create" | "replace"> {
+  prepared: PreparedImageResource<Kind>; requestToken: string;
+}
+export interface ImageRef { readonly kind: "image"; readonly id: string; readonly revision: number; }
+export interface ImageResource {
+  readonly kind: "image"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly never[];
+  readonly options: Readonly<ImageResourceSource & { maxBytes: number }>;
+  readonly result: Pick<ConcreteImage, "width" | "height" | "byteLength" | "payload">;
+  readonly provenance: { readonly origin: "authored" };
+}
+export interface ImageMarkOptions {
+  image?: string;
+  viewport?: "auto" | { x: number; y: number; width: number; height: number };
+  fit?: "contain" | "cover" | "fill";
+  align?: readonly [number, number];
+  opacity?: number; alt?: string; clip?: false | GraphicClip;
+}
+export interface CreateImageMarkOptions extends ImageMarkOptions { id?: string; }
+export interface EditImageMarkOptions extends ImageMarkOptions { target?: string; }
 export type ConcretePathCommand =
   | { readonly op: "M"; readonly x: number; readonly y: number }
   | { readonly op: "L"; readonly x: number; readonly y: number }
@@ -90,7 +154,24 @@ export interface LinearGradientPaint {
     ...LinearGradientStop[]
   ];
 }
-export type FillPaint = string | LinearGradientPaint;
+export interface PatternPaint {
+  readonly type: "pattern";
+  readonly style?: "solid" | "diagonal" | "antidiagonal" | "horizontal" | "vertical" | "cross" | "dots";
+  readonly pitch?: number;
+  readonly strokeWidth?: number;
+  readonly phase?: readonly [number, number];
+  readonly foreground?: string;
+  readonly background?: string;
+  readonly coordinateSpace?: "plot" | "object";
+}
+export interface RadialGradientPaint {
+  readonly type: "radial-gradient";
+  readonly center: LinearGradientPoint;
+  readonly focal?: LinearGradientPoint;
+  readonly radius: number;
+  readonly stops: readonly [LinearGradientStop, LinearGradientStop, ...LinearGradientStop[]];
+}
+export type FillPaint = string | LinearGradientPaint | PatternPaint | RadialGradientPaint;
 type FilledMarkStroke = string | false;
 export type CurveInterpolation =
   | "linear"
@@ -1228,6 +1309,8 @@ export interface BindMarkDataOptions {
   data: string;
 }
 
+export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }
+
 export interface RemoveResourceOptions {
   readonly id: string;
 }
@@ -1583,7 +1666,7 @@ export interface GraphResource {
   readonly result: { readonly model: GraphModel; readonly diagnostics: null };
   readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly InputRowRef[] };
 }
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "graph";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph";
 export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
   | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
 export interface PersistentSelectionResource {
@@ -1596,6 +1679,73 @@ export interface PersistentSelectionResource {
   readonly result: Readonly<Record<string, never>>;
   readonly provenance: { readonly origin: "authored" | "observed" | "inferred"; readonly sourceRows?: readonly InputRowRef[] };
 }
+
+
+export type HierarchyValueMode = "leaf-sum" | "inclusive" | "own-plus-children";
+export type HierarchySource =
+  | { key: string; parent: string; value: string; children?: never; groupFields?: never; valueMode?: HierarchyValueMode; forest?: boolean; missingCategory?: never }
+  | { key: string; children: string; value: string; parent?: never; groupFields?: never; valueMode?: HierarchyValueMode; forest?: boolean; missingCategory?: never }
+  | { groupFields: readonly string[]; value: string; key?: never; parent?: never; children?: never; valueMode?: "leaf-sum"; forest?: never; missingCategory?: "error" | "include" };
+export type CreateHierarchyDataOptions = HierarchySource & { id: string; data?: string; maxNodes?: number };
+/** Omitted fields preserve the existing source form; every edit must change at least one option. */
+export type EditHierarchyDataOptions = Partial<HierarchySource> & { target?: string; data?: string; maxNodes?: number };
+export type HierarchyOrder = "input"
+  | { by: "value" | "key"; direction: "ascending" | "descending" }
+  | { by: "field"; field: string; direction: "ascending" | "descending"; nulls?: "first" | "last"; temporalUnit?: "year" | "timestamp" };
+export type HierarchyTreeOptions = { nodeSize: readonly [number, number]; siblingGap: number; depthGap: number; maxNodes?: number } &
+  ({ orientation: "vertical" | "horizontal"; radius?: never; startAngle?: never; sweep?: never }
+  | { orientation: "radial"; radius: number; startAngle: number; sweep: number });
+export interface HierarchyTreemapOptions { size: readonly [number, number]; padding: number; method: "slice-dice" | "squarify"; maxNodes?: number; }
+export type LayoutHierarchyOptions = { id: string; hierarchy?: string; order?: HierarchyOrder } &
+  ({ method: "partition"; options?: { maxNodes?: number } }
+  | { method: "tree"; options: HierarchyTreeOptions }
+  | { method: "treemap"; options: HierarchyTreemapOptions });
+/** The method remains fixed; supplied options patch its existing layout intent. */
+export interface EditLayoutOptions { target?: string; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number }; }
+export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }
+export interface HierarchyNode {
+  readonly key: string; readonly parentKey: string | null; readonly childrenKeys: readonly string[]; readonly depth: number;
+  readonly ownValue: number; readonly totalValue: number; readonly residual: number; readonly sourceRows: readonly number[]; readonly synthetic?: true;
+}
+export interface HierarchyModel {
+  readonly nodes: readonly HierarchyNode[]; readonly rootKey: string | null; readonly valueMode: HierarchyValueMode; readonly totalValue: number;
+  readonly diagnostics: { readonly emptyHierarchy: boolean; readonly emptyValue: boolean; readonly ignoredInternalValues: readonly { readonly key: string; readonly value: number }[] };
+}
+export interface HierarchyResource {
+  readonly kind: "hierarchy"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly Extract<InputRef, { readonly kind: "data" }>[];
+  readonly options: Readonly<HierarchySource & { format: "flat" | "nested" | "groups"; maxNodes: number }>;
+  readonly result: HierarchyModel; readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly InputRowRef[] };
+}
+export interface HierarchyRectangle { readonly x0: number; readonly y0: number; readonly x1: number; readonly y1: number; }
+export interface HierarchyTreeResult { readonly nodes: readonly { readonly key: string; readonly parentKey: string | null; readonly depth: number; readonly x: number; readonly y: number; readonly theta?: number; readonly radius?: number; readonly synthetic?: true }[]; }
+export interface HierarchyPartitionResult extends Omit<HierarchyModel, "nodes"> { readonly nodes: readonly (HierarchyNode & { readonly u0: number; readonly u1: number; readonly residualStart: number })[]; }
+export interface HierarchyTreemapResult extends Omit<HierarchyModel, "nodes"> { readonly nodes: readonly (HierarchyNode & { readonly rect: HierarchyRectangle; readonly content: HierarchyRectangle; readonly residualRect: HierarchyRectangle; readonly childOrder: readonly string[]; readonly area: number })[]; }
+export type HierarchyLayoutResource = {
+  readonly kind: "layout"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly { readonly kind: "hierarchy"; readonly id: string; readonly revision: number }[];
+  readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+} & ({ readonly options: { readonly method: "tree"; readonly order: HierarchyOrder; readonly options: Readonly<HierarchyTreeOptions> }; readonly result: HierarchyTreeResult }
+  | { readonly options: { readonly method: "partition"; readonly order: HierarchyOrder; readonly options: { readonly maxNodes?: number } }; readonly result: HierarchyPartitionResult }
+  | { readonly options: { readonly method: "treemap"; readonly order: HierarchyOrder; readonly options: Readonly<HierarchyTreemapOptions> }; readonly result: HierarchyTreemapResult });
+export type HierarchyNodeTarget = { key: RowKeyScalar; path?: never } | { path: readonly (RowKeyScalar | null)[]; key?: never };
+export interface HierarchyBodyPaint { fill?: string; stroke?: string; strokeWidth?: number; opacity?: number; }
+export interface HierarchyNodePaint extends HierarchyBodyPaint { radius?: number; }
+export interface HierarchyLabelPaint { fill?: string; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+export interface HierarchyLabelsOptions extends HierarchyLabelPaint {
+  content?: "value"; offset?: readonly [number, number]; overrides?: readonly (HierarchyNodeTarget & HierarchyLabelPaint & { text?: string })[];
+}
+export interface TreePlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  nodes?: HierarchyNodePaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyNodePaint)[] };
+  links?: false | { stroke?: string; strokeWidth?: number; opacity?: number }; labels?: false | HierarchyLabelsOptions;
+}
+export interface EditTreePlotOptions extends Omit<TreePlotOptions, "id"> { target?: string; }
+export interface TreemapPlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  cells?: HierarchyBodyPaint & { overrides?: readonly (HierarchyNodeTarget & HierarchyBodyPaint)[] }; labels?: false | HierarchyLabelsOptions;
+}
+export interface EditTreemapPlotOptions extends Omit<TreemapPlotOptions, "id"> { target?: string; }
 
 export interface SemanticDataset {
   readonly id: string;
@@ -1654,6 +1804,10 @@ export interface SourceSchemaInput {
 
 export interface SemanticLayer {
   readonly id: string;
+  readonly image?: ImageRef;
+  readonly alt?: string;
+  readonly hierarchyBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
+  readonly hierarchyLabels?: false | { readonly content: "value"; readonly overrides: readonly { readonly key: string; readonly text: string }[] };
   readonly data?: string;
   readonly source?: string;
   readonly coordinate?: string;
@@ -1679,7 +1833,7 @@ export interface OverlayLineAppearance extends StrokeStyleDetails {
 export interface OverlayPointAppearance extends StrokeStyleDetails {
   clip?: boolean;
   shape?: PointShape;
-  fill?: string;
+  fill?: FillPaint;
   stroke?: FilledMarkStroke;
   strokeWidth?: number;
   opacity?: number;
@@ -1716,7 +1870,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | GraphResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -1725,9 +1879,9 @@ export interface SemanticSpec {
   readonly title: Readonly<Record<string, unknown>>;
 }
 
-export interface GraphicLineageRef {
+export type GraphicLineageRef = {
   readonly data: string; readonly logicalDataId: string; readonly revision: number; readonly rowKeys: readonly string[];
-}
+} | { readonly kind: "resource"; readonly resource: { readonly kind: "image" | "hierarchy" | "layout"; readonly id: string; readonly revision: number } };
 
 export interface GraphicIdentity {
   readonly key: string; readonly topology: string; readonly role: string; readonly lineage: GraphicLineageRef;
@@ -4415,7 +4569,7 @@ export type CreatePiePlotOptions = {
   category: PieCategory;
   color?: false | PieColor;
   radius?: PieRadiusChannel;
-  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 
@@ -4426,7 +4580,7 @@ export type MeasuredRadialGuideOptions = {
 };
 export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value" | "radius"> & {
   radiusScale?: MeasuredRadiusScaleOptions;
-  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: ArcInnerRadius; padAngle?: 0; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate?: "sum" });
 export type CreateRadialBarPlotOptions = CreateRosePlotOptions;
@@ -4631,7 +4785,7 @@ export interface TextMarkOptions {
   source?: string;
   text?: unknown;
   missing?: "error" | "skip";
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   fontSize?: number;
   fontFamily?: string;
@@ -4704,7 +4858,7 @@ export interface RectMarkOptions extends RectStyleDetails {
   id?: string;
   data?: string;
   missing?: "error" | "skip";
-  fill?: string;
+  fill?: FillPaint;
   opacity?: number;
   stroke?: string | false;
   strokeWidth?: number;
@@ -5734,6 +5888,7 @@ export class ChartProgram {
   createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram;
   applyDataUpdate(options: ApplyDataUpdateOptions): ChartProgram;
   reviseData<Row extends object>(options: TargetedOptions<ReviseDataOptions<Row>>): ChartProgram;
+  removeResource(options: RemoveStoredResourceOptions): ChartProgram;
   removeData(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeScale(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
   removeCoordinate(options: TargetedOptions<RemoveResourceOptions>): ChartProgram;
@@ -5753,6 +5908,18 @@ export class ChartProgram {
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
   createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
+  createImageResource(options: ApplyImageResourceOptions<"create">): ChartProgram;
+  replaceImageResource(options: ApplyImageResourceOptions<"replace">): ChartProgram;
+  createImageMark(options?: TargetedOptions<CreateImageMarkOptions>): ChartProgram;
+  editImageMark(options: TargetedOptions<EditImageMarkOptions>): ChartProgram;
+  createHierarchyData(options: TargetedOptions<CreateHierarchyDataOptions>): ChartProgram;
+  editHierarchyData(options: TargetedOptions<EditHierarchyDataOptions>): ChartProgram;
+  layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
+  editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
+  createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+  editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
+  createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
+  editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createGraphData(options: CreateGraphDataOptions): ChartProgram;
   editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
@@ -5801,7 +5968,7 @@ export class ChartProgram {
     data?: string;
     missing?: "error" | "skip";
     shape?: PointShape;
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -5811,7 +5978,7 @@ export class ChartProgram {
     target?: string;
     missing?: "error" | "skip";
     shape?: PointShape;
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -5899,7 +6066,7 @@ export class ChartProgram {
     data?: string;
     innerRadius?: ArcInnerRadius;
     padAngle?: number;
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: string;
     strokeWidth?: number;
@@ -5908,7 +6075,7 @@ export class ChartProgram {
     target?: string;
     innerRadius?: ArcInnerRadius;
     padAngle?: number;
-    fill?: string;
+    fill?: FillPaint;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;

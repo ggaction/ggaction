@@ -6,7 +6,7 @@ import { indexHierarchyModel } from "./model.js";
 
 const precise = Object.freeze({ compensated: true });
 
-function parameters(options) {
+export function normalizeTreemapOptions(options) {
   ownRecord(options, "Hierarchy treemap options");
   rejectUnknownProperties(options, ["size", "padding", "method", "maxNodes"], "hierarchy treemap");
   if (["size", "padding", "method"].some(field => !Object.hasOwn(options, field))) throw new TypeError("Hierarchy treemap requires all own layout options.");
@@ -90,7 +90,7 @@ function squarify(rect, children, nodes, rectangles, charge) {
 }
 
 export function layoutHierarchyTreemap(model, options) {
-  const resolved = parameters(options), indexed = indexHierarchyModel(model, Object.hasOwn(resolved, "maxNodes") ? resolved.maxNodes : undefined);
+  const resolved = normalizeTreemapOptions(options), indexed = indexHierarchyModel(model, Object.hasOwn(resolved, "maxNodes") ? resolved.maxNodes : undefined);
   const { nodes, indexes } = indexed;
   let work = indexed.work;
   const charge = amount => validateWorkLimit(work += amount, "Hierarchy treemap work");

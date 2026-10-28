@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { chart, prepareDataUpdate } from "../src/index.js";
+import { chart, prepareDataUpdate, prepareImageResource } from "../src/index.js";
 import {
   buildScenario,
   generateScenarioDescriptors
@@ -423,6 +423,19 @@ function collectDirectRelationships(trace, directNames, relationships, observed)
   }
 }
 
+async function imageResourcePrograms() {
+  const base = chart().createCanvas({width: 100, height: 80, margin: 0});
+  const bytes = new TextEncoder().encode('<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1"><rect width="2" height="1" fill="red"/></svg>');
+  const source = {uri: "fixture:relationship-image", expectedHash: "3a12088d5970454aebf783f37e77640d75dab6494850606f04ca6646a62d005c", mimeType: "image/svg+xml"};
+  const host = {requestToken: "image", load: () => ({bytes, mimeType: source.mimeType}), decode: () => ({width: 2, height: 1, originClean: true})};
+  const prepared = await prepareImageResource(base, {kind: "create", id: "logo", ...source}, host);
+  const marked = base.createImageResource({prepared, requestToken: "image"})
+    .createImageMark({image: "logo", alt: "Logo"}).editImageMark({fit: "cover", opacity: 0.5});
+  const replacement = await prepareImageResource(marked, {kind: "replace", target: "logo", ...source}, host);
+  return [marked.replaceImageResource({prepared: replacement, requestToken: "image"})
+    .removeResource({kind: "image", id: "logo", cascade: true})];
+}
+
 export async function buildActionRelationships() {
   const catalog = JSON.parse(await readFile(catalogFile, "utf8"));
   const actionNames = catalog.actions.map(action => action.name);
@@ -432,7 +445,7 @@ export async function buildActionRelationships() {
   const preparedBase = chart();
   const prepared = await prepareDataUpdate(preparedBase, { kind: "create", id: "received",
     source: { kind: "inline", values: [{ x: 1 }] } }, { requestToken: "received" });
-  const programs = [preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
+  const programs = [...await imageResourcePrograms(), preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
     .createCanvas({ width: 500, height: 400, margin: 70 })
     .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
     .createScatterPlot({ x: "x", y: "y" })
@@ -526,6 +539,17 @@ export function buildActionRelationshipPrograms() {
       .createData({ id: "graphEdges", values: [{ from: "a", to: "b" }] })
       .createGraphData({ id: "network", nodes: "graphNodes", edges: "graphEdges", nodeKey: "id", source: "from", target: "to" })
       .editGraphData({ definition: { directed: true } }),
+    chart().createCanvas().createData({ id: "hierarchyRows", values: [{ id: "root", parent: null, value: 3 }, { id: "a", parent: "root", value: 3 }] })
+      .createHierarchyData({ id: "hierarchy", key: "id", parent: "parent", value: "value" })
+      .layoutHierarchy({ id: "tree-layout", method: "tree", options: { nodeSize: [20, 10], siblingGap: 10, depthGap: 20, orientation: "vertical" } })
+      .createTreePlot({ id: "tree", labels: {} }).editTreePlot({ nodes: { radius: 8 } })
+      .editHierarchyData({ target: "hierarchy", valueMode: "inclusive" })
+      .editLayout({ target: "tree-layout", options: { siblingGap: 12 } })
+      .layoutHierarchy({ id: "treemap-layout", hierarchy: "hierarchy", method: "treemap", options: { size: [200, 100], padding: 3, method: "squarify" } })
+      .createTreemapPlot({ id: "treemap", layout: "treemap-layout", labels: {} }).editTreemapPlot({ cells: { opacity: .8 } })
+      .removeMark({ target: "tree" }).removeMark({ target: "treemap" })
+      .removeResource({ kind: "layout", id: "tree-layout" }).removeResource({ kind: "layout", id: "treemap-layout" })
+      .removeResource({ kind: "hierarchy", id: "hierarchy" }),
     chart().createParameter({ id: "factor", value: 2 })
       .editParameter({ target: "factor", value: 3 }).removeParameter({ id: "factor" }),
     chart().createData({ id: "parameterSource", values: [{ value: 2 }] })

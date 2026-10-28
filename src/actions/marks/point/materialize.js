@@ -1,5 +1,7 @@
 import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
 import { hasPositionBinding, positionBindings } from "../../../core/encodingBindings.js";
+import { materializeFillItems } from "../../../materialization/fillPaint.js";
+import { isPatternPaint } from "../../../grammar/paint.js";
 import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
 import { materializeMarkOutput } from "../../../materialization/markOutput.js";
 import { validateGraphicItemLimit, validateWorkLimit } from "../../../core/validation.js";
@@ -400,6 +402,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
     const existingChildren = graphic.items ?? [];
     const constantShape = validatePointShape(config.shape ?? "circle");
     const requiresMixedCollection =
+      typeof config.fill === "object" ||
       encodedShape !== undefined ||
       angles !== undefined ||
       graphic.type === "collection" ||
@@ -465,7 +468,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
           return incompleteShapeGraphic(shape, {
             x: centerX,
             y: centerY,
-            fill: color,
+            fill: isPatternPaint(color) ? undefined : color,
             opacity,
             ...strokeDetails
           }, angle);
@@ -490,7 +493,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
       return materializeFollowingOverlays(materializeMarkOutput(jittered.program.editGraphics({
         target: id,
         property: "items",
-        value: items
+        value: materializeFillItems(jittered.program, layer, items)
       }), id), id);
     }
 

@@ -1,0 +1,7 @@
+export interface ImageRenderingHost {
+  decode(request: Readonly<{ bytes: Uint8Array; mimeType: ImageMimeType; contentHash: string;
+    width: number; height: number; signal?: AbortSignal }>):
+    Promise<Readonly<{ image: object; width: number; height: number; originClean: true }>> |
+    Readonly<{ image: object; width: number; height: number; originClean: true }>;
+  signal?: AbortSignal;
+}

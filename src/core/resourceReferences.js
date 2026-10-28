@@ -8,14 +8,14 @@ export const RESOURCE_KINDS = Object.freeze([
 ]);
 
 const LAYER_RESOURCE_BINDINGS = Object.freeze([
-  Object.freeze({ path: Object.freeze(["image"]), kind: "image" }),
-  Object.freeze({ path: Object.freeze(["hierarchyBinding", "layout"]), kind: "layout" })
+  Object.freeze({ path: Object.freeze(["image"]), kind: "image", marks: Object.freeze(["image"]) }),
+  Object.freeze({ path: Object.freeze(["hierarchyBinding", "layout"]), kind: "layout", marks: Object.freeze(["tree", "treemap"]) })
 ]);
 
 export function layerResourceBindings(layer) {
   return LAYER_RESOURCE_BINDINGS.flatMap(binding => {
     const ref = binding.path.reduce((value, part) => value?.[part], layer);
-    return ref === undefined ? [] : [{ ...binding, ref }];
+    return ref === undefined && !binding.marks.includes(layer.mark?.type) ? [] : [{ ...binding, ref }];
   });
 }
 
@@ -393,7 +393,7 @@ export function collectResourceReferences(program, { kind, id }) {
 export function collectAllResourceReferences(program) {
   return [
     ...program.semanticSpec.layers.flatMap(layer => layerResourceBindings(layer).map(({ ref, path }) =>
-      reference(ref.kind, ref.id, "layer", layer.id, path))),
+      reference(ref?.kind, ref?.id, "layer", layer.id, path))),
     ...(program.semanticSpec.resources ?? []).filter(resource => resource.kind === "data-source")
       .map(resource => reference("data", resource.result.data.id, "resource", resource.id, ["result", "data"])),
     ...(program.semanticSpec.resources ?? []).flatMap(resource => [

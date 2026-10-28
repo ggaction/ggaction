@@ -9,11 +9,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:405a72e317077cf5bcafd3efb2bbd7c6ab0796b80ff2db01186b11bebc3772d9` |
-| Example and dataset source | `da1de34460983705b2fb7e2d04b766a6123d1c1a` |
+| Contract fingerprint | `sha256:ca1c91e6521893ed839477c548f6c2864da5322b94931611578cc8ab6143c192` |
+| Example and dataset source | `codex/roadmap9-graph-metrics` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 306 |
+| Declared actions here | 319 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

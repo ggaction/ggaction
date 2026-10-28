@@ -8,6 +8,7 @@ import { collectResourceReferences } from "../../../../src/core/resourceReferenc
 import { validateProgramState } from "../../../../src/persistence/validation.js";
 import { encodeRowKey } from "../../../../src/core/itemIdentity.js";
 import { resolveGraphResource } from "../../../../src/selectors/graphs.js";
+import { comparePrograms } from "../../../../src/inspection.js";
 
 const nodeValues = [{ id: "a", label: "Alpha" }, { id: "b", label: "Beta" }];
 const edgeValues = [{ id: "first", from: "a", to: "b", weight: 0 }, { id: "second", from: "a", to: "b", weight: 2 }];
@@ -164,4 +165,32 @@ test("graphs follow materialized derived owners after source revision", () => {
   assert.notEqual(resource.inputs[1].id, graph(before).inputs[1].id);
   assert.deepEqual(resource.result.model.edges.map(edge => edge.weight), [4, 2]);
   validateProgramState(revised, "program");
+});
+
+test("graph and hierarchy resources sharing a source revise once and retain typed removal boundaries", () => {
+  const rows = [{ id: "a", parent: null, value: 0 }, { id: "b", parent: "a", value: 2 }];
+  const before = chart().createCanvas({ width: 200, height: 120 })
+    .createData({ id: "nodes", values: rows, keyField: "id" })
+    .createData({ id: "edges", values: edgeValues, keyField: "id" })
+    .createGraphData({ ...create, id: "shared", attributes: ["value"] })
+    .createHierarchyData({ id: "shared", data: "nodes", key: "id", parent: "parent", value: "value" })
+    .layoutHierarchy({ id: "layout", hierarchy: "shared", method: "tree", options: { nodeSize: [10, 10], siblingGap: 2, depthGap: 2, orientation: "vertical" } })
+    .createTreePlot({ id: "tree", layout: "layout" });
+  const saved = serializeProgram(before);
+  const after = before.reviseData({ source: "nodes", id: "revised", values: rows.map(row => ({ ...row, value: row.value + 1 })) });
+  for (const kind of ["graph", "hierarchy"]) {
+    const resource = after.semanticSpec.resources.find(item => item.kind === kind);
+    assert.equal(resource.revision, 1);
+    assert.equal(resource.inputs[0].id, "revised");
+    assert.ok(comparePrograms(before, after).affected.some(ref => ref.kind === kind && ref.id === "shared"));
+  }
+  assert.deepEqual(graph(after).result.model.nodes.map(node => node.attributes.value), [1, 3]);
+  assert.deepEqual(deserializeProgram(serializeProgram(after)).semanticSpec, after.semanticSpec);
+  assert.throws(() => after.removeResource({ kind: "hierarchy", id: "shared", cascade: true }));
+  const removed = after.removeResource({ kind: "graph", id: "shared" });
+  assert.equal(graph(removed), undefined);
+  assert.ok(removed.semanticSpec.resources.some(resource => resource.kind === "hierarchy" && resource.id === "shared"));
+  assert.ok(comparePrograms(after, removed).changes.some(change => change.resource.kind === "graph"));
+  assert.throws(() => before.reviseData({ source: "nodes", id: "invalid", values: [rows[0]] }));
+  assert.equal(serializeProgram(before), saved);
 });

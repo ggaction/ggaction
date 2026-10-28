@@ -1,0 +1,7 @@
+export interface ImageResource {
+  readonly kind: "image"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly never[];
+  readonly options: Readonly<ImageResourceSource & { maxBytes: number }>;
+  readonly result: Pick<ConcreteImage, "width" | "height" | "byteLength" | "payload">;
+  readonly provenance: { readonly origin: "authored" };
+}

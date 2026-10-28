@@ -1,3 +1,4 @@
+import { validateFillPaint } from "./paint.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { buildLinearPathCommands } from "./pathCommands.js";
 import { requestedStrokeDetails } from "./strokeStyle.js";
@@ -168,9 +169,7 @@ export function createPointShapeGraphic({
   if (![x, y, area].every(Number.isFinite) || area < 0) {
     throw new TypeError("Point shape x, y, and non-negative area must be finite.");
   }
-  if (typeof fill !== "string" || fill.length === 0) {
-    throw new TypeError("Point shape fill must be a non-empty string.");
-  }
+  validateFillPaint(fill, "Point shape fill");
   const shared = appearance(fill, stroke, strokeWidth, opacity, {
     ...(lineCap === undefined ? {} : { lineCap }),
     ...(lineJoin === undefined ? {} : { lineJoin }),
@@ -195,7 +194,7 @@ export function createPointShapeGraphic({
         width: side,
         height: side,
         ...shared,
-        stroke: stroke ?? fill,
+        stroke: stroke ?? (typeof fill === "string" ? fill : "transparent"),
         strokeWidth: strokeWidth ?? 0
       }
     };
