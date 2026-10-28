@@ -52,3 +52,6 @@ Package는819 entries/5,552,006unpacked, 최대1,210,811packed bytes로 cap819/1
 - Revision/cache: exact current scene identity로 결합, 복제/endpoint scene 거부 통과.
 - Ref collector/rematerialization/codec: 저장 상태를 만들지 않는 private 계산이므로 이 checkpoint는 변경 없음.
 - Browser/DPR/session/selection commit/animation sampler: 후속 adapter/runtime 검증 의무로 유지.
+
+Source `ce5de4d8b` provenance/machine/LLM 고정 후 docs19/19와 built154pages/1310artifacts를 통과했다.
+Browser CSS/JS/images/layout은 같아 ccbce6a6b의 desktop/mobile/Axe 증거를 재사용한다.

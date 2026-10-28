@@ -66,5 +66,12 @@
     "STEP035 nested composition",
     "current frame bridge",
     "public interaction entry/types/browser event consumers and AT33/34"
-  ]
+  ],
+  "sourceCommit": "ce5de4d8b",
+  "documentation": {
+    "sourceChecks": 19,
+    "builtPages": 154,
+    "selectiveLlmArtifacts": 1310,
+    "browserReuse": "Only source provenance identity changed; CSS, JS, images and layout are unchanged from ccbce6a6b."
+  }
 }
