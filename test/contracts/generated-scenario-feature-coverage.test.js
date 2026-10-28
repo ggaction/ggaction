@@ -581,7 +581,14 @@ test("derives a bounded public option inventory without runtime prototype paths"
         dataOperations: [] }, effectiveFeatures: [], renderers: ["svg"] }],
     datasetCorpus: { datasets: [datasetDefinition(preparedRecipe.datasets[0])] }, ledger
   });
-  for (const id of ["action:applyDataUpdate", "option-path:applyDataUpdate.prepared",
+  for (const id of ["action:createFlowData", "action:editFlowData", "action:layoutFlow",
+    "action:createFlowNodes", "action:editFlowNodes", "action:createFlowLinks", "action:editFlowLinks",
+    "option-path:createFlowData.value", "option-path:createFlowData.edgeKey",
+    "option-path:createFlowData.selfLoops", "option-path:createFlowData.balance",
+    "option-path:layoutFlow.method", "option-path:layoutFlow.options.iterations",
+    "option-path:createFlowNodes.labels", "option-path:editFlowNodes.nodes.opacity",
+    "option-path:editFlowLinks.links.opacity",
+    "action:applyDataUpdate", "option-path:applyDataUpdate.prepared",
     "option-path:applyDataUpdate.requestToken",
     "action:createPivotData", "action:editPivotData",
     "option-path:createPivotData.source", "option-path:createPivotData.field",
@@ -610,7 +617,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 33252);
+  assert.equal(ledger.requirements.length, 33635);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

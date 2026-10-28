@@ -13,6 +13,32 @@ const raw = [{ id: "ab", source: "a", target: "b", value: 3 }, { id: "ac", sourc
 const response = values => ({ text: JSON.stringify(values), mimeType: "application/json", encoding: "utf-8" });
 const resource = (p, kind) => p.semanticSpec.resources.find(r => r.kind === kind);
 
+test("flow highlight keeps body strokes separate from label appearance through revisions and restore", () => {
+  const original = createFlow();
+  const snapshot = serializeProgram(original);
+  for (const target of ["flowNodes", "flowLinks"]) {
+    const changed = original.highlightMarks({ id: "chosen", target, select: { field: "value", op: "gt", value: 0 },
+      stroke: "red", strokeWidth: 4, fill: "green", opacity: 0, offset: { x: 2, y: 3 } });
+    const children = changed.graphicSpec.objects[target].items;
+    for (const child of children) {
+      assert.equal(child.properties.fill, "green");
+      assert.equal(child.properties.opacity, 0);
+      if (child.identity.role === "label") {
+        assert.equal(Object.hasOwn(child.properties, "stroke"), false);
+        assert.equal(Object.hasOwn(child.properties, "strokeWidth"), false);
+      } else {
+        assert.equal(child.properties.stroke, "red");
+        assert.equal(child.properties.strokeWidth, 4);
+      }
+    }
+    const restored = deserializeProgram(serializeProgram(changed)).editLayout({ options: { nodeWidth: 20 } });
+    assert.equal(renderToSVG(deserializeProgram(serializeProgram(restored))), renderToSVG(restored));
+    assert.ok(restored.graphicSpec.objects[target].items.filter(child => child.identity.role === "body")
+      .every(child => child.properties.stroke === "red"));
+  }
+  assert.equal(serializeProgram(original), snapshot);
+});
+
 async function preparedFlow() {
   let p = chart().createCanvas().createData({ id: "nodes", values: [{ id: "a" }, { id: "b" }, { id: "c" }], keyField: "id" })
     .createParameter({ id: "gain", value: 2 });

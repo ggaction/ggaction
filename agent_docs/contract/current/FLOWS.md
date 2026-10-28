@@ -128,6 +128,7 @@ Evidence: `test/unit/resources/flow-plots.test.js`.
 - materializeFlowNodes wrapped child가 concrete graphics를 만든다. Canvas/coordinate 수정은
   저장 layout identity를 바꾸지 않고 현재 frame에 rematerialize한다. Selection/highlight는
   원본 source rows와 final node item을 사용한다. opacity0은 유효하며 삭제로 취급하지 않는다.
+  highlight의 stroke/strokeWidth는 body에만 적용하며 label에는 fill/opacity/offset을 적용한다.
 - 위치와 두께는 layout 소유이므로 일반 x/y/size/offset encoding은 적용하지 않는다.
   appearance는 이 action의 typed overrides, 강조는 공통 selection/highlight를 사용한다.
   axis/legend를 자동 생성하지 않는다. 별도 일반 mark/guide와 composition할 수 있다.

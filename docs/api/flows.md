@@ -194,6 +194,8 @@ position/size encodings and automatic axes/legends do not apply to these marks.
 Use typed style overrides for body appearance and selection/highlighting for
 emphasis. Remove marks with `removeMark` before removing their layout or graph
 with `removeResource`; live consumers are protected by dependency checks.
+Highlight strokes apply to node and link bodies. Node labels share highlight
+fill, opacity and offset while retaining their text appearance.
 
 Every action returns an immutable program. Unknown options, explicit
 `undefined`, invalid keys and ambiguous omitted references are rejected.

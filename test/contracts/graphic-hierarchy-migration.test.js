@@ -25,6 +25,11 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "flow-layouts": ["canvas", "flowLinks", "flowNodes", "chartTitle", "chartSubtitle"],
+  "flow-vertical": ["canvas", "flowLinks", "flowNodes", "chartTitle", "chartSubtitle"],
+  "flow-cyclic": ["canvas", "flowLinks", "flowNodes", "chartTitle", "chartSubtitle"],
+  "flow-cyclic-vertical": ["canvas", "flowLinks", "flowNodes", "chartTitle", "chartSubtitle"],
+
   "structured-paints": ["canvas", "paint"],
   "image-assets": ["canvas", "plot-main", "label", "backdrop", "image-image-clip", "image"],
   "tree-layouts": ["canvas", "treePlot", "chartTitle", "chartSubtitle"],

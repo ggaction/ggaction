@@ -112,17 +112,33 @@ exact child 편집을 검증하며 자동 facet/repeat는 명시 incompatible �
 | Scene/persistence | 두 scene 형식·graphic-only snapshots·offline fresh-process source revision; AT65 player는 후행 의무 |
 | Full/Basic/types | Full7actions, Basic 노출 없음; typed union·잘못된 method/options static 거부 |
 | Actual data | pinned5datasets×dag/vertical/cyclic3recipes, 각7action direct trace 및 source value/identity checks |
+| Font/typography | 기준 branch에 후행 font profile 없음; 통합 시 `materialization/flow/plot.js`의 label에 공통 exact font binder와 typography rematerialization 연결 의무 유지 |
 | P2 outline/blend/shadow | 현재 기준 branch에는 미포함; root의 paint 통합 때 공통 owner와 Flow body/label consumer 결합 의무 유지 |
 
 고정 레이아웃/패키지/문서 결과의 성공 여부는 실제 명령 receipt를 확인한 뒤 최종 기록한다.
+
+## Highlight label 정확성 보완
+
+최종검증 중 H 소비자 교차에서 발견한 body stroke가 Text에 전달되는 오류를 Flow에서도
+재현했다. root가 최소 correctness 수리와 새 tar 재검증을 승인했다. GraphPlot의 기존
+`transformHighlightChild` hook을 동일하게 재사용하고 label의 stroke/strokeWidth 제외는
+`materialization/selection/path.js`의 `transformLabeledPathHighlightChild` 한 owner로 둔다.
+body의 stroke, 공통 fill/opacity/offset, revision/codec 재실행과 이전 입력 불변을 검증한다.
+이 수리 전 tar/evidence는 별도 보존하며 최종 tar 및 결과와 혼동하지 않는다.
 
 ## 검증 중간 기록
 
 - 새 순수/상태/공개 소비자 focused coverage는100/96.54/100이며 신규 고위험 owner의
   기존 family floor95/90/100을 모두 통과했다. 기준을 낮추지 않았다.
-- 전체 render301/301, Flow browser4/4(DPR1/2), actual-data16/16 통과.
+- 전체 render301/301, 전체 browser323/323, Flow browser4/4(DPR1/2), actual-data16/16 통과.
 - 수정 후 focused contracts46/46 및 discovery16/16 통과. 최초 실패 로그는 보존한다.
 - docs source의 최초5실패는 search ceiling, changelog, tutorial catalog, 아직 미커밋인
-  example source link였다. 마지막 항목은 source commit 후 재생성/재검증한다.
-- canonical full coverage, 전체 browser, 동일 tar3Node 및 최종 문서 검증은 실행 대기/진행 중이다.
+  example source link였다. 수정·source commit 뒤 source170/170, built155pages/1328artifacts,
+  desktop search 및 전체문서320/390/768px 검증을 통과했다.
+- 최초 고정 tar `e15568d1c389c9181254e2865b0104ce91e83eb8f5fb2736ec6783696190c7bf`의
+  Node20/22/24 각212runtime+74tutorial+7qualification 통과. 추가 shared Flow 타입 fixture도
+  3Node에서 통과했다. 이 tar는 위 label 수리 전 결과이며 새 tar와 구분한다.
+- label 수리 후 selection/Flow75/75, boundary/types12/12, docs source170/170 통과.
+  새 packed 최대1,201,119/unpacked5,523,241bytes,819entries에 최소1000byte ceiling을 적용했다.
+- canonical full coverage와 label 수리 이후 고정 tar3Node·최종 문서 검증은 실행 대기/진행 중이다.
   이 중간 source checkpoint를 전체 종료나 STEP077 완료 증거로 사용하지 않는다.

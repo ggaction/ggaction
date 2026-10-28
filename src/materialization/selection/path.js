@@ -24,6 +24,12 @@ export function transformPathHighlightProperties(properties, style) {
   };
 }
 
+export function transformLabeledPathHighlightChild(child, style) {
+  const { stroke, strokeWidth, ...labelStyle } = style;
+  return { ...child, properties: transformPathHighlightProperties(child.properties,
+    child.identity?.role === "label" ? labelStyle : style) };
+}
+
 export function transformRuleHighlightProperties(properties, style) {
   const { offset, ...appearance } = style;
   return {
