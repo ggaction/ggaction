@@ -50,3 +50,11 @@ Full/Basic gzip526996/304841bytes, 한도529000/307000이며 SVG 한도25000은 
 원본 로그·failed attempts·정확한 archive·각 runtime 소비자 결과·DATA clean receipts는
 [통합 evidence](statistics/integration-evidence/files.json)에 SHA256과 함께 보존한다.
 STEP-016 조건부 dataflow, 이후 paint/image/hierarchy 및 전체 STEP-077 범위는 계속 남아 있다.
+
+## Clean 종료 검사 중 문서 한도 동기화
+
+`2810a8e2`의 clean unit은 통과했으나 전체 contracts684개 중 문서 한도표1개가 실패했다.
+README와 SECOND_ARCHITECTURE의 Full/Basic cap을 runtime 검사와 동기화하고 관련10개를
+재검증했다. 실패 원본은 `integration-evidence/clean-attempt-2810a8e2/`에 보존한다.
+수정 뒤에는 새 commit으로 clean receipts를 다시 생성한다. STEP-014/015의 필수 검사 목록도
+원격coverage, unit/contracts, 통계CLI, metadata/package/installed, browser/render/docs로 명시한다.
