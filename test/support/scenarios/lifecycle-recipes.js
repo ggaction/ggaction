@@ -1050,7 +1050,15 @@ function addDirectDerivedDataEdits(program) {
         }
       }
     })
+    .filterData({ id: "parameterFiltered", source: "editSource", where: {
+      version: 2, registry: "standard@1", root: { type: "binary", op: "gte",
+        left: { type: "field", name: "x" }, right: { type: "parameter", id: "computedOffset" } }
+    } })
     .editParameter({ target: "computedOffset", value: 2 })
+    .editFilteredData({ target: "parameterFiltered", where: {
+      version: 2, registry: "standard@1", root: { type: "binary", op: "gt",
+        left: { type: "field", name: "x" }, right: { type: "parameter", id: "computedOffset" } }
+    } })
     .createParameter({ id: "unusedLifecycleParameter", type: "boolean", value: null, nullable: true })
     .removeParameter({ id: "unusedLifecycleParameter" })
     .createComputedData({
@@ -1364,9 +1372,28 @@ function buildDirectDataResources(factors) {
     .createTitle({ text: lifecycleTitle(factors, "Derived resource analysis") });
 }
 
+function appendConditionalPoints(program) {
+  const when = { version: 2, registry: "standard@1", root: {
+    type: "binary", op: "gte", left: { type: "field", name: "x" }, right: { type: "literal", value: 2 }
+  } };
+  const options = (value, otherwise) => ({ target: "conditionalPoints",
+    conditions: [{ when, value: { value } }], otherwise: { value: otherwise } });
+  return program.createData({ id: "conditionalRows", values: [{ x: 1, y: 2 }, { x: 3, y: 4 }] })
+    .createPointMark({ id: "conditionalPoints", data: "conditionalRows" })
+    .encodeX({ target: "conditionalPoints", field: "x", scale: { id: "conditionalX" } })
+    .encodeY({ target: "conditionalPoints", field: "y", scale: { id: "conditionalY" } })
+    .encodeColor(options("red", "blue"))
+    .encodeStroke(options("#111111", "#222222"))
+    .encodeSize(options(36, 16))
+    .encodeShape(options("square", "circle"))
+    .encodeAngle(options(45, 0))
+    .encodeOpacity(options(0, 1))
+    .encodeStrokeWidth(options(2, 1));
+}
+
 function buildDirectPointText(factors) {
   const rows = styleRows(factors.dataset).map(row => ({ ...row, label: row.shape }));
-  return chart()
+  const program = chart()
     .createCanvas(cartesianCanvas(factors))
     .createData({ id: "appearanceRows", values: rows })
     .createPointMark({ id: "appearancePoints" })
@@ -1431,6 +1458,7 @@ function buildDirectPointText(factors) {
     .createRadarPlot({id:"appearanceRadarPlot",data:"radarAppearanceRows",coordinate:"appearanceRadar",wide:{fields:["x","positive","opacity"]},groupBy:"seriesKey",guides:false})
     .editRadarPlot({target:"appearanceRadarPlot",wide:{fields:["positive","opacity","x"]}})
     .removeMark({target:"appearanceRadarPlot"});
+  return appendConditionalPoints(program);
 }
 
 function directRangeRows(dataset) {
@@ -1476,6 +1504,10 @@ function buildDirectRangedMarks(factors) {
     .editStrokeWidthScale({ target: "directRules", range: [1, 4] })
     .encodeOpacity({ target: "directRules", value: factors.opacity })
     .editRuleMark({ target: "directRules", stroke: factors.stroke, opacity: factors.opacity })
+    .encodeStrokeDash({ target: "directRules", conditions: [{ when: {
+      version: 2, registry: "standard@1", root: { type: "binary", op: "gt",
+        left: { type: "field", name: "position" }, right: { type: "literal", value: 0 } }
+    }, value: { value: [3, 2] } }], otherwise: { value: [1, 1] } })
     .createRectMark({ id: "directRects", data: "directRanges", opacity: 0.12 })
     .encodeX({ target: "directRects", field: "lower", scale: { id: "x" } })
     .encodeX2({ target: "directRects", field: "upper" })

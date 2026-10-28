@@ -522,7 +522,7 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 
 ## `filterData`
 
-- Signature: `filterData({ id, source?, field, oneOf?, predicate?, range? })`
+- Signature: `filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })` or `filterData({ id, source?, where: ExpressionV2 })`.
 - `id`: Implemented, 필수 derived dataset ID. 새 ID여야 한다.
 - `source`: Implemented, dataset ID. 생략하면 current data를 사용하며 유일하게 추론되지 않으면 오류다.
 - `field`: Implemented, 비어 있지 않은 필드 이름. 각 row에 값이 없어도 비교 결과가 false일 수 있다.
@@ -539,9 +539,16 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 - Coverage: `test/unit/actions/data/filter-data.test.js`가 source inference, scalar types,
   ownership, invalid options와 primitive equivalence를 검증한다.
 
+- Expression predicates use the closed `ExpressionV2` registry and require a boolean result; numeric or string truthiness is rejected. Comparisons keep the expression null/missing policy.
+- `where` is exclusive with every field-filter option. All fields, parameter references, and known types are checked in every AST branch before evaluation, including empty inputs.
+- Stored expression filters record ordered exact `parameterInputs`; authors cannot supply these bindings. Parameter edits revise every dependent filter, statistic, scale, mark and guide through the existing dataset DAG. Unaffected datasets retain identity.
+- Filtering preserves source order, row keys, lineage and schema, including empty outputs. Automatic empty scale domains reject unless a fixed domain or the existing explicit `emptyDomain: "preserve"` policy is supplied. Failed edits preserve the old program and trace.
+- Editable restoration validates predicate shape, source field types and exact parameter revisions without evaluating the AST. Referenced parameters cannot be removed until their filter dependency is detached.
+- Evidence: `test/unit/actions/data/expression-filter.test.js` and `test/unit/grammar/conditional-encoding.test.js`.
+
 ### Formal values — `filterData`
 
-- Implemented: `filterData({ id: UserId; source?: UserId; field: FieldName } & ({ oneOf: readonly unknown[] } | { predicate: FilterComparison } | { range: FilterRange }))`
+- Implemented: `filterData(options: FilterDataOptions): ChartProgram`. `FilterDataOptions` is the exclusive union of the field filter modes and `{ id; source?; where: ComputedExpressionV2 }`.
 - `FilterComparison = { op: "eq" | "neq"; value: unknown } | { op: "lt" | "lte" | "gt" | "gte"; value: Finite | string }`
 - `FilterRange = { min: Finite | string; max: Finite | string; inclusive?: boolean }`
 - Planned (NOT IMPLEMENTED): —
@@ -1326,7 +1333,8 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 
 ## `editFilteredData`
 
-- Signature: `editFilteredData({ target, field?, oneOf? | predicate? | range?, dependents? })`.
+- Signature: `editFilteredData({ target, field?, oneOf? | noneOf? | predicate? | range?, nulls?, dependents? })` or `editFilteredData({ target, where: ExpressionV2, dependents? })`.
+- A complete `where` switches from a legacy field mode; a complete field/mode pair switches back. Expression edits rebind all parameter inputs, including inactive branches. `where` cannot be mixed with `field` or `nulls`.
 - Filter mode option을 제공하면 이전 mode keys를 모두 제거한 뒤 exactly-one mode를 검증한다. `field`만 편집하면
   현재 mode를 유지한다.
 

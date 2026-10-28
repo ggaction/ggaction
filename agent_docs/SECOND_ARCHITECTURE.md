@@ -4,6 +4,14 @@
 > [`architecture/README.md`](architecture/README.md)의 작업별 경로에서 시작한다. 이 파일은 현재
 > macro-architecture의 canonical 원문으로 유지한다.
 
+### Boolean filter 의존성
+
+AST filter는 computed와 같은 closed v2 expression 및 exact parameter-reference 검증을
+사용한다. 읽기 전용 `materialization/expressionInputs.js`가 action materialization과
+editable restore에 schema/parameter 환경을 공급하며 restore는 predicate를 실행하지 않는다.
+Parameter edit는 공통 dataset DAG와 기존 mark/scale/guide plan을 명시적으로 실행한다.
+필터는 원본 행의 순서·식별자·lineage를 유지한다.
+
 ## 현재 구조 빠른 지도
 
 이 지도는 현재 `package.json.exports`와 대응한다. 기본 authoring은 domain action →
@@ -39,8 +47,8 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 `core/ownData.js`는 descriptor 검증을 공유하고 action summary는 getter를 호출하지 않는다.
 `grammar/transformInput.js`는 dispatch 전 transform 배열 검증을 Full/Basic에서 공유하며
 큰 transform policy 모듈을 Basic 입력 경계로 끌어오지 않는다.
-이 pure kernel은 공개 computed v2, parameter와 prepared data source의 명시 계산에서 재사용한다.
-공개 연결과 저장 검증 경계는 아래 computed 및 data-source integration 절이 소유한다.
+이 pure kernel은 공개 computed v2, where filter, conditional encoding, parameter와 prepared data source의
+명시 계산에서 재사용한다. 공개 연결과 저장 검증 경계는 아래 각 domain integration 절이 소유한다.
 Renderer는 AST를 읽거나 평가하지 않으며 기존 computed v1의 의미와 명시 materialization을 유지한다.
 상세 내부 계약은 [expression core](architecture/EXPRESSION_CORE.md), 공개 computed는
 [CORE](contract/current/CORE.md), action trace는 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
@@ -583,8 +591,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 529,000 bytes |
-| `ggaction/basic` | 307,000 bytes |
+| `ggaction` | 537,000 bytes |
+| `ggaction/basic` | 315,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -774,7 +782,7 @@ Action 경계가 생성 namespace를 준비하고 kernel이 source snapshot iden
 `semanticSpec.resources`의 authored parameter가 scalar 값과 revision을 소유한다.
 `grammar/parameter.js`와 expression grammar는 명시 값을 받아 순수 검증·계산하며,
 `actions/data/computedBinding.js`가 현재 parameter를 exact revision vector에 바인딩한다.
-`materialization/computedInputs.js`는 공통 schema와 exact resource lookup을 사용해 저장된
+`materialization/expressionInputs.js`는 공통 schema와 exact resource lookup을 사용해 저장된
 computed 입력을 검증한다. Persistence는 이 read-only validator를 재사용하고 AST를 재평가하지 않는다.
 Named lookup 자체는 계속 `selectors/resources.js`가 소유한다.
 
@@ -2947,3 +2955,16 @@ Parameter/computed v2 통합의 동일 staged artifact는 Node 20.20.2·22.23.2�
 최소 1,000 bytes 단위 package/browser ceiling을 갱신했다. Basic은 생성 경로만 추가하고
 parameter revision planner를 import하지 않는다. 이전 Node22 compressor 차이로 인한
 기존 ceiling 실패도 이 지원 matrix 측정으로 해결했다.
+
+### 조건부 인코딩과 명시적인 소비자 갱신
+
+조건부 appearance는 `layer.conditionals[channel]` 한 곳에 branch intent와 exact
+parameter/selection refs를 보존한다. 일반 encoding/config에 otherwise를 복제하지 않는다.
+기존 encoder의 deferred normalization을 재사용하고, topology와 final item grain을 검증한
+뒤 domain action이 scale/mark/guide materialization을 명시 호출한다. Selection property로
+연결된 mark dependency는 cycle을 거부하고 정렬된 영향 closure로 갱신한다. Facet scale
+collector와 resource reference collector는 비활성 branch도 live consumer로 취급한다.
+Point glyph의 geometry 이전 mapping과 나머지 appearance의 기존 mark output 단계는
+같은 first-match grammar를 사용한다. Selection은 chosen raw channel value를 검사하고
+실제 그래픽 identity로 drawing-order 변경에 대응한다. Renderer 경계는 변하지 않는다.
+정확한 지원 채널, 단일 binding 범례와 empty-domain 규칙은 current/ENCODINGS가 소유한다.

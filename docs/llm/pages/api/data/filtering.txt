@@ -75,6 +75,53 @@ program.filterData({
 old one atomically. A partial range edit preserves an omitted endpoint and its
 existing inclusivity; `min: false` or `max: false` removes that endpoint.
 
+## Filter with a parameter
+
+A `where` predicate uses the same closed boolean expression format as computed
+fields. It is exclusive with `field`, `oneOf`, `noneOf`, `predicate`, `range`, and
+`nulls`. The predicate must produce a boolean; `0` and empty strings are not
+converted to booleans. All branches are checked for missing fields, parameters,
+and incompatible types, even when they are inactive.
+
+> **Executable complete.** Standalone ES module with a Canvas, all observations and imports included. Inspect each immutable filtered dataset.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ id: "observations", values: [{ value: 2 }, { value: 5 }] })
+  .createParameter({ id: "minimum", value: 3 })
+  .filterData({
+    id: "selected",
+    source: "observations",
+    where: {
+      version: 2,
+      registry: "standard@1",
+      root: {
+        type: "binary", op: "gte",
+        left: { type: "field", name: "value" },
+        right: { type: "parameter", id: "minimum" }
+      }
+    }
+  })
+  .createScatterPlot({ id: "points", data: "selected", x: "value", y: "value" });
+const revised = program.editParameter({ target: "minimum", value: 1 });
+// selected now contains both rows; program still contains only value 5.
+```
+
+Parameter edits update dependent filters, statistics, scales, marks, and guides.
+`editFilteredData({ target: "selected", where })` replaces the predicate; a
+complete field and filter mode switches back to field filtering. Source order,
+row identity, and schema are retained. A parameter remains referenced until every
+filter or computed dependency using it is removed or changed.
+
+An empty filter does not silently retain an inferred scale domain. Use a fixed
+scale `domain`, or explicitly choose `emptyDomain: "preserve"` to reuse the last
+domain for the same binding. Otherwise the update fails and the original chart
+is unchanged. Comparisons with null or missing values follow the expression
+comparison rules and evaluate to false.
+
 ## `filterMarks({ target?, mode?, ...selector })` {#filter-marks}
 
 Filter existing final mark items without changing the source dataset.

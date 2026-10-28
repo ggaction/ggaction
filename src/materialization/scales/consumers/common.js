@@ -1,3 +1,6 @@
+import { conditionalValues } from "../../../grammar/conditionalState.js";
+import { canonicalJSON } from "../../../core/contentDigest.js";
+import { readConditionalConsumerValues } from "../../conditionalValues.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { readSeriesIdentity, validatePathSeriesAppearance } from "../../../grammar/pathSeries.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
@@ -25,6 +28,13 @@ export function findScaleConsumers(program, id) {
       if (layer.derivedBindings?.overlay?.inheritColor && channel === "color") continue;
       const encoding = layer.encoding?.[channel];
       if (encoding?.scale === id) consumers.push({ layer, channel, encoding });
+      const bindings = new Set();
+      for (const branch of layer.conditionals?.[channel] === undefined ? [] : conditionalValues(layer.conditionals[channel])) {
+        if (branch.scale !== id) continue;
+        const key = canonicalJSON(branch);
+        if (!bindings.has(key)) consumers.push({ layer, channel, encoding: branch, role: "conditional" });
+        bindings.add(key);
+      }
     }
     for (const dimension of layer.encoding?.parallel?.dimensions ?? []) {
       if (dimension.scale === id) {
@@ -62,6 +72,7 @@ export function readConsumerFieldValues(
   dataset,
   scale = findScale(program, consumer.encoding.scale)
 ) {
+  if (consumer.role === "conditional") return readConditionalConsumerValues(program, consumer.layer, consumer.encoding, scale);
   const { field, fieldType, temporalUnit } = consumer.encoding;
   if (consumer.layer.derivedBindings?.overlay) {
     const groups = resolveOverlaySeries(program, consumer.layer.derivedBindings.overlay, { geometry: false });

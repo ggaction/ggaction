@@ -275,6 +275,25 @@ function directAction(program, action) {
 }
 
 function buildScaleWitness(action, path, type) {
+  if (path.startsWith("otherwise.")) {
+    // Trace arguments summarize arrays; reuse the observed public input so
+    // discretized color and size ranges remain actual encoder payloads.
+    const previousObserver = observeRecipe;
+    let program, input;
+    observeRecipe = (receiver, method, args) => {
+      previousObserver?.(receiver, method, args);
+      if (method === action) input = args;
+    };
+    try { program = buildScaleWitness(action, path.slice("otherwise.".length), type); }
+    finally { observeRecipe = previousObserver; }
+    const { target, ...value } = input;
+    // A conditional chooses appearance at an existing path grain; author
+    // grouping explicitly instead of inheriting ordinary dash's implicit split.
+    if (action === "encodeStrokeDash") program = program.encodeGroup({ fields: [value.field] });
+    return program[action]({ ...(target === undefined ? {} : { target }),
+      conditions: [{ when: { version: 2, registry: "standard@1", root: { type: "literal", value: false } }, value }],
+      otherwise: value });
+  }
   switch (action) {
     case "encodeX":
       return source().createPointMark().encodeY({ field: "y" })
@@ -885,10 +904,13 @@ test("derives only role-reachable nested scale type paths", async () => {
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action)).length, 152);
+  const conditional = scaleTypes.filter(option => option.path.startsWith("otherwise."));
+  assert.deepEqual(conditional.map(option => option.action).sort(), ["encodeColor", "encodeOpacity", "encodeShape", "encodeSize", "encodeStroke", "encodeStrokeDash", "encodeStrokeWidth"].sort());
+  for (const option of conditional) assert.deepEqual(option.values, options.get(`option-path:${option.action}.${option.path.slice("otherwise.".length)}`).values);
+  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).length, 152);
   assert.equal(scaleTypes.filter(option => option.action === "createAdjacentPlot").length, 22);
   assert.equal(scaleTypes.filter(option => option.action === "createLayerPlot").length, 22);
-  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action)).reduce((sum, option) => sum + option.values.length, 0), 701);
+  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).reduce((sum, option) => sum + option.values.length, 0), 701);
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:band"));
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:point"));
   // Horizontal lines add the same categorical position roles on Y.

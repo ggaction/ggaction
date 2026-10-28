@@ -97,6 +97,12 @@ export function collectSemanticScaleReferences(program) {
       }
     }
   }
+  for (const layer of program.semanticSpec.layers) {
+    for (const [channel, definition] of Object.entries(layer.conditionals ?? {})) {
+      definition.conditions.forEach((condition, index) => append(references, reference("scale", condition.value.scale, "layer", layer.id, ["conditionals", channel, "conditions", index, "value", "scale"])));
+      append(references, reference("scale", definition.otherwise.scale, "layer", layer.id, ["conditionals", channel, "otherwise", "scale"]));
+    }
+  }
   collectKnownKeys(program.semanticSpec.guides, [], (key, value, path) => {
     if (["scale", "colorScale", "sizeScale", "shapeScale"].includes(key)) {
       append(references, reference(
@@ -241,6 +247,14 @@ export function collectGuideConfigReferences(program) {
 
 export function collectSelectionReferences(program) {
   const references = [];
+  for (const layer of program.semanticSpec.layers) {
+    for (const [channel, definition] of Object.entries(layer.conditionals ?? {})) {
+      definition.selectionInputs.forEach((input, index) => append(references, reference(
+        "selection", input.selection, "layer", layer.id,
+        ["conditionals", channel, "selectionInputs", index, "selection"]
+      )));
+    }
+  }
   for (const [id, config] of Object.entries(
     program.materializationConfigs.selections ?? {}
   )) {

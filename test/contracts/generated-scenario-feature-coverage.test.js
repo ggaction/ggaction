@@ -217,11 +217,11 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const inventory = await buildPublicOptionInventory(actionCards);
 
   assert.equal(inventory.counts.publicActions, 297);
-  assert.equal(inventory.counts.topLevelOptionPaths, 2739);
-  assert.equal(inventory.counts.nestedOptionPaths, 21911);
-  assert.equal(inventory.counts.optionPaths, 24650);
-  assert.equal(inventory.counts.requiredOptionPaths, 17041);
-  assert.equal(inventory.counts.excludedOptionPaths, 7609);
+  assert.equal(inventory.counts.topLevelOptionPaths, 2757);
+  assert.equal(inventory.counts.nestedOptionPaths, 22585);
+  assert.equal(inventory.counts.optionPaths, 25342);
+  assert.equal(inventory.counts.requiredOptionPaths, 17264);
+  assert.equal(inventory.counts.excludedOptionPaths, 8078);
   assert.deepEqual(inventory.optionPaths.filter(option =>
     ["createData", "reviseData"].includes(option.action) && option.topLevel &&
     ["keyField", "keyFields", "keys", "rowMap"].includes(option.path)
@@ -237,9 +237,9 @@ test("derives a bounded public option inventory without runtime prototype paths"
   assert.equal(inventory.counts.topLevelCategoricalPaths, 937);
   assert.equal(inventory.counts.topLevelLiteralValues, 3767);
   assert.equal(inventory.counts.literalFamilies, 216);
-  assert.equal(inventory.counts.pathLiteralRequirements, 12803);
+  assert.equal(inventory.counts.pathLiteralRequirements, 13026);
   assert.equal(inventory.counts.familyLiteralRequirements, 525);
-  assert.equal(inventory.counts.pathDiversityRequirements, 463);
+  assert.equal(inventory.counts.pathDiversityRequirements, 485);
   for (const action of ["createPivotData", "editPivotData"]) {
     const options = inventory.optionPaths.filter(option => option.action === action && option.topLevel);
     assert.deepEqual(options.map(option => option.path), action === "createPivotData"
@@ -496,7 +496,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 7609 }
+    { "redacted-array": 8078 }
   );
   const values = id => optionById.get(id)?.values ?? [];
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);
@@ -524,14 +524,25 @@ test("derives a bounded public option inventory without runtime prototype paths"
     option.required &&
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
-  assert.equal(scaleTypePaths.length, 192);
-  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 897);
+  assert.equal(scaleTypePaths.length, 199);
+  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 931);
   assert.equal(inventory.excludedOptionPaths.every(option =>
     optionById.get(option.replacement)?.required === true
   ), true);
   assert.equal(inventory.optionPaths.filter(option => option.required).every(option =>
     option.evidence === "direct-trace"
   ), true);
+  for (const action of ["encodeColor", "encodeStroke", "encodeSize", "encodeShape", "encodeOpacity", "encodeStrokeWidth", "encodeStrokeDash", "encodeAngle"]) {
+    for (const path of ["conditions", "otherwise", "otherwise.value"]) {
+      const option = optionById.get(`option-path:${action}.${path}`);
+      assert.equal(option?.required, true, `${action}.${path}`);
+      assert.equal(option?.evidence, "direct-trace", `${action}.${path}`);
+    }
+    assert.equal(optionById.get(`option-path:${action}.conditions[].when`)?.evidence, "redacted-trace");
+  }
+  for (const action of ["filterData", "editFilteredData"]) for (const path of ["where", "where.version", "where.registry", "where.root.type"]) {
+    assert.equal(optionById.get(`option-path:${action}.${path}`)?.evidence, "direct-trace");
+  }
   const ledger = createScenarioCoverageLedger({
     publicInventory: inventory,
     rendererFeatures: []
@@ -556,15 +567,31 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "action:createPivotData", "action:editPivotData",
     "option-path:createPivotData.source", "option-path:createPivotData.field",
     "option-path:createPivotData.value", "option-path:createPivotData.op",
-    "option-path:editPivotData.op", "option-path:editPivotData.groupBy"]) {
+    "option-path:editPivotData.op", "option-path:editPivotData.groupBy",
+    "option-path:filterData.where", "option-path:editFilteredData.where"]) {
     assert.equal(preparedReport.requirements.find(requirement => requirement.id === id)?.occurrences,
       1, `${id} must be observed from an executed public action`);
+  }
+  const conditionalResults = ["action-direct-point-text", "action-direct-ranged-marks"].map(id => {
+    const recipe = LIFECYCLE_SCENARIO_RECIPES.find(item => item.id === id);
+    const program = recipe.build({ dataset: recipe.datasets[0], ...Object.fromEntries(Object.entries(recipe.factors).map(([name, values]) => [name, values[0]])) });
+    const directTrace = program.trace.children.map(({ op, args }) => ({ op, args }));
+    return { id, recipe: id, dataset: recipe.datasets[0], operations: directTrace.map(node => node.op),
+      directOperations: directTrace.map(node => node.op), directTrace, metadata: { chartFamily: "scatter", complexity: "advanced", activeFeatures: [], dataOperations: [] }, effectiveFeatures: [], renderers: ["svg"] };
+  });
+  const conditionalReport = summarizeScenarioFeatureCoverage({ results: conditionalResults,
+    datasetCorpus: { datasets: conditionalResults.map(result => datasetDefinition(result.dataset)) }, ledger });
+  for (const action of ["encodeColor", "encodeStroke", "encodeSize", "encodeShape", "encodeOpacity", "encodeStrokeWidth", "encodeStrokeDash", "encodeAngle"]) {
+    for (const path of ["conditions", "otherwise", "otherwise.value"]) {
+      const id = `option-path:${action}.${path}`;
+      assert.equal(conditionalReport.requirements.find(requirement => requirement.id === id)?.occurrences, 1, id);
+    }
   }
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 30672);
+  assert.equal(ledger.requirements.length, 31118);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

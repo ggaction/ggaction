@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect.",
-  "signature": "encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions>): ChartProgram;",
+  "signature": "encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode stroke width",
     "encode",
@@ -68,19 +68,29 @@
   },
   "options": [
     {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<StrokeWidthEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<StrokeWidthEncodingOptions>[\"otherwise\"]"
+    },
+    {
       "name": "value",
       "required": false,
-      "type": "number | undefined"
+      "type": "number"
     },
     {
       "name": "field",
       "required": false,
-      "type": "string | undefined"
-    },
-    {
-      "name": "target",
-      "required": false,
-      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+      "type": "string"
     },
     {
       "name": "fieldType",
@@ -94,7 +104,9 @@
     }
   ],
   "callPatterns": [
-    "encodeStrokeWidth({ target?, scale?, value?, field?, fieldType? })"
+    "encodeStrokeWidth({ value, target? })",
+    "encodeStrokeWidth({ field, target?, fieldType?, scale? })",
+    "encodeStrokeWidth({ target?, conditions: [{ when, value }], otherwise })"
   ],
   "snippet": "program.encodeStrokeWidth({ value: 2 })",
   "errors": [],

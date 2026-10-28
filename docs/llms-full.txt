@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:40ba83f1722b03c6c309334ccf013fc94a37d861a49d5dd55402dfbbb3c56f94. Status: development. Runtime source: b84b54b536bfb3c282dc6301d72e105aea665e35. Release baseline: v0.0.13.
+Contract: sha256:02365ee2d0c5170388865da7dc9f00a8526488a7e5f705830ae0b048cddb04d8. Status: development. Runtime source: 698f926b3b155cdf19fa27df1141d35c207a5b7d. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/b84b54b536bfb3c282dc6301d72e105aea665e35/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/698f926b3b155cdf19fa27df1141d35c207a5b7d/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/b84b54b536bfb3c282dc6301d72e105aea665e35/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/698f926b3b155cdf19fa27df1141d35c207a5b7d/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -5184,7 +5184,7 @@ corresponding higher-level action when the library should materialize values:
 | `"normalize"` | `{ type, field, as, groupBy, method, ...methodPolicies }` | `createNormalizedData` |
 | `"complete"` | `{ type, key, groupBy, values? or sequence? or calendar?, fill, members? }` | `createCompleteData` |
 | `"impute"` | `{ type, fields, groupBy, sortBy, method, value?, edges, maxGap? }` | `createImputedData` |
-| `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
+| `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }`, or `{ type, where }` | `filterData` |
 | `"lookup"` | `{ type, field, lookup: { data, key, fields, as } }` | `createLookupData` |
 | `"flatten"` | `{ type, fields, as }` | `createFlattenData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
@@ -5411,6 +5411,53 @@ program.filterData({
 `editFilteredData` accepts the same modes. Supplying a new mode replaces the
 old one atomically. A partial range edit preserves an omitted endpoint and its
 existing inclusivity; `min: false` or `max: false` removes that endpoint.
+
+## Filter with a parameter
+
+A `where` predicate uses the same closed boolean expression format as computed
+fields. It is exclusive with `field`, `oneOf`, `noneOf`, `predicate`, `range`, and
+`nulls`. The predicate must produce a boolean; `0` and empty strings are not
+converted to booleans. All branches are checked for missing fields, parameters,
+and incompatible types, even when they are inactive.
+
+> **Executable complete.** Standalone ES module with a Canvas, all observations and imports included. Inspect each immutable filtered dataset.
+
+```js
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas()
+  .createData({ id: "observations", values: [{ value: 2 }, { value: 5 }] })
+  .createParameter({ id: "minimum", value: 3 })
+  .filterData({
+    id: "selected",
+    source: "observations",
+    where: {
+      version: 2,
+      registry: "standard@1",
+      root: {
+        type: "binary", op: "gte",
+        left: { type: "field", name: "value" },
+        right: { type: "parameter", id: "minimum" }
+      }
+    }
+  })
+  .createScatterPlot({ id: "points", data: "selected", x: "value", y: "value" });
+const revised = program.editParameter({ target: "minimum", value: 1 });
+// selected now contains both rows; program still contains only value 5.
+```
+
+Parameter edits update dependent filters, statistics, scales, marks, and guides.
+`editFilteredData({ target: "selected", where })` replaces the predicate; a
+complete field and filter mode switches back to field filtering. Source order,
+row identity, and schema are retained. A parameter remains referenced until every
+filter or computed dependency using it is removed or changed.
+
+An empty filter does not silently retain an inferred scale domain. Use a fixed
+scale `domain`, or explicitly choose `emptyDomain: "preserve"` to reuse the last
+domain for the same binding. Otherwise the update fails and the original chart
+is unchanged. Comparisons with null or missing values follow the expression
+comparison rules and evaluate to false.
 
 ## `filterMarks({ target?, mode?, ...selector })` {#filter-marks}
 
@@ -7644,6 +7691,60 @@ Basic still has no public `editScale`, focused scale editors, or legend editors.
 Scale-type transitions require Full, or a new scale ID in Basic. Saving a Basic
 program preserves its internal actions; restoring it returns the existing
 editable Full program. See [Saved programs](./data-updates/#save-and-restore-snapshots).
+
+## Choose appearance with conditions
+
+`encodeColor`, `encodeStroke`, `encodeSize`, `encodeShape`, `encodeOpacity`,
+`encodeStrokeWidth`, `encodeStrokeDash`, and `encodeAngle` also accept ordered
+`conditions` and a required `otherwise`. Each branch contains the corresponding
+encoder's usual payload without `target`. The first true predicate wins; opacity
+`0` remains fully transparent. Every branch is validated, including inactive ones.
+
+> **Executable complete.** The displayed program imports chart and supplies its inline data and parameter.
+
+```javascript
+import { chart } from "ggaction";
+
+const initial = chart().createCanvas({ width: 360, height: 240, margin: 40 })
+  .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }, { x: 3, y: 3 }] })
+  .createParameter({ id: "minimum", value: 2 })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+  .encodeOpacity({
+    conditions: [{
+      when: { version: 2, registry: "standard@1", root: {
+        type: "binary", op: "gte",
+        left: { type: "field", name: "x" },
+        right: { type: "parameter", id: "minimum" }
+      } },
+      value: { value: 1 }
+    }],
+    otherwise: { value: 0 }
+  });
+const updated = initial.editParameter({ target: "minimum", value: 3 });
+```
+
+A predicate is a boolean expression or an explicit `{ selection: "selectionId" }`
+created with `selectMarks`. Parameter and selection edits refresh the affected
+marks and their dependent output. A selection cannot depend on the same
+conditional output that reads it. Referenced parameters, selections, and branch
+scales stay live until the encoding is replaced or removed.
+
+Field branches contribute their complete final-item populations to automatic
+scale domains. Conditions change appearance without removing rows. Use a
+[parameterized data filter](./data-updates/) to change statistical input.
+Path and aggregate marks require one branch value and one predicate result per
+final item; provide the existing grouping or aggregate when needed. Branches
+cannot introduce different grouping, stacking, or layout policies.
+
+A legend can use a conditional channel when its field branches share one exact
+field/type/scale binding. Different bindings are ambiguous: remove the affected
+legend before assigning them, and use a unique binding before creating a legend.
+Constants do not create legend entries. Existing empty-domain rules apply,
+including explicit `emptyDomain: "preserve"`; there is no implicit domain fallback.
+
+Replace a conditional with the same encoder, or use `removeEncoding` to remove
+it. Full and Basic support conditional authoring; editing parameters or selections
+after authoring uses Full, including a restored Basic program.
 
 ## Choose a family
 
@@ -18305,7 +18406,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `id` | Required | `string` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
-| `field` | Required | `string` |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
 | `nulls` | Optional / branch-dependent | `"exclude" \| "include" \| undefined` |
 | `oneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `noneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
@@ -18316,11 +18418,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
+filterData({ id, source?, where })
 filterData({ id, source?, field, oneOf | noneOf | predicate | range, nulls? })
 ```
 
-Create an immutable named derived dataset using exactly one membership,
-comparison, or range filter. The source defaults to current data.
+Create an immutable named dataset using a field filter or a strict boolean expression predicate.
+The source defaults to current data. `where` uses the closed v2 AST and excludes all field
+filter options. Parameter edits revise dependent filters and their chart resources.
 [Data](./api/data/)
 
 ## `createParameter`
@@ -18755,13 +18859,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `where` | Optional / branch-dependent | `ComputedExpressionV2 \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `nulls` | Optional / branch-dependent | `"exclude" \| "include" \| false \| undefined` |
 | `oneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `noneOf` | Optional / branch-dependent | `readonly [DatasetScalar, ...DatasetScalar[]] \| undefined` |
 | `predicate` | Optional / branch-dependent | `FilterComparison \| undefined` |
 | `range` | Optional / branch-dependent | `FilterRangePatch \| undefined` |
 | `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `nulls` | Optional / branch-dependent | `"exclude" \| "include" \| false \| undefined` |
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused core data editing](./reference/actions/charts-data/#focused-core-data-editing).
@@ -21594,6 +21699,7 @@ channel false restores independent domain inference. This edit is atomic.
 
 ```javascript
 editDerivedData({ target, definition, dependents? })
+editFilteredData({ target, where, dependents? })
 editFilteredData({ target, field?, oneOf? | noneOf? | predicate? | range?, nulls?, dependents? })
 editSortedData({ target, sortBy, dependents? })
 editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })
@@ -23382,10 +23488,10 @@ Rule field endpoints and nonnumeric datum endpoints require an explicit matching
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeColor(options: TargetedOptions<ColorEncodingOptions>): ChartProgram;
+encodeColor(options: TargetedOptions<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`ColorEncodingOptions`](./reference/types/#type-colorencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`ColorEncodingOptions`](./reference/types/#type-colorencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23393,11 +23499,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `value` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
-| `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<ColorEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<ColorEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `string` |
+| `field` | Optional / branch-dependent | `string` |
+| `fieldType` | Optional / branch-dependent | `"quantitative"` |
+| `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `layout` | Optional / branch-dependent | `ColorLayout \| undefined` |
 | `aggregate` | Optional / branch-dependent | `AggregateOperation \| undefined` |
@@ -23415,6 +23523,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })
+encodeColor({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or compatibly replace point fill, line-series color, grouped area fill,
@@ -23465,6 +23574,8 @@ scale of the same type, updating every consumer atomically. Generic/focused
 scale editors and legend editors remain Full-only; scale-type transitions use
 Full or a new scale ID in Basic. [Encoding reassignment](./api/encodings/#reassign-an-existing-encoding)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](./api/encodings/#choose-appearance-with-conditions).
+
 ## `encodeStrokeDash`
 
 **API layer:** user-facing. **Authoring roles:** H2.
@@ -23472,10 +23583,10 @@ Full or a new scale ID in Basic. [Encoding reassignment](./api/encodings/#reassi
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions>): ChartProgram;
+encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeDashEncodingOptions`](./reference/types/#type-strokedashencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeDashEncodingOptions`](./reference/types/#type-strokedashencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23483,9 +23594,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `value` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<StrokeDashEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<StrokeDashEncodingOptions>["otherwise"]` |
+| `field` | Optional / branch-dependent | `string` |
+| `value` | Optional / branch-dependent | `DashPattern \| DashStyle` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| undefined` |
 | `scale` | Optional / branch-dependent | `DashScaleOptions \| undefined` |
 
@@ -23496,6 +23609,7 @@ encodeStrokeDash(
   { field, target?, fieldType?, scale? }
   | { value, target? }
 )
+encodeStrokeDash({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or replace nominal/ordinal line-series or rule dash patterns, or apply one
@@ -23505,6 +23619,8 @@ pattern for valid categories outside a domain; missing categories remain errors,
 and domain, legend and raw series identities stay unchanged.
 [Series encodings](./api/series-encodings/)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](./api/encodings/#choose-appearance-with-conditions).
+
 ## `encodeStroke`
 
 **API layer:** user-facing. **Authoring roles:** H2.
@@ -23512,10 +23628,10 @@ and domain, legend and raw series identities stay unchanged.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeStroke(options: TargetedOptions<StrokeEncodingOptions>): ChartProgram;
+encodeStroke(options: TargetedOptions<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeEncodingOptions`](./reference/types/#type-strokeencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeEncodingOptions`](./reference/types/#type-strokeencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23524,17 +23640,20 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `value` | Optional / branch-dependent | `string \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<StrokeEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<StrokeEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `string` |
+| `field` | Optional / branch-dependent | `string` |
+| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
-| `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
+| `scale` | Optional / branch-dependent | `CategoricalColorScaleOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 encodeStroke({ value, target? })
 encodeStroke({ field, target?, fieldType?, temporalUnit?, scale? })
+encodeStroke({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign a constant non-empty stroke color or map a categorical, quantitative, or
@@ -23544,6 +23663,8 @@ mode clears the field binding and its own legend; field mode clears the constant
 override. Text outlines are outside this action.
 [Appearance encodings](./api/appearance/)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](./api/encodings/#choose-appearance-with-conditions).
+
 ## `encodeStrokeWidth`
 
 **API layer:** user-facing. **Authoring roles:** H2.
@@ -23551,10 +23672,10 @@ override. Text outlines are outside this action.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions>): ChartProgram;
+encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeWidthEncodingOptions`](./reference/types/#type-strokewidthencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeWidthEncodingOptions`](./reference/types/#type-strokewidthencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23562,9 +23683,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `value` | Optional / branch-dependent | `number \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<StrokeWidthEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<StrokeWidthEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `number` |
+| `field` | Optional / branch-dependent | `string` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
 | `scale` | Optional / branch-dependent | `(Omit<ScaleFields<"base" \| "clamp" \| "constant" \| "exponent" \| "id" \| "reverse" \| "zero"> & { domain?: "auto" \| readonly [number, number] \| undefined; range?: "auto" \| readonly [...] \| undefined; } & { ...; }, "nice"> & { ...; }) \| (Omit<...> & { ...; }) \| undefined` |
 
@@ -23573,6 +23696,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 encodeStrokeWidth({ value, target? })
 encodeStrokeWidth({ field, target?, fieldType?, scale? })
+encodeStrokeWidth({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect. Field mode
@@ -23581,6 +23705,8 @@ clears the field and its own sampled width legend; fieldType/scale are invalid i
 constant mode. Active channel selections must be removed before replacement.
 [Appearance encodings](./api/appearance/)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](./api/encodings/#choose-appearance-with-conditions).
+
 ## `encodeSize`
 
 **API layer:** user-facing. **Authoring roles:** H2.
@@ -23588,10 +23714,10 @@ constant mode. Active channel selections must be removed before replacement.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeSize(options: TargetedOptions<SizeEncodingOptions>): ChartProgram;
+encodeSize(options: TargetedOptions<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`SizeEncodingOptions`](./reference/types/#type-sizeencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`SizeEncodingOptions`](./reference/types/#type-sizeencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23599,22 +23725,27 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `value` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| undefined` |
-| `scale` | Optional / branch-dependent | `SizeScaleOptions \| CategoricalSizeScaleOptions \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<SizeEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<SizeEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `number` |
+| `field` | Optional / branch-dependent | `string` |
+| `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
+| `scale` | Optional / branch-dependent | `SizeScaleOptions \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 encodeSize({ field, target?, fieldType?, scale? })
+encodeSize({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Encode point size as area; radius-normalized polygons use reference-circle area. The automatic area range
 is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 `pow` mappings plus discrete `quantize`, `quantile`, and `threshold` mappings.
 [Appearance encodings](./api/appearance/)
+
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](./api/encodings/#choose-appearance-with-conditions).
 
 ## `encodeShape`
 
@@ -23623,10 +23754,10 @@ is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeShape(options: TargetedOptions<ShapeEncodingOptions>): ChartProgram;
+encodeShape(options: TargetedOptions<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`ShapeEncodingOptions`](./reference/types/#type-shapeencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`ShapeEncodingOptions`](./reference/types/#type-shapeencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23634,9 +23765,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `value` | Optional / branch-dependent | `PointShape \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<ShapeEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<ShapeEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `PointShape` |
+| `field` | Optional / branch-dependent | `string` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| undefined` |
 | `scale` | Optional / branch-dependent | `ShapeScaleOptions \| undefined` |
 
@@ -23644,11 +23777,14 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 encodeShape({ field, target?, fieldType?, scale? })
+encodeShape({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.
 Explicit ranges may repeat shapes; provide one entry per domain value. Automatic ranges remain distinct.
 [Appearance encodings](./api/appearance/)
+
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](./api/encodings/#choose-appearance-with-conditions).
 
 ## `encodeAngle`
 
@@ -23657,10 +23793,10 @@ Explicit ranges may repeat shapes; provide one entry per domain value. Automatic
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeAngle(options: TargetedOptions<AngleEncodingOptions>): ChartProgram;
+encodeAngle(options: TargetedOptions<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`AngleEncodingOptions`](./reference/types/#type-angleencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`AngleEncodingOptions`](./reference/types/#type-angleencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23669,8 +23805,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `value` | Optional / branch-dependent | `number \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<AngleEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<AngleEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `number` |
+| `field` | Optional / branch-dependent | `string` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
@@ -23678,12 +23816,15 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 encodeAngle({ target?, value })
 encodeAngle({ target?, field, fieldType? })
+encodeAngle({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Rotate point or Tick glyphs with direct clockwise degrees: `0` points up and
 no scale or legend is created. Reassignment replaces the prior constant/field
 branch; remove it with `removeEncoding({ channel: "angle" })`.
 [Encodings](./api/encodings/#direction)
+
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](./api/encodings/#choose-appearance-with-conditions).
 
 ## `encodeOpacity`
 
@@ -23692,10 +23833,10 @@ branch; remove it with `removeEncoding({ channel: "angle" })`.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-encodeOpacity(options: TargetedOptions<OpacityEncodingOptions>): ChartProgram;
+encodeOpacity(options: TargetedOptions<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`OpacityEncodingOptions`](./reference/types/#type-opacityencodingoptions).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`OpacityEncodingOptions`](./reference/types/#type-opacityencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions).
 
  Declared options
 
@@ -23703,9 +23844,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `value` | Optional / branch-dependent | `number \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<OpacityEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<OpacityEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `number` |
+| `field` | Optional / branch-dependent | `string` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
 | `scale` | Optional / branch-dependent | `OpacityScaleOptions \| undefined` |
 
@@ -23714,6 +23857,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 encodeOpacity({ value, target? })
 encodeOpacity({ field, target?, fieldType?, scale? })
+encodeOpacity({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Apply a constant point/rule/line/bar/rect opacity from `0` to `1`, or map a quantitative field
@@ -23722,6 +23866,8 @@ replace each other through the same action. Lines require one raw field value pe
 series and support sampled opacity legends. Constant mode clears its field and
 owned opacity legend and rejects fieldType/scale or selections using that channel.
 [Appearance encodings](./api/appearance/)
+
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](./api/encodings/#choose-appearance-with-conditions).
 
 ## `encodeRadius`
 
@@ -29957,6 +30103,7 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](./types/index.d.ts)
 
 ```typescript
+export type { ConditionalEncodingOptions } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
@@ -30462,6 +30609,7 @@ export function render(
 [Complete declaration and relative dependencies](./types/basic.d.ts)
 
 ```typescript
+export type { ConditionalEncodingOptions } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec } from "./program.js";
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
@@ -31089,12 +31237,12 @@ interface ChartProgramActions {
   encodeTheta(options: TargetedOptions<ThetaEncodingOptions>): ChartProgram;
   encodeR(options: TargetedOptions<RadialEncodingOptions>): ChartProgram;
   encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
-  encodeColor(options: TargetedOptions<ColorEncodingOptions>): ChartProgram;
-  encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions>): ChartProgram;
-  encodeSize(options: TargetedOptions<SizeEncodingOptions>): ChartProgram;
-  encodeShape(options: TargetedOptions<ShapeEncodingOptions>): ChartProgram;
-  encodeAngle(options: TargetedOptions<AngleEncodingOptions>): ChartProgram;
-  encodeOpacity(options: TargetedOptions<OpacityEncodingOptions>): ChartProgram;
+  encodeColor(options: TargetedOptions<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>): ChartProgram;
+  encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>): ChartProgram;
+  encodeSize(options: TargetedOptions<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>): ChartProgram;
+  encodeShape(options: TargetedOptions<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>): ChartProgram;
+  encodeAngle(options: TargetedOptions<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>): ChartProgram;
+  encodeOpacity(options: TargetedOptions<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>): ChartProgram;
   encodeRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
   encodePointRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
   removePointRadius(options?: TargetedOptions<{ target?: string }>): ChartProgram;
@@ -31120,8 +31268,8 @@ interface ChartProgramActions {
   encodeHorizon(options?: TargetedOptions<HorizonEncodingOptions>): ChartProgram;
   editHorizon(options: TargetedOptions<EditHorizonOptions>): ChartProgram;
   encodeBarWidth(options?: TargetedOptions<BarWidthOptions>): ChartProgram;
-  encodeStroke(options: TargetedOptions<StrokeEncodingOptions>): ChartProgram;
-  encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions>): ChartProgram;
+  encodeStroke(options: TargetedOptions<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>): ChartProgram;
+  encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>): ChartProgram;
   encodeChannels(options: TargetedOptions<EncodeChannelsOptions>): ChartProgram;
   createRegression(options?: TargetedOptions<RegressionOptions>): ChartProgram;
   editRegression(options: TargetedOptions<EditRegressionOptions>): ChartProgram;
@@ -33075,6 +33223,33 @@ export interface ComputedExpressionV2 {
 
 Related types: [`ExpressionNode`](./reference/types/#type-expressionnode).
 
+### `ConditionalEncodingBranch` {#type-conditionalencodingbranch}
+
+ Expand ConditionalEncodingBranch
+
+```typescript
+interface ConditionalEncodingBranch<Value> {
+  when: ComputedExpressionV2 | { selection: string };
+  value: WithoutEncodingTarget<Value>;
+}
+```
+
+Related types: [`ComputedExpressionV2`](./reference/types/#type-computedexpressionv2) · [`WithoutEncodingTarget`](./reference/types/#type-withoutencodingtarget).
+
+### `ConditionalEncodingOptions` {#type-conditionalencodingoptions}
+
+ Expand ConditionalEncodingOptions
+
+```typescript
+export type ConditionalEncodingOptions<Value> = {
+  target?: string;
+  conditions: readonly ConditionalEncodingBranch<Value>[];
+  otherwise: WithoutEncodingTarget<Value>;
+};
+```
+
+Related types: [`ConditionalEncodingBranch`](./reference/types/#type-conditionalencodingbranch) · [`WithoutEncodingTarget`](./reference/types/#type-withoutencodingtarget).
+
 ### `ConfidenceIntervalMethod` {#type-confidenceintervalmethod}
 
  Expand ConfidenceIntervalMethod
@@ -34180,6 +34355,11 @@ export interface DashScaleOptions {
   range?: "auto" | readonly (DashStyle | DashPattern)[];
   unknown?: DashStyle | DashPattern;
 }
+
+/** Ordered first-match predicates; otherwise is required. All branches are validated.
+ * Each value uses the existing encoder payload without target. Selection predicates
+ * reference stored logical selection IDs. Legends require one unique field/scale binding.
+ */
 ```
 
 Related types: [`DashStyle`](./reference/types/#type-dashstyle) · [`DashPattern`](./reference/types/#type-dashpattern).
@@ -34523,7 +34703,7 @@ Related types: [`ECDFOutputFields`](./reference/types/#type-ecdfoutputfields) ·
  Expand DatasetFilterTransform
 
 ```typescript
-export type DatasetFilterTransform = {
+export type DatasetFilterTransform = ({
   type: "filter";
   field: string;
   nulls?: "include" | "exclude";
@@ -34532,10 +34712,10 @@ export type DatasetFilterTransform = {
   | { oneOf?: never; noneOf: readonly DatasetScalar[]; predicate?: never; range?: never }
   | { oneOf?: never; noneOf?: never; predicate: FilterComparison; range?: never }
   | { oneOf?: never; noneOf?: never; predicate?: never; range: FilterRange }
-);
+)) | ({ type: "filter" } & ExpressionFilterOptions);
 ```
 
-Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`FilterComparison`](./reference/types/#type-filtercomparison) · [`FilterRange`](./reference/types/#type-filterrange).
+Related types: [`DatasetScalar`](./reference/types/#type-datasetscalar) · [`FilterComparison`](./reference/types/#type-filtercomparison) · [`FilterRange`](./reference/types/#type-filterrange) · [`ExpressionFilterOptions`](./reference/types/#type-expressionfilteroptions).
 
 ### `DatasetFlattenTransform` {#type-datasetflattentransform}
 
@@ -35808,15 +35988,16 @@ export type EditFacetSourceOptions =
  Expand EditFilteredDataOptions
 
 ```typescript
-export type EditFilteredDataOptions = FilterModePatch & {
+export type EditFilteredDataOptions = (FilterModePatch & {
+  where?: never;
   target: string;
   field?: string;
   nulls?: "include" | "exclude" | false;
   dependents?: DerivedDataDependents;
-};
+}) | (ExpressionFilterOptions & { target: string; dependents?: DerivedDataDependents });
 ```
 
-Related types: [`FilterModePatch`](./reference/types/#type-filtermodepatch) · [`DerivedDataDependents`](./reference/types/#type-deriveddatadependents).
+Related types: [`FilterModePatch`](./reference/types/#type-filtermodepatch) · [`DerivedDataDependents`](./reference/types/#type-deriveddatadependents) · [`ExpressionFilterOptions`](./reference/types/#type-expressionfilteroptions).
 
 ### `EditFlattenDataOptions` {#type-editflattendataoptions}
 
@@ -36689,21 +36870,21 @@ export interface EncodingChannelAssignments {
   yOffset?: WithoutEncodingTarget<YOffsetEncodingOptions>;
   group?: WithoutEncodingTarget<GroupEncodingOptions>;
   pathOrder?: WithoutEncodingTarget<PathOrderEncodingOptions>;
-  color?: WithoutEncodingTarget<ColorEncodingOptions>;
-  stroke?: WithoutEncodingTarget<StrokeEncodingOptions>;
-  size?: WithoutEncodingTarget<SizeEncodingOptions>;
-  shape?: WithoutEncodingTarget<ShapeEncodingOptions>;
-  opacity?: WithoutEncodingTarget<OpacityEncodingOptions>;
-  strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions>;
-  strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions>;
-  angle?: WithoutEncodingTarget<AngleEncodingOptions>;
+  color?: WithoutEncodingTarget<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>;
+  stroke?: WithoutEncodingTarget<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>;
+  size?: WithoutEncodingTarget<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>;
+  shape?: WithoutEncodingTarget<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>;
+  opacity?: WithoutEncodingTarget<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>;
+  strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>;
+  strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>;
+  angle?: WithoutEncodingTarget<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>;
   text?: WithoutEncodingTarget<TextEncodingOptions>;
   dx?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
   dy?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
 }
 ```
 
-Related types: [`WithoutEncodingTarget`](./reference/types/#type-withoutencodingtarget) · [`PositionEncodingOptions`](./reference/types/#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](./reference/types/#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](./reference/types/#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](./reference/types/#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](./reference/types/#type-thetaencodingoptions) · [`RadialEncodingOptions`](./reference/types/#type-radialencodingoptions) · [`XOffsetEncodingOptions`](./reference/types/#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](./reference/types/#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](./reference/types/#type-groupencodingoptions) · [`PathOrderEncodingOptions`](./reference/types/#type-pathorderencodingoptions) · [`ColorEncodingOptions`](./reference/types/#type-colorencodingoptions) · [`StrokeEncodingOptions`](./reference/types/#type-strokeencodingoptions) · [`SizeEncodingOptions`](./reference/types/#type-sizeencodingoptions) · [`ShapeEncodingOptions`](./reference/types/#type-shapeencodingoptions) · [`OpacityEncodingOptions`](./reference/types/#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](./reference/types/#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](./reference/types/#type-strokedashencodingoptions) · [`AngleEncodingOptions`](./reference/types/#type-angleencodingoptions) · [`TextEncodingOptions`](./reference/types/#type-textencodingoptions) · [`TextOffsetEncodingOptions`](./reference/types/#type-textoffsetencodingoptions).
+Related types: [`WithoutEncodingTarget`](./reference/types/#type-withoutencodingtarget) · [`PositionEncodingOptions`](./reference/types/#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](./reference/types/#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](./reference/types/#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](./reference/types/#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](./reference/types/#type-thetaencodingoptions) · [`RadialEncodingOptions`](./reference/types/#type-radialencodingoptions) · [`XOffsetEncodingOptions`](./reference/types/#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](./reference/types/#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](./reference/types/#type-groupencodingoptions) · [`PathOrderEncodingOptions`](./reference/types/#type-pathorderencodingoptions) · [`ColorEncodingOptions`](./reference/types/#type-colorencodingoptions) · [`ConditionalEncodingOptions`](./reference/types/#type-conditionalencodingoptions) · [`StrokeEncodingOptions`](./reference/types/#type-strokeencodingoptions) · [`SizeEncodingOptions`](./reference/types/#type-sizeencodingoptions) · [`ShapeEncodingOptions`](./reference/types/#type-shapeencodingoptions) · [`OpacityEncodingOptions`](./reference/types/#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](./reference/types/#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](./reference/types/#type-strokedashencodingoptions) · [`AngleEncodingOptions`](./reference/types/#type-angleencodingoptions) · [`TextEncodingOptions`](./reference/types/#type-textencodingoptions) · [`TextOffsetEncodingOptions`](./reference/types/#type-textoffsetencodingoptions).
 
 ### `EndpointCategoryChannel` {#type-endpointcategorychannel}
 
@@ -37013,6 +37194,24 @@ export type ExpressionCall =
 
 Related types: [`ExpressionNode`](./reference/types/#type-expressionnode).
 
+### `ExpressionFilterOptions` {#type-expressionfilteroptions}
+
+ Expand ExpressionFilterOptions
+
+```typescript
+export type ExpressionFilterOptions = {
+  where: ComputedExpressionV2;
+  field?: never;
+  nulls?: never;
+  oneOf?: never;
+  noneOf?: never;
+  predicate?: never;
+  range?: never;
+};
+```
+
+Related types: [`ComputedExpressionV2`](./reference/types/#type-computedexpressionv2).
+
 ### `ExpressionNode` {#type-expressionnode}
 
  Expand ExpressionNode
@@ -37305,15 +37504,13 @@ export type FilterComparison =
  Expand FilterDataOptions
 
 ```typescript
-export type FilterDataOptions = {
-  id: string;
-  source?: string;
-  field: string;
-  nulls?: "include" | "exclude";
-} & FilterModeOptions;
+export type FilterDataOptions = { id: string; source?: string } & (
+  | ({ field: string; nulls?: "include" | "exclude"; where?: never } & FilterModeOptions)
+  | ExpressionFilterOptions
+);
 ```
 
-Related types: [`FilterModeOptions`](./reference/types/#type-filtermodeoptions).
+Related types: [`FilterModeOptions`](./reference/types/#type-filtermodeoptions) · [`ExpressionFilterOptions`](./reference/types/#type-expressionfilteroptions).
 
 ### `FilterMarksOptions` {#type-filtermarksoptions}
 
@@ -42984,12 +43181,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b84b54b536bfb3c282dc6301d72e105aea665e35/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/698f926b3b155cdf19fa27df1141d35c207a5b7d/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/b84b54b536bfb3c282dc6301d72e105aea665e35/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/698f926b3b155cdf19fa27df1141d35c207a5b7d/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -46017,9 +46214,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:40ba83f1722b03c6c309334ccf013fc94a37d861a49d5dd55402dfbbb3c56f94` |
+| Contract fingerprint | `sha256:02365ee2d0c5170388865da7dc9f00a8526488a7e5f705830ae0b048cddb04d8` |
 | Example and dataset source | `b8f9668133b278974c9cfe7324402a18282c9f4b` |
-| Runtime source commit | `b84b54b536bfb3c282dc6301d72e105aea665e35` |
+| Runtime source commit | `698f926b3b155cdf19fa27df1141d35c207a5b7d` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 304 |
 | Declared actions in that release | 234 |

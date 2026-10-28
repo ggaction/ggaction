@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Maps a constant or quantitative field to point or tick rotation angle.",
-  "signature": "encodeAngle(options: TargetedOptions<AngleEncodingOptions>): ChartProgram;",
+  "signature": "encodeAngle(options: TargetedOptions<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode angle",
     "encode",
@@ -63,14 +63,24 @@
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<AngleEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<AngleEncodingOptions>[\"otherwise\"]"
+    },
+    {
       "name": "value",
       "required": false,
-      "type": "number | undefined"
+      "type": "number"
     },
     {
       "name": "field",
       "required": false,
-      "type": "string | undefined"
+      "type": "string"
     },
     {
       "name": "fieldType",
@@ -80,7 +90,8 @@
   ],
   "callPatterns": [
     "encodeAngle({ target?, value })",
-    "encodeAngle({ target?, field, fieldType? })"
+    "encodeAngle({ target?, field, fieldType? })",
+    "encodeAngle({ target?, conditions: [{ when, value }], otherwise })"
   ],
   "snippet": "program.encodeAngle({ value: 45 })",
   "errors": [

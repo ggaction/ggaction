@@ -3,7 +3,7 @@ import test from "node:test";
 import { chart } from "../../../../src/index.js";
 import { normalizeComputedTransform, validateComputedTransform } from "../../../../src/grammar/computed.js";
 import { inspectExpressionV2 } from "../../../../src/grammar/expressionAst.js";
-import { resolveComputedEnvironment } from "../../../../src/materialization/computedInputs.js";
+import { resolveComputedEnvironment } from "../../../../src/materialization/expressionInputs.js";
 
 const literal = value => ({ type: "literal", value });
 const field = name => ({ type: "field", name });

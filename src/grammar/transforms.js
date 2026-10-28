@@ -27,8 +27,8 @@ import {
   validateCompleteTransform
 } from "./complete.js";
 import {
-  normalizeFilterTransformEdit,
   normalizeFilterTransform,
+  normalizeFilterTransformEdit,
   validateFilterTransform
 } from "./filter.js";
 import { normalizeFoldTransform, validateFoldTransform } from "./fold.js";
@@ -82,6 +82,16 @@ function requestedTransform(transform) {
 }
 
 const requestedDensityTransform = requestedTransform;
+
+function requestedFilterTransform(transform) {
+  ownRecord(transform, "Filter transform");
+  if (transform.where === undefined) return requestedTransform(transform);
+  if (Object.hasOwn(transform, "parameterInputs")) validateFilterTransform(transform);
+  else if (Object.keys(transform).some(key => !["type", "where"].includes(key))) {
+    throw new TypeError("Filter transform has unknown properties.");
+  }
+  return normalizeFilterTransform({ where: transform.where });
+}
 
 function requestedComputedTransform(transform) {
   ownRecord(transform, "Computed transform");
@@ -410,7 +420,7 @@ const TRANSFORM_POLICIES = Object.freeze({
     ...findTransformTopology("filter"),
     validate: validateFilterTransform,
     materializeOp: "materializeFilteredData",
-    replayTransform: requestedTransform,
+    replayTransform: requestedFilterTransform,
     editable: true,
     normalizeEdit: normalizeFilterTransformEdit,
     outputRoles: () => ({})

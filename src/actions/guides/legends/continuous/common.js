@@ -1,3 +1,4 @@
+import { conditionalLegendLayer } from "../../../../materialization/legendEncodings.js";
 import { validateTextAlignment } from "../../../../core/validation.js";
 import { materializeHardTextLines } from "../../../../materialization/textLines.js";
 import{normalizeLegendClipHeight}from"../../../../grammar/legendClip.js";
@@ -35,7 +36,7 @@ import { resolveGraphicBounds, canvasOverflowError } from "../../../../layout/ca
 import { isHorizontalEdgeLegend } from "../../../../layout/legendLane.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY, DEFAULT_VERTICAL_LEGEND_ITEM_GAP } from
   "../../../../theme/defaults.js";
-import { findLayer } from "../../../../selectors/layers.js";
+import { findLegendLayer as findLayer } from "../../../../materialization/legendEncodings.js";
 import { isOpacityLegendLayer } from "../../../../materialization/legends.js";
 import { findCanvasGraphic } from
   "../../../../materialization/graphicHierarchy.js";
@@ -249,7 +250,7 @@ export function normalizeContinuousLegend(args, kind) {
 }
 
 export function selectLegendLayer(program, requested, predicate) {
-  const candidates = program.semanticSpec.layers.filter(predicate);
+  const candidates = program.semanticSpec.layers.map(layer => conditionalLegendLayer(layer)).filter(predicate);
   if (requested === undefined) return candidates.length === 1
     ? candidates[0]
     : undefined;

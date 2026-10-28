@@ -1,3 +1,4 @@
+import { conditionalLegendLayer } from "../../../materialization/legendEncodings.js";
 import { legendResourcePolicy } from "../../../materialization/guides/resources.js";
 import { LEGEND_POSITIONS, LEGEND_BLOCK_LAYOUTS } from "../../../core/vocabulary.js";
 import { validateLegendGroupState } from "../../../grammar/legendGroups.js";
@@ -102,7 +103,7 @@ export function prepareLegendGroup(program, args, target, { creation = false, co
 export function creationLegendTarget(program, args) {
   if (args.target !== undefined) return args.target;
   const channels = args.channels;
-  const candidates = program.semanticSpec.layers.filter(layer =>
+  const candidates = program.semanticSpec.layers.map(layer => conditionalLegendLayer(layer)).filter(layer =>
     channels === undefined
       ? Object.keys(layer.encoding ?? {}).some(channel => ["color", "stroke", "shape", "strokeDash", "size", "opacity", "strokeWidth"].includes(channel) && layer.encoding[channel]?.scale !== undefined)
       : channels.every(channel => layer.encoding?.[channel]?.scale !== undefined));

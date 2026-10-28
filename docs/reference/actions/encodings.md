@@ -158,10 +158,10 @@ Rule field endpoints and nonnumeric datum endpoints require an explicit matching
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-encodeColor(options: TargetedOptions<ColorEncodingOptions>): ChartProgram;
+encodeColor(options: TargetedOptions<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ColorEncodingOptions`](./../types.md#type-colorencodingoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ColorEncodingOptions`](./../types.md#type-colorencodingoptions) · [`ConditionalEncodingOptions`](./../types.md#type-conditionalencodingoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -170,11 +170,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `value` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
-| `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<ColorEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<ColorEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `string` |
+| `field` | Optional / branch-dependent | `string` |
+| `fieldType` | Optional / branch-dependent | `"quantitative"` |
+| `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| undefined` |
 | `palette` | Optional / branch-dependent | `Palette \| undefined` |
 | `layout` | Optional / branch-dependent | `ColorLayout \| undefined` |
 | `aggregate` | Optional / branch-dependent | `AggregateOperation \| undefined` |
@@ -198,6 +200,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })
+encodeColor({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or compatibly replace point fill, line-series color, grouped area fill,
@@ -248,6 +251,8 @@ scale of the same type, updating every consumer atomically. Generic/focused
 scale editors and legend editors remain Full-only; scale-type transitions use
 Full or a new scale ID in Basic. [Encoding reassignment](../../api/encodings.md#reassign-an-existing-encoding)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../../api/encodings.md#choose-appearance-with-conditions).
+
 
 ## `encodeStrokeDash`
 
@@ -256,10 +261,10 @@ Full or a new scale ID in Basic. [Encoding reassignment](../../api/encodings.md#
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions>): ChartProgram;
+encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeDashEncodingOptions`](./../types.md#type-strokedashencodingoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeDashEncodingOptions`](./../types.md#type-strokedashencodingoptions) · [`ConditionalEncodingOptions`](./../types.md#type-conditionalencodingoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -268,9 +273,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `value` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<StrokeDashEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<StrokeDashEncodingOptions>["otherwise"]` |
+| `field` | Optional / branch-dependent | `string` |
+| `value` | Optional / branch-dependent | `DashPattern \| DashStyle` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| undefined` |
 | `scale` | Optional / branch-dependent | `DashScaleOptions \| undefined` |
 
@@ -283,6 +290,7 @@ encodeStrokeDash(
   { field, target?, fieldType?, scale? }
   | { value, target? }
 )
+encodeStrokeDash({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or replace nominal/ordinal line-series or rule dash patterns, or apply one
@@ -292,6 +300,8 @@ pattern for valid categories outside a domain; missing categories remain errors,
 and domain, legend and raw series identities stay unchanged.
 [Series encodings](../../api/series-encodings.md)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../../api/encodings.md#choose-appearance-with-conditions).
+
 
 ## `encodeStroke`
 
@@ -300,10 +310,10 @@ and domain, legend and raw series identities stay unchanged.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-encodeStroke(options: TargetedOptions<StrokeEncodingOptions>): ChartProgram;
+encodeStroke(options: TargetedOptions<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeEncodingOptions`](./../types.md#type-strokeencodingoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeEncodingOptions`](./../types.md#type-strokeencodingoptions) · [`ConditionalEncodingOptions`](./../types.md#type-conditionalencodingoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -313,11 +323,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `value` | Optional / branch-dependent | `string \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| "temporal" \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<StrokeEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<StrokeEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `string` |
+| `field` | Optional / branch-dependent | `string` |
+| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
-| `scale` | Optional / branch-dependent | `ContinuousColorScaleOptions \| DiscretizedColorScaleOptions \| CategoricalColorScaleOptions \| (Omit<...> & { ...; }) \| undefined` |
+| `scale` | Optional / branch-dependent | `CategoricalColorScaleOptions \| undefined` |
 
 </details>
 
@@ -326,6 +338,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 encodeStroke({ value, target? })
 encodeStroke({ field, target?, fieldType?, temporalUnit?, scale? })
+encodeStroke({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign a constant non-empty stroke color or map a categorical, quantitative, or
@@ -335,6 +348,8 @@ mode clears the field binding and its own legend; field mode clears the constant
 override. Text outlines are outside this action.
 [Appearance encodings](../../api/appearance.md)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../../api/encodings.md#choose-appearance-with-conditions).
+
 
 ## `encodeStrokeWidth`
 
@@ -343,10 +358,10 @@ override. Text outlines are outside this action.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions>): ChartProgram;
+encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeWidthEncodingOptions`](./../types.md#type-strokewidthencodingoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeWidthEncodingOptions`](./../types.md#type-strokewidthencodingoptions) · [`ConditionalEncodingOptions`](./../types.md#type-conditionalencodingoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -355,9 +370,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `value` | Optional / branch-dependent | `number \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<StrokeWidthEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<StrokeWidthEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `number` |
+| `field` | Optional / branch-dependent | `string` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
 | `scale` | Optional / branch-dependent | `(Omit<ScaleFields<"base" \| "clamp" \| "constant" \| "exponent" \| "id" \| "reverse" \| "zero"> & { domain?: "auto" \| readonly [number, number] \| undefined; range?: "auto" \| readonly [...] \| undefined; } & { ...; }, "nice"> & { ...; }) \| (Omit<...> & { ...; }) \| undefined` |
 
@@ -368,6 +385,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 encodeStrokeWidth({ value, target? })
 encodeStrokeWidth({ field, target?, fieldType?, scale? })
+encodeStrokeWidth({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect. Field mode
@@ -375,6 +393,8 @@ maps one quantitative value per rule/rect row or complete line series. Constant 
 clears the field and its own sampled width legend; fieldType/scale are invalid in
 constant mode. Active channel selections must be removed before replacement.
 [Appearance encodings](../../api/appearance.md)
+
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../../api/encodings.md#choose-appearance-with-conditions).
 
 
 ## `encodeSize`
@@ -384,10 +404,10 @@ constant mode. Active channel selections must be removed before replacement.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-encodeSize(options: TargetedOptions<SizeEncodingOptions>): ChartProgram;
+encodeSize(options: TargetedOptions<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`SizeEncodingOptions`](./../types.md#type-sizeencodingoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`SizeEncodingOptions`](./../types.md#type-sizeencodingoptions) · [`ConditionalEncodingOptions`](./../types.md#type-conditionalencodingoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -396,11 +416,13 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `value` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
-| `fieldType` | Optional / branch-dependent | `"nominal" \| "ordinal" \| "quantitative" \| undefined` |
-| `scale` | Optional / branch-dependent | `SizeScaleOptions \| CategoricalSizeScaleOptions \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<SizeEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<SizeEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `number` |
+| `field` | Optional / branch-dependent | `string` |
+| `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
+| `scale` | Optional / branch-dependent | `SizeScaleOptions \| undefined` |
 
 </details>
 
@@ -408,12 +430,15 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 encodeSize({ field, target?, fieldType?, scale? })
+encodeSize({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Encode point size as area; radius-normalized polygons use reference-circle area. The automatic area range
 is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 `pow` mappings plus discrete `quantize`, `quantile`, and `threshold` mappings.
 [Appearance encodings](../../api/appearance.md)
+
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../../api/encodings.md#choose-appearance-with-conditions).
 
 
 ## `encodeShape`
@@ -423,10 +448,10 @@ is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-encodeShape(options: TargetedOptions<ShapeEncodingOptions>): ChartProgram;
+encodeShape(options: TargetedOptions<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ShapeEncodingOptions`](./../types.md#type-shapeencodingoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`ShapeEncodingOptions`](./../types.md#type-shapeencodingoptions) · [`ConditionalEncodingOptions`](./../types.md#type-conditionalencodingoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -435,9 +460,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `value` | Optional / branch-dependent | `PointShape \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<ShapeEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<ShapeEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `PointShape` |
+| `field` | Optional / branch-dependent | `string` |
 | `fieldType` | Optional / branch-dependent | `"nominal" \| undefined` |
 | `scale` | Optional / branch-dependent | `ShapeScaleOptions \| undefined` |
 
@@ -447,11 +474,14 @@ The following call patterns are abbreviated examples; the declaration above owns
 
 ```javascript
 encodeShape({ field, target?, fieldType?, scale? })
+encodeShape({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.
 Explicit ranges may repeat shapes; provide one entry per domain value. Automatic ranges remain distinct.
 [Appearance encodings](../../api/appearance.md)
+
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../../api/encodings.md#choose-appearance-with-conditions).
 
 
 ## `encodeAngle`
@@ -461,10 +491,10 @@ Explicit ranges may repeat shapes; provide one entry per domain value. Automatic
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-encodeAngle(options: TargetedOptions<AngleEncodingOptions>): ChartProgram;
+encodeAngle(options: TargetedOptions<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AngleEncodingOptions`](./../types.md#type-angleencodingoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`AngleEncodingOptions`](./../types.md#type-angleencodingoptions) · [`ConditionalEncodingOptions`](./../types.md#type-conditionalencodingoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -474,8 +504,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `value` | Optional / branch-dependent | `number \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<AngleEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<AngleEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `number` |
+| `field` | Optional / branch-dependent | `string` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
 
 </details>
@@ -485,12 +517,15 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 encodeAngle({ target?, value })
 encodeAngle({ target?, field, fieldType? })
+encodeAngle({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Rotate point or Tick glyphs with direct clockwise degrees: `0` points up and
 no scale or legend is created. Reassignment replaces the prior constant/field
 branch; remove it with `removeEncoding({ channel: "angle" })`.
 [Encodings](../../api/encodings.md#direction)
+
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../../api/encodings.md#choose-appearance-with-conditions).
 
 
 ## `encodeOpacity`
@@ -500,10 +535,10 @@ branch; remove it with `removeEncoding({ channel: "angle" })`.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-encodeOpacity(options: TargetedOptions<OpacityEncodingOptions>): ChartProgram;
+encodeOpacity(options: TargetedOptions<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`OpacityEncodingOptions`](./../types.md#type-opacityencodingoptions).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`OpacityEncodingOptions`](./../types.md#type-opacityencodingoptions) · [`ConditionalEncodingOptions`](./../types.md#type-conditionalencodingoptions).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -512,9 +547,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `value` | Optional / branch-dependent | `number \| undefined` |
-| `field` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `conditions` | Optional / branch-dependent | `ConditionalEncodingOptions<OpacityEncodingOptions>["conditions"]` |
+| `otherwise` | Optional / branch-dependent | `ConditionalEncodingOptions<OpacityEncodingOptions>["otherwise"]` |
+| `value` | Optional / branch-dependent | `number` |
+| `field` | Optional / branch-dependent | `string` |
 | `fieldType` | Optional / branch-dependent | `"quantitative" \| undefined` |
 | `scale` | Optional / branch-dependent | `OpacityScaleOptions \| undefined` |
 
@@ -525,6 +562,7 @@ The following call patterns are abbreviated examples; the declaration above owns
 ```javascript
 encodeOpacity({ value, target? })
 encodeOpacity({ field, target?, fieldType?, scale? })
+encodeOpacity({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Apply a constant point/rule/line/bar/rect opacity from `0` to `1`, or map a quantitative field
@@ -533,6 +571,8 @@ replace each other through the same action. Lines require one raw field value pe
 series and support sampled opacity legends. Constant mode clears its field and
 owned opacity legend and rejects fieldType/scale or selections using that channel.
 [Appearance encodings](../../api/appearance.md)
+
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../../api/encodings.md#choose-appearance-with-conditions).
 
 
 ## `encodeRadius`

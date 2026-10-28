@@ -1,0 +1,310 @@
+TAP version 13
+# Subtest: constant and conditional stroke widths preserve an existing conditional stroke owner
+ok 1 - constant and conditional stroke widths preserve an existing conditional stroke owner
+  ---
+  duration_ms: 116.413625
+  type: 'test'
+  ...
+# Subtest: conditional appearance is first-match with required otherwise and an exact zero
+ok 2 - conditional appearance is first-match with required otherwise and an exact zero
+  ---
+  duration_ms: 25.384375
+  type: 'test'
+  ...
+# Subtest: all inactive fields, values and resource references are checked before state changes
+ok 3 - all inactive fields, values and resource references are checked before state changes
+  ---
+  duration_ms: 11.399
+  type: 'test'
+  ...
+# Subtest: all branch fields contribute scale domains and references without filtering the population
+ok 4 - all branch fields contribute scale domains and references without filtering the population
+  ---
+  duration_ms: 19.748917
+  type: 'test'
+  ...
+# Subtest: conditional-only parameter edits and fresh-process-compatible restoration rebind exact revisions
+ok 5 - conditional-only parameter edits and fresh-process-compatible restoration rebind exact revisions
+  ---
+  duration_ms: 31.404333
+  type: 'test'
+  ...
+# Subtest: explicit selections revise conditionals and cannot be removed while referenced
+ok 6 - explicit selections revise conditionals and cannot be removed while referenced
+  ---
+  duration_ms: 24.108958
+  type: 'test'
+  ...
+# Subtest: a conditional cannot read its own output through a selection predicate
+ok 7 - a conditional cannot read its own output through a selection predicate
+  ---
+  duration_ms: 13.521167
+  type: 'test'
+  ...
+# Subtest: point size shape and angle use selected values before concrete geometry
+ok 8 - point size shape and angle use selected values before concrete geometry
+  ---
+  duration_ms: 21.390208
+  type: 'test'
+  ...
+# Subtest: unique conditional bindings create legends and ambiguous replacements fail atomically
+ok 9 - unique conditional bindings create legends and ambiguous replacements fail atomically
+  ---
+  duration_ms: 52.445833
+  type: 'test'
+  ...
+# Subtest: parameter filters refresh aggregate scales, legends and conditional appearance together
+ok 10 - parameter filters refresh aggregate scales, legends and conditional appearance together
+  ---
+  duration_ms: 43.144
+  type: 'test'
+  ...
+# Subtest: grouped line and aggregate bar conditionals use their final item grain
+ok 11 - grouped line and aggregate bar conditionals use their final item grain
+  ---
+  duration_ms: 40.940917
+  type: 'test'
+  ...
+# Subtest: channel selections inspect the chosen raw branch value and reject feedback cycles
+ok 12 - channel selections inspect the chosen raw branch value and reject feedback cycles
+  ---
+  duration_ms: 18.223833
+  type: 'test'
+  ...
+# Subtest: conditional selection dependencies refresh transitively in dependency order
+ok 13 - conditional selection dependencies refresh transitively in dependency order
+  ---
+  duration_ms: 68.419959
+  type: 'test'
+  ...
+# Subtest: named dash branches normalize through the ordinary dash owner
+ok 14 - named dash branches normalize through the ordinary dash owner
+  ---
+  duration_ms: 40.152458
+  type: 'test'
+  ...
+# Subtest: discretized size branches retain numeric scale roles across creation and mixed scale reassignment
+ok 15 - discretized size branches retain numeric scale roles across creation and mixed scale reassignment
+  ---
+  duration_ms: 81.873333
+  type: 'test'
+  ...
+# Subtest: conditional values retain item identity after highlighted items move to the front
+ok 16 - conditional values retain item identity after highlighted items move to the front
+  ---
+  duration_ms: 11.790584
+  type: 'test'
+  ...
+# Subtest: restore rejects duplicate channel owners and incompatible inactive branch scale roles
+ok 17 - restore rejects duplicate channel owners and incompatible inactive branch scale roles
+  ---
+  duration_ms: 28.182125
+  type: 'test'
+  ...
+# Subtest: derived field renames rebind branch fields and predicates while retaining string literals
+ok 18 - derived field renames rebind branch fields and predicates while retaining string literals
+  ---
+  duration_ms: 11.477083
+  type: 'test'
+  ...
+# Subtest: continuous Tick color supports conditional branch fields and explicit selection references remain inspectable
+ok 19 - continuous Tick color supports conditional branch fields and explicit selection references remain inspectable
+  ---
+  duration_ms: 14.365375
+  type: 'test'
+  ...
+# Subtest: conditional branch reassignment retains its scale id and follows ordinary scale edit semantics
+ok 20 - conditional branch reassignment retains its scale id and follows ordinary scale edit semantics
+  ---
+  duration_ms: 20.421625
+  type: 'test'
+  ...
+# Subtest: empty conditional branch domains require explicit policy and recover when a filter refills
+ok 21 - empty conditional branch domains require explicit policy and recover when a filter refills
+  ---
+  duration_ms: 27.670583
+  type: 'test'
+  ...
+# Subtest: linked overlays use conditional glyph anchors and preserve their aggregate item values
+ok 22 - linked overlays use conditional glyph anchors and preserve their aggregate item values
+  ---
+  duration_ms: 68.960875
+  type: 'test'
+  ...
+# Subtest: conditional temporal color, aggregate color and stroke width share ordinary channel units
+ok 23 - conditional temporal color, aggregate color and stroke width share ordinary channel units
+  ---
+  duration_ms: 50.035833
+  type: 'test'
+  ...
+# Subtest: conditional parameters retain their scope through facets, repeats and explicit concat child targets
+ok 24 - conditional parameters retain their scope through facets, repeats and explicit concat child targets
+  ---
+  duration_ms: 127.609041
+  type: 'test'
+  ...
+# Subtest: replacing a conditional releases its shared domain contribution and refreshes surviving consumers
+ok 25 - replacing a conditional releases its shared domain contribution and refreshes surviving consumers
+  ---
+  duration_ms: 23.910167
+  type: 'test'
+  ...
+# Subtest: optional missing fields retain expression and explicit scale unknown semantics
+ok 26 - optional missing fields retain expression and explicit scale unknown semantics
+  ---
+  duration_ms: 9.89
+  type: 'test'
+  ...
+# Subtest: parameter filters retain row order, identity, schema and exact input revisions
+ok 27 - parameter filters retain row order, identity, schema and exact input revisions
+  ---
+  duration_ms: 25.01725
+  type: 'test'
+  ...
+# Subtest: parameter filter closure rematerializes summaries, scales, guides and marks
+ok 28 - parameter filter closure rematerializes summaries, scales, guides and marks
+  ---
+  duration_ms: 52.832583
+  type: 'test'
+  ...
+# Subtest: empty inferred domains fail atomically and explicit policies govern empty materialization
+ok 29 - empty inferred domains fail atomically and explicit policies govern empty materialization
+  ---
+  duration_ms: 108.655417
+  type: 'test'
+  ...
+# Subtest: all predicate branches validate even for empty input and inactive parameter references stay live
+ok 30 - all predicate branches validate even for empty input and inactive parameter references stay live
+  ---
+  duration_ms: 2.818
+  type: 'test'
+  ...
+# Subtest: filter edits switch between expression and legacy modes and release detached dependencies
+ok 31 - filter edits switch between expression and legacy modes and release detached dependencies
+  ---
+  duration_ms: 6.467916
+  type: 'test'
+  ...
+# Subtest: authoring cannot forge exact references and restore rejects malformed or stale filter bindings
+ok 32 - authoring cannot forge exact references and restore rejects malformed or stale filter bindings
+  ---
+  duration_ms: 3.043292
+  type: 'test'
+  ...
+# Subtest: shared parameter roots form one filter/computed lookup diamond and raw revisions replay predicates
+ok 33 - shared parameter roots form one filter/computed lookup diamond and raw revisions replay predicates
+  ---
+  duration_ms: 15.432875
+  type: 'test'
+  ...
+# Subtest: nullable predicates reject candidate edits atomically and zero-rows still validate references
+ok 34 - nullable predicates reject candidate edits atomically and zero-rows still validate references
+  ---
+  duration_ms: 1.93725
+  type: 'test'
+  ...
+# Subtest: a fresh process restores a parameter filter and revises it without evaluating during restoration
+ok 35 - a fresh process restores a parameter filter and revises it without evaluating during restoration
+  ---
+  duration_ms: 312.736541
+  type: 'test'
+  ...
+# Subtest: prepared parameter edits replay a raw/filter/computed diamond once and refresh conditional marks
+ok 36 - prepared parameter edits replay a raw/filter/computed diamond once and refresh conditional marks
+  ---
+  duration_ms: 157.706417
+  type: 'test'
+  ...
+# Subtest: prepared raw refresh reevaluates branch fields and preserves exact selection dependencies
+ok 37 - prepared raw refresh reevaluates branch fields and preserves exact selection dependencies
+  ---
+  duration_ms: 53.037333
+  type: 'test'
+  ...
+# Subtest: prepared invalid inactive branches and empty inferred domains fail without changing old state
+ok 38 - prepared invalid inactive branches and empty inferred domains fail without changing old state
+  ---
+  duration_ms: 33.615083
+  type: 'test'
+  ...
+# Subtest: prepared facet and repeat refresh retain current source bindings with conditional exact refs
+ok 39 - prepared facet and repeat refresh retain current source bindings with conditional exact refs
+  ---
+  duration_ms: 263.363167
+  type: 'test'
+  ...
+# Subtest: repeat action replacement preserves explicit source detachment across retained child adoption
+ok 40 - repeat action replacement preserves explicit source detachment across retained child adoption
+  ---
+  duration_ms: 121.725833
+  type: 'test'
+  ...
+# Subtest: repeat program replacement preserves explicit source detachment across retained child adoption
+ok 41 - repeat program replacement preserves explicit source detachment across retained child adoption
+  ---
+  duration_ms: 57.304041
+  type: 'test'
+  ...
+# Subtest: multiple URL roots replay a shared computed and lookup diamond exactly once
+ok 42 - multiple URL roots replay a shared computed and lookup diamond exactly once
+  ---
+  duration_ms: 129.145416
+  type: 'test'
+  ...
+# Subtest: manual rows detach one live binding while preserving receipts and computed parameter edits
+ok 43 - manual rows detach one live binding while preserving receipts and computed parameter edits
+  ---
+  duration_ms: 47.719958
+  type: 'test'
+  ...
+# Subtest: prepared refresh preserves generated row selection identity through explicit row mapping
+ok 44 - prepared refresh preserves generated row selection identity through explicit row mapping
+  ---
+  duration_ms: 57.995458
+  type: 'test'
+  ...
+# Subtest: field-keyed refresh preserves selection on reorder, deletion and key reappearance
+ok 45 - field-keyed refresh preserves selection on reorder, deletion and key reappearance
+  ---
+  duration_ms: 64.896416
+  type: 'test'
+  ...
+# Subtest: facet parameter refresh adopts full raw source bindings into regenerated children
+ok 46 - facet parameter refresh adopts full raw source bindings into regenerated children
+  ---
+  duration_ms: 118.801292
+  type: 'test'
+  ...
+# Subtest: repeat refresh preserves selected computed fields through parameter and source revisions
+ok 47 - repeat refresh preserves selected computed fields through parameter and source revisions
+  ---
+  duration_ms: 166.295291
+  type: 'test'
+  ...
+# Subtest: concat requires the exact child receiver and preserves same-named sibling sources
+ok 48 - concat requires the exact child receiver and preserves same-named sibling sources
+  ---
+  duration_ms: 38.589334
+  type: 'test'
+  ...
+# Subtest: prepared parameter refresh replays pivot, calendar and quadratic consumers after offline restore
+ok 49 - prepared parameter refresh replays pivot, calendar and quadratic consumers after offline restore
+  ---
+  duration_ms: 144.10225
+  type: 'test'
+  ...
+# Subtest: a prepared source that violates inferred pivot columns fails atomically
+ok 50 - a prepared source that violates inferred pivot columns fails atomically
+  ---
+  duration_ms: 27.010625
+  type: 'test'
+  ...
+1..50
+# tests 50
+# suites 0
+# pass 50
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1444.773875

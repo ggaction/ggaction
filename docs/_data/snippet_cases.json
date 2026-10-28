@@ -250,5 +250,25 @@
     "result": "program",
     "prerequisites": "Use the complete ES module with explicit host CSV text and current request tokens.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "parameter-filter-revision",
+    "file": "api/data/filtering.md",
+    "contains": "const revised = program.editParameter({ target: \"minimum\", value: 1 });",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program, revised",
+    "prerequisites": "Standalone ES module with a Canvas, all observations and imports included. Inspect each immutable filtered dataset.",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "conditional-appearance",
+    "file": "api/encodings.md",
+    "contains": "const initial = chart().createCanvas",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "updated",
+    "prerequisites": "The displayed program imports chart and supplies its inline data and parameter.",
+    "rendering": "authoring-only"
   }
 ]

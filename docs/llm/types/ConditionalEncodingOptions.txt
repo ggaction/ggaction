@@ -1,0 +1,5 @@
+export type ConditionalEncodingOptions<Value> = {
+  target?: string;
+  conditions: readonly ConditionalEncodingBranch<Value>[];
+  otherwise: WithoutEncodingTarget<Value>;
+};

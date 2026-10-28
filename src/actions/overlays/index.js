@@ -1,7 +1,8 @@
 import { closedAction } from "../../core/action.js";
 import { normalizeOverlayBinding, overlayGroupFields, overlayPositionEncoding } from "../../grammar/overlay.js";
 import { requireLayer, resolveEligibleLayer } from "../../selectors/layers.js";
-import { resolveOverlaySeries, overlaySegments } from "../../materialization/overlayItems.js";
+import { overlaySegments } from "../../materialization/overlayItems.js";
+import { resolveOverlayGeometry } from "../../materialization/overlayGeometry.js";
 import { resolveFacadeId } from "../charts/shared.js";
 import { buildCurvePathCommands } from "../../grammar/curveCommands.js";
 import { mapScaleConsumerValues } from "../../materialization/scales/map.js";
@@ -12,6 +13,9 @@ import { detachOverlay } from "./snapshot.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { requestedStrokeDetails, STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { resolveDirectionValues } from "../../grammar/direction.js";
+import { resolveConditionalValues } from "../../materialization/conditionalValues.js";
+import { resolveMarkSourceItems } from "../../materialization/selection/policies/index.js";
+import { getLayerScaleIds } from "../../materialization/marks/index.js";
 
 function positionBindings(program, id, source) {
   let next = program.editSemantic({ property: `layer[${id}].data`, value: source.data });
@@ -68,11 +72,15 @@ export const rematerializeOverlay = /* @__PURE__ */ closedAction({
   const previous = requireLayer(this, id);
   const binding = normalizeOverlayBinding(previous.derivedBindings?.overlay);
   const source = requireLayer(this, binding.source);
-  const series = resolveOverlaySeries(this, binding);
+  const series = resolveOverlayGeometry(this, binding);
   let next = synchronizeSourceAppearance(positionBindings(this, id, source), id, source, binding);
   for (const [channel, encoding] of Object.entries(requireLayer(next, id).encoding)) {
     if (["x", "y"].includes(channel) || channel === "color" && binding.inheritColor || !encoding.scale) continue;
     next = next.rematerializeScale({ id: encoding.scale, marks: false, guides: false });
+  }
+  for (const scale of getLayerScaleIds(requireLayer(next, id))) {
+    if (Object.values(requireLayer(next, id).encoding).some(encoding => encoding?.scale === scale)) continue;
+    next = next.rematerializeScale({ id: scale, marks: false, guides: false });
   }
   const layer = requireLayer(next, id), config = next.markConfigs[id];
   const color = (members, fallback) => mappedAppearance(next, layer, "color", members, fallback);
@@ -96,12 +104,17 @@ export const rematerializeOverlay = /* @__PURE__ */ closedAction({
     });
     next = next.editGraphics({ target: id, property: "items", value: entries });
   } else {
+    const sourceItems = resolveMarkSourceItems(next, id);
+    const shape = resolveConditionalValues(next, layer, "shape", sourceItems);
+    const angle = resolveConditionalValues(next, layer, "angle", sourceItems);
+    const size = resolveConditionalValues(next, layer, "size", sourceItems);
+    const appearance = new Map(sourceItems.map((item, index) => [item.semanticIdentity[1], { shape: shape?.[index], angle: angle?.[index], size: size?.[index] }]));
     const items = series.flatMap(group => group.points.map(point => ({
       ...createPointShapeGraphic({
-        shape: mappedAppearance(next, layer, "shape", [point.fields], config.shape ?? "circle"),
+        shape: appearance.get(point.key)?.shape ?? mappedAppearance(next, layer, "shape", [point.fields], config.shape ?? "circle"),
         x: point.x, y: point.y,
-        angle: resolveDirectionValues([point.fields], layer.encoding.angle)?.[0],
-        area: mappedAppearance(next, layer, "size", [point.fields], Math.PI * (config.radius ?? 3) ** 2),
+        angle: appearance.get(point.key)?.angle ?? resolveDirectionValues([point.fields], layer.encoding.angle)?.[0],
+        area: appearance.get(point.key)?.size ?? mappedAppearance(next, layer, "size", [point.fields], Math.PI * (config.radius ?? 3) ** 2),
         fill: color([point.fields], config.fill ?? "#4c78a8"),
         stroke: mappedAppearance(next, layer, "stroke", [point.fields], config.stroke === false ? "transparent" : config.stroke),
         strokeWidth: mappedAppearance(next, layer, "strokeWidth", [point.fields], config.stroke === false ? 0 : config.strokeWidth),
@@ -131,7 +144,7 @@ const createOverlay = /* @__PURE__ */ closedAction({
     series: args.series ?? "source", missing: args.missing ?? "break",
     inheritColor: args[type]?.[type === "line" ? "stroke" : "fill"] === undefined,
     ...(args.orderBy === undefined ? type === "point" && source.mark.type === "point" ? { orderBy: "x" } : {} : { orderBy: args.orderBy }) });
-  resolveOverlaySeries(this, binding);
+  resolveOverlayGeometry(this, binding);
   const id = resolveFacadeId(this, args.id, { defaultId: "overlay", operation: "createOverlay" });
   let next = this[type === "line" ? "createLineMark" : "createPointMark"]({
     ...(args[type] ?? {}), id, data: source.data
@@ -156,7 +169,7 @@ const editOverlay = /* @__PURE__ */ closedAction({
   const { target, follow, ...patch } = args;
   const binding = normalizeOverlayBinding({ ...layer.derivedBindings.overlay, ...patch });
   if (binding.source === layer.id) throw new Error("An overlay cannot follow itself.");
-  resolveOverlaySeries(this, binding);
+  resolveOverlayGeometry(this, binding);
   return this.editSemantic({ property: `layer[${layer.id}].derivedBindings.overlay`, value: binding })
     .rematerializeOverlay({ id: layer.id });
 });

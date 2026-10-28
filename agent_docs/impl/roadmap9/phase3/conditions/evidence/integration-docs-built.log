@@ -1,0 +1,6 @@
+
+> ggaction@0.0.26 test:docs:built
+> node scripts/check-built-docs.js _site
+
+verified 1221 selective LLM artifacts and their identity hashes
+checked 150 built documentation pages

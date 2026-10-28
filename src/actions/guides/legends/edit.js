@@ -1,3 +1,4 @@
+import { conditionalLegendLayer } from "../../../materialization/legendEncodings.js";
 import {colorSizeChannels} from "../../../grammar/colorSizeLegend.js";
 import { splitGuideVisibility, patchGuideVisibility } from "../../../materialization/guides/visibility.js";
 import { patchLegendItemsOffset } from "../../../grammar/legendItemsOffset.js";
@@ -45,7 +46,7 @@ import {
   resolveStrokeIntervalConfig,
   resolveStrokeIntervalLayout
 } from "./continuous/stroke.js";
-import { findLayer } from "../../../selectors/layers.js";
+import { findLegendLayer as findLayer } from "../../../materialization/legendEncodings.js";
 import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { resolveLegendBlock, resolveLegendTarget, validateLegendChannels } from "./target.js";
@@ -601,7 +602,7 @@ function editLegendContent(program, target, args, positionIntent = {position: ar
   } else creation = resolveLegendCreationPlan(view, { target, channels,
     ...(combine === undefined ? {} : {combine}),
     ...(combine === "color-size-shape" ? {values: patch.values ?? oldCombined?.sampling?.values} : {}),
-    ...(colorRepresentation === undefined ? {} : { representation: colorRepresentation }) }, program.semanticSpec.layers, channels);
+    ...(colorRepresentation === undefined ? {} : { representation: colorRepresentation }) }, program.semanticSpec.layers.map(layer => conditionalLegendLayer(layer)), channels);
   if (creation.legendGroup !== undefined) view = view._withMaterializationConfig(
     ["guides", "legendGroups", target], creation.legendGroup.config);
   const oldCategorical = removed.find(kind =>

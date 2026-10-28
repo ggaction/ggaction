@@ -857,5 +857,18 @@
         "statements": 34
       }
     ]
+  },
+  {
+    "file": "conditional-encoding.mjs",
+    "cases": [
+      {
+        "id": "conditional-encoding/fresh-process-lifecycle",
+        "statements": 10
+      },
+      {
+        "id": "conditional-encoding/renderers-and-scene",
+        "statements": 22
+      }
+    ]
   }
 ]

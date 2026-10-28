@@ -14,7 +14,7 @@ import {
 
 function programWith({ datasets = [], marks = {} } = {}) {
   return {
-    semanticSpec: { datasets },
+    semanticSpec: { datasets, layers: [] },
     markConfigs: marks
   };
 }

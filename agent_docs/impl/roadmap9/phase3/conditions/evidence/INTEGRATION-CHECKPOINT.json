@@ -1,0 +1,149 @@
+{
+  "step": "STEP-016",
+  "checkpoint": "prepared-conditional-integration",
+  "status": "verified-partial",
+  "parents": [
+    "812d6c26d473699179647cb7f2bee56045ad8e5d",
+    "72855612"
+  ],
+  "date": "2026-10-28",
+  "authorization": "../../../AUTHORIZATION.json",
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js unit unit/actions/conditional-encoding.test.js unit/actions/data/expression-filter.test.js unit/resources/prepared-conditionals.test.js unit/resources/prepared-data-lifecycle.test.js unit/resources/prepared-statistics.test.js unit/resources/prepared-data-adoption.test.js",
+      "exit": 0,
+      "tests": 50,
+      "passed": 50,
+      "log": "integration-unit.log"
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/conditional-encoding-types.test.js contracts/compact-action-cards.test.js",
+      "exit": 0,
+      "tests": 24,
+      "passed": 24,
+      "log": "integration-contracts.log"
+    },
+    {
+      "command": "node scripts/run-tests.js realistic contracts/generated-lifecycle-scenarios.test.js contracts/generated-scenario-feature-coverage.test.js",
+      "exit": 0,
+      "tests": 10,
+      "passed": 10,
+      "log": "integration-realistic.log",
+      "receipt": "integration-realistic-receipt.json"
+    },
+    {
+      "command": "npm run test:package",
+      "exit": 0,
+      "nodeCases": 198,
+      "qualificationGroups": 7,
+      "artifactSha256": "824f74dba9555329067ff071e0a9da1f11f9237d36672dd8fbb35e093658fbb9",
+      "report": "integration-installed-qualification.json"
+    },
+    {
+      "command": "GGACTION_PACKAGE_SPEC=<canonical installed tgz> node scripts/run-tests.js browser browser/conditional-rendering.browser.js",
+      "exit": 0,
+      "tests": 2,
+      "passed": 2,
+      "log": "integration-browser.log"
+    },
+    {
+      "command": "node scripts/run-tests.js docs",
+      "exit": 0,
+      "tests": 166,
+      "passed": 166,
+      "log": "integration-docs.log"
+    },
+    {
+      "command": "PATH=/opt/homebrew/opt/ruby@3.2/bin:$PATH npm run docs:build",
+      "exit": 0,
+      "log": "integration-docs-build.log"
+    },
+    {
+      "command": "npm run test:docs:built",
+      "exit": 0,
+      "pages": 150,
+      "machineArtifacts": 1221,
+      "log": "integration-docs-built.log"
+    },
+    {
+      "command": "npm run test:docs:browser",
+      "exit": 0,
+      "viewports": [
+        "desktop",
+        320,
+        390,
+        768
+      ],
+      "log": "integration-docs-browser.log"
+    }
+  ],
+  "confirmed": [
+    "prepared parameter raw/filter/computed union and conditional-only marks",
+    "prepared raw refresh selection exact refs and fresh editable restore",
+    "inactive field and inferred empty-domain atomic rejection",
+    "facet/repeat source bindings and conditional references",
+    "existing conditional stroke ownership across constant/conditional width assignment",
+    "8 conditional actions and where filter create/edit observed through direct lifecycle traces"
+  ],
+  "size": {
+    "entries": 712,
+    "unpackedBytes": 4924496,
+    "maxPackedBytes": 1059505,
+    "sameTarSha256": "f65bcca457c4fbb923a9d4bca8ac78b21f7ffb489e7f12c9456265320a52cb2c",
+    "ceilings": {
+      "entries": 712,
+      "unpackedBytes": 4926000,
+      "packedBytes": 1062000,
+      "fullGzip": 537000,
+      "basicGzip": 315000,
+      "svgGzip": 25000
+    },
+    "searchIndexBytes": 865245,
+    "searchIndexCeiling": 867000
+  },
+  "notClaimed": [
+    "STEP-016 completion",
+    "positional/offset/pointRadius/text completion",
+    "full realistic corpus sweep",
+    "full render sweep",
+    "new full coverage measurement after integration"
+  ],
+  "failuresPreserved": [
+    {
+      "log": ".artifacts/conditions/integrated-lifecycle.log",
+      "cause": "Conditional stroke width incorrectly enabled constant stroke over conditional stroke."
+    },
+    {
+      "log": ".artifacts/conditions/integrated-conditional-regression.log",
+      "cause": "A circle with enabled stroke but deferred conditional width wrote an undefined graphic property."
+    },
+    {
+      "log": ".artifacts/conditions/integrated-lifecycle-inventory.log",
+      "cause": "Old literal inventory count."
+    },
+    {
+      "log": ".artifacts/conditions/integrated-lifecycle-inventory-final.log",
+      "cause": "Old redacted-array inventory count."
+    },
+    {
+      "log": ".artifacts/conditions/integrated-docs.log",
+      "cause": "Combined measured search payload exceeded the prior ceiling by 245 bytes."
+    }
+  ],
+  "evidenceSha256": {
+    "integration-unit.log": "389d8da92eb202fd1347f09474a54fca649dd24db1ef9604bdb5d99626fad6f0",
+    "integration-contracts.log": "c3a9c563d5fe8eb810afab27a9e6db5b121578e5ca5fd2f07722019d1ecdeb0c",
+    "integration-realistic.log": "71bda8d3060cdce2104ed59cc751c8ad126cb97c463cf1138326ccf6bf42e478",
+    "integration-realistic-receipt.json": "b4edbb93e54e21670684ca33e13517eb48fd56533b02526f4b7dbf0a60c1d8f4",
+    "integration-docs.log": "d6f5aba9b09123ec49508e38fe1e86fba7589afc4f05692e9aac6453322cf697",
+    "integration-docs-build.log": "f65b6b9ff76722a655d21a855b32658af48b8b6edded4bacbc5bc2b047ebe583",
+    "integration-docs-built.log": "174e554da4a3362d0c93d21f68327d28009c7797cea58b1f555ed1bc6f435ccf",
+    "integration-browser.log": "5844bba5c496e105c02f713e0648c57e1efcbac19898216dec29a1a1bdbe34fd",
+    "integration-installed-node.json": "bae9735cc66e0aab3396cb27531161dfb5401b3fd9118b55afb9169349fbec60",
+    "integration-installed-qualification.json": "21de2d80a9ead8dd8646e1d91a6b54be910192014cd7f9b461a7932d97e46467",
+    "integration-size-node20.json": "3884e59e617cd5446d1e8b6b057c2c5c1cbc7f2bf0397fcc6f441aa55203b4b2",
+    "integration-size-node22.json": "132a58e103c18761d5c80aa43e95420d3f0f8103ddbc806f5d38194609834d52",
+    "integration-size-node24.json": "51826765b3a637749a8c552fe778f9114c50cab369ccdd74f4a2f25bfa592842",
+    "integration-docs-browser.log": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3"
+  }
+}

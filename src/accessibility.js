@@ -68,7 +68,7 @@ function finalRows(program, layer) {
     unsupported(layer.id, "the owner is not materialized");
   }
   if (layer.derivedBindings?.overlay) {
-    return resolveOverlaySeries(program, layer.derivedBindings.overlay).flatMap(group =>
+    return resolveOverlaySeries(program, layer.derivedBindings.overlay, { geometry: false }).flatMap(group =>
       group.points.map(point => ({
         series: Object.fromEntries(["group", "color", "stroke"].flatMap(channel => {
           const encoding = layer.encoding[channel];

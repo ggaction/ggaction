@@ -1,3 +1,4 @@
+import { CONDITIONAL_CHANNELS } from "../conditionalState.js";
 import { USER_ID_SOURCE } from "../../core/identifiers.js";
 import {
   AXIS_RESOURCE_CHANNELS,
@@ -56,7 +57,7 @@ const ENTITY_PATHS = Object.freeze({
     collection: "layers",
     removableContainers: new Set(
       [...ENCODING_CHANNELS.map(channel => `encoding.${channel}`),
-        "encoding.parallel", "layout"]
+        "encoding.parallel", "layout", ...CONDITIONAL_CHANNELS.map(channel => `conditionals.${channel}`)]
     ),
     properties: new Set([
       "data",
@@ -70,6 +71,7 @@ const ENTITY_PATHS = Object.freeze({
       "derivedBindings.regression",
       "derivedBindings.overlay",
       "layout.mode",
+      ...CONDITIONAL_CHANNELS.map(channel => `conditionals.${channel}`),
       ...ENCODING_PATHS
     ])
   },

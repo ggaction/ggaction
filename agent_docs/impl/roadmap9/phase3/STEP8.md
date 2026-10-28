@@ -38,13 +38,13 @@ CI Linux에서 한글 fallback font가 없어 해당1개 test를 건너뛴 사�
 같은 commit의 로컬 전체 unit에서는 해당 test가 실행되어 통과했고 skip은0이다.
 Verifier는 이 test의 실제 성공 line, discovery와 log hash까지 확인한다.
 
-전체 원격 workflow의 realistic (2) job은 이 문서 작성 시 실행 중이다.
+전체 원격 workflow [40723472877](https://github.com/ggaction/ggaction/actions/runs/40723472877)의
+20개 job이 모두 성공했다. [원격 실행 기록](integration-closeout/ci-run.json)은 정확한 구현 commit,
+각 job과 step의 완료 상태를 보존한다. realistic (1–7), Node20/22/24 package, Windows/macOS,
+Firefox/WebKit, documentation와 coverage를 포함한다.
 앞선 ade3dd16 CI의 realistic (6) 실패는 누락된 pivot 직접 호출·옵션 inventory 문제였다.
-[수리 근거](statistics/REALISTIC_REPAIR.md)에 최초 실패와 수정 후 검증을 보존했으며,
-현재72855612의 realistic (6) job은 성공했다.
-이 사실을 전체 CI 성공으로 표현하지 않는다. 위 종료 record는 task가 선언한 모든
-필수 검사의 실제 성공 evidence를 사용한다. 앞선 실패한 DATA CI나2810a8e2 계약
-실행은 역사 evidence로 남기며 이번 성공 receipt에 섞지 않는다.
+[수리 근거](statistics/REALISTIC_REPAIR.md)에 최초 실패와 수정 후 검증을 보존했다.
+앞선 실패한 DATA CI나2810a8e2 계약 실행은 역사 evidence로 남기며 이번 성공 receipt에 섞지 않는다.
 
 ## 원시 evidence와 재현
 

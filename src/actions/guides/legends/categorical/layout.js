@@ -2,7 +2,7 @@ import { validateLegendOverflow } from "../../../../grammar/legendOverflow.js";
 import{validateLegendClip,clippedSampleBounds}from"../../../../grammar/legendClip.js";
 import {categoricalLegendSymbolId as symbolGraphic}from"../../../../grammar/legendBlocks.js";
 export {symbolGraphic};
-import { findLayer } from "../../../../selectors/layers.js";
+import { findLegendLayer as findLayer } from "../../../../materialization/legendEncodings.js";
 import { isLinearGradientPaint } from "../../../../grammar/paint.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { validateOptionObject } from "../../../../core/validation.js";

@@ -1,3 +1,4 @@
+import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
 import { materializeMarkOutput } from "../../../materialization/markOutput.js";
 import { validateGraphicItemLimit, validateWorkLimit } from "../../../core/validation.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
@@ -350,15 +351,15 @@ export const rematerializePointMark = /* @__PURE__ */ action(
     const positions = resolvePointPositions(resolved, layer, dataset);
     const mappedFill = resolveRowEncodingValues(resolved, layer, dataset, "color");
     const mappedStroke = resolveRowEncodingValues(resolved, layer, dataset, "stroke");
-    const area = resolveRowEncodingValues(resolved, layer, dataset, "size");
-    const encodedShape = resolveRowEncodingValues(resolved, layer, dataset, "shape");
+    const area = resolveConditionalValues(resolved, layer, "size") ?? resolveRowEncodingValues(resolved, layer, dataset, "size");
+    const encodedShape = resolveConditionalValues(resolved, layer, "shape") ?? resolveRowEncodingValues(resolved, layer, dataset, "shape");
     const encodedOpacity = resolveRowEncodingValues(
       resolved,
       layer,
       dataset,
       "opacity"
     );
-    const angles = resolveDirectionValues(dataset.values, layer.encoding?.angle);
+    const angles = resolveConditionalValues(resolved, layer, "angle") ?? resolveDirectionValues(dataset.values, layer.encoding?.angle);
     const config = resolved.markConfigs[id] ?? {};
     const strokeDetails = requestedStrokeDetails(config, "Point mark");
     const fill = mappedFill ?? config.fill ?? DEFAULT_POINT_FILL;
@@ -547,7 +548,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
       next = next.editGraphics({
         target: id,
         property: "strokeWidth",
-        value: config.strokeWidth
+        value: config.strokeWidth ?? 1
       });
     }
     for (const [property, value] of Object.entries(strokeDetails)) {

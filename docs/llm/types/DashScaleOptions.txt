@@ -5,3 +5,8 @@ export interface DashScaleOptions {
   range?: "auto" | readonly (DashStyle | DashPattern)[];
   unknown?: DashStyle | DashPattern;
 }
+
+/** Ordered first-match predicates; otherwise is required. All branches are validated.
+ * Each value uses the existing encoder payload without target. Selection predicates
+ * reference stored logical selection IDs. Legends require one unique field/scale binding.
+ */

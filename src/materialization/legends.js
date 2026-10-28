@@ -1,5 +1,5 @@
 import {colorSizeScaleIds} from "../grammar/colorSizeLegend.js";
-import { findLayer } from "../selectors/layers.js";
+import { findLegendLayer as findLayer } from "../materialization/legendEncodings.js";
 import { LEGEND_CONFIG_KINDS } from "../core/vocabulary.js";
 
 export function isOpacityLegendLayer(layer) {

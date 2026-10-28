@@ -124,6 +124,10 @@
     "completion-validation.json": {
       "sha256": "f0e51bfd0f87f77ba70b7d2875d8ad5a39212f317ada8b6fb05bfbe625e3dd45",
       "bytes": 312
+    },
+    "ci-run.json": {
+      "sha256": "2c376e7b6147b88d742cdd3ac4c15f451b6ead9dc134b4cf644c838f90b08268",
+      "bytes": 68511
     }
   }
 }
