@@ -51,7 +51,7 @@ test("exports the complete strict field-driven option surface", () => {
   }
   assert.match(
     programTypes,
-    /encodeTheta\(options: TargetedOptions<ThetaEncodingOptions>\): ChartProgram/
+    /encodeTheta\(options: TargetedOptions<ThetaEncodingOptions \| ConditionalEncodingOptions<ThetaEncodingOptions>>\): ChartProgram/
   );
   assert.match(
     programTypes,

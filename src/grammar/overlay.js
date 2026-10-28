@@ -1,5 +1,6 @@
 import { isPlainObject, cloneAndFreeze } from "../core/immutable.js";
 import { validateUserId } from "../core/identifiers.js";
+import { commonPositionBinding, hasPositionBinding, positionBindings } from "../core/encodingBindings.js";
 
 // Inspection and materialization share the same topology capability. A
 // categorical density is an entire silhouette, not one endpoint per category.
@@ -7,7 +8,7 @@ export function overlaySourceReason(layer, coordinateType, density) {
   if (coordinateType !== 'cartesian' || !['bar', 'point', 'line', 'area'].includes(layer?.mark?.type))
     return 'Overlay source requires a Cartesian bar, point, line, or area mark.';
   if (layer.derivedBindings?.overlay) return 'Overlay source must be an independent mark.';
-  if (['x', 'y'].some(channel => !layer.encoding?.[channel]?.scale)) return 'Overlay source requires complete x and y positions.';
+  if (['x', 'y'].some(channel => !hasPositionBinding(layer, channel))) return 'Overlay source requires complete x and y positions.';
   if (density?.placement?.type === 'category') return 'Categorically placed density areas do not have a single result endpoint per category.';
   return undefined;
 }
@@ -36,14 +37,13 @@ export function overlayGroupFields(layer) {
   if (group?.field) return [group.field];
   const color = layer.encoding?.color;
   return ["nominal", "ordinal"].includes(color?.fieldType) &&
-    ![layer.encoding?.x?.field, layer.encoding?.y?.field].includes(color.field)
+    ![...positionBindings(layer, "x"), ...positionBindings(layer, "y")].some(binding => binding.field === color.field)
     ? [color.field] : [];
 }
 
 export function overlayPositionEncoding(source, channel) {
-  const encoding = source.encoding[channel];
-  return encoding?.field === undefined && source.encoding[`${channel}2`]?.field !== undefined
-    ? source.encoding[`${channel}2`] : encoding;
+  const encoding = commonPositionBinding(source, channel), secondary = commonPositionBinding(source, `${channel}2`);
+  return encoding?.field === undefined && secondary?.field !== undefined ? secondary : encoding;
 }
 
 export function assertIndependentOverlayGeometry(layer, operation) {

@@ -1,0 +1,335 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "createdAt": "2026-10-28T19:02:19.700908+00:00",
+  "parents": [
+    "b758b912",
+    "e62e9f38"
+  ],
+  "codeRevision": "The merge commit containing this evidence; exact revision is recorded in STEP-016 progress after commit.",
+  "results": {
+    "normal": 7100,
+    "realistic": 19,
+    "renderer": 284,
+    "browser": 305,
+    "acceptance": 8,
+    "pages": 150,
+    "llmArtifacts": 1221,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ],
+    "installed": {
+      "20": {
+        "nodeCases": 200,
+        "groups": 7
+      },
+      "22": {
+        "nodeCases": 200,
+        "groups": 7
+      },
+      "24": {
+        "nodeCases": 200,
+        "groups": 7
+      }
+    }
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 755,
+    "packedBytes": 1116064,
+    "unpackedBytes": 5159396,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "94fcc33b6e50f691c8840bd2e9d7f04f8e41b443",
+    "sha256": "e62af203eb6653118b651608c28a81345ff08ae10382024da0eae66535aa6031"
+  },
+  "maxPackedBytes": 1117945,
+  "ceilings": {
+    "entries": 755,
+    "packedBytes": 1118000,
+    "unpackedBytes": 5160000,
+    "fullGzip": 549000,
+    "basicGzip": 325000,
+    "svgGzip": 25000
+  },
+  "coverageReuse": {
+    "codeRevision": "e62e9f38",
+    "manifest": "../position/manifest.json",
+    "changedRuntimeInputs": {
+      "src/actions/encodings/appearance.js": "49f312204689cd68a0b61530fb62d0414796200fd8fccafbe10604b2ba49889e",
+      "src/actions/encodings/channels.js": "d4f7e76a1409752e8844bbf18d4b0ceb89a1901d1694773399f7ac1adea28d45",
+      "src/actions/encodings/conditional.js": "935aa9aef25662210ce3eae128ed6effef4e3f9bc9f169057beec030a07f3cb6",
+      "src/actions/encodings/offset.js": "e84662223dd0447978c599bea7ce7bdd0e0ce66b922be5aa8cf17385896400e7",
+      "src/actions/encodings/position/resolve.js": "84bb1412f64d5bea5948c34e148d878a5fe13c0e990f4b80ea1abdc15db9eb3d",
+      "src/actions/encodings/ranged.js": "7c02ede0ed3d060484c76df36a88e138cb464716cd8464c0acfda0b115ae1670",
+      "src/actions/encodings/seriesLayout.js": "ce19e2b252f5a5361f82d8d2dce1148d9f8e3930e8495d9871087a4ad787e8b4",
+      "src/actions/encodings/text.js": "5bf7f4eb155aaebe078f6644e1ba737ce468c98e2d045c49fae518ecd05aa836",
+      "src/actions/facets/actions.js": "6e4930dfbf2c19707274ccd6a5af3f91db3916f5cede10a367d4585a229f9c0a",
+      "src/actions/guides/axes/axes.js": "5bc5ef29aa0a54b53a3a098f4fa6868d94f4f1272d99d3385bebb044f18b8cad",
+      "src/actions/guides/axes/axis.js": "4d9a88549fde19da0ab56ff63f45b1b110acedacf44b30eef4344aed2b0532e5",
+      "src/actions/guides/axes/lines.js": "1b99508b7d59eb3e33194dab6b09bf347408799909c22b3abf87c82d0f16051e",
+      "src/actions/guides/axes/titles.js": "c188a19959dad8641d37d2f23b54e3a90345055236832a7aab10f697c615195b",
+      "src/actions/guides/grids/resolve.js": "8b4fd6d883a640bf6d27683b3d18e70161be1a29f3ef04ca6a2aceb217748e2b",
+      "src/actions/guides/polar/resolve.js": "15a4d4a9e78fd120ce0bde07241d11048c1e1c369f0947a03381785d84c4aaac",
+      "src/actions/marks/arc/actions.js": "ed7d9641fba4908ec4c2586fdb1a3d22098c089a0cb026c8ee1ee069507d337c",
+      "src/actions/marks/area/actions.js": "5865eb7cdc3c6862a51e207fd2c3a59a53d81bfb05e6d187b2d1efd78f4f3679",
+      "src/actions/marks/area/materialize.js": "3704feafc349590b916e46c393cd0ab1ceeacc73c2492bfa478936fa0f03fda3",
+      "src/actions/marks/bar/materialize.js": "44581306197c850f6a19c45f644657f5c701618b87155893c83a3e110113a6e5",
+      "src/actions/marks/line/actions.js": "592d458838e4ac2393a75a3c674667c8d6e0a5177f5bf7bc52f5d32c4ef5f5a4",
+      "src/actions/marks/line/materialize.js": "9b656aeb406ff164f781bfb84e5132b338820455d83df893db2539458ce4c009",
+      "src/actions/marks/point/jitter.js": "2e761da9dd5d32a0d278e7b213f923a7f43426cf8a96f4de221d9d7f00e5735d",
+      "src/actions/marks/point/materialize.js": "c652ebe6ac3ba6e67ba6f820bf50c0faeccbb2b5826e801ba58d1a44fc001735",
+      "src/actions/marks/point/packing.js": "370023f10ade2beb92b09e3c73ca8af0cc608961597c777be4ee7e635e9238c3",
+      "src/actions/marks/rect/actions.js": "8608283ae61907498a9910f88e41f5c2f499bbe3465187f64a126605fd05f945",
+      "src/actions/marks/rule/actions.js": "8b17986fe4c6b5ea1f34b6e80ac6f3021000078b914998f6b18b5f1585316ec5",
+      "src/actions/marks/shared.js": "c69063e64a2998ade3930cae5ef5a3e7deea80bfa49a61b5c9d0a0c3e192c71a",
+      "src/actions/marks/text/actions.js": "04f9814eefa2d7496e5915bb696b3b58b62db4eb3816b1c3ab46b06aad40d3a4",
+      "src/actions/marks/tick/actions.js": "1e05e0cc309c39cbfa3005ccf802922a137107de5cb00d1fbbc17f48a7927a7d",
+      "src/actions/overlays/snapshot.js": "2da4bd1c0421115024e99c29efb675d882d80429c0a7babb06b2d0e808b924b0",
+      "src/actions/scales/edit.js": "ac3ceb1f71de0b8d70ce3d2ef289293c690774ac6b7a2c839bbe99657e1c184b",
+      "src/actions/scales/preview.js": "558b921d0d13ca96f7119713de4974e69983ee248a5987b46bdc1927ca44f860",
+      "src/core/encodingBindings.js": "613b86e33e3e5029f711210c47885c2a4202044318580c38c0b798e21132b82c",
+      "src/core/vocabulary.js": "dc2c718316740e6fbe47ca8d6266ea24c72024cf75003aa10de93d6618e26fc5",
+      "src/grammar/arcs.js": "3539b54543d51a576dee2e80a39b05988f4b8f9fa252f8f41850b7d2e72438f1",
+      "src/grammar/areaSeries.js": "124b0d1e1878dd1686071ae2df29875b8402a471092ca0b726cf16d0ae68443a",
+      "src/grammar/bars/aggregate.js": "2134c40a899ca52646920151b4c059ced722e7d1bea5635236beab0d4bc85d70",
+      "src/grammar/bars/policy.js": "94c559d13f12a4fd0ef7bb1aec36c016d4110bec08236f92675ec184c05a648b",
+      "src/grammar/categoricalDensity.js": "ea1c8bdae47b5e674661a68013344846fd48ecdff32b71b829db1f319543e1c0",
+      "src/grammar/conditionalPosition.js": "1f72cb9c10f39a497657fd9041e8156d7b1fbb95af2540a9d94cea28a03f56a2",
+      "src/grammar/conditionalState.js": "c1c9888bc72a65e185ecb9c314e373048be84820f26cd15ac8b4131fffa9c197",
+      "src/grammar/facets/dependencies.js": "7d457dadcc46f7752022ad46bfb35ed4367b0797a38a67a7ece00dabe68b6eda",
+      "src/grammar/itemMissing.js": "174063688edf5adace72e2af1b26d5b54d2d022ce22552639c0af052d618c714",
+      "src/grammar/jitter.js": "51a4217aeff20b6a288f64f0ea266ce49639372df4e3a27e5c568952c504f22d",
+      "src/grammar/lineSeries.js": "4386042c19442623d4062593208e5d76a1b9be7827db04911e9295fd3d83e7fa",
+      "src/grammar/markLabels.js": "668b43a7c4e080cc0bff854a7109213c1c23d4b2d3ba948b5a465127031909cf",
+      "src/grammar/overlay.js": "81022ea0a2636cf0b91053e906868cac6802a7bca00ed709e4723168ea006c71",
+      "src/grammar/pointPacking.js": "52b1e8c2a9ce88f6542a5cf3e9ca1fb144d2629c993ccc0d2590129b5cc7ab2b",
+      "src/grammar/polarLineCommands.js": "7b594c83767983827d13caa1109f46a1bbfe8a3cecdae88e68c43e2217d81788",
+      "src/grammar/positionPolicies/arc.js": "f0624a57cc4088ee19bcbc87195b53b47fa07a9c7a8a009866e529a5fb9399b7",
+      "src/grammar/positionPolicies/area.js": "6cffe38a7db0d97612f18262799c4ce6f16caf2ddb844e00f6cd29f1dc55870f",
+      "src/grammar/positionPolicies/bar.js": "85a94c29d4d82cd65cd422d1c2c02711fe1d5aeb933e03afa6af38cd9b85fe8a",
+      "src/grammar/positionPolicies/common.js": "d5052a2a2d023a77f3bcd49438a0c587d0e0b917ea86b0f87035e75c22dc7545",
+      "src/grammar/positionPolicies/index.js": "d2f0d68fd65efba2d2fd62e0d6cfeb2cb703566e1c4a424f3d6b383316fbd980",
+      "src/grammar/positionPolicies/line.js": "e520c4f7c8bea490c5b7afed906f7216fe8f248216d2b88785f3a87fdd592587",
+      "src/grammar/positionPolicies/point.js": "c45409e81e5a5a9b6489f9cae5ff2c5a2e28df5df74bfc64e4c7e8cd68cc825b",
+      "src/grammar/positionPolicies/rule.js": "da81e92753a99414b5fec6ee18dab9e922d93237691ec2b488d64a3b399170d9",
+      "src/grammar/positionPolicies/secondary.js": "c6e33da6e4d5d7459c7492f6bc53f36e77add8696824b988b53fe7261dc05ae2",
+      "src/grammar/positionPolicies/source.js": "3986b6962dcd5ca15ee7200ce3246a2b9e3a3cb755d4c0f6260a546823fabb0a",
+      "src/grammar/positionPolicies/tick.js": "bb0bec323220bcc9ae4daeda4d86500c663148980b35d90e87a23f0befef717a",
+      "src/grammar/rects.js": "867ece471b9f296ec9bc74f5d1425b4f800af477f036755c456f53579e00179b",
+      "src/grammar/rules.js": "8f434eef573b112fa7ecd6b31490d4b2e9515b9a78363862126ee01bd1d4d818",
+      "src/grammar/text.js": "b9ceea43fe102adf004aefa11c020fbf26090e246c3ec44b7df99a41b1d3f7c0",
+      "src/inspectionDescriptors.js": "276997530106b3e487a932e1e8d76e27d90a2c708bd2b8348e73c4afbb61665e",
+      "src/materialization/bars/aggregate.js": "f74f12073c1c78ea04ab19c88258a08d364c105372a64979cc134c4315027b78",
+      "src/materialization/bars/histogram.js": "4c4d4794f4c4914e7e413320a2e3ad8281a85a2ed12536da712143772f97c41b",
+      "src/materialization/bars/ranged.js": "46629c2f345df3f8a05646c78d2fa7a720f1b09672fdfae7a747c475dc0bae93",
+      "src/materialization/bars/resolve.js": "46d637559bfb1e7797e623bdcbb5de241416eac6071ca3d18a97804d290241ae",
+      "src/materialization/conditionalArcStructure.js": "dd43c90aedbf6dc600b1bcdbcdcbfa0688ab330691cfe9b1a8885726cd909432",
+      "src/materialization/conditionalArcValues.js": "77cdd9e5815d93a10e6f5222716758bfe6a62a1a41857432dfe11c1cdf91797f",
+      "src/materialization/conditionalAreaStructure.js": "ae7104fc49a62835c40ce05da7337917ac1308173d41696a80216231f774b7c3",
+      "src/materialization/conditionalAreaValues.js": "61f5fd6d85a704b884eb5ec07cf21c911b51ac37b80d0127a45dd7f2b6b3d0f8",
+      "src/materialization/conditionalBarStructure.js": "5f24f4abc7f81722a5f6ef88e8a8ad96f60beaa49046449bcef6816b277d111a",
+      "src/materialization/conditionalBarValues.js": "bb20ea782010e18184449f101e5af64fde2dc1c56cd887189e302fd1660cdf4d",
+      "src/materialization/conditionalBranches.js": "a7e18f31342a82c6895f2b60b0ac4157020876cad82f92da07c86f9fe11b6d3c",
+      "src/materialization/conditionalLineStructure.js": "3a4869c6341a97c9876e1a9d885a00faceefba1539fce67ea0108b4f9c326c8a",
+      "src/materialization/conditionalLineValues.js": "71b66101df44d4f11f5a0a9507aa4c5a243a1be7828ddda72b54c1c1c201cf91",
+      "src/materialization/conditionalMapping.js": "55b19f8ba9bb768566d6ba4646554072986dc04e514fb16148d7085b6a3f4795",
+      "src/materialization/conditionalPositionBindings.js": "269118d78e1ec4c83cf50109c195368c240a30255cd074a09717472967785579",
+      "src/materialization/conditionalSelection.js": "59e2ecaa982b68e714a91ff2938335a0830c4ac3bd953cf33d3a02292ce0e3b7",
+      "src/materialization/conditionalState.js": "ed826124ee913231fdd96e0a6a4dc729eb19d921b6b5ae657ff98d4ce42912da",
+      "src/materialization/conditionalValues.js": "8dc8b9feae7324221ed8460fab507f00394dd7f8d589df45c92c85dda658c21f",
+      "src/materialization/coordinateBounds.js": "12dec78e62dee633eabce8bb391f9bd6a81327a00a2e706ae0f0d2c6dd4f1f78",
+      "src/materialization/markOutput.js": "4566dc648b4401b2cf2bbc01dfab3a3e9b46658bbbaee6d81f1cc668b95313f7",
+      "src/materialization/marks/capabilities.js": "19141a652159c142612dcf363f0086cc58dd8c2e3e2170523086da8971cf55fb",
+      "src/materialization/marks/index.js": "79e90deb06f854e58bafd5ade69cde94e25886de072418c8fe39832d2ba26eed",
+      "src/materialization/overlayGeometry.js": "2ea9fe12f0ec1dad8ce48dcae270af9cc123148333359296d0c9f237dbfb8629",
+      "src/materialization/overlayItems.js": "afb450ec4217ce31cf836ac7270574a8cbd6a114c18111e3b5952c004750d459",
+      "src/materialization/positionGuides.js": "0d55f3ab2f81b071f568bd6adfefb3f16fc68f3849828b821f0f931cc85630d0",
+      "src/materialization/positionPolicy.js": "a4f8e19fa39f415f69442824e4f9d44e6bc8f07febef62f5014f85b210c7597b",
+      "src/materialization/rect.js": "f835c9856873596fab74beaf52dc498e25703aed486d4b6e1726433e4025fd1a",
+      "src/materialization/rowEncoding.js": "80960d6756362fbee414748764dfbce31ebfed1a21888b36c45348e1c911805e",
+      "src/materialization/scales/consumers/common.js": "d1300d4965c783d40e517630c5fc5c1a8acd7df4222f01822ed49810efc8e4ad",
+      "src/materialization/scales/consumers/index.js": "55df5bb568fb400f369ac56a5efaff51942d7f76e13599af61f19297271aa56a",
+      "src/materialization/scales/consumers/seriesLayout.js": "549e850a570b1f0217f0d9bd08b292a0f35e711262c21378ea45275278bbd1a1",
+      "src/materialization/scales/policies/arc.js": "b05a228036578f849502744535d2794a6c1b8e74cfb4df65b1da3ac0638fd074",
+      "src/materialization/scales/policies/offset.js": "b4a0e875a02d588064b491a67e5ebeabc37f0b7d09f85aa604016efc8e40fc2b",
+      "src/materialization/selection/items/arc.js": "e768ce13247d1431c87156718af0fe82eef287d4eb7ca286af8cd11bfea6bb04",
+      "src/materialization/selection/items/bar.js": "f4313bd7cd9c66fc7bc5d5ee648c16dfc9d1e9102f5e20b1234bce2cc06cc73c",
+      "src/materialization/selection/items/overlay.js": "b2660c8484465b9d6768cb8edb0253eb9ef0d65716f1198924287ba61d85f013",
+      "src/materialization/selection/items/path.js": "656ed0e361da8f36bdc46ebafad5111cc599ec36c84f2013ffbc8bd51dc4b4e3",
+      "src/materialization/selection/items/point.js": "f8cf5a1a491946d21c7146e439e77afdf9001f3dc5dc23203ba67637af08a545",
+      "src/materialization/selection/items/rect.js": "d161d8463ae9b968db7520f485385266005aad90b045f7d239bf0aa156584ed1",
+      "src/materialization/selection/items/rule.js": "941b4b0c72688c9227f61661aad9f662dee68a85064a0b085526c527c22f1198",
+      "src/materialization/selection/items/tick.js": "69b29aa284eb0295d82ce36bfcd05523b4b9705f42043c4e2fada48fa883feb8",
+      "src/materialization/selection/policies/index.js": "5c3f59c279835bcfd631829228fa43f2a88e6e31c4091a8b13727975d855e8c3",
+      "src/materialization/selection/policies/rect.js": "a9db45977e042bcfd07c5dc50e9562db62cbfedfed157b6b13b36507efad6159",
+      "src/materialization/selection/policies/text.js": "3b7fcd8fdd5041f976d422fcd3de0fcea65348da8ab6d089579db3c928d097c5",
+      "src/materialization/text.js": "fd29ba11d31f8064c31ee8fd075ec37d644b52450dba71cfc1cea2db2d3ba9ff",
+      "src/materialization/textContent.js": "5cb613d5d9b7b92e293666af8cb48c720baf8ff7d25e680cbb579931168428cb",
+      "src/materialization/textGeometry.js": "04fa2eb1784b9b19c6d1f2e289fec4a012094d065dbf2cbb0f905dd022cdb202",
+      "src/selectors/axes.js": "32dd759c8870f6db144057fd7d99cb012630663b6c84a123eb705f4dc29d2584"
+    },
+    "regeneratedDescriptors": [
+      "src/inspectionDescriptors.js"
+    ],
+    "note": "Conditional source and tests passed full instrumented normal coverage before integration. Every surviving changed runtime file except the regenerated action descriptor is byte-identical. Integrated normal/render/browser/realistic/installed evidence is fresh; this is not a new whole-integrated-source coverage run."
+  },
+  "failuresPreserved": [
+    "The first installed invocation supplied a relative archive path; installation resolved it from its temporary directory and failed. Retried with the same archive absolute path."
+  ],
+  "evidence": [
+    {
+      "path": "00-conditional-integration-all.log.gz",
+      "source": ".artifacts/conditional-integration-all.log",
+      "bytes": 1510187,
+      "sha256": "cfdd41965cb988146309883f0be9c592a22ef7582d7919a254a4b6fa5b9d7bda"
+    },
+    {
+      "path": "01-conditional-integration-realistic.log.gz",
+      "source": ".artifacts/conditional-integration-realistic.log",
+      "bytes": 4488,
+      "sha256": "49871b870976be8e4af622534b95823a8df2b0c602e7ad6451fab3c1070144eb"
+    },
+    {
+      "path": "02-conditional-integration-render.log.gz",
+      "source": ".artifacts/conditional-integration-render.log",
+      "bytes": 48834,
+      "sha256": "441da37a4f4eb6c2df7351b513f7b2f3fa6437ce9aed362b9522844dda4d26b2"
+    },
+    {
+      "path": "03-conditional-integration-browser.log.gz",
+      "source": ".artifacts/conditional-integration-browser.log",
+      "bytes": 59013,
+      "sha256": "ae5fe5ae14b03a97b91eef40158f2a05cffaf81fa75b84233d37e92a06cfbaea"
+    },
+    {
+      "path": "04-conditional-integration-docs.log.gz",
+      "source": ".artifacts/conditional-integration-docs.log",
+      "bytes": 10073,
+      "sha256": "14bf254e0a919108a3652edeacd4604e9c3f082c1f749ae662b814bcd6d56259"
+    },
+    {
+      "path": "05-conditional-integration-docs-build.log.gz",
+      "source": ".artifacts/conditional-integration-docs-build.log",
+      "bytes": 599,
+      "sha256": "5ce744823d8cc2ec1262527621d1ee2fae36e679342cb902a9b510cd3d647b4b"
+    },
+    {
+      "path": "06-conditional-integration-docs-browser.log.gz",
+      "source": ".artifacts/conditional-integration-docs-browser.log",
+      "bytes": 157,
+      "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3"
+    },
+    {
+      "path": "07-conditional-integration-acceptance.log.gz",
+      "source": ".artifacts/conditional-integration-acceptance.log",
+      "bytes": 393,
+      "sha256": "7bdca9b5544b37249f8609d7087d715c61a60b0fd50119009affd50d896ab6d9"
+    },
+    {
+      "path": "08-conditionals.json.gz",
+      "source": ".artifacts/acceptance/conditionals.json",
+      "bytes": 121091,
+      "sha256": "7c595effb0e88918ad1ee9c71a13ca52cc41adbc5817894be21d553a21d87440"
+    },
+    {
+      "path": "09-conditional-integration-installed-node20.log.gz",
+      "source": ".artifacts/conditional-integration-installed-node20.log",
+      "bytes": 3954,
+      "sha256": "6a939915dbc77d898aa28ec8f5b879a15be019c794bdc0bbecd2e8a85e9f43de"
+    },
+    {
+      "path": "10-conditional-integration-installed-node20-absolute.log.gz",
+      "source": ".artifacts/conditional-integration-installed-node20-absolute.log",
+      "bytes": 2880,
+      "sha256": "a8651b29987693062241e829b1871a7d1cafb942e6d4bc45732db7c22f9e3991"
+    },
+    {
+      "path": "11-conditional-integration-installed-node22.log.gz",
+      "source": ".artifacts/conditional-integration-installed-node22.log",
+      "bytes": 2880,
+      "sha256": "33cdb5b3e71b76de95d5a372189f6020296cf9993cd63b7b0dc2a8d531520ba8"
+    },
+    {
+      "path": "12-conditional-integration-installed-node24.log.gz",
+      "source": ".artifacts/conditional-integration-installed-node24.log",
+      "bytes": 2880,
+      "sha256": "8eda25ce21c77748d9f7e84895d6a0ef1a92dbd4b54a134af7dfa1caff336baa"
+    },
+    {
+      "path": "13-conditional-integration-package-node20.json.gz",
+      "source": ".artifacts/conditional-integration-package-node20.json",
+      "bytes": 160,
+      "sha256": "3ca7d265ad304583683efc1c4eb70d171ca8d94e88a8764153b52e63ad744342"
+    },
+    {
+      "path": "14-conditional-integration-package-node22.json.gz",
+      "source": ".artifacts/conditional-integration-package-node22.json",
+      "bytes": 418,
+      "sha256": "3f5cda6d20f15374aaa0e4be439b301c44eac623624774d40399bf9d87909b5f"
+    },
+    {
+      "path": "15-conditional-integration-package-node24.json.gz",
+      "source": ".artifacts/conditional-integration-package-node24.json",
+      "bytes": 160,
+      "sha256": "3ca7d265ad304583683efc1c4eb70d171ca8d94e88a8764153b52e63ad744342"
+    },
+    {
+      "path": "16-node-cases.json.gz",
+      "source": ".artifacts/conditional-integration-consumers/node20/node-cases.json",
+      "bytes": 21779,
+      "sha256": "54bbc65022e66027b4ff0578b64ab20f43110107a0344c38a09f7270e6437cfc"
+    },
+    {
+      "path": "17-qualification.json.gz",
+      "source": ".artifacts/conditional-integration-consumers/node20/qualification.json",
+      "bytes": 775,
+      "sha256": "6f3fcfded013b572a6142091db23c2bfbc502edce31dc28bf95a3a51bb19fe5e"
+    },
+    {
+      "path": "18-node-cases.json.gz",
+      "source": ".artifacts/conditional-integration-consumers/node22/node-cases.json",
+      "bytes": 21775,
+      "sha256": "cadaed1909d1c605ff81d79f3cf40ff56f32ad7713b755634b54be5c47a677b5"
+    },
+    {
+      "path": "19-qualification.json.gz",
+      "source": ".artifacts/conditional-integration-consumers/node22/qualification.json",
+      "bytes": 770,
+      "sha256": "1832eef2158ed22abd1cf642a01f0857745a781aa22790a9bb7c9380971bcc74"
+    },
+    {
+      "path": "20-node-cases.json.gz",
+      "source": ".artifacts/conditional-integration-consumers/node24/node-cases.json",
+      "bytes": 21783,
+      "sha256": "f54bba3ff3a93d963dcc35ae46d8b0fc4a53656e1336b46725da92514f48980f"
+    },
+    {
+      "path": "21-qualification.json.gz",
+      "source": ".artifacts/conditional-integration-consumers/node24/qualification.json",
+      "bytes": 766,
+      "sha256": "b6e550646b9b3bfc4a738e785a71c0912f96ed4036a0046a7ac66be35345a9b4"
+    },
+    {
+      "path": "22-suite-all.json.gz",
+      "source": ".artifacts/checks/suite-all.json",
+      "bytes": 215008,
+      "sha256": "399c7036817e563fe14cbc9fd43205c8902f1919895646f0c35a18806db3314f"
+    },
+    {
+      "path": "23-suite-realistic.json.gz",
+      "source": ".artifacts/checks/suite-realistic.json",
+      "bytes": 1969,
+      "sha256": "655077dd3a4520dcebabb07e8f43666995d0d7ee81aecc0bde05d5bf53cbb765"
+    },
+    {
+      "path": "24-suite-browser.json.gz",
+      "source": ".artifacts/checks/suite-browser.json",
+      "bytes": 7596,
+      "sha256": "a13a4995f2f56c9e641c46dc24197c7142554b6a1ff45a7699e9f5d0c57a181d"
+    }
+  ]
+}

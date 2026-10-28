@@ -1,3 +1,8 @@
+import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
+import { getLayerScaleIds } from "../../../materialization/marks/index.js";
+import { conditionalArcValues } from "../../../materialization/conditionalArcValues.js";
+import { hasConditionalArcPosition } from "../../../materialization/conditionalArcStructure.js";
+import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
 import { normalizeArcInnerRadius } from "../../../grammar/arcs.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -167,7 +172,9 @@ const rematerializeArcMark = /* @__PURE__ */ action(
       resetValue: 0
     });
     if (highlighted !== undefined) return highlighted;
-    const { layer, dataset } = requireArc(this, id);
+    const { layer: storedLayer, dataset } = requireArc(this, id);
+    const conditional = hasConditionalArcPosition(storedLayer);
+    const layer = conditional ? conditionalPositionTemplate(storedLayer, ["theta", "radius"]) : storedLayer;
     if (!canMaterializeArc(this, layer)) {
       throw new Error(`Arc mark "${id}" does not have a complete encoding.`);
     }
@@ -175,28 +182,19 @@ const rematerializeArcMark = /* @__PURE__ */ action(
     const radiusScaleId = layer.encoding?.radius?.scale;
     const colorScaleId = layer.encoding?.color?.scale;
     const strokeScaleId = layer.encoding?.stroke?.scale;
-    let resolved = args.scales === false
-      ? this
-      : this.rematerializeScale({ id: thetaScaleId });
-    if (radiusScaleId !== undefined && args.scales !== false) {
-      resolved = resolved.rematerializeScale({ id: radiusScaleId });
-    }
-    if (colorScaleId !== undefined && args.scales !== false) {
-      resolved = resolved.rematerializeScale({ id: colorScaleId });
-    }
-    if (strokeScaleId !== undefined && args.scales !== false) {
-      resolved = resolved.rematerializeScale({ id: strokeScaleId });
-    }
+    let resolved = this;
+    if (args.scales !== false) for (const id of getLayerScaleIds(storedLayer)) resolved = resolved.rematerializeScale({ id });
     const config = resolved.markConfigs[id] ?? {};
     const frame = resolveCoordinatePolarFrame(resolved, layer.coordinate);
-    const derived = deriveArcSectors(dataset.values, layer, {
+    const options = {
       thetaScale: resolved.resolvedScales[thetaScaleId],
       ...(radiusScaleId === undefined
         ? {}
         : { radiusScale: resolved.resolvedScales[radiusScaleId] }),
       frame,
       innerRadius: config.innerRadius ?? 0
-    });
+    };
+    const derived = conditional ? conditionalArcValues(resolved, storedLayer, dataset, { resolveMarkItems, resolveMarkSourceItems }, options) : deriveArcSectors(dataset.values, layer, options);
     const commands = derived.sectors.map(sector => buildAnnularSectorCommands({
       frame,
       startTheta: sector.startTheta,

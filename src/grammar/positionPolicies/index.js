@@ -9,7 +9,7 @@ import { resolvePointPositionPolicy } from "./point.js";
 import { resolveRulePositionPolicy } from "./rule.js";
 import { resolveArcPositionPolicy } from "./arc.js";
 import { validatePositionFieldCompatibility } from
-  "../../../../grammar/positionCompatibility.js";
+  "../positionCompatibility.js";
 
 const POSITION_POLICIES = Object.freeze({
   area: resolveAreaPositionPolicy,

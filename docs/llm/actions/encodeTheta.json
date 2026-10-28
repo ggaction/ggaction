@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Encode Polar angle in clockwise degrees from 12 o'clock.",
-  "signature": "encodeTheta(options: TargetedOptions<ThetaEncodingOptions>): ChartProgram;",
+  "signature": "encodeTheta(options: TargetedOptions<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode theta",
     "encode",
@@ -75,14 +75,19 @@
   },
   "options": [
     {
-      "name": "field",
-      "required": true,
-      "type": "string"
-    },
-    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<ThetaEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<ThetaEncodingOptions>[\"otherwise\"]"
     },
     {
       "name": "scale",
@@ -93,6 +98,16 @@
       "name": "coordinate",
       "required": false,
       "type": "string | undefined"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "datum",
+      "required": false,
+      "type": "unknown"
     },
     {
       "name": "aggregate",
@@ -107,7 +122,7 @@
     {
       "name": "fieldType",
       "required": false,
-      "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+      "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | undefined"
     },
     {
       "name": "temporalUnit",
@@ -116,9 +131,9 @@
     }
   ],
   "callPatterns": [
-    "encodeTheta({ field, target?, scale?, coordinate?, aggregate?, weight?, fieldType?, temporalUnit? })"
+    "encodeTheta({ target?, scale?, coordinate?, conditions?, otherwise?, field?, datum?, aggregate? })"
   ],
-  "snippet": "program.encodeTheta({ field: \"value\" })",
+  "snippet": "program.encodeTheta({ field: \"category\" })",
   "errors": [],
   "route": "/reference/actions/encodings/#encodetheta"
 }

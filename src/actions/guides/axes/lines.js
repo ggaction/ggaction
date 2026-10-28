@@ -1,3 +1,4 @@
+import { positionGuideLayers } from "../../../materialization/positionGuides.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
@@ -45,7 +46,7 @@ function resolveLineRange(resolvedScale, bounds, channel, explicitRange) {
 }
 
 function resolveGeometry(program, channel, scaleId, position, axisId = channel) {
-  const hasConsumer = program.semanticSpec.layers.some(
+  const hasConsumer = positionGuideLayers(program, [channel]).some(
     layer => !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale === scaleId
   );
 

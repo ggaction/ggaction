@@ -10318,7 +10318,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Create or compatibly replace an x encoding for the supported mark/type pairs in the matrix above.",
-      "signature": "encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;",
+      "signature": "encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode x",
         "encode",
@@ -10391,14 +10391,29 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": false,
-          "type": "string | undefined"
-        },
-        {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>[\"otherwise\"]"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "datum",
+          "required": false,
+          "type": "unknown"
         },
         {
           "name": "coordinate",
@@ -10408,17 +10423,12 @@
         {
           "name": "fieldType",
           "required": false,
-          "type": "FieldType | undefined"
+          "type": "\"quantitative\" | undefined"
         },
         {
           "name": "scale",
           "required": false,
-          "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | QuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | TemporalPositionScaleOptions | undefined"
-        },
-        {
-          "name": "datum",
-          "required": false,
-          "type": "unknown"
+          "type": "NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | undefined"
         },
         {
           "name": "bin",
@@ -10442,7 +10452,7 @@
         }
       ],
       "callPatterns": [
-        "encodeX({ target?, coordinate?, scale?, field?, fieldType?, datum?, bin?, stack? })"
+        "encodeX({ target?, coordinate?, scale?, conditions?, otherwise?, field?, datum?, fieldType? })"
       ],
       "snippet": "program.encodeX({ field: \"x\" })",
       "errors": [],
@@ -10454,7 +10464,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Create or compatibly replace a y encoding.",
-      "signature": "encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;",
+      "signature": "encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode y",
         "encode",
@@ -10528,14 +10538,29 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": false,
-          "type": "string | undefined"
-        },
-        {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>[\"otherwise\"]"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "datum",
+          "required": false,
+          "type": "unknown"
         },
         {
           "name": "coordinate",
@@ -10545,17 +10570,12 @@
         {
           "name": "fieldType",
           "required": false,
-          "type": "FieldType | undefined"
+          "type": "\"quantitative\" | undefined"
         },
         {
           "name": "scale",
           "required": false,
-          "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | QuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | TemporalPositionScaleOptions | undefined"
-        },
-        {
-          "name": "datum",
-          "required": false,
-          "type": "unknown"
+          "type": "NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | undefined"
         },
         {
           "name": "aggregate",
@@ -10574,7 +10594,7 @@
         }
       ],
       "callPatterns": [
-        "encodeY({ target?, coordinate?, scale?, field?, fieldType?, datum?, aggregate?, stack? })"
+        "encodeY({ target?, coordinate?, scale?, conditions?, otherwise?, field?, datum?, fieldType? })"
       ],
       "snippet": "program.encodeY({ field: \"y\" })",
       "errors": [],
@@ -10664,7 +10684,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Assign an area, ranged-bar, or rect upper edge, or a rule secondary x endpoint.",
-      "signature": "encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;",
+      "signature": "encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode x2",
         "encode",
@@ -10734,6 +10754,21 @@
       },
       "options": [
         {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<SecondaryPositionEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<SecondaryPositionEncodingOptions>[\"otherwise\"]"
+        },
+        {
           "name": "datum",
           "required": false,
           "type": "unknown"
@@ -10741,22 +10776,17 @@
         {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         },
         {
           "name": "fieldType",
           "required": false,
-          "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
-        },
-        {
-          "name": "target",
-          "required": false,
-          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+          "type": "\"quantitative\" | undefined"
         },
         {
           "name": "scale",
           "required": false,
-          "type": "{ id?: string | undefined; } | { id?: string | undefined; } | { id?: string | undefined; } | undefined"
+          "type": "{ id?: string | undefined; } | undefined"
         },
         {
           "name": "coordinate",
@@ -10770,7 +10800,7 @@
         }
       ],
       "callPatterns": [
-        "encodeX2({ target?, scale?, coordinate?, datum?, field?, fieldType?, temporalUnit? })"
+        "encodeX2({ target?, scale?, coordinate?, conditions?, otherwise?, datum?, field?, fieldType? })"
       ],
       "snippet": "program.encodeX2({ field: \"x2\" })",
       "errors": [],
@@ -11695,8 +11725,8 @@
       "name": "encodeRadius",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Apply a constant point radius.",
-      "signature": "encodeRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;",
+      "summary": "Apply a constant or conditionally selected point pixel radius, separate from Polar distance.",
+      "signature": "encodeRadius(options: TargetedOptions<{ value: number; target?: string } | ConditionalEncodingOptions<{ value: number }>>): ChartProgram;",
       "intents": [
         "encode radius",
         "encode",
@@ -11746,20 +11776,30 @@
       },
       "options": [
         {
-          "name": "value",
-          "required": true,
-          "type": "number"
-        },
-        {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<{ value: number }>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<{ value: number }>[\"otherwise\"]"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "number"
         }
       ],
       "callPatterns": [
-        "encodeRadius({ value, target? })"
+        "encodeRadius({ target?, conditions?, otherwise?, value? })"
       ],
-      "snippet": "program.encodeRadius({ value: 1 })",
+      "snippet": "program.encodeRadius({ value: 4 })",
       "errors": [],
       "route": "/reference/actions/encodings/#encoderadius"
     },
@@ -11769,7 +11809,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Encode Polar angle in clockwise degrees from 12 o'clock.",
-      "signature": "encodeTheta(options: TargetedOptions<ThetaEncodingOptions>): ChartProgram;",
+      "signature": "encodeTheta(options: TargetedOptions<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode theta",
         "encode",
@@ -11840,14 +11880,19 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": true,
-          "type": "string"
-        },
-        {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<ThetaEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<ThetaEncodingOptions>[\"otherwise\"]"
         },
         {
           "name": "scale",
@@ -11858,6 +11903,16 @@
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "datum",
+          "required": false,
+          "type": "unknown"
         },
         {
           "name": "aggregate",
@@ -11872,7 +11927,7 @@
         {
           "name": "fieldType",
           "required": false,
-          "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+          "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | undefined"
         },
         {
           "name": "temporalUnit",
@@ -11881,9 +11936,9 @@
         }
       ],
       "callPatterns": [
-        "encodeTheta({ field, target?, scale?, coordinate?, aggregate?, weight?, fieldType?, temporalUnit? })"
+        "encodeTheta({ target?, scale?, coordinate?, conditions?, otherwise?, field?, datum?, aggregate? })"
       ],
-      "snippet": "program.encodeTheta({ field: \"value\" })",
+      "snippet": "program.encodeTheta({ field: \"category\" })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodetheta"
     },
@@ -11893,7 +11948,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Encode a quantitative field as Polar radial distance.",
-      "signature": "encodeR(options: TargetedOptions<RadialEncodingOptions>): ChartProgram;",
+      "signature": "encodeR(options: TargetedOptions<RadialEncodingOptions | ConditionalEncodingOptions<RadialEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode radial",
         "encode",
@@ -11964,6 +12019,16 @@
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
         },
         {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<RadialEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<RadialEncodingOptions>[\"otherwise\"]"
+        },
+        {
           "name": "fieldType",
           "required": false,
           "type": "\"quantitative\" | undefined"
@@ -11976,26 +12041,31 @@
         {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
+        },
+        {
+          "name": "datum",
+          "required": false,
+          "type": "number"
         },
         {
           "name": "mapping",
           "required": false,
-          "type": "false | RadialMapping | undefined"
+          "type": "false | undefined"
         },
         {
           "name": "aggregate",
           "required": false,
-          "type": "\"count\" | \"sum\" | undefined"
+          "type": "\"sum\""
         },
         {
           "name": "scale",
           "required": false,
-          "type": "RadiusScaleOptions | MeasuredRadiusScaleOptions | undefined"
+          "type": "RadiusScaleOptions | undefined"
         }
       ],
       "callPatterns": [
-        "encodeR({ target?, coordinate?, scale?, fieldType?, field?, mapping?, aggregate? })"
+        "encodeR({ target?, coordinate?, scale?, conditions?, otherwise?, fieldType?, field?, datum? })"
       ],
       "snippet": "program.encodeR({ field: \"value\" })",
       "errors": [],
@@ -12006,8 +12076,8 @@
       "name": "encodePointRadius",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Apply a constant point glyph radius through a traced encodeRadius child.",
-      "signature": "encodePointRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;",
+      "summary": "Apply a point glyph radius.",
+      "signature": "encodePointRadius(options: TargetedOptions<{ value: number; target?: string } | ConditionalEncodingOptions<{ value: number }>>): ChartProgram;",
       "intents": [
         "encode point radius",
         "encode",
@@ -12060,20 +12130,30 @@
       },
       "options": [
         {
-          "name": "value",
-          "required": true,
-          "type": "number"
-        },
-        {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<{ value: number }>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<{ value: number }>[\"otherwise\"]"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "number"
         }
       ],
       "callPatterns": [
-        "encodePointRadius({ value, target? })"
+        "encodePointRadius({ target?, conditions?, otherwise?, value? })"
       ],
-      "snippet": "program.encodePointRadius({ value: 1 })",
+      "snippet": "program.encodePointRadius({ value: 4 })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodepointradius"
     },
@@ -12082,7 +12162,7 @@
       "name": "removePointRadius",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Remove an explicit constant point glyph radius and restore the theme default.",
+      "summary": "Remove an explicit constant or conditional point glyph radius and restore the theme default.",
       "signature": "removePointRadius(options?: TargetedOptions<{ target?: string }>): ChartProgram;",
       "intents": [
         "remove point radius",
@@ -12150,7 +12230,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Create or compatibly update a categorical sub-slot scale within a bar, point, or rule x category.",
-      "signature": "encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions>): ChartProgram;",
+      "signature": "encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions | ConditionalEncodingOptions<XOffsetEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode x offset",
         "encode",
@@ -12222,14 +12302,24 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": true,
-          "type": "string"
-        },
-        {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<XOffsetEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<XOffsetEncodingOptions>[\"otherwise\"]"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string"
         },
         {
           "name": "fieldType",
@@ -12253,9 +12343,9 @@
         }
       ],
       "callPatterns": [
-        "encodeXOffset({ field, target?, scale?, fieldType?, paddingInner?, paddingOuter? })"
+        "encodeXOffset({ target?, scale?, conditions?, otherwise?, field?, fieldType?, paddingInner?, paddingOuter? })"
       ],
-      "snippet": "program.encodeXOffset({ field: \"value\" })",
+      "snippet": "program.encodeXOffset({ field: \"series\" })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodexoffset"
     },
@@ -12265,7 +12355,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Create or compatibly update the corresponding categorical offset scale within a bar, point, or rule y category.",
-      "signature": "encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions>): ChartProgram;",
+      "signature": "encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions | ConditionalEncodingOptions<YOffsetEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode y offset",
         "encode",
@@ -12337,14 +12427,24 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": true,
-          "type": "string"
-        },
-        {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<YOffsetEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<YOffsetEncodingOptions>[\"otherwise\"]"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string"
         },
         {
           "name": "fieldType",
@@ -12368,9 +12468,9 @@
         }
       ],
       "callPatterns": [
-        "encodeYOffset({ field, target?, scale?, fieldType?, paddingInner?, paddingOuter? })"
+        "encodeYOffset({ target?, scale?, conditions?, otherwise?, field?, fieldType?, paddingInner?, paddingOuter? })"
       ],
-      "snippet": "program.encodeYOffset({ field: \"value\" })",
+      "snippet": "program.encodeYOffset({ field: \"series\" })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodeyoffset"
     },
@@ -12380,7 +12480,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Assign an area, ranged-bar, or rect upper edge, or a rule secondary y endpoint.",
-      "signature": "encodeY2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;",
+      "signature": "encodeY2(options: TargetedOptions<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode y2",
         "encode",
@@ -12450,6 +12550,21 @@
       },
       "options": [
         {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<SecondaryPositionEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<SecondaryPositionEncodingOptions>[\"otherwise\"]"
+        },
+        {
           "name": "datum",
           "required": false,
           "type": "unknown"
@@ -12457,22 +12572,17 @@
         {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         },
         {
           "name": "fieldType",
           "required": false,
-          "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
-        },
-        {
-          "name": "target",
-          "required": false,
-          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+          "type": "\"quantitative\" | undefined"
         },
         {
           "name": "scale",
           "required": false,
-          "type": "{ id?: string | undefined; } | { id?: string | undefined; } | { id?: string | undefined; } | undefined"
+          "type": "{ id?: string | undefined; } | undefined"
         },
         {
           "name": "coordinate",
@@ -12486,7 +12596,7 @@
         }
       ],
       "callPatterns": [
-        "encodeY2({ target?, scale?, coordinate?, datum?, field?, fieldType?, temporalUnit? })"
+        "encodeY2({ target?, scale?, coordinate?, conditions?, otherwise?, datum?, field?, fieldType? })"
       ],
       "snippet": "program.encodeY2({ field: \"y2\" })",
       "errors": [],
@@ -13310,7 +13420,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Assign exactly one field, constant value, or semantic content to a text mark.",
-      "signature": "encodeText(options: TargetedOptions<TextEncodingOptions>): ChartProgram;",
+      "signature": "encodeText(options: TargetedOptions<TextEncodingOptions | ConditionalEncodingOptions<TextEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode text",
         "encode",
@@ -13369,6 +13479,16 @@
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
         },
         {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<TextEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<TextEncodingOptions>[\"otherwise\"]"
+        },
+        {
           "name": "format",
           "required": false,
           "type": "ValueFormat | undefined"
@@ -13376,7 +13496,7 @@
         {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         },
         {
           "name": "value",
@@ -13386,7 +13506,7 @@
         {
           "name": "content",
           "required": false,
-          "type": "\"category\" | \"share\" | \"value\" | undefined"
+          "type": "\"category\" | \"value\""
         },
         {
           "name": "normalizeBy",
@@ -13395,7 +13515,7 @@
         }
       ],
       "callPatterns": [
-        "encodeText({ target?, format?, field?, value?, content?, normalizeBy? })"
+        "encodeText({ target?, conditions?, otherwise?, format?, field?, value?, content?, normalizeBy? })"
       ],
       "snippet": "program.encodeText({ field: \"label\" })",
       "errors": [],
@@ -13407,7 +13527,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Move each independent Text glyph horizontally by finite signed logical pixels.",
-      "signature": "encodeDx(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;",
+      "signature": "encodeDx(options: TargetedOptions<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode dx",
         "encode",
@@ -13471,14 +13591,24 @@
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
         },
         {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<TextOffsetEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<TextOffsetEncodingOptions>[\"otherwise\"]"
+        },
+        {
           "name": "value",
           "required": false,
-          "type": "number | undefined"
+          "type": "number"
         },
         {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         }
       ],
       "callPatterns": [
@@ -13495,7 +13625,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "The corresponding independent Text vertical offset; positive values move down.",
-      "signature": "encodeDy(options: TargetedOptions<TextOffsetEncodingOptions>): ChartProgram;",
+      "signature": "encodeDy(options: TargetedOptions<TextOffsetEncodingOptions | ConditionalEncodingOptions<TextOffsetEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode dy",
         "encode",
@@ -13559,14 +13689,24 @@
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
         },
         {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<TextOffsetEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<TextOffsetEncodingOptions>[\"otherwise\"]"
+        },
+        {
           "name": "value",
           "required": false,
-          "type": "number | undefined"
+          "type": "number"
         },
         {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         }
       ],
       "callPatterns": [

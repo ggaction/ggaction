@@ -1763,6 +1763,21 @@
     },
     "encodeSize": {
       "field": "value"
+    },
+    "encodeTheta": {
+      "field": "category"
+    },
+    "encodeRadius": {
+      "value": 4
+    },
+    "encodePointRadius": {
+      "value": 4
+    },
+    "encodeXOffset": {
+      "field": "series"
+    },
+    "encodeYOffset": {
+      "field": "series"
     }
   },
   "callPatternOverrides": {

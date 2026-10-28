@@ -905,7 +905,7 @@ test("derives only role-reachable nested scale type paths", async () => {
   );
 
   const conditional = scaleTypes.filter(option => option.path.startsWith("otherwise."));
-  assert.deepEqual(conditional.map(option => option.action).sort(), ["encodeColor", "encodeOpacity", "encodeShape", "encodeSize", "encodeStroke", "encodeStrokeDash", "encodeStrokeWidth"].sort());
+  assert.deepEqual(conditional.map(option => option.action).sort(), ["encodeColor", "encodeOpacity", "encodeR", "encodeShape", "encodeSize", "encodeStroke", "encodeStrokeDash", "encodeStrokeWidth", "encodeTheta", "encodeX", "encodeXOffset", "encodeY", "encodeYOffset"].sort());
   for (const option of conditional) assert.deepEqual(option.values, options.get(`option-path:${option.action}.${option.path.slice("otherwise.".length)}`).values);
   assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).length, 152);
   assert.equal(scaleTypes.filter(option => option.action === "createAdjacentPlot").length, 22);

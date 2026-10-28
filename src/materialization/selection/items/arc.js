@@ -1,3 +1,5 @@
+import { conditionalArcStructure, hasConditionalArcPosition } from "../../conditionalArcStructure.js";
+import { conditionalArcValues } from "../../conditionalArcValues.js";
 import { deriveArcSectors } from "../../../grammar/arcs.js";
 import { resolvePolarPoint } from "../../../grammar/polarPaths.js";
 import { readScaleField } from "../../../grammar/scales/index.js";
@@ -9,15 +11,21 @@ import {
 } from "./common.js";
 
 export function resolveArcItems(program, layer, dataset, grain, resolveItems, selectionResolvers) {
+  const storedLayer = layer, conditional = hasConditionalArcPosition(layer);
+  const sourceOnly = selectionResolvers?.sourceOnly === true;
+  const structure = conditional ? conditionalArcStructure(program, layer, dataset) : undefined;
+  if (structure !== undefined) layer = structure.template;
   const thetaScale = program.resolvedScales[layer.encoding?.theta?.scale];
   const radiusScale = program.resolvedScales[layer.encoding?.radius?.scale];
   const frame = resolveCoordinatePolarFrame(program, layer.coordinate);
-  const derived = deriveArcSectors(dataset.values, layer, {
+  const options = {
     thetaScale,
     ...(radiusScale === undefined ? {} : { radiusScale }),
     frame,
     innerRadius: program.markConfigs[layer.id]?.innerRadius ?? 0
-  });
+  };
+  const derived = conditional ? sourceOnly ? { sectors: structure.derived.values } : conditionalArcValues(program, storedLayer, dataset, selectionResolvers, options)
+    : deriveArcSectors(dataset.values, layer, options);
   const graphic = program.graphicSpec.objects[layer.id];
   const stroke = layer.encoding?.stroke;
   const definitions = derived.sectors.map((sector, index) => {
@@ -42,7 +50,7 @@ export function resolveArcItems(program, layer, dataset, grain, resolveItems, se
         ...(sector.color === undefined ? {} : { color: sector.color }),
         ...(strokeValues === undefined ? {} : { stroke: strokeValues[0] })
       },
-      properties: {
+      ...(sourceOnly ? {} : { properties: {
         ...concreteProperties(graphic?.items?.[index]?.properties),
         ...resolvePolarPoint(
           frame,
@@ -62,9 +70,10 @@ export function resolveArcItems(program, layer, dataset, grain, resolveItems, se
           (program.markConfigs[layer.id]?.padAngle ?? 0) / 2,
         innerRadius: sector.innerRadius,
         outerRadius: sector.outerRadius
-      },
+      }
+      }),
       members
     };
   });
-  return finalizeItems(program, layer, "sector", definitions, "path", { selectionResolvers });
+  return finalizeItems(program, storedLayer, "sector", definitions, "path", { selectionResolvers });
 }

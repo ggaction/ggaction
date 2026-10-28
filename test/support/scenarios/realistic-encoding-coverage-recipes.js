@@ -1,3 +1,4 @@
+import assert from "node:assert/strict";
 import { realisticColorControls, realisticPaletteRange } from "./realistic-color-controls.js";
 import { chart } from "../../../src/index.js";
 
@@ -25,8 +26,9 @@ const POSITION_ACTIONS = Object.freeze([
   "encodeXRange", "encodeYRange", "encodeXOffset", "encodeYOffset"
 ]);
 const APPEARANCE_ACTIONS = Object.freeze([
-  "encodeColor", "encodeOpacity", "encodeSize", "encodeShape",
-  "encodeStrokeWidth", "encodeStrokeDash", "encodeAngle", "encodeText"
+  "encodeColor", "encodeStroke", "encodeOpacity", "encodeSize", "encodeShape",
+  "encodeStrokeWidth", "encodeStrokeDash", "encodeAngle", "encodeText",
+  "encodeDx", "encodeDy", "encodeRadius", "encodePointRadius"
 ]);
 const POLAR_ACTIONS = Object.freeze(["encodeTheta", "encodeR"]);
 
@@ -190,9 +192,12 @@ function timeScale(id, reverse = false, { unknown = true } = {}) {
 
 function pointPair(program, id, x, y) {
   const coordinate = x.coordinate ?? y.coordinate ?? `${id}-coordinate`;
-  return program.createPointMark({ id, data: "analysisRows" })
-    .encodeX({ target: id, coordinate, ...x })
-    .encodeY({ target: id, coordinate, ...y });
+  const xArgs = { target: id, coordinate, ...x };
+  const yArgs = { target: id, coordinate, ...y };
+  let next = program.createPointMark({ id, data: "analysisRows" })
+    .encodeX(xArgs).encodeY(yArgs);
+  next = conditionalWitness(next, "encodeX", xArgs);
+  return conditionalWitness(next, "encodeY", yArgs);
 }
 
 function aggregateVariants() {
@@ -211,16 +216,14 @@ function addHorizontalAggregateBars(program) {
   let next = program;
   for (const [index, variant] of aggregateVariants().entries()) {
     const id = `x-aggregate-${index}`;
-    next = next.createBarMark({ id, data: "analysisRows" })
-      .encodeY({
+    next = conditionalWitness(conditionalWitness(next.createBarMark({ id, data: "analysisRows" }), "encodeY", {
         target: id, coordinate: `${id}-coordinate`,
         field: "category", fieldType: index === 1 ? "ordinal" : "nominal",
         scale: bandScale(
           `${id}-y`, "band", index % 2 === 1,
           { unknown: false }
         )
-      })
-      .encodeX({
+      }), "encodeX", {
         target: id, coordinate: `${id}-coordinate`, field: "x",
         fieldType: "quantitative", aggregate: variant.aggregate, stack: variant.stack,
         scale: quantitativeScale("linear", `${id}-x`, index, { point: false })
@@ -238,16 +241,14 @@ function addVerticalAggregateBars(program) {
   let next = program;
   for (const [index, variant] of aggregateVariants().entries()) {
     const id = `y-aggregate-${index}`;
-    next = next.createBarMark({ id, data: "analysisRows" })
-      .encodeX({
+    next = conditionalWitness(conditionalWitness(next.createBarMark({ id, data: "analysisRows" }), "encodeX", {
         target: id, coordinate: `${id}-coordinate`,
         field: "category", fieldType: index === 1 ? "ordinal" : "nominal",
         scale: bandScale(
           `${id}-x`, "band", index % 2 === 1,
           { unknown: false }
         )
-      })
-      .encodeY({
+      }), "encodeY", {
         target: id, coordinate: `${id}-coordinate`, field: "y",
         fieldType: "quantitative", aggregate: variant.aggregate, stack: variant.stack,
         scale: quantitativeScale("linear", `${id}-y`, index + 1, { point: false })
@@ -277,17 +278,18 @@ function addBinnedX(program) {
   let next = program;
   for (const [index, bin] of bins.entries()) {
     const id = `x-bin-${index}`;
-    next = next.createBarMark({ id, data: "analysisRows" })
-      .encodeX({
-        target: id, coordinate: `${id}-coordinate`, field: "x",
-        fieldType: "quantitative", bin,
-        scale: quantitativeScale("linear", `${id}-x`, index, { point: false })
-      })
-      .encodeY({
-        target: id, coordinate: `${id}-coordinate`, field: "x", fieldType: "quantitative",
-        aggregate: "count", stack: index === 1 ? "normalize" : "zero",
-        scale: quantitativeScale("linear", `${id}-y`, index + 1, { point: false })
-      });
+    const x = {
+      target: id, coordinate: `${id}-coordinate`, field: "x",
+      fieldType: "quantitative", bin,
+      scale: quantitativeScale("linear", `${id}-x`, index, { point: false })
+    };
+    next = conditionalWitness(conditionalWitness(next.createBarMark({ id, data: "analysisRows" }), "encodeX", x), "encodeY", {
+      target: id, coordinate: `${id}-coordinate`, field: "x", fieldType: "quantitative",
+      aggregate: "count", stack: index === 1 ? "normalize" : "zero",
+      scale: quantitativeScale("linear", `${id}-y`, index + 1, { point: false })
+    });
+    // Atomic assignment commits complete geometry, so replay bin options after Y.
+    next = conditionalWitness(next, "encodeX", x);
   }
   return next;
 }
@@ -296,13 +298,12 @@ function addRangesAndSecondary(program) {
   let next = program;
   for (const [index, type] of QUANTITATIVE_TYPES.entries()) {
     const xId = `x-range-${type}`;
-    next = next.createRuleMark({ id: xId, data: "analysisRows" })
+    next = conditionalWitness(next.createRuleMark({ id: xId, data: "analysisRows" })
       .encodeXRange({
         target: xId, coordinate: `${xId}-coordinate`, lower: "lowerX", upper: "upperX",
         fieldType: "quantitative",
         scale: quantitativeScale(type, `${xId}-scale`, index, { point: false })
-      })
-      .encodeY({
+      }), "encodeY", {
         target: xId,
         coordinate: `${xId}-coordinate`,
         field: "y",
@@ -310,13 +311,12 @@ function addRangesAndSecondary(program) {
         scale: { id: `${xId}-orthogonal`, zero: false }
       });
     const yId = `y-range-${type}`;
-    next = next.createRuleMark({ id: yId, data: "analysisRows" })
+    next = conditionalWitness(next.createRuleMark({ id: yId, data: "analysisRows" })
       .encodeYRange({
         target: yId, coordinate: `${yId}-coordinate`, lower: "lowerY", upper: "upperY",
         fieldType: "quantitative",
         scale: quantitativeScale(type, `${yId}-scale`, index + 1, { point: false })
-      })
-      .encodeX({
+      }), "encodeX", {
         target: yId,
         coordinate: `${yId}-coordinate`,
         field: "x",
@@ -331,8 +331,7 @@ function addRangesAndSecondary(program) {
   ];
   for (const [index, variant] of secondary.entries()) {
     const xId = `x-secondary-${variant.type}`;
-    next = next.createRuleMark({ id: xId, data: "analysisRows" })
-      .encodeX({
+    next = conditionalWitness(conditionalWitness(conditionalWitness(next.createRuleMark({ id: xId, data: "analysisRows" }), "encodeX", {
         target: xId, coordinate: `${xId}-coordinate`, field: variant.first,
         fieldType: variant.type,
         scale: variant.type === "temporal"
@@ -340,12 +339,10 @@ function addRangesAndSecondary(program) {
           : bandScale(`${xId}-scale`, index === 0 ? "band" : "point", false, {
               unknown: false
             })
-      })
-      .encodeX2({
+      }), "encodeX2", {
         target: xId, coordinate: `${xId}-coordinate`, field: variant.second,
         fieldType: variant.type, scale: { id: `${xId}-scale` }
-      })
-      .encodeY({
+      }), "encodeY", {
         target: xId,
         coordinate: `${xId}-coordinate`,
         field: "y",
@@ -353,8 +350,7 @@ function addRangesAndSecondary(program) {
         scale: { id: `${xId}-orthogonal`, zero: false }
       });
     const yId = `y-secondary-${variant.type}`;
-    next = next.createRuleMark({ id: yId, data: "analysisRows" })
-      .encodeY({
+    next = conditionalWitness(conditionalWitness(conditionalWitness(next.createRuleMark({ id: yId, data: "analysisRows" }), "encodeY", {
         target: yId, coordinate: `${yId}-coordinate`, field: variant.first,
         fieldType: variant.type,
         scale: variant.type === "temporal"
@@ -362,12 +358,10 @@ function addRangesAndSecondary(program) {
           : bandScale(`${yId}-scale`, index === 0 ? "band" : "point", true, {
               unknown: false
             })
-      })
-      .encodeY2({
+      }), "encodeY2", {
         target: yId, coordinate: `${yId}-coordinate`, field: variant.second,
         fieldType: variant.type, scale: { id: `${yId}-scale` }
-      })
-      .encodeX({
+      }), "encodeX", {
         target: yId,
         coordinate: `${yId}-coordinate`,
         field: "x",
@@ -375,41 +369,33 @@ function addRangesAndSecondary(program) {
         scale: { id: `${yId}-orthogonal`, zero: false }
       });
   }
-  return next.createRuleMark({ id: "x-datum", data: "analysisRows" })
-    .encodeX({
+  return conditionalWitness(conditionalWitness(conditionalWitness(conditionalWitness(conditionalWitness(conditionalWitness(conditionalWitness(conditionalWitness(next.createRuleMark({ id: "x-datum", data: "analysisRows" }), "encodeX", {
       target: "x-datum", coordinate: "x-datum-coordinate", datum: 2,
       fieldType: "quantitative",
       scale: quantitativeScale("linear", "x-datum-scale", 0, { point: false })
     })
-    .createRuleMark({ id: "y-datum", data: "analysisRows" })
-    .encodeY({
+    .createRuleMark({ id: "y-datum", data: "analysisRows" }), "encodeY", {
       target: "y-datum", coordinate: "y-datum-coordinate", datum: 2,
       fieldType: "quantitative",
       scale: quantitativeScale("linear", "y-datum-scale", 1, { point: false })
     })
-    .createRuleMark({ id: "x2-datum", data: "analysisRows" })
-    .encodeX({
+    .createRuleMark({ id: "x2-datum", data: "analysisRows" }), "encodeX", {
       target: "x2-datum", coordinate: "x2-datum-coordinate",
       field: "lowerX", fieldType: "quantitative", scale: { id: "x2-datum-scale" }
-    })
-    .encodeX2({
+    }), "encodeX2", {
       target: "x2-datum", coordinate: "x2-datum-coordinate", datum: 2,
       fieldType: "quantitative", scale: { id: "x2-datum-scale" }
-    })
-    .encodeY({
+    }), "encodeY", {
       target: "x2-datum", coordinate: "x2-datum-coordinate",
       field: "y", fieldType: "quantitative", scale: { id: "x2-datum-y", zero: false }
     })
-    .createRuleMark({ id: "y2-datum", data: "analysisRows" })
-    .encodeY({
+    .createRuleMark({ id: "y2-datum", data: "analysisRows" }), "encodeY", {
       target: "y2-datum", coordinate: "y2-datum-coordinate",
       field: "lowerY", fieldType: "quantitative", scale: { id: "y2-datum-scale" }
-    })
-    .encodeY2({
+    }), "encodeY2", {
       target: "y2-datum", coordinate: "y2-datum-coordinate", datum: 2,
       fieldType: "quantitative", scale: { id: "y2-datum-scale" }
-    })
-    .encodeX({
+    }), "encodeX", {
       target: "y2-datum", coordinate: "y2-datum-coordinate",
       field: "x", fieldType: "quantitative", scale: { id: "y2-datum-x", zero: false }
     });
@@ -417,25 +403,21 @@ function addRangesAndSecondary(program) {
 
 function addOffsets(program) {
   const vertical = "x-offset-bars";
-  let next = program.createBarMark({ id: vertical, data: "analysisRows" })
-    .encodeX({
+  let next = conditionalWitness(conditionalWitness(conditionalWitness(conditionalWitness(program.createBarMark({ id: vertical, data: "analysisRows" }), "encodeX", {
       target: vertical, coordinate: `${vertical}-coordinate`,
       field: "category", fieldType: "nominal",
       scale: bandScale(`${vertical}-x`, "band", false, { unknown: false })
-    })
-    .encodeY({
+    }), "encodeY", {
       target: vertical, coordinate: `${vertical}-coordinate`,
       field: "y", aggregate: "mean", stack: null,
       scale: quantitativeScale("linear", `${vertical}-y`, 0, { point: false })
-    })
-    .encodeXOffset({
+    }), "encodeXOffset", {
       target: vertical, field: "group", fieldType: "nominal",
       scale: {
         id: "x-offset-nominal-scale", type: "ordinal", domain: "auto", range: "auto",
         padding: 0.08, align: 0, reverse: false
       }
-    })
-    .encodeXOffset({
+    }), "encodeXOffset", {
       target: vertical, field: "group", fieldType: "ordinal",
       scale: {
         id: "x-offset-scale", type: "ordinal", domain: "auto", range: "auto",
@@ -445,25 +427,21 @@ function addOffsets(program) {
     })
     .encodeColor({ target: vertical, field: "group", layout: "group" });
   const horizontal = "y-offset-bars";
-  next = next.createBarMark({ id: horizontal, data: "analysisRows" })
-    .encodeY({
+  next = conditionalWitness(conditionalWitness(conditionalWitness(conditionalWitness(next.createBarMark({ id: horizontal, data: "analysisRows" }), "encodeY", {
       target: horizontal, coordinate: `${horizontal}-coordinate`,
       field: "category", fieldType: "nominal",
       scale: bandScale(`${horizontal}-y`, "band", false, { unknown: false })
-    })
-    .encodeX({
+    }), "encodeX", {
       target: horizontal, coordinate: `${horizontal}-coordinate`,
       field: "x", aggregate: "mean", stack: null,
       scale: quantitativeScale("linear", `${horizontal}-x`, 0, { point: false })
-    })
-    .encodeYOffset({
+    }), "encodeYOffset", {
       target: horizontal, field: "group", fieldType: "nominal",
       scale: {
         id: "y-offset-nominal-scale", type: "ordinal", domain: "auto", range: "auto",
         padding: 0.08, align: 0, reverse: false
       }
-    })
-    .encodeYOffset({
+    }), "encodeYOffset", {
       target: horizontal, field: "group", fieldType: "ordinal",
       scale: {
         id: "y-offset-scale", type: "ordinal", domain: "auto", range: "auto",
@@ -535,13 +513,9 @@ function addTemporalRanges(program) {
   for (const mode of TEMPORAL_MODES) {
     const id = `temporal-ranges-${mode.temporalUnit}`;
     const options = { target: id, fieldType: "temporal", temporalUnit: mode.temporalUnit };
-    next = next.createRuleMark({ id, data: "analysisRows" })
+    next = conditionalWitness(conditionalWitness(conditionalWitness(conditionalWitness(next.createRuleMark({ id, data: "analysisRows" })
       .encodeXRange({ ...options, coordinate: `${id}-coordinate`, lower: mode.field, upper: mode.end, scale: timeScale(`${id}-x`, false, { unknown: false }) })
-      .encodeYRange({ ...options, lower: mode.field, upper: mode.end, scale: timeScale(`${id}-y`, false, { unknown: false }) })
-      .encodeX({ ...options, field: mode.field })
-      .encodeY({ ...options, field: mode.field })
-      .encodeX2({ ...options, field: mode.end })
-      .encodeY2({ ...options, field: mode.end });
+      .encodeYRange({ ...options, lower: mode.field, upper: mode.end, scale: timeScale(`${id}-y`, false, { unknown: false }) }), "encodeX", { ...options, field: mode.field }), "encodeY", { ...options, field: mode.field }), "encodeX2", { ...options, field: mode.end }), "encodeY2", { ...options, field: mode.end });
   }
   return next;
 }
@@ -556,15 +530,27 @@ function buildPositionCoverage(factors) {
   program = addVerticalAggregateBars(program);
   program = addBinnedX(program);
   program = addRangesAndSecondary(program);
+  for (const [fieldType, field] of [["nominal", "categoryEnd"], ["ordinal", "groupEnd"], ["temporal", "timeEnd"]]) {
+    for (const [axis, action] of [["x", "encodeX2"], ["y", "encodeY2"]]) {
+      const target = `${axis}-secondary-${fieldType}`;
+      program = conditionalWitness(program, action, { target, field, fieldType, scale: { id: `${target}-scale` } });
+    }
+  }
+  // The secondary-datum atomic witnesses run after their orthogonal anchor.
+  program = conditionalWitness(program, "encodeX2", {
+    target: "x2-datum", datum: 2, fieldType: "quantitative", scale: { id: "x2-datum-scale" }
+  });
+  program = conditionalWitness(program, "encodeY2", {
+    target: "y2-datum", datum: 2, fieldType: "quantitative", scale: { id: "y2-datum-scale" }
+  });
   program = addOffsets(program);
   const density = "center-density";
-  program = program.createAreaMark({ id: density, data: "analysisRows", opacity: 0.45 })
+  program = conditionalWitness(program.createAreaMark({ id: density, data: "analysisRows", opacity: 0.45 })
     .encodeDensity({
       target: density, source: "analysisRows", field: "x", groupBy: "group",
       bandwidth: "auto", steps: 32, coordinate: "center-density-coordinate"
     })
-    .encodeColor({ target: density, field: "group", layout: "center" })
-    .encodeY({
+    .encodeColor({ target: density, field: "group", layout: "center" }), "encodeY", {
       target: density, coordinate: "center-density-coordinate",
       field: "x_density", fieldType: "quantitative", stack: "center",
       scale: quantitativeScale("linear", "center-density-y", 0, { point: false })
@@ -589,7 +575,7 @@ function addColorScales(program) {
   for (const [index, interpolate] of INTERPOLATIONS.entries()) {
     const id = `sequential-${slug(interpolate)}`;
     const type = index === 0 ? "log" : index === 1 ? "symlog" : index === 2 ? "sqrt" : "sequential";
-    next = positionedPoint(next, id).encodeColor({
+    next = conditionalEncoding(positionedPoint(next, id), "encodeColor", {
       target: id,
       field: "y",
       fieldType: "quantitative",
@@ -611,7 +597,7 @@ function addColorScales(program) {
       }
     });
   }
-  next = positionedPoint(next, "powered-color").encodeColor({
+  next = conditionalEncoding(positionedPoint(next, "powered-color"), "encodeColor", {
     target:"powered-color",field:"y",fieldType:"quantitative",
     scale:{id:"powered-color-scale",type:"pow",exponent:2,interpolate:"lab",whitePoint:"d50",range:realisticPaletteRange(0)}
   }).editColorScale({target:"powered-color",whitePoint:"d50",range:realisticPaletteRange(1)})
@@ -628,7 +614,7 @@ function addColorScales(program) {
   ];
   for (const [index, range] of rangePalettes.entries()) {
     const id = `range-palette-color-${index}`;
-    next = positionedPoint(next, id).encodeColor({
+    next = conditionalEncoding(positionedPoint(next, id), "encodeColor", {
       target: id, field: "y", fieldType: "quantitative",
       scale: { id: `${id}-scale`, type: "sequential", range }
     });
@@ -640,7 +626,7 @@ function addColorScales(program) {
   ];
   for (const [index, scale] of discrete.entries()) {
     const id = `discretized-${scale.type}`;
-    next = positionedPoint(next, id).encodeColor({
+    next = conditionalEncoding(positionedPoint(next, id), "encodeColor", {
       target: id, field: "y", fieldType: "quantitative",
       scale: {
         id: `${id}-color`, ...scale,
@@ -650,11 +636,11 @@ function addColorScales(program) {
       }
     });
   }
-  next = positionedPoint(next, "categorical-color").encodeColor({
+  next = conditionalEncoding(positionedPoint(next, "categorical-color"), "encodeColor", {
     target: "categorical-color", field: "category", fieldType: "nominal",
     palette: { name: "tableau20", count: 8 }
   });
-  next = positionedPoint(next, "top-level-sequential-palette").encodeColor({
+  next = conditionalEncoding(positionedPoint(next, "top-level-sequential-palette"), "encodeColor", {
     target: "top-level-sequential-palette", field: "y", fieldType: "quantitative",
     palette: { name: "viridis", extent: [0.1, 0.9] },
     scale: {
@@ -663,7 +649,7 @@ function addColorScales(program) {
       unknown: "#94a3b8"
     }
   });
-  next = positionedPoint(next, "ordinal-color").encodeColor({
+  next = conditionalEncoding(positionedPoint(next, "ordinal-color"), "encodeColor", {
     target: "ordinal-color", field: "group", fieldType: "ordinal",
     palette: "accent",
     scale: {
@@ -671,7 +657,7 @@ function addColorScales(program) {
       unknown: "#94a3b8"
     }
   });
-  return positionedPoint(next, "temporal-color").encodeColor({
+  return conditionalEncoding(positionedPoint(next, "temporal-color"), "encodeColor", {
     target: "temporal-color", field: "time", fieldType: "temporal",
     palette: "cividis",
     scale: {
@@ -681,8 +667,8 @@ function addColorScales(program) {
   });
 }
 
-function completeBar(program, id, field = "y") {
-  return program.createBarMark({ id, data: "analysisRows" })
+function completeBar(program, id, field = "y", data = "analysisRows") {
+  return program.createBarMark({ id, data })
     .encodeX({
       target: id, coordinate: `${id}-coordinate`, field: "category", fieldType: "nominal",
       scale: bandScale(`${id}-x`, "band", false, { unknown: false })
@@ -732,9 +718,17 @@ function addColorAggregatesAndLayouts(program) {
         .map(row => row.group)
     )
   ];
+  // Confidence bounds need at least two observations per cell. Retain authentic
+  // rows and lineage; a conditional branch may not remove an undefined-CI cell.
+  const counts = new Map();
+  for (const row of program.semanticSpec.datasets.find(dataset => dataset.id === "analysisRows").values) {
+    counts.set(row.category, (counts.get(row.category) ?? 0) + 1);
+  }
+  next = next.filterData({ id: "confidenceRows", source: "analysisRows", field: "category",
+    oneOf: [...counts].filter(([, count]) => count >= 2).map(([category]) => category) });
   for (const [index, variant] of aggregateVariants().entries()) {
     const id = `color-aggregate-${index}`;
-    next = completeBar(next, id).encodeColor({
+    next = conditionalEncoding(completeBar(next, id, "y", index < 2 ? "confidenceRows" : "analysisRows"), "encodeColor", {
       target: id, field: "x", fieldType: "quantitative",
       aggregate: variant.aggregate,
       scale: {
@@ -762,7 +756,7 @@ function addColorAggregatesAndLayouts(program) {
         paddingOuter: 0.05
       });
     }
-    next = bar.encodeColor({
+    next = conditionalEncoding(bar, "encodeColor", {
       target: id,
       field: "group",
       layout,
@@ -775,12 +769,11 @@ function addColorAggregatesAndLayouts(program) {
     });
   }
   const density = "appearance-center-density";
-  return next.createAreaMark({ id: density, data: "analysisRows", opacity: 0.45 })
+  return conditionalEncoding(next.createAreaMark({ id: density, data: "analysisRows", opacity: 0.45 })
     .encodeDensity({
       target: density, source: "analysisRows", field: "x", groupBy: "group",
       bandwidth: "auto", steps: 32, coordinate: `${density}-coordinate`
-    })
-    .encodeColor({
+    }), "encodeColor", {
       target: density,
       field: "group",
       layout: "center",
@@ -794,181 +787,170 @@ function addColorAggregatesAndLayouts(program) {
 }
 
 function addAppearanceEncodings(program) {
-  let next = positionedPoint(program, "opacity-false").encodeOpacity({
+  let next = conditionalEncoding(positionedPoint(program, "opacity-false"), "encodeOpacity", {
     target: "opacity-false", field: "opacity", fieldType: "quantitative",
     scale: {
       id: "opacity-false-scale", type: "linear", domain: "auto", range: "auto",
       nice: false, zero: false, clamp: false, reverse: false, unknown: 0.25
     }
   });
-  next = positionedPoint(next, "opacity-true").encodeOpacity({
+  next = conditionalEncoding(positionedPoint(next, "opacity-true"), "encodeOpacity", {
     target: "opacity-true", field: "opacity", fieldType: "quantitative",
     scale: {
       id: "opacity-true-scale", type: "linear", domain: "auto", range: "auto",
       nice: true, zero: true, clamp: true, reverse: true, unknown: 0.3
     }
   });
-  next = positionedPoint(next, "size").encodeSize({
+  next = conditionalEncoding(positionedPoint(next, "size"), "encodeSize", {
     target: "size", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-scale", type: "linear", domain: "auto", range: "auto",
       clamp: false, reverse: false, unknown: 4
     }
   });
-  next = positionedPoint(next, "size-log").encodeSize({
+  next = conditionalEncoding(positionedPoint(next, "size-log"), "encodeSize", {
     target: "size-log", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-log-scale", type: "log", domain: "auto", range: "auto",
       base: 2, clamp: false, reverse: true, unknown: 4
     }
   });
-  next = positionedPoint(next, "size-pow").encodeSize({
+  next = conditionalEncoding(positionedPoint(next, "size-pow"), "encodeSize", {
     target: "size-pow", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-pow-scale", type: "pow", domain: "auto", range: "auto",
       exponent: 2, clamp: true, reverse: false, unknown: 4
     }
   });
-  next = positionedPoint(next, "size-sqrt").encodeSize({
+  next = conditionalEncoding(positionedPoint(next, "size-sqrt"), "encodeSize", {
     target: "size-sqrt", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-sqrt-scale", type: "sqrt", domain: "auto", range: "auto",
       clamp: true, reverse: true, unknown: 4
     }
   });
-  next = positionedPoint(next, "size-quantize").encodeSize({
+  next = conditionalEncoding(positionedPoint(next, "size-quantize"), "encodeSize", {
     target: "size-quantize", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-quantize-scale", type: "quantize", domain: "auto",
       range: [4, 9, 16], reverse: false, unknown: 4
     }
   });
-  next = positionedPoint(next, "size-quantile").encodeSize({
+  next = conditionalEncoding(positionedPoint(next, "size-quantile"), "encodeSize", {
     target: "size-quantile", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-quantile-scale", type: "quantile", domain: "auto",
       range: [4, 9, 16], reverse: true, unknown: 4
     }
   });
-  next = positionedPoint(next, "size-threshold").encodeSize({
+  next = conditionalEncoding(positionedPoint(next, "size-threshold"), "encodeSize", {
     target: "size-threshold", field: "size", fieldType: "quantitative",
     scale: {
       id: "size-threshold-scale", type: "threshold", domain: [2, 4],
       range: [4, 9, 16], reverse: false, unknown: 4
     }
   });
-  next = positionedPoint(next, "size-nominal").encodeSize({
+  next = conditionalEncoding(positionedPoint(next, "size-nominal"), "encodeSize", {
     target: "size-nominal", field: "group", fieldType: "nominal",
     scale: {
       id: "size-nominal-scale", type: "ordinal", domain: "auto",
       range: [4, 9, 16], reverse: false, unknown: 4
     }
   });
-  next = positionedPoint(next, "size-ordinal").encodeSize({
+  next = conditionalEncoding(positionedPoint(next, "size-ordinal"), "encodeSize", {
     target: "size-ordinal", field: "category", fieldType: "ordinal",
     scale: {
       id: "size-ordinal-scale", type: "ordinal", domain: "auto",
       range: [4, 9, 16], reverse: true, unknown: 4
     }
   });
-  next = positionedPoint(next, "shape-circle").encodeShape({
+  next = conditionalEncoding(positionedPoint(next, "shape-circle"), "encodeShape", {
     target: "shape-circle", field: "group", fieldType: "nominal",
     scale: {
       id: "shape-scale", type: "ordinal", domain: "auto", range: "auto", unknown: "circle"
     }
   });
-  next = positionedPoint(next, "shape-diamond", "diamond").encodeShape({
+  next = conditionalEncoding(positionedPoint(next, "shape-diamond", "diamond"), "encodeShape", {
     target: "shape-diamond", field: "group", fieldType: "nominal",
     scale: {
       id: "shape-diamond-scale", type: "ordinal", domain: "auto", range: "auto",
       unknown: "diamond"
     }
   });
-  next = positionedPoint(next, "opacity-value").encodeOpacity({
+  next = conditionalEncoding(positionedPoint(next, "opacity-value"), "encodeOpacity", {
     target: "opacity-value", value: 0.55
   });
   for (const [index, type] of QUANTITATIVE_TYPES.entries()) {
     const id = `stroke-width-${type}`;
-    next = positionedLine(next, id).encodeStrokeWidth({
+    next = conditionalEncoding(positionedLine(next, id), "encodeStrokeWidth", {
       target: id, field: "seriesWidth", fieldType: "quantitative",
       scale: { ...quantitativeScale(type, `${id}-scale`, index, { point: false }), nice: type === "log" ? false : index % 2 === 0 }
     });
   }
-  next = next.createRuleMark({ id: "stroke-width-value", data: "analysisRows" })
-    .encodeX({
+  next = conditionalEncoding(conditionalWitness(conditionalWitness(conditionalWitness(next.createRuleMark({ id: "stroke-width-value", data: "analysisRows" }), "encodeX", {
       target: "stroke-width-value",
       coordinate: "stroke-width-value-coordinate",
       field: "lowerX",
       fieldType: "quantitative",
       scale: { id: "stroke-width-value-x", zero: false }
-    })
-    .encodeX2({
+    }), "encodeX2", {
       target: "stroke-width-value",
       field: "upperX",
       fieldType: "quantitative"
-    })
-    .encodeY({
+    }), "encodeY", {
       target: "stroke-width-value",
       coordinate: "stroke-width-value-coordinate",
       field: "y",
       fieldType: "quantitative",
       scale: { id: "stroke-width-value-y", zero: false }
-    })
-    .encodeStrokeWidth({ target: "stroke-width-value", value: 2.5 });
+    }), "encodeStrokeWidth", { target: "stroke-width-value", value: 2.5 });
   const dashField = "stroke-dash-field";
-  next = next.createLineMark({ id: dashField, data: "analysisRows" })
-    .encodeX({
+  next = conditionalEncoding(conditionalWitness(conditionalWitness(next.createLineMark({ id: dashField, data: "analysisRows" }), "encodeX", {
       target: dashField, coordinate: `${dashField}-coordinate`,
       field: "x", scale: { id: `${dashField}-x`, zero: false }
-    })
-    .encodeY({
+    }), "encodeY", {
       target: dashField, coordinate: `${dashField}-coordinate`,
       field: "y", scale: { id: `${dashField}-y`, zero: false }
-    })
-    .encodeStrokeDash({
+    }), "encodeStrokeDash", {
       target: dashField, field: "group", fieldType: "nominal",
       scale: { id: "stroke-dash-scale", type: "ordinal", domain: "auto", range: "auto" }
     });
   for (const value of ["solid", "dashed", "dotted", "dashdot"]) {
     const id = `stroke-dash-${value}`;
-    next = next.createLineMark({ id, data: "analysisRows" })
-      .encodeX({
+    next = conditionalEncoding(conditionalWitness(conditionalWitness(next.createLineMark({ id, data: "analysisRows" }), "encodeX", {
         target: id, coordinate: `${id}-coordinate`,
         field: "x", scale: { id: `${id}-x`, zero: false }
-      })
-      .encodeY({
+      }), "encodeY", {
         target: id, coordinate: `${id}-coordinate`,
         field: "y", scale: { id: `${id}-y`, zero: false }
-      })
-      .encodeStrokeDash({ target: id, value });
+      }), "encodeStrokeDash", { target: id, value });
   }
-  next = positionedPoint(next, "angle-field", "square")
-    .encodeAngle({ target: "angle-field", field: "angle", fieldType: "quantitative" });
-  next = positionedPoint(next, "angle-value", "diamond")
-    .encodeAngle({ target: "angle-value", value: 35 });
-  next = next.createTextMark({ id: "text-field", data: "analysisRows", fontSize: 10 })
-    .encodeX({
+  next = conditionalEncoding(positionedPoint(next, "angle-field", "square"), "encodeAngle", { target: "angle-field", field: "angle", fieldType: "quantitative" });
+  next = conditionalEncoding(positionedPoint(next, "angle-value", "diamond"), "encodeAngle", { target: "angle-value", value: 35 });
+  next = conditionalWitness(conditionalWitness(conditionalWitness(next.createTextMark({ id: "text-field", data: "analysisRows", fontSize: 10 }), "encodeX", {
       target: "text-field", coordinate: "text-field-coordinate",
       field: "x", scale: { id: "text-field-x", zero: false }
-    })
-    .encodeY({
+    }), "encodeY", {
       target: "text-field", coordinate: "text-field-coordinate",
       field: "y", scale: { id: "text-field-y", zero: false }
-    })
-    .encodeText({ target: "text-field", field: "label", format: "auto" });
-  next = next.createTextMark({ id: "text-value", data: "analysisRows", fontSize: 10 })
-    .encodeX({
+    }), "encodeText", { target: "text-field", field: "label", format: "auto" });
+  next = conditionalWitness(conditionalWitness(conditionalWitness(next.createTextMark({ id: "text-value", data: "analysisRows", fontSize: 10 }), "encodeX", {
       target: "text-value", coordinate: "text-value-coordinate",
       field: "x", scale: { id: "text-value-x", zero: false }
-    })
-    .encodeY({
+    }), "encodeY", {
       target: "text-value", coordinate: "text-value-coordinate",
       field: "y", scale: { id: "text-value-y", zero: false }
-    })
-    .encodeText({ target: "text-value", value: 42.25, format: ".2f" });
+    }), "encodeText", { target: "text-value", value: 42.25, format: ".2f" });
+  for (const action of ["encodeDx", "encodeDy"]) {
+    next = conditionalWitness(next, action, { target: "text-field", field: "seriesWidth" });
+    next = conditionalWitness(next, action, { target: "text-field", value: 4 });
+  }
+  for (const action of ["encodeRadius", "encodePointRadius"]) {
+    const id = action === "encodeRadius" ? "radius-alias" : "point-radius";
+    next = conditionalWitness(positionedPoint(next, id), action, { target: id, value: 4 });
+  }
   const source = "text-content-source";
-  next = completeBar(next, source)
-    .encodeColor({ target: source, field: "group", layout: "stack" });
+  next = conditionalEncoding(completeBar(next, source), "encodeColor", { target: source, field: "group", layout: "stack" });
   for (const [id, options] of [
     ["text-content-category", { content: "category", format: "auto" }],
     ["text-content-value", { content: "value", format: ".1f" }],
@@ -979,10 +961,95 @@ function addAppearanceEncodings(program) {
       content: "share", normalizeBy: "category", format: ".1%"
     }]
   ]) {
-    next = next.createTextMark({ id, source, fontSize: 9 })
-      .encodeText({ target: id, ...options });
+    next = conditionalWitness(next.createTextMark({ id, source, fontSize: 9 }), "encodeText", { target: id, ...options });
   }
   return next;
+}
+
+
+function assertConcreteEquivalent(actual, expected, label) {
+  if (actual === undefined || expected === undefined) return assert.deepEqual(actual, expected, label);
+  assert.equal(actual.length, expected.length, `${label} item count`);
+  for (const [index, item] of actual.entries()) {
+    const reference = expected[index];
+    assert.deepEqual(item.identity, reference.identity, `${label} row identity`);
+    assert.deepEqual(Object.keys(item.properties).sort(), Object.keys(reference.properties).sort(), `${label} property ownership`);
+    for (const [property, value] of Object.entries(item.properties)) {
+      const expectedValue = reference.properties[property];
+      if (typeof value === "number" && typeof expectedValue === "number") {
+        const tolerance = 64 * Number.EPSILON * Math.max(1, Math.abs(value), Math.abs(expectedValue));
+        assert.ok(Math.abs(value - expectedValue) <= tolerance,
+          `${label}[${index}].${property}: ${value} differs from ${expectedValue}`);
+      } else assert.deepEqual(value, expectedValue, `${label}[${index}].${property}`);
+    }
+  }
+}
+
+// Execute each existing authored payload through both ordinary and conditional
+// authoring. The fallback uses the exact original options, so every nested option
+// remains a real direct-action witness rather than fabricated trace metadata.
+function conditionalEncoding(program, action, args, { restore = false } = {}) {
+  let next = program[action](args);
+  const { target, coordinate: _coordinate, ...authored } = args;
+  const layer = next.semanticSpec.layers.find(layer => layer.id === target);
+  if (layer.mark.type === "line" && layer.encoding?.group === undefined) {
+    const field = layer.encoding?.color?.field ?? layer.encoding?.strokeDash?.field;
+    if (field !== undefined) next = next.encodeGroup({ target, field });
+  }
+  const channel = action.slice("encode".length);
+  const encoding = layer.encoding?.[channel[0].toLowerCase() + channel.slice(1)];
+  const value = encoding?.scale === undefined ? authored : {
+    ...authored, scale: { ...authored.scale, id: encoding.scale }
+  };
+  const concrete = program => program.graphicSpec.objects[target]?.items.map(item => ({
+    identity: item.identity, properties: item.properties
+  }));
+  let result = next;
+  for (const predicate of [false, true]) {
+    result = result[action]({
+      target,
+      conditions: [{ when: { version: 2, registry: "standard@1",
+        root: { type: "literal", value: predicate } }, value }],
+      otherwise: value
+    });
+    assertConcreteEquivalent(concrete(result), concrete(next),
+      `${action}(${target}): identical ${predicate ? "matched branch" : "fallback"}`);
+  }
+  if (!["encodeRadius", "encodePointRadius"].includes(action) && concrete(result)?.length > 0) {
+    const { coordinate: _coordinate, ...atomicValue } = value;
+    const nativeChannel = channel[0].toLowerCase() + channel.slice(1);
+    const ordinaryBatch = { target, channels: { [nativeChannel]: atomicValue } };
+    result = result.encodeChannels(ordinaryBatch);
+    assertConcreteEquivalent(concrete(result), concrete(next), `${action}(${target}): atomic ordinary`);
+    for (const predicate of [false, true]) {
+      result = result.encodeChannels({ target, channels: { [nativeChannel]: {
+        conditions: [{ when: { version: 2, registry: "standard@1",
+          root: { type: "literal", value: predicate } }, value: atomicValue }],
+        otherwise: atomicValue
+      } } });
+      assertConcreteEquivalent(concrete(result), concrete(next),
+        `${action}(${target}): atomic ${predicate ? "matched branch" : "fallback"}`);
+    }
+  }
+  if (action === "encodeColor" && layer.mark.type === "point") {
+    // Stroke shares color scale semantics, but has its own scale and excludes
+    // color's aggregate/layout options. Execute real native calls for both.
+    const stroke = Object.fromEntries(["field", "value", "fieldType", "temporalUnit"]
+      .filter(key => Object.hasOwn(authored, key)).map(key => [key, authored[key]]));
+    if (stroke.field !== undefined) stroke.scale = {
+      ...authored.scale,
+      ...(authored.palette === undefined ? {} : { palette: authored.palette }),
+      id: `${target}-stroke-scale`
+    };
+    return conditionalEncoding(result, "encodeStroke", { target, ...stroke });
+  }
+  // Position fixtures continue ordinary grouping/layout authoring after this
+  // verified transition; lifecycle fixtures retain live conditional bindings.
+  return restore ? result[action]({ target, ...value }) : result;
+}
+
+function conditionalWitness(program, action, args) {
+  return conditionalEncoding(program, action, args, { restore: true });
 }
 
 function buildAppearanceCoverage(factors) {
@@ -995,28 +1062,26 @@ function buildAppearanceCoverage(factors) {
   program = addAppearanceEncodings(program);
   for (const mode of TEMPORAL_MODES) {
     const id = `color-input-${mode.temporalUnit}`;
-    program = positionedPoint(program, id).encodeColor({
+    program = conditionalEncoding(positionedPoint(program, id), "encodeColor", {
       target: id, field: mode.field, fieldType: "temporal", temporalUnit: mode.temporalUnit,
       scale: { id: `${id}-scale`, type: "sequential", palette: "viridis" }
     });
   }
-  program = positionedPoint(program, "constant-color-size")
-    .encodeColor({ target: "constant-color-size", value: "#2563eb" })
-    .encodeSize({ target: "constant-color-size", value: 25 });
+  program = conditionalEncoding(conditionalEncoding(positionedPoint(program, "constant-color-size"), "encodeColor", { target: "constant-color-size", value: "#2563eb" }), "encodeSize", { target: "constant-color-size", value: 25 });
   for (const value of ["circle", "diamond"]) {
     const id = `constant-shape-${value}`;
-    program = positionedPoint(program, id).encodeShape({ target: id, value });
+    program = conditionalEncoding(positionedPoint(program, id), "encodeShape", { target: id, value });
   }
   for (const normalization of ["area", "radius"]) {
     const constantId = `constant-polygon-${normalization}`;
-    program = positionedPoint(program, constantId).encodeShape({
+    program = conditionalEncoding(positionedPoint(program, constantId), "encodeShape", {
       target: constantId,
       value: {
         polygon: [{x: 0, y: -1}, {x: 1, y: 1}, {x: -1, y: 1}], normalization
       }
     });
     const id = `polygon-unknown-${normalization}`;
-    program = positionedPoint(program, id).encodeShape({
+    program = conditionalEncoding(positionedPoint(program, id), "encodeShape", {
       target: id, field: "group", fieldType: "nominal",
       scale: {id: `${id}-scale`, type: "ordinal", domain: "auto", unknown: {
         polygon: [{x: 0, y: -1}, {x: 1, y: 1}, {x: -1, y: 1}], normalization
@@ -1026,18 +1091,30 @@ function buildAppearanceCoverage(factors) {
   const dashDomain = [...new Set(view.rows.map(row => row.group))];
   for (const unknown of ["solid", "dashed", "dotted", "dashdot"]) {
     const id = `dash-unknown-${unknown}`;
-    program = positionedLine(program, id).encodeStrokeDash({
+    program = conditionalEncoding(positionedLine(program, id), "encodeStrokeDash", {
       target: id, field: "group", fieldType: unknown === "solid" ? "nominal" : "ordinal",
       scale: { id: `${id}-scale`, type: "ordinal", domain: dashDomain, range: "auto", unknown }
     });
   }
+  program = positionedLine(program, "atomic-order")
+    .encodeChannels({ target: "atomic-order", channels: {
+      group: { fields: ["category", "group"], fieldType: "nominal" },
+      pathOrder: { field: "order", fieldType: "quantitative", order: "ascending" }
+    } })
+    .encodeChannels({ target: "atomic-order", channels: {
+      group: { field: "group", fieldType: "nominal" },
+      pathOrder: { field: "order", fieldType: "quantitative", order: "descending" }
+    } });
   return finish(program, factors, "direct-appearance-encoding-options");
 }
 
 function polarPoint(program, id, theta, radius) {
-  return program.createPointMark({ id, data: "analysisRows" })
-    .encodeTheta({ target: id, coordinate: `${id}-coordinate`, ...theta })
-    .encodeR({ target: id, coordinate: `${id}-coordinate`, ...radius });
+  const thetaArgs = { target: id, coordinate: `${id}-coordinate`, ...theta };
+  const radiusArgs = { target: id, coordinate: `${id}-coordinate`, ...radius };
+  let next = program.createPointMark({ id, data: "analysisRows" })
+    .encodeTheta(thetaArgs).encodeR(radiusArgs);
+  next = conditionalWitness(next, "encodeTheta", thetaArgs);
+  return conditionalWitness(next, "encodeR", radiusArgs);
 }
 
 function buildPolarCoverage(factors) {
@@ -1110,10 +1187,17 @@ function buildPolarCoverage(factors) {
       scale: quantitativeScale(type, `radius-${type}-scale`, index, { point: false })
     });
   }
+  program = conditionalWitness(program, "encodeTheta", {
+    target: "theta-linear", datum: 180, fieldType: "quantitative",
+    scale: { id: "theta-linear", type: "linear", domain: [0, 360], range: "auto" }
+  });
+  program = conditionalWitness(program, "encodeR", {
+    target: "theta-linear", datum: 10, fieldType: "quantitative",
+    scale: { id: "theta-linear-radius", type: "linear", domain: [0, 100], range: "auto" }
+  });
   for (const aggregate of ["count", "sum"]) {
     const id = `theta-aggregate-${aggregate}`;
-    program = program.createArcMark({ id, data: "analysisRows", innerRadius: 0.3 })
-      .encodeTheta({
+    program = conditionalWitness(program.createArcMark({ id, data: "analysisRows", innerRadius: 0.3 }), "encodeTheta", {
         target: id, coordinate: `${id}-coordinate`, field: "category",
         fieldType: "nominal", aggregate,
         ...(aggregate === "sum" ? { weight: "radius" } : {}),
@@ -1133,15 +1217,13 @@ function buildPolarCoverage(factors) {
   for (const mapping of ["area", "radius-length"]) {
     for (const aggregate of ["count", "sum"]) {
       const id = `measured-${mapping}-${aggregate}`;
-      program = program.createArcMark({ id, data: "analysisRows", innerRadius: 0.3 })
-        .encodeTheta({ target: id, coordinate: `${id}-coordinate`, field: "category", fieldType: "nominal" })
-        .encodeR({ target: id, mapping, aggregate,
+      program = conditionalWitness(conditionalWitness(program.createArcMark({ id, data: "analysisRows", innerRadius: 0.3 }), "encodeTheta", { target: id, coordinate: `${id}-coordinate`, field: "category", fieldType: "nominal" }), "encodeR", { target: id, mapping, aggregate,
           ...(aggregate === "sum" ? { field: "radius" } : {}),
           scale: { id: `${id}-scale` } })
         .encodeColor({ target: id, field: "category" });
     }
   }
-  program = program.encodeR({
+  program = conditionalWitness(program, "encodeR", {
     target: "measured-area-sum",
     field: "radius",
     mapping: false
@@ -1179,7 +1261,7 @@ function makeRecipe({ id, family, actions, build, operations }) {
     enforceFactorEffects: true,
     datasets: DATASETS,
     factors: { profile: PROFILES },
-    expectedDirectActions: actions,
+    expectedDirectActions: [...actions, "encodeChannels"],
     coverageSchedule,
     minimumSelections: coverageSchedule.minimumSelections,
     factorsForDataset(dataset) {
@@ -1259,7 +1341,8 @@ export const REALISTIC_ENCODING_COVERAGE_RECIPES = freeze([
 export const REALISTIC_ENCODING_COVERAGE_EXPECTED_ACTIONS = freeze([
   ...POSITION_ACTIONS,
   ...APPEARANCE_ACTIONS,
-  ...POLAR_ACTIONS
+  ...POLAR_ACTIONS,
+  "encodeChannels"
 ]);
 
 export const REALISTIC_ENCODING_COVERAGE_COUNTS = freeze({

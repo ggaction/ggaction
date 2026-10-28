@@ -1,3 +1,4 @@
+import { hasPositionBinding, commonPositionBinding, uniquePositionBinding } from "../../core/encodingBindings.js";
 import { adoptSelectionResources } from "../primitives/resourceState.js";
 import { normalizeFacetAxes, validateFacetAxisPolicy } from "../../core/facetAxisPolicy.js";
 import { DEFAULT_ACTION_METHODS } from "../../core/vocabulary.js";
@@ -404,15 +405,15 @@ function resolveRepeatDefinition(program, args) {
     }
     if (["x", "y"].includes(args.channel)) {
       return family === "cartesian" &&
-        layer.encoding?.x?.scale !== undefined &&
-        layer.encoding?.y?.scale !== undefined &&
-        layer.encoding?.[args.channel]?.field !== undefined &&
+        hasPositionBinding(layer, "x") &&
+        hasPositionBinding(layer, "y") &&
+        commonPositionBinding(layer, args.channel)?.field !== undefined &&
         ["point", "line", "area", "bar", "rule", "tick", "rect"].includes(layer.mark?.type);
     }
     const role = program.markConfigs[layer.id]?.compositionRole;
     if (family !== "polar" || ["pie", "radar"].includes(role)) return false;
     return ["point", "line", "arc"].includes(layer.mark?.type) &&
-      layer.encoding?.[semanticChannel]?.field !== undefined;
+      commonPositionBinding(layer, semanticChannel)?.field !== undefined;
   });
   let target;
   if (args.target !== undefined) {
@@ -459,7 +460,7 @@ function resolveRepeatDefinition(program, args) {
   }
   const encoding = parallelChannel
     ? layer.encoding.parallel
-    : layer.encoding[semanticChannel];
+    : uniquePositionBinding(layer, semanticChannel);
   const dimensionIndex = parallelChannel
     ? encoding.dimensions.findIndex(
         dimension => dimension.field === args.channel.parallelDimension
@@ -533,7 +534,10 @@ function deriveRepeatedProgram(template, definition, field) {
     theta: "encodeTheta",
     r: "encodeR"
   }[definition.channel];
-  return template[operation](repeatEncodingArgs(definition, field));
+  const conditional = findLayer(template, definition.target).conditionals?.[definition.channel === "r" ? "radius" : definition.channel];
+  if (conditional === undefined) return template[operation](repeatEncodingArgs(definition, field));
+  const { target, ...value } = repeatEncodingArgs(definition, field);
+  return template[operation]({ target, conditions: conditional.conditions.map(condition => ({ when: condition.when, value })), otherwise: value });
 }
 
 function deriveRepeatChildren(base, definition, scales, closeInheritedAction) {

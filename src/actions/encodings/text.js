@@ -4,7 +4,8 @@ import { formatTextValue, validateTextFormat, isIndependentText, resolveTextOffs
 import { validateUserId } from "../../core/identifiers.js";
 import { normalizeMarkLabelContent, resolveMarkLabelValues } from "../../grammar/markLabels.js";
 import { canMaterializeText } from "../../materialization/marks/index.js";
-import { resolveMarkItems } from "../../materialization/selection/policies/index.js";
+import { resolveTextSourceBindings } from "../../materialization/textContent.js";
+import { resolveMarkItems, resolveMarkSourceItems } from "../../materialization/selection/policies/index.js";
 import { findLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 import {
   resolveTarget,
@@ -73,7 +74,9 @@ export const encodeText = /* @__PURE__ */ action(
     const proposed = { ...layer, encoding: { ...layer.encoding, text: properties } };
     if (hasContent && canMaterializeText(this, proposed)) {
       const source = findLayer(this, layer.source);
-      for (const value of resolveMarkLabelValues(source, resolveMarkItems(this, source.id), content)) {
+      const items = resolveMarkItems(this, source.id);
+      const sources = resolveTextSourceBindings(this, layer, items, { resolveMarkItems, resolveMarkSourceItems });
+      for (const value of resolveMarkLabelValues(source, items, content, { sources })) {
         formatTextValue(value, format);
       }
     }

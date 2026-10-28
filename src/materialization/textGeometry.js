@@ -1,5 +1,13 @@
+import { hasPositionBinding } from "../core/encodingBindings.js";
+import { contentValue, resolveTextSourceBindings } from "./textContent.js";
+export { sourceValue } from "./textContent.js";
+import { mapConditionalValues } from "./conditionalMapping.js";
+import { conditionalSelectionMembership } from "./conditionalSelection.js";
+import { identifyItems } from "./selection/items/common.js";
+import { memberRowReferences } from "./selection/rows.js";
+import { conditionalPositionUsesRows } from "../grammar/conditionalPosition.js";
 import { selectionPredicate } from "./selection/predicate.js";
-import { resolveTextOverrides, textIdentity, textIdentityOccurrences } from "../grammar/text.js";
+import { DEFAULT_TEXT_MARK, conditionalTextUsesRows, resolveTextOverrides, textIdentity, textIdentityOccurrences } from "../grammar/text.js";
 import { resolveBarChannels } from "../grammar/bars/policy.js";
 import {
   assertMarkLabelPlacementSupport,
@@ -21,33 +29,6 @@ import { normalizeMarkSelector, selectMarkItemKeys } from "../grammar/markSelect
 
 import { mapScaleConsumerValues } from "./scales/map.js";
 import { resolveRowEncodingValues } from "./rowEncoding.js";
-
-export function sourceValue(item, source, field) {
-  const measure = source.mark.type === "bar" ? resolveBarChannels(source).measure
-    : source.mark.type === "arc" ? "radius" : undefined;
-  const encoding = source.encoding?.[measure];
-  if (encoding?.field === field && encoding.aggregate != null && item.channels[measure] !== undefined) {
-    return source.mark.type === "bar"
-      ? item.channels[`${measure}2`] ?? item.channels[measure]
-      : item.channels[measure];
-  }
-  if (Object.hasOwn(item.fields, field)) return item.fields[field];
-  for (const [channel, encoding] of Object.entries(source.encoding ?? {})) {
-    if (encoding?.field !== field || item.channels[channel] === undefined) continue;
-    if (source.mark.type === "bar" && item.channels[`${channel}2`] !== undefined) {
-      return item.channels[`${channel}2`];
-    }
-    return item.channels[channel];
-  }
-  if (item.members.length === 1 && Object.hasOwn(item.members[0], field)) {
-    return item.members[0][field];
-  }
-  if (source.mark.type === "line" && item.members.length > 0) {
-    const endpoint = item.members.at(-1);
-    if (Object.hasOwn(endpoint, field)) return endpoint[field];
-  }
-  return undefined;
-}
 
 function barAnchor(program, source, item) {
   const channels = resolveBarChannels(source);
@@ -96,8 +77,8 @@ function sourceAnchor(program, source, item) {
 
 function explicitIntervalAxis(source) {
   const axes = ["x", "y"].filter(axis =>
-    source.encoding?.[axis] !== undefined &&
-    source.encoding?.[`${axis}2`] !== undefined
+    hasPositionBinding(source, axis) &&
+    hasPositionBinding(source, `${axis}2`)
   );
   return axes.length === 1 ? axes[0] : undefined;
 }
@@ -208,9 +189,10 @@ function pointPlacementGeometry(program, source, item) {
   const coordinateType = findCoordinate(program, source.coordinate)?.type;
   if (coordinateType !== "polar") return { kind: "point", center };
   const thetaScale = program.resolvedScales[source.encoding?.theta?.scale];
-  const theta = item.channels.theta === undefined || thetaScale === undefined
+  const thetaValue = item.channels.theta ?? (source.encoding?.theta?.field === undefined ? source.encoding?.theta?.datum : item.fields[source.encoding.theta.field]);
+  const theta = thetaValue === undefined || thetaScale === undefined
     ? undefined
-    : mapScaleConsumerValues([item.channels.theta], thetaScale, "theta")[0];
+    : mapScaleConsumerValues([thetaValue], thetaScale, "theta")[0];
   const outward = Number.isFinite(theta) ? polarDirection(theta) : { x: 0, y: -1 };
   const objectBounds = unionConcreteGraphicBounds(
     program.graphicSpec,
@@ -258,14 +240,6 @@ function sourcePlacementGeometry(program, source, item) {
     return pointPlacementGeometry(program, source, item);
   }
   return { kind: "point", center: sourceAnchor(program, source, item) };
-}
-
-function contentValue(encoding, rowOrItem, source) {
-  return Object.hasOwn(encoding, "field")
-    ? source === undefined
-      ? rowOrItem[encoding.field]
-      : sourceValue(rowOrItem, source, encoding.field)
-    : encoding.datum;
 }
 
 function concreteTextItem(config, position, text, { offsets = true } = {}) {
@@ -325,7 +299,8 @@ function sourceTextConfig(config, source, item) {
   };
 }
 
-function resolveSourceTextItems(program, layer, config, identities, members, resolveMarkItems) {
+function resolveSourceTextItems(program, layer, config, identities, members, resolvers, sourceOnly) {
+  const { resolveMarkItems } = resolvers;
   const source = findLayer(program, layer.source);
   if (source === undefined) {
     throw new Error(`Text mark "${layer.id}" requires source layer "${layer.source}".`);
@@ -335,13 +310,13 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
   };
   const resolveMarkSelection = (program, target, selector) => {
     const normalized = normalizeMarkSelector(selector);
-    const items = resolveMarkItems(program, target, normalized.grain);
+    const items = resolveMarkItems(program, target, normalized.grain, { channels: normalized.channel === undefined ? [] : [normalized.channel] });
     return { items, keys: selectMarkItemKeys(items, normalized) };
   };
   let allItems;
   let items;
   if (requested.kind === "all") {
-    allItems = resolveMarkItems(program, source.id);
+    allItems = resolveMarkItems(program, source.id, "item", { channels: [] });
     items = allItems;
   } else if (requested.kind === "inline") {
     const resolved = resolveMarkSelection(program, source.id, requested.selector);
@@ -365,8 +340,15 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
   } else {
     throw new Error(`Unknown label selection kind "${requested.kind}".`);
   }
-  const resolvedValues = layer.encoding.text.content === undefined ? undefined
-    : resolveMarkLabelValues(source, allItems, layer.encoding.text);
+  if (sourceOnly) return items.map(item => ({ members: item.members, fields: item.fields, channels: item.channels, semanticIdentity: ["label", item.key] }));
+  const sourceBindings = resolveTextSourceBindings(program, layer, allItems, resolvers);
+  const sourceByKey = sourceBindings === undefined ? undefined : new Map(allItems.map((item, index) => [item.key, sourceBindings[index]]));
+  const conditionalFill = resolvers.skipAppearance ? undefined : resolveTextConditional(program, layer, "color", allItems, resolvers);
+  const fillByKey = conditionalFill === undefined ? undefined : new Map(allItems.map((item, index) => [item.key, conditionalFill[index]]));
+  const conditionalText = resolveTextConditional(program, layer, "text", allItems, resolvers);
+  const textByKey = conditionalText === undefined ? undefined : new Map(allItems.map((item, index) => [item.key, conditionalText[index]]));
+  const resolvedValues = layer.encoding?.text?.content === undefined ? undefined
+    : resolveMarkLabelValues(source, allItems, layer.encoding.text, { sources: sourceBindings });
   const values = resolvedValues === undefined ? undefined : new Map(
     allItems.map((item, index) => [item.key, resolvedValues[index]])
   );
@@ -374,26 +356,29 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
   const identityRecords = identities ? new Map(allItems.map((item, index) => [item, identityValues[index]])) : undefined;
   const overrides = resolveTextOverrides(allItems, config.textOverrides);
   return items.flatMap(item => {
+    const itemSource = sourceByKey?.get(item.key) ?? source;
     const identity = identityRecords?.get(item);
     const provenance = members ? { members: item.members, fields: item.fields, channels: item.channels, semanticIdentity: ["label", item.key] } : {};
-    let resolvedConfig = sourceTextConfig(config, source, item);
-    const text = overrides.has(item) ? overrides.get(item) : formatTextValue(
+    let resolvedConfig = sourceTextConfig(config, itemSource, item);
+    if (resolvers.skipAppearance && resolvedConfig.fill === undefined) resolvedConfig = { ...resolvedConfig, fill: DEFAULT_TEXT_MARK.fill };
+    if (fillByKey !== undefined) resolvedConfig = { ...resolvedConfig, fill: fillByKey.get(item.key), fillExplicit: true };
+    const text = overrides.has(item) ? overrides.get(item) : textByKey !== undefined ? textByKey.get(item.key) : formatTextValue(
       values === undefined
-        ? contentValue(layer.encoding.text, item, source)
+        ? contentValue(layer.encoding.text, item, itemSource)
         : values.get(item.key),
       layer.encoding.text.format
     );
     if (text === undefined) return [];
     const placement = program.markConfigs[layer.id]?.labelAuthoring?.placement;
     if (placement === undefined) {
-      const anchor = sourceAnchor(program, source, item);
+      const anchor = sourceAnchor(program, itemSource, item);
       const concrete = concreteTextItem(resolvedConfig, anchor, text);
       return concrete === undefined ? [] : [{ graphic: concrete, anchor, ...identity, ...provenance }];
     }
-    assertMarkLabelPlacementSupport(sourcePlacementContext(program, source), placement);
+    assertMarkLabelPlacementSupport(sourcePlacementContext(program, itemSource), placement);
     const resolved = resolveMarkLabelPlacement({
       placement,
-      geometry: sourcePlacementGeometry(program, source, item),
+      geometry: sourcePlacementGeometry(program, itemSource, item),
       text: {
         text,
         lines: resolveTextLines(text, resolvedConfig),
@@ -410,7 +395,7 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
     if (!resolved.visible) return [];
     if (
       resolved.anchor.startsWith("outside") &&
-      config.fillExplicit !== true && !config.inheritColor
+      config.fillExplicit !== true && !config.inheritColor && fillByKey === undefined
     ) {
       resolvedConfig = config;
     }
@@ -430,7 +415,7 @@ function resolveSourceTextItems(program, layer, config, identities, members, res
   });
 }
 
-function resolveRowTextItems(program, layer, config, includeIdentities, members) {
+function resolveRowTextItems(program, layer, config, includeIdentities, members, resolvers) {
   const sourceDataset = findDataset(program, layer.data);
   if (sourceDataset === undefined) {
     throw new Error(`Text mark "${layer.id}" requires an existing dataset.`);
@@ -438,10 +423,11 @@ function resolveRowTextItems(program, layer, config, includeIdentities, members)
   const dataset = resolveTextOffsetDataset(layer, sourceDataset);
   const encodings = [layer.encoding?.x, layer.encoding?.y, layer.encoding?.text, layer.encoding?.color,
     layer.encoding?.dx, layer.encoding?.dy];
-  const length = encodings.some(encoding => encoding !== undefined && Object.hasOwn(encoding, "field"))
+  const length = conditionalTextUsesRows(layer) || conditionalPositionUsesRows(layer) || encodings.some(encoding => encoding !== undefined && Object.hasOwn(encoding, "field"))
     ? dataset.values.length
     : 1;
   const positionValues = channel => {
+    if (layer.conditionals?.[channel] !== undefined) return resolveRowEncodingValues(program, layer, dataset, channel, resolvers);
     const encoding = layer.encoding?.[channel];
     if (encoding === undefined) return undefined;
     if (Object.hasOwn(encoding, "field")) {
@@ -471,7 +457,15 @@ function resolveRowTextItems(program, layer, config, includeIdentities, members)
   const rows = length === 1 && dataset.values.length === 0
     ? [undefined]
     : dataset.values.slice(0, length);
-  const fills = resolveRowEncodingValues(program, layer, dataset, "color");
+  const definitions = ["text", "dx", "dy", "color"].some(channel => layer.conditionals?.[channel] !== undefined) ? identifyItems(program, layer, "text", rows.map((row, index) => ({
+    ...(dataset.rowKeys[index] === undefined ? { semanticIdentity: ["constant"] } : { rowKey: dataset.rowKeys[index] }),
+    fields: row ?? {}, channels: {}, members: row === undefined ? [] : [row],
+    rows: row === undefined ? [] : memberRowReferences(program, [row], layer.data, [dataset.rowKeys[index]])
+  }))) : undefined;
+  const conditionalText = resolveTextConditional(program, layer, "text", definitions, resolvers);
+  const dx = resolveTextConditional(program, layer, "dx", definitions, resolvers);
+  const dy = resolveTextConditional(program, layer, "dy", definitions, resolvers);
+  const fills = resolveTextConditional(program, layer, "color", definitions, resolvers) ?? resolveRowEncodingValues(program, layer, dataset, "color");
   const identities = !includeIdentities && !config.textOverrides?.length ? [] : rows.map(row => textIdentity(row ?? {}, Object.fromEntries(
     Object.entries(layer.encoding).map(([channel, encoding]) => [channel,
       encoding.field === undefined ? encoding.datum : row?.[encoding.field]]))));
@@ -480,25 +474,62 @@ function resolveRowTextItems(program, layer, config, includeIdentities, members)
   return rows.flatMap((row, index) => {
     const identity = identities[index];
     const text = overrides.has(identity) ? overrides.get(identity)
-      : formatTextValue(contentValue(layer.encoding.text, row), layer.encoding.text.format);
+      : conditionalText !== undefined ? conditionalText[index] : formatTextValue(contentValue(layer.encoding.text, row), layer.encoding.text.format);
     const concrete = concreteTextItem(
       {
         ...config,
         ...(fills === undefined ? {} : { fill: fills[index] }),
-        dx: textOffsetValue(layer.encoding?.dx, row, config.dx),
-        dy: textOffsetValue(layer.encoding?.dy, row, config.dy)
+        dx: dx === undefined ? textOffsetValue(layer.encoding?.dx, row, config.dx) : dx[index],
+        dy: dy === undefined ? textOffsetValue(layer.encoding?.dy, row, config.dy) : dy[index]
       },
       { x: x[index], y: y[index] },
       text
     );
     return concrete === undefined
       ? []
-      : [{ graphic: concrete, ...occurrences?.[index], ...(members ? { ...(sourceDataset.rowKeys[index] === undefined ? { semanticIdentity: ["constant"] } : { rowKey: sourceDataset.rowKeys[index] }), members: sourceDataset.values[index] ? [sourceDataset.values[index]] : [], fields: row ?? {}, channels: Object.fromEntries(Object.entries(layer.encoding).map(([channel, encoding]) => [channel, encoding.field === undefined ? encoding.datum : row?.[encoding.field]])) } : {}), anchor: { x: x[index], y: y[index] } }];
+      : [{ graphic: concrete, ...occurrences?.[index], ...(members ? { ...(dataset.rowKeys[index] === undefined ? { semanticIdentity: ["constant"] } : { rowKey: dataset.rowKeys[index] }), members: dataset.values[index] ? [dataset.values[index]] : [], fields: row ?? {}, channels: Object.fromEntries(Object.entries(layer.encoding).map(([channel, encoding]) => [channel, encoding.field === undefined ? encoding.datum : row?.[encoding.field]])) } : {}), anchor: { x: x[index], y: y[index] } }];
   });
 }
 
-export function resolveTextGraphicEntries(program, layer, config, { identities = false, members = false, resolveMarkItems } = {}) {
+export function resolveTextGraphicEntries(program, layer, config, { identities = false, members = false, resolveMarkItems, resolveMarkSourceItems, sourceOnly = false, skipAppearance = false } = {}) {
   return layer.source === undefined
-    ? resolveRowTextItems(program, layer, config, identities, members)
-    : resolveSourceTextItems(program, layer, config, identities, members, resolveMarkItems);
+    ? resolveRowTextItems(program, layer, config, identities, members, { resolveMarkItems, resolveMarkSourceItems })
+    : resolveSourceTextItems(program, layer, config, identities, members, { resolveMarkItems, resolveMarkSourceItems, skipAppearance }, sourceOnly);
+}
+
+// Row membership is available before position materialization. Raw-field
+// selections therefore never need to recursively build conditional geometry.
+export function resolveIndependentTextSourceDefinitions(program, layer, dataset, config) {
+  const eligible = resolveTextOffsetDataset(layer, dataset);
+  const usesRows = conditionalTextUsesRows(layer) || conditionalPositionUsesRows(layer) || Object.values(layer.encoding ?? {}).some(encoding => encoding.field !== undefined);
+  const rows = usesRows ? eligible.values : eligible.values.length ? eligible.values.slice(0, 1) : [undefined];
+  return rows.flatMap((row, index) => {
+    const text = layer.encoding?.text === undefined ? true
+      : formatTextValue(contentValue(layer.encoding.text, row), layer.encoding.text.format);
+    if (text === undefined && !config.textOverrides?.length) return [];
+    return [{ ...(eligible.rowKeys[index] === undefined ? { semanticIdentity: ["constant"] } : { rowKey: eligible.rowKeys[index] }),
+      fields: row ?? {}, members: row === undefined ? [] : [row], channels: Object.fromEntries(
+        Object.entries(layer.encoding ?? {}).map(([channel, encoding]) => [channel, encoding.field === undefined ? encoding.datum : row?.[encoding.field]])) }];
+  });
+}
+
+export function resolveIndependentTextItemDefinitions(program, layer, dataset, config, resolvers) {
+  const definitions = resolveIndependentTextSourceDefinitions(program, layer, dataset, config);
+  const identified = identifyItems(program, layer, "text", definitions).map(item => ({ ...item,
+    rows: memberRowReferences(program, item.members, layer.data, item.memberKeys) }));
+  const texts = resolveTextConditional(program, layer, "text", identified, resolvers);
+  const identities = definitions.map(item => textIdentity(item.fields, item.channels));
+  const overrides = resolveTextOverrides(identities, config.textOverrides);
+  return definitions.filter((item, index) => {
+    if (overrides.has(identities[index])) return overrides.get(identities[index]) !== undefined;
+    if (texts !== undefined) return texts[index] !== undefined;
+    return layer.encoding?.text === undefined || formatTextValue(contentValue(layer.encoding.text, item.fields), layer.encoding.text.format) !== undefined;
+  });
+}
+
+function resolveTextConditional(program, layer, channel, items, resolvers) {
+  const definition = layer.conditionals?.[channel];
+  if (definition === undefined) return undefined;
+  const membership = conditionalSelectionMembership(program, layer, definition, items, resolvers, { rowMembership: true });
+  return mapConditionalValues(program, layer, channel, items, membership, { resolvers });
 }

@@ -136,6 +136,7 @@ export function resolvePointJitter({
   target,
   policy,
   scale,
+  scales = [scale],
   entries,
   plotMinimum,
   plotMaximum
@@ -151,8 +152,10 @@ export function resolvePointJitter({
   ) {
     throw new RangeError("Point jitter plot bounds are invalid.");
   }
-  const maximum = resolveJitterMaximum(policy, scale);
-  const slotWidth = resolveJitterSlotWidth(scale);
+  // Validate every native branch, including inactive branches and empty data.
+  const branchMaximum = scales.reduce((maximum, current) =>
+    Math.max(maximum, resolveJitterMaximum(policy, current)), 0);
+  let maximum = entries.length === 0 ? branchMaximum : 0;
   const items = entries.map((entry, itemIndex) => {
     if (!Number.isInteger(entry.index) || entry.index < 0) {
       throw new TypeError(`Point jitter entry ${itemIndex} index must be non-negative.`);
@@ -163,12 +166,16 @@ export function resolvePointJitter({
     if (entry.halfExtent < 0) {
       throw new RangeError(`Point jitter entry ${itemIndex} extent must not be negative.`);
     }
+    const itemScale = entry.scale ?? scale;
+    const itemMaximum = resolveJitterMaximum(policy, itemScale);
+    const slotWidth = resolveJitterSlotWidth(itemScale);
+    maximum = Math.max(maximum, itemMaximum);
     const requested = requestedOffset({
       target,
       channel: policy.channel,
       seed: policy.seed,
       identity: entry.identity
-    }, maximum);
+    }, itemMaximum);
     const contained = containOffset({
       base: entry.base,
       requested,

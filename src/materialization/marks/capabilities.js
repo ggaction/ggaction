@@ -1,3 +1,4 @@
+import { hasPositionBinding, conditionalPositionTemplate } from "../../core/encodingBindings.js";
 import { isHorizontalLine } from "../../grammar/lineSeries.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
@@ -15,15 +16,15 @@ import { resolveRectMode } from "../../grammar/rects.js";
 
 function hasCartesianPositionScales(layer) {
   return (
-    layer.encoding?.x?.scale !== undefined &&
-    layer.encoding?.y?.scale !== undefined
+    hasPositionBinding(layer, "x") &&
+    hasPositionBinding(layer, "y")
   );
 }
 
 function hasPolarPositionScales(layer) {
   return (
-    layer.encoding?.theta?.scale !== undefined &&
-    layer.encoding?.radius?.scale !== undefined
+    hasPositionBinding(layer, "theta") &&
+    hasPositionBinding(layer, "radius")
   );
 }
 
@@ -38,6 +39,7 @@ export function canMaterializeTick(_program, layer) {
 }
 
 export function canMaterializeLine(program, layer) {
+  if (layer.conditionals !== undefined) layer = conditionalPositionTemplate(layer, ["x", "y", "theta", "radius"]);
   if (layer.derivedBindings?.overlay) return hasCartesianPositionScales(layer);
   const parallel = layer.encoding?.parallel;
   if (parallel !== undefined) {
@@ -77,6 +79,7 @@ export function canMaterializeLine(program, layer) {
 }
 
 export function canMaterializeArea(program, layer) {
+  if (layer.conditionals !== undefined) layer = conditionalPositionTemplate(layer, ["x", "y", "x2", "y2"]);
   if (layer.mark?.type !== "area" || !hasCartesianPositionScales(layer)) {
     return false;
   }
@@ -110,6 +113,7 @@ export function isIntentionallyEmptyArea(program, layer) {
 }
 
 export function canMaterializeArc(_program, layer) {
+  if (layer.conditionals !== undefined) layer = conditionalPositionTemplate(layer, ["theta", "radius"]);
   if (
     layer.mark?.type !== "arc" ||
     layer.encoding?.theta?.scale === undefined
@@ -135,6 +139,7 @@ export function canMaterializeArc(_program, layer) {
 }
 
 export function canMaterializeBar(program, layer) {
+  if (layer.conditionals !== undefined) layer = conditionalPositionTemplate(layer, ["x", "y", "x2", "y2", "xOffset", "yOffset"]);
   if (layer.mark?.type !== "bar" || !hasCartesianPositionScales(layer)) {
     return false;
   }
@@ -181,15 +186,18 @@ export function isTextSource(layer) {
     Object.hasOwn(TEXT_SOURCE_CAPABILITIES, layer.mark?.type);
 }
 
+export function canMaterializeTextSource(program, source) {
+  return isTextSource(source) && TEXT_SOURCE_CAPABILITIES[source.mark.type](program, source) &&
+    Array.isArray(program.graphicSpec.objects[source.id]?.items);
+}
+
 export function canMaterializeText(program, layer) {
-  if (layer.mark?.type !== "text" || layer.encoding?.text === undefined) {
+  if (layer.mark?.type !== "text" || (layer.encoding?.text === undefined && layer.conditionals?.text === undefined)) {
     return false;
   }
   if (layer.source !== undefined) {
     const source = findLayer(program, layer.source);
-    return isTextSource(source) &&
-      TEXT_SOURCE_CAPABILITIES[source.mark.type](program, source) &&
-      Array.isArray(program.graphicSpec.objects[source.id]?.items);
+    return canMaterializeTextSource(program, source);
   }
   return hasCartesianPositionScales(layer);
 }
