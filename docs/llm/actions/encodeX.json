@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create or compatibly replace an x encoding for the supported mark/type pairs in the matrix above.",
-  "signature": "encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions>): ChartProgram;",
+  "signature": "encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode x",
     "encode",
@@ -77,14 +77,29 @@
   },
   "options": [
     {
-      "name": "field",
-      "required": false,
-      "type": "string | undefined"
-    },
-    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>[\"otherwise\"]"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "datum",
+      "required": false,
+      "type": "unknown"
     },
     {
       "name": "coordinate",
@@ -94,17 +109,12 @@
     {
       "name": "fieldType",
       "required": false,
-      "type": "FieldType | undefined"
+      "type": "\"quantitative\" | undefined"
     },
     {
       "name": "scale",
       "required": false,
-      "type": "CategoricalPositionScaleOptions | NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | QuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | TemporalPositionScaleOptions | undefined"
-    },
-    {
-      "name": "datum",
-      "required": false,
-      "type": "unknown"
+      "type": "NonPointCategoricalPositionScaleOptions | NonPointQuantitativePositionScaleOptions | undefined"
     },
     {
       "name": "bin",
@@ -128,7 +138,7 @@
     }
   ],
   "callPatterns": [
-    "encodeX({ target?, coordinate?, scale?, field?, fieldType?, datum?, bin?, stack? })"
+    "encodeX({ target?, coordinate?, scale?, conditions?, otherwise?, field?, datum?, fieldType? })"
   ],
   "snippet": "program.encodeX({ field: \"x\" })",
   "errors": [],

@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create or compatibly update the corresponding categorical offset scale within a bar, point, or rule y category.",
-  "signature": "encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions>): ChartProgram;",
+  "signature": "encodeYOffset(options: TargetedOptions<YOffsetEncodingOptions | ConditionalEncodingOptions<YOffsetEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode y offset",
     "encode",
@@ -76,14 +76,24 @@
   },
   "options": [
     {
-      "name": "field",
-      "required": true,
-      "type": "string"
-    },
-    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<YOffsetEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<YOffsetEncodingOptions>[\"otherwise\"]"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string"
     },
     {
       "name": "fieldType",
@@ -107,9 +117,9 @@
     }
   ],
   "callPatterns": [
-    "encodeYOffset({ field, target?, scale?, fieldType?, paddingInner?, paddingOuter? })"
+    "encodeYOffset({ target?, scale?, conditions?, otherwise?, field?, fieldType?, paddingInner?, paddingOuter? })"
   ],
-  "snippet": "program.encodeYOffset({ field: \"value\" })",
+  "snippet": "program.encodeYOffset({ field: \"series\" })",
   "errors": [],
   "route": "/reference/actions/encodings/#encodeyoffset"
 }

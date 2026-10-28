@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 740, // Structural graph group and sequence inference.
-  packedBytes: 1_104_000, // Node20/24 measured maximum: 1,103,541 bytes.
-  unpackedBytes: 5_076_000 // Structural graph and existing owners: 5,075,040 bytes.
+  entries: 757,
+  packedBytes: 1_124_000,
+  unpackedBytes: 5_181_000
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -78,7 +78,7 @@ const COMPACT_JAVASCRIPT_FILES = Object.freeze([
   "src/grammar/lineSeries.js",
   "src/grammar/pathSeries.js",
   "src/grammar/scales/colorConsumers.js",
-  "src/actions/encodings/position/policies/line.js",
+  "src/grammar/positionPolicies/line.js",
   "src/inspection.js",
   "src/grammar/regression/derive.js",
   "src/grammar/areaSeries.js",

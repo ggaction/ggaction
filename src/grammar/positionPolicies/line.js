@@ -1,12 +1,11 @@
 import {
   validateAggregate,
   validateAggregateFieldType
-} from "../../../../grammar/aggregate.js";
+} from "../aggregate.js";
 import { emptyPositionPolicy, resolveBin } from "./common.js";
-import { findSemanticScale } from "../../../../selectors/scales.js";
-import { validateCategoricalColorConsumer } from "../../../../grammar/scales/colorConsumers.js";
-import { validateLineMissingScope } from "../../../../grammar/lineMissing.js";
-import { isAggregateLinePosition, isHorizontalLine } from "../../../../grammar/lineSeries.js";
+import { validateCategoricalColorConsumer } from "../scales/colorConsumers.js";
+import { validateLineMissingScope } from "../lineMissing.js";
+import { isAggregateLinePosition, isHorizontalLine } from "../lineSeries.js";
 
 function rejectStack(args, channel) {
   if (args.stack !== undefined) {
@@ -21,7 +20,7 @@ function rejectBin(args, channel) {
 }
 
 export function resolveLinePositionPolicy({
-  program,
+  markConfig = {}, appearanceScales = {},
   layer,
   dataset,
   channel,
@@ -33,7 +32,7 @@ export function resolveLinePositionPolicy({
     [channel]: { ...args, fieldType } } });
   for (const appearance of ["color", "strokeDash"]) {
     const encoding = layer.encoding?.[appearance];
-    const scale = encoding === undefined ? undefined : findSemanticScale(program, encoding.scale);
+    const scale = appearanceScales[appearance];
     if (scale !== undefined) {
       validateCategoricalColorConsumer({
         ...layer,
@@ -42,7 +41,7 @@ export function resolveLinePositionPolicy({
     }
   }
   const polar = ["theta", "radius"].includes(channel);
-  const config = program.markConfigs[layer.id] ?? {};
+  const config = markConfig;
   if (polar) {
     if (config.curve !== undefined && config.curve !== "linear") {
       throw new Error("Polar line position currently requires curve \"linear\".");
@@ -62,7 +61,7 @@ export function resolveLinePositionPolicy({
     throw new Error("A Line requires one independent position; both axes cannot aggregate.");
   }
   if (!orientationNormalized && isHorizontalLine(prospective)) {
-    return resolveLinePositionPolicy({ program, dataset,
+    return resolveLinePositionPolicy({ markConfig, appearanceScales, dataset,
       layer: { ...layer, encoding: { ...layer.encoding, x: layer.encoding?.y, y: layer.encoding?.x } },
       channel: channel === 'x' ? 'y' : 'x', args, fieldType, orientationNormalized: true });
   }

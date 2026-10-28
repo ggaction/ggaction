@@ -1,3 +1,4 @@
+import { conditionalPositionTemplate } from "../../core/encodingBindings.js";
 import { readScaleField } from "../../grammar/scales/index.js";
 import { mapScaleConsumerValues } from "../scales/map.js";
 
@@ -54,7 +55,8 @@ export function resolveBarAppearance(
 }
 
 export function requireCompleteBar(program, id) {
-  const layer = findLayer(program, id);
+  const storedLayer = findLayer(program, id);
+  const layer = storedLayer?.conditionals === undefined ? storedLayer : conditionalPositionTemplate(storedLayer, ["x", "y", "x2", "y2", "xOffset", "yOffset"]);
 
   if (layer?.mark?.type !== "bar") {
     throw new Error(`Unknown bar mark "${id}".`);
@@ -94,6 +96,7 @@ export function requireCompleteBar(program, id) {
   return {
     dataset,
     layer,
+    storedLayer,
     xEncoding,
     yEncoding,
     xScale,

@@ -1,3 +1,4 @@
+import { canonicalJSON } from "../../core/contentDigest.js";
 import { aggregateRows } from "../../grammar/aggregate.js";
 import { resolveBarCellOpacities } from "./resolve.js";
 import { readSeriesIdentity } from "../../grammar/pathSeries.js";
@@ -64,118 +65,62 @@ export function resolveHistogramInput(dataset, xEncoding, yEncoding) {
   };
 }
 
-export function deriveHistogramSegments({
-  dataset,
-  layer,
-  xEncoding,
-  xScale,
-  resolvedScales
-}) {
+export function deriveHistogramCells({ dataset, layer, xEncoding, xScale, resolvedScales = {}, colorDomain }) {
   const input = resolveHistogramInput(dataset, xEncoding, layer.encoding.y);
   const { rows, values: xValues, entries } = input;
-  const bins = resolveHistogramBins({
-    values: xValues,
-    bin: xEncoding.bin,
-    domain: xScale.domain,
-    nice: xScale.nice ?? true,
-    zero: xScale.zero ?? false
-  });
+  const bins = resolveHistogramBins({ values: xValues, bin: xEncoding.bin, domain: xScale.domain,
+    nice: xScale.nice ?? true, zero: xScale.zero ?? false });
   const colorEncoding = layer.encoding?.color;
-  const layout = resolveBarColorLayout(layer);
-
-  if (layer.encoding?.group !== undefined) {
-    const identity = readSeriesIdentity(rows, layer);
-    const cellRows = bins.boundaries.slice(0, -1).map(() => identity.domain.map(() => []));
-    const index = new Map(identity.domain.map((value, i) => [value, i]));
-    xValues.forEach((value, i) => { const bin = findHistogramBinIndex(value, bins.boundaries);
-      if (bin !== -1) cellRows[bin][index.get(identity.values[i])].push(entries[i]); });
-    return cellRows.flatMap((cells, bin) => layoutSeriesPartition(cells.map(input.mass), layout).map(segment => {
-      const members = cells[segment.index].map(entry => entry.row);
-      let color, colorValue;
-      if (colorEncoding !== undefined) {
-        const values = readNominalField(members, colorEncoding.field);
-        if (new Set(values).size !== 1) throw new Error("Histogram color requires one value within each bin/series cell.");
-        colorValue = values[0];
-        const scale = resolvedScales[colorEncoding.scale];
-        color = mapOrdinalValues([colorValue], scale.domain, scale.range)[0];
-      }
-      return { bin, start: bins.boundaries[bin], end: bins.boundaries[bin + 1],
-        category: segment.index, categoryCount: identity.domain.length,
-        stackStart: segment.start, stackEnd: segment.end, members,
-        ...(color === undefined ? {} : { color, colorValue }) };
-    }));
-  }
-
-  if (colorEncoding?.scale === undefined) {
-    const cellRows = bins.boundaries.slice(0, -1).map(() => []);
-    xValues.forEach((value, index) => {
-      const bin = findHistogramBinIndex(value, bins.boundaries);
-      if (bin !== -1) cellRows[bin].push(entries[index]);
-    });
-    return cellRows.flatMap((cell, bin) =>
-      layoutSeriesPartition([input.mass(cell)], layout).map(segment => ({
-        bin,
-        start: bins.boundaries[bin],
-        end: bins.boundaries[bin + 1],
-        category: segment.index,
-        categoryCount: 1,
-        stackStart: segment.start,
-        stackEnd: segment.end,
-        members: cell.map(entry => entry.row)
-      }))
-    );
-  }
-
-  const colorScale = resolvedScales[colorEncoding.scale];
-  if (colorScale === undefined) {
-    throw new Error(
-      `Bar mark "${layer.id}" requires a resolved color scale.`
-    );
-  }
-  const colorValues = readNominalField(rows, colorEncoding.field);
-  mapOrdinalValues(colorValues, colorScale.domain, colorScale.range);
-  const categoryIndex = new Map(
-    colorScale.domain.map((value, index) => [value, index])
-  );
-  const cells = bins.boundaries.slice(0, -1).map(() =>
-    colorScale.domain.map(() => [])
-  );
-
-  for (let index = 0; index < xValues.length; index += 1) {
-    const bin = findHistogramBinIndex(xValues[index], bins.boundaries);
-    const category = categoryIndex.get(colorValues[index]);
-    if (bin !== -1 && category !== undefined) cells[bin][category].push(entries[index]);
-  }
-
-  const segments = [];
-  for (let bin = 0; bin < cells.length; bin += 1) {
-    const partition = layoutSeriesPartition(cells[bin].map(input.mass), layout);
-    for (const segment of partition) {
-      const category = segment.index;
-      segments.push({
-        bin,
-        start: bins.boundaries[bin],
-        end: bins.boundaries[bin + 1],
-        category,
-        categoryCount: cells[bin].length,
-        stackStart: segment.start,
-        stackEnd: segment.end,
-        members: cells[bin][category].map(entry => entry.row),
-        color: mapOrdinalValues(
-          [colorScale.domain[category]],
-          colorScale.domain,
-          colorScale.range
-        )[0]
-      });
+  const identity = layer.encoding?.group === undefined ? undefined : readSeriesIdentity(rows, layer);
+  const colors = colorEncoding === undefined ? undefined : readNominalField(rows, colorEncoding.field);
+  const domain = identity?.domain ?? (colorEncoding === undefined ? [undefined]
+    : colorDomain ?? resolvedScales[colorEncoding.scale]?.domain);
+  if (domain === undefined) throw new Error(`Bar mark "${layer.id}" requires a resolved color scale.`);
+  const keys = identity?.values ?? colors ?? rows.map(() => undefined);
+  const categoryIndices = new Map(domain.map((value, index) => [value, index]));
+  const partitions = bins.boundaries.slice(0, -1).map(() => domain.map(() => []));
+  xValues.forEach((value, index) => {
+    const bin = findHistogramBinIndex(value, bins.boundaries), category = categoryIndices.get(keys[index]);
+    if (bin !== -1 && category !== undefined) partitions[bin][category].push(entries[index]);
+  });
+  return partitions.flatMap((cells, bin) => cells.map((cell, category) => {
+    const members = cell.map(entry => entry.row);
+    let colorValue;
+    if (colorEncoding !== undefined) {
+      const values = readNominalField(members, colorEncoding.field);
+      if (new Set(values).size > 1) throw new Error("Histogram color requires one value within each bin/series cell.");
+      colorValue = identity === undefined ? domain[category] : values[0];
     }
+    return { bin, start: bins.boundaries[bin], end: bins.boundaries[bin + 1], category, categoryCount: domain.length,
+      mass: input.mass(cell), members, sourceIndices: cell.map(entry => entry.index),
+      ...(identity === undefined ? {} : { series: domain[category] }),
+      ...(colorEncoding === undefined ? {} : { colorValue }) };
+  }));
+}
+
+export function deriveHistogramSegmentsFromCells(cells, layer, resolvedScales, { mapColor = true } = {}) {
+  const layout = resolveBarColorLayout(layer), bins = new Map();
+  for (const cell of cells) {
+    if (!bins.has(cell.bin)) bins.set(cell.bin, []);
+    bins.get(cell.bin).push(cell);
   }
-  return segments;
+  return [...bins.values()].flatMap(partition => layoutSeriesPartition(partition.map(cell => cell.mass), layout).map(segment => {
+    const cell = partition[segment.index], colorEncoding = layer.encoding?.color;
+    const scale = resolvedScales[colorEncoding?.scale];
+    const color = colorEncoding === undefined || !mapColor ? undefined : mapOrdinalValues([cell.colorValue], scale.domain, scale.range)[0];
+    const { mass: _mass, sourceIndices: _sourceIndices, ...result } = cell;
+    return { ...result, stackStart: segment.start, stackEnd: segment.end, ...(color === undefined ? {} : { color }) };
+  }));
+}
+
+export function deriveHistogramSegments(options) {
+  return deriveHistogramSegmentsFromCells(deriveHistogramCells(options), options.layer, options.resolvedScales);
 }
 
 export function deriveHistogramRectangles(required, resolved) {
   const xScale = resolved.resolvedScales[required.xEncoding.scale];
   const yScale = resolved.resolvedScales[required.yEncoding.scale];
-  const segments = deriveHistogramSegments({
+  const segments = required.conditional?.segments ?? deriveHistogramSegments({
     ...required,
     resolvedScales: resolved.resolvedScales
   });
@@ -204,6 +149,9 @@ export function deriveHistogramRectangles(required, resolved) {
   );
 
   return segments.map((segment, index) => {
+    const selected = required.conditional?.bindings.get(canonicalJSON([segment.bin, segment.category]));
+    const xScale = resolved.resolvedScales[selected?.x.binding.scale ?? required.xEncoding.scale];
+    const yScale = resolved.resolvedScales[selected?.y.binding.scale ?? required.yEncoding.scale];
     const [x1, x2] = mapContinuousScaleValues(
       [segment.start, segment.end],
       xScale

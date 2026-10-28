@@ -70,7 +70,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
     rationale: "Coordinate ownership and inference must reject ambiguity consistently."
   }),
   "position-policies": Object.freeze({
-    prefix: "actions/encodings/position/policies/",
+    prefix: "grammar/positionPolicies/",
     floor: Object.freeze({ lines: 50, branches: 30, functions: 80 }),
     rationale: "Every positional mark policy must remain executable through shared encodings."
   }),
@@ -167,7 +167,7 @@ export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
     branches: 75,
     functions: 100
   }),
-  "actions/encodings/position/policies/index.js": Object.freeze({
+  "grammar/positionPolicies/index.js": Object.freeze({
     lines: 90,
     branches: 75,
     functions: 100

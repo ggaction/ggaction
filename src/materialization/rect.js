@@ -1,3 +1,5 @@
+import { hasPositionBinding } from "../core/encodingBindings.js";
+import { resolveRowEncodingValues } from "./rowEncoding.js";
 import {
   mapOrdinalPositionValues,
   readScaleField
@@ -36,7 +38,7 @@ export function resolveRectConsumerValues(layer, dataset, channel) {
   const requested = optionalValues(dataset.values, layer.encoding[channel], length, channel);
   const mode = resolveRectMode(layer);
   if (mode === undefined) return requested;
-  const complete = requiredChannels(layer, mode).map(candidate =>
+  const complete = requiredChannels(layer, mode).filter(candidate => layer.encoding?.[candidate] !== undefined).map(candidate =>
     optionalValues(dataset.values, layer.encoding[candidate], length, candidate)
   );
   return requested.map((value, index) =>
@@ -53,7 +55,11 @@ function mapOptional(values, scale, channel, categorical = false) {
   });
 }
 
-function mappedEncoding(program, layer, dataset, channel) {
+function mappedEncoding(program, layer, dataset, channel, resolvers) {
+  if (layer.conditionals?.[channel] !== undefined) {
+    const mapped = resolveRowEncodingValues(program, layer, dataset, channel, resolvers, { includeScale: true });
+    return { values: mapped.map(item => item.value), scales: mapped.map(item => item.scale) };
+  }
   const encoding = layer.encoding[channel];
   const scale = program.resolvedScales[encoding.scale];
   if (scale === undefined) {
@@ -82,14 +88,14 @@ function appearance(config, fill, stroke) {
   };
 }
 
-export function resolveRectRows(program, layer, dataset) {
+export function resolveRectRows(program, layer, dataset, resolvers) {
   const mode = resolveRectMode(layer);
   if (mode === undefined) return [];
   const bounds = resolveCoordinateBounds(program, layer.coordinate);
-  const x = layer.encoding.x === undefined ? undefined : mappedEncoding(program, layer, dataset, "x");
-  const y = layer.encoding.y === undefined ? undefined : mappedEncoding(program, layer, dataset, "y");
-  const x2 = layer.encoding.x2 === undefined ? undefined : mappedEncoding(program, layer, dataset, "x2");
-  const y2 = layer.encoding.y2 === undefined ? undefined : mappedEncoding(program, layer, dataset, "y2");
+  const x = !hasPositionBinding(layer, "x") ? undefined : mappedEncoding(program, layer, dataset, "x", resolvers);
+  const y = !hasPositionBinding(layer, "y") ? undefined : mappedEncoding(program, layer, dataset, "y", resolvers);
+  const x2 = !hasPositionBinding(layer, "x2") ? undefined : mappedEncoding(program, layer, dataset, "x2", resolvers);
+  const y2 = !hasPositionBinding(layer, "y2") ? undefined : mappedEncoding(program, layer, dataset, "y2", resolvers);
   const color = layer.encoding?.color === undefined
     ? undefined
     : mappedEncoding(program, layer, dataset, "color").values;
@@ -116,8 +122,8 @@ export function resolveRectRows(program, layer, dataset) {
 
     let geometry;
     if (mode === RECT_MODES.discrete) {
-      const width = x.scale.bandwidth;
-      const height = y.scale.bandwidth;
+      const width = (x.scales?.[index] ?? x.scale).bandwidth;
+      const height = (y.scales?.[index] ?? y.scale).bandwidth;
       if (!Number.isFinite(width) || width <= 0 || !Number.isFinite(height) || height <= 0) {
         return [];
       }
@@ -151,9 +157,9 @@ export function resolveRectRows(program, layer, dataset) {
   });
 }
 
-export function resolveRectGraphicItems(program, layer, dataset) {
+export function resolveRectGraphicItems(program, layer, dataset, resolvers) {
   const radius = program.markConfigs[layer.id] ?? {};
-  return resolveRectRows(program, layer, dataset).map(item =>
+  return resolveRectRows(program, layer, dataset, resolvers).map(item =>
     materializeRectItem(item.properties, radius)
   );
 }

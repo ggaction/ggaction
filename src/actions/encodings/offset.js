@@ -1,3 +1,4 @@
+import { commonPositionBinding } from "../../core/encodingBindings.js";
 import { assertIndependentOverlayGeometry } from "../../grammar/overlay.js";
 import { inferSeriesGroup } from "./shared.js";
 import { findSemanticScale } from "../../selectors/scales.js";
@@ -57,7 +58,7 @@ function createOffsetEncoding(channel) {
         }
 
       } else {
-        const parent = layer.encoding?.[parentChannel];
+        const parent = commonPositionBinding(layer, parentChannel);
         if (
           parent === undefined ||
           !["nominal", "ordinal"].includes(parent.fieldType)
@@ -96,7 +97,7 @@ function createOffsetEncoding(channel) {
       });
       next = applyEncodingScale(next, scale, {
         ...Object.fromEntries(Object.entries(scaleOptions).filter(
-          ([property]) => property !== "range"
+          ([property]) => !["range", "padding"].includes(property)
         )),
         paddingInner: scale.paddingInner,
         paddingOuter: scale.paddingOuter,

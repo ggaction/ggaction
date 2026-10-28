@@ -12,7 +12,7 @@ import { findDataset } from "../../../selectors/datasets.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
 import { SCALED_ENCODING_CHANNELS } from "../../../core/vocabulary.js";
 import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
-import { resolveOverlaySeries } from "../../overlayItems.js";
+import { resolveOverlayGeometry } from "../../overlayGeometry.js";
 import { uniqueFields } from "../../selection/items/common.js";
 
 export function findScale(program, id) {
@@ -72,10 +72,10 @@ export function readConsumerFieldValues(
   dataset,
   scale = findScale(program, consumer.encoding.scale)
 ) {
-  if (consumer.role === "conditional") return readConditionalConsumerValues(program, consumer.layer, consumer.encoding, scale);
+  if (consumer.role === "conditional") return readConditionalConsumerValues(program, consumer.layer, consumer.encoding, scale, consumer.channel);
   const { field, fieldType, temporalUnit } = consumer.encoding;
   if (consumer.layer.derivedBindings?.overlay) {
-    const groups = resolveOverlaySeries(program, consumer.layer.derivedBindings.overlay, { geometry: false });
+    const groups = resolveOverlayGeometry(program, consumer.layer.derivedBindings.overlay, { geometry: false });
     const rows = consumer.layer.mark.type === "point" ? groups.flatMap(group => group.points.map(point => point.fields))
       : groups.map(group => uniqueFields(group.points.map(point => point.fields)));
     return readScaleField(rows, field, fieldType, { allowUnknown: Object.hasOwn(scale, "unknown"), temporalUnit });

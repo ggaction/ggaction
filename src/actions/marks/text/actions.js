@@ -16,6 +16,7 @@ import {
   canMaterializeArc,
   canMaterializeRect,
   canMaterializeText,
+  canMaterializeTextSource,
   isTextSource
 } from "../../../materialization/marks/index.js";
 import {
@@ -61,6 +62,7 @@ function eligibleSource(program, layer, requestedData) {
     !isTextSource(layer) ||
     !sourceMatchesData(program, layer, requestedData)
   ) return false;
+  if (["x", "y", "theta", "radius"].some(channel => layer.conditionals?.[channel] !== undefined)) return canMaterializeTextSource(program, layer);
   if (layer.mark.type === "arc") return canMaterializeArc(program, layer);
   if (
     layer.mark.type === "point" &&

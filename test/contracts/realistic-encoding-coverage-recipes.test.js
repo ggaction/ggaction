@@ -24,12 +24,12 @@ const actionCards = JSON.parse(readFileSync(
 ));
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const EXPECTED = Object.freeze({
-  "paths": 310,
-  "pathSha256": "2b51d84100f8f9ab20a1388c6ef63d922ec4ad7b41a8baabdeb034308514c984",
-  "literals": 305,
-  "literalSha256": "305a74d986f06a1d2dc91c79468753151e20635c5a3e1cfaa11e11a36f7ef54f",
-  "diversity": 12,
-  "diversitySha256": "842dd3215cb8191bd53940e33c4faf91cf1f2f71bda241ce4876565d8fd9df55"
+  "paths": 673,
+  "pathSha256": "489be20311ab31f3b85a4355dfff3fa3ff79f21ebf1bde9ced5ef353288e8acc",
+  "literals": 634,
+  "literalSha256": "524b246978b5f09ced277f27b45f0016bf47584106d153c53257f784f9e192fb",
+  "diversity": 32,
+  "diversitySha256": "545faa63709bbd91bcd85ab0b2a3f0c803fb81b11c67efafd629806799486103"
 });
 
 function digest(values) {
@@ -105,6 +105,23 @@ function targetInventory(inventory) {
   });
 }
 
+const ATOMIC_METHODS = new Set([
+  "encodeX", "encodeY", "encodeX2", "encodeY2", "encodeTheta", "encodeR",
+  "encodeXOffset", "encodeYOffset", "encodeColor", "encodeStroke", "encodeSize",
+  "encodeShape", "encodeOpacity", "encodeStrokeWidth", "encodeStrokeDash",
+  "encodeAngle", "encodeText", "encodeDx", "encodeDy"
+]);
+function atomicPath(option) {
+  if (!ATOMIC_METHODS.has(option.action) || ["target", "coordinate"].includes(option.path)) return undefined;
+  const suffix = option.action.slice("encode".length);
+  return `channels.${suffix[0].toLowerCase() + suffix.slice(1)}.${option.path}`;
+}
+const ATOMIC_STRUCTURAL_PATHS = Object.freeze([
+  "channels.group.field", "channels.group.fields", "channels.group.fieldType",
+  "channels.pathOrder.field", "channels.pathOrder.fieldType",
+  "channels.pathOrder.order:ascending", "channels.pathOrder.order:descending"
+]);
+
 function assertMetadata(recipe, factors, program, metadata, label) {
   const definition = datasetDefinition(factors.dataset);
   assert.equal(definition.corpus, "tidytuesday", label);
@@ -169,6 +186,13 @@ async function projection() {
       emptyStats()
     ]));
     const valuesByOption = new Map(target.options.map(option => [option.id, new Map()]));
+    const atomicOptions = target.options.filter(option => atomicPath(option) !== undefined);
+    const atomicOptionIds = new Set(atomicOptions.map(option => option.id));
+    const atomicOptionStats = new Map(atomicOptions.map(option => [option.id, emptyStats()]));
+    const atomicLiterals = target.literals.filter(requirement => atomicOptionIds.has(requirement.optionPath));
+    const atomicLiteralStats = new Map(atomicLiterals.map(requirement => [requirement.id, emptyStats()]));
+    const atomicValuesByOption = new Map(atomicOptions.map(option => [option.id, new Map()]));
+    const atomicStructuralStats = new Map(ATOMIC_STRUCTURAL_PATHS.map(path => [path, emptyStats()]));
     let chartCount = 0;
     const datasets = new Set();
     for (const recipe of REALISTIC_ENCODING_COVERAGE_RECIPES) {
@@ -226,6 +250,29 @@ async function projection() {
               }
             }
           }
+          const atomicEntries = directEntries(program, "encodeChannels");
+          for (const option of atomicOptions) {
+            const values = atomicEntries.flatMap(entry => nestedTraceValues(entry.args, atomicPath(option)));
+            if (values.length === 0) continue;
+            record(atomicOptionStats.get(option.id), factors.dataset);
+            const keys = new Set(values.map(literalValueKey).filter(Boolean));
+            for (const key of keys) {
+              const observed = atomicValuesByOption.get(option.id);
+              const stats = observed.get(key) ?? emptyStats();
+              record(stats, factors.dataset);
+              observed.set(key, stats);
+            }
+            for (const requirement of literalsByOption.get(option.id) ?? []) {
+              if (keys.has(requirement.valueKey)) record(atomicLiteralStats.get(requirement.id), factors.dataset);
+            }
+          }
+          for (const path of ATOMIC_STRUCTURAL_PATHS) {
+            const [property, literal] = path.split(":");
+            const values = atomicEntries.flatMap(entry => nestedTraceValues(entry.args, property));
+            if (literal === undefined ? values.length > 0 : values.includes(literal)) {
+              record(atomicStructuralStats.get(path), factors.dataset);
+            }
+          }
           chartCount += 1;
           datasets.add(factors.dataset);
         } finally {
@@ -238,6 +285,8 @@ async function projection() {
       optionStats,
       literalStats,
       valuesByOption,
+      atomicOptions, atomicOptionStats, atomicLiterals, atomicLiteralStats,
+      atomicValuesByOption, atomicStructuralStats,
       chartCount,
       datasetCount: datasets.size
     });
@@ -251,8 +300,8 @@ test("defines three direct-encoding recipes with five authentic TT witnesses eac
     composite: 3,
     minimumSelections: 15
   });
-  assert.equal(REALISTIC_ENCODING_COVERAGE_EXPECTED_ACTIONS.length, 18);
-  assert.equal(new Set(REALISTIC_ENCODING_COVERAGE_EXPECTED_ACTIONS).size, 18);
+  assert.equal(REALISTIC_ENCODING_COVERAGE_EXPECTED_ACTIONS.length, 24);
+  assert.equal(new Set(REALISTIC_ENCODING_COVERAGE_EXPECTED_ACTIONS).size, 24);
   assert.equal(new Set(REALISTIC_ENCODING_COVERAGE_RECIPES.map(recipe => recipe.id)).size, 3);
   for (const recipe of REALISTIC_ENCODING_COVERAGE_RECIPES) {
     assert.equal(recipe.suite, "realistic", recipe.id);
@@ -270,7 +319,7 @@ test("defines three direct-encoding recipes with five authentic TT witnesses eac
   }
 });
 
-test("covers every valid direct encoding option path and path literal at 5/3", async () => {
+test("covers every valid direct encoding option path and path literal at 5/3", async t => {
   const result = await projection();
   assert.equal(result.chartCount, 15);
   assert.equal(result.datasetCount, 5);
@@ -300,6 +349,7 @@ test("covers every valid direct encoding option path and path literal at 5/3", a
     }),
     []
   );
+  t.diagnostic(`${result.target.options.length} paths, ${result.target.literals.length} literals, ${result.target.diversity.length} diversity requirements; ${result.chartCount} recipes on ${result.datasetCount} pinned datasets`);
 });
 
 
@@ -322,5 +372,28 @@ test("executes both restored range palette spellings with authentic 5/3 witnesse
       assert.ok(stats && meetsMinimum(stats), `${path} ${palette} actual 5/3 evidence`);
       assert.equal(stats.datasets.size, 5, `${path} ${palette} all five pinned datasets`);
     }
+  }
+});
+
+// encodeChannels is an advanced action, so the ordinary public-action inventory
+// intentionally excludes it. Its native payloads still receive actual 5/3 proof.
+test("atomic channel counterparts preserve every supported focused option at 5/3", async t => {
+  const result = await projection();
+  assert.deepEqual({
+    paths: result.atomicOptions.filter(option =>
+      !meetsMinimum(result.atomicOptionStats.get(option.id))).map(atomicPath),
+    literals: result.atomicLiterals.filter(requirement =>
+      !meetsMinimum(result.atomicLiteralStats.get(requirement.id))).map(requirement => requirement.id),
+    diversity: result.target.diversity.filter(requirement => {
+      const values = result.atomicValuesByOption.get(requirement.optionPath);
+      return values !== undefined && [...values.values()].filter(meetsMinimum).length < requirement.minimumDistinctValues;
+    }).map(requirement => requirement.id),
+    structural: [...result.atomicStructuralStats].filter(([, stats]) =>
+      !meetsMinimum(stats)).map(([path]) => path)
+  }, { paths: [], literals: [], diversity: [], structural: [] });
+  t.diagnostic(`${result.atomicOptions.length} atomic paths, ${result.atomicLiterals.length} atomic literals, ${result.atomicValuesByOption.size} typed option ledgers; ${ATOMIC_STRUCTURAL_PATHS.length} group/path-order witnesses`);
+  for (const [path, stats] of result.atomicStructuralStats) {
+    assert.ok(meetsMinimum(stats), `${path}: actual grouped/path-order atomic witnesses`);
+    assert.equal(stats.datasets.size, 5, `${path}: all pinned sources`);
   }
 });

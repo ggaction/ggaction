@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Assign an area, ranged-bar, or rect upper edge, or a rule secondary x endpoint.",
-  "signature": "encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;",
+  "signature": "encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions | ConditionalEncodingOptions<SecondaryPositionEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode x2",
     "encode",
@@ -74,6 +74,21 @@
   },
   "options": [
     {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<SecondaryPositionEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<SecondaryPositionEncodingOptions>[\"otherwise\"]"
+    },
+    {
       "name": "datum",
       "required": false,
       "type": "unknown"
@@ -81,22 +96,17 @@
     {
       "name": "field",
       "required": false,
-      "type": "string | undefined"
+      "type": "string"
     },
     {
       "name": "fieldType",
       "required": false,
-      "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
-    },
-    {
-      "name": "target",
-      "required": false,
-      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+      "type": "\"quantitative\" | undefined"
     },
     {
       "name": "scale",
       "required": false,
-      "type": "{ id?: string | undefined; } | { id?: string | undefined; } | { id?: string | undefined; } | undefined"
+      "type": "{ id?: string | undefined; } | undefined"
     },
     {
       "name": "coordinate",
@@ -110,7 +120,7 @@
     }
   ],
   "callPatterns": [
-    "encodeX2({ target?, scale?, coordinate?, datum?, field?, fieldType?, temporalUnit? })"
+    "encodeX2({ target?, scale?, coordinate?, conditions?, otherwise?, datum?, field?, fieldType? })"
   ],
   "snippet": "program.encodeX2({ field: \"x2\" })",
   "errors": [],

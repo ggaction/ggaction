@@ -10,13 +10,15 @@
 - [x] Appearance empty domain·cycle·inactive branch·zero·atomic failure 통합 시험
 - [x] Appearance 타입·Current·공개 문서·generated metadata·설치 소비자 동기화
 - [x] Prepared-source/main statistics 통합, lifecycle 직접 증거와 설치·문서 검증
-- [ ] Positional·offset·pointRadius·text 및 topology matrix 종료
-- [ ] 전체 조건부 checkpoint commit/push와 AT-18 인계
+- [x] Positional·offset·pointRadius·text 및 topology matrix 종료
+- [x] 전체 조건부 checkpoint commit/push와 [AT-18 인계](../progress/STEP-016.json)
 
 기준은 `c0f0f7147f62a9da671b632eb5dbaf03188cd575`다. 사용자의 전체 Roadmap9 실행·병렬
 작업 승인은 [AUTHORIZATION](../../AUTHORIZATION.json)에 기록되어 있다. Root가 지정한
 `codex/roadmap9-conditions`에서 독립 구현하며 G-DATA의 아직 통합되지 않은 파일은 복사하지 않는다.
-이 문서는 구현 예정인 구체 계약이며 시험 성공이나 STEP-016 완료를 뜻하지 않는다.
+이 문서는 승인된 설계와 단계별 구현 기록이다. 최종 위치·텍스트 소비자와 검증은
+[POSITION_IMPLEMENTATION](POSITION_IMPLEMENTATION.md)에 기록했다. Clean integration과
+전체 STEP-016 closeout은 후속 통합 기록으로 확인한다.
 
 ## Predicate와 filter
 
@@ -56,11 +58,11 @@ item의 한 값이 유일하지 않으면 임의 source row를 선택하지 않�
 | 소비자 | 현재 계획 | 종료 조건 |
 | --- | --- | --- |
 | color/stroke/size/shape/opacity/strokeWidth/strokeDash/angle | 우선 구현 | 기존 mark별 허용 채널, constant/field/scale, create/edit/remove/replay 및 renderer parity |
-| x/y/x2/y2/theta/r | 추가 계약 대조 중 | positional mapping과 topology 변경을 구별한 supported/unsupported 근거 및 필요 구현 |
-| xOffset/yOffset/dx/dy | 추가 계약 대조 중 | 기존 unit/coordinate/field 제약과 조건부 branch 호환성 |
-| pointRadius | 추가 계약 대조 중 | equal-area size와 radius의 기존 단위/동시 사용 금지 유지 |
-| text | 추가 계약 대조 중 | content/format/layout owner와 typed value 계약 |
-| group/pathOrder | topology 경계 검토 | item grain 변경·selection 대응·데이터 DAG 순환을 감추지 않는 계약 |
+| x/y/x2/y2/theta/r | 구현·검증 완료 | positional mapping과 topology 변경을 구별한 supported/unsupported 근거 및 필요 구현 |
+| xOffset/yOffset/dx/dy | 구현·검증 완료 | 기존 unit/coordinate/field 제약과 조건부 branch 호환성 |
+| pointRadius | 구현·검증 완료 | equal-area size와 radius의 기존 단위/동시 사용 금지 유지 |
+| text | 구현·검증 완료 | content/format/layout owner와 typed value 계약 |
+| group/pathOrder | ordinary topology owner 유지, atomic 7 paths 검증 | item grain 변경·selection 대응·데이터 DAG 순환을 감추지 않는 계약 |
 | parameter/filter/stats/scale/guide/highlight | 필수 | 영향 있는 closure만 갱신, diamond 중복 제거, 불변 실패 |
 | selection CRUD, resource removal, facet/repeat/concat | 필수 | exact refs, scope, 재채택과 ancestor snapshot 갱신 |
 | inspection/scene/codec | 필수 | 조건 입력/결과 확인, concrete output parity, fresh-process 편집과 malformed restore 거부 |
@@ -229,3 +231,59 @@ Prepared-source 통합 검증은 [INTEGRATION-CHECKPOINT.json](evidence/INTEGRAT
 qualification 7/7, browser 2/2, docs 166/166, build/built/browser를 통과했다.
 동일 tar와 minified bytes의 Node 20/22/24 크기를 측정했고 global/critical coverage floor는
 그대로 유지했다. 이 통합에서 새 full coverage/full realistic sweep을 수행했다고 주장하지 않는다.
+
+## Positional consumer 구현 기록 (누적 검증 중)
+
+위 계약의 위치 소비자를 동일 STEP 범위로 구현했다. 일반 encoder로 branch를 정규화하며
+field/scale/coordinate는 기존 namespace와 inference를 쓴다. 기존 ordinary binding이 있으면
+native 재할당 규칙을 그대로 preview에 공급한다. x2/y2는 primary scale, 이미 endpoint가 있는
+area/bar primary는 해당 scale, arc theta는 기존 단일 angular scale을 기본으로 사용한다.
+명시 ID의 정의 충돌 또는 guide의 unique binding 부재는 원본 상태와 trace를 보존하며 거부한다.
+
+- 행 기반 point/tick/rule/rect/독립 text는 선택된 raw 값을 각각의 scale로 변환한다.
+  datum 0을 값 없음으로 처리하지 않는다. missing:'skip'는 when AST 필드와 encoding 필드를
+  혼합하지 않고 모든 value/otherwise field의 union으로 최종 행 eligibility를 한 번 정한다.
+- line은 native vertex lineage를 사용하여 aggregate 값도 최종 vertex에서 선택한다.
+  area는 선택된 값으로 native stack/fill/center, ranged endpoint, missing break와
+  density/categorical-density geometry를 계산한다. 기존 path 순서나 source membership을
+  바꾸는 비활성 branch도 거부한다.
+- bar는 aggregate cell 또는 histogram bin/series cell에서 count/sum/mean 등 native 값을
+  계산한 뒤 branch를 고르고 기존 series layout에 공급한다. mixed stack total도 automatic
+  domain에 포함한다. Ranged/numeric-center geometry와 inspection은 선택된 endpoint를 공유한다.
+  이후 layoutSeries의 stack/group/fill 변경은 conditionals owner를 유지하며 native 정책을 재사용한다.
+- arc는 ordinary와 conditional 모두 같은 unprojected theta/radius 값과 최종 projection owner를
+  쓴다. Proportional theta는 선택된 weight를 먼저 모은 뒤 total과 cumulative angle을 계산한다.
+  grouped count/sum과 measured radius의 area/radius-length 의미를 유지하며, 일반 zero cell에
+  가려졌던 source item도 selection predicate 평가에서 잃지 않는다.
+- 자동 domain은 비활성 branch 값도 검증·포함한다. Shared stack/center endpoint scale은
+  실제 선택된 혼합 layout의 extrema도 포함한다. Scale별 동시 guide를 새로 생성하지 않으며
+  기존 target+channel의 binding이 하나로 결정되지 않으면 guide authoring/retained guide update를 거부한다.
+
+Native 위치 금지/허용을 restore에서도 동일하게 검사하기 위해 기존 action 하위 pure 정책을
+`grammar/positionPolicies`로 이동했다. `materialization/positionPolicy`는 명시 mark config와
+appearance scale만 pure owner에 전달한다. 이는 새 API가 아니라 기존 native 계약의 재사용이다.
+Action preview와 inactive persisted branch가 서로 다른 허용 목록을 갖지 않는다. 기존 coverage
+family/exact-owner floor의 경로를 이동했으며 숫자는 낮추지 않았다.
+
+현재 source-focused 증거: position/bar/area + native series-layout 47/47, native arc 93/93,
+source-boundary 11/11. 추가 arc/restore/labels와 전체 unit/renderer/browser/installed evidence는
+통합 중이며 이 기록 자체는 checkpoint 완료 선언이 아니다. 최종 수치와 command/input hash는
+source freeze 이후 evidence에 기록한다.
+
+위치 소비자 source freeze 확인: 16개 focused unit 파일 149/149와 source-boundary 11/11을
+통과했다. 로그는 `.artifacts/conditions/positional-closeout-focused.log`,
+`positional-closeout-boundaries.log`다. Prepared URL source의 parameter → filter/computed/lookup
+→ 조건부 위치 → retained guide, facet/repeat 갱신을 포함한다. Repeat할 조건부 field role은
+field/type/scale이 하나의 binding으로 결정되어야 하며, 기존 predicate와 branch owner는 유지한다.
+연결 overlay는 원본 source의 선택된 final-grain 값과 concrete anchor를 공유한다.
+숫자형 문자열 category는 ordinary scale domain의 encounter order를 유지하며, histogram
+bin extent를 중복 확장하지 않는다. 새로운 선택 branch category는 누락하지 않고 뒤에 합친다.
+
+실제 사용이 빠졌던 proportional theta + independent grouped radius 회귀를 추가했다.
+Area의 비정량 datum fallback은 native policy가 금지하는 도달 불가능한 중복이라 제거하고,
+허용된 quantitative datum은 기존 readAreaEndpoint가 계속 소유한다. 14개 focused 회귀의
+`positional-critical-final.log`에서 ArcStructure 100/94.29/100, AreaValues 100/86.49/100
+(line/branch/function)을 확인했다. 기존 critical/global floors는 낮추지 않았다.
+전체 unit의 이전 5128/5129 실행은 동시 추가된 realistic 파일로 discovery snapshot이 달랐으므로
+최종 전체 성공 증거로 사용하지 않는다. 최종 통합 coverage/renderer/browser/package와 현실 데이터
+sweep은 같은 동결 소스에서 별도로 완료해야 한다.

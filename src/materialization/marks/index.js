@@ -1,3 +1,4 @@
+import { positionBindings } from "../../core/encodingBindings.js";
 import { conditionalDependentMarkIds, orderConditionalMarkIds } from "../conditionalState.js";
 import { conditionalValues } from "../../grammar/conditionalState.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
@@ -18,17 +19,20 @@ export {
   canMaterializeRect,
   canMaterializeRule,
   canMaterializeText,
+  canMaterializeTextSource,
   canMaterializeTick,
   isTextSource
 } from "./capabilities.js";
 
 export function getLayerScaleIds(layer) {
   if (isSourceOwnedText(layer)) return [];
-  return [
+  const offsets = new Set(["xOffset", "yOffset"].flatMap(channel => positionBindings(layer, channel)).map(binding => binding.scale));
+  const ids = [
     ...Object.values(layer.encoding ?? {}).map(encoding => encoding?.scale),
     ...Object.values(layer.conditionals ?? {}).flatMap(conditionalValues).map(value => value.scale),
     ...(layer.encoding?.parallel?.dimensions ?? []).map(dimension => dimension.scale)
   ].filter(scale => scale !== undefined);
+  return [...ids.filter(id => !offsets.has(id)), ...ids.filter(id => offsets.has(id))];
 }
 
 export function getScaleConsumerMarkSteps(program, scaleIds) {
@@ -90,7 +94,7 @@ export function getPositionEncodingMaterializationSteps(program, layer, scaleId)
       candidate.id !== layer.id &&
       !isSourceOwnedText(candidate) &&
       POSITION_CHANNELS.some(channel =>
-        candidate.encoding?.[channel]?.scale === scaleId
+        positionBindings(candidate, channel).some(binding => binding.scale === scaleId)
       )
     )
     .map(candidate => getMarkMaterializationStep(program, candidate))

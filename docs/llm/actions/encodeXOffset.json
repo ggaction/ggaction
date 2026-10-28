@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Create or compatibly update a categorical sub-slot scale within a bar, point, or rule x category.",
-  "signature": "encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions>): ChartProgram;",
+  "signature": "encodeXOffset(options: TargetedOptions<XOffsetEncodingOptions | ConditionalEncodingOptions<XOffsetEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode x offset",
     "encode",
@@ -76,14 +76,24 @@
   },
   "options": [
     {
-      "name": "field",
-      "required": true,
-      "type": "string"
-    },
-    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<XOffsetEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<XOffsetEncodingOptions>[\"otherwise\"]"
+    },
+    {
+      "name": "field",
+      "required": false,
+      "type": "string"
     },
     {
       "name": "fieldType",
@@ -107,9 +117,9 @@
     }
   ],
   "callPatterns": [
-    "encodeXOffset({ field, target?, scale?, fieldType?, paddingInner?, paddingOuter? })"
+    "encodeXOffset({ target?, scale?, conditions?, otherwise?, field?, fieldType?, paddingInner?, paddingOuter? })"
   ],
-  "snippet": "program.encodeXOffset({ field: \"value\" })",
+  "snippet": "program.encodeXOffset({ field: \"series\" })",
   "errors": [],
   "route": "/reference/actions/encodings/#encodexoffset"
 }

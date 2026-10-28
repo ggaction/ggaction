@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { renderToSVG } from "../../../src/renderers/svg.js";
 import { chart, hconcat } from "../../../src/index.js";
 import { serializeProgram, deserializeProgram } from "../../../src/persistence.js";
 import { collectResourceReferences } from "../../../src/core/resourceReferences.js";
@@ -349,4 +350,78 @@ test("optional missing fields retain expression and explicit scale unknown seman
   assert.deepEqual(items(original).map(item => item.properties.opacity), [1, 0]);
   const mapped = original.encodeOpacity(condition({ field: "optional", scale: { domain: [0, 2], unknown: 0.1 } }, { value: 0 }, expression(literal(true))));
   assert.deepEqual(items(mapped).map(item => item.properties.opacity), [0.1, 1]);
+});
+
+
+test("conditional density-area color materializes valid fills before concrete graphic validation", () => {
+  const original = chart().createCanvas({ width: 400, height: 300, margin: 50 })
+    .createData({ id: "raw", values: [
+      { x: 1, group: "A" }, { x: 2, group: "A" }, { x: 3, group: "A" },
+      { x: 2, group: "B" }, { x: 3, group: "B" }, { x: 4, group: "B" }
+    ] })
+    .createAreaMark({ id: "area", data: "raw" })
+    .encodeDensity({ target: "area", source: "raw", field: "x", groupBy: "group", steps: 8 })
+    .encodeColor({ target: "area", field: "group", layout: "center" })
+    .configureAreaStrokeFromFill({ id: "area", strokeWidth: 2 });
+  const saved = serializeProgram(original);
+  const value = { field: "group", layout: "center" };
+  const result = original.encodeColor({ target: "area", conditions: [
+    { when: expression(literal(false)), value }
+  ], otherwise: value });
+  assert.deepEqual(result.graphicSpec.objects.area.items.map(item => item.properties.fill),
+    ["#4c78a8", "#f58518"]);
+  assert.deepEqual(result.graphicSpec.objects.area.items.map(item => item.properties.stroke),
+    ["#4c78a8", "#f58518"]);
+  assert.equal(serializeProgram(original), saved);
+  const restored = deserializeProgram(serializeProgram(result));
+  const revised = restored.encodeColor({ target: "area", conditions: [
+    { when: expression(literal(true)), value: { value: "#dc2626" } }
+  ], otherwise: { value: "#2563eb" } });
+  assert.deepEqual(revised.graphicSpec.objects.area.items.map(item => item.properties.fill),
+    ["#dc2626", "#dc2626"]);
+  assert.deepEqual(revised.graphicSpec.objects.area.items.map(item => item.properties.stroke),
+    ["#dc2626", "#dc2626"]);
+});
+
+
+test("conditional point and area strokes retain the ordinary visible default width", () => {
+  for (const shape of ["circle", "square", "triangle-up"]) {
+    for (const value of [{ value: "#dc2626" }, { field: "group", scale: { id: "strokes" } }]) {
+      const original = base().encodeShape({ value: shape });
+      const result = original.encodeStroke(condition(value, { value: "#2563eb" }));
+      assert.deepEqual(items(result).map(item => item.properties.strokeWidth), [1, 1, 1]);
+      assert.equal(items(result)[0].properties.stroke, "#2563eb");
+      assert.doesNotThrow(() => renderToSVG(result));
+      const restored = deserializeProgram(serializeProgram(result));
+      assert.doesNotThrow(() => renderToSVG(restored.editCanvas({ width: 420 })));
+    }
+  }
+  const zero = base().encodeStrokeWidth({ value: 0 })
+    .encodeStroke(condition({ value: "red" }, { value: "blue" }));
+  assert.deepEqual(items(zero).map(item => item.properties.strokeWidth), [0, 0, 0]);
+  const area = chart().createCanvas({ width: 400, height: 300, margin: 50 })
+    .createData({ id: "raw", values: [{ x: 1 }, { x: 2 }, { x: 3 }] })
+    .createAreaMark({ id: "area", data: "raw" })
+    .encodeDensity({ target: "area", field: "x", steps: 8 })
+    .encodeStroke({ target: "area", conditions: [
+      { when: expression(literal(true)), value: { value: "#dc2626" } }
+    ], otherwise: { value: "#2563eb" } });
+  assert.deepEqual(area.graphicSpec.objects.area.items.map(item =>
+    [item.properties.stroke, item.properties.strokeWidth]), [["#dc2626", 1]]);
+  assert.doesNotThrow(() => renderToSVG(area));
+});
+
+
+test("conditional positions reject feedback through interval size and radial centroids", () => {
+  const rows = [{ category: "A", x: 1, y: 2 }, { category: "B", x: 3, y: 6 }];
+  const start = () => chart().createCanvas({ width: 300, height: 200 }).createData({ values: rows });
+  const bars = start().createBarPlot({ id: "bars", x: "category", y: { field: "y", aggregate: "sum" }, guides: false })
+    .selectMarks({ id: "tall", target: "bars", property: "height", op: "gt", value: 50 });
+  assert.throws(() => bars.encodeY(condition({ field: "y", aggregate: "mean" }, { field: "y", aggregate: "sum" }, { selection: "tall" })), /Cyclic conditional/);
+  const rect = start().createRectMark({ id: "rect" }).encodeX({ field: "x" }).encodeX2({ field: "y" }).encodeY({ datum: 0 }).encodeY2({ datum: 1 })
+    .selectMarks({ id: "wide", target: "rect", property: "width", op: "gt", value: 20 });
+  assert.throws(() => rect.encodeX2(condition({ field: "y" }, { field: "x" }, { selection: "wide" })), /Cyclic conditional/);
+  const arcs = start().createArcMark({ id: "arcs" }).encodeTheta({ field: "category", fieldType: "nominal" }).encodeR({ field: "y" })
+    .selectMarks({ id: "right", target: "arcs", property: "x", op: "gt", value: 100 });
+  assert.throws(() => arcs.encodeR(condition({ field: "x" }, { field: "y" }, { selection: "right" })), /Cyclic conditional/);
 });

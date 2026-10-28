@@ -1,3 +1,7 @@
+import { getLayerScaleIds } from "../../../materialization/marks/index.js";
+import { hasConditionalBarPosition, conditionalBarStructure } from "../../../materialization/conditionalBarStructure.js";
+import { conditionalAggregateBarValues, conditionalHistogramBarValues } from "../../../materialization/conditionalBarValues.js";
+import { resolveMarkItems, resolveMarkSourceItems } from "../../../materialization/selection/policies/index.js";
 import { materializeMarkOutput } from "../../../materialization/markOutput.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { editGraphicProperties } from "../../primitives/graphicProperties.js";
@@ -81,33 +85,15 @@ export const rematerializeBarMark = /* @__PURE__ */ action(
     });
     if (highlighted !== undefined) return highlighted;
     const required = requireCompleteBar(this, id);
+    if (hasConditionalBarPosition(required.storedLayer)) conditionalBarStructure(this, required.storedLayer, required.dataset);
     let resolved = this;
-    if (args.scales !== false) {
-      resolved = resolved
-        .rematerializeScale({ id: required.xEncoding.scale })
-        .rematerializeScale({ id: required.yEncoding.scale });
-    }
-
-    const colorScaleId = required.layer.encoding?.color?.scale;
-    if (colorScaleId !== undefined && args.scales !== false) {
-      resolved = resolved.rematerializeScale({ id: colorScaleId });
-    }
-    const strokeScaleId = required.layer.encoding?.stroke?.scale;
-    if (strokeScaleId !== undefined && args.scales !== false) {
-      resolved = resolved.rematerializeScale({ id: strokeScaleId });
-    }
-
-    const opacityScaleId = required.layer.encoding?.opacity?.scale;
-    if (opacityScaleId !== undefined && args.scales !== false) {
-      resolved = resolved.rematerializeScale({ id: opacityScaleId });
-    }
+    if (args.scales !== false) for (const id of getLayerScaleIds(required.storedLayer)) resolved = resolved.rematerializeScale({ id });
 
     if (required.materialization === "aggregate") {
+      if (hasConditionalBarPosition(required.storedLayer)) required.conditional = conditionalAggregateBarValues(resolved, required.storedLayer, required.dataset, { resolveMarkItems, resolveMarkSourceItems });
       const offsetChannel = resolveBarOffsetChannel(required.layer);
       const offsetScaleId = required.layer.encoding?.[offsetChannel]?.scale;
-      if (offsetScaleId !== undefined && args.scales !== false) {
-        resolved = resolved.rematerializeScale({ id: offsetScaleId });
-      }
+
       const width = resolved.markConfigs[id]?.barWidth;
       return editRectangles(resolved, id, offsetCategoryRectangles(
         resolved, required.layer, deriveAggregateRectangles(required, resolved, width)
@@ -117,10 +103,11 @@ export const rematerializeBarMark = /* @__PURE__ */ action(
     if ([BAR_GRAINS.ranged, BAR_GRAINS.centered].includes(required.materialization)) {
       const width = resolved.markConfigs[id]?.barWidth;
       return editRectangles(resolved, id, offsetCategoryRectangles(
-        resolved, required.layer, deriveRangedRectangles(required, resolved, width)
+        resolved, required.layer, deriveRangedRectangles(required, resolved, width, { resolveMarkItems, resolveMarkSourceItems })
       ));
     }
 
+    if (hasConditionalBarPosition(required.storedLayer)) required.conditional = conditionalHistogramBarValues(resolved, required.storedLayer, required.dataset, { resolveMarkItems, resolveMarkSourceItems });
     return editRectangles(
       resolved,
       id,

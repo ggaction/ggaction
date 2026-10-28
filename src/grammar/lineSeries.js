@@ -96,9 +96,10 @@ function groupedSeries(groups, fields, dimensions) {
   return series;
 }
 
-function seriesWithSources(key, values, enabled) {
+function seriesWithSources(key, values, enabled, vertexLineage) {
   return { key, values: values.map(({ sourceIndex, sourceIndices, ...value }) => value),
-    ...(enabled ? { sourceIndices: values.flatMap(value => value.sourceIndices ?? [value.sourceIndex]) } : {}) };
+    ...(enabled ? { sourceIndices: values.flatMap(value => value.sourceIndices ?? [value.sourceIndex]) } : {}),
+    ...(vertexLineage ? { vertexSourceIndices: values.map(value => value.sourceIndices ?? [value.sourceIndex]) } : {}) };
 }
 
 function freezeCartesianSeries(series, categoryOrder) {
@@ -156,7 +157,8 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
       const segments = splitLineGapValues(ordered);
       return segments.map(values => ({ key: item.key,
         values: values.map(({ sourceIndex: _sourceIndex, ...value }) => value),
-        sourceIndices: values.map(value => value.sourceIndex) }));
+        sourceIndices: values.map(value => value.sourceIndex),
+        ...(options.vertexLineage ? { vertexSourceIndices: values.map(value => [value.sourceIndex]) } : {}) }));
     });
     return cloneAndFreeze({ xValues: xValues.filter(value => value !== null),
       yValues: yValues.filter(value => value !== null), series });
@@ -208,7 +210,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
         item.orderValues,
         pathOrder.order
       );
-      return [seriesWithSources(item.key, values, options.lineage)];
+      return [seriesWithSources(item.key, values, options.lineage, options.vertexLineage)];
     });
     if (series.length === 0) {
       throw new Error(
@@ -232,7 +234,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
       const values = item.values.sort(
         orderBy === "x" ? compareX : (left, right) => left.y - right.y
       );
-      return [seriesWithSources(item.key, values, options.lineage)];
+      return [seriesWithSources(item.key, values, options.lineage, options.vertexLineage)];
     });
     if (series.length === 0) {
       throw new Error(
@@ -297,7 +299,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
       return [];
     }
 
-    return [seriesWithSources(item.key, values, options.lineage)];
+    return [seriesWithSources(item.key, values, options.lineage, options.vertexLineage)];
   });
 
   if (series.length === 0) {
@@ -356,7 +358,7 @@ function thetaOrder(values, fieldType, domain) {
   return values.map(value => indices.get(value));
 }
 
-export function derivePolarLineSeries(rows, layer, { thetaDomain, lineage = false } = {}) {
+export function derivePolarLineSeries(rows, layer, { thetaDomain, lineage = false, vertexLineage = false } = {}) {
   if (layer.encoding?.pathOrder !== undefined) {
     throw new Error(
       `Polar line mark "${layer.id}" does not support path order.`
@@ -387,7 +389,8 @@ export function derivePolarLineSeries(rows, layer, { thetaDomain, lineage = fals
       (left, right) => left.order - right.order ||
         left.sourceIndex - right.sourceIndex
     );
-    return values.length < 2 ? [] : [{ key: item.key, values, ...(lineage ? { sourceIndices: values.map(value => value.sourceIndex) } : {}) }];
+    return values.length < 2 ? [] : [{ key: item.key, values, ...(lineage ? { sourceIndices: values.map(value => value.sourceIndex) } : {}),
+      ...(vertexLineage ? { vertexSourceIndices: values.map(value => [value.sourceIndex]) } : {}) }];
   });
   if (series.length === 0) {
     throw new Error(

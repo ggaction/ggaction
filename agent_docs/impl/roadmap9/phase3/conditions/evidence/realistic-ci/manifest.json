@@ -1,0 +1,139 @@
+{
+  "baseRevision": "a9ecf10787016aa8098536f96ebf18d58da2a301",
+  "runtimeFixes": [
+    "692d28dbf9f6fb7f411676afe652bd1c381e6eaf",
+    "fb780217a454c80cad152809c1e2ae1ee31deff0"
+  ],
+  "node": "v22.23.1",
+  "platform": "darwin-arm64",
+  "initialCI": {
+    "run": 40730410088,
+    "job": 122965211588,
+    "shard": "7/7"
+  },
+  "commands": {
+    "realistic": "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT=<pinned-cache> node scripts/run-tests.js realistic contracts/realistic-encoding-coverage-recipes.test.js contracts/realistic-data-mark-recipes.test.js contracts/realistic-conditional-lifecycle.test.js",
+    "unit": "node --test --test-concurrency=4 --experimental-test-coverage --test-coverage-include=src/actions/marks/area/actions.js --test-coverage-include=src/actions/marks/point/materialize.js test/unit/actions/conditional-encoding.test.js test/unit/actions/marks/area-gradient-fill.test.js test/unit/actions/marks/create-area-mark.test.js test/unit/actions/marks/edit-area-mark.test.js test/unit/actions/marks/density-area.test.js test/unit/actions/marks/filled-mark-stroke.test.js test/unit/actions/marks/polygon-point-shapes.test.js test/unit/actions/encodings/point-appearance-encodings.test.js test/unit/actions/charts/scatter-stroke-facade.test.js test/unit/actions/marks/create-point-mark.test.js test/unit/actions/marks/edit-point-mark.test.js test/unit/actions/marks/point-packing.test.js test/unit/actions/marks/point-jitter.test.js",
+    "contracts": "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-artifact.test.js",
+    "package": "npm run package:check",
+    "bundle": "npm run package:bundle"
+  },
+  "results": {
+    "realistic": {
+      "passed": 18,
+      "failed": 0
+    },
+    "unit": {
+      "passed": 104,
+      "failed": 0
+    },
+    "contracts": {
+      "passed": 34,
+      "failed": 0
+    },
+    "paths": 429,
+    "literals": 420,
+    "diversity": 21,
+    "minimumOccurrences": 5,
+    "minimumDatasets": 3,
+    "equivalentConditionalTransitions": 375,
+    "package": {
+      "entries": 712,
+      "packedBytes": 1057756,
+      "unpackedBytes": 4924852
+    },
+    "bundle": {
+      "fullGzipBytes": 534567,
+      "basicGzipBytes": 312370
+    }
+  },
+  "inputs": [
+    {
+      "path": "src/actions/marks/area/actions.js",
+      "sha256": "57ae7d60ba193f53f558f851449c209d8530efb881fcb77162fd09b150305267"
+    },
+    {
+      "path": "src/actions/marks/point/materialize.js",
+      "sha256": "0114c6fd28670a258f6b931bacad92dcec01910d79b56e3250af55758e3bb1ea"
+    },
+    {
+      "path": "test/unit/actions/conditional-encoding.test.js",
+      "sha256": "b3df8b9e2af6255ada6b42a6b9bf15abcbf9f6dee17ed696913556652a9181f5"
+    },
+    {
+      "path": "test/contracts/realistic-data-mark-recipes.test.js",
+      "sha256": "8f4b1a1e110859f66d38454dac5f7f9e6213dbc9c1ee3fa5b9893ee1f57a9b0f"
+    },
+    {
+      "path": "test/contracts/realistic-encoding-coverage-recipes.test.js",
+      "sha256": "1615d1c1317a674c084c52c2c75ff7a6be970fe61a87088fa9d039e1ade209f4"
+    },
+    {
+      "path": "test/contracts/realistic-conditional-lifecycle.test.js",
+      "sha256": "f893af83b85f89b44ce156f0af2b766268b9739dfd674276cd2530e951dbde92"
+    },
+    {
+      "path": "test/contracts/test-discovery.test.js",
+      "sha256": "80cd288b5001ed6ecae55407d8d9fc5a74b681fea30a4d7be1778dd9502fae95"
+    },
+    {
+      "path": "test/support/scenarios/realistic-data-mark-recipes.js",
+      "sha256": "7f1e98e2c93dcc906ca443a3c2c6f91e9fca6974b44b2d1c9762fe91712d30b8"
+    },
+    {
+      "path": "test/support/scenarios/realistic-encoding-coverage-recipes.js",
+      "sha256": "8091421e347b4d4bc8d2ee23944122f2b759079ad0a6f82c4c39140abbf4a9c0"
+    },
+    {
+      "path": "test/support/scenarios/realistic-conditional-recipes.js",
+      "sha256": "d4786a4207b7fee3948b112199d2f4bc4d4a9e0b8d444c5a787cee4e3c02fee7"
+    }
+  ],
+  "files": [
+    {
+      "path": "initial-ci-realistic-7.log.gz",
+      "sha256": "76b5bf86bc31d525d86a378597f4cb0fce817a7c4144bf2a3517de6b94f72186",
+      "uncompressedSha256": "142bd4e0e6694b88e9fe92965923b7b4e0fe5c059feaef8f5ef22dfbe67e2f6f"
+    },
+    {
+      "path": "area-repro.log.gz",
+      "sha256": "5d359932f56018227189d3a51e5947534373aed1556592ab58f8c79c39e63790",
+      "uncompressedSha256": "ec13eedc761c3bb6d22269235ff93925b8307363efe69859a6131bd1d46901b1"
+    },
+    {
+      "path": "stroke-unit-before.log.gz",
+      "sha256": "c56f8361cf2a6cd04855d40eb1fdcef389830f5dd3e2201e1021c7c09e938ee0",
+      "uncompressedSha256": "79e9911832bc5a3bb5ac75a120651347505bf8cb9e9a12b815a7e138bf428480"
+    },
+    {
+      "path": "realistic-first.log.gz",
+      "sha256": "90efbbcd5b54cc835c1062f550ed729ef33505463fb2f8d9f6d7541f5b05f87d",
+      "uncompressedSha256": "66b5bdb8e3f4032f84315f1de79795ebb2bcfc3d3d3e19bc58ebe0562b9afe13"
+    },
+    {
+      "path": "realistic-final.log.gz",
+      "sha256": "e27060b2735fb2b548d50c7909b5c460fd0a5ff15453cc0fa96953d5e6dca3f3",
+      "uncompressedSha256": "09b8e742cb46a59715c190cebeca5e36b786f4bbf355b8d06aa7b7ff44d6fd80"
+    },
+    {
+      "path": "mark-coverage-final.log.gz",
+      "sha256": "b0b1e68bee91364d0cf43df6c847e8075f3765d1eb9113e9713e4e0bd4cee3ad",
+      "uncompressedSha256": "f9e45a447c3ba82ddc21ae9eb04cc5ff0614427ad77e9fe68feb76f5a0e65ff6"
+    },
+    {
+      "path": "contracts-final.log.gz",
+      "sha256": "8bf01d0492265363553f984e8fa476c70a839455c52139c38f329bd5c3adcb5b",
+      "uncompressedSha256": "3f7da0270ccd2ff02a88475feed863be6c13a38a7784d2b564abd0973e9c9c63"
+    },
+    {
+      "path": "package-final.log.gz",
+      "sha256": "ba6fb7c3cb076a4dc43ef13e6927e00d92752e22e207e35b13ed506103a93f9f",
+      "uncompressedSha256": "8ce1bf0e6a5ba0754528ff7e0f28c858c26f3854cab80e536769204157a4ee85"
+    },
+    {
+      "path": "bundle-final.log.gz",
+      "sha256": "689b7d680aeb33a05ef67a4f9b08ace73fe6f983824b3fafe40dee6243084afc",
+      "uncompressedSha256": "0cc28ec6413847cb27b62db92ef3258f64c62333e6706a92c867f7585e0befd5"
+    }
+  ]
+}

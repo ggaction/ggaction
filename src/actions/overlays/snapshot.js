@@ -29,7 +29,7 @@ export function detachOverlay(program, layer) {
     .editSemantic({ property: `layer[${layer.id}].derivedBindings.overlay`, remove: true })
     .editSemantic({ property: `layer[${layer.id}].data`, value: data });
   for (const channel of ["x", "y", "group"]) {
-    if (requireLayer(next, layer.id).encoding[channel]) next = next.editSemantic({ property: `layer[${layer.id}].encoding.${channel}`, remove: true });
+    if (requireLayer(next, layer.id).encoding?.[channel]) next = next.editSemantic({ property: `layer[${layer.id}].encoding.${channel}`, remove: true });
   }
   // Appearance shares no mutable scale identity with the former source.
   for (const [channel, encoding] of Object.entries(layer.encoding)) {
