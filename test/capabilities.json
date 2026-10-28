@@ -66,6 +66,14 @@
     "blend-paints": [
       {
         "type": "file",
+        "path": "unit/grammar/png-encoding.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/png-byte-encoding.browser.js"
+      },
+      {
+        "type": "file",
         "path": "unit/grammar/compositing.test.js"
       },
       {

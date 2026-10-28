@@ -1,0 +1,64 @@
+{
+  "state": "private-kernel-verified",
+  "sourceRevision": null,
+  "publicIntegration": false,
+  "commands": [
+    "node scripts/run-tests.js unit unit/grammar/png-encoding.test.js",
+    "node scripts/run-tests.js browser browser/png-byte-encoding.browser.js",
+    "node --test --experimental-test-coverage --test-coverage-include=src/core/pngEncoding.js test/unit/grammar/png-encoding.test.js",
+    "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js"
+  ],
+  "checks": {
+    "normal": {
+      "passed": 5,
+      "failed": 0
+    },
+    "browser": {
+      "passed": 1,
+      "cases": 3,
+      "byteEquality": "exact"
+    },
+    "contracts": {
+      "passed": 40,
+      "failed": 0
+    },
+    "coverage": {
+      "lines": 100,
+      "branches": 97.06,
+      "functions": 100,
+      "floor": [
+        95,
+        90,
+        100
+      ]
+    }
+  },
+  "package": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/paint-public-integration/png-encoding-package/ggaction-0.0.26.tgz",
+    "sha256": "9f40db3811c1dce76fe89da7faf68f2a0924ab16919b9cd3496c1b4867c103d2",
+    "packedBytes": 1049457,
+    "unpackedBytes": 4877645,
+    "entryCount": 706
+  },
+  "logs": {
+    ".artifacts/paint-public-integration/png-encoding-unit.log": "b61a24fcace9a6002af386e6153e6fab41ff25c4ec364cdaeb41a45401e92d20",
+    ".artifacts/paint-public-integration/png-encoding-coverage.log": "e2cc99455693c3d966fa4dfffa3c78f6da6ec9b476f5c1bbdc327cf2ad03cd92",
+    ".artifacts/paint-public-integration/png-encoding-browser.log": "9df28d3c85e0f395fe2dff4b22978a092622de1b78688cb1721b6eea3813222c",
+    ".artifacts/paint-public-integration/png-encoding-contracts-final.log": "ff84cffd89315517733d5e75cc3bf42723a36dce1b2ea78bf2e0fae9b7b2ccef",
+    ".artifacts/paint-public-integration/png-encoding-package-final.json": "3dc0b09c71587d867c0433b7992a72d7cba8c663c4565626aaebb54563eed19a"
+  },
+  "limits": {
+    "dimension": 4096,
+    "pixels": 1048576,
+    "newOutputBytes": 4198788,
+    "moduleCRCBytes": 1024,
+    "maximumCallerInputBytes": 4194304,
+    "maximumCombinedTypedBytes": 8394116,
+    "byteWork": 8397253
+  },
+  "remaining": [
+    "승인된 I3 image payload에 materializer가 연결",
+    "공통 glyph lowerer의 aggregate memory preflight",
+    "실제 shadow/isolated group public consumer 검증"
+  ]
+}
