@@ -1,4 +1,0 @@
-
-> ggaction@0.0.26 docs:machine:check
-> node scripts/generate-doc-machine-artifacts.js --check
-

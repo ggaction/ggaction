@@ -1,0 +1,67 @@
+{
+  "label": "suite-docs",
+  "command": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+  "args": [
+    "--test",
+    "--test-concurrency=4",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/action-capabilities.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/action-reference.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/architecture-paths.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/built-html-ids.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/documentation-coverage.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/documentation.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/documented-behavior.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/executable-programs.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/generated-images.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/getting-started.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/interaction-regressions.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/quarto-ojs-example.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/readme-authoring-sequence.test.js",
+    "/Users/hyeonjeon/Projects/ggactionnewbrand/test/docs/readme-immutable-revisions.test.js"
+  ],
+  "code": 0,
+  "signal": null,
+  "timeoutMs": 5400000,
+  "durationMs": 11837,
+  "node": "v22.23.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "startedAt": "2026-10-28T09:38:55.439Z",
+  "finishedAt": "2026-10-28T09:39:07.276Z",
+  "source": {
+    "available": true,
+    "commit": "3a022aea4d297c63659a37446ce0a39e3e86a3b2",
+    "clean": false,
+    "statusSha256": "a0b1a40e4b2fd56bce7192ca6ab24f1bfafaf58ed8d117a38b6e27c56577d9da"
+  },
+  "sourceAfter": {
+    "available": true,
+    "commit": "3a022aea4d297c63659a37446ce0a39e3e86a3b2",
+    "clean": false,
+    "statusSha256": "a0b1a40e4b2fd56bce7192ca6ab24f1bfafaf58ed8d117a38b6e27c56577d9da"
+  },
+  "logSha256": "eab3def418a643d2911f49a57b5c1380085b7a78af8add0817652ec37a68a0fa",
+  "discovery": {
+    "suite": "docs",
+    "selectors": [],
+    "files": [
+      "test/docs/action-capabilities.test.js",
+      "test/docs/action-reference.test.js",
+      "test/docs/architecture-paths.test.js",
+      "test/docs/built-html-ids.test.js",
+      "test/docs/documentation-coverage.test.js",
+      "test/docs/documentation.test.js",
+      "test/docs/documented-behavior.test.js",
+      "test/docs/executable-programs.test.js",
+      "test/docs/generated-images.test.js",
+      "test/docs/getting-started.test.js",
+      "test/docs/interaction-regressions.test.js",
+      "test/docs/quarto-ojs-example.test.js",
+      "test/docs/readme-authoring-sequence.test.js",
+      "test/docs/readme-immutable-revisions.test.js"
+    ]
+  },
+  "bytes": 36221,
+  "retainedBytes": 36221,
+  "truncated": false
+}

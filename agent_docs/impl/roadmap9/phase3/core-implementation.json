@@ -3,7 +3,7 @@
   "status": "private-core-verified",
   "approval": "G-EXPR.json",
   "reviewCommit": "a08836f0a054e1a7463bc12bc87e9d3e07c43625",
-  "runtimeCommit": null,
+  "runtimeCommit": "3a022aea4d297c63659a37446ce0a39e3e86a3b2",
   "scope": "D2-D6 private AST kernel and getter-safe existing action inputs; public v2 integration remains pending G-PARAM/G-DATA",
   "checks": [
     {
@@ -11,9 +11,10 @@
       "exitCode": 0,
       "receipt": "agent_docs/impl/roadmap9/phase3/core-evidence/expression-core-coverage.json",
       "receiptSha256": "3799919a80e29b44c2aec485a645de4ab32bfbbd73db3445c5c3385a106fd0ca",
-      "log": "agent_docs/impl/roadmap9/phase3/core-evidence/expression-core-coverage.log",
-      "logSha256": "1afaf9c331a931d17b0e700c567d930f6c41c6bd7b31a24bdfafd277c9c7a3ef",
-      "durationMs": 4185
+      "log": "agent_docs/impl/roadmap9/phase3/core-evidence/expression-core-coverage.log.gz",
+      "logSha256": "05c55a5e1a0553cec5efbd655514445657251dff182323aab46d5cb69014bf01",
+      "durationMs": 4185,
+      "logEncoding": "gzip"
     },
     {
       "label": "suite-all",
@@ -22,34 +23,48 @@
       "receiptSha256": "f3f079d53f87a29dd5c7ded3e50a8775c706d58f2246352793c6563df0137427",
       "log": "agent_docs/impl/roadmap9/phase3/core-evidence/suite-all.log.gz",
       "logSha256": "d69e6644c72afa9fd29aa121ab38dfa1dc815750906d90760c8f943e2b47f03c",
-      "durationMs": 278241
+      "durationMs": 278241,
+      "logEncoding": "gzip"
     },
     {
       "label": "expression-package",
       "exitCode": 0,
       "receipt": "agent_docs/impl/roadmap9/phase3/core-evidence/expression-package.json",
       "receiptSha256": "b7feb98d24dc833d44f96960ca3d34f1b29f0faf9275596674e444e7ce62aba6",
-      "log": "agent_docs/impl/roadmap9/phase3/core-evidence/expression-package.log",
-      "logSha256": "6a9b09ede46a3aacfa7b60bfcaaf2178a12008b5161d5d50028c40f8f7196028",
-      "durationMs": 2531
+      "log": "agent_docs/impl/roadmap9/phase3/core-evidence/expression-package.log.gz",
+      "logSha256": "fe0964b5e64c021958dd80fef1dafe2032677e36531c0223318536a498b9f6ef",
+      "durationMs": 2531,
+      "logEncoding": "gzip"
     },
     {
       "label": "expression-bundle",
       "exitCode": 0,
       "receipt": "agent_docs/impl/roadmap9/phase3/core-evidence/expression-bundle.json",
       "receiptSha256": "7a070894229227995dce6892b60f5e4dbfb6dca023d9a467ba2ceb5c79081ea5",
-      "log": "agent_docs/impl/roadmap9/phase3/core-evidence/expression-bundle.log",
-      "logSha256": "c1346d2d47025d492c5cfe2de9fd01b842d8d680c0fac4118d2e78c270cac101",
-      "durationMs": 8154
+      "log": "agent_docs/impl/roadmap9/phase3/core-evidence/expression-bundle.log.gz",
+      "logSha256": "fcc3f7c49f6da6bd074a812c6a6c84e9983d93bd4236472e1c5273d392ff8e41",
+      "durationMs": 8154,
+      "logEncoding": "gzip"
     },
     {
       "label": "expression-machine",
       "exitCode": 0,
       "receipt": "agent_docs/impl/roadmap9/phase3/core-evidence/expression-machine.json",
       "receiptSha256": "c808274839925c72a4e85cb4d2b0105f7a4461211c051df7cdc1e05339f7005a",
-      "log": "agent_docs/impl/roadmap9/phase3/core-evidence/expression-machine.log",
-      "logSha256": "795dd208b8c58e44015d36a6d75d7b26bf5661c5e8c07a4b442bb215e7e219f5",
-      "durationMs": 433
+      "log": "agent_docs/impl/roadmap9/phase3/core-evidence/expression-machine.log.gz",
+      "logSha256": "2970ceb3830b3ae8923e2ae3212fd9dd7870e970c2d964c7c4b8f05d27fbefe3",
+      "durationMs": 433,
+      "logEncoding": "gzip"
+    },
+    {
+      "label": "suite-docs",
+      "exitCode": 0,
+      "receipt": "agent_docs/impl/roadmap9/phase3/core-evidence/suite-docs.json",
+      "receiptSha256": "c0afaaa2c3ed4ecad1985bd6f403c4e710125991b966cdcf6b67cf2707930ade",
+      "log": "agent_docs/impl/roadmap9/phase3/core-evidence/suite-docs.log.gz",
+      "logSha256": "1e4e8d2c2c0bc7772064120f187d296c51266aa59e76d580a5777ce35b130509",
+      "logEncoding": "gzip",
+      "durationMs": 11837
     }
   ],
   "verification": {
@@ -59,7 +74,21 @@
     "focusedTests": 62,
     "criticalMetrics": "agent_docs/impl/roadmap9/phase3/core-evidence/expression-critical-metrics.json",
     "inputs": "agent_docs/impl/roadmap9/phase3/core-evidence/inputs.json",
-    "inputsSha256": "7d62b8a2d36530db199abeb72c7fe629855315439de0589e595a288cf5c7aeb6"
+    "inputsSha256": "7d62b8a2d36530db199abeb72c7fe629855315439de0589e595a288cf5c7aeb6",
+    "postCommitDocumentationTests": 158,
+    "bundleBudgets": {
+      "owner": "scripts/browser-bundle-size.js",
+      "values": {
+        "full": {
+          "gzipBytes": 507597,
+          "maximum": 508000
+        },
+        "basic": {
+          "gzipBytes": 285702,
+          "maximum": 286000
+        }
+      }
+    }
   },
   "provenanceNote": "Implementation tests ran against the recorded working tree before the source commit. inputs.json pins source, tests and scripts; runtimeCommit is recorded after committing those exact bytes. Documentation provenance is regenerated and rechecked after that commit.",
   "integrationComplete": false,

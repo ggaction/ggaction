@@ -92,3 +92,7 @@ installed-package 통합 검사는 기존 정책대로 공개 통합 checkpoint�
 신규 critical family/file 기준을 모두 통과했다. 이 수치는 전체 repository coverage가 아니다.
 Package·Full/Basic bundle 및 생성 machine metadata 검사도 exit0이다. 전체 suite raw log는 gzip으로
 보존하고 receipt·입력 파일 hash와 함께 같은 source bytes를 재현할 수 있게 기록했다.
+
+Runtime commit은 `3a022aea`다. Commit 후 source reference를 갱신한 공개 문서 158개 검사도
+모두 통과했다. 증거 receipt의 pre-commit working tree를 clean 실행이라고 바꾸지 않았으며,
+기록한 source/test/script 2,386개 hash와 이 commit의 동일성을 별도로 확인했다.
