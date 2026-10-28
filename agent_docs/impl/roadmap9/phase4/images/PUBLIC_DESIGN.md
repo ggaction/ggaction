@@ -90,8 +90,10 @@ decoder로 같은 preflight를 내부 수행한다. 어느 renderer도 URL fetch
 
 ## 검증 계획과 남은 범위
 
-I1/I3의 새 저장·공개 계약은 승인 후 구현한다. 그 전에는 private resolver/placement/primitive proof만 Current다.
+I1–I4의 새 저장·공개 계약은 승인 후 구현한다. 그 전에는 private resolver/placement/primitive proof만 구현되어 있다.
 Required checks는 독립 literal fit/hash/budget/abort, forged/stale handle, immutable failure, resource replace/remove
 closure, graphic-only/offline codec, four renderer preflight, public/primitive pixel equality, package/types/current/docs다.
-임의 RGBA를 image bytes로 오해하지 않으며, asset payload 및 decode budget은 resource별 기존 한도를 우선 적용하고
-합계 materialization work를 공통 budget에 누적한다. Font resource/최종 export bundle은 별도 STEP의 남은 범위다.
+임의 RGBA를 image bytes로 오해하지 않는다. 준비 시 resource별 기존16MiB/64MiPixels 한도를 적용한다.
+한 renderer 준비는 distinct contentHash의 bytes와 decoded pixels를 각각 합산해64MiB/64MiPixels를
+넘으면 decode callback 전에 거부한다. 같은 payload를 반복 그리는 경우 한 번만 합산한다.
+Materialization의 item/work 비용은 기존 공통 budget에 누적한다. Font resource/최종 export bundle은 별도 STEP의 남은 범위다.
