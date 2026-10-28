@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:233a23b316f294aa348765ab633a393d70525d557da78de28144bb447ff7691d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:7348b1d195f222063bfbb3d2d98f7f9936080d75e9cdd2a108c47f468abf4cd1. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -9508,9 +9508,11 @@ clockwise; top and bottom titles remain horizontal.
 
 Set `maxWidth` to wrap text before edge rotation. Word wrapping prefers
 whitespace and falls back to Unicode-safe character wrapping for an oversized
-word. Character wrapping always splits on Unicode code-point boundaries. The
-library uses deterministic text metrics so the same program produces the same
-line breaks in browsers and Node. Renderers draw the concrete lines already in
+word. Both modes preserve whole Unicode grapheme clusters, including combining
+marks, Hangul syllable sequences, and emoji sequences. A single cluster wider
+than `maxWidth` stays intact on its own line. Layout uses `Intl.Segmenter`
+grapheme boundaries and deterministic text metrics; Unicode boundary rules
+follow the runtime's Unicode version. Renderers draw the concrete lines already in
 `graphicSpec`; they do not wrap text again. Title and subtitle strings accept
 explicit newline characters. Each hard line wraps independently when `maxWidth`
 is set. Leading, interior, and trailing blank lines reserve vertical spacing
@@ -31221,6 +31223,7 @@ export interface AxisLabelLayoutOptions {
   rotation?: RotationInput;
   /** Wrap each label to this measured width; false removes an existing wrap policy. */
   maxWidth?: number | false;
+  /** Both modes keep grapheme clusters intact; hard breaks preserve line spacing. */
   wrap?: "word" | "character";
   lineHeight?: number;
   /** Defaults to error; allow stores an intentional label-label overlap policy. */
@@ -41522,6 +41525,7 @@ export interface TitleOptions {
   alongOffset?: number;
   gap?: number;
   maxWidth?: number;
+  /** Both modes keep grapheme clusters intact; hard breaks preserve line spacing. */
   wrap?: "word" | "character";
   lineHeight?: number;
   /** Subtitle-only line spacing; overrides lineHeight without requiring maxWidth. */
@@ -45322,7 +45326,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:233a23b316f294aa348765ab633a393d70525d557da78de28144bb447ff7691d` |
+| Contract fingerprint | `sha256:7348b1d195f222063bfbb3d2d98f7f9936080d75e9cdd2a108c47f468abf4cd1` |
 | Example and dataset source | `b8f9668133b278974c9cfe7324402a18282c9f4b` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
@@ -45633,7 +45637,10 @@ Cartesian label styles accept `rotation`, `maxWidth`, `wrap`, `lineHeight`, and
 facades. Numeric rotations are radians; `{ value, unit }` accepts radians or
 degrees. Setting a positive `maxWidth` stores deterministic word or character
 wrapping as concrete text lines. Word wrapping is the default, and an oversized
-word is split by Unicode code point. `lineHeight` defaults to `fontSize * 1.2`
+word is split only between Unicode grapheme clusters using `Intl.Segmenter`.
+Combining marks, Hangul sequences, and emoji clusters stay intact, even when a
+single cluster exceeds `maxWidth`. LF, CRLF, and CR breaks preserve separate
+lines and blank-line spacing. `lineHeight` defaults to `fontSize * 1.2`
 and cannot be smaller than the font size.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.

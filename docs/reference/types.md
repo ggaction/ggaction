@@ -610,6 +610,7 @@ export interface AxisLabelLayoutOptions {
   rotation?: RotationInput;
   /** Wrap each label to this measured width; false removes an existing wrap policy. */
   maxWidth?: number | false;
+  /** Both modes keep grapheme clusters intact; hard breaks preserve line spacing. */
   wrap?: "word" | "character";
   lineHeight?: number;
   /** Defaults to error; allow stores an intentional label-label overlap policy. */
@@ -12873,6 +12874,7 @@ export interface TitleOptions {
   alongOffset?: number;
   gap?: number;
   maxWidth?: number;
+  /** Both modes keep grapheme clusters intact; hard breaks preserve line spacing. */
   wrap?: "word" | "character";
   lineHeight?: number;
   /** Subtitle-only line spacing; overrides lineHeight without requiring maxWidth. */

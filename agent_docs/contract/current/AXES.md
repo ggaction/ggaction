@@ -114,7 +114,8 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `maxWidth`: positive finite measured width다. 지정하면 각 tick text를 deterministic shared text metric으로
   concrete line item에 줄바꿈한다. Edit의 `false`는 wrap policy를 제거하며 같은 호출에서 `wrap`이나
   `lineHeight`와 함께 쓸 수 없다.
-- `wrap`: `"word" | "character"`, 기본값은 `"word"`다. 너무 긴 word는 Unicode code point 단위로 나눈다.
+- `wrap`: `"word" | "character"`, 기본값은 `"word"`다. 너무 긴 word와 character mode는 Unicode grapheme cluster 단위로 나누며 결합 문자·한글 자모·emoji cluster를 보존한다. cluster 하나가 maxWidth보다 넓어도 쪼개지 않는다. LF·CRLF·CR hard break와 빈 줄의 간격을 보존한다. Boundary는 `Intl.Segmenter` grapheme 정책을 사용한다.
+  Evidence: `test/unit/actions/guides/grapheme-wrapping.test.js`, `test/browser/backend-compatibility.browser.js`.
 - `lineHeight`: fontSize 이상의 finite number다. 생략하면 `fontSize * 1.2`다.
 - `overlap`: `"error" | "allow"`, 기본값은 `"error"`다. Allow는 label-label 교차만 허용하며 Canvas
   overflow는 계속 거부한다. 같은 축 제목이 명시적 `overlap: "allow"`를 저장한 경우에만 그 제목과의 교차도 허용한다.

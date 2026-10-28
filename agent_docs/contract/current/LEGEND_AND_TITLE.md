@@ -716,7 +716,9 @@ config normalization과 rematerialization을 공유한다. Evidence:
 - `gap`: non-negative finite number, 기본 `8`; title/subtitle 사이 거리다.
 - `maxWidth`: positive finite reading-axis width. 지정하면 wrapping이 활성화되고 `wrap` 기본값은 `"word"`다.
 - `wrap`: `"word" | "character"`; `maxWidth` 없이 지정하면 오류다. word mode의 oversized token은
-  character fallback을 사용하고 character mode는 Unicode code point boundary를 보존한다.
+  character fallback을 사용하고 두 mode 모두 Unicode grapheme cluster를 보존한다. 결합 문자, 한글 자모 조합, emoji modifier·ZWJ·flag cluster를 나누지 않으며 cluster 하나가 maxWidth보다 넓어도 그대로 한 줄에 둔다.
+  Boundary는 실행 환경의 `Intl.Segmenter` grapheme 정책을 사용하고 renderer는 저장된 concrete line만 그린다.
+  Evidence: `test/unit/actions/guides/grapheme-wrapping.test.js`, `test/browser/backend-compatibility.browser.js`.
 - `lineHeight`: positive finite number; `maxWidth`가 필요하고 title/subtitle의 resolved fontSize 이상이어야 한다.
   생략 시 각 style의 fontSize × `1.2`를 사용한다.
 - `subtitleLineHeight`: finite number이며 저장된 `subtitleStyle.fontSize` 이상. 부제가 숨겨져도 같은 검증을 적용한다.

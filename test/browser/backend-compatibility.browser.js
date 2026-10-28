@@ -23,6 +23,9 @@ test.before(async () => {
   await writeFile(path.join(consumer.directory,"legend-spacing-primitive.js"),
     (await readFile(new URL("../charts/legend-content-spacing/primitive.program.js",import.meta.url),"utf8"))
       .replace("'../../../src/index.js'","'ggaction'"));
+  await writeFile(path.join(consumer.directory, "grapheme-wrapping.js"),
+    (await readFile(new URL("../support/text/grapheme-wrapping.js", import.meta.url), "utf8"))
+      .replace('"../../../src/index.js"', '"/node_modules/ggaction/src/index.js"'));
   server = await startStaticServer(consumer.directory);
   browser = await browsers[browserName].launch({ headless: true });
 });
@@ -316,4 +319,46 @@ test(`${browserName} preserves keyed selection and graphic-only scene identity a
     await page.close();
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
+});
+
+
+test(`${browserName} keeps title and axis graphemes intact in installed Canvas and SVG`, async () => {
+  const context = await browser.newContext();
+  try {
+    const { page, errors } = await openBrowserPage(context, server.baseUrl, {
+      waitFor: () => window.compatibility !== undefined
+    });
+    const result = await page.evaluate(async () => {
+      const { graphemeProgram, graphemes, labelLines, graphicLines } = await import("/grapheme-wrapping.js");
+      const { render } = await import("/node_modules/ggaction/src/index.js");
+      const { renderToSVG } = await import("/node_modules/ggaction/src/renderers/svg.js");
+      return ["word", "character"].map(mode => {
+        const program = graphemeProgram(mode);
+        const canvas = document.createElement("canvas"), ctx = canvas.getContext("2d");
+        const drawn = [], fillText = ctx.fillText.bind(ctx);
+        ctx.fillText = (text, ...args) => { drawn.push(text); fillText(text, ...args); };
+        render(program, ctx, { pixelRatio: 1 });
+        const doc = new DOMParser().parseFromString(renderToSVG(program), "image/svg+xml");
+        const texts = [...doc.querySelectorAll("text")].map(node => node.textContent);
+        return { mode, title: graphicLines(program, "chartTitle"), labels: graphicLines(program, "xAxisLabels"),
+          expectedTitle: graphemes, expectedLabels: labelLines,
+          canvasCounts: graphemes.map(text => drawn.filter(actual => actual === text).length),
+          svgCounts: graphemes.map(text => texts.filter(actual => actual === text).length),
+          dimensions: [canvas.width, canvas.height] };
+      });
+    });
+    const expected = ["e\u0301", "\u1112\u1161\u11ab", "👩🏽‍💻", "🇩🇰", "1️⃣"];
+    for (const actual of result) {
+      assert.deepEqual(actual.title, expected);
+      assert.deepEqual(actual.labels, [expected[0], "", ...expected.slice(1)]);
+      assert.deepEqual(actual.canvasCounts, [2, 2, 2, 2, 2]);
+      assert.deepEqual(actual.svgCounts, [2, 2, 2, 2, 2]);
+      assert.deepEqual(actual.dimensions, [700, 700]);
+    }
+    assertNoBrowserErrors(errors, "grapheme wrapping");
+    await page.close();
+  } catch (error) {
+    await saveBrowserContextEvidence(context, error);
+    throw error;
+  } finally { await context.close(); }
 });

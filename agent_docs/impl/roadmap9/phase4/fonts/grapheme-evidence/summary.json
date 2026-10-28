@@ -1,0 +1,66 @@
+{
+  "status": "partial-step019",
+  "baseCommit": "e17a82554e92e6f188d492b4b045f524abaa7a9e",
+  "logs": {
+    "focused": {
+      "file": "agent_docs/impl/roadmap9/phase4/fonts/grapheme-evidence/focused.log.gz",
+      "uncompressedSha256": "71162209e7daef7b96c025ca85893a4f7caea3bba0f1c1c7509871c9ec3880f4"
+    },
+    "unit": {
+      "file": "agent_docs/impl/roadmap9/phase4/fonts/grapheme-evidence/unit.log.gz",
+      "uncompressedSha256": "d7ac493cf46451b6590f6e2d4d6091e421d602fa8c9c9d7f2e982dcfc502a7b4"
+    },
+    "contracts": {
+      "file": "agent_docs/impl/roadmap9/phase4/fonts/grapheme-evidence/contracts.log.gz",
+      "uncompressedSha256": "35213942037f8eebc59a02bcd3ec60c36c83dbb6875f4acaa14fa5a34f5c3a35"
+    },
+    "docs": {
+      "file": "agent_docs/impl/roadmap9/phase4/fonts/grapheme-evidence/docs.log.gz",
+      "uncompressedSha256": "5824996ba79d155ab13923309db14f78ef851ebe3a36ce37964458f4ca3f9036"
+    },
+    "metadata": {
+      "file": "agent_docs/impl/roadmap9/phase4/fonts/grapheme-evidence/metadata.log.gz",
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "chromium": {
+      "file": "agent_docs/impl/roadmap9/phase4/fonts/grapheme-evidence/chromium.log.gz",
+      "uncompressedSha256": "c74c3712628ee93552cd62e7457dceef2b3d488d20e7130468d43132087e3eaa"
+    },
+    "firefox": {
+      "file": "agent_docs/impl/roadmap9/phase4/fonts/grapheme-evidence/firefox.log.gz",
+      "uncompressedSha256": "79728b8d6f066cf89d45be514a0a8b64f5c93dd4f2aff3867c8392b755b5acd4"
+    },
+    "webkit": {
+      "file": "agent_docs/impl/roadmap9/phase4/fonts/grapheme-evidence/webkit.log.gz",
+      "uncompressedSha256": "f6f1079b9bb1bada2dcd71b39d256014cd685aec38a5f158155bef98cbf7429e"
+    },
+    "node20": {
+      "file": "agent_docs/impl/roadmap9/phase4/fonts/grapheme-evidence/node20.log.gz",
+      "uncompressedSha256": "bc6c865561a400ff969089ccd0a18b93d636b6b0b64054dd5968f8026e091b00"
+    },
+    "node24": {
+      "file": "agent_docs/impl/roadmap9/phase4/fonts/grapheme-evidence/node24.log.gz",
+      "uncompressedSha256": "e314f282fc13e675ebda6fa71c7dc747b82f7c5e443693c1b1ea4383e767a7c5"
+    },
+    "package": {
+      "file": "agent_docs/impl/roadmap9/phase4/fonts/grapheme-evidence/package.log.gz",
+      "uncompressedSha256": "61a810af61f50c2a9d1e7bd9e14ea8722ad33529a9c63ba4cd18816581660200"
+    },
+    "bundle": {
+      "file": "agent_docs/impl/roadmap9/phase4/fonts/grapheme-evidence/bundle.log.gz",
+      "uncompressedSha256": "5059424ee2832fee4c2e34ea73db4b25044f034bbf50f42b7b933266dc3a5117"
+    },
+    "metadata-invocation-error": {
+      "file": "agent_docs/impl/roadmap9/phase4/fonts/grapheme-evidence/metadata-invocation-error.log.gz",
+      "uncompressedSha256": "24afcea7f2f81ef4b1b399f155a55945441f879a397c300240fd676ebce67c14"
+    }
+  },
+  "inputs": {
+    "src/layout/text.js": "e0baefa4668885af774da46d7facd07ea28619ef13e75b2cee54a3b93f42da79",
+    "src/actions/guides/axes/labels.js": "9c6eabb41f003b12595cd78a84592517951bbc72e358803142edc683575ac507",
+    "test/support/text/grapheme-wrapping.js": "f6f044c318720cb2519a7e7bcd062fbd0e7e5ac2f17246d447dea34075e247e1",
+    "test/unit/actions/guides/grapheme-wrapping.test.js": "5f1d77c32ba0c01444d8e8190080d0c0826024d12da2c9e878b789dc3489d016",
+    "test/unit/layout/text.test.js": "874dbac35a07356415bb2c1e33705dff68fd13f937ed6672119ae9e462a50c15",
+    "test/browser/backend-compatibility.browser.js": "3f417757f388b1650cf488507372b08c763535d95d96f7d416408f1fcf24d6a7"
+  }
+}

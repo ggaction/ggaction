@@ -9,6 +9,7 @@
 - [x] image 기존 회귀, source/package/discovery 및 문서 검증
 - [ ] public font resource·apply/load completion·stale revision·dependency closure
 - [ ] bundled font의 Canvas/SVG/PNG/PDF 연결과 export preflight
+- [x] 결합 문자·한글 자모·emoji grapheme wrapping과 hard break line origins ([검증](GRAPHEME.md))
 - [ ] 한글/emoji/combining/긴 label 및 layout line origins 전체 AT-15
 - [ ] STEP-019 종료와 후속 bundle/qualification
 

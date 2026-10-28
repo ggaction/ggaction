@@ -189,7 +189,7 @@ function assertTickCompatibility(ticks, config, operation) {
 }
 
 function expandWrappedLabels(resolved, text, config, channel, profile) {
-  if (config.maxWidth === undefined && !text.some(value => value.includes("\n"))) {
+  if (config.maxWidth === undefined && !text.some(value => /[\r\n]/u.test(value))) {
     return {
       ...resolved,
       text,
@@ -204,7 +204,7 @@ function expandWrappedLabels(resolved, text, config, channel, profile) {
   const lineHeight = config.lineHeight ?? config.fontSize * 1.2;
   const expanded = { text: [], x: [], y: [], groups: [] };
   for (let index = 0; index < text.length; index += 1) {
-    const lines = config.maxWidth === undefined ? text[index].split(/\r?\n/u) : wrapText(text[index], {
+    const lines = config.maxWidth === undefined ? text[index].split(/\r\n|\r|\n/u) : wrapText(text[index], {
       maxWidth: config.maxWidth,
       mode: config.wrap,
       style, profile

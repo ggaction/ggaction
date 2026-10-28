@@ -106,9 +106,11 @@ clockwise; top and bottom titles remain horizontal.
 
 Set `maxWidth` to wrap text before edge rotation. Word wrapping prefers
 whitespace and falls back to Unicode-safe character wrapping for an oversized
-word. Character wrapping always splits on Unicode code-point boundaries. The
-library uses deterministic text metrics so the same program produces the same
-line breaks in browsers and Node. Renderers draw the concrete lines already in
+word. Both modes preserve whole Unicode grapheme clusters, including combining
+marks, Hangul syllable sequences, and emoji sequences. A single cluster wider
+than `maxWidth` stays intact on its own line. Layout uses `Intl.Segmenter`
+grapheme boundaries and deterministic text metrics; Unicode boundary rules
+follow the runtime's Unicode version. Renderers draw the concrete lines already in
 `graphicSpec`; they do not wrap text again. Title and subtitle strings accept
 explicit newline characters. Each hard line wraps independently when `maxWidth`
 is set. Leading, interior, and trailing blank lines reserve vertical spacing
