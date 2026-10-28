@@ -5,7 +5,7 @@ const clipPrefix=namespaceGraphicId('legendSampleClip','');
 import{categoricalLegendSymbolId}from'../grammar/legendBlocks.js';
 import{validateLegendClip}from'../grammar/legendClip.js';
 import{hasRectRadius}from'../grammar/roundedRect.js';
-import{resolvePrimitiveGraphicBounds}from'../grammar/schemas/graphicBounds.js';
+import{resolvePrimitiveOccupiedBounds}from'../grammar/schemas/graphicBounds.js';
 import{translatedProperties}from'./graphicTranslation.js';
 
 function roles(kind,config){
@@ -55,7 +55,7 @@ export function applyLegendClipGraphics(program,{force=false,anchors={}}={}){
   for(let index=0;index<count;index++){
    const samples=owners.map((owner,j)=>({item:owner.items[index],type:owner.items[index].type??owner.type,role:descriptors[j]}));
    const point=samples.find(sample=>sample.role.point),y=anchors[kind]?.[index]??anchorY(point.type,point.item.properties);
-   const b=union(samples.map(sample=>resolvePrimitiveGraphicBounds(sample.type,sample.item.properties)));
+   const b=union(samples.map(sample=>resolvePrimitiveOccupiedBounds(sample.type,sample.item.properties)));
    const x=b.left,top=y-config.clipHeight/2,id=namespaceGraphicId('legendSampleClip',namespaceGraphicId(`${primary}:${index}`,'window')),glyphs=[];
    for(const sample of samples){
     const glyph=namespaceGraphicId(sample.item.id,'glyph');glyphs.push(glyph);

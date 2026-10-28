@@ -88,8 +88,9 @@ export function transformPointHighlightChild(child, style) {
       area,
       ...shared
     });
-    return child.properties.outline === undefined ? shaped
-      : { ...shaped, properties: { ...shaped.properties, outline: child.properties.outline } };
+    return { ...shaped, properties: { ...shaped.properties,
+      ...(child.properties.outline === undefined ? {} : { outline: child.properties.outline }),
+      ...(child.properties.shadow === undefined ? {} : { shadow: child.properties.shadow }) } };
   }
   const scale = Math.sqrt(style.size);
   if (child.type === "circle") {

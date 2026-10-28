@@ -106,6 +106,16 @@
       "type": "number | undefined"
     },
     {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "clip",
       "required": false,
       "type": "boolean | undefined"

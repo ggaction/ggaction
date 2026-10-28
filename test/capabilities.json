@@ -102,11 +102,27 @@
       },
       {
         "type": "prefix",
-        "path": "gates/blend-paints/"
+        "path": "charts/bar-compositing/variants/native/"
       },
       {
         "type": "file",
         "path": "unit/resources/paint-image-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/mark-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/mark-blend-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-mark-blends.test.js"
       }
     ],
     "calendar": [
@@ -917,12 +933,40 @@
     ],
     "shadow-paints": [
       {
+        "type": "prefix",
+        "path": "charts/mark-shadows/"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-shadow.test.js"
+      },
+      {
         "type": "file",
         "path": "unit/grammar/shadow.test.js"
       },
       {
-        "type": "prefix",
-        "path": "gates/shadow-paints/"
+        "type": "file",
+        "path": "unit/grammar/shadow-composite.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/marks/mark-shadow.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/shadow-rendering.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/text-shadow.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/mark-shadow-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-mark-shadows.test.js"
       }
     ],
     "statistical-fixtures": [

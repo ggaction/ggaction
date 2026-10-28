@@ -1,0 +1,819 @@
+{
+  "artifacts": [
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/contact-sheet.png",
+      "bytes": 32877,
+      "sha256": "bbb439f27e72e3c1ef91993e8c69fb4898ad7b615f5c493ea8326dda13d6e6ca"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/difference/browser-canvas.png",
+      "bytes": 10442,
+      "sha256": "ec7926677c487bde04cfd30f9d37d2a13627174420cdf93735d1ec6cac1ff3c9"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/difference/browser-isolated-group.png",
+      "bytes": 987,
+      "sha256": "1b498048dbdf4f5c85da7ee10941cf2e66f229dd8bdf36c5196bf3e55254fc17"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/difference/browser-svg.png",
+      "bytes": 10442,
+      "sha256": "ec7926677c487bde04cfd30f9d37d2a13627174420cdf93735d1ec6cac1ff3c9"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/difference/evidence.json",
+      "bytes": 15845,
+      "sha256": "bb82523a173fef381b9be4cd87042ab9b2a3755731aa70a57736bc1e9ab43f73"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/difference/isolated-group.png",
+      "bytes": 888,
+      "sha256": "d8c78c469720bbb0411c33ac31b6bafb6b886a567f06132a5e12428805893e8c"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/difference/native-isolated-group.png",
+      "bytes": 415,
+      "sha256": "04fce29ec1779f24e6150f4c9f4dc1aa028359a7f1fe9a2f52d413fc578a7d76"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/difference/pdf.png",
+      "bytes": 7506,
+      "sha256": "832ea5452c091d40d6f30c05303f57170a434467ee541d9d8cc9721fb1cea253"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/difference/primitive.pdf",
+      "bytes": 17877,
+      "sha256": "91b30bdc5fbfd53096738931b6a8ed9dda4a1f948c1156c697612a137e4524e8"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/difference/primitive.png",
+      "bytes": 7700,
+      "sha256": "c3ec7b50eb4929688c7516004a98c2ca8269698766397947ed4db78cdb27af85"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/difference/primitive.svg",
+      "bytes": 2097,
+      "sha256": "e1d73601fc69aea3b0d6ec7ae27e95e1b4e721a7d427090fd71ccbca9f6b4d2f"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/difference/variant.json",
+      "bytes": 247,
+      "sha256": "4bdd8d93abe40a857e1682a9ee85fd2a6d5b8e3adb9051da125532dc428788d2"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/group-opacity/browser-canvas.png",
+      "bytes": 11095,
+      "sha256": "b817e96749a71d6b3bff94eecce01bb967ed8448a4b70eaca48c1afde70d35de"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/group-opacity/browser-isolated-group.png",
+      "bytes": 989,
+      "sha256": "55c085a9d9ba00f87e398dc624ec85d891eeed867d4c115c4f93e8730e4d33d8"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/group-opacity/browser-svg.png",
+      "bytes": 11095,
+      "sha256": "b817e96749a71d6b3bff94eecce01bb967ed8448a4b70eaca48c1afde70d35de"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/group-opacity/evidence.json",
+      "bytes": 15854,
+      "sha256": "57ee32c95bf98f19ea24a528e5aa5a40857ce85ffe0d2e4a337c526deb0c3e86"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/group-opacity/isolated-group.png",
+      "bytes": 887,
+      "sha256": "a83eaf43810317967fdfb644d048cea6b045ea6d5ddb2aa7a12a71e8b233ad4e"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/group-opacity/native-isolated-group.png",
+      "bytes": 415,
+      "sha256": "82ad3b2b9445e23377116f1de74378730ae99f614e9dc6ad60be2a8f53cbf9f4"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/group-opacity/pdf.png",
+      "bytes": 8250,
+      "sha256": "e554a2fa6dac8082cde7abd1987580449d8c6cc2af89a32fef856e1d96b3c118"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/group-opacity/primitive.pdf",
+      "bytes": 18047,
+      "sha256": "b529da727d7bb6adfbd60129209dd32cdefa151b531b41cca081a8ca240472d3"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/group-opacity/primitive.png",
+      "bytes": 8422,
+      "sha256": "12fb8f6b44cc3c6eafa1bf03a4c21ddb3885f08c99eb97521b283135cddb3872"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/group-opacity/primitive.svg",
+      "bytes": 2096,
+      "sha256": "f3271b5776ace64ea7d06cf4f44e8abf997aeb31f2490f7869511ddef8e0934d"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/group-opacity/variant.json",
+      "bytes": 256,
+      "sha256": "3d548a5ed489e5f91b2a93ce149109c4aa8e468486180980933393f3e0863288"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply/browser-canvas.png",
+      "bytes": 10129,
+      "sha256": "b796a69dddbc7728d5af926f116ac3e206614d8e9a421e651826cd15b7df7a22"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply/browser-isolated-group.png",
+      "bytes": 989,
+      "sha256": "fb10ef871fc46d139d139851170c2b19a77722126373c260f593ff2373bdb765"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply/browser-svg.png",
+      "bytes": 10129,
+      "sha256": "b796a69dddbc7728d5af926f116ac3e206614d8e9a421e651826cd15b7df7a22"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply/evidence.json",
+      "bytes": 15834,
+      "sha256": "89df794937114540ab4c6150e7dcdd0882a3e8b87d9f760225c2e246ce7f40ad"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply/isolated-group.png",
+      "bytes": 887,
+      "sha256": "5983ae5a703784ea82150b5454d05bfed65541660b8fb7b8a1a04651589c9575"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply/native-isolated-group.png",
+      "bytes": 415,
+      "sha256": "74175c60421d9348caf268093ea0e2cde7e2a9f1944a988a26a7a839368fec5d"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply/pdf.png",
+      "bytes": 7207,
+      "sha256": "b0d288b871b1bb2a084e99664c706ff49ddf3201832de98a96de242ce4323a3e"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply/primitive.pdf",
+      "bytes": 18394,
+      "sha256": "89132d0ddadf1740eba79442cb18f0089df023f596a85f0010f59fddfb732c74"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply/primitive.png",
+      "bytes": 7381,
+      "sha256": "6a865418cfae7c99645e984d42ba0d261688ea19898eadc19361aeac0ca74885"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply/primitive.svg",
+      "bytes": 2093,
+      "sha256": "965a9a5b16eafa51c754ed06f12a5e83152ecc9fbbe2bd68a75677e9ae3c03d8"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply/variant.json",
+      "bytes": 241,
+      "sha256": "1825527792ee8f65deb5a1f5f2be39d75afa135bafde9083b575c799c244fc2d"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply-reversed/browser-canvas.png",
+      "bytes": 11318,
+      "sha256": "089b932d3e2d86672907436444c362cec003de6fa4a7aa951b0eda35e6638478"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply-reversed/browser-isolated-group.png",
+      "bytes": 989,
+      "sha256": "fb10ef871fc46d139d139851170c2b19a77722126373c260f593ff2373bdb765"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply-reversed/browser-svg.png",
+      "bytes": 11318,
+      "sha256": "089b932d3e2d86672907436444c362cec003de6fa4a7aa951b0eda35e6638478"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply-reversed/evidence.json",
+      "bytes": 15811,
+      "sha256": "8687ae23f5cf91c80403b56e7b548283a3b21376f72b505275a502aa7cb168c4"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply-reversed/isolated-group.png",
+      "bytes": 887,
+      "sha256": "5983ae5a703784ea82150b5454d05bfed65541660b8fb7b8a1a04651589c9575"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply-reversed/native-isolated-group.png",
+      "bytes": 415,
+      "sha256": "74175c60421d9348caf268093ea0e2cde7e2a9f1944a988a26a7a839368fec5d"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply-reversed/pdf.png",
+      "bytes": 8296,
+      "sha256": "2984c745e86444280b14f6f1ec4ba70117d1a81d0ce897654f5c1e513d1d925e"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply-reversed/primitive.pdf",
+      "bytes": 18409,
+      "sha256": "4401d559f47c1eb4c1a7ea33132f6d5ca9c2be29df03e78cc6885bffc537e594"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply-reversed/primitive.png",
+      "bytes": 8605,
+      "sha256": "d282d4986fc85b90cb97ffca56288e4ba77fa58e117f6334e1fd26095cf7ffd5"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply-reversed/primitive.svg",
+      "bytes": 2101,
+      "sha256": "5635eb32b4601179559ba949fb585a57a30a6068f8e6163b7e9b67d19802686c"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/multiply-reversed/variant.json",
+      "bytes": 268,
+      "sha256": "5d07a4a8a753759255aa08a3840adfef1e4cda758ad9f431dc6da40b011713ec"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/results.json",
+      "bytes": 141288,
+      "sha256": "fcbfb482690afa57b198e3eed81bb9372035fc3a84ecdcd73db37ed5cd1de3e2"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/screen/browser-canvas.png",
+      "bytes": 10112,
+      "sha256": "b9f433744960a9204282250e383c6159e05968dba476c1120c7e13f667642876"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/screen/browser-isolated-group.png",
+      "bytes": 989,
+      "sha256": "55c085a9d9ba00f87e398dc624ec85d891eeed867d4c115c4f93e8730e4d33d8"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/screen/browser-svg.png",
+      "bytes": 10112,
+      "sha256": "b9f433744960a9204282250e383c6159e05968dba476c1120c7e13f667642876"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/screen/evidence.json",
+      "bytes": 15844,
+      "sha256": "06ac9be311e6ad3b424c43841a2ad00de4d9890582206104ea34ea39f4600dd5"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/screen/isolated-group.png",
+      "bytes": 887,
+      "sha256": "c730599c945012acd63098c49d5dbf8fadb755c4fb8f3c005b8f67280d1b9096"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/screen/native-isolated-group.png",
+      "bytes": 415,
+      "sha256": "82ad3b2b9445e23377116f1de74378730ae99f614e9dc6ad60be2a8f53cbf9f4"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/screen/pdf.png",
+      "bytes": 7308,
+      "sha256": "cfacc6ffeb89d115ad0ee91bb0fb5147a57641e5e32c13bd15af6efecbd6557a"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/screen/primitive.pdf",
+      "bytes": 17520,
+      "sha256": "9b73950785eb814171db691574b31cde0e706f84eb83e34fb94ea838532f4919"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/screen/primitive.png",
+      "bytes": 7510,
+      "sha256": "e4aa3c4c2a75a11fff21c25c695af7b70af0e7b55ffb11eef8153e6e082fcf52"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/screen/primitive.svg",
+      "bytes": 2089,
+      "sha256": "327478cd4a7b98c8dfe273e016f71990e3945fb91fa98eaa072edbf946eb64da"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/screen/variant.json",
+      "bytes": 235,
+      "sha256": "a0f187ace1b829f5732a1e7ed4ef83ff0032fcae58b7375622f0a403c258c3a0"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over/browser-canvas.png",
+      "bytes": 10587,
+      "sha256": "d51b506832cbea8eb8b1ab2b64920a4fd9c4e5aeb036e0832ad779537437205f"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over/browser-isolated-group.png",
+      "bytes": 988,
+      "sha256": "6e2591e13c4da2ed77c9359f14c5ba585e2bdc91ebf85b5bfa8572dd3bfd067a"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over/browser-svg.png",
+      "bytes": 10587,
+      "sha256": "d51b506832cbea8eb8b1ab2b64920a4fd9c4e5aeb036e0832ad779537437205f"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over/evidence.json",
+      "bytes": 15855,
+      "sha256": "95024629e14f988c81971513519b19aefd794c493805d9527c8d2730cad984ce"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over/isolated-group.png",
+      "bytes": 888,
+      "sha256": "81056ed1aa06d45b1a8f426abd9c29b38ad55ace4ce1019860c3af569757e853"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over/native-isolated-group.png",
+      "bytes": 415,
+      "sha256": "80b27c0f88af7b18bf344403f6599f60bc57ec767b7270ba1ac9e9f5f6e5db3c"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over/pdf.png",
+      "bytes": 7890,
+      "sha256": "d8f4945b63bbc6f41964908a379c6db79f9f9d27a80a360f0e9a2d8cf7ded22a"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over/primitive.pdf",
+      "bytes": 17526,
+      "sha256": "80f05024c6d60cbcc42ef4d29e2fbc31d928a8d0afb6b5a74337cd2e1da10d4a"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over/primitive.png",
+      "bytes": 7926,
+      "sha256": "d92d8108365bb1c3e379810f2eb6b90a2650bf4cc5b73aea014d80730d7ef6c4"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over/primitive.svg",
+      "bytes": 2064,
+      "sha256": "19e67ddb5112c8a7428f003f0a57156ee4acb0332db1b10534a1311a720884ee"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over/variant.json",
+      "bytes": 250,
+      "sha256": "b72e7fd6864c295f127b1b09e232e9e36f41f8ea5e6f3953d576eaff14585aff"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over-reversed/browser-canvas.png",
+      "bytes": 11442,
+      "sha256": "d982164c4adccef812c8eaaf4e6cb585ff8c6a0c196751271e9c95522b117c4d"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over-reversed/browser-isolated-group.png",
+      "bytes": 988,
+      "sha256": "bc463d3170ec5b2913b0aa23a2b1a22851a09aa0c6ec86fab72113feed22cb40"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over-reversed/browser-svg.png",
+      "bytes": 11442,
+      "sha256": "d982164c4adccef812c8eaaf4e6cb585ff8c6a0c196751271e9c95522b117c4d"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over-reversed/evidence.json",
+      "bytes": 15834,
+      "sha256": "ac383ac3e3ba9dba922b7c34351b1440929b4d476d0c58d672069d7b00af4030"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over-reversed/isolated-group.png",
+      "bytes": 887,
+      "sha256": "a5ae5fb65b309136b052d80c1739b17d4e12dfa8339b9a5b685f7765933a905c"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over-reversed/native-isolated-group.png",
+      "bytes": 416,
+      "sha256": "d643fd8b880c447b493e7175e9e784fe81ea87da4ad6eab4aad1527a7c4b0712"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over-reversed/pdf.png",
+      "bytes": 8818,
+      "sha256": "f6822b88c1c5c4426dbc76fc971cbb4e7f072f70a8e01d57b8913a5799c34462"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over-reversed/primitive.pdf",
+      "bytes": 17534,
+      "sha256": "18430c240d4ee045f0eef4dd779bd3e87d985426539135bea660e79b52eee1f4"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over-reversed/primitive.png",
+      "bytes": 8731,
+      "sha256": "ddc4d0268d1e8a8c3daa4c952bab0ad218df14f451ce2f1abf1bf3de9bb6ce1d"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over-reversed/primitive.svg",
+      "bytes": 2072,
+      "sha256": "16886edcadb270b8f4245d78f010d589ef159b2d51dd7bb1b42f1a4002d26e73"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/blend-paints/source-over-reversed/variant.json",
+      "bytes": 277,
+      "sha256": "4984399200666f4089288a51d6d5c1583ef81bde6ff502452b7162de3e05b56c"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-difference/primitive-pdf.png",
+      "bytes": 425,
+      "sha256": "960bf24b6e8698161f9a7c1531a78c8f9bb3ae9b40c0bf14d9277d5463022e63"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-difference/primitive.pdf",
+      "bytes": 1698,
+      "sha256": "c13e69b5040aff5f475986dfff8ebcd5abde75144ed3a6ac511603f5afc9cd1b"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-difference/primitive.png",
+      "bytes": 551,
+      "sha256": "5edb5807ea00ab01c0b18276be3cbbcef87de0bbb9bd76cc016c8c3e50bd9428"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-difference/public-pdf.png",
+      "bytes": 425,
+      "sha256": "960bf24b6e8698161f9a7c1531a78c8f9bb3ae9b40c0bf14d9277d5463022e63"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-difference/public.pdf",
+      "bytes": 1698,
+      "sha256": "c13e69b5040aff5f475986dfff8ebcd5abde75144ed3a6ac511603f5afc9cd1b"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-difference/public.png",
+      "bytes": 551,
+      "sha256": "5edb5807ea00ab01c0b18276be3cbbcef87de0bbb9bd76cc016c8c3e50bd9428"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-difference/variant.json",
+      "bytes": 234,
+      "sha256": "3ed34f09566f2ba6a46fb84150cb5ba5f11c07bd40aafc06ee37a1198605afbb"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-multiply/primitive-pdf.png",
+      "bytes": 441,
+      "sha256": "0d5387da7ff5a05123d04afdd02648fbc7f4d1a81d49abc53109dd222929f266"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-multiply/primitive.pdf",
+      "bytes": 1696,
+      "sha256": "58bee917308b231662ff640f60859e29911ec32584bd5b6e03aadcfd3242cfc1"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-multiply/primitive.png",
+      "bytes": 554,
+      "sha256": "27e0c74f1267933dceaa8e97f71b9014658d5c13ca158de0c2277ebc8f480d2f"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-multiply/public-pdf.png",
+      "bytes": 441,
+      "sha256": "0d5387da7ff5a05123d04afdd02648fbc7f4d1a81d49abc53109dd222929f266"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-multiply/public.pdf",
+      "bytes": 1696,
+      "sha256": "58bee917308b231662ff640f60859e29911ec32584bd5b6e03aadcfd3242cfc1"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-multiply/public.png",
+      "bytes": 554,
+      "sha256": "27e0c74f1267933dceaa8e97f71b9014658d5c13ca158de0c2277ebc8f480d2f"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-multiply/variant.json",
+      "bytes": 228,
+      "sha256": "fb97b1f11b730d8125dbc69e843859b56911880652f05532685c3e3bbd9c7c2c"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-screen/primitive-pdf.png",
+      "bytes": 425,
+      "sha256": "eb11b4f6a36e88251f9c4f044d5fdeb511e4d00d5000d2f94defdd275feca56e"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-screen/primitive.pdf",
+      "bytes": 1694,
+      "sha256": "8d2f256115b587e0a40109250ae00f8413c7089ad1258450fd01c5713f418890"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-screen/primitive.png",
+      "bytes": 548,
+      "sha256": "b1bfdb391ac0f9e4c9af9d35b3172b6d7d4283d5a298e06e5641bca92fdd4076"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-screen/public-pdf.png",
+      "bytes": 425,
+      "sha256": "eb11b4f6a36e88251f9c4f044d5fdeb511e4d00d5000d2f94defdd275feca56e"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-screen/public.pdf",
+      "bytes": 1694,
+      "sha256": "8d2f256115b587e0a40109250ae00f8413c7089ad1258450fd01c5713f418890"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-screen/public.png",
+      "bytes": 548,
+      "sha256": "b1bfdb391ac0f9e4c9af9d35b3172b6d7d4283d5a298e06e5641bca92fdd4076"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-line-screen/variant.json",
+      "bytes": 222,
+      "sha256": "1d5de20c4dd37e61dbb226166edc98f4f3273380e88fdd35eddfb3440fbda886"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-difference/primitive-pdf.png",
+      "bytes": 3441,
+      "sha256": "3e9e8264c66936617dffc30e52f18690b5647d8785538b0fda906df531aaaf71"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-difference/primitive.pdf",
+      "bytes": 3301,
+      "sha256": "20eb836edb1ec5955ece966d1c814606abe4949f8832a12d208266c245d773fe"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-difference/primitive.png",
+      "bytes": 3041,
+      "sha256": "796e5f68f85f2067f5a687904c4f3ee72f3b9c7ca7b645aa4004e70be2c91cdf"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-difference/public-pdf.png",
+      "bytes": 3441,
+      "sha256": "3e9e8264c66936617dffc30e52f18690b5647d8785538b0fda906df531aaaf71"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-difference/public.pdf",
+      "bytes": 3301,
+      "sha256": "20eb836edb1ec5955ece966d1c814606abe4949f8832a12d208266c245d773fe"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-difference/public.png",
+      "bytes": 3041,
+      "sha256": "796e5f68f85f2067f5a687904c4f3ee72f3b9c7ca7b645aa4004e70be2c91cdf"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-difference/variant.json",
+      "bytes": 237,
+      "sha256": "c7c5de9a2a12026ba3f14548bc3e9eaef8de97741acc2e95ccafa16f7f73545b"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-multiply/primitive-pdf.png",
+      "bytes": 1823,
+      "sha256": "d2dc531e732bf2fd57e30a489b974b3a30f7f86901e55582365ccb5b03818b63"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-multiply/primitive.pdf",
+      "bytes": 3299,
+      "sha256": "7ac6ee02b040ce3a621b33b35c9a03883629ecaa174d53ed2e2e718210e0584b"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-multiply/primitive.png",
+      "bytes": 1755,
+      "sha256": "f894c712f40909cb4774cf5f2a2ac349edf47ccd62193e69d7586dbf6ffd616e"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-multiply/public-pdf.png",
+      "bytes": 1823,
+      "sha256": "d2dc531e732bf2fd57e30a489b974b3a30f7f86901e55582365ccb5b03818b63"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-multiply/public.pdf",
+      "bytes": 3299,
+      "sha256": "7ac6ee02b040ce3a621b33b35c9a03883629ecaa174d53ed2e2e718210e0584b"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-multiply/public.png",
+      "bytes": 1755,
+      "sha256": "f894c712f40909cb4774cf5f2a2ac349edf47ccd62193e69d7586dbf6ffd616e"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-multiply/variant.json",
+      "bytes": 231,
+      "sha256": "b9eb1b989dfa653d31ed6dbf0e79acccd0a42ebb87c3feb743694635fad88ffa"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-screen/primitive-pdf.png",
+      "bytes": 3477,
+      "sha256": "f83e16b5a0d332e5bd6fd69b940b19dac02e0785eb6656c3c38a5f20a0b2872f"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-screen/primitive.pdf",
+      "bytes": 3297,
+      "sha256": "7752d3337062dd21d20ef618b5c3dbe0678058444a0ea97d4cdcc0146b4c60c2"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-screen/primitive.png",
+      "bytes": 3091,
+      "sha256": "73e9648894eb1dd07d09ebf77fab3daa4342c940f78b93e0c8efa7071cf20f20"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-screen/public-pdf.png",
+      "bytes": 3477,
+      "sha256": "f83e16b5a0d332e5bd6fd69b940b19dac02e0785eb6656c3c38a5f20a0b2872f"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-screen/public.pdf",
+      "bytes": 3297,
+      "sha256": "7752d3337062dd21d20ef618b5c3dbe0678058444a0ea97d4cdcc0146b4c60c2"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-screen/public.png",
+      "bytes": 3091,
+      "sha256": "73e9648894eb1dd07d09ebf77fab3daa4342c940f78b93e0c8efa7071cf20f20"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-point-screen/variant.json",
+      "bytes": 225,
+      "sha256": "8d5d2f5aafd15bb6c39a22a13e9b485be16405423ea6319e57887a561815ac51"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-difference/primitive-pdf.png",
+      "bytes": 481,
+      "sha256": "1867f454b7dfa37b70994c45217a3caee2d63282a3921eeaf00927ac886ae97e"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-difference/primitive.pdf",
+      "bytes": 1839,
+      "sha256": "ac05a307843cadb5d58f416b90ffcb2a7437d48191e6fee10b0e040d142415c8"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-difference/primitive.png",
+      "bytes": 575,
+      "sha256": "8f3185bc94a5213d307c03ebbd13c7308cb41c65ac4e2e84e06f0a31f6ccb99d"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-difference/public-pdf.png",
+      "bytes": 481,
+      "sha256": "1867f454b7dfa37b70994c45217a3caee2d63282a3921eeaf00927ac886ae97e"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-difference/public.pdf",
+      "bytes": 1839,
+      "sha256": "ac05a307843cadb5d58f416b90ffcb2a7437d48191e6fee10b0e040d142415c8"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-difference/public.png",
+      "bytes": 575,
+      "sha256": "8f3185bc94a5213d307c03ebbd13c7308cb41c65ac4e2e84e06f0a31f6ccb99d"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-difference/variant.json",
+      "bytes": 234,
+      "sha256": "1d216d40fd03993474e7a6dd2396c891accc543628522c4a3452caf2653a310b"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-multiply/primitive-pdf.png",
+      "bytes": 430,
+      "sha256": "1dc4d30c5922126d65946a40968d725994180bee590d4573d187b5523e07ae4e"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-multiply/primitive.pdf",
+      "bytes": 1837,
+      "sha256": "3238029a7deadeb4fa48a0b9164600a3c8e23f728f36c63ebed83a5c8ab89b14"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-multiply/primitive.png",
+      "bytes": 552,
+      "sha256": "3c223afad12d84ceb4a594c80296018816b25a8abc77b7a23d69153424a47ea5"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-multiply/public-pdf.png",
+      "bytes": 430,
+      "sha256": "1dc4d30c5922126d65946a40968d725994180bee590d4573d187b5523e07ae4e"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-multiply/public.pdf",
+      "bytes": 1837,
+      "sha256": "3238029a7deadeb4fa48a0b9164600a3c8e23f728f36c63ebed83a5c8ab89b14"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-multiply/public.png",
+      "bytes": 552,
+      "sha256": "3c223afad12d84ceb4a594c80296018816b25a8abc77b7a23d69153424a47ea5"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-multiply/variant.json",
+      "bytes": 228,
+      "sha256": "953d9532a389d9f219940ef11f02f0d50e18df3874037ab8b6945cfa1d6f963c"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-screen/primitive-pdf.png",
+      "bytes": 475,
+      "sha256": "fb69ebe0f9ad16532d59506002983932a151fcfcdd533d3fb6afa4d969e06856"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-screen/primitive.pdf",
+      "bytes": 1835,
+      "sha256": "d544fcbd669b2aba2a8655c3b5962439658b7c7dd78ce76908f4532744ae9523"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-screen/primitive.png",
+      "bytes": 574,
+      "sha256": "27554d7dfbcd381e639ae3b2ede0f47766a3c96dc982b360c0241b8c20f9efce"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-screen/public-pdf.png",
+      "bytes": 475,
+      "sha256": "fb69ebe0f9ad16532d59506002983932a151fcfcdd533d3fb6afa4d969e06856"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-screen/public.pdf",
+      "bytes": 1835,
+      "sha256": "d544fcbd669b2aba2a8655c3b5962439658b7c7dd78ce76908f4532744ae9523"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-screen/public.png",
+      "bytes": 574,
+      "sha256": "27554d7dfbcd381e639ae3b2ede0f47766a3c96dc982b360c0241b8c20f9efce"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-rect-screen/variant.json",
+      "bytes": 222,
+      "sha256": "35e392f31fcbe0892321a8e2f37422744e8bab3fba773b3e87eac25ad48238d7"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-difference/primitive-pdf.png",
+      "bytes": 2967,
+      "sha256": "62e7258d6644154ea6e716dc86dcd2996bed84a22f469a54d8b61a5ece7c827b"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-difference/primitive.pdf",
+      "bytes": 3433,
+      "sha256": "200a0430848711e4d0b7e4a51e0c9f9321df673b2c9c74442ed9757b5c4a7a01"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-difference/primitive.png",
+      "bytes": 2595,
+      "sha256": "08426c6711a13c24ea2b0ac55da5b3ab2bcc049d29e799691cfb1cdf56e3833f"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-difference/public-pdf.png",
+      "bytes": 2967,
+      "sha256": "62e7258d6644154ea6e716dc86dcd2996bed84a22f469a54d8b61a5ece7c827b"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-difference/public.pdf",
+      "bytes": 3433,
+      "sha256": "200a0430848711e4d0b7e4a51e0c9f9321df673b2c9c74442ed9757b5c4a7a01"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-difference/public.png",
+      "bytes": 2595,
+      "sha256": "08426c6711a13c24ea2b0ac55da5b3ab2bcc049d29e799691cfb1cdf56e3833f"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-difference/variant.json",
+      "bytes": 234,
+      "sha256": "442eb36c0872723cb4736e7f88ee7eaac9771ce62e31987bc0ff5495fb33e546"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-multiply/primitive-pdf.png",
+      "bytes": 1648,
+      "sha256": "9d5880f4d5403d9caae3939300f8e84f7932d710f8b74619c06d6164a60cfbbf"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-multiply/primitive.pdf",
+      "bytes": 3431,
+      "sha256": "3c963e0c0b7a9dd1b3838a12ac91463fe0a3dc128c6e0c8ad5530a82f22f9ca2"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-multiply/primitive.png",
+      "bytes": 1647,
+      "sha256": "22b7f9f0d1bf9d78dee6642d5417e99341d5da47d3fd3d83b17d125298fbf5cf"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-multiply/public-pdf.png",
+      "bytes": 1648,
+      "sha256": "9d5880f4d5403d9caae3939300f8e84f7932d710f8b74619c06d6164a60cfbbf"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-multiply/public.pdf",
+      "bytes": 3431,
+      "sha256": "3c963e0c0b7a9dd1b3838a12ac91463fe0a3dc128c6e0c8ad5530a82f22f9ca2"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-multiply/public.png",
+      "bytes": 1647,
+      "sha256": "22b7f9f0d1bf9d78dee6642d5417e99341d5da47d3fd3d83b17d125298fbf5cf"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-multiply/variant.json",
+      "bytes": 228,
+      "sha256": "1aaf242f7d880e8cbea1ea3f50c3998e0723753232a726ef064d1d9434d45a03"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-screen/primitive-pdf.png",
+      "bytes": 2793,
+      "sha256": "2e3f20b9bac2a72b478fdc5371aaf4655cf5873916c5a3331de3bf167982faa7"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-screen/primitive.pdf",
+      "bytes": 3429,
+      "sha256": "aabb744b2b221d866fb451fade9b8171abd7329b3e691bc03e7cbdb3a39bd96d"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-screen/primitive.png",
+      "bytes": 2628,
+      "sha256": "0bd7a6f4ba60422c5c348cd37254b55ed01329cce4e12ec899e72cb4ebe4b706"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-screen/public-pdf.png",
+      "bytes": 2793,
+      "sha256": "2e3f20b9bac2a72b478fdc5371aaf4655cf5873916c5a3331de3bf167982faa7"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-screen/public.pdf",
+      "bytes": 3429,
+      "sha256": "aabb744b2b221d866fb451fade9b8171abd7329b3e691bc03e7cbdb3a39bd96d"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-screen/public.png",
+      "bytes": 2628,
+      "sha256": "0bd7a6f4ba60422c5c348cd37254b55ed01329cce4e12ec899e72cb4ebe4b706"
+    },
+    {
+      "file": ".artifacts/test/png/charts/bar-compositing/glyph-text-screen/variant.json",
+      "bytes": 222,
+      "sha256": "7ccfe45f8151f2e667584a8883be46b3cf519edac609fa7afda7cec4070b321f"
+    }
+  ]
+}

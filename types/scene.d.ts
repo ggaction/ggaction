@@ -1,4 +1,4 @@
-import type { ChartProgram, GraphicObject, GraphicClipPath, CanvasRenderOptions } from './program.js';
+import type { ChartProgram, GraphicObject, GraphicClipPath, CanvasRenderOptions, PreparedShadowRendering } from './program.js';
 export interface TransitionNode {
   readonly key: string;
   readonly type: string;
@@ -30,6 +30,6 @@ export interface CanvasTransitionScene {
   readonly height: number;
   readonly nodes: readonly CanvasTransitionNode[];
 }
-export declare function createTransitionScene(program: ChartProgram, options?: {format?: 'svg'}): TransitionScene;
+export declare function createTransitionScene(program: ChartProgram, options?: {format?: 'svg'; shadows?: PreparedShadowRendering}): TransitionScene;
 export declare function createTransitionScene(program: ChartProgram, options: {format: 'canvas'}): CanvasTransitionScene;
 export declare function renderTransitionScene(scene: CanvasTransitionScene, context: CanvasRenderingContext2D, options?: CanvasRenderOptions): void;

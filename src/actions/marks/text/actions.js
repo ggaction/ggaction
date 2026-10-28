@@ -1,3 +1,5 @@
+import { applyMarkBlend } from "../blend.js";
+import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
 import { selectionPredicate } from "../../../materialization/selection/state.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import { materializeMarkOutput } from "../../../materialization/markOutput.js";
@@ -47,9 +49,9 @@ import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
-const STYLE_OPTIONS = Object.freeze(["clip", ...TEXT_MARK_STYLE_OPTIONS]);
-const CREATE_OPTIONS = Object.freeze(["id", "data", "source", "text", "missing", ...STYLE_OPTIONS]);
-const EDIT_OPTIONS = Object.freeze(["target", "missing", "textOverrides", ...STYLE_OPTIONS]);
+const STYLE_OPTIONS = Object.freeze(["blend", "clip", ...TEXT_MARK_STYLE_OPTIONS]);
+const CREATE_OPTIONS = Object.freeze(["blend", "id", "data", "source", "text", "missing", ...STYLE_OPTIONS]);
+const EDIT_OPTIONS = Object.freeze(["blend", "target", "missing", "textOverrides", ...STYLE_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "replayLayout"]);
 
 function sourceMatchesData(program, layer, requestedData) {
@@ -137,6 +139,7 @@ const createTextMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createTextMark");
+    validateRequestedMarkBlend(args, "text");
     requestedMarkClip(args);
     const id = resolveMarkId(this, args.id, {
       defaultId: "text",
@@ -171,6 +174,7 @@ const createTextMark = /* @__PURE__ */ action(
         value: inherited.source
       });
     }
+    next = applyMarkBlend(next, id, args);
     next = applyLayeredMarkInheritance(next, id, inherited)
       .createGraphics({
         id,
@@ -491,6 +495,7 @@ const editTextMark = /* @__PURE__ */ action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editTextMark");
+    validateRequestedMarkBlend(args, "text");
     requestedMarkClip(args);
     if (!["missing", "textOverrides", ...STYLE_OPTIONS].some(option => Object.hasOwn(args, option))) {
       throw new Error("editTextMark requires at least one editable property.");
@@ -506,12 +511,13 @@ const editTextMark = /* @__PURE__ */ action(
       throw new Error("Text fill conflicts with its color encoding.");
     }
     validateMarkClipCoordinate(this, layer, args.clip ?? this.markConfigs[layer.id]?.clip);
-    const semantic = Object.hasOwn(args, "missing")
+    let semantic = Object.hasOwn(args, "missing")
       ? this.editSemantic({
           property: `layer[${layer.id}].mark.missing`,
           value: validateItemMissing(args.missing, "Text missing")
         })
       : this;
+    semantic = applyMarkBlend(semantic, layer.id, args);
     const next = semantic._withMarkConfig(
       layer.id,
       {

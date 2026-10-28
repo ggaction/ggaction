@@ -696,7 +696,7 @@ export function getMarkItems(program, { target, grain = 'item' } = {}) {
       if (g.type === 'circle') return {left:p.x-p.radius,top:p.y-p.radius,right:p.x+p.radius,bottom:p.y+p.radius};
       if (g.type === 'line') return {left:Math.min(p.x1,p.x2),top:Math.min(p.y1,p.y2),right:Math.max(p.x1,p.x2),bottom:Math.max(p.y1,p.y2)};
       if (g.type === 'rect') return {left:p.x,top:p.y,right:p.x+p.width,bottom:p.y+p.height};
-      return unionConcreteGraphicBounds({objects:{item:g},order:['item']}, ['item'], view.materializationConfigs.textMetrics);
+      return unionConcreteGraphicBounds({objects:{item:g},order:['item']}, ['item'], view.materializationConfigs.textMetrics, { includeEffects: false });
     }).filter(Boolean);
     const visible = item.markType === "image" ? unionConcreteGraphicBounds(view.graphicSpec, item.graphicIds) : undefined;
     return { key:scopedKey(item.key), target:item.layer, markType:item.markType, grain, fields:item.fields,

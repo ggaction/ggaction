@@ -1197,7 +1197,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editPointMark` and encoding actions; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke",
+      "update": "`editPointMark` and encoding actions; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1215,7 +1215,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editTickMark`, position encodings, and generic `removeMark`",
+      "update": "`editTickMark`, position encodings, and generic `removeMark`; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1377,7 +1377,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editTextMark` and `encodeText`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke",
+      "update": "`editTextMark` and `encodeText`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1395,7 +1395,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits typography, alignment, rotation, and offsets; pre-fill outline removal restores stored ordinary stroke",
+      "update": "Edits typography, alignment, rotation, and offsets; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1449,7 +1449,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits constant point shape and appearance; pre-fill outline removal restores stored ordinary stroke",
+      "update": "Edits constant point shape and appearance; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1467,7 +1467,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits Tick length and constant appearance",
+      "update": "Edits Tick length and constant appearance; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1575,7 +1575,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editLineMark`",
+      "update": "`editLineMark`; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1593,7 +1593,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits curve and stroke width",
+      "update": "Edits curve and stroke width; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1611,7 +1611,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editBarMark`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke",
+      "update": "`editBarMark`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1629,7 +1629,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits whole-bar appearance and normal, multiply, screen, or difference compositing; pre-fill outline removal restores stored ordinary stroke",
+      "update": "Edits whole-bar appearance and normal, multiply, screen, or difference compositing; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1647,7 +1647,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editAreaMark`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke",
+      "update": "`editAreaMark`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1665,7 +1665,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editRuleMark`; endpoint and field appearance assignments retain their encoding owners",
+      "update": "`editRuleMark`; endpoint and field appearance assignments retain their encoding owners; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1683,7 +1683,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits constant rule appearance through existing encoding actions",
+      "update": "Edits constant rule appearance through existing encoding actions; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1701,7 +1701,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits constant area appearance; pre-fill outline removal restores stored ordinary stroke",
+      "update": "Edits constant area appearance; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4185,7 +4185,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editArcMark`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke",
+      "update": "`editArcMark`; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4203,7 +4203,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits arc geometry and appearance; pre-fill outline removal restores stored ordinary stroke",
+      "update": "Edits arc geometry and appearance; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -5337,7 +5337,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editRectMark` and position/color encodings; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke",
+      "update": "`editRectMark` and position/color encodings; shared structured fill paint follows the owning mark editor; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -5355,7 +5355,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits rect appearance; pre-fill outline removal restores stored ordinary stroke",
+      "update": "Edits rect appearance; pre-fill outline removal restores stored ordinary stroke; per-item normal/multiply/screen/difference blend uses one semantic intent; normalized per-item shadow uses explicit prepared glyph rendering",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

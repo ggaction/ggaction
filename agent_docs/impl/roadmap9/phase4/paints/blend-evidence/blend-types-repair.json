@@ -1,0 +1,9 @@
+{
+  "node": "v22.23.1",
+  "packageSha256": "15fa644a721d4ac85d763bb3b2f8e6f88d6d9ede6934dd3bbf6495799a58bd3c",
+  "fixture": "scripts/consumers/fixtures/types-2.ts",
+  "fixtureSha256": "cfc8aa76e9599252f17806317f11d0d6c7149e5342f960c6cd7750e933a594e6",
+  "command": "node node_modules/typescript/bin/tsc --project <same-installed-consumer>/tsconfig.json",
+  "exitCode": 0,
+  "originalFailure": "TS2578 unused @ts-expect-error on newly supported createBarMark blend"
+}

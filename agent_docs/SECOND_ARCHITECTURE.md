@@ -3268,3 +3268,28 @@ source/candidate revision closure가 Full bundle에 포함된다. Node20 실측�
 Full 한도를596,000에서613,000으로 최소 조정하며 Basic346,000과 SVG25,000은 유지한다.
 패키지 실측814entries/unpacked5,535,332bytes이며 packed는 Node22 1,200,162,
 Node20 1,203,209bytes다. 이 실측에 맞춰814/1,204,000/5,536,000 한도를 적용한다. Basic은 inference action과 resource를 등록하지 않는다.
+
+### Shared per-item blend materialization
+
+기존 semantic mark.blend owner를 9개 일반 mark에 공유한다. 각 domain action이 명시적으로 pure capability
+검증과 semantic write를 수행하고 기존 final mark-output 단계가 concrete mode를 적용·제거한다.
+Bar geometry owner의 중복 blend 처리는 제거한다. Renderer는 같은 concrete glyph를 소비하며 circle/line/text도
+기존 isolated glyph owner 및 SVG serializer를 사용한다. 별도 compiler/group transaction/registry를 추가하지 않는다.
+정확한 값·상속 소비자·렌더링 경계는 [MARKS](contract/current/MARKS.md#per-item-blend-modes)에 둔다.
+
+### Explicit prepared per-glyph effects
+
+Shadow intent는 기존 mark appearance에 한 번 저장하고 final mark-output에서 명시적으로 concrete 값으로 만든다.
+동기 Canvas/SVG는 exact graphic identity·digest·density에 묶인 private 준비 handle을 소비한다. Native PNG/PDF는
+같은 준비 owner를 호출한다. 실제 glyph RGBA와 공통 pure blur/composite를 거친 image payload는 ephemeral하며
+program이나 codec에 backend 객체를 넣지 않는다. Text ink 측정은 기존 font/line/origin을 바꾸지 않는 준비 단계이고,
+layout reflow나 semantic compilation이 아니다. 준비된 exact font와 실제 glyph drawer를 재사용한다.
+공통 bounds owner는 occupied effect 범위를 별도로 계산하며 selection/hit은 원래 source geometry를 유지한다.
+정확한 지원·수명·한도는 [MARKS](contract/current/MARKS.md#prepared-per-item-shadows)가 소유한다.
+
+Shadow source checkpoint의 실측은815 entries / unpacked5,516,118 bytes이며 packed는 Node22의1,198,723과
+Node20·24의1,201,262 bytes이다. 동일 내부 파일의 압축 차이를 반영해 cap은815/1,202,000/5,517,000이다.
+동일 Node22 archive의 minimal installed Vite는 Node22에서 Full585,965/Basic346,504/SVG20,051gzip,
+Node20에서586,754/347,170/20,191gzip bytes로 측정되어 각각587,000/348,000/25,000 cap을 사용한다.
+Exact support와 lifecycle은 Current에, 최초실패와
+최종 고정 archive의 Node별 qualification은 paints/shadow-evidence에 분리 기록한다.

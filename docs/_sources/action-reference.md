@@ -48,17 +48,17 @@ interface ChartProgramActions {
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
-  createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: { target?: string; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  createPointMark(options?: { blend?: BlendMode; id?: string; data?: string; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editPointMark(options: { blend?: BlendMode; target?: string; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
-  createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  editLineMark(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: { id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: { target?: string; blend?: "normal" | "difference"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
-  createAreaMark(options?: { id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
-  createArcMark(options?: { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editArcMark(options: { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  createLineMark(options?: { blend?: BlendMode; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  editLineMark(options: { blend?: BlendMode; target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  createBarMark(options?: { blend?: BlendMode; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: { target?: string; blend?: BlendMode; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+  createAreaMark(options?: { blend?: BlendMode; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
+  createArcMark(options?: { blend?: BlendMode; id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editArcMark(options: { blend?: BlendMode; target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
@@ -73,7 +73,7 @@ interface ChartProgramActions {
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
-  editAreaMark(options: { target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
+  editAreaMark(options: { blend?: BlendMode; target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeY(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
@@ -1512,7 +1512,7 @@ belong only to the previous mode before validating the final definition.
 ### `createPointMark`
 
 ```javascript
-createPointMark({ clip?, id?, data?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ blend?, shadow?, clip?, id?, data?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a point mark using fourteen named shapes or polygons with area/radius normalization.
@@ -1521,7 +1521,7 @@ Create a point mark using fourteen named shapes or polygons with area/radius nor
 ### `editPointMark`
 
 ```javascript
-editPointMark({ clip?, target?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
+editPointMark({ blend?, shadow?, clip?, target?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
@@ -1530,7 +1530,7 @@ Change constant point shape, fill, opacity, or outline appearance and rematerial
 ### `createTickMark`
 
 ```javascript
-createTickMark({ clip?, id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
+createTickMark({ blend?, shadow?, clip?, id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
 ```
 
 Create a centered line glyph that materializes after both x and y are complete.
@@ -1539,7 +1539,7 @@ Length defaults to `14`; stroke width defaults to `2`. [Marks](../api/marks.md)
 ### `editTickMark`
 
 ```javascript
-editTickMark({ clip?, target?, length?, stroke?, strokeWidth?, opacity? })
+editTickMark({ blend?, shadow?, clip?, target?, length?, stroke?, strokeWidth?, opacity? })
 ```
 
 Partially edit Tick length or constant line appearance while preserving data,
@@ -1597,7 +1597,7 @@ and independently shared resources. [Marks](../api/marks.md)
 ### `createLineMark`
 
 ```javascript
-createLineMark({ clip?, missing?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
+createLineMark({ blend?, shadow?, clip?, missing?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
@@ -1614,7 +1614,7 @@ strict. Each run is a path and selection item; curves restart at each gap.
 ### `editLineMark`
 
 ```javascript
-editLineMark({ clip?, missing?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
+editLineMark({ blend?, shadow?, clip?, missing?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
 ```
 
 Edit line appearance or its explicit missing-coordinate policy and rematerialize
@@ -1623,7 +1623,7 @@ concrete path commands without changing field encodings. [Marks](../api/marks.md
 ### `createBarMark`
 
 ```javascript
-createBarMark({ clip?, id?, data?, orientation?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
+createBarMark({ blend?, shadow?, clip?, id?, data?, orientation?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection.
@@ -1637,11 +1637,11 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `editBarMark`
 
 ```javascript
-editBarMark({ clip?, target?, blend?, fill?, outline?, opacity?, stroke?, strokeWidth? })
+editBarMark({ clip?, target?, blend?, shadow?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit whole-bar appearance and rematerialize every concrete rectangle.
-Use `blend: "difference"` to composite each bar fill and outline once over earlier
+Use `blend: "multiply"`, `"screen"`, or `"difference"` to composite each bar fill and outline once over earlier
 content; `blend: "normal"` restores ordinary painting. Omission preserves the current mode.
 `stroke: false` removes the visible outline; constant fill conflicts with a
 field-driven color encoding. [Marks](../api/marks.md)
@@ -1657,7 +1657,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `createAreaMark`
 
 ```javascript
-createAreaMark({ clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
+createAreaMark({ blend?, shadow?, clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
@@ -1670,7 +1670,7 @@ Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured e
 ### `editAreaMark`
 
 ```javascript
-editAreaMark({ clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? })
+editAreaMark({ blend?, shadow?, clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 ```
 
 Edit constant area appearance. `stroke: false` removes an existing outline.
@@ -1679,7 +1679,7 @@ Edit constant area appearance. `stroke: false` removes an existing outline.
 ### `createArcMark`
 
 ```javascript
-createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
+createArcMark({ blend?, shadow?, id?, data?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic arc mark and empty closed-path collection. Direct
@@ -1690,7 +1690,7 @@ radial sectors. [Marks](../api/marks/line-area.md#arc-marks)
 ### `editArcMark`
 
 ```javascript
-editArcMark({ target?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? })
+editArcMark({ blend?, shadow?, target?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit arc geometry or appearance and rematerialize complete sector paths.
@@ -1700,7 +1700,7 @@ Edit arc geometry or appearance and rematerialize complete sector paths.
 ### `createRuleMark`
 
 ```javascript
-createRuleMark({ clip?, id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
+createRuleMark({ blend?, shadow?, clip?, id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
 ```
 
 Create a semantic rule mark and empty line collection. The first omitted ID is
@@ -1709,7 +1709,7 @@ Create a semantic rule mark and empty line collection. The first omitted ID is
 ### `editRuleMark`
 
 ```javascript
-editRuleMark({ clip?, target?, stroke?, strokeWidth?, strokeDash?, opacity? })
+editRuleMark({ blend?, shadow?, clip?, target?, stroke?, strokeWidth?, strokeDash?, opacity? })
 ```
 
 Edit constant Rule appearance through the four existing encoding owners. At least
@@ -1719,7 +1719,7 @@ accepts the same styles. [Rule marks](../api/marks/rule.md)
 ### `createRectMark`
 
 ```javascript
-createRectMark({ clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
+createRectMark({ blend?, shadow?, clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic rect mark and empty rect collection. Two discrete x/y bands
@@ -1735,7 +1735,7 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 ### `editRectMark`
 
 ```javascript
-editRectMark({ clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth? })
+editRectMark({ blend?, shadow?, clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit rect appearance and rematerialize complete cells. Constant fill conflicts
@@ -1930,7 +1930,7 @@ Omit `layout` or pass `false` to retain the exact anchor. A layout object accept
 ### `createTextMark`
 
 ```javascript
-createTextMark({ clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ blend?, shadow?, clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -1938,7 +1938,7 @@ or unique compatible point, bar, line, rect, rule, or arc layer. Line text ancho
 at each series' final path coordinate; Arc text anchors at
 sector centers. `text` is constant-content shorthand. Source-owned text follows final source positions and never
 contributes independent scale-domain values. Source field or scale changes also drive its labels and guides.
-Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ dx, dy })`, or create
+Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ blend?, shadow?, dx, dy })`, or create
 independent Text with explicit `data` to author its positions. Independent Text accepts field or datum positions;
 all-constant x/y/text produces one item, while any field-bound encoding uses row grain.
 Row-backed text supports `encodeColor`; explicit fill conflicts with that encoding.
@@ -1955,7 +1955,7 @@ centers the entire block vertically. Empty internal lines are retained.
 ### `editTextMark`
 
 ```javascript
-editTextMark({ clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+editTextMark({ blend?, shadow?, clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
 ```
 
 Edit text typography and graphical offsets without changing its semantic
@@ -3875,3 +3875,15 @@ complete Browser Canvas, SVG, Node PNG, and vector PDF examples.
 
 
 Shared mark fill options follow [Pattern and gradient fills](../api/appearance/mark-style.md#pattern-and-gradient-fills). Point, Rect, Bar, Area, Arc, and Text constructors and editors accept the complete FillPaint union; strokes remain solid colors.
+
+The `blend` option on Point, Bar, Rect, Area, Arc, Text, Line, Rule, and Tick mark
+creation/editing accepts normal, multiply, screen, or difference. It applies once
+per final glyph and is preserved through rematerialization. See
+[Mark Style](../api/appearance/mark-style.md#blending-each-mark-item) for ordering and output behavior.
+
+
+The `shadow` option on Point, Bar, Rect, Area, Arc, Text, Line, Rule and Tick create/edit actions adds
+`{color, offsetX?, offsetY?, blurRadius?}`; edit with `shadow: false` to remove it. Defaults are zero offsets
+and zero blur. [Mark Style](../api/appearance/mark-style.md#shadows) explains source opacity and selection;
+[Rendering](../api/rendering.md#prepared-shadows) specifies explicit Canvas/SVG preparation and automatic
+native PNG/PDF preparation. Text requires exact prepared embedded fonts.

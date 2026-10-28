@@ -1,0 +1,30 @@
+{
+  "fontRevision": "efcf2ca9b2cb5a05ae5903a7e7a63d27a9535e5d",
+  "paintRevision": "f9ba5e621b44577fcdff58be648ce9b39b450bd8",
+  "focused": {
+    "passed": 50,
+    "failed": 0
+  },
+  "generation": "complete",
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 807,
+    "packedBytes": 1190379,
+    "unpackedBytes": 5479048
+  },
+  "bundle": {
+    "fullGzip": 584601,
+    "basicGzip": 345051
+  },
+  "environment": "Node 22.23.1",
+  "limitations": [
+    "Dependency merge checks only; final shadow consumer qualification remains pending."
+  ],
+  "initialFailures": [
+    "Conflict resolution syntax failure corrected before runtime checks.",
+    "Vocabulary check raced canonical regeneration; regenerated input passes.",
+    "Combined package count 807 exceeded inherited 803; measured cap adjusted."
+  ]
+}

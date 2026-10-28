@@ -1,4 +1,5 @@
 import { requestedMarkOutline } from "../grammar/markOutline.js";
+import { requestedMarkShadow } from "../grammar/markShadow.js";
 import { validateFillPaint } from "../grammar/paint.js";
 import {
   validateNonEmptyString,
@@ -19,7 +20,8 @@ export function normalizeRectMarkConfig(patch, previous = DEFAULT_RECT_MARK) {
   const result = {
     ...previous,
     ...requestedRectStyleDetails(patch, "Rect"),
-    ...requestedMarkOutline(patch, "Rect")
+    ...requestedMarkOutline(patch, "Rect"),
+    ...requestedMarkShadow(patch, "Rect")
   };
   if (Object.hasOwn(patch, "fill")) {
     result.fill = validateFillPaint(patch.fill, "Rect fill");

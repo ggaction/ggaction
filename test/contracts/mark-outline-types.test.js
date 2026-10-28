@@ -11,10 +11,21 @@ test("outline declarations reach filled marks and labels with closed full replac
   try {
     const file = path.join(directory, "outline.mts");
     await writeFile(file, `
-import type { ChartProgram, MarkOutline } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { ChartProgram, MarkOutline, BlendMode } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import type { MarkOutline as ExtensionOutline } from ${JSON.stringify(path.join(root, "types/extension.js"))};
 import type { MarkOutline as BasicOutline } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 declare const p: ChartProgram;
+
+const blend: BlendMode = 'screen';
+p.createPointMark({blend});p.editPointMark({blend});p.createBarMark({blend});p.editBarMark({blend});
+p.createAreaMark({blend});p.editAreaMark({blend});p.createArcMark({blend});p.editArcMark({blend});
+p.createRectMark({blend});p.editRectMark({blend});p.createTextMark({blend});p.editTextMark({blend});
+p.createLineMark({blend});p.editLineMark({blend});p.createRuleMark({blend});p.editRuleMark({blend});p.createTickMark({blend});p.editTickMark({blend});
+// @ts-expect-error blend is a closed enum
+p.editTextMark({blend:'overlay'});
+// @ts-expect-error null does not remove blend
+p.editPointMark({blend:null});
+
 const outline: MarkOutline = { color:'white', width:8 }; const e:ExtensionOutline=outline; const b:BasicOutline=outline;
 p.createPointMark({outline});p.editPointMark({outline:false});p.createBarMark({outline});p.editBarMark({outline});
 p.createAreaMark({outline});p.editAreaMark({outline});p.createArcMark({outline});p.editArcMark({outline});

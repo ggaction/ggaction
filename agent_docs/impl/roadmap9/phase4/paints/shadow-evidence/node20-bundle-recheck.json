@@ -1,0 +1,27 @@
+{
+  "node": "v20.20.2",
+  "source": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/shadow-final-tar/node22/ggaction-0.0.26.tgz",
+  "results": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 713,
+      "minifiedBytes": 2088790,
+      "gzipBytes": 586754
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 489,
+      "minifiedBytes": 1191960,
+      "gzipBytes": 347170
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 37,
+      "minifiedBytes": 59436,
+      "gzipBytes": 20191
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "variants": [
+    {
+      "variant": "plain",
+      "exactPrimitivePublic": [
+        "PNG",
+        "PDF",
+        "Browser Canvas 1x/2x",
+        "Browser SVG 1x/2x"
+      ],
+      "offlineGraphicPixels": "exact PNG",
+      "rasterScope": "actual glyph source plus shadow, bounded below canvas size",
+      "layers": {
+        "png": {
+          "source": 324,
+          "shadow": 280,
+          "outline": 0
+        },
+        "pdf": {
+          "source": 358,
+          "shadow": 298,
+          "outline": 0
+        },
+        "canvas1x": {
+          "source": 371,
+          "shadow": 327,
+          "outline": 0
+        },
+        "svg1x": {
+          "source": 371,
+          "shadow": 327,
+          "outline": 0
+        },
+        "canvas2x": {
+          "source": 1356,
+          "shadow": 1281,
+          "outline": 0
+        },
+        "svg2x": {
+          "source": 1356,
+          "shadow": 1281,
+          "outline": 0
+        }
+      }
+    },
+    {
+      "variant": "rotated-outline",
+      "exactPrimitivePublic": [
+        "PNG",
+        "PDF",
+        "Browser Canvas 1x/2x",
+        "Browser SVG 1x/2x"
+      ],
+      "offlineGraphicPixels": "exact PNG",
+      "rasterScope": "actual glyph source plus shadow, bounded below canvas size",
+      "layers": {
+        "png": {
+          "source": 250,
+          "shadow": 573,
+          "outline": 249
+        },
+        "pdf": {
+          "source": 240,
+          "shadow": 573,
+          "outline": 250
+        },
+        "canvas1x": {
+          "source": 299,
+          "shadow": 538,
+          "outline": 164
+        },
+        "svg1x": {
+          "source": 299,
+          "shadow": 538,
+          "outline": 164
+        },
+        "canvas2x": {
+          "source": 1197,
+          "shadow": 2251,
+          "outline": 816
+        },
+        "svg2x": {
+          "source": 1197,
+          "shadow": 2251,
+          "outline": 816
+        }
+      }
+    },
+    {
+      "variant": "clipped",
+      "exactPrimitivePublic": [
+        "PNG",
+        "PDF",
+        "Browser Canvas 1x/2x",
+        "Browser SVG 1x/2x"
+      ],
+      "offlineGraphicPixels": "exact PNG",
+      "rasterScope": "actual glyph source plus shadow, bounded below canvas size",
+      "layers": {
+        "png": {
+          "source": 287,
+          "shadow": 187,
+          "outline": 0
+        },
+        "pdf": {
+          "source": 319,
+          "shadow": 191,
+          "outline": 0
+        },
+        "canvas1x": {
+          "source": 332,
+          "shadow": 218,
+          "outline": 0
+        },
+        "svg1x": {
+          "source": 332,
+          "shadow": 218,
+          "outline": 0
+        },
+        "canvas2x": {
+          "source": 1200,
+          "shadow": 850,
+          "outline": 0
+        },
+        "svg2x": {
+          "source": 1200,
+          "shadow": 850,
+          "outline": 0
+        }
+      }
+    }
+  ]
+}

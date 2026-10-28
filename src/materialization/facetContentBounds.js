@@ -1,6 +1,6 @@
 import { cartesianAxisOwners } from "../selectors/axes.js";
 import { facetAxisMode } from "../core/facetAxisPolicy.js";
-import { resolvePrimitiveGraphicBounds, resolveGraphicParentOffset, resolveGraphicClipBounds } from "../grammar/schemas/graphicBounds.js";
+import { resolvePrimitiveOccupiedBounds, resolveGraphicParentOffset, resolveGraphicClipBounds } from "../grammar/schemas/graphicBounds.js";
 import { intersectClipBounds } from "../grammar/schemas/graphicClip.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { walkGraphicTreeEvents } from "../grammar/schemas/graphicTree.js";
@@ -66,7 +66,7 @@ export function measureFacetContentChildren(program, { headerItems = [] } = {}) 
         clip: resolveGraphicClipBounds(graphic, ownerId, { rootViewport: true })
       });
       const { offset: [x, y], clip } = frames.get(ownerId);
-      let bounds = resolvePrimitiveGraphicBounds(type, p, profile);
+      let bounds = resolvePrimitiveOccupiedBounds(type, p, profile);
       if (bounds === undefined) return;
       bounds = requireFiniteBounds({ left: bounds.left + x, right: bounds.right + x,
         top: bounds.top + y, bottom: bounds.bottom + y });

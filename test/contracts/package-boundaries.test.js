@@ -21,12 +21,12 @@ const PUBLIC_ENTRIES = Object.freeze({
   ".": Object.freeze({
     runtime: "./src/index.js",
     types: "./types/index.d.ts",
-    values: Object.freeze(["chart", "hconcat", "prepareDataUpdate", "prepareFontRendering", "prepareFontResource", "prepareImageRendering", "prepareImageResource", "prepareTextMetrics", "render", "vconcat"])
+    values: Object.freeze(["chart", "hconcat", "prepareDataUpdate", "prepareFontRendering", "prepareFontResource", "prepareImageRendering", "prepareImageResource", "prepareShadowRendering", "prepareTextMetrics", "render", "vconcat"])
   }),
   "./basic": Object.freeze({
     runtime: "./src/basic.js",
     types: "./types/basic.d.ts",
-    values: Object.freeze(["chart", "prepareDataUpdate", "prepareFontRendering", "prepareImageRendering", "render"])
+    values: Object.freeze(["chart", "prepareDataUpdate", "prepareFontRendering", "prepareImageRendering", "prepareShadowRendering", "render"])
   }),
   "./extension": Object.freeze({
     runtime: "./src/extension.js",

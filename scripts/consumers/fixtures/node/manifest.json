@@ -986,5 +986,39 @@
         "statements": 22
       }
     ]
+  },
+  {
+    "file": "mark-blends.mjs",
+    "cases": [
+      {
+        "id": "paint/blend-facade-text-and-rule",
+        "statements": 2
+      },
+      {
+        "id": "paint/blend-nine-owners-and-basic",
+        "statements": 2
+      },
+      {
+        "id": "paint/blend-glyph-output-and-fresh-edit",
+        "statements": 1
+      }
+    ]
+  },
+  {
+    "file": "mark-shadows.mjs",
+    "cases": [
+      {
+        "id": "paint/shadow-basic-codec-scene",
+        "statements": 1
+      },
+      {
+        "id": "paint/shadow-text-font-outline-native",
+        "statements": 7
+      },
+      {
+        "id": "paint/shadow-stale-density-fresh-process",
+        "statements": 3
+      }
+    ]
   }
 ]

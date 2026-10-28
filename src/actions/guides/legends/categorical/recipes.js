@@ -1,3 +1,4 @@
+import { normalizeMarkShadow } from "../../../../grammar/markShadow.js";
 import { normalizeMarkOutline } from "../../../../grammar/markOutline.js";
 import {validateLegendLayerOpacity}from"../../../../grammar/legendOpacity.js";
 import { isPlainObject } from "../../../../core/immutable.js";
@@ -38,9 +39,9 @@ const LAYER_OPTIONS = Object.freeze({
   ])
 });
 const INTERNAL_LAYER_OPTIONS = Object.freeze({
-  line: Object.freeze([...LAYER_OPTIONS.line, ...STROKE_STYLE_PROPERTIES]),
-  point: Object.freeze([...LAYER_OPTIONS.point, "outline", ...STROKE_STYLE_PROPERTIES]),
-  swatch: Object.freeze([...LAYER_OPTIONS.swatch, "outline", ...RECT_STYLE_PROPERTIES])
+  line: Object.freeze([...LAYER_OPTIONS.line, "shadow", ...STROKE_STYLE_PROPERTIES]),
+  point: Object.freeze([...LAYER_OPTIONS.point, "outline", "shadow", ...STROKE_STYLE_PROPERTIES]),
+  swatch: Object.freeze([...LAYER_OPTIONS.swatch, "outline", "shadow", ...RECT_STYLE_PROPERTIES])
 });
 
 export function resolveLegendSymbol(program, layer, channels, requested, kind) {
@@ -51,6 +52,7 @@ export function resolveLegendSymbol(program, layer, channels, requested, kind) {
   const outline = styleOwner.outline;
   const strokeDetails = {
     ...requestedStrokeDetails(styleOwner, "Legend source"),
+    ...(styleOwner.shadow === undefined || styleOwner.shadow === false ? {} : { shadow: styleOwner.shadow }),
     ...(outline === undefined || outline === false || channels?.includes("stroke") ? {} : { outline })
   };
   const rectDetails = ["bar", "rect"].includes(layer.mark.type)
@@ -103,10 +105,11 @@ export function resolveLegendSymbol(program, layer, channels, requested, kind) {
         candidate.encoding?.color?.field === color.field &&
         candidate.encoding?.color?.scale === color.scale
       );
+    const lineStyle = matchingLine === undefined ? {} : program.markConfigs[matchingLine.id] ?? {};
     const lineDetails = matchingLine === undefined
       ? {}
       : requestedStrokeDetails(
-          program.markConfigs[matchingLine.id] ?? {},
+          lineStyle,
           "Legend line source"
         );
     return { layers: [
@@ -114,7 +117,8 @@ export function resolveLegendSymbol(program, layer, channels, requested, kind) {
         type: "line",
         length: 32,
         lineWidth: 3,
-        ...lineDetails
+        ...lineDetails,
+        ...(lineStyle.shadow === undefined || lineStyle.shadow === false ? {} : { shadow: lineStyle.shadow })
       }] : []),
       {
         type: "point",
@@ -156,6 +160,7 @@ function defaultRecipe(kind) {
 }
 
 function normalizeLayer(layer, internal) {
+  if (internal && layer?.shadow !== undefined) normalizeMarkShadow(layer.shadow, "Legend shadow");
   if (internal && layer?.outline !== undefined) normalizeMarkOutline(layer.outline, "Legend outline");
   validateLegendLayerOpacity(layer?.opacity);
   if (!isPlainObject(layer) || !Object.hasOwn(LAYER_OPTIONS, layer.type)) {

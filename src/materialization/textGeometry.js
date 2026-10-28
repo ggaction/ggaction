@@ -199,7 +199,7 @@ function pointPlacementGeometry(program, source, item) {
   const objectBounds = unionConcreteGraphicBounds(
     program.graphicSpec,
     item.graphicIds
-  , program.materializationConfigs.textMetrics);
+  , program.materializationConfigs.textMetrics, { includeEffects: false });
   const corners = objectBounds === undefined ? [] : [
     { x: objectBounds.left, y: objectBounds.top },
     { x: objectBounds.right, y: objectBounds.top },

@@ -66,3 +66,13 @@ npm run package:check
 Atlas는 `.artifacts/test/png/review/blend-paints/contact-sheet.png`다. 각 variant는 primitive.png/svg/pdf, pdf.png, browser-canvas.png, browser-svg.png, isolated-group.png, native/browser-isolated-group.png, 공용 variant.json과 별도 evidence.json을 만든다. Gitignored 출력은 [REVIEW-EVIDENCE.json](REVIEW-EVIDENCE.json)의 hashes와 실행 source로 재현한다.
 
 Primitive4/4, render1/1, 기존 opacity6/6, contracts50/50, package check가 통과했다. Runtime source 변경은 없고 package dimensions는681 entries/1,014,128 packed/4,727,468 unpacked bytes다. 이번 검토는 production native/group renderer 구현을 대신하지 않는다. Strict color·공개 schema·object/plot anchoring·pixelRatio·동적 budget·clip/bounds/hit·모든 mark/text·resource/codec/scene·rematerialization·Full/Basic/types·primitive/public parity가 남아 있다. Pattern/radial/shadow와 text/mark halo·outline의 필수 범위도 유지한다. Source/evidence revision은 `90f5f67ec080003dd3606ed78bbb9bfbfd3beafe`다. 후속 metadata-only 기록은 실행 source와 출력 내용을 바꾸지 않는다.
+
+
+## Public blend 연결 후 위치
+
+승인된 native/group oracle slice는 `test/charts/bar-compositing/variants/native/`로 이동한다.
+Public per-item mode는 기존 bar-compositing slice와 추가 circle/rect/line/Text glyph pair에서 검증한다.
+Group fixture는 한 번 양자화하는 순수 수치 기준이며 새 public group transaction을 노출하지 않는다.
+과거 위 명령과 review artifact 경로는 최초 승인 기록이다. 현재 명령은
+`node scripts/run-tests.js all capability:blend-paints` 및
+`node scripts/run-tests.js render capability:blend-paints`다.

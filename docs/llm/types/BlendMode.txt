@@ -1,0 +1,1 @@
+export type BlendMode = "normal" | "multiply" | "screen" | "difference";

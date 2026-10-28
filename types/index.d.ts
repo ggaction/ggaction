@@ -323,7 +323,7 @@ export type {
   EditStrokeDashScaleOptions,
   EditSemanticOptions,
   FieldType,
-  FillPaint, MarkOutline,
+  FillPaint, MarkOutline, MarkShadow, BlendMode,
   PatternPaint,
   RadialGradientPaint,
   FacetCompositionSpec,
@@ -531,3 +531,7 @@ export function prepareFontRendering(program: Pick<ChartProgram, "graphicSpec">,
 export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRenderingHost): Promise<PreparedFontRendering>;
 
 export type { GraphMetric, GraphFeatures, GraphSearchOptions, GraphFeaturePolicy, InferredGraphSource, GraphMetricDefinition, GraphNeighborDefinition, GraphMetricMstDefinition, GraphCandidateMstDefinition, GraphStructuralDefinition, InferredGraphDefinition, CreateInferredGraphDataOptions, EditInferredGraphDataOptions, GraphInferenceDiagnostics, ObservedGraphResource, InferredGraphResource } from "./program.js";
+export type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
+import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js";
+export function prepareShadowRendering(program: Pick<ChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
+export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;

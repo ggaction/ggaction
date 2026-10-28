@@ -15,10 +15,10 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+createPointMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`PointShape`](./../types.md#type-pointshape) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow) · [`PointShape`](./../types.md#type-pointshape) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -30,6 +30,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -47,7 +49,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createPointMark({ clip?, id?, data?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ blend?, shadow?, clip?, id?, data?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a point mark using fourteen named shapes or polygons with area/radius normalization.
@@ -61,10 +63,10 @@ Create a point mark using fourteen named shapes or polygons with area/radius nor
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createTickMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
+createTickMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -76,6 +78,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -91,7 +95,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTickMark({ clip?, id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
+createTickMark({ blend?, shadow?, clip?, id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
 ```
 
 Create a centered line glyph that materializes after both x and y are complete.
@@ -126,6 +130,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -201,6 +207,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
 | `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
@@ -276,6 +284,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
@@ -330,6 +340,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
@@ -527,6 +539,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
@@ -608,6 +622,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
@@ -638,7 +654,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTextMark({ clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ blend?, shadow?, clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -646,7 +662,7 @@ or unique compatible point, bar, line, rect, rule, or arc layer. Line text ancho
 at each series' final path coordinate; Arc text anchors at
 sector centers. `text` is constant-content shorthand. Source-owned text follows final source positions and never
 contributes independent scale-domain values. Source field or scale changes also drive its labels and guides.
-Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ dx, dy })`, or create
+Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ blend?, shadow?, dx, dy })`, or create
 independent Text with explicit `data` to author its positions. Independent Text accepts field or datum positions;
 all-constant x/y/text produces one item, while any field-bound encoding uses row grain.
 Row-backed text supports `encodeColor`; explicit fill conflicts with that encoding.
@@ -685,6 +701,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
@@ -707,7 +725,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editTextMark({ clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+editTextMark({ blend?, shadow?, clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
 ```
 
 Edit text typography and graphical offsets without changing its semantic
@@ -817,10 +835,10 @@ binding clears it. Domains and tick values are already normalized timestamps.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+editPointMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`PointShape`](./../types.md#type-pointshape) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow) · [`PointShape`](./../types.md#type-pointshape) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -832,6 +850,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -847,7 +867,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editPointMark({ clip?, target?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
+editPointMark({ blend?, shadow?, clip?, target?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
@@ -861,10 +881,10 @@ Change constant point shape, fill, opacity, or outline appearance and rematerial
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editTickMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
+editTickMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -876,6 +896,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
@@ -889,7 +911,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editTickMark({ clip?, target?, length?, stroke?, strokeWidth?, opacity? })
+editTickMark({ blend?, shadow?, clip?, target?, length?, stroke?, strokeWidth?, opacity? })
 ```
 
 Partially edit Tick length or constant line appearance while preserving data,
@@ -1081,10 +1103,10 @@ and independently shared resources. [Marks](../../api/marks.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createLineMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
+createLineMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1096,6 +1118,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
@@ -1113,7 +1137,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createLineMark({ clip?, missing?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
+createLineMark({ blend?, shadow?, clip?, missing?, id?, data?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? } = {})
 ```
 
 Create a semantic line mark and empty path collection. Curve defaults to
@@ -1135,10 +1159,10 @@ strict. Each run is a path and selection item; curves restart at each gap.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editLineMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
+editLineMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1150,6 +1174,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
@@ -1165,7 +1191,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editLineMark({ clip?, missing?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
+editLineMark({ blend?, shadow?, clip?, missing?, target?, stroke?, strokeWidth?, opacity?, curve?, tension?, closed? })
 ```
 
 Edit line appearance or its explicit missing-coordinate policy and rematerialize
@@ -1179,10 +1205,10 @@ concrete path commands without changing field encodings. [Marks](../../api/marks
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+createBarMark(options?: TargetedOptions<RectStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1199,6 +1225,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -1216,7 +1244,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createBarMark({ clip?, id?, data?, orientation?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
+createBarMark({ blend?, shadow?, clip?, id?, data?, orientation?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection.
@@ -1235,10 +1263,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "multiply" | "screen" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+editBarMark(options: TargetedOptions<RectStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`RectStyleDetails`](./../types.md#type-rectstyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`FilledMarkStroke`](./../types.md#type-filledmarkstroke).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1255,9 +1283,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `blend` | Optional / branch-dependent | `"difference" \| "multiply" \| "normal" \| "screen" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
 | `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
@@ -1270,11 +1299,11 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editBarMark({ clip?, target?, blend?, fill?, outline?, opacity?, stroke?, strokeWidth? })
+editBarMark({ clip?, target?, blend?, shadow?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit whole-bar appearance and rematerialize every concrete rectangle.
-Use `blend: "difference"` to composite each bar fill and outline once over earlier
+Use `blend: "multiply"`, `"screen"`, or `"difference"` to composite each bar fill and outline once over earlier
 content; `blend: "normal"` restores ordinary painting. Omission preserves the current mode.
 `stroke: false` removes the visible outline; constant fill conflicts with a
 field-driven color encoding. [Marks](../../api/marks.md)
@@ -1295,10 +1324,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1310,6 +1339,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -1327,7 +1358,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createAreaMark({ clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
+createAreaMark({ blend?, shadow?, clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
@@ -1361,6 +1392,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
@@ -1375,7 +1408,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createRuleMark({ clip?, id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
+createRuleMark({ blend?, shadow?, clip?, id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
 ```
 
 Create a semantic rule mark and empty line collection. The first omitted ID is
@@ -1404,6 +1437,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
@@ -1417,7 +1452,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editRuleMark({ clip?, target?, stroke?, strokeWidth?, strokeDash?, opacity? })
+editRuleMark({ blend?, shadow?, clip?, target?, stroke?, strokeWidth?, strokeDash?, opacity? })
 ```
 
 Edit constant Rule appearance through the four existing encoding owners. At least
@@ -1432,10 +1467,10 @@ accepts the same styles. [Rule marks](../../api/marks/rule.md)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+editAreaMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; clip?: boolean; target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1447,6 +1482,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
@@ -1462,7 +1499,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editAreaMark({ clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? })
+editAreaMark({ blend?, shadow?, clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 ```
 
 Edit constant area appearance. `stroke: false` removes an existing outline.
@@ -1476,10 +1513,10 @@ Edit constant area appearance. `stroke: false` removes an existing outline.
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
+createArcMark(options?: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`ArcInnerRadius`](./../types.md#type-arcinnerradius) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow) · [`ArcInnerRadius`](./../types.md#type-arcinnerradius) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1491,6 +1528,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `innerRadius` | Optional / branch-dependent | `ArcInnerRadius \| undefined` |
@@ -1507,7 +1546,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
+createArcMark({ blend?, shadow?, id?, data?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic arc mark and empty closed-path collection. Direct
@@ -1523,10 +1562,10 @@ radial sectors. [Marks](../../api/marks/line-area.md#arc-marks)
 **Availability:** Available by v0.0.13. See [release compatibility](../../version.md).
 
 ```typescript
-editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
+editArcMark(options: TargetedOptions<StrokeStyleDetails & { blend?: BlendMode; shadow?: MarkShadow | false; target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`ArcInnerRadius`](./../types.md#type-arcinnerradius) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline).
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`BlendMode`](./../types.md#type-blendmode) · [`MarkShadow`](./../types.md#type-markshadow) · [`ArcInnerRadius`](./../types.md#type-arcinnerradius) · [`FillPaint`](./../types.md#type-fillpaint) · [`MarkOutline`](./../types.md#type-markoutline).
 
 <details markdown="1">
 <summary>Declared options</summary>
@@ -1538,6 +1577,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `innerRadius` | Optional / branch-dependent | `ArcInnerRadius \| undefined` |
 | `padAngle` | Optional / branch-dependent | `number \| undefined` |
@@ -1552,7 +1593,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editArcMark({ target?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? })
+editArcMark({ blend?, shadow?, target?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit arc geometry or appearance and rematerialize complete sector paths.
@@ -1579,6 +1620,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
@@ -1603,7 +1646,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createRectMark({ clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
+createRectMark({ blend?, shadow?, clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic rect mark and empty rect collection. Two discrete x/y bands
@@ -1645,6 +1688,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusTopRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomRight` | Optional / branch-dependent | `number \| undefined` |
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
@@ -1658,7 +1703,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editRectMark({ clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth? })
+editRectMark({ blend?, shadow?, clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit rect appearance and rematerialize complete cells. Constant fill conflicts

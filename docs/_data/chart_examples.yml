@@ -1907,3 +1907,33 @@
   actions: createHierarchyData · layoutHierarchy · createPartitionPlot
   tasks: hierarchy partition focus
   url: /tutorials/partition/
+- id: mark-shadows
+  example: /examples/mark-shadows/
+  title: Bounded mark shadows
+  image: /assets/images/mark-shadows.png
+  alt: A red rectangle with a soft blue-gray shadow and an unaffected yellow sibling
+  width: 520
+  height: 400
+  thumbnail: /assets/images/mark-shadows-thumb.png
+  thumbnail_width: 520
+  thumbnail_height: 400
+  caption: Prepare the actual mark alpha once and share its bounded shadow across output backends.
+  summary: Prepare the actual mark alpha once and share its bounded shadow across output backends.
+  actions: createRectMark · editRectMark
+  tasks: appearance shadows
+  url: /api/appearance/mark-style/#shadows
+- id: text-shadows
+  example: /examples/text-shadows/
+  title: Exact text shadows
+  image: /assets/images/text-shadows.png
+  alt: Rotated multiline red text with a green outline and a blue glyph-shaped shadow
+  width: 440
+  height: 320
+  thumbnail: /assets/images/text-shadows-thumb.png
+  thumbnail_width: 440
+  thumbnail_height: 320
+  caption: Use an embedded font to preserve actual letters, outlines and shadows across output backends.
+  summary: Use an embedded font to preserve actual letters, outlines and shadows across output backends.
+  actions: createTextMark · createFontResource · applyTextMetrics
+  tasks: appearance shadows
+  url: /api/appearance/mark-style/#shadows

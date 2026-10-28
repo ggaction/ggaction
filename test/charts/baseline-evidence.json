@@ -53,6 +53,13 @@
     "independentOracleImports": []
   },
   {
+    "file": "test/charts/bar-compositing/variants/native/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [],
+    "independentOracleImports": []
+  },
+  {
     "file": "test/charts/beeswarm-plot/primitive.program.js",
     "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
     "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
@@ -733,6 +740,33 @@
     "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
     "sharedProductionImports": [
       "src/grammar/pointShapes.js",
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/mark-shadows/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/mark-shadows/variants/native/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/grammar/shadow.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/mark-shadows/variants/text/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
       "src/index.js"
     ],
     "independentOracleImports": []

@@ -1,3 +1,4 @@
+import { normalizeMarkShadow, MARK_SHADOW_TYPES } from "../grammar/markShadow.js";
 import { normalizeMarkOutline, MARK_OUTLINE_TYPES } from "../grammar/markOutline.js";
 import { validateFillPaint } from "../grammar/paint.js";
 import { normalizeImageMarkConfig, IMAGE_MARK_CONFIG_KEYS } from "../grammar/imageMark.js";
@@ -643,6 +644,15 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     }
     for (const outline of [markConfig.outline, markConfig.barAppearance?.outline]) {
       if (outline !== undefined) normalizeMarkOutline(outline, "Stored mark outline");
+    }
+    if (markConfig.shadow !== undefined && (!MARK_SHADOW_TYPES.includes(markType) || markType === "bar") ||
+        markConfig.barAppearance?.shadow !== undefined && markType !== "bar") {
+      throw invalidSnapshot(`Mark config "${id}" has an unsupported shadow owner.`, path);
+    }
+    for (const shadow of [markConfig.shadow, markConfig.barAppearance?.shadow]) {
+      if (shadow !== undefined && canonicalJSON(normalizeMarkShadow(shadow, "Stored mark shadow")) !== canonicalJSON(shadow)) {
+        throw invalidSnapshot("Stored mark shadow must be normalized.", path);
+      }
     }
     for (const fill of [markConfig.fill, markConfig.barAppearance?.fill]) {
       if (fill !== undefined) validateFillPaint(fill, "Stored mark fill");

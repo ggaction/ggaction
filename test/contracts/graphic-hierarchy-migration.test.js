@@ -28,6 +28,8 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
   "graph-plots": ["canvas", "networkPlot"],
   "graph-parallel": ["canvas", "networkPlot"],
   "graph-self-loop": ["canvas", "networkPlot"],
+  "mark-shadows": ["canvas", "background", "title", "sibling", "shadowed"],
+  "text-shadows": ["canvas", "labels"],
   "structured-paints": ["canvas", "paint"],
   "mark-outlines": ["canvas", "background", "title", "outlined"],
   "image-assets": ["canvas", "plot-main", "label", "backdrop", "image-image-clip", "image"],

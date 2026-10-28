@@ -61,3 +61,10 @@ export function canonicalJSON(value) {
   if (Array.isArray(value)) return `[${value.map(canonicalJSON).join(",")}]`;
   return `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonicalJSON(value[key])}`).join(",")}}`;
 }
+
+// Bounded callers share the canonical browser-safe byte representation.
+export function contentBytesBase64(bytes) {
+  let binary = "";
+  for (let offset = 0; offset < bytes.length; offset += 8192) binary += String.fromCharCode(...bytes.subarray(offset, offset + 8192));
+  return btoa(binary);
+}

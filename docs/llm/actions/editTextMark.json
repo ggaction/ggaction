@@ -98,6 +98,16 @@
       "type": "number | undefined"
     },
     {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
       "name": "clip",
       "required": false,
       "type": "boolean | undefined"
@@ -179,7 +189,7 @@
     }
   ],
   "callPatterns": [
-    "editTextMark({ target?, textOverrides?, lineCap?, lineJoin?, miterLimit?, clip?, lineHeight?, blockAlign? })"
+    "editTextMark({ target?, textOverrides?, lineCap?, lineJoin?, miterLimit?, blend?, shadow?, clip? })"
   ],
   "snippet": "program.editTextMark({ textOverrides: \"auto\" })",
   "errors": [],
