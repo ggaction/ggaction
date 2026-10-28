@@ -9,7 +9,7 @@ import { validateRegressionPlacement } from "../grammar/regression/parameters.js
 import { validateGraphicClip } from "../grammar/schemas/graphicClip.js";
 import { validatePointShape } from "../grammar/pointShapes.js";
 import {deriveLookupRows,sameLookupValue} from "../grammar/lookup.js";
-import {deriveTransformSchema,datasetSchemaContext} from "../grammar/datasetSchema.js";
+import {deriveTransformSchema,datasetSchemaContext,assertFieldsAvailable,transformInputFields} from "../grammar/datasetSchema.js";
 import {orderedDatasetAncestors} from "../grammar/datasetDependencies.js";
 import {validateLegendSpacing} from "../grammar/legendSpacing.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../selectors/markClip.js";
@@ -468,6 +468,14 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     validateRegressionFitStatistics(cache, dataset, resources.get("data").get(dataset?.source));
   }
   for (const dataset of semantic.datasets) {
+    if (dataset.transform?.[0]?.type === "pivot") {
+      const transform = dataset.transform[0], source = resources.get("data").get(dataset.source);
+      if (source === undefined) throw invalidSnapshot("Pivot requires its existing source dataset.", path);
+      assertFieldsAvailable(source.schema, transformInputFields(transform), { data: source.id, operation: "Pivot" });
+      const schema = deriveTransformSchema(source.schema, transform, dataset.values,
+        { sourceId: source.id, ownerId: dataset.id });
+      if (!sameLookupValue(dataset.schema, schema)) throw invalidSnapshot("Pivot schema does not match its source and columns.", path);
+    }
     if(dataset.transform?.[0]?.type==="lookup"){
       orderedDatasetAncestors(semantic.datasets,dataset.id);
       const transform=dataset.transform[0],source=resources.get("data").get(dataset.source),right=resources.get("data").get(transform.lookup.data);

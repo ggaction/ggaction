@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 682, // Adds the private calendar day domain owner.
-  packedBytes: 1_014_000, // Private calendar day checkpoint: measured 1,013,735 bytes.
-  unpackedBytes: 4_727_000 // Private calendar day checkpoint: measured 4,726,245 bytes.
+  entries: 683, // Adds the public pivot action owner.
+  packedBytes: 1_016_000, // Public pivot checkpoint: measured 1,015,469 bytes.
+  unpackedBytes: 4_736_000 // Public pivot checkpoint: measured 4,735,980 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([

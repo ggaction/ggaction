@@ -2077,3 +2077,9 @@ const compoundOwner: import("ggaction").GraphicObject = {type:"path",clip:clipUn
 // @ts-expect-error unknown fill rules are rejected
 const invalidClip: import("ggaction").GraphicClipPath = {...compoundClip,fillRule:"alternate"};
 const compoundSceneClip: NonNullable<import("ggaction/scene").CanvasTransitionNode["clips"]>[number] = compoundClip;
+
+const pivotConsumer = chart().createData({ id: "pivotRaw", values: [{ key: "a", value: 2 }] })
+  .createPivotData({ id: "pivotWide", field: "key", value: "value" })
+  .editPivotData({ target: "pivotWide", op: "count" });
+// @ts-expect-error count has no numeric value input
+chart().createPivotData({id:"badPivot",field:"key",op:"count",value:"amount"});

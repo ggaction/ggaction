@@ -796,5 +796,14 @@
         "statements": 11
       }
     ]
+  },
+  {
+    "file": "pivot.mjs",
+    "cases": [
+      {
+        "id": "data-transforms/pivot",
+        "statements": 16
+      }
+    ]
   }
 ]

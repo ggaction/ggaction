@@ -44,6 +44,7 @@ interface ChartProgramActions {
   createBinData(options: TargetedOptions<BinDataOptions>): ChartProgram;
   createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
+  createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
   createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;
@@ -64,6 +65,7 @@ interface ChartProgramActions {
   editFilteredData(options: TargetedOptions<EditFilteredDataOptions>): ChartProgram;
   editFlattenData(options: TargetedOptions<EditFlattenDataOptions>): ChartProgram;
   editLookupData(options: TargetedOptions<EditLookupDataOptions>): ChartProgram;
+  editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;
   editFoldData(options: TargetedOptions<EditFoldDataOptions>): ChartProgram;
   editSummaryData(options: TargetedOptions<EditSummaryDataOptions>): ChartProgram;
   editBinData(options: TargetedOptions<EditBinDataOptions>): ChartProgram;
@@ -4195,6 +4197,28 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
 
 Related types: [`DatasetNormalizedBaseTransform`](#type-datasetnormalizedbasetransform) · [`NormalizeZeroDenominator`](#type-normalizezerodenominator) · [`DatasetNormalizeBaselineTransform`](#type-datasetnormalizebaselinetransform).
 
+### `DatasetPivotTransform` {#type-datasetpivottransform}
+
+<details markdown="1">
+<summary>Expand DatasetPivotTransform</summary>
+
+```typescript
+export type DatasetPivotTransform = {
+  readonly type: "pivot";
+  readonly field: string;
+  readonly groupBy: readonly string[];
+  readonly columns: readonly PivotColumn[];
+  readonly fill: number | null;
+} & (
+  | { readonly op: PivotNumericOperation; readonly value: string }
+  | { readonly op: "count"; readonly value?: never }
+);
+```
+
+</details>
+
+Related types: [`PivotColumn`](#type-pivotcolumn) · [`PivotNumericOperation`](#type-pivotnumericoperation).
+
 ### `DatasetRegressionStatisticsTransform` {#type-datasetregressionstatisticstransform}
 
 <details markdown="1">
@@ -4419,6 +4443,7 @@ Related types: [`TemporalInputUnit`](#type-temporalinputunit).
 
 ```typescript
 export type DatasetTransform =
+  | DatasetPivotTransform
   | DatasetBinTransform
   | DatasetBin2DTransform
   | DatasetCompleteTransform
@@ -4445,7 +4470,7 @@ export type DatasetTransform =
 
 </details>
 
-Related types: [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFlattenTransform`](#type-datasetflattentransform) · [`DatasetLookupTransform`](#type-datasetlookuptransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
+Related types: [`DatasetPivotTransform`](#type-datasetpivottransform) · [`DatasetBinTransform`](#type-datasetbintransform) · [`DatasetBin2DTransform`](#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](#type-datasetcompletetransform) · [`DatasetComputedTransform`](#type-datasetcomputedtransform) · [`DatasetImputedTransform`](#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](#type-datasetfiltertransform) · [`DatasetFlattenTransform`](#type-datasetflattentransform) · [`DatasetLookupTransform`](#type-datasetlookuptransform) · [`DatasetFoldTransform`](#type-datasetfoldtransform) · [`DatasetRegressionTransform`](#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](#type-datasetsorttransform) · [`DatasetDensityTransform`](#type-datasetdensitytransform) · [`DatasetECDFTransform`](#type-datasetecdftransform) · [`DatasetHorizonTransform`](#type-datasethorizontransform) · [`DatasetIntervalTransform`](#type-datasetintervaltransform) · [`DatasetSummaryTransform`](#type-datasetsummarytransform) · [`DatasetStackTransform`](#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](#type-datasettimeunittransform) · [`DatasetWindowTransform`](#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -5890,6 +5915,19 @@ export type EditParallelScaleOptions = {
 </details>
 
 Related types: [`WithoutScaleId`](#type-withoutscaleid) · [`QuantitativePositionScaleOptions`](#type-quantitativepositionscaleoptions) · [`CategoricalPositionScaleOptions`](#type-categoricalpositionscaleoptions).
+
+### `EditPivotDataOptions` {#type-editpivotdataoptions}
+
+<details markdown="1">
+<summary>Expand EditPivotDataOptions</summary>
+
+```typescript
+export type EditPivotDataOptions = FocusedDerivedDataEdit<PivotDataOptions>;
+```
+
+</details>
+
+Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`PivotDataOptions`](#type-pivotdataoptions).
 
 ### `EditPolarAxisOptions` {#type-editpolaraxisoptions}
 
@@ -9761,6 +9799,54 @@ export type PieRadiusChannel = string | {
 </details>
 
 Related types: [`RadiusScaleOptions`](#type-radiusscaleoptions).
+
+### `PivotColumn` {#type-pivotcolumn}
+
+<details markdown="1">
+<summary>Expand PivotColumn</summary>
+
+```typescript
+export interface PivotColumn {
+  readonly value: string | number | boolean | null;
+  readonly as: string;
+}
+```
+
+</details>
+
+### `PivotDataOptions` {#type-pivotdataoptions}
+
+<details markdown="1">
+<summary>Expand PivotDataOptions</summary>
+
+```typescript
+export type PivotDataOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string | readonly string[];
+  columns?: readonly PivotColumn[];
+  fill?: number | null;
+} & (
+  | { op?: PivotNumericOperation; value: string }
+  | { op: "count"; value?: never }
+);
+```
+
+</details>
+
+Related types: [`PivotColumn`](#type-pivotcolumn) · [`PivotNumericOperation`](#type-pivotnumericoperation).
+
+### `PivotNumericOperation` {#type-pivotnumericoperation}
+
+<details markdown="1">
+<summary>Expand PivotNumericOperation</summary>
+
+```typescript
+export type PivotNumericOperation = "none" | "sum" | "mean" | "min" | "max";
+```
+
+</details>
 
 ### `PointFacadePositionChannel` {#type-pointfacadepositionchannel}
 

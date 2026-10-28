@@ -662,6 +662,16 @@ createFoldData({ id, source?, fields, as? })
 Materialize selected wide fields as stable key/value rows while preserving
 every source cell. [Source and Derived Data](../api/data/source-and-derived.md#createfolddata-id-source-fields-as)
 
+### `createPivotData`
+
+```javascript
+createPivotData({ id, source?, field, value?, groupBy?, columns?, op?, fill? })
+```
+
+Turn category cells into numeric columns within observed groups. Duplicate cells
+require an explicit aggregation operation. Full only.
+[Grouped pivot data](../api/data/summaries-and-shaping.md#createpivotdata)
+
 ### `createComputedData`
 
 ```javascript
@@ -1391,6 +1401,7 @@ editComputedData({ target, as?, expression?, dependents? })
 editLookupData({ target, field?, lookup?, dependents? })
 editFlattenData({ target, fields?, as?, dependents? })
 editFoldData({ target, fields?, as?, dependents? })
+editPivotData({ target, field?, value?, groupBy?, columns?, op?, fill?, dependents? })
 editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
 editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })
 editStackData({ target, category?, group?, value?, mode?, as?, dependents? })

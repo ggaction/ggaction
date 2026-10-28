@@ -2,6 +2,7 @@ import { requireStringValue as requireName } from "../core/validation.js";
 import { annotateError } from "../core/diagnostics.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { requireRegressionStatisticsSource, REGRESSION_STATISTIC_FIELDS } from "./regression/statistics.js";
+import { scalarKey } from "./transformKeys.js";
 
 const STORAGE_TYPES = new Set([
   "number", "string", "boolean", "array", "object", "unknown", "mixed"
@@ -303,7 +304,16 @@ export function deriveTransformSchema(inputSchema, transform, values, { sourceId
     fields = fields.filter(item => item.name !== field.name);
     fields.push(field);
   };
-  if (transform.type === "summary") {
+  if (transform.type === "pivot") {
+    fields = transform.groupBy.map(name => inheritedField(input, name)).filter(Boolean);
+    const inputs = [...new Set([...transform.groupBy, transform.field, transform.value])];
+    for (const column of transform.columns) {
+      const field = generatedField(column.as, "number", definition,
+        `column:${scalarKey(column.value, "Pivot column value")}`, inputs);
+      field.nullable = transform.fill === null || !["sum", "count"].includes(transform.op);
+      push(field);
+    }
+  } else if (transform.type === "summary") {
     fields = transform.groupBy.map(name => inheritedField(input, name)).filter(Boolean);
     for (const item of transform.aggregates) {
       const op = typeof item.op === "string" ? item.op : item.op.op;
@@ -404,7 +414,7 @@ export function deriveTransformSchema(inputSchema, transform, values, { sourceId
       if (planned.lineage === undefined && !["complete", "impute"].includes(transform.type)) {
         return planned;
       }
-      return { ...planned, storageType: ["regressionStatistics", "timeUnit"].includes(transform.type) && planned.storageType === "number"
+      return { ...planned, storageType: ["regressionStatistics", "timeUnit", "pivot"].includes(transform.type) && planned.storageType === "number"
         ? "number" : field.storageType, nullable: field.nullable, optional: field.optional };
     });
     for (const field of inferred.fields) {

@@ -369,6 +369,24 @@
         "path": "unit/persistence/"
       }
     ],
+    "pivot": [
+      {
+        "type": "file",
+        "path": "unit/grammar/pivot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/pivot-data.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/pivot-consumers.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/pivot-types.test.js"
+      }
+    ],
     "plot-guide-underlays": [
       {
         "type": "file",

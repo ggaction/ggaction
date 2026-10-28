@@ -1085,7 +1085,34 @@ interface DatasetStatisticalReferenceTransform {
   readonly type: "statisticalReference";
   readonly target: string;
 }
+export interface PivotColumn {
+  readonly value: string | number | boolean | null;
+  readonly as: string;
+}
+export type PivotNumericOperation = "none" | "sum" | "mean" | "min" | "max";
+export type DatasetPivotTransform = {
+  readonly type: "pivot";
+  readonly field: string;
+  readonly groupBy: readonly string[];
+  readonly columns: readonly PivotColumn[];
+  readonly fill: number | null;
+} & (
+  | { readonly op: PivotNumericOperation; readonly value: string }
+  | { readonly op: "count"; readonly value?: never }
+);
+export type PivotDataOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string | readonly string[];
+  columns?: readonly PivotColumn[];
+  fill?: number | null;
+} & (
+  | { op?: PivotNumericOperation; value: string }
+  | { op: "count"; value?: never }
+);
 export type DatasetTransform =
+  | DatasetPivotTransform
   | DatasetBinTransform
   | DatasetBin2DTransform
   | DatasetCompleteTransform
@@ -2927,6 +2954,7 @@ export type EditFilteredDataOptions = FilterModePatch & {
 };
 export type EditFlattenDataOptions = FocusedDerivedDataEdit<FlattenDataOptions>;
 export type EditLookupDataOptions = FocusedDerivedDataEdit<LookupDataOptions>;
+export type EditPivotDataOptions = FocusedDerivedDataEdit<PivotDataOptions>;
 export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 export type EditSummaryDataOptions = FocusedWeightedDerivedDataEdit<
   SummaryDataOptions,
@@ -5513,6 +5541,7 @@ export class ChartProgram {
   createBinData(options: TargetedOptions<BinDataOptions>): ChartProgram;
   createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
+  createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
   createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;
@@ -5533,6 +5562,7 @@ export class ChartProgram {
   editFilteredData(options: TargetedOptions<EditFilteredDataOptions>): ChartProgram;
   editFlattenData(options: TargetedOptions<EditFlattenDataOptions>): ChartProgram;
   editLookupData(options: TargetedOptions<EditLookupDataOptions>): ChartProgram;
+  editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;
   editFoldData(options: TargetedOptions<EditFoldDataOptions>): ChartProgram;
   editSummaryData(options: TargetedOptions<EditSummaryDataOptions>): ChartProgram;
   editBinData(options: TargetedOptions<EditBinDataOptions>): ChartProgram;

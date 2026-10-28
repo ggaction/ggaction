@@ -123,6 +123,7 @@ corresponding higher-level action when the library should materialize values:
 | `"lookup"` | `{ type, field, lookup: { data, key, fields, as } }` | `createLookupData` |
 | `"flatten"` | `{ type, fields, as }` | `createFlattenData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
+| `"pivot"` | `{ type, field, value?, groupBy, columns, op, fill }` | `createPivotData` (Full only) |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
 | `"regressionStatistics"` | `{ type }`, with an existing linear fit as source | `createRegressionStatisticsData` |
 | `"sort"` | `{ type, sortBy }` | `createSortedData` |

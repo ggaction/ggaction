@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "pivot-actions": { prefix: "actions/data/pivot", floor: { lines: 90, branches: 85, functions: 100 }, rationale: "Pivot inference, ownership and explicit materialization must remain exercised." },
   "calendar-day": { prefix: "grammar/calendarDay", floor: { lines: 90, branches: 85, functions: 100 }, rationale: "Civil-day domains must preserve strict parsing, explicit zones, DST boundaries and bounded output." },
   "pivot-grammar": { prefix: "grammar/pivot", floor: { lines: 90, branches: 85, functions: 100 }, rationale: "Pivot grouping, typed columns, numerical policies and work limits must remain exercised." },
   "transform-input": { prefix: "grammar/transformInput", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Shared data input validation must remain safe before dispatch in Full and Basic." },

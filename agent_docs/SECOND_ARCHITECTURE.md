@@ -44,14 +44,19 @@ renderer에는 연결하지 않았다. 기존 computed v1의 의미와 직접 ma
 상세 내부 계약은 [expression core](architecture/EXPRESSION_CORE.md), 공개 computed는
 [CORE](contract/current/CORE.md), action trace는 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
 
-## Private pivot kernel 준비
+## Pivot data lifecycle
 
 `grammar/pivot.js`는 명시 typed columns와 group tuple을 받아 수치 cell을 계산하는 pure owner다.
 열 추론은 별도 normalize 호출에서 끝나고 derive는 저장할 정규형만 소비한다. Shared own-data validation,
-typed scalar identity, finite aggregate와 generated/work limit 정책을 재사용한다. 아직 transform registry,
-domain action, public declaration, persistence 또는 renderer에 연결하지 않았으므로 공개 pivot 지원을 뜻하지 않는다.
-State와 materialization 경계는 그대로다. 준비 범위와 재현 명령은
-[private checkpoint](impl/roadmap9/phase3/statistics/PIVOT_KERNEL.md)에 기록한다.
+typed scalar identity, finite aggregate와 generated/work limit 정책을 재사용한다. Full의 `createPivotData`가
+관측 columns를 한 번 정규화하고 `createDerivedData`→`materializePivotData` child로 계산을 명시 호출한다.
+`editPivotData`는 기존 immutable revision plan과 typed-column output role을 사용한다. Group row grain과
+실제 source row lineage, 빈 numeric schema를 기존 dataset owner가 저장한다. Facet은 source partition을
+재계산하며 repeat의 statistical restriction은 유지한다. Basic은 direct/generic pivot 모두 지원하지 않는다.
+Persistence는 저장 정의/source schema/lineage를 검증하고 rows/graphics를 재계산하지 않고 복원한다.
+새 state/resource/renderer 종류는 없다. 정확한 공개 계약은 [CORE](contract/current/CORE.md#createpivotdata),
+검증과 통합 범위는 [public checkpoint](impl/roadmap9/phase3/statistics/PIVOT_PUBLIC.md)가 소유한다.
+아래 수치는 [private 준비 checkpoint](impl/roadmap9/phase3/statistics/PIVOT_KERNEL.md)의 보존 기록이다.
 
 이 독립 checkpoint는 기준 `8685719f`에 private module 한 개를 더한다. Node22.23.1/npm10.9.8의 공식
 staging 실측은 679entries, 1,011,694packed, 4,719,770unpacked bytes다. 이전 678entries 및
@@ -59,6 +64,12 @@ staging 실측은 679entries, 1,011,694packed, 4,719,770unpacked bytes다. 이�
 679entries 및 1,012,000/4,720,000bytes로만 변경했다. Full/Basic gzip은 기존과 같은
 507,597/285,702bytes로 508,000/286,000 한도를 유지한다. 이 수치는 해당 기준 branch의 측정이며
 다른 통합 checkpoint의 누적 한도를 대체하지 않는다.
+
+Public action owner 한 개와 declarations/descriptors를 연결한 독립 branch 실측은683entries,
+1,015,469packed/4,735,980unpacked bytes다. 이전682/1,014,000/4,727,000을 초과해
+683/1,016,000/4,736,000으로 최소 조정한다. 설치 Full gzip509,064는508,000을 초과해510,000으로
+올리고 Basic285,851 및 SVG는 기존286,000/25,000 한도를 유지한다. 정확 action2개와 설명을 더한
+search index857,741bytes는857,000을 초과해858,000으로만 조정한다. 모든 값은 main 통합 때 재측정한다.
 
 ## Private local quadratic 준비
 

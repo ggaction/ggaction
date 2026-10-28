@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:da14c6fa784ad71e53dc994c51fea71f353ef3f309f08a7ced70625e3711f8e4. Status: development. Runtime source: 3a022aea4d297c63659a37446ce0a39e3e86a3b2. Release baseline: v0.0.13.
+Contract: sha256:76b3e4503e6abbe07e407711ec597713b0ab1e87591cc766fb74b103cd7cd758. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/3a022aea4d297c63659a37446ce0a39e3e86a3b2/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/3a022aea4d297c63659a37446ce0a39e3e86a3b2/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -5094,6 +5094,7 @@ corresponding higher-level action when the library should materialize values:
 | `"lookup"` | `{ type, field, lookup: { data, key, fields, as } }` | `createLookupData` |
 | `"flatten"` | `{ type, fields, as }` | `createFlattenData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
+| `"pivot"` | `{ type, field, value?, groupBy, columns, op, fill }` | `createPivotData` (Full only) |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
 | `"regressionStatistics"` | `{ type }`, with an existing linear fit as source | `createRegressionStatisticsData` |
 | `"sort"` | `{ type, sortBy }` | `createSortedData` |
@@ -17338,6 +17339,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createParallelAxis`](./reference/actions/guides/#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](./reference/actions/charts-data/#createparallelcoordinates) | H0 | user-facing | charts |
 | [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | H0 | user-facing | charts |
+| [`createPivotData`](./reference/actions/statistics/#createpivotdata) | H1 | user-facing | statistics |
 | [`createPointMark`](./reference/actions/marks/#createpointmark) | H2 | user-facing | marks |
 | [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](./reference/actions/charts-data/#createpolarscatterplot) | H0 | user-facing | charts |
@@ -17449,6 +17451,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editOverlay`](./reference/actions/marks/#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](./reference/actions/guides/#editparallelaxis) | H3 | user-facing | axes |
 | [`editParallelScale`](./reference/actions/charts-data/#editparallelscale) | H2 | user-facing | core |
+| [`editPivotData`](./reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editRadarPlot`](./reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](./reference/actions/guides/#editradialaxis) | H3 | user-facing | axes |
@@ -24605,6 +24608,44 @@ createFoldData({ id, source?, fields, as? })
 Materialize selected wide fields as stable key/value rows while preserving
 every source cell. [Source and Derived Data](./api/data/source-and-derived/#createfolddata-id-source-fields-as)
 
+## `createPivotData`
+
+**API layer:** user-facing. **Authoring roles:** H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`PivotDataOptions`](./reference/types/#type-pivotdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `field` | Required | `string` |
+| `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
+| `columns` | Optional / branch-dependent | `readonly PivotColumn[] \| undefined` |
+| `fill` | Optional / branch-dependent | `number \| null \| undefined` |
+| `op` | Optional / branch-dependent | `"count" \| PivotNumericOperation \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createPivotData({ id, source?, field, value?, groupBy?, columns?, op?, fill? })
+```
+
+Turn category cells into numeric columns within observed groups. Duplicate cells
+require an explicit aggregation operation. Full only.
+[Grouped pivot data](./api/data/summaries-and-shaping/#createpivotdata)
+
 ## `createComputedData`
 
 **API layer:** user-facing. **Authoring roles:** H1.
@@ -24922,6 +24963,35 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
 | `fields` | Optional / branch-dependent | `readonly string[] \| undefined` |
 | `as` | Optional / branch-dependent | `FoldDataOutputFields \| undefined` |
+
+Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
+
+## `editPivotData`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditPivotDataOptions`](./reference/types/#type-editpivotdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
+| `dependents` | Optional / branch-dependent | `DerivedDataDependents \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
+| `columns` | Optional / branch-dependent | `readonly PivotColumn[] \| undefined` |
+| `fill` | Optional / branch-dependent | `number \| null \| undefined` |
+| `op` | Optional / branch-dependent | `"count" \| PivotNumericOperation \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
 
 Behavior, inference, resets, and errors: [Focused statistical data editing](./reference/actions/statistics/#focused-statistical-data-editing).
 
@@ -26108,6 +26178,7 @@ editComputedData({ target, as?, expression?, dependents? })
 editLookupData({ target, field?, lookup?, dependents? })
 editFlattenData({ target, fields?, as?, dependents? })
 editFoldData({ target, fields?, as?, dependents? })
+editPivotData({ target, field?, value?, groupBy?, columns?, op?, fill?, dependents? })
 editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
 editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })
 editStackData({ target, category?, group?, value?, mode?, as?, dependents? })
@@ -29606,6 +29677,11 @@ export type {
   RemoveResourceOptions,
   CanvasOptions,
   FitCanvasOptions,
+  PivotColumn,
+  PivotNumericOperation,
+  PivotDataOptions,
+  DatasetPivotTransform,
+  EditPivotDataOptions,
   FoldDataOptions,
   FoldDataOutputFields,
   CategoricalEncodingOptions,
@@ -30562,6 +30638,7 @@ interface ChartProgramActions {
   createBinData(options: TargetedOptions<BinDataOptions>): ChartProgram;
   createFlattenData(options: TargetedOptions<FlattenDataOptions>): ChartProgram;
   createLookupData(options: TargetedOptions<LookupDataOptions>): ChartProgram;
+  createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
   createNormalizedData(options: TargetedOptions<NormalizedDataOptions>): ChartProgram;
@@ -30582,6 +30659,7 @@ interface ChartProgramActions {
   editFilteredData(options: TargetedOptions<EditFilteredDataOptions>): ChartProgram;
   editFlattenData(options: TargetedOptions<EditFlattenDataOptions>): ChartProgram;
   editLookupData(options: TargetedOptions<EditLookupDataOptions>): ChartProgram;
+  editPivotData(options: TargetedOptions<EditPivotDataOptions>): ChartProgram;
   editFoldData(options: TargetedOptions<EditFoldDataOptions>): ChartProgram;
   editSummaryData(options: TargetedOptions<EditSummaryDataOptions>): ChartProgram;
   editBinData(options: TargetedOptions<EditBinDataOptions>): ChartProgram;
@@ -34128,6 +34206,25 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
 
 Related types: [`DatasetNormalizedBaseTransform`](./reference/types/#type-datasetnormalizedbasetransform) · [`NormalizeZeroDenominator`](./reference/types/#type-normalizezerodenominator) · [`DatasetNormalizeBaselineTransform`](./reference/types/#type-datasetnormalizebaselinetransform).
 
+### `DatasetPivotTransform` {#type-datasetpivottransform}
+
+ Expand DatasetPivotTransform
+
+```typescript
+export type DatasetPivotTransform = {
+  readonly type: "pivot";
+  readonly field: string;
+  readonly groupBy: readonly string[];
+  readonly columns: readonly PivotColumn[];
+  readonly fill: number | null;
+} & (
+  | { readonly op: PivotNumericOperation; readonly value: string }
+  | { readonly op: "count"; readonly value?: never }
+);
+```
+
+Related types: [`PivotColumn`](./reference/types/#type-pivotcolumn) · [`PivotNumericOperation`](./reference/types/#type-pivotnumericoperation).
+
 ### `DatasetRegressionStatisticsTransform` {#type-datasetregressionstatisticstransform}
 
  Expand DatasetRegressionStatisticsTransform
@@ -34321,6 +34418,7 @@ Related types: [`TemporalInputUnit`](./reference/types/#type-temporalinputunit).
 
 ```typescript
 export type DatasetTransform =
+  | DatasetPivotTransform
   | DatasetBinTransform
   | DatasetBin2DTransform
   | DatasetCompleteTransform
@@ -34345,7 +34443,7 @@ export type DatasetTransform =
   | DatasetWindowTransform;
 ```
 
-Related types: [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFlattenTransform`](./reference/types/#type-datasetflattentransform) · [`DatasetLookupTransform`](./reference/types/#type-datasetlookuptransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](./reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
+Related types: [`DatasetPivotTransform`](./reference/types/#type-datasetpivottransform) · [`DatasetBinTransform`](./reference/types/#type-datasetbintransform) · [`DatasetBin2DTransform`](./reference/types/#type-datasetbin2dtransform) · [`DatasetCompleteTransform`](./reference/types/#type-datasetcompletetransform) · [`DatasetComputedTransform`](./reference/types/#type-datasetcomputedtransform) · [`DatasetImputedTransform`](./reference/types/#type-datasetimputedtransform) · [`DatasetNormalizedTransform`](./reference/types/#type-datasetnormalizedtransform) · [`DatasetFilterTransform`](./reference/types/#type-datasetfiltertransform) · [`DatasetFlattenTransform`](./reference/types/#type-datasetflattentransform) · [`DatasetLookupTransform`](./reference/types/#type-datasetlookuptransform) · [`DatasetFoldTransform`](./reference/types/#type-datasetfoldtransform) · [`DatasetRegressionTransform`](./reference/types/#type-datasetregressiontransform) · [`DatasetRegressionStatisticsTransform`](./reference/types/#type-datasetregressionstatisticstransform) · [`DatasetSortTransform`](./reference/types/#type-datasetsorttransform) · [`DatasetDensityTransform`](./reference/types/#type-datasetdensitytransform) · [`DatasetECDFTransform`](./reference/types/#type-datasetecdftransform) · [`DatasetHorizonTransform`](./reference/types/#type-datasethorizontransform) · [`DatasetIntervalTransform`](./reference/types/#type-datasetintervaltransform) · [`DatasetSummaryTransform`](./reference/types/#type-datasetsummarytransform) · [`DatasetStackTransform`](./reference/types/#type-datasetstacktransform) · [`DatasetStatisticalReferenceTransform`](./reference/types/#type-datasetstatisticalreferencetransform) · [`DatasetTimeUnitTransform`](./reference/types/#type-datasettimeunittransform) · [`DatasetWindowTransform`](./reference/types/#type-datasetwindowtransform).
 
 ### `DatasetWindowOperation` {#type-datasetwindowoperation}
 
@@ -35565,6 +35663,16 @@ export type EditParallelScaleOptions = {
 ```
 
 Related types: [`WithoutScaleId`](./reference/types/#type-withoutscaleid) · [`QuantitativePositionScaleOptions`](./reference/types/#type-quantitativepositionscaleoptions) · [`CategoricalPositionScaleOptions`](./reference/types/#type-categoricalpositionscaleoptions).
+
+### `EditPivotDataOptions` {#type-editpivotdataoptions}
+
+ Expand EditPivotDataOptions
+
+```typescript
+export type EditPivotDataOptions = FocusedDerivedDataEdit<PivotDataOptions>;
+```
+
+Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`PivotDataOptions`](./reference/types/#type-pivotdataoptions).
 
 ### `EditPolarAxisOptions` {#type-editpolaraxisoptions}
 
@@ -38797,6 +38905,45 @@ export type PieRadiusChannel = string | {
 ```
 
 Related types: [`RadiusScaleOptions`](./reference/types/#type-radiusscaleoptions).
+
+### `PivotColumn` {#type-pivotcolumn}
+
+ Expand PivotColumn
+
+```typescript
+export interface PivotColumn {
+  readonly value: string | number | boolean | null;
+  readonly as: string;
+}
+```
+
+### `PivotDataOptions` {#type-pivotdataoptions}
+
+ Expand PivotDataOptions
+
+```typescript
+export type PivotDataOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string | readonly string[];
+  columns?: readonly PivotColumn[];
+  fill?: number | null;
+} & (
+  | { op?: PivotNumericOperation; value: string }
+  | { op: "count"; value?: never }
+);
+```
+
+Related types: [`PivotColumn`](./reference/types/#type-pivotcolumn) · [`PivotNumericOperation`](./reference/types/#type-pivotnumericoperation).
+
+### `PivotNumericOperation` {#type-pivotnumericoperation}
+
+ Expand PivotNumericOperation
+
+```typescript
+export type PivotNumericOperation = "none" | "sum" | "mean" | "min" | "max";
+```
 
 ### `PointFacadePositionChannel` {#type-pointfacadepositionchannel}
 
@@ -42167,12 +42314,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3a022aea4d297c63659a37446ce0a39e3e86a3b2/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/3a022aea4d297c63659a37446ce0a39e3e86a3b2/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -42391,6 +42538,58 @@ same bin decisions. Set `includeEmpty: false` to omit zero-count bins and
 and members use positive-weight rows, while zero-weight rows are still validated.
 Frequency weights require non-negative safe integers; reliability weights require
 non-negative finite numbers.
+
+## Group categories into columns {#createpivotdata}
+
+Use `createPivotData` from the Full entry when each group needs one numeric
+column per category. For the exact contract, see
+[`createPivotData`](./reference/actions/statistics/#createpivotdata) and
+[`editPivotData`](./reference/actions/statistics/#editpivotdata).
+
+> **Executable complete.** The complete snippet imports chart and declares its input rows.
+
+```javascript
+import { chart } from "ggaction";
+
+const wide = chart()
+  .createData({ id: "sales", values: [
+    { store: "A", product: "apples", amount: 2 },
+    { store: "A", product: "apples", amount: 3 },
+    { store: "B", product: "pears", amount: 4 }
+  ] })
+  .createPivotData({
+    id: "wide", groupBy: "store", field: "product", value: "amount", op: "sum"
+  });
+// [{ store: "A", apples: 5, pears: null },
+//  { store: "B", apples: null, pears: 4 }]
+
+const counts = wide.editPivotData({ target: "wide", op: "count", fill: 0 });
+// [{ store: "A", apples: 2, pears: 0 },
+//  { store: "B", apples: 0, pears: 1 }]
+
+const plot = counts.createCanvas()
+  .createBarPlot({ x: "store", y: "apples", guides: false });
+```
+
+The default `op: "none"` accepts one row per group and category; duplicates are
+errors. Choose `sum`, `mean`, `min`, `max`, or `count` explicitly to aggregate.
+Count omits `value`; the other operations require a numeric or null value field.
+Only absent cells use `fill` (default null). An observed null remains null with
+`none`; all-null numeric cells yield zero for sum and null for mean/min/max.
+
+Nonempty string categories infer column names once in first appearance order.
+For numeric, boolean, null, renamed, unobserved, or empty-input categories,
+provide `columns: [{ value, as }]`. Typed keys stay distinct and aliases must be
+unique and different from grouping fields. Empty input also needs a declared
+source schema for its referenced fields. It produces no rows and retains the
+declared output columns. At most 64 columns and 10,000 output groups are allowed.
+
+Source revisions preserve the stored columns and reject new categories until
+you explicitly edit the columns. Edits retain omitted options and replace a
+provided columns array. Renaming an alias for the same typed category updates
+direct visual consumers. Use `dependents: "recompute"` to update downstream
+datasets. Facets recompute their partition; repeat does not accept pivot data.
+Basic does not expose pivot creation or editing.
 
 ## `createFoldData({ id, source?, fields, as? })` {#createfolddata-id-source-fields-as}
 
@@ -44957,11 +45156,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:da14c6fa784ad71e53dc994c51fea71f353ef3f309f08a7ced70625e3711f8e4` |
+| Contract fingerprint | `sha256:76b3e4503e6abbe07e407711ec597713b0ab1e87591cc766fb74b103cd7cd758` |
 | Example and dataset source | `b8f9668133b278974c9cfe7324402a18282c9f4b` |
-| Runtime source commit | `3a022aea4d297c63659a37446ce0a39e3e86a3b2` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 298 |
+| Declared actions here | 300 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

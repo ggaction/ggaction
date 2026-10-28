@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add Full-only `createPivotData` and `editPivotData` with typed columns, explicit duplicate aggregation, stable schema and lineage, and immutable revision of dependent data and chart consumers.
+
 - Prevent action trace summaries from invoking getters; reject executable computed-expression properties before evaluation while preserving existing formula results.
 
 - Support compound M/L/C/Z paths, nonzero/evenodd fills and path owner clips across SVG, Canvas, PNG, PDF, transition scenes and saved programs. Preserve open strokes with implicitly closed fills and share subpath-aware bounds and adaptive geometry calculations.

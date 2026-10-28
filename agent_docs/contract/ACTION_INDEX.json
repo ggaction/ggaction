@@ -382,6 +382,24 @@
       }
     },
     {
+      "name": "createPivotData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical pivot owner; revise it with editPivotData",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createpivotdata"
+      }
+    },
+    {
       "name": "createComputedData",
       "layer": "user-facing",
       "domain": "statistics",
@@ -721,6 +739,24 @@
       "contract": {
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "editfolddata"
+      }
+    },
+    {
+      "name": "editPivotData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revise a standalone grouped pivot dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editpivotdata"
       }
     },
     {
@@ -5428,6 +5464,7 @@
       "materializeLookupData",
       "materializeFlattenData",
       "materializeFoldData",
+      "materializePivotData",
       "materializeMarkFilteredData",
       "materializeIntervalData",
       "materializeNormalizedData",

@@ -944,6 +944,11 @@
       "layered chart",
       "independent plot layer",
       "shared coordinates"
+    ],
+    "PivotData": [
+      "grouped pivot data",
+      "category columns",
+      "long to wide data"
     ]
   },
   "summaryOverrides": {
@@ -1712,6 +1717,16 @@
     },
     "encodeShape": {
       "value": "circle"
+    },
+    "createPivotData": {
+      "id": "wide",
+      "field": "category",
+      "value": "amount",
+      "op": "sum"
+    },
+    "editPivotData": {
+      "target": "wide",
+      "op": "count"
     }
   },
   "callPatternOverrides": {

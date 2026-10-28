@@ -1499,6 +1499,20 @@
   {
     "file": "api/data/summaries-and-shaping.md",
     "block": 3,
+    "heading": "Group categories into columns {#createpivotdata}",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"wide\""
+    ],
+    "prerequisites": "The complete snippet imports chart and declares its input rows.",
+    "sha256": "5b7b53dd9ac042e268a19860af98e51f61b55d4c26319996ea3f9a32020df91e",
+    "executable": true
+  },
+  {
+    "file": "api/data/summaries-and-shaping.md",
+    "block": 4,
     "heading": "`createFoldData({ id, source?, fields, as? })` {#createfolddata-id-source-fields-as}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1514,7 +1528,7 @@
   },
   {
     "file": "api/data/summaries-and-shaping.md",
-    "block": 4,
+    "block": 5,
     "heading": "`createStackData({ id?, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1530,7 +1544,7 @@
   },
   {
     "file": "api/data/summaries-and-shaping.md",
-    "block": 5,
+    "block": 6,
     "heading": "`createFlattenData({ id, source?, fields, as? })` {#createflattendata-id-source-fields-as}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1542,7 +1556,7 @@
   },
   {
     "file": "api/data/summaries-and-shaping.md",
-    "block": 6,
+    "block": 7,
     "heading": "Named table lookup",
     "mode": "fragment",
     "environment": "esm-context",

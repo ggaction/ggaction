@@ -195,5 +195,15 @@
     "result": "program",
     "prerequisites": "Standalone ES module with ggaction installed.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "pivot-data",
+    "file": "api/data/summaries-and-shaping.md",
+    "contains": "const wide = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "plot",
+    "prerequisites": "The complete snippet imports chart and declares its input rows.",
+    "rendering": "authoring-only"
   }
 ]

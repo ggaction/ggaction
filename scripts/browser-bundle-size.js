@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 508_000, // Compound paths: CI Node 24 measured 507419.
+  ggaction: 510_000, // Public pivot lifecycle: Node 22.23.1 measured 509064.
   "ggaction/basic": 286_000, // Shared lineage and concrete identity: Node 22.23.2 measured 285190.
   "ggaction/svg": 25_000
 });

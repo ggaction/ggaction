@@ -729,6 +729,36 @@ Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data
 - ✅ Covered: field/output uniqueness, source collision, 64-field and 10,000-row bounds, immutable rejection.
 - Evidence: `test/unit/actions/data/fold-data.test.js`.
 
+## `createPivotData`
+
+- Signature: `createPivotData({ id, source?, field, value?, groupBy?, columns?, op?, fill? })`.
+- Full-only. `id`는 필수 새 dataset ID, `source` 생략 시 current data를 사용한다. `groupBy` 기본은 `[]`이며 string 또는 unique field 배열이다.
+- `field`는 열 category를 가리킨다. `columns`는1..64개의 `{value: string|number|boolean|null, as: nonempty string}`이다. Typed key와 output 이름은 각각 고유하고 group field와 충돌할 수 없다. `-0`과0은 같은 key다.
+- Columns 생략은 모든 관측 key가 nonempty string일 때 first-appearance 순서로 추론한다. Empty input 또는 non-string key는 explicit columns가 필요하다. 추론 결과를 저장하며 revision/replay는 다시 추론하지 않는다. 선언하지 않은 관측 key는 오류다.
+- `op`는 `none`(기본), `sum`, `mean`, `min`, `max`, `count`다. `none`은 group×column당 한 행만 허용한다. 중복은 명시 aggregate가 필요하다. Count만 `value`를 받지 않으며 행 수를 센다. 나머지는 `value` field를 요구하고 finite number/null만 받는다. Absent/undefined/nonnumeric/nonfinite input과 결과 overflow는 오류다.
+- `none`은 관측 null을 보존한다. 수치 aggregate는 null을 제외하고 all-null cell의 sum은0, mean/min/max는 null이다. 관측 없는 cell만 `fill`(기본 null, finite number 또는 null)을 사용한다.
+- Output은 first-observed group tuple 순서의 group fields와 column aliases뿐이다. Empty output은`[]`이며 빈 입력은 기존 field validation에 필요한 declared source schema와 explicit columns를 사용한다. Columns의 number schema와 nullable intent가 보존된다.
+- Canonical transform은 `{type:"pivot",field,groupBy:[],columns:[{value,as}],op:"none",fill:null,value}`다. Count는 value를 저장하지 않는다. Row lineage는 group의 실제 input rows 전체이며 fictitious missing-cell reference가 없다. Column lineage는 group fields와 field/value를 참조하고 typed column value가 stable output role이다.
+- `createDerivedData`와 `materializePivotData` child를 명시 호출한다. Source/consumer revision은 기존 logical identity와 dependency plan을 사용한다. Facet은 source partition에서 statistical replay한다. Repeat는 statistical dataset을 거부한다. Renderer는 materialized graphicSpec만 읽는다.
+- Columns64/output rows10,000/work10,000,000을 allocation 전에 검사한다. Input validation/grouping 및 group×column output 작업을 포함한다. Unknown option, getter, collision, invalid key, duplicate/no-op, missing field와 resource limit 실패는 immutable하다.
+- Persistence는 closed transform, source field/schema 및 lineage를 검증하고 저장된 rows/graphics를 복원한다. 복원 시 pivot 계산이나 materialization을 다시 실행하지 않는다.
+
+### Formal values — `createPivotData`
+
+- Implemented: `createPivotData(options: PivotDataOptions): ChartProgram` (Full only).
+- Numeric branch: `{value: FieldName, op?: "none"|"sum"|"mean"|"min"|"max"}`; count branch: `{op:"count",value?:never}`.
+- Defaults: `groupBy:[]`, `op:"none"`, `fill:null`; columns infer once or are explicit typed keys.
+- Proposed (NOT IMPLEMENTED): No proposal in this contract.
+
+### Value coverage — `createPivotData`
+
+- Evidence: `test/unit/actions/data/pivot-data.test.js`, `test/unit/grammar/pivot.test.js`.
+
+- ✅ Covered: typed keys, independent numeric/null/overflow/work oracles in `test/unit/grammar/pivot.test.js`.
+- ✅ Covered: immutable create, exact trace/schema/lineage, empty schema, Basic rejection, revision and lookup diamond in `test/unit/actions/data/pivot-data.test.js`.
+- ✅ Covered: facet/repeat boundary, selections, composition and concrete renderers in `test/unit/actions/data/pivot-consumers.test.js`, `scripts/consumers/fixtures/node/pivot.mjs`.
+- ✅ Covered: positive/negative declarations in `test/contracts/pivot-types.test.js`.
+
 ## `createComputedData`
 
 - Signature: `createComputedData({ id, source?, as, expression })`
@@ -1408,6 +1438,27 @@ weight를 지원하는 focused editors에서만 stored weight를 제거한다. �
 
 - ✅ Covered: share/zscore/minmax/baseline family cleanup, zero-denominator policy와 output rename.
 - Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editPivotData`
+
+- Signature: `editPivotData({ target, field?, value?, groupBy?, columns?, op?, fill?, dependents? })`.
+- Full-only focused editor for a standalone pivot owner. Target is the logical ID or current dataset snapshot; omitted transform options are preserved and arrays replace the whole value. Columns are never re-inferred by an edit.
+- Count 전환 시 이전 value를 제거하며 count에서 numeric op로 전환할 때 value가 필요하다. Count와 value를 함께 지정하면 오류다. `op:"none"`은 aggregation을 제거하고 duplicate cells가 있으면 실패한다.
+- Same typed column key의 as 변경은 직접 encoding/selection field를 새 alias로 rebind한다. Key 제거·교체로 필요한 consumer output이 없어지면 거부한다. `dependents` 기본 reject이며 recompute는 모든 downstream dataset을 stable topological order로 한 번씩 재계산한다.
+- 새 immutable revision을 만들고 logical identity, group-grain row identity와 source lineage를 보존한다. Invalid child, field, column, selector, guide 또는 output capacity는 이전 program과 trace를 보존한다.
+
+### Formal values — `editPivotData`
+
+- Implemented: `editPivotData(options: EditPivotDataOptions): ChartProgram`.
+- Existing focused editor의 explicit target, nonempty patch, closed options와 `dependents:"reject"|"recompute"` 규칙을 공유한다.
+- Proposed (NOT IMPLEMENTED): No proposal in this contract.
+
+### Value coverage — `editPivotData`
+
+- Evidence: `test/unit/actions/data/pivot-data.test.js`, `test/unit/actions/data/pivot-consumers.test.js`.
+
+- ✅ Covered: count/mean/none transitions, aliases, dependent recompute, source revisions, selection and restored editing in `test/unit/actions/data/pivot-data.test.js` and `test/unit/actions/data/pivot-consumers.test.js`.
+- ✅ Covered: declaration boundaries in `test/contracts/pivot-types.test.js`; installed package in `scripts/consumers/fixtures/node/pivot.mjs`.
 
 ## `editCompleteData`
 
