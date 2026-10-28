@@ -62,4 +62,4 @@ Atlas는 `.artifacts/test/png/review/outline-paints/contact-sheet.png`다. 각 v
 
 Primitive2/2, render1/1, 기존 stroke/opacity16/16, contracts38/38과 package check가 통과했다. Runtime/public schema/source 변경은0이며 package dimensions는681 entries/1,014,128 packed/4,727,468 unpacked bytes다. Font fixture는 STEP019 소유자의 같은 bytes이며 별도 provider를 만들지 않는다.
 
-전체 mark/text consumers, real font outlines/holes/complex scripts, fractional geometry·HiDPI, stroke color alpha·glyph opacity 조합, strict color validation, inspection/hit/clip bounds, scene/codec, rematerialization, Full/Basic/types와 public/primitive parity가 남아 있다. Pattern/radial/shadow/blend 지원표와 함께 공개 integration을 마쳐야 한다. Source/evidence revision은 metadata 기록에서 고정한다.
+전체 mark/text consumers, real font outlines/holes/complex scripts, fractional geometry·HiDPI, stroke color alpha·glyph opacity 조합, strict color validation, inspection/hit/clip bounds, scene/codec, rematerialization, Full/Basic/types와 public/primitive parity가 남아 있다. Pattern/radial/shadow/blend 지원표와 함께 공개 integration을 마쳐야 한다. Source/evidence revision은 `ca0649475025a253af82e9be0dcbec1ffecd5504`다. 후속 metadata-only 기록은 실행 source와 출력 내용을 바꾸지 않는다.
