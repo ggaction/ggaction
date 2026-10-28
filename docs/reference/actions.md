@@ -311,6 +311,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](./actions/charts-data.md#highlightmarks) | H3 | user-facing | mark-selection |
 | [`insertCompositionChild`](./actions/charts-data.md#insertcompositionchild) | H3 | user-facing | composition |
 | [`jitterPoints`](./actions/marks.md#jitterpoints) | H3 | user-facing | marks |
+| [`layoutGraph`](./actions/charts-data.md#layoutgraph) | H2 | user-facing | core |
 | [`layoutHierarchy`](./actions/charts-data.md#layouthierarchy) | H2 | user-facing | core |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | H3 | user-facing | marks |
 | [`layoutSeries`](./actions/encodings.md#layoutseries) | H2 | user-facing | encodings |

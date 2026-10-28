@@ -31,7 +31,7 @@ inspectProgram(p, { target: { kind: 'hierarchy', id: 'h' } });
 comparePrograms(p, p, { target: { kind: 'layout', id: 'l' } });
 for (const r of p.semanticSpec.resources) {
  if (r.kind === 'hierarchy') { const h: HierarchyResource = r; h.result.nodes.map(n => n.totalValue); }
- if (r.kind === 'layout') { const l: HierarchyLayoutResource = r; l.inputs[0].revision; }
+ if (r.kind === 'layout') { r.inputs[0].revision; }
 }
 // @ts-expect-error Basic does not register hierarchy actions
 basicChart().createHierarchyData({ id: 'h', key: 'id', parent: 'p', value: 'v' });

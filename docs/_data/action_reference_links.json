@@ -317,5 +317,6 @@
   "createTreePlot": "/reference/actions/charts-data/#createtreeplot",
   "editTreePlot": "/reference/actions/charts-data/#edittreeplot",
   "createTreemapPlot": "/reference/actions/charts-data/#createtreemapplot",
-  "editTreemapPlot": "/reference/actions/charts-data/#edittreemapplot"
+  "editTreemapPlot": "/reference/actions/charts-data/#edittreemapplot",
+  "layoutGraph": "/reference/actions/charts-data/#layoutgraph"
 }

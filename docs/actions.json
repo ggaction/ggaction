@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 319,
+  "count": 320,
   "cards": [
     {
       "schemaVersion": 3,
@@ -38975,7 +38975,7 @@
       "name": "editLayout",
       "layer": "user-facing",
       "domain": "core",
-      "summary": "Change a layout order or method-specific options and refresh its plot consumers.",
+      "summary": "Patch a stored hierarchy or graph layout and refresh its existing consumers.",
       "signature": "editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;",
       "intents": [
         "edit layout",
@@ -38983,13 +38983,13 @@
         "change",
         "chart setup",
         "data and scales",
-        "stored hierarchy layout",
+        "stored layout",
         "node positions"
       ],
       "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
-          "existing stored hierarchy layout"
+          "existing stored layout"
         ],
         "owns": [],
         "idOptions": [
@@ -39021,7 +39021,7 @@
       "completionRequirements": {
         "state": "contextual",
         "requires": [
-          "existing stored hierarchy layout"
+          "existing stored layout"
         ],
         "allowsEmpty": false
       },
@@ -39039,7 +39039,7 @@
         {
           "name": "options",
           "required": false,
-          "type": "Partial<...> | { maxNodes?: number | undefined; } | Partial<...> | undefined"
+          "type": "GraphCircularOptions | GraphForceOptions | Partial<...> | Partial<...> | { ...; } | Partial<...> | undefined"
         }
       ],
       "callPatterns": [
@@ -39486,6 +39486,98 @@
       "snippet": "program.editTreemapPlot({ target: \"treemap\", cells: { opacity: 0.8 } })",
       "errors": [],
       "route": "/reference/actions/charts-data/#edittreemapplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "layoutGraph",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Store fixed, circular, or deterministic force positions for an existing graph.",
+      "signature": "layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;",
+      "intents": [
+        "layout graph",
+        "layout",
+        "avoid overlap",
+        "chart setup",
+        "data and scales",
+        "graph layout",
+        "node positions"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing graph resource"
+        ],
+        "owns": [
+          "layout resource"
+        ],
+        "idOptions": [
+          "id",
+          "graph"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editLayout",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing graph resource"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "graph",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "method",
+          "required": true,
+          "type": "\"circular\" | \"fixed\" | \"force\""
+        },
+        {
+          "name": "options",
+          "required": false,
+          "type": "GraphCircularOptions | GraphFixedOptions | GraphForceOptions | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "layoutGraph({ id, method, target?, graph?, options? })"
+      ],
+      "snippet": "program.layoutGraph({ id: \"network-layout\", graph: \"network\", method: \"circular\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#layoutgraph"
     }
   ]
 }

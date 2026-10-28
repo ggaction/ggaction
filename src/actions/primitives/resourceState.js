@@ -26,9 +26,9 @@ export function replaceStoredResource(program, parsed, value, args) {
   const replacements = new Map();
   for (const entry of preparedResourceResults(args, program) ?? []) {
     const old = requireStoredResource(program, entry.previous);
-    if ((old.kind === "data-source" ? value.kind !== "parameter" : old.kind !== "layout" || value.kind !== "hierarchy") || !old.inputs.some(ref => same(ref, value)) ||
+    if ((old.kind === "data-source" ? value.kind !== "parameter" : old.kind !== "layout" || !["hierarchy", "graph"].includes(value.kind)) || !old.inputs.some(ref => same(ref, value)) ||
         dataSourceValueHash(old.options) !== dataSourceValueHash(entry.resource.options)) {
-      throw annotateError(new Error("Prepared resource replacement does not belong to this parameter write."), { code: "stale-result", resourceId: old.id });
+      throw annotateError(new Error("Prepared resource replacement does not belong to this resource write."), { code: "stale-result", resourceId: old.id });
     }
     replacements.set(JSON.stringify([old.kind, old.id]), entry.resource);
   }

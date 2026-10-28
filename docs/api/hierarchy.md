@@ -46,9 +46,9 @@ Chart authoring. Compute an explicit tree, treemap, or normalized partition layo
 editLayout(options: EditLayoutOptions): ChartProgram
 ```
 
-Chart authoring. Change a layout order or method-specific options and refresh its plot consumers.
+Chart authoring. Patch a stored hierarchy or graph layout and refresh its existing consumers.
 
-The existing layout method remains fixed. `options` is a partial patch of that method. Changing a radial tree to vertical/horizontal removes its radial-only options. The proposed geometry and every plot are checked before state-changing child actions. Layout numeric intent has one owner and is independent of Canvas placement.
+The existing layout method remains fixed. `options` is a partial patch of that method. Graph layouts require nonempty options and reject hierarchy-only `order`; see [graph layouts](data/source-and-derived.md#layoutgraph). Omitted targets select the current layout, then a unique layout, and reject ambiguity across both families. Changing a radial tree to vertical/horizontal removes its radial-only options. The proposed geometry and every plot are checked before state-changing child actions. Layout numeric intent has one owner and is independent of Canvas placement.
 
 ## removeResource
 

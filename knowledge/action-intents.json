@@ -990,7 +990,7 @@
       "normalized partition"
     ],
     "Layout": [
-      "stored hierarchy layout",
+      "stored layout",
       "node positions"
     ],
     "TreePlot": [
@@ -1000,6 +1000,10 @@
     "TreemapPlot": [
       "nested rectangle chart",
       "proportional hierarchy"
+    ],
+    "Graph": [
+      "graph layout",
+      "node positions"
     ]
   },
   "summaryOverrides": {
@@ -1022,7 +1026,8 @@
     "createGraphics": "Creates one backend-neutral concrete graphic resource inside an extension action.",
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action.",
     "encodeChannels": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state.",
-    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token."
+    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token.",
+    "layoutGraph": "Store fixed, circular, or deterministic force positions for an existing graph."
   },
   "sampleOverrides": {
     "createStackData": {
@@ -1910,6 +1915,11 @@
       "cells": {
         "opacity": 0.8
       }
+    },
+    "layoutGraph": {
+      "id": "network-layout",
+      "graph": "network",
+      "method": "circular"
     }
   },
   "callPatternOverrides": {

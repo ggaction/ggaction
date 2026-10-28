@@ -5,6 +5,9 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "layout-action-dispatch": { prefix: "actions/layouts/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Shared layout edits must retain exact domain routing and atomic validation." },
+  "layout-state-dispatch": { prefix: "materialization/layoutState.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored layouts must validate only their explicit owning input domain." },
+  "layout-selection": { prefix: "selectors/layouts.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Layout inference must reject ambiguity and incompatible domains." },
   "structured-paint": { prefix: "grammar/paint.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Authored and concrete fill contracts must preserve normalized coordinate frames and reject unsafe values." },
   "gradient-stops": { prefix: "grammar/gradientStops.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Ordered stops and hard transitions share one complete validation owner." },
   "fill-materialization": { prefix: "materialization/fillPaint.js", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Explicit fill origins, glyph bounds and cumulative pattern work must remain exercised." },

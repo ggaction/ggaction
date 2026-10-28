@@ -12,11 +12,31 @@ test("observed graph declarations distinguish source target columns from graph e
   try {
     const file = path.join(directory, "consumer.mts");
     await writeFile(file, `
-import { chart, type GraphResource, type CreateGraphDataOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import { chart, type GraphResource, type GraphLayoutResource, type CreateGraphDataOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import { chart as basicChart } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 const definition: CreateGraphDataOptions = { id: "graph", nodes: "nodes", edges: "edges", nodeKey: ["family", "id"], source: "from", target: ["tf", "tn"], weight: "weight" };
 const program = chart().createGraphData(definition).editGraphData({ target: "graph", definition: { target: "to", directed: true } });
 program.editGraphData({ target: { childPath: ["left"], id: "graph" }, definition: { selfLoops: true } });
+program.layoutGraph({ id: "fixed", method: "fixed", options: { positions: [{ key: ["a", 1], x: 2, y: 3 }] } })
+  .layoutGraph({ id: "circular", method: "circular" })
+  .layoutGraph({ id: "force", graph: "graph", method: "force", options: { seed: 2, pinned: [{ key: "a", fx: 0, fy: 0 }] } })
+  .editLayout({ target: "force", options: { iterations: 10 } });
+const layout = program.semanticSpec.resources.find((value): value is GraphLayoutResource => value.kind === "layout" && value.inputs[0].kind === "graph");
+if (layout) {
+  const graphKind: "graph" = layout.inputs[0].kind;
+  // @ts-expect-error stored coordinates are immutable
+  layout.result.nodes[0].x = 2;
+}
+// @ts-expect-error Basic does not register graph layouts
+basicChart().layoutGraph({ id: "circular", method: "circular" });
+// @ts-expect-error fixed needs complete explicit positions
+program.layoutGraph({ id: "fixed", method: "fixed" });
+// @ts-expect-error method-specific options stay closed
+program.layoutGraph({ id: "circular", method: "circular", options: { seed: 2 } });
+// @ts-expect-error graph layouts do not accept hierarchy order
+program.editLayout({ options: { iterations: 2 }, order: "input" });
+// @ts-expect-error explicit undefined is not omission
+program.layoutGraph({ id: "force", method: "force", options: undefined });
 const resource = program.semanticSpec.resources.find((value): value is GraphResource => value.kind === "graph");
 if (resource) {
   const inputKind: "data" = resource.inputs[0].kind;

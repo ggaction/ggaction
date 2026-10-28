@@ -3400,7 +3400,7 @@ Compute an explicit tree, treemap, or normalized partition layout from a named h
 editLayout({ target?, order?, options? })
 ```
 
-Change a layout order or method-specific options and refresh its plot consumers. Full only.
+Patch a stored hierarchy or graph layout and refresh its existing consumers. Full only.
 [Hierarchy resources and plots](../api/hierarchy.md#editlayout)
 
 ### `createTreePlot`
@@ -3438,6 +3438,15 @@ editTreemapPlot({ target?, layout?, origin?, clip?, cells?, labels? })
 
 Edit treemap cells, labels, placement, or the bound treemap layout. Full only.
 [Hierarchy resources and plots](../api/hierarchy.md#edittreemapplot)
+
+### `layoutGraph`
+
+```javascript
+layoutGraph({ id, graph?, method, options? })
+```
+
+Store a fixed, circular, or deterministic force layout of an existing graph. Full only.
+[Graph data and layouts](../api/data/source-and-derived.md#layoutgraph)
 
 ## Advanced Chart API
 

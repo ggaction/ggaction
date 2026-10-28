@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:8bc5f5bc48cd1fd7323f718aca4b6cfae3f6f9b3d36df273f961cf04efbac794",
-    "sourceCommit": "e103977bc1b1a1a4a75eb894ea7b36eac688d1f8",
+    "contractId": "sha256:9159158041527366fbcea8a11fdcdaaf13adcdfccd434c8ebd3c9ae2e268b912",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "802b6a2da76fd0092b37179973f10721992b0220c50f8116bde9e75b165c3015"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -810,10 +810,11 @@
         "createstackdata-id-source-category-group-value-mode-as",
         "editing-derived-data",
         "removedata-id",
-        "related"
+        "related",
+        "layoutgraph"
       ],
-      "bytes": 23185,
-      "sha256": "b4febd52dc1bd6dfeaa7b2ec43ff41b0ecbe069d9812abab18e3a5b903e5b681"
+      "bytes": 24784,
+      "sha256": "ef42ea2b78993c4d095289214b6482cdae27a5ce0d365cfa2be1d0e2d89f5e59"
     },
     {
       "order": 51,
@@ -1985,8 +1986,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 34179,
-      "sha256": "b8e82a11881661e59354222436be47be8e3451510988e6e44c5ee38f251ecfde"
+      "bytes": 34271,
+      "sha256": "3a38ddb134fd2f6a622351d1a5e2fa31c001100b78c3a2fe0bb420251c1c9fb5"
     },
     {
       "order": 118,
@@ -2106,12 +2107,13 @@
         "edittreeplot",
         "createtreemapplot",
         "edittreemapplot",
+        "layoutgraph",
         "focused-core-data-editing",
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 221395,
-      "sha256": "5659462d100038bb7e2192fadcdeb17f856092e899a7ad519a7a5c98813183ce"
+      "bytes": 222761,
+      "sha256": "83ffc0f401952c89e15eccd504d46d94a545086e8a807a0c14915c8b4506bed9"
     },
     {
       "order": 119,
@@ -2439,8 +2441,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 37476,
-      "sha256": "8a51521a0e0bde13fc1bad1d806fc261d4920bb1949a19a3c3be188ef909370e"
+      "bytes": 37657,
+      "sha256": "fb746e26e614218c07d4314d26e0d11d9e7c9ef20d48bfb6f85557a138520ff4"
     },
     {
       "order": 126,
@@ -2860,7 +2862,13 @@
         "type-gradientplotguideoptions",
         "type-gradientplotoptions",
         "type-gradientplotpositionchannel",
+        "type-graphcircularoptions",
+        "type-graphfixedoptions",
+        "type-graphforceoptions",
         "type-graphkeyfield",
+        "type-graphlayoutlimits",
+        "type-graphpin",
+        "type-graphposition",
         "type-graphicclip",
         "type-graphicclippath",
         "type-graphiccliprect",
@@ -2912,6 +2920,7 @@
         "type-labellayoutoptions",
         "type-labelleaderoptions",
         "type-layerplotspecification",
+        "type-layoutgraphoptions",
         "type-layouthierarchyoptions",
         "type-legendblocksymbolpatch",
         "type-legendblocktextpatch",
@@ -3209,8 +3218,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 420388,
-      "sha256": "ba5594c7acbc28a669dcc0341e10b55719a691787724c10839c51b2d1e4a67fb"
+      "bytes": 423481,
+      "sha256": "c432e3dcbfeb60733c61252d84574b19f629078663ebbf763dde34b823d6f5a8"
     },
     {
       "order": 127,
@@ -3244,8 +3253,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "dc65f265bc86f48c7168a1ea993612ecaa22584ebda43369087ab692e8c2f9aa"
+      "bytes": 20908,
+      "sha256": "19272623e1edbc8514f6274d6607f8ba7ad1f60d16a299bd1acf5e6ccdce5ab6"
     },
     {
       "order": 129,
@@ -3584,8 +3593,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "705ed859d1864c9a92209308db472319f7f96332c82d9351d5e0c07d30076684"
+      "bytes": 3000,
+      "sha256": "b4dce1b1cf8d2681587516b85c0a1c5b3a299fd658e0ed4212e66c274b94342a"
     },
     {
       "order": 150,
@@ -3637,8 +3646,8 @@
         "labels-overrides-and-retained-identity",
         "revising-and-restoring"
       ],
-      "bytes": 7360,
-      "sha256": "b453e6934b91e7e4eccf23fa2d219c2964ec2d43545db80d992bdd5a0d2103ab"
+      "bytes": 7603,
+      "sha256": "5f753665296568cdd4c1f03d4473e3eb2fa3bda8d478b3f1e58acc653c6bfd33"
     },
     {
       "order": 153,

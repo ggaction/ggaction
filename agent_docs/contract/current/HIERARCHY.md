@@ -61,22 +61,9 @@ Selection operates on final nodes and selects body plus label; links are exclude
 - ✅ Covered: explicit and inferred identity, closed options, immutable lifecycle, exact references, stored validation and dependent concrete output.
 - Evidence: `test/unit/resources/hierarchy-resources.test.js`, `test/unit/resources/hierarchy-plots.test.js`, `test/unit/resources/hierarchy-consumers.test.js`, `test/unit/resources/hierarchy-validation.test.js`, `test/contracts/hierarchy-types.test.js`, `test/charts/tree-layouts/public.test.js`, `test/charts/treemap-layouts/public.test.js`.
 
-## `editLayout`
+## 공통 배치 편집
 
-- Signature: `editLayout({ target?, order?, options? })`.
-- Change a layout order or method-specific options and refresh its plot consumers.
-- The existing layout method remains fixed. `options` is a partial patch of that method. Changing a radial tree to vertical/horizontal removes its radial-only options. The proposed geometry and every plot are checked before state-changing child actions. Layout numeric intent has one owner and is independent of Canvas placement.
-
-### Formal values — `editLayout`
-
-- Implemented: `editLayout(options: EditLayoutOptions): ChartProgram` (Full only).
-- Planned: 없음.
-- Proposed (NOT IMPLEMENTED): No additional options.
-
-### Value coverage — `editLayout`
-
-- ✅ Covered: explicit and inferred identity, closed options, immutable lifecycle, exact references, stored validation and dependent concrete output.
-- Evidence: `test/unit/resources/hierarchy-resources.test.js`, `test/unit/resources/hierarchy-plots.test.js`, `test/unit/resources/hierarchy-consumers.test.js`, `test/unit/resources/hierarchy-validation.test.js`, `test/contracts/hierarchy-types.test.js`, `test/charts/tree-layouts/public.test.js`, `test/charts/treemap-layouts/public.test.js`.
+Hierarchy와 graph가 공유하는 `editLayout` 계약은 [LAYOUTS.md](LAYOUTS.md#editlayout)가 소유한다.
 
 ## 계층 리소스 제거
 

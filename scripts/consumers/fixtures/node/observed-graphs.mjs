@@ -26,4 +26,19 @@ export const cases = [{ id: "data/observed-graph-lifecycle", run() {
   assert.equal(basicChart().createGraphData, undefined);
   assert.throws(() => source.editGraphData({ definition: { target: "missing" } }));
   assert.equal(graph(source).revision, 0);
+  for (const [method, options] of [
+    ["fixed", { positions: [{ key: 1, x: 0, y: 10 }, { key: "1", x: 20, y: 30 }] }],
+    ["circular", { radius: 50 }],
+    ["force", { iterations: 3, pinned: [{ key: 1, fx: 0, fy: 10 }] }]
+  ]) {
+    const placed = source.layoutGraph({ id: "layout", method, options });
+    const layout = program => program.semanticSpec.resources.find(item => item.kind === "layout");
+    const restored = deserializeProgram(serializeProgram(placed));
+    assert.deepEqual(layout(restored), layout(placed));
+    const updated = restored.editGraphData({ definition: { directed: true } });
+    assert.equal(layout(updated).revision, 1);
+    assert.equal(layout(updated).inputs[0].revision, 1);
+    assert.equal(layout(placed).revision, 0);
+  }
+  assert.equal(basicChart().layoutGraph, undefined);
 } }];

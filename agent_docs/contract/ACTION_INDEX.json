@@ -5705,7 +5705,7 @@
         "tests": "complete"
       },
       "contract": {
-        "file": "agent_docs/contract/current/HIERARCHY.md",
+        "file": "agent_docs/contract/current/LAYOUTS.md",
         "anchor": "editlayout"
       }
     },
@@ -5779,6 +5779,24 @@
       "contract": {
         "file": "agent_docs/contract/current/HIERARCHY.md",
         "anchor": "edittreemapplot"
+      }
+    },
+    {
+      "name": "layoutGraph",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editLayout`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "layoutgraph"
       }
     }
   ],

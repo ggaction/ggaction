@@ -1666,6 +1666,37 @@ export interface GraphResource {
   readonly result: { readonly model: GraphModel; readonly diagnostics: null };
   readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly InputRowRef[] };
 }
+export interface GraphPosition { readonly key: RowKey; readonly x: number; readonly y: number; }
+export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly fy: number; }
+export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
+export interface GraphFixedOptions extends GraphLayoutLimits { readonly positions: readonly GraphPosition[]; }
+export interface GraphCircularOptions extends GraphLayoutLimits { readonly center?: readonly [number, number]; readonly radius?: number; readonly startAngle?: number; }
+export interface GraphForceOptions extends GraphLayoutLimits {
+  readonly seed?: number; readonly iterations?: number; readonly linkDistance?: number; readonly repulsion?: number;
+  readonly collisionRadius?: number; readonly damping?: number; readonly center?: readonly [number, number];
+  readonly componentGap?: number; readonly initialPositions?: readonly GraphPosition[]; readonly pinned?: readonly GraphPin[];
+}
+export type LayoutGraphOptions = { readonly id: string; readonly graph?: string } &
+  ({ readonly method: "fixed"; readonly options: GraphFixedOptions }
+  | { readonly method: "circular"; readonly options?: GraphCircularOptions }
+  | { readonly method: "force"; readonly options?: GraphForceOptions });
+export type GraphLayoutResource = {
+  readonly kind: "layout"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly { readonly kind: "graph"; readonly id: string; readonly revision: number }[];
+  readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+  readonly result: {
+    readonly nodes: readonly { readonly key: string; readonly x: number; readonly y: number }[];
+    readonly algorithm: "fixed@1" | "circular@1" | "exact-pair-spring@1";
+    readonly packing: null | { readonly method: "horizontal"; readonly gap: number; readonly components: readonly {
+      readonly nodeIndices: readonly number[]; readonly pinned: boolean;
+      readonly bounds: { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number };
+    }[] };
+  };
+} & { readonly options:
+  { readonly method: "fixed"; readonly options: Readonly<Required<GraphFixedOptions>> }
+  | { readonly method: "circular"; readonly options: Readonly<Required<GraphCircularOptions>> }
+  | { readonly method: "force"; readonly options: Readonly<Required<Omit<GraphForceOptions, "initialPositions">> & Pick<GraphForceOptions, "initialPositions">> }
+};
 export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph";
 export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
   | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
@@ -1701,7 +1732,9 @@ export type LayoutHierarchyOptions = { id: string; hierarchy?: string; order?: H
   | { method: "tree"; options: HierarchyTreeOptions }
   | { method: "treemap"; options: HierarchyTreemapOptions });
 /** The method remains fixed; supplied options patch its existing layout intent. */
-export interface EditLayoutOptions { target?: string; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number }; }
+export type EditLayoutOptions = { target?: string } & (
+  { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
+  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions });
 export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }
 export interface HierarchyNode {
   readonly key: string; readonly parentKey: string | null; readonly childrenKeys: readonly string[]; readonly depth: number;
@@ -1870,7 +1903,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -5923,6 +5956,7 @@ export class ChartProgram {
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createGraphData(options: CreateGraphDataOptions): ChartProgram;
   editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
+  layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;

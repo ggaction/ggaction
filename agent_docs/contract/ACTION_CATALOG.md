@@ -322,11 +322,12 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createHierarchyData`](current/HIERARCHY.md#createhierarchydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editHierarchyData`](current/HIERARCHY.md#edithierarchydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`layoutHierarchy`](current/HIERARCHY.md#layouthierarchy) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`editLayout`](current/HIERARCHY.md#editlayout) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editLayout`](current/LAYOUTS.md#editlayout) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTreePlot`](current/HIERARCHY.md#createtreeplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTreePlot`](current/HIERARCHY.md#edittreeplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTreemapPlot`](current/HIERARCHY.md#createtreemapplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTreemapPlot`](current/HIERARCHY.md#edittreemapplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`layoutGraph`](current/GRAPHS.md#layoutgraph) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

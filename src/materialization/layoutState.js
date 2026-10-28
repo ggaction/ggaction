@@ -1,0 +1,13 @@
+import { hierarchyLayoutResourceHandler } from "./hierarchy/state.js";
+import { graphLayoutResourceHandler } from "./graph/layoutState.js";
+
+function handler(resource) {
+  if (resource.inputs.length !== 1) throw new TypeError("A layout requires exactly one domain resource input.");
+  if (resource.inputs[0].kind === "hierarchy") return hierarchyLayoutResourceHandler;
+  if (resource.inputs[0].kind === "graph") return graphLayoutResourceHandler;
+  throw new TypeError("Layout input must be a hierarchy or graph resource.");
+}
+export const layoutResourceHandler = Object.freeze({
+  validateStored: resource => handler(resource).validateStored(resource),
+  validateBindings: (program, resource) => handler(resource).validateBindings(program, resource)
+});

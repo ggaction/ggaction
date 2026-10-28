@@ -299,6 +299,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](../../../reference/actions/charts-data/#highlightmarks) | H3 | user-facing | mark-selection |
 | [`insertCompositionChild`](../../../reference/actions/charts-data/#insertcompositionchild) | H3 | user-facing | composition |
 | [`jitterPoints`](../../../reference/actions/marks/#jitterpoints) | H3 | user-facing | marks |
+| [`layoutGraph`](../../../reference/actions/charts-data/#layoutgraph) | H2 | user-facing | core |
 | [`layoutHierarchy`](../../../reference/actions/charts-data/#layouthierarchy) | H2 | user-facing | core |
 | [`layoutLabels`](../../../reference/actions/marks/#layoutlabels) | H3 | user-facing | marks |
 | [`layoutSeries`](../../../reference/actions/encodings/#layoutseries) | H2 | user-facing | encodings |

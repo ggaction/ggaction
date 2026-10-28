@@ -68,7 +68,7 @@ freeze하며 상위 constructor의 권한을 상속하지 않는다. Public plug
 공통 resource owner는 envelope·typed refs·graph를 먼저 검사하고 등록 owner의 저장값 및 binding
 검증만 호출한다. Plain preview는 원래 constructor를 명시하며, 미등록 class/Basic는 추가 kind를
 거부한다. Persistence도 실제 복원 constructor의 같은 경계를 사용하고 계산을 실행하지 않는다.
-Full assembly는 image, hierarchy, hierarchy layout의 닫힌 handler와 public consumer를 등록하며 Basic에는 등록하지 않는다. Graph의 독립 공개 구현은 같은 경계를 사용한다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이 초기 승인·검증과 연결 경계를 보존한다.
+Full assembly는 image, hierarchy, graph와 layout의 닫힌 handler를 등록하며 Basic에는 등록하지 않는다. `materialization/layoutState.js`는 단일 input.kind의 hierarchy/graph owner로 저장 검증을 전달한다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이 초기 승인·검증과 연결 경계를 보존한다.
 이 owner1개를 더한 지원 Node20/22/24 staging은739entries, packed최대1,098,083,
 unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
 Full/Basic/SVG browser gzip최대535,560/313,517/8,185는 기존 한도 안이며 그대로 유지한다.
@@ -86,7 +86,7 @@ Persistence는 이 typed reference도 공통 stored-resource selector로 확인�
 `actions/primitives/preparedResourceContext.js`가 exact receiver와 exact primitive args에만
 precomputed 결과를 결박한다. 중첩/실패/정상 종료마다 권한을 복원하거나 제거하며, primitive는
 허용된 원인 관계와 options 불변·next revision vector를 검증한 최종 resource envelope만 적용한다.
-DATA의 parameter→source 결과와 hierarchy→layout 결과가 같은 경계를 공유하되 kind별 검증은
+DATA의 parameter→source 결과와 hierarchy/graph→layout 결과가 같은 경계를 공유하되 kind별 검증은
 등록 validator에 남는다. `actions/data/resourceRevision.js`는 exact constructor별 한 번 등록한
 도메인 갱신 함수로 data-backed resource의 재계산을 위임한다. 등록된 kind는 generic data-ref
 치환에서 제외하고 같은 revision plan의 명시 domain action으로 갱신한다. Basic 또는 미등록 class는
@@ -761,7 +761,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 586,000 bytes |
+| `ggaction` | 591,000 bytes |
 | `ggaction/basic` | 343,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -3158,3 +3158,12 @@ Native radial output은 affine frame을 실제 fill까지 유지한다. Text는 
 paint texture를 준비하고 기존 native glyph에 적용한다. Native glyph overhang 때문에 gradient texture는
 viewport의 역회전 범위를 덮으며 glyph shape를 bounds rectangle으로 바꾸지 않는다. SVG text는 vector
 paint resource를 소비한다. 정확한 값/제한/출력 차이는 current/MARKS.md의 shared structured fill이 소유한다.
+
+## Graph layout ownership
+
+`actions/graphs/layouts.js`는 명시 graph layout 계산과 graph revision의 dependent layout closure를 소유한다. `actions/layouts/index.js`의 공통 editLayout은 source domain의 편집 body로 전달한다. Pure fixed/circular/force kernel은 topology를 보존하며, `materialization/graph/layoutResource.js`가 exact graph input과 resolved intent·결과를 저장한다. 복원 validator는 stored coordinates·node membership·pins·component bounds와 provenance만 검사하며 force solver를 재실행하지 않는다. Source revision은 계산한 모든 layout 결과를 기존 prepared primitive 경계로 원자적으로 교체한다. 정확 API는 [GRAPHS](contract/current/GRAPHS.md)와 [LAYOUTS](contract/current/LAYOUTS.md)가 소유한다.
+
+공개 graph layout 추가 뒤 Node20 실측은803entries/1,183,611packed/5,437,539unpacked bytes다.
+최소 한도는803/1,184,000/5,438,000으로 조정했다. Full gzip590,274는591,000으로만
+변경하고 Basic342,113은343,000 한도 안이다. Search900,853bytes는901,000 한도로 반영한다.
+이전 한도 통과로 보고하지 않는다.

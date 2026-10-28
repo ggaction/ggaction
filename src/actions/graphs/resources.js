@@ -7,6 +7,7 @@ import { createObservedGraphResource } from "../../materialization/graph/resourc
 import { findStoredResource, resolveInputReference } from "../../selectors/resources.js";
 import { requireMaterializedDataset } from "../../selectors/datasets.js";
 import { resolveGraphResource } from "../../selectors/graphs.js";
+import { layoutGraph, writeGraphResource } from "./layouts.js";
 
 export const createGraphData = /* @__PURE__ */ closedAction(
   { op: "createGraphData", description: "Create a graph from observed node and edge tables." }, ["id", "nodes", "edges", ...OBSERVED_GRAPH_FIELDS], function (args = {}) {
@@ -29,11 +30,11 @@ export const editGraphData = /* @__PURE__ */ closedAction(
     const source = (requested, role) => requested === undefined ? resolveInputReference(this, previous.inputs[previous.options.roles[role]]) : requireMaterializedDataset(this, requested);
     const resource = createObservedGraphResource({ id: previous.id, revision: previous.revision + 1,
       nodes: source(nodes, "nodes"), edges: source(edges, "edges"), definition: { ...previous.options.definition, ...definition } });
-    return this.editSemantic({ property: `resource[graph:${resource.id}]`, value: resource });
+    return writeGraphResource(this, resource);
   });
 
 export function registerGraphActions(ProgramClass) {
-  Object.assign(ProgramClass.prototype, { createGraphData, editGraphData });
+  Object.assign(ProgramClass.prototype, { createGraphData, editGraphData, layoutGraph });
 }
 
 export function reviseGraphInputs(program, replacements) {

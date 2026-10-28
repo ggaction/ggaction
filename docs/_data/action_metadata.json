@@ -2606,5 +2606,13 @@
     ],
     "layer": "user-facing",
     "domain": "charts"
+  },
+  "layoutGraph": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
   }
 }

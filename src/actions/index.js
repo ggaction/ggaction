@@ -1,4 +1,5 @@
 import { registerImageResourceActions } from "./images/index.js";
+import { registerLayoutActions } from "./layouts/index.js";
 import { registerHierarchyPlotActions } from "./hierarchy/plots.js";
 import { registerDataResourceRevision } from "./data/resourceRevision.js";
 import { registerHierarchyResourceActions, reviseHierarchyInputs } from "./hierarchy/resources.js";
@@ -64,6 +65,7 @@ export function registerActions(ProgramClass) {
   registerResourceActions(ProgramClass);
   registerGraphActions(ProgramClass);
   registerHierarchyResourceActions(ProgramClass);
+  registerLayoutActions(ProgramClass);
   registerHierarchyPlotActions(ProgramClass);
   registerDataResourceRevision(ProgramClass, { kinds: ["hierarchy", "graph"],
     revise: (program, replacements) => reviseGraphInputs(reviseHierarchyInputs(program, replacements), replacements) });

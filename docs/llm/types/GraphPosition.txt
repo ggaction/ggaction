@@ -1,0 +1,1 @@
+export interface GraphPosition { readonly key: RowKey; readonly x: number; readonly y: number; }

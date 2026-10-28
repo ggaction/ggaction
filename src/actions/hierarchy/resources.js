@@ -75,9 +75,8 @@ export const layoutHierarchy = /* @__PURE__ */ closedAction(
     return this.editSemantic({ property: `resource[layout:${args.id}]`, value: resource });
   });
 
-export const editLayout = /* @__PURE__ */ closedAction(
-  { op: "editLayout", description: "Revise a stored hierarchy layout." }, ["target", "order", "options"], function (args = {}) {
-    const previous = resolveHierarchyResource(this, "layout", args.target), patch = patchOptions(args, ["target"]);
+export function editHierarchyLayout(program, args, previous) {
+    const patch = patchOptions(args, ["target"]);
     if (patch.options !== undefined) ownRecord(patch.options, "Hierarchy layout options");
     const priorOptions = { ...previous.options.options };
     if (patch.options?.orientation !== undefined && patch.options.orientation !== "radial") {
@@ -85,13 +84,13 @@ export const editLayout = /* @__PURE__ */ closedAction(
     }
     const options = { ...previous.options, ...patch, options: { ...priorOptions, ...patch.options } };
     const resource = createHierarchyLayoutResource({ id: previous.id, revision: previous.revision + 1,
-      hierarchy: resolveInputReference(this, previous.inputs[0]), options, program: this });
-    preflightLayouts(this, this.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate), [resource]);
-    return materializeLayouts(this.editSemantic({ property: `resource[layout:${resource.id}]`, value: resource }), new Set([resource.id]));
-  });
+      hierarchy: resolveInputReference(program, previous.inputs[0]), options, program });
+    preflightLayouts(program, program.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate), [resource]);
+    return materializeLayouts(program.editSemantic({ property: `resource[layout:${resource.id}]`, value: resource }), new Set([resource.id]));
+}
 
 export function registerHierarchyResourceActions(ProgramClass) {
-  Object.assign(ProgramClass.prototype, { createHierarchyData, editHierarchyData, layoutHierarchy, editLayout });
+  Object.assign(ProgramClass.prototype, { createHierarchyData, editHierarchyData, layoutHierarchy });
 }
 
 export function reviseHierarchyInputs(program, replacements) {

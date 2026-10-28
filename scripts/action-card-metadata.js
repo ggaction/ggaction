@@ -67,6 +67,7 @@ const explicitLifecycleEditors = Object.freeze({
   createHierarchyData: ["editHierarchyData", "removeResource"],
   editHierarchyData: ["editHierarchyData", "removeResource"],
   layoutHierarchy: ["editLayout", "removeResource"],
+  layoutGraph: ["editLayout", "removeResource"],
   editLayout: ["editLayout", "removeResource"],
   removeResource: ["removeResource"],
   createTreePlot: ["editTreePlot", "removeMark"],
@@ -142,6 +143,7 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "layoutGraph",
   "createGraphData",
   "editGraphData",
   "filterData",

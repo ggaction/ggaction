@@ -50,5 +50,21 @@ for (const dataset of datasets) test(`observed category membership graph retains
     assert.equal(serializeProgram(source), saved);
     assert.equal(source.trace.children.at(-1).op, "createGraphData");
     assert.equal(directed.trace.children.at(-1).op, "editGraphData");
+    for (const [method, options] of [
+      ["fixed", { positions: nodes.map((node, index) => ({ key: [node.role, node.name], x: index * 3, y: index % 4 })) }],
+      ["circular", { radius: 30 }],
+      ["force", { seed: 23, iterations: 4, pinned: [{ key: [nodes[0].role, nodes[0].name], fx: 5, fy: 10 }] }]
+    ]) {
+      const placed = source.layoutGraph({ id: "layout", method, options });
+      const layout = program => program.semanticSpec.resources.find(item => item.kind === "layout");
+      assert.equal(layout(placed).result.nodes.length, nodes.length);
+      assert.ok(layout(placed).result.nodes.every(node => Number.isFinite(node.x) && Number.isFinite(node.y)));
+      const changed = placed.reviseData({ source: "memberships", id: "reordered", values: [...edges].reverse() });
+      assert.equal(layout(changed).revision, 1);
+      assert.equal(layout(changed).inputs[0].revision, 1);
+      assert.deepEqual(layout(changed).provenance.sourceRows, resource(changed).provenance.sourceRows);
+      assert.deepEqual(deserializeProgram(serializeProgram(changed)).semanticSpec, changed.semanticSpec);
+      assert.deepEqual(resource(placed).result.model, model);
+    }
   } finally { releaseTidyTuesdaySourceCache(dataset); }
 });
