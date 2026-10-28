@@ -350,3 +350,34 @@ test("optional missing fields retain expression and explicit scale unknown seman
   const mapped = original.encodeOpacity(condition({ field: "optional", scale: { domain: [0, 2], unknown: 0.1 } }, { value: 0 }, expression(literal(true))));
   assert.deepEqual(items(mapped).map(item => item.properties.opacity), [0.1, 1]);
 });
+
+
+test("conditional density-area color materializes valid fills before concrete graphic validation", () => {
+  const original = chart().createCanvas({ width: 400, height: 300, margin: 50 })
+    .createData({ id: "raw", values: [
+      { x: 1, group: "A" }, { x: 2, group: "A" }, { x: 3, group: "A" },
+      { x: 2, group: "B" }, { x: 3, group: "B" }, { x: 4, group: "B" }
+    ] })
+    .createAreaMark({ id: "area", data: "raw" })
+    .encodeDensity({ target: "area", source: "raw", field: "x", groupBy: "group", steps: 8 })
+    .encodeColor({ target: "area", field: "group", layout: "center" })
+    .configureAreaStrokeFromFill({ id: "area", strokeWidth: 2 });
+  const saved = serializeProgram(original);
+  const value = { field: "group", layout: "center" };
+  const result = original.encodeColor({ target: "area", conditions: [
+    { when: expression(literal(false)), value }
+  ], otherwise: value });
+  assert.deepEqual(result.graphicSpec.objects.area.items.map(item => item.properties.fill),
+    ["#4c78a8", "#f58518"]);
+  assert.deepEqual(result.graphicSpec.objects.area.items.map(item => item.properties.stroke),
+    ["#4c78a8", "#f58518"]);
+  assert.equal(serializeProgram(original), saved);
+  const restored = deserializeProgram(serializeProgram(result));
+  const revised = restored.encodeColor({ target: "area", conditions: [
+    { when: expression(literal(true)), value: { value: "#dc2626" } }
+  ], otherwise: { value: "#2563eb" } });
+  assert.deepEqual(revised.graphicSpec.objects.area.items.map(item => item.properties.fill),
+    ["#dc2626", "#dc2626"]);
+  assert.deepEqual(revised.graphicSpec.objects.area.items.map(item => item.properties.stroke),
+    ["#dc2626", "#dc2626"]);
+});

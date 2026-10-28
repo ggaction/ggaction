@@ -1,3 +1,4 @@
+import { resolveConditionalValues } from "../../../materialization/conditionalValues.js";
 import { requestedMarkClip, validateMarkClipCoordinate } from "../../../selectors/markClip.js";
 import { validateFillPaint } from "../../../grammar/paint.js";
 import { validateAreaPaintConfig } from "../../../grammar/areaPaint.js";
@@ -210,13 +211,14 @@ const rematerializeAreaMark = /* @__PURE__ */ action(
       resolved = resolved.rematerializeScale({ id: opacityEncoding.scale });
     }
     const config = validateAreaPaintConfig(this.markConfigs[id]);
-    const { paths, fills, strokes, opacities } = resolveAreaMaterialization({
+    const { paths, fills: ordinaryFills, strokes, opacities } = resolveAreaMaterialization({
       rows: dataset.values,
       layer,
       densityTransform,
       resolvedScales: resolved.resolvedScales,
       config
     });
+    const fills = resolveConditionalValues(resolved, layer, "color") ?? ordinaryFills;
     const existingChildren = resolved.graphicSpec.objects[id].items ?? [];
     const hasOutline = strokes !== undefined || config.stroke !== undefined ||
       config.strokeFromFill === true;
