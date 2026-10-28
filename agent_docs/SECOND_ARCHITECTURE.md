@@ -3241,3 +3241,11 @@ scene identity 소유권은 유지된다. 공개 interaction entry와 exact geom
 Private 좌표 owner 한 파일을 추가한 뒤 packed content는816entries/5,520,464unpacked bytes,
 Node22 packed1,200,158/Node20·24 packed1,202,819bytes였다. Package cap을816/1,203,000/5,521,000으로
 최소 갱신했다. Full/Basic/SVG import graph에는 새 owner가 아직 없으므로 browser bundle 한도와 지원 계약은 같다.
+
+
+Private hit 도형 계산은 `grammar/hitStroke.js`가 local painted stroke, `grammar/hitShapes.js`가 explicit
+CSS transform·clip·opacity와 filled geometry 판정을 소유한다. 기존 pathGeometry/strokeStyle owner를
+재사용하며 semantic state나 renderer를 읽지 않는다. Text는 explicit resolved line boxes, Image는
+viewport로 제한하고 scene adapter/index/frame은 후속 경계다. 자세한 범위는 같은 STEP047 기록에 둔다.
+두 파일을 추가한 package는818 entries/5,541,801unpacked, packed 최대1,208,456bytes로 측정했으며
+cap을818/1,209,000/5,542,000으로 최소 갱신했다. Public entry와 browser import graph는 변하지 않는다.

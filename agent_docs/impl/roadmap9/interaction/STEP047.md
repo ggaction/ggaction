@@ -7,7 +7,8 @@
 - [x] 회전·음수 scale·중첩 행렬·변환 clip의 독립 literal과 수치 경계
 - [x] Node20/22/24 각8개, source/discovery/package33개와 owner100% coverage
 - [x] private source `23a493c48`에 맞춘 provenance·docs19/19·built154/1310 고정
-- [ ] geometry별 exact hit와 current scene index, 의미 role/lineage 연결
+- [x] private geometry별 hit, CSS stroke slop/dash/cap/join, 변환 clip/opacity 검증
+- [ ] current scene index, 의미 role/lineage 및 concrete scene adapter 연결
 - [ ] STEP035 중첩 composition과 공개 interaction entry·선언·소비자 통합
 - [ ] STEP048 broad phase/guide roles 및 STEP049 synthetic/current frame bridge
 
@@ -61,3 +62,29 @@ Full/Basic/SVG public import graph에 이 파일이 없음을 확인했으므로
 Packed contents는 source1개 추가로816 entries, unpacked5,520,464bytes다. Node22 packed1,200,158,
 Node20/24 packed1,202,819bytes를 실제 측정했다. 최초 cap 실패를 보존한 뒤 cap만816/1,203,000/5,521,000으로
 최소 올림했다. 이 private checkpoint에서 새 public renderer/설치 지원을 주장하지 않는다.
+
+
+## 도형과 painted stroke 계산 checkpoint
+
+`grammar/hitStroke.js`는 기존 stroke defaults와 path 거리/면적 판정을 재사용하여 실제 painted dash run,
+segment rectangle, cap, join의 local footprint를 만든다. Odd dash 반복, zero dash, closed seam,
+subpath reset, miter limit을 명시 처리한다. 호출별 최대100만 work를 넘거나 유한한 진행이 불가능한
+수치 입력은 부분 결과 없이 거부한다. `grammar/hitShapes.js`는 이 footprint를 명시 affine transform으로
+CSS 공간에 옮긴다. 변환된 선 폭에 mouse/pen3px, touch6px 또는 명시 slop을 추가한다.
+
+Filled circle/rect/path는 내부를 판정하고 slop으로 fill hole을 메우지 않는다. Path는 기존 winding/evenodd,
+curve flatten owner를 사용한다. 곡선의 판정은 원 계약의 최대.25 CSS px subdivision 정책이며 임의 확대의
+raster boundary와 수학적 동일성을 주장하지 않는다. Clip은 rect/path의 실제 fill 교집합이고 slop으로
+벗어나지 않는다. Opacity0은 기본 제외, hitInvisible:true에서도 clip은 유지한다. Transparent fill은
+adapter가 fill:true, none은 false로 전달한다. Shadow/halo occupied bounds로 source를 대체하지 않는다.
+
+Text는 측정 owner가 제공한 개별 line box의 변환 사각형을 사용하며 줄 사이 간격과 회전 후 AABB 모서리를
+hit로 만들지 않는다. Glyph alpha 판정이나 font 추측은 하지 않는다. Image는 배치 viewport를 사용한다.
+아직 concrete scene→입력 adapter가 없으므로 이 정책의 public consumer 완료를 뜻하지 않는다.
+모든 branch와 accessor/희소 배열/수치 overflow는 preparation에서 검증하고 caller input은 변경·freeze하지 않는다.
+
+Node20/22/24 각각27개, source/discovery/package33개, native Canvas의 cap×join×dash와 affine 내부표본을
+통과했다. 세 owner의 coverage는100 lines/95.38 branches/100 functions이며 기존95/90/100 floor를 유지한다.
+Literal hole/island expected/actual/diff와 최초 실패는 `shape-evidence/`에 보존한다.
+새 source 두 파일을 포함한 실측은818 entries/5,541,801unpacked, Node22 packed1,205,871,
+Node20/24 packed1,208,456bytes다. 최소 cap은818/1,209,000/5,542,000이다. Public import graph는 그대로다.

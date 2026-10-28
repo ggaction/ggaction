@@ -1,0 +1,63 @@
+{
+  "status": "private-shape-qualified",
+  "base": "fa19d0f83d9929eb7fdf869d7fa29e7be9a22325",
+  "publicApiAdded": false,
+  "tests": {
+    "node20": 27,
+    "node22": 27,
+    "node24": 27,
+    "boundaries": 33,
+    "nativePixelInteriorSamples": "more than 250 plus stroke cap/join/dash matrix"
+  },
+  "coverage": {
+    "hitCoordinates": [
+      100,
+      100,
+      100
+    ],
+    "hitStroke": [
+      100,
+      94.59,
+      100
+    ],
+    "hitShapes": [
+      100,
+      93.98,
+      100
+    ],
+    "floor": [
+      95,
+      90,
+      100
+    ]
+  },
+  "package": {
+    "entries": 818,
+    "unpackedBytes": 5541801,
+    "node22PackedBytes": 1205871,
+    "node20And24PackedBytes": 1208456,
+    "caps": {
+      "entries": 818,
+      "packedBytes": 1209000,
+      "unpackedBytes": 5542000
+    }
+  },
+  "failuresPreserved": [
+    "stroke test helper invoked getter before the owner; replaced helper call with direct own-data input",
+    "entries818 exceeded816",
+    "packed1205871 exceeded1203000"
+  ],
+  "sources": {
+    "src/grammar/hitCoordinates.js": "068294f0c0d13b6f375710e699a1d7ad67d8df596b7cbf9e9763fd0df4831453",
+    "src/grammar/hitStroke.js": "7b44c644834329cff29e7ad84b75f34e68efeef1ec61e322fe1f7b11edbfe3f3",
+    "src/grammar/hitShapes.js": "caae9fb371da7d19650dccba2bcfb3929acf79182e41a99dd3b96824e3791228",
+    "test/unit/grammar/hit-stroke.test.js": "48a28b754cf4a0588c45e56414c426c566219f4d32f60ea7244f76544bdd1188",
+    "test/unit/grammar/hit-shapes.test.js": "d819fef5d8e8d2736ce15cb652637faef598f65813f786a79560d0cbc56c46a9"
+  },
+  "remaining": [
+    "scene adapter and semantic roles/lineage",
+    "spatial index and current scene binding",
+    "synthetic frame bridge",
+    "STEP035 nested composition and public interaction consumers"
+  ]
+}
