@@ -77,6 +77,8 @@ Main 누적 통합 때 parent가 combined 한도를 다시 측정한다.
 
 ## 남은 의무
 
+후속 private tree 계산과 model 검증은 [TREE_KERNEL](TREE_KERNEL.md)에 기록한다. 아래 항목은 이 checkpoint 시점의 상태다.
+
 명시 sibling order와 tree/treemap 계산은 아직 구현되지 않았다. 공통 hierarchy의 세 입력 형식이
 private 수치 경계에 연결되었다는 것과 public API/저장 schema/visual 지원은 구분한다.
 Public create/edit/revise/remove, exact resource refs·dataset row lineage, partition 소비, codec/inspection,
