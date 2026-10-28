@@ -10470,7 +10470,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Create or compatibly replace point fill, line-series color, grouped area fill, bar color, rect fill, or arc-sector fill.",
-      "signature": "encodeColor(options: TargetedOptions<ColorEncodingOptions>): ChartProgram;",
+      "signature": "encodeColor(options: TargetedOptions<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode color",
         "encode",
@@ -10537,29 +10537,39 @@
       },
       "options": [
         {
-          "name": "value",
-          "required": false,
-          "type": "string | undefined"
-        },
-        {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
         },
         {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<ColorEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<ColorEncodingOptions>[\"otherwise\"]"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "string"
+        },
+        {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         },
         {
           "name": "fieldType",
           "required": false,
-          "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+          "type": "\"quantitative\""
         },
         {
           "name": "scale",
           "required": false,
-          "type": "ContinuousColorScaleOptions | DiscretizedColorScaleOptions | CategoricalColorScaleOptions | (Omit<...> & { ...; }) | undefined"
+          "type": "ContinuousColorScaleOptions | DiscretizedColorScaleOptions | undefined"
         },
         {
           "name": "palette",
@@ -10583,9 +10593,10 @@
         }
       ],
       "callPatterns": [
-        "encodeColor({ target?, scale?, value?, field?, fieldType?, palette?, layout?, aggregate? })"
+        "encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })",
+        "encodeColor({ target?, conditions: [{ when, value }], otherwise })"
       ],
-      "snippet": "program.encodeColor({ value: \"value\" })",
+      "snippet": "program.encodeColor({ field: \"group\" })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodecolor"
     },
@@ -10595,7 +10606,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Create or replace nominal/ordinal line-series or rule dash patterns, or apply one constant named/direct pattern.",
-      "signature": "encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions>): ChartProgram;",
+      "signature": "encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode stroke dash",
         "encode",
@@ -10656,19 +10667,29 @@
       },
       "options": [
         {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<StrokeDashEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<StrokeDashEncodingOptions>[\"otherwise\"]"
+        },
+        {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         },
         {
           "name": "value",
           "required": false,
-          "type": "DashPattern | DashStyle | undefined"
-        },
-        {
-          "name": "target",
-          "required": false,
-          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+          "type": "DashPattern | DashStyle"
         },
         {
           "name": "fieldType",
@@ -10682,7 +10703,8 @@
         }
       ],
       "callPatterns": [
-        "encodeStrokeDash({ target?, scale?, field?, value?, fieldType? })"
+        "encodeStrokeDash(",
+        "encodeStrokeDash({ target?, conditions: [{ when, value }], otherwise })"
       ],
       "snippet": "program.encodeStrokeDash({ value: \"dashed\" })",
       "errors": [],
@@ -10694,7 +10716,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Assign a constant non-empty stroke color or map a categorical, quantitative, or temporal field to the outline of a Point, Line, Area, Bar, Rect, Arc, Rule, or Tick.",
-      "signature": "encodeStroke(options: TargetedOptions<StrokeEncodingOptions>): ChartProgram;",
+      "signature": "encodeStroke(options: TargetedOptions<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode stroke",
         "encode",
@@ -10764,19 +10786,29 @@
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
         },
         {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<StrokeEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<StrokeEncodingOptions>[\"otherwise\"]"
+        },
+        {
           "name": "value",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         },
         {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         },
         {
           "name": "fieldType",
           "required": false,
-          "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+          "type": "\"nominal\" | \"ordinal\" | undefined"
         },
         {
           "name": "temporalUnit",
@@ -10786,11 +10818,13 @@
         {
           "name": "scale",
           "required": false,
-          "type": "ContinuousColorScaleOptions | DiscretizedColorScaleOptions | CategoricalColorScaleOptions | (Omit<...> & { ...; }) | undefined"
+          "type": "CategoricalColorScaleOptions | undefined"
         }
       ],
       "callPatterns": [
-        "encodeStroke({ target?, scale?, value?, field?, fieldType?, temporalUnit? })"
+        "encodeStroke({ value, target? })",
+        "encodeStroke({ field, target?, fieldType?, temporalUnit?, scale? })",
+        "encodeStroke({ target?, conditions: [{ when, value }], otherwise })"
       ],
       "snippet": "program.encodeStroke({ value: \"#222222\" })",
       "errors": [],
@@ -10802,7 +10836,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect.",
-      "signature": "encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions>): ChartProgram;",
+      "signature": "encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode stroke width",
         "encode",
@@ -10866,19 +10900,29 @@
       },
       "options": [
         {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<StrokeWidthEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<StrokeWidthEncodingOptions>[\"otherwise\"]"
+        },
+        {
           "name": "value",
           "required": false,
-          "type": "number | undefined"
+          "type": "number"
         },
         {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
-        },
-        {
-          "name": "target",
-          "required": false,
-          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+          "type": "string"
         },
         {
           "name": "fieldType",
@@ -10892,7 +10936,9 @@
         }
       ],
       "callPatterns": [
-        "encodeStrokeWidth({ target?, scale?, value?, field?, fieldType? })"
+        "encodeStrokeWidth({ value, target? })",
+        "encodeStrokeWidth({ field, target?, fieldType?, scale? })",
+        "encodeStrokeWidth({ target?, conditions: [{ when, value }], otherwise })"
       ],
       "snippet": "program.encodeStrokeWidth({ value: 2 })",
       "errors": [],
@@ -10904,7 +10950,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Encode point size as area; radius-normalized polygons use reference-circle area.",
-      "signature": "encodeSize(options: TargetedOptions<SizeEncodingOptions>): ChartProgram;",
+      "signature": "encodeSize(options: TargetedOptions<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode size",
         "encode",
@@ -10965,35 +11011,46 @@
       },
       "options": [
         {
-          "name": "value",
-          "required": false,
-          "type": "number | undefined"
-        },
-        {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
         },
         {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<SizeEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<SizeEncodingOptions>[\"otherwise\"]"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "number"
+        },
+        {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         },
         {
           "name": "fieldType",
           "required": false,
-          "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | undefined"
+          "type": "\"quantitative\" | undefined"
         },
         {
           "name": "scale",
           "required": false,
-          "type": "SizeScaleOptions | CategoricalSizeScaleOptions | undefined"
+          "type": "SizeScaleOptions | undefined"
         }
       ],
       "callPatterns": [
-        "encodeSize({ target?, scale?, value?, field?, fieldType? })"
+        "encodeSize({ field, target?, fieldType?, scale? })",
+        "encodeSize({ target?, conditions: [{ when, value }], otherwise })"
       ],
-      "snippet": "program.encodeSize({ value: 1 })",
+      "snippet": "program.encodeSize({ field: \"value\" })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodesize"
     },
@@ -11003,7 +11060,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.",
-      "signature": "encodeShape(options: TargetedOptions<ShapeEncodingOptions>): ChartProgram;",
+      "signature": "encodeShape(options: TargetedOptions<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode shape",
         "encode",
@@ -11064,19 +11121,29 @@
       },
       "options": [
         {
-          "name": "value",
-          "required": false,
-          "type": "PointShape | undefined"
-        },
-        {
           "name": "target",
           "required": false,
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
         },
         {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<ShapeEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<ShapeEncodingOptions>[\"otherwise\"]"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "PointShape"
+        },
+        {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         },
         {
           "name": "fieldType",
@@ -11090,7 +11157,8 @@
         }
       ],
       "callPatterns": [
-        "encodeShape({ target?, scale?, value?, field?, fieldType? })"
+        "encodeShape({ field, target?, fieldType?, scale? })",
+        "encodeShape({ target?, conditions: [{ when, value }], otherwise })"
       ],
       "snippet": "program.encodeShape({ value: \"circle\" })",
       "errors": [],
@@ -11102,7 +11170,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Maps a constant or quantitative field to point or tick rotation angle.",
-      "signature": "encodeAngle(options: TargetedOptions<AngleEncodingOptions>): ChartProgram;",
+      "signature": "encodeAngle(options: TargetedOptions<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode angle",
         "encode",
@@ -11161,14 +11229,24 @@
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
         },
         {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<AngleEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<AngleEncodingOptions>[\"otherwise\"]"
+        },
+        {
           "name": "value",
           "required": false,
-          "type": "number | undefined"
+          "type": "number"
         },
         {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
+          "type": "string"
         },
         {
           "name": "fieldType",
@@ -11178,7 +11256,8 @@
       ],
       "callPatterns": [
         "encodeAngle({ target?, value })",
-        "encodeAngle({ target?, field, fieldType? })"
+        "encodeAngle({ target?, field, fieldType? })",
+        "encodeAngle({ target?, conditions: [{ when, value }], otherwise })"
       ],
       "snippet": "program.encodeAngle({ value: 45 })",
       "errors": [
@@ -11195,7 +11274,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Apply a constant point/rule/line/bar/rect opacity from 0 to 1, or map a quantitative field through a linear opacity scale.",
-      "signature": "encodeOpacity(options: TargetedOptions<OpacityEncodingOptions>): ChartProgram;",
+      "signature": "encodeOpacity(options: TargetedOptions<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>): ChartProgram;",
       "intents": [
         "encode opacity",
         "encode",
@@ -11255,19 +11334,29 @@
       },
       "options": [
         {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "conditions",
+          "required": false,
+          "type": "ConditionalEncodingOptions<OpacityEncodingOptions>[\"conditions\"]"
+        },
+        {
+          "name": "otherwise",
+          "required": false,
+          "type": "ConditionalEncodingOptions<OpacityEncodingOptions>[\"otherwise\"]"
+        },
+        {
           "name": "value",
           "required": false,
-          "type": "number | undefined"
+          "type": "number"
         },
         {
           "name": "field",
           "required": false,
-          "type": "string | undefined"
-        },
-        {
-          "name": "target",
-          "required": false,
-          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+          "type": "string"
         },
         {
           "name": "fieldType",
@@ -11281,7 +11370,9 @@
         }
       ],
       "callPatterns": [
-        "encodeOpacity({ target?, scale?, value?, field?, fieldType? })"
+        "encodeOpacity({ value, target? })",
+        "encodeOpacity({ field, target?, fieldType?, scale? })",
+        "encodeOpacity({ target?, conditions: [{ when, value }], otherwise })"
       ],
       "snippet": "program.encodeOpacity({ value: 0.8 })",
       "errors": [],

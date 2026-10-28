@@ -1,3 +1,6 @@
+import { rebindConditionalInputs, orderConditionalMarkIds } from "../../materialization/conditionalState.js";
+import { applyLayerDataRematerialization } from "../../materialization/dependencies.js";
+import { requireLayer } from "../../selectors/layers.js";
 import { closedAction } from "../../core/action.js";
 import { annotateError } from "../../core/diagnostics.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -13,8 +16,13 @@ export function reviseUnitParameter(program, { resource, value }) {
   const plan = buildParameterRevisionPlan(program, resource.id);
   let next = program.editSemantic({ property: `resource[parameter:${resource.id}]`,
     value: { ...resource, revision: resource.revision + 1, result: { value } } });
+  const conditionals = rebindConditionalInputs(next, { parameter: resource.id });
+  next = conditionals.program;
   if (plan.revisions.length) next = withGuideLayoutTransaction(next,
     candidate => applyRevisionPlan(candidate, undefined, plan, { parameterBudget: true }));
+  for (const target of orderConditionalMarkIds(next, conditionals.targets)) {
+    if (!plan.revisions.some(revision => revision.id === requireLayer(next, target).data)) next = applyLayerDataRematerialization(next, target);
+  }
   return { program: next, plan };
 }
 

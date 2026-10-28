@@ -1728,6 +1728,12 @@
     },
     "removeParameter": {
       "id": "factor"
+    },
+    "encodeColor": {
+      "field": "group"
+    },
+    "encodeSize": {
+      "field": "value"
     }
   },
   "callPatternOverrides": {
@@ -1827,7 +1833,8 @@
     ],
     "encodeAngle": [
       "encodeAngle({ target?, value })",
-      "encodeAngle({ target?, field, fieldType? })"
+      "encodeAngle({ target?, field, fieldType? })",
+      "encodeAngle({ target?, conditions: [{ when, value }], otherwise })"
     ],
     "createHistogram": [
       "createHistogram({ field, maxBins? | binStep? | binBoundaries? })",
@@ -1940,6 +1947,37 @@
     "editFilteredData": [
       "editFilteredData({ target, where, dependents? })",
       "editFilteredData({ target, field?, oneOf | noneOf | predicate | range, nulls?, dependents? })"
+    ],
+    "encodeColor": [
+      "encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })",
+      "encodeColor({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeStroke": [
+      "encodeStroke({ value, target? })",
+      "encodeStroke({ field, target?, fieldType?, temporalUnit?, scale? })",
+      "encodeStroke({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeSize": [
+      "encodeSize({ field, target?, fieldType?, scale? })",
+      "encodeSize({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeShape": [
+      "encodeShape({ field, target?, fieldType?, scale? })",
+      "encodeShape({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeOpacity": [
+      "encodeOpacity({ value, target? })",
+      "encodeOpacity({ field, target?, fieldType?, scale? })",
+      "encodeOpacity({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeStrokeWidth": [
+      "encodeStrokeWidth({ value, target? })",
+      "encodeStrokeWidth({ field, target?, fieldType?, scale? })",
+      "encodeStrokeWidth({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "encodeStrokeDash": [
+      "encodeStrokeDash(",
+      "encodeStrokeDash({ target?, conditions: [{ when, value }], otherwise })"
     ]
   },
   "errorOverrides": {

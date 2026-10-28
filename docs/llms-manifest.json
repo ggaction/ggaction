@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:18fa96a91d911171ebc5b3101b207ded6a90577a91de757ba2d9caa423cda421",
-    "sourceCommit": "d8d727e2a065912bfdf15b293af45c482a80d749",
+    "contractId": "sha256:7e91183255a0e69248c33f18b8319fe10382f10e2cd338a86109e6dfd1f95231",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "1b62a58458ef0839500d1d693a9f688055d50f384f9ac0cc0d8a9d0e2c244f66"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1027,6 +1027,7 @@
       "headings": [
         "encodings",
         "reassign-an-existing-encoding",
+        "choose-appearance-with-conditions",
         "choose-a-family",
         "supported-markchannel-matrix",
         "position-channels",
@@ -1046,8 +1047,8 @@
         "calendar-interval-bar-widths",
         "related"
       ],
-      "bytes": 20156,
-      "sha256": "2f1326965459e622e4fd4356edd8f55f26cbc5b481f8dae316c07723f0f981d5"
+      "bytes": 22855,
+      "sha256": "baff5204f712e986ce29a971a4f512b13bbe935e9abe57130d6929858035ba1d"
     },
     {
       "order": 64,
@@ -2190,8 +2191,8 @@
         "encodechannels",
         "related"
       ],
-      "bytes": 71662,
-      "sha256": "fe8cd63a08816895ab6dfcdd39af66a5268602ae4bd9ed32f12add0d2ec4502b"
+      "bytes": 76249,
+      "sha256": "2af2c4ed4d830b3d88a78f462a06b0c298a22c090ed398d1f4855cc1fc3be4e5"
     },
     {
       "order": 121,
@@ -2415,8 +2416,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 31989,
-      "sha256": "78298432671e8c83f5726d3553be7394a53c4201888dd5e6b70332efba0b4001"
+      "bytes": 32117,
+      "sha256": "a518acea2a99e1f1cf9639c4b8524a1fa0f6a643c32ff972603719626df5bd3c"
     },
     {
       "order": 126,
@@ -2539,6 +2540,8 @@
         "type-computedexpression",
         "type-computedexpressionv1",
         "type-computedexpressionv2",
+        "type-conditionalencodingbranch",
+        "type-conditionalencodingoptions",
         "type-confidenceintervalmethod",
         "type-continuouscartesiangridoptions",
         "type-continuouscolorinterpolation",
@@ -3127,8 +3130,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 392624,
-      "sha256": "763328bc1668ca007d1988b7a94cbf0d0a35851b5ab228077e287c77e3acbfb5"
+      "bytes": 394717,
+      "sha256": "d3da4a249ea86092c72b54d74be89357042b41dc0066f1babd90da73d75e87be"
     },
     {
       "order": 127,
@@ -3162,8 +3165,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "01459c1307ad343c01dd7332fba07d423848d37209af277762f4aeaa69203911"
+      "bytes": 20908,
+      "sha256": "3512cd406f4ed3c1b8fae8b7199073b6e16563579e2a629879529ea0a606139b"
     },
     {
       "order": 129,
@@ -3499,8 +3502,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "f5595201b64d254d63ffca11822b98ea21eab51075d862c7dd9fa97a652caf56"
+      "bytes": 3000,
+      "sha256": "6663f9793a7cdf891ea5eee15b645ad0f81437bee8bffd7d65f7206c6a5b75c9"
     },
     {
       "order": 150,

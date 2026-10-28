@@ -118,12 +118,12 @@ interface ChartProgramActions {
   encodeTheta(options: TargetedOptions<ThetaEncodingOptions>): ChartProgram;
   encodeR(options: TargetedOptions<RadialEncodingOptions>): ChartProgram;
   encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
-  encodeColor(options: TargetedOptions<ColorEncodingOptions>): ChartProgram;
-  encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions>): ChartProgram;
-  encodeSize(options: TargetedOptions<SizeEncodingOptions>): ChartProgram;
-  encodeShape(options: TargetedOptions<ShapeEncodingOptions>): ChartProgram;
-  encodeAngle(options: TargetedOptions<AngleEncodingOptions>): ChartProgram;
-  encodeOpacity(options: TargetedOptions<OpacityEncodingOptions>): ChartProgram;
+  encodeColor(options: TargetedOptions<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>): ChartProgram;
+  encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>): ChartProgram;
+  encodeSize(options: TargetedOptions<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>): ChartProgram;
+  encodeShape(options: TargetedOptions<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>): ChartProgram;
+  encodeAngle(options: TargetedOptions<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>): ChartProgram;
+  encodeOpacity(options: TargetedOptions<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>): ChartProgram;
   encodeRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
   encodePointRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
   removePointRadius(options?: TargetedOptions<{ target?: string }>): ChartProgram;
@@ -149,8 +149,8 @@ interface ChartProgramActions {
   encodeHorizon(options?: TargetedOptions<HorizonEncodingOptions>): ChartProgram;
   editHorizon(options: TargetedOptions<EditHorizonOptions>): ChartProgram;
   encodeBarWidth(options?: TargetedOptions<BarWidthOptions>): ChartProgram;
-  encodeStroke(options: TargetedOptions<StrokeEncodingOptions>): ChartProgram;
-  encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions>): ChartProgram;
+  encodeStroke(options: TargetedOptions<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>): ChartProgram;
+  encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>): ChartProgram;
   encodeChannels(options: TargetedOptions<EncodeChannelsOptions>): ChartProgram;
   createRegression(options?: TargetedOptions<RegressionOptions>): ChartProgram;
   editRegression(options: TargetedOptions<EditRegressionOptions>): ChartProgram;
@@ -2074,6 +2074,33 @@ export interface ComputedExpressionV2 {
 
 Related types: [`ExpressionNode`](../../../reference/types/#type-expressionnode).
 
+### `ConditionalEncodingBranch` {#type-conditionalencodingbranch}
+
+ Expand ConditionalEncodingBranch
+
+```typescript
+interface ConditionalEncodingBranch<Value> {
+  when: ComputedExpressionV2 | { selection: string };
+  value: WithoutEncodingTarget<Value>;
+}
+```
+
+Related types: [`ComputedExpressionV2`](../../../reference/types/#type-computedexpressionv2) · [`WithoutEncodingTarget`](../../../reference/types/#type-withoutencodingtarget).
+
+### `ConditionalEncodingOptions` {#type-conditionalencodingoptions}
+
+ Expand ConditionalEncodingOptions
+
+```typescript
+export type ConditionalEncodingOptions<Value> = {
+  target?: string;
+  conditions: readonly ConditionalEncodingBranch<Value>[];
+  otherwise: WithoutEncodingTarget<Value>;
+};
+```
+
+Related types: [`ConditionalEncodingBranch`](../../../reference/types/#type-conditionalencodingbranch) · [`WithoutEncodingTarget`](../../../reference/types/#type-withoutencodingtarget).
+
 ### `ConfidenceIntervalMethod` {#type-confidenceintervalmethod}
 
  Expand ConfidenceIntervalMethod
@@ -3167,6 +3194,11 @@ export interface DashScaleOptions {
   range?: "auto" | readonly (DashStyle | DashPattern)[];
   unknown?: DashStyle | DashPattern;
 }
+
+/** Ordered first-match predicates; otherwise is required. All branches are validated.
+ * Each value uses the existing encoder payload without target. Selection predicates
+ * reference stored logical selection IDs. Legends require one unique field/scale binding.
+ */
 ```
 
 Related types: [`DashStyle`](../../../reference/types/#type-dashstyle) · [`DashPattern`](../../../reference/types/#type-dashpattern).
@@ -5543,21 +5575,21 @@ export interface EncodingChannelAssignments {
   yOffset?: WithoutEncodingTarget<YOffsetEncodingOptions>;
   group?: WithoutEncodingTarget<GroupEncodingOptions>;
   pathOrder?: WithoutEncodingTarget<PathOrderEncodingOptions>;
-  color?: WithoutEncodingTarget<ColorEncodingOptions>;
-  stroke?: WithoutEncodingTarget<StrokeEncodingOptions>;
-  size?: WithoutEncodingTarget<SizeEncodingOptions>;
-  shape?: WithoutEncodingTarget<ShapeEncodingOptions>;
-  opacity?: WithoutEncodingTarget<OpacityEncodingOptions>;
-  strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions>;
-  strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions>;
-  angle?: WithoutEncodingTarget<AngleEncodingOptions>;
+  color?: WithoutEncodingTarget<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>;
+  stroke?: WithoutEncodingTarget<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>;
+  size?: WithoutEncodingTarget<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>;
+  shape?: WithoutEncodingTarget<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>;
+  opacity?: WithoutEncodingTarget<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>;
+  strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>;
+  strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>;
+  angle?: WithoutEncodingTarget<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>;
   text?: WithoutEncodingTarget<TextEncodingOptions>;
   dx?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
   dy?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
 }
 ```
 
-Related types: [`WithoutEncodingTarget`](../../../reference/types/#type-withoutencodingtarget) · [`PositionEncodingOptions`](../../../reference/types/#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](../../../reference/types/#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](../../../reference/types/#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](../../../reference/types/#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](../../../reference/types/#type-thetaencodingoptions) · [`RadialEncodingOptions`](../../../reference/types/#type-radialencodingoptions) · [`XOffsetEncodingOptions`](../../../reference/types/#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](../../../reference/types/#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](../../../reference/types/#type-groupencodingoptions) · [`PathOrderEncodingOptions`](../../../reference/types/#type-pathorderencodingoptions) · [`ColorEncodingOptions`](../../../reference/types/#type-colorencodingoptions) · [`StrokeEncodingOptions`](../../../reference/types/#type-strokeencodingoptions) · [`SizeEncodingOptions`](../../../reference/types/#type-sizeencodingoptions) · [`ShapeEncodingOptions`](../../../reference/types/#type-shapeencodingoptions) · [`OpacityEncodingOptions`](../../../reference/types/#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](../../../reference/types/#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](../../../reference/types/#type-strokedashencodingoptions) · [`AngleEncodingOptions`](../../../reference/types/#type-angleencodingoptions) · [`TextEncodingOptions`](../../../reference/types/#type-textencodingoptions) · [`TextOffsetEncodingOptions`](../../../reference/types/#type-textoffsetencodingoptions).
+Related types: [`WithoutEncodingTarget`](../../../reference/types/#type-withoutencodingtarget) · [`PositionEncodingOptions`](../../../reference/types/#type-positionencodingoptions) · [`DatumPositionEncodingOptions`](../../../reference/types/#type-datumpositionencodingoptions) · [`YPositionEncodingOptions`](../../../reference/types/#type-ypositionencodingoptions) · [`SecondaryPositionEncodingOptions`](../../../reference/types/#type-secondarypositionencodingoptions) · [`ThetaEncodingOptions`](../../../reference/types/#type-thetaencodingoptions) · [`RadialEncodingOptions`](../../../reference/types/#type-radialencodingoptions) · [`XOffsetEncodingOptions`](../../../reference/types/#type-xoffsetencodingoptions) · [`YOffsetEncodingOptions`](../../../reference/types/#type-yoffsetencodingoptions) · [`GroupEncodingOptions`](../../../reference/types/#type-groupencodingoptions) · [`PathOrderEncodingOptions`](../../../reference/types/#type-pathorderencodingoptions) · [`ColorEncodingOptions`](../../../reference/types/#type-colorencodingoptions) · [`ConditionalEncodingOptions`](../../../reference/types/#type-conditionalencodingoptions) · [`StrokeEncodingOptions`](../../../reference/types/#type-strokeencodingoptions) · [`SizeEncodingOptions`](../../../reference/types/#type-sizeencodingoptions) · [`ShapeEncodingOptions`](../../../reference/types/#type-shapeencodingoptions) · [`OpacityEncodingOptions`](../../../reference/types/#type-opacityencodingoptions) · [`StrokeWidthEncodingOptions`](../../../reference/types/#type-strokewidthencodingoptions) · [`StrokeDashEncodingOptions`](../../../reference/types/#type-strokedashencodingoptions) · [`AngleEncodingOptions`](../../../reference/types/#type-angleencodingoptions) · [`TextEncodingOptions`](../../../reference/types/#type-textencodingoptions) · [`TextOffsetEncodingOptions`](../../../reference/types/#type-textoffsetencodingoptions).
 
 ### `EndpointCategoryChannel` {#type-endpointcategorychannel}
 

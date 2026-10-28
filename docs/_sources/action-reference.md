@@ -2126,12 +2126,15 @@ retained; incomplete marks remain empty until later encoding completion.
 ```javascript
 encodeAngle({ target?, value })
 encodeAngle({ target?, field, fieldType? })
+encodeAngle({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Rotate point or Tick glyphs with direct clockwise degrees: `0` points up and
 no scale or legend is created. Reassignment replaces the prior constant/field
 branch; remove it with `removeEncoding({ channel: "angle" })`.
 [Encodings](../api/encodings.md#direction)
+
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
 
 ### `encodeText`
 
@@ -2292,6 +2295,7 @@ removes grouping.
 
 ```javascript
 encodeColor({ field, target?, fieldType?, palette?, layout?, aggregate?, scale? })
+encodeColor({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or compatibly replace point fill, line-series color, grouped area fill,
@@ -2342,6 +2346,8 @@ scale of the same type, updating every consumer atomically. Generic/focused
 scale editors and legend editors remain Full-only; scale-type transitions use
 Full or a new scale ID in Basic. [Encoding reassignment](../api/encodings.md#reassign-an-existing-encoding)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeStrokeDash`
 
 ```javascript
@@ -2349,6 +2355,7 @@ encodeStrokeDash(
   { field, target?, fieldType?, scale? }
   | { value, target? }
 )
+encodeStrokeDash({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Create or replace nominal/ordinal line-series or rule dash patterns, or apply one
@@ -2357,6 +2364,8 @@ constant named/direct pattern. Named styles are `solid`, `dashed`, `dotted`, and
 pattern for valid categories outside a domain; missing categories remain errors,
 and domain, legend and raw series identities stay unchanged.
 [Series encodings](../api/series-encodings.md)
+
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
 
 ### `encodeRadius`
 
@@ -2423,6 +2432,7 @@ Semantic Polar radial position is unchanged.
 
 ```javascript
 encodeSize({ field, target?, fieldType?, scale? })
+encodeSize({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Encode point size as area; radius-normalized polygons use reference-circle area. The automatic area range
@@ -2430,21 +2440,27 @@ is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
 `pow` mappings plus discrete `quantize`, `quantile`, and `threshold` mappings.
 [Appearance encodings](../api/appearance.md)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeShape`
 
 ```javascript
 encodeShape({ field, target?, fieldType?, scale? })
+encodeShape({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.
 Explicit ranges may repeat shapes; provide one entry per domain value. Automatic ranges remain distinct.
 [Appearance encodings](../api/appearance.md)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeOpacity`
 
 ```javascript
 encodeOpacity({ value, target? })
 encodeOpacity({ field, target?, fieldType?, scale? })
+encodeOpacity({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Apply a constant point/rule/line/bar/rect opacity from `0` to `1`, or map a quantitative field
@@ -2454,11 +2470,14 @@ series and support sampled opacity legends. Constant mode clears its field and
 owned opacity legend and rejects fieldType/scale or selections using that channel.
 [Appearance encodings](../api/appearance.md)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeStroke`
 
 ```javascript
 encodeStroke({ value, target? })
 encodeStroke({ field, target?, fieldType?, temporalUnit?, scale? })
+encodeStroke({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign a constant non-empty stroke color or map a categorical, quantitative, or
@@ -2468,11 +2487,14 @@ mode clears the field binding and its own legend; field mode clears the constant
 override. Text outlines are outside this action.
 [Appearance encodings](../api/appearance.md)
 
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
+
 ### `encodeStrokeWidth`
 
 ```javascript
 encodeStrokeWidth({ value, target? })
 encodeStrokeWidth({ field, target?, fieldType?, scale? })
+encodeStrokeWidth({ target?, conditions: [{ when, value }], otherwise })
 ```
 
 Assign a non-negative finite logical Canvas width to a Line, Rule, or Rect. Field mode
@@ -2480,6 +2502,8 @@ maps one quantitative value per rule/rect row or complete line series. Constant 
 clears the field and its own sampled width legend; fieldType/scale are invalid in
 constant mode. Active channel selections must be removed before replacement.
 [Appearance encodings](../api/appearance.md)
+
+Ordered conditional branches use the same payload contract, with required otherwise and validation of every branch. See [Conditional appearance](../api/encodings.md#choose-appearance-with-conditions).
 
 ### `encodeBarWidth`
 

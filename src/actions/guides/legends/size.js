@@ -17,7 +17,7 @@ import {
 import { resolveLegendItemLayout } from "../../../layout/legendItems.js";
 import { DEFAULT_COLORS } from
   "../../../theme/defaults.js";
-import { findLayer } from "../../../selectors/layers.js";
+import { findLegendLayer as findLayer } from "../../../materialization/legendEncodings.js";
 import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import {

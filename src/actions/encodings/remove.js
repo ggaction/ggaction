@@ -46,7 +46,7 @@ const REMOVE_AXIS = Object.freeze({
 
 function resolveTarget(program, requested, channel) {
   const candidates = program.semanticSpec.layers.filter(
-    layer => layer.encoding?.[channel] !== undefined
+    layer => (layer.encoding?.[channel] !== undefined || layer.conditionals?.[channel] !== undefined)
   );
   if (requested !== undefined) {
     const id = validateUserId(requested, "Encoding target id");
@@ -54,7 +54,7 @@ function resolveTarget(program, requested, channel) {
     if (layer === undefined) {
       throw new Error(`Unknown encoding target "${id}".`);
     }
-    if (layer.encoding?.[channel] === undefined) {
+    if (layer.encoding?.[channel] === undefined && layer.conditionals?.[channel] === undefined) {
       throw new Error(`Mark "${id}" has no ${channel} encoding.`);
     }
     return layer;
@@ -94,7 +94,7 @@ function activeCascade(layer, channel) {
   ) {
     channels.add("color");
   }
-  return [...channels].filter(active => layer.encoding?.[active] !== undefined);
+  return [...channels].filter(active => layer.encoding?.[active] !== undefined || layer.conditionals?.[active] !== undefined);
 }
 
 function removeChannelConfigs(program, target, channels) {
@@ -259,7 +259,7 @@ export const removeEncoding = /* @__PURE__ */ closedAction(
     }
     for (const channel of channels) {
       next = next.editSemantic({
-        property: `layer[${layer.id}].encoding.${channel}`,
+        property: `layer[${layer.id}].${layer.conditionals?.[channel] === undefined ? "encoding" : "conditionals"}.${channel}`,
         remove: true
       });
     }

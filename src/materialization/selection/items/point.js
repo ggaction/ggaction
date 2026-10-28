@@ -4,6 +4,13 @@ import {
   finalizeItems,
   ownFields
 } from "./common.js";
+import { identifyItems } from "./common.js";
+
+export function resolvePointSourceItems(program, layer, dataset) {
+  return identifyItems(program, layer, "point", dataset.values.map((row, index) => ({
+    rowKey: dataset.rowKeys[index], fields: ownFields(row), channels: channelMapFromRow(row, layer), members: [row]
+  })));
+}
 
 export function resolvePointItems(program, layer, dataset, grain, resolveItems, selectionResolvers) {
   const graphic = program.graphicSpec.objects[layer.id];

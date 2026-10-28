@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Apply a constant point/rule/line/bar/rect opacity from 0 to 1, or map a quantitative field through a linear opacity scale.",
-  "signature": "encodeOpacity(options: TargetedOptions<OpacityEncodingOptions>): ChartProgram;",
+  "signature": "encodeOpacity(options: TargetedOptions<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode opacity",
     "encode",
@@ -64,19 +64,29 @@
   },
   "options": [
     {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<OpacityEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<OpacityEncodingOptions>[\"otherwise\"]"
+    },
+    {
       "name": "value",
       "required": false,
-      "type": "number | undefined"
+      "type": "number"
     },
     {
       "name": "field",
       "required": false,
-      "type": "string | undefined"
-    },
-    {
-      "name": "target",
-      "required": false,
-      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+      "type": "string"
     },
     {
       "name": "fieldType",
@@ -90,7 +100,9 @@
     }
   ],
   "callPatterns": [
-    "encodeOpacity({ target?, scale?, value?, field?, fieldType? })"
+    "encodeOpacity({ value, target? })",
+    "encodeOpacity({ field, target?, fieldType?, scale? })",
+    "encodeOpacity({ target?, conditions: [{ when, value }], otherwise })"
   ],
   "snippet": "program.encodeOpacity({ value: 0.8 })",
   "errors": [],

@@ -1640,6 +1640,20 @@
   {
     "file": "api/encodings.md",
     "block": 1,
+    "heading": "Choose appearance with conditions",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"minimum\""
+    ],
+    "prerequisites": "The displayed program imports chart and supplies its inline data and parameter.",
+    "sha256": "0ea350c16712226c8a4804e1b797d865174de0a1039c66bbd8cf9745846cff6b",
+    "executable": true
+  },
+  {
+    "file": "api/encodings.md",
+    "block": 2,
     "heading": "Fixed or variable appearance",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1651,7 +1665,7 @@
   },
   {
     "file": "api/encodings.md",
-    "block": 2,
+    "block": 3,
     "heading": "Direction",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1665,7 +1679,7 @@
   },
   {
     "file": "api/encodings.md",
-    "block": 3,
+    "block": 4,
     "heading": "Removing an encoding",
     "mode": "fragment",
     "environment": "esm-context",

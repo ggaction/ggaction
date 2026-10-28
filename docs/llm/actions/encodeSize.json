@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Encode point size as area; radius-normalized polygons use reference-circle area.",
-  "signature": "encodeSize(options: TargetedOptions<SizeEncodingOptions>): ChartProgram;",
+  "signature": "encodeSize(options: TargetedOptions<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode size",
     "encode",
@@ -65,35 +65,46 @@
   },
   "options": [
     {
-      "name": "value",
-      "required": false,
-      "type": "number | undefined"
-    },
-    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<SizeEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<SizeEncodingOptions>[\"otherwise\"]"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "number"
+    },
+    {
       "name": "field",
       "required": false,
-      "type": "string | undefined"
+      "type": "string"
     },
     {
       "name": "fieldType",
       "required": false,
-      "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | undefined"
+      "type": "\"quantitative\" | undefined"
     },
     {
       "name": "scale",
       "required": false,
-      "type": "SizeScaleOptions | CategoricalSizeScaleOptions | undefined"
+      "type": "SizeScaleOptions | undefined"
     }
   ],
   "callPatterns": [
-    "encodeSize({ target?, scale?, value?, field?, fieldType? })"
+    "encodeSize({ field, target?, fieldType?, scale? })",
+    "encodeSize({ target?, conditions: [{ when, value }], otherwise })"
   ],
-  "snippet": "program.encodeSize({ value: 1 })",
+  "snippet": "program.encodeSize({ field: \"value\" })",
   "errors": [],
   "route": "/reference/actions/encodings/#encodesize"
 }

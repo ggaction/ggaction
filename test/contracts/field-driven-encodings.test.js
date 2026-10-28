@@ -55,7 +55,7 @@ test("exports the complete strict field-driven option surface", () => {
   );
   assert.match(
     programTypes,
-    /encodeStrokeWidth\(options: TargetedOptions<StrokeWidthEncodingOptions>\): ChartProgram/
+    /encodeStrokeWidth\(options: TargetedOptions<StrokeWidthEncodingOptions \| ConditionalEncodingOptions<StrokeWidthEncodingOptions>>\): ChartProgram/
   );
 });
 

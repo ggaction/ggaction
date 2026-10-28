@@ -1,3 +1,4 @@
+import { validateConditionalDependencies } from "../materialization/resourceState.js";
 import { resolveFilterEnvironment } from "../materialization/expressionInputs.js";
 import { validateLegacyPathCommands } from "../grammar/pathCommands.js";
 import { validateGraphicIdentity } from "../grammar/schemas/graphicIdentity.js";
@@ -557,6 +558,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
     if (Object.hasOwn(selection, "sourceSelection")) validateUserId(selection.sourceSelection, "Composite selection owner");
   }
   resources.set("selection", new Map(Object.entries(selections)));
+  validateConditionalDependencies(program);
   for (const reference of collectAllResourceReferences(program)) {
     if (reference.kind === "data") resolveDatasetReference(program, reference.id);
     else if (!resources.get(reference.kind)?.has(reference.id)) {

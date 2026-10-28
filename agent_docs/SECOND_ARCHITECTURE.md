@@ -512,8 +512,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 517,000 bytes |
-| `ggaction/basic` | 298,000 bytes |
+| `ggaction` | 525,000 bytes |
+| `ggaction/basic` | 306,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -2868,3 +2868,16 @@ Parameter/computed v2 통합의 동일 staged artifact는 Node 20.20.2·22.23.2�
 최소 1,000 bytes 단위 package/browser ceiling을 갱신했다. Basic은 생성 경로만 추가하고
 parameter revision planner를 import하지 않는다. 이전 Node22 compressor 차이로 인한
 기존 ceiling 실패도 이 지원 matrix 측정으로 해결했다.
+
+### 조건부 인코딩과 명시적인 소비자 갱신
+
+조건부 appearance는 `layer.conditionals[channel]` 한 곳에 branch intent와 exact
+parameter/selection refs를 보존한다. 일반 encoding/config에 otherwise를 복제하지 않는다.
+기존 encoder의 deferred normalization을 재사용하고, topology와 final item grain을 검증한
+뒤 domain action이 scale/mark/guide materialization을 명시 호출한다. Selection property로
+연결된 mark dependency는 cycle을 거부하고 정렬된 영향 closure로 갱신한다. Facet scale
+collector와 resource reference collector는 비활성 branch도 live consumer로 취급한다.
+Point glyph의 geometry 이전 mapping과 나머지 appearance의 기존 mark output 단계는
+같은 first-match grammar를 사용한다. Selection은 chosen raw channel value를 검사하고
+실제 그래픽 identity로 drawing-order 변경에 대응한다. Renderer 경계는 변하지 않는다.
+정확한 지원 채널, 단일 binding 범례와 empty-domain 규칙은 current/ENCODINGS가 소유한다.

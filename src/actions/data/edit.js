@@ -1,3 +1,4 @@
+import { orderConditionalMarkIds } from "../../materialization/conditionalState.js";
 import { bindFilterTransform } from "./filterBinding.js";
 import { ownRecord } from "../../core/ownData.js";
 import {resolveDatasetTransformInputs} from "./shared.js";
@@ -349,8 +350,8 @@ function applyRevisionPlanWithIdentity(program, resolved, plan, { retain, parame
       );
     }
   }
-  for (const consumer of consumers) {
-    next = applyLayerDataRematerialization(next, consumer.id);
+  for (const target of orderConditionalMarkIds(next, consumers.map(consumer => consumer.id))) {
+    next = applyLayerDataRematerialization(next, target);
   }
   for (const revision of [...plan.revisions].reverse()) {
     if (retain.has(revision.old)) continue;

@@ -1,3 +1,5 @@
+import { conditionalDependentMarkIds, orderConditionalMarkIds } from "../conditionalState.js";
+import { conditionalValues } from "../../grammar/conditionalState.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import { findLayer } from "../../selectors/layers.js";
 import {
@@ -24,6 +26,7 @@ export function getLayerScaleIds(layer) {
   if (isSourceOwnedText(layer)) return [];
   return [
     ...Object.values(layer.encoding ?? {}).map(encoding => encoding?.scale),
+    ...Object.values(layer.conditionals ?? {}).flatMap(conditionalValues).map(value => value.scale),
     ...(layer.encoding?.parallel?.dimensions ?? []).map(dimension => dimension.scale)
   ].filter(scale => scale !== undefined);
 }
@@ -58,20 +61,23 @@ export function getMarkMaterializationStep(program, layer) {
 }
 
 export function getSourceDependentMarkSteps(program, sourceId) {
-  return (program.semanticSpec.layers ?? []).flatMap(layer => {
+  const conditionalTargets = new Set(conditionalDependentMarkIds(program, [sourceId]));
+  const steps = (program.semanticSpec.layers ?? []).flatMap(layer => {
     const sourceOwned = layer.source === sourceId &&
       getMarkMaterializationPolicy(layer)?.sourceDependent === true;
     const statistical = program.markConfigs?.[layer.id]
       ?.statisticalReference?.source === sourceId;
     const filteredCompanion = program.markConfigs?.[layer.id]?.markFilter?.owner === sourceId;
     const overlay = layer.derivedBindings?.overlay?.source === sourceId;
-    return sourceOwned || statistical || filteredCompanion || overlay
+    return sourceOwned || statistical || filteredCompanion || overlay || conditionalTargets.has(layer.id)
       ? [getMarkMaterializationStep(program, layer) ??
           getExistingMarkRematerializationStep(program, layer)].filter(
           step => step !== undefined
         )
       : [];
   });
+  const order = new Map(orderConditionalMarkIds(program, steps.map(step => step.args.id)).map((id, index) => [id, index]));
+  return steps.sort((a, b) => order.get(a.args.id) - order.get(b.args.id));
 }
 
 export function getPositionEncodingMaterializationSteps(program, layer, scaleId) {
@@ -106,6 +112,7 @@ export function getPositionEncodingMaterializationSteps(program, layer, scaleId)
 }
 
 export function getScaleConsumerMaterializationMode(layer, channel) {
+  if (layer.conditionals?.[channel]) return "defer";
   if (layer.derivedBindings?.overlay) return "defer";
   const policy = getMarkMaterializationPolicy(layer);
   if (policy === undefined) return "direct";

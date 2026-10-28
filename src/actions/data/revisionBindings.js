@@ -5,6 +5,8 @@ import { storedSelectionSelector } from "../../selectors/selectionResources.js";
 import { writeSelectionState } from "../selection/resources.js";
 import { requireDataset } from "../../selectors/datasets.js";
 import { dataInputReference, requireStoredResource } from "../../selectors/resources.js";
+import { rebindExpressionFields } from "../../grammar/expressionAst.js";
+import { rebindConditionalInputs } from "../../materialization/conditionalState.js";
 
 
 export function outputFieldChanges(previous, next) {
@@ -60,6 +62,15 @@ export function rebindLayerOutputFields(program, id, changes) {
       }
     }
   }
+  for (const [channel, definition] of Object.entries(layer.conditionals ?? {})) {
+    const value = branch => branch.field === undefined ? branch : { ...branch, field: changed(branch.field) };
+    const revised = { ...definition,
+      conditions: definition.conditions.map(condition => ({
+        when: condition.when.selection === undefined ? rebindExpressionFields(condition.when, changed) : condition.when,
+        value: value(condition.value)
+      })), otherwise: value(definition.otherwise) };
+    if (JSON.stringify(revised) !== JSON.stringify(definition)) next = next.editSemantic({ property: `layer[${id}].conditionals.${channel}`, value: revised });
+  }
   editField(
     `layer[${id}].encoding.theta.weight`,
     layer.encoding?.theta?.weight
@@ -82,6 +93,7 @@ export function rebindLayerOutputFields(program, id, changes) {
   }
   editField(`layer[${id}].encoding.parallel.key`, parallel?.key);
 
+  const changedSelections = [];
   for (const [selectionId, config] of Object.entries(
     program.materializationConfigs.selections ?? {}
   )) {
@@ -94,8 +106,10 @@ export function rebindLayerOutputFields(program, id, changes) {
     }
     if (JSON.stringify(selector) !== JSON.stringify(originalSelector)) {
       next = writeSelectionState(next, selectionId, config.target, selector);
+      changedSelections.push(selectionId);
     }
   }
+  if (changedSelections.length) next = rebindConditionalInputs(next, { selections: changedSelections }).program;
 
   const jitter = program.materializationConfigs.jitters?.[id];
   const key = jitter?.key === undefined ? undefined : changed(jitter.key);

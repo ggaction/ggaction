@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "encodings",
   "summary": "Encode a nominal field as fourteen named shapes or polygons with area/radius normalization.",
-  "signature": "encodeShape(options: TargetedOptions<ShapeEncodingOptions>): ChartProgram;",
+  "signature": "encodeShape(options: TargetedOptions<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>): ChartProgram;",
   "intents": [
     "encode shape",
     "encode",
@@ -65,19 +65,29 @@
   },
   "options": [
     {
-      "name": "value",
-      "required": false,
-      "type": "PointShape | undefined"
-    },
-    {
       "name": "target",
       "required": false,
       "type": "string | ActionTargetList | ScopedActionTarget | undefined"
     },
     {
+      "name": "conditions",
+      "required": false,
+      "type": "ConditionalEncodingOptions<ShapeEncodingOptions>[\"conditions\"]"
+    },
+    {
+      "name": "otherwise",
+      "required": false,
+      "type": "ConditionalEncodingOptions<ShapeEncodingOptions>[\"otherwise\"]"
+    },
+    {
+      "name": "value",
+      "required": false,
+      "type": "PointShape"
+    },
+    {
       "name": "field",
       "required": false,
-      "type": "string | undefined"
+      "type": "string"
     },
     {
       "name": "fieldType",
@@ -91,7 +101,8 @@
     }
   ],
   "callPatterns": [
-    "encodeShape({ target?, scale?, value?, field?, fieldType? })"
+    "encodeShape({ field, target?, fieldType?, scale? })",
+    "encodeShape({ target?, conditions: [{ when, value }], otherwise })"
   ],
   "snippet": "program.encodeShape({ value: \"circle\" })",
   "errors": [],

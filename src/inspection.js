@@ -1,4 +1,5 @@
 import { namespaceItemKey } from "./grammar/schemas/graphicIdentity.js";
+import { conditionalValues } from "./grammar/conditionalState.js";
 import { resolveMarkItems } from "./materialization/selection/policies/index.js";
 import { highlightTargets } from "./selectors/selectionTargets.js";
 import { resolvePathCommandBounds, unionConcreteGraphicBounds } from "./grammar/schemas/graphicBounds.js";
@@ -412,7 +413,8 @@ export function comparePrograms(before, after, { target } = {}) {
                 (candidate.ref.kind === "guide" && (candidate.value.semantic?.target === source.ref.id || candidate.value.config?.target === source.ref.id));
             }
             if (source.ref.kind === "scale") {
-              return (candidate.ref.kind === "mark" && Object.values(candidate.value.semantic?.encoding ?? {}).some(
+              return (candidate.ref.kind === "mark" && [...Object.values(candidate.value.semantic?.encoding ?? {}),
+                ...Object.values(candidate.value.semantic?.conditionals ?? {}).flatMap(conditionalValues)].some(
                 encoding => encoding?.scale === source.ref.id || encoding?.dimensions?.some(dimension => dimension.scale === source.ref.id)
               )) || (candidate.ref.kind === "guide" && (candidate.value.semantic?.scale === source.ref.id || candidate.value.config?.scale === source.ref.id));
             }

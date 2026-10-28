@@ -143,3 +143,19 @@ export function normalizePredicateExpression(expression, environment = {}) {
 export function inspectPredicateExpression(expression) {
   return normalize(expression, {}, false, true);
 }
+
+// Rebind field references only. Literals, function options and parameter IDs
+// are values with different owners even when their strings match a field name.
+export function rebindExpressionFields(expression, changed) {
+  const inspected = inspectExpressionV2(expression);
+  function visit(node) {
+    if (node.type === "field") return { ...node, name: changed(node.name) };
+    if (node.type === "fieldPath") return { ...node, root: changed(node.root) };
+    if (node.type === "unary") return { ...node, operand: visit(node.operand) };
+    if (node.type === "binary") return { ...node, left: visit(node.left), right: visit(node.right) };
+    if (node.type === "if") return { ...node, condition: visit(node.condition), then: visit(node.then), else: visit(node.else) };
+    if (node.type === "call") return { ...node, args: node.args.map(visit) };
+    return node;
+  }
+  return inspectExpressionV2({ ...inspected.expression, root: visit(inspected.expression.root) }).expression;
+}

@@ -1665,7 +1665,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Reassign supported field color; Tick supports numeric/temporal segment color with explicit stroke-channel switching",
+      "update": "Reassign supported field color; Tick supports numeric/temporal segment color with explicit stroke-channel switching; ordered conditional branches use the same payload and required otherwise",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1683,7 +1683,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action atomically replaces nominal/ordinal field, constant value, and scale binding",
+      "update": "Same action atomically replaces nominal/ordinal field, constant value, and scale binding; ordered conditional branches use the same payload and required otherwise",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1701,7 +1701,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces constant or field-driven stroke color",
+      "update": "Same action replaces constant or field-driven stroke color; ordered conditional branches use the same payload and required otherwise",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1719,7 +1719,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces constant or field-driven line/rule/rect width",
+      "update": "Same action replaces constant or field-driven line/rule/rect width; ordered conditional branches use the same payload and required otherwise",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1737,7 +1737,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces field and scale binding",
+      "update": "Same action replaces field and scale binding; ordered conditional branches use the same payload and required otherwise",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1755,7 +1755,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Assign an ordinal field to fourteen named point shapes or explicit simple polygons with area or radius normalization",
+      "update": "Assign an ordinal field to fourteen named point shapes or explicit simple polygons with area or radius normalization; ordered conditional branches use the same payload and required otherwise",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1773,7 +1773,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the complete constant or field direction assignment",
+      "update": "Same action replaces the complete constant or field direction assignment; ordered conditional branches use the same payload and required otherwise",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1791,7 +1791,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces constant or field opacity on point/rule/line/bar/rect marks",
+      "update": "Same action replaces constant or field opacity on point/rule/line/bar/rect marks; ordered conditional branches use the same payload and required otherwise",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",

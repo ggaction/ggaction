@@ -6,9 +6,10 @@
 - [x] 전체 계획 승인과 독립 작업 범위 연결
 - [x] Boolean predicate와 ordered first-match 순수 kernel 및 독립 시험
 - [x] AST filter 생성·편집·revision·schema·lineage·복원 연결
-- [ ] 조건부 encoder와 parameter/selection/scale dependency 연결
-- [ ] Empty domain·cycle·inactive branch·zero·atomic failure 통합 시험
-- [ ] 타입·Current·공개 문서·generated metadata·설치 소비자 동기화
+- [x] Appearance 조건부 encoder와 parameter/selection/scale dependency 연결
+- [x] Appearance empty domain·cycle·inactive branch·zero·atomic failure 통합 시험
+- [x] Appearance 타입·Current·공개 문서·generated metadata·설치 소비자 동기화
+- [ ] Positional·offset·pointRadius·text 및 topology matrix 종료
 - [ ] 전체 조건부 checkpoint commit/push와 AT-18 인계
 
 기준은 `c0f0f7147f62a9da671b632eb5dbaf03188cd575`다. 사용자의 전체 Roadmap9 실행·병렬
@@ -114,11 +115,65 @@ otherwise를 다른 semantic/config 위치에 복제하지 않는다. 기존 enc
 명시 field/scale binding을 읽는다. 첫 true를 고르는 시점은 기존 final item grain이다. Path/bar
 그룹에서 서로 다른 source 값이 하나의 최종 item 값으로 정의되지 않으면 임의 첫 행을 택하지
 않는다. 명시 group이나 해당 family의 기존 aggregate owner를 사용 가능한 경우 재사용하며,
-family 전체를 일괄 미지원 처리하지 않는다. Branch별 scale이 여러 개인 guide는 기존 explicit
-scale/target 계약으로 모호성을 해소한다. Branch 교체와 removeEncoding은 ref를 해제하고 다른
-live 소비자가 있는 scale을 제거하지 않는다. 이러한 경로는 아직 구현/검증 완료가 아니다.
+family 전체를 일괄 미지원 처리하지 않는다. Branch field/type/scale binding이 하나일 때 기존 target+channels 범례를 재사용한다.
+여러 binding이면 명시 ambiguity 오류를 내며, 이미 범례가 있으면 branch 변경을 원자적으로
+거부한다. 별도의 scale 선택 옵션이나 branch별 동시 범례를 신설하지 않는다. Branch 교체와 removeEncoding은 ref를 해제하고 다른
+live 소비자가 있는 scale을 제거하지 않는다. 아래 appearance checkpoint에서 이 경로를 검증했다.
 
 Point의 size/shape/angle은 geometry 이전 row mapping에 적용해 jitter/packing이 실제 최종
 모양을 반영해야 한다. 나머지 appearance는 기존 mark materializer가 명시 호출하는 output
 단계에서 적용한다. Selection property가 같은 conditional 결과를 읽는 cycle을 선검증하고,
 parameter와 selection edit는 exact refs를 갱신한 뒤 affected mark/scale/guide만 물질화한다.
+
+
+## Appearance checkpoint 구현 상태
+
+8개 appearance focused encoder와 encodeChannels의 조건부 branch를 구현했다. 타입과
+현재 계약은 같은 generic payload를 사용한다. 기존 시각 primitive/mark owner를 재사용하므로
+새 primitive visual target이 없으며 중복 시각 승인 gate를 만들지 않는다. 원본 STEP-016과
+Root의 추가 확인에 따라 positional x/y/x2/y2/theta/r은 다음 동일 STEP checkpoint의 필수 범위다.
+
+이번 checkpoint는 first-match/otherwise/opacity zero, inactive branch, field/scale refs,
+conditional-only parameter, selection exact revision, feedback cycle, grouped path/bar,
+shared scale detach, output-field rename, malformed restore, empty preserve/explicit/refill,
+facet/repeat/concat와 overlay geometry를 실제 회귀로 고정한다. 과거 최종 item 순서의 index를
+조건 값에 사용하는 대신 identity key로 결합해 highlight reordering에도 값을 보존한다.
+
+Empty regression에서 일반 opacity/continuous-color/strokeWidth scale helper가 이미 허용한
+emptyDomain 옵션을 저장하지 않는 결함을 재현했다. 기존 grammar validator를 공유하며
+해당 option을 수동 definition helper와 재지정 scale patch에서 보존하도록 고쳤다. 이 보완은
+새 empty 정책을 추가하지 않는다.
+
+### Root 통합 후 반드시 확인할 경로
+
+- G-DATA sourcePlan의 prepared raw+computed union에 where-filter roots와 conditional mark
+  closure를 연결한다. opaque source payload 검증과 materialization 원자성을 유지한다.
+- 새 adoptSelectionResources가 conditional parameterInputs/selectionInputs의 exact refs를
+  복원하되 독립 live data-source binding을 과거 child에서 되살리지 않는다.
+- 통계 checkpoint의 pivot/LOESS/calendar 최종 schema와 출력 field rename을 조건부 branch와
+  predicate가 공유하는지 통합 시험한다.
+- positional/offset/pointRadius/text 소비자와 topology group/pathOrder의 matrix는 아직 닫지
+  않는다. 이 appearance checkpoint를 STEP-016 또는 AT-18 완료라고 보고하지 않는다.
+
+### Appearance 검증 결과
+
+[APPEARANCE-CHECKPOINT.json](evidence/APPEARANCE-CHECKPOINT.json)에 정확한 명령과
+증거 hash를 기록했다. 전체 normal coverage 6,572건, 기존 global 94/89/98 기준과
+critical floors 213개를 모두 통과했다. 실제 측정은 96.00/93.58/98.75다. 새 conditional
+owner만 측정한 98.95/88.94/100은 별도 집중 결과이며 global 결과로 해석하지 않는다.
+기존 floor를 낮추지 않았고 새 grammar/materialization prefix에 기존 expression family와
+동일한 90/80/100을 자동 적용했다.
+
+설치 패키지 Node 사례 191건과 qualification 7개, 새 브라우저 DPR 1/2 사례 2건,
+문서 161건, built 150페이지/1,193 artifact, docs browser desktop 및 320/390/768px를
+통과했다. Basic은 기존 color/size/shape 범위의 조건을 지원하며 설치 fixture는 color로
+검증했다. Full fixture는 where filter와 opacity 조건부까지 복원·parameter 편집을 검증했다.
+
+모든 nested scale literal 직접 실행에서 numeric discretized size가 소비자 등록 이전에 color로
+분류되는 결함을 찾아 수정했다. 단일 conditional semantic binding과 새 scales를 기록·해석한 뒤
+기존 scales를 수정하며, 새/기존 scale을 함께 변경하는 회귀도 통과했다. Stored strokeDash는
+정규화 배열을 요구하며 author 입력의 named dash는 기존 owner에서 배열로 바뀐다.
+
+Generated lifecycle/scenario inventory의 새 조건 옵션에 대한 direct-call 및 option inventory
+동기화는 Root의 pivot repair와 같은 파일을 소유하므로 최신 main 통합 직후 연결한다.
+이번 증거는 full realistic sweep, 전체 render sweep 또는 G-DATA 통합 완료를 주장하지 않는다.

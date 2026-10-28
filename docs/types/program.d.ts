@@ -1495,6 +1495,7 @@ export interface SemanticLayer {
     overlay?: Readonly<{ source: string; basis: "visibleItems"; mode: "follow"; series: "source" | "total";
       missing: "break" | "connect"; orderBy?: "x" | "y"; inheritColor: boolean }> }>;
   readonly encoding?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
+  readonly conditionals?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
   readonly [key: string]: unknown;
 }
 
@@ -4668,6 +4669,20 @@ export interface DashScaleOptions {
   unknown?: DashStyle | DashPattern;
 }
 
+/** Ordered first-match predicates; otherwise is required. All branches are validated.
+ * Each value uses the existing encoder payload without target. Selection predicates
+ * reference stored logical selection IDs. Legends require one unique field/scale binding.
+ */
+interface ConditionalEncodingBranch<Value> {
+  when: ComputedExpressionV2 | { selection: string };
+  value: WithoutEncodingTarget<Value>;
+}
+export type ConditionalEncodingOptions<Value> = {
+  target?: string;
+  conditions: readonly ConditionalEncodingBranch<Value>[];
+  otherwise: WithoutEncodingTarget<Value>;
+};
+
 export type StrokeDashEncodingOptions =
   | {
       field: string;
@@ -4943,14 +4958,14 @@ export interface EncodingChannelAssignments {
   yOffset?: WithoutEncodingTarget<YOffsetEncodingOptions>;
   group?: WithoutEncodingTarget<GroupEncodingOptions>;
   pathOrder?: WithoutEncodingTarget<PathOrderEncodingOptions>;
-  color?: WithoutEncodingTarget<ColorEncodingOptions>;
-  stroke?: WithoutEncodingTarget<StrokeEncodingOptions>;
-  size?: WithoutEncodingTarget<SizeEncodingOptions>;
-  shape?: WithoutEncodingTarget<ShapeEncodingOptions>;
-  opacity?: WithoutEncodingTarget<OpacityEncodingOptions>;
-  strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions>;
-  strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions>;
-  angle?: WithoutEncodingTarget<AngleEncodingOptions>;
+  color?: WithoutEncodingTarget<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>;
+  stroke?: WithoutEncodingTarget<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>;
+  size?: WithoutEncodingTarget<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>;
+  shape?: WithoutEncodingTarget<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>;
+  opacity?: WithoutEncodingTarget<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>;
+  strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>;
+  strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>;
+  angle?: WithoutEncodingTarget<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>;
   text?: WithoutEncodingTarget<TextEncodingOptions>;
   dx?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
   dy?: WithoutEncodingTarget<TextOffsetEncodingOptions>;
@@ -5757,12 +5772,12 @@ export class ChartProgram {
   encodeTheta(options: TargetedOptions<ThetaEncodingOptions>): ChartProgram;
   encodeR(options: TargetedOptions<RadialEncodingOptions>): ChartProgram;
   encodeX2(options: TargetedOptions<SecondaryPositionEncodingOptions>): ChartProgram;
-  encodeColor(options: TargetedOptions<ColorEncodingOptions>): ChartProgram;
-  encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions>): ChartProgram;
-  encodeSize(options: TargetedOptions<SizeEncodingOptions>): ChartProgram;
-  encodeShape(options: TargetedOptions<ShapeEncodingOptions>): ChartProgram;
-  encodeAngle(options: TargetedOptions<AngleEncodingOptions>): ChartProgram;
-  encodeOpacity(options: TargetedOptions<OpacityEncodingOptions>): ChartProgram;
+  encodeColor(options: TargetedOptions<ColorEncodingOptions | ConditionalEncodingOptions<ColorEncodingOptions>>): ChartProgram;
+  encodeStrokeDash(options: TargetedOptions<StrokeDashEncodingOptions | ConditionalEncodingOptions<StrokeDashEncodingOptions>>): ChartProgram;
+  encodeSize(options: TargetedOptions<SizeEncodingOptions | ConditionalEncodingOptions<SizeEncodingOptions>>): ChartProgram;
+  encodeShape(options: TargetedOptions<ShapeEncodingOptions | ConditionalEncodingOptions<ShapeEncodingOptions>>): ChartProgram;
+  encodeAngle(options: TargetedOptions<AngleEncodingOptions | ConditionalEncodingOptions<AngleEncodingOptions>>): ChartProgram;
+  encodeOpacity(options: TargetedOptions<OpacityEncodingOptions | ConditionalEncodingOptions<OpacityEncodingOptions>>): ChartProgram;
   encodeRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
   encodePointRadius(options: TargetedOptions<{ value: number; target?: string }>): ChartProgram;
   removePointRadius(options?: TargetedOptions<{ target?: string }>): ChartProgram;
@@ -5794,8 +5809,8 @@ export class ChartProgram {
   encodeHorizon(options?: TargetedOptions<HorizonEncodingOptions>): ChartProgram;
   editHorizon(options: TargetedOptions<EditHorizonOptions>): ChartProgram;
   encodeBarWidth(options?: TargetedOptions<BarWidthOptions>): ChartProgram;
-  encodeStroke(options: TargetedOptions<StrokeEncodingOptions>): ChartProgram;
-  encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions>): ChartProgram;
+  encodeStroke(options: TargetedOptions<StrokeEncodingOptions | ConditionalEncodingOptions<StrokeEncodingOptions>>): ChartProgram;
+  encodeStrokeWidth(options: TargetedOptions<StrokeWidthEncodingOptions | ConditionalEncodingOptions<StrokeWidthEncodingOptions>>): ChartProgram;
   encodeChannels(options: TargetedOptions<EncodeChannelsOptions>): ChartProgram;
 
   createRegression(options?: TargetedOptions<RegressionOptions>): ChartProgram;

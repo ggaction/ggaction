@@ -1,8 +1,8 @@
 import { findCoordinate } from "../selectors/coordinates.js";
 import { requireLayer } from "../selectors/layers.js";
 import { requireMaterializedDataset } from "../selectors/datasets.js";
-import { resolveBarItems, resolveBarItemDefinitions } from "./selection/items/bar.js";
-import { resolvePointItems } from "./selection/items/point.js";
+import { resolveBarItems, resolveBarSourceItems } from "./selection/items/bar.js";
+import { resolvePointItems, resolvePointSourceItems } from "./selection/items/point.js";
 import { applyItemMissingPolicy } from "../grammar/itemMissing.js";
 import { resolveBarChannels, resolveBarColorLayout } from "../grammar/bars/policy.js";
 import { overlayGroupFields, overlayPositionEncoding, overlaySourceReason } from "../grammar/overlay.js";
@@ -29,13 +29,13 @@ export function overlaySegments(group, binding) {
   return segments.filter(points => points.length);
 }
 
-function sourcePointAnchor(program, source, item, graphics) {
+function sourcePointAnchor(program, source, item, graphics, appearance) {
   const owner = program.graphicSpec.objects[source.id];
   const graphic = graphics.get(item.graphicIds[0]);
   const encoding = source.encoding.shape;
-  const shape = encoding?.scale ? mapScaleConsumerValues([item.fields[encoding.field]], program.resolvedScales[encoding.scale], "shape")[0]
-    : program.markConfigs[source.id].shape ?? "circle";
-  const angle = resolveDirectionValues(item.members, source.encoding.angle)?.[0];
+  const shape = appearance?.shape ?? (encoding?.scale ? mapScaleConsumerValues([item.fields[encoding.field]], program.resolvedScales[encoding.scale], "shape")[0]
+    : program.markConfigs[source.id].shape ?? "circle");
+  const angle = appearance?.angle ?? resolveDirectionValues(item.members, source.encoding.angle)?.[0];
   return pointGraphicAnchor({ ...graphic, type: graphic.type ?? owner.type }, shape, angle);
 }
 
@@ -61,7 +61,7 @@ function itemGroups(items, source, binding) {
   return [...groups.values()];
 }
 
-export function resolveOverlaySeries(program, binding, { geometry = true } = {}) {
+export function resolveOverlaySeries(program, binding, { geometry = true, pointAppearance } = {}) {
   const source = requireLayer(program, binding.source);
   const dataset = applyItemMissingPolicy(source, requireMaterializedDataset(program, source.data));
   const density = findUpstreamTransform(program, dataset, 'density');
@@ -76,13 +76,14 @@ export function resolveOverlaySeries(program, binding, { geometry = true } = {})
     // still resolve and validate the fully materialized source collections.
     const items = geometry
       ? bar ? resolveBarItems(program, source, dataset, "item") : resolvePointItems(program, source, dataset)
-      : bar ? resolveBarItemDefinitions(program, source, dataset)
-        : dataset.values.map(row => ({ fields: ownFields(row), channels: channelMapFromRow(row, source), members: [row] }));
+      : bar ? resolveBarSourceItems(program, source, dataset, "item")
+        : resolvePointSourceItems(program, source, dataset);
     const graphics = bar || !geometry ? undefined : new Map(program.graphicSpec.objects[source.id].items.map(item => [item.id, item]));
+    const appearance = bar || !geometry ? undefined : pointAppearance?.(source, items);
     const anchors = items.map(item => {
       const p = item.properties;
       const measure = item.channels[`${channels.measure}2`] ?? item.channels[channels.measure];
-      const point = !geometry ? item.channels : bar ? p : sourcePointAnchor(program, source, item, graphics);
+      const point = !geometry ? item.channels : bar ? p : sourcePointAnchor(program, source, item, graphics, appearance?.get(item.key));
       const endpoint = bar && geometry ? mapPosition(program, source, channels.measure, measure) : point[channels.measure];
       const x = geometry && bar && channels.category === "x" ? p.x + p.width / 2 : channels.measure === "x" ? endpoint : point.x;
       const y = geometry && bar && channels.category === "y" ? p.y + p.height / 2 : channels.measure === "y" ? endpoint : point.y;
