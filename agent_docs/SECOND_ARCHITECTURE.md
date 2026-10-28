@@ -73,7 +73,7 @@ Full assembly는 image, hierarchy, graph와 layout의 닫힌 handler를 등록�
 unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
 Full/Basic/SVG browser gzip최대535,560/313,517/8,185는 기존 한도 안이며 그대로 유지한다.
 
-Typed layer binding의 닫힌 경로(`image`, `hierarchyBinding.layout`)는
+Typed layer binding의 닫힌 경로(`image`, `hierarchyBinding.layout`, `graphBinding.layout`)는
 `core/resourceReferences.js`가 수집과 immutable rebind를 함께 소유한다. 공통 exact ref shape는
 `core/resourceReference.js`에 두어 core 수집기와 grammar/materialization이 같은 kind vocabulary를
 사용한다. Primitive resource replacement는 해당 리소스 revision과 live layer reference를 같은
@@ -163,7 +163,8 @@ renderer는 다음 통합 경계다. 수치·검증·실측 package 경계는
 검증한다. DATA revision owner는 등록된 graph 갱신 함수를 명시적으로 호출한다. Basic과 renderer는
 graph resource를 읽지 않으며 automatic compiler는 없다. `createGraphData.target`은 endpoint 열이므로
 기존 unit-local creation dispatch를 사용한다. 수정 target은 별도의 resource selector다.
-현재 관측 data lifecycle만 공개하며 inference·layout·plot의 공개 연결은 별도 구현 영역이다.
+Full의 graph layout과 plot은 같은 typed resource 경계를 사용한다. `actions/graphs/layouts.js`가 변경될 graph→layout→plot closure를 먼저 계산·검증한 뒤 wrapped semantic replacement와 plot materialization을 명시 호출한다.
+`materialization/graph/geometry.js`는 finite cubic route·parallel offset·self-loop·endpoint trimming을, plot owner는 concrete circle/path/text·paint·source-row identity를 소유한다. 공통 selection policy는 node와 edge를 별도 logical item으로 유지하며 arrow/label을 같은 item에 결박한다. Renderer는 기존 concrete primitives만 읽는다. Inference 공개 연결은 후속 domain owner다.
 정확한 공개·저장 계약은 [GRAPHS.md](contract/current/GRAPHS.md)가 소유한다.
 상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
 
@@ -3193,3 +3194,6 @@ outline mark, retained image를 두고 source revision·codec·prepared image st
 통합 search-index 실측896,003bytes는 이전896,000을3bytes 초과한다. 현재 모든 페이지/액션을 유지하며
 공유 canonical search cap만 최소1000단위897,000으로 조정한다. 최초 source2개 및 built 링크 검사 실패와
 해당 입력 수정 뒤 재검증 결과는 outline 통합 evidence가 보존한다.
+
+GraphPlot 입력 layout의 닫힌 method vocabulary는 core/vocabulary.js 한 곳이 소유한다. Graph selector와 grammar normalizer가 이를 함께 읽으며 selector는 layout 계산기를 import하지 않는다.
+Node20 canonical graph-plot staging810entries, packed1,193,083/unpacked5,488,863bytes에 맞춰 package cap810/1,194,000/5,489,000으로 최소 조정한다.

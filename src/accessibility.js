@@ -68,6 +68,7 @@ function finalRows(program, layer) {
     unsupported(layer.id, "the owner is not materialized");
   }
   if (layer.mark.type === "image") return [{ series: {}, values: { alt: layer.alt } }];
+  if (layer.mark.type === "graph") return resolveMarkItems(program, layer.id).map(item => ({ series: { kind: item.role }, values: item.fields }));
   if (layer.derivedBindings?.overlay) {
     return resolveOverlaySeries(program, layer.derivedBindings.overlay, { geometry: false }).flatMap(group =>
       group.points.map(point => ({

@@ -2614,5 +2614,23 @@
     ],
     "layer": "user-facing",
     "domain": "core"
+  },
+  "createGraphPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H0",
+      "H1"
+    ],
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "editGraphPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H1",
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "charts"
   }
 }

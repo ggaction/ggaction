@@ -1,3 +1,4 @@
+import { createGraph } from "./graph-plots/program.js";
 import { createMarkOutlineExample } from "./mark-outlines/program.js";
 import { createStructuredPaintExample } from "./structured-paints/program.js";
 import { createImageExample } from "./image-assets/program.js";
@@ -287,6 +288,18 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createAreaSimple(),
     browser: { path: "area-layout/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
+  }),
+  example({ id: "graph-plots", programDirectory: "graph-plots", testDirectory: "graph-plots", data: {}, width: 300, height: 240, docsGroup: "tutorials",
+    createProgram: () => createGraph("directed"),
+    browser: { path: "browser-host/?chart=graph-plots", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "graph-plots", width: 300, height: 240 } } }
+  }),
+  example({ id: "graph-parallel", programDirectory: "graph-plots", testDirectory: "graph-plots", data: {}, width: 300, height: 240, docsGroup: "tutorials",
+    createProgram: () => createGraph("parallel"),
+    browser: { path: "browser-host/?chart=graph-parallel", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "graph-parallel", width: 300, height: 240 } } }
+  }),
+  example({ id: "graph-self-loop", programDirectory: "graph-plots", testDirectory: "graph-plots", data: {}, width: 300, height: 240, docsGroup: "tutorials",
+    createProgram: () => createGraph("self-loop"),
+    browser: { path: "browser-host/?chart=graph-self-loop", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "graph-self-loop", width: 300, height: 240 } } }
   }),
   example({ id: "tree-layouts", programDirectory: "tree-layouts", testDirectory: "tree-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
     createProgram: () => createTree("vertical"),

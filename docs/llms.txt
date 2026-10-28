@@ -217,3 +217,5 @@ requirements after resolving each part.
 - Image Assets Tutorial: ./tutorials/image-assets/
 - Hierarchy Resources and Plots: ./api/hierarchy/
 - Hierarchy Tutorial: ./tutorials/hierarchy/
+- Graph Plots: ./api/graphs/
+- Graph Tutorial: ./tutorials/graphs/

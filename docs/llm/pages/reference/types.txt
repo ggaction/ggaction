@@ -50,6 +50,8 @@ interface ChartProgramActions {
   layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
   editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+  createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
+  editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
@@ -5017,6 +5019,16 @@ export interface EditGraphDataOptions {
 
 Related types: [`ObservedGraphDefinition`](../../../reference/types/#type-observedgraphdefinition).
 
+### `EditGraphPlotOptions` {#type-editgraphplotoptions}
+
+ Expand EditGraphPlotOptions
+
+```typescript
+export interface EditGraphPlotOptions extends Omit<GraphPlotOptions, "id"> { target?: string; }
+```
+
+Related types: [`GraphPlotOptions`](../../../reference/types/#type-graphplotoptions).
+
 ### `EditGraphicsOptions` {#type-editgraphicsoptions}
 
  Expand EditGraphicsOptions
@@ -6845,6 +6857,14 @@ export interface GraphCircularOptions extends GraphLayoutLimits { readonly cente
 
 Related types: [`GraphLayoutLimits`](../../../reference/types/#type-graphlayoutlimits).
 
+### `GraphEdgePaint` {#type-graphedgepaint}
+
+ Expand GraphEdgePaint
+
+```typescript
+export interface GraphEdgePaint { stroke?: string; strokeWidth?: number; opacity?: number; parallelGap?: number; loopRadius?: number; arrowSize?: number; arrows?: "auto" | boolean; }
+```
+
 ### `GraphFixedOptions` {#type-graphfixedoptions}
 
  Expand GraphFixedOptions
@@ -6877,6 +6897,28 @@ Related types: [`GraphLayoutLimits`](../../../reference/types/#type-graphlayoutl
 export type GraphKeyField = string | readonly string[];
 ```
 
+### `GraphLabelPaint` {#type-graphlabelpaint}
+
+ Expand GraphLabelPaint
+
+```typescript
+export interface GraphLabelPaint { fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+```
+
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint).
+
+### `GraphLabelsOptions` {#type-graphlabelsoptions}
+
+ Expand GraphLabelsOptions
+
+```typescript
+export interface GraphLabelsOptions extends GraphLabelPaint {
+  field?: string; offset?: readonly [number, number]; overrides?: readonly (GraphLabelPaint & { key: RowKey; text?: string })[];
+}
+```
+
+Related types: [`GraphLabelPaint`](../../../reference/types/#type-graphlabelpaint) · [`RowKey`](../../../reference/types/#type-rowkey).
+
 ### `GraphLayoutLimits` {#type-graphlayoutlimits}
 
  Expand GraphLayoutLimits
@@ -6884,6 +6926,16 @@ export type GraphKeyField = string | readonly string[];
 ```typescript
 export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdges?: number; }
 ```
+
+### `GraphNodePaint` {#type-graphnodepaint}
+
+ Expand GraphNodePaint
+
+```typescript
+export interface GraphNodePaint { radius?: number; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
+```
+
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint).
 
 ### `GraphPin` {#type-graphpin}
 
@@ -6894,6 +6946,20 @@ export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly 
 ```
 
 Related types: [`RowKey`](../../../reference/types/#type-rowkey).
+
+### `GraphPlotOptions` {#type-graphplotoptions}
+
+ Expand GraphPlotOptions
+
+```typescript
+export interface GraphPlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
+  edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
+}
+```
+
+Related types: [`GraphNodePaint`](../../../reference/types/#type-graphnodepaint) · [`RowKey`](../../../reference/types/#type-rowkey) · [`GraphEdgePaint`](../../../reference/types/#type-graphedgepaint) · [`GraphLabelsOptions`](../../../reference/types/#type-graphlabelsoptions).
 
 ### `GraphPosition` {#type-graphposition}
 

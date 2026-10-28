@@ -222,7 +222,7 @@ function applyHighlight(program, config, keys) {
 }
 
 function highlightPaintProperty(markType) {
-  return ["line", "rule", "tick"].includes(markType) ? "stroke" : "fill";
+  return ["line", "rule", "tick", "graph"].includes(markType) ? "stroke" : "fill";
 }
 
 function requestedPaintSource(args, markType, style) {
@@ -473,7 +473,8 @@ export const applyPathHighlight = /* @__PURE__ */ closedAction(
       throw new Error("applyPathHighlight requires a path selection policy.");
     }
     if (keys.length === 0) return this;
-    return editSelectedItems(this, resolved, keys, item => ({
+    const transform = requireSelectionPolicy(markType).transformHighlightChild;
+    return editSelectedItems(this, resolved, keys, item => transform ? transform(item, args.style) : ({
       ...item,
       properties: transformPathHighlightProperties(item.properties, args.style)
     }));

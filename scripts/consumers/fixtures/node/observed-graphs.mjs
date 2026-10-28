@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { chart, hconcat } from "ggaction";
 import { chart as basicChart } from "ggaction/basic";
 import { serializeProgram, deserializeProgram } from "ggaction/persistence";
+import { getMarkItems } from "ggaction/inspection";
+import { renderToSVG } from "ggaction/svg";
 
 export const cases = [{ id: "data/observed-graph-lifecycle", run() {
   const source = chart().createCanvas({ width: 120, height: 100 })
@@ -31,7 +33,8 @@ export const cases = [{ id: "data/observed-graph-lifecycle", run() {
     ["circular", { radius: 50 }],
     ["force", { iterations: 3, pinned: [{ key: 1, fx: 0, fy: 10 }] }]
   ]) {
-    const placed = source.layoutGraph({ id: "layout", method, options });
+    const placed = source.layoutGraph({ id: "layout", method, options })
+      .createGraphPlot({ labels: {} }).editGraphPlot({ nodes: { radius: 4 } });
     const layout = program => program.semanticSpec.resources.find(item => item.kind === "layout");
     const restored = deserializeProgram(serializeProgram(placed));
     assert.deepEqual(layout(restored), layout(placed));
@@ -39,6 +42,11 @@ export const cases = [{ id: "data/observed-graph-lifecycle", run() {
     assert.equal(layout(updated).revision, 1);
     assert.equal(layout(updated).inputs[0].revision, 1);
     assert.equal(layout(placed).revision, 0);
+    assert.equal(getMarkItems(updated).length, 4);
+    assert.equal(updated.graphicSpec.objects.graphPlot.items.filter(item => item.identity.role === "arrow").length, 2);
+    assert.equal(renderToSVG(deserializeProgram(serializeProgram(updated))), renderToSVG(updated));
   }
   assert.equal(basicChart().layoutGraph, undefined);
+  assert.equal(basicChart().createGraphPlot, undefined);
+  assert.equal(basicChart().editGraphPlot, undefined);
 } }];

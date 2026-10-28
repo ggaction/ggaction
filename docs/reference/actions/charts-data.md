@@ -4766,6 +4766,75 @@ Store a fixed, circular, or deterministic force layout of an existing graph. Ful
 [Graph data and layouts](../../api/data/source-and-derived.md#layoutgraph)
 
 
+## `createGraphPlot`
+
+**API layer:** user-facing. **Authoring roles:** H0, H1.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`GraphPlotOptions`](./../types.md#type-graphplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
+| `edges` | Optional / branch-dependent | `GraphEdgePaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| GraphLabelsOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+Draw stored graph nodes, edge routes and optional labels. See [Graph plots](../../api/graphs.md#creategraphplot) for full defaults, typed overrides and supported consumers.
+
+
+## `editGraphPlot`
+
+**API layer:** user-facing. **Authoring roles:** H1, H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGraphPlotOptions`](./../types.md#type-editgraphplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `origin` | Optional / branch-dependent | `"auto" \| readonly [number, number] \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `nodes` | Optional / branch-dependent | `(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] \| undefined; }) \| undefined` |
+| `edges` | Optional / branch-dependent | `GraphEdgePaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| GraphLabelsOptions \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+Apply a nonempty graph appearance or layout-binding patch and rebuild its logical items atomically. See [Graph plot edits](../../api/graphs.md#editgraphplot).
+
+
 ## Focused core data editing
 
 ```javascript

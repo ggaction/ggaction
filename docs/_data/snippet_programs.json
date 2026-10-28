@@ -431,5 +431,16 @@
       "exported": "createTree"
     },
     "rendering": "renders-canvas"
+  },
+  "tutorials/graphs.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart.",
+    "canonical": {
+      "file": "examples/graph-plots/program.js",
+      "exported": "createGraph"
+    },
+    "rendering": "renders-canvas"
   }
 }

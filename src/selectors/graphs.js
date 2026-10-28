@@ -1,5 +1,11 @@
 import { annotateError } from "../core/diagnostics.js";
-import { requireStoredResource } from "./resources.js";
+import { resolveInputReference, requireStoredResource } from "./resources.js";
+import { resolveLayoutResource } from "./layouts.js";
+import { GRAPH_LAYOUT_METHODS } from "../core/vocabulary.js";
+
+export function resolveGraphPlotLayout(program, requested) {
+  return resolveLayoutResource(program, requested, "graph", GRAPH_LAYOUT_METHODS);
+}
 
 export function resolveGraphResource(program, target, origin) {
   const eligible = resource => resource.kind === "graph" && (origin === undefined || resource.provenance.origin === origin);
@@ -15,4 +21,12 @@ export function resolveGraphResource(program, target, origin) {
     code: resources.length ? "ambiguous-resource" : "missing-resource", candidates: resources.map(resource => resource.id)
   });
   return resources[0];
+}
+
+export function resolveGraphLayerResources(program, layer) {
+  const layout = resolveInputReference(program, layer.graphBinding.layout);
+  if (layout.kind !== "layout" || layout.inputs.length !== 1 || layout.inputs[0].kind !== "graph" || !GRAPH_LAYOUT_METHODS.includes(layout.options.method)) throw new TypeError("Graph plots require a fixed, circular or force graph layout.");
+  const graph = resolveInputReference(program, layout.inputs[0]);
+  return { layout, graph, nodesData: resolveInputReference(program, graph.inputs[graph.options.roles.nodes]),
+    edgesData: resolveInputReference(program, graph.inputs[graph.options.roles.edges]) };
 }

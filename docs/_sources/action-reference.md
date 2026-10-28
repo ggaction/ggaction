@@ -3367,6 +3367,14 @@ editImageMark({ target?, image?, viewport?, fit?, align?, opacity?, alt?, clip? 
 
 Edit an existing image mark; omission preserves options. `viewport:"auto"` resets
 to the plot. Explicit geometry adds clipping to the always-clipped viewport.
+### `createGraphPlot`
+
+Draw stored graph nodes, edge routes and optional labels. See [Graph plots](../api/graphs.md#creategraphplot) for full defaults, typed overrides and supported consumers.
+
+### `editGraphPlot`
+
+Apply a nonempty graph appearance or layout-binding patch and rebuild its logical items atomically. See [Graph plot edits](../api/graphs.md#editgraphplot).
+
 ### `createHierarchyData`
 
 ```javascript

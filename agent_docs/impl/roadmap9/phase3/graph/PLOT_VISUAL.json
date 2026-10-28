@@ -1,0 +1,115 @@
+{
+  "status": "approved",
+  "authorization": "../../AUTHORIZATION.json",
+  "evidence": "Explicit user approval for all remaining Roadmap 9 design and visual targets; no repeated approval question.",
+  "renderedBeforePublicImplementation": true,
+  "verification": {
+    "primitiveAndStructureAndPNGTests": 10,
+    "nativePDFTests": 3,
+    "browserCanvasSVGParityTests": 2,
+    "browserExamples": 3,
+    "semanticTests": 12,
+    "geometryTests": 4,
+    "notes": [
+      "The primitive now uses one heterogeneous collection, matching the public output structure and renderer calls exactly.",
+      "One parallel arrow decimal uses independent tangent arithmetic to retain the exact finite coordinate; pixels are unchanged.",
+      "Full current sources and compressed output are versioned in this checkpoint."
+    ]
+  },
+  "sources": [
+    {
+      "path": "examples/graph-plots/fixture.js",
+      "sha256": "049cff733f57626dcb7be289c55dd846f62b324a1c163902f5147c14329fd133"
+    },
+    {
+      "path": "examples/graph-plots/options.js",
+      "sha256": "2d3df5d8bc2f2629e4fd211b7d6b9b6c9a7f6fed9b0dd700aa9c4776938f0893"
+    },
+    {
+      "path": "test/charts/graph-plots/primitive.program.js",
+      "sha256": "259143e7cffc6fd18e6c1a6ff1c58970216c036236368c51f1492292ad135084"
+    },
+    {
+      "path": "test/charts/graph-plots/manifest.js",
+      "sha256": "d5d91a2b15e1e325f2aa90ccab6ada116358853b2c16c597acbf9b235e616d98"
+    },
+    {
+      "path": "examples/graph-plots/program.js",
+      "sha256": "0f22a9625ce350c7755945c4cd6578b6492ceaa32e1c4143b97a571f41a8569e"
+    },
+    {
+      "path": "test/charts/graph-plots/public.test.js",
+      "sha256": "b2cc70a9011ea42236e5fec0f4d66ac8d3e3dac54a24f4b73b2936d1ad7c366d"
+    },
+    {
+      "path": "test/charts/graph-plots/pdf.render.js",
+      "sha256": "a56c3e35e9c4080032352935d90a309e5ba5d9b2dfa6f593b31f5ad0b1bc23b7"
+    },
+    {
+      "path": "test/browser/graph-output.browser.js",
+      "sha256": "cb1f8ac8e5f71c6460481d85c46321c464b7e73f64244de9229cde133d5bbe24"
+    }
+  ],
+  "variants": [
+    {
+      "id": "directed",
+      "path": ".artifacts/test/png/charts/graph/graph-plots/directed/primitive.png",
+      "sha256": "7ba7de9f59c98770b5a11daacefa90a7904e5b76c0b2f310bd840af96f0ae394",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/directed-primitive.png.gz"
+    },
+    {
+      "id": "parallel",
+      "path": ".artifacts/test/png/charts/graph/graph-parallel/parallel/primitive.png",
+      "sha256": "104aa06fb72527c49bcfe5cb31657bf032cb1ec9288b03b268d106ccc172eeab",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/parallel-primitive.png.gz"
+    },
+    {
+      "id": "self-loop",
+      "path": ".artifacts/test/png/charts/graph/graph-self-loop/self-loop/primitive.png",
+      "sha256": "e80499e4f74242b5b4c509d874ea0377a66cd79303f09f51e4a75eb9310ac2b1",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/plot-evidence/self-loop-primitive.png.gz"
+    }
+  ],
+  "initialEvidence": {
+    "sources": [
+      {
+        "path": "examples/graph-plots/fixture.js",
+        "sha256": "e07e4f708f55ce63dfe0eed22c44f14804f919bdac837a878070b6e75c7c7925"
+      },
+      {
+        "path": "examples/graph-plots/options.js",
+        "sha256": "dbb4ca33808a3e04afaff517282e66215e5dc11355ca791dcde1c5580f3c87f4"
+      },
+      {
+        "path": "test/charts/graph-plots/primitive.program.js",
+        "sha256": "1a08ebfff6357b97754c4a1a872d90f4d4a96b9e03d71cf757654e4705999494"
+      },
+      {
+        "path": "test/charts/graph-plots/manifest.js",
+        "sha256": "14305a0ecf9601fed64d1b29969870fe22ca58f5ee06c0b1c4d7ca4a5ad186d9"
+      }
+    ],
+    "variants": [
+      {
+        "id": "directed",
+        "path": ".artifacts/test/png/charts/graph/graph-plots/directed/primitive.png",
+        "sha256": "7ba7de9f59c98770b5a11daacefa90a7904e5b76c0b2f310bd840af96f0ae394"
+      },
+      {
+        "id": "parallel",
+        "path": ".artifacts/test/png/charts/graph/graph-plots/parallel/primitive.png",
+        "sha256": "104aa06fb72527c49bcfe5cb31657bf032cb1ec9288b03b268d106ccc172eeab"
+      },
+      {
+        "id": "self-loop",
+        "path": ".artifacts/test/png/charts/graph/graph-plots/self-loop/primitive.png",
+        "sha256": "e80499e4f74242b5b4c509d874ea0377a66cd79303f09f51e4a75eb9310ac2b1"
+      }
+    ],
+    "verification": {
+      "primitiveTests": 4,
+      "pngTests": 3,
+      "visualInspection": "Directed edge, separated parallel edges, retained self-loop and readable labels checked."
+    }
+  }
+}

@@ -5798,6 +5798,42 @@
         "file": "agent_docs/contract/current/GRAPHS.md",
         "anchor": "layoutgraph"
       }
+    },
+    {
+      "name": "createGraphPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editGraphPlot`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "creategraphplot"
+      }
+    },
+    {
+      "name": "editGraphPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits or removes the named resource",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "editgraphplot"
+      }
     }
   ],
   "plannedActions": [],
@@ -5885,7 +5921,8 @@
       "rematerializeOverlay",
       "rematerializeImageMark",
       "materializeTreePlot",
-      "materializeTreemapPlot"
+      "materializeTreemapPlot",
+      "materializeGraphPlot"
     ],
     "guideComponents": [
       "createLegendBackground",

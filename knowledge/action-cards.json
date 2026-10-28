@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 320,
+  "count": 322,
   "cards": [
     {
       "schemaVersion": 3,
@@ -39632,7 +39632,7 @@
       "name": "layoutGraph",
       "layer": "user-facing",
       "domain": "core",
-      "summary": "Store fixed, circular, or deterministic force positions for an existing graph.",
+      "summary": "Store a fixed, circular, or deterministic force layout of an existing graph.",
       "signature": "layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;",
       "intents": [
         "layout graph",
@@ -39718,6 +39718,228 @@
       "snippet": "program.layoutGraph({ id: \"network-layout\", graph: \"network\", method: \"circular\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#layoutgraph"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createGraphPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Creates graph plot for network plot.",
+      "signature": "createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;",
+      "intents": [
+        "create graph plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "graph plot",
+        "network plot"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "graph plot"
+        ],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H0",
+        "H1"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGraphPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "origin",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "complete",
+        "requires": [
+          "canvas and dataset context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "origin",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "nodes",
+          "required": false,
+          "type": "(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] | undefined; }) | undefined"
+        },
+        {
+          "name": "edges",
+          "required": false,
+          "type": "GraphEdgePaint | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | GraphLabelsOptions | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createGraphPlot({ id?, target?, layout?, origin?, clip?, nodes?, edges?, labels? })"
+      ],
+      "snippet": "program.createGraphPlot({ id: \"networkPlot\", layout: \"network-layout\", labels: {} })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#creategraphplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editGraphPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Edits graph plot, including settings for network plot.",
+      "signature": "editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;",
+      "intents": [
+        "edit graph plot",
+        "edit",
+        "change",
+        "complete chart",
+        "chart facade",
+        "graph plot",
+        "network plot"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing graph plot",
+          "canvas and dataset context"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGraphPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "origin",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing graph plot",
+          "canvas and dataset context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "origin",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "nodes",
+          "required": false,
+          "type": "(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] | undefined; }) | undefined"
+        },
+        {
+          "name": "edges",
+          "required": false,
+          "type": "GraphEdgePaint | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | GraphLabelsOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editGraphPlot({ target?, layout?, origin?, clip?, nodes?, edges?, labels? })"
+      ],
+      "snippet": "program.editGraphPlot({ target: \"networkPlot\", nodes: { radius: 8 } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editgraphplot"
     }
   ]
 }

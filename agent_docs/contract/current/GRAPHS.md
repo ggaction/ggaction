@@ -1,4 +1,4 @@
-# 관측 그래프 데이터 계약
+# 그래프 데이터·배치·표시 계약
 
 ## `createGraphData`
 
@@ -32,7 +32,7 @@
 - 전체 편집이 비어 있거나 undefined/null/unknown option, 잘못된 key/endpoint/weight/limit을 포함하면 거부한다. 정의의 ID나 graph origin은 바꾸지 않는다.
 - 원본 table을 다시 읽어 graph model과 provenance를 만들고 revision을 1 올린다. 관측 explicit key 또는 살아 있는 persisted row key는 행 재정렬 후에도 유지한다. 원본 program, 입력, trace와 graphics는 불변이다.
 - DATA의 `reviseData`와 derived revision 계획은 등록된 graph owner를 명시적으로 호출해 입력 역할을 새 dataset revision으로 갱신한다. 한 dataset이 nodes/edges를 함께 소유하면 graph revision은 한 번만 갱신한다. 유효하지 않은 endpoint/값을 만드는 source revision은 전체적으로 실패한다. 참조 중인 dataset 제거는 기존 restrict 정책으로 거부한다.
-- 연결된 graph layout의 결과를 먼저 계산·검증하고, exact graph/layout revision을 한 primitive transition에 함께 반영한다. 각 layout은 한 번 갱신하며 다른 graph의 layout은 공유를 유지한다. Fixed positions나 pinned/initial coverage를 깨뜨리는 source 변경은 전체적으로 거부한다. 이 저장 데이터 action은 graphics를 만들지 않는다.
+- 연결된 graph layout의 결과를 먼저 계산·검증하고, exact graph/layout revision을 한 primitive transition에 함께 반영한다. 각 layout은 한 번 갱신하며 다른 graph의 layout은 공유를 유지한다. Fixed positions나 pinned/initial coverage를 깨뜨리는 source 변경은 전체적으로 거부한다. 연결된 graph plot이 있으면 그 geometry와 label을 preflight하고 layout 반영 뒤 명시 materialize한다. Plot이 없으면 graphics는 그대로다.
 
 ### Formal values — `editGraphData`
 
@@ -66,3 +66,47 @@
 
 - ✅ Covered: all three methods, typed positions, deterministic force, pins, empty and singleton graphs, independent layout revisions, atomic source changes, codec validation and Full boundary.
 - Evidence: `test/unit/resources/graph-layouts.test.js`, `test/unit/resources/graph-layout-state.test.js`, `test/unit/grammar/graph/layout-options.test.js`, `test/unit/grammar/graph-force.test.js`, `test/contracts/observed-graph-types.test.js`.
+
+## `createGraphPlot`
+
+- Signature: `createGraphPlot({ id?, layout?, origin?, clip?, nodes?, edges?, labels? })`.
+- Full chart-authoring action이다. 첫 생략 ID는 graphPlot이며 추가 plot은 명시 ID를 요구한다. layout은 explicit/current eligible/unique 순서로 graph input 한 개를 가진 layout만 고르고 missing/ambiguity는 오류다.
+- origin:auto는 저장된 node bounds를 plot 중앙으로 이동한다. 명시 [x,y]는 plot-relative translation이다. 좌표를 scale하거나 solver를 실행하지 않는다. clip 기본 false다.
+- nodes 기본 radius6/fill#2563eb/stroke#ffffff/strokeWidth1/opacity1. overrides는 원 typed RowKey와 같은 style subset의 배열이다. fill은 shared FillPaint를 허용한다. radius/폭은 nonnegative finite, opacity는 unit interval이다.
+- edges 기본 stroke#94a3b8/strokeWidth1.5/opacity1/parallelGap16/loopRadius20/arrowSize8/arrows:auto다. auto는 graph.directed를 따르고 true/false는 표시를 명시한다. 모든 길이는 nonnegative finite다. Endpoint pair의 원 순서로 병렬 cubic 경로를 나누고 self-loop/coincident endpoint도 별도 경로로 보존한다. Arrow는 같은 edge logical item의 별도 graphic role이다.
+- labels 기본 false, {}는 원 key 표시다. field는 명시 보존된 node attribute여야 하며 scalar를 String으로 표시한다. null/undefined는 빈 문자열, object/array는 오류다. 기본 fill#0f172a/fontSize12/fontFamily sans-serif/fontWeight normal/offset[0,14]. overrides는 typed key/text/label paint를 허용한다.
+- 초기 override key는 기존 node이며 유일해야 한다. 배열은 교체 의미다. 이후 사라진 key는 orphan-style 진단과 dormant intent로 유지하며 동일 key가 돌아올 때만 재사용한다.
+- layer는 mark.type:graph, exact graphBinding.layout, graphLabels 의미를 저장한다. materializationConfigs.marks[id].graphPlot이 paint·placement를 소유한다. Wrapped editSemantic 세 단계와 materializeGraphPlot이 concrete collection에 edge body/arrow, node body, node label 순으로 기록한다.
+- Logical selection은 node와 edge 각각 한 항목이며 role별 exact 원본 row membership을 가진다. fields.kind/key/origin과 node degree/incoming/outgoing, edge sourceKey/targetKey/weight/directed/ruleId를 노출한다. Node attributes는 attribute:<name>를 사용해 metadata와 충돌하지 않는다.
+- Highlight는 stroke 계열 color/stroke/strokeWidth/opacity/offset을 지원한다. Node border와 edge path/arrow fill을 함께 강조하고 label paint를 보존한다. Node label·edge arrow는 opacity/offset/dim/order에서 같은 항목을 따른다. fill/shape/size/fontSize/strokeDash는 거부한다.
+- Source/graph/layout revision은 모든 plot의 결과를 먼저 검사하고 exact revision 갱신 뒤 명시 재물질화한다. 실패는 원 program/trace를 보존한다. Canvas edit는 placement만 갱신하며 stored solver result는 공유한다. Concat scoped edit를 지원한다.
+- removeMark가 binding을 해제한다. removeResource의 restrict/cascade 모두 live mark는 먼저 제거해야 한다. Codec은 저장 config·binding·label 의미를 검증하며 force solver를 재실행하지 않는다. Inspector와 accessible export는 logical node/edge를 세고 scene은 같은 concrete identity를 보존한다. Canvas/SVG/PNG/PDF는 graph 의미를 해석하지 않는다.
+- Position encoding/axes/scale legend는 stored layout에 적용되지 않는다. Graph facet/repeat와 induced filtering은 이 공개 plot에 아직 연결하지 않았다.
+
+### Formal values — `createGraphPlot`
+
+- Implemented: `createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram`.
+- Planned: graph facet/filter 및 후행 paint/controller 통합은 별도 소비자 범위다.
+- Proposed (NOT IMPLEMENTED): implicit coordinate-to-edge inference.
+
+### Value coverage — `createGraphPlot`
+
+- ✅ Covered: directed/parallel/self-loop primitive pairs, immutable typed membership, labels, source revisions, codec, scene, accessibility and scoped composition.
+- Evidence: `test/charts/graph-plots/`, `test/unit/resources/graph-plots.test.js`.
+
+## `editGraphPlot`
+
+- Signature: `editGraphPlot({ target?, layout?, origin?, clip?, nodes?, edges?, labels? })`.
+- 기존 graph plot에 nonempty partial patch를 적용한다. target은 explicit/current eligible/unique 순서이며 scoped target도 허용한다. 생략은 보존, override 배열은 교체, labels:false는 의미와 paint를 함께 제거한다. labels:{}는 key label을 다시 켠다.
+- 새 binding은 graph layout이어야 한다. 기본값·검증·consumer는 createGraphPlot과 같다. 동일 값의 명시 편집도 재물질화하며 layout numeric intent는 바꾸지 않는다. Unknown/null/undefined, 잘못된 key/paint/label은 상태 변경 전에 거절한다.
+
+### Formal values — `editGraphPlot`
+
+- Implemented: `editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram`.
+- Planned: 이 action의 추가 값 없음.
+- Proposed (NOT IMPLEMENTED): implicit topology edits through appearance.
+
+### Value coverage — `editGraphPlot`
+
+- ✅ Covered: appearance/labels/binding, source reordering, dormant overrides, immutable failure, scoped target, removal and restore.
+- Evidence: `test/unit/resources/graph-plots.test.js`.

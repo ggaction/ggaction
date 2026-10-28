@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 3,
+  "name": "createGraphPlot",
+  "layer": "user-facing",
+  "domain": "charts",
+  "summary": "Draw node circles, edge routes and optional labels from one stored graph layout.",
+  "signature": "createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;",
+  "intents": [
+    "create graph plot",
+    "create",
+    "add",
+    "complete chart",
+    "chart facade",
+    "graph plot",
+    "network plot"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "canvas and dataset context"
+    ],
+    "owns": [
+      "graph plot"
+    ],
+    "idOptions": [
+      "id",
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H0",
+    "H1"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editGraphPlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "origin",
+      "strategy": "documented-auto"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "complete",
+    "requires": [
+      "canvas and dataset context"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "origin",
+      "required": false,
+      "type": "\"auto\" | readonly [number, number] | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "nodes",
+      "required": false,
+      "type": "(GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey; })[] | undefined; }) | undefined"
+    },
+    {
+      "name": "edges",
+      "required": false,
+      "type": "GraphEdgePaint | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | GraphLabelsOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createGraphPlot({ id?, target?, layout?, origin?, clip?, nodes?, edges?, labels? })"
+  ],
+  "snippet": "program.createGraphPlot({ id: \"networkPlot\", layout: \"network-layout\", labels: {} })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#creategraphplot"
+}

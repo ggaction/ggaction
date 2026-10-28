@@ -9,5 +9,11 @@ function handler(resource) {
 }
 export const layoutResourceHandler = Object.freeze({
   validateStored: resource => handler(resource).validateStored(resource),
-  validateBindings: (program, resource) => handler(resource).validateBindings(program, resource)
+  validateBindings: (program, resource) => {
+    for (const layer of program.semanticSpec.layers) {
+      if (layer.graphBinding?.layout.id === resource.id && resource.inputs[0]?.kind !== "graph") throw new TypeError("Graph plots require a graph layout.");
+      if (layer.hierarchyBinding?.layout.id === resource.id && resource.inputs[0]?.kind !== "hierarchy") throw new TypeError("Hierarchy plots require a hierarchy layout.");
+    }
+    return handler(resource).validateBindings(program, resource);
+  }
 });

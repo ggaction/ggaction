@@ -57,6 +57,8 @@ interface ChartProgramActions {
   layoutHierarchy(options: TargetedOptions<LayoutHierarchyOptions>): ChartProgram;
   editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
+  createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
+  editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
@@ -5873,6 +5875,19 @@ export interface EditGraphDataOptions {
 
 Related types: [`ObservedGraphDefinition`](#type-observedgraphdefinition).
 
+### `EditGraphPlotOptions` {#type-editgraphplotoptions}
+
+<details markdown="1">
+<summary>Expand EditGraphPlotOptions</summary>
+
+```typescript
+export interface EditGraphPlotOptions extends Omit<GraphPlotOptions, "id"> { target?: string; }
+```
+
+</details>
+
+Related types: [`GraphPlotOptions`](#type-graphplotoptions).
+
 ### `EditGraphicsOptions` {#type-editgraphicsoptions}
 
 <details markdown="1">
@@ -8082,6 +8097,17 @@ export interface GraphCircularOptions extends GraphLayoutLimits { readonly cente
 
 Related types: [`GraphLayoutLimits`](#type-graphlayoutlimits).
 
+### `GraphEdgePaint` {#type-graphedgepaint}
+
+<details markdown="1">
+<summary>Expand GraphEdgePaint</summary>
+
+```typescript
+export interface GraphEdgePaint { stroke?: string; strokeWidth?: number; opacity?: number; parallelGap?: number; loopRadius?: number; arrowSize?: number; arrows?: "auto" | boolean; }
+```
+
+</details>
+
 ### `GraphFixedOptions` {#type-graphfixedoptions}
 
 <details markdown="1">
@@ -8123,6 +8149,34 @@ export type GraphKeyField = string | readonly string[];
 
 </details>
 
+### `GraphLabelPaint` {#type-graphlabelpaint}
+
+<details markdown="1">
+<summary>Expand GraphLabelPaint</summary>
+
+```typescript
+export interface GraphLabelPaint { fill?: FillPaint; fontSize?: number; fontFamily?: string; fontWeight?: string | number; }
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint).
+
+### `GraphLabelsOptions` {#type-graphlabelsoptions}
+
+<details markdown="1">
+<summary>Expand GraphLabelsOptions</summary>
+
+```typescript
+export interface GraphLabelsOptions extends GraphLabelPaint {
+  field?: string; offset?: readonly [number, number]; overrides?: readonly (GraphLabelPaint & { key: RowKey; text?: string })[];
+}
+```
+
+</details>
+
+Related types: [`GraphLabelPaint`](#type-graphlabelpaint) · [`RowKey`](#type-rowkey).
+
 ### `GraphLayoutLimits` {#type-graphlayoutlimits}
 
 <details markdown="1">
@@ -8133,6 +8187,19 @@ export interface GraphLayoutLimits { readonly maxNodes?: number; readonly maxEdg
 ```
 
 </details>
+
+### `GraphNodePaint` {#type-graphnodepaint}
+
+<details markdown="1">
+<summary>Expand GraphNodePaint</summary>
+
+```typescript
+export interface GraphNodePaint { radius?: number; fill?: FillPaint; stroke?: string; strokeWidth?: number; opacity?: number; }
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint).
 
 ### `GraphPin` {#type-graphpin}
 
@@ -8146,6 +8213,23 @@ export interface GraphPin { readonly key: RowKey; readonly fx: number; readonly 
 </details>
 
 Related types: [`RowKey`](#type-rowkey).
+
+### `GraphPlotOptions` {#type-graphplotoptions}
+
+<details markdown="1">
+<summary>Expand GraphPlotOptions</summary>
+
+```typescript
+export interface GraphPlotOptions {
+  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
+  edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
+}
+```
+
+</details>
+
+Related types: [`GraphNodePaint`](#type-graphnodepaint) · [`RowKey`](#type-rowkey) · [`GraphEdgePaint`](#type-graphedgepaint) · [`GraphLabelsOptions`](#type-graphlabelsoptions).
 
 ### `GraphPosition` {#type-graphposition}
 

@@ -6,6 +6,7 @@ import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { normalizeGraphLayout } from "../../grammar/graph/layoutOptions.js";
 import { polarToCartesian } from "../../grammar/polar.js";
 import { resolveInputReference } from "../../selectors/resources.js";
+import { validateGraphPlotDefinition } from "../../grammar/graph/plot.js";
 
 const same = (a, b) => canonicalJSON(encodeValue(a)) === canonicalJSON(encodeValue(b));
 function exact(value, fields, label) {
@@ -65,6 +66,21 @@ function validateBindings(program, resource) {
   validateGeneratedItemLimit(model.edges.length, "Graph layout edges", options.maxEdges);
   if (nodes.length !== model.nodes.length || nodes.some((node, index) => node.key !== model.nodes[index].key)) throw new TypeError("Graph layout node membership or order is stale.");
   if (!same(resource.provenance.sourceRows, graph.provenance.sourceRows)) throw new TypeError("Graph layout source provenance is stale.");
+  for (const layer of program.semanticSpec.layers) {
+    if (layer.graphBinding?.layout.id !== resource.id) continue;
+    exact(layer, ["id", "mark", "graphBinding", "graphLabels"], "Graph plot layer");
+    exact(layer.mark, ["type"], "Graph plot mark");
+    exact(layer.graphBinding, ["layout"], "Graph plot binding");
+    if (layer.mark.type !== "graph") throw new TypeError("Graph layout binding requires a graph mark.");
+    const config = program.materializationConfigs.marks?.[layer.id];
+    exact(config, ["graphPlot"], "Graph mark configuration");
+    validateGraphPlotDefinition(config.graphPlot, layer.graphLabels);
+    if (layer.graphLabels !== false && Object.hasOwn(layer.graphLabels, "field")) {
+      const field = layer.graphLabels.field;
+      if (!graph.options.definition.attributes.includes(field) || model.nodes.some(node => node.attributes[field] !== null &&
+          !["undefined", "string", "number", "boolean", "bigint"].includes(typeof node.attributes[field]))) throw new TypeError("Graph labels require a retained scalar attribute.");
+    }
+  }
   const byKey = new Map(nodes.map(node => [node.key, node]));
   const completePositions = positions => {
     if (positions.length !== nodes.length || positions.some(position => !byKey.has(encodeRowKey(position.key)))) throw new TypeError("Graph layout initial positions must cover current nodes.");

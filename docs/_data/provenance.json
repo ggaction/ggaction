@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:9159158041527366fbcea8a11fdcdaaf13adcdfccd434c8ebd3c9ae2e268b912",
+  "contractId": "sha256:ca5640a8dcc439a184d1624dce353128d6bc8613e689c96c9983cf96d592f228",
   "sourceCommit": null,
   "sourceRef": "main",
-  "exampleSourceRef": "b6291b4db13fc895cd966e6025e092c14c31726e",
+  "exampleSourceRef": "codex/roadmap9-graph-plots",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 320,
+  "actionCount": 322,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -147,6 +147,14 @@
       "status": "development"
     },
     "createTreePlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGraphPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGraphPlot": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

@@ -21,6 +21,19 @@ program.layoutGraph({ id: "fixed", method: "fixed", options: { positions: [{ key
   .layoutGraph({ id: "circular", method: "circular" })
   .layoutGraph({ id: "force", graph: "graph", method: "force", options: { seed: 2, pinned: [{ key: "a", fx: 0, fy: 0 }] } })
   .editLayout({ target: "force", options: { iterations: 10 } });
+program.createGraphPlot().editGraphPlot({ nodes: { fill: { type: "pattern", style: "dots", foreground: "red", background: "white", pitch: 8 } } });
+program.createGraphPlot({ labels: { field: "name", overrides: [{ key: ["a", 1], text: "A" }] } });
+program.editGraphPlot({ target: { childPath: ["left"], id: "networkPlot" }, edges: { arrows: false } });
+// @ts-expect-error graph nodes are circles
+program.createGraphPlot({ nodes: { shape: "square" } });
+// @ts-expect-error label field is a string
+program.createGraphPlot({ labels: { field: 1 } });
+// @ts-expect-error graph labels are disabled or an option object
+program.createGraphPlot({ labels: true });
+// @ts-expect-error node override keys are required
+program.editGraphPlot({ nodes: { overrides: [{ fill: "red" }] } });
+// @ts-expect-error Full graph plots are not Basic methods
+basicChart().createGraphPlot();
 const layout = program.semanticSpec.resources.find((value): value is GraphLayoutResource => value.kind === "layout" && value.inputs[0].kind === "graph");
 if (layout) {
   const graphKind: "graph" = layout.inputs[0].kind;

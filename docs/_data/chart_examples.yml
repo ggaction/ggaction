@@ -1814,3 +1814,49 @@
   actions: createHierarchyData · layoutHierarchy · createTreemapPlot
   tasks: hierarchy layout
   url: /tutorials/hierarchy/
+- id: graph-plots
+  example: /examples/graph-plots/
+  title: Directed graph
+  image: /assets/images/graph-plots.png
+  alt: Two labeled nodes linked by a directed edge
+  width: 600
+  height: 480
+  thumbnail: /assets/images/graph-plots-thumb.png
+  thumbnail_width: 300
+  thumbnail_height: 240
+  caption: Explicit graph topology and stored coordinates retain each node and edge identity.
+  summary: Draw a stored graph layout with independently identifiable nodes and connections.
+  actions: createGraphData · layoutGraph · createGraphPlot
+  tasks: graph network layout
+  url: /tutorials/graphs/
+  tutorial_order: 220
+- id: graph-parallel
+  example: /examples/graph-parallel/
+  title: Parallel edges
+  image: /assets/images/graph-parallel.png
+  alt: Two separate directed curves between the same labeled nodes
+  width: 600
+  height: 480
+  thumbnail: /assets/images/graph-parallel-thumb.png
+  thumbnail_width: 300
+  thumbnail_height: 240
+  caption: Explicit graph topology and stored coordinates retain each node and edge identity.
+  summary: Draw a stored graph layout with independently identifiable nodes and connections.
+  actions: createGraphData · layoutGraph · createGraphPlot
+  tasks: graph network layout
+  url: /tutorials/graphs/
+- id: graph-self-loop
+  example: /examples/graph-self-loop/
+  title: Self-loop
+  image: /assets/images/graph-self-loop.png
+  alt: One labeled node with a retained loop
+  width: 600
+  height: 480
+  thumbnail: /assets/images/graph-self-loop-thumb.png
+  thumbnail_width: 300
+  thumbnail_height: 240
+  caption: Explicit graph topology and stored coordinates retain each node and edge identity.
+  summary: Draw a stored graph layout with independently identifiable nodes and connections.
+  actions: createGraphData · layoutGraph · createGraphPlot
+  tasks: graph network layout
+  url: /tutorials/graphs/

@@ -535,10 +535,11 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
-    chart().createData({ id: "graphNodes", values: [{ id: "a" }, { id: "b" }], keyField: "id" })
+    chart().createCanvas().createData({ id: "graphNodes", values: [{ id: "a" }, { id: "b" }], keyField: "id" })
       .createData({ id: "graphEdges", values: [{ from: "a", to: "b" }] })
       .createGraphData({ id: "network", nodes: "graphNodes", edges: "graphEdges", nodeKey: "id", source: "from", target: "to" })
       .layoutGraph({ id: "network-layout", method: "circular" })
+      .createGraphPlot({ labels: {} }).editGraphPlot({ nodes: { radius: 8 } })
       .editLayout({ target: "network-layout", options: { radius: 80 } })
       .editGraphData({ definition: { directed: true } }),
     chart().createCanvas().createData({ id: "hierarchyRows", values: [{ id: "root", parent: null, value: 3 }, { id: "a", parent: "root", value: 3 }] })

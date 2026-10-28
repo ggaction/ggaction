@@ -19,6 +19,7 @@ const completeChartActions = [
   "createDumbbellPlot",
   "createECDFPlot",
   "createGradientPlot",
+  "createGraphPlot",
   "createHeatmap",
   "createHistogram",
   "createHorizonPlot",
@@ -95,6 +96,17 @@ test("complete-chart discovery reaches semantic and primitive authoring layers",
       continue;
     }
     const descendants = [...reachableActions(card, byName)].map(child => byName.get(child));
+    if (name === "createGraphPlot") {
+      assert.deepEqual(card.wraps, ["editSemantic"]);
+      const program = fullChart().createCanvas().createData({ id: "nodes", values: [{ key: "a" }] })
+        .createData({ id: "edges", values: [] })
+        .createGraphData({ id: "g", nodes: "nodes", edges: "edges", nodeKey: "key", source: "from", target: "to" })
+        .layoutGraph({ id: "l", method: "circular" }).createGraphPlot();
+      const materialize = program.trace.children.at(-1).children.find(child => child.op === "materializeGraphPlot");
+      assert.ok(materialize.children.some(child => child.op === "createGraphics"));
+      assert.ok(materialize.children.some(child => child.op === "editGraphics"));
+      continue;
+    }
     if (["createTreePlot", "createTreemapPlot"].includes(name)) {
       assert.deepEqual(card.wraps, ["editSemantic"]);
       const base = fullChart().createCanvas().createData({ values: [{ id: "root", parent: null, value: 1 }] })
@@ -125,9 +137,9 @@ test("discovery separates completion from resource validity", async () => {
     state,
     entries.length
   ])), {
-    contextual: actionCards.length - 39,
+    contextual: actionCards.length - 40,
     deferred: 2,
-    complete: 34,
+    complete: 35,
     "not-applicable": 3
   });
   assert.deepEqual(byState.deferred.map(card => card.name), [

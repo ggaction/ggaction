@@ -660,6 +660,24 @@ Create a hierarchy resource, compute an explicit squarify layout, and draw its n
 
 Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreemapPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchy/).
 
+### [Directed graph](./graph-plots/)
+
+Draw a stored graph layout with independently identifiable nodes and connections.
+
+Representative actions: `createGraphData`, `layoutGraph`, `createGraphPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/graphs/).
+
+### [Parallel edges](./graph-parallel/)
+
+Draw a stored graph layout with independently identifiable nodes and connections.
+
+Representative actions: `createGraphData`, `layoutGraph`, `createGraphPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/graphs/).
+
+### [Self-loop](./graph-self-loop/)
+
+Draw a stored graph layout with independently identifiable nodes and connections.
+
+Representative actions: `createGraphData`, `layoutGraph`, `createGraphPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/graphs/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

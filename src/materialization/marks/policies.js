@@ -13,6 +13,7 @@ import {
 } from "./capabilities.js";
 
 const MARK_MATERIALIZATION_POLICIES = Object.freeze({
+  graph: Object.freeze({ canMaterialize: (_program, layer) => layer.graphBinding !== undefined, op: "materializeGraphPlot", scaleApplication: Object.freeze({ default: "defer" }) }),
   image: Object.freeze({ canMaterialize: (_program, layer) => layer.image !== undefined,
     op: "rematerializeImageMark", graphicOwner: imageClipOwner,
     positionEncoding: Object.freeze({ incomplete: "mark", scaleFirst: false }),

@@ -1004,6 +1004,11 @@
     "Graph": [
       "graph layout",
       "node positions"
+    ],
+    "GraphPlot": [
+      "graph plot",
+      "network plot",
+      "nodes and edges"
     ]
   },
   "summaryOverrides": {
@@ -1026,8 +1031,7 @@
     "createGraphics": "Creates one backend-neutral concrete graphic resource inside an extension action.",
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action.",
     "encodeChannels": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state.",
-    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token.",
-    "layoutGraph": "Store fixed, circular, or deterministic force positions for an existing graph."
+    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token."
   },
   "sampleOverrides": {
     "createStackData": {
@@ -1920,6 +1924,17 @@
       "id": "network-layout",
       "graph": "network",
       "method": "circular"
+    },
+    "createGraphPlot": {
+      "id": "networkPlot",
+      "layout": "network-layout",
+      "labels": {}
+    },
+    "editGraphPlot": {
+      "target": "networkPlot",
+      "nodes": {
+        "radius": 8
+      }
     }
   },
   "callPatternOverrides": {

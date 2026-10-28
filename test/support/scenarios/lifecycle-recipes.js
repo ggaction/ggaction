@@ -1292,6 +1292,8 @@ function buildDirectDataResources(factors) {
     .createGraphData({ id: "directGraph", nodes: "directGraphNodes", edges: "directSource", nodeKey: "category",
       source: "category", target: "category", weight: "positive", selfLoops: true })
     .layoutGraph({ id: "directGraphLayout", graph: "directGraph", method: "circular", options: { radius: 25 } })
+    .createGraphPlot({ id: "directGraphPlot", layout: "directGraphLayout", labels: {} })
+    .editGraphPlot({ target: "directGraphPlot", nodes: { radius: 4 }, edges: { strokeWidth: 1 } })
     .editLayout({ target: "directGraphLayout", options: { startAngle: 30 } })
     .editGraphData({ target: "directGraph", definition: { directed: true } })
     .createHierarchyData({ id: "directHierarchy", data: "directSource", groupFields: ["category"], value: "positive" })
