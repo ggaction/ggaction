@@ -202,5 +202,7 @@
     "screen/direction bend adapter",
     "exact rendered partition primitive approval",
     "public action/resource/schema and consumer integration"
-  ]
+  ],
+  "sourceEvidenceRevision": "78a2700900c195e76f72f48fcfc358d49aaae8ea",
+  "metadataOnlyRecording": true
 }

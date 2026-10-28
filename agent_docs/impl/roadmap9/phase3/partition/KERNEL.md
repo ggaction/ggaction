@@ -104,3 +104,5 @@ Main 통합에서는 모든 병렬 branch를 합친 뒤 다시 실측한다.
 
 Hierarchy/layout resource lifecycle·typed refs·revision/rematerialization·selection/scene/codec·inspection/accessibility·Full/Basic/types/docs는
 아직 공개 통합 전이다. 새로운 chart flow는 exact primitive 시각 확인이 필요하다. STEP025–028, AT62–65 또는 전체 STEP077 완료가 아니다.
+
+Source/evidence revision은 `78a2700900c195e76f72f48fcfc358d49aaae8ea`다. 후속 metadata-only 기록은 검증 입력을 바꾸지 않는다.
