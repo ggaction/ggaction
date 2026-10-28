@@ -6,7 +6,7 @@ import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 581_000, // Combined hierarchy, image and paint owners, Node20: 580,123 gzip bytes.
-  "ggaction/basic": 342_000, // Shared concrete consumers, Node20: 341,958 gzip bytes.
+  "ggaction/basic": 343_000, // Shared immutable source copy, Node20: 342,096 gzip bytes.
   "ggaction/svg": 25_000
 });
 
