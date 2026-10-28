@@ -188,5 +188,7 @@
     "entryCount": 681,
     "packedBytes": 1014128,
     "unpackedBytes": 4727468
-  }
+  },
+  "sourceEvidenceRevision": "90f5f67ec080003dd3606ed78bbb9bfbfd3beafe",
+  "metadataOnlyRecording": true
 }
