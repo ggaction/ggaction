@@ -128,7 +128,7 @@ test("calls every user-facing action directly from a generated scenario root", (
   for (const operation of [
     "removeData", "removeScale", "removeCoordinate",
     "createParameter", "editParameter", "removeParameter", "applyDataUpdate",
-    "createPivotData", "editPivotData", "createHierarchyData", "editHierarchyData",
+    "createGraphData", "editGraphData", "createPivotData", "editPivotData", "createHierarchyData", "editHierarchyData",
     "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot",
     "createTreemapPlot", "editTreemapPlot", "createImageResource", "replaceImageResource",
     "createImageMark", "editImageMark"

@@ -10,7 +10,7 @@ const sourceByEnteredAction = new WeakMap();
 const summariesByArguments = new WeakMap();
 let actionCompletionHook;
 const targetDispatchers = new WeakMap();
-const UNSCOPED_PRIMITIVES = new Set(["createGraphics", "editGraphics", "editSemantic", "createData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource"]);
+const UNSCOPED_PRIMITIVES = new Set(["createGraphics", "editGraphics", "editSemantic", "createData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "createGraphData"]);
 
 // Prepared updates must compare their base with the caller's receiver, before
 // _enterAction creates the immutable trace branch. This evidence is valid only

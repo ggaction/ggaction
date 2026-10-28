@@ -550,6 +550,10 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
+    chart().createData({ id: "graphNodes", values: [{ id: "a" }, { id: "b" }], keyField: "id" })
+      .createData({ id: "graphEdges", values: [{ from: "a", to: "b" }] })
+      .createGraphData({ id: "network", nodes: "graphNodes", edges: "graphEdges", nodeKey: "id", source: "from", target: "to" })
+      .editGraphData({ definition: { directed: true } }),
     chart().createCanvas().createData({ id: "hierarchyRows", values: [{ id: "root", parent: null, value: 3 }, { id: "a", parent: "root", value: 3 }] })
       .createHierarchyData({ id: "hierarchy", key: "id", parent: "parent", value: "value" })
       .layoutHierarchy({ id: "tree-layout", method: "tree", options: { nodeSize: [20, 10], siblingGap: 10, depthGap: 20, orientation: "vertical" } })

@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 901_000; // Embedded font APIs and runnable font tutorial: 900,154 bytes.
+export const SEARCH_INDEX_MAX_BYTES = 904_000; // Fonts with observed graph and outline documentation: 903,709 bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

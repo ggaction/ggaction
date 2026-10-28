@@ -27,7 +27,7 @@ const analysisChartEditorNames = new Set([
 
 const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot", "createLayerPlot"]);
 const coreH3Names = new Set([
-  "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "removeResource",
+  "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "removeResource",
   "applyTextMetrics",
   "removeTextMetrics",
   "reviseData",
@@ -144,6 +144,8 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "createGraphData",
+  "editGraphData",
   "filterData",
   "filterMarks",
   "createLookupData",

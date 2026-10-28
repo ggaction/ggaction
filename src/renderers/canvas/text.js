@@ -1,9 +1,10 @@
+import { drawCanvasOutline } from "./outline.js";
 import { applyCanvasFill } from "./fill.js";
 import { applyCanvasTextPattern } from "./textPaint.js";
 import { requireFiniteProperty, requireStringProperty } from "./validation.js";
 import { validateConcreteGraphicProperties, validateConcreteGraphicValue } from
   "../../grammar/schemas/concreteGraphic.js";
-import { normalizeRendererFontWeight } from "../text.js";
+import { normalizeRendererFontWeight, rendererFontFamily } from "../text.js";
 import { fontRenderKey } from "../fonts.js";
 
 function drawText(context, child, collectionId, { resolveFontFamily, fontAliases, textPaint } = {}) {
@@ -80,7 +81,7 @@ function drawText(context, child, collectionId, { resolveFontFamily, fontAliases
   try {
     context.globalAlpha = opacity;
     const rendererFontWeight = normalizeRendererFontWeight(fontWeight);
-    context.font = `${properties.fontStyle === "italic" ? "italic " : ""}${rendererFontWeight} ${fontSize}px ${alias === undefined ? resolveFontFamily?.(fontFamily) ?? fontFamily : `"${alias}"`}`;
+    context.font = `${properties.fontStyle === "italic" ? "italic " : ""}${rendererFontWeight} ${fontSize}px ${alias === undefined ? (resolveFontFamily ?? rendererFontFamily)(fontFamily) : `"${alias}"`}`;
     context.textAlign = textAlign;
     context.textBaseline = textBaseline;
     context.translate(x, y);
@@ -89,6 +90,10 @@ function drawText(context, child, collectionId, { resolveFontFamily, fontAliases
     const localBounds = bounds && { left: bounds.left - x, right: bounds.right - x, top: bounds.top - y, bottom: bounds.bottom - y };
     if (fill?.type === "pattern" || fill?.type === "radial-gradient") applyCanvasTextPattern(context, fill, bounds, properties, graphicId, textPaint);
     else applyCanvasFill(context, fill, localBounds, graphicId);
+    drawCanvasOutline(context, properties, () => {
+      if (properties.lines === undefined) context.strokeText(text, 0, 0);
+      else for (const line of properties.lines) context.strokeText(line.text, line.x, line.y);
+    });
     if (properties.lines === undefined) context.fillText(text, 0, 0);
     else for (const line of properties.lines) context.fillText(line.text, line.x, line.y);
   } finally {

@@ -49,8 +49,10 @@ Evidence: `test/unit/core/action.test.js`, `test/unit/grammar/expression-validat
 `resource[persistent-selection:id]`는 complete resource assignment와 removal을 지원한다.
 resource의 kind+id는 path와 같아야 하고 생성 revision은 0, 교체는 이전 revision+1이다.
 `algorithmVersion: "1"`, ownership, typed inputs, closed options/result, provenance를 검증한다.
-현재 지원 kind는 persistent-selection뿐이다. Options는 predicate 또는 logicalDataId+rowKeys이며
-result는 빈 object다. 정확한 stored shape는 `PersistentSelectionResource` declaration이 소유한다.
+지원 kind는 constructor에 등록된 built-in resource handler가 검증한다. 정확한 stored shape는
+각 domain의 current contract와 declaration이 소유한다. Persistent selection의 options는
+predicate 또는 logicalDataId+rowKeys이며 result는 빈 object다. 관측 graph의 입력 역할·model·provenance는
+[GRAPHS.md](GRAPHS.md)가 소유한다.
 입력 revision 오류·cycle·중복 ID는 원자적으로 거부한다. 기존 dependent resource와 selection consumer의
 revision ref를 같은 transaction에서 갱신한다. remove는 live consumer가 있으면 거부한다.
 자동 graphical materialization은 하지 않는다. Evidence: `test/unit/core/resource-state.test.js`.
@@ -259,3 +261,7 @@ semantic origin이나 기본값을 추론하지 않는다. Text의 구조화된 
 finite ordered `{left,right,top,bottom}`이며 회전 전 text anchor와 동일 frame이다. Renderer는 이를
 소비하고 native glyph 자체를 그대로 그린다. 기존 string fill은 fillBounds가 필요 없다. 모든 새 값은
 editable/graphic codec에서 같은 schema로 검증된다. Shape geometry나 row lineage는 paint 때문에 바뀌지 않는다.
+
+### Concrete pre-fill outlines
+
+Circle, Rect, Path and Text concrete properties accept the immutable closed `outline:{color,width}` defined in [Marks](MARKS.md#pre-fill-outlines-and-halos). Collections may supply it to compatible children. Concrete false is invalid; removal deletes the property. The outline owns the rendered edge while retaining ordinary stroke properties for restoration. Shared bounds include half the width and existing cap/join/miter rules; renderer opacity applies to the complete glyph once. Text permits the same lineCap/lineJoin/miterLimit details. Line primitives reject outline.

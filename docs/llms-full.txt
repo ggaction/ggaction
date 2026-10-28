@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:4a146ea548f6141c3530e8accf2570fb853ce1f0de1c06fc2a925052b25fb651. Status: development. Runtime source: ad538d08d195a2d9aac4e29a130149a4c5227bf0. Release baseline: v0.0.13.
+Contract: sha256:979c2a020d7c324c2a7269eb223fb2b42a172a1a387446ff681c797b788cb954. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -213,11 +213,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -652,15 +652,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/ad538d08d195a2d9aac4e29a130149a4c5227bf0/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-theme/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -805,7 +805,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -823,7 +823,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/ad538d08d195a2d9aac4e29a130149a4c5227bf0/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-theme/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -936,7 +936,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/ad538d08d195a2d9aac4e29a130149a4c5227bf0/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-theme/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1106,7 +1106,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/ad538d08d195a2d9aac4e29a130149a4c5227bf0/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-theme/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1328,15 +1328,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/ad538d08d195a2d9aac4e29a130149a4c5227bf0/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-theme/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1472,7 +1472,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1486,15 +1486,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/ad538d08d195a2d9aac4e29a130149a4c5227bf0/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-theme/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1592,7 +1592,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1606,15 +1606,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/ad538d08d195a2d9aac4e29a130149a4c5227bf0/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-theme/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1723,7 +1723,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1739,15 +1739,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/ad538d08d195a2d9aac4e29a130149a4c5227bf0/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-theme/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1872,7 +1872,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1947,7 +1947,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1957,15 +1957,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/ad538d08d195a2d9aac4e29a130149a4c5227bf0/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-theme/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2090,7 +2090,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2123,7 +2123,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2134,8 +2134,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2231,15 +2231,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/ad538d08d195a2d9aac4e29a130149a4c5227bf0/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-theme/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2336,15 +2336,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/ad538d08d195a2d9aac4e29a130149a4c5227bf0/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-theme/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2450,8 +2450,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2460,7 +2460,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/ad538d08d195a2d9aac4e29a130149a4c5227bf0/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-theme/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2760,7 +2760,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -5053,6 +5053,65 @@ The most recently created dataset becomes the default for `createPointMark`,
 `createLineMark`, or `createBarMark`. Creating data records semantic state only
 and produces no graphics.
 
+## Observed graph data {#observed-graph-data}
+
+`createGraphData({ id, nodes, edges, nodeKey, source, target, edgeKey?, weight?,
+attributes?, directed?, selfLoops?, maxNodes?, maxEdges? })` is a Full
+chart-authoring action. It stores a graph from two explicitly selected,
+materialized tables. It creates no graphics.
+
+> **Executable complete.** Imports and both source tables are included. This data-only example creates a semantic graph and no Canvas.
+
+```javascript
+import { chart } from "ggaction";
+
+const graph = chart()
+  .createData({ id: "nodes", values: [{ name: "A" }, { name: "B" }] })
+  .createData({ id: "edges", values: [{ from: "A", to: "B", cost: 0 }] })
+  .createGraphData({
+    id: "network", nodes: "nodes", edges: "edges",
+    nodeKey: "name", source: "from", target: "to", weight: "cost"
+  });
+
+const directed = graph.editGraphData({
+  target: "network", definition: { directed: true }
+});
+console.log(directed.semanticSpec.resources.find(resource =>
+  resource.kind === "graph" && resource.id === "network"
+).result.model.edges[0].weight); // 0
+```
+
+`nodeKey`, `source`, `target`, and optional `edgeKey` each select one field or
+an ordered array of 1–64 distinct fields. Keys retain their types: the string
+`"1"` and number `1` identify different nodes. Node keys must be unique, and
+every edge endpoint must match an existing node. Explicit edge keys must also
+be unique. Without `edgeKey`, parallel edges retain identities derived from
+the edge table's persisted row keys, including across row reordering.
+
+`weight` selects one finite numeric field; omission assigns 1. Zero and negative
+observed weights are retained. `attributes` explicitly selects node fields to
+copy, defaulting to `[]`. `directed` and `selfLoops` default to false. A self
+edge requires `selfLoops: true`. `maxNodes` and `maxEdges` default to 10,000;
+both must be positive safe integers, and the shared work limit also applies.
+Empty node and edge tables are valid. The same table may supply both roles.
+
+`editGraphData({ target?, nodes?, edges?, definition? })` revises an observed
+graph. Its `target` selects the graph; `definition.target` changes the edge's
+destination field. Omitted inputs and definition fields preserve their current
+values. A nonempty patch is required, and explicit `undefined`, unknown options,
+missing endpoints, and invalid weights fail without changing the original
+program. Every successful explicit edit increments the graph revision.
+Omitting `target` uses the current eligible graph, then a unique eligible graph;
+an ambiguous choice requires an explicit ID.
+
+Creation is local to a unit because its `target` names an endpoint field. Create
+graphs in their child units before composing charts. Editing supports the
+standard [scoped targets](./api/composition/editing/#target-one-view-one-mark-or-several-marks). Source data revisions
+rebuild each affected graph once, updating exact input references and row
+provenance. A referenced source cannot be removed. Editable snapshots retain
+the graph model and validate its structure and source bindings on restoration.
+These actions and graph snapshots require the Full entry.
+
 ## Prepared data updates {#prepared-data-updates}
 
 `prepareDataUpdate(program, request, host)` is an asynchronous chart-authoring
@@ -6002,7 +6061,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -9866,11 +9925,12 @@ the optional native backend with `npm install ggaction @napi-rs/canvas`.
 Importing the PNG/PDF entry works without the backend; calling it then reports
 the required installation command. No dependency is installed automatically.
 
-Node PNG/PDF keep the requested font families first and append installed common
-CJK, Unicode, and emoji fallback families for missing glyphs. Text and layout
-remain unchanged; fonts are never downloaded. Install an appropriate font on the
-export host for the scripts you use, or specify your own ordered font-family list.
-Browser Canvas and SVG use the browser's font resolution.
+Canvas, PNG, and PDF keep the requested font families first and share one ordered
+list of common CJK, Unicode, and emoji fallback families. The drawing host skips
+unavailable families. Exact embedded font bindings use only their prepared alias.
+Text and layout remain unchanged; fonts are never downloaded. Install an
+appropriate font on the drawing host for the scripts you use, or specify your own
+ordered font-family list. SVG uses the browser's font resolution.
 
 ## At a glance
 
@@ -10531,7 +10591,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -10597,7 +10657,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -10999,7 +11059,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -11597,7 +11657,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -12532,6 +12592,44 @@ receive opacity together; PDF can contain a glyph image in this case. Closed-sha
 native PDF vector shading. PNG `pixelRatio` controls texture resolution as well
 as output pixels. Excessively dense patterns or large cumulative texture work
 fail before drawing under the shared output limits.
+
+## Outlines and text halos
+
+Point, Bar, Rect, Area, Arc, and Text create/edit options accept
+`outline: { color, width }`. White produces a halo. The outline follows the shape
+or actual letters and is painted before the fill. Attached labels and annotations
+accept the same Text option.
+
+> **Executable complete.** Run this complete ES module with ggaction installed; the inline row supplies the position and label fields.
+
+```javascript
+import { chart } from "ggaction";
+const program = chart()
+  .createCanvas({ width: 320, height: 200, margin: 40 })
+  .createData({ values: [{ x: 1, y: 2, label: "North" }] })
+  .createTextMark({ outline: { color: "white", width: 8 }, fontSize: 24 })
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .encodeText({ field: "label" });
+const withoutHalo = program.editTextMark({ outline: false });
+```
+
+Both color and width are required. Width is a finite non-negative number in logical
+pixels; zero keeps the option but draws no edge. Colors use the pattern/radial color
+syntax above. An outline object replaces the complete previous outline. Omitted edit
+options preserve it; `false` removes it. Null and partial objects are errors.
+
+An active outline controls the visible edge. Removing it restores any previously
+authored or encoded stroke. Supplying both an active outline and an explicit stroke
+color in one call is an error. `lineCap`, `lineJoin`, and `miterLimit` control the same
+contour, including Text outlines. Temporary selection stroke highlights override
+outlines until the highlight is removed. Automatic fill/shape legend samples follow
+the mark outline.
+
+Opacity applies once to the combined outline and fill. Canvas, PNG, and PDF may
+isolate a partly transparent glyph as an image; opaque outlines and SVG Text retain
+vector output. Text requires native `strokeText` support. Outline bounds participate
+in spacing and Point packing, while selection still addresses the original data item.
 
 ## Stroke caps, joins, and rounded rectangles
 
@@ -17834,6 +17932,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFoldData`](./reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
 | [`createFontResource`](./reference/actions/charts-data/#createfontresource) | H3 | user-facing | core |
 | [`createGradientPlot`](./reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
+| [`createGraphData`](./reference/actions/charts-data/#creategraphdata) | H2 | user-facing | core |
 | [`createGraphics`](./reference/actions/extension/#creategraphics) | H4 | primitive | primitives |
 | [`createGrid`](./reference/actions/guides/#creategrid) | H3 | user-facing | grid |
 | [`createGuides`](./reference/actions/guides/#createguides) | H3 | user-facing | legend_and_title |
@@ -17952,6 +18051,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFlattenData`](./reference/actions/statistics/#editflattendata) | H1, H3 | user-facing | statistics |
 | [`editFoldData`](./reference/actions/statistics/#editfolddata) | H1, H3 | user-facing | statistics |
 | [`editGradientPlot`](./reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
+| [`editGraphData`](./reference/actions/charts-data/#editgraphdata) | H3 | user-facing | core |
 | [`editGraphics`](./reference/actions/extension/#editgraphics) | H4 | primitive | primitives |
 | [`editGrid`](./reference/actions/guides/#editgrid) | H3 | user-facing | grid |
 | [`editHierarchyData`](./reference/actions/charts-data/#edithierarchydata) | H2 | user-facing | core |
@@ -18666,6 +18766,79 @@ Create an immutable named dataset using a field filter or a strict boolean expre
 The source defaults to current data. `where` uses the closed v2 AST and excludes all field
 filter options. Parameter edits revise dependent filters and their chart resources.
 [Data](./api/data/)
+
+## `createGraphData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createGraphData(options: CreateGraphDataOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateGraphDataOptions`](./reference/types/#type-creategraphdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `nodes` | Required | `string` |
+| `edges` | Required | `string` |
+| `nodeKey` | Required | `GraphKeyField` |
+| `source` | Required | `GraphKeyField` |
+| `target` | Required | `GraphKeyField` |
+| `edgeKey` | Optional / branch-dependent | `GraphKeyField \| undefined` |
+| `weight` | Optional / branch-dependent | `string \| undefined` |
+| `attributes` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `directed` | Optional / branch-dependent | `boolean \| undefined` |
+| `selfLoops` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+| `maxEdges` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGraphData({ id, nodes, edges, nodeKey, source, target, edgeKey?, weight?, attributes?, directed?, selfLoops?, maxNodes?, maxEdges? })
+```
+
+Store a graph from explicit node and edge tables, preserving typed endpoint keys
+and parallel-edge identity. See [observed graph data](./api/data/source-and-derived/#observed-graph-data).
+
+## `editGraphData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditGraphDataOptions`](./reference/types/#type-editgraphdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `nodes` | Optional / branch-dependent | `string \| undefined` |
+| `edges` | Optional / branch-dependent | `string \| undefined` |
+| `definition` | Optional / branch-dependent | `Partial<ObservedGraphDefinition> \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGraphData({ target?, nodes?, edges?, definition? })
+```
+
+Revise an existing observed graph. The graph ID is `target`; the edge endpoint
+column belongs in `definition.target`. See [observed graph data](./api/data/source-and-derived/#observed-graph-data).
 
 ## `createParameter`
 
@@ -22458,10 +22631,10 @@ Each declared action has an exact signature and its own stable link. Option tabl
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -22478,6 +22651,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `shape` | Optional / branch-dependent | `PointShape \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -22486,7 +22660,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createPointMark({ clip?, id?, data?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createPointMark({ clip?, id?, data?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a point mark using fourteen named shapes or polygons with area/radius normalization.
@@ -22571,6 +22745,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
@@ -22702,6 +22877,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `cornerRadiusBottomLeft` | Optional / branch-dependent | `number \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -22746,6 +22922,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
@@ -22754,6 +22933,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
@@ -22923,12 +23103,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
@@ -23009,6 +23193,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `text` | Optional / branch-dependent | `unknown` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
@@ -23018,12 +23203,15 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `dx` | Optional / branch-dependent | `number \| undefined` |
 | `dy` | Optional / branch-dependent | `number \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createTextMark({ clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ clip?, id?, data?, source?, text?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -23065,12 +23253,16 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `textOverrides` | Optional / branch-dependent | `"auto" \| readonly TextOverride[] \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `lineHeight` | Optional / branch-dependent | `number \| undefined` |
 | `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
 | `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `fontFamily` | Optional / branch-dependent | `string \| undefined` |
@@ -23084,7 +23276,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editTextMark({ clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
+editTextMark({ clip?, target?, inheritColor?, lineHeight?, blockAlign?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
 ```
 
 Edit text typography and graphical offsets without changing its semantic
@@ -23181,10 +23373,10 @@ binding clears it. Domains and tick values are already normalized timestamps.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`PointShape`](./reference/types/#type-pointshape) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -23200,6 +23392,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `shape` | Optional / branch-dependent | `PointShape \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23207,7 +23400,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editPointMark({ clip?, target?, missing?, shape?, fill?, opacity?, stroke?, strokeWidth? })
+editPointMark({ clip?, target?, missing?, shape?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
@@ -23506,10 +23699,10 @@ concrete path commands without changing field encodings. [Marks](./api/marks/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -23531,6 +23724,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `orientation` | Optional / branch-dependent | `"horizontal" \| "vertical" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23539,7 +23733,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createBarMark({ clip?, id?, data?, orientation?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createBarMark({ clip?, id?, data?, orientation?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic bar mark and empty rect collection.
@@ -23557,10 +23751,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "multiply" | "screen" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "multiply" | "screen" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`FilledMarkStroke`](./reference/types/#type-filledmarkstroke).
 
  Declared options
 
@@ -23581,6 +23775,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `blend` | Optional / branch-dependent | `"difference" \| "multiply" \| "normal" \| "screen" \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23588,7 +23783,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editBarMark({ clip?, target?, blend?, fill?, opacity?, stroke?, strokeWidth? })
+editBarMark({ clip?, target?, blend?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit whole-bar appearance and rematerialize every concrete rectangle.
@@ -23611,10 +23806,10 @@ Omitted corners fall back to the global radius or zero; edits retain unspecified
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
 
  Declared options
 
@@ -23629,6 +23824,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23639,7 +23835,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createAreaMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
+createAreaMark({ clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
@@ -23735,10 +23931,10 @@ accepts the same styles. [Rule marks](./api/marks/rule/)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`CurveInterpolation`](./reference/types/#type-curveinterpolation).
 
  Declared options
 
@@ -23752,6 +23948,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23761,7 +23958,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editAreaMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
+editAreaMark({ clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 ```
 
 Edit constant area appearance. `stroke: false` removes an existing outline.
@@ -23774,10 +23971,10 @@ Edit constant area appearance. `stroke: false` removes an existing outline.
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
+createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`FillPaint`](./reference/types/#type-fillpaint).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline).
 
  Declared options
 
@@ -23793,6 +23990,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `innerRadius` | Optional / branch-dependent | `ArcInnerRadius \| undefined` |
 | `padAngle` | Optional / branch-dependent | `number \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23801,7 +23999,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic arc mark and empty closed-path collection. Direct
@@ -23816,10 +24014,10 @@ radial sectors. [Marks](./api/marks/line-area/#arc-marks)
 **Availability:** Available by v0.0.13. See [release compatibility](./version/).
 
 ```typescript
-editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
+editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
 ```
 
-Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`FillPaint`](./reference/types/#type-fillpaint).
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`ArcInnerRadius`](./reference/types/#type-arcinnerradius) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline).
 
  Declared options
 
@@ -23834,6 +24032,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `innerRadius` | Optional / branch-dependent | `ArcInnerRadius \| undefined` |
 | `padAngle` | Optional / branch-dependent | `number \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23841,7 +24040,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? })
+editArcMark({ target?, innerRadius?, padAngle?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit arc geometry or appearance and rematerialize complete sector paths.
@@ -23871,6 +24070,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23887,7 +24087,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createRectMark({ clip?, id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+createRectMark({ clip?, id?, data?, fill?, outline?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
 Create a semantic rect mark and empty rect collection. Two discrete x/y bands
@@ -23930,6 +24130,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `clip` | Optional / branch-dependent | `boolean \| undefined` |
 | `missing` | Optional / branch-dependent | `"error" \| "skip" \| undefined` |
 | `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |
 | `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
 | `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
@@ -23937,7 +24138,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editRectMark({ clip?, target?, fill?, opacity?, stroke?, strokeWidth? })
+editRectMark({ clip?, target?, fill?, outline?, opacity?, stroke?, strokeWidth? })
 ```
 
 Edit rect appearance and rematerialize complete cells. Constant fill conflicts
@@ -30948,6 +31149,7 @@ export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderi
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 export type { HierarchyValueMode, HierarchySource, CreateHierarchyDataOptions, EditHierarchyDataOptions, HierarchyOrder, HierarchyTreeOptions, HierarchyTreemapOptions, LayoutHierarchyOptions, EditLayoutOptions, RemoveStoredResourceOptions, HierarchyNode, HierarchyModel, HierarchyResource, HierarchyRectangle, HierarchyTreeResult, HierarchyPartitionResult, HierarchyTreemapResult, HierarchyLayoutResource, HierarchyNodeTarget, HierarchyBodyPaint, HierarchyNodePaint, HierarchyLabelPaint, HierarchyLabelsOptions, TreePlotOptions, EditTreePlotOptions, TreemapPlotOptions, EditTreemapPlotOptions } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
+export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
@@ -31261,7 +31463,7 @@ export type {
   EditStrokeDashScaleOptions,
   EditSemanticOptions,
   FieldType,
-  FillPaint,
+  FillPaint, MarkOutline,
   PatternPaint,
   RadialGradientPaint,
   FacetCompositionSpec,
@@ -31474,7 +31676,7 @@ export function prepareFontRendering(scene: CanvasTransitionScene, host: FontRen
 [Complete declaration and relative dependencies](./types/basic.d.ts)
 
 ```typescript
-export type { FillPaint, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
+export type { FillPaint, MarkOutline, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
@@ -31647,7 +31849,7 @@ import { ChartProgram } from "./program.js";
 export { ChartProgram };
 export type {
   InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
-  FillPaint,
+  FillPaint, MarkOutline,
   PatternPaint,
   RadialGradientPaint,
   LinearGradientPaint,
@@ -31687,6 +31889,7 @@ export function action<TOptions extends ActionOptions = ActionOptions>(
 export function registerExtension<
   TActions extends Readonly<Record<string, RegisteredExtensionAction>>
 >(definition: ExtensionDefinition<TActions>): void;
+export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 ```
 
 #### `ggaction/png`
@@ -32052,6 +32255,8 @@ interface ChartProgramActions {
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createGraphData(options: CreateGraphDataOptions): ChartProgram;
+  editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
@@ -32089,8 +32294,8 @@ interface ChartProgramActions {
   editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
   editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
   editBin2DData(options: TargetedOptions<EditBin2DDataOptions>): ChartProgram;
-  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   createTickMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   editTickMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   jitterPoints(options: TargetedOptions<JitterPointsOptions>): ChartProgram;
@@ -32099,11 +32304,11 @@ interface ChartProgramActions {
   removePointPacking(options?: TargetedOptions<RemovePointPackingOptions>): ChartProgram;
   createLineMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
   editLineMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
-  createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "multiply" | "screen" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
-  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
-  editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
+  createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "multiply" | "screen" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
+  editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
   createRectMark(options?: TargetedOptions<RectMarkOptions>): ChartProgram;
   editRectMark(options: TargetedOptions<EditRectMarkOptions>): ChartProgram;
   createRuleMark(options?: TargetedOptions<{ clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions>): ChartProgram;
@@ -32126,7 +32331,7 @@ interface ChartProgramActions {
   editTextMark(options: TargetedOptions<EditTextMarkOptions>): ChartProgram;
   layoutLabels(options?: TargetedOptions<LabelLayoutOptions>): ChartProgram;
   removeLabelLayout(options?: TargetedOptions<RemoveLabelLayoutOptions>): ChartProgram;
-  editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+  editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
   encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
   encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
   encodeTheta(options: TargetedOptions<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>): ChartProgram;
@@ -34564,6 +34769,18 @@ export interface CreateECDFPlotOptions {
 
 Related types: [`ECDFOutputFields`](./reference/types/#type-ecdfoutputfields) · [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`EndpointLabelOptions`](./reference/types/#type-endpointlabeloptions) · [`CartesianPathGuideOptions`](./reference/types/#type-cartesianpathguideoptions).
 
+### `CreateGraphDataOptions` {#type-creategraphdataoptions}
+
+ Expand CreateGraphDataOptions
+
+```typescript
+export interface CreateGraphDataOptions extends ObservedGraphDefinition {
+  readonly id: string; readonly nodes: string; readonly edges: string;
+}
+```
+
+Related types: [`ObservedGraphDefinition`](./reference/types/#type-observedgraphdefinition).
+
 ### `CreateGridOptions` {#type-creategridoptions}
 
  Expand CreateGridOptions
@@ -36999,6 +37216,19 @@ export interface EditGradientPlotOptions {
 
 Related types: [`GradientPlotPositionChannel`](./reference/types/#type-gradientplotpositionchannel) · [`GradientPlotDensityOptions`](./reference/types/#type-gradientplotdensityoptions) · [`GradientPlotAppearanceOptions`](./reference/types/#type-gradientplotappearanceoptions) · [`GradientPlotCenterOptions`](./reference/types/#type-gradientplotcenteroptions).
 
+### `EditGraphDataOptions` {#type-editgraphdataoptions}
+
+ Expand EditGraphDataOptions
+
+```typescript
+export interface EditGraphDataOptions {
+  readonly target?: string; readonly nodes?: string; readonly edges?: string;
+  readonly definition?: Partial<ObservedGraphDefinition>;
+}
+```
+
+Related types: [`ObservedGraphDefinition`](./reference/types/#type-observedgraphdefinition).
+
 ### `EditGraphicsOptions` {#type-editgraphicsoptions}
 
  Expand EditGraphicsOptions
@@ -38815,6 +39045,14 @@ export type GradientPlotPositionChannel = BoxPlotPositionChannel;
 
 Related types: [`BoxPlotPositionChannel`](./reference/types/#type-boxplotpositionchannel).
 
+### `GraphKeyField` {#type-graphkeyfield}
+
+ Expand GraphKeyField
+
+```typescript
+export type GraphKeyField = string | readonly string[];
+```
+
 ### `GraphicClip` {#type-graphicclip}
 
  Expand GraphicClip
@@ -40043,6 +40281,14 @@ export type MarkLabelSelectionOptions =
 
 Related types: [`MarkSelector`](./reference/types/#type-markselector).
 
+### `MarkOutline` {#type-markoutline}
+
+ Expand MarkOutline
+
+```typescript
+export interface MarkOutline { color: string; width: number; }
+```
+
 ### `MarkSelector` {#type-markselector}
 
  Expand MarkSelector
@@ -40413,6 +40659,27 @@ export type NumericFormatString =
 ```
 
 Related types: [`ValueFormatPrecision`](./reference/types/#type-valueformatprecision).
+
+### `ObservedGraphDefinition` {#type-observedgraphdefinition}
+
+ Expand ObservedGraphDefinition
+
+```typescript
+export interface ObservedGraphDefinition {
+  readonly nodeKey: GraphKeyField;
+  readonly source: GraphKeyField;
+  readonly target: GraphKeyField;
+  readonly edgeKey?: GraphKeyField;
+  readonly weight?: string;
+  readonly attributes?: readonly string[];
+  readonly directed?: boolean;
+  readonly selfLoops?: boolean;
+  readonly maxNodes?: number;
+  readonly maxEdges?: number;
+}
+```
+
+Related types: [`GraphKeyField`](./reference/types/#type-graphkeyfield).
 
 ### `OffsetEncodingOptions` {#type-offsetencodingoptions}
 
@@ -41604,6 +41871,7 @@ export interface RadialGradientPaint {
   readonly radius: number;
   readonly stops: readonly [LinearGradientStop, LinearGradientStop, ...LinearGradientStop[]];
 }
+/** Stroke painted before the fill; white produces a halo. */
 ```
 
 Related types: [`LinearGradientPoint`](./reference/types/#type-lineargradientpoint) · [`LinearGradientStop`](./reference/types/#type-lineargradientstop).
@@ -41838,13 +42106,14 @@ export interface RectMarkOptions extends RectStyleDetails {
   data?: string;
   missing?: "error" | "skip";
   fill?: FillPaint;
+  outline?: MarkOutline | false;
   opacity?: number;
   stroke?: string | false;
   strokeWidth?: number;
 }
 ```
 
-Related types: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint).
+Related types: [`RectStyleDetails`](./reference/types/#type-rectstyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline).
 
 ### `RectStyleDetails` {#type-rectstyledetails}
 
@@ -42957,7 +43226,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
  Expand StoredResourceKind
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "font";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font";
 ```
 
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}
@@ -43225,7 +43494,7 @@ Related types: [`ValueFormat`](./reference/types/#type-valueformat).
  Expand TextMarkOptions
 
 ```typescript
-export interface TextMarkOptions {
+export interface TextMarkOptions extends StrokeStyleDetails {
   clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;
@@ -43240,6 +43509,7 @@ export interface TextMarkOptions {
   text?: unknown;
   missing?: "error" | "skip";
   fill?: FillPaint;
+  outline?: MarkOutline | false;
   opacity?: number;
   fontSize?: number;
   fontFamily?: string;
@@ -43252,7 +43522,7 @@ export interface TextMarkOptions {
 }
 ```
 
-Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`RotationInput`](./reference/types/#type-rotationinput).
+Related types: [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`RotationInput`](./reference/types/#type-rotationinput).
 
 ### `TextMeasurement` {#type-textmeasurement}
 
@@ -44407,9 +44677,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -44475,12 +44745,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -45592,7 +45862,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -45645,7 +45915,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -45891,7 +46161,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -45943,7 +46213,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/repeat-charts).
 
 ## Space between plots
 
@@ -46618,7 +46888,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -47515,11 +47785,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:4a146ea548f6141c3530e8accf2570fb853ce1f0de1c06fc2a925052b25fb651` |
-| Example and dataset source | `ad538d08d195a2d9aac4e29a130149a4c5227bf0` |
-| Runtime source commit | `ad538d08d195a2d9aac4e29a130149a4c5227bf0` |
+| Contract fingerprint | `sha256:979c2a020d7c324c2a7269eb223fb2b42a172a1a387446ff681c797b788cb954` |
+| Example and dataset source | `codex/roadmap9-theme` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 319 |
+| Declared actions here | 321 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -48023,12 +48293,12 @@ An explicit Cartesian `labelMap` entry with `label: ""` hides only that displaye
 # Place a retained image
 
 Prepare image bytes explicitly, then use one image mark to control its fit,
-alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/image-assets/)
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/image-assets/)
 uses one pinned SVG asset for six placements and retains the bytes for offline export.
 
 ## Prepare and place
 
-The canonical [example program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/image-assets/program.js) loads its
+The canonical [example program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/image-assets/program.js) loads its
 inline asset through `prepareImageResource` and applies the returned handle to the
 same immutable program. Its application-owned decoder reports the source dimensions.
 The synchronous `createImageResource` action stores the validated bytes. Then
@@ -48129,13 +48399,13 @@ render(program, document.querySelector("#chart").getContext("2d"), {images});
 # Prepare fonts before text layout
 
 Keep font loading explicit, measure with the loaded bytes, and save the final
-text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/font-assets/)
+text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/font-assets/)
 uses licensed Korean and monochrome emoji subsets with fixed content hashes.
 It includes a combining accent and a wrapped Korean title.
 
 ## Load, measure, apply
 
-The canonical [program](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/font-assets/program.js)
+The canonical [program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/font-assets/program.js)
 first creates a title using the requested font families. Its initial estimated
 layout is a usable immutable program while loading runs. For each named font,
 `prepareFontResource` asks the application to load and decode bytes and verifies
@@ -48146,7 +48416,7 @@ original receiver using the current request token.
 measure every width needed by the existing layout. `applyTextMetrics` commits the
 exact profile and rematerializes the title. Widths that have not been measured
 cannot silently use an estimate. A late result for an edited receiver is stale.
-The [host adapter](https://github.com/ggaction/ggaction/blob/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/font-assets/host.js)
+The [host adapter](https://github.com/ggaction/ggaction/blob/codex/roadmap9-theme/examples/font-assets/host.js)
 uses browser `FontFace` and Canvas measurement, or a native Canvas in Node.
 
 ## Draw the prepared text
@@ -48305,7 +48575,7 @@ A hierarchy describes parent-child meaning. A layout computes positions, and a p
 
 ## Run the maintained examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/ad538d08d195a2d9aac4e29a130149a4c5227bf0/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-theme/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 

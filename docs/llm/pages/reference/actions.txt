@@ -54,6 +54,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFoldData`](../../../reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
 | [`createFontResource`](../../../reference/actions/charts-data/#createfontresource) | H3 | user-facing | core |
 | [`createGradientPlot`](../../../reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
+| [`createGraphData`](../../../reference/actions/charts-data/#creategraphdata) | H2 | user-facing | core |
 | [`createGraphics`](../../../reference/actions/extension/#creategraphics) | H4 | primitive | primitives |
 | [`createGrid`](../../../reference/actions/guides/#creategrid) | H3 | user-facing | grid |
 | [`createGuides`](../../../reference/actions/guides/#createguides) | H3 | user-facing | legend_and_title |
@@ -172,6 +173,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFlattenData`](../../../reference/actions/statistics/#editflattendata) | H1, H3 | user-facing | statistics |
 | [`editFoldData`](../../../reference/actions/statistics/#editfolddata) | H1, H3 | user-facing | statistics |
 | [`editGradientPlot`](../../../reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
+| [`editGraphData`](../../../reference/actions/charts-data/#editgraphdata) | H3 | user-facing | core |
 | [`editGraphics`](../../../reference/actions/extension/#editgraphics) | H4 | primitive | primitives |
 | [`editGrid`](../../../reference/actions/guides/#editgrid) | H3 | user-facing | grid |
 | [`editHierarchyData`](../../../reference/actions/charts-data/#edithierarchydata) | H2 | user-facing | core |

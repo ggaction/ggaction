@@ -2,6 +2,18 @@
   {
     "file": "api/appearance/mark-style.md",
     "block": 1,
+    "heading": "Outlines and text halos",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run this complete ES module with ggaction installed; the inline row supplies the position and label fields.",
+    "sha256": "99ee0fea80de0162bfb84d017210e2bcc3196cfc3e11434b8ca659611aa3bf79",
+    "executable": true
+  },
+  {
+    "file": "api/appearance/mark-style.md",
+    "block": 2,
     "heading": "Stroke caps, joins, and rounded rectangles",
     "mode": "fragment",
     "environment": "esm-context",
@@ -13,7 +25,7 @@
   },
   {
     "file": "api/appearance/mark-style.md",
-    "block": 2,
+    "block": 3,
     "heading": "Stroke color and Line/Rule appearance",
     "mode": "fragment",
     "environment": "esm-context",
@@ -25,7 +37,7 @@
   },
   {
     "file": "api/appearance/mark-style.md",
-    "block": 3,
+    "block": 4,
     "heading": "Stroke color and Line/Rule appearance",
     "mode": "fragment",
     "environment": "esm-context",
@@ -37,7 +49,7 @@
   },
   {
     "file": "api/appearance/mark-style.md",
-    "block": 4,
+    "block": 5,
     "heading": "`encodeBarWidth({ band?, pixels?, target? })`",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1413,6 +1425,22 @@
   {
     "file": "api/data/source-and-derived.md",
     "block": 2,
+    "heading": "Observed graph data {#observed-graph-data}",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"from\"",
+      "target: \"to\"",
+      "target: \"network\""
+    ],
+    "prerequisites": "Imports and both source tables are included. This data-only example creates a semantic graph and no Canvas.",
+    "sha256": "4621d7bed7384142f48eae7fbb2cbb9e8ee06dd90e6bc0bc7257ab05e01b313b",
+    "executable": true
+  },
+  {
+    "file": "api/data/source-and-derived.md",
+    "block": 3,
     "heading": "`createDerivedData({ id, source, transform })` {#create-derived-data}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1426,7 +1454,7 @@
   },
   {
     "file": "api/data/source-and-derived.md",
-    "block": 3,
+    "block": 4,
     "heading": "`createSortedData({ id, source?, sortBy })` {#create-sorted-data}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1438,7 +1466,7 @@
   },
   {
     "file": "api/data/source-and-derived.md",
-    "block": 4,
+    "block": 5,
     "heading": "`bindMarkData({ target, data })` {#bindmarkdata-target-data}",
     "mode": "fragment",
     "environment": "esm-context",

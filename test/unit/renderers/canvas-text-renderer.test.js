@@ -48,12 +48,13 @@ test("renders a rotated concrete text graphic", () => {
 
   assert.deepEqual(findCanvasCalls(context, "translate")[0].args, [12, 40]);
   assert.deepEqual(findCanvasCalls(context, "rotate")[0].args, [-Math.PI / 2]);
-  assert.deepEqual(findCanvasCalls(context, "fillText")[0], {
+  const { font, ...draw } = findCanvasCalls(context, "fillText")[0];
+  assert.match(font, /^600 12px sans-serif, /u);
+  assert.deepEqual(draw, {
     op: "fillText",
     args: ["Mileage", 0, 0],
     fillStyle: "#333333",
     globalAlpha: 1,
-    font: "600 12px sans-serif",
     textAlign: "center",
     textBaseline: "middle"
   });
@@ -113,7 +114,7 @@ test("normalizes numeric font weights before assigning the Canvas font", () => {
         textBaseline: "top"
       }
     });
-    assert.equal(findCanvasCalls(context, "fillText")[0].font, expected);
+    assert.ok(findCanvasCalls(context, "fillText")[0].font.startsWith(`${expected}, `));
   }
 });
 
@@ -212,7 +213,7 @@ test("Canvas renders italic font style and restores normal text independently", 
   drawTextGraphic(context, "italic", { properties: { ...properties, fontStyle: "italic" } });
   drawTextGraphic(context, "normal", { properties });
   const calls = findCanvasCalls(context, "fillText");
-  assert.equal(calls[0].font, "italic 400 12px sans-serif");
-  assert.equal(calls[1].font, "400 12px sans-serif");
+  assert.ok(calls[0].font.startsWith("italic 400 12px sans-serif, "));
+  assert.ok(calls[1].font.startsWith("400 12px sans-serif, "));
   assert.throws(() => drawTextGraphic(context, "invalid", { properties: { ...properties, fontStyle: "oblique" } }), /fontStyle/u);
 });

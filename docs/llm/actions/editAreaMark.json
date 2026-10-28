@@ -4,7 +4,7 @@
   "layer": "user-facing",
   "domain": "marks",
   "summary": "Edit constant area appearance.",
-  "signature": "editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
+  "signature": "editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }>): ChartProgram;",
   "intents": [
     "edit area mark",
     "edit",
@@ -91,6 +91,11 @@
       "type": "FillPaint | undefined"
     },
     {
+      "name": "outline",
+      "required": false,
+      "type": "false | MarkOutline | undefined"
+    },
+    {
       "name": "opacity",
       "required": false,
       "type": "number | undefined"
@@ -117,7 +122,7 @@
     }
   ],
   "callPatterns": [
-    "editAreaMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, fill?, opacity?, stroke? })"
+    "editAreaMark({ target?, lineCap?, lineJoin?, miterLimit?, clip?, fill?, outline?, opacity? })"
   ],
   "snippet": "program.editAreaMark({ lineCap: \"butt\" })",
   "errors": [],

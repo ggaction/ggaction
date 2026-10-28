@@ -56,6 +56,8 @@ interface ChartProgramActions {
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createGraphData(options: CreateGraphDataOptions): ChartProgram;
+  editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
@@ -93,8 +95,8 @@ interface ChartProgramActions {
   editCompleteData(options: TargetedOptions<EditCompleteDataOptions>): ChartProgram;
   editImputedData(options: TargetedOptions<EditImputedDataOptions>): ChartProgram;
   editBin2DData(options: TargetedOptions<EditBin2DDataOptions>): ChartProgram;
-  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createPointMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editPointMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; shape?: PointShape; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
   createTickMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   editTickMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; missing?: "error" | "skip"; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }>): ChartProgram;
   jitterPoints(options: TargetedOptions<JitterPointsOptions>): ChartProgram;
@@ -103,11 +105,11 @@ interface ChartProgramActions {
   removePointPacking(options?: TargetedOptions<RemovePointPackingOptions>): ChartProgram;
   createLineMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
   editLineMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; missing?: "error" | "break"; target?: string; strokeWidth?: number; curve?: CurveInterpolation; tension?: number; stroke?: string; opacity?: number; closed?: boolean; }>): ChartProgram;
-  createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "multiply" | "screen" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
-  createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
-  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
-  editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
+  createBarMark(options?: TargetedOptions<RectStyleDetails & { clip?: boolean; id?: string; data?: string; orientation?: "vertical" | "horizontal"; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  editBarMark(options: TargetedOptions<RectStyleDetails & { clip?: boolean; target?: string; blend?: "normal" | "multiply" | "screen" | "difference"; missing?: "error" | "skip"; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }>): ChartProgram;
+  createAreaMark(options?: TargetedOptions<StrokeStyleDetails & { clip?: boolean; id?: string; data?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+  createArcMark(options?: TargetedOptions<StrokeStyleDetails & { id?: string; data?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string; strokeWidth?: number; }>): ChartProgram;
+  editArcMark(options: TargetedOptions<StrokeStyleDetails & { target?: string; innerRadius?: ArcInnerRadius; padAngle?: number; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; }>): ChartProgram;
   createRectMark(options?: TargetedOptions<RectMarkOptions>): ChartProgram;
   editRectMark(options: TargetedOptions<EditRectMarkOptions>): ChartProgram;
   createRuleMark(options?: TargetedOptions<{ clip?: boolean; id?: string; data?: string; missing?: "error" | "skip" } & RuleStyleOptions>): ChartProgram;
@@ -130,7 +132,7 @@ interface ChartProgramActions {
   editTextMark(options: TargetedOptions<EditTextMarkOptions>): ChartProgram;
   layoutLabels(options?: TargetedOptions<LabelLayoutOptions>): ChartProgram;
   removeLabelLayout(options?: TargetedOptions<RemoveLabelLayoutOptions>): ChartProgram;
-  editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
+  editAreaMark(options: TargetedOptions<StrokeStyleDetails & { clip?: boolean; target?: string; fill?: FillPaint; outline?: MarkOutline | false; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }>): ChartProgram;
   encodeX(options: TargetedOptions<PositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<PositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
   encodeY(options: TargetedOptions<YPositionEncodingOptions | DatumPositionEncodingOptions | ConditionalEncodingOptions<YPositionEncodingOptions | DatumPositionEncodingOptions>>): ChartProgram;
   encodeTheta(options: TargetedOptions<ThetaEncodingOptions | ConditionalEncodingOptions<ThetaEncodingOptions>>): ChartProgram;
@@ -2568,6 +2570,18 @@ export interface CreateECDFPlotOptions {
 
 Related types: [`ECDFOutputFields`](../../../reference/types/#type-ecdfoutputfields) · [`LineCategoricalColorChannel`](../../../reference/types/#type-linecategoricalcolorchannel) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`EndpointLabelOptions`](../../../reference/types/#type-endpointlabeloptions) · [`CartesianPathGuideOptions`](../../../reference/types/#type-cartesianpathguideoptions).
 
+### `CreateGraphDataOptions` {#type-creategraphdataoptions}
+
+ Expand CreateGraphDataOptions
+
+```typescript
+export interface CreateGraphDataOptions extends ObservedGraphDefinition {
+  readonly id: string; readonly nodes: string; readonly edges: string;
+}
+```
+
+Related types: [`ObservedGraphDefinition`](../../../reference/types/#type-observedgraphdefinition).
+
 ### `CreateGridOptions` {#type-creategridoptions}
 
  Expand CreateGridOptions
@@ -5003,6 +5017,19 @@ export interface EditGradientPlotOptions {
 
 Related types: [`GradientPlotPositionChannel`](../../../reference/types/#type-gradientplotpositionchannel) · [`GradientPlotDensityOptions`](../../../reference/types/#type-gradientplotdensityoptions) · [`GradientPlotAppearanceOptions`](../../../reference/types/#type-gradientplotappearanceoptions) · [`GradientPlotCenterOptions`](../../../reference/types/#type-gradientplotcenteroptions).
 
+### `EditGraphDataOptions` {#type-editgraphdataoptions}
+
+ Expand EditGraphDataOptions
+
+```typescript
+export interface EditGraphDataOptions {
+  readonly target?: string; readonly nodes?: string; readonly edges?: string;
+  readonly definition?: Partial<ObservedGraphDefinition>;
+}
+```
+
+Related types: [`ObservedGraphDefinition`](../../../reference/types/#type-observedgraphdefinition).
+
 ### `EditGraphicsOptions` {#type-editgraphicsoptions}
 
  Expand EditGraphicsOptions
@@ -6819,6 +6846,14 @@ export type GradientPlotPositionChannel = BoxPlotPositionChannel;
 
 Related types: [`BoxPlotPositionChannel`](../../../reference/types/#type-boxplotpositionchannel).
 
+### `GraphKeyField` {#type-graphkeyfield}
+
+ Expand GraphKeyField
+
+```typescript
+export type GraphKeyField = string | readonly string[];
+```
+
 ### `GraphicClip` {#type-graphicclip}
 
  Expand GraphicClip
@@ -8047,6 +8082,14 @@ export type MarkLabelSelectionOptions =
 
 Related types: [`MarkSelector`](../../../reference/types/#type-markselector).
 
+### `MarkOutline` {#type-markoutline}
+
+ Expand MarkOutline
+
+```typescript
+export interface MarkOutline { color: string; width: number; }
+```
+
 ### `MarkSelector` {#type-markselector}
 
  Expand MarkSelector
@@ -8417,6 +8460,27 @@ export type NumericFormatString =
 ```
 
 Related types: [`ValueFormatPrecision`](../../../reference/types/#type-valueformatprecision).
+
+### `ObservedGraphDefinition` {#type-observedgraphdefinition}
+
+ Expand ObservedGraphDefinition
+
+```typescript
+export interface ObservedGraphDefinition {
+  readonly nodeKey: GraphKeyField;
+  readonly source: GraphKeyField;
+  readonly target: GraphKeyField;
+  readonly edgeKey?: GraphKeyField;
+  readonly weight?: string;
+  readonly attributes?: readonly string[];
+  readonly directed?: boolean;
+  readonly selfLoops?: boolean;
+  readonly maxNodes?: number;
+  readonly maxEdges?: number;
+}
+```
+
+Related types: [`GraphKeyField`](../../../reference/types/#type-graphkeyfield).
 
 ### `OffsetEncodingOptions` {#type-offsetencodingoptions}
 
@@ -9608,6 +9672,7 @@ export interface RadialGradientPaint {
   readonly radius: number;
   readonly stops: readonly [LinearGradientStop, LinearGradientStop, ...LinearGradientStop[]];
 }
+/** Stroke painted before the fill; white produces a halo. */
 ```
 
 Related types: [`LinearGradientPoint`](../../../reference/types/#type-lineargradientpoint) · [`LinearGradientStop`](../../../reference/types/#type-lineargradientstop).
@@ -9842,13 +9907,14 @@ export interface RectMarkOptions extends RectStyleDetails {
   data?: string;
   missing?: "error" | "skip";
   fill?: FillPaint;
+  outline?: MarkOutline | false;
   opacity?: number;
   stroke?: string | false;
   strokeWidth?: number;
 }
 ```
 
-Related types: [`RectStyleDetails`](../../../reference/types/#type-rectstyledetails) · [`FillPaint`](../../../reference/types/#type-fillpaint).
+Related types: [`RectStyleDetails`](../../../reference/types/#type-rectstyledetails) · [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MarkOutline`](../../../reference/types/#type-markoutline).
 
 ### `RectStyleDetails` {#type-rectstyledetails}
 
@@ -10961,7 +11027,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
  Expand StoredResourceKind
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "font";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font";
 ```
 
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}
@@ -11229,7 +11295,7 @@ Related types: [`ValueFormat`](../../../reference/types/#type-valueformat).
  Expand TextMarkOptions
 
 ```typescript
-export interface TextMarkOptions {
+export interface TextMarkOptions extends StrokeStyleDetails {
   clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;
@@ -11244,6 +11310,7 @@ export interface TextMarkOptions {
   text?: unknown;
   missing?: "error" | "skip";
   fill?: FillPaint;
+  outline?: MarkOutline | false;
   opacity?: number;
   fontSize?: number;
   fontFamily?: string;
@@ -11256,7 +11323,7 @@ export interface TextMarkOptions {
 }
 ```
 
-Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`RotationInput`](../../../reference/types/#type-rotationinput).
+Related types: [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MarkOutline`](../../../reference/types/#type-markoutline) · [`RotationInput`](../../../reference/types/#type-rotationinput).
 
 ### `TextMeasurement` {#type-textmeasurement}
 

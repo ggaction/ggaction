@@ -25,6 +25,34 @@ function collectDatasetReferences(value, references = new Map()) {
   return references;
 }
 
+function normalizeObservedOccurrences(value, references) {
+  if (value.kind !== "graph" || value.provenance?.origin !== "observed" ||
+      !value.options?.definition || Object.hasOwn(value.options.definition, "edgeKey")) return value;
+  const input = value.inputs?.[value.options.roles?.edges];
+  const dataset = input?.kind === "data" && references.get(datasetReferenceKey(input));
+  const model = value.result?.model;
+  if (!dataset || !Array.isArray(model?.edges) || !Array.isArray(model.adjacency)) return value;
+  const keys = new Map();
+  for (const edge of model.edges) {
+    const row = edge.sourceRows?.length === 1 ? edge.sourceRows[0] : undefined;
+    if (!Number.isInteger(row) || row < 0 || typeof dataset.rowKeys?.[row] !== "string") continue;
+    const occurrence = JSON.stringify([dataset.logicalId, dataset.rowKeys[row]]);
+    const allocated = JSON.stringify(["observed-occurrence", occurrence]);
+    if (edge.key !== allocated) continue;
+    const stableRow = dataset.keySpec?.mode === "generated" ? `row:${row}` : dataset.rowKeys[row];
+    keys.set(allocated, JSON.stringify(["observed-occurrence", JSON.stringify([dataset.id, stableRow])]));
+  }
+  if (keys.size === 0) return value;
+  const normalizeKey = key => keys.get(key) ?? key;
+  return { ...value, result: { ...value.result, model: { ...model,
+    edges: model.edges.map(edge => ({ ...edge, key: normalizeKey(edge.key) })),
+    adjacency: model.adjacency.map(node => ({ ...node,
+      incoming: Array.isArray(node.incoming) ? node.incoming.map(normalizeKey) : node.incoming,
+      outgoing: Array.isArray(node.outgoing) ? node.outgoing.map(normalizeKey) : node.outgoing
+    }))
+  } } };
+}
+
 // Independently authored programs have distinct allocation namespaces. Compare
 // their chart meaning and exact concrete draw state here; identity lifecycle has
 // separate assertions that deliberately retain all of these fields.
@@ -37,6 +65,7 @@ function normalizeAllocatedIdentity(value, index, references) {
     normalizeAllocatedIdentity(child, childIndex, references));
   if (value === null || typeof value !== "object") return value;
   if (value instanceof Date) return value;
+  value = normalizeObservedOccurrences(value, references);
   const dataset = isDataset(value);
   const dataReference = value.kind === "data" &&
     Object.keys(value).length === dataReferenceKeys.size &&

@@ -1,0 +1,5 @@
+export interface GraphEdge {
+  readonly key: string; readonly sourceKey: string; readonly targetKey: string;
+  readonly directed: boolean; readonly weight: number;
+  readonly origin: "observed"; readonly ruleId: null; readonly sourceRows: readonly number[];
+}

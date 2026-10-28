@@ -157,7 +157,14 @@ renderer는 다음 통합 경계다. 수치·검증·실측 package 경계는
 순수 adapter를 소유한다. 관측 parallel edge는 caller가 전달한 persisted row key 또는
 명시 edgeKey만 사용하며 행 위치는 lineage로만 남긴다. Inference owner의 진단·전처리·검색
 증거를 그대로 반환하고 node/edge sourceRows는 원본 행 위치를 유지한다.
-현재 private 계산이며 public GraphResource, graph action, layout/renderer에는 연결하지 않았다.
+관측 입력은 Full의 `actions/graphs/resources.js`에서 명시 dataset selector와 결합한다.
+`materialization/graph/resources.js`가 exact input 역할·model·row provenance를 만들고,
+`materialization/graph/state.js`는 Full constructor에 등록되어 저장 구조와 실제 source binding을
+검증한다. DATA revision owner는 등록된 graph 갱신 함수를 명시적으로 호출한다. Basic과 renderer는
+graph resource를 읽지 않으며 automatic compiler는 없다. `createGraphData.target`은 endpoint 열이므로
+기존 unit-local creation dispatch를 사용한다. 수정 target은 별도의 resource selector다.
+현재 관측 data lifecycle만 공개하며 inference·layout·plot의 공개 연결은 별도 구현 영역이다.
+정확한 공개·저장 계약은 [GRAPHS.md](contract/current/GRAPHS.md)가 소유한다.
 상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
 
 ## 내부 expression kernel 경계
@@ -754,8 +761,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 585,000 bytes |
-| `ggaction/basic` | 345,000 bytes |
+| `ggaction` | 591,000 bytes |
+| `ggaction/basic` | 346,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -3166,5 +3173,35 @@ payload를 붙인다. Renderer는 semantic resource나 measurement profile을 �
 Canvas/scene은 ephemeral registration handle, SVG는 embedded font 정의, PNG/PDF는 native
 registration lease로 같은 bytes를 소비한다. Native engine이 같은 bytes의 여러 alias를 공유하므로
 library adapter는 content별 참조 수를 유지해 마지막 출력이 끝날 때 해제한다. 실제 glyph alpha
-준비 역시 공통 concrete Text renderer를 사용하고 bounds rectangle을 glyph로 대체하지 않는다.
+준비 역시 공통 concrete Text renderer를 사용하고 bounds rectangle을 glyph로 대체하지 않는다. 일반 Canvas와 native PNG/PDF의
+unbound text는 renderer/text의 공통 대체 글꼴 순서를 사용한다. Native adapter는 설치된
+family로 필터링하며, exact font binding의 준비된 별칭은 이 경로를 우회한다.
+이 정책은 concrete text나 semantic layout을 다시 계산하지 않는다.
 정확한 public shape/상한/오류/생활주기는 [CORE](contract/current/CORE.md)와 rendering 문서가 소유한다.
+
+### Pre-fill outline ownership
+
+외곽선 요청은 기존 mark appearance config 한 곳에 저장하고 `grammar/markOutline.js`가 닫힌 값을 검증한다.
+각 domain materializer가 호출하는 기존 final mark-output 단계에서 concrete outline을 명시적으로 적용한다.
+일반 stroke 값은 복원을 위해 유지하며 renderer가 outline 우선순위와 contour→fill 순서를 소비한다.
+Selection의 명시적인 stroke highlight만 일시적으로 outline을 제거한다. Point packing/jitter는 동일한
+가시 edge 폭을 배치 전에 사용하고, 범례·라벨은 완성된 owner에서 경계를 읽는다. Text는 기존 glyph
+line/origin을 유지하며 partial opacity isolation은 visible frame 안의 실제 글자를 보존한다. 공유 image
+schema나 새 semantic compiler를 도입하지 않는다. 정확한 공개 계약과 소비자 차이는
+[MARKS](contract/current/MARKS.md#pre-fill-outlines-and-halos)가 소유한다.
+
+이 outline checkpoint의 runtime owner2개로 packed entries761→763을 실측했다. Canonical staging 최대값은
+Node20/24 packed1,131,929, unpacked5,212,872bytes이며 한도는763/1,132,000/5,213,000으로 최소 조정한다.
+지원 Node의 설치 bundle 최대 실측 Full556,491/Basic333,073bytes에 따라 한도는557,000/334,000이다.
+SVG25,000은 유지하며 기존 한도의 최초 실패와 실제 소비 archive는
+[OUTLINE](impl/roadmap9/phase4/paints/OUTLINE.md)에 보존한다.
+
+Outline과 image/H 통합(기준 `02e2f63ef`)은 양쪽 owner를 유지한다. 같은 chart에 hierarchy resource,
+outline mark, retained image를 두고 source revision·codec·prepared image stale preflight·Canvas scene을
+교차 검증한다. 합산 canonical packed entry794, Node20 packed1,177,323/unpacked5,410,308bytes에 맞춰
+한도는794/1,178,000/5,411,000이다. 합산 Full gzip581,143은 기존581,000을143bytes 초과하여582,000만
+허용하고 Basic342,894/SVG는 기존343,000/25,000 안에 있다. 개별 기능의 이전 측정을 합산 결과로 대신하지 않는다.
+
+통합 search-index 실측896,003bytes는 이전896,000을3bytes 초과한다. 현재 모든 페이지/액션을 유지하며
+공유 canonical search cap만 최소1000단위897,000으로 조정한다. 최초 source2개 및 built 링크 검사 실패와
+해당 입력 수정 뒤 재검증 결과는 outline 통합 evidence가 보존한다.

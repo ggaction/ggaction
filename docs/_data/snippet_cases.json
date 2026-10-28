@@ -270,5 +270,26 @@
     "result": "updated",
     "prerequisites": "The displayed program imports chart and supplies its inline data and parameter.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "observed-graph-data",
+    "file": "api/data/source-and-derived.md",
+    "contains": "const graph = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "graph, directed",
+    "prerequisites": "Imports and both source tables are included. This data-only example creates a semantic graph and no Canvas.",
+    "rendering": "authoring-only",
+    "resultKind": "semantic"
+  },
+  {
+    "id": "pre-fill-outline",
+    "file": "api/appearance/mark-style.md",
+    "contains": "const withoutHalo = program.editTextMark",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program, withoutHalo",
+    "prerequisites": "Run this complete ES module with ggaction installed; the inline row supplies the position and label fields.",
+    "rendering": "authoring-only"
   }
 ]

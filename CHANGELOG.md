@@ -6,6 +6,7 @@ All notable changes to `ggaction` are recorded in this file.
 
 - Add `prepareFontResource`, `createFontResource`, `replaceFontResource`, `prepareTextMetrics`, and `prepareFontRendering` for explicit font loading, exact measured layout and immutable resource replacement. Preserve embedded font bytes through offline snapshots and Canvas/SVG/PNG/PDF/scene output; reject missing widths, stale preparation and disposed rendering handles.
 
+- Add Full-only `createGraphData` and `editGraphData` for observed node and edge tables, with typed keys, stable parallel-edge identity, exact source revisions, and validated offline snapshots.
 - Add `prepareImageResource`, `createImageResource`, `replaceImageResource`, `removeResource`, `createImageMark`, `editImageMark`, and `prepareImageRendering` for Full image resource preparation, immutable authoring, and image marks with contain/cover/fill, alignment, clipping and alternative text. Preserve embedded bytes through offline snapshots, selection, composition and scenes; prepare browser Canvas explicitly and export the same data through SVG, PNG and PDF.
 - Add Full-only `createHierarchyData`, `editHierarchyData`, `layoutHierarchy`, `editLayout`, `removeResource`, `createTreePlot`, `editTreePlot`, `createTreemapPlot`, and `editTreemapPlot`. Preserve typed node identity, exact source contributions, stored layout geometry, labels and selections through edits, facets and offline restoration. Tree and treemap views use the same concrete graphics across Canvas, SVG, PNG and PDF.
 

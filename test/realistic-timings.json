@@ -29,6 +29,8 @@
     "contracts/realistic-legend-option-witness.test.js": 5886,
     "contracts/realistic-lifecycle-factor-effects.test.js": 63898,
     "contracts/realistic-lifecycle-provenance.test.js": 106,
+    "contracts/realistic-mark-outlines.test.js": 2594,
+    "contracts/realistic-observed-graphs.test.js": 197,
     "contracts/realistic-row-selection.test.js": 19760,
     "contracts/realistic-scenario-generation-isolation.test.js": 945678,
     "contracts/realistic-scenario-generator.test.js": 535185,

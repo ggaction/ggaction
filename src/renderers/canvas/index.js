@@ -1,3 +1,4 @@
+import { preflightCanvasOutlineCapabilities } from "./outline.js";
 import { prepareTextPaints } from "./textPaint.js";
 import { preflightCanvasFillCapabilities } from "./fill.js";
 import { readPreparedImages } from "../imageRendering.js";
@@ -37,6 +38,7 @@ const DRAWERS = Object.freeze({
 function prepareCanvasPainting(target, context, options) {
   const objects = Object.values(target.graphicSpec.objects);
   preflightCanvasFillCapabilities(objects, context);
+  preflightCanvasOutlineCapabilities(objects, context);
   const preparation = { ...options, objects };
   return {
     isolated: prepareIsolatedGlyphs(target, context, preparation),

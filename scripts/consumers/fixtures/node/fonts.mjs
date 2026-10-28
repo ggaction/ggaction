@@ -56,6 +56,18 @@ export const cases = [
     assert.equal(basic().createFontResource, undefined);
   } },
   { id: "fonts/renderers-scene-handles", async run() {
+    const generic = chart().createCanvas({ width: 200, height: 120, margin: 40 })
+      .createTitle({ text: "Root 0.9", titleStyle: { fontFamily: "sans-serif" } });
+    let initialPixels;
+    const checkGeneric = async () => {
+      const canvas = createCanvas(1, 1); render(generic, canvas.getContext("2d"));
+      const png = (await renderToPNGBuffer(generic)).buffer;
+      assert.deepEqual(png, canvas.toBuffer("image/png"));
+      if (initialPixels === undefined) initialPixels = png;
+      else assert.deepEqual(png, initialPixels);
+      assert.match((await renderToPDFBuffer(generic)).buffer.toString("latin1"), /\/ToUnicode/);
+    };
+    await checkGeneric();
     const program = await example(), restored = deserializeGraphic(serializeGraphic(program));
     const fonts = await prepareFontRendering(program, { register }), canvas = createCanvas(1, 1);
     try {
@@ -64,7 +76,9 @@ export const cases = [
       assert.deepEqual((await renderToPNGBuffer(restored)).buffer, canvas.toBuffer("image/png"));
       assert.equal((await renderToPDFBuffer(restored)).buffer.subarray(0, 4).toString(), "%PDF");
       assert.equal(renderToSVG(restored), renderToSVG(program));
+      await checkGeneric();
     } finally { fonts.dispose(); }
+    await checkGeneric();
     assert.throws(() => render(program, canvas.getContext("2d"), { fonts }), error => error.assetCode === "disposed");
     const scene = createTransitionScene(restored, { format: "canvas" }), prepared = await basicPrepare(scene, { register });
     try { renderTransitionScene(scene, canvas.getContext("2d"), { fonts: prepared });

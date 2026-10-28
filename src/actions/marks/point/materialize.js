@@ -392,8 +392,8 @@ export const rematerializePointMark = /* @__PURE__ */ action(
     const config = resolved.markConfigs[id] ?? {};
     const strokeDetails = requestedStrokeDetails(config, "Point mark");
     const strokeWidths = dataset.values.map((_, index) =>
-      typeof (mappedStroke?.[index] ?? config.stroke) === "string"
-        ? mappedStrokeWidths?.[index] ?? config.strokeWidth ?? 1 : 0);
+      config.outline?.width ?? (typeof (mappedStroke?.[index] ?? config.stroke) === "string"
+        ? mappedStrokeWidths?.[index] ?? config.strokeWidth ?? 1 : 0));
     const fill = mappedFill ?? config.fill ?? DEFAULT_POINT_FILL;
     const shapes = encodedShape ?? dataset.values.map(() => config.shape ?? "circle");
     validateWorkLimit(shapes.reduce((sum, shape) => sum +

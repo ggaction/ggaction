@@ -23,6 +23,7 @@ import { registerChartActions } from "./charts/index.js";
 import { registerCategoryOrderActions } from "./categoryOrder/index.js";
 import { registerSelectionActions } from "./selection/index.js";
 import { registerResourceActions } from "./resources/index.js";
+import { registerGraphActions, reviseGraphInputs } from "./graphs/resources.js";
 import { registerTextMetricActions } from "./textMetrics/index.js";
 import { registerCompositionActions } from "./composition/index.js";
 import { registerFacetActions } from "./facets/index.js";
@@ -63,8 +64,10 @@ export function registerActions(ProgramClass) {
   registerCategoryOrderActions(ProgramClass);
   registerSelectionActions(ProgramClass);
   registerResourceActions(ProgramClass);
+  registerGraphActions(ProgramClass);
   registerHierarchyResourceActions(ProgramClass);
   registerHierarchyPlotActions(ProgramClass);
-  registerDataResourceRevision(ProgramClass, Object.freeze({ kinds: Object.freeze(["hierarchy"]), revise: reviseHierarchyInputs }));
+  registerDataResourceRevision(ProgramClass, { kinds: ["hierarchy", "graph"],
+    revise: (program, replacements) => reviseGraphInputs(reviseHierarchyInputs(program, replacements), replacements) });
   registerTextMetricActions(ProgramClass);
 }

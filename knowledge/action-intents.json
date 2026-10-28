@@ -114,6 +114,11 @@
     ]
   },
   "termAliases": {
+    "GraphData": [
+      "observed graph data",
+      "node and edge tables",
+      "network topology"
+    ],
     "Theme": [
       "program theme",
       "light or dark visual defaults"
@@ -1819,6 +1824,20 @@
     },
     "encodeYOffset": {
       "field": "series"
+    },
+    "createGraphData": {
+      "id": "network",
+      "nodes": "nodes",
+      "edges": "edges",
+      "nodeKey": "name",
+      "source": "from",
+      "target": "to"
+    },
+    "editGraphData": {
+      "target": "network",
+      "definition": {
+        "directed": true
+      }
     },
     "createImageResource": {
       "prepared": {

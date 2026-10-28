@@ -238,6 +238,8 @@ export interface RadialGradientPaint {
   readonly radius: number;
   readonly stops: readonly [LinearGradientStop, LinearGradientStop, ...LinearGradientStop[]];
 }
+/** Stroke painted before the fill; white produces a halo. */
+export interface MarkOutline { color: string; width: number; }
 export type FillPaint = string | LinearGradientPaint | PatternPaint | RadialGradientPaint;
 type FilledMarkStroke = string | false;
 export type CurveInterpolation =
@@ -1688,7 +1690,52 @@ export interface DataSourceResource {
   readonly result: { readonly data: Extract<InputRef, { readonly kind: "data" }>; readonly inputHash: string };
   readonly provenance: { readonly origin: "authored" };
 }
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "font";
+export type GraphKeyField = string | readonly string[];
+export interface ObservedGraphDefinition {
+  readonly nodeKey: GraphKeyField;
+  readonly source: GraphKeyField;
+  readonly target: GraphKeyField;
+  readonly edgeKey?: GraphKeyField;
+  readonly weight?: string;
+  readonly attributes?: readonly string[];
+  readonly directed?: boolean;
+  readonly selfLoops?: boolean;
+  readonly maxNodes?: number;
+  readonly maxEdges?: number;
+}
+export interface CreateGraphDataOptions extends ObservedGraphDefinition {
+  readonly id: string; readonly nodes: string; readonly edges: string;
+}
+export interface EditGraphDataOptions {
+  readonly target?: string; readonly nodes?: string; readonly edges?: string;
+  readonly definition?: Partial<ObservedGraphDefinition>;
+}
+export interface GraphNode {
+  readonly key: string;
+  readonly sourceRows: readonly number[];
+  readonly attributes: Readonly<Record<string, unknown>>;
+}
+export interface GraphEdge {
+  readonly key: string; readonly sourceKey: string; readonly targetKey: string;
+  readonly directed: boolean; readonly weight: number;
+  readonly origin: "observed"; readonly ruleId: null; readonly sourceRows: readonly number[];
+}
+export interface GraphModel {
+  readonly nodes: readonly GraphNode[]; readonly edges: readonly GraphEdge[];
+  readonly directed: boolean; readonly selfLoops: boolean;
+  readonly adjacency: readonly { readonly key: string; readonly incoming: readonly string[];
+    readonly outgoing: readonly string[]; readonly neighbors: readonly string[] }[];
+}
+export interface GraphResource {
+  readonly kind: "graph"; readonly id: string; readonly revision: number;
+  readonly algorithmVersion: "1"; readonly ownership: { readonly mode: "authored" };
+  readonly inputs: readonly Extract<InputRef, { readonly kind: "data" }>[];
+  readonly options: { readonly roles: { readonly nodes: 0; readonly edges: 0 | 1 };
+    readonly definition: ObservedGraphDefinition & Required<Pick<ObservedGraphDefinition, "attributes" | "directed" | "selfLoops" | "maxNodes" | "maxEdges">> };
+  readonly result: { readonly model: GraphModel; readonly diagnostics: null };
+  readonly provenance: { readonly origin: "observed"; readonly sourceRows: readonly InputRowRef[] };
+}
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font";
 export type InputRef = { readonly kind: "data"; readonly id: string; readonly logicalId: string; readonly revision: number }
   | { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number };
 export interface PersistentSelectionResource {
@@ -1892,7 +1939,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | FontResource | HierarchyResource | HierarchyLayoutResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | FontResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -4793,7 +4840,7 @@ export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 
 export type TextFormat = ValueFormat;
 
-export interface TextMarkOptions {
+export interface TextMarkOptions extends StrokeStyleDetails {
   clip?: boolean;
   /** Logical-pixel baseline spacing; defaults to 1.2 times fontSize. */
   lineHeight?: number;
@@ -4808,6 +4855,7 @@ export interface TextMarkOptions {
   text?: unknown;
   missing?: "error" | "skip";
   fill?: FillPaint;
+  outline?: MarkOutline | false;
   opacity?: number;
   fontSize?: number;
   fontFamily?: string;
@@ -4881,6 +4929,7 @@ export interface RectMarkOptions extends RectStyleDetails {
   data?: string;
   missing?: "error" | "skip";
   fill?: FillPaint;
+  outline?: MarkOutline | false;
   opacity?: number;
   stroke?: string | false;
   strokeWidth?: number;
@@ -5945,6 +5994,8 @@ export class ChartProgram {
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createGraphData(options: CreateGraphDataOptions): ChartProgram;
+  editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
@@ -5991,6 +6042,7 @@ export class ChartProgram {
     missing?: "error" | "skip";
     shape?: PointShape;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -6001,6 +6053,7 @@ export class ChartProgram {
     missing?: "error" | "skip";
     shape?: PointShape;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -6058,6 +6111,7 @@ export class ChartProgram {
     orientation?: "vertical" | "horizontal";
     missing?: "error" | "skip";
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -6068,6 +6122,7 @@ export class ChartProgram {
     blend?: "normal" | "multiply" | "screen" | "difference";
     missing?: "error" | "skip";
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
@@ -6077,6 +6132,7 @@ export class ChartProgram {
     id?: string;
     data?: string;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: string;
     strokeWidth?: number;
@@ -6089,6 +6145,7 @@ export class ChartProgram {
     innerRadius?: ArcInnerRadius;
     padAngle?: number;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: string;
     strokeWidth?: number;
@@ -6098,6 +6155,7 @@ export class ChartProgram {
     innerRadius?: ArcInnerRadius;
     padAngle?: number;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;
@@ -6128,6 +6186,7 @@ export class ChartProgram {
     clip?: boolean;
     target?: string;
     fill?: FillPaint;
+    outline?: MarkOutline | false;
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;

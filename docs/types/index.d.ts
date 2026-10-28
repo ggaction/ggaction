@@ -6,6 +6,7 @@ export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderi
 import type { PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
 export type { HierarchyValueMode, HierarchySource, CreateHierarchyDataOptions, EditHierarchyDataOptions, HierarchyOrder, HierarchyTreeOptions, HierarchyTreemapOptions, LayoutHierarchyOptions, EditLayoutOptions, RemoveStoredResourceOptions, HierarchyNode, HierarchyModel, HierarchyResource, HierarchyRectangle, HierarchyTreeResult, HierarchyPartitionResult, HierarchyTreemapResult, HierarchyLayoutResource, HierarchyNodeTarget, HierarchyBodyPaint, HierarchyNodePaint, HierarchyLabelPaint, HierarchyLabelsOptions, TreePlotOptions, EditTreePlotOptions, TreemapPlotOptions, EditTreemapPlotOptions } from "./program.js";
 export type { ConditionalEncodingOptions } from "./program.js";
+export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
@@ -319,7 +320,7 @@ export type {
   EditStrokeDashScaleOptions,
   EditSemanticOptions,
   FieldType,
-  FillPaint,
+  FillPaint, MarkOutline,
   PatternPaint,
   RadialGradientPaint,
   FacetCompositionSpec,

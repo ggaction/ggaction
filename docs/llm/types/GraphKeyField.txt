@@ -1,0 +1,1 @@
+export type GraphKeyField = string | readonly string[];

@@ -1,3 +1,4 @@
+import { normalizeMarkOutline } from "../../../../grammar/markOutline.js";
 import {validateLegendLayerOpacity}from"../../../../grammar/legendOpacity.js";
 import { isPlainObject } from "../../../../core/immutable.js";
 import {
@@ -38,8 +39,8 @@ const LAYER_OPTIONS = Object.freeze({
 });
 const INTERNAL_LAYER_OPTIONS = Object.freeze({
   line: Object.freeze([...LAYER_OPTIONS.line, ...STROKE_STYLE_PROPERTIES]),
-  point: Object.freeze([...LAYER_OPTIONS.point, ...STROKE_STYLE_PROPERTIES]),
-  swatch: Object.freeze([...LAYER_OPTIONS.swatch, ...RECT_STYLE_PROPERTIES])
+  point: Object.freeze([...LAYER_OPTIONS.point, "outline", ...STROKE_STYLE_PROPERTIES]),
+  swatch: Object.freeze([...LAYER_OPTIONS.swatch, "outline", ...RECT_STYLE_PROPERTIES])
 });
 
 export function resolveLegendSymbol(program, layer, channels, requested, kind) {
@@ -47,9 +48,13 @@ export function resolveLegendSymbol(program, layer, channels, requested, kind) {
   const config = program.markConfigs[layer.id] ?? {};
   const bar = config.barAppearance ?? {};
   const styleOwner = layer.mark.type === "bar" ? bar : config;
-  const strokeDetails = requestedStrokeDetails(styleOwner, "Legend source");
+  const outline = styleOwner.outline;
+  const strokeDetails = {
+    ...requestedStrokeDetails(styleOwner, "Legend source"),
+    ...(outline === undefined || outline === false || channels?.includes("stroke") ? {} : { outline })
+  };
   const rectDetails = ["bar", "rect"].includes(layer.mark.type)
-    ? requestedRectStyleDetails(styleOwner, "Legend source")
+    ? { ...requestedRectStyleDetails(styleOwner, "Legend source"), ...strokeDetails }
     : strokeDetails;
   if (channels?.length === 1 && channels[0] === "stroke") {
     const strokeWidth = bar.strokeWidth ?? config.strokeWidth ?? ({
@@ -151,6 +156,7 @@ function defaultRecipe(kind) {
 }
 
 function normalizeLayer(layer, internal) {
+  if (internal && layer?.outline !== undefined) normalizeMarkOutline(layer.outline, "Legend outline");
   validateLegendLayerOpacity(layer?.opacity);
   if (!isPlainObject(layer) || !Object.hasOwn(LAYER_OPTIONS, layer.type)) {
     throw new Error("Legend symbol layer type must be line, point, or swatch.");

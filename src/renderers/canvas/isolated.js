@@ -1,3 +1,4 @@
+import { preflightCanvasOutlineCapabilities } from "./outline.js";
 import { canvasFactory } from "./surfaceFactory.js";
 import { preflightCanvasFillCapabilities } from "./fill.js";
 import { resolvePrimitiveGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
@@ -8,6 +9,7 @@ import { isBlendMode } from "../../grammar/compositing.js";
 
 export function requiresIsolatedGlyph(properties) {
   return isBlendMode(properties?.blend) ||
+    properties?.outline?.width > 0 && (properties.opacity ?? 1) !== 1 ||
     properties?.fill?.type === "pattern" && (properties.opacity ?? 1) !== 1;
 }
 
@@ -37,6 +39,7 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
     surface = factory(1, 1);
     const source = requireSurface(surface);
     preflightCanvasFillCapabilities(objects, source);
+    preflightCanvasOutlineCapabilities(objects, source);
     const hasGradient = objects.some(object =>
       [object, ...(object.items ?? [])].some(item =>
         requiresIsolatedGlyph(item.properties) && item.properties.fill?.type === "linear-gradient"));
@@ -80,7 +83,7 @@ export function prepareIsolatedGlyphs(target, context, { pixelRatio = 1, createC
     const bounds = resolvePrimitiveGraphicBounds(type, properties);
     if (!bounds) throw new Error(`Graphic "${id}" requires finite isolated paint bounds.`);
     const {offset: [x, y], clip} = frames.at(-1);
-    const clipped = {
+    const clipped = type === "text" ? clip : {
       left: Math.max(bounds.left + x, clip.left),
       right: Math.min(bounds.right + x, clip.right),
       top: Math.max(bounds.top + y, clip.top),

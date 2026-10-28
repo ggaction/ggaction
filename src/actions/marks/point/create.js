@@ -1,3 +1,4 @@
+import { requestedMarkOutline } from "../../../grammar/markOutline.js";
 import { requestedMarkClip } from "../../../selectors/markClip.js";
 import { action } from "../../../core/action.js";
 import { validatePointShape } from "../../../grammar/pointShapes.js";
@@ -20,7 +21,7 @@ import {
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
 const OPTIONS = Object.freeze([
-  "clip", "id", "data", "missing", "shape", "fill", "opacity", "stroke", "strokeWidth",
+  "clip", "id", "data", "missing", "shape", "fill", "opacity", "outline", "stroke", "strokeWidth",
   ...STROKE_STYLE_PROPERTIES
 ]);
 
@@ -32,6 +33,7 @@ export const createPointMark = /* @__PURE__ */ action(
   function (args = {}) {
     validateMarkOptions(args, OPTIONS, "createPointMark");
     requestedMarkClip(args);
+    requestedMarkOutline(args);
     requestedStrokeDetails(args, "createPointMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "point",
@@ -79,7 +81,7 @@ export const createPointMark = /* @__PURE__ */ action(
       ._withMarkConfig(id, { shape });
     const created = materializeInheritedMark(next, id);
     const appearance = Object.fromEntries(
-      ["clip", "fill", "opacity", "stroke", "strokeWidth", ...STROKE_STYLE_PROPERTIES]
+      ["clip", "fill", "opacity", "outline", "stroke", "strokeWidth", ...STROKE_STYLE_PROPERTIES]
         .filter(property => Object.hasOwn(args, property))
         .map(property => [property, args[property]])
     );

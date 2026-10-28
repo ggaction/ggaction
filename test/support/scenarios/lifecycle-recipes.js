@@ -1303,6 +1303,10 @@ function buildDirectDataResources(factors) {
     .removeCoordinate({ id: "unusedLifecycleCoordinate" });
   program = addDirectDerivedDataEdits(program);
   program = program
+    .createData({ id: "directGraphNodes", values: [...new Set(rows.map(row => row.category))].map(category => ({ category })) })
+    .createGraphData({ id: "directGraph", nodes: "directGraphNodes", edges: "directSource", nodeKey: "category",
+      source: "category", target: "category", weight: "positive", selfLoops: true })
+    .editGraphData({ target: "directGraph", definition: { directed: true } })
     .createHierarchyData({ id: "directHierarchy", data: "directSource", groupFields: ["category"], value: "positive" })
     .editHierarchyData({ target: "directHierarchy", maxNodes: 1000 })
     .layoutHierarchy({ id: "directTreeLayout", hierarchy: "directHierarchy", method: "tree", options: { nodeSize: [10, 10], siblingGap: 8, depthGap: 30, orientation: "vertical" } })

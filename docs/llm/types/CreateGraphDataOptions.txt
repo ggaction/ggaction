@@ -1,0 +1,3 @@
+export interface CreateGraphDataOptions extends ObservedGraphDefinition {
+  readonly id: string; readonly nodes: string; readonly edges: string;
+}
