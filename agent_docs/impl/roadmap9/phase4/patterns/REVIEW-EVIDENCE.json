@@ -61,7 +61,7 @@
     "test/gates/pattern-paints/reference.js": "49bbab9bbd737478d51bd64587cff31be71da78d1df0f4161fdd295c67033d99",
     "src/grammar/patterns.js": "bf9c774cf77d9e41a5deea15e0ee04cee07fa1807043216454de772e6198db5b",
     "test/oracles/patterns.js": "ad92dfdede7b1a918fa74cd67f8211c4cd1fdd8ef8e2d079fbe7373c979cf25d",
-    "agent_docs/impl/roadmap9/phase4/patterns/REVIEW.md": "0bc36b051ea051e47ef08980196a90c11bb1e8363ff3da1768d39fe703e21340"
+    "agent_docs/impl/roadmap9/phase4/patterns/REVIEW.md": "d91e58fe46934033531a61afdd9899e35149dcb7682292c1ed5354fb4c352bd4"
   },
   "artifactRoot": ".artifacts/test/png/review/pattern-paints/",
   "outputs": {
@@ -358,5 +358,8 @@
       "dots/primitive.png"
     ],
     "result": "Directions, phase, separate origins, circle clip, and wide-dot overlap are visible; user visual approval remains pending."
-  }
+  },
+  "codeRevision": "4cd8917e8a912de51164669439820f7d7fff4e82",
+  "evidenceRevision": "4cd8917e8a912de51164669439820f7d7fff4e82",
+  "metadataNote": "Revision-only follow-up; executable source and rendered artifact hashes are unchanged."
 }

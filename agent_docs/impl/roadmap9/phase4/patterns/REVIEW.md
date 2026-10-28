@@ -9,6 +9,8 @@
 - [ ] 사용자 visual target 승인
 - [ ] 공개 paint API와 전체 소비자 연결
 
+검토 source와 최초 evidence revision은 `4cd8917e` (`codex/roadmap9-paints`)다. 이 revision 표시는 metadata 후속 기록이며 검증된 실행 source는 바꾸지 않는다.
+
 Gate 상태는 `ready-for-review`다. Roadmap 전체 구현 승인은 작업 진행 근거지만 이 이미지의 시각적 승인을 뜻하지 않는다. 이번 checkpoint는 public paint API나 renderer runtime을 수정하지 않는다. STEP-017 및 AT-13 완료도 아니다. Private kernel 계약과 이전 수치 검증은 [PRIVATE.md](PRIVATE.md)가 소유한다.
 
 기준 카드는 현재 병행 DATA checkout에서 읽은 `study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-017-paint-resources.ko.md`와 `roadmap/contracts/geometry-design.ko.md`다. 이 paints branch에는 study 자료가 없으므로 새 복제 계약을 만들지 않았다.
