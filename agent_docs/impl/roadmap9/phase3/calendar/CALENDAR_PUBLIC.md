@@ -10,7 +10,7 @@
 - [x] 설치 node190개·complete snippets66개·types/MCP/optional peers/bundles
 - [x] Built docs150페이지·1183 selective artifacts의 링크·identity hashes
 - [x] Docs desktop search와 전 페이지320/390/768px browser 검증
-- [ ] Verified implementation commit/push와 source provenance 고정
+- [x] Verified implementation commit/push와 source provenance 고정
 - [ ] STEP-014/015 전체 numeric matrix·AT-17 통합과 STEP-077 완료
 - [ ] STEP-024 calendar cell/month geometry와 그 rendered primitive 승인
 
@@ -19,6 +19,9 @@
 기준은 `58aa2bea79d94ac129f14725722a64bfeccdff5d`, branch는 `codex/roadmap9-statistics`다.
 Main/G-DATA worktree 파일은 수정하거나 복사하지 않았다. 이 체크포인트만으로 STEP-015/AT-17 또는
 Roadmap9 전체 완료를 선언하지 않는다. Calendar cell 배치·month label·시각 facade는 아직 미구현이다.
+구현 source commit은 `982c53a2587d5747b0865e6f68f47ee79a13fd27`이며 원격 push를 확인했다.
+이 commit으로 provenance를 고정한 뒤 docs161개와 built150페이지/1183artifacts를 다시 검증했다.
+문서 내용과 UI는 그대로이므로 먼저 통과한 browser sweep을 재사용한다.
 
 ## 구현과 소비자 경계
 
