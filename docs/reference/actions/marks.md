@@ -1804,6 +1804,158 @@ Edit an existing image mark; omission preserves options. `viewport:"auto"` reset
 to the plot. Explicit geometry adds clipping to the always-clipped viewport.
 
 
+## `createFlowNodes`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createFlowNodes(options?: TargetedOptions<FlowNodesOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`FlowNodesOptions`](./../types.md#type-flownodesoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `nodes` | Optional / branch-dependent | `(FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey; })[] \| undefined; }) \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| FlowLabelsOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createFlowNodes({ id?, layout?, coordinate?, clip?, nodes?, labels? })
+```
+
+Create flow node rectangles and optional labels from a stored layout. Full only.
+[Flow data and Sankey layouts](../../api/flows.md#createflownodes)
+
+
+## `editFlowNodes`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editFlowNodes(options: TargetedOptions<EditFlowNodesOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditFlowNodesOptions`](./../types.md#type-editflownodesoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `nodes` | Optional / branch-dependent | `(FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey; })[] \| undefined; }) \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| FlowLabelsOptions \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editFlowNodes({ target?, layout?, coordinate?, clip?, nodes?, labels? })
+```
+
+Edit flow node styling, labels or layout binding. Full only.
+[Flow data and Sankey layouts](../../api/flows.md#editflownodes)
+
+
+## `createFlowLinks`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createFlowLinks(options?: TargetedOptions<FlowLinksOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`FlowLinksOptions`](./../types.md#type-flowlinksoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `links` | Optional / branch-dependent | `(FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey; })[] \| undefined; }) \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createFlowLinks({ id?, layout?, coordinate?, clip?, links? })
+```
+
+Create closed flow ribbons from a stored layout. Full only.
+[Flow data and Sankey layouts](../../api/flows.md#createflowlinks)
+
+
+## `editFlowLinks`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editFlowLinks(options: TargetedOptions<EditFlowLinksOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditFlowLinksOptions`](./../types.md#type-editflowlinksoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `layout` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `links` | Optional / branch-dependent | `(FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey; })[] \| undefined; }) \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editFlowLinks({ target?, layout?, coordinate?, clip?, links? })
+```
+
+Edit flow ribbon styling or layout binding. Full only.
+[Flow data and Sankey layouts](../../api/flows.md#editflowlinks)
+
+
 ## Related
 
 [Action Reference](../actions.md) · [Chart API](../../api/index.md) · [Supported Features](../../supported-features.md)

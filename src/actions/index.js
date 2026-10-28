@@ -24,6 +24,8 @@ import { registerCategoryOrderActions } from "./categoryOrder/index.js";
 import { registerSelectionActions } from "./selection/index.js";
 import { registerResourceActions } from "./resources/index.js";
 import { registerGraphActions, reviseGraphInputs } from "./graphs/resources.js";
+import { registerFlowActions } from "./flow/resources.js";
+import { registerFlowPlotActions } from "./flow/plots.js";
 import { registerTextMetricActions } from "./textMetrics/index.js";
 import { registerCompositionActions } from "./composition/index.js";
 import { registerFacetActions } from "./facets/index.js";
@@ -64,6 +66,8 @@ export function registerActions(ProgramClass) {
   registerSelectionActions(ProgramClass);
   registerResourceActions(ProgramClass);
   registerGraphActions(ProgramClass);
+  registerFlowActions(ProgramClass);
+  registerFlowPlotActions(ProgramClass);
   registerHierarchyResourceActions(ProgramClass);
   registerLayoutActions(ProgramClass);
   registerHierarchyPlotActions(ProgramClass);

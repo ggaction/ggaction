@@ -4,7 +4,7 @@ import { requireStoredResource } from "./resources.js";
 export function resolveLayoutResource(program, requested, inputKind, method) {
   const eligible = resource => resource.kind === "layout" && resource.inputs.length === 1 &&
     (inputKind === undefined || resource.inputs[0].kind === inputKind) &&
-    (method === undefined || resource.options.method === method);
+    (method === undefined || (Array.isArray(method) ? method.includes(resource.options.method) : resource.options.method === method));
   if (requested !== undefined) {
     const resource = requireStoredResource(program, { kind: "layout", id: requested });
     if (!eligible(resource)) throw annotateError(new Error("Layout has an incompatible input or method."), {

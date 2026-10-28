@@ -19,6 +19,8 @@ const MARK_MATERIALIZATION_POLICIES = Object.freeze({
     scaleApplication: Object.freeze({ default: "defer" }) }),
   tree: Object.freeze({ canMaterialize: (_program, layer) => layer.hierarchyBinding !== undefined, op: "materializeTreePlot", scaleApplication: Object.freeze({ default: "defer" }) }),
   treemap: Object.freeze({ canMaterialize: (_program, layer) => layer.hierarchyBinding !== undefined, op: "materializeTreemapPlot", scaleApplication: Object.freeze({ default: "defer" }) }),
+  "flow-node": Object.freeze({ canMaterialize: (_program, layer) => layer.flowBinding !== undefined, op: "materializeFlowNodes", scaleApplication: Object.freeze({ default: "defer" }) }),
+  "flow-link": Object.freeze({ canMaterialize: (_program, layer) => layer.flowBinding !== undefined, op: "materializeFlowLinks", scaleApplication: Object.freeze({ default: "defer" }) }),
   point: Object.freeze({
     canMaterialize: canMaterializePoint,
     op: "rematerializePointMark",

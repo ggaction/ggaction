@@ -2,6 +2,7 @@ import { layerResourceBindings } from "./core/resourceReferences.js";
 import { STORED_RESOURCE_KINDS } from "./core/resourceReference.js";
 import { findStoredResource } from "./selectors/resources.js";
 import { resolveHierarchyPlot } from "./materialization/hierarchy/plot.js";
+import { resolveFlowPlot } from "./materialization/flow/plot.js";
 import { hierarchyFacetSource, resolveHierarchyLayerResources } from "./selectors/hierarchy.js";
 import { findSelectionPolicy } from "./materialization/selection/policies/index.js";
 import { namespaceItemKey } from "./grammar/schemas/graphicIdentity.js";
@@ -489,7 +490,8 @@ function itemBounds(properties, type) {
 function inspectMark(program, layer, childPath) {
   const graphic = program.graphicSpec.objects[layer.id];
   const hierarchy = layer.hierarchyBinding === undefined ? undefined : resolveHierarchyPlot(program, layer, program.markConfigs[layer.id].hierarchyPlot);
-  const dataset = hierarchy?.dataset ?? findDataset(program, layer.data);
+  const flow = layer.flowBinding === undefined ? undefined : resolveFlowPlot(program, layer, program.markConfigs[layer.id].flowPlot);
+  const dataset = hierarchy?.dataset ?? flow?.dataset ?? findDataset(program, layer.data);
   const boundedTypes = new Set(["circle", "rect", "line", "path", "image"]);
   const items = graphic?.items ?? (graphic?.properties ? [{ properties: graphic.properties }] : []);
   const concreteTypes = items.map(item => item.type ?? graphic?.type);
@@ -518,7 +520,7 @@ function inspectMark(program, layer, childPath) {
   return {
     owner: resourceRef("mark", layer.id, childPath), grain,
     rawRows: dataset?.values?.length ?? null,
-    logicalDataItems: logicalSupported ? hierarchy?.items.length ?? items.length : null,
+    logicalDataItems: logicalSupported ? hierarchy?.items.length ?? flow?.items.length ?? items.length : null,
     drawablePrimitives: logicalSupported ? items.length : null,
     visibleCandidates: geometrySupported ? Math.max(0, items.length - new Set([
       ...items.map((item, index) => item.properties.opacity === 0 ? index : -1),
@@ -531,6 +533,10 @@ function inspectMark(program, layer, childPath) {
         { reason: "zero-value", count: hierarchy.items.filter(item => item.node.totalValue === 0).length },
         { reason: "orphan-style", count: hierarchy.diagnostics.length }
       ]),
+      ...(flow === undefined ? [] : [
+        { reason: "zero-value", count: flow.items.filter(item => item.fields.value === 0).length },
+        { reason: "orphan-style", count: flow.diagnostics.length }
+      ]),
       { reason: "opacity-zero", count: opacityZero },
       { reason: "zero-size", count: zeroSize },
       { reason: "outside-clip", count: outside },
@@ -541,6 +547,7 @@ function inspectMark(program, layer, childPath) {
     sourceRefs: [
       ...layerResourceBindings(layer).map(({ ref }) => resourceRef(ref.kind, ref.id, childPath)),
       ...(hierarchy === undefined ? [] : [resourceRef("hierarchy", hierarchy.hierarchy.id, childPath)]),
+      ...(flow === undefined ? [] : [resourceRef("graph", flow.graph.id, childPath)]),
       ...(dataset === undefined ? [] : [resourceRef("data", dataset.id, childPath)]),
       ...(layer.derivedBindings?.overlay ? [resourceRef("mark", layer.derivedBindings.overlay.source, childPath)] : [])
     ],
@@ -665,7 +672,7 @@ export function inspectProgram(program, { target } = {}) {
     version: 1, views: filtered,
     calculations,
     checks: [{ name: "pixel-visibility", status: "not_run", evidencePaths: [], findings: [] }],
-    findings: filtered.flatMap(view => view.flags.filter(flag => flag.reason === "orphan-style" && flag.count > 0).map(flag => ({ severity: "info", code: "orphan-style", reason: "missing-node", message: `${flag.count} hierarchy style targets are dormant until their exact nodes return.`, resource: view.owner }))), coverage: { partial: filtered.some(view => view.checks.some(check => check.status !== "passed")), unsupported }
+    findings: filtered.flatMap(view => view.flags.filter(flag => flag.reason === "orphan-style" && flag.count > 0).map(flag => ({ severity: "info", code: "orphan-style", reason: "missing-node", message: `${flag.count} resource-backed style targets are dormant until their exact items return.`, resource: view.owner }))), coverage: { partial: filtered.some(view => view.checks.some(check => check.status !== "passed")), unsupported }
   });
 }
 

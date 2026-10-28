@@ -63,6 +63,9 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createErrorBand`](./actions/statistics.md#createerrorband) | H1 | user-facing | statistics |
 | [`createErrorBar`](./actions/statistics.md#createerrorbar) | H1 | user-facing | statistics |
 | [`createFlattenData`](./actions/statistics.md#createflattendata) | H1 | user-facing | statistics |
+| [`createFlowData`](./actions/charts-data.md#createflowdata) | H2 | user-facing | core |
+| [`createFlowLinks`](./actions/marks.md#createflowlinks) | H2 | user-facing | marks |
+| [`createFlowNodes`](./actions/marks.md#createflownodes) | H2 | user-facing | marks |
 | [`createFoldData`](./actions/statistics.md#createfolddata) | H1 | user-facing | statistics |
 | [`createGradientPlot`](./actions/statistics.md#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphData`](./actions/charts-data.md#creategraphdata) | H2 | user-facing | core |
@@ -182,6 +185,9 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFacetSource`](./actions/charts-data.md#editfacetsource) | H3 | user-facing | composition |
 | [`editFilteredData`](./actions/charts-data.md#editfiltereddata) | H2 | user-facing | core |
 | [`editFlattenData`](./actions/statistics.md#editflattendata) | H1, H3 | user-facing | statistics |
+| [`editFlowData`](./actions/charts-data.md#editflowdata) | H3 | user-facing | core |
+| [`editFlowLinks`](./actions/marks.md#editflowlinks) | H3 | user-facing | marks |
+| [`editFlowNodes`](./actions/marks.md#editflownodes) | H3 | user-facing | marks |
 | [`editFoldData`](./actions/statistics.md#editfolddata) | H1, H3 | user-facing | statistics |
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphData`](./actions/charts-data.md#editgraphdata) | H3 | user-facing | core |
@@ -311,6 +317,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](./actions/charts-data.md#highlightmarks) | H3 | user-facing | mark-selection |
 | [`insertCompositionChild`](./actions/charts-data.md#insertcompositionchild) | H3 | user-facing | composition |
 | [`jitterPoints`](./actions/marks.md#jitterpoints) | H3 | user-facing | marks |
+| [`layoutFlow`](./actions/charts-data.md#layoutflow) | H2 | user-facing | core |
 | [`layoutGraph`](./actions/charts-data.md#layoutgraph) | H2 | user-facing | core |
 | [`layoutHierarchy`](./actions/charts-data.md#layouthierarchy) | H2 | user-facing | core |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | H3 | user-facing | marks |

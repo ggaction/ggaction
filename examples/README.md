@@ -654,6 +654,30 @@ Create a hierarchy resource, compute an explicit squarify layout, and draw its n
 
 Representative actions: `createHierarchyData`, `layoutHierarchy`, `createTreemapPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/hierarchy/).
 
+### [Conserved flows](./flow-layouts/)
+
+Validate a directed flow graph, store its layout, then draw links and nodes.
+
+Representative actions: `createFlowData`, `layoutFlow`, `createFlowLinks`, `createFlowNodes`. [Documentation](https://ggaction.github.io/ggaction/tutorials/flows/).
+
+### [Vertical flows](./flow-vertical/)
+
+Validate a directed flow graph, store its layout, then draw links and nodes.
+
+Representative actions: `createFlowData`, `layoutFlow`, `createFlowLinks`, `createFlowNodes`. [Documentation](https://ggaction.github.io/ggaction/tutorials/flows/).
+
+### [Cyclic flows](./flow-cyclic/)
+
+Validate a directed flow graph, store its layout, then draw links and nodes.
+
+Representative actions: `createFlowData`, `layoutFlow`, `createFlowLinks`, `createFlowNodes`. [Documentation](https://ggaction.github.io/ggaction/tutorials/flows/).
+
+### [Vertical feedback](./flow-cyclic-vertical/)
+
+Validate a directed flow graph, store its layout, then draw links and nodes.
+
+Representative actions: `createFlowData`, `layoutFlow`, `createFlowLinks`, `createFlowNodes`. [Documentation](https://ggaction.github.io/ggaction/tutorials/flows/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

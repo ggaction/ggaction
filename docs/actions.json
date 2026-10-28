@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 320,
+  "count": 327,
   "cards": [
     {
       "schemaVersion": 3,
@@ -39039,7 +39039,7 @@
         {
           "name": "options",
           "required": false,
-          "type": "GraphCircularOptions | GraphForceOptions | Partial<...> | Partial<...> | { ...; } | Partial<...> | undefined"
+          "type": "FlowLayoutOptions | GraphCircularOptions | GraphForceOptions | Partial<...> | Partial<...> | { ...; } | Partial<...> | undefined"
         }
       ],
       "callPatterns": [
@@ -39492,7 +39492,7 @@
       "name": "layoutGraph",
       "layer": "user-facing",
       "domain": "core",
-      "summary": "Store fixed, circular, or deterministic force positions for an existing graph.",
+      "summary": "Store a fixed, circular, or deterministic force layout of an existing graph.",
       "signature": "layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;",
       "intents": [
         "layout graph",
@@ -39578,6 +39578,742 @@
       "snippet": "program.layoutGraph({ id: \"network-layout\", graph: \"network\", method: \"circular\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#layoutgraph"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createFlowData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Store directed flow values and an explicit balance policy.",
+      "signature": "createFlowData(options: CreateFlowDataOptions): ChartProgram;",
+      "intents": [
+        "create flow data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "flow graph",
+        "directed flow values"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "explicit materialized node and edge datasets"
+        ],
+        "owns": [
+          "graph resource"
+        ],
+        "idOptions": [
+          "id",
+          "nodes",
+          "edges"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editFlowData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "explicit materialized node and edge datasets"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "nodes",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "edges",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "nodeKey",
+          "required": true,
+          "type": "GraphKeyField"
+        },
+        {
+          "name": "source",
+          "required": true,
+          "type": "GraphKeyField"
+        },
+        {
+          "name": "target",
+          "required": true,
+          "type": "GraphKeyField"
+        },
+        {
+          "name": "edgeKey",
+          "required": false,
+          "type": "GraphKeyField | undefined"
+        },
+        {
+          "name": "attributes",
+          "required": false,
+          "type": "readonly string[] | undefined"
+        },
+        {
+          "name": "selfLoops",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "maxNodes",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "maxEdges",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "value",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "balance",
+          "required": false,
+          "type": "\"allow\" | \"strict\" | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createFlowData({ id, nodes, edges, nodeKey, source, target, value, edgeKey? })"
+      ],
+      "snippet": "program.createFlowData({ id: \"flow\", nodes: \"nodes\", edges: \"edges\", nodeKey: \"name\", source: \"from\", target: \"to\", value: \"amount\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createflowdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editFlowData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Revise flow data and refresh dependent layouts, nodes, links, labels and selections.",
+      "signature": "editFlowData(options: TargetedOptions<EditFlowDataOptions>): ChartProgram;",
+      "intents": [
+        "edit flow data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "flow graph",
+        "directed flow values"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing observed graph"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "nodes",
+          "edges"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editFlowData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing observed graph"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "nodes",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "edges",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "definition",
+          "required": false,
+          "type": "Partial<FlowDefinition> | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editFlowData({ target?, nodes?, edges?, definition? })"
+      ],
+      "snippet": "program.editFlowData({ nodes: \"nodes\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editflowdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "layoutFlow",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Store a DAG or cyclic Sankey layout while preserving every edge.",
+      "signature": "layoutFlow(options: TargetedOptions<LayoutFlowOptions>): ChartProgram;",
+      "intents": [
+        "layout flow",
+        "layout",
+        "avoid overlap",
+        "chart setup",
+        "data and scales",
+        "Sankey layout",
+        "DAG flow"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing graph resource"
+        ],
+        "owns": [
+          "layout resource"
+        ],
+        "idOptions": [
+          "id",
+          "graph"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editLayout",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing graph resource"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "graph",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "method",
+          "required": true,
+          "type": "\"cyclic\" | \"dag\""
+        },
+        {
+          "name": "options",
+          "required": false,
+          "type": "FlowLayoutOptions | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "layoutFlow({ id, method, target?, graph?, options? })"
+      ],
+      "snippet": "program.layoutFlow({ id: \"flow-1\", method: \"cyclic\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#layoutflow"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createFlowNodes",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create flow node rectangles and optional labels from a stored layout.",
+      "signature": "createFlowNodes(options?: TargetedOptions<FlowNodesOptions>): ChartProgram;",
+      "intents": [
+        "create flow nodes",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "flow nodes",
+        "flow rectangles"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "stored DAG or cyclic flow layout"
+        ],
+        "owns": [
+          "flow mark"
+        ],
+        "idOptions": [
+          "id",
+          "layout",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editFlowNodes",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "stored DAG or cyclic flow layout"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "nodes",
+          "required": false,
+          "type": "(FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey; })[] | undefined; }) | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | FlowLabelsOptions | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createFlowNodes({ id?, coordinate?, target?, layout?, clip?, nodes?, labels? })"
+      ],
+      "snippet": "program.createFlowNodes({})",
+      "errors": [],
+      "route": "/reference/actions/marks/#createflownodes"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editFlowNodes",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edit flow node styling, labels or layout binding.",
+      "signature": "editFlowNodes(options: TargetedOptions<EditFlowNodesOptions>): ChartProgram;",
+      "intents": [
+        "edit flow nodes",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "flow nodes",
+        "flow rectangles"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "stored DAG or cyclic flow layout"
+        ],
+        "owns": [
+          "flow mark"
+        ],
+        "idOptions": [
+          "target",
+          "layout",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editFlowNodes",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "stored DAG or cyclic flow layout"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "nodes",
+          "required": false,
+          "type": "(FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey; })[] | undefined; }) | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | FlowLabelsOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editFlowNodes({ target?, coordinate?, layout?, clip?, nodes?, labels? })"
+      ],
+      "snippet": "program.editFlowNodes({ layout: \"layout\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editflownodes"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createFlowLinks",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create closed flow ribbons from a stored layout.",
+      "signature": "createFlowLinks(options?: TargetedOptions<FlowLinksOptions>): ChartProgram;",
+      "intents": [
+        "create flow links",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "flow links",
+        "flow ribbons"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "stored DAG or cyclic flow layout"
+        ],
+        "owns": [
+          "flow mark"
+        ],
+        "idOptions": [
+          "id",
+          "layout",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "createCoordinate",
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editFlowLinks",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "stored DAG or cyclic flow layout"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "links",
+          "required": false,
+          "type": "(FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey; })[] | undefined; }) | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createFlowLinks({ id?, coordinate?, target?, layout?, clip?, links? })"
+      ],
+      "snippet": "program.createFlowLinks({})",
+      "errors": [],
+      "route": "/reference/actions/marks/#createflowlinks"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editFlowLinks",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edit flow ribbon styling or layout binding.",
+      "signature": "editFlowLinks(options: TargetedOptions<EditFlowLinksOptions>): ChartProgram;",
+      "intents": [
+        "edit flow links",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "flow links",
+        "flow ribbons"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "stored DAG or cyclic flow layout"
+        ],
+        "owns": [
+          "flow mark"
+        ],
+        "idOptions": [
+          "target",
+          "layout",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editFlowLinks",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "stored DAG or cyclic flow layout"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "links",
+          "required": false,
+          "type": "(FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey; })[] | undefined; }) | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editFlowLinks({ target?, coordinate?, layout?, clip?, links? })"
+      ],
+      "snippet": "program.editFlowLinks({ layout: \"layout\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editflowlinks"
     }
   ]
 }

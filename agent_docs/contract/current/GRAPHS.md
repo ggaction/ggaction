@@ -27,7 +27,7 @@
 ## `editGraphData`
 
 - Signature: `editGraphData({ target?, nodes?, edges?, definition? })`.
-- 기존 observed graph만 수정한다. 명시 target이 우선하며 생략하면 current eligible graph, 하나뿐인 eligible graph 순서로 찾고 ambiguity/missing은 오류다. Scoped target은 기존 Full action target 프로토콜을 따른다.
+- 기존 observed graph 중 flow 의미가 없는 graph만 수정한다. Flow는 [editFlowData](FLOWS.md#editflowdata)를 사용한다. 명시 target이 우선하며 생략하면 current eligible graph, 하나뿐인 eligible graph 순서로 찾고 ambiguity/missing은 오류다. Scoped target은 기존 Full action target 프로토콜을 따른다.
 - `definition`은 생성 action의 source definition에 대한 nonempty partial patch다. Endpoint 열 `definition.target`과 수정 대상 `target`을 구분한다. `nodes`/`edges`를 생략하면 현재 exact input을 보존한다. 같은 값도 명시한 수정은 새 graph revision을 만든다.
 - 전체 편집이 비어 있거나 undefined/null/unknown option, 잘못된 key/endpoint/weight/limit을 포함하면 거부한다. 정의의 ID나 graph origin은 바꾸지 않는다.
 - 원본 table을 다시 읽어 graph model과 provenance를 만들고 revision을 1 올린다. 관측 explicit key 또는 살아 있는 persisted row key는 행 재정렬 후에도 유지한다. 원본 program, 입력, trace와 graphics는 불변이다.

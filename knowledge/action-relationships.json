@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 320,
+  "actionCount": 327,
   "relationships": [
     {
       "name": "createCanvas",
@@ -2174,6 +2174,49 @@
     },
     {
       "name": "layoutGraph",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createFlowData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editFlowData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "layoutFlow",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createFlowNodes",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editFlowNodes",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createFlowLinks",
+      "wraps": [
+        "createCoordinate",
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editFlowLinks",
       "wraps": [
         "editSemantic"
       ]

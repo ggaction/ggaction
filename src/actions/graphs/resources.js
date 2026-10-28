@@ -21,7 +21,7 @@ export const createGraphData = /* @__PURE__ */ closedAction(
 
 export const editGraphData = /* @__PURE__ */ closedAction(
   { op: "editGraphData", description: "Revise an observed graph and preserve typed endpoint identity." }, ["target", "nodes", "edges", "definition"], function (args = {}) {
-    const previous = resolveGraphResource(this, args.target, "observed");
+    const previous = resolveGraphResource(this, args.target, "observed", false);
     const { nodes, edges, definition = {} } = args;
     ownRecord(definition, "Graph definition patch");
     if (Object.keys(args).every(key => key === "target")) throw new TypeError("Graph edits require a nonempty patch.");
@@ -43,8 +43,10 @@ export function reviseGraphInputs(program, replacements) {
     if (resource.kind !== "graph") continue;
     const nodes = replacements.get(resource.inputs[resource.options.roles.nodes].id);
     const edges = replacements.get(resource.inputs[resource.options.roles.edges].id);
-    if (nodes !== undefined || edges !== undefined) next = next.editGraphData({ target: resource.id,
-      ...(nodes === undefined ? {} : { nodes }), ...(edges === undefined ? {} : { edges }) });
+    if (nodes !== undefined || edges !== undefined) {
+      const args = { target: resource.id, ...(nodes === undefined ? {} : { nodes }), ...(edges === undefined ? {} : { edges }) };
+      next = resource.options.flow ? next.editFlowData(args) : next.editGraphData(args);
+    }
   }
   return next;
 }

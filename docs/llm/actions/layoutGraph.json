@@ -3,7 +3,7 @@
   "name": "layoutGraph",
   "layer": "user-facing",
   "domain": "core",
-  "summary": "Store fixed, circular, or deterministic force positions for an existing graph.",
+  "summary": "Store a fixed, circular, or deterministic force layout of an existing graph.",
   "signature": "layoutGraph(options: TargetedOptions<LayoutGraphOptions>): ChartProgram;",
   "intents": [
     "layout graph",

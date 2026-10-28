@@ -1004,6 +1004,26 @@
     "Graph": [
       "graph layout",
       "node positions"
+    ],
+    "FlowData": [
+      "flow graph",
+      "directed flow values",
+      "conservation"
+    ],
+    "Flow": [
+      "Sankey layout",
+      "DAG flow",
+      "cyclic flow"
+    ],
+    "FlowNodes": [
+      "flow nodes",
+      "flow rectangles",
+      "flow labels"
+    ],
+    "FlowLinks": [
+      "flow links",
+      "flow ribbons",
+      "feedback lanes"
     ]
   },
   "summaryOverrides": {
@@ -1026,8 +1046,7 @@
     "createGraphics": "Creates one backend-neutral concrete graphic resource inside an extension action.",
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action.",
     "encodeChannels": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state.",
-    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token.",
-    "layoutGraph": "Store fixed, circular, or deterministic force positions for an existing graph."
+    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token."
   },
   "sampleOverrides": {
     "createStackData": {
@@ -1920,6 +1939,15 @@
       "id": "network-layout",
       "graph": "network",
       "method": "circular"
+    },
+    "createFlowData": {
+      "id": "flow",
+      "nodes": "nodes",
+      "edges": "edges",
+      "nodeKey": "name",
+      "source": "from",
+      "target": "to",
+      "value": "amount"
     }
   },
   "callPatternOverrides": {

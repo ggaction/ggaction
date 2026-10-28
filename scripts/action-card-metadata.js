@@ -27,7 +27,7 @@ const analysisChartEditorNames = new Set([
 
 const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot", "createLayerPlot"]);
 const coreH3Names = new Set([
-  "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "removeResource",
+  "editFlowData", "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "removeResource",
   "applyTextMetrics",
   "removeTextMetrics",
   "reviseData",
@@ -64,6 +64,14 @@ const explicitFacadeEditors = Object.freeze({
 });
 
 const explicitLifecycleEditors = Object.freeze({
+  createFlowData: ["editFlowData", "removeResource"],
+  editFlowData: ["editFlowData", "removeResource"],
+  layoutFlow: ["editLayout", "removeResource"],
+  createFlowNodes: ["editFlowNodes", "removeMark"],
+  editFlowNodes: ["editFlowNodes", "removeMark"],
+  createFlowLinks: ["editFlowLinks", "removeMark"],
+  editFlowLinks: ["editFlowLinks", "removeMark"],
+
   createHierarchyData: ["editHierarchyData", "removeResource"],
   editHierarchyData: ["editHierarchyData", "removeResource"],
   layoutHierarchy: ["editLayout", "removeResource"],
@@ -143,6 +151,7 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks",
   "layoutGraph",
   "createGraphData",
   "editGraphData",

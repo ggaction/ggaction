@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add Full-only `createFlowData`, `editFlowData`, `layoutFlow`, `createFlowNodes`, `editFlowNodes`, `createFlowLinks`, and `editFlowLinks` for conserved Sankey flows and cyclic feedback. Store explicit node/edge identities, common value-to-thickness scales, and all feedback edges; preserve labels, selections and offline snapshots across source and layout revisions.
+
 - Add Full-only `layoutGraph` for stored fixed, circular, and seeded force layouts. Share `editLayout` with hierarchy layouts and preserve graph bindings, pins, component packing and limits through data revisions and offline restoration.
 
 - Add Full-only `createGraphData` and `editGraphData` for observed node and edge tables, with typed keys, stable parallel-edge identity, exact source revisions, and validated offline snapshots.

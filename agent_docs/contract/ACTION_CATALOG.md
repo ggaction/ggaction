@@ -328,6 +328,13 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createTreemapPlot`](current/HIERARCHY.md#createtreemapplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTreemapPlot`](current/HIERARCHY.md#edittreemapplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`layoutGraph`](current/GRAPHS.md#layoutgraph) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createFlowData`](current/FLOWS.md#createflowdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editFlowData`](current/FLOWS.md#editflowdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`layoutFlow`](current/FLOWS.md#layoutflow) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createFlowNodes`](current/FLOWS.md#createflownodes) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editFlowNodes`](current/FLOWS.md#editflownodes) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createFlowLinks`](current/FLOWS.md#createflowlinks) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editFlowLinks`](current/FLOWS.md#editflowlinks) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

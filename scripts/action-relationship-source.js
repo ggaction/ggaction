@@ -535,6 +535,14 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
+    chart().createCanvas().createData({ id: "flowNodesSource", values: [{ id: "a" }, { id: "b" }] })
+      .createData({ id: "flowEdgesSource", values: [{ id: "ab", from: "a", to: "b", amount: 5 }] })
+      .createFlowData({ id: "flow", nodes: "flowNodesSource", edges: "flowEdgesSource", nodeKey: "id", source: "from", target: "to", edgeKey: "id", value: "amount" })
+      .layoutFlow({ id: "flow-layout", method: "dag" })
+      .createFlowLinks().createFlowNodes({ labels: {} })
+      .editFlowLinks({ links: { opacity: .6 } }).editFlowNodes({ nodes: { fill: "#123456" } })
+      .editLayout({ target: "flow-layout", options: { nodePadding: 10 } })
+      .editFlowData({ target: "flow", definition: { balance: "strict" } }),
     chart().createData({ id: "graphNodes", values: [{ id: "a" }, { id: "b" }], keyField: "id" })
       .createData({ id: "graphEdges", values: [{ from: "a", to: "b" }] })
       .createGraphData({ id: "network", nodes: "graphNodes", edges: "graphEdges", nodeKey: "id", source: "from", target: "to" })

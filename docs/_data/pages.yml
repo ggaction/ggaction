@@ -490,3 +490,10 @@
 - title: Hierarchy Tutorial
   url: /tutorials/hierarchy/
   parent: /tutorials/
+
+- title: Flow Data and Sankey Layouts
+  url: /api/flows/
+  parent: /api/
+- title: Draw Conserved Flows
+  url: /tutorials/flows/
+  parent: /tutorials/

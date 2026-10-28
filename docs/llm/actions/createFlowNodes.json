@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 3,
+  "name": "createFlowNodes",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Create flow node rectangles and optional labels from a stored layout.",
+  "signature": "createFlowNodes(options?: TargetedOptions<FlowNodesOptions>): ChartProgram;",
+  "intents": [
+    "create flow nodes",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "flow nodes",
+    "flow rectangles"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "stored DAG or cyclic flow layout"
+    ],
+    "owns": [
+      "flow mark"
+    ],
+    "idOptions": [
+      "id",
+      "layout",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editFlowNodes",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "stored DAG or cyclic flow layout"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "nodes",
+      "required": false,
+      "type": "(FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey; })[] | undefined; }) | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | FlowLabelsOptions | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createFlowNodes({ id?, coordinate?, target?, layout?, clip?, nodes?, labels? })"
+  ],
+  "snippet": "program.createFlowNodes({})",
+  "errors": [],
+  "route": "/reference/actions/marks/#createflownodes"
+}

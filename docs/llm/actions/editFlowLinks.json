@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 3,
+  "name": "editFlowLinks",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Edit flow ribbon styling or layout binding.",
+  "signature": "editFlowLinks(options: TargetedOptions<EditFlowLinksOptions>): ChartProgram;",
+  "intents": [
+    "edit flow links",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "flow links",
+    "flow ribbons"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "stored DAG or cyclic flow layout"
+    ],
+    "owns": [
+      "flow mark"
+    ],
+    "idOptions": [
+      "target",
+      "layout",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editFlowLinks",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "stored DAG or cyclic flow layout"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "links",
+      "required": false,
+      "type": "(FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey; })[] | undefined; }) | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editFlowLinks({ target?, coordinate?, layout?, clip?, links? })"
+  ],
+  "snippet": "program.editFlowLinks({ layout: \"layout\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editflowlinks"
+}

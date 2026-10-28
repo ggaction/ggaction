@@ -4103,7 +4103,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `order` | Optional / branch-dependent | `HierarchyOrder \| undefined` |
-| `options` | Optional / branch-dependent | `GraphCircularOptions \| GraphForceOptions \| Partial<...> \| Partial<...> \| { ...; } \| Partial<...> \| undefined` |
+| `options` | Optional / branch-dependent | `FlowLayoutOptions \| GraphCircularOptions \| GraphForceOptions \| Partial<...> \| Partial<...> \| { ...; } \| Partial<...> \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -4286,6 +4286,112 @@ layoutGraph({ id, graph?, method, options? })
 
 Store a fixed, circular, or deterministic force layout of an existing graph. Full only.
 [Graph data and layouts](../../../../api/data/source-and-derived/#layoutgraph)
+
+## `createFlowData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+createFlowData(options: CreateFlowDataOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateFlowDataOptions`](../../../../reference/types/#type-createflowdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `nodes` | Required | `string` |
+| `edges` | Required | `string` |
+| `nodeKey` | Required | `GraphKeyField` |
+| `source` | Required | `GraphKeyField` |
+| `target` | Required | `GraphKeyField` |
+| `edgeKey` | Optional / branch-dependent | `GraphKeyField \| undefined` |
+| `attributes` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `selfLoops` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+| `maxEdges` | Optional / branch-dependent | `number \| undefined` |
+| `value` | Required | `string` |
+| `balance` | Optional / branch-dependent | `"allow" \| "strict" \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createFlowData({ id, nodes, edges, nodeKey, source, target, value, edgeKey?, attributes?, selfLoops?, balance?, maxNodes?, maxEdges? })
+```
+
+Store directed flow values and an explicit balance policy. Full only.
+[Flow data and Sankey layouts](../../../../api/flows/#createflowdata)
+
+## `editFlowData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+editFlowData(options: TargetedOptions<EditFlowDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`EditFlowDataOptions`](../../../../reference/types/#type-editflowdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `nodes` | Optional / branch-dependent | `string \| undefined` |
+| `edges` | Optional / branch-dependent | `string \| undefined` |
+| `definition` | Optional / branch-dependent | `Partial<FlowDefinition> \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editFlowData({ target?, nodes?, edges?, definition? })
+```
+
+Revise flow data and refresh dependent layouts, nodes, links, labels and selections. Full only.
+[Flow data and Sankey layouts](../../../../api/flows/#editflowdata)
+
+## `layoutFlow`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+layoutFlow(options: TargetedOptions<LayoutFlowOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`LayoutFlowOptions`](../../../../reference/types/#type-layoutflowoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `graph` | Optional / branch-dependent | `string \| undefined` |
+| `method` | Required | `"cyclic" \| "dag"` |
+| `options` | Optional / branch-dependent | `FlowLayoutOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+layoutFlow({ id, graph?, method, options? })
+```
+
+Store a DAG or cyclic Sankey layout while preserving every edge. Full only.
+[Flow data and Sankey layouts](../../../../api/flows/#layoutflow)
 
 ## Focused core data editing
 

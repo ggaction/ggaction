@@ -3,6 +3,7 @@ import { encodeValue } from "../../core/valueEncoding.js";
 import { encodeRowKey } from "../../core/itemIdentity.js";
 import { ownRecord } from "../../core/ownData.js";
 import { indexGraphModel } from "../../grammar/graph/model.js";
+import { normalizeFlowBalance, summarizeFlow } from "../../grammar/flow/model.js";
 import { resolveObservedGraphInput } from "../../grammar/graph/input.js";
 import { graphSourceRows, graphSourceKey, graphAttributes, graphFieldValue } from "../../grammar/graph/fields.js";
 import { resolveInputReference } from "../../selectors/resources.js";
@@ -16,7 +17,8 @@ function exact(value, fields, label) {
 
 function validateStored(resource) {
   if (resource.provenance.origin !== "observed" || !same(resource.ownership, { mode: "authored" })) throw new TypeError("Observed graph resources require authored ownership and observed provenance.");
-  exact(resource.options, ["roles", "definition"], "Graph options");
+  const flow = Object.hasOwn(resource.options, "flow");
+  exact(resource.options, flow ? ["roles", "definition", "flow"] : ["roles", "definition"], "Graph options");
   exact(resource.options.roles, ["nodes", "edges"], "Observed graph roles");
   if (![1, 2].includes(resource.inputs.length) || resource.inputs.some(input => input.kind !== "data") ||
       resource.options.roles.nodes !== 0 || resource.options.roles.edges !== resource.inputs.length - 1) throw new TypeError("Observed graph inputs require canonical node and edge roles.");
@@ -25,10 +27,12 @@ function validateStored(resource) {
   const normalized = resolveObservedGraphInput([], [], definition, Object.hasOwn(definition, "edgeKey") ? undefined : []).options;
   if (!same(normalized, definition)) throw new TypeError("Observed graph options must store all resolved defaults.");
   exact(resource.result, ["model", "diagnostics"], "Graph result");
-  if (resource.result.diagnostics !== null) throw new TypeError("Observed graphs do not have inference diagnostics.");
+  if (!flow && resource.result.diagnostics !== null) throw new TypeError("Observed graphs do not have inference diagnostics.");
   const model = resource.result.model;
   indexGraphModel(model, { maxNodes: definition.maxNodes, maxEdges: definition.maxEdges });
   if (model.directed !== definition.directed || model.selfLoops !== definition.selfLoops || model.edges.some(edge => edge.origin !== "observed")) throw new TypeError("Observed graph topology disagrees with its definition.");
+  if (flow && (!same(normalizeFlowBalance(resource.options.flow), resource.options.flow) || !Object.hasOwn(definition, "weight") ||
+      !same(resource.result.diagnostics, { flow: summarizeFlow(model, resource.options.flow) }))) throw new TypeError("Flow graph diagnostics or definition are stale.");
 }
 
 function validateBindings(program, resource) {

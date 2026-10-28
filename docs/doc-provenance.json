@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:9159158041527366fbcea8a11fdcdaaf13adcdfccd434c8ebd3c9ae2e268b912",
+  "contractId": "sha256:32b7c029bed896d136d17e81508bf6982ee0cf4d1c24e31932b41428ac3d1ff2",
   "sourceCommit": null,
   "sourceRef": "main",
-  "exampleSourceRef": "b6291b4db13fc895cd966e6025e092c14c31726e",
+  "exampleSourceRef": "codex/roadmap9-flow",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 320,
+  "actionCount": 327,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -163,6 +163,34 @@
       "status": "development"
     },
     "createParameter": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createFlowData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editFlowData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "layoutFlow": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createFlowNodes": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editFlowNodes": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createFlowLinks": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editFlowLinks": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

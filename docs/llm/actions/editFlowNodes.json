@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 3,
+  "name": "editFlowNodes",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Edit flow node styling, labels or layout binding.",
+  "signature": "editFlowNodes(options: TargetedOptions<EditFlowNodesOptions>): ChartProgram;",
+  "intents": [
+    "edit flow nodes",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "flow nodes",
+    "flow rectangles"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "stored DAG or cyclic flow layout"
+    ],
+    "owns": [
+      "flow mark"
+    ],
+    "idOptions": [
+      "target",
+      "layout",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editFlowNodes",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "stored DAG or cyclic flow layout"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "nodes",
+      "required": false,
+      "type": "(FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey; })[] | undefined; }) | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | FlowLabelsOptions | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editFlowNodes({ target?, coordinate?, layout?, clip?, nodes?, labels? })"
+  ],
+  "snippet": "program.editFlowNodes({ layout: \"layout\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editflownodes"
+}

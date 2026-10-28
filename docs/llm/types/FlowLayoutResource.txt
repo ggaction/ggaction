@@ -1,0 +1,9 @@
+export interface FlowLayoutResource extends Omit<GraphLayoutResource, "options" | "result"> {
+  readonly options: { readonly method: "dag" | "cyclic"; readonly options: Readonly<Required<FlowLayoutOptions>> };
+  readonly result: {
+    readonly algorithm: "sankey@1"; readonly nodes: readonly FlowLayoutNode[]; readonly edges: readonly FlowLayoutEdge[]; readonly scale: number;
+    readonly columns: readonly { readonly rank: number; readonly keys: readonly string[] }[];
+    readonly components: readonly { readonly rank: number; readonly keys: readonly string[] }[];
+    readonly bounds: { readonly left: number; readonly top: number; readonly right: number; readonly bottom: number };
+  };
+}

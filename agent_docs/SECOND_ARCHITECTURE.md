@@ -761,8 +761,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 591,000 bytes |
-| `ggaction/basic` | 343,000 bytes |
+| `ggaction` | 602,000 bytes |
+| `ggaction/basic` | 345,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 
@@ -3167,3 +3167,17 @@ paint resource를 소비한다. 정확한 값/제한/출력 차이는 current/MA
 최소 한도는803/1,184,000/5,438,000으로 조정했다. Full gzip590,274는591,000으로만
 변경하고 Basic342,113은343,000 한도 안이다. Search900,853bytes는901,000 한도로 반영한다.
 이전 한도 통과로 보고하지 않는다.
+
+### Flow data and layout ownership
+
+Flow는 observed graph의 exact source identity와 resource revision을 재사용한다. 순수
+`grammar/flow`가 conservation·SCC·배치를 계산하고 `materialization/flow`가 저장 결과 검증과
+concrete node/ribbon 생성을 소유한다. `actions/flow`는 graph→layout→mark/label/selection
+closure를 preflight하고 wrapped materialization을 호출한다. Renderer는 최종 graphicSpec만
+읽는다. 정확한 공개 계약은 [FLOWS.md](contract/current/FLOWS.md)가 소유한다.
+
+Flow 공개 확장으로 package entry는819, Node20/24 packed 최대1,200,981bytes,
+unpacked5,522,719bytes로 측정되어 한도를819/1,201,000/5,523,000으로 최소 단위 갱신했다.
+동일 minified JS의 Node20/22/24 gzip을 비교해 Full 최대601,073, Basic344,083bytes를
+확인하고 한도를602,000/345,000으로 갱신했다. SVG25,000과 기존 coverage floor는 유지한다.
+Flow 두 문서 및7action의 검색 색인은913,578bytes여서914,000으로 갱신했다.

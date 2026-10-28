@@ -1,3 +1,4 @@
+import { createFlow } from "./flow-layouts/program.js";
 import { createStructuredPaintExample } from "./structured-paints/program.js";
 import { createImageExample } from "./image-assets/program.js";
 import { createTree } from "./tree-layouts/program.js";
@@ -284,6 +285,26 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createAreaSimple(),
     browser: { path: "area-layout/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
+  }),
+  example({ id: "flow-layouts", programDirectory: "flow-layouts", testDirectory: "flow-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createFlow("dag"),
+    browser: { path: "browser-host/?chart=flow-layouts", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "flow-layouts", width: 640, height: 500 } } }
+  }),
+  example({ id: "flow-vertical", programDirectory: "flow-layouts", testDirectory: "flow-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createFlow("vertical"),
+    browser: { path: "browser-host/?chart=flow-vertical", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "flow-vertical", width: 640, height: 500 } } }
+  }),
+  example({ id: "flow-cyclic", programDirectory: "flow-layouts", testDirectory: "flow-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createFlow("cyclic"),
+    browser: { path: "browser-host/?chart=flow-cyclic", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "flow-cyclic", width: 640, height: 500 } } }
+  }),
+  example({ id: "flow-cyclic-vertical", programDirectory: "flow-layouts", testDirectory: "flow-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createFlow("cyclic-vertical"),
+    browser: { path: "browser-host/?chart=flow-cyclic-vertical", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "flow-cyclic-vertical", width: 640, height: 500 } } }
   }),
   example({ id: "tree-layouts", programDirectory: "tree-layouts", testDirectory: "tree-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
     createProgram: () => createTree("vertical"),

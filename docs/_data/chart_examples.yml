@@ -1798,3 +1798,64 @@
   actions: createHierarchyData · layoutHierarchy · createTreemapPlot
   tasks: hierarchy layout
   url: /tutorials/hierarchy/
+- id: flow-layouts
+  tutorial_order: 200
+  example: /examples/flow-layouts/
+  title: Conserved flows
+  image: /assets/images/flow-layouts.png
+  alt: Two sources contribute six and four units to a shared total
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/flow-layouts-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: Two sources contribute six and four units to a shared total.
+  summary: Validate a directed flow graph, store its layout, then draw links and nodes.
+  actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
+  tasks: flow conservation
+  url: /tutorials/flows/
+- id: flow-vertical
+  example: /examples/flow-vertical/
+  title: Vertical flows
+  image: /assets/images/flow-vertical.png
+  alt: The same conserved quantities flow from top to bottom
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/flow-vertical-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: The same conserved quantities flow from top to bottom.
+  summary: Validate a directed flow graph, store its layout, then draw links and nodes.
+  actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
+  tasks: flow conservation
+  url: /tutorials/flows/
+- id: flow-cyclic
+  example: /examples/flow-cyclic/
+  title: Cyclic flows
+  image: /assets/images/flow-cyclic.png
+  alt: Both directions remain visible in separate feedback lanes
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/flow-cyclic-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: Both directions remain visible in separate feedback lanes.
+  summary: Validate a directed flow graph, store its layout, then draw links and nodes.
+  actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
+  tasks: flow conservation
+  url: /tutorials/flows/
+- id: flow-cyclic-vertical
+  example: /examples/flow-cyclic-vertical/
+  title: Vertical feedback
+  image: /assets/images/flow-cyclic-vertical.png
+  alt: Feedback lanes and node attachments transpose together
+  width: 1280
+  height: 1000
+  thumbnail: /assets/images/flow-cyclic-vertical-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 500
+  caption: Feedback lanes and node attachments transpose together.
+  summary: Validate a directed flow graph, store its layout, then draw links and nodes.
+  actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
+  tasks: flow conservation
+  url: /tutorials/flows/

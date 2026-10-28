@@ -79,6 +79,9 @@ function finalRows(program, layer) {
         values: { ...channelMapFromRow(point.fields, layer), x: point.channels.x, y: point.channels.y }
       })));
   }
+  if (["flow-node", "flow-link"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
+    series: {}, values: item.fields
+  }));
   if (["tree", "treemap"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
     series: {}, values: { key: item.key, value: item.fields.value, depth: item.fields.depth, children: item.fields.children }
   }));
