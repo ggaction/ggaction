@@ -3293,3 +3293,17 @@ Node20·24의1,201,262 bytes이다. 동일 내부 파일의 압축 차이를 반
 Node20에서586,754/347,170/20,191gzip bytes로 측정되어 각각587,000/348,000/25,000 cap을 사용한다.
 Exact support와 lifecycle은 Current에, 최초실패와
 최종 고정 archive의 Node별 qualification은 paints/shadow-evidence에 분리 기록한다.
+
+### Flow data and layout ownership
+
+Flow는 observed graph의 exact source identity와 resource revision을 재사용한다. 순수
+`grammar/flow`가 conservation·SCC·배치를 계산하고 `materialization/flow`가 저장 결과 검증과
+concrete node/ribbon 생성을 소유한다. `actions/flow`는 graph→layout→mark/label/selection
+closure를 preflight하고 wrapped materialization을 호출한다. Renderer는 최종 graphicSpec만
+읽는다. 정확한 공개 계약은 [FLOWS.md](contract/current/FLOWS.md)가 소유한다.
+
+Flow 공개 확장으로 package entry는819, Node20/24 packed 최대1,200,981bytes,
+unpacked5,522,719bytes로 측정되어 한도를819/1,201,000/5,523,000으로 최소 단위 갱신했다.
+동일 minified JS의 Node20/22/24 gzip을 비교해 Full 최대601,073, Basic344,083bytes를
+확인하고 한도를602,000/345,000으로 갱신했다. SVG25,000과 기존 coverage floor는 유지한다.
+Flow 두 문서 및7action의 검색 색인은913,578bytes여서914,000으로 갱신했다.

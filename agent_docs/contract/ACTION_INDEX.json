@@ -5942,6 +5942,132 @@
         "file": "agent_docs/contract/current/PARTITION.md",
         "anchor": "editpartitionplot"
       }
+    },
+    {
+      "name": "createFlowData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editFlowData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "createflowdata"
+      }
+    },
+    {
+      "name": "editFlowData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editFlowData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "editflowdata"
+      }
+    },
+    {
+      "name": "layoutFlow",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editLayout`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "layoutflow"
+      }
+    },
+    {
+      "name": "createFlowNodes",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editFlowNodes`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "createflownodes"
+      }
+    },
+    {
+      "name": "editFlowNodes",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editFlowNodes`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "editflownodes"
+      }
+    },
+    {
+      "name": "createFlowLinks",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editFlowLinks`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "createflowlinks"
+      }
+    },
+    {
+      "name": "editFlowLinks",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editFlowLinks`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/FLOWS.md",
+        "anchor": "editflowlinks"
+      }
     }
   ],
   "plannedActions": [],
@@ -6031,7 +6157,9 @@
       "materializeTreePlot",
       "materializeTreemapPlot",
       "materializeGraphPlot",
-      "materializePartitionPlot"
+      "materializePartitionPlot",
+      "materializeFlowNodes",
+      "materializeFlowLinks"
     ],
     "guideComponents": [
       "createLegendBackground",

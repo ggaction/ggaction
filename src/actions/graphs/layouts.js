@@ -14,6 +14,7 @@ import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { resolveGraphPlot } from "../../materialization/graph/plot.js";
 
 function preflightLayouts(program, resources, layouts) {
+  preflightFlowLayouts(program, resources, layouts);
   const replacements = new Map(layouts.map(layout => [layout.id, layout]));
   const layers = mapLayerResourceBindings(program.semanticSpec.layers, ref => {
     const replacement = ref.kind === "layout" ? replacements.get(ref.id) : undefined;
@@ -26,10 +27,12 @@ function preflightLayouts(program, resources, layouts) {
 }
 
 function materializeLayouts(program, ids) {
-  let next = program;
+  let next = materializeFlowLayouts(program, ids);
   for (const layer of program.semanticSpec.layers) if (ids.has(layer.graphBinding?.layout.id)) next = next.materializeGraphPlot({ id: layer.id });
   return next;
 }
+import { normalizeGraphLayout } from "../../grammar/graph/layoutOptions.js";
+import { preflightFlowLayouts, materializeFlowLayouts } from "../flow/closure.js";
 
 export const layoutGraph = /* @__PURE__ */ closedAction(
   { op: "layoutGraph", description: "Compute and store an explicit graph layout." }, ["id", "graph", "method", "options"], function (args = {}) {
@@ -37,7 +40,7 @@ export const layoutGraph = /* @__PURE__ */ closedAction(
     if (findStoredResource(this, "layout", args.id)) throw annotateError(new Error("Layout already exists."), { code: "duplicate-id", resourceId: args.id });
     if (Object.values(args).some(value => value === undefined)) throw new TypeError("Graph layout arguments cannot contain undefined.");
     const graph = resolveGraphResource(this, args.graph);
-    const resource = createGraphLayoutResource({ id: args.id, graph, intent: { method: args.method, options: args.options } });
+    const resource = createGraphLayoutResource({ id: args.id, graph, intent: normalizeGraphLayout(args.method, args.options) });
     return this.editSemantic({ property: `resource[layout:${resource.id}]`, value: resource });
   });
 

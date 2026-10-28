@@ -67,6 +67,13 @@ interface ChartProgramActions {
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createFlowData(options: CreateFlowDataOptions): ChartProgram;
+  editFlowData(options: TargetedOptions<EditFlowDataOptions>): ChartProgram;
+  layoutFlow(options: TargetedOptions<LayoutFlowOptions>): ChartProgram;
+  createFlowNodes(options?: TargetedOptions<FlowNodesOptions>): ChartProgram;
+  editFlowNodes(options: TargetedOptions<EditFlowNodesOptions>): ChartProgram;
+  createFlowLinks(options?: TargetedOptions<FlowLinksOptions>): ChartProgram;
+  editFlowLinks(options: TargetedOptions<EditFlowLinksOptions>): ChartProgram;
   createGraphData(options: CreateGraphDataOptions): ChartProgram;
   createInferredGraphData(options: CreateInferredGraphDataOptions): ChartProgram;
   editInferredGraphData(options: TargetedOptions<EditInferredGraphDataOptions>): ChartProgram;
@@ -3018,6 +3025,21 @@ export interface CreateECDFPlotOptions {
 
 Related types: [`ECDFOutputFields`](#type-ecdfoutputfields) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`EndpointLabelOptions`](#type-endpointlabeloptions) · [`CartesianPathGuideOptions`](#type-cartesianpathguideoptions).
 
+### `CreateFlowDataOptions` {#type-createflowdataoptions}
+
+<details markdown="1">
+<summary>Expand CreateFlowDataOptions</summary>
+
+```typescript
+export interface CreateFlowDataOptions extends FlowDefinition {
+  readonly id: string; readonly nodes: string; readonly edges: string;
+}
+```
+
+</details>
+
+Related types: [`FlowDefinition`](#type-flowdefinition).
+
 ### `CreateGraphDataOptions` {#type-creategraphdataoptions}
 
 <details markdown="1">
@@ -5871,6 +5893,48 @@ export type EditFlattenDataOptions = FocusedDerivedDataEdit<FlattenDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`FlattenDataOptions`](#type-flattendataoptions).
 
+### `EditFlowDataOptions` {#type-editflowdataoptions}
+
+<details markdown="1">
+<summary>Expand EditFlowDataOptions</summary>
+
+```typescript
+export interface EditFlowDataOptions {
+  readonly target?: string; readonly nodes?: string; readonly edges?: string;
+  readonly definition?: Partial<FlowDefinition>;
+}
+```
+
+</details>
+
+Related types: [`FlowDefinition`](#type-flowdefinition).
+
+### `EditFlowLinksOptions` {#type-editflowlinksoptions}
+
+<details markdown="1">
+<summary>Expand EditFlowLinksOptions</summary>
+
+```typescript
+export interface EditFlowLinksOptions extends Omit<FlowLinksOptions, "id"> { readonly target?: string; }
+```
+
+</details>
+
+Related types: [`FlowLinksOptions`](#type-flowlinksoptions).
+
+### `EditFlowNodesOptions` {#type-editflownodesoptions}
+
+<details markdown="1">
+<summary>Expand EditFlowNodesOptions</summary>
+
+```typescript
+export interface EditFlowNodesOptions extends Omit<FlowNodesOptions, "id"> { readonly target?: string; }
+```
+
+</details>
+
+Related types: [`FlowNodesOptions`](#type-flownodesoptions).
+
 ### `EditFoldDataOptions` {#type-editfolddataoptions}
 
 <details markdown="1">
@@ -6085,12 +6149,12 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Int
 ```typescript
 export type EditLayoutOptions = { target?: string } & (
   { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
-  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions });
+  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions });
 ```
 
 </details>
 
-Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions) · [`GraphFixedOptions`](#type-graphfixedoptions) · [`GraphCircularOptions`](#type-graphcircularoptions) · [`GraphForceOptions`](#type-graphforceoptions).
+Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions) · [`GraphFixedOptions`](#type-graphfixedoptions) · [`GraphCircularOptions`](#type-graphcircularoptions) · [`GraphForceOptions`](#type-graphforceoptions) · [`FlowLayoutOptions`](#type-flowlayoutoptions).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 
@@ -7950,6 +8014,115 @@ export interface FlattenDataOptions {
 
 </details>
 
+### `FlowBodyPaint` {#type-flowbodypaint}
+
+<details markdown="1">
+<summary>Expand FlowBodyPaint</summary>
+
+```typescript
+export interface FlowBodyPaint { readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; }
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint).
+
+### `FlowDefinition` {#type-flowdefinition}
+
+<details markdown="1">
+<summary>Expand FlowDefinition</summary>
+
+```typescript
+export interface FlowDefinition extends Omit<ObservedGraphDefinition, "weight" | "directed"> {
+  readonly value: string;
+  readonly balance?: "allow" | "strict";
+}
+```
+
+</details>
+
+Related types: [`ObservedGraphDefinition`](#type-observedgraphdefinition).
+
+### `FlowLabelPaint` {#type-flowlabelpaint}
+
+<details markdown="1">
+<summary>Expand FlowLabelPaint</summary>
+
+```typescript
+export interface FlowLabelPaint { readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number; }
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint).
+
+### `FlowLabelsOptions` {#type-flowlabelsoptions}
+
+<details markdown="1">
+<summary>Expand FlowLabelsOptions</summary>
+
+```typescript
+export interface FlowLabelsOptions extends FlowLabelPaint {
+  readonly content?: "key" | "value" | { readonly field: string }; readonly offset?: readonly [number, number];
+  readonly overrides?: readonly (FlowLabelPaint & { readonly key: RowKey; readonly text?: string })[];
+}
+```
+
+</details>
+
+Related types: [`FlowLabelPaint`](#type-flowlabelpaint) · [`RowKey`](#type-rowkey).
+
+### `FlowLayoutOptions` {#type-flowlayoutoptions}
+
+<details markdown="1">
+<summary>Expand FlowLayoutOptions</summary>
+
+```typescript
+export interface FlowLayoutOptions extends GraphLayoutLimits {
+  readonly width?: number; readonly height?: number; readonly nodeWidth?: number; readonly nodePadding?: number;
+  readonly align?: "left" | "right" | "center" | "justify";
+  readonly order?: "input" | "barycentric" | readonly RowKey[];
+  readonly iterations?: number; readonly laneGap?: number; readonly orientation?: "horizontal" | "vertical";
+}
+```
+
+</details>
+
+Related types: [`GraphLayoutLimits`](#type-graphlayoutlimits) · [`RowKey`](#type-rowkey).
+
+### `FlowLinksOptions` {#type-flowlinksoptions}
+
+<details markdown="1">
+<summary>Expand FlowLinksOptions</summary>
+
+```typescript
+export interface FlowLinksOptions {
+  readonly id?: string; readonly layout?: string; readonly coordinate?: string; readonly clip?: boolean;
+  readonly links?: FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey })[] };
+}
+```
+
+</details>
+
+Related types: [`FlowBodyPaint`](#type-flowbodypaint) · [`RowKey`](#type-rowkey).
+
+### `FlowNodesOptions` {#type-flownodesoptions}
+
+<details markdown="1">
+<summary>Expand FlowNodesOptions</summary>
+
+```typescript
+export interface FlowNodesOptions {
+  readonly id?: string; readonly layout?: string; readonly coordinate?: string; readonly clip?: boolean;
+  readonly nodes?: FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey })[] };
+  readonly labels?: false | FlowLabelsOptions;
+}
+```
+
+</details>
+
+Related types: [`FlowBodyPaint`](#type-flowbodypaint) · [`RowKey`](#type-rowkey) · [`FlowLabelsOptions`](#type-flowlabelsoptions).
+
 ### `FocusedDerivedDataEdit` {#type-focusedderiveddataedit}
 
 <details markdown="1">
@@ -9326,6 +9499,21 @@ export type LayerPlotSpecification = {
 </details>
 
 Related types: [`AdjacentPlotSpecification`](#type-adjacentplotspecification).
+
+### `LayoutFlowOptions` {#type-layoutflowoptions}
+
+<details markdown="1">
+<summary>Expand LayoutFlowOptions</summary>
+
+```typescript
+export interface LayoutFlowOptions {
+  readonly id: string; readonly graph?: string; readonly method: "dag" | "cyclic"; readonly options?: FlowLayoutOptions;
+}
+```
+
+</details>
+
+Related types: [`FlowLayoutOptions`](#type-flowlayoutoptions).
 
 ### `LayoutGraphOptions` {#type-layoutgraphoptions}
 

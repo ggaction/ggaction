@@ -3518,6 +3518,68 @@ editPartitionPlot({ target?, layout?, coordinate?, focus?, rootVisible?, prunedS
 
 Edit an icicle or sunburst from stored partition intervals, with explicit focus and stable node identity. Full only.
 [Partition plots](../api/partition.md#editpartitionplot)
+### `createFlowData`
+
+```javascript
+createFlowData({ id, nodes, edges, nodeKey, source, target, value, edgeKey?, attributes?, selfLoops?, balance?, maxNodes?, maxEdges? })
+```
+
+Store directed flow values and an explicit balance policy. Full only.
+[Flow data and Sankey layouts](../api/flows.md#createflowdata)
+
+### `editFlowData`
+
+```javascript
+editFlowData({ target?, nodes?, edges?, definition? })
+```
+
+Revise flow data and refresh dependent layouts, nodes, links, labels and selections. Full only.
+[Flow data and Sankey layouts](../api/flows.md#editflowdata)
+
+### `layoutFlow`
+
+```javascript
+layoutFlow({ id, graph?, method, options? })
+```
+
+Store a DAG or cyclic Sankey layout while preserving every edge. Full only.
+[Flow data and Sankey layouts](../api/flows.md#layoutflow)
+
+### `createFlowNodes`
+
+```javascript
+createFlowNodes({ id?, layout?, coordinate?, clip?, nodes?, labels? })
+```
+
+Create flow node rectangles and optional labels from a stored layout. Full only.
+[Flow data and Sankey layouts](../api/flows.md#createflownodes)
+
+### `editFlowNodes`
+
+```javascript
+editFlowNodes({ target?, layout?, coordinate?, clip?, nodes?, labels? })
+```
+
+Edit flow node styling, labels or layout binding. Full only.
+[Flow data and Sankey layouts](../api/flows.md#editflownodes)
+
+### `createFlowLinks`
+
+```javascript
+createFlowLinks({ id?, layout?, coordinate?, clip?, links? })
+```
+
+Create closed flow ribbons from a stored layout. Full only.
+[Flow data and Sankey layouts](../api/flows.md#createflowlinks)
+
+### `editFlowLinks`
+
+```javascript
+editFlowLinks({ target?, layout?, coordinate?, clip?, links? })
+```
+
+Edit flow ribbon styling or layout binding. Full only.
+[Flow data and Sankey layouts](../api/flows.md#editflowlinks)
 
 ## Advanced Chart API
 

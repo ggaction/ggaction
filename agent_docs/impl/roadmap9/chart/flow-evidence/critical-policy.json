@@ -1,0 +1,39 @@
+{
+  "status": "passed-across-unchanged-source-runs",
+  "totalCriticalFloors": 336,
+  "originalCriticalFloorsPassed": 334,
+  "originalGlobal": {
+    "lines": 96.41,
+    "branches": 94.26,
+    "functions": 98.87
+  },
+  "focusedOwners": {
+    "renderers/canvas/circle.js": {
+      "floor": {
+        "lines": 75,
+        "branches": 60,
+        "functions": 80
+      },
+      "metrics": {
+        "lines": 84.13,
+        "branches": 66.67,
+        "functions": 100
+      }
+    },
+    "renderers/canvas/path.js": {
+      "floor": {
+        "lines": 75,
+        "branches": 60,
+        "functions": 80
+      },
+      "metrics": {
+        "lines": 79.52,
+        "branches": 79.41,
+        "functions": 100
+      }
+    }
+  },
+  "floorsLowered": false,
+  "source": "3a3ec85d834ccc0fb36079b52d0df879e1c20831",
+  "note": "Original full run remains 7361/7362 (one generated baseline registry failure). Focused repair runs are recorded separately; no synthetic merged global coverage."
+}

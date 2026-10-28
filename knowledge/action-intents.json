@@ -1025,6 +1025,26 @@
       "nearest neighbor network",
       "similarity and spanning graph",
       "group and sequence connections"
+    ],
+    "FlowData": [
+      "flow graph",
+      "directed flow values",
+      "conservation"
+    ],
+    "Flow": [
+      "Sankey layout",
+      "DAG flow",
+      "cyclic flow"
+    ],
+    "FlowNodes": [
+      "flow nodes",
+      "flow rectangles",
+      "flow labels"
+    ],
+    "FlowLinks": [
+      "flow links",
+      "flow ribbons",
+      "feedback lanes"
     ]
   },
   "summaryOverrides": {
@@ -1997,6 +2017,15 @@
           "k": 2
         }
       }
+    },
+    "createFlowData": {
+      "id": "flow",
+      "nodes": "nodes",
+      "edges": "edges",
+      "nodeKey": "name",
+      "source": "from",
+      "target": "to",
+      "value": "amount"
     }
   },
   "callPatternOverrides": {

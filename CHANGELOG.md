@@ -8,6 +8,7 @@ All notable changes to `ggaction` are recorded in this file.
 - Add Full-only `createInferredGraphData` and `editInferredGraphData` for nearest-neighbor, radius, similarity, spanning, group and sequence relationships. Preserve typed edge identities, source revisions, preprocessing and search diagnostics through dependent layouts, inspection, accessibility and offline restoration.
 
 - Add Full-only `createGraphPlot` and `editGraphPlot` for explicit graph layouts, with directed arrows, separate parallel edges, self-loops, typed node styles and labels. Preserve node and edge source rows through selections, graph/layout revisions, scoped composition and offline snapshots across Canvas, SVG, PNG and PDF.
+- Add Full-only `createFlowData`, `editFlowData`, `layoutFlow`, `createFlowNodes`, `editFlowNodes`, `createFlowLinks`, and `editFlowLinks` for conserved Sankey flows and cyclic feedback. Store explicit node/edge identities, common value-to-thickness scales, and all feedback edges; preserve labels, selections and offline snapshots across source and layout revisions.
 
 - Add Full-only `layoutGraph` for stored fixed, circular, and seeded force layouts. Share `editLayout` with hierarchy layouts and preserve graph bindings, pins, component packing and limits through data revisions and offline restoration.
 

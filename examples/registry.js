@@ -2,6 +2,7 @@ import { createGraph } from "./graph-plots/program.js";
 import { createTextShadowExample } from "./text-shadows/program.js";
 import { createMarkShadowExample } from "./mark-shadows/program.js";
 import { createMarkOutlineExample } from "./mark-outlines/program.js";
+import { createFlow } from "./flow-layouts/program.js";
 import { createStructuredPaintExample } from "./structured-paints/program.js";
 import { createImageExample } from "./image-assets/program.js";
 import { createFontExample } from "./font-assets/program.js";
@@ -310,6 +311,26 @@ export const PUBLIC_CHARTS = Object.freeze([
   example({ id: "graph-self-loop", programDirectory: "graph-plots", testDirectory: "graph-plots", data: {}, width: 300, height: 240, docsGroup: "tutorials",
     createProgram: () => createGraph("self-loop"),
     browser: { path: "browser-host/?chart=graph-self-loop", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "graph-self-loop", width: 300, height: 240 } } }
+  }),
+  example({ id: "flow-layouts", programDirectory: "flow-layouts", testDirectory: "flow-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createFlow("dag"),
+    browser: { path: "browser-host/?chart=flow-layouts", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "flow-layouts", width: 640, height: 500 } } }
+  }),
+  example({ id: "flow-vertical", programDirectory: "flow-layouts", testDirectory: "flow-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createFlow("vertical"),
+    browser: { path: "browser-host/?chart=flow-vertical", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "flow-vertical", width: 640, height: 500 } } }
+  }),
+  example({ id: "flow-cyclic", programDirectory: "flow-layouts", testDirectory: "flow-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createFlow("cyclic"),
+    browser: { path: "browser-host/?chart=flow-cyclic", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "flow-cyclic", width: 640, height: 500 } } }
+  }),
+  example({ id: "flow-cyclic-vertical", programDirectory: "flow-layouts", testDirectory: "flow-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
+    createProgram: () => createFlow("cyclic-vertical"),
+    browser: { path: "browser-host/?chart=flow-cyclic-vertical", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "flow-cyclic-vertical", width: 640, height: 500 } } }
   }),
   example({ id: "tree-layouts", programDirectory: "tree-layouts", testDirectory: "tree-layouts", data: {}, width: 640, height: 500, docsGroup: "tutorials",
     createProgram: () => createTree("vertical"),

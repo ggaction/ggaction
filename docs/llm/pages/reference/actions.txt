@@ -51,6 +51,9 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createErrorBand`](../../../reference/actions/statistics/#createerrorband) | H1 | user-facing | statistics |
 | [`createErrorBar`](../../../reference/actions/statistics/#createerrorbar) | H1 | user-facing | statistics |
 | [`createFlattenData`](../../../reference/actions/statistics/#createflattendata) | H1 | user-facing | statistics |
+| [`createFlowData`](../../../reference/actions/charts-data/#createflowdata) | H2 | user-facing | core |
+| [`createFlowLinks`](../../../reference/actions/marks/#createflowlinks) | H2 | user-facing | marks |
+| [`createFlowNodes`](../../../reference/actions/marks/#createflownodes) | H2 | user-facing | marks |
 | [`createFoldData`](../../../reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
 | [`createFontResource`](../../../reference/actions/charts-data/#createfontresource) | H3 | user-facing | core |
 | [`createGradientPlot`](../../../reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
@@ -174,6 +177,9 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFacetSource`](../../../reference/actions/charts-data/#editfacetsource) | H3 | user-facing | composition |
 | [`editFilteredData`](../../../reference/actions/charts-data/#editfiltereddata) | H2 | user-facing | core |
 | [`editFlattenData`](../../../reference/actions/statistics/#editflattendata) | H1, H3 | user-facing | statistics |
+| [`editFlowData`](../../../reference/actions/charts-data/#editflowdata) | H3 | user-facing | core |
+| [`editFlowLinks`](../../../reference/actions/marks/#editflowlinks) | H3 | user-facing | marks |
+| [`editFlowNodes`](../../../reference/actions/marks/#editflownodes) | H3 | user-facing | marks |
 | [`editFoldData`](../../../reference/actions/statistics/#editfolddata) | H1, H3 | user-facing | statistics |
 | [`editGradientPlot`](../../../reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphData`](../../../reference/actions/charts-data/#editgraphdata) | H3 | user-facing | core |
@@ -306,6 +312,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](../../../reference/actions/charts-data/#highlightmarks) | H3 | user-facing | mark-selection |
 | [`insertCompositionChild`](../../../reference/actions/charts-data/#insertcompositionchild) | H3 | user-facing | composition |
 | [`jitterPoints`](../../../reference/actions/marks/#jitterpoints) | H3 | user-facing | marks |
+| [`layoutFlow`](../../../reference/actions/charts-data/#layoutflow) | H2 | user-facing | core |
 | [`layoutGraph`](../../../reference/actions/charts-data/#layoutgraph) | H2 | user-facing | core |
 | [`layoutHierarchy`](../../../reference/actions/charts-data/#layouthierarchy) | H2 | user-facing | core |
 | [`layoutLabels`](../../../reference/actions/marks/#layoutlabels) | H3 | user-facing | marks |

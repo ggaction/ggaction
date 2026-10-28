@@ -1,0 +1,1 @@
+export interface FlowLabelPaint { readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number; }

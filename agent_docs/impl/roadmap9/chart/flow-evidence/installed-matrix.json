@@ -1,0 +1,26 @@
+[
+  {
+    "node": "20",
+    "binary": "/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node",
+    "artifact": "587c5f1994f7bff9668f8bf751e06fac97fcaf8b8e8853f7aff6eaa1c65a0757",
+    "started": "2026-10-28T22:58:29.255Z",
+    "finished": "2026-10-28T23:00:02.583Z",
+    "exitCode": 0
+  },
+  {
+    "node": "22",
+    "binary": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+    "artifact": "587c5f1994f7bff9668f8bf751e06fac97fcaf8b8e8853f7aff6eaa1c65a0757",
+    "started": "2026-10-28T23:00:02.584Z",
+    "finished": "2026-10-28T23:01:50.591Z",
+    "exitCode": 0
+  },
+  {
+    "node": "24",
+    "binary": "/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+    "artifact": "587c5f1994f7bff9668f8bf751e06fac97fcaf8b8e8853f7aff6eaa1c65a0757",
+    "started": "2026-10-28T23:01:50.596Z",
+    "finished": "2026-10-28T23:03:42.250Z",
+    "exitCode": 0
+  }
+]

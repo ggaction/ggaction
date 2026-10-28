@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 3,
+  "name": "createFlowLinks",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Create closed flow ribbons from a stored layout.",
+  "signature": "createFlowLinks(options?: TargetedOptions<FlowLinksOptions>): ChartProgram;",
+  "intents": [
+    "create flow links",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "flow links",
+    "flow ribbons"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "stored DAG or cyclic flow layout"
+    ],
+    "owns": [
+      "flow mark"
+    ],
+    "idOptions": [
+      "id",
+      "layout",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "createCoordinate",
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editFlowLinks",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "stored DAG or cyclic flow layout"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "links",
+      "required": false,
+      "type": "(FlowBodyPaint & { readonly overrides?: readonly (FlowBodyPaint & { readonly key: RowKey; })[] | undefined; }) | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createFlowLinks({ id?, coordinate?, target?, layout?, clip?, links? })"
+  ],
+  "snippet": "program.createFlowLinks({})",
+  "errors": [],
+  "route": "/reference/actions/marks/#createflowlinks"
+}

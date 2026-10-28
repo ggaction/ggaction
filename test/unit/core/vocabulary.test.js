@@ -22,7 +22,7 @@ import {
 
 test("owns the implemented semantic and legend vocabularies in one module", () => {
   assert.deepEqual(MARK_TYPES, [
-    "point", "line", "bar", "area", "arc", "rule", "tick", "text", "rect", "image", "tree", "treemap", "graph", "partition"
+    "point", "line", "bar", "area", "arc", "rule", "tick", "text", "rect", "image", "tree", "treemap", "graph", "partition", "flow-node", "flow-link"
   ]);
   assert.deepEqual(CARTESIAN_POSITION_CHANNELS, ["x", "y"]);
   assert.deepEqual(POLAR_POSITION_CHANNELS, ["theta", "radius"]);
@@ -46,6 +46,8 @@ test("owns the implemented semantic and legend vocabularies in one module", () =
   assert.deepEqual(getMarkGraphicTypes("arc"), ["path"]);
   assert.deepEqual(getMarkGraphicTypes("partition"), ["collection"]);
   assert.deepEqual(getMarkGraphicTypes("tick"), ["line"]);
+  assert.deepEqual(getMarkGraphicTypes("flow-node"), ["collection"]);
+  assert.deepEqual(getMarkGraphicTypes("flow-link"), ["collection"]);
   assert.equal(Object.isFrozen(MARK_GRAPHIC_TYPES), true);
   assert.deepEqual(CATEGORICAL_LEGEND_CHANNELS, [
     "color", "stroke", "strokeDash", "shape"

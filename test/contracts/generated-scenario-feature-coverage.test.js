@@ -222,6 +222,12 @@ test("derives a bounded public option inventory without runtime prototype paths"
   assert.equal(inventory.counts.optionPaths, 27999);
   assert.equal(inventory.counts.requiredOptionPaths, 18851);
   assert.equal(inventory.counts.excludedOptionPaths, 9148);
+  for (const action of ["createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks"]) {
+    assert.ok(inventory.publicActions.some(value => value.name === action), action);
+  }
+  for (const id of ["option-path:createFlowData.value", "option-path:layoutFlow.options.order", "option-path:createFlowLinks.links.overrides[].key", "option-path:createFlowNodes.labels.content.field"]) {
+    assert.ok(inventory.optionPaths.some(value => value.id === id), id);
+  }
   assert.deepEqual(inventory.optionPaths.filter(option =>
     ["createData", "reviseData"].includes(option.action) && option.topLevel &&
     ["keyField", "keyFields", "keys", "rowMap"].includes(option.path)
@@ -575,7 +581,14 @@ test("derives a bounded public option inventory without runtime prototype paths"
         dataOperations: [] }, effectiveFeatures: [], renderers: ["svg"] }],
     datasetCorpus: { datasets: [datasetDefinition(preparedRecipe.datasets[0])] }, ledger
   });
-  for (const id of ["action:applyDataUpdate", "option-path:applyDataUpdate.prepared",
+  for (const id of ["action:createFlowData", "action:editFlowData", "action:layoutFlow",
+    "action:createFlowNodes", "action:editFlowNodes", "action:createFlowLinks", "action:editFlowLinks",
+    "option-path:createFlowData.value", "option-path:createFlowData.edgeKey",
+    "option-path:createFlowData.selfLoops", "option-path:createFlowData.balance",
+    "option-path:layoutFlow.method", "option-path:layoutFlow.options.iterations",
+    "option-path:createFlowNodes.labels", "option-path:editFlowNodes.nodes.opacity",
+    "option-path:editFlowLinks.links.opacity",
+    "action:applyDataUpdate", "option-path:applyDataUpdate.prepared",
     "option-path:applyDataUpdate.requestToken",
     "action:createFontResource", "option-path:createFontResource.prepared", "option-path:createFontResource.requestToken",
     "action:replaceFontResource", "option-path:replaceFontResource.prepared", "option-path:replaceFontResource.requestToken",

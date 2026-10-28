@@ -26,6 +26,10 @@ const labelProperties = program => program.graphicSpec.objects.plot.items.filter
 function plot(kind) {
   const p = chart().createCanvas({ width: 240, height: 160, margin: 0, background: "white" });
   const labels = { fontFamily: family, fontSize: 20, fontWeight: 400 };
+  if (kind === "flow") return p.createData({ id: "nodes", keyField: "id", values: [{ id: "r", label: "AB" }, { id: "a", label: "AB" }] })
+    .createData({ id: "edges", values: [{ from: "r", to: "a", value: 2 }] })
+    .createFlowData({ id: "source", nodes: "nodes", edges: "edges", nodeKey: "id", source: "from", target: "to", value: "value", attributes: ["label"] })
+    .layoutFlow({ id: "layout", method: "dag" }).createFlowNodes({ id: "plot", labels: { ...labels, content: { field: "label" } } });
   if (["graph", "inferredGraph"].includes(kind)) {
     const graph = p.createData({ id: "nodes", keyField: "id", values: [{ id: "r", label: "AB" }, { id: "a", label: "AB" }] })
       .createData({ id: "edges", values: [{ from: "r", to: "a" }] });
@@ -49,13 +53,13 @@ async function bound(kind) {
   assert.ok(queried.includes("AB"), "Resource labels participate in exact width query preparation");
   return p.applyTextMetrics({ prepared: metrics, requestToken: "current" });
 }
-for (const kind of ["graph", "inferredGraph", "tree", "treemap", "partition"]) {
+for (const kind of ["graph", "inferredGraph", "tree", "treemap", "partition", "flow"]) {
   test(`${kind} labels bind exact fonts without recalculating their resource layout`, async () => {
     const p = await bound(kind), before = serializeProgram(p), layout = p.semanticSpec.resources.find(resource => resource.kind === "layout");
     const coordinates = structuredClone(layout.result);
     assert.ok(labelProperties(p).length > 0);
     assert.ok(labelProperties(p).every(properties => properties.font.contentHash === expectedHash));
-    const edit = { graph: "editGraphPlot", inferredGraph: "editGraphPlot", tree: "editTreePlot", treemap: "editTreemapPlot", partition: "editPartitionPlot" }[kind];
+    const edit = { graph: "editGraphPlot", inferredGraph: "editGraphPlot", tree: "editTreePlot", treemap: "editTreemapPlot", partition: "editPartitionPlot", flow: "editFlowNodes" }[kind];
     assert.throws(() => p[edit]({ target: "plot", labels: { overrides: [{ key: "a", text: "BBBB" }] } }), error => error.assetCode === "metrics-required");
     assert.equal(serializeProgram(p), before);
     if (kind === "inferredGraph") {

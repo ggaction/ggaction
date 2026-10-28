@@ -30,6 +30,11 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
   "graph-self-loop": ["canvas", "networkPlot"],
   "mark-shadows": ["canvas", "background", "title", "sibling", "shadowed"],
   "text-shadows": ["canvas", "labels"],
+  "flow-layouts": ["canvas", "flowLinks", "flowNodes", "chartTitle", "chartSubtitle"],
+  "flow-vertical": ["canvas", "flowLinks", "flowNodes", "chartTitle", "chartSubtitle"],
+  "flow-cyclic": ["canvas", "flowLinks", "flowNodes", "chartTitle", "chartSubtitle"],
+  "flow-cyclic-vertical": ["canvas", "flowLinks", "flowNodes", "chartTitle", "chartSubtitle"],
+
   "structured-paints": ["canvas", "paint"],
   "mark-outlines": ["canvas", "background", "title", "outlined"],
   "image-assets": ["canvas", "plot-main", "label", "backdrop", "image-image-clip", "image"],

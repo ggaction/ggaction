@@ -473,5 +473,16 @@
       "exported": "createPartition"
     },
     "rendering": "renders-canvas"
+  },
+  "tutorials/flows.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; the example declares its own node and edge tables.",
+    "canonical": {
+      "file": "examples/flow-layouts/program.js",
+      "exported": "createFlow"
+    },
+    "rendering": "authoring-only"
   }
 }

@@ -11,10 +11,10 @@ export function rematerializeTypography(program) {
   }
   const exists = (id, op) => program.graphicSpec.objects[id] !== undefined && typeof program[op] === "function";
   const textOwners = { text: "rematerializeTextMark", tree: "materializeTreePlot",
-    treemap: "materializeTreemapPlot", partition: "materializePartitionPlot", graph: "materializeGraphPlot" };
+    treemap: "materializeTreemapPlot", partition: "materializePartitionPlot", graph: "materializeGraphPlot", "flow-node": "materializeFlowNodes" };
   const marks = program.semanticSpec.layers.flatMap(layer => {
     const op = textOwners[layer.mark?.type];
-    return op !== undefined && exists(layer.id, op) && layer.hierarchyLabels !== false && layer.graphLabels !== false
+    return op !== undefined && exists(layer.id, op) && layer.hierarchyLabels !== false && layer.graphLabels !== false && layer.flowLabels !== false
       ? [{ op, args: { id: layer.id } }] : [];
   });
   const guides = [];

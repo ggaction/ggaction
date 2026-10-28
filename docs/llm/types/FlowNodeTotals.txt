@@ -1,0 +1,4 @@
+export interface FlowNodeTotals {
+  readonly key: string; readonly incoming: number; readonly outgoing: number;
+  readonly throughput: number; readonly imbalance: number;
+}

@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 3,
+  "name": "editFlowData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Revise flow data and refresh dependent layouts, nodes, links, labels and selections.",
+  "signature": "editFlowData(options: TargetedOptions<EditFlowDataOptions>): ChartProgram;",
+  "intents": [
+    "edit flow data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "flow graph",
+    "directed flow values"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing observed graph"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "nodes",
+      "edges"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editFlowData",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing observed graph"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "nodes",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "edges",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "definition",
+      "required": false,
+      "type": "Partial<FlowDefinition> | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editFlowData({ target?, nodes?, edges?, definition? })"
+  ],
+  "snippet": "program.editFlowData({ nodes: \"nodes\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editflowdata"
+}

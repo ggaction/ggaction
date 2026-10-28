@@ -1,5 +1,4 @@
 {
-  "version": 2,
   "capabilities": {
     "accessibility": [
       {
@@ -1244,6 +1243,41 @@
         "type": "file",
         "path": "contracts/theme.test.js"
       }
+    ],
+    "flow": [
+      {
+        "type": "file",
+        "path": "unit/flow-layouts.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/flow-layouts/"
+      },
+      {
+        "type": "file",
+        "path": "browser/flow-layouts.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/flow-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/flow-resources.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/flow-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/flow-consumers.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/flow-state.test.js"
+      }
     ]
-  }
+  },
+  "version": 2
 }

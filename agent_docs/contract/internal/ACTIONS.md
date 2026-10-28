@@ -21,6 +21,8 @@ domain action을 통해서만 실행한다.
 | `materializeBoxPlot` | deferred `createBoxPlot` completion and position encodings |
 | `materializeBinData` | reusable one-dimensional bin data actions |
 | `materializeBin2DData` | rectangular 2D-bin data actions |
+| `materializeFlowNodes` | stored flow rectangles, node labels, source rows and exact layout binding |
+| `materializeFlowLinks` | stored flow attachments and feedback lanes as closed ribbons |
 | `materializeTreePlot` | stored tree layout, plot style and hierarchy resource revisions |
 | `materializeGraphPlot` | stored graph layout, typed node/edge identity, plot style and exact source revisions |
 | `materializePartitionPlot` | stored partition intervals, focus view, coordinate mapping and styles |

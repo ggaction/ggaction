@@ -191,11 +191,14 @@ function actionResources(action, optionNames, intentSource) {
     owns: action.name === "createInferredGraphData" ? ["graph resource"] : [],
     idOptions: action.name === "createInferredGraphData" ? ["id", "data", "candidateGraph"] : ["target", "data", "candidateGraph"]
   };
-  if (action.name === "layoutGraph") return { prerequisites: ["existing graph resource"], owns: ["layout resource"], idOptions: ["id", "graph"] };
-  if (action.name === "createGraphData" || action.name === "editGraphData") return {
-    prerequisites: action.name === "createGraphData" ? ["explicit materialized node and edge datasets"] : ["existing observed graph"],
-    owns: action.name === "createGraphData" ? ["graph resource"] : [],
-    idOptions: action.name === "createGraphData" ? ["id", "nodes", "edges"] : ["target", "nodes", "edges"]
+  if (["layoutGraph", "layoutFlow"].includes(action.name)) return { prerequisites: ["existing graph resource"], owns: ["layout resource"], idOptions: ["id", "graph"] };
+  if (["createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks"].includes(action.name)) return {
+    prerequisites: ["stored DAG or cyclic flow layout"], owns: ["flow mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "layout", "coordinate"]
+  };
+  if (["createGraphData", "editGraphData", "createFlowData", "editFlowData"].includes(action.name)) return {
+    prerequisites: action.name.startsWith("create") ? ["explicit materialized node and edge datasets"] : ["existing observed graph"],
+    owns: action.name.startsWith("create") ? ["graph resource"] : [],
+    idOptions: action.name.startsWith("create") ? ["id", "nodes", "edges"] : ["target", "nodes", "edges"]
   };
   const { operation, subject } = operationAndSubject(action.name);
   const aliases = aliasesForSubject(intentSource, subject);

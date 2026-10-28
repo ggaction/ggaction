@@ -1020,5 +1020,22 @@
         "statements": 3
       }
     ]
+  },
+  {
+    "file": "flows.mjs",
+    "cases": [
+      {
+        "id": "flow/full-basic-lifecycle",
+        "statements": 13
+      },
+      {
+        "id": "flow/fresh-process-source-revision",
+        "statements": 9
+      },
+      {
+        "id": "flow/renderers-scene-codec",
+        "statements": 1
+      }
+    ]
   }
 ]

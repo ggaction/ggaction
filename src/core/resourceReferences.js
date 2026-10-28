@@ -10,7 +10,8 @@ export const RESOURCE_KINDS = Object.freeze([
 const LAYER_RESOURCE_BINDINGS = Object.freeze([
   Object.freeze({ path: Object.freeze(["image"]), kind: "image", marks: Object.freeze(["image"]) }),
   Object.freeze({ path: Object.freeze(["hierarchyBinding", "layout"]), kind: "layout", marks: Object.freeze(["tree", "treemap", "partition"]) }),
-  Object.freeze({ path: Object.freeze(["graphBinding", "layout"]), kind: "layout", marks: Object.freeze(["graph"]) })
+  Object.freeze({ path: Object.freeze(["graphBinding", "layout"]), kind: "layout", marks: Object.freeze(["graph"]) }),
+  Object.freeze({ path: Object.freeze(["flowBinding", "layout"]), kind: "layout", marks: Object.freeze(["flow-node", "flow-link"]) })
 ]);
 
 export function layerResourceBindings(layer) {
