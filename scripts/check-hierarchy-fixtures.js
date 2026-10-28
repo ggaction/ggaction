@@ -7,11 +7,13 @@ import path from "node:path";
 import { normalizeHierarchyNodes } from "../src/grammar/hierarchy/normalize.js";
 import { normalizeHierarchyInput } from "../src/grammar/hierarchy/input.js";
 import { layoutHierarchyTree } from "../src/grammar/hierarchy/tree.js";
+import { layoutHierarchyPartition } from "../src/grammar/hierarchy/partition.js";
 import { hierarchyRows, hierarchyExpected, hierarchyInputFixtures } from "../test/oracles/hierarchy.js";
 import { naiveHierarchyTree } from "../test/oracles/hierarchy-tree.js";
+import { integerHierarchyPartition } from "../test/oracles/hierarchy-partition.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const directory = path.join(root, ".artifacts/validation/hierarchy-tree");
+const directory = path.join(root, ".artifacts/validation/hierarchy-partition");
 const hash = value => createHash("sha256").update(typeof value === "string" ? value : JSON.stringify(value)).digest("hex");
 const cases = ["leaf-sum", "inclusive", "own-plus-children"].map(valueMode => {
   const result = normalizeHierarchyNodes(hierarchyRows, { valueMode });
@@ -45,12 +47,28 @@ for (const [index, parents] of [[null, 0, 0, 1, 1], [null, 0, 0, 1, 3, 4, 2], [n
   cases.push({ id: `tree-${index}`, call: `layoutHierarchyTree(${JSON.stringify(model)},${JSON.stringify(options)})`,
     input, expected, actual, differences, hashes: { input: hash(input), expected: hash(expected), actual: hash(actual), differences: hash(differences) } });
 }
-const oracles = ["test/oracles/hierarchy.js", "test/oracles/hierarchy-tree.js"];
-const sources = ["src/grammar/hierarchy/normalize.js", "src/grammar/hierarchy/input.js", "src/grammar/hierarchy/model.js", "src/grammar/hierarchy/tree.js"];
+for (const valueMode of ["leaf-sum", "inclusive", "own-plus-children"]) {
+  const model = normalizeHierarchyNodes(hierarchyRows, { valueMode });
+  const actual = layoutHierarchyPartition(model).nodes.map(({ key, u0, u1, residualStart }) => ({ key, u0, u1, residualStart }));
+  const expected = integerHierarchyPartition(model), differences = [], input = { model };
+  actual.forEach((node, index) => {
+    assert.equal(node.key, expected[index].key);
+    for (const field of ["u0", "u1", "residualStart"]) {
+      const difference = node[field] - expected[index][field];
+      assert.ok(Math.abs(difference) <= 2e-15);
+      if (difference !== 0) differences.push({ key: node.key, field, difference });
+    }
+  });
+  cases.push({ id: `partition-${valueMode}`, call: `layoutHierarchyPartition(${JSON.stringify(model)})`,
+    input, expected, actual, differences, absoluteTolerance: 2e-15,
+    hashes: { input: hash(input), expected: hash(expected), actual: hash(actual), differences: hash(differences) } });
+}
+const oracles = ["test/oracles/hierarchy.js", "test/oracles/hierarchy-tree.js", "test/oracles/hierarchy-partition.js"];
+const sources = ["src/grammar/hierarchy/normalize.js", "src/grammar/hierarchy/input.js", "src/grammar/hierarchy/model.js", "src/grammar/hierarchy/tree.js", "src/grammar/hierarchy/partition.js", "src/grammar/numeric.js"];
 const receipt = { schemaVersion: 1, command: "node scripts/check-hierarchy-fixtures.js", exitCode: 0,
   testedHead: execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim(), node: process.version,
   oracleHashes: Object.fromEntries(await Promise.all(oracles.map(async oracle => [oracle, hash(await readFile(path.join(root, oracle), "utf8"))]))),
   sourceHashes: Object.fromEntries(await Promise.all(sources.map(async source => [source, hash(await readFile(path.join(root, source), "utf8"))]))), cases };
 await mkdir(directory, { recursive: true });
 await writeFile(path.join(directory, "numeric-evidence.json"), `${JSON.stringify(receipt, null, 2)}\n`);
-console.log(`Verified ${cases.length} independent hierarchy aggregate, input and tree fixtures.`);
+console.log(`Verified ${cases.length} independent hierarchy aggregate, input, tree and partition fixtures.`);

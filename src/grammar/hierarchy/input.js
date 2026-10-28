@@ -94,7 +94,7 @@ export function normalizeHierarchyInput(input, options) {
       });
     });
     const explicit = nodes.map(({ key, parentKey, sourceRows, values }) => ({ key, parentKey, sourceRows,
-      ...(values ? { value: stableFiniteSum(values, "Hierarchy grouped leaf total") } : {}) }));
+      ...(values ? { value: stableFiniteSum(values, "Hierarchy grouped leaf total", { compensated: true }) } : {}) }));
     return normalizeHierarchyNodes(explicit, { ...normalizedOptions, forest: true }, work);
   }
   const keyField = requireStringValue(read("key"), "Hierarchy key field");

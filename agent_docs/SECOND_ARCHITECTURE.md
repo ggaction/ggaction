@@ -40,10 +40,13 @@ iterative preorder/postorder와 세 가지 value aggregation을 한 번 검증�
 이 결과의 canonical preorder·reference·value 일관성을 검증하고 layout용 index를 만든다.
 `grammar/hierarchy/tree.js`는 그 순서를 그대로 소비하여 persistent contour로 tidy 좌표를 계산하고,
 가로 전치와 기존 polar owner를 통한 방사형 변환을 수행한다. Node size·gap·orientation은 명시 입력이다.
-Partition/treemap도 같은 model 경계를 소비하도록 준비한다. 현재는 private 계산만 있고 hierarchy/layout resource 저장, public
+`grammar/hierarchy/partition.js`도 같은 model 경계를 소비하여 depth와 정규화 구간·reserved residual tail을 만든다.
+계층의 합계와 prefix는 기존 numeric owner의 명시 compensated 정책을 공유하며 기존 호출 기본 계산은 유지한다.
+Treemap도 같은 model 경계를 소비하도록 준비한다. 현재는 private 계산만 있고 hierarchy/layout resource 저장, public
 action, renderer 또는 새 시각 target과 연결하지 않았다.
 상세 범위·후속 의무와 실측 package 증거는 [normalizer](impl/roadmap9/phase3/hierarchy/NORMALIZE_KERNEL.md)와
-[input adapter](impl/roadmap9/phase3/hierarchy/INPUT_KERNEL.md), [tree 계산](impl/roadmap9/phase3/hierarchy/TREE_KERNEL.md) 기록이 소유한다.
+[input adapter](impl/roadmap9/phase3/hierarchy/INPUT_KERNEL.md), [tree 계산](impl/roadmap9/phase3/hierarchy/TREE_KERNEL.md),
+[partition 계산](impl/roadmap9/phase3/hierarchy/PARTITION_KERNEL.md) 기록이 소유한다.
 
 ## 내부 expression kernel 경계
 

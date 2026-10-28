@@ -64,6 +64,8 @@ Main 통합 시 parent가 누적 크기를 다시 측정한다. 전체 통합·r
 
 ## 남은 의무
 
+후속 partition 계산과 보정 합산 정책은 [PARTITION_KERNEL](PARTITION_KERNEL.md)에 기록한다. 아래 항목은 이 checkpoint 시점의 상태다.
+
 Sibling 정렬, treemap slice/dice/squarify, partition 공유 계산을 이어 구현한다.
 Public hierarchy/layout resources의 create/edit/revise/remove, 정확한 dataset row identity와 refs,
 persistence/inspection/scene/selection/hit/accessibility, composition 및 SVG/Canvas/PNG/PDF 소비자는 아직 연결하지 않았다.

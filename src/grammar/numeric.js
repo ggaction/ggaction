@@ -60,24 +60,38 @@ function stableReducedSum(values, label, divisor = 1) {
   );
 }
 
-export function stableFiniteSum(values, label = "Numeric sum") {
+export function stableFiniteSum(values, label = "Numeric sum", { compensated = false } = {}) {
+  if (compensated) {
+    finiteArray(values, label);
+    const direct = compensatedSum(values);
+    if (Number.isFinite(direct)) return requireFiniteResult(direct, label);
+    const normalized = normalizedFiniteSum(values, label);
+    return restoreFiniteScale(normalized.total, normalized.scale, label);
+  }
   return stableReducedSum(values, label);
 }
 
-export function stableFinitePrefixSums(values, label = "Numeric sum") {
+export function stableFinitePrefixSums(values, label = "Numeric sum", { compensated = false } = {}) {
   const normalized = normalizedFiniteSum(values, label);
   let ordinary = 0;
+  let ordinaryCorrection = 0;
   let sum = 0;
   let correction = 0;
   return values.map(value => {
-    ordinary += value;
+    const ordinaryNext = ordinary + value;
+    ordinaryCorrection += Math.abs(ordinary) >= Math.abs(value)
+      ? ordinary - ordinaryNext + value
+      : value - ordinaryNext + ordinary;
+    ordinary = ordinaryNext;
     const scaled = value / normalized.scale;
     const next = sum + scaled;
     correction += Math.abs(sum) >= Math.abs(scaled)
       ? sum - next + scaled
       : scaled - next + sum;
     sum = next;
-    return Number.isFinite(ordinary)
+    const corrected = ordinary + ordinaryCorrection;
+    if (compensated && Number.isFinite(corrected)) return corrected === 0 ? 0 : corrected;
+    return !compensated && Number.isFinite(ordinary)
       ? ordinary === 0 ? 0 : ordinary
       : restoreFiniteScale(sum + correction, normalized.scale, label);
   });

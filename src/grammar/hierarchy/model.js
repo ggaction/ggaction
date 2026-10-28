@@ -58,8 +58,8 @@ export function indexHierarchyModel(model, maxNodes = 10_000) {
       }
       seen.add(key); children.push(child);
     }
-    const childTotal = stableFiniteSum(children.map(child => nodes[child].totalValue), "Hierarchy model child total");
-    if (stableFiniteSum([node.ownValue, childTotal], "Hierarchy model total") !== node.totalValue ||
+    const childTotal = stableFiniteSum(children.map(child => nodes[child].totalValue), "Hierarchy model child total", { compensated: true });
+    if (stableFiniteSum([node.ownValue, childTotal], "Hierarchy model total", { compensated: true }) !== node.totalValue ||
         (model.valueMode === "leaf-sum" && children.length > 0 && node.ownValue !== 0)) {
       throw new Error("Hierarchy model child values disagree with its total.");
     }

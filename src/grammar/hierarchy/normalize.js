@@ -86,7 +86,7 @@ export function normalizeHierarchyNodes(input, options = {}, priorWork = 0) {
   const ignoredInternalValues = [];
   for (let i = preorder.length - 1; i >= 0; i--) {
     const node = records[preorder[i]], internal = node.children.length > 0;
-    const childrenTotal = stableFiniteSum(node.children.map(index => records[index].totalValue), "Hierarchy child total");
+    const childrenTotal = stableFiniteSum(node.children.map(index => records[index].totalValue), "Hierarchy child total", { compensated: true });
     if (!node.hasValue && (!internal || valueMode === "inclusive")) {
       throw new Error("Hierarchy leaf weights and inclusive internal totals are required.");
     }
@@ -100,7 +100,7 @@ export function normalizeHierarchyNodes(input, options = {}, priorWork = 0) {
       node.ownValue = node.value - childrenTotal;
     } else {
       node.ownValue = node.value ?? 0;
-      node.totalValue = stableFiniteSum([node.ownValue, childrenTotal], "Hierarchy subtree total");
+      node.totalValue = stableFiniteSum([node.ownValue, childrenTotal], "Hierarchy subtree total", { compensated: true });
     }
     node.residual = node.ownValue;
   }
@@ -112,7 +112,7 @@ export function normalizeHierarchyNodes(input, options = {}, priorWork = 0) {
   });
   if (forest && nodes.length > 0) nodes.unshift({ key: SYNTHETIC_ROOT, parentKey: null,
     childrenKeys: roots.map(index => records[index].key), depth: 0, ownValue: 0,
-    totalValue: stableFiniteSum(roots.map(index => records[index].totalValue), "Hierarchy forest total"),
+    totalValue: stableFiniteSum(roots.map(index => records[index].totalValue), "Hierarchy forest total", { compensated: true }),
     residual: 0, sourceRows: [], synthetic: true });
   const totalValue = nodes[0]?.totalValue ?? 0;
   return cloneAndFreeze({ nodes, rootKey: nodes[0]?.key ?? null, valueMode, totalValue,

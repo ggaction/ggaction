@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 687, // Adds private hierarchy model validation and tree layout owners.
-  packedBytes: 1_025_000, // Hierarchy tree: measured 1,024,447 bytes.
-  unpackedBytes: 4_768_000 // Hierarchy tree: measured 4,767,355 bytes.
+  entries: 688, // Adds the private hierarchy partition owner.
+  packedBytes: 1_026_000, // Hierarchy partition: measured 1,025,059 bytes.
+  unpackedBytes: 4_770_000 // Hierarchy partition: measured 4,769,405 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
