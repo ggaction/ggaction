@@ -31,8 +31,9 @@
       "id": "DATAFLOW-INTEGRATION",
       "owner": "STEP-016",
       "gate": "G-PARAM",
-      "status": "open",
-      "requirement": "Parameter→filter→statistics→scale→conditional encoding closure, first-match otherwise, cycle/empty domain behavior"
+      "status": "verified",
+      "requirement": "Parameter→filter→statistics→scale→conditional encoding closure, first-match otherwise, cycle/empty domain behavior",
+      "evidence": "progress/STEP-016.json"
     },
     {
       "id": "CALENDAR-INTEGRATION",
