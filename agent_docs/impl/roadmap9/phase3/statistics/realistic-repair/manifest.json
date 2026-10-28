@@ -1,0 +1,26 @@
+{
+  "original-run.json": {
+    "file": "original-run.json.gz",
+    "sha256": "be599858993ae4489f666ddb2453353a09445055195fff02b40018f540a4ffbd"
+  },
+  "shard6.log": {
+    "file": "shard6.log.gz",
+    "sha256": "faf255b9509c7e4b78ef0009d202d651f14c99c0425074c351a4be5990701038"
+  },
+  "feature-first-attempt.log": {
+    "file": "feature-first-attempt.log.gz",
+    "sha256": "b424d2f9bea566b1449932558745d2f0ea66d31bfa134d41c5a0966154c4ab15"
+  },
+  "feature-second-attempt.log": {
+    "file": "feature-second-attempt.log.gz",
+    "sha256": "d5f2f8ee971c0aa5dc222c5895d864f06e3b896647077aa92e80f93442284813"
+  },
+  "feature-repair.log": {
+    "file": "feature-repair.log.gz",
+    "sha256": "553697d9102e13ffe1ae37027b2b612a1fec3aa0f6ea36c51a50e38585d3fdad"
+  },
+  "discovery-repair.log": {
+    "file": "discovery-repair.log.gz",
+    "sha256": "57b981a19a491e41d135ec47f24e03a089143c8b79c5b0c481fb6f14f4d2b565"
+  }
+}

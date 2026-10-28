@@ -1102,6 +1102,10 @@ function addDirectDerivedDataEdits(program) {
       target: "editSummary",
       aggregates: [{ op: "sum", field: "value", as: "summaryValue" }]
     })
+    .createPivotData({
+      id: "editPivot", source: "editSource", field: "category", value: "value", op: "sum"
+    })
+    .editPivotData({ target: "editPivot", op: "mean", groupBy: "group" })
     .createBinData({
       id: "editBin",
       source: "editSource",
@@ -2152,7 +2156,8 @@ function lifecycleSignature(base, factors) {
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale",
       "removeData", "removeScale", "removeCoordinate",
       "createParameter", "editParameter", "removeParameter",
-      "createNormalizedData", "createCompleteData", "createImputedData", "editDerivedData",
+      "createNormalizedData", "createCompleteData", "createImputedData",
+      "createPivotData", "editPivotData", "editDerivedData",
       "editComputedData", "editFilteredData", "editFoldData", "editSummaryData",
       "editBinData", "editTimeUnitData", "editWindowData", "createSortedData", "editSortedData", "editDensityData",
       "editStackData", "editRegressionData", "createRegressionStatisticsData", "editRegressionStatisticsData", "editIntervalData", "editECDFData",
@@ -2412,6 +2417,7 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createSortedData", "editSortedData",
   "createIntervalData", "createTickMark", "editTickMark", "removeMark",
   "createNormalizedData", "createCompleteData", "createImputedData",
+  "createPivotData", "editPivotData",
   "editDerivedData", "editComputedData", "editFilteredData", "editFoldData",
   "editSummaryData", "editBinData", "editTimeUnitData", "editWindowData",
   "editDensityData", "editStackData", "editRegressionData", "createRegressionStatisticsData", "editRegressionStatisticsData", "editIntervalData",
