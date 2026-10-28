@@ -1,0 +1,206 @@
+{
+  "state": "private-kernel-verified",
+  "publicIntegration": "pending",
+  "visualReview": "pending",
+  "codeBase": "b8fe0549cbd6ef2f9780a7e2dcb606bcd44def14",
+  "recordedAt": "2026-10-28T16:13:03.652Z",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "inputs": {
+    "src/grammar/hierarchy/model.js": "d86c3eb1bb3e967d0f9df1903f0e63a02b698dfa55b5d8281bf5932431324c89",
+    "src/grammar/hierarchy/normalize.js": "20cd194fa20f1bc0fa1c5306394f1ef4751901b0d52b23037b1a1f6bcd0fef42",
+    "src/grammar/hierarchy/partition.js": "7097588deab0a18963a0c0dabd361a3f02d5da550f50219cb5c19d669ebaa2e8",
+    "src/grammar/hierarchy/partitionView.js": "9f52d44f7458b0ab1015abd1f275baf051c38d54a68adc6bf78d464d3d81d20b",
+    "src/grammar/hierarchy/partitionMapping.js": "dd3cfe1dd2d76f5d57f2a4e382e043f9faeb65866232b9a4fe27c352603b650e",
+    "src/grammar/hierarchy/partitionBend.js": "a2267c9e9626780bb71a540ac7f32c0410fbb392118536eff2cf38bb481e9dfe",
+    "src/grammar/numeric.js": "97f65492ffe9ecf98878323f82af7a8c6008323568da69e4d876c31aabcc2c6c",
+    "test/oracles/partition-mapping.js": "e077a479e6d63550dcf1cc8c7c9b3d3937443b432621447a8726a927a770e97d",
+    "test/unit/grammar/hierarchy-partition-view.test.js": "c721f279a45c5e6aa7d00cb95d6c0409f5492df63f3bee7e43439ccc26f59ea6",
+    "test/unit/grammar/hierarchy-partition-mapping.test.js": "af1cf7d60c6e437a9fb2bfb0f9453a0aa74bd4ba5ac0b40790eea075d62dd6ec",
+    "test/unit/grammar/hierarchy-partition-bend.test.js": "7667494ff233ebc3715d9d13c1db7a5da99f024265b296b5f4d8576878da2528",
+    "test/capabilities.json": "e68380344f22846b30ebd80025700d37122b99d1edd156de71d429407aaadbe9",
+    "scripts/package-artifact.js": "fe7e1b882bb220ecbee2f862a037d83481db505a906c3f91707fce5d7de15b3d"
+  },
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js unit unit/grammar/hierarchy-normalize.test.js unit/grammar/hierarchy-input.test.js unit/grammar/hierarchy-model.test.js unit/grammar/hierarchy-tree.test.js unit/grammar/hierarchy-partition.test.js unit/grammar/hierarchy-treemap.test.js unit/grammar/hierarchy-partition-view.test.js unit/grammar/hierarchy-partition-mapping.test.js unit/grammar/hierarchy-partition-bend.test.js",
+      "exit": 0,
+      "tests": 68,
+      "pass": 68,
+      "fail": 0,
+      "log": ".artifacts/partition-kernel/unit-final.log",
+      "sha256": "2804aaeff34b552c74f6a2e136015577ffaf350f08e90c47a9c13aa0d9488ff2"
+    },
+    {
+      "command": "node --experimental-test-coverage --test-coverage-include=src/grammar/hierarchy/partitionView.js --test-coverage-include=src/grammar/hierarchy/partitionMapping.js --test-coverage-include=src/grammar/hierarchy/partitionBend.js --test test/unit/grammar/hierarchy-partition-view.test.js test/unit/grammar/hierarchy-partition-mapping.test.js test/unit/grammar/hierarchy-partition-bend.test.js",
+      "exit": 0,
+      "tests": 15,
+      "pass": 15,
+      "fail": 0,
+      "log": ".artifacts/partition-kernel/coverage-final.log",
+      "sha256": "493291f52be057a505dc05f9e1f78996fc8ef7e9d1cd286fcc1bfff488cd927c"
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js",
+      "exit": 0,
+      "tests": 38,
+      "pass": 38,
+      "fail": 0,
+      "log": ".artifacts/partition-kernel/contracts-final.log",
+      "sha256": "ad339872fe6d843cc15efd25a1b07985516bc697d3b4463d1570050ffe6bcb64"
+    },
+    {
+      "command": "npm run package:check",
+      "exit": 0,
+      "log": ".artifacts/partition-kernel/package-final.log",
+      "sha256": "6943d6fcd710818875d2bc2f825acfed4d5436c8f27fc0e93e1156ffbeab707a"
+    },
+    {
+      "command": "npm run package:bundle",
+      "exit": 0,
+      "log": ".artifacts/partition-kernel/bundle-final.log",
+      "sha256": "811c2854d42c19b1bbcb2bdedb732dfd5664cc7fcbee1da6eceb1f8a3213ffab"
+    }
+  ],
+  "criticalCoverage": {
+    "scope": "new partition owners only",
+    "floors": {
+      "grammar/hierarchy/partitionView.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/hierarchy/partitionMapping.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "grammar/hierarchy/partitionBend.js": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "actual": {
+      "grammar/hierarchy/partitionBend.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "grammar/hierarchy/partitionMapping.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      },
+      "grammar/hierarchy/partitionView.js": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      }
+    }
+  },
+  "examples": [
+    {
+      "call": "createPartitionView(model,{focusKey:encodeRowKey(\"A\")})",
+      "expectedIntervals": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0.3333333333333333
+        ],
+        [
+          0.3333333333333333,
+          1
+        ]
+      ],
+      "actualIntervals": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0.3333333333333333
+        ],
+        [
+          0.3333333333333333,
+          1
+        ]
+      ]
+    },
+    {
+      "call": "mapPartitionRectangle(cell,{x:0,y:0,width:1000,height:300})",
+      "expected": {
+        "x": 0,
+        "y": 100,
+        "width": 600,
+        "height": 100,
+        "visible": true
+      },
+      "actual": {
+        "x": 0,
+        "y": 100,
+        "width": 600,
+        "height": 100,
+        "visible": true
+      }
+    },
+    {
+      "call": "mapPartitionSector(cell,{innerRadius:0,outerRadius:300})",
+      "expectedSpan": 3.7699111843077517,
+      "actual": {
+        "startAngle": 0,
+        "endAngle": 3.7699111843077517,
+        "innerRadius": 100,
+        "outerRadius": 200,
+        "visible": true
+      }
+    },
+    {
+      "call": "partitionRadius(.5,{innerRadius:0,outerRadius:100,radiusPolicy:\"equal-depth-area\"})",
+      "expected": 70.71067811865476,
+      "actual": 70.71067811865476
+    },
+    {
+      "call": "bendPartitionPoint({u:.5,v:.5,bend:Number.MIN_VALUE},{width:2*Math.PI,height:1,innerRadius:0,outerRadius:1})",
+      "expected": {
+        "x": 0,
+        "y": 0.5
+      },
+      "actual": {
+        "x": 0,
+        "y": 0.5
+      }
+    }
+  ],
+  "preservedLimitFailures": {
+    ".artifacts/partition-kernel/package-initial.log": "f4fc167ef460144a415208bfec6de235c0b08f39c6431bedcf4ade9e75251b12",
+    ".artifacts/partition-kernel/package-entry-adjusted.log": "66d12b4369abdcb55213f11c2e93b3bce37746c9848c0f1b950d787e26bfcf00",
+    ".artifacts/partition-kernel/package-packed-adjusted.log": "5d9393c99d1bdd555009d3680579dbf2750e7dff69873be5ae133da012b3c3ca"
+  },
+  "package": {
+    "entryCount": 692,
+    "packedBytes": 1030205,
+    "unpackedBytes": 4788507,
+    "limits": {
+      "entries": 692,
+      "packedBytes": 1031000,
+      "unpackedBytes": 4789000
+    }
+  },
+  "browserGzip": {
+    "full": 510644,
+    "basic": 287809
+  },
+  "pending": [
+    "screen/direction bend adapter",
+    "exact rendered partition primitive approval",
+    "public action/resource/schema and consumer integration"
+  ]
+}

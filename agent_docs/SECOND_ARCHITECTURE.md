@@ -49,6 +49,15 @@ action, renderer 또는 새 시각 target과 연결하지 않았다.
 [input adapter](impl/roadmap9/phase3/hierarchy/INPUT_KERNEL.md), [tree 계산](impl/roadmap9/phase3/hierarchy/TREE_KERNEL.md),
 [partition 계산](impl/roadmap9/phase3/hierarchy/PARTITION_KERNEL.md), [treemap 계산](impl/roadmap9/phase3/hierarchy/TREEMAP_KERNEL.md) 기록이 소유한다.
 
+## Private partition view and mapping
+
+`grammar/hierarchy/partitionView.js`는 위의 model/partition owner를 명시 호출하여 focus 구간과 상대 depth view,
+nearest surviving ancestor와 navigation metadata를 계산한다. Canonical key/value/interval owner를 복제하거나 원 hierarchy를 변경하지 않는다.
+`partitionMapping.js`는 normalized cell을 Cartesian/polar geometry로 매핑하고 pixel gap과 radial policy를 소유한다.
+`partitionBend.js`는 같은 radius policy에서 canonical mathematical bend point를 계산하며 screen adapter와 현재-frame hit는 후속 통합이다.
+이 세 owner는 private pure 계산이고 resource/action/renderer 저장 경계를 확장하지 않는다.
+정확한 내부 범위·미결정 adapter·검증·실측 한도는 [partition view 계산](impl/roadmap9/phase3/partition/KERNEL.md)이 소유한다.
+
 ## 내부 expression kernel 경계
 
 `grammar/expressionAst.js`는 versioned AST의 정규화·정적 검사·명시 dependency 추출,
