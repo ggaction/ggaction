@@ -71,6 +71,17 @@ semantic candidate에서 갱신하고, generic graph validation은 handler보다
 남으면 거부하며, public cascade owner가 필요한 mark 제거를 명시적으로 먼저 수행한다.
 Persistence는 이 typed reference도 공통 stored-resource selector로 확인한다.
 
+의존 resource result를 함께 바꿔야 하는 쓰기는 private
+`actions/primitives/preparedResourceContext.js`가 exact receiver와 exact primitive args에만
+precomputed 결과를 결박한다. 중첩/실패/정상 종료마다 권한을 복원하거나 제거하며, primitive는
+허용된 원인 관계와 options 불변·next revision vector를 검증한 최종 resource envelope만 적용한다.
+DATA의 parameter→source 결과와 hierarchy→layout 결과가 같은 경계를 공유하되 kind별 검증은
+등록 validator에 남는다. `actions/data/resourceRevision.js`는 exact constructor별 한 번 등록한
+도메인 갱신 함수로 data-backed resource의 재계산을 위임한다. 등록된 kind는 generic data-ref
+치환에서 제외하고 같은 revision plan의 명시 domain action으로 갱신한다. Basic 또는 미등록 class는
+등록 함수를 상속하지 않으며 자동 compiler나 public registry는 없다.
+
+
 Typed binding checkpoint는 같은 staging을 Node20/22/24에서 측정해739entries,
 packed최대1,098,660/unpacked5,059,006bytes다. 기존 packed 한도를 유지하고 unpacked 한도만
 최소1,000byte 단위인5,060,000으로 조정했다. 동일 minified browser bytes의 최대gzip은

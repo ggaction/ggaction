@@ -5,7 +5,7 @@ import { findStoredResource, requireStoredResource, resolveInputReference, dataI
 import { validateResourceGraph, validateStoredResource, resourceDependencies, orderResourceDependencies, planStoredResourceRemoval, collectParameterInputReferences } from "../../materialization/resourceState.js";
 import { dataSourceValueHash } from "../../grammar/dataSourcePayload.js";
 import { dataSourcesForDataset, validateDataSourceState } from "../../materialization/dataSourceState.js";
-import { preparedSourceResources } from "./dataSourceContext.js";
+import { preparedResourceResults } from "./preparedResourceContext.js";
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 
 const same = (a, b) => a.kind === b.kind && a.id === b.id;
@@ -24,11 +24,11 @@ export function replaceStoredResource(program, parsed, value, args) {
     if (!same(ref, value)) resolveInputReference(program, ref);
   }
   const replacements = new Map();
-  for (const entry of preparedSourceResources(args) ?? []) {
+  for (const entry of preparedResourceResults(args, program) ?? []) {
     const old = requireStoredResource(program, entry.previous);
-    if (value.kind !== "parameter" || !old.inputs.some(ref => same(ref, value)) ||
+    if ((old.kind === "data-source" ? value.kind !== "parameter" : old.kind !== "layout" || value.kind !== "hierarchy") || !old.inputs.some(ref => same(ref, value)) ||
         dataSourceValueHash(old.options) !== dataSourceValueHash(entry.resource.options)) {
-      throw annotateError(new Error("Prepared source replacement does not belong to this parameter write."), { code: "stale-result", resourceId: old.id });
+      throw annotateError(new Error("Prepared resource replacement does not belong to this parameter write."), { code: "stale-result", resourceId: old.id });
     }
     replacements.set(JSON.stringify([old.kind, old.id]), entry.resource);
   }
@@ -50,7 +50,7 @@ export function replaceStoredResource(program, parsed, value, args) {
       if (!changed || replacement.revision !== next.revision ||
           dataSourceValueHash(replacement.inputs) !== dataSourceValueHash(inputs) ||
           dataSourceValueHash(replacement.ownership) !== dataSourceValueHash(ownership)) {
-        throw annotateError(new Error("Prepared source replacement has stale dependency revisions."), { code: "stale-result", resourceId: resource.id });
+        throw annotateError(new Error("Prepared resource replacement has stale dependency revisions."), { code: "stale-result", resourceId: resource.id });
       }
       next = replacement;
       replacements.delete(key);
@@ -58,7 +58,7 @@ export function replaceStoredResource(program, parsed, value, args) {
     updated.set(key, next);
     if (changed || same(resource, value)) revisions.set(key, next.revision);
   }
-  if (replacements.size) throw annotateError(new Error("Prepared source replacement is missing from the resource graph."), { code: "stale-result" });
+  if (replacements.size) throw annotateError(new Error("Prepared resource replacement is missing from the resource graph."), { code: "stale-result" });
   const resources = supplied.map(resource => updated.get(JSON.stringify([resource.kind, resource.id])));
   const layers = mapLayerResourceBindings(program.semanticSpec.layers, ref => {
     const revision = revisions.get(JSON.stringify([ref.kind, ref.id]));
@@ -72,7 +72,7 @@ export function replaceStoredResource(program, parsed, value, args) {
     const revision = revisions.get(JSON.stringify([definition.resource?.kind, definition.resource?.id]));
     return [id, revision === undefined ? definition : { ...definition, resource: { ...definition.resource, revision } }];
   }));
-  return program._clone({ semanticSpec, ...(rebound === undefined ? {} : { materializationConfigs: { ...program.materializationConfigs, selections: rebound } }) });
+  return program._clone({ semanticSpec, context: { ...program.context, currentResources: { ...program.context.currentResources, [value.kind]: value.id } }, ...(rebound === undefined ? {} : { materializationConfigs: { ...program.materializationConfigs, selections: rebound } }) });
 }
 
 export function detachDataSourceBindings(program, dataset) {

@@ -1,3 +1,4 @@
+import { reviseDataResources } from "./resourceRevision.js";
 import { orderConditionalMarkIds } from "../../materialization/conditionalState.js";
 import { bindFilterTransform } from "./filterBinding.js";
 import { ownRecord } from "../../core/ownData.js";
@@ -344,6 +345,7 @@ function applyRevisionPlanWithIdentity(program, resolved, plan, { retain, parame
   }
 
   next = rebindMaterializationDataReferences(next, plan.replacements);
+  next = reviseDataResources(next, plan.replacements);
   for (const revision of plan.revisions) {
     if (revision.owner !== undefined) {
       next = next._withMaterializationConfig(
