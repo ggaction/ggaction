@@ -878,5 +878,14 @@
         "statements": 23
       }
     ]
+  },
+  {
+    "file": "observed-graphs.mjs",
+    "cases": [
+      {
+        "id": "data/observed-graph-lifecycle",
+        "statements": 16
+      }
+    ]
   }
 ]

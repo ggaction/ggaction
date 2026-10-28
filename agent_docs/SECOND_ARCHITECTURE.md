@@ -137,7 +137,14 @@ renderer는 다음 통합 경계다. 수치·검증·실측 package 경계는
 순수 adapter를 소유한다. 관측 parallel edge는 caller가 전달한 persisted row key 또는
 명시 edgeKey만 사용하며 행 위치는 lineage로만 남긴다. Inference owner의 진단·전처리·검색
 증거를 그대로 반환하고 node/edge sourceRows는 원본 행 위치를 유지한다.
-현재 private 계산이며 public GraphResource, graph action, layout/renderer에는 연결하지 않았다.
+관측 입력은 Full의 `actions/graphs/resources.js`에서 명시 dataset selector와 결합한다.
+`materialization/graph/resources.js`가 exact input 역할·model·row provenance를 만들고,
+`materialization/graph/state.js`는 Full constructor에 등록되어 저장 구조와 실제 source binding을
+검증한다. DATA revision owner는 등록된 graph 갱신 함수를 명시적으로 호출한다. Basic과 renderer는
+graph resource를 읽지 않으며 automatic compiler는 없다. `createGraphData.target`은 endpoint 열이므로
+기존 unit-local creation dispatch를 사용한다. 수정 target은 별도의 resource selector다.
+현재 관측 data lifecycle만 공개하며 inference·layout·plot의 공개 연결은 별도 구현 영역이다.
+정확한 공개·저장 계약은 [GRAPHS.md](contract/current/GRAPHS.md)가 소유한다.
 상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.
 
 ## 내부 expression kernel 경계

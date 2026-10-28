@@ -20,6 +20,8 @@
   "createFlattenData": "/reference/actions/statistics/#createflattendata",
   "createFoldData": "/reference/actions/statistics/#createfolddata",
   "createPivotData": "/reference/actions/statistics/#createpivotdata",
+  "createGraphData": "/reference/actions/charts-data/#creategraphdata",
+  "editGraphData": "/reference/actions/charts-data/#editgraphdata",
   "createParameter": "/reference/actions/charts-data/#createparameter",
   "editParameter": "/reference/actions/charts-data/#editparameter",
   "removeParameter": "/reference/actions/charts-data/#removeparameter",

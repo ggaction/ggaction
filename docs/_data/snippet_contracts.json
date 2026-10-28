@@ -1413,6 +1413,22 @@
   {
     "file": "api/data/source-and-derived.md",
     "block": 2,
+    "heading": "Observed graph data {#observed-graph-data}",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"from\"",
+      "target: \"to\"",
+      "target: \"network\""
+    ],
+    "prerequisites": "Imports and both source tables are included. This data-only example creates a semantic graph and no Canvas.",
+    "sha256": "4621d7bed7384142f48eae7fbb2cbb9e8ee06dd90e6bc0bc7257ab05e01b313b",
+    "executable": true
+  },
+  {
+    "file": "api/data/source-and-derived.md",
+    "block": 3,
     "heading": "`createDerivedData({ id, source, transform })` {#create-derived-data}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1426,7 +1442,7 @@
   },
   {
     "file": "api/data/source-and-derived.md",
-    "block": 3,
+    "block": 4,
     "heading": "`createSortedData({ id, source?, sortBy })` {#create-sorted-data}",
     "mode": "fragment",
     "environment": "esm-context",
@@ -1438,7 +1454,7 @@
   },
   {
     "file": "api/data/source-and-derived.md",
-    "block": 4,
+    "block": 5,
     "heading": "`bindMarkData({ target, data })` {#bindmarkdata-target-data}",
     "mode": "fragment",
     "environment": "esm-context",

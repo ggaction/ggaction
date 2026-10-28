@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:1bffa6c41f68d64a210cc679194b8b4a4542fb79636319ad864e582d2931157c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:405a72e317077cf5bcafd3efb2bbd7c6ab0796b80ff2db01186b11bebc3772d9. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -5052,6 +5052,65 @@ field names requires a runtime that supports these source keys.
 The most recently created dataset becomes the default for `createPointMark`,
 `createLineMark`, or `createBarMark`. Creating data records semantic state only
 and produces no graphics.
+
+## Observed graph data {#observed-graph-data}
+
+`createGraphData({ id, nodes, edges, nodeKey, source, target, edgeKey?, weight?,
+attributes?, directed?, selfLoops?, maxNodes?, maxEdges? })` is a Full
+chart-authoring action. It stores a graph from two explicitly selected,
+materialized tables. It creates no graphics.
+
+> **Executable complete.** Imports and both source tables are included. This data-only example creates a semantic graph and no Canvas.
+
+```javascript
+import { chart } from "ggaction";
+
+const graph = chart()
+  .createData({ id: "nodes", values: [{ name: "A" }, { name: "B" }] })
+  .createData({ id: "edges", values: [{ from: "A", to: "B", cost: 0 }] })
+  .createGraphData({
+    id: "network", nodes: "nodes", edges: "edges",
+    nodeKey: "name", source: "from", target: "to", weight: "cost"
+  });
+
+const directed = graph.editGraphData({
+  target: "network", definition: { directed: true }
+});
+console.log(directed.semanticSpec.resources.find(resource =>
+  resource.kind === "graph" && resource.id === "network"
+).result.model.edges[0].weight); // 0
+```
+
+`nodeKey`, `source`, `target`, and optional `edgeKey` each select one field or
+an ordered array of 1–64 distinct fields. Keys retain their types: the string
+`"1"` and number `1` identify different nodes. Node keys must be unique, and
+every edge endpoint must match an existing node. Explicit edge keys must also
+be unique. Without `edgeKey`, parallel edges retain identities derived from
+the edge table's persisted row keys, including across row reordering.
+
+`weight` selects one finite numeric field; omission assigns 1. Zero and negative
+observed weights are retained. `attributes` explicitly selects node fields to
+copy, defaulting to `[]`. `directed` and `selfLoops` default to false. A self
+edge requires `selfLoops: true`. `maxNodes` and `maxEdges` default to 10,000;
+both must be positive safe integers, and the shared work limit also applies.
+Empty node and edge tables are valid. The same table may supply both roles.
+
+`editGraphData({ target?, nodes?, edges?, definition? })` revises an observed
+graph. Its `target` selects the graph; `definition.target` changes the edge's
+destination field. Omitted inputs and definition fields preserve their current
+values. A nonempty patch is required, and explicit `undefined`, unknown options,
+missing endpoints, and invalid weights fail without changing the original
+program. Every successful explicit edit increments the graph revision.
+Omitting `target` uses the current eligible graph, then a unique eligible graph;
+an ambiguous choice requires an explicit ID.
+
+Creation is local to a unit because its `target` names an endpoint field. Create
+graphs in their child units before composing charts. Editing supports the
+standard [scoped targets](./api/composition/editing/#target-one-view-one-mark-or-several-marks). Source data revisions
+rebuild each affected graph once, updating exact input references and row
+provenance. A referenced source cannot be removed. Editable snapshots retain
+the graph model and validate its structure and source bindings on restoration.
+These actions and graph snapshots require the Full entry.
 
 ## Prepared data updates {#prepared-data-updates}
 
@@ -17631,6 +17690,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFlattenData`](./reference/actions/statistics/#createflattendata) | H1 | user-facing | statistics |
 | [`createFoldData`](./reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
 | [`createGradientPlot`](./reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
+| [`createGraphData`](./reference/actions/charts-data/#creategraphdata) | H2 | user-facing | core |
 | [`createGraphics`](./reference/actions/extension/#creategraphics) | H4 | primitive | primitives |
 | [`createGrid`](./reference/actions/guides/#creategrid) | H3 | user-facing | grid |
 | [`createGuides`](./reference/actions/guides/#createguides) | H3 | user-facing | legend_and_title |
@@ -17744,6 +17804,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFlattenData`](./reference/actions/statistics/#editflattendata) | H1, H3 | user-facing | statistics |
 | [`editFoldData`](./reference/actions/statistics/#editfolddata) | H1, H3 | user-facing | statistics |
 | [`editGradientPlot`](./reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
+| [`editGraphData`](./reference/actions/charts-data/#editgraphdata) | H3 | user-facing | core |
 | [`editGraphics`](./reference/actions/extension/#editgraphics) | H4 | primitive | primitives |
 | [`editGrid`](./reference/actions/guides/#editgrid) | H3 | user-facing | grid |
 | [`editHorizon`](./reference/actions/encodings/#edithorizon) | H2, H3 | user-facing | encodings |
@@ -18443,6 +18504,79 @@ Create an immutable named dataset using a field filter or a strict boolean expre
 The source defaults to current data. `where` uses the closed v2 AST and excludes all field
 filter options. Parameter edits revise dependent filters and their chart resources.
 [Data](./api/data/)
+
+## `createGraphData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createGraphData(options: CreateGraphDataOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateGraphDataOptions`](./reference/types/#type-creategraphdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `nodes` | Required | `string` |
+| `edges` | Required | `string` |
+| `nodeKey` | Required | `GraphKeyField` |
+| `source` | Required | `GraphKeyField` |
+| `target` | Required | `GraphKeyField` |
+| `edgeKey` | Optional / branch-dependent | `GraphKeyField \| undefined` |
+| `weight` | Optional / branch-dependent | `string \| undefined` |
+| `attributes` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `directed` | Optional / branch-dependent | `boolean \| undefined` |
+| `selfLoops` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+| `maxEdges` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGraphData({ id, nodes, edges, nodeKey, source, target, edgeKey?, weight?, attributes?, directed?, selfLoops?, maxNodes?, maxEdges? })
+```
+
+Store a graph from explicit node and edge tables, preserving typed endpoint keys
+and parallel-edge identity. See [observed graph data](./api/data/source-and-derived/#observed-graph-data).
+
+## `editGraphData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditGraphDataOptions`](./reference/types/#type-editgraphdataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `nodes` | Optional / branch-dependent | `string \| undefined` |
+| `edges` | Optional / branch-dependent | `string \| undefined` |
+| `definition` | Optional / branch-dependent | `Partial<ObservedGraphDefinition> \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGraphData({ target?, nodes?, edges?, definition? })
+```
+
+Revise an existing observed graph. The graph ID is `target`; the edge endpoint
+column belongs in `definition.target`. See [observed graph data](./api/data/source-and-derived/#observed-graph-data).
 
 ## `createParameter`
 
@@ -30204,6 +30338,7 @@ These blocks are generated from the declaration file owned by each package entry
 
 ```typescript
 export type { ConditionalEncodingOptions } from "./program.js";
+export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
@@ -30909,6 +31044,7 @@ export function action<TOptions extends ActionOptions = ActionOptions>(
 export function registerExtension<
   TActions extends Readonly<Record<string, RegisteredExtensionAction>>
 >(definition: ExtensionDefinition<TActions>): void;
+export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 ```
 
 #### `ggaction/png`
@@ -31257,6 +31393,8 @@ interface ChartProgramActions {
   createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createGraphData(options: CreateGraphDataOptions): ChartProgram;
+  editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
@@ -33725,6 +33863,18 @@ export interface CreateECDFPlotOptions {
 
 Related types: [`ECDFOutputFields`](./reference/types/#type-ecdfoutputfields) · [`LineCategoricalColorChannel`](./reference/types/#type-linecategoricalcolorchannel) · [`StrokeStyleDetails`](./reference/types/#type-strokestyledetails) · [`EndpointLabelOptions`](./reference/types/#type-endpointlabeloptions) · [`CartesianPathGuideOptions`](./reference/types/#type-cartesianpathguideoptions).
 
+### `CreateGraphDataOptions` {#type-creategraphdataoptions}
+
+ Expand CreateGraphDataOptions
+
+```typescript
+export interface CreateGraphDataOptions extends ObservedGraphDefinition {
+  readonly id: string; readonly nodes: string; readonly edges: string;
+}
+```
+
+Related types: [`ObservedGraphDefinition`](./reference/types/#type-observedgraphdefinition).
+
 ### `CreateGridOptions` {#type-creategridoptions}
 
  Expand CreateGridOptions
@@ -36139,6 +36289,19 @@ export interface EditGradientPlotOptions {
 
 Related types: [`GradientPlotPositionChannel`](./reference/types/#type-gradientplotpositionchannel) · [`GradientPlotDensityOptions`](./reference/types/#type-gradientplotdensityoptions) · [`GradientPlotAppearanceOptions`](./reference/types/#type-gradientplotappearanceoptions) · [`GradientPlotCenterOptions`](./reference/types/#type-gradientplotcenteroptions).
 
+### `EditGraphDataOptions` {#type-editgraphdataoptions}
+
+ Expand EditGraphDataOptions
+
+```typescript
+export interface EditGraphDataOptions {
+  readonly target?: string; readonly nodes?: string; readonly edges?: string;
+  readonly definition?: Partial<ObservedGraphDefinition>;
+}
+```
+
+Related types: [`ObservedGraphDefinition`](./reference/types/#type-observedgraphdefinition).
+
 ### `EditGraphicsOptions` {#type-editgraphicsoptions}
 
  Expand EditGraphicsOptions
@@ -37905,6 +38068,14 @@ export type GradientPlotPositionChannel = BoxPlotPositionChannel;
 
 Related types: [`BoxPlotPositionChannel`](./reference/types/#type-boxplotpositionchannel).
 
+### `GraphKeyField` {#type-graphkeyfield}
+
+ Expand GraphKeyField
+
+```typescript
+export type GraphKeyField = string | readonly string[];
+```
+
 ### `GraphicType` {#type-graphictype}
 
  Expand GraphicType
@@ -39341,6 +39512,27 @@ export type NumericFormatString =
 ```
 
 Related types: [`ValueFormatPrecision`](./reference/types/#type-valueformatprecision).
+
+### `ObservedGraphDefinition` {#type-observedgraphdefinition}
+
+ Expand ObservedGraphDefinition
+
+```typescript
+export interface ObservedGraphDefinition {
+  readonly nodeKey: GraphKeyField;
+  readonly source: GraphKeyField;
+  readonly target: GraphKeyField;
+  readonly edgeKey?: GraphKeyField;
+  readonly weight?: string;
+  readonly attributes?: readonly string[];
+  readonly directed?: boolean;
+  readonly selfLoops?: boolean;
+  readonly maxNodes?: number;
+  readonly maxEdges?: number;
+}
+```
+
+Related types: [`GraphKeyField`](./reference/types/#type-graphkeyfield).
 
 ### `OffsetEncodingOptions` {#type-offsetencodingoptions}
 
@@ -46316,11 +46508,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:1bffa6c41f68d64a210cc679194b8b4a4542fb79636319ad864e582d2931157c` |
+| Contract fingerprint | `sha256:405a72e317077cf5bcafd3efb2bbd7c6ab0796b80ff2db01186b11bebc3772d9` |
 | Example and dataset source | `da1de34460983705b2fb7e2d04b766a6123d1c1a` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 304 |
+| Declared actions here | 306 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

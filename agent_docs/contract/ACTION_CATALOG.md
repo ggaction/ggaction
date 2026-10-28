@@ -29,6 +29,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createFlattenData`](current/CORE.md#createflattendata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createFoldData`](current/CORE.md#createfolddata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createPivotData`](current/CORE.md#createpivotdata) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createGraphData`](current/GRAPHS.md#creategraphdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editGraphData`](current/GRAPHS.md#editgraphdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createParameter`](current/CORE.md#createparameter) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editParameter`](current/CORE.md#editparameter) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeParameter`](current/CORE.md#removeparameter) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |

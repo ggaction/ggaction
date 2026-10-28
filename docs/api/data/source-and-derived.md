@@ -74,6 +74,69 @@ The most recently created dataset becomes the default for `createPointMark`,
 `createLineMark`, or `createBarMark`. Creating data records semantic state only
 and produces no graphics.
 
+## Observed graph data {#observed-graph-data}
+
+`createGraphData({ id, nodes, edges, nodeKey, source, target, edgeKey?, weight?,
+attributes?, directed?, selfLoops?, maxNodes?, maxEdges? })` is a Full
+chart-authoring action. It stores a graph from two explicitly selected,
+materialized tables. It creates no graphics.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Imports and both source tables are included. This data-only example creates a semantic graph and no Canvas.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+
+const graph = chart()
+  .createData({ id: "nodes", values: [{ name: "A" }, { name: "B" }] })
+  .createData({ id: "edges", values: [{ from: "A", to: "B", cost: 0 }] })
+  .createGraphData({
+    id: "network", nodes: "nodes", edges: "edges",
+    nodeKey: "name", source: "from", target: "to", weight: "cost"
+  });
+
+const directed = graph.editGraphData({
+  target: "network", definition: { directed: true }
+});
+console.log(directed.semanticSpec.resources.find(resource =>
+  resource.kind === "graph" && resource.id === "network"
+).result.model.edges[0].weight); // 0
+```
+
+`nodeKey`, `source`, `target`, and optional `edgeKey` each select one field or
+an ordered array of 1–64 distinct fields. Keys retain their types: the string
+`"1"` and number `1` identify different nodes. Node keys must be unique, and
+every edge endpoint must match an existing node. Explicit edge keys must also
+be unique. Without `edgeKey`, parallel edges retain identities derived from
+the edge table's persisted row keys, including across row reordering.
+
+`weight` selects one finite numeric field; omission assigns 1. Zero and negative
+observed weights are retained. `attributes` explicitly selects node fields to
+copy, defaulting to `[]`. `directed` and `selfLoops` default to false. A self
+edge requires `selfLoops: true`. `maxNodes` and `maxEdges` default to 10,000;
+both must be positive safe integers, and the shared work limit also applies.
+Empty node and edge tables are valid. The same table may supply both roles.
+
+`editGraphData({ target?, nodes?, edges?, definition? })` revises an observed
+graph. Its `target` selects the graph; `definition.target` changes the edge's
+destination field. Omitted inputs and definition fields preserve their current
+values. A nonempty patch is required, and explicit `undefined`, unknown options,
+missing endpoints, and invalid weights fail without changing the original
+program. Every successful explicit edit increments the graph revision.
+Omitting `target` uses the current eligible graph, then a unique eligible graph;
+an ambiguous choice requires an explicit ID.
+
+Creation is local to a unit because its `target` names an endpoint field. Create
+graphs in their child units before composing charts. Editing supports the
+standard [scoped targets](../composition/editing.md#target-one-view-one-mark-or-several-marks). Source data revisions
+rebuild each affected graph once, updating exact input references and row
+provenance. A referenced source cannot be removed. Editable snapshots retain
+the graph model and validate its structure and source bindings on restoration.
+These actions and graph snapshots require the Full entry.
+
 ## Prepared data updates {#prepared-data-updates}
 
 `prepareDataUpdate(program, request, host)` is an asynchronous chart-authoring

@@ -522,6 +522,10 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
+    chart().createData({ id: "graphNodes", values: [{ id: "a" }, { id: "b" }], keyField: "id" })
+      .createData({ id: "graphEdges", values: [{ from: "a", to: "b" }] })
+      .createGraphData({ id: "network", nodes: "graphNodes", edges: "graphEdges", nodeKey: "id", source: "from", target: "to" })
+      .editGraphData({ definition: { directed: true } }),
     chart().createParameter({ id: "factor", value: 2 })
       .editParameter({ target: "factor", value: 3 }).removeParameter({ id: "factor" }),
     chart().createData({ id: "parameterSource", values: [{ value: 2 }] })

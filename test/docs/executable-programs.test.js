@@ -35,6 +35,11 @@ for (const example of await documentationPrograms()) {
     for (const name of resultNames) {
       const program = result[name];
       assert.ok(program?.semanticSpec, `${name} must be a program`);
+      if (example.resultKind === "semantic") {
+        assert.ok(program.semanticSpec.resources.length > 0, `${name} must own semantic resources`);
+        assert.equal(Object.keys(program.graphicSpec.objects).length, 0, `${name} must create no graphics`);
+        continue;
+      }
       assert.ok(program?.graphicSpec?.objects?.canvas, `${name} must own a Canvas`);
       assert.ok(Object.values(program.graphicSpec.objects).some(object =>
         (object.items?.length ?? 0) > 0 || ["line", "path", "circle", "rect", "text"].includes(object.type)

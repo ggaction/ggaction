@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add Full-only `createGraphData` and `editGraphData` for observed node and edge tables, with typed keys, stable parallel-edge identity, exact source revisions, and validated offline snapshots.
+
 - Add `prepareDataUpdate` and `applyDataUpdate` for explicit host-loaded CSV/JSON, named and inline sources. Retain received-data receipts for offline restoration, reject stale preparations, and atomically refresh URL sources with parameter-dependent charts. Full supports source and parameter revisions; Basic supports creation.
 
 - Add `createParameter`, `editParameter`, and `removeParameter` for immutable scalar inputs with exact revision references and atomic dependent-data and chart updates. Full supports the complete lifecycle; Basic supports creation.

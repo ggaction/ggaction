@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 3,
+  "name": "editGraphData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Revise an existing observed graph.",
+  "signature": "editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;",
+  "intents": [
+    "edit graph data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "observed graph data",
+    "node and edge tables"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing observed graph"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target",
+      "nodes",
+      "edges"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editGraphData"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing observed graph"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "nodes",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "edges",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "definition",
+      "required": false,
+      "type": "Partial<ObservedGraphDefinition> | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editGraphData({ target?, nodes?, edges?, definition? })"
+  ],
+  "snippet": "program.editGraphData({ target: \"network\", definition: { directed: true } })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editgraphdata"
+}

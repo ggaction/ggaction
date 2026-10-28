@@ -418,6 +418,42 @@
       }
     },
     {
+      "name": "createGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Revise observed graph inputs and definitions with `editGraphData`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "creategraphdata"
+      }
+    },
+    {
+      "name": "editGraphData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Rebuilds the observed graph with exact source revisions and immutable endpoint identity",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRAPHS.md",
+        "anchor": "editgraphdata"
+      }
+    },
+    {
       "name": "createParameter",
       "layer": "user-facing",
       "domain": "core",

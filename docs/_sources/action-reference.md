@@ -567,6 +567,24 @@ createData({ id?, values })
 
 Create one immutable named dataset. [Data](../api/data.md)
 
+### `createGraphData`
+
+```javascript
+createGraphData({ id, nodes, edges, nodeKey, source, target, edgeKey?, weight?, attributes?, directed?, selfLoops?, maxNodes?, maxEdges? })
+```
+
+Store a graph from explicit node and edge tables, preserving typed endpoint keys
+and parallel-edge identity. See [observed graph data](../api/data/source-and-derived.md#observed-graph-data).
+
+### `editGraphData`
+
+```javascript
+editGraphData({ target?, nodes?, edges?, definition? })
+```
+
+Revise an existing observed graph. The graph ID is `target`; the edge endpoint
+column belongs in `definition.target`. See [observed graph data](../api/data/source-and-derived.md#observed-graph-data).
+
 ### `applyDataUpdate`
 
 ```javascript

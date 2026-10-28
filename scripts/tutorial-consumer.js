@@ -45,7 +45,9 @@ export async function prepareTutorials(directory) {
       ...Object.entries(fixture).map(([key, value]) => `const ${key} = ${JSON.stringify(value)};`)
     ].join("\n");
     const result = example.result.split(",").at(-1).trim();
-    const renderResult = example.rendering === "authoring-only" ? `renderDocumentationResult(${result}, document.querySelector("#chart").getContext("2d"));` : "";
+    const renderResult = example.resultKind === "semantic"
+      ? `window.__ggactionSemanticResult = { resources: ${result}.semanticSpec.resources.length, graphics: Object.keys(${result}.graphicSpec.objects).length };`
+      : example.rendering === "authoring-only" ? `renderDocumentationResult(${result}, document.querySelector("#chart").getContext("2d"));` : "";
     const source = `${prefix}\n${example.code}\n${renderResult}\nwindow.__ggactionSnippetCompleted = true;\n`;
     assert.doesNotMatch(source, /from ["']\.\.\/.*src\//, "Examples must import the installed package.");
     const tutorialDirectory = path.join(directory, "tutorials", name);
@@ -54,12 +56,12 @@ export async function prepareTutorials(directory) {
     const html = path.join(tutorialDirectory, "index.html");
     await writeFile(html, tutorialHtml(name));
     inputs[name] = html;
-    consumers.push({ name, dataset: example.dataset, id: example.id ?? example.file, file: example.file, sha256: example.sha256, rendering: example.rendering });
+    consumers.push({ name, dataset: example.dataset, id: example.id ?? example.file, file: example.file, sha256: example.sha256, rendering: example.rendering, ...(example.resultKind ? { resultKind: example.resultKind } : {}) });
   }
   return { inputs, consumers };
 }
 
-async function assertRenderedTutorial(page, baseUrl, name, dataset) {
+async function assertRenderedTutorial(page, baseUrl, name, dataset, resultKind) {
   const consoleErrors = [];
   const pageErrors = [];
   const responseErrors = [];
@@ -93,7 +95,12 @@ async function assertRenderedTutorial(page, baseUrl, name, dataset) {
     }
     return { width: element.width, height: element.height, ink };
   });
-  assert.equal(canvas.ink > 0, true, `${name} rendered an empty Canvas.`);
+  if (resultKind === "semantic") {
+    const result = await page.evaluate(() => window.__ggactionSemanticResult);
+    assert.ok(result.resources > 0, `${name} must own semantic resources.`);
+    assert.equal(result.graphics, 0, `${name} must create no graphics.`);
+    assert.equal(canvas.ink, 0, `${name} must not draw a chart.`);
+  } else assert.equal(canvas.ink > 0, true, `${name} rendered an empty Canvas.`);
   assert.deepEqual(consoleErrors, [], `${name} console errors`);
   assert.deepEqual(pageErrors, [], `${name} page errors`);
   assert.deepEqual(responseErrors, [], `${name} response errors`);
@@ -134,7 +141,7 @@ export async function testTutorialConsumers(directory) {
       const started = performance.now();
       const page = await browser.newPage();
       try {
-        await assertRenderedTutorial(page, baseUrl, name, dataset);
+        await assertRenderedTutorial(page, baseUrl, name, dataset, consumer.resultKind);
         records.push({ ...consumer, status: "passed", durationMs: performance.now() - started });
       } catch (error) {
         records.push({ ...consumer, status: "failed", durationMs: performance.now() - started, error: error.stack });

@@ -18,6 +18,7 @@ import { registerChartActions } from "./charts/index.js";
 import { registerCategoryOrderActions } from "./categoryOrder/index.js";
 import { registerSelectionActions } from "./selection/index.js";
 import { registerResourceActions } from "./resources/index.js";
+import { registerGraphActions } from "./graphs/resources.js";
 import { registerTextMetricActions } from "./textMetrics/index.js";
 import { registerCompositionActions } from "./composition/index.js";
 import { registerFacetActions } from "./facets/index.js";
@@ -56,5 +57,6 @@ export function registerActions(ProgramClass) {
   registerCategoryOrderActions(ProgramClass);
   registerSelectionActions(ProgramClass);
   registerResourceActions(ProgramClass);
+  registerGraphActions(ProgramClass);
   registerTextMetricActions(ProgramClass);
 }

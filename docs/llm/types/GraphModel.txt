@@ -1,0 +1,6 @@
+export interface GraphModel {
+  readonly nodes: readonly GraphNode[]; readonly edges: readonly GraphEdge[];
+  readonly directed: boolean; readonly selfLoops: boolean;
+  readonly adjacency: readonly { readonly key: string; readonly incoming: readonly string[];
+    readonly outgoing: readonly string[]; readonly neighbors: readonly string[] }[];
+}

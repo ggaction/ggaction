@@ -33,7 +33,8 @@
     "contracts/realistic-scenario-generator.test.js": 535185,
     "contracts/realistic-scenario-runner.test.js": 99611,
     "contracts/realistic-scoped-composition.test.js": 843,
-    "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393
+    "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
+    "contracts/realistic-observed-graphs.test.js": 197
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {

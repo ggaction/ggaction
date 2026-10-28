@@ -65,6 +65,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFlattenData`](./actions/statistics.md#createflattendata) | H1 | user-facing | statistics |
 | [`createFoldData`](./actions/statistics.md#createfolddata) | H1 | user-facing | statistics |
 | [`createGradientPlot`](./actions/statistics.md#creategradientplot) | H0, H1 | user-facing | statistics |
+| [`createGraphData`](./actions/charts-data.md#creategraphdata) | H2 | user-facing | core |
 | [`createGraphics`](./actions/extension.md#creategraphics) | H4 | primitive | primitives |
 | [`createGrid`](./actions/guides.md#creategrid) | H3 | user-facing | grid |
 | [`createGuides`](./actions/guides.md#createguides) | H3 | user-facing | legend_and_title |
@@ -178,6 +179,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFlattenData`](./actions/statistics.md#editflattendata) | H1, H3 | user-facing | statistics |
 | [`editFoldData`](./actions/statistics.md#editfolddata) | H1, H3 | user-facing | statistics |
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | H1, H3 | user-facing | statistics |
+| [`editGraphData`](./actions/charts-data.md#editgraphdata) | H3 | user-facing | core |
 | [`editGraphics`](./actions/extension.md#editgraphics) | H4 | primitive | primitives |
 | [`editGrid`](./actions/guides.md#editgrid) | H3 | user-facing | grid |
 | [`editHorizon`](./actions/encodings.md#edithorizon) | H2, H3 | user-facing | encodings |

@@ -603,6 +603,87 @@ filter options. Parameter edits revise dependent filters and their chart resourc
 [Data](../../api/data.md)
 
 
+## `createGraphData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createGraphData(options: CreateGraphDataOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateGraphDataOptions`](./../types.md#type-creategraphdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `nodes` | Required | `string` |
+| `edges` | Required | `string` |
+| `nodeKey` | Required | `GraphKeyField` |
+| `source` | Required | `GraphKeyField` |
+| `target` | Required | `GraphKeyField` |
+| `edgeKey` | Optional / branch-dependent | `GraphKeyField \| undefined` |
+| `weight` | Optional / branch-dependent | `string \| undefined` |
+| `attributes` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `directed` | Optional / branch-dependent | `boolean \| undefined` |
+| `selfLoops` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxNodes` | Optional / branch-dependent | `number \| undefined` |
+| `maxEdges` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGraphData({ id, nodes, edges, nodeKey, source, target, edgeKey?, weight?, attributes?, directed?, selfLoops?, maxNodes?, maxEdges? })
+```
+
+Store a graph from explicit node and edge tables, preserving typed endpoint keys
+and parallel-edge identity. See [observed graph data](../../api/data/source-and-derived.md#observed-graph-data).
+
+
+## `editGraphData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGraphDataOptions`](./../types.md#type-editgraphdataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `nodes` | Optional / branch-dependent | `string \| undefined` |
+| `edges` | Optional / branch-dependent | `string \| undefined` |
+| `definition` | Optional / branch-dependent | `Partial<ObservedGraphDefinition> \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGraphData({ target?, nodes?, edges?, definition? })
+```
+
+Revise an existing observed graph. The graph ID is `target`; the edge endpoint
+column belongs in `definition.target`. See [observed graph data](../../api/data/source-and-derived.md#observed-graph-data).
+
+
 ## `createParameter`
 
 **API layer:** user-facing. **Authoring roles:** H2.

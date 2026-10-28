@@ -25,6 +25,7 @@ These blocks are generated from the declaration file owned by each package entry
 
 ```typescript
 export type { ConditionalEncodingOptions } from "./program.js";
+export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 export type { ParameterType, ParameterValue, ParameterRef, ParameterResource, CreateParameterOptions, EditParameterOptions, RemoveParameterOptions, ComputedExpressionV1, ComputedExpressionV2, ExpressionNode, ExpressionCall } from "./program.js";
 export type { RowKeyScalar, RowKey, DataKeyOptions, DataKeySpec, InputRowRef, RowLineage, InputRef, StoredResourceKind, PersistentSelectionResource, GraphicIdentity, GraphicLineageRef } from "./program.js";
 export type { DataSourceValue, DataParseDirective, DataParse, DataSource, CreateDataUpdateRequest,
@@ -730,6 +731,7 @@ export function action<TOptions extends ActionOptions = ActionOptions>(
 export function registerExtension<
   TActions extends Readonly<Record<string, RegisteredExtensionAction>>
 >(definition: ExtensionDefinition<TActions>): void;
+export type { GraphKeyField, ObservedGraphDefinition, CreateGraphDataOptions, EditGraphDataOptions, GraphNode, GraphEdge, GraphModel, GraphResource } from "./program.js";
 ```
 
 #### `ggaction/png`

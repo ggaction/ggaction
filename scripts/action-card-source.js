@@ -186,6 +186,11 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (action.name === "createGraphData" || action.name === "editGraphData") return {
+    prerequisites: action.name === "createGraphData" ? ["explicit materialized node and edge datasets"] : ["existing observed graph"],
+    owns: action.name === "createGraphData" ? ["graph resource"] : [],
+    idOptions: action.name === "createGraphData" ? ["id", "nodes", "edges"] : ["target", "nodes", "edges"]
+  };
   const { operation, subject } = operationAndSubject(action.name);
   const aliases = aliasesForSubject(intentSource, subject);
   const resource = aliases[0];

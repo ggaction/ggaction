@@ -48,6 +48,8 @@ interface ChartProgramActions {
   createPivotData(options: TargetedOptions<PivotDataOptions>): ChartProgram;
   createFoldData(options: TargetedOptions<FoldDataOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createGraphData(options: CreateGraphDataOptions): ChartProgram;
+  editGraphData(options: TargetedOptions<EditGraphDataOptions>): ChartProgram;
   editParameter(options: TargetedOptions<EditParameterOptions>): ChartProgram;
   removeParameter(options: TargetedOptions<RemoveParameterOptions>): ChartProgram;
   createComputedData(options: TargetedOptions<ComputedDataOptions>): ChartProgram;
@@ -2930,6 +2932,21 @@ export interface CreateECDFPlotOptions {
 
 Related types: [`ECDFOutputFields`](#type-ecdfoutputfields) · [`LineCategoricalColorChannel`](#type-linecategoricalcolorchannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`EndpointLabelOptions`](#type-endpointlabeloptions) · [`CartesianPathGuideOptions`](#type-cartesianpathguideoptions).
 
+### `CreateGraphDataOptions` {#type-creategraphdataoptions}
+
+<details markdown="1">
+<summary>Expand CreateGraphDataOptions</summary>
+
+```typescript
+export interface CreateGraphDataOptions extends ObservedGraphDefinition {
+  readonly id: string; readonly nodes: string; readonly edges: string;
+}
+```
+
+</details>
+
+Related types: [`ObservedGraphDefinition`](#type-observedgraphdefinition).
+
 ### `CreateGridOptions` {#type-creategridoptions}
 
 <details markdown="1">
@@ -5761,6 +5778,22 @@ export interface EditGradientPlotOptions {
 
 Related types: [`GradientPlotPositionChannel`](#type-gradientplotpositionchannel) · [`GradientPlotDensityOptions`](#type-gradientplotdensityoptions) · [`GradientPlotAppearanceOptions`](#type-gradientplotappearanceoptions) · [`GradientPlotCenterOptions`](#type-gradientplotcenteroptions).
 
+### `EditGraphDataOptions` {#type-editgraphdataoptions}
+
+<details markdown="1">
+<summary>Expand EditGraphDataOptions</summary>
+
+```typescript
+export interface EditGraphDataOptions {
+  readonly target?: string; readonly nodes?: string; readonly edges?: string;
+  readonly definition?: Partial<ObservedGraphDefinition>;
+}
+```
+
+</details>
+
+Related types: [`ObservedGraphDefinition`](#type-observedgraphdefinition).
+
 ### `EditGraphicsOptions` {#type-editgraphicsoptions}
 
 <details markdown="1">
@@ -7890,6 +7923,17 @@ export type GradientPlotPositionChannel = BoxPlotPositionChannel;
 
 Related types: [`BoxPlotPositionChannel`](#type-boxplotpositionchannel).
 
+### `GraphKeyField` {#type-graphkeyfield}
+
+<details markdown="1">
+<summary>Expand GraphKeyField</summary>
+
+```typescript
+export type GraphKeyField = string | readonly string[];
+```
+
+</details>
+
 ### `GraphicType` {#type-graphictype}
 
 <details markdown="1">
@@ -9596,6 +9640,30 @@ export type NumericFormatString =
 </details>
 
 Related types: [`ValueFormatPrecision`](#type-valueformatprecision).
+
+### `ObservedGraphDefinition` {#type-observedgraphdefinition}
+
+<details markdown="1">
+<summary>Expand ObservedGraphDefinition</summary>
+
+```typescript
+export interface ObservedGraphDefinition {
+  readonly nodeKey: GraphKeyField;
+  readonly source: GraphKeyField;
+  readonly target: GraphKeyField;
+  readonly edgeKey?: GraphKeyField;
+  readonly weight?: string;
+  readonly attributes?: readonly string[];
+  readonly directed?: boolean;
+  readonly selfLoops?: boolean;
+  readonly maxNodes?: number;
+  readonly maxEdges?: number;
+}
+```
+
+</details>
+
+Related types: [`GraphKeyField`](#type-graphkeyfield).
 
 ### `OffsetEncodingOptions` {#type-offsetencodingoptions}
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 304,
+  "actionCount": 306,
   "relationships": [
     {
       "name": "createCanvas",
@@ -131,6 +131,18 @@
       "name": "createPivotData",
       "wraps": [
         "createDerivedData"
+      ]
+    },
+    {
+      "name": "createGraphData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editGraphData",
+      "wraps": [
+        "editSemantic"
       ]
     },
     {

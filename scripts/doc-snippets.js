@@ -59,6 +59,8 @@ export async function documentationPrograms() {
     if (!["node-esm", "browser-module"].includes(options.environment) ||
         !["authoring-only", "renders-canvas"].includes(options.rendering) ||
         !["complete", "continuation"].includes(options.mode) ||
+        (options.resultKind !== undefined && options.resultKind !== "semantic") ||
+        (options.resultKind === "semantic" && options.rendering !== "authoring-only") ||
         !/^[A-Za-z_$][\w$]*(?:\s*,\s*[A-Za-z_$][\w$]*)*$/.test(options.result ?? "")) {
       throw new Error(`${file} must identify its environment and observable result.`);
     }
