@@ -68,6 +68,10 @@ unpacked 실측4,909,964bytes에 맞춰 cap만4,910,000으로 조정했다.
 `grammar/graph/model.js`는 opaque node/edge key, endpoint·direction·origin·source membership과
 bounded plain-data attributes를 검증하고 stable incoming/outgoing/weak-neighbor adjacency를 만든다.
 Layout 소비자는 같은 model owner로 저장 adjacency의 일관성을 확인하며 topology를 다시 추론하지 않는다.
+`grammar/graph/layout.js`는 opaque key에 명시한 fixed 좌표 또는 stable model 순서의 circular 좌표만 만든다.
+Circular 계산은 기존 polarToCartesian의 clockwise degree owner를 사용하며 model과 layout work를 합산한다.
+Resource 저장·공개 action·force solver·component packing을 포함하지 않는다. 수치·검증·실측 package 경계는
+[fixed/circular private checkpoint](impl/roadmap9/phase3/graph/LAYOUT_KERNEL.md)가 소유한다.
 현재는 private 계산이며 public GraphResource, source field adapter, graph action, layout/renderer에는
 연결하지 않았다. 별도 graph metric/preprocessing 작업과 상태를 섞지 않는다.
 상세 경계·남은 의무·실측 증거는 [graph model 기록](impl/roadmap9/phase3/graph/NORMALIZE_KERNEL.md)이 소유한다.

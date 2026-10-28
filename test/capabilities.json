@@ -232,6 +232,10 @@
     "graph": [
       {
         "type": "file",
+        "path": "unit/grammar/graph-layout.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/grammar/graph-model.test.js"
       },
       {
