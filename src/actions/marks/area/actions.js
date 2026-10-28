@@ -211,7 +211,7 @@ const rematerializeAreaMark = /* @__PURE__ */ action(
       resolved = resolved.rematerializeScale({ id: opacityEncoding.scale });
     }
     const config = validateAreaPaintConfig(this.markConfigs[id]);
-    const { paths, fills: ordinaryFills, strokes, opacities } = resolveAreaMaterialization({
+    const { paths, fills: ordinaryFills, strokes: ordinaryStrokes, opacities } = resolveAreaMaterialization({
       rows: dataset.values,
       layer,
       densityTransform,
@@ -219,6 +219,7 @@ const rematerializeAreaMark = /* @__PURE__ */ action(
       config
     });
     const fills = resolveConditionalValues(resolved, layer, "color") ?? ordinaryFills;
+    const strokes = resolveConditionalValues(resolved, layer, "stroke") ?? ordinaryStrokes;
     const existingChildren = resolved.graphicSpec.objects[id].items ?? [];
     const hasOutline = strokes !== undefined || config.stroke !== undefined ||
       config.strokeFromFill === true;

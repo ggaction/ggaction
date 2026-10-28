@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { renderToSVG } from "../../../src/renderers/svg.js";
 import { chart, hconcat } from "../../../src/index.js";
 import { serializeProgram, deserializeProgram } from "../../../src/persistence.js";
 import { collectResourceReferences } from "../../../src/core/resourceReferences.js";
@@ -380,4 +381,32 @@ test("conditional density-area color materializes valid fills before concrete gr
     ["#dc2626", "#dc2626"]);
   assert.deepEqual(revised.graphicSpec.objects.area.items.map(item => item.properties.stroke),
     ["#dc2626", "#dc2626"]);
+});
+
+
+test("conditional point and area strokes retain the ordinary visible default width", () => {
+  for (const shape of ["circle", "square", "triangle-up"]) {
+    for (const value of [{ value: "#dc2626" }, { field: "group", scale: { id: "strokes" } }]) {
+      const original = base().encodeShape({ value: shape });
+      const result = original.encodeStroke(condition(value, { value: "#2563eb" }));
+      assert.deepEqual(items(result).map(item => item.properties.strokeWidth), [1, 1, 1]);
+      assert.equal(items(result)[0].properties.stroke, "#2563eb");
+      assert.doesNotThrow(() => renderToSVG(result));
+      const restored = deserializeProgram(serializeProgram(result));
+      assert.doesNotThrow(() => renderToSVG(restored.editCanvas({ width: 420 })));
+    }
+  }
+  const zero = base().encodeStrokeWidth({ value: 0 })
+    .encodeStroke(condition({ value: "red" }, { value: "blue" }));
+  assert.deepEqual(items(zero).map(item => item.properties.strokeWidth), [0, 0, 0]);
+  const area = chart().createCanvas({ width: 400, height: 300, margin: 50 })
+    .createData({ id: "raw", values: [{ x: 1 }, { x: 2 }, { x: 3 }] })
+    .createAreaMark({ id: "area", data: "raw" })
+    .encodeDensity({ target: "area", field: "x", steps: 8 })
+    .encodeStroke({ target: "area", conditions: [
+      { when: expression(literal(true)), value: { value: "#dc2626" } }
+    ], otherwise: { value: "#2563eb" } });
+  assert.deepEqual(area.graphicSpec.objects.area.items.map(item =>
+    [item.properties.stroke, item.properties.strokeWidth]), [["#dc2626", 1]]);
+  assert.doesNotThrow(() => renderToSVG(area));
 });

@@ -350,7 +350,7 @@ export const rematerializePointMark = /* @__PURE__ */ action(
 
     const positions = resolvePointPositions(resolved, layer, dataset);
     const mappedFill = resolveRowEncodingValues(resolved, layer, dataset, "color");
-    const mappedStroke = resolveRowEncodingValues(resolved, layer, dataset, "stroke");
+    const mappedStroke = resolveConditionalValues(resolved, layer, "stroke") ?? resolveRowEncodingValues(resolved, layer, dataset, "stroke");
     const area = resolveConditionalValues(resolved, layer, "size") ?? resolveRowEncodingValues(resolved, layer, dataset, "size");
     const encodedShape = resolveConditionalValues(resolved, layer, "shape") ?? resolveRowEncodingValues(resolved, layer, dataset, "shape");
     const encodedOpacity = resolveRowEncodingValues(
