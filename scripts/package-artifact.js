@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 738, // Combined image, paint, graph and hierarchy private owners.
-  packedBytes: 1_098_000, // Combined Node20/24 observed maximum: 1,097,419 bytes.
-  unpackedBytes: 5_054_000 // Combined runtime, declarations and knowledge: 5,053,657 bytes.
+  entries: 739, // Combined owners and the private builtin resource registry.
+  packedBytes: 1_099_000, // Node20/24 observed maximum: 1,098,083 bytes.
+  unpackedBytes: 5_057_000 // Runtime, declarations and knowledge: 5,056,470 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
