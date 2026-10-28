@@ -6,7 +6,8 @@
 - [x] Tree3 + treemap2 primitive 승인 (`ec048461`, “5개 대상 모두 승인”)
 - [x] 최신 main `72855612`와 hierarchy branch의 검증된 merge
 - [x] 원안의 확정 이름과 새 facade·저장 경계를 구분한 최소 전체 API 제안
-- [ ] 이 문서의 새 plot facade 및 builtin resource validator 경계 승인 (`ready-for-review`)
+- [x] 새 plot facade·builtin resource validator 경계 revision `928fba48` 승인 (`approved`): “세 설계안 모두 승인, 구현 계속”
+  ([승인 정본](../PUBLIC_APPROVALS_20261028.json))
 - [ ] 공개 action·revision·consumer·declarations/current/docs와 installed evidence 구현
 - [ ] STEP-020·AT-22·STEP-077 완료
 

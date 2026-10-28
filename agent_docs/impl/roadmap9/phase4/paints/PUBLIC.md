@@ -4,10 +4,10 @@
 
 - [x] Pattern `4cd8917e`, radial `57f70fbc`, shadow `10f04609`, blend `90f5f67e`, outline/halo `ca064947`의 rendered target 사용자 승인 기록
 - [x] Main `72855612` 통합, 기존 private/renderer 검증 재실행
-- [ ] 아래 새 공개 모양과 저장 형식의 사용자 확인
+- [x] P1–P2 revision `06e9eba8` 공개 모양·저장 형식 승인: “세 설계안 모두 승인, 구현 계속”
 - [ ] 기존 action·materializer·renderer·consumer·declaration·Current 문서 연결
 
-이 제안은 **ready-for-review**이며 실행 계약이 아니다. Root AGENTS의 새 public API/persisted schema 보호 규칙 때문에
+이 제안은 **approved**이며 구현 완료를 뜻하지 않는다. [승인 정본](../../PUBLIC_APPROVALS_20261028.json)을 따른다. Root AGENTS의 새 public API/persisted schema 보호 규칙 때문에
 미정 선택을 구체화했다. 이미 승인된 모양·alpha 처리·7 styles·공통 shadow blur를 다시 묻지 않는다.
 새 paint resource CRUD, registry, package entry 또는 generic style transaction을 추가하지 않는다.
 

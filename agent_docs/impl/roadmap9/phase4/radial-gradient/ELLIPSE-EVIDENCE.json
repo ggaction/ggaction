@@ -1,5 +1,5 @@
 {
-  "state": "ready-for-review",
+  "state": "approved",
   "sourceEvidenceRevision": "06e9eba80a9495f161480785f458e7eb4121e240",
   "approvedOriginalTargetRevision": "57f70fbc",
   "normal": {
@@ -46,5 +46,10 @@
     ".artifacts/test/png/review/radial-gradient/object-bounds-ellipse/primitive.png": "fa0721709d9f116e41ea5d3258643db900e534ce757c48dcee0c80acb6ec1e5d",
     ".artifacts/test/png/review/radial-gradient/object-bounds-ellipse/primitive.svg": "dc238b92a665c4e93e42504c47e28b23bfa590c687beeb4412add956f5b11387",
     ".artifacts/test/png/review/radial-gradient/object-bounds-ellipse/variant.json": "47f42249073136be0c30b0dd147445314c4f6dbc724c62fd608405505f94d299"
+  },
+  "approval": {
+    "reviewRevision": "06e9eba8",
+    "answer": "추가 시각 대상 모두 승인, 구현 계속",
+    "record": "../../PUBLIC_APPROVALS_20261028.json"
   }
 }

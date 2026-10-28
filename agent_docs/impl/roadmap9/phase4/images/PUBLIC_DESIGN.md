@@ -1,6 +1,7 @@
 # Image 공개 연결 검토안
 
-상태: **ready-for-review**. 아래 I1–I4는 아직 공개 API·Current·저장 validator에 넣지 않은 구체안이다.
+상태: **approved**. 사용자 “세 설계안 모두 승인, 구현 계속”으로 I1–I4의 revision `990315b7`이 승인되었다.
+[승인 정본](../../PUBLIC_APPROVALS_20261028.json)을 따른다. 공개 API·Current·저장 validator 구현과 검증은 별도 완료 의무다.
 시각6종은 [REVIEW](REVIEW.md)의 `3853bdb1`로 승인되었다. 전체 이미지 resolver/fit/offline 요구와
 명시 resource lifecycle은 원안 및 [전체 실행 승인](../../AUTHORIZATION.json)에 포함되어 있다.
 이번 확인은 원안에서 이름·연결 방식이 미정이었던 부분에 한정한다.
