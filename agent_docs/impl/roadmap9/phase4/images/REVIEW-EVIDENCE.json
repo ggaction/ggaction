@@ -1,0 +1,344 @@
+{
+  "state": "ready-for-review",
+  "visualApproval": "pending",
+  "publicImageIntegration": "pending",
+  "codeBase": "119b7845e709e78169a645948709c61155871eb3",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64",
+    "poppler": "pdftoppm version 26.08.0"
+  },
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js all capability:image-assets",
+      "exit": 0,
+      "log": "evidence/review/image-gate-focused.log.gz",
+      "rawSha256": "269645f53d81b298e763592547363388d4b09ab19dd9cf587209a0270dbb26fb",
+      "gzipSha256": "be33ebd855997d41b54ed8c68803c10ec6929281911d970bbef6e49d8fb070bb",
+      "counts": {
+        "tests": 28,
+        "pass": 28,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "command": "node scripts/run-tests.js render gates/image-assets/backends.render.js",
+      "exit": 0,
+      "log": "evidence/review/image-gate-render.log.gz",
+      "rawSha256": "8e435ded686f09fcc47ac3a5f8b31235c1b2779ad47ade5f7cfda92c10a9d8f9",
+      "gzipSha256": "dfac2912e3b5f9fbd447be27de6ebe71a22d7166cebc9c5d0e5cea9508f9a4c1",
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/source-boundaries.test.js contracts/test-discovery.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js",
+      "exit": 0,
+      "log": "evidence/review/image-gate-contracts-final.log.gz",
+      "rawSha256": "ad5370d18687dec1d0ae46ed81decd83de86565289a19f9868ada36a37f8526f",
+      "gzipSha256": "12099f30f51b20be100f9bb9d7c3b449cf61d135141dba1bfed7f2828fb812da",
+      "counts": {
+        "tests": 38,
+        "pass": 38,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "command": "node scripts/run-tests.js docs",
+      "exit": 0,
+      "log": "evidence/review/image-gate-docs-final.log.gz",
+      "rawSha256": "72e74bf60e3bd7b73ef3cf2879c816d44619072cd7a6c77a1b7bb1598d27e520",
+      "gzipSha256": "847c24c79d0ee39bb6ce0a167df9f7772cbef7dc92f528d12d144a70d8ba942b",
+      "counts": {
+        "tests": 159,
+        "pass": 159,
+        "fail": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "command": "npm run docs:machine:check",
+      "exit": 0,
+      "log": "evidence/review/image-gate-machine.log.gz",
+      "rawSha256": "795dd208b8c58e44015d36a6d75d7b26bf5661c5e8c07a4b442bb215e7e219f5",
+      "gzipSha256": "2970ceb3830b3ae8923e2ae3212fd9dd7870e970c2d964c7c4b8f05d27fbefe3",
+      "counts": {}
+    },
+    {
+      "command": "npm run package:check",
+      "exit": 0,
+      "log": "evidence/review/image-gate-package.log.gz",
+      "rawSha256": "b3b258503b536d6fb8985415747c682589907582674118bb675ca6c21876e6cc",
+      "gzipSha256": "a67985c5f173473573f217bd9f5fdcd1adbabf7b9fe69a6fff3c3e199345fb26",
+      "counts": {}
+    }
+  ],
+  "preservedInitialFailures": [
+    {
+      "path": "evidence/review/image-gate-render-initial.log.gz",
+      "rawSha256": "3d206eacfef1f1c32e67a81a7cdfde404c6ae9bec30977078a4aefc2bec3338f",
+      "gzipSha256": "58b0da7941189f64bc56d60f57d4c16a48309919924722740fb76ea6f2be7d0c",
+      "status": "failed, preserved; not final pass evidence"
+    },
+    {
+      "path": "evidence/review/image-gate-initial-results.json.gz",
+      "rawSha256": "de930b0d8de8dff64cbfc2face64638db1e2a044c05e003b8137c8589cf86669",
+      "gzipSha256": "801a777e047d7a53a3ff6d97cf5f6cfbd85d98e14ad980abed182ef64e62249b",
+      "status": "failed, preserved; not final pass evidence"
+    },
+    {
+      "path": "evidence/review/image-gate-contracts.log.gz",
+      "rawSha256": "4d4167c4e4f66ec334e486b743782b1b4249813ad09d1bce5f13a4be99fc2e69",
+      "gzipSha256": "cf83aff76e75f6621ff329a3336b8a3530c313320c1fbd256665fb02793df8ce",
+      "status": "failed, preserved; not final pass evidence"
+    }
+  ],
+  "inputs": {
+    "test/gates/image-assets/primitive.test.js": "6c18c9a16bc8963771b25cab82fa5be6c1fc39d6cc1b61319f86f599098df878",
+    "test/gates/image-assets/browser.html": "b3927cbe11e111534847527a76229c54623ca947d773a16a6e8b0360ba73fc12",
+    "test/gates/image-assets/fixture.js": "252b78bf2696668b14fcebaf5d8718382a28aba3e484f67169c7e81d609fdeb0",
+    "test/gates/image-assets/manifest.js": "42db2ddd19febc5f9bfaf59127517fa0a8abb0587972c1ca6785719116280b0c",
+    "test/gates/image-assets/backends.render.js": "fe214233b763f60cf57b32b9434f706db5bc961557d3328705de5aebff1a6c4d",
+    "test/gates/image-assets/primitive.program.js": "c6867e527e797ee54223c1d2f2e2815bede57d98a3ea172ac606c7b9308a51f7",
+    "test/gates/image-assets/reference.js": "43cecf519f691a577018b3bd762fac33417de687ea67c63b352465bc13631a6d",
+    "test/capabilities.json": "5c1d378c5b45d21323e5bdd494caf7b27f519e9693021a22874ea0bbffdb4884",
+    "src/resources/resolveAssets.js": "cd90a2ee33b424f4a302f4b33a78eebcbea8bd8d8bce14f2e0ca40a3fa0bb945",
+    "src/resources/svgImage.js": "6f85b82f50f7b4cccb4feedd1a53485e921f2a47a20f85f17e41ed31fea57081",
+    "src/materialization/image.js": "10ea6e4d19ea8776d8abee167466dce35b1b4855be2f7f6a75b2f159ce8f04d4",
+    "src/core/contentDigest.js": "4e3392fbf2c9e3a335f6e55405c2c07326bda07f7004b66aef703be270a3b7b5",
+    "agent_docs/impl/roadmap9/phase4/images/REVIEW.md": "98041239b48193e42d5f631db24353d066974642814f4da129fcafcfedc615ef"
+  },
+  "artifactRoot": ".artifacts/test/png/review/image-assets",
+  "outputs": {
+    "clip-opacity/browser-canvas.png": {
+      "sha256": "a35e51cd8e6fc39362e56f18d03bc8720fa7c7a8976201896bf0a7032e0feadf",
+      "bytes": 7070
+    },
+    "clip-opacity/browser-svg.png": {
+      "sha256": "a35e51cd8e6fc39362e56f18d03bc8720fa7c7a8976201896bf0a7032e0feadf",
+      "bytes": 7070
+    },
+    "clip-opacity/evidence.json": {
+      "sha256": "2e7457751dad96a0626d38f1234673df1e533ad44792388c9822c8a94691c1e0",
+      "bytes": 12852
+    },
+    "clip-opacity/pdf.png": {
+      "sha256": "e768ab1dee8ad3495b1945af7436c184045f72d28f4c5d5415779df03a9d7703",
+      "bytes": 5139
+    },
+    "clip-opacity/primitive.pdf": {
+      "sha256": "c77571b932128353802f71e6b9a2bbac1f1e6c2916f5e60f44432c19cb058d1b",
+      "bytes": 15086
+    },
+    "clip-opacity/primitive.png": {
+      "sha256": "3dc27767e6254d70bef6188cfc0f25b47027405b4bb1717815cd317abcc3a89c",
+      "bytes": 5570
+    },
+    "clip-opacity/primitive.svg": {
+      "sha256": "e2404daf93bf8baae2c48e0c81cd60ccfcf8d9769987577e1df7350f7e4eb2d3",
+      "bytes": 1099
+    },
+    "clip-opacity/variant.json": {
+      "sha256": "f6d3b0d1eac724122f9b0544b8e3b62effc0574819b81a14cad8b4301b7cb2eb",
+      "bytes": 256
+    },
+    "contact-sheet.png": {
+      "sha256": "a1c188e37d400f3f39ab3d06c82df8dc0f11813c2ff5e7fad09db0280365c22a",
+      "bytes": 13917
+    },
+    "contain-center/browser-canvas.png": {
+      "sha256": "ce68a9df56f97bea379863e6eb4c9b21b57bf36bdc06d98747cd340052dc9278",
+      "bytes": 4395
+    },
+    "contain-center/browser-svg.png": {
+      "sha256": "ce68a9df56f97bea379863e6eb4c9b21b57bf36bdc06d98747cd340052dc9278",
+      "bytes": 4395
+    },
+    "contain-center/evidence.json": {
+      "sha256": "8f192fcccc0a4631eaae8d0f187a207598924de1bcab60c8917733997e5cb7e2",
+      "bytes": 12814
+    },
+    "contain-center/pdf.png": {
+      "sha256": "62916f5bbfedd80472a45ce0a402f4b09a49c81a021ea74288a7c22608cc81a3",
+      "bytes": 2703
+    },
+    "contain-center/primitive.pdf": {
+      "sha256": "6a594a53e38b5d5e4f0811b7711292894db5606db36293c3fc53830e8fc1f286",
+      "bytes": 13406
+    },
+    "contain-center/primitive.png": {
+      "sha256": "cb0233a03d6b063d45424f0611ce88d6c49403454ca9bc282a0b4b4e8a6169dc",
+      "bytes": 3073
+    },
+    "contain-center/primitive.svg": {
+      "sha256": "03979488fd095171754ee8e23ebf5f6c32ddb8527d19e5f2846f313ab70646ba",
+      "bytes": 1064
+    },
+    "contain-center/variant.json": {
+      "sha256": "f3c165206d4962da2fbd568242963e6fdf08e9c185850ee1d871686862ae8cc0",
+      "bytes": 252
+    },
+    "contain-start/browser-canvas.png": {
+      "sha256": "26c9c7cb85e9bf0c20b03a6131b0f606eeb68c0246ad1548c2ba07cb3737f8da",
+      "bytes": 3950
+    },
+    "contain-start/browser-svg.png": {
+      "sha256": "26c9c7cb85e9bf0c20b03a6131b0f606eeb68c0246ad1548c2ba07cb3737f8da",
+      "bytes": 3950
+    },
+    "contain-start/evidence.json": {
+      "sha256": "a08a50e24a4c048fb50252f69b4f7cdff0cd0e89c79d3a3e68aa402c194e99df",
+      "bytes": 12813
+    },
+    "contain-start/pdf.png": {
+      "sha256": "e3f8cdfac0f649f3eab5de69ee789da5cf0132e731e0e7fefc3e937417a6c87b",
+      "bytes": 2349
+    },
+    "contain-start/primitive.pdf": {
+      "sha256": "fd81df66612fca5258476402db018fec8c6a36f1303d1a6b72717fa001a4d300",
+      "bytes": 13733
+    },
+    "contain-start/primitive.png": {
+      "sha256": "3b626db206074c978248428111a304b3d4e5fd9e5e9010640ec06e2a94054f4e",
+      "bytes": 2728
+    },
+    "contain-start/primitive.svg": {
+      "sha256": "4d1737dbffc0922f0b2c304315ea06d41bf99428f24e2125c7beabbb347d958a",
+      "bytes": 1063
+    },
+    "contain-start/variant.json": {
+      "sha256": "f634b551987101c14b8578f6cc2670303af953dd074a23b2bca21ebc13cdbf2e",
+      "bytes": 249
+    },
+    "cover-center/browser-canvas.png": {
+      "sha256": "4d90f7f3411de8a36d52b212895163317195bee8960ef07341a6f9649bbe54af",
+      "bytes": 4549
+    },
+    "cover-center/browser-svg.png": {
+      "sha256": "4d90f7f3411de8a36d52b212895163317195bee8960ef07341a6f9649bbe54af",
+      "bytes": 4549
+    },
+    "cover-center/evidence.json": {
+      "sha256": "59c390da27100e4b0030eb8b46a49095bca65fdcad5398d17c55c4d748758519",
+      "bytes": 12772
+    },
+    "cover-center/pdf.png": {
+      "sha256": "7d6d41db2244bc4497f3af0755d5cc5c34976f321e2bcbbc7334fcc3a4ea4ce0",
+      "bytes": 3238
+    },
+    "cover-center/primitive.pdf": {
+      "sha256": "2fe294a21c46cf4a8152fe4f54875fa9f198e4eb449772f15bbba315094fa9c6",
+      "bytes": 13013
+    },
+    "cover-center/primitive.png": {
+      "sha256": "2e4d994fc35c1f71595bf7e62154a4c07b242572b40a1f990768758e75395d5a",
+      "bytes": 3226
+    },
+    "cover-center/primitive.svg": {
+      "sha256": "67b828382914c3d9e65da458aa58fc70532a5c1e05897970e6f859d5f48af779",
+      "bytes": 1062
+    },
+    "cover-center/variant.json": {
+      "sha256": "a7a7ee6d91cb413864c931e671145c11e83c2b27b324df5849b34dfd2c1f2566",
+      "bytes": 246
+    },
+    "cover-end/browser-canvas.png": {
+      "sha256": "6ed85520f60f575096ae8a0ad4a878baa060ef20f66e0bd3f3be95d0c1c36405",
+      "bytes": 3660
+    },
+    "cover-end/browser-svg.png": {
+      "sha256": "6ed85520f60f575096ae8a0ad4a878baa060ef20f66e0bd3f3be95d0c1c36405",
+      "bytes": 3660
+    },
+    "cover-end/evidence.json": {
+      "sha256": "e166fdd03a9650eefce8e1bdc4ecb39005aa5e4e61da733c9dd27b4c7820eb07",
+      "bytes": 12779
+    },
+    "cover-end/pdf.png": {
+      "sha256": "05b8cc7378bcd91e6d3a9c1d81d9689cd8dd55bdf2095ee458d3a388608e8054",
+      "bytes": 2441
+    },
+    "cover-end/primitive.pdf": {
+      "sha256": "56fbfca3fedafa68c7f3e0c28e329d69415d1b2cde0dc2dc07936824c40bd761",
+      "bytes": 13061
+    },
+    "cover-end/primitive.png": {
+      "sha256": "fa9b7f67970e82d15855e295e410b30c4484c51c7759049f7996c48d4cf61333",
+      "bytes": 2455
+    },
+    "cover-end/primitive.svg": {
+      "sha256": "06a5a74336f80a88cdd152e92f17b136f326c97e6588372d209dc06ae0237998",
+      "bytes": 1061
+    },
+    "cover-end/variant.json": {
+      "sha256": "3faf5de58b0e6e3f83e63c0dc6e0a24c2ddb5fcf549ef7fea6d58d6293ca77ed",
+      "bytes": 237
+    },
+    "fill/browser-canvas.png": {
+      "sha256": "bf3afba869afd4cedf62497179e487d01e2a499fd9ea8635dde30cd09963b44f",
+      "bytes": 2717
+    },
+    "fill/browser-svg.png": {
+      "sha256": "bf3afba869afd4cedf62497179e487d01e2a499fd9ea8635dde30cd09963b44f",
+      "bytes": 2717
+    },
+    "fill/evidence.json": {
+      "sha256": "90131d11fda3db38e0145b38f9039ca57ee6e76467b31a718b40d29be3121205",
+      "bytes": 12765
+    },
+    "fill/pdf.png": {
+      "sha256": "fe33ce0c66cfa2f57ff27bd2de24b0dff94c587fe590a781b50413c65af5abf3",
+      "bytes": 1274
+    },
+    "fill/primitive.pdf": {
+      "sha256": "24389581d81138f13d25d63e62d188fdaa9b452a2b87cb7940f85ee921165222",
+      "bytes": 10891
+    },
+    "fill/primitive.png": {
+      "sha256": "4c76e3305bf62e9edba5f3ad95fbeeb6d5c4b24af1304fc6b546df8e6eeb9f58",
+      "bytes": 1609
+    },
+    "fill/primitive.svg": {
+      "sha256": "e02ed05e0b9e78931f8bec47654d5e69d4926bcab8961eb6243725ed7b98bd74",
+      "bytes": 1052
+    },
+    "fill/variant.json": {
+      "sha256": "459931d888e9dbd159c0d58db29bcdd4ffdb85574bf7bf0b211c0e09c3c970c2",
+      "bytes": 219
+    },
+    "results.json": {
+      "sha256": "45856ae90dc510497ab41f17262abe9213cd0e315092a7f1cd53a2384955a400",
+      "bytes": 98542
+    }
+  },
+  "assertionSummary": {
+    "variants": 6,
+    "backends": [
+      "Native Canvas / PNG",
+      "Browser Canvas",
+      "Browser SVG",
+      "PDF"
+    ],
+    "analyticSamples": 264,
+    "rgbTolerance": 1,
+    "alphaTolerance": 0,
+    "nativePNGExactPixels": true
+  },
+  "reusedCoverage": {
+    "sourceCommit": "119b7845",
+    "reason": "Runtime source unchanged; hashes above",
+    "manifest": "evidence/svg/manifest.json"
+  },
+  "manualInspection": {
+    "images": [
+      "contact-sheet.png"
+    ],
+    "result": "Contain preserves aspect; cover crops at selected alignment; fill stretches the circle; clip and alpha visible. User approval remains pending."
+  }
+}

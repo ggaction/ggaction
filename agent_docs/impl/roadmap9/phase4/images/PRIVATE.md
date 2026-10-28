@@ -9,7 +9,8 @@
 - [x] source/package/discovery 경계, 기존 데이터 digest 회귀와 공개 번들 검사
 - [x] SVG allowlist와 unsafe external resource 거부
 - [ ] 공개 resource CRUD·codec·scene·export preflight와 네 renderer 연결
-- [ ] rendered primitive 검토와 공개 image action flow
+- [x] [rendered primitive 검토 package](REVIEW.md); 사용자 확인 대기
+- [ ] 승인 뒤 공개 image action flow
 - [ ] AT-04/AT-14 전체 소비자 검증 및 STEP-018 종료
 
 이는 **private kernel checkpoint**다. public exports, 저장 schema, image primitive 또는
