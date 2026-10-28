@@ -10,7 +10,7 @@ import { preparedSourceResources } from "./dataSourceContext.js";
 const same = (a, b) => a.kind === b.kind && a.id === b.id;
 
 export function replaceStoredResource(program, parsed, value, args) {
-  validateStoredResource(value);
+  validateStoredResource(value, program.constructor);
   if (value.kind !== parsed.resourceKind || value.id !== parsed.id) throw new Error("Resource identity must match its semantic path.");
   const previous = findStoredResource(program, value.kind, value.id);
   if (value.revision !== (previous === undefined ? 0 : previous.revision + 1)) {
@@ -60,7 +60,7 @@ export function replaceStoredResource(program, parsed, value, args) {
   if (replacements.size) throw annotateError(new Error("Prepared source replacement is missing from the resource graph."), { code: "stale-result" });
   const resources = supplied.map(resource => updated.get(JSON.stringify([resource.kind, resource.id])));
   const semanticSpec = { ...program.semanticSpec, resources: cloneAndFreeze(resources) };
-  validateResourceGraph({ ...program, semanticSpec });
+  validateResourceGraph({ ...program, semanticSpec }, program.constructor);
   const selections = program.materializationConfigs.selections;
   const rebound = selections === undefined ? undefined : Object.fromEntries(Object.entries(selections).map(([id, definition]) => {
     const revision = revisions.get(JSON.stringify([definition.resource?.kind, definition.resource?.id]));

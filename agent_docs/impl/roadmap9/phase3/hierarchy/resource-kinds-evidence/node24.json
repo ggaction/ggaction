@@ -1,0 +1,37 @@
+{
+  "node": "v24.22.1",
+  "zlib": "1.3.2.1-motley-285e94b",
+  "npm": "10.9.8",
+  "entries": 739,
+  "unpackedBytes": 5056470,
+  "packedBytes": 1098083,
+  "tarBytes": 5633536,
+  "tarSha256": "81185d265108dd41072632a137d4d3026453dd833ceb52f2d125ce2d3d7918df",
+  "artifactSha256": "2e0cce753a1cb72ace5693a72e9f6fa6b261fdb3b11edad34201e8c176f1eccc",
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "minifiedBytes": 1921311,
+      "gzipBytes": 535560,
+      "chunkHashes": [
+        "81f7a26c63db2f5f3913735478a0109661ebea60189e4d67a3ca7d5a2879464a"
+      ]
+    },
+    {
+      "specifier": "ggaction/basic",
+      "minifiedBytes": 1084821,
+      "gzipBytes": 313517,
+      "chunkHashes": [
+        "9efa3ca5abcd7b7f157481dd4e1fc155722e2aaa5840f1d34e8d43f9b79cc1fb"
+      ]
+    },
+    {
+      "specifier": "ggaction/svg",
+      "minifiedBytes": 25670,
+      "gzipBytes": 8185,
+      "chunkHashes": [
+        "16c86f32bb00ccf9752d490a6e2a658282f85eb226553376d54e8f3a4b640da0"
+      ]
+    }
+  ]
+}

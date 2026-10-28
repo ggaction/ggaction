@@ -47,6 +47,21 @@ public resource/action/schema와 renderer 경계는 아직 바꾸지 않았다. 
 object와 mutable byte buffer는 저장 결과에 들어가지 않는다. 공개 연결 전의 근거와 남은 범위는
 [image](impl/roadmap9/phase4/images/PRIVATE.md)와 [font](impl/roadmap9/phase4/fonts/PRIVATE.md)에 있다.
 
+## Private builtin resource validation
+
+승인된 Full-only hierarchy/layout/image 연결을 위해 `materialization/resourceKinds.js`가 exact
+program constructor별 검증 handler를 한 번 등록한다. 복사한 null-prototype record와 handler를
+freeze하며 상위 constructor의 권한을 상속하지 않는다. Public plugin 또는 renderer registry가 아니다.
+공통 resource owner는 envelope·typed refs·graph를 먼저 검사하고 등록 owner의 저장값 및 binding
+검증만 호출한다. Plain preview는 원래 constructor를 명시하며, 미등록 class/Basic는 추가 kind를
+거부한다. Persistence도 실제 복원 constructor의 같은 경계를 사용하고 계산을 실행하지 않는다.
+이 준비 checkpoint는 handler 연결점만 추가하며 Full assembly의 hierarchy/layout/image 등록과
+각 public authoring consumer는 후속 구현이다. [구현 기록](impl/roadmap9/phase3/hierarchy/RESOURCE_KINDS.md)이
+승인·검증과 후행 연결 의무를 보존한다.
+이 owner1개를 더한 지원 Node20/22/24 staging은739entries, packed최대1,098,083,
+unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
+Full/Basic/SVG browser gzip최대535,560/313,517/8,185는 기존 한도 안이며 그대로 유지한다.
+
 ## Private hierarchy normalization
 
 `grammar/hierarchy/normalize.js`는 명시 node records의 typed identity, parent/children topology,

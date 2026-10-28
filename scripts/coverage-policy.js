@@ -32,6 +32,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "compositing-kernel": { prefix: "grammar/compositing", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Premultiplied blend equations, one group attenuation and bounded quantization must remain exercised." },
   "pattern-kernel": { prefix: "grammar/patterns", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Shared vector tile normalization, periodic coverage and bounded geometry must remain exercised." },
   "resource-state": { prefix: "materialization/resourceState", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Stored resource revisions and dependency validation must remain exercised." },
+  "builtin-resource-kinds": { prefix: "materialization/resourceKinds", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Class-specific builtin validation must reject unsafe records, inheritance and repeated registration." },
   "row-lineage": { prefix: "grammar/rowLineage", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "Every transform must preserve exact contributing rows." },
   "core-state": { prefix: "core/", floor: { lines: 80, branches: 75, functions: 80 }, rationale: "State and action boundaries must remain exercised." },
   "all-renderers": { prefix: "renderers/", floor: { lines: 50, branches: 60, functions: 80 }, rationale: "Includes the lazy native loader; Canvas and explicit overrides retain stricter floors." },
