@@ -43,11 +43,15 @@ iterative preorder/postorder와 세 가지 value aggregation을 한 번 검증�
 `grammar/hierarchy/partition.js`도 같은 model 경계를 소비하여 depth와 정규화 구간·reserved residual tail을 만든다.
 계층의 합계와 prefix는 기존 numeric owner의 명시 compensated 정책을 공유하며 기존 호출 기본 계산은 유지한다.
 `grammar/hierarchy/treemap.js`는 같은 model에서 slice-dice/squarify rectangle을 계산하고,
-padding을 뺀 content와 own-value reserved rectangle을 분리해 보존한다. 현재는 private 계산만 있고 hierarchy/layout resource 저장, public
+padding을 뺀 content와 own-value reserved rectangle을 분리해 보존한다.
+`grammar/hierarchy/order.js`는 명시 input/value/key/field 순서를 공통 model에 반영한다. Key는 기존 typed
+identity comparator, field는 기존 sort transform 정책을 재사용하며 원본 field 해결은 semantic caller의 책임이다.
+현재는 private 계산만 있고 hierarchy/layout resource 저장, public
 action, renderer 또는 새 시각 target과 연결하지 않았다.
 상세 범위·후속 의무와 실측 package 증거는 [normalizer](impl/roadmap9/phase3/hierarchy/NORMALIZE_KERNEL.md)와
 [input adapter](impl/roadmap9/phase3/hierarchy/INPUT_KERNEL.md), [tree 계산](impl/roadmap9/phase3/hierarchy/TREE_KERNEL.md),
-[partition 계산](impl/roadmap9/phase3/hierarchy/PARTITION_KERNEL.md), [treemap 계산](impl/roadmap9/phase3/hierarchy/TREEMAP_KERNEL.md) 기록이 소유한다.
+[partition 계산](impl/roadmap9/phase3/hierarchy/PARTITION_KERNEL.md), [treemap 계산](impl/roadmap9/phase3/hierarchy/TREEMAP_KERNEL.md),
+[sibling 정렬](impl/roadmap9/phase3/hierarchy/ORDER_KERNEL.md) 기록이 소유한다.
 
 ## 내부 expression kernel 경계
 

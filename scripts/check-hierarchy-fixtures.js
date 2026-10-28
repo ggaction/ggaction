@@ -9,13 +9,14 @@ import { normalizeHierarchyInput } from "../src/grammar/hierarchy/input.js";
 import { layoutHierarchyTree } from "../src/grammar/hierarchy/tree.js";
 import { layoutHierarchyPartition } from "../src/grammar/hierarchy/partition.js";
 import { layoutHierarchyTreemap } from "../src/grammar/hierarchy/treemap.js";
-import { hierarchyRows, hierarchyExpected, hierarchyInputFixtures } from "../test/oracles/hierarchy.js";
+import { orderHierarchyModel } from "../src/grammar/hierarchy/order.js";
+import { hierarchyRows, hierarchyExpected, hierarchyInputFixtures, hierarchyOrderFixtures } from "../test/oracles/hierarchy.js";
 import { naiveHierarchyTree } from "../test/oracles/hierarchy-tree.js";
 import { integerHierarchyPartition } from "../test/oracles/hierarchy-partition.js";
 import { rationalSquarify } from "../test/oracles/hierarchy-treemap.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const directory = path.join(root, ".artifacts/validation/hierarchy-treemap");
+const directory = path.join(root, ".artifacts/validation/hierarchy-order");
 const hash = value => createHash("sha256").update(typeof value === "string" ? value : JSON.stringify(value)).digest("hex");
 const cases = ["leaf-sum", "inclusive", "own-plus-children"].map(valueMode => {
   const result = normalizeHierarchyNodes(hierarchyRows, { valueMode });
@@ -79,8 +80,16 @@ for (const [index, weights] of [[6, 6, 4, 3, 2, 2, 1], [1, 1], [1, 4, 4, 2]].ent
     input, expected, actual, differences, relativeTolerance: 2e-12,
     hashes: { input: hash(input), expected: hash(expected), actual: hash(actual), differences: hash(differences) } });
 }
+for (const fixture of hierarchyOrderFixtures) {
+  const model = normalizeHierarchyNodes(hierarchyRows), result = orderHierarchyModel(model, fixture.options, fixture.values);
+  const actual = result.nodes.map(node => node.sourceRows[0]), expected = fixture.expectedSourceRows, differences = [];
+  assert.deepEqual(actual, expected);
+  const input = { model, options: fixture.options, values: fixture.values };
+  cases.push({ id: `order-${fixture.options.by}`, call: `orderHierarchyModel(${JSON.stringify(model)},${JSON.stringify(fixture.options)},${JSON.stringify(fixture.values)})`,
+    input, expected, actual, differences, hashes: { input: hash(input), expected: hash(expected), actual: hash(actual), differences: hash(differences) } });
+}
 const oracles = ["test/oracles/hierarchy.js", "test/oracles/hierarchy-tree.js", "test/oracles/hierarchy-partition.js", "test/oracles/hierarchy-treemap.js"];
-const sources = ["src/grammar/hierarchy/normalize.js", "src/grammar/hierarchy/input.js", "src/grammar/hierarchy/model.js", "src/grammar/hierarchy/tree.js", "src/grammar/hierarchy/partition.js", "src/grammar/hierarchy/treemap.js", "src/grammar/numeric.js"];
+const sources = ["src/grammar/hierarchy/normalize.js", "src/grammar/hierarchy/input.js", "src/grammar/hierarchy/model.js", "src/grammar/hierarchy/tree.js", "src/grammar/hierarchy/partition.js", "src/grammar/hierarchy/treemap.js", "src/grammar/hierarchy/order.js", "src/grammar/numeric.js", "src/grammar/sort.js", "src/core/itemIdentity.js"];
 const receipt = { schemaVersion: 1, command: "node scripts/check-hierarchy-fixtures.js", exitCode: 0,
   testedHead: execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim(), node: process.version,
   oracleHashes: Object.fromEntries(await Promise.all(oracles.map(async oracle => [oracle, hash(await readFile(path.join(root, oracle), "utf8"))]))),

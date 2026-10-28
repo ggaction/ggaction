@@ -78,6 +78,8 @@ Main 누적 integration의 package/bundle/full/realistic 검증은 parent가 별
 
 ## 남은 의무
 
+후속 명시 sibling 정렬은 [ORDER_KERNEL](ORDER_KERNEL.md)에 기록한다. 아래 항목은 이 checkpoint 시점의 상태다.
+
 명시 sibling ordering과 public hierarchy/layout resource lifecycle, 실제 dataset row identity/ref,
 persistence/inspection/scene/selection/hit/accessibility, composition, SVG/Canvas/PNG/PDF와 types/docs 소비자 통합이 남는다.
 새 tree/treemap/partition visual public flow는 실행 가능한 rendered primitive 검토 뒤 구현한다.

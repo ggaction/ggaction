@@ -16,6 +16,13 @@ export const hierarchyExpected = {
   "own-plus-children": { total: [26, 12, 2, 4, 4], own: [10, 6, 2, 4, 4] }
 };
 
+export const hierarchyOrderFixtures = [
+  { options: { by: "input" }, expectedSourceRows: [0, 1, 3, 4, 2] },
+  { options: { by: "value", direction: "ascending" }, expectedSourceRows: [0, 2, 1, 3, 4] },
+  { options: { by: "key", direction: "descending" }, values: ["root", "A", "A1", "A2", "B"], expectedSourceRows: [0, 2, 1, 4, 3] },
+  { options: { by: "field", direction: "ascending" }, values: [0, 3, 4, 1, 2], expectedSourceRows: [0, 2, 1, 4, 3] }
+];
+
 export const hierarchyInputFixtures = [
   { id: "flat", input: hierarchyRows.map(({ key, parentKey, value }) => ({ id: key, parent: parentKey, v: value })),
     options: { format: "flat", key: "id", parent: "parent", value: "v" },
