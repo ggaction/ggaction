@@ -143,6 +143,10 @@ test("action-card hierarchy is generated from the executable direct-child trace"
     artifact.cards.find(card => card.name === "selectMarks").editableVia,
     ["editMarkSelection", "removeMarkSelection"]
   );
+  assert.deepEqual(
+    artifact.cards.find(card => card.name === "editParameter").wraps,
+    ["editSemantic", "createDerivedData"]
+  );
 });
 
 test("scale spacing units agree across every generic and focused editor", async () => {

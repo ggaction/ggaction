@@ -519,6 +519,20 @@ export function buildActionRelationshipPrograms() {
     ...derivedEditingPrograms(),
     chart().createParameter({ id: "factor", value: 2 })
       .editParameter({ target: "factor", value: 3 }).removeParameter({ id: "factor" }),
+    chart().createData({ id: "parameterSource", values: [{ value: 2 }] })
+      .createParameter({ id: "factor", value: 2 })
+      .createComputedData({
+        id: "parameterComputed", source: "parameterSource", as: "scaled",
+        expression: {
+          version: 2, registry: "standard@1",
+          root: {
+            type: "binary", op: "multiply",
+            left: { type: "field", name: "value" },
+            right: { type: "parameter", id: "factor" }
+          }
+        }
+      })
+      .editParameter({ target: "factor", value: 3 }),
     chart().createData({id:"people",values:[{name:"A",age:25}]}).createData({id:"groups",values:[{person:"A"}]})
       .createLookupData({id:"ages",field:"person",lookup:{data:"people",key:"name",fields:["age"]}})
       .editLookupData({target:"ages",lookup:{data:"people",key:"name",fields:["age"],as:["years"]}}),

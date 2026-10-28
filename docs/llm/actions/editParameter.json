@@ -28,7 +28,8 @@
     "H3"
   ],
   "wraps": [
-    "editSemantic"
+    "editSemantic",
+    "createDerivedData"
   ],
   "editableVia": [
     "editParameter"

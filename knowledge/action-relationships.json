@@ -129,7 +129,8 @@
     {
       "name": "editParameter",
       "wraps": [
-        "editSemantic"
+        "editSemantic",
+        "createDerivedData"
       ]
     },
     {

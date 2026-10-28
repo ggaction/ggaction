@@ -44,5 +44,13 @@ canonical runner로 재실행했다. Focused 실행의 남은 inventory 상수 1
 구분했다. 이 수정 전후 runtime·types·docs는 동일하며 이전 정상·browser·render·package 검사를 재사용한다.
 현재 체크아웃을 clean으로 주장하지 않고 전체 입력 hash와 세 파일의 차이를 보존한다.
 
+원격 CI `40688721113`에서 정상·coverage 검사 모두 action 관계 freshness 하나가 실패했다.
+Lifecycle recipe의 parameter-dependent computed 예제가 보강된 뒤 관계/card 생성물이 이전 상태로
+남아 `editParameter → createDerivedData`가 누락된 것이 원인이다. Literal source를 사용하는 고정 예제로도
+이 관계를 보장하고 관계·card·machine/LLM/search 생성물을 함께 갱신했다. Runtime·타입·package 구성은
+변하지 않는다. 영향받은 generator 소비자와 MCP/inspection/docs 100개, generator freshness 및 package
+검사를 통과한 [후속 수정 증거](parameter-trace-ci-repair.json)를 기존 전체 검증과 구분해 보존한다.
+수정 commit의 원격 전체 CI는 push 후 별도로 확인하며 이 focused 검사를 전체 재실행으로 표시하지 않는다.
+
 공개 data 준비·적용, source provenance와 parameter URL 갱신은 다음 checkpoint다. 이 제품 검증을
 STEP-013 또는 STEP-077 완료로 표시하지 않는다.
