@@ -2,6 +2,7 @@ import { ownArray, ownRecord } from "../../core/ownData.js";
 import { canonicalJSON } from "../../core/contentDigest.js";
 import { encodeValue } from "../../core/valueEncoding.js";
 import { encodeRowKey } from "../../core/itemIdentity.js";
+import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { normalizeGraphLayout } from "../../grammar/graph/layoutOptions.js";
 import { polarToCartesian } from "../../grammar/polar.js";
 import { resolveInputReference } from "../../selectors/resources.js";
@@ -60,6 +61,8 @@ function validatePacking(resource) {
 function validateBindings(program, resource) {
   const graph = resolveInputReference(program, resource.inputs[0]), model = graph.result.model;
   const nodes = resource.result.nodes, { method, options } = resource.options;
+  validateGeneratedItemLimit(model.nodes.length, "Graph layout nodes", options.maxNodes);
+  validateGeneratedItemLimit(model.edges.length, "Graph layout edges", options.maxEdges);
   if (nodes.length !== model.nodes.length || nodes.some((node, index) => node.key !== model.nodes[index].key)) throw new TypeError("Graph layout node membership or order is stale.");
   if (!same(resource.provenance.sourceRows, graph.provenance.sourceRows)) throw new TypeError("Graph layout source provenance is stale.");
   const byKey = new Map(nodes.map(node => [node.key, node]));

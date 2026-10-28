@@ -57,3 +57,17 @@ test("layout validation rejects forged options, node membership, provenance and 
   assert.throws(() => validate(program, { ...circular, result: { ...circular.result, packing: {} } }));
   const moved = structuredClone(circular); moved.result.nodes[0].x += 1; assert.throws(() => validate(program, moved));
 });
+
+test("restored layout limits must cover its bound graph without executing a layout", () => {
+  const program = chart().createData({ id: "nodes", values: [{ id: "a" }, { id: "b" }, { id: "c" }] })
+    .createData({ id: "edges", values: [{ source: "a", target: "b" }, { source: "b", target: "c" }] })
+    .createGraphData({ id: "g", nodes: "nodes", edges: "edges", nodeKey: "id", source: "source", target: "target" });
+  const graph = program.semanticSpec.resources[0];
+  for (const method of ["circular", "force"]) {
+    const resource = createGraphLayoutResource({ id: "layout", graph, intent: { method, options: method === "force" ? { iterations: 0 } : {} } });
+    for (const field of ["maxNodes", "maxEdges"]) {
+      const invalid = structuredClone(resource); invalid.options.options[field] = 1;
+      assert.throws(() => validate(program, invalid), undefined, `${method}.${field}`);
+    }
+  }
+});

@@ -52,3 +52,9 @@ test("graph layout defaults never read inherited option getters", () => {
   }
   assert.equal(calls, 0);
 });
+
+test("explicit null layout options never select omission defaults", () => {
+  for (const [method, fields] of [["circular", ["center", "radius", "startAngle"]], ["force", ["center", "pinned"]]]) {
+    for (const field of fields) assert.throws(() => normalizeGraphLayout(method, { [field]: null }), undefined, `${method}.${field}`);
+  }
+});

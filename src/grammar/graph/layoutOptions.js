@@ -23,7 +23,7 @@ export function normalizeGraphLayout(method, input = {}) {
   ownRecord(input, "Graph layout options");
   input = Object.assign(Object.create(null), input);
   if (!["fixed", "circular", "force"].includes(method)) throw new TypeError("Graph layout method must be fixed, circular or force.");
-  if (Object.values(input).some(value => value === undefined)) throw new TypeError("Graph layout options cannot contain undefined.");
+  if (Object.values(input).some(value => value === undefined || value === null)) throw new TypeError("Graph layout options cannot contain null or undefined.");
   const common = ["maxNodes", "maxEdges"];
   const allowed = method === "fixed" ? ["positions"] : method === "circular" ? ["center", "radius", "startAngle"]
     : ["seed", "iterations", "linkDistance", "repulsion", "collisionRadius", "damping", "center", "componentGap", "initialPositions", "pinned"];

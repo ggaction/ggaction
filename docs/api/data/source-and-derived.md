@@ -425,9 +425,6 @@ See [Data Revisions and Removal](./revisions-and-removal.md#editing-derived-data
 
 See [Data Revisions and Removal](./revisions-and-removal.md#removedata-id) for this contract and its examples.
 
-## Related
-
-[Data overview](../data.md) · [Chart API](../index.md) · [Action reference](../../reference/actions.md)
 
 ## layoutGraph
 
@@ -443,6 +440,10 @@ Circular layouts default to `center:[0,0]`, `radius:100`, and `startAngle:0`. An
 
 Force layouts default to `seed:1`, `iterations:300`, `linkDistance:30`, `repulsion:100`, `collisionRadius:4`, `damping:0.9`, `center:[0,0]`, `componentGap:16`, and `pinned:[]`. Optional `initialPositions` must cover every node. Each pin is `{key,fx,fy}` and remains fixed when disconnected components are packed. Results are deterministic for the same graph and options.
 
-Every method accepts positive integer `maxNodes` and `maxEdges`, each defaulting to 10000. Work limits reject oversized computations. Undefined and unknown options fail.
+Every method accepts positive integer `maxNodes` and `maxEdges`, each defaulting to 10000. Work limits reject oversized computations. Explicit null, undefined, and unknown options fail.
 
 Use [editLayout](../hierarchy.md#editlayout) to patch options. Graph or source edits update dependent layouts once and reject incompatible fixed positions or pins atomically. Serialization retains the computed results; restoration validates them without running the force solver. These resource actions do not draw marks.
+
+## Related
+
+[Data overview](../data.md) · [Chart API](../index.md) · [Action reference](../../reference/actions.md)

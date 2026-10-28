@@ -52,7 +52,7 @@
 - method는 fixed/circular/force다. fixed의 positions는 `{key,x,y}` 배열이며 모든 node를 정확히 한 번 덮는다. key는 원본 typed RowKey이며 compound tuple도 허용한다. x/y는 finite다.
 - circular 기본은 center `[0,0]`, radius `100`, startAngle `0`이다. Radius는 nonnegative finite, angle은 finite degree이며 0은 위쪽, 양수는 시계 방향이다. Empty graph는 빈 결과, single node 또는 radius0은 center에 배치한다.
 - force 기본은 seed1, iterations300, linkDistance30, repulsion100, collisionRadius4, damping0.9, center `[0,0]`, componentGap16, pinned `[]`다. Seed는 uint32, iterations는 nonnegative safe integer, 나머지 숫자는 finite nonnegative이며 damping은 1 이하다. initialPositions는 optional complete `{key,x,y}` 배열이고 pinned는 unique existing key의 `{key,fx,fy}` subset이다. Pins는 packing 뒤에도 exact 좌표를 유지한다. Disconnected components는 저장된 horizontal packing 정책으로 배치한다.
-- maxNodes/maxEdges 기본은 각각10000이며 positive safe integer다. 공통 work 한도를 계산 전에 검사한다. 옵션은 닫힌 own-data record이며 accessors, unknown/undefined fields와 invalid coordinates는 오류다.
+- maxNodes/maxEdges 기본은 각각10000이며 positive safe integer다. 공통 work 한도를 계산 전에 검사한다. 옵션은 닫힌 own-data record이며 accessors, unknown/null/undefined fields와 invalid coordinates는 오류다.
 - 저장된 authored layout은 exact graph input 한 개, next revision, resolved options, concrete node 좌표, algorithm version, optional force packing과 exact source-row provenance를 가진다. Renderer와 Canvas를 호출하지 않는다. `editSemantic`을 명시 child로 호출한다.
 - 공개 수정은 [editLayout](LAYOUTS.md#editlayout)이 소유한다. Graph/source revision은 연결된 layout을 명시적으로 다시 계산한다. 저장 복원은 exact node membership/order, fixed/circular coordinates, force pins/component membership/bounds와 provenance를 검증하며 force solver를 실행하지 않는다.
 
