@@ -6,7 +6,7 @@
 - [x] 승인 재사용 및 공개/stored 계약 구체화
 - [x] Icicle/Sunburst·focus·revision·selection·codec 소비자 연결
 - [x] 타입·Current·공개 문서·action inventory 동기화
-- [ ] 공개/primitive·4 renderer·설치 consumer 검증 및 checkpoint
+- [x] 공개/primitive·4 renderer·설치 consumer 검증 및 checkpoint
 - [x] 순수 screen bend adapter/sampler와 후행 AT65 연결 근거
 
 ## 승인과 근거
@@ -99,7 +99,34 @@ frame sampler 100/96.18/100이며 floor를 낮추거나 예외를 추가하지 �
 새 package owner 9개로 entries는801이다. Node24 pack 1,190,327/5,462,716bytes, 같은 minified browser
 입력의 Node20/24 gzip Full586,157·Basic348,186·SVG18,070bytes를 측정했다. 기존 한도 통과를 주장하지
 않으며 entries801/packed1,191,000/unpacked5,463,000, Full587,000/Basic349,000/SVG25,000으로 최소 단위를 적용한다.
-Search901,428bytes는902,000으로 조정한다. 최종 README/metadata 동기화 후 canonical pack을 다시 검증한다.
+Search901,428bytes는902,000으로 조정했다. 최종 README/metadata 동기화 후 canonical pack을 다시 검증했다.
 
-Canonical 전체 coverage·render/browser·문서·설치 consumer의 마지막 결과와 source hash는 별도
-`partition-checkpoint.json`에 기록하며, 그 검증 완료 전 전체 checkpoint 완료로 세지 않는다.
+## 검증 완료 기록
+
+Source는 `eb5fd61a0d250ced6f11ecaba725cfd0e0102a91`, 예제 링크를 고정한 metadata는
+`a0b20aef792f3d5dff6ba120523f191db2050b55`다. 정확한 명령·로그·hash와 실패 후 보강은
+[partition-checkpoint.json](partition-checkpoint.json)에 보존했다.
+
+전체 coverage는 7,334개 중 7,328개 통과, 6개는 신규 family discovery/vocabulary 기대값,
+primitive slice 파일, baseline evidence 및 realistic timing ledger 누락이었다. 원본 실패 상태와
+global 96.38/94.20/98.87을 그대로 보존한다. 해당 fixture/manifest/ledger를 수정하고 새 primitive와
+Canvas contour 회귀 및 discovery를 포함한 canonical 집중 검사 43개가 통과했다. 런타임·타입·공개
+문서·패키지 입력은 변하지 않았다. 원본에서 316개 critical owner가 기존 하한을 통과했고,
+structured fill 뒤 stroke contour를 복원하는 Canvas circle/path의 함수 2개는 실제 픽셀 회귀를
+추가한 집중 coverage 33개에서 각 owner의 모든 기존 하한을 통과했다. 이 두 근거로 318개 기준을
+검증했으며 global 수치를 합성하거나 전체 재실행으로 표시하지 않는다.
+
+전체 renderer 306개, browser 317개, source docs 169개가 통과했다. Built 문서 155페이지와
+선택 참조 1,290개, desktop 검색 및 320/390/768px 검사가 통과했다. 정적 11종과 private frame3종
+contact sheet를 시각적으로 확인했고 제목·label·의도된 zero-total 빈 그림을 확인했다.
+
+Node20/22/24는 동일한 고정 tar `837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17`로
+각 208개 실행 사례와 7개 패키지 검증을 통과했다. 실행 전후 hash가 모두 같다. 초기 Node20의
+30초 fresh-process timeout은 변경하지 않은 제한에서 재검증 시 약 5.5초로 통과했다. Browser가
+공용 release 경로를 다시 pack한 초기 시도는 최종 동일-artifact 증거로 사용하지 않고 별도로 보존했다.
+
+공통 `buildDirectDataResources`를 graph layout도 확장하므로
+`realistic-lifecycle-factor-effects.test.js`, `realistic-scenario-generator.test.js`,
+`realistic-scenario-generation-isolation.test.js`는 root가 graph/paint/partition 최종 병합 상태에서
+한 번 실행한다. 개별 checkpoint에서 중복 실행하지 않는 소유 합의를 기록하며, AT65와 P2 소비자
+의무는 위에 적은 후행 범위로 계속 유지한다.

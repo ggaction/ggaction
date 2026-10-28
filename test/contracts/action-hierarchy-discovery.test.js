@@ -27,6 +27,7 @@ const completeChartActions = [
   "createLinePlot",
   "createLollipopPlot",
   "createParallelCoordinates",
+  "createPartitionPlot",
   "createPiePlot",
   "createPolarLinePlot",
   "createPolarScatterPlot",
@@ -95,15 +96,16 @@ test("complete-chart discovery reaches semantic and primitive authoring layers",
       continue;
     }
     const descendants = [...reachableActions(card, byName)].map(child => byName.get(child));
-    if (["createTreePlot", "createTreemapPlot"].includes(name)) {
-      assert.deepEqual(card.wraps, ["editSemantic"]);
+    if (["createTreePlot", "createTreemapPlot", "createPartitionPlot"].includes(name)) {
+      const partition = name === "createPartitionPlot";
+      assert.deepEqual(card.wraps, partition ? ["createCoordinate", "editSemantic"] : ["editSemantic"]);
       const base = fullChart().createCanvas().createData({ values: [{ id: "root", parent: null, value: 1 }] })
         .createHierarchyData({ id: "h", key: "id", parent: "parent", value: "value" });
       const tree = name === "createTreePlot";
-      const program = base.layoutHierarchy({ id: "l", method: tree ? "tree" : "treemap", options: tree
+      const program = base.layoutHierarchy({ id: "l", method: partition ? "partition" : tree ? "tree" : "treemap", options: partition ? {} : tree
         ? { nodeSize: [10, 10], siblingGap: 10, depthGap: 10, orientation: "vertical" }
         : { size: [100, 100], padding: 0, method: "slice-dice" } })[name]({});
-      const materialize = program.trace.children.at(-1).children.find(child => child.op === (tree ? "materializeTreePlot" : "materializeTreemapPlot"));
+      const materialize = program.trace.children.at(-1).children.find(child => child.op === (partition ? "materializePartitionPlot" : tree ? "materializeTreePlot" : "materializeTreemapPlot"));
       assert.ok(materialize.children.some(child => child.op === "createGraphics"));
       assert.ok(materialize.children.some(child => child.op === "editGraphics"));
       continue;
@@ -125,9 +127,9 @@ test("discovery separates completion from resource validity", async () => {
     state,
     entries.length
   ])), {
-    contextual: actionCards.length - 39,
+    contextual: actionCards.length - 40,
     deferred: 2,
-    complete: 34,
+    complete: 35,
     "not-applicable": 3
   });
   assert.deepEqual(byState.deferred.map(card => card.name), [

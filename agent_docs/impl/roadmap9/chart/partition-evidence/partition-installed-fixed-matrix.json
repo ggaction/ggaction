@@ -1,0 +1,32 @@
+[
+  {
+    "node": "/Users/hyeonjeon/.npm/_npx/ebaba8b9e55fd0a9/node_modules/node/bin/node",
+    "version": "20",
+    "code": 0,
+    "startedAt": "2026-10-28T21:18:28.593Z",
+    "finishedAt": "2026-10-28T21:25:28.006Z",
+    "packagePath": "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/.artifacts/partition-fixed-package/ggaction-0.0.26.tgz",
+    "beforeHash": "837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17",
+    "afterHash": "837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17"
+  },
+  {
+    "node": "/opt/homebrew/Cellar/node@22/22.23.1/bin/node",
+    "version": "22",
+    "code": 0,
+    "startedAt": "2026-10-28T21:25:28.015Z",
+    "finishedAt": "2026-10-28T21:28:04.873Z",
+    "packagePath": "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/.artifacts/partition-fixed-package/ggaction-0.0.26.tgz",
+    "beforeHash": "837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17",
+    "afterHash": "837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17"
+  },
+  {
+    "node": "/Users/hyeonjeon/.npm/_npx/387698761821791d/node_modules/node/bin/node",
+    "version": "24",
+    "code": 0,
+    "startedAt": "2026-10-28T21:28:04.875Z",
+    "finishedAt": "2026-10-28T21:29:43.271Z",
+    "packagePath": "/Users/hyeonjeon/.codex/worktrees/roadmap9-partition/ggactionnewbrand/.artifacts/partition-fixed-package/ggaction-0.0.26.tgz",
+    "beforeHash": "837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17",
+    "afterHash": "837ddaf28969786d6948be453b7f4344151221be42359dc788bed2641617af17"
+  }
+]
