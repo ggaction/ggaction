@@ -7,7 +7,8 @@
 - [x] Cartesian/polar mapping과 pixel gap 분리
 - [x] Canonical bend endpoint·small-b 수치 안정성
 - [x] 독립 oracle·깊이10,000·critical coverage·package 경계 검증
-- [ ] Exact partition primitive와 시각 확인
+- [x] [Exact partition primitive 검토 패키지](REVIEW.md)
+- [ ] Partition 시각 확인
 - [ ] 일반 screen/direction morph adapter와 current-frame hit
 - [ ] 공개 resource/action/schema·전체 consumer 연결
 

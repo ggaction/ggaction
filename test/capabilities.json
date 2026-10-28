@@ -419,6 +419,10 @@
       {
         "type": "file",
         "path": "unit/grammar/hierarchy-partition-bend.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "gates/partition-layouts/"
       }
     ],
     "persistence": [

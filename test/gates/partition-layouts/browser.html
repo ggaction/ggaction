@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Private partition primitive review</title></head><body><p id="status">Loading</p><main></main><script type="module">
+import {render} from "../../../src/index.js";
+import {renderToSVG} from "../../../src/renderers/svg.js";
+import {createPartitionPrimitive} from "./primitive.program.js";
+window.renderPartition=async({id,graphicSpec})=>{
+ const calculated=createPartitionPrimitive(id),program={graphicSpec},canvas=document.createElement("canvas");canvas.setAttribute("aria-label",`Private partition primitive: ${id}`);document.querySelector("main").append(canvas);render(program,canvas.getContext("2d"));
+ const svg=renderToSVG(program),image=new Image();image.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);await image.decode();const decoded=document.createElement("canvas");decoded.width=image.width;decoded.height=image.height;decoded.getContext("2d").drawImage(image,0,0);
+ return{canvas:canvas.toDataURL(),svg:decoded.toDataURL(),graphicSpec:program.graphicSpec,calculated:calculated.graphicSpec,width:canvas.width,height:canvas.height};
+};
+document.getElementById("status").textContent="Ready";
+</script></body></html>
