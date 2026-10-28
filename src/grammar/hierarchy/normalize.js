@@ -9,7 +9,7 @@ const MODES = new Set(["leaf-sum", "inclusive", "own-plus-children"]);
 
 // This is a private explicit-node boundary. Field/nested/path adapters share it;
 // it does not resolve datasets, store resources or materialize graphical output.
-export function normalizeHierarchyNodes(input, options = {}) {
+export function normalizeHierarchyNodes(input, options = {}, priorWork = 0) {
   ownRecord(options, "Hierarchy options");
   rejectUnknownProperties(options, ["valueMode", "forest", "maxNodes"], "hierarchy options");
   const option = (name, fallback) => !Object.hasOwn(options, name) || options[name] === undefined ? fallback : options[name];
@@ -17,7 +17,8 @@ export function normalizeHierarchyNodes(input, options = {}) {
   if (!MODES.has(valueMode)) throw new Error("Unsupported hierarchy value mode.");
   if (typeof forest !== "boolean") throw new TypeError("Hierarchy forest must be boolean.");
   if (!Number.isSafeInteger(maxNodes) || maxNodes < 1) throw new RangeError("Hierarchy maxNodes must be a positive safe integer.");
-  let work = 0;
+  if (!Number.isSafeInteger(priorWork) || priorWork < 0) throw new RangeError("Hierarchy prior work must be a nonnegative safe integer.");
+  let work = priorWork;
   const charge = amount => validateWorkLimit(work += amount, "Hierarchy normalization work");
   if (Array.isArray(input)) {
     validateGeneratedItemLimit(input.length + (forest && input.length > 0 ? 1 : 0), "Hierarchy node count", maxNodes);

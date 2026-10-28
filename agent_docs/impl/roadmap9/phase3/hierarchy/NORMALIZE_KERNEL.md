@@ -95,3 +95,6 @@ hierarchy/layout resource lifecycle, partition 공유, exact refs/row lineage, e
 ref collector/removal, inspection/scene/codec, selection/highlight/hit, nested composition,
 SVG/Canvas/PNG/PDF, declarations/package/docs/accessibility 및 primitive review가 남는다.
 현재 STEP-020/AT-22 또는 전체 로드맵 완료로 표시하지 않는다.
+
+이후 flat/nested/group-path adapter는 [INPUT_KERNEL](INPUT_KERNEL.md)에서 같은 normalizer에 연결한다.
+명시 sibling order와 layout/public/visual 통합은 별도 후속 의무다.

@@ -15,3 +15,16 @@ export const hierarchyExpected = {
   inclusive: { total: [10, 6, 2, 4, 4], own: [0, 0, 2, 4, 4] },
   "own-plus-children": { total: [26, 12, 2, 4, 4], own: [10, 6, 2, 4, 4] }
 };
+
+export const hierarchyInputFixtures = [
+  { id: "flat", input: hierarchyRows.map(({ key, parentKey, value }) => ({ id: key, parent: parentKey, v: value })),
+    options: { format: "flat", key: "id", parent: "parent", value: "v" },
+    expected: { depth: [0, 1, 2, 2, 1], sourceRows: [[0], [1], [3], [4], [2]], total: [10, 6, 2, 4, 4], own: [0, 0, 2, 4, 4] } },
+  { id: "nested", input: [{ id: "root", children: [{ id: "A", children: [{ id: "A1", v: 2 }, { id: "A2", v: 4 }] }, { id: "B", v: 4 }] }],
+    options: { format: "nested", key: "id", children: "children", value: "v" },
+    expected: { depth: [0, 1, 2, 2, 1], sourceRows: [[0], [0], [0], [0], [0]], total: [10, 6, 2, 4, 4], own: [0, 0, 2, 4, 4] } },
+  { id: "groups", input: [{ continent: "E", country: "A", v: 2 }, { continent: "E", country: "A", v: 4 },
+    { continent: "E", country: "B", v: 0 }, { continent: "N", country: "C", v: 3 }],
+    options: { format: "groups", groupFields: ["continent", "country"], value: "v" },
+    expected: { depth: [0, 1, 2, 2, 1, 2], sourceRows: [[], [0, 1, 2], [0, 1], [2], [3], [3]], total: [9, 6, 6, 0, 3, 3], own: [0, 0, 6, 0, 0, 3] } }
+];

@@ -35,10 +35,12 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 `grammar/hierarchy/normalize.js`는 명시 node records의 typed identity, parent/children topology,
 iterative preorder/postorder와 세 가지 value aggregation을 한 번 검증하는 pure owner다.
 기존 `core/itemIdentity`, own-data boundary, finite sum과 work limit을 재사용하며 source-row 참조를
-자손별 복사로 증폭하지 않는다. Flat/nested/group-path adapters와 partition/tree/treemap은 이 공통
-경계를 소비하도록 준비한다. 현재는 private 계산만 있고 hierarchy/layout resource 저장, public
+자손별 복사로 증폭하지 않는다. `grammar/hierarchy/input.js`가 flat/nested/group-path 입력을 같은
+경계로 낮추고, 입력 확장 비용도 공통 work 한도에 합산한다. Partition/tree/treemap은 이 결과를
+소비하도록 준비한다. 현재는 private 계산만 있고 hierarchy/layout resource 저장, public
 action, renderer 또는 새 시각 target과 연결하지 않았다.
-상세 범위·후속 의무와 실측 package 증거는 [hierarchy kernel 기록](impl/roadmap9/phase3/hierarchy/NORMALIZE_KERNEL.md)이 소유한다.
+상세 범위·후속 의무와 실측 package 증거는 [normalizer](impl/roadmap9/phase3/hierarchy/NORMALIZE_KERNEL.md)와
+[input adapter](impl/roadmap9/phase3/hierarchy/INPUT_KERNEL.md) 기록이 소유한다.
 
 ## 내부 expression kernel 경계
 
