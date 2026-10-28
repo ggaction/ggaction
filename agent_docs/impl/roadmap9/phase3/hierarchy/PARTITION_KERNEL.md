@@ -60,6 +60,8 @@ Main 누적 통합에서는 parent가 combined package/bundle 크기를 재측�
 
 ## 남은 의무
 
+후속 treemap 계산은 [TREEMAP_KERNEL](TREEMAP_KERNEL.md)에 기록한다. 아래 항목은 이 checkpoint 시점의 상태다.
+
 Sibling sort와 treemap 계산을 이어 구현한다. Hierarchy/layout resource 생성·수정·revision·삭제,
 실제 dataset row identity/ref 연결, persistence/inspection/scene/selection/hit/accessibility,
 composition·renderers·types/docs/package-consumer는 아직 public 통합 전이다.
