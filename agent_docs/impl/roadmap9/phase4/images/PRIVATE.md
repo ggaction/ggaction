@@ -7,7 +7,7 @@
 - [x] immutable base64 payload와 license/attribution 보존
 - [x] contain/cover/fill과 align·viewport clip의 독립 수치 검사
 - [x] source/package/discovery 경계, 기존 데이터 digest 회귀와 공개 번들 검사
-- [ ] SVG allowlist와 unsafe external resource 거부
+- [x] SVG allowlist와 unsafe external resource 거부
 - [ ] 공개 resource CRUD·codec·scene·export preflight와 네 renderer 연결
 - [ ] rendered primitive 검토와 공개 image action flow
 - [ ] AT-04/AT-14 전체 소비자 검증 및 STEP-018 종료
@@ -21,7 +21,7 @@ renderer 지원을 추가했다는 뜻이 아니다. [전체 실행 승인](../.
 기존 text digest 결과는 그대로이며 host callback 없이 네트워크나 decoder를 선택하지 않는다.
 
 요청은 URI, lowercase expected SHA256, MIME, 최대 byte 수를 고정한다. 현재 private 지원 MIME은
-PNG/JPEG/WebP이며 SVG는 명시 unsupported-format이다. SVG 요구를 삭제하거나 완료로 세지 않는다.
+PNG/JPEG/WebP와 검증한 정적 SVG다. SVG는 아래의 닫힌 subset만 허용하며 임의 SVG 문서 지원을 주장하지 않는다.
 기본/최대 byte budget은 16 MiB, decode pixel budget은 64 MiPixels다. MIME magic과 hash를 decode 전에
 검증하고 decode 결과는 양의 정수 dimensions와 originClean=true를 요구한다. host는 전달된 pixel
 budget을 실제 decode 전에 적용해야 한다. 일반 CORS load error와 decoder 오류는 별도 원인으로 남긴다.
@@ -51,3 +51,30 @@ Retained bytes는 host/decoder와 별도로 복사하고 immutable base64 text�
 실행 로그와 입력 hash는 `evidence/manifest.json`에 연결한다. 공개 source export·타입은 변경하지
 않으며 전체 STEP-018을 complete로 표시하지 않는다. 최종 DATA/statistics/conditions merge 이후
 package 크기와 provenance를 다시 측정해야 한다.
+
+## 정적 SVG 검증 checkpoint
+
+`resources/svgImage.js`는 명시 host decoder 앞에서 UTF-8 문서를 읽어 element/attribute allowlist,
+단일 SVG namespace/root, unique ID, local gradient/clip reference의 종류·존재를 확인한다.
+기본 도형·path·group, defs의 linear/radial gradient와 clipPath, title/desc만 허용한다.
+script, event handler, stylesheet/style attribute, foreignObject, text/font, image/use/href,
+외부 URL, XML DTD/entity 선언과 processing instruction을 거부한다. XML 1.0 UTF-8 declaration과
+표준/유효 numeric character reference만 허용하고 raw document를 DOM에 삽입하지 않는다.
+
+원본 SVG bytes의 SHA256을 먼저 확인한 뒤 허용 여부를 검사하고, decoder에는 별도 복사본을
+전달한다. SVG는 최대1MiB/10000elements/depth128이며 전체 image decode의64MiPixel 한도도
+유지한다. 불허 content는 `unsafe-svg` 원인과 함께 실패하고 decoder 호출은0이다. 이는
+자동으로 문서를 고치는 sanitizer가 아니다. 기존 drawing의 지원되지 않는 element를 조용히
+제거하지 않는다. 지원 범위를 벗어난 문서는 명시 실패한다.
+
+Host가 던진 error의 name getter를 읽으면 preparation promise가 끝나지 않을 수 있던 경로도
+수정했다. own data descriptor 또는 내장 DOMException getter의 brand check만 사용한다.
+사용자 getter가 실행되지 않고 load-error 또는 cors로 종료되는 회귀를 검증했다.
+
+집중19/19, source/package/discovery38/38, 문서159/159 통과. SVG validator line100/branch97.12/
+function100%, resolver100/99.03/100%다. 실제 native decoder로 hash 고정 SVG를 읽어 clip 외부
+alpha0/내부alpha255도 검사했다. Package688entries, packed1029429/unpacked4788996bytes이며
+앞선 main CI에서 확인한 pack 크기 변동을 고려해 cap1034000/4790000을 적용한다.
+이 source는 여전히 private이며 공개 renderer의 SVG image 지원 완료와 구별한다.
+
+SVG checkpoint의 입력과 실행 evidence는 [별도 manifest](evidence/svg/manifest.json)에 보존한다.

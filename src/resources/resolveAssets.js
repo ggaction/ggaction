@@ -1,10 +1,11 @@
 import { contentBytesDigest, copyContentBytes } from "../core/contentDigest.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { ownRecord } from "../core/ownData.js";
+import { validateSvgImage } from "./svgImage.js";
 
 const MAX_BYTES = 16 * 1024 * 1024;
 const MAX_PIXELS = 64 * 1024 * 1024;
-const MIMES = ["image/png", "image/jpeg", "image/webp"];
+const MIMES = ["image/png", "image/jpeg", "image/webp", "image/svg+xml"];
 
 function exact(value, keys, label) {
   ownRecord(value, label);
@@ -27,6 +28,15 @@ function assertActive(signal) {
   if (aborted(signal)) throw assetError("aborted", "Image preparation was aborted.");
 }
 
+function isSecurityError(error) {
+  if (error === null || (typeof error !== "object" && typeof error !== "function")) return false;
+  try {
+    const name = Object.getOwnPropertyDescriptor(error, "name");
+    if (name) return "value" in name && name.value === "SecurityError";
+    return Object.getOwnPropertyDescriptor(DOMException.prototype, "name").get.call(error) === "SecurityError";
+  } catch { return false; }
+}
+
 // Race each host stage and remove its listener on success, failure, or abort.
 function hostStage(callback, request, signal, code) {
   assertActive(signal);
@@ -47,12 +57,13 @@ function hostStage(callback, request, signal, code) {
       if (aborted(signal)) onAbort(); else finish(resolve, value);
     }, error => {
       if (aborted(signal)) onAbort();
-      else finish(reject, assetError(error?.name === "SecurityError" ? "cors" : code, `Image ${code} failed.`, error));
+      else finish(reject, assetError(isSecurityError(error) ? "cors" : code, `Image ${code} failed.`, error));
     });
   });
 }
 
 function matchesMime(bytes, mimeType) {
+  if (mimeType === "image/svg+xml") return true; // The complete static SVG allowlist runs before decode.
   if (mimeType === "image/png") return [137, 80, 78, 71, 13, 10, 26, 10].every((value, i) => bytes[i] === value);
   if (mimeType === "image/jpeg") return bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255;
   return bytes.length >= 12 && [82, 73, 70, 70].every((value, i) => bytes[i] === value) &&
@@ -71,7 +82,7 @@ export async function prepareImageAsset(input, host) {
   exact(host, ["load", "decode", "signal"], "Image host");
   if (typeof input.uri !== "string" || !input.uri.trim()) throw new TypeError("Image URI must be a nonempty string.");
   if (typeof input.expectedHash !== "string" || !/^[a-f0-9]{64}$/.test(input.expectedHash)) throw new TypeError("Image expectedHash must be a lowercase SHA256 digest.");
-  if (!MIMES.includes(input.mimeType)) throw assetError("unsupported-format", "Image MIME must be image/png, image/jpeg, or image/webp.");
+  if (!MIMES.includes(input.mimeType)) throw assetError("unsupported-format", "Image MIME must be image/png, image/jpeg, image/webp, or image/svg+xml.");
   const maxBytes = input.maxBytes === undefined ? MAX_BYTES : input.maxBytes;
   if (!Number.isSafeInteger(maxBytes) || maxBytes < 1 || maxBytes > MAX_BYTES) throw new RangeError(`Image maxBytes must be in [1, ${MAX_BYTES}].`);
   for (const key of ["license", "attribution"]) if (input[key] !== undefined && typeof input[key] !== "string") throw new TypeError(`Image ${key} must be text.`);
@@ -93,6 +104,10 @@ export async function prepareImageAsset(input, host) {
   if (response.mimeType !== request.mimeType || !matchesMime(bytes, request.mimeType)) throw assetError("mime-mismatch", "Image bytes do not match the requested MIME.");
   const hash = contentBytesDigest(bytes);
   if (hash !== request.expectedHash) throw assetError("hash-mismatch", "Image content hash does not match expectedHash.");
+  if (request.mimeType === "image/svg+xml") {
+    try { validateSvgImage(bytes); }
+    catch (error) { throw assetError("unsafe-svg", "SVG image failed static image validation.", error); }
+  }
   // The decoder receives its own copy; retained bytes cannot be changed by it.
   const dimensions = await hostStage(decode, Object.freeze({ bytes: new Uint8Array(bytes), mimeType: request.mimeType, maxPixels: MAX_PIXELS, ...(signal === undefined ? {} : { signal }) }), signal, "decode-error");
   assertActive(signal);
