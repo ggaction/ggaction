@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:9159158041527366fbcea8a11fdcdaaf13adcdfccd434c8ebd3c9ae2e268b912. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:342987cdca8aa79c156774ff700252df23d45d892b90064272f1153f0def776a. Status: development. Runtime source: cbcaaf991d2a99485651e785108f21a42acf5434. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/cbcaaf991d2a99485651e785108f21a42acf5434/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/cbcaaf991d2a99485651e785108f21a42acf5434/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -5388,10 +5388,6 @@ See [Data Revisions and Removal](./api/data/revisions-and-removal/#editing-deriv
 
 See [Data Revisions and Removal](./api/data/revisions-and-removal/#removedata-id) for this contract and its examples.
 
-## Related
-
-[Data overview](./api/data/) · [Chart API](./api/) · [Action reference](./reference/actions/)
-
 ## layoutGraph
 
 ```typescript
@@ -5406,9 +5402,13 @@ Circular layouts default to `center:[0,0]`, `radius:100`, and `startAngle:0`. An
 
 Force layouts default to `seed:1`, `iterations:300`, `linkDistance:30`, `repulsion:100`, `collisionRadius:4`, `damping:0.9`, `center:[0,0]`, `componentGap:16`, and `pinned:[]`. Optional `initialPositions` must cover every node. Each pin is `{key,fx,fy}` and remains fixed when disconnected components are packed. Results are deterministic for the same graph and options.
 
-Every method accepts positive integer `maxNodes` and `maxEdges`, each defaulting to 10000. Work limits reject oversized computations. Undefined and unknown options fail.
+Every method accepts positive integer `maxNodes` and `maxEdges`, each defaulting to 10000. Work limits reject oversized computations. Explicit null, undefined, and unknown options fail.
 
 Use [editLayout](./api/hierarchy/#editlayout) to patch options. Graph or source edits update dependent layouts once and reject incompatible fixed positions or pins atomically. Serialization retains the computed results; restoration validates them without running the force solver. These resource actions do not draw marks.
+
+## Related
+
+[Data overview](./api/data/) · [Chart API](./api/) · [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/filtering/ -->
 
@@ -44599,12 +44599,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/cbcaaf991d2a99485651e785108f21a42acf5434/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/cbcaaf991d2a99485651e785108f21a42acf5434/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -47639,9 +47639,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:9159158041527366fbcea8a11fdcdaaf13adcdfccd434c8ebd3c9ae2e268b912` |
+| Contract fingerprint | `sha256:342987cdca8aa79c156774ff700252df23d45d892b90064272f1153f0def776a` |
 | Example and dataset source | `b6291b4db13fc895cd966e6025e092c14c31726e` |
-| Runtime source commit | `current` |
+| Runtime source commit | `cbcaaf991d2a99485651e785108f21a42acf5434` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 320 |
 | Declared actions in that release | 234 |

@@ -3167,3 +3167,9 @@ paint resource를 소비한다. 정확한 값/제한/출력 차이는 current/MA
 최소 한도는803/1,184,000/5,438,000으로 조정했다. Full gzip590,274는591,000으로만
 변경하고 Basic342,113은343,000 한도 안이다. Search900,853bytes는901,000 한도로 반영한다.
 이전 한도 통과로 보고하지 않는다.
+
+null/default 및 복원 limit 검증을 보강한 최종 graph-layout source는 Node20에서
+1,183,749packed/5,438,055unpacked bytes다. Packed 한도는 유지하고 unpacked만5,439,000으로
+최소 조정한다. 이전5,438,000 한도 초과55bytes를 통과로 표시하지 않는다.
+
+동일 final archive의 Node20 browser 실측은 Full590,307/Basic342,113bytes이며 두 기존 한도591,000/343,000 안이다.

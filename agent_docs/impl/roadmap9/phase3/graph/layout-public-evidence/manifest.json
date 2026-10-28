@@ -1,0 +1,186 @@
+{
+  "sourceCommit": "cbcaaf991",
+  "packageSha256": "850bfed0f24df10c15b3ef4959004514345f97a3390fba81d4cb4051b88ed8c0",
+  "records": [
+    {
+      "source": ".artifacts/graph-layout-action-first.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-action-first.log.gz",
+      "sha256": "8437f68253f543c812f3f08b677fc52e81ec01e497c426abc59c35ffa6bd4c7d"
+    },
+    {
+      "source": ".artifacts/graph-layout-boundaries.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-boundaries.log.gz",
+      "sha256": "e440d42394c3e74b5fdd0a73f638a6f5aaac0af6065a43f7a3ddf0326a6e7f31"
+    },
+    {
+      "source": ".artifacts/graph-layout-boundary-audit-first.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-boundary-audit-first.log.gz",
+      "sha256": "66f59a6ab117aadfde7929494cd34eb77c039c931304f3429c96e89a6b71a1a8"
+    },
+    {
+      "source": ".artifacts/graph-layout-browser.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-browser.log.gz",
+      "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3"
+    },
+    {
+      "source": ".artifacts/graph-layout-build.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-build.log.gz",
+      "sha256": "f38c9397abe2d2bca092515c3d5812c8f793379e0e27cb1e3767894902338632"
+    },
+    {
+      "source": ".artifacts/graph-layout-built.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-built.log.gz",
+      "sha256": "272bf170626d2a7e35a356b170d7b1fd8e251043cd777e113cfc2d3d3897e1f7"
+    },
+    {
+      "source": ".artifacts/graph-layout-bundle20.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-bundle20.log.gz",
+      "sha256": "e39185ff6d8ae4625f0e8a184baef1a888233d2de9ec0d17372e1f63fea572b4"
+    },
+    {
+      "source": ".artifacts/graph-layout-bundles-final20.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-bundles-final20.json.gz",
+      "sha256": "fb3acb4f2a6510c1f77cc1885f24dc4686a68b328b178988de7b7ea340ee47d4"
+    },
+    {
+      "source": ".artifacts/graph-layout-coverage-final.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-coverage-final.log.gz",
+      "sha256": "f6342d5605fb7791c209bbc73b924f1cafeff600c110552f87776eecf042281c"
+    },
+    {
+      "source": ".artifacts/graph-layout-coverage-first.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-coverage-first.log.gz",
+      "sha256": "ed45ae2d05e4d7a155d8cabdfad9778f21a5e7406b495714ec99db71c44bc0cb"
+    },
+    {
+      "source": ".artifacts/graph-layout-coverage.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-coverage.log.gz",
+      "sha256": "66cafc842be56b8125202a03ded9dc7c87c7530e928ec111be7d2183783280d6"
+    },
+    {
+      "source": ".artifacts/graph-layout-docs-final.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-docs-final.log.gz",
+      "sha256": "d0d7eca1f33776a7be2fcccf3ff7f1e25860da3526f71d1848ed0a316d38758b"
+    },
+    {
+      "source": ".artifacts/graph-layout-docs.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-docs.log.gz",
+      "sha256": "28d23a7469173978f61da53998b21553083aa800d947d93fa2127373e8f059ea"
+    },
+    {
+      "source": ".artifacts/graph-layout-final-pin.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-final-pin.log.gz",
+      "sha256": "ee459806f2c60c707e2a610eb925d2fa6e024898aad84e2190b57e13e74bee84"
+    },
+    {
+      "source": ".artifacts/graph-layout-floors-final.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-floors-final.json.gz",
+      "sha256": "3945287afe0196819900121d54b75ceeb790a623dd38dad9183a1ebdcf428b46"
+    },
+    {
+      "source": ".artifacts/graph-layout-floors.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-floors.json.gz",
+      "sha256": "cff44c4dcbe3157f102e2c5373e4544ae987ea70d6ef39428fb5de13d5b7dec4"
+    },
+    {
+      "source": ".artifacts/graph-layout-generate-final.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-generate-final.log.gz",
+      "sha256": "055bbd8adea6382dfe8ab24e9694386d0ee2828cc35eb76a258e6367c4dd4184"
+    },
+    {
+      "source": ".artifacts/graph-layout-generate.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-generate.log.gz",
+      "sha256": "055bbd8adea6382dfe8ab24e9694386d0ee2828cc35eb76a258e6367c4dd4184"
+    },
+    {
+      "source": ".artifacts/graph-layout-installed-focused.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-installed-focused.log.gz",
+      "sha256": "3b591187bda3aab419bfdc446104fff0b25da3bcc7de90dfce009b932c146da2"
+    },
+    {
+      "source": ".artifacts/graph-layout-inventory.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-inventory.json.gz",
+      "sha256": "7dd9dce50be6e9d63ae6e21add830b60d787e547c9966dbf874ebe8daf715d5d"
+    },
+    {
+      "source": ".artifacts/graph-layout-measure-final20-stderr.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-measure-final20-stderr.log.gz",
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    {
+      "source": ".artifacts/graph-layout-measure-final20.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-measure-final20.json.gz",
+      "sha256": "dcda17be165d47645b835cd626119d43b4bbb6f1020d08946dbc262e6e6df801"
+    },
+    {
+      "source": ".artifacts/graph-layout-measure20-stderr.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-measure20-stderr.log.gz",
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    {
+      "source": ".artifacts/graph-layout-measure20.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-measure20.json.gz",
+      "sha256": "c606849d7f04f81f7d9276fdbcad510277ddd6ecba81cc524533bc7d53596007"
+    },
+    {
+      "source": ".artifacts/graph-layout-package-final22-stderr.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-package-final22-stderr.log.gz",
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a"
+    },
+    {
+      "source": ".artifacts/graph-layout-package-final22.json",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-package-final22.json.gz",
+      "sha256": "999676e7f59d99ea3884b4b778d47d1708695c86aec5511578f948a3ac445c83"
+    },
+    {
+      "source": ".artifacts/graph-layout-precommit.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-precommit.log.gz",
+      "sha256": "a482877d2b6823f06eb7459065909422dd3fe4e2bc70ce5ab66d50725e76c4e7"
+    },
+    {
+      "source": ".artifacts/graph-layout-public-first.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-public-first.log.gz",
+      "sha256": "e53ae98b0337c87ace9e532ef39ce8c7d3924faebf784a46f3c9a35577eb6e25"
+    },
+    {
+      "source": ".artifacts/graph-layout-public-focused.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-public-focused.log.gz",
+      "sha256": "2fb4921fdfc7aa968f3a70fba470ce46e958fdd90bd30693366142275e065a91"
+    },
+    {
+      "source": ".artifacts/graph-layout-realistic-final.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-realistic-final.log.gz",
+      "sha256": "c35d14586ca8c9757fbb7a002f1e4d0e9ded47db8570eb3a9175b6e6f3ad9ded"
+    },
+    {
+      "source": ".artifacts/graph-layout-realistic-five.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-realistic-five.log.gz",
+      "sha256": "207b934d378927484f3f1766e4ada4a60c3532e082e04fc0ca6c2917380e47b7"
+    },
+    {
+      "source": ".artifacts/graph-layout-resource-first.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-resource-first.log.gz",
+      "sha256": "4e7b181a881cc6ff389b4300305fd145138c88c83153325aa54a6c5c97a8b1b5"
+    },
+    {
+      "source": ".artifacts/graph-layout-resource-focused.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-resource-focused.log.gz",
+      "sha256": "2acac787f39d086c50bb2f67582b717248cb791032022d7b8cd348f8f6026322"
+    },
+    {
+      "source": ".artifacts/graph-layout-state-first.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-state-first.log.gz",
+      "sha256": "eebad76f90bc07d577d13f43343713ec565f37d7a0871c7151a924a5cbe3bcc9"
+    },
+    {
+      "source": ".artifacts/graph-layout-types-first.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-types-first.log.gz",
+      "sha256": "a8315adc876cebf330c88b87370b11a794bf494a0b0b51d87c9637f9632d2b10"
+    },
+    {
+      "source": ".artifacts/graph-layout-types.log",
+      "archive": "agent_docs/impl/roadmap9/phase3/graph/layout-public-evidence/graph-layout-types.log.gz",
+      "sha256": "0a8da5d1728b6c63a043bbc6d4a4eed4fec9593315b25a9797c1dec086608b65"
+    }
+  ]
+}
