@@ -44,6 +44,22 @@ renderer에는 연결하지 않았다. 기존 computed v1의 의미와 직접 ma
 상세 내부 계약은 [expression core](architecture/EXPRESSION_CORE.md), 공개 computed는
 [CORE](contract/current/CORE.md), action trace는 [PRIMITIVES](contract/current/PRIMITIVES.md)가 소유한다.
 
+## Private pivot kernel 준비
+
+`grammar/pivot.js`는 명시 typed columns와 group tuple을 받아 수치 cell을 계산하는 pure owner다.
+열 추론은 별도 normalize 호출에서 끝나고 derive는 저장할 정규형만 소비한다. Shared own-data validation,
+typed scalar identity, finite aggregate와 generated/work limit 정책을 재사용한다. 아직 transform registry,
+domain action, public declaration, persistence 또는 renderer에 연결하지 않았으므로 공개 pivot 지원을 뜻하지 않는다.
+State와 materialization 경계는 그대로다. 준비 범위와 재현 명령은
+[private checkpoint](impl/roadmap9/phase3/statistics/PIVOT_KERNEL.md)에 기록한다.
+
+이 독립 checkpoint는 기준 `8685719f`에 private module 한 개를 더한다. Node22.23.1/npm10.9.8의 공식
+staging 실측은 679entries, 1,011,694packed, 4,719,770unpacked bytes다. 이전 678entries 및
+1,010,000/4,713,000bytes 한도는 통과하지 못했다. 모듈 수와 최소1,000bytes 올림에 맞춰
+679entries 및 1,012,000/4,720,000bytes로만 변경했다. Full/Basic gzip은 기존과 같은
+507,597/285,702bytes로 508,000/286,000 한도를 유지한다. 이 수치는 해당 기준 branch의 측정이며
+다른 통합 checkpoint의 누적 한도를 대체하지 않는다.
+
 ## 범례 항목 이동 소유권
 
 범례 항목의 독립 이동 의도는 기존 `guideConfigs.legend`가 소유하고,

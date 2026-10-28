@@ -23,9 +23,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 678, // Adds private expression owners, own-data validation and lightweight transform input.
-  packedBytes: 1_010_000, // Expression core: measured 1,009,699 bytes before final qualification.
-  unpackedBytes: 4_713_000 // Expression core and safe replay: measured 4,712,083 bytes.
+  entries: 679, // Adds the private pivot grammar owner.
+  packedBytes: 1_012_000, // Private pivot kernel: measured 1,011,694 bytes.
+  unpackedBytes: 4_720_000 // Private pivot kernel: measured 4,719,770 bytes.
 });
 
 const REQUIRED_FILES = Object.freeze([
