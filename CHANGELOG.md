@@ -8,6 +8,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Animate completed GraphPlot nodes, labels, ordinary edges, and stored routes through the existing animation API, including current-frame rebasing and offline replay.
+
 - Prepare native asynchronous session replacements atomically, with revision guards, cancellation and existing worker/asset lifetimes.
 
 - Add atomic interaction asset preparation with abortable host leases, exact revision guards and terminal disposal.

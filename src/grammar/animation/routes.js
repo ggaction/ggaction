@@ -62,6 +62,12 @@ export function sampleRouteInterpolation(plan, progress, anchors) {
     if (!samePoint(points[0], anchors.source) || !samePoint(points.at(-1), anchors.target)) throw new Error("Animation route endpoint anchors disagree with the exact endpoint.");
     return cloneAndFreeze({ kind: "route", points });
   }
+  // A stationary polyline must keep every original corner. Resampling equal
+  // endpoints onto a uniform grid could otherwise cut across those corners.
+  if (plan.from.length === plan.to.length && plan.from.every((point, index) => samePoint(point, plan.to[index])) &&
+      samePoint(plan.from[0], anchors.source) && samePoint(plan.from.at(-1), anchors.target)) {
+    return cloneAndFreeze({ kind: "route", points: plan.from });
+  }
   const at = (a, b) => ({ x: interpolateNumber(a.x, b.x, progress), y: interpolateNumber(a.y, b.y, progress) });
   const first = at(plan.source[0], plan.target[0]), last = at(plan.source.at(-1), plan.target.at(-1));
   const sourceDelta = { x: anchors.source.x - first.x, y: anchors.source.y - first.y };

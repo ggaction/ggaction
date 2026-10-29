@@ -10,11 +10,10 @@ import { MAX_HIT_INDEX_ITEMS, MAX_HIT_INDEX_WORK } from "../grammar/hitIndex.js"
 import { hitShapeWork } from "../grammar/hitShapes.js";
 import { prepareConcreteHitShape } from "./hitConcrete.js";
 import { guideHitMetadata, guideHitItemKey } from "./hitGuides.js";
-import { animationFrameProvenance, animationPlanProvenance } from "../animation/frameProvenance.js";
-import { transitionProgress } from "../grammar/animation/values.js";
+import { animationFrameProvenance } from "../animation/frameProvenance.js";
 
 const frameSources = new WeakMap();
-const animationBases = new WeakMap();
+const nativeBases = new WeakMap();
 
 export function requireProgram(program) {
   if (!(program instanceof ChartProgram) || !Object.isFrozen(program)) throw new TypeError("Hit preparation requires an immutable ChartProgram.");
@@ -63,10 +62,10 @@ function metadata(identity, context, budget) {
 }
 
 /** Bind existing concrete item identities to the exact scene; no rematerialization. */
-export function prepareProgramHitFrame(program, version = 0) {
+export function prepareProgramHitFrame(program, version = 0, budget = { work: 0 }) {
   requireProgram(program);
   if (!Number.isSafeInteger(version) || version < 0) throw new TypeError("Hit frame version must be a non-negative safe integer.");
-  const budget = { work: 0 };
+  const initialWork = budget.work;
   let count = 0;
   for (const object of Object.values(program.graphicSpec.objects)) {
     count += object.items?.length ?? 1;
@@ -106,7 +105,7 @@ export function prepareProgramHitFrame(program, version = 0) {
     const context = owners.get(canvas.graphicId);
     if (context?.program.graphicSpec.order.includes(context.localId)) placements.set(JSON.stringify(context.childPath), canvas);
   }
-  frameSources.set(frame, { profiles, placements, nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
+  frameSources.set(frame, { profiles, placements, work: budget.work - initialWork, nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
   return frame;
 }
 
@@ -143,52 +142,50 @@ export function rebindProgramHitFrame(base, scene, version, rootTransform = [1, 
   return frame;
 }
 
-// Authentic samples can contain new, exiting or blended representations. Their
-// metadata comes from exact native endpoint owners, never a guessed node key.
-export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1, 0, 0, 1, 0, 0], ancestry = new Set()) {
+// Only native programs contributing to the displayed proof or the direct plan
+// endpoints have authority. Historical ancestry is neither retained nor inferred.
+export function requireAnimationFrameProgram(sample, program) {
+  const proof = animationFrameProvenance(sample);
+  if (proof === undefined) throw new TypeError("Animation hit requires an authentic sampled frame.");
+  if (proof.native === undefined) throw new TypeError("Animation hit requires native endpoint metadata.");
+  if (!proof.native.owners.includes(program)) throw new TypeError("Animation frame is not owned by the current native program.");
+}
+
+export function prepareAnimationHitFrame(sample, version = 0, rootTransform = [1, 0, 0, 1, 0, 0]) {
   const proof = animationFrameProvenance(sample);
   if (proof === undefined) throw new TypeError("Animation hit requires an authentic sampled frame.");
   if (!Number.isSafeInteger(version) || version < 0) throw new TypeError("Hit frame version must be a non-negative safe integer.");
-  if (ancestry.has(sample) || ancestry.size >= 256) throw new RangeError("Animation hit endpoint ancestry exceeds its work budget.");
+  if (proof.native === undefined) throw new TypeError("Animation hit requires native endpoint metadata.");
   transformHitPoint(rootTransform, { x: 0, y: 0 });
-  let bases = animationBases.get(proof.plan);
-  if (bases === undefined) {
-    const endpoints = animationPlanProvenance(proof.plan);
-    if (endpoints?.from === undefined || endpoints.to === undefined) throw new TypeError("Animation hit requires native endpoint metadata.");
-    const next = new Set(ancestry).add(sample);
-    const prepare = endpoint => animationFrameProvenance(endpoint) === undefined
-      ? prepareProgramHitFrame(endpoint) : prepareAnimationHitFrame(endpoint, 0, [1, 0, 0, 1, 0, 0], next);
-    bases = { from: prepare(endpoints.from), to: prepare(endpoints.to) };
-    animationBases.set(proof.plan, bases);
-  }
-  const progress = transitionProgress(proof.timeMs, proof.plan.durationMs);
-  const exact = progress === 0 ? bases.from : progress === 1 ? bases.to : undefined;
-  if (exact !== undefined) return rebindProgramHitFrame(exact, sample.scene, version, rootTransform);
-  if (sample.decisions.length !== sample.scene.nodes.length) throw new TypeError("Animation hit decisions must follow the exact sampled nodes.");
-  const lookup = base => ({ source: frameSources.get(base), entries: new Map(base.entries.map(entry => [entry.nodeKey, entry.metadata])) });
-  const from = lookup(bases.from), to = lookup(bases.to), profiles = new Map(), entries = [], budget = { work: 0 };
+  const budget = { work: 0 }, entries = [], profiles = new Map(), counted = new Set();
+  const baseFor = program => {
+    let value = nativeBases.get(program);
+    if (value === undefined) {
+      const base = prepareProgramHitFrame(program, 0, budget);
+      value = { base, source: frameSources.get(base), entries: new Map(base.entries.map(entry => [entry.nodeKey, entry.metadata])) };
+      nativeBases.set(program, value);
+    } else if (!counted.has(program)) spend(budget, value.source.work);
+    counted.add(program);
+    return value;
+  };
+  const resolve = origin => {
+    spend(budget);
+    const base = baseFor(origin.program), node = base.base.scene.nodes[origin.index];
+    if (node === undefined) throw new TypeError("Animation hit requires an exact native endpoint node.");
+    return { metadata: base.entries.get(node.key), metrics: base.source.profiles.get(node.key) };
+  };
+  if (proof.native.nodes.length !== sample.scene.nodes.length) throw new TypeError("Animation hit sources must follow the exact sampled nodes.");
   sample.scene.nodes.forEach((node, zIndex) => {
-    const decision = sample.decisions[zIndex], exiting = decision.kind === "exit";
-    const side = exiting ? from : to, endpoint = exiting ? bases.from : bases.to;
-    const index = exiting ? decision.sourceIndex : decision.targetIndex, original = endpoint.scene.nodes[index];
-    if (original === undefined) throw new TypeError("Animation hit decision requires an exact endpoint node.");
-    const metadata = side.entries.get(original.key);
-    if (metadata === undefined) return;
-    let metrics = side.source.profiles.get(original.key);
-    if (decision.kind === "crossfade") {
-      const a = bases.from.scene.nodes[decision.sourceIndex], b = bases.to.scene.nodes[decision.targetIndex];
-      if (a === undefined || b === undefined) throw new TypeError("Animation hit blend requires both endpoint nodes.");
-      const list = (source, value) => Array.isArray(value) ? value
-        : Array(source.type === "weighted-blend" ? source.properties.sources.length : 1).fill(value);
-      metrics = [...list(a, from.source.profiles.get(a.key)), ...list(b, to.source.profiles.get(b.key))];
-    }
+    const source = proof.native.nodes[zIndex], original = resolve(source.origin);
+    if (original.metadata === undefined) return;
+    const values = source.metrics.map(origin => resolve(origin).metrics);
+    const metrics = node.type === "weighted-blend" ? values : values[0];
     const shape = prepareConcreteHitShape(node, metrics, rootTransform);
-    spend(budget, hitShapeWork(shape));
-    profiles.set(node.key, metrics);
-    entries.push(freezeOwned({ nodeKey: node.key, zIndex, metadata, shape }));
+    spend(budget, hitShapeWork(shape)); profiles.set(node.key, metrics);
+    entries.push(freezeOwned({ nodeKey: node.key, zIndex, metadata: original.metadata, shape }));
   });
   const frame = freezeOwned({ scene: sample.scene, entries: freezeOwned(entries), version });
-  frameSources.set(frame, { profiles, placements: frameSources.get(bases.to).placements,
+  frameSources.set(frame, { profiles, placements: baseFor(proof.native.placement).source.placements,
     nodes: new Map(frame.scene.nodes.map(node => [node.key, node])) });
   return frame;
 }

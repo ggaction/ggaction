@@ -4,10 +4,11 @@ import { cloneAndFreeze } from "../../../src/core/immutable.js";
 import { registerAnimationPlan, animationPlanProvenance, registerAnimationFrame, animationFrameProvenance } from "../../../src/animation/frameProvenance.js";
 
 test("sample provenance keeps native endpoints private and preserves the exact frame", () => {
-  const plan = cloneAndFreeze({ durationMs: 1000 }), from = {}, to = {};
+  const endpoint = { scene: { nodes: [{ type: "circle" }] } };
+  const plan = cloneAndFreeze({ durationMs: 1000, from: endpoint, to: endpoint }), from = {}, to = {};
   assert.equal(registerAnimationPlan(plan, { from, to }), plan);
-  assert.equal(animationPlanProvenance(plan).from, from);
-  assert.equal(animationPlanProvenance(plan).to, to);
+  assert.equal(animationPlanProvenance(plan).from.nodes[0].origin.program, from);
+  assert.equal(animationPlanProvenance(plan).to.nodes[0].origin.program, to);
   assert.equal(Object.isFrozen(animationPlanProvenance(plan)), true);
   const frame = cloneAndFreeze({ scene: { nodes: [{ key: "a" }] }, progress: .5 });
   const positions = [{ x: { value: 10, scale: { type: "linear", domain: [0, 20], range: [0, 100] } } }];
@@ -15,7 +16,8 @@ test("sample provenance keeps native endpoints private and preserves the exact f
   assert.equal(registerAnimationFrame(frame, { plan, timeMs: 500, positions }), frame);
   positions[0].x.value = 99;
   const proof = animationFrameProvenance(frame);
-  assert.equal(proof.plan, plan);
+  assert.equal(proof.planIdentity, animationPlanProvenance(plan).identity);
+  assert.equal(Object.hasOwn(proof, "plan"), false);
   assert.equal(proof.timeMs, 500);
   assert.equal(proof.positions[0].x.value, 10);
   assert.equal(Object.isFrozen(proof.positions[0].x.scale.domain), true);
@@ -36,4 +38,15 @@ test("provenance rejects duplicate registration, mutable frames and mismatched p
   assert.equal(animationFrameProvenance(frame), undefined);
   registerAnimationFrame(frame, { plan, timeMs: 0 });
   assert.throws(() => registerAnimationFrame(frame, { plan, timeMs: 0 }), /owned sampled frame/);
+});
+
+test("shared graph meaning remains private, immutable and aligned with the frame",()=>{
+ const plan=cloneAndFreeze({durationMs:1}),frame=cloneAndFreeze({scene:{nodes:[{key:"a"}]}});
+ registerAnimationPlan(plan,{});
+ assert.throws(()=>registerAnimationFrame(frame,{plan,timeMs:0,graphs:{groups:[],items:[]}}),/graph items.*node order/);
+ assert.equal(animationFrameProvenance(frame),undefined);
+ const graphs={groups:[{nodes:[{key:"a",x:10}]}],items:[{group:0,key:"a",role:"body"}]};
+ registerAnimationFrame(frame,{plan,timeMs:0,graphs});graphs.groups[0].nodes[0].x=99;
+ assert.equal(animationFrameProvenance(frame).graphs.groups[0].nodes[0].x,10);
+ assert.equal(Object.hasOwn(frame,"graphs"),false);assert.ok(Object.isFrozen(animationFrameProvenance(frame).graphs.items[0]));
 });

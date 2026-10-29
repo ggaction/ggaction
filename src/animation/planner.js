@@ -14,9 +14,15 @@ import { validatePointAnimationPosition } from "../grammar/animation/pointState.
 import { easeProgress } from "../grammar/animation/values.js";
 import { sameConcreteValue, pointAppearanceCompatible, clipInterpolationCompatible, blendAnimationNodes, validateAnimationFallbackReason } from "./concrete.js";
 
+import { projectGraphAnimationState, validateAnimationGraphState } from "../materialization/animation/graph.js";
+import { ANIMATION_GRAPH_VERSION } from "../grammar/animation/graphState.js";
+import { ANIMATION_ROUTE_VERSION } from "../grammar/animation/routes.js";
+import { graphTrackPreparation, emptyAnimationGraphs } from "./graphTracks.js";
+
 export const TRANSITION_PLAN_VERSION = 1;
 const plans = new WeakSet();
 const preparedPositions = new WeakMap();
+const preparedGraphs = new WeakMap();
 const exactFrames = new WeakMap();
 // Transition version also fixes timing/easing, correspondence and weighted blending.
 const kernels = Object.freeze({ transition: TRANSITION_PLAN_VERSION, position: ANIMATION_POSITION_VERSION });
@@ -26,7 +32,7 @@ function native(program) {
 }
 export function requireTransitionEndpoint(value) {
   const proof=animationFrameProvenance(value);
-  if(proof!==undefined){requireTransitionPlan(proof.plan);if(proof.positions===undefined)throw new TypeError("Sampled endpoint requires prepared semantic positions.");}
+  if(proof!==undefined){if(proof.positions===undefined)throw new TypeError("Sampled endpoint requires prepared semantic positions.");}
   else native(value);
   return value;
 }
@@ -76,8 +82,8 @@ function track(match,from,to,a,b) {
   return {...metadata,kind:"semantic-point",x,y};
 }
 
-// First executable vertical: native keyed circles with resolved continuous x/y.
-// Other identities remain explicit concrete crossfades, never pixel-inferred tracks.
+// Native typed families share exact keyed correspondence and endpoint admission.
+// Unsupported identities remain explicit crossfades, never pixel-inferred tracks.
 export function normalizeTransitionOptions(input) {
   const options=ownRecord(input,"Transition options");rejectUnknownProperties(options,["durationMs","easing"],"transition options");
   validateNonNegativeFinite(options.durationMs,"Transition duration");
@@ -85,15 +91,16 @@ export function normalizeTransitionOptions(input) {
   if(easing===undefined)throw new TypeError("Transition easing cannot be undefined.");
   return {durationMs:options.durationMs,easing};
 }
-function assemble(from,to,a,b,options) {
+function assemble(from,to,a,b,options,graphs) {
   validateGeneratedItemLimit(from.scene.nodes.length+to.scene.nodes.length,"Animation endpoint nodes");
   const matching=matchAnimationEndpoints(from,to);
-  const tracks=matching.matches.map(match=>track(match,from,to,a[match.sourceIndex],b[match.targetIndex]));
+  const graphPreparation=graphTrackPreparation(from,to,graphs.from,graphs.to);
+  const tracks=matching.matches.map(match=>graphPreparation.track(match)??track(match,from,to,a[match.sourceIndex],b[match.targetIndex]));
   const frames=frameTracks(from,to),frameSources=new Set(frames.map(track=>track.sourceIndex)),frameTargets=new Set(frames.map(track=>track.targetIndex));
   for(const item of [...tracks,...frames])if(item.kind==="crossfade")blendAnimationNodes(from.scene.nodes[item.sourceIndex],to.scene.nodes[item.targetIndex],.5,Math.max(from.scene.width,to.scene.width),Math.max(from.scene.height,to.scene.height));
   const plan=cloneAndFreeze({kind:"transition-plan",version:TRANSITION_PLAN_VERSION,...options,
     from,to,tracks,frameTracks:frames,enters:matching.enters.filter(index=>!frameTargets.has(index)),exits:matching.exits.filter(index=>!frameSources.has(index))});
-  plans.add(plan);preparedPositions.set(plan,cloneAndFreeze({from:a,to:b}));return plan;
+  plans.add(plan);preparedPositions.set(plan,cloneAndFreeze({from:a,to:b}));preparedGraphs.set(plan,cloneAndFreeze({...graphs,pairs:graphPreparation.pairs}));return plan;
 }
 export function planTransition(input) {
   ownRecord(input,"Transition request");rejectUnknownProperties(input,["from","to","options"],"transition request");
@@ -102,9 +109,9 @@ export function planTransition(input) {
   const prepare=value=>{
     const proof=animationFrameProvenance(value);
     if(proof!==undefined)return prepareFrameEndpoint(value,proof);
-    const endpoint=projectAnimationEndpoint(value);return{endpoint,positions:projectPointAnimationPositions(value,endpoint)};
+    const endpoint=projectAnimationEndpoint(value);return{endpoint,positions:projectPointAnimationPositions(value,endpoint),graphs:projectGraphAnimationState(value,endpoint)};
   };
-  const from=prepare(input.from),to=prepare(input.to),plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options);
+  const from=prepare(input.from),to=prepare(input.to),plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs??emptyAnimationGraphs(from.endpoint.scene.nodes.length),to:to.graphs??emptyAnimationGraphs(to.endpoint.scene.nodes.length)});
   exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{from:input.from,to:input.to});
   return plan;
 }
@@ -113,17 +120,19 @@ export function requireTransitionPlan(plan) {
 }
 
 export function exportTransitionPlan(input) {
-  const plan=requireTransitionPlan(input),positions=preparedPositions.get(plan);
+  const plan=requireTransitionPlan(input),positions=preparedPositions.get(plan),graphs=preparedGraphs.get(plan);
   const endpoint=side=>{
     const frame=exactFrames.get(plan)?.[side],source=plan[side];
+    const graphState=graphs[side].groups.length?{graphs:graphs[side]}:{};
     const view=frame===undefined?{}:{view:{progress:frame.progress,decisions:frame.decisions,...(Object.hasOwn(frame,"timeMs")?{timeMs:frame.timeMs}:{})}};
-    return source.format==="native"?{graphicSpec:source.graphicSpec,positions:positions[side],...view}:{scene:source.scene,identities:source.identities,
-      backgrounds:source.backgrounds,positions:positions[side],...view};
+    return source.format==="native"?{graphicSpec:source.graphicSpec,positions:positions[side],...graphState,...view}:{scene:source.scene,identities:source.identities,
+      backgrounds:source.backgrounds,positions:positions[side],...graphState,...view};
   };
-  return cloneAndFreeze({kind:plan.kind,version:plan.version,kernels,durationMs:plan.durationMs,easing:plan.easing,
+  return cloneAndFreeze({kind:plan.kind,version:plan.version,kernels:{...kernels,...(graphs.from.groups.length||graphs.to.groups.length?{graph:ANIMATION_GRAPH_VERSION,route:ANIMATION_ROUTE_VERSION}:{})},durationMs:plan.durationMs,easing:plan.easing,
     from:endpoint("from"),to:endpoint("to")});
 }
 
+export function transitionGraphs(plan) {requireTransitionPlan(plan);return preparedGraphs.get(plan);}
 export function transitionEndpointFrame(plan,side) {requireTransitionPlan(plan);return exactFrames.get(plan)?.[side];}
 export function transitionEndpointPositions(plan,side) {requireTransitionPlan(plan);return preparedPositions.get(plan)[side];}
 
@@ -134,13 +143,13 @@ function closed(value, keys, label) {
 function restoreEndpoint(input) {
   let endpoint,frame;
   if(Object.hasOwn(input,"scene")){
-    closed(input,["scene","identities","backgrounds","positions","view"],"Restored sampled endpoint");
+    closed(input,["scene","identities","backgrounds","positions","view",...(Object.hasOwn(input,"graphs")?["graphs"]:[])],"Restored sampled endpoint");
     const scene=cloneAndFreeze(input.scene),graphicSpec=canvasSceneProgram(scene).graphicSpec;validateGraphic(graphicSpec);
     validateSampledEndpointMetadata(scene,input.identities,input.backgrounds,input.view);
     frame=cloneAndFreeze({graphicSpec,scene,...input.view});
     endpoint=projectSampledAnimationEndpoint(frame,cloneAndFreeze(input.identities),cloneAndFreeze(input.backgrounds));
   }else{
-    closed(input,["graphicSpec","positions",...(Object.hasOwn(input,"view")?["view"]:[])],"Restored animation endpoint");
+    closed(input,["graphicSpec","positions",...(Object.hasOwn(input,"graphs")?["graphs"]:[]),...(Object.hasOwn(input,"view")?["view"]:[])],"Restored animation endpoint");
     validateGraphic(input.graphicSpec);endpoint=projectAnimationEndpoint({graphicSpec:cloneAndFreeze(input.graphicSpec)});
     if(Object.hasOwn(input,"view")){
       validateSampledEndpointMetadata(endpoint.scene,endpoint.identities,endpoint.backgrounds,input.view);
@@ -152,17 +161,26 @@ function restoreEndpoint(input) {
   for(let index=0;index<input.positions.length;index++){
     validatePointAnimationPosition(input.positions[index],endpoint.identities[index],endpoint.scene.nodes[index]);
   }
-  return {endpoint,positions:cloneAndFreeze(input.positions),frame};
+  const graphs=Object.hasOwn(input,"graphs")?validateAnimationGraphState(input.graphs,endpoint):emptyAnimationGraphs(endpoint.scene.nodes.length);
+  if(Object.hasOwn(input,"graphs")&&graphs.groups.length===0)throw new TypeError("An empty animation graph state must be omitted.");
+  for(const [index,decision]of (input.view?.decisions??[]).entries())if(decision.kind==="semantic-kernel"){
+    if(decision.kernel==="cartesian-point"?Object.hasOwn(input.positions[index],"reason"):graphs.items[index]===null||Object.hasOwn(graphs.items[index],"reason")) {
+      throw new TypeError("Sampled semantic decision requires its retained prepared meaning.");
+    }
+  }
+  return {endpoint,positions:cloneAndFreeze(input.positions),graphs:cloneAndFreeze(graphs),frame};
 }
 export function restoreTransitionPlan(input) {
   budget([input],true);
   closed(input,["kind","version","kernels","durationMs","easing","from","to"],"Restored transition plan");
   if(input.kind!=="transition-plan"||input.version!==TRANSITION_PLAN_VERSION)throw new TypeError("Unsupported transition plan kind or version.");
-  closed(input.kernels,["transition","position"],"Animation kernels");
+  const graphKernel=Object.hasOwn(input.from,"graphs")||Object.hasOwn(input.to,"graphs");
+  closed(input.kernels,["transition","position",...(graphKernel?["graph","route"]:[])],"Animation kernels");
+  if(graphKernel&&(input.kernels.graph!==ANIMATION_GRAPH_VERSION||input.kernels.route!==ANIMATION_ROUTE_VERSION))throw new TypeError("Unsupported animation graph kernel version.");
   if(input.kernels.transition!==kernels.transition||input.kernels.position!==kernels.position)throw new TypeError("Unsupported animation kernel version.");
   const options=normalizeTransitionOptions({durationMs:input.durationMs,easing:input.easing});
   const from=restoreEndpoint(input.from),to=restoreEndpoint(input.to);
-  const plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options);
+  const plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs,to:to.graphs});
   exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{});
   return plan;
 }

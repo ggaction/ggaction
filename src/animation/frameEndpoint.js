@@ -4,26 +4,56 @@ import { rejectUnknownProperties, validateUnitInterval } from "../core/validatio
 import { easeProgress, transitionProgress } from "../grammar/animation/values.js";
 import { unavailablePointAnimationPosition } from "../grammar/animation/pointState.js";
 import { projectSampledAnimationEndpoint } from "./endpoints.js";
+import { animationPlanProvenance } from "./frameProvenance.js";
 import { validateAnimationFallbackReason } from "./concrete.js";
 
-// Resolve through recorded correspondence, never through a synthetic scene key.
-export function prepareFrameEndpoint(frame, proof) {
-  const plan=proof.plan, progress=easeProgress(transitionProgress(proof.timeMs,plan.durationMs),plan.easing);
-  const exact=progress===0?plan.from:progress===1?plan.to:undefined;
-  let identities,backgrounds;
-  if(exact){identities=exact.identities;backgrounds=exact.backgrounds;}
-  else{
-    identities=frame.decisions.map(decision=>decision.targetIndex===undefined
-      ? plan.from.identities[decision.sourceIndex] : plan.to.identities[decision.targetIndex]);
-    backgrounds=frame.decisions.flatMap((decision,index)=>{
-      const endpoint=decision.targetIndex===undefined?plan.from:plan.to;
-      const original=decision.targetIndex??decision.sourceIndex;
-      const background=endpoint.backgrounds.find(value=>value.index===original);
-      return background===undefined?[]:[{index,owner:background.owner}];
+// Capture correspondence once while the authentic plan is available. No earlier
+// plan or sampled endpoint is retained by the resulting frame meaning.
+export function captureFrameMeaning(frame, plan, timeMs) {
+  const progress = easeProgress(transitionProgress(timeMs, plan.durationMs), plan.easing);
+  const side = progress === 0 ? "from" : progress === 1 ? "to" : undefined;
+  const exact = side === undefined ? undefined : plan[side];
+  let identities, backgrounds;
+  if (exact) { identities = exact.identities; backgrounds = exact.backgrounds; }
+  else {
+    if (frame.decisions.length !== frame.scene.nodes.length) throw new TypeError("Animation decisions must follow the exact sampled nodes.");
+    identities = frame.decisions.map(decision => {
+      const endpoint = decision.targetIndex === undefined ? plan.from : plan.to;
+      const index = decision.targetIndex ?? decision.sourceIndex;
+      if (endpoint.scene.nodes[index] === undefined) throw new TypeError("Animation decision requires an exact endpoint node.");
+      return endpoint.identities[index];
+    });
+    backgrounds = frame.decisions.flatMap((decision, index) => {
+      const endpoint = decision.targetIndex === undefined ? plan.from : plan.to;
+      const original = decision.targetIndex ?? decision.sourceIndex;
+      const background = endpoint.backgrounds.find(value => value.index === original);
+      return background === undefined ? [] : [{ index, owner: background.owner }];
     });
   }
-  const positions=proof.positions.map((position,index)=>position??unavailablePointAnimationPosition(identities[index]===undefined?"anonymous":"sampled-concrete"));
-  return {endpoint:exact??projectSampledAnimationEndpoint(frame,cloneAndFreeze(identities),cloneAndFreeze(backgrounds)),positions:cloneAndFreeze(positions),frame};
+  const endpoint = exact ?? projectSampledAnimationEndpoint(frame, cloneAndFreeze(identities), cloneAndFreeze(backgrounds));
+  const proof = animationPlanProvenance(plan);
+  let native;
+  if (proof?.from !== undefined && proof.to !== undefined) {
+    const nodes = exact ? proof[side].nodes : frame.decisions.map(decision => {
+      const origin = decision.kind === "exit" ? proof.from.nodes[decision.sourceIndex] : proof.to.nodes[decision.targetIndex];
+      if (origin === undefined) throw new TypeError("Animation hit requires an exact native source.");
+      if (decision.kind !== "crossfade") return origin;
+      const from = proof.from.nodes[decision.sourceIndex], to = proof.to.nodes[decision.targetIndex];
+      if (from === undefined || to === undefined) throw new TypeError("Animation hit blend requires both native sources.");
+      return Object.freeze({ origin: origin.origin, metrics: Object.freeze([...from.metrics, ...to.metrics]) });
+    });
+    const placement = (side === "from" ? proof.from : proof.to).placement;
+    const owners = new Set([...proof.directOwners, placement]);
+    for (const node of nodes) { owners.add(node.origin.program); for (const origin of node.metrics) owners.add(origin.program); }
+    native = Object.freeze({ nodes: Object.freeze(nodes), owners: Object.freeze([...owners]), placement });
+  }
+  return Object.freeze({ endpoint, native });
+}
+
+export function prepareFrameEndpoint(frame, proof) {
+  if (proof.endpoint === undefined) throw new TypeError("Sampled endpoint requires prepared identity metadata.");
+  const positions = proof.positions.map((position, index) => position ?? unavailablePointAnimationPosition(proof.endpoint.identities[index] === undefined ? "anonymous" : "sampled-concrete"));
+  return { endpoint: proof.endpoint, positions: cloneAndFreeze(positions), graphs: proof.graphs, frame };
 }
 
 export function validateSampledEndpointMetadata(scene,identities,backgrounds,view) {
@@ -59,8 +89,8 @@ export function validateSampledEndpointMetadata(scene,identities,backgrounds,vie
     if(!singular){
       const identity=identities[index],background=backgrounds.find(value=>value.index===index);
       if(identity?(decision.itemKey!==identity.key||decision.role!==identity.role):(decision.owner!==background?.owner||decision.role!=="canvas-background"))throw new TypeError("Sampled decision differs from its retained identity.");
-      if(decision.kind==="semantic-kernel"&&decision.kernel!=="cartesian-point")throw new TypeError("Unsupported sampled semantic kernel.");
-      if((decision.kind==="semantic-kernel"&&scene.nodes[index].type!=="circle")||(decision.kind==="crossfade"&&scene.nodes[index].type!=="weighted-blend"))throw new TypeError("Sampled decision differs from its concrete primitive.");
+      if(decision.kind==="semantic-kernel"&&!["cartesian-point","completed-graph"].includes(decision.kernel))throw new TypeError("Unsupported sampled semantic kernel.");
+      if((decision.kind==="semantic-kernel"&&(decision.kernel==="cartesian-point"?scene.nodes[index].type!=="circle":!["circle","path","text"].includes(scene.nodes[index].type)))||(decision.kind==="crossfade"&&scene.nodes[index].type!=="weighted-blend"))throw new TypeError("Sampled decision differs from its concrete primitive.");
       if(decision.kind==="crossfade")validateAnimationFallbackReason(decision.reason);
     }
   }

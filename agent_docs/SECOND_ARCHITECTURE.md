@@ -3188,7 +3188,7 @@ owner에 두며, 기존 controller가 같은 playback 옵션 정규화를 재사
 Node22 canonical staging 측정은 1065 entries/1516293 packed/6912702 unpacked bytes이며,
 최소 상한 1065/1517000/6913000을 적용한다. 공개 entry와 browser bundle 경계는 그대로다.
 
-`animation/planner.js`는 settled immutable program 두 개에서 기존 endpoint와 item key/role
+`animation/planner.js`는 settled immutable program 또는 authentic frame 두 개에서 기존 endpoint와 item key/role
 대응을 준비한다. `materialization/animation/point.js`는 exact child scope·final row identity와
 rowEncoding의 의미값·resolved scale을 투영하며 pixel 역산이나 별도 mapper를 만들지 않는다.
 `animation/sample.js`는 기존 browser-safe concrete scene compiler를 공유하여 renderer-ready
@@ -3198,10 +3198,24 @@ rowEncoding의 의미값·resolved scale을 투영하며 pixel 역산이나 별�
 item correspondence로 해석하지 않는다. 지원하지 않는 family·topology·appearance는 명시 이유와
 concrete weighted-blend로 남긴다. 이는 나머지 compatible family 구현을 대체하지 않는다.
 `core/programState.js`의 descriptor-safe settled-state admission을 hit preparation과 planner가 공유한다.
-이 checkpoint는 private authentic plan만 지원한다. 공개 entry·offline 복원·current-frame 재기준과
-player 연결은 후행 의무이며 새 semantic 상태나 public API는 없다. Node22 package는
+Private planner는 닫힌 payload의 엄격한 복원과 current-frame 의미 값 재기준을 지원한다.
+공개 entry와 player 연결은 후행 통합 의무이며 새 semantic 상태를 만들지 않는다. Node22 package는
 1118entries/1,592,653packed/7,244,281unpacked bytes이고 Node20/24 packed는1,595,412bytes다.
 최소 상한1118/1,596,000/7,245,000을 적용하며 공개 entry·browser bundle cap은 유지한다.
+
+`materialization/animation/graph.js`는 exact graph/layout/route와 scoped item identity를 native
+`graph/plot`에서 한 번 준비한다. 완료 layout 좌표·resolved origin·radius·label offset과 route
+center samples가 group당 한 번 저장되며 node마다 전체 model을 복제하지 않는다.
+`grammar/animation/graphState.js`는 이 닫힌 값을 기존 anchored route kernel과 함께 보간하고,
+`animation/graphTracks.js`는 current anchors를 native edge/inset/arrow materializer에 전달한다.
+매 frame inference·layout·bundling solver는 실행하지 않는다. Primitive geometry 편집, parallel
+ordering 변화와 route 붕괴는 명시 사유로 남기며 graph node의 호환 이동은 계속 유지한다.
+Authentic frame의 private provenance가 current graph groups와 node-order item refs를 보존하여
+재기준에 pixel 역산이 필요하지 않다. Export/restore도 이 단일 준비값과 kernel version을 검증한다.
+원 endpoint, scene schema와 renderer 입력은 그대로 유지하며 public entry는 후행 통합 대상이다.
+Graph private owner 추가의 같은 staging은 Node22에서1124entries/1,604,256packed/7,289,382unpacked,
+Node20/24에서는1,608,202packed bytes다. 최소 한도1124/1,609,000/7,290,000을 적용하며
+기존 browser bundle cap은 유지한다.
 
 `grammar/animation/positions.js`는 명시 resolved semantic value를 보간하고 기존
 `scales/mapping.js`에서만 좌표를 계산한다. 값과 domain 전환을 구분하며 log domain만
@@ -3220,8 +3234,12 @@ endpoint/options owner로 검사한다. 공개 entry와 offline 계약은 같은
 소유하며 frame의 직렬화 표면에는 상태를 추가하지 않는다. `interaction/hitProgram.js`의 좁은
 직접 import는 이 경량 owner에 한정한다. Planner·solver·renderer를 interaction으로 가져오지 않는다.
 현재 native frame hit은 원 endpoint의 metadata와 준비된 Text metric을 재사용하고, weighted
-표현의 각 source metric과 같은 논리 항목의 단일 hit을 보존한다. Offline frame의 native metadata,
-session publication·asset lease 및 반복 interruption의 retention 검증은 후속 의무다.
+표현의 각 source metric과 같은 논리 항목의 단일 hit을 보존한다. Sample proof는 이미 해석한
+endpoint identity/background, semantic position 및 현재 node별 exact native program/index와
+weighted metric 출처만 보존한다. Plan identity는 작은 opaque token이고 frame→이전 plan→
+이전 frame 연쇄는 없다. 권한은 현재 표시 출처 및 직접 native endpoint로 한정하며 과거 모든
+조상 프로그램을 권한 집합으로 누적하지 않는다. 원 program과 같은 값의 clone은 권한이 아니다.
+Offline frame의 native metadata, session publication·asset lease는 후속 의무다.
 
 ### Cartesian title label-relative offset measurement
 
@@ -4464,3 +4482,19 @@ Typed point restore·현재 frame 재기준·player adapter와 native hit의 합
 적용한다. 같은 archive9b3c3eea…의 interaction128,129gzip만128,200으로 올리며
 Full772,328/Basic421,122/SVG24,779/graph43,923은 기존 합산 한도를 유지한다.
 이 private checkpoint는 공개 animation entry나 최종077 qualification을 대신하지 않는다.
+
+### Completed graph animation public integration
+
+공개 `ggaction/animation`의 기존6함수는 완료 graph layout/node/radius·ordinary edge와
+stored route를 같은 typed 준비 owner로 처리한다. Private graph group/item 벡터를
+flat frame proof에 한 번 보존하며, 현재 의미와 native origin만 보유하고 이전 plan을
+재귀적으로 참조하지 않는다. Current의 [Animation](contract/current/ANIMATION.md)이
+지원 범위와 offline/session 경계를 소유한다. Native current-frame hit는 같은 item role의
+실제 현재 geometry와 endpoint metadata를 공유한다.
+합산 package는1135entries이며 Node22 packed1,618,480 / Node20·24 packed1,620,916 /
+unpacked7,343,716bytes다. 최소 상한1135/1,621,000/7,344,000을 적용한다.
+
+동일 tar의 Node20/24 installed gzip 최대치는 Full774,063/Basic422,154/
+animation191,948bytes이며 최소100-byte 상한774,100/422,200/192,000을 적용한다.
+기존 SVG/graph/interaction 한도는 유지하며 Node 전용 renderer를 animation entry에 넣지 않는다.
+공개 graph 단락 추가 후 search payload1,080,369bytes에 최소1000-byte 상한1,081,000을 적용한다.

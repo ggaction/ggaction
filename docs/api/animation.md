@@ -43,12 +43,32 @@ console.log(renderToSVG(frames[1]));
 ```
 
 Item keys retain number/string distinctions and child composition namespaces.
-The current semantic kernel moves compatible Cartesian circle points by
+The Cartesian semantic kernel moves compatible circle points by
 interpolating their data values and scale mappings. For example, a logarithmic
 axis maps the interpolated data value; it does not average endpoint pixels.
 Other geometry or incompatible appearance uses a bounded weighted crossfade,
 reported in the sample's `decisions`. Entering and exiting items retain explicit
 decisions. This surface does not promise semantic interpolation for every chart family.
+
+## Move a completed graph layout
+
+GraphPlot transitions interpolate the completed node coordinates, radii, origin,
+and label offsets. Edges and arrows follow their current node anchors using the
+same geometry rules as an ordinary graph. Stored world-space and screen-space
+routes interpolate along their arc length, retaining the current endpoints and
+radius inset. Sampling never runs graph inference, layout, or bundling again.
+
+Stable node and edge keys support reordered, entering, and exiting items, including
+composed charts. A sampled graph frame can start or end another transition; its
+current layout meaning is retained without reconstructing it from pixels. Identical
+routes keep their original corners. The decision kernel is `completed-graph`.
+
+Changed endpoint relationships, parallel-edge order, route kind or coordinate
+space, incompatible appearance or clipping, and collapsed or overstretched routes
+produce an explicit crossfade reason for the affected item. Compatible nodes keep
+moving independently. These rules also apply after offline serialization. Native
+current-frame hit testing uses the displayed geometry; restored offline frames can
+render and rebase, but cannot bind to a live session without native endpoint metadata.
 
 ## Functions
 
@@ -138,7 +158,9 @@ The player supports `play`, `pause`, `seek(timeMs)`, `reverse`, `setRate(rate)`,
 accepts a program or authentic sample and continues from the current frame.
 A negative rate puts the captured frame at the new plan's ending time and plays
 back toward the target. Invalid interruption targets leave
-the active run intact. An optional `commit(frame)` callback runs on completion.
+the active run intact. Repeated interruption of compatible geometry does not accumulate
+a chain of earlier plans. Weighted crossfades still respect their concrete source
+and clipping limits. An optional `commit(frame)` callback runs on completion.
 `finished` settles with `reason`, `timeMs`, and `iteration`; reasons are
 `completed`, `cancelled`, `interrupted`, and `disposed`.
 
