@@ -32,6 +32,16 @@ export const cases = [
           assert.deepEqual(getMarkItems(session.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red').map(item=>item.key),[firstKey]);
         }
         stop();
+        for (const selectionPolicy of ['keep-hidden','drop']) {
+          const original=session.getState().program, lifecycle=createInteractionSession({program:original,selectionPolicy,bindings:[]}), events=[];
+          lifecycle.subscribe(event=>events.push(event));
+          lifecycle.updateProgram(original.filterMarks({target:'points',field:'x',op:'gt',value:100}));
+          assert.equal(events[0].selectionChanges[0][selectionPolicy==='drop'?'droppedKeys':'hiddenKeys'].length,1);
+          const current=deserializeProgram(serializeProgram(lifecycle.getState().program)).removeMarkFilter({target:'points'});
+          lifecycle.updateProgram(current);
+          assert.equal(getMarkItems(lifecycle.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red').length,selectionPolicy==='drop'?0:1);
+          lifecycle.destroy();
+        }
       } else assert.throws(()=>session.dispatch({type:'select',target:'points',payload:{id:'picked',select:{items:[]}}}),/does not support/);
 
       assert.equal(hit.candidates.length, 2); assert.equal(hit.target.role, "point");

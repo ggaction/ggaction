@@ -1,5 +1,5 @@
 import { cloneAndFreeze } from "../core/immutable.js";
-import { namespaceItemKey } from "../grammar/schemas/graphicIdentity.js";
+import { namespaceItemKey, unnamespaceItemKey } from "../grammar/schemas/graphicIdentity.js";
 import { validateUserId } from "../core/identifiers.js";
 import { normalizeActionTargets } from "../grammar/actionTargets.js";
 import { normalizeSelectionSelector } from "../grammar/selectionExpression.js";
@@ -23,7 +23,7 @@ export function interactionTransaction(command, generatedId) {
   return cloneAndFreeze({ ...request, transactionId, origin });
 }
 
-export function interactionOwner(program, requested) {
+export function interactionOwner(program, requested, allowMissing = false) {
   if (Array.isArray(requested)) throw new TypeError("Editing commands require one explicit owner target.");
   if (typeof requested !== "string") options(requested, ["childPath", "id"], ["facetSource"], "Editing target");
   const [target] = normalizeActionTargets(requested);
@@ -31,7 +31,10 @@ export function interactionOwner(program, requested) {
   let view = program;
   for (const id of target.childPath) {
     if (view.compositionSpec?.type === "facet") throw new Error("Facet cells follow their source; select the facet source explicitly.");
-    if (!Object.hasOwn(view.children, id)) throw new Error(`Unknown target child "${id}".`);
+    if (!Object.hasOwn(view.children, id)) {
+      if (allowMissing) return null;
+      throw new Error(`Unknown target child "${id}".`);
+    }
     view = view.children[id];
   }
   if (target.facetSource && view.compositionSpec?.type !== "facet") throw new Error("facetSource requires a facet view.");
@@ -80,7 +83,7 @@ export function prepareInteractionEdit(program, command) {
   return { program: invoke(program, "editMarkSelection", { ...address(target, false), selection: id, ...select, mode }), affectedOwners };
 }
 
-export function scopeSelectionKeys(program, target, keys, spend) {
+export function scopeSelectionKeys(program, target, keys, spend, reverse = false) {
   const namespaces = [];
   for (const child of target.childPath) {
     namespaces.push(`${program.compositionSpec.id}-${child}`); program = program.children[child];
@@ -89,6 +92,6 @@ export function scopeSelectionKeys(program, target, keys, spend) {
   spend(keys.length * prefixWork * Math.max(1, namespaces.length));
   return keys.map(key => {
     spend(key.length * Math.max(1, namespaces.length));
-    return namespaces.reduceRight((local, namespace) => namespaceItemKey(local, namespace), key);
+    return reverse ? unnamespaceItemKey(key, namespaces) : namespaces.reduceRight((local, namespace) => namespaceItemKey(local, namespace), key);
   });
 }

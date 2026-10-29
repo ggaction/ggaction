@@ -267,3 +267,46 @@ Node20/22/24 각각3runtime·strict public types·4 browser entry bundles가 통
 문서184, build164페이지/1411 selective artifacts와 수정 페이지4폭 Axe0/overflow0,390px 시각
 확인을 완료했다. 최초 실패·초기 archive와 최종 metadata archive는 구분했다. 전체 suite나
 D의 잔여 hidden/drop/자동 bindings, STEP057 AT37 및 STEP077 완료로 확대 보고하지 않는다.
+
+## D3 삭제·숨김 선택 수명 설계
+
+D2 뒤 원 계약의 삭제된 child/row/edge에 대한 keep-hidden/drop과 event를 연결한다. 기존
+Partition `prunedSelection` owner를 확인했고, 동일한 명시 membership pruning 의미를 재사용한다.
+Session 옵션 `selectionPolicy`는 `keep-hidden`(기본) 또는 `drop`이다. 새로운 selection resource나
+semantic schema를 만들지 않고 기존 `editMarkSelection`으로만 dropped membership을 저장한다.
+
+각 authored selection의 명시 owner/child/grain, 기존 options signature, 현재 item key 집합과
+효과 membership을 bounded runtime snapshot으로 비교한다. Keep-hidden은 item keys와 live
+predicate/range를 보존한다. Drop은 이전에 선택되어 있었으나 현재 final-item universe에서 사라진
+keys가 있을 때 이전 membership∩현재 universe를 기존 key selector로 저장한다. Source replacement가
+selection options 자체를 명시 변경했다면 그 새 authoring intent를 우선하며 과거 snapshot으로 덮지 않는다.
+Opacity0 같은 paint 설정과 sampled animation frame은 final-item 삭제로 취급하지 않는다.
+
+삭제된 owner/child는 keep-hidden의 bounded runtime tombstone으로 남기고 같은 선택/키가 돌아올 때
+restored를 보고한다. 임의로 삭제된 mark/selection resource를 재생성하지 않는다. Drop은 제거된
+membership을 보고하고 tombstone을 해제한다. Commit/settled와 external program event에
+selectionChanges를 붙여 hidden/restored/dropped와 owner missing 상태를 명시한다. Runtime cache는
+codec에 넣지 않으며 program의 기존 key resource만 저장된다.
+
+Linked endpoint가 삭제된 뒤에는 생성 때의 unknown endpoint 오류와 달리 기존 binding이 dormant가
+되어야 한다. Missing source의 keep-hidden은 이전 source별 projection을 보존하고 drop은 빈 기여를
+사용한다. Missing target은 재생성하지 않는다. Endpoint가 복귀하면 동일한 explicit projection을
+다시 검증하고 owner/data identity와 명시 field projection이 맞지 않으면 전체 replacement를 거부한다. 현재 C의
+initialization/updateProgram validation 및 source DAG ordering을 이 수명 규칙으로 확장할 필요가 있다.
+
+검증은 direct data revision/filter와 원본복원, child remove/reinsert, graph node/edge induced filter,
+partition focus, 명시 selector 교체, 조건식 parameter membership, malformed/stale replacement의 원자
+실패, linked missing source/target와 재등장, codec의 runtime 분리를 포함한다. 아직 D3 구현 완료가
+아니며 automatic click/toggle binding과 후행 gesture/history도 그대로 남아 있다.
+
+
+D3 source는 세션 생성 시 기존 숨김을 기록하고 다음 commit/update에서 availability를 비교한다.
+Partition focus의 `visible:false`는 숨김이며 opacity·clip·sampled frame은 semantic 삭제가 아니다.
+Linked target pruning은 DAG에 위임해 단일 editor revision을 보존한다. Missing source는 마지막
+projection을 보존하거나 empty로 기여하고, present source는 현재 effective membership을 투영한다.
+초기 missing endpoint 오류는 유지한다. Legacy facet concrete-property predicate는 source-only
+geometry가 없으므로 keep-hidden 보존만 지원하고 명시 drop은 닫힌 오류다.
+
+새15 lifecycle 회귀와 기존 selection/link/nearest/session, source/type/discovery28, 실제 데이터
+5종×3grain16 및 Canvas/SVG browser7의 검증을 진행했다. 최종 coverage·installed tar·문서와
+증거를 닫기 전이며 automatic click/toggle, 후행 gesture/history 및077 전체 완료는 아니다.

@@ -168,3 +168,34 @@ test("CSS nearest click outside a fill selects the same item on Canvas and SVG",
   } catch(error) { await saveBrowserContextEvidence(context,error); throw error; }
   finally { await context.close(); }
 });
+
+test("Canvas and SVG hosts render accepted drop programs after real pointer selection", async () => {
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1100, height: 850 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => document.querySelector("#status")?.textContent === "Canvas and SVG inspection ready" });
+    for (const [index, selector] of ["#chart", "#vector svg"].entries()) {
+      const box = await page.locator(selector).boundingBox(); await page.mouse.click(box.x + 294, box.y + 118);
+      const result = await page.evaluate(async index => {
+        const { createInteractionSession } = await import('/src/interaction.js'), { getMarkItems } = await import('/src/inspection.js');
+        const { render } = await import('/src/index.js'), { renderToSVG } = await import('/src/renderers/svg.js');
+        const prior = window.__inspectionSessions[index], key = prior.getState().hit.target.itemKey;
+        const selected = prior.getState().program.selectMarks({id:'picked',target:'observations',items:[key]})
+          .highlightMarks({selection:'picked',color:'red',bringToFront:false,dimOthers:false});
+        const session = createInteractionSession({program:selected,selectionPolicy:'drop',bindings:[]}), events=[];
+        session.subscribe(event=>events.push(event));
+        session.updateProgram(selected.filterMarks({target:'observations',field:'id',op:'neq',value:'b'}));
+        session.updateProgram(session.getState().program.removeMarkFilter({target:'observations'}));
+        const program=session.getState().program;
+        if(index===0)render(program,document.querySelector('#chart').getContext('2d'),{pixelRatio:2});
+        else document.querySelector('#vector').innerHTML=renderToSVG(program);
+        const value={dropped:events[0].selectionChanges[0].droppedKeys,highlighted:getMarkItems(program,{target:'observations'}).filter(item=>item.properties.fill==='red').length,key};
+        session.destroy();return value;
+      }, index);
+      assert.deepEqual(result.dropped,[result.key]);assert.equal(result.highlighted,0);
+    }
+    await page.evaluate(()=>window.__inspectionSessions.forEach(session=>session.destroy()));
+    assertNoBrowserErrors(errors,'selection lifecycle');await page.close();
+  } catch(error) { await saveBrowserContextEvidence(context,error);throw error; }
+  finally { await context.close(); }
+});

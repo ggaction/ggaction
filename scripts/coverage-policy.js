@@ -6,6 +6,7 @@ const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "selection-nearest": { prefix: "grammar/nearestSelection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Explicit nearest metrics require finite bounded final-grain tuples and stable identity." },
+  "interaction-reconciliation": { prefix: "interaction/reconciliation", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Selection lifecycle must preserve intent, bound dormant identities and prune through atomic native actions." },
   "interaction-nearest": { prefix: "interaction/nearest", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Nearest commands must use current frames and atomic native selection updates." },
   "selection-projection": { prefix: "grammar/selectionProjection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Typed tuple and original-lineage projections must remain bounded and preserve explicit source identity." },
   "interaction-bindings": { prefix: "interaction/bindings", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Linked selection DAGs must validate ownership and commit the entire projection closure atomically." },

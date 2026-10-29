@@ -629,6 +629,10 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-reconciliation.test.js"
+      },
+      {
+        "type": "file",
         "path": "contracts/interaction-types.test.js"
       },
       {

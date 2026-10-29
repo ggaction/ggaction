@@ -23,6 +23,12 @@ createInteractionSession({program,bindings:[{type:'linkSelection',id:'join',targ
  {target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'source',targetData:'source'}}
 ]}]});
 const projected: readonly string[] = session.getState().linkedSelections[0].sources[0].keys;
+createInteractionSession({program,selectionPolicy:'drop',bindings:[]});
+const available:boolean=session.getState().linkedSelections[0].targetAvailable;
+session.subscribe(event=>{if(event.type==='program'||'phase' in event){const changes:readonly string[]=event.selectionChanges.flatMap(change=>change.droppedKeys);}});
+// @ts-expect-error lifecycle policy is explicit and closed
+createInteractionSession({program,selectionPolicy:'forget'});
+
 // @ts-expect-error runtime projection sets are immutable
 session.getState().linkedSelections[0].keys.push('change');
 // @ts-expect-error row and tuple options cannot be mixed

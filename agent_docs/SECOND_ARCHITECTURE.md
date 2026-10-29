@@ -3547,3 +3547,21 @@ D2 source 후보의 package 실측은918entries/6,053,713unpacked/Node20 최대1
 한도918/1,323,000/6,054,000을 적용한다. Interaction의 초기 Node22 gzip94,603에95,000 한도를
 적용하며 Full/Basic/SVG와 기존 critical floor는 유지한다. 최종 metadata tar의 검증은 STEP057 증거에
 별도로 구분한다. 최초 package entry 및 interaction bundle 초과 실패는 삭제하지 않는다.
+
+
+### Selection의 runtime availability 수명
+
+`interaction/reconciliation.js`가 authored selection의 exact final-item membership과 explicit view
+visibility를 bounded session snapshot으로 비교한다. Keep-hidden tombstone은 runtime에만 남기고
+Drop의 저장 변경은 기존 wrapped selection editor로 위임한다. Linked target의 pruning은 기존
+DAG owner에 위임해 동일 target을 두 번 edit하지 않는다. Missing endpoint는 기존 binding cache를
+유지하거나 empty contribution으로 바꾸며 임의 resource를 재생성하지 않는다. 최종 selection
+검증과 hit-frame 준비가 끝나야 program·projection·lifecycle cache를 함께 교체한다. Renderer와
+codec의 기존 경계는 바뀌지 않는다. 정확 정책과 event는 Current INTERACTION을 따른다.
+
+
+D3 초기 package919entries/Node20packed1,325,924/unpacked6,066,891를 측정해 cap을
+919/1,326,000/6,067,000으로 최소 올림했다. 초기 Node22 interaction96,601gzip에는97,000을
+적용한 뒤 Node20의97,221gzip으로97,500까지 최소 증분했다. Full/Basic/SVG floor와 cap은 유지한다.
+Search959,574bytes는960,000으로 최소 올림했다.
+최초 초과 실패와 동일 archive의 후속3Node 검증 결과는 D3 증거에서 구분한다.

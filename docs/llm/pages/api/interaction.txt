@@ -250,8 +250,8 @@ by a direct session selection command. Other named selections stay independent.
 Facet links address `facetSource: true` and use semantic source items; concrete
 property predicates are unavailable there. Generated cells remain read-only.
 
-Initialization and external `updateProgram` validate links without changing
-selection membership. Subsequent authoring changes update affected links in
+Initialization and ordinary external `updateProgram` replacements validate links without changing
+selection membership. Missing endpoints and pruning use the lifecycle policy below. Authoring changes update affected links in
 source-to-target order, once per target. `linkedSelections` exposes immutable
 source-specific projection sets and their resolved keys. Bindings allow at most
 256 links and 256 total source references, with bounded configuration and
@@ -306,3 +306,30 @@ logical item key, independently of draw order. A miss supplies an empty set to t
 `replace` clears, and add/toggle/subtract/intersect retain their normal set behavior. The resulting
 selection stores keys and survives serialization; nearest is not a continuously evaluated predicate.
 It commits with the same transaction, linked-selection and failure behavior as ordinary selection.
+
+## Keep or drop hidden selections
+
+Pass `selectionPolicy: "keep-hidden"` (the default) to preserve selections when a filter,
+partition focus or removed child hides their logical items. Matching selected keys can become visible
+again. Use `selectionPolicy: "drop"` to replace affected membership with its surviving item keys.
+A live range or predicate becomes a key snapshot only when items must be dropped. Explicitly authored
+replacement selection options take precedence. Opacity zero and sampled animation frames do not count
+as removed items.
+
+Program replacement events and transaction events expose `event.selectionChanges`, with each change
+containing `target`, `selection`, `policy`, `ownerMissing`, `hiddenKeys`, `restoredKeys` and `droppedKeys`.
+The arrays use opaque logical keys in the owner's child scope. Unchanged hidden state does not repeat
+an event. Render the session's accepted program after replacement: drop may add native selection edits.
+Failures preserve the previously accepted program and frame.
+
+A removed linked endpoint becomes dormant. Inspect `linkedSelections[].targetAvailable` and
+`sources[].available`. Missing sources retain their last projected set under keep-hidden or contribute
+an empty set under drop; present sources project their current effective membership. Missing targets
+are never recreated. Returning endpoints are validated again before their linked changes commit.
+A new session still requires all configured endpoints to exist.
+
+The controller stores this history only for its current lifetime. Serialization saves the existing
+selection resources; recreate the session and links after loading. A fresh replacement program retains
+the selection intent authored in that program. Legacy concrete-property predicates on facet sources
+have no source-only geometry: keep-hidden preserves them, while explicit drop rejects them. Prefer
+item keys, data fields or AST predicates for source selections.

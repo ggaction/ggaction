@@ -1,3 +1,4 @@
+import { normalizeSelectionPolicy, reconcileSelections } from "./reconciliation.js";
 import { prepareNearestSelection } from "./nearest.js";
 import { ownHitScene } from "./sceneFrame.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
@@ -9,7 +10,7 @@ import { resolveHitCoordinates, transformHitPoint } from "../grammar/hitCoordina
 import { normalizeHitQuery } from "../grammar/hitShapes.js";
 import { prepareProgramHitFrame, rebindProgramHitFrame } from "./hitProgram.js";
 import { createHitFrameBridge } from "./hitFrame.js";
-import { normalizeSelectionLinks, inspectSelectionLinks, applySelectionLinks } from "./bindings.js";
+import { normalizeSelectionLinks, inspectSelectionLinks, applySelectionLinks, selectionLinksChangedAvailability } from "./bindings.js";
 
 const IDENTITY = Object.freeze([1, 0, 0, 1, 0, 0]);
 const MAX_DISPATCHES = 256;
@@ -46,10 +47,11 @@ const emptyHit = (frameVersion, diagnostics) => cloneAndFreeze({ target: null, c
 
 /** Browser-safe inspection and atomic authoring command lifecycle. */
 export function createInteractionSession(input) {
-  const request = options(input, ["program"], ["bindings"], "Interaction session");
-  const configured = bindings(request.program, request.bindings);
+  const request = options(input, ["program"], ["bindings", "selectionPolicy"], "Interaction session");
+  const configured = bindings(request.program, request.bindings), selectionPolicy = normalizeSelectionPolicy(request.selectionPolicy);
   let program = request.program, base = prepareProgramHitFrame(program), bridge = createHitFrameBridge(base);
   let linkedSelections = inspectSelectionLinks(program, configured.linked);
+  let selectionRecords = reconcileSelections(program, [], selectionPolicy, { initialize: true }).records;
   let rootTransform = IDENTITY, mounted, destroyed = false, generation = 0, lastHit = null, processing = false;
   let state, revision = 0, transactionSequence = 0;
   const drainedTransactions = new Set();
@@ -89,23 +91,27 @@ export function createInteractionSession(input) {
   const close = () => {
     if (mounted !== undefined) detach(mounted);
     mounted = undefined; lastHit = null; destroyed = true;
-    try { publish("destroy"); } finally { listeners.clear(); bridge.dispose(); base = null; rootTransform = IDENTITY; queue.length = 0; }
+    try { publish("destroy"); } finally { listeners.clear(); bridge.dispose(); base = null; rootTransform = IDENTITY; queue.length = 0; selectionRecords = []; }
     return outcome("applied");
   };
   const edit = command => {
     if (drainedTransactions.has(command.transactionId)) return outcome("stale");
     drainedTransactions.add(command.transactionId);
     const previous = program;
-    let prepared, version, nextGeneration, nextRevision, candidate, frame;
+    let prepared, version, nextGeneration, nextRevision, candidate, frame, reconciled, selectionChanges = [];
     const details = (phase, affectedOwners, diagnostics = []) => freezeOwned({
       transactionId: command.transactionId, origin: command.origin,
       ...(command.causeTransactionId === undefined ? {} : { causeTransactionId: command.causeTransactionId }),
-      phase, revision, affectedOwners, previous, current: program, diagnostics: cloneAndFreeze(diagnostics)
+      phase, revision, affectedOwners, previous, current: program, diagnostics: cloneAndFreeze(diagnostics), selectionChanges: cloneAndFreeze(phase === "error" ? [] : selectionChanges)
     });
     try {
       prepared = prepareInteractionEdit(program, prepareNearestSelection(program, command, bridge));
       if (prepared.program === program) return outcome("unchanged");
-      prepared = applySelectionLinks(prepared.program, configured.linked, linkedSelections, prepared.affectedOwners, command);
+      reconciled = reconcileSelections(prepared.program, selectionRecords, selectionPolicy, { managed: configured.linked });
+      prepared = applySelectionLinks(reconciled.program, configured.linked, linkedSelections, [...prepared.affectedOwners, ...reconciled.affectedOwners], command, selectionPolicy);
+      const verified = reconcileSelections(prepared.program, reconciled.records, selectionPolicy, { verify: true });
+      selectionChanges = [...reconciled.changes, ...verified.changes];
+      reconciled = verified;
       version = nextInteger(bridge.getState().version); nextGeneration = nextInteger(generation); nextRevision = nextInteger(revision);
       candidate = prepareProgramHitFrame(prepared.program, version);
       frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
@@ -114,7 +120,7 @@ export function createInteractionSession(input) {
       throw error;
     }
     bridge.updateFrame(frame); base = candidate; program = prepared.program;
-    linkedSelections = prepared.projections;
+    linkedSelections = prepared.projections; selectionRecords = reconciled.records;
     generation = nextGeneration; revision = nextRevision; lastHit = null;
     publish(command.type, details("commit", prepared.affectedOwners));
     publish(command.type, details("settled", prepared.affectedOwners));
@@ -157,12 +163,18 @@ export function createInteractionSession(input) {
     updateProgram(next) {
       return perform(() => {
         const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
-        const candidate = prepareProgramHitFrame(next, version);
+        const reconciled = reconcileSelections(next, selectionRecords, selectionPolicy, { managed: configured.linked });
+        let linked = { program: reconciled.program, projections: inspectSelectionLinks(reconciled.program, configured.linked, undefined, linkedSelections, selectionPolicy) };
+        if (reconciled.affectedOwners.length || selectionLinksChangedAvailability(linked.projections, linkedSelections)) {
+          linked = applySelectionLinks(linked.program, configured.linked, linkedSelections, reconciled.affectedOwners, { type: "program" }, selectionPolicy);
+        }
+        const verified = reconcileSelections(linked.program, reconciled.records, selectionPolicy, { verify: true });
+        const selectionChanges = cloneAndFreeze([...reconciled.changes, ...verified.changes]);
+        const candidate = prepareProgramHitFrame(linked.program, version);
         const frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
-        const projections = inspectSelectionLinks(next, configured.linked);
-        bridge.updateFrame(frame); base = candidate; program = next; generation = nextGeneration; revision = nextRevision; lastHit = null;
-        linkedSelections = projections;
-        publish("program"); return outcome("applied");
+        bridge.updateFrame(frame); base = candidate; program = linked.program; generation = nextGeneration; revision = nextRevision; lastHit = null;
+        linkedSelections = linked.projections; selectionRecords = verified.records;
+        publish("program", { selectionChanges }); return outcome("applied");
       });
     },
     subscribe(listener) {

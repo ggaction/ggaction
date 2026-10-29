@@ -26,6 +26,14 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
    assert.ok(keys.length>=2);
    const q=p.selectMarks({id:"picked",target:"mark",items:[keys[0]]}).highlightMarks({selection:"picked",color:"#ef4444",bringToFront:false});
    const saved=serializeProgram(q);
+   for(const selectionPolicy of ['keep-hidden','drop']) {
+    const lifecycle=createInteractionSession({program:q,selectionPolicy,bindings:[]}),events=[];lifecycle.subscribe(event=>events.push(event));
+    lifecycle.updateProgram(q.filterMarks({target:'mark',field:'category',op:'neq',value:items[0].fields.category}));
+    assert.deepEqual(events[0].selectionChanges[0][selectionPolicy==='drop'?'droppedKeys':'hiddenKeys'],[keys[0]]);
+    lifecycle.updateProgram(deserializeProgram(serializeProgram(lifecycle.getState().program)).removeMarkFilter({target:'mark'}));
+    const actual=getMarkItems(lifecycle.getState().program,{target:'mark'}).filter(item=>item.geometry.some(g=>g.properties.fill==='#ef4444'||g.properties.stroke==='#ef4444')).map(item=>item.key);
+    assert.deepEqual(actual,selectionPolicy==='drop'?[]:[keys[0]]);lifecycle.destroy();
+   }
    for(const [mode,requested,expected]of[["replace",[keys[1]],[keys[1]]],["add",[keys[1]],[keys[0],keys[1]]],["toggle",[keys[0],keys[1]],[keys[1]]],["subtract",[keys[0]],[]],["intersect",[keys[0],keys[1]],[keys[0]]]]) {
     const revised=deserializeProgram(saved).editMarkSelection({selection:"picked",mode,items:requested});
     const actual=getMarkItems(revised,{target:"mark"}).filter(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")).map(item=>item.key);

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:865d5e24eade95b3e4f2cb266ffd1bcc9708060d615292256994417025164829. Status: development. Runtime source: 7e6854182161abb9c5ce96403238a65997da8d4b. Release baseline: v0.0.13.
+Contract: sha256:0d125f7064c7f64c70012808d44792dfc62203fd0070c7336d7cc18af30c9c0a. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/7e6854182161abb9c5ce96403238a65997da8d4b/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/7e6854182161abb9c5ce96403238a65997da8d4b/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10923,8 +10923,8 @@ by a direct session selection command. Other named selections stay independent.
 Facet links address `facetSource: true` and use semantic source items; concrete
 property predicates are unavailable there. Generated cells remain read-only.
 
-Initialization and external `updateProgram` validate links without changing
-selection membership. Subsequent authoring changes update affected links in
+Initialization and ordinary external `updateProgram` replacements validate links without changing
+selection membership. Missing endpoints and pruning use the lifecycle policy below. Authoring changes update affected links in
 source-to-target order, once per target. `linkedSelections` exposes immutable
 source-specific projection sets and their resolved keys. Bindings allow at most
 256 links and 256 total source references, with bounded configuration and
@@ -10979,6 +10979,33 @@ logical item key, independently of draw order. A miss supplies an empty set to t
 `replace` clears, and add/toggle/subtract/intersect retain their normal set behavior. The resulting
 selection stores keys and survives serialization; nearest is not a continuously evaluated predicate.
 It commits with the same transaction, linked-selection and failure behavior as ordinary selection.
+
+## Keep or drop hidden selections
+
+Pass `selectionPolicy: "keep-hidden"` (the default) to preserve selections when a filter,
+partition focus or removed child hides their logical items. Matching selected keys can become visible
+again. Use `selectionPolicy: "drop"` to replace affected membership with its surviving item keys.
+A live range or predicate becomes a key snapshot only when items must be dropped. Explicitly authored
+replacement selection options take precedence. Opacity zero and sampled animation frames do not count
+as removed items.
+
+Program replacement events and transaction events expose `event.selectionChanges`, with each change
+containing `target`, `selection`, `policy`, `ownerMissing`, `hiddenKeys`, `restoredKeys` and `droppedKeys`.
+The arrays use opaque logical keys in the owner's child scope. Unchanged hidden state does not repeat
+an event. Render the session's accepted program after replacement: drop may add native selection edits.
+Failures preserve the previously accepted program and frame.
+
+A removed linked endpoint becomes dormant. Inspect `linkedSelections[].targetAvailable` and
+`sources[].available`. Missing sources retain their last projected set under keep-hidden or contribute
+an empty set under drop; present sources project their current effective membership. Missing targets
+are never recreated. Returning endpoints are validated again before their linked changes commit.
+A new session still requires all configured endpoints to exist.
+
+The controller stores this history only for its current lifetime. Serialization saves the existing
+selection resources; recreate the session and links after loading. A fresh replacement program retains
+the selection intent authored in that program. Legacy concrete-property predicates on facet sources
+have no source-only geometry: keep-hidden preserves them, while explicit drop rejects them. Prefer
+item keys, data fields or AST predicates for source selections.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -33686,12 +33713,24 @@ export interface LinkedSelectionBinding {
   /** global requires exactly one source owner. */
   readonly resolve: 'union' | 'intersection' | 'global';
 }
+export type SelectionPolicy = 'keep-hidden' | 'drop';
+export interface SelectionChange {
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  readonly selection: string;
+  readonly policy: SelectionPolicy;
+  readonly ownerMissing: boolean;
+  readonly hiddenKeys: readonly string[];
+  readonly restoredKeys: readonly string[];
+  readonly droppedKeys: readonly string[];
+}
 export interface LinkedSelectionState {
   readonly id: string;
   readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
   readonly selection: string;
   readonly resolve: 'union' | 'intersection' | 'global';
+  readonly targetAvailable: boolean;
   readonly sources: readonly {
+    readonly available: boolean;
     readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
     readonly selection: string;
     /** Logical keys projected into the target owner, with its child namespace. */
@@ -33712,7 +33751,7 @@ export interface InteractionState {
   readonly destroyed: boolean;
 }
 export interface InteractionLifecycleEvent {
-  readonly type: 'inspect' | 'leave' | 'frame' | 'program' | 'mount' | 'unmount' | 'destroy';
+  readonly type: 'inspect' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
   readonly state: InteractionState;
 }
 /** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
@@ -33765,9 +33804,15 @@ export interface InteractionTransactionEvent {
   readonly previous: InteractionProgram;
   readonly current: InteractionProgram;
   readonly diagnostics: readonly { readonly code: string; readonly message: string }[];
+  readonly selectionChanges: readonly SelectionChange[];
   readonly state: InteractionState;
 }
-export type InteractionEvent = InteractionLifecycleEvent | InteractionTransactionEvent;
+export interface InteractionProgramEvent {
+  readonly type: 'program';
+  readonly state: InteractionState;
+  readonly selectionChanges: readonly SelectionChange[];
+}
+export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent;
 export type InteractionCommand = InteractionEditCommand | {
   readonly type: 'inspect';
   /** CSS-local point, after subtracting the host client rectangle. */
@@ -33793,6 +33838,8 @@ export interface InteractionSession {
 }
 export declare function createInteractionSession(options: {
   readonly program: InteractionProgram;
+  /** Removed final items remain selected by default; drop snapshots surviving membership. */
+  readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
   readonly bindings?: readonly (InspectBinding | LinkedSelectionBinding)[];
 }): InteractionSession;
@@ -46988,12 +47035,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/7e6854182161abb9c5ce96403238a65997da8d4b/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/7e6854182161abb9c5ce96403238a65997da8d4b/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -50038,9 +50085,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:865d5e24eade95b3e4f2cb266ffd1bcc9708060d615292256994417025164829` |
+| Contract fingerprint | `sha256:0d125f7064c7f64c70012808d44792dfc62203fd0070c7336d7cc18af30c9c0a` |
 | Example and dataset source | `8e7582ff780415da5e7d7f553073b449fb637689` |
-| Runtime source commit | `7e6854182161abb9c5ce96403238a65997da8d4b` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 340 |
 | Declared actions in that release | 234 |

@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 959000; // Linked selection documentation: measured 958319 bytes.
+export const SEARCH_INDEX_MAX_BYTES = 960000; // Selection lifecycle documentation: measured 959574 bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");
