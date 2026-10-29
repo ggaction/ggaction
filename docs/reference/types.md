@@ -72,6 +72,10 @@ interface ChartProgramActions {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
+  editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
+  createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
+  editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
   editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
@@ -3800,6 +3804,22 @@ export type CreateProjectionOptions = { readonly id: string } & ((ProjectionPara
 
 Related types: [`ProjectionParameters`](#type-projectionparameters) · [`ProjectionFittedOptions`](#type-projectionfittedoptions).
 
+### `CreatePyramidPlotOptions` {#type-createpyramidplotoptions}
+
+<details markdown="1">
+<summary>Expand CreatePyramidPlotOptions</summary>
+
+```typescript
+export type CreatePyramidPlotOptions = PyramidLayoutOptions & {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly stage: string; readonly value: string;
+  readonly stages?: PyramidStagePaint; readonly labels?: false | PyramidLabelPaint; readonly color?: false | PyramidColor; readonly clip?: boolean;
+};
+```
+
+</details>
+
+Related types: [`PyramidLayoutOptions`](#type-pyramidlayoutoptions) · [`PyramidStagePaint`](#type-pyramidstagepaint) · [`PyramidLabelPaint`](#type-pyramidlabelpaint) · [`PyramidColor`](#type-pyramidcolor).
+
 ### `CreateRadarPlotOptions` {#type-createradarplotoptions}
 
 <details markdown="1">
@@ -6972,6 +6992,19 @@ export type EditNormalizedDataOptions = FocusedDerivedDataEdit<NormalizedDataOpt
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`NormalizedDataOptions`](#type-normalizeddataoptions).
 
+### `EditOHLCPlotOptions` {#type-editohlcplotoptions}
+
+<details markdown="1">
+<summary>Expand EditOHLCPlotOptions</summary>
+
+```typescript
+export type EditOHLCPlotOptions = { readonly target?: string } & Partial<Omit<CreateOHLCPlotOptions, "id">>;
+```
+
+</details>
+
+Related types: [`CreateOHLCPlotOptions`](#type-createohlcplotoptions).
+
 ### `EditOpacityScaleOptions` {#type-editopacityscaleoptions}
 
 <details markdown="1">
@@ -7130,6 +7163,20 @@ export type EditProjectionOptions = { readonly target?: string } & ((Partial<Pro
 </details>
 
 Related types: [`ProjectionParameters`](#type-projectionparameters) · [`ProjectionEditFittedOptions`](#type-projectioneditfittedoptions).
+
+### `EditPyramidPlotOptions` {#type-editpyramidplotoptions}
+
+<details markdown="1">
+<summary>Expand EditPyramidPlotOptions</summary>
+
+```typescript
+export type EditPyramidPlotOptions = { readonly target?: string } & Partial<Omit<CreatePyramidPlotOptions, "id" | "encoding" | "lastStage" | "taperRatio">> &
+  { readonly encoding?: "width" | "area"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: number; };
+```
+
+</details>
+
+Related types: [`CreatePyramidPlotOptions`](#type-createpyramidplotoptions).
 
 ### `EditRScaleOptions` {#type-editrscaleoptions}
 
@@ -11466,6 +11513,92 @@ export type NumericFormatString =
 
 Related types: [`ValueFormatPrecision`](#type-valueformatprecision).
 
+### `OHLCBodyPaint` {#type-ohlcbodypaint}
+
+<details markdown="1">
+<summary>Expand OHLCBodyPaint</summary>
+
+```typescript
+export interface OHLCBodyPaint {
+  readonly upFill?: FillPaint; readonly downFill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
+### `OHLCColor` {#type-ohlccolor}
+
+<details markdown="1">
+<summary>Expand OHLCColor</summary>
+
+```typescript
+export type OHLCColor = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal"; readonly scale?: CategoricalColorScaleOptions; readonly palette?: Palette }
+  | { readonly field: string; readonly fieldType: "quantitative"; readonly scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions; readonly palette?: Palette }
+  | { readonly field: string; readonly fieldType: "temporal"; readonly scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" }; readonly palette?: Palette };
+```
+
+</details>
+
+Related types: [`CategoricalColorScaleOptions`](#type-categoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`ContinuousColorScaleOptions`](#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](#type-discretizedcolorscaleoptions).
+
+### `OHLCLabelPaint` {#type-ohlclabelpaint}
+
+<details markdown="1">
+<summary>Expand OHLCLabelPaint</summary>
+
+```typescript
+export interface OHLCLabelPaint extends CalendarLabelPaint { readonly content?: "open" | "close" | "low" | "high"; readonly format?: string; readonly offset?: number; }
+```
+
+</details>
+
+Related types: [`CalendarLabelPaint`](#type-calendarlabelpaint).
+
+### `OHLCStemPaint` {#type-ohlcstempaint}
+
+<details markdown="1">
+<summary>Expand OHLCStemPaint</summary>
+
+```typescript
+export type OHLCStemPaint = Omit<OHLCBodyPaint, "upFill" | "downFill">;
+```
+
+</details>
+
+Related types: [`OHLCBodyPaint`](#type-ohlcbodypaint).
+
+### `OHLCWidth` {#type-ohlcwidth}
+
+<details markdown="1">
+<summary>Expand OHLCWidth</summary>
+
+```typescript
+export type OHLCWidth = BarWidthOptions extends infer T ? T extends unknown ? Omit<T, "target"> : never : never;
+```
+
+</details>
+
+Related types: [`BarWidthOptions`](#type-barwidthoptions).
+
+### `OHLCX` {#type-ohlcx}
+
+<details markdown="1">
+<summary>Expand OHLCX</summary>
+
+```typescript
+export type OHLCX = string | { readonly field: string } & (
+  { readonly fieldType?: "quantitative"; readonly scale?: NonPointQuantitativePositionScaleOptions }
+  | { readonly fieldType: "temporal"; readonly temporalUnit?: TemporalInputUnit; readonly scale?: NonPointTemporalPositionScaleOptions }
+  | { readonly fieldType: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions });
+```
+
+</details>
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](#type-nonpointtemporalpositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions).
+
 ### `ObservedGraphDefinition` {#type-observedgraphdefinition}
 
 <details markdown="1">
@@ -12844,6 +12977,65 @@ export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "n
 ```
 
 </details>
+
+### `PyramidColor` {#type-pyramidcolor}
+
+<details markdown="1">
+<summary>Expand PyramidColor</summary>
+
+```typescript
+export type PyramidColor = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal";
+  readonly scale?: CategoricalColorScaleOptions; readonly palette?: Palette; }
+  | { readonly field: string; readonly fieldType: "quantitative"; readonly scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions; readonly palette?: Palette; }
+  | { readonly field: string; readonly fieldType: "temporal"; readonly scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" }; readonly palette?: Palette; };
+```
+
+</details>
+
+Related types: [`CategoricalColorScaleOptions`](#type-categoricalcolorscaleoptions) · [`Palette`](#type-palette) · [`ContinuousColorScaleOptions`](#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](#type-discretizedcolorscaleoptions).
+
+### `PyramidLabelPaint` {#type-pyramidlabelpaint}
+
+<details markdown="1">
+<summary>Expand PyramidLabelPaint</summary>
+
+```typescript
+export interface PyramidLabelPaint extends CalendarLabelPaint { readonly content?: "stage" | "value" | "percent"; readonly format?: string; }
+```
+
+</details>
+
+Related types: [`CalendarLabelPaint`](#type-calendarlabelpaint).
+
+### `PyramidLayoutOptions` {#type-pyramidlayoutoptions}
+
+<details markdown="1">
+<summary>Expand PyramidLayoutOptions</summary>
+
+```typescript
+export type PyramidLayoutOptions = { readonly orientation?: "down" | "up" | "right" | "left"; readonly gap?: number;
+  readonly percentBase?: "first" | "total" | "previous"; } &
+  ({ readonly encoding?: "width"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: never; }
+  | { readonly encoding: "area"; readonly taperRatio?: number; readonly lastStage?: never; });
+```
+
+</details>
+
+### `PyramidStagePaint` {#type-pyramidstagepaint}
+
+<details markdown="1">
+<summary>Expand PyramidStagePaint</summary>
+
+```typescript
+export interface PyramidStagePaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
 
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 

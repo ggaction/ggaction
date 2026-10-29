@@ -1,9 +1,13 @@
+import { OHLC_PLOT_DEFAULTS } from "../../grammar/ohlcPlot.js";
+import { PYRAMID_PLOT_DEFAULTS } from "../../grammar/pyramid/plot.js";
 import { CALENDAR_PLOT_DEFAULTS } from "../../grammar/calendar/plot.js";
 import { GRAPH_PLOT_DEFAULTS } from "../../grammar/graph/plot.js";
 import { HIERARCHY_PLOT_DEFAULTS } from "../../grammar/hierarchy/plot.js";
 import { FLOW_PLOT_DEFAULTS } from "../../grammar/flow/plot.js";
 
 const OWNERS = Object.freeze({
+  ohlc: { key: "ohlcPlot", op: "materializeOHLCPlot" },
+  pyramid: { key: "pyramidPlot", op: "materializePyramidPlot" },
   calendar: { key: "calendarPlot", op: "materializeCalendarPlot" },
   graph: { key: "graphPlot", op: "materializeGraphPlot" },
   tree: { key: "hierarchyPlot", op: "materializeTreePlot" },
@@ -20,28 +24,29 @@ export function resourcePlotThemeOwner(layer) {
 // A family default is lower precedence than an active theme; removing the final
 // frame restores that family's own value, not a generic mark default.
 export function resourcePlotThemeProperty(path, layer) {
-  if (path[0] !== "marks" || !["graphPlot", "hierarchyPlot", "flowPlot", "calendarPlot"].includes(path[2])) return undefined;
+  if (path[0] !== "marks" || !["graphPlot", "hierarchyPlot", "flowPlot", "calendarPlot", "pyramidPlot", "ohlcPlot"].includes(path[2])) return undefined;
   if (path.includes("overrides")) return { explicit: true };
   const calendarLabel = path[2] === "calendarPlot" && path[3] === "labels";
   if (path.length !== (calendarLabel ? 6 : 5)) return undefined;
   const [, , family, storedRole] = path, property = path.at(-1);
   const role = family === "flowPlot" && storedRole === "body"
     ? { "flow-node": "nodes", "flow-link": "links" }[layer?.mark?.type] : storedRole;
-  const defaults = family === "calendarPlot" ? CALENDAR_PLOT_DEFAULTS : family === "graphPlot" ? GRAPH_PLOT_DEFAULTS : family === "flowPlot" ? FLOW_PLOT_DEFAULTS : HIERARCHY_PLOT_DEFAULTS;
+  const defaults = family === "ohlcPlot" ? OHLC_PLOT_DEFAULTS : family === "pyramidPlot" ? PYRAMID_PLOT_DEFAULTS : family === "calendarPlot" ? CALENDAR_PLOT_DEFAULTS : family === "graphPlot" ? GRAPH_PLOT_DEFAULTS : family === "flowPlot" ? FLOW_PLOT_DEFAULTS : HIERARCHY_PLOT_DEFAULTS;
   let token;
   if (role === "labels") token = property === "fill" ? "text" : ["fontFamily", "fontSize", "fontWeight"].includes(property) ? property : undefined;
+  else if (family === "ohlcPlot") token = ["body", "stem"].includes(role) && property === "stroke" ? "mutedText" : undefined;
   else if (family === "calendarPlot") token = role === "cells"
     ? property === "fill" ? "mark" : property === "emptyFill" ? "background" : undefined
     : role === "monthBoundary" && property === "stroke" ? "mutedText" : undefined;
-  else if (["nodes", "cells"].includes(role)) token = property === "fill" ? "mark" : property === "stroke" ? "background" : undefined;
+  else if (["nodes", "cells", "stages"].includes(role)) token = property === "fill" ? "mark" : property === "stroke" ? "background" : undefined;
   else if (["edges", "links"].includes(role) && property === (family === "flowPlot" ? "fill" : "stroke")) token = "mutedText";
   return token === undefined ? undefined : { token, defaultValue: defaults[role][property] };
 }
 
 function change(node) {
-  const match = /^(create|edit)(GraphPlot|TreePlot|TreemapPlot|PartitionPlot|FlowNodes|FlowLinks|CalendarPlot)$/u.exec(node.op);
+  const match = /^(create|edit)(GraphPlot|TreePlot|TreemapPlot|PartitionPlot|FlowNodes|FlowLinks|CalendarPlot|PyramidPlot|OHLCPlot)$/u.exec(node.op);
   if (match === null) return;
-  const family = match[2] === "CalendarPlot" ? "calendarPlot" : match[2] === "GraphPlot" ? "graphPlot" : match[2].startsWith("Flow") ? "flowPlot" : "hierarchyPlot";
+  const family = match[2] === "OHLCPlot" ? "ohlcPlot" : match[2] === "PyramidPlot" ? "pyramidPlot" : match[2] === "CalendarPlot" ? "calendarPlot" : match[2] === "GraphPlot" ? "graphPlot" : match[2].startsWith("Flow") ? "flowPlot" : "hierarchyPlot";
   const args = node.args, ids = new Set();
   const materializer = `materialize${match[2]}`;
   const visit = entry => {
@@ -70,7 +75,7 @@ export function addResourcePlotThemeOverrides(overrides, node) {
   const target = change(node);
   if (target === undefined) return;
   const { family, id, args } = target;
-  const roles = ["nodes", "cells", "edges", "links", "labels", "monthBoundary"];
+  const roles = ["body", "stem", "stages", "nodes", "cells", "edges", "links", "labels", "monthBoundary"];
   for (const role of roles) {
     if (args[role] === null || typeof args[role] !== "object") continue;
     const styles = family === "calendarPlot" && role === "labels" ? Object.entries(args.labels).map(([label, value]) => [`labels.${label}`, value])

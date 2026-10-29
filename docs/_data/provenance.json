@@ -210,6 +210,22 @@
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
+    "createOHLCPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editOHLCPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createPyramidPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editPyramidPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
     "createCalendarPlot": {
       "introducedAfter": "v0.0.13",
       "status": "development"

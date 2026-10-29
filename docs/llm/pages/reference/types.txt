@@ -65,6 +65,10 @@ interface ChartProgramActions {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
+  editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
+  createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
+  editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
   editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
@@ -3238,6 +3242,19 @@ export type CreateProjectionOptions = { readonly id: string } & ((ProjectionPara
 
 Related types: [`ProjectionParameters`](../../../reference/types/#type-projectionparameters) · [`ProjectionFittedOptions`](../../../reference/types/#type-projectionfittedoptions).
 
+### `CreatePyramidPlotOptions` {#type-createpyramidplotoptions}
+
+ Expand CreatePyramidPlotOptions
+
+```typescript
+export type CreatePyramidPlotOptions = PyramidLayoutOptions & {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly stage: string; readonly value: string;
+  readonly stages?: PyramidStagePaint; readonly labels?: false | PyramidLabelPaint; readonly color?: false | PyramidColor; readonly clip?: boolean;
+};
+```
+
+Related types: [`PyramidLayoutOptions`](../../../reference/types/#type-pyramidlayoutoptions) · [`PyramidStagePaint`](../../../reference/types/#type-pyramidstagepaint) · [`PyramidLabelPaint`](../../../reference/types/#type-pyramidlabelpaint) · [`PyramidColor`](../../../reference/types/#type-pyramidcolor).
+
 ### `CreateRadarPlotOptions` {#type-createradarplotoptions}
 
  Expand CreateRadarPlotOptions
@@ -5918,6 +5935,16 @@ export type EditNormalizedDataOptions = FocusedDerivedDataEdit<NormalizedDataOpt
 
 Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focusedderiveddataedit) · [`NormalizedDataOptions`](../../../reference/types/#type-normalizeddataoptions).
 
+### `EditOHLCPlotOptions` {#type-editohlcplotoptions}
+
+ Expand EditOHLCPlotOptions
+
+```typescript
+export type EditOHLCPlotOptions = { readonly target?: string } & Partial<Omit<CreateOHLCPlotOptions, "id">>;
+```
+
+Related types: [`CreateOHLCPlotOptions`](../../../reference/types/#type-createohlcplotoptions).
+
 ### `EditOpacityScaleOptions` {#type-editopacityscaleoptions}
 
  Expand EditOpacityScaleOptions
@@ -6046,6 +6073,17 @@ export type EditProjectionOptions = { readonly target?: string } & ((Partial<Pro
 ```
 
 Related types: [`ProjectionParameters`](../../../reference/types/#type-projectionparameters) · [`ProjectionEditFittedOptions`](../../../reference/types/#type-projectioneditfittedoptions).
+
+### `EditPyramidPlotOptions` {#type-editpyramidplotoptions}
+
+ Expand EditPyramidPlotOptions
+
+```typescript
+export type EditPyramidPlotOptions = { readonly target?: string } & Partial<Omit<CreatePyramidPlotOptions, "id" | "encoding" | "lastStage" | "taperRatio">> &
+  { readonly encoding?: "width" | "area"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: number; };
+```
+
+Related types: [`CreatePyramidPlotOptions`](../../../reference/types/#type-createpyramidplotoptions).
 
 ### `EditRScaleOptions` {#type-editrscaleoptions}
 
@@ -9623,6 +9661,74 @@ export type NumericFormatString =
 
 Related types: [`ValueFormatPrecision`](../../../reference/types/#type-valueformatprecision).
 
+### `OHLCBodyPaint` {#type-ohlcbodypaint}
+
+ Expand OHLCBodyPaint
+
+```typescript
+export interface OHLCBodyPaint {
+  readonly upFill?: FillPaint; readonly downFill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MarkOutline`](../../../reference/types/#type-markoutline) · [`MarkShadow`](../../../reference/types/#type-markshadow).
+
+### `OHLCColor` {#type-ohlccolor}
+
+ Expand OHLCColor
+
+```typescript
+export type OHLCColor = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal"; readonly scale?: CategoricalColorScaleOptions; readonly palette?: Palette }
+  | { readonly field: string; readonly fieldType: "quantitative"; readonly scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions; readonly palette?: Palette }
+  | { readonly field: string; readonly fieldType: "temporal"; readonly scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" }; readonly palette?: Palette };
+```
+
+Related types: [`CategoricalColorScaleOptions`](../../../reference/types/#type-categoricalcolorscaleoptions) · [`Palette`](../../../reference/types/#type-palette) · [`ContinuousColorScaleOptions`](../../../reference/types/#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](../../../reference/types/#type-discretizedcolorscaleoptions).
+
+### `OHLCLabelPaint` {#type-ohlclabelpaint}
+
+ Expand OHLCLabelPaint
+
+```typescript
+export interface OHLCLabelPaint extends CalendarLabelPaint { readonly content?: "open" | "close" | "low" | "high"; readonly format?: string; readonly offset?: number; }
+```
+
+Related types: [`CalendarLabelPaint`](../../../reference/types/#type-calendarlabelpaint).
+
+### `OHLCStemPaint` {#type-ohlcstempaint}
+
+ Expand OHLCStemPaint
+
+```typescript
+export type OHLCStemPaint = Omit<OHLCBodyPaint, "upFill" | "downFill">;
+```
+
+Related types: [`OHLCBodyPaint`](../../../reference/types/#type-ohlcbodypaint).
+
+### `OHLCWidth` {#type-ohlcwidth}
+
+ Expand OHLCWidth
+
+```typescript
+export type OHLCWidth = BarWidthOptions extends infer T ? T extends unknown ? Omit<T, "target"> : never : never;
+```
+
+Related types: [`BarWidthOptions`](../../../reference/types/#type-barwidthoptions).
+
+### `OHLCX` {#type-ohlcx}
+
+ Expand OHLCX
+
+```typescript
+export type OHLCX = string | { readonly field: string } & (
+  { readonly fieldType?: "quantitative"; readonly scale?: NonPointQuantitativePositionScaleOptions }
+  | { readonly fieldType: "temporal"; readonly temporalUnit?: TemporalInputUnit; readonly scale?: NonPointTemporalPositionScaleOptions }
+  | { readonly fieldType: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions });
+```
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](../../../reference/types/#type-nonpointquantitativepositionscaleoptions) · [`TemporalInputUnit`](../../../reference/types/#type-temporalinputunit) · [`NonPointTemporalPositionScaleOptions`](../../../reference/types/#type-nonpointtemporalpositionscaleoptions) · [`NonPointCategoricalPositionScaleOptions`](../../../reference/types/#type-nonpointcategoricalpositionscaleoptions).
+
 ### `ObservedGraphDefinition` {#type-observedgraphdefinition}
 
  Expand ObservedGraphDefinition
@@ -10764,6 +10870,53 @@ Related types: [`ProjectionPlaneParameters`](../../../reference/types/#type-proj
 export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "natural-earth" | "orthographic" | "stereographic" | "gnomonic"
   | "azimuthal-equal-area" | "azimuthal-equidistant" | "conic-equal-area" | "conic-conformal" | "conic-equidistant" | "transverse-mercator" | "albers-usa" | "identity";
 ```
+
+### `PyramidColor` {#type-pyramidcolor}
+
+ Expand PyramidColor
+
+```typescript
+export type PyramidColor = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal";
+  readonly scale?: CategoricalColorScaleOptions; readonly palette?: Palette; }
+  | { readonly field: string; readonly fieldType: "quantitative"; readonly scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions; readonly palette?: Palette; }
+  | { readonly field: string; readonly fieldType: "temporal"; readonly scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" }; readonly palette?: Palette; };
+```
+
+Related types: [`CategoricalColorScaleOptions`](../../../reference/types/#type-categoricalcolorscaleoptions) · [`Palette`](../../../reference/types/#type-palette) · [`ContinuousColorScaleOptions`](../../../reference/types/#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](../../../reference/types/#type-discretizedcolorscaleoptions).
+
+### `PyramidLabelPaint` {#type-pyramidlabelpaint}
+
+ Expand PyramidLabelPaint
+
+```typescript
+export interface PyramidLabelPaint extends CalendarLabelPaint { readonly content?: "stage" | "value" | "percent"; readonly format?: string; }
+```
+
+Related types: [`CalendarLabelPaint`](../../../reference/types/#type-calendarlabelpaint).
+
+### `PyramidLayoutOptions` {#type-pyramidlayoutoptions}
+
+ Expand PyramidLayoutOptions
+
+```typescript
+export type PyramidLayoutOptions = { readonly orientation?: "down" | "up" | "right" | "left"; readonly gap?: number;
+  readonly percentBase?: "first" | "total" | "previous"; } &
+  ({ readonly encoding?: "width"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: never; }
+  | { readonly encoding: "area"; readonly taperRatio?: number; readonly lastStage?: never; });
+```
+
+### `PyramidStagePaint` {#type-pyramidstagepaint}
+
+ Expand PyramidStagePaint
+
+```typescript
+export interface PyramidStagePaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MarkOutline`](../../../reference/types/#type-markoutline) · [`MarkShadow`](../../../reference/types/#type-markshadow).
 
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 

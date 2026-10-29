@@ -3549,6 +3549,38 @@ createCalendarLayout({ id?, data?, date, value?, start, end, timeZone, weekStart
 
 Store civil-day aggregates, week/weekday cells and month boundaries. See [Calendar plots](../api/calendar.md#createcalendarlayout).
 
+### `createOHLCPlot`
+
+```javascript
+createOHLCPlot({ id?, data?, coordinate?, x, low, high, open, close, yScale?, invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? })
+```
+
+Draw explicit open, high, low and close roles as one row-owned item. See [OHLC plots](../api/ohlc.md).
+
+### `editOHLCPlot`
+
+```javascript
+editOHLCPlot({ target?, data?, coordinate?, x?, low?, high?, open?, close?, yScale?, invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? })
+```
+
+Edit prices and styles while preserving typed row identities. See [OHLC plots](../api/ohlc.md).
+
+### `createPyramidPlot`
+
+```javascript
+createPyramidPlot({ id?, data?, coordinate?, stage, value, orientation?, encoding?, gap?, lastStage?, taperRatio?, percentBase?, color?, stages?, labels?, clip? })
+```
+
+Draw ordered stages with explicit width or area meaning. See [Pyramid plots](../api/pyramid.md).
+
+### `editPyramidPlot`
+
+```javascript
+editPyramidPlot({ target?, data?, coordinate?, stage?, value?, orientation?, encoding?, gap?, lastStage?, taperRatio?, percentBase?, color?, stages?, labels?, clip? })
+```
+
+Edit a Pyramid while preserving typed row identities and source order. See [Pyramid plots](../api/pyramid.md).
+
 ### `createCalendarPlot`
 
 ```javascript

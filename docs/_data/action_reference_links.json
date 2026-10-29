@@ -359,5 +359,9 @@
   "createGeoLineMark": "/reference/actions/marks/#creategeolinemark",
   "editGeoLineMark": "/reference/actions/marks/#editgeolinemark",
   "createGraticule": "/reference/actions/marks/#creategraticule",
-  "editGraticule": "/reference/actions/marks/#editgraticule"
+  "editGraticule": "/reference/actions/marks/#editgraticule",
+  "createPyramidPlot": "/reference/actions/marks/#createpyramidplot",
+  "editPyramidPlot": "/reference/actions/marks/#editpyramidplot",
+  "createOHLCPlot": "/reference/actions/marks/#createohlcplot",
+  "editOHLCPlot": "/reference/actions/marks/#editohlcplot"
 }

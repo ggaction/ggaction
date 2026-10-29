@@ -544,6 +544,7 @@ export function buildActionRelationshipPrograms() {
       })),
     chart().createCanvas().createData({ values: [{ category: "A", amount: 3 }, { category: "B", amount: 8 }] })
       .createPiePlot({ category: "category", radius: { field: "amount", aggregate: "sum" }, guides: false }),
+    chart().createCanvas().createData({ values: [{ x: "A", low: 1, high: 8, open: 3, close: 6 }] }).createOHLCPlot({ x: "x", low: "low", high: "high", open: "open", close: "close", guides: false }).editOHLCPlot({ labels: {} }),
     ...selectionLifecyclePrograms(),
     ...focusedScaleEditorPrograms(),
     ...atomicEncodingPrograms(),
@@ -556,6 +557,8 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
+    chart().createCanvas().createData({ values: [{ stage: "A", value: 3 }, { stage: "B", value: 2 }] })
+      .createPyramidPlot({ stage: "stage", value: "value" }).editPyramidPlot({ encoding: "area" }),
     chart().createCanvas().createData({ values: [{ day: "2024-02-29", value: 1 }] })
       .createCalendarLayout({ date: "day", value: "value", start: "2024-02-01", end: "2024-02-29", timeZone: "UTC", weekStartsOn: 1, aggregate: "sum", missing: "empty" })
       .createCalendarPlot().editCalendarPlot({ cells: { opacity: .5 } }).editLayout({ options: { missing: "omit" } }),

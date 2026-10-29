@@ -1,4 +1,6 @@
 import { geoSelectionPolicy } from "./geo.js";
+import { ohlcSelectionPolicy } from "./ohlc.js";
+import { pyramidSelectionPolicy } from "./pyramid.js";
 import { calendarSelectionPolicy } from "./calendar.js";
 import { imageSelectionPolicy } from "./image.js";
 import { contourSelectionPolicy } from "./contour.js";
@@ -28,6 +30,8 @@ const POLICIES = Object.freeze({
   graph: graphSelectionPolicy,
   image: imageSelectionPolicy,
   calendar: calendarSelectionPolicy,
+  pyramid: pyramidSelectionPolicy,
+  ohlc: ohlcSelectionPolicy,
   contour: contourSelectionPolicy,
   tree: treeSelectionPolicy, treemap: treemapSelectionPolicy, partition: partitionSelectionPolicy,
   "flow-node": flowNodeSelectionPolicy, "flow-link": flowLinkSelectionPolicy,

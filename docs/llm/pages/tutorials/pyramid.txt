@@ -1,0 +1,39 @@
+# Compare ordered stages
+
+These three observations count visits, trials and returns. The order expresses
+the process. Pyramid keeps it even if a later count exceeds an earlier one.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 420, height: 360,
+    margin: { left: 60, right: 60, top: 60, bottom: 30 }, background: "#ffffff" })
+  .createData({ id: "stages", keyField: "id", values: [
+    { id: "visit", stage: "Visited", value: 100 },
+    { id: "trial", stage: "Tried", value: 60 },
+    { id: "return", stage: "Returned", value: 20 }
+  ] })
+  .createPyramidPlot({ stage: "stage", value: "value",
+    stages: { fill: "#c7d2fe", stroke: "#4338ca", strokeWidth: 1 },
+    labels: { fontSize: 14 } });
+```
+
+The default width profile connects each stage to the width of the next. Its
+last stage stays flat. To compare areas directly, use `encoding: "area"` and
+`taperRatio: 0.8`; the three areas then have the same 100:60:20 ratio as the data.
+
+Directions are explicit. `orientation: "up"`, `"right"` or `"left"` changes
+the direction of progress; it does not sort the source rows. A pointed ending
+is an explicit `lastStage: "point"` choice for width mode.
+
+The [shared example source](https://github.com/ggaction/ggaction/blob/a657a9fe7f0bea5cde197d5f831ef023654eecb0/examples/pyramid/program.js)
+drives the browser examples, primitive comparisons and generated images.
+See [Pyramid plots](../../../api/pyramid/) for labels, percentages, color, selection
+and editing options.
+
+## Key action trace
+
+`createPyramidPlot` records its stage/value meaning, then explicitly calls
+`materializePyramidPlot` and the graphic primitives. `editPyramidPlot` validates
+the whole candidate before applying the same materializer.

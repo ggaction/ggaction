@@ -35,6 +35,8 @@ function classifyPrimaryLayer(semanticSpec, layer) {
     if (!layer.hierarchyBinding?.layout) throw new Error("Hierarchy facets require a complete layout binding.");
     return "hierarchy";
   }
+  if (type === "ohlc" && layer.ohlc !== undefined && coordinateType(semanticSpec, layer) === "cartesian") return "cartesian";
+  if (type === "pyramid" && layer.pyramid !== undefined && coordinateType(semanticSpec, layer) === "cartesian") return "cartesian";
   const parallel = layer.encoding?.parallel;
   if (parallel !== undefined || coordinateType(semanticSpec, layer) === "parallel") {
     const complete = type === "line" && Array.isArray(parallel?.dimensions) &&

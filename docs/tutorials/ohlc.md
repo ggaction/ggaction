@@ -1,0 +1,45 @@
+---
+layout: default
+title: Show open, high, low and close
+---
+
+# Show open, high, low and close
+
+Keep each observation's four prices together. A high-low stem and an open-close
+body are one chart item, so selecting either part selects the same source row.
+
+{% include chart-example.html id="ohlc" %}
+
+```js
+import { chart } from "ggaction";
+
+const prices = chart()
+  .createCanvas({ width: 420, height: 320, margin: { left: 60, right: 60, top: 60, bottom: 60 }, background: "#ffffff" })
+  .createData({ id: "observations", keyField: "id", values: [
+    { id: "a", date: "Monday", low: 1, high: 9, open: 3, close: 7 },
+    { id: "b", date: "Tuesday", low: 2, high: 8, open: 6, close: 4 },
+    { id: "c", date: "Wednesday", low: 4, high: 6, open: 5, close: 5 }
+  ] })
+  .createOHLCPlot({ id: "ohlc", x: "date", low: "low", high: "high",
+    open: "open", close: "close", width: { pixels: 32 },
+    yScale: { domain: [0, 10] }, guides: false });
+
+const labeled = prices.editOHLCPlot({ target: "ohlc",
+  labels: { content: "close", format: ".1f" } });
+const selected = labeled.selectMarks({ id: "chosen", target: "ohlc",
+  field: "id", op: "eq", value: "b" })
+  .highlightMarks({ selection: "chosen", stroke: "#1d4ed8", strokeWidth: 2 });
+```
+
+Green bodies close above their opening price; red bodies close below it. The
+third observation has equal open and close, so it uses a horizontal doji line.
+Its numerical value and range stay unchanged.
+
+With real date columns, pass `{field:"date",fieldType:"temporal"}` as X.
+Use keyed source revisions to update prices; the source rows, scales, bodies,
+labels and selections are rematerialized together. See [OHLC options](../api/ohlc.md)
+for invalid rows, color scales, effects, temporal widths and scoped edits.
+
+The facade records the price meaning, then calls the wrapped
+`materializeOHLCPlot` and ordinary graphic primitives. Renderers consume those
+concrete graphics without deriving prices or fetching data.

@@ -1233,5 +1233,39 @@
         "statements": 6
       }
     ]
+  },
+  {
+    "file": "pyramid-plots.mjs",
+    "cases": [
+      {
+        "id": "pyramid/public-lifecycle",
+        "statements": 16
+      },
+      {
+        "id": "pyramid/offline-scene-renderers",
+        "statements": 14
+      },
+      {
+        "id": "pyramid/fresh-process-and-nested",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "ohlc-plots.mjs",
+    "cases": [
+      {
+        "id": "ohlc/public-lifecycle",
+        "statements": 16
+      },
+      {
+        "id": "ohlc/offline-scene-renderers",
+        "statements": 13
+      },
+      {
+        "id": "ohlc/fresh-process-and-nested",
+        "statements": 10
+      }
+    ]
   }
 ]

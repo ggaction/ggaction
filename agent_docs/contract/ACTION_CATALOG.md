@@ -369,6 +369,10 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editGeoLineMark`](current/GEOMETRY.md#editgeolinemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGraticule`](current/GEOMETRY.md#creategraticule) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGraticule`](current/GEOMETRY.md#editgraticule) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createPyramidPlot`](current/PYRAMID.md#createpyramidplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editPyramidPlot`](current/PYRAMID.md#editpyramidplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createOHLCPlot`](current/OHLC.md#createohlcplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editOHLCPlot`](current/OHLC.md#editohlcplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

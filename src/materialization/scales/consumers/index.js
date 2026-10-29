@@ -1,4 +1,5 @@
 import { unfilteredMarkDataset } from "../../../selectors/datasets.js";
+import { ohlcScaleValues } from "../../ohlc/plot.js";
 import { findMarkFilterDataset } from "../../../selectors/datasets.js";
 import { readNominalField } from "../../../grammar/scales/fields.js";
 import { calendarScaleValues } from "../../calendar/scaleValues.js";
@@ -26,6 +27,7 @@ export {
 } from "./seriesLayout.js";
 
 export function resolveConsumerValuesForDataset(program, consumer, dataset) {
+  if (consumer.layer.mark.type === "ohlc") return ohlcScaleValues(dataset, consumer.layer, consumer.encoding);
   const arc = resolveConditionalArcConsumer(program, consumer.layer, consumer.encoding, consumer.channel);
   if (arc !== undefined) return arc;
   const bar = resolveConditionalBarConsumer(program, consumer.layer, consumer.encoding, consumer.channel);

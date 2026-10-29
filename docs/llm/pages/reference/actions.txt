@@ -93,6 +93,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLookupData`](../../../reference/actions/statistics/#createlookupdata) | H1 | user-facing | statistics |
 | [`createMarkLabels`](../../../reference/actions/marks/#createmarklabels) | H1, H2 | user-facing | marks |
 | [`createNormalizedData`](../../../reference/actions/statistics/#createnormalizeddata) | H1 | user-facing | statistics |
+| [`createOHLCPlot`](../../../reference/actions/marks/#createohlcplot) | H2 | user-facing | marks |
 | [`createOverlay`](../../../reference/actions/marks/#createoverlay) | H1, H2 | user-facing | marks |
 | [`createParallelAxes`](../../../reference/actions/guides/#createparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](../../../reference/actions/guides/#createparallelaxis) | H3 | user-facing | axes |
@@ -105,6 +106,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPolarLinePlot`](../../../reference/actions/charts-data/#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](../../../reference/actions/charts-data/#createpolarscatterplot) | H0 | user-facing | charts |
 | [`createProjection`](../../../reference/actions/charts-data/#createprojection) | H2 | user-facing | core |
+| [`createPyramidPlot`](../../../reference/actions/marks/#createpyramidplot) | H2 | user-facing | marks |
 | [`createRadarPlot`](../../../reference/actions/charts-data/#createradarplot) | H0 | user-facing | charts |
 | [`createRadialAxis`](../../../reference/actions/guides/#createradialaxis) | H3 | user-facing | axes |
 | [`createRadialAxisLabels`](../../../reference/actions/guides/#createradialaxislabels) | H3 | user-facing | axes |
@@ -230,6 +232,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editMarkLabelSelection`](../../../reference/actions/marks/#editmarklabelselection) | H3 | user-facing | marks |
 | [`editMarkSelection`](../../../reference/actions/advanced/#editmarkselection) | H3 | advanced | mark-selection |
 | [`editNormalizedData`](../../../reference/actions/statistics/#editnormalizeddata) | H1, H3 | user-facing | statistics |
+| [`editOHLCPlot`](../../../reference/actions/marks/#editohlcplot) | H3 | user-facing | marks |
 | [`editOpacityScale`](../../../reference/actions/charts-data/#editopacityscale) | H2 | user-facing | core |
 | [`editOverlay`](../../../reference/actions/marks/#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](../../../reference/actions/guides/#editparallelaxis) | H3 | user-facing | axes |
@@ -239,6 +242,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editPivotData`](../../../reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](../../../reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editProjection`](../../../reference/actions/charts-data/#editprojection) | H3 | user-facing | core |
+| [`editPyramidPlot`](../../../reference/actions/marks/#editpyramidplot) | H3 | user-facing | marks |
 | [`editRadarPlot`](../../../reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](../../../reference/actions/guides/#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](../../../reference/actions/guides/#editradialaxislabels) | H3 | user-facing | axes |

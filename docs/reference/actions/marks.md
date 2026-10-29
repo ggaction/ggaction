@@ -2587,6 +2587,198 @@ editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
 Edit projected geographic Graticule geometry with native style. See [Geometry and projections](../../api/geometry.md#editgraticule).
 
 
+## `createPyramidPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreatePyramidPlotOptions`](./../types.md#type-createpyramidplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `orientation` | Optional / branch-dependent | `"down" \| "left" \| "right" \| "up" \| undefined` |
+| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `percentBase` | Optional / branch-dependent | `"first" \| "previous" \| "total" \| undefined` |
+| `encoding` | Optional / branch-dependent | `"area" \| "width" \| undefined` |
+| `lastStage` | Optional / branch-dependent | `"flat" \| "point" \| undefined` |
+| `taperRatio` | Optional / branch-dependent | `number \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `stage` | Required | `string` |
+| `value` | Required | `string` |
+| `stages` | Optional / branch-dependent | `PyramidStagePaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| PyramidLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createPyramidPlot({ id?, data?, coordinate?, stage, value, orientation?, encoding?, gap?, lastStage?, taperRatio?, percentBase?, color?, stages?, labels?, clip? })
+```
+
+Draw ordered stages with explicit width or area meaning. See [Pyramid plots](../../api/pyramid.md).
+
+
+## `editPyramidPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditPyramidPlotOptions`](./../types.md#type-editpyramidplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `orientation` | Optional / branch-dependent | `"down" \| "left" \| "right" \| "up" \| undefined` |
+| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `percentBase` | Optional / branch-dependent | `"first" \| "previous" \| "total" \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `stage` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `stages` | Optional / branch-dependent | `PyramidStagePaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| PyramidLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `encoding` | Optional / branch-dependent | `"area" \| "width" \| undefined` |
+| `lastStage` | Optional / branch-dependent | `"flat" \| "point" \| undefined` |
+| `taperRatio` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editPyramidPlot({ target?, data?, coordinate?, stage?, value?, orientation?, encoding?, gap?, lastStage?, taperRatio?, percentBase?, color?, stages?, labels?, clip? })
+```
+
+Edit a Pyramid while preserving typed row identities and source order. See [Pyramid plots](../../api/pyramid.md).
+
+
+## `createOHLCPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateOHLCPlotOptions`](./../types.md#type-createohlcplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Required | `OHLCX` |
+| `low` | Required | `string` |
+| `high` | Required | `string` |
+| `open` | Required | `string` |
+| `close` | Required | `string` |
+| `yScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `invalid` | Optional / branch-dependent | `"error" \| "omit-row" \| undefined` |
+| `doji` | Optional / branch-dependent | `"line" \| "none" \| undefined` |
+| `width` | Optional / branch-dependent | `Omit<{ target?: string \| undefined; } & { band?: number \| undefined; pixels?: undefined; interval?: undefined; }, "target"> \| Omit<{ target?: string \| undefined; } & { band?: undefined; pixels: number; interval?: undefined; }, "target"> \| Omit<...> \| undefined` |
+| `body` | Optional / branch-dependent | `OHLCBodyPaint \| undefined` |
+| `stem` | Optional / branch-dependent | `OHLCStemPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| OHLCLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createOHLCPlot({ id?, data?, coordinate?, x, low, high, open, close, yScale?, invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? })
+```
+
+Draw explicit open, high, low and close roles as one row-owned item. See [OHLC plots](../../api/ohlc.md).
+
+
+## `editOHLCPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditOHLCPlotOptions`](./../types.md#type-editohlcplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Optional / branch-dependent | `OHLCX \| undefined` |
+| `low` | Optional / branch-dependent | `string \| undefined` |
+| `high` | Optional / branch-dependent | `string \| undefined` |
+| `open` | Optional / branch-dependent | `string \| undefined` |
+| `close` | Optional / branch-dependent | `string \| undefined` |
+| `yScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `invalid` | Optional / branch-dependent | `"error" \| "omit-row" \| undefined` |
+| `doji` | Optional / branch-dependent | `"line" \| "none" \| undefined` |
+| `width` | Optional / branch-dependent | `Omit<{ target?: string \| undefined; } & { band?: number \| undefined; pixels?: undefined; interval?: undefined; }, "target"> \| Omit<{ target?: string \| undefined; } & { band?: undefined; pixels: number; interval?: undefined; }, "target"> \| Omit<...> \| undefined` |
+| `body` | Optional / branch-dependent | `OHLCBodyPaint \| undefined` |
+| `stem` | Optional / branch-dependent | `OHLCStemPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| OHLCLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editOHLCPlot({ target?, data?, coordinate?, x?, low?, high?, open?, close?, yScale?, invalid?, doji?, width?, body?, stem?, labels?, color?, clip?, guides? })
+```
+
+Edit prices and styles while preserving typed row identities. See [OHLC plots](../../api/ohlc.md).
+
+
 ## Related
 
 [Action Reference](../actions.md) · [Chart API](../../api/index.md) · [Supported Features](../../supported-features.md)

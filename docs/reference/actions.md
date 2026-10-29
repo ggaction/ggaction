@@ -105,6 +105,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLookupData`](./actions/statistics.md#createlookupdata) | H1 | user-facing | statistics |
 | [`createMarkLabels`](./actions/marks.md#createmarklabels) | H1, H2 | user-facing | marks |
 | [`createNormalizedData`](./actions/statistics.md#createnormalizeddata) | H1 | user-facing | statistics |
+| [`createOHLCPlot`](./actions/marks.md#createohlcplot) | H2 | user-facing | marks |
 | [`createOverlay`](./actions/marks.md#createoverlay) | H1, H2 | user-facing | marks |
 | [`createParallelAxes`](./actions/guides.md#createparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](./actions/guides.md#createparallelaxis) | H3 | user-facing | axes |
@@ -117,6 +118,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPolarLinePlot`](./actions/charts-data.md#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](./actions/charts-data.md#createpolarscatterplot) | H0 | user-facing | charts |
 | [`createProjection`](./actions/charts-data.md#createprojection) | H2 | user-facing | core |
+| [`createPyramidPlot`](./actions/marks.md#createpyramidplot) | H2 | user-facing | marks |
 | [`createRadarPlot`](./actions/charts-data.md#createradarplot) | H0 | user-facing | charts |
 | [`createRadialAxis`](./actions/guides.md#createradialaxis) | H3 | user-facing | axes |
 | [`createRadialAxisLabels`](./actions/guides.md#createradialaxislabels) | H3 | user-facing | axes |
@@ -242,6 +244,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editMarkLabelSelection`](./actions/marks.md#editmarklabelselection) | H3 | user-facing | marks |
 | [`editMarkSelection`](./actions/advanced.md#editmarkselection) | H3 | advanced | mark-selection |
 | [`editNormalizedData`](./actions/statistics.md#editnormalizeddata) | H1, H3 | user-facing | statistics |
+| [`editOHLCPlot`](./actions/marks.md#editohlcplot) | H3 | user-facing | marks |
 | [`editOpacityScale`](./actions/charts-data.md#editopacityscale) | H2 | user-facing | core |
 | [`editOverlay`](./actions/marks.md#editoverlay) | H3 | user-facing | marks |
 | [`editParallelAxis`](./actions/guides.md#editparallelaxis) | H3 | user-facing | axes |
@@ -251,6 +254,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editPivotData`](./actions/statistics.md#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
 | [`editProjection`](./actions/charts-data.md#editprojection) | H3 | user-facing | core |
+| [`editPyramidPlot`](./actions/marks.md#editpyramidplot) | H3 | user-facing | marks |
 | [`editRadarPlot`](./actions/charts-data.md#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](./actions/guides.md#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](./actions/guides.md#editradialaxislabels) | H3 | user-facing | axes |

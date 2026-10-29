@@ -1,3 +1,5 @@
+import { resolveOHLCPlot } from "./materialization/ohlc/plot.js";
+import { resolvePyramidPlot } from "./materialization/pyramid/plot.js";
 import { resolveCalendarPlot } from "./materialization/calendar/plot.js";
 import { getMarkMaterializationStep } from "./materialization/marks/index.js";
 import { appearanceContext, markAppearance, guideAppearance } from "./actions/theme/provenance.js";
@@ -494,6 +496,8 @@ function inspectMark(program, layer, childPath, appearance, scopedKey) {
   const network = layer.graphBinding === undefined ? undefined : resolveGraphPlot(program, layer, program.markConfigs[layer.id].graphPlot);
   const flow = layer.flowBinding === undefined ? undefined : resolveFlowPlot(program, layer, program.markConfigs[layer.id].flowPlot);
   const contour = layer.contourBinding === undefined ? undefined : resolveContourPlot(program, layer, program.markConfigs[layer.id].contour);
+  const ohlc = layer.ohlc === undefined ? undefined : resolveOHLCPlot(program, layer, program.markConfigs[layer.id].ohlcPlot);
+  const pyramid = layer.pyramid === undefined ? undefined : resolvePyramidPlot(program, layer, program.markConfigs[layer.id].pyramidPlot);
   const calendar = layer.calendarBinding === undefined ? undefined : resolveCalendarPlot(program, layer, program.markConfigs[layer.id].calendarPlot);
   const geo = layer.geoBinding === undefined ? undefined : geoMarkSource(program, layer, program.markConfigs[layer.id].geo);
   const dataset = calendar?.dataset ?? hierarchy?.dataset ?? flow?.dataset ?? contour?.dataset ?? findDataset(program, layer.data);
@@ -530,7 +534,7 @@ function inspectMark(program, layer, childPath, appearance, scopedKey) {
     owner: resourceRef("mark", layer.id, childPath), grain,
     appearance: items.flatMap((item, index) => { const logical = itemByGraphic.get(item.id); return markAppearance(appearance, layer, logical, item, resourceRef("mark", layer.id, childPath), logical ? scopedKey(logical.key) : undefined, String(index)); }),
     rawRows: network === undefined ? dataset?.values?.length ?? null : [...new Set([network.nodesData, network.edgesData])].reduce((sum, data) => sum + data.values.length, 0),
-    logicalDataItems: logicalSupported ? geo?.features.length ?? calendar?.items.length ?? network?.items.length ?? hierarchy?.items.length ?? flow?.items.length ?? contour?.items.length ?? items.length : null,
+    logicalDataItems: logicalSupported ? geo?.features.length ?? ohlc?.items.length ?? pyramid?.items.length ?? calendar?.items.length ?? network?.items.length ?? hierarchy?.items.length ?? flow?.items.length ?? contour?.items.length ?? items.length : null,
     drawablePrimitives: logicalSupported ? items.length : null,
     visibleCandidates: geometrySupported ? Math.max(0, items.length - new Set([
       ...items.map((item, index) => item.properties.opacity === 0 ? index : -1),

@@ -1328,6 +1328,8 @@ function buildDirectDataResources(factors) {
     .editFlowLinks({ target: "directFlowLinks", links: { opacity: .4 } })
     .editFlowNodes({ target: "directFlowNodes", nodes: { opacity: .8 } })
     .editFlowData({ target: "directFlow", definition: { balance: "allow" } })
+    .createPyramidPlot({ id: "directPyramid", data: "directSource", stage: "category", value: "positive", labels: false, stages: { opacity: .2 } })
+    .editPyramidPlot({ target: "directPyramid", encoding: "area" })
     .createCalendarLayout({ id: "directCalendarLayout", data: "directSource", date: "calendarDate", value: "positive", start: "2024-02-01", end: "2024-02-29", timeZone: "UTC", weekStartsOn: 1, aggregate: "sum", missing: "empty" })
     .createCalendarPlot({ id: "directCalendar", layout: "directCalendarLayout", color: false, labels: false, cells: { opacity: .2 } })
     .editCalendarPlot({ target: "directCalendar", cells: { gap: .1 }, monthBoundary: false })
@@ -1632,6 +1634,10 @@ function buildDirectRangedMarks(factors) {
     })
     .encodeY({ target: "directBands", field: "position", scale: { id: "y" } })
     .encodeGroup({ target: "directBands", field: "group" })
+    .createOHLCPlot({ id: "directOHLC", data: "directRanges", x: { field: "lower", scale: { id: "x" } },
+      low: "position", open: "position", high: "positionEnd", close: "positionEnd", yScale: { id: "y" },
+      width: { pixels: 5 }, labels: false, guides: false })
+    .editOHLCPlot({ target: "directOHLC", body: { opacity: .3 }, doji: "none" })
     .createTitle({ text: lifecycleTitle(factors, "Ranged comparison") });
 }
 
