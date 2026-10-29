@@ -25,6 +25,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 - Add Full-only `setMarkVisibility` and `removeMarkVisibility`, plus categorical legend visibility bindings. Preserve independent user filters, typed categories, explicit domain policies, selections and original row lineage.
 - Add Full geographic text anchors through `createGeoAnnotation` and `editGeoAnnotation`, retaining original feature and detail-level identity with shared Text styles, fonts and themes; the `annotate` command routes explicit geographic targets to the same native editor.
+- Add concrete `weighted-blend` graphics for bounded per-item linear-light crossfades. Preserve exact ordinary endpoints, clipped sources, retained fonts/images, scene identity and immutable codec state across Canvas, SVG, PNG and PDF.
+
 - Extend existing `createMarkLabels` and source-owned `createTextMark` to Full geographic features and graticules, preserving centroid anchors, typed feature identity, actual joined rows, detail representations, native Text styling and immutable revision closure.
 
 - Extend geographic color and point-area encodings with first-match conditions, typed expressions, named selections, exact parameter revisions and native scale/legend lifecycle. Validate every branch and preserve feature identity through joins, detail changes and offline restoration.

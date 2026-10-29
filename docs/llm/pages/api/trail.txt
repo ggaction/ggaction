@@ -19,6 +19,10 @@ quantitative. Fields refer to actual samples; aggregate, bin, datum and conditio
 position bindings are not accepted. Use this action's position and color options
 instead of generic encoders for a Trail.
 
+Overlapping Cartesian plots must share one Y scale. Create and edit validate the
+complete frame and guides before changing any child resource; independent Y scales
+belong in separate panels.
+
 `width` is a nonnegative finite number, or a field containing one such number per
 sample. Use `createComputedData` first when the width needs an explicit calculation.
 The ribbon's border `body.strokeWidth` is a separate appearance option.

@@ -776,6 +776,30 @@ The complete scene permits 16,777,216 output pixels, 64 MiB RGBA and 10,000,000 
 All glyph frames are checked before large raster allocations. Text may first allocate a 1×1 measuring surface.
 
 
+## Weighted concrete blends
+
+The extension `weighted-blend` primitive combines each item's complete source
+pixels in premultiplied linear-light sRGB. Canvas and PNG use bounded offscreen
+surfaces per item. SVG retains native source elements and applies a `linearRGB`
+arithmetic filter. PDF retains vector endpoints and embeds only each intermediate
+weighted item as a raster at one pixel per logical unit. No backend captures the
+whole chart to implement the blend.
+
+Canvas/PNG limits are 1,048,576 pixels per item, 16,777,216 retained result pixels
+per scene, and 67,108,864 source-pixel operations. Density counts toward these
+limits. SVG applies the same logical pixel budgets to its filter regions; native
+Text retains its explicit source viewport so glyph overhangs are not cut to an
+estimated text box. Oversized requests fail explicitly. Canvas checks and prepares
+all weighted results before resizing or clearing the destination.
+
+Prepare embedded images, fonts, and shadows through the existing preparation
+functions for the exact program or scene. Inactive sources are also validated.
+A single weight-one endpoint draws its original primitive directly; empty Text,
+zero-area shapes and fully clipped sources remain transparent. Current-frame hit
+geometry follows the visible source footprints while retaining one logical item.
+See [the concrete source contract](../extension/primitives.md#blend-concrete-sources-for-one-item)
+for the extension syntax.
+
 ## Related
 
 [Canvas](./canvas.md) · [Semantic and graphical state](../concepts/semantic-and-graphics.md) ·

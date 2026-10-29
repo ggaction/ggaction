@@ -1,3 +1,6 @@
+import { resolvePrimitiveOccupiedBounds } from "../grammar/schemas/graphicBounds.js";
+import { graphicClipBounds, intersectClipBounds } from "../grammar/schemas/graphicClip.js";
+import { MAX_BLEND_ITEM_PIXELS, MAX_BLEND_SCENE_PIXELS, MAX_BLEND_PIXEL_WORK } from "../grammar/weightedBlend.js";
 import { readPreparedShadows } from "./shadowState.js";
 import { readBlendMode } from "../grammar/compositing.js";
 import { patternFillGeometry, validatePatternWork } from "../grammar/patterns.js";
@@ -508,6 +511,7 @@ function serializeText(state, graphicId, properties) {
 }
 
 function serializeConcreteGraphic(state, id, graphic) {
+  if (graphic.type === "weighted-blend") return serializeWeightedBlend(state, id, graphic.properties);
   if (Object.hasOwn(graphic.properties ?? {}, "shadow")) {
     const glyph = state.shadows?.get(id);
     if (!glyph) throw new Error(`Graphic "${id}" requires a prepared shadow glyph.`);
@@ -543,6 +547,65 @@ function serializeConcreteGraphic(state, id, graphic) {
     return serializeText(state, id, properties);
   }
   throw new Error(`SVG renderer does not support "${graphic.type}" yet.`);
+}
+
+function serializeWeightedSource(state, source) {
+  let body = serializeConcreteGraphic(state, source, source);
+  body = element("g", [["transform", `translate(${source.offset.map(formatNumber).join(" ")})`]], body);
+  for (const clip of [source.clip, ...source.clips].reverse()) {
+    const id = `ggaction-clip-${state.resourceNamespace}-${state.clipCount++}`;
+    state.definitions.push(element("clipPath", [["id", id], ["clipPathUnits", "userSpaceOnUse"]], serializeClip(clip)));
+    body = element("g", [["clip-path", `url(#${id})`]], body);
+  }
+  return body;
+}
+function serializeWeightedBlend(state, id, properties) {
+  validateConcreteGraphicProperties("weighted-blend", properties);
+  const active = properties.sources.filter(source => source.weight > 0);
+  let bounds;
+  for (const source of active) {
+    // SVG retains native Text and its exact embedded font. The explicit source
+    // viewport bounds its filter without substituting estimated glyph metrics.
+    let b = source.type === "text" ? graphicClipBounds(source.clip) : resolvePrimitiveOccupiedBounds(source.type, source.properties);
+    if (!b) continue;
+    if (source.type !== "text") b = { left: b.left + source.offset[0], right: b.right + source.offset[0], top: b.top + source.offset[1], bottom: b.bottom + source.offset[1] };
+    for (const clip of [source.clip, ...source.clips]) b = intersectClipBounds(b, graphicClipBounds(clip));
+    if (b.right <= b.left || b.bottom <= b.top) continue;
+    bounds = bounds ? { left: Math.min(bounds.left, b.left), right: Math.max(bounds.right, b.right), top: Math.min(bounds.top, b.top), bottom: Math.max(bounds.bottom, b.bottom) } : b;
+  }
+  if (!bounds || properties.opacity === 0) return "";
+  const x = Math.floor(bounds.left) - 1, y = Math.floor(bounds.top) - 1;
+  const width = Math.ceil(bounds.right) + 1 - x, height = Math.ceil(bounds.bottom) + 1 - y, pixels = width * height;
+  state.blendPixels = (state.blendPixels ?? 0) + pixels;
+  state.blendWork = (state.blendWork ?? 0) + pixels * active.length;
+  if (!Number.isSafeInteger(pixels) || pixels > MAX_BLEND_ITEM_PIXELS || state.blendPixels > MAX_BLEND_SCENE_PIXELS || state.blendWork > MAX_BLEND_PIXEL_WORK) throw new RangeError("Weighted blend SVG filter exceeds its pixel budget.");
+  const blend = properties.blend;
+  const effects = [["opacity", properties.opacity], ["style", blend === undefined || blend === "normal" ? undefined : `mix-blend-mode:${blend}`]];
+  if (active.length === 1 && active[0].weight === 1) return element("g", effects, serializeWeightedSource(state, active[0]));
+  const filterId = `ggaction-weighted-${state.resourceNamespace}-${state.clipCount++}`, filter = [];
+  let queue = active.map((source, index) => {
+    const sourceId = `${filterId}-source-${index}`, result = `source-${index}`;
+    state.definitions.push(element("g", [["id", sourceId], ["transform", `translate(${-x} ${-y})`]], serializeWeightedSource(state, source)));
+    filter.push(element("feImage", [["href", `#${sourceId}`], ["result", result]]));
+    return { result, weight: source.weight };
+  });
+  let index = 0;
+  // Balanced weighted averages avoid repeatedly attenuating an accumulated
+  // eight-bit filter buffer while preserving the same premultiplied sum.
+  while (queue.length > 1) {
+    const next = [];
+    for (let i = 0; i < queue.length; i += 2) {
+      if (!queue[i + 1]) { next.push(queue[i]); continue; }
+      const a = queue[i], b = queue[i + 1], weight = a.weight + b.weight, result = `sum-${index++}`;
+      filter.push(element("feComposite", [["in", a.result], ["in2", b.result], ["operator", "arithmetic"],
+        ["k1", 0], ["k2", a.weight / weight], ["k3", b.weight / weight], ["k4", 0], ["result", result]]));
+      next.push({ result, weight });
+    }
+    queue = next;
+  }
+  state.definitions.push(element("filter", [["id", filterId], ["x", x], ["y", y], ["width", width], ["height", height],
+    ["filterUnits", "userSpaceOnUse"], ["primitiveUnits", "userSpaceOnUse"], ["color-interpolation-filters", "linearRGB"]], filter.join("")));
+  return element("g", effects, element("rect", [["x", x], ["y", y], ["width", width], ["height", height], ["filter", `url(#${filterId})`]]));
 }
 
 function openNestedCanvas(state, id, canvas) {
@@ -721,7 +784,7 @@ export function renderToSVG(program, options = {}) {
 // Internal adapter: only concrete graphics and opaque correspondence keys enter here.
 export function renderTransitionGraphics(graphicSpec, identities, options = {}) {
   concreteFonts(graphicSpec);
-  const prepared = readPreparedShadows(graphicSpec, options.shadows), shadows = new Map();
+  const prepared = readPreparedShadows(graphicSpec, options.shadows), shadows = new Map([...prepared].filter(([key]) => typeof key === "object"));
   const scene = collectTransitionGraphics(graphicSpec, identities, { onNode(id, node) {
     if (prepared.has(id)) shadows.set(node.key, prepared.get(id));
   } });

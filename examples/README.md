@@ -900,6 +900,7 @@ Representative actions: `createGeoAnnotation`, `editGeoAnnotation`, `createProje
 Map geographic feature properties or joined measurements to color and point area.
 
 Representative actions: `createGeoPointMark`, `encodeColor`, `encodeSize`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
+
 ### [Changing width along each series](./trail/)
 
 Draw two independent ribbons with a screen width at each source sample.

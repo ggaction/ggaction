@@ -243,9 +243,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-combined/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/b93aadb6fa6386cda8806f39d8aa51ecede01276/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-combined/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/b93aadb6fa6386cda8806f39d8aa51ecede01276/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -311,12 +311,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ed6dc1c2b00fcd6f9b30f5ae84c0cac6db46aea1/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ed6dc1c2b00fcd6f9b30f5ae84c0cac6db46aea1/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -414,3 +414,47 @@ Typed `editGraphics({ property: "items", ... })` entries may include
 produce a stable private child ID; ordered path membership produces its topology
 fingerprint. `GraphicLineageRef` links to the exact data revision and row keys.
 Renderers consume this concrete metadata without reading semantic state.
+
+## Blend concrete sources for one item
+
+Use the `weighted-blend` graphic type when an extension needs a crossfade between
+fully materialized primitives, including different Text or primitive kinds.
+It combines colors in premultiplied linear-light sRGB. Two overlapping source-over
+opacity layers do not produce this result.
+
+> **Executable complete.** Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.
+
+```javascript
+import { ChartProgram } from "ggaction/extension";
+
+const source = (weight, fill) => ({
+  weight, type: "rect",
+  properties: { x: 10, y: 10, width: 20, height: 20,
+    fill, stroke: "none", strokeWidth: 0 },
+  offset: [0, 0], clip: { x: 0, y: 0, width: 80, height: 80 }, clips: []
+});
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .editGraphics({ target: "canvas", property: "width", value: 80 })
+  .editGraphics({ target: "canvas", property: "height", value: 80 })
+  .createGraphics({ id: "item", type: "weighted-blend" })
+  .editGraphics({ target: "item", property: "sources",
+    value: [source(0.5, "red"), source(0.5, "blue")] });
+```
+
+Each source has exactly `weight`, `type`, `properties`, `offset`, `clip`, and
+`clips`. Types are `circle`, `rect`, `line`, `text`, `path`, or `image` with their
+complete concrete properties. Offsets translate primitive geometry. The required
+rectangular `clip` and additional rectangular/path `clips` use the group's local
+frame. Embedded image/font bytes and outline/shadow properties stay with each source.
+
+Provide 2–64 flat sources with finite weights from 0 to 1 summing to 1. A weight
+of zero does not bypass validation or asset preparation. Nested blends are rejected;
+flatten an interrupted blend's weights before combining it with another source.
+The group's optional `opacity` and `blend` apply once after the weighted sum.
+Source `blend` must be absent or `normal`; one shared backdrop mode belongs to
+the group. Transitions between different backdrop modes need an explicit policy.
+
+[Renderer limits and preparation](../../../api/rendering/#weighted-concrete-blends)
+apply to all sources. Graphic and editable serialization preserve the concrete
+sources without retaining callbacks or renderer objects.

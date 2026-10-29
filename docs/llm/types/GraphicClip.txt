@@ -1,1 +1,3 @@
 export type GraphicClip = GraphicClipRect | GraphicClipPath;
+
+/** One fully materialized primitive in a flat linear-light weighted blend. */

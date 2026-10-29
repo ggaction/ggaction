@@ -1,0 +1,6 @@
+export interface GraphicWeightedBlendProperties {
+  /** Two through 64 sources; finite non-negative weights sum to one. */
+  readonly sources: readonly [GraphicBlendSource, GraphicBlendSource, ...GraphicBlendSource[]];
+  readonly opacity?: number;
+  readonly blend?: BlendMode;
+}

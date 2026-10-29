@@ -647,5 +647,15 @@
     "result": "program",
     "prerequisites": "Import the Full ggaction package; this complete example declares the nested observations and their shared sparkline channels.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "weighted-concrete-sources",
+    "file": "extension/primitives.md",
+    "contains": "const source = (weight, fill)",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.",
+    "rendering": "authoring-only"
   }
 ]

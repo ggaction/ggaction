@@ -1223,6 +1223,16 @@ internal wrapped materializer가 호출하고 `editGraphics`의 exact children-p
 [축 계약](contract/current/AXES.md#cartesian-axis-underlays), [Canvas 계약](contract/current/CORE.md),
 [primitive 계약](contract/current/PRIMITIVES.md#editgraphics)이 소유한다.
 
+### 항목별 weighted concrete 합성
+
+`weighted-blend`는 semantic mark가 아닌 concrete primitive다. 기존 primitive sources와 가중치를
+평탄하게 저장하고 하나의 item identity를 유지한다. `grammar/schemas/graphicSources.js`가 embedded
+source 방문을 소유하여 image/font/shadow 준비가 같은 byte identity와 immutable handle을 재사용한다.
+Canvas/PNG는 제한된 항목 surface에서 linear-light premultiplied RGBA를 합산하고, SVG는 native arithmetic
+filter, PDF는 해당 항목만 raster로 lowering한다. renderer는 여전히 graphicSpec만 읽으며 clock/player,
+semantic correspondence, interruption 선택을 추론하지 않는다. exact shape/한도는
+[primitive 계약](contract/current/PRIMITIVES.md#concrete-weighted-blend)이 소유한다.
+
 ### Graphic type
 
 현재 type은 다음과 같다.
@@ -1230,7 +1240,7 @@ internal wrapped materializer가 호출하고 `editGraphics`의 exact children-p
 ```text
 root/container      canvas
 named container     collection
-homogeneous draw    circle, rect, line, text, path
+homogeneous draw    circle, rect, line, text, path, image, weighted-blend
 heterogeneous items collection
 ```
 
@@ -4211,3 +4221,16 @@ Navigation 모듈 추가의 package 실측은1060entries/1,504,297packed/6,840,0
 동일 navigation tar의 Node20 interaction bundle은119,691gzip(190modules)이며 한도를119,700으로
 최소100단위 올렸다. 새 adapter와 기존 pure projection 옵션 검증을 포함하고 Full/Basic/SVG/graph
 번들은 변화가 없어 기존 한도를 유지한다. 최초116,700 한도 실패와 통과한 runtime/types를 보존한다.
+
+Weighted concrete qualification은 runtime 모듈 5개를 추가하며 기존 public entry
+경계를 유지한다. 설치된 package의 Node20 측정은 Full732,039 / Basic387,595 /
+SVG24,941 / interaction110,455 gzip bytes이다. 각 cap은734,000 / 389,000 /
+26,000 / 112,000이고 graph cap은 유지한다. 최초 interaction cap 실패와 같은
+archive의 집중 재검증을 별도 보존한다. Package는1,048entries,
+Node20/24 측정packed1,486,571bytes, unpacked6,755,280bytes이며 cap은
+1,048 / 1,488,000 / 6,757,000이다. 최종 Node22 archive의 packed1,482,864bytes와
+동일 archive Node20/22/24 설치 증거는 qualification 기록이 소유한다.
+
+합산 후보의 native chart·Table·weighted primitive 참조를 모두 생성한 검색 payload는
+1,065,602bytes다. 이전1,037,700 한도 실패를 보존하며 최소100byte 단위인
+1,065,700으로 조정한다. 검색은 기존 canonical content 생성과 on-demand loading을 유지한다.

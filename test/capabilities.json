@@ -1967,6 +1967,32 @@
         "type": "file",
         "path": "contracts/realistic-waterfall-plots.test.js"
       }
+    ],
+    "weighted-blends": [
+      {
+        "type": "file",
+        "path": "unit/weighted-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/weighted-blend.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/renderers/weighted-blend-assets.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/weighted-blend-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/weighted-blends.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/weighted-blends/"
+      }
     ]
   },
   "version": 2
