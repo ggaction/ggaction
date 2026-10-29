@@ -10,10 +10,12 @@ title: Inspect overlapping chart items
 Create a chart with two observations at the same location, then inspect both
 through Canvas or SVG. Open the live example to compare the two surfaces.
 
-## Render the chart
+## Prerequisites
 
 Use the [browser module setup](../getting-started.md) and a
 `<canvas id="chart"></canvas>`. This complete program includes its source rows.
+
+## Complete program
 
 <!-- workflow-program:start -->
 

@@ -6,8 +6,6 @@ description: Create, compose, render, and inspect programs without confusing pac
 
 # Program and Rendering Functions
 
-`ggaction/interaction` exposes the advanced [inspection session controller](../api/interaction.md). It preserves programs and supports Canvas, SVG, and headless hosts.
-
 ## Program functions
 
 Package-level functions create, compose, or render programs. They are not

@@ -8,7 +8,7 @@
 - [x] headless command, DOM pointermove/click, mount/unmount/destroy, generation/version 원자 교체
 - [x] 실제 Canvas/SVG DPR1/2/3 브라우저 이벤트 및 sampled frame 검사
 - [x] 새 owner와 기존 축/크기 범례 공통 추출의 집중 coverage
-- [ ] 최종 source-free 동일 archive·문서 생성/빌드·browser 증거 기록 및 push
+- [x] 최종 source-free 동일 archive·문서 생성/빌드·browser 증거 기록
 - [ ] STEP035 추가 composition 구현과 최종 통합, AT33/34 전체 인수
 - [ ] STEP050 이후 편집 제스처·선택 orphan/drop·history 및 전체077
 
@@ -53,3 +53,21 @@ compatibility/architecture 안내 누락이었다. Ruby2.6 preflight 실패도 �
 복원·frame generation·host cleanup과 strict exactOptionalPropertyTypes를 검사한다. 기본
 Full/Basic/SVG bundle 한도는 유지한다. 전수 integration/realistic/renderer sweep은 root의 최신
 통합 checkpoint 의무이며 이 controller branch 결과로 대신 주장하지 않는다.
+
+## 최종 공개 체크포인트
+
+Runtime source는 `7cc2977f4cc083d091c7c69046ac9b52da9f2b9d`다.
+[Qualification](public-evidence/qualification.json)은 최종 source hash 불변, 명령 로그,
+최초 실패와 수정 후 결과, 동일 archive 설치를 구분한다. Source/package/discovery41,
+문서178, built162pages/1,392LLM 및 전 페이지320/390/768px·keyboard/search/Axe 검사가 통과했다.
+실제 frame 교체를 그린 backend는 Canvas이고, 초기 동일 program의 pointer parity는 Canvas/SVG다.
+
+고정 tar SHA-256은 `d5fedd309cffc6bb2e335406e65880dca9dca3079688dcef50b0d75bfe470039`다.
+879entries, Node22packed1,278,672/unpacked5,879,486bytes이며 최종 Node20/24 pack은
+1,281,072bytes다. 동일 tar의 interaction gzip 최대82,306bytes를 확인했다.
+기존 기본 Full/Basic/SVG regression ceiling은 그대로 통과한다.
+
+현재 AT33/34 전체 매트릭스와 animation sampler의 최종 인수는 여전히 미완료다.
+원 카드 번호대로 다음 interaction 후속은 STEP057–060 및065–068이다. STEP050–056의
+single-Y/native mark/composition 범위는 root 통합 작업 목록에 보존하며 이 checkpoint가
+대신 완료했다고 주장하지 않는다.
