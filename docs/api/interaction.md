@@ -930,3 +930,63 @@ For a projection in a composed child, use `{childPath,id}`. The nonempty patch a
 transform fields above; it does not change projection type, clipping, geometry or level of detail.
 Native buttons keep focus and their usual keyboard behavior. This direct command does not install
 pointer pan or pinch gestures, infer cursor anchoring, or animate the change. It requires Full authoring.
+
+
+## Move graph nodes with pointer or keyboard
+
+Bind `moveNode` to the explicit GraphPlot. Its fixed or force layout and plot origin determine the
+coordinate system. Dragging keeps the initial pointer offset, previews from one baseline, and commits
+once when released. Escape restores the baseline. A force drag pins the moved node and uses the existing
+solver for the others. Native buttons can send the same command using an explicit layout and typed key.
+
+This browser module expects `<canvas id="chart" aria-label="Movable graph nodes"></canvas>`.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use a Canvas with id chart. Drag either node with a pointer or touch; activate Move first node right with Enter or Space. Escape cancels a drag.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart, render } from "ggaction";
+import { getMarkItems } from "ggaction/inspection";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+canvas.style.touchAction = "none";
+const controls = document.createElement("div");
+controls.innerHTML = '<button id="node-right">Move first node right</button> <output aria-live="polite"></output>';
+canvas.before(controls);
+const program = chart().createCanvas({ width: 400, height: 280, margin: 0 })
+  .createData({ id: "nodes", keyField: "id", values: [{ id: "first", group: "pair" }, { id: "second", group: "pair" }] })
+  .createInferredGraphData({ id: "graph", nodeKey: "id", ruleId: "pair", rule: "group", options: { fields: ["group"] } })
+  .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: "first", x: 70, y: 90 }, { key: "second", x: 210, y: 160 }] } })
+  .createGraphPlot({ id: "network", origin: [0, 0], nodes: { radius: 12 }, labels: false });
+const nodeSession = createInteractionSession({ program, bindings: [{ type: "moveNode", target: "network" }] });
+const first = current => getMarkItems(current, { target: "network" }).find(item => item.fields.kind === "node" && item.fields.key === "first");
+const draw = current => {
+  render(current, canvas.getContext("2d"));
+  const { x, y } = first(current).properties;
+  controls.querySelector("output").textContent = `First node: ${x}, ${y}`;
+};
+const moveRight = () => {
+  const { x, y } = first(nodeSession.getState().program).properties;
+  nodeSession.dispatch({ type: "moveNode", target: "layout", payload: { key: "first", x: x + 20, y }, origin: "user" });
+};
+controls.querySelector("button").addEventListener("click", moveRight);
+const unsubscribe = nodeSession.subscribe(event => {
+  if (event.type === "program" || "phase" in event) draw(event.state.previewProgram ?? event.state.program);
+});
+draw(program);
+const unmount = nodeSession.mount(canvas);
+const disposeNodeControls = () => {
+  controls.querySelector("button").removeEventListener("click", moveRight);
+  unsubscribe(); unmount(); nodeSession.destroy(); controls.remove();
+};
+```
+
+The example uses an explicit origin so moving a node does not recenter the whole graph. Circular and
+flow layouts do not accept node movement. Gesture cancellation releases capture and redraws the prior
+program. Preview hit frames track the same visible geometry; read the session's current `frameVersion`
+when delivering external frames. General keyboard item navigation, unpin controls and history are not
+installed by this binding.

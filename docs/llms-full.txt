@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:13e32a3af42318782701901f388c3e2860f17a9a369f1dc42d9694c50c4e672b. Status: development. Runtime source: 572b8a14d7804ccc2a23cb17df5fc3583ea8a692. Release baseline: v0.0.13.
+Contract: sha256:5a728e1938775d20793426dd4ae01e857609d87b9568ce1c1f65a0a8c824db92. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -213,11 +213,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/572b8a14d7804ccc2a23cb17df5fc3583ea8a692/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/572b8a14d7804ccc2a23cb17df5fc3583ea8a692/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -652,15 +652,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -805,7 +805,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -823,7 +823,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -936,7 +936,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1106,7 +1106,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1328,15 +1328,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1472,7 +1472,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1486,15 +1486,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1592,7 +1592,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1606,15 +1606,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1723,7 +1723,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1739,15 +1739,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1872,7 +1872,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1947,7 +1947,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1957,15 +1957,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2090,7 +2090,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2123,7 +2123,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2134,8 +2134,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2231,15 +2231,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2336,15 +2336,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2450,8 +2450,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2460,7 +2460,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/0a46877e019d00163dc55c681ce4833b14d8e541/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2760,7 +2760,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -6129,7 +6129,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -11550,6 +11550,61 @@ transform fields above; it does not change projection type, clipping, geometry o
 Native buttons keep focus and their usual keyboard behavior. This direct command does not install
 pointer pan or pinch gestures, infer cursor anchoring, or animate the change. It requires Full authoring.
 
+## Move graph nodes with pointer or keyboard
+
+Bind `moveNode` to the explicit GraphPlot. Its fixed or force layout and plot origin determine the
+coordinate system. Dragging keeps the initial pointer offset, previews from one baseline, and commits
+once when released. Escape restores the baseline. A force drag pins the moved node and uses the existing
+solver for the others. Native buttons can send the same command using an explicit layout and typed key.
+
+This browser module expects `<canvas id="chart" aria-label="Movable graph nodes"></canvas>`.
+
+> **Executable complete.** Use a Canvas with id chart. Drag either node with a pointer or touch; activate Move first node right with Enter or Space. Escape cancels a drag.
+
+```js
+import { chart, render } from "ggaction";
+import { getMarkItems } from "ggaction/inspection";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+canvas.style.touchAction = "none";
+const controls = document.createElement("div");
+controls.innerHTML = '<button id="node-right">Move first node right</button> <output aria-live="polite"></output>';
+canvas.before(controls);
+const program = chart().createCanvas({ width: 400, height: 280, margin: 0 })
+  .createData({ id: "nodes", keyField: "id", values: [{ id: "first", group: "pair" }, { id: "second", group: "pair" }] })
+  .createInferredGraphData({ id: "graph", nodeKey: "id", ruleId: "pair", rule: "group", options: { fields: ["group"] } })
+  .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: "first", x: 70, y: 90 }, { key: "second", x: 210, y: 160 }] } })
+  .createGraphPlot({ id: "network", origin: [0, 0], nodes: { radius: 12 }, labels: false });
+const nodeSession = createInteractionSession({ program, bindings: [{ type: "moveNode", target: "network" }] });
+const first = current => getMarkItems(current, { target: "network" }).find(item => item.fields.kind === "node" && item.fields.key === "first");
+const draw = current => {
+  render(current, canvas.getContext("2d"));
+  const { x, y } = first(current).properties;
+  controls.querySelector("output").textContent = `First node: ${x}, ${y}`;
+};
+const moveRight = () => {
+  const { x, y } = first(nodeSession.getState().program).properties;
+  nodeSession.dispatch({ type: "moveNode", target: "layout", payload: { key: "first", x: x + 20, y }, origin: "user" });
+};
+controls.querySelector("button").addEventListener("click", moveRight);
+const unsubscribe = nodeSession.subscribe(event => {
+  if (event.type === "program" || "phase" in event) draw(event.state.previewProgram ?? event.state.program);
+});
+draw(program);
+const unmount = nodeSession.mount(canvas);
+const disposeNodeControls = () => {
+  controls.querySelector("button").removeEventListener("click", moveRight);
+  unsubscribe(); unmount(); nodeSession.destroy(); controls.remove();
+};
+```
+
+The example uses an explicit origin so moving a node does not recenter the whole graph. Circular and
+flow layouts do not accept node movement. Gesture cancellation releases capture and redraws the prior
+program. Preview hit frames track the same visible geometry; read the session's current `frameVersion`
+when delivering external frames. General keyboard item navigation, unpin controls and history are not
+installed by this binding.
+
 <!-- Source: /recipes/inspect-chart/ -->
 
 # Inspect overlapping chart items
@@ -11642,7 +11697,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -11708,7 +11763,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -12139,7 +12194,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -12741,7 +12796,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -23776,16 +23831,17 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `node` | Optional / branch-dependent | `GraphPosition \| undefined` |
 | `order` | Optional / branch-dependent | `HierarchyOrder \| undefined` |
 | `options` | Optional / branch-dependent | `FlowLayoutOptions \| GraphCircularOptions \| GraphForceOptions \| Partial<GraphFixedOptions> \| ... 4 more ... \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editLayout({ target?, order?, options? })
+editLayout({ target?, order?, options?, node? })
 ```
 
-Patch a stored hierarchy or graph layout and refresh its existing consumers. Full only.
+Patch a stored layout and refresh its existing consumers. A fixed/force graph layout also accepts `node:{key,x,y}` to move one current node while preserving dormant coordinates. Full only.
 [Hierarchy resources and plots](./api/hierarchy/#editlayout)
 
 ## `createTreePlot`
@@ -34430,6 +34486,7 @@ These blocks are generated from the declaration file owned by each package entry
 
 ```typescript
 export type { GeoMarkStyleOptions, GeoSourceMarkOptions, GeoShapeMarkOptions, GeoPointMarkOptions, GeoLineMarkOptions, GraticuleOptions, EditGeoShapeMarkOptions, EditGeoPointMarkOptions, EditGeoLineMarkOptions, EditGraticuleOptions, GeoMarkBinding, SemanticNativeCoordinate, SemanticGeoCoordinate, CreateNativeCoordinateOptions } from "./program.js";
+export type { WaterfallBarPaint, WaterfallConnectorPaint, WaterfallLabelPaint, WaterfallX, WaterfallColor, WaterfallWidth, CreateWaterfallPlotOptions, EditWaterfallPlotOptions } from "./program.js";
 export type { OHLCBodyPaint, OHLCStemPaint, OHLCLabelPaint, OHLCX, OHLCColor, OHLCWidth, CreateOHLCPlotOptions, EditOHLCPlotOptions } from "./program.js";
 export type { GeometryJSONValue, GeometryPosition, GeographicGeometry, GeometryFeature, GeoJSONInput, TopologyGeometry, TopoJSONInput, GeometryLimits, GeometryFeatureKey, CreateGeometryDataOptions, EditGeometryDataOptions, GeometrySourceResource } from "./program.js";
 export type { ProjectionType, ProjectionPlaneParameters, ProjectionSphereParameters, ProjectionParameters, ProjectionFitOptions, CreateProjectionOptions, EditProjectionOptions, ProjectionResource } from "./program.js";
@@ -35540,7 +35597,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](./types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, GraphPosition, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -35622,6 +35679,8 @@ export type BrushSelectionBinding = RegionSelectionBindingOptions & { readonly t
 export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
   readonly type: 'lasso';
 }
+/** Drag one current graph node; target must have an explicit plot origin and fixed or force layout. */
+export interface NodeMovementBinding { readonly type: 'moveNode'; readonly target: InteractionTarget; }
 export type SelectionProjection = {
   readonly type: 'rows';
   readonly sourceData: string;
@@ -35678,7 +35737,7 @@ export interface LinkedSelectionState {
 }
 export interface InteractionState {
   readonly program: InteractionProgram;
-  /** Separate transient selection rendering. Null outside an active preview. */
+  /** Separate transient editing result. Null outside an active preview. */
   readonly previewProgram: InteractionProgram | null;
   readonly scene: CanvasTransitionScene;
   readonly frameVersion: number;
@@ -35760,6 +35819,10 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly target: InteractionTarget;
   readonly payload: { readonly focus: HierarchyNodeTarget | null };
 } | {
+  readonly type: 'moveNode';
+  readonly target: InteractionTarget;
+  readonly payload: GraphPosition;
+} | {
   readonly type: 'setViewport';
   readonly target: InteractionTarget;
   readonly payload: InteractionViewportPayload;
@@ -35773,7 +35836,7 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly payload: InteractionReorderPayload;
 });
 export interface InteractionTransactionEvent {
-  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy' | 'setViewport';
+  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy' | 'setViewport' | 'moveNode';
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
@@ -35820,7 +35883,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 
@@ -41662,11 +41725,12 @@ Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderived
 
 ```typescript
 export type EditLayoutOptions = { target?: string } & (
-  { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
-  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch });
+  { node?: never; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
+  | { node?: never; order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch }
+  | { node: GraphPosition; order?: never; options?: never });
 ```
 
-Related types: [`HierarchyOrder`](./reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](./reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](./reference/types/#type-hierarchytreemapoptions) · [`GraphFixedOptions`](./reference/types/#type-graphfixedoptions) · [`GraphCircularOptions`](./reference/types/#type-graphcircularoptions) · [`GraphForceOptions`](./reference/types/#type-graphforceoptions) · [`FlowLayoutOptions`](./reference/types/#type-flowlayoutoptions) · [`CalendarLayoutPatch`](./reference/types/#type-calendarlayoutpatch).
+Related types: [`HierarchyOrder`](./reference/types/#type-hierarchyorder) · [`HierarchyTreeOptions`](./reference/types/#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](./reference/types/#type-hierarchytreemapoptions) · [`GraphFixedOptions`](./reference/types/#type-graphfixedoptions) · [`GraphCircularOptions`](./reference/types/#type-graphcircularoptions) · [`GraphForceOptions`](./reference/types/#type-graphforceoptions) · [`FlowLayoutOptions`](./reference/types/#type-flowlayoutoptions) · [`CalendarLayoutPatch`](./reference/types/#type-calendarlayoutpatch) · [`GraphPosition`](./reference/types/#type-graphposition).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 
@@ -50081,9 +50145,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -50149,12 +50213,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/572b8a14d7804ccc2a23cb17df5fc3583ea8a692/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/572b8a14d7804ccc2a23cb17df5fc3583ea8a692/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -51266,7 +51330,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -51319,7 +51383,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -51565,7 +51629,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -51617,7 +51681,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/repeat-charts).
 
 ## Space between plots
 
@@ -52292,7 +52356,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -53205,11 +53269,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:13e32a3af42318782701901f388c3e2860f17a9a369f1dc42d9694c50c4e672b` |
-| Example and dataset source | `11a9d313ec55d3a2a7e7df73d26538f8b96c2639` |
-| Runtime source commit | `572b8a14d7804ccc2a23cb17df5fc3583ea8a692` |
+| Contract fingerprint | `sha256:5a728e1938775d20793426dd4ae01e857609d87b9568ce1c1f65a0a8c824db92` |
+| Example and dataset source | `0a46877e019d00163dc55c681ce4833b14d8e541` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 365 |
+| Declared actions here | 369 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -53744,12 +53808,12 @@ option does not apply to Polar or Parallel labels.
 # Place a retained image
 
 Prepare image bytes explicitly, then use one image mark to control its fit,
-alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/image-assets/)
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/image-assets/)
 uses one pinned SVG asset for six placements and retains the bytes for offline export.
 
 ## Prepare and place
 
-The canonical [example program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/image-assets/program.js) loads its
+The canonical [example program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/image-assets/program.js) loads its
 inline asset through `prepareImageResource` and applies the returned handle to the
 same immutable program. Its application-owned decoder reports the source dimensions.
 The synchronous `createImageResource` action stores the validated bytes. Then
@@ -53854,13 +53918,13 @@ Use `editImageMark({target:"image",shadow:{color:"#0008",offsetX:4,offsetY:4,blu
 # Prepare fonts before text layout
 
 Keep font loading explicit, measure with the loaded bytes, and save the final
-text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/font-assets/)
+text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/font-assets/)
 uses licensed Korean and monochrome emoji subsets with fixed content hashes.
 It includes a combining accent and a wrapped Korean title.
 
 ## Load, measure, apply
 
-The canonical [program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/font-assets/program.js)
+The canonical [program](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/font-assets/program.js)
 first creates a title using the requested font families. Its initial estimated
 layout is a usable immutable program while loading runs. For each named font,
 `prepareFontResource` asks the application to load and decode bytes and verifies
@@ -53871,7 +53935,7 @@ original receiver using the current request token.
 measure every width needed by the existing layout. `applyTextMetrics` commits the
 exact profile and rematerializes the title. Widths that have not been measured
 cannot silently use an estimate. A late result for an edited receiver is stale.
-The [host adapter](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/font-assets/host.js)
+The [host adapter](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/font-assets/host.js)
 uses browser `FontFace` and Canvas measurement, or a native Canvas in Node.
 
 ## Draw the prepared text
@@ -54038,7 +54102,7 @@ A hierarchy describes parent-child meaning. A layout computes positions, and a p
 
 ## Run the maintained examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 
@@ -54219,6 +54283,12 @@ Removing a mark keeps its reusable layout. Remove the layout before its hierarch
 Create [observed graph data and a layout](./api/data/source-and-derived/#observed-graph-data), then draw the stored node positions. Full supports fixed, circular and deterministic force layouts. The [graph tutorial](./tutorials/graphs/) uses the same program as the browser and renderer examples.
 
 A source revision can remove nodes from a fixed or force layout. Their authored positions and pins remain stored and are reused if the same typed keys return. New nodes still need complete fixed or initial positions. When `editLayout` replaces a coordinate array, it validates that array against the current nodes; omitted arrays retain their earlier intent.
+
+Use `editLayout({ target: 'layout', node: { key: 'a', x: 80, y: 100 } })` to move one current node.
+A fixed layout changes that node's position; a force layout sets its pin and recomputes the native solver.
+Coordinates are layout-local. Other authored positions, including dormant source keys, remain stored.
+The node patch cannot be combined with `options` or `order` and does not apply to circular or flow layouts.
+For pointer and keyboard controls, see [node movement](./api/interaction/#move-graph-nodes-with-pointer-or-keyboard).
 
 ## createGraphPlot
 
@@ -54572,7 +54642,7 @@ The long A–C connection follows the existing A–B–C path, with two corner c
 All three original edges remain independently selectable.
 
 This complete ES module uses the same data and action flow as the
-[executable example](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/edge-routes/program.js).
+[executable example](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/edge-routes/program.js).
 
 ```javascript
 import { chart } from 'ggaction';
@@ -54650,7 +54720,7 @@ Body and label styles accept `outline:{color,width}|false` and `shadow:{color,of
 
 # Partition tutorial
 
-A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/0a46877e019d00163dc55c681ce4833b14d8e541/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
 
 ## Run the icicle
 
@@ -55180,7 +55250,7 @@ For feedback, select `method: "cyclic"`. All edges remain represented, including
 self-loops when the flow graph explicitly enables them. Outside lanes are part
 of the stored bounds, so fitting and clipping include their full extent.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/flow-layouts/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/flow-layouts/program.js)
 also demonstrates vertical flow and typed per-item colors. The browser example,
 primitive comparisons and generated figures use that one program.
 See [Flow Data and Sankey Layouts](./api/flows/) for exact options, selection
@@ -55885,7 +55955,7 @@ example uses one point of weight two. The kernel example uses the same point,
 a triangular product kernel and bandwidth [1, 1]. On this grid their sampled
 values agree, while their estimation policies remain explicit.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/contours/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/contours/program.js)
 contains all five variants. Browser examples, primitive comparisons and images
 use that one program. See [Contours and two-dimensional density](./api/contours/)
 for exact options, limits, guide mappings, edits and source revision behavior.
@@ -56151,7 +56221,7 @@ With missing: "omit", unobserved dates have no cells. Their locations remain
 empty, so later dates never shift into those gaps. This variant hides month
 boundaries to emphasize the missing cells.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/calendar/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/calendar/program.js)
 contains all three variants. Its program is shared by browser examples, renderer
 pairs and generated images. See [Calendar plots](./api/calendar/) for exact
 options, selection, aggregation, edits and source revision behavior.
@@ -56266,7 +56336,7 @@ and translation; Canvas resizing alone does not silently fit the geometry.
 
 See [Geometry and projections](./api/geometry/) for exact options, revisions,
 selection, coordinate compatibility and current limitations. The
-[shared example source](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/geographic-marks/program.js)
+[shared example source](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/geographic-marks/program.js)
 is used by this tutorial, the browser examples and the primitive comparisons.
 
 <!-- Source: /api/pyramid/ -->
@@ -56397,7 +56467,7 @@ Directions are explicit. `orientation: "up"`, `"right"` or `"left"` changes
 the direction of progress; it does not sort the source rows. A pointed ending
 is an explicit `lastStage: "point"` choice for width mode.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/pyramid/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/pyramid/program.js)
 drives the browser examples, primitive comparisons and generated images.
 See [Pyramid plots](./api/pyramid/) for labels, percentages, color, selection
 and editing options.

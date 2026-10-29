@@ -103,7 +103,7 @@ test("documentation mocks reject incorrect URLs/selectors and missing rendering"
   const example = { environment: "browser-module", dataset: "cars", rendering: "renders-canvas" };
   const environment = documentationEnvironment(example, []);
   assert.throws(() => environment.document.querySelector("#wrong"), /Undocumented Canvas selector/);
-  assert.throws(() => environment.document.createElement("div"), /Undocumented element/);
+  assert.throws(() => environment.document.createElement("script"), /Undocumented element/);
   assert.notEqual(environment.document.createElement("canvas"), environment.canvas);
   await assert.rejects(environment.createImageBitmap({}), /requires a Blob/);
   await assert.rejects(environment.fetch("/wrong.json"), /documented dataset URL/);

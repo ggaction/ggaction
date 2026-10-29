@@ -41,5 +41,5 @@ and translation; Canvas resizing alone does not silently fit the geometry.
 
 See [Geometry and projections](../../../api/geometry/) for exact options, revisions,
 selection, coordinate compatibility and current limitations. The
-[shared example source](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/geographic-marks/program.js)
+[shared example source](https://github.com/ggaction/ggaction/blob/0a46877e019d00163dc55c681ce4833b14d8e541/examples/geographic-marks/program.js)
 is used by this tutorial, the browser examples and the primitive comparisons.

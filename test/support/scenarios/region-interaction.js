@@ -53,6 +53,7 @@ export function assertRegionInteraction(source, recipe, rows) {
   assertLegendVisibility(source);
   assertHierarchyFocusSource(rows, recipe);
   assertViewportSource(rows, recipe);
+  assertNodeMovementSource(rows, recipe);
   assert.equal(serializeProgram(p), original);
 }
 
@@ -230,4 +231,26 @@ function assertViewportSource(rows, recipe) {
     assert.equal(item.fields.value, rows[index].value);
   }
   assert.equal(serializeProgram(p), before); session.destroy();
+}
+
+
+function assertNodeMovementSource(rows, recipe) {
+ for (const tuple of [false, true]) {
+  const key = row => tuple ? [row.key, row.category] : row.key;
+  const positions = rows.map(row => ({ key: key(row), x: row.order, y: row.value }));
+  const p = chart().createCanvas({ width: 500, height: 400, margin: 0 }).createData({ id: "move-rows", keyField: "key", values: rows })
+    .createData({ id: "move-edges", values: [] })
+    .createGraphData({ id: "graph", nodes: "move-rows", edges: "move-edges", nodeKey: tuple ? ["key", "category"] : "key", source: tuple ? ["from", "fromCategory"] : "from", target: tuple ? ["to", "toCategory"] : "to" })
+    .layoutGraph({ id: "layout", method: "fixed", options: { positions } }).createGraphPlot({ id: "network", origin: [0, 0] });
+  const before = serializeProgram(p), original = getMarkItems(p, { target: "network" }), row = rows[0];
+  const delta = recipe === "observations" ? [10,20] : recipe === "categories" ? [-5,10] : [3,-4];
+  const session = createInteractionSession({ program: p, bindings: [] });
+  session.dispatch({ type: "moveNode", target: "layout", payload: { key: key(row), x: row.order + delta[0], y: row.value + delta[1] } });
+  const next = deserializeProgram(serializeProgram(session.getState().program)), items = getMarkItems(next, { target: "network" });
+  assert.deepEqual(items.map(item => item.key), original.map(item => item.key));
+  assert.deepEqual([items[0].properties.x, items[0].properties.y], [row.order + delta[0], row.value + delta[1]]);
+  assert.deepEqual(items.slice(1).map(item => [item.properties.x,item.properties.y]), rows.slice(1).map(row => [row.order,row.value]));
+  assert.ok(items.every(item => item.rows.some(row => row.data === "move-rows")));
+  assert.equal(serializeProgram(p), before); session.destroy();
+}
 }

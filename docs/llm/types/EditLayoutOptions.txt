@@ -1,3 +1,4 @@
 export type EditLayoutOptions = { target?: string } & (
-  { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
-  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch });
+  { node?: never; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
+  | { node?: never; order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch }
+  | { node: GraphPosition; order?: never; options?: never });

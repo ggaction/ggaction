@@ -503,5 +503,15 @@
     "prerequisites": "Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.",
     "rendering": "authoring-only",
     "resultKind": "semantic"
+  },
+  {
+    "id": "interaction-node-movement",
+    "file": "api/interaction.md",
+    "contains": "const nodeSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Drag either node with a pointer or touch; activate Move first node right with Enter or Space. Escape cancels a drag."
   }
 ]

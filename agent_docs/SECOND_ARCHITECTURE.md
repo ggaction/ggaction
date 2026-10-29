@@ -865,7 +865,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction` | 721,000 bytes |
 | `ggaction/basic` | 382,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
-| `ggaction/interaction` | 112,100 bytes |
+| `ggaction/interaction` | 112,700 bytes |
 | `ggaction/graph` | 44,000 bytes |
 
 
@@ -3808,6 +3808,16 @@ Nested closure의 동일 staged source는 Node20/24에서934entries,
 1,341,753packed/6,149,683unpackedbytes, minimal browser Full667,284gzip을
 기록했다. 한도는934/1,342,000/6,150,000 및 Full668,000으로 교정하며
 Basic375,000/SVG25,000/interaction83,000은 유지한다.
+
+### 그래프 노드 이동과 concrete preview frame
+
+`grammar/graph/itemIdentity.js`가 GraphPlot materializer와 interaction adapter의 동일 typed logical key를
+소유한다. `interaction/nodeMovement.js`는 기존 source key/layout binding/scene 좌표 소유자만 결합하고,
+실제 위치 수정은 기존 Full layout action과 native dependency closure가 수행한다.
+Session의 geometry preview는 committed program/revision/generation을 보존하면서 accepted hit frame만
+미리보기 program과 함께 교체한다. 취소는 baseline scene을 새 frame version으로 복구하고, release는
+하나의 native candidate를 commit한다. Renderer와 저장 codec에 host gesture state가 들어가지 않는다.
+정확한 명령과 frame version 의미는 [INTERACTION](contract/current/INTERACTION.md#graph-node-dragging)이 소유한다.
 
 ### 영역 선택과 별도 미리보기 program
 

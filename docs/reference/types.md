@@ -6789,13 +6789,14 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Int
 
 ```typescript
 export type EditLayoutOptions = { target?: string } & (
-  { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
-  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch });
+  { node?: never; order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
+  | { node?: never; order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch }
+  | { node: GraphPosition; order?: never; options?: never });
 ```
 
 </details>
 
-Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions) · [`GraphFixedOptions`](#type-graphfixedoptions) · [`GraphCircularOptions`](#type-graphcircularoptions) · [`GraphForceOptions`](#type-graphforceoptions) · [`FlowLayoutOptions`](#type-flowlayoutoptions) · [`CalendarLayoutPatch`](#type-calendarlayoutpatch).
+Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions) · [`GraphFixedOptions`](#type-graphfixedoptions) · [`GraphCircularOptions`](#type-graphcircularoptions) · [`GraphForceOptions`](#type-graphforceoptions) · [`FlowLayoutOptions`](#type-flowlayoutoptions) · [`CalendarLayoutPatch`](#type-calendarlayoutpatch) · [`GraphPosition`](#type-graphposition).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 

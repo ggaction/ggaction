@@ -589,3 +589,53 @@ test("host viewport buttons apply native projection transforms to Canvas and SVG
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });
+
+test("canonical graph node controls preserve current Canvas and SVG hits across mouse touch keyboard and cancel", async () => {
+  const snippet = (await documentationPrograms()).find(program => program.id === "interaction-node-movement"); assert.ok(snippet);
+  const context = await browser.newContext({ deviceScaleFactor: 2, hasTouch: true, viewport: { width: 1000, height: 750 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      document.body.innerHTML = '<canvas id="chart" aria-label="Movable graph nodes"></canvas><div id="vector"></div>';
+      let source = code;
+      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/inspection", "inspection"], ["ggaction/interaction", "interaction"]]) {
+        source = source.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
+      }
+      const url = URL.createObjectURL(new Blob([source + '\nwindow.__nodeSession=nodeSession;window.__disposeNodeControls=disposeNodeControls;'], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      const { renderToSVG } = await import("/src/renderers/svg.js"); window.__nodePhases = [];
+      const vector = current => { document.querySelector("#vector").innerHTML = renderToSVG(current); };
+      window.__nodeSession.subscribe(event => { if (event.phase) { window.__nodePhases.push(event.phase); vector(event.state.previewProgram ?? event.state.program); } });
+      vector(window.__nodeSession.getState().program);
+    }, snippet.code);
+    const box = await page.locator("canvas").boundingBox();
+    await page.mouse.move(box.x + 72, box.y + 92); await page.mouse.down(); await page.mouse.move(box.x + 112, box.y + 122, { steps: 12 });
+    await page.waitForFunction(() => window.__nodeSession.getState().previewProgram !== null);
+    assert.deepEqual(await page.evaluate(() => {
+      const s = window.__nodeSession; s.dispatch({ type: "inspect", point: { x: 110, y: 120 }, slop: 0 });
+      const vector = document.querySelector("#vector circle");
+      const pixel = document.querySelector("canvas").getContext("2d").getImageData(110,120,1,1).data;
+      return { revision: s.getState().revision, hit: s.getState().hit.target.role, circle: [Number(vector.getAttribute("cx")), Number(vector.getAttribute("cy"))], painted: pixel[3] > 0 && pixel.slice(0,3).some(channel => channel < 250) };
+    }), { revision: 0, hit: "node", circle: [110,120], painted: true });
+    await page.mouse.up(); assert.equal(await page.locator("output").textContent(), "First node: 110, 120");
+    assert.equal(await page.evaluate(() => window.__nodeSession.getState().revision), 1);
+    await page.mouse.move(box.x + 110, box.y + 120); await page.mouse.down(); await page.mouse.move(box.x + 150, box.y + 150);
+    await page.waitForFunction(() => window.__nodeSession.getState().previewProgram !== null); await page.keyboard.press("Escape"); await page.mouse.up();
+    assert.equal(await page.locator("output").textContent(), "First node: 110, 120");
+    await page.getByRole("button", { name: "Move first node right" }).focus(); await page.keyboard.press("Enter");
+    assert.equal(await page.locator("output").textContent(), "First node: 130, 120");
+    assert.equal(await page.evaluate(() => document.activeElement.id), "node-right");
+    const protocol = await context.newCDPSession(page);
+    await protocol.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: box.x + 130, y: box.y + 120 }] });
+    await protocol.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: box.x + 160, y: box.y + 140 }] });
+    await page.waitForFunction(() => window.__nodeSession.getState().previewProgram !== null);
+    await protocol.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    assert.equal(await page.locator("output").textContent(), "First node: 160, 140");
+    assert.deepEqual(await page.evaluate(() => ({ revision: window.__nodeSession.getState().revision,
+      commits: window.__nodePhases.filter(phase => phase === "commit").length, cancels: window.__nodePhases.filter(phase => phase === "cancel").length })), { revision: 3, commits: 3, cancels: 1 });
+    await page.evaluate(() => window.__disposeNodeControls()); assertNoBrowserErrors(errors, "node movement host controls"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});

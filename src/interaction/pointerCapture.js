@@ -25,7 +25,7 @@ export function prepareSelectionCapture(element, callbacks) {
     }
     if (terminal) {
       try {
-        if (terminal.type === "commit" && hooks.drag) hooks.drag(token, terminal.pointers[0].point, terminal.pointers[0].type);
+        if (terminal.type === "commit" && hooks.drag) hooks.drag(token, terminal.pointers[0].point, terminal.pointers[0].type, terminal.gesture);
         else if (terminal.type === "commit" && terminal.gesture === "click") hooks.select(token, terminal.pointers[0].point, terminal.pointers[0].type);
         else hooks.cancel(token, terminal.type === "cancel" ? terminal.reason : "movement");
       } catch (error) { failure ??= error; }

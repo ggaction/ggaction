@@ -15,7 +15,16 @@ import { chart } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import { chart as basic } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 import { createInteractionSession, type InteractionCommand } from ${JSON.stringify(path.join(root, "types/interaction.js"))};
 import { createTransitionScene } from ${JSON.stringify(path.join(root, "types/scene.js"))};
+chart().editLayout({target:'layout',node:{key:[1,'a'],x:1,y:2}});
+// @ts-expect-error a single-node patch cannot also replace layout options
+chart().editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
 const program = chart(); const session = createInteractionSession({ program });
+createInteractionSession({program,bindings:[{type:'moveNode',target:'network'}]});
+session.dispatch({type:'moveNode',target:'layout',payload:{key:[1,'a'],x:1,y:2}});
+// @ts-expect-error node movement has no implicit key or position
+session.dispatch({type:'moveNode',target:'layout',payload:{x:1,y:2}});
+// @ts-expect-error node dragging has no selection resource or guessed behavior
+createInteractionSession({program,bindings:[{type:'moveNode',target:'network',selection:'picked'}]});
 createInteractionSession({program:basic(),bindings:[{type:'contextMenu',slop:0,hitInvisible:false}]});
 session.dispatch({type:'contextMenu',point:{x:0,y:0},pointerType:'touch'});
 session.subscribe(event=>{if(event.type==='contextMenu'){const candidate=event.state.hit?.target; candidate?.childPath;}});

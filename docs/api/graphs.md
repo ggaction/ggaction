@@ -12,6 +12,13 @@ Create [observed graph data and a layout](data/source-and-derived.md#observed-gr
 
 A source revision can remove nodes from a fixed or force layout. Their authored positions and pins remain stored and are reused if the same typed keys return. New nodes still need complete fixed or initial positions. When `editLayout` replaces a coordinate array, it validates that array against the current nodes; omitted arrays retain their earlier intent.
 
+Use `editLayout({ target: 'layout', node: { key: 'a', x: 80, y: 100 } })` to move one current node.
+A fixed layout changes that node's position; a force layout sets its pin and recomputes the native solver.
+Coordinates are layout-local. Other authored positions, including dormant source keys, remain stored.
+The node patch cannot be combined with `options` or `order` and does not apply to circular or flow layouts.
+For pointer and keyboard controls, see [node movement](interaction.md#move-graph-nodes-with-pointer-or-keyboard).
+
+
 ## createGraphPlot
 
 ```typescript

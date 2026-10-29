@@ -5,6 +5,8 @@
 All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
+- Added explicit graph node movement and captured pointer dragging with native fixed/force layout edits, typed identities, dormant-coordinate preservation and atomic previews.
+
 
 - Add Full-only `createGeoJoinData` and `editGeoJoinData` for typed one-to-one geometry/table correspondence. Preserve feature order, shared arcs, exact source rows, unmatched diagnostics, and immutable source revisions through geographic marks and offline restoration.
 

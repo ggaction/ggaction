@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 365,
+  "count": 369,
   "cards": [
     {
       "schemaVersion": 3,
@@ -39949,7 +39949,7 @@
       "name": "editLayout",
       "layer": "user-facing",
       "domain": "core",
-      "summary": "Patch a stored hierarchy or graph layout and refresh its existing consumers.",
+      "summary": "Patch a stored layout and refresh its existing consumers.",
       "signature": "editLayout(options: TargetedOptions<EditLayoutOptions>): ChartProgram;",
       "intents": [
         "edit layout",
@@ -40006,6 +40006,11 @@
           "type": "string | ActionTargetList | ScopedActionTarget | undefined"
         },
         {
+          "name": "node",
+          "required": false,
+          "type": "GraphPosition | undefined"
+        },
+        {
           "name": "order",
           "required": false,
           "type": "HierarchyOrder | undefined"
@@ -40017,7 +40022,7 @@
         }
       ],
       "callPatterns": [
-        "editLayout({ target?, order?, options? })"
+        "editLayout({ target?, node?, order?, options? })"
       ],
       "snippet": "program.editLayout({ target: \"tree-layout\", order: { by: \"value\", direction: \"descending\" } })",
       "errors": [],

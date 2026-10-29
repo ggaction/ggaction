@@ -1400,6 +1400,10 @@
       {
         "type": "file",
         "path": "unit/interaction-viewport.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-node-move.test.js"
       }
     ],
     "selectors": [
