@@ -92,3 +92,10 @@ The [canonical rendered program](https://github.com/ggaction/ggaction/blob/b93aa
 fixes a small two-series example, including a layer that ends at zero thickness.
 
 The wiggle value scale must support zero; logarithmic value scales are rejected.
+
+### Shared layout policies
+
+Two Area owners can share the same value scale when both use the same stack, fill, center, or wiggle policy.
+The facade checks the complete group, layout and endpoint proposal before creating a mark. Incompatible
+policies, a misaligned group grid, or an explicit domain that excludes resolved bounds fail without creating
+child actions. Direct `layoutSeries` still requires complete positions.

@@ -50,6 +50,10 @@
     ],
     "area-layout": [
       {
+        "type": "file",
+        "path": "unit/actions/charts/area-facade-policy.test.js"
+      },
+      {
         "type": "prefix",
         "path": "charts/area-layout/"
       },

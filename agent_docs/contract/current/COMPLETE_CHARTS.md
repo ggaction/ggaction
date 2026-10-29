@@ -710,12 +710,16 @@ Default id는 `horizonPlot`, lifecycle은 Aggregate create-only다.
 - Layout defaults to overlay; stack/fill/diverging require one field and baseline 0 on an aligned unique group grid.
   Center additionally requires vertical nonnegative values. Missing defaults to error; break accepts null/undefined
   measure endpoints and emits segments of at least two valid samples. Stacked series break together at each gap.
-- Wrapped children: createAreaMark → encodeGroup? → independent position → range endpoint owners → layoutSeries
+- Wrapped children: createAreaMark → encodeGroup? → canonical layout semantic assignment → independent position → range endpoint owners → layoutSeries
   → encodeColor? → scoped guides. No derived source column, chart recipe, geometry cache or renderer policy is added.
 - Semantic effects: mark.missing, field/datum endpoints, encoding.group and layer.layout.mode. Graphic effects:
   closed concrete paths; endpoint/layout values drive scales, guides and source-owned selection. Guides false skips
   this facade's creation; omitted guides secure compatible Cartesian axes/grid and optional categorical color legend.
 - Wiggle requires vertical quantitative/temporal x, aligned nonnegative y with one zero datum endpoint, and the shared layoutSeries baseline policy. Its value scale uses `NonPointZeroSupportingPositionScaleOptions`; logarithmic value scales are rejected.
+- Creation preflights the final group, layout, endpoint pair, shared scale domain and frame before its first child.
+  Compatible Area owners with the same stack/fill/center/wiggle policy may share a value scale during creation.
+  Conflicting policies, invalid aligned grids and out-of-domain centered bounds reject before creating a mark.
+  The canonical layer.layout is initialized before position children; no pending intent or second stored policy exists.
 - Editing uses encodeX/YRange, encodeX2/Y2, encodeGroup, layoutSeries, editAreaMark and existing scale/guide/data editors.
   Log baselines must be valid for the final pair. Invalid input/resource/grain/style/guide transitions preserve the
   complete previous program, action trace and caller-owned input.
@@ -729,6 +733,6 @@ Default id는 `horizonPlot`, lifecycle은 Aggregate create-only다.
 
 - ✅ Covered: shortest/lower equivalence, signed/log/ribbon/stack/fill/diverging/center/wiggle/break, invalid roles/options,
   immutable edits, exact semantic/graphic/order/Canvas and decoded PNG pairs.
-- Evidence: `test/unit/actions/charts/area-facade.test.js`, `test/unit/actions/encodings/series-layout.test.js`,
+- Evidence: `test/unit/actions/charts/area-facade.test.js`, `test/unit/actions/charts/area-facade-policy.test.js`, `test/unit/actions/encodings/series-layout.test.js`,
   `test/charts/area-layout/`, `examples/area-layout/program.js`, `test/contracts/area-endpoint-types.test.js`,
   `test/charts/streamgraph/`, `test/unit/wiggle-area.test.js`, `test/contracts/realistic-stream-baselines.test.js`.

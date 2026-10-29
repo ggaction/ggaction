@@ -16,10 +16,8 @@ export function stackLayoutMode(stack) {
   return stack === "normalize" ? "fill" : stack === "center" ? "center" : stack === null ? "overlay" : "stack";
 }
 
-export const layoutSeries = /* @__PURE__ */ action({ op: "layoutSeries", description: "Assign series placement independently of color." }, function (args = {}) {
-  validateOptions(args, ["target", "mode"], "layoutSeries");
-  const mode = validateColorLayout(args.mode);
-  const { id: target, layer, dataset } = resolveTarget(this, args.target, ["bar", "area"], "series mark");
+export function resolveSeriesLayoutPlan(program, { id: target, layer, dataset }, requestedMode) {
+  const mode = validateColorLayout(requestedMode);
   const positions = ["x", "y", "x2", "y2", "xOffset", "yOffset"];
   const conditionals = Object.fromEntries(Object.entries(layer.conditionals ?? {}).map(([channel, definition]) => {
     if (!["x", "y"].includes(channel)) return [channel, definition];
@@ -36,8 +34,8 @@ export const layoutSeries = /* @__PURE__ */ action({ op: "layoutSeries", descrip
   for (const channel of ["x", "y"]) if (encoding[channel]) delete encoding[channel].stack;
   if (color) delete color.layout;
   const updated = { ...layer, conditionals, layout: { mode }, encoding };
-  const density = findUpstreamTransform(this, dataset, "density");
-  const horizon = findUpstreamTransform(this, dataset, "horizon");
+  const density = findUpstreamTransform(program, dataset, "density");
+  const horizon = findUpstreamTransform(program, dataset, "horizon");
   let endpoint, offset, offsetScale, offsetChannel;
   if (layer.mark.type === "area") {
     if (horizon !== undefined) throw new Error("Horizon owns its layout; layoutSeries is not supported.");
@@ -64,23 +62,36 @@ export const layoutSeries = /* @__PURE__ */ action({ op: "layoutSeries", descrip
       readSeriesIdentity(dataset.values, updated);
       offsetChannel = `${channels.category}Offset`;
       const existingOffset = layer.conditionals?.[offsetChannel] === undefined ? encoding[offsetChannel] : uniquePositionBinding(layer, offsetChannel);
-      offsetScale = resolveOffsetScaleDefinition(this, { id: existingOffset?.scale ?? offsetChannel }, offsetChannel);
+      offsetScale = resolveOffsetScaleDefinition(program, { id: existingOffset?.scale ?? offsetChannel }, offsetChannel);
       offset = { ...(encoding.group.field === undefined ? {} : { field: encoding.group.field }), fieldType: encoding[offsetChannel]?.fieldType ?? "nominal", scale: offsetScale.id };
       encoding[offsetChannel] = offset;
     } else for (const channel of ["xOffset", "yOffset"]) delete encoding[channel];
   }
-  const scales = offsetScale === undefined ? this.semanticSpec.scales
-    : [...this.semanticSpec.scales.filter(scale => scale.id !== offsetScale.id), offsetScale];
+  const scales = offsetScale === undefined ? program.semanticSpec.scales
+    : [...program.semanticSpec.scales.filter(scale => scale.id !== offsetScale.id), offsetScale];
   const storedUpdated = { ...updated, encoding: Object.fromEntries(Object.entries(encoding).filter(([channel]) => conditionals[channel] === undefined)),
     conditionals: Object.fromEntries(Object.entries(conditionals).filter(([channel]) => !["xOffset", "yOffset"].includes(channel) || channel === offsetChannel)) };
-  const preview = { ...this, markConfigs: this.markConfigs, canvasConfig: this.canvasConfig,
-    resolvedScales: { ...this.resolvedScales },
-    semanticSpec: { ...this.semanticSpec, scales,
-      layers: this.semanticSpec.layers.map(item => item.id === target ? storedUpdated : item) } };
+  const preview = { ...program, markConfigs: program.markConfigs, canvasConfig: program.canvasConfig,
+    resolvedScales: { ...program.resolvedScales },
+    semanticSpec: { ...program.semanticSpec, scales,
+      layers: program.semanticSpec.layers.map(item => item.id === target ? storedUpdated : item) } };
   for (const id of new Set(positions.flatMap(channel => positionBindings(storedUpdated, channel).map(binding => binding.scale)).filter(Boolean))) {
     preview.resolvedScales[id] = resolveScalePreview(preview, id).resolvedScale;
   }
-  let next = this.editSemantic({ property: `layer[${target}].layout.mode`, value: mode });
+  return { target, layer, mode, encoding, group, color, conditionals, updated, endpoint, offset, offsetScale, offsetChannel };
+}
+
+// Store the already validated final policy before aggregate position children.
+// The existing public layout action still owns complete-policy materialization.
+export function applySeriesLayoutMode(program, target, mode) {
+  return program.editSemantic({ property: `layer[${target}].layout.mode`, value: mode });
+}
+
+export const layoutSeries = /* @__PURE__ */ action({ op: "layoutSeries", description: "Assign series placement independently of color." }, function (args = {}) {
+  validateOptions(args, ["target", "mode"], "layoutSeries");
+  const resolved = resolveTarget(this, args.target, ["bar", "area"], "series mark");
+  const { target, layer, mode, encoding, group, color, conditionals, updated, endpoint, offset, offsetScale, offsetChannel } = resolveSeriesLayoutPlan(this, resolved, args.mode);
+  let next = applySeriesLayoutMode(this, target, mode);
   if (group === undefined && encoding.group !== undefined) next = setEncodingProperties(next, target, "group", encoding.group);
   for (const channel of ["x", "y"]) if (Object.hasOwn(layer.encoding?.[channel] ?? {}, "stack")) {
     next = next.editSemantic({ property: `layer[${target}].encoding.${channel}.stack`, remove: true });

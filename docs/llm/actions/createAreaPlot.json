@@ -35,6 +35,7 @@
   "wraps": [
     "createAreaMark",
     "encodeGroup",
+    "editSemantic",
     "encodeX",
     "encodeYRange",
     "layoutSeries",

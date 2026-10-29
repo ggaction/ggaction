@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:0a37d4df2e973fe135a3e0e01f8395e9e80965fe42569c91c65822f2276ec616. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:2382d73154c2b440e4128b99bd888a5349116cb43ec9410545ec2c63eb7ffdcd. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -1945,6 +1945,13 @@ The [canonical rendered program](https://github.com/ggaction/ggaction/blob/b93aa
 fixes a small two-series example, including a layer that ends at zero thickness.
 
 The wiggle value scale must support zero; logarithmic value scales are rejected.
+
+### Shared layout policies
+
+Two Area owners can share the same value scale when both use the same stack, fill, center, or wiggle policy.
+The facade checks the complete group, layout and endpoint proposal before creating a mark. Incompatible
+policies, a misaligned group grid, or an explicit domain that excludes resolved bounds fail without creating
+child actions. Direct `layoutSeries` still requires complete positions.
 
 <!-- Source: /tutorials/density-area/ -->
 
@@ -54557,7 +54564,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:0a37d4df2e973fe135a3e0e01f8395e9e80965fe42569c91c65822f2276ec616` |
+| Contract fingerprint | `sha256:2382d73154c2b440e4128b99bd888a5349116cb43ec9410545ec2c63eb7ffdcd` |
 | Example and dataset source | `b93aadb6fa6386cda8806f39d8aa51ecede01276` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
