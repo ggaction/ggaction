@@ -801,8 +801,17 @@
       "id": "AT-45",
       "expectation": "Animation endpoints, fonts, assets and kernel versions produce deterministic frames and reduced motion",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/ANIMATION.md"
+        ],
+        "tests": [
+          "test/unit/animation/offline.test.js",
+          "test/unit/animation/offline-assets.test.js",
+          "test/unit/animation/native-player.test.js",
+          "test/browser/animation-offline.browser.js",
+          "test/contracts/animation-types.test.js"
+        ]
       },
       "input": "Save an animation envelope and replay offline in a fresh process"
     },
@@ -1131,8 +1140,17 @@
       "id": "AT-83",
       "expectation": "Pyramid preserves stage order, gaps, values and prior stage geometry",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md",
+          "agent_docs/contract/current/PYRAMID.md"
+        ],
+        "tests": [
+          "test/contracts/native-api-policy.test.js",
+          "test/unit/pyramid-plot.test.js",
+          "test/charts/pyramid/primitive.test.js",
+          "test/charts/pyramid/public.test.js"
+        ]
       },
       "input": "Public Pyramid naming and stage geometry"
     },
@@ -1140,8 +1158,18 @@
       "id": "AT-84",
       "expectation": "Marginal, bullet and combination views compose existing actions with shared frame mapping",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md",
+          "agent_docs/contract/current/AXES.md"
+        ],
+        "tests": [
+          "test/contracts/composition-recipes.test.js",
+          "test/unit/composition-recipes.test.js",
+          "test/contracts/realistic-composition-recipes.test.js",
+          "test/charts/marginal/renderer.render.js",
+          "test/browser/composition-recipes.browser.js"
+        ]
       },
       "input": "Marginal, bullet and combination action chains and composition fixtures"
     },
@@ -1167,8 +1195,13 @@
       "id": "AT-87",
       "expectation": "Excluded dedicated indicator families are not reintroduced as mandatory public facades",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md"
+        ],
+        "tests": [
+          "test/contracts/native-api-policy.test.js"
+        ]
       },
       "input": "Excluded dedicated indicator APIs and human and agent documentation scope"
     },
@@ -1176,8 +1209,14 @@
       "id": "AT-88",
       "expectation": "Native fixture policy preserves exclusions and keeps reference-only rows outside pass counts",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md"
+        ],
+        "tests": [
+          "test/contracts/native-capability-completion.test.js",
+          "test/contracts/native-api-policy.test.js"
+        ]
       },
       "input": "Separation of native policy and external reference ledgers"
     },
@@ -1212,8 +1251,15 @@
       "id": "AT-92",
       "expectation": "Core, APIs, events, defaults, dependencies and release gates remain native and independent",
       "owner": {
-        "status": "pending",
-        "reason": "The complete integrated acceptance owner is not yet assigned; partial implementations do not close this group."
+        "status": "assigned",
+        "contracts": [
+          "agent_docs/contract/current/NATIVE_POLICY.md"
+        ],
+        "tests": [
+          "test/contracts/native-api-policy.test.js",
+          "test/contracts/native-capability-completion.test.js",
+          "test/contracts/package-boundaries.test.js"
+        ]
       },
       "input": "Independence of core, APIs, events, defaults, dependencies and release gates"
     }

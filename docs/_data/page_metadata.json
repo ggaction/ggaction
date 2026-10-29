@@ -140,6 +140,27 @@
     "editSource": "docs/recipes/index.md",
     "description": "Use a recipe when you know the chart type and want the shortest supported action flow."
   },
+  "/recipes/marginal/": {
+    "title": "Marginal Distribution Recipe",
+    "source": "docs/recipes/marginal.md",
+    "editSource": "examples/marginal/program.js",
+    "description": "Keep the scatterplot and both marginal distributions on the same observations.",
+    "image": "/assets/images/marginal.png"
+  },
+  "/recipes/bullet/": {
+    "title": "Bullet Comparison Recipe",
+    "source": "docs/recipes/bullet.md",
+    "editSource": "examples/bullet/program.js",
+    "description": "A Bullet comparison places reference ranges, an actual measure and a target on one quantitative scale.",
+    "image": "/assets/images/bullet.png"
+  },
+  "/recipes/combo/": {
+    "title": "Combo Chart Recipe",
+    "source": "docs/recipes/combo.md",
+    "editSource": "examples/linked-overlay/program.js",
+    "description": "Use createOverlay when a line should follow the endpoints of existing bars. The bars and line share the same meaning, scale and final positions.",
+    "image": "/assets/images/linked-overlay.png"
+  },
   "/recipes/scatterplot/": {
     "title": "Scatterplot Recipe",
     "source": "docs/recipes/scatterplot.md",
@@ -482,6 +503,13 @@
     "source": "docs/api/rendering.md",
     "editSource": "docs/api/rendering.md",
     "description": "Render one fully materialized ChartProgram to Browser Canvas, a browser safe SVG string, a Node PNG file, or a single page vector PDF.",
+    "image": "/assets/images/cars-scatterplot.png"
+  },
+  "/api/animation/": {
+    "title": "Animate and Export Chart Frames",
+    "source": "docs/api/animation.md",
+    "editSource": "docs/api/animation.md",
+    "description": "Prepare a transition between two immutable charts, sample it at an explicit time, and pass the returned frame directly to Canvas, SVG, PNG, or PDF.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/interaction/": {

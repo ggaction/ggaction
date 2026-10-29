@@ -599,7 +599,7 @@ Representative actions: `createLinePlot`, `createYAxis`, `editYAxisTicksAndLabel
 
 A line follows the final endpoints of aggregated bars and retains independent appearance.
 
-Representative actions: `createOverlay editOverlay encodeColor`. [Documentation](https://ggaction.github.io/ggaction/recipes/composition/).
+Representative actions: `createOverlay editOverlay encodeColor`. [Documentation](https://ggaction.github.io/ggaction/recipes/combo/).
 
 ### [Shared-scale adjacent charts](./shared-adjacent/)
 
@@ -924,6 +924,18 @@ Representative actions: `createAreaPlot`, `layoutSeries`. [Documentation](https:
 Keep exact values beside bars and shared-scale sparklines.
 
 Representative actions: `createTablePlot`, `editTablePlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/table/).
+
+### [Marginal distributions](./marginal/)
+
+Link scatterplot observations to the exact members of each marginal bin.
+
+Representative actions: `createScatterPlot createBinData createRectMark hconcat vconcat`. [Documentation](https://ggaction.github.io/ggaction/recipes/marginal/).
+
+### [Bullet comparison](./bullet/)
+
+Compare an actual measure with an explicitly authored target and reference ranges.
+
+Representative actions: `createRectMark createBarMark createRuleMark createMarkLabels`. [Documentation](https://ggaction.github.io/ggaction/recipes/bullet/).
 
 ## Development fixtures
 

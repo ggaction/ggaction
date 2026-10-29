@@ -667,5 +667,58 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture."
+  },
+  {
+    "id": "accessible-items",
+    "file": "api/rendering.md",
+    "contains": "const alternative = exportAccessibleData(program, { format: \"items\", target: \"bars\" });",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "rendering": "authoring-only",
+    "prerequisites": "Use an ES module. The example prints native aggregate values and their named selection membership."
+  },
+  {
+    "id": "interaction-keyboard",
+    "file": "api/interaction.md",
+    "contains": "const keyboardSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.",
+    "host": "paired-html"
+  },
+  {
+    "id": "interaction-accessible-tooltip",
+    "file": "api/interaction.md",
+    "contains": "const accessibleSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use this section's HTML and JavaScript together. Hover, focus or tap an item; Escape dismisses its description.",
+    "host": "paired-html"
+  },
+  {
+    "id": "interaction-native-controls",
+    "file": "api/interaction.md",
+    "contains": "const controlSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "host": "paired-html",
+    "prerequisites": "Use this section's HTML and JavaScript together. Activate category and history controls with Enter, Space or touch."
+  },
+  {
+    "id": "animation-offline",
+    "file": "api/animation.md",
+    "contains": "const saved = serializeAnimation",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.",
+    "rendering": "authoring-only"
   }
 ]

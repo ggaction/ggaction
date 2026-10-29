@@ -984,7 +984,37 @@ export interface AccessibleData {
   readonly title: string | null;
   readonly views: readonly AccessibleView[];
 }
-export function exportAccessibleData(program: ChartProgram | BasicChartProgram, options?: { readonly target?: string }): AccessibleData;
+
+/** One final native logical item. Visibility does not infer opacity or clipping. */
+export interface AccessibleItem {
+  readonly key: string;
+  readonly component: string;
+  readonly markType: string;
+  readonly role?: string;
+  readonly fields: Readonly<Record<string, unknown>>;
+  readonly channels: Readonly<Record<string, unknown>>;
+  readonly selectedBy: readonly string[];
+  readonly visible: boolean;
+  readonly representationKeys?: readonly string[];
+  /** Native hierarchy node keys, local to this view's childPath and component. */
+  readonly navigation?: Readonly<Record<"key" | "parent" | "firstChild" | "previousSibling" | "nextSibling" | "root", string | null>>;
+}
+export interface AccessibleItemView {
+  readonly kind: "items";
+  readonly ownerId: string;
+  readonly markType: string;
+  readonly childPath: readonly string[];
+  readonly items: readonly AccessibleItem[];
+}
+export interface AccessibleItemData {
+  readonly schemaVersion: 1;
+  readonly format: "items";
+  readonly title: string | null;
+  readonly views: readonly AccessibleItemView[];
+}
+export function exportAccessibleData(program: ChartProgram | BasicChartProgram, options: { readonly format: "items"; readonly target?: string }): AccessibleItemData;
+export function exportAccessibleData(program: ChartProgram | BasicChartProgram, options?: { readonly format?: "table"; readonly target?: string }): AccessibleData;
+export function exportAccessibleData(program: ChartProgram | BasicChartProgram, options: { readonly format?: "table" | "items"; readonly target?: string }): AccessibleData | AccessibleItemData;
 ```
 
 #### `ggaction/inspection`
@@ -1213,6 +1243,26 @@ export interface ContextMenuBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+/** Host supplies a focusable surface and safe accessible descriptions. Targets are leaf marks. */
+export interface KeyboardBinding {
+  readonly type: 'keyboard';
+  readonly targets: readonly {
+    readonly target: InteractionTarget;
+    readonly activation?: { readonly type: 'select'; readonly selection: string; readonly mode?: 'replace' | 'toggle' }
+      | { readonly type: 'focusHierarchy' };
+  }[];
+}
+/** Runtime-only focus. Null keys designate the configured owner container. */
+export interface InteractionFocus {
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  /** Stable authored scoped key, preserved when one current item represents it. */
+  readonly itemKey: string | null;
+  readonly currentItemKey: string | null;
+  readonly screenPoint: InteractionPoint | null;
+  readonly role: string | null;
+}
+export type InteractionFocusCommand = { readonly type: 'focus'; readonly target: InteractionTarget; readonly itemKey: string | null; readonly move?: never }
+  | { readonly type: 'focus'; readonly move: 'next' | 'previous' | 'first' | 'last' | 'parent' | 'firstChild' | 'previousSibling' | 'nextSibling' | 'root'; readonly target?: never; readonly itemKey?: never };
 /** Pointer arbitration uses explicit modifier conjunctions and bounded integer priorities. */
 export interface GestureBindingOptions {
   readonly priority?: number;
@@ -1340,6 +1390,7 @@ export interface InteractionState {
   /** Session-local committed program revision; inspection and frames do not increment it. */
   readonly revision: number;
   readonly hit: InteractionHit | null;
+  readonly focus: InteractionFocus | null;
   readonly linkedSelections: readonly LinkedSelectionState[];
   /** Bounded immutable snapshots. Preview and cancelled edits are never recorded. */
   readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
@@ -1353,7 +1404,7 @@ export interface InteractionState {
   readonly destroyed: boolean;
 }
 export interface InteractionLifecycleEvent {
-  readonly type: 'inspect' | 'contextMenu' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
+  readonly type: 'inspect' | 'contextMenu' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy' | 'focus';
   readonly state: InteractionState;
 }
 /** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
@@ -1489,7 +1540,7 @@ export interface InteractionUpdateEvent extends Omit<InteractionAssetEvent, 'typ
   readonly causeTransactionId?: string;
 }
 export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent | InteractionAssetEvent | InteractionUpdateEvent | InteractionResizeEvent;
-export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | {
+export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | InteractionFocusCommand | { readonly type: 'activate' } | {
   readonly type: 'inspect' | 'contextMenu';
   /** CSS-local point, after subtracting the host client rectangle. */
   readonly point: InteractionPoint;
@@ -1526,7 +1577,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | NavigationBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | KeyboardBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | NavigationBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 
@@ -1568,6 +1619,113 @@ export interface GraphEdgeRoutesHost { readonly requestToken: string; readonly s
 export function createGraphRouteExecutor(options?: { readonly createWorker?: () => GraphRouteWorker }): GraphRouteExecutor;
 export function computeGraphEdgeRoutes(job: GraphRouteJob, signal?: AbortSignal): GraphRouteCompletion;
 export function prepareGraphEdgeRoutes(program: ChartProgram, request: GraphEdgeRoutesRequest, host: GraphEdgeRoutesHost): Promise<PreparedGraphEdgeRoutes>;
+```
+
+#### `ggaction/animation`
+
+[Complete declaration and relative dependencies](../types/animation.d.ts)
+
+```typescript
+import type { ChartProgram } from './program.js';
+import type { BasicChartProgram } from './basic.js';
+import type { CanvasTransitionScene } from './scene.js';
+
+declare const transitionPlan: unique symbol;
+declare const transitionFrame: unique symbol;
+export type AnimationProgram = ChartProgram | BasicChartProgram;
+export type AnimationEasing = 'linear' | 'cubic-in-out';
+export interface TransitionOptions {
+  readonly durationMs: number;
+  readonly easing?: AnimationEasing;
+}
+/** Created only by planTransition or deserializeAnimation. */
+export interface TransitionPlan {
+  readonly [transitionPlan]: true;
+  readonly kind: 'transition-plan';
+  readonly version: 1;
+  readonly durationMs: number;
+  readonly easing: AnimationEasing;
+}
+export type TransitionDecision =
+  | { readonly kind: 'enter'; readonly targetIndex: number }
+  | { readonly kind: 'exit'; readonly sourceIndex: number }
+  | { readonly kind: 'exact' | 'semantic-kernel' | 'crossfade'; readonly sourceIndex: number;
+      readonly targetIndex: number; readonly itemKey?: string; readonly owner?: string;
+      readonly role: string; readonly kernel?: string; readonly reason?: string };
+/** An authentic immutable sample, directly accepted by all four renderers. */
+export interface TransitionFrame extends Readonly<Pick<ChartProgram, 'graphicSpec'>> {
+  readonly [transitionFrame]: true;
+  readonly scene: CanvasTransitionScene;
+  readonly progress: number;
+  readonly decisions: readonly TransitionDecision[];
+}
+export interface ExportedAnimationFrame extends TransitionFrame { readonly timeMs: number; }
+export interface PlaybackOptions {
+  readonly rate?: number;
+  /** Additional repetitions; Infinity repeats until cancelled. */
+  readonly repeat?: number;
+  readonly reducedMotion?: boolean;
+}
+export interface AnimationPlayback {
+  readonly rate: number;
+  readonly repeat: number;
+  readonly reducedMotion: boolean;
+}
+export interface RestoredAnimation {
+  readonly plan: TransitionPlan;
+  readonly playback: AnimationPlayback;
+}
+export type AnimationFrameOptions =
+  | { readonly timesMs: readonly number[]; readonly fps?: never }
+  | { readonly fps: number; readonly timesMs?: never };
+export declare function planTransition(input: {
+  readonly from: AnimationProgram | TransitionFrame;
+  readonly to: AnimationProgram | TransitionFrame;
+  readonly options: TransitionOptions;
+}): TransitionPlan;
+export declare function sampleTransition(plan: TransitionPlan, timeMs: number): TransitionFrame;
+export declare function serializeAnimation(plan: TransitionPlan, playback?: PlaybackOptions): string;
+export declare function deserializeAnimation(text: string): RestoredAnimation;
+export declare function exportAnimationFrames(plan: TransitionPlan, options: AnimationFrameOptions): readonly ExportedAnimationFrame[];
+
+export interface AnimationClock<Handle = number> {
+  now(): number;
+  requestFrame(callback: () => void): Handle;
+  cancelFrame(handle: Handle): void;
+}
+export interface AnimationPlayerState {
+  readonly status: 'idle' | 'playing' | 'paused' | 'finished' | 'cancelled' | 'disposed';
+  readonly timeMs: number;
+  readonly durationMs: number;
+  readonly rate: number;
+  readonly iteration: number;
+  readonly repeat: number;
+}
+export interface AnimationSettlement {
+  readonly reason: 'completed' | 'cancelled' | 'disposed' | 'interrupted';
+  readonly timeMs: number;
+  readonly iteration: number;
+}
+export interface AnimationPlayer {
+  play(): AnimationPlayer;
+  pause(): AnimationPlayer;
+  seek(timeMs: number): AnimationPlayer;
+  reverse(): AnimationPlayer;
+  setRate(rate: number): AnimationPlayer;
+  setRepeat(repeat: number): AnimationPlayer;
+  cancel(): AnimationPlayer;
+  interrupt(input: PlaybackOptions & { readonly to: AnimationProgram | TransitionFrame; readonly options: TransitionOptions }): AnimationPlayer;
+  dispose(): void;
+  getState(): AnimationPlayerState;
+  getFrame(): TransitionFrame | undefined;
+  readonly finished: Promise<AnimationSettlement>;
+}
+export declare function createAnimationPlayer<Handle>(input: PlaybackOptions & {
+  readonly plan: TransitionPlan;
+  readonly clock: AnimationClock<Handle>;
+  readonly render: (frame: TransitionFrame) => void;
+  readonly commit?: (frame: TransitionFrame) => void;
+}): AnimationPlayer;
 ```
 
 <!-- END GENERATED RUNTIME SIGNATURES -->

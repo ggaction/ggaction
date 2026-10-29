@@ -501,7 +501,7 @@ test("native parameter inputs and host context actions preserve keyboard focus a
     await page.evaluate(async code => {
       window.__inspectionSessions.forEach(session => session.destroy());
       document.body.innerHTML = '<canvas id="chart" aria-label="Adjustable points"></canvas><div id="vector"></div>';
-      const source = code.replaceAll('"ggaction"', JSON.stringify(new URL('/src/index.js', location.href).href)).replaceAll('"ggaction/interaction"', JSON.stringify(new URL('/src/interaction.js', location.href).href));
+      const source = code.replaceAll('"ggaction"', JSON.stringify(new URL('/src/index.js', location.href).href)).replaceAll('"ggaction/interaction"', JSON.stringify(new URL('/src/interaction.js', location.href).href)).replaceAll('"ggaction/inspection"', JSON.stringify(new URL('/src/inspection.js', location.href).href));
       const url = URL.createObjectURL(new Blob([source + '\nwindow.__parameterSession=parameterSession;window.__disposeControls=disposeControls;'], { type: "text/javascript" }));
       try { await import(url); } finally { URL.revokeObjectURL(url); }
       const { renderToSVG } = await import("/src/renderers/svg.js");

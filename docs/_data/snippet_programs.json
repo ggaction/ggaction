@@ -625,5 +625,49 @@
       "exported": "createTable"
     },
     "rendering": "authoring-only"
+  },
+  "recipes/marginal.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart and the linked example support modules.",
+    "canonical": {
+      "file": "examples/marginal/program.js",
+      "exported": "createMarginal"
+    },
+    "supportFiles": {
+      "program.js": "examples/marginal/program.js",
+      "fixture.js": "examples/marginal/fixture.js"
+    },
+    "rendering": "renders-canvas"
+  },
+  "recipes/bullet.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart and the linked example support modules.",
+    "canonical": {
+      "file": "examples/bullet/program.js",
+      "exported": "createBullet"
+    },
+    "supportFiles": {
+      "program.js": "examples/bullet/program.js",
+      "fixture.js": "examples/bullet/fixture.js"
+    },
+    "rendering": "renders-canvas"
+  },
+  "recipes/combo.md": {
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "prerequisites": "Use the Getting Started browser module setup with a canvas whose id is chart and the linked example support modules.",
+    "canonical": {
+      "file": "examples/linked-overlay/program.js",
+      "exported": "createLinkedOverlay"
+    },
+    "supportFiles": {
+      "program.js": "examples/linked-overlay/program.js"
+    },
+    "rendering": "renders-canvas"
   }
 }

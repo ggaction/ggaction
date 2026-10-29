@@ -251,3 +251,26 @@ test("cancelled frame callbacks remain invalid after a new run is scheduled", as
   stale(); assert.equal(rendered.length, length); assert.equal(clock.pending.size, 1);
   player.cancel(); assert.equal((await player.finished).reason, "cancelled");
 });
+
+test("a queued rejected interruption preserves the previous run and its next clock callback", async () => {
+  const clock = virtualClock(); let player, rejected = false;
+  player = createPlaybackController({ durationMs: 10, clock: clock.api, sample: time => ({ x: time }),
+    render(frame) {
+      if (frame.x === 5 && !rejected) {
+        rejected = true;
+        player.interrupt({ durationMs: 5, createSample() { throw new Error("invalid replacement"); } });
+      }
+    } });
+  player.play(); const terminal = player.finished;
+  assert.throws(() => clock.elapse(5), /invalid replacement/);
+  assert.equal(player.getState().status, "playing"); assert.deepEqual(player.getFrame(), { x: 5 });
+  assert.equal(player.finished, terminal); assert.equal(clock.pending.size, 1);
+  clock.elapse(5); assert.equal((await terminal).reason, "completed"); player.dispose();
+});
+
+test("an ordinary callback throwing a non-object value still cancels its run", async () => {
+  const { player, clock } = fixture({ render() { throw undefined; } });
+  assert.throws(() => player.play());
+  assert.equal(player.getState().status, "cancelled"); assert.equal(clock.pending.size, 0);
+  assert.equal((await player.finished).reason, "cancelled"); player.dispose();
+});

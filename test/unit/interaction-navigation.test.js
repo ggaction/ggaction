@@ -147,3 +147,10 @@ test('navigation snapshots caller options and rejects competing pointer owners',
  h.fire('keydown',0,0,{key:'Home'});assert.deepEqual(s.getState().program.graphicSpec,p.graphicSpec);s.destroy();
  assert.throws(()=>createInteractionSession({program:p,bindings:[binding(p),binding(p)]}),/ambiguous priority/);
 });
+test('explicit keyboard items own key navigation while camera wheel and Escape cancellation retain their native lifetime',()=>{
+ const p=program(),s=createInteractionSession({program:p,bindings:[binding(p),{type:'keyboard',targets:[{target:'places'}]}]}),h=host();s.mount(h);
+ h.fire('keydown',0,0,{key:'ArrowRight'});assert.notEqual(s.getState().focus,null);assert.equal(s.getState().program,p);const focused=s.getState().focus.itemKey;
+ h.fire('wheel',80,90,{deltaY:-100,deltaMode:0});assert.equal(s.getState().history.undoCount,1);assert.equal(s.getState().focus.itemKey,focused);
+ const before=s.getState().program,point=xy(s);h.fire('pointerdown',...point);h.fire('pointermove',point[0]+10,point[1]);h.flush();assert.notEqual(s.getState().previewProgram,null);
+ h.fire('keydown',0,0,{key:'Escape'});assert.equal(s.getState().program,before);assert.equal(s.getState().previewProgram,null);assert.deepEqual(xy(s),point);assert.equal(h.captures.size,0);assert.equal(s.getState().history.undoCount,1);s.destroy();
+});

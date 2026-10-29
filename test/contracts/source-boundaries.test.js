@@ -73,6 +73,7 @@ const allowed = Object.freeze({
   actions: new Set([
     "actions", "core", "grammar", "layout", "materialization", "selectors", "theme"
   ]),
+  animation: new Set(["animation", "core", "grammar", "materialization", "persistence"]),
   interaction: new Set(["interaction", "core", "grammar", "materialization", "selectors"]),
   core: new Set(["core"]),
   persistence: new Set(["persistence", "core", "grammar", "selectors"]),
@@ -87,6 +88,17 @@ const allowed = Object.freeze({
   theme: new Set(["theme"])
 });
 
+test("the frame association shared by interaction reaches only its lightweight core owners", () => {
+  const association = path.join(root, "animation", "frameProvenance.js"), pending = [association], seen = new Set();
+  while (pending.length) {
+    const file = pending.pop();
+    if (seen.has(file)) continue;
+    seen.add(file);
+    assert.ok(file === association || layer(file) === "core", path.relative(root, file));
+    pending.push(...localImports(file));
+  }
+});
+
 test("keeps source imports inside their architectural boundaries", () => {
   for (const file of sourceFiles()) {
     const owner = layer(file);
@@ -94,7 +106,9 @@ test("keeps source imports inside their architectural boundaries", () => {
     for (const dependency of localImports(file)) {
       assert.equal(
         allowed[owner].has(layer(dependency)) || (
+          (owner === "animation" && ["sceneSnapshot.js", "version.js", path.join("renderers", "canvasScene.js")].includes(path.relative(root, dependency))) ||
           (path.relative(root, file) === path.join("interaction", "hitProgram.js") && path.relative(root, dependency) === "sceneSnapshot.js") ||
+          (path.relative(root, file) === path.join("interaction", "hitProgram.js") && path.relative(root, dependency) === path.join("animation", "frameProvenance.js")) ||
           (path.relative(root, file) === path.join("interaction", "sceneFrame.js") && path.relative(root, dependency) === path.join("renderers", "canvasScene.js")) ||
           (["hitGuides.js", "hitLegends.js"].some(name => path.relative(root, file) === path.join("interaction", name)) && [
             "tickValues.js", "polar/resolve.js", "axes/parallel/resolve.js", "legends/blocks.js", "legends/categorical/layout.js",
@@ -284,4 +298,11 @@ test("architectural syntax checks ignore comments and recognize direct bracket a
   "p.semanticSpec.layers.some(x => x.visible)"
  ]) assert.equal(directSemanticLookup(source), false, source);
  // This syntactic rule intentionally does not perform interprocedural alias analysis.
+});
+
+test('keyboard focus uses native item readers without importing the complete mark policy graph',()=>{
+ const pending=[path.join(root,'interaction','keyboardFocus.js')],visited=new Set();
+ while(pending.length){const file=pending.pop();if(visited.has(file))continue;visited.add(file);pending.push(...localImports(file));}
+ assert.ok(visited.has(path.join(root,'materialization','selection','itemResolver.js')));
+ assert.equal(visited.has(path.join(root,'materialization','selection','policies','index.js')),false);
 });

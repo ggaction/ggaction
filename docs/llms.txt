@@ -119,6 +119,9 @@ requirements after resolving each part.
 - Error Band Tutorial: ./tutorials/error-band/
 - Dot, Lollipop, and Dumbbell Plots: ./tutorials/endpoint-plots/
 - Empirical Cumulative Distribution Plots: ./tutorials/ecdf/
+- Marginal Distribution Recipe: ./recipes/marginal/
+- Bullet Comparison Recipe: ./recipes/bullet/
+- Combo Chart Recipe: ./recipes/combo/
 - Horizon Chart Recipe: ./recipes/horizon/
 - Error Band Recipe: ./recipes/error-band/
 - Box Plot Recipe: ./recipes/box-plot/
@@ -154,6 +157,7 @@ requirements after resolving each part.
 - Violin Plots: ./api/violin-plots/
 - Guides: ./api/guides/
 - Titles: ./api/titles/
+- Animate and Export Chart Frames: ./api/animation/
 - Inspect Chart Items: ./api/interaction/
 - Inspect Overlapping Chart Items: ./recipes/inspect-chart/
 - Program Composition: ./api/composition/

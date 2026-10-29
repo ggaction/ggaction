@@ -49,7 +49,7 @@ TAP diagnostics에서 실제값·기대값·빈diff를 추출해 evidence JSON�
 | codec/source revision | 기존 real route update의 fresh deserialize graphic equality | 검증; session/DOM/lease 직렬화 없음 |
 | Full/Basic/package | 기존 update Basic/native 제한 및 G 동일 tar3Node | source/types 동일, 새pack 불필요 |
 | public docs/types | 변경된 공개계약 없음; G source-pin49/built/4폭 | 그대로 유효 |
-| accessible focus/tooltip | 현재 host-owned focus와 명시 native commands | STEP068 후행 |
+| accessible focus/tooltip | STEP068 A/B의 native items·exact frame focus와 C1 host tooltip/touch | A/B/C1/C2 정적 control 검증; public player/reduced-motion 후행 |
 | animation/current frame | 현재 private controller/endpoint owner를 import하지 않음 | 공개 planner/player 후행 연결 필요 |
 
 ## 검사 범위와 실패 보존

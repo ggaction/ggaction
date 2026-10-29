@@ -84,7 +84,7 @@ function track(match,from,to,a,b) {
 
 // Native typed families share exact keyed correspondence and endpoint admission.
 // Unsupported identities remain explicit crossfades, never pixel-inferred tracks.
-function optionsOf(input) {
+export function normalizeTransitionOptions(input) {
   const options=ownRecord(input,"Transition options");rejectUnknownProperties(options,["durationMs","easing"],"transition options");
   validateNonNegativeFinite(options.durationMs,"Transition duration");
   const easing=Object.hasOwn(options,"easing")?options.easing:"cubic-in-out";easeProgress(.5,easing);
@@ -104,7 +104,7 @@ function assemble(from,to,a,b,options,graphs) {
 }
 export function planTransition(input) {
   ownRecord(input,"Transition request");rejectUnknownProperties(input,["from","to","options"],"transition request");
-  const options=optionsOf(input.options);
+  const options=normalizeTransitionOptions(input.options);
   requireTransitionEndpoint(input.from);requireTransitionEndpoint(input.to);budget([input.from.graphicSpec,input.to.graphicSpec]);
   const prepare=value=>{
     const proof=animationFrameProvenance(value);
@@ -178,7 +178,7 @@ export function restoreTransitionPlan(input) {
   closed(input.kernels,["transition","position",...(graphKernel?["graph","route"]:[])],"Animation kernels");
   if(graphKernel&&(input.kernels.graph!==ANIMATION_GRAPH_VERSION||input.kernels.route!==ANIMATION_ROUTE_VERSION))throw new TypeError("Unsupported animation graph kernel version.");
   if(input.kernels.transition!==kernels.transition||input.kernels.position!==kernels.position)throw new TypeError("Unsupported animation kernel version.");
-  const options=optionsOf({durationMs:input.durationMs,easing:input.easing});
+  const options=normalizeTransitionOptions({durationMs:input.durationMs,easing:input.easing});
   const from=restoreEndpoint(input.from),to=restoreEndpoint(input.to);
   const plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options,{from:from.graphs,to:to.graphs});
   exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{});

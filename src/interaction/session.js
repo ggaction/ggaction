@@ -1,3 +1,4 @@
+import { normalizeKeyboardBinding, prepareKeyboardFrame, reconcileKeyboardFocus, normalizeFocusCommand, moveKeyboardFocus, keyboardActivation, keyboardKeyCommand } from "./keyboardFocus.js";
 import { normalizeCameraNavigation, resolveCameraNavigation, prepareCameraNavigation, joinCameraNavigation, cameraNavigationDraft, navigationCenter, cameraWheelCommand, cameraKeyboardCommand } from "./cameraNavigation.js";
 import { normalizeAnnotationMovement, resolveAnnotationMovement, prepareAnnotationMovement, annotationMovementCommand } from "./annotationMovement.js";
 import { normalizeNodeMovement, resolveNodeMovement, prepareNodeMovement, nodeMovementCommand } from "./nodeMovement.js";
@@ -35,12 +36,13 @@ function bindings(program, value) {
   if (value === undefined) value = [{ type: "inspect" }];
   if (!Array.isArray(value) || value.length > 259) throw new TypeError("Interaction bindings exceed the binding limit.");
   ownArray(value, "Interaction bindings");
-  const inspect = [], context = [], linked = [], editing = [];
+  const inspect = [], context = [], linked = [], editing = [], keyboard = [];
   for (const binding of value) {
-    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss", "axis", "channels", "channel", "effect", "scaleDomain", "scaleExtent", "initial", "rotationStepDeg", "priority", "modifiers"], "Interaction binding");
-    (["select", "legend", "brush", "lasso", "moveNode", "annotate", "navigate"].includes(head.type) ? editing : head.type === "contextMenu" ? context : ["linkSelection", "linkFilter"].includes(head.type) ? linked : inspect).push(head);
+    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss", "axis", "channels", "channel", "effect", "scaleDomain", "scaleExtent", "initial", "rotationStepDeg", "priority", "modifiers", "targets"], "Interaction binding");
+    (head.type === "keyboard" ? keyboard : ["select", "legend", "brush", "lasso", "moveNode", "annotate", "navigate"].includes(head.type) ? editing : head.type === "contextMenu" ? context : ["linkSelection", "linkFilter"].includes(head.type) ? linked : inspect).push(head);
   }
   if (inspect.length > 1 || context.length > 1) throw new TypeError("Interaction bindings support at most one inspect and one context menu.");
+  if (keyboard.length > 1) throw new TypeError("Interaction bindings support at most one keyboard binding.");
   const links = normalizeSelectionLinks(program, linked);
   const policies = normalizeGestureBindings(editing.map((head, index) => ({ id: `pointer-${index}`, kind: head.type === "navigate" ? "pan" : head.type === "legend" ? "select" : head.type,
     ...(head.priority === undefined ? {} : { priority: head.priority }), ...(head.modifiers === undefined ? {} : { modifiers: head.modifiers }), ...(head.type === "navigate" ? { pinch: true } : {}) })));
@@ -50,7 +52,7 @@ function bindings(program, value) {
       : ["brush", "lasso"].includes(head.type) ? normalizeRegionBinding : head.type === "legend" ? (head.effect === "visibility" ? normalizeLegendVisibility : normalizeLegendSelection) : normalizeClickSelection;
     return { binding: normalize(program, domain, links), policy: policies[index] };
   });
-  return { pointers, linked: links, inspect: freezeOwned([...inspect, ...context].map(binding => {
+  return { pointers, linked: links, keyboard: keyboard.length ? normalizeKeyboardBinding(program, keyboard[0], links) : null, inspect: freezeOwned([...inspect, ...context].map(binding => {
     const contextual = binding.type === "contextMenu";
     const request = options(binding, ["type"], contextual ? ["slop", "hitInvisible"] : ["events", "slop", "hitInvisible"], "Inspection binding");
     if (!contextual && request.type !== "inspect") throw new TypeError("Unsupported interaction binding type.");
@@ -86,6 +88,21 @@ export function createInteractionSession(input) {
   const hasMoving = configured.pointers.some(({ binding }) => ["moveNode", "annotate", "navigate"].includes(binding.type));
   const managedSelections = configured.linked.filter(link => !link.filter);
   let program = request.program, base = prepareProgramHitFrame(program), bridge = createHitFrameBridge(base);
+  const keyboardFrames = new WeakMap();
+  const keyboardFrameFor = (current, frame) => {
+    if (configured.keyboard === null) return null;
+    const cached = keyboardFrames.get(frame);
+    if (cached?.program === current) return cached;
+    const model = prepareKeyboardFrame(current, configured.keyboard, frame);
+    keyboardFrames.set(frame, model); return model;
+  };
+  let keyboardFrame = keyboardFrameFor(program, base), focus = null;
+  const adoptKeyboardFrame = model => { focus = reconcileKeyboardFocus(model, focus); keyboardFrame = model; };
+  const setFrame = (frame, current = program) => {
+    const model = keyboardFrameFor(current, frame), result = bridge.updateFrame(frame);
+    if (result.applied) adoptKeyboardFrame(model);
+    return result;
+  };
   let linkedSelections = inspectSelectionLinks(program, configured.linked);
   let selectionRecords = reconcileSelections(program, [], selectionPolicy, { initialize: true }).records;
   let rootTransform = IDENTITY, mounted, destroyed = false, destroyRequested = false, generation = 0, lastHit = null, processing = false;
@@ -100,7 +117,7 @@ export function createInteractionSession(input) {
   const snapshot = () => state = freezeOwned({ program, previewProgram, scene: bridge.getState().scene, ...preparation.inspect(),
     previewAssets: previewPreparation?.inspect().assets ?? null,
     preparation: previewPreparation?.inspect().preparation ?? preparation.inspect().preparation,
-    frameVersion: bridge.getState().version, generation, revision, hit: lastHit, linkedSelections, history: history.inspect(), mounted: mounted !== undefined, destroyed });
+    frameVersion: bridge.getState().version, generation, revision, hit: lastHit, focus, linkedSelections, history: history.inspect(), mounted: mounted !== undefined, destroyed });
   snapshot();
   const live = () => { if (destroyed) throw new Error("Interaction session is disposed."); };
   const publish = (type, details) => {
@@ -148,9 +165,9 @@ export function createInteractionSession(input) {
     let failure;
     try { if (mounted !== undefined) detach(mounted, "destroy"); } catch (error) { failure = error; }
     try { preparation.dispose(); } catch (error) { failure ??= error; }
-    mounted = undefined; lastHit = null; destroyed = true; assetResolver = undefined; history.dispose();
+    mounted = undefined; lastHit = null; focus = null; destroyed = true; assetResolver = undefined; history.dispose();
     try { publish("destroy"); } catch (error) { failure ??= error; }
-    finally { listeners.clear(); bridge.dispose(); base = null; rootTransform = IDENTITY; queue.length = 0; selectionRecords = []; ignoredClick = undefined; }
+    finally { listeners.clear(); bridge.dispose(); base = null; keyboardFrame = null; rootTransform = IDENTITY; queue.length = 0; selectionRecords = []; ignoredClick = undefined; }
     if (failure) throw failure;
     return outcome("applied");
   };
@@ -176,6 +193,7 @@ export function createInteractionSession(input) {
     const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
     const candidate = prepareProgramHitFrame(prepared.program, version);
     const frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+    keyboardFrameFor(prepared.program, frame);
     const resourceRevisions = preparation.enabled ? interactionResourceRevisions(prepared.program) : undefined;
     return { prepared, reconciled, selectionChanges, nextGeneration, nextRevision, candidate, frame, resourceRevisions };
   };
@@ -204,10 +222,11 @@ export function createInteractionSession(input) {
       // Host mount/frame changes while assets load do not invalidate an immutable
       // candidate. Rebind its concrete geometry to the current host transform.
       frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+      keyboardFrameFor(prepared.program, frame);
       return () => {
         mounted?.capture?.cancel("updateProgram"); previewProgram = null;
         if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
-        bridge.updateFrame(frame); base = candidate; program = prepared.program;
+        setFrame(frame, prepared.program); base = candidate; program = prepared.program;
         linkedSelections = prepared.projections; selectionRecords = reconciled.records;
         generation = nextGeneration; revision = nextRevision; lastHit = null;
         history.record(previousSnapshot, prepared.affectedOwners);
@@ -245,6 +264,7 @@ export function createInteractionSession(input) {
       nextGeneration = nextInteger(generation); nextRevision = nextInteger(revision);
       candidate = prepareProgramHitFrame(entry.state.program, version);
       frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+      keyboardFrameFor(entry.state.program, frame);
       resourceRevisions = preparation.enabled ? interactionResourceRevisions(entry.state.program) : undefined;
       if (hasMoving && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
     } catch (error) {
@@ -253,10 +273,11 @@ export function createInteractionSession(input) {
     }
     const prepareCommit = () => {
       frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+      keyboardFrameFor(entry.state.program, frame);
       return () => {
         mounted?.capture?.cancel("updateProgram"); previewProgram = null;
         if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
-        bridge.updateFrame(frame); base = candidate;
+        setFrame(frame, entry.state.program); base = candidate;
         ({ program, selectionRecords, linkedSelections } = entry.state);
         generation = nextGeneration; revision = nextRevision; lastHit = null;
         history.accept(command.type, previousSnapshot, entry.affectedOwners);
@@ -290,13 +311,15 @@ export function createInteractionSession(input) {
     const selectionChanges = cloneAndFreeze([...reconciled.changes, ...(linked.selectionChanges ?? []), ...verified.changes]);
     const candidate = prepareProgramHitFrame(linked.program, version);
     let frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+    keyboardFrameFor(linked.program, frame);
     if (hasMoving && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
     const prepareCommit = tags => {
       frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+      keyboardFrameFor(linked.program, frame);
       return () => {
         mounted?.capture?.cancel("updateProgram");
         if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
-        bridge.updateFrame(frame); base = candidate; program = linked.program; generation = nextGeneration; revision = nextRevision; lastHit = null;
+        setFrame(frame, linked.program); base = candidate; program = linked.program; generation = nextGeneration; revision = nextRevision; lastHit = null;
         linkedSelections = linked.projections; selectionRecords = verified.records;
         if (policy === "reset") history.clear();
         else if (program !== previousSnapshot.program) history.record(previousSnapshot, Object.freeze([]));
@@ -336,10 +359,27 @@ export function createInteractionSession(input) {
       }, vector);
     });
   };
+  const focusCommand = command => {
+    const next = moveKeyboardFocus(keyboardFrame, focus, command);
+    if (JSON.stringify(next) === JSON.stringify(focus)) return outcome("unchanged");
+    focus = next; publish("focus"); return outcome("applied");
+  };
+  const activate = (parent = false) => {
+    if (configured.keyboard === null) throw new Error("Activation requires a keyboard binding.");
+    const command = keyboardActivation(keyboardFrame, focus, parent);
+    if (command === null) return outcome("unchanged");
+    transactionSequence = nextInteger(transactionSequence);
+    return edit(interactionTransaction(command, `interaction-${transactionSequence}`));
+  };
   const dispatch = command => {
     live();
     // Inspect the envelope before reading type; queued edits snapshot all payload data.
-    const envelope = options(command, ["type"], ["point", "pointerType", "slop", "hitInvisible", "scene", "version", "generation", "target", "payload", "transactionId", "origin", "causeTransactionId"], "Interaction command");
+    const envelope = options(command, ["type"], ["point", "pointerType", "slop", "hitInvisible", "scene", "version", "generation", "target", "payload", "transactionId", "origin", "causeTransactionId", "itemKey", "move"], "Interaction command");
+    if (envelope.type === "focus") {
+      const owned = normalizeFocusCommand(program, configured.keyboard, envelope);
+      return perform(() => focusCommand(owned));
+    }
+    if (envelope.type === "activate") { options(envelope, ["type"], [], "Activation command"); return perform(() => activate()); }
     if (INTERACTION_HISTORY_TYPES.includes(envelope.type)) {
       const owned = options(envelope, ["type"], ["transactionId", "origin", "causeTransactionId"], "History command");
       transactionSequence = nextInteger(transactionSequence);
@@ -368,10 +408,11 @@ export function createInteractionSession(input) {
       return perform(() => {
         if (c.generation !== generation || c.version <= bridge.getState().version) return outcome("stale");
         let frame = rebindProgramHitFrame(base, scene, c.version, rootTransform);
+        keyboardFrameFor(program, frame);
         if (hasMoving && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
         mounted?.capture?.cancel("updateProgram");
         if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(base, scene, nextInteger(bridge.getState().version), rootTransform);
-        bridge.updateFrame(frame); lastHit = null; publish("frame"); return outcome("applied");
+        setFrame(frame); lastHit = null; publish("frame"); return outcome("applied");
       });
     }
     throw new TypeError("Unsupported interaction command type.");
@@ -418,7 +459,26 @@ export function createInteractionSession(input) {
         const version = nextInteger(bridge.getState().version);
         const frame = rebindProgramHitFrame(base, bridge.getState().scene, version, transform);
         const candidate = createHitFrameBridge(frame);
+        let candidateKeyboard;
+        try { candidateKeyboard = keyboardFrameFor(program, frame); } catch (error) { candidate.dispose(); throw error; }
         try {
+          if (configured.keyboard !== null) {
+            const listener = event => {
+              if (destroyed || mounted !== lease || event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+              // Host controls nested form elements; keyboard handling owns only
+              // the explicit surface, never text entry or descendant controls.
+              if (event.target !== undefined && event.target !== element) return;
+              const command = keyboardKeyCommand(keyboardFrame, focus, event.key);
+              if (command === null) return;
+              perform(() => {
+                if (destroyed || mounted !== lease) return outcome("stale");
+                event.preventDefault();
+                if (event.key === "Escape" && lease.capture?.cancel("Escape")) return outcome("applied");
+                return command.type === "activate" ? activate(command.parent === true) : focusCommand(command);
+              });
+            };
+            lease.listeners.push(["keydown", listener]); element.addEventListener("keydown", listener, { passive: false });
+          }
           for (const binding of configured.inspect) for (const event of binding.type === "contextMenu" ? binding.events : [...binding.events, "pointerleave"]) {
             const listener = event === "pointerleave" ? () => { if (!destroyed && mounted === lease) dispatch({ type: "leave" }); }
               : eventObject => {
@@ -446,7 +506,7 @@ export function createInteractionSession(input) {
             const discard = (token, restore = true) => {
               try {
                 if (token?.raf !== undefined) scheduler.cancelAnimationFrame(token.raf);
-                if (moving && restore && token?.previewed) bridge.updateFrame(rebindProgramHitFrame(base, token.scene, nextInteger(bridge.getState().version), transform));
+                if (moving && restore && token?.previewed) setFrame(rebindProgramHitFrame(base, token.scene, nextInteger(bridge.getState().version), transform));
               }
               finally {
                 if (token) token.raf = undefined; gesture = undefined; previewProgram = null;
@@ -472,9 +532,10 @@ export function createInteractionSession(input) {
                   frame = rebindProgramHitFrame(draft.candidate, draft.candidate.scene, nextInteger(bridge.getState().version), transform);
                   nextInteger(nextInteger(frame.version));
                 } else if (navigating && token.previewed) frame = rebindProgramHitFrame(base, token.scene, nextInteger(bridge.getState().version), transform);
+                if (frame) keyboardFrameFor(draft?.prepared.program ?? program, frame);
                 return () => {
                   previewProgram = next;
-                  if (frame) { bridge.updateFrame(frame); token.previewed = true; lastHit = null; }
+                  if (frame) { setFrame(frame, draft?.prepared.program ?? program); token.previewed = true; lastHit = null; }
                   publish(eventType, { ...details(token, "preview"), affectedOwners: draft?.prepared.affectedOwners ?? freezeOwned([binding.target]) });
                 };
               };
@@ -561,7 +622,7 @@ export function createInteractionSession(input) {
           const navigation = configured.pointers.filter(({ binding }) => binding.type === "navigate");
           if (navigation.length) {
             const navigate = (event, wheel) => {
-              if (destroyed || mounted !== lease || (!wheel && (event.altKey || event.ctrlKey || event.metaKey))) return;
+              if (destroyed || mounted !== lease || event.defaultPrevented || (!wheel && configured.keyboard !== null) || (!wheel && (event.altKey || event.ctrlKey || event.metaKey))) return;
               if (!wheel && !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "+", "=", "-", "_", "Home"].includes(event.key)) return;
               perform(() => {
                 if (destroyed || mounted !== lease) return outcome("stale");
@@ -664,8 +725,11 @@ export function createInteractionSession(input) {
         try { if (mounted !== undefined) detach(mounted); } catch (error) { failure = error; }
         // Detaching an active native preview restores its pre-gesture scene.
         // The new surface must bind that restored scene, not the earlier draft.
-        if (candidate.getState().scene !== bridge.getState().scene) candidate.updateFrame(rebindProgramHitFrame(base, bridge.getState().scene, nextInteger(bridge.getState().version), transform));
-        bridge.dispose(); bridge = candidate; mounted = lease; rootTransform = transform; lastHit = null;
+        if (candidate.getState().scene !== bridge.getState().scene) {
+          const restored = rebindProgramHitFrame(base, bridge.getState().scene, nextInteger(bridge.getState().version), transform);
+          candidateKeyboard = keyboardFrameFor(program, restored); candidate.updateFrame(restored);
+        }
+        bridge.dispose(); bridge = candidate; adoptKeyboardFrame(candidateKeyboard); mounted = lease; rootTransform = transform; lastHit = null;
         try { publish("mount"); } catch (error) { failure ??= error; }
         if (failure) throw failure;
         return outcome("applied");
@@ -678,7 +742,7 @@ export function createInteractionSession(input) {
           let frame = rebindProgramHitFrame(base, bridge.getState().scene, version), failure;
           try { detach(lease); } catch (error) { failure = error; }
           if (frame.scene !== bridge.getState().scene) frame = rebindProgramHitFrame(base, bridge.getState().scene, nextInteger(bridge.getState().version));
-          bridge.updateFrame(frame); mounted = undefined; rootTransform = IDENTITY; lastHit = null;
+          setFrame(frame); mounted = undefined; rootTransform = IDENTITY; lastHit = null;
           try { publish("unmount"); } catch (error) { failure ??= error; }
           if (failure) throw failure;
           return outcome("applied");

@@ -1,3 +1,5 @@
+import { registerMarkItemResolver } from "./materialization/selection/itemResolver.js";
+import { resolveMarkItems } from "./materialization/selection/policies/index.js";
 import { registerGeoLabelAnchorResolver } from "./materialization/textSourceAnchors.js";
 import { geoLabelAnchors } from "./materialization/geo/labelAnchors.js";
 import { registerBuiltinResourceKinds } from "./materialization/resourceKinds.js";
@@ -14,6 +16,8 @@ import { edgeRouteResourceHandler } from "./materialization/graph/routeState.js"
 import { projectionResourceHandler } from "./materialization/geo/projectionState.js";
 
 export class ChartProgram extends CoreChartProgram {}
+
+registerMarkItemResolver(ChartProgram, resolveMarkItems);
 
 registerBuiltinResourceKinds(ChartProgram, { image: imageResourceHandler, hierarchy: hierarchyResourceHandler, layout: layoutResourceHandler, font: fontResourceHandler, graph: graphResourceHandler, geometry: geometryResourceHandler, "edge-route": edgeRouteResourceHandler, projection: projectionResourceHandler });
 registerGeoLabelAnchorResolver(ChartProgram, geoLabelAnchors);

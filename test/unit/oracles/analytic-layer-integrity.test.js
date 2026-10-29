@@ -227,3 +227,25 @@ test("filled Pyramid paths retain nonzero geometry without a stroke", () => {
   }
   assert.throws(() => assertAnalyticLayerIntegrity(zero), /no finite, non-zero geometry/);
 });
+
+
+test("filled Trail ribbons require finite width and height without requiring a stroke", () => {
+  const ribbon = commands => ({
+    semanticSpec: { layers: [{ id: "trail", mark: { type: "trail" } }] },
+    graphicSpec: { objects: { trail: { type: "path", items: [{ properties: {
+      commands, fill: "#2563eb", stroke: "none", strokeWidth: 0
+    } }] } } }
+  });
+  const commands = [
+    { op: "M", x: 0, y: 0 }, { op: "L", x: 20, y: 5 },
+    { op: "L", x: 20, y: 9 }, { op: "L", x: 0, y: 4 }, { op: "Z" }
+  ];
+  assert.equal(assertAnalyticLayerIntegrity(ribbon(commands)).nonDegenerateItemCount, 1);
+  for (const invalid of [
+    [{ op: "M", x: 0, y: 0 }, { op: "L", x: 20, y: 0 }, { op: "Z" }],
+    [{ op: "M", x: 0, y: 0 }, { op: "L", x: 0, y: 20 }, { op: "Z" }],
+    [{ op: "M", x: 4, y: 4 }, { op: "L", x: 4, y: 4 }, { op: "Z" }],
+    commands.map(command => command.x === 20 ? { ...command, x: Infinity } : command),
+    commands.map(command => command.y === 9 ? { ...command, y: NaN } : command)
+  ]) assert.throws(() => assertAnalyticLayerIntegrity(ribbon(invalid)), /no finite, non-zero geometry/);
+});

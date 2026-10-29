@@ -1,5 +1,45 @@
 [
   {
+    "file": "api/animation.md",
+    "block": 1,
+    "heading": "Prepare, save, and sample",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "source: \"rows\""
+    ],
+    "prerequisites": "Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.",
+    "sha256": "c0fca538e59f2d5bd064b0f409e2577f25d2e1ba5af1f071c6a0c030a9e916a7",
+    "executable": true
+  },
+  {
+    "file": "api/animation.md",
+    "block": 2,
+    "heading": "Render the same frame",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "26a9f09fb97fb8488b209de42d800aa60d449631d334c1eeb6d207517fbbfaf3",
+    "executable": false
+  },
+  {
+    "file": "api/animation.md",
+    "block": 3,
+    "heading": "Play with an explicit clock",
+    "mode": "fragment",
+    "environment": "browser-module",
+    "receivers": [
+      "performance"
+    ],
+    "resources": [],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `performance`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "ca79a2c86c14397f823ca1702a66c95996d919157c7e5d3e9aabb0c9350f91bd",
+    "executable": false
+  },
+  {
     "file": "api/appearance/mark-style.md",
     "block": 1,
     "heading": "Outlines and text halos",
@@ -2617,7 +2657,7 @@
       "target: \"factor\""
     ],
     "prerequisites": "Use a Canvas with id chart. Arrow keys on Multiplier update computed data; right-click a point and activate the host selection button.",
-    "sha256": "24f1c61bcd341c58eb5e51c8ca4b2404da0b853a2859c9b1cff314b39f6cd257",
+    "sha256": "985d396067408a32d5e40362ccac8f29ab2c5671113ab5d78eac3753b2e6dfdf",
     "executable": true
   },
   {
@@ -2676,7 +2716,7 @@
       "target: \"layout\""
     ],
     "prerequisites": "Use a Canvas with id chart. Drag either node with a pointer or touch; activate Move first node right with Enter or Space. Escape cancels a drag.",
-    "sha256": "0e7878d2aa67896922db3ce5699c6bec6c04ce36fa6ed9b77ea277f6a7d80669",
+    "sha256": "6fab75ac1026f92312c9d058fae555a9708b13a3394784cd7e87a9da292dff23",
     "executable": true
   },
   {
@@ -2723,6 +2763,57 @@
     ],
     "prerequisites": "Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture.",
     "sha256": "e842dec3d27f8f5aa5c8c90d5c3480801e0f5332ae959cf3fbbadf1001767048",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 25,
+    "heading": "Keyboard item focus",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "selection: \"chosen\"",
+      "target: \"points\""
+    ],
+    "prerequisites": "Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.",
+    "host": "paired-html",
+    "htmlSha256": "47a3c10ee52191151dc7633d054e5c7c7db3b85e919f1656a11175fb1e4bac9d",
+    "sha256": "e8023f8f5184e2dc050252e75cab538932e48ea8326710e1822d028b0c52f10d",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 26,
+    "heading": "Accessible tooltips and touch",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "selection: \"chosen\"",
+      "target: \"points\""
+    ],
+    "prerequisites": "Use this section's HTML and JavaScript together. Hover, focus or tap an item; Escape dismisses its description.",
+    "host": "paired-html",
+    "htmlSha256": "6bc24b86e914dbb7823f2ff0c8b56c64d3b7d9778f4b7920baa1b8c1674f35c5",
+    "sha256": "c5147eb184d5bfbfd1f377f06f875c203d95aad613001dcfc5f0fbf92eb9d8ee",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 27,
+    "heading": "Native control alternatives",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"bars\"",
+      "selection: \"picked\""
+    ],
+    "prerequisites": "Use this section's HTML and JavaScript together. Activate category and history controls with Enter, Space or touch.",
+    "host": "paired-html",
+    "htmlSha256": "4e8bca2df8af6c4b82305a7e5ddb041c22669f0856372cc9cf52aae2fe9e921e",
+    "sha256": "262373f5d1dc5cd6c83e564101d1e95722572cad747d30dfbdc4b88c167f437e",
     "executable": true
   },
   {
@@ -4398,6 +4489,20 @@
   {
     "file": "api/rendering.md",
     "block": 10,
+    "heading": "Native item alternatives",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"bars\""
+    ],
+    "prerequisites": "Use an ES module. The example prints native aggregate values and their named selection membership.",
+    "sha256": "22bea3dcafaec9b10404d3fe8d1d08ee98eaa8e7f177488c8228a30c102ef34e",
+    "executable": true
+  },
+  {
+    "file": "api/rendering.md",
+    "block": 11,
     "heading": "Transition scenes",
     "mode": "fragment",
     "environment": "esm-context",
@@ -4411,7 +4516,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 11,
+    "block": 12,
     "heading": "Canvas transition scenes",
     "mode": "fragment",
     "environment": "browser-module",
@@ -4425,7 +4530,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 12,
+    "block": 13,
     "heading": "Measured text layout",
     "mode": "fragment",
     "environment": "browser-module",
@@ -4437,7 +4542,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 13,
+    "block": 14,
     "heading": "Embedded images",
     "mode": "fragment",
     "environment": "esm-context",
@@ -4452,7 +4557,7 @@
   },
   {
     "file": "api/rendering.md",
-    "block": 14,
+    "block": 15,
     "heading": "Prepared shadows",
     "mode": "complete",
     "environment": "browser-module",

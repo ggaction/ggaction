@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "scope": "private offline codec, frame schedule and shared playback options; no public entry or typed plan restore",
+  "sourceBase": "56ad6a753d084e28ef6d2aea918b3d86dc0e5e57",
+  "sources": [
+    {
+      "path": "src/animation/envelopeCodec.js",
+      "sha256": "cbad5ad7bc3dde627b37347776f79e3e9bce59af15d1a756553fed0f58722668"
+    },
+    {
+      "path": "src/animation/player.js",
+      "sha256": "34d3d516f87484f9891bb200214402473b5cbaa3de112888c0db22ec7690edfc"
+    },
+    {
+      "path": "src/grammar/animation/frameTimes.js",
+      "sha256": "2f528e4375a03230b443147173e429a16e822e222b8dc99858f067fb9ea50d12"
+    },
+    {
+      "path": "src/grammar/animation/playbackOptions.js",
+      "sha256": "8281509f986bd74e13d1f1e6da8e737b1b778688863c3c43f3a626795006fc7f"
+    },
+    {
+      "path": "test/unit/animation/envelope-codec.test.js",
+      "sha256": "b76cd59154a9e6d2766fc4db98bd96568855db702e7bdcb9ee539fff71d8b08e"
+    },
+    {
+      "path": "test/unit/animation/frame-times.test.js",
+      "sha256": "6742b94a9662e22086b485f6572a89115997cd74d5186894f063b84dd9fe4561"
+    },
+    {
+      "path": "test/unit/animation/playback-options.test.js",
+      "sha256": "63bd8ee71605df9698c5e91adaf512c42f73fdc6a707a933d6255214727773a0"
+    },
+    {
+      "path": "scripts/package-artifact.js",
+      "sha256": "a3cb709d67859914f3478326168fb60e3f58f5900d569e5479f0d1a05a0a21b9"
+    },
+    {
+      "path": "scripts/coverage-policy.js",
+      "sha256": "cbc290b252d79f239257090838ce9072244c26a39bc88c45f290e22db050dc56"
+    }
+  ],
+  "checks": {
+    "unit": {
+      "node20": 66,
+      "node22": 66,
+      "node24": 66,
+      "failed": 0
+    },
+    "focusedCoverage": {
+      "tests": 28,
+      "lines": 100,
+      "branches": 98.23,
+      "functions": 100,
+      "familyFloors": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "sourceBoundariesAndPackage": {
+      "passed": 18,
+      "failed": 0
+    },
+    "package": [
+      {
+        "node": "v20.20.2",
+        "entryCount": 1109,
+        "packedBytes": 1580251,
+        "unpackedBytes": 7183760,
+        "shasum": "649e5f761b12b3f31e5ea2db32aa3270cd2029dd"
+      },
+      {
+        "entryCount": 1109,
+        "packedBytes": 1576115,
+        "unpackedBytes": 7183760,
+        "shasum": "61ff931865c959d8b5acb4864e0ac51759e049a2",
+        "node": "v22.23.1"
+      },
+      {
+        "node": "v24.22.1",
+        "entryCount": 1109,
+        "packedBytes": 1580251,
+        "unpackedBytes": 7183760,
+        "shasum": "649e5f761b12b3f31e5ea2db32aa3270cd2029dd"
+      }
+    ]
+  },
+  "initialFailures": [
+    {
+      "log": "animation-frame-times-first.log.gz",
+      "reason": "Extreme literal expected an endpoint larger than duration under the specified frameIndex/fps*1000 arithmetic; replaced with an unambiguous interior duration."
+    },
+    {
+      "log": "animation-frame-times-final.log.gz",
+      "reason": "The decimal near-boundary literal rounded to the actual frame; anchored explicit adjacent binary64 decimal literals instead."
+    },
+    {
+      "log": "animation-envelope-codec-first.log.gz",
+      "reason": "Test read error.code but canonical diagnostics are in getErrorDetails; test-only correction."
+    },
+    {
+      "log": "animation-offline-package-first.log.gz",
+      "reason": "Old cap1065 vs measured1109 entries; new modules add3 over native baseline1106. Three Node measurements set minimum caps1109/1581000/7184000."
+    }
+  ],
+  "deferredKnownBaselineChecks": {
+    "log": "animation-offline-independent-contracts.log.gz",
+    "failures": [
+      "realistic file roster58 vs54",
+      "composition-recipes capability missing"
+    ],
+    "resolution": "Root reports both fixed in combined729a; not duplicated in this branch. All new tests match existing animation capability prefix."
+  },
+  "pending": [
+    "strict planner export/restore with kernel manifest",
+    "public serialize/deserialize/frame exports and declarations",
+    "actual embedded asset fresh-process network-zero typed replay",
+    "same-time canonical scenes and four public renderer consumers",
+    "public installed/browser/docs qualification",
+    "unsupported typed animation families and final roadmap integration"
+  ]
+}

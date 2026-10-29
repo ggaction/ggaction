@@ -817,13 +817,15 @@ This browser module expects `<canvas id="chart" aria-label="Adjustable points"><
 ```js
 import { chart, render } from "ggaction";
 import { createInteractionSession } from "ggaction/interaction";
+import { getMarkItems } from "ggaction/inspection";
 
 const canvas = document.querySelector("#chart");
 const panel = document.createElement("div");
-panel.innerHTML = '<label>Multiplier <input id="multiplier" type="range" min="1" max="4" step="1" value="1"></label> <button id="select-context" hidden>Select this point</button>';
+panel.innerHTML = '<label>Multiplier <input id="multiplier" type="range" min="1" max="4" step="1" value="1"></label> <button id="open-context">Actions for point a</button> <button id="select-context" hidden>Select this point</button>';
 canvas.before(panel);
 const range = panel.querySelector("input");
-const choose = panel.querySelector("button");
+const choose = panel.querySelector("#select-context");
+const open = panel.querySelector("#open-context");
 const program = chart().createCanvas({ width: 400, height: 280 })
   .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 1, y: 3 }, { id: "b", x: 2, y: 6 }] })
   .createParameter({ id: "factor", value: 1 })
@@ -834,7 +836,7 @@ const program = chart().createCanvas({ width: 400, height: 280 })
   .createScatterPlot({ id: "points", x: "x", y: { field: "height", scale: { domain: [0, 30] } }, guides: false })
   .selectMarks({ target: "points", id: "chosen", items: [], empty: "none" })
   .highlightMarks({ selection: "chosen", color: "red" });
-const parameterSession = createInteractionSession({ program, bindings: [{ type: "contextMenu" }] });
+const parameterSession = createInteractionSession({ program, bindings: [{ type: "contextMenu" }, { type: "keyboard", targets: [{ target: "points" }] }] });
 const draw = value => render(value, canvas.getContext("2d"));
 let contextTarget = null;
 const closeMenu = () => { choose.hidden = true; contextTarget = null; };
@@ -848,6 +850,13 @@ const unsubscribe = parameterSession.subscribe(event => {
 });
 const change = () => parameterSession.dispatch({ type: "setParameter", target: "factor",
   payload: { value: range.valueAsNumber }, origin: "user" });
+const openActions = () => {
+  const item = getMarkItems(parameterSession.getState().program, { target: "points" }).find(item => item.fields.id === "a");
+  if (!item) return;
+  parameterSession.dispatch({ type: "focus", target: "points", itemKey: item.key });
+  const point = parameterSession.getState().focus?.screenPoint;
+  if (point) parameterSession.dispatch({ type: "contextMenu", point });
+};
 const select = () => {
   if (!contextTarget) return;
   parameterSession.dispatch({ type: "select", target: { id: contextTarget.ownerId, childPath: contextTarget.childPath },
@@ -857,6 +866,7 @@ const select = () => {
 const escape = event => { if (event.key === "Escape") { closeMenu(); range.focus(); } };
 range.addEventListener("input", change);
 choose.addEventListener("click", select);
+open.addEventListener("click", openActions);
 panel.addEventListener("keydown", escape);
 draw(program);
 const unmount = parameterSession.mount(canvas);
@@ -864,11 +874,14 @@ const unmount = parameterSession.mount(canvas);
 const disposeControls = () => {
   range.removeEventListener("input", change);
   choose.removeEventListener("click", select);
+  open.removeEventListener("click", openActions);
   panel.removeEventListener("keydown", escape);
   unsubscribe(); unmount(); parameterSession.destroy(); panel.remove();
 };
 ```
 
+The Actions for point a button uses that native item's exact current-frame focus point. It works with
+Enter, Space or touch, and the same selection action is available without a right-click or hover.
 A host keyboard menu can send `dispatch({type:"contextMenu",point:{x,y}})` using its focused item's
 current CSS-local point. The session supplies all overlapping candidates, including guide roles, and the
 host decides which commands are applicable. It does not infer a focused item or menu policy. Without a
@@ -1066,7 +1079,7 @@ import { createInteractionSession } from "ggaction/interaction";
 const canvas = document.querySelector("#chart");
 canvas.style.touchAction = "none";
 const controls = document.createElement("div");
-controls.innerHTML = '<button id="node-right">Move first node right</button> <output aria-live="polite"></output>';
+controls.innerHTML = '<button id="node-right">Move first node right</button> <button id="node-second-right">Move second node right</button> <output aria-live="polite"></output>';
 canvas.before(controls);
 const program = chart().createCanvas({ width: 400, height: 280, margin: 0 })
   .createData({ id: "nodes", keyField: "id", values: [{ id: "first", group: "pair" }, { id: "second", group: "pair" }] })
@@ -1079,12 +1092,19 @@ const draw = current => {
   render(current, canvas.getContext("2d"));
   const { x, y } = first(current).properties;
   controls.querySelector("output").textContent = `First node: ${x}, ${y}`;
+  const second = getMarkItems(current, { target: "network" }).find(item => item.fields.kind === "node" && item.fields.key === "second");
+  controls.querySelector("#node-second-right").textContent = `Move second node right (${second.properties.x}, ${second.properties.y})`;
 };
 const moveRight = () => {
   const { x, y } = first(nodeSession.getState().program).properties;
   nodeSession.dispatch({ type: "moveNode", target: "layout", payload: { key: "first", x: x + 20, y }, origin: "user" });
 };
+const moveSecondRight = () => {
+  const second = getMarkItems(nodeSession.getState().program, { target: "network" }).find(item => item.fields.kind === "node" && item.fields.key === "second");
+  nodeSession.dispatch({ type: "moveNode", target: "layout", payload: { key: "second", x: second.properties.x + 20, y: second.properties.y }, origin: "user" });
+};
 controls.querySelector("button").addEventListener("click", moveRight);
+controls.querySelector("#node-second-right").addEventListener("click", moveSecondRight);
 const unsubscribe = nodeSession.subscribe(event => {
   if (event.type === "program" || "phase" in event) draw(event.state.previewProgram ?? event.state.program);
 });
@@ -1092,10 +1112,12 @@ draw(program);
 const unmount = nodeSession.mount(canvas);
 const disposeNodeControls = () => {
   controls.querySelector("button").removeEventListener("click", moveRight);
+  controls.querySelector("#node-second-right").removeEventListener("click", moveSecondRight);
   unsubscribe(); unmount(); nodeSession.destroy(); controls.remove();
 };
 ```
 
+Both native nodes have an ordinary button alternative to dragging.
 The example uses an explicit origin so moving a node does not recenter the whole graph. Circular and
 flow layouts do not accept node movement. Gesture cancellation releases capture and redraws the prior
 program. Preview hit frames track the same visible geometry; read the session's current `frameVersion`
@@ -1260,3 +1282,324 @@ There are at most256 editing bindings and259 total records. A click clear-on-mis
 command; use `onMiss:"ignore"` when a miss should fall through. Wheel and keyboard arbitrate navigation
 bindings, while native Ctrl/Meta/Alt shortcuts remain with the host. SVG hosts keep the root during a drag
 and remount when replacing it. Call `disposeGestures()` when removing this view.
+
+## Keyboard item focus
+
+A keyboard binding navigates native logical items that are painted in the accepted current frame.
+It respects clipping, opacity, nested scopes and geographic representations. Focus alone changes no
+program or history. Enter or Space executes an explicitly configured native selection; partition
+activation can instead use `activation: { type: "focusHierarchy" }`.
+
+```html
+<div id="item-focus" role="listbox" aria-label="Measurements" tabindex="0"
+     style="position:relative;width:360px;height:240px">
+  <canvas id="item-canvas" aria-label="Measurements" aria-hidden="true"></canvas>
+  <span id="item-ring" aria-hidden="true" style="position:absolute;pointer-events:none;border:2px solid #111;border-radius:50%;width:16px;height:16px;display:none"></span>
+  <div id="item-options" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)"></div>
+</div>
+```
+
+> **Executable complete.** Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.
+
+```javascript
+import { chart } from "ggaction";
+import { exportAccessibleData } from "ggaction/accessibility";
+import { createInteractionSession } from "ggaction/interaction";
+import { renderTransitionScene } from "ggaction/scene";
+
+const program = chart().createCanvas({ width: 360, height: 240 })
+  .createData({ id: "rows", keyField: "name", values: [
+    { name: "A", x: 1, y: 2 }, { name: "B", x: 2, y: 3 }
+  ] })
+  .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+  .selectMarks({ id: "chosen", items: [], empty: "none" })
+  .highlightMarks({ selection: "chosen", color: "#dc2626", dimOthers: false });
+const surface = document.querySelector("#item-focus");
+const canvas = document.querySelector("#item-canvas");
+const ring = document.querySelector("#item-ring");
+const descriptions = document.querySelector("#item-options");
+const keyboardSession = createInteractionSession({ program, bindings: [{
+  type: "keyboard", targets: [{ target: "points", activation: {
+    type: "select", selection: "chosen", mode: "toggle"
+  } }]
+}] });
+const drawFocus = state => {
+  renderTransitionScene(state.scene, canvas.getContext("2d"));
+  const items = exportAccessibleData(state.program, { format: "items", target: "points" }).views[0].items;
+  descriptions.replaceChildren();
+  surface.removeAttribute("aria-activedescendant");
+  items.forEach((item, index) => {
+    const option = document.createElement("span");
+    option.id = `measurement-${index}`;
+    option.setAttribute("role", "option");
+    option.setAttribute("aria-selected", String(item.selectedBy.includes("chosen")));
+    option.textContent = `${item.fields.name}: x ${item.fields.x}, y ${item.fields.y}`;
+    descriptions.append(option);
+    if (state.focus?.currentItemKey === item.key) surface.setAttribute("aria-activedescendant", option.id);
+  });
+  const point = state.focus?.screenPoint;
+  ring.style.display = point ? "block" : "none";
+  if (point) { ring.style.left = `${point.x - 10}px`; ring.style.top = `${point.y - 10}px`; }
+};
+const unsubscribeKeyboard = keyboardSession.subscribe(event => drawFocus(event.state));
+const unmountKeyboard = keyboardSession.mount(surface);
+drawFocus(keyboardSession.getState());
+const disposeKeyboard = () => { unmountKeyboard(); unsubscribeKeyboard(); keyboardSession.destroy(); };
+```
+
+The controller keeps a stable authored key when exactly one current geographic item represents it.
+If the item becomes hidden, fully clipped, transparent, deleted or ambiguous, focus returns to its
+configured owner container; the host clears `aria-activedescendant`. The native program remains the
+source for descriptions, selected state and restored data. Use explicit `{childPath,id}` targets for
+nested charts and opaque scoped item keys from `exportAccessibleData` or inspection.
+
+Headless hosts can dispatch `{type:"focus",move:"first"}`, `{type:"focus",target:"points",itemKey}`
+or `{type:"activate"}`. Moves are next, previous, first, last, parent, firstChild, previousSibling,
+nextSibling and root. The hierarchy moves follow native navigation metadata. On a hierarchy item,
+Left/Right visit parent/first child, Up/Down visit siblings, Home visits root, and Escape invokes the
+configured partition parent's native focus. Unavailable neighbors are unchanged. Tab and modified
+keys stay with the host; nested text controls are never intercepted. A keyboard binding takes the
+surface's key navigation role when a camera navigation binding is also present; wheel and drag remain
+with that camera binding. For independent keyboard camera controls, use a separate focusable surface.
+
+Focus uses current paint and clip footprints. Text retains its metric-box hit policy. PNG and PDF
+exports are static; the same accessible item snapshot can accompany them without installing listeners.
+
+## Accessible tooltips and touch
+
+Tooltips are host UI. Combine native item descriptions with the same pointer inspection and keyboard
+focus state; never insert a field value as HTML. This complete example exposes three descriptions,
+including the two overlapping points, through a focusable listbox. Hover or focus opens a tooltip;
+Escape closes that description until the pointer or focused item changes. A click or touch tap focuses
+and toggles the native selection, so touch does not depend on hover. The host owns tooltip dismissal;
+it does not create a second selection or history store.
+
+```html
+<div id="accessible-chart" role="listbox" aria-label="Observations" tabindex="0"
+     style="position:relative;width:420px;height:300px">
+  <canvas id="accessible-canvas" aria-label="Observations" aria-hidden="true"></canvas>
+  <div id="accessible-options" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)"></div>
+  <span id="accessible-ring" aria-hidden="true" style="display:none;position:absolute;pointer-events:none;width:16px;height:16px;border:2px solid #111;border-radius:50%"></span>
+</div>
+<div style="height:4em;position:relative">
+  <p id="accessible-tooltip" role="tooltip" hidden style="position:absolute;margin:0;max-height:4em;overflow:auto"></p>
+</div>
+<button id="accessible-hide" type="button">Hide A</button>
+<button id="accessible-dispose" type="button">Remove interactions</button>
+```
+
+> **Executable complete.** Use this section's HTML and JavaScript together. Hover, focus or tap an item; Escape dismisses its description.
+
+```javascript
+import { chart } from "ggaction";
+import { exportAccessibleData } from "ggaction/accessibility";
+import { createInteractionSession } from "ggaction/interaction";
+import { renderTransitionScene } from "ggaction/scene";
+
+const program = chart().createCanvas({ width: 420, height: 300, margin: 70 })
+  .createData({ id: "rows", keyField: "name", values: [
+    { name: "A", x: 2, y: 3 }, { name: "B", x: 8, y: 7 }, { name: "C", x: 2, y: 3 }
+  ] })
+  .createPointMark({ id: "points" })
+  .encodeX({ field: "x", scale: { domain: [0, 10], nice: false } })
+  .encodeY({ field: "y", scale: { domain: [0, 10], nice: false } })
+  .selectMarks({ id: "chosen", items: [], empty: "none" })
+  .highlightMarks({ selection: "chosen", color: "#dc2626", dimOthers: false, bringToFront: false });
+const surface = document.querySelector("#accessible-chart");
+const canvas = document.querySelector("#accessible-canvas");
+const options = document.querySelector("#accessible-options");
+const tooltip = document.querySelector("#accessible-tooltip");
+const ring = document.querySelector("#accessible-ring");
+const hideButton = document.querySelector("#accessible-hide");
+const disposeButton = document.querySelector("#accessible-dispose");
+const accessibleSession = createInteractionSession({ program, bindings: [
+  { type: "inspect", slop: 0 },
+  { type: "keyboard", targets: [{ target: "points", activation: {
+    type: "select", selection: "chosen", mode: "toggle"
+  } }] }
+] });
+let live = true, pointerKey = null, shownKey = null, dismissedKey = null, overTooltip = false, previousProgram, previousScene;
+const describe = item => `${item.fields.name}: x ${item.fields.x}, y ${item.fields.y}. ${item.selectedBy.includes("chosen") ? "Selected" : "Not selected"}.`;
+const drawAccessible = event => {
+  const state = event.state;
+  if (event.type === "inspect" && !overTooltip) pointerKey = state.hit?.target?.ownerId === "points" ? state.hit.target.itemKey : null;
+  else if ((event.type === "leave" && !overTooltip) || event.type === "focus" || state.program !== previousProgram || event.type === "frame") pointerKey = null;
+  if (state.scene !== previousScene) renderTransitionScene(state.scene, canvas.getContext("2d"));
+  previousScene = state.scene; previousProgram = state.program;
+  const items = exportAccessibleData(state.program, { format: "items" }).views.find(view => view.ownerId === "points")?.items ?? [];
+  options.replaceChildren(); surface.removeAttribute("aria-activedescendant");
+  items.filter(item => item.visible).forEach((item, index) => {
+    const option = document.createElement("span"); option.id = `observation-${index}`;
+    option.setAttribute("role", "option"); option.setAttribute("aria-selected", String(item.selectedBy.includes("chosen")));
+    option.textContent = describe(item); options.append(option);
+    if (item.key === state.focus?.currentItemKey) surface.setAttribute("aria-activedescendant", option.id);
+  });
+  const focusKey = document.activeElement === surface ? state.focus?.currentItemKey : null;
+  const selected = items.find(item => item.visible && item.key === (pointerKey ?? focusKey));
+  const nextKey = selected?.key ?? null;
+  if (nextKey !== shownKey) dismissedKey = null;
+  shownKey = nextKey; tooltip.hidden = selected === undefined || dismissedKey === nextKey;
+  tooltip.textContent = selected ? describe(selected) : "";
+  if (tooltip.hidden) surface.removeAttribute("aria-describedby");
+  else surface.setAttribute("aria-describedby", tooltip.id);
+  const point = state.focus?.screenPoint; ring.style.display = point ? "block" : "none";
+  if (point) { ring.style.left = `${point.x - 10}px`; ring.style.top = `${point.y - 10}px`; }
+};
+const dismissTooltip = event => {
+  if (event.key !== "Escape" || tooltip.hidden) return;
+  dismissedKey = shownKey; tooltip.hidden = true; surface.removeAttribute("aria-describedby");
+  event.preventDefault(); // Capture phase dismisses the tooltip before native hierarchy Escape.
+};
+const activatePointer = () => {
+  const hit = accessibleSession.getState().hit?.target;
+  if (hit?.ownerId !== "points") return;
+  surface.focus({ preventScroll: true });
+  accessibleSession.dispatch({ type: "focus", target: "points", itemKey: hit.itemKey });
+  accessibleSession.dispatch({ type: "activate" });
+};
+const hideA = () => {
+  const result = accessibleSession.updateProgram(accessibleSession.getState().program
+    .filterMarks({ target: "points", field: "name", op: "neq", value: "A" }));
+  if (result.status === "applied") hideButton.disabled = true;
+};
+const leaveSurface = event => { overTooltip = !tooltip.hidden && tooltip.contains(event.relatedTarget); };
+const enterTooltip = () => { overTooltip = true; };
+const leaveTooltip = () => { overTooltip = false; pointerKey = null; drawAccessible({ state: accessibleSession.getState() }); };
+const updateFocusDescription = () => drawAccessible({ state: accessibleSession.getState() });
+const unsubscribeAccessible = accessibleSession.subscribe(drawAccessible);
+// This listener runs before session pointerleave so the tooltip can remain hoverable.
+surface.addEventListener("pointerleave", leaveSurface);
+const unmountAccessible = accessibleSession.mount(surface);
+// Mount inspection first: click/tap then reads the exact current hit, with no delayed callback.
+surface.addEventListener("click", activatePointer);
+window.addEventListener("keydown", dismissTooltip, true);
+surface.addEventListener("focus", updateFocusDescription); surface.addEventListener("blur", updateFocusDescription);
+tooltip.addEventListener("pointerenter", enterTooltip); tooltip.addEventListener("pointerleave", leaveTooltip);
+hideButton.addEventListener("click", hideA);
+const disposeAccessible = () => {
+  if (!live) return; live = false;
+  surface.removeEventListener("click", activatePointer);
+  window.removeEventListener("keydown", dismissTooltip, true);
+  surface.removeEventListener("pointerleave", leaveSurface);
+  surface.removeEventListener("focus", updateFocusDescription); surface.removeEventListener("blur", updateFocusDescription);
+  tooltip.removeEventListener("pointerenter", enterTooltip); tooltip.removeEventListener("pointerleave", leaveTooltip);
+  hideButton.removeEventListener("click", hideA);
+  disposeButton.removeEventListener("click", disposeAccessible);
+  window.removeEventListener("pagehide", disposeAccessible);
+  unmountAccessible(); unsubscribeAccessible(); accessibleSession.destroy();
+  tooltip.hidden = true; tooltip.textContent = ""; ring.style.display = "none";
+  surface.removeAttribute("aria-describedby"); surface.removeAttribute("aria-activedescendant");
+};
+disposeButton.addEventListener("click", disposeAccessible);
+window.addEventListener("pagehide", disposeAccessible);
+drawAccessible({ state: accessibleSession.getState() });
+```
+
+The tooltip is ordinary text beside the chart and remains available when the pointer moves into that
+text. Escape and native focus changes dismiss or replace it without a timer. Tab is never trapped, and nested host controls keep their
+own keyboard behavior. Filtering updates the native descriptions and selected state before the host
+reads them. The item-focus example above explains owner fallback and geographic representations.
+Use a similarly explicit list of native controls for camera, legend visibility and other commands;
+those controls must dispatch through the same session reducer and cleanup their own listeners.
+Public animation and reduced-motion playback integration remain separate from this static host recipe.
+
+## Native control alternatives
+
+Provide native HTML controls for each editing task instead of requiring a gesture on a painted mark.
+These buttons use the same selection, visibility, filter, category-order and history commands as pointer
+bindings. Category controls remain present when their items are hidden, so showing a category does not
+require finding an invisible mark. The description is rebuilt from the committed native snapshot;
+button focus stays on the same DOM element after every edit.
+
+```html
+<fieldset id="native-controls">
+  <legend>Category controls</legend>
+  <button type="button" id="choose-a">Select A</button>
+  <button type="button" id="choose-b">Select B</button>
+  <button type="button" id="clear-picked">Clear selection</button>
+  <button type="button" id="hide-a">Hide A</button>
+  <button type="button" id="show-a">Show A</button>
+  <button type="button" id="hide-b">Hide B</button>
+  <button type="button" id="show-b">Show B</button>
+  <button type="button" id="only-b">Filter to B</button>
+  <button type="button" id="clear-filter">Remove filter</button>
+  <button type="button" id="reverse-categories">B before A</button>
+  <button type="button" id="clear-order">Original order</button>
+  <button type="button" id="undo-control">Undo</button>
+  <button type="button" id="redo-control">Redo</button>
+  <button type="button" id="reset-control">Reset</button>
+</fieldset>
+<canvas id="controlled-chart" aria-label="Category totals"></canvas>
+<p id="control-summary" role="status" aria-live="polite"></p>
+```
+
+> **Executable complete.** Use this section's HTML and JavaScript together. Activate category and history controls with Enter, Space or touch.
+
+```javascript
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+import { exportAccessibleData } from "ggaction/accessibility";
+
+const program = chart().createCanvas({ width: 420, height: 300, margin: 70 })
+  .createData({ id: "rows", values: [{ category: "A", value: 2 }, { category: "B", value: 5 }] })
+  .createBarPlot({ id: "bars", x: "category", y: "value", color: "category", guides: false })
+  .createLegend({ target: "bars", channels: ["color"] })
+  .selectMarks({ target: "bars", id: "picked", items: [], empty: "none" })
+  .highlightMarks({ selection: "picked", color: "#c62828", dimOthers: false, bringToFront: false });
+const controlSession = createInteractionSession({ program, bindings: [], selectionPolicy: "keep-hidden" });
+const panel = document.querySelector("#native-controls");
+const canvas = document.querySelector("#controlled-chart");
+const summary = document.querySelector("#control-summary");
+const commands = [
+  ["choose-a", { type: "select", target: "bars", payload: { id: "picked", select: { field: "category", op: "eq", value: "A" } } }],
+  ["choose-b", { type: "select", target: "bars", payload: { id: "picked", select: { field: "category", op: "eq", value: "B" } } }],
+  ["clear-picked", { type: "clearSelection", target: "bars", payload: { id: "picked" } }],
+  ["hide-a", { type: "setVisibility", target: "bars", payload: { channel: "color", values: ["A"], visible: false, scaleDomain: "all-data" } }],
+  ["show-a", { type: "setVisibility", target: "bars", payload: { channel: "color", values: ["A"], visible: true, scaleDomain: "all-data" } }],
+  ["hide-b", { type: "setVisibility", target: "bars", payload: { channel: "color", values: ["B"], visible: false, scaleDomain: "all-data" } }],
+  ["show-b", { type: "setVisibility", target: "bars", payload: { channel: "color", values: ["B"], visible: true, scaleDomain: "all-data" } }],
+  ["only-b", { type: "filter", target: "bars", payload: { select: { field: "category", op: "eq", value: "B" }, mode: "replace" } }],
+  ["clear-filter", { type: "filter", target: "bars", payload: { clear: true } }],
+  ["reverse-categories", { type: "reorder", target: "bars", payload: { channel: "x", values: ["B", "A"] } }],
+  ["clear-order", { type: "reorder", target: "bars", payload: { channel: "x", clear: true } }],
+  ...["undo", "redo", "reset"].map(type => [`${type}-control`, { type }])
+];
+const drawControls = () => {
+  const state = controlSession.getState();
+  render(state.program, canvas.getContext("2d"));
+  const items = exportAccessibleData(state.program, { format: "items", target: "bars" }).views[0].items;
+  summary.textContent = items.length ? items.map(item => `${item.fields.category}: ${item.fields.value}${item.selectedBy.includes("picked") ? ", selected" : ""}`).join("; ") : "No visible categories";
+  panel.querySelector("#choose-a").disabled = !items.some(item => item.fields.category === "A");
+  panel.querySelector("#choose-b").disabled = !items.some(item => item.fields.category === "B");
+  panel.querySelector("#undo-control").disabled = state.history.undoCount === 0;
+  panel.querySelector("#redo-control").disabled = state.history.redoCount === 0;
+};
+const listeners = commands.map(([id, command]) => {
+  const button = panel.querySelector(`#${id}`);
+  const activate = () => controlSession.dispatch({ ...command, origin: "user" });
+  button.addEventListener("click", activate);
+  return () => button.removeEventListener("click", activate);
+});
+const unsubscribeControls = controlSession.subscribe(event => {
+  if (event.type === "program" || event.phase === "commit") drawControls();
+});
+const disposeNativeControls = () => {
+  listeners.forEach(remove => remove()); unsubscribeControls(); controlSession.destroy(); panel.disabled = true;
+  window.removeEventListener("pagehide", disposeNativeControls);
+};
+window.addEventListener("pagehide", disposeNativeControls);
+drawControls();
+```
+
+Enter, Space and a touch tap activate the same button handler. Hiding a category preserves the user
+filter; showing it does not clear that filter. Removing the filter preserves visibility. With
+`keep-hidden`, a surviving selection reappears when its category returns. Undo and redo restore the
+native snapshots; Reset restores the initial chart, while Clear selection changes membership alone.
+
+Use the labeled [parameter input](../../../api/interaction/#connect-parameter-inputs-and-a-context-action),
+[partition buttons](../../../api/interaction/#navigate-a-partition-view-from-host-controls),
+[map buttons](../../../api/interaction/#adjust-a-geographic-view-from-host-controls),
+[node controls](../../../api/interaction/#move-graph-nodes-with-pointer-or-keyboard) and
+[annotation controls](../../../api/interaction/#edit-existing-annotations) for those editing tasks. Provide context actions from
+a keyboard-accessible or touch button as well as a pointer menu. These are host controls; the library
+keeps one command, preparation, selection and history path and does not create DOM widgets.

@@ -1,3 +1,5 @@
+import { createMarginal } from "./marginal/program.js";
+import { createBullet } from "./bullet/program.js";
 import { createGeographicMarks } from "./geographic-marks/program.js";
 import { createTable } from "./table/program.js";
 import { createTrail } from "./trail/program.js";
@@ -321,6 +323,10 @@ export const PUBLIC_CHARTS = Object.freeze([
   example({ id: "streamgraph", data: {}, width: 380, height: 280, docsGroup: "tutorials", createProgram: createStreamgraph,
     browser: { path: "streamgraph/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "streamgraph", width: 380, height: 280 } } }
   }),
+  example({ id: "marginal", data: {}, width: 472, height: 400, docsGroup: "tutorials", createProgram: () => createMarginal(),
+    browser: { path: "marginal/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "marginal", width: 472, height: 400 } } } }),
+  example({ id: "bullet", data: {}, width: 360, height: 160, docsGroup: "tutorials", createProgram: () => createBullet(),
+    browser: { path: "bullet/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "bullet", width: 360, height: 160 } } } }),
   example({ id: "table", data: {}, width: 360, height: 220, docsGroup: "tutorials", createProgram: createTable,
     browser: { path: "table/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "table", width: 360, height: 220 } } }
   }),

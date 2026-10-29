@@ -44,6 +44,7 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 | `ggaction/accessibility` | `src/accessibility.js` | `types/accessibility.d.ts` |
 | `ggaction/inspection` | `src/inspection.js` | `types/inspection.d.ts` |
 | `ggaction/scene` | `src/scene.js` | `types/scene.d.ts` |
+| `ggaction/animation` | `src/animation.js` | `types/animation.d.ts` |
 | `ggaction/graph` | `src/graph.js` | `types/graph.d.ts` |
 | `ggaction/interaction` | `src/interaction.js` | `types/interaction.d.ts` |
 
@@ -764,7 +765,7 @@ Facet은 기존100-child 전용 ceiling 대신 공통 generated-item/work budget
 
 ### `ggaction/accessibility`
 
-`src/accessibility.js`의 read-only `ggaction/accessibility` entry는 기존 final-item selection adapter 및 pure path series 계산을 사용하여 시각적 grain의 데이터를 반환한다. Renderer나 DOM을 실행하지 않고 원본 행을 최종 표로 대체하지 않는다. 안정적인 composite owner 관계는 `src/selectors/markOwners.js`를 mark removal과 공유한다. 결과의 정확한 schema와 제한은 [Rendering](../docs/api/rendering.md#accessible-data-alternatives)이 소유한다.
+`src/accessibility.js`의 read-only `ggaction/accessibility` entry는 기존 final-item selection adapter 및 pure path series 계산을 사용하여 시각적 grain의 데이터를 반환한다. Renderer나 DOM을 실행하지 않고 원본 행을 최종 표로 대체하지 않는다. 안정적인 composite owner 관계는 `src/selectors/markOwners.js`를 mark removal과 공유한다. 항목 모드는 `accessibilityItems.js`가 같은 native policy 및 Full의 고정 selection resolver를 읽어 중첩 namespace·선택 membership·논리적 visibility를 투영한다. DOM/renderer/Full action import 없이 bounded read-only adapter를 유지한다. 결과의 정확한 schema와 제한은 [ACCESSIBILITY](contract/current/ACCESSIBILITY.md)가 소유하며 [Rendering](../docs/api/rendering.md#accessible-data-alternatives)이 공개 사용 예를 제공한다.
 
 ### `ggaction/inspection`
 
@@ -3117,7 +3118,17 @@ facet guide reuse avoids rebuilding completed panels without changing exports or
 explicit guide creation semantics. This is a measured correctness-feature allowance,
 not a bundle optimization claim.
 
-## 읽기 전용 전환 장면과 외부 재생기
+## 읽기 전용 전환 장면과 애니메이션
+
+현재 공개 `ggaction/animation`은 계획·sampling·명시 clock player·offline envelope·frame export를
+소유한다. `src/animation.js`와 `types/animation.d.ts`가 한 entry이며, 아래 외부 재생기 설명은
+이전 scene-only 단계의 경계다. `ANIMATION.md`의 현재계약으로 확장되었다.
+계획은 semantic point 준비를 공유 materialization owner에서 읽고 renderer는 결과 graphicSpec만
+읽는다. offline payload 검증은 planner의 단일 export/restore, tagged encoding과64MiB 예산은
+envelope codec, 재생 preferences와시간목록은 grammar owner로 분리된다. controller clock·
+callback·Promise·frame provenance는 runtime만 소유하며 ChartProgram 상태로 저장하지 않는다.
+공개 내보내기 결과는 네 renderer가 직접 받을 graphicSpec과 scene을 함께 제공한다.
+정확 API·지원범위·오류는 [Current](contract/current/ANIMATION.md)가 소유한다.
 
 사용자가 2026-10-22 승인한 분리 구조에 따라 `ggaction/scene`의
 `createTransitionScene(program)`은 버전 1 장면 계약을 제공한다. 기존 selection의
@@ -3160,6 +3171,12 @@ semanticSpec·trace·authoring config는 읽지 않으며, 실제 저장된 item
 대응 근거로 사용한다. scene의 anonymous fallback key는 correspondence가 아니다.
 lineage·topology·namespace·offset·clip과 실제 graphic payload를 보존한다. 이는 private
 planner의 입력 준비이며 typed compatibility·중간 장면·offline animation schema는 후속 의무다.
+오프라인 준비의 내부 `animation/envelopeCodec.js`는 기존 tagged codec과 digest를 사용하며
+직접 계획 의미나 kernel 호환성을 승인하지 않는다. 의미 payload의 export/restore는 planner의
+단일 검증 경계에 남는다. frame 시각 계산과 playback 기본값·저장 표현은 각각 순수 grammar
+owner에 두며, 기존 controller가 같은 playback 옵션 정규화를 재사용한다. 공개 entry와
+실제 typed offline replay는 이 내부 준비 뒤의 결합 의무이며 정확 범위는
+[STEP064 기록](impl/roadmap9/animation/STEP064.md)을 따른다.
 Node22 canonical staging 측정은 1065 entries/1516293 packed/6912702 unpacked bytes이며,
 최소 상한 1065/1517000/6913000을 적용한다. 공개 entry와 browser bundle 경계는 그대로다.
 
@@ -3199,6 +3216,18 @@ Node20/24에서는1,608,202packed bytes다. 최소 한도1124/1,609,000/7,290,00
 Node22 canonical package는1066entries/1,517,992packed/6,918,212unpacked bytes다.
 새 내부 모듈1개를 포함하도록 최소 한도1066/1,518,000/6,919,000을 적용하고
 공개 entry와 browser bundle cap은 유지한다.
+
+Typed playback의 `animation/createPlayer.js`는 기존 controller에 planner와 sampler만
+주입한다. clock·예약·run Promise의 정본은 계속 controller 하나이며, queued interruption의
+준비 실패는 현재 run과 다음 예약을 보존한다. 목표와 전환 옵션은 queue 진입 전에 공통
+endpoint/options owner로 검사한다. 공개 entry와 offline 계약은 같은 기능의 후속 합산에서 연결한다.
+
+`animation/frameProvenance.js`는 sampler와 hit consumer가 공유하는 private WeakMap 연결만
+소유하며 frame의 직렬화 표면에는 상태를 추가하지 않는다. `interaction/hitProgram.js`의 좁은
+직접 import는 이 경량 owner에 한정한다. Planner·solver·renderer를 interaction으로 가져오지 않는다.
+현재 native frame hit은 원 endpoint의 metadata와 준비된 Text metric을 재사용하고, weighted
+표현의 각 source metric과 같은 논리 항목의 단일 hit을 보존한다. Offline frame의 native metadata,
+session publication·asset lease 및 반복 interruption의 retention 검증은 후속 의무다.
 
 ### Cartesian title label-relative offset measurement
 
@@ -4378,3 +4407,66 @@ clean candidate qualification을 대신하지 않는다.
 
 Geo winding의 현재 공개 옵션과 원본 유지 설명을 합친 검색 payload는1,066,690bytes다.
 이전1,066,100 한도 실패를 보존하고 최소100byte 단위1,066,700을 적용한다.
+
+Marginal·Bullet·Combo의 native public recipe와 Geo winding·interaction 합산 검색 payload는
+1,073,688bytes다. 독립 recipe 한도1,072,000을 넘으므로 최소100byte 단위1,073,700을
+적용한다. 새 authoring API·runtime 모듈·저장 구조는 추가하지 않고 기존 domain action을 조합한다.
+
+논리적 native item 대체 값은 기존 selection/identity owner를 재사용하는 browser-safe
+accessibilityItems owner1개에 모으며 화면상의 가시성과는 구분한다. 합산 Node22 package는
+1114entries/1,587,160packed/7,225,523unpacked bytes다. 최소 한도
+1114/1,588,000/7,226,000을 적용한다. 정확한 공개 형식은 Current ACCESSIBILITY가 소유한다.
+
+Accessible items와 stable owner 오류 설명을 합친 검색 payload는1,074,243bytes다.
+이전1,073,700 한도를 넘으므로 최소100byte 단위1,074,300을 적용한다. 같은 package의
+기존5개 browser entry는 앞선 합산과 byte 단위로 같으며 새 accessibility owner를 import하지 않는다.
+
+Private partition typed track과 native frame의 raw→bend→CSS gap 순서를 합친 Node22
+package는1115entries/1,589,127packed/7,233,578unpacked bytes다. 새 grammar owner1개와
+기존 adapter/bend/mapping/frame의 재사용에 최소 한도1115/1,590,000/7,234,000을 적용한다.
+
+Native scope 정책과 accessible items를 합친 검색 payload는1,074,694bytes다.
+이전1,074,300 한도 실패를 보존하고 최소100byte 단위1,074,700으로 조정한다.
+새 runtime 모듈이나 공개 package entry는 추가하지 않는다.
+
+### Keyboard focus projection
+
+`interaction/keyboardFocus.js`는 명시 scoped native layer의 final items를 exact accepted frame의
+prepared paint/clip footprint와 결합한다. 공유 hit geometry owner의 boundary subdivision으로
+CSS anchor를 계산하며 별도 renderer geometry나 endpoint 추정을 만들지 않는다. Session은
+후보 model을 program/history commit 전에 검사하고 runtime focus만 보존·복원한다. native 선택과
+partition focus activation은 기존 command reducer·asset preparation·history를 그대로 통과한다.
+명시 host surface의 키 listener와 읽기전용 focus state만 소유하며 DOM/ARIA/description은 host가
+소유한다. 공개 값과 fallback 정책은 [INTERACTION](contract/current/INTERACTION.md#keyboard-focus-and-native-activation)이 소유한다.
+
+Full and Basic assemblies register their existing native final-item reader once per
+exact constructor in `materialization/selection/itemResolver.js`. Interaction reads
+this fixed private boundary; it does not import the complete native mark policy graph.
+This adds neither a public registration API nor another selection implementation.
+Final staging measured 1,064 entries / 1,512,831
+packed / 6,874,696 unpacked (bounds 1,064 / 1,512,900 / 6,874,700). The corrected
+Node20 Full bundle is 732,895 gzip bytes (732,900 bound) and interaction is 126,826
+(126,900 bound); Basic 385,729, SVG 20,196 and graph 44,045 retain existing bounds.
+The host example search payload is 1,039,320 bytes with a 1,039,400 bound.
+Original failed measurements are retained in the STEP068 evidence; combined integration
+remeasures its archive rather than reusing these branch-specific caps.
+
+합산 native keyboard 후보의 Node22 staging은1117entries/1,594,582packed/7,254,528unpacked bytes다.
+최소 한도1117/1,595,000/7,255,000을 적용한다. 동일 archive의 Full772,312와
+interaction127,988gzip에 각각772,400/128,000 한도를 적용하고 나머지 세 한도는 유지한다.
+문서 HTML host 실행의 실패는 별도 통합 의무이며 이 측정으로 통과 처리하지 않는다.
+
+키보드·툴팁의 paired HTML host 예제를 합친 검색 payload는1,075,834bytes다.
+이전1,074,700 한도 실패를 보존하고 최소100byte 한도1,075,900으로 조정한다.
+일반 문서와 source-free tutorial은 같은 실제 Chromium 실행 owner를 공유하며
+JavaScript와 HTML의 독립 hash를 보존한다. Runtime archive ecbd493d…는 그대로다.
+
+Native control host 예제의 합산 검색 payload는1,076,418bytes다.
+이전1,075,900 한도 실패를 보존하고 최소100byte 한도1,076,500을 적용한다.
+정적 native 제어는 기존 command/history reducer를 사용하며 runtime archive는 ecbd493d…로 유지한다.
+
+Typed point restore·현재 frame 재기준·player adapter와 native hit의 합산 canonical staging은
+1125entries/1,605,787packed/7,298,169unpacked bytes다. 최소 cap1125/1,606,000/7,299,000을
+적용한다. 같은 archive9b3c3eea…의 interaction128,129gzip만128,200으로 올리며
+Full772,328/Basic421,122/SVG24,779/graph43,923은 기존 합산 한도를 유지한다.
+이 private checkpoint는 공개 animation entry나 최종077 qualification을 대신하지 않는다.
