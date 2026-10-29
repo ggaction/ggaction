@@ -6,7 +6,7 @@
 - [x] remainingApproval를 재사용하고 구체 입력·gap 계약을 기록했다.
 - [x] typed 준비·복원·반복 샘플과 native frame 교차를 구현했다.
 - [x] 수치·endpoint·현재 hit·지원 Node·owner coverage를 검증했다.
-- [ ] source/evidence checkpoint를 push하고 최종 planner 의무를 인계한다.
+- [x] 검증 source checkpoint를 push하고 후속 planner 의무를 명시했다.
 
 ## 승인 및 기존 owner
 
@@ -96,3 +96,9 @@ cap 검증을 우회하지 않는다. 세 runtime/zlib 결과와 helper를 함�
 계약이 없으므로 fake public API나 예제는 추가하지 않았다. Working candidate에서 실행한
 입력을 source commit의 exact bytes와 대조하고 기존 verification-evidence owner로
 hash를 확인하며 clean release receipt와 구분한다. 공통 realistic builder 변경은 없다.
+
+
+검증 source는 `7d76901c435cb3ae25e2938366deb790d7a02dfe`이다.
+[qualification manifest](partition-animation-evidence/qualification.json)가 선언한20개 source와
+16개 압축 로그/측정 artifact를 기존 hash/source owner로 검증했다. 최종 증거 commit은
+런타임을 변경하지 않는다. 기존 AT65 후속 책임은 위 목록에 그대로 남는다.
