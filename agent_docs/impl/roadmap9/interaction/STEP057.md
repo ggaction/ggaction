@@ -6,7 +6,7 @@
 - [x] 전체 잔여 구현 사용자 승인 [AUTHORIZATION](../AUTHORIZATION.json) 재사용
 - [x] A: logical item keys, 다섯 집합 update mode, empty 정책, scoped identity 구현
 - [x] A: 조건부 인코딩·라벨·필터·복합 하이라이트·resize·revision·codec 회귀
-- [ ] A: 패키지·타입·Current·generated docs 및 독립 realistic qualification 완료
+- [x] A: 패키지·타입·Current·generated docs 및 독립 realistic qualification 완료
 - [ ] B: typed range의 독립 endpoint inclusive flags와 AST predicate/parameter closure
 - [ ] C: linked targets의 union/intersection/global와 명시 owner/child projection
 - [ ] D: nearest screen/data metric, delete/hidden reconciliation·event, session commands/bindings
@@ -42,3 +42,19 @@ snapshot namespace 재적용은 기존 identity 정책이다. Root/child facade 
   정본 cache를 read-only로 지정한 canonical runner 재실행으로 결과를 판정한다.
 - A는 selection 저장/연산 개념만 완료하며 session selection command, parameter binding,
   linked resolve, orphan/drop events, transaction/history를 구현했다고 주장하지 않는다.
+
+## A 검증 checkpoint
+
+Source `e40f9fba0`를 고정한 [qualification](selection-evidence/qualification.json)과 압축 원본 로그를 보존했다.
+신규 19, 기존 회귀 139, 계약 53, 실제 데이터 5종×3 recipe 및 ledger 16, 기존 selection 액션 owning coverage 151 검사가 통과했다.
+새 집합 owner는 100/100/100, 선택 액션은 96.38/88/100으로 해당 floor를 유지했다.
+
+동일 SHA256 `c1a37425c4bbdd5143f0564d4fb42bfa18304d4ecfa7c95cab5c0dcb60d219e4` tar의 Node20/22/24 각각 새 실행2·strict 타입·4 entry browser bundle을 확인했다.
+전체 설치 sweep은 이 checkpoint에서 반복하지 않았다. 최초 Node20/24 Full/Basic bundle cap 실패를 원본 로그에 보존하고,
+실제 최대635,846/360,009를 근거로636,000/361,000으로만 높였다. Package 최대880 entries·1,282,975 packed·5,887,693 unpacked에
+880/1,283,000/5,888,000 한도를 적용했다. Search 실제946,372에947,000 한도다. 변경은 신규1파일과 확장된 선택 타입/문서/공유 selector 경로다.
+
+문서179/179, Jekyll162페이지·1,392 selective artifacts, 해당 수정 페이지320/390/768/1440의 containment 및 Axe0 통과.
+모바일390px 결과를 시각 확인했다. 전체 UI/CSS가 그대로인 페이지의 이전 전수 browser 증거는 `121acb6c6`에서 재사용한다.
+초기 캐시·snippet·metadata 동시변경·임시 browser probe 오류와 수정 결과를 분리했으며 전체 suite green으로 확대 보고하지 않는다.
+B/C/D 및 다른 STEP 인수 조건은 계속 남아 있다.
