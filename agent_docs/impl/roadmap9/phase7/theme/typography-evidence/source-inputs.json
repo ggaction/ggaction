@@ -1,0 +1,13 @@
+{
+  "src/actions/guides/axes/labels.js": "605f3f84a6d0f463777098fe9c20dd9fd02863d82d1c0602048a658706c9fd61",
+  "src/actions/guides/axes/parallel/policy.js": "749dbd27aab70f7748473e43d507064c26dbe297a1eb3c092e06bdd4739b8340",
+  "src/actions/guides/axes/titles.js": "96ff29c820cf26ac028925ef6b39e2148a9fee635fbaed15886391c0f8a7199e",
+  "src/actions/guides/polar/resolve.js": "82a78614f457f2996f0f6d4f01d163626422c0e95f97fb44eac71931b13a39e8",
+  "src/actions/theme/reconcile.js": "8938a2ef82d4292dd049b45f2c83a89b4f67055cdcda358f1c4d607038f0a4be",
+  "src/actions/theme/resourcePlots.js": "fd8f17e50639bbb8aec770b2348641daa8d263522e7aa2ddbb6cd0119a38d162",
+  "src/actions/theme/state.js": "a420a09ad1ab2160c3502a8c2422a6da85d19f7d9fa4fcd041343d251fbc7eba",
+  "src/actions/theme/typographyRoles.js": "128993517ea8c51048bb5cfae7cb1e6fe7b45c67aea55be6c939f090e3a31739",
+  "src/actions/titles/resolve.js": "7292ad87461f1dcb0550042564cefdde360318006d8536ae9e470d3779b7fc09",
+  "src/theme/defaults.js": "51d020575dfb1154579206fd92768d720abf2989010c4b3db9d6434045d311e8",
+  "types/program.d.ts": "9d402050d52c256aac4a5dbeebcd110fc89869800d63695e41e3fc3d747e720f"
+}

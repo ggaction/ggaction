@@ -33,7 +33,7 @@ const STYLE_OPTIONS = Object.freeze([
 const POSITIONS = Object.freeze(["top", "bottom", "left", "right"]);
 const ALIGNS = Object.freeze(["left", "center", "right"]);
 const WRAPS = Object.freeze(["word", "character"]);
-const DEFAULTS = Object.freeze({
+export const TITLE_DEFAULTS = Object.freeze({
   position: "top",
   align: "left",
   offset: 0,
@@ -52,6 +52,7 @@ const DEFAULTS = Object.freeze({
     fontWeight: "normal"
   })
 });
+const DEFAULTS = TITLE_DEFAULTS;
 
 export function validateTitleString(value, label, multiline = false) {
   validateNonEmptyString(value, label);

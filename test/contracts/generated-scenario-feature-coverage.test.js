@@ -218,15 +218,20 @@ test("derives a bounded public option inventory without runtime prototype paths"
 
   assert.equal(inventory.counts.publicActions, 328);
   assert.equal(inventory.counts.topLevelOptionPaths, 3089);
-  assert.equal(inventory.counts.nestedOptionPaths, 26926);
-  assert.equal(inventory.counts.optionPaths, 30015);
-  assert.equal(inventory.counts.requiredOptionPaths, 19975);
+  assert.equal(inventory.counts.nestedOptionPaths, 26928);
+  assert.equal(inventory.counts.optionPaths, 30017);
+  assert.equal(inventory.counts.requiredOptionPaths, 19977);
   assert.equal(inventory.counts.excludedOptionPaths, 10040);
   for (const action of ["createFlowData", "editFlowData", "layoutFlow", "createFlowNodes", "editFlowNodes", "createFlowLinks", "editFlowLinks"]) {
     assert.ok(inventory.publicActions.some(value => value.name === action), action);
   }
   for (const id of ["option-path:createFlowData.value", "option-path:layoutFlow.options.order", "option-path:createFlowLinks.links.overrides[].key", "option-path:createFlowNodes.labels.content.field"]) {
     assert.ok(inventory.optionPaths.some(value => value.id === id), id);
+  }
+  for (const path of ["theme.tokens.fontSize", "theme.tokens.fontWeight"]) {
+    const option = inventory.optionPaths.find(option => option.action === "applyTheme" && option.path === path);
+    assert.equal(option?.required, true, path);
+    assert.equal(option?.evidence, "direct-trace", path);
   }
   assert.deepEqual(inventory.optionPaths.filter(option =>
     ["createData", "reviseData"].includes(option.action) && option.topLevel &&
@@ -620,7 +625,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 35451);
+  assert.equal(ledger.requirements.length, 35453);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

@@ -26,7 +26,7 @@ import {
 import { formatTimeTick, formatTimeTicks, validateTickRounding } from "../../../grammar/ticks.js";
 import { resolveRotation } from "../../../grammar/rotation.js";
 import { valuesFromTickConfig } from "../tickValues.js";
-import { AXIS_LABEL_FONT_SIZES, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
+import { AXIS_LABEL_FONT_WEIGHT, AXIS_LABEL_FONT_SIZES, DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import {
   defaultAxisPosition,
@@ -59,15 +59,16 @@ const OPTIONS = [
   "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "flushThreshold", "colorMap", "align"
 ];
 
-const DEFAULTS = {
+const DEFAULTS = Object.freeze({
   count: 5,
   color: DEFAULT_COLORS.text,
   fontSize: AXIS_LABEL_FONT_SIZES.cartesian,
   fontFamily: DEFAULT_FONT_FAMILY,
-  fontWeight: "normal",
+  fontWeight: AXIS_LABEL_FONT_WEIGHT,
   rotation: 0,
   overlap: "error"
-};
+});
+export { DEFAULTS as CARTESIAN_AXIS_LABEL_DEFAULTS };
 
 function normalizeLabelLayout(config, args, operation) {
   const next = { ...config };

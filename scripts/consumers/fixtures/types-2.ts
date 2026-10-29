@@ -238,9 +238,12 @@ import {
     // @ts-expect-error side belongs to a row/column role
     chart().facet({ field: "group", headers: { side: "right" } });
     basicChart().applyTheme({ theme: { base: "light", tokens: {
-      axisLabel: "red", axisLabelFontSize: 6, axisTitleFontSize: 18,
+      fontSize: 14, fontWeight: 0, axisLabel: "red", axisLabelFontSize: 6, axisTitleFontSize: 18,
       axisLabelFontFamily: "serif", axisTitleFontFamily: "monospace"
     } } });
+    chart().applyTheme({ theme: { base: "dark", tokens: { fontWeight: "bold" } } });
+    // @ts-expect-error font weight is a string or number
+    chart().applyTheme({ theme: { base: "dark", tokens: { fontWeight: false } } });
     // @ts-expect-error font size is numeric
     chart().applyTheme({ theme: { base: "light", tokens: { axisLabelFontSize: "large" } } });
     chart().createLegend({ position: "top-left", overflow: { maxItems: 29, summary: "ellipsis-count" } });

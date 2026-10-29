@@ -1285,6 +1285,18 @@
     "theme": [
       {
         "type": "file",
+        "path": "unit/actions/theme-guide-defaults.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-item-identity.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-typography.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/actions/theme-resource-plots.test.js"
       },
       {
@@ -1302,6 +1314,10 @@
       {
         "type": "file",
         "path": "contracts/theme.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-flow.test.js"
       }
     ]
   },

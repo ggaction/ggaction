@@ -7,6 +7,12 @@ export function isOpacityLegendLayer(layer) {
     layer.encoding?.opacity?.scale !== undefined;
 }
 
+export function legendSampleFill(program, target) {
+  const graphic = program.graphicSpec.objects[target];
+  const properties = graphic?.items?.[0]?.properties ?? graphic?.properties;
+  return properties?.fill;
+}
+
 export function hasMaterializedLegend(program) {
   return LEGEND_CONFIG_KINDS.some(kind => {
     const config = program.guideConfigs?.legend?.[kind];
