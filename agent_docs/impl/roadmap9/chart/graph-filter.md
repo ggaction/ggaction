@@ -4,7 +4,7 @@
 
 - [x] 기본 induced view와 제거·갱신·복원
 - [ ] 명시 recompute와 inference revision
-- [ ] 선택·접근성·렌더러·설치 소비자 검증
+- [x] 기본 보기의 선택·접근성·렌더러·설치 소비자 검증
 
 [남은 계획 전체 승인](../AUTHORIZATION.json)을 적용한다. 이 기록은 구현 완료 증거가 아니다.
 
@@ -44,5 +44,9 @@ Node22 1,259,887, Node20 1,262,438bytes였고 설치 bundle은 Node20 Full635,80
 실측을 [검증 기록](graph-filter-evidence/summary.json)에 보존한다. 최종 고정 archive는 README
 ceiling 한 자리 수정 뒤 별도 생성했으며 hash/크기는 같은 기록에서 구분한다.
 
-현재 source는 고정했고 동일 archive 설치 qualification과 commit source-link 문서 검증을
-마감 중이다. 전체 suite를 다시 실행했다거나 STEP-032가 완료됐다는 의미가 아니다.
+Source revision은 `525cf6276`이다. SHA256
+`55c2aae8a0f6917d51c69afcda206482d7fd510df041426cb5823ff96131dbb5`인 동일 archive로
+Node20/22/24 각각 runtime228, tutorial81, qualification7개를 통과했다. Docs177개,
+Jekyll160pages/1390selective artifacts 및 desktop search와 전체 페이지320/390/768px 검사도 통과했다.
+전체 suite를 다시 실행했다거나 STEP-032가 완료됐다는 의미가 아니다. Explicit recompute와
+controller orphan/drop은 위 미완료 항목으로 유지한다.

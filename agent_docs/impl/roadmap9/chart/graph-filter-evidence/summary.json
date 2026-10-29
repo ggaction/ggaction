@@ -1,5 +1,5 @@
 {
-  "status": "source-verified-qualification-in-progress",
+  "status": "induced-view-qualified",
   "runtimeTests": {
     "node20": 63,
     "node22": 63,
@@ -44,12 +44,46 @@
     "packed": 1259888,
     "unpacked": 5807352
   },
-  "pending": [
-    "installed same-artifact qualification",
-    "docs after source commit"
-  ],
+  "pending": [],
   "remainingRequirements": [
     "explicit recompute",
     "controller orphan event"
-  ]
+  ],
+  "installed": {
+    "node20": {
+      "node": "v20.20.2",
+      "runtime": 228,
+      "tutorials": 81,
+      "qualification": 7,
+      "passed": true
+    },
+    "node22": {
+      "node": "v22.23.1",
+      "runtime": 228,
+      "tutorials": 81,
+      "qualification": 7,
+      "passed": true
+    },
+    "node24": {
+      "node": "v24.22.1",
+      "runtime": 228,
+      "tutorials": 81,
+      "qualification": 7,
+      "passed": true
+    }
+  },
+  "sourceRevision": "525cf6276",
+  "docs": {
+    "sourceTests": 177,
+    "builtPages": 160,
+    "selectiveArtifacts": 1390,
+    "browser": {
+      "desktopSearch": "passed",
+      "allPagesWidths": [
+        320,
+        390,
+        768
+      ]
+    }
+  }
 }
