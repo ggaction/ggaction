@@ -17,6 +17,29 @@
       "failed": 1,
       "failedOwner": "test/unit/actions/data/row-lineage.test.js",
       "repairedOwnerPassed": 6
+    },
+    "commonCorpusRepaired": {
+      "sourceRevision": "729a663240c73d61aaa8e6f94cdbef49fa518ff8",
+      "tests": 10,
+      "passed": 10,
+      "failed": 0,
+      "wallMs": 938639.126791,
+      "isolation": [
+        {
+          "limit": 216,
+          "complete": true,
+          "maximumChildRssBytes": 224804864,
+          "maximumCombinedRssBytes": 293683200,
+          "isolatedAndReferenceMatch": true
+        },
+        {
+          "limit": 360,
+          "complete": true,
+          "maximumChildRssBytes": 298221568,
+          "maximumCombinedRssBytes": 382664704,
+          "isolatedAndReferenceMatch": true
+        }
+      ]
     }
   },
   "package": {
@@ -72,7 +95,6 @@
     }
   },
   "pending": [
-    "Common corpus Trail filled-path oracle taxonomy and 16 added Trail palette paths",
     "Final STEP077 clean-source archive and complete acceptance/consumer matrix"
   ]
 }

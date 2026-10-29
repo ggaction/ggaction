@@ -2,7 +2,7 @@
 
 상태: 활성. 정식 누적 closeout은 **Phase 0–3 / STEP-001–016**까지 기록했다. 이후 개별 구현·검증은 **STEP-056 Marginal·Bullet·Combo recipe**까지 진행했으며 여러 interaction 및 animation 기반을 병렬로 구현하고 있다. 개별 checkpoint와 전체 통합 완료는 구분한다. [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 활성 위치를 소유한다.
 
-2026-10-29 현재 합산 후보는 Geo·Trail·Streamgraph·Table·Marginal·Bullet·Combo 및 interaction camera/history/preview를 통합 중이다. 실제 데이터 갤러리는 source `7b6e7ae9906c780fdd374a76073c9e1fb8a7d4eb`에서 새 타입17종·실제 자료25개·전체39개를 검증해 제공했다. [갤러리 검증](qualification/combined-composition-evidence/qualification.json)은 PNG·SVG25쌍과65개 HTTPS 파일의 해시, 1440/768/390px 접근성·검색·확대를 포함한다. 공통 corpus의 Trail·Table palette와 filled-path oracle 연결, 전체 consumer/qualification, 공개 animation·후행 전달은 남아 있으며 STEP-077 완료로 세지 않는다.
+2026-10-29 현재 합산 후보는 Geo·Trail·Streamgraph·Table·Marginal·Bullet·Combo 및 interaction camera/history/preview를 통합 중이다. 실제 데이터 갤러리는 source `7b6e7ae9906c780fdd374a76073c9e1fb8a7d4eb`에서 새 타입17종·실제 자료25개·전체39개를 검증해 제공했다. [갤러리 검증](qualification/combined-composition-evidence/qualification.json)은 PNG·SVG25쌍과65개 HTTPS 파일의 해시, 1440/768/390px 접근성·검색·확대를 포함한다. 공통 corpus의 Trail·Table palette와 filled-path oracle 연결은 엄격216·360 격리를 포함한10개 검사를 모두 통과했다. 전체 consumer/qualification, 공개 animation·후행 전달은 남아 있으며 STEP-077 완료로 세지 않는다.
 
 [원안](../../../study/coverage-expansion-2026-10-27/roadmap/START_HERE.ko.md)의 범위와 도메인 계약을 보존한다. 상세 구현은 해당 Phase에 필요한 계약만 이곳에서 확정한다. [전체 실행 승인](AUTHORIZATION.json)에 따라 STEP-077까지 계속 진행하며 Gate의 계약·검증 기록은 유지한다.
 
