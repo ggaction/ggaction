@@ -4,7 +4,7 @@ A hierarchy describes parent-child meaning. A layout computes positions, and a p
 
 ## Run the maintained examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/9caadd537c1e75b1c264487fa30fc0d3fa2b46ae/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/9caadd537c1e75b1c264487fa30fc0d3fa2b46ae/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 

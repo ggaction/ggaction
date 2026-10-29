@@ -1,5 +1,5 @@
 {
-  "status": "Table public slice runtime qualified; immutable documentation source pin pending; STEP050 integration and STEP074/077 remain open",
+  "status": "Qualified Table public vertical slice; STEP050 integration and STEP074/077 cumulative qualification remain open",
   "base": "11147c531",
   "approval": "../../AUTHORIZATION.json remainingApproval",
   "archive": {
@@ -56,7 +56,13 @@
       "documentationSnippets": 2,
       "optionalPeers": 1,
       "browserBundles": 5
-    }
+    },
+    "docsPinnedOwners": 47,
+    "builtBrowserWidths": [
+      320,
+      390,
+      768
+    ]
   },
   "packageMeasurements": {
     "entries": 1038,
@@ -71,6 +77,8 @@
   ],
   "reuse": [
     "Final card-only archive requalification reused unchanged runtime coverage, actual-source and four-backend visual evidence.",
-    "Final documentation source pin will be completed after source commit without changing runtime or archive inputs."
-  ]
+    "Immutable source-pinned docs owning47/47 and built181/1538 plus responsive browser passed; repack is byte-identical to the final installed archive."
+  ],
+  "sourceCommit": "9caadd537c1e75b1c264487fa30fc0d3fa2b46ae",
+  "sourceInputDelta": []
 }

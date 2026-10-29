@@ -257,5 +257,47 @@
     "bytes": 2418,
     "sha256": "4f503037d433df7cc8cc5145ac4c63fc668c0156247d5634a00c784330593690",
     "encoding": "gzip"
+  },
+  {
+    "file": "table-docs-pin-generation.log.gz",
+    "source": ".artifacts/table-docs-pin-generation.log",
+    "bytes": 335,
+    "sha256": "c6c663a2e5976e9a1fc6af86b352ad01241bf169816f94d36584c8d1e8e98058",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-docs-pinned-owners.log.gz",
+    "source": ".artifacts/table-docs-pinned-owners.log",
+    "bytes": 9771,
+    "sha256": "24f4c3c1e5b865f90699066f3b518f21115fb7bf5d023028045467f64c2ef9a4",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-docs-final-build.log.gz",
+    "source": ".artifacts/table-docs-final-build.log",
+    "bytes": 420,
+    "sha256": "a42ef88375abc160963c821d53e2080199e940d9da1d63dba2a1c2afae791bec",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-docs-final-built.log.gz",
+    "source": ".artifacts/table-docs-final-built.log",
+    "bytes": 102,
+    "sha256": "7eba38af3fbc684a907534d2e39a411f780b2673fece838ad7931047c1fb7eae",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-docs-final-browser.log.gz",
+    "source": ".artifacts/table-docs-final-browser.log",
+    "bytes": 81,
+    "sha256": "9ca3f1596cba11ce086c70a319fa888d8d6dae25a13a100369f804cc8461349c",
+    "encoding": "gzip"
+  },
+  {
+    "file": "table-final-source-proof.json.gz",
+    "source": ".artifacts/table-final-source-proof.json",
+    "bytes": 620,
+    "sha256": "cbd8ea811eca6661764e790af6351f0c60d8c2dfdac4b7929338e56fdc9e309d",
+    "encoding": "gzip"
   }
 ]

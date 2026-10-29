@@ -137,3 +137,14 @@ STEP050 최신 합산과074 최종 누적 인수는 계속 별도 의무다.
 최신050 frame owner 합산은 root가 맡는다. Table은 Cartesian 위치축이 없고 각 sparkline cell에 하나의
 Y mapping만 있으므로 Table 자체에 독립 position scale/guide를 만들지 않는다. 전체074 corpus/coverage와
 077 인수를 이 owning 검사의 통과 수로 대체하지 않는다.
+
+## 공개 체크포인트 qualification
+
+Source `9caadd537c1e75b1c264487fa30fc0d3fa2b46ae`에서 owning50/50,9개 critical owner100/98.03/100, shared72/72,
+실제5개 자료16/16, Canvas/SVG/PNG/PDF와DPR1/2 primitive pair4/4가 통과했다.
+최종 tar`9b81d21ac42b0f4dbbe36d74c956caeffc66073cc9b0eaf57e7b7f59378d84fe`를 Node20/22/24에서 각각
+3 runtime·strict types·2문서 snippet·optional peers·5bundle로 검증했다.
+Source pin 후 문서 owning47/47, built181pages/1538artifacts,320/390/768px browser가 통과했다.
+최초 실패·수리·재사용 입력·한도·정확 명령은 [summary](table-public-evidence/summary.json)와
+[COMMANDS](table-public-evidence/COMMANDS.md)가 소유한다. 재생성 후 runtime/example 입력delta는0이며
+같은 source를 다시 pack한 SHA도 동일하다. 전체050/074/077 인수나 배포를 완료로 세지 않는다.
