@@ -256,6 +256,16 @@
         768
       ],
       "log": "projection-public-browser-final.log.gz"
+    },
+    "postCommitDocs": 187,
+    "postCommitBuilt": {
+      "pages": 169,
+      "selectiveArtifacts": 1475
+    },
+    "postCommitPackedInputParity": {
+      "artifact": "b8070d2bc257234f62ea46011d323bb7f993d5ce878cd7d43ce2d0ba141c0698",
+      "entries": 985,
+      "differences": []
     }
   },
   "artifact": {
@@ -923,6 +933,22 @@
     {
       "file": "projection-public-size-qualification.json.gz",
       "sha256": "d172f29cc97e337629369295ebaf2814c4aa6aaacae87aa579ab613c37cc7d43"
+    },
+    {
+      "file": "projection-public-postcommit-docs.log.gz",
+      "sha256": "9456cbedc55d8acbf8d857f08fc75d8e7da6da5772e4b40b6d1b178fec02db82"
+    },
+    {
+      "file": "projection-public-postcommit-build.log.gz",
+      "sha256": "592a368409e720ae5dec63d89bd8d86fbf6b65302ea7d39b2264db427910ea9f"
+    },
+    {
+      "file": "projection-public-postcommit-built.log.gz",
+      "sha256": "4734bb21a71ccede383347e7830b92fe38e9db544b5bf7e413701c12eb696b8f"
+    },
+    {
+      "file": "projection-public-postcommit-packed.log.gz",
+      "sha256": "e9149f2970fe4d29c979321c0081a9c29c1266d55cd0422a1f8becb2e8aefb8a"
     }
   ],
   "discardedBrowserEvidence": "The first completed browser pass overlapped a metadata rebuild; only the subsequent final pass with frozen built files is qualified.",
@@ -938,5 +964,6 @@
     "node scripts/check-built-docs.js _site",
     "node scripts/test-built-docs.js _site",
     "Node20/22/24 preparePackageConsumer using one fixed tar, 8 cases + public types/snippet + signature proof + 4 minimal browser bundles"
-  ]
+  ],
+  "sourceCommit": "f52d5c5f4e2f423214c687ff9961d5adb93607c8"
 }
