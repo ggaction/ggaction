@@ -1,0 +1,63 @@
+{
+  "status": "private-concrete-item-adapter-qualified",
+  "publicApiAdded": false,
+  "tests": {
+    "node20": 24,
+    "node22": 24,
+    "node24": 24,
+    "boundaries": 33
+  },
+  "coverage": {
+    "hitConcrete": [
+      100,
+      100,
+      100
+    ],
+    "hitProgram": [
+      100,
+      96.43,
+      100
+    ],
+    "sceneSnapshot": [
+      100,
+      95,
+      100
+    ],
+    "scene": [
+      100,
+      100,
+      100
+    ]
+  },
+  "failuresPreserved": [
+    "incorrect expected inspection rowKeys location",
+    "distinct overlapping tree links were initially omitted from expected candidates",
+    "text metric fixture used non-normalized font weight",
+    "primitive fixture required zero margins and concrete ChartProgram constructor",
+    "package entries871 exceeded868",
+    "own-data guards increased unpacked bytes5849189 beyond5849000"
+  ],
+  "sources": {
+    "src/scene.js": "51484c63ee902ee9ad28741444fd9305330bc52d3170bfdd88685684efd2aa6d",
+    "src/sceneSnapshot.js": "eb7facd0be7de77ec00afd4ff3d7bc24ba97827ec47a03eb5b48b8501e4f408e",
+    "src/interaction/hitConcrete.js": "e50249d5c07efeeb4e51e1ff187256fa517c13fbb2172e20711eb271689da489",
+    "src/interaction/hitProgram.js": "a2f7e9b7ec61299da08a50c6913d8562a77e6874eba6ef7505eb661ebad2e69c",
+    "test/unit/hit-program.test.js": "bdda796d7058dcc3afa99ba90ca8c64aac42a190f5ff5ed777a1270601410dde"
+  },
+  "remaining": [
+    "guide semantic adapter",
+    "public interaction entry/types/session/browser/animation",
+    "STEP035 and AT33/34 closure"
+  ],
+  "package": {
+    "entries": 871,
+    "unpackedBytes": 5849189,
+    "node22PackedBytes": 1270580,
+    "node20And24PackedBytes": 1273444,
+    "caps": {
+      "entries": 871,
+      "packedBytes": 1274000,
+      "unpackedBytes": 5850000
+    }
+  }
+}

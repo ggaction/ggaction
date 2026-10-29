@@ -552,6 +552,10 @@
       {
         "type": "file",
         "path": "unit/hit-frame.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/hit-program.test.js"
       }
     ],
     "horizon": [

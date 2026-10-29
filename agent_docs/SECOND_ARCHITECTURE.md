@@ -3368,3 +3368,13 @@ Private hit owner는 Full/Basic/SVG public import에 들어가지 않으므로 �
 Program/trace/codec와 renderer는 바꾸지 않으며 DOM/event/RAF를 만들지 않는다. Exact public interaction 및
 035/guide/animation 소비자 경계는 [STEP049](impl/roadmap9/interaction/STEP049.md)의 잔여 의무로 유지한다.
 이 source 추가 후 package868entries/5,840,161unpacked/최대1,271,149packed bytes에 cap868/1,272,000/5,841,000을 쓴다.
+
+실제 마크 hit 연결은 `sceneSnapshot.js`가 기존 scene의 onNode association을 ephemeral하게 보유하고,
+`interaction/hitProgram.js`가 이미 materialized된 item identity와 exact child namespace를 읽는 방식이다.
+Semantic grouping이나 materialization을 다시 실행하지 않는다. `interaction/hitConcrete.js`는 기존
+Text metrics의 줄별 영역과 path/stroke/clip owner를 재사용하여 같은 scene의 geometry를 준비한다.
+Public scene schema와 renderer 입력은 유지하며 가이드와 공개 session은 후속 연결이다.
+[Adapter 기록](impl/roadmap9/interaction/ADAPTER.md)이 현재 범위와 남은 소비자를 구분한다.
+이 concrete adapter checkpoint의 package는871entries/5,849,189unpacked, Node22 1,270,580packed,
+Node20/24 1,273,444packed bytes다. Cap은871/1,274,000/5,850,000으로 최소 조정했다.
+Public Full/Basic/SVG import graph에는 private hit owner가 없으며 CanvasScene은 기존 version2 shape를 유지한다.
