@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:a2b44896d85a97630abfa39d55d0ea27df5494815bc4ad3c96eb01a197634d8c. Status: development. Runtime source: 9416d6fc78894d22168f6f4d079da3ee53436253. Release baseline: v0.0.13.
+Contract: sha256:5e4b6d7850f564b4140b3506717aa45f3490fc6f27edf99278591ac8a20c678f. Status: development. Runtime source: 22eb6fcc3e944afe09d8aa3a0f69ed22112cd651. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/9416d6fc78894d22168f6f4d079da3ee53436253/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/22eb6fcc3e944afe09d8aa3a0f69ed22112cd651/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/9416d6fc78894d22168f6f4d079da3ee53436253/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/22eb6fcc3e944afe09d8aa3a0f69ed22112cd651/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11051,12 +11051,32 @@ console.log(renderToSVG(frames[1]));
 ```
 
 Item keys retain number/string distinctions and child composition namespaces.
-The current semantic kernel moves compatible Cartesian circle points by
+The Cartesian semantic kernel moves compatible circle points by
 interpolating their data values and scale mappings. For example, a logarithmic
 axis maps the interpolated data value; it does not average endpoint pixels.
 Other geometry or incompatible appearance uses a bounded weighted crossfade,
 reported in the sample's `decisions`. Entering and exiting items retain explicit
 decisions. This surface does not promise semantic interpolation for every chart family.
+
+## Move a completed graph layout
+
+GraphPlot transitions interpolate the completed node coordinates, radii, origin,
+and label offsets. Edges and arrows follow their current node anchors using the
+same geometry rules as an ordinary graph. Stored world-space and screen-space
+routes interpolate along their arc length, retaining the current endpoints and
+radius inset. Sampling never runs graph inference, layout, or bundling again.
+
+Stable node and edge keys support reordered, entering, and exiting items, including
+composed charts. A sampled graph frame can start or end another transition; its
+current layout meaning is retained without reconstructing it from pixels. Identical
+routes keep their original corners. The decision kernel is `completed-graph`.
+
+Changed endpoint relationships, parallel-edge order, route kind or coordinate
+space, incompatible appearance or clipping, and collapsed or overstretched routes
+produce an explicit crossfade reason for the affected item. Compatible nodes keep
+moving independently. These rules also apply after offline serialization. Native
+current-frame hit testing uses the displayed geometry; restored offline frames can
+render and rebase, but cannot bind to a live session without native endpoint metadata.
 
 ## Functions
 
@@ -11138,7 +11158,9 @@ The player supports `play`, `pause`, `seek(timeMs)`, `reverse`, `setRate(rate)`,
 accepts a program or authentic sample and continues from the current frame.
 A negative rate puts the captured frame at the new plan's ending time and plays
 back toward the target. Invalid interruption targets leave
-the active run intact. An optional `commit(frame)` callback runs on completion.
+the active run intact. Repeated interruption of compatible geometry does not accumulate
+a chain of earlier plans. Weighted crossfades still respect their concrete source
+and clipping limits. An optional `commit(frame)` callback runs on completion.
 `finished` settles with `reason`, `timeMs`, and `iteration`; reasons are
 `completed`, `cancelled`, `interrupted`, and `disposed`.
 
@@ -52411,12 +52433,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/9416d6fc78894d22168f6f4d079da3ee53436253/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/22eb6fcc3e944afe09d8aa3a0f69ed22112cd651/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/9416d6fc78894d22168f6f4d079da3ee53436253/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/22eb6fcc3e944afe09d8aa3a0f69ed22112cd651/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55543,9 +55565,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:a2b44896d85a97630abfa39d55d0ea27df5494815bc4ad3c96eb01a197634d8c` |
+| Contract fingerprint | `sha256:5e4b6d7850f564b4140b3506717aa45f3490fc6f27edf99278591ac8a20c678f` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `9416d6fc78894d22168f6f4d079da3ee53436253` |
+| Runtime source commit | `22eb6fcc3e944afe09d8aa3a0f69ed22112cd651` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |
