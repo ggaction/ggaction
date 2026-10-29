@@ -284,3 +284,8 @@ Node20/22/24 소비자 각17개, 타입, runnable snippet, 3 dependency 서명/�
 최초 문서191개 중3실패는 검색 상한2개와 아직 merge commit에 없는 새 예제 provenance
 ref1개다. 검색 owner29개는 수리 후 통과했고 provenance는 merge commit 뒤 전체 문서와
 built/browser를 재검증한다. 전체 Geo coverage/renderer 완료로 주장하지 않는다.
+
+최종 source `0c8de8dac`의 postcommit 문서191/191, built171페이지와1479 machine artifact,
+desktop search 및 전체 페이지320/390/768px 브라우저 검증이 통과했다. 고정 tar와 현재
+998개 입력은 여전히 차이0이다. 명령 로그·3Node실측·최초 실패/회복은
+`geo-evidence/responsive-merge/status.json`에 보존했다.

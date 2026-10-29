@@ -1,0 +1,231 @@
+{
+  "source": "0c8de8dac",
+  "baseline": "17cf6a85a",
+  "merged": "26676b8e1",
+  "scope": "Geographic projection resources with responsive screen routes",
+  "approval": "AUTHORIZATION.json remainingApproval",
+  "checks": {
+    "focused": 75,
+    "mixedProjection": 12,
+    "contracts": 46,
+    "artifact": 7,
+    "realistic": 26,
+    "docs": 191,
+    "builtPages": 171,
+    "selectiveArtifacts": 1479
+  },
+  "archive": {
+    "sha256": "3dca83706effc478384e42574e1e6d9c8f35160b67cccc282e76ad50b0475a67",
+    "entries": 998
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "cases": 17,
+      "types": "geometry and projection passed",
+      "dependencyProof": "all 3 packages: version, license hash, complete source signatures"
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "cases": 17,
+      "types": "geometry and projection passed",
+      "dependencyProof": "all 3 packages: version, license hash, complete source signatures"
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "cases": 17,
+      "types": "geometry and projection passed",
+      "dependencyProof": "all 3 packages: version, license hash, complete source signatures"
+    }
+  },
+  "bundles": {
+    "20": {
+      "ggaction": 705090,
+      "ggaction/basic": 375603,
+      "ggaction/svg": 20196,
+      "ggaction/interaction": 101198,
+      "ggaction/graph": 42383
+    },
+    "22": {
+      "ggaction": 703420,
+      "ggaction/basic": 374788,
+      "ggaction/svg": 20055,
+      "ggaction/interaction": 100714,
+      "ggaction/graph": 42227
+    },
+    "24": {
+      "ggaction": 705090,
+      "ggaction/basic": 375603,
+      "ggaction/svg": 20196,
+      "ggaction/interaction": 101198,
+      "ggaction/graph": 42383
+    }
+  },
+  "limitations": [
+    "No full global coverage or renderer claim for this merge; both parent closures retain their original evidence.",
+    "Final Geo mark integration retains full normal/coverage/renderer/browser obligations.",
+    "Parent owns combined realistic factor-effects, scenario-generator, generation-isolation."
+  ],
+  "initialFailures": [
+    "Precommit docs: 3 of 191 failed: 2 search cap expectations corrected at 991000; 1 provenance target only existed in MERGE_HEAD until merge commit. Postcommit complete suite 191 passed.",
+    "Mistyped focused search test path did not execute tests; actual owning test/docs/documentation.test.js passed 29/29.",
+    "Merged Full gzip exceeded inherited 701000 cap at 705090; measured supported-Node maximum rounded to 706000, other floors unchanged."
+  ],
+  "logs": [
+    {
+      "file": "merge-responsive-artifact-contract.log.gz",
+      "sha256": "aa092031d29f23208a61be840fb74cb346213b32152ac0af4b97d0d5a4c1a703"
+    },
+    {
+      "file": "merge-responsive-browser.log.gz",
+      "sha256": "cd654be1f98e3f682806dd2e5a9c5bad4ed6c1af9a34607bf405621dc743420e"
+    },
+    {
+      "file": "merge-responsive-build.log.gz",
+      "sha256": "2d9fc0d39b29626ac16ec1b65d0ecba215fab7ddc5b8bd5511d3af6d271e2b9f"
+    },
+    {
+      "file": "merge-responsive-built.log.gz",
+      "sha256": "af1befa41a67beb11627cfa8feb9d944c21992155e97a678c31de0adc240b7f9"
+    },
+    {
+      "file": "merge-responsive-commit.log.gz",
+      "sha256": "fd9d41c6cc55c83a01192be758f857c6395dcd713d25fddd1f7ef90c54dd4fca"
+    },
+    {
+      "file": "merge-responsive-contracts.log.gz",
+      "sha256": "87e154ef64c2af5bc69501758f34b87c1a8b52a1cbdfffe76eb5d1068ee5554a"
+    },
+    {
+      "file": "merge-responsive-doc-owning.log.gz",
+      "sha256": "6c339eb4f0cf58b91c51d05d2036d577f132ce922d28f90da472963eb05470b5"
+    },
+    {
+      "file": "merge-responsive-docs-final.log.gz",
+      "sha256": "b26a8607236727be921a6641cda6a698a71b5efe85713b840c2b57d4c9b8d103"
+    },
+    {
+      "file": "merge-responsive-docs.log.gz",
+      "sha256": "709993fb0cecfa9f5a4c36d71bc3e781b7fbe5d3891c6a559f3cb03470d41c58"
+    },
+    {
+      "file": "merge-responsive-focused.log.gz",
+      "sha256": "e1eb29caf8343bb15a0828dd3c0599e6ecc4e96e19e2d1e713535ff41cf962f3"
+    },
+    {
+      "file": "merge-responsive-generate.log.gz",
+      "sha256": "b4e935973824064b8d4441d1772aa7bf0469882d823c3fbfd1103de00783e196"
+    },
+    {
+      "file": "merge-responsive-input-parity.log.gz",
+      "sha256": "5eadd13b258394499e651f02a36ebedbf7ba4edc5005da804ea67a4900752220"
+    },
+    {
+      "file": "merge-responsive-installed-20.exit.json.gz",
+      "sha256": "4aac97126b2182a3c0b671c3ddcca4c010634d20b5342f86a0207fe069d2e8c0"
+    },
+    {
+      "file": "merge-responsive-installed-20.json.gz",
+      "sha256": "e73740f3eb7794f7745a68657780cb4c66f7fd0e9e41570d5e2a14c6995a291d"
+    },
+    {
+      "file": "merge-responsive-installed-20.log.gz",
+      "sha256": "7991a5d80e954daebb6d1bf85a12de310e63e2c529ebfcde1311500ef5a0b4f0"
+    },
+    {
+      "file": "merge-responsive-installed-22.exit.json.gz",
+      "sha256": "6c028593b4e2db273d4cf0b8e3e308055b560f53de41d177e4358dcc6b107a3f"
+    },
+    {
+      "file": "merge-responsive-installed-22.json.gz",
+      "sha256": "48668d77310f72896c6b15625b46f22e8aac2ff122f5ebf1f7e4093ec0362434"
+    },
+    {
+      "file": "merge-responsive-installed-22.log.gz",
+      "sha256": "48dad610d4edfbac8e6cd4553da637fd9f538b1cdc0e1a54e9796a0fc37746d2"
+    },
+    {
+      "file": "merge-responsive-installed-24.exit.json.gz",
+      "sha256": "71b6ff190b5d53594b567fba0ba6535b6a8ef7f27d3370d2ed07328edc39c3eb"
+    },
+    {
+      "file": "merge-responsive-installed-24.json.gz",
+      "sha256": "e6d229773ebedfe63785a2736861e49d161351c3838ddd277800850d7ed00e9c"
+    },
+    {
+      "file": "merge-responsive-installed-24.log.gz",
+      "sha256": "d9cfc5de5f5bbc994d19b2ca9fb4aa582b0c933d035b7db274e2d28dc6a9215f"
+    },
+    {
+      "file": "merge-responsive-installed.log.gz",
+      "sha256": "1ae20c071ed7cc641ff2a640583df7ef2afa2e7d55a2841b698b3c5c8b96f40e"
+    },
+    {
+      "file": "merge-responsive-inventory.log.gz",
+      "sha256": "c7bc2eaae751147f12276b07636114d05ef4c433a1a074d8a01ec1dcd676c8cd"
+    },
+    {
+      "file": "merge-responsive-mixed.log.gz",
+      "sha256": "84929eef7ce4e3c211a3eb76d1ebcd6903bd2aba00f32c69b9151e383d6d912d"
+    },
+    {
+      "file": "merge-responsive-package-measure.log.gz",
+      "sha256": "758ced3ab29bed742ec6bfd03fba3698a5bfe28c9093320058172c3f71ca07f4"
+    },
+    {
+      "file": "merge-responsive-package-size-v20.20.2.json.gz",
+      "sha256": "a61f5a20d253ef5899b99ed6916268d1acc0ebc036c8abf1a7ea4a0ceddb0218"
+    },
+    {
+      "file": "merge-responsive-package-size-v22.23.1.json.gz",
+      "sha256": "c93598cc635462731726d6243d6d9d818bd59d8a2862e4373052c22f0b102dc5"
+    },
+    {
+      "file": "merge-responsive-package-size-v24.22.1.json.gz",
+      "sha256": "f541e5725391dcf8a0ecfe948a83dfa56a081d4e656ffab0068102c0916d2e30"
+    },
+    {
+      "file": "merge-responsive-package.log.gz",
+      "sha256": "5f95e4c949d1b8076ee8893ad99976ccd832d55111845b0de34172a0605f60cf"
+    },
+    {
+      "file": "merge-responsive-packed-inputs.json.gz",
+      "sha256": "d27be6d856bdc171863f0a1f856414727277500a8aff9a1e796c0ed8ba8acff2"
+    },
+    {
+      "file": "merge-responsive-postcommit-generate.log.gz",
+      "sha256": "b4e935973824064b8d4441d1772aa7bf0469882d823c3fbfd1103de00783e196"
+    },
+    {
+      "file": "merge-responsive-realistic.check.log.gz",
+      "sha256": "751242f54bc37359fc808579258bb1546c038e2758535ff4e1bc2e27db0b938d"
+    },
+    {
+      "file": "merge-responsive-realistic.log.gz",
+      "sha256": "751242f54bc37359fc808579258bb1546c038e2758535ff4e1bc2e27db0b938d"
+    },
+    {
+      "file": "merge-responsive-realistic.receipt.json.gz",
+      "sha256": "baec831018762364a984d3a8054413a535d59ba02299b69b794cc6195900d510"
+    },
+    {
+      "file": "merge-responsive-search-final.log.gz",
+      "sha256": "45983b9a11fa34619f26ee731562e67bf052f899376333a0aebc0f4863569878"
+    },
+    {
+      "file": "merge-responsive-size-20.log.gz",
+      "sha256": "c795f70bc7c6d109d60bd645aa40ed963d3a3be68740f566dbe4b358a19a7877"
+    },
+    {
+      "file": "merge-responsive-size-24.log.gz",
+      "sha256": "2e097830bc22004cddf813787f027f7ea4135989c73fd68c29dd0f34ff7d9188"
+    },
+    {
+      "file": "merge-responsive-size-limits.log.gz",
+      "sha256": "47c6f23a9a69d6fc22baf297b06edbcbce029336f78f6c983cbd9ca6f693868a"
+    }
+  ]
+}
