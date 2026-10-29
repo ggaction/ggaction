@@ -527,7 +527,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 11247 }
+    { "redacted-array": 11599 }
   );
   for (const id of ["createCanvas.responsive.minPlotSize.width", "editCanvas.responsive.minPlotSize.height",
     "createXAxisLabels.responsive.maxLines", "editYAxisLabels.responsive.skipStride"]) {
@@ -561,8 +561,8 @@ test("derives a bounded public option inventory without runtime prototype paths"
     option.required &&
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
-  assert.equal(scaleTypePaths.length, 219);
-  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 1052);
+  assert.equal(scaleTypePaths.length, 229);
+  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 1118);
   assert.equal(inventory.excludedOptionPaths.every(option =>
     optionById.get(option.replacement)?.required === true
   ), true);
@@ -600,7 +600,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
         effectiveFeatures: [], renderers: ["svg"] };
     }), datasetCorpus: { datasets: [preparedRecipe, rangeRecipe].map(recipe => datasetDefinition(recipe.datasets[0])) }, ledger
   });
-  for (const id of ["action:createWaterfallPlot", "action:editWaterfallPlot", "option-path:createWaterfallPlot.role", "option-path:createWaterfallPlot.value", "option-path:editWaterfallPlot.connectors", "action:createOHLCPlot", "action:editOHLCPlot", "option-path:createOHLCPlot.low", "option-path:createOHLCPlot.high", "option-path:createOHLCPlot.open", "option-path:createOHLCPlot.close", "option-path:editOHLCPlot.doji", "action:createPyramidPlot", "action:editPyramidPlot", "option-path:createPyramidPlot.stage", "option-path:createPyramidPlot.value", "option-path:createPyramidPlot.labels", "option-path:editPyramidPlot.encoding", "action:createCalendarLayout", "action:createCalendarPlot", "action:editCalendarPlot",
+  for (const id of ["action:createTrailPlot", "action:editTrailPlot", "option-path:createTrailPlot.width", "option-path:createTrailPlot.x", "option-path:createTrailPlot.y", "option-path:editTrailPlot.width", "option-path:editTrailPlot.lineCap", "action:createWaterfallPlot", "action:editWaterfallPlot", "option-path:createWaterfallPlot.role", "option-path:createWaterfallPlot.value", "option-path:editWaterfallPlot.connectors", "action:createOHLCPlot", "action:editOHLCPlot", "option-path:createOHLCPlot.low", "option-path:createOHLCPlot.high", "option-path:createOHLCPlot.open", "option-path:createOHLCPlot.close", "option-path:editOHLCPlot.doji", "action:createPyramidPlot", "action:editPyramidPlot", "option-path:createPyramidPlot.stage", "option-path:createPyramidPlot.value", "option-path:createPyramidPlot.labels", "option-path:editPyramidPlot.encoding", "action:createCalendarLayout", "action:createCalendarPlot", "action:editCalendarPlot",
     "option-path:createCalendarLayout.date", "option-path:createCalendarLayout.aggregate", "option-path:createCalendarPlot.color", "option-path:createCalendarPlot.cells.opacity", "option-path:editCalendarPlot.monthBoundary", "action:createContourData", "action:createDensityContourData", "action:editContourData", "action:createContourMark", "action:editContourMark",
     "option-path:createContourData.grid", "option-path:createDensityContourData.estimator", "option-path:editContourData.thresholds", "option-path:createContourMark.mode", "option-path:editContourMark.opacity", "option-path:createContourMark.outline.width", "option-path:createContourMark.shadow", "option-path:editContourMark.outline", "option-path:editContourMark.shadow", "action:createFlowData", "action:editFlowData", "action:layoutFlow",
     "action:createFlowNodes", "action:editFlowNodes", "action:createFlowLinks", "action:editFlowLinks",
@@ -644,7 +644,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 41924);
+  assert.equal(ledger.requirements.length, 41920);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

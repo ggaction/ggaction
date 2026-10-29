@@ -3,9 +3,9 @@
   "status": "development",
   "packageVersion": "0.0.26",
   "contractId": "sha256:7d95fb42cddd2c7f7edf77050e936c4ee7d31c78c6187dc60a0f540b7a62f2ac",
-  "sourceCommit": null,
-  "sourceRef": "main",
-  "exampleSourceRef": "codex/roadmap9-native-charts",
+  "sourceCommit": "fedc6a4b944057433c6d82f07b6cf00039d06391",
+  "sourceRef": "fedc6a4b944057433c6d82f07b6cf00039d06391",
+  "exampleSourceRef": "fedc6a4b944057433c6d82f07b6cf00039d06391",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
