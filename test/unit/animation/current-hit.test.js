@@ -5,7 +5,8 @@ import { getMarkItems } from "../../../src/inspection.js";
 import { planTransition, exportTransitionPlan, restoreTransitionPlan } from "../../../src/animation/planner.js";
 import { sampleTransition } from "../../../src/animation/sample.js";
 import { registerAnimationPlan, registerAnimationFrame } from "../../../src/animation/frameProvenance.js";
-import { prepareAnimationHitFrame } from "../../../src/interaction/hitProgram.js";
+import { captureFrameMeaning } from "../../../src/animation/frameEndpoint.js";
+import { prepareAnimationHitFrame, requireAnimationFrameProgram } from "../../../src/interaction/hitProgram.js";
 import { createHitFrameBridge } from "../../../src/interaction/hitFrame.js";
 import { prepareConcreteHitShape } from "../../../src/interaction/hitConcrete.js";
 import { hitShape } from "../../../src/grammar/hitShapes.js";
@@ -99,17 +100,15 @@ test("native frame admission rejects invalid counters, missing endpoint metadata
   const plan = planTransition({ from, to, options: { durationMs: 100, easing: "linear" } });
   const unbound = sampleTransition(restoreTransitionPlan(exportTransitionPlan(plan)), 50);
   assert.throws(() => prepareAnimationHitFrame(unbound), /native endpoint metadata/);
-  const missing = cloneAndFreeze({ ...frame, decisions: [] }); registerAnimationFrame(missing, { plan, timeMs: 50 });
-  assert.throws(() => prepareAnimationHitFrame(missing), /exact sampled nodes/);
+  const missing = cloneAndFreeze({ ...frame, decisions: [] }); assert.throws(() => captureFrameMeaning(missing, plan, 50), /exact sampled nodes/);
   const altered = structuredClone(frame); altered.decisions[1].targetIndex = 999;
-  const invalid = cloneAndFreeze(altered); registerAnimationFrame(invalid, { plan, timeMs: 50 });
-  assert.throws(() => prepareAnimationHitFrame(invalid), /exact endpoint node/);
+  const invalid = cloneAndFreeze(altered); assert.throws(() => captureFrameMeaning(invalid, plan, 50), /exact endpoint node/);
   const before = JSON.stringify(frame); assert.ok(hit(frame, point(frame.scene.nodes[1])).target); assert.equal(JSON.stringify(frame), before);
 });
 
 test("sampled endpoint metadata cannot recurse through a cyclic private association", () => {
   const from = program([{ id: "a", x: 2, y: 5 }]), frame = sample(from, from, 50);
   const plan = cloneAndFreeze({ durationMs: 100 }), cyclic = cloneAndFreeze({ ...frame, progress: .25 });
-  registerAnimationPlan(plan, { from: cyclic, to: from }); registerAnimationFrame(cyclic, { plan, timeMs: 50 });
-  assert.throws(() => prepareAnimationHitFrame(cyclic), /ancestry/);
+  assert.throws(() => registerAnimationPlan(plan, { from: cyclic, to: from }), /exact projected endpoint/);
+  assert.throws(() => prepareAnimationHitFrame(cyclic), /authentic/);
 });

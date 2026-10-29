@@ -28,6 +28,25 @@ const prepare=()=>{
 };
 
 export const cases=[
+  {id:'animation/bounded-repeated-interruption',async run(){
+    const plan=prepare(),left=sampleTransition(plan,0),right=sampleTransition(plan,100);
+    let draws=0;
+    const player=createAnimationPlayer({plan,clock:{now:()=>0,requestFrame(){throw Error('Paused player scheduled a callback');},cancelFrame(){}},render(){draws++;}});
+    player.seek(50);
+    for(let i=0;i<1000;i++){
+      const captured=player.getFrame(),finished=player.finished;
+      player.interrupt({to:i%2?left:right,options:{durationMs:100,easing:'linear'}});
+      assert.equal(player.getFrame(),captured);assert.equal((await finished).reason,'interrupted');
+      player.seek(50);
+      const node=player.getFrame().scene.nodes.find(node=>node.type==='circle');
+      assert.ok(node&&Number.isFinite(node.properties.x)&&Number.isFinite(node.properties.y));
+      assert.equal(player.getFrame().scene.nodes.length,2);
+    }
+    const last=player.getFrame(),saved=serializeAnimation(planTransition({from:last,to:left,options:{durationMs:100}}));
+    assert.deepEqual(sampleTransition(deserializeAnimation(saved).plan,0),last);
+    player.dispose();assert.equal(player.getFrame(),undefined);const before=draws;
+    assert.throws(()=>player.seek(50),/disposed/);assert.equal(draws,before);
+  }},
   {id:'animation/public-player-interruption',async run(){
     const plan=prepare();let now=0,sequence=0;const pending=new Map(),frames=[],commits=[];
     const clock={now:()=>now,requestFrame:fn=>{const id=++sequence;pending.set(id,fn);return id;},cancelFrame:id=>pending.delete(id)};

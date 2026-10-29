@@ -32,7 +32,7 @@ function native(program) {
 }
 export function requireTransitionEndpoint(value) {
   const proof=animationFrameProvenance(value);
-  if(proof!==undefined){requireTransitionPlan(proof.plan);if(proof.positions===undefined)throw new TypeError("Sampled endpoint requires prepared semantic positions.");}
+  if(proof!==undefined){if(proof.positions===undefined)throw new TypeError("Sampled endpoint requires prepared semantic positions.");}
   else native(value);
   return value;
 }

@@ -3226,8 +3226,12 @@ endpoint/options owner로 검사한다. 공개 entry와 offline 계약은 같은
 소유하며 frame의 직렬화 표면에는 상태를 추가하지 않는다. `interaction/hitProgram.js`의 좁은
 직접 import는 이 경량 owner에 한정한다. Planner·solver·renderer를 interaction으로 가져오지 않는다.
 현재 native frame hit은 원 endpoint의 metadata와 준비된 Text metric을 재사용하고, weighted
-표현의 각 source metric과 같은 논리 항목의 단일 hit을 보존한다. Offline frame의 native metadata,
-session publication·asset lease 및 반복 interruption의 retention 검증은 후속 의무다.
+표현의 각 source metric과 같은 논리 항목의 단일 hit을 보존한다. Sample proof는 이미 해석한
+endpoint identity/background, semantic position 및 현재 node별 exact native program/index와
+weighted metric 출처만 보존한다. Plan identity는 작은 opaque token이고 frame→이전 plan→
+이전 frame 연쇄는 없다. 권한은 현재 표시 출처 및 직접 native endpoint로 한정하며 과거 모든
+조상 프로그램을 권한 집합으로 누적하지 않는다. 원 program과 같은 값의 clone은 권한이 아니다.
+Offline frame의 native metadata, session publication·asset lease는 후속 의무다.
 
 ### Cartesian title label-relative offset measurement
 

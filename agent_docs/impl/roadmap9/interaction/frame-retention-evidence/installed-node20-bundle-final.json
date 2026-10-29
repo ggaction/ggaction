@@ -1,0 +1,41 @@
+{
+  "node": "v20.20.2",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+  "sha256": "a6ae8226645cd5c5a0b5e3c783a547ca0bc392241693d6312e2ad705e4c2ee9e",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 1977.9190839999999
+    },
+    {
+      "id": "ggaction/animation",
+      "status": "passed",
+      "durationMs": 1134.6819580000001,
+      "value": {
+        "specifier": "ggaction/animation",
+        "chunks": 1,
+        "modules": 307,
+        "minifiedBytes": 614030,
+        "gzipBytes": 186027
+      }
+    },
+    {
+      "id": "ggaction/interaction",
+      "status": "passed",
+      "durationMs": 741.8985419999999,
+      "value": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 199,
+        "minifiedBytes": 400793,
+        "gzipBytes": 128607
+      }
+    }
+  ],
+  "status": "passed",
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  }
+}
