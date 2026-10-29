@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:11489f21e2358e430caabb3d888a1e36d46338706bb509ab8848072b013a1bf8",
+  "contractId": "sha256:29b6a27bd918b4f7b809d65f2f0d2f478675c0205a98006d5991e6efda20210e",
   "sourceCommit": null,
   "sourceRef": "main",
-  "exampleSourceRef": "codex/roadmap9-resource-integration",
+  "exampleSourceRef": "fbc2bd66f2c9e95013334c45427b4628e399070c",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
