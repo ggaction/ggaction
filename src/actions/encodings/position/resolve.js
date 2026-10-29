@@ -1,3 +1,4 @@
+import { statisticalReferencePositions } from "../../../grammar/statisticalReference.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { validatePositionSource } from "../../../grammar/positionPolicies/source.js";
 import { assertProgramSingleY } from "../../../materialization/frameState.js";
@@ -65,7 +66,7 @@ export function assertPositionEncodingFrame(program, channel, plans) {
 
 // Pure proposal shared by direct encoders and the facade which owns a complete
 // pair. A facade validates the pair once, before creating its first mark.
-export function previewPositionEncodingFrame(program, channel, plans) {
+export function previewPositionEncodingFrame(program, channel, plans, { previousLayer } = {}) {
   const { layer, coordinate } = plans[0];
   if (plans.some(plan => plan.coordinate.id !== coordinate.id || plan.coordinate.type !== coordinate.type)) {
     throw new Error("Conditional positions must share one coordinate.");
@@ -93,7 +94,7 @@ export function previewPositionEncodingFrame(program, channel, plans) {
     conditionals[channel] = { conditions: values.slice(0, -1).map(value => ({ value })), otherwise: values.at(-1) };
   }
   const updated = { ...layer, encoding, conditionals, derivedBindings, coordinate: coordinate.id };
-  const oldScales = new Set(positionBindings(layer, channel).map(value => value.scale));
+  const oldScales = new Set(positionBindings(previousLayer ?? layer, channel).map(value => value.scale));
   const nextScales = new Set(values.map(value => value.scale));
   const axis = Object.fromEntries(Object.entries(program.semanticSpec.guides.axis ?? {}).map(([id, guide]) =>
     [id, (guide.channel ?? id) === channel && oldScales.has(guide.scale) && nextScales.size === 1
@@ -101,7 +102,22 @@ export function previewPositionEncodingFrame(program, channel, plans) {
   const scales = new Map(program.semanticSpec.scales.map(scale => [scale.id, scale]));
   for (const plan of plans) scales.set(plan.scale.id, plan.scale);
   return { ...program, markConfigs: program.markConfigs, guideConfigs: program.guideConfigs, semanticSpec: { ...program.semanticSpec,
-    layers: program.semanticSpec.layers.map(value => value.id === layer.id ? updated : value),
+    layers: program.semanticSpec.layers.map(value => {
+      if (value.id === layer.id) return updated;
+      const reference = program.markConfigs[value.id]?.statisticalReference;
+      if (reference?.source !== layer.id) return value;
+      const positions = statisticalReferencePositions(updated, reference);
+      const nextEncoding = { ...value.encoding };
+      for (const axis of ["x", "y", "x2", "y2"]) {
+        if (!Object.hasOwn(positions, axis)) delete nextEncoding[axis];
+        else {
+          const { datum: ignored, ...retained } = nextEncoding[axis] ?? {};
+          void ignored;
+          nextEncoding[axis] = { ...retained, ...positions[axis] };
+        }
+      }
+      return { ...value, coordinate: updated.coordinate, encoding: nextEncoding };
+    }),
     coordinates: findCoordinate(program, coordinate.id) === undefined
       ? [...program.semanticSpec.coordinates, coordinate] : program.semanticSpec.coordinates,
     scales: [...scales.values()], guides: { ...program.semanticSpec.guides, axis }
@@ -142,7 +158,7 @@ export function previewPositionSequence(program, layer, dataset, positions, { co
 // Bulk assignment needs the final resource identities before its existing
 // deferred materialization draft runs. The request owner is also used by the
 // ordinary resolver; values/domains remain validated by that ordinary path.
-export function previewPositionIdentityFrame(program, layer, channel, payloads) {
+export function previewPositionIdentityFrame(program, layer, channel, payloads, options) {
   const plans = payloads.map(args => {
     const requested = resolvePositionScaleRequest(layer, channel, args);
     const id = resolvePositionScaleId(channel, requested);
@@ -150,7 +166,7 @@ export function previewPositionIdentityFrame(program, layer, channel, payloads) 
       scale: { ...findSemanticScale(program, id), id }, hasField: Object.hasOwn(args, "field"),
       field: args.field, datum: args.datum, fieldType: args.fieldType ?? layer.encoding?.[channel]?.fieldType ?? "quantitative" };
   });
-  return previewPositionEncodingFrame(program, channel, plans);
+  return previewPositionEncodingFrame(program, channel, plans, options);
 }
 
 function resolvePositionScaleRequest(layer, channel, args) {

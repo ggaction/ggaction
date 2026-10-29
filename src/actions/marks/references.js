@@ -14,6 +14,7 @@ import { requireDerivedDataset } from "../data/shared.js";
 import { withRematerializedDerivedDataset } from
   "../primitives/semanticAction.js";
 import {
+  statisticalReferencePositions,
   normalizeReferenceField,
   normalizeReferenceGroupBy,
   normalizeReferencePopulation,
@@ -188,11 +189,8 @@ function syncReferenceEncoding(program, id, source, config) {
   if (layer === undefined) {
     throw new Error(`Unknown statistical reference mark "${id}".`);
   }
-  const axis = config.axis;
-  const secondary = `${axis}2`;
-  const retained = new Set(
-    config.statistics.length === 1 ? [axis] : [axis, secondary]
-  );
+  const positions = statisticalReferencePositions(source, config);
+  const retained = new Set(Object.keys(positions));
   let next = program;
   for (const channel of ["x", "y", "x2", "y2"]) {
     if (!retained.has(channel) && layer.encoding?.[channel] !== undefined) {
@@ -202,11 +200,7 @@ function syncReferenceEncoding(program, id, source, config) {
       });
     }
   }
-  const scale = source.encoding[axis].scale;
-  const fields = config.statistics.length === 1
-    ? [[axis, "value"]]
-    : [[axis, "lower"], [secondary, "upper"]];
-  for (const [channel, field] of fields) {
+  for (const [channel, binding] of Object.entries(positions)) {
     const current = findLayer(next, id).encoding?.[channel];
     if (current?.datum !== undefined) {
       next = next.editSemantic({
@@ -214,11 +208,7 @@ function syncReferenceEncoding(program, id, source, config) {
         remove: true
       });
     }
-    for (const [property, value] of Object.entries({
-      field,
-      fieldType: "quantitative",
-      scale
-    })) {
+    for (const [property, value] of Object.entries(binding)) {
       if (findLayer(next, id).encoding?.[channel]?.[property] !== value) {
         next = next.editSemantic({
           property: `layer[${id}].encoding.${channel}.${property}`,

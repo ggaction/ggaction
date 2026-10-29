@@ -130,3 +130,21 @@ test('a Line layer inherits exact numeric Area aggregation and shares its coordi
  assert.equal(serializeProgram(p),before);
  assert.deepEqual(createTransitionScene(deserializeProgram(serializeProgram(q)),{format:'canvas'}),createTransitionScene(q,{format:'canvas'}));
 });
+
+
+test('precomputed intervals share the center axis before offset-aware compound construction',()=>{
+ const p=chart().createCanvas({plot:{width:420,height:340},margin:80}).createData({values:[
+  {category:'A',subgroup:'one',lower:1,center:2,upper:3},
+  {category:'B',subgroup:'two',lower:2,center:4,upper:6}
+ ]}).createIntervalPlot({id:'basis',x:{field:'category',fieldType:'nominal'},
+  y:{lower:'lower',center:'center',upper:'upper'},xOffset:{field:'subgroup',scale:{type:'ordinal'}},guides:false});
+ const q=p.createLayerPlot({id:'comparison',source:'basis',plot:{action:'createIntervalPlot',options:{
+  x:{field:'category',fieldType:'nominal'},y:{lower:'lower',center:'center',upper:'upper'},
+  xOffset:{field:'subgroup',scale:{type:'ordinal'}},guides:false
+ }}});
+ const layer=id=>q.semanticSpec.layers.find(value=>value.id===id);
+ assert.equal(layer('comparison').encoding.y.scale,layer('basis').encoding.y.scale);
+ assert.equal(layer('comparisonInterval').encoding.y.scale,layer('basis').encoding.y.scale);
+ assert.equal(layer('comparison').encoding.y.field,'center');
+ assert.equal(p.semanticSpec.layers.some(value=>value.id==='comparison'),false);
+});

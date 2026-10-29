@@ -1,4 +1,9 @@
+import { normalizePlotAnchor } from "../../../grammar/plotPosition.js";
 import { applyTemporalUnit } from "../temporal.js";
+
+export function applyPlotAnchor(program, id, value) {
+  return program.editSemantic({ property: `layer[${id}].derivedBindings.plotAnchor`, value: normalizePlotAnchor(value) });
+}
 
 export function clearPlotPositionChannel(program, layer, channel) {
   const axis = channel === "x2" ? "x" : channel === "y2" ? "y" : channel;

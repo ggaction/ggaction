@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { readFile } from "node:fs/promises";
+import { readFile, realpath } from "node:fs/promises";
+import path from "node:path";
+import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import { build } from "esbuild";
 import { chart } from "../../../src/index.js";
@@ -17,5 +19,15 @@ test("persistence bundles for browsers without native, filesystem, or MCP depend
     bundle: true, platform: "browser", format: "esm", write: false, metafile: true
   });
   assert.ok(result.outputFiles[0].text.includes("deserializeProgram"));
-  assert.equal(Object.keys(result.metafile.inputs).some(file => /(?:node_modules|\/mcp\/|\/renderers\/native)/.test(file)), false);
+  const manifest = JSON.parse(await readFile(new URL("../../../licenses/geometry-math.json", import.meta.url), "utf8"));
+  const require = createRequire(new URL("../../../package.json", import.meta.url));
+  const roots = await Promise.all(manifest.packages.map(async entry => path.resolve(path.dirname(await realpath(require.resolve(entry.installKey))),
+    ...Array(entry.moduleEntry.split("/").length - 1).fill(".."))));
+  const inputs = Object.keys(result.metafile.inputs);
+  assert.equal(inputs.some(file => /(?:\/mcp\/|\/renderers\/native)/.test(file)), false);
+  for (const file of inputs.filter(file => file.includes("node_modules/"))) {
+    const actual = await realpath(file);
+    assert.ok(roots.some(root => actual.startsWith(root + path.sep)), `Unexpected browser dependency: ${file}`);
+  }
+  assert.ok(Object.values(result.metafile.outputs).every(output => output.imports.every(entry => entry.external !== true)));
 });

@@ -72,8 +72,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
   "legend-content-spacing": ["canvas", "scatterPlot", "sizeLegendSymbols", "sizeLegendLabels", "sizeLegendTitle"],
   "axis-owners": [
     "canvas", "horizontalGridLines", "scatterPlot", "xAxisLine", "xAxisTitle",
-    "axis_quantity__Line", "axis_quantity__Ticks", "axis_quantity__Labels", "axis_quantity__Title",
-    "axis_share__Line", "axis_share__Ticks", "axis_share__Labels", "axis_share__Title"
+    "axis_quantity__Line", "axis_quantity__Ticks", "axis_quantity__Labels", "axis_quantity__Title"
   ],
   "bar-compositing": ["canvas", "barPlot"],
   "plot-guide-underlays": ["canvas", "horizontalGridLines", "plotBorder", "xAxisLine", "barPlot"],

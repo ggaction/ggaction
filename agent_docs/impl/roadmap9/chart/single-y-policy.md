@@ -82,3 +82,23 @@ annotation의 resize는 통과한다. latest responsive/Routes/nested prospectiv
 
 기존 corpus owning 실행은58분49초 시점에 의도적으로 중단했고 exit143·1 complete/3 pending의
 중단 영수증을 보존했다. 이를 성공이나 최종 common27 실행으로 세지 않는다.
+
+
+## main 합산 회귀 수리 checkpoint
+
+Canvas의 prospective responsive bounds를 최초 그래픽 child 전에 검사하는 경계는
+`4191986ce`에서 수리했다. 독립 scale 재배치·normalized annotation·중첩 responsive/Routes
+집중120개가 통과했다. 이후 전체 unit 6584 중7, contracts754 중16, chart955 중1의 실패를
+보존하고 소유 경계에서 수리했다. 이를 최종 전체 green으로 바꿔 기록하지 않는다.
+
+Bulk transpose는 이전 layer의 scale identity를 후보 계산에 전달한다. Source 통계 reference는
+실제 native encoding과 같은 순수 projection을 사용한다. Layered ECDF는 exact constructor
+argument에 한해 최종 공유 scale ID를 private WeakMap scope로 전달하고 finally에서 제거한다.
+이 정보는 공개 옵션·context·저장 state에 들어가지 않으며 edit/revise/codec도 같은 identity를 유지한다.
+Precomputed interval은 descriptor에서 center field를 먼저 투영해 native 작성 전에 Y를 공유한다.
+Rug의 plotAnchor 작성은 기존 encoding owner로 이동해 façade의 primitive 직접 호출을 제거했다.
+
+집중77·소유91·native/primitive21·중첩 scale4·마지막 metadata10개를 통과했다. 새 private
+position scope는 lines/branches/functions100/100/100이다. 이전 실패 로그와 수정 후 소유 검증을
+[수리 증거](single-y-repair-evidence/summary.json)에 별도로 보존한다. 최신 Geo·interaction·native
+chart 합산 후 전체 source/corpus·문서·동일 패키지3Node 검증은 여전히 후행 의무다.

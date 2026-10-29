@@ -11,42 +11,44 @@
     "contracts/generated-scenarios.test.js": 24465,
     "contracts/realistic-arc-legend-layout.test.js": 67117,
     "contracts/realistic-axis-facet-owner-witness.test.js": 60773,
+    "contracts/realistic-calendar-plots.test.js": 9353,
     "contracts/realistic-cartesian-facade-coverage-recipes.test.js": 134704,
     "contracts/realistic-combined-legend-witness.test.js": 1338,
     "contracts/realistic-complete-chart-facades.test.js": 3510,
     "contracts/realistic-conditional-lifecycle.test.js": 958,
+    "contracts/realistic-contours.test.js": 3379,
     "contracts/realistic-data-color-contracts.test.js": 50176,
     "contracts/realistic-data-mark-recipes.test.js": 147131,
     "contracts/realistic-direct-lifecycle-coverage-recipes.test.js": 799519,
+    "contracts/realistic-edge-routes.test.js": 6263,
     "contracts/realistic-encoding-coverage-recipes.test.js": 209481,
     "contracts/realistic-facade-option-recipes.test.js": 331156,
     "contracts/realistic-facet-column-factors.test.js": 165289,
     "contracts/realistic-facet-raster-bounds.test.js": 82744,
+    "contracts/realistic-flow-layouts.test.js": 1611,
     "contracts/realistic-guide-scale-recipes.test.js": 268329,
     "contracts/realistic-hierarchical-facade-matrix.test.js": 367033,
     "contracts/realistic-hierarchy-lifecycle.test.js": 9912,
+    "contracts/realistic-inferred-graphs.test.js": 933,
     "contracts/realistic-layer-plot.test.js": 23253,
     "contracts/realistic-legend-option-witness.test.js": 5886,
     "contracts/realistic-lifecycle-factor-effects.test.js": 63898,
     "contracts/realistic-lifecycle-provenance.test.js": 106,
+    "contracts/realistic-logical-selection.test.js": 2181,
+    "contracts/realistic-mark-blends.test.js": 18646,
     "contracts/realistic-mark-outlines.test.js": 2594,
+    "contracts/realistic-mark-shadows.test.js": 3052,
     "contracts/realistic-observed-graphs.test.js": 197,
+    "contracts/realistic-partition-lifecycle.test.js": 5082,
+    "contracts/realistic-projections.test.js": 897,
+    "contracts/realistic-responsive-layout.test.js": 3484,
     "contracts/realistic-row-selection.test.js": 19760,
     "contracts/realistic-scenario-generation-isolation.test.js": 945678,
     "contracts/realistic-scenario-generator.test.js": 535185,
     "contracts/realistic-scenario-runner.test.js": 99611,
     "contracts/realistic-scoped-composition.test.js": 843,
     "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
-    "contracts/realistic-structured-paints.test.js": 184876,
-    "contracts/realistic-partition-lifecycle.test.js": 5082,
-    "contracts/realistic-inferred-graphs.test.js": 933,
-    "contracts/realistic-mark-blends.test.js": 18646,
-    "contracts/realistic-mark-shadows.test.js": 3052,
-    "contracts/realistic-flow-layouts.test.js": 1611,
-    "contracts/realistic-contours.test.js": 3379,
-    "contracts/realistic-calendar-plots.test.js": 9353,
-    "contracts/realistic-logical-selection.test.js": 2181,
-    "contracts/realistic-edge-routes.test.js": 6263
+    "contracts/realistic-structured-paints.test.js": 184876
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -162,5 +164,29 @@
       "environment": "macOS arm64, Node 23.5.0",
       "source": "Local canonical realistic runner, 2026-10-26; five pinned datasets with row selection and editable persistence"
     }
-  ]
+  ],
+  "localAdditions": {
+    "contracts/realistic-projections.test.js": {
+      "record": "1793277879414-22302.json",
+      "durationMs": 896.14725,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    },
+    "contracts/realistic-responsive-layout.test.js": {
+      "record": "1793279805187-40300.json",
+      "durationMs": 3483.3687919999998,
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "status": "passed"
+    }
+  }
 }

@@ -395,7 +395,7 @@ function assertEncodingAssignmentFrame(program, target, requests) {
       values = [...definition.conditions.map((condition, index) => branch(condition.value, ["conditions", index]).payload),
         branch(definition.otherwise, ["otherwise"]).payload];
     }
-    candidate = previewPositionIdentityFrame(candidate, layer, channel, values);
+    candidate = previewPositionIdentityFrame(candidate, layer, channel, values, { previousLayer: findLayer(program, target) });
   }
   assertProgramSingleY(candidate, { allowIncomplete: true });
 }

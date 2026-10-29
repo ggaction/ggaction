@@ -75,6 +75,11 @@ for (const channel of ["x", "y", "color", "size", "opacity"]) {
           [method]({ target: "highPoints", ...options });
       }
       const snapshot = JSON.stringify(before);
+      if (channel === "y" && operation === "reassign") {
+        assert.throws(() => before[method]({ target: "highPoints", ...options, scale: { id: "separate" } }), /requires one Y scale/);
+        assert.equal(JSON.stringify(before), snapshot);
+        return;
+      }
       const after = operation === "removeMark"
         ? before.removeMark({ target: "highPoints" })
         : operation === "removeEncoding"

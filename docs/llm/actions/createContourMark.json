@@ -33,9 +33,9 @@
     "H2"
   ],
   "wraps": [
-    "createCoordinate",
     "editSemantic",
-    "createScale"
+    "createScale",
+    "createCoordinate"
   ],
   "editableVia": [
     "editContourMark",

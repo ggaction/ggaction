@@ -247,7 +247,7 @@ test("rejects multiple Cartesian scale pairs for one data-aspect coordinate", ()
     .createData({ id: "otherRows", values: [{ x: 0, y: 0 }, { x: 1, y: 1 }] })
     .createPointMark({ id: "other", data: "otherRows" })
     .encodeX({ target: "other", field: "x", scale: { id: "otherX" } })
-    .encodeY({ target: "other", field: "y", scale: { id: "otherY" } });
+    .encodeY({ target: "other", field: "y", scale: { id: "y" } });
   assert.throws(
     () => base.editCoordinate({
       target: "main",

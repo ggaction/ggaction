@@ -783,6 +783,13 @@
     "independentOracleImports": []
   },
   {
+    "file": "test/charts/mark-selection-points/variants/interaction/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [],
+    "independentOracleImports": []
+  },
+  {
     "file": "test/charts/mark-shadows/primitive.program.js",
     "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
     "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
@@ -819,6 +826,15 @@
     "independentOracleImports": [
       "test/oracles/directional-point-scenes.js"
     ]
+  },
+  {
+    "file": "test/charts/nested-responsive/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
   },
   {
     "file": "test/charts/ordered-category-bar/primitive.program.js",
@@ -947,6 +963,15 @@
   },
   {
     "file": "test/charts/repeat-charts/primitive.program.js",
+    "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
+    "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
+    "sharedProductionImports": [
+      "src/index.js"
+    ],
+    "independentOracleImports": []
+  },
+  {
+    "file": "test/charts/responsive-guides/primitive.program.js",
     "proof": "primitive-public equivalence; exact same-run graphics and renderer output where asserted by the owning slice",
     "independentGeometry": "not inferred from equivalence; consult literal assertions and independent oracle anchors",
     "sharedProductionImports": [

@@ -862,11 +862,11 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 706,000 bytes |
-| `ggaction/basic` | 376,000 bytes |
+| `ggaction` | 707,700 bytes |
+| `ggaction/basic` | 378,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
-| `ggaction/graph` | 43,000 bytes |
-| `ggaction/interaction` | 102,000 bytes |
+| `ggaction/graph` | 44,000 bytes |
+| `ggaction/interaction` | 109,200 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3566,6 +3566,12 @@ validator를 등록한다. 최상위 wrapped action의 theme completion까지 �
 검사하고 실패 후보를 반환하지 않는다. 중간 primitive들은 aggregate의 합법적인 재바인딩을 위해
 완성된 후보에서 함께 판정한다. 최상위 semantic primitive, composition child admission,
 editable restore도 같은 frame owner를 사용한다. Renderer는 이 의미 검증을 하지 않는다.
+
+Bulk position proposal은 원 binding의 guide 이동까지 검사하며 통계 기준선의 position identity는
+기존 pure statisticalReference owner와 함께 투영한다. 실제 통계 계산이나 child materializer를
+사전 실행하지 않는다. Layer aggregate가 이미 확정한 scale IDs는 private position scope가
+exact constructor arguments에만 결박한다. ECDF가 같은 최종 IDs를 admission과 실제 encoding에
+사용하며 중첩/실패 모두 scope를 복원한다. 새 public 옵션·context·저장 alias는 없다.
 
 Canvas action은 순수 prospective size/margin과 같은 frame adapter를 첫 graphical child 전에
 검사한다. Responsive의 명시 재시도는 기존 guide transaction에서 받은 read-only admission

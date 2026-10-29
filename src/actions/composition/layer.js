@@ -1,3 +1,4 @@
+import { withPositionScaleBindings } from "../encodings/position/scope.js";
 import { closedAction } from '../../core/action.js';
 import { planLayerPlot } from './layerPlan.js';
 import { findLayer } from '../../selectors/layers.js';
@@ -8,7 +9,7 @@ const createLayerPlot = /* @__PURE__ */ closedAction({op:'createLayerPlot',descr
     const plan=planLayerPlot(this,args);
     let next=this;
     for (const edit of plan.scaleEdits) next=next.editScale(edit);
-    next=next[plan.action](plan.options);
+    next=withPositionScaleBindings(plan.options, plan.rebind, options => next[plan.action](options));
     for (const [channel, scale] of Object.entries(plan.rebind)) {
       const owner = plotComposition(next, plan.id);
       const layer = findLayer(next, owner.owner);

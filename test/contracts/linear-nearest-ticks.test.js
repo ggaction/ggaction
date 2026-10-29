@@ -123,15 +123,15 @@ test("malformed rounding, explicit values and unsupported axis families reject a
 
 test("named axes keep separate policies and inferred grids reject conflicting owners", () => {
   const program = base().editCanvas({ margin: { left: 40, top: 20, right: 50, bottom: 30 } })
-    .createAxes({ x: false, y: [
+    .editXScale({ domain: [0, 140] }).createAxes({ y: false, x: [
       { id: "near", title: false, ticksAndLabels: { rounding: "nearest" } },
-      { id: "ceil", position: "right", title: false }
+      { id: "ceil", position: "top", title: false }
     ] });
-  assert.throws(() => program.createHorizontalGrid(), /polic/);
-  const explicit = program.createHorizontalGrid({ count: 5 });
-  assert.equal(explicit.graphicSpec.objects.horizontalGridLines.items.length, 5);
-  const same = program.editYAxisTicks({ target: "near", rounding: "ceiling" });
-  assert.equal(same.createHorizontalGrid().graphicSpec.objects.horizontalGridLines.items.length, 5);
+  assert.throws(() => program.createVerticalGrid(), /polic/);
+  const explicit = program.createVerticalGrid({ count: 5 });
+  assert.equal(explicit.graphicSpec.objects.verticalGridLines.items.length, 5);
+  const same = program.editXAxisTicks({ target: "near", rounding: "ceiling" });
+  assert.equal(same.createVerticalGrid().graphicSpec.objects.verticalGridLines.items.length, 5);
   assert.equal(program.guideConfigs.axis.near.ticks.rounding, "nearest");
   assert.equal(program.guideConfigs.axis.ceil.ticks.rounding, undefined);
 });

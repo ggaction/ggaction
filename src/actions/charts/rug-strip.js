@@ -1,3 +1,4 @@
+import { applyPlotAnchor } from "../encodings/position/apply.js";
 import { assertFacadePositionFrame } from "./frame.js";
 import { action } from "../../core/action.js";
 import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
@@ -127,7 +128,7 @@ export const createRugPlot = /* @__PURE__ */ action(
       fieldType: "quantitative",
       scale: { id: `${id}Anchor`, domain: [0, 1], zero: false, nice: false }
     });
-    next = next.editSemantic({ property: `layer[${id}].derivedBindings.plotAnchor`, value: { [anchor]: highEdge ? 1 : 0 } });
+    next = applyPlotAnchor(next, id, { [anchor]: highEdge ? 1 : 0 });
     next = next.encodeAngle({ target: id, value: measure === "x" ? 0 : 90 });
     return applyFacadeGuides(next, guides, id, guides);
   }
@@ -284,7 +285,7 @@ export const createStripPlot = /* @__PURE__ */ action(
           scale: { id: `${id}Anchor`, domain: [0, 1], zero: false, nice: false }
         })
       : next.encodeY(positionArgs(y, { target: id }));
-    if (y === undefined) next = next.editSemantic({ property: `layer[${id}].derivedBindings.plotAnchor`, value: { y: 0.5 } });
+    if (y === undefined) next = applyPlotAnchor(next, id, { y: 0.5 });
     if (radius !== undefined) next = next.encodePointRadius({ target: id, value: radius });
     if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
     if (size !== undefined) next = next.encodeSize(targetArgs(size, id));

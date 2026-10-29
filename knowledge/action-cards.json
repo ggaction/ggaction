@@ -38687,10 +38687,10 @@
         "H0"
       ],
       "wraps": [
-        "editScale",
-        "createBoxPlot",
         "createScatterPlot",
-        "editGraphics"
+        "editGraphics",
+        "editScale",
+        "createBoxPlot"
       ],
       "editableVia": [
         "encodeColor",
@@ -40783,8 +40783,8 @@
         "H1"
       ],
       "wraps": [
-        "createCoordinate",
-        "editSemantic"
+        "editSemantic",
+        "createCoordinate"
       ],
       "editableVia": [
         "editPartitionPlot",
@@ -42214,9 +42214,9 @@
         "H2"
       ],
       "wraps": [
-        "createCoordinate",
         "editSemantic",
-        "createScale"
+        "createScale",
+        "createCoordinate"
       ],
       "editableVia": [
         "editContourMark",

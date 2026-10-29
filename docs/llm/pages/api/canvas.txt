@@ -77,6 +77,11 @@ edits, and facet replay preserve the border setting and update its bounds.
 
 ## `editCanvas(options)`
 
+Resizing preserves the single-Y rule for each Cartesian plot region. A change
+that makes independent frames overlap is rejected. Separate facet or concat
+panels, plot-space annotations and normalized Rug/Strip anchors retain their
+existing resize behavior.
+
 Updates one or more existing canvas options. Omitted values are preserved. A
 numeric margin applies to every side; a partial object updates only named sides.
 The `plotBorder` object replaces its complete style as described above.

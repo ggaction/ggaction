@@ -56,7 +56,7 @@ test("explicit graph edits still rebuild candidate inference and its stored layo
 });
 
 test("source revisions materialize the final calendar, contour and native shared-scale union once", () => {
-  const p = mixed().createPointMark({ id: "points", data: "samples" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+  const p = mixed().createPointMark({ id: "points", data: "samples" }).encodeX({ field: "x" }).encodeY({ field: "y", scale: { id: "contour-y" } })
     .encodeColor({ field: "value", fieldType: "quantitative", scale: { id: "shared" } });
   const before = serializeProgram(p), values = rows.map(row => ({ ...row, value: row.value * 2 }));
   const q = p.reviseData({ source: "samples", id: "next", values });

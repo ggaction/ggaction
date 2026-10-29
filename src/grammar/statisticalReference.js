@@ -118,3 +118,12 @@ export function deriveStatisticalReferenceValues(values, statistics, label) {
       : statistic.op
   ));
 }
+
+// Position identity follows the source; statistical values retain their own
+// output fields and population owner.
+export function statisticalReferencePositions(source, config) {
+  const fields = config.statistics.length === 1 ? [[config.axis, "value"]]
+    : [[config.axis, "lower"], [`${config.axis}2`, "upper"]];
+  return Object.fromEntries(fields.map(([channel, field]) => [channel,
+    { field, fieldType: "quantitative", scale: source.encoding[config.axis].scale }]));
+}

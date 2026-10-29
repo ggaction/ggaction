@@ -872,12 +872,13 @@ function compositionScaleWitness(option, type, inventory) {
     /^create(?:.*Plot|Histogram|Heatmap|ParallelCoordinates)$/.test(candidate.action) &&
     candidate.path === nestedPath && candidate.values.includes(`string:${type}`));
   let lastError;
+  const errors = [];
   for (const candidate of constructors) {
     let captured;
     try {
       observeRecipe = (program, method, args) => { if (method === candidate.action) captured = { program, args }; };
       buildScaleWitness(candidate.action, nestedPath, type);
-    } catch (error) { lastError = error; } finally { observeRecipe = undefined; }
+    } catch (error) { lastError = error; errors.push(`${candidate.action}: ${error.message}`); } finally { observeRecipe = undefined; }
     if (!captured) continue;
     try {
       const { id: _id, data, ...options } = captured.args;
@@ -891,9 +892,9 @@ function compositionScaleWitness(option, type, inventory) {
         .createData({ id: "adjacent-input", values: dataset.values });
       return base.createAdjacentPlot({ id: "comparison", source: "basis", share: {},
         plot: { action: candidate.action, options: { ...options, data: "adjacent-input" } } });
-    } catch (error) { lastError = error; }
+    } catch (error) { lastError = error; errors.push(`${candidate.action}: ${error.message}`); }
   }
-  throw lastError ?? new Error(`No compatible native composition constructor for ${option.path}=${type}.`);
+  throw new Error(errors.join("; ") || `No compatible native composition constructor for ${option.path}=${type}.`, { cause: lastError });
 }
 
 test("derives only role-reachable nested scale type paths", async () => {

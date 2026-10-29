@@ -138,11 +138,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/4191986ce68922a20d9d4a08552ba89737754849/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](../../gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/4191986ce68922a20d9d4a08552ba89737754849/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next

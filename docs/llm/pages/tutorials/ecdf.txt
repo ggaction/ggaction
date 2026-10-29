@@ -34,7 +34,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/4191986ce68922a20d9d4a08552ba89737754849/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
