@@ -1,0 +1,600 @@
+{
+  "sourceCommit": "787adcfafc2339e533e2813ee9e7a7153a11608d",
+  "scope": "STEP059 Cartesian x/y/xy brush and current-screen lasso; angular pointer, history, remaining AT36 and STEP077 are incomplete",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "sourceHashes": {
+    "src/actions/selection/actions.js": "00a7155be07aaf684b161cbfd96053619e53efe73c11de00ce7d2dd56dd05404",
+    "src/actions/selection/index.js": "7374b31a287a5078f013e490822e76effdf67c39b5883c1b1d7561bac4b6dab8",
+    "src/actions/selection/preview.js": "419b6634847f1436046cd82fbfb1b9161fe144c6bf00fdcecdf2d882d7914332",
+    "src/actions/selection/resources.js": "28f8722c68b5b292596e033c5d1a8e11d827035c4993f1e91d50b12549064f5f",
+    "src/grammar/lassoSelection.js": "b807859a1108f5458ee7bf4003462cceb1a67f4892772247f2084a68a8506384",
+    "src/grammar/selectionExpression.js": "5278b931461e69d3ea0b969e9135744ce7b08988bb7be7856467f61937f9c3ca",
+    "src/grammar/selectionRegion.js": "858a0b09284b381ef3c38bad89811a708e9b07deffafbe533d0be6660f375ef8",
+    "src/inspectionDescriptors.js": "03a5a2cba1c4c15c2d63eda02ca8d4fa8af17dd8815df451fa177f58706b0d71",
+    "src/interaction/hitProgram.js": "5d945b642d3e7af44af07cd793b514a9b9c15fd676f29e5e364eb7eea185af59",
+    "src/interaction/pointerCapture.js": "73e2812e51b735606020fce0ced4b3ec94d1306baef94ac795a4e83fc5a0e177",
+    "src/interaction/regionSelection.js": "197a9bfc3d88af725b8a1c93c349073b709e3b92650c39d7ea9eaec541aa2a78",
+    "src/interaction/session.js": "f65ad6c8e7f155525878c91dde0d0012518d3ee51ff8acc34f1223b8d67aaae4",
+    "src/materialization/resourceState.js": "6daf6bd9770c5ef7e36f646c54ecd56cd2ed36cb48f5c7d959868f2509156a29",
+    "src/materialization/selection/expression.js": "dbeb23c0434d74f168b1961d785c62bd34952be6b957c017b2c315bdada11e27",
+    "src/materialization/selection/itemSelection.js": "4cda7cbb2aec43ecef2d86b5136c0d2868b675fa30a7a9430d73a18675ab9188",
+    "src/renderers/transitionScene.js": "e20c537923307ba3a1bff3256f615dddd0965dd44e9ec15900ad3effd1c67804",
+    "src/sceneSnapshot.js": "ee1b04769e7fc50511ef3c6a6ea6e0ee5d37f873d664fa9911db26827e71d954",
+    "src/selectors/selectionResources.js": "9447b2b49000714c44eda6537a3b3e2a0cd7dfb1969fc60c42ecaf6b7d4c0675",
+    "types/index.d.ts": "bb86fa1fe2cdff2edf65efb1e252e568534fe9d78e24fbe6d6b1f7c3a836df5e",
+    "types/interaction.d.ts": "1e2a9c3bb243607deacaaee91ee613042a0451f6011979f173dca62af7a21ff7",
+    "types/program.d.ts": "b19ff0b9726d5472ceba748dde943c682e6773689432b121fc6c70c149100637"
+  },
+  "checks": {
+    "focusedCoverage": {
+      "tests": 117,
+      "criticalFloor": [
+        95,
+        90,
+        100
+      ],
+      "owners": {
+        "actions/selection/preview.js": [
+          100,
+          100,
+          100
+        ],
+        "grammar/lassoSelection.js": [
+          100,
+          100,
+          100
+        ],
+        "grammar/selectionRegion.js": [
+          100,
+          100,
+          100
+        ],
+        "interaction/pointerCapture.js": [
+          100,
+          97.17,
+          100
+        ],
+        "interaction/regionSelection.js": [
+          100,
+          94.51,
+          100
+        ],
+        "interaction/session.js": [
+          100,
+          93.68,
+          100
+        ]
+      }
+    },
+    "registeredOwnerCoverage": {
+      "tests": 242,
+      "owners": {
+        "interaction/hitProgram.js": [
+          100,
+          95.12,
+          100
+        ],
+        "materialization/selection/expression.js": [
+          100,
+          100,
+          100
+        ]
+      }
+    },
+    "nativeSelectionCoverage": {
+      "tests": 136,
+      "owners": {
+        "actions/selection/resources.js": [
+          100,
+          100,
+          100
+        ],
+        "grammar/selectionExpression.js": [
+          100,
+          100,
+          100
+        ],
+        "selectors/selectionResources.js": [
+          100,
+          93.33,
+          100
+        ]
+      }
+    },
+    "typesSourceBoundary": 40,
+    "discoveryVerticalSlices": 17,
+    "packageContracts": 26,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipes": 3,
+      "runner": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js"
+    },
+    "browser": {
+      "tests": 4,
+      "backends": [
+        "Canvas",
+        "SVG"
+      ],
+      "pixelRatios": [
+        1,
+        2
+      ],
+      "bindings": [
+        "brush",
+        "lasso"
+      ]
+    },
+    "render": {
+      "tests": 1,
+      "exact": [
+        "Canvas",
+        "SVG",
+        "PNG",
+        "PDF",
+        "offline graphic codec"
+      ],
+      "primitive": "test/charts/mark-selection-points/variants/interaction/primitive.program.js"
+    },
+    "docs": {
+      "sourceTests": 186,
+      "builtPages": 164,
+      "selectiveArtifacts": 1413,
+      "responsiveWidths": [
+        320,
+        390,
+        768
+      ],
+      "axe": "passed",
+      "pinnedProvenance": {
+        "owningTests": 20,
+        "builtPages": 164,
+        "selectiveArtifacts": 1413,
+        "sourceCommit": "787adcfafc2339e533e2813ee9e7a7153a11608d"
+      },
+      "reuse": "Full responsive browser run preceded only private invalid touching-range input guard and source SHA footer pin; HTML layout, examples, renderer paths and styling unchanged. Final browser gesture4/render1 reran after source guard."
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "c9fc5dc92ce69d0f16e912e9ded08dded621e2574ced41d093ba061d453a4cbb",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 811,
+            "minifiedBytes": 2306897,
+            "gzipBytes": 653407
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 533,
+            "minifiedBytes": 1260697,
+            "gzipBytes": 367386
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 168,
+            "minifiedBytes": 323719,
+            "gzipBytes": 105754
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "c9fc5dc92ce69d0f16e912e9ded08dded621e2574ced41d093ba061d453a4cbb",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 811,
+            "minifiedBytes": 2306897,
+            "gzipBytes": 652532
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 533,
+            "minifiedBytes": 1260697,
+            "gzipBytes": 366664
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 168,
+            "minifiedBytes": 323719,
+            "gzipBytes": 104976
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "c9fc5dc92ce69d0f16e912e9ded08dded621e2574ced41d093ba061d453a4cbb",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 811,
+            "minifiedBytes": 2306897,
+            "gzipBytes": 653407
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 533,
+            "minifiedBytes": 1260697,
+            "gzipBytes": 367386
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 168,
+            "minifiedBytes": 323719,
+            "gzipBytes": 105754
+          }
+        ]
+      }
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 927,
+    "packedBytes": 1340606,
+    "unpackedBytes": 6125329,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/selection-gesture-c9fc5dc9.tgz",
+    "sha1": "886de6d21376565cdf820f8015fa1103f0ea9624",
+    "sha256": "c9fc5dc92ce69d0f16e912e9ded08dded621e2574ced41d093ba061d453a4cbb"
+  },
+  "limits": {
+    "entries": 927,
+    "packedBytes": 1341000,
+    "unpackedBytes": 6126000,
+    "fullGzip": 653500,
+    "basicGzip": 367400,
+    "svgGzip": 25000,
+    "interactionGzip": 105800,
+    "searchBytes": 962000
+  },
+  "measuredSearchBytes": 961762,
+  "upstreamMetadataPatch": {
+    "sourceCommit": "c966374951afec293106d34bd0f9dd9ed0261976",
+    "files": [
+      "test/charts/mark-shadows/variants/text/manifest.js",
+      "test/charts/mark-shadows/variants/text/backends.render.js"
+    ],
+    "checks": "vertical17 and exact text-shadow four-backend1 passed; runtime unchanged"
+  },
+  "preservedFailures": [
+    "Initial module syntax/import corrections",
+    "Fake RAF fixture incorrectly retained already-fired callback",
+    "Astronaut one-point line lasso expectation corrected from independent source distinct values",
+    "Render fixture discovery placement corrected under existing mark-selection capability",
+    "Existing text-shadow manifest linkage fixed by exact upstream two-file metadata patch",
+    "Documentation Related section placement and contextual snippet registration",
+    "Search payload and package/browser size budgets raised only from measured values",
+    "Two-sided inclusive touching intervals rejected before final archive; final Node20 Full653407 exceeded interim653400 by7bytes"
+  ],
+  "integrationStatus": "Branch source is independently qualified. Root main11e617145 has D2/D3/D4/058+Calendar; this059 branch has not merged that main yet. Full combined coverage/realistic qualification remains integration work.",
+  "remaining": [
+    "Angular pointer and normalized seam/domain adapter",
+    "Other STEP059 AT36 interactions and history/keyboard/navigation requirements",
+    "Latest main composition/calendar cross-consumer integration",
+    "Full STEP077 scope"
+  ],
+  "evidenceFiles": {
+    "selection-gesture-browser-final.log": {
+      "sha256": "cda8f238f547a73fb04af88533d119ee4821d2f6f89ac84c7830437c670ce5ca",
+      "bytes": 992
+    },
+    "selection-gesture-browser-qualified.log": {
+      "sha256": "b6fb35c952cbc422edd4c3f80e073b2f6f4c319b30f5154dcc6d3b3973b97d09",
+      "bytes": 991
+    },
+    "selection-gesture-browser.log": {
+      "sha256": "3dc56e6e4679546e0bdd7a574851efe09eaa20e820a6e7756d2d94e25c24b59a",
+      "bytes": 991
+    },
+    "selection-gesture-catalog.log": {
+      "sha256": "b5d04b9d485bf5a7861d1ece0e2a309ea5f5c27da59b893462790fa69e4b67f0",
+      "bytes": 80
+    },
+    "selection-gesture-consumer-final20-fixed.log": {
+      "sha256": "0caa6382fbd3b11a1937eba6d1010eab674e3028ec4ac8e8c3ae2930106de6e9",
+      "bytes": 939
+    },
+    "selection-gesture-consumer-final20.log": {
+      "sha256": "c82f504127c426d429adc36f7e7cf2a405aa0a3721fe3af2156186f63cb1f7e9",
+      "bytes": 1480
+    },
+    "selection-gesture-consumer-final22.log": {
+      "sha256": "7a104f097bf0f35d77d0a756f6e20f50b14ab25b7dd3d69f0e63779577ca8822",
+      "bytes": 939
+    },
+    "selection-gesture-consumer-final24.log": {
+      "sha256": "8d057c0a33823bd214e4b081a7b3d0f7c474195b6c790ae3dcad03100288b1cb",
+      "bytes": 939
+    },
+    "selection-gesture-consumer-node20-initial.log": {
+      "sha256": "cf7a71a6b7ccff0e35ca8bbea91039504ace09dd8e6a4b8346464aa30f958beb",
+      "bytes": 1480
+    },
+    "selection-gesture-consumer-node20.log": {
+      "sha256": "51c841db8aa1b31d32447d3fa1dc7a62be51079bb33cacdf609da0fbe5d268a7",
+      "bytes": 939
+    },
+    "selection-gesture-consumer-node22.log": {
+      "sha256": "1720b81f8ba845fe79024185ec7861c1785616bd8812f7714013e196818d9a87",
+      "bytes": 939
+    },
+    "selection-gesture-consumer-node24.log": {
+      "sha256": "2dbcd04c3ed22f84aef3d7fe014614598d3b74578590ac26734d75a430247bdd",
+      "bytes": 939
+    },
+    "selection-gesture-consumers.log": {
+      "sha256": "5f3909bfaba8c523e2fda6dadfb25cdbdb03a3a65e4941bb0b2367ec0b38b02e",
+      "bytes": 3798
+    },
+    "selection-gesture-contracts-final.log": {
+      "sha256": "4a94a662acacdf8587f82ee6a73a4814e7137fa4a6db05775cab486257279439",
+      "bytes": 12250
+    },
+    "selection-gesture-contracts-fixed.log": {
+      "sha256": "4109c58254edba0b2ba1c1c58c971a3bb54e543f5b0e9d38220ba11b164d82f9",
+      "bytes": 8054
+    },
+    "selection-gesture-contracts-initial.log": {
+      "sha256": "142747d33c700eb9e295209afadba87a5c63071e682eb21758cbb0b93ae5f802",
+      "bytes": 8048
+    },
+    "selection-gesture-coverage-final.log": {
+      "sha256": "086fd07dab29c57eb6e91338f914cce36cc5de1f4122f9e9cd47a5282a881634",
+      "bytes": 30069
+    },
+    "selection-gesture-coverage-initial.log": {
+      "sha256": "5204d76d6fedf53af26e23dbc33911f9c03ffbf26309f397ca938aee1331d527",
+      "bytes": 29643
+    },
+    "selection-gesture-coverage.log": {
+      "sha256": "86f101a034c61cf47fa8bf7de566edc49cb8aa0e5d9008538ac417306a7720c5",
+      "bytes": 30067
+    },
+    "selection-gesture-discovery-final.log": {
+      "sha256": "db40d6ca82b9c88b5d9757518265d05a754fecfef6b5d1850fc8122ea31f56df",
+      "bytes": 4099
+    },
+    "selection-gesture-discovery-fixed.log": {
+      "sha256": "1d14f5ef9c013bc253388f8f75fc0f77a3b3af826d6a84562df2e424d55cfa79",
+      "bytes": 3487
+    },
+    "selection-gesture-doc-browser-final.log": {
+      "sha256": "896cb8b1c4d07dd39f2efb8b167d587549481604c8265b2c88f93f78a3526a0d",
+      "bytes": 79
+    },
+    "selection-gesture-doc-build-final.log": {
+      "sha256": "123eac156f1a677d335edb4279eebcfe6399f570ae28b1a303c21b69792cf69a",
+      "bytes": 420
+    },
+    "selection-gesture-doc-build-qualified.log": {
+      "sha256": "77d9960728cb56b90ba9171cad94ba50324daa35e1e9da560ace5665412eee72",
+      "bytes": 420
+    },
+    "selection-gesture-doc-build.log": {
+      "sha256": "510258fbe346a3b20655cf545413d74ac50088a0e8da764c70f59b2710082b66",
+      "bytes": 420
+    },
+    "selection-gesture-doc-built-final.log": {
+      "sha256": "54baf7ed639f38012be39033be10ec758853438ef8d223cde2973debfe8dca10",
+      "bytes": 102
+    },
+    "selection-gesture-doc-built-qualified.log": {
+      "sha256": "54baf7ed639f38012be39033be10ec758853438ef8d223cde2973debfe8dca10",
+      "bytes": 102
+    },
+    "selection-gesture-doc-built.log": {
+      "sha256": "5052390e37dd071963438a1659d16abd476fa845455ea9ea27a273d853a5386e",
+      "bytes": 426
+    },
+    "selection-gesture-doc-generate-final.log": {
+      "sha256": "47b008ad06bc69b764dd5c40d787a6a5309482a7c36cf5fa6b65122dd80fa931",
+      "bytes": 11721
+    },
+    "selection-gesture-doc-generate.log": {
+      "sha256": "47b008ad06bc69b764dd5c40d787a6a5309482a7c36cf5fa6b65122dd80fa931",
+      "bytes": 11721
+    },
+    "selection-gesture-doc-preflight.log": {
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "bytes": 257
+    },
+    "selection-gesture-doc-tests-final.log": {
+      "sha256": "e832dc27d62946e4ef09bf328734c095fbea53300522d9c07799ed19178db875",
+      "bytes": 43419
+    },
+    "selection-gesture-doc-tests-qualified.log": {
+      "sha256": "4ca980c58502233bca6bc965868b60c2b6ac31447b502f6729e83e781d163299",
+      "bytes": 43387
+    },
+    "selection-gesture-doc-tests.log": {
+      "sha256": "e5eacbe87979f39d705880dcdcdc02d6bd4480e267461f225060501afca2c10f",
+      "bytes": 48708
+    },
+    "selection-gesture-domains.log": {
+      "sha256": "31d7902b05abf1faeffe59df45e47f668ec8727f422ce915031646e77d4a2531",
+      "bytes": 3331
+    },
+    "selection-gesture-focused.log": {
+      "sha256": "7a0bd5c29dce4bf945169760ff7871f1d2bdfe2950d5cbda2b0592b85e164e7b",
+      "bytes": 2070
+    },
+    "selection-gesture-images-final.log": {
+      "sha256": "2ea1f2a466e246651e1dd1c2563367517deed21d0ab7187c969f6f7ab7c1db57",
+      "bytes": 9402
+    },
+    "selection-gesture-initial.log": {
+      "sha256": "e64c3cb90b6165299d674fb419c0c8fc4d8cbc09c064fac22dfb698a3a888901",
+      "bytes": 1534
+    },
+    "selection-gesture-native-coverage.log": {
+      "sha256": "9b06e15738219b1d0971dafeca89cf25ee0c9d5f4a175c4936ed114d02f42a07",
+      "bytes": 32231
+    },
+    "selection-gesture-oracle-qualified.log": {
+      "sha256": "f96729c2444e6b391ec2c6d386dbdbf729d738f3fada344e20de073186b8b85b",
+      "bytes": 31
+    },
+    "selection-gesture-oracle.log": {
+      "sha256": "f96729c2444e6b391ec2c6d386dbdbf729d738f3fada344e20de073186b8b85b",
+      "bytes": 31
+    },
+    "selection-gesture-owner-coverage-final.log": {
+      "sha256": "86812bfe25f814eaa82ce08cac47f5669003af69ce57a5f7fbd1ecc1b7a78f0b",
+      "bytes": 58122
+    },
+    "selection-gesture-owner-coverage.log": {
+      "sha256": "f80d94d7d333c36cf70fd09d4db8ffe947fabb24fdd0ef08886d1479200d7e24",
+      "bytes": 32268
+    },
+    "selection-gesture-package-contracts-final.log": {
+      "sha256": "1bacf57df41585254d065796680a71f63c21e091883b6d1fc4e0f1e9063dbab5",
+      "bytes": 12031
+    },
+    "selection-gesture-package-contracts-qualified.log": {
+      "sha256": "34f7a9b0d736d9c29b4dfeb953f48ff8cb30ebfac442de61aa4814036f4280fc",
+      "bytes": 5615
+    },
+    "selection-gesture-package-contracts.log": {
+      "sha256": "0e4a4771c91af8652d32e765a0ac5990a5a5aa3ad2f55243df9bad1734d337ed",
+      "bytes": 3812
+    },
+    "selection-gesture-package-initial.log": {
+      "sha256": "554b8ce97c09f31da76efc495c5cef406ef8164e2eae052851c17a6926064d80",
+      "bytes": 1204
+    },
+    "selection-gesture-package-node20-final.log": {
+      "sha256": "dd8fd7f17c36ae22004f05a978ebab9a66f5b3deb25d8389bba9179d5a673911",
+      "bytes": 368
+    },
+    "selection-gesture-pinned-build.log": {
+      "sha256": "3804554afe0a15902892623342cadc3bf0337d68bbe0c44c15c3cc02d69e5fc7",
+      "bytes": 420
+    },
+    "selection-gesture-pinned-built.log": {
+      "sha256": "54baf7ed639f38012be39033be10ec758853438ef8d223cde2973debfe8dca10",
+      "bytes": 102
+    },
+    "selection-gesture-pinned-docs.log": {
+      "sha256": "fc48111b0fb77fe79bff08ae45f3bc4f94efebce7578567f50465e1f1b944a6d",
+      "bytes": 4732
+    },
+    "selection-gesture-pinned-generation.log": {
+      "sha256": "08ae846004379daf9c73d157586ff752a74283713825f4828282d74f088e7353",
+      "bytes": 335
+    },
+    "selection-gesture-realistic-final.log": {
+      "sha256": "3fcf65da62acceaff217de6e65cefda61dd1f6ffe55789084bdaf549b56cf8b5",
+      "bytes": 4272
+    },
+    "selection-gesture-realistic-fixed.log": {
+      "sha256": "4cbeb487682bf3eb2518ed355646d43643e1665503ec51d0bd2f06f3d6679866",
+      "bytes": 4270
+    },
+    "selection-gesture-realistic-initial.log": {
+      "sha256": "6949932da02be357ddf43db4c9e595245180708cfe5eb2910ba723ddb2adf63d",
+      "bytes": 20758
+    },
+    "selection-gesture-realistic.log": {
+      "sha256": "2bc54b797620f0479bde9dbff1ecb050e4825f363f0389d60d0ac7a86a19b909",
+      "bytes": 7754
+    },
+    "selection-gesture-render-canonical.log": {
+      "sha256": "a976b3c970f4ee8f1b385dddec81d9723fdbd6a8111d80fbbc63286fecf16114",
+      "bytes": 379
+    },
+    "selection-gesture-render-final.log": {
+      "sha256": "3bd0095160a2ce70e8a0023cb510fdd3eca4d2a515c31a850d0310b5e705596f",
+      "bytes": 378
+    },
+    "selection-gesture-render-qualified.log": {
+      "sha256": "78570e37d6390f166c17da4daa0219a34e14822d86799b9b08a1429302e33947",
+      "bytes": 378
+    },
+    "selection-gesture-render.log": {
+      "sha256": "e1e36306faca62f7b932cc1b6d68338e5b9150d2c6e49b4da2a6c4501e08bfce",
+      "bytes": 378
+    },
+    "selection-gesture-shadow-manifest-render.log": {
+      "sha256": "538b34e52fa20e375e12747e3e9dc2538c3251c05857699d3b1af49763db4004",
+      "bytes": 404
+    },
+    "selection-gesture-smoke-fixed.log": {
+      "sha256": "24bd40b40a292433a0b0e1c39cf97689ade1214a74cf4b33d5db3d44df3ab002",
+      "bytes": 6622
+    },
+    "selection-gesture-smoke.log": {
+      "sha256": "7e2a160e935972b5520e25593a37cb549db4ac6bebffaef773b467294c3247d2",
+      "bytes": 4427
+    },
+    "selection-gesture-fixed.json": {
+      "sha256": "a711e45c2617f183893519b64ec5743c260ca55359e047838f7dd7533638c7ce",
+      "bytes": 413
+    },
+    "selection-gesture-fixed-final.json": {
+      "sha256": "e648af016ee8fe80bfc08ae78f3c3ef6f31a2925cece27e2dccd29037aad30e6",
+      "bytes": 413
+    },
+    "selection-gesture-consumer-check.mjs": {
+      "sha256": "5277f77c20220baba27867327d399b5b8b47164183a4868d073194c458256336",
+      "bytes": 2015
+    },
+    "selection-gesture-oracle.mjs": {
+      "sha256": "f655652f0276f9de51210d03ce222519f858eb7a630c10ce220518092643f08e",
+      "bytes": 3182
+    }
+  }
+}

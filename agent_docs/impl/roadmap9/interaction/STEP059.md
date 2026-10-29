@@ -9,7 +9,7 @@
 - [x] screen lasso metadata·keys 연결
 - [ ] angular seam union 공개 pointer adapter 연결
 - [x] 실제 capture/RAF preview/final-up/cancel lifecycle 연결
-- [ ] types/Current/docs/codec/installed/browser 소비자 검증
+- [x] Cartesian/lasso types/Current/docs/codec/installed/browser 소비자 검증
 - [ ] AT36 closure와 후행 history/077 종료
 
 [전체 승인](../AUTHORIZATION.json)을 재사용한다. 원 카드의 요구를 삭제하거나 private 계산을
@@ -105,3 +105,15 @@ Source 검증은 gesture117/117, final-item selection owner242/242, native resou
 이 branch는 root의 최신 main487b9a434(Calendar+AST+D1/C)을 아직 병합하지 않았다. D2/D3/D4/058 및
 현재059의 main 통합 검증은 root가 별도 수행하며 해당 통합을 이 기록에서 통과로 주장하지 않는다.
 기존 text-shadow manifest linkage 수리는 c96637495의2파일 delta만 적용했으며 runtime 변경이 없다.
+
+
+## Cartesian/lasso qualification
+
+[Qualification](region-gesture-evidence/qualification.json), [독립 literal expected/actual/diff](region-gesture-evidence/expected-actual-diff.json),
+[실제 preview](region-gesture-evidence/public.png)를 보존한다. Source는 `787adcfaf`이고 최종 동일 archive는
+`c9fc5dc92ce69d0f16e912e9ded08dded621e2574ced41d093ba061d453a4cbb`이다. Node20/22/24에서
+각3개 기존 interaction consumer(brush/lasso 확장 포함), strict TypeScript,4개 browser bundle을 통과했다.
+초기 `c6f51d32…` archive는 맞닿은 inclusive 구간 수리 전 결과로 분리 보존하고 최종 결과로 사용하지 않는다.
+실제 세부 테스트 개수와 변경 owner coverage는 JSON과 로그가 소유한다.
+Root 최신 main `11e617145`의 Calendar+057/058 통합은 별도 checkpoint이며 다음 병합에서 소비자 교차를 검증한다.
+이 기록은 angular pointer·history·STEP059/077 전체 완료가 아니다.
