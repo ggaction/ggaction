@@ -10,8 +10,8 @@ export function resolveFlowLayerResources(program, layer) {
   if (layout.inputs.length !== 1 || layout.inputs[0].kind !== "graph" || !["dag", "cyclic"].includes(layout.options.method)) throw new TypeError("Flow marks require a DAG or cyclic graph layout.");
   const graph = resolveInputReference(program, layout.inputs[0]);
   const role = layer.mark.type === "flow-node" ? "nodes" : "edges";
-  const dataset = resolveInputReference(program, graph.inputs[graph.options.roles?.[role] ?? 0]);
-  const nodesDataset = resolveInputReference(program, graph.inputs[graph.options.roles?.nodes ?? 0]);
+  const dataset = resolveInputReference(program, graph.inputs[graph.options.roles[role]]);
+  const nodesDataset = resolveInputReference(program, graph.inputs[graph.options.roles.nodes]);
   return { layout, graph, dataset, nodesDataset };
 }
 export function resolveFlowCoordinate(program, requested) {
