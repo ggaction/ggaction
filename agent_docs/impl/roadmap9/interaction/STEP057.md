@@ -9,7 +9,7 @@
 - [x] A: 패키지·타입·Current·generated docs 및 독립 realistic qualification 완료
 - [x] B1: typed range의 독립 endpoint inclusive flags 및 단일 경계 구현
 - [x] B1: focused/realistic/타입·패키지·Current·문서 qualification
-- [ ] B2: AST predicate/parameter closure
+- [x] B2: 이름 있는 AST predicate/parameter closure 및 qualification
 - [ ] C: linked targets의 union/intersection/global와 명시 owner/child projection
 - [ ] D: nearest screen/data metric, delete/hidden reconciliation·event, session commands/bindings
 - [ ] STEP057 AT37 및 후행 058–060/065–068 통합 완료
@@ -111,3 +111,19 @@ number→string으로 바꾸면 edit 자체는 성공하고 이후 선택 조회
 검증하므로 정상 거부했다. Shared derived revision 종료에도 같은 private final-item resolver로 영향받는 AST
 선택을 검사하도록 연결해 원자 실패와 유효한 변경 후 membership을 검증했다. 최초 source 후보 be214bab1와
 그 tar는 최종 qualification과 구분한다.
+
+
+### B2 검증 checkpoint
+
+최종 source `6a581f204`의 [qualification](expression-evidence/qualification.json)과
+[독립 expected/actual/diff](expression-evidence/expected-actual-diff.json)를 저장했다.
+새 owner 두 개100/100/100, 기존 selection action96.44/87.90/100을 유지한다. 기존 선택/parameter104,
+조건부127, 최종 derived-revision hook 후58 검사와 실제 데이터5종×3 grain/ledger16이 통과했다.
+문서181, Jekyll164페이지/1411 selective artifacts, 모바일 포함4폭 Axe0·overflow0와390px 시각 확인을 마쳤다.
+
+동일 최종 archive `a7f0c0a5f571f8620bca7743dc6e3df4249df92416a298d3e1cea96734082a25`의
+Node20/22/24에서 각각2개 실행·strict 타입·4 entry bundle이 통과했다. 전수 설치 sweep은 반복하지 않았다.
+실측 최대 package911entries/1,312,374packed/6,013,768unpacked에911/1,313,000/6,014,000 한도,
+Full651,656/Basic366,102에652,000/367,000 bundle 한도를 적용했다. 최초 실패와 후보 tar는 최종 증거와 분리했다.
+최종 수정과 무관한 기존 source/renderer/UI 증거만 명시적으로 재사용했으며 전체 suite green으로 보고하지 않는다.
+C/D와 모든 후행 인수 조건은 계속 남아 있다.

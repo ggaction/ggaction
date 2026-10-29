@@ -1,0 +1,515 @@
+{
+  "sourceCommit": "6a581f2046dc4669387c8021c4e5e0d68285c5f1",
+  "scope": "STEP057 B2 named AST predicate selection and exact parameter closure; C/D/AT37 and STEP077 remain open",
+  "sourceHashes": {
+    "src/actions/data/edit.js": "c91102ea88dc43e99981af9096b8cbc6ea3289f8e5d8d4196f86b2a147765024",
+    "src/actions/parameters/edit.js": "8785b37cd1dd0f14e71bd223f87dc303df7f0563dbc132842a1b2ad329e9ceeb",
+    "src/actions/selection/actions.js": "0eedd1ea7388cff684f793bda37942322de24d5d35f6730aac8ba4e03d12c812",
+    "src/actions/selection/index.js": "158cb7629422a33af369eb4a915573aa10b3048b4a1ec911fbda46210763130a",
+    "src/actions/selection/resources.js": "3fadebf551e63ddb6050b293dcaa93ebce6ec28231955621db61130b691fe86e",
+    "src/grammar/selectionExpression.js": "3e78632c14c333597d072cf77b898224a5427f7ae76aa7c998150a4dcb9d8b4b",
+    "src/inspectionDescriptors.js": "6fef4b3f05a65b20e4fee038c0b62a56290687a19d02f0d51dbe93687293c0e6",
+    "src/materialization/conditionalSelection.js": "dfdfc2d23be23fe2fc9d24ba715f348dc77546cc75d04ce8fdd9c4df7fb457f2",
+    "src/materialization/resourceState.js": "191d024e09019e28974e4f802a521c222f9b6a84c4abf3310413151d603f2159",
+    "src/materialization/selection/expression.js": "3c656b1c3fde76fab35ed54b3f3f65888a97432a26c16725bb1a6366acf59161",
+    "src/materialization/selection/itemSelection.js": "6e11ad80f5e55fda704543e743ef822898c856b015f68875aab0ca75c67c4f07",
+    "src/materialization/selection/items/common.js": "22d088b0ae4f5dbaaa821e2d37a6d3e754a35ab546ba7390d801250021cc7f7d",
+    "src/materialization/selection/predicate.js": "9f41388f350db1e1a8f74bbd1dffddc69a084d76117b285f5e495bb1763720e4",
+    "src/materialization/selection/state.js": "3799853c4d012704ffd3684cab0965b6b2833b10826421b0ba3a15a5e27ff4f2",
+    "src/materialization/textGeometry.js": "f5b054310f57cfcdbf4ac416518c5bb5fa2c67ceaf11a338cb26429cdbd2d2c7",
+    "src/persistence/validation.js": "3da85a9fd3b4b8955efb592da7c38bfe2c49408e0b9e6eb58d912bcb6df30aef",
+    "types/index.d.ts": "36080a28ab9f586471023cc8610b0fad0efb70f20448d35dfe754412fe6f1c44",
+    "types/program.d.ts": "921010f8ca45e51cfa29a73f074b9a888184f34842b6087cf74782823bfef098"
+  },
+  "checks": {
+    "newOwnerCoverage": {
+      "tests": 33,
+      "files": {
+        "grammar/selectionExpression.js": [
+          100,
+          100,
+          100
+        ],
+        "materialization/selection/expression.js": [
+          100,
+          100,
+          100
+        ]
+      },
+      "floor": [
+        95,
+        90,
+        100
+      ]
+    },
+    "selectionActionCoverage": {
+      "tests": 188,
+      "lines": 96.44,
+      "branches": 87.9,
+      "functions": 100,
+      "floor": [
+        90,
+        75,
+        100
+      ],
+      "reused": "The selection action source is unchanged by the later derived-revision validation hook."
+    },
+    "priorSelectionParameterRegression": 104,
+    "conditionalRegression": 127,
+    "afterFinalRevisionHook": {
+      "tests": 58,
+      "scope": "derived editing, source revision, parameter lifecycle, AST selections, source boundaries and strict types"
+    },
+    "boundariesAndDiscovery": 34,
+    "actionCatalogAndCards": 24,
+    "packageArtifactTests": 7,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipesPerDataset": 3,
+      "expected": "Independent category equality for observations, aggregate categories and series; matching highlighted item keys and valid SVG",
+      "reuse": "Final hook adds validation only to derived revision, which these parameter-only selection cases do not invoke."
+    },
+    "docs": {
+      "sourceTests": 181,
+      "builtPages": 164,
+      "selectiveArtifacts": 1411,
+      "responsiveWidths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "horizontalOverflow": false,
+      "visualInspection": "390px screenshot reviewed. Browser evidence reused after the final source-only revision hook; page layout and code unchanged."
+    },
+    "installed": {
+      "artifactSha256": "a7f0c0a5f571f8620bca7743dc6e3df4249df92416a298d3e1cea96734082a25",
+      "sourceFree": true,
+      "perNode": [
+        {
+          "node": "v20.20.2",
+          "artifact": "a7f0c0a5f571f8620bca7743dc6e3df4249df92416a298d3e1cea96734082a25",
+          "sourceFree": true,
+          "runtime": [
+            "selection/logical-item-update PASS",
+            "selection/logical-scoped-update PASS"
+          ],
+          "types": "passed",
+          "bundles": [
+            {
+              "specifier": "ggaction",
+              "chunks": 1,
+              "modules": 808,
+              "minifiedBytes": 2301324,
+              "gzipBytes": 651656
+            },
+            {
+              "specifier": "ggaction/basic",
+              "chunks": 1,
+              "modules": 531,
+              "minifiedBytes": 1256443,
+              "gzipBytes": 366102
+            },
+            {
+              "specifier": "ggaction/svg",
+              "chunks": 1,
+              "modules": 37,
+              "minifiedBytes": 59445,
+              "gzipBytes": 20196
+            },
+            {
+              "specifier": "ggaction/interaction",
+              "chunks": 1,
+              "modules": 138,
+              "minifiedBytes": 248334,
+              "gzipBytes": 82468
+            }
+          ]
+        },
+        {
+          "node": "v22.23.1",
+          "artifact": "a7f0c0a5f571f8620bca7743dc6e3df4249df92416a298d3e1cea96734082a25",
+          "sourceFree": true,
+          "runtime": [
+            "selection/logical-item-update PASS",
+            "selection/logical-scoped-update PASS"
+          ],
+          "types": "passed",
+          "bundles": [
+            {
+              "specifier": "ggaction",
+              "chunks": 1,
+              "modules": 808,
+              "minifiedBytes": 2301324,
+              "gzipBytes": 650834
+            },
+            {
+              "specifier": "ggaction/basic",
+              "chunks": 1,
+              "modules": 531,
+              "minifiedBytes": 1256443,
+              "gzipBytes": 365369
+            },
+            {
+              "specifier": "ggaction/svg",
+              "chunks": 1,
+              "modules": 37,
+              "minifiedBytes": 59445,
+              "gzipBytes": 20055
+            },
+            {
+              "specifier": "ggaction/interaction",
+              "chunks": 1,
+              "modules": 138,
+              "minifiedBytes": 248334,
+              "gzipBytes": 81892
+            }
+          ]
+        },
+        {
+          "node": "v24.22.1",
+          "artifact": "a7f0c0a5f571f8620bca7743dc6e3df4249df92416a298d3e1cea96734082a25",
+          "sourceFree": true,
+          "runtime": [
+            "selection/logical-item-update PASS",
+            "selection/logical-scoped-update PASS"
+          ],
+          "types": "passed",
+          "bundles": [
+            {
+              "specifier": "ggaction",
+              "chunks": 1,
+              "modules": 808,
+              "minifiedBytes": 2301324,
+              "gzipBytes": 651656
+            },
+            {
+              "specifier": "ggaction/basic",
+              "chunks": 1,
+              "modules": 531,
+              "minifiedBytes": 1256443,
+              "gzipBytes": 366102
+            },
+            {
+              "specifier": "ggaction/svg",
+              "chunks": 1,
+              "modules": 37,
+              "minifiedBytes": 59445,
+              "gzipBytes": 20196
+            },
+            {
+              "specifier": "ggaction/interaction",
+              "chunks": 1,
+              "modules": 138,
+              "minifiedBytes": 248334,
+              "gzipBytes": 82468
+            }
+          ]
+        }
+      ],
+      "scope": "Two logical/AST runtime cases, strict public types, four browser entries. No full installed sweep."
+    }
+  },
+  "artifact": {
+    "sha256": "a7f0c0a5f571f8620bca7743dc6e3df4249df92416a298d3e1cea96734082a25",
+    "entries": 911,
+    "packedNode22": 1309607,
+    "unpacked": 6013768,
+    "packedMaximum": 1312374,
+    "caps": {
+      "entries": 911,
+      "packed": 1313000,
+      "unpacked": 6014000
+    },
+    "bundleMaximum": {
+      "ggaction": 651656,
+      "ggaction/basic": 366102,
+      "ggaction/svg": 20196,
+      "ggaction/interaction": 82468
+    },
+    "bundleCaps": {
+      "ggaction": 652000,
+      "ggaction/basic": 367000,
+      "ggaction/svg": 25000,
+      "ggaction/interaction": 83000
+    },
+    "searchBytes": 957070,
+    "searchCap": 958000
+  },
+  "initialFailures": [
+    "Fixture-only failures: nonexistent bar facade, wrong codec payload property, wrong diagnostic access; shared scale was avoided by using an independent aggregate program.",
+    "Initial docs found a new unregistered snippet and search size 957070 > 957000. The code is now a complete executed registered program; search cap is minimally 958000.",
+    "Initial preflight inherited system Ruby 2.6.10. Explicit existing Ruby 3.2/Bundler PATH passed without changing dependencies.",
+    "Local targeted browser script first matched both TOC and heading, then an exact accessible name with permalink mismatch; final canonical heading ID passed all widths.",
+    "Initial package entry count 911 > 909; measured content budget raised only to accommodate two owners.",
+    "Initial Node20/24 bundle limits failed at 651553/366102. Both runtime/types had passed; final source measures 651656/366102 within 652000/367000.",
+    "Actual late lifecycle defect: editComputedData accepted number-to-string output while an unconsumed AST selection read that field. Final source hook now rejects atomically and permits valid membership changes. Initial be214bab1 tar 82c33b84c3146c16bced32a098519b116e3bd3256847afd17d432b94b0e817f0 is not the qualified archive."
+  ],
+  "verificationLimits": [
+    "No full repository or renderer sweep repeated.",
+    "Public interaction selection commands and linked resolve are not implemented by this checkpoint.",
+    "Inline label/mark-filter/graph-view AST authoring is closed; named labels use selection IDs."
+  ],
+  "remaining": [
+    "STEP057 C linked union/intersection/global targets",
+    "STEP057 D nearest, hidden/delete reconciliation, events and session commands",
+    "AT37 and later gesture/history integration",
+    "Overall STEP077 roadmap completion"
+  ],
+  "logs": [
+    {
+      "file": "actions-coverage-2.log.gz",
+      "sha256": "3589d0128c03d56aca14eed854e0589fe3f740d47f0ad9038096c18e23c0ea64"
+    },
+    {
+      "file": "actions-coverage-3.log.gz",
+      "sha256": "e3d51517bba035cd5d2a8ce1a028306a959c519b2b42d0814a5bb57861332c46"
+    },
+    {
+      "file": "actions-coverage-4.log.gz",
+      "sha256": "e075297f5bd27d709e780a7942eb0a07462292fbca87dcc1ada96654994454a4"
+    },
+    {
+      "file": "actions-coverage.log.gz",
+      "sha256": "be05463989dfc28304be2e5918bfc0c8714b012a5235398c738d1702dfc8e1c0"
+    },
+    {
+      "file": "boundaries.log.gz",
+      "sha256": "4809eeed3ebbaeaa223baf6ff11675c6b5a9e7d59051a75a0d893fb57b74d429"
+    },
+    {
+      "file": "catalog-contracts.log.gz",
+      "sha256": "c2a177c356a2b167e1ecb813f1e1be6bcef07e612aeedaa7fa80ef80eb64e0f0"
+    },
+    {
+      "file": "catalog.log.gz",
+      "sha256": "b5d04b9d485bf5a7861d1ece0e2a309ea5f5c27da59b893462790fa69e4b67f0"
+    },
+    {
+      "file": "consumer-20-final.log.gz",
+      "sha256": "589fccdeaebb09d53fe7e6eba9df6dd4778920faabc3ae9763795cfe8c5d749d"
+    },
+    {
+      "file": "consumer-20-initial.log.gz",
+      "sha256": "85a5a0b013051a5799ebe5824e7c24d893ac8ed9d8f33bf27695850e50c9eadd"
+    },
+    {
+      "file": "consumer-22-final.log.gz",
+      "sha256": "30d6ecbdc5dbff4b775fb3d4e674d3ac3f66c89697c7c664bdce1bdd9181f0b6"
+    },
+    {
+      "file": "consumer-22-initial.log.gz",
+      "sha256": "ec73a82fa2af3174bb39c0f1dab21623df397362f01cd1b5cdcd814910920e03"
+    },
+    {
+      "file": "consumer-24-final.log.gz",
+      "sha256": "3b94d5a920d49eef1b8a8be2da206abbe41da2c3c93685d5f7a6f8717b6b06dd"
+    },
+    {
+      "file": "consumer-24-initial.log.gz",
+      "sha256": "cdbec153fb525e34a228a68da60eaf1ae384a1bf66c09bbb0dfb82276e6211ad"
+    },
+    {
+      "file": "consumer-regression.log.gz",
+      "sha256": "c12fbf0764efcba19629eafcf8fa0ae966a3dfa546fe9120a7560978d2de2358"
+    },
+    {
+      "file": "contracts.log.gz",
+      "sha256": "d6ab98ca3885257d0934e1e4d9e05db9dce3b0fcb25a3fe187b5f4634b35e0f2"
+    },
+    {
+      "file": "coverage-final.log.gz",
+      "sha256": "5d39202e7a476c5b92257b16aec8a984df37228e52c80b0acf4eb07d654e541d"
+    },
+    {
+      "file": "coverage.log.gz",
+      "sha256": "8a59efa28d4932d093bfa1118b37990d63fe6f63f2e9a7261e114c2189474a67"
+    },
+    {
+      "file": "doc-browser-final.log.gz",
+      "sha256": "d7258c7c3ce375363d064e67229663733f264085a9c8cea1e83bf819c2b2e351"
+    },
+    {
+      "file": "doc-browser-qualified.log.gz",
+      "sha256": "665eb67745accbe70f33770f192389a5d5ca7f1fbf688be4c0c8ed3fd51d4d50"
+    },
+    {
+      "file": "doc-browser.log.gz",
+      "sha256": "1c1856a3b4a16c2da0fb2e5480770294b2608049df4b08b39222a73275e0c19a"
+    },
+    {
+      "file": "docs-build-closure.log.gz",
+      "sha256": "21587f9865df54f941fb4a13c0c609db73773d482288661346c54a74797eb58c"
+    },
+    {
+      "file": "docs-build-qualified.log.gz",
+      "sha256": "24f7530c24e5904db026612a445acb2e306cf4ec992e271dd3a7d7b25f22a604"
+    },
+    {
+      "file": "docs-build.log.gz",
+      "sha256": "83bae6fd176f897900a3c1304fdfbea7eaa2bb867a1fd44ad187022ef5b7a7a6"
+    },
+    {
+      "file": "docs-built-closure.log.gz",
+      "sha256": "cc569a3f2bfe2809bb2269e151f0208d0cc02c6ce6500344f16d7215f120cb71"
+    },
+    {
+      "file": "docs-built-qualified.log.gz",
+      "sha256": "cc569a3f2bfe2809bb2269e151f0208d0cc02c6ce6500344f16d7215f120cb71"
+    },
+    {
+      "file": "docs-built.log.gz",
+      "sha256": "cc569a3f2bfe2809bb2269e151f0208d0cc02c6ce6500344f16d7215f120cb71"
+    },
+    {
+      "file": "docs-closure.log.gz",
+      "sha256": "78f8d1d4eff27b7522e4d05ee911a0f11453fd66559b58043c633e7c70e07913"
+    },
+    {
+      "file": "docs-final.log.gz",
+      "sha256": "224ec010017135bb2edd3a974a9f15801508fb1beba78648387b919082d80917"
+    },
+    {
+      "file": "docs-initial.log.gz",
+      "sha256": "e7244e5eb48d8c37ddb2797ea597840150763f27860863bd97e39989ba39f135"
+    },
+    {
+      "file": "docs-preflight-final.log.gz",
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e"
+    },
+    {
+      "file": "docs-preflight.log.gz",
+      "sha256": "efea710c7eaa498073d44718c3e042aabc027d959865ae20209e8e39d2e1f29d"
+    },
+    {
+      "file": "docs-qualified.log.gz",
+      "sha256": "cbe37d3ead9ca031fd4f59cd8059ef4b237fbbd4a27f4882a84930925390eed8"
+    },
+    {
+      "file": "existing.log.gz",
+      "sha256": "b04ef336128f0813c160accd59ab904b7a9194171759bf5cea5b33da17571e50"
+    },
+    {
+      "file": "final-llms.log.gz",
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+    },
+    {
+      "file": "final-machine.log.gz",
+      "sha256": "5c5d9afb5b707c38ef2083a993d002b68819556df7f6d19228ca574951657e45"
+    },
+    {
+      "file": "final-provenance.log.gz",
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5"
+    },
+    {
+      "file": "focused-2.log.gz",
+      "sha256": "e618a3bffd55fd53cb5b9bad91920055f4a2ca1f782366e19f6d6a825a4f1b23"
+    },
+    {
+      "file": "focused-3.log.gz",
+      "sha256": "68319f4c7d5b7b361ef24e1c35ddec89b10f3a15c04b11f4e350bf687394da0e"
+    },
+    {
+      "file": "focused.log.gz",
+      "sha256": "0fe049c1dc0d5fdd35c826d261bedda5386950d0e00c917ba4b4f7b580ed02bb"
+    },
+    {
+      "file": "generate.log.gz",
+      "sha256": "47b008ad06bc69b764dd5c40d787a6a5309482a7c36cf5fa6b65122dd80fa931"
+    },
+    {
+      "file": "lifecycle-2.log.gz",
+      "sha256": "8400ab71b98ab10e002a96c20518c798ac855baf4ea84436d65c89c937599d32"
+    },
+    {
+      "file": "lifecycle-fix-coverage.log.gz",
+      "sha256": "476d8a3e8b544366343c4a68e4ac4b832088007fb640713f607b6910dc462a6d"
+    },
+    {
+      "file": "lifecycle.log.gz",
+      "sha256": "b22f8b53f7e45e0c9357ab500437a14505595616d76ff72bf0cd36cafb3cdd78"
+    },
+    {
+      "file": "llms.log.gz",
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+    },
+    {
+      "file": "machine.log.gz",
+      "sha256": "5c5d9afb5b707c38ef2083a993d002b68819556df7f6d19228ca574951657e45"
+    },
+    {
+      "file": "pack-final.log.gz",
+      "sha256": "a61d8128afc4b0410a47ebe13a43f2b5fa83edae32faf5492525f888a2577870"
+    },
+    {
+      "file": "pack.log.gz",
+      "sha256": "18b00ac12b88e185a052c37c67356dabb62d29ec792482d7ff7e4aa0f7cf1998"
+    },
+    {
+      "file": "package-final.log.gz",
+      "sha256": "b9bddcb30ed1a8e5f05f29e0e863121a8565473778c7e9c1ac3c38dddb99ec34"
+    },
+    {
+      "file": "package-fixed-measured-20.log.gz",
+      "sha256": "8d49662d871f05c47a4a3703958263f219453f62431505c2e6d50bde9a194f6c"
+    },
+    {
+      "file": "package-fixed-measured-22.log.gz",
+      "sha256": "23529f09e3536c182b3ed5a28a0f58317aa135862c96e40c3c90680055b102b5"
+    },
+    {
+      "file": "package-fixed-measured-24.log.gz",
+      "sha256": "8d49662d871f05c47a4a3703958263f219453f62431505c2e6d50bde9a194f6c"
+    },
+    {
+      "file": "package-initial.log.gz",
+      "sha256": "c0c624ae010ac749f633e74b70039cf4e5bf42f515f4f5d4f0e671fd2f7b1743"
+    },
+    {
+      "file": "package-measured-20.log.gz",
+      "sha256": "9b400150965fb0aea1eb37855850aef03eb60e684b9f2eedb6acf961ce7d55b1"
+    },
+    {
+      "file": "package-measured-22.log.gz",
+      "sha256": "f8258b3bd5e01661caca10e8bf36f6241903422a148cfe8aeed36b90c9347b08"
+    },
+    {
+      "file": "package-measured-24.log.gz",
+      "sha256": "9b400150965fb0aea1eb37855850aef03eb60e684b9f2eedb6acf961ce7d55b1"
+    },
+    {
+      "file": "package-tests.log.gz",
+      "sha256": "dcb720bc7a24464f9697946f18ab7b68339686881d263a1e70901631f0566d07"
+    },
+    {
+      "file": "provenance.log.gz",
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5"
+    },
+    {
+      "file": "qualified-llms.log.gz",
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f"
+    },
+    {
+      "file": "qualified-machine.log.gz",
+      "sha256": "5c5d9afb5b707c38ef2083a993d002b68819556df7f6d19228ca574951657e45"
+    },
+    {
+      "file": "qualified-provenance.log.gz",
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5"
+    },
+    {
+      "file": "realistic.log.gz",
+      "sha256": "fd92fe132241d6ed72753b975e650c3cb8ba87dd09cd90f9a5735ae877782add"
+    },
+    {
+      "file": "regression.log.gz",
+      "sha256": "b2a4eceddea433878cc652019c4eb8347a70264be174f27037254c51a517edc5"
+    },
+    {
+      "file": "revision-final.log.gz",
+      "sha256": "64d76027d78a5e2a99b5a2d952a18afa081c148052d7419dd9724700af36d185"
+    }
+  ]
+}
