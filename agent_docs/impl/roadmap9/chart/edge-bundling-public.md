@@ -9,10 +9,10 @@
 - [x] Public resource·수정·GraphPlot·source/layout/hierarchy closure
 - [x] 저장 검증·Full/Basic·typed refs·removal·inspection
 - [x] Worker/sync parity·token/abort/cache lifetime
-- [ ] 네 renderer·scene/hit/selection·실제 데이터·types/current/docs/installed
+- [x] 네 renderer·scene/hit/selection·실제 데이터·types/current/docs/installed
 
 승인은 [AUTHORIZATION](../AUTHORIZATION.json)의 잔여 STEP077 전체 승인을 재사용한다.
-현재 Current 구현을 뜻하지 않는다. 계산 owner와 고정 수치는 [전체 구현 기록](edge-bundling.md)이
+아래 구체안의 공개 구현과 검증을 마쳤다. 계산 owner와 고정 수치는 [전체 구현 기록](edge-bundling.md)이
 소유한다. 아래는 해당 계산을 사용자 API와 기존 소비자에 연결하기 위한 구체화다.
 
 ## API와 단일 의미 소유
@@ -166,3 +166,24 @@ Search index는973,565bytes여서974,000 상한으로 최소 올림한다.
 `realistic-scenario-generator.test.js`, `realistic-scenario-generation-isolation.test.js`다.
 AT80 keyboard/temporary unbundle, AT81 animation interrupt/geo clip, AT82 단계별 SLO는
 각 후행 closure owner와 합산 검증이 필요하며 이 source 후보로 전체 인수 시험을 닫지 않는다.
+
+
+## 공개 checkpoint 최종 검증
+
+Runtime source는 `a491a8b8e`이며 이후 수리는 test/inventory/내부 계약 분류·문서뿐이다.
+[검증 정본](edge-bundling-evidence/public/status.json)에 원본 실패와 수리 결과를 함께 보존했다.
+전체 coverage 최초 실행은8,123중8,113 통과, global96.73/94.74/99.10이다. 실패10개는
+신규 route의 catalog/목록·primitive 파일·문서 entry·exact lineage 기대값·shard timing 누락이다.
+Owning32개 중31개가 회복됐고, 이때 잘못 쓴 contour fixture 경로를 고쳐 해당6개도 통과했다.
+Runtime 수정은 없으며 전체 검사를 한 번에 모두 통과했다고 보고하지 않는다.
+
+현재 critical469개 중468개는 원본 전체 보고서에서 통과했다. 전체 실행 시작 뒤 추가한
+Canvas registration 경계는 별도19개 검사에서100/100/100을 확인했다. 새 Canvas/route selector도
+기존 family95/90/100을 적용했고 어떤 기존 floor도 낮추지 않았다.
+
+동일 tar `07070a83f1d44ea1a31a42f033dd7f8a91b56c8cb1c036c170f08693303c31a0`로
+Node20.20.2/22.23.1/24.22.1 각각243 runtime·87 tutorials·9 qualification 모두 통과했다.
+Canonical staged minification/JSON 형식으로957개 입력을 대조해 현재와 차이가0임을 확인했다.
+문서183/183, built168pages/1,448machine artifacts,320/390/768px 실제 브라우저 검증도 통과했다.
+AT80/81/82의 남은 session·animation·geo·SLO 통합은 STEP070 closure/074 qualification에
+계속 연결하며, 공통 realistic3파일은 parent의 합산 통합에서 한 번 실행한다.

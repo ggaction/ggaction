@@ -9,8 +9,8 @@
 - [x] Force-directed compatibility + double buffer
 - [x] Density field + vector advection
 - [x] Edge-path Dijkstra + skip/lock
-- [ ] Full public actions·exact resource revision closure·prepared entry
-- [ ] 네 렌더러·scene·selection·inspection·codec·실제 데이터 소비자
+- [x] Full public actions·exact resource revision closure·prepared entry
+- [x] 네 렌더러·scene·selection·inspection·codec·실제 데이터 소비자
 - [ ] AT80/81/82의 session·animation·geo 교차 종료
 
 ## 승인과 기준
@@ -218,3 +218,8 @@ collinear 사례에서 smoothing 후 길이의 작은 초과를 발견하고 원
 회귀도 고정했다. Package는935 entries/6,145,064 unpacked/최대1,342,662 packed bytes다.
 새 owner만 추가되어 HEB의 public bundle 증거는 그대로 유효하며 전체 공개 소비자 검증은
 다음 체크포인트에 남아 있다. 네 알고리즘의 계산이 끝난 것을 STEP036–041 전체 완료로 보지 않는다.
+
+
+## 공개 연결 검증 완료
+
+공개 source `a491a8b8e`와 후속 test/documentation 수리 결과는 [공개 연결 기록](edge-bundling-public.md#공개-checkpoint-최종-검증) 및 그 증거 정본에서 소유한다. 최초 전체 결과와 수리 owning checks를 구분했고 package input은 동일하다. AT80/81/82 교차 종료와 Geo042–046 의무는 위 checklist에서 열어 둔다.

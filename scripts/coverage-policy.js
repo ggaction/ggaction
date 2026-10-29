@@ -99,6 +99,8 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "hierarchy-actions": { prefix: "actions/hierarchy/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Hierarchy revisions must preflight all dependent layouts and plots before wrapped transitions." },
   "source-preparation": { prefix: "resources/", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Host input, opaque preparation and freshness must be validated before application." },
   "source-grammar": { prefix: "grammar/dataSource", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Parsing, retained payload and request proofs must agree without host execution." },
+  "canvas-resource-revision": { prefix: "actions/canvas/resourceRevision", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Exact-class Canvas resource preparation must preserve immutable registration and Basic isolation." },
+  "edge-route-selection": { prefix: "selectors/edgeRoutes.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Route consumers must resolve one eligible exact stored resource." },
   "data-resource-revision": { prefix: "actions/data/resourceRevision", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Exact-class data-backed resource dispatch must preserve immutable registration and Basic isolation." },
   "source-actions": { prefix: "actions/data/source", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Prepared source planning and exact child contexts preserve atomic application." },
   "source-state": { prefix: "materialization/dataSourceState", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Historic receipts and live source revisions have distinct validated owners." },

@@ -25,6 +25,7 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "edge-routes": ["canvas", "routesPlot"],
   "calendar": ["canvas", "calendar", "chartTitle", "chartSubtitle"],
   "calendar-monday": ["canvas", "calendar", "chartTitle", "chartSubtitle"],
   "calendar-omitted": ["canvas", "calendar", "chartTitle", "chartSubtitle"],
