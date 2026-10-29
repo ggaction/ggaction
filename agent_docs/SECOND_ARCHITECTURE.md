@@ -790,9 +790,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 644,000 bytes |
-| `ggaction/basic` | 363,000 bytes |
+| `ggaction` | 650,000 bytes |
+| `ggaction/basic` | 365,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
+| `ggaction/interaction` | 83,000 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3451,3 +3452,12 @@ README 진입점 추가 전 최대1,281,005packed/5,879,334unpacked bytes에 최
 Node별 설치 근거는 interaction 공개 체크포인트 기록이 소유한다.
 공개 inspection API/recipe와 entry reference를 포함한 search index는945,337bytes로 기존941,000을
 넘어 최소1,000bytes 올림946,000으로 조정했다. 검색 내용이나 기능을 제외하지 않았다.
+
+
+### Resource·guide·inspection 통합 검증
+
+Contour·graph recompute·guide geometry·public inspection을 같은 source에 통합했다.
+Node20 설치 minimal bundle Full649,557/Basic364,927gzip 실측에 ceiling650,000/365,000을 적용하고
+SVG25,000/interaction83,000은 유지한다. Package907entries/5,994,134unpacked,
+Node20packed1,307,688bytes에 ceiling907/1,308,000/5,995,000을 적용한다.
+Public docs search955,504bytes는 ceiling956,000으로 최소 올림했다. Runtime owner 경계는 각 Current 계약을 따른다.

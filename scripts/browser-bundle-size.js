@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 644_000, // Contour branch ceiling; remeasure combined source before qualification.
-  "ggaction/basic": 363_000, // Preserve integrated native guide and graph dispatch ceiling.
+  ggaction: 650_000, // Combined resource and inspection owners: Node20 649,557 gzip bytes.
+  "ggaction/basic": 365_000, // Combined guide owners: Node20 364,927 gzip bytes.
   "ggaction/svg": 25_000,
   "ggaction/interaction": 83_000 // Dedicated controller; measured independently.
 });
