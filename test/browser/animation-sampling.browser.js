@@ -18,13 +18,13 @@ test("browser point planner samples renderer-ready frames in Canvas and SVG at b
     await writeFile(path.join(directory, "frame.js"), bundle.outputFiles[0].contents);
     await writeFile(path.join(directory, "index.html"), '<!doctype html><html lang="en"><title>Sampled point</title><link rel="icon" href="data:,"><p id="status">Ready</p><canvas aria-label="Point moving on a logarithmic scale"></canvas></html>');
     server = await startStaticServer(directory);browser = await chromium.launch({ headless: true });
-    for (const ratio of [1, 2]) {
+    for (const ratio of [1, 2]) for(const rebased of [false,true]) {
       const context = await browser.newContext({ deviceScaleFactor: ratio });
       try {
         const opened = await openBrowserPage(context, server.baseUrl, { waitFor: () => document.querySelector("#status").textContent === "Ready" });
-        const result = await opened.page.evaluate(async ratio => {
+        const result = await opened.page.evaluate(async ({ratio,rebased}) => {
           const { animationPointFrame, render, renderToSVG } = await import("/frame.js");
-          const { frame, checks } = animationPointFrame(), canvas = document.querySelector("canvas");
+          const { frame, checks } = animationPointFrame(rebased), canvas = document.querySelector("canvas");
           render(frame, canvas.getContext("2d"), { pixelRatio: ratio });
           const image = new Image();image.src = `data:image/svg+xml,${encodeURIComponent(renderToSVG(frame))}`;await image.decode();
           const svg = document.createElement("canvas");svg.width = 300 * ratio;svg.height = 200 * ratio;
@@ -32,7 +32,7 @@ test("browser point planner samples renderer-ready frames in Canvas and SVG at b
           const pixels = target => checks.map(({ point: [x, y] }) => [...target.getContext("2d").getImageData(x * ratio, y * ratio, 1, 1).data]);
           document.querySelector("#status").textContent = "Complete";
           return { canvas: pixels(canvas), svg: pixels(svg), expected: checks.map(c => c.rgba), size: [canvas.width, canvas.height] };
-        }, ratio);
+        }, {ratio,rebased});
         assert.deepEqual(result.size, [300 * ratio, 200 * ratio]);
         assert.deepEqual(result.canvas, result.expected);assert.deepEqual(result.svg, result.expected);
         assert.equal(await opened.page.locator("#status").textContent(), "Complete");assertNoBrowserErrors(opened.errors, "Sampled point");

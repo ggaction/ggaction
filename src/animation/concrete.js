@@ -2,6 +2,13 @@ import { cloneAndFreeze } from "../core/immutable.js";
 import { interpolateNumber } from "../grammar/animation/values.js";
 import { translateWeightedBlendSources } from "../grammar/schemas/weightedBlend.js";
 import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGraphic.js";
+import { isPointAnimationFallbackReason } from "../grammar/animation/pointState.js";
+
+const reasons=new Set(["primitive-kind","topology","clip-topology","appearance","scale-clamp","scale-parameters",
+  "degenerate-domain","scale-direction","log-sign","canvas-background","collapsed-domain","nonfinite-position"]);
+export function validateAnimationFallbackReason(reason) {
+  if(!isPointAnimationFallbackReason(reason)&&!reasons.has(reason))throw new TypeError("Unknown animation crossfade reason.");
+}
 
 export const sameConcreteValue = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const rectangle = value => Array.isArray(value) ? { x:value[0], y:value[1], width:value[2], height:value[3] } : value;
