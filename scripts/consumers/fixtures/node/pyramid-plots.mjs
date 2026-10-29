@@ -18,6 +18,7 @@ export const cases = [
     assert.match(import.meta.resolve("ggaction"), /\/node_modules\/ggaction\//);
     assert.equal(basic().createPyramidPlot,undefined); assert.equal(basic().editPyramidPlot,undefined);
     const p=create(), saved=serializeProgram(p), keys=getMarkItems(p,{target:"pyramid"}).map(item=>item.key);
+    for(const patch of [{stage:null},{value:null},{data:null},{coordinate:null}]) assert.throws(()=>p.editPyramidPlot(patch),/null/);
     const q=p.editPyramidPlot({encoding:"area",orientation:"left",labels:false}).reviseData({source:"d",id:"next",values:[...rows].reverse()});
     assert.deepEqual(getMarkItems(q,{target:"pyramid"}).map(item=>item.key), [...keys].reverse());
     assert.equal(exportAccessibleData(q,{target:"pyramid"}).views[0].rows.length,3);

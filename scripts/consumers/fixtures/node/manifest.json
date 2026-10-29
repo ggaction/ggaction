@@ -1205,15 +1205,15 @@
     "cases": [
       {
         "id": "pyramid/public-lifecycle",
-        "statements": 15
+        "statements": 16
       },
       {
         "id": "pyramid/offline-scene-renderers",
-        "statements": 12
+        "statements": 14
       },
       {
         "id": "pyramid/fresh-process-and-nested",
-        "statements": 9
+        "statements": 10
       }
     ]
   }

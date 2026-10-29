@@ -32,7 +32,7 @@ function paint(input, fields, label, stored = false) {
 
 export function normalizePyramidPlot(patch, previous, previousConfig, stored = false) {
   ownRecord(patch, "Pyramid plot"); rejectUnknownProperties(patch, PYRAMID_PLOT_FIELDS, "pyramid plot");
-  if (Object.values(patch).some(value => value === undefined)) throw new TypeError("Pyramid plot options cannot contain undefined.");
+  if (Object.values(patch).some(value => value === undefined || value === null)) throw new TypeError("Pyramid plot options cannot contain null or undefined.");
   const stage = patch.stage ?? previous?.stage, value = patch.value ?? previous?.value;
   validateNonEmptyString(stage, "Pyramid stage field"); validateNonEmptyString(value, "Pyramid value field");
   const options = { ...previous?.options };

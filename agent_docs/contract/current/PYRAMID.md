@@ -53,7 +53,7 @@
 - Signature: `editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram`.
 - target은 기존 pyramid다. create의 모든 field/style/layout 옵션을 patch하며 stage/value 생략은 유지한다.
   target만 있거나 빈 patch, explicit undefined, unknown key는 거부한다. labels:false 후 labels:{}는
-  stage/auto와 native label style로 재활성화한다. 명시 data/coordinate 재결합도 전체 사전 검증한다.
+  stage/auto와 native label style로 재활성화한다. 명시 data/coordinate 재결합도 전체 사전 검증한다. null은 유지나 reset으로 해석하지 않고 거부한다.
 - 동일 dataset의 source revision/reorder는 row identity를 유지하고 새로운 geometry를 계산한다. Canvas,
   coordinate, color scale, typography, theme, filter/highlight와 같은 materializer를 공유한다.
 - selection은 stage당 한 항목이다. row fields·semantic channels·concrete properties·source rows를

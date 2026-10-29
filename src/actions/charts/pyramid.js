@@ -37,7 +37,7 @@ function facade(editing) {
   const op = editing ? "editPyramidPlot" : "createPyramidPlot";
   return closedAction({ op, description: `${editing ? "Edit" : "Create"} an ordered stage Pyramid with width or area meaning.` },
     [editing ? "target" : "id", "data", "coordinate", "color", ...PYRAMID_PLOT_FIELDS], function (args = {}) {
-      if (Object.values(args).some(value => value === undefined)) throw new TypeError("Pyramid options cannot contain undefined.");
+      if (Object.values(args).some(value => value === undefined || value === null)) throw new TypeError("Pyramid options cannot contain null or undefined.");
       if (editing && !Object.keys(args).some(key => key !== "target")) throw new TypeError("Pyramid edit requires a nonempty patch.");
       const previous = editing ? resolveEligibleLayer(this, { target: args.target, predicate: layer => layer.mark.type === "pyramid", label: op }) : undefined;
       const id = previous?.id ?? resolveMarkId(this, args.id, { defaultId: "pyramid", label: "Pyramid plot id", markType: "pyramid", operation: op });

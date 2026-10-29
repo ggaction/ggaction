@@ -84,7 +84,7 @@ editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
 ```
 
 Use the creation options with `target` instead of `id`. Omitted options retain
-their values. An empty patch, unknown option or explicit `undefined` is an error.
+their values. An empty patch, unknown option, explicit `null` or `undefined` is an error.
 Changing encoding mode removes the previous mode's specific width policy.
 After `labels: false`, `labels: {}` restores stage labels with their defaults.
 `color: false` removes the mapping and its legend, exposing the fixed stage fill.

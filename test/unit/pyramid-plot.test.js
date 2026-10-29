@@ -117,13 +117,16 @@ test("Pyramid rejects invalid final candidates before any state-changing child",
   const calls = [];
   class Capturing extends ChartProgram { editSemantic(args) { calls.push(args); return super.editSemantic(args); } createGraphics(args) { calls.push(args); return super.createGraphics(args); } }
   const plain = base(), captured = new Capturing({ ...plain });
-  for (const patch of [{ value: "missing" }, { gap: 100 }, { encoding: "area", lastStage: "point" }, { stages: { opacity: 2 } }, { labels: { content: "percent" } }]) {
+  for (const patch of [{ stage:null }, { data:null }, { coordinate:null }, { value: "missing" }, { gap: 100 }, { encoding: "area", lastStage: "point" }, { stages: { opacity: 2 } }, { labels: { content: "percent" } }]) {
     calls.length = 0;
     assert.throws(() => captured.createPyramidPlot({ stage: "stage", value: "value", ...patch }));
     assert.deepEqual(calls, []);
   }
   assert.throws(() => build().createPyramidPlot({ stage: "stage", value: "value" }), /explicit|exists|id/);
   assert.throws(() => build().editPyramidPlot({}), /nonempty/);
+  for(const patch of [{stage:null},{value:null},{data:null},{coordinate:null}]) {
+    calls.length=0;assert.throws(()=>new Capturing({...build()}).editPyramidPlot(patch),/null/);assert.deepEqual(calls,[]);
+  }
 });
 
 
