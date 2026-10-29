@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:abf5377cb26714d2b84f652c7e1abcdc393de3d3a774ab869b25cbe04d5c2aeb. Status: development. Runtime source: e6a47675f6c1eb50785f8e8169788b15c65f8bb1. Release baseline: v0.0.13.
+Contract: sha256:1658522bb09d5d25bcea6d73b206435f710ec874ba2e6b13d867ddbe664d0480. Status: development. Runtime source: d86e49cd321e04003fdc9c49677f1348fcdb53dc. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/e6a47675f6c1eb50785f8e8169788b15c65f8bb1/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/d86e49cd321e04003fdc9c49677f1348fcdb53dc/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/e6a47675f6c1eb50785f8e8169788b15c65f8bb1/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/d86e49cd321e04003fdc9c49677f1348fcdb53dc/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -52151,12 +52151,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e6a47675f6c1eb50785f8e8169788b15c65f8bb1/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d86e49cd321e04003fdc9c49677f1348fcdb53dc/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/e6a47675f6c1eb50785f8e8169788b15c65f8bb1/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/d86e49cd321e04003fdc9c49677f1348fcdb53dc/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55283,9 +55283,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:abf5377cb26714d2b84f652c7e1abcdc393de3d3a774ab869b25cbe04d5c2aeb` |
+| Contract fingerprint | `sha256:1658522bb09d5d25bcea6d73b206435f710ec874ba2e6b13d867ddbe664d0480` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `e6a47675f6c1eb50785f8e8169788b15c65f8bb1` |
+| Runtime source commit | `d86e49cd321e04003fdc9c49677f1348fcdb53dc` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |

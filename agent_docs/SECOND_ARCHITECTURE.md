@@ -4433,3 +4433,9 @@ JavaScript와 HTML의 독립 hash를 보존한다. Runtime archive ecbd493d…�
 Native control host 예제의 합산 검색 payload는1,076,418bytes다.
 이전1,075,900 한도 실패를 보존하고 최소100byte 한도1,076,500을 적용한다.
 정적 native 제어는 기존 command/history reducer를 사용하며 runtime archive는 ecbd493d…로 유지한다.
+
+Typed point restore·현재 frame 재기준·player adapter와 native hit의 합산 canonical staging은
+1125entries/1,605,787packed/7,298,169unpacked bytes다. 최소 cap1125/1,606,000/7,299,000을
+적용한다. 같은 archive9b3c3eea…의 interaction128,129gzip만128,200으로 올리며
+Full772,328/Basic421,122/SVG24,779/graph43,923은 기존 합산 한도를 유지한다.
+이 private checkpoint는 공개 animation entry나 최종077 qualification을 대신하지 않는다.

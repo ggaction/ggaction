@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 421_200, // Shared schemas, materialization and weighted rendering: Node22 421,200.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/interaction": 128_000 // Combined current-frame keyboard focus and prepared previews: Node22 127,988.
+  "ggaction/interaction": 128_200 // Shared closed-program admission and sampled-frame metric handling: Node22 128,129.
 });
 
 function minimalBrowserSource(specifier) {
