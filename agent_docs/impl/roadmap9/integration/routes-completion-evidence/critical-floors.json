@@ -1,0 +1,86 @@
+[
+  {
+    "file": "actions/data/resourcePlan.js",
+    "actual": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "floor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "log": ".artifacts/routes-integration-owner-coverage-final.log"
+  },
+  {
+    "file": "actions/graphs/routeClosure.js",
+    "actual": {
+      "lines": 100,
+      "branches": 96,
+      "functions": 100
+    },
+    "floor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "log": ".artifacts/routes-integration-owner-coverage-final.log"
+  },
+  {
+    "file": "actions/graphs/screenRoutes.js",
+    "actual": {
+      "lines": 100,
+      "branches": 97.22,
+      "functions": 100
+    },
+    "floor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "log": ".artifacts/routes-integration-owner-coverage-final.log"
+  },
+  {
+    "file": "actions/primitives/preparedResourceContext.js",
+    "actual": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "floor": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "log": ".artifacts/routes-integration-owner-coverage-final.log"
+  },
+  {
+    "file": "materialization/canvasResourceRevision.js",
+    "actual": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "floor": {
+      "lines": 95,
+      "branches": 90,
+      "functions": 100
+    },
+    "log": ".artifacts/routes-integration-owner-coverage-final.log"
+  },
+  {
+    "file": "materialization/guides/layout.js",
+    "actual": {
+      "lines": 97.37,
+      "branches": 98.75,
+      "functions": 100
+    },
+    "floor": {
+      "lines": 90,
+      "branches": 80,
+      "functions": 100
+    },
+    "log": ".artifacts/routes-integration-guide-coverage-final.log"
+  }
+]
