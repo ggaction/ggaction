@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { assertEquivalentMeaning } from "../support/identity-equivalence.js";
+import { directProgramTrace, programTraceOwners } from "../support/program-traces.js";
 
 import { renderToSVG } from "../../src/renderers/svg.js";
 import { assertGraphicIntegrity } from "../oracles/graphic-integrity.js";
@@ -22,7 +23,7 @@ function edgeFactors(recipe, index) {
 }
 
 function directTraceOperations(program, operations = new Set()) {
-  for (const child of program.trace.children ?? []) operations.add(child.op);
+  for (const child of directProgramTrace(program)) operations.add(child.op);
   return operations;
 }
 
@@ -151,7 +152,10 @@ test("calls every user-facing action directly from a generated scenario root", (
 });
 
 test("retains direct action effects in final semantic and graphic state", () => {
-  const resources = buildLifecycleRecipe("action-direct-data-resources");
+  const resourceOwners = programTraceOwners(buildLifecycleRecipe("action-direct-data-resources"))
+    .filter(owner => owner.semanticSpec.layers.some(layer => layer.id === "resourcePoints"));
+  assert.equal(resourceOwners.length, 1, "prepared resource assertions require one explicit resource panel");
+  const [resources] = resourceOwners;
   const preparedSource = semanticResource(resources, "datasets", "unusedPreparedLifecycleSource");
   assert.deepEqual(preparedSource.values, [{ fixture: "prepared-source", value: 1 }]);
   assert.equal(preparedSource.sourceReceipt.sourceId, preparedSource.id);

@@ -442,5 +442,55 @@
     "prerequisites": "Run the complete module with its inline region features and population table. Both regions remain in the joined result.",
     "rendering": "authoring-only",
     "resultKind": "semantic"
+  },
+  {
+    "id": "interaction-legend-selection",
+    "file": "api/interaction.md",
+    "contains": "const legendSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use this browser module with the Canvas element whose id is chart. Click a legend symbol or label to toggle that category."
+  },
+  {
+    "id": "interaction-legend-visibility",
+    "file": "api/interaction.md",
+    "contains": "const visibilitySession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use this browser module with the Canvas element whose id is chart. Click a legend category twice to hide and restore its items."
+  },
+  {
+    "id": "interaction-parameter-context",
+    "file": "api/interaction.md",
+    "contains": "const parameterSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Arrow keys on Multiplier update computed data; right-click a point and activate the host selection button."
+  },
+  {
+    "id": "interaction-hierarchy-focus",
+    "file": "api/interaction.md",
+    "contains": "const focusSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Activate Group A or All groups with a pointer, Enter or Space; the breadcrumb text follows the native partition view."
+  },
+  {
+    "id": "interaction-viewport",
+    "file": "api/interaction.md",
+    "contains": "const viewportSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Pan right, Zoom in and Original view work with pointer, Enter and Space; the output reports the current projection transform."
   }
 ]

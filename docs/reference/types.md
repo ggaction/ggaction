@@ -3639,6 +3639,25 @@ export interface CreateNativeCoordinateOptions {
 
 </details>
 
+### `CreateOHLCPlotOptions` {#type-createohlcplotoptions}
+
+<details markdown="1">
+<summary>Expand CreateOHLCPlotOptions</summary>
+
+```typescript
+export interface CreateOHLCPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: OHLCX;
+  readonly low: string; readonly high: string; readonly open: string; readonly close: string; readonly yScale?: NonPointQuantitativePositionScaleOptions;
+  readonly invalid?: "error" | "omit-row"; readonly doji?: "line" | "none"; readonly width?: OHLCWidth;
+  readonly body?: OHLCBodyPaint; readonly stem?: OHLCStemPaint; readonly labels?: false | OHLCLabelPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
+}
+```
+
+</details>
+
+Related types: [`OHLCX`](#type-ohlcx) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`OHLCWidth`](#type-ohlcwidth) · [`OHLCBodyPaint`](#type-ohlcbodypaint) · [`OHLCStemPaint`](#type-ohlcstempaint) · [`OHLCLabelPaint`](#type-ohlclabelpaint) · [`OHLCColor`](#type-ohlccolor) · [`ColorGuides`](#type-colorguides).
+
 ### `CreateOverlayOptions` {#type-createoverlayoptions}
 
 <details markdown="1">

@@ -19,6 +19,7 @@ import {
 } from "../support/scenarios/coverage-inventory.js";
 import { LIFECYCLE_SCENARIO_RECIPES } from "../support/scenarios/lifecycle-recipes.js";
 import { datasetDefinition } from "../support/datasets/catalog.js";
+import { directProgramTrace } from "../support/program-traces.js";
 
 const actionCards = JSON.parse(readFileSync(
   new URL("../../knowledge/action-cards.json", import.meta.url),
@@ -592,7 +593,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const rangeProgram = rangeRecipe.build({ dataset: rangeRecipe.datasets[0], ...Object.fromEntries(Object.entries(rangeRecipe.factors).map(([name, values]) => [name, values[0]])) });
   const preparedReport = summarizeScenarioFeatureCoverage({
     results: [[preparedRecipe, preparedProgram], [rangeRecipe, rangeProgram]].map(([recipe, program]) => {
-      const directTrace = program.trace.children.map(({ op, args }) => ({ op, args }));
+      const directTrace = directProgramTrace(program).map(({ op, args }) => ({ op, args }));
       return { id: recipe.id, recipe: recipe.id, dataset: recipe.datasets[0],
         operations: directTrace.map(node => node.op), directOperations: directTrace.map(node => node.op), directTrace,
         metadata: { chartFamily: "scatter", complexity: "advanced", activeFeatures: [], dataOperations: [] },
@@ -630,7 +631,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const conditionalResults = ["action-direct-point-text", "action-direct-ranged-marks"].map(id => {
     const recipe = LIFECYCLE_SCENARIO_RECIPES.find(item => item.id === id);
     const program = recipe.build({ dataset: recipe.datasets[0], ...Object.fromEntries(Object.entries(recipe.factors).map(([name, values]) => [name, values[0]])) });
-    const directTrace = program.trace.children.map(({ op, args }) => ({ op, args }));
+    const directTrace = directProgramTrace(program).map(({ op, args }) => ({ op, args }));
     return { id, recipe: id, dataset: recipe.datasets[0], operations: directTrace.map(node => node.op),
       directOperations: directTrace.map(node => node.op), directTrace, metadata: { chartFamily: "scatter", complexity: "advanced", activeFeatures: [], dataOperations: [] }, effectiveFeatures: [], renderers: ["svg"] };
   });

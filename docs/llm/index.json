@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "packageVersion": "0.0.26",
-  "contractId": "sha256:2a81c3d57f0d159df31676e782155157ddd85ad82de840fd6fa3310a9f2ddda9",
+  "contractId": "sha256:13e32a3af42318782701901f388c3e2860f17a9a369f1dc42d9694c50c4e672b",
   "identityPolicy": "Match contractId and artifact hashes before mixing page, card, type, or MCP resource data. Task packets must come from the same installed card/resource set; packageVersion alone is insufficient.",
   "artifacts": [
     {
       "path": "actions.json",
-      "sha256": "1320abfdb77cd737f093d1bb4587a49ab40ded492eb3b173b21a6e4a9aa4d4c3",
-      "bytes": 1143869
+      "sha256": "2fb32281362c2e58eecedf9936c5613c3f7696916cfc4eaf863cab202b8f53b8",
+      "bytes": 1206706
     },
     {
       "path": "mcp-resources.json",
@@ -31,28 +31,28 @@
     },
     {
       "path": "types/program.d.ts",
-      "sha256": "3b56c8a3c9edebb867c0671876e91c76e7463a3027ab6fbd57b262887c94219c",
-      "bytes": 295491
+      "sha256": "a42931c9f9840a8fc2f7601cf5f993bec4f18180528a23bfcc7e5379ac16ba7b",
+      "bytes": 306599
     }
   ],
   "catalogs": {
     "pages": {
-      "count": 172,
+      "count": 176,
       "path": "llm/pages.json",
-      "bytes": 42550,
-      "sha256": "bb02c581da10e893045035c576a7aca0117f0311ed95a95f4e540aae54a46a17"
+      "bytes": 43721,
+      "sha256": "65fd15d76f360a52fcdc059e60b87c6d664460f1f7302bc238f34af80855be9f"
     },
     "actions": {
-      "count": 359,
+      "count": 365,
       "path": "llm/actions.json",
-      "bytes": 99442,
-      "sha256": "0c5d07d09a396d577bd286e38703ff3b9c518f1b93b50319bb4895353d8a21e3"
+      "bytes": 103941,
+      "sha256": "fef2b37ac9e0589789e56b381ee754f28c20484c202f4c11b6b160e766620d81"
     },
     "types": {
-      "count": 980,
+      "count": 996,
       "path": "llm/types.json",
-      "bytes": 214942,
-      "sha256": "9387c4f6e0b6a225544be21042c405dd1a7f4107bb3ff2409633e1c2b3c31116"
+      "bytes": 222458,
+      "sha256": "256ceed0cc7d10cd35ae28cdd625cf4f970bdafc2f2d12f2d604d8bd899540c8"
     }
   },
   "paths": {

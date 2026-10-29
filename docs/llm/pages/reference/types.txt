@@ -3101,6 +3101,22 @@ export interface CreateNativeCoordinateOptions {
 }
 ```
 
+### `CreateOHLCPlotOptions` {#type-createohlcplotoptions}
+
+ Expand CreateOHLCPlotOptions
+
+```typescript
+export interface CreateOHLCPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: OHLCX;
+  readonly low: string; readonly high: string; readonly open: string; readonly close: string; readonly yScale?: NonPointQuantitativePositionScaleOptions;
+  readonly invalid?: "error" | "omit-row"; readonly doji?: "line" | "none"; readonly width?: OHLCWidth;
+  readonly body?: OHLCBodyPaint; readonly stem?: OHLCStemPaint; readonly labels?: false | OHLCLabelPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
+}
+```
+
+Related types: [`OHLCX`](../../../reference/types/#type-ohlcx) · [`NonPointQuantitativePositionScaleOptions`](../../../reference/types/#type-nonpointquantitativepositionscaleoptions) · [`OHLCWidth`](../../../reference/types/#type-ohlcwidth) · [`OHLCBodyPaint`](../../../reference/types/#type-ohlcbodypaint) · [`OHLCStemPaint`](../../../reference/types/#type-ohlcstempaint) · [`OHLCLabelPaint`](../../../reference/types/#type-ohlclabelpaint) · [`OHLCColor`](../../../reference/types/#type-ohlccolor) · [`ColorGuides`](../../../reference/types/#type-colorguides).
+
 ### `CreateOverlayOptions` {#type-createoverlayoptions}
 
  Expand CreateOverlayOptions

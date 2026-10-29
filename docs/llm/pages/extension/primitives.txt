@@ -243,9 +243,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/4191986ce68922a20d9d4a08552ba89737754849/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/4191986ce68922a20d9d4a08552ba89737754849/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -311,12 +311,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/572b8a14d7804ccc2a23cb17df5fc3583ea8a692/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/572b8a14d7804ccc2a23cb17df5fc3583ea8a692/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 

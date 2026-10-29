@@ -236,3 +236,7 @@ requirements after resolving each part.
 - Place Observations on a Calendar: ./tutorials/calendar/
 - Arrange Nested Panels with Shared Guides: ./tutorials/nested-responsive/
 - Draw Geometry on a Map: ./tutorials/geographic-marks/
+- Pyramid Plots: ./api/pyramid/
+- Compare Ordered Stages: ./tutorials/pyramid/
+- OHLC Plots: ./api/ohlc/
+- Show open, high, low and close: ./tutorials/ohlc/

@@ -7,15 +7,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/4191986ce68922a20d9d4a08552ba89737754849/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/4191986ce68922a20d9d4a08552ba89737754849/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](../../../getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/4191986ce68922a20d9d4a08552ba89737754849/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program

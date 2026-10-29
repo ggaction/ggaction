@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:2a81c3d57f0d159df31676e782155157ddd85ad82de840fd6fa3310a9f2ddda9",
-  "sourceCommit": null,
-  "sourceRef": "main",
-  "exampleSourceRef": "4191986ce68922a20d9d4a08552ba89737754849",
+  "contractId": "sha256:13e32a3af42318782701901f388c3e2860f17a9a369f1dc42d9694c50c4e672b",
+  "sourceCommit": "572b8a14d7804ccc2a23cb17df5fc3583ea8a692",
+  "sourceRef": "572b8a14d7804ccc2a23cb17df5fc3583ea8a692",
+  "exampleSourceRef": "11a9d313ec55d3a2a7e7df73d26538f8b96c2639",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 359,
+  "actionCount": 365,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"

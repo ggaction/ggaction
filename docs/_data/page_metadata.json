@@ -1155,5 +1155,29 @@
     "editSource": "examples/geographic-marks/program.js",
     "description": "A geometry resource preserves source features. A projection maps their coordinates, and one Geo coordinate shares that projection among shapes, points and lines.",
     "image": "/assets/images/geographic-marks.png"
+  },
+  "/api/pyramid/": {
+    "title": "Pyramid Plots",
+    "source": "docs/api/pyramid.md",
+    "editSource": "docs/api/pyramid.md",
+    "description": "Show ordered stages as adjacent trapezoids. Use width to compare their spans, or area to make each trapezoid's area proportional to its value."
+  },
+  "/tutorials/pyramid/": {
+    "title": "Compare Ordered Stages",
+    "source": "docs/tutorials/pyramid.md",
+    "editSource": "examples/pyramid/program.js",
+    "description": "These three observations count visits, trials and returns. The order expresses the process. Pyramid keeps it even if a later count exceeds an earlier one."
+  },
+  "/api/ohlc/": {
+    "title": "OHLC Plots",
+    "source": "docs/api/ohlc.md",
+    "editSource": "docs/api/ohlc.md",
+    "description": "Show each observation's open, high, low and close as one selectable item. A thin line spans the low and high; a rectangle spans the open and close."
+  },
+  "/tutorials/ohlc/": {
+    "title": "Show open, high, low and close",
+    "source": "docs/tutorials/ohlc.md",
+    "editSource": "examples/ohlc/program.js",
+    "description": "Keep each observation's four prices together. A high low stem and an open close body are one chart item, so selecting either part selects the same source row."
   }
 }

@@ -2,8 +2,8 @@
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/4191986ce68922a20d9d4a08552ba89737754849/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/4191986ce68922a20d9d4a08552ba89737754849/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -12,7 +12,7 @@ Follow [Getting Started](../../../getting-started/) to create a browser module a
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/4191986ce68922a20d9d4a08552ba89737754849/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/11a9d313ec55d3a2a7e7df73d26538f8b96c2639/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
