@@ -127,6 +127,10 @@
     "calendar": [
       {
         "type": "file",
+        "path": "unit/calendar-layout.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/grammar/calendar-days.test.js"
       },
       {

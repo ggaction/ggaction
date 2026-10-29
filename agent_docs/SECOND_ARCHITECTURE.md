@@ -75,6 +75,9 @@ Full assembly는 image, hierarchy, graph와 layout의 닫힌 handler를 등록�
 shared scale union과 mark/guide closure를 명시 실행한다. `materialization/contour/plot.js`의
 compound path는 기존 renderer의 유일한 입력이다. 정확한 값과 lifecycle은
 [등고선 계약](contract/current/CONTOURS.md)이 소유한다.
+Calendar의 civil-day cell 계산은 기존 날짜 파싱·시간대·day-domain owner를 재사용한다.
+`grammar/gridBoundary.js`는 Contour와 Calendar month cell union의 공통 directed-edge
+소거·ring 연결·hole 분류를 소유하며 pixel frame이나 프로그램 상태를 읽지 않는다.
 
 이 owner1개를 더한 지원 Node20/22/24 staging은739entries, packed최대1,098,083,
 unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.

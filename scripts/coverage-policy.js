@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "calendar-grammar": { prefix: "grammar/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Civil-day aggregation, leap/DST mapping and month boundaries require independent date and topology evidence." },
+  "grid-boundary": { prefix: "grammar/gridBoundary.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Contour and calendar cell unions share one bounded edge cancellation and ring topology owner." },
   "contour-grammar": { prefix: "grammar/contour/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Grid topology, density values and closed ring boundaries require independent numeric and malformed-input evidence." },
   "density-kernels": { prefix: "grammar/densityKernels.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "One-dimensional and contour density share the same finite kernel definitions." },
   "resource-mark-effects": { prefix: "grammar/markEffects.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Role effects must share normalized authoring and strict stored validation without mutating input." },
