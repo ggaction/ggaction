@@ -511,5 +511,6 @@
       "file": "revision-final.log.gz",
       "sha256": "64d76027d78a5e2a99b5a2d952a18afa081c148052d7419dd9724700af36d185"
     }
-  ]
+  ],
+  "logHashEncoding": "sha256 of decompressed original log bytes; .gz files use gzip with mtime 0"
 }
