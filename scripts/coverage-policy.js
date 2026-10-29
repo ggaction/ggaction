@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "ohlc-values": { prefix: "grammar/ohlc.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "High-low and open-close roles require finite inequalities and whole-row eligibility with exact typed identity." },
+  "waterfall-values": { prefix: "grammar/waterfall.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Ordered signed contributions, explicit total/subtotal roles and reset must retain exact finite accumulation." },
   "pyramid-layout": { prefix: "grammar/pyramid/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stage order, width/area meaning, typed keys and finite oriented geometry must retain independent numerical evidence." },
   "facet-scale-context": { prefix: "materialization/facetScaleContext.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Layout-only facet work must preserve resolved domains and expire transient authority on return or failure." },
   "responsive-canvas-state": { prefix: "grammar/responsiveCanvas.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored fixed Canvas policies and results require closed shape, finite bounds and immutable restoration." },

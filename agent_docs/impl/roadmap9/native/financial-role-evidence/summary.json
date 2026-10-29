@@ -1,0 +1,524 @@
+{
+  "status": "private-kernel-qualified",
+  "base": "c92679870",
+  "scope": "OHLC finite row eligibility and explicit waterfall value roles only; no public action/schema/renderer/export added",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "sourceHashes": {
+    "src/grammar/ohlc.js": "9eb58229fef3699fb1d8ac71f2880d290df4b38f23eea6fdadbcaf8560b3a575",
+    "src/grammar/waterfall.js": "11543e96fba582dbecbe6717158eb3c777e13c3a6921cd9601fc37b6fd3d239a",
+    "test/unit/grammar/financial-roles.test.js": "b9d814089644b8160740881932748e812959e86f6b5e759c8fc305c1cc668817",
+    "scripts/coverage-policy.js": "19ba88c6497a44786100088611bab72c5ba6e8c659cf16abeef3966d6807b728"
+  },
+  "checks": {
+    "focused": 8,
+    "twoOwnerCoverage": [
+      100,
+      100,
+      100
+    ],
+    "boundariesDiscovery": 27,
+    "packageContracts": 13
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/financial-roles/package/ggaction-0.0.26.tgz",
+    "entries": 983,
+    "packedBytes": 1407290,
+    "unpackedBytes": 6413792,
+    "sha256": "01f7d405068a42047d0e88d69efce00bb6faea70481cd9d3c9d6123da9b61747"
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/financial-roles/package/ggaction-0.0.26.tgz",
+      "kernelTests": 8,
+      "records": [
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        }
+      ],
+      "types": "passed",
+      "optionalPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 859,
+          "minifiedBytes": 2414983,
+          "gzipBytes": 688008
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1292572,
+          "gzipBytes": 377332
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145387,
+          "gzipBytes": 43572
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 173,
+          "minifiedBytes": 333287,
+          "gzipBytes": 108444
+        }
+      }
+    },
+    "22": {
+      "node": "v22.23.1",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/financial-roles/package/ggaction-0.0.26.tgz",
+      "kernelTests": 8,
+      "records": [
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        }
+      ],
+      "types": "passed",
+      "optionalPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 859,
+          "minifiedBytes": 2414983,
+          "gzipBytes": 686198
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1292572,
+          "gzipBytes": 376502
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20055
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145387,
+          "gzipBytes": 43411
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 173,
+          "minifiedBytes": 333287,
+          "gzipBytes": 107805
+        }
+      }
+    },
+    "24": {
+      "node": "v24.22.1",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/financial-roles/package/ggaction-0.0.26.tgz",
+      "kernelTests": 8,
+      "records": [
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        }
+      ],
+      "types": "passed",
+      "optionalPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 859,
+          "minifiedBytes": 2414983,
+          "gzipBytes": 688008
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1292572,
+          "gzipBytes": 377332
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145387,
+          "gzipBytes": 43572
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 173,
+          "minifiedBytes": 333287,
+          "gzipBytes": 108444
+        }
+      }
+    }
+  },
+  "allFiveBundleSizesUnchanged": true,
+  "remaining": [
+    "Source-pinned docs provenance",
+    "OHLC and waterfall primitive visual and public create/edit/revise consumers",
+    "Pyramid public consumers",
+    "STEP050-052 prerequisite integration",
+    "STEP074/077 final qualification"
+  ],
+  "evidenceFiles": {
+    "boundaries.log": {
+      "sha256": "c3317ebea9c206e0bb1d31c560d3f6a25f23c35e71e80a0b8c23861c014b72bf",
+      "bytes": 5483
+    },
+    "coverage.log": {
+      "sha256": "fe74a3844471ccbefb0e344ca0a089beece25da13ca81acda113813a4582d66a",
+      "bytes": 2671
+    },
+    "initial.log": {
+      "sha256": "6bf720a22d96df75ea6c0b4d5366bb235c975a88322b677d8e9bd74d6825b1f6",
+      "bytes": 2428
+    },
+    "installed-20.json": {
+      "sha256": "aa1430ac8fba8acd7fd09953f5be57ffc31c1197c0fb327d55bf3001623cd061",
+      "bytes": 3186
+    },
+    "installed-20.log": {
+      "sha256": "e6a02be056e4567212e6440d4f72e3337986ce02f2ead39852fa6d8da6716205",
+      "bytes": 5104
+    },
+    "installed-22.json": {
+      "sha256": "a2a89c03988c5bda5efc69b328cb03f22df783f942501b0c014efb902a2f6b2b",
+      "bytes": 3186
+    },
+    "installed-22.log": {
+      "sha256": "9d1bd1979332d34db9a17a772b447dcc64504edaf46bdbb17da192a915c9d8c4",
+      "bytes": 5225
+    },
+    "installed-24.json": {
+      "sha256": "d092b087f0ce8766aae0431ca28dd3a83022f437a859186aa0f60490d065779f",
+      "bytes": 3186
+    },
+    "installed-24.log": {
+      "sha256": "df64767dc9580277ddf3a9959366328a7b1b81e2b70ef7d4a315af16d707b438",
+      "bytes": 4116
+    },
+    "installed.mjs": {
+      "sha256": "7aceecb962a4845f0636804d567229a649916554b1c00245dc41401d1b99843d",
+      "bytes": 3033
+    },
+    "measure.json": {
+      "sha256": "db939dd332400ea639ec00a9c654beff6c45ee957ddb19047aa1f85142d35064",
+      "bytes": 62
+    },
+    "measure.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "package-contracts.log": {
+      "sha256": "03372286ba3b494dec9fa35816d67cca2db68f08e5415fc9e984ce4e1a206552",
+      "bytes": 2769
+    },
+    "package.json": {
+      "sha256": "fe68b1677f150c294692728a8430ce9423157310cd6c1e6da9f4aa5d355e65cc",
+      "bytes": 268
+    },
+    "package.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  }
+}

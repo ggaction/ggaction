@@ -6,7 +6,8 @@
 - [x] Pyramid 순수 단계 kernel과 독립 polygon 면적·literal 수치 검사
 - [ ] STEP050·051·052 최종 통합과 명칭·제외 정책 검사
 - [ ] Pyramid primitive 시각 증거와 공개 create/edit/revise 소비자 연결
-- [ ] OHLC·waterfall 역할, 독립 수치·시각 증거와 공개 소비자 연결
+- [x] OHLC·waterfall 순수 값 역할과 독립 수치 검사
+- [ ] OHLC·waterfall 시각 증거와 공개 소비자 연결
 - [ ] 전체 mark consumer matrix·설치·문서 인수
 - [ ] STEP074·077 누적 인수
 
@@ -44,3 +45,23 @@ percentBase를 생략하면 비율 metadata는 null이다. first/total/previous�
 패키지981entries/1406091packed/6409665unpacked에981/1407000/6410000의 최소 상한을 적용했다.
 source pin 후 동일 bytes를 확인했고 문서191·built170pages/1454LLM이 통과했다. 새 공개 문서·이미지·HTML 구조는 없으므로 직전 main의320/390/768px browser 증거를 재사용한다.
 [증거](pyramid-kernel-evidence/summary.json)는 최초 실패와 source·설치·문서 로그를 보존한다.
+
+## OHLC·waterfall 값 역할 결정
+
+기존 전체 승인을 재사용해 별도 순수 owner `grammar/ohlc.js`, `grammar/waterfall.js`를 추가한다.
+공개 façade·새 mark·저장 schema는 아직 추가하지 않았다. OHLC는 finite low≤min(open,close)≤
+max(open,close)≤high를 검증하고 up/down/flat 및 정확 sourceIndex를 반환한다. invalid 기본은 error,
+명시 omit-row는 수치·부등식 오류 행 전체를 뺀다. 중복 key·own-data/schema 오류는 숨기지 않는다.
+
+Waterfall은 입력 순서의 명시 delta/total/subtotal만 받는다. delta는 현재 누적에서 증감하고, total은
+0에서 명시 값 또는 현재 누적까지 그리며, subtotal은0에서 현재 누적까지다. total의 명시 값은
+누적을 덮어쓰지 않는다. total/subtotal의 reset:true만 다음 누적을0으로 초기화한다. subtotal에
+value, delta에 reset을 넣으면 거부한다. label 문자열로 역할을 추론하거나 source를 정렬하지 않는다.
+각 결과는 frozen이며 기존 typed key·item/work limit을 사용하고 누적 overflow를 명시 거부한다.
+
+8개 독립 literal·보존 법칙 검사와 두 owner line/branch/function100%, 경계27·패키지13을 확인했다.
+계획 OR-21의5−2+4=7 fixture를 runtime suite의 독립 literal로 옮겨 과거 문서에 의존하지 않는다.
+같은 archive `01f7d405`를 Node20/22/24 각각 kernel8·기존runtime23·strict TS/optional peers/5bundle로
+검증했고 다섯 bundle gzip은 앞선 Pyramid checkpoint와 정확히 같다. 패키지는983entries,
+1407290packed/6413792unpacked이며 최소 상한983/1408000/6414000을 적용했다.
+[수치·설치 증거](financial-role-evidence/summary.json)는 공개 소비자 및 최종074/077 검증을 대신하지 않는다.
