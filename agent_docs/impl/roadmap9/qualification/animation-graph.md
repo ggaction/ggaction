@@ -96,3 +96,12 @@ public session adapter의 graph scope/retention integration이 완료됐다는 �
 - Root partition, 별도 담당 Cartesian rule/rect/line/area 및 나머지 Geo/polar/guide typed kernel을
   연결한다. 현재 fallback은 그 compatible-family 의무를 면제하지 않는다.
 - 최종 공통 corpus와 release qualification은 root가 합산 candidate에서 실행한다.
+
+## Source 고정 증거
+
+Source `1551c22a9ce3c9c85cf69a7c6c1836a8c69b3a47`의 clean canonical
+unit172/172, render4/4, browser1/1 receipt 및 source input hash는
+[증거 manifest](animation-graph-evidence/qualification.json)에 보존했다.
+Node20/24 source122개씩과 coverage122개는 같은 runtime/test bytes를 검증했다.
+경계와 package40개, 검증 증거/완료manifest23개도 통과했다. 초기 실패 원본은 별도
+artifact로 남겼으며 이 증거는 공개 설치나 전체 통합 완료를 주장하지 않는다.
