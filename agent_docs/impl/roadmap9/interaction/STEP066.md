@@ -8,7 +8,8 @@
 - [x] 직접 renderer handles·100회 lifecycle·실제 browser·설치 소비자 검증
 - [x] 타입·Current·공개 문서·증거 동기화
 - [x] B: native 비동기 replacement와 기존 executor/asset pipeline 통합
-- [ ] animation/layout worker/resize observer 통합 및 AT40/41 최종 matrix
+- [x] C: 명시 ResizeObserver mount 수명·CSS 크기 이벤트·host native resize 연결
+- [ ] animation/layout worker/camera gesture 통합 및 AT40/41 최종 matrix
 - [ ] STEP074–077 전체 통합
 
 기반은 bounded history `68d09461d`다. [승인 원문](../AUTHORIZATION.json)의 remainingApproval을 재사용한다.
@@ -118,3 +119,38 @@ Docs+packageboundary55중 검색cap2실패는 실측 최소cap으로 고쳐 owni
 통과로 바꾸어 쓰지 않으며 [B qualification](update-evidence/qualification.json)에 원본과 최종을 기록한다.
 Source43f0f4fe0에 고정한 owning49·built172pages/1531LLM이 통과했다. 문서4폭320/390/768/1440px
 Axe/overflow0이며320/1440px 화면을 직접 확인했다. exact source 및 최종 PNG는 B qualification에 고정했다.
+
+## C 최소 공개안 — 명시 host resize 관찰
+
+B source43f0f4fe0/evidencecc300db35 뒤 remainingApproval을 재사용한다.
+`mount(element,{rootTransform?,observeResize?:boolean})`의 observeResize 기본은 false다.
+true는 해당 element의 ownerDocument.defaultView.ResizeObserver를 사용해 content-box만 관찰한다.
+지원하지 않는 host는 mount 사전 검증에서 명시 오류이며 이미 mounted된 surface를 그대로 둔다.
+
+`resize` event는 `{type:'resize',size:{width,height},state}`이며 width/height는 finite non-negative
+CSS content-box pixels다. DPR과 rootTransform을 다시 적용하지 않는다.0은 숨김/접힌 element의
+측정치로 허용하고, 완전히 같은 연속 측정은 한 번만 알린다. Resize는 program/history/revision을
+자동으로 바꾸지 않는다. Host가 event.size를 바탕으로 native editCanvas/navigateProjection 등
+공개 정책을 선택하고 updateProgram callback을 명시 호출한다. Session이 width/height나 projection
+동작을 추측하지 않는다.
+
+Observer는 mount lease 소유이며 remount/unmount/destroy에서 disconnect를 정확히 한 번 수행한다.
+Callback은 현재 lease와 disposed 여부를 확인하고 기존 FIFO로 들어간다. observe 도중 오류는 새
+listener/observer/index를 모두 되돌리고 기존 mount를 유지한다. disconnect 오류가 있어도 나머지
+capture/listener 정리는 계속한다. 늦은 notification, update 준비 중 resize, subscriber 재진입/destroy,
+100회 attach/detach를 실제 또는 명시 host mock으로 검증한다. 기본 observer 미지정 동작은 보존한다.
+
+### C 검증 경계
+
+변경 source owner는 session.js 하나이며 교차273/273, lines100/branches95.01/functions100으로
+기존95/90/100 floor를 유지한다. 신규resize8개는100회mount/detach,constructor/observe/disconnect
+실패,duplicate/invalid크기,subscriber 재진입,비동기역전,해제후callback0을 포함한다.
+실제5datasets×3recipes의16검사와 실제browser ResizeObserver/DPR2/Canvas·SVGexact1도 통과했다.
+Source-free 동일archive의17interaction사례·strict types·5entrybundles를 세Node에서 검증한다.
+전체normal/coverage/설치suite를 수행했다고 주장하지 않고 변경owner와 실제consumer 증거를 구분한다.
+Source pin 뒤built links/4width/Axe/수동화면 증거는 qualification record에 추가한다.
+
+첫docs owning검사를generator완료전에실행해 freshness4+size2가 실패했고 원본을 보존했다.
+Generator완료후에는 size2만 남았으며 실제1,030,081bytes의최소cap을적용해55/55가 통과했다.
+초기preflight는시스템Ruby2.6PATH를사용해실패했으며기존Ruby3.2PATH로수리해통과했다.
+신규installedcase의manifest누락1개는정확case등록으로수리했고owning2/2가통과했다.

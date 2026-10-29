@@ -1072,6 +1072,10 @@
     "file": "interaction.mjs",
     "cases": [
       {
+        "id": "interaction/observed-resize-prepared-native-policy",
+        "statements": 27
+      },
+      {
         "id": "interaction/prepared-update",
         "statements": 19
       },

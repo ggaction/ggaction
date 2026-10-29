@@ -111,7 +111,16 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
    assert.equal(preparedSession.getState().program,preparedSource);await preparedSession.whenSettled();
    assert.deepEqual(getMarkItems(preparedSession.getState().program,{target:"mark"}).filter(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")).map(item=>item.key),items.filter(item=>item.fields.category===max).map(item=>item.key));
    preparedSession.dispatch({type:"undo"});await preparedSession.whenSettled();assert.equal(preparedSession.getState().program,preparedSource);
-   preparedSession.destroy();assert.equal(assetReleased.length,5);assert.ok(assetCalls.every(request=>request.signal.aborted));
+   let observer,disconnects=0;
+   const host={ownerDocument:{defaultView:{ResizeObserver:class{constructor(callback){this.callback=callback;observer=this}observe(element){this.element=element}disconnect(){disconnects++}}}},
+    addEventListener(){},removeEventListener(){},getBoundingClientRect(){return{left:0,top:0,width:600,height:400}}};
+   const unsubscribeResize=preparedSession.subscribe(event=>{if(event.type==='resize'&&event.size.width>0)preparedSession.updateProgram(({program})=>program.editCanvas({width:event.size.width}),{history:'record'});});
+   const unmountResize=preparedSession.mount(host,{observeResize:true});observer.callback([{target:host,contentRect:{width:600,height:400}}]);await preparedSession.whenSettled();
+   assert.deepEqual(getMarkItems(preparedSession.getState().program,{target:"mark"}).map(item=>item.key),items.map(item=>item.key));
+   assert.equal(preparedSession.getState().program.graphicSpec.objects.canvas.properties.width,600);
+   preparedSession.dispatch({type:'undo'});await preparedSession.whenSettled();assert.equal(preparedSession.getState().program,preparedSource);
+   unmountResize();unsubscribeResize();assert.equal(disconnects,1);observer.callback([{target:host,contentRect:{width:700,height:400}}]);
+   preparedSession.destroy();assert.equal(assetReleased.length,7);assert.ok(assetCalls.every(request=>request.signal.aborted));
    const session=createInteractionSession({program:deserializeProgram(astSaved),bindings:[]}),phases=[];
    session.subscribe(event=>{if('phase' in event)phases.push(event.phase);});
    session.dispatch({type:"setParameter",target:"categoryChoice",payload:{value:max}});

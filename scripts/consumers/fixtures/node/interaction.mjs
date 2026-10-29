@@ -11,6 +11,19 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/observed-resize-prepared-native-policy", async run() {
+    const program=make(chart), session=createInteractionSession({program,bindings:[]}), observers=[], pending=[];
+    class ResizeObserver { constructor(callback){this.callback=callback;this.disconnected=0;observers.push(this);} observe(target,options){this.target=target;assert.deepEqual(options,{box:'content-box'});} disconnect(){this.disconnected++;} resize(width,height){this.callback([{target:this.target,contentRect:{width,height}}]);} }
+    const listeners=new Map(), element={ownerDocument:{defaultView:{ResizeObserver}},getBoundingClientRect:()=>({left:0,top:0,width:200,height:160}),addEventListener:(type,fn)=>listeners.set(type,fn),removeEventListener:type=>listeners.delete(type)};
+    session.subscribe(event=>{if(event.type==='resize')session.updateProgram(request=>new Promise(resolve=>pending.push({request,resolve,size:event.size})),{history:'record'});});
+    const off=session.mount(element,{observeResize:true});observers[0].resize(300,200);await new Promise(setImmediate);
+    const old=session.whenSettled();observers[0].resize(400,240);await new Promise(setImmediate);assert.equal((await old).status,'cancelled');
+    assert.equal(session.getState().program,program);assert.equal(pending[0].request.signal.aborted,true);
+    pending[1].resolve(pending[1].request.program.editCanvas(pending[1].size));await session.whenSettled();
+    assert.equal(session.getState().history.undoCount,1);assert.equal(session.getState().program.graphicSpec.objects.canvas.properties.width,400);
+    const accepted=session.getState().program;pending[0].resolve(program.editCanvas(pending[0].size));await new Promise(setImmediate);assert.equal(session.getState().program,accepted);
+    off();observers[0].resize(500,300);assert.equal(pending.length,2);session.destroy();assert.equal(listeners.size,0);assert.equal(observers[0].disconnected,1);
+  } },
   { id: "interaction/prepared-update", async run() {
     const p=chart().createCanvas({width:400,height:300}).createData({id:"nodes",values:[{id:"a"},{id:"b"}]}).createData({id:"edges",values:[{s:"a",t:"b"}]})
       .createGraphData({id:"graph",nodes:"nodes",edges:"edges",nodeKey:"id",source:"s",target:"t"})

@@ -8,7 +8,7 @@
 
 ## Handle and commands
 
-- `mount(element, { rootTransform? } = {})` accepts an event surface with `addEventListener`, `removeEventListener`, and `getBoundingClientRect`; public declarations use `Element`. It installs passive inspection listeners, a nonpassive listener for an explicit context-menu binding, and returns an idempotent unmount function. A later successful mount removes the previous listeners. Invalid frame/host setup preserves the previous state. `rootTransform` is an explicit six-number local-to-CSS affine matrix; omission is identity. CSS layout matrices and DPR are never guessed. The host renders the same program at the declared logical size and supplies any additional matrix.
+- `mount(element, { rootTransform?, observeResize? } = {})` accepts an event surface with `addEventListener`, `removeEventListener`, and `getBoundingClientRect`; public declarations use `Element`. It installs passive inspection listeners, a nonpassive listener for an explicit context-menu binding, and returns an idempotent unmount function. A later successful mount removes the previous listeners. Invalid frame/host setup preserves the previous state. `rootTransform` is an explicit six-number local-to-CSS affine matrix; omission is identity. CSS layout matrices and DPR are never guessed. The host renders the same program at the declared logical size and supplies any additional matrix.
 - `dispatch({ type: "inspect", point, pointerType?, slop?, hitInvisible? })` accepts an explicit CSS-local `{x,y}`. The pointer type is mouse (default), pen, or touch. Mounted events subtract the current client rectangle once. Root matrices transform indexed shapes and clips, preserving slop in CSS pixels; localPoint remains the child Canvas coordinate. Empty viewports or singular matrices produce no hit with diagnostics.
 - `dispatch({ type: "leave" })` clears the transient hit.
 - `dispatch({ type: "frame", scene, version, generation })` snapshots a version-2 concrete Canvas scene. `generation` must equal current state and `version` must be a greater non-negative safe integer. Stale commands return `{status:"stale"}` without examining scene contents. Current frames retain known node keys, type and topology from the current program; subsets and concrete sampled coordinates are permitted. Unknown keys or changed topology fail atomically. Use the accepted `getState().scene` with `renderTransitionScene` so drawing and targeting share one exact snapshot. The session does not sample animations or infer geometry from endpoints. Region previews use host RAF as specified below. An accepted external frame cancels an active captured gesture before replacing its baseline.
@@ -681,3 +681,20 @@ pending job. Invalid native input leaves it pending. Late success or failure can
 state. Inspecting, remounting or sampling a frame does not change the committed base; final candidate geometry
 is checked against the current host transform before commit. Destroy aborts the native signal and disposes the
 accepted renderer lease; duplicate destruction remains safe. Ordinary synchronous replacement is unchanged.
+
+## Mounted surface observation
+
+`observeResize` is an optional boolean, default false. True requires the mounted element's
+`ownerDocument.defaultView.ResizeObserver`. The session observes only that surface with
+`box:"content-box"` and emits `{type:"resize",size:{width,height},state}` through its existing
+FIFO. Size is frozen, finite, non-negative content-box CSS pixels; zero is valid and exact
+repeated dimensions are deduplicated per mount. DPR/rootTransform do not change measurements.
+Observation does not edit authoring state, history, revision, hit frame or viewport. The host
+may explicitly call an existing native action through updateProgram to choose its resize policy.
+
+Each mount owns one observer. Remount/unmount/destroy disconnect it once; late callbacks cannot
+publish. A failed constructor/observe attempt removes its listeners, capture and candidate index
+while preserving the previous mount. A throwing disconnect does not prevent other cleanup.
+Malformed or duplicate matching entries and batches over the existing 256 dispatch bound reject
+before publication. Unsupported hosts fail explicitly; no global observer or inferred camera policy
+is substituted. User-driven authoring and asynchronous preparation retain their existing contracts.

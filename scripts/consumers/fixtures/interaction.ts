@@ -162,3 +162,8 @@ createInteractionSession({program,assetResolver:()=>({images:{}})});
 
 session.updateProgram(async request=>{ const signal:AbortSignal=request.signal; const id:string=request.transactionId; return request.program; }, {history:'record',transactionId:'job',origin:'linked'});
 session.subscribe(event=>{if(event.type==='update'){const id:string=event.transactionId;const status:'settled'|'cancelled'|'error'=event.status;}});
+
+session.mount(document.createElement('canvas'),{observeResize:true});
+session.subscribe(event=>{if(event.type==='resize'){const width:number=event.size.width;const height:number=event.size.height;}});
+// @ts-expect-error resize observation is an explicit boolean
+session.mount(document.createElement('canvas'),{observeResize:'auto'});

@@ -4022,3 +4022,16 @@ Full729,256/Basic384,464/SVG20,196/graph43,759는 A와 동일하다. Node20 pack
 1,490,812packed /6,782,476unpacked에 기존entries/packedcap을 유지하고 unpacked만6,783,000으로
 올렸다. 최초unpacked/interaction한도실패와 동일archive재검사, docs검색1,029,453bytes의
 최소1,030,000cap을 [B evidence](impl/roadmap9/interaction/update-evidence/qualification.json)에 보존한다.
+
+### Mounted observer ownership
+
+ResizeObserver는 기존 session mount lease의 명시 옵션으로 연결한다. Content-box CSS 측정은
+읽기 전용 이벤트이며 program/viewport의 새 정본을 만들지 않는다. Host가 기존 native action과
+prepared update를 선택하므로 layout/camera 정책이나 renderer를 interaction에 import하지 않는다.
+Mount setup 실패는 시도한 lease만 정리하고 이전 mount를 보존하며, detach는 observer와 모든
+listener/capture를 함께 해제한다. 정확한 옵션과 이벤트는 Current INTERACTION이 소유한다.
+
+C의 source-free Node20 interaction은116,618gzip이며 최소cap116,700이다. 다른네 entry는 B와
+같다. Node20 package1049entries/1,491,340packed/6,784,871unpacked에 최소cap1,492,000/6,785,000을
+적용했다. 검색index1,030,081bytes는1,030,100cap이다. 최초기존한도실패와 동일archive의
+측정재검사는 resize evidence에 보존하며 런타임 입력이 같은 검사를 반복하지 않는다.

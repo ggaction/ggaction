@@ -22,6 +22,10 @@ const program = chart(); const session = createInteractionSession({ program, his
 session.dispatch({type:'undo',origin:'user',transactionId:'back'});
 session.dispatch({type:'redo'}); session.dispatch({type:'reset'});
 session.updateProgram(program,{history:'record',origin:'replay'});
+session.mount(document.createElement('div'),{observeResize:true});
+session.subscribe(event=>{if(event.type==='resize'){const width:number=event.size.width;const height:number=event.size.height;}});
+// @ts-expect-error resize observation is an explicit boolean, not an implicit viewport policy
+session.mount(document.createElement('div'),{observeResize:'auto'});
 const undoCount:number=session.getState().history.undoCount;
 const asyncSession=createInteractionSession({program,async assetResolver(request){
   const signal:AbortSignal=request.signal;const revision:number=request.baseRevision;

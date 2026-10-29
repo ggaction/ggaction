@@ -1360,6 +1360,10 @@
       {
         "type": "file",
         "path": "unit/interaction-update.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-resize.test.js"
       }
     ],
     "selectors": [

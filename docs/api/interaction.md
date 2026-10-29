@@ -47,6 +47,46 @@ rectangle once. Device pixel ratio is never multiplied into hit coordinates.
 Slop remains in CSS pixels under scale or rotation. Use matching logical dimensions
 for the rendered chart and surface when no root matrix is supplied.
 
+## Observe the mounted surface size
+
+Opt into `mount(element, { observeResize: true })` to receive `resize` events from the
+mounted element's browser `ResizeObserver`. `event.size` contains finite, non-negative
+`width` and `height` in content-box CSS pixels. Identical measurements are deduplicated;
+a collapsed surface may report zero. DPR and `rootTransform` do not alter these numbers.
+Observation alone never edits the chart, creates history or changes its revision.
+
+Continue from a Full `program` with a Canvas and a rendered DOM `element`. This host
+policy explicitly resizes the native Canvas; choose your own native projection policy
+when a map needs fitting or a preserved viewport.
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { createInteractionSession } from "ggaction/interaction";
+const resizeSession = createInteractionSession({ program, bindings: [] });
+const stopResize = resizeSession.subscribe(event => {
+  if (event.type !== "resize" || event.size.width === 0 || event.size.height === 0) return;
+  const { width, height } = event.size;
+  resizeSession.updateProgram(({ program }) => program.editCanvas({ width, height }),
+    { history: "record", origin: "programmatic" });
+});
+const stopObservation = resizeSession.mount(element, { observeResize: true });
+function disposeResize() {
+  stopResize(); stopObservation(); resizeSession.destroy();
+}
+```
+
+Render accepted `program` events using your existing Canvas or SVG renderer. Keep the
+surface's CSS dimensions controlled by its container to avoid a render/resize loop.
+Async native work and assets use the same prepared-update cancellation contract below.
+Remount, unmount and destroy disconnect the observer; previous observers cannot publish
+late events. Observation defaults to `false`. An unsupported host or failed observer setup
+rejects the attempted mount while preserving the previous mounted surface.
+
 ## Prepare assets before committing
 
 Supply `assetResolver` when a candidate needs asynchronous image, font or shadow preparation.

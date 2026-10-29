@@ -952,3 +952,54 @@ test("canonical native update and real browser workers reject stale completion a
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });
+
+test("canonical observed resize uses CSS pixels and prepared native rendering with deterministic teardown", async () => {
+  const { readFile } = await import("node:fs/promises"), { documentationCodeBlocks } = await import("../../scripts/doc-snippets.js");
+  const source = documentationCodeBlocks(await readFile(new URL("../../docs/api/interaction.md", import.meta.url), "utf8"))
+    .find(block => block.code.includes("const resizeSession = createInteractionSession")).code;
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 900, height: 650 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      const { chart, render } = await import("/src/index.js"), { renderToSVG } = await import("/src/renderers/svg.js");
+      document.body.innerHTML = '<div id="surface" style="width:200px;height:160px"><canvas aria-label="Resizable points"></canvas></div><div id="vector"></div>';
+      const program = chart().createCanvas({width:200,height:160,margin:20}).createData({values:[{x:0,y:0},{x:1,y:1}]})
+        .createPointMark({id:"points"}).encodeX({field:"x"}).encodeY({field:"y"});
+      window.__resizeBase=program; window.__resizeEvents=[];window.__resizeWrites=0;window.__resizeObservers=[];
+      const NativeResizeObserver=window.ResizeObserver;
+      window.ResizeObserver=class {
+        constructor(callback){this.disconnected=0;this.native=new NativeResizeObserver(callback);window.__resizeObservers.push(this);}
+        observe(...args){this.native.observe(...args);}disconnect(){this.disconnected++;this.native.disconnect();}
+      };
+      let module='const program=window.__resizeBase,element=document.querySelector("#surface");\n'+code;
+      module=module.replaceAll('"ggaction/interaction"',JSON.stringify(new URL('/src/interaction.js',location.href).href));
+      module+='\nwindow.__resizeSession=resizeSession;window.__resizeCleanup=disposeResize;window.__stopResizePolicy=stopResize;';
+      const url=URL.createObjectURL(new Blob([module],{type:'text/javascript'}));try{await import(url);}finally{URL.revokeObjectURL(url);}
+      const draw=current=>{render(current,document.querySelector('canvas').getContext('2d'),{pixelRatio:2});document.querySelector('#vector').innerHTML=renderToSVG(current);};draw(program);
+      window.__resizeSession.subscribe(event=>{if(event.type==='resize')window.__resizeEvents.push(event.size);if(event.type==='program'){window.__resizeWrites++;draw(event.state.program);}});
+      window.__resizeParity=(width,height)=>{const expected=program.editCanvas({width,height}),canvas=document.createElement('canvas');render(expected,canvas.getContext('2d'),{pixelRatio:2});return{svg:renderToSVG(window.__resizeSession.getState().program)===renderToSVG(expected),pixels:canvas.toDataURL()===document.querySelector('canvas').toDataURL(),physical:[document.querySelector('canvas').width,document.querySelector('canvas').height]};};
+      window.__setSurface=(width,height)=>{const element=document.querySelector('#surface');element.style.width=`${width}px`;element.style.height=`${height}px`;};
+    },source);
+    await page.waitForFunction(()=>window.__resizeWrites===1);
+    await page.evaluate(()=>window.__setSurface(300,200));await page.waitForFunction(()=>window.__resizeWrites===2);
+    assert.deepEqual(await page.evaluate(()=>window.__resizeEvents),[{width:200,height:160},{width:300,height:200}]);
+    assert.deepEqual(await page.evaluate(()=>window.__resizeParity(300,200)),{svg:true,pixels:true,physical:[600,400]});
+    await page.evaluate(()=>{
+      window.__stopResizePolicy();window.__resizePending=[];
+      window.__resizeSession.subscribe(event=>{if(event.type==='resize')window.__resizeSession.updateProgram(request=>new Promise(resolve=>window.__resizePending.push({request,resolve,size:event.size})),{history:'record'});});
+      window.__resizeBefore=window.__resizeSession.getState().program;window.__setSurface(400,250);
+    });
+    await page.waitForFunction(()=>window.__resizePending.length===1);
+    await page.evaluate(()=>window.__setSurface(500,300));await page.waitForFunction(()=>window.__resizePending.length===2);
+    assert.deepEqual(await page.evaluate(()=>[window.__resizeSession.getState().program===window.__resizeBefore,window.__resizePending[0].request.signal.aborted,window.__resizeWrites]),[true,true,2]);
+    await page.evaluate(async()=>{const [old,current]=window.__resizePending;current.resolve(current.request.program.editCanvas(current.size));await window.__resizeSession.whenSettled();old.resolve(old.request.program.editCanvas(old.size));});
+    assert.deepEqual(await page.evaluate(()=>window.__resizeParity(500,300)),{svg:true,pixels:true,physical:[1000,600]});
+    assert.deepEqual(await page.evaluate(()=>[window.__resizeSession.getState().history.undoCount,window.__resizeWrites]),[3,3]);
+    await page.evaluate(()=>window.__setSurface(550,320));await page.waitForFunction(()=>window.__resizePending.length===3);
+    await page.evaluate(async()=>{window.__resizeCleanup();const pending=window.__resizePending[2];pending.resolve(pending.request.program.editCanvas(pending.size));window.__setSurface(600,340);await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});
+    assert.deepEqual(await page.evaluate(()=>[window.__resizeSession.getState().destroyed,window.__resizeWrites,window.__resizeEvents.length,window.__resizeObservers[0].disconnected]),[true,3,5,1]);
+    assertNoBrowserErrors(errors,"observed resize lifecycle");await page.close();
+  }catch(error){await saveBrowserContextEvidence(context,error);throw error;}finally{await context.close();}
+});

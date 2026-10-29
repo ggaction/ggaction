@@ -2903,5 +2903,12 @@
     "mode": "contextual-fragment",
     "owner": "docs/api/interaction.md",
     "reason": "Requires the explicitly named graph, layout and network plot. The exact fragment is executed by the native-update browser regression before real worker supersession and disposal checks."
+  },
+  {
+    "id": "docs/api/interaction.md#observe-the-mounted-surface-size:1",
+    "sha256": "49988ce70c7af967223aa4d7a3464202cece9489de63334112d603fc7599ec99",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "Requires a rendered Full program and DOM element. The exact fragment is executed with a native browser ResizeObserver at DPR 2 in interaction-session.browser.js, including accepted Canvas/SVG parity and disconnect cleanup."
   }
 ]

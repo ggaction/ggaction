@@ -121,6 +121,8 @@ export function createInteractionSession(input) {
   const detach = (lease, reason = "unmount") => {
     let failure;
     try { lease.capture?.dispose(reason); } catch (error) { failure = error; }
+    try { lease.observer?.disconnect(); } catch (error) { failure ??= error; }
+    lease.observer = undefined;
     for (const [event, listener] of lease.listeners) {
       try { lease.element.removeEventListener(event, listener); } catch (error) { failure ??= error; }
     }
@@ -384,13 +386,16 @@ export function createInteractionSession(input) {
     },
     mount(element, configuration = {}) {
       live();
-      const config = options(configuration, [], ["rootTransform"], "Interaction mount");
+      const config = options(configuration, [], ["rootTransform", "observeResize"], "Interaction mount");
+      if (config.observeResize !== undefined && typeof config.observeResize !== "boolean") throw new TypeError("observeResize must be boolean.");
       const matrix = config.rootTransform === undefined ? IDENTITY : config.rootTransform;
       transformHitPoint(matrix, { x: 0, y: 0 });
       const transform = cloneAndFreeze(matrix);
       if (!element || !["addEventListener", "removeEventListener", "getBoundingClientRect"].every(key => typeof element[key] === "function")) {
         throw new TypeError("Interaction mount requires an event surface with a client rectangle.");
       }
+      const ResizeObserver = config.observeResize ? element.ownerDocument?.defaultView?.ResizeObserver : undefined;
+      if (config.observeResize && typeof ResizeObserver !== "function") throw new TypeError("Resize observation requires the mounted element's host ResizeObserver.");
       const lease = { element, listeners: [] };
       perform(() => {
         const version = nextInteger(bridge.getState().version);
@@ -544,7 +549,27 @@ export function createInteractionSession(input) {
             };
             lease.listeners.push(["click", listener]); element.addEventListener("click", listener, { passive: true });
           }
-        } catch (error) { detach(lease); candidate.dispose(); throw error; }
+          if (ResizeObserver) {
+            let measured;
+            lease.observer = new ResizeObserver(entries => {
+              if (destroyed || mounted !== lease) return;
+              if (!Array.isArray(entries) || entries.length > MAX_DISPATCHES) throw new RangeError("Resize observations exceed the entry budget.");
+              const matching = entries.filter(entry => entry.target === lease.element);
+              if (matching.length > 1) throw new TypeError("Resize notification contains duplicate surface measurements.");
+              if (!matching.length) return;
+              const { width, height } = matching[0].contentRect;
+              if (![width, height].every(value => typeof value === "number" && Number.isFinite(value) && value >= 0)) throw new TypeError("Resize measurements require finite non-negative CSS dimensions.");
+              perform(() => {
+                if (destroyed || mounted !== lease || measured?.width === width && measured?.height === height) return outcome("unchanged");
+                measured = freezeOwned({ width, height });
+                publish("resize", { size: measured });
+                return outcome("applied");
+              });
+            });
+            if (typeof lease.observer.observe !== "function" || typeof lease.observer.disconnect !== "function") throw new TypeError("Resize observer requires observe and disconnect methods.");
+            lease.observer.observe(element, { box: "content-box" });
+          }
+        } catch (error) { try { detach(lease); } catch {} finally { candidate.dispose(); } throw error; }
         let failure;
         try { if (mounted !== undefined) detach(mounted); } catch (error) { failure = error; }
         bridge.dispose(); bridge = candidate; mounted = lease; rootTransform = transform; lastHit = null;
