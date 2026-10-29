@@ -1100,5 +1100,12 @@
     "editSource": "examples/contours/program.js",
     "description": "A scalar grid states where measurements were sampled. Contours interpolate the boundaries between those samples.",
     "image": "/assets/images/contours.png"
+  },
+  "/tutorials/responsive-guides/": {
+    "title": "Fit Labels Inside a Fixed Canvas",
+    "source": "docs/tutorials/responsive-guides.md",
+    "editSource": "examples/responsive-guides/program.js",
+    "description": "Use a fixed outer size when a chart must fit an existing panel. The Canvas policy reserves space for guides, and the label policy decides how much text can fit.",
+    "image": "/assets/images/responsive-guides.png"
   }
 }

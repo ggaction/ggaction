@@ -3465,3 +3465,19 @@ Node20 설치 minimal bundle Full649,557/Basic364,927gzip 실측에 ceiling650,0
 SVG25,000/interaction83,000은 유지한다. Package907entries/5,994,134unpacked,
 Node20packed1,307,688bytes에 ceiling907/1,308,000/5,995,000을 적용한다.
 Public docs search955,504bytes는 ceiling956,000으로 최소 올림했다. Runtime owner 경계는 각 Current 계약을 따른다.
+
+### Bounded fixed-Canvas guide layout
+
+Canvas responsive intent와 derived plot reservation은 기존 Canvas materialization config 한 곳이
+소유한다. `grammar/responsiveCanvas.js`/`responsiveLabels.js`는 closed own-data 정책과 저장
+결과를 검증하며, `layout/responsivePolicy.js`는 명시적으로 측정된 최대4회 snapshot만 비교한다.
+`materialization/responsiveLayout.js`가 기존 guide transaction 안에서 scale→mark→guide→title
+계획을 실행하고 최종 concrete occupied bounds를 측정한다. 전역 action hook이나 semantic
+compiler는 없으며 renderer의 입력 경계도 바뀌지 않는다. 반환 시 측정 context를 제거하고
+`layout/canvas.js resolveGraphicBounds`가 settled plot의 단일 읽기 owner로 남는다.
+
+축 fallback intent와 result는 기존 guide config에 분리하여 저장한다. Actual text, hit metadata,
+inspection이 동일 선택을 읽고 font/source 갱신은 기존 explicit dependency 경계를 사용한다.
+정확 옵션·수렴·실패·복원 계약은 [CORE](contract/current/CORE.md)와
+[AXES](contract/current/AXES.md)가 소유한다. Nested composition의 root reservation 및 ancestor
+closure는 별도 composition owner의 후속 연결 의무이며 unit solver에 자동 재귀를 넣지 않는다.

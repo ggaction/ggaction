@@ -135,7 +135,7 @@ function geometry(program, channel, config, axisId = channel) {
     bottom + strokeExtent <= canvas.height + epsilon;
   if (
     coordinates.some(value => !Number.isFinite(value)) ||
-    !fits
+    !fits && program.context.responsiveMeasuring !== true
   ) {
     throw canvasOverflowError(`The ${channel}-axis ticks do not fit the Canvas margin.`, [{ left: left - strokeExtent, right: right + strokeExtent, top: top - strokeExtent, bottom: bottom + strokeExtent }], canvas);
   }

@@ -1,4 +1,6 @@
 export interface CartesianAxisLabelStyleOptions extends AxisLabelStyleOptions {
+  /** Opt-in measured fallback; requires responsive Canvas mode. False removes the policy. */
+  responsive?: false | ResponsiveLabelOptions;
   /** Local text alignment before rotation; omitted edits retain existing intent. */
   align?: "left" | "center" | "right";
   /** Typed raw-tick color overrides; missing entries use color. Auto removes the map. */

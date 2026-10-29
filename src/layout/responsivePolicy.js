@@ -59,8 +59,9 @@ function difference(left, right) {
 }
 
 function contained(inner, outer) {
-  return inner.left >= outer.left && inner.right <= outer.right &&
-    inner.top >= outer.top && inner.bottom <= outer.bottom;
+  const tolerance = Number.EPSILON * 16 * Math.max(1, ...Object.values(inner).map(Math.abs), ...Object.values(outer).map(Math.abs));
+  return inner.left >= outer.left - tolerance && inner.right <= outer.right + tolerance &&
+    inner.top >= outer.top - tolerance && inner.bottom <= outer.bottom + tolerance;
 }
 
 // A bounded reducer over measured passes, not a callback runner or semantic

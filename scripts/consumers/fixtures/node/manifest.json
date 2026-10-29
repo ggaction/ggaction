@@ -1084,5 +1084,18 @@
         "statements": 1
       }
     ]
+  },
+  {
+    "file": "responsive-guides.mjs",
+    "cases": [
+      {
+        "id": "responsive/full-basic-resize-restore",
+        "statements": 1
+      },
+      {
+        "id": "responsive/renderers-scene-codec",
+        "statements": 1
+      }
+    ]
   }
 ]

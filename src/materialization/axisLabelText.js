@@ -15,8 +15,14 @@ export function axisLabelTexts(values, scale, config) {
 }
 
 export function axisLabelLines(text, config, profile) {
+  if (config.responsiveResult !== undefined) config = { ...config, ...config.responsiveResult };
   return config.maxWidth === undefined ? text.split(/\r\n|\r|\n/u) : wrapText(text, {
     maxWidth: config.maxWidth, mode: config.wrap,
     style: { fontSize: config.fontSize, fontFamily: config.fontFamily, fontWeight: config.fontWeight }, profile
   });
+}
+
+export function axisLabelValues(values, config) {
+  return config.responsiveResult === undefined ? values
+    : config.responsiveResult.indices.map(index => values[index]);
 }

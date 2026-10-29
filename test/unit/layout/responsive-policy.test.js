@@ -187,3 +187,10 @@ test("a huge finite translation cannot produce an infinite convergence metric", 
   assert.equal(result.status, "continue");
   assert.ok(Object.values(result.requiredBounds).every(Number.isFinite));
 });
+
+test("containment admits floating point rotation roundoff but never a visible subpixel crop", () => {
+  const roundoff = frame(); roundoff.occupied.left = -Number.EPSILON * 4;
+  assert.equal(evaluate([roundoff, roundoff]).status, "satisfied");
+  const crop = frame(); crop.occupied.left = -0.001;
+  assert.equal(evaluate([crop, crop]).reason, "insufficient-space");
+});

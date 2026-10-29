@@ -67,7 +67,7 @@ export function resolveLegendGroupPlacement({ blocks, group, plot, canvas, allow
   if (corner && !deferPlotFit && (occupied.left < plot.x || occupied.top < plot.y || occupied.right > plot.x + plot.width || occupied.bottom > plot.y + plot.height)) {
     throw new Error("In-plot legend group does not fit the plot inset.");
   }
-  if (!deferCanvasFit && (occupied.left < 0 || occupied.top < 0 || occupied.right > canvas.width || occupied.bottom > canvas.height)) {
+  if (!deferCanvasFit && !canvas.deferCanvasFit && (occupied.left < 0 || occupied.top < 0 || occupied.right > canvas.width || occupied.bottom > canvas.height)) {
     const error = canvasOverflowError("Legend group requires more Canvas space.", [occupied], canvas);
     // Expose the required space without relaxing explicitly authored placement.
     // Hosts may issue a separate Canvas edit; the native action remains atomic.

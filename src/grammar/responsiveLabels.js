@@ -1,4 +1,5 @@
 import { cloneAndFreeze } from "../core/immutable.js";
+import { canonicalJSON } from "../core/contentDigest.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { validateGeneratedItemLimit, validateKeys } from "../core/validation.js";
 import { resolveRotation } from "./rotation.js";
@@ -42,5 +43,39 @@ export function normalizeResponsiveLabels(value) {
     return radians === 0 ? 0 : radians;
   });
   return cloneAndFreeze({ sequence: [...SEQUENCE], maxLines, skipStride, rotationCandidates });
+}
+
+export function validateResponsiveLabelState(config) {
+  const policy = config?.responsive, result = config?.responsiveResult;
+  if (policy === undefined) {
+    if (result !== undefined) throw new Error("Responsive label result requires a policy.");
+    return;
+  }
+  if (canonicalJSON(normalizeResponsiveLabels(policy)) !== canonicalJSON(policy)) {
+    throw new Error("Stored responsive label policy must be canonical.");
+  }
+  if (result === undefined) return;
+  record(result, ["stage", "reason", "indices", "rotation", "maxWidth", "wrap"], "Responsive label result");
+  if (!["native", ...SEQUENCE].includes(result.stage) ||
+      !["native-fit", "label-overlap", "label-lines", "label-size"].includes(result.reason) ||
+      (result.stage === "native") !== (result.reason === "native-fit") ||
+      !Number.isFinite(result.rotation) ||
+      (result.stage === "rotate" ? !policy.rotationCandidates.includes(result.rotation) : result.rotation !== config.rotation)) {
+    throw new Error("Stored responsive label decision is invalid.");
+  }
+  ownArray(result.indices, "Responsive label indices");
+  validateGeneratedItemLimit(result.indices.length, "Responsive label indices");
+  for (const [index, value] of result.indices.entries()) {
+    if (!Number.isSafeInteger(value) || value < 0 || value >= 10000 || index > 0 && value <= result.indices[index - 1] ||
+        ["skip", "rotate"].includes(result.stage) && value % policy.skipStride !== 0) {
+      throw new Error("Responsive label indices must retain ordered source positions.");
+    }
+  }
+  if (result.maxWidth !== undefined && (!Number.isFinite(result.maxWidth) || result.maxWidth <= 0 ||
+      !["word", "character"].includes(result.wrap) || config.maxWidth !== undefined && config.maxWidth !== result.maxWidth)) {
+    throw new Error("Responsive label width must preserve an explicit wrap policy.");
+  }
+  if (result.maxWidth === undefined && result.wrap !== undefined) throw new Error("Responsive wrap requires a width.");
+  if (result.stage !== "native" && result.maxWidth === undefined) throw new Error("Responsive fallback requires a measured width.");
 }
 

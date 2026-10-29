@@ -5,6 +5,9 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "responsive-canvas-state": { prefix: "grammar/responsiveCanvas.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored fixed Canvas policies and results require closed shape, finite bounds and immutable restoration." },
+  "responsive-materialization": { prefix: "materialization/responsiveLayout.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Bounded explicit layout passes must preserve fixed dimensions and transient context on every exit." },
+  "responsive-guide-canvas": { prefix: "materialization/guides/canvas.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Containment deferral is limited to a private measured candidate and never stored." },
   "responsive-labels": { prefix: "grammar/responsiveLabels.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Declared fallback labels require closed finite own-data normalization and bounded candidate work." },
   "responsive-layout": { prefix: "layout/responsivePolicy.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Fixed Canvas layout must reject oscillation, overflow and stale measured topology within a bounded solve." },
   "graph-filter-selection": { prefix: "selectors/graphFilters.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Graph filter ownership must remain unique and source-bound." },

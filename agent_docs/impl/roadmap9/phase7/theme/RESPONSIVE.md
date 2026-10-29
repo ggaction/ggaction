@@ -5,13 +5,16 @@
 - [x] STEP-034/035·geometry-design 계약과 기존 fitCanvas/guide transaction 대조
 - [x] 전체 승인 `b758b912` 재사용; 새 질문 없이 아래 구현 선택 기록
 - [x] private closed label policy와 4회/0.1px convergence reducer·독립 literal 시험
-- [ ] Canvas/axis authoring·wrapped materialization·inspection·codec 공개 연결
-- [ ] 실제 resize/font/revise·nested composition·scene·네 renderer·설치 소비자 검증
-- [ ] STEP-034/035 완료 기록과 generated docs 동기화
+- [x] Canvas/axis authoring·wrapped materialization·inspection·codec 공개 연결
+- [x] 실제 resize/font/revise·명시 child 교체·scene·네 renderer 검증
+- [ ] 고정 tar 설치 소비자·최종 문서 자격
+- [ ] STEP-034 완료 기록과 generated docs 동기화
+- [ ] STEP-035 nested facet/shared guide 후속 통합
 
-기준은 STEP-033 qualification `0aae2f639`다. 현재 구현은
-`src/grammar/responsiveLabels.js`와 `src/layout/responsivePolicy.js`의 private 계산뿐이다. 아래 공개 연결과 저장 결과는 아직
-Current 지원으로 표시하지 않으며 STEP-034 또는 STEP-035를 완료했다고 주장하지 않는다.
+기준은 STEP-033 qualification `0aae2f639`와 합산 runtime `039deaf14`다.
+현재 공개034 source는 아래 intent와 결과를 Full/Basic의 기존 action·inspection·codec에 연결했다.
+[공개 구현 검증 기록](RESPONSIVE_COMPLETION.md)이 정확한 소비자 범위와 남은 자격을 소유한다.
+STEP-035의 중첩 패싯/공유 가이드 및 AT-20 전체는 이 체크포인트로 완료하지 않는다.
 
 ## 기존 의미와 경계
 
@@ -30,12 +33,12 @@ identity와 non-Cartesian scope 분리는 원래 composition/coordinate owner를
 ## 공개 연결 선택
 
 기존 `createCanvas`/`editCanvas`의 `responsive: false | { minPlotSize?: { width, height } }`를
-opt-in 경계로 사용할 계획이다. Omission은 기존 intent를 보존하고 false는 해당 policy/result를
+opt-in 경계로 사용한다. Omission은 기존 intent를 보존하고 false는 해당 policy/result를
 제거해 native layout으로 다시 materialize한다. Plot minimum의 기본값은 기존 fitCanvas의
 160×120 owner와 공유한다. Fixed outer Canvas와 exact-inner `plot`은 동시에 켜지 않는다.
 
 Axis label option의 `responsive: false | { sequence?, maxLines?, skipStride?, rotationCandidates? }`
-역시 원래 guide config에 한 번 저장한다. Policy는 Canvas responsive mode를 요구한다. 기본은
+역시 원래 guide config에 한 번 저장한다. Policy는 Canvas responsive mode에서만 실행되며 false로 끈 동안에는 intent를 보존하고 derived 선택을 제거한다. 기본은
 `sequence: ['wrap','skip','rotate']`, `maxLines: 2`, `skipStride: 2`,
 `rotationCandidates: [-Math.PI/4,-Math.PI/2]`다. 순서를 바꾸거나 중복 단계는 거부한다.
 Rotation은 기존 radians 또는 `{value,unit}` 입력을 받아 finite radians로 정규화하며 중복

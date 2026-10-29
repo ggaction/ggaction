@@ -90,7 +90,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 
 - Create parameters: `scale?`, `position?`, `count?`, `values?`, `offset?`, `format?`, `color?`,
   `fontSize?`, `fontFamily?`, `fontWeight?`, `rotation?`, `maxWidth?`, `wrap?`, `lineHeight?`,
-  `overlap?`, `labelMap?`, `alongOffset?`, `flush?`, `flushThreshold?`, `colorMap?`; edit에서는 scale을 제외한다.
+  `overlap?`, `labelMap?`, `alongOffset?`, `flush?`, `flushThreshold?`, `colorMap?`, `responsive?`; edit에서는 scale을 제외한다.
 - `count`/`values`/`rounding`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
 - `offset`: non-negative finite number; x default `18`, y default `12`.
 - `alongOffset`: signed finite logical pixels, 기본 `0`. Mapped label 위치에서 X는 오른쪽, Y는 아래쪽으로 이동한다. Tick offset을 상속하지 않는 독립 절대값이다. 기존 `offset`은 축 바깥쪽 간격으로 유지된다.
@@ -145,12 +145,20 @@ Flush evidence: `test/unit/actions/guides/axis-label-flush.test.js`는 full time
 
 Continuous labelMap evidence: `test/unit/actions/guides/continuous-axis-display-labels.test.js`는 finite raw key lookup, numeric/UTC fallback, reset, new ticks, whole/group/focused edits, Canvas·scale replay, invalid key atomicity를 검증한다. `test/unit/actions/guides/axis-display-labels.test.js`의 기존 categorical typed key 동작도 유지한다. Expression evaluator는 제공하지 않는다.
 
+### Responsive Cartesian labels
+
+`responsive: false | { sequence?, maxLines?, skipStride?, rotationCandidates? }`를 focused/whole/ticksAndLabels/facade label 옵션에서 지원한다. 새 policy는 활성 Canvas responsive를 요구한다. Default는 sequence `['wrap','skip','rotate']`, maxLines2, skipStride2, rotations−π/4·−π/2다. 순서 변경은 거부하며 maxLines1..10000, stride2..10000, distinct rotation 후보1..10000개, radians/degrees 정규화를 사용한다. 실제 candidate×value 작업은 기존 work budget을 먼저 검사한다.
+
+Native→wrap→skip→declared rotations 순서로 선택하고 maxLines를 넘겨 잘라내지 않는다. Skip은 raw0,k,2k만 남기며 ticks/domain/rows는 그대로다. 명시 maxWidth 보존, 자동 X width는 선택 anchors 간 최소 거리, 자동 Y width는 minimum plot 및 반대쪽 margin과 offset을 제외한 available lane이다. Empty labelMap은 계속 숨겨진다. Flush true는 비영 회전 후보를 제외한다. Missing exact metric은 fallback 사유가 아니라 준비 오류다. Exhaustion은 layout-unsatisfied와 requiredBounds를 반환한다.
+
+Intent와 derived result는 guide config의 responsive와 responsiveResult에 각각 저장한다. Result는 stage/reason/indices/rotation 및 optional maxWidth/wrap이며 실제 concrete text/hit metadata가 같은 선택을 사용한다. Omission 보존, false 제거다. Canvas mode를 끄면 label intent만 dormant로 보존하고 result를 제거한다. Polar/Parallel에는 label fallback 옵션이 없다. Evidence는 CORE의 responsive 단일 검증 묶음과 같다.
+
 ## Shared ticks-and-labels contract
 
 - Create: `scale?`, `position?`, `count?`, `values?`, `ticks?`, `labels?`.
 - Edit: create option에서 scale을 제외하며 빈 edit는 오류다.
 - `ticks`: `{ length?, color?, lineWidth?, alongOffset? }`.
-- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, labelMap?, alongOffset?, flush?, flushThreshold?, colorMap? }`; `labelMap`은 categorical/continuous Cartesian scale에 적용한다.
+- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, labelMap?, alongOffset?, flush?, flushThreshold?, colorMap?, responsive? }`; `labelMap`은 categorical/continuous Cartesian scale에 적용한다.
 - Effect: shared count/values를 tick과 label child에 원자적으로 전달한다. nested appearance는 해당 child만 바꾼다.
 
 ## Shared axis-title contract

@@ -199,8 +199,8 @@ export function requireTitleConfig(program) {
   return program.titleConfig;
 }
 
-function validateLayout(position, titleBounds, plot, canvas) {
-  if (!textBoundsFitCanvas(titleBounds, canvas)) {
+function validateLayout(position, titleBounds, plot, canvas, deferCanvasFit) {
+  if (!deferCanvasFit && !textBoundsFitCanvas(titleBounds, canvas)) {
     throw canvasOverflowError(`Chart title requires more ${position}-margin space.`, [titleBounds], canvas);
   }
   const outsidePlot = {
@@ -235,7 +235,7 @@ export function resolveTitleLayout(program, config) {
           "Chart subtitle", true
         )
   }, config, program.materializationConfigs.textMetrics);
-  const automatic = program.materializationConfigs.canvas?.plot !== undefined;
+  const automatic = program.materializationConfigs.canvas?.plot !== undefined || program.materializationConfigs.canvas?.responsive !== undefined;
   const near = ["top", "left"].includes(config.position);
   const horizontal = ["top", "bottom"].includes(config.position);
   let titleEdge = horizontal ? plot.y + (near ? 0 : plot.height)
@@ -294,7 +294,8 @@ export function resolveTitleLayout(program, config) {
     config.position,
     titleBounds,
     plot,
-    canvas.properties
+    canvas.properties,
+    program.context.responsiveMeasuring === true
   );
   return { title, subtitle, bounds: titleBounds };
 }

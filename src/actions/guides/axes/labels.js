@@ -1,3 +1,5 @@
+import { normalizeResponsiveLabels } from "../../../grammar/responsiveLabels.js";
+import { annotateError, getErrorDetails } from "../../../core/diagnostics.js";
 import { axisLabelTexts, axisLabelLines } from "../../../materialization/axisLabelText.js";
 import { materializeTextFont } from "../../../materialization/textFont.js";
 import { axisTitleAllowsLabelOverlap, axisTitleFollowsLabels } from "../../../grammar/axisTextPlacement.js";
@@ -12,6 +14,7 @@ import { validateUserId } from "../../../core/identifiers.js";
 import {
   sameOrderedValues,
   validateGeneratedItemLimit,
+  validateWorkLimit,
   validateTextStyle,
   validateOptionObject,
   validateNonNegativeFinite,
@@ -52,7 +55,7 @@ import {
 const OPTIONS = [
   "target", "scale", "position", "count", "values", "rounding", "offset", "format", "color",
   "fontSize", "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "flushThreshold", "colorMap", "align"
+  "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "flushThreshold", "colorMap", "align", "responsive"
 ];
 
 const DEFAULTS = Object.freeze({
@@ -69,6 +72,11 @@ export const cartesianAxisLabelOffset = channel => channel === "x" ? 18 : 12;
 
 function normalizeLabelLayout(config, args, operation) {
   const next = { ...config };
+  delete next.responsiveResult;
+  if (Object.hasOwn(args, "responsive")) {
+    if (args.responsive === false) delete next.responsive;
+    else next.responsive = normalizeResponsiveLabels(args.responsive);
+  }
   next.rotation = Object.hasOwn(args, "rotation")
     ? resolveRotation(args.rotation, `${operation} rotation`)
     : next.rotation ?? 0;
@@ -154,6 +162,9 @@ function validateConfig(channel, config) {
 
 function normalizeAxisLabelConfig(program, config, args, operation) {
   const next = { ...config };
+  if (Object.hasOwn(args, "responsive") && args.responsive !== false && program.materializationConfigs.canvas?.responsive === undefined) {
+    throw new Error("Responsive axis labels require Canvas responsive mode.");
+  }
   if (args.flushThreshold === "auto") delete next.flushThreshold;
   for (const [property, normalize] of [
     ["labelMap", normalizeDisplayLabelMap],
@@ -231,7 +242,7 @@ function unionLabelBounds(records) {
   return [...byGroup.values()];
 }
 
-export function resolveAxisLabels(program, channel, config, axisId = channel) {
+function resolveAxisLabelCandidate(program, channel, config, axisId, indices) {
   const scale = program.resolvedScales[config.scale];
   const bounds = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale, axisId);
   const discrete = ["ordinal", "band", "point"].includes(scale?.type);
@@ -250,6 +261,8 @@ export function resolveAxisLabels(program, channel, config, axisId = channel) {
     const low = Math.min(...scale.domain), high = Math.max(...scale.domain);
     if (!values.every(value => value >= low && value <= high)) throw new RangeError("Label values must be inside the scale domain.");
   }
+  indices ??= values.map((_, index) => index);
+  values = indices.map(index => values[index]);
   let positions = discrete
     ? mapOrdinalPositionValues(values, scale)
     : mapContinuousScaleValues(values, scale);
@@ -259,12 +272,13 @@ export function resolveAxisLabels(program, channel, config, axisId = channel) {
   if (text.includes("")) {
     const visible = text.map((value, index) => value === "" ? -1 : index)
       .filter(index => index !== -1);
+    indices = visible.map(index => indices[index]);
     values = visible.map(index => values[index]);
     positions = visible.map(index => positions[index]);
     text = visible.map(index => text[index]);
   }
   const geometry = {
-    values,
+    values, indices,
     ...resolveAxisLabelGeometry({
       bounds,
       channel,
@@ -292,7 +306,7 @@ export function resolveAxisLabels(program, channel, config, axisId = channel) {
     rotation: config.rotation
   }, program.materializationConfigs.textMetrics));
   let labelBounds = measuredBounds();
-  if (program.materializationConfigs.canvas?.plot !== undefined || config.rotation !== 0) {
+  if (program.materializationConfigs.canvas?.plot !== undefined || program.materializationConfigs.canvas?.responsive !== undefined || config.rotation !== 0) {
     const horizontal = channel === "x";
     const near = ["bottom", "right"].includes(config.position);
     const edge = horizontal ? bounds.y + (near ? bounds.height : 0)
@@ -357,13 +371,15 @@ export function resolveAxisLabels(program, channel, config, axisId = channel) {
   const orderedBounds = groupedBounds.sort((left, right) => channel === "x"
     ? left.left - right.left
     : left.top - right.top);
-  if (!canvas || !labelBounds.every(item => textBoundsFitCanvas(item, canvas))) {
+  const requiredBounds = labelBounds.length === 0 ? undefined
+    : unionLabelBounds(labelBounds.map(bounds => ({ bounds, group: 0 })))[0];
+  if (!canvas || program.context.responsiveMeasuring !== true && !labelBounds.every(item => textBoundsFitCanvas(item, canvas))) {
     throw canvasOverflowError(`The ${channel}-axis labels do not fit the Canvas margin.`, labelBounds, canvas);
   }
   if (config.overlap === "error" && orderedBounds.some((item, index) => rotatedOverlap
     ? orderedBounds.slice(0, index).some(previous => textBoundsIntersect(previous, item))
     : index > 0 && textBoundsIntersect(orderedBounds[index - 1], item))) {
-    throw new Error(`The ${channel}-axis labels overlap each other.`);
+    throw annotateError(new Error(`The ${channel}-axis labels overlap each other.`), { reason: "label-overlap", requiredBounds });
   }
   const title = program.graphicSpec.objects[axisGraphicIds(channel, axisId)[3]]
     ? resolveConcreteGraphicBounds(program.graphicSpec, axisGraphicIds(channel, axisId)[3], program.materializationConfigs.textMetrics)
@@ -374,7 +390,80 @@ export function resolveAxisLabels(program, channel, config, axisId = channel) {
     labelBounds.some(item => textBoundsIntersect(item, title))) {
     throw new Error(`The ${channel}-axis labels overlap the axis title.`);
   }
-  return resolved;
+  return { ...resolved, requiredBounds };
+}
+
+const RESPONSIVE_FAILURES = new Set(["label-overlap", "label-lines", "label-size"]);
+
+function responsiveLabelWidth(program, channel, config, indices, axisId) {
+  const scale = program.resolvedScales[config.scale];
+  const frame = resolveCartesianAxisFrameBounds(program, channel, config.position, config.scale, axisId);
+  if (config.maxWidth !== undefined) return config.maxWidth;
+  if (channel === "y") {
+    const canvas = program.graphicSpec.objects.canvas.properties;
+    const policy = program.materializationConfigs.canvas;
+    return Math.max(1, canvas.width - policy.responsive.minPlotSize.width -
+      (config.position === "left" ? policy.margin.right : policy.margin.left) - config.offset);
+  }
+  const values = valuesFromTickConfig(program, config);
+  const chosen = indices.map(index => values[index]);
+  const positions = (["ordinal", "band", "point"].includes(scale.type)
+    ? mapOrdinalPositionValues(chosen, scale) : mapContinuousScaleValues(chosen, scale)).toSorted((a, b) => a - b);
+  let width = frame.width;
+  for (let index = 1; index < positions.length; index += 1) width = Math.min(width, positions[index] - positions[index - 1]);
+  return Math.max(1, width);
+}
+
+export function resolveAxisLabels(program, channel, config, axisId = channel) {
+  const policy = config.responsive;
+  if (policy === undefined || program.materializationConfigs.canvas?.responsive === undefined) {
+    return resolveAxisLabelCandidate(program, channel, config, axisId);
+  }
+  const values = valuesFromTickConfig(program, config);
+  validateWorkLimit(values.length * (3 + policy.rotationCandidates.length), "Responsive label candidate work");
+  const all = values.map((_, index) => index);
+  const skipped = all.filter(index => index % policy.skipStride === 0);
+  let lastReason = "native-fit";
+  let requiredBounds;
+  const candidates = [
+    { stage: "native", indices: all, options: config },
+    { stage: "wrap", indices: all, options: { ...config, maxWidth: responsiveLabelWidth(program, channel, config, all, axisId), wrap: config.wrap ?? "word" } },
+    { stage: "skip", indices: skipped, options: { ...config, maxWidth: responsiveLabelWidth(program, channel, config, skipped, axisId), wrap: config.wrap ?? "word" } }
+  ];
+  const rotated = candidates.at(-1);
+  for (const rotation of policy.rotationCandidates) {
+    if (config.flush === true && rotation !== 0) continue;
+    candidates.push({ ...rotated, stage: "rotate", options: { ...rotated.options, rotation } });
+  }
+  for (const candidate of candidates) {
+    try {
+      const resolved = resolveAxisLabelCandidate(program, channel, candidate.options, axisId, candidate.indices);
+      requiredBounds = resolved.requiredBounds;
+      const counts = new Map();
+      for (const group of resolved.groups) counts.set(group, (counts.get(group) ?? 0) + 1);
+      if ([...counts.values()].some(count => count > policy.maxLines)) {
+        throw annotateError(new Error("Responsive label exceeds maxLines."), { reason: "label-lines" });
+      }
+      const canvas = program.graphicSpec.objects.canvas.properties;
+      if (resolved.text.some(text => {
+        const measured = resolveTextBounds({ text, x: 0, y: 0, fontSize: config.fontSize,
+          fontFamily: config.fontFamily, fontWeight: config.fontWeight, rotation: candidate.options.rotation }, program.materializationConfigs.textMetrics);
+        return measured.right - measured.left > canvas.width || measured.bottom - measured.top > canvas.height;
+      })) throw annotateError(new Error("Responsive label exceeds Canvas dimensions."), { reason: "label-size" });
+      return { ...resolved, responsiveResult: { stage: candidate.stage, reason: lastReason,
+        indices: resolved.indices, rotation: candidate.options.rotation,
+        ...(candidate.options.maxWidth === undefined ? {} : { maxWidth: candidate.options.maxWidth, wrap: candidate.options.wrap }) } };
+    } catch (error) {
+      const reason = getErrorDetails(error)?.reason;
+      if (!RESPONSIVE_FAILURES.has(reason)) throw error;
+      requiredBounds = getErrorDetails(error)?.requiredBounds ?? requiredBounds;
+      lastReason = reason;
+    }
+  }
+  throw annotateError(new Error(`Responsive ${channel}-axis labels cannot satisfy the declared fallback policy.`), {
+    reason: "layout-unsatisfied", layout: { owner: axisId, reason: lastReason, requiredBounds,
+      requiredPlotSize: program.materializationConfigs.canvas.responsive.minPlotSize }
+  });
 }
 
 export function resolveAxisLabelEditConfig(program, channel, args, axisId = channel) {
@@ -418,7 +507,8 @@ function makeEdit(channel) {
     const config = resolveAxisLabelEditConfig(this, channel, args, axisId);
     assertTickCompatibility(this.guideConfigs.axis?.[axisId]?.ticks, config, op);
     const resolved = resolveAxisLabels(this, channel, config, axisId);
-    let next = this._withGuideConfig(axisId, "labels", config);
+    let next = this._withGuideConfig(axisId, "labels", { ...config,
+      ...(resolved.responsiveResult === undefined ? {} : { responsiveResult: resolved.responsiveResult }) });
     const properties = {
       length: resolved.text.length,
       x: resolved.x,
@@ -433,9 +523,10 @@ function makeEdit(channel) {
       textAlign: resolved.textAlign,
       textBaseline: resolved.textBaseline
     };
-    if (config.rotation !== 0 || this.graphicSpec.objects[id].items.some(
+    const rotation = resolved.responsiveResult?.rotation ?? config.rotation;
+    if (rotation !== 0 || this.graphicSpec.objects[id].items.some(
       item => Object.hasOwn(item.properties, "rotation")
-    )) properties.rotation = config.rotation;
+    )) properties.rotation = rotation;
     for (const [property, value] of Object.entries(properties)) {
       next = next.editGraphics({ target: id, property, value });
     }

@@ -527,3 +527,7 @@
 - title: Draw Levels, Bands and Density
   url: /tutorials/contours/
   parent: /tutorials/
+
+- title: Fit Labels Inside a Fixed Canvas
+  url: /tutorials/responsive-guides/
+  parent: /tutorials/

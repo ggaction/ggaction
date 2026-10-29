@@ -619,7 +619,7 @@ function inspectGuide(program, id, childPath, appearance) {
 export function inspectProgram(program, { target } = {}) {
   requireProgram(program);
   if (target !== undefined) validateTarget(target);
-  const views = [];
+  const views = [], layouts = [];
   function visit(current, path = [], namespaces = []) {
     const visited = new Set();
     const active = new Set();
@@ -633,6 +633,13 @@ export function inspectProgram(program, { target } = {}) {
       active.delete(id);
     }
     for (const id of current.graphicSpec.order) validateGraphic(id);
+    if (current.materializationConfigs.canvas?.responsive !== undefined &&
+        (target === undefined || canonical(path) === canonical(target.childPath ?? []))) {
+      layouts.push({ childPath: path, policy: current.materializationConfigs.canvas.responsive,
+        result: current.materializationConfigs.canvas.responsiveResult,
+        labels: Object.entries(current.guideConfigs.axis ?? {}).flatMap(([id, axis]) =>
+          axis.labels?.responsiveResult === undefined ? [] : [{ id, policy: axis.labels.responsive, result: axis.labels.responsiveResult }]) });
+    }
     const appearance = appearanceContext(current, ACTION_DESCRIPTORS);
     const scopedKey = key => namespaces.reduceRight((result, namespace) => namespaceItemKey(result, namespace), key);
     for (const layer of current.semanticSpec.layers) views.push(inspectMark(current, layer, path, appearance, scopedKey));
@@ -681,6 +688,7 @@ export function inspectProgram(program, { target } = {}) {
   const unsupported = filtered.filter(view => view.logicalDataItems === null).map(view => view.owner);
   return cloneAndFreeze({
     version: 1, views: filtered,
+    ...(layouts.length === 0 ? {} : { layouts }),
     calculations,
     checks: [{ name: "pixel-visibility", status: "not_run", evidencePaths: [], findings: [] }],
     findings: filtered.flatMap(view => view.flags.filter(flag => flag.reason === "orphan-style" && flag.count > 0).map(flag => ({ severity: "info", code: "orphan-style", reason: "missing-node", message: `${flag.count} resource-backed style targets are dormant until their exact items return.`, resource: view.owner }))), coverage: { partial: filtered.some(view => view.checks.some(check => check.status !== "passed")), unsupported }

@@ -1,0 +1,4 @@
+export interface ResponsiveCanvasOptions {
+  /** Required final inner size. Defaults to 160 by 120 CSS pixels. */
+  minPlotSize?: { width: number; height: number };
+}

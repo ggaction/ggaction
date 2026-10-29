@@ -8,10 +8,10 @@
 - [ ] 명령 실행 및 evidence 저장
 - [ ] 타입·문서·Gate·인계 종료
 
-상태 private-kernel-verified. 작업 묶음 WP-07. 선행 단계 STEP-033 완료.
-Closed label intent와 bounded convergence의 독립14개 및 경계41개를 검증했다.
+상태 public-qualification. 작업 묶음 WP-07. 선행 단계 STEP-033 완료.
+Closed label intent와 bounded convergence를 공개 Canvas/Cartesian labels에 연결했고 실제 렌더러·font/source/resize·실데이터 회귀를 검증했다.
 [구체 공개 연결 설계와 private evidence](../../../../agent_docs/impl/roadmap9/phase7/theme/RESPONSIVE.md)가
-실제 범위를 소유한다. Canvas/guide 공개 연결과 전체 소비자 검증은 아직 미완료다.
+실제 범위를 소유한다. 동일 tar 설치 및 최종 문서 자격을 마친 뒤 공개 체크포인트를 닫는다. STEP-035와 AT-20 전체는 후속 범위다.
 
 ## 먼저 읽을 것
 

@@ -72,6 +72,8 @@ export type {
   BindMarkDataOptions,
   RemoveResourceOptions,
   CanvasOptions,
+  ResponsiveCanvasOptions,
+  ResponsiveLabelOptions,
   FitCanvasOptions,
   PivotColumn,
   PivotNumericOperation,

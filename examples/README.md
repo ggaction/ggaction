@@ -768,6 +768,12 @@ Inspect the same final chart items through Canvas, SVG, or headless CSS points.
 
 Representative actions: `createPointMark`, `encodeX`, `encodeY`. [Documentation](https://ggaction.github.io/ggaction/recipes/inspect-chart/).
 
+### [Labels inside a fixed Canvas](./responsive-guides/)
+
+Reserve guide space and explicitly resize an immutable chart without changing its margins.
+
+Representative actions: `createCanvas`, `createBarPlot`, `editCanvas`. [Documentation](https://ggaction.github.io/ggaction/tutorials/responsive-guides/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

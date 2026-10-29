@@ -506,5 +506,16 @@
       "exported": "createInspectionChart"
     },
     "rendering": "renders-canvas"
+  },
+  "tutorials/responsive-guides.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its category rows.",
+    "canonical": {
+      "file": "examples/responsive-guides/program.js",
+      "exported": "createResponsiveGuides"
+    },
+    "rendering": "authoring-only"
   }
 }

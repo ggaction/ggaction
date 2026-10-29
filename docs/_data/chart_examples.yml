@@ -2092,3 +2092,19 @@
   url: /recipes/inspect-chart/
   recipe_url: /recipes/inspect-chart/
   recipe_order: 209
+- id: responsive-guides
+  tutorial_order: 260
+  example: /examples/responsive-guides/
+  title: Labels inside a fixed Canvas
+  image: /assets/images/responsive-guides.png
+  alt: Four bars with long category names wrapped onto two lines
+  width: 800
+  height: 640
+  thumbnail: /assets/images/responsive-guides-thumb.png
+  thumbnail_width: 400
+  thumbnail_height: 320
+  caption: Four categories retain every tick while their labels wrap inside a fixed Canvas.
+  summary: Reserve guide space and explicitly resize an immutable chart without changing its margins.
+  actions: createCanvas · createBarPlot · editCanvas
+  tasks: responsive labels
+  url: /tutorials/responsive-guides/

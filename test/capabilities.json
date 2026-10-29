@@ -994,6 +994,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-inferred-graphs.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-responsive-layout.test.js"
       }
     ],
     "rendering": [
@@ -1022,6 +1026,30 @@
       {
         "type": "file",
         "path": "unit/layout/responsive-policy.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "unit/actions/canvas/responsive-"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/responsive-state.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/responsive-layout-types.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/responsive-guides/"
+      },
+      {
+        "type": "file",
+        "path": "browser/responsive-guides.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-responsive-layout.test.js"
       }
     ],
     "scales": [

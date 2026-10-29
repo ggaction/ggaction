@@ -3,6 +3,8 @@ export interface CanvasOptions {
   height?: number;
   background?: string;
   margin?: number | Partial<Record<"top" | "right" | "bottom" | "left", number>>;
+  /** Preserve outer dimensions and authored margins while reserving guide lanes. False disables. */
+  responsive?: false | ResponsiveCanvasOptions;
   /** Exact inner dimensions with automatic outer guide margins; false disables this mode. */
   plot?: { width: number; height: number } | false;
   /** Optional inner plot outline. Defaults off; an object replaces the complete style on edit. */
