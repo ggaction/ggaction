@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { planTransition, sampleTransition, serializeAnimation, deserializeAnimation } from "../../../src/animation.js";
 import { chart } from "../../../src/index.js";
+import { chart as basicChart } from "../../../src/basic.js";
 import { projectAnimationEndpoint } from "../../../src/animation/endpoints.js";
 import { projectCartesianAnimationState } from "../../../src/materialization/animation/cartesian.js";
 import { prepareCartesianInterpolation, sampleCartesianInterpolation, validateCartesianAnimationState } from "../../../src/grammar/animation/cartesianState.js";
@@ -116,5 +117,24 @@ test("native line curves and Area layout endpoints use the same sample geometry 
     assert.ok(plan.tracks.every(track=>["semantic-cartesian","exact"].includes(track.kind)),layout);
     const mid=sampleTransition(plan,50);assert.ok(mid.decisions.every(decision=>decision.kind!=="crossfade"),layout);
     assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(plan)).plan,50),mid);
+  }
+});
+
+
+test("Basic Cartesian families retain the same typed preparation and offline renderer contract",()=>{
+  const supported=[builders.bar,builders.line,builders.band,
+    p=>p.createRectMark({id:"m"}).encodeX({field:"x"}).encodeX2({datum:4,fieldType:"quantitative"}).encodeY({field:"y"}).encodeY2({field:"y2"}),
+    p=>p.createHistogram({id:"m",field:"x",binBoundaries:[0,2,4],guides:false})];
+  for(const build of supported) {
+    const from=build(basicChart().createCanvas({width:300,height:200}).createData({id:"d",keyField:"id",values:rows}));
+    const {endpoint,states}=projection(from);
+    states.forEach((state,index)=>{if(endpoint.identities[index]!==undefined)assert.equal(state.reason,undefined);});
+    const to=["bar","line"].includes(from.semanticSpec.layers[0].mark.type)
+      ?from.encodeY({target:"m",field:"y",scale:{domain:[0,20],nice:false},...(from.semanticSpec.layers[0].mark.type==="bar"?{aggregate:"sum"}:{})}):from;
+    const plan=planTransition({from,to,options:{durationMs:100,easing:"linear"}}),frame=sampleTransition(plan,50);
+    if(to!==from)assert.ok(frame.decisions.some(decision=>decision.kernel==="cartesian-geometry"));
+    assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(plan)).plan,50),frame);
+    assert.equal(sampleTransition(plan,0).graphicSpec,from.graphicSpec);
+    assert.equal(sampleTransition(plan,100).graphicSpec,to.graphicSpec);
   }
 });
