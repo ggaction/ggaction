@@ -145,6 +145,8 @@ export function hitIndex(index, scene, point, options = {}) {
   if (scene !== state.scene) throw new TypeError("Hit index is stale for this scene.");
   const screenPoint = transformHitPoint(identity, point), query = normalizeHitQuery(options);
   const work = { value: 0, limit: MAX_HIT_QUERY_WORK }, pending = state.root ? [state.root] : [], hits = new Map(), testedShapes = new Map();
+  spend(work, state.diagnostics.length);
+  const diagnostics = [...state.diagnostics], diagnosticKeys = new Set();
   let visited = 0, tested = 0;
   while (pending.length) {
     const node = pending.pop(); spend(work); visited++;
@@ -155,6 +157,10 @@ export function hitIndex(index, scene, point, options = {}) {
       if (!within(item.shape.bounds, screenPoint, query.slop)) continue;
       let result = testedShapes.get(item.shape);
       if (result === undefined) { spend(work, item.cost); result = hitShape(item.shape, screenPoint, query); testedShapes.set(item.shape, result); tested++; }
+      if (result.diagnostics !== item.shape.diagnostics) for (const diagnostic of result.diagnostics) {
+        const key = JSON.stringify([item.semanticKey, diagnostic.code, diagnostic.transformIndex]); spend(work, key.length);
+        if (!diagnosticKeys.has(key)) { diagnosticKeys.add(key); diagnostics.push(freezeOwned({ itemKey: item.metadata.itemKey, ...diagnostic })); }
+      }
       if (!result.hit) continue;
       const candidate = freezeOwned({ ...item.metadata, screenPoint, localPoint: result.localPoint, distance: result.distance, zIndex: item.zIndex });
       const previous = hits.get(item.semanticKey);
@@ -162,6 +168,6 @@ export function hitIndex(index, scene, point, options = {}) {
     }
   }
   const candidates = [...hits.values()].sort((a, b) => candidateOrder(a, b, work));
-  return freezeOwned({ target: candidates[0] ?? null, candidates: freezeOwned(candidates), diagnostics: state.diagnostics,
+  return freezeOwned({ target: candidates[0] ?? null, candidates: freezeOwned(candidates), diagnostics: freezeOwned(diagnostics),
     statistics: freezeOwned({ visited, tested, work: work.value }) });
 }

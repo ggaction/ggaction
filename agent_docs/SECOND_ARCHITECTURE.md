@@ -3367,4 +3367,4 @@ Private hit owner는 Full/Basic/SVG public import에 들어가지 않으므로 �
 새 순수 index 준비가 끝난 뒤 한 번에 교체하고 늦은 version은 폐기한다. Dispose는 현재 참조를 해제한다.
 Program/trace/codec와 renderer는 바꾸지 않으며 DOM/event/RAF를 만들지 않는다. Exact public interaction 및
 035/guide/animation 소비자 경계는 [STEP049](impl/roadmap9/interaction/STEP049.md)의 잔여 의무로 유지한다.
-이 source 추가 후 package868entries/5,839,653unpacked/최대1,271,066packed bytes에 cap868/1,272,000/5,840,000을 쓴다.
+이 source 추가 후 package868entries/5,840,161unpacked/최대1,271,149packed bytes에 cap868/1,272,000/5,841,000을 쓴다.

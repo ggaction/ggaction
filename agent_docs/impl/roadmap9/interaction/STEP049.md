@@ -6,7 +6,7 @@
 - [x] current scene index를 원자적으로 교체하는 host-independent lifecycle
 - [x] synthetic 중간 위치, enter/exit/crossfade, stale completion, dispose 검증
 - [x] 기존 Canvas renderer의 실제 DPR1/2/3 중간 geometry pixels와 동일 hit 확인
-- [x] Node20/22/24 각46개, source/discovery/package33개, 새 owner100% coverage
+- [x] Node20/22/24 각47개, source/discovery/package33개, 새 owner100% coverage
 - [ ] concrete mark/guide provenance adapter 및 STEP035 composition 통합
 - [ ] 공개 interaction entry/types/session/browser/animation sampler와 AT33/34 전체 인수
 
@@ -42,8 +42,8 @@ Enter/exit opacity0은 기본 제외되고 crossfade의 두 decorative primitive
 exact snapshot reference와 이전 hit가 그대로임을 검증했다. 테스트는 roadmap 파일을 import하지 않는다.
 
 `frame-evidence/`는 최초 discovery/package 실패와 수정후 owning 검사,5개 owner의95/90/100 floor,
-Node별 검사 및 package 실측을 구분한다. Published source는868entries/5,839,653unpacked,
-packed Node22 1,268,179와 Node20/24 1,271,066bytes이므로 cap868/1,272,000/5,840,000이다.
+Node별 검사 및 package 실측을 구분한다. Published source는868entries/5,840,161unpacked,
+packed Node22 1,268,280와 Node20/24 1,271,149bytes이므로 cap868/1,272,000/5,841,000이다.
 
 ## 남은 소비자
 
@@ -51,3 +51,8 @@ packed Node22 1,268,179와 Node20/24 1,271,066bytes이므로 cap868/1,272,000/5,
 row/resource provenance 자동 수집, 공개 interaction 함수·타입·문서·설치 및 browser event,
 animation sampler와 session의 stale asset/transaction bridge가 남아 있다. 현재 private index의
 명시 metadata를 public API의 자동 inference로 표시하지 않는다.
+
+최종 검토에서 scaleX1e-308 선의 slop-only point가 local inverse overflow 진단을 index에서 잃는 실제
+재현을 발견했다. b36280156 이전 index와 수정 index를 같은 입력으로 실행한 expected/actual/diff를
+`frame-evidence/overflow-regression.json`에 보존했다. Query 진단은 semantic key별 한 번 전달하며
+기존 static 진단 복사도 query work budget에 포함한다. No-hit와 후속 정상 query는 그대로 유지된다.

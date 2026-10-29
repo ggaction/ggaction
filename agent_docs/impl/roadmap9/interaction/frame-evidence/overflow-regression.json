@@ -1,0 +1,24 @@
+{
+  "sourceBefore": "b36280156",
+  "point": {
+    "x": 2,
+    "y": 0
+  },
+  "scaleX": 1e-308,
+  "before": [],
+  "expected": [
+    {
+      "itemKey": "i",
+      "code": "hit-coordinate-overflow",
+      "transformIndex": 0
+    }
+  ],
+  "actual": [
+    {
+      "itemKey": "i",
+      "code": "hit-coordinate-overflow",
+      "transformIndex": 0
+    }
+  ],
+  "diff": []
+}

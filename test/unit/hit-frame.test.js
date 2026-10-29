@@ -109,3 +109,15 @@ test("closed frame envelope rejects accessors and invalid versions before curren
   assert.throws(() => { bridge.updateFrame = () => {}; }, TypeError);
   assert.throws(() => at(bridge, 20, { slop: NaN })); assert.equal(bridge.getState(), snapshot);
 });
+
+
+test("current-frame queries retain inverse-overflow diagnostics without selecting a slop-only phantom", () => {
+  const shape = prepareHitShape({ geometry: { type: "line", from: { x: 0, y: 0 }, to: { x: 1, y: 0 } },
+    paint: { fill: false, stroke: { width: 1 }, opacity: 1 }, transform: [1e-308, 0, 0, 1, 0, 0], clips: [] });
+  const input = { version: 0, scene: cloneAndFreeze({ version: 2, width: 10, height: 10, nodes: [{ key: "a" }, { key: "b" }] }),
+    entries: ["a", "b"].map((nodeKey, zIndex) => ({ nodeKey, zIndex, shape, metadata: metadata("same") })) };
+  const bridge = createHitFrameBridge(input), result = bridge.hit({ x: 2, y: 0 });
+  assert.equal(result.target, null); assert.deepEqual(result.diagnostics, [{ itemKey: "same", code: "hit-coordinate-overflow", transformIndex: 0 }]);
+  assert.equal(result.statistics.tested, 1); assert.ok(Object.isFrozen(result.diagnostics[0]));
+  assert.equal(bridge.hit({ x: 0, y: 0 }).target.itemKey, "same");
+});
