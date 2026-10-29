@@ -23,7 +23,7 @@ export function prepareFrameEndpoint(frame, proof) {
     });
   }
   const positions=proof.positions.map((position,index)=>position??unavailablePointAnimationPosition(identities[index]===undefined?"anonymous":"sampled-concrete"));
-  return {endpoint:exact??projectSampledAnimationEndpoint(frame,cloneAndFreeze(identities),cloneAndFreeze(backgrounds)),positions:cloneAndFreeze(positions),frame};
+  return {endpoint:exact??projectSampledAnimationEndpoint(frame,cloneAndFreeze(identities),cloneAndFreeze(backgrounds)),positions:cloneAndFreeze(positions),graphs:proof.graphs,frame};
 }
 
 export function validateSampledEndpointMetadata(scene,identities,backgrounds,view) {
@@ -59,8 +59,8 @@ export function validateSampledEndpointMetadata(scene,identities,backgrounds,vie
     if(!singular){
       const identity=identities[index],background=backgrounds.find(value=>value.index===index);
       if(identity?(decision.itemKey!==identity.key||decision.role!==identity.role):(decision.owner!==background?.owner||decision.role!=="canvas-background"))throw new TypeError("Sampled decision differs from its retained identity.");
-      if(decision.kind==="semantic-kernel"&&decision.kernel!=="cartesian-point")throw new TypeError("Unsupported sampled semantic kernel.");
-      if((decision.kind==="semantic-kernel"&&scene.nodes[index].type!=="circle")||(decision.kind==="crossfade"&&scene.nodes[index].type!=="weighted-blend"))throw new TypeError("Sampled decision differs from its concrete primitive.");
+      if(decision.kind==="semantic-kernel"&&!["cartesian-point","completed-graph"].includes(decision.kernel))throw new TypeError("Unsupported sampled semantic kernel.");
+      if((decision.kind==="semantic-kernel"&&(decision.kernel==="cartesian-point"?scene.nodes[index].type!=="circle":!["circle","path","text"].includes(scene.nodes[index].type)))||(decision.kind==="crossfade"&&scene.nodes[index].type!=="weighted-blend"))throw new TypeError("Sampled decision differs from its concrete primitive.");
       if(decision.kind==="crossfade")validateAnimationFallbackReason(decision.reason);
     }
   }

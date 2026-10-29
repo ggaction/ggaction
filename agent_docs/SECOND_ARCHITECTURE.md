@@ -3163,7 +3163,7 @@ planner의 입력 준비이며 typed compatibility·중간 장면·offline anima
 Node22 canonical staging 측정은 1065 entries/1516293 packed/6912702 unpacked bytes이며,
 최소 상한 1065/1517000/6913000을 적용한다. 공개 entry와 browser bundle 경계는 그대로다.
 
-`animation/planner.js`는 settled immutable program 두 개에서 기존 endpoint와 item key/role
+`animation/planner.js`는 settled immutable program 또는 authentic frame 두 개에서 기존 endpoint와 item key/role
 대응을 준비한다. `materialization/animation/point.js`는 exact child scope·final row identity와
 rowEncoding의 의미값·resolved scale을 투영하며 pixel 역산이나 별도 mapper를 만들지 않는다.
 `animation/sample.js`는 기존 browser-safe concrete scene compiler를 공유하여 renderer-ready
@@ -3173,10 +3173,24 @@ rowEncoding의 의미값·resolved scale을 투영하며 pixel 역산이나 별�
 item correspondence로 해석하지 않는다. 지원하지 않는 family·topology·appearance는 명시 이유와
 concrete weighted-blend로 남긴다. 이는 나머지 compatible family 구현을 대체하지 않는다.
 `core/programState.js`의 descriptor-safe settled-state admission을 hit preparation과 planner가 공유한다.
-이 checkpoint는 private authentic plan만 지원한다. 공개 entry·offline 복원·current-frame 재기준과
-player 연결은 후행 의무이며 새 semantic 상태나 public API는 없다. Node22 package는
+Private planner는 닫힌 payload의 엄격한 복원과 current-frame 의미 값 재기준을 지원한다.
+공개 entry와 player 연결은 후행 통합 의무이며 새 semantic 상태를 만들지 않는다. Node22 package는
 1118entries/1,592,653packed/7,244,281unpacked bytes이고 Node20/24 packed는1,595,412bytes다.
 최소 상한1118/1,596,000/7,245,000을 적용하며 공개 entry·browser bundle cap은 유지한다.
+
+`materialization/animation/graph.js`는 exact graph/layout/route와 scoped item identity를 native
+`graph/plot`에서 한 번 준비한다. 완료 layout 좌표·resolved origin·radius·label offset과 route
+center samples가 group당 한 번 저장되며 node마다 전체 model을 복제하지 않는다.
+`grammar/animation/graphState.js`는 이 닫힌 값을 기존 anchored route kernel과 함께 보간하고,
+`animation/graphTracks.js`는 current anchors를 native edge/inset/arrow materializer에 전달한다.
+매 frame inference·layout·bundling solver는 실행하지 않는다. Primitive geometry 편집, parallel
+ordering 변화와 route 붕괴는 명시 사유로 남기며 graph node의 호환 이동은 계속 유지한다.
+Authentic frame의 private provenance가 current graph groups와 node-order item refs를 보존하여
+재기준에 pixel 역산이 필요하지 않다. Export/restore도 이 단일 준비값과 kernel version을 검증한다.
+원 endpoint, scene schema와 renderer 입력은 그대로 유지하며 public entry는 후행 통합 대상이다.
+Graph private owner 추가의 같은 staging은 Node22에서1124entries/1,604,256packed/7,289,382unpacked,
+Node20/24에서는1,608,202packed bytes다. 최소 한도1124/1,609,000/7,290,000을 적용하며
+기존 browser bundle cap은 유지한다.
 
 `grammar/animation/positions.js`는 명시 resolved semantic value를 보간하고 기존
 `scales/mapping.js`에서만 좌표를 계산한다. 값과 domain 전환을 구분하며 log domain만

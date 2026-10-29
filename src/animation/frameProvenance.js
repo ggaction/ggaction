@@ -20,8 +20,12 @@ export function registerAnimationFrame(frame, input) {
   if (input.positions !== undefined && (!Array.isArray(input.positions) || input.positions.length !== frame.scene.nodes.length)) {
     throw new TypeError("Animation frame positions must follow its exact node order.");
   }
+  if (input.graphs !== undefined && (!Array.isArray(input.graphs.items) || input.graphs.items.length !== frame.scene.nodes.length)) {
+    throw new TypeError("Animation frame graph items must follow its exact node order.");
+  }
   frames.set(frame, Object.freeze({ plan: input.plan, timeMs: input.timeMs,
-    ...(input.positions === undefined ? {} : { positions: cloneAndFreeze(input.positions) }) }));
+    ...(input.positions === undefined ? {} : { positions: cloneAndFreeze(input.positions) }),
+    ...(input.graphs === undefined ? {} : { graphs: cloneAndFreeze(input.graphs) }) }));
   return frame;
 }
 

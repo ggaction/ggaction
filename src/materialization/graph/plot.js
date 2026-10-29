@@ -30,7 +30,7 @@ function overrideMap(entries) {
   return new Map(entries.map(({ key, ...style }) => [key, style]));
 }
 
-export function resolveGraphPlot(program, layer, config) {
+export function resolveGraphPlot(program, layer, config, { animationGeometry = false } = {}) {
   const { layout, graph, nodesData, edgesData } = resolveGraphLayerResources(program, layer), model = graph.result.model;
   validateGraphRecomputeView(program, layer, graph, config.view);
   const labels = layer.graphLabels, frame = resolveGraphicBounds(program), positions = layout.result.nodes;
@@ -102,5 +102,7 @@ export function resolveGraphPlot(program, layer, config) {
   const concrete = materializeFillItems(program, layer, graphics.map(graphic => ({ ...graphic, properties: materializeMarkEffectProperties(graphic.properties) })));
   for (const graphic of concrete) validateConcreteGraphicProperties(graphic.type, graphic.properties);
   return applyGraphView(program, { graphics: concrete, items, frame, layout, graph, nodesData, edgesData,
+    ...(animationGeometry ? { animation: { origin, labelOffset: config.labels?.offset ?? [0, 0], edgeStyle: resolvedEdgeStyle,
+      nodes: positions.map(node => ({ key: node.key, x: node.x, y: node.y, radius: radii.get(node.key) })), routeResource } } : {}),
     diagnostics: [...targets].filter(key => !known.has(key)).map(key => ({ code: "orphan-style", key })) }, config.view);
 }
