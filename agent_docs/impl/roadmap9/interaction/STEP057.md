@@ -10,7 +10,7 @@
 - [x] B1: typed range의 독립 endpoint inclusive flags 및 단일 경계 구현
 - [x] B1: focused/realistic/타입·패키지·Current·문서 qualification
 - [x] B2: 이름 있는 AST predicate/parameter closure 및 qualification
-- [ ] C: linked targets의 union/intersection/global와 명시 owner/child projection
+- [x] C: linked targets의 union/intersection/global와 명시 owner/child projection
 - [x] D1: select/setParameter/clearSelection session command 원자 commit 및 qualification
 - [ ] D: nearest screen/data metric, delete/hidden reconciliation·event, 자동 bindings
 - [ ] STEP057 AT37 및 후행 058–060/065–068 통합 완료
@@ -209,3 +209,18 @@ selection state100/100/100이며 기존보다 낮은 floor를 만들지 않았�
 package13, 실제 데이터5종×3 recipe/ledger16, browser5를 통과했다. 마지막 nested namespace work-accounting의
 보수적 상계 조정 후 owning121을 재검증했다. 최종 동일 tar 설치와 문서 qualification은 아직 진행 중이다.
 최초 callback 인자 오류와 nested fixture cardinality 오류, entry/bundle cap·snippet 등록/provenance 실패를 보존한다.
+
+
+### C 검증 checkpoint
+
+Source `c3c55c11b`의 [qualification](link-evidence/qualification.json)과 독립
+[expected/actual/diff](link-evidence/expected-actual-diff.json)를 보존했다. 최종 owning121, 계약28,
+package13, 실제 데이터5종×3 recipe/ledger16, 실제 browser5 및 문서183 검사를 통과했다.
+새 owner와 변경 resolver의 critical floor는 유지되며 source state는100/100/100이다.
+문서164페이지/1411 selective artifacts, 수정 페이지4폭 Axe0·overflow0 및390px 시각 확인을 완료했다.
+
+동일 archive `3124a6cc81d385e0b3d3220a22deb588c908f1f4c722af51a4d3258594470963`의
+Node20/22/24 각각3 runtime·strict 타입·4 entry browser bundle이 통과했다. 최종 최대
+915entries/1,319,191packed/6,040,713unpacked, interaction91,706gzip으로 최소 cap을 충족한다.
+최초 실패와 마지막 namespace work-accounting 수정 전 archive를 별도 보존했다. 전체 sweep이나
+STEP057 D/AT37·STEP077 전체 완료로 확대 보고하지 않는다. 다음은 nearest·orphan/drop 및 자동 binding이다.
