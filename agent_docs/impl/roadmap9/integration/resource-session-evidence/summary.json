@@ -1,5 +1,5 @@
 {
-  "status": "runtime-qualified-integration-checks-running",
+  "status": "qualified",
   "source": "96955f817",
   "branches": [
     "2a7549a0b",
@@ -24,7 +24,7 @@
     "tests": 51,
     "passed": 50,
     "failed": 1,
-    "failure": "pathLiteralRequirements snapshot 14778 vs14780; corrected and final inventory running"
+    "failure": "Initial pathLiteralRequirements snapshot 14778 vs14780; corrected final inventory 7/7 passed."
   },
   "docs": {
     "tests": 179,
@@ -36,7 +36,8 @@
   },
   "builtDocs": {
     "pages": 164,
-    "llmArtifacts": 1410
+    "llmArtifacts": 1410,
+    "browser": "passed desktop search and every documentation page at widths 320,390,768"
   },
   "installed": {
     "initialNode20": {
@@ -62,13 +63,31 @@
     "size": 1304869,
     "unpackedSize": 5994134
   },
-  "pending": [
-    "corrected inventory final run",
-    "common realistic 3 files after Flow ribbon oracle repair",
-    "combined built docs browser verification"
-  ],
+  "pending": [],
   "limitations": [
     "No combined full coverage or all-suite claim.",
     "This checkpoint does not close Roadmap9 or STEP077."
-  ]
+  ],
+  "qualifiedSource": "2d92baea0",
+  "inventoryFinal": {
+    "tests": 7,
+    "passed": 7,
+    "durationMs": 247112.354917
+  },
+  "commonRealistic": {
+    "tests": 27,
+    "passed": 27,
+    "durationMs": 969911.423208,
+    "files": [
+      "test/contracts/realistic-lifecycle-factor-effects.test.js",
+      "test/contracts/realistic-scenario-generator.test.js",
+      "test/contracts/realistic-scenario-generation-isolation.test.js"
+    ],
+    "initialFailure": "Filled Flow ribbon incorrectly classified as line in independent oracle; repaired and reran all three files."
+  },
+  "docsFinal": {
+    "tests": 25,
+    "passed": 25,
+    "scope": "documentation coverage/provenance and both README suites after budget text update"
+  }
 }

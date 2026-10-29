@@ -240,6 +240,8 @@ import {
     basicChart().applyTheme({ theme: { base: "light", tokens: {
       fontSize: 14, fontWeight: 0, axisLabel: "red", axisLabelFontSize: 6, axisTitleFontSize: 18,
       axisStrokeWidth: 0, tickStrokeWidth: 2, tickSize: 8, gridStrokeWidth: .5,
+      axisLabelGap: 0, axisTitleGap: 42, legendItemGap: 25, palette: ["red", "blue"],
+      patternPalette: [{ type: "pattern", style: "diagonal", foreground: "red" }],
       axisLabelFontFamily: "serif", axisTitleFontFamily: "monospace"
     } } });
     chart().applyTheme({ theme: { base: "dark", tokens: { fontWeight: "bold" } } });
@@ -260,6 +262,12 @@ import {
     const transitionScene: import("ggaction/scene").TransitionScene = (await import("ggaction/scene")).createTransitionScene(program);
     void transitionScene;
     const inspection: ProgramInspection = inspectProgram(program);
+    const appearance: import("ggaction/inspection").AppearanceProvenance | undefined = inspection.views[0]?.appearance[0];
+    if (appearance?.source.kind === "theme") { const token: keyof import("ggaction").ThemeTokens = appearance.source.token; void token; }
+    // @ts-expect-error pattern palette only accepts pattern paints
+    chart().applyTheme({ theme: { base: "light", tokens: { patternPalette: ["red"] } } });
+    // @ts-expect-error spacing tokens are numeric
+    chart().applyTheme({ theme: { base: "light", tokens: { axisLabelGap: "wide" } } });
     const description: ActionDescription = describeAction(program, {
       action: "createData",
       options: { id: "typedRows", values: [] }

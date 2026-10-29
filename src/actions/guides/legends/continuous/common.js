@@ -1,3 +1,4 @@
+import { legendThemeGap } from "../../../theme/state.js";
 import { conditionalLegendLayer } from "../../../../materialization/legendEncodings.js";
 import { validateTextAlignment } from "../../../../core/validation.js";
 import { materializeHardTextLines } from "../../../../materialization/textLines.js";
@@ -34,7 +35,7 @@ import {
 } from "../../../../grammar/numeric.js";
 import { resolveGraphicBounds, canvasOverflowError } from "../../../../layout/canvas.js";
 import { isHorizontalEdgeLegend } from "../../../../layout/legendLane.js";
-import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY, DEFAULT_VERTICAL_LEGEND_ITEM_GAP } from
+import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY, nativeLegendItemGap } from
   "../../../../theme/defaults.js";
 import { findLegendLayer as findLayer } from "../../../../materialization/legendEncodings.js";
 import { isOpacityLegendLayer } from "../../../../materialization/legends.js";
@@ -90,13 +91,13 @@ export function normalizeInitialLegendTitle(title, fallback) {
   };
 }
 
-export function normalizeItemLegendConfig(args, encoding, itemGap) {
+export function normalizeItemLegendConfig(args, encoding, kind, theme) {
   const side = ["right", "left"].includes(args.position ?? "right") || isPlotLegend(args);
   const direction = args.direction ?? (side ? "vertical" : "horizontal");
-  const defaultGap = direction === "vertical" ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : itemGap;
+  const defaultGap = nativeLegendItemGap(kind, { direction, position: args.position });
   return {
     ...(args.clipHeight===undefined?{}:{clipHeight:normalizeLegendClipHeight(args.clipHeight)}),
-    ...normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? defaultGap }),
+    ...normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? legendThemeGap(theme) ?? defaultGap }),
     ...normalizeInitialLegendTitle(args.title, encoding.field),
     labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", ITEM_LEGEND_LABELS),
     titleStyle: normalizeLegendTitleOptions(args.titleStyle, "createLegend.titleStyle", ITEM_LEGEND_TITLE_STYLE),
@@ -162,7 +163,7 @@ export function normalizeLegendBorder(value) {
   return { ...border, ...(dash === undefined ? {} : { strokeDash: dash }) };
 }
 
-export function normalizeContinuousLegend(args, kind) {
+export function normalizeContinuousLegend(args, kind, theme) {
   validateOptionObject(args, OPTIONS, "createLegend");
   const position = args.position ?? "right";
   if (!POSITIONS.includes(position)) {
@@ -205,8 +206,7 @@ export function normalizeContinuousLegend(args, kind) {
       "Only horizontal opacity legends support left titlePosition."
     );
   }
-  const itemGap = args.itemGap ?? (kind === "opacity" && (["right", "left"].includes(position) || isPlotLegend({ position }))
-    ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : titlePosition === "left" ? 20 : 28);
+  const itemGap = args.itemGap ?? (kind === "opacity" ? legendThemeGap(theme) : undefined) ?? nativeLegendItemGap(kind === "opacity" ? "opacity" : "continuous", { position, titlePosition });
   validatePositive(itemGap, "Legend itemGap");
   if (kind === "gradient") {
     for (const key of ["symbol", "columns", "itemGap"]) {
@@ -452,7 +452,7 @@ export function normalizeItemLegendLayout(args, { multiColumnSide = false } = {}
     throw new Error("Side item legends require vertical direction, center alignment, top title and one column.");
   }
   const offset = args.offset ?? (isPlotLegend({ position }) ? 8 : 30);
-  const itemGap = args.itemGap ?? (direction === "vertical" ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP : 28);
+  const itemGap = args.itemGap ?? nativeLegendItemGap("item", { direction, position });
   validateNonNegative(offset, "Legend offset");
   validatePositive(itemGap, "Legend itemGap");
   return { position, layout, align, direction, columns, titlePosition, offset, itemGap,

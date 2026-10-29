@@ -1,3 +1,4 @@
+import { resolveEffectiveThemeTokens } from "../theme/state.js";
 import { positionBindings } from "../../core/encodingBindings.js";
 import { resolveScaleRange } from "../../grammar/scales/index.js";
 import { resolvePolarFrame } from "../../grammar/polar.js";
@@ -65,6 +66,7 @@ function resolveScalePreviewAtBounds(program, id, bounds) {
     ? resolveSharedRadiusFrame(program, consumers, bounds)
     : undefined;
   const resolvedScale = resolveScaleMaterialization({ program, id, scale, channel, consumers, valuesByConsumer,
+    themePalette: resolveEffectiveThemeTokens(program.materializationConfigs.theme).palette,
     bounds: ["color", "stroke", "strokeDash", "strokeWidth", "shape", "size", "opacity", "xOffset", "yOffset"].includes(channel)
       ? undefined : bounds,
     resolvedScales: program.resolvedScales, markConfigs: program.markConfigs, polarFrame,

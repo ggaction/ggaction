@@ -140,6 +140,14 @@ resource targets include their bound marks, and image mark views expose the name
 resource in `sourceRefs`. IDs from different resource kinds never alias, and
 `childPath` is resolved from the outer program inward.
 
+## Appearance provenance
+
+`getMarkItems(program, { target })` and `inspectProgram(program).views` include an immutable `appearance` array. Each entry identifies its semantic owner, item key or guide component, property and resolved value. Its `source.kind` is `defaults`, `family`, `theme`, `style`, `explicit`, `interaction` or `unknown`.
+
+Theme sources include the frame owner, theme name and token. Authored options include their action; named overlays identify their selection. A value deliberately set equal to a default remains authored. Guide offsets and item gaps report the resolved stored setting, including automatic title placement adjustments. These reads preserve the program, resources and trace.
+
+Legacy state without authoring evidence, extension replacement of complete graphic items, or a property selection whose pre-highlight baseline cannot be proven reports `unknown`. The inspection does not infer a source from a matching color alone or claim pixel visibility.
+
 ## Related
 
 [Data updates and snapshots](./data-updates.md) ·

@@ -1,5 +1,5 @@
 import { normalizeDisplayLabelMap } from "../../../../grammar/displayLabels.js";
-import { axisThemeTypography } from "../../../theme/state.js";
+import { axisThemeTypography, axisThemeOffset } from "../../../theme/state.js";
 import {
   validateGeneratedItemLimit,
   validateNonEmptyString,
@@ -25,9 +25,9 @@ export function defaultParallelAxis(field, theme) {
     field,
     line: { color: DEFAULT_COLORS.axis, lineWidth: 1.25 },
     ticks: { mode: "auto", length: 8, color: DEFAULT_COLORS.mutedText, lineWidth: 1 },
-    labels: { mode: "auto", offset: 9, format: "auto", color: DEFAULT_COLORS.axis,
+    labels: { mode: "auto", offset: axisThemeOffset(theme, "labels") ?? 9, format: "auto", color: DEFAULT_COLORS.axis,
       fontSize: AXIS_LABEL_FONT_SIZES.parallel, fontFamily: DEFAULT_FONT_FAMILY, fontWeight: AXIS_LABEL_FONT_WEIGHT, ...axisThemeTypography(theme, "labels") },
-    title: { offset: 20, color: DEFAULT_COLORS.axisTitle,
+    title: { offset: axisThemeOffset(theme, "title") ?? 20, color: DEFAULT_COLORS.axisTitle,
       fontSize: AXIS_TITLE_FONT_SIZE, fontFamily: DEFAULT_FONT_FAMILY, fontWeight: AXIS_TITLE_FONT_WEIGHT, ...axisThemeTypography(theme, "title") }
   };
 }

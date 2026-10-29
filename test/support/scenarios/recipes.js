@@ -962,7 +962,7 @@ function buildHierarchicalAuthoringActions(factors) {
       text: "Hierarchical authoring action lifecycle",
       subtitle: factors.theme
     })
-    .applyTheme({ theme: { base: factors.theme, tokens: { axisStrokeWidth: 1, tickStrokeWidth: 1, tickSize: 6, gridStrokeWidth: 1 } } })
+    .applyTheme({ theme: { base: factors.theme, tokens: { axisStrokeWidth: 1, tickStrokeWidth: 1, tickSize: 6, gridStrokeWidth: 1, axisLabelGap: 12, axisTitleGap: 42, legendItemGap: 18, palette: ["#2563eb", "#f97316"], patternPalette: [{ type: "pattern", style: "diagonal", pitch: 64 }, { type: "pattern", style: "dots", pitch: 64 }] } } })
     .removeTheme();
   program = program.fitCanvas({ padding: 8, overflow: "report" });
   return program;

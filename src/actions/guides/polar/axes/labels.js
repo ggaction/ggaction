@@ -1,7 +1,7 @@
 import { materializeHardTextLines } from "../../../../materialization/textLines.js";
 import { resolveTextLines } from "../../../../core/textMetrics.js";
 import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
-import { axisThemeTypography } from "../../../theme/state.js";
+import { axisThemeTypography, axisThemeOffset } from "../../../theme/state.js";
 import { action } from "../../../../core/action.js";
 import { validateNonNegativeFinite } from "../../../../core/validation.js";
 import {
@@ -112,7 +112,7 @@ function resolveLabelConfig(program, kind, args, resources, previous) {
     scale: resources.scale,
     coordinate: resources.coordinate,
     ...mode,
-    offset: args.offset ?? previous?.offset ?? (kind === "theta"
+    offset: args.offset ?? previous?.offset ?? axisThemeOffset(program.materializationConfigs.theme, "labels") ?? (kind === "theta"
       ? POLAR_AXIS_DEFAULTS.labels.thetaOffset
       : POLAR_AXIS_DEFAULTS.labels.radiusOffset),
     format: args.format ?? previous?.format ??

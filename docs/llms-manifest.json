@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:75c33334d9284bf0ce84cf3a06adf5ca6d9aec7af88369f887f52c5be09b6620",
-    "sourceCommit": "80b84bac1fae87eaa1a1eaf90cffb70ca86f4896",
+    "contractId": "sha256:e377ff82245a12d7120d00405b3d36d4fd08deda448ac870023c43a67dd3b7a3",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "d12a1ffa0fcc0988277f6c28a08d0ef1aebb0c2cdcb98bbced9f66cd53f78d64"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1904,10 +1904,11 @@
         "preflight-an-action",
         "compare-immutable-revisions",
         "inspect-concrete-results",
+        "appearance-provenance",
         "related"
       ],
-      "bytes": 6800,
-      "sha256": "a637942bcace965389d408ca361f5bafc927837bc5ef4eaf674c6d296803254a"
+      "bytes": 7787,
+      "sha256": "01fea6cfce24007f098e84ca34ccd18fad715752acf17a46983fadda6ce888d5"
     },
     {
       "order": 113,
@@ -2499,8 +2500,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 47171,
-      "sha256": "e868e0ed87adcd8bf5c1f15b372cd56498c623bc7e42ad9241f08d4f4c1acd2b"
+      "bytes": 48098,
+      "sha256": "f0bf7fb89bd44907640114445642289af57b7a03c407b22ba3e32088312fa98e"
     },
     {
       "order": 128,
@@ -3331,8 +3332,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 454370,
-      "sha256": "af613dca2a57db12c0cb914acbc0e72b9b7aaa69d2e93b68410ce8ed6ad70883"
+      "bytes": 454593,
+      "sha256": "3dce73f43578ca9973d8026c196cb70b52edd194c0b6f8e68080a683888daed1"
     },
     {
       "order": 129,
@@ -3366,8 +3367,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "d89b2401decd1c642971c8321453e62a81467e5a3bf2809e5d74ee6cecec53e7"
+      "bytes": 20908,
+      "sha256": "5f7076bac2540b7055788bf2e8d3885900f2f17e3334d9879ed15445b4b2f9c8"
     },
     {
       "order": 131,
@@ -3593,8 +3594,8 @@
         "boundaries-and-failure-behavior",
         "related"
       ],
-      "bytes": 4026,
-      "sha256": "f6c57297ec3ac3883d54063476a9cbf467ad5d465bdbdffd67f1e6e18006e3e2"
+      "bytes": 5004,
+      "sha256": "20b9847c73db938708908425a4053e75d20e1465b7c1e0afed97e9e0ce8b1f18"
     },
     {
       "order": 145,
@@ -3706,8 +3707,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "f6aa5ad9227918477cb557f16380e7cd640a6969cdfdf09906126b92a2b0eb72"
+      "bytes": 3000,
+      "sha256": "37dab73a27daadd10f4257817890b970f6ec06208365e24442e9067f9a9677cf"
     },
     {
       "order": 152,

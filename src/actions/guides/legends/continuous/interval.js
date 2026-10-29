@@ -1,3 +1,4 @@
+import { legendThemeGap } from "../../../theme/state.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
 import { resolveLegendItemLayout } from "../../../../layout/legendItems.js";
 import { action, closedAction } from "../../../../core/action.js";
@@ -38,7 +39,7 @@ const SYMBOL_OPTIONS = [
   "width", "height", "stroke", "strokeWidth"
 ];
 
-export function normalizeIntervalLegend(args) {
+export function normalizeIntervalLegend(args, theme) {
   validateOptionObject(args, OPTIONS, "createLegend");
   if (args.channels !== undefined && (
     !Array.isArray(args.channels) ||
@@ -47,7 +48,7 @@ export function normalizeIntervalLegend(args) {
   )) {
     throw new Error('Interval legend requires channels: ["color"].');
   }
-  const layout = normalizeItemLegendLayout(args);
+  const layout = normalizeItemLegendLayout({ ...args, ...(args.itemGap === undefined && legendThemeGap(theme) !== undefined ? { itemGap: legendThemeGap(theme) } : {}) });
   if (args.symbol !== undefined && !isPlainObject(args.symbol)) {
     throw new TypeError("createLegend.symbol must be a plain object.");
   }
@@ -228,7 +229,7 @@ export const createIntervalLegend = /* @__PURE__ */ action(
     description: "Create a discretized color interval legend."
   },
   function (args = {}) {
-    const config = normalizeIntervalLegend(args);
+    const config = normalizeIntervalLegend(args, this.materializationConfigs.theme);
     const resolved = resolveIntervalConfig(this, config);
     resolveIntervalLayout(this, resolved.config, resolved.scale);
     if (this.graphicSpec.objects.colorLegendSymbols !== undefined) {

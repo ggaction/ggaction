@@ -2,13 +2,17 @@
 
 ## 진행 상태
 
-- [ ] 계약과 선행 단계 확인
-- [ ] 독립 실패 시험 작성
-- [ ] 구현과 모든 소비자 연결
-- [ ] 명령 실행 및 evidence 저장
-- [ ] 타입·문서·Gate·인계 종료
+- [x] 계약과 선행 단계 확인
+- [x] 독립 실패 시험 작성
+- [x] 구현과 모든 소비자 연결
+- [x] 명령 실행 및 evidence 저장
+- [x] 타입·문서·Gate·인계 종료
 
-상태 planned. 작업 묶음 WP-07. 선행 단계 STEP-009、STEP-019. 현재 구현 또는 테스트 성공을 뜻하지 않는다.
+상태 implemented-qualified. 작업 묶음 WP-07. 선행 단계 STEP-009、STEP-019.
+구현 source `5a38661bd`와 앞선 role/typography/guide checkpoint의 정확한 검증 범위는
+[완료 기록](../../../../agent_docs/impl/roadmap9/phase7/theme/COMPLETION.md)이 소유한다.
+실제 owner는 기존 `src/actions/theme/`이며 신규 speculative registry는 없다. 사용자 전체 승인
+`b758b912`를 재사용했다. STEP-034/035와 STEP-074 전체 qualification 의무는 남아 있다.
 
 ## 먼저 읽을 것
 

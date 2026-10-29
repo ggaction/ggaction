@@ -8,7 +8,8 @@
 - [x] Full/Basic·nested descendants·scale/Canvas edit·codec·원자적 실패 검증
 - [x] 집중 coverage·실제 light/dark recipe·source-free 설치와 TypeScript 검증
 - [x] 최종 generated docs177·inventory7·package 기록
-- [ ] STEP-033 간격·palette·winning provenance 및 STEP-034/035
+- [x] STEP-033 간격·palette·winning provenance: [completion checkpoint](COMPLETION.md)
+- [ ] STEP-034 responsive solver 및 STEP-035 nested guide 정렬
 
 기준은 `52207ed93`, source는 `a273eeef5`다. 공개 API는 기존 `applyTheme`의 partial token 확장이다.
 `axisStrokeWidth`, `tickStrokeWidth`, `tickSize`, `gridStrokeWidth`는 finite nonnegative

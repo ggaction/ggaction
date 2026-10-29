@@ -5,7 +5,7 @@ import { axisGraphicIds } from "../../../materialization/guides/resources.js";
 import { materializeTextLines } from "../../../materialization/textLines.js";
 import { axisTitleTextLines as titleLines, validateAxisTextPlacement, axisTitleAllowsLabelOverlap,
   isLabelRelativeTitleOffset, axisLabelHasText } from "../../../grammar/axisTextPlacement.js";
-import { axisThemeTypography } from "../../theme/state.js";
+import { axisThemeTypography, axisThemeOffset } from "../../theme/state.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
@@ -93,7 +93,7 @@ function inferredTitleOffset(program, channel, config, axisId = channel) {
   const labels = program.graphicSpec.objects[axisGraphicIds(channel, axisId)[2]]
     ? resolveConcreteGraphicBounds(program.graphicSpec, axisGraphicIds(channel, axisId)[2], program.materializationConfigs.textMetrics)
     : undefined;
-  const preferred = channel === "x" ? 42 : 52;
+  const preferred = axisThemeOffset(program.materializationConfigs.theme, "title") ?? (channel === "x" ? 42 : 52);
   if (!plot || !canvas || !labels) return preferred;
   const horizontal = channel === "x";
   const positive = config.position === (horizontal ? "bottom" : "right");

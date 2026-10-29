@@ -41,12 +41,18 @@
     {
       "name": "applyTheme",
       "wraps": [
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisTitle",
         "editGraphics"
       ]
     },
     {
       "name": "removeTheme",
       "wraps": [
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisTitle",
         "editGraphics"
       ]
     },

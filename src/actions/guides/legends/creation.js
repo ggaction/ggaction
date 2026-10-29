@@ -22,7 +22,7 @@ export function resolveLegendStepConfig(program, step) {
     case "createOpacityLegend":
       return { kind: "opacity", config: resolveOpacityLegendCreation(program, step.args).config };
     case "createIntervalLegend":
-      return { kind: "interval", config: resolveIntervalConfig(program, normalizeIntervalLegend(step.args)).config };
+      return { kind: "interval", config: resolveIntervalConfig(program, normalizeIntervalLegend(step.args, program.materializationConfigs.theme)).config };
     case "createSizeLegend":
       return { kind: "size", config: resolveSizeLegendConfig(program, step.args) };
     case "createStrokeWidthLegend":

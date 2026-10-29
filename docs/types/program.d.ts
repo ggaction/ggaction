@@ -86,6 +86,11 @@ export interface FontRenderingHost {
 
 export type ThemeName = "light" | "dark";
 export interface ThemeTokens {
+  axisLabelGap?: number;
+  axisTitleGap?: number;
+  legendItemGap?: number;
+  palette?: readonly string[];
+  patternPalette?: readonly PatternPaint[];
   axisStrokeWidth?: number;
   tickStrokeWidth?: number;
   tickSize?: number;
