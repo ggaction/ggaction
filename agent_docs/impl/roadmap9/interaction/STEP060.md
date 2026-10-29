@@ -246,3 +246,7 @@ Node20/24 Full690,277/Basic378,363/interaction111,865gzip bytes가 최대값이�
 보존하고 같은 bundle측정에 새cap을 검증했으며, Node22/24는 새cap 포함 전체명령이 성공했다.
 Superseded `e582ecdc`는 dormant hidden 보완 전이므로 최종 증거로 세지 않는다.
 전수 coverage는 반복하지 않았고 root의 전체 통합 qualification 의무를 유지한다.
+
+C2 source `5b69d264c` push 뒤 provenance→machine→LLM을 source commit에 고정했고 owning docs47,
+built170pages/1458LLM을 통과했다. Runtime/타입·같은 archive `cb065aa8`는 불변이며 기존 네 폭
+Axe0 증거를 재사용한다. 최종metadata commit은 source/runtime scope를 확장하지 않는다.

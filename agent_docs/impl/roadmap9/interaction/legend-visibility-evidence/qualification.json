@@ -1,6 +1,6 @@
 {
   "baseCommit": "23fe1677907b27d39dbe1568ffcc30451b5e0548",
-  "sourceCommit": null,
+  "sourceCommit": "5b69d264c27819e7493adef213f95aceda491bc6",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "STEP060 C2 categorical visibility as an outer final-item view composed with native user filtering; explicit domain policy, control legend, session and immutable revision closure",
   "sourceHashes": {
@@ -342,6 +342,12 @@
         "b"
       ],
       "errors": []
+    },
+    "sourcePinnedDocs": {
+      "passed": 47,
+      "builtPages": 170,
+      "llmArtifacts": 1458,
+      "visualEvidence": "Previous four-width Axe0 evidence reused; only source revision provenance label changed. Runtime/types/exact archive unchanged."
     }
   },
   "artifact": {
@@ -658,6 +664,30 @@
     {
       "path": "visibility-state-validation.log.gz",
       "sha256": "0bdc9a468ec2c42ad4d40278300ccb6ea52b0b2d9500bb6124400a2407edcf9c"
+    },
+    {
+      "path": "visibility-source-commit.log.gz",
+      "sha256": "a15f1c60c06026fd8fed3744cd15ccda0d26b298d12d90f0ac982a393abdb461"
+    },
+    {
+      "path": "visibility-source-push.log.gz",
+      "sha256": "b4c18c36b74de4dc85732da8550e8d517978ba3b26fbc1480be9266f59f5d0f8"
+    },
+    {
+      "path": "visibility-docs-source-pinned.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "visibility-docs-pinned-tests.log.gz",
+      "sha256": "15e6712c44e360308a94adb30e3187bc26356104a70483efd5b8d7e34bd7d0e7"
+    },
+    {
+      "path": "visibility-docs-pinned-build.log.gz",
+      "sha256": "80f0b117670f9c955dddee4b9dade29c9cd7c3c159d28fb1077fc8a0bf895468"
+    },
+    {
+      "path": "visibility-docs-pinned-built.log.gz",
+      "sha256": "2d16227a9e782a0fc76a306513a1e60f2fe3504b47bc16edc1fb3faeb0b8e395"
     }
   ]
 }
