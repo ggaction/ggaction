@@ -597,6 +597,8 @@ export function buildActionRelationshipPrograms() {
         { id: "county", geometry: "fine", parents: [{ key: "c", parent: "s" }], enterZoom: 4.2, exitZoom: 3.8 }], zoom: 5 })
       .createProjection({ id: "detailFit", type: "identity", fit: { width: 100, height: 100 } })
       .createCoordinate({ type: "geo" }).createGeoPointMark({ id: "details" }).editGeoLODData({ zoom: 3 }),
+    chart().createCanvas().createProjection({ id: "noteMap", type: "identity" }).createCoordinate({ type: "geo" })
+      .createGeoAnnotation({ anchor: { type: "position", position: [20, 30] }, text: "Location" }).editGeoAnnotation({ text: "Updated", dx: 5 }),
     chart().createGeometryData({ id: "fitShape", format: "geojson", coordinateKind: "planar",
       values: { type: "LineString", coordinates: [[0, 0], [10, 20]] } })
       .createProjection({ id: "fittedMap", type: "identity", fit: { geometry: "fitShape", width: 100, height: 100 } })

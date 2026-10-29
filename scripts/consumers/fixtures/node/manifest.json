@@ -1250,5 +1250,22 @@
         "statements": 6
       }
     ]
+  },
+  {
+    "file": "geographic-annotations.mjs",
+    "cases": [
+      {
+        "id": "geographic-annotations/feature-anchor-and-atomicity",
+        "statements": 7
+      },
+      {
+        "id": "geographic-annotations/offline-fresh-process",
+        "statements": 3
+      },
+      {
+        "id": "geographic-annotations/four-renderer-native-text-parity",
+        "statements": 5
+      }
+    ]
   }
 ]

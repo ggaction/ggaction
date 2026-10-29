@@ -2931,6 +2931,22 @@
     "layer": "user-facing",
     "domain": "marks"
   },
+  "createGeoAnnotation": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editGeoAnnotation": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
   "createGraticule": {
     "operation": "create",
     "authoringRoles": [

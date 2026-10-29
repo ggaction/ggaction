@@ -1110,6 +1110,11 @@
       "geographic detail levels",
       "region hierarchy",
       "map level of detail"
+    ],
+    "GeoAnnotation": [
+      "geographic annotation",
+      "feature anchor",
+      "map text"
     ]
   },
   "summaryOverrides": {
@@ -2279,6 +2284,20 @@
     "editGeoLODData": {
       "target": "regions",
       "zoom": 5
+    },
+    "createGeoAnnotation": {
+      "anchor": {
+        "type": "position",
+        "position": [
+          10,
+          20
+        ]
+      },
+      "text": "Location"
+    },
+    "editGeoAnnotation": {
+      "text": "Updated location",
+      "dx": 4
     }
   },
   "callPatternOverrides": {

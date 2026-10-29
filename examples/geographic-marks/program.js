@@ -1,6 +1,8 @@
 import { chart } from "../../src/index.js";
-import { canvas, shapes, cities, routes, projection, grid } from "./fixture.js";
+import { canvas, shapes, cities, routes, projection, grid, annotations } from "./fixture.js";
 export function createGeographicMarks(variant = "planar") {
+  if (variant === "annotations") return createGeographicMarks("planar")
+    .createGeoAnnotation(annotations[0]).createGeoAnnotation(annotations[1]).createGeoAnnotation(annotations[2]);
   if (variant === "graticule") return chart().createCanvas(canvas).createProjection(projection)
     .createCoordinate({ type: "geo" }).createGraticule(grid);
   if (variant !== "planar") throw new Error("Unknown geographic chart variant.");

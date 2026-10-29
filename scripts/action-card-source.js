@@ -187,6 +187,10 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (["createGeoAnnotation", "editGeoAnnotation"].includes(action.name)) return {
+    prerequisites: ["Canvas", "Geo coordinate", "explicit position or keyed geographic feature"], owns: ["geographic annotation"],
+    idOptions: [action.name.startsWith("create") ? "id" : "target", "coordinate"]
+  };
   if (["createGeoLODData", "editGeoLODData"].includes(action.name)) return {
     prerequisites: ["explicit keyed geometry levels and parent mappings"], owns: ["geographic detail resource"],
     idOptions: [action.name.startsWith("create") ? "id" : "target"]

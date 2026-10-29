@@ -2,6 +2,7 @@ import { CALENDAR_PLOT_DEFAULTS } from "../../grammar/calendar/plot.js";
 import { GRAPH_PLOT_DEFAULTS } from "../../grammar/graph/plot.js";
 import { HIERARCHY_PLOT_DEFAULTS } from "../../grammar/hierarchy/plot.js";
 import { FLOW_PLOT_DEFAULTS } from "../../grammar/flow/plot.js";
+import { DEFAULT_TEXT_MARK } from "../../grammar/text.js";
 
 const OWNERS = Object.freeze({
   calendar: { key: "calendarPlot", op: "materializeCalendarPlot" },
@@ -14,12 +15,18 @@ const OWNERS = Object.freeze({
 });
 
 export function resourcePlotThemeOwner(layer) {
-  return OWNERS[layer?.mark?.type];
+  return layer?.mark?.type === "geo" && layer.geoBinding?.mode === "annotation"
+    ? { key: "geo", op: "materializeGeoMark" } : OWNERS[layer?.mark?.type];
 }
 
 // A family default is lower precedence than an active theme; removing the final
 // frame restores that family's own value, not a generic mark default.
 export function resourcePlotThemeProperty(path, layer) {
+  if (path[0] === "marks" && path[2] === "geo" && layer?.geoBinding?.mode === "annotation") {
+    if (path.length !== 4) return undefined;
+    const property = path[3], token = property === "fill" ? "text" : ["fontFamily", "fontSize", "fontWeight"].includes(property) ? property : undefined;
+    return token === undefined ? undefined : { token, defaultValue: DEFAULT_TEXT_MARK[property] };
+  }
   if (path[0] !== "marks" || !["graphPlot", "hierarchyPlot", "flowPlot", "calendarPlot"].includes(path[2])) return undefined;
   if (path.includes("overrides")) return { explicit: true };
   const calendarLabel = path[2] === "calendarPlot" && path[3] === "labels";
@@ -39,11 +46,11 @@ export function resourcePlotThemeProperty(path, layer) {
 }
 
 function change(node) {
-  const match = /^(create|edit)(GraphPlot|TreePlot|TreemapPlot|PartitionPlot|FlowNodes|FlowLinks|CalendarPlot)$/u.exec(node.op);
+  const match = /^(create|edit)(GraphPlot|TreePlot|TreemapPlot|PartitionPlot|FlowNodes|FlowLinks|CalendarPlot|GeoAnnotation)$/u.exec(node.op);
   if (match === null) return;
-  const family = match[2] === "CalendarPlot" ? "calendarPlot" : match[2] === "GraphPlot" ? "graphPlot" : match[2].startsWith("Flow") ? "flowPlot" : "hierarchyPlot";
+  const family = match[2] === "GeoAnnotation" ? "geo" : match[2] === "CalendarPlot" ? "calendarPlot" : match[2] === "GraphPlot" ? "graphPlot" : match[2].startsWith("Flow") ? "flowPlot" : "hierarchyPlot";
   const args = node.args, ids = new Set();
-  const materializer = `materialize${match[2]}`;
+  const materializer = match[2] === "GeoAnnotation" ? "materializeGeoMark" : `materialize${match[2]}`;
   const visit = entry => {
     if (entry.op === materializer && typeof entry.args.id === "string") ids.add(entry.args.id);
     entry.children?.forEach(visit);
@@ -70,6 +77,12 @@ export function addResourcePlotThemeOverrides(overrides, node) {
   const target = change(node);
   if (target === undefined) return;
   const { family, id, args } = target;
+  if (family === "geo") {
+    for (const property of ["fill", "fontFamily", "fontSize", "fontWeight"]) {
+      if (Object.hasOwn(args, property)) overrides.add(`c:marks.${id}.geo.${property}`);
+    }
+    return;
+  }
   const roles = ["nodes", "cells", "edges", "links", "labels", "monthBoundary"];
   for (const role of roles) {
     if (args[role] === null || typeof args[role] !== "object") continue;

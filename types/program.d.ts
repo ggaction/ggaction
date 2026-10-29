@@ -2243,7 +2243,18 @@ type GeoEditOptions<Options> = Options extends unknown ? Omit<Options, "id"> & {
 export type EditGeoPointMarkOptions = GeoEditOptions<GeoPointMarkOptions>;
 export type EditGeoLineMarkOptions = Omit<GeoLineMarkOptions, "id"> & { readonly target?: string };
 export type EditGraticuleOptions = Omit<GraticuleOptions, "id"> & { readonly target?: string };
-export type GeoMarkBinding = {
+export type GeoAnnotationAnchor = { readonly type: "position"; readonly position: readonly [number, number] }
+  | { readonly type: "feature"; readonly geometry?: string; readonly key: RowKey; readonly level?: string };
+export interface GeoAnnotationOptions extends Omit<TextMarkOptions, "data" | "source" | "missing" | "text" | "inheritColor"> {
+  readonly coordinate?: string; readonly anchor: GeoAnnotationAnchor; readonly text: string;
+}
+export type EditGeoAnnotationOptions = Partial<Omit<GeoAnnotationOptions, "id">> & { readonly target?: string };
+export type GeoAnnotationBinding = { readonly mode: "annotation"; readonly text: string } & (
+  | { readonly anchor: { readonly type: "position"; readonly position: readonly [number, number] }; readonly geometry?: never }
+  | { readonly anchor: { readonly type: "feature"; readonly key: RowKey; readonly level?: string };
+      readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number } });
+
+export type GeoMarkBinding = GeoAnnotationBinding | {
   readonly mode: "shape" | "point" | "line";
   readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number };
   readonly interpolation: "source-segment" | "great-circle"; readonly routeHint?: readonly [number, number]; readonly radiusDeg?: number;
@@ -6645,6 +6656,8 @@ export class ChartProgram {
   editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
   createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
   editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
+  createGeoAnnotation(options: TargetedOptions<GeoAnnotationOptions>): ChartProgram;
+  editGeoAnnotation(options: TargetedOptions<EditGeoAnnotationOptions>): ChartProgram;
   createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
   editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
   createFlowData(options: CreateFlowDataOptions): ChartProgram;

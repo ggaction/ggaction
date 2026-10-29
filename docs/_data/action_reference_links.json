@@ -358,6 +358,8 @@
   "editGeoPointMark": "/reference/actions/marks/#editgeopointmark",
   "createGeoLineMark": "/reference/actions/marks/#creategeolinemark",
   "editGeoLineMark": "/reference/actions/marks/#editgeolinemark",
+  "createGeoAnnotation": "/reference/actions/marks/#creategeoannotation",
+  "editGeoAnnotation": "/reference/actions/marks/#editgeoannotation",
   "createGraticule": "/reference/actions/marks/#creategraticule",
   "editGraticule": "/reference/actions/marks/#editgraticule"
 }

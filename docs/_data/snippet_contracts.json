@@ -2067,6 +2067,18 @@
     "executable": true
   },
   {
+    "file": "api/geometry.md",
+    "block": 6,
+    "heading": "`createGeoAnnotation`",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Run the complete module with its inline keyed planar port feature.",
+    "sha256": "6f869a86d85bbd5d12ad8a8f481621040a6a170935ddcdcfa2766e624ceb16db",
+    "executable": true
+  },
+  {
     "file": "api/gradient-plots.md",
     "block": 1,
     "heading": "Create a gradient plot",

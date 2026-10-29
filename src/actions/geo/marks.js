@@ -1,3 +1,4 @@
+import { registerGeoAnnotationActions } from "./annotation.js";
 import { closedAction } from "../../core/action.js";
 import { normalizeGeoStyle, normalizeGraticule, GEO_STYLE_FIELDS } from "../../grammar/geo/mark.js";
 import { resolveGeometryResource } from "../../selectors/geometry.js";
@@ -68,6 +69,7 @@ export const editGeoLineMark = /* @__PURE__ */ facade("line", true, "GeoLineMark
 export const createGraticule = /* @__PURE__ */ facade("graticule", false, "Graticule");
 export const editGraticule = /* @__PURE__ */ facade("graticule", true, "Graticule");
 export function registerGeoMarkActions(ProgramClass) {
+  registerGeoAnnotationActions(ProgramClass);
   Object.assign(ProgramClass.prototype, { createGeoShapeMark, editGeoShapeMark, createGeoPointMark, editGeoPointMark,
     createGeoLineMark, editGeoLineMark, createGraticule, editGraticule, materializeGeoMark });
 }

@@ -3661,6 +3661,22 @@ editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
 
 Edit projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../api/geometry.md#editgeolinemark).
 
+### `createGeoAnnotation`
+
+```js
+createGeoAnnotation({ id?, coordinate?, anchor, text, ...textStyle })
+```
+
+Attach native Text to a semantic geographic position or original feature centroid. See [Geometry and projections](../api/geometry.md#creategeoannotation).
+
+### `editGeoAnnotation`
+
+```js
+editGeoAnnotation({ target?, coordinate?, anchor?, text?, ...textStyle })
+```
+
+Edit the annotation while preserving omitted intent, original feature identity and native Text styles. See [Geometry and projections](../api/geometry.md#editgeoannotation).
+
 ### `createGraticule`
 
 ```javascript

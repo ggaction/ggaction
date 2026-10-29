@@ -1,3 +1,4 @@
+import { resolveGeoAnnotation } from "./annotation.js";
 import { geoFeatureKey, geoMarkSource } from "./source.js";
 import { contentDigest } from "../../core/contentDigest.js";
 import { validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
@@ -12,6 +13,7 @@ import { materializeMarkEffectProperties } from "../markEffects.js";
 
 export function resolveGeoMark(program, layer, config) {
   const source = geoMarkSource(program, layer, config), { binding, resource, coordinateKind, parameters, features } = source;
+  if (binding.mode === "annotation") return resolveGeoAnnotation(program, layer, config, source, geoFeatureKey(layer, resource, features[0]));
   const lineage = { kind: "resource", resource: binding.geometry ?? requireCoordinate(program, layer.coordinate).projection };
   const { clip: _clip, radiusPx, ...style } = config;
   const items = [], graphics = []; let work = 0, count = 0;

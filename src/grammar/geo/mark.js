@@ -1,3 +1,4 @@
+import { validateGeoAnnotationBinding } from "./annotation.js";
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownRecord } from "../../core/ownData.js";
 import { validateInputReference } from "../../core/resourceReference.js";
@@ -8,7 +9,7 @@ import { MARK_EFFECT_PROPERTIES, normalizeMarkEffects } from "../markEffects.js"
 import { resolveStrokeDetails, STROKE_STYLE_PROPERTIES } from "../strokeStyle.js";
 import { projectionTuple } from "./projectionOptions.js";
 
-export const GEO_MODES = Object.freeze(["shape", "point", "line", "graticule"]);
+export const GEO_MODES = Object.freeze(["shape", "point", "line", "graticule", "annotation"]);
 const REQUIRED_STYLE = ["fill", "stroke", "strokeWidth", "opacity", "radiusPx", "clip", ...STROKE_STYLE_PROPERTIES];
 export const GEO_STYLE_FIELDS = Object.freeze([...REQUIRED_STYLE, "blend", ...MARK_EFFECT_PROPERTIES]);
 
@@ -44,6 +45,7 @@ export function normalizeGraticule(input = {}) {
 
 export function validateGeoMarkBinding(layer, config) {
   const binding = layer.geoBinding;
+  if (binding?.mode === "annotation") return validateGeoAnnotationBinding(layer, config);
   ownRecord(binding, "Geographic mark binding");
   if (!GEO_MODES.includes(binding.mode)) throw new TypeError("Unknown geographic mark mode.");
   const graticule = binding.mode === "graticule";

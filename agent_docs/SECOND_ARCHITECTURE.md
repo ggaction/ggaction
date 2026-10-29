@@ -862,8 +862,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 721,000 bytes |
-| `ggaction/basic` | 382,000 bytes |
+| `ggaction` | 727,000 bytes |
+| `ggaction/basic` | 384,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/graph` | 43,000 bytes |
 | `ggaction/interaction` | 102,000 bytes |
@@ -3864,3 +3864,12 @@ revision DAG가 LOD와 join, fitted projection, mark union을 명시 갱신한�
 단일 조회하고 Geo selection adapter와 inspection이 재사용한다. Selector는 원 authored key를
 보존하며 현재 item key로 해석하고 hit/frame key는 바꾸지 않는다. 렌더러는 같은 concrete primitives만
 읽는다. 정확한 공개 옵션·제한은 [GEOMETRY](contract/current/GEOMETRY.md)가 소유한다.
+
+Geographic annotation은 기존 Geo layer의 닫힌 mode와 native Text primitive를 재사용한다.
+`grammar/geo/centroid.js`는 명시 source geometry의 bounded planar/spherical centroid만 계산하고,
+`materialization/geo/annotationSource.js`는 exact geometry 및 원 LOD level/key를 해석한다.
+공통 feature metadata 조회는 `materialization/geo/features.js`, native Text/font 구성은
+`materialization/textItem.js`가 단일 소유한다. Projection ref는 coordinate에만 존재하며
+annotation은 원 feature 의미와 literal text를 보존한다. Typography/theme/selection/복원은
+기존 owner를 사용하고 renderer에는 concrete Text만 전달한다. 정확한 API는
+[GEOMETRY.md](contract/current/GEOMETRY.md#creategeoannotation)를 따른다.

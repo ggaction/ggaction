@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:1fa1add8cfe75d8668903f80585ddc1c71ae137d02f312826dd49a973839fd6a",
-  "sourceCommit": "6ea274544b84df8f38f13c4d2257a28ffa7eebcb",
-  "sourceRef": "6ea274544b84df8f38f13c4d2257a28ffa7eebcb",
-  "exampleSourceRef": "0a217a83b217d228b6a17dc73e1d5979544acdcb",
+  "contractId": "sha256:9e8226fa1bfd72bfd8012df993368e41d9d19264c5068a2a453bdae0733d593b",
+  "sourceCommit": null,
+  "sourceRef": "main",
+  "exampleSourceRef": "codex/roadmap9-geo",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 361,
+  "actionCount": 363,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -283,6 +283,14 @@
       "status": "development"
     },
     "editGraticule": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGeoAnnotation": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeoAnnotation": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

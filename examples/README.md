@@ -817,6 +817,12 @@ Draw geographic shapes, points, lines and graticules with stable feature identit
 
 Representative actions: `createGeometryData`, `createProjection`, `createGeoShapeMark`, `createGeoPointMark`, `createGeoLineMark`, `createGraticule`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
 
+### [Labels stay attached to the original stops](./geographic-annotations/)
+
+Attach semantic text to geographic positions and original feature keys.
+
+Representative actions: `createGeoAnnotation`, `editGeoAnnotation`, `createProjection`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started
