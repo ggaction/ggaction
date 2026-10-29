@@ -930,6 +930,11 @@ also accept their native `centerDeg` and `rotateDeg` options. The command uses t
 edit rules: a scale or translation patch detaches a fitted projection, while an angular patch retains
 and recomputes its fit. It preserves the geometry resource and feature selection identities.
 
+Alternatively, pass only `{operation}` to use [native camera operations](../../../api/geometry/#navigateprojection):
+pan, anchored zoom, pinch, spherical rotation, fit, reset or resize. The operation and absolute transform
+fields cannot be combined. One successful command adds one history entry, including Canvas resize.
+Capture reset parameters explicitly with `getProjectionView`; the session does not infer a home view.
+
 This browser module expects `<canvas id="chart" aria-label="Map points"></canvas>`.
 
 > **Executable complete.** Use a Canvas with id chart. Pan right, Zoom in and Original view work with pointer, Enter and Space; the output reports the current projection transform.
@@ -937,6 +942,7 @@ This browser module expects `<canvas id="chart" aria-label="Map points"></canvas
 ```js
 import { chart, render } from "ggaction";
 import { createInteractionSession } from "ggaction/interaction";
+import { getProjectionView } from "ggaction/inspection";
 
 const canvas = document.querySelector("#chart");
 const nav = document.createElement("nav");
@@ -952,19 +958,17 @@ const program = chart().createCanvas({ width: 400, height: 300, margin: 0 })
   .createProjection({ id: "map", type: "identity", scalePx: 1, translatePx: [0, 0] })
   .createCoordinate({ type: "geo" }).createGeoPointMark({ id: "places", geometry: "places", radiusPx: 8 });
 const viewportSession = createInteractionSession({ program, bindings: [] });
-const transform = current => {
-  const projection = current.semanticSpec.resources.find(resource => resource.kind === "projection" && resource.id === "map");
-  return { ...projection.options, ...projection.result };
-};
+const transform = current => getProjectionView(current, { target: "map" }).parameters;
+const initial = transform(program);
 const draw = current => {
   render(current, canvas.getContext("2d"));
   const { scalePx, translatePx } = transform(current);
   nav.querySelector("output").textContent = `Scale ${scalePx}; translation ${translatePx.join(", ")}`;
 };
-const move = payload => viewportSession.dispatch({ type: "setViewport", target: "map", payload, origin: "user" });
-const pan = () => { const { translatePx: [x, y] } = transform(viewportSession.getState().program); move({ translatePx: [x + 20, y] }); };
-const zoom = () => move({ scalePx: transform(viewportSession.getState().program).scalePx * 2 });
-const home = () => move({ scalePx: 1, translatePx: [0, 0] });
+const move = operation => viewportSession.dispatch({ type: "setViewport", target: "map", payload: { operation }, origin: "user" });
+const pan = () => move({ type: "pan", deltaPx: [20, 0] });
+const zoom = () => move({ type: "zoom", anchorPx: [80, 70], factor: 2, scaleExtent: [0.5, 8] });
+const home = () => move({ type: "reset", initial });
 const controls = [["#map-right", pan], ["#map-zoom", zoom], ["#map-home", home]];
 for (const [selector, handler] of controls) nav.querySelector(selector).addEventListener("click", handler);
 const unsubscribe = viewportSession.subscribe(event => {
@@ -977,10 +981,12 @@ const disposeViewport = () => {
 };
 ```
 
-For a projection in a composed child, use `{childPath,id}`. The nonempty patch accepts only the four
-transform fields above; it does not change projection type, clipping, geometry or level of detail.
-Native buttons keep focus and their usual keyboard behavior. This direct command does not install
-pointer pan or pinch gestures, infer cursor anchoring, or animate the change. It requires Full authoring.
+For a projection in a composed child, use `{childPath,id}`. Zoom and pinch anchors use native local
+projection pixels; convert a host pointer into that coordinate space before dispatching. The native
+operation validates inverse visibility and the explicit scale extent. Reset uses the captured parameters.
+Both payload forms preserve geometry and level of detail. Native buttons keep focus and keyboard behavior.
+Preparation failure or cancellation keeps the committed program, frame and history unchanged. This direct
+command requires Full authoring and does not install pointer gestures or animate the change.
 
 ## Move graph nodes with pointer or keyboard
 

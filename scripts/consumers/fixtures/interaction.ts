@@ -114,6 +114,14 @@ session.dispatch({type:'setViewport',target:{childPath:['left'],id:'map'},payloa
 session.dispatch({type:'setViewport',target:'map',payload:{type:'mercator'}});
 // @ts-expect-error viewport commands do not infer LOD zoom
 session.dispatch({type:'setViewport',target:'map',payload:{zoom:2}});
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'pan',deltaPx:[10,-5]}}});
+session.dispatch({type:'setViewport',target:{childPath:['left'],id:'map'},payload:{operation:{type:'zoom',anchorPx:[100,100],factor:2,scaleExtent:[0.5,4]}}});
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'resize',canvas:{width:400,height:300},scaling:'preserve'}}});
+// @ts-expect-error absolute transform and native operation are mutually exclusive
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'pan',deltaPx:[1,2]},scalePx:2}});
+// @ts-expect-error anchored zoom requires an explicit scale extent
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'zoom',anchorPx:[1,2],factor:2}}});
+
 
 program.editLayout({target:'layout',node:{key:[1,'a'],x:10,y:20}});
 session.dispatch({type:'moveNode',target:'layout',payload:{key:1,x:10,y:20}});

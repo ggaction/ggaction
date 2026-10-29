@@ -4096,3 +4096,9 @@ markOutput은 명시 resource lineage를 우선 보존하며 screen layer만 scr
 Basic에 Geo math/authoring owner를 유입하지 않는다. Package1059entries/1,500,878packed/
 6,826,646unpacked에1059/1,501,000/6,827,000 한도를 적용했다. 검색1,036,885bytes는1,036,900이다.
 기존 cap 실패와 최종 동일archive24cases/types/bundles를 integration evidence에 분리 보존한다.
+
+Interaction camera operation은 기존 closed command owner가 receiver의 native facade로 전달한다.
+정적 Full import나 추가 projection 상태 없이 preparation/history/frame 수명을 그대로 사용한다.
+정확 배타 payload는 Current INTERACTION에 둔다. Source-free Node20 interaction은116,663gzip으로
+기존116,700 한도 안이다. Package1059entries/1,500,976packed/6,827,033unpacked에서 entries/packed는
+유지하고 unpacked만6,828,000으로 올렸다. 검색1,036,903bytes는1,037,000 한도로 변경했다.

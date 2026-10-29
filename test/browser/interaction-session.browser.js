@@ -557,7 +557,7 @@ test("host viewport buttons apply native projection transforms to Canvas and SVG
       window.__inspectionSessions.forEach(session => session.destroy());
       document.body.innerHTML = '<canvas id="chart" aria-label="Map points"></canvas><div id="vector"></div>';
       let source = code;
-      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/interaction", "interaction"]]) {
+      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/interaction", "interaction"], ["ggaction/inspection", "inspection"]]) {
         source = source.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
       }
       const url = URL.createObjectURL(new Blob([source + '\nwindow.__viewportSession=viewportSession;window.__disposeViewport=disposeViewport;'], { type: "text/javascript" }));
@@ -580,7 +580,7 @@ test("host viewport buttons apply native projection transforms to Canvas and SVG
     await page.getByRole("button", { name: "Pan right", exact: true }).focus(); await page.keyboard.press("Enter");
     assert.deepEqual(await inspect(), { circles: [[80,70],[140,110]], vector: [[80,70],[140,110]], painted: true, revision: 1, focus: "map-right" });
     await page.getByRole("button", { name: "Zoom in", exact: true }).focus(); await page.keyboard.press("Space");
-    assert.deepEqual(await inspect(), { circles: [[140,140],[260,220]], vector: [[140,140],[260,220]], painted: true, revision: 2, focus: "map-zoom" });
+    assert.deepEqual(await inspect(), { circles: [[80,70],[200,150]], vector: [[80,70],[200,150]], painted: true, revision: 2, focus: "map-zoom" });
     await page.getByRole("button", { name: "Original view", exact: true }).click();
     assert.deepEqual(await inspect(), { circles: [[60,70],[120,110]], vector: [[60,70],[120,110]], painted: true, revision: 3, focus: "map-home" });
     assert.deepEqual(await page.evaluate(() => window.__viewportPhases), ["commit","settled","commit","settled","commit","settled"]);

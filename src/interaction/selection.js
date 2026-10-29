@@ -103,8 +103,10 @@ export function prepareInteractionEdit(program, command) {
     return { program: invoke(program, "editLayout", { node: payload, ...address(target, true) }), affectedOwners };
   }
   if (command.type === "setViewport") {
-    const payload = options(command.payload, [], ["scalePx", "translatePx", "centerDeg", "rotateDeg"], "Projection viewport payload");
-    return { program: invoke(program, "editProjection", { ...payload, ...address(target, true) }), affectedOwners };
+    const payload = options(command.payload, [], ["scalePx", "translatePx", "centerDeg", "rotateDeg", "operation"], "Projection viewport payload");
+    const operation = Object.hasOwn(payload, "operation");
+    if (operation) options(payload, ["operation"], [], "Camera viewport payload");
+    return { program: invoke(program, operation ? "navigateProjection" : "editProjection", { ...payload, ...address(target, true) }), affectedOwners };
   }
   if (command.type === "setVisibility") {
     const payload = options(command.payload, [], ["clear", "channel", "values", "visible", "scaleDomain"], "Visibility command payload");

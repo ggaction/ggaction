@@ -1144,7 +1144,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](../types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, GraphPosition, EditAnnotationOptions, EditGeoAnnotationOptions, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, GeoCameraOperation, GraphPosition, EditAnnotationOptions, EditGeoAnnotationOptions, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -1375,8 +1375,9 @@ export type InteractionReorderPayload = { readonly channel: 'x' | 'y' | 'theta' 
   (CategoryOrder & { readonly clear?: never })
   | { readonly clear: true; readonly values?: never; readonly by?: never; readonly direction?: never }
 );
-/** Nonempty native projection transform patch. Pixel units precede composition and host transforms. */
-export type InteractionViewportPayload = Pick<ProjectionSphereParameters, 'scalePx' | 'translatePx' | 'centerDeg' | 'rotateDeg'>;
+/** Absolute transform patch or one native camera operation, exclusively. Full-only. */
+export type InteractionViewportPayload = (Pick<ProjectionSphereParameters, 'scalePx' | 'translatePx' | 'centerDeg' | 'rotateDeg'> & { readonly operation?: never })
+  | { readonly operation: GeoCameraOperation; readonly scalePx?: never; readonly translatePx?: never; readonly centerDeg?: never; readonly rotateDeg?: never };
 /** Nonempty native Text/label or geographic annotation patch; target kind selects its editor. Full-only. */
 export type InteractionAnnotationPayload = Omit<EditAnnotationOptions, 'target'> | Omit<EditGeoAnnotationOptions, 'target'>;
 export type InteractionEditCommand = InteractionTransaction & ({

@@ -45,7 +45,7 @@ The following advanced controller commands require an explicit `target` and `pay
 - `dispatch({type:"focusHierarchy",target,payload:{focus},transactionId?,origin?,causeTransactionId?})` invokes the existing Full partition editor. `focus` is the native typed `HierarchyNodeTarget` or null for the current root. Only an explicit partition owner is accepted; other hierarchy marks and Basic reject. Coordinate, layout, paint and pruning policy remain unchanged. Native source recovery, selection pruning and subsequent session reconciliation/linked closure retain their existing meaning. No new hierarchy calculation or stored schema is introduced.
 - `dispatch({type:"moveNode",target,payload:{key,x,y},transactionId?,origin?,causeTransactionId?})` addresses an explicit graph layout and delegates to `editLayout({node:payload})`. Typed key, finite layout-local coordinates, dormant intent, force pins, dependent routes/plots and failure atomicity follow the native layout owner. Basic and incompatible layout methods reject it.
 - `dispatch({type:"annotate",target,payload,transactionId?,origin?,causeTransactionId?})` invokes Full `editAnnotation` for Text or `editGeoAnnotation` for a geographic annotation with a nonempty native patch. The target is one explicit existing annotation owner; payload cannot redirect target. Existing constant datum or local Canvas screen anchors, text, offsets, placement, item membership and layout keep their native ownership. Geographic position/feature anchors retain the native coordinate, typed feature key and original detail level. The selected target kind determines the closed payload; Text-only options reject for Geo and Geo-only options reject for Text. Complete preflight precedes one session reconciliation/link closure and commit/settled pair. Basic rejects; this command does not create annotations or infer an anchor.
-- `dispatch({type:"setViewport",target,payload:{scalePx?,translatePx?,centerDeg?,rotateDeg?},transactionId?,origin?,causeTransactionId?})` invokes the existing Full projection editor with a nonempty patch. The target identifies the projection itself. Values and projection-type applicability use `editProjection`; absolute scale/translation detach a prior fit, while angular changes retain and recompute it. Pixel units are native projection output coordinates before child composition and host transforms. The command preserves type, clipping, precision and geometry. Basic rejects it.
+- `dispatch({type:"setViewport",target,payload:{scalePx?,translatePx?,centerDeg?,rotateDeg?},transactionId?,origin?,causeTransactionId?})` invokes the existing Full projection editor with a nonempty patch. The target identifies the projection itself. Values and projection-type applicability use `editProjection`; absolute scale/translation detach a prior fit, while angular changes retain and recompute it. Pixel units are native projection output coordinates before child composition and host transforms. The command preserves type, clipping, precision and geometry. Alternatively, the entire payload is `{operation:GeoCameraOperation}` and invokes Full `navigateProjection`. Operation and absolute transform fields are mutually exclusive. Pan, anchored zoom, pinch, spherical rotation, fit, explicit reset and resize use the native camera contract without a second stored camera. Basic rejects both paths.
 - `dispatch({type:"setParameter", target, payload:{value}, transactionId?,origin?,causeTransactionId?})` invokes the existing parameter editor and its entire dependency closure. An unchanged scalar value returns `{status:"unchanged"}` without a trace, revision or event. Basic lacks these editors and rejects them even for unchanged values.
 - `dispatch({type:"filter",target,payload:{select,mode?,recompute?},transactionId?,origin?,causeTransactionId?})` invokes `filterMarks` with the existing inline `MarkSelector`. `mode` is native replace/compose; `recompute` retains the existing inferred-graph restriction. Named-selection AST, region and screen metadata are not inline filter selectors. `{clear:true}` replaces the entire payload to invoke `removeMarkFilter`. Clear removes only that filter; it does not reset other state. Missing active filters and invalid native options reject atomically.
 - `dispatch({type:"reorder",target,payload:{channel,values}|{channel,by,direction?}|{channel,clear:true},transactionId?,origin?,causeTransactionId?})` invokes `orderCategories` or `removeCategoryOrder`. Channel is x/y/theta and all values, computed ordering, shared-scale compatibility and automatic-domain rules are the existing category-order contract. Source rows stay in their original order; mark geometry, axes, linked legends and selection items follow the native order. Clear requires an active order. A clear payload cannot contain replacement options and clear accepts only true. Basic rejects both direct-control editors.
@@ -506,15 +506,25 @@ and existing partition resource/renderer tests.
 
 ## Host projection viewport
 
-`setViewport` delegates validation and materialization to `editProjection`, retaining geometry identity,
-feature selection keys and native projection revision semantics. Its payload accepts only `scalePx`,
-`translatePx`, `centerDeg` and `rotateDeg`; at least one must be present. Invalid values, unsupported
-projection parameters, unknown targets and later dependent failures preserve the previous program,
-trace, scene and revision. The command does not derive level-of-detail zoom or cursor anchoring.
+`setViewport` delegates validation and materialization to the existing Full native owners, retaining
+geometry identity, feature selection keys and projection revision semantics. Use either a nonempty
+absolute patch with `scalePx`, `translatePx`, `centerDeg` and `rotateDeg`, or the exclusive payload
+`{operation:GeoCameraOperation}`. The former invokes `editProjection`; the latter invokes
+`navigateProjection` with its existing pan, inverse-anchored zoom, pinch, spherical rotation, fit,
+explicit reset and resize contract. All pixel coordinates precede composition and host transforms.
+An operation cannot accompany an absolute transform field, and unknown fields reject.
 
-Host buttons or typed controls may send absolute transform patches and redraw the committed program.
-They retain native keyboard activation and focus. Existing scope routing permits explicit child
-projection targets. No navigation listeners, animation or camera state are installed.
+The target is always one explicit projection ID or `{childPath,id}`; the session never chooses another
+projection or child. The host obtains reset parameters through `getProjectionView` and supplies them
+explicitly. No second camera baseline is stored. The complete native action and dependent closure form
+one transaction and history entry, including a resize that edits both Canvas and projection.
+Invalid values, unsupported parameters, unknown targets and later dependent failures preserve the
+previous program, trace, scene and revision. Asset preparation precedes commit; cancellation or failure
+preserves committed program, current frame and history together, while late leases are disposed once.
+
+Host buttons or typed controls may send either payload and redraw the committed program. They retain
+native keyboard activation and focus. No pointer navigation listeners, animation or level-of-detail
+zoom inference are installed by this direct command.
 
 Evidence: `test/unit/interaction-viewport.test.js`, the canonical viewport browser snippet,
 `test/support/scenarios/region-interaction.js` and the installed interaction consumer.

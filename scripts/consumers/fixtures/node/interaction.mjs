@@ -17,7 +17,7 @@ export const cases = [
       .createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'}).createGeoPointMark({id:'places'})
       .createMarkLabels({field:'name'}).createAnnotation({id:'note',space:'screen',x:10,y:20,text:'Fixed'});
     const session=createInteractionSession({program:p,bindings:[]}), key=getMarkItems(p,{target:'places-labels'})[0].key;
-    session.updateProgram(({program})=>program.navigateProjection({target:'map',operation:{type:'pan',deltaPx:[30,-10]}}),{history:'record'});await session.whenSettled();
+    session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'pan',deltaPx:[30,-10]}}});await session.whenSettled();
     const q=session.getState().program;assert.deepEqual(q.graphicSpec.objects['places-labels'].items.map(item=>[item.properties.x,item.properties.y]),[[70,40]]);
     assert.equal(getMarkItems(q,{target:'places-labels'})[0].key,key);assert.deepEqual(q.graphicSpec.objects.note,p.graphicSpec.objects.note);
     assert.deepEqual(q.graphicSpec.objects.note.items[0].identity.lineage,{kind:'screen'});assert.equal(q.graphicSpec.objects['places-labels'].items[0].identity.lineage.resource.kind,'geometry');

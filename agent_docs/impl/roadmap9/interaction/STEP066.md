@@ -9,6 +9,7 @@
 - [x] 타입·Current·공개 문서·증거 동기화
 - [x] B: native 비동기 replacement와 기존 executor/asset pipeline 통합
 - [x] C: 명시 ResizeObserver mount 수명·CSS 크기 이벤트·host native resize 연결
+- [x] D: 배타 native camera operation 명령·공통 preparation/history/frame 경계
 - [ ] animation/layout worker/camera gesture 통합 및 AT40/41 최종 matrix
 - [ ] STEP074–077 전체 통합
 
@@ -185,3 +186,22 @@ runtime24 + strict types + five-entry bundle 검증이 종료0이다. 이전 tar
 1535LLM, interaction/geometry/labels 세 경로×네 폭의 overflow0/Axe0도 통과했다.
 원본 실패와 두 archive, 정확 명령·측정·그림은
 [camera merge qualification](camera-merge-evidence/qualification.json)에 보존한다.
+
+## D 최소 공개안 — native camera 명령 전달
+
+`AUTHORIZATION.json` remainingApproval 및 2026-10-29 부모의 명시 방향을 재사용한다.
+기존 `setViewport`의 payload에 배타적인 `{operation:GeoCameraOperation}` 경로를 추가한다.
+원 절대 transform 네 필드와 operation은 함께 넣을 수 없고 unknown/accessor 입력을 거부한다.
+명시 projection `{childPath,id}`를 기존 owner resolver로 찾고 receiver의 `navigateProjection`을
+호출한다. Full 정적 import, 새 camera 저장 상태, 중복 pan/zoom 수학은 추가하지 않는다.
+
+원 native pan/anchor zoom/pinch/rotate/fit/reset/resize 결과는 공통 transaction → preparation →
+commit/history/frame 경로 하나로 전달한다. 준비 실패·취소에서 원 program/scene/history는 보존하고
+늦은 lease는 해제한다. Reset baseline은 host가 `getProjectionView`로 명시 확보한다.
+이번 checkpoint는 명령 경로이며 pointer/wheel/pinch gesture와 공개 player 연결은 뒤따른다.
+
+D command source 검증: 집중279/279 및 변경 selection owner100/99.22/100, native camera 전 연산의
+literal/위임/취소/불변성 회귀, 실제5datasets×3recipes+inventory16, canonical host button의
+키보드/Canvas·SVG 브라우저1, docs55/manifest2 통과. 동일 tar `4deb6f2a…` Node20/22/24 각각
+interaction18 + strict types + five-entry bundles가 종료0이다. 최초unpacked33bytes 초과와
+검색3bytes 초과를 실측최소한도6,828,000/1,037,000으로 수정했다. Source pin 뒤 built 증거를 잇는다.

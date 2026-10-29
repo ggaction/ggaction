@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 1036900; // Geographic camera/labels plus interaction: 1,036,885 measured bytes.
+export const SEARCH_INDEX_MAX_BYTES = 1037000; // Native camera operation commands: 1,036,903 measured bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

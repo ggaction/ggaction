@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:8cc8e3d088d01ef8075c9a9cd21992088afa58686cbefe3bc324f15c96c4c4e0. Status: development. Runtime source: 04137a355524b82ab225d8ab8743bcb7d49bc6d2. Release baseline: v0.0.13.
+Contract: sha256:ee82decc433c341f5aa92482fe9665fbbbff7ae82420a1d4b67cd8af21df4d2c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/04137a355524b82ab225d8ab8743bcb7d49bc6d2/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/04137a355524b82ab225d8ab8743bcb7d49bc6d2/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11648,6 +11648,11 @@ also accept their native `centerDeg` and `rotateDeg` options. The command uses t
 edit rules: a scale or translation patch detaches a fitted projection, while an angular patch retains
 and recomputes its fit. It preserves the geometry resource and feature selection identities.
 
+Alternatively, pass only `{operation}` to use [native camera operations](./api/geometry/#navigateprojection):
+pan, anchored zoom, pinch, spherical rotation, fit, reset or resize. The operation and absolute transform
+fields cannot be combined. One successful command adds one history entry, including Canvas resize.
+Capture reset parameters explicitly with `getProjectionView`; the session does not infer a home view.
+
 This browser module expects `<canvas id="chart" aria-label="Map points"></canvas>`.
 
 > **Executable complete.** Use a Canvas with id chart. Pan right, Zoom in and Original view work with pointer, Enter and Space; the output reports the current projection transform.
@@ -11655,6 +11660,7 @@ This browser module expects `<canvas id="chart" aria-label="Map points"></canvas
 ```js
 import { chart, render } from "ggaction";
 import { createInteractionSession } from "ggaction/interaction";
+import { getProjectionView } from "ggaction/inspection";
 
 const canvas = document.querySelector("#chart");
 const nav = document.createElement("nav");
@@ -11670,19 +11676,17 @@ const program = chart().createCanvas({ width: 400, height: 300, margin: 0 })
   .createProjection({ id: "map", type: "identity", scalePx: 1, translatePx: [0, 0] })
   .createCoordinate({ type: "geo" }).createGeoPointMark({ id: "places", geometry: "places", radiusPx: 8 });
 const viewportSession = createInteractionSession({ program, bindings: [] });
-const transform = current => {
-  const projection = current.semanticSpec.resources.find(resource => resource.kind === "projection" && resource.id === "map");
-  return { ...projection.options, ...projection.result };
-};
+const transform = current => getProjectionView(current, { target: "map" }).parameters;
+const initial = transform(program);
 const draw = current => {
   render(current, canvas.getContext("2d"));
   const { scalePx, translatePx } = transform(current);
   nav.querySelector("output").textContent = `Scale ${scalePx}; translation ${translatePx.join(", ")}`;
 };
-const move = payload => viewportSession.dispatch({ type: "setViewport", target: "map", payload, origin: "user" });
-const pan = () => { const { translatePx: [x, y] } = transform(viewportSession.getState().program); move({ translatePx: [x + 20, y] }); };
-const zoom = () => move({ scalePx: transform(viewportSession.getState().program).scalePx * 2 });
-const home = () => move({ scalePx: 1, translatePx: [0, 0] });
+const move = operation => viewportSession.dispatch({ type: "setViewport", target: "map", payload: { operation }, origin: "user" });
+const pan = () => move({ type: "pan", deltaPx: [20, 0] });
+const zoom = () => move({ type: "zoom", anchorPx: [80, 70], factor: 2, scaleExtent: [0.5, 8] });
+const home = () => move({ type: "reset", initial });
 const controls = [["#map-right", pan], ["#map-zoom", zoom], ["#map-home", home]];
 for (const [selector, handler] of controls) nav.querySelector(selector).addEventListener("click", handler);
 const unsubscribe = viewportSession.subscribe(event => {
@@ -11695,10 +11699,12 @@ const disposeViewport = () => {
 };
 ```
 
-For a projection in a composed child, use `{childPath,id}`. The nonempty patch accepts only the four
-transform fields above; it does not change projection type, clipping, geometry or level of detail.
-Native buttons keep focus and their usual keyboard behavior. This direct command does not install
-pointer pan or pinch gestures, infer cursor anchoring, or animate the change. It requires Full authoring.
+For a projection in a composed child, use `{childPath,id}`. Zoom and pinch anchors use native local
+projection pixels; convert a host pointer into that coordinate space before dispatching. The native
+operation validates inverse visibility and the explicit scale extent. Reset uses the captured parameters.
+Both payload forms preserve geometry and level of detail. Native buttons keep focus and keyboard behavior.
+Preparation failure or cancellation keeps the committed program, frame and history unchanged. This direct
+command requires Full authoring and does not install pointer gestures or animate the change.
 
 ## Move graph nodes with pointer or keyboard
 
@@ -35807,7 +35813,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](./types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, GraphPosition, EditAnnotationOptions, EditGeoAnnotationOptions, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, GeoCameraOperation, GraphPosition, EditAnnotationOptions, EditGeoAnnotationOptions, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -36038,8 +36044,9 @@ export type InteractionReorderPayload = { readonly channel: 'x' | 'y' | 'theta' 
   (CategoryOrder & { readonly clear?: never })
   | { readonly clear: true; readonly values?: never; readonly by?: never; readonly direction?: never }
 );
-/** Nonempty native projection transform patch. Pixel units precede composition and host transforms. */
-export type InteractionViewportPayload = Pick<ProjectionSphereParameters, 'scalePx' | 'translatePx' | 'centerDeg' | 'rotateDeg'>;
+/** Absolute transform patch or one native camera operation, exclusively. Full-only. */
+export type InteractionViewportPayload = (Pick<ProjectionSphereParameters, 'scalePx' | 'translatePx' | 'centerDeg' | 'rotateDeg'> & { readonly operation?: never })
+  | { readonly operation: GeoCameraOperation; readonly scalePx?: never; readonly translatePx?: never; readonly centerDeg?: never; readonly rotateDeg?: never };
 /** Nonempty native Text/label or geographic annotation patch; target kind selects its editor. Full-only. */
 export type InteractionAnnotationPayload = Omit<EditAnnotationOptions, 'target'> | Omit<EditGeoAnnotationOptions, 'target'>;
 export type InteractionEditCommand = InteractionTransaction & ({
@@ -50336,12 +50343,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/04137a355524b82ab225d8ab8743bcb7d49bc6d2/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/04137a355524b82ab225d8ab8743bcb7d49bc6d2/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -53424,9 +53431,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:8cc8e3d088d01ef8075c9a9cd21992088afa58686cbefe3bc324f15c96c4c4e0` |
+| Contract fingerprint | `sha256:ee82decc433c341f5aa92482fe9665fbbbff7ae82420a1d4b67cd8af21df4d2c` |
 | Example and dataset source | `369cc8ec66d295eaade171d0a32a3c7a3d985cc8` |
-| Runtime source commit | `04137a355524b82ab225d8ab8743bcb7d49bc6d2` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 367 |
 | Declared actions in that release | 234 |
