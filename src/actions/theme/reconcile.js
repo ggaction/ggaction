@@ -454,7 +454,7 @@ function recolorConfig(
     if (property === "background" && value === "transparent") {
       return { changed: false, value };
     }
-    const resource = resourcePlotThemeProperty(path);
+    const resource = resourcePlotThemeProperty(path, path[0] === "marks" && path[2] === "flowPlot" ? findLayer(program, path[1]) : undefined);
     if (resource?.explicit) return { changed: false, value };
     if (resource !== undefined) {
       const target = themeActive ? targetTokens[resource.token] ?? resource.defaultValue : resource.defaultValue;
@@ -1208,7 +1208,7 @@ export function reconcileProgramTheme(program, { source, metadata }) {
   const resourceMarks = next.semanticSpec.layers.flatMap(layer => {
     const owner = resourcePlotThemeOwner(layer);
     if (owner === undefined || themed.markConfigs[layer.id]?.[owner.key] === next.markConfigs[layer.id]?.[owner.key]) return [];
-    const textHandled = typographyChanged && layer.hierarchyLabels !== false && layer.graphLabels !== false;
+    const textHandled = typographyChanged && layer.hierarchyLabels !== false && layer.graphLabels !== false && layer.flowLabels !== false;
     return textHandled ? [] : [{ op: owner.op, args: { id: layer.id } }];
   });
   if (resourceMarks.length > 0) next = applyMaterializationPlan(next, buildMaterializationPlan({ marks: resourceMarks }));

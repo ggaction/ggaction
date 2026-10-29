@@ -234,6 +234,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   `mutedText`, label은 `text`/`fontFamily` 및 optional `fontSize`/`fontWeight`를 따른다. 명시한 역할별 style과 node별 overrides는
   theme보다 우선한다. 마지막 frame을 제거하면 각 plot family의 기본값을 복원하며, 저장된
   graph/hierarchy/layout 결과·revision·item key는 변경하거나 재계산하지 않는다.
+  Flow node body는 `mark`/`background`, link ribbon fill은 `mutedText`, label은
+  `text`와 typography token을 따른다. 명시한 nodes/links/labels style과 typed-key overrides는
+  기본값과 같아도 우선한다. Label false→{} reset은 이전 label override를 제거한다.
+  Typography와 paint를 함께 바꾸면 label이 없는 node 및 link까지 각 실제 materializer를 한 번 호출한다.
   마지막 frame 제거 시 Cartesian/Polar/Parallel 축·격자와 각 범례는 일반 light token 대신 각 native family의
   기본 색을 복원한다. 명시한 색은 기본값과 같아도 유지한다. Stroke 범례의 field-driven stroke는 보존하며
   target fill만 기존 sample owner에서 갱신하므로 색 변경이 legend geometry를 바꾸지 않는다.
@@ -280,6 +284,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     codec 복원·Canvas/SVG transition scene·named highlight에서도 유지한다. `test/unit/actions/theme-item-identity.test.js`.
   - ✅ Covered: native guide family 색 복원, theme-before-create, stroke samples, named axes, Basic,
     nested concat/facet/shared legend와 offline 복원. `test/unit/actions/theme-guide-defaults.test.js`.
+  - ✅ Covered: DAG/cyclic Flow body/link/label 색·font, exact preparation 오류 원자성,
+    false label reset, named highlight와 nested scope. `test/unit/actions/theme-flow.test.js`.
 - Visual boundary
   - ✅ Covered: `dark-theme-scatterplot`의 explicit low-level style primitive와 public `applyTheme`
     program 사이 exact graphic/renderer/decoded PNG pixel equivalence.

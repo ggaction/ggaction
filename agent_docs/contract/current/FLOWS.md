@@ -10,6 +10,10 @@ Basic은 이 action들과 graph/layout snapshot 복원을 지원하지 않는다
 분할할 규칙이 없는 `facet`/`repeatCharts`는 명시 incompatible 오류로 원자적으로 거부한다.
 Evidence: `test/unit/resources/flow-plots.test.js`.
 
+기본 body/link/label 스타일은 [theme precedence](CORE.md#applytheme)를 따른다. 명시한 role과
+typed-key style은 보존하고, theme 제거·codec·named highlight·글꼴 변경은 저장된 layout을
+재계산하지 않는다. Evidence: `test/unit/actions/theme-flow.test.js`.
+
 옵션은 닫힌 own-data record다. unknown key, accessor, 명시 undefined/null, 잘못된 값과
 공통 generated-item/work 한도를 거부한다. 실패는 이전 program·입력·trace를 보존한다.
 명시 ID가 우선이며 생략한 참조는 current eligible, 유일한 eligible 순으로 선택한다.

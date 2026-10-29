@@ -1288,6 +1288,10 @@
       {
         "type": "file",
         "path": "contracts/theme.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/theme-flow.test.js"
       }
     ]
   },
