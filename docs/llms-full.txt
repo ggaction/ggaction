@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:c068b447a308b1874b0ef15ea3578f644f22dbc9688e3f99a9955a4c0ea57bf1. Status: development. Runtime source: 4aaddbaf0b47becbbb5a6da2b13ce77261c02ad3. Release baseline: v0.0.13.
+Contract: sha256:dcbcd33e381b9093642de347bba5496f609f15707ae856d45959028efaf6d1a8. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/4aaddbaf0b47becbbb5a6da2b13ce77261c02ad3/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/4aaddbaf0b47becbbb5a6da2b13ce77261c02ad3/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11138,7 +11138,9 @@ The player supports `play`, `pause`, `seek(timeMs)`, `reverse`, `setRate(rate)`,
 accepts a program or authentic sample and continues from the current frame.
 A negative rate puts the captured frame at the new plan's ending time and plays
 back toward the target. Invalid interruption targets leave
-the active run intact. An optional `commit(frame)` callback runs on completion.
+the active run intact. Repeated interruption of compatible geometry does not accumulate
+a chain of earlier plans. Weighted crossfades still respect their concrete source
+and clipping limits. An optional `commit(frame)` callback runs on completion.
 `finished` settles with `reason`, `timeMs`, and `iteration`; reasons are
 `completed`, `cancelled`, `interrupted`, and `disposed`.
 
@@ -52411,12 +52413,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/4aaddbaf0b47becbbb5a6da2b13ce77261c02ad3/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/4aaddbaf0b47becbbb5a6da2b13ce77261c02ad3/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55543,9 +55545,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:c068b447a308b1874b0ef15ea3578f644f22dbc9688e3f99a9955a4c0ea57bf1` |
+| Contract fingerprint | `sha256:dcbcd33e381b9093642de347bba5496f609f15707ae856d45959028efaf6d1a8` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `4aaddbaf0b47becbbb5a6da2b13ce77261c02ad3` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |

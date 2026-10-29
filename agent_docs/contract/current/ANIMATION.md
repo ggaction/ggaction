@@ -20,6 +20,9 @@ finite time은 양 끝으로 clamp하며0duration의 time0은 target이다. exac
 원 graphicSpec/scene 참조를 보존한다. 중간 graphicSpec은 기존 scene concrete owner를
 재사용하므로 네 공개 renderer에 frame 자체를 전달할 수 있다. frame clone은 authentic
 계획 입력이 아니며 외부에서 재생결과처럼 꾸민 object를 허용하지 않는다.
+호환되는 bounded geometry를 반복 중단해도 이전 계획의 재귀 깊이를 누적하지 않는다.
+현재 sample의 identity·준비된 의미값만 유지하며 이전 playback controller를 보존하지 않는다.
+Weighted crossfade의 실제 source/clip 수 제한은 그대로 적용한다.
 
 현재 typed vertical은 resolved continuous Cartesian circle point다. 실제 semantic
 값과 scale(domain/range/clamp/parameters)을 먼저 보간한 다음 forward mapping한다.

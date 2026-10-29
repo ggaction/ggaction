@@ -1,0 +1,82 @@
+{
+  "status": "runtime-qualified-documentation-pin-pending",
+  "sourceCommit": null,
+  "archiveSha256": "a6ae8226645cd5c5a0b5e3c783a547ca0bc392241693d6312e2ad705e4c2ee9e",
+  "checks": {
+    "owningCoverageTests": 205,
+    "contracts": 43,
+    "node20Focused": 22,
+    "node24Focused": 22,
+    "installed": {
+      "sameArchive": true,
+      "nodes": [
+        "20.20.2",
+        "22.23.1",
+        "24.22.1"
+      ],
+      "eachRuntimeCases": 6,
+      "types": true,
+      "executableAnimationDocument": true,
+      "fourRenderers": true,
+      "node20": "Runtime/types/snippet passed; initial cap failure retained, exact-archive bundle-only supplement passed."
+    }
+  },
+  "coverage": {
+    "frameEndpoint": [
+      100,
+      96.49,
+      100
+    ],
+    "frameProvenance": [
+      100,
+      93.75,
+      100
+    ],
+    "planner": [
+      100,
+      96.58,
+      100
+    ],
+    "sample": [
+      100,
+      98.31,
+      100
+    ],
+    "hitProgram": [
+      100,
+      93.81,
+      100
+    ]
+  },
+  "package": {
+    "entries": 1132,
+    "packedBytes": 1610623,
+    "unpackedBytes": 7317421,
+    "caps": [
+      1132,
+      1611000,
+      7318000
+    ]
+  },
+  "bundles": {
+    "animation": {
+      "20": 186027,
+      "22": 185619,
+      "24": 186027,
+      "cap": 186100
+    },
+    "interaction": {
+      "20": 128607,
+      "22": 128158,
+      "24": 128607,
+      "cap": 128700
+    }
+  },
+  "pending": [
+    "authenticated session frame dispatch and atomic keyboard publication",
+    "frame transient asset leases and lifecycle",
+    "100/1000 session focus and lease stress",
+    "offline native scope binding",
+    "all remaining STEP070 acceptance cells and STEP077"
+  ]
+}

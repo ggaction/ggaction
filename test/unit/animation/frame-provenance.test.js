@@ -4,10 +4,11 @@ import { cloneAndFreeze } from "../../../src/core/immutable.js";
 import { registerAnimationPlan, animationPlanProvenance, registerAnimationFrame, animationFrameProvenance } from "../../../src/animation/frameProvenance.js";
 
 test("sample provenance keeps native endpoints private and preserves the exact frame", () => {
-  const plan = cloneAndFreeze({ durationMs: 1000 }), from = {}, to = {};
+  const endpoint = { scene: { nodes: [{ type: "circle" }] } };
+  const plan = cloneAndFreeze({ durationMs: 1000, from: endpoint, to: endpoint }), from = {}, to = {};
   assert.equal(registerAnimationPlan(plan, { from, to }), plan);
-  assert.equal(animationPlanProvenance(plan).from, from);
-  assert.equal(animationPlanProvenance(plan).to, to);
+  assert.equal(animationPlanProvenance(plan).from.nodes[0].origin.program, from);
+  assert.equal(animationPlanProvenance(plan).to.nodes[0].origin.program, to);
   assert.equal(Object.isFrozen(animationPlanProvenance(plan)), true);
   const frame = cloneAndFreeze({ scene: { nodes: [{ key: "a" }] }, progress: .5 });
   const positions = [{ x: { value: 10, scale: { type: "linear", domain: [0, 20], range: [0, 100] } } }];
@@ -15,7 +16,8 @@ test("sample provenance keeps native endpoints private and preserves the exact f
   assert.equal(registerAnimationFrame(frame, { plan, timeMs: 500, positions }), frame);
   positions[0].x.value = 99;
   const proof = animationFrameProvenance(frame);
-  assert.equal(proof.plan, plan);
+  assert.equal(proof.planIdentity, animationPlanProvenance(plan).identity);
+  assert.equal(Object.hasOwn(proof, "plan"), false);
   assert.equal(proof.timeMs, 500);
   assert.equal(proof.positions[0].x.value, 10);
   assert.equal(Object.isFrozen(proof.positions[0].x.scale.domain), true);

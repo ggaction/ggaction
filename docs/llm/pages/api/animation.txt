@@ -119,7 +119,9 @@ The player supports `play`, `pause`, `seek(timeMs)`, `reverse`, `setRate(rate)`,
 accepts a program or authentic sample and continues from the current frame.
 A negative rate puts the captured frame at the new plan's ending time and plays
 back toward the target. Invalid interruption targets leave
-the active run intact. An optional `commit(frame)` callback runs on completion.
+the active run intact. Repeated interruption of compatible geometry does not accumulate
+a chain of earlier plans. Weighted crossfades still respect their concrete source
+and clipping limits. An optional `commit(frame)` callback runs on completion.
 `finished` settles with `reason`, `timeMs`, and `iteration`; reasons are
 `completed`, `cancelled`, `interrupted`, and `disposed`.
 

@@ -3,15 +3,16 @@ import { validateConcreteGraphicProperties } from "../grammar/schemas/concreteGr
 import { samplePositionInterpolation } from "../grammar/animation/positions.js";
 import { transitionProgress,easeProgress,interpolateNumber } from "../grammar/animation/values.js";
 import { requireTransitionPlan, transitionEndpointPositions, transitionEndpointFrame } from "./planner.js";
-import { registerAnimationFrame, animationFrameProvenance } from "./frameProvenance.js";
+import { registerAnimationFrame, registerAnimationFrameView, animationFrameProvenance, animationPlanProvenance } from "./frameProvenance.js";
 import { blendAnimationNodes,fadeAnimationNode,interpolateNodeFrame } from "./concrete.js";
+import { captureFrameMeaning } from "./frameEndpoint.js";
 import { canvasSceneProgram } from "../renderers/canvasScene.js";
 
 export function sampleTransition(input,timeMs) {
   const plan=requireTransitionPlan(input),progress=easeProgress(transitionProgress(timeMs,plan.durationMs),plan.easing);
   const decisions=[];
   const fromPositions=transitionEndpointPositions(plan,"from"),toPositions=transitionEndpointPositions(plan,"to");
-  const finish=(frame,positions)=>animationFrameProvenance(frame)===undefined?registerAnimationFrame(frame,{plan,timeMs,positions}):frame;
+  const finish=(frame,positions)=>animationFrameProvenance(frame)===undefined?registerAnimationFrame(frame,{plan,timeMs,positions,meaning:captureFrameMeaning(frame,plan,timeMs)}):frame;
   const meaning=position=>position.reason?null:position;
   if(progress===0||progress===1){
     const side=progress===0?"from":"to",endpoint=plan[side],frame=transitionEndpointFrame(plan,side)??cloneAndFreeze({graphicSpec:endpoint.graphicSpec,scene:endpoint.scene,progress,decisions});
@@ -54,13 +55,15 @@ export function sampleTransition(input,timeMs) {
 export function withSampleTime(frame,timeMs,plan) {
   const proof=animationFrameProvenance(frame);
   if(proof===undefined)throw new TypeError("A sampled time view requires an authentic frame.");
-  let source=proof;
   if(plan!==undefined){
     requireTransitionPlan(plan);
     const progress=easeProgress(transitionProgress(timeMs,plan.durationMs),plan.easing),side=progress===0?"from":progress===1?"to":undefined;
-    if(side!==undefined&&transitionEndpointFrame(plan,side)===frame){source={plan,timeMs,positions:transitionEndpointPositions(plan,side).map(position=>position.reason?null:position)};}
-    else if(plan!==proof.plan)throw new TypeError("Sampled time view does not belong to this plan.");
+    if(side!==undefined&&transitionEndpointFrame(plan,side)===frame){
+      return registerAnimationFrame(cloneAndFreeze({...frame,timeMs}),{plan,timeMs,
+        positions:transitionEndpointPositions(plan,side).map(position=>position.reason?null:position),meaning:captureFrameMeaning(frame,plan,timeMs)});
+    }
+    if(animationPlanProvenance(plan).identity!==proof.planIdentity)throw new TypeError("Sampled time view does not belong to this plan.");
   }
-  if(source.timeMs!==timeMs)throw new TypeError("A sampled time view requires its exact authentic sample time.");
-  return registerAnimationFrame(cloneAndFreeze({...frame,timeMs}),source);
+  if(proof.timeMs!==timeMs)throw new TypeError("A sampled time view requires its exact authentic sample time.");
+  return registerAnimationFrameView(cloneAndFreeze({...frame,timeMs}),frame,timeMs);
 }
