@@ -716,3 +716,31 @@ test("geographic annotation controls reuse native feature anchors through keyboa
     await page.evaluate(()=>window.__geoNote.destroy());assertNoBrowserErrors(errors,'geographic annotation controls');await page.close();
   }catch(error){await saveBrowserContextEvidence(context,error);throw error;}finally{await context.close();}
 });
+
+test("annotation membership buttons preserve item anchors and focus across pointer touch and keyboard",async()=>{
+ const context=await browser.newContext({deviceScaleFactor:2,hasTouch:true,viewport:{width:900,height:650}});
+ try{
+  const {page,errors}=await openBrowserPage(context,new URL('examples/inspect-chart/',server.baseUrl).href,{waitFor:()=>window.__inspectionSessions?.length===2});
+  await page.evaluate(async()=>{
+   window.__inspectionSessions.forEach(s=>s.destroy());
+   const {chart,render}=await import('/src/index.js'),{getMarkItems}=await import('/src/inspection.js'),{createInteractionSession}=await import('/src/interaction.js'),{renderToSVG}=await import('/src/renderers/svg.js');
+   document.body.innerHTML='<button id="all">All notes</button><button id="one">First note</button><button id="none">No notes</button><canvas id="notes" aria-label="Selected item notes"></canvas><div id="vector"></div>';
+   const base=chart().createCanvas({width:256,height:160,margin:0}).createData({values:[{x:40,y:60},{x:120,y:90}]})
+    .createPointMark({id:'points'}).encodeX({field:'x',scale:{domain:[0,256],range:[0,256]}}).encodeY({field:'y',scale:{domain:[0,160],range:[0,160]}});
+   const key=getMarkItems(base)[0].key,program=base.selectMarks({id:'picked',target:'points',items:[key]}).createAnnotation({id:'notes',source:'points',text:'Note',selection:'picked',dy:-5});
+   const session=createInteractionSession({program,bindings:[]});window.__memberSession=session;window.__memberPhases=[];
+   const draw=p=>{render(p,document.querySelector('canvas').getContext('2d'),{pixelRatio:2});document.querySelector('#vector').innerHTML=renderToSVG(p)};
+   session.subscribe(e=>{if(e.phase)window.__memberPhases.push(e.phase);if(e.phase==='commit')draw(e.current)});draw(program);
+   for(const[id,payload]of[['all',{all:true}],['one',{selection:'picked'}],['none',{select:{items:[]}}]])document.querySelector('#'+id).onclick=()=>session.dispatch({type:'annotate',target:'notes',payload});
+  });
+  await page.getByRole('button',{name:'All notes'}).focus();await page.keyboard.press('Enter');
+  assert.deepEqual(await page.evaluate(()=>[...document.querySelectorAll('#vector text')].map(t=>[Number(t.getAttribute('x')),Number(t.getAttribute('y'))])),[[40,55],[120,85]]);
+  await page.getByRole('button',{name:'No notes'}).tap();assert.equal(await page.locator('#vector text').count(),0);
+  await page.getByRole('button',{name:'First note'}).click();assert.equal(await page.locator('#vector text').count(),1);
+  await page.keyboard.press('Space');
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'one');
+  assert.deepEqual(await page.evaluate(()=>window.__memberPhases),['commit','settled','commit','settled','commit','settled','commit','settled']);
+  assert.equal(await page.evaluate(()=>{const c=document.querySelector('canvas').getContext('2d'),rgba=c.getImageData(60,70,100,40).data;return [...rgba].some((v,i)=>i%4!==3&&v<150&&rgba[i-i%4+3]>0)}),true);
+  await page.evaluate(()=>window.__memberSession.destroy());assertNoBrowserErrors(errors,'annotation membership controls');await page.close();
+ }catch(error){await saveBrowserContextEvidence(context,error);throw error;}finally{await context.close();}
+});

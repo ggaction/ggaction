@@ -1,4 +1,4 @@
-export interface EditAnnotationOptions extends Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "missing"> {
+export type EditAnnotationOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "missing"> & {
   target?: string;
   text?: unknown;
   /** Without text, reformat the current constant content. */
@@ -8,4 +8,4 @@ export interface EditAnnotationOptions extends Omit<TextMarkOptions, "id" | "dat
   y?: unknown;
   placement?: MarkLabelPlacement | "auto";
   layout?: false | Omit<LabelLayoutOptions, "target">;
-}
+} & ((MarkLabelSelectionOptions & { all?: never }) | { all: true; select?: never; selection?: never });

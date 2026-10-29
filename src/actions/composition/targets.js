@@ -67,7 +67,7 @@ function refreshAncestors(original, revised) {
   return next.materializeComposition();
 }
 
-const ITEM_SELECTION_ACTIONS = new Set(["selectMarks", "editMarkSelection", "filterMarks", "highlightMarks", "createMarkLabels", "editMarkLabelSelection"]);
+const ITEM_SELECTION_ACTIONS = new Set(["selectMarks", "editMarkSelection", "filterMarks", "highlightMarks", "createMarkLabels", "editMarkLabelSelection", "createAnnotation", "editAnnotation"]);
 function scopedSelectionOptions(program, path, operation, options) {
   if (!path.length || !ITEM_SELECTION_ACTIONS.has(operation)) return options;
   let current = program;

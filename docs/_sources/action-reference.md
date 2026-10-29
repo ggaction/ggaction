@@ -1941,12 +1941,12 @@ to use `removeMark`.
 ### `createAnnotation`
 
 ```javascript
-createAnnotation({ clip?, id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
+createAnnotation({ clip?, id?, text, anchor?, format?, source?, select?, selection?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
 ```
 
 Create anchored text. Omit x/y/space for a
 final-item mark anchor; `source` selects the mark, otherwise current/unique mark
-inference applies. Provide both x and y for a data anchor; `source` selects one
+inference applies. A mark anchor can use inline `select` or a named `selection` belonging to the same source; both retain final-item grain, and empty membership stays empty. Coordinate anchors reject these options. Provide both x and y for a data anchor; `source` selects one
 complete Cartesian layer whose data, coordinate, scales, field types, and temporal
 units are reused. The annotation participates in automatic domains without becoming
 a source-owned label.
@@ -1971,7 +1971,7 @@ Omit `layout` or pass `false` to retain the exact anchor. A layout object accept
 ### `editAnnotation`
 
 ```javascript
-editAnnotation({ target?, text?, format?, x?, y?, placement?, layout?, blend?, shadow?, clip?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, lineHeight?, blockAlign?, inheritColor?, lineCap?, lineJoin?, miterLimit? })
+editAnnotation({ target?, text?, format?, x?, y?, placement?, layout?, select?, selection?, all?, blend?, shadow?, clip?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, lineHeight?, blockAlign?, inheritColor?, lineCap?, lineJoin?, miterLimit? })
 ```
 
 Edit existing Text or attached labels in one atomic change. Available in Full. Choose `target` explicitly,
@@ -1982,6 +1982,8 @@ without changing the program or its trace.
 units. Supply either or both. Source-owned labels and field-driven or conditional positions reject this patch.
 `text` supplies constant content; `format` alone reformats existing constant content. Style options follow
 `editTextMark`. An encoded dx/dy channel must be edited through its encoding action instead.
+
+For attached labels, exactly one of `select`, `selection`, or `all:true` replaces membership through `editMarkLabelSelection`. Independent annotations reject membership edits. Named selection and source revisions keep their native replay and removal rules.
 
 `placement` uses `editMarkLabelPlacement`; `"auto"` restores its ordinary source anchor. A `layout` object uses
 `layoutLabels`, and `false` removes collision layout. These edits retain source ownership, selection, replay and

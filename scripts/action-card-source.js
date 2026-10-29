@@ -675,8 +675,9 @@ export function compactActionCardByteLimit(name) {
   // Annotation 4057 bytes; ceilings round up by at most 7.
   // Legend cards also retain the closed overflow summary-symbol policy and three-channel combination literal.
   // Angular pointer metadata measures editMarkSelection at 3606 bytes.
+  // Explicit annotation membership unions measure createAnnotation4220/editAnnotation3757 bytes.
   return 180 + ({editMarkSelection: 3430, editLegend: 4505, createLegend: 3873, createMarkLabels: 3890,
-    createAnnotation: 3880, createRegressionPlot: 3460, createReferenceBand: 3630}[name] ?? 3360);
+    createAnnotation: 4040, editAnnotation: 3580, createRegressionPlot: 3460, createReferenceBand: 3630}[name] ?? 3360);
 }
 
 export async function buildActionCards() {

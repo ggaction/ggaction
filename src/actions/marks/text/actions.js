@@ -205,6 +205,7 @@ const LABEL_OPTIONS = Object.freeze([
 
 const ANNOTATION_OPTIONS = Object.freeze([
   "id", "text", "format", "anchor", "x", "y", "space", "source", "data", "coordinate", "layout",
+  "select", "selection",
   ...STYLE_OPTIONS
 ]);
 
@@ -230,6 +231,9 @@ function resolveAnnotationBinding(program, args) {
   }
   if (!hasX || !hasY) {
     throw new Error("createAnnotation coordinate anchor requires both x and y.");
+  }
+  if (Object.hasOwn(args, "select") || Object.hasOwn(args, "selection")) {
+    throw new Error("createAnnotation membership requires a source-owned item anchor.");
   }
   const space = args.space ?? "data";
   if (space !== "data" && space !== "plot") {
@@ -310,6 +314,8 @@ const createAnnotation = /* @__PURE__ */ action(
         return program.createMarkLabels({
           id,
           ...(args.source === undefined ? {} : { source: args.source }),
+          ...(Object.hasOwn(args, "select") ? { select: args.select } : {}),
+          ...(Object.hasOwn(args, "selection") ? { selection: args.selection } : {}),
           ...style,
           ...text,
           ...(layout === undefined ? {} : { layout })

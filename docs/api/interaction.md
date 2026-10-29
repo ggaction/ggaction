@@ -1000,7 +1000,7 @@ For a [geographic annotation](geometry.md), the same `annotate` command calls `e
 Its payload accepts a native `anchor` (position or typed feature key), text and Text styles; geographic coordinates and the original detail level remain native.
 The explicit target chooses the editor. Position fields `x`/`y`, label placement and collision layout belong to ordinary Text annotations and reject on geographic targets.
 
-Send `annotate` to an existing Text owner to update text, datum anchors, offsets or style in one transaction.
+Send `annotate` to an existing Text owner to update text, datum anchors, offsets, style or source-owned item membership in one transaction.
 The payload follows [`editAnnotation`](./marks/text.md#editannotationoptions) and cannot include another target.
 The Full editor retains the source/data/plot anchor and native replay behavior. Basic does not author Text annotations.
 

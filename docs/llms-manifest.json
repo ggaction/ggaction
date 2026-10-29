@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:61b9e67063a34f3aedf58abefbd445eaa3ad963c6eaa68dbf5fba9c663efdbc0",
-    "sourceCommit": "fe03a41489b5701a74233c8c646d81c231d18e7a",
+    "contractId": "sha256:4e4eceac59a660786c70a2d7ff4b348d9e38bf9398d54370a83f68bbd08d50bc",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "d65c66574a3922366942e848509c8263695180d0d2f9d0c35f5f50c3137fc5a6"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -1005,8 +1005,8 @@
         "numeric-pixel-offsets",
         "related"
       ],
-      "bytes": 17619,
-      "sha256": "1582404af460c7b765ecdc25eb706556d1f9faefcf9be919ef30cff38813202a"
+      "bytes": 18015,
+      "sha256": "ba453415e26311634c88489baaeb97dc5def8497060a889de83bd0938cfac699"
     },
     {
       "order": 62,
@@ -1257,8 +1257,8 @@
         "move-graph-nodes-with-pointer-or-keyboard",
         "edit-existing-annotations"
       ],
-      "bytes": 55454,
-      "sha256": "dd61b4423e91121b691c920403eae3ed2c3380d98f6e9da1d83d9b05f365fe1b"
+      "bytes": 55484,
+      "sha256": "8a747740d22d658911db65a39b729434d14ee9c99e4c82dfa2118e60f62f5f50"
     },
     {
       "order": 74,
@@ -2265,8 +2265,8 @@
         "editgraticule",
         "related"
       ],
-      "bytes": 141514,
-      "sha256": "c9899405f40c4cf86a098430f8d7474e0626278e0ac4f945856f9640d15b19d7"
+      "bytes": 142364,
+      "sha256": "df078740043a16c707d9590ccc92600c38267948d500c5037ede0329482d1012"
     },
     {
       "order": 122,
@@ -3442,8 +3442,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 486927,
-      "sha256": "dca6dbad4d36f47586656e41218ea6b1aa885accb1b7c0705071e85fd880e46d"
+      "bytes": 487373,
+      "sha256": "fc453677d194e1f29af743797f0aade1a5dbb3e152580f3321fdea40cbee29c1"
     },
     {
       "order": 129,
@@ -3477,8 +3477,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "2fdf80723c7835c267cc2b01028b7b2bbdd97574d238e2a898fc0622b085a9fb"
+      "bytes": 20908,
+      "sha256": "d71d2d5cb483bf02ca28e79c32b93e9ab4c2466a0f67a46999701d27500f87e8"
     },
     {
       "order": 131,
@@ -3817,8 +3817,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "4c63db75721707e6bdc2df55997a0bd5e2302e5a1fe372d41c49021945f55ae0"
+      "bytes": 3000,
+      "sha256": "8c8221830af2e61b8e979aecbbae96f966db855ecf2bc9dbdbdad53547d078f7"
     },
     {
       "order": 152,

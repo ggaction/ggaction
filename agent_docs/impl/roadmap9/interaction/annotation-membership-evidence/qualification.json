@@ -1,0 +1,442 @@
+{
+  "parent": "a5918aed0cd819b470c3d5f79353c1a7199bfef3",
+  "sourceCommit": null,
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "scope": "Connect source-owned annotation creation and editing to existing native final-item label selection. Reuse same-source named selections, inline selectors and all:true. Localize parent item keys with the existing composition action registry. Reject membership on independent coordinate and Geo anchors; no new persisted schema or renderer.",
+  "runtimeAndTypesFingerprint": "cd94b25a7510dd6a9099b9a1bd4b750677f6f39d5debaaf1a42df80b7b605a34",
+  "checks": {
+    "textFocused": 92,
+    "compositionAndInteraction": 52,
+    "ownerCoverage": {
+      "actions/marks/text/annotation.js": [
+        100,
+        93.94,
+        100
+      ],
+      "actions/marks/text/actions.js": [
+        94.95,
+        89.32,
+        100
+      ],
+      "actions/composition/targets.js": [
+        94.7,
+        91.67,
+        93.33
+      ]
+    },
+    "sourceTypesDiscoveryFinal": 28,
+    "contracts": 32,
+    "newUnitRegressions": 2,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipes": 3,
+      "reuse": "Final scoped-action registration only changes child dispatch; unscoped actual-data inputs remain identical."
+    },
+    "browser": 1,
+    "renderers": "Public/native/codec exact Canvas calls, SVG, decoded PNG and rasterized PDF pixels",
+    "docs": {
+      "source": 207,
+      "builtPages": 172,
+      "llmArtifacts": 1531,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "mobileInspected": true,
+      "reuse": "Final scoped-action registration does not change documentation example graphics; image source manifests regenerated after the change.",
+      "finalOwning": 34
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "22b797974bc0060582ea192761bcc79ffa5c4349c90ea0fc0f4cd3dd6af167dd",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 964,
+            "minifiedBytes": 2540023,
+            "gzipBytes": 728292
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 561,
+            "minifiedBytes": 1315143,
+            "gzipBytes": 383679
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 183,
+            "minifiedBytes": 349787,
+            "gzipBytes": 112841
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "22b797974bc0060582ea192761bcc79ffa5c4349c90ea0fc0f4cd3dd6af167dd",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 964,
+            "minifiedBytes": 2540023,
+            "gzipBytes": 726692
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 561,
+            "minifiedBytes": 1315143,
+            "gzipBytes": 382895
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 183,
+            "minifiedBytes": 349787,
+            "gzipBytes": 112332
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43599
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "22b797974bc0060582ea192761bcc79ffa5c4349c90ea0fc0f4cd3dd6af167dd",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 964,
+            "minifiedBytes": 2540023,
+            "gzipBytes": 728292
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 561,
+            "minifiedBytes": 1315143,
+            "gzipBytes": 383679
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 183,
+            "minifiedBytes": 349787,
+            "gzipBytes": 112841
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        ]
+      }
+    ]
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-annotation-items-22b79797.tgz",
+    "sha256": "22b797974bc0060582ea192761bcc79ffa5c4349c90ea0fc0f4cd3dd6af167dd"
+  },
+  "supersededArtifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-annotation-items-07712260.tgz",
+    "sha256": "07712260debce58b4ffd30e7eae8df49a8cbd9bcd07d4b7a739bb9d19e8b5c05"
+  },
+  "packageMeasurementNode20": {
+    "node": "v20.20.2",
+    "entries": 1044,
+    "packedBytes": 1481747,
+    "unpackedBytes": 6746635
+  },
+  "limits": {
+    "entries": 1044,
+    "packedBytes": 1482000,
+    "unpackedBytes": 6747000,
+    "fullGzip": 728300,
+    "basicGzip": 384000,
+    "svgGzip": 25000,
+    "interactionGzip": 112900,
+    "graphGzip": 44000,
+    "searchBytes": 1027500
+  },
+  "preservedFailures": [
+    "Initial new tests reproduced unsupported membership; implementation reuses native label owners.",
+    "Scoped parent item key produced zero labels rather than one because annotation facades were missing from ITEM_SELECTION_ACTIONS. Added the two facade names to the existing localization owner. Both create and edit now have direct regression and installed coverage.",
+    "Initial browser assertion used a non-binary-exact scale and compared 119.99999999999999 with120. Fixture now uses identical domain/range [0,256], maintaining exact literal assertions and native behavior.",
+    "Initial create/edit action card byte budgets were4220>4060 and3757>3540. Measured scoped caps4220/3760 preserve all options and native trace relationships.",
+    "Initial archive07712260 predates the scoped-key correction. Node20 runtime11/strictTS passed, but Full728283>728200 failed. Final archive22b79797 contains the correction and all three Node commands pass with measured Full728292<=728300.",
+    "Original source docs207/207 predate the scoped-key Set addition. Owning final fingerprints and source-pinned docs are separately recorded; no full rerun is claimed."
+  ],
+  "remaining": [
+    "Explicit data-less screen anchor creation and pointer anchor drag",
+    "Pointer navigation, general keyboard focus/history and coordinate morph",
+    "Full AT35/38/65/80 and STEP074/077"
+  ],
+  "reusedEvidence": "Native label selection owns typed key validation, final-item grain, empty and named lifetimes. Final same-tar3Node checks include a child namespaced-key annotation regression. Source boundaries, Text and composition owners rerun after the actual fix. Unchanged unscoped realistic/browser/renderer inputs reuse prior passing results. No full normal/coverage or complete installed suite claimed.",
+  "commands": {
+    "text": "node --test --experimental-test-coverage --test-coverage-include=src/actions/marks/text/actions.js --test-coverage-include=src/actions/marks/text/annotation.js test/unit/interaction-annotation.test.js and owning Text/label tests",
+    "scope": "node --test --experimental-test-coverage --test-coverage-include=src/actions/composition/targets.js test/unit/interaction-annotation.test.js test/unit/interaction-selection.test.js test/unit/actions/composition/adjacent-groups.test.js test/unit/actions/composition/shared-adjacent.test.js test/unit/actions/composition/facet-editing.test.js",
+    "realistic": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js with pinned corpus cache",
+    "browser": "node --test --test-name-pattern=\"annotation membership\" test/browser/interaction-session.browser.js",
+    "render": "node .artifacts/annotation-items-render-check.mjs",
+    "installed": "Node20/22/24 node .artifacts/annotation-items-consumer.mjs",
+    "docs": "docs:generate; test:docs; docs:build; test:docs:built; node .artifacts/annotation-items-doc-browser.mjs; final docs:images and owning docs"
+  },
+  "evidenceFiles": [
+    {
+      "path": "annotation-items-browser-final.log.gz",
+      "sha256": "07cea530c70778c1acd14182257d196aa6c4386df927ed12dcb780ababdecd69"
+    },
+    {
+      "path": "annotation-items-browser.log.gz",
+      "sha256": "f66af4675ddc394586adfffc9036e8ef22f890e057e32f337f3ae5c73dbc3e0a"
+    },
+    {
+      "path": "annotation-items-build.log.gz",
+      "sha256": "6e59021c913020a5395fdc3b8e6dbc997a4a08678e2806638f707e9c9a71c411"
+    },
+    {
+      "path": "annotation-items-built.log.gz",
+      "sha256": "27ff6e226c96663ea21eaa7bd53a841845ace34abf34cea1a316cafc30ca69cd"
+    },
+    {
+      "path": "annotation-items-cards.log.gz",
+      "sha256": "36eeb75d5171c37820cefa3f1ee8f4b4597291cd4ef8e8676e2c09822988a093"
+    },
+    {
+      "path": "annotation-items-consumer.mjs.gz",
+      "sha256": "a6f998147572cc1a5be6d01989c1d94c8878171c2295b7094ac786e7820ad4e6"
+    },
+    {
+      "path": "annotation-items-consumer20-final.log.gz",
+      "sha256": "388b33b4e657ef010c2002e2bbd65be2e3cecda06fc35fd5b45d49abde80b988"
+    },
+    {
+      "path": "annotation-items-consumer20.log.gz",
+      "sha256": "a0157850edd1abd26d1e9b0f4b907a14010f6875928ceb106c1b21fd21c59a27"
+    },
+    {
+      "path": "annotation-items-consumer22-final.log.gz",
+      "sha256": "3f06d30490c84dc082977f07e341615a916fa2c47021a41b004c60b7e6ae8ef2"
+    },
+    {
+      "path": "annotation-items-consumer24-final.log.gz",
+      "sha256": "6152c827b33eeaf1f9ced1407debb526d8515075a0d306636ebbc2393522f470"
+    },
+    {
+      "path": "annotation-items-contracts.log.gz",
+      "sha256": "d27b6405c346cb3e89cec59ff02d1dfb9c007a39d9f576c6186e8bc87427bdd3"
+    },
+    {
+      "path": "annotation-items-coverage.log.gz",
+      "sha256": "07cc2bf156e1bbfa9a89375af7e93a895bafbc4ad73db33ef97035083025f949"
+    },
+    {
+      "path": "annotation-items-cross-final.log.gz",
+      "sha256": "211f2abfadf29ca9ec8f98de52a35d81c71ef266181b4d761c7b78045866ec18"
+    },
+    {
+      "path": "annotation-items-cross.log.gz",
+      "sha256": "9c3d8f80d0a0d98189d0b4dea153d82be157ff85a286e5e491ac5bb26bb02517"
+    },
+    {
+      "path": "annotation-items-doc-browser.log.gz",
+      "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
+    },
+    {
+      "path": "annotation-items-doc-browser.mjs.gz",
+      "sha256": "0c89c0186ffd6dae0594ec575247bc3c81779e5bbc8f12125ff18ff6a6ac1d06"
+    },
+    {
+      "path": "annotation-items-docs-final-owning.log.gz",
+      "sha256": "51f4554b966a724d0014b7168fda742faac32ba9dfbc6fb633fd1fc8ab6bb382"
+    },
+    {
+      "path": "annotation-items-docs.log.gz",
+      "sha256": "b65d9fb3f92dd6094a59c793c8a2e077838c44527f861fb26ccc2a6173ebde51"
+    },
+    {
+      "path": "annotation-items-final-coverage.log.gz",
+      "sha256": "4c7ef0c7e2610221ac1b8b09872e54934c344b679ccc17ce9e2366e826460e00"
+    },
+    {
+      "path": "annotation-items-fixed-initial.json.gz",
+      "sha256": "6933645c7d406b1d3a236636100ade88111bb2c7bb801eee6fd43758559a362e"
+    },
+    {
+      "path": "annotation-items-fixed.json.gz",
+      "sha256": "f012a5f7b2920cd97a673392dc526d52f186e19f346e8fd78b578b4e45160cec"
+    },
+    {
+      "path": "annotation-items-focused.log.gz",
+      "sha256": "cdb6eb85499f7b614687e34c1dcf817b4c47e0db7cd69e015d5e727fbf7510b0"
+    },
+    {
+      "path": "annotation-items-generation-final.log.gz",
+      "sha256": "601ed194fe70ff42e7a760c0a6bc3bd6fba19c95208f8f92029bdc052f5ad8f9"
+    },
+    {
+      "path": "annotation-items-generation.log.gz",
+      "sha256": "4ad7e1d49b9dc9e642abd0fb0d26a5557823065a144af1416313f697174be1a3"
+    },
+    {
+      "path": "annotation-items-images-final.log.gz",
+      "sha256": "170b3e5e0d2c9d105c0e008cbb5366c7de9d1d0bb17101e14f9188dfdcf9255a"
+    },
+    {
+      "path": "annotation-items-initial.log.gz",
+      "sha256": "0ca2e9fa11f257ca0f43f85f38c47bfa1d9cb8985bd7e06b7e4add19f4e2085e"
+    },
+    {
+      "path": "annotation-items-measure20-final.json.gz",
+      "sha256": "246e5dc905629fb34305bb41003fc231306fe1df368f3cdd830b0d4a71cd36a2"
+    },
+    {
+      "path": "annotation-items-measure20.json.gz",
+      "sha256": "3fb992c31cd41cfb91ee6415e76a7bfaaa7cdebf52062bcdc048d15164237d1a"
+    },
+    {
+      "path": "annotation-items-pack-final.log.gz",
+      "sha256": "08825a205a3cd8861a73592ff65cd8d8730191a3e64b2dbf97b8e2331a36258a"
+    },
+    {
+      "path": "annotation-items-pack.log.gz",
+      "sha256": "365e66a758ffcc926bfa8fe3928c97d602556281893e1be7591a512253e598b0"
+    },
+    {
+      "path": "annotation-items-qualify.py.gz",
+      "sha256": "fa4329a5a74db4b09a6e3d122754dc480c72dbf29a513fc87c57cc2bbdbf467f"
+    },
+    {
+      "path": "annotation-items-realistic.log.gz",
+      "sha256": "a847f8fe923ebe52823b10dd0aed7a78f5c3a281b3d536ac195389215fc179cc"
+    },
+    {
+      "path": "annotation-items-render-check.mjs.gz",
+      "sha256": "50a68b79c2915fcaf1079558c67df143d42a419b327d39cb5804fdb660104f74"
+    },
+    {
+      "path": "annotation-items-render.log.gz",
+      "sha256": "6a75d64b2658c510489e0599f4e9666a15535bd69534778fe2cc1167d1da2eac"
+    },
+    {
+      "path": "annotation-items-scoped-final.log.gz",
+      "sha256": "8ace631fea0e672909fa5e4668772295df6ce9171e0fa6442f1f7845bae146a5"
+    },
+    {
+      "path": "annotation-items-scoped-initial.log.gz",
+      "sha256": "98249f56076c5f6965aa0c23c1d09119c58fd760191ac39325f4cfdec4eae8f3"
+    },
+    {
+      "path": "annotation-items-text-coverage.log.gz",
+      "sha256": "34ba79c840ba0b63e2ad3dea6fc31de0315a6aa89d6cfe0ec1cfb3aa3e712ff5"
+    },
+    {
+      "path": "annotation-items-types.log.gz",
+      "sha256": "b8653518be49a14a77574b05e0edc9f15ce245d9d7610b7fe1d30459502a1563"
+    },
+    {
+      "path": "api-interaction-1440.png",
+      "sha256": "80166656f6ba5ef70c7ad432feebfca981e60c89f0ce4664284a455ca20e20fc"
+    },
+    {
+      "path": "api-interaction-320.png",
+      "sha256": "35c26e025bbd134c9f70ead0f57e800da2fd475a96bff252967b5f9510b01a07"
+    },
+    {
+      "path": "api-interaction-390.png",
+      "sha256": "53074666d38b10c0c6eae0059fdc14c69a84908f8598def9f1249c06afb7fa99"
+    },
+    {
+      "path": "api-interaction-768.png",
+      "sha256": "0d41784191e0d20c968c24c4aa1d3771c93f143cc93dd6576db9eef3e91edc03"
+    }
+  ]
+}

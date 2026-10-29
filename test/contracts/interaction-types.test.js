@@ -22,6 +22,12 @@ const program = chart(); const session = createInteractionSession({ program });
 chart().editAnnotation({target:'note',text:'New',x:2,dy:-8,placement:'auto',layout:false});
 session.dispatch({type:'annotate',target:{childPath:['left'],id:'note'},payload:{text:'New',fill:'red'}});
 session.dispatch({type:'annotate',target:'map-note',payload:{anchor:{type:'feature',geometry:'regions',key:1,level:'county'},dx:8}});
+session.dispatch({type:'annotate',target:'note',payload:{select:{items:['logical-item']}}});
+chart().createAnnotation({text:'Chosen',source:'bars',selection:'picked'}).editAnnotation({all:true});
+// @ts-expect-error coordinate annotations cannot own item membership
+chart().createAnnotation({text:'Bad',x:1,y:2,select:{items:[]}});
+// @ts-expect-error membership replacement chooses exactly one native mode
+chart().editAnnotation({select:{items:[]},all:true});
 // @ts-expect-error annotation patches do not rebind or create sources
 chart().editAnnotation({target:'note',source:'points'});
 // @ts-expect-error annotation command target cannot be redirected in its payload

@@ -503,6 +503,8 @@ export type AngleEncodingOptions =
 type AnnotationAnchor =
   | {
       anchor: "plot-center";
+      select?: never;
+      selection?: never;
       x?: never;
       y?: never;
       space?: never;
@@ -512,7 +514,7 @@ type AnnotationAnchor =
       data?: string;
       coordinate?: string;
     }
-  | {
+  | ({
       anchor?: never;
       x?: never;
       y?: never;
@@ -520,9 +522,11 @@ type AnnotationAnchor =
       source?: string;
       data?: never;
       coordinate?: never;
-    }
+    } & MarkLabelSelectionOptions)
   | {
       anchor?: never;
+      select?: never;
+      selection?: never;
       x: unknown;
       y: unknown;
       space?: "data";
@@ -534,6 +538,8 @@ type AnnotationAnchor =
       anchor?: never;
       x: number;
       y: number;
+      select?: never;
+      selection?: never;
       space: "plot";
       source?: never;
       data?: string;
@@ -542,6 +548,8 @@ type AnnotationAnchor =
 ```
 
 </details>
+
+Related types: [`MarkLabelSelectionOptions`](#type-marklabelselectionoptions).
 
 ### `AnnotationBaseOptions` {#type-annotationbaseoptions}
 
@@ -5818,7 +5826,7 @@ export type EdgeRouteMethod = "hierarchical" | "force-directed" | "density" | "e
 <summary>Expand EditAnnotationOptions</summary>
 
 ```typescript
-export interface EditAnnotationOptions extends Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "missing"> {
+export type EditAnnotationOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "missing"> & {
   target?: string;
   text?: unknown;
   /** Without text, reformat the current constant content. */
@@ -5828,12 +5836,12 @@ export interface EditAnnotationOptions extends Omit<TextMarkOptions, "id" | "dat
   y?: unknown;
   placement?: MarkLabelPlacement | "auto";
   layout?: false | Omit<LabelLayoutOptions, "target">;
-}
+} & ((MarkLabelSelectionOptions & { all?: never }) | { all: true; select?: never; selection?: never });
 ```
 
 </details>
 
-Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`TextFormat`](#type-textformat) · [`MarkLabelPlacement`](#type-marklabelplacement) · [`LabelLayoutOptions`](#type-labellayoutoptions).
+Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`TextFormat`](#type-textformat) · [`MarkLabelPlacement`](#type-marklabelplacement) · [`LabelLayoutOptions`](#type-labellayoutoptions) · [`MarkLabelSelectionOptions`](#type-marklabelselectionoptions).
 
 ### `EditAxesOptions` {#type-editaxesoptions}
 

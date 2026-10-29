@@ -24,6 +24,7 @@
     ],
     "idOptions": [
       "id",
+      "selection",
       "source",
       "data",
       "coordinate",
@@ -69,6 +70,10 @@
     }
   ],
   "inference": [
+    {
+      "input": "selection",
+      "strategy": "explicit-current-unique-or-error"
+    },
     {
       "input": "source",
       "strategy": "explicit-current-unique-or-error"
@@ -227,6 +232,16 @@
       "name": "anchor",
       "required": false,
       "type": "\"plot-center\" | undefined"
+    },
+    {
+      "name": "select",
+      "required": false,
+      "type": "MarkSelector | undefined"
+    },
+    {
+      "name": "selection",
+      "required": false,
+      "type": "string | undefined"
     },
     {
       "name": "x",

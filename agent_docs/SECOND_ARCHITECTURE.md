@@ -862,7 +862,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 728,200 bytes |
+| `ggaction` | 728,300 bytes |
 | `ggaction/basic` | 384,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/interaction` | 112,900 bytes |
@@ -3935,3 +3935,12 @@ E6 합산 source-free Node20 최대는 Full728,182/Basic383,679/interaction112,8
 한도728,200/384,000/112,900을 적용했다. 1044entries/packed1,481,470/unpacked6,744,953에
 최소 package cap1,482,000/6,745,000을 적용했다. Basic 증분은 기존 native Text 공통 owner 추출에서
 발생하며 geographic authoring assembly 또는 interaction Full import를 추가하지 않는다.
+
+
+E7의 item membership은 기존 label selection owner와 composition scoped-key 변환을 그대로 사용한다.
+source-owned Annotation facade만 native select/selection/all intent에 연결하며 dataset·coordinate·renderer
+소유권을 늘리지 않는다. Exact current syntax와 실패 경계는 MARKS/INTERACTION이 소유한다.
+최종 Node20 Full728,292 gzip에 최소728,300 cap을 적용하고 Basic383,679/interaction112,841은
+유지한다. Package1044entries/packed1,481,747/unpacked6,746,635에 기존 packed1,482,000과
+최소 unpacked6,747,000 cap을 적용한다. 최초 cap 실패와 최종 같은 archive의 소비자 검증을
+[qualification](impl/roadmap9/interaction/annotation-membership-evidence/qualification.json)에 보존한다.

@@ -170,3 +170,52 @@ test("geographic annotation commands retain original feature level and selection
   assert.throws(()=>s.dispatch({type:"annotate",target:"note",payload:{anchor:{type:"feature",geometry:"regions",key:"1",level:"county"}}}),/feature key/);
   assert.equal(s.getState().program,saved);s.destroy();
 });
+
+test("item-anchored annotations preserve final aggregate grain through inline named and all membership edits", () => {
+  const p=chart().createCanvas().createData({id:'rows',keyField:'id',values:[{id:'a',c:1,v:2},{id:'b',c:1,v:3},{id:'c',c:'1',v:8}]})
+    .createBarPlot({id:'bars',x:{field:'c',fieldType:'nominal'},y:{field:'v',aggregate:'sum'},guides:false});
+  const [number,string]=getMarkItems(p,{target:'bars'}),saved=serializeProgram(p);
+  const first=p.createAnnotation({id:'note',source:'bars',text:'Chosen',select:{items:[number.key]}});
+  assert.equal(getMarkItems(first,{target:'note'}).length,1);
+  assert.equal(getMarkItems(first,{target:'note'})[0].rows.length,2);
+  const named=first.selectMarks({id:'pick',target:'bars',items:[string.key]});
+  const s=createInteractionSession({program:named,bindings:[]}),events=[];s.subscribe(e=>events.push(e));
+  s.dispatch({type:'annotate',target:'note',payload:{selection:'pick',text:'Named',dx:5}});
+  const next=s.getState().program, lowered=named.encodeText({target:'note',value:'Named'}).editTextMark({target:'note',dx:5}).editMarkLabelSelection({target:'note',selection:'pick'});
+  assert.deepEqual(next.graphicSpec,lowered.graphicSpec);assert.equal(getMarkItems(next,{target:'note'})[0].rows.length,1);
+  assert.deepEqual(events.map(e=>e.phase),['commit','settled']);
+  const updated=deserializeProgram(serializeProgram(next)).editMarkSelection({selection:'pick',items:[number.key]});
+  assert.equal(getMarkItems(updated,{target:'note'})[0].rows.length,2);
+  const revised=updated.reviseData({source:'rows',id:'revised',values:[{id:'a',c:1,v:4},{id:'b',c:1,v:5},{id:'c',c:'1',v:1}]});
+  assert.equal(getMarkItems(revised,{target:'note'})[0].rows.length,2);
+  const all=revised.editAnnotation({target:'note',all:true});assert.equal(getMarkItems(all,{target:'note'}).length,2);
+  const none=all.editAnnotation({target:'note',select:{items:[]}});assert.equal(getMarkItems(none,{target:'note'}).length,0);
+  assert.deepEqual(deserializeProgram(serializeProgram(none)).graphicSpec,none.graphicSpec);
+  const parent=hconcat({programs:[{id:'left',program:named},{id:'right',program:named}]}), scoped=createInteractionSession({program:parent,bindings:[]});
+  scoped.dispatch({type:'annotate',target:{childPath:['left'],id:'note'},payload:{all:true}});
+  assert.equal(getMarkItems(scoped.getState().program.children.left,{target:'note'}).length,2);
+  assert.equal(scoped.getState().program.children.right,named);
+  const scopedKey=getMarkItems(parent,{target:{childPath:['left'],id:'bars'}})[0].key;
+  scoped.dispatch({type:'annotate',target:{childPath:['left'],id:'note'},payload:{select:{items:[scopedKey]}}});
+  assert.equal(getMarkItems(scoped.getState().program.children.left,{target:'note'}).length,1);
+  const created=parent.createAnnotation({target:{childPath:['left']},id:'scoped-note',source:'bars',text:'Scoped',select:{items:[scopedKey]}});
+  assert.equal(getMarkItems(created.children.left,{target:'scoped-note'}).length,1);scoped.destroy();
+  assert.equal(serializeProgram(p),saved);s.destroy();
+});
+
+test("annotation item membership rejects incompatible anchors and conflicting selectors atomically",()=>{
+  const p=source().createAnnotation({id:'note',source:'points',text:'All'}),saved=serializeProgram(p);
+  for(const payload of [{select:{items:[]},selection:'missing'},{all:false},{selection:'missing'},{all:true,select:{}},{x:4,all:true}]){
+    assert.throws(()=>p.editAnnotation({target:'note',text:'Partial',...payload}));assert.equal(serializeProgram(p),saved);
+  }
+  for(const args of [{space:'plot',x:.5,y:.5},{x:2,y:3},{anchor:'plot-center'}]){
+    assert.throws(()=>source().createAnnotation({text:'Bad',select:{items:[]},...args}),/membership|select/);
+  }
+  const independent=source().createAnnotation({id:'note',text:'Point',x:2,y:3});
+  assert.throws(()=>independent.editAnnotation({all:true}),/attached label/);
+  const wrong=p.selectMarks({id:'wrong',target:'note',items:[]});
+  assert.throws(()=>wrong.editAnnotation({selection:'wrong'}),/source mark/);
+  const named=p.selectMarks({id:'chosen',target:'points',items:[]});
+  const q=named.createAnnotation({id:'named-note',source:'points',text:'Empty',selection:'chosen'});
+  assert.equal(getMarkItems(q,{target:'named-note'}).length,0);
+});

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:61b9e67063a34f3aedf58abefbd445eaa3ad963c6eaa68dbf5fba9c663efdbc0. Status: development. Runtime source: fe03a41489b5701a74233c8c646d81c231d18e7a. Release baseline: v0.0.13.
+Contract: sha256:4e4eceac59a660786c70a2d7ff4b348d9e38bf9398d54370a83f68bbd08d50bc. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/fe03a41489b5701a74233c8c646d81c231d18e7a/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/fe03a41489b5701a74233c8c646d81c231d18e7a/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -7361,7 +7361,7 @@ Optional `data`, `coordinate`, text styling, and pixel offsets remain available.
 
 For a mark anchor, omit x, y, and space. `source` selects an existing compatible
 mark, or the current/unique mark is inferred. The constant text appears once per
-final source item, including aggregate bars and arc sectors.
+final source item, including aggregate bars and arc sectors. Add inline `select` (including explicit item keys) or a same-source named `selection` to label a subset. Coordinate anchors reject membership options.
 
 For a data anchor, provide both x and y and optionally `source`. The selected
 complete Cartesian layer supplies its dataset, coordinate, x/y scales, field types,
@@ -7390,6 +7390,8 @@ An invalid change leaves the old program intact. [Full signature and rules](./re
 `x` or `y` preserves the stored scale and field type, so a category remains a category and a date remains temporal.
 Field-driven positions and source-owned label positions cannot be replaced here. Change source-owned offsets with
 `dx`/`dy`, or use `placement` for semantic inside/outside positioning. Existing encoded offsets require their encoding action.
+For attached labels, `select`, `selection`, or `all:true` replaces item membership through the native label selector. Choose one mode; an empty selector shows no labels. Named selections stay linked to the same source and follow its revisions.
+
 `layout:false` removes collision layout; `placement:"auto"` restores ordinary source placement.
 
 For host controls, the [`annotate` interaction command](./api/interaction/#edit-existing-annotations) calls the same editor.
@@ -11621,7 +11623,7 @@ For a [geographic annotation](./api/geometry/), the same `annotate` command call
 Its payload accepts a native `anchor` (position or typed feature key), text and Text styles; geographic coordinates and the original detail level remain native.
 The explicit target chooses the editor. Position fields `x`/`y`, label placement and collision layout belong to ordinary Text annotations and reject on geographic targets.
 
-Send `annotate` to an existing Text owner to update text, datum anchors, offsets or style in one transaction.
+Send `annotate` to an existing Text owner to update text, datum anchors, offsets, style or source-owned item membership in one transaction.
 The payload follows [`editAnnotation`](./api/marks/text/#editannotationoptions) and cannot include another target.
 The Full editor retains the source/data/plot anchor and native replay behavior. Basic does not author Text annotations.
 
@@ -25481,6 +25483,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
 | `layout` | Optional / branch-dependent | `false \| Omit<LabelLayoutOptions, "target"> \| undefined` |
 | `anchor` | Optional / branch-dependent | `"plot-center" \| undefined` |
+| `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
+| `selection` | Optional / branch-dependent | `string \| undefined` |
 | `x` | Optional / branch-dependent | `unknown` |
 | `y` | Optional / branch-dependent | `unknown` |
 | `space` | Optional / branch-dependent | `"data" \| "plot" \| undefined` |
@@ -25492,12 +25496,12 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createAnnotation({ clip?, id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
+createAnnotation({ clip?, id?, text, anchor?, format?, source?, select?, selection?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
 ```
 
 Create anchored text. Omit x/y/space for a
 final-item mark anchor; `source` selects the mark, otherwise current/unique mark
-inference applies. Provide both x and y for a data anchor; `source` selects one
+inference applies. A mark anchor can use inline `select` or a named `selection` belonging to the same source; both retain final-item grain, and empty membership stays empty. Coordinate anchors reject these options. Provide both x and y for a data anchor; `source` selects one
 complete Cartesian layer whose data, coordinate, scales, field types, and temporal
 units are reused. The annotation participates in automatic domains without becoming
 a source-owned label.
@@ -25537,13 +25541,6 @@ Generated from the current TypeScript declaration. Union branches can require di
 
 | Option | Presence | Type |
 | --- | --- | --- |
-| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `text` | Optional / branch-dependent | `unknown` |
-| `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
-| `x` | Optional / branch-dependent | `unknown` |
-| `y` | Optional / branch-dependent | `unknown` |
-| `placement` | Optional / branch-dependent | `"auto" \| MarkLabelPlacement \| undefined` |
-| `layout` | Optional / branch-dependent | `false \| Omit<LabelLayoutOptions, "target"> \| undefined` |
 | `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
 | `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
 | `miterLimit` | Optional / branch-dependent | `number \| undefined` |
@@ -25564,11 +25561,21 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
 | `dx` | Optional / branch-dependent | `number \| undefined` |
 | `dy` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `text` | Optional / branch-dependent | `unknown` |
+| `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
+| `x` | Optional / branch-dependent | `unknown` |
+| `y` | Optional / branch-dependent | `unknown` |
+| `placement` | Optional / branch-dependent | `"auto" \| MarkLabelPlacement \| undefined` |
+| `layout` | Optional / branch-dependent | `false \| Omit<LabelLayoutOptions, "target"> \| undefined` |
+| `all` | Optional / branch-dependent | `true \| undefined` |
+| `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
+| `selection` | Optional / branch-dependent | `string \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-editAnnotation({ target?, text?, format?, x?, y?, placement?, layout?, blend?, shadow?, clip?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, lineHeight?, blockAlign?, inheritColor?, lineCap?, lineJoin?, miterLimit? })
+editAnnotation({ target?, text?, format?, x?, y?, placement?, layout?, select?, selection?, all?, blend?, shadow?, clip?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, lineHeight?, blockAlign?, inheritColor?, lineCap?, lineJoin?, miterLimit? })
 ```
 
 Edit existing Text or attached labels in one atomic change. Available in Full. Choose `target` explicitly,
@@ -25579,6 +25586,8 @@ without changing the program or its trace.
 units. Supply either or both. Source-owned labels and field-driven or conditional positions reject this patch.
 `text` supplies constant content; `format` alone reformats existing constant content. Style options follow
 `editTextMark`. An encoded dx/dy channel must be edited through its encoding action instead.
+
+For attached labels, exactly one of `select`, `selection`, or `all:true` replaces membership through `editMarkLabelSelection`. Independent annotations reject membership edits. Named selection and source revisions keep their native replay and removal rules.
 
 `placement` uses `editMarkLabelPlacement`; `"auto"` restores its ordinary source anchor. A `layout` object uses
 `layoutLabels`, and `false` removes collision layout. These edits retain source ownership, selection, replay and
@@ -36405,6 +36414,8 @@ export type AngleEncodingOptions =
 type AnnotationAnchor =
   | {
       anchor: "plot-center";
+      select?: never;
+      selection?: never;
       x?: never;
       y?: never;
       space?: never;
@@ -36414,7 +36425,7 @@ type AnnotationAnchor =
       data?: string;
       coordinate?: string;
     }
-  | {
+  | ({
       anchor?: never;
       x?: never;
       y?: never;
@@ -36422,9 +36433,11 @@ type AnnotationAnchor =
       source?: string;
       data?: never;
       coordinate?: never;
-    }
+    } & MarkLabelSelectionOptions)
   | {
       anchor?: never;
+      select?: never;
+      selection?: never;
       x: unknown;
       y: unknown;
       space?: "data";
@@ -36436,12 +36449,16 @@ type AnnotationAnchor =
       anchor?: never;
       x: number;
       y: number;
+      select?: never;
+      selection?: never;
       space: "plot";
       source?: never;
       data?: string;
       coordinate?: string;
     };
 ```
+
+Related types: [`MarkLabelSelectionOptions`](./reference/types/#type-marklabelselectionoptions).
 
 ### `AnnotationBaseOptions` {#type-annotationbaseoptions}
 
@@ -40877,7 +40894,7 @@ export type EdgeRouteMethod = "hierarchical" | "force-directed" | "density" | "e
  Expand EditAnnotationOptions
 
 ```typescript
-export interface EditAnnotationOptions extends Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "missing"> {
+export type EditAnnotationOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "missing"> & {
   target?: string;
   text?: unknown;
   /** Without text, reformat the current constant content. */
@@ -40887,10 +40904,10 @@ export interface EditAnnotationOptions extends Omit<TextMarkOptions, "id" | "dat
   y?: unknown;
   placement?: MarkLabelPlacement | "auto";
   layout?: false | Omit<LabelLayoutOptions, "target">;
-}
+} & ((MarkLabelSelectionOptions & { all?: never }) | { all: true; select?: never; selection?: never });
 ```
 
-Related types: [`TextMarkOptions`](./reference/types/#type-textmarkoptions) · [`TextFormat`](./reference/types/#type-textformat) · [`MarkLabelPlacement`](./reference/types/#type-marklabelplacement) · [`LabelLayoutOptions`](./reference/types/#type-labellayoutoptions).
+Related types: [`TextMarkOptions`](./reference/types/#type-textmarkoptions) · [`TextFormat`](./reference/types/#type-textformat) · [`MarkLabelPlacement`](./reference/types/#type-marklabelplacement) · [`LabelLayoutOptions`](./reference/types/#type-labellayoutoptions) · [`MarkLabelSelectionOptions`](./reference/types/#type-marklabelselectionoptions).
 
 ### `EditAxesOptions` {#type-editaxesoptions}
 
@@ -49971,12 +49988,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/fe03a41489b5701a74233c8c646d81c231d18e7a/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/fe03a41489b5701a74233c8c646d81c231d18e7a/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -53027,9 +53044,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:61b9e67063a34f3aedf58abefbd445eaa3ad963c6eaa68dbf5fba9c663efdbc0` |
+| Contract fingerprint | `sha256:4e4eceac59a660786c70a2d7ff4b348d9e38bf9398d54370a83f68bbd08d50bc` |
 | Example and dataset source | `d665f6bbcdd97ed5e5d22ce63c73d5b3afdbfaa4` |
-| Runtime source commit | `fe03a41489b5701a74233c8c646d81c231d18e7a` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 366 |
 | Declared actions in that release | 234 |

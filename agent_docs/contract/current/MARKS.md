@@ -1259,7 +1259,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `createAnnotation`
 
-- Signature: `createAnnotation({ id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })`.
+- Signature: `createAnnotation({ id?, text, anchor?, format?, source?, select?, selection?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })`.
 - Exactly one anchor branch is selected. Mark anchor omits x/y/space and uses explicit/current/unique final-item source.
   Data anchor requires x and y and selects one explicit/current/unique complete Cartesian layer for data, coordinate,
   both scales, field types and temporal units. Plot anchor requires `space:"plot"`, finite x/y in [0,1], optional
@@ -1283,7 +1283,8 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 - Implemented: `CreateAnnotationOptions = TextStyle & { id?: UserId; text: unknown; format?: TextFormat;
   layout?: false | Omit<LabelLayoutOptions,"target"> } & (MarkAnchor | DataAnchor | PlotAnchor | PlotCenterAnchor)`.
-- MarkAnchor: `{ source?: UserId; x?: never; y?: never; space?: never; data?: never; coordinate?: never }`.
+- MarkAnchor: `{ source?: UserId; x?: never; y?: never; space?: never; data?: never; coordinate?: never } & MarkLabelSelectionOptions`.
+- Mark anchors accept either inline `select` or same-source named `selection`, using createMarkLabels final-item membership. Data/plot/plot-center anchors reject both. Empty membership stays empty; no nearest-row inference occurs.
 - DataAnchor: `{ x: unknown; y: unknown; space?: "data"; source?: UserId; data?: never; coordinate?: never }`.
 - PlotAnchor: `{ x: UnitInterval; y: UnitInterval; space: "plot"; source?: never; data?: UserId; coordinate?: UserId }`.
 - PlotCenterAnchor: `{ anchor:"plot-center"; data?:UserId; coordinate?:UserId; x?:never; y?:never; space?:never; source?:never; align?:never; baseline?:never }`. Other branches reject `anchor`.
@@ -1298,7 +1299,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `editAnnotation`
 
-- Signature: `editAnnotation({ target?, text?, format?, x?, y?, placement?, layout?, ...TextStyle })`. Full-only.
+- Signature: `editAnnotation({ target?, text?, format?, x?, y?, placement?, layout?, select?, selection?, all?, ...TextStyle })`. Full-only.
 - Targets an existing Text layer created by createAnnotation, createTextMark or createMarkLabels. Resolution is explicit,
   then current eligible Text, then unique Text; ambiguous/missing/non-Text targets reject. The patch must be nonempty.
 - Independent Cartesian x/y edits require both existing position bindings to be constant datum encodings with scales.
@@ -1310,6 +1311,7 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 - TextStyle has the native fill, stroke cap/join details, outline, shadow, blend, clip, opacity, font, alignment, rotation, multiline,
   inheritColor and dx/dy options. Native applicability/conflict/validation rules are unchanged. dx/dy reject when an
   offset encoding or conditional owns that channel; explicit lower encoding actions remain available.
+- `select`, `selection`, or `all:true` replaces source-owned label membership through editMarkLabelSelection. Exactly one is allowed; independent Text rejects them. Named selections must target the same source, empty inline membership produces no labels, and native reference/removal/revision semantics remain unchanged.
 - `placement` replaces source-owned semantic placement or accepts `"auto"`; `layout` sets a target-free label layout,
   while false removes the active collision layout. Disabling collision layout precedes placement replacement so its
   old leader cannot falsely conflict. Native placement and collision leaders cannot coexist.
@@ -1322,13 +1324,14 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 - Implemented: `EditAnnotationOptions = Omit<TextMarkOptions,"id"|"data"|"source"|"text"|"missing"> &
   { target?: UserId; text?: unknown; format?: TextFormat; x?: unknown; y?: unknown;
-  placement?: MarkLabelPlacement|"auto"; layout?: false|Omit<LabelLayoutOptions,"target"> }`.
+  placement?: MarkLabelPlacement|"auto"; layout?: false|Omit<LabelLayoutOptions,"target"> } &
+  ((MarkLabelSelectionOptions & {all?:never}) | {all:true; select?:never; selection?:never})`.
 - Proposed (NOT IMPLEMENTED): no additional options in this editor.
 
 ### Value coverage — `editAnnotation`
 
 - ✅ Covered: datum/type/scale preservation, categorical/time/plot anchors, source-owned placement, layout/leader removal,
-  native parity, immutable preflight failures, scoped command commit and restore, Basic boundary.
+  native parity, immutable preflight failures, typed aggregate item membership, named-selection replay, scoped command commit and restore, Basic boundary.
 - Evidence: `test/unit/interaction-annotation.test.js`, `test/contracts/interaction-types.test.js`.
 
 ## `createTextMark`

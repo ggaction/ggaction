@@ -12,7 +12,8 @@
 - [x] D: 기존 setParameter host controls와 context semantic targets
 - [x] E5: 기존 Text annotation의 datum anchor/offset/content/placement 원자 편집
 - [x] E6: native Geo annotation의 명시 command 연결
-- [ ] screen anchor·item membership/drag 후행 인수
+- [x] E7: source-owned item membership의 inline/named/all 편집과 scoped key 연결
+- [ ] screen anchor·pointer anchor drag 후행 인수
 - [x] E1: native partition focus 명령과 host breadcrumb/button keyboard 연결
 - [x] E2: explicit projection viewport 명령과 host button/keyboard 연결
 - [x] E3: fixed/force node 이동과 실제 pointer/touch drag·host keyboard
@@ -556,3 +557,32 @@ source commit 뒤 고정한다. Built172pages/1531LLM 및 네 폭overflow0/Axe0�
 E6 source `fe03a4148` push 뒤 canonical example source link를 포함한 owning docs50/50과
 built172pages/1531LLM을 통과했다. 최종 source/타입/taref611 및 시각 입력은 동일하므로3Node·4backend·
 네 폭Axe 증거를 재사용한다. 원본207개 실행의4실패와 수정후 owning 검증을 구분해 남긴다.
+
+## E7 item anchor membership의 기존 label owner 연결
+
+전체 승인과 기존 item anchor 계약을 재사용한다. source-owned createAnnotation에 select 또는 selection을
+전달하고 editAnnotation/annotate에 select·selection·all:true 중 하나를 전달한다. createMarkLabels와
+editMarkLabelSelection이 기존 final-item membership을 단일 소유하며 새 저장 schema는 없다.
+Coordinate/data/plot/Geo anchor와 item membership을 섞지 않는다. Empty selector는 native empty 의미를
+유지하며 named selection은 같은 source를 가리켜야 한다. 원 aggregate grain/typed item key·source revision·
+선택 제거 참조와 label layout/selection replay, child scope 및 immutable one-commit을 검증한다.
+
+
+E7은 새 unit2개를 포함한 Text92/92와 scoped interaction/composition52/52를 통과했다.
+Text annotation owner100/93.94/100, Text actions94.95/89.32/100,
+composition target94.70/91.67/93.33을 기록한다. 부모 inspection의 namespaced key가 child annotation에서
+빈 선택으로 해석되는 실제 반례를 보존했고 기존 ITEM_SELECTION_ACTIONS에 두 facade를 등록해 고쳤다.
+새 namespace 변환 owner나 selector grammar는 만들지 않는다.
+
+Source/type/discovery28 및 contracts32, 실제5datasets×3recipes16, Chromium pointer/touch/Enter/Space1,
+public/native/codec Canvas calls·SVG·decoded PNG/PDF exact를 확인했다.
+마지막 scoped key 등록 후에는 Text92·scope52·boundary28과 최종 설치 회귀를 재실행하고,
+입력이 동일한 unscoped realistic/browser/renderer 증거는 재사용한다.
+Docs207/207·built172pages/1531LLM·네 폭overflow0/Axe0과 모바일 화면을 확인했다.
+전체 normal/coverage·전체 installed matrix 및060/074/077 완료는 주장하지 않는다.
+
+동일 최종 tar22b79797에서 Node20/22/24 각각11runtime·strictTS·5bundles 명령이 exit0이다.
+Full gzip728,292→728,300과 package1044entries/packed1,481,747/unpacked6,746,635를 실측했다.
+처음 archive07712260의 cap 실패와 scoped key 버그를 보존한다. Source 최종 변경 뒤 owning docs34/34 및
+이미지 manifest를 갱신했고 source commit 뒤 provenance를 다시 고정한다.
+[정확 artifact·명령·원본 실패](annotation-membership-evidence/qualification.json)를 참고한다.

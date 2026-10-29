@@ -49,7 +49,7 @@ Optional `data`, `coordinate`, text styling, and pixel offsets remain available.
 
 For a mark anchor, omit x, y, and space. `source` selects an existing compatible
 mark, or the current/unique mark is inferred. The constant text appears once per
-final source item, including aggregate bars and arc sectors.
+final source item, including aggregate bars and arc sectors. Add inline `select` (including explicit item keys) or a same-source named `selection` to label a subset. Coordinate anchors reject membership options.
 
 For a data anchor, provide both x and y and optionally `source`. The selected
 complete Cartesian layer supplies its dataset, coordinate, x/y scales, field types,
@@ -78,6 +78,8 @@ An invalid change leaves the old program intact. [Full signature and rules](../.
 `x` or `y` preserves the stored scale and field type, so a category remains a category and a date remains temporal.
 Field-driven positions and source-owned label positions cannot be replaced here. Change source-owned offsets with
 `dx`/`dy`, or use `placement` for semantic inside/outside positioning. Existing encoded offsets require their encoding action.
+For attached labels, `select`, `selection`, or `all:true` replaces item membership through the native label selector. Choose one mode; an empty selector shows no labels. Named selections stay linked to the same source and follow its revisions.
+
 `layout:false` removes collision layout; `placement:"auto"` restores ordinary source placement.
 
 For host controls, the [`annotate` interaction command](../interaction.md#edit-existing-annotations) calls the same editor.

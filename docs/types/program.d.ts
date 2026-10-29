@@ -5634,6 +5634,8 @@ type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "t
 type AnnotationAnchor =
   | {
       anchor: "plot-center";
+      select?: never;
+      selection?: never;
       x?: never;
       y?: never;
       space?: never;
@@ -5643,7 +5645,7 @@ type AnnotationAnchor =
       data?: string;
       coordinate?: string;
     }
-  | {
+  | ({
       anchor?: never;
       x?: never;
       y?: never;
@@ -5651,9 +5653,11 @@ type AnnotationAnchor =
       source?: string;
       data?: never;
       coordinate?: never;
-    }
+    } & MarkLabelSelectionOptions)
   | {
       anchor?: never;
+      select?: never;
+      selection?: never;
       x: unknown;
       y: unknown;
       space?: "data";
@@ -5665,6 +5669,8 @@ type AnnotationAnchor =
       anchor?: never;
       x: number;
       y: number;
+      select?: never;
+      selection?: never;
       space: "plot";
       source?: never;
       data?: string;
@@ -5674,7 +5680,7 @@ type AnnotationAnchor =
 export type CreateAnnotationOptions = AnnotationBaseOptions & AnnotationAnchor;
 
 /** Existing Text or attached labels; preserves stored anchor bindings. Full-only. */
-export interface EditAnnotationOptions extends Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "missing"> {
+export type EditAnnotationOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "missing"> & {
   target?: string;
   text?: unknown;
   /** Without text, reformat the current constant content. */
@@ -5684,7 +5690,7 @@ export interface EditAnnotationOptions extends Omit<TextMarkOptions, "id" | "dat
   y?: unknown;
   placement?: MarkLabelPlacement | "auto";
   layout?: false | Omit<LabelLayoutOptions, "target">;
-}
+} & ((MarkLabelSelectionOptions & { all?: never }) | { all: true; select?: never; selection?: never });
 
 type TextPlotPositionChannel =
   | string

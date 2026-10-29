@@ -488,7 +488,8 @@
         "editTextMark",
         "layoutLabels",
         "removeLabelLayout",
-        "editMarkLabelPlacement"
+        "editMarkLabelPlacement",
+        "editMarkLabelSelection"
       ]
     },
     {

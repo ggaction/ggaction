@@ -432,7 +432,8 @@ function annotationEditingPrograms() {
     .editAnnotation({target:'note',text:'New',x:2,y:3,dx:4,layout:{maxDisplacement:0}})
     .editAnnotation({target:'note',layout:false});
   const attached = base.createAnnotation({id:'labels',text:'Old'})
-    .editAnnotation({target:'labels',placement:{anchor:'center'},text:'New'});
+    .editAnnotation({target:'labels',placement:{anchor:'center'},text:'New'})
+    .editAnnotation({target:'labels',select:{items:[]}}).editAnnotation({target:'labels',all:true});
   return [datum,attached];
 }
 

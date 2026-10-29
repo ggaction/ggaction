@@ -32,6 +32,14 @@ export const cases = [
     assert.deepEqual(events.map(event=>event.phase),['commit','settled']);
     const before=session.getState().program;assert.throws(()=>session.dispatch({type:'annotate',target:'note',payload:{text:'Partial',opacity:2}}));
     assert.equal(session.getState().program,before);assert.equal(p.graphicSpec.objects.note.items[0].properties.text,'Before');session.destroy();
+    const source=p.semanticSpec.layers.find(layer=>layer.mark.type==='point').id,keys=getMarkItems(p,{target:source}).map(item=>item.key);
+    const labels=p.createAnnotation({id:'items',source,text:'Chosen',select:{items:[keys[0]]}});
+    const member=createInteractionSession({program:labels,bindings:[]});member.dispatch({type:'annotate',target:'items',payload:{all:true}});
+    assert.equal(getMarkItems(member.getState().program,{target:'items'}).length,2);
+    member.dispatch({type:'annotate',target:'items',payload:{select:{items:[]}}});assert.equal(getMarkItems(deserializeProgram(serializeProgram(member.getState().program)),{target:'items'}).length,0);member.destroy();
+    const parent=hconcat({programs:[{id:'left',program:labels},{id:'right',program:labels}]}),scopedKey=getMarkItems(parent,{target:{childPath:['left'],id:source}})[0].key;
+    const scoped=createInteractionSession({program:parent,bindings:[]});scoped.dispatch({type:'annotate',target:{childPath:['left'],id:'items'},payload:{select:{items:[scopedKey]}}});
+    assert.equal(getMarkItems(scoped.getState().program.children.left,{target:'items'}).length,1);assert.equal(scoped.getState().program.children.right,labels);scoped.destroy();
     const b=createInteractionSession({program:basic().createCanvas(),bindings:[]});assert.throws(()=>b.dispatch({type:'annotate',target:'note',payload:{text:'No'}}),/editAnnotation/);b.destroy();
   } },
   { id: "interaction/geographic-representation", run() {

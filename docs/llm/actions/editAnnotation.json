@@ -21,7 +21,8 @@
     ],
     "owns": [],
     "idOptions": [
-      "target"
+      "target",
+      "selection"
     ]
   },
   "authoringRoles": [
@@ -34,7 +35,8 @@
     "editTextMark",
     "layoutLabels",
     "removeLabelLayout",
-    "editMarkLabelPlacement"
+    "editMarkLabelPlacement",
+    "editMarkLabelSelection"
   ],
   "editableVia": [
     "editAnnotation"
@@ -70,6 +72,10 @@
     {
       "input": "placement",
       "strategy": "documented-auto"
+    },
+    {
+      "input": "selection",
+      "strategy": "explicit-current-unique-or-error"
     }
   ],
   "completionRequirements": {
@@ -80,41 +86,6 @@
     "allowsEmpty": false
   },
   "options": [
-    {
-      "name": "target",
-      "required": false,
-      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
-    },
-    {
-      "name": "text",
-      "required": false,
-      "type": "unknown"
-    },
-    {
-      "name": "format",
-      "required": false,
-      "type": "ValueFormat | undefined"
-    },
-    {
-      "name": "x",
-      "required": false,
-      "type": "unknown"
-    },
-    {
-      "name": "y",
-      "required": false,
-      "type": "unknown"
-    },
-    {
-      "name": "placement",
-      "required": false,
-      "type": "\"auto\" | MarkLabelPlacement | undefined"
-    },
-    {
-      "name": "layout",
-      "required": false,
-      "type": "false | Omit<LabelLayoutOptions, \"target\"> | undefined"
-    },
     {
       "name": "lineCap",
       "required": false,
@@ -214,6 +185,56 @@
       "name": "dy",
       "required": false,
       "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "text",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "format",
+      "required": false,
+      "type": "ValueFormat | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "unknown"
+    },
+    {
+      "name": "placement",
+      "required": false,
+      "type": "\"auto\" | MarkLabelPlacement | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "false | Omit<LabelLayoutOptions, \"target\"> | undefined"
+    },
+    {
+      "name": "all",
+      "required": false,
+      "type": "true | undefined"
+    },
+    {
+      "name": "select",
+      "required": false,
+      "type": "MarkSelector | undefined"
+    },
+    {
+      "name": "selection",
+      "required": false,
+      "type": "string | undefined"
     }
   ],
   "callPatterns": [

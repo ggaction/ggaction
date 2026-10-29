@@ -31,6 +31,19 @@ export function assertAnnotationInteraction(rows, recipe) {
   assert.ok(getMarkItems(labels, { target: "totals" }).every(item => item.geometry[0].properties.text === last.category));
   const reset = labels.editAnnotation({ target: "totals", placement: "auto" });
   assert.equal(reset.markConfigs.totals.labelAuthoring.placement, undefined);
+  const chosen = getMarkItems(reset,{target:"bars"})[0];
+  const selected = reset.selectMarks({id:"annotation-picked",target:"bars",items:[chosen.key]})
+    .createAnnotation({id:"item-note",source:"bars",text:"One",select:{items:[chosen.key]}})
+    .createAnnotation({id:"named-note",source:"bars",text:"Named",selection:"annotation-picked"});
+  const expectedMembers = rows.filter(row=>row.category===chosen.fields.category).length;
+  assert.equal(getMarkItems(selected,{target:"item-note"})[0].rows.length,expectedMembers);
+  const itemSession=createInteractionSession({program:selected,bindings:[]});
+  itemSession.dispatch({type:"annotate",target:"item-note",payload:{selection:"annotation-picked",text:"Linked"}});
+  assert.equal(getMarkItems(itemSession.getState().program,{target:"item-note"}).length,1);
+  itemSession.dispatch({type:"annotate",target:"item-note",payload:{all:true}});
+  assert.equal(getMarkItems(itemSession.getState().program,{target:"item-note"}).length,new Set(rows.map(row=>row.category)).size);
+  itemSession.dispatch({type:"annotate",target:"item-note",payload:{select:{items:[]}}});
+  assert.equal(getMarkItems(deserializeProgram(serializeProgram(itemSession.getState().program)),{target:"item-note"}).length,0);itemSession.destroy();
   assert.equal(serializeProgram(p), saved); session.destroy();
   const geo = chart().createCanvas({width:500,height:360,margin:0})
     .createGeometryData({id:"places",format:"geojson",coordinateKind:"planar",featureKey:"id",values:{type:"FeatureCollection",features:rows.map(row=>({type:"Feature",id:row.key,properties:{sourceRowIndex:row.sourceRowIndex},geometry:{type:"Point",coordinates:[row.order,row.value]}}))}})

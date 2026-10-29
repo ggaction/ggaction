@@ -7,7 +7,7 @@ import { validateOptionObject } from "../../../core/validation.js";
 import { TEXT_LABEL_LAYOUT_OPTIONS } from "./layout.js";
 
 const STYLE = Object.freeze(["blend", "clip", ...TEXT_MARK_STYLE_OPTIONS]);
-const OPTIONS = Object.freeze(["target", "text", "format", "x", "y", "placement", "layout", ...STYLE]);
+const OPTIONS = Object.freeze(["target", "text", "format", "x", "y", "placement", "layout", "select", "selection", "all", ...STYLE]);
 
 const editAnnotation = /* @__PURE__ */ closedAction({
   op: "editAnnotation",
@@ -55,6 +55,8 @@ const editAnnotation = /* @__PURE__ */ closedAction({
         ...(binding.temporalUnit === undefined ? {} : { temporalUnit: binding.temporalUnit }) });
     }
     if (Object.keys(style).length) next = next.editTextMark({ target, ...style });
+    const membership = Object.fromEntries(["select", "selection", "all"].filter(key => Object.hasOwn(args, key)).map(key => [key, args[key]]));
+    if (Object.keys(membership).length) next = next.editMarkLabelSelection({ target, ...membership });
     if (Object.hasOwn(args, "placement")) next = next.editMarkLabelPlacement({ target, placement: args.placement });
     if (Object.hasOwn(args, "layout") && args.layout !== false) next = next.layoutLabels({ ...args.layout, target });
     return next;
