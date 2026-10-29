@@ -16,6 +16,14 @@
       {
         "type": "prefix",
         "path": "unit/animation/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/animation-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/animation-offline.browser.js"
       }
     ],
     "architecture": [
@@ -206,6 +214,32 @@
       {
         "type": "prefix",
         "path": "charts/"
+      }
+    ],
+    "composition-recipes": [
+      {
+        "type": "file",
+        "path": "unit/composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-composition-recipes.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/composition-recipes.browser.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/marginal/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/bullet/"
       }
     ],
     "contour": [

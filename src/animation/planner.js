@@ -78,7 +78,7 @@ function track(match,from,to,a,b) {
 
 // First executable vertical: native keyed circles with resolved continuous x/y.
 // Other identities remain explicit concrete crossfades, never pixel-inferred tracks.
-function optionsOf(input) {
+export function normalizeTransitionOptions(input) {
   const options=ownRecord(input,"Transition options");rejectUnknownProperties(options,["durationMs","easing"],"transition options");
   validateNonNegativeFinite(options.durationMs,"Transition duration");
   const easing=Object.hasOwn(options,"easing")?options.easing:"cubic-in-out";easeProgress(.5,easing);
@@ -97,7 +97,7 @@ function assemble(from,to,a,b,options) {
 }
 export function planTransition(input) {
   ownRecord(input,"Transition request");rejectUnknownProperties(input,["from","to","options"],"transition request");
-  const options=optionsOf(input.options);
+  const options=normalizeTransitionOptions(input.options);
   requireTransitionEndpoint(input.from);requireTransitionEndpoint(input.to);budget([input.from.graphicSpec,input.to.graphicSpec]);
   const prepare=value=>{
     const proof=animationFrameProvenance(value);
@@ -160,7 +160,7 @@ export function restoreTransitionPlan(input) {
   if(input.kind!=="transition-plan"||input.version!==TRANSITION_PLAN_VERSION)throw new TypeError("Unsupported transition plan kind or version.");
   closed(input.kernels,["transition","position"],"Animation kernels");
   if(input.kernels.transition!==kernels.transition||input.kernels.position!==kernels.position)throw new TypeError("Unsupported animation kernel version.");
-  const options=optionsOf({durationMs:input.durationMs,easing:input.easing});
+  const options=normalizeTransitionOptions({durationMs:input.durationMs,easing:input.easing});
   const from=restoreEndpoint(input.from),to=restoreEndpoint(input.to);
   const plan=assemble(from.endpoint,to.endpoint,from.positions,to.positions,options);
   exactFrames.set(plan,Object.freeze({from:from.frame,to:to.frame}));registerAnimationPlan(plan,{});

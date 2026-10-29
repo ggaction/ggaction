@@ -1072,6 +1072,14 @@
     "file": "interaction.mjs",
     "cases": [
       {
+        "id": "interaction/editing-arbitration",
+        "statements": 24
+      },
+      {
+        "id": "interaction/prepared-native-preview",
+        "statements": 27
+      },
+      {
         "id": "interaction/native-camera-navigation",
         "statements": 23
       },
@@ -1146,14 +1154,6 @@
       {
         "id": "interaction/guide-and-host-cleanup",
         "statements": 85
-      },
-      {
-        "id": "interaction/editing-arbitration",
-        "statements": 24
-      },
-      {
-        "id": "interaction/prepared-native-preview",
-        "statements": 27
       }
     ]
   },
@@ -1539,6 +1539,31 @@
       },
       {
         "id": "weighted-blend/endpoints-limits-and-immutable-failure",
+        "statements": 11
+      }
+    ]
+  },
+  {
+    "file": "animation.mjs",
+    "cases": [
+      {
+        "id": "animation/public-player-interruption",
+        "statements": 32
+      },
+      {
+        "id": "animation/offline-fresh-process",
+        "statements": 8
+      },
+      {
+        "id": "animation/four-public-renderers",
+        "statements": 12
+      },
+      {
+        "id": "animation/embedded-assets-fresh-process",
+        "statements": 13
+      },
+      {
+        "id": "animation/immutable-schedules-and-corruption",
         "statements": 11
       }
     ]

@@ -6,8 +6,8 @@
 - [x] [remainingApproval](../AUTHORIZATION.json#remainingApproval) 재사용
 - [x] planner와 envelope 사이의 단일 검증 책임 합의
 - [x] 독립 시각 목록·한도·오염 실패 검증
-- [ ] 실제 endpoint·이미지·폰트 바이트를 담은 저장·복원
-- [ ] 새 프로세스의 network 0 및 같은 시각의 canonical scene 일치
+- [x] 실제 endpoint·이미지·폰트 바이트를 담은 저장·복원
+- [x] 새 프로세스의 network 0 및 같은 시각의 canonical scene 일치
 - [ ] SVG/Canvas/PNG/PDF·공개 타입·문서·설치 소비자
 
 승인은 구현 완료를 뜻하지 않는다. 이 기록은 이미 승인된 원안의 구체화이며,
@@ -53,7 +53,7 @@ fps는 양의 finite 값이며 `frameIndex / fps * 1000`으로 각 시각을 독
 종료시각이 그 격자 위에 없으면 임의의 마지막 frame을 추가하지 않는다. 정확한 종료
 장면도 필요한 호출자는 `timesMs`에 duration을 명시한다. duration 0은 `[0]`이다.
 frame 수는 기존 generated-item 상한 10,000을 재사용하며 요청 전체를 sampling 전에
-검증한다. 실제 frame 누적 작업량 역시 기존 work 상한을 적용할 예정이다.
+검증한다. 실제 frame 누적 작업량은 frame수×max(1,양endpointnode수)로 기존10M 상한을 적용한다.
 
 ## 검증 경계
 
@@ -77,3 +77,11 @@ hash는 [independent evidence](offline-independent-evidence/qualification.json)�
 실패를 보존했고, Node20/22/24 canonical staging 실제 최대1,580,251 packed /
 7,183,760 unpacked에 따른 최소한도1109/1,581,000/7,184,000만 적용한다.
 실제 transition offline/fresh-process/4formats 및 공개 package 자격은 다음 결합 의무다.
+
+## 공개 연결 후보
+
+`ggaction/animation`의 여섯 함수는 단일 entry/선언으로 연결했다. planner/rebase는
+69cb70d0c, 공개 player는 d86e49cd3의 지정 source/test delta를 보존한다.
+현재 typed 지원은 Cartesian circle point이며 다른 family는 명시한 fallback이다.
+집중143개, 새프로세스 actual image/font bytes replay, browser DPR1/2, 세시각의
+PNG/PDF interior oracle은 통과했다. 최종 패키지·문서 qualification은 이어서 기록한다.

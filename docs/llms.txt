@@ -157,6 +157,7 @@ requirements after resolving each part.
 - Violin Plots: ./api/violin-plots/
 - Guides: ./api/guides/
 - Titles: ./api/titles/
+- Animate and Export Chart Frames: ./api/animation/
 - Inspect Chart Items: ./api/interaction/
 - Inspect Overlapping Chart Items: ./recipes/inspect-chart/
 - Program Composition: ./api/composition/

@@ -211,6 +211,7 @@ The package is ESM-only and requires Node.js 20 or later.
 | `ggaction/inspection` | Inspect dataset schemas, action applicability, program changes, and concrete results without mutation |
 | `ggaction/diagnostics` | Read structured error codes and resource details in Browser or Node |
 | `ggaction/svg` | Serialize a completed program to browser-safe SVG |
+| `ggaction/animation` | Prepare, sample, play, save, and export immutable transition frames |
 | `ggaction/scene` | Read-only structured transition scenes and native Canvas scene drawing |
 | `ggaction/graph` | Prepare and compute bounded graph edge routes with an explicit worker/cache lifetime |
 | `ggaction/interaction` | Inspect marks and guides through browser events or headless CSS-point queries |

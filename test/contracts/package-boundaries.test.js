@@ -18,6 +18,7 @@ import {
 } from "../../src/inspection.js";
 
 const PUBLIC_ENTRIES = Object.freeze({
+  "./animation": Object.freeze({ runtime: "./src/animation.js", types: "./types/animation.d.ts", values: Object.freeze(["createAnimationPlayer", "deserializeAnimation", "exportAnimationFrames", "planTransition", "sampleTransition", "serializeAnimation"]) }),
   "./graph": Object.freeze({ runtime: "./src/graph.js", types: "./types/graph.d.ts", values: Object.freeze(["computeGraphEdgeRoutes", "createGraphRouteExecutor", "prepareGraphEdgeRoutes"]) }),
   "./interaction": Object.freeze({ runtime: "./src/interaction.js", types: "./types/interaction.d.ts", values: Object.freeze(["createInteractionSession"]) }),
   "./scene": Object.freeze({ runtime: "./src/scene.js", types: "./types/scene.d.ts", values: Object.freeze(["createTransitionScene", "renderTransitionScene"]) }),

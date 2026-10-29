@@ -9,10 +9,12 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 421_200, // Shared schemas, materialization and weighted rendering: Node22 421,200.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
+  "ggaction/animation": 185_500, // Installed six public animation exports: Node20 185,433 gzip bytes.
   "ggaction/interaction": 122_100 // Single-capture gesture arbitration and prepared previews: Node22 122,074.
 });
 
 function minimalBrowserSource(specifier) {
+  if (specifier === "ggaction/animation") return `import * as animation from "ggaction/animation"; globalThis.chartAnimation = animation;`;
   if (specifier === "ggaction/graph") return `import { prepareGraphEdgeRoutes, computeGraphEdgeRoutes, createGraphRouteExecutor } from "ggaction/graph"; globalThis.graphRoutes = { prepareGraphEdgeRoutes, computeGraphEdgeRoutes, createGraphRouteExecutor };`;
   if (specifier === "ggaction/interaction") return `import { createInteractionSession } from "ggaction/interaction"; globalThis.createChartInspection = createInteractionSession;`;
   if (specifier === "ggaction/svg") {

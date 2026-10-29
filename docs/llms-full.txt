@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:84adcdaae5c1e102d1583e8096ce4953e0a5067d3261b47bd88765ebc3cc71f1. Status: development. Runtime source: 0e41afeb5588b93ec778a121886b7c38a4609785. Release baseline: v0.0.13.
+Contract: sha256:d0e9be609bd6e6b84c0e1a5980533075ee29b710ed3c4ca2448b37d1bbdb8419. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/0e41afeb5588b93ec778a121886b7c38a4609785/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/0e41afeb5588b93ec778a121886b7c38a4609785/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10252,6 +10252,9 @@ ordered font-family list. SVG uses the browser's font resolution.
 Rendering consumes a completed program's `graphicSpec`. It does not read
 datasets, semantic encodings, context, or trace to infer missing output.
 
+For time-based chart transitions and offline frame export, use [animation](./api/animation/).
+Sampled frames are accepted directly by these four rendering targets.
+
 For pointer inspection of the rendered Canvas or SVG, use an explicit
 [interaction session](./api/interaction/).
 
@@ -10933,10 +10936,183 @@ Each glyph permits at most 4096 pixels on either axis, 1,048,576 pixels and 8 Mi
 The complete scene permits 16,777,216 output pixels, 64 MiB RGBA and 10,000,000 units of convolution/compositing work.
 All glyph frames are checked before large raster allocations. Text may first allocate a 1×1 measuring surface.
 
+## Weighted concrete blends
+
+The extension `weighted-blend` primitive combines each item's complete source
+pixels in premultiplied linear-light sRGB. Canvas and PNG use bounded offscreen
+surfaces per item. SVG retains native source elements and applies a `linearRGB`
+arithmetic filter. PDF retains vector endpoints and embeds only each intermediate
+weighted item as a raster at one pixel per logical unit. No backend captures the
+whole chart to implement the blend.
+
+Canvas/PNG limits are 1,048,576 pixels per item, 16,777,216 retained result pixels
+per scene, and 67,108,864 source-pixel operations. Density counts toward these
+limits. SVG applies the same logical pixel budgets to its filter regions; native
+Text retains its explicit source viewport so glyph overhangs are not cut to an
+estimated text box. Oversized requests fail explicitly. Canvas checks and prepares
+all weighted results before resizing or clearing the destination.
+
+Prepare embedded images, fonts, and shadows through the existing preparation
+functions for the exact program or scene. Inactive sources are also validated.
+A single weight-one endpoint draws its original primitive directly; empty Text,
+zero-area shapes and fully clipped sources remain transparent. Current-frame hit
+geometry follows the visible source footprints while retaining one logical item.
+See [the concrete source contract](./extension/primitives/#blend-concrete-sources-for-one-item)
+for the extension syntax.
+
 ## Related
 
 [Canvas](./api/canvas/) · [Semantic and graphical state](./concepts/semantic-and-graphics/) ·
 [Primitive extension API](./extension/primitives/)
+
+<!-- Source: /api/animation/ -->
+
+# Animate and Export Chart Frames
+
+Prepare a transition between two immutable charts, sample it at an explicit time,
+and pass the returned frame directly to Canvas, SVG, PNG, or PDF. The
+`ggaction/animation` entry is browser-safe. These functions are advanced chart
+authoring APIs; they leave both source programs and their action traces unchanged.
+
+## Prepare, save, and sample
+
+Run this complete ES module in Node.js 20+ after installing `ggaction`:
+
+> **Executable complete.** Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.
+
+```javascript
+import { chart } from 'ggaction';
+import { planTransition, serializeAnimation, deserializeAnimation,
+  exportAnimationFrames } from 'ggaction/animation';
+import { renderToSVG } from 'ggaction/svg';
+
+const from = chart().createCanvas({ width: 300, height: 200, margin: 20 })
+  .createData({ id: 'rows', keyField: 'id', values: [{ id: 'a', x: 1, y: 50 }] })
+  .createPointMark({ id: 'points', fill: '#e11d48' })
+  .encodeX({ field: 'x', scale: { type: 'log', domain: [1, 1000], nice: false } })
+  .encodeY({ field: 'y', scale: { domain: [0, 100], nice: false } });
+const to = from.reviseData({ source: 'rows', id: 'next',
+  values: [{ id: 'a', x: 100, y: 50 }] });
+const plan = planTransition({ from, to, options: { durationMs: 1000, easing: 'linear' } });
+const saved = serializeAnimation(plan, { rate: 1, repeat: 0, reducedMotion: false });
+const restored = deserializeAnimation(saved);
+const frames = exportAnimationFrames(restored.plan, { timesMs: [0, 500, 1000] });
+console.log(renderToSVG(frames[1]));
+```
+
+Item keys retain number/string distinctions and child composition namespaces.
+The current semantic kernel moves compatible Cartesian circle points by
+interpolating their data values and scale mappings. For example, a logarithmic
+axis maps the interpolated data value; it does not average endpoint pixels.
+Other geometry or incompatible appearance uses a bounded weighted crossfade,
+reported in the sample's `decisions`. Entering and exiting items retain explicit
+decisions. This surface does not promise semantic interpolation for every chart family.
+
+## Functions
+
+| Function | Result and behavior |
+| --- | --- |
+| `planTransition({from, to, options:{durationMs, easing?}})` | An opaque immutable plan. Duration is finite and nonnegative; easing is `linear` or default `cubic-in-out`. Full and Basic programs are accepted. Either endpoint can also be an authentic sampled frame. |
+| `sampleTransition(plan, timeMs)` | Immutable `{graphicSpec, scene, progress, decisions}`. Finite time is clamped to the plan's duration. For zero duration, time zero selects the target. |
+| `serializeAnimation(plan, playback?)` | A JSON string containing the prepared endpoint payloads, kernel versions, and playback preferences. |
+| `deserializeAnimation(text)` | Immutable `{plan, playback}`. It validates the complete stored values before returning an authentic plan. |
+| `exportAnimationFrames(plan, {timesMs})` | Frames with `timeMs`, using a nonempty strictly increasing array within the duration. |
+| `exportAnimationFrames(plan, {fps})` | Frames at `index / fps * 1000` milliseconds through the duration; fps must be positive and finite. |
+
+When an authentic sample is reused as an endpoint, sampling that endpoint returns
+the original frame, including its original progress and decisions. Exported
+`timeMs` belongs to the new plan and does not rewrite the endpoint progress.
+
+A frame-rate grid does not add an off-grid ending frame. Use `timesMs` when an
+exact endpoint is required. A zero-duration plan exports one frame at zero.
+Requests are limited to 10,000 frames and 10,000,000 cumulative endpoint-node
+visits before sampling. Returned arrays and frames are immutable.
+
+## Render the same frame
+
+This Node fragment follows the first example. Install the optional backend with
+`npm install @napi-rs/canvas`:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { createCanvas } from '@napi-rs/canvas';
+import { render } from 'ggaction';
+import { renderToPNGBuffer } from 'ggaction/png';
+import { renderToPDFBuffer } from 'ggaction/pdf';
+
+const frame = frames[1];
+const canvas = createCanvas(1, 1);
+render(frame, canvas.getContext('2d'));
+const png = await renderToPNGBuffer(frame);
+const pdf = await renderToPDFBuffer(frame);
+console.log(png.width, png.height, pdf.width, pdf.height);
+```
+
+In a browser, pass the frame to `render` with your Canvas context or insert the
+string from `renderToSVG`. Embedded images and fonts keep their actual bytes.
+Canvas uses the existing explicit [image and font preparation](./api/rendering/);
+PNG and PDF prepare their native bytes internally. The animation entry itself
+does not load a Node renderer, fetch assets, or write files.
+
+## Play with an explicit clock
+
+This browser fragment follows the first example and assumes a Canvas element
+whose id is `chart`. It uses the browser's animation clock explicitly:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `performance`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { render } from 'ggaction';
+import { createAnimationPlayer } from 'ggaction/animation';
+
+const context = document.querySelector('#chart').getContext('2d');
+const player = createAnimationPlayer({
+  plan: restored.plan,
+  ...restored.playback,
+  clock: {
+    now: () => performance.now(),
+    requestFrame: callback => requestAnimationFrame(callback),
+    cancelFrame: handle => cancelAnimationFrame(handle)
+  },
+  render: frame => render(frame, context)
+});
+player.play();
+await player.finished;
+player.dispose();
+```
+
+The player supports `play`, `pause`, `seek(timeMs)`, `reverse`, `setRate(rate)`,
+`setRepeat(repeat)`, `cancel`, `dispose`, `getState`, and `getFrame`.
+`interrupt({to, options:{durationMs, easing?}, rate?, repeat?, reducedMotion?})`
+accepts a program or authentic sample and continues from the current frame.
+A negative rate puts the captured frame at the new plan's ending time and plays
+back toward the target. Invalid interruption targets leave
+the active run intact. An optional `commit(frame)` callback runs on completion.
+`finished` settles with `reason`, `timeMs`, and `iteration`; reasons are
+`completed`, `cancelled`, `interrupted`, and `disposed`.
+
+Playback defaults are `rate:1`, `repeat:0`, and `reducedMotion:false`. Rate may be
+negative or zero. Repeat counts additional traversals; `Infinity` continues
+until cancellation. Reduced motion selects the endpoint in the playback direction
+and follows the same render and completion callbacks.
+
+## Offline replay and limits
+
+Saved animation contains the endpoint graphics, actual embedded image/font bytes,
+prepared semantic positions, and versioned kernels. It preserves playback
+preferences, including infinite repeat. It omits clocks, callbacks, DOM objects,
+runtime handles, promises, and the current playback position.
+
+Restoration performs no network requests or semantic data inference. Unknown
+schemas or kernels, missing asset bytes, invalid identities, inconsistent
+prepared positions, and corrupted payloads reject the entire restore. The JSON
+limit is 64 MiB, decoded nesting is at most 128 levels, and encoded/decoded values
+are each bounded to 1,000,000 occurrences. Plan preparation also has a 10,000-node
+endpoint limit and a 10,000,000-unit work limit.
+
+The same time and stored algorithm versions reproduce the same canonical scene.
+This does not assert identical font rasterization across operating systems.
 
 <!-- Source: /api/interaction/ -->
 
@@ -11022,7 +11198,8 @@ Superseding edits and destroy abort the request; a late result is released witho
 result. Native transaction events keep their existing commit/settled/error/cancel phases.
 Initial and external preparation use an `assets` event with a separate `status` field.
 
-Continue from an immutable `program` containing retained images and a Canvas `context`:
+Continue from an immutable `program` containing retained images, a Canvas `context`, and an
+explicit `interactionBindings` array (use `[]` for commands without pointer editing):
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `signal`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -11032,7 +11209,7 @@ import { createInteractionSession } from "ggaction/interaction";
 
 const assetSession = createInteractionSession({
   program,
-  bindings: [],
+  bindings: interactionBindings,
   async assetResolver({ program, signal }) {
     const bitmaps = [];
     const dispose = () => { for (const bitmap of bitmaps.splice(0)) bitmap.close(); };
@@ -11053,9 +11230,11 @@ const assetSession = createInteractionSession({
   }
 });
 const stopDrawing = assetSession.subscribe(event => {
-  if (event.phase === "commit" || (event.type === "assets" && event.status === "settled")) {
-    render(event.state.program, context, event.state.assets);
-  }
+  const state = event.state;
+  if (state.destroyed) return;
+  const current = state.previewProgram ?? state.program;
+  const assets = state.previewProgram ? state.previewAssets : state.assets;
+  if (assets) render(current, context, assets);
 });
 await assetSession.whenSettled();
 const disposeAssets = () => { stopDrawing(); assetSession.destroy(); };
@@ -11066,7 +11245,13 @@ and release their handles in the lease's `dispose`. Release partially acquired r
 preparation throws. Prepared handles belong to the exact committed program; undo/redo/reset
 prepare the restored snapshot again. `state.assets` exposes only the accepted rendering handles;
 `state.preparation` exposes the pending transaction, generation, base revision and scoped resource
-revisions. The host still owns rendering, resize observation and animation-frame preparation.
+revisions. With editing bindings, the same resolver prepares each exact preview.
+`previewProgram`, `previewAssets` and its hit frame appear together only when ready. While a new
+preview is pending, the previous accepted frame remains visible. New samples abort older pending
+work; cancellation restores the committed program and releases transient handles. Initial asset
+preparation must finish before editing capture begins. Final release prepares the latest candidate
+through the ordinary commit path and adds one history entry. The host still owns drawing and
+public animation-frame preparation.
 
 ## Undo, redo and reset
 
@@ -11553,7 +11738,7 @@ supported by this selection binding. It does not change category visibility or s
 
 The binding uses the same captured click, cancellation, child scope and linked update
 rules as ordinary click selection. It requires Full and an existing named selection.
-Only one editing pointer binding can be active alongside inspection and linked bindings.
+Editing pointer bindings share the explicit priority and modifier rules in [Combine editing gestures](./api/interaction/#combine-editing-gestures).
 For SVG, remount the new SVG element after rendering a committed program. Call
 `legendSession.destroy()` when the surface is removed; selection state remains in the chart.
 
@@ -11649,10 +11834,10 @@ of the same explicit key snapshot, or clearing an already empty key snapshot, pr
 Only primary-button click events are used; modifier keys do not change the configured mode. The
 binding does not emit inspection events by itself. Missing endpoints become inactive until restored.
 
-At most one click-selection binding is supported alongside inspection and linked bindings. A linked
+Click-selection bindings may be combined with explicit priorities and modifier conditions. A linked
 target cannot also be its click-selection writer. Root and explicit concat owners are supported;
 facet source geometry is not inferred. Basic supports inspection, but this binding requires Full.
-The controller does not yet arbitrate competing bindings, keyboard activation or modifiers.
+Use the arbitration options below to choose bindings; automatic keyboard focus remains separate.
 
 For SVG, render `event.current`, replace the SVG element, then call `clickSession.mount(newSvg)`;
 remounting removes the old listeners. Call `clickSession.destroy()` when the host is removed.
@@ -11671,7 +11856,7 @@ inspection runs after this up commit. Host controls may still send an activation
 the controller does not assign Enter/Space behavior or a focused item.
 
 Custom event surfaces without pointer-capture methods keep click-only handling. Native Canvas and SVG
-Elements use capture automatically. Brush/lasso dragging, competing bindings, navigation pinch are not supported by this binding. History commands operate on the whole session.
+Elements use capture automatically. Brush/lasso and navigation are separate binding types; this click binding does not start their gestures. History commands operate on the whole session.
 
 ## Brush or lasso an existing selection
 
@@ -11732,8 +11917,7 @@ stable wrapper with the same logical dimensions and replace only its SVG content
 replacing the captured element cancels the gesture. Canvas/SVG use the same program, and ordinary
 PNG/PDF exports can render a preview snapshot without running a controller.
 
-Explicit concat targets retain child scope. Facet-source geometry, Basic editing, competing gesture
-bindings and navigation are not inferred. Lasso input is limited to 10,000 samples and
+Explicit concat targets retain child scope. Facet-source geometry, Basic editing and navigation are not inferred. Lasso input is limited to 10,000 samples and
 50,000 candidate anchors, with bounded cumulative geometry work. Dispose the session when its host
 is removed.
 
@@ -11979,8 +12163,7 @@ active. Escape, lost capture, pointer cancel, blur, external program/frame updat
 release both pointers and discard the draft. A late pointer-up has no effect. Wheel and keyboard each use
 one native command; Ctrl/Meta/Alt keyboard shortcuts remain with the host. The host owns focus and touch
 CSS. Remove the binding by creating a new session; incompatible targets fail, and a removed target remains
-inactive until an explicit matching owner returns. The current session supports one editing pointer
-binding alongside inspection/context-menu bindings. Animated camera playback is a separate integration.
+inactive until an explicit matching owner returns. Editing bindings share one capture owner alongside inspection/context-menu bindings. Animated camera playback is a separate integration.
 
 ## Move graph nodes with pointer or keyboard
 
@@ -12144,6 +12327,57 @@ Subscribe to the `program` event to render the accepted replacement. The subsequ
 their existing transaction phases. Supply `createWorker` to `createGraphRouteExecutor` when work should run
 in a worker; the executor owns its transport and honors the session signal. Keep the executor until its owning
 view is disposed, then call `disposeRoutes()`.
+
+## Combine editing gestures
+
+Use `modifiers` to choose an explicit binding and `priority` to override its default rank. Each optional
+`alt`, `ctrl`, `meta` and `shift` flag is a boolean requirement; omitted flags impose no condition.
+Default ranks are annotation 50, brush/lasso 40, node movement 30, navigation 20 and click/legend 10. Priority
+must be an integer between -1,000,000 and 1,000,000. Equal ranks with overlapping conditions are rejected
+before mounting, including bindings with different targets. Reordering the binding array does not resolve a tie.
+
+A higher rank only wins when its target applies at the pointer location. Hidden or removed annotations,
+node misses and another child's viewport do not block lower-ranked candidates. The winner is fixed from
+pointerdown through release or cancel; changing modifiers mid-drag does not switch tools. Only navigation
+can take a second pointer, and only within its chosen viewport. Every gesture uses the same preview, prepared asset, history and cleanup rules.
+
+> **Executable complete.** Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture.
+
+```js
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+canvas.style.touchAction = "none";
+canvas.setAttribute("aria-label", "Points: drag the label, Shift-drag to brush, or click a point");
+const program = chart().createCanvas({ width: 300, height: 200, margin: 0 })
+  .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 50, y: 60 }, { id: "b", x: 200, y: 130 }] })
+  .createPointMark({ id: "points" }).encodePointRadius({ value: 8 })
+  .encodeX({ field: "x", scale: { domain: [0, 300], range: [0, 300] } })
+  .encodeY({ field: "y", scale: { domain: [0, 200], range: [0, 200] } })
+  .selectMarks({ id: "picked", target: "points", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", dimOthers: false })
+  .createAnnotation({ id: "note", space: "screen", x: 150, y: 30, text: "Drag label", align: "center", baseline: "middle" });
+const gestureBindings = [
+  { type: "annotate", target: "note" },
+  { type: "brush", target: "points", selection: "picked", modifiers: { shift: true } },
+  { type: "select", target: "points", selection: "picked", mode: "toggle", modifiers: { shift: false } }
+];
+const gestureSession = createInteractionSession({ program, bindings: gestureBindings });
+const draw = state => render(state.previewProgram ?? state.program, canvas.getContext("2d"), { pixelRatio: 2 });
+const unsubscribe = gestureSession.subscribe(event => { if (!event.state.destroyed) draw(event.state); });
+draw(gestureSession.getState());
+gestureSession.mount(canvas);
+const disposeGestures = () => { unsubscribe(); gestureSession.destroy(); };
+```
+
+The annotation wins when its label is hit, including while Shift is pressed. Elsewhere Shift selects the
+brush and a plain click toggles a point. `priority` and `modifiers` are available on all editing bindings,
+including legends and navigation; they do not apply to inspection, context menus or linked bindings.
+There are at most256 editing bindings and259 total records. A click clear-on-miss remains an applicable
+command; use `onMiss:"ignore"` when a miss should fall through. Wheel and keyboard arbitrate navigation
+bindings, while native Ctrl/Meta/Alt shortcuts remain with the host. SVG hosts keep the root during a drag
+and remount when replacing it. Call `disposeGestures()` when removing this view.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -18322,6 +18556,7 @@ documentation interaction tests run in Playwright Chromium. Library renderer com
 | `ggaction/accessibility` | Browser or Node.js 20+ | Read visual data for accessible tables and descriptions |
 | `ggaction/inspection` | Browser or Node.js 20+ | Inspect schemas, applicability, changes, and concrete results |
 | `ggaction/diagnostics` | Browser or Node.js 20+ | Read structured error details |
+| `ggaction/animation` | Browser or Node.js 20+ | Prepare, play, save, restore, and export immutable transition frames |
 | `ggaction/scene` | Browser or Node.js 20+ | Read transition scenes and draw native Canvas scenes |
 | `ggaction/graph` | Browser or Node.js 20+ | Prepare graph routes with explicit worker and cache ownership |
 | `ggaction/interaction` | Browser or Node.js 20+ | Inspect current marks and guides; DOM-free until mounted |
@@ -25163,9 +25398,10 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Required | `string` |
-| `coordinateKind` | Required | `"geographic" \| "planar"` |
 | `featureKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
 | `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `coordinateKind` | Required | `"geographic" \| "planar"` |
+| `polygonWinding` | Optional / branch-dependent | `"left-hand" \| "right-hand" \| undefined` |
 | `format` | Required | `"geojson" \| "topojson"` |
 | `values` | Required | `TopoJSONInput \| GeoJSONInput` |
 | `topoObject` | Optional / branch-dependent | `string \| undefined` |
@@ -25202,6 +25438,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `coordinateKind` | Optional / branch-dependent | `"geographic" \| "planar" \| undefined` |
 | `topoObject` | Optional / branch-dependent | `string \| undefined` |
 | `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `polygonWinding` | Optional / branch-dependent | `"left-hand" \| "right-hand" \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -35829,6 +36066,8 @@ export type {
   GraphicObject,
   GraphicSpec,
   GraphicType,
+  GraphicBlendSource,
+  GraphicWeightedBlendProperties,
   GroupEncodingOptions,
   GradientPlotAppearanceOptions,
   GradientPlotCenterOptions,
@@ -36036,6 +36275,7 @@ export type { GeoLODBaseLevel, GeoLODChildLevel, GeoLODLevels, CreateGeoLODDataO
 [Complete declaration and relative dependencies](./types/basic.d.ts)
 
 ```typescript
+export type { GraphicBlendSource, GraphicWeightedBlendProperties } from "./program.js";
 export type { FillPaint, MarkOutline, MarkShadow, BlendMode, LinearGradientPaint, PatternPaint, RadialGradientPaint, LinearGradientStop } from "./program.js";
 import type { CanvasTransitionScene } from "./scene.js";
 export type { ConcreteImage, ImageMimeType, PreparedImageRendering, ImageRenderingHost, CanvasRenderOptions } from "./program.js";
@@ -36217,7 +36457,7 @@ import { ChartProgram } from "./program.js";
 export { ChartProgram };
 export type {
   InputRef, InputRowRef, RowLineage, GraphicIdentity, GraphicLineageRef, PersistentSelectionResource,
-  FillPaint, MarkOutline, MarkShadow,
+  FillPaint, MarkOutline, MarkShadow, GraphicBlendSource, GraphicWeightedBlendProperties,
   PatternPaint,
   RadialGradientPaint,
   LinearGradientPaint,
@@ -36570,7 +36810,7 @@ export interface TransitionScene {
 }
 export interface CanvasTransitionNode {
   readonly key: string;
-  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image';
+  readonly type: 'circle' | 'rect' | 'line' | 'path' | 'text' | 'image' | 'weighted-blend';
   readonly topology: string;
   readonly properties: Readonly<NonNullable<GraphicObject['properties']>>;
   /** Explicit outer-to-inner global clip frames; the root physical viewport is implicit. */
@@ -36655,7 +36895,12 @@ export interface ContextMenuBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
-export interface ClickSelectionBinding {
+/** Pointer arbitration uses explicit modifier conjunctions and bounded integer priorities. */
+export interface GestureBindingOptions {
+  readonly priority?: number;
+  readonly modifiers?: { readonly alt?: boolean; readonly ctrl?: boolean; readonly meta?: boolean; readonly shift?: boolean };
+}
+export interface ClickSelectionBinding extends GestureBindingOptions {
   readonly type: 'select';
   /** Existing authored selection on an explicit root or concat mark owner. */
   readonly target: InteractionTarget;
@@ -36666,7 +36911,7 @@ export interface ClickSelectionBinding {
   readonly hitInvisible?: boolean;
 }
 /** Activate a categorical legend block using its public channel and existing selection. */
-export interface LegendSelectionBinding {
+export interface LegendSelectionBinding extends GestureBindingOptions {
   readonly type: 'legend';
   readonly effect: 'selection';
   readonly target: InteractionTarget;
@@ -36677,7 +36922,7 @@ export interface LegendSelectionBinding {
   readonly slop?: number;
 }
 /** Toggle actual category membership; the control legend remains available to restore it. */
-export interface LegendVisibilityBinding {
+export interface LegendVisibilityBinding extends GestureBindingOptions {
   readonly type: 'legend';
   readonly effect: 'visibility';
   readonly target: InteractionTarget;
@@ -36685,7 +36930,7 @@ export interface LegendVisibilityBinding {
   readonly scaleDomain: 'visible-data' | 'all-data';
   readonly slop?: number;
 }
-interface RegionSelectionBindingOptions {
+interface RegionSelectionBindingOptions extends GestureBindingOptions {
   readonly target: InteractionTarget;
   readonly selection: string;
   readonly mode?: 'replace' | 'add' | 'toggle' | 'subtract' | 'intersect';
@@ -36700,11 +36945,11 @@ export interface LassoSelectionBinding extends RegionSelectionBindingOptions {
   readonly type: 'lasso';
 }
 /** Drag one current graph node; target must have an explicit plot origin and fixed or force layout. */
-export interface NodeMovementBinding { readonly type: 'moveNode'; readonly target: InteractionTarget; }
+export interface NodeMovementBinding extends GestureBindingOptions { readonly type: 'moveNode'; readonly target: InteractionTarget; }
 /** Drag the target annotation layer by native pixel offsets, preserving its semantic anchor. */
-export interface AnnotationMovementBinding { readonly type: 'annotate'; readonly target: InteractionTarget; }
+export interface AnnotationMovementBinding extends GestureBindingOptions { readonly type: 'annotate'; readonly target: InteractionTarget; }
 /** Native projection navigation. The host supplies focus and touch-action: none. */
-export type NavigationBinding = {
+export type NavigationBinding = GestureBindingOptions & {
   readonly type: 'navigate';
   readonly target: InteractionTarget;
   readonly scaleExtent: readonly [number, number];
@@ -36782,6 +37027,8 @@ export interface InteractionState {
   readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
   /** Prepared handles for this exact committed program; host passes them to its renderer. */
   readonly assets: Readonly<InteractionAssets> | null;
+  /** Transient handles for the exact previewProgram; never use committed assets for that preview. */
+  readonly previewAssets: Readonly<InteractionAssets> | null;
   /** Pending candidate identity. Program and history remain committed until ready. */
   readonly preparation: InteractionPreparation | null;
   readonly mounted: boolean;
@@ -37003,6 +37250,113 @@ export interface GraphEdgeRoutesHost { readonly requestToken: string; readonly s
 export function createGraphRouteExecutor(options?: { readonly createWorker?: () => GraphRouteWorker }): GraphRouteExecutor;
 export function computeGraphEdgeRoutes(job: GraphRouteJob, signal?: AbortSignal): GraphRouteCompletion;
 export function prepareGraphEdgeRoutes(program: ChartProgram, request: GraphEdgeRoutesRequest, host: GraphEdgeRoutesHost): Promise<PreparedGraphEdgeRoutes>;
+```
+
+#### `ggaction/animation`
+
+[Complete declaration and relative dependencies](./types/animation.d.ts)
+
+```typescript
+import type { ChartProgram } from './program.js';
+import type { BasicChartProgram } from './basic.js';
+import type { CanvasTransitionScene } from './scene.js';
+
+declare const transitionPlan: unique symbol;
+declare const transitionFrame: unique symbol;
+export type AnimationProgram = ChartProgram | BasicChartProgram;
+export type AnimationEasing = 'linear' | 'cubic-in-out';
+export interface TransitionOptions {
+  readonly durationMs: number;
+  readonly easing?: AnimationEasing;
+}
+/** Created only by planTransition or deserializeAnimation. */
+export interface TransitionPlan {
+  readonly [transitionPlan]: true;
+  readonly kind: 'transition-plan';
+  readonly version: 1;
+  readonly durationMs: number;
+  readonly easing: AnimationEasing;
+}
+export type TransitionDecision =
+  | { readonly kind: 'enter'; readonly targetIndex: number }
+  | { readonly kind: 'exit'; readonly sourceIndex: number }
+  | { readonly kind: 'exact' | 'semantic-kernel' | 'crossfade'; readonly sourceIndex: number;
+      readonly targetIndex: number; readonly itemKey?: string; readonly owner?: string;
+      readonly role: string; readonly kernel?: string; readonly reason?: string };
+/** An authentic immutable sample, directly accepted by all four renderers. */
+export interface TransitionFrame extends Readonly<Pick<ChartProgram, 'graphicSpec'>> {
+  readonly [transitionFrame]: true;
+  readonly scene: CanvasTransitionScene;
+  readonly progress: number;
+  readonly decisions: readonly TransitionDecision[];
+}
+export interface ExportedAnimationFrame extends TransitionFrame { readonly timeMs: number; }
+export interface PlaybackOptions {
+  readonly rate?: number;
+  /** Additional repetitions; Infinity repeats until cancelled. */
+  readonly repeat?: number;
+  readonly reducedMotion?: boolean;
+}
+export interface AnimationPlayback {
+  readonly rate: number;
+  readonly repeat: number;
+  readonly reducedMotion: boolean;
+}
+export interface RestoredAnimation {
+  readonly plan: TransitionPlan;
+  readonly playback: AnimationPlayback;
+}
+export type AnimationFrameOptions =
+  | { readonly timesMs: readonly number[]; readonly fps?: never }
+  | { readonly fps: number; readonly timesMs?: never };
+export declare function planTransition(input: {
+  readonly from: AnimationProgram | TransitionFrame;
+  readonly to: AnimationProgram | TransitionFrame;
+  readonly options: TransitionOptions;
+}): TransitionPlan;
+export declare function sampleTransition(plan: TransitionPlan, timeMs: number): TransitionFrame;
+export declare function serializeAnimation(plan: TransitionPlan, playback?: PlaybackOptions): string;
+export declare function deserializeAnimation(text: string): RestoredAnimation;
+export declare function exportAnimationFrames(plan: TransitionPlan, options: AnimationFrameOptions): readonly ExportedAnimationFrame[];
+
+export interface AnimationClock<Handle = number> {
+  now(): number;
+  requestFrame(callback: () => void): Handle;
+  cancelFrame(handle: Handle): void;
+}
+export interface AnimationPlayerState {
+  readonly status: 'idle' | 'playing' | 'paused' | 'finished' | 'cancelled' | 'disposed';
+  readonly timeMs: number;
+  readonly durationMs: number;
+  readonly rate: number;
+  readonly iteration: number;
+  readonly repeat: number;
+}
+export interface AnimationSettlement {
+  readonly reason: 'completed' | 'cancelled' | 'disposed' | 'interrupted';
+  readonly timeMs: number;
+  readonly iteration: number;
+}
+export interface AnimationPlayer {
+  play(): AnimationPlayer;
+  pause(): AnimationPlayer;
+  seek(timeMs: number): AnimationPlayer;
+  reverse(): AnimationPlayer;
+  setRate(rate: number): AnimationPlayer;
+  setRepeat(repeat: number): AnimationPlayer;
+  cancel(): AnimationPlayer;
+  interrupt(input: PlaybackOptions & { readonly to: AnimationProgram | TransitionFrame; readonly options: TransitionOptions }): AnimationPlayer;
+  dispose(): void;
+  getState(): AnimationPlayerState;
+  getFrame(): TransitionFrame | undefined;
+  readonly finished: Promise<AnimationSettlement>;
+}
+export declare function createAnimationPlayer<Handle>(input: PlaybackOptions & {
+  readonly plan: TransitionPlan;
+  readonly clock: AnimationClock<Handle>;
+  readonly render: (frame: TransitionFrame) => void;
+  readonly commit?: (frame: TransitionFrame) => void;
+}): AnimationPlayer;
 ```
 
 ## Rendering functions
@@ -39946,10 +40300,14 @@ Related types: [`GeoLODLevels`](./reference/types/#type-geolodlevels).
 
 ```typescript
 export type CreateGeometryDataOptions = {
-  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  readonly id: string;
   /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
   readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
-} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+} & ({ readonly coordinateKind: "geographic";
+  /** Source ring convention. Omission preserves right-hand; retained coordinates are never reversed. */
+  readonly polygonWinding?: "right-hand" | "left-hand" }
+  | { readonly coordinateKind: "planar"; readonly polygonWinding?: never })
+  & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
   | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
 ```
 
@@ -42719,6 +43077,8 @@ Related types: [`GeoShapeMarkOptions`](./reference/types/#type-geoshapemarkoptio
 export interface EditGeometryDataOptions {
   readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
   readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+  /** Geographic sources only; edits preserve unspecified source convention. */
+  readonly polygonWinding?: "right-hand" | "left-hand";
 }
 ```
 
@@ -45226,6 +45586,8 @@ Related types: [`InferredGraphSource`](./reference/types/#type-inferredgraphsour
 
 ```typescript
 export type GraphicClip = GraphicClipRect | GraphicClipPath;
+
+/** One fully materialized primitive in a flat linear-light weighted blend. */
 ```
 
 Related types: [`GraphicClipRect`](./reference/types/#type-graphiccliprect) · [`GraphicClipPath`](./reference/types/#type-graphicclippath).
@@ -45267,7 +45629,8 @@ export type GraphicType =
   | "line"
   | "text"
   | "path"
-  | "image";
+  | "image"
+  | "weighted-blend";
 ```
 
 ### `GraticuleOptions` {#type-graticuleoptions}
@@ -51604,12 +51967,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0e41afeb5588b93ec778a121886b7c38a4609785/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/0e41afeb5588b93ec778a121886b7c38a4609785/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -51707,6 +52070,50 @@ Typed `editGraphics({ property: "items", ... })` entries may include
 produce a stable private child ID; ordered path membership produces its topology
 fingerprint. `GraphicLineageRef` links to the exact data revision and row keys.
 Renderers consume this concrete metadata without reading semantic state.
+
+## Blend concrete sources for one item
+
+Use the `weighted-blend` graphic type when an extension needs a crossfade between
+fully materialized primitives, including different Text or primitive kinds.
+It combines colors in premultiplied linear-light sRGB. Two overlapping source-over
+opacity layers do not produce this result.
+
+> **Executable complete.** Import ChartProgram from ggaction/extension; all materialized primitive sources and clips are included in the complete example.
+
+```javascript
+import { ChartProgram } from "ggaction/extension";
+
+const source = (weight, fill) => ({
+  weight, type: "rect",
+  properties: { x: 10, y: 10, width: 20, height: 20,
+    fill, stroke: "none", strokeWidth: 0 },
+  offset: [0, 0], clip: { x: 0, y: 0, width: 80, height: 80 }, clips: []
+});
+const program = new ChartProgram()
+  .createGraphics({ id: "canvas", type: "canvas" })
+  .editGraphics({ target: "canvas", property: "width", value: 80 })
+  .editGraphics({ target: "canvas", property: "height", value: 80 })
+  .createGraphics({ id: "item", type: "weighted-blend" })
+  .editGraphics({ target: "item", property: "sources",
+    value: [source(0.5, "red"), source(0.5, "blue")] });
+```
+
+Each source has exactly `weight`, `type`, `properties`, `offset`, `clip`, and
+`clips`. Types are `circle`, `rect`, `line`, `text`, `path`, or `image` with their
+complete concrete properties. Offsets translate primitive geometry. The required
+rectangular `clip` and additional rectangular/path `clips` use the group's local
+frame. Embedded image/font bytes and outline/shadow properties stay with each source.
+
+Provide 2–64 flat sources with finite weights from 0 to 1 summing to 1. A weight
+of zero does not bypass validation or asset preparation. Nested blends are rejected;
+flatten an interrupted blend's weights before combining it with another source.
+The group's optional `opacity` and `blend` apply once after the weighted sum.
+Source `blend` must be absent or `normal`; one shared backdrop mode belongs to
+the group. Transitions between different backdrop modes need an explicit policy.
+
+[Renderer limits and preparation](./api/rendering/#weighted-concrete-blends)
+apply to all sources. Graphic and editable serialization preserve the concrete
+sources without retaining callbacks or renderer objects.
 
 <!-- Source: /api/data/summaries-and-shaping/ -->
 
@@ -54692,9 +55099,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:84adcdaae5c1e102d1583e8096ce4953e0a5067d3261b47bd88765ebc3cc71f1` |
+| Contract fingerprint | `sha256:d0e9be609bd6e6b84c0e1a5980533075ee29b710ed3c4ca2448b37d1bbdb8419` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `0e41afeb5588b93ec778a121886b7c38a4609785` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |
@@ -56687,6 +57094,14 @@ Keep geographic or planar shapes in an immutable resource with explicit feature
 identity. These Full `ggaction` actions prepare source geometry; creating a
 resource does not draw it. [Contours](./api/contours/) use the same resource kind
 with their own scalar-grid contract.
+
+Clockwise geographic datasets can declare `polygonWinding: "left-hand"` when creating
+or editing their geometry source. The default `"right-hand"` convention preserves existing
+counterclockwise exteriors and clockwise holes. This declaration preserves all source
+coordinates and hashes; projection, fit, feature centroids and labels share it. Reversing a
+ring relative to the declared convention still represents a spherical complement. Planar
+sources do not accept this option. Generated geographic-radius circles retain their own
+direction, including circles larger than a hemisphere.
 
 ## `createGeometryData`
 

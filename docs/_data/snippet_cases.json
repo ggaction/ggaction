@@ -667,5 +667,15 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use a Canvas with id chart. Drag the label, Shift-drag a selection rectangle, or click a point. Escape cancels the active gesture."
+  },
+  {
+    "id": "animation-offline",
+    "file": "api/animation.md",
+    "contains": "const saved = serializeAnimation",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "from,to",
+    "prerequisites": "Run this complete ES module with ggaction installed; keyed rows, both endpoints and the offline frame schedule are included.",
+    "rendering": "authoring-only"
   }
 ]

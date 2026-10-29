@@ -44,6 +44,7 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 | `ggaction/accessibility` | `src/accessibility.js` | `types/accessibility.d.ts` |
 | `ggaction/inspection` | `src/inspection.js` | `types/inspection.d.ts` |
 | `ggaction/scene` | `src/scene.js` | `types/scene.d.ts` |
+| `ggaction/animation` | `src/animation.js` | `types/animation.d.ts` |
 | `ggaction/graph` | `src/graph.js` | `types/graph.d.ts` |
 | `ggaction/interaction` | `src/interaction.js` | `types/interaction.d.ts` |
 
@@ -3117,7 +3118,17 @@ facet guide reuse avoids rebuilding completed panels without changing exports or
 explicit guide creation semantics. This is a measured correctness-feature allowance,
 not a bundle optimization claim.
 
-## 읽기 전용 전환 장면과 외부 재생기
+## 읽기 전용 전환 장면과 애니메이션
+
+현재 공개 `ggaction/animation`은 계획·sampling·명시 clock player·offline envelope·frame export를
+소유한다. `src/animation.js`와 `types/animation.d.ts`가 한 entry이며, 아래 외부 재생기 설명은
+이전 scene-only 단계의 경계다. `ANIMATION.md`의 현재계약으로 확장되었다.
+계획은 semantic point 준비를 공유 materialization owner에서 읽고 renderer는 결과 graphicSpec만
+읽는다. offline payload 검증은 planner의 단일 export/restore, tagged encoding과64MiB 예산은
+envelope codec, 재생 preferences와시간목록은 grammar owner로 분리된다. controller clock·
+callback·Promise·frame provenance는 runtime만 소유하며 ChartProgram 상태로 저장하지 않는다.
+공개 내보내기 결과는 네 renderer가 직접 받을 graphicSpec과 scene을 함께 제공한다.
+정확 API·지원범위·오류는 [Current](contract/current/ANIMATION.md)가 소유한다.
 
 사용자가 2026-10-22 승인한 분리 구조에 따라 `ggaction/scene`의
 `createTransitionScene(program)`은 버전 1 장면 계약을 제공한다. 기존 selection의
