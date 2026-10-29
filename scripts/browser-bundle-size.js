@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 422_200, // Combined installed Basic authoring: Node20/24 422,154 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 192_000, // Typed completed graph and flat frame proof: Node20/24 191,948 gzip bytes.
+  "ggaction/animation": 199_800, // Public partition tracks: Node20/24 199,722 gzip bytes.
   "ggaction/interaction": 128_700 // Shared admission and bounded native preparation work: Node20 128,607.
 });
 

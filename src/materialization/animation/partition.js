@@ -7,6 +7,7 @@ import { namespaceItemKey, unnamespaceItemKey } from "../../grammar/schemas/grap
 import { createPartitionAnimationState } from "../../grammar/animation/partitionState.js";
 import { resolveCoordinatePolarFrame } from "../coordinateBounds.js";
 import { resolvePartitionPlot } from "../hierarchy/partitionPlot.js";
+import { partitionAnimationGroupWork } from "./partitionGeometry.js";
 
 const geometry = new Set(["x", "y", "width", "height", "commands", "fillBounds"]);
 const geometryOf = graphic => Object.fromEntries(Object.entries(graphic.properties).filter(([key]) => geometry.has(key)));
@@ -41,7 +42,7 @@ export function projectPartitionAnimations(program, endpoint) {
     let entry = prepared.get(id);
     if (entry === undefined) {
       entry = prepareGroup(scope, layer, namespaces, id);
-      validateWorkLimit(work += entry.group.meaning.state.nodes.length * 64, "Partition animation projection work");
+      validateWorkLimit(work += partitionAnimationGroupWork(entry.group), "Partition animation projection work");
       groupIndices.set(id, groups.length); groups.push(entry.group); prepared.set(id, entry);
     }
     if (resolveGraphicLineage(program, identity) !== entry.layout) throw new TypeError("Partition animation requires its exact native layout lineage.");

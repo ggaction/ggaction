@@ -1,3 +1,4 @@
+import { isPartitionAnimationFallbackReason } from "../grammar/animation/partitionState.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { interpolateNumber } from "../grammar/animation/values.js";
 import { translateWeightedBlendSources } from "../grammar/schemas/weightedBlend.js";
@@ -9,7 +10,7 @@ import { isGraphAnimationFallbackReason } from "../grammar/animation/graphState.
 const reasons=new Set(["primitive-kind","topology","clip-topology","appearance","scale-clamp","scale-parameters",
   "degenerate-domain","scale-direction","log-sign","canvas-background","collapsed-domain","nonfinite-position"]);
 export function validateAnimationFallbackReason(reason) {
-  if(!isPointAnimationFallbackReason(reason)&&!isGraphAnimationFallbackReason(reason)&&!reasons.has(reason))throw new TypeError("Unknown animation crossfade reason.");
+  if(!isPartitionAnimationFallbackReason(reason)&&!isPointAnimationFallbackReason(reason)&&!isGraphAnimationFallbackReason(reason)&&!reasons.has(reason))throw new TypeError("Unknown animation crossfade reason.");
 }
 
 export const sameConcreteValue = (a, b) => JSON.stringify(a) === JSON.stringify(b);

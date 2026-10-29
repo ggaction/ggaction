@@ -4498,3 +4498,13 @@ unpacked7,343,716bytes다. 최소 상한1135/1,621,000/7,344,000을 적용한다
 animation191,948bytes이며 최소100-byte 상한774,100/422,200/192,000을 적용한다.
 기존 SVG/graph/interaction 한도는 유지하며 Node 전용 renderer를 animation entry에 넣지 않는다.
 공개 graph 단락 추가 후 search payload1,080,369bytes에 최소1000-byte 상한1,081,000을 적용한다.
+
+### Public partition animation integration
+
+기존 공개 animation planner/sampler가 `materialization/animation/partition`의 exact
+layout/view 의미를 namespace별 group/item vector로 소비한다. Current frame은 normalized
+cell·basis·bend 의미를 flat private provenance에 보존하고 offline payload도 같은 owner로
+검증한다. `grammar/hierarchy/partitionCell`이 이전 private partition frame과 공개 animation의
+현재 cell path/anchor 계산을 공유한다. Native endpoint renderer, ChartProgram semantic state,
+공개 함수 signature는 변하지 않으며 renderer는 완성된 graphicSpec만 읽는다. 정확한 지원과
+fallback 경계는 [ANIMATION](contract/current/ANIMATION.md#partition의-native-일반-방향-전환)이 소유한다.

@@ -37,3 +37,13 @@ const graphPlan=planTransition({from:graphFrom,to:graphTo,options:{durationMs:10
 const graphFrames=exportAnimationFrames(deserializeAnimation(serializeAnimation(graphPlan)).plan,{timesMs:[0,50,100]});
 render(graphFrames[1],context);renderToSVG(graphFrames[1]);renderToPNGBuffer(graphFrames[1]);renderToPDFBuffer(graphFrames[1]);
 planTransition({from:graphFrames[1],to:graphTo,options:{durationMs:100}});
+
+const partitionFrom=chart().createCanvas({plot:{width:300,height:100}})
+ .createData({id:'hierarchyRows',values:[{key:'root',parent:null,value:10},{key:'a',parent:'root',value:10}]})
+ .createHierarchyData({id:'hierarchy',key:'key',parent:'parent',value:'value'})
+ .layoutHierarchy({id:'partitionLayout',method:'partition'}).createPartitionPlot({id:'partition',labels:false});
+const partitionTo=partitionFrom.createCoordinate({id:'polar',type:'polar'}).editPartitionPlot({coordinate:'polar',direction:'counterclockwise'});
+const partitionPlan=planTransition({from:partitionFrom,to:partitionTo,options:{durationMs:100}});
+const partitionFrames=exportAnimationFrames(deserializeAnimation(serializeAnimation(partitionPlan)).plan,{timesMs:[0,50,100]});
+render(partitionFrames[1],context);renderToSVG(partitionFrames[1]);renderToPNGBuffer(partitionFrames[1]);renderToPDFBuffer(partitionFrames[1]);
+planTransition({from:partitionFrames[1],to:partitionFrom,options:{durationMs:100}});

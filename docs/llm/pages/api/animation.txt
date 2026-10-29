@@ -59,6 +59,27 @@ moving independently. These rules also apply after offline serialization. Native
 current-frame hit testing uses the displayed geometry; restored offline frames can
 render and rebase, but cannot bind to a live session without native endpoint metadata.
 
+## Bend an icicle into a sunburst
+
+PartitionPlot transitions use the stored hierarchy cells and their stable parent
+relationships. Compatible icicle and sunburst directions interpolate the current
+frame, radial hole, cell intervals, and gaps with the native bend geometry. Labels
+follow their current cells. Sampling uses the completed hierarchy layout.
+The decision kernel is `partition`.
+
+Use the same `planTransition` and `sampleTransition` functions with two programs
+created through [PartitionPlot](../../../api/partition/). Either endpoint can be an authentic
+sampled frame, so reversing or interrupting a bend preserves its current shape.
+The original native graphics remain exact at the endpoints, and offline replay
+preserves the prepared hierarchy meaning.
+
+Changed parent relationships, visible cells, handedness, radial depth direction,
+radius policy, clipping, or appearance use an explicit crossfade reason. Edited
+primitive geometry also falls back. A gap that consumes a cell during the bend
+produces `partition-collapsed-cell` for its body and label. Current native frames
+support hit testing on the displayed paths. Offline frames retain rendering and
+rebasing data; live interaction uses separately restored native programs.
+
 ## Functions
 
 | Function | Result and behavior |
@@ -153,7 +174,7 @@ and follows the same render and completion callbacks.
 ## Offline replay and limits
 
 Saved animation contains the endpoint graphics, actual embedded image/font bytes,
-prepared semantic positions, and versioned kernels. It preserves playback
+prepared semantic positions, graph routes, normalized hierarchy cells, and versioned kernels. It preserves playback
 preferences, including infinite repeat. It omits clocks, callbacks, DOM objects,
 runtime handles, promises, and the current playback position.
 

@@ -1,10 +1,13 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { ownRecord, ownArray } from "../../core/ownData.js";
 import { rejectUnknownProperties, validateGeneratedItemLimit } from "../../core/validation.js";
+import { mapPartitionSector } from "../hierarchy/partitionMapping.js";
 import { validatePartitionMapping } from "../hierarchy/partitionPlot.js";
 import { preparePartitionInterpolation, samplePartitionInterpolation } from "../hierarchy/partitionInterpolation.js";
 
 export const PARTITION_ANIMATION_VERSION = 1;
+const reasons = new Set(["topology", "visibility", "handedness", "radius-policy", "depth-direction", "partition-edited-geometry", "partition-collapsed-cell"]);
+export const isPartitionAnimationFallbackReason = reason => reasons.has(reason);
 function closed(value, keys, label) {
   ownRecord(value, label); rejectUnknownProperties(value, keys, label);
   if (keys.some(key => !Object.hasOwn(value, key) || value[key] === undefined)) throw new TypeError(`${label} requires every resolved field.`);
@@ -14,6 +17,7 @@ function checked(input) {
   if (typeof input.depthReversed !== "boolean") throw new TypeError("Partition depth direction must be boolean.");
   return { depthReversed: input.depthReversed, state: preparePartitionInterpolation(input.state, input.state).from };
 }
+export function validatePartitionAnimationMeaning(input) { return cloneAndFreeze(checked(input)); }
 
 // Convert stored normalized intervals and an explicit native coordinate frame.
 // No hierarchy layout, row lookup, scene inspection or pixel inference occurs.
@@ -36,7 +40,9 @@ export function createPartitionAnimationState(input) {
     const p = input.polar, turn = (mapping.direction === "clockwise" ? 1 : -1) * (mapping.reverseU ? -1 : 1);
     if (![p.centerX, p.centerY, p.outerRadius].every(Number.isFinite)) throw new TypeError("Native partition polar frame must be finite.");
     if (mapping.outerRadius !== "auto" && mapping.outerRadius !== p.outerRadius) throw new TypeError("Native partition radius must equal its resolved mapping.");
-    const center = (mapping.startAngle + (mapping.direction === "clockwise" ? 1 : -1) * mapping.sweep / 2) * Math.PI / 180;
+    const sector = mapPartitionSector({ u0: 0, u1: 1, v0: 0, v1: 1 }, { innerRadius: mapping.innerRadius, outerRadius: p.outerRadius,
+      radiusPolicy: mapping.radiusPolicy, startAngle: mapping.startAngle * Math.PI / 180, sweep: mapping.sweep * Math.PI / 180, direction: mapping.direction });
+    const center = (sector.startAngle + sector.endAngle) / 2;
     origin = [p.centerX, p.centerY]; angle = Math.atan2(turn * Math.sin(center), turn * Math.cos(center)); handedness = -turn;
     kernel = { width: 1, height: 1, innerRadius: mapping.innerRadius, outerRadius: p.outerRadius, radiusPolicy: mapping.radiusPolicy, sweep: mapping.sweep * Math.PI / 180 };
   } else {
