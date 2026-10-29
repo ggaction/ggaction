@@ -2850,5 +2850,21 @@
     ],
     "layer": "user-facing",
     "domain": "core"
+  },
+  "createPyramidPlot": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "editPyramidPlot": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
   }
 }

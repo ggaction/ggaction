@@ -1,0 +1,318 @@
+{
+  "status": "source-qualified-docs-finishing",
+  "base": "576f07e5d",
+  "scope": "Pyramid public vertical slice; STEP050 combined admission and STEP051-056/074/077 remaining obligations are not complete",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json#remainingApproval",
+  "sourceDigest": "a73ad7a78693515395c8d970a059b89395d3a28724fef814f938e915bd96e55c",
+  "sourceFileCount": 996,
+  "checks": {
+    "unitFinal": 16,
+    "unitGrammarAndPublicCoverage": 28,
+    "critical": [
+      100,
+      99.73,
+      100
+    ],
+    "primitive": 6,
+    "rendererPairs": 12,
+    "browserVariants": 6,
+    "browserPixelRatios": [
+      1,
+      2
+    ],
+    "resourceEffectConsumers": 9,
+    "realisticTests": 16,
+    "realisticDatasetRecipePairs": 15,
+    "contracts": 39,
+    "packageRendererContracts": 9,
+    "optionInventory": 7,
+    "docsPrePin": {
+      "passed": 194,
+      "failed": 1,
+      "reason": "new example source not yet committed"
+    },
+    "builtPages": 173,
+    "selectiveArtifacts": 1491
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1012,
+    "packedBytes": 1443300,
+    "unpackedBytes": 6567217,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+    "sha1": "4d4a972e8691acaec98af08a5571ce922ffc67a4",
+    "sha256": "0fe3523231f60a0bbbbaee2fa5b6ec1b62f1f4a3a0edb5c2481e959c950c97b4"
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+      "sha256": "0fe3523231f60a0bbbbaee2fa5b6ec1b62f1f4a3a0edb5c2481e959c950c97b4",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed",
+          "durationMs": 2517.9965839999995
+        },
+        {
+          "id": "pyramid-three-public-cases",
+          "status": "passed",
+          "durationMs": 989.451333
+        },
+        {
+          "id": "pyramid-strict-types",
+          "status": "passed",
+          "durationMs": 164.83116599999994
+        },
+        {
+          "id": "ggaction",
+          "status": "passed",
+          "durationMs": 2343.3383750000003,
+          "value": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 930,
+            "minifiedBytes": 2488217,
+            "gzipBytes": 712481
+          }
+        },
+        {
+          "id": "ggaction/basic",
+          "status": "passed",
+          "durationMs": 1206.2958339999996,
+          "value": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 551,
+            "minifiedBytes": 1305068,
+            "gzipBytes": 380833
+          }
+        },
+        {
+          "id": "ggaction/svg",
+          "status": "passed",
+          "durationMs": 61.658417000000554,
+          "value": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          }
+        },
+        {
+          "id": "ggaction/graph",
+          "status": "passed",
+          "durationMs": 190.41883400000006,
+          "value": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145400,
+            "gzipBytes": 43579
+          }
+        },
+        {
+          "id": "ggaction/interaction",
+          "status": "passed",
+          "durationMs": 467.1101669999989,
+          "value": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335398,
+            "gzipBytes": 109216
+          }
+        }
+      ],
+      "status": "passed",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      }
+    },
+    "22": {
+      "node": "v22.23.1",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+      "sha256": "0fe3523231f60a0bbbbaee2fa5b6ec1b62f1f4a3a0edb5c2481e959c950c97b4",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed",
+          "durationMs": 2527.5477909999995
+        },
+        {
+          "id": "pyramid-three-public-cases",
+          "status": "passed",
+          "durationMs": 1123.4317499999997
+        },
+        {
+          "id": "pyramid-strict-types",
+          "status": "passed",
+          "durationMs": 217.9213749999999
+        },
+        {
+          "id": "ggaction",
+          "status": "passed",
+          "durationMs": 2275.251625,
+          "value": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 930,
+            "minifiedBytes": 2488217,
+            "gzipBytes": 710620
+          }
+        },
+        {
+          "id": "ggaction/basic",
+          "status": "passed",
+          "durationMs": 1214.1236249999993,
+          "value": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 551,
+            "minifiedBytes": 1305068,
+            "gzipBytes": 379965
+          }
+        },
+        {
+          "id": "ggaction/svg",
+          "status": "passed",
+          "durationMs": 71.52366699999948,
+          "value": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          }
+        },
+        {
+          "id": "ggaction/graph",
+          "status": "passed",
+          "durationMs": 185.6565410000003,
+          "value": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145400,
+            "gzipBytes": 43417
+          }
+        },
+        {
+          "id": "ggaction/interaction",
+          "status": "passed",
+          "durationMs": 470.4732090000016,
+          "value": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335398,
+            "gzipBytes": 108581
+          }
+        }
+      ],
+      "status": "passed",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      }
+    },
+    "24": {
+      "node": "v24.22.1",
+      "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+      "sha256": "0fe3523231f60a0bbbbaee2fa5b6ec1b62f1f4a3a0edb5c2481e959c950c97b4",
+      "records": [
+        {
+          "id": "optional-peers",
+          "status": "passed",
+          "durationMs": 4747.360500000001
+        },
+        {
+          "id": "pyramid-three-public-cases",
+          "status": "passed",
+          "durationMs": 1161.5232500000002
+        },
+        {
+          "id": "pyramid-strict-types",
+          "status": "passed",
+          "durationMs": 197.637291
+        },
+        {
+          "id": "ggaction",
+          "status": "passed",
+          "durationMs": 2253.5125000000007,
+          "value": {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 930,
+            "minifiedBytes": 2488217,
+            "gzipBytes": 712481
+          }
+        },
+        {
+          "id": "ggaction/basic",
+          "status": "passed",
+          "durationMs": 1041.670709,
+          "value": {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 551,
+            "minifiedBytes": 1305068,
+            "gzipBytes": 380833
+          }
+        },
+        {
+          "id": "ggaction/svg",
+          "status": "passed",
+          "durationMs": 54.35829199999898,
+          "value": {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          }
+        },
+        {
+          "id": "ggaction/graph",
+          "status": "passed",
+          "durationMs": 190.88950000000114,
+          "value": {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145400,
+            "gzipBytes": 43579
+          }
+        },
+        {
+          "id": "ggaction/interaction",
+          "status": "passed",
+          "durationMs": 421.6860830000005,
+          "value": {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 174,
+            "minifiedBytes": 335398,
+            "gzipBytes": 109216
+          }
+        }
+      ],
+      "status": "passed",
+      "peers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      }
+    }
+  },
+  "pending": [
+    "source-pinned docs and built browser result",
+    "STEP050 combined validation",
+    "STEP051/052 native policy audit",
+    "OHLC/waterfall, Trail and Table",
+    "STEP074/077 cumulative acceptance"
+  ]
+}

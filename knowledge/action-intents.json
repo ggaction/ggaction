@@ -1085,6 +1085,10 @@
       "map projection",
       "planar projection",
       "geometry fit"
+    ],
+    "PyramidPlot": [
+      "Pyramid plot",
+      "ordered stage widths and areas"
     ]
   },
   "summaryOverrides": {
@@ -2191,6 +2195,14 @@
     "editProjection": {
       "target": "projection",
       "scalePx": 200
+    },
+    "createPyramidPlot": {
+      "stage": "stage",
+      "value": "value"
+    },
+    "editPyramidPlot": {
+      "target": "pyramid",
+      "encoding": "area"
     }
   },
   "callPatternOverrides": {

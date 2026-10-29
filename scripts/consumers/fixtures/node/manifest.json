@@ -1199,5 +1199,22 @@
         "statements": 7
       }
     ]
+  },
+  {
+    "file": "pyramid-plots.mjs",
+    "cases": [
+      {
+        "id": "pyramid/public-lifecycle",
+        "statements": 15
+      },
+      {
+        "id": "pyramid/offline-scene-renderers",
+        "statements": 12
+      },
+      {
+        "id": "pyramid/fresh-process-and-nested",
+        "statements": 9
+      }
+    ]
   }
 ]

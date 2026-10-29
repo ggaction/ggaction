@@ -20,7 +20,7 @@ function isCategoricalTarget(layer) {
       channel => layer.encoding?.[channel]?.scale !== undefined
     );
   }
-  return ["bar", "area", "arc", "rect", "rule", "tick", "text"].includes(
+  return ["bar", "area", "arc", "rect", "rule", "tick", "text", "pyramid"].includes(
     layer?.mark?.type
   ) && ["color", "stroke"].some(
     channel => layer.encoding?.[channel]?.scale !== undefined
@@ -52,7 +52,7 @@ export const sameValues = sameOrderedValues;
 
 function resolveLegendKind(program, layer, requestedChannels) {
   if (sameValues(requestedChannels, ["stroke"])) return "stroke";
-  if (["bar", "area", "arc", "rect", "text"].includes(layer.mark.type)) return "color";
+  if (["bar", "area", "arc", "rect", "text", "pyramid"].includes(layer.mark.type)) return "color";
   if (
     sameValues(requestedChannels, ["color"]) &&
     (layer.mark.type === "point" || program.guideConfigs.legend?.color?.target === layer.id ||

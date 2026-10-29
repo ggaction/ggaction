@@ -3,6 +3,9 @@ import path from "node:path";
 import { root, run, npmCommand, tscCommand } from "./runtime.js";
 
 export async function testTypeScriptConsumer(directory) {
+  const pyramidFile = path.join(directory, "pyramid.mts");
+  await writeFile(pyramidFile, await readFile(new URL("./fixtures/pyramid.ts", import.meta.url), "utf8"));
+  run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", pyramidFile], directory);
   const responsiveFile = path.join(directory, "responsive-guides.mts");
   await writeFile(responsiveFile, await readFile(new URL("./fixtures/responsive-guides.ts", import.meta.url), "utf8"));
   run(process.execPath, [tscCommand, "--noEmit", "--strict", "--exactOptionalPropertyTypes", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", responsiveFile], directory);

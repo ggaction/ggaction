@@ -1327,6 +1327,8 @@ function buildDirectDataResources(factors) {
     .editFlowLinks({ target: "directFlowLinks", links: { opacity: .4 } })
     .editFlowNodes({ target: "directFlowNodes", nodes: { opacity: .8 } })
     .editFlowData({ target: "directFlow", definition: { balance: "allow" } })
+    .createPyramidPlot({ id: "directPyramid", data: "directSource", stage: "category", value: "positive", labels: false, stages: { opacity: .2 } })
+    .editPyramidPlot({ target: "directPyramid", encoding: "area" })
     .createCalendarLayout({ id: "directCalendarLayout", data: "directSource", date: "calendarDate", value: "positive", start: "2024-02-01", end: "2024-02-29", timeZone: "UTC", weekStartsOn: 1, aggregate: "sum", missing: "empty" })
     .createCalendarPlot({ id: "directCalendar", layout: "directCalendarLayout", color: false, labels: false, cells: { opacity: .2 } })
     .editCalendarPlot({ target: "directCalendar", cells: { gap: .1 }, monthBoundary: false })

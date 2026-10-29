@@ -235,3 +235,5 @@ requirements after resolving each part.
 - Calendar Plots: ./api/calendar/
 - Place Observations on a Calendar: ./tutorials/calendar/
 - Arrange Nested Panels with Shared Guides: ./tutorials/nested-responsive/
+- Pyramid Plots: ./api/pyramid/
+- Compare Ordered Stages: ./tutorials/pyramid/

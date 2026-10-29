@@ -1150,6 +1150,36 @@
         "path": "unit/actions/coordinates/"
       }
     ],
+    "pyramid": [
+      {
+        "type": "file",
+        "path": "unit/pyramid-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/pyramid-layout.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/pyramid/"
+      },
+      {
+        "type": "file",
+        "path": "browser/pyramid.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/pyramid-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/pyramid-plot.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-pyramid-plots.test.js"
+      }
+    ],
     "radial-gradient": [
       {
         "type": "prefix",
@@ -1192,6 +1222,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-responsive-layout.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-pyramid-plots.test.js"
       }
     ],
     "rendering": [

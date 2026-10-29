@@ -5,6 +5,9 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "pyramid-action": { prefix: "actions/charts/pyramid.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Pyramid edits must preflight final meaning and preserve explicit materialization." },
+  "pyramid-materialization": { prefix: "materialization/pyramid/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stage and label geometry must share typed identity, paint and current viewport." },
+  "pyramid-selection": { prefix: "materialization/selection/policies/pyramid.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "One stage must remain one logical item across labels, highlights and revisions." },
   "ohlc-values": { prefix: "grammar/ohlc.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "High-low and open-close roles require finite inequalities and whole-row eligibility with exact typed identity." },
   "waterfall-values": { prefix: "grammar/waterfall.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Ordered signed contributions, explicit total/subtotal roles and reset must retain exact finite accumulation." },
   "pyramid-layout": { prefix: "grammar/pyramid/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stage order, width/area meaning, typed keys and finite oriented geometry must retain independent numerical evidence." },

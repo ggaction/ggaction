@@ -347,5 +347,7 @@
   "createGeometryData": "/reference/actions/charts-data/#creategeometrydata",
   "editGeometryData": "/reference/actions/charts-data/#editgeometrydata",
   "createProjection": "/reference/actions/charts-data/#createprojection",
-  "editProjection": "/reference/actions/charts-data/#editprojection"
+  "editProjection": "/reference/actions/charts-data/#editprojection",
+  "createPyramidPlot": "/reference/actions/marks/#createpyramidplot",
+  "editPyramidPlot": "/reference/actions/marks/#editpyramidplot"
 }

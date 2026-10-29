@@ -5,7 +5,7 @@
 - [x] 기존 전체 승인과 structure-recipes의 수치 계약 확인
 - [x] Pyramid 순수 단계 kernel과 독립 polygon 면적·literal 수치 검사
 - [ ] STEP050·051·052 최종 통합과 명칭·제외 정책 검사
-- [ ] Pyramid primitive 시각 증거와 공개 create/edit/revise 소비자 연결
+- [x] Pyramid primitive 시각 증거와 공개 create/edit/revise 소비자 연결
 - [x] OHLC·waterfall 순수 값 역할과 독립 수치 검사
 - [ ] OHLC·waterfall 시각 증거와 공개 소비자 연결
 - [ ] 전체 mark consumer matrix·설치·문서 인수
@@ -13,7 +13,8 @@
 
 [전체 승인](../AUTHORIZATION.json)의 남은 설계·저장·시각 결정 범위를 재사용한다.
 단일 Y 선행 작업은 동료가 소유하며, 여기서는 그 결과에 의존하지 않는 순수 계산을 먼저 구현한다.
-공개 action이나 저장 schema는 아직 추가하지 않았고 현재 공개 지원이라고 주장하지 않는다.
+이하 수치 기록은 최초 private checkpoint의 범위다. 후속 [Pyramid 공개 구현](../chart/pyramid.md)은
+Full API와 저장·소비자를 연결했으며 STEP050 합산 및 전체 단계 인수는 계속 열려 있다.
 
 ## Pyramid 계산 결정
 

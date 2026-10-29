@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add Full-only `createPyramidPlot` and `editPyramidPlot` for ordered stages with explicit width or area meaning, four directions and named percent denominators. Preserve row identities through source revisions, selection, Canvas edits, nested composition, color legends and offline Canvas/SVG/PNG/PDF output.
+
 - Add Full-only `createProjection` and `editProjection` for 15 geographic/planar projection types, explicit viewport fits and atomic geometry-dependent revision updates. Preserve exact resource references, immutable transforms and offline validation.
 
 - Add Full-only `createGeometryData` and `editGeometryData` for geographic or planar GeoJSON/TopoJSON sources. Retain shared arcs, immutable feature keys and source provenance through bounded validation, edits, inspection and offline restoration.

@@ -559,5 +559,16 @@
       "exported": "createNestedResponsive"
     },
     "rendering": "authoring-only"
+  },
+  "tutorials/pyramid.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its ordered stage observations.",
+    "canonical": {
+      "file": "examples/pyramid/program.js",
+      "exported": "createPyramid"
+    },
+    "rendering": "authoring-only"
   }
 }

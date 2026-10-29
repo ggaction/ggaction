@@ -2201,6 +2201,99 @@ editCalendarPlot({ target?, layout?, coordinate?, color?, cells?, monthBoundary?
 Edit a calendar plot while preserving day identities and source lineage. See [Calendar plots](../../api/calendar.md#editcalendarplot).
 
 
+## `createPyramidPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreatePyramidPlotOptions`](./../types.md#type-createpyramidplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `orientation` | Optional / branch-dependent | `"down" \| "left" \| "right" \| "up" \| undefined` |
+| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `percentBase` | Optional / branch-dependent | `"first" \| "previous" \| "total" \| undefined` |
+| `encoding` | Optional / branch-dependent | `"area" \| "width" \| undefined` |
+| `lastStage` | Optional / branch-dependent | `"flat" \| "point" \| undefined` |
+| `taperRatio` | Optional / branch-dependent | `number \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `stage` | Required | `string` |
+| `value` | Required | `string` |
+| `stages` | Optional / branch-dependent | `PyramidStagePaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| PyramidLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createPyramidPlot({ id?, data?, coordinate?, stage, value, orientation?, encoding?, gap?, lastStage?, taperRatio?, percentBase?, color?, stages?, labels?, clip? })
+```
+
+Draw ordered stages with explicit width or area meaning. See [Pyramid plots](../../api/pyramid.md).
+
+
+## `editPyramidPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditPyramidPlotOptions`](./../types.md#type-editpyramidplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `orientation` | Optional / branch-dependent | `"down" \| "left" \| "right" \| "up" \| undefined` |
+| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `percentBase` | Optional / branch-dependent | `"first" \| "previous" \| "total" \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `stage` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `stages` | Optional / branch-dependent | `PyramidStagePaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| PyramidLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `encoding` | Optional / branch-dependent | `"area" \| "width" \| undefined` |
+| `lastStage` | Optional / branch-dependent | `"flat" \| "point" \| undefined` |
+| `taperRatio` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editPyramidPlot({ target?, data?, coordinate?, stage?, value?, orientation?, encoding?, gap?, lastStage?, taperRatio?, percentBase?, color?, stages?, labels?, clip? })
+```
+
+Edit a Pyramid while preserving typed row identities and source order. See [Pyramid plots](../../api/pyramid.md).
+
+
 ## Related
 
 [Action Reference](../actions.md) · [Chart API](../../api/index.md) · [Supported Features](../../supported-features.md)

@@ -552,3 +552,10 @@
 - title: Arrange Nested Panels with Shared Guides
   url: /tutorials/nested-responsive/
   parent: /tutorials/
+
+- title: Pyramid Plots
+  url: /api/pyramid/
+  parent: /api/
+- title: Compare Ordered Stages
+  url: /tutorials/pyramid/
+  parent: /tutorials/

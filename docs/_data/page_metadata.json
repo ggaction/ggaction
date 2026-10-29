@@ -1148,5 +1148,19 @@
     "editSource": "examples/nested-responsive/program.js",
     "description": "Compare five regional panels with an overview. Each child keeps a fixed Canvas; content spacing accounts for rotated headers, long labels, strokes and shared guides.",
     "image": "/assets/images/nested-responsive.png"
+  },
+  "/api/pyramid/": {
+    "title": "Pyramid Plots",
+    "source": "docs/api/pyramid.md",
+    "editSource": "docs/api/pyramid.md",
+    "description": "Show ordered stages as adjacent trapezoids. Use width to compare their spans, or area to make each trapezoid's area proportional to its value.",
+    "image": "/assets/images/pyramid.png"
+  },
+  "/tutorials/pyramid/": {
+    "title": "Compare Ordered Stages",
+    "source": "docs/tutorials/pyramid.md",
+    "editSource": "examples/pyramid/program.js",
+    "description": "These three observations count visits, trials and returns. The order expresses the process. Pyramid keeps it even if a later count exceeds an earlier one.",
+    "image": "/assets/images/pyramid.png"
   }
 }

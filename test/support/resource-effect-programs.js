@@ -8,7 +8,9 @@ import { createGraph } from "../../examples/graph-plots/program.js";
 import { createFlow } from "../../examples/flow-layouts/program.js";
 import { createImageExample } from "../../examples/image-assets/program.js";
 
-export const effectConsumers = ["tree", "treemap", "icicle", "sunburst", "graph", "flow-node", "flow-link", "image"];
+import { createPyramid } from "../../examples/pyramid/program.js";
+
+export const effectConsumers = ["tree", "treemap", "icicle", "sunburst", "graph", "flow-node", "flow-link", "image", "pyramid"];
 export async function resourceEffectPair(name) {
   const entry = {
     tree: [createTree, "tree", "editTreePlot", "nodes"], treemap: [createTreemap, "treemap", "editTreemapPlot", "cells"],
@@ -17,6 +19,7 @@ export async function resourceEffectPair(name) {
     graph: [createGraph, "graph", "editGraphPlot", "nodes"],
     "flow-node": [createFlow, "flow-node", "editFlowNodes", "nodes"],
     "flow-link": [createFlow, "flow-link", "editFlowLinks", "links"],
+    pyramid: [createPyramid, "pyramid", "editPyramidPlot", "stages"],
     image: [createImageExample, "image", "editImageMark", null]
   }[name];
   const [create, kind, edit, role] = entry;

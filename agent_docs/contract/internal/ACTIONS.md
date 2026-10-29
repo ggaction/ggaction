@@ -22,6 +22,7 @@ domain action을 통해서만 실행한다.
 | `materializeBoxPlot` | deferred `createBoxPlot` completion and position encodings |
 | `materializeBinData` | reusable one-dimensional bin data actions |
 | `materializeBin2DData` | rectangular 2D-bin data actions |
+| `materializePyramidPlot` | ordered row-keyed stage paths and labels from the shared width/area kernel |
 | `materializeCalendarPlot` | stored civil-day cells, month boundaries, label roles and exact layout lineage |
 | `materializeContourMark` | stored contour geometry, scale mappings, holes and exact geometry lineage |
 | `materializeFlowNodes` | stored flow rectangles, node labels, source rows and exact layout binding |

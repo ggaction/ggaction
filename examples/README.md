@@ -805,6 +805,42 @@ Follow existing graph edges with a bounded detour and explicit stored route.
 
 Representative actions: `bundleGraphEdges`, `createGraphPlot`, `editEdgeRoute`. [Documentation](https://ggaction.github.io/ggaction/tutorials/edge-routes/).
 
+### [Ordered stages by width](./pyramid/)
+
+Keep the process order while matching adjacent stage widths.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Ordered stages by area](./pyramid-area/)
+
+Make stage areas proportional to values with an explicit taper.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Stages progress upward](./pyramid-up/)
+
+Keep input order while changing the direction of progress.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Stages progress rightward](./pyramid-right/)
+
+Use a horizontal process direction without sorting rows.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Stages progress leftward](./pyramid-left/)
+
+Reverse the progression direction while retaining row order.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [An explicit pointed ending](./pyramid-point/)
+
+Request a pointed last stage in width mode.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

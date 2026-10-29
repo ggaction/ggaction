@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:83296cf463f8708d14b5e58e077b142c5bd2cad9ca32b66c5f916599e6dd3f4e. Status: development. Runtime source: 316b2db057ea7796773594f206a92771d46dd490. Release baseline: v0.0.13.
+Contract: sha256:ef9b054a4d7d41803c2dbde08890d9f221b117d5338e36ad5103546aed9c1fb4. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -213,11 +213,11 @@ across the supported Node release matrix.
 ## Runnable repository examples
 
 Use the
-[generated repository example index](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/README.md)
+[generated repository example index](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/README.md)
 for complete runnable modules. Browse the
 [chart gallery](./gallery/) for visual examples,
 or use
-the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/quarto-ojs/)
+the [Quarto and Observable JS example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/quarto-ojs/)
 when authoring an `.qmd` document.
 
 ## Next
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/316b2db057ea7796773594f206a92771d46dd490/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/316b2db057ea7796773594f206a92771d46dd490/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -652,15 +652,15 @@ than introducing a separate renderer path.
 ![Horsepower versus miles per gallon](./assets/images/cars-scatterplot.png)
 
 This tutorial uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-scatterplot)
-and its [canonical program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/cars-scatterplot)
+and its [canonical program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/cars-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/65bb5a89188449ba95edafef99b76be6d522a75a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-native-charts/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -805,7 +805,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-scatterplot/`.
-- View the [complete browser source](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-scatterplot/main.js).
+- View the [complete browser source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/cars-scatterplot/main.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), and the
  [Basic Chart contract](./api/basic-charts/#createscatterplot).
@@ -823,7 +823,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/65bb5a89188449ba95edafef99b76be6d522a75a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-native-charts/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -936,7 +936,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/65bb5a89188449ba95edafef99b76be6d522a75a/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-native-charts/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -1106,7 +1106,7 @@ place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/65bb5a89188449ba95edafef99b76be6d522a75a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-native-charts/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1328,15 +1328,15 @@ const tighter = radialBars.editArcMark({
 
 This chart shows mean acceleration over time for each origin. The complete
 module below uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-line-chart)
-and its [complete program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-line-chart/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/cars-line-chart)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/cars-line-chart/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/65bb5a89188449ba95edafef99b76be6d522a75a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-native-charts/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1472,7 +1472,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-line-chart/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-line-chart/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/cars-line-chart/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createlineplot).
@@ -1486,15 +1486,15 @@ program
 This chart bins car displacement, counts the rows in each bin, and stacks those
 counts by origin. The complete module uses the public npm package. The
 repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-histogram)
-and its [complete program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-histogram/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/cars-histogram)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/cars-histogram/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/65bb5a89188449ba95edafef99b76be6d522a75a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-native-charts/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1592,7 +1592,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-histogram/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-histogram/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/cars-histogram/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Guides](./api/guides/), [Titles](./api/titles/), and the
  [Basic Chart contract](./api/basic-charts/#createhistogram).
@@ -1606,15 +1606,15 @@ program
 This tutorial uses a grouped bar chart as one concrete bar-chart layout. It
 aggregates job percentages by year and places the mean for men and women side
 by side. The complete module uses the public npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/jobs-grouped-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/jobs-grouped-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/jobs-grouped-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/jobs-grouped-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/65bb5a89188449ba95edafef99b76be6d522a75a/data/jobs.json --output public/jobs.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-native-charts/data/jobs.json --output public/jobs.json
 ```
 
 ## Complete program
@@ -1723,7 +1723,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/jobs-grouped-bar/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/jobs-grouped-bar/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/jobs-grouped-bar/program.js).
 - Continue with [Position encodings](./api/position-encodings/),
  [Series encodings](./api/series-encodings/), and
  [Constant appearance](./api/appearance/), or review the
@@ -1739,15 +1739,15 @@ This tutorial filters the cars dataset to Japan and the USA, maps point size to
 Acceleration and point color/shape to Origin, then adds one linear fit and 95%
 mean-response confidence band per Origin. The complete module uses the public
 npm package. The repository also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-regression-scatterplot)
-and its [complete program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-regression-scatterplot/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/cars-regression-scatterplot)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/cars-regression-scatterplot/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/65bb5a89188449ba95edafef99b76be6d522a75a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-native-charts/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -1872,7 +1872,7 @@ render(program, document.querySelector('#chart').getContext('2d'));
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -1947,7 +1947,7 @@ explicit grid options can choose a direction. `editDensity` changes the statisti
 `editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
 the group and the two generated value/density fields.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/density-plot) includes all three variants.
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/density-plot) includes all three variants.
 The workflow below shows the same lower-level owners on car data.
 
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
@@ -1957,15 +1957,15 @@ Origin. The source rows remain immutable; `encodeDensity` creates a named
 derived dataset and materializes one translucent, zero-baseline area per
 group. The complete module below uses the public npm package. The repository
 also contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-density-area)
-and its [complete program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-density-area/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/cars-density-area)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/cars-density-area/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/65bb5a89188449ba95edafef99b76be6d522a75a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-native-charts/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2090,7 +2090,7 @@ program
 ## Run and continue
 
 - Serve the repository root and open `examples/cars-density-area/`.
-- View the [complete chart program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-density-area/program.js).
+- View the [complete chart program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/cars-density-area/program.js).
 - Continue with [Encodings](./api/encodings/),
  [Legends](./api/legends/), and [Scale options](./api/scales/).
 
@@ -2123,7 +2123,7 @@ Use `editHorizon` for bands, baseline, palette, or source revisions and `editAre
 stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
 All-baseline input correctly produces no area paths while retaining the original x domain.
 
-The [runnable example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/horizon-plot) includes
+The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/horizon-plot) includes
 signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
 
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
@@ -2134,8 +2134,8 @@ creates one derived dataset and ordinary closed area paths, so Browser Canvas
 and the SVG, PNG, and PDF outputs use the same backend-neutral graphics.
 
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/gapminder-horizon)
-and its [complete program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/gapminder-horizon/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/gapminder-horizon)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/gapminder-horizon/program.js).
 
 ## Complete program
 
@@ -2231,15 +2231,15 @@ acceleration by Origin. `createErrorBar()` infers the encoded point layer,
 derives one mean and two-sided 95% Student-t confidence interval per group,
 then creates concrete vertical rules and fixed-width caps. The source rows remain immutable.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-error-bar)
-and its [complete program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-error-bar/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/cars-error-bar)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/cars-error-bar/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/65bb5a89188449ba95edafef99b76be6d522a75a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-native-charts/data/cars.json --output public/cars.json
 ```
 
 ## Complete program
@@ -2336,15 +2336,15 @@ This chart summarizes life expectancy over time for each Gapminder cluster.
 interval per year and cluster, then creates one closed area path plus explicit
 lower and upper boundary paths per cluster.
 The repository contains a
-[runnable browser example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/gapminder-error-band)
-and its [complete program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/gapminder-error-band/program.js).
+[runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/gapminder-error-band)
+and its [complete program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/gapminder-error-band/program.js).
 
 Start with the Vite project from [Getting Started](./getting-started/), then
 place the tutorial dataset in Vite's public directory:
 
 ```bash
 mkdir -p public
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/65bb5a89188449ba95edafef99b76be6d522a75a/data/gapminder.json --output public/gapminder.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-native-charts/data/gapminder.json --output public/gapminder.json
 ```
 
 ## Complete program
@@ -2450,8 +2450,8 @@ program
 
 Select final visual items by data field, semantic channel, or concrete graphic
 property, then filter, reuse, or highlight that selection. The repository
-contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/mark-selection)
-and the [canonical programs](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/mark-selection/program.js)
+contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/mark-selection)
+and the [canonical programs](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
 ## Complete program
@@ -2460,7 +2460,7 @@ Follow [Getting Started](./getting-started/) to create a browser module and
 `<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
 
 ```bash
-curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/65bb5a89188449ba95edafef99b76be6d522a75a/data/cars.json --output public/cars.json
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/codex/roadmap9-native-charts/data/cars.json --output public/cars.json
 ```
 
 This complete point workflow matches the canonical program used for its image.
@@ -2760,7 +2760,7 @@ render(program, document.querySelector("#chart").getContext("2d"));
 ```
 
 The runnable repository version is in
-[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/ecdf-plot).
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/ecdf-plot).
 
 This example uses colored paths and endpoint labels without axes or a legend,
 matching the repository program and image. To add a legend, reserve space on
@@ -6124,7 +6124,7 @@ instead of replacing or rebinding consumers.
 ## Related
 
 [Data overview](./api/data/) · [Source and derived data](./api/data/source-and-derived/) ·
-[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/airline-passenger-moving-windows/program.js) ·
+[Runnable airline-passenger example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/airline-passenger-moving-windows/program.js) ·
 [Action reference](./reference/actions/)
 
 <!-- Source: /api/data/bin2d/ -->
@@ -11358,7 +11358,7 @@ const dashboard = vconcat({
 
 This is a composition fragment: `scatterplot`, `barChart`, and `trendChart`
 must each be a complete program with one materialized Canvas. See the
-[runnable repository example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/program-composition)
+[runnable repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/program-composition)
 for complete child construction and Browser Canvas rendering.
 
 The representative output deliberately keeps two different final grammars:
@@ -11424,7 +11424,7 @@ const revisedDashboard = dashboard.replaceCompositionChild({
 
 This preserves immutable earlier programs and makes the affected ancestor
 layout visible in the action trace. See the
-[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cross-feature-dashboard)
+[cross-feature dashboard source](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/cross-feature-dashboard)
 for a nested Polar replacement next to a Cartesian facet.
 
 ## Repeat the current chart by a field
@@ -11845,7 +11845,7 @@ Primary and secondary endpoints can specify different input units on one scale.
 Domains and tick values are already timestamps and are never parsed again.
 Channel selectors read normalized values; raw-field selectors read original rows.
 
-See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/temporal-input).
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/temporal-input).
 
 ## Aggregate line `encodeY(options)`
 
@@ -12447,7 +12447,7 @@ if the remaining appearance would be ambiguous. Ordinary ranged Areas support
 the same explicit identity; statistical and stacked-layout groups keep their
 existing owner restrictions.
 
-The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/series-identity)
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/series-identity)
 uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
@@ -18985,6 +18985,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](./reference/actions/charts-data/#createpolarscatterplot) | H0 | user-facing | charts |
 | [`createProjection`](./reference/actions/charts-data/#createprojection) | H2 | user-facing | core |
+| [`createPyramidPlot`](./reference/actions/marks/#createpyramidplot) | H2 | user-facing | marks |
 | [`createRadarPlot`](./reference/actions/charts-data/#createradarplot) | H0 | user-facing | charts |
 | [`createRadialAxis`](./reference/actions/guides/#createradialaxis) | H3 | user-facing | axes |
 | [`createRadialAxisLabels`](./reference/actions/guides/#createradialaxislabels) | H3 | user-facing | axes |
@@ -19114,6 +19115,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editPivotData`](./reference/actions/statistics/#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editProjection`](./reference/actions/charts-data/#editprojection) | H3 | user-facing | core |
+| [`editPyramidPlot`](./reference/actions/marks/#editpyramidplot) | H3 | user-facing | marks |
 | [`editRadarPlot`](./reference/actions/charts-data/#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](./reference/actions/guides/#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](./reference/actions/guides/#editradialaxislabels) | H3 | user-facing | axes |
@@ -26409,6 +26411,91 @@ editCalendarPlot({ target?, layout?, coordinate?, color?, cells?, monthBoundary?
 
 Edit a calendar plot while preserving day identities and source lineage. See [Calendar plots](./api/calendar/#editcalendarplot).
 
+## `createPyramidPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreatePyramidPlotOptions`](./reference/types/#type-createpyramidplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `orientation` | Optional / branch-dependent | `"down" \| "left" \| "right" \| "up" \| undefined` |
+| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `percentBase` | Optional / branch-dependent | `"first" \| "previous" \| "total" \| undefined` |
+| `encoding` | Optional / branch-dependent | `"area" \| "width" \| undefined` |
+| `lastStage` | Optional / branch-dependent | `"flat" \| "point" \| undefined` |
+| `taperRatio` | Optional / branch-dependent | `number \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `stage` | Required | `string` |
+| `value` | Required | `string` |
+| `stages` | Optional / branch-dependent | `PyramidStagePaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| PyramidLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createPyramidPlot({ id?, data?, coordinate?, stage, value, orientation?, encoding?, gap?, lastStage?, taperRatio?, percentBase?, color?, stages?, labels?, clip? })
+```
+
+Draw ordered stages with explicit width or area meaning. See [Pyramid plots](./api/pyramid/).
+
+## `editPyramidPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditPyramidPlotOptions`](./reference/types/#type-editpyramidplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `orientation` | Optional / branch-dependent | `"down" \| "left" \| "right" \| "up" \| undefined` |
+| `gap` | Optional / branch-dependent | `number \| undefined` |
+| `percentBase` | Optional / branch-dependent | `"first" \| "previous" \| "total" \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `stage` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `stages` | Optional / branch-dependent | `PyramidStagePaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| PyramidLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| PyramidColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `encoding` | Optional / branch-dependent | `"area" \| "width" \| undefined` |
+| `lastStage` | Optional / branch-dependent | `"flat" \| "point" \| undefined` |
+| `taperRatio` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editPyramidPlot({ target?, data?, coordinate?, stage?, value?, orientation?, encoding?, gap?, lastStage?, taperRatio?, percentBase?, color?, stages?, labels?, clip? })
+```
+
+Edit a Pyramid while preserving typed row identities and source order. See [Pyramid plots](./api/pyramid/).
+
 ## Related
 
 [Action Reference](./reference/actions/) · [Chart API](./api/) · [Supported Features](./supported-features/)
@@ -33293,6 +33380,7 @@ These blocks are generated from the declaration file owned by each package entry
 ```typescript
 export type { GeometryJSONValue, GeometryPosition, GeographicGeometry, GeometryFeature, GeoJSONInput, TopologyGeometry, TopoJSONInput, GeometryLimits, GeometryFeatureKey, CreateGeometryDataOptions, EditGeometryDataOptions, GeometrySourceResource } from "./program.js";
 export type { ProjectionType, ProjectionPlaneParameters, ProjectionSphereParameters, ProjectionParameters, ProjectionFitOptions, CreateProjectionOptions, EditProjectionOptions, ProjectionResource } from "./program.js";
+export type { PyramidStagePaint, PyramidLabelPaint, PyramidColor, PyramidLayoutOptions, CreatePyramidPlotOptions, EditPyramidPlotOptions } from "./program.js";
 export type { CalendarDayOptions, CalendarDefinition, CreateCalendarLayoutOptions, CalendarLayoutPatch, CalendarCell, CalendarLayoutResult, CalendarLayoutResource, CalendarCellPaint, CalendarBoundaryPaint, CalendarLabelPaint, CalendarLabelRole, CalendarPlotOptions, EditCalendarPlotOptions } from "./program.js";
 export type { ContourGridFrame, ContourGrid, ContourDensityDefinition, CreateContourDataOptions, CreateDensityContourDataOptions, EditContourDataOptions, ContourPolygon, ContourResult, ContourResource, ContourMarkOptions, EditContourMarkOptions } from "./program.js";
 export type { FlowDefinition, CreateFlowDataOptions, EditFlowDataOptions, FlowNodeTotals, FlowResource, FlowLayoutOptions, LayoutFlowOptions, FlowLayoutNode, FlowLayoutEdge, FlowLayoutResource, FlowBodyPaint, FlowLabelPaint, FlowLabelsOptions, FlowNodesOptions, FlowLinksOptions, EditFlowNodesOptions, EditFlowLinksOptions } from "./program.js";
@@ -34773,6 +34861,8 @@ interface ChartProgramActions {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
+  editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
   editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
   createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
@@ -37912,6 +38002,19 @@ export type CreateProjectionOptions = { readonly id: string } & ((ProjectionPara
 
 Related types: [`ProjectionParameters`](./reference/types/#type-projectionparameters) · [`ProjectionFittedOptions`](./reference/types/#type-projectionfittedoptions).
 
+### `CreatePyramidPlotOptions` {#type-createpyramidplotoptions}
+
+ Expand CreatePyramidPlotOptions
+
+```typescript
+export type CreatePyramidPlotOptions = PyramidLayoutOptions & {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly stage: string; readonly value: string;
+  readonly stages?: PyramidStagePaint; readonly labels?: false | PyramidLabelPaint; readonly color?: false | PyramidColor; readonly clip?: boolean;
+};
+```
+
+Related types: [`PyramidLayoutOptions`](./reference/types/#type-pyramidlayoutoptions) · [`PyramidStagePaint`](./reference/types/#type-pyramidstagepaint) · [`PyramidLabelPaint`](./reference/types/#type-pyramidlabelpaint) · [`PyramidColor`](./reference/types/#type-pyramidcolor).
+
 ### `CreateRadarPlotOptions` {#type-createradarplotoptions}
 
  Expand CreateRadarPlotOptions
@@ -40667,6 +40770,17 @@ export type EditProjectionOptions = { readonly target?: string } & ((Partial<Pro
 ```
 
 Related types: [`ProjectionParameters`](./reference/types/#type-projectionparameters) · [`ProjectionEditFittedOptions`](./reference/types/#type-projectioneditfittedoptions).
+
+### `EditPyramidPlotOptions` {#type-editpyramidplotoptions}
+
+ Expand EditPyramidPlotOptions
+
+```typescript
+export type EditPyramidPlotOptions = { readonly target?: string } & Partial<Omit<CreatePyramidPlotOptions, "id" | "encoding" | "lastStage" | "taperRatio">> &
+  { readonly encoding?: "width" | "area"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: number; };
+```
+
+Related types: [`CreatePyramidPlotOptions`](./reference/types/#type-createpyramidplotoptions).
 
 ### `EditRScaleOptions` {#type-editrscaleoptions}
 
@@ -45269,6 +45383,53 @@ export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "n
   | "azimuthal-equal-area" | "azimuthal-equidistant" | "conic-equal-area" | "conic-conformal" | "conic-equidistant" | "transverse-mercator" | "albers-usa" | "identity";
 ```
 
+### `PyramidColor` {#type-pyramidcolor}
+
+ Expand PyramidColor
+
+```typescript
+export type PyramidColor = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal";
+  readonly scale?: CategoricalColorScaleOptions; readonly palette?: Palette; }
+  | { readonly field: string; readonly fieldType: "quantitative"; readonly scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions; readonly palette?: Palette; }
+  | { readonly field: string; readonly fieldType: "temporal"; readonly scale?: Omit<ContinuousColorScaleOptions, "midpoint" | "type" | "base" | "exponent" | "constant"> & { midpoint?: "auto"; type?: "sequential" }; readonly palette?: Palette; };
+```
+
+Related types: [`CategoricalColorScaleOptions`](./reference/types/#type-categoricalcolorscaleoptions) · [`Palette`](./reference/types/#type-palette) · [`ContinuousColorScaleOptions`](./reference/types/#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](./reference/types/#type-discretizedcolorscaleoptions).
+
+### `PyramidLabelPaint` {#type-pyramidlabelpaint}
+
+ Expand PyramidLabelPaint
+
+```typescript
+export interface PyramidLabelPaint extends CalendarLabelPaint { readonly content?: "stage" | "value" | "percent"; readonly format?: string; }
+```
+
+Related types: [`CalendarLabelPaint`](./reference/types/#type-calendarlabelpaint).
+
+### `PyramidLayoutOptions` {#type-pyramidlayoutoptions}
+
+ Expand PyramidLayoutOptions
+
+```typescript
+export type PyramidLayoutOptions = { readonly orientation?: "down" | "up" | "right" | "left"; readonly gap?: number;
+  readonly percentBase?: "first" | "total" | "previous"; } &
+  ({ readonly encoding?: "width"; readonly lastStage?: "flat" | "point"; readonly taperRatio?: never; }
+  | { readonly encoding: "area"; readonly taperRatio?: number; readonly lastStage?: never; });
+```
+
+### `PyramidStagePaint` {#type-pyramidstagepaint}
+
+ Expand PyramidStagePaint
+
+```typescript
+export interface PyramidStagePaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow).
+
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
  Expand QuantileColorScaleOptions
@@ -48356,9 +48517,9 @@ closes each open subpath; stroke closes only with an explicit `Z`. Each subpath
 keeps its own caps and joins. When both fill and stroke are present, rendering
 fills first and strokes second.
 
-The [compound path example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/compound-path) combines
+The [compound path example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/compound-path) combines
 an outer ring, a hole and a separate island over a translucent underlay. Its
-[executable program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/compound-path/program.js)
+[executable program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/compound-path/program.js)
 is shared by the browser example and renderer regressions.
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "band"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -48424,12 +48585,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/316b2db057ea7796773594f206a92771d46dd490/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/316b2db057ea7796773594f206a92771d46dd490/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -49541,7 +49702,7 @@ program.editFacetHeaders({
 
 This is a fragment for an existing facet program. A one-field facet uses the
 `column` header role for each panel, including panels arranged in one column.
-Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/facet-header-rotation)
+Grid facets also provide a `row` role. The [complete example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/facet-header-rotation)
 declares the axes and grid before arranging the two region panels.
 
 The same `rotation` option is available in common `headers` and in
@@ -49594,7 +49755,7 @@ const faceted = chart()
 
 The input rows in this runnable fragment must contain complete values for the
 encoded fields. See the
-[repository example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/cars-origin-scatterplot-facet)
+[repository example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/cars-origin-scatterplot-facet)
 for the complete data preparation and guide options.
 
 Data-bound Cartesian text layers also repeat: encode x, y, and text before
@@ -49840,7 +50001,7 @@ The child limit is 100 after applying the combination policy. The same
 supports the same Cartesian, Polar, and Parallel chart families, scale policies,
 axis restrictions, and compatible shared legends as `facet`.
 
-See the [runnable grid example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/facet-grid)
+See the [runnable grid example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
 
 ## Repeat a positional encoding across fields
@@ -49892,7 +50053,7 @@ non-repeated legend may be promoted to the parent.
 Every repeated field can describe a different quantity, so outer-axis
 promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
 derived target datasets, and unrelated sibling layers also fail atomically.
-See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/repeat-charts).
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/repeat-charts).
 
 ## Space between plots
 
@@ -50567,7 +50728,7 @@ semantic base text rather than accumulating offsets. Text, data, scale, source
 mark, and Canvas changes replay that same policy.
 
 See the complete
-[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/gapminder-country-labels/program.js)
+[Gapminder country-label program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/gapminder-country-labels/program.js)
 for a point-attached label layer with leaders.
 
 ## `removeLabelLayout(options?)`
@@ -51480,11 +51641,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:83296cf463f8708d14b5e58e077b142c5bd2cad9ca32b66c5f916599e6dd3f4e` |
-| Example and dataset source | `65bb5a89188449ba95edafef99b76be6d522a75a` |
-| Runtime source commit | `316b2db057ea7796773594f206a92771d46dd490` |
+| Contract fingerprint | `sha256:ef9b054a4d7d41803c2dbde08890d9f221b117d5338e36ad5103546aed9c1fb4` |
+| Example and dataset source | `codex/roadmap9-native-charts` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 349 |
+| Declared actions here | 351 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -52015,12 +52176,12 @@ option does not apply to Polar or Parallel labels.
 # Place a retained image
 
 Prepare image bytes explicitly, then use one image mark to control its fit,
-alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/image-assets/)
+alignment, viewport and alternative text. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/image-assets/)
 uses one pinned SVG asset for six placements and retains the bytes for offline export.
 
 ## Prepare and place
 
-The canonical [example program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/image-assets/program.js) loads its
+The canonical [example program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/image-assets/program.js) loads its
 inline asset through `prepareImageResource` and applies the returned handle to the
 same immutable program. Its application-owned decoder reports the source dimensions.
 The synchronous `createImageResource` action stores the validated bytes. Then
@@ -52125,13 +52286,13 @@ Use `editImageMark({target:"image",shadow:{color:"#0008",offsetX:4,offsetY:4,blu
 # Prepare fonts before text layout
 
 Keep font loading explicit, measure with the loaded bytes, and save the final
-text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/font-assets/)
+text layout for offline output. The [runnable example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/font-assets/)
 uses licensed Korean and monochrome emoji subsets with fixed content hashes.
 It includes a combining accent and a wrapped Korean title.
 
 ## Load, measure, apply
 
-The canonical [program](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/font-assets/program.js)
+The canonical [program](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/font-assets/program.js)
 first creates a title using the requested font families. Its initial estimated
 layout is a usable immutable program while loading runs. For each named font,
 `prepareFontResource` asks the application to load and decode bytes and verifies
@@ -52142,7 +52303,7 @@ original receiver using the current request token.
 measure every width needed by the existing layout. `applyTextMetrics` commits the
 exact profile and rematerializes the title. Widths that have not been measured
 cannot silently use an estimate. A late result for an edited receiver is stale.
-The [host adapter](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/font-assets/host.js)
+The [host adapter](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/font-assets/host.js)
 uses browser `FontFace` and Canvas measurement, or a native Canvas in Node.
 
 ## Draw the prepared text
@@ -52309,7 +52470,7 @@ A hierarchy describes parent-child meaning. A layout computes positions, and a p
 
 ## Run the maintained examples
 
-Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
+Serve the repository over HTTP and open [the tree example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/tree-layouts) or [the treemap example](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/treemap-layouts). Their canonical public programs are `examples/tree-layouts/program.js` and `examples/treemap-layouts/program.js`; the same functions produce the images and test fixtures on this page.
 
 Use the Getting Started browser module setup with a canvas whose id is `chart`. This is the complete vertical tree program:
 
@@ -52843,7 +53004,7 @@ The long A–C connection follows the existing A–B–C path, with two corner c
 All three original edges remain independently selectable.
 
 This complete ES module uses the same data and action flow as the
-[executable example](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/edge-routes/program.js).
+[executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/edge-routes/program.js).
 
 ```javascript
 import { chart } from 'ggaction';
@@ -52921,7 +53082,7 @@ Body and label styles accept `outline:{color,width}|false` and `shadow:{color,of
 
 # Partition tutorial
 
-A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/65bb5a89188449ba95edafef99b76be6d522a75a/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
+A partition assigns each node one normalized interval. Rectangular and radial views share its values, order and typed identity. The maintained program is [examples/partition-layouts/program.js](https://github.com/ggaction/ggaction/tree/codex/roadmap9-native-charts/examples/partition-layouts/program.js); the example, tutorial and render tests consume that same program.
 
 ## Run the icicle
 
@@ -53451,7 +53612,7 @@ For feedback, select `method: "cyclic"`. All edges remain represented, including
 self-loops when the flow graph explicitly enables them. Outside lanes are part
 of the stored bounds, so fitting and clipping include their full extent.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/flow-layouts/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/flow-layouts/program.js)
 also demonstrates vertical flow and typed per-item colors. The browser example,
 primitive comparisons and generated figures use that one program.
 See [Flow Data and Sankey Layouts](./api/flows/) for exact options, selection
@@ -53900,7 +54061,7 @@ example uses one point of weight two. The kernel example uses the same point,
 a triangular product kernel and bandwidth [1, 1]. On this grid their sampled
 values agree, while their estimation policies remain explicit.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/contours/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/contours/program.js)
 contains all five variants. Browser examples, primitive comparisons and images
 use that one program. See [Contours and two-dimensional density](./api/contours/)
 for exact options, limits, guide mappings, edits and source revision behavior.
@@ -54166,7 +54327,7 @@ With missing: "omit", unobserved dates have no cells. Their locations remain
 empty, so later dates never shift into those gaps. This variant hides month
 boundaries to emphasize the missing cells.
 
-The [shared example source](https://github.com/ggaction/ggaction/blob/65bb5a89188449ba95edafef99b76be6d522a75a/examples/calendar/program.js)
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/calendar/program.js)
 contains all three variants. Its program is shared by browser examples, renderer
 pairs and generated images. See [Calendar plots](./api/calendar/) for exact
 options, selection, aggregation, edits and source revision behavior.
@@ -54235,3 +54396,142 @@ requires another preparation before it can be authored.
 See [composition](./api/composition/) for scoped editing and guide policies,
 and [font assets](./tutorials/font-assets/) for explicit host preparation. Renderers consume
 the same resolved output; they do not measure or relayout the panels.
+
+<!-- Source: /api/pyramid/ -->
+
+# Pyramid plots
+
+Show ordered stages as adjacent trapezoids. Use width to compare their spans, or
+area to make each trapezoid's area proportional to its value. These actions use
+the Full `ggaction` entry point and render through Canvas, SVG, PNG and PDF.
+
+## `createPyramidPlot`
+
+**Chart authoring.**
+
+```typescript
+createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
+```
+
+Create a Canvas and dataset first. Pass `stage` and `value` as column names.
+Stage labels may repeat; dataset row keys identify the individual stages.
+Values must be finite and nonnegative. Rows remain in input order, including
+when a later stage is larger than an earlier one.
+
+Options are `{ id?, data?, coordinate?, stage, value, orientation?, encoding?,
+gap?, lastStage?, taperRatio?, percentBase?, stages?, labels?, color?, clip? }`.
+The default ID is `pyramid`; use an explicit ID for another plot. Omitted data
+and Cartesian coordinate references use the current or unique eligible resource.
+The `main` coordinate is created if none exists. Ambiguous references are errors.
+
+`orientation` is `down` by default, or `up`, `right`, `left`. Directions change
+where stages progress without reversing their input order. Stages have equal
+lengths along that direction. `gap` is nonnegative logical pixels between stages
+and defaults to zero; gaps exceeding the available extent are errors.
+
+With `encoding: "width"` (default), the widest top spans the viewport. Each
+bottom matches the next top; `lastStage: "flat"` keeps the final width and
+`"point"` ends at zero. With `encoding: "area"`, each bottom is its own top
+multiplied by `taperRatio` (default `0.8`, from zero to one). This makes areas
+proportional to values. Width mode rejects `taperRatio`; area mode rejects
+`lastStage`. An empty dataset produces no stages. All-zero values preserve
+stage identities with zero width.
+
+`stages` accepts `fill`, `stroke`, `strokeWidth`, `opacity`, `outline` and
+`shadow`. Defaults are `"#2563eb"`, `"none"`, `0` and `1`. Fills accept
+[solid, gradient and pattern paints](./api/appearance/mark-style/). Effects share
+the existing preparation and `false` reset rules. `clip` defaults to true.
+
+`labels` accepts `false` or `{ content?, format?, fill?, fontFamily?, fontSize?,
+fontWeight?, outline?, shadow? }`. Content is `"stage"` by default, `"value"`,
+or `"percent"`. Defaults are `format: "auto"`, fill `"#0f172a"`, family
+`"sans-serif"`, size `12`, and weight `"normal"`. Number formatting uses the
+shared Text formatter, for example `".1%"` for percentages. Empty auto-formatted
+strings produce no label.
+
+Labels wrap within a rectangle inset by 4 pixels inside each stage, using words
+and then grapheme clusters for long words. Lines are spaced at 1.2 times the font
+size. If that rectangle is too small, vertical stages use the empty lane to their
+right; horizontal stages use the lane below. Labels remain inside the plot and
+within their own stage interval. If neither location fits, the action fails before
+changing the chart. Increase the Canvas size, reduce `labels.fontSize`, or use
+`labels: false`. Stage values and geometry are never changed to fit text.
+A prepared font profile must include the wrapping measurements; prepare metrics
+again before edits that introduce new text or font sizes.
+
+Percent labels require an explicit `percentBase`: `"first"`, `"total"` or
+`"previous"`. A zero denominator produces no percent label; the first stage
+also has none for `"previous"`. Ratios are never silently assigned a denominator.
+
+`color` is a field string or `{ field, fieldType?, scale?, palette? }`. The
+default field type is nominal; ordinal, quantitative and temporal are supported.
+Scale options follow [color encodings](./api/series/color/). The default scale ID
+is `<mark>-color`. Mapping takes precedence over the fixed stage fill.
+Add a legend explicitly with `createLegend({ target: "pyramid" })`.
+
+## `editPyramidPlot`
+
+**Chart authoring.**
+
+```typescript
+editPyramidPlot(options: TargetedOptions<EditPyramidPlotOptions>): ChartProgram;
+```
+
+Use the creation options with `target` instead of `id`. Omitted options retain
+their values. An empty patch, unknown option or explicit `undefined` is an error.
+Changing encoding mode removes the previous mode's specific width policy.
+After `labels: false`, `labels: {}` restores stage labels with their defaults.
+`color: false` removes the mapping and its legend, exposing the fixed stage fill.
+
+Each stage is one selectable item containing its body and optional label.
+Selection, highlighting and hit inspection use the same row identity. Canvas
+resize, source revision, color-scale changes, fonts and themes rematerialize the
+stages. Reordering keyed source rows changes their order while preserving identity.
+Edits validate the complete candidate before writing semantic or graphic children.
+
+Use named concat children and scoped targets for nested editing, or `facet` to
+partition the source dataset. Saved editable programs retain these operations;
+graphic snapshots render offline. This stage layout has no Cartesian x/y axes.
+See the [ordered-stage tutorial](./tutorials/pyramid/) for the executable example.
+
+<!-- Source: /tutorials/pyramid/ -->
+
+# Compare ordered stages
+
+These three observations count visits, trials and returns. The order expresses
+the process. Pyramid keeps it even if a later count exceeds an earlier one.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 420, height: 360,
+    margin: { left: 60, right: 60, top: 60, bottom: 30 }, background: "#ffffff" })
+  .createData({ id: "stages", keyField: "id", values: [
+    { id: "visit", stage: "Visited", value: 100 },
+    { id: "trial", stage: "Tried", value: 60 },
+    { id: "return", stage: "Returned", value: 20 }
+  ] })
+  .createPyramidPlot({ stage: "stage", value: "value",
+    stages: { fill: "#c7d2fe", stroke: "#4338ca", strokeWidth: 1 },
+    labels: { fontSize: 14 } });
+```
+
+The default width profile connects each stage to the width of the next. Its
+last stage stays flat. To compare areas directly, use `encoding: "area"` and
+`taperRatio: 0.8`; the three areas then have the same 100:60:20 ratio as the data.
+
+Directions are explicit. `orientation: "up"`, `"right"` or `"left"` changes
+the direction of progress; it does not sort the source rows. A pointed ending
+is an explicit `lastStage: "point"` choice for width mode.
+
+The [shared example source](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/pyramid/program.js)
+drives the browser examples, primitive comparisons and generated images.
+See [Pyramid plots](./api/pyramid/) for labels, percentages, color, selection
+and editing options.
+
+## Key action trace
+
+`createPyramidPlot` records its stage/value meaning, then explicitly calls
+`materializePyramidPlot` and the graphic primitives. `editPyramidPlot` validates
+the whole candidate before applying the same materializer.

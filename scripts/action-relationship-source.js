@@ -550,6 +550,8 @@ export function buildActionRelationshipPrograms() {
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms(),
+    chart().createCanvas().createData({ values: [{ stage: "A", value: 3 }, { stage: "B", value: 2 }] })
+      .createPyramidPlot({ stage: "stage", value: "value" }).editPyramidPlot({ encoding: "area" }),
     chart().createCanvas().createData({ values: [{ day: "2024-02-29", value: 1 }] })
       .createCalendarLayout({ date: "day", value: "value", start: "2024-02-01", end: "2024-02-29", timeZone: "UTC", weekStartsOn: 1, aggregate: "sum", missing: "empty" })
       .createCalendarPlot().editCalendarPlot({ cells: { opacity: .5 } }).editLayout({ options: { missing: "omit" } }),

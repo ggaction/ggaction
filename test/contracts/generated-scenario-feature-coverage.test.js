@@ -216,13 +216,13 @@ function smallPolicy(overrides = {}) {
 test("derives a bounded public option inventory without runtime prototype paths", async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
 
-  assert.equal(inventory.counts.publicActions, 342);
-  assert.equal(inventory.counts.topLevelOptionPaths, 3237);
-  assert.equal(inventory.counts.nestedOptionPaths, 28386);
-  assert.equal(inventory.counts.optionPaths, 31623);
-  assert.equal(inventory.counts.requiredOptionPaths, 21122);
-  assert.equal(inventory.counts.excludedOptionPaths, 10501);
-  for (const action of ["createGeometryData", "editGeometryData", "createProjection", "editProjection"]) {
+  assert.equal(inventory.counts.publicActions, 344);
+  assert.equal(inventory.counts.topLevelOptionPaths, 3268);
+  assert.equal(inventory.counts.nestedOptionPaths, 28628);
+  assert.equal(inventory.counts.optionPaths, 31896);
+  assert.equal(inventory.counts.requiredOptionPaths, 21357);
+  assert.equal(inventory.counts.excludedOptionPaths, 10539);
+  for (const action of ["createPyramidPlot", "editPyramidPlot", "createGeometryData", "editGeometryData", "createProjection", "editProjection"]) {
     assert.ok(inventory.publicActions.some(value => value.name === action), action);
   }
   for (const id of ["option-path:createGeometryData.format", "option-path:createGeometryData.featureKey", "option-path:editGeometryData.limits.maxFeatures", "option-path:createProjection.type", "option-path:createProjection.fit.geometry", "option-path:createProjection.fit.width", "option-path:createProjection.fit.height", "option-path:createProjection.fit.padding", "option-path:editProjection.reflectX"]) {
@@ -251,12 +251,12 @@ test("derives a bounded public option inventory without runtime prototype paths"
       "option-path:createTitle.subtitleLineHeight",
       "option-path:editTitle.subtitleLineHeight"
     ]);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 1128);
-  assert.equal(inventory.counts.topLevelLiteralValues, 4175);
-  assert.equal(inventory.counts.literalFamilies, 266);
-  assert.equal(inventory.counts.pathLiteralRequirements, 15193);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 1142);
+  assert.equal(inventory.counts.topLevelLiteralValues, 4205);
+  assert.equal(inventory.counts.literalFamilies, 271);
+  assert.equal(inventory.counts.pathLiteralRequirements, 15347);
   assert.equal(inventory.counts.familyLiteralRequirements, 561);
-  assert.equal(inventory.counts.pathDiversityRequirements, 512);
+  assert.equal(inventory.counts.pathDiversityRequirements, 524);
   for (const action of ["createHierarchyData", "editHierarchyData", "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot", "createPartitionPlot", "editPartitionPlot"]) {
     const options = inventory.optionPaths.filter(option => option.action === action && option.topLevel);
     assert.ok(options.length > 0 && options.every(option => option.required && option.evidence === "direct-trace"), action);
@@ -526,7 +526,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 10501 }
+    { "redacted-array": 10539 }
   );
   for (const id of ["createCanvas.responsive.minPlotSize.width", "editCanvas.responsive.minPlotSize.height",
     "createXAxisLabels.responsive.maxLines", "editYAxisLabels.responsive.skipStride"]) {
@@ -560,8 +560,8 @@ test("derives a bounded public option inventory without runtime prototype paths"
     option.required &&
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
-  assert.equal(scaleTypePaths.length, 205);
-  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 958);
+  assert.equal(scaleTypePaths.length, 207);
+  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 976);
   assert.equal(inventory.excludedOptionPaths.every(option =>
     optionById.get(option.replacement)?.required === true
   ), true);
@@ -598,7 +598,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
         dataOperations: [] }, effectiveFeatures: [], renderers: ["svg"] }],
     datasetCorpus: { datasets: [datasetDefinition(preparedRecipe.datasets[0])] }, ledger
   });
-  for (const id of ["action:createCalendarLayout", "action:createCalendarPlot", "action:editCalendarPlot",
+  for (const id of ["action:createPyramidPlot", "action:editPyramidPlot", "option-path:createPyramidPlot.stage", "option-path:createPyramidPlot.value", "option-path:createPyramidPlot.labels", "option-path:editPyramidPlot.encoding", "action:createCalendarLayout", "action:createCalendarPlot", "action:editCalendarPlot",
     "option-path:createCalendarLayout.date", "option-path:createCalendarLayout.aggregate", "option-path:createCalendarPlot.color", "option-path:createCalendarPlot.cells.opacity", "option-path:editCalendarPlot.monthBoundary", "action:createContourData", "action:createDensityContourData", "action:editContourData", "action:createContourMark", "action:editContourMark",
     "option-path:createContourData.grid", "option-path:createDensityContourData.estimator", "option-path:editContourData.thresholds", "option-path:createContourMark.mode", "option-path:editContourMark.opacity", "option-path:createContourMark.outline.width", "option-path:createContourMark.shadow", "option-path:editContourMark.outline", "option-path:editContourMark.shadow", "action:createFlowData", "action:editFlowData", "action:layoutFlow",
     "action:createFlowNodes", "action:editFlowNodes", "action:createFlowLinks", "action:editFlowLinks",
@@ -642,7 +642,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 37224);
+  assert.equal(ledger.requirements.length, 37615);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

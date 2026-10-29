@@ -2188,3 +2188,100 @@
   tasks: graph edge routes bundling
   url: /tutorials/edge-routes/
   tutorial_order: 225
+
+- id: pyramid
+  tutorial_order: 280
+  example: /examples/pyramid/
+  title: Ordered stages by width
+  image: /assets/images/pyramid.png
+  alt: Keep the process order while matching adjacent stage widths.
+  width: 840
+  height: 720
+  thumbnail: /assets/images/pyramid-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 549
+  caption: Keep the process order while matching adjacent stage widths.
+  summary: Keep the process order while matching adjacent stage widths.
+  actions: createPyramidPlot · editPyramidPlot
+  tasks: ordered stages
+  url: /tutorials/pyramid/
+
+- id: pyramid-area
+  example: /examples/pyramid-area/
+  title: Ordered stages by area
+  image: /assets/images/pyramid-area.png
+  alt: Make stage areas proportional to values with an explicit taper.
+  width: 840
+  height: 720
+  thumbnail: /assets/images/pyramid-area-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 549
+  caption: Make stage areas proportional to values with an explicit taper.
+  summary: Make stage areas proportional to values with an explicit taper.
+  actions: createPyramidPlot · editPyramidPlot
+  tasks: ordered stages
+  url: /tutorials/pyramid/
+
+- id: pyramid-up
+  example: /examples/pyramid-up/
+  title: Stages progress upward
+  image: /assets/images/pyramid-up.png
+  alt: Keep input order while changing the direction of progress.
+  width: 840
+  height: 720
+  thumbnail: /assets/images/pyramid-up-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 549
+  caption: Keep input order while changing the direction of progress.
+  summary: Keep input order while changing the direction of progress.
+  actions: createPyramidPlot · editPyramidPlot
+  tasks: ordered stages
+  url: /tutorials/pyramid/
+
+- id: pyramid-right
+  example: /examples/pyramid-right/
+  title: Stages progress rightward
+  image: /assets/images/pyramid-right.png
+  alt: Use a horizontal process direction without sorting rows.
+  width: 840
+  height: 720
+  thumbnail: /assets/images/pyramid-right-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 549
+  caption: Use a horizontal process direction without sorting rows.
+  summary: Use a horizontal process direction without sorting rows.
+  actions: createPyramidPlot · editPyramidPlot
+  tasks: ordered stages
+  url: /tutorials/pyramid/
+
+- id: pyramid-left
+  example: /examples/pyramid-left/
+  title: Stages progress leftward
+  image: /assets/images/pyramid-left.png
+  alt: Reverse the progression direction while retaining row order.
+  width: 840
+  height: 720
+  thumbnail: /assets/images/pyramid-left-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 549
+  caption: Reverse the progression direction while retaining row order.
+  summary: Reverse the progression direction while retaining row order.
+  actions: createPyramidPlot · editPyramidPlot
+  tasks: ordered stages
+  url: /tutorials/pyramid/
+
+- id: pyramid-point
+  example: /examples/pyramid-point/
+  title: An explicit pointed ending
+  image: /assets/images/pyramid-point.png
+  alt: Request a pointed last stage in width mode.
+  width: 840
+  height: 720
+  thumbnail: /assets/images/pyramid-point-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 549
+  caption: Request a pointed last stage in width mode.
+  summary: Request a pointed last stage in width mode.
+  actions: createPyramidPlot · editPyramidPlot
+  tasks: ordered stages
+  url: /tutorials/pyramid/

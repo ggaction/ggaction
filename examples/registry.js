@@ -1,4 +1,6 @@
 import { createNestedResponsive } from "./nested-responsive/program.js";
+import { createPyramid } from "./pyramid/program.js";
+import { variants as pyramidVariants } from "./pyramid/fixture.js";
 import { createCalendar } from "./calendar/program.js";
 import { createResponsiveGuides } from "./responsive-guides/program.js";
 import { createContours } from "./contours/program.js";
@@ -307,6 +309,11 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "area-layout/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
   }),
+  ...pyramidVariants.map(variant => example({ id: variant.chart, programDirectory: "pyramid", testDirectory: "pyramid", data: {}, width: 420, height: 360, docsGroup: "tutorials",
+    createProgram: () => createPyramid(variant.id),
+    browser: { path: `browser-host/?chart=${variant.chart}`, canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: variant.chart, width: 420, height: 360 } } }
+  })),
   example({ id: "calendar", programDirectory: "calendar", testDirectory: "calendar", data: {}, width: 1080, height: 360, docsGroup: "tutorials",
     createProgram: () => createCalendar("year"),
     browser: { path: "browser-host/?chart=calendar", canvas: "#chart",

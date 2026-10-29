@@ -355,6 +355,10 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editEdgeRoute`](current/EDGE_ROUTES.md#editedgeroute) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGeometryData`](current/GEOMETRY.md#creategeometrydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGeometryData`](current/GEOMETRY.md#editgeometrydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createProjection`](current/GEOMETRY.md#createprojection) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editProjection`](current/GEOMETRY.md#editprojection) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createPyramidPlot`](current/PYRAMID.md#createpyramidplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editPyramidPlot`](current/PYRAMID.md#editpyramidplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 
