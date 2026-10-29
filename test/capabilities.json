@@ -464,6 +464,24 @@
         "path": "unit/resources/font-work-budget.test.js"
       }
     ],
+    "geo": [
+      {
+        "type": "prefix",
+        "path": "unit/geo/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/geographic-math.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/projection-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-projections.test.js"
+      }
+    ],
     "grammar": [
       {
         "type": "prefix",

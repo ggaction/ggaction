@@ -3545,6 +3545,38 @@ editCalendarPlot({ target?, layout?, coordinate?, color?, cells?, monthBoundary?
 
 Edit a calendar plot while preserving day identities and source lineage. See [Calendar plots](../api/calendar.md#editcalendarplot).
 
+### `createGeometryData`
+
+```javascript
+createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, limits? })
+```
+
+Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values. See [Geometry sources](../api/geometry.md#creategeometrydata).
+
+### `editGeometryData`
+
+```javascript
+editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
+```
+
+Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](../api/geometry.md#editgeometrydata).
+
+### `createProjection`
+
+```javascript
+createProjection({ id, type, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Create a named projection, optionally fitted to one exact geometry source and explicit viewport. See [Geometry and projections](../api/geometry.md#createprojection).
+
+### `editProjection`
+
+```javascript
+editProjection({ target?, type?, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Edit a projection atomically. Explicit scale or translation detaches an existing geometry fit. See [Geometry and projections](../api/geometry.md#editprojection).
+
 ### `createContourData`
 
 ```javascript

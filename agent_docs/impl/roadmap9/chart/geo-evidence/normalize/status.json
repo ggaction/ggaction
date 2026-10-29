@@ -1,0 +1,130 @@
+{
+  "scope": "Private GeoJSON/TopoJSON normalization only",
+  "baseline": "1fcebb8281eb36e2031ad65b6457dfa78f6ccbfc",
+  "checks": {
+    "focused": {
+      "tests": 10,
+      "passed": 10
+    },
+    "canonicalBoundary": {
+      "tests": 37,
+      "passed": 37
+    },
+    "packageContracts": {
+      "tests": 7,
+      "passed": 7
+    }
+  },
+  "coverage": {
+    "grammar/geo/geometry.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "grammar/geo/input.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "grammar/geo/normalize.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    },
+    "grammar/geo/topology.js": {
+      "lines": 100,
+      "branches": 98.72,
+      "functions": 100,
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      }
+    }
+  },
+  "packageMeasurements": [
+    {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 961,
+      "packedBytes": 1370180,
+      "unpackedBytes": 6257066
+    },
+    {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 961,
+      "packedBytes": 1367476,
+      "unpackedBytes": 6257066
+    },
+    {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 961,
+      "packedBytes": 1370180,
+      "unpackedBytes": 6257066
+    }
+  ],
+  "runtimeBoundary": "No existing runtime module changed. New grammar owners are unreachable from public entries; no action/type/current surface is claimed. Prior same-tar public renderer/bundle/installed evidence remains applicable to the unchanged reachable runtime.",
+  "initialFailure": "First8/9: fixture expected /limit/ but resource-limit error says must not exceed; literal output and thrown budget were correct.",
+  "remaining": [
+    "Geometry resource, featureKey/generated identity and asset resolver",
+    "Projection/stream/mark/guide/join/LOD/camera and typed revision/removal/restore consumers",
+    "STEP042–046 and AT30 integration evidence"
+  ],
+  "sourceHashes": {
+    "src/grammar/geo/geometry.js": "fbf53baef9dd1be24108916e5434dd84a6c2c26c05f5e3f34b9a79cf6f1e7b1c",
+    "src/grammar/geo/input.js": "178c5a327e1141399a07b3f5edcae77d3f6d101207e3fabc6d9cc0a1e4cd365f",
+    "src/grammar/geo/normalize.js": "6f2f89050d38652fd187d9ef60a4fb2f8ba5f748658b3b97b8fbcd2c90e3a171",
+    "src/grammar/geo/topology.js": "24759a3cd0f3fb3a10207b1e3bbeff84da1bb68c653b6b2b87412dbcf92d3c11"
+  },
+  "artifacts": {
+    "geo-normalize-first.log.gz": {
+      "sha256": "e8a70890fa4b199a7373e43f24bab839f249e4c255e990f06ce65696aae5cead",
+      "bytes": 4504
+    },
+    "geo-normalize-coverage-second.log.gz": {
+      "sha256": "8d348e82793dbc0550214e6fadd5362c3543c86fbe817924c55471d1cc80fd8d",
+      "bytes": 4967
+    },
+    "geo-normalize-boundaries.log.gz": {
+      "sha256": "04f90e2d4787b6e93990dc9809f3af1b88cbf8775917826c73ecd2db2da54c68",
+      "bytes": 7946
+    },
+    "package-size-v24.22.1.json.gz": {
+      "sha256": "80a4866f7e5b452e9912b9d573bc5fc93f81b3ae91faa41020554dc5205a3308",
+      "bytes": 133
+    },
+    "package-size-v20.20.2.json.gz": {
+      "sha256": "d4e8324961a1747024341b7ae7e0bad267e485a9debc358d71d1084a200ce5ac",
+      "bytes": 124
+    },
+    "package-size-v22.23.1.json.gz": {
+      "sha256": "7bfd7f40456572bb56ef5e6712870ba053cda71e9cf3fdd4ec68f5209c719f2f",
+      "bytes": 117
+    },
+    "normalize-coverage.json.gz": {
+      "sha256": "99fa0c0cd0eb85b9491af5d793dc812e2708770da3386b3a40e5d7abd832002d",
+      "bytes": 731
+    },
+    "normalize-package-contracts.log.gz": {
+      "sha256": "777013908deb3ed6d9888136b0b54628814601ce29233ff151cf38ab21826f90",
+      "bytes": 1714
+    }
+  }
+}

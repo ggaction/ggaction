@@ -5,6 +5,11 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "geo-actions": { prefix: "actions/geo/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geometry revisions must preserve immutable feature identity and preflight consumers before writes." },
+  "geo-materialization": { prefix: "materialization/geo", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geometry source results and their closed dispatch must retain exact source and identity validation." },
+  "geo-selection": { prefix: "selectors/geometry.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geographic geometry selection must preserve eligible current and unique resource semantics." },
+  "projection-selection": { prefix: "selectors/projections.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Named projections must preserve explicit, current and unique resource resolution." },
+  "geo-grammar": { prefix: "grammar/geo/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geographic geometry must preserve exact feature identity, bounded shared topology, finite projection and clipping semantics." },
   "facet-scale-context": { prefix: "materialization/facetScaleContext.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Layout-only facet work must preserve resolved domains and expire transient authority on return or failure." },
   "responsive-canvas-state": { prefix: "grammar/responsiveCanvas.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored fixed Canvas policies and results require closed shape, finite bounds and immutable restoration." },
   "responsive-materialization": { prefix: "materialization/responsiveLayout.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Bounded explicit layout passes must preserve fixed dimensions and transient context on every exit." },

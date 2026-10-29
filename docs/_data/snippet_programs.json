@@ -529,6 +529,15 @@
     },
     "rendering": "authoring-only"
   },
+  "api/geometry.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "fixture": "values",
+    "result": "program",
+    "prerequisites": "Import ggaction; the example supplies its own feature collection.",
+    "rendering": "authoring-only",
+    "resultKind": "semantic"
+  },
   "tutorials/responsive-guides.md": {
     "mode": "complete",
     "environment": "node-esm",

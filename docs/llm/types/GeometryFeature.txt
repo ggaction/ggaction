@@ -1,0 +1,5 @@
+export interface GeometryFeature extends Readonly<Record<string, unknown>> {
+  readonly type: "Feature"; readonly id?: string | number;
+  readonly properties: Readonly<Record<string, GeometryJSONValue>> | null;
+  readonly geometry: GeographicGeometry | null;
+}

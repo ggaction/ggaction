@@ -58,13 +58,14 @@ test("separates network-backed corpus sweeps from source coverage", () => {
   const normal = collectTestFiles("all", testRoot);
   const realistic = collectTestFiles("realistic", testRoot);
 
-  assert.equal(realistic.length, 44);
+  assert.equal(realistic.length, 45);
   assert.equal(realistic.every(file => file.endsWith(".test.js")), true);
   assert.equal(realistic.some(file => file.endsWith(
     `${path.sep}dataset-fixtures.test.js`
   )), true);
   for (const name of [
     "realistic-edge-routes.test.js",
+    "realistic-projections.test.js",
     "realistic-calendar-plots.test.js",
     "realistic-axis-facet-owner-witness.test.js",
     "realistic-layer-plot.test.js",

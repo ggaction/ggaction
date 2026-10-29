@@ -1,0 +1,1 @@
+export type GeometryJSONValue = null | boolean | number | string | readonly GeometryJSONValue[] | { readonly [key: string]: GeometryJSONValue };

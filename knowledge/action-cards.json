@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 345,
+  "count": 349,
   "cards": [
     {
       "schemaVersion": 3,
@@ -43044,6 +43044,577 @@
       "snippet": "program.editEdgeRoute({ target: \"routes\", options: { exponent: 3 } })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editedgeroute"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createGeometryData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values.",
+      "signature": "createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;",
+      "intents": [
+        "create geometry data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "geographic source",
+        "planar shapes"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "geographic source"
+        ],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeometryData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "coordinateKind",
+          "required": true,
+          "type": "\"geographic\" | \"planar\""
+        },
+        {
+          "name": "featureKey",
+          "required": false,
+          "type": "GeometryFeatureKey | undefined"
+        },
+        {
+          "name": "limits",
+          "required": false,
+          "type": "GeometryLimits | undefined"
+        },
+        {
+          "name": "format",
+          "required": true,
+          "type": "\"geojson\" | \"topojson\""
+        },
+        {
+          "name": "values",
+          "required": true,
+          "type": "TopoJSONInput | GeoJSONInput"
+        },
+        {
+          "name": "topoObject",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createGeometryData({ id, coordinateKind, format, values, target?, featureKey?, limits?, topoObject? })"
+      ],
+      "snippet": "program.createGeometryData({ id: \"geometry\", format: \"geojson\", coordinateKind: \"geographic\", featureKey: \"id\", values: { type: \"Feature\", id: \"place\", properties: {}, geometry: { type: \"Point\", coordinates: [12.6, 55.7] } } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#creategeometrydata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editGeometryData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Revise a geometry source atomically while preserving its format and feature-key policy.",
+      "signature": "editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;",
+      "intents": [
+        "edit geometry data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "geographic source",
+        "planar shapes"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing geographic source",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeometryData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing geographic source",
+          "source dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "values",
+          "required": false,
+          "type": "TopoJSONInput | GeoJSONInput | undefined"
+        },
+        {
+          "name": "coordinateKind",
+          "required": false,
+          "type": "\"geographic\" | \"planar\" | undefined"
+        },
+        {
+          "name": "topoObject",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "limits",
+          "required": false,
+          "type": "GeometryLimits | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })"
+      ],
+      "snippet": "program.editGeometryData({ target: \"geometry\", coordinateKind: \"planar\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editgeometrydata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Create a named projection, optionally fitted to one exact geometry source and explicit viewport.",
+      "signature": "createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;",
+      "intents": [
+        "create projection",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "geographic projection",
+        "map projection"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "explicit native projection type"
+        ],
+        "owns": [
+          "projection resource"
+        ],
+        "idOptions": [
+          "id"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editProjection",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "scalePx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "translatePx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "precisionPx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "clipExtentPx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "centerDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "rotateDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "clipAngleDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "parallelsDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "fit.width",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.height",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.padding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.pointScale",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "explicit native projection type"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "type",
+          "required": true,
+          "type": "ProjectionType"
+        },
+        {
+          "name": "fit",
+          "required": false,
+          "type": "ProjectionFitOptions | undefined"
+        },
+        {
+          "name": "scalePx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "translatePx",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "precisionPx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "reflectX",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reflectY",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "clipExtentPx",
+          "required": false,
+          "type": "readonly [readonly [number, number], readonly [number, number]] | null | undefined"
+        },
+        {
+          "name": "centerDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "rotateDeg",
+          "required": false,
+          "type": "readonly [number, number] | readonly [number, number, number] | undefined"
+        },
+        {
+          "name": "clipAngleDeg",
+          "required": false,
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "parallelsDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createProjection({ id, type, target?, fit?, scalePx?, translatePx?, precisionPx?, reflectX? })"
+      ],
+      "snippet": "program.createProjection({ id: \"projection\", type: \"mercator\", centerDeg: [0, 0] })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createprojection"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edit a projection atomically.",
+      "signature": "editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;",
+      "intents": [
+        "edit projection",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "geographic projection",
+        "map projection"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing named projection"
+        ],
+        "owns": [
+          "projection resource"
+        ],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editProjection",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "scalePx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "translatePx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "precisionPx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "clipExtentPx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "centerDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "rotateDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "clipAngleDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "parallelsDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "fit.width",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.height",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.padding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.pointScale",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing named projection"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "ProjectionType"
+        },
+        {
+          "name": "fit",
+          "required": false,
+          "type": "ProjectionFitOptions | undefined"
+        },
+        {
+          "name": "scalePx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "translatePx",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "precisionPx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "reflectX",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reflectY",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "clipExtentPx",
+          "required": false,
+          "type": "readonly [readonly [number, number], readonly [number, number]] | null | undefined"
+        },
+        {
+          "name": "centerDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "rotateDeg",
+          "required": false,
+          "type": "readonly [number, number] | readonly [number, number, number] | undefined"
+        },
+        {
+          "name": "clipAngleDeg",
+          "required": false,
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "parallelsDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editProjection({ target?, type?, fit?, scalePx?, translatePx?, precisionPx?, reflectX?, reflectY? })"
+      ],
+      "snippet": "program.editProjection({ target: \"projection\", scalePx: 200 })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editprojection"
     }
   ]
 }

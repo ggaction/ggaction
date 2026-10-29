@@ -1,0 +1,381 @@
+{
+  "status": "verified-private-kernel",
+  "baseline": "e16e767a9",
+  "approval": "AUTHORIZATION.json remainingApproval and parent exact mathematical dependency alias confirmation",
+  "checks": {
+    "numeric": 13,
+    "geoAndBoundary": 64,
+    "artifactContracts": 24,
+    "critical": {
+      "status": "passed",
+      "floors": {
+        "grammar/geo/projectionFit.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "grammar/geo/projectionMath.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "grammar/geo/projectionOptions.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "grammar/geo/projections.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      }
+    },
+    "packedInputParity": {
+      "artifact": "d951d3f0ca46121c637a518fc28ebeef23943b1b41272a58f020938758a8cdd8",
+      "entries": 977,
+      "differences": []
+    },
+    "postCommitDocs": 186
+  },
+  "initialFailure": {
+    "tests": 13,
+    "passed": 12,
+    "failed": 1,
+    "cause": "The screen roundtrip allowance accepted an orthographic inverse 0.1px outside the limb.",
+    "fix": "Use a stricter scale-relative numeric roundtrip tolerance capped at 0.25px."
+  },
+  "artifact": {
+    "sha256": "d951d3f0ca46121c637a518fc28ebeef23943b1b41272a58f020938758a8cdd8",
+    "entries": 977,
+    "packedBytes": 1391060,
+    "unpackedBytes": 6347818
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "sha256": "d951d3f0ca46121c637a518fc28ebeef23943b1b41272a58f020938758a8cdd8",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 860,
+          "minifiedBytes": 2407294,
+          "gzipBytes": 685181
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 538,
+          "minifiedBytes": 1273850,
+          "gzipBytes": 371470
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 154,
+          "minifiedBytes": 282866,
+          "gzipBytes": 92173
+        }
+      },
+      "types": "passed",
+      "privateKernel": "15 projections, raw literal, inverse, installed dependency version and notices passed"
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "sha256": "d951d3f0ca46121c637a518fc28ebeef23943b1b41272a58f020938758a8cdd8",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 860,
+          "minifiedBytes": 2407294,
+          "gzipBytes": 683402
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 538,
+          "minifiedBytes": 1273850,
+          "gzipBytes": 370704
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 154,
+          "minifiedBytes": 282866,
+          "gzipBytes": 92104
+        }
+      },
+      "types": "passed",
+      "privateKernel": "15 projections, raw literal, inverse, installed dependency version and notices passed"
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "sha256": "d951d3f0ca46121c637a518fc28ebeef23943b1b41272a58f020938758a8cdd8",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 860,
+          "minifiedBytes": 2407294,
+          "gzipBytes": 685181
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 538,
+          "minifiedBytes": 1273850,
+          "gzipBytes": 371470
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 154,
+          "minifiedBytes": 282866,
+          "gzipBytes": 92173
+        }
+      },
+      "types": "passed",
+      "privateKernel": "15 projections, raw literal, inverse, installed dependency version and notices passed"
+    }
+  },
+  "measurements": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 977,
+      "packedBytes": 1394455,
+      "unpackedBytes": 6347818
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 977,
+      "packedBytes": 1391060,
+      "unpackedBytes": 6347818
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 977,
+      "packedBytes": 1394455,
+      "unpackedBytes": 6347818
+    }
+  },
+  "sourceHashes": {
+    "src/grammar/geo/projectionOptions.js": "0823d794815ef95aa555589db3cb04f2844d5bb3c63498a1566b9f62f6db492e",
+    "src/grammar/geo/projectionMath.js": "a034f4bedc1c05be4e09bee82712fe43dc43d220bd8a83fecbca2f62e0f1ae7c",
+    "src/grammar/geo/projections.js": "ad8531ef610c050e901a6327cb85c4895f9c96abf37e99dacca5e6a9510785e8",
+    "src/grammar/geo/projectionFit.js": "36059e6ea326977231420cb5c085605507680549b5d00c5a71d31d088c0a534f",
+    "test/unit/geo/projections.test.js": "bf66378a9c08a1582403de3fca7403bf4f3b726c4410017bf81f6eab2bcd6d58",
+    "test/contracts/geographic-math.test.js": "c3ef3e89fbdf08109ce5d5377ab4cb3a361c4f2f96baf7964910b123f163217d",
+    "package.json": "b78f111b6541deea5fb5117c0a23762ef12e01f724352c98ee2c6392305967d1",
+    "package-lock.json": "6c16c3a555c4e9165e2896e71a08118128ea387d968e2dd24d289ba5dddfff37",
+    "THIRD_PARTY_NOTICES": "c091a90b342f4250966d354f300011d86a69ba14f662696f7decd7f473baa351",
+    "licenses/geometry-math.json": "a2764254dcda2da113a3a9255365ef79d4827c19cc6eb78f6fa01801046e3580"
+  },
+  "logs": [
+    {
+      "file": "projection-boundaries.log.gz",
+      "sha256": "c9785607c723c92fa0d60e97fa9a88f03977aa00eda703c05143206c6003594f"
+    },
+    {
+      "file": "projection-coverage.log.gz",
+      "sha256": "102260fca5c2854fd8203583af30b59f8532f7e71790b3dedb624403eb05cc42"
+    },
+    {
+      "file": "projection-critical.json.gz",
+      "sha256": "48c4b6a587d7b69a84a8da12a52ef120c4d3bf1c446d3e70167cc20023e621d7"
+    },
+    {
+      "file": "projection-dependency-candidate.json.gz",
+      "sha256": "128e2460c1b7541e5a0b0da9589bc532b648125afd622182dce86bb9514a19e8"
+    },
+    {
+      "file": "projection-first.log.gz",
+      "sha256": "5b0abbdda54b301dba9ebc4773245aaeb910b7894c2f886bdf469c2465209167"
+    },
+    {
+      "file": "projection-installed-20.exit.json.gz",
+      "sha256": "c50a0c4c734cad3e53761b21dd20e7d56661fc99e2f1398e7ff5cf098e698437"
+    },
+    {
+      "file": "projection-installed-20.json.gz",
+      "sha256": "a5ab891c88f1aa73ccf4521d0f1b6a987e57c1e0325bb8369655fb8b7e2feaaf"
+    },
+    {
+      "file": "projection-installed-20.log.gz",
+      "sha256": "88edaa0539e34887c7c7c61df772e1f8b54cfd81a396f2d22f97729c20a4315f"
+    },
+    {
+      "file": "projection-installed-22.exit.json.gz",
+      "sha256": "0ddd49b8d2519b9be0576477db1a5e0479364cceb7759ebbf9a10cf4ac80508e"
+    },
+    {
+      "file": "projection-installed-22.json.gz",
+      "sha256": "1b5f10f6b2a9d54baa3bd211ff165617c64cdfce594e5ceec69f736f05ffe02b"
+    },
+    {
+      "file": "projection-installed-22.log.gz",
+      "sha256": "8a6f044cb051f21d3981471e67a4533207e1802250067bd9eb8b2092616c0eb5"
+    },
+    {
+      "file": "projection-installed-24.exit.json.gz",
+      "sha256": "2e8c1326c5db4b3c4870ba7b50517fa037baeadb8608c5bfe183c95a5cde254a"
+    },
+    {
+      "file": "projection-installed-24.json.gz",
+      "sha256": "1c7fe8b3d0ad57bcf52f6c0ff8a720b2415b4e700b6b604b865b11257d876640"
+    },
+    {
+      "file": "projection-installed-24.log.gz",
+      "sha256": "692de8b27b2e94b1b4c617857ef6921aea8b0a5454dc064538887252c872b9b5"
+    },
+    {
+      "file": "projection-installed-summary.log.gz",
+      "sha256": "1aaa2bdd34c782bbefd4432cc3ed9116ea561a636743ab668c9a9de2201e15d7"
+    },
+    {
+      "file": "projection-package-contracts.log.gz",
+      "sha256": "5a6e88e9e5b1d301fa372e87c455671ac6eb26415062f755484ca8bc58187580"
+    },
+    {
+      "file": "projection-package-size-v20.20.2.json.gz",
+      "sha256": "a423a5ecbb7d77e136adfe1a10946d12ee47093a0a42c4aa732d32598bf49aca"
+    },
+    {
+      "file": "projection-package-size-v22.23.1.json.gz",
+      "sha256": "5f7296543251c05f6fa9f10e557e8680c5249f808674d4917c58dcfe897ad964"
+    },
+    {
+      "file": "projection-package-size-v24.22.1.json.gz",
+      "sha256": "c1f9db20e698b46c569c09acdca13f37b15e6c1f5d5113789148cca1fd7d5e0b"
+    },
+    {
+      "file": "projection-package.log.gz",
+      "sha256": "34806bbf5302936a0764d6ac23fb8019b942b35a7531dd1bdf062b20d874433a"
+    },
+    {
+      "file": "projection-packed-inputs.json.gz",
+      "sha256": "fb72810f5d42effd2c30c8417e2d766001b0d34b046f6e881e3b3d61f4efbe07"
+    },
+    {
+      "file": "projection-packed-inputs.log.gz",
+      "sha256": "2e5a1c0a5f34db3a6bc4d7ae514b2372b77c10fa8c1aa83f00e61917efcab5e5"
+    },
+    {
+      "file": "projection-qualified.log.gz",
+      "sha256": "6087c2a739057d82a2b3cc26bae2159b37f834e3996b9684f73c189964c54c90"
+    },
+    {
+      "file": "projection-second.log.gz",
+      "sha256": "c450afc85806b0eeb42fbfd3ebc053b721f63bce7be94517128f0c688e0cf66a"
+    },
+    {
+      "file": "projection-size-20.log.gz",
+      "sha256": "d8e7aff8614a119b365614cdb61b4e909b4497cd5291ebde106c13eece1758b5"
+    },
+    {
+      "file": "projection-size-22.log.gz",
+      "sha256": "0ce601a4caacb39ee9be7d58f04009847ce958c5b745bc190a8f82e2df36ff7f"
+    },
+    {
+      "file": "projection-size-24.log.gz",
+      "sha256": "a50790afd8bb3b66b82236d52dd93beeefc49a98fdf5f8e27ce2672418b09b4c"
+    },
+    {
+      "file": "projection-docs.log.gz",
+      "sha256": "d9433c644e21f501848c3951c00a58f5fcc5fb0a25bf6cd83d88caf29451f142"
+    }
+  ],
+  "remaining": [
+    "Public projection resource and geo coordinate lifecycle",
+    "Geometry streaming, split/clip/resampling, marks and guide consumers",
+    "Geo join, shared-arc LOD, camera and asset original-byte provenance",
+    "Combined Geo whole coverage/render/browser qualification",
+    "Common realistic3 integration remains assigned to root"
+  ],
+  "sourceCommit": "690ce4522"
+}

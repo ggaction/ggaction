@@ -74,6 +74,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFlowNodes`](./actions/marks.md#createflownodes) | H2 | user-facing | marks |
 | [`createFoldData`](./actions/statistics.md#createfolddata) | H1 | user-facing | statistics |
 | [`createFontResource`](./actions/charts-data.md#createfontresource) | H3 | user-facing | core |
+| [`createGeometryData`](./actions/charts-data.md#creategeometrydata) | H2 | user-facing | core |
 | [`createGradientPlot`](./actions/statistics.md#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphData`](./actions/charts-data.md#creategraphdata) | H2 | user-facing | core |
 | [`createGraphics`](./actions/extension.md#creategraphics) | H4 | primitive | primitives |
@@ -110,6 +111,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPointMark`](./actions/marks.md#createpointmark) | H2 | user-facing | marks |
 | [`createPolarLinePlot`](./actions/charts-data.md#createpolarlineplot) | H0 | user-facing | charts |
 | [`createPolarScatterPlot`](./actions/charts-data.md#createpolarscatterplot) | H0 | user-facing | charts |
+| [`createProjection`](./actions/charts-data.md#createprojection) | H2 | user-facing | core |
 | [`createRadarPlot`](./actions/charts-data.md#createradarplot) | H0 | user-facing | charts |
 | [`createRadialAxis`](./actions/guides.md#createradialaxis) | H3 | user-facing | axes |
 | [`createRadialAxisLabels`](./actions/guides.md#createradialaxislabels) | H3 | user-facing | axes |
@@ -203,6 +205,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFlowLinks`](./actions/marks.md#editflowlinks) | H3 | user-facing | marks |
 | [`editFlowNodes`](./actions/marks.md#editflownodes) | H3 | user-facing | marks |
 | [`editFoldData`](./actions/statistics.md#editfolddata) | H1, H3 | user-facing | statistics |
+| [`editGeometryData`](./actions/charts-data.md#editgeometrydata) | H3 | user-facing | core |
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphData`](./actions/charts-data.md#editgraphdata) | H3 | user-facing | core |
 | [`editGraphics`](./actions/extension.md#editgraphics) | H4 | primitive | primitives |
@@ -237,6 +240,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editPartitionPlot`](./actions/charts-data.md#editpartitionplot) | H1, H3 | user-facing | charts |
 | [`editPivotData`](./actions/statistics.md#editpivotdata) | H1, H3 | user-facing | statistics |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
+| [`editProjection`](./actions/charts-data.md#editprojection) | H3 | user-facing | core |
 | [`editRadarPlot`](./actions/charts-data.md#editradarplot) | H1, H3 | user-facing | charts |
 | [`editRadialAxis`](./actions/guides.md#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](./actions/guides.md#editradialaxislabels) | H3 | user-facing | axes |

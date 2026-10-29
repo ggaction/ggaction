@@ -1,0 +1,3 @@
+export interface ProjectionFitOptions {
+  readonly geometry?: string; readonly width: number; readonly height: number; readonly padding?: number; readonly pointScale?: number;
+}

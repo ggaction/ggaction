@@ -65,6 +65,10 @@ interface ChartProgramActions {
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
   editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
+  createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+  createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
+  editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+  editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
@@ -2817,6 +2821,21 @@ export interface CreateFlowDataOptions extends FlowDefinition {
 
 Related types: [`FlowDefinition`](../../../reference/types/#type-flowdefinition).
 
+### `CreateGeometryDataOptions` {#type-creategeometrydataoptions}
+
+ Expand CreateGeometryDataOptions
+
+```typescript
+export type CreateGeometryDataOptions = {
+  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
+  readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
+} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+  | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
+```
+
+Related types: [`GeometryFeatureKey`](../../../reference/types/#type-geometryfeaturekey) · [`GeometryLimits`](../../../reference/types/#type-geometrylimits) · [`GeoJSONInput`](../../../reference/types/#type-geojsoninput) · [`TopoJSONInput`](../../../reference/types/#type-topojsoninput).
+
 ### `CreateGraphDataOptions` {#type-creategraphdataoptions}
 
  Expand CreateGraphDataOptions
@@ -3172,6 +3191,16 @@ export interface CreatePolarScatterPlotOptions {
 ```
 
 Related types: [`PolarThetaChannel`](../../../reference/types/#type-polarthetachannel) · [`PolarRadiusChannel`](../../../reference/types/#type-polarradiuschannel) · [`BasicColorChannel`](../../../reference/types/#type-basiccolorchannel) · [`BasicSizeChannel`](../../../reference/types/#type-basicsizechannel) · [`BasicShapeChannel`](../../../reference/types/#type-basicshapechannel) · [`CreateScatterPlotOptions`](../../../reference/types/#type-createscatterplotoptions) · [`PolarPointGuideOptions`](../../../reference/types/#type-polarpointguideoptions).
+
+### `CreateProjectionOptions` {#type-createprojectionoptions}
+
+ Expand CreateProjectionOptions
+
+```typescript
+export type CreateProjectionOptions = { readonly id: string } & ((ProjectionParameters & { readonly fit?: never }) | ProjectionFittedOptions);
+```
+
+Related types: [`ProjectionParameters`](../../../reference/types/#type-projectionparameters) · [`ProjectionFittedOptions`](../../../reference/types/#type-projectionfittedoptions).
 
 ### `CreateRadarPlotOptions` {#type-createradarplotoptions}
 
@@ -5392,6 +5421,19 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](../../../reference/types/#type-focusedderiveddataedit) · [`FoldDataOptions`](../../../reference/types/#type-folddataoptions).
 
+### `EditGeometryDataOptions` {#type-editgeometrydataoptions}
+
+ Expand EditGeometryDataOptions
+
+```typescript
+export interface EditGeometryDataOptions {
+  readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
+  readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+}
+```
+
+Related types: [`GeoJSONInput`](../../../reference/types/#type-geojsoninput) · [`TopoJSONInput`](../../../reference/types/#type-topojsoninput) · [`GeometryLimits`](../../../reference/types/#type-geometrylimits).
+
 ### `EditGradientPlotOptions` {#type-editgradientplotoptions}
 
  Expand EditGradientPlotOptions
@@ -5904,6 +5946,17 @@ export interface EditPolarGridOptions {
 ```
 
 Related types: [`AxisValue`](../../../reference/types/#type-axisvalue).
+
+### `EditProjectionOptions` {#type-editprojectionoptions}
+
+ Expand EditProjectionOptions
+
+```typescript
+export type EditProjectionOptions = { readonly target?: string } & ((Partial<ProjectionParameters> & { readonly fit?: never })
+  | ProjectionEditFittedOptions);
+```
+
+Related types: [`ProjectionParameters`](../../../reference/types/#type-projectionparameters) · [`ProjectionEditFittedOptions`](../../../reference/types/#type-projectioneditfittedoptions).
 
 ### `EditRScaleOptions` {#type-editrscaleoptions}
 
@@ -7277,6 +7330,77 @@ export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { 
 ```
 
 Related types: [`EdgeRouteCommonOptions`](../../../reference/types/#type-edgeroutecommonoptions).
+
+### `GeoJSONInput` {#type-geojsoninput}
+
+ Expand GeoJSONInput
+
+```typescript
+export type GeoJSONInput = GeographicGeometry | GeometryFeature | (Readonly<Record<string, unknown>> & { readonly type: "FeatureCollection"; readonly features: readonly GeometryFeature[] }) | null;
+```
+
+Related types: [`GeographicGeometry`](../../../reference/types/#type-geographicgeometry) · [`GeometryFeature`](../../../reference/types/#type-geometryfeature).
+
+### `GeographicGeometry` {#type-geographicgeometry}
+
+ Expand GeographicGeometry
+
+```typescript
+export type GeographicGeometry = Readonly<Record<string, unknown>> & (
+  | { readonly type: "Point"; readonly coordinates: GeometryPosition }
+  | { readonly type: "MultiPoint" | "LineString"; readonly coordinates: readonly GeometryPosition[] }
+  | { readonly type: "MultiLineString" | "Polygon"; readonly coordinates: readonly (readonly GeometryPosition[])[] }
+  | { readonly type: "MultiPolygon"; readonly coordinates: readonly (readonly (readonly GeometryPosition[])[])[] }
+  | { readonly type: "GeometryCollection"; readonly geometries: readonly (GeographicGeometry | null)[] });
+```
+
+Related types: [`GeometryPosition`](../../../reference/types/#type-geometryposition).
+
+### `GeometryFeature` {#type-geometryfeature}
+
+ Expand GeometryFeature
+
+```typescript
+export interface GeometryFeature extends Readonly<Record<string, unknown>> {
+  readonly type: "Feature"; readonly id?: string | number;
+  readonly properties: Readonly<Record<string, GeometryJSONValue>> | null;
+  readonly geometry: GeographicGeometry | null;
+}
+```
+
+Related types: [`GeometryJSONValue`](../../../reference/types/#type-geometryjsonvalue) · [`GeographicGeometry`](../../../reference/types/#type-geographicgeometry).
+
+### `GeometryFeatureKey` {#type-geometryfeaturekey}
+
+ Expand GeometryFeatureKey
+
+```typescript
+export type GeometryFeatureKey = string | readonly string[];
+```
+
+### `GeometryJSONValue` {#type-geometryjsonvalue}
+
+ Expand GeometryJSONValue
+
+```typescript
+export type GeometryJSONValue = null | boolean | number | string | readonly GeometryJSONValue[] | { readonly [key: string]: GeometryJSONValue };
+```
+
+### `GeometryLimits` {#type-geometrylimits}
+
+ Expand GeometryLimits
+
+```typescript
+export interface GeometryLimits { readonly maxFeatures?: number; readonly maxPositions?: number; readonly maxArcs?: number; readonly maxValues?: number; readonly maxDepth?: number; }
+```
+
+### `GeometryPosition` {#type-geometryposition}
+
+ Expand GeometryPosition
+
+```typescript
+export type GeometryPosition = readonly [number, number, ...number[]];
+```
 
 ### `GradientPlotAppearanceOptions` {#type-gradientplotappearanceoptions}
 
@@ -10356,6 +10480,85 @@ export interface PreparedTextMetrics {
 }
 ```
 
+### `ProjectionEditFittedOptions` {#type-projectioneditfittedoptions}
+
+ Expand ProjectionEditFittedOptions
+
+```typescript
+type ProjectionEditFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Partial<Omit<Parameters, "scalePx" | "translatePx">> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+/** Type changes start from the new type defaults. Explicit scale/translation edits detach a previous fit. */
+```
+
+Related types: [`ProjectionParameters`](../../../reference/types/#type-projectionparameters) · [`ProjectionFitOptions`](../../../reference/types/#type-projectionfitoptions).
+
+### `ProjectionFitOptions` {#type-projectionfitoptions}
+
+ Expand ProjectionFitOptions
+
+```typescript
+export interface ProjectionFitOptions {
+  readonly geometry?: string; readonly width: number; readonly height: number; readonly padding?: number; readonly pointScale?: number;
+}
+```
+
+### `ProjectionFittedOptions` {#type-projectionfittedoptions}
+
+ Expand ProjectionFittedOptions
+
+```typescript
+type ProjectionFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Omit<Parameters, "scalePx" | "translatePx"> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+```
+
+Related types: [`ProjectionParameters`](../../../reference/types/#type-projectionparameters) · [`ProjectionFitOptions`](../../../reference/types/#type-projectionfitoptions).
+
+### `ProjectionParameters` {#type-projectionparameters}
+
+ Expand ProjectionParameters
+
+```typescript
+export type ProjectionParameters = ({ readonly type: "identity" } & ProjectionPlaneParameters)
+  | ({ readonly type: Exclude<ProjectionType, "identity" | "albers-usa" | "conic-equal-area" | "conic-conformal" | "conic-equidistant"> } & ProjectionSphereParameters)
+  | ({ readonly type: "conic-equal-area" | "conic-conformal" | "conic-equidistant"; readonly parallelsDeg?: readonly [number, number] } & ProjectionSphereParameters)
+  | { readonly type: "albers-usa"; readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly precisionPx?: number };
+```
+
+Related types: [`ProjectionPlaneParameters`](../../../reference/types/#type-projectionplaneparameters) · [`ProjectionType`](../../../reference/types/#type-projectiontype) · [`ProjectionSphereParameters`](../../../reference/types/#type-projectionsphereparameters).
+
+### `ProjectionPlaneParameters` {#type-projectionplaneparameters}
+
+ Expand ProjectionPlaneParameters
+
+```typescript
+export interface ProjectionPlaneParameters {
+  readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly reflectX?: boolean; readonly reflectY?: boolean;
+  readonly clipExtentPx?: readonly [readonly [number, number], readonly [number, number]] | null;
+}
+```
+
+### `ProjectionSphereParameters` {#type-projectionsphereparameters}
+
+ Expand ProjectionSphereParameters
+
+```typescript
+export interface ProjectionSphereParameters extends ProjectionPlaneParameters {
+  readonly centerDeg?: readonly [number, number]; readonly rotateDeg?: readonly [number, number] | readonly [number, number, number];
+  readonly precisionPx?: number; readonly clipAngleDeg?: number | null;
+}
+```
+
+Related types: [`ProjectionPlaneParameters`](../../../reference/types/#type-projectionplaneparameters).
+
+### `ProjectionType` {#type-projectiontype}
+
+ Expand ProjectionType
+
+```typescript
+export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "natural-earth" | "orthographic" | "stereographic" | "gnomonic"
+  | "azimuthal-equal-area" | "azimuthal-equidistant" | "conic-equal-area" | "conic-conformal" | "conic-equidistant" | "transverse-mercator" | "albers-usa" | "identity";
+```
+
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
  Expand QuantileColorScaleOptions
@@ -11946,7 +12149,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
  Expand StoredResourceKind
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route" | "projection";
 ```
 
 ### `StripBandJitterOptions` {#type-stripbandjitteroptions}
@@ -12580,6 +12783,37 @@ export interface TitleTextStyleOptions {
   fontWeight?: string | number;
 }
 ```
+
+### `TopoJSONInput` {#type-topojsoninput}
+
+ Expand TopoJSONInput
+
+```typescript
+export interface TopoJSONInput extends Readonly<Record<string, unknown>> {
+  readonly type: "Topology"; readonly objects: Readonly<Record<string, TopologyGeometry>>;
+  readonly arcs: readonly (readonly GeometryPosition[])[];
+  readonly transform?: { readonly scale: readonly [number, number]; readonly translate: readonly [number, number] };
+}
+```
+
+Related types: [`TopologyGeometry`](../../../reference/types/#type-topologygeometry) · [`GeometryPosition`](../../../reference/types/#type-geometryposition).
+
+### `TopologyGeometry` {#type-topologygeometry}
+
+ Expand TopologyGeometry
+
+```typescript
+export type TopologyGeometry = Readonly<Record<string, unknown>> & ({ readonly id?: string | number; readonly properties?: Readonly<Record<string, GeometryJSONValue>> | null }) & (
+  | { readonly type: null }
+  | { readonly type: "Point"; readonly coordinates: GeometryPosition }
+  | { readonly type: "MultiPoint"; readonly coordinates: readonly GeometryPosition[] }
+  | { readonly type: "LineString"; readonly arcs: readonly number[] }
+  | { readonly type: "MultiLineString" | "Polygon"; readonly arcs: readonly (readonly number[])[] }
+  | { readonly type: "MultiPolygon"; readonly arcs: readonly (readonly (readonly number[])[])[] }
+  | { readonly type: "GeometryCollection"; readonly geometries: readonly TopologyGeometry[] });
+```
+
+Related types: [`GeometryJSONValue`](../../../reference/types/#type-geometryjsonvalue) · [`GeometryPosition`](../../../reference/types/#type-geometryposition).
 
 ### `TreePlotOptions` {#type-treeplotoptions}
 

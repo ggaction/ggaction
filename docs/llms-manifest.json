@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:11fbb2fc16000d5c666dfbc6854610484977414806c4c12bec3255e8ca7fc937",
-    "sourceCommit": "a9e706a703d2d86033535ee0413a25e538295646",
+    "contractId": "sha256:f2cc3c0df5e2e657738710ec7114994ea3026c2fb3293d71e85ad62584b89d82",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -14,7 +14,7 @@
     "manifest": "doc-provenance.json"
   },
   "bundle": "llms-full.txt",
-  "sectionCount": 170,
+  "sectionCount": 171,
   "sections": [
     {
       "order": 1,
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "4b627fea522ca6b73be4701a46e69d9c26f588771d3b4d8451a651e5481fe60f"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -2034,8 +2034,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 36821,
-      "sha256": "8024096b4418b2956dceaf04337a62a5983a93fb3a8bb9867947c7c179240a9e"
+      "bytes": 37229,
+      "sha256": "f05ba92ae85ade1a5d82c9e8218796df0cbd764c948bb28f74d6a4c585244f1a"
     },
     {
       "order": 120,
@@ -2173,12 +2173,16 @@
         "createcalendarlayout",
         "bundlegraphedges",
         "editedgeroute",
+        "creategeometrydata",
+        "editgeometrydata",
+        "createprojection",
+        "editprojection",
         "focused-core-data-editing",
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 254128,
-      "sha256": "559956c6467d15f71a6526fa3fc289d42dcfe22d0dc622c79f7b3b1f864ced2e"
+      "bytes": 261675,
+      "sha256": "d10a02bdaa7c38d43ab328adc494a6308f2e95efdf73cee4f53c9ff7eb158860"
     },
     {
       "order": 121,
@@ -2516,8 +2520,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 59154,
-      "sha256": "e3b96e5f3ff1bbd23159b23d6ac61d1737865970b0ac6a72e1de0e7bb215ba27"
+      "bytes": 59642,
+      "sha256": "c6a29da57ecf9cbb5f78dad365351df98f8252389252a80613deeb2461f5b208"
     },
     {
       "order": 128,
@@ -2688,6 +2692,7 @@
         "type-createdumbbellplotoptions",
         "type-createecdfplotoptions",
         "type-createflowdataoptions",
+        "type-creategeometrydataoptions",
         "type-creategraphdataoptions",
         "type-creategridoptions",
         "type-createguidesoptions",
@@ -2709,6 +2714,7 @@
         "type-createpieplotoptions",
         "type-createpolarlineplotoptions",
         "type-createpolarscatterplotoptions",
+        "type-createprojectionoptions",
         "type-createradarplotoptions",
         "type-createradialaxislabelsoptions",
         "type-createradialaxislineoptions",
@@ -2842,6 +2848,7 @@
         "type-editflowlinksoptions",
         "type-editflownodesoptions",
         "type-editfolddataoptions",
+        "type-editgeometrydataoptions",
         "type-editgradientplotoptions",
         "type-editgraphdataoptions",
         "type-editgraphplotoptions",
@@ -2876,6 +2883,7 @@
         "type-editpivotdataoptions",
         "type-editpolaraxisoptions",
         "type-editpolargridoptions",
+        "type-editprojectionoptions",
         "type-editrscaleoptions",
         "type-editradarplotoptions",
         "type-editradialaxisoptions",
@@ -2974,6 +2982,13 @@
         "type-folddataoptions",
         "type-folddataoutputfields",
         "type-forcedirectededgerouteoptions",
+        "type-geojsoninput",
+        "type-geographicgeometry",
+        "type-geometryfeature",
+        "type-geometryfeaturekey",
+        "type-geometryjsonvalue",
+        "type-geometrylimits",
+        "type-geometryposition",
         "type-gradientplotappearanceoptions",
         "type-gradientplotcenteroptions",
         "type-gradientplotdensitylegendoptions",
@@ -3185,6 +3200,13 @@
         "type-preparedgraphedgeroutes",
         "type-preparedimageresource",
         "type-preparedtextmetrics",
+        "type-projectioneditfittedoptions",
+        "type-projectionfitoptions",
+        "type-projectionfittedoptions",
+        "type-projectionparameters",
+        "type-projectionplaneparameters",
+        "type-projectionsphereparameters",
+        "type-projectiontype",
         "type-quantilecolorscaleoptions",
         "type-quantitativebarcolorchannel",
         "type-quantitativepositionscaleoptions",
@@ -3333,6 +3355,8 @@
         "type-timeunitdataoptions",
         "type-titleoptions",
         "type-titletextstyleoptions",
+        "type-topojsoninput",
+        "type-topologygeometry",
         "type-treeplotoptions",
         "type-treemapplotoptions",
         "type-utcformatstring",
@@ -3364,8 +3388,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 464513,
-      "sha256": "42ef44086d547f6d66f8cc1c79fb68bbc196c1a14cee6069fddfc637c188a441"
+      "bytes": 474983,
+      "sha256": "20cb878ccf1f521b458d81ebe8a6e300ed8f9286232edc81673d4219c081c7be"
     },
     {
       "order": 129,
@@ -3399,8 +3423,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "9b49feada6eed91de67a3c7cc1f80c293297d213b34d46a891cbf54dd0340a79"
+      "bytes": 20908,
+      "sha256": "1f59845331519e84008cbbf29d9692df72522a6f26bdbd39d72a11092af78e4e"
     },
     {
       "order": 131,
@@ -3739,8 +3763,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "98ac393a99f997cecb1471a04ad9b6331ae84ce7b6632fefd093b85aecaf5841"
+      "bytes": 3000,
+      "sha256": "a1065aaff84de34843df3f429c38d68a9026b86246fa233d40030c1b4a9c0d88"
     },
     {
       "order": 152,
@@ -3946,6 +3970,21 @@
     },
     {
       "order": 165,
+      "title": "Geometry and Projections",
+      "route": "/api/geometry/",
+      "source": "api/geometry.md",
+      "headings": [
+        "geometry-and-projections",
+        "creategeometrydata",
+        "editgeometrydata",
+        "createprojection",
+        "editprojection"
+      ],
+      "bytes": 7554,
+      "sha256": "5aad308b6b0726b4b2b2294a3f44a8705a7869e4a198d5f68dcdf3fd7a3f8996"
+    },
+    {
+      "order": 166,
       "title": "Contours and Two-Dimensional Density",
       "route": "/api/contours/",
       "source": "api/contours.md",
@@ -3961,7 +4000,7 @@
       "sha256": "128a153ec10839098b3da6a365473ca0bc741a05d64fff0f7536d3c61cc52243"
     },
     {
-      "order": 166,
+      "order": 167,
       "title": "Draw Levels, Bands and Density",
       "route": "/tutorials/contours/",
       "source": "tutorials/contours.md",
@@ -3972,7 +4011,7 @@
       "sha256": "2cc0718dc586f7d6473b345131d8bfb8aa6580b55a31d57b5ac86857c1f571ca"
     },
     {
-      "order": 167,
+      "order": 168,
       "title": "Fit Labels Inside a Fixed Canvas",
       "route": "/tutorials/responsive-guides/",
       "source": "tutorials/responsive-guides.md",
@@ -3983,7 +4022,7 @@
       "sha256": "2e6aeeccd9db4e2ba9f7432c2c3bc35f5034935b62342df518cb810a08e25b94"
     },
     {
-      "order": 168,
+      "order": 169,
       "title": "Calendar Plots",
       "route": "/api/calendar/",
       "source": "api/calendar.md",
@@ -3998,7 +4037,7 @@
       "sha256": "5394529c61cb226787b7723aa56d3e2d17082957b8f7812c0daf1c6065a53078"
     },
     {
-      "order": 169,
+      "order": 170,
       "title": "Place Observations on a Calendar",
       "route": "/tutorials/calendar/",
       "source": "tutorials/calendar.md",
@@ -4009,7 +4048,7 @@
       "sha256": "6a764f19e7635f69e89b8bc1fcef1774d200b2c3a725f38fb4ebca5f7f300b3b"
     },
     {
-      "order": 170,
+      "order": 171,
       "title": "Arrange Nested Panels with Shared Guides",
       "route": "/tutorials/nested-responsive/",
       "source": "tutorials/nested-responsive.md",

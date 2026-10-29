@@ -56,7 +56,7 @@ test("publishes only the bounded public package artifact", async () => {
   assert.ok(manifest.size <= PACKAGE_LIMITS.packedBytes);
   assert.ok(manifest.unpackedSize <= PACKAGE_LIMITS.unpackedBytes);
   assert.ok(paths.every(path =>
-    ["CHANGELOG.md", "LICENSE", "README.md", "package.json"].includes(path) ||
+    ["CHANGELOG.md", "LICENSE", "THIRD_PARTY_NOTICES", "licenses/geometry-math.json", "README.md", "package.json"].includes(path) ||
     path.startsWith("src/") || path.startsWith("types/") || [
       "knowledge/action-card.schema.json",
       "knowledge/action-cards.json",
@@ -106,6 +106,8 @@ test("rejects missing, forbidden, and oversized package manifests", () => {
     files: [
       "CHANGELOG.md",
       "LICENSE",
+      "THIRD_PARTY_NOTICES",
+      "licenses/geometry-math.json",
       "README.md",
       "package.json",
       "knowledge/action-card.schema.json",

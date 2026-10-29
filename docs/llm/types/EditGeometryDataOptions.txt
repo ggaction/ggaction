@@ -1,0 +1,4 @@
+export interface EditGeometryDataOptions {
+  readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
+  readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+}

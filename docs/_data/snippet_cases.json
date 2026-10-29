@@ -362,6 +362,17 @@
     "rendering": "authoring-only"
   },
   {
+    "id": "projection-fit",
+    "file": "api/geometry.md",
+    "contains": "const fitted = chart()",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "fitted",
+    "prerequisites": "Run the complete ES module with its inline planar geometry and public chart import. The projection fit has scale 5 and translation [25, 0].",
+    "rendering": "authoring-only",
+    "resultKind": "semantic"
+  },
+  {
     "id": "interaction-nearest-selection",
     "file": "api/interaction.md",
     "contains": "nearest: { space: \"data\", fields: [\"x\", \"y\"], values: [2, 3]",

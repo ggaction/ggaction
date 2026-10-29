@@ -33,6 +33,8 @@ const analysisChartEditorNames = new Set([
 
 const h0CompositionNames = new Set(["facet", "facetGrid", "repeatCharts", "createAdjacentPlot", "createLayerPlot"]);
 const coreH3Names = new Set([
+  "editProjection",
+  "editGeometryData",
   "editEdgeRoute",
   "editContourData", "editInferredGraphData", "editFlowData", "editGraphData", "applyDataUpdate", "createImageResource", "replaceImageResource", "createFontResource", "replaceFontResource", "removeResource",
   "applyTextMetrics",
@@ -71,6 +73,10 @@ const explicitFacadeEditors = Object.freeze({
 });
 
 const explicitLifecycleEditors = Object.freeze({
+  createProjection: ["editProjection", "removeResource"],
+  editProjection: ["editProjection", "removeResource"],
+  createGeometryData: ["editGeometryData", "removeResource"],
+  editGeometryData: ["editGeometryData", "removeResource"],
   bundleGraphEdges: ["editEdgeRoute", "removeResource"],
   editEdgeRoute: ["editEdgeRoute", "removeResource"],
   createCalendarLayout: ["editLayout", "removeResource"],
@@ -176,6 +182,7 @@ const logicalPixelNames = new Set([
 
 const countNames = new Set(["count", "columns", "bands", "steps", "maxBins", "precision"]);
 const emptyResultActions = new Set([
+  "createGeometryData", "editGeometryData",
   "bundleGraphEdges", "editEdgeRoute",
   "createCalendarLayout", "createCalendarPlot", "editCalendarPlot",
   "createContourData", "createDensityContourData", "editContourData", "createContourMark", "editContourMark",
@@ -274,6 +281,13 @@ function includesNumber(type) {
 
 export function optionUnits(action, options) {
   const units = [];
+  if (["createProjection", "editProjection"].includes(action.name)) {
+    for (const option of options) {
+      if (option.name.endsWith("Deg")) units.push({ path: option.name, unit: "degree" });
+      if (option.name.endsWith("Px")) units.push({ path: option.name, unit: "logical-pixel" });
+    }
+    for (const key of ["width", "height", "padding", "pointScale"]) units.push({ path: `fit.${key}`, unit: "logical-pixel" });
+  }
   if (["createMarkLabels", "editMarkLabelPlacement"].includes(action.name)) {
     units.push(
       { path: "placement.gap", unit: "logical-pixel" },

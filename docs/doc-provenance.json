@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:11fbb2fc16000d5c666dfbc6854610484977414806c4c12bec3255e8ca7fc937",
-  "sourceCommit": "a9e706a703d2d86033535ee0413a25e538295646",
-  "sourceRef": "a9e706a703d2d86033535ee0413a25e538295646",
+  "contractId": "sha256:f2cc3c0df5e2e657738710ec7114994ea3026c2fb3293d71e85ad62584b89d82",
+  "sourceCommit": null,
+  "sourceRef": "main",
   "exampleSourceRef": "3a9901e925b04d640f064ff7e06d434011a4d858",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 345,
+  "actionCount": 349,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -207,6 +207,22 @@
       "status": "development"
     },
     "editCalendarPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGeometryData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createProjection": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editProjection": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeometryData": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

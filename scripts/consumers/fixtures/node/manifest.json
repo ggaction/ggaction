@@ -1169,5 +1169,35 @@
         "statements": 21
       }
     ]
+  },
+  {
+    "file": "geometry.mjs",
+    "cases": [
+      {
+        "id": "geometry/full-basic-identity",
+        "statements": 11
+      },
+      {
+        "id": "geometry/fresh-process-offline",
+        "statements": 8
+      },
+      {
+        "id": "geometry/topology-atomic-failure",
+        "statements": 9
+      }
+    ]
+  },
+  {
+    "file": "projections.mjs",
+    "cases": [
+      {
+        "id": "projection/full-basic-fit-lifecycle",
+        "statements": 16
+      },
+      {
+        "id": "projection/fresh-process-offline-fit",
+        "statements": 7
+      }
+    ]
   }
 ]

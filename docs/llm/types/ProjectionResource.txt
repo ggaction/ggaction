@@ -1,0 +1,8 @@
+export interface ProjectionResource {
+  readonly kind: "projection"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly { readonly kind: "geometry"; readonly id: string; readonly revision: number }[];
+  readonly options: ProjectionParameters | (Omit<ProjectionSphereParameters, "scalePx" | "translatePx"> & {
+    readonly type: ProjectionType; readonly parallelsDeg?: readonly [number, number]; readonly fit: Required<Omit<ProjectionFitOptions, "geometry">> });
+  readonly result: { readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly bounds?: readonly [number, number, number, number] | null };
+  readonly provenance: { readonly origin: "authored"; readonly sourceRows: readonly [] };
+}
