@@ -1,0 +1,71 @@
+{
+  "scope": "Private effect reducer; actual DOM/program/history validation remains open",
+  "input": [
+    {
+      "type": "down",
+      "pointerId": 1,
+      "pointerType": "mouse",
+      "point": {
+        "x": 0,
+        "y": 0
+      },
+      "binding": {
+        "id": "brush",
+        "kind": "brush"
+      }
+    },
+    {
+      "type": "move",
+      "pointerId": 1,
+      "point": {
+        "x": 4,
+        "y": 0
+      }
+    },
+    {
+      "type": "move",
+      "pointerId": 1,
+      "point": {
+        "x": 8,
+        "y": 0
+      }
+    },
+    {
+      "type": "move",
+      "pointerId": 1,
+      "point": {
+        "x": 12,
+        "y": 0
+      }
+    },
+    {
+      "type": "cancel",
+      "reason": "Escape"
+    },
+    {
+      "type": "up",
+      "pointerId": 1,
+      "point": {
+        "x": 12,
+        "y": 0
+      }
+    }
+  ],
+  "expected": {
+    "terminalEvents": [
+      "cancel"
+    ],
+    "commitCount": 0,
+    "capturedPointersAfter": 0,
+    "finalPhase": "idle"
+  },
+  "actual": {
+    "terminalEvents": [
+      "cancel"
+    ],
+    "commitCount": 0,
+    "capturedPointersAfter": 0,
+    "finalPhase": "idle"
+  },
+  "diff": []
+}

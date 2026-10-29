@@ -3588,3 +3588,14 @@ D4 click owner 추가로 entries920, Node20packed1,327,105/unpacked6,072,371를 
 Package cap은920/1,328,000/6,073,000, interaction97,595gzip은97,600,
 search960,195bytes는961,000으로 최소 올림한다. 최초 한도 초과와 동일 archive의
 Node20/22/24 검증은 click evidence에서 구분하며 기존 다른 entry cap은 유지한다.
+
+### Private gesture state와 host effect 분리
+
+`interaction/gestures.js`가 bounded candidate arbitration과 immutable pointer transition/effects를
+소유한다. DOM capture·RAF·program baseline은 이 pure owner에 넣지 않는다. 기존 session과
+후속 domain adapter가 효과를 명시 소비하며 새 public export나 persisted state는 없다.
+Private 계산 검증은 capture/preview의 public 통합 완료를 의미하지 않는다.
+
+Private gesture module1개로 entries921, Node20 packed1,329,320/unpacked6,080,779를 측정했다.
+Package cap만921/1,330,000/6,081,000으로 최소 올림하며 public entry import graph와 bundle은
+변하지 않는다. 최초 package entry 초과를 별도 보존한다.

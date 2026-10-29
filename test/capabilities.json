@@ -637,6 +637,10 @@
       },
       {
         "type": "file",
+        "path": "unit/gesture-controller.test.js"
+      },
+      {
+        "type": "file",
         "path": "contracts/interaction-types.test.js"
       },
       {

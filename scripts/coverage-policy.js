@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "interaction-gestures": { prefix: "interaction/gestures", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Gesture arbitration and terminal transitions must retain pointer ownership, bounded work and one commit or cancellation." },
   "selection-nearest": { prefix: "grammar/nearestSelection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Explicit nearest metrics require finite bounded final-grain tuples and stable identity." },
   "interaction-click-selection": { prefix: "interaction/clickSelection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Automatic clicks must retain exact owner identity, native selection semantics and bounded current-frame queries." },
   "interaction-reconciliation": { prefix: "interaction/reconciliation", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Selection lifecycle must preserve intent, bound dormant identities and prune through atomic native actions." },
