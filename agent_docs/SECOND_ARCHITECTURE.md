@@ -4474,3 +4474,19 @@ Typed point restore·현재 frame 재기준·player adapter와 native hit의 합
 적용한다. 같은 archive9b3c3eea…의 interaction128,129gzip만128,200으로 올리며
 Full772,328/Basic421,122/SVG24,779/graph43,923은 기존 합산 한도를 유지한다.
 이 private checkpoint는 공개 animation entry나 최종077 qualification을 대신하지 않는다.
+
+### Completed graph animation public integration
+
+공개 `ggaction/animation`의 기존6함수는 완료 graph layout/node/radius·ordinary edge와
+stored route를 같은 typed 준비 owner로 처리한다. Private graph group/item 벡터를
+flat frame proof에 한 번 보존하며, 현재 의미와 native origin만 보유하고 이전 plan을
+재귀적으로 참조하지 않는다. Current의 [Animation](contract/current/ANIMATION.md)이
+지원 범위와 offline/session 경계를 소유한다. Native current-frame hit는 같은 item role의
+실제 현재 geometry와 endpoint metadata를 공유한다.
+합산 package는1135entries이며 Node22 packed1,618,480 / Node20·24 packed1,620,916 /
+unpacked7,343,716bytes다. 최소 상한1135/1,621,000/7,344,000을 적용한다.
+
+동일 tar의 Node20/24 installed gzip 최대치는 Full774,063/Basic422,154/
+animation191,948bytes이며 최소100-byte 상한774,100/422,200/192,000을 적용한다.
+기존 SVG/graph/interaction 한도는 유지하며 Node 전용 renderer를 animation entry에 넣지 않는다.
+공개 graph 단락 추가 후 search payload1,080,369bytes에 최소1000-byte 상한1,081,000을 적용한다.

@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:c068b447a308b1874b0ef15ea3578f644f22dbc9688e3f99a9955a4c0ea57bf1",
-    "sourceCommit": "0bcba0bbbe0f73bf69f2d6a99dbdf6f55322b0cd",
+    "contractId": "sha256:5859f1adb77150b1f9cc585dbd6fc48e822b926f5a37dbd90d24b6b4bc7a481c",
+    "sourceCommit": "5626e3fd558b2c9b8d67c7f3a56cd7ad5d8bb918",
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -66,7 +66,7 @@
         "related"
       ],
       "bytes": 12058,
-      "sha256": "a2f8ad88314a77a778214e9341c4712b3e9f7ed878d97bfa68adf0bf1094bebb"
+      "sha256": "5f20c555bd8d3bca0643167345c00fab19edf472670113b7d808b4dcb38a21ed"
     },
     {
       "order": 4,
@@ -1287,13 +1287,14 @@
       "headings": [
         "animate-and-export-chart-frames",
         "prepare-save-and-sample",
+        "move-a-completed-graph-layout",
         "functions",
         "render-the-same-frame",
         "play-with-an-explicit-clock",
         "offline-replay-and-limits"
       ],
-      "bytes": 8032,
-      "sha256": "63d8da4cf73e2a2f820ccafcebadcf44a59bb45d590311f5f6b23e34e0013b5e"
+      "bytes": 9276,
+      "sha256": "8b45485dda8977b6f17a7458976957b35c37a60525815cedf2935f84567e0a0c"
     },
     {
       "order": 77,
@@ -3607,7 +3608,7 @@
         "blend-concrete-sources-for-one-item"
       ],
       "bytes": 23271,
-      "sha256": "026ff2a2b0f38cc2f0dfd17902c2f1cd29759400427315728d7b02e469cd8d40"
+      "sha256": "ef86ffff00b896b70d3c7a59131fc4bc7d88c0cde71588d7ccfc215eba5d6e9c"
     },
     {
       "order": 135,
@@ -3948,7 +3949,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3033,
-      "sha256": "da32c6fb8a7338f78b70b1541ce3e23f440685b9fb7ceff205eeef6174d24584"
+      "sha256": "4e6c1449febe5fd9247e368a8a5c4d3009acf19516d57c51677a42ca1d0f6154"
     },
     {
       "order": 156,

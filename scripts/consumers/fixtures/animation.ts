@@ -25,3 +25,15 @@ planTransition({from:{graphicSpec:frame.graphicSpec},to,options:{durationMs:1}})
 serializeAnimation(plan,{render(){}});
 // @ts-expect-error output frames are immutable
 frames.push(frame);
+
+const graphFrom=chart().createCanvas({width:300,height:200})
+ .createData({id:'nodes',values:[{id:'a'},{id:'b'}]})
+ .createData({id:'edges',values:[{id:'ab',from:'a',to:'b'}]})
+ .createGraphData({id:'graph',nodes:'nodes',edges:'edges',nodeKey:'id',edgeKey:'id',source:'from',target:'to',directed:true})
+ .layoutGraph({id:'layout',method:'fixed',options:{positions:[{key:'a',x:0,y:0},{key:'b',x:100,y:0}]}})
+ .createGraphPlot({id:'plot',layout:'layout'}).bundleGraphEdges({id:'routes',method:'edge-path'}).editGraphPlot({routes:'routes'});
+const graphTo=graphFrom.editLayout({options:{positions:[{key:'a',x:0,y:20},{key:'b',x:100,y:20}]}});
+const graphPlan=planTransition({from:graphFrom,to:graphTo,options:{durationMs:100,easing:'linear'}});
+const graphFrames=exportAnimationFrames(deserializeAnimation(serializeAnimation(graphPlan)).plan,{timesMs:[0,50,100]});
+render(graphFrames[1],context);renderToSVG(graphFrames[1]);renderToPNGBuffer(graphFrames[1]);renderToPDFBuffer(graphFrames[1]);
+planTransition({from:graphFrames[1],to:graphTo,options:{durationMs:100}});

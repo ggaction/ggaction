@@ -1614,5 +1614,22 @@
         "statements": 11
       }
     ]
+  },
+  {
+    "file": "animation-graph.mjs",
+    "cases": [
+      {
+        "id": "animation-graph/offline-four-renderers",
+        "statements": 14
+      },
+      {
+        "id": "animation-graph/current-frame-interruption",
+        "statements": 12
+      },
+      {
+        "id": "animation-graph/topology-and-immutable-failure",
+        "statements": 10
+      }
+    ]
   }
 ]

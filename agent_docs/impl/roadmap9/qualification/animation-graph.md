@@ -7,7 +7,7 @@
 - [x] 실제 graph/layout/route 준비값을 native endpoint와 교차검증한다.
 - [x] 기존 route·edge geometry 계산으로 중간 frame을 생성한다.
 - [x] private 재기준·strict export/restore·현재 concrete hit·네 renderer를 검증한다.
-- [ ] 공개 animation entry와 합친 동일 tar 소비자 및 session hit/retention을 검증한다.
+- [x] 공개 animation entry와 합친 동일 tar 소비자 및 native current hit/retention을 검증한다.
 
 ## 범위와 승인
 
@@ -105,3 +105,22 @@ unit172/172, render4/4, browser1/1 receipt 및 source input hash는
 Node20/24 source122개씩과 coverage122개는 같은 runtime/test bytes를 검증했다.
 경계와 package40개, 검증 증거/완료manifest23개도 통과했다. 초기 실패 원본은 별도
 artifact로 남겼으며 이 증거는 공개 설치나 전체 통합 완료를 주장하지 않는다.
+
+## 공개 합산 진행
+
+`9bedccbbb`의 공개6entry와 `624accf4b`의 flat retention을 graph source에 합쳤다.
+새 API를 만들지 않고 기존 Current/doc에 GraphPlot 지원을 별도 명시한다. Source-only
+public 소비자는 fresh-process network0 네renderer,32회 player interruption, 토폴로지
+변경 및 실패불변을 검증한다. Native 현재 hit는40회 재기준 후 node/layout와 edge/route
+정확참조, 동일 child를 두 번 배치한 namespace를 확인한다.
+공개 source animation163개 및 coverage100/97.45/100,경계/type36개,renderer7개와
+browser2개가 통과했다. 원 merge owning의157/158은 graph proof fixture에 새로운
+registerAnimationPlan 선행조건이 빠진 것이며 기존 cardinality assertion을 유지해 수리했다.
+동일 tar `693bb41872f3db33cefc17897b790728a780f717799642f0aecfb0c4611ed097`의
+Node20/22/24에서 각각9개 runtime 및 strict animation types·optional peers가 통과했다.
+처음 installed command의 exit1은 bundle cap뿐이었다. 같은 측정18개를 새 최소 cap으로
+재검증한 별도 결과를 보존하며 최초 실행을 exit0이라고 바꾸지 않는다.
+Docs source는231중229 통과 후 search-size cap2개를 owning31/31로 수리했다.
+Ruby system2.6의 첫 build 오류는 원본 보존 후 preflight가 통과한 Ruby3.3.12로 복구했다
+(CI 고정 Ruby3.2.6과 버전은 다르다). Built186pages/1598artifacts를 확인했다.
+최종 browser와 source/evidence 고정을 마감한다.

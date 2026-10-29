@@ -42,6 +42,7 @@ test("provenance rejects duplicate registration, mutable frames and mismatched p
 
 test("shared graph meaning remains private, immutable and aligned with the frame",()=>{
  const plan=cloneAndFreeze({durationMs:1}),frame=cloneAndFreeze({scene:{nodes:[{key:"a"}]}});
+ registerAnimationPlan(plan,{});
  assert.throws(()=>registerAnimationFrame(frame,{plan,timeMs:0,graphs:{groups:[],items:[]}}),/graph items.*node order/);
  assert.equal(animationFrameProvenance(frame),undefined);
  const graphs={groups:[{nodes:[{key:"a",x:10}]}],items:[{group:0,key:"a",role:"body"}]};
