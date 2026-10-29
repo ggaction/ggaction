@@ -1,8 +1,8 @@
 import {cloneAndFreeze} from "../../core/immutable.js";
-import {ownRecord} from "../../core/ownData.js";
-import {rejectUnknownProperties} from "../../core/validation.js";
-import {interpolateNumber} from "../numeric.js";
-import {partitionRadius} from "./partitionMapping.js";
+import {ownArray,ownRecord} from "../../core/ownData.js";
+import {rejectUnknownProperties,validateNonNegativeFinite} from "../../core/validation.js";
+import {finiteMidpoint,interpolateNumber} from "../numeric.js";
+import {partitionRadius,validatePartitionInterval} from "./partitionMapping.js";
 
 // Canonical mathematical coordinates, before one screen/rotation adapter.
 export function bendPartitionPoint(point,options){
@@ -25,4 +25,31 @@ export function bendPartitionPoint(point,options){
  const x=(1-b)*width*q*sinc+y*Math.sin(theta),vertical=y*Math.cos(theta)-drop;
  if(!Number.isFinite(x)||!Number.isFinite(vertical))throw new RangeError("Partition bend output exceeds finite coordinates.");
  return cloneAndFreeze({x,y:vertical});
+}
+
+// Insets use current CSS distances after bending, never endpoint pixel geometry.
+export function insetPartitionBendCell(cell,kernel,bend,gap){
+ validatePartitionInterval(cell);ownArray(gap,"Partition bend gaps");
+ if(gap.length!==2)throw new TypeError("Partition bend gaps require two distances.");
+ gap.forEach(value=>validateNonNegativeFinite(value,"Partition bend gap"));
+ const depth=v=>bendPartitionPoint({u:.5,v,bend},kernel).y;
+ const low=depth(cell.v0),high=depth(cell.v1),middle=finiteMidpoint(low,high);
+ const tangent=(1-bend)*kernel.width+kernel.sweep*bend*middle;
+ if(!Number.isFinite(tangent))throw new RangeError("Partition bend tangent exceeds finite coordinates.");
+ const inverse=value=>{
+  if(value===low)return cell.v0;if(value===high)return cell.v1;
+  let left=cell.v0,right=cell.v1;
+  for(let count=0;count<64;count++){
+   const mid=finiteMidpoint(left,right),actual=depth(mid);
+   if(actual===value||mid===left||mid===right)return mid;
+   if(actual<value)left=mid;else right=mid;
+  }
+  return finiteMidpoint(left,right);
+ };
+ const width=cell.u1-cell.u0;
+ const visible=width>0&&high>low&&tangent>0&&gap[0]/tangent<width&&gap[1]<high-low;
+ if(!visible){const u=finiteMidpoint(cell.u0,cell.u1),anchorV=inverse(middle);return cloneAndFreeze({u0:u,u1:u,v0:anchorV,v1:anchorV,anchorV,visible:false});}
+ const inset=gap[0]/tangent/2;
+ const v0=gap[1]===0?cell.v0:inverse(low+gap[1]/2),v1=gap[1]===0?cell.v1:inverse(high-gap[1]/2);
+ return cloneAndFreeze({u0:cell.u0+inset,u1:cell.u1-inset,v0,v1,anchorV:inverse(finiteMidpoint(depth(v0),depth(v1))),visible:true});
 }
