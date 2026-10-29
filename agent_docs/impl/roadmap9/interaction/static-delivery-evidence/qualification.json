@@ -1,0 +1,150 @@
+{
+  "sourceCommit": "2dc92a47e622dd55d33e7dedd7b855beb2a7ae17",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json#remainingApproval",
+  "scope": "Static interacted partition/graph/geo nested composition, embedded font/image/clip, new session edit/history in a network API guarded fresh installed process; no runtime/types changes.",
+  "fixture": "scripts/consumers/fixtures/node/static-delivery.mjs",
+  "fixtureSha256": "782b29b3dac78c8f41cc7e6521d05b5dde16b97f4b344bbcaca83ac2fd134682",
+  "archive": {
+    "sha256": "ecbd493db25236a7410057f261a8a8a9516bcb74930f5e907ec179a638803629",
+    "sourceIntegration": "02acd3ea5",
+    "installMode": "One exact artifact installed outside the checkout with locked native canvas peer; each Node version and its fresh child uses that same installation.",
+    "runtimeAndTypesEvidence": "Parent combined archive Node20/22/24 runtime + strict types + five browser bundle checks; no library/type/package surface changed here."
+  },
+  "checks": {
+    "installed": {
+      "nodeVersions": [
+        "v20.20.2",
+        "v22.23.1",
+        "v24.22.1"
+      ],
+      "casesPerNode": 1,
+      "freshProcessPerNode": true,
+      "networkCalls": [
+        0,
+        0,
+        0
+      ],
+      "networkGuard": "Before library import: fetch/WebSocket, http/https request+get, net connect/createConnection and Socket.connect, tls.connect, dns and dns.promises lookup+resolve; self-probes exercise fetch/http/socket. No OS namespace claim.",
+      "semantics": "Exact codec text roundtrip, all native inspection/items/accessibility/scene state, selectedBy + scoped keys, typed row lineage, immutable child references, projection/layout revisions.",
+      "formats": "SVG exact; Canvas and PNG RGBA exact; PDF decompressed stream hashes exact; prepared CanvasScene pixels exact.",
+      "literalChecks": "836x180, typed graph coordinates and source rows, partition focus membership, selected item counts, projection scale/translation, embedded font AB width28, viewport/outer clip rectangles and four clip pixels.",
+      "failClosed": "Tampered image hash and stale image reference; missing node key and zero projection scale; unchanged program/trace/history. Empty selection + undo."
+    },
+    "packageArtifactAndDiscovery": 23,
+    "visualReview": {
+      "originalPNGViewed": true,
+      "path": "original.png"
+    },
+    "crossNodeOriginalRgbaEqual": true,
+    "crossNodeEditedRgbaEqual": true
+  },
+  "firstFailures": [
+    {
+      "log": "static-delivery-node22-first.log.gz",
+      "cause": "Fixture title top margin20 was too small; reused font owner margin40."
+    },
+    {
+      "log": "static-delivery-node22-second.log.gz",
+      "cause": "Fixture resource decoder returned renderer image; narrowed resource host to metadata."
+    },
+    {
+      "log": "static-delivery-node22-third.log.gz",
+      "cause": "Fixture metrics host included load; narrowed to requestToken/decode/measure."
+    },
+    {
+      "log": "static-delivery-node22-fourth.log.gz",
+      "cause": "Fixture confused viewport clip with additional owner clip; asserted both translated literal rectangles."
+    },
+    {
+      "log": "static-delivery-node22-fifth.log.gz",
+      "cause": "Fixture expected fresh focus.itemKey rather than null focus; corrected to actual public empty state."
+    },
+    {
+      "log": "static-delivery-node22-boundaries.log.gz",
+      "cause": "Fixture passed scoped object to accessibility target string; read public views and explicit childPath."
+    },
+    {
+      "log": "static-delivery-node22-qualified.log.gz",
+      "cause": "Expected resource inventory omitted authored persistent selection revision1; included exact resource."
+    }
+  ],
+  "commands": [
+    "node .artifacts/static-delivery-consumer.mjs",
+    "node .artifacts/static-delivery-retry.mjs (same installed archive, each Node20/22/24)",
+    "node scripts/run-tests.js contracts contracts/package-artifact.test.js contracts/test-discovery.test.js",
+    "node --check scripts/consumers/fixtures/node/static-delivery.mjs",
+    "git diff --check"
+  ],
+  "logs": [
+    {
+      "file": "static-delivery-node20-final.log.gz",
+      "sha256": "b84ee1e1770bdcf8175f9809afa19968a636331ec84d4556f16f25dab6833230"
+    },
+    {
+      "file": "static-delivery-node20-qualified.log.gz",
+      "sha256": "b84ee1e1770bdcf8175f9809afa19968a636331ec84d4556f16f25dab6833230"
+    },
+    {
+      "file": "static-delivery-node22-boundaries.log.gz",
+      "sha256": "9f6262053d66d9eacdbaaac22bd22eb5f21c8b49f0d8360ab2994e70d72970a5"
+    },
+    {
+      "file": "static-delivery-node22-fifth.log.gz",
+      "sha256": "ee6960d8cc380e348db7e7c1583cf78b3ed7d4555c4461846b2bf90074dccb25"
+    },
+    {
+      "file": "static-delivery-node22-final.log.gz",
+      "sha256": "ad07980bbd91616f5d5fa408995658e9b76b64f4e5546fc237b64ed742cfb7c1"
+    },
+    {
+      "file": "static-delivery-node22-first.log.gz",
+      "sha256": "eb90c6fbdbcbe070052f354a90d87d863d63268f182ea0cc06dca3c289b184ff"
+    },
+    {
+      "file": "static-delivery-node22-fourth.log.gz",
+      "sha256": "a5ab91770b096695f39107f39aebc2fa7469415bc30ee8fbec0c6f4a52ee48c5"
+    },
+    {
+      "file": "static-delivery-node22-qualified.log.gz",
+      "sha256": "04b2b3ff92fd4cf8742e1f6f5bd98ed01c04b4cacac72b482bce40c6907a471f"
+    },
+    {
+      "file": "static-delivery-node22-qualified2.log.gz",
+      "sha256": "ad07980bbd91616f5d5fa408995658e9b76b64f4e5546fc237b64ed742cfb7c1"
+    },
+    {
+      "file": "static-delivery-node22-second.log.gz",
+      "sha256": "d064dc183fc3cbca503777c8cbc138d8a246ba41fe30068689634c28b1f256a8"
+    },
+    {
+      "file": "static-delivery-node22-sixth.log.gz",
+      "sha256": "ad07980bbd91616f5d5fa408995658e9b76b64f4e5546fc237b64ed742cfb7c1"
+    },
+    {
+      "file": "static-delivery-node22-third.log.gz",
+      "sha256": "ee6cb031e05b9684036da87b751300c7026cd2d88a88ffa4eb39d0494b738a92"
+    },
+    {
+      "file": "static-delivery-node24-final.log.gz",
+      "sha256": "5857de0676d33ba7d59fd3dff80fe2c974bab430f7f7bf772f0c543a0559a2ed"
+    },
+    {
+      "file": "static-delivery-node24-qualified.log.gz",
+      "sha256": "5857de0676d33ba7d59fd3dff80fe2c974bab430f7f7bf772f0c543a0559a2ed"
+    },
+    {
+      "file": "static-delivery-owning-final.log.gz",
+      "sha256": "06d87043e2e640507f4ecd35eec94f2621e97f6435c9f0d005f53cc9b84d622e"
+    },
+    {
+      "file": "static-delivery-owning-initial.log.gz",
+      "sha256": "18a29e4281187d37f7e46fa9ef6ab7cf719ede5a8df9973a509656bec34cd463"
+    }
+  ],
+  "limitations": [
+    "No new library runtime or API; no whole-suite/coverage/performance claim.",
+    "Fresh-session command replay is tested; browser input witnesses remain B/C1/C2/native gesture evidence.",
+    "Animation/player/plan/time-export and final AT53/54/55/89 remain pending.",
+    "No package publication, documentation deployment, or PR."
+  ]
+}

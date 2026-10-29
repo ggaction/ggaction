@@ -7,7 +7,7 @@
 - [x] partition·graph·geo·font·image가 함께 있는 저장본의 source-free fresh-process 복원
 - [x] 선택·focus intent·layout/projection revision·lineage·clip의 독립 기대값
 - [x] 새 session의 편집·undo/redo와 SVG/Canvas/PNG/PDF 같은 run 검증
-- [ ] exact archive Node 20/22/24와 증거 checkpoint
+- [x] exact archive Node 20/22/24와 증거 checkpoint
 - [ ] 공개 animation bundle/player가 준비된 뒤 current-frame/offline 시간표 결합
 - [ ] AT-54/55/89 전체 후행 matrix 종료
 
@@ -51,3 +51,5 @@
 | browser gesture | unchanged — B/C1/C2와 각 native gesture owner의 실제 입력 증거 재사용; 이 셀은 fresh-process delivery |
 | animation/current-frame time export | pending — 공개 player/plan/codec 통합 뒤 AT-54/55 후행 |
 | release/전체077 | pending — 별도 qualification과 권한 범위 유지 |
+
+증거: [static delivery qualification](static-delivery-evidence/qualification.json). source `2dc92a47e622dd55d33e7dedd7b855beb2a7ae17`, package/discovery 23/23, 동일 archive 새 case 1×3Node 통과.
