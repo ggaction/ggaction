@@ -1,27 +1,27 @@
 {
   "node": "v22.23.1",
   "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
-  "sha256": "d13ec0f72b4f5e9d51db1ea5882dfb6b9c19593515f361bf111610f748712dea",
+  "sha256": "f9d4ee5554380e09794b782486f12409adb45021b1800e7155b2a84ca2db4457",
   "records": [
     {
       "id": "optional-peers",
       "status": "passed",
-      "durationMs": 2896.938875
+      "durationMs": 2201.226291
     },
     {
       "id": "ohlc-three-public-cases",
       "status": "passed",
-      "durationMs": 1237.3200420000003
+      "durationMs": 1038.3677500000003
     },
     {
       "id": "ohlc-strict-types",
       "status": "passed",
-      "durationMs": 185.10383300000012
+      "durationMs": 185.73029199999928
     },
     {
       "id": "ggaction",
       "status": "passed",
-      "durationMs": 2308.9758329999995,
+      "durationMs": 2200.4699170000004,
       "value": {
         "specifier": "ggaction",
         "chunks": 1,
@@ -33,7 +33,7 @@
     {
       "id": "ggaction/basic",
       "status": "passed",
-      "durationMs": 1223.5588329999991,
+      "durationMs": 1129.133417,
       "value": {
         "specifier": "ggaction/basic",
         "chunks": 1,
@@ -45,7 +45,7 @@
     {
       "id": "ggaction/svg",
       "status": "passed",
-      "durationMs": 62.70275000000038,
+      "durationMs": 59.90220799999952,
       "value": {
         "specifier": "ggaction/svg",
         "chunks": 1,
@@ -57,7 +57,7 @@
     {
       "id": "ggaction/graph",
       "status": "passed",
-      "durationMs": 185.0007910000004,
+      "durationMs": 175.34404200000063,
       "value": {
         "specifier": "ggaction/graph",
         "chunks": 1,
@@ -69,7 +69,7 @@
     {
       "id": "ggaction/interaction",
       "status": "passed",
-      "durationMs": 485.471458,
+      "durationMs": 585.8507919999993,
       "value": {
         "specifier": "ggaction/interaction",
         "chunks": 1,

@@ -1,7 +1,7 @@
 {
-  "status": "runtime-qualified; source-pinned docs verification pending",
+  "status": "qualified OHLC vertical slice; broader STEP050/053/074 obligations remain open",
   "base": "c4fe0a70b14b897ef0916a445086b9fe543c8141",
-  "archiveSha256": "d13ec0f72b4f5e9d51db1ea5882dfb6b9c19593515f361bf111610f748712dea",
+  "archiveSha256": "f9d4ee5554380e09794b782486f12409adb45021b1800e7155b2a84ca2db4457",
   "cases": {
     "publicLatest": 15,
     "pure": 6,
@@ -22,12 +22,36 @@
       "fail": 1
     },
     "inventoryCorrectedOwner": 1,
-    "sharedPackageAndGuideContracts": 62
+    "sharedPackageAndGuideContracts": 62,
+    "documentation": {
+      "previousPass": 195,
+      "previousFail": 1,
+      "correctedChangelogOwner": 1
+    },
+    "builtPages": 175,
+    "builtLlmArtifacts": 1503,
+    "builtBrowserWidths": [
+      320,
+      390,
+      768
+    ]
   },
   "approval": "../../AUTHORIZATION.json remainingApproval",
   "remaining": [
     "STEP050 aggregate admission integration",
     "Waterfall/Trail/Table vertical slices",
     "STEP074 full qualification and independent-source distribution"
+  ],
+  "sourceCommit": "a657a9fe7f0bea5cde197d5f831ef023654eecb0",
+  "package": {
+    "entries": 1016,
+    "packedBytesNode22": 1451466,
+    "unpackedBytes": 6608235
+  },
+  "evidenceReuse": [
+    "The six unchanged inventory tests passed in the original 7-test invocation; the sole changed inventory owner passed separately with exact updated counts.",
+    "The 195 unchanged documentation tests passed at a657 source; the missing CHANGELOG entry was corrected and its owner passed separately.",
+    "Final archive differs from d13 only in CHANGELOG; three Node versions were nevertheless requalified against f9d4.",
+    "Regular primitive renderer/browser variants preceded the added outline-path lowering; final 10-consumer same-run effect pairs and installed renderer/scene cases cover the final implementation."
   ]
 }

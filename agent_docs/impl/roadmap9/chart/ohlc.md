@@ -1,6 +1,6 @@
 # OHLC native vertical slice
 
-상태: OHLC 공개 수직 구현 검증 완료. 문서 source pin을 최종 검증하고 evidence revision으로 고정한다. 기존 `resolveOHLCValues`가 가격 유효성의 단일 소유자이며 STEP050 합산 admission과 최종074는 아직 열려 있다. `AUTHORIZATION.json`의 remainingApproval(남은077 전체 공개 API·저장·아키텍처·시각 결정 승인)을 이 구체안에 적용한다. 새 질문 없이 구현·검증한다.
+상태: OHLC 공개 수직 구현 검증 완료. source a657a9fe7에 문서를 고정했고, 195개 성공+CHANGELOG 누락 1개 보완 후 owner1개 성공, built175/LLM1503 및 320/390/768px browser 검증을 보존했다. 기존 `resolveOHLCValues`가 가격 유효성의 단일 소유자이며 STEP050 합산 admission과 최종074는 아직 열려 있다. `AUTHORIZATION.json`의 remainingApproval(남은077 전체 공개 API·저장·아키텍처·시각 결정 승인)을 이 구체안에 적용한다. 새 질문 없이 구현·검증한다.
 
 `createOHLCPlot({id?,data?,coordinate?,x,low,high,open,close,yScale?,invalid?,doji?,width?,body?,stem?,labels?,color?,clip?,guides?})`와 `editOHLCPlot({target?,...patch})`는 Full에만 제공한다. x는 기존 field/fieldType/scale/temporalUnit 계약, 가격 네 필드는 명시 문자열이다. yScale은 기존 quantitative position scale 옵션이다. 기본 scale ID는 `<id>-x`, `<id>-y`이며 같은 의미의 기존 척도를 공유하려면 ID를 명시한다.
 
@@ -23,8 +23,8 @@ Outlined stem/doji roles use an explicit open M→L Path with the exact original
 - Renderer slice 6, browser 3 variants at 1×/2×; same-run role effect pairs for 10 consumers including OHLC stem/body/label through Canvas/SVG/PNG/PDF. Original Line-outline failure is preserved; the exact open Path lowering fixes it without new renderer schema.
 - Real financial source: **one** pinned `tt-stock-prices` table, AAPL/ADBE/AMZN/MSFT/NVDA as five series, three recipes each plus one provenance assertion = 16 cases. This does **not** count as five independent source tables. Any broader independent-source distribution obligation remains at STEP074.
 - Shared direct ranged-marks recipe explicitly maps the existing interval positions to low/open and high/close, sharing its original x/y scales. This is a generic API trace witness, not financial-source evidence; no fabricated price rows are introduced.
-- Same final archive `d13ec0f72b4f5e9d51db1ea5882dfb6b9c19593515f361bf111610f748712dea`: Node20/22/24 each passed three source-free public cases, strict types, optional peers and five browser entry bundles. Full-only authoring remains absent from Basic.
+- Same final archive `f9d4ee5554380e09794b782486f12409adb45021b1800e7155b2a84ca2db4457`: Node20/22/24 each passed three source-free public cases, strict types, optional peers and five browser entry bundles. Full-only authoring remains absent from Basic.
 - Four new critical owners: line100%, branch≥94.05%, functions100%; focused20 tests at this source. The later additional shared-paint consumer test passes without runtime changes. No new full coverage/installed sweep is claimed.
-- Package measured on Node20/22/24: 1016 entries, 6,607,952 unpacked bytes; max packed1,454,234 before equal-length README ceiling text update. Final Node22 archive is1,451,378 packed; conservative measured caps1016/1,455,000/6,609,000. Browser max Full716,468/Basic383,535; caps716,500/383,600.
+- Package measured on Node20/22/24: 1016 entries, 6,607,952 unpacked bytes; max packed1,454,234 before equal-length README ceiling text update. Final CHANGELOG-synchronized Node22 archive is1,451,466 packed/6,608,235 unpacked; conservative measured caps1016/1,455,000/6,609,000. Browser max Full716,468/Basic383,535; caps716,500/383,600.
 
 `editOHLCPlot` owns price field and role appearance changes; generic Cartesian position authoring is not used for splitting its four price roles. Existing `editXScale`/`editYScale`/`editColorScale`, guides and coordinate consumers retain their shared owners. STEP050 final aggregate admission remains an explicit integration obligation; this checkpoint does not relax that policy.
