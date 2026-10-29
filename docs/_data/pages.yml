@@ -526,6 +526,10 @@
   url: /tutorials/flows/
   parent: /tutorials/
 
+- title: Geometry Sources
+  url: /api/geometry/
+  parent: /api/
+
 - title: Contours and Two-Dimensional Density
   url: /api/contours/
   parent: /api/

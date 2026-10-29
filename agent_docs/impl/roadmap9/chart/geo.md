@@ -5,7 +5,7 @@
 - [x] STEP042–046 원안·core·Geo 계약과 RFC7946/TopoJSON 규격 확인
 - [x] 남은 전체 승인 재사용, 순수 owner와 source provenance 구체화
 - [x] GeoJSON/TopoJSON 정규화와 독립 수치·오류 검사
-- [ ] Geometry resource/action·identity/revision·stored validation
+- [x] Geometry resource/action·identity/revision·stored validation 공개 checkpoint 검증
 - [ ] 15 projection registry·fit/inverse·split/clip/resample
 - [ ] Native geo marks/guide/typed join/shared-arc LOD
 - [ ] Camera·route·current frame·네 renderer·타입/docs/실제 데이터
@@ -73,3 +73,61 @@ Node20/22/24 패키지 실측은961entries/6,257,066unpacked이고 packed는
 네 private owner는 공개 import graph에서 도달하지 않고 기존 runtime source가 바뀌지 않아
 공개 route checkpoint의 browser bundle/renderer/installed 증거를 재사용한다. 새 public
 resource나 projection API는 아직 없으므로 Current/types/docs에 구현된 것으로 넣지 않는다.
+
+## 공개 source resource 계약
+
+순수 checkpoint `87d3489d9` 이후 `createGeometryData`와 `editGeometryData`를 Full에
+등록한다. 새 resource kind를 늘리지 않고 기존 geometry kind의 `options.method`를
+contour|geo로 닫아 dispatch한다. 원본 format/coordinateKind/featureKey/topoObject/limits와
+feature/result/source/diagnostics를 저장하고 원래 core identity를 별도 result.identity로
+보존한다. 입력 source를 feature row나 별도 dataset으로 복제하지 않는다.
+
+`featureKey`는 own field 문자열 또는 정확한 문자열 path이며 properties를 고르려면
+`["properties","code"]`처럼 쓴다. key omission의 generated key는 옵션 편집에서 유지되고
+전체 values 교체나 TopoJSON object 변경에서 새로 발급된다. 명시 key의 reorder는 원 identity를
+유지한다. Format/key policy는 기존 source identity를 바꾸므로 edit의 옵션으로 열지 않는다.
+단일 TopoJSON object 추론 결과는 options에 확정해 후속 다중 object 입력에도 기존 선택을
+유지한다. Partial limits는 기존 값을 보존한다.
+
+Resource는 authored/no-input이며 algorithmVersion1이다. Source 값의 encoded-values hash는
+원 파일 bytes hash와 구분한다. Restore는 bounded deterministic normalization과 options,
+features, topology, source, diagnostics, keys/revision의 정합성을 검증한다. Generic geometry
+primitive로 contour 소비자에 geo를 대입하는 경우도 거부한다. Public source 생성은 그림을
+만들지 않으므로 시각 fixture를 합성하지 않으며 향후 projection/mark 소비자가 생기면 전체
+revision closure와 네 renderer 증거를 같은 후속 checkpoint에 연결한다.
+
+## 공개 source 검증 checkpoint
+
+기존 contour와 합친36개 검사, source/type/action40개, package/architecture38개,
+identity comparison/boundary30개와 마지막 package/vocabulary19개가 통과했다. 새10개 critical
+owner는 line/function100%와 branch92.86–100%이며 기존95/90/100 floor를 그대로 적용했다.
+단독 공개 source 단계에서 전체 coverage를 재실행한 것으로 주장하지 않는다. Route의 원본 전체
+coverage와 이 변경의 영향 검사, 이후 전체 Geo 통합 검증을 구분한다.
+
+Canonical realistic의 direct lifecycle3개와 최종 option inventory7개가 통과했다. 첫 실행은
+allocation namespace를 독립 프로그램 사이에 그대로 비교한 helper와 신규 count 기대값 때문에
+8/10이었다. Helper는 명시 geometry owner의 namespace만 정규화하며 revision/key/source/좌표
+차이는 보존하도록 검증했다. 이어 확인된 categorical/excluded/ledger 집계 기대값도 갱신했다.
+실제 create/edit trace와 format/coordinateKind/featureKey/limits의 관측을 별도로 assert한다.
+공통 realistic3파일은 root 합산 통합에서 실행하며 새 recipe/helper 변경을 인계했다.
+
+문서 source184/184, built169pages/1463machine artifacts 및 desktop search와320/390/768px
+전체 페이지 검사가 통과했다. 최초 metadata/semantic snippet/visual exception/search cap 오류와
+수리 후 증거는 `geo-evidence/source/`에 모두 보존했다.
+
+최종 archive SHA256 `226372c3f47cce9ad0d3b9ad55891d1f0e8045068842c86e6487d7d51810f23e`의
+동일 tar를 Node20/22/24에서 각각 runtime3개·strict types로 검증했다. 같은 archive의 Full/Basic
+bundle은 Node22에서683295/370704bytes, Node20/24에서685086/371470bytes다. Full만686000으로
+최소 올림했고 Basic372000은 유지한다. Package는967entries/6278165unpacked, packed는
+Node22=1371494와20/24=1374187bytes이며 ceilings967/1375000/6279000이다. Canonical
+staging transform을 적용해 archive967파일과 현재 source의 차이0개를 확인했다.
+
+| 소비자 | 현재 source 경계 |
+| --- | --- |
+| create/edit/keyed/generated/Topo object | 단일 core identity와 bounded normalization, 실패 원자성 |
+| contour 공존/primitive | 닫힌 geometry method dispatch, 잘못된 mark binding 거부 |
+| inspection/compare/removal | 기존 일반 resource owner 재사용 |
+| offline restore | source/result/options/identity 재검산, network 없음 |
+| Full/Basic/types/package | Full만 등록, source-free 설치와 immutable type 검증 |
+| renderers/scene/hit | 아직 source만 저장하므로 concrete output 없음; 후속 geo mark에서 연결 |
+| projection/join/LOD/camera/asset bytes | 남은 STEP043–046 및 원본 byte provenance 통합 의무 |

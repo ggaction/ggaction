@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:910f5b83362299cd159bddcc72f7a437c17360af75b871fbc9eedf70c8c57558",
-    "sourceCommit": "a491a8b8e421ace56be22a83296e163e2315be70",
+    "contractId": "sha256:8155850485febd3f0551ffd63cc83e4e69a87d9530e19cf7449cf6aa529204fb",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -14,7 +14,7 @@
     "manifest": "doc-provenance.json"
   },
   "bundle": "llms-full.txt",
-  "sectionCount": 168,
+  "sectionCount": 169,
   "sections": [
     {
       "order": 1,
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "4de64771e9e69213d02b584cd8eaa881cfec26fe88157af302a8c83782f355cc"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -2023,8 +2023,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 36821,
-      "sha256": "8024096b4418b2956dceaf04337a62a5983a93fb3a8bb9867947c7c179240a9e"
+      "bytes": 37029,
+      "sha256": "bcaf6d124bf08c305e71ec76e3b75191050988f364070f33aee48306a6ced059"
     },
     {
       "order": 120,
@@ -2162,12 +2162,14 @@
         "createcalendarlayout",
         "bundlegraphedges",
         "editedgeroute",
+        "creategeometrydata",
+        "editgeometrydata",
         "focused-core-data-editing",
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 253934,
-      "sha256": "7983de142e148a48816ee6adde255c89871100ac3d2d5593b1f831b48a2d6fc0"
+      "bytes": 256976,
+      "sha256": "126efe16b9606ba0b04eff9f7383f556f6e2ada0158ba97344c593edba7a2bdb"
     },
     {
       "order": 121,
@@ -2505,8 +2507,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 50854,
-      "sha256": "fa5dbde10ffc9a82be28905e53ea5db731b2e3a9cc12445ec5db49ef2a27ff53"
+      "bytes": 51123,
+      "sha256": "3639c7570e1358fda598a07b49334fa10d0f738c86a9daa9b26e6fb9a7f2eb5d"
     },
     {
       "order": 128,
@@ -2677,6 +2679,7 @@
         "type-createdumbbellplotoptions",
         "type-createecdfplotoptions",
         "type-createflowdataoptions",
+        "type-creategeometrydataoptions",
         "type-creategraphdataoptions",
         "type-creategridoptions",
         "type-createguidesoptions",
@@ -2831,6 +2834,7 @@
         "type-editflowlinksoptions",
         "type-editflownodesoptions",
         "type-editfolddataoptions",
+        "type-editgeometrydataoptions",
         "type-editgradientplotoptions",
         "type-editgraphdataoptions",
         "type-editgraphplotoptions",
@@ -2963,6 +2967,13 @@
         "type-folddataoptions",
         "type-folddataoutputfields",
         "type-forcedirectededgerouteoptions",
+        "type-geojsoninput",
+        "type-geographicgeometry",
+        "type-geometryfeature",
+        "type-geometryfeaturekey",
+        "type-geometryjsonvalue",
+        "type-geometrylimits",
+        "type-geometryposition",
         "type-gradientplotappearanceoptions",
         "type-gradientplotcenteroptions",
         "type-gradientplotdensitylegendoptions",
@@ -3318,6 +3329,8 @@
         "type-timeunitdataoptions",
         "type-titleoptions",
         "type-titletextstyleoptions",
+        "type-topojsoninput",
+        "type-topologygeometry",
         "type-treeplotoptions",
         "type-treemapplotoptions",
         "type-utcformatstring",
@@ -3349,8 +3362,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 460869,
-      "sha256": "a2ef91e99434f023f8667da44cf64883077b2ab7e273e753d536ae9666ab2598"
+      "bytes": 466581,
+      "sha256": "edb988b02a0a105639487ef7cacee38feb824c684c1a8877f25fbcb928d50617"
     },
     {
       "order": 129,
@@ -3384,8 +3397,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "35d0e651d18e4020c42db845af15b1e097db982ddc3080c80f88066fc46182ae"
+      "bytes": 20908,
+      "sha256": "015c171d0d3d204a5a9177ac3f23edb1c9f9b256e6be4102a244e8b40145139b"
     },
     {
       "order": 131,
@@ -3724,8 +3737,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "aad5fa85fc9b4840cd0fca770b6f01011e655bfd46ea1579ee08b1b565961bc8"
+      "bytes": 3000,
+      "sha256": "47422b56e1ec8df92a9338117b4c753d07ac12a3f722bc3489b80fd81032b018"
     },
     {
       "order": 152,
@@ -3930,6 +3943,19 @@
     },
     {
       "order": 165,
+      "title": "Geometry Sources",
+      "route": "/api/geometry/",
+      "source": "api/geometry.md",
+      "headings": [
+        "geometry-sources",
+        "creategeometrydata",
+        "editgeometrydata"
+      ],
+      "bytes": 3802,
+      "sha256": "ad1a126db0fea27e47eb439fc60c4b359e21db34743c556801249bb2c6c4a16f"
+    },
+    {
+      "order": 166,
       "title": "Contours and Two-Dimensional Density",
       "route": "/api/contours/",
       "source": "api/contours.md",
@@ -3945,7 +3971,7 @@
       "sha256": "128a153ec10839098b3da6a365473ca0bc741a05d64fff0f7536d3c61cc52243"
     },
     {
-      "order": 166,
+      "order": 167,
       "title": "Draw Levels, Bands and Density",
       "route": "/tutorials/contours/",
       "source": "tutorials/contours.md",
@@ -3956,7 +3982,7 @@
       "sha256": "68c3b2a53f871d21ca2674ef5268d6c88f3238c562fbd0db33cc4bbc74b56d26"
     },
     {
-      "order": 167,
+      "order": 168,
       "title": "Calendar Plots",
       "route": "/api/calendar/",
       "source": "api/calendar.md",
@@ -3971,7 +3997,7 @@
       "sha256": "5394529c61cb226787b7723aa56d3e2d17082957b8f7812c0daf1c6065a53078"
     },
     {
-      "order": 168,
+      "order": 169,
       "title": "Place Observations on a Calendar",
       "route": "/tutorials/calendar/",
       "source": "tutorials/calendar.md",

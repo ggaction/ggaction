@@ -1073,6 +1073,12 @@
     "EdgeRoute": [
       "edge route",
       "bundled connection geometry"
+    ],
+    "GeometryData": [
+      "geographic source",
+      "planar shapes",
+      "GeoJSON features",
+      "TopoJSON shared arcs"
     ]
   },
   "summaryOverrides": {
@@ -2145,6 +2151,28 @@
       "options": {
         "exponent": 3
       }
+    },
+    "createGeometryData": {
+      "id": "geometry",
+      "format": "geojson",
+      "coordinateKind": "geographic",
+      "featureKey": "id",
+      "values": {
+        "type": "Feature",
+        "id": "place",
+        "properties": {},
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            12.6,
+            55.7
+          ]
+        }
+      }
+    },
+    "editGeometryData": {
+      "target": "geometry",
+      "coordinateKind": "planar"
     }
   },
   "callPatternOverrides": {

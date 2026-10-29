@@ -1101,6 +1101,12 @@
     "description": "Start with a node table and an edge table whose values have one shared unit.",
     "image": "/assets/images/flow-layouts.png"
   },
+  "/api/geometry/": {
+    "title": "Geometry Sources",
+    "source": "docs/api/geometry.md",
+    "editSource": "docs/api/geometry.md",
+    "description": "Keep geographic or planar shapes in an immutable resource with explicit feature identity."
+  },
   "/api/contours/": {
     "title": "Contours and Two-Dimensional Density",
     "source": "docs/api/contours.md",

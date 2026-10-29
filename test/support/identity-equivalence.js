@@ -53,6 +53,24 @@ function normalizeObservedOccurrences(value, references) {
   } } };
 }
 
+function normalizeGeometryIdentity(value) {
+  if (value.kind !== "geometry" || value.options?.method !== "geo" || !value.result?.identity) return value;
+  const { logicalId, allocationId, ...identity } = value.result.identity;
+  if (identity.keySpec?.mode === "generated" && Array.isArray(identity.rowKeys)) {
+    const namespaces = new Map();
+    identity.rowKeys = identity.rowKeys.map(key => {
+      let decoded;
+      try { decoded = JSON.parse(key); } catch { return key; }
+      if (!Array.isArray(decoded) || decoded.length !== 3 || decoded[0] !== "generated" ||
+          typeof decoded[1] !== "string" || !decoded[1] || !Number.isSafeInteger(decoded[2]) ||
+          decoded[2] < 0 || decoded[2] >= identity.nextGeneratedKey || JSON.stringify(decoded) !== key) return key;
+      if (!namespaces.has(decoded[1])) namespaces.set(decoded[1], namespaces.size);
+      return JSON.stringify(["generated", `allocation:${namespaces.get(decoded[1])}`, decoded[2]]);
+    });
+  }
+  return { ...value, result: { ...value.result, identity } };
+}
+
 // Independently authored programs have distinct allocation namespaces. Compare
 // their chart meaning and exact concrete draw state here; identity lifecycle has
 // separate assertions that deliberately retain all of these fields.
@@ -65,7 +83,7 @@ function normalizeAllocatedIdentity(value, index, references) {
     normalizeAllocatedIdentity(child, childIndex, references));
   if (value === null || typeof value !== "object") return value;
   if (value instanceof Date) return value;
-  value = normalizeObservedOccurrences(value, references);
+  value = normalizeGeometryIdentity(normalizeObservedOccurrences(value, references));
   const dataset = isDataset(value);
   const dataReference = value.kind === "data" &&
     Object.keys(value).length === dataReferenceKeys.size &&

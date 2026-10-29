@@ -353,6 +353,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editCalendarPlot`](current/CALENDAR.md#editcalendarplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`bundleGraphEdges`](current/EDGE_ROUTES.md#bundlegraphedges) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editEdgeRoute`](current/EDGE_ROUTES.md#editedgeroute) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createGeometryData`](current/GEOMETRY.md#creategeometrydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editGeometryData`](current/GEOMETRY.md#editgeometrydata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

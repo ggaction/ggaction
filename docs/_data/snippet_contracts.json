@@ -1993,6 +1993,18 @@
     "executable": false
   },
   {
+    "file": "api/geometry.md",
+    "block": 1,
+    "heading": "`createGeometryData`",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [],
+    "prerequisites": "Import ggaction; the example supplies its own feature collection.",
+    "sha256": "3f0d3429e519482abe43f1b38ae31e011be811b96f7664d3f40b6f48666356e2",
+    "executable": true
+  },
+  {
     "file": "api/gradient-plots.md",
     "block": 1,
     "heading": "Create a gradient plot",

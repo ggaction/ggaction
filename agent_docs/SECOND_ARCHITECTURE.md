@@ -853,7 +853,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 681,000 bytes |
+| `ggaction` | 686,000 bytes |
 | `ggaction/basic` | 372,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/graph` | 43,000 bytes |
@@ -3586,8 +3586,14 @@ coverage floor는 유지한다. 정확 고정 archive와 최종 검증은 Calend
 
 ### Geographic source normalization
 
-`grammar/geo/`는 아직 공개 entry에서 도달하지 않는 순수 JSON/geometry owner다. Caller source의
+`grammar/geo/`는 순수 JSON/geometry owner다. Caller source의
 own-data snapshot·유형·finite/closed ring과 TopoJSON shared arc decode를 정규화하며
 기존 immutable/value digest/typed-key/work-budget core를 재사용한다. 프로그램, trace, renderer,
-asset loader를 가져오지 않는다. 공개 resource 및 projection/stream consumers는 이 checkpoint에
-등록하지 않았다. Source values provenance와 실제 asset byte provenance를 혼동하지 않는다.
+asset loader를 가져오지 않는다. Full의 `actions/geo/resources.js`는 이 결과와 core identity를
+`materialization/geo/resources.js`의 authored geometry resource로 저장한다. 공통
+`materialization/geometryState.js`는 닫힌 `options.method`로 contour와 geo validator를
+분리하고 각 stored result와 소비자 적격성을 검증한다. `selectors/geometry.js`는 geographic
+source의 명시·현재·유일한 선택만 허용한다. 복원은 retained source와 정규화 결과를 검산하며
+그래픽을 생성하지 않는다. Source values provenance와 실제 asset byte provenance를
+혼동하지 않는다. Projection/stream은 후속 독립 owner이며 renderer 입력은 여전히 concrete
+graphicSpec만이다.

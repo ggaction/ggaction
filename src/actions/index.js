@@ -1,3 +1,4 @@
+import { registerGeometryActions } from "./geo/resources.js";
 import { reviseSourceResourceInputs } from "./data/resourcePlan.js";
 import { registerCalendarResourceActions, reviseCalendarInputs } from "./calendar/resources.js";
 import { registerCalendarPlotActions } from "./calendar/plots.js";
@@ -81,6 +82,7 @@ export function registerActions(ProgramClass) {
   registerFlowPlotActions(ProgramClass);
   registerCalendarResourceActions(ProgramClass);
   registerCalendarPlotActions(ProgramClass);
+  registerGeometryActions(ProgramClass);
   registerContourResourceActions(ProgramClass);
   registerContourMarkActions(ProgramClass);
   registerHierarchyResourceActions(ProgramClass);

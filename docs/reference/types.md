@@ -72,6 +72,8 @@ interface ChartProgramActions {
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
   editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
+  createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+  editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
@@ -3298,6 +3300,24 @@ export interface CreateFlowDataOptions extends FlowDefinition {
 
 Related types: [`FlowDefinition`](#type-flowdefinition).
 
+### `CreateGeometryDataOptions` {#type-creategeometrydataoptions}
+
+<details markdown="1">
+<summary>Expand CreateGeometryDataOptions</summary>
+
+```typescript
+export type CreateGeometryDataOptions = {
+  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
+  readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
+} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+  | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
+```
+
+</details>
+
+Related types: [`GeometryFeatureKey`](#type-geometryfeaturekey) · [`GeometryLimits`](#type-geometrylimits) · [`GeoJSONInput`](#type-geojsoninput) · [`TopoJSONInput`](#type-topojsoninput).
+
 ### `CreateGraphDataOptions` {#type-creategraphdataoptions}
 
 <details markdown="1">
@@ -6335,6 +6355,22 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`FoldDataOptions`](#type-folddataoptions).
 
+### `EditGeometryDataOptions` {#type-editgeometrydataoptions}
+
+<details markdown="1">
+<summary>Expand EditGeometryDataOptions</summary>
+
+```typescript
+export interface EditGeometryDataOptions {
+  readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
+  readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+}
+```
+
+</details>
+
+Related types: [`GeoJSONInput`](#type-geojsoninput) · [`TopoJSONInput`](#type-topojsoninput) · [`GeometryLimits`](#type-geometrylimits).
+
 ### `EditGradientPlotOptions` {#type-editgradientplotoptions}
 
 <details markdown="1">
@@ -8616,6 +8652,98 @@ export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { 
 </details>
 
 Related types: [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions).
+
+### `GeoJSONInput` {#type-geojsoninput}
+
+<details markdown="1">
+<summary>Expand GeoJSONInput</summary>
+
+```typescript
+export type GeoJSONInput = GeographicGeometry | GeometryFeature | (Readonly<Record<string, unknown>> & { readonly type: "FeatureCollection"; readonly features: readonly GeometryFeature[] }) | null;
+```
+
+</details>
+
+Related types: [`GeographicGeometry`](#type-geographicgeometry) · [`GeometryFeature`](#type-geometryfeature).
+
+### `GeographicGeometry` {#type-geographicgeometry}
+
+<details markdown="1">
+<summary>Expand GeographicGeometry</summary>
+
+```typescript
+export type GeographicGeometry = Readonly<Record<string, unknown>> & (
+  | { readonly type: "Point"; readonly coordinates: GeometryPosition }
+  | { readonly type: "MultiPoint" | "LineString"; readonly coordinates: readonly GeometryPosition[] }
+  | { readonly type: "MultiLineString" | "Polygon"; readonly coordinates: readonly (readonly GeometryPosition[])[] }
+  | { readonly type: "MultiPolygon"; readonly coordinates: readonly (readonly (readonly GeometryPosition[])[])[] }
+  | { readonly type: "GeometryCollection"; readonly geometries: readonly (GeographicGeometry | null)[] });
+```
+
+</details>
+
+Related types: [`GeometryPosition`](#type-geometryposition).
+
+### `GeometryFeature` {#type-geometryfeature}
+
+<details markdown="1">
+<summary>Expand GeometryFeature</summary>
+
+```typescript
+export interface GeometryFeature extends Readonly<Record<string, unknown>> {
+  readonly type: "Feature"; readonly id?: string | number;
+  readonly properties: Readonly<Record<string, GeometryJSONValue>> | null;
+  readonly geometry: GeographicGeometry | null;
+}
+```
+
+</details>
+
+Related types: [`GeometryJSONValue`](#type-geometryjsonvalue) · [`GeographicGeometry`](#type-geographicgeometry).
+
+### `GeometryFeatureKey` {#type-geometryfeaturekey}
+
+<details markdown="1">
+<summary>Expand GeometryFeatureKey</summary>
+
+```typescript
+export type GeometryFeatureKey = string | readonly string[];
+```
+
+</details>
+
+### `GeometryJSONValue` {#type-geometryjsonvalue}
+
+<details markdown="1">
+<summary>Expand GeometryJSONValue</summary>
+
+```typescript
+export type GeometryJSONValue = null | boolean | number | string | readonly GeometryJSONValue[] | { readonly [key: string]: GeometryJSONValue };
+```
+
+</details>
+
+### `GeometryLimits` {#type-geometrylimits}
+
+<details markdown="1">
+<summary>Expand GeometryLimits</summary>
+
+```typescript
+export interface GeometryLimits { readonly maxFeatures?: number; readonly maxPositions?: number; readonly maxArcs?: number; readonly maxValues?: number; readonly maxDepth?: number; }
+```
+
+</details>
+
+### `GeometryPosition` {#type-geometryposition}
+
+<details markdown="1">
+<summary>Expand GeometryPosition</summary>
+
+```typescript
+export type GeometryPosition = readonly [number, number, ...number[]];
+```
+
+</details>
 
 ### `GradientPlotAppearanceOptions` {#type-gradientplotappearanceoptions}
 
@@ -14911,6 +15039,43 @@ export interface TitleTextStyleOptions {
 ```
 
 </details>
+
+### `TopoJSONInput` {#type-topojsoninput}
+
+<details markdown="1">
+<summary>Expand TopoJSONInput</summary>
+
+```typescript
+export interface TopoJSONInput extends Readonly<Record<string, unknown>> {
+  readonly type: "Topology"; readonly objects: Readonly<Record<string, TopologyGeometry>>;
+  readonly arcs: readonly (readonly GeometryPosition[])[];
+  readonly transform?: { readonly scale: readonly [number, number]; readonly translate: readonly [number, number] };
+}
+```
+
+</details>
+
+Related types: [`TopologyGeometry`](#type-topologygeometry) · [`GeometryPosition`](#type-geometryposition).
+
+### `TopologyGeometry` {#type-topologygeometry}
+
+<details markdown="1">
+<summary>Expand TopologyGeometry</summary>
+
+```typescript
+export type TopologyGeometry = Readonly<Record<string, unknown>> & ({ readonly id?: string | number; readonly properties?: Readonly<Record<string, GeometryJSONValue>> | null }) & (
+  | { readonly type: null }
+  | { readonly type: "Point"; readonly coordinates: GeometryPosition }
+  | { readonly type: "MultiPoint"; readonly coordinates: readonly GeometryPosition[] }
+  | { readonly type: "LineString"; readonly arcs: readonly number[] }
+  | { readonly type: "MultiLineString" | "Polygon"; readonly arcs: readonly (readonly number[])[] }
+  | { readonly type: "MultiPolygon"; readonly arcs: readonly (readonly (readonly number[])[])[] }
+  | { readonly type: "GeometryCollection"; readonly geometries: readonly TopologyGeometry[] });
+```
+
+</details>
+
+Related types: [`GeometryJSONValue`](#type-geometryjsonvalue) · [`GeometryPosition`](#type-geometryposition).
 
 ### `TreePlotOptions` {#type-treeplotoptions}
 

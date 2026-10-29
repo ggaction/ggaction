@@ -1,0 +1,1 @@
+export type GeometryPosition = readonly [number, number, ...number[]];

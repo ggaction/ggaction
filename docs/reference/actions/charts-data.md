@@ -5462,6 +5462,81 @@ editEdgeRoute({ target?, graph?, layout?, method?, options?, coordinateSpace? })
 Apply a nonempty patch to a stored route and refresh each consuming GraphPlot once. Same-method options preserve omitted values; a changed method starts from its defaults. Exact preparation handles also support `{prepared,requestToken}`. See [Edge routes](../../api/edge-routes.md) for validation, async lifetime, source revision and Canvas invalidation.
 
 
+## `createGeometryData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateGeometryDataOptions`](./../types.md#type-creategeometrydataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `coordinateKind` | Required | `"geographic" \| "planar"` |
+| `featureKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
+| `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `format` | Required | `"geojson" \| "topojson"` |
+| `values` | Required | `TopoJSONInput \| GeoJSONInput` |
+| `topoObject` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, limits? })
+```
+
+Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values. See [Geometry sources](../../api/geometry.md#creategeometrydata).
+
+
+## `editGeometryData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGeometryDataOptions`](./../types.md#type-editgeometrydataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `values` | Optional / branch-dependent | `TopoJSONInput \| GeoJSONInput \| undefined` |
+| `coordinateKind` | Optional / branch-dependent | `"geographic" \| "planar" \| undefined` |
+| `topoObject` | Optional / branch-dependent | `string \| undefined` |
+| `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
+```
+
+Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](../../api/geometry.md#editgeometrydata).
+
+
 ## Focused core data editing
 
 ```javascript

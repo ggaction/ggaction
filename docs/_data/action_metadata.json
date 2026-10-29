@@ -2818,5 +2818,21 @@
     ],
     "layer": "user-facing",
     "domain": "core"
+  },
+  "createGeometryData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "editGeometryData": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
   }
 }

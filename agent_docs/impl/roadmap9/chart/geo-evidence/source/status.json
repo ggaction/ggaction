@@ -1,0 +1,628 @@
+{
+  "schemaVersion": 1,
+  "baseline": "87d3489d9",
+  "scope": "Full immutable geographic/planar geometry source actions; projection and mark consumers remain subsequent work",
+  "verification": {
+    "geometryAndContour": {
+      "tests": 36,
+      "passed": 36
+    },
+    "criticalOwners": {
+      "actions/geo/resources.js": {
+        "actual": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "floor": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "grammar/geo/geometry.js": {
+        "actual": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "floor": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "grammar/geo/input.js": {
+        "actual": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "floor": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "grammar/geo/normalize.js": {
+        "actual": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "floor": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "grammar/geo/options.js": {
+        "actual": {
+          "lines": 100,
+          "branches": 92.86,
+          "functions": 100
+        },
+        "floor": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "grammar/geo/topology.js": {
+        "actual": {
+          "lines": 100,
+          "branches": 98.72,
+          "functions": 100
+        },
+        "floor": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "materialization/geo/resources.js": {
+        "actual": {
+          "lines": 100,
+          "branches": 94.12,
+          "functions": 100
+        },
+        "floor": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "materialization/geo/state.js": {
+        "actual": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "floor": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "materialization/geometryState.js": {
+        "actual": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "floor": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "selectors/geometry.js": {
+        "actual": {
+          "lines": 100,
+          "branches": 100,
+          "functions": 100
+        },
+        "floor": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      }
+    },
+    "contractsFirst": {
+      "tests": 40,
+      "passed": 40
+    },
+    "packageTypeArchitecture": {
+      "tests": 38,
+      "passed": 38
+    },
+    "comparisonBoundaries": {
+      "tests": 30,
+      "passed": 30
+    },
+    "docsSource": {
+      "tests": 184,
+      "passed": 184
+    },
+    "docsBuilt": {
+      "pages": 169,
+      "machineArtifacts": 1463
+    },
+    "docsBrowser": "desktop search plus all pages at 320/390/768px passed",
+    "realistic": {
+      "directLifecycle": {
+        "tests": 3,
+        "passed": 3,
+        "log": "public-realistic-inventory-final.log.gz"
+      },
+      "optionInventory": {
+        "tests": 7,
+        "passed": 7,
+        "log": "public-inventory-qualified.log.gz"
+      },
+      "sameExecution": false
+    },
+    "finalPackageVocabulary": {
+      "tests": 19,
+      "passed": 19
+    },
+    "packedInputs": {
+      "artifact": "226372c3f47cce9ad0d3b9ad55891d1f0e8045068842c86e6487d7d51810f23e",
+      "entries": 967,
+      "differences": []
+    }
+  },
+  "artifact": {
+    "filename": "ggaction-0.0.26.tgz",
+    "sha256": "226372c3f47cce9ad0d3b9ad55891d1f0e8045068842c86e6487d7d51810f23e",
+    "entryCount": 967,
+    "size": 1371494,
+    "unpackedSize": 6278165
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "sha256": "226372c3f47cce9ad0d3b9ad55891d1f0e8045068842c86e6487d7d51810f23e",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 860,
+          "minifiedBytes": 2407045,
+          "gzipBytes": 685086
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 538,
+          "minifiedBytes": 1273850,
+          "gzipBytes": 371470
+        }
+      },
+      "types": "passed"
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "sha256": "226372c3f47cce9ad0d3b9ad55891d1f0e8045068842c86e6487d7d51810f23e",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 860,
+          "minifiedBytes": 2407045,
+          "gzipBytes": 683295
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 538,
+          "minifiedBytes": 1273850,
+          "gzipBytes": 370704
+        }
+      },
+      "types": "passed"
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "sha256": "226372c3f47cce9ad0d3b9ad55891d1f0e8045068842c86e6487d7d51810f23e",
+      "cases": [
+        {
+          "id": "geometry/full-basic-identity",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/fresh-process-offline",
+          "status": "passed"
+        },
+        {
+          "id": "geometry/topology-atomic-failure",
+          "status": "passed"
+        }
+      ],
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 860,
+          "minifiedBytes": 2407045,
+          "gzipBytes": 685086
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 538,
+          "minifiedBytes": 1273850,
+          "gzipBytes": 371470
+        }
+      },
+      "types": "passed"
+    }
+  },
+  "packageMeasurements": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 967,
+      "packedBytes": 1374187,
+      "unpackedBytes": 6278165
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 967,
+      "packedBytes": 1371494,
+      "unpackedBytes": 6278165
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 967,
+      "packedBytes": 1374187,
+      "unpackedBytes": 6278165
+    }
+  },
+  "failureHistory": [
+    "Initial source tests caught normalized TopoJSON options property ordering; factory now reuses the canonical options owner. A contour test fixture used invalid native origin/step fields and was corrected.",
+    "Initial focused coverage left unique eligible geometry fallback unexecuted; public mixed contour/geographic selection regression now covers it. All ten affected floors remain 95/90/100.",
+    "Initial docs184:175 passed/9 failed from source metadata regenerated during type changes, new semantic snippet resultKind, visual exception inventory, and measured search payload cap. Qualified rerun184/184.",
+    "Initial docs environment preflight used system Ruby2.6. Repeated with existing Ruby3.2 before successful build; no toolchain or dependency changes.",
+    "Initial realistic10:8 passed/2 failed for independent geometry allocation namespaces and new option inventory expectations. Namespace normalization now retains keys/revisions/source differences with regression evidence. Subsequent owning inventory reruns exposed two further aggregate counts; original logs preserved.",
+    "First installed archive was replaced after adding the required CHANGELOG entry. Final same-tar Node20/22/24 fixtures3 each and strict types passed; Full/Basic bundle bytes measured on each runtime. No runtime edits after this archive."
+  ],
+  "remaining": [
+    "Projection15 support/options/forward inverse/fit; spherical stream and geo marks",
+    "Typed join/shared-arc LOD/camera/route/frame/actual geographic corpus and renderer matrix",
+    "Host asset original-bytes provenance remains separate from this encoded-values authoring source",
+    "Common realistic three affected files are assigned to root final integration",
+    "Whole source coverage and broad installed/renderer sweep belong to final Geo integration; this change checkpoint uses affected critical owner evidence"
+  ],
+  "sourceHashes": {
+    "src/ChartProgram.js": "d9056358920ce791aa4a4e241d25fac6e6ef2f1de555d1b1fe5b89eeae533b97",
+    "src/actions/geo/resources.js": "d79938cc7ca5513cea82f850363a2ee17f5ae6fbfdb48e1da3740c0185a54588",
+    "src/actions/index.js": "7de0366b532d7a4ec74c0280df5e62d31376f1330b104c5df7698d456310b3a1",
+    "src/core/vocabulary.js": "8134f3a0d2685f824e9f8e5028143db74e379beb78f052bc0f1f6d89a2dad1fb",
+    "src/grammar/geo/options.js": "78969514a193c6e4fbc903b763ad2aaf6a4a03d71789c5b0f6f14913aee8fa19",
+    "src/inspectionDescriptors.js": "8d881e518160cc1e9a4b23c2a6b89c4b295839fedae8999bf683403842f833b8",
+    "src/materialization/geo/resources.js": "a98ff9b1d87b1b294b4da087eede9b2cb44756f81ade05156f8b85358a494da9",
+    "src/materialization/geo/state.js": "dc1c75471e8a75e2383579395f0212a8f267a7c658e0cf4ed9b3ff1580c4ad52",
+    "src/materialization/geometryState.js": "24a2b6d43d29f51752cb52c58854c6371263dc92d8c97baa2c216fb416af1d0b",
+    "src/selectors/geometry.js": "4df4242dfc91f453b972d8b2d7957202ff0c6572c495d0556288b5c302feb33c",
+    "types/index.d.ts": "749d9af9e5c7f1a0ca29b0aefd779e68ab4325cb50a46b7e184b6151f52abbb2",
+    "types/program.d.ts": "de976561174df321443afcffac873edda79efcadd2fb6e1dc9dc9e83cd403372"
+  },
+  "logs": [
+    {
+      "file": "package-size-v20.20.2.json.gz",
+      "sha256": "fb4b562e68de01fdebb4511eef239f87a13c97d6aef07849be0541a843060a98",
+      "bytes": 124
+    },
+    {
+      "file": "package-size-v22.23.1.json.gz",
+      "sha256": "e372e3b6c0b1d8ca2ac36ae6da2de0681bbb5576f54d85b4bac561cb8454c45d",
+      "bytes": 117
+    },
+    {
+      "file": "package-size-v24.22.1.json.gz",
+      "sha256": "a4297ff797d8e58c6186d1f356ea2f1d6780be2b6a8e7048b6946ff5c71fe8b7",
+      "bytes": 133
+    },
+    {
+      "file": "public-boundaries-final.log.gz",
+      "sha256": "7a85377074953effc9af6327453980845b7800a5dd2503d12f872330a059afae",
+      "bytes": 7834
+    },
+    {
+      "file": "public-bundle-ceilings.log.gz",
+      "sha256": "87e27cd280328a0ef106bc66f383f5644633add4a969b14675683d69164bb2a0",
+      "bytes": 40
+    },
+    {
+      "file": "public-catalog.log.gz",
+      "sha256": "b5d04b9d485bf5a7861d1ece0e2a309ea5f5c27da59b893462790fa69e4b67f0",
+      "bytes": 80
+    },
+    {
+      "file": "public-contracts-first.log.gz",
+      "sha256": "f66fd0826a4ccf8859e70c62468173f99ec3d8d077a6eac205e671a225b072a7",
+      "bytes": 8361
+    },
+    {
+      "file": "public-coverage-final.log.gz",
+      "sha256": "9c4be208dba74196e38858091a08faa62b38e45d92a12531c92f0c9e2166b901",
+      "bytes": 117312
+    },
+    {
+      "file": "public-coverage-first.log.gz",
+      "sha256": "664231d33a2c189afaa03af14cbacbe219c45c8891a61074f9924be0a03c2c84",
+      "bytes": 110433
+    },
+    {
+      "file": "public-coverage-qualified.log.gz",
+      "sha256": "02538670bd152f3f70811b9d054307f219d6c1ac9f5a6de28f4536496a90f76d",
+      "bytes": 117304
+    },
+    {
+      "file": "public-critical.json.gz",
+      "sha256": "6ae6360dfbfdb06a3d134e89be1713cfac4ec6dc1ea65c743fabaa6f28b84e04",
+      "bytes": 2127
+    },
+    {
+      "file": "public-doc-browser.log.gz",
+      "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3",
+      "bytes": 157
+    },
+    {
+      "file": "public-doc-build.log.gz",
+      "sha256": "5e9447ffdbe3dc008cd3e432cf77a362ab9db3f6fadccfea5f0c1b0ba1dc2212",
+      "bytes": 419
+    },
+    {
+      "file": "public-doc-built.log.gz",
+      "sha256": "c8716095a666f8d2bccbd29be09be70917cbdf6fd6e70e14e949b2dc7f2a9e8a",
+      "bytes": 179
+    },
+    {
+      "file": "public-doc-owner-final.log.gz",
+      "sha256": "ba0e9f2f3e97cb8ea9c041fd1c87a7e708330a6f804b110d5fc51433555a7026",
+      "bytes": 4232
+    },
+    {
+      "file": "public-doc-preflight-final.log.gz",
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "bytes": 257
+    },
+    {
+      "file": "public-doc-preflight.log.gz",
+      "sha256": "efea710c7eaa498073d44718c3e042aabc027d959865ae20209e8e39d2e1f29d",
+      "bytes": 263
+    },
+    {
+      "file": "public-doc-source-final.log.gz",
+      "sha256": "dcfa1ae131738181099a82ee2b0b22959332f9bfe94b3c5fb5706218959e168c",
+      "bytes": 43385
+    },
+    {
+      "file": "public-doc-source-qualified.log.gz",
+      "sha256": "b6bf342bf4a5bb8d7a7a3e281d83f4d9f2b730552440078a7b81c5ad105d9660",
+      "bytes": 42810
+    },
+    {
+      "file": "public-doc-source.log.gz",
+      "sha256": "7a78df5cfae093a2148edece7d76337c6cd01c0d0c730fb9a58cd1f216459989",
+      "bytes": 6492165
+    },
+    {
+      "file": "public-docs-final.log.gz",
+      "sha256": "3e5418684bdf2ef907be88cf1d92c4a2304e9e7b1e9974f0f1ad90da0b6393f6",
+      "bytes": 11965
+    },
+    {
+      "file": "public-docs-first.log.gz",
+      "sha256": "b5e5cccdd31042d9feccbc9a149508600c9d321375855962374659fba8e2db96",
+      "bytes": 1465
+    },
+    {
+      "file": "public-docs-second.log.gz",
+      "sha256": "3e5418684bdf2ef907be88cf1d92c4a2304e9e7b1e9974f0f1ad90da0b6393f6",
+      "bytes": 11965
+    },
+    {
+      "file": "public-first.log.gz",
+      "sha256": "2653f5dea666ef83dea67ac21ec01a25c1871f35c10272915d7ecd6102505d2e",
+      "bytes": 7188
+    },
+    {
+      "file": "public-fourth.log.gz",
+      "sha256": "4358801eff2911ffc6dca49d1b6d0a8f511b9d59ce04c5a3a874fc48c8567f65",
+      "bytes": 4322
+    },
+    {
+      "file": "public-installed-20.exit.json.gz",
+      "sha256": "c50a0c4c734cad3e53761b21dd20e7d56661fc99e2f1398e7ff5cf098e698437",
+      "bytes": 90
+    },
+    {
+      "file": "public-installed-20.json.gz",
+      "sha256": "3a104fffe04d134a5f38f2c73c724d87e33f67e5fadc14aa6a8d3f7773652fe3",
+      "bytes": 762
+    },
+    {
+      "file": "public-installed-20.log.gz",
+      "sha256": "8d19ff77d511c50a7b71633329c4f9bcff84a1dfa495f4b608e3d9910f7bb47a",
+      "bytes": 763
+    },
+    {
+      "file": "public-installed-22.exit.json.gz",
+      "sha256": "0ddd49b8d2519b9be0576477db1a5e0479364cceb7759ebbf9a10cf4ac80508e",
+      "bytes": 65
+    },
+    {
+      "file": "public-installed-22.json.gz",
+      "sha256": "3d71cb1f1f4dd82a686716868f394e8da3a0c263285846ed023b12c2cf78890c",
+      "bytes": 755
+    },
+    {
+      "file": "public-installed-22.log.gz",
+      "sha256": "de5a80319aada97432574b15ebabd0d3ddb876a95bf242a2b12ce1f4bc8b5364",
+      "bytes": 756
+    },
+    {
+      "file": "public-installed-24.exit.json.gz",
+      "sha256": "2e8c1326c5db4b3c4870ba7b50517fa037baeadb8608c5bfe183c95a5cde254a",
+      "bytes": 90
+    },
+    {
+      "file": "public-installed-24.json.gz",
+      "sha256": "5566c9333ced7a5d15b4ffa4e934b6a5578f4c481fea6ab61bda228139fae66b",
+      "bytes": 771
+    },
+    {
+      "file": "public-installed-24.log.gz",
+      "sha256": "bef29719a96dc1c199d7f78a0a9343986c6fa804d3e069e82eac4c29d49b3fbb",
+      "bytes": 772
+    },
+    {
+      "file": "public-installed-summary-final.log.gz",
+      "sha256": "1aaa2bdd34c782bbefd4432cc3ed9116ea561a636743ab668c9a9de2201e15d7",
+      "bytes": 75
+    },
+    {
+      "file": "public-installed-summary.log.gz",
+      "sha256": "1aaa2bdd34c782bbefd4432cc3ed9116ea561a636743ab668c9a9de2201e15d7",
+      "bytes": 75
+    },
+    {
+      "file": "public-inventory-qualified.log.gz",
+      "sha256": "b41fbba690a65a36f8ac51e2d0b2bd84593b1ba1261c4313226afd14e324e46c",
+      "bytes": 1720
+    },
+    {
+      "file": "public-inventory-repair.log.gz",
+      "sha256": "860cb57ec97fda1c92538161b8c2e6d29202377082930e3b83bca95c6a630739",
+      "bytes": 2418
+    },
+    {
+      "file": "public-pack-final.log.gz",
+      "sha256": "8978d11e0c4a57ed6f4677045989576efae9c5ebf92b91626434324e6db6e12c",
+      "bytes": 273
+    },
+    {
+      "file": "public-pack.log.gz",
+      "sha256": "90d0737662c641be5ce434968874610681aae268502446a88db3b2e0eb96cc94",
+      "bytes": 273
+    },
+    {
+      "file": "public-package-contracts-final.log.gz",
+      "sha256": "2584f959346cdd534de529a2144294e1809b39dd0f11fb895e385d3fc8f04c4c",
+      "bytes": 3982
+    },
+    {
+      "file": "public-package-size-20.log.gz",
+      "sha256": "6ddb59b6df6e205edc335a9c98824e5993e56ee665ce771c42aa9c93606582dc",
+      "bytes": 322
+    },
+    {
+      "file": "public-package-size-22.log.gz",
+      "sha256": "6c2e227d27702029c152c7652120d3cd6ade1d83f338e52630252b54f0a14ef0",
+      "bytes": 315
+    },
+    {
+      "file": "public-package-size-24.log.gz",
+      "sha256": "5d09a5c568ec49eb7d55d74627c20916879c3226cb42b5d451da3a7bb9d6079a",
+      "bytes": 331
+    },
+    {
+      "file": "public-package-size-final-20.log.gz",
+      "sha256": "ff7972a66baed8b9e6ae413faa2872a9d57c72e74b9035ed192073b46746069a",
+      "bytes": 322
+    },
+    {
+      "file": "public-package-size-final-22.log.gz",
+      "sha256": "4021cf0957639782c8a9c82764dcba6a96a82a5f03c030b7e2a6619c257a054e",
+      "bytes": 315
+    },
+    {
+      "file": "public-package-size-final-24.log.gz",
+      "sha256": "c19b17e854d7d2054d3fdb9acb298e1fd3c2e877a9b1f134b7e59865ec63ae22",
+      "bytes": 331
+    },
+    {
+      "file": "public-packed-inputs-final.log.gz",
+      "sha256": "0577b1a03a003a297f3fb362c46ebb86042587c63c7442c0dad5ba73dd51b6f7",
+      "bytes": 118
+    },
+    {
+      "file": "public-packed-inputs.log.gz",
+      "sha256": "ff0705b26367e9cd72624d37faf5d3c91fd7c575639f8b60d6b062d8fbdf048e",
+      "bytes": 738
+    },
+    {
+      "file": "public-realistic-inventory-final.log.gz",
+      "sha256": "874fd1c9b794408b0269eb46a4eec1ba800ac681f43bcaa3c401520d25726fc2",
+      "bytes": 3193
+    },
+    {
+      "file": "public-realistic-inventory.log.gz",
+      "sha256": "c492a54620f942d4b39ab445bb4e2cde67a9b05af8d608c0bcfd02b4937b6f10",
+      "bytes": 481374
+    },
+    {
+      "file": "public-repair-boundaries.log.gz",
+      "sha256": "4f5eb3e85ed3a929769288f110adb7d51e36c59f243eac0bb8f0647496bd11f7",
+      "bytes": 6282
+    },
+    {
+      "file": "public-second.log.gz",
+      "sha256": "90c618ac71cc29c7506234cb9b033624271e8eb20316fd874fbade73d4eacc8a",
+      "bytes": 7134
+    },
+    {
+      "file": "public-third.log.gz",
+      "sha256": "82fc92ea15f41b799dab5e3ef2b839cefa58f11adc58378b89b7ac1f1adcee80",
+      "bytes": 8754
+    },
+    {
+      "file": "public-type-boundaries-first.log.gz",
+      "sha256": "ab9bb2ddc05c92335a80c9a58e5650c411be4a15bcdcbcf95539a5431a7bc3d9",
+      "bytes": 3471
+    },
+    {
+      "file": "public-type-boundaries-second.log.gz",
+      "sha256": "b026c575dbfb5ca356bc56b50263bce28544494cb908550297b1581ee60b9669",
+      "bytes": 2547
+    }
+  ],
+  "status": "verified"
+}

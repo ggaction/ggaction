@@ -3545,6 +3545,22 @@ editCalendarPlot({ target?, layout?, coordinate?, color?, cells?, monthBoundary?
 
 Edit a calendar plot while preserving day identities and source lineage. See [Calendar plots](../api/calendar.md#editcalendarplot).
 
+### `createGeometryData`
+
+```javascript
+createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, limits? })
+```
+
+Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values. See [Geometry sources](../api/geometry.md#creategeometrydata).
+
+### `editGeometryData`
+
+```javascript
+editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
+```
+
+Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](../api/geometry.md#editgeometrydata).
+
 ### `createContourData`
 
 ```javascript

@@ -5,7 +5,7 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 681_000, // Stored routes and explicit host entry: Node20/24 680,570 bytes.
+  ggaction: 686_000, // Geographic source normalization and lifecycle: Node20/24 685,086 bytes.
   "ggaction/basic": 372_000, // Shared typed reference/Canvas boundary: Node20/24 371,470 bytes.
   "ggaction/svg": 25_000,
   "ggaction/graph": 43_000, // Dedicated explicit route host: Node20/24 42,269 bytes.

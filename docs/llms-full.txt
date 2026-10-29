@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:910f5b83362299cd159bddcc72f7a437c17360af75b871fbc9eedf70c8c57558. Status: development. Runtime source: a491a8b8e421ace56be22a83296e163e2315be70. Release baseline: v0.0.13.
+Contract: sha256:8155850485febd3f0551ffd63cc83e4e69a87d9530e19cf7449cf6aa529204fb. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/a491a8b8e421ace56be22a83296e163e2315be70/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -18410,6 +18410,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFlowNodes`](./reference/actions/marks/#createflownodes) | H2 | user-facing | marks |
 | [`createFoldData`](./reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
 | [`createFontResource`](./reference/actions/charts-data/#createfontresource) | H3 | user-facing | core |
+| [`createGeometryData`](./reference/actions/charts-data/#creategeometrydata) | H2 | user-facing | core |
 | [`createGradientPlot`](./reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
 | [`createGraphData`](./reference/actions/charts-data/#creategraphdata) | H2 | user-facing | core |
 | [`createGraphics`](./reference/actions/extension/#creategraphics) | H4 | primitive | primitives |
@@ -18539,6 +18540,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFlowLinks`](./reference/actions/marks/#editflowlinks) | H3 | user-facing | marks |
 | [`editFlowNodes`](./reference/actions/marks/#editflownodes) | H3 | user-facing | marks |
 | [`editFoldData`](./reference/actions/statistics/#editfolddata) | H1, H3 | user-facing | statistics |
+| [`editGeometryData`](./reference/actions/charts-data/#editgeometrydata) | H3 | user-facing | core |
 | [`editGradientPlot`](./reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphData`](./reference/actions/charts-data/#editgraphdata) | H3 | user-facing | core |
 | [`editGraphics`](./reference/actions/extension/#editgraphics) | H4 | primitive | primitives |
@@ -23632,6 +23634,73 @@ editEdgeRoute({ target?, graph?, layout?, method?, options?, coordinateSpace? })
 ```
 
 Apply a nonempty patch to a stored route and refresh each consuming GraphPlot once. Same-method options preserve omitted values; a changed method starts from its defaults. Exact preparation handles also support `{prepared,requestToken}`. See [Edge routes](./api/edge-routes/) for validation, async lifetime, source revision and Canvas invalidation.
+
+## `createGeometryData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateGeometryDataOptions`](./reference/types/#type-creategeometrydataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `coordinateKind` | Required | `"geographic" \| "planar"` |
+| `featureKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
+| `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `format` | Required | `"geojson" \| "topojson"` |
+| `values` | Required | `TopoJSONInput \| GeoJSONInput` |
+| `topoObject` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, limits? })
+```
+
+Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values. See [Geometry sources](./api/geometry/#creategeometrydata).
+
+## `editGeometryData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditGeometryDataOptions`](./reference/types/#type-editgeometrydataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `values` | Optional / branch-dependent | `TopoJSONInput \| GeoJSONInput \| undefined` |
+| `coordinateKind` | Optional / branch-dependent | `"geographic" \| "planar" \| undefined` |
+| `topoObject` | Optional / branch-dependent | `string \| undefined` |
+| `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
+```
+
+Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](./api/geometry/#editgeometrydata).
 
 ## Focused core data editing
 
@@ -32586,6 +32655,7 @@ These blocks are generated from the declaration file owned by each package entry
 [Complete declaration and relative dependencies](./types/index.d.ts)
 
 ```typescript
+export type { GeometryJSONValue, GeometryPosition, GeographicGeometry, GeometryFeature, GeoJSONInput, TopologyGeometry, TopoJSONInput, GeometryLimits, GeometryFeatureKey, CreateGeometryDataOptions, EditGeometryDataOptions, GeometrySourceResource } from "./program.js";
 export type { CalendarDayOptions, CalendarDefinition, CreateCalendarLayoutOptions, CalendarLayoutPatch, CalendarCell, CalendarLayoutResult, CalendarLayoutResource, CalendarCellPaint, CalendarBoundaryPaint, CalendarLabelPaint, CalendarLabelRole, CalendarPlotOptions, EditCalendarPlotOptions } from "./program.js";
 export type { ContourGridFrame, ContourGrid, ContourDensityDefinition, CreateContourDataOptions, CreateDensityContourDataOptions, EditContourDataOptions, ContourPolygon, ContourResult, ContourResource, ContourMarkOptions, EditContourMarkOptions } from "./program.js";
 export type { FlowDefinition, CreateFlowDataOptions, EditFlowDataOptions, FlowNodeTotals, FlowResource, FlowLayoutOptions, LayoutFlowOptions, FlowLayoutNode, FlowLayoutEdge, FlowLayoutResource, FlowBodyPaint, FlowLabelPaint, FlowLabelsOptions, FlowNodesOptions, FlowLinksOptions, EditFlowNodesOptions, EditFlowLinksOptions } from "./program.js";
@@ -33882,6 +33952,8 @@ interface ChartProgramActions {
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
   editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
+  createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+  editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
@@ -36628,6 +36700,21 @@ export interface CreateFlowDataOptions extends FlowDefinition {
 
 Related types: [`FlowDefinition`](./reference/types/#type-flowdefinition).
 
+### `CreateGeometryDataOptions` {#type-creategeometrydataoptions}
+
+ Expand CreateGeometryDataOptions
+
+```typescript
+export type CreateGeometryDataOptions = {
+  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
+  readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
+} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+  | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
+```
+
+Related types: [`GeometryFeatureKey`](./reference/types/#type-geometryfeaturekey) · [`GeometryLimits`](./reference/types/#type-geometrylimits) · [`GeoJSONInput`](./reference/types/#type-geojsoninput) · [`TopoJSONInput`](./reference/types/#type-topojsoninput).
+
 ### `CreateGraphDataOptions` {#type-creategraphdataoptions}
 
  Expand CreateGraphDataOptions
@@ -39203,6 +39290,19 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](./reference/types/#type-focusedderiveddataedit) · [`FoldDataOptions`](./reference/types/#type-folddataoptions).
 
+### `EditGeometryDataOptions` {#type-editgeometrydataoptions}
+
+ Expand EditGeometryDataOptions
+
+```typescript
+export interface EditGeometryDataOptions {
+  readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
+  readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+}
+```
+
+Related types: [`GeoJSONInput`](./reference/types/#type-geojsoninput) · [`TopoJSONInput`](./reference/types/#type-topojsoninput) · [`GeometryLimits`](./reference/types/#type-geometrylimits).
+
 ### `EditGradientPlotOptions` {#type-editgradientplotoptions}
 
  Expand EditGradientPlotOptions
@@ -41088,6 +41188,77 @@ export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { 
 ```
 
 Related types: [`EdgeRouteCommonOptions`](./reference/types/#type-edgeroutecommonoptions).
+
+### `GeoJSONInput` {#type-geojsoninput}
+
+ Expand GeoJSONInput
+
+```typescript
+export type GeoJSONInput = GeographicGeometry | GeometryFeature | (Readonly<Record<string, unknown>> & { readonly type: "FeatureCollection"; readonly features: readonly GeometryFeature[] }) | null;
+```
+
+Related types: [`GeographicGeometry`](./reference/types/#type-geographicgeometry) · [`GeometryFeature`](./reference/types/#type-geometryfeature).
+
+### `GeographicGeometry` {#type-geographicgeometry}
+
+ Expand GeographicGeometry
+
+```typescript
+export type GeographicGeometry = Readonly<Record<string, unknown>> & (
+  | { readonly type: "Point"; readonly coordinates: GeometryPosition }
+  | { readonly type: "MultiPoint" | "LineString"; readonly coordinates: readonly GeometryPosition[] }
+  | { readonly type: "MultiLineString" | "Polygon"; readonly coordinates: readonly (readonly GeometryPosition[])[] }
+  | { readonly type: "MultiPolygon"; readonly coordinates: readonly (readonly (readonly GeometryPosition[])[])[] }
+  | { readonly type: "GeometryCollection"; readonly geometries: readonly (GeographicGeometry | null)[] });
+```
+
+Related types: [`GeometryPosition`](./reference/types/#type-geometryposition).
+
+### `GeometryFeature` {#type-geometryfeature}
+
+ Expand GeometryFeature
+
+```typescript
+export interface GeometryFeature extends Readonly<Record<string, unknown>> {
+  readonly type: "Feature"; readonly id?: string | number;
+  readonly properties: Readonly<Record<string, GeometryJSONValue>> | null;
+  readonly geometry: GeographicGeometry | null;
+}
+```
+
+Related types: [`GeometryJSONValue`](./reference/types/#type-geometryjsonvalue) · [`GeographicGeometry`](./reference/types/#type-geographicgeometry).
+
+### `GeometryFeatureKey` {#type-geometryfeaturekey}
+
+ Expand GeometryFeatureKey
+
+```typescript
+export type GeometryFeatureKey = string | readonly string[];
+```
+
+### `GeometryJSONValue` {#type-geometryjsonvalue}
+
+ Expand GeometryJSONValue
+
+```typescript
+export type GeometryJSONValue = null | boolean | number | string | readonly GeometryJSONValue[] | { readonly [key: string]: GeometryJSONValue };
+```
+
+### `GeometryLimits` {#type-geometrylimits}
+
+ Expand GeometryLimits
+
+```typescript
+export interface GeometryLimits { readonly maxFeatures?: number; readonly maxPositions?: number; readonly maxArcs?: number; readonly maxValues?: number; readonly maxDepth?: number; }
+```
+
+### `GeometryPosition` {#type-geometryposition}
+
+ Expand GeometryPosition
+
+```typescript
+export type GeometryPosition = readonly [number, number, ...number[]];
+```
 
 ### `GradientPlotAppearanceOptions` {#type-gradientplotappearanceoptions}
 
@@ -46319,6 +46490,37 @@ export interface TitleTextStyleOptions {
 }
 ```
 
+### `TopoJSONInput` {#type-topojsoninput}
+
+ Expand TopoJSONInput
+
+```typescript
+export interface TopoJSONInput extends Readonly<Record<string, unknown>> {
+  readonly type: "Topology"; readonly objects: Readonly<Record<string, TopologyGeometry>>;
+  readonly arcs: readonly (readonly GeometryPosition[])[];
+  readonly transform?: { readonly scale: readonly [number, number]; readonly translate: readonly [number, number] };
+}
+```
+
+Related types: [`TopologyGeometry`](./reference/types/#type-topologygeometry) · [`GeometryPosition`](./reference/types/#type-geometryposition).
+
+### `TopologyGeometry` {#type-topologygeometry}
+
+ Expand TopologyGeometry
+
+```typescript
+export type TopologyGeometry = Readonly<Record<string, unknown>> & ({ readonly id?: string | number; readonly properties?: Readonly<Record<string, GeometryJSONValue>> | null }) & (
+  | { readonly type: null }
+  | { readonly type: "Point"; readonly coordinates: GeometryPosition }
+  | { readonly type: "MultiPoint"; readonly coordinates: readonly GeometryPosition[] }
+  | { readonly type: "LineString"; readonly arcs: readonly number[] }
+  | { readonly type: "MultiLineString" | "Polygon"; readonly arcs: readonly (readonly number[])[] }
+  | { readonly type: "MultiPolygon"; readonly arcs: readonly (readonly (readonly number[])[])[] }
+  | { readonly type: "GeometryCollection"; readonly geometries: readonly TopologyGeometry[] });
+```
+
+Related types: [`GeometryJSONValue`](./reference/types/#type-geometryjsonvalue) · [`GeometryPosition`](./reference/types/#type-geometryposition).
+
 ### `TreePlotOptions` {#type-treeplotoptions}
 
  Expand TreePlotOptions
@@ -47218,12 +47420,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/a491a8b8e421ace56be22a83296e163e2315be70/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -50274,11 +50476,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:910f5b83362299cd159bddcc72f7a437c17360af75b871fbc9eedf70c8c57558` |
+| Contract fingerprint | `sha256:8155850485febd3f0551ffd63cc83e4e69a87d9530e19cf7449cf6aa529204fb` |
 | Example and dataset source | `a491a8b8e421ace56be22a83296e163e2315be70` |
-| Runtime source commit | `a491a8b8e421ace56be22a83296e163e2315be70` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 345 |
+| Declared actions here | 347 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation
@@ -52221,6 +52423,97 @@ also demonstrates vertical flow and typed per-item colors. The browser example,
 primitive comparisons and generated figures use that one program.
 See [Flow Data and Sankey Layouts](./api/flows/) for exact options, selection
 fields, defaults and lifecycle behavior.
+
+<!-- Source: /api/geometry/ -->
+
+# Geometry sources
+
+Keep geographic or planar shapes in an immutable resource with explicit feature
+identity. These Full `ggaction` actions prepare source geometry; creating a
+resource does not draw it. [Contours](./api/contours/) use the same resource kind
+with their own scalar-grid contract.
+
+## `createGeometryData`
+
+**Chart authoring.**
+
+```typescript
+createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+```
+
+Provide an `id`, `format: "geojson" | "topojson"`, `values` and
+`coordinateKind: "geographic" | "planar"`. Geographic coordinates are longitude
+and latitude in degrees; latitude must be within −90 to 90. Planar coordinates
+retain their original units. Extra coordinate dimensions remain available in
+the source and normalized result.
+
+> **Executable complete.** Import ggaction; the example supplies its own feature collection.
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart().createGeometryData({
+  id: "places", format: "geojson", coordinateKind: "geographic", featureKey: "id",
+  values: { type: "FeatureCollection", features: [
+    { type: "Feature", id: "harbor", properties: { name: "Harbor" },
+      geometry: { type: "Point", coordinates: [12.6, 55.7] } }
+  ] }
+});
+```
+
+`featureKey` selects an own field or an exact property path, such as
+`["properties", "code"]`. Every feature must have a unique valid key. Numeric 1
+and string `"1"` are distinct. Without this option, generated keys persist in the
+resource and survive options-only edits.
+
+GeoJSON points, lines, polygons, multi-geometries and nested collections retain
+their structure. Null and empty geometry remains identifiable but nondrawable.
+A nonempty line needs two positions. Rings need at least four positions and an
+exactly repeated final position. Invalid rings are rejected without repair.
+Holes and islands remain separate parts of their original feature.
+
+TopoJSON retains shared arcs. Quantized arcs are delta-decoded before their
+transform; negative arc references reverse the corresponding arc. Joined arcs
+must meet exactly. `topoObject` is required when there is more than one object.
+A single inferred object is retained for later edits.
+
+Optional `limits` may lower these maximum values:
+
+| Limit | Maximum |
+| --- | --- |
+| `maxFeatures` | 100,000 |
+| `maxPositions` | 1,000,000 cumulative position visits |
+| `maxArcs` | 100,000 |
+| `maxValues` | 2,000,000 JSON values |
+| `maxDepth` | 128 |
+
+Normalization also has a cumulative 10,000,000-unit work limit. Accessors,
+cycles, sparse arrays, nonfinite numbers and non-JSON values are rejected.
+Source values and their hash are retained for offline restoration. This API
+does not fetch files or claim a hash of original file bytes.
+
+## `editGeometryData`
+
+**Chart authoring.**
+
+```typescript
+editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
+```
+
+Provide a nonempty patch of `values`, `coordinateKind`, `topoObject` or `limits`.
+`target` may be omitted for the current or unique eligible geometry source.
+Contour resources are ineligible. The original format and feature-key policy
+stay fixed; create a separate resource to change them.
+
+Keyed features keep their identity through reordering and replacement. Replacing
+whole values without a feature key allocates new keys. Changing the selected
+TopoJSON object also replaces generated keys. Options-only edits preserve them.
+An omitted object name retains the previous selection, and partial limits retain
+unspecified limits. Every successful edit advances the resource revision once.
+
+Invalid edits leave the original program and its trace unchanged. Inspect or
+compare geometry through [inspection](./inspection/), and remove it through
+[`removeResource`](./reference/actions/charts-data/#removeresource).
 
 <!-- Source: /api/contours/ -->
 
