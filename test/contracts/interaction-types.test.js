@@ -18,8 +18,20 @@ import { createTransitionScene } from ${JSON.stringify(path.join(root, "types/sc
 chart().editLayout({target:'layout',node:{key:[1,'a'],x:1,y:2}});
 // @ts-expect-error a single-node patch cannot also replace layout options
 chart().editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
+createInteractionSession({program:basic(),bindings:[{type:'keyboard',targets:[{target:'points'}]}]});
+createInteractionSession({program:chart(),bindings:[{type:'keyboard',targets:[{target:{childPath:['a'],id:'points'},activation:{type:'select',selection:'picked',mode:'toggle'}},{target:'partition',activation:{type:'focusHierarchy'}}]}]});
 const program = chart(); const session = createInteractionSession({ program, historyLimit: 50 });
 session.dispatch({type:'undo',origin:'user',transactionId:'back'});
+session.dispatch({type:'focus',move:'firstChild'});session.dispatch({type:'focus',target:'points',itemKey:null});session.dispatch({type:'activate'});
+const currentItem:string|null|undefined=session.getState().focus?.currentItemKey;
+// @ts-expect-error focus moves and explicit target keys are exclusive
+session.dispatch({type:'focus',move:'first',target:'points',itemKey:'key'});
+// @ts-expect-error no inferred nearest focus
+session.dispatch({type:'focus',move:'nearest'});
+// @ts-expect-error native activation has no arbitrary target override
+session.dispatch({type:'activate',target:'points'});
+// @ts-expect-error focus is immutable
+session.getState().focus!.itemKey='bad';
 session.dispatch({type:'redo'}); session.dispatch({type:'reset'});
 session.updateProgram(program,{history:'record',origin:'replay'});
 session.mount(document.createElement('div'),{observeResize:true});

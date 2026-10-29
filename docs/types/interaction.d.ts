@@ -59,6 +59,26 @@ export interface ContextMenuBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+/** Host supplies a focusable surface and safe accessible descriptions. Targets are leaf marks. */
+export interface KeyboardBinding {
+  readonly type: 'keyboard';
+  readonly targets: readonly {
+    readonly target: InteractionTarget;
+    readonly activation?: { readonly type: 'select'; readonly selection: string; readonly mode?: 'replace' | 'toggle' }
+      | { readonly type: 'focusHierarchy' };
+  }[];
+}
+/** Runtime-only focus. Null keys designate the configured owner container. */
+export interface InteractionFocus {
+  readonly target: Readonly<ScopedActionTarget> & { readonly id: string };
+  /** Stable authored scoped key, preserved when one current item represents it. */
+  readonly itemKey: string | null;
+  readonly currentItemKey: string | null;
+  readonly screenPoint: InteractionPoint | null;
+  readonly role: string | null;
+}
+export type InteractionFocusCommand = { readonly type: 'focus'; readonly target: InteractionTarget; readonly itemKey: string | null; readonly move?: never }
+  | { readonly type: 'focus'; readonly move: 'next' | 'previous' | 'first' | 'last' | 'parent' | 'firstChild' | 'previousSibling' | 'nextSibling' | 'root'; readonly target?: never; readonly itemKey?: never };
 /** Pointer arbitration uses explicit modifier conjunctions and bounded integer priorities. */
 export interface GestureBindingOptions {
   readonly priority?: number;
@@ -186,6 +206,7 @@ export interface InteractionState {
   /** Session-local committed program revision; inspection and frames do not increment it. */
   readonly revision: number;
   readonly hit: InteractionHit | null;
+  readonly focus: InteractionFocus | null;
   readonly linkedSelections: readonly LinkedSelectionState[];
   /** Bounded immutable snapshots. Preview and cancelled edits are never recorded. */
   readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
@@ -199,7 +220,7 @@ export interface InteractionState {
   readonly destroyed: boolean;
 }
 export interface InteractionLifecycleEvent {
-  readonly type: 'inspect' | 'contextMenu' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
+  readonly type: 'inspect' | 'contextMenu' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy' | 'focus';
   readonly state: InteractionState;
 }
 /** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
@@ -335,7 +356,7 @@ export interface InteractionUpdateEvent extends Omit<InteractionAssetEvent, 'typ
   readonly causeTransactionId?: string;
 }
 export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent | InteractionAssetEvent | InteractionUpdateEvent | InteractionResizeEvent;
-export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | {
+export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | InteractionFocusCommand | { readonly type: 'activate' } | {
   readonly type: 'inspect' | 'contextMenu';
   /** CSS-local point, after subtracting the host client rectangle. */
   readonly point: InteractionPoint;
@@ -372,5 +393,5 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | NavigationBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | KeyboardBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | NodeMovementBinding | AnnotationMovementBinding | NavigationBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;

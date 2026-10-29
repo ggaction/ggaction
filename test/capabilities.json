@@ -12,6 +12,18 @@
       {
         "type": "file",
         "path": "browser/accessible-data.browser.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-keyboard.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/hit-focus.test.js"
+      },
+      {
+        "type": "file",
+        "path": "browser/interaction-keyboard.browser.js"
       }
     ],
     "actions": [

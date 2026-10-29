@@ -35,6 +35,16 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
    assert.deepEqual(nativeItems.map(item=>item.selectedBy),keys.map((key,index)=>index===0?["picked"]:[]));
    assert.ok(nativeItems.every(item=>item.visible));
    assert.deepEqual(exportAccessibleData(deserializeProgram(saved),{format:"items"}),alternative);
+   const keyboard=createInteractionSession({program:q,bindings:[{type:'keyboard',targets:[{target:'mark',activation:{type:'select',selection:'picked',mode:'toggle'}}]}]});
+   keyboard.dispatch({type:'focus',move:'first'});
+   const focused=keyboard.getState().focus;
+   assert.ok(keys.includes(focused.itemKey));
+   keyboard.dispatch({type:'inspect',point:focused.screenPoint,slop:0});
+   assert.ok(keyboard.getState().hit.candidates.some(item=>item.itemKey===focused.currentItemKey));
+   keyboard.dispatch({type:'activate'});
+   assert.equal(keyboard.getState().history.undoCount,1);
+   keyboard.updateProgram(deserializeProgram(serializeProgram(keyboard.getState().program)));
+   assert.equal(keyboard.getState().focus.itemKey,focused.itemKey);keyboard.destroy();
    const shape=items[0].geometry[0], properties=shape.properties;
    const probe=shape.type==='path'?properties.commands.find(command=>command.op==='M'):
     {x:properties.x+(shape.type==='rect'?properties.width/2:0),y:properties.y+(shape.type==='rect'?properties.height/2:0)};

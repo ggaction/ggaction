@@ -1559,5 +1559,22 @@
         "statements": 5
       }
     ]
+  },
+  {
+    "file": "keyboard-focus.mjs",
+    "cases": [
+      {
+        "id": "keyboard-focus/current-paint-and-basic",
+        "statements": 2
+      },
+      {
+        "id": "keyboard-focus/nested-native-selection-and-offline-restore",
+        "statements": 12
+      },
+      {
+        "id": "keyboard-focus/native-hierarchy-paths",
+        "statements": 9
+      }
+    ]
   }
 ]

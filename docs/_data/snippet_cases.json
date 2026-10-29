@@ -677,5 +677,15 @@
     "result": "program",
     "rendering": "authoring-only",
     "prerequisites": "Use an ES module. The example prints native aggregate values and their named selection membership."
+  },
+  {
+    "id": "interaction-keyboard",
+    "file": "api/interaction.md",
+    "contains": "const keyboardSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use this section's HTML and JavaScript together. Press Tab, Arrow keys and Enter. The host owns roles and safe option text."
   }
 ]

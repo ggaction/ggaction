@@ -285,3 +285,10 @@ test("architectural syntax checks ignore comments and recognize direct bracket a
  ]) assert.equal(directSemanticLookup(source), false, source);
  // This syntactic rule intentionally does not perform interprocedural alias analysis.
 });
+
+test('keyboard focus uses native item readers without importing the complete mark policy graph',()=>{
+ const pending=[path.join(root,'interaction','keyboardFocus.js')],visited=new Set();
+ while(pending.length){const file=pending.pop();if(visited.has(file))continue;visited.add(file);pending.push(...localImports(file));}
+ assert.ok(visited.has(path.join(root,'materialization','selection','itemResolver.js')));
+ assert.equal(visited.has(path.join(root,'materialization','selection','policies','index.js')),false);
+});
