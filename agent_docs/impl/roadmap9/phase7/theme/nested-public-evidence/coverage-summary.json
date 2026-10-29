@@ -1,0 +1,80 @@
+{
+  "status": 0,
+  "rows": {
+    "actions/data/resourceRevision.js": {
+      "lines": 100,
+      "branches": 93.75,
+      "functions": 100
+    },
+    "actions/facets/derive.js": {
+      "lines": 96.79,
+      "branches": 90,
+      "functions": 96.77
+    },
+    "actions/graphs/layouts.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "actions/graphs/resources.js": {
+      "lines": 100,
+      "branches": 75,
+      "functions": 100
+    },
+    "actions/graphs/sourceRevisionContext.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "actions/primitives/preparedResourceContext.js": {
+      "lines": 97.73,
+      "branches": 95.12,
+      "functions": 100
+    },
+    "actions/primitives/resourceState.js": {
+      "lines": 85.37,
+      "branches": 92.23,
+      "functions": 66.67
+    },
+    "actions/scales/preview.js": {
+      "lines": 77.95,
+      "branches": 78.38,
+      "functions": 84.21
+    },
+    "actions/textMetrics/index.js": {
+      "lines": 98.46,
+      "branches": 93.1,
+      "functions": 100
+    },
+    "actions/theme/composition.js": {
+      "lines": 98.33,
+      "branches": 92.31,
+      "functions": 96
+    },
+    "actions/theme/reconcile.js": {
+      "lines": 85.58,
+      "branches": 85.51,
+      "functions": 92.31
+    },
+    "materialization/facetHeaders.js": {
+      "lines": 95.97,
+      "branches": 95.95,
+      "functions": 98.81
+    },
+    "materialization/facetScaleContext.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "materialization/layout.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "all files": {
+      "lines": 91.05,
+      "branches": 89.53,
+      "functions": 93.9
+    }
+  }
+}

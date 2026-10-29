@@ -33,14 +33,16 @@
   10cell 중5empty, sourceresize/revise/theme/font, 실패 receiver/trace 동등성을 확인한다.
 - declarations: 기존 API만 사용하므로 변경 없음. 새 source-free installed3case와 기존
   TypeScript/4browserbundles/optionalpeer검증을 최종 archive에 대해 수행한다.
-- AT21은 이 capability가 소유한다. AT20의 single-Y 최종 admission은 후행 STEP050
-  소유자이며 이 체크포인트로 전체 AT20/전체 Roadmap9 완료를 주장하지 않는다.
+- AT21은 이 capability가 소유한다. 원안의 AT20 closureTask는 STEP035다. 현재 병렬
+  분담에서 single-Y admission을 STEP050 소유자가 구현하며, 그 결과를 합친 최종 인수
+  검증까지 AT20과 STEP035 전체 종료를 열어 둔다. 원안의 closure 위치를 변경하지 않는다.
 
 ## 실행 기록 상태
 
-Runtime/primitive 검증 완료. 이 source checkpoint 뒤 정확한 commit 링크를 생성하여
-문서 source/built/browser 및 동일 최종 archive3Node installed검증을 닫고 별도
-NESTED_COMPLETION.md와 nested-public-evidence를 추가한다.
+Source `fbc2bd66f2c9e95013334c45427b4628e399070c`의 runtime/primitive와 최종 문서
+source/built/browser, 동일 archive의 Node20/22/24 설치 검증을 완료했다.
+정확한 범위·결과·남은 인수 조건은 [NESTED_COMPLETION.md](NESTED_COMPLETION.md),
+실행 로그와 hash는 [nested-public-evidence/summary.json](nested-public-evidence/summary.json)에 있다.
 첫 docs source검사의4실패는 미커밋 예제 source link1, search한도2,
 두 번째 contextual snippet 미등록1이었다. snippet은 실행 가능한 canonical flow와
 함께 inline scoped 호출로 정리했다. 초기 coverage588은 테스트 전부 통과했으나

@@ -2,13 +2,19 @@
 
 ## 진행 상태
 
-- [ ] 계약과 선행 단계 확인
-- [ ] 독립 실패 시험 작성
-- [ ] 구현과 모든 소비자 연결
-- [ ] 명령 실행 및 evidence 저장
-- [ ] 타입·문서·Gate·인계 종료
+- [x] 계약과 선행 단계 확인
+- [x] 독립 실패 시험 작성
+- [x] 중첩 반응형 합성과 AT21 소비자 연결
+- [x] 해당 범위 명령 실행 및 evidence 저장
+- [x] 해당 범위 Current·문서·설치·renderer 인계
+- [ ] AT20의 single-Y admission 합산 및 카드 전체 종료
 
-상태 planned. 작업 묶음 WP-07. 선행 단계 STEP-034. 현재 구현 또는 테스트 성공을 뜻하지 않는다.
+상태: 중첩 반응형 합성 및 AT21 검증 완료, AT20 합산 대기. 작업 묶음 WP-07.
+선행 STEP034와 Calendar source union을 반영한 source `fbc2bd66f`를 검증했다.
+정확한 결과는 [구현 검증 기록](../../../../agent_docs/impl/roadmap9/phase7/theme/NESTED_COMPLETION.md)과
+[evidence](../../../../agent_docs/impl/roadmap9/phase7/theme/nested-public-evidence/summary.json)에 있다.
+AT20의 원안 closureTask는 이 카드이며, 현재 STEP050 담당자가 구현 중인 single-Y admission을
+합친 최종 검증까지 전체 종료로 표시하지 않는다.
 
 ## 먼저 읽을 것
 
@@ -59,16 +65,18 @@ acceptance-cases.json의 closureTask가 이 카드보다 뒤라면 이 카드 �
 
 ## 시험 파일과 명령
 
-아래 파일은 **제안된 새 경로**다. 같은 capability의 기존 파일이 있으면 그 파일을 확장하고 manifest 경로를 갱신한다. 실행 전 runner discovery를 확인한다.
+실제 capability owner는 다음과 같다. 기존 composition·font·source 회귀도 함께 검증했다.
 
-- `test/unit/nested-composition.test.js`
-- `test/contracts/nested-composition.test.js`
-- `test/charts/nested-composition/variants.render.js`
+- `test/unit/actions/composition/nested-responsive-layout.test.js`
+- `test/unit/actions/composition/facet-resource-projection.test.js`
+- `test/unit/materialization/facet-scale-context.test.js`
+- `test/charts/nested-responsive/`
+- `test/browser/nested-responsive.browser.js`
 
 ~~~sh
-node scripts/run-tests.js unit unit/nested-composition.test.js
-node scripts/run-tests.js contracts contracts/nested-composition.test.js
-npm run test:render
+node scripts/run-tests.js unit capability:nested-composition
+node scripts/run-tests.js render capability:nested-composition
+node scripts/run-tests.js browser browser/nested-responsive.browser.js
 ~~~
 
 명령은 ggaction repository root에서 실행한다. `<...>` 값은 실제 candidate metadata로 치환하며 그대로 실행하지 않는다. render 전체 suite 비용이 크면 기존 runner가 지원하는 selector를 먼저 확인해 좁히고 phase 종료 때 전체를 실행한다.
