@@ -5,7 +5,7 @@
   "contractId": "sha256:84adcdaae5c1e102d1583e8096ce4953e0a5067d3261b47bd88765ebc3cc71f1",
   "sourceCommit": "0e41afeb5588b93ec778a121886b7c38a4609785",
   "sourceRef": "0e41afeb5588b93ec778a121886b7c38a4609785",
-  "exampleSourceRef": "codex/roadmap9-native-charts",
+  "exampleSourceRef": "7830a16a64097fb6e6be8498a63a80da61bb9afc",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",

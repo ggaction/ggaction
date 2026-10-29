@@ -1,5 +1,5 @@
 {
-  "status": "source-verified; source-pin and built documentation pending",
+  "status": "passed; focused STEP056 checkpoint, final STEP074/077 qualification pending",
   "runtimeDelta": 0,
   "typeDelta": 0,
   "publicAPIDelta": 0,
@@ -95,5 +95,21 @@
     "Existing docs Canvas attribute mock reused exactly from f14063eab",
     "Existing interaction fixture manifest order synchronized with same unchanged case AST",
     "Source-link not yet pinned and measured search limit"
-  ]
+  ],
+  "sourceCommit": "7830a16a64097fb6e6be8498a63a80da61bb9afc",
+  "documentation": {
+    "sourceTests": 224,
+    "sourcePassed": 224,
+    "buildExit": 0,
+    "builtPages": 185,
+    "builtLLMArtifacts": 1595,
+    "desktopSearch": "passed",
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ],
+    "browserExit": 0,
+    "sourceInputDelta": []
+  }
 }

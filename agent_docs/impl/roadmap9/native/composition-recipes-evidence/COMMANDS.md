@@ -26,6 +26,8 @@
 
 Search index의 기존 HEAD조차 1,064,902bytes로 이전 1,037,700 한도를 초과했다. 세 recipe 추가 뒤 정확한 1,071,900bytes를 측정하고 root와 조율하여 최소 1,072,000으로 교정했다. 패키지/bundle limits는 변경하지 않았다. Docs renderer inputs는 그대로 유지했고 canonical generation만 실행했다.
 
-## 후행
+## 최종 문서 검증
 
-이 source checkpoint 뒤 canonical example source ref를 고정하고 docs source/build/built-browser 증거를 metadata checkpoint로 추가한다. 이미 통과한 runtime/installed/render/actual-data 검사는 입력이 같으면 반복하지 않는다.
+Canonical example source ref를 `7830a16a64097fb6e6be8498a63a80da61bb9afc`로 고정했다. `npm run docs:provenance` 이후 examples index/metadata/search/LLM을 재생성하고 `npm run test:docs` 224/224, `bundle exec jekyll build` 종료 0, built links 185 pages/1,595 LLM artifacts를 확인했다. `node scripts/test-built-docs.js _site`는 desktop search와 전체 문서의 320/390/768px 검사를 통과했다. 실행 Ruby는 3.2.11이며 CI의 3.2.6과 동일 버전이라고 주장하지 않는다.
+
+`inputs.json`의 source 31개 hash는 최종 검증 뒤 모두 동일했다. 이미 통과한 runtime/installed/render/actual-data 검사는 반복하지 않았다. 최종 STEP074/077 합산 archive qualification은 여전히 별도 의무다.
