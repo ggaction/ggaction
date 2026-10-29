@@ -3,7 +3,7 @@
     "7b6df990a0964ea866f269fb65f56e2726878384",
     "79d72577da02c66654fc69745a9a26a5d829fa1f"
   ],
-  "sourceCommit": null,
+  "sourceCommit": "fe03a41489b5701a74233c8c646d81c231d18e7a",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "Merge native geographic annotation and route explicit annotate targets to editGeoAnnotation through the named layer selector. Preserve ordinary Text editor, scoped target, original feature level, native projection/source replay and atomic session closure. No new schema or renderer.",
   "runtimeAndTypesFingerprint": "9368a06226bdfe5497b5f612f20eace0e75d84faf2b54b594f9424497931172c",
@@ -35,7 +35,6 @@
       "initialPassed": 203,
       "initialTotal": 207,
       "correctedOwningChecks": 3,
-      "pendingUntilSourceCommit": "Canonical example source link requires checked-in merged example source.",
       "builtPages": 172,
       "llmArtifacts": 1531,
       "widths": [
@@ -44,7 +43,8 @@
         768,
         1440
       ],
-      "axeViolations": 0
+      "axeViolations": 0,
+      "canonicalMergedExampleSource": "verified after source commit"
     },
     "installed": [
       {
@@ -215,7 +215,8 @@
           }
         ]
       }
-    ]
+    ],
+    "sourcePinnedDocs": 50
   },
   "artifact": {
     "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-annotation-geo-ef611d30.tgz",
@@ -423,6 +424,22 @@
     {
       "path": "api-interaction-768.png",
       "sha256": "757325e7c563622b86a04a21e968b8a412101c285428678d6d3a5946210f61ac"
+    },
+    {
+      "path": "annotation-geo-provenance.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "annotation-geo-docs-pinned.log.gz",
+      "sha256": "93cd3b9aeb93341e9f3b6a5e838fbc6de2f5e1704e0309967d8ba2cd7da66188"
+    },
+    {
+      "path": "annotation-geo-build-pinned.log.gz",
+      "sha256": "6b1fb17b4aac29ef93ffa78db55780362d8697e0ecc10540145e300878541bf9"
+    },
+    {
+      "path": "annotation-geo-built-pinned.log.gz",
+      "sha256": "27ff6e226c96663ea21eaa7bd53a841845ace34abf34cea1a316cafc30ca69cd"
     }
   ]
 }

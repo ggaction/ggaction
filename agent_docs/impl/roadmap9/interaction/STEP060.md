@@ -552,3 +552,7 @@ Docs 최초203/207 중 상대link1·fingerprint2는 owning3으로 확인했고, 
 source commit 뒤 고정한다. Built172pages/1531LLM 및 네 폭overflow0/Axe0이 통과했다.
 [정확 archive·원본 실패·명령](geographic-annotation-evidence/qualification.json)을 보존한다.
 전체 normal/coverage·전체 installed matrix 및060/077 완료는 주장하지 않는다.
+
+E6 source `fe03a4148` push 뒤 canonical example source link를 포함한 owning docs50/50과
+built172pages/1531LLM을 통과했다. 최종 source/타입/taref611 및 시각 입력은 동일하므로3Node·4backend·
+네 폭Axe 증거를 재사용한다. 원본207개 실행의4실패와 수정후 owning 검증을 구분해 남긴다.
