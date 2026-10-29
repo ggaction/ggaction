@@ -19337,6 +19337,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTreePlot`](./reference/actions/charts-data/#createtreeplot) | H0, H1 | user-facing | charts |
 | [`createVerticalGrid`](./reference/actions/guides/#createverticalgrid) | H3 | user-facing | grid |
 | [`createViolinPlot`](./reference/actions/statistics/#createviolinplot) | H0, H1 | user-facing | statistics |
+| [`createWaterfallPlot`](./reference/actions/marks/#createwaterfallplot) | H2 | user-facing | marks |
 | [`createWindowData`](./reference/actions/charts-data/#createwindowdata) | H2 | user-facing | core |
 | [`createXAxis`](./reference/actions/guides/#createxaxis) | H3 | user-facing | axes |
 | [`createXAxisLabels`](./reference/actions/guides/#createxaxislabels) | H3 | user-facing | axes |
@@ -19472,6 +19473,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editTreePlot`](./reference/actions/charts-data/#edittreeplot) | H1, H3 | user-facing | charts |
 | [`editVerticalGrid`](./reference/actions/guides/#editverticalgrid) | H3 | user-facing | grid |
 | [`editViolinPlot`](./reference/actions/statistics/#editviolinplot) | H1, H3 | user-facing | statistics |
+| [`editWaterfallPlot`](./reference/actions/marks/#editwaterfallplot) | H3 | user-facing | marks |
 | [`editWindowData`](./reference/actions/charts-data/#editwindowdata) | H2 | user-facing | core |
 | [`editXAxis`](./reference/actions/guides/#editxaxis) | H3 | user-facing | axes |
 | [`editXAxisLabels`](./reference/actions/guides/#editxaxislabels) | H3 | user-facing | axes |
@@ -27397,6 +27399,91 @@ editOHLCPlot({ target?, data?, coordinate?, x?, low?, high?, open?, close?, ySca
 ```
 
 Edit prices and styles while preserving typed row identities. See [OHLC plots](./api/ohlc/).
+
+## `createWaterfallPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateWaterfallPlotOptions`](./reference/types/#type-createwaterfallplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Required | `WaterfallX` |
+| `role` | Required | `string` |
+| `value` | Required | `string` |
+| `reset` | Optional / branch-dependent | `string \| false \| undefined` |
+| `yScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `width` | Optional / branch-dependent | `WaterfallWidth \| undefined` |
+| `bars` | Optional / branch-dependent | `WaterfallBarPaint \| undefined` |
+| `connectors` | Optional / branch-dependent | `false \| WaterfallConnectorPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| WaterfallLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createWaterfallPlot({ id?, data?, coordinate?, x, role, value, reset?, yScale?, width?, bars?, connectors?, labels?, color?, clip?, guides? })
+```
+
+Draw ordered contributions, explicit totals and subtotals. See [Waterfall plots](./api/waterfall/).
+
+## `editWaterfallPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditWaterfallPlotOptions`](./reference/types/#type-editwaterfallplotoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Optional / branch-dependent | `WaterfallX \| undefined` |
+| `role` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `reset` | Optional / branch-dependent | `string \| false \| undefined` |
+| `yScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `width` | Optional / branch-dependent | `WaterfallWidth \| undefined` |
+| `bars` | Optional / branch-dependent | `WaterfallBarPaint \| undefined` |
+| `connectors` | Optional / branch-dependent | `false \| WaterfallConnectorPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| WaterfallLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editWaterfallPlot({ target?, data?, coordinate?, x?, role?, value?, reset?, yScale?, width?, bars?, connectors?, labels?, color?, clip?, guides? })
+```
+
+Edit contribution meaning and appearance with stable stage identities. See [Waterfall plots](./api/waterfall/).
 
 ## Related
 
@@ -35882,6 +35969,8 @@ interface ChartProgramActions {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
+  editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
   createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
   editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
   createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
@@ -39483,6 +39572,21 @@ export type CreateThetaAxisTitleOptions = PolarTitleOptions &
 
 Related types: [`PolarTitleOptions`](./reference/types/#type-polartitleoptions) · [`PolarGuideResourceOptions`](./reference/types/#type-polarguideresourceoptions).
 
+### `CreateWaterfallPlotOptions` {#type-createwaterfallplotoptions}
+
+ Expand CreateWaterfallPlotOptions
+
+```typescript
+export interface CreateWaterfallPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: WaterfallX;
+  readonly role: string; readonly value: string; readonly reset?: string | false; readonly yScale?: NonPointQuantitativePositionScaleOptions;
+  readonly width?: WaterfallWidth; readonly bars?: WaterfallBarPaint; readonly connectors?: false | WaterfallConnectorPaint; readonly labels?: false | WaterfallLabelPaint;
+  readonly color?: false | WaterfallColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
+}
+```
+
+Related types: [`WaterfallX`](./reference/types/#type-waterfallx) · [`NonPointQuantitativePositionScaleOptions`](./reference/types/#type-nonpointquantitativepositionscaleoptions) · [`WaterfallWidth`](./reference/types/#type-waterfallwidth) · [`WaterfallBarPaint`](./reference/types/#type-waterfallbarpaint) · [`WaterfallConnectorPaint`](./reference/types/#type-waterfallconnectorpaint) · [`WaterfallLabelPaint`](./reference/types/#type-waterfalllabelpaint) · [`WaterfallColor`](./reference/types/#type-waterfallcolor) · [`ColorGuides`](./reference/types/#type-colorguides).
+
 ### `CurveInterpolation` {#type-curveinterpolation}
 
  Expand CurveInterpolation
@@ -42295,6 +42399,16 @@ export interface EditViolinPlotOptions {
 ```
 
 Related types: [`ViolinPlotPositionChannel`](./reference/types/#type-violinplotpositionchannel) · [`ViolinPlotSplitOptions`](./reference/types/#type-violinplotsplitoptions) · [`ViolinPlotDensityOptions`](./reference/types/#type-violinplotdensityoptions) · [`StatisticalWeight`](./reference/types/#type-statisticalweight).
+
+### `EditWaterfallPlotOptions` {#type-editwaterfallplotoptions}
+
+ Expand EditWaterfallPlotOptions
+
+```typescript
+export type EditWaterfallPlotOptions = { readonly target?: string } & Partial<Omit<CreateWaterfallPlotOptions, "id">>;
+```
+
+Related types: [`CreateWaterfallPlotOptions`](./reference/types/#type-createwaterfallplotoptions).
 
 ### `EditWindowDataOptions` {#type-editwindowdataoptions}
 
@@ -49267,6 +49381,68 @@ export type VisibleTickGroup<T> = T & { ticks?: VisibleGuide<AxisTickStyleOption
 ```
 
 Related types: [`VisibleGuide`](./reference/types/#type-visibleguide) · [`AxisTickStyleOptions`](./reference/types/#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](./reference/types/#type-axislabelstyleoptions).
+
+### `WaterfallBarPaint` {#type-waterfallbarpaint}
+
+ Expand WaterfallBarPaint
+
+```typescript
+export interface WaterfallBarPaint {
+  readonly positiveFill?: FillPaint; readonly negativeFill?: FillPaint; readonly totalFill?: FillPaint; readonly subtotalFill?: FillPaint;
+  readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](./reference/types/#type-fillpaint) · [`MarkOutline`](./reference/types/#type-markoutline) · [`MarkShadow`](./reference/types/#type-markshadow).
+
+### `WaterfallColor` {#type-waterfallcolor}
+
+ Expand WaterfallColor
+
+```typescript
+export type WaterfallColor = OHLCColor;
+```
+
+Related types: [`OHLCColor`](./reference/types/#type-ohlccolor).
+
+### `WaterfallConnectorPaint` {#type-waterfallconnectorpaint}
+
+ Expand WaterfallConnectorPaint
+
+```typescript
+export type WaterfallConnectorPaint = Pick<WaterfallBarPaint, "stroke" | "strokeWidth" | "opacity" | "outline" | "shadow">;
+```
+
+Related types: [`WaterfallBarPaint`](./reference/types/#type-waterfallbarpaint).
+
+### `WaterfallLabelPaint` {#type-waterfalllabelpaint}
+
+ Expand WaterfallLabelPaint
+
+```typescript
+export interface WaterfallLabelPaint extends CalendarLabelPaint { readonly content?: "value" | "end" | "category"; readonly format?: string; readonly offset?: number; }
+```
+
+Related types: [`CalendarLabelPaint`](./reference/types/#type-calendarlabelpaint).
+
+### `WaterfallWidth` {#type-waterfallwidth}
+
+ Expand WaterfallWidth
+
+```typescript
+export type WaterfallWidth = { readonly band: number; readonly pixels?: never } | { readonly pixels: number; readonly band?: never };
+```
+
+### `WaterfallX` {#type-waterfallx}
+
+ Expand WaterfallX
+
+```typescript
+export type WaterfallX = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions };
+```
+
+Related types: [`NonPointCategoricalPositionScaleOptions`](./reference/types/#type-nonpointcategoricalpositionscaleoptions).
 
 ### `WindowDataOptions` {#type-windowdataoptions}
 
@@ -56352,3 +56528,128 @@ for invalid rows, color scales, effects, temporal widths and scoped edits.
 The facade records the price meaning, then calls the wrapped
 `materializeOHLCPlot` and ordinary graphic primitives. Renderers consume those
 concrete graphics without deriving prices or fetching data.
+
+<!-- Source: /api/waterfall/ -->
+
+# Waterfall plots
+
+Show ordered contributions, subtotals and totals as one bar per source row.
+Connectors show the running balance between stages. These Full entry actions
+use the same concrete graphics in Canvas, SVG, PNG and PDF.
+
+## `createWaterfallPlot`
+
+**Chart authoring.**
+
+```typescript
+createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
+```
+
+Pass `x`, `role` and `value` field names. X is categorical, in source order by
+default; `{field,fieldType?:"nominal"|"ordinal",scale?}` specifies its scale.
+The role column determines the arithmetic:
+
+| Role | Value and running balance |
+| --- | --- |
+| `delta` | Requires a finite value; starts at the running balance and adds that value |
+| `subtotal` | Requires the value field to be absent; draws the current balance from zero |
+| `total` | Draws an explicit finite value, or the current balance when the field is absent, from zero |
+
+Totals and subtotals do not change the balance unless their optional `reset`
+field is `true`. Pass `reset: "fieldName"` to bind it. A delta row must omit that
+field, even when other rows use it. Null, undefined, unknown roles and numeric
+overflow are errors. Roles are never inferred from labels.
+
+Options are `{id?,data?,coordinate?,x,role,value,reset?,yScale?,width?,bars?,
+connectors?,labels?,color?,clip?,guides?}`. The default ID is `waterfall`.
+Data and coordinate references must be explicit when no current or unique
+eligible resource exists. `yScale` uses ordinary quantitative position options;
+its default domain includes zero and the actual cumulative endpoints. Default
+scale IDs are `<id>-x` and `<id>-y`.
+
+| Option | Behavior |
+| --- | --- |
+| `width` | `{band:.72}` by default, or `{pixels}`; policies are mutually exclusive |
+| `bars` | `positiveFill`, `negativeFill`, `totalFill`, `subtotalFill`, `stroke`, `strokeWidth`, `opacity`, `outline`, `shadow` |
+| `connectors` | Enabled by default; `{stroke?,strokeWidth?,opacity?,outline?,shadow?}` or `false` |
+| `labels` | `false` by default, or `{content?,format?,fill?,fontFamily?,fontSize?,fontWeight?,offset?,outline?,shadow?}` |
+| `color` | Field string or `{field,fieldType?,scale?,palette?}`; replaces bar fills through an ordinary color scale |
+| `clip` | `true` by default; clips to the plot viewport |
+| `guides` | Ordinary axes/grid/legend options, or `false` |
+
+Positive, negative, total and subtotal fills default to `#16a34a`, `#dc2626`,
+`#2563eb` and `#64748b`. Bar stroke is `#334155`; connector stroke is `#64748b`.
+Both use width 1 and opacity 1. Fills accept structured paints; effects use the
+ordinary outline and shadow options.
+
+Each incoming connector belongs to its current stage. It joins the previous
+bar's right edge to the current bar's left edge at the balance **before** the
+current stage. An explicit total can differ from that balance. A reset makes
+the next connector start at zero.
+
+Labels show `value` by default, or `end` or `category`. They use the ordinary
+Text formatter and font preparation, 6 logical pixels above the screen top of
+the bar. Defaults are sans-serif, size 12, normal weight and fill `#0f172a`.
+Allow space above the data domain or change clipping when labels need room.
+
+## `editWaterfallPlot`
+
+**Chart authoring.**
+
+```typescript
+editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
+```
+
+Patch fields, scales or appearance on an existing plot. Targets may name a mark
+or an explicit child path. Omitted options stay unchanged; null, undefined and
+an empty patch are errors. `reset:false` removes the reset binding. Set
+`connectors`, `labels` or `color` to `false` to remove that choice. Omitting
+`guides` while editing preserves current guide presence.
+
+Typed row keys identify stages across revisions and reordering. Bar, connector
+and label share one logical selection and hit item. Implicit totals also expose
+the source contributions they summarize. Filtering recalculates from retained
+rows; facets calculate within each panel. Duplicate X labels remain distinct
+rows and may overlap at the same position.
+
+Themes change stroke and label typography while preserving role fill colors.
+Editable and graphic snapshots support offline rendering. See the
+[Waterfall tutorial](./tutorials/waterfall/) for a complete call chain.
+
+<!-- Source: /tutorials/waterfall/ -->
+
+# Show contributions and totals
+
+Declare each row's role so its effect on the running balance is explicit.
+Positive and negative contributions share the same ordered scale; totals start
+at zero without changing the balance.
+
+```js
+import { chart } from "ggaction";
+
+const contributions = chart()
+  .createCanvas({ width: 500, height: 320, margin: 40, background: "#ffffff" })
+  .createData({ id: "contributions", keyField: "id", values: [
+    { id: "a", stage: "Revenue", role: "delta", value: 5 },
+    { id: "b", stage: "Cost", role: "delta", value: -2 },
+    { id: "c", stage: "Subtotal", role: "subtotal" },
+    { id: "d", stage: "Other", role: "delta", value: 4 },
+    { id: "e", stage: "Total", role: "total" }
+  ] })
+  .createWaterfallPlot({ id: "waterfall", x: "stage", role: "role", value: "value",
+    width: { pixels: 48 }, yScale: { domain: [0, 10] }, guides: false });
+
+const labeled = contributions.editWaterfallPlot({ target: "waterfall", labels: {} });
+const selected = labeled.selectMarks({ id: "cost", target: "waterfall",
+  field: "id", op: "eq", value: "b" })
+  .highlightMarks({ selection: "cost", stroke: "#1d4ed8", strokeWidth: 2 });
+```
+
+The balance moves from 5 to 3, stays at 3 for the subtotal, then rises to 7.
+The final total is 7. Its value is derived from the explicit contribution rows;
+the total row intentionally has no `value` property.
+
+A source revision recalculates the full sequence while preserving keyed stage
+identity. Bar, connector and label stay together during selection and hit
+testing. See [Waterfall options](./api/waterfall/) for reset fields, color
+scales, effects, clipping and scoped edits.

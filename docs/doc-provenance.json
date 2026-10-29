@@ -210,6 +210,14 @@
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
+    "createWaterfallPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editWaterfallPlot": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
     "createOHLCPlot": {
       "introducedAfter": "v0.0.13",
       "status": "development"

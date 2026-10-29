@@ -22,7 +22,7 @@ import {
 
 test("owns the implemented semantic and legend vocabularies in one module", () => {
   assert.deepEqual(MARK_TYPES, [
-    "point", "line", "bar", "area", "arc", "rule", "tick", "text", "rect", "image", "tree", "treemap", "graph", "partition", "flow-node", "flow-link", "contour", "geo", "calendar", "pyramid", "ohlc"
+    "point", "line", "bar", "area", "arc", "rule", "tick", "text", "rect", "image", "tree", "treemap", "graph", "partition", "flow-node", "flow-link", "contour", "geo", "calendar", "pyramid", "ohlc", "waterfall"
   ]);
   assert.deepEqual(getMarkGraphicTypes("geo"), ["collection"]);
   assert.deepEqual(getMarkGraphicTypes("pyramid"), ["collection"]);

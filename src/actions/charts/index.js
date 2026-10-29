@@ -1,3 +1,4 @@
+import { createWaterfallPlot, editWaterfallPlot, materializeWaterfallPlot } from "./waterfall.js";
 import { createOHLCPlot, editOHLCPlot, materializeOHLCPlot } from "./ohlc.js";
 import { createPyramidPlot, editPyramidPlot, materializePyramidPlot } from "./pyramid.js";
 import { createRosePlot, createRadialBarPlot } from "./radial.js";
@@ -24,6 +25,7 @@ import { createBeeswarmPlot } from "./beeswarm.js";
 import { createRaincloudPlot, editRaincloudPlot } from "./raincloud.js";
 
 export function registerChartActions(ProgramClass) {
+  Object.assign(ProgramClass.prototype, { createWaterfallPlot, editWaterfallPlot, materializeWaterfallPlot });
   Object.assign(ProgramClass.prototype, { createOHLCPlot, editOHLCPlot, materializeOHLCPlot });
   Object.assign(ProgramClass.prototype, { createPyramidPlot, editPyramidPlot, materializePyramidPlot });
   ProgramClass.prototype.createRosePlot = createRosePlot;

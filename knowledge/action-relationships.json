@@ -2522,6 +2522,21 @@
         "editSemantic",
         "createScale"
       ]
+    },
+    {
+      "name": "createWaterfallPlot",
+      "wraps": [
+        "createCoordinate",
+        "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "editWaterfallPlot",
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ]
     }
   ]
 }

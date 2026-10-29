@@ -240,3 +240,5 @@ requirements after resolving each part.
 - Compare Ordered Stages: ./tutorials/pyramid/
 - OHLC Plots: ./api/ohlc/
 - Show open, high, low and close: ./tutorials/ohlc/
+- Waterfall Plots: ./api/waterfall/
+- Show Contributions and Totals: ./tutorials/waterfall/

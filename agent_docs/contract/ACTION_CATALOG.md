@@ -375,6 +375,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editPyramidPlot`](current/PYRAMID.md#editpyramidplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createOHLCPlot`](current/OHLC.md#createohlcplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editOHLCPlot`](current/OHLC.md#editohlcplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createWaterfallPlot`](current/WATERFALL.md#createwaterfallplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editWaterfallPlot`](current/WATERFALL.md#editwaterfallplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

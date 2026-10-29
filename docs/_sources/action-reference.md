@@ -3549,6 +3549,22 @@ createCalendarLayout({ id?, data?, date, value?, start, end, timeZone, weekStart
 
 Store civil-day aggregates, week/weekday cells and month boundaries. See [Calendar plots](../api/calendar.md#createcalendarlayout).
 
+### `createWaterfallPlot`
+
+```javascript
+createWaterfallPlot({ id?, data?, coordinate?, x, role, value, reset?, yScale?, width?, bars?, connectors?, labels?, color?, clip?, guides? })
+```
+
+Draw ordered contributions, explicit totals and subtotals. See [Waterfall plots](../api/waterfall.md).
+
+### `editWaterfallPlot`
+
+```javascript
+editWaterfallPlot({ target?, data?, coordinate?, x?, role?, value?, reset?, yScale?, width?, bars?, connectors?, labels?, color?, clip?, guides? })
+```
+
+Edit contribution meaning and appearance with stable stage identities. See [Waterfall plots](../api/waterfall.md).
+
 ### `createOHLCPlot`
 
 ```javascript

@@ -14,6 +14,8 @@ import {
 
 const MARK_MATERIALIZATION_POLICIES = Object.freeze({
   geo: Object.freeze({ canMaterialize: (_program, layer) => layer.geoBinding !== undefined, op: "materializeGeoMark", scaleApplication: Object.freeze({ default: "defer" }) }),
+  waterfall: Object.freeze({ canMaterialize: (_program, layer) => layer.waterfall !== undefined,
+    op: "materializeWaterfallPlot", acceptsResolvedScales: true, scaleApplication: Object.freeze({ default: "defer", deferWithMark: true }) }),
   ohlc: Object.freeze({ canMaterialize: (_program, layer) => layer.ohlc !== undefined,
     op: "materializeOHLCPlot", acceptsResolvedScales: true, scaleApplication: Object.freeze({ default: "defer", deferWithMark: true }) }),
   pyramid: Object.freeze({ canMaterialize: (_program, layer) => layer.pyramid !== undefined,

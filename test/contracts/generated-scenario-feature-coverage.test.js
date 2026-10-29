@@ -1,3 +1,4 @@
+import { directProgramTrace } from "../support/program-traces.js";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
@@ -257,7 +258,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
   assert.equal(inventory.counts.literalFamilies, 276);
   assert.equal(inventory.counts.pathLiteralRequirements, 16086);
   assert.equal(inventory.counts.familyLiteralRequirements, 561);
-  assert.equal(inventory.counts.pathDiversityRequirements, 542);
+  assert.equal(inventory.counts.pathDiversityRequirements, 560);
   for (const action of ["createHierarchyData", "editHierarchyData", "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot", "createPartitionPlot", "editPartitionPlot"]) {
     const options = inventory.optionPaths.filter(option => option.action === action && option.topLevel);
     assert.ok(options.length > 0 && options.every(option => option.required && option.evidence === "direct-trace"), action);
@@ -332,7 +333,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     ...["createGuides", "editFacetGuides"].map(action => `${action}.legend.clipHeight`),
     ...["createAreaPlot", "createBarPlot", "createBeeswarmPlot", "createDensityPlot", "createDotPlot",
       "createDumbbellPlot", "createECDFPlot", "createHeatmap", "createHistogram", "createIntervalPlot",
-      "createLinePlot", "createLollipopPlot", "createOHLCPlot", "editOHLCPlot", "createParallelCoordinates", "createPiePlot", "createPolarLinePlot",
+      "createLinePlot", "createLollipopPlot", "createWaterfallPlot", "editWaterfallPlot", "createOHLCPlot", "editOHLCPlot", "createParallelCoordinates", "createPiePlot", "createPolarLinePlot",
       "createPolarScatterPlot", "createRadarPlot", "createRadialBarPlot", "createRaincloudPlot", "createRegressionPlot",
       "createRosePlot", "createScatterPlot", "createStripPlot", "createTextPlot", "createViolinPlot",
       "facet", "facetGrid", "repeatCharts"].map(action => `${action}.guides.legend.clipHeight`)
@@ -561,8 +562,8 @@ test("derives a bounded public option inventory without runtime prototype paths"
     option.required &&
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
-  assert.equal(scaleTypePaths.length, 213);
-  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 1020);
+  assert.equal(scaleTypePaths.length, 219);
+  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 1052);
   assert.equal(inventory.excludedOptionPaths.every(option =>
     optionById.get(option.replacement)?.required === true
   ), true);
@@ -600,7 +601,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
         effectiveFeatures: [], renderers: ["svg"] };
     }), datasetCorpus: { datasets: [preparedRecipe, rangeRecipe].map(recipe => datasetDefinition(recipe.datasets[0])) }, ledger
   });
-  for (const id of ["action:createOHLCPlot", "action:editOHLCPlot", "option-path:createOHLCPlot.low", "option-path:createOHLCPlot.high", "option-path:createOHLCPlot.open", "option-path:createOHLCPlot.close", "option-path:editOHLCPlot.doji", "action:createPyramidPlot", "action:editPyramidPlot", "option-path:createPyramidPlot.stage", "option-path:createPyramidPlot.value", "option-path:createPyramidPlot.labels", "option-path:editPyramidPlot.encoding", "action:createCalendarLayout", "action:createCalendarPlot", "action:editCalendarPlot",
+  for (const id of ["action:createWaterfallPlot", "action:editWaterfallPlot", "option-path:createWaterfallPlot.role", "option-path:createWaterfallPlot.value", "option-path:editWaterfallPlot.connectors", "action:createOHLCPlot", "action:editOHLCPlot", "option-path:createOHLCPlot.low", "option-path:createOHLCPlot.high", "option-path:createOHLCPlot.open", "option-path:createOHLCPlot.close", "option-path:editOHLCPlot.doji", "action:createPyramidPlot", "action:editPyramidPlot", "option-path:createPyramidPlot.stage", "option-path:createPyramidPlot.value", "option-path:createPyramidPlot.labels", "option-path:editPyramidPlot.encoding", "action:createCalendarLayout", "action:createCalendarPlot", "action:editCalendarPlot",
     "option-path:createCalendarLayout.date", "option-path:createCalendarLayout.aggregate", "option-path:createCalendarPlot.color", "option-path:createCalendarPlot.cells.opacity", "option-path:editCalendarPlot.monthBoundary", "action:createContourData", "action:createDensityContourData", "action:editContourData", "action:createContourMark", "action:editContourMark",
     "option-path:createContourData.grid", "option-path:createDensityContourData.estimator", "option-path:editContourData.thresholds", "option-path:createContourMark.mode", "option-path:editContourMark.opacity", "option-path:createContourMark.outline.width", "option-path:createContourMark.shadow", "option-path:editContourMark.outline", "option-path:editContourMark.shadow", "action:createFlowData", "action:editFlowData", "action:layoutFlow",
     "action:createFlowNodes", "action:editFlowNodes", "action:createFlowLinks", "action:editFlowLinks",

@@ -2261,6 +2261,8 @@
         "editpyramidplot",
         "createohlcplot",
         "editohlcplot",
+        "createwaterfallplot",
+        "editwaterfallplot",
         "related"
       ],
       "bytes": 141111,
@@ -2769,6 +2771,7 @@
         "type-createthetaaxislineoptions",
         "type-createthetaaxisticksoptions",
         "type-createthetaaxistitleoptions",
+        "type-createwaterfallplotoptions",
         "type-curveinterpolation",
         "type-dashpattern",
         "type-dashscaleoptions",
@@ -2949,6 +2952,7 @@
         "type-edittreeplotoptions",
         "type-edittreemapplotoptions",
         "type-editviolinplotoptions",
+        "type-editwaterfallplotoptions",
         "type-editwindowdataoptions",
         "type-editxoffsetscaleoptions",
         "type-editxscaleoptions",
@@ -3433,6 +3437,12 @@
         "type-violinplotsplitoptions",
         "type-visibleguide",
         "type-visibletickgroup",
+        "type-waterfallbarpaint",
+        "type-waterfallcolor",
+        "type-waterfallconnectorpaint",
+        "type-waterfalllabelpaint",
+        "type-waterfallwidth",
+        "type-waterfallx",
         "type-windowdataoptions",
         "type-windowframe",
         "type-windowoperation",
@@ -4193,6 +4203,30 @@
       ],
       "bytes": 1845,
       "sha256": "dc646bd85c2cc5cc8eaa7fedec13b6a15a6aa26aee034e2b862468402c171813"
+    },
+    {
+      "order": 176,
+      "title": "Waterfall Plots",
+      "route": "/api/waterfall/",
+      "source": "api/waterfall.md",
+      "headings": [
+        "waterfall-plots",
+        "createwaterfallplot",
+        "editwaterfallplot"
+      ],
+      "bytes": 4307,
+      "sha256": "542c43e1fc1b9bd7608b44997a0afb46fd330f3ead1a2446719ed3a337e58969"
+    },
+    {
+      "order": 177,
+      "title": "Show Contributions and Totals",
+      "route": "/tutorials/waterfall/",
+      "source": "tutorials/waterfall.md",
+      "headings": [
+        "show-contributions-and-totals"
+      ],
+      "bytes": 1642,
+      "sha256": "c4ae18fc8eb3a57a2ea4d6c53fb1a2c729b5c935a8ca31840eb456e8ca820d24"
     }
   ]
 }

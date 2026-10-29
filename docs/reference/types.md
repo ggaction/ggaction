@@ -72,6 +72,8 @@ interface ChartProgramActions {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
+  editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
   createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
   editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;
   createPyramidPlot(options: TargetedOptions<CreatePyramidPlotOptions>): ChartProgram;
@@ -4306,6 +4308,24 @@ export type CreateThetaAxisTitleOptions = PolarTitleOptions &
 
 Related types: [`PolarTitleOptions`](#type-polartitleoptions) · [`PolarGuideResourceOptions`](#type-polarguideresourceoptions).
 
+### `CreateWaterfallPlotOptions` {#type-createwaterfallplotoptions}
+
+<details markdown="1">
+<summary>Expand CreateWaterfallPlotOptions</summary>
+
+```typescript
+export interface CreateWaterfallPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: WaterfallX;
+  readonly role: string; readonly value: string; readonly reset?: string | false; readonly yScale?: NonPointQuantitativePositionScaleOptions;
+  readonly width?: WaterfallWidth; readonly bars?: WaterfallBarPaint; readonly connectors?: false | WaterfallConnectorPaint; readonly labels?: false | WaterfallLabelPaint;
+  readonly color?: false | WaterfallColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
+}
+```
+
+</details>
+
+Related types: [`WaterfallX`](#type-waterfallx) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`WaterfallWidth`](#type-waterfallwidth) · [`WaterfallBarPaint`](#type-waterfallbarpaint) · [`WaterfallConnectorPaint`](#type-waterfallconnectorpaint) · [`WaterfallLabelPaint`](#type-waterfalllabelpaint) · [`WaterfallColor`](#type-waterfallcolor) · [`ColorGuides`](#type-colorguides).
+
 ### `CurveInterpolation` {#type-curveinterpolation}
 
 <details markdown="1">
@@ -7658,6 +7678,19 @@ export interface EditViolinPlotOptions {
 </details>
 
 Related types: [`ViolinPlotPositionChannel`](#type-violinplotpositionchannel) · [`ViolinPlotSplitOptions`](#type-violinplotsplitoptions) · [`ViolinPlotDensityOptions`](#type-violinplotdensityoptions) · [`StatisticalWeight`](#type-statisticalweight).
+
+### `EditWaterfallPlotOptions` {#type-editwaterfallplotoptions}
+
+<details markdown="1">
+<summary>Expand EditWaterfallPlotOptions</summary>
+
+```typescript
+export type EditWaterfallPlotOptions = { readonly target?: string } & Partial<Omit<CreateWaterfallPlotOptions, "id">>;
+```
+
+</details>
+
+Related types: [`CreateWaterfallPlotOptions`](#type-createwaterfallplotoptions).
 
 ### `EditWindowDataOptions` {#type-editwindowdataoptions}
 
@@ -16082,6 +16115,86 @@ export type VisibleTickGroup<T> = T & { ticks?: VisibleGuide<AxisTickStyleOption
 </details>
 
 Related types: [`VisibleGuide`](#type-visibleguide) · [`AxisTickStyleOptions`](#type-axistickstyleoptions) · [`AxisLabelStyleOptions`](#type-axislabelstyleoptions).
+
+### `WaterfallBarPaint` {#type-waterfallbarpaint}
+
+<details markdown="1">
+<summary>Expand WaterfallBarPaint</summary>
+
+```typescript
+export interface WaterfallBarPaint {
+  readonly positiveFill?: FillPaint; readonly negativeFill?: FillPaint; readonly totalFill?: FillPaint; readonly subtotalFill?: FillPaint;
+  readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
+### `WaterfallColor` {#type-waterfallcolor}
+
+<details markdown="1">
+<summary>Expand WaterfallColor</summary>
+
+```typescript
+export type WaterfallColor = OHLCColor;
+```
+
+</details>
+
+Related types: [`OHLCColor`](#type-ohlccolor).
+
+### `WaterfallConnectorPaint` {#type-waterfallconnectorpaint}
+
+<details markdown="1">
+<summary>Expand WaterfallConnectorPaint</summary>
+
+```typescript
+export type WaterfallConnectorPaint = Pick<WaterfallBarPaint, "stroke" | "strokeWidth" | "opacity" | "outline" | "shadow">;
+```
+
+</details>
+
+Related types: [`WaterfallBarPaint`](#type-waterfallbarpaint).
+
+### `WaterfallLabelPaint` {#type-waterfalllabelpaint}
+
+<details markdown="1">
+<summary>Expand WaterfallLabelPaint</summary>
+
+```typescript
+export interface WaterfallLabelPaint extends CalendarLabelPaint { readonly content?: "value" | "end" | "category"; readonly format?: string; readonly offset?: number; }
+```
+
+</details>
+
+Related types: [`CalendarLabelPaint`](#type-calendarlabelpaint).
+
+### `WaterfallWidth` {#type-waterfallwidth}
+
+<details markdown="1">
+<summary>Expand WaterfallWidth</summary>
+
+```typescript
+export type WaterfallWidth = { readonly band: number; readonly pixels?: never } | { readonly pixels: number; readonly band?: never };
+```
+
+</details>
+
+### `WaterfallX` {#type-waterfallx}
+
+<details markdown="1">
+<summary>Expand WaterfallX</summary>
+
+```typescript
+export type WaterfallX = string | { readonly field: string; readonly fieldType?: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions };
+```
+
+</details>
+
+Related types: [`NonPointCategoricalPositionScaleOptions`](#type-nonpointcategoricalpositionscaleoptions).
 
 ### `WindowDataOptions` {#type-windowdataoptions}
 

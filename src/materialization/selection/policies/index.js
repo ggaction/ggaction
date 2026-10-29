@@ -1,4 +1,5 @@
 import { geoSelectionPolicy } from "./geo.js";
+import { waterfallSelectionPolicy } from "./waterfall.js";
 import { ohlcSelectionPolicy } from "./ohlc.js";
 import { pyramidSelectionPolicy } from "./pyramid.js";
 import { calendarSelectionPolicy } from "./calendar.js";
@@ -31,6 +32,7 @@ const POLICIES = Object.freeze({
   image: imageSelectionPolicy,
   calendar: calendarSelectionPolicy,
   pyramid: pyramidSelectionPolicy,
+  waterfall: waterfallSelectionPolicy,
   ohlc: ohlcSelectionPolicy,
   contour: contourSelectionPolicy,
   tree: treeSelectionPolicy, treemap: treemapSelectionPolicy, partition: partitionSelectionPolicy,

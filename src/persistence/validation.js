@@ -5,6 +5,7 @@ import { normalizeMarkShadow, MARK_SHADOW_TYPES } from "../grammar/markShadow.js
 import { normalizeMarkOutline, MARK_OUTLINE_TYPES } from "../grammar/markOutline.js";
 import { validateFillPaint } from "../grammar/paint.js";
 import { normalizeImageMarkConfig, IMAGE_MARK_CONFIG_KEYS } from "../grammar/imageMark.js";
+import { validateWaterfallBinding, readWaterfallItems } from "../grammar/waterfallPlot.js";
 import { validateOHLCBinding, readOHLCItems } from "../grammar/ohlcPlot.js";
 import { validatePyramidBinding, readPyramidStages } from "../grammar/pyramid/plot.js";
 import { validateImageBinding } from "../materialization/imageState.js";
@@ -66,7 +67,7 @@ import { validateUserId } from "../core/identifiers.js";
 import { collectAllResourceReferences } from "../core/resourceReferences.js";
 import { STORED_RESOURCE_KINDS } from "../core/resourceReference.js";
 import { requiredTraceExtension } from "../core/extensionRegistry.js";
-import { resolveDatasetReference } from "../selectors/datasets.js";
+import { findDataset, resolveDatasetReference } from "../selectors/datasets.js";
 import { normalizeMarkSelector, validateRowSelectionDataset } from "../grammar/markSelection.js";
 import { normalizeSelectionSelector } from "../grammar/selectionExpression.js";
 import { highlightTargets } from "../selectors/selectionTargets.js";
@@ -268,6 +269,12 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
         validateSourceIdentity(resource);
       }
       if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource);
+        if (resource.mark?.type === "waterfall") {
+          validateWaterfallBinding(resource, program.markConfigs[resource.id]?.waterfallPlot);
+          const dataset = findDataset(program, resource.data);
+          if (dataset === undefined) throw new TypeError("Waterfall requires an existing dataset.");
+          readWaterfallItems(dataset, resource);
+        }
         if (resource.mark?.type === "ohlc") {
           validateOHLCBinding(resource, program.markConfigs[resource.id]?.ohlcPlot);
           const dataset = semantic.datasets.find(entry => entry.id === resource.data);

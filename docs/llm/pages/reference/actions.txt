@@ -151,6 +151,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTreePlot`](../../../reference/actions/charts-data/#createtreeplot) | H0, H1 | user-facing | charts |
 | [`createVerticalGrid`](../../../reference/actions/guides/#createverticalgrid) | H3 | user-facing | grid |
 | [`createViolinPlot`](../../../reference/actions/statistics/#createviolinplot) | H0, H1 | user-facing | statistics |
+| [`createWaterfallPlot`](../../../reference/actions/marks/#createwaterfallplot) | H2 | user-facing | marks |
 | [`createWindowData`](../../../reference/actions/charts-data/#createwindowdata) | H2 | user-facing | core |
 | [`createXAxis`](../../../reference/actions/guides/#createxaxis) | H3 | user-facing | axes |
 | [`createXAxisLabels`](../../../reference/actions/guides/#createxaxislabels) | H3 | user-facing | axes |
@@ -286,6 +287,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editTreePlot`](../../../reference/actions/charts-data/#edittreeplot) | H1, H3 | user-facing | charts |
 | [`editVerticalGrid`](../../../reference/actions/guides/#editverticalgrid) | H3 | user-facing | grid |
 | [`editViolinPlot`](../../../reference/actions/statistics/#editviolinplot) | H1, H3 | user-facing | statistics |
+| [`editWaterfallPlot`](../../../reference/actions/marks/#editwaterfallplot) | H3 | user-facing | marks |
 | [`editWindowData`](../../../reference/actions/charts-data/#editwindowdata) | H2 | user-facing | core |
 | [`editXAxis`](../../../reference/actions/guides/#editxaxis) | H3 | user-facing | axes |
 | [`editXAxisLabels`](../../../reference/actions/guides/#editxaxislabels) | H3 | user-facing | axes |

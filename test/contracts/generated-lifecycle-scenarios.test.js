@@ -1,3 +1,4 @@
+import { directProgramTrace } from "../support/program-traces.js";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
@@ -127,7 +128,7 @@ test("calls every user-facing action directly from a generated scenario root", (
 
   assert.equal(publicActions.length, 356);
   for (const operation of [
-    "createOHLCPlot", "editOHLCPlot",
+    "createWaterfallPlot", "editWaterfallPlot", "createOHLCPlot", "editOHLCPlot",
     "bundleGraphEdges", "editEdgeRoute",
     "createGeometryData", "editGeometryData", "createGeoJoinData", "editGeoJoinData", "createGeoLODData", "editGeoLODData", "createProjection", "editProjection",
     "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark",

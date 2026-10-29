@@ -163,6 +163,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTreePlot`](./actions/charts-data.md#createtreeplot) | H0, H1 | user-facing | charts |
 | [`createVerticalGrid`](./actions/guides.md#createverticalgrid) | H3 | user-facing | grid |
 | [`createViolinPlot`](./actions/statistics.md#createviolinplot) | H0, H1 | user-facing | statistics |
+| [`createWaterfallPlot`](./actions/marks.md#createwaterfallplot) | H2 | user-facing | marks |
 | [`createWindowData`](./actions/charts-data.md#createwindowdata) | H2 | user-facing | core |
 | [`createXAxis`](./actions/guides.md#createxaxis) | H3 | user-facing | axes |
 | [`createXAxisLabels`](./actions/guides.md#createxaxislabels) | H3 | user-facing | axes |
@@ -298,6 +299,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editTreePlot`](./actions/charts-data.md#edittreeplot) | H1, H3 | user-facing | charts |
 | [`editVerticalGrid`](./actions/guides.md#editverticalgrid) | H3 | user-facing | grid |
 | [`editViolinPlot`](./actions/statistics.md#editviolinplot) | H1, H3 | user-facing | statistics |
+| [`editWaterfallPlot`](./actions/marks.md#editwaterfallplot) | H3 | user-facing | marks |
 | [`editWindowData`](./actions/charts-data.md#editwindowdata) | H2 | user-facing | core |
 | [`editXAxis`](./actions/guides.md#editxaxis) | H3 | user-facing | axes |
 | [`editXAxisLabels`](./actions/guides.md#editxaxislabels) | H3 | user-facing | axes |

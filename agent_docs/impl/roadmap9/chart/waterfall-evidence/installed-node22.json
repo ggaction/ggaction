@@ -1,0 +1,87 @@
+{
+  "node": "v22.23.1",
+  "archive": "/Users/hyeonjeon/.codex/worktrees/roadmap9-data/ggactionnewbrand/.artifacts/release/ggaction-0.0.26.tgz",
+  "sha256": "d74590ff866949a4dcfc7e9b939e7d13b42402899d9b2bfb8a1b677ddf47cef8",
+  "records": [
+    {
+      "id": "optional-peers",
+      "status": "passed",
+      "durationMs": 2446.400125
+    },
+    {
+      "id": "waterfall-three-public-cases",
+      "status": "passed",
+      "durationMs": 1213.8217080000004
+    },
+    {
+      "id": "waterfall-strict-types",
+      "status": "passed",
+      "durationMs": 187.19566699999996
+    },
+    {
+      "id": "ggaction",
+      "status": "passed",
+      "durationMs": 2207.3239999999996,
+      "value": {
+        "specifier": "ggaction",
+        "chunks": 1,
+        "modules": 940,
+        "minifiedBytes": 2520659,
+        "gzipBytes": 717772
+      }
+    },
+    {
+      "id": "ggaction/basic",
+      "status": "passed",
+      "durationMs": 1131.2064170000003,
+      "value": {
+        "specifier": "ggaction/basic",
+        "chunks": 1,
+        "modules": 559,
+        "minifiedBytes": 1325880,
+        "gzipBytes": 385057
+      }
+    },
+    {
+      "id": "ggaction/svg",
+      "status": "passed",
+      "durationMs": 60.72216599999956,
+      "value": {
+        "specifier": "ggaction/svg",
+        "chunks": 1,
+        "modules": 37,
+        "minifiedBytes": 59445,
+        "gzipBytes": 20055
+      }
+    },
+    {
+      "id": "ggaction/graph",
+      "status": "passed",
+      "durationMs": 174.4716249999983,
+      "value": {
+        "specifier": "ggaction/graph",
+        "chunks": 1,
+        "modules": 80,
+        "minifiedBytes": 145400,
+        "gzipBytes": 43417
+      }
+    },
+    {
+      "id": "ggaction/interaction",
+      "status": "passed",
+      "durationMs": 435.6570419999989,
+      "value": {
+        "specifier": "ggaction/interaction",
+        "chunks": 1,
+        "modules": 174,
+        "minifiedBytes": 335417,
+        "gzipBytes": 108586
+      }
+    }
+  ],
+  "status": "passed",
+  "peers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  }
+}

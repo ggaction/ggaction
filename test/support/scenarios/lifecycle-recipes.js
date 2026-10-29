@@ -1419,7 +1419,7 @@ function buildDirectDataResources(factors) {
     .createStatisticalReference({id:"resourceMean",source:"resourcePoints",axis:"y"});
   const panel = () => chart().createCanvas(cartesianCanvas(factors))
     .createData({ id: "directSource", values: rows });
-  return vconcat({ id: "directAnalysis", programs: [
+  const resourcePanels = vconcat({ id: "directAnalysis", programs: [
     { id: "resources", program: resources },
     { id: "dot", program: panel().createDotPlot({
       id: "directDot",
@@ -1477,6 +1477,12 @@ function buildDirectDataResources(factors) {
     })
     .editECDFPlot({ target: "directECDFPlot", groupBy: false }) }
   ] }).createTitle({ text: lifecycleTitle(factors, "Derived resource analysis") });
+  // Preserve the existing source values and keep cumulative units in a separate panel.
+  const waterfall = chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "waterfallSource", values: sourceRows.map(row => ({ ...row, stageRole: "delta" })) })
+    .createWaterfallPlot({ id: "directWaterfall", x: "category", value: "positive", role: "stageRole", guides: false })
+    .editWaterfallPlot({ target: "directWaterfall", connectors: false });
+  return vconcat({ programs: [{ id: "resources", program: resourcePanels }, { id: "waterfall", program: waterfall }] });
 }
 
 function appendConditionalPoints(program) {

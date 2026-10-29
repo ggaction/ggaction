@@ -544,6 +544,7 @@ export function buildActionRelationshipPrograms() {
       })),
     chart().createCanvas().createData({ values: [{ category: "A", amount: 3 }, { category: "B", amount: 8 }] })
       .createPiePlot({ category: "category", radius: { field: "amount", aggregate: "sum" }, guides: false }),
+    chart().createCanvas().createData({ values: [{ stage: "A", role: "delta", value: 3 }] }).createWaterfallPlot({ x: "stage", role: "role", value: "value", guides: false }).editWaterfallPlot({ connectors: false }),
     chart().createCanvas().createData({ values: [{ x: "A", low: 1, high: 8, open: 3, close: 6 }] }).createOHLCPlot({ x: "x", low: "low", high: "high", open: "open", close: "close", guides: false }).editOHLCPlot({ labels: {} }),
     ...selectionLifecyclePrograms(),
     ...focusedScaleEditorPrograms(),

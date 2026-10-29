@@ -2779,6 +2779,99 @@ editOHLCPlot({ target?, data?, coordinate?, x?, low?, high?, open?, close?, ySca
 Edit prices and styles while preserving typed row identities. See [OHLC plots](../../api/ohlc.md).
 
 
+## `createWaterfallPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateWaterfallPlotOptions`](./../types.md#type-createwaterfallplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Required | `WaterfallX` |
+| `role` | Required | `string` |
+| `value` | Required | `string` |
+| `reset` | Optional / branch-dependent | `string \| false \| undefined` |
+| `yScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `width` | Optional / branch-dependent | `WaterfallWidth \| undefined` |
+| `bars` | Optional / branch-dependent | `WaterfallBarPaint \| undefined` |
+| `connectors` | Optional / branch-dependent | `false \| WaterfallConnectorPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| WaterfallLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createWaterfallPlot({ id?, data?, coordinate?, x, role, value, reset?, yScale?, width?, bars?, connectors?, labels?, color?, clip?, guides? })
+```
+
+Draw ordered contributions, explicit totals and subtotals. See [Waterfall plots](../../api/waterfall.md).
+
+
+## `editWaterfallPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditWaterfallPlotOptions`](./../types.md#type-editwaterfallplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Optional / branch-dependent | `WaterfallX \| undefined` |
+| `role` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `string \| undefined` |
+| `reset` | Optional / branch-dependent | `string \| false \| undefined` |
+| `yScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `width` | Optional / branch-dependent | `WaterfallWidth \| undefined` |
+| `bars` | Optional / branch-dependent | `WaterfallBarPaint \| undefined` |
+| `connectors` | Optional / branch-dependent | `false \| WaterfallConnectorPaint \| undefined` |
+| `labels` | Optional / branch-dependent | `false \| WaterfallLabelPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editWaterfallPlot({ target?, data?, coordinate?, x?, role?, value?, reset?, yScale?, width?, bars?, connectors?, labels?, color?, clip?, guides? })
+```
+
+Edit contribution meaning and appearance with stable stage identities. See [Waterfall plots](../../api/waterfall.md).
+
+
 ## Related
 
 [Action Reference](../actions.md) · [Chart API](../../api/index.md) · [Supported Features](../../supported-features.md)

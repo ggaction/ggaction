@@ -573,3 +573,10 @@
 - title: Show open, high, low and close
   url: /tutorials/ohlc/
   parent: /tutorials/
+
+- title: Waterfall Plots
+  url: /api/waterfall/
+  parent: /api/
+- title: Show Contributions and Totals
+  url: /tutorials/waterfall/
+  parent: /tutorials/
