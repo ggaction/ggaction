@@ -784,6 +784,12 @@ commands를 연결하고 runtime bindings·event·listener 수명을 소유한�
 renderer에 DOM 의존성을 넣지 않는다. 정확한 공개 옵션과 현재 지원 범위는
 [Current INTERACTION](contract/current/INTERACTION.md)이 소유한다.
 
+### `ggaction/animation`
+
+Browser-safe typed transition entry는 준비된 native endpoint에서 불변 frame을 계산하고,
+같은 concrete graphicSpec을 네 renderer에 제공한다. 공개 planner, player와 offline envelope의
+정확한 계약은 [Current ANIMATION](contract/current/ANIMATION.md)이 소유한다.
+
 ### `ggaction/scene`
 
 Browser-safe read-only transition scenes consume materialized item identity metadata and concrete drawing values solely from graphicSpec. Domain mark materializers explicitly persist this metadata through primitives; the exact public scene contract is documented in [Rendering](../docs/api/rendering.md#transition-scenes).
@@ -883,11 +889,12 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 771,400 bytes |
-| `ggaction/basic` | 421,200 bytes |
+| `ggaction` | 774,200 bytes |
+| `ggaction/basic` | 422,200 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 122,100 bytes |
+| `ggaction/interaction` | 128,700 bytes |
+| `ggaction/animation` | 192,200 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
