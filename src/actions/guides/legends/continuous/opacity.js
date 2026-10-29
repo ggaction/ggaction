@@ -324,7 +324,7 @@ export const rematerializeOpacityLegend = /* @__PURE__ */ closedAction(
 
 
 export function resolveOpacityLegendCreation(program, args = {}) {
-  const config = normalizeContinuousLegend(args, "opacity");
+  const config = normalizeContinuousLegend(args, "opacity", program.materializationConfigs.theme);
   if (args.channels !== undefined && (
     !Array.isArray(args.channels) ||
     args.channels.length !== 1 ||

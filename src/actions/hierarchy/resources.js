@@ -13,7 +13,7 @@ import { withPreparedResourceResults } from "../primitives/preparedResourceConte
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { resolveHierarchyPlot } from "../../materialization/hierarchy/plot.js";
 
-function preflightLayouts(program, resources, layouts) {
+export function preflightHierarchyLayouts(program, resources, layouts) {
   const replacements = new Map(layouts.map(layout => [layout.id, layout]));
   const views = new Map();
   const originals = new Map(program.semanticSpec.resources.filter(resource => resource.kind === "layout").map(resource => [resource.id, resource]));
@@ -39,7 +39,7 @@ function preflightLayouts(program, resources, layouts) {
   return views;
 }
 
-function applyPartitionViews(program, views) {
+export function applyPartitionViews(program, views) {
   let next = program;
   for (const [id, view] of views) next = next.editSemantic({ property: `layer[${id}].partitionView`, value: view });
   return next;
@@ -64,7 +64,7 @@ export function writeHierarchyResource(program, resource) {
   const replacements = layouts.map(layout => ({ previous: { kind: "layout", id: layout.id, revision: layout.revision },
     resource: createHierarchyLayoutResource({ id: layout.id, revision: layout.revision + 1, hierarchy: resource, options: layout.options, program: preview }) }));
   const nextLayouts = new Map(replacements.map(({ resource }) => [resource.id, resource]));
-  const views = preflightLayouts(program, preview.semanticSpec.resources.map(candidate => candidate.kind === "layout"
+  const views = preflightHierarchyLayouts(program, preview.semanticSpec.resources.map(candidate => candidate.kind === "layout"
     ? nextLayouts.get(candidate.id) ?? candidate : candidate), [...nextLayouts.values()]);
   const entered = applyPartitionViews(program, views);
   const next = withPreparedResourceResults(entered, { property: `resource[hierarchy:${resource.id}]`, value: resource }, replacements,
@@ -109,7 +109,7 @@ export function editHierarchyLayout(program, args, previous) {
     const options = { ...previous.options, ...patch, options: { ...priorOptions, ...patch.options } };
     const resource = createHierarchyLayoutResource({ id: previous.id, revision: previous.revision + 1,
       hierarchy: resolveInputReference(program, previous.inputs[0]), options, program });
-    const views = preflightLayouts(program, program.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate), [resource]);
+    const views = preflightHierarchyLayouts(program, program.semanticSpec.resources.map(candidate => candidate === previous ? resource : candidate), [resource]);
     return materializeLayouts(applyPartitionViews(program, views).editSemantic({ property: `resource[layout:${resource.id}]`, value: resource }), new Set([resource.id]), program);
 }
 

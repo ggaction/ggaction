@@ -99,7 +99,7 @@ export function resolveStrokeIntervalLayout(program, config, scale) {
 
 export function resolveStrokeIntervalLegendCreation(program, args = {}) {
   requireChannels(args, "Stroke interval legend");
-  const config = normalizeIntervalLegend({ ...args, channels: undefined });
+  const config = normalizeIntervalLegend({ ...args, channels: undefined }, program.materializationConfigs.theme);
   const layer = resolveContinuousColorLayer(program, config.target, "stroke");
   config.symbol = {
     ...config.symbol,

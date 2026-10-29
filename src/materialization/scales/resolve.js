@@ -48,6 +48,7 @@ function scaleBindingSignature(channel, consumers, { comparable = false } = {}) 
     data: comparable
       ? comparableDataIdentity(consumer.layer.data)
       : consumer.layer.data,
+    ...(consumer.layer.calendarBinding === undefined ? {} : { layout: consumer.layer.calendarBinding.layout.id }),
     ...(consumer.layer.contourBinding === undefined ? {} : { geometry: consumer.layer.contourBinding.geometry.id }),
     field: consumer.encoding.field,
     datum: consumer.encoding.datum,
@@ -129,12 +130,13 @@ function resolveRange({
   isDiscretizedColor,
   isOrdinalOffset,
   discretizedScale,
-  polarFrame
+  polarFrame,
+  themePalette
 }) {
   if (channel === "color") {
     if (isDiscretizedColor) return discretizedScale.range;
     if (isSequentialColor) return resolveSequentialColorStops(scale.range);
-    return resolveColorRange(scale.range, domain.length);
+    return resolveColorRange(scale.range === "auto" && themePalette !== undefined ? themePalette : scale.range, domain.length);
   }
   if (channel === "strokeDash") return resolveStrokeDashRange(scale.range);
   if (channel === "shape") return resolveShapeRange(scale.range);
@@ -361,6 +363,7 @@ export function resolveScaleMaterialization(options) {
         isDiscretePosition
       });
   const range = resolveRange({
+    themePalette: options.themePalette,
     scale,
     channel,
     domain,

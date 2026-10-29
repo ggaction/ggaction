@@ -1,3 +1,4 @@
+import { legendThemeGap } from "../../../theme/state.js";
 import { normalizeLegendOverflow, validateLegendOverflow } from "../../../../grammar/legendOverflow.js";
 export { normalizeLegendOverflow } from "../../../../grammar/legendOverflow.js";
 import { validateTextAlignment } from "../../../../core/validation.js";
@@ -17,7 +18,7 @@ import {
   validateKeys,
   validateObject
 } from "./validation.js";
-import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY, DEFAULT_VERTICAL_LEGEND_ITEM_GAP } from
+import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY, nativeLegendItemGap } from
   "../../../../theme/defaults.js";
 
 export const CHANNELS = CATEGORICAL_LEGEND_CHANNELS;
@@ -97,7 +98,7 @@ function normalizeBorder(border) {
   return { ...normalized, ...(dash === undefined ? {} : { strokeDash: dash }) };
 }
 
-export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
+export function normalizeOptions(args, kind, { internalSymbol = false, theme } = {}) {
   validateOptionObject(args, OPTIONS, "createLegend");
   if (Object.hasOwn(args, "labels")) {
     validateObject(args.labels, TEXT_OPTIONS, "createLegend.labels");
@@ -137,9 +138,7 @@ export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   const offset = args.offset ?? 8;
   const titlePosition = args.titlePosition ?? "top";
   validateLegendTitleAlignment(titleStyle, titlePosition);
-  const itemGap = args.itemGap ?? (direction === "vertical"
-    ? DEFAULT_VERTICAL_LEGEND_ITEM_GAP
-    : position === "top" ? 24 : 20);
+  const itemGap = args.itemGap ?? legendThemeGap(theme) ?? nativeLegendItemGap(kind, { direction, position });
   const layout = args.layout === undefined ? "edge" : args.layout;
   validateLegendSpacing(kind,{...args,layout});
   if (!["edge", "legacy-bottom"].includes(layout)) {

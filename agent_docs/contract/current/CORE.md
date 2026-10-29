@@ -206,15 +206,26 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     `regressionBand`, `boxLine`, `boxMedian`, `referenceLine`, `referenceBand`,
     `gradientCenter`, `highlight`, `fontFamily`, `axisLabel`, `axisLabelFontFamily`,
     `axisTitleFontFamily`, `axisLabelFontSize`, `axisTitleFontSize`, `fontSize`, `fontWeight`,
-    `axisStrokeWidth`, `tickStrokeWidth`, `tickSize`, `gridStrokeWidth`의 closed vocabulary다.
+    `axisStrokeWidth`, `tickStrokeWidth`, `tickSize`, `gridStrokeWidth`, `axisLabelGap`, `axisTitleGap`,
+    `legendItemGap`, `palette`, `patternPalette`의 closed vocabulary다.
     FontSize token은 positive finite number이고, fontWeight는 finite number 또는 non-empty string이며
-    guide geometry 4개 token은 nonnegative finite number, 나머지는 non-empty string이다.
+    guide geometry 및 axis gap token은 nonnegative finite number다. `legendItemGap`은 native legend 계약대로 positive finite number다.
+    `palette`는 비어 있지 않은 color string 배열, `patternPalette`는 비어 있지 않은 PatternPaint 배열이며
+    최대 길이는 기존 generated item budget(10000)이다. 나머지는 non-empty string이다.
     `fontWeight: 0` 및 guide geometry의 0도 명시값으로 보존한다.
   - Guide geometry token은 각 native axis line/tick/grid의 lineWidth와 tick length 기본값을 CSS px로
     지정한다. Cartesian/named/Polar/Parallel 및 Basic의 기존 소비자에만 적용하며 새로운 guide를 만들지 않는다.
     명시한 direct/facade guide 값은 같은 기본값이나 0이어도 우선한다. 제거 또는 partial token 생략 시
     각 family 기본값을 복원한다. 기존 wrapped guide materializer와 전체 guide layout 검증을 거치고
     Canvas dimensions/margins와 scale domain을 바꾸지 않는다. 부족한 공간은 원자적으로 거부한다.
+  - `axisLabelGap`과 `axisTitleGap`은 기존 guide offset 기본값이다. Cartesian 자동 title은 gap을 preferred offset으로
+    사용하고 기존 collision 보정을 유지한다. 직접 지정한 0 또는 `{from:"labels",gap}`은 우선한다.
+    `legendItemGap`은 categorical, item, sampled/interval 및 opacity 범례의 기존 간격에 적용하며
+    연속 gradient bar의 geometry에는 적용하지 않는다. 모든 값은 초기 생성과 재배치에서 같은 owner를 쓴다.
+  - `palette`는 ordinal categorical color/stroke의 자동 range만 바꾼다. 명시 range, literal color와 continuous scale은 유지한다.
+    `patternPalette`는 Point/Bar/Area/Arc/Rect/Text의 자동 categorical fill과 categorical legend symbol에 적용한다.
+    typed scale domain 순서로 순환하며 scalar color range에 pattern을 저장하지 않는다. Native pattern의 origin,
+    alpha, bounds와 work budget을 공유한다. 선택 강조는 패턴 baseline 뒤 재적용한다.
   - Axis 전용 token은 Cartesian/Polar/Parallel 축에만 적용한다. Role font family 미지정은
     global fontFamily, size 미지정은 global fontSize, 그것도 없으면 family 기본값(label 12/11/11, title 13)으로 돌아간다.
     axisLabel 미지정은 Cartesian/Polar text, Parallel axis 색을 사용한다.
@@ -230,7 +241,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - 우선순위와 상호작용: explicit user style > newest applicable theme request > earlier request >
   built-in light다. 같은 값으로 직접 지정한 style도 explicit이다. Parent theme은 child-local frame을
   덮어쓰지 않고 아래에 보존하므로 parent removal 뒤 newest child frame이 복원된다. Field-driven
-  palette, categorical legend symbol, semantic state, resolved scale, grouping, 통계와 order는 보존한다.
+  palette는 위 optional palette token이 없으면 유지한다. Semantic state, position scales, grouping, 통계와 order는 보존한다.
   기본 highlight paint는 active `highlight` token을 사용하고 explicit highlight paint는 보존한다.
   `fontFamily`, `fontSize`, `fontWeight` 변경은 Text, axis, legend, title, facet header를 다시 materialize해 text bounds와
   composition layout을 검증한다. Global size/weight는 optional이며 생략하거나 마지막 frame을 제거하면
@@ -266,13 +277,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `applyTheme`
 
 - Implemented: `applyTheme({ theme: ThemeName | { base: ThemeName; tokens: Partial<ThemeTokens> }; scope?: "self" | "descendants" }): ChartProgram`
-- `ThemeName = "light" | "dark"`이며 `ThemeTokens`는 위 18개 required string property, 5개 optional axis role property, optional global `fontSize`/`fontWeight`다.
+- `ThemeName = "light" | "dark"`이며 `ThemeTokens`는 위 18개 required string property, 5개 optional axis role property, optional global `fontSize`/`fontWeight`, 7개 guide geometry/gap 및 `palette`/`patternPalette`다.
 - Proposed (NOT IMPLEMENTED): No proposal. Theme creation/import와 arbitrary token vocabulary는 현재 범위 밖이다.
 
 ### Value coverage — `applyTheme`
 
 - Theme definition
-  - ✅ Covered: built-in light/dark, custom partial, closed 25-token vocabulary, input ownership/freeze,
+  - ✅ Covered: built-in light/dark, custom partial, closed token vocabulary, input ownership/freeze,
     replacement without partial merge, malformed/unknown values와 atomic rejection.
 - Scope와 lifecycle
   - ✅ Covered: unit normalization, composition default descendants, explicit self, nested concat/facet,
@@ -289,6 +300,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     resolved scales, statistics, ordering과 caller program immutability.
   - ✅ Covered: collection 색상 교체는 기존 item identity/key/lineage/topology와 owner clip을 보존하며,
     codec 복원·Canvas/SVG transition scene·named highlight에서도 유지한다. `test/unit/actions/theme-item-identity.test.js`.
+  - ✅ Covered: guide spacing family 초기생성/복원, categorical typed palette/conditional/highlight/codec와 read-only winning provenance. `test/unit/actions/theme-spacing.test.js`, `theme-palettes.test.js`, `theme-provenance.test.js`.
   - ✅ Covered: native guide family 색 복원, theme-before-create, stroke samples, named axes, Basic,
     nested concat/facet/shared legend와 offline 복원. `test/unit/actions/theme-guide-defaults.test.js`.
   - ✅ Covered: DAG/cyclic Flow body/link/label 색·font, exact preparation 오류 원자성,

@@ -1,0 +1,33 @@
+import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises';
+import path from 'node:path';
+import { preparePackageConsumer } from '../../scripts/package-consumer.js';
+import { run } from '../../scripts/consumers/runtime.js';
+import { testTypeScriptConsumer } from '../../scripts/consumers/types.js';
+import { measureMinimalBrowserBundle, BROWSER_BUNDLE_GZIP_LIMITS } from '../../scripts/browser-bundle-size.js';
+const tar = path.resolve('.artifacts/theme-completion/package/ggaction-0.0.26.tgz');
+const consumer = await preparePackageConsumer({ packageSpec: tar });
+try {
+  const fixtures = ['theme-guide-defaults', 'theme-item-identity', 'theme-resource-plots', 'theme-typography', 'theme-flow', 'theme-guide-geometry', 'theme-spacing', 'theme-palettes', 'theme-provenance', 'theme-paint-consumers'];
+  const lock = JSON.parse(await readFile('package-lock.json','utf8'));
+  run('npm',['install','--ignore-scripts','--no-audit','--no-fund', `@napi-rs/canvas@${lock.packages['node_modules/@napi-rs/canvas'].version}`],consumer.directory);
+  await mkdir(path.join(consumer.directory,'fixtures/fonts'),{recursive:true});
+  await copyFile('test/fixtures/fonts/metric-fixture.ttf',path.join(consumer.directory,'fixtures/fonts/metric-fixture.ttf'));
+  for (const name of fixtures) {
+    const fixture = (await readFile(`test/unit/actions/${name}.test.js`, 'utf8'))
+      .replaceAll('../../../src/renderers/png.js','ggaction/png').replaceAll('../../../src/renderers/svg.js','ggaction/svg').replaceAll('../../../src/index.js','ggaction').replaceAll('../../../src/basic.js','ggaction/basic')
+      .replaceAll('../../../src/inspection.js','ggaction/inspection').replaceAll('../../../src/persistence.js','ggaction/persistence')
+      .replaceAll('../../../src/scene.js','ggaction/scene').replaceAll('../../fixtures/fonts/','./fixtures/fonts/');
+    await writeFile(path.join(consumer.directory,`${name}.test.mjs`),fixture);
+  }
+  run(process.execPath, ['--test', ...fixtures.map(name=>`${name}.test.mjs`)], consumer.directory, {stdio:'inherit'});
+  await testTypeScriptConsumer(consumer.directory);
+  const bundles = {};
+  for (const specifier of ['ggaction', 'ggaction/basic', 'ggaction/svg']) {
+    bundles[specifier] = await measureMinimalBrowserBundle(consumer.directory, { specifier });
+
+
+  }
+  const receipt = { node: process.version, tar, fixtures, bundles };
+  await writeFile('.artifacts/theme-completion/installed.json', JSON.stringify(receipt, null, 2));
+  console.log(JSON.stringify(receipt, null, 2));
+} finally { await consumer.cleanup(); }

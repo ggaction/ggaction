@@ -1,5 +1,5 @@
 import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
-import { axisThemeTypography } from "../../../theme/state.js";
+import { axisThemeTypography, axisThemeOffset } from "../../../theme/state.js";
 import { action } from "../../../../core/action.js";
 import { resolveTextLines } from "../../../../core/textMetrics.js";
 import { materializeTextLines } from "../../../../materialization/textLines.js";
@@ -75,7 +75,7 @@ function resolveTitleConfig(program, kind, args, resources, previous) {
     scale: resources.scale,
     coordinate: resources.coordinate,
     inferredText: previous?.inferredText ?? !Object.hasOwn(args, "text"),
-    offset: args.offset ?? previous?.offset ?? (kind === "theta"
+    offset: args.offset ?? previous?.offset ?? axisThemeOffset(program.materializationConfigs.theme, "title") ?? (kind === "theta"
       ? POLAR_AXIS_DEFAULTS.title.thetaOffset
       : POLAR_AXIS_DEFAULTS.title.radiusOffset),
     color: args.color ?? previous?.color ?? POLAR_AXIS_DEFAULTS.title.color,

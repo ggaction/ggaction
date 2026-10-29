@@ -117,3 +117,23 @@ Source 검증은 gesture117/117, final-item selection owner242/242, native resou
 실제 세부 테스트 개수와 변경 owner coverage는 JSON과 로그가 소유한다.
 Root 최신 main `11e617145`의 Calendar+057/058 통합은 별도 checkpoint이며 다음 병합에서 소비자 교차를 검증한다.
 이 기록은 angular pointer·history·STEP059/077 전체 완료가 아니다.
+
+## Calendar·최신 selection lifecycle 통합
+
+`11e617145`(Calendar+057/058)를 병합했다. Runtime source 충돌은 없고 양쪽 canonical API/critical family를
+모두 유지한 뒤 생성 metadata를 재생성했다. Calendar lasso는 기존 day item의2개 원행과 집계값7을 유지하고,
+theme/decorations·codec·resize·source revision 값9·drop 및 scoped concat sibling identity를 검증한다.
+Calendar에 존재하지 않는 position scale을 추정해 brush하지 않고 명시 거부한다. Native resource union이
+최종 targets를 검사하므로 기존 unconsumed AST/region hook을 edit.js에 중복 설치하지 않았다.
+
+교차46/46, 타입경계40/40, 실제5×3recipes16/16, browser4/renderer1이 통과했다. 같은 합산 archive
+`2de2d6918fb0a2d3644f2019b23a479b1fe909888762c25dbd23966384130efa`로 Node20/22/24 각각
+3interaction cases(Calendar lasso 추가 포함)+strict TS+4browser bundles를 통과했다. Node20 최대 측정은
+944entries/packed1,360,688/unpacked6,224,525, Full664,335/Basic372,044/interaction106,140gzip이다.
+상한은944/1,361,000/6,225,000 및664,400/372,100/106,200으로 최소 올림하고 search970,454는971,000을 쓴다.
+SVG 상한25,000은 유지한다. 이전 각 branch cap 통과를 합산 cap 통과로 대체하지 않았다.
+
+전체 문서187 중186개는 merge 전 통과했고 유일 실패는 아직 commit하지 않은 Calendar 예제의 Git 링크였다.
+소스 merge commit 뒤 provenance pin·소유 검사로 닫는다. Built166pages/1431LLM와 변경3페이지의
+320/390/768/1440 responsive+Axe(12cells)는 통과했다. Runtime 및 내용이 같은 upstream 전체 화면과
+059 전체 화면 증거를 보존하며 이번 integration의 전역 coverage 또는077 전체 완료를 주장하지 않는다.

@@ -188,3 +188,31 @@ test("command snapshots reject accessors, cycles, sparse arrays and unbounded wo
   for (const extra of [{ transactionId: "" }, { transactionId: "x".repeat(1025) }, { origin: "unknown" }, { causeTransactionId: 4 }]) assert.throws(() => session.dispatch(select({ items: [] }, extra)));
   assert.equal(reads, 0); assert.equal(events, 0); assert.equal(session.getState(), state); session.destroy();
 });
+
+test("Calendar aggregated days retain nearest selection and hidden/drop lifecycle across source revisions", () => {
+  const rows = [{ id: "a", day: "2024-02-28", value: 0 }, { id: "b", day: "2024-02-29", value: 3 }, { id: "c", day: "2024-02-29", value: 4 }];
+  const original = chart().createCanvas({ width: 400, height: 220, margin: 20 })
+    .createData({ id: "days", keyField: "id", values: rows })
+    .createCalendarLayout({ id: "calendarLayout", date: "day", value: "value", start: "2024-02-28", end: "2024-02-29", timeZone: "UTC", weekStartsOn: 1, aggregate: "sum", missing: "omit" })
+    .createCalendarPlot({ color: false, labels: false })
+    .selectMarks({ id: "picked", target: "calendar", items: [] });
+  const before = serializeProgram(original);
+  for (const selectionPolicy of ["keep-hidden", "drop"]) {
+    const session = createInteractionSession({ program: original, selectionPolicy, bindings: [] }), events = [];
+    session.subscribe(event => events.push(event));
+    session.dispatch({ type: "select", target: "calendar", payload: { id: "picked", nearest: { space: "data", fields: ["value"], values: [7], metric: "euclidean", maxDistance: 0 } } });
+    const chosen = session.getState().program, selected = resolveStoredSelection(chosen, "picked");
+    assert.equal(selected.keys.length, 1);
+    assert.equal(selected.items.find(item => item.key === selected.keys[0]).fields.value, 7);
+    const filtered = chosen.reviseData({ source: "days", id: "filteredDays", values: rows.slice(0, 1) });
+    session.updateProgram(filtered);
+    assert.equal(getMarkItems(session.getState().program, { target: "calendar" }).length, 1);
+    assert.equal(events.at(-1).selectionChanges[0][selectionPolicy === "drop" ? "droppedKeys" : "hiddenKeys"].length, 1);
+    const restored = session.getState().program.reviseData({ source: "filteredDays", id: "restoredDays", values: rows });
+    session.updateProgram(restored);
+    assert.equal(resolveStoredSelection(session.getState().program, "picked").keys.length, selectionPolicy === "drop" ? 0 : 1);
+    if (selectionPolicy === "keep-hidden") assert.equal(events.at(-1).selectionChanges[0].restoredKeys.length, 1);
+    session.destroy();
+  }
+  assert.equal(serializeProgram(original), before);
+});

@@ -1,3 +1,4 @@
+import { applyThemePatternPalette, rematerializeThemePalettes } from "./palettes.js";
 import { themeTypographyValue } from "./typographyRoles.js";
 import { guideConfigDefault, guideGraphicDefaults, guideNumericProperty, themeGuideGeometrySteps } from "./guideDefaults.js";
 import { withGuideLayoutTransaction } from "../../materialization/guides/layout.js";
@@ -75,7 +76,7 @@ function axisTextRole(property, component) {
   return undefined;
 }
 
-function roleToken(tokens, role, family = "cartesian") {
+export function roleToken(tokens, role, family = "cartesian") {
   if (tokens[role] !== undefined) return tokens[role];
   if (role === "axisLabel") return family === "parallel" ? tokens.axis : tokens.text;
   if (["axisLabelFontFamily", "axisTitleFontFamily"].includes(role)) return tokens.fontFamily;
@@ -191,7 +192,7 @@ function componentRole(program, id, property) {
   return referenceRole(program, id, property);
 }
 
-function graphicRole(program, id, property) {
+export function graphicRole(program, id, property) {
   const axisPart = /(?:Axis|^axis_.+__)(Labels|Titles?)$/u.exec(id);
   const scoped = axisPart === null ? undefined : axisTextRole(property, axisPart[1] === "Labels" ? "labels" : "title");
   if (scoped !== undefined) return scoped;
@@ -366,7 +367,7 @@ function recolorGraphic(
     : program;
 }
 
-function configRole(program, path) {
+export function configRole(program, path) {
   const property = path.at(-1);
   if (path[0] === "guides" && path[1] === "axis") {
     const component = path[2] === "parallel" ? path.at(-2) : path[3];
@@ -445,14 +446,14 @@ function recolorConfig(
   }
   if (value === null || typeof value !== "object") {
     const property = path.at(-1);
-    if (!["color", "fill", "stroke", "background", "fontFamily", "fontSize", "fontWeight", "lineWidth", "length"]
+    if (!["color", "fill", "emptyFill", "stroke", "background", "fontFamily", "fontSize", "fontWeight", "lineWidth", "length", "offset", "itemGap"]
       .includes(property)) {
       return { changed: false, value };
     }
     if (isOverridden(overrides, `c:${path.join(".")}`)) {
       return { changed: false, value };
     }
-    const numeric = guideNumericProperty(path);
+    const numeric = guideNumericProperty(path, program);
     if (numeric !== undefined) {
       const target = themeActive ? targetTokens[numeric.token] ?? numeric.defaultValue : numeric.defaultValue;
       return { changed: value !== target, value: target };
@@ -843,7 +844,7 @@ function addAxisOverrides(overrides, op, args, node) {
   const component = match[2].toLowerCase();
   const axisId = axisOverrideId(node, channel, args);
   const idPrefix = match[1] === "Radial" ? "radial" : channel;
-  for (const property of ["lineWidth", "length"]) if (Object.hasOwn(args, property)) overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
+  for (const property of ["lineWidth", "length", "offset"]) if (Object.hasOwn(args, property)) overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
   if (Object.hasOwn(args, "color")) {
     overrides.add(`c:guides.axis.${axisId}.${component}.color`);
     overrides.add(
@@ -873,7 +874,7 @@ function addCompleteAxisOverride(overrides, name, args, node) {
     components.labels = args.ticksAndLabels.labels;
   }
   for (const [component, options] of Object.entries(components)) {
-    for (const property of ["lineWidth", "length"]) if (Object.hasOwn(options ?? {}, property)) overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
+    for (const property of ["lineWidth", "length", "offset"]) if (Object.hasOwn(options ?? {}, property)) overrides.add(`c:guides.axis.${axisId}.${component}.${property}`);
     const suffix = `${component[0].toUpperCase()}${component.slice(1)}`;
     if (Object.hasOwn(options ?? {}, "color")) {
       overrides.add(`c:guides.axis.${axisId}.${component}.color`);
@@ -969,7 +970,7 @@ function addParallelOverrides(overrides, program, op, args) {
     components.labels = args.ticksAndLabels.labels;
   }
   for (const [component, options] of Object.entries(components)) {
-    for (const property of ["lineWidth", "length"]) if (Object.hasOwn(options ?? {}, property)) overrides.add(`c:guides.axis.parallel.axes.dimensions.${index}.${component}.${property}`);
+    for (const property of ["lineWidth", "length", "offset"]) if (Object.hasOwn(options ?? {}, property)) overrides.add(`c:guides.axis.parallel.axes.dimensions.${index}.${component}.${property}`);
     if (Object.hasOwn(options ?? {}, "color")) {
       overrides.add(
         `c:guides.axis.parallel.axes.dimensions.${index}.${component}.color`
@@ -986,6 +987,7 @@ function addParallelOverrides(overrides, program, op, args) {
 function addLegendOverrides(overrides, program, args) {
   for (const kind of Object.keys(program.guideConfigs.legend ?? {})) {
     const prefix = legendPrefix(kind);
+    if (Object.hasOwn(args, "itemGap")) overrides.add(`c:guides.legend.${kind}.itemGap`);
     for (const [option, suffix, property, graphicProperty] of [
       ["labels", "Labels", "color", "fill"],
       ["labels", "Labels", "fontFamily", "fontFamily"],
@@ -1139,19 +1141,27 @@ function explicitOverrides(program, node) {
   return overrides;
 }
 
-function collectOverrides(program) {
-  const overrides = new Set();
+// Inspection and reconciliation share the same reset/override policy. The map
+// is derived from immutable trace; it is not another persisted history.
+export function collectThemeAuthoredSources(program) {
+  const overrides = new Set(), sources = new Map();
   for (const node of program.trace.children) {
     if (["applyTheme", "removeTheme"].includes(node.op)) continue;
     clearRecreatedOverrides(overrides, node.op, node.args);
     clearRemovedResources(overrides, node);
     clearLocalResets(overrides, program, node);
     clearResourcePlotThemeOverrides(overrides, node);
+    for (const key of sources.keys()) if (!overrides.has(key)) sources.delete(key);
     for (const key of explicitOverrides(program, node)) {
       overrides.add(key);
+      sources.set(key, { kind: /(?:Plot|Histogram|ParallelCoordinates|Annotation|MarkLabels)$/.test(node.op) ? "style" : "explicit", action: node.op });
     }
   }
-  return overrides;
+  return sources;
+}
+
+function collectOverrides(program) {
+  return new Set(collectThemeAuthoredSources(program).keys());
 }
 
 function axisTypographyChanged(before, after) {
@@ -1234,7 +1244,9 @@ export function reconcileProgramTheme(program, { source, metadata }) {
   });
   if (resourceMarks.length > 0) next = applyMaterializationPlan(next, buildMaterializationPlan({ marks: resourceMarks }));
 
-  const guideGeometry = themeGuideGeometrySteps(next, themed, overrides);
+  const guideGeometry = themeGuideGeometrySteps(next, themed, overrides, {
+    typographyChanged, titleGapChanged: sourceTokens.axisTitleGap !== targetTokens.axisTitleGap
+  });
   if (guideGeometry.length > 0) next = withGuideLayoutTransaction(next,
     candidate => applyMaterializationPlan(candidate, buildMaterializationPlan({ guides: guideGeometry })));
 
@@ -1244,6 +1256,10 @@ export function reconcileProgramTheme(program, { source, metadata }) {
     next = next.rematerializeParallelAxes();
   }
 
+  const beforePalettes = next;
+  next = rematerializeThemePalettes(next, sourceTokens, targetTokens);
+  next = applyThemePatternPalette(next);
+  const palettesChanged = next.graphicSpec !== beforePalettes.graphicSpec;
   const nativeDefaults = guideGraphicDefaults(next);
   const beforeMarkColors = next;
   const markIds = new Set(next.semanticSpec.layers.map(layer => layer.id));
@@ -1287,7 +1303,7 @@ export function reconcileProgramTheme(program, { source, metadata }) {
     );
   }
 
-  if (sourceTokens.highlight !== targetTokens.highlight) {
+  if (palettesChanged || sourceTokens.highlight !== targetTokens.highlight) {
     next = rematerializeThemeHighlights(next);
   }
 

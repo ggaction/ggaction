@@ -1,0 +1,61 @@
+{
+  "status": "qualified",
+  "base": "ff1ff820a",
+  "mergedSelection": "98c3791a6",
+  "focused": {
+    "passed": 415,
+    "failed": 0
+  },
+  "contracts": {
+    "passed": 41,
+    "failed": 0
+  },
+  "inventory": {
+    "passed": 7,
+    "failed": 0
+  },
+  "docs": {
+    "passed": 181,
+    "failed": 0
+  },
+  "built": {
+    "pages": 164,
+    "selectiveLLM": 1411,
+    "browser": "passed desktop search and every page at widths 320,390,768"
+  },
+  "installed": {
+    "nodeVersions": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "themeTestsEach": 90,
+    "resourceInteractionSelectionEach": 10,
+    "typesEach": "passed",
+    "optionalPeersEach": "passed",
+    "browserEntriesEach": 4,
+    "sameArtifactSha256": "022b74a2473b501052eb5e1a34c3a886221f329cadc3084e16c468b1a4e40a7f"
+  },
+  "artifact": {
+    "entryCount": 915,
+    "size": 1320556,
+    "unpackedSize": 6045741,
+    "sha256": "022b74a2473b501052eb5e1a34c3a886221f329cadc3084e16c468b1a4e40a7f"
+  },
+  "caps": {
+    "entries": 915,
+    "packedBytes": 1321000,
+    "unpackedBytes": 6046000,
+    "FullGzip": 654000,
+    "BasicGzip": 369000,
+    "SVGGzip": 25000,
+    "interactionGzip": 83000,
+    "searchIndex": 958000
+  },
+  "notClaimed": [
+    "STEP057 linked selection or transaction completion",
+    "whole source coverage rerun",
+    "full realistic corpus rerun",
+    "Roadmap9 completion"
+  ]
+}

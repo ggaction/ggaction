@@ -3505,6 +3505,30 @@ layoutGraph({ id, graph?, method, options? })
 Store a fixed, circular, or deterministic force layout of an existing graph. Full only.
 [Graph data and layouts](../api/data/source-and-derived.md#layoutgraph)
 
+### `createCalendarLayout`
+
+```javascript
+createCalendarLayout({ id?, data?, date, value?, start, end, timeZone, weekStartsOn, aggregate, missing })
+```
+
+Store civil-day aggregates, week/weekday cells and month boundaries. See [Calendar plots](../api/calendar.md#createcalendarlayout).
+
+### `createCalendarPlot`
+
+```javascript
+createCalendarPlot({ id?, layout?, coordinate?, color?, cells?, monthBoundary?, labels?, clip? } = {})
+```
+
+Draw a stored calendar layout with explicit day, month and label roles. See [Calendar plots](../api/calendar.md#createcalendarplot).
+
+### `editCalendarPlot`
+
+```javascript
+editCalendarPlot({ target?, layout?, coordinate?, color?, cells?, monthBoundary?, labels?, clip? })
+```
+
+Edit a calendar plot while preserving day identities and source lineage. See [Calendar plots](../api/calendar.md#editcalendarplot).
+
 ### `createContourData`
 
 ```javascript

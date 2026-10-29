@@ -6,7 +6,7 @@ import {
 import {
   normalizeThemeDefinition,
   resolveThemeTokens
-} from "../../theme/defaults.js";
+} from "./definition.js";
 
 export const LOCAL_THEME_OWNER = "local";
 
@@ -170,4 +170,14 @@ export function axisThemeTypography(state, component) {
     ...(fontSize === undefined ? {} : { fontSize }),
     ...(tokens.fontWeight === undefined ? {} : { fontWeight: tokens.fontWeight })
   };
+}
+
+// Native guide offsets retain their own anchors and collision policies.
+export function axisThemeOffset(state, component) {
+  if (resolveEffectiveThemeFrame(state) === undefined) return undefined;
+  return resolveEffectiveThemeTokens(state)[component === "labels" ? "axisLabelGap" : "axisTitleGap"];
+}
+
+export function legendThemeGap(state) {
+  return resolveEffectiveThemeFrame(state) === undefined ? undefined : resolveEffectiveThemeTokens(state).legendItemGap;
 }

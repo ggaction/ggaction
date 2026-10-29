@@ -1100,5 +1100,19 @@
     "editSource": "examples/contours/program.js",
     "description": "A scalar grid states where measurements were sampled. Contours interpolate the boundaries between those samples.",
     "image": "/assets/images/contours.png"
+  },
+  "/api/calendar/": {
+    "title": "Calendar Plots",
+    "source": "docs/api/calendar.md",
+    "editSource": "docs/api/calendar.md",
+    "description": "Aggregate observations by civil day and place each date in a week/weekday cell. These chart authoring actions require the Full ggaction entry point.",
+    "image": "/assets/images/calendar.png"
+  },
+  "/tutorials/calendar/": {
+    "title": "Place Observations on a Calendar",
+    "source": "docs/tutorials/calendar.md",
+    "editSource": "examples/calendar/program.js",
+    "description": "A calendar makes each civil day a stable location. This example uses the 366 days of 2024, then leaves every fifth observation absent.",
+    "image": "/assets/images/calendar.png"
   }
 }

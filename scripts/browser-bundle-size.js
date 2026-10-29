@@ -5,10 +5,10 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 653_500, // Region selection: Node20 measured 653,407 gzip bytes.
-  "ggaction/basic": 367_400, // Shared native region predicate: Node20 measured 367,386 gzip bytes.
+  ggaction: 664_400, // Calendar with brush/lasso: Node20 measured 664,335 gzip bytes.
+  "ggaction/basic": 372_100, // Calendar with region validation: Node20 measured 372,044 gzip bytes.
   "ggaction/svg": 25_000,
-  "ggaction/interaction": 105_800 // Captured brush/lasso: Node20 measured 105,754 gzip bytes.
+  "ggaction/interaction": 106_200 // Calendar with brush/lasso: Node20 measured 106,140 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {

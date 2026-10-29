@@ -284,7 +284,7 @@ test("edits size scale families with explicit migration and stable interval labe
   close(
     itemArea(
       replayedObject,
-      replayedObject.items.find(item => item.id === "points:3")
+      replayedObject.items.find(item => item.id === discrete.graphicSpec.objects.points.items[3].id)
     ),
     8
   );

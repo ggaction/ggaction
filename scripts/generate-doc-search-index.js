@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 962000; // Brush/lasso documentation: measured 961762 bytes.
+export const SEARCH_INDEX_MAX_BYTES = 971000; // Calendar with brush/lasso documentation: measured 970454 bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

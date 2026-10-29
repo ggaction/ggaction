@@ -1,0 +1,51 @@
+{
+  "status": "qualified",
+  "source": "039deaf14",
+  "mergedTheme": "0aae2f639",
+  "focused": {
+    "passed": 206,
+    "failed": 0
+  },
+  "inventory": {
+    "passed": 7,
+    "failed": 0
+  },
+  "docs": {
+    "passed": 179,
+    "failed": 0
+  },
+  "built": {
+    "pages": 164,
+    "selectiveLLM": 1410,
+    "browser": "passed desktop search and every page at widths 320,390,768"
+  },
+  "installed": {
+    "nodeVersions": [
+      "20.20.2",
+      "22.23.1",
+      "24.22.1"
+    ],
+    "themeTestsEach": 90,
+    "resourceAndInteractionEach": 8,
+    "typesEach": "passed",
+    "optionalPeersEach": "passed",
+    "browserEntriesEach": 4,
+    "sameArtifactSha256": "ef68e05a1f78bd192a6036505cef075a23d4f8761b591ad841b5aee9decf103f"
+  },
+  "caps": {
+    "entries": 911,
+    "packedBytes": 1316000,
+    "unpackedBytes": 6027000,
+    "FullGzip": 652000,
+    "BasicGzip": 368000,
+    "SVGGzip": 25000,
+    "interactionGzip": 83000,
+    "searchIndex": 957000
+  },
+  "pending": [],
+  "notClaimed": [
+    "whole source coverage",
+    "full realistic corpus rerun",
+    "Roadmap9 completion"
+  ]
+}

@@ -5,7 +5,7 @@ import { findStoredResource, requireStoredResource, resolveInputReference, dataI
 import { validateResourceGraph, validateStoredResource, resourceDependencies, orderResourceDependencies, planStoredResourceRemoval, collectParameterInputReferences } from "../../materialization/resourceState.js";
 import { dataSourceValueHash } from "../../grammar/dataSourcePayload.js";
 import { dataSourcesForDataset, validateDataSourceState } from "../../materialization/dataSourceState.js";
-import { preparedResourceResults, preparedResourceDataReplacements } from "./preparedResourceContext.js";
+import { preparedResourceResults, preparedResourceDataReplacements, preparedResourceDataRooted } from "./preparedResourceContext.js";
 import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
 
 const same = (a, b) => a.kind === b.kind && a.id === b.id;
@@ -23,16 +23,29 @@ export function replaceStoredResource(program, parsed, value, args) {
   for (const ref of resourceDependencies(value)) {
     if (!same(ref, value)) resolveInputReference(program, ref);
   }
+  const dataRooted = preparedResourceDataRooted(args, program);
+  const dataReplacements = new Map();
+  for (const entry of preparedResourceDataReplacements(args, program)) {
+    resolveInputReference(program, entry.previous); resolveInputReference(program, entry.next);
+    dataReplacements.set(entry.previous.id, entry);
+  }
   const replacements = new Map();
-  const affected = new Set([JSON.stringify([value.kind, value.id])]);
+  const affected = new Set(dataRooted ? [] : [JSON.stringify([value.kind, value.id])]);
   const allowed = new Set();
   for (const candidate of orderResourceDependencies(program.semanticSpec.resources)) {
-    const owns = candidate.kind === "data-source" && value.kind === "parameter" ||
-      candidate.kind === "layout" && ["hierarchy", "graph"].includes(value.kind) ||
-      candidate.kind === "graph" && candidate.provenance.origin === "inferred" && value.kind === "graph";
-    if (owns && candidate.inputs.some(ref => affected.has(JSON.stringify([ref.kind, ref.id])))) {
+    const owns = dataRooted ? ["hierarchy", "graph", "geometry", "layout"].includes(candidate.kind)
+      : candidate.kind === "data-source" && value.kind === "parameter" ||
+        candidate.kind === "layout" && ["hierarchy", "graph"].includes(value.kind) ||
+        candidate.kind === "graph" && candidate.provenance.origin === "inferred" && value.kind === "graph";
+    if (owns && candidate.inputs.some(ref => affected.has(JSON.stringify([ref.kind, ref.id])) ||
+        dataRooted && ref.kind === "data" && dataReplacements.has(ref.id))) {
       const key = JSON.stringify([candidate.kind, candidate.id]); affected.add(key); allowed.add(key);
     }
+  }
+  const primaryKey = JSON.stringify([value.kind, value.id]);
+  if (dataRooted && (!allowed.delete(primaryKey) || previous === undefined ||
+      dataSourceValueHash(previous.options) !== dataSourceValueHash(value.options))) {
+    throw annotateError(new Error("Prepared source resource is not rooted in its data revisions."), { code: "stale-result", resourceId: value.id });
   }
   for (const entry of preparedResourceResults(args, program) ?? []) {
     const old = requireStoredResource(program, entry.previous);
@@ -42,10 +55,10 @@ export function replaceStoredResource(program, parsed, value, args) {
     }
     replacements.set(JSON.stringify([old.kind, old.id]), entry.resource);
   }
-  const dataReplacements = new Map();
-  for (const entry of preparedResourceDataReplacements(args, program)) {
-    resolveInputReference(program, entry.previous); resolveInputReference(program, entry.next);
-    dataReplacements.set(entry.previous.id, entry);
+  if (dataRooted) {
+    if (allowed.size !== replacements.size) throw annotateError(new Error("Prepared source revision requires every affected resource result."), { code: "stale-result" });
+    const expected = previous.inputs.map(ref => ref.kind === "data" && dataReplacements.has(ref.id) ? dataReplacements.get(ref.id).next : ref);
+    if (dataSourceValueHash(expected) !== dataSourceValueHash(value.inputs)) throw annotateError(new Error("Prepared source resource has stale data inputs."), { code: "stale-result", resourceId: value.id });
   }
   const supplied = previous === undefined ? [...program.semanticSpec.resources, value]
     : program.semanticSpec.resources.map(resource => same(resource, value) ? value : resource);
@@ -56,7 +69,7 @@ export function replaceStoredResource(program, parsed, value, args) {
     const rebind = ref => {
       if (replacement !== undefined && ref.kind === "data" && dataReplacements.has(ref.id)) {
         const entry = dataReplacements.get(ref.id);
-        if (dataSourceValueHash(ref) !== dataSourceValueHash(entry.previous)) throw new TypeError("Prepared graph data input has a stale source revision.");
+        if (dataSourceValueHash(ref) !== dataSourceValueHash(entry.previous)) throw new TypeError("Prepared resource data input has a stale source revision.");
         return entry.next;
       }
       const revised = updated.get(JSON.stringify([ref.kind, ref.id]));

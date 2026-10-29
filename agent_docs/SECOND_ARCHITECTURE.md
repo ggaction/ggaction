@@ -76,6 +76,9 @@ Full assembly는 image, hierarchy, graph와 layout의 닫힌 handler를 등록�
 shared scale union과 mark/guide closure를 명시 실행한다. `materialization/contour/plot.js`의
 compound path는 기존 renderer의 유일한 입력이다. 정확한 값과 lifecycle은
 [등고선 계약](contract/current/CONTOURS.md)이 소유한다.
+Calendar의 civil-day cell 계산은 기존 날짜 파싱·시간대·day-domain owner를 재사용한다.
+`grammar/gridBoundary.js`는 Contour와 Calendar month cell union의 공통 directed-edge
+소거·ring 연결·hole 분류를 소유하며 pixel frame이나 프로그램 상태를 읽지 않는다.
 
 이 owner1개를 더한 지원 Node20/22/24 staging은739entries, packed최대1,098,083,
 unpacked5,056,470bytes여서 package 한도만739/1,099,000/5,057,000으로 최소 조정했다.
@@ -798,10 +801,10 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 652,000 bytes |
-| `ggaction/basic` | 367,000 bytes |
+| `ggaction` | 663,000 bytes |
+| `ggaction/basic` | 371,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
-| `ggaction/interaction` | 100,600 bytes |
+| `ggaction/interaction` | 101,000 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -1937,9 +1940,13 @@ Theme는 이 기본값과 authored override를 구분하고 기존 plot material
 갱신한다. 마지막 frame 제거는 해당 family 기본값을 복원한다. 저장된 graph/hierarchy/layout 계산은
 다시 실행하지 않으며 named highlight는 새 baseline에서 기존 selection owner가 다시 적용한다.
 
-Theme reconciliation은 concrete appearance와 해당 materialization config만 바꾼다. Field-driven
-palette output, semantic spec, resolved scale, 통계 row, grouping, domain, item/draw order는 입력과
-동일하게 유지한다. Explicit local style은 값이 preset 또는 library default와 같더라도 action
+Theme 정의 정규화는 `actions/theme/definition.js`에서 core own-data·paint grammar를 재사용한다.
+`theme/defaults.js`는 공유 token/default 값만 소유한다. Optional categorical palette는 자동 appearance scale의
+resolved range와 기존 mark/legend materializer를 갱신한다. Pattern palette는 final item의 typed category와
+기존 fill materializer를 사용하며 scalar scale range에 구조화 paint를 저장하지 않는다.
+Semantic spec, position scale, 통계 row, grouping, domain과 item identity는 동일하게 유지한다.
+Inspection은 같은 theme override/reset owner에서 winning source를 읽으며 별도 persisted history를 추가하지 않는다.
+권한을 입증하지 못한 legacy/extension 값은 unknown이다. Explicit local style은 값이 preset 또는 library default와 같더라도 action
 trace의 top-level authoring argument로 식별하므로 theme 교체와 제거 뒤에도 보존된다. 정확한
 public signature와 지원 preset은 [CORE current contract](contract/current/CORE.md)가 소유한다.
 
@@ -3506,6 +3513,23 @@ persistent-selection.inputs 한 곳에 저장된다. 일반 inline selector의 o
 검증 중 교체·상속 fallback·외부 plugin API가 없다. Basic parameter entry가 Full mark policy를 import하지 않는다.
 정확한 값·제한·저장 형태와 지원은 [expression selection](contract/current/MARK_SELECTION.md#expression-selection)이 소유한다.
 
+### Calendar and source resource union
+
+`grammar/calendar/`가 명시 civil-date 집계와 grid cell/month boundary를 계산하고
+`materialization/calendar/`가 exact source 검산과 concrete day/label 출력을 소유한다.
+`actions/data/resourcePlan.js`는 Full source revision의 typed resource DAG를 기존 family factories로
+한 번 계산하고 모든 후보를 preflight한다. 기존 private primitive authority에 exact data revision vector를
+결박하여 독립 roots와 dependent layouts를 함께 교체한다. Native와 resource 소비자의 합집합은
+기존 materialization planner가 scale→mark→guide 순서로 한 번 실행한다. Facet projection의 별도
+logical dataset 경로 및 명시 graph edit/recompute의 prepared 계획은 그대로 유지한다. 새 pending
+state·저장 callback·renderer semantic 해석은 없다. Calendar theme는 기존 resource role owner를
+사용하며 정확 API와 defaults는 [CALENDAR](contract/current/CALENDAR.md)가 소유한다.
+
+Calendar 통합 실측은920entries/6,061,365unpacked bytes이며 Node20/24 packed 최대1,319,887bytes다.
+한도는920/1,320,000/6,062,000으로 최소 올림한다. 동일 minified JS의 Node20/22/24 gzip에서
+Full 최대658,183/Basic367,366bytes를 확인해659,000/368,000으로 갱신하고 SVG25,000 및
+interaction83,000은 유지한다. Search963,468bytes는964,000으로 올림하며 기존 global/critical
+coverage floor는 유지한다. 정확 고정 archive와 최종 검증은 Calendar evidence가 소유한다.
 
 ### Interaction의 원자 authoring command 경계
 
@@ -3633,3 +3657,8 @@ package927entries/packed1,340,606/unpacked6,125,329이다. 상한은 각각653,5
 927/1,341,000/6,126,000으로 최소 올림했다. Basic 증가는 공유 persisted selection 검증 소유자이며
 Full action import는 없다. Search961,762bytes는962,000 상한을 쓴다. 최초 초과와 경계 수정 전후
 archive는 STEP059 evidence에서 별도 구분하며 최종 통합에서는 합산 실측을 다시 수행한다.
+
+Calendar와 영역 선택을 합친 source/resource union은 기존 Full final-target validation 소유자를 그대로
+재사용한다. 새 macro owner는 없다. 합산 측정은 package944/1,360,688/6,224,525와
+Full664,335/Basic372,044/interaction106,140gzip이며 기존 두 branch의 cap을 합격으로 재사용하지 않는다.
+통합 상한은944/1,361,000/6,225,000 및664,400/372,100/106,200, search971,000이다.

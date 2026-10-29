@@ -1,4 +1,4 @@
-import { validateGeneratedItemLimit, validateWorkLimit } from "../../core/validation.js";
+import { validateGeneratedItemLimit, validateWorkLimit } from "../core/validation.js";
 
 function comparePoint(a, b) {
   return a.x - b.x || a.y - b.y || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0);
@@ -25,7 +25,7 @@ function contains(ring, point) {
 
 // Opposite cell boundaries cancel. The remaining directed edges keep the
 // occupied region on their right in the grid's downward-positive y convention.
-export function stitchContourRings(segments, grid) {
+export function stitchGridRings(segments, grid) {
   const edges = new Map();
   for (const [a, b] of segments) {
     if (a.id === b.id || a.x === b.x && a.y === b.y) continue;
@@ -33,7 +33,7 @@ export function stitchContourRings(segments, grid) {
     if (edges.has(reverse)) edges.delete(reverse);
     else edges.set(key, { a, b, key });
   }
-  validateGeneratedItemLimit(edges.size, "Contour boundary segment count");
+  validateGeneratedItemLimit(edges.size, "Grid boundary segment count");
   const outgoing = new Map();
   for (const edge of edges.values()) {
     if (!outgoing.has(edge.a.id)) outgoing.set(edge.a.id, []);
@@ -50,7 +50,7 @@ export function stitchContourRings(segments, grid) {
       points.push(edge.b);
       if (edge.b.id === first.a.id) break;
       const candidates = (outgoing.get(edge.b.id) ?? []).filter(candidate => !visited.has(candidate.key));
-      if (!candidates.length) throw new Error("Contour boundary must form closed rings.");
+      if (!candidates.length) throw new Error("Grid boundary must form closed rings.");
       const dx = edge.b.x - edge.a.x, dy = edge.b.y - edge.a.y;
       const turn = candidate => Math.atan2(dx * (candidate.b.y - candidate.a.y) - dy * (candidate.b.x - candidate.a.x),
         dx * (candidate.b.x - candidate.a.x) + dy * (candidate.b.y - candidate.a.y));
@@ -68,10 +68,10 @@ export function stitchContourRings(segments, grid) {
   for (const hole of holes) {
     let parent;
     for (const outer of outers) {
-      validateWorkLimit(work += outer.points.length, "Contour containment work");
+      validateWorkLimit(work += outer.points.length, "Grid containment work");
       if ((!parent || outer.area < parent.area) && contains(outer.points, hole.points[0])) parent = outer;
     }
-    if (!parent) throw new Error("Contour holes require an enclosing outer ring.");
+    if (!parent) throw new Error("Grid holes require an enclosing outer ring.");
     parent.holes.push(hole);
   }
   const order = (a, b) => comparePoint(a.points[0], b.points[0]) || b.area - a.area;
@@ -79,7 +79,7 @@ export function stitchContourRings(segments, grid) {
     const step = axis === 0 ? grid.dx : grid.dy, coordinate = grid.origin[axis] + value * step;
     if (!Number.isInteger(value) && (coordinate === grid.origin[axis] + Math.floor(value) * step ||
       coordinate === grid.origin[axis] + Math.ceil(value) * step)) {
-      throw new RangeError("Contour crossing cannot be represented in the coordinate frame.");
+      throw new RangeError("Grid crossing cannot be represented in the coordinate frame.");
     }
     return coordinate;
   }));

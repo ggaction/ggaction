@@ -114,6 +114,23 @@ export const cases = [
       if (type === "lasso") assert.equal(restored.semanticSpec.resources.find(resource => resource.id === "picked").options.screenPolygon.length, 4);
       session.destroy(); assert.equal(clicks.size, 0);
     }
+    const calendarRows = [{id:'a',day:'2024-02-28',value:2},{id:'b',day:'2024-02-29',value:3},{id:'c',day:'2024-02-29',value:4}];
+    const calendar = chart().createCanvas({width:300,height:200,margin:10}).createData({id:'days',keyField:'id',values:calendarRows})
+      .createCalendarLayout({date:'day',value:'value',start:'2024-02-28',end:'2024-02-29',timeZone:'UTC',weekStartsOn:1,aggregate:'sum',missing:'omit'})
+      .createCalendarPlot({color:false,labels:false}).selectMarks({id:'picked',target:'calendar',items:[]})
+      .highlightMarks({selection:'picked',fill:'red',bringToFront:false,dimOthers:false});
+    const calendarSession = createInteractionSession({program:calendar,bindings:[{type:'lasso',target:'calendar',selection:'picked'}]});
+    const pendingCalendar = new Map();let sequence=0;host.requestAnimationFrame=fn=>(pendingCalendar.set(++sequence,fn),sequence);host.cancelAnimationFrame=id=>pendingCalendar.delete(id);
+    calendarSession.mount(host);
+    const cell = getMarkItems(calendar,{target:'calendar'}).at(-1), {x,y,width,height}=cell.geometry[0].properties;
+    const polygon = [[x+.1,y+.1],[x+width-.1,y+.1],[x+width-.1,y+height-.1],[x+.1,y+height-.1]];
+    const fire=(type,point)=>clicks.get(type)({pointerId:1,pointerType:'mouse',button:0,clientX:point[0]+10,clientY:point[1]+20});
+    fire('pointerdown',polygon[0]);for(const point of polygon.slice(1))fire('pointermove',point);fire('pointerup',polygon[0]);
+    const selectedCalendar=deserializeProgram(serializeProgram(calendarSession.getState().program));
+    const day=getMarkItems(selectedCalendar,{target:'calendar'}).filter(item=>item.properties.fill==='red');
+    assert.equal(day.length,1);assert.equal(day[0].fields.date,'2024-02-29');assert.equal(day[0].fields.value,7);assert.equal(day[0].rows.length,2);
+    assert.equal(day[0].key,cell.key);assert.equal(calendarSession.getState().revision,1);assert.equal(pendingCalendar.size,0);
+    assert.equal(getMarkItems(calendar,{target:'calendar'}).filter(item=>item.properties.fill==='red').length,0);calendarSession.destroy();assert.equal(clicks.size,0);
     const p = make(chart);
     const session = createInteractionSession({ program: p }), active = new Map();
     const element = { addEventListener(type, listener) { active.set(type, listener); },
