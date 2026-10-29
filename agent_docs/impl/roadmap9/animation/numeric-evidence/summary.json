@@ -43,6 +43,15 @@
     {
       "file": "animation-values-final-discovery.log.gz",
       "sha256": "ecc09cda9fec47c1a44a5d34cc98ab08259a30dd46b49902924c86cbfef70337"
+    },
+    {
+      "file": "animation-values-final-docs.log.gz",
+      "sha256": "d8bb81a2bda306fbb0a0e75441505b49971303436d54bdf9d6fd84a4c7d1b226"
+    },
+    {
+      "file": "animation-values-package-contract.log.gz",
+      "sha256": "093a3303056cd98e4898c9ac25abfb0c9d21119fc3000cb3f0c6919c009ca6ae"
     }
-  ]
+  ],
+  "sourceCommit": "206524886"
 }
