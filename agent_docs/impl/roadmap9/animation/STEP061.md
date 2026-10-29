@@ -4,6 +4,7 @@
 
 - [x] 기존 승인 재사용: [remainingApproval](../AUTHORIZATION.json)
 - [x] 순수 수치 커널과 변경 경로의 독립 수치 검증
+- [x] item key·primitive role 기반 순수 대응과 실제 keyed 데이터 revision 검증
 - [ ] item identity·primitive role별 transition planner
 - [ ] 정확한 두 endpoint와 typed scene 연결
 - [ ] 의미 좌표 및 곡선·partition·graph·Geo 통합
@@ -16,3 +17,9 @@
 패키지에는 내부 모듈 한 개가 추가된다. dry pack은 1,060 entries, 1,509,975 packed bytes, 6,889,438 unpacked bytes였다. packed 상한은 그대로 두고 entries 1개와 unpacked 최소 4KB만 보정했다. 공개 export·타입·ChartProgram 저장 구조·브라우저 진입점은 이 체크포인트에서 바뀌지 않는다. 소스 식별용 생성 문서는 소스 커밋 뒤에 다시 고정한다.
 
 이 체크포인트는 STEP-061/062 완료가 아니다. typed planner·의미 좌표·clock/player·offline payload와 4개 출력 경로·selection/hit/session 연결은 계속 구현한다. 원본 요구는 [animation 계약](../../../../study/coverage-expansion-2026-10-27/roadmap/contracts/animation.ko.md)에 유지한다.
+
+## Stable identity 대응 체크포인트
+
+`src/grammar/animation/matching.js`는 planner가 한 번 투영한 `{key, role}`만 대응시킨다. 배열 위치나 path 문자열을 같은 항목의 증거로 쓰지 않는다. 반환하는 index는 이미 key로 결정한 두 endpoint의 위치를 가리킬 뿐이다. target 순서의 대응·enter 목록과 source 순서의 exit 목록을 불변 데이터로 반환한다. anonymous primitive는 항상 enter/exit이며, 같은 endpoint의 중복 key·role은 오류다. child namespace를 포함한 전체 key를 보존한다. topology·coordinate compatibility와 kernel 결정은 후속 planner의 의무다.
+
+실제 `reviseData`로 값·순서를 변경하고 항목을 추가·삭제한 point chart에서도 같은 item key가 대응된다. 복합 primitive role, namespace, delimiter 충돌, prototype 형태 문자열, 2,003개 역순 대응, accessor·중복·불변성 경계를 확인했다. 숫자·대응 커널 합계 Node 20/22/24 각각 16개와 discovery 16개가 통과했고, 두 커널의 line/branch/function coverage는 모두 100%다. [정확한 로그와 측정](matching-evidence/summary.json)을 보존한다.

@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
-  "animation-values": { prefix: "grammar/animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Transition numerics must preserve exact endpoints, bounded interpolation and immutable linear-light color values." },
+  "animation": { prefix: "grammar/animation/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Transition numerics and item matching must preserve exact endpoints, bounded values and unambiguous semantic identity." },
   "position-scale-scope": { prefix: "actions/encodings/position/scope.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Aggregate positional identities must be exact-argument scoped and expire across nested failures without entering public options or persisted state." },
   "conditional-encoding-requests": { prefix: "actions/encodings/conditionalRequest.js", floor: { lines: 90, branches: 80, functions: 100 }, rationale: "Direct and aggregate conditional encoders must resolve branch resource identities with one policy." },
   "facade-frame-admission": { prefix: "actions/charts/frame.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Complete facade positions and guide ownership must be admitted before any state-changing child." },
