@@ -1136,6 +1136,10 @@
     "theme": [
       {
         "type": "file",
+        "path": "unit/actions/theme-guide-defaults.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/actions/theme-item-identity.test.js"
       },
       {

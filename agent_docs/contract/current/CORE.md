@@ -234,6 +234,12 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   `mutedText`, label은 `text`/`fontFamily` 및 optional `fontSize`/`fontWeight`를 따른다. 명시한 역할별 style과 node별 overrides는
   theme보다 우선한다. 마지막 frame을 제거하면 각 plot family의 기본값을 복원하며, 저장된
   graph/hierarchy/layout 결과·revision·item key는 변경하거나 재계산하지 않는다.
+  마지막 frame 제거 시 Cartesian/Polar/Parallel 축·격자와 각 범례는 일반 light token 대신 각 native family의
+  기본 색을 복원한다. 명시한 색은 기본값과 같아도 유지한다. Stroke 범례의 field-driven stroke는 보존하며
+  target fill만 기존 sample owner에서 갱신하므로 색 변경이 legend geometry를 바꾸지 않는다.
+  GradientPlot density 범례는 title/labels/border 역할을 따르며 density paint와 계산 결과는 유지한다.
+  Composition root는 자신의 Canvas/title/header/guide만 재조정한다. Child와 collected-guide snapshot은
+  해당 owner가 계산한 스타일을 그대로 유지한다.
 - 상태와 불변성: request는 owner/scope/base/partial token frame으로 immutable하게 저장한다. Full
   resolved token object와 계산된 layout을 theme request state에 저장하지 않는다. Composition 전파는
   retained child input을 변경하지 않고 postorder로 새 snapshots를 만든다.
@@ -272,6 +278,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     resolved scales, statistics, ordering과 caller program immutability.
   - ✅ Covered: collection 색상 교체는 기존 item identity/key/lineage/topology와 owner clip을 보존하며,
     codec 복원·Canvas/SVG transition scene·named highlight에서도 유지한다. `test/unit/actions/theme-item-identity.test.js`.
+  - ✅ Covered: native guide family 색 복원, theme-before-create, stroke samples, named axes, Basic,
+    nested concat/facet/shared legend와 offline 복원. `test/unit/actions/theme-guide-defaults.test.js`.
 - Visual boundary
   - ✅ Covered: `dark-theme-scatterplot`의 explicit low-level style primitive와 public `applyTheme`
     program 사이 exact graphic/renderer/decoded PNG pixel equivalence.
@@ -283,7 +291,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 - Signature: `removeTheme()`
 - 목적과 필수 state: receiver가 직접 적용한 가장 최근 theme scope 하나를 제거한다.
-- Unit effect: local frame을 제거하고 inherited frame 또는 built-in light default를 드러낸다.
+- Unit effect: local frame을 제거하고 inherited frame 또는 native family default를 드러낸다.
 - Composition effect: `localOrder`의 newest `self` 또는 `descendants` owner만 제거한다. Descendant
   removal은 nested children과 future-child policy에서 그 parent owner만 제거하고, 보존된 child-local
   또는 다른 ancestor frame으로 color/font/layout을 다시 계산한다. `self` removal은 root Canvas만

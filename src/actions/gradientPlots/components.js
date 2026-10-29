@@ -11,6 +11,7 @@ import { findLayer } from "../../selectors/layers.js";
 import { createDensityLegendPaint } from "./paint.js";
 import { legendResourcePolicy } from "../../materialization/guides/resources.js";
 import { resolveConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
+import { DEFAULT_COLORS } from "../../theme/defaults.js";
 
 const CENTER_OPTIONS = Object.freeze([
   "id", "owner", "data", "category", "categoryType", "coordinate",
@@ -110,14 +111,14 @@ export const rematerializeGradientPlotLegend = /* @__PURE__ */ action(
     let next = editProperties(baseline, ids.strip, {
       x, y, width, height,
       fill: createDensityLegendPaint(config.gradient.opacity),
-      stroke: "#cbd5e1",
+      stroke: DEFAULT_COLORS.border,
       strokeWidth: 1
     });
     next = editProperties(next, ids.labels, {
       x: x + width + 10,
       y: [y + height, y],
       text: ["Low", "High"],
-      fill: "#64748b",
+      fill: DEFAULT_COLORS.mutedText,
       fontSize: 11,
       fontFamily: "sans-serif",
       textAlign: "left",
@@ -127,7 +128,7 @@ export const rematerializeGradientPlotLegend = /* @__PURE__ */ action(
       x,
       y: y - 18,
       text: config.guides.legend.title,
-      fill: "#334155",
+      fill: DEFAULT_COLORS.text,
       fontSize: 12,
       fontFamily: "sans-serif",
       fontWeight: 600,

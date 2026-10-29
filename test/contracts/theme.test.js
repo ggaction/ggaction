@@ -145,6 +145,9 @@ test("applies the dark theme to every public unit chart without semantic drift",
     assert.equal(JSON.stringify(themed.semanticSpec), semantic, definition.id);
     assert.equal(JSON.stringify(themed.resolvedScales), scales, definition.id);
     assert.equal(JSON.stringify(themed.graphicSpec.order), order, definition.id);
+    if (!(program.materializationConfigs.theme?.frames?.length > 0)) {
+      assert.deepEqual(themed.removeTheme().graphicSpec, program.graphicSpec, definition.id);
+    }
   }
   assert.equal(unitCount > 0, true);
 });

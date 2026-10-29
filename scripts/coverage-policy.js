@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "theme-native-guide-defaults": { prefix: "actions/theme/guideDefaults.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Theme removal must reuse native guide defaults and preserve child-owned snapshots and explicit colors." },
   "theme-typography-roles": { prefix: "actions/theme/typographyRoles.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Typography tokens must resolve native family defaults and authored precedence without losing exact font preparation." },
   "resource-plot-theme": { prefix: "actions/theme/resourcePlots.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Resource plot appearance must retain explicit authored styles while restoring each family's defaults without rerunning layout." },
   "embedded-asset-payload": { prefix: "grammar/assetPayload", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Encoded image and font bytes require one exact bounded ownership and digest contract." },

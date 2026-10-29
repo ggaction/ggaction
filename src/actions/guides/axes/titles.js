@@ -160,12 +160,13 @@ const CREATE_OPTIONS = ["target",
   "fontSize", "fontFamily", "fontWeight", "alongOffset", "align", "baseline", "overlap"
 ];
 const EDIT_OPTIONS = CREATE_OPTIONS.filter(key => key !== "scale");
-const DEFAULTS = {
+const DEFAULTS = Object.freeze({
   color: DEFAULT_COLORS.text,
   fontSize: AXIS_TITLE_FONT_SIZE,
   fontFamily: DEFAULT_FONT_FAMILY,
   fontWeight: AXIS_TITLE_FONT_WEIGHT
-};
+});
+export { DEFAULTS as CARTESIAN_AXIS_TITLE_DEFAULTS };
 
 function validateText(text) {
   return validateNonEmptyString(text, "Axis title text");

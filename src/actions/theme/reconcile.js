@@ -1,4 +1,7 @@
 import { themeTypographyValue } from "./typographyRoles.js";
+import { guideConfigDefault, guideGraphicDefaults } from "./guideDefaults.js";
+import { legendSampleFill } from "../../materialization/legends.js";
+import { legendResourcePolicy } from "../../materialization/guides/resources.js";
 import { resourcePlotThemeOwner, resourcePlotThemeProperty, addResourcePlotThemeOverrides, clearResourcePlotThemeOverrides } from "./resourcePlots.js";
 import { applyMaterializationPlan, buildMaterializationPlan } from "../../materialization/planner.js";
 import { synchronizeFacetLegendAppearance } from "../../materialization/facetGuides/owner.js";
@@ -88,7 +91,7 @@ function roleValues(role, sourceTokens, legacy = [], family) {
   ]);
 }
 
-function mapRoleValue(value, role, sourceTokens, targetTokens, legacy, family) {
+function mapRoleValue(value, role, sourceTokens, targetTokens, legacy, family, nativeDefault, themeActive = true) {
   if (Array.isArray(value)) {
     let changed = false;
     const next = value.map(item => {
@@ -97,17 +100,17 @@ function mapRoleValue(value, role, sourceTokens, targetTokens, legacy, family) {
         role,
         sourceTokens,
         targetTokens,
-        legacy, family
+        legacy, family, nativeDefault, themeActive
       );
       changed ||= mapped.changed;
       return mapped.value;
     });
     return { changed, value: changed ? next : value };
   }
-  if (!roleValues(role, sourceTokens, legacy, family).has(value)) {
+  if ((nativeDefault === undefined || value !== nativeDefault) && !roleValues(role, sourceTokens, legacy, family).has(value)) {
     return { changed: false, value };
   }
-  const target = roleToken(targetTokens, role, family);
+  const target = !themeActive && nativeDefault !== undefined ? nativeDefault : roleToken(targetTokens, role, family);
   return { changed: value !== target, value: target };
 }
 
@@ -256,6 +259,8 @@ function mapGraphicProperties(
   sourceTokens,
   targetTokens,
   overrides,
+  nativeDefaults,
+  themeActive,
   overrideId = id
 ) {
   let changed = false;
@@ -264,7 +269,8 @@ function mapGraphicProperties(
     if (!Object.hasOwn(properties, property)) continue;
     if (isOverridden(overrides, `g:${overrideId}.${property}`) ||
         isOverridden(overrides, `g:${id}.${property}`)) continue;
-    const role = graphicRole(program, id, property);
+    const native = nativeDefaults.get(id);
+    const role = (native?.property === property ? native.role : undefined) ?? graphicRole(program, id, property);
     if (role === undefined || isFieldDrivenLegendSymbol(id) ||
         isFieldDrivenMark(program, id, property)) continue;
     const mapped = mapRoleValue(
@@ -272,7 +278,8 @@ function mapGraphicProperties(
       role,
       sourceTokens,
       targetTokens,
-      roleLegacy(role), axisFamily(id)
+      roleLegacy(role), axisFamily(id),
+      native?.property === property ? native.value : undefined, themeActive
     );
     if (mapped.changed) {
       next[property] = mapped.value;
@@ -288,8 +295,16 @@ function recolorGraphic(
   graphic,
   sourceTokens,
   targetTokens,
-  overrides
+  overrides,
+  nativeDefaults,
+  themeActive
 ) {
+  if (program.compositionSpec !== undefined && !nativeDefaults.has(id) &&
+      !["canvas", "chartTitle", "chartSubtitle", `${program.compositionSpec.id}-headers`].includes(id)) {
+    // Child and collected-guide snapshots already carry their owning program's
+    // resolved appearance, including local overrides and native family defaults.
+    return program;
+  }
   if (resourcePlotThemeOwner(findLayer(program, id)) !== undefined) return program;
   if (id === `${program.compositionSpec?.id}-headers`) {
     const headers = program.materializationConfigs.facets?.[program.compositionSpec.id]?.headers;
@@ -308,6 +323,8 @@ function recolorGraphic(
       sourceTokens,
       targetTokens,
       overrides,
+      nativeDefaults,
+      themeActive,
       id
     );
     if (!mapped.changed) return program;
@@ -335,6 +352,8 @@ function recolorGraphic(
       sourceTokens,
       targetTokens,
       overrides,
+      nativeDefaults,
+      themeActive,
       item.id
     );
     changed ||= mapped.changed;
@@ -375,7 +394,7 @@ function configRole(program, path) {
     return layer?.mark?.type === "text" ? "text" : "mark";
   }
   if (path[0] === "guides" && path[1] === "axis") {
-    const component = path[3];
+    const component = path[2] === "parallel" ? path.at(-2) : path[3];
     if (property !== "color") return undefined;
     if (component === "line") return "axis";
     if (component === "ticks") return "mutedText";
@@ -384,6 +403,11 @@ function configRole(program, path) {
   }
   if (path[0] === "guides" && path[1] === "grid" && property === "color") {
     return "grid";
+  }
+  if (path[0] === "guides" && path[1] === "legend" && property === "color") {
+    if (path.includes("titleStyle")) return "strongText";
+    if (path.includes("labels")) return "text";
+    if (path.includes("border")) return "border";
   }
   if (path[0] === "title" && property === "color") {
     if (path.includes("titleStyle")) return "strongText";
@@ -446,7 +470,7 @@ function recolorConfig(
           role,
           sourceTokens,
           targetTokens,
-          roleLegacy(role), axisFamily(String(path[2] ?? ""))
+          roleLegacy(role), axisFamily(String(path[2] ?? "")), guideConfigDefault(path), themeActive
         );
   }
   if (["theme", "highlights", "selections"].includes(path[0])) {
@@ -1141,6 +1165,7 @@ export function reconcileProgramTheme(program, { source, metadata }) {
     : current;
   const sourceTokens = resolveEffectiveThemeTokens(contentState(sourceState));
   const targetTokens = resolveEffectiveThemeTokens(contentState(state));
+  const themeActive = resolveEffectiveThemeFrame(contentState(state)) !== undefined;
   const overrides = collectOverrides(program);
 
   let themed = program._withMaterializationConfig(
@@ -1154,7 +1179,7 @@ export function reconcileProgramTheme(program, { source, metadata }) {
     sourceTokens,
     targetTokens,
     overrides,
-    resolveEffectiveThemeFrame(contentState(state)) !== undefined
+    themeActive
   );
   let next = configs.changed
     ? themed
@@ -1194,7 +1219,30 @@ export function reconcileProgramTheme(program, { source, metadata }) {
     next = next.rematerializeParallelAxes();
   }
 
+  const nativeDefaults = guideGraphicDefaults(next);
+  const beforeMarkColors = next;
+  const markIds = new Set(next.semanticSpec.layers.map(layer => layer.id));
+  for (const id of markIds) {
+    const graphic = next.graphicSpec.objects[id];
+    if (graphic !== undefined) next = recolorGraphic(next, id, graphic,
+      sourceTokens, targetTokens, overrides, nativeDefaults, themeActive);
+  }
+  // Stroke legend samples retain the target's concrete fill as well as their
+  // field-driven stroke. Refresh that dependency after mark colors, before
+  // reconciling the new legend chrome through its own theme roles.
+  for (const kind of ["strokeGradient", "strokeInterval"]) {
+    const config = next.guideConfigs.legend?.[kind], target = config?.target;
+    if (target !== undefined && beforeMarkColors.graphicSpec.objects[target] !== next.graphicSpec.objects[target]) {
+      const fill = config.blockSymbol?.fill ?? legendSampleFill(next, target) ?? targetTokens.mark;
+      for (const id of legendResourcePolicy(kind).graphicIds) {
+        if (/(?:Strips|Symbols)$/u.test(id) && next.graphicSpec.objects[id] !== undefined) {
+          next = next.editGraphics({ target: id, property: "fill", value: fill });
+        }
+      }
+    }
+  }
   for (const [id, graphic] of Object.entries(next.graphicSpec.objects)) {
+    if (markIds.has(id)) continue;
     if (parallelChanged && id.startsWith("parallelAxis")) continue;
     const graphicSourceTokens = id === "canvas"
       ? sourceRootTokens
@@ -1208,7 +1256,9 @@ export function reconcileProgramTheme(program, { source, metadata }) {
       graphic,
       graphicSourceTokens,
       graphicTargetTokens,
-      overrides
+      overrides,
+      nativeDefaults,
+      themeActive
     );
   }
 

@@ -59,7 +59,7 @@ const OPTIONS = [
   "lineHeight", "overlap", "labelMap", "alongOffset", "flush", "flushThreshold", "colorMap", "align"
 ];
 
-const DEFAULTS = {
+const DEFAULTS = Object.freeze({
   count: 5,
   color: DEFAULT_COLORS.text,
   fontSize: AXIS_LABEL_FONT_SIZES.cartesian,
@@ -67,7 +67,8 @@ const DEFAULTS = {
   fontWeight: AXIS_LABEL_FONT_WEIGHT,
   rotation: 0,
   overlap: "error"
-};
+});
+export { DEFAULTS as CARTESIAN_AXIS_LABEL_DEFAULTS };
 
 function normalizeLabelLayout(config, args, operation) {
   const next = { ...config };
