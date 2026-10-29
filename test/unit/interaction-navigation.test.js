@@ -73,10 +73,10 @@ test('wheel modes normalize CSS deltas and keyboard native operations share hist
 test('native preparation waits on the committed frame after drag and cancellation rejects a late lease',async()=>{
  const pending=[],released=[],p=program(),{s,h}=setup(p,{}, {assetResolver:request=>new Promise(resolve=>pending.push({request,resolve}))});
  await tick();pending[0].resolve({dispose(){released.push('initial')}});await s.whenSettled();
- h.fire('pointerdown');h.fire('pointermove',120,90);h.flush();assert.deepEqual(xy(s),[120,90]);h.fire('pointerup',120,90);const wait=s.whenSettled();await tick();
+ h.fire('pointerdown');h.fire('pointermove',120,90);h.flush();assert.deepEqual(xy(s),[80,90]);await tick();pending[1].resolve({dispose(){released.push('preview')}});await s.whenSettled();assert.deepEqual(xy(s),[120,90]);h.fire('pointerup',120,90);const wait=s.whenSettled();await tick();
  assert.equal(s.getState().program,p);assert.deepEqual(xy(s),[80,90]);assert.equal(s.getState().previewProgram,null);
- s.dispatch({type:'undo'});assert.equal((await wait).status,'cancelled');assert.equal(pending[1].request.signal.aborted,true);
- pending[1].resolve({dispose(){released.push('late')}});await tick();assert.equal(s.getState().program,p);assert.deepEqual(xy(s),[80,90]);assert.deepEqual(released,['late']);s.destroy();
+ s.dispatch({type:'undo'});assert.equal((await wait).status,'cancelled');assert.equal(pending[2].request.signal.aborted,true);
+ pending[2].resolve({dispose(){released.push('late')}});await tick();assert.equal(s.getState().program,p);assert.deepEqual(xy(s),[80,90]);assert.deepEqual(released,['preview','late']);s.destroy();
 });
 
 test('nested CSS transforms map camera deltas and keep sibling graphics unchanged',()=>{

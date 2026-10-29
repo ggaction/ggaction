@@ -39,6 +39,9 @@ session.updateProgram(async()=>({}));
 // @ts-expect-error explicit IDs belong to callback preparation, not ordinary replacement
 session.updateProgram(program,{transactionId:'ordinary'});
 const ready:Promise<import(${JSON.stringify(path.join(root, "types/interaction.js"))}).InteractionSettlement>=asyncSession.whenSettled();
+const previewImages = session.getState().previewAssets?.images;
+// @ts-expect-error preview handles are read-only
+session.getState().previewAssets = null;
 // @ts-expect-error asset preparation must return a disposable lease
 createInteractionSession({program,assetResolver:()=>({})});
 // @ts-expect-error asset results use authentic prepared handles

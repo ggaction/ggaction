@@ -96,7 +96,8 @@ Superseding edits and destroy abort the request; a late result is released witho
 result. Native transaction events keep their existing commit/settled/error/cancel phases.
 Initial and external preparation use an `assets` event with a separate `status` field.
 
-Continue from an immutable `program` containing retained images and a Canvas `context`:
+Continue from an immutable `program` containing retained images, a Canvas `context`, and an
+explicit `interactionBindings` array (use `[]` for commands without pointer editing):
 
 <!-- snippet-context:start -->
 
@@ -110,7 +111,7 @@ import { createInteractionSession } from "ggaction/interaction";
 
 const assetSession = createInteractionSession({
   program,
-  bindings: [],
+  bindings: interactionBindings,
   async assetResolver({ program, signal }) {
     const bitmaps = [];
     const dispose = () => { for (const bitmap of bitmaps.splice(0)) bitmap.close(); };
@@ -131,9 +132,11 @@ const assetSession = createInteractionSession({
   }
 });
 const stopDrawing = assetSession.subscribe(event => {
-  if (event.phase === "commit" || (event.type === "assets" && event.status === "settled")) {
-    render(event.state.program, context, event.state.assets);
-  }
+  const state = event.state;
+  if (state.destroyed) return;
+  const current = state.previewProgram ?? state.program;
+  const assets = state.previewProgram ? state.previewAssets : state.assets;
+  if (assets) render(current, context, assets);
 });
 await assetSession.whenSettled();
 const disposeAssets = () => { stopDrawing(); assetSession.destroy(); };
@@ -144,7 +147,13 @@ and release their handles in the lease's `dispose`. Release partially acquired r
 preparation throws. Prepared handles belong to the exact committed program; undo/redo/reset
 prepare the restored snapshot again. `state.assets` exposes only the accepted rendering handles;
 `state.preparation` exposes the pending transaction, generation, base revision and scoped resource
-revisions. The host still owns rendering, resize observation and animation-frame preparation.
+revisions. With editing bindings, the same resolver prepares each exact preview.
+`previewProgram`, `previewAssets` and its hit frame appear together only when ready. While a new
+preview is pending, the previous accepted frame remains visible. New samples abort older pending
+work; cancellation restores the committed program and releases transient handles. Initial asset
+preparation must finish before editing capture begins. Final release prepares the latest candidate
+through the ordinary commit path and adds one history entry. The host still owns drawing and
+public animation-frame preparation.
 
 ## Undo, redo and reset
 

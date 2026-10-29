@@ -79,13 +79,17 @@ export function createInteractionSession(input) {
   let linkedSelections = inspectSelectionLinks(program, configured.linked);
   let selectionRecords = reconcileSelections(program, [], selectionPolicy, { initialize: true }).records;
   let rootTransform = IDENTITY, mounted, destroyed = false, destroyRequested = false, generation = 0, lastHit = null, processing = false;
-  let state, revision = 0, transactionSequence = 0, ignoredClick, previewProgram = null;
+  let state, revision = 0, transactionSequence = 0, ignoredClick, previewProgram = null, previewPreparation = null;
   const committedSnapshot = () => ({ program, selectionRecords, linkedSelections });
   const history = createInteractionHistory(committedSnapshot(), request.historyLimit);
   const drainedTransactions = new Set();
   const queue = [], listeners = new Set();
-  const preparation = createInteractionPreparation(request.assetResolver, operation => perform(operation), () => snapshot());
+  let assetResolver = request.assetResolver;
+  const preparation = createInteractionPreparation(assetResolver, operation => perform(operation), () => snapshot());
+  let activePreparation = preparation;
   const snapshot = () => state = freezeOwned({ program, previewProgram, scene: bridge.getState().scene, ...preparation.inspect(),
+    previewAssets: previewPreparation?.inspect().assets ?? null,
+    preparation: previewPreparation?.inspect().preparation ?? preparation.inspect().preparation,
     frameVersion: bridge.getState().version, generation, revision, hit: lastHit, linkedSelections, history: history.inspect(), mounted: mounted !== undefined, destroyed });
   snapshot();
   const live = () => { if (destroyed) throw new Error("Interaction session is disposed."); };
@@ -132,9 +136,9 @@ export function createInteractionSession(input) {
   };
   const close = () => {
     let failure;
-    try { preparation.dispose(); } catch (error) { failure = error; }
-    try { if (mounted !== undefined) detach(mounted, "destroy"); } catch (error) { failure ??= error; }
-    mounted = undefined; lastHit = null; destroyed = true; history.dispose();
+    try { if (mounted !== undefined) detach(mounted, "destroy"); } catch (error) { failure = error; }
+    try { preparation.dispose(); } catch (error) { failure ??= error; }
+    mounted = undefined; lastHit = null; destroyed = true; assetResolver = undefined; history.dispose();
     try { publish("destroy"); } catch (error) { failure ??= error; }
     finally { listeners.clear(); bridge.dispose(); base = null; rootTransform = IDENTITY; queue.length = 0; selectionRecords = []; ignoredClick = undefined; }
     if (failure) throw failure;
@@ -142,6 +146,7 @@ export function createInteractionSession(input) {
   };
   const prepareAssets = (candidate, metadata, handlers, vector) => {
     const previous = program, sessionGeneration = generation, baseRevision = revision;
+    activePreparation = preparation;
     return preparation.start(candidate, { sessionGeneration, transactionId: metadata.transactionId, baseRevision }, {
       current: tags => !destroyed && program === previous && generation === tags.sessionGeneration && revision === tags.baseRevision,
       ...handlers
@@ -363,7 +368,7 @@ export function createInteractionSession(input) {
   };
   const session = Object.freeze({
     getState() { return state; },
-    whenSettled() { return preparation.whenSettled(); },
+    whenSettled() { return activePreparation.whenSettled(); },
     dispatch,
     updateProgram(next, configuration = {}) {
       live();
@@ -432,23 +437,46 @@ export function createInteractionSession(input) {
                 if (token?.raf !== undefined) scheduler.cancelAnimationFrame(token.raf);
                 if (moving && restore && token?.previewed) bridge.updateFrame(rebindProgramHitFrame(base, token.scene, nextInteger(bridge.getState().version), transform));
               }
-              finally { if (token) token.raf = undefined; gesture = undefined; previewProgram = null; }
+              finally {
+                if (token) token.raf = undefined; gesture = undefined; previewProgram = null;
+                const previous = previewPreparation; previewPreparation = null; snapshot(); previous?.dispose();
+              }
             };
             const details = (token, phase, diagnostics = []) => ({ transactionId: token.transactionId, origin: "user", phase, revision,
               affectedOwners: freezeOwned([binding.target]), previous: token.previous, current: program,
               diagnostics: cloneAndFreeze(diagnostics), selectionChanges: Object.freeze([]) });
             const failure = (token, error) => {
-              discard(token);
+              try { discard(token); } catch { /* Preserve the original error after cleanup. */ }
               publish(eventType, details(token, "error", [{ code: getErrorDetails(error)?.code ?? "selection-gesture-failed", message: String(error?.message ?? error) }]));
             };
-            const preview = token => {
+            const preview = (token, final = false) => {
               if (token.previous !== program) throw new Error("Selection gesture baseline is stale.");
               const result = navigating ? cameraNavigationDraft(token.context, token.pointers) : (moving ? movement.command : regionGestureCommand)(token.context, token.points);
               const command = interactionTransaction(result.command, token.transactionId), draft = prepareEdit(command, result.prepared);
-              previewProgram = moving ? draft?.prepared.program ?? program : materializeRegisteredSelectionPreview(draft?.prepared.program ?? program, result.overlay);
-              if (moving && draft) { nextInteger(nextInteger(draft.frame.version)); bridge.updateFrame(draft.frame); token.previewed = true; lastHit = null; }
-              else if (navigating && token.previewed) bridge.updateFrame(rebindProgramHitFrame(base, token.scene, nextInteger(bridge.getState().version), transform));
-              publish(eventType, { ...details(token, "preview"), affectedOwners: draft?.prepared.affectedOwners ?? freezeOwned([binding.target]) });
+              if (final && preparation.enabled) return { command, draft };
+              const next = moving ? draft?.prepared.program ?? program : materializeRegisteredSelectionPreview(draft?.prepared.program ?? program, result.overlay);
+              const accept = () => {
+                let frame;
+                if (moving && draft) {
+                  frame = rebindProgramHitFrame(draft.candidate, draft.candidate.scene, nextInteger(bridge.getState().version), transform);
+                  nextInteger(nextInteger(frame.version));
+                } else if (navigating && token.previewed) frame = rebindProgramHitFrame(base, token.scene, nextInteger(bridge.getState().version), transform);
+                return () => {
+                  previewProgram = next;
+                  if (frame) { bridge.updateFrame(frame); token.previewed = true; lastHit = null; }
+                  publish(eventType, { ...details(token, "preview"), affectedOwners: draft?.prepared.affectedOwners ?? freezeOwned([binding.target]) });
+                };
+              };
+              if (preparation.enabled) {
+                const owner = token.preparation;
+                activePreparation = owner;
+                owner.start(next, { sessionGeneration: generation, transactionId: token.transactionId, baseRevision: revision }, {
+                  current: tags => !destroyed && mounted === lease && gesture === token && program === token.previous && generation === tags.sessionGeneration && revision === tags.baseRevision,
+                  prepare: accept,
+                  cancel() {},
+                  error: error => { try { lease.capture.fail(error); } catch (failure) { if (failure !== error) throw failure; } }
+                }, draft?.resourceRevisions);
+              } else accept()();
               return { command, draft };
             };
             lease.capture = prepareSelectionCapture(element, {
@@ -457,13 +485,15 @@ export function createInteractionSession(input) {
               perform,
               point: event => { const coordinates = pointerCoordinates(element, event, transform); return coordinates.localPoint === null ? null : coordinates.screenPoint; },
               begin: point => {
+                if (preparation.enabled && preparation.inspect().assets === null) return null;
                 const scene = bridge.getState().scene;
                 const context = navigating ? prepareCameraNavigation(program, binding, base, scene, transform, point) : moving ? movement.prepare(program, binding, base, scene, transform, point, bridge.hit(point, { slop: 0 }))
                   : prepareRegionGesture(program, binding, base, scene, transform, point);
                 if (!context) return null;
                 preparation.cancel("gesture");
                 transactionSequence = nextInteger(transactionSequence);
-                return gesture = { transactionId: `interaction-${transactionSequence}`, previous: program, context, points: [point], scene, previewed: false, raf: undefined };
+                if (preparation.enabled) previewPreparation = createInteractionPreparation(assetResolver, operation => perform(operation), () => snapshot());
+                return gesture = { preparation: previewPreparation, transactionId: `interaction-${transactionSequence}`, previous: program, context, points: [point], scene, previewed: false, raf: undefined };
               },
               join: navigating ? (token, pointers) => { token.context = joinCameraNavigation(token.context, pointers); } : undefined,
               sample: (token, point) => {
@@ -498,17 +528,17 @@ export function createInteractionSession(input) {
                 try {
                   if (token.raf !== undefined) scheduler.cancelAnimationFrame(token.raf);
                   token.raf = undefined;
-                  result = preview(token);
+                  result = preview(token, true);
                   // Asset preparation may defer the final commit; its displayed
                   // baseline must be the committed frame throughout that wait.
-                  discard(token, navigating);
+                  discard(token, navigating || preparation.enabled);
                 } catch (error) { failure(token, error); throw error; }
                 if (navigating && result.draft === null) { publish(eventType, details(token, "cancel", [{ code: "gesture-cancelled", message: "movement" }])); return outcome("unchanged"); }
                 return edit(result.command, result.draft);
               },
               cancel: (token, reason) => {
-                discard(token);
-                publish(eventType, details(token, "cancel", [{ code: "gesture-cancelled", message: reason }]));
+                try { discard(token); }
+                finally { publish(eventType, details(token, "cancel", [{ code: "gesture-cancelled", message: reason }])); }
               },
               error: failure,
               blockClick: pointerId => { ignoredClick = pointerId; }

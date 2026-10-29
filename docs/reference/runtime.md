@@ -1340,6 +1340,8 @@ export interface InteractionState {
   readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
   /** Prepared handles for this exact committed program; host passes them to its renderer. */
   readonly assets: Readonly<InteractionAssets> | null;
+  /** Transient handles for the exact previewProgram; never use committed assets for that preview. */
+  readonly previewAssets: Readonly<InteractionAssets> | null;
   /** Pending candidate identity. Program and history remain committed until ready. */
   readonly preparation: InteractionPreparation | null;
   readonly mounted: boolean;

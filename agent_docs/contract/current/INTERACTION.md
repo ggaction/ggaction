@@ -741,8 +741,35 @@ leave a camera preview visible. All pointer captures, RAF callbacks and DOM list
 teardown, and late callbacks are ignored. Removed target owners remain inactive; replacement owners must
 remain compatible with the explicit binding. An independently sampled camera frame cannot be used as a
 semantic baseline before the public animation adapter is connected. The accepted state.assets handles
-belong only to state.program; rendering an asset-bound previewProgram requires separate preparation
-for that exact preview. Automatic preview asset preparation remains a follow-up integration obligation.
+belong only to state.program; previewAssets belongs only to the exact previewProgram, as described below.
 
 Evidence: `test/unit/interaction-navigation.test.js`, shared pointer/session regressions and the canonical
 navigation browser snippet. Full camera animation and multi-editing gesture priority remain separate.
+
+## Prepared gesture previews
+
+When assetResolver is configured, the existing editing gesture adapters prepare transient candidates
+through the same asset preparation owner. Initial committed preparation must be accepted before capture
+starts. Each RAF sample supersedes the preceding pending preview; a previously accepted preview remains
+visible while its replacement prepares. Success publishes previewProgram, readonly previewAssets and
+the matching current hit frame together in one preview event. No committed program, revision, trace or
+history changes. Without a resolver, existing synchronous previews remain and previewAssets is null.
+
+state.preparation describes the current pending preview or native candidate using the existing four tags.
+whenSettled observes the most recently started preparation, including its settled/cancelled/error result.
+The callback receives the exact preview program and the same closed request shape. A gesture owns only
+one pending and one accepted transient lease; the committed lease stays separate and remains usable.
+
+Final pointer release calculates the latest candidate without starting another preview request, restores
+the committed frame, disposes transient leases and uses the ordinary final preparation/history path.
+Preview rejection reports one gesture error and commit zero; capture and the accepted preview are released.
+Superseded results cannot publish, and each complete late lease is disposed once. Cancel, native replacement,
+frame replacement, remount, unmount and destroy discard all transient preparation. Host abort listeners
+observe the restored committed state. Returned lease disposers remain exactly-once even when they throw.
+A disposer/subscriber exception after accepting a valid preview rejects that preparation Promise without
+rolling the accepted preview back; later cancellation/destroy still releases it.
+
+Host rendering selects state.previewProgram with state.previewAssets, or state.program with state.assets;
+it must not reuse committed handles for a preview. Existing image/font/shadow authentication is unchanged.
+This integration covers native gesture previews, not independently sampled animation scenes. Evidence:
+test/unit/interaction-preview-preparation.test.js and the actual browser bitmap lifecycle fixture.
