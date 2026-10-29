@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "pyramid-layout": { prefix: "grammar/pyramid/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stage order, width/area meaning, typed keys and finite oriented geometry must retain independent numerical evidence." },
   "geo-actions": { prefix: "actions/geo/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geometry revisions must preserve immutable feature identity and preflight consumers before writes." },
   "geo-materialization": { prefix: "materialization/geo", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geometry source results and their closed dispatch must retain exact source and identity validation." },
   "geo-selection": { prefix: "selectors/geometry.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geographic geometry selection must preserve eligible current and unique resource semantics." },
