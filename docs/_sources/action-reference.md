@@ -3782,6 +3782,10 @@ values, and properties are concrete graphical values. A range requires `min` or
 or the existing `inclusive` shorthand. Do not mix the two forms.
 [Mark selection and highlighting](../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
 
+Native `region` selectors use final position channels. A theta region or item-key selection
+may retain normalized clockwise `screenAngles: [startRadians, endRadians]` metadata;
+domain ranges or keys continue to determine membership.
+
 Named selections also accept exclusive `where: ComputedExpressionV2` boolean
 predicates over fields uniquely defined at final item grain. Parameter edits
 refresh their named labels, highlights and conditional consumers together.

@@ -6558,6 +6558,7 @@
       "materializeFlowNodes",
       "materializeFlowLinks",
       "materializeContourMark",
+      "materializeSelectionPreview",
       "materializeCalendarPlot",
       "materializeGeoMark"
     ],

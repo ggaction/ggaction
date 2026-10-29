@@ -9,6 +9,7 @@ import { realisticRecordView } from "../support/scenarios/realistic-data.js";
 import { releaseTidyTuesdaySourceCache } from "../support/datasets/tidytuesday.js";
 import { assertGraphicIntegrity } from "../oracles/graphic-integrity.js";
 import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
+import { assertRegionInteraction } from "../support/scenarios/region-interaction.js";
 const datasets=["tt-penguins","tt-london-marathon-winners","tt-astronauts","tt-us-births","tt-chocolate-ratings"];
 const witnessed=new Set();
 for (const dataset of datasets) for (const recipe of ["observations","categories","series"]) {
@@ -24,6 +25,7 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
    else p=p.createLineMark({id:"mark"}).encodeX({field:"order"}).encodeY({field:"value"}).encodeGroup({field:"category",fieldType:"nominal"});
    const items=getMarkItems(p,{target:"mark"}),keys=items.map(item=>item.key);
    assert.ok(keys.length>=2);
+   assertRegionInteraction(p, recipe, rows);
    const q=p.selectMarks({id:"picked",target:"mark",items:[keys[0]]}).highlightMarks({selection:"picked",color:"#ef4444",bringToFront:false});
    const saved=serializeProgram(q);
    const shape=items[0].geometry[0], properties=shape.properties;

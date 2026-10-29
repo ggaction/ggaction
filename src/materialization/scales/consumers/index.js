@@ -1,3 +1,5 @@
+import { findMarkFilterDataset } from "../../../selectors/datasets.js";
+import { readNominalField } from "../../../grammar/scales/fields.js";
 import { calendarScaleValues } from "../../calendar/scaleValues.js";
 import { resolveConditionalAreaConsumer, resolveConditionalBarConsumer, resolveConditionalArcConsumer } from "../../conditionalValues.js";
 import { conditionalPositionTemplate } from "../../../core/encodingBindings.js";
@@ -97,5 +99,11 @@ export function resolveConsumerCategoryOrder(program, consumer) {
     throw new Error("Remove category order before assigning a non-categorical position.");
   }
   const dataset = requireConsumerDataset(program, consumer);
+  if (order.values !== undefined && findMarkFilterDataset(program, consumer.layer) !== undefined) {
+    const source = requireConsumerDataset(program, { ...consumer, layer: { ...consumer.layer, data: dataset.source } });
+    const authored = resolveCategoryOrder(source.values, consumer.encoding.field, order);
+    const visible = new Set(readNominalField(dataset.values, consumer.encoding.field));
+    return Object.freeze(authored.filter(value => visible.has(value)));
+  }
   return resolveCategoryOrder(dataset.values, consumer.encoding.field, order);
 }

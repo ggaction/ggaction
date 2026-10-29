@@ -862,8 +862,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 713,000 bytes |
-| `ggaction/basic` | 380,000 bytes |
+| `ggaction` | 715,000 bytes |
+| `ggaction/basic` | 381,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/graph` | 43,000 bytes |
 | `ggaction/interaction` | 102,000 bytes |
@@ -3642,11 +3642,11 @@ geometry→fitted projection→mark union을 중복 없이 실행한다. Rendere
 
 ### Interaction의 원자 authoring command 경계
 
-`interaction/selection.js`는 명시 owner/child scope의 select/clearSelection/setParameter를 receiver의
+`interaction/selection.js`는 명시 owner/child scope의 selection/parameter/filter/reorder 명령을 receiver의
 기존 wrapped domain action에 위임한다. Full assembly를 controller에 import하거나 private primitive로
 state를 쓰지 않는다. `session.js`는 후보 program과 hit frame 모두 준비한 뒤 한 번에 교체하며
 transaction revision·event·FIFO·중복 transaction 억제는 runtime에만 둔다. Renderer는 여전히
-graphicSpec 또는 accepted scene만 읽으며 codec는 기존 selection/parameter resource만 저장한다.
+graphicSpec 또는 accepted scene만 읽으며 codec는 기존 selection/parameter resource와 native filter/order intent를 저장한다.
 
 `interaction/input.js`는 queued command와 외부 concrete frame의 bounded own-data snapshot을 공유한다.
 기존 sceneFrame은 해당 snapshot 뒤 canonical scene/concrete validator를 호출한다. 구체 공개 명령,
@@ -3662,7 +3662,9 @@ graphicSpec 또는 accepted scene만 읽으며 codec는 기존 selection/paramet
 adapter를 읽고 새 그래픽을 숨겨서 materialize하지 않는다.
 
 연결된 기존 selection resource는 receiver의 wrapped editor가 저장하며 모든 후보·dependency closure와
-hit frame 준비 후 하나의 session commit이 교체한다. Bindings/cache는 직렬화하지 않는다. 정확한
+hit frame 준비 후 하나의 session commit이 교체한다. Bindings/cache는 직렬화하지 않는다. Filter binding도 같은 DAG를 사용하며 native filter 제거·교체의
+private 후보로 전체 target item universe를 복원한다. 대상의 persistent selection을 재평가한 뒤
+downstream 연결을 처리하며 중간 program은 host에 전달하지 않는다. 정확한
 범위·제한과 오류는 [INTERACTION](contract/current/INTERACTION.md#linked-selections)이 소유한다.
 
 
@@ -3766,3 +3768,78 @@ Nested closure의 동일 staged source는 Node20/24에서934entries,
 1,341,753packed/6,149,683unpackedbytes, minimal browser Full667,284gzip을
 기록했다. 한도는934/1,342,000/6,150,000 및 Full668,000으로 교정하며
 Basic375,000/SVG25,000/interaction83,000은 유지한다.
+
+### 영역 선택과 별도 미리보기 program
+
+`grammar/selectionRegion.js`는 final-item channel 교집합과 bounded polygon metadata를,
+`grammar/lassoSelection.js`는 기존 path geometry를 재사용한 screen polygon membership을 소유한다.
+기존 selection resource/editor가 저장과 revision·의존 소비자를 계속 관리한다.
+`interaction/regionSelection.js`는 기존 scale inverse와 scene hit identity를 명시 결합한다.
+Scene의 기존 concrete tree 순회가 Canvas placement를 함께 읽어 empty/nested owner도 추정 없이 찾는다.
+Session은 같은 down baseline에서만 후보를 만들며 previewProgram과 committed program을 분리한다.
+Full의 registration-once selection owner가 내부 wrapped preview materializer를 제공하고, 이 action은
+기존 concrete primitive를 호출한다. Interaction은 Full assembly를 import하지 않으며 renderer에는
+semantic 선택·host state가 들어가지 않는다. 정확한 공개 옵션과 제한은 Current INTERACTION과
+MARK_SELECTION이 소유한다. Angular와 후행 history의 완료는 이 checkpoint에 포함하지 않는다.
+
+
+이 공개 연결의 Node20/24 최대 실측은 Full653,407/Basic367,386/interaction105,754 gzip,
+package927entries/packed1,340,606/unpacked6,125,329이다. 상한은 각각653,500/367,400/105,800 및
+927/1,341,000/6,126,000으로 최소 올림했다. Basic 증가는 공유 persisted selection 검증 소유자이며
+Full action import는 없다. Search961,762bytes는962,000 상한을 쓴다. 최초 초과와 경계 수정 전후
+archive는 STEP059 evidence에서 별도 구분하며 최종 통합에서는 합산 실측을 다시 수행한다.
+
+Calendar와 영역 선택을 합친 source/resource union은 기존 Full final-target validation 소유자를 그대로
+재사용한다. 새 macro owner는 없다. 합산 측정은 package944/1,360,688/6,224,525와
+Full664,335/Basic372,044/interaction106,140gzip이며 기존 두 branch의 cap을 합격으로 재사용하지 않는다.
+통합 상한은944/1,361,000/6,225,000 및664,400/372,100/106,200, search971,000이다.
+
+
+Angular brush는 기존 domain inverse/Polar frame/sector path 소유자를 결합하고 새macro owner를 만들지
+않는다. Existing selection predicate/items resource가 native theta domain 또는 keys를 소유하며
+`screenAngles`는 원래 normalized pointer metadata다. Renderer는 transient preview의 같은 concrete
+sector path만 읽는다. Current INTERACTION/MARK_SELECTION이 정확 동작을 소유한다.
+최초 Node20 측정은 package945/1,363,260/6,234,129, Full664,885/Basic372,376/interaction107,875gzip이다.
+상한은945/1,364,000/6,235,000과664,900/372,400/107,900으로 최소 올림했다. Basic의 증가는 공유
+selection metadata 검증이며 Full import가 아니다. Search970,470은 기존971,000 상한을 유지한다.
+Source final rounding fix 이후 동일 archive 검증은 STEP059의 별도qualification이 소유한다.
+
+Angular preview의 실제 nested getter5회 재현을 수리해 own-data 사전 검증과 caller input불변을
+고정했다. 그 최종 archive는945/1,363,336/6,234,504, Full664,966/Basic372,376/interaction107,879gzip이다.
+Full만665,000으로 최소추가하며 나머지상한은유지한다. 초기cap실패와수리전archive는최종통과와구분한다.
+
+Angular와034/035 nested responsive를 합친 경계는 기존 양쪽 owner를 유지한다. 새macro owner 없이
+resolved Polar frame과 child placement를 읽고 resize중 captured preview를 취소한다. 합산 archive는
+951entries/1,370,214packed/6,271,222unpacked이며 Node20/24 최대 Full669,657/Basic376,363/
+interaction108,129gzip을 측정했다. 한도는951/1,371,000/6,272,000 및669,700/376,400/108,200,
+search973,997bytes→974,000이다. 각각의branch한도통과를합산근거로대체하지않는다.
+
+
+Direct filter/reorder 연결은 controller의 기존 receiver dispatch에만 추가되며 별도 resolver나 저장 schema를
+만들지 않는다. 동일951 entries에서 source/types 증가 후 packed1,370,824/unpacked6,274,003bytes를
+측정해 unpacked 한도만6,275,000으로 올렸다. Interaction gzip108,372는108,400으로, 검색974,604bytes는
+975,000으로 최소 올림한다. Category projection을 공유하는 Full/Basic gzip 최대669,714/376,439는
+669,800/376,500으로 최소 올림하며 SVG와 기존 critical floors는 유지한다.
+
+기존 scale consumer의 category-order 해석은 active final-item filter일 때 원 source에서 저장된
+explicit intent를 검증한 뒤 현재 visible category로 투영한다. 새 입력의 검증은 기존 action이
+현재 dataset에서 수행한다. 필터 해제 시 저장 intent를 그대로 다시 적용하며 별도 순서 상태를 만들지 않는다.
+
+
+### Linked filter와 빈 native view의 final-item 경계
+
+기존 native empty-filter flag와 실제 빈 dataset을 확인하는 selection policy owner가 aggregate/path
+final items를 빈 배열로 반환한다. Grain 검증은 이 단축 경계 전에도 실행되며 Bar의 기존 stack
+검증은 같은 capability policy callback에서 재사용한다. 새 semantic flag나 renderer 예외는 없다.
+
+951 entries 유지, 최종 Node22 packed1,372,003/unpacked6,278,805 및 Node20/24 packed1,374,590을
+측정해 cap951/1,375,000/6,279,000을 적용한다. Node20 gzip Full669,905/Basic376,583/
+interaction109,073에 최소 cap670,000/376,600/109,100을 적용하고 SVG25,000은 유지한다.
+Search975,249bytes에는976,000 cap을 적용한다. 최초 초과와 수정 후 동일 archive 검증은
+[linked filter qualification](impl/roadmap9/interaction/linked-filter-evidence/qualification.json)에 남긴다.
+
+
+STEP060 B와 qualified routes/direct-controls baseline 통합은 기존 소유자를 유지한다. Node20
+합산 package980entries/1,408,440packed/6,408,744unpacked와 Full688,226/Basic377,519/
+interaction109,145/graph43,572gzip bytes를 측정했다. Cap은980/1,409,000/6,409,000,
+Full688,300/Basic378,000/interaction109,200/graph44,000이며 최초 초과를 보존한다.

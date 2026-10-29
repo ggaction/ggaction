@@ -38,6 +38,7 @@ test("every native example module starts through the shared dependency loader wi
       entries++;
     }
     assert.equal(html.includes('type="importmap"'), false, `${file} duplicates the shared import map`);
+    assert.match(html, /\bid="status"/, `${file} must expose the shared readiness signal`);
   }
   assert.ok(entries >= 100);
 });

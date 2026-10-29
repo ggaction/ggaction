@@ -56,3 +56,27 @@ createInteractionSession({program,selectionPolicy:'forget'});
 session.getState().linkedSelections[0].keys.push('change');
 
 session.subscribe(event => { if ('phase' in event && event.phase === 'cancel') { const sameRevision: number = event.revision; } });
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'xy',mode:'intersect'}]});
+createInteractionSession({program,bindings:[{type:'brush',target:'bars',selection:'picked',axis:'y',channels:{y:'y2'}}]});
+createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',mode:'add'}]});
+session.subscribe(event=>{if('phase' in event&&event.phase==='preview'){const preview=event.state.previewProgram;}});
+// @ts-expect-error one-axis brush cannot select the other axis
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'x',channels:{y:'y'}}]});
+// @ts-expect-error screen lasso has no domain axis
+createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',axis:'x'}]});
+
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'theta'}]});
+program.editMarkSelection({selection:'picked',region:{theta:{ranges:[]}},screenAngles:[0,Math.PI/2]});
+session.dispatch({type:'filter',target:'points',payload:{select:{field:'x',op:'gte',value:2},mode:'compose'}});
+session.dispatch({type:'filter',target:'points',payload:{clear:true}});
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',values:['B','A']}});
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',by:'count',direction:'descending'}});
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true}});
+// @ts-expect-error clear cannot also set a filter
+session.dispatch({type:'filter',target:'points',payload:{clear:true,select:{items:[]}}});
+// @ts-expect-error clear cannot also set an order
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true,values:['A']}});
+
+createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',target:'points',selection:'universe',resolve:'global',sources:[
+ {target:'source',selection:'picked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}}
+]}]});

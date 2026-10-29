@@ -242,6 +242,20 @@
     "executable": true
   },
   {
+    "file": "api/appearance/selection-and-highlighting.md",
+    "block": 9,
+    "heading": "Select a typed region",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"points\""
+    ],
+    "prerequisites": "Run this complete ES module with its inline observations and public import. The named region selects the observation at (15, 5).",
+    "sha256": "f9a4285c9af0a47f78b75fbbcc88848f89f62c2f7f8f2528aa0d00223d576eb9",
+    "executable": true
+  },
+  {
     "file": "api/axes.md",
     "block": 1,
     "heading": "Keep a title outside its labels",
@@ -2358,6 +2372,20 @@
   {
     "file": "api/interaction.md",
     "block": 6,
+    "heading": "Filter and reorder a view",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"bars\""
+    ],
+    "prerequisites": "Install ggaction and import the authoring and interaction entries.",
+    "sha256": "35c473e8a21748e2b4ad96494ff5fa8e81411000df58eb5903c9a9b39c33401d",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 7,
     "heading": "Link named selections",
     "mode": "complete",
     "environment": "node-esm",
@@ -2372,7 +2400,22 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 7,
+    "block": 8,
+    "heading": "Filter another view from a selection",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"picked\""
+    ],
+    "prerequisites": "Run this ES module with its inline observations. Selecting a in the source leaves only a in the target view.",
+    "sha256": "7a56091d168f534fe42d2594b3818f2a2b6a0a56f1349f77cddc1d266012dfc4",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 9,
     "heading": "Select the nearest item",
     "mode": "complete",
     "environment": "node-esm",
@@ -2387,7 +2430,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 8,
+    "block": 10,
     "heading": "Automatic click selection",
     "mode": "complete",
     "environment": "browser-module",
@@ -2399,6 +2442,23 @@
     "prerequisites": "Use this complete browser module with the Canvas element whose id is chart, shown immediately before it. Click an observation to toggle its named selection.",
     "sha256": "3e7d8469623f77728140d0501a858ef2fd5b9dabe52532df347cc8031776d449",
     "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 11,
+    "heading": "Brush or lasso an existing selection",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "canvas"
+    ],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"picked\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `canvas`. Resource selectors used here: `target: \"points\"`; `selection: \"picked\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "b8f9354ae730d6336069da94f8b81ccf88c819479420ece198d83dbf89a6ba95",
+    "executable": false
   },
   {
     "file": "api/legends.md",

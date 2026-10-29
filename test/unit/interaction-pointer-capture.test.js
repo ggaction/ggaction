@@ -4,7 +4,7 @@ import { chart } from "../../src/index.js";
 import { createInteractionSession } from "../../src/interaction.js";
 import { serializeProgram } from "../../src/persistence.js";
 import { resolveStoredSelection } from "../../src/materialization/selection/state.js";
-import { prepareClickCapture } from "../../src/interaction/pointerCapture.js";
+import { prepareSelectionCapture } from "../../src/interaction/pointerCapture.js";
 
 const program = () => chart().createCanvas({ width: 300, height: 200, margin: 0 })
   .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 50, y: 60 }, { id: "b", x: 200, y: 130 }] })
@@ -170,7 +170,7 @@ test("queued host input cannot reclaim a remounted lease and direct adapter disp
   session.subscribe(event => { if (event.phase === "commit") { session.mount(next); host.fire("pointerdown"); host.fire("pointermove"); host.fire("pointercancel"); } });
   host.fire("click", { detail: 0 }); assert.equal(host.captures.size, 0); assert.equal(host.count(), 0); session.destroy();
   const fake = surface(); let live = true, queue = [], starts = 0;
-  const adapter = prepareClickCapture(fake, { current: () => live, perform: fn => { queue.push(fn); }, point: event => ({ x: event.clientX, y: event.clientY }), begin: () => { starts++; return {}; }, blockClick() {}, select() {}, cancel() {} });
+  const adapter = prepareSelectionCapture(fake, { current: () => live, perform: fn => { queue.push(fn); }, point: event => ({ x: event.clientX, y: event.clientY }), begin: () => { starts++; return {}; }, blockClick() {}, select() {}, cancel() {} });
   fake.fire("pointerdown"); queue.shift()(); fake.fire("pointermove"); fake.fire("pointercancel"); live = false;
   for (const fn of queue) fn(); assert.equal(starts, 1); adapter.dispose(); adapter.dispose(); assert.equal(adapter.cancel("blur"), false); assert.equal(fake.count(), 0);
 });

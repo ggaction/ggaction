@@ -6,7 +6,7 @@ import { getMarkItems } from "../../../../src/inspection.js";
 import { serializeProgram, deserializeProgram } from "../../../../src/persistence.js";
 import { encodeValue, decodeValue } from "../../../../src/persistence/codec.js";
 import { resolveStoredSelection } from "../../../../src/materialization/selection/state.js";
-import { registerSelectionExpressionResolver, validateSelectionExpressionConsumers } from "../../../../src/materialization/selection/expression.js";
+import { materializeRegisteredSelectionPreview, registerSelectionExpressionResolver, validateSelectionExpressionConsumers } from "../../../../src/materialization/selection/expression.js";
 
 const field = name => ({ type: "field", name });
 const parameter = id => ({ type: "parameter", id });
@@ -135,7 +135,15 @@ test("selection parameter validation installs one class-specific resolver and ne
   class Other {}
   const calls = [], p = { constructor: Owner, materializationConfigs: { selections: { picked: { resource: { id: "r" } }, unrelated: { resource: { id: "other" } } } } };
   for (const args of [[null, () => {}], [() => {}, () => {}], [Owner, null]]) assert.throws(() => registerSelectionExpressionResolver(...args));
+  assert.throws(() => registerSelectionExpressionResolver(Owner, () => {}, null), /wrapped materializer/);
   registerSelectionExpressionResolver(Owner, (program, id) => calls.push([program, id]));
+  assert.throws(() => materializeRegisteredSelectionPreview(p, []), /Full selection owner/);
+  assert.throws(() => materializeRegisteredSelectionPreview({ constructor: Other }, []), /Full selection owner/);
+  class PreviewOwner {}
+  registerSelectionExpressionResolver(PreviewOwner, () => {}, function({points}) { return { owner: this, points }; });
+  const previewProgram = { constructor: PreviewOwner }, points = [{x: 1, y: 2}];
+  const result = materializeRegisteredSelectionPreview(previewProgram, points);
+  assert.equal(result.owner, previewProgram); assert.equal(result.points, points);
   assert.throws(() => registerSelectionExpressionResolver(Owner, () => {}), /already registered/);
   validateSelectionExpressionConsumers(p, ["r"]);
   assert.deepEqual(calls, [[p, "picked"]]);

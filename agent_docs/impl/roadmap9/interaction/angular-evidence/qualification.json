@@ -1,0 +1,524 @@
+{
+  "sourceCommit": "573fe777fc5596cca2dbd3f4e8ba1051565071b4",
+  "upstream": "11e617145",
+  "scope": "Angular brush public adapter plus STEP059 AT36 implementation closure; STEP074 qualification and STEP077 remain pending",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "sourceHashes": {
+    "src/actions/selection/actions.js": "ee5b0e75c83a1773c4071804092298fe21b9a81668ea5b7e155d658e988dfb3f",
+    "src/actions/selection/preview.js": "a49dd2ac36ed0115d3254e1e026ae7284da9ef3d7730ae8ac7f008f97a93e1a2",
+    "src/actions/selection/resources.js": "c741da6dc1f6ed359b185fba98430849d14662eb88284c3ac4864b6938e8381a",
+    "src/grammar/arcs.js": "006ce64871695533c3841bcec048ce5b19c1eb5e9cc4f7a1a4fa44b3cef44a1b",
+    "src/grammar/polar.js": "44a8569d4870e86d3a37df2c28a40ac301e89cd622bc04ec9832fff3cc36f249",
+    "src/grammar/scales/angularInversion.js": "929f21cfc5f6051d74c64152867bc8203087c4b8d4b5817de90aa00105daa63b",
+    "src/grammar/selectionExpression.js": "ef956dbc719ff55c52118e5f747d12e66aa4a7d5dc38d4b60b363070e264046e",
+    "src/grammar/selectionRegion.js": "9d6683f2ec853cb769fabb879ea8c2409e4e568e61d74de8b75acf8e852d25d5",
+    "src/inspectionDescriptors.js": "ca63bafcb9395f08640a4e49cf8af583ef40203477b749347edd96c25690f16b",
+    "src/interaction/regionSelection.js": "833e47bfeab0685d019252fa16fd647f1289ebff82b9b601d2def226e691427c",
+    "src/materialization/conditionalArcStructure.js": "adfe96398d2d4c30fc229b4d7f7b976f94cc897669a3e40b4c8108594f76d138",
+    "src/materialization/resourceState.js": "8a543cfa5d703671ba6e7127c7fa7f7600ccbf6ea7144b794d32117b47f48cdf",
+    "src/materialization/selection/expression.js": "3cbe698726219771ed3863c30d40d18682db4b296bdab27e48e5c777faafcb06",
+    "src/selectors/selectionResources.js": "ec381ab21b3eae0a1d8fdb330512fb6d66981020a635c7d82b37b0854dd7ecf9",
+    "types/interaction.d.ts": "b3afa4582e69a821244c59e498144de8ec866085c929f99aa9f0f17a423f27a0",
+    "types/program.d.ts": "f9eb008cf36f6dc1b08460988e3faada7390374d351b7c506feef0cb61e47d53"
+  },
+  "checks": {
+    "focusedCoverage": 45,
+    "nativeContracts": 156,
+    "polarTypesBoundaryDiscovery": 69,
+    "metadataContracts": 44,
+    "verticalBaseline": 4,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipes": 3,
+      "runner": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js"
+    },
+    "browser": {
+      "full": 6,
+      "finalAngular": 2,
+      "backends": [
+        "Canvas",
+        "SVG"
+      ],
+      "DPR": [
+        1,
+        2
+      ]
+    },
+    "renderExactBackendsAndCodec": 2,
+    "AT36": {
+      "publicScenarios": 8,
+      "pathsPerScenario": [
+        "preview-cancel-late-up",
+        "preview-up-codec-destroy"
+      ],
+      "result": "passed",
+      "evidence": "angular-at36-expected-actual-diff.json"
+    },
+    "docs": {
+      "initial": {
+        "passed": 186,
+        "total": 187,
+        "failure": "Uncommitted appended Polar example source link"
+      },
+      "owningPinned": 20,
+      "builtPages": 166,
+      "selectiveArtifacts": 1431,
+      "affectedPageResponsiveAxe": {
+        "pages": [
+          "api/interaction/",
+          "api/appearance/selection-and-highlighting/"
+        ],
+        "widths": [
+          320,
+          390,
+          768,
+          1440
+        ],
+        "cells": 8
+      },
+      "reuse": "Prior source suite186 and existing full-page responsive coverage retained; final pinned20 and both affected pages rerun. No site UI changes."
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "634cd1db5b8fbdc4432c3b828b23754c56304fee708cc753430831f746646fac",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 827,
+            "minifiedBytes": 2342897,
+            "gzipBytes": 664966
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 539,
+            "minifiedBytes": 1277264,
+            "gzipBytes": 372376
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 172,
+            "minifiedBytes": 331579,
+            "gzipBytes": 107879
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "634cd1db5b8fbdc4432c3b828b23754c56304fee708cc753430831f746646fac",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 827,
+            "minifiedBytes": 2342897,
+            "gzipBytes": 663345
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 539,
+            "minifiedBytes": 1277264,
+            "gzipBytes": 371589
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 172,
+            "minifiedBytes": 331579,
+            "gzipBytes": 107234
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "634cd1db5b8fbdc4432c3b828b23754c56304fee708cc753430831f746646fac",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 827,
+            "minifiedBytes": 2342897,
+            "gzipBytes": 664966
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 539,
+            "minifiedBytes": 1277264,
+            "gzipBytes": 372376
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 172,
+            "minifiedBytes": 331579,
+            "gzipBytes": 107879
+          }
+        ]
+      }
+    ]
+  },
+  "coverage": {
+    "actions/selection/preview.js": [
+      100,
+      100,
+      100
+    ],
+    "grammar/scales/angularInversion.js": [
+      100,
+      100,
+      100
+    ],
+    "grammar/selectionRegion.js": [
+      100,
+      100,
+      100
+    ],
+    "interaction/regionSelection.js": [
+      100,
+      94.83,
+      100
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 945,
+    "packedBytes": 1363336,
+    "unpackedBytes": 6234504,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/angular-634cd1db.tgz",
+    "sha1": "02dfc52ef0556448b4bd648039ed5df6982469ef",
+    "sha256": "634cd1db5b8fbdc4432c3b828b23754c56304fee708cc753430831f746646fac"
+  },
+  "limits": {
+    "entries": 945,
+    "packedBytes": 1364000,
+    "unpackedBytes": 6235000,
+    "fullGzip": 665000,
+    "basicGzip": 372400,
+    "interactionGzip": 107900,
+    "svgGzip": 25000,
+    "searchBytes": 971000,
+    "editMarkSelectionCardBytes": 3610
+  },
+  "measuredSearchBytes": 970470,
+  "preservedFailures": [
+    "Initial package entry count945 exceeded old944; canonical final archive passed measured caps",
+    "Initial compact card3606 exceeded3540; exact action exception3610",
+    "Interim archive21211feb and rounding archive43f2fd02 precede final input fix and are not final qualification",
+    "Final Node20 runtime/types passed but old Full cap664900 was66bytes short; measured cap665000 passed on same archive",
+    "Independent quarter-circle double control literal differed at last bit; formula-derived literal corrected before exact four-backend pass",
+    "Nested sector frame getter executed5times; own-data validation fix now rejects with0reads",
+    "Initial docs preflight used system Ruby2.6; configured Ruby3.2 preflight passed",
+    "Uncommitted example Git source link fixed by source pin; owning20 plus final build passed"
+  ],
+  "remaining": [
+    "Integrate responsive nested composition main de634f88e and later root combined checkpoint",
+    "STEP074 broad qualification",
+    "STEP060 direct controls and later history requirements",
+    "STEP077 complete roadmap"
+  ],
+  "globalCoverage": "Not run or claimed; affected owners and same-source existing checks only",
+  "evidenceFiles": {
+    "angular-at36-expected-actual-diff.json": {
+      "sha256": "2dd24ca0a07cad6bdb5fd5489cf5efba1bd1d1253c6b4b15081be130e8320430",
+      "bytes": 18920
+    },
+    "angular-at36.log": {
+      "sha256": "b37ec3e83c71896ea83ea74b79a96df738845b74aa6a02f18a0dee5977755310",
+      "bytes": 75
+    },
+    "angular-at36.mjs": {
+      "sha256": "f37dc737059363e172da70705e609d6098f15a9f626570970d055a2ca6d29555",
+      "bytes": 5564
+    },
+    "angular-browser-qualified.log": {
+      "sha256": "b2db83214cf84bad538b975e9a95e4979e90dfcc6c1267a1625bd8bd5faa2597",
+      "bytes": 564
+    },
+    "angular-browser.log": {
+      "sha256": "9d81e7fdbdf29ce318b020ac7c0bc26adcb228d3d74494c43f648ca87c9d128a",
+      "bytes": 1436
+    },
+    "angular-consumer-check.mjs": {
+      "sha256": "d81f2a627e9ce9318d413bea07cfd2d3bf155b7f202f2efc7427adee94ec6af5",
+      "bytes": 2005
+    },
+    "angular-consumer-final20-initial.log": {
+      "sha256": "40865390276c9dc4e67ecbf02dcd5f4690339012163be350c1c18ed3ff3e484c",
+      "bytes": 1470
+    },
+    "angular-consumer-final20.log": {
+      "sha256": "0b21c686c9f455cd4c417850d52b150be4622ae2be5cf626167661598ed3a12e",
+      "bytes": 939
+    },
+    "angular-consumer-final22.log": {
+      "sha256": "f63e034fd7ed9c4b6f79d512912e6be9f8ae5b4810b5948651421db0168c2308",
+      "bytes": 939
+    },
+    "angular-consumer-final24.log": {
+      "sha256": "2bf672ebbfc7ba7277b061d411e069f7f8687a1d55e767da08a0fc88548cebd6",
+      "bytes": 939
+    },
+    "angular-consumer-initial20.log": {
+      "sha256": "dc126add4671ea0d3067d549809724f5f4f851ab64c1b55963f6dd0b61cc1be9",
+      "bytes": 1470
+    },
+    "angular-contracts.log": {
+      "sha256": "806e8d751751dbc8491f722170e7e5dbf88c8948d4d216954e03936a580bd381",
+      "bytes": 13958
+    },
+    "angular-coverage-final.log": {
+      "sha256": "78e50f3b2d862c432c2d2b0983e16224fd173ad31b2feb4b9585e98ed8603f78",
+      "bytes": 13482
+    },
+    "angular-coverage-qualified.log": {
+      "sha256": "961aa0c4275fcf9bf53b8def913defd63fcda10681fb42bbef13b0fc450e5cfd",
+      "bytes": 12012
+    },
+    "angular-coverage.log": {
+      "sha256": "a48244eb77b3eceb357644ee54fe862f38263855b8f319426aab335ba3173d0c",
+      "bytes": 11574
+    },
+    "angular-doc-browser.log": {
+      "sha256": "a8a0c710c52ca210e7d265b0c2f66f3c84a369339b90e9b37989b2d714a0ea2c",
+      "bytes": 714
+    },
+    "angular-doc-browser.mjs": {
+      "sha256": "db46d6c0357d80025189cd8df8f2e110b5fecaeeeb81e18072a4c4010501a5a4",
+      "bytes": 2876
+    },
+    "angular-doc-build.log": {
+      "sha256": "ea166025c20c124f25346b7d22cb29e33f0067668a008492597e14e066057dc8",
+      "bytes": 420
+    },
+    "angular-doc-built.log": {
+      "sha256": "6281e78db854b07bcd80865d55b741343f0c551bd1045989eedaf6dc9effd23c",
+      "bytes": 102
+    },
+    "angular-doc-preflight-fixed.log": {
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "bytes": 257
+    },
+    "angular-doc-preflight.log": {
+      "sha256": "efea710c7eaa498073d44718c3e042aabc027d959865ae20209e8e39d2e1f29d",
+      "bytes": 263
+    },
+    "angular-docs.log": {
+      "sha256": "418608ca4fd4b7e46e79a0e996bc809b9036241f2af48eac2dc2d723b07d0f66",
+      "bytes": 48272
+    },
+    "angular-expected-actual-diff.json": {
+      "sha256": "076b4aa9b176f6c49b1d92ae26ec408f54f895914b2a7adf4cce34f745f407bf",
+      "bytes": 4267
+    },
+    "angular-fixed-before-reference.json": {
+      "sha256": "40ab19f389571b0f5ce6ba0b3ad46c65e0c4afc1dfb3276142a8c3ccb1033236",
+      "bytes": 413
+    },
+    "angular-fixed-final.json": {
+      "sha256": "40ab19f389571b0f5ce6ba0b3ad46c65e0c4afc1dfb3276142a8c3ccb1033236",
+      "bytes": 413
+    },
+    "angular-fixed-rounding.json": {
+      "sha256": "764ad22dd9064fd4a2307b6b3882e1f3291392f0c97ac3e2f18813d47a872f35",
+      "bytes": 413
+    },
+    "angular-fixed.json": {
+      "sha256": "4afc493003731155dbe6f65ed1f8aa9f4319d0e5354bce4bb5050221d4ecb649",
+      "bytes": 413
+    },
+    "angular-focused-fixed.log": {
+      "sha256": "2243f846d1cc0930df7abfb25f96bdbd658b3089a2c9b3c0f23ab746fc5a3a68",
+      "bytes": 5267
+    },
+    "angular-focused-initial.log": {
+      "sha256": "e2cedef6a3da7c8418b4f64d36888e7dcdc2a2fa621502fabf2a9e94800e9e9b",
+      "bytes": 7452
+    },
+    "angular-focused-next.log": {
+      "sha256": "e732aba77eceed0a15f34de2ee50592cd5247cba84b05f914cde35d24cda6484",
+      "bytes": 5774
+    },
+    "angular-focused-pass.log": {
+      "sha256": "3acecd8571cbbafcca4d553137f77514be5251795d83442cd9780fbd0f5075ec",
+      "bytes": 4289
+    },
+    "angular-focused-public.log": {
+      "sha256": "dcf598b15a38d6a63bf86ed62cdaf194721ecb35007907ea066a782e0852f387",
+      "bytes": 3365
+    },
+    "angular-generation-fixed.log": {
+      "sha256": "6d471c9ae09d68d8d06f206d3b424c1f3b5af8d2879842612455d5c5e91bfa6d",
+      "bytes": 11907
+    },
+    "angular-generation.log": {
+      "sha256": "c06ebed0c5bc311eca198dd05f336230bc4bd2138b1d03b0a4281cc10cb1681e",
+      "bytes": 1755
+    },
+    "angular-images-final.log": {
+      "sha256": "493928dbd6f17690c221b69ca746ad52405a8831c5f358f3499fbfeaab85b1e4",
+      "bytes": 9588
+    },
+    "angular-images-qualified.log": {
+      "sha256": "493928dbd6f17690c221b69ca746ad52405a8831c5f358f3499fbfeaab85b1e4",
+      "bytes": 9588
+    },
+    "angular-initial.log": {
+      "sha256": "e3e58f260cea3a9c7c5d8450778afeba7b7a54ef3ed5bded243e6e5583b573a3",
+      "bytes": 4133
+    },
+    "angular-inspect.mjs": {
+      "sha256": "f653e6d04878d8ae9f1ffdd5ba72c36badd5dbd79fcbaa7272dc5039e05e4a75",
+      "bytes": 466
+    },
+    "angular-kernel.log": {
+      "sha256": "a82bfe23a7e67094bf6f2ea8623cfbafd4e028eadd24d7699537c8dad8b02b33",
+      "bytes": 1089
+    },
+    "angular-measure.mjs": {
+      "sha256": "60ce597fd22cf63b264e02b9ca8bc1d4d952a66f433020de2025a4911eb3d64f",
+      "bytes": 9479
+    },
+    "angular-metadata-contracts.log": {
+      "sha256": "5f99decddf0acfce531f93c0783d567cf6c415004be3545bd8a25e8546f75f97",
+      "bytes": 9962
+    },
+    "angular-native-contracts-final.log": {
+      "sha256": "4f88ae1312877037f0c9219b3827a39a7c121c843cb8a461afad728921db964a",
+      "bytes": 33888
+    },
+    "angular-oracle.log": {
+      "sha256": "ec2ab52810fbf0289f047c7b399046cdb8b09a24ab2bcab242ad5bc46c2df442",
+      "bytes": 58
+    },
+    "angular-oracle.mjs": {
+      "sha256": "9b0f24c051e4d720cb90359aefc1073532b688f4078d16f10cb83af790674aa2",
+      "bytes": 3275
+    },
+    "angular-own-data-final.log": {
+      "sha256": "c6368540dbedbea8311ba0b36b78abf4aaf545b33f714bdcc8061f79050cf297",
+      "bytes": 2540
+    },
+    "angular-own-data.mjs": {
+      "sha256": "fd6ed204bf5c23a3bc2ade3ca98efac5d65cab25ed1ccfd41a27567b4bb32b5b",
+      "bytes": 334
+    },
+    "angular-package-initial.log": {
+      "sha256": "025b6c3d0d715a50a18b946be7bf2a29eb884c9941cc0844c6e1fc12cd727227",
+      "bytes": 1192
+    },
+    "angular-pinned-build.log": {
+      "sha256": "218bec6db42efbd1ba949b5849b844294634b7117c07762c3b7731e4f648b6a7",
+      "bytes": 420
+    },
+    "angular-pinned-built.log": {
+      "sha256": "6281e78db854b07bcd80865d55b741343f0c551bd1045989eedaf6dc9effd23c",
+      "bytes": 102
+    },
+    "angular-pinned-docs.log": {
+      "sha256": "8466411777caf264d577cce8d7de9139cdeef833b49c2ef23126bd42bbbbe7c7",
+      "bytes": 4737
+    },
+    "angular-pinned-generation.log": {
+      "sha256": "08ae846004379daf9c73d157586ff752a74283713825f4828282d74f088e7353",
+      "bytes": 335
+    },
+    "angular-public-initial.log": {
+      "sha256": "c96f45aa2b2d2e68bf0ab8d1409ca525ead5ee847588042f762029ecdc502ffa",
+      "bytes": 2644
+    },
+    "angular-realistic-qualified.log": {
+      "sha256": "7d6d7e63b67be3cd03eb9fc1e0b58dcbbed72e691ad0e828724536fca15a770a",
+      "bytes": 4277
+    },
+    "angular-realistic.log": {
+      "sha256": "22f00277cc29a7fb5ba4913f374b59b86bf3536846a6e9fd861b158c4d4477d3",
+      "bytes": 4269
+    },
+    "angular-reference-final.log": {
+      "sha256": "be08113919a40d492c54fbb51b854e9f5229bc6214e05a8ce6c7e96de6bddb2b",
+      "bytes": 756
+    },
+    "angular-render-final.log": {
+      "sha256": "ba5d84aa4410ad9a8367231f1f88c45c7e163c18496a33b57ca30599cbe6a2b1",
+      "bytes": 640
+    },
+    "angular-render-qualified.log": {
+      "sha256": "5650f412b9e56a3cfa6cc17f43a026d26041f159832283a7b58bdfe2b3192065",
+      "bytes": 640
+    },
+    "angular-render.log": {
+      "sha256": "6278ebcf9e0024297b96f4fcf635b491f4e40b668521546d6f8cf0915cb711aa",
+      "bytes": 7376
+    },
+    "angular-rounding-final.log": {
+      "sha256": "8b60bf1ce79dba17bd11b3708f5cb2be5648f8c739dc9a7afd5dc1f2a187fe12",
+      "bytes": 5255
+    },
+    "angular-runtime-first.log": {
+      "sha256": "8f5fc410912c29ff4c00840a9950a43bf0663186ffefaa3224ddab77f1ccbc81",
+      "bytes": 6005
+    },
+    "angular-runtime.log": {
+      "sha256": "e89bab22888d0d41f45c9d0414ef758b704b8b0f65c4f48ee23896e52581864d",
+      "bytes": 7702
+    },
+    "angular-time.mjs": {
+      "sha256": "5ab657217f6d5d83786d5e6546d1e32e3c470a4889ee91ee6dba3f7dda5bd8b1",
+      "bytes": 468
+    },
+    "angular-vertical-final.log": {
+      "sha256": "a9834f7ab1be5f6fb5c7a90bddbec1c6f81230746d153c4fd9d1956c640c8d1f",
+      "bytes": 986
+    }
+  }
+}

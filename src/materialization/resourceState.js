@@ -5,7 +5,6 @@ import { annotateError } from "../core/diagnostics.js";
 import { validateUserId } from "../core/identifiers.js";
 import { validateWorkLimit } from "../core/validation.js";
 import { canonicalJSON, contentDigest } from "../core/contentDigest.js";
-import { normalizeMarkSelector } from "../grammar/markSelection.js";
 import { normalizeSelectionSelector, validateSelectionExpression } from "../grammar/selectionExpression.js";
 import { inspectPredicateExpression } from "../grammar/expressionAst.js";
 import { validateExpressionParameterInputs } from "../grammar/expressionInputs.js";
@@ -59,9 +58,10 @@ export function validateStoredResource(resource, ProgramClass) {
   exact(resource.result, [], "Persistent selection result");
   const options = resource.options;
   if (options?.mode === "item-keys") {
-    exact(options, ["mode", "itemKeys", "empty"], "Logical item selection");
-    const normalized = normalizeMarkSelector({ items: options.itemKeys, empty: options.empty });
-    if (canonicalJSON(normalized.items) !== canonicalJSON(options.itemKeys) || normalized.empty !== options.empty) {
+    exact(options, ["mode", "itemKeys", "empty", ...(Object.hasOwn(options, "screenPolygon") ? ["screenPolygon"] : []), ...(Object.hasOwn(options, "screenAngles") ? ["screenAngles"] : [])], "Logical item selection");
+    const selector = { items: options.itemKeys, empty: options.empty, ...(Object.hasOwn(options, "screenPolygon") ? { screenPolygon: options.screenPolygon } : {}), ...(Object.hasOwn(options, "screenAngles") ? { screenAngles: options.screenAngles } : {}) };
+    const { grain: _grain, ...normalized } = normalizeSelectionSelector(selector);
+    if (canonicalJSON(normalized) !== canonicalJSON(selector)) {
       throw error("Selection item keys and empty policy must be normalized.");
     }
   } else if (options?.mode === "predicate") {

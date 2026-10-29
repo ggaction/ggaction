@@ -401,5 +401,35 @@
     "result": "map",
     "prerequisites": "Import the Full package and run this complete planar polygon-with-hole example.",
     "rendering": "authoring-only"
+  },
+  {
+    "id": "selection-typed-region",
+    "file": "api/appearance/selection-and-highlighting.md",
+    "contains": "id: \"window\", target: \"points\"",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run this complete ES module with its inline observations and public import. The named region selects the observation at (15, 5).",
+    "rendering": "authoring-only"
+  },
+  {
+    "id": "interaction-direct-controls",
+    "file": "api/interaction.md",
+    "contains": "const orderedProgram =",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "orderedProgram",
+    "prerequisites": "Install ggaction and import the authoring and interaction entries."
+  },
+  {
+    "id": "interaction-linked-filter",
+    "file": "api/interaction.md",
+    "contains": "const filterSession =",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "filteredProgram",
+    "prerequisites": "Run this ES module with its inline observations. Selecting a in the source leaves only a in the target view."
   }
 ]

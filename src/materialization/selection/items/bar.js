@@ -138,7 +138,8 @@ function sharedChannels(definitions) {
   return shared;
 }
 
-function barStackDefinitions(layer, barGrain, definitions) {
+export function validateBarStackGrain(layer) {
+  const barGrain = resolveBarGrain(layer);
   if (hasConditionalBarPosition(layer)) layer = conditionalPositionTemplate(layer, BAR_POSITION_CHANNELS);
   const layout = resolveBarColorLayout(layer);
   if (!["stack", "fill", "diverging"].includes(layout)) {
@@ -149,6 +150,11 @@ function barStackDefinitions(layer, barGrain, definitions) {
   if (barGrain === BAR_GRAINS.ranged) {
     throw new Error(`Ranged bar mark "${layer.id}" has no stack grain.`);
   }
+  return layer;
+}
+
+function barStackDefinitions(layer, barGrain, definitions) {
+  layer = validateBarStackGrain(layer);
   const channels = resolveBarChannels(layer);
   const categoryChannels = barGrain === BAR_GRAINS.histogram
     ? ["x", "x2"]

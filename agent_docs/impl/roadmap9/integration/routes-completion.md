@@ -10,7 +10,7 @@
 - [x] 최종 critical owner floors·계약26개·artifact/discovery23개·문서189개
 - [x] 공통 실제데이터 생성·격리·factor effect27개
 - [x] built170pages/1452LLM·전체320/390/768px browser 검증
-- [ ] 검증한 동일 source와 기록의 main 반영
+- [x] 검증한 동일 source와 기록을 main `26676b8e1`에 반영
 
 Source가 바뀌는 responsive pass는 기존 source DAG owner가 독립 screen route를 포함한
 완전한 후보를 먼저 검증한다. Viewport만 바뀐 sibling은 원 options와 exact inputs를 유지한다.

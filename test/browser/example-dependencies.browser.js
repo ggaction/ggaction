@@ -12,7 +12,7 @@ for (const url of ["examples/browser-host/?chart=contours", "examples/inspect-ch
   const { page, errors } = await openBrowserPage(browser, `${server.baseUrl}${url}`, { waitFor: () => {
     const status = document.querySelector("#status");
     const canvas = document.querySelector("canvas");
-    return canvas !== null && canvas.width > 300 && (status === null || !/Loading|Failed/i.test(status.textContent));
+    return canvas !== null && canvas.width > 300 && status !== null && !/Loading|Failed/i.test(status.textContent);
   } });
   try {
     const state = await page.evaluate(() => {

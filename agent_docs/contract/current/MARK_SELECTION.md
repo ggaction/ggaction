@@ -185,6 +185,7 @@ type MarkSelector =
   program and explicit layer rebind.
 - ✅ Covered: point scale/axis/grid rematerialization, histogram boundary retention, stack grain, line/area series,
   density provenance, arc sectors, rule/Tick endpoints and categorical legend convergence.
+- Empty active filters expose an empty final-item array to selection, source-only membership and inspection, including aggregate and path marks. Native empty-filter domain preservation remains unchanged.
 - ✅ Covered: empty domain preservation and stale graphic cleanup, removal/source restoration, histogram bin restoration,
   dependent filtered snapshot preservation and invalid mode/missing owner failure.
 - ✅ Covered: regression scatterplot primitive/public equivalence when filtering before statistical layers.
@@ -415,6 +416,37 @@ keys so moving between child paths enters/exits. SVG scene v1 and Canvas scene v
 Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/core/resource-state.test.js`,
 `test/unit/persistence/legacy-selection.test.js`, `test/unit/persistence/legacy-derived.test.js`.
 
+
+## Typed regions and screen polygon metadata
+
+Named `MarkSelectionSelector` additionally accepts `{region,grain?}`. Region has one or more of
+`x`, `y`, `x2`, `y2`, or `theta` alone. Each axis has exactly `{ranges:[...]}` or `{values:[...]}`.
+Numeric ranges require finite min/max and reuse endpoint inclusion flags, default inclusive. At most
+two ordered, non-overlapping ranges form a union within an axis; axes intersect. Categories are
+finite number/string/boolean values, deduplicated by first occurrence with strict typed equality.
+Empty arrays mean no members. Missing or incompatible per-item values are excluded; a nonempty
+owner with no such final-grain channel rejects the selector. Aggregate channels retain their existing
+endpoint meaning; raw member rows never substitute for unavailable final-item values. Full region
+shape validation occurs even for empty data. Category count is at most 10,000, item count at most
+50,000, and cumulative key/category comparisons and UTF-16 work at most 10,000,000.
+
+An items selector may additionally contain `screenPolygon:[{x,y},...]`. Points are finite CSS-local
+coordinates, bounded to 10,000 input points; consecutive duplicates and a repeated closing point
+normalize away. Polygons with fewer than three points are valid metadata. Item keys alone determine
+membership through resize, filtering, source revisions and codec restoration. An item-key resource
+stores optional normalized `options.screenPolygon`; it is never interpreted as a data-space polygon.
+Set updates retain only the incoming polygon metadata when present. Replacing with another selector
+or editing without polygon metadata removes it. Predicate resources store normalized `region` in
+their existing predicate options; algorithm version remains `"1"`. Malformed/noncanonical stored
+ranges, points or mixed selector forms fail load rather than being repaired.
+
+Native select/edit, inline or named highlights, named labels, conditional encodings and scoped
+composition edits share the updated resource revision. Inline mark filters and inline label selectors
+retain `MarkSelector` and reject region/polygon additions. Basic does not author these selections.
+The theta selector reads semantic theta values in their existing units. Angular pointer bindings are
+owned by Current INTERACTION. Evidence: `test/unit/actions/selection/region-selection.test.js`,
+`test/unit/selection-region.test.js`, `test/contracts/logical-selection-types.test.js`.
+
 ## Appearance inspection
 
 `ggaction/inspection`의 `getMarkItems`와 `inspectProgram().views`는 immutable `appearance` 배열을 반환한다.
@@ -427,3 +459,12 @@ Guide offset/length/itemGap은 저장된 실제 배치 설정을 보고하며 in
 Trace 없는 legacy/extension item 교체 또는 pre-highlight property selector의 baseline을 입증할 수 없으면
 `unknown`이며 default라고 추측하지 않는다. Property source는 glyph 자체의 pixel visibility를 주장하지 않는다.
 Coverage: `test/unit/actions/theme-provenance.test.js`와 existing inspection/selection tests.
+
+
+A theta-region selector or item-key selector may include `screenAngles:[startRadians,endRadians]`.
+Both finite values are in `[0,2π)` and exactly two endpoints are required, even for empty selections.
+The tuple is clockwise pointer metadata; equal endpoints are empty and do not imply a full turn.
+It cannot accompany a Cartesian region, `where`, raw value selectors or `screenPolygon`. Predicate
+resources retain it beside `region`; item-key resources retain `options.screenAngles`. Membership
+continues to use native domain values or logical keys. Incoming set updates retain only their incoming
+metadata; ordinary replacement removes it. Codec rejects malformed angle metadata without repair.

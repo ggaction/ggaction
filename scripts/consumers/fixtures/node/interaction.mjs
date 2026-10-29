@@ -31,6 +31,21 @@ export const cases = [
           session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest}});
           assert.deepEqual(getMarkItems(session.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red').map(item=>item.key),[firstKey]);
         }
+        session.dispatch({type:'filter',target:'points',payload:{select:{items:[firstKey]}}});
+        assert.equal(getMarkItems(session.getState().program,{target:'points'}).length,1);
+        session.dispatch({type:'filter',target:'points',payload:{clear:true}});
+        assert.equal(getMarkItems(session.getState().program,{target:'points'}).length,2);
+        const controls=createInteractionSession({program:chart().createCanvas().createData({values:[{g:'A',v:2},{g:'B',v:5}]}).createBarPlot({id:'bars',x:'g',y:'v',guides:false}),bindings:[]});
+        controls.dispatch({type:'reorder',target:'bars',payload:{channel:'x',values:['B','A']}});
+        assert.deepEqual(controls.getState().program.resolvedScales.x.domain,['B','A']);
+        assert.deepEqual(deserializeProgram(serializeProgram(controls.getState().program)).graphicSpec,controls.getState().program.graphicSpec);
+        controls.dispatch({type:'filter',target:'bars',payload:{select:{field:'g',op:'eq',value:'B'}}});
+        assert.deepEqual(controls.getState().program.resolvedScales.x.domain,['B']);
+        assert.deepEqual(deserializeProgram(serializeProgram(controls.getState().program)).graphicSpec,controls.getState().program.graphicSpec);
+        controls.dispatch({type:'filter',target:'bars',payload:{clear:true}});
+        assert.deepEqual(controls.getState().program.resolvedScales.x.domain,['B','A']);
+        controls.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true}});
+        assert.deepEqual(controls.getState().program.resolvedScales.x.domain,['A','B']);controls.destroy();
         stop();
         for (const selectionPolicy of ['keep-hidden','drop']) {
           const original=session.getState().program, lifecycle=createInteractionSession({program:original,selectionPolicy,bindings:[]}), events=[];
@@ -63,6 +78,16 @@ export const cases = [
     assert.equal(linked.getState().linkedSelections[0].keys.length,1);
     linked.dispatch({type:'clearSelection',target:{childPath:['left'],id:'points'},payload:{id:'picked'}});
     assert.equal(linked.getState().linkedSelections[0].keys.length,0);linked.destroy();
+    const filtered = createInteractionSession({ program: joined, bindings: [{type:'linkFilter',id:'filterRows',target:{childPath:['right'],id:'points'},selection:'picked',resolve:'global',sources:[{target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'rows',targetData:'rows'}}]}] });
+    for (const select of [{items:[first]}, {items:[]}, {items:[],empty:'all'}]) {
+      filtered.dispatch({type:'select',target:{childPath:['left'],id:'points'},payload:{id:'picked',select}});
+      const current=deserializeProgram(serializeProgram(filtered.getState().program));
+      assert.equal(getMarkItems(current.children.right,{target:'points'}).length,select.empty==='all'?2:select.items.length);
+    }
+    assert.equal(filtered.getState().linkedSelections[0].effect,'filter');
+    const accepted=filtered.getState().program;
+    assert.throws(()=>filtered.dispatch({type:'filter',target:{childPath:['right'],id:'points'},payload:{clear:true}}),/owned by its binding/);
+    assert.equal(filtered.getState().program,accepted);filtered.destroy();
     const p = make(chart), session = createInteractionSession({ program: p }), state = session.getState();
     const scene = structuredClone(state.scene);
     for (const node of scene.nodes.filter(node => node.type === "circle")) node.properties.x += 30;
@@ -79,6 +104,7 @@ export const cases = [
   } },
   { id: "interaction/guide-and-host-cleanup", run() {
     const autoProgram=make(chart).selectMarks({id:'picked',target:'points',items:[]}).highlightMarks({selection:'picked',color:'red',dimOthers:false,bringToFront:false});
+    assert.throws(() => autoProgram.editMarkSelection({ selection: 'picked', region: { x: { ranges: [{min:0,max:1},{min:1,max:2}] } } }), /non-overlapping/);
     const automatic=createInteractionSession({program:autoProgram,bindings:[{type:'select',target:'points',selection:'picked',mode:'toggle'}]}), clicks=new Map();
     const host={getBoundingClientRect:()=>({left:10,top:20,width:200,height:160}),addEventListener:(event,listener)=>clicks.set(event,listener),removeEventListener:(event,listener)=>{if(clicks.get(event)===listener)clicks.delete(event)}};
     automatic.mount(host);clicks.get('click')({clientX:60,clientY:80});
@@ -92,6 +118,58 @@ export const cases = [
     const accepted=automatic.getState().program;clicks.get('pointerdown')(pointer);clicks.get('keydown')({key:'Escape'});clicks.get('pointerup')(pointer);clicks.get('click')({...pointer,detail:1});
     assert.equal(automatic.getState().program,accepted);assert.equal(phases.at(-1),'cancel');assert.equal(captures.size,0);
     automatic.destroy();assert.equal(clicks.size,0);
+    {
+      const angular = chart().createCanvas({width:200,height:160,margin:0}).createData({values:[{id:'a',angle:355,radius:1},{id:'b',angle:180,radius:1},{id:'c',angle:5,radius:1}],keyField:'id'})
+        .createPolarScatterPlot({id:'points',theta:{field:'angle',scale:{domain:[0,360]}},radius:{field:'radius',scale:{domain:[0,2]}},guides:false})
+        .selectMarks({id:'picked',target:'points',items:[]}).highlightMarks({selection:'picked',color:'red',bringToFront:false,dimOthers:false});
+      const session=createInteractionSession({program:angular,bindings:[{type:'brush',axis:'theta',target:'points',selection:'picked'}]}), pending=new Map();let frameId=0;
+      host.requestAnimationFrame=fn=>{pending.set(++frameId,fn);return frameId;};host.cancelAnimationFrame=id=>pending.delete(id);session.mount(host);
+      const pointer=angle=>({pointerId:1,pointerType:'mouse',clientX:110+64*Math.sin(angle*Math.PI/180),clientY:100-64*Math.cos(angle*Math.PI/180)});
+      clicks.get('pointerdown')(pointer(350));clicks.get('pointermove')(pointer(10));const callbacks=[...pending.values()];pending.clear();callbacks.forEach(fn=>fn());
+      assert.equal(session.getState().program,angular);assert.ok(session.getState().previewProgram);clicks.get('pointerup')(pointer(10));
+      const restored=deserializeProgram(serializeProgram(session.getState().program));
+      assert.deepEqual(getMarkItems(restored,{target:'points'}).filter(item=>item.properties.fill==='red').map(item=>item.fields.id),['a','c']);
+      assert.equal(restored.semanticSpec.resources.find(resource=>resource.id==='picked').options.predicate.screenAngles.length,2);
+      assert.equal(captures.size,0);assert.equal(pending.size,0);session.destroy();assert.equal(clicks.size,0);
+    }
+    for (const type of ["brush", "lasso"]) {
+      const source = autoProgram, session = createInteractionSession({ program: source, bindings: [{ type, target: "points", selection: "picked" }] });
+      const pending = new Map(); let frameId = 0;
+      host.requestAnimationFrame = fn => { pending.set(++frameId, fn); return frameId; };
+      host.cancelAnimationFrame = id => pending.delete(id);
+      session.mount(host); const phases = []; session.subscribe(event => { if (event.phase) phases.push(event.phase); });
+      const pointer = (x, y) => ({ pointerId: 1, pointerType: "mouse", button: 0, clientX: x + 10, clientY: y + 20 });
+      clicks.get("pointerdown")(pointer(20, 20));
+      clicks.get("pointermove")(pointer(90, 20)); clicks.get("pointermove")(pointer(90, 100));
+      if (type === "lasso") clicks.get("pointermove")(pointer(20, 100));
+      assert.equal(pending.size, 1); const callbacks = [...pending.values()]; pending.clear(); callbacks.forEach(fn => fn());
+      assert.equal(session.getState().program, source); assert.equal(session.getState().revision, 0);
+      assert.equal(getMarkItems(session.getState().previewProgram, { target: "points" }).filter(item => item.properties.fill === "red").length, 2);
+      clicks.get("pointerup")(pointer(type === "brush" ? 90 : 20, 100));
+      assert.deepEqual(phases, ["preview", "preview", "commit", "settled"]); assert.equal(session.getState().revision, 1);
+      assert.equal(session.getState().previewProgram, null); assert.equal(captures.size, 0); assert.equal(pending.size, 0);
+      const restored = deserializeProgram(serializeProgram(session.getState().program));
+      assert.equal(getMarkItems(restored, { target: "points" }).filter(item => item.properties.fill === "red").length, 2);
+      if (type === "lasso") assert.equal(restored.semanticSpec.resources.find(resource => resource.id === "picked").options.screenPolygon.length, 4);
+      session.destroy(); assert.equal(clicks.size, 0);
+    }
+    const calendarRows = [{id:'a',day:'2024-02-28',value:2},{id:'b',day:'2024-02-29',value:3},{id:'c',day:'2024-02-29',value:4}];
+    const calendar = chart().createCanvas({width:300,height:200,margin:10}).createData({id:'days',keyField:'id',values:calendarRows})
+      .createCalendarLayout({date:'day',value:'value',start:'2024-02-28',end:'2024-02-29',timeZone:'UTC',weekStartsOn:1,aggregate:'sum',missing:'omit'})
+      .createCalendarPlot({color:false,labels:false}).selectMarks({id:'picked',target:'calendar',items:[]})
+      .highlightMarks({selection:'picked',fill:'red',bringToFront:false,dimOthers:false});
+    const calendarSession = createInteractionSession({program:calendar,bindings:[{type:'lasso',target:'calendar',selection:'picked'}]});
+    const pendingCalendar = new Map();let sequence=0;host.requestAnimationFrame=fn=>(pendingCalendar.set(++sequence,fn),sequence);host.cancelAnimationFrame=id=>pendingCalendar.delete(id);
+    calendarSession.mount(host);
+    const cell = getMarkItems(calendar,{target:'calendar'}).at(-1), {x,y,width,height}=cell.geometry[0].properties;
+    const polygon = [[x+.1,y+.1],[x+width-.1,y+.1],[x+width-.1,y+height-.1],[x+.1,y+height-.1]];
+    const fire=(type,point)=>clicks.get(type)({pointerId:1,pointerType:'mouse',button:0,clientX:point[0]+10,clientY:point[1]+20});
+    fire('pointerdown',polygon[0]);for(const point of polygon.slice(1))fire('pointermove',point);fire('pointerup',polygon[0]);
+    const selectedCalendar=deserializeProgram(serializeProgram(calendarSession.getState().program));
+    const day=getMarkItems(selectedCalendar,{target:'calendar'}).filter(item=>item.properties.fill==='red');
+    assert.equal(day.length,1);assert.equal(day[0].fields.date,'2024-02-29');assert.equal(day[0].fields.value,7);assert.equal(day[0].rows.length,2);
+    assert.equal(day[0].key,cell.key);assert.equal(calendarSession.getState().revision,1);assert.equal(pendingCalendar.size,0);
+    assert.equal(getMarkItems(calendar,{target:'calendar'}).filter(item=>item.properties.fill==='red').length,0);calendarSession.destroy();assert.equal(clicks.size,0);
     const p = make(chart);
     const session = createInteractionSession({ program: p }), active = new Map();
     const element = { addEventListener(type, listener) { active.set(type, listener); },

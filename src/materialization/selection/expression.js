@@ -7,12 +7,19 @@ const resolvers = new WeakMap();
 
 // Full assembly installs its existing final-item resolver once. Basic imports
 // parameter lifecycle without importing Full mark policies or adding actions.
-export function registerSelectionExpressionResolver(ProgramClass, resolveSelection) {
+export function registerSelectionExpressionResolver(ProgramClass, resolveSelection, preview) {
   if (typeof ProgramClass !== "function" || ProgramClass.prototype === undefined || typeof resolveSelection !== "function") {
     throw new TypeError("Selection expression validation requires a constructor and resolver.");
   }
   if (resolvers.has(ProgramClass)) throw new Error("Selection expression resolver is already registered.");
-  resolvers.set(ProgramClass, Object.freeze({ resolveSelection }));
+  if (preview !== undefined && typeof preview !== "function") throw new TypeError("Selection preview requires a wrapped materializer.");
+  resolvers.set(ProgramClass, Object.freeze({ resolveSelection, preview }));
+}
+
+export function materializeRegisteredSelectionPreview(program, points) {
+  const preview = resolvers.get(program.constructor)?.preview;
+  if (preview === undefined) throw new Error("Selection preview requires the Full selection owner.");
+  return preview.call(program, Array.isArray(points) ? { points } : points);
 }
 
 export function validateSelectionExpressionConsumers(program, resourceIds) {
@@ -35,7 +42,7 @@ export function validateSelectionExpressionTargets(program, targets) {
   const changed = new Set(targets);
   const expressions = new Set(program.semanticSpec.resources.filter(resource =>
     resource.kind === "persistent-selection" && resource.options.mode === "predicate" &&
-    Object.hasOwn(resource.options.predicate, "where")).map(resource => resource.id));
+    (Object.hasOwn(resource.options.predicate, "where") || Object.hasOwn(resource.options.predicate, "region"))).map(resource => resource.id));
   const ids = Object.values(program.materializationConfigs.selections ?? {}).filter(definition =>
     changed.has(definition.target) && expressions.has(definition.resource.id)).map(definition => definition.resource.id);
   validateSelectionExpressionConsumers(program, ids);

@@ -218,10 +218,10 @@ test("derives a bounded public option inventory without runtime prototype paths"
 
   assert.equal(inventory.counts.publicActions, 350);
   assert.equal(inventory.counts.topLevelOptionPaths, 3377);
-  assert.equal(inventory.counts.nestedOptionPaths, 28565);
-  assert.equal(inventory.counts.optionPaths, 31942);
-  assert.equal(inventory.counts.requiredOptionPaths, 21404);
-  assert.equal(inventory.counts.excludedOptionPaths, 10538);
+  assert.equal(inventory.counts.nestedOptionPaths, 28622);
+  assert.equal(inventory.counts.optionPaths, 31999);
+  assert.equal(inventory.counts.requiredOptionPaths, 21422);
+  assert.equal(inventory.counts.excludedOptionPaths, 10577);
   for (const action of ["createGeometryData", "editGeometryData", "createProjection", "editProjection", "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule"]) {
     assert.ok(inventory.publicActions.some(value => value.name === action), action);
   }
@@ -526,7 +526,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 10538 }
+    { "redacted-array": 10577 }
   );
   for (const id of ["createCanvas.responsive.minPlotSize.width", "editCanvas.responsive.minPlotSize.height",
     "createXAxisLabels.responsive.maxLines", "editYAxisLabels.responsive.skipStride"]) {
@@ -643,7 +643,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 37705);
+  assert.equal(ledger.requirements.length, 37723);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

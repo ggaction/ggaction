@@ -5,6 +5,9 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "ohlc-values": { prefix: "grammar/ohlc.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "High-low and open-close roles require finite inequalities and whole-row eligibility with exact typed identity." },
+  "waterfall-values": { prefix: "grammar/waterfall.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Ordered signed contributions, explicit total/subtotal roles and reset must retain exact finite accumulation." },
+  "pyramid-layout": { prefix: "grammar/pyramid/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stage order, width/area meaning, typed keys and finite oriented geometry must retain independent numerical evidence." },
   "geo-actions": { prefix: "actions/geo/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geometry revisions must preserve immutable feature identity and preflight consumers before writes." },
   "geo-materialization": { prefix: "materialization/geo", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geometry source results and their closed dispatch must retain exact source and identity validation." },
   "geo-mark-selection": { prefix: "materialization/selection/policies/geo.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Geographic source and concrete items retain exact feature identity and every split highlight part." },
@@ -18,6 +21,13 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
   "responsive-labels": { prefix: "grammar/responsiveLabels.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Declared fallback labels require closed finite own-data normalization and bounded candidate work." },
   "responsive-layout": { prefix: "layout/responsivePolicy.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Fixed Canvas layout must reject oscillation, overflow and stale measured topology within a bounded solve." },
   "edge-route-kernel": { prefix: "grammar/graph/routes/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Edge route geometry must preserve exact endpoints, typed identity, deterministic work order and bounded immutable output." },
+  "selection-region": { prefix: "grammar/selectionRegion", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Region predicates must preserve typed final-grain intersections and bounded immutable metadata." },
+  "selection-lasso": { prefix: "grammar/lassoSelection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Lasso membership must use finite CSS polygons, exact logical keys and bounded geometry work." },
+  "interaction-region": { prefix: "interaction/regionSelection", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Region gestures must share exact committed scales, current-frame anchors and scoped identities." },
+  "selection-preview": { prefix: "actions/selection/preview", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Preview materialization must remain immutable, traceable and separate from committed state." },
+  "angular-scale-inversion": { prefix: "grammar/scales/angularInversion", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Angular inverse must preserve periodic seam unions, resolved theta units and cumulative category bounds." },
+  "brush-scale-inversion": { prefix: "grammar/scales/inversion", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Brush inverse values must preserve resolved scale geometry, typed keys and bounded immutable input." },
+
   "calendar-actions": { prefix: "actions/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Calendar source changes must preflight all consumers and preserve exact atomic revision closure." },
   "calendar-materialization": { prefix: "materialization/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored calendar results and all cell, month boundary and label consumers require exact source identity and responsive geometry." },
   "calendar-selection": { prefix: "materialization/selection/policies/calendar.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Calendar final day items must preserve contributing rows and exclude decorative roles from selection." },

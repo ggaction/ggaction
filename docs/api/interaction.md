@@ -148,8 +148,7 @@ other session methods reject further work.
 
 Preparation is limited to 100,000 scene nodes and 10,000,000 work units; queries
 are limited to 2,000,000 units. Work includes geometry, metadata and guide sample
-comparisons. The session does not persist host objects or hover state. Editing
-brush/lasso gestures, keyboard navigation, history, and asset loading
+comparisons. The session does not persist host objects or hover state. Keyboard navigation, history, angular gestures, and asset loading
 are not supported commands. PNG/PDF exports remain static.
 
 
@@ -220,6 +219,52 @@ Repeated IDs within one reentrant FIFO drain are ignored as stale. An unchanged
 parameter value returns `unchanged` with no event or revision. Subscriber errors
 stop delivery and preserve a commit already made. Runtime bindings and transaction
 metadata are not serialized with the chart.
+
+## Filter and reorder a view
+
+Use `filter` to call the existing mark filter through the same atomic session.
+The payload is `{select,mode?,recompute?}` or `{clear:true}`. `select` uses the
+inline [mark selector](appearance/selection-and-highlighting.md); named selection
+expressions, region and screen metadata are not inline filters. Native replace/
+compose and inferred-graph recompute rules remain unchanged. Clear restores that
+filter's source while preserving other authored state.
+
+Use `reorder` with `{channel,values}` or `{channel,by,direction?}` to apply the
+existing [category order](position/category-ordering.md). Channel is `x`, `y`, or
+`theta`. `{channel,clear:true}` removes an active order. These commands update the
+native data, geometry and guide consumers before committing the new hit frame.
+They preserve source row order and use the existing selection lifecycle policy.
+Basic programs reject these editors.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Install ggaction and import the authoring and interaction entries.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const controls = createInteractionSession({
+  program: chart().createCanvas({ width: 360, height: 240 })
+    .createData({ values: [{ category: "A", value: 2 }, { category: "B", value: 5 }] })
+    .createBarPlot({ id: "bars", x: "category", y: "value", guides: false }),
+  bindings: []
+});
+controls.dispatch({ type: "filter", target: "bars",
+  payload: { select: { field: "category", op: "eq", value: "B" } } });
+controls.dispatch({ type: "filter", target: "bars", payload: { clear: true } });
+controls.dispatch({ type: "reorder", target: "bars",
+  payload: { channel: "x", values: ["B", "A"] } });
+const orderedProgram = controls.getState().program;
+controls.destroy();
+```
+
+Each successful command publishes one `commit` followed by `settled`, including
+dependent linked selections. Invalid options leave the previous program and frame
+intact. Clearing a filter or order is an explicit operation; combining `clear`
+with replacement options is an error.
 
 
 ## Link named selections
@@ -292,6 +337,68 @@ source-specific projection sets and their resolved keys. Bindings allow at most
 projection work. They remain runtime state: serialize the committed chart as
 usual and attach the bindings again after restoring it.
 
+
+## Filter another view from a selection
+
+Use `linkFilter` to make a source selection control a target's native filter.
+The target's existing selection identifies its item grain. Its membership stays
+independent, so target selections can still be edited or brushed. Projections and
+`union`, `intersection`, and `global` resolution follow linked selections above.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Run this ES module with its inline observations. Selecting a in the source leaves only a in the target view.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart, hconcat } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const child = chart().createCanvas({ width: 300, height: 200 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "a", x: 1, y: 2 }, { id: "b", x: 2, y: 4 }
+  ] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+  .selectMarks({ id: "picked", target: "points", items: [], empty: "all" });
+const program = hconcat({ programs: [
+  { id: "source", program: child }, { id: "target", program: child }
+] });
+const filterSession = createInteractionSession({ program, bindings: [{
+  type: "linkFilter", id: "filterRows", resolve: "global",
+  sources: [{
+    target: { childPath: ["source"], id: "points" }, selection: "picked",
+    projection: { type: "rows", sourceData: "rows", targetData: "rows" }
+  }],
+  target: { childPath: ["target"], id: "points" }, selection: "picked"
+}] });
+filterSession.dispatch({ type: "select",
+  target: { childPath: ["source"], id: "points" },
+  payload: { id: "picked", select: { field: "id", op: "eq", value: "a" } }
+});
+const filteredProgram = filterSession.getState().program;
+filterSession.destroy();
+```
+
+Render `filteredProgram` with any supported renderer. A wider source selection
+restores target items because matching uses its unfiltered universe. Empty-none
+produces an empty target; empty-all contributes every current source item.
+
+The binding owns the target filter. A pre-existing filter stays during session
+creation and is replaced on the next relevant source transaction. Direct session
+filter commands to that target are rejected. Filter and selection bindings share
+one writer per target and must form an acyclic graph. Filters refresh target
+selection visibility before downstream links run, following `selectionPolicy`.
+
+Each source command, all dependent filters and selections, and the hit frame
+publish one commit. Errors preserve the prior state; brush cancellation discards
+the preview. External source projection changes passed to `updateProgram` also
+refresh the filters. Missing targets stay absent. `linkedSelections` identifies
+these records with `effect: "filter"`.
+
+Serialize the committed chart normally and reattach bindings after restoration.
+Destroying the session keeps the committed filter. This authoring binding requires
+Full and the target's existing native filter support.
 
 ## Select the nearest item
 
@@ -428,7 +535,7 @@ binding does not emit inspection events by itself. Missing endpoints become inac
 At most one click-selection binding is supported alongside inspection and linked bindings. A linked
 target cannot also be its click-selection writer. Root and explicit concat owners are supported;
 facet source geometry is not inferred. Basic supports inspection, but this binding requires Full.
-The controller does not yet arbitrate dragging, competing bindings, keyboard activation or modifiers.
+The controller does not yet arbitrate competing bindings, keyboard activation or modifiers.
 
 For SVG, render `event.current`, replace the SVG element, then call `clickSession.mount(newSvg)`;
 remounting removes the old listeners. Call `clickSession.destroy()` when the host is removed.
@@ -450,3 +557,72 @@ the controller does not assign Enter/Space behavior or a focused item.
 Custom event surfaces without pointer-capture methods keep click-only handling. Native Canvas and SVG
 Elements use capture automatically. Brush/lasso dragging, competing bindings, navigation pinch and
 history are not supported by this binding.
+
+
+## Brush or lasso an existing selection
+
+Use a Full program with an existing authored selection. A session accepts one click, brush, or lasso
+binding alongside inspection and linked selections. The following browser fragment assumes `program`
+has a `points` mark and `picked` selection, and `canvas` is an HTML Canvas element:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `canvas`. Resource selectors used here: `target: "points"`; `selection: "picked"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const brush = createInteractionSession({ program, bindings: [
+  { type: "brush", target: "points", selection: "picked", axis: "xy" }
+] });
+brush.subscribe(event => {
+  if (["preview", "commit", "cancel", "error"].includes(event.phase)) {
+    render(event.state.previewProgram ?? event.current, canvas.getContext("2d"));
+  }
+});
+brush.mount(canvas);
+```
+
+`axis` is x, y, theta, or default xy. Brush uses the stored position scale and writes a typed domain region;
+x/y conditions intersect. Linear, log, time, ordinal, band and point scales are supported. Bands that
+touch the brush interval are included, while padding gaps select no nearest category. Time endpoints
+are epoch milliseconds. Set `channels: {y: "y2"}` for an aggregated Bar's ending y value, or x2 for its
+ending x value. Other secondary channels require an explicit stored binding. Arbitrary animation-scale
+inversion is rejected; brush starts from committed owner geometry.
+
+For a Polar owner use `axis: "theta"`. Drag clockwise from the top-zero direction; 350° to 10°
+selects both sides of the zero seam. Equal endpoints select nothing. The stored theta scale determines
+the data units and typed categories, including reversed, shifted and partial ranges. A category is
+selected when its band touches the interval. Proportional pie sectors have no position-scale inverse
+and reject angular brushing. Start inside the owner's Polar disc, away from its exact center; ending
+at the center cancels with an error because no angle exists. The temporary overlay is a clipped sector.
+The selection also records `screenAngles: [startRadians, endRadians]` in `[0, 2π)` as pointer metadata.
+Its native domain ranges or item keys preserve the selection after resizing or loading.
+
+Use `{type: "lasso", target: "points", selection: "picked"}` for a freehand screen polygon.
+Lasso selects the centers of current logical-item hit bounds, respecting clipping and opacity. It
+uses the current accepted frame, including sampled geometry. The selected keys and normalized
+CSS-local polygon are recorded together; resizing preserves the keys. Fewer than three distinct
+points select nothing. Lasso does not accept axis or channel options.
+
+Both bindings accept `mode: "replace" | "add" | "toggle" | "subtract" | "intersect"`, default replace.
+Each preview recomputes from the same pointerdown program; repeated toggle previews do not accumulate.
+At most one preview is published per animation frame. Final pointerup uses its last coordinates
+synchronously and creates one commit followed by settled. `state.program` and its revision stay
+unchanged during preview; render `state.previewProgram` for the temporary selection and blue overlay.
+The committed program never contains that overlay. Empty brushes select nothing.
+
+Escape, lost capture, pointer cancellation, blur, a new accepted frame/program, unmount and destruction
+clear the preview and retain the prior program. Redraw that program on cancel. Capture and host RAF
+are required. Set the host's CSS `touch-action` policy for direct touch gestures. For SVG, mount a
+stable wrapper with the same logical dimensions and replace only its SVG contents during preview;
+replacing the captured element cancels the gesture. Canvas/SVG use the same program, and ordinary
+PNG/PDF exports can render a preview snapshot without running a controller.
+
+Explicit concat targets retain child scope. Facet-source geometry, Basic editing, competing gesture
+bindings, navigation and history are not inferred. Lasso input is limited to 10,000 samples and
+50,000 candidate anchors, with bounded cumulative geometry work. Dispose the session when its host
+is removed.

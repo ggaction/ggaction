@@ -1,0 +1,304 @@
+{
+  "sourceCommit": "a8681980ae07fd5bd7ffb0d14446405f80d3aa3b",
+  "upstream": "11e617145",
+  "scope": "Calendar and STEP057/058 integration with Cartesian brush/lasso; angular pointer and remaining STEP059/077 incomplete",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "checks": {
+    "focused": 46,
+    "typesBoundariesDiscovery": 40,
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipes": 3,
+      "runner": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js"
+    },
+    "browser": 4,
+    "renderExactBackendsAndCodec": 1,
+    "docs": {
+      "initial": {
+        "passed": 186,
+        "total": 187,
+        "failure": "Uncommitted Calendar example Git source link"
+      },
+      "owningPinned": 20,
+      "builtPages": 166,
+      "selectiveArtifacts": 1431,
+      "affectedPageResponsiveAxe": {
+        "pages": [
+          "api/interaction/",
+          "api/appearance/selection-and-highlighting/",
+          "api/calendar/"
+        ],
+        "widths": [
+          320,
+          390,
+          768,
+          1440
+        ],
+        "cells": 12
+      },
+      "reuse": "Upstream11e full166-page sweep and standalone059 full164-page sweep; this integration reran the affected three pages. Pinned build only changes provenance source links."
+    },
+    "packageCheck": "passed",
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "2de2d6918fb0a2d3644f2019b23a479b1fe909888762c25dbd23966384130efa",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 827,
+            "minifiedBytes": 2340619,
+            "gzipBytes": 664335
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 539,
+            "minifiedBytes": 1275976,
+            "gzipBytes": 372044
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 169,
+            "minifiedBytes": 324940,
+            "gzipBytes": 106140
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "2de2d6918fb0a2d3644f2019b23a479b1fe909888762c25dbd23966384130efa",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 827,
+            "minifiedBytes": 2340619,
+            "gzipBytes": 662748
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 539,
+            "minifiedBytes": 1275976,
+            "gzipBytes": 371283
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 169,
+            "minifiedBytes": 324940,
+            "gzipBytes": 105342
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "2de2d6918fb0a2d3644f2019b23a479b1fe909888762c25dbd23966384130efa",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 827,
+            "minifiedBytes": 2340619,
+            "gzipBytes": 664335
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 539,
+            "minifiedBytes": 1275976,
+            "gzipBytes": 372044
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 169,
+            "minifiedBytes": 324940,
+            "gzipBytes": 106140
+          }
+        ]
+      }
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 944,
+    "packedBytes": 1360688,
+    "unpackedBytes": 6224525,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/selection-main-2de2d691.tgz",
+    "sha1": "0c2700c3bc99ffea2b918fa3f846df7dedc116e7",
+    "sha256": "2de2d6918fb0a2d3644f2019b23a479b1fe909888762c25dbd23966384130efa"
+  },
+  "limits": {
+    "entries": 944,
+    "packedBytes": 1361000,
+    "unpackedBytes": 6225000,
+    "fullGzip": 664400,
+    "basicGzip": 372100,
+    "interactionGzip": 106200,
+    "svgGzip": 25000,
+    "searchBytes": 971000
+  },
+  "measuredSearchBytes": 970454,
+  "preservedFailures": [
+    "Calendar test attempted unsupported filterMarks; corrected to explicit source revision without runtime changes",
+    "Initial Node20 consumer passed runtime and types but exceeded pre-integration bundle caps; final minimal measured caps passed",
+    "Initial docs source link was unavailable until the merge source commit; final owning20 and build passed"
+  ],
+  "remaining": [
+    "Angular pointer/domain seam adapter",
+    "Other STEP059 AT36 requirements and history",
+    "Full STEP077 scope"
+  ],
+  "globalCoverage": "Not rerun or claimed for this integration; unchanged owning coverage retained from standalone checkpoint",
+  "evidenceFiles": {
+    "selection-main-browser.log": {
+      "sha256": "96f9220251931ec15374f36a3ff8e207f3536c8adfbf12c6d513e625d0339f49",
+      "bytes": 993
+    },
+    "selection-main-catalog.log": {
+      "sha256": "b5d04b9d485bf5a7861d1ece0e2a309ea5f5c27da59b893462790fa69e4b67f0",
+      "bytes": 80
+    },
+    "selection-main-consumer-check.mjs": {
+      "sha256": "44bd2a31912249baa0df90cad9bc54e5c568e0458f3767ea3aa18053b0cb5926",
+      "bytes": 2006
+    },
+    "selection-main-consumer-final20.log": {
+      "sha256": "fd28c096a4b5506db54e54b084e3bbac809fcc9b9065c3a4527997c015153e9e",
+      "bytes": 939
+    },
+    "selection-main-consumer-final22.log": {
+      "sha256": "759be33ab5f2ba60ccbb5341aa541a6ddf425c3e6c9c29b5700327d9154bd295",
+      "bytes": 939
+    },
+    "selection-main-consumer-final24.log": {
+      "sha256": "8131c2048d25597188a78258b36b046ebc12e5fa81fcf53989ad5fbdcbb8ee33",
+      "bytes": 939
+    },
+    "selection-main-consumer-initial20.log": {
+      "sha256": "f6742242a4e7aeef4849fc946ee07417074f6490548ea101d0002ec98feeef1d",
+      "bytes": 1477
+    },
+    "selection-main-contracts.log": {
+      "sha256": "ff36e67d204574aacc36d18e5f6ab7d0c205c89ff1a2aaf4fa9762c8e648e0d7",
+      "bytes": 8058
+    },
+    "selection-main-doc-browser.log": {
+      "sha256": "0bac750763a0c43a7d1073986fc031c98e07c34155fa89d107904a297f295287",
+      "bytes": 1007
+    },
+    "selection-main-doc-browser.mjs": {
+      "sha256": "7530e3fd4cff60753c37784745b6e48207736041c696b010a58cf7ee1ecb5ce0",
+      "bytes": 2903
+    },
+    "selection-main-doc-build.log": {
+      "sha256": "5e947b8dfd4694d44bd0dd49ae428fe2f031ee0e564ab28551d16ae29172a6e0",
+      "bytes": 420
+    },
+    "selection-main-doc-built.log": {
+      "sha256": "6281e78db854b07bcd80865d55b741343f0c551bd1045989eedaf6dc9effd23c",
+      "bytes": 102
+    },
+    "selection-main-docs.log": {
+      "sha256": "a5db9ba15a5f274da9e0275abc1bee96a5ed91803e9474f449559a7a1099e9a4",
+      "bytes": 44695
+    },
+    "selection-main-fixed.json": {
+      "sha256": "7f2105e804eac410f084b0c0f263de9e6a8e73229585564e96c7facd536b079e",
+      "bytes": 413
+    },
+    "selection-main-focused-final.log": {
+      "sha256": "45c3ee67bb694945933e4431d75433ef4427eb254ae01eebc9363e96f7476291",
+      "bytes": 11802
+    },
+    "selection-main-focused.log": {
+      "sha256": "ad0a74d31d54f253a348cfdb4621b4400129f65b417bee87beb194954262c10e",
+      "bytes": 13005
+    },
+    "selection-main-generate.log": {
+      "sha256": "6d471c9ae09d68d8d06f206d3b424c1f3b5af8d2879842612455d5c5e91bfa6d",
+      "bytes": 11907
+    },
+    "selection-main-measure.mjs": {
+      "sha256": "6e68d1571e2d6b2c30d253efb38bbbdcb6c504f25d6096e8d4e56105e5a8c357",
+      "bytes": 9479
+    },
+    "selection-main-package-final.log": {
+      "sha256": "eb621eb3824fe4e7d7030732979bd565e1e0e13bae22ce66e8fedd4a4949c092",
+      "bytes": 368
+    },
+    "selection-main-pinned-build.log": {
+      "sha256": "fef31f0fe87bf3068e944ebba0d9627d004e5fef28b2976fd5a4a18703318fd9",
+      "bytes": 420
+    },
+    "selection-main-pinned-built.log": {
+      "sha256": "6281e78db854b07bcd80865d55b741343f0c551bd1045989eedaf6dc9effd23c",
+      "bytes": 102
+    },
+    "selection-main-pinned-docs.log": {
+      "sha256": "8aa8e8e255081743f8dfc703275a7356d8627c6de1f9157f8b315724317618df",
+      "bytes": 4734
+    },
+    "selection-main-pinned-generation.log": {
+      "sha256": "08ae846004379daf9c73d157586ff752a74283713825f4828282d74f088e7353",
+      "bytes": 335
+    },
+    "selection-main-realistic.log": {
+      "sha256": "2efebaec236593a6d878290f70318154de8c0b87269c357a82b088032b1d190d",
+      "bytes": 4283
+    },
+    "selection-main-render.log": {
+      "sha256": "f00f36ae0ba9828a1fdf94ef17c117581addf17c331daf65ad0dab43f7bd19cb",
+      "bytes": 379
+    }
+  }
+}

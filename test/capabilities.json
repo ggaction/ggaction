@@ -685,11 +685,31 @@
     "hit-testing": [
       {
         "type": "file",
+        "path": "browser/interaction-region.browser.js"
+      },
+      {
+        "type": "file",
         "path": "browser/interaction-session.browser.js"
       },
       {
         "type": "file",
+        "path": "charts/mark-selection-points/variants/interaction/png.render.js"
+      },
+      {
+        "type": "file",
         "path": "contracts/interaction-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/selection/region-selection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/angular-brush-inversion.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/brush-scale-inversion.test.js"
       },
       {
         "type": "file",
@@ -725,7 +745,23 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-angular-selection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-calendar-region.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/interaction-click-selection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-direct-controls.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-linked-filter.test.js"
       },
       {
         "type": "file",
@@ -745,6 +781,10 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-region-gesture.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/interaction-selection.test.js"
       },
       {
@@ -754,6 +794,10 @@
       {
         "path": "unit/resources/graph-hit.test.js",
         "type": "file"
+      },
+      {
+        "type": "file",
+        "path": "unit/selection-region.test.js"
       }
     ],
     "horizon": [

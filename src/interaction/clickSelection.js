@@ -17,7 +17,7 @@ export function normalizeClickSelection(program, value, links) {
   const { target } = resolveClickSelection(program, request.target, request.selection);
   const mode = request.mode === undefined ? "replace" : request.mode, onMiss = request.onMiss === undefined ? "clear" : request.onMiss;
   if (!["replace", "toggle"].includes(mode) || !["clear", "ignore"].includes(onMiss)) throw new TypeError("Click selection requires replace/toggle and clear/ignore policies.");
-  if (links.some(link => link.selection === request.selection && link.target.id === target.id &&
+  if (links.some(link => !link.filter && link.selection === request.selection && link.target.id === target.id &&
       JSON.stringify(link.target.childPath) === JSON.stringify(target.childPath))) throw new Error("A linked target selection is owned by its binding.");
   const query = normalizeHitQuery({ ...(request.slop === undefined ? {} : { slop: request.slop }),
     ...(request.hitInvisible === undefined ? {} : { hitInvisible: request.hitInvisible }) });

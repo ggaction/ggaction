@@ -22,7 +22,25 @@ createInteractionSession({program,bindings:[{type:'linkSelection',id:'join',targ
  {target:'points',selection:'picked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}},
  {target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'source',targetData:'source'}}
 ]}]});
+createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',target:'points',selection:'universe',resolve:'global',sources:[
+ {target:'source',selection:'picked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}}
+]}]});
+// @ts-expect-error filter projections require a target selection that declares final grain
+createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',target:'points',resolve:'global',sources:[]}]});
 createInteractionSession({program,bindings:[{type:'select',target:{childPath:['left'],id:'points'},selection:'picked',mode:'toggle',onMiss:'ignore',slop:2,hitInvisible:true}]});
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'xy',mode:'intersect'}]});
+createInteractionSession({program,bindings:[{type:'brush',target:'bars',selection:'picked',axis:'y',channels:{y:'y2'}}]});
+createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',mode:'add'}]});
+session.subscribe(event=>{if('phase' in event&&event.phase==='preview'){const preview=event.state.previewProgram;}});
+// @ts-expect-error one-axis brush cannot select the other axis
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'x',channels:{y:'y'}}]});
+// @ts-expect-error Cartesian channel must match its axis
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',channels:{x:'y'}}]});
+// @ts-expect-error screen lasso has no domain axis
+createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',axis:'x'}]});
+createInteractionSession({program,bindings:[{type:"brush",target:"points",selection:"picked",axis:"theta",channels:{theta:"theta"}}]});
+// @ts-expect-error theta is the exact supported angular axis name
+createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'angular'}]});
 // @ts-expect-error click bindings use existing named selections
 createInteractionSession({program,bindings:[{type:'select',target:'points'}]});
 // @ts-expect-error drag and additive gestures have no automatic click binding
@@ -59,6 +77,23 @@ session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{sp
 // @ts-expect-error no implicit unbounded nearest search
 session.dispatch({type:'select',target:'points',payload:{id:'picked',nearest:{space:'screen',point:{x:1,y:2}}}});
 session.dispatch({type:'setParameter',target:'threshold',payload:{value:2},transactionId:'change'});
+session.dispatch({type:'filter',target:'points',payload:{select:{field:'x',op:'gte',value:2},mode:'replace',recompute:false}});
+session.dispatch({type:'filter',target:'points',payload:{clear:true}});
+session.dispatch({type:'reorder',target:{childPath:['left'],id:'bars'},payload:{channel:'x',values:['B','A']}});
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',by:{field:'value',aggregate:'sum'},direction:'descending'}});
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true}});
+// @ts-expect-error clearing does not accept a replacement filter
+session.dispatch({type:'filter',target:'points',payload:{clear:true,select:{items:[]}}});
+// @ts-expect-error inline filter selectors do not persist named selection region metadata
+session.dispatch({type:'filter',target:'points',payload:{select:{region:{x:{ranges:[]}}}}});
+// @ts-expect-error clear is an explicit true operation
+session.dispatch({type:'filter',target:'points',payload:{clear:false}});
+// @ts-expect-error explicit order cannot include computed direction
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',values:['A'],direction:'ascending'}});
+// @ts-expect-error clear cannot set a new order
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true,by:'count'}});
+// @ts-expect-error category order only uses existing native position channels
+session.dispatch({type:'reorder',target:'bars',payload:{channel:'color',values:['A']}});
 session.dispatch({type:'clearSelection',target:'points',payload:{id:'picked'},causeTransactionId:'change'});
 session.subscribe(event=>{if ('phase' in event) { const revision:number=event.revision; const p=event.previous; const q=event.current; }});
 // @ts-expect-error one explicit owner is required

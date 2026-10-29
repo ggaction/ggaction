@@ -1,0 +1,132 @@
+{
+  "baseCommit": "6b21bf8a2be2ef5b88bcc21f81d26d746e8d0176",
+  "scope": "Private resolved linear/log/time and categorical interval inversion; no public brush or STEP059 completion claim",
+  "sourceHashes": {
+    "src/grammar/scales/inversion.js": "f2d6410b25c13dd3e5279e8231197594f58a9b71f98f672b85d97b0294f1286e",
+    "test/unit/brush-scale-inversion.test.js": "5a4f9178d753c97801ce29ebee572c46ef9f3e64c97d70f8e4d26de77f123159"
+  },
+  "checks": {
+    "focused": 11,
+    "nodes": [
+      "v20.20.2",
+      "v22.23.1",
+      "v24.22.1"
+    ],
+    "coverage": {
+      "grammar/scales/inversion.js": [
+        100,
+        98.75,
+        100
+      ]
+    },
+    "criticalFloor": [
+      95,
+      90,
+      100
+    ],
+    "sourceBoundaryDiscoveryAndPackage": 40
+  },
+  "packageMeasurement": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 923,
+    "packedBytes": 1332897,
+    "unpackedBytes": 6094813
+  },
+  "limits": {
+    "entries": 923,
+    "packedBytes": 1333000,
+    "unpackedBytes": 6095000
+  },
+  "unchanged": "No public entry imports this new private owner; exports/types/current/API behavior and bundle module graphs remain unchanged. No renderer change.",
+  "initialFailures": [
+    "Initial tests sorted a frozen forward output and defaulted undefined type to linear; fixed independent fixtures, no runtime workaround.",
+    "Malformed category geometry produced out-of-range positions; owner now rejects out-of-range or aliased centers and validates all extents even for empty gestures.",
+    "New normal test initially lacked capability registration; registered with existing interaction capability.",
+    "Initial canonical package923 exceeded922; Node20 measured1332897/6094813, minimal rounded caps recorded."
+  ],
+  "remaining": [
+    "pow/sqrt/symlog and measured radius inverse are explicitly unsupported here, not claimed as brush support",
+    "Public native selection and stored screen polygon/range integration",
+    "Actual capture/RAF/browser/installed brush/lasso consumers",
+    "Full STEP058/059 acceptance and later history/077"
+  ],
+  "logs": {
+    "brush-inversion-boundaries.log": {
+      "sha256": "52517745bd9058e91e97990399169fc725f57601ffec8198ca426bd23e5f8bdc",
+      "bytes": 6472,
+      "gzip": "brush-inversion-boundaries.log.gz"
+    },
+    "brush-inversion-contracts-final.log": {
+      "sha256": "ffff9143367a25dc833a8b0175151561025a542deca7bbb8d390881ce06cc77d",
+      "bytes": 8133,
+      "gzip": "brush-inversion-contracts-final.log.gz"
+    },
+    "brush-inversion-expected-actual-diff.json": {
+      "sha256": "e532b572450ef18fd37c514e19d9c7317e367f3a05d082c356e97c17cfdb7388",
+      "bytes": 2268,
+      "gzip": "brush-inversion-expected-actual-diff.json.gz"
+    },
+    "brush-inversion-final.log": {
+      "sha256": "0a289d36a3e3414d94531048429999c9c49189f8b478b5e72a0185464a8928a0",
+      "bytes": 8438,
+      "gzip": "brush-inversion-final.log.gz"
+    },
+    "brush-inversion-focused.log": {
+      "sha256": "b35f1b7963f25869b1859493f601a37d29f91929182103cfb2b3018d1eee2a17",
+      "bytes": 8435,
+      "gzip": "brush-inversion-focused.log.gz"
+    },
+    "brush-inversion-initial.log": {
+      "sha256": "93321fe7a47f4e85b1e726fa71b38464cc976241e89de8036af726f5280467b4",
+      "bytes": 10165,
+      "gzip": "brush-inversion-initial.log.gz"
+    },
+    "brush-inversion-measure-node20.json": {
+      "sha256": "98f280afea4d9ba55573488c450ca7fa39d82b80fa39725bec490fb3e52aacc5",
+      "bytes": 160,
+      "gzip": "brush-inversion-measure-node20.json.gz"
+    },
+    "brush-inversion-measure-node20.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208,
+      "gzip": "brush-inversion-measure-node20.log.gz"
+    },
+    "brush-inversion-measure.mjs": {
+      "sha256": "2344653beeadb49e788c8ce8df2416cc2ca62267a4c64ec3f7da4ed23bea08da",
+      "bytes": 9988,
+      "gzip": "brush-inversion-measure.mjs.gz"
+    },
+    "brush-inversion-node20.log": {
+      "sha256": "df7d64b147559605293c5dca268ba6d096e4424299e5a5df1a3f43ae2e28566e",
+      "bytes": 2403,
+      "gzip": "brush-inversion-node20.log.gz"
+    },
+    "brush-inversion-node24.log": {
+      "sha256": "73f3dbc85a3d2d60bf54c3af9a814f5ed181167be70a617dc79237bfa969086c",
+      "bytes": 1142,
+      "gzip": "brush-inversion-node24.log.gz"
+    },
+    "brush-inversion-oracle.log": {
+      "sha256": "3922591f11d32bb62d1352412cfc3a416e2502946cae42572f36f3d66ddd2338",
+      "bytes": 59,
+      "gzip": "brush-inversion-oracle.log.gz"
+    },
+    "brush-inversion-oracle.mjs": {
+      "sha256": "62e89a77b687baf672b5194a4c67294c250e24a6159e87e55651a5919f590ba8",
+      "bytes": 1264,
+      "gzip": "brush-inversion-oracle.mjs.gz"
+    },
+    "brush-inversion-package-initial.log": {
+      "sha256": "88c89b889f52a182584451fee26980c22bbc2486336268099e746726094e25fa",
+      "bytes": 1204,
+      "gzip": "brush-inversion-package-initial.log.gz"
+    },
+    "brush-inversion-second.log": {
+      "sha256": "4f20c7659925c7e8c34ac6b8d4df2de9c2ae98fa146295c2956b69535be4a52d",
+      "bytes": 9242,
+      "gzip": "brush-inversion-second.log.gz"
+    }
+  }
+}

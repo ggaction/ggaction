@@ -1,0 +1,696 @@
+{
+  "status": "qualified",
+  "source": "a9e706a70",
+  "base": "7a34a6417",
+  "incoming": "9e0b47f1b",
+  "scope": "STEP060A direct native filter/reorder with integrated routes, responsive layout and region gestures",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "sourceHashes": {
+    "src/interaction/selection.js": "a70f9bdb63e3e424078d6a50b1996877188a809cb60dbc2e2b954fdfa6c57e4b",
+    "src/materialization/scales/consumers/index.js": "0a8cf60249b8d5d0ba231462fb54bab79f9129b9304d0716b831da8876d1efe8",
+    "types/interaction.d.ts": "37da30a418dfbb81d16cb05609603da1b86836e67166223690676178aa714ee2",
+    "test/unit/interaction-direct-controls.test.js": "4ac1cfc56464df08813c12b62f7adbd55d5e3eaa07c5d4cce2fa6dbf89f15def",
+    "test/unit/actions/encodings/category-order.test.js": "f3780cfdc8869ffbe81cb5641d664a78ce60f4672db1cc05615c81b32397c746",
+    "test/support/scenarios/region-interaction.js": "76429fd8079e3851f0719089889903df57ed3129ba65c1e717899f7e79cadbb7",
+    "test/browser/interaction-session.browser.js": "941be7978681e96356d8e50d05a190a05aef7b7cfa5bd3b1eabe421f5012415c",
+    "scripts/consumers/fixtures/node/interaction.mjs": "cb9dac216fda029dd1c52352e099057fe52e9ad6e760906503d11d125e4fff2f"
+  },
+  "unchangedIncomingRuntimeOwners": [
+    "src/interaction/selection.js",
+    "src/materialization/scales/consumers/index.js"
+  ],
+  "checks": {
+    "focused": 93,
+    "ownerCoverageTests": 134,
+    "ownerCoverage": {
+      "src/interaction/selection.js": [
+        100,
+        99.12,
+        100
+      ],
+      "src/materialization/scales/consumers/index.js": [
+        98.17,
+        93.48,
+        100
+      ]
+    },
+    "contracts": 28,
+    "realistic": 16,
+    "browser": 17,
+    "docs": 191,
+    "pinnedDocs": 191,
+    "builtPages": 170,
+    "selectiveLLMArtifacts": 1454,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ]
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/direct-controls-integration-final/ggaction-0.0.26.tgz",
+    "entries": 980,
+    "packedBytes": 1404760,
+    "unpackedBytes": 6403942,
+    "sha256": "0d5d00fa4742505b2b278c3fec258193766a96f241816b79fccd437d1aa8bde4"
+  },
+  "sourcePinnedRepack": {
+    "sha256": "0d5d00fa4742505b2b278c3fec258193766a96f241816b79fccd437d1aa8bde4",
+    "entries": 980,
+    "packedBytes": 1404760,
+    "unpackedBytes": 6403942,
+    "budgets": "passed",
+    "byteIdentical": true
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/direct-controls-integration-final/ggaction-0.0.26.tgz",
+      "fixtures": [
+        "theme-guide-defaults",
+        "theme-item-identity",
+        "theme-resource-plots",
+        "theme-typography",
+        "theme-flow",
+        "theme-guide-geometry",
+        "theme-spacing",
+        "theme-palettes",
+        "theme-provenance",
+        "theme-paint-consumers"
+      ],
+      "records": [
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        }
+      ],
+      "types": "passed",
+      "optionalPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 859,
+          "minifiedBytes": 2414983,
+          "gzipBytes": 688008
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1292572,
+          "gzipBytes": 377332
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 173,
+          "minifiedBytes": 333287,
+          "gzipBytes": 108444
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145387,
+          "gzipBytes": 43572
+        }
+      }
+    },
+    "22": {
+      "node": "v22.23.1",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/direct-controls-integration-final/ggaction-0.0.26.tgz",
+      "fixtures": [
+        "theme-guide-defaults",
+        "theme-item-identity",
+        "theme-resource-plots",
+        "theme-typography",
+        "theme-flow",
+        "theme-guide-geometry",
+        "theme-spacing",
+        "theme-palettes",
+        "theme-provenance",
+        "theme-paint-consumers"
+      ],
+      "records": [
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        }
+      ],
+      "types": "passed",
+      "optionalPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 859,
+          "minifiedBytes": 2414983,
+          "gzipBytes": 686198
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1292572,
+          "gzipBytes": 376502
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20055
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 173,
+          "minifiedBytes": 333287,
+          "gzipBytes": 107805
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145387,
+          "gzipBytes": 43411
+        }
+      }
+    },
+    "24": {
+      "node": "v24.22.1",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/direct-controls-integration-final/ggaction-0.0.26.tgz",
+      "fixtures": [
+        "theme-guide-defaults",
+        "theme-item-identity",
+        "theme-resource-plots",
+        "theme-typography",
+        "theme-flow",
+        "theme-guide-geometry",
+        "theme-spacing",
+        "theme-palettes",
+        "theme-provenance",
+        "theme-paint-consumers"
+      ],
+      "records": [
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        }
+      ],
+      "types": "passed",
+      "optionalPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 859,
+          "minifiedBytes": 2414983,
+          "gzipBytes": 688008
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1292572,
+          "gzipBytes": 377332
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 173,
+          "minifiedBytes": 333287,
+          "gzipBytes": 108444
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145387,
+          "gzipBytes": 43572
+        }
+      }
+    }
+  },
+  "installedHelper": {
+    "file": "installed.mjs.gz",
+    "sha256": "2f4443cbb3e8ad4654608a28060c5a063e0a34cbeafa3e1d0800e2b8db01ada8"
+  },
+  "limits": {
+    "entries": 980,
+    "packedBytes": 1405000,
+    "unpackedBytes": 6405000,
+    "fullGzip": 688100,
+    "basicGzip": 378000,
+    "interactionGzip": 109000,
+    "graphGzip": 44000,
+    "svgGzip": 25000,
+    "searchBytes": 983000
+  },
+  "measuredSearchBytes": 982407,
+  "preservedFindings": [
+    "Initial environment preflight selected system Ruby2.6; correct locked Ruby3.2 PATH passes.",
+    "Initial package contract found unpacked6403942 over inherited6402000; measured cap6405000.",
+    "Initial small coverage run did not cover whole scale consumer. Canonical134 owning tests then meet both critical floors.",
+    "First pack used relative destination against staging cwd and failed ENOENT; absolute output directory corrects invocation.",
+    "Measured Node20/24 Full688008 exceeds inherited688000 by8 bytes; minimally rounded cap688100 and explicit all-five budget assertions pass."
+  ],
+  "reuse": {
+    "commonRealistic": "27 passed on route integration e5e7f3987; this feature reruns16 native final-grain interaction witnesses. No cumulative27 rerun claimed.",
+    "renderer": "Native graphics/primitive schema and four renderer source unchanged. Previous region renderer evidence retained.",
+    "pinnedBrowser": "Full responsive browser completed before pinned rebuild; pin changes only source provenance href/hash. Pinned source191 and built links/assets1454/170 rechecked."
+  },
+  "remaining": [
+    "STEP060B and remaining direct controls",
+    "STEP050 single Y integration",
+    "STEP074 full coverage and native qualification",
+    "STEP077 overall delivery"
+  ],
+  "commands": {
+    "focused": "node scripts/run-tests.js unit unit/interaction-direct-controls.test.js unit/interaction-session.test.js unit/interaction-selection.test.js unit/interaction-links.test.js unit/interaction-reconciliation.test.js unit/interaction-region-gesture.test.js unit/interaction-angular-selection.test.js unit/actions/encodings/category-order.test.js",
+    "coverage": "Canonical direct-controls-evidence/qualification.json commands.coverage;134 owning tests",
+    "contracts": "node scripts/run-tests.js contracts contracts/interaction-types.test.js contracts/package-boundaries.test.js contracts/package-artifact.test.js contracts/action-hierarchy-discovery.test.js contracts/source-boundaries.test.js",
+    "realistic": "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT=canonical-cache node scripts/run-tests.js realistic test/contracts/realistic-logical-selection.test.js",
+    "browser": "node scripts/run-tests.js browser browser/interaction-session.browser.js browser/interaction-region.browser.js",
+    "installed": "Each Node20/22/24: node installed.mjs same-final-tar result.json;90 theme tests,23 runtime fixtures,strict TS,optional peers,five bundles",
+    "docs": "npm run docs:preflight; npm run docs:generate; node scripts/run-tests.js docs; npm run docs:build; npm run test:docs:built; npm run test:docs:browser; source-pin generate/docs/build/built"
+  },
+  "evidenceFiles": {
+    "direct-controls-integration-browser.log": {
+      "sha256": "9389023db32b80f0557cc0bb43e6a847041b1cf788820571e7bfd10cf307f9ea",
+      "bytes": 3959
+    },
+    "direct-controls-integration-build-pinned.log": {
+      "sha256": "fcc23d33d26d6db5bd38733d3f5806fb8c9d62cbd59fba970a5837c9c34011b5",
+      "bytes": 419
+    },
+    "direct-controls-integration-build.log": {
+      "sha256": "0a427f018a44186292ac9956b2977b42c51fb2f1e7db037e4234d4e43d41945d",
+      "bytes": 420
+    },
+    "direct-controls-integration-built-pinned.log": {
+      "sha256": "7c3bb9baa90982ce0c8764324c9ad2f0a8aadf2daf50be2fe131edc106fb242b",
+      "bytes": 179
+    },
+    "direct-controls-integration-built.log": {
+      "sha256": "7c3bb9baa90982ce0c8764324c9ad2f0a8aadf2daf50be2fe131edc106fb242b",
+      "bytes": 179
+    },
+    "direct-controls-integration-contracts-final.log": {
+      "sha256": "1d55be08a88b22cc456631c76b88d83773a8e79445f19cc5cb104310964ffdd6",
+      "bytes": 5817
+    },
+    "direct-controls-integration-contracts.log": {
+      "sha256": "2605bee16a5acbcf5e7d03d2d4b84c41a1c887d7302d2c2e581d664d1e38f741",
+      "bytes": 4468
+    },
+    "direct-controls-integration-doc-browser.log": {
+      "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3",
+      "bytes": 157
+    },
+    "direct-controls-integration-docs-pinned.log": {
+      "sha256": "834ac607690f5f1ef134f8f4975b7484246b4a387c3d4c3f13fb7846540ac1ac",
+      "bytes": 44667
+    },
+    "direct-controls-integration-docs.log": {
+      "sha256": "691fcd6b3bc2acd2c6979b3ac87e4155d6dda13808eaf0ea89db7b71744ccd80",
+      "bytes": 44646
+    },
+    "direct-controls-integration-focused.log": {
+      "sha256": "7a3ca0abc748591633f96d7e09e0778d33e253418ffaf6238110415ecc18f8dc",
+      "bytes": 23073
+    },
+    "direct-controls-integration-generation-pinned.log": {
+      "sha256": "e4e14e9ccfcfb65bb822c511317c9b9b1600115329cfc78df1767d862a3c9a85",
+      "bytes": 12105
+    },
+    "direct-controls-integration-generation.log": {
+      "sha256": "e4e14e9ccfcfb65bb822c511317c9b9b1600115329cfc78df1767d862a3c9a85",
+      "bytes": 12105
+    },
+    "direct-controls-integration-installed-20.json": {
+      "sha256": "8a569e3765bd9e7c69af951da02c0c8032a31d040d70647e68cb40ac794ffa7a",
+      "bytes": 3451
+    },
+    "direct-controls-integration-installed-20.log": {
+      "sha256": "307c2db344315864551b15eb542079a33ad92add01dd09de0deb0183822d07d8",
+      "bytes": 23362
+    },
+    "direct-controls-integration-installed-22.json": {
+      "sha256": "4edd05235874835cb54f6aa319e996eea7bbcfde1c53564c09d619392a54c4a9",
+      "bytes": 3451
+    },
+    "direct-controls-integration-installed-22.log": {
+      "sha256": "9cba2a91f255680acf4ec3f5cead8db0f41e856f326c67113f7e908e27e1acce",
+      "bytes": 24690
+    },
+    "direct-controls-integration-installed-24.json": {
+      "sha256": "b079ec1ceacd4fb7c7e6902455aee92e723b9cc0130f9d965c8766c3ae401cb2",
+      "bytes": 3451
+    },
+    "direct-controls-integration-installed-24.log": {
+      "sha256": "73c6090a0f08af7aa0923a7400494257e98f50239e904a7b9446aaf021ff5ea1",
+      "bytes": 12531
+    },
+    "direct-controls-integration-measure.json": {
+      "sha256": "cd5988b2291b48eecca96a90f6da7ee5c946922352c48918da107ba68335dad9",
+      "bytes": 62
+    },
+    "direct-controls-integration-measure.mjs": {
+      "sha256": "75113e21a971626c284da50d58373041d773a63937a7d44ddb41df881e1ca699",
+      "bytes": 9539
+    },
+    "direct-controls-integration-merge.log": {
+      "sha256": "c294e9f090b21728b28b44d7c77250c4fc878074d452091a13ae9143cd45f960",
+      "bytes": 1706
+    },
+    "direct-controls-integration-owner-coverage-final.log": {
+      "sha256": "4a8d16d93ef9f7b3277c7ff5dc6729603c3ace7ff98c1fa617e464935124636c",
+      "bytes": 32660
+    },
+    "direct-controls-integration-owner-coverage.log": {
+      "sha256": "74af88237f8944df8c813e0304575036552553a99640a66587b72e92bbff45e6",
+      "bytes": 17640
+    },
+    "direct-controls-integration-pack-final.json": {
+      "sha256": "041b0c2f9ce26c5e3bfea2e4f89563f274e7a748fc0972453042e761c5dd98c0",
+      "bytes": 284
+    },
+    "direct-controls-integration-pack-final.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "direct-controls-integration-pack-pinned.json": {
+      "sha256": "86c950c52db7a7aece3fc333003936db34ec0ba0cfc548de98aa3df92f6b4fcf",
+      "bytes": 178
+    },
+    "direct-controls-integration-pack-pinned.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "direct-controls-integration-preflight-final.log": {
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "bytes": 257
+    },
+    "direct-controls-integration-preflight.log": {
+      "sha256": "efea710c7eaa498073d44718c3e042aabc027d959865ae20209e8e39d2e1f29d",
+      "bytes": 263
+    },
+    "direct-controls-integration-qualify.py": {
+      "sha256": "3bf8745fa24bc1d2e24891a5ce5ba1a7eaee399a32f219989365ab8b9298178a",
+      "bytes": 5110
+    },
+    "direct-controls-integration-realistic.log": {
+      "sha256": "56be530aaae35ead60555e54dabe61a9c142ae8af59d1ba42296a5174af67073",
+      "bytes": 4272
+    }
+  }
+}

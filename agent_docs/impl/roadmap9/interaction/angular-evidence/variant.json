@@ -1,0 +1,40 @@
+{
+  "capability": "interaction",
+  "chart": "selection-preview",
+  "variant": "angular",
+  "title": "Clockwise angular brush selects a quarter circle",
+  "width": 200,
+  "height": 200,
+  "rows": [
+    {
+      "id": "a",
+      "angle": 45,
+      "radius": 1
+    },
+    {
+      "id": "b",
+      "angle": 225,
+      "radius": 1
+    }
+  ],
+  "publicCalls": [
+    "createAngularSelectionChart(rows)",
+    "createInteractionSession({program,bindings:[{type:\"brush\",axis:\"theta\",target:\"points\",selection:\"picked\"}]}).mount(host)",
+    "pointerdown(100,20); pointermove(180,100); animationFrame()"
+  ],
+  "expected": {
+    "selected": [
+      "a"
+    ],
+    "center": [
+      100,
+      100
+    ],
+    "radius": 100,
+    "angles": [
+      0,
+      90
+    ],
+    "committedRevision": 0
+  }
+}

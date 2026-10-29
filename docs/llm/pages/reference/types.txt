@@ -9158,15 +9158,35 @@ export interface MarkOutline { color: string; width: number; }
  Expand MarkSelectionSelector
 
 ```typescript
-export type MarkSelectionSelector = (MarkSelector & { where?: never }) | {
+export type MarkSelectionSelector = (MarkSelector & { where?: never; region?: never; screenPolygon?: never; screenAngles?: never }) | {
   grain?: "item" | "stack";
   /** Boolean v2 expression evaluated over fields uniquely defined at the final item grain. */
   where: ComputedExpressionV2;
-  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never;
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never; region?: never; screenPolygon?: never; screenAngles?: never;
+} | {
+  grain?: "item" | "stack";
+  /** Intersection of final semantic channels; each axis is a range union or category set. */
+  region: SelectionRegion;
+  /** Normalized clockwise start/end radians; theta-region metadata only. */
+  screenAngles?: readonly [number, number];
+  items?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; empty?: never; where?: never; screenPolygon?: never;
+} | {
+  grain?: "item" | "stack";
+  items: readonly string[];
+  empty?: "none" | "all";
+  /** CSS-local polygon metadata; keys alone define persistent selection membership. */
+  screenPolygon: readonly { readonly x: number; readonly y: number }[];
+  screenAngles?: never;
+  rows?: never; field?: never; channel?: never; property?: never; op?: never; where?: never; region?: never;
+} | {
+  grain?: "item" | "stack"; items: readonly string[]; empty?: "none" | "all";
+  /** Normalized clockwise start/end radians; keys define persistent membership. */
+  screenAngles: readonly [number, number];
+  screenPolygon?: never; rows?: never; field?: never; channel?: never; property?: never; op?: never; where?: never; region?: never;
 };
 ```
 
-Related types: [`MarkSelector`](../../../reference/types/#type-markselector) · [`ComputedExpressionV2`](../../../reference/types/#type-computedexpressionv2).
+Related types: [`MarkSelector`](../../../reference/types/#type-markselector) · [`ComputedExpressionV2`](../../../reference/types/#type-computedexpressionv2) · [`SelectionRegion`](../../../reference/types/#type-selectionregion).
 
 ### `MarkSelector` {#type-markselector}
 
@@ -11948,6 +11968,29 @@ export type SelectMarksOptions = {
 ```
 
 Related types: [`MarkSelectionSelector`](../../../reference/types/#type-markselectionselector).
+
+### `SelectionRegion` {#type-selectionregion}
+
+ Expand SelectionRegion
+
+```typescript
+export type SelectionRegion = ({ x?: SelectionRegionAxis; y?: SelectionRegionAxis; x2?: SelectionRegionAxis; y2?: SelectionRegionAxis; theta?: never } &
+  ({ x: SelectionRegionAxis } | { y: SelectionRegionAxis } | { x2: SelectionRegionAxis } | { y2: SelectionRegionAxis }))
+  | { theta: SelectionRegionAxis; x?: never; y?: never; x2?: never; y2?: never };
+```
+
+Related types: [`SelectionRegionAxis`](../../../reference/types/#type-selectionregionaxis).
+
+### `SelectionRegionAxis` {#type-selectionregionaxis}
+
+ Expand SelectionRegionAxis
+
+```typescript
+export type SelectionRegionAxis = { ranges: readonly ({ min: number; max: number } & FilterRange)[]; values?: never }
+  | { values: readonly (string | number | boolean)[]; ranges?: never };
+```
+
+Related types: [`FilterRange`](../../../reference/types/#type-filterrange).
 
 ### `SeparateFilledLegendOptions` {#type-separatefilledlegendoptions}
 

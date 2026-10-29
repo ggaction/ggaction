@@ -2882,5 +2882,12 @@
     "mode": "contextual-fragment",
     "owner": "docs/recipes/inspect-chart.md",
     "reason": "Contextual continuation of the rendered inspection program in \"Add inspection\". Requires its session, mounted DOM element or externally sampled Canvas scene; the complete canonical recipe is executed separately and actual pointer/frame behavior is covered by the registered browser example."
+  },
+  {
+    "id": "docs/api/interaction.md#brush-or-lasso-an-existing-selection:1",
+    "sha256": "b8f9354ae730d6336069da94f8b81ccf88c819479420ece198d83dbf89a6ba95",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "This browser continuation requires the prepared points program, picked selection and mounted Canvas named in the text. Native browser brush and lasso execution with actual rendering and captured pointers is verified at DPR 1 and 2 in interaction-region.browser.js."
   }
 ]

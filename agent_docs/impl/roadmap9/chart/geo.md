@@ -373,3 +373,16 @@ desktop search 및 전체 페이지320/390/768px 검증이 통과했다. 현재1
 동일 tar와 차이0이다. 최초 전체 unit4실패와 owning13개 수리, inventory·문서 원본실패와
 최종 통과를 구분한 증거는 `geo-evidence/marks/status.json`에 보존한다. 이 기록 commit은
 source를 바꾸지 않으며 source checkpoint와 최종 proof checkpoint는 별개다.
+
+## Native mark와 linked interaction 합산
+
+Mark source `f55f12db2`와 proof `7f55cc930`에 main `576f07e5d`를 병합했다.
+Runtime 소스는 양쪽 변경을 보존했고, 필수 browser `#status` 완료 신호 및 region/linked-filter
+경계도 유지했다. 기존 Geo unit79개, 추가 session frame·feature selection·offline 복원1개,
+interaction/direct controls/linked filter/region35개와 browser13개, 경계·타입 계약26개가
+통과했다. 공통 realistic3개와 전역 coverage를 여기서 반복하지 않는다.
+
+합산 option inventory는350actions/31999paths/37723requirements이며 기존 의미 assertion을
+유지해 canonical 검증한다. Package는1016entries이고 Full/Basic gzip을 지원 Node에서
+다시 측정했다. 합산 tar·문서 provenance·최종 browser 증거는 source merge commit 이후
+`geo-evidence/marks-merge/`에 별도로 기록한다.

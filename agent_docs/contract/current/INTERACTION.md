@@ -2,19 +2,19 @@
 
 ## Classification and entry
 
-`ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. No action, renderer or persisted schema is added. The default authoring and rendering entries do not import the controller.
+`ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
-`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one click-selection binding, plus up to 256 explicit linked-selection bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including gesture bindings, clock and assetResolver, are rejected.
+`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one click-selection, brush, or lasso binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
 
 ## Handle and commands
 
 - `mount(element, { rootTransform? } = {})` accepts an event surface with `addEventListener`, `removeEventListener`, and `getBoundingClientRect`; public declarations use `Element`. It installs passive listeners and returns an idempotent unmount function. A later successful mount removes the previous listeners. Invalid frame/host setup preserves the previous state. `rootTransform` is an explicit six-number local-to-CSS affine matrix; omission is identity. CSS layout matrices and DPR are never guessed. The host renders the same program at the declared logical size and supplies any additional matrix.
 - `dispatch({ type: "inspect", point, pointerType?, slop?, hitInvisible? })` accepts an explicit CSS-local `{x,y}`. The pointer type is mouse (default), pen, or touch. Mounted events subtract the current client rectangle once. Root matrices transform indexed shapes and clips, preserving slop in CSS pixels; localPoint remains the child Canvas coordinate. Empty viewports or singular matrices produce no hit with diagnostics.
 - `dispatch({ type: "leave" })` clears the transient hit.
-- `dispatch({ type: "frame", scene, version, generation })` snapshots a version-2 concrete Canvas scene. `generation` must equal current state and `version` must be a greater non-negative safe integer. Stale commands return `{status:"stale"}` without examining scene contents. Current frames retain known node keys, type and topology from the current program; subsets and concrete sampled coordinates are permitted. Unknown keys or changed topology fail atomically. Use the accepted `getState().scene` with `renderTransitionScene` so drawing and targeting share one exact snapshot. The session does not sample animations, schedule RAF, or infer geometry from endpoints.
+- `dispatch({ type: "frame", scene, version, generation })` snapshots a version-2 concrete Canvas scene. `generation` must equal current state and `version` must be a greater non-negative safe integer. Stale commands return `{status:"stale"}` without examining scene contents. Current frames retain known node keys, type and topology from the current program; subsets and concrete sampled coordinates are permitted. Unknown keys or changed topology fail atomically. Use the accepted `getState().scene` with `renderTransitionScene` so drawing and targeting share one exact snapshot. The session does not sample animations or infer geometry from endpoints. Region previews use host RAF as specified below. An accepted external frame cancels an active captured gesture before replacing its baseline.
 - `updateProgram(program)` prepares the full replacement before committing it, increments frameVersion, generation and session revision, and clears transient hits. Earlier immutable programs and their indices are unchanged. Existing mounted bindings remain active.
 - `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, leave, frame, program, mount, unmount, or destroy; program events also include `selectionChanges` below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
-- `getState()` returns `{program,scene,frameVersion,generation,revision,hit,linkedSelections,mounted,destroyed}`. It remains readable after destruction and contains no host objects.
+- `getState()` returns `{program,previewProgram,scene,frameVersion,generation,revision,hit,linkedSelections,mounted,destroyed}`. It remains readable after destruction and contains no host objects.
 - `destroy()` removes listeners and disposes the active index once; first call returns true and later calls false. Pending work is discarded. Later dispatch, mount, subscribe, or updateProgram calls throw a disposed error.
 
 Dispatch and updateProgram return `{status:"applied"|"queued"|"stale"|"unchanged"}`. Reentrant calls return queued; invalid operations throw. No inspection creates a selection resource, persistent hover, authoring transaction, history entry or asset request.
@@ -31,20 +31,22 @@ Filled paths honor nonzero/evenodd holes, strokes honor widths, dash gaps, caps 
 
 Preparation supports at most 100,000 scene nodes and a 10,000,000-unit cumulative work budget; a query has a 2,000,000-unit budget. External frame snapshot work is bounded before canonical concrete validation. Guide layout reuse accounts for sample comparisons before computation. Frames containing accessors, cycles, unsupported objects, excessive work or mismatched semantic cardinality are rejected atomically.
 
-Brush/lasso gestures, navigation, keyboard focus, async assets and history have no commands in this entry yet. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
+Navigation, keyboard focus, async assets and history have no commands in this entry yet. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
 
 Evidence: `test/unit/interaction-session.test.js`, `test/unit/interaction-selection.test.js`, `test/unit/hit-guides.test.js`, `test/unit/hit-program.test.js`, `test/unit/hit-frame.test.js`, `test/browser/interaction-session.browser.js`, `test/contracts/interaction-types.test.js`.
 
 
-## Atomic selection and parameter commands
+## Atomic authoring commands
 
 The following advanced controller commands require an explicit `target` and `payload`:
 
 - `dispatch({type:"select", target, payload:{id,select,mode?}, transactionId?,origin?,causeTransactionId?})` creates a missing selection with mode `replace` (default) or updates the same ID and owner. `select` is the existing `MarkSelectionSelector`, including item keys, typed ranges and parameter-backed boolean ASTs. `add`, `toggle`, `subtract`, and `intersect` require an existing selection and reuse its native set semantics.
 - `dispatch({type:"clearSelection", target, payload:{id}, transactionId?,origin?,causeTransactionId?})` replaces an existing selection with an empty item set, `empty:"none"`, and its existing grain. The resource, highlight, label and conditional consumers remain valid. It does not remove the resource or reset the chart.
 - `dispatch({type:"setParameter", target, payload:{value}, transactionId?,origin?,causeTransactionId?})` invokes the existing parameter editor and its entire dependency closure. An unchanged scalar value returns `{status:"unchanged"}` without a trace, revision or event. Basic lacks these editors and rejects them even for unchanged values.
+- `dispatch({type:"filter",target,payload:{select,mode?,recompute?},transactionId?,origin?,causeTransactionId?})` invokes `filterMarks` with the existing inline `MarkSelector`. `mode` is native replace/compose; `recompute` retains the existing inferred-graph restriction. Named-selection AST, region and screen metadata are not inline filter selectors. `{clear:true}` replaces the entire payload to invoke `removeMarkFilter`. Clear removes only that filter; it does not reset other state. Missing active filters and invalid native options reject atomically.
+- `dispatch({type:"reorder",target,payload:{channel,values}|{channel,by,direction?}|{channel,clear:true},transactionId?,origin?,causeTransactionId?})` invokes `orderCategories` or `removeCategoryOrder`. Channel is x/y/theta and all values, computed ordering, shared-scale compatibility and automatic-domain rules are the existing category-order contract. Source rows stay in their original order; mark geometry, axes, linked legends and selection items follow the native order. Clear requires an active order. A clear payload cannot contain replacement options and clear accepts only true. Basic rejects both direct-control editors.
 
-A target is a root owner ID string or `{childPath,id,facetSource?}` using existing action scopes. Selection commands identify the mark owner; parameter commands identify the parameter. No list or inferred owner is accepted. Concat paths retain exact item namespaces; facet selection edits require `facetSource:true` and regenerate retained cells. Generated facet cells cannot be edited individually. An existing selection must belong to the stated owner. Child paths are limited to 1,024 components; ordinary action target validation also applies.
+A target is a root owner ID string or `{childPath,id,facetSource?}` using existing action scopes. Selection, filter and reorder commands identify the mark owner; parameter commands identify the parameter. No list or inferred owner is accepted. Concat paths retain exact item namespaces; facet edits require `facetSource:true` and regenerate retained cells. Generated facet cells cannot be edited individually. An existing selection must belong to the stated owner. Child paths are limited to 1,024 components; ordinary action target validation also applies.
 
 Each accepted edit first invokes the wrapped domain action on an immutable candidate and prepares its complete current hit frame. Only successful preparation replaces the session program/scene, increments revision, generation and frameVersion once, and clears the transient hit. The original program remains unchanged. The host renders `event.current` or the current accepted scene; the controller does not draw or prepare renderer assets. `settled` means this synchronous program/frame work has completed, not that a host renderer or asynchronous asset job has finished.
 
@@ -112,6 +114,43 @@ selection resources use the existing program codec; reattach bindings explicitly
 Links do not install DOM listeners or synthesize additional transactions. A cause ID alone never
 creates a link. Evidence includes `test/unit/interaction-links.test.js`, the logical-selection realistic
 corpus, public interaction type checks and source-free interaction consumers.
+
+
+## Linked filters
+
+A Full session accepts `{type:"linkFilter",id,sources,target,selection,resolve}`. Source projections,
+resolution, explicit endpoint scopes, final item grains and all limits follow linked selections above.
+The existing target selection supplies its final-item universe and grain; its selected membership is
+not overwritten. This binding exclusively owns the target's native mark filter while installed.
+Direct session `filter` commands for that owner reject. Direct selection, click and brush edits on
+that owner's selections remain available. A target owner still has one writer across both binding
+kinds, and the combined dependency graph must be acyclic.
+
+Construction validates and computes projections without authoring: an existing target filter is
+retained. On the next relevant source transaction, the binding replaces that native filter with the
+resolved target items. Projection uses the target's unfiltered item universe, so a later wider source
+selection can restore previously filtered items. Native `removeMarkFilter` and `filterMarks` build
+private immutable candidates; neither intermediate program is published. Unsupported native targets
+reject through the same atomic error boundary. Empty-none sources produce an empty view; empty-all
+sources contribute their complete current membership. A filter result with no rows has no final items,
+including aggregate bar and path marks, while retaining native empty-filter domains and validating the requested grain. Graph filters retain their native
+node selection and induced-edge behavior; effective native item membership determines no-op writes.
+
+The target's persistent selections are reconciled under keep-hidden/drop immediately after filtering
+and before downstream links run. The original source change, all filter/selection dependents and the
+new hit frame commit at one revision. Failure preserves the previous committed program, scene, trace,
+selection and projection references; only the error event is published. Brush preview uses the same
+candidate closure, and cancellation discards it. External `updateProgram` changes to source projections
+also refresh affected filters atomically; missing owners remain dormant and are not recreated.
+
+Filter records in `getState().linkedSelections` add `effect:"filter"`; selection-link records retain
+their existing shape. Bindings are runtime-only. Native committed filters and selections use the
+existing codec; recreate the binding after restoring a program. Destroying a session does not remove
+its committed filter. Full authoring is required; Basic rejects these bindings.
+
+Evidence: `test/unit/interaction-linked-filter.test.js`, `test/unit/interaction-region-gesture.test.js`,
+`test/browser/interaction-region.browser.js`, the five-source/three-recipe logical-selection realistic
+suite and the source-free interaction consumer.
 
 
 ## Nearest selection commands
@@ -272,3 +311,82 @@ DOM events, capture IDs and armed program references are runtime-only. Codec, st
 renderer geometry remain unchanged. Browser tests cover actual mouse, Escape and touch on Canvas/SVG;
 brush/lasso preview, RAF coalescing, navigation pinch and history remain unsupported public options.
 Evidence: `test/unit/interaction-pointer-capture.test.js` and `test/browser/interaction-session.browser.js`.
+
+
+## Brush and screen lasso bindings
+
+Full sessions accept one `{type:"brush",target,selection,axis?,channels?,mode?}` or
+`{type:"lasso",target,selection,mode?}` instead of the click-selection binding. The existing authored
+selection must match the explicit root or concat owner; facet-source geometry and linked target
+writers are rejected. A missing endpoint after program replacement remains dormant. Brush axis
+is `"x"`, `"y"`, `"theta"` or default `"xy"`. Optional `channels` maps each active axis to its same-axis semantic
+channel (`x`/`x2`, `y`/`y2`); omitted entries use the primary channel. Bar end values use explicit
+`channels:{y:"y2"}` or `{x:"x2"}` and the stored primary scale. Other secondary channels require their
+own stored binding. Conditional positions require one identical binding across every branch.
+
+Cartesian brush accepts resolved linear/log/time/ordinal/band/point scales.
+It intersects finite scale ranges, preserves already resolved reversal, and stores the native named
+`region` selector: numeric domain ranges or typed category values, intersected across active axes.
+Time ranges use epoch milliseconds. Bands that touch the closed screen interval are included;
+padding gaps do not select a nearest category. Zero-width intervals select nothing. Unsupported scale
+families and arbitrary sampled changes to the owner's concrete frame reject before capture; no
+animation scale is inferred. Lasso instead reads the accepted current frame. It tests the center of
+each logical item's union of concrete hit bounds against an evenodd CSS-local polygon, including its
+boundary. The center must pass current opacity and clip admission; missing/hidden items are absent.
+Its native items selector stores exact keys and normalized `screenPolygon` metadata. Resizing retains
+the keys rather than reevaluating the old screen polygon. A polygon with fewer than three distinct
+points is empty. Lasso coordinates are relative to the mounted element, independent of DPR.
+
+`mode` uses native replace/add/toggle/subtract/intersect semantics, default replace. Every preview
+starts from the immutable pointerdown program, so repeated toggle previews do not accumulate.
+Down must be within the owner's plot bounds. Native pointer capture/release and host
+requestAnimationFrame/cancelAnimationFrame are required; custom click-only hosts are not drag hosts.
+A displacement of at least 3 CSS pixels schedules preview. Lasso retains at most 10,000 distinct
+consecutive samples, with 50,000 candidate anchors and a 10,000,000-unit cumulative geometric budget.
+Capture errors or exceeded budgets release host state and retain the committed program.
+
+At most one preview runs per animation frame. `select` events with `phase:"preview"` retain the
+committed `previous`/`current` program and revision; `state.previewProgram` is a separate immutable
+program with native selection consumers and a concrete translucent blue overlay. Hosts render that
+program through the ordinary Canvas/SVG/PNG/PDF APIs. The accepted scene and hit frame remain those
+of the committed program. Final up flushes its last point synchronously, then commits one native edit
+and publishes commit/settled. The committed result has no overlay and previewProgram becomes null.
+A click-sized brush still commits its empty region; a click-sized lasso commits empty keys.
+
+Escape, pointercancel, lost capture, blur, accepted frame/program/edit replacement, remount, unmount,
+and destroy clear pending RAF and preview state, release capture and publish one cancel event.
+The prior program and trace remain exact; late up/RAF callbacks cannot commit. The same terminal and
+FIFO guarantees as captured click apply. For SVG previews keep the captured host stable (for example,
+a correctly sized wrapper containing the replaced SVG); replacing the capture element cancels it.
+The host owns touch-action and rendering, and must redraw the committed program after cancel.
+No keyboard, multi-binding arbitration, pinch or history support is implied.
+
+Evidence: `test/unit/selection-region.test.js`, `test/unit/actions/selection/region-selection.test.js`,
+`test/unit/interaction-region-gesture.test.js`, `test/contracts/interaction-types.test.js`.
+
+
+### Angular brush
+
+`{type:"brush",axis:"theta",target,selection,channels?:{theta:"theta"},mode?}` requires the explicit owner's
+Polar coordinate and one identical stored theta binding across all conditional branches. Existing theta
+scale authoring supports linear/time/discrete positions; this binding does not add scale families.
+The owner's resolved Polar frame supplies center and radius. Down must lie in its disc and plot clip;
+the exact center is inapplicable. A final center point has no angle and atomically fails with capture
+cleanup. Positive angles run clockwise from the top. The directed start-to-end interval crosses zero
+as `[start,2π) ∪ [0,end]`; equal angles mean empty, never an inferred full turn.
+
+The adapter explicitly converts radians to the existing degree-based theta range and then inverts it
+into native `region.theta` domain ranges or typed categories. Reversal is already resolved and is not
+applied twice; shifted and partial degree ranges intersect the same periodic interval. Categories
+retain domain order and include touched bands. If two domain endpoints project to the same seam
+position, both are selected when that position is included. At most two sorted native ranges remain.
+Proportional/weighted Arc sectors have no position-scale inverse and reject this binding; equal-band
+radial sectors retain their existing category scale. A differing sampled animation frame also rejects
+before capture. The ordinary Cartesian/lasso lifecycle and bounded cumulative category work apply.
+
+`screenAngles:[startRadians,endRadians]` records normalized `[0,2π)` pointer metadata alongside native
+theta regions or resulting item keys. Domain/keys alone define persistent membership through resize,
+revision and restoration. The preview is an exact existing Polar sector path, clipped to the owner
+plot, in the separate preview program; Canvas/SVG/PNG/PDF consume it identically.
+Evidence: `test/unit/angular-brush-inversion.test.js`, `test/unit/interaction-angular-selection.test.js`,
+`test/browser/interaction-region.browser.js`, and the interaction selection-preview renderer pair.
