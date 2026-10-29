@@ -1,0 +1,80 @@
+{
+  "base": "0e41afeb5588b93ec778a121886b7c38a4609785",
+  "runtimeDelta": [],
+  "status": "owning-verification-passed",
+  "results": [
+    {
+      "suite": "realistic-cartesian-facade-coverage-recipes",
+      "tests": 6,
+      "passed": 6,
+      "witnesses": 920,
+      "durationMs": 242192.484416
+    },
+    {
+      "suite": "realistic-statistical-facade-coverage-recipes",
+      "tests": 8,
+      "passed": 8,
+      "witnesses": 540,
+      "durationMs": 376419.212667
+    },
+    {
+      "suite": "realistic-hierarchical-facade-matrix",
+      "tests": 1,
+      "passed": 1,
+      "datasets": 8,
+      "additionalProfilesPerDataset": 55,
+      "optionPaths": 3221,
+      "pathLiterals": 2268,
+      "diversityRequirements": 103,
+      "minimumOccurrences": 5,
+      "minimumDatasets": 3,
+      "durationMs": 682376.548792
+    },
+    {
+      "suite": "realistic-facet-raster-bounds",
+      "tests": 1,
+      "passed": 1,
+      "originalGuideCases": 25,
+      "originalLifecycleCases": 13,
+      "panels": 88,
+      "panelFormats": [
+        "Canvas",
+        "SVG",
+        "PNG",
+        "PDF"
+      ],
+      "wholeConcatSVG": 25,
+      "maximumGuidePixels": 15351680,
+      "maximumLifecyclePixels": 15831784,
+      "maximumRssKiB": 408848,
+      "durationMs": 81419.036583
+    }
+  ],
+  "limits": {
+    "canonicalHeapMiB": 512,
+    "rasterPixels": 16777216,
+    "rasterChildRssMiB": 512,
+    "rasterChildHeapMiB": 224
+  },
+  "exclusions": [
+    "No new runtime, declaration, renderer or package inputs.",
+    "No final combined artifact qualification or STEP074/077 completion claimed.",
+    "Whole concatenated raster output is not claimed; every original-sized facet panel is rendered."
+  ],
+  "artifacts": {
+    "COMMANDS.md": "13ad7de67b6e6caf8ee810a24c73f248c64c6e476a0da3820a9765ad315040c0",
+    "facade-cartesian-owning.log.gz": "dcced37a93128ba7209ced04f8230ddbaa01d99edf6fb1b3c4d3297841807b32",
+    "facade-facet-final.log.gz": "0962b7b5d0fb4cc4ef3cbd462217417ca9232fb00dc2f46398134d97b55a6861",
+    "facade-facet-owning.log.gz": "370ce5c1540471843b070c68f6f5b8921c21b85aceac714b853a00150da82436",
+    "facade-hierarchical-final.log.gz": "2718b82ac5e7dfc416af4c338cbf3b673030752382a1efca96110e55396a6bb4",
+    "facade-hierarchical-first.log.gz": "ed9c716bfdc8a8349f35a1f3169479150dd74b1a1e27f1bad6acc1d2e3d56876",
+    "facade-hierarchical-profile-smoke.log.gz": "316b6189333fb0649f4b3b25e6519d76a706b57ba8b931af4ee19cedbdc7de8a",
+    "facade-inventory-targets.json.gz": "714e7046d7487470d2e4a4aabefc389460a443e82f22859c795bf746aaf3634c",
+    "facade-original-ci-failures.json.gz": "340d019e42f5483f24879dc13f118443d2ff0061cbe82b9ee5f41c7a2e281471",
+    "facade-paint-smoke-second.log.gz": "e889b5648f4beb99e1383af422f0c5d22024c104082ec167a3657ff3c1c10779",
+    "facade-paint-smoke.log.gz": "0f6e696bfa5a11a2ed4f3b0565defb8f3be827794cd9c5b3055b9d45c54974d5",
+    "facade-statistical-owning.log.gz": "084cc2ba0d0ffd115305c6de0f4f39139eda107c1ee9a8fca8d4ae918d6696ba",
+    "facet-raster-receipts.json.gz": "c44788b6098a0818086dceb385d6fabdfd42b588e09d0328f9e821a682e56b8d",
+    "inputs.json": "b8cecc5354be74abb3cb1ae1969865a4349401eafb50dcc19cb8784940615d46"
+  }
+}
