@@ -76,7 +76,7 @@ source2..64/clip/pixel budget을 기존 concrete owner로 검증한다. endpoint
 restore, player/interrupt/history/session frame reconciliation, same-family partition·camera·route
 adapter, rule/rect/line/area/polar/graph/guide kernels, 네 renderer export를 연결해야 한다.
 기존 순수 camera/partition/routes owner는 이번 point slice에서 다시 구현하지 않는다.
-현재 sample 재기준은 아직 미구현이다. 후속에는 현재 계산한 의미값/scale을 authentic frame의
+현재 sample 재기준은 아래 private 경계로 구현했다. 현재 계산한 의미값/scale을 authentic frame의
 private provenance에 보존하여 같은 planner가 consume하며 pixel 역산이나 원 endpoint로의 되돌림을 금지한다.
 Offline 담당은 exportTransitionPlan/restoreTransitionPlan의 단일 owner 검증을 공유한다.
 플레이어 wrapper는 root 소유이며 plan의 duration/easing과 별도로 playback 설정을 한 번 보관한다.
@@ -99,3 +99,25 @@ owner를 호출한다. 모든 node의 자료를 검증하고 x/y forward mapping
 현재 frame provenance는 root의 lightweight WeakMap owner가 단독 소유한다.
 native plan receiver와 sample의 현재 의미값/scale을 private 등록하며 offline hit의 childPath
 복원은 아직 후속 의무다. 이 checkpoint는 공개 API·완전한 interrupt/player 완료를 주장하지 않는다.
+
+## 현재 프레임 재기준
+
+Root의 frameProvenance owner를 그대로 재사용한다. planTransition의 from/to 양쪽은 native
+program 또는 authentic sample이며, 후자는 현재 x/y 의미값과 scale을 positions kernel에
+그대로 제공한다. 역방향 재생도 target program→captured frame 순서로 준비할 수 있다.
+requireTransitionEndpoint는 player가 queue 변경 전에 동일 입구 검증을 재사용하는 private helper다.
+중간 frame의 identity/background는 이전 계획의 명시 source/target index에서만 가져오며
+namespace나 scene hash를 분해하여 의미를 추정하지 않는다. rebase endpoint 자체는
+scene·identity·positions로 평탄화한다. Weighted source는 기존 bounded flattening을 사용한다.
+
+Exact runtime endpoint는 capturedFrame 객체 자체를 반환한다. 따라서 기존 progress/decisions는
+그 frame의 원 timeline 값이며 소비자는 private proof의 plan/timeMs로 해석한다.
+Sampled endpoint를 저장할 때 scene+identities+backgrounds+positions와 bounded view 진단만
+저장하고 graphicSpec은 공통 scene compiler로 재생한다. Native boundary는 원 graphicSpec을
+그대로 보존한다. 복원 후 시작/중간/끝의 전체 frame deep equality를 검사한다.
+withSampleTime(frame,timeMs,plan)은 offline frame 목록에 time label을 추가하면서 exact endpoint
+소속을 검증하고 authentic provenance를 유지한다.
+
+이전 sample의 runtime 정확한 객체와 provenance가 과거 plan을 참조하는 수명 문제는 남아 있다.
+또한 offline session hit의 실제 childPath, player controller와의 통합, compatible family 확장,
+전체 renderer·설치 qualification은 각각 후속 소유자가 닫아야 한다. 여기서 완료로 표기하지 않는다.
