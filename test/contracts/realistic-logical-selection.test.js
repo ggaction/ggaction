@@ -26,6 +26,21 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
    assert.ok(keys.length>=2);
    const q=p.selectMarks({id:"picked",target:"mark",items:[keys[0]]}).highlightMarks({selection:"picked",color:"#ef4444",bringToFront:false});
    const saved=serializeProgram(q);
+   const shape=items[0].geometry[0], properties=shape.properties;
+   const probe=shape.type==='path'?properties.commands.find(command=>command.op==='M'):
+    {x:properties.x+(shape.type==='rect'?properties.width/2:0),y:properties.y+(shape.type==='rect'?properties.height/2:0)};
+   for(const mode of ['replace','toggle'])for(const onMiss of ['clear','ignore']) {
+    const selectedProgram=p.selectMarks({id:'automatic',target:'mark',items:[]}).highlightMarks({selection:'automatic',color:'#ef4444',bringToFront:false,dimOthers:false});
+    const automatic=createInteractionSession({program:selectedProgram,bindings:[{type:'select',target:'mark',selection:'automatic',mode,onMiss,slop:0}]}),listeners=new Map();
+    const host={getBoundingClientRect:()=>({left:0,top:0,width:500,height:360}),addEventListener:(type,listener)=>listeners.set(type,listener),removeEventListener:type=>listeners.delete(type)};
+    automatic.mount(host);automatic.dispatch({type:'inspect',point:{x:probe.x,y:probe.y},slop:0});
+    const expected=automatic.getState().hit.candidates.find(candidate=>candidate.ownerId==='mark').itemKey;
+    const click=()=>listeners.get('click')({clientX:probe.x,clientY:probe.y});
+    const active=()=>getMarkItems(automatic.getState().program,{target:'mark'}).filter(item=>item.geometry.some(g=>g.properties.fill==='#ef4444'||g.properties.stroke==='#ef4444')).map(item=>item.key);
+    click();assert.deepEqual(active(),[expected]);click();assert.deepEqual(active(),mode==='toggle'?[]:[expected]);
+    if(mode==='toggle')click();listeners.get('click')({clientX:5000,clientY:5000});assert.deepEqual(active(),onMiss==='clear'?[]:[expected]);
+    automatic.destroy();assert.equal(listeners.size,0);
+   }
    for(const selectionPolicy of ['keep-hidden','drop']) {
     const lifecycle=createInteractionSession({program:q,selectionPolicy,bindings:[]}),events=[];lifecycle.subscribe(event=>events.push(event));
     lifecycle.updateProgram(q.filterMarks({target:'mark',field:'category',op:'neq',value:items[0].fields.category}));

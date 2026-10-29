@@ -2,10 +2,9 @@ import { cloneAndFreeze } from "../core/immutable.js";
 import { ownArray } from "../core/ownData.js";
 import { validateUserId } from "../core/identifiers.js";
 import { normalizeSelectionProjection, projectSelectionKeys, selectionProjectionBudget } from "../grammar/selectionProjection.js";
-import { resolveRegisteredSelection } from "../materialization/selection/expression.js";
 import { requireMaterializedDataset } from "../selectors/datasets.js";
 import { interactionOptions as options, snapshotInteractionInput } from "./input.js";
-import { interactionOwner, prepareInteractionEdit, scopeSelectionKeys } from "./selection.js";
+import { interactionOwner, prepareInteractionEdit, scopeSelectionKeys, resolveInteractionSelection } from "./selection.js";
 
 const ownerKey = target => JSON.stringify([target.childPath, target.id, target.facetSource === true]);
 const same = (left, right) => {
@@ -57,20 +56,10 @@ export function normalizeSelectionLinks(program, input) {
   return cloneAndFreeze(ordered);
 }
 
-function endpoint(program, target, selection, allowMissing) {
-  const owner = interactionOwner(program, target, allowMissing);
-  if (!owner || (allowMissing && !Object.hasOwn(owner.view.materializationConfigs.selections ?? {}, selection))) return null;
-  const { view } = owner;
-  const resolved = resolveRegisteredSelection(view, selection, { sourceOnly: target.facetSource === true });
-  if (resolved.definition.target !== target.id) throw new Error("Linked selection must match its explicit owner target.");
-  if (resolved.definition.sourceSelection) throw new Error("A linked endpoint requires an authored selection owner, not a generated projection.");
-  return { view, resolved };
-}
-
 function projectLink(program, link, spend, before, policy) {
-  const target = endpoint(program, link.target, link.selection, before !== undefined);
+  const target = resolveInteractionSelection(program, link.target, link.selection, before !== undefined);
   const sources = link.sources.map((source, index) => {
-    const selected = endpoint(program, source.target, source.selection, before !== undefined);
+    const selected = resolveInteractionSelection(program, source.target, source.selection, before !== undefined);
     let keys;
     if (!target || !selected) {
       keys = policy === "drop" ? [] : [...before.sources[index].keys];

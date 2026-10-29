@@ -1,3 +1,4 @@
+import { resolveRegisteredSelection } from "../materialization/selection/expression.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import { namespaceItemKey, unnamespaceItemKey } from "../grammar/schemas/graphicIdentity.js";
 import { validateUserId } from "../core/identifiers.js";
@@ -39,6 +40,15 @@ export function interactionOwner(program, requested, allowMissing = false) {
   }
   if (target.facetSource && view.compositionSpec?.type !== "facet") throw new Error("facetSource requires a facet view.");
   return { target, view };
+}
+
+export function resolveInteractionSelection(program, requested, selection, allowMissing = false) {
+  const id = validateUserId(selection, "Selection id"), owner = interactionOwner(program, requested, allowMissing);
+  if (!owner || (allowMissing && !Object.hasOwn(owner.view.materializationConfigs.selections ?? {}, id))) return null;
+  const { view, target } = owner;
+  const resolved = resolveRegisteredSelection(view, id, { sourceOnly: target.facetSource === true });
+  if (resolved.definition.target !== target.id || resolved.definition.sourceSelection) throw new Error("Selection requires an authored selection matching its explicit owner.");
+  return { ...owner, resolved };
 }
 
 function address(target, includeId) {

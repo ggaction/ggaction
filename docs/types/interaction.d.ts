@@ -30,6 +30,16 @@ export interface InspectBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+export interface ClickSelectionBinding {
+  readonly type: 'select';
+  /** Existing authored selection on an explicit root or concat mark owner. */
+  readonly target: InteractionTarget;
+  readonly selection: string;
+  readonly mode?: 'replace' | 'toggle';
+  readonly onMiss?: 'clear' | 'ignore';
+  readonly slop?: number;
+  readonly hitInvisible?: boolean;
+}
 export type SelectionProjection = {
   readonly type: 'rows';
   readonly sourceData: string;
@@ -181,5 +191,5 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | LinkedSelectionBinding)[];
+  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | LinkedSelectionBinding)[];
 }): InteractionSession;

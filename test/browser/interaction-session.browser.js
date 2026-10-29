@@ -199,3 +199,38 @@ test("Canvas and SVG hosts render accepted drop programs after real pointer sele
   } catch(error) { await saveBrowserContextEvidence(context,error);throw error; }
   finally { await context.close(); }
 });
+
+test("automatic click bindings toggle and clear in real Canvas and remounted SVG without host selection code", async () => {
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1100, height: 850 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => document.querySelector("#status")?.textContent === "Canvas and SVG inspection ready" });
+    await page.evaluate(async () => {
+      const { createInteractionSession }=await import('/src/interaction.js'),{render}=await import('/src/index.js'),{renderToSVG}=await import('/src/renderers/svg.js');
+      window.__automaticEvents=[[],[]];
+      window.__automaticSessions=window.__inspectionSessions.map((previous,index)=>{
+        const program=previous.getState().program.selectMarks({id:'picked',target:'observations',items:[]}).highlightMarks({selection:'picked',color:'red',dimOthers:false,bringToFront:false});previous.destroy();
+        const session=createInteractionSession({program,bindings:[{type:'select',target:'observations',selection:'picked',mode:'toggle'}]});
+        session.mount(document.querySelector(index===0?'#chart':'#vector svg'));
+        session.subscribe(event=>{
+          if(!event.phase)return;window.__automaticEvents[index].push([event.phase,event.origin]);if(event.phase!=='commit')return;
+          if(index===0)render(event.current,document.querySelector('#chart').getContext('2d'),{pixelRatio:2});
+          else {document.querySelector('#vector').innerHTML=renderToSVG(event.current);session.mount(document.querySelector('#vector svg'));}
+        });return session;
+      });
+    });
+    for (const [index, selector] of ['#chart','#vector svg'].entries()) {
+      const box=await page.locator(selector).boundingBox();
+      for(const [x,y,expected] of [[294,118,['b']],[294,118,[]],[294,118,['b']],[30,270,[]]]) {
+        await page.mouse.click(box.x+x,box.y+y);
+        const selected=await page.evaluate(async index=>{const {getMarkItems}=await import('/src/inspection.js');return getMarkItems(window.__automaticSessions[index].getState().program,{target:'observations'}).filter(item=>item.properties.fill==='red').map(item=>item.fields.id);},index);
+        assert.deepEqual(selected,expected);
+      }
+      assert.deepEqual(await page.evaluate(index=>window.__automaticEvents[index],index),Array.from({length:4},()=>[['commit','user'],['settled','user']]).flat());
+      assert.equal(await page.evaluate(index=>window.__automaticSessions[index].getState().hit,index),null);
+    }
+    await page.evaluate(()=>window.__automaticSessions.forEach(session=>session.destroy()));
+    assertNoBrowserErrors(errors,'automatic click selection');await page.close();
+  }catch(error){await saveBrowserContextEvidence(context,error);throw error;}
+  finally{await context.close();}
+});

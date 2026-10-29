@@ -22,6 +22,13 @@ createInteractionSession({program,bindings:[{type:'linkSelection',id:'join',targ
  {target:'points',selection:'picked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}},
  {target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'source',targetData:'source'}}
 ]}]});
+createInteractionSession({program,bindings:[{type:'select',target:{childPath:['left'],id:'points'},selection:'picked',mode:'toggle',onMiss:'ignore',slop:2,hitInvisible:true}]});
+// @ts-expect-error click bindings use existing named selections
+createInteractionSession({program,bindings:[{type:'select',target:'points'}]});
+// @ts-expect-error drag and additive gestures have no automatic click binding
+createInteractionSession({program,bindings:[{type:'select',target:'points',selection:'picked',mode:'add'}]});
+// @ts-expect-error miss policy differs from selection empty semantics
+createInteractionSession({program,bindings:[{type:'select',target:'points',selection:'picked',onMiss:'all'}]});
 const projected: readonly string[] = session.getState().linkedSelections[0].sources[0].keys;
 createInteractionSession({program,selectionPolicy:'drop',bindings:[]});
 const available:boolean=session.getState().linkedSelections[0].targetAvailable;

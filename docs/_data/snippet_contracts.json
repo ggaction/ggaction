@@ -2350,6 +2350,21 @@
     "executable": true
   },
   {
+    "file": "api/interaction.md",
+    "block": 8,
+    "heading": "Automatic click selection",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"picked\""
+    ],
+    "prerequisites": "Use this complete browser module with the Canvas element whose id is chart, shown immediately before it. Click an observation to toggle its named selection.",
+    "sha256": "3e7d8469623f77728140d0501a858ef2fd5b9dabe52532df347cc8031776d449",
+    "executable": true
+  },
+  {
     "file": "api/legends.md",
     "block": 1,
     "heading": "Editing one block",

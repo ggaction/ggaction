@@ -38,6 +38,13 @@ session.dispatch({ type: "frame", scene: createTransitionScene(program), version
 session.getState().hit!.target!.itemKey = "change";
 createInteractionSession({program,bindings:[{type:'linkSelection',id:'rows',target:{childPath:['right'],id:'points'},selection:'picked',resolve:'global',sources:[{target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'rows',targetData:'rows'}}]}]});
 createInteractionSession({program,bindings:[{type:'linkSelection',id:'tuple',target:'points',selection:'picked',resolve:'union',sources:[{target:'other',selection:'otherPicked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}}]}]});
+createInteractionSession({program,bindings:[{type:'select',target:{childPath:['left'],id:'points'},selection:'picked',mode:'toggle',onMiss:'ignore',slop:2,hitInvisible:true}]});
+// @ts-expect-error click bindings use existing named selections
+createInteractionSession({program,bindings:[{type:'select',target:'points'}]});
+// @ts-expect-error drag and additive gestures have no automatic click binding
+createInteractionSession({program,bindings:[{type:'select',target:'points',selection:'picked',mode:'add'}]});
+// @ts-expect-error miss policy differs from selection empty semantics
+createInteractionSession({program,bindings:[{type:'select',target:'points',selection:'picked',onMiss:'all'}]});
 const projected: readonly string[] = session.getState().linkedSelections[0].sources[0].keys;
 createInteractionSession({program,selectionPolicy:'drop',bindings:[]});
 const available:boolean=session.getState().linkedSelections[0].targetAvailable;

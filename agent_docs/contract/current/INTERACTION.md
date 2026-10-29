@@ -4,7 +4,7 @@
 
 `ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. No action, renderer or persisted schema is added. The default authoring and rendering entries do not import the controller.
 
-`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record plus up to 256 explicit linked-selection bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including gesture bindings, clock and assetResolver, are rejected.
+`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one click-selection binding, plus up to 256 explicit linked-selection bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including gesture bindings, clock and assetResolver, are rejected.
 
 ## Handle and commands
 
@@ -201,3 +201,38 @@ selection resolution and editors do not become Basic capabilities.
 
 Evidence: `test/unit/interaction-reconciliation.test.js`, linked-selection tests, the logical-selection
 realistic corpus, browser interaction tests and installed interaction consumers.
+
+
+## Automatic click binding
+
+Full accepts one `{type:"select",target,selection,mode?,onMiss?,slop?,hitInvisible?}` binding. The target
+is one explicit root or concat mark owner and `selection` must be an existing authored selection on
+that owner. Root/concat facade items follow their native final grain. Basic, generated selection IDs,
+facet-source geometry, duplicate click bindings and conflicting linked target writers are rejected.
+A replacement program revalidates the endpoint before commit; a removed endpoint remains inactive.
+
+`mode` is `replace` (default) or `toggle`. `onMiss` is `clear` (default) or `ignore`. Both option sets
+are closed and explicit null is invalid. `slop` and `hitInvisible` reuse inspect validation/defaults.
+Mounted primary-button `click` events map client coordinates through the existing CSS/root transform
+and query the current accepted frame. Among all hit candidates, the first exact owner/path key in the
+selection's final available item grain is selected. Inspect z-order is retained, and decorative
+geometry still collapses to its item. A missing owner or singular/empty viewport causes no edit.
+
+The binding dispatches native `select` or `clearSelection` commands with `origin:"user"` through the
+same queued transaction, linked closure, reconciliation and frame commit boundary. It retains the
+selection's grain, using `empty:"none"` for explicit keys. Replacing an identical singleton key
+snapshot or clearing an existing empty-none key snapshot is a no-op without revision or event.
+Live predicates/ranges are converted to key snapshots when clicked, even if effective membership
+happens to match. Clearing also removes retained hidden intent. Toggle uses the native set operation.
+
+The binding alone emits no inspect/leave events. If an inspect binding includes click, inspection
+runs before selection; subscriber work still follows the existing FIFO lifecycle. Remount/destroy
+release listeners, and a captured old listener is inactive. All successful selection event consumers
+must render the accepted program; the controller never renders. SVG hosts remount after replacing
+the root element. Headless authors use explicit select/clear commands instead of a new low-level
+click command. No automatic modifier, drag/capture, competing binding, keyboard or history policy is
+inferred. Existing count/work limits apply; candidate and key expansion additionally share a
+10,000,000-unit click-selection budget.
+
+Evidence: `test/unit/interaction-click-selection.test.js`, `test/browser/interaction-session.browser.js`,
+the logical-selection realistic corpus, documentation module and source-free interaction consumers.

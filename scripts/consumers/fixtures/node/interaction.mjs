@@ -78,6 +78,13 @@ export const cases = [
     session.destroy();
   } },
   { id: "interaction/guide-and-host-cleanup", run() {
+    const autoProgram=make(chart).selectMarks({id:'picked',target:'points',items:[]}).highlightMarks({selection:'picked',color:'red',dimOthers:false,bringToFront:false});
+    const automatic=createInteractionSession({program:autoProgram,bindings:[{type:'select',target:'points',selection:'picked',mode:'toggle'}]}), clicks=new Map();
+    const host={getBoundingClientRect:()=>({left:10,top:20,width:200,height:160}),addEventListener:(event,listener)=>clicks.set(event,listener),removeEventListener:event=>clicks.delete(event)};
+    automatic.mount(host);clicks.get('click')({clientX:60,clientY:80});
+    assert.equal(getMarkItems(automatic.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red').length,1);
+    clicks.get('click')({clientX:60,clientY:80});assert.equal(getMarkItems(automatic.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red').length,0);
+    automatic.destroy();assert.equal(clicks.size,0);
     const p = make(chart);
     const session = createInteractionSession({ program: p }), active = new Map();
     const element = { addEventListener(type, listener) { active.set(type, listener); },

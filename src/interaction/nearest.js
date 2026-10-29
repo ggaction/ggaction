@@ -1,7 +1,6 @@
 import { interactionOptions as options } from "./input.js";
-import { interactionOwner, scopeSelectionKeys } from "./selection.js";
+import { resolveInteractionSelection, scopeSelectionKeys } from "./selection.js";
 import { normalizeNearestSelection, nearestDataKey, nearestSelectionBudget } from "../grammar/nearestSelection.js";
-import { resolveRegisteredSelection } from "../materialization/selection/expression.js";
 import { validateUserId } from "../core/identifiers.js";
 
 // Resolve at execution time against the current program and accepted sampled frame.
@@ -11,9 +10,7 @@ export function prepareNearestSelection(program, command, bridge) {
   if (Object.hasOwn(payload, "select") === Object.hasOwn(payload, "nearest")) throw new TypeError("Selection command requires exactly one of select or nearest.");
   if (Object.hasOwn(payload, "select")) return command;
   const query = normalizeNearestSelection(payload.nearest), id = validateUserId(payload.id, "Selection id");
-  const { target, view } = interactionOwner(program, command.target);
-  const resolved = resolveRegisteredSelection(view, id, { sourceOnly: target.facetSource === true });
-  if (resolved.definition.target !== target.id || resolved.definition.sourceSelection) throw new Error("Nearest requires an authored selection matching its explicit owner.");
+  const { target, resolved } = resolveInteractionSelection(program, command.target, id);
   const spend = nearestSelectionBudget();
   let keys;
   if (query.space === "data") {

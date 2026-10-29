@@ -1,3 +1,4 @@
+import { normalizeClickSelection, clickSelectionCommand, resolveClickSelection } from "./clickSelection.js";
 import { normalizeSelectionPolicy, reconcileSelections } from "./reconciliation.js";
 import { prepareNearestSelection } from "./nearest.js";
 import { ownHitScene } from "./sceneFrame.js";
@@ -16,15 +17,16 @@ const IDENTITY = Object.freeze([1, 0, 0, 1, 0, 0]);
 const MAX_DISPATCHES = 256;
 function bindings(program, value) {
   if (value === undefined) value = [{ type: "inspect" }];
-  if (!Array.isArray(value) || value.length > 257) throw new TypeError("Interaction bindings exceed the binding limit.");
+  if (!Array.isArray(value) || value.length > 258) throw new TypeError("Interaction bindings exceed the binding limit.");
   ownArray(value, "Interaction bindings");
-  const inspect = [], linked = [];
+  const inspect = [], linked = [], selected = [];
   for (const binding of value) {
-    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve"], "Interaction binding");
-    (head.type === "linkSelection" ? linked : inspect).push(head);
+    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss"], "Interaction binding");
+    (head.type === "linkSelection" ? linked : head.type === "select" ? selected : inspect).push(head);
   }
-  if (inspect.length > 1) throw new TypeError("Interaction bindings support at most one inspect binding.");
-  return { linked: normalizeSelectionLinks(program, linked), inspect: freezeOwned(inspect.map(binding => {
+  if (inspect.length > 1 || selected.length > 1) throw new TypeError("Interaction bindings support at most one inspect and one select binding.");
+  const links = normalizeSelectionLinks(program, linked);
+  return { linked: links, select: selected.length ? normalizeClickSelection(program, selected[0], links) : undefined, inspect: freezeOwned(inspect.map(binding => {
     const request = options(binding, ["type"], ["events", "slop", "hitInvisible"], "Inspect binding");
     if (request.type !== "inspect") throw new TypeError("Unsupported interaction binding type.");
     const events = request.events === undefined ? ["pointermove", "click"] : request.events;
@@ -36,6 +38,12 @@ function bindings(program, value) {
       ...(request.hitInvisible === undefined ? {} : { hitInvisible: request.hitInvisible }) });
     return cloneAndFreeze({ type: "inspect", events, ...(request.slop === undefined ? {} : { slop: query.slop }), hitInvisible: query.hitInvisible });
   })) };
+}
+function pointerCoordinates(element, event, transform) {
+  const bounds = element.getBoundingClientRect();
+  return resolveHitCoordinates({ point: { x: event.clientX, y: event.clientY },
+    rect: { left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height },
+    rootTransform: transform, childTransforms: [] });
 }
 function nextInteger(value) {
   if (value === Number.MAX_SAFE_INTEGER) throw new RangeError("Interaction frame counter is exhausted.");
@@ -168,6 +176,7 @@ export function createInteractionSession(input) {
         if (reconciled.affectedOwners.length || selectionLinksChangedAvailability(linked.projections, linkedSelections)) {
           linked = applySelectionLinks(linked.program, configured.linked, linkedSelections, reconciled.affectedOwners, { type: "program" }, selectionPolicy);
         }
+        if (configured.select) resolveClickSelection(linked.program, configured.select.target, configured.select.selection, true);
         const verified = reconcileSelections(linked.program, reconciled.records, selectionPolicy, { verify: true });
         const selectionChanges = cloneAndFreeze([...reconciled.changes, ...verified.changes]);
         const candidate = prepareProgramHitFrame(linked.program, version);
@@ -200,10 +209,7 @@ export function createInteractionSession(input) {
             const listener = event === "pointerleave" ? () => { if (!destroyed && mounted === lease) dispatch({ type: "leave" }); }
               : eventObject => {
                 if (destroyed || mounted !== lease) return;
-                const bounds = element.getBoundingClientRect();
-                const coordinates = resolveHitCoordinates({ point: { x: eventObject.clientX, y: eventObject.clientY },
-                  rect: { left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height },
-                  rootTransform: transform, childTransforms: [] });
+                const coordinates = pointerCoordinates(element, eventObject, transform);
                 const query = { pointerType: eventObject.pointerType || "mouse", hitInvisible: binding.hitInvisible,
                   ...(binding.slop === undefined ? {} : { slop: binding.slop }) };
                 if (coordinates.localPoint === null) perform(() => {
@@ -212,6 +218,22 @@ export function createInteractionSession(input) {
                 else dispatch({ type: "inspect", point: coordinates.screenPoint, ...query });
               };
             lease.listeners.push([event, listener]); element.addEventListener(event, listener, { passive: true });
+          }
+          if (configured.select) {
+            const binding = configured.select, listener = event => {
+              if (destroyed || mounted !== lease || (event.button !== undefined && event.button !== 0)) return;
+              const coordinates = pointerCoordinates(element, event, transform);
+              const query = normalizeHitQuery({ pointerType: event.pointerType || "mouse", hitInvisible: binding.hitInvisible,
+                ...(binding.slop === undefined ? {} : { slop: binding.slop }) });
+              perform(() => {
+                if (mounted !== lease || coordinates.localPoint === null) return outcome("unchanged");
+                const command = clickSelectionCommand(program, binding, bridge.hit(coordinates.screenPoint, query));
+                if (!command) return outcome("unchanged");
+                transactionSequence = nextInteger(transactionSequence);
+                return edit(interactionTransaction(command, `interaction-${transactionSequence}`));
+              });
+            };
+            lease.listeners.push(["click", listener]); element.addEventListener("click", listener, { passive: true });
           }
         } catch (error) { detach(lease); candidate.dispose(); throw error; }
         if (mounted !== undefined) detach(mounted);

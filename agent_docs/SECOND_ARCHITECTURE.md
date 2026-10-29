@@ -3565,3 +3565,18 @@ D3 초기 package919entries/Node20packed1,325,924/unpacked6,066,891를 측정해
 적용한 뒤 Node20의97,221gzip으로97,500까지 최소 증분했다. Full/Basic/SVG floor와 cap은 유지한다.
 Search959,574bytes는960,000으로 최소 올림했다.
 최초 초과 실패와 동일 archive의 후속3Node 검증 결과는 D3 증거에서 구분한다.
+
+
+### Host click의 native selection 위임
+
+`interaction/clickSelection.js`는 설정된 explicit owner의 기존 final-item grain과 current hit 후보를
+연결해 ordinary select/clear command만 만든다. Owner·authored selection 검증은 기존
+`interaction/selection.js`의 shared resolver로 모아 nearest/linked/click이 재사용한다. Session이
+listener 수명과 FIFO·원자 commit을 소유하고 렌더러는 계속 accepted graphicSpec/scene만 읽는다.
+새 selection resource나 low-level pointer command는 없다. 정확한 단일 binding 범위·miss/no-op
+정책과 후행 gesture 경계는 Current INTERACTION에 둔다.
+
+D4 click owner 추가로 entries920, Node20packed1,327,105/unpacked6,072,371를 측정했다.
+Package cap은920/1,328,000/6,073,000, interaction97,595gzip은97,600,
+search960,195bytes는961,000으로 최소 올림한다. 최초 한도 초과와 동일 archive의
+Node20/22/24 검증은 click evidence에서 구분하며 기존 다른 entry cap은 유지한다.

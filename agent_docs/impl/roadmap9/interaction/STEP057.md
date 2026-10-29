@@ -334,3 +334,22 @@ runtime/type는 통과했음을 구분하고, 최종 whole consumer exit0 로그
 잘못된 임시 heading locator·없는 개별 provenance test 경로의 실패와 실제 owning 검사 수정 결과를
 함께 남겼다. 전체 unit/coverage/installed/render sweep 또는 자동 bindings·history·STEP077 완료로
 확대하지 않는다. 다음은 기존 selection owner를 재사용하는 자동 click/toggle binding이다.
+
+## D4 자동 click binding 설계
+
+AUTHORIZATION의 잔여 설계 승인을 재사용한다. Session은 선택적으로 하나의
+`{type:"select",target,selection,mode?:"replace"|"toggle",onMiss?:"clear"|"ignore",slop?,hitInvisible?}`를
+받는다. 기본은 replace/clear이며 기존 authored selection의 명시 owner와 grain을 재사용한다.
+현재 accepted frame의 전체 hit 후보 중 해당 owner·child·selection grain에 속한 첫 항목을 고른다.
+별도 inspect binding이 없으면 transient inspect event는 만들지 않는다. 실제 pointer click은 기존
+select/clearSelection의 원자 경로와 origin:user를 사용하고, 명시 동일 key snapshot은 no-op이다.
+
+Click binding은 자신의 selection을 소유하는 linked writer와 충돌할 수 없다. Basic은 기존 Full
+resolver 경계에서 거부하고 facetSource의 다중 화면 geometry를 추론하지 않는다. 기존 root/concat
+owner 및 해당 facade의 실제 final logical item은 지원한다. Missing endpoint는 세션 수명 내 no-op이고
+돌아온 authored endpoint는 다시 검증한다. Listener 추가 실패·remount·destroy·subscriber 오류와
+queued dispatch 수명은 기존 controller가 소유한다. 같은 binding에서 반복 click해도 중복 listener나
+transaction이 생기면 실패다. 새 public low-level pointer command는 추가하지 않는다.
+
+다중 경쟁 binding·modifier·3px drag arbitration·capture/cancel·keyboard activation은 후행 STEP058+의
+별도 의무이며 이 click checkpoint의 완료 범위로 표시하지 않는다. 새 시각 primitive는 없다.

@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:0d125f7064c7f64c70012808d44792dfc62203fd0070c7336d7cc18af30c9c0a. Status: development. Runtime source: 7980936d7e831a8465fb7e2072c7e8e3b32d9302. Release baseline: v0.0.13.
+Contract: sha256:aaf2c55debc36f9c838769fca49e5e452dfbca9e3a28f8783cef7218460333a0. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/7980936d7e831a8465fb7e2072c7e8e3b32d9302/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/7980936d7e831a8465fb7e2072c7e8e3b32d9302/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11006,6 +11006,61 @@ selection resources; recreate the session and links after loading. A fresh repla
 the selection intent authored in that program. Legacy concrete-property predicates on facet sources
 have no source-only geometry: keep-hidden preserves them, while explicit drop rejects them. Prefer
 item keys, data fields or AST predicates for source selections.
+
+## Automatic click selection
+
+Use a `select` binding when the session should turn clicks into selection commands. The named
+selection must already exist on the explicit Full mark owner. Add an `inspect` binding separately
+if you also want hover or click inspection events.
+
+Place `<canvas id="chart" aria-label="Selectable observations"></canvas>` in the page, then run:
+
+> **Executable complete.** Use this complete browser module with the Canvas element whose id is chart, shown immediately before it. Click an observation to toggle its named selection.
+
+```javascript
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const program = chart()
+  .createCanvas({ width: 480, height: 320 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "a", x: 1, y: 2 }, { id: "b", x: 2, y: 3 }
+  ] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+  .selectMarks({ id: "picked", target: "points", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", dimOthers: false, bringToFront: false });
+
+const canvas = document.querySelector("#chart");
+const context = canvas.getContext("2d");
+render(program, context);
+const clickSession = createInteractionSession({ program, bindings: [
+  { type: "select", target: "points", selection: "picked", mode: "toggle", onMiss: "clear" }
+] });
+clickSession.subscribe(event => {
+  if (event.phase === "commit") render(event.current, context);
+});
+clickSession.mount(canvas);
+```
+
+`mode` defaults to `replace`; `toggle` adds or removes the clicked key. `onMiss` defaults to `clear`;
+`ignore` keeps the selection on a miss. Picking uses the first current-frame candidate belonging to
+the stated owner, child path and selection grain. Other marks and guide items cannot become that
+selection. Overlapping eligible items retain inspection's frontmost ordering. `slop` and
+`hitInvisible` have the same meaning as inspection.
+
+Selection commits have `origin: "user"` and update linked selections atomically. A repeated replace
+of the same explicit key snapshot, or clearing an already empty key snapshot, produces no commit.
+Only primary-button click events are used; modifier keys do not change the configured mode. The
+binding does not emit inspection events by itself. Missing endpoints become inactive until restored.
+
+At most one click-selection binding is supported alongside inspection and linked bindings. A linked
+target cannot also be its click-selection writer. Root and explicit concat owners are supported;
+facet source geometry is not inferred. Basic supports inspection, but this binding requires Full.
+The controller does not yet arbitrate dragging, competing bindings, keyboard activation or modifiers.
+
+For SVG, render `event.current`, replace the SVG element, then call `clickSession.mount(newSvg)`;
+remounting removes the old listeners. Call `clickSession.destroy()` when the host is removed.
+Headless applications use the same explicit `select` and `clearSelection` commands.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -33690,6 +33745,16 @@ export interface InspectBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+export interface ClickSelectionBinding {
+  readonly type: 'select';
+  /** Existing authored selection on an explicit root or concat mark owner. */
+  readonly target: InteractionTarget;
+  readonly selection: string;
+  readonly mode?: 'replace' | 'toggle';
+  readonly onMiss?: 'clear' | 'ignore';
+  readonly slop?: number;
+  readonly hitInvisible?: boolean;
+}
 export type SelectionProjection = {
   readonly type: 'rows';
   readonly sourceData: string;
@@ -33841,7 +33906,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | LinkedSelectionBinding)[];
+  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | LinkedSelectionBinding)[];
 }): InteractionSession;
 ```
 
@@ -47035,12 +47100,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/7980936d7e831a8465fb7e2072c7e8e3b32d9302/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/7980936d7e831a8465fb7e2072c7e8e3b32d9302/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -50085,9 +50150,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:0d125f7064c7f64c70012808d44792dfc62203fd0070c7336d7cc18af30c9c0a` |
+| Contract fingerprint | `sha256:aaf2c55debc36f9c838769fca49e5e452dfbca9e3a28f8783cef7218460333a0` |
 | Example and dataset source | `8e7582ff780415da5e7d7f553073b449fb637689` |
-| Runtime source commit | `7980936d7e831a8465fb7e2072c7e8e3b32d9302` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 340 |
 | Declared actions in that release | 234 |

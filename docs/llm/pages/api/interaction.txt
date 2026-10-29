@@ -333,3 +333,58 @@ selection resources; recreate the session and links after loading. A fresh repla
 the selection intent authored in that program. Legacy concrete-property predicates on facet sources
 have no source-only geometry: keep-hidden preserves them, while explicit drop rejects them. Prefer
 item keys, data fields or AST predicates for source selections.
+
+## Automatic click selection
+
+Use a `select` binding when the session should turn clicks into selection commands. The named
+selection must already exist on the explicit Full mark owner. Add an `inspect` binding separately
+if you also want hover or click inspection events.
+
+Place `<canvas id="chart" aria-label="Selectable observations"></canvas>` in the page, then run:
+
+> **Executable complete.** Use this complete browser module with the Canvas element whose id is chart, shown immediately before it. Click an observation to toggle its named selection.
+
+```javascript
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const program = chart()
+  .createCanvas({ width: 480, height: 320 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "a", x: 1, y: 2 }, { id: "b", x: 2, y: 3 }
+  ] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+  .selectMarks({ id: "picked", target: "points", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", dimOthers: false, bringToFront: false });
+
+const canvas = document.querySelector("#chart");
+const context = canvas.getContext("2d");
+render(program, context);
+const clickSession = createInteractionSession({ program, bindings: [
+  { type: "select", target: "points", selection: "picked", mode: "toggle", onMiss: "clear" }
+] });
+clickSession.subscribe(event => {
+  if (event.phase === "commit") render(event.current, context);
+});
+clickSession.mount(canvas);
+```
+
+`mode` defaults to `replace`; `toggle` adds or removes the clicked key. `onMiss` defaults to `clear`;
+`ignore` keeps the selection on a miss. Picking uses the first current-frame candidate belonging to
+the stated owner, child path and selection grain. Other marks and guide items cannot become that
+selection. Overlapping eligible items retain inspection's frontmost ordering. `slop` and
+`hitInvisible` have the same meaning as inspection.
+
+Selection commits have `origin: "user"` and update linked selections atomically. A repeated replace
+of the same explicit key snapshot, or clearing an already empty key snapshot, produces no commit.
+Only primary-button click events are used; modifier keys do not change the configured mode. The
+binding does not emit inspection events by itself. Missing endpoints become inactive until restored.
+
+At most one click-selection binding is supported alongside inspection and linked bindings. A linked
+target cannot also be its click-selection writer. Root and explicit concat owners are supported;
+facet source geometry is not inferred. Basic supports inspection, but this binding requires Full.
+The controller does not yet arbitrate dragging, competing bindings, keyboard activation or modifiers.
+
+For SVG, render `event.current`, replace the SVG element, then call `clickSession.mount(newSvg)`;
+remounting removes the old listeners. Call `clickSession.destroy()` when the host is removed.
+Headless applications use the same explicit `select` and `clearSelection` commands.
