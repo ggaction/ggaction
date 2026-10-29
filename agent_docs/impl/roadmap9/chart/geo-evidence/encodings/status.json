@@ -73,7 +73,12 @@
         2
       ]
     },
-    "inventory": "pending",
+    "inventory": {
+      "final": {
+        "tests": 10,
+        "pass": 10
+      }
+    },
     "sourceDocs": {
       "initial": {
         "tests": 201,
@@ -88,9 +93,26 @@
         "pass": 200,
         "remaining": "Uncommitted example source pin"
       },
-      "final": "pending"
+      "final": {
+        "tests": 201,
+        "pass": 201
+      }
     },
-    "builtDocs": "pending"
+    "builtDocs": {
+      "pages": 172,
+      "selectiveArtifacts": 1525,
+      "final": {
+        "linksAssetsAndHashes": "passed",
+        "browser": "passed",
+        "responsiveWidths": [
+          320,
+          390,
+          768
+        ],
+        "accessibility": "passed",
+        "search": "passed"
+      }
+    }
   },
   "package": {
     "sha256": "a2cf6a22ef8ec43acbffbbcf8be2b7cdb2f5a1ede7760810d8fc98d1b090536c",
@@ -302,5 +324,6 @@
     "Conditional resource-grain fields, feature and graticule labels, and native camera remain required subsequent Geo scope.",
     "Session LOD logical-key availability and Geo annotation commands are peer-owned integration obligations.",
     "Parent owns final combined realistic-lifecycle-factor-effects, realistic-scenario-generator and realistic-scenario-generation-isolation checks."
-  ]
+  ],
+  "sourceCommit": "bff4d29eb0366a048259109dab009a1fe878afb5"
 }

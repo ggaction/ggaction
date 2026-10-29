@@ -3,9 +3,9 @@
   "status": "development",
   "packageVersion": "0.0.26",
   "contractId": "sha256:aa5fdab50129bc775a4d25c4474a38bed35f54b5b4bd59168c7ba46f43fe3962",
-  "sourceCommit": null,
-  "sourceRef": "main",
-  "exampleSourceRef": "codex/roadmap9-geo",
+  "sourceCommit": "bff4d29eb0366a048259109dab009a1fe878afb5",
+  "sourceRef": "bff4d29eb0366a048259109dab009a1fe878afb5",
+  "exampleSourceRef": "bff4d29eb0366a048259109dab009a1fe878afb5",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",

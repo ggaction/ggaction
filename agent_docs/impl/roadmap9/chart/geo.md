@@ -661,3 +661,11 @@ normal/global coverage 통과를 주장하지 않는다. Discovery 최초57/58 �
 최종 inventory·source/built/browser 문서 결과는 아래 evidence에 구분해 기록한다.
 
 [Feature appearance evidence](geo-evidence/encodings/status.json)
+
+
+Feature appearance source는 `bff4d29eb`로 고정·push했다. 동일 runtime과 타입을 유지한
+후속 source pin 갱신에서 문서201/201, canonical inventory10/10, built172페이지/1525개
+selective artifact 및 전체320/390/768px browser containment·검색·접근성 검증이 통과했다.
+1035개 package input의 canonical byte parity도 다시 확인했다. 최초 실패와 owning 수리는
+위 evidence status와 원본 로그로 분리했다. 이 checkpoint는 ordinary fields와 기존legend
+연결이며 conditional resource-grain, feature/graticule labels, camera046 전체 완료를 뜻하지 않는다.
