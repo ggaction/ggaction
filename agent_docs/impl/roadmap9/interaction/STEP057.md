@@ -14,7 +14,7 @@
 - [x] D1: select/setParameter/clearSelection session command 원자 commit 및 qualification
 - [x] D2: nearest screen/data metric 및 qualification
 - [x] D3: delete/hidden reconciliation·event 및 dormant linked endpoint qualification
-- [ ] D4: 자동 click/toggle bindings
+- [x] D4: 자동 click/toggle bindings 및 실제 host/package qualification
 - [ ] STEP057 AT37 및 후행 058–060/065–068 통합 완료
 
 STEP050–056은 다른 원안 카드이며 이 기록의 완료 범위가 아니다. STEP077 전체 목표는 계속 진행 중이다.
@@ -353,3 +353,26 @@ transaction이 생기면 실패다. 새 public low-level pointer command는 추�
 
 다중 경쟁 binding·modifier·3px drag arbitration·capture/cancel·keyboard activation은 후행 STEP058+의
 별도 의무이며 이 click checkpoint의 완료 범위로 표시하지 않는다. 새 시각 primitive는 없다.
+
+### D4 검증 checkpoint
+
+Source `c999932b0`의 [qualification](click-evidence/qualification.json)과
+[독립 expected/actual/diff](click-evidence/expected-actual-diff.json)를 보존했다. Focused117
+(새11), source/type/discovery28, package13, 실제5데이터×3recipe16 및 Canvas/SVG browser8이
+통과했다. 새 click owner100/97.87/100, 기존 변경 owner 모두95/90/100 critical floor를
+충족했다. 원본 불변, exact snapshot no-op, linked 단일 writer, child 수명과 current frame을 포함한다.
+
+Archive `83555814939fbc90916469ceb61d8c0ecb642cf556f67be51560cf3d04ce24d9` 하나로
+Node20/22/24 각각3runtime·strict types·4entry bundle 검사를 완료했다. Entries920,
+Node20 dry packed1,327,105/unpacked6,072,371 및 interaction97,595gzip의 실측에 맞춰
+각 cap을 최소 조정했다. 최초 package·bundle·search 초과를 최종 통과와 분리 보존한다.
+
+문서 source185, 최종 provenance owning+package truth32, built164페이지/1411 artifacts가
+통과했다. 실제 실행 complete browser-module은 host click으로 선택을 바꾸며, 문서 host mock도
+명시 EventTarget을 제공한다. 320/390/768/1440 Axe0/overflow0와390px 시각 확인은 변경 없는
+페이지/CSS 결과를 재사용한다. 별도 package truth 검사에서 발견한 기존 architecture의
+interaction heading과 오래된 bundle 표를 정본에 맞췄다. 실행 스크립트의 잘못된 selection
+state 조회 및 destroy 기대값 누락은 증거 스크립트만 수정했고 최초 로그를 남겼다.
+
+다음 STEP058은 capture·3px threshold·priority/modifier arbitration 및 cancel 수명이다.
+D4는 drag/pinch/keyboard·brush/lasso/history 또는 STEP057 AT37/STEP077 전체 완료가 아니다.
