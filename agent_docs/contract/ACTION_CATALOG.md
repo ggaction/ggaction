@@ -351,6 +351,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createCalendarLayout`](current/CALENDAR.md#createcalendarlayout) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createCalendarPlot`](current/CALENDAR.md#createcalendarplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editCalendarPlot`](current/CALENDAR.md#editcalendarplot) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`bundleGraphEdges`](current/EDGE_ROUTES.md#bundlegraphedges) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editEdgeRoute`](current/EDGE_ROUTES.md#editedgeroute) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

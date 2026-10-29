@@ -10,6 +10,7 @@ import { applyMaterializationPlan } from "../planner.js";
 import { assertGuideCollisionBlocks } from "../../layout/guideCollisions.js";
 import { resolveGuideCollisionBlocks } from "./resources.js";
 import { hasPlotUnderlays } from "../plotDrawOrder.js";
+import { prepareCanvasResourceRevision, applyCanvasResourceRevision } from "../canvasResourceRevision.js";
 export { resolveGuideCollisionBlocks } from "./resources.js";
 
 // Whole-axis edits can replace label and relative-title siblings together.
@@ -65,7 +66,10 @@ export function withGuideLayoutTransaction(program, apply) {
   if (program.materializationConfigs.canvas?.responsive !== undefined) {
     const result = withResponsiveLayout(program, candidate => applyGuidePass(candidate, current => {
       const applied = apply(resetLegendClipGraphics(restoreLegendItemsOffset(restoreGuideVisibilityPaint(current))));
-      return applyMaterializationPlan(applied, planCanvasRematerialization(applied));
+      // A source action already computes its route closure against this pass's
+      // bounds. Guide-only edits still need their viewport-dependent results.
+      const settled = applyCanvasResourceRevision(applied, prepareCanvasResourceRevision(applied));
+      return applyMaterializationPlan(settled, planCanvasRematerialization(settled));
     }));
     return validateFinalGuideLayout(result);
   }
@@ -83,6 +87,11 @@ export function withGuideLayoutTransaction(program, apply) {
         candidate = applyMaterializationPlan(candidate, planCanvasRematerialization(candidate));
       }
       result = applyGuidePass(candidate, apply);
+      const resources = prepareCanvasResourceRevision(result);
+      if (resources !== undefined) {
+        result = applyCanvasResourceRevision(result, resources);
+        result = applyMaterializationPlan(result, planCanvasRematerialization(result));
+      }
       break;
     } catch (error) {
       const details = getErrorDetails(error), overflow = details?.canvasOverflow;

@@ -1,0 +1,34 @@
+{
+  "scope": "Private revision-bound route jobs and source/result adapters",
+  "baseline": "c78959a54",
+  "checks": {
+    "focusedAndCoverage": 52,
+    "criticalOwners": 16,
+    "architectureAndDiscoveryWithFocused": 38,
+    "canonicalRouteUnit": 48,
+    "packageContracts": 7
+  },
+  "coverage": {
+    "lines": 99.92,
+    "branches": 99.63,
+    "functions": 100
+  },
+  "floor": {
+    "lines": 95,
+    "branches": 90,
+    "functions": 100
+  },
+  "initialFailures": "Fixture mutation shared a cloned limits alias; hierarchy fixture omitted required native tree/treemap options. Corrected fixtures passed; originals retained.",
+  "bundleReuse": {
+    "from": "../public-baseline/bundles.json",
+    "reason": "New adapters and solver validators are unreachable from public package entries; existing solver numeric policy is unchanged."
+  },
+  "remaining": "Public resource/actions/worker/GraphPlot/revision/renderer/consumer integration remains open.",
+  "hashes": {
+    "src/grammar/graph/routes/options.js": "69d6aea1967a60c2188b412ac40138d197582a5aacb936dc16abb4fa2776113d",
+    "src/grammar/graph/routes/job.js": "757453d52e9eca3f555feb00c4fb965701f558f1a23cdb6dd661d8d41d9d3d49",
+    "src/grammar/graph/routes/result.js": "8189f68bdf53fc13edff90545dc81bd26e928ff2a1ef4efadd84f15f59d4f1dc",
+    "src/grammar/graph/routes/resultProvenance.js": "f38e61aad6c1566dad9aef2af3c25611bd6fc08c7e67127c41c8b1905c927715",
+    "src/materialization/graph/routeInput.js": "dfd73991a2ec5cd2cc6f8955f6fd3a9620cd220aebd145702bd4ed9b97f092bf"
+  }
+}

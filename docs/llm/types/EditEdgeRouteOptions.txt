@@ -1,0 +1,7 @@
+export interface EditEdgeRouteOptions {
+  readonly target?: string; readonly graph?: string; readonly layout?: string; readonly method?: EdgeRouteMethod;
+  readonly coordinateSpace?: "world" | "screen";
+  readonly options?: Partial<HierarchicalEdgeRouteOptions> | ForceDirectedEdgeRouteOptions | EdgeRouteCommonOptions | EdgePathRouteOptions;
+}
+declare const preparedGraphEdgeRoutes: unique symbol;
+/** Opaque, exact-receiver preparation. Obtain it from ggaction/graph. */

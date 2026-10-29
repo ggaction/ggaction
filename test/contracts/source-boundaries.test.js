@@ -109,6 +109,7 @@ test("keeps source imports inside their architectural boundaries", () => {
             path.relative(root, dependency) === path.join("actions", "data", "sourcePlan.js")) ||
           (path.relative(root, file) === path.join("actions", "images", "index.js") && path.relative(root, dependency) === path.join("resources", "imageResource.js")) ||
           (path.relative(root, file) === path.join("actions", "fonts", "index.js") && path.relative(root, dependency) === path.join("resources", "fontResource.js")) ||
+          (path.relative(root, file) === path.join("actions", "graphs", "edgeRoutes.js") && path.relative(root, dependency) === path.join("resources", "graphRoutes.js")) ||
           (path.relative(root, file) === path.join("actions", "textMetrics", "index.js") && path.relative(root, dependency) === path.join("resources", "textMetrics.js")) ||
           (path.relative(root, file) === path.join("resources", "textMetricsFull.js") && path.relative(root, dependency) === path.join("actions", "textMetrics", "index.js")) ||
           (owner === "renderers" && path.relative(root, dependency) === path.join("core", "immutable.js")) ||
@@ -145,7 +146,7 @@ test("Basic source preparation excludes Full revision and facet orchestration", 
   }
   assert.ok(visited.has(path.join(root, "resources", "dataUpdate.js")));
   for (const file of ["resources/dataUpdateFull.js", "actions/data/sourceEdit.js", "actions/data/sourcePlan.js", "actions/parameters/edit.js",
-    "resources/fontResource.js", "resources/textMetricsFull.js", "actions/fonts/index.js"]) {
+    "resources/fontResource.js", "resources/textMetricsFull.js", "actions/fonts/index.js", "resources/graphRoutes.js", "resources/graphRouteExecutor.js", "actions/graphs/edgeRoutes.js"]) {
     assert.equal(visited.has(path.join(root, file)), false, file);
   }
 });

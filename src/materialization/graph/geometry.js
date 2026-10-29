@@ -10,7 +10,7 @@ function checked(commands) {
   for (const command of commands) for (const key of Object.keys(command)) if (key !== "op") finite(command[key]);
   return commands;
 }
-function arrow(tip, control, size) {
+export function graphArrowCommands(tip, control, size) {
   const tangent = direction(tip.x - control.x, tip.y - control.y);
   const base = { x: tip.x - tangent.x * size, y: tip.y - tangent.y * size };
   return checked([{ op: "M", x: tip.x, y: tip.y },
@@ -51,6 +51,6 @@ export function graphEdgeGeometry(model, positions, radii, style) {
       end = { x: b.x - to.x * targetInset, y: b.y - to.y * targetInset };
     }
     const commands = checked([{ op: "M", ...start }, { op: "C", x1: c1.x, y1: c1.y, x2: c2.x, y2: c2.y, ...end }]);
-    return { edge, commands, ...(style.arrows && style.arrowSize > 0 ? { arrowCommands: arrow(end, c2, style.arrowSize) } : {}) };
+    return { edge, commands, ...(style.arrows && style.arrowSize > 0 ? { arrowCommands: graphArrowCommands(end, c2, style.arrowSize) } : {}) };
   });
 }

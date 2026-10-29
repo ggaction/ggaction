@@ -1,0 +1,1 @@
+export interface EdgeRoutePoint { readonly x: number; readonly y: number; }

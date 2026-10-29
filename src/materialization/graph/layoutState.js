@@ -9,6 +9,7 @@ import { resolveInputReference } from "../../selectors/resources.js";
 import { validateGraphPlotDefinition } from "../../grammar/graph/plot.js";
 import { validateRowSelectionDataset } from "../../grammar/markSelection.js";
 import { findDataset } from "../../selectors/datasets.js";
+import { validateInputReference } from "../../core/resourceReference.js";
 
 const same = (a, b) => canonicalJSON(encodeValue(a)) === canonicalJSON(encodeValue(b));
 function exact(value, fields, label) {
@@ -72,7 +73,11 @@ function validateBindings(program, resource) {
     if (layer.graphBinding?.layout.id !== resource.id) continue;
     exact(layer, ["id", "mark", "graphBinding", "graphLabels"], "Graph plot layer");
     exact(layer.mark, ["type"], "Graph plot mark");
-    exact(layer.graphBinding, ["layout"], "Graph plot binding");
+    exact(layer.graphBinding, ["layout", ...(Object.hasOwn(layer.graphBinding, "routes") ? ["routes"] : [])], "Graph plot binding");
+    if (Object.hasOwn(layer.graphBinding, "routes")) {
+      validateInputReference(layer.graphBinding.routes);
+      if (layer.graphBinding.routes.kind !== "edge-route") throw new TypeError("Graph routes require an edge-route resource.");
+    }
     if (layer.mark.type !== "graph") throw new TypeError("Graph layout binding requires a graph mark.");
     const config = program.materializationConfigs.marks?.[layer.id];
     exact(config, ["graphPlot"], "Graph mark configuration");

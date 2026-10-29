@@ -1,0 +1,34 @@
+{
+  "scope": "Private density field and vector route bundling",
+  "baseline": "786463863",
+  "runtime": "v22.23.1",
+  "checks": {
+    "canonicalRouteUnit": 34,
+    "routeCoverage": {
+      "tests": 34,
+      "owners": 9,
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "architectureDiscoveryAndPolicy": 34,
+    "package": 7
+  },
+  "requiredRouteFloor": {
+    "lines": 95,
+    "branches": 90,
+    "functions": 100
+  },
+  "bundles": {
+    "reusedFrom": "../hierarchical/bundles.json",
+    "reason": "Only unreachable private modules were added; no public import or existing runtime changed."
+  },
+  "firstFailure": "Two fixture assertions corrected: fractional floating result now uses tolerance; only endpoints must remain bitwise pinned, not every interior y coordinate.",
+  "remaining": "Public resource/actions, async workers, renderer and all consumer closure remain open.",
+  "hashes": {
+    "src/grammar/graph/routes/density.js": "c79ac8280d15c4eb1728d3bfbda339fd7bd2447aa0aa195364044bfbbe636e75",
+    "src/grammar/graph/routes/densityField.js": "259652565d465cf61bdeb8892347b1ea104998e476c30be5ec51d29c2b86ddd9",
+    "test/unit/grammar/graph/routes/density.test.js": "ae608755602f8f4dae0dab21c1b6f19623c89504d62350a576e0632724c45a7b",
+    "test/oracles/edge-routes.js": "f25abe36f7ba9ff91dea6d793aed62ba4c31cb0f9e08f226135d7f05ef6a5f19"
+  }
+}

@@ -143,8 +143,9 @@ function geometryOptions(tolerance, maxDepth) {
 }
 
 // Input is transformed to scene CSS pixels before measuring subdivision error.
-export function flattenPathCommands(commands, { tolerance = 0.25, maxDepth = 20, transform = [1, 0, 0, 1, 0, 0] } = {}) {
+export function flattenPathCommands(commands, { tolerance = 0.25, maxDepth = 20, maxPoints = MAX_FLATTENED_POINTS, transform = [1, 0, 0, 1, 0, 0] } = {}) {
   geometryOptions(tolerance, maxDepth);
+  if (!Number.isSafeInteger(maxPoints) || maxPoints < 1 || maxPoints > MAX_FLATTENED_POINTS) throw new RangeError("Path maxPoints must be an integer from 1 to 1000000.");
   if (!Array.isArray(transform) || transform.length !== 6 || !transform.every(Number.isFinite)) throw new TypeError("Path transform requires six finite numbers.");
   const map = (x, y) => {
     const [a, b, c, d, e, f] = transform, result = point(a * x + c * y + e, b * x + d * y + f);
@@ -153,14 +154,16 @@ export function flattenPathCommands(commands, { tolerance = 0.25, maxDepth = 20,
   };
   const subpaths = [], diagnostics = [];
   let pointCount = 0;
+  const pointLimit = commandIndex => freezeOwned({ subpaths: freezeOwned([]), diagnostics: freezeOwned([freezeOwned({ code: "path-point-limit", limit: maxPoints, commandIndex })]) });
   for (const { start, end, closed } of resolvePathSubpaths(commands)) {
     const first = map(commands[start].x, commands[start].y), points = [first];
     let current = first, hasSegments = false;
     pointCount++;
+    if (pointCount > maxPoints) return pointLimit(start);
     const append = value => { points.push(value); pointCount++; };
     for (let index = start + 1; index <= end; index++) {
       const command = commands[index];
-      if (command.op === "Z") { hasSegments = true; append(first); continue; }
+      if (command.op === "Z") { hasSegments = true; append(first); if (pointCount > maxPoints) return pointLimit(index); continue; }
       hasSegments = true;
       const to = map(command.x, command.y);
       if (command.op === "L") append(to);
@@ -177,11 +180,10 @@ export function flattenPathCommands(commands, { tolerance = 0.25, maxDepth = 20,
             const d = midpoint(a, b), e = midpoint(b, c), middle = midpoint(d, e);
             stack.push({ points: [middle, e, c, p3], depth: depth + 1 }, { points: [p0, a, d, middle], depth: depth + 1 });
           }
-          if (pointCount >= MAX_FLATTENED_POINTS) {
-            return freezeOwned({ subpaths: freezeOwned([]), diagnostics: freezeOwned([freezeOwned({ code: "path-point-limit", limit: MAX_FLATTENED_POINTS, commandIndex: index })]) });
-          }
+          if (pointCount > maxPoints) return pointLimit(index);
         }
       }
+      if (pointCount > maxPoints) return pointLimit(index);
       current = to;
     }
     subpaths.push(freezeOwned({ closed, hasSegments, points: freezeOwned(points.map(value => freezeOwned(value))) }));

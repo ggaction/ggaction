@@ -32,6 +32,7 @@ semantic 상태 → 명시적 materialization → concrete graphicSpec 순서다
 | `ggaction/accessibility` | `src/accessibility.js` | `types/accessibility.d.ts` |
 | `ggaction/inspection` | `src/inspection.js` | `types/inspection.d.ts` |
 | `ggaction/scene` | `src/scene.js` | `types/scene.d.ts` |
+| `ggaction/graph` | `src/graph.js` | `types/graph.d.ts` |
 | `ggaction/interaction` | `src/interaction.js` | `types/interaction.d.ts` |
 
 `ggaction-mcp`는 별도의 Node stdio executable이며 chart code를 실행하지 않는다.
@@ -62,6 +63,60 @@ Font의 public resource 연결과 최종 export bundle은 별도 단계다. 정�
 reference가 소유한다.
 
 ## Private builtin resource validation
+
+Edge route의 공통 계산은 `grammar/graph/routes/`에 있다. 기존 graph model과 원 typed
+key 순서, 명시 node anchor를 검증해 독립 work buffer를 만들고 완료 vector만 원 edge 순서로
+반환한다. Full registry의 `edge-route` handler는 exact graph/layout/hierarchy refs와 완료
+hash/shape/provenance를 검증하며 restore에서 solver를 실행하지 않는다. GraphPlot는 선택한
+route의 원 edge identity를 유지하고 concrete path만 materialize한다. Renderer는 기존 path를
+그대로 읽는다. 공개 API·수치 정책의 정본은 [Edge Routes](contract/current/EDGE_ROUTES.md)다.
+
+`ggaction/graph`는 순수 job compute와 명시 executor/preparation을 제공한다. Executor 인스턴스만
+bounded cache/worker/abort 수명을 소유하고 exact receiver/token의 private prepared handle을
+동기 domain action이 소비한다. Callback이나 worker는 저장 상태·trace·renderer로 전달하지 않는다.
+Graph/H/layout/data source revision은 final resource 후보를 먼저 검증한 뒤 소비 plot union을 한 번
+materialize한다. Canvas의 Full-only resource revision adapter는 prospective plot bounds에 대한
+screen routes를 먼저 검산하고 기존 private final-envelope proof로 새 refs를 원자적으로 적용한다.
+Basic Canvas는 solver를 import하지 않는다. World routes의 결과는 Canvas 크기 변화에 유지한다.
+Shared materialization의 `canvasResourceRevision` registry가 Canvas와 guide transaction의
+명시 resource adapter 경계를 소유한다. Responsive와 exact-plot guide transaction도 이를 호출한다. Responsive pass의
+domain action이 먼저 현재 후보 bounds로 source resource union을 닫고, guide-only viewport
+변경은 최종 graphical rematerialization 전에 갱신한다. Source union은 같은 Canvas를 쓰는
+독립 screen route까지 검증하며 viewport-only sibling의 원 intent와 input vector를 보존한다.
+
+아래 package 수치는 공개 연결 이전 private checkpoint의 보존 기록이다.
+Theme 통합 기준과 이 private kernel의 합산 package는 927 entries/6,105,931 unpacked bytes,
+Node20/22/24 packed 최대1,331,298 bytes다. 상한은927/1,332,000/6,106,000으로 최소 올림한다.
+동일 tar의 합산 theme baseline bundle은 Full660,081/Basic369,582 gzip bytes로, 상한을
+661,000/370,000으로 맞춘다. Route kernel은 아직 public entry에서 import되지 않는다.
+Hierarchy bundling은 같은 private boundary에서 기존 hierarchy model·명시 node mapping·layout
+anchor를 소비한다. `routes/spline.js`가 de Boor와 knot-span cubic 변환을 맡고 기존
+`pathGeometry`의 convex-hull 분할에 호출별 point budget을 전달한다. Partial geometry는 완료
+결과로 반환하지 않는다. 이후 HEB 합산 package는929 entries/6,117,831 unpacked bytes,
+packed 최대1,334,664 bytes로 상한929/1,335,000/6,118,000을 적용한다.
+Force compatibility와 고정 double-buffer schedule은 같은 private route owner에 추가됐다.
+공개 entry import는 없으며 package만931 entries/6,126,103 unpacked/최대1,337,161 packed
+bytes로 증가해 상한931/1,338,000/6,127,000을 적용한다. Browser bundle 입력은 이전 HEB와 같다.
+Density 계산은 sparse field와 direction channels를 `routes/densityField.js`, 고정 iteration
+및 point-buffer 수명을 `routes/density.js`가 소유한다. Dense grid 차분과 같은 값을 계산하고
+완료 vector만 반환한다. 합산 package933 entries/6,135,655 unpacked/최대1,339,858 packed
+bytes에 최소 상한933/1,340,000/6,136,000을 적용하며 public bundle 입력은 유지한다.
+`routes/shortestPath.js`는 bounded Dijkstra와 full edge-key sequence tie를, `routes/edgePath.js`는
+기하 cost 우선순위·skip/lock·stretch·convex corner smoothing을 소유한다. Semantic weight와
+graph topology는 바꾸지 않는다. 이 두 owner를 포함한 package935 entries/6,145,064 unpacked/
+최대1,342,662 packed bytes에 상한935/1,343,000/6,146,000을 적용한다.
+Calendar/selection 통합 afc4e34e6 이후 동일 private route source의 합산 package는939 entries,
+6,164,691 unpacked/최대1,347,343 packed bytes다. 상한939/1,348,000/6,165,000을 적용하며
+통합 main의 Full663,000/Basic371,000 gzip 상한을 유지한다.
+
+Route 공개 연결용 private job은 `grammar/graph/routes/job.js`가 exact revision vector와
+해석된 intent, viewport, 입력·완료 해시를 결박한다. `materialization/graph/routeInput.js`는
+source의 typed key 순위를 읽어 opaque normalized key를 해독하지 않고 worker 입력으로
+내린다. `routes/result.js`와 `resultProvenance.js`는 solver 재실행 없이 완료 vector, 원 edge
+순서, endpoint, bounds, method provenance/schedule을 검증한다. 이 private checkpoint 당시에는 public entry에서
+도달하지 않았으며 네 solver 자체의 숫자 정책은 각 기존 owner를 공유한다. 이 private 추가의
+package는944 entries,6,191,389 unpacked이며 Node20/24 packed1,354,281,
+Node22 packed1,351,738 bytes다. 기존 공개 번들은 영향이 없어 합산 기준 증거를 재사용한다.
 
 승인된 Full-only hierarchy/layout/image 연결을 위해 `materialization/resourceKinds.js`가 exact
 program constructor별 검증 handler를 한 번 등록한다. 복사한 null-prototype record와 handler를
@@ -694,6 +749,12 @@ Facet은 기존100-child 전용 ceiling 대신 공통 generated-item/work budget
 ### `ggaction/inspection`
 
 `src/inspection.js`의 browser-safe read-only entry는 저장된 dataset schema, action의 정적 적용 가능성, 두 프로그램의 resource 변화, materialized graphic의 구조와 가시 후보를 조회한다. 조회는 action을 실행하거나 program, trace, context를 바꾸지 않는다. 계산이나 pixel 확인을 수행하지 않은 검사는 `not_run`, 알 수 없는 extension 의미는 `unverified`, 지원하지 않는 concrete owner는 partial coverage로 반환한다.
+
+### `ggaction/graph`
+
+명시적 executor 수명 안에서 bounded graph edge route job을 계산하고 immutable receiver에 적용할 준비를 제공한다.
+Worker 결과와 저장 route는 같은 exact ref·hash·결과 validator를 거치며 renderer는 완성된 concrete path만 읽는다.
+정확한 공개 계약은 [EDGE_ROUTES.md](contract/current/EDGE_ROUTES.md)가 소유한다.
 
 ### `ggaction/interaction`
 

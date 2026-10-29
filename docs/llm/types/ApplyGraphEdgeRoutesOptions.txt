@@ -1,0 +1,1 @@
+export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }

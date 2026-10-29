@@ -4,6 +4,7 @@ import { createResponsiveGuides } from "./responsive-guides/program.js";
 import { createContours } from "./contours/program.js";
 import { createInspectionChart } from "./inspect-chart/program.js";
 import { createGraph } from "./graph-plots/program.js";
+import { createEdgeRoutes } from "./edge-routes/program.js";
 import { createTextShadowExample } from "./text-shadows/program.js";
 import { createMarkShadowExample } from "./mark-shadows/program.js";
 import { createMarkOutlineExample } from "./mark-outlines/program.js";
@@ -353,6 +354,10 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createContours("kde"),
     browser: { path: "browser-host/?chart=contour-density", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "contour-density", width: 640, height: 480 } } }
+  }),
+  example({ id: "edge-routes", programDirectory: "edge-routes", testDirectory: "edge-routes", data: {}, width: 320, height: 240, docsGroup: "tutorials",
+    createProgram: () => createEdgeRoutes(),
+    browser: { path: "browser-host/?chart=edge-routes", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "edge-routes", width: 320, height: 240 } } }
   }),
   example({ id: "graph-plots", programDirectory: "graph-plots", testDirectory: "graph-plots", data: {}, width: 300, height: 240, docsGroup: "tutorials",
     createProgram: () => createGraph("directed"),

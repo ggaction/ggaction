@@ -5,13 +5,15 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 668_000, // Nested responsive facet closure: Node20/24 667,284 bytes.
-  "ggaction/basic": 375_000, // Combined responsive and selection owners: Node20/24 374,493 bytes.
+  ggaction: 686_000, // Combined routes and nested responsive closure; measured across supported Node runtimes.
+  "ggaction/basic": 376_000, // Shared viewport registry retains Full-only computation outside Basic.
   "ggaction/svg": 25_000,
+  "ggaction/graph": 43_000,
   "ggaction/interaction": 102_000 // Nested responsive hit metadata with captured click: Node20/24 101,103 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {
+  if (specifier === "ggaction/graph") return `import { prepareGraphEdgeRoutes, computeGraphEdgeRoutes, createGraphRouteExecutor } from "ggaction/graph"; globalThis.graphRoutes = { prepareGraphEdgeRoutes, computeGraphEdgeRoutes, createGraphRouteExecutor };`;
   if (specifier === "ggaction/interaction") return `import { createInteractionSession } from "ggaction/interaction"; globalThis.createChartInspection = createInteractionSession;`;
   if (specifier === "ggaction/svg") {
     return `

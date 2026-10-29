@@ -124,8 +124,9 @@ test("calls every user-facing action directly from a generated scenario root", (
     directTraceOperations(buildScenario(descriptor), directOperations);
   }
 
-  assert.equal(publicActions.length, 336);
+  assert.equal(publicActions.length, 338);
   for (const operation of [
+    "bundleGraphEdges", "editEdgeRoute",
     "removeData", "removeScale", "removeCoordinate",
     "createParameter", "editParameter", "removeParameter", "applyDataUpdate",
     "createCalendarLayout", "createCalendarPlot", "editCalendarPlot",

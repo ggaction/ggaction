@@ -61,6 +61,8 @@ interface ChartProgramActions {
   createTreePlot(options?: TargetedOptions<TreePlotOptions>): ChartProgram;
   createGraphPlot(options?: TargetedOptions<GraphPlotOptions>): ChartProgram;
   editGraphPlot(options: TargetedOptions<EditGraphPlotOptions>): ChartProgram;
+  bundleGraphEdges(options: TargetedOptions<BundleGraphEdgesOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
+  editEdgeRoute(options: TargetedOptions<EditEdgeRouteOptions> | ApplyGraphEdgeRoutesOptions): ChartProgram;
   editTreePlot(options: TargetedOptions<EditTreePlotOptions>): ChartProgram;
   createPartitionPlot(options?: TargetedOptions<PartitionPlotOptions>): ChartProgram;
   editPartitionPlot(options: TargetedOptions<EditPartitionPlotOptions>): ChartProgram;
@@ -567,6 +569,19 @@ declare const preparedTextMetricsBrand: unique symbol;
 </details>
 
 Related types: [`PreparedFontResource`](#type-preparedfontresource).
+
+### `ApplyGraphEdgeRoutesOptions` {#type-applygraphedgeroutesoptions}
+
+<details markdown="1">
+<summary>Expand ApplyGraphEdgeRoutesOptions</summary>
+
+```typescript
+export interface ApplyGraphEdgeRoutesOptions { readonly prepared: PreparedGraphEdgeRoutes; readonly requestToken: string; }
+```
+
+</details>
+
+Related types: [`PreparedGraphEdgeRoutes`](#type-preparedgraphedgeroutes).
 
 ### `ApplyImageResourceOptions` {#type-applyimageresourceoptions}
 
@@ -1579,6 +1594,20 @@ type BoxPlotWidth = { band?: number; pixels?: never } | { band?: never; pixels: 
 ```
 
 </details>
+
+### `BundleGraphEdgesOptions` {#type-bundlegraphedgesoptions}
+
+<details markdown="1">
+<summary>Expand BundleGraphEdgesOptions</summary>
+
+```typescript
+export type BundleGraphEdgesOptions = { readonly id: string; readonly graph?: string; readonly layout?: string; readonly coordinateSpace?: "world" | "screen" } & EdgeRouteDefinition;
+/** Same-method options patch existing values; changing method starts from that method's defaults. */
+```
+
+</details>
+
+Related types: [`EdgeRouteDefinition`](#type-edgeroutedefinition).
 
 ### `CAxes` {#type-caxes}
 
@@ -5619,6 +5648,73 @@ export interface ECDFOutputFields {
 
 </details>
 
+### `EdgePathRouteOptions` {#type-edgepathrouteoptions}
+
+<details markdown="1">
+<summary>Expand EdgePathRouteOptions</summary>
+
+```typescript
+export interface EdgePathRouteOptions extends EdgeRouteCommonOptions { readonly exponent?: number; readonly maxStretch?: number; }
+```
+
+</details>
+
+Related types: [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions).
+
+### `EdgeRouteCommonOptions` {#type-edgeroutecommonoptions}
+
+<details markdown="1">
+<summary>Expand EdgeRouteCommonOptions</summary>
+
+```typescript
+export interface EdgeRouteCommonOptions { readonly zeroLength?: "point"; readonly limits?: EdgeRouteLimits; }
+```
+
+</details>
+
+Related types: [`EdgeRouteLimits`](#type-edgeroutelimits).
+
+### `EdgeRouteDefinition` {#type-edgeroutedefinition}
+
+<details markdown="1">
+<summary>Expand EdgeRouteDefinition</summary>
+
+```typescript
+export type EdgeRouteDefinition =
+  { readonly method: "hierarchical"; readonly options: HierarchicalEdgeRouteOptions }
+  | { readonly method: "force-directed"; readonly options?: ForceDirectedEdgeRouteOptions }
+  | { readonly method: "density"; readonly options?: EdgeRouteCommonOptions }
+  | { readonly method: "edge-path"; readonly options?: EdgePathRouteOptions };
+```
+
+</details>
+
+Related types: [`HierarchicalEdgeRouteOptions`](#type-hierarchicaledgerouteoptions) · [`ForceDirectedEdgeRouteOptions`](#type-forcedirectededgerouteoptions) · [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions) · [`EdgePathRouteOptions`](#type-edgepathrouteoptions).
+
+### `EdgeRouteLimits` {#type-edgeroutelimits}
+
+<details markdown="1">
+<summary>Expand EdgeRouteLimits</summary>
+
+```typescript
+export interface EdgeRouteLimits {
+  readonly maxNodes?: number; readonly maxEdges?: number; readonly maxCandidatePairs?: number; readonly maxSamples?: number;
+}
+```
+
+</details>
+
+### `EdgeRouteMethod` {#type-edgeroutemethod}
+
+<details markdown="1">
+<summary>Expand EdgeRouteMethod</summary>
+
+```typescript
+export type EdgeRouteMethod = "hierarchical" | "force-directed" | "density" | "edge-path";
+```
+
+</details>
+
 ### `EditAxesOptions` {#type-editaxesoptions}
 
 <details markdown="1">
@@ -5987,6 +6083,25 @@ export type EditECDFPlotOptions = { target?: string } & Partial<Pick<
 </details>
 
 Related types: [`CreateECDFPlotOptions`](#type-createecdfplotoptions).
+
+### `EditEdgeRouteOptions` {#type-editedgerouteoptions}
+
+<details markdown="1">
+<summary>Expand EditEdgeRouteOptions</summary>
+
+```typescript
+export interface EditEdgeRouteOptions {
+  readonly target?: string; readonly graph?: string; readonly layout?: string; readonly method?: EdgeRouteMethod;
+  readonly coordinateSpace?: "world" | "screen";
+  readonly options?: Partial<HierarchicalEdgeRouteOptions> | ForceDirectedEdgeRouteOptions | EdgeRouteCommonOptions | EdgePathRouteOptions;
+}
+declare const preparedGraphEdgeRoutes: unique symbol;
+/** Opaque, exact-receiver preparation. Obtain it from ggaction/graph. */
+```
+
+</details>
+
+Related types: [`EdgeRouteMethod`](#type-edgeroutemethod) · [`HierarchicalEdgeRouteOptions`](#type-hierarchicaledgerouteoptions) · [`ForceDirectedEdgeRouteOptions`](#type-forcedirectededgerouteoptions) · [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions) · [`EdgePathRouteOptions`](#type-edgepathrouteoptions).
 
 ### `EditEndpointPlotOptions` {#type-editendpointplotoptions}
 
@@ -8495,6 +8610,19 @@ export interface FoldDataOutputFields {
 
 </details>
 
+### `ForceDirectedEdgeRouteOptions` {#type-forcedirectededgerouteoptions}
+
+<details markdown="1">
+<summary>Expand ForceDirectedEdgeRouteOptions</summary>
+
+```typescript
+export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { readonly compatibilityThreshold?: number; }
+```
+
+</details>
+
+Related types: [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions).
+
 ### `GradientPlotAppearanceOptions` {#type-gradientplotappearanceoptions}
 
 <details markdown="1">
@@ -8823,7 +8951,7 @@ Related types: [`RowKey`](#type-rowkey).
 
 ```typescript
 export interface GraphPlotOptions {
-  id?: string; layout?: string; origin?: "auto" | readonly [number, number]; clip?: boolean;
+  id?: string; layout?: string; routes?: string | false; origin?: "auto" | readonly [number, number]; clip?: boolean;
   nodes?: GraphNodePaint & { overrides?: readonly (GraphNodePaint & { key: RowKey })[] };
   edges?: GraphEdgePaint; labels?: false | GraphLabelsOptions;
 }
@@ -9051,6 +9179,23 @@ export type HeatmapCategoryPositionChannel =
 </details>
 
 Related types: [`NonPointBandPositionScaleOptions`](#type-nonpointbandpositionscaleoptions).
+
+### `HierarchicalEdgeRouteOptions` {#type-hierarchicaledgerouteoptions}
+
+<details markdown="1">
+<summary>Expand HierarchicalEdgeRouteOptions</summary>
+
+```typescript
+export interface HierarchicalEdgeRouteOptions extends EdgeRouteCommonOptions {
+  readonly hierarchy?: string; readonly hierarchyLayout?: string;
+  readonly mapping: readonly { readonly nodeKey: RowKey; readonly hierarchyKey: RowKeyScalar }[];
+  readonly strength?: number; readonly tolerance?: number; readonly maxSubdivisions?: number;
+}
+```
+
+</details>
+
+Related types: [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions) · [`RowKey`](#type-rowkey) · [`RowKeyScalar`](#type-rowkeyscalar).
 
 ### `HierarchyBodyPaint` {#type-hierarchybodypaint}
 
@@ -12126,6 +12271,20 @@ export interface PreparedFontResource<Kind extends "create" | "replace" = "creat
 
 </details>
 
+### `PreparedGraphEdgeRoutes` {#type-preparedgraphedgeroutes}
+
+<details markdown="1">
+<summary>Expand PreparedGraphEdgeRoutes</summary>
+
+```typescript
+export interface PreparedGraphEdgeRoutes {
+  readonly [preparedGraphEdgeRoutes]: true; readonly kind: "edge-route-preparation";
+  readonly request: { readonly kind: "create" | "edit"; readonly id: string }; readonly inputHash: string;
+}
+```
+
+</details>
+
 ### `PreparedImageResource` {#type-preparedimageresource}
 
 <details markdown="1">
@@ -14047,7 +14206,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
 <summary>Expand StoredResourceKind</summary>
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route";
 ```
 
 </details>

@@ -2802,5 +2802,21 @@
     ],
     "layer": "user-facing",
     "domain": "marks"
+  },
+  "bundleGraphEdges": {
+    "operation": "create",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "editEdgeRoute": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
   }
 }

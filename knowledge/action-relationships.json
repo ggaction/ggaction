@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 343,
+  "actionCount": 345,
   "relationships": [
     {
       "name": "createCanvas",
@@ -2330,6 +2330,18 @@
       "wraps": [
         "editSemantic",
         "createScale"
+      ]
+    },
+    {
+      "name": "bundleGraphEdges",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editEdgeRoute",
+      "wraps": [
+        "editSemantic"
       ]
     }
   ]

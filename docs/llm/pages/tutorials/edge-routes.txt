@@ -1,0 +1,39 @@
+# Bundle existing graph edges
+
+The long A–C connection follows the existing A–B–C path, with two corner cuts.
+All three original edges remain independently selectable.
+
+This complete ES module uses the same data and action flow as the
+[executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-routes-integration/examples/edge-routes/program.js).
+
+```javascript
+import { chart } from 'ggaction';
+
+const program = chart()
+  .createCanvas({ width: 320, height: 240, margin: 0, background: '#ffffff' })
+  .createData({ id: 'nodes', keyField: 'id', values: [
+    { id: 'A' }, { id: 'B' }, { id: 'C' }
+  ] })
+  .createData({ id: 'edges', keyField: 'id', values: [
+    { id: 'AC', source: 'A', target: 'C' },
+    { id: 'AB', source: 'A', target: 'B' },
+    { id: 'BC', source: 'B', target: 'C' }
+  ] })
+  .createGraphData({ id: 'network', nodes: 'nodes', edges: 'edges',
+    nodeKey: 'id', source: 'source', target: 'target', edgeKey: 'id' })
+  .layoutGraph({ id: 'placement', method: 'fixed', options: { positions: [
+    { key: 'A', x: 60, y: 180 }, { key: 'B', x: 160, y: 60 },
+    { key: 'C', x: 260, y: 180 }
+  ] } })
+  .bundleGraphEdges({ id: 'routes', method: 'edge-path' })
+  .createGraphPlot({ id: 'routesPlot', routes: 'routes', origin: [0, 0],
+    nodes: { radius: 6 }, edges: { stroke: '#2563eb', strokeWidth: 2, arrows: false },
+    labels: { fontSize: 14, offset: [0, 20] } });
+```
+
+Edit the route's `maxStretch` or switch its method with `editEdgeRoute`. A route
+edit updates each plot bound to it once. Use `editGraphPlot({routes:false})` to
+return to the graph's native paths while retaining node and edge identities.
+
+See [Edge routes](../../../api/edge-routes/) for method options, exact input bindings,
+screen-size invalidation and the explicit worker preparation lifecycle.

@@ -8,10 +8,11 @@ import { registerActions } from "./actions/index.js";
 import { ChartProgram as CoreChartProgram } from "./core/ChartProgram.js";
 import { graphResourceHandler } from "./materialization/graph/state.js";
 import { contourResourceHandler } from "./materialization/contour/state.js";
+import { edgeRouteResourceHandler } from "./materialization/graph/routeState.js";
 
 export class ChartProgram extends CoreChartProgram {}
 
-registerBuiltinResourceKinds(ChartProgram, { image: imageResourceHandler, hierarchy: hierarchyResourceHandler, layout: layoutResourceHandler, font: fontResourceHandler, graph: graphResourceHandler, geometry: contourResourceHandler });
+registerBuiltinResourceKinds(ChartProgram, { image: imageResourceHandler, hierarchy: hierarchyResourceHandler, layout: layoutResourceHandler, font: fontResourceHandler, graph: graphResourceHandler, geometry: contourResourceHandler, "edge-route": edgeRouteResourceHandler });
 registerActions(ChartProgram);
 recordBuiltinActions(ChartProgram, ["hconcat", "vconcat", "rematerializeEncodingScales"]);
 

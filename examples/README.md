@@ -798,6 +798,12 @@ Compose a three-row facet with an overview and resize its source through a scope
 
 Representative actions: `facet`, `hconcat`, `editCanvas`. [Documentation](https://ggaction.github.io/ggaction/tutorials/nested-responsive/).
 
+### [Edge routes](./edge-routes/)
+
+Follow existing graph edges with a bounded detour and explicit stored route.
+
+Representative actions: `bundleGraphEdges`, `createGraphPlot`, `editEdgeRoute`. [Documentation](https://ggaction.github.io/ggaction/tutorials/edge-routes/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

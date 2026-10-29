@@ -78,4 +78,3 @@ export function validateResponsiveLabelState(config) {
   if (result.maxWidth === undefined && result.wrap !== undefined) throw new Error("Responsive wrap requires a width.");
   if (result.stage !== "native" && result.maxWidth === undefined) throw new Error("Responsive fallback requires a measured width.");
 }
-
