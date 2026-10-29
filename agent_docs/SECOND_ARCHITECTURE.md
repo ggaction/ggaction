@@ -4385,3 +4385,8 @@ remeasures its archive rather than reusing these branch-specific caps.
 최소 한도1117/1,595,000/7,255,000을 적용한다. 동일 archive의 Full772,312와
 interaction127,988gzip에 각각772,400/128,000 한도를 적용하고 나머지 세 한도는 유지한다.
 문서 HTML host 실행의 실패는 별도 통합 의무이며 이 측정으로 통과 처리하지 않는다.
+
+키보드·툴팁의 paired HTML host 예제를 합친 검색 payload는1,075,834bytes다.
+이전1,074,700 한도 실패를 보존하고 최소100byte 한도1,075,900으로 조정한다.
+일반 문서와 source-free tutorial은 같은 실제 Chromium 실행 owner를 공유하며
+JavaScript와 HTML의 독립 hash를 보존한다. Runtime archive ecbd493d…는 그대로다.
