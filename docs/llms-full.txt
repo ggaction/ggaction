@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:217b7baecf94a6bf33c99182b037f37511a8628114424aabddb6cad702935d43. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:2571ffc3a0c2420950cdf3002bdab371b013160fa9639fd7efcd9d4b7078c27a. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -11448,6 +11448,28 @@ hit geometry. Path approximation is bounded by 0.25 CSS pixels.
 Call `session.updateProgram(nextProgram)` after an authoring edit. Replacement is
 atomic and clears transient hits. It increments both `frameVersion` and
 `generation`; mounted listeners stay active.
+
+For frames returned by `sampleTransition` or `createAnimationPlayer` from
+[`ggaction/animation`](./api/animation/), dispatch
+`{ type: "frame", frame, version, generation }`. Supply the exact returned frame,
+not a clone, and keep the session's current native program as a displayed contributor
+or a direct endpoint of the plan. A restored offline plan can render, but it has no
+native program authority for session targeting. `frame` and `scene` are mutually exclusive.
+
+Maintain an increasing host counter greater than the current `frameVersion` and every
+previous request, including requests still preparing. Use the current session generation.
+Stale requests return `stale` without examining their frame. Entering, exiting and weighted
+shapes use their actual displayed geometry for inspection; keyboard activation additionally
+requires that the logical item exists in the session's current program.
+
+With `assetResolver`, prepare against `request.frame ?? request.program`. While the frame's
+assets prepare, the previous accepted picture and focus remain active. A successful `frame`
+event publishes the exact `state.animationFrame`, scene, focus and `state.frameAssets` together.
+Render the accepted animation frame with those handles; `state.assets` remains bound to the
+committed native program. A failed or cancelled request preserves the previous display.
+Native edits and program replacements clear the transient animation frame and release its
+lease. Frames themselves add no history entry. The same flow accepts a reduced-motion player's
+final frame; the host owns playback policy.
 
 An animation host may supply a sampled version-2 Canvas scene whose node keys,
 types and topology belong to the current program. Render the accepted snapshot:
@@ -37325,6 +37347,7 @@ import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, Categ
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
+import type { TransitionFrame } from './animation.js';
 import type { PreparedImageRendering, PreparedFontRendering, PreparedShadowRendering } from './program.js';
 export interface InteractionAssets {
   readonly images?: PreparedImageRendering;
@@ -37334,6 +37357,8 @@ export interface InteractionAssets {
 /** Host owns partially prepared assets; the session disposes each returned lease once. */
 export interface InteractionAssetLease extends InteractionAssets { dispose(): void; }
 export interface InteractionPreparation {
+  /** Present only while preparing an authentic animation frame. */
+  readonly frameVersion?: number;
   readonly sessionGeneration: number;
   readonly transactionId: string;
   readonly baseRevision: number;
@@ -37343,7 +37368,10 @@ export interface InteractionUpdateRequest extends InteractionPreparation {
   readonly program: InteractionProgram;
   readonly signal: AbortSignal;
 }
-export interface InteractionAssetRequest extends InteractionUpdateRequest {}
+export interface InteractionAssetRequest extends InteractionUpdateRequest {
+  /** Prepare this exact renderer-ready frame instead of program when present. */
+  readonly frame?: TransitionFrame;
+}
 export interface InteractionSettlement {
   readonly status: 'settled' | 'cancelled' | 'error';
   readonly preparation?: InteractionPreparation;
@@ -37523,6 +37551,8 @@ export interface InteractionState {
   readonly program: InteractionProgram;
   /** Separate transient editing result. Null outside an active preview. */
   readonly previewProgram: InteractionProgram | null;
+  /** Exact accepted sampled frame; null for committed programs and plain scenes. */
+  readonly animationFrame: TransitionFrame | null;
   readonly scene: CanvasTransitionScene;
   readonly frameVersion: number;
   readonly generation: number;
@@ -37537,6 +37567,8 @@ export interface InteractionState {
   readonly assets: Readonly<InteractionAssets> | null;
   /** Transient handles for the exact previewProgram; never use committed assets for that preview. */
   readonly previewAssets: Readonly<InteractionAssets> | null;
+  /** Transient handles bound to animationFrame, separately from committed assets. */
+  readonly frameAssets: Readonly<InteractionAssets> | null;
   /** Pending candidate identity. Program and history remain committed until ready. */
   readonly preparation: InteractionPreparation | null;
   readonly mounted: boolean;
@@ -37686,13 +37718,19 @@ export type InteractionCommand = InteractionEditCommand | InteractionHistoryComm
   readonly pointerType?: 'mouse' | 'pen' | 'touch';
   readonly slop?: number;
   readonly hitInvisible?: boolean;
-} | { readonly type: 'leave' } | {
+} | { readonly type: 'leave' } | ({
   readonly type: 'frame';
-  /** Sampled scene containing only current program node keys and unchanged topology. */
-  readonly scene: CanvasTransitionScene;
   readonly version: number;
   readonly generation: number;
-};
+} & ({
+  /** Scene containing only current program node keys and unchanged topology. */
+  readonly scene: CanvasTransitionScene;
+  readonly frame?: never;
+} | {
+  /** Authentic sample with the exact current native program in its displayed or direct endpoint owners. */
+  readonly frame: TransitionFrame;
+  readonly scene?: never;
+}));
 export interface InteractionDispatchResult { readonly status: 'applied' | 'queued' | 'stale' | 'unchanged'; }
 export interface InteractionSession {
   mount(element: Element, options?: { readonly rootTransform?: InteractionTransform; readonly observeResize?: boolean }): () => boolean;
@@ -55609,7 +55647,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:217b7baecf94a6bf33c99182b037f37511a8628114424aabddb6cad702935d43` |
+| Contract fingerprint | `sha256:2571ffc3a0c2420950cdf3002bdab371b013160fa9639fd7efcd9d4b7078c27a` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

@@ -1186,6 +1186,7 @@ import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, Categ
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
+import type { TransitionFrame } from './animation.js';
 import type { PreparedImageRendering, PreparedFontRendering, PreparedShadowRendering } from './program.js';
 export interface InteractionAssets {
   readonly images?: PreparedImageRendering;
@@ -1195,6 +1196,8 @@ export interface InteractionAssets {
 /** Host owns partially prepared assets; the session disposes each returned lease once. */
 export interface InteractionAssetLease extends InteractionAssets { dispose(): void; }
 export interface InteractionPreparation {
+  /** Present only while preparing an authentic animation frame. */
+  readonly frameVersion?: number;
   readonly sessionGeneration: number;
   readonly transactionId: string;
   readonly baseRevision: number;
@@ -1204,7 +1207,10 @@ export interface InteractionUpdateRequest extends InteractionPreparation {
   readonly program: InteractionProgram;
   readonly signal: AbortSignal;
 }
-export interface InteractionAssetRequest extends InteractionUpdateRequest {}
+export interface InteractionAssetRequest extends InteractionUpdateRequest {
+  /** Prepare this exact renderer-ready frame instead of program when present. */
+  readonly frame?: TransitionFrame;
+}
 export interface InteractionSettlement {
   readonly status: 'settled' | 'cancelled' | 'error';
   readonly preparation?: InteractionPreparation;
@@ -1384,6 +1390,8 @@ export interface InteractionState {
   readonly program: InteractionProgram;
   /** Separate transient editing result. Null outside an active preview. */
   readonly previewProgram: InteractionProgram | null;
+  /** Exact accepted sampled frame; null for committed programs and plain scenes. */
+  readonly animationFrame: TransitionFrame | null;
   readonly scene: CanvasTransitionScene;
   readonly frameVersion: number;
   readonly generation: number;
@@ -1398,6 +1406,8 @@ export interface InteractionState {
   readonly assets: Readonly<InteractionAssets> | null;
   /** Transient handles for the exact previewProgram; never use committed assets for that preview. */
   readonly previewAssets: Readonly<InteractionAssets> | null;
+  /** Transient handles bound to animationFrame, separately from committed assets. */
+  readonly frameAssets: Readonly<InteractionAssets> | null;
   /** Pending candidate identity. Program and history remain committed until ready. */
   readonly preparation: InteractionPreparation | null;
   readonly mounted: boolean;
@@ -1547,13 +1557,19 @@ export type InteractionCommand = InteractionEditCommand | InteractionHistoryComm
   readonly pointerType?: 'mouse' | 'pen' | 'touch';
   readonly slop?: number;
   readonly hitInvisible?: boolean;
-} | { readonly type: 'leave' } | {
+} | { readonly type: 'leave' } | ({
   readonly type: 'frame';
-  /** Sampled scene containing only current program node keys and unchanged topology. */
-  readonly scene: CanvasTransitionScene;
   readonly version: number;
   readonly generation: number;
-};
+} & ({
+  /** Scene containing only current program node keys and unchanged topology. */
+  readonly scene: CanvasTransitionScene;
+  readonly frame?: never;
+} | {
+  /** Authentic sample with the exact current native program in its displayed or direct endpoint owners. */
+  readonly frame: TransitionFrame;
+  readonly scene?: never;
+}));
 export interface InteractionDispatchResult { readonly status: 'applied' | 'queued' | 'stale' | 'unchanged'; }
 export interface InteractionSession {
   mount(element: Element, options?: { readonly rootTransform?: InteractionTransform; readonly observeResize?: boolean }): () => boolean;

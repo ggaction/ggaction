@@ -901,7 +901,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction/basic` | 422,300 bytes |
 | `ggaction/svg` | 26,000 bytes |
 | `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 128,700 bytes |
+| `ggaction/interaction` | 130,600 bytes |
 | `ggaction/animation` | 200,300 bytes |
 
 
@@ -3246,7 +3246,17 @@ endpoint identity/background, semantic position 및 현재 node별 exact native 
 weighted metric 출처만 보존한다. Plan identity는 작은 opaque token이고 frame→이전 plan→
 이전 frame 연쇄는 없다. 권한은 현재 표시 출처 및 직접 native endpoint로 한정하며 과거 모든
 조상 프로그램을 권한 집합으로 누적하지 않는다. 원 program과 같은 값의 clone은 권한이 아니다.
-Offline frame의 native metadata, session publication·asset lease는 후속 의무다.
+Offline replay는 editable native program 권한을 복원하지 않는다. Session publication·asset lease는
+Current INTERACTION의 exact frame 계약을 따른다.
+
+Geo에서 양 endpoint picture에 없던 중간 part의 native source는 index 대신 실제 program·childPath·
+owner·itemKey를 가진 private closed origin으로 표현한다. `hitProgram`은 기존 builtin item reader의
+source arm을 통해 같은 native final-grain policy를 읽고 namespace와 resource revision을 대조한다.
+Class별 frozen registration에 기존 source resolver를 함께 전달하며 새 registry나 public plugin 경계는
+없다. Scope/owner별 source Map은 준비 호출 안에서만 유지하고 work budget에 합산한다.
+실제 중간 role/topology를 생성·검증하는 책임은 animation Geo presentation에 남으며, native selection
+권한은 계속 현재 최종 항목과의 교집합이다. 공개 Geo sampler 연결 상태와 증거는
+[Geo source hit 기록](impl/roadmap9/interaction/GEO_SOURCE_HIT.md)에 둔다.
 
 ### Cartesian title label-relative offset measurement
 
@@ -4193,6 +4203,20 @@ renderer handle projection이고 cache나 저장 resource가 아니다. Renderer
 exact graphic identity 검증을 유지한다. Session에 decoder/font/raster 또는 private player import는 없다.
 취소·실패·destroy는 candidate와 callback 참조를 해제하고 늦은 lease를 폐기한다. 구체 event와 Promise
 계약은 [Current INTERACTION](contract/current/INTERACTION.md#atomic-asset-preparation)이 소유한다.
+
+Authentic animation frame은 평탄한 native 출처 증명을 기존 hit owner에서 소비한다. Session은
+committed program 준비 owner와 별도 transient frame lease를 같은 preparation 구현으로 관리한다.
+frame/scene/index/keyboard model의 준비가 끝난 뒤 한 번에 게시하고, native authoring이 성공하면
+그 transient lease를 해제한다. `animationFrame`과 `frameAssets`는 읽기 전용 runtime projection이며
+새 저장 상태나 asset cache가 아니다. Native item 교집합은 기존 keyboard owner, weighted source의
+실제 anchor는 기존 hit grammar가 소유한다. Renderer와 player 실행은 계속 host 책임이다.
+
+Session frame checkpoint의 동일 archive 실측은1,132entries, packed1,611,830/unpacked7,322,421로
+cap1,612,000/7,323,000을 적용했다. 여섯 entry를 모두 다시 측정해 Node20/24의
+Full773,950·Basic422,008·interaction129,659gzip에 각각774,000/422,100/129,700을 적용했다.
+Full/Basic의 직전 cap은 Node22 기준이어서 이번 모든-entry Node20 검사에서 초과가 확인됐다.
+Animation186,027 및 SVG/graph는 기존 한도 안이며 새 renderer import나 공개 export는 없다.
+원본 실패와 동일 archive 보충 증거는 STEP070의 session-frame-evidence가 소유한다.
 
 Asset preparation source-free Node20/24 interaction은115,827gzip으로 최소cap115,900을 적용했다.
 Full729,256/Basic384,464/SVG20,196/graph43,759는 직전 history와 동일하다. 새 interaction private
