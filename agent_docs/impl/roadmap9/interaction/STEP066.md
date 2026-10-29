@@ -205,3 +205,8 @@ literal/위임/취소/불변성 회귀, 실제5datasets×3recipes+inventory16, c
 키보드/Canvas·SVG 브라우저1, docs55/manifest2 통과. 동일 tar `4deb6f2a…` Node20/22/24 각각
 interaction18 + strict types + five-entry bundles가 종료0이다. 최초unpacked33bytes 초과와
 검색3bytes 초과를 실측최소한도6,828,000/1,037,000으로 수정했다. Source pin 뒤 built 증거를 잇는다.
+
+D source `e4715d55a` 고정 뒤 provenance/LLM 재생성, owning docs49, build172pages/1535LLM,
+320/390/768/1440 화면의 overflow0/Axe0까지 완료했다. 320/1440 이미지를 직접 확인했다.
+[정확 D qualification](camera-operation-evidence/qualification.json)에 source hash·동일 tar·초기실패·
+명령·원본로그·공개 브라우저 그림을 보존한다. STEP046/066/067 전체와077은 아직 완료가 아니다.
