@@ -19250,6 +19250,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createFontResource`](./reference/actions/charts-data/#createfontresource) | H3 | user-facing | core |
 | [`createGeoJoinData`](./reference/actions/charts-data/#creategeojoindata) | H2 | user-facing | core |
 | [`createGeoLineMark`](./reference/actions/marks/#creategeolinemark) | H2 | user-facing | marks |
+| [`createGeoLODData`](./reference/actions/charts-data/#creategeoloddata) | H2 | user-facing | core |
 | [`createGeometryData`](./reference/actions/charts-data/#creategeometrydata) | H2 | user-facing | core |
 | [`createGeoPointMark`](./reference/actions/marks/#creategeopointmark) | H2 | user-facing | marks |
 | [`createGeoShapeMark`](./reference/actions/marks/#creategeoshapemark) | H2 | user-facing | marks |
@@ -19388,6 +19389,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFoldData`](./reference/actions/statistics/#editfolddata) | H1, H3 | user-facing | statistics |
 | [`editGeoJoinData`](./reference/actions/charts-data/#editgeojoindata) | H3 | user-facing | core |
 | [`editGeoLineMark`](./reference/actions/marks/#editgeolinemark) | H3 | user-facing | marks |
+| [`editGeoLODData`](./reference/actions/charts-data/#editgeoloddata) | H3 | user-facing | core |
 | [`editGeometryData`](./reference/actions/charts-data/#editgeometrydata) | H3 | user-facing | core |
 | [`editGeoPointMark`](./reference/actions/marks/#editgeopointmark) | H3 | user-facing | marks |
 | [`editGeoShapeMark`](./reference/actions/marks/#editgeoshapemark) | H3 | user-facing | marks |
@@ -24628,6 +24630,69 @@ editGeoJoinData({ target?, geometry?, data?, geometryKey?, dataKey? })
 
 Revise join inputs or key paths and refresh all dependent projections and geographic marks atomically.
 See [Geometry and projections](./api/geometry/#editgeojoindata).
+
+## `createGeoLODData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`CreateGeoLODDataOptions`](./reference/types/#type-creategeoloddataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `levels` | Required | `GeoLODLevels` |
+| `zoom` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeoLODData({ id, levels, zoom? })
+```
+
+Create detail levels with explicit typed parent correspondence, shared topology simplification and hysteresis.
+See [Geometry and projections](./api/geometry/#creategeoloddata).
+
+## `editGeoLODData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditGeoLODDataOptions`](./reference/types/#type-editgeoloddataoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `levels` | Optional / branch-dependent | `GeoLODLevels \| undefined` |
+| `zoom` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeoLODData({ target?, levels?, zoom? })
+```
+
+Update detail intent and all geographic consumers while retaining original logical selection keys.
+See [Geometry and projections](./api/geometry/#editgeoloddata).
 
 ## `createProjection`
 
@@ -34829,6 +34894,8 @@ import type { PreparedShadowRendering, ShadowRenderingHost } from "./program.js"
 export function prepareShadowRendering(program: Pick<ChartProgram, "graphicSpec">, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
 export function prepareShadowRendering(scene: CanvasTransitionScene, host: ShadowRenderingHost): Promise<PreparedShadowRendering>;
 export type { GeoJoinKeyOptions, CreateGeoJoinDataOptions, EditGeoJoinDataOptions, GeoJoinResource } from "./program.js";
+
+export type { GeoLODBaseLevel, GeoLODChildLevel, GeoLODLevels, CreateGeoLODDataOptions, EditGeoLODDataOptions, GeoLODResource } from "./program.js";
 ```
 
 #### `ggaction/basic`
@@ -35315,6 +35382,8 @@ export interface PlotComposition {
 export function getPlotComposition(program: ProgramInput, options?: { readonly target?: string | { readonly childPath: readonly string[]; readonly id: string }; readonly childPath?: readonly string[] }): PlotComposition;
 
 export interface MarkItemInspection {
+  /** Original logical keys represented by this current geographic detail item. The hit key remains key. */
+  readonly representationKeys?: readonly string[];
   readonly appearance: readonly AppearanceProvenance[];
   readonly visible?: boolean; readonly navigation?: PartitionNavigation;
   readonly key: string; readonly target: string; readonly markType: string; readonly grain: "item" | "stack";
@@ -35823,6 +35892,8 @@ interface ChartProgramActions {
   createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
   editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
   editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
+  createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
+  editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
   createGeoJoinData(options: TargetedOptions<CreateGeoJoinDataOptions>): ChartProgram;
   editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
@@ -38597,6 +38668,16 @@ export interface CreateGeoJoinDataOptions extends GeoJoinKeyOptions {
 
 Related types: [`GeoJoinKeyOptions`](./reference/types/#type-geojoinkeyoptions).
 
+### `CreateGeoLODDataOptions` {#type-creategeoloddataoptions}
+
+ Expand CreateGeoLODDataOptions
+
+```typescript
+export interface CreateGeoLODDataOptions { readonly id: string; readonly levels: GeoLODLevels; readonly zoom?: number; }
+```
+
+Related types: [`GeoLODLevels`](./reference/types/#type-geolodlevels).
+
 ### `CreateGeometryDataOptions` {#type-creategeometrydataoptions}
 
  Expand CreateGeometryDataOptions
@@ -41251,6 +41332,16 @@ export interface EditGeoJoinDataOptions extends Partial<GeoJoinKeyOptions> {
 
 Related types: [`GeoJoinKeyOptions`](./reference/types/#type-geojoinkeyoptions).
 
+### `EditGeoLODDataOptions` {#type-editgeoloddataoptions}
+
+ Expand EditGeoLODDataOptions
+
+```typescript
+export interface EditGeoLODDataOptions { readonly target?: string; readonly levels?: GeoLODLevels; readonly zoom?: number; }
+```
+
+Related types: [`GeoLODLevels`](./reference/types/#type-geolodlevels).
+
 ### `EditGeoLineMarkOptions` {#type-editgeolinemarkoptions}
 
  Expand EditGeoLineMarkOptions
@@ -43254,6 +43345,43 @@ export interface GeoJoinKeyOptions {
 ```
 
 Related types: [`GeometryFeatureKey`](./reference/types/#type-geometryfeaturekey).
+
+### `GeoLODBaseLevel` {#type-geolodbaselevel}
+
+ Expand GeoLODBaseLevel
+
+```typescript
+export interface GeoLODBaseLevel {
+  readonly id: string;
+  /** Explicit geometry source or join with a stable featureKey; nested LOD is rejected. */
+  readonly geometry: string;
+  /** Maximum deviation in planar units or geographic degrees; positive values require shared topology. */
+  readonly tolerance?: number;
+}
+```
+
+### `GeoLODChildLevel` {#type-geolodchildlevel}
+
+ Expand GeoLODChildLevel
+
+```typescript
+export interface GeoLODChildLevel extends GeoLODBaseLevel {
+  readonly parents: readonly { readonly key: RowKey; readonly parent: RowKey }[];
+  readonly enterZoom: number; readonly exitZoom: number;
+}
+```
+
+Related types: [`GeoLODBaseLevel`](./reference/types/#type-geolodbaselevel) · [`RowKey`](./reference/types/#type-rowkey).
+
+### `GeoLODLevels` {#type-geolodlevels}
+
+ Expand GeoLODLevels
+
+```typescript
+export type GeoLODLevels = readonly [GeoLODBaseLevel, ...GeoLODChildLevel[]];
+```
+
+Related types: [`GeoLODBaseLevel`](./reference/types/#type-geolodbaselevel) · [`GeoLODChildLevel`](./reference/types/#type-geolodchildlevel).
 
 ### `GeoLineMarkOptions` {#type-geolinemarkoptions}
 
@@ -55026,6 +55154,64 @@ editGeoJoinData(options: TargetedOptions<EditGeoJoinDataOptions>): ChartProgram;
 revisions refresh the join, dependent fitted projections and marks atomically.
 Remove dependent joins before removing their source resources. Both actions are
 available in Full `ggaction`.
+
+## `createGeoLODData`
+
+**Chart authoring.**
+
+```typescript
+createGeoLODData(options: TargetedOptions<CreateGeoLODDataOptions>): ChartProgram;
+```
+
+Use explicit keyed geometry resources for each detail level. List levels from coarse to fine.
+Every finer region needs one typed key and its parent key in the preceding level. All resources
+must use the same coordinate system. Joins retain their source feature keys and can supply measurements.
+
+> **Executable complete.** Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.
+
+```javascript
+import { chart } from "ggaction";
+
+const feature = (id, x) => ({ type: "Feature", id, properties: {},
+  geometry: { type: "Point", coordinates: [x, 20] } });
+const program = chart()
+  .createGeometryData({ id: "states", format: "geojson", coordinateKind: "planar", featureKey: "id",
+    values: feature("s", 10) })
+  .createGeometryData({ id: "counties", format: "geojson", coordinateKind: "planar", featureKey: "id",
+    values: { type: "FeatureCollection", features: [feature("a", 8), feature("b", 12)] } })
+  .createGeoLODData({ id: "regions", zoom: 4, levels: [
+    { id: "state", geometry: "states" },
+    { id: "county", geometry: "counties", enterZoom: 4.2, exitZoom: 3.8,
+      parents: [{ key: "a", parent: "s" }, { key: "b", parent: "s" }] }
+  ] });
+```
+
+The initial zoom defaults to0. County detail begins at4.2 and remains active until zoom falls below3.8.
+This gap prevents repeated switching around4. Each finer threshold pair must increase and enter must
+exceed exit. Missing parents, generated source keys, mixed coordinate systems and nested LOD fail.
+
+Optional level `tolerance` defaults to0. A positive value simplifies retained shared topology once for
+all neighbors, in planar units or geographic degrees. Unsafe topology changes keep the original arcs
+and record why. Geographic seam arcs stay exact. Original geometry and source hashes remain available.
+
+Geo marks and fitted projections can use `geometry:"regions"`. Original selection keys remain stored
+when their region is shown by a parent or children. [Item inspection](./inspection/) exposes
+`representationKeys` alongside each current key; hits always identify the visible representation.
+Fields and original table rows come from the current level. The action creates no marks, annotations
+or interaction bindings, and changing a projection does not automatically change LOD zoom.
+
+## `editGeoLODData`
+
+**Chart authoring.**
+
+```typescript
+editGeoLODData(options: TargetedOptions<EditGeoLODDataOptions>): ChartProgram;
+```
+
+Change `zoom`, replace `levels`, or both. Omission preserves the existing decision. `target` can be
+omitted for the current or unique detail resource. A replacement list must retain the active level ID;
+there is no silent reset. Each successful edit advances revision once and updates dependent joins,
+fitted projections and marks atomically. Invalid edits preserve the earlier program and trace.
 
 ## `createProjection`
 

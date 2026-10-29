@@ -1,5 +1,7 @@
 # Changelog
 
+- Add `createGeoLODData` and `editGeoLODData` with shared topology simplification, detail hysteresis and original selection representation mapping.
+
 All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased

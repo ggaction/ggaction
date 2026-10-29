@@ -201,3 +201,27 @@ test("rejects invalid selectors and item contracts before returning keys", () =>
     /Duplicate selectable mark item key/
   );
 });
+
+
+test("logical representation selection preserves current keys and rejects malformed producer aliases", () => {
+  const current = [{ ...item("state", 3), representationKeys: ["state", "county-a", "county-b"] }, item("other", 1)];
+  const saved = structuredClone(current);
+  assert.deepEqual(selectMarkItemKeys(current, { items: ["county-b"] }), ["state"]);
+  assert.deepEqual(selectMarkItemKeys(current, { items: ["state", "county-a"] }), ["state"]);
+  assert.deepEqual(selectMarkItemKeys(current, { items: ["missing"] }), []);
+  assert.deepEqual(selectMarkItemKeys(current, { items: [], empty: "all" }), ["state", "other"]);
+  assert.deepEqual(current, saved);
+  for (const aliases of [["a", "a"], [""], [null], "a"]) {
+    assert.throws(() => selectMarkItemKeys([{ ...item("state", 3), representationKeys: aliases }], { items: ["state"] }));
+  }
+  assert.throws(() => selectMarkItemKeys([{ ...item("state", 3), representationKeys: ["a".repeat(10_000_001)] }], { items: ["state"] }), RangeError);
+});
+
+
+test("selection producers reject invalid item collections before resolving matching keys", () => {
+  for (const items of [null, {}, [null], [42], [{ ...item("a", 1), key: "" }], [{ ...item("a", 1), fields: null }], [{ ...item("a", 1), channels: [] }], [{ ...item("a", 1), properties: null }]]) {
+    assert.throws(() => selectMarkItemKeys(items, { items: ["a"] }), TypeError);
+  }
+  const aliases = ["a".repeat(5_000_000)];
+  assert.throws(() => selectMarkItemKeys([{ ...item("first", 1), representationKeys: aliases }, { ...item("second", 1), representationKeys: aliases }], { items: ["first"] }), /Selectable representation work/);
+});

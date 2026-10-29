@@ -188,6 +188,10 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (["createGeoLODData", "editGeoLODData"].includes(action.name)) return {
+    prerequisites: ["explicit keyed geometry levels and parent mappings"], owns: ["geographic detail resource"],
+    idOptions: [action.name.startsWith("create") ? "id" : "target"]
+  };
   if (["createGeoJoinData", "editGeoJoinData"].includes(action.name)) return {
     prerequisites: ["geographic geometry resource", "materialized table"], owns: ["joined geometry resource"],
     idOptions: [action.name.startsWith("create") ? "id" : "target", "geometry", "data"]

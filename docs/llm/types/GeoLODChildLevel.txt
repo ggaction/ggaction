@@ -1,0 +1,4 @@
+export interface GeoLODChildLevel extends GeoLODBaseLevel {
+  readonly parents: readonly { readonly key: RowKey; readonly parent: RowKey }[];
+  readonly enterZoom: number; readonly exitZoom: number;
+}

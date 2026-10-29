@@ -1119,6 +1119,11 @@
       "OHLC plot",
       "open high low close prices",
       "price stems and bodies"
+    ],
+    "GeoLODData": [
+      "geographic detail levels",
+      "region hierarchy",
+      "map level of detail"
     ]
   },
   "summaryOverrides": {
@@ -2304,6 +2309,20 @@
     "editOHLCPlot": {
       "target": "ohlc",
       "doji": "none"
+    },
+    "createGeoLODData": {
+      "id": "regions",
+      "levels": [
+        {
+          "id": "county",
+          "geometry": "geometry"
+        }
+      ],
+      "zoom": 4
+    },
+    "editGeoLODData": {
+      "target": "regions",
+      "zoom": 5
     }
   },
   "callPatternOverrides": {

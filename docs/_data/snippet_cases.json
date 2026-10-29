@@ -492,5 +492,16 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use a Canvas with id chart. Pan right, Zoom in and Original view work with pointer, Enter and Space; the output reports the current projection transform."
+  },
+  {
+    "id": "geographic-detail-levels",
+    "file": "api/geometry.md",
+    "contains": "const feature = (id, x)",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.",
+    "rendering": "authoring-only",
+    "resultKind": "semantic"
   }
 ]

@@ -9,6 +9,7 @@ import { createFlowResource, flowSourceDefinition } from "../../materialization/
 import { createGraphLayoutResource } from "../../materialization/graph/layoutResource.js";
 import { GRAPH_COORDINATE_FIELDS } from "../../grammar/graph/layoutOptions.js";
 import { createContourResource } from "../../materialization/contour/resources.js";
+import { createGeoLODResource } from "../../materialization/geo/lodResource.js";
 import { createGeoJoinResource } from "../../materialization/geo/joinResource.js";
 import { createProjectionResource } from "../../materialization/geo/projectionResource.js";
 import { createCalendarResource } from "../../materialization/calendar/resources.js";
@@ -64,6 +65,10 @@ export function planSourceResourceRevision(program, dataReplacements) {
     } else if (previous.kind === "geometry" && previous.options.method === "geo-join") {
       const { method, ...definition } = previous.options;
       resource = createGeoJoinResource({ ...identity, geometry: resourceInput(previous.inputs[0]), dataset: source(previous.inputs[1]), definition });
+    } else if (previous.kind === "geometry" && previous.options.method === "geo-lod") {
+      const { method, ...definition } = previous.options;
+      resource = createGeoLODResource({ ...identity, program, definition, geometries: previous.inputs.map(resourceInput),
+        input: resourceInput, logicalId: previous.result.identity.logicalId, allocationId: previous.result.identity.allocationId });
     } else if (previous.kind === "geometry") {
       resource = createContourResource({ ...identity, dataset: source(previous.inputs[0]),
         definition: previous.options.definition, thresholds: previous.options.thresholds });

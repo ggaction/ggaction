@@ -1,6 +1,7 @@
 import { applyMaterializationPlan, planCoordinateRematerialization, planLayersDataRematerialization } from "../../materialization/dependencies.js";
 import { mapCoordinateResourceBindings, mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { createProjectionResource } from "../../materialization/geo/projectionResource.js";
+import { createGeoLODResource } from "../../materialization/geo/lodResource.js";
 import { createGeoJoinResource } from "../../materialization/geo/joinResource.js";
 import { resolveInputReference } from "../../selectors/resources.js";
 import { orderResourceDependencies, validateResourceGraph } from "../../materialization/resourceState.js";
@@ -18,6 +19,10 @@ export function writeGeometryResource(program, geometry) {
       const { method, ...definition } = previous.options;
       resource = createGeoJoinResource({ id: previous.id, revision: previous.revision + 1, definition,
         geometry: input(previous.inputs[0]), dataset: input(previous.inputs[1]) });
+    } else if (previous.kind === "geometry" && previous.options.method === "geo-lod") {
+      const { method, ...definition } = previous.options;
+      resource = createGeoLODResource({ program, id: previous.id, revision: previous.revision + 1, definition,
+        geometries: previous.inputs.map(input), input, logicalId: previous.result.identity.logicalId, allocationId: previous.result.identity.allocationId });
     } else continue;
     entries.push({ previous: { kind: previous.kind, id: previous.id, revision: previous.revision }, resource });
     revised.set(key(resource), resource);

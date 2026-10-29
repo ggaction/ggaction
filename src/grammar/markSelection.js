@@ -1,5 +1,6 @@
 import { normalizeOrderedRange, orderedRangeContains } from "./orderedRange.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
+import { validateWorkLimit } from "../core/validation.js";
 import { ownRecord } from "../core/ownData.js";
 import { normalizeSelectionKeys, normalizeSelectionEmpty } from "./selectionSet.js";
 import { ENCODING_CHANNELS } from "../core/vocabulary.js";
@@ -216,7 +217,7 @@ function validateItems(items) {
   if (!Array.isArray(items)) {
     throw new TypeError("Selectable mark items must be an array.");
   }
-  const keys = new Set();
+  const keys = new Set(); let representationWork = 0;
   for (const [index, item] of items.entries()) {
     if (!isPlainObject(item)) {
       throw new TypeError(`Selectable mark item ${index} must be a plain object.`);
@@ -228,6 +229,12 @@ function validateItems(items) {
       throw new Error(`Duplicate selectable mark item key "${item.key}".`);
     }
     keys.add(item.key);
+    if (item.representationKeys !== undefined) {
+      const aliases = normalizeSelectionKeys(item.representationKeys);
+      if (aliases.length !== item.representationKeys.length) throw new TypeError("Selectable representation keys must be unique.");
+      for (const key of aliases) representationWork += key.length + 1;
+      validateWorkLimit(representationWork, "Selectable representation work");
+    }
     if (
       !isPlainObject(item.fields) ||
       !isPlainObject(item.channels) ||
@@ -308,7 +315,7 @@ export function selectMarkItemKeys(items, selector) {
   const normalized = normalizeMarkSelector(selector);
   if (normalized.items !== undefined) {
     const selected = new Set(normalized.items);
-    return Object.freeze(items.filter(item => selected.has(item.key) ||
+    return Object.freeze(items.filter(item => selected.has(item.key) || item.representationKeys?.some(key => selected.has(key)) ||
       (selected.size === 0 && normalized.empty === "all")).map(item => item.key));
   }
   if (normalized.rows) {

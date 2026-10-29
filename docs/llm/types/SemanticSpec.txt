@@ -1,5 +1,5 @@
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | GeoJoinResource | CalendarLayoutResource | EdgeRouteResource | ProjectionResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | GeometrySourceResource | GeoJoinResource | GeoLODResource | CalendarLayoutResource | EdgeRouteResource | ProjectionResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];

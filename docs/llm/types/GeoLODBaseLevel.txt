@@ -1,0 +1,7 @@
+export interface GeoLODBaseLevel {
+  readonly id: string;
+  /** Explicit geometry source or join with a stable featureKey; nested LOD is rejected. */
+  readonly geometry: string;
+  /** Maximum deviation in planar units or geographic degrees; positive values require shared topology. */
+  readonly tolerance?: number;
+}

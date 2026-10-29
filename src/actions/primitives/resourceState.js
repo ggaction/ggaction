@@ -58,7 +58,7 @@ export function replaceStoredResource(program, parsed, value, args) {
         candidate.kind === "graph" && candidate.provenance.origin === "inferred" && value.kind === "graph" ||
         candidate.kind === "edge-route" && ["graph", "hierarchy", "layout"].includes(value.kind) ||
         candidate.kind === "projection" && value.kind === "geometry" ||
-        candidate.kind === "geometry" && candidate.options.method === "geo-join" && value.kind === "geometry";
+        candidate.kind === "geometry" && ["geo-join", "geo-lod"].includes(candidate.options.method) && value.kind === "geometry";
     if (owns && candidate.inputs.some(ref => affected.has(JSON.stringify([ref.kind, ref.id])) ||
         dataRooted && ref.kind === "data" && dataReplacements.has(ref.id))) {
       const key = JSON.stringify([candidate.kind, candidate.id]); affected.add(key); allowed.add(key);

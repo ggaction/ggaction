@@ -1,0 +1,126 @@
+{
+  "scope": "Private shared-topology simplification and common topology expansion owner; public LOD lifecycle remains pending",
+  "base": "e9cf5c1c8",
+  "approval": "AUTHORIZATION.json remainingApproval",
+  "checks": {
+    "kernelAndGeometry": {
+      "tests": 19,
+      "pass": 19,
+      "coverage": {
+        "simplify": {
+          "lines": 100,
+          "branches": 98.11,
+          "functions": 100
+        },
+        "topology": {
+          "lines": 100,
+          "branches": 98.88,
+          "functions": 100
+        }
+      }
+    },
+    "existingDataResourceJoin": {
+      "tests": 29,
+      "pass": 29
+    },
+    "sourceBoundaries": {
+      "tests": 11,
+      "pass": 11
+    },
+    "packageArtifact": {
+      "tests": 7,
+      "pass": 7
+    },
+    "sourceDocs": {
+      "tests": 197,
+      "pass": 197
+    }
+  },
+  "package": {
+    "limits": {
+      "entries": 1022,
+      "packedBytes": 1460000,
+      "unpackedBytes": 6637000
+    },
+    "measurements": [
+      {
+        "node": "v20.20.2",
+        "zlib": "1.3.1-e00f703",
+        "entries": 1022,
+        "packedBytes": 1459130,
+        "unpackedBytes": 6636332
+      },
+      {
+        "node": "v22.23.1",
+        "zlib": "1.2.12",
+        "entries": 1022,
+        "packedBytes": 1455513,
+        "unpackedBytes": 6636332
+      },
+      {
+        "node": "v24.22.1",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "entries": 1022,
+        "packedBytes": 1459130,
+        "unpackedBytes": 6636332
+      }
+    ]
+  },
+  "limitations": [
+    "Geographic seam arcs are retained without simplification.",
+    "Candidate topology violations retain original arcs with an explicit diagnostic.",
+    "Public LOD actions, selection/annotation mapping and renderer consumers remain in STEP045."
+  ],
+  "initialPartialCheck": "topology-owner-extract.log ran only 12 join tests because two selectors named nonexistent files; corrected run explicitly covered 29 existing tests.",
+  "manifest": [
+    {
+      "file": "topology-coverage-1.log.gz",
+      "sha256": "2de077d4159fb53b4f0377d1e3928a2df972fdcf34561c2bee099bc94060f803"
+    },
+    {
+      "file": "topology-owner-extract.log.gz",
+      "sha256": "0fd95120cef0fc1944a4ea0120c5fd0db74752e164f3bd0cb3176876a61812ea"
+    },
+    {
+      "file": "topology-owner-extract-2.log.gz",
+      "sha256": "9b098ca94f6e1eebd634e767c0c83bcd81aa8aa98e0cd676d813eb1af2d3a943"
+    },
+    {
+      "file": "topology-boundaries.log.gz",
+      "sha256": "981f47717a46d36f0cc7ddf75bee27717d8a7f989b64f2f1898c787bb86e89a9"
+    },
+    {
+      "file": "topology-package-contract.log.gz",
+      "sha256": "d41b6160ef076965422e652df574a9fe541aac9436fd3672f2f2be6226888390"
+    },
+    {
+      "file": "topology-package-size-20.json.gz",
+      "sha256": "6ad190b9c2ca5fdaa24b223122013de684017de859b68ce677480b5dba0b0210"
+    },
+    {
+      "file": "topology-package-size-22.json.gz",
+      "sha256": "543ca5417c6c5dd0c55ecfb7d9f22685be0e76efd5aa9dcce2f197fefc40f3d1"
+    },
+    {
+      "file": "topology-package-size-24.json.gz",
+      "sha256": "53f939049adc2be790a422bab732c736457319faaa584cf805eb2b3e8f1303a7"
+    },
+    {
+      "file": "topology-docs.log.gz",
+      "sha256": "d3f82a09ebf04a4d2c4e98f9bfa8efa72aa2546cd940dd3e0c9cd110d16d436b"
+    },
+    {
+      "file": "topology-provenance.log.gz",
+      "sha256": "9b35b403ed4658b37822e9eb06482a5d9bfbdb5488a669f984c2fa1b14ad45e5"
+    },
+    {
+      "file": "topology-machine.log.gz",
+      "sha256": "f92b6883c2ffb0f111f564631c70578123a0cc8d279044c43faf9e1d83a1d6c8"
+    },
+    {
+      "file": "topology-llms.log.gz",
+      "sha256": "db570229dbd7a39cf8cfc853d1749b6deeff3dedfbb888d65ef9e08a14bbafcc"
+    }
+  ],
+  "sourceCommit": "771d7e2dc"
+}

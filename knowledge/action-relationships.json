@@ -2424,6 +2424,18 @@
       ]
     },
     {
+      "name": "createGeoLODData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editGeoLODData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
       "name": "createProjection",
       "wraps": [
         "editSemantic"

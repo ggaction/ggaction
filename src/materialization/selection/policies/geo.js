@@ -19,6 +19,7 @@ function items(program, layer, concrete) {
     const key = geoFeatureKey(layer, resource, feature), children = byKey.get(key) ?? [];
     if (concrete && !children.length) return [];
     return [cloneAndFreeze({ key, layer: layer.id, markType: "geo", role: "feature", topology: children[0]?.identity.topology ?? "",
+      ...(feature.representationKeys === undefined ? {} : { representationKeys: feature.representationKeys.map(key => geoFeatureKey(layer, resource, { key })) }),
       channels: {}, rows: feature.rows ?? [], fields: feature.fields ?? feature.properties ?? {}, members: [], rowKeys: [], graphicRoles: children.map(child => child.identity.role),
       lineage: { kind: "resource", resource: layer.geoBinding.geometry ?? { kind: "projection", id: projection.id, revision: projection.revision } },
       properties: concrete ? concreteProperties(children[0].properties) : config,

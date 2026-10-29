@@ -250,6 +250,14 @@
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
+    "createGeoLODData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeoLODData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
     "createGeoJoinData": {
       "introducedAfter": "v0.0.13",
       "status": "development"
