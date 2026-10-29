@@ -1,0 +1,105 @@
+{
+  "status": "qualified nested feature; AT20 single-Y integration remains open",
+  "base": "11e617145",
+  "merged": "b2f45e541",
+  "sourceCommit": "195e2267c",
+  "checks": {
+    "focused": 67,
+    "responsiveRealistic": 15,
+    "browser": 2,
+    "inventory": 7,
+    "contracts": 32,
+    "commonRealistic": 27,
+    "docsInitial": {
+      "passed": 187,
+      "failed": 1,
+      "cause": "new example absent from pre-source-commit Git branch"
+    },
+    "docsFinal": 188,
+    "builtPages": 168,
+    "selectiveLLMArtifacts": 1433,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ]
+  },
+  "sourceHashes": {
+    "src/materialization/facetScaleContext.js": "25d982750b180c7416c8122a77dc4f5f493eaa186c63499f7260b79a69557fc1",
+    "src/materialization/responsiveLayout.js": "5ca5f7cec94be67071b260e1ba8ff26c35ec073b5b2932b66e7dc9c3abc53ced",
+    "src/grammar/responsiveCanvas.js": "8f05128d60d2e9f00150161a23cc6aead6ab539314d03a82dee7ce5abb05bc45",
+    "src/grammar/responsiveLabels.js": "b95f884d40760e0e753dc09545ad751417857b473cf8a90babf77657f0435bc2",
+    "src/actions/data/resourceRevision.js": "259cfe5a1792ca36305b2a949cda42419ec4e70ee650efc4c211a159fe4c4bd5",
+    "src/actions/primitives/preparedResourceContext.js": "98b63c6c6f502a13bd822e92fd17f05945f1f346f8f22535f89ddcf71a83769d",
+    "src/actions/primitives/resourceState.js": "a1d1baf066e64499bfa4e58c6b76c52e423891479a5d65669a6eb74c0193ff15",
+    "src/actions/graphs/layouts.js": "4acaa592a249b7b9f9f7fd2009a4ef902ee9d5e1503bf306a80cb89d03ed3754"
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/nested-responsive-integration-final/ggaction-0.0.26.tgz",
+    "entries": 945,
+    "packedBytes": 1358168,
+    "unpackedBytes": 6225072,
+    "sha256": "3cf6796a7ceb3a1e3e7be89527f0c3440cc3a50c34a6a48ce8730bae34ce3edb"
+  },
+  "installed": [
+    {
+      "node": "v20.20.2",
+      "themeTests": 90,
+      "runtimeCases": 19,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 667372,
+        "ggaction/basic": 374664,
+        "ggaction/svg": 20196,
+        "ggaction/interaction": 101103
+      }
+    },
+    {
+      "node": "v22.23.1",
+      "themeTests": 90,
+      "runtimeCases": 19,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 665924,
+        "ggaction/basic": 373906,
+        "ggaction/svg": 20055,
+        "ggaction/interaction": 100639
+      }
+    },
+    {
+      "node": "v24.22.1",
+      "themeTests": 90,
+      "runtimeCases": 19,
+      "types": "passed",
+      "optionalPeers": "passed",
+      "bundles": {
+        "ggaction": 667372,
+        "ggaction/basic": 374664,
+        "ggaction/svg": 20196,
+        "ggaction/interaction": 101103
+      }
+    }
+  ],
+  "caps": {
+    "entries": 945,
+    "packedBytes": 1359000,
+    "unpackedBytes": 6226000,
+    "gzip": {
+      "ggaction": 668000,
+      "ggaction/basic": 375000,
+      "ggaction/svg": 25000,
+      "ggaction/interaction": 102000
+    },
+    "search": 973000
+  },
+  "searchBytes": 972414,
+  "criticalCoverage": "Incoming affected owner coverage588 + observed-graph40 reused; semantic source unchanged except removal of trailing blank line in responsiveLabels before final archive matrix",
+  "notClaimed": [
+    "AT20 completion before STEP050 admission",
+    "whole source coverage rerun",
+    "full realistic corpus rerun",
+    "STEP077 completion"
+  ]
+}

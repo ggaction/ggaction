@@ -1,0 +1,129 @@
+{
+  "node": "v24.22.1",
+  "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-integration/ggactionnewbrand/.artifacts/nested-responsive-integration-final/ggaction-0.0.26.tgz",
+  "fixtures": [
+    "theme-guide-defaults",
+    "theme-item-identity",
+    "theme-resource-plots",
+    "theme-typography",
+    "theme-flow",
+    "theme-guide-geometry",
+    "theme-spacing",
+    "theme-palettes",
+    "theme-provenance",
+    "theme-paint-consumers"
+  ],
+  "records": [
+    {
+      "id": "data/observed-graph-lifecycle",
+      "status": "passed"
+    },
+    {
+      "id": "data/inferred-graph-lifecycle",
+      "status": "passed"
+    },
+    {
+      "id": "contour/full-basic-lifecycle",
+      "status": "passed"
+    },
+    {
+      "id": "contour/fresh-process-source-revision",
+      "status": "passed"
+    },
+    {
+      "id": "contour/renderers-scene-codec",
+      "status": "passed"
+    },
+    {
+      "id": "interaction/full-basic-immutable-inspection",
+      "status": "passed"
+    },
+    {
+      "id": "interaction/current-frame-and-restored-program",
+      "status": "passed"
+    },
+    {
+      "id": "interaction/guide-and-host-cleanup",
+      "status": "passed"
+    },
+    {
+      "id": "selection/logical-item-update",
+      "status": "passed"
+    },
+    {
+      "id": "selection/logical-scoped-update",
+      "status": "passed"
+    },
+    {
+      "id": "calendar/full-basic-lifecycle",
+      "status": "passed"
+    },
+    {
+      "id": "calendar/fresh-process-source-revision",
+      "status": "passed"
+    },
+    {
+      "id": "calendar/shared-resource-source-union",
+      "status": "passed"
+    },
+    {
+      "id": "calendar/renderers-scene-codec",
+      "status": "passed"
+    },
+    {
+      "id": "responsive/full-basic-resize-restore",
+      "status": "passed"
+    },
+    {
+      "id": "responsive/renderers-scene-codec",
+      "status": "passed"
+    },
+    {
+      "id": "nested/shared-layout-lifecycle",
+      "status": "passed"
+    },
+    {
+      "id": "nested/projected-graph-source",
+      "status": "passed"
+    },
+    {
+      "id": "nested/renderers-scene-codec",
+      "status": "passed"
+    }
+  ],
+  "types": "passed",
+  "optionalPeers": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "@napi-rs/canvas": "1.0.9"
+  },
+  "bundles": {
+    "ggaction": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 830,
+      "minifiedBytes": 2349645,
+      "gzipBytes": 667372
+    },
+    "ggaction/basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 542,
+      "minifiedBytes": 1283921,
+      "gzipBytes": 374664
+    },
+    "ggaction/svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 37,
+      "minifiedBytes": 59445,
+      "gzipBytes": 20196
+    },
+    "ggaction/interaction": {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 164,
+      "minifiedBytes": 310014,
+      "gzipBytes": 101103
+    }
+  }
+}
