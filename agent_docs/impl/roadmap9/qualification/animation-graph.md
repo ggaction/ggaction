@@ -16,7 +16,7 @@
 stable node key, fixed endpoint, normalized arc-length route, 현재 anchor 보정 의무를 구현한다.
 Point 안정 source69cb70d0c/evidence d5cd6a0fb를 별도 branch에 보존한다.
 새 branch는 codex/roadmap9-animation-graph이며 기존 공개 entry/Current 소유자는 offline 담당이다.
-이 문서는 아직 구현된 Current 계약이 아니다.
+이 문서는 구현 이력이며 현재 공개 의미는 [Current](../../../contract/current/ANIMATION.md)가 소유한다.
 
 ## 기존 계산 소유자
 
@@ -87,7 +87,7 @@ stored route를 사용한다. Exact endpoint PNG, 중간 literal pixel과 vector
 Canvas/SVG DPR1/2를 확인한다. 현재 hit 검사는 실제 중간 concrete shape 위치를 확인하며
 public session adapter의 graph scope/retention integration이 완료됐다는 뜻은 아니다.
 
-### 최종 합산으로 남기는 의무
+### Private checkpoint 당시 합산 의무
 
 - 공개 caf731f73의 entry/Current/type/offline envelope와 합산하고 graph 지원 문구 및 같은 tar
   Node20/22/24 소비자를 확인한다. 이 branch의 Node별 검사는 source import이며 설치검사가 아니다.
@@ -123,4 +123,17 @@ Node20/22/24에서 각각9개 runtime 및 strict animation types·optional peers
 Docs source는231중229 통과 후 search-size cap2개를 owning31/31로 수리했다.
 Ruby system2.6의 첫 build 오류는 원본 보존 후 preflight가 통과한 Ruby3.3.12로 복구했다
 (CI 고정 Ruby3.2.6과 버전은 다르다). Built186pages/1598artifacts를 확인했다.
-최종 browser와 source/evidence 고정을 마감한다.
+전체 built browser도 desktop search 및 320/390/768px의 모든 페이지를 통과했다.
+Source `350b72e550cf03d508d7b98346ba49bbbbd23d39`의 clean canonical213/213과
+package 관련29/29를 확인했다. 이후 canonical docs 전체 재생성은 tracked diff가 없어
+동일 source pin과 built/browser 입력이 유지됨을 확인했다.
+
+공개 증거는 [합산 manifest](animation-graph-public-evidence/qualification.json)에 보존한다.
+패키지 전체1,135파일을 canonical JSON/JavaScript staging 변환 후 현재 source와 정확히
+비교했다. 따라서 압축 대상 파일과 raw source byte 차이를 source 변경으로 오인하지 않는다.
+최종 한도는 entries1135/packed1621000/unpacked7344000이며 Node20/22/24의 실측과
+별도 browser cap 회복을 연결한다. 전체 installed sweep/전체 corpus/release 검사는 실행하지 않았다.
+
+현재 열린 의무는 root partition, 별도 Cartesian 및 Geo/polar/guide typed family 연결,
+offline frame의 native scope hit metadata, root 최종 합산 corpus/release qualification이다.
+현재 public graph checkpoint는 이 범위를 완료하거나 면제했다고 주장하지 않는다.
