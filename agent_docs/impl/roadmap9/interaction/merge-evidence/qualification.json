@@ -1,0 +1,37 @@
+{
+  "status": "focused-integration-verified",
+  "parents": [
+    "5f6504405",
+    "f1800607d09cead3b1131a5b4e7fa663e6f67a5a"
+  ],
+  "runtimeConflicts": false,
+  "resolvedConflicts": [
+    "architecture appended both owners",
+    "coverage retained all strict families",
+    "package caps remeasured",
+    "generated provenance regenerated after source merge"
+  ],
+  "tests": {
+    "hitAndScene": 44,
+    "boundaries": 33
+  },
+  "package": {
+    "entries": 867,
+    "unpackedBytes": 5837672,
+    "node22PackedBytes": 1267560,
+    "node20And24PackedBytes": 1270493,
+    "caps": {
+      "entries": 867,
+      "packedBytes": 1271000,
+      "unpackedBytes": 5838000
+    }
+  },
+  "priorPublicEvidence": "Root f1800607d public installed and critical381 evidence remains owned by that checkpoint; not rerun or claimed here.",
+  "mergeSource": "75d23783e",
+  "documentation": {
+    "sourceChecks": 19,
+    "builtPages": 160,
+    "selectiveLlmArtifacts": 1390,
+    "browserReuse": "Stable main f1800607d UI assets/layout; private hit sources add no visual changes."
+  }
+}

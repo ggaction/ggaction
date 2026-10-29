@@ -1,0 +1,33 @@
+{
+  "points": [
+    [
+      2,
+      1
+    ],
+    [
+      5,
+      5
+    ],
+    [
+      13,
+      1
+    ],
+    [
+      18,
+      1
+    ]
+  ],
+  "expected": [
+    true,
+    false,
+    true,
+    false
+  ],
+  "actual": [
+    true,
+    false,
+    true,
+    false
+  ],
+  "diff": []
+}

@@ -1,0 +1,18 @@
+{
+  "src/index.js": {
+    "modules": 803,
+    "privateHitOwners": []
+  },
+  "src/basic.js": {
+    "modules": 562,
+    "privateHitOwners": []
+  },
+  "src/renderers/svg.js": {
+    "modules": 41,
+    "privateHitOwners": []
+  },
+  "src/scene.js": {
+    "modules": 62,
+    "privateHitOwners": []
+  }
+}

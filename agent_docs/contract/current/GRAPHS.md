@@ -81,7 +81,7 @@
 - Highlight는 stroke 계열 color/stroke/strokeWidth/opacity/offset을 지원한다. Node border와 edge path/arrow fill을 함께 강조하고 label paint를 보존한다. Node label·edge arrow는 opacity/offset/dim/order에서 같은 항목을 따른다. fill/shape/size/fontSize/strokeDash는 거부한다.
 - Source/graph/layout revision은 모든 plot의 결과를 먼저 검사하고 exact revision 갱신 뒤 명시 재물질화한다. 실패는 원 program/trace를 보존한다. Canvas edit는 placement만 갱신하며 stored solver result는 공유한다. Concat scoped edit를 지원한다.
 - removeMark가 binding을 해제한다. removeResource의 restrict/cascade 모두 live mark는 먼저 제거해야 한다. Codec은 저장 config·binding·label 의미를 검증하며 force solver를 재실행하지 않는다. Inspector와 accessible export는 logical node/edge를 세고 scene은 같은 concrete identity를 보존한다. Canvas/SVG/PNG/PDF는 graph 의미를 해석하지 않는다.
-- Position encoding/axes/scale legend는 stored layout에 적용되지 않는다. Graph facet/repeat와 induced filtering은 이 공개 plot에 아직 연결하지 않았다.
+- Position encoding/axes/scale legend는 stored layout에 적용되지 않는다. Graph facet/repeat는 아직 연결하지 않았다. Graph induced filtering은 [MARK_SELECTION](MARK_SELECTION.md#filtermarks)의 node recipe를 사용한다.
 
 ### Formal values — `createGraphPlot`
 
@@ -144,7 +144,7 @@
 - target은 explicit/current eligible/unique inferred graph이며 observed graph를 수정하지 않는다. Scoped child target을 지원한다. data와 candidateGraph를 생략하면 exact 입력을 보존한다. candidateGraph:null은 후보 입력을 제거한다. definition은 source definition partial patch이며 options를 지정하면 rule options 전체를 교체한다. rule을 바꿀 때는 nodeKey/attributes/limits만 이어받고 새 ruleId와 applicable intent를 받는다. 빈 편집과 explicit undefined/null definition, unknown/inapplicable options는 오류다.
 - topology를 다시 계산하여 graph revision을1 올린다. 살아 있는 같은 ruleId/direction/endpoints의 edge key는 유지한다. Candidate graph를 소비하는 추론 graph chain과 각 layout/plot을 의존 순서대로 preflight하고 한 번씩 명시 갱신한다. Cyclic candidate refs와 실패하는 downstream geometry는 전체 편집을 거부한다.
 - DATA revision의 전체 source replacement map은 exact graph action receiver의 private context에만 존재한다. Prepared primitive는 unique exact next graph/layout revisions, 유지된 options, 동적 dataset의 동일 logicalId와 later revision을 검사한다. 이 authority는 public option이나 저장 state가 아니다.
-- Layout/Canvas/paint 수정은 graph topology를 보존한다. Logical node/edge item은 inferred origin/ruleId/rule/metric과 endpoint source rows를 inspection/accessibility에 노출한다. Mark filter의 induced-view와 explicit recompute는 현재 별도 지원하지 않는다.
+- Layout/Canvas/paint 수정은 graph topology를 보존한다. Logical node/edge item은 inferred origin/ruleId/rule/metric과 endpoint source rows를 inspection/accessibility에 노출한다. Mark filter의 induced-view는 원 topology를 보존한다. Explicit recompute는 아직 지원하지 않는다.
 
 ### Formal values — `editInferredGraphData`
 

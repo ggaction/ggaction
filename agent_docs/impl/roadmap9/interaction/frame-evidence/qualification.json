@@ -1,0 +1,87 @@
+{
+  "status": "private-frame-qualified",
+  "base": "668fe7d7d",
+  "publicApiAdded": false,
+  "tests": {
+    "node20": 47,
+    "node22Coverage": 47,
+    "node24": 47,
+    "boundaries": 33
+  },
+  "coverage": {
+    "hitFrame": [
+      100,
+      100,
+      100
+    ],
+    "hitIndex": [
+      100,
+      100,
+      100
+    ],
+    "hitCoordinates": [
+      100,
+      100,
+      100
+    ],
+    "hitShapes": [
+      100,
+      94.52,
+      100
+    ],
+    "hitStroke": [
+      100,
+      94.59,
+      100
+    ],
+    "floor": [
+      95,
+      90,
+      100
+    ]
+  },
+  "nativeCanvasPixelRatios": [
+    1,
+    2,
+    3
+  ],
+  "package": {
+    "entries": 868,
+    "unpackedBytes": 5840161,
+    "node22PackedBytes": 1268280,
+    "node20And24PackedBytes": 1271149,
+    "caps": {
+      "entries": 868,
+      "packedBytes": 1272000,
+      "unpackedBytes": 5841000
+    }
+  },
+  "failuresPreserved": [
+    "new frame test initially lacked named capability; added exact hit-testing selector",
+    "868 entries exceeded867 cap",
+    "b36280156 index dropped inverse overflow diagnostic; fixed with independent exact reproduction",
+    "diagnostic forwarding raised unpacked bytes5840120 above5840000; measured final5840161 and set5841000"
+  ],
+  "sources": {
+    "src/interaction/hitFrame.js": "54eb386c2501985185f5562f3bb591f2b3fefa9edbd171604d0f39a56f1a2096",
+    "test/unit/hit-frame.test.js": "ab9f3fc87eb13b953e759588ca6c1cfe1a75981a869a2cd21e8c046027e4f4ac",
+    "scripts/coverage-policy.js": "2b3f0acf720e1fae9a782dc38e15c200ea5bfdb38a130f6ff80a55b096cdaceb",
+    "test/capabilities.json": "a75decf365df91183d2b500748ff8a4603bac4f7147e2b2880d2bf57f9d12416",
+    "src/grammar/hitIndex.js": "16d3c77b003e6bf2b9565da7b49f3604c754101151827123912ed1166b6d9b3b"
+  },
+  "remaining": [
+    "concrete scene adapter with all mark/guide provenance",
+    "STEP035 nested composition",
+    "public interaction session entry and types",
+    "browser event/animation sampler integration and AT33/34 closure"
+  ],
+  "sourceCommit": "6d07bf122",
+  "initialFrameSource": "b36280156",
+  "documentation": {
+    "sourceChecks": 19,
+    "builtPages": 160,
+    "selectiveLlmArtifacts": 1390,
+    "browserReuse": "Source provenance only; main f1800607d browser CSS/JS/images/layout unchanged."
+  },
+  "publicImportGraphProof": "public-imports.json"
+}

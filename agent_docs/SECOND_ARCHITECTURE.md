@@ -3300,6 +3300,34 @@ Node20에서586,754/347,170/20,191gzip bytes로 측정되어 각각587,000/348,0
 Exact support와 lifecycle은 Current에, 최초실패와
 최종 고정 archive의 Node별 qualification은 paints/shadow-evidence에 분리 기록한다.
 
+
+### Private hit 좌표 계산 경계
+
+`grammar/hitCoordinates.js`는 explicit client point/rect와 root·child affine matrix를 받아
+CSS-local→geometry-local 좌표를 계산하는 private 순수 owner다. DOM/DPR/semantic resource를
+읽거나 program·trace를 변경하지 않는다. Singular/overflow/empty viewport는 no-hit diagnostic이며
+모든 입력과 최대1024 child work를 계산 전에 검증한다. Existing pathGeometry/graphicClip/graphicTree와
+scene identity 소유권은 유지된다. 공개 interaction entry와 exact geometry/index/frame 소비자는
+아직 연결되지 않았으며 [private 범위 기록](impl/roadmap9/interaction/STEP047.md)이 잔여 의무를 구분한다.
+
+Private 좌표 owner 한 파일을 추가한 뒤 packed content는816entries/5,520,464unpacked bytes,
+Node22 packed1,200,158/Node20·24 packed1,202,819bytes였다. Package cap을816/1,203,000/5,521,000으로
+최소 갱신했다. Full/Basic/SVG import graph에는 새 owner가 아직 없으므로 browser bundle 한도와 지원 계약은 같다.
+
+
+Private hit 도형 계산은 `grammar/hitStroke.js`가 local painted stroke, `grammar/hitShapes.js`가 explicit
+CSS transform·clip·opacity와 filled geometry 판정을 소유한다. 기존 pathGeometry/strokeStyle owner를
+재사용하며 semantic state나 renderer를 읽지 않는다. Text는 explicit resolved line boxes, Image는
+viewport로 제한하고 scene adapter/index/frame은 후속 경계다. 자세한 범위는 같은 STEP047 기록에 둔다.
+두 파일을 추가한 package는818 entries/5,541,801unpacked, packed 최대1,208,456bytes로 측정했으며
+cap을818/1,209,000/5,542,000으로 최소 갱신했다. Public entry와 browser import graph는 변하지 않는다.
+
+
+`grammar/hitIndex.js`는 현재 owned CanvasScene identity와 명시 node/semantic mapping을 결합하는 private
+순수 공간 인덱스다. BVH broad phase와 기존 hitShapes narrow phase를 분리하고 누적 work를 제한한다.
+Row/resource lineage는 입력의 exact ref를 보존하며 의미 중복만 합친다. Renderer/semantic state/codec에는
+새 저장 값을 추가하지 않는다. Guide materializer와 public runtime 연결은 [STEP048](impl/roadmap9/interaction/STEP048.md)에 남긴다.
+실측819 entries/5,552,006unpacked/최대1,210,811packed bytes에 cap819/1,211,000/5,553,000을 적용했다.
 ### Flow data and layout ownership
 
 Flow는 observed graph의 exact source identity와 resource revision을 재사용한다. 순수
@@ -3332,3 +3360,17 @@ and Full633,808/Basic358,837/SVG20,055 on Node22. The current budgets therefore 
 863 entries, packed1,259,000/unpacked5,802,000 and Full635,000/Basic360,000/SVG25,000.
 These retain every module and public option; the final fixed archive receives installed
 consumer qualification separately from this measurement.
+
+
+Private hit index를 resource effects 공개 baseline f1800607d와 통합한 package는867 entries,
+unpacked5,837,672/packed Node22 1,267,560 및 Node20/24 1,270,493bytes다. 한도는867/1,271,000/5,838,000이다.
+Private hit owner는 Full/Basic/SVG public import에 들어가지 않으므로 기존 public bundle 경계는 유지한다.
+
+
+### Private current-frame lifecycle
+
+`interaction/hitFrame.js`는 외부 sampler가 제공한 explicit scene/entries/version을 받아 현재 index를 소유한다.
+새 순수 index 준비가 끝난 뒤 한 번에 교체하고 늦은 version은 폐기한다. Dispose는 현재 참조를 해제한다.
+Program/trace/codec와 renderer는 바꾸지 않으며 DOM/event/RAF를 만들지 않는다. Exact public interaction 및
+035/guide/animation 소비자 경계는 [STEP049](impl/roadmap9/interaction/STEP049.md)의 잔여 의무로 유지한다.
+이 source 추가 후 package868entries/5,840,161unpacked/최대1,271,149packed bytes에 cap868/1,272,000/5,841,000을 쓴다.
