@@ -8,7 +8,7 @@
 - [x] 같은 tar Node20·22·24 각각 runtime28·공개 strict TS·15투영·3개 dependency 법적/source signature 검증
 - [x] 모든 설치 runtime의 5bundle 실측과 상한 검증
 - [x] source pin 문서194·built171pages/1481LLM·전체320/390/768px browser
-- [ ] 검증한 source와 기록을 main에 반영
+- [x] 검증한 source와 기록을 main에 반영 (`752a377bb`)
 - [ ] Geo mark·coordinate와 나머지 지리 기능 및 STEP074·077 누적 인수
 
 현재 지리 원본과15개 named projection만 이 통합의 완료 범위다. 투영은 명시 viewport와
