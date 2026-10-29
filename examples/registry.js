@@ -59,6 +59,7 @@ import { createBarTransition } from "./color-transitions/program.js";
 import { createMidpoint } from "./color-midpoint/program.js";
 import { createRoseHole } from "./radial-sectors/program.js";
 import { createLinkedThetaLegend } from "./theta-legend-order/program.js";
+import { createStreamgraph } from "./streamgraph/program.js";
 import { createAreaSimple } from "./area-layout/program.js";
 import { createDotPlotExample } from "./dot-plot/program.js";
 import { createLollipopPlotExample } from "./lollipop-plot/program.js";
@@ -314,6 +315,9 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createAreaSimple(),
     browser: { path: "area-layout/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
+  }),
+  example({ id: "streamgraph", data: {}, width: 380, height: 280, docsGroup: "tutorials", createProgram: createStreamgraph,
+    browser: { path: "streamgraph/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "streamgraph", width: 380, height: 280 } } }
   }),
   ...trailVariants.map(variant => example({ id: variant.chart, programDirectory: "trail", testDirectory: "trail", data: {}, width: 420, height: 240, docsGroup: "tutorials",
     createProgram: () => createTrail(variant.id),

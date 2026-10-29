@@ -1267,5 +1267,22 @@
         "statements": 10
       }
     ]
+  },
+  {
+    "file": "stream-baselines.mjs",
+    "cases": [
+      {
+        "id": "stream-baselines/public-lifecycle",
+        "statements": 14
+      },
+      {
+        "id": "stream-baselines/offline-scene-renderers",
+        "statements": 13
+      },
+      {
+        "id": "stream-baselines/fresh-process-nested",
+        "statements": 10
+      }
+    ]
   }
 ]

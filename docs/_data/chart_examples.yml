@@ -2416,3 +2416,19 @@
   actions: createTrailPlot · editTrailPlot
   tasks: sample width along ordered series
   url: /tutorials/trail/
+
+- id: streamgraph
+  example: /examples/streamgraph/
+  title: Moving streamgraph baseline
+  image: /assets/images/streamgraph.png
+  alt: Blue and teal layers preserve sample thickness while their shared baseline moves
+  width: 760
+  height: 560
+  thumbnail: /assets/images/streamgraph-thumb.png
+  thumbnail_width: 380
+  thumbnail_height: 280
+  caption: Wiggle keeps sample thickness and input series order while minimizing weighted center movement.
+  summary: Choose zero, centered, or moving baselines through the existing Area layout action.
+  actions: createAreaPlot · layoutSeries
+  tasks: composition trend
+  url: /tutorials/area-layout/#use-a-moving-streamgraph-baseline

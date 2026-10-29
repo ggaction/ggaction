@@ -4,7 +4,7 @@ The long A–C connection follows the existing A–B–C path, with two corner c
 All three original edges remain independently selectable.
 
 This complete ES module uses the same data and action flow as the
-[executable example](https://github.com/ggaction/ggaction/blob/fedc6a4b944057433c6d82f07b6cf00039d06391/examples/edge-routes/program.js).
+[executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap9-native-charts/examples/edge-routes/program.js).
 
 ```javascript
 import { chart } from 'ggaction';

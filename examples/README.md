@@ -889,6 +889,12 @@ Preserve both centerlines while setting a constant screen width.
 
 Representative actions: `createTrailPlot`, `editTrailPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/trail/).
 
+### [Moving streamgraph baseline](./streamgraph/)
+
+Choose zero, centered, or moving baselines through the existing Area layout action.
+
+Representative actions: `createAreaPlot`, `layoutSeries`. [Documentation](https://ggaction.github.io/ggaction/tutorials/area-layout/#use-a-moving-streamgraph-baseline).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

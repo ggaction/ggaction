@@ -38287,11 +38287,6 @@
           "type": "string | readonly [string, ...string[]] | undefined"
         },
         {
-          "name": "layout",
-          "required": false,
-          "type": "\"center\" | \"diverging\" | \"fill\" | \"overlay\" | \"stack\" | undefined"
-        },
-        {
           "name": "missing",
           "required": false,
           "type": "\"break\" | \"error\" | undefined"
@@ -38312,6 +38307,11 @@
           "type": "false | (Omit<DensityPlotGuideOptions, \"grid\"> & { grid?: false | CartesianGridOptions | undefined; }) | undefined"
         },
         {
+          "name": "layout",
+          "required": false,
+          "type": "\"center\" | \"diverging\" | \"fill\" | \"overlay\" | \"stack\" | \"wiggle\" | undefined"
+        },
+        {
           "name": "valueChannel",
           "required": false,
           "type": "\"x\" | \"y\" | undefined"
@@ -38324,7 +38324,7 @@
         {
           "name": "y",
           "required": true,
-          "type": "{ field: string; scale?: NonPointQuantitativePositionScaleOptions | undefined; } | AreaPlotIndependentChannel | ({ ...; } & ({ ...; } | { ...; }))"
+          "type": "{ field: string; scale?: NonPointQuantitativePositionScaleOptions | undefined; } | { field: string; scale?: NonPointZeroSupportingPositionScaleOptions | undefined; } | AreaPlotIndependentChannel | ({ ...; } & ({ ...; } | { ...; })) | ({ ...; } & ({ ...; } | { ...; }))"
         },
         {
           "name": "baseline",

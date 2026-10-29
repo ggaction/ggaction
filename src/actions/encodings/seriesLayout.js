@@ -55,6 +55,7 @@ export const layoutSeries = /* @__PURE__ */ action({ op: "layoutSeries", descrip
     const channels = resolveBarChannels(updated), grain = resolveBarGrain(updated);
     if (grain === undefined || encoding.x?.scale === undefined || encoding.y?.scale === undefined) throw new Error("Series layout requires a complete bar.");
     if (mode === "center") throw new Error("Centered bars are not supported.");
+    if (mode === "wiggle") throw new Error("Wiggle is supported only for vertical area series.");
     if (grain === BAR_GRAINS.ranged && mode !== "overlay") throw new Error("Ranged bars support only overlay layout.");
     if (grain === BAR_GRAINS.centered && mode !== "overlay") throw new Error("Numeric-center bars support only overlay layout.");
     if (grain === BAR_GRAINS.aggregate) deriveBarAggregates(dataset.values, updated);

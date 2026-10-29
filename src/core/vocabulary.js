@@ -236,7 +236,8 @@ export const COLOR_LAYOUTS = Object.freeze([
   "center",
   "group",
   "overlay",
-  "diverging"
+  "diverging",
+  "wiggle"
 ]);
 
 export const STACK_MODES = Object.freeze(["zero", "normalize", "center"]);

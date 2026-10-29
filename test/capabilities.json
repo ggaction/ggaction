@@ -46,6 +46,18 @@
       {
         "type": "prefix",
         "path": "charts/area-layout/"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/streamgraph/"
+      },
+      {
+        "type": "file",
+        "path": "unit/wiggle-area.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/stream-baseline.test.js"
       }
     ],
     "artifacts": [
@@ -1272,6 +1284,10 @@
       {
         "type": "file",
         "path": "contracts/realistic-trail-plots.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-stream-baselines.test.js"
       }
     ],
     "rendering": [

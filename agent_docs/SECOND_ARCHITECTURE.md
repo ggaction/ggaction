@@ -1158,7 +1158,7 @@ Layer가 data, optional source/coordinate, semantic mark와 encoding을 연결�
 
 `core/vocabulary.js`의 positional descriptor가 coordinate family, role, shared-scale relation, guide/grid binding과 mark capability를 소유한다. Inference, consumer discovery, inheritance와 removal이 같은 descriptor를 사용한다.
 
-Field mapping과 grouping/order/series layout은 semantic intent다. Constant appearance와 pixel/band placement intent는 materialization config다. `layoutSeries`는 semantic layout 변경 후 offset/endpoint/scale/mark/guide owner를 명시적으로 호출한다. Automatic scale의 private ownership만 config에 기록하고 semantic scale 정책을 이중 저장하지 않는다.
+Field mapping과 grouping/order/series layout은 semantic intent다. Constant appearance와 pixel/band placement intent는 materialization config다. `layoutSeries`는 semantic layout 변경 후 offset/endpoint/scale/mark/guide owner를 명시적으로 호출한다. Automatic scale의 private ownership만 config에 기록하고 semantic scale 정책을 이중 저장하지 않는다. 정렬된 Area의 움직이는 기준선은 `grammar/streamBaseline.js` 한 순수 owner가 계산하며 raw/density materializer와 domain consumer가 동일 경계를 재사용한다.
 
 Series identity, appearance field 유일성, row eligibility와 order는 geometry 전에 확정한다. Aggregate/bin/stack, ordered vertices와 missing-data segmentation은 같은 final grain을 scale, mark와 selection에 제공해야 한다. `grammar/areaEndpoints.js`가 Area endpoint의 datum/field/missing 값을 공유하고 `actions/encodings/ranged.js`는 complete pair를 preview한 뒤 wrapped primary/secondary를 실행한다.
 

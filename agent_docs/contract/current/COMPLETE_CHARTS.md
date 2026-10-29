@@ -706,18 +706,20 @@ Default id는 `horizonPlot`, lifecycle은 Aggregate create-only다.
 - Semantic effects: mark.missing, field/datum endpoints, encoding.group and layer.layout.mode. Graphic effects:
   closed concrete paths; endpoint/layout values drive scales, guides and source-owned selection. Guides false skips
   this facade's creation; omitted guides secure compatible Cartesian axes/grid and optional categorical color legend.
+- Wiggle requires vertical quantitative/temporal x, aligned nonnegative y with one zero datum endpoint, and the shared layoutSeries baseline policy. Its value scale uses `NonPointZeroSupportingPositionScaleOptions`; logarithmic value scales are rejected.
 - Editing uses encodeX/YRange, encodeX2/Y2, encodeGroup, layoutSeries, editAreaMark and existing scale/guide/data editors.
   Log baselines must be valid for the final pair. Invalid input/resource/grain/style/guide transitions preserve the
   complete previous program, action trace and caller-owned input.
 
 ### Formal values — `createAreaPlot`
 
-- Implemented: required x/y; valueChannel x|y; layout overlay|stack|fill|diverging|center; missing error|break.
+- Implemented: required x/y; valueChannel x|y; layout overlay|stack|fill|diverging|center|wiggle; missing error|break.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createAreaPlot`
 
-- ✅ Covered: shortest/lower equivalence, signed/log/ribbon/stack/fill/diverging/center/break, invalid roles/options,
+- ✅ Covered: shortest/lower equivalence, signed/log/ribbon/stack/fill/diverging/center/wiggle/break, invalid roles/options,
   immutable edits, exact semantic/graphic/order/Canvas and decoded PNG pairs.
 - Evidence: `test/unit/actions/charts/area-facade.test.js`, `test/unit/actions/encodings/series-layout.test.js`,
-  `test/charts/area-layout/`, `examples/area-layout/program.js`, `test/contracts/area-endpoint-types.test.js`.
+  `test/charts/area-layout/`, `examples/area-layout/program.js`, `test/contracts/area-endpoint-types.test.js`,
+  `test/charts/streamgraph/`, `test/unit/wiggle-area.test.js`, `test/contracts/realistic-stream-baselines.test.js`.

@@ -421,5 +421,15 @@
     "mode": "complete",
     "result": "filteredProgram",
     "prerequisites": "Run this ES module with its inline observations. Selecting a in the source leaves only a in the target view."
+  },
+  {
+    "id": "stream-baseline-switching",
+    "file": "tutorials/area-layout.md",
+    "contains": "const stream = base.createAreaPlot",
+    "mode": "complete",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "result": "stream, centered, zeroBased",
+    "prerequisites": "Run this complete ES module with its inline aligned observations. The three immutable programs preserve each series thickness while changing their shared baseline."
   }
 ]

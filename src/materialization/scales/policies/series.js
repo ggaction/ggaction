@@ -59,12 +59,13 @@ export function resolveSeriesLayoutDomain({
     ...activeLayouts.flatMap(item => item.values),
     ...directConsumers.flatMap(item => item.values)
   ];
-  if (layout === "center" && scale.domain !== "auto") {
+  if (["center", "wiggle"].includes(layout) && scale.domain !== "auto") {
     const [minimum, maximum] = numericExtent(values);
     const [domainMinimum, domainMaximum] = numericExtent(scale.domain);
     if (domainMinimum > minimum || domainMaximum < maximum) {
       throw new Error(
-        `Center layout scale "${id}" explicit domain must contain every centered bound.`
+        layout === "center" ? `Center layout scale "${id}" explicit domain must contain every centered bound.`
+          : `Wiggle layout scale "${id}" explicit domain must contain every resolved bound.`
       );
     }
   }

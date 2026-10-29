@@ -1514,7 +1514,8 @@ export type ColorLayout =
   | "group"
   | "overlay"
   | "diverging"
-  | "center";
+  | "center"
+  | "wiggle";
 export type ScalarAggregateOperation =
   | "count" | "sum" | "mean" | "median" | "min" | "max"
   | "distinct" | "valid" | "missing"
@@ -4419,7 +4420,7 @@ type HistogramCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 type LineCategoricalColorChannel<Scale = NonPointCategoricalColorScaleOptions> =
   | string
@@ -4446,7 +4447,7 @@ type BarCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 type BarColorChannel =
   | BarCategoricalColorChannel
@@ -5020,7 +5021,7 @@ export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & 
 );
 
 export interface SeriesLayoutOptions { target?: string; mode: ColorLayout; }
-export interface BasicSeriesLayoutOptions { target?: string; mode: Exclude<ColorLayout, "center">; }
+export interface BasicSeriesLayoutOptions { target?: string; mode: Exclude<ColorLayout, "center" | "wiggle">; }
 export type AreaPlotIndependentChannel = string | ({ field: string } & (
   | { fieldType: "nominal" | "ordinal"; scale?: NonPointCategoricalPositionScaleOptions }
   | { fieldType?: "quantitative"; scale?: NonPointQuantitativePositionScaleOptions }
@@ -5034,16 +5035,25 @@ export type AreaPlotMeasureChannel = string | { field: string; scale?: NonPointQ
 export type CreateAreaPlotOptions = {
   id?: string; data?: string; coordinate?: string;
   groupBy?: string | readonly [string, ...string[]];
-  layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
+  missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
   area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
-} & (
+} & (({ layout?: Exclude<ColorLayout, "group" | "wiggle"> } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
   | { valueChannel: "x"; x: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: number }
   | { valueChannel: "x"; x: Extract<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: never }
-);
+)) | {
+  layout: "wiggle"; valueChannel?: "y";
+  x: Exclude<AreaPlotIndependentChannel, { fieldType: "nominal" | "ordinal" }>;
+  y: string | { field: string; scale?: NonPointZeroSupportingPositionScaleOptions }
+    | ({ scale?: NonPointZeroSupportingPositionScaleOptions } & (
+      | { lower: string; upper: { datum: 0 } }
+      | { lower: { datum: 0 }; upper: string }
+    ));
+  baseline?: 0;
+});
 
 interface LinePlotCommonOptions {
   id?: string;

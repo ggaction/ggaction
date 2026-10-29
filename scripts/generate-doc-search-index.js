@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { readDocChartCatalog } from "./doc-chart-catalog.js";
 
-export const SEARCH_INDEX_MAX_BYTES = 1014000; // Native Trail documentation: measured 1,013,957 bytes.
+export const SEARCH_INDEX_MAX_BYTES = 1015100; // Moving Area baseline documentation: measured 1,015,061 bytes.
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");

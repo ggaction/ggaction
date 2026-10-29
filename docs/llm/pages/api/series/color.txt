@@ -24,7 +24,7 @@ per series. Raw Area supports an independent group field or tuple. Color must be
 | `target` | point, line, area, bar, rect, or arc mark ID | current mark |
 | `fieldType` | `"nominal"`, `"ordinal"`, `"quantitative"`, or `"temporal"` | `"nominal"` |
 | `aggregate` | aggregate operation; quantitative aggregate bars only | matching measure aggregate |
-| `layout` | `"stack"`, `"fill"`, `"group"`, `"overlay"`, `"diverging"`, or `"center"` | mark policy |
+| `layout` | `"stack"`, `"fill"`, `"group"`, `"overlay"`, `"diverging"`, `"center"`, or `"wiggle"` | mark policy |
 | `palette` | palette name or `{ name, count?, extent? }`; shorthand for `scale.palette` | omitted |
 | `scale.id` | scale ID | `"color"` |
 | `scale.type` | `"ordinal"` | `"ordinal"` |
@@ -157,7 +157,7 @@ densityArea.encodeColor({
 });
 ```
 
-Area layouts support `stack`, `fill`, `overlay`, `diverging`, and `center`; `group` is
+Area layouts support `stack`, `fill`, `overlay`, `diverging`, `center`, and `wiggle`; `group` is
 bar-only. Each existing path receives the resolved color for its group. Path order,
 color domain order, and legend order have separate roles;
 Canvas and shared-scale changes rematerialize every affected area fill.
@@ -253,7 +253,7 @@ then declare `encodeGroup` when it contains several series. Every existing serie
 must have exactly one finite numeric color value, including all missing-break
 subpaths. Without grouping, the entire area is one series. Color never creates
 extra series, changes their order, interpolates between vertices, or changes layout.
-Use `layoutSeries` independently for stack, fill, center, overlay, or diverging placement.
+Use `layoutSeries` independently for stack, fill, center, wiggle, overlay, or diverging placement.
 
 The same scale drives the area fills and `createLegend({ channels: ["color"] })`.
 Gradient legends, sampled color symbols, and discretized intervals retain their
@@ -303,6 +303,18 @@ A Tick accepts one color or stroke field. Remove its encoding before switching
 channels or editing a constant stroke. Color removal restores default stroke.
 Categorical color, aggregate, layout and point-only unknown remain unsupported.
 Basic has no Tick/Rug authoring.
+
+### Moving streamgraph baseline
+
+Use `layoutSeries({ mode: "wiggle" })` on a vertical Area with aligned numeric or temporal x samples and
+nonnegative values. The baseline minimizes the thickness-weighted squared movement of layer centers
+between adjacent samples. Each connected run starts at zero; all-zero samples retain the prior baseline,
+and an explicit missing break resets the next run. Series retain their source appearance order.
+Categorical x, horizontal areas, custom path order and Bar layouts cannot use this mode.
+Explicit y domains must contain every shifted bound. Each layout has at most 10,000 samples and cells.
+See the [executable Area workflow](../../../../tutorials/area-layout/#use-a-moving-streamgraph-baseline).
+
+The wiggle value scale must support zero; logarithmic value scales are rejected.
 
 ## Related
 

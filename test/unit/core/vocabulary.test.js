@@ -22,7 +22,7 @@ import {
 
 test("owns the implemented semantic and legend vocabularies in one module", () => {
   assert.deepEqual(MARK_TYPES, [
-    "point", "line", "bar", "area", "arc", "rule", "tick", "text", "rect", "image", "tree", "treemap", "graph", "partition", "flow-node", "flow-link", "contour", "calendar"
+    "point", "line", "bar", "area", "arc", "rule", "tick", "text", "rect", "image", "tree", "treemap", "graph", "partition", "flow-node", "flow-link", "contour", "calendar", "pyramid", "ohlc", "waterfall", "trail"
   ]);
   assert.deepEqual(getMarkGraphicTypes("contour"), ["collection"]);
   assert.deepEqual(getMarkGraphicTypes("calendar"), ["collection"]);
@@ -59,7 +59,7 @@ test("owns the implemented semantic and legend vocabularies in one module", () =
     "strokeGradient", "strokeInterval", "opacity", "strokeWidth"
   ]);
   assert.deepEqual(COLOR_LAYOUTS, [
-    "stack", "fill", "center", "group", "overlay", "diverging"
+    "stack", "fill", "center", "group", "overlay", "diverging", "wiggle"
   ]);
   assert.deepEqual(STACK_MODES, ["zero", "normalize", "center"]);
   assert.equal(ENCODING_CHANNELS.includes("group"), true);
