@@ -4185,3 +4185,10 @@ Interaction camera operation은 기존 closed command owner가 receiver의 nativ
 정확 배타 payload는 Current INTERACTION에 둔다. Source-free Node20 interaction은116,663gzip으로
 기존116,700 한도 안이다. Package1059entries/1,500,976packed/6,827,033unpacked에서 entries/packed는
 유지하고 unpacked만6,828,000으로 올렸다. 검색1,036,903bytes는1,037,000 한도로 변경했다.
+
+동일 source inputs의 원격 CI 재포장에서 Linux/macOS는1,512,649,
+Windows는1,512,709 packed bytes로 측정됐다. Local Node20/22/24 재포장도
+1,512,649이며 기존 검증 archive와 tar의 압축 해제 bytes/hash가 정확히 같다.
+압축 결과 차이를 수용하도록 packed 한도만 다음 최소1,000-byte 단위인1,513,000으로
+조정한다. Entries1059/unpacked6,887,000 및 browser 한도는 유지한다.
+이 보정은 원격 realistic 검사 등의 별도 실패를 통과로 바꾸지 않는다.
