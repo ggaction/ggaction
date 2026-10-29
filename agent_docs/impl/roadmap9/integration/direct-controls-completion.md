@@ -7,7 +7,7 @@
 - [x] 집중93·owner coverage134·계약28·실제데이터16·browser17
 - [x] 동일 tar Node20·22·24 각각 theme90·runtime23·strict types/optional peers/5bundles
 - [x] 문서191·source pin191·built170pages/1454LLM·전체320/390/768px browser
-- [ ] 검증한 동일 source와 기록의 main 반영
+- [x] 검증한 동일 source와 기록의 main 반영 (`8a2f0e1ed`)
 - [ ] STEP060 잔여 기능·STEP074·077 인수
 
 기존 filterMarks/removeMarkFilter와 orderCategories/removeCategoryOrder를 interaction session의
