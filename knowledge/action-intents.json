@@ -1074,6 +1074,11 @@
       "edge route",
       "bundled connection geometry"
     ],
+    "MarkVisibility": [
+      "category visibility",
+      "hide and restore legend categories",
+      "visible or all-data domains"
+    ],
     "GeometryData": [
       "geographic source",
       "planar shapes",
@@ -2178,6 +2183,15 @@
         "exponent": 3
       }
     },
+    "setMarkVisibility": {
+      "channel": "color",
+      "values": [
+        "A"
+      ],
+      "visible": false,
+      "scaleDomain": "all-data"
+    },
+    "removeMarkVisibility": {},
     "createGeometryData": {
       "id": "geometry",
       "format": "geojson",
@@ -2507,6 +2521,12 @@
     "encodeStrokeDash": [
       "encodeStrokeDash(",
       "encodeStrokeDash({ target?, conditions: [{ when, value }], otherwise })"
+    ],
+    "setMarkVisibility": [
+      "setMarkVisibility({ target?, channel, values, visible, scaleDomain })"
+    ],
+    "removeMarkVisibility": [
+      "removeMarkVisibility({ target? })"
     ]
   },
   "errorOverrides": {

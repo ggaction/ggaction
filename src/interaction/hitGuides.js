@@ -7,10 +7,15 @@ import { valuesFromTickConfig } from "../actions/guides/tickValues.js";
 import { resolvePolarTickValues } from "../actions/guides/polar/resolve.js";
 import { requireParallelAxisLayer, resolveStyledParallelAxes } from "../actions/guides/axes/parallel/resolve.js";
 
+export function guideHitToken(ownerId, role, value) { return { ownerId, role, value: encodeValue(value) }; }
+export function guideHitItemKey(namespaces, guide) {
+  return JSON.stringify(["guide", namespaces, guide.ownerId, guide.role, guide.value]);
+}
+
 // Read-only semantic associations. Geometry always comes from the current scene.
 export function guideHitMetadata(program, spend) {
   const result = new Map(), objects = program.graphicSpec.objects;
-  const token = (ownerId, role, value) => ({ ownerId, role, value: encodeValue(value) });
+  const token = guideHitToken;
   const direct = (id, entry) => { spend(1 + id.length); result.set(id, entry); };
   const bind = (id, entries) => {
     const object = objects[id];

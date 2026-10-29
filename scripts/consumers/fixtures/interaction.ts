@@ -80,3 +80,30 @@ session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true,v
 createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',target:'points',selection:'universe',resolve:'global',sources:[
  {target:'source',selection:'picked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}}
 ]}]});
+
+createInteractionSession({program,bindings:[{type:'legend',effect:'selection',target:'points',channel:'color',selection:'picked',mode:'toggle'}]});
+// @ts-expect-error internal representation is not a public legend channel
+createInteractionSession({program,bindings:[{type:'legend',effect:'selection',target:'points',channel:'series',selection:'picked'}]});
+
+program.setMarkVisibility({channel:'color',values:[1,'1',false],visible:false,scaleDomain:'all-data'});
+program.removeMarkVisibility();
+createInteractionSession({program,bindings:[{type:'legend',effect:'visibility',target:'points',channel:'color',scaleDomain:'visible-data'}]});
+session.dispatch({type:'setVisibility',target:'points',payload:{channel:'shape',values:['A'],visible:true,scaleDomain:'all-data'}});
+session.dispatch({type:'setVisibility',target:'points',payload:{clear:true}});
+// @ts-expect-error Basic has no visibility authoring
+basic().setMarkVisibility({channel:'color',values:['A'],visible:false,scaleDomain:'all-data'});
+// @ts-expect-error visibility requires an explicit policy
+session.dispatch({type:'setVisibility',target:'points',payload:{channel:'color',values:['A'],visible:false}});
+
+createInteractionSession({program:basic(),bindings:[{type:'contextMenu',slop:0}]});
+session.dispatch({type:'focusHierarchy',target:'partition',payload:{focus:{key:1}}});
+session.dispatch({type:'focusHierarchy',target:{childPath:['left'],id:'partition'},payload:{focus:{path:['A',false]}}});
+session.dispatch({type:'focusHierarchy',target:'partition',payload:{focus:null}});
+// @ts-expect-error focus is explicit even when restoring the root
+session.dispatch({type:'focusHierarchy',target:'partition',payload:{}});
+// @ts-expect-error focus does not change partition layout policies
+session.dispatch({type:'focusHierarchy',target:'partition',payload:{focus:null,rootVisible:false}});
+session.dispatch({type:'contextMenu',point:{x:50,y:60}});
+session.subscribe(event=>{if(event.type==='contextMenu'){const owner: string|undefined=event.state.hit?.target?.ownerId;}});
+// @ts-expect-error context binding does not pick a target or action for the host
+createInteractionSession({program,bindings:[{type:'contextMenu',target:'points'}]});

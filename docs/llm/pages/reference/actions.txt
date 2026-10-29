@@ -357,6 +357,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeMarkHighlight`](../../../reference/actions/charts-data/#removemarkhighlight) | H3 | user-facing | mark-selection |
 | [`removeMarkLabels`](../../../reference/actions/marks/#removemarklabels) | H3 | user-facing | marks |
 | [`removeMarkSelection`](../../../reference/actions/advanced/#removemarkselection) | H3 | advanced | mark-selection |
+| [`removeMarkVisibility`](../../../reference/actions/advanced/#removemarkvisibility) | H3 | advanced | mark-selection |
 | [`removeParallelAxes`](../../../reference/actions/guides/#removeparallelaxes) | H3 | user-facing | axes |
 | [`removeParallelAxis`](../../../reference/actions/guides/#removeparallelaxis) | H3 | user-facing | axes |
 | [`removeParameter`](../../../reference/actions/charts-data/#removeparameter) | H3 | user-facing | core |
@@ -379,3 +380,4 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`replaceImageResource`](../../../reference/actions/charts-data/#replaceimageresource) | H3 | user-facing | core |
 | [`reviseData`](../../../reference/actions/charts-data/#revisedata) | H3 | user-facing | core |
 | [`selectMarks`](../../../reference/actions/advanced/#selectmarks) | H3 | advanced | mark-selection |
+| [`setMarkVisibility`](../../../reference/actions/advanced/#setmarkvisibility) | H3 | advanced | mark-selection |

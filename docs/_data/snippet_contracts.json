@@ -2443,6 +2443,35 @@
   {
     "file": "api/interaction.md",
     "block": 10,
+    "heading": "Select categories from a legend",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"picked\""
+    ],
+    "prerequisites": "Use this browser module with the Canvas element whose id is chart. Click a legend symbol or label to toggle that category.",
+    "sha256": "64989a2e3760614cf7438897ce02ef2705abe976e5e5b561221ab774ca360624",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 11,
+    "heading": "Hide and restore categories from a legend",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"points\""
+    ],
+    "prerequisites": "Use this browser module with the Canvas element whose id is chart. Click a legend category twice to hide and restore its items.",
+    "sha256": "c75b524006aa62120d0eb046fe1b9f9c2eab44be267d80b33113538d01e8fa07",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 12,
     "heading": "Automatic click selection",
     "mode": "complete",
     "environment": "browser-module",
@@ -2457,7 +2486,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 11,
+    "block": 13,
     "heading": "Brush or lasso an existing selection",
     "mode": "fragment",
     "environment": "esm-context",
@@ -2471,6 +2500,37 @@
     "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `canvas`. Resource selectors used here: `target: \"points\"`; `selection: \"picked\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
     "sha256": "b8f9354ae730d6336069da94f8b81ccf88c819479420ece198d83dbf89a6ba95",
     "executable": false
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 14,
+    "heading": "Connect parameter inputs and a context action",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "source: \"rows\"",
+      "target: \"points\"",
+      "selection: \"chosen\"",
+      "target: \"factor\""
+    ],
+    "prerequisites": "Use a Canvas with id chart. Arrow keys on Multiplier update computed data; right-click a point and activate the host selection button.",
+    "sha256": "24f1c61bcd341c58eb5e51c8ca4b2404da0b853a2859c9b1cff314b39f6cd257",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 15,
+    "heading": "Navigate a partition view from host controls",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"partition\""
+    ],
+    "prerequisites": "Use a Canvas with id chart. Activate Group A or All groups with a pointer, Enter or Space; the breadcrumb text follows the native partition view.",
+    "sha256": "6fd1f87017b39ba22cb581f1fb8d8d76ab2c16bd939b1b1d4a755f724a1086cf",
+    "executable": true
   },
   {
     "file": "api/legends.md",

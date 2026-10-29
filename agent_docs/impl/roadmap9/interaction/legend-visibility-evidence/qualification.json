@@ -1,0 +1,693 @@
+{
+  "baseCommit": "23fe1677907b27d39dbe1568ffcc30451b5e0548",
+  "sourceCommit": "5b69d264c27819e7493adef213f95aceda491bc6",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "scope": "STEP060 C2 categorical visibility as an outer final-item view composed with native user filtering; explicit domain policy, control legend, session and immutable revision closure",
+  "sourceHashes": {
+    "src/actions/data/filter.js": "bf1c1397f8a35d8f44e3d093d3f0bcf1274b7720de8188f8ce370abde8c044e0",
+    "src/actions/data/filterGeometry.js": "8896c48f5e2ee8ea2eee315156349963c8090fb6d104b10e8ff0bc479a695853",
+    "src/actions/data/index.js": "1bd345ba22a462fb275c7cd890d7d494ecb88c9ac6e189bdc45a045f8362e303",
+    "src/actions/data/visibility.js": "14a5b6c2bd9151b8d654c13ce68dc99cf9ac9dc2648f3e404cf967eda047f48f",
+    "src/actions/encodings/remove.js": "5a0d8f37b094b3f3dfc2cd0d963e1504e5c6ab01da9a1a5ba71ef287865ffbbb",
+    "src/actions/guides/legends/categorical/resolve.js": "fc57b871af4c8bd3f6f3b8189f920d1bd8c3814a153c7244e452dea03b2a21b5",
+    "src/actions/scales/preview.js": "38b2974bd70e954a8d38e24c31480dcccf5a88729dbda488cc36c93a7c5e6c9a",
+    "src/core/resourceReferences.js": "16e65b6225c8bdff6804dfca350b85855fe48b3317b4ab6d25ba8b05eab77ebe",
+    "src/core/vocabulary.js": "42202a95ef446cc9c75b38a748a00f343d1650c0d641f2eb98a3d42245297b35",
+    "src/grammar/categoryOrder.js": "a42b3bed63d10cb986b7114f791e519605ca1197a5378f2e7161aeb9e0ab4af0",
+    "src/grammar/datasetSchema.js": "2a7334388567c2c5184386f8e643dde61516917d9ec31e237e31ae653f763e53",
+    "src/grammar/markFilter.js": "27dce8da5e45938d734381471ffec60f05af60fa638bbe718e47b319a6b126ca",
+    "src/grammar/markVisibility.js": "4334e611fd96d4cdfbdc43d4bf3071f755e9a43dd944a2c583d279a76afaedf0",
+    "src/inspectionDescriptors.js": "45748938f3b13756d36928b7b3066fc9aec3498781f8c8184c02c8480109418a",
+    "src/interaction/bindings.js": "d006597620c4a0b2812118375cf95db82975bb19e922697fdf10da07667c4803",
+    "src/interaction/legendCategory.js": "091dca410c321fce0e7e92884da6c5b66a6d00338297dffdaec64357e672342a",
+    "src/interaction/legendSelection.js": "3e089ab9e9541f8c04134a33da0dec6ea51465db8b547d5011e11e25f93e3681",
+    "src/interaction/legendVisibility.js": "cfacdf07e031e61c6613c74b7c09fa55aa21e0a6152ead369b9279b3ebbeba46",
+    "src/interaction/selection.js": "d984ae4e8da6c7ada555771949465ce995094c0061c101b8de056fbb4227d1d2",
+    "src/interaction/session.js": "6bf266f04a41e9e108d01befa7a17aefb3e16ada8730a713ed1d2d41d1f4cb79",
+    "src/materialization/encodings.js": "794c604df936b9d1d0aa428205ef3419491a36e4682376e35945a2c8857e91f7",
+    "src/materialization/markVisibility.js": "4e86a9b27197f245c492d9f2dc0c970d833f6de1c06a557547e3c8a9e6487c4c",
+    "src/materialization/marks/index.js": "9290d5f485f5a173bf5657ab0e51c06cba3e1b58bdbad3ef37c1078e8e1212d2",
+    "src/materialization/resourceState.js": "c49c13751532e02555a09e4530601d9796be336c1f5f016c8a0aa9b91a022099",
+    "src/materialization/scales/consumers/index.js": "ea1d17a1d535ea523c56b8b26bf0032dead745d7cfe2ee0b508a6a510d92ee95",
+    "src/materialization/scales/policies/binnedPosition.js": "c6818ed7c5c936453e7987d50c5299524a8ade282f953ea8cc0e67ffb4dac19a",
+    "src/materialization/scales/resolve.js": "9468615ec8e8440c7cfc51092b46ff8147b9dba53740e1a516baa749a675961e",
+    "src/materialization/selection/filter.js": "34e84dec6b9232624a741cd1253765b222dad7ce2c308dbbc7d43ed81dedfef6",
+    "src/materialization/selection/policies/index.js": "a80eac61d3f0478b1fe4bf407c8cb0203cc807c19859c95b38a80f5d2cdbf47f",
+    "src/persistence/validation.js": "efeb8e3c9c6b789dbdf6a29355dda86794e0e3b82295721eb8574d4a3a1626ba",
+    "src/selectors/datasets.js": "9c2cbd1a6bd305173e3c55613e514d45330f05f28001589ada889e06d42588f2",
+    "types/interaction.d.ts": "ccee96b79263de0565f5d3f146e31a4741b95662046d426444e1434087926356",
+    "types/program.d.ts": "5ff6a262765f375168716f08b872ddbb22a60a86c472093ca3fe39365cfe6f25"
+  },
+  "checks": {
+    "nativeAndComposition": {
+      "initialNative": 32,
+      "sessionAndLegacy": 43,
+      "stateValidation": 11,
+      "resourceDAGAndHistogram": 45,
+      "legendOrderAndOriginalSource": 48
+    },
+    "newCriticalOwners": {
+      "passed": 56,
+      "floor": [
+        95,
+        90,
+        100
+      ],
+      "owners": {
+        "actions/data/filterGeometry.js": [
+          100,
+          90.48,
+          100
+        ],
+        "actions/data/visibility.js": [
+          100,
+          92.11,
+          100
+        ],
+        "grammar/markVisibility.js": [
+          100,
+          100,
+          100
+        ],
+        "interaction/legendCategory.js": [
+          100,
+          100,
+          100
+        ],
+        "interaction/legendVisibility.js": [
+          100,
+          94.59,
+          100
+        ],
+        "materialization/markVisibility.js": [
+          100,
+          100,
+          100
+        ]
+      },
+      "timing": "Before final dormant-value restoration addition; final changed owner below."
+    },
+    "finalDormantRestoration": {
+      "passed": 22,
+      "owner": "actions/data/visibility.js",
+      "coverage": [
+        100,
+        92.5,
+        100
+      ]
+    },
+    "sharedOwners": {
+      "passed": 235,
+      "owners": {
+        "interaction/bindings.js": [
+          100,
+          98.67,
+          100
+        ],
+        "interaction/legendSelection.js": [
+          100,
+          93.02,
+          100
+        ],
+        "interaction/selection.js": [
+          100,
+          99.19,
+          100
+        ],
+        "interaction/session.js": [
+          100,
+          94.42,
+          100
+        ],
+        "grammar/categoryOrder.js": [
+          89.63,
+          89.25,
+          100
+        ],
+        "grammar/markFilter.js": [
+          83.33,
+          76,
+          100
+        ],
+        "materialization/scales/policies/binnedPosition.js": [
+          92.11,
+          75,
+          100
+        ],
+        "materialization/selection/filter.js": [
+          96.36,
+          75,
+          100
+        ],
+        "selectors/datasets.js": [
+          86.36,
+          87.5,
+          84.21
+        ]
+      },
+      "policy": "Existing canonical floors unchanged; final dormant action-only delta is measured separately."
+    },
+    "publicContracts": 46,
+    "finalCatalog": 11,
+    "finalSourceTypesSessionBoundary": {
+      "passed": 35,
+      "total": 37,
+      "remaining": "Two discovery failures were module location only; moving render test to existing chart capability closed all16 owning discovery checks."
+    },
+    "finalDiscovery": 16,
+    "realistic": {
+      "passed": 16,
+      "witness": "Five pinned datasets times observations/categories/series and inventory, both scale policies, typed category hiding/restoration and codec."
+    },
+    "browser": {
+      "passed": 1,
+      "witness": "Canvas and SVG DPR2 actual category clicks, Escape/cancel, one committed edit, restore and cleanup."
+    },
+    "render": {
+      "passed": 1,
+      "command": "node scripts/run-tests.js render charts/mark-selection-points/visibility.render.js",
+      "witness": "Independent literal first/third glyph omission, same Canvas calls/SVG/PNG/PDF streams, editable/graphic codec and expected flattened scene."
+    },
+    "docs": {
+      "initialPassed": 45,
+      "initialTotal": 47,
+      "qualified": 47,
+      "builtPages": 170,
+      "llmArtifacts": 1458,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "cb065aa8fdc727eb5063dbf4919c3eea39d5904fe34c61500e917245d6e52f25",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 863,
+            "minifiedBytes": 2422060,
+            "gzipBytes": 690277
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 548,
+            "minifiedBytes": 1295806,
+            "gzipBytes": 378363
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 343945,
+            "gzipBytes": 111865
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145387,
+            "gzipBytes": 43572
+          }
+        ],
+        "budgetValidation": "Passed against minimally updated limits after the preserved measurement failure; runtime and types are the same completed Node20 run."
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "cb065aa8fdc727eb5063dbf4919c3eea39d5904fe34c61500e917245d6e52f25",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 863,
+            "minifiedBytes": 2422060,
+            "gzipBytes": 688488
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 548,
+            "minifiedBytes": 1295806,
+            "gzipBytes": 377535
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 343945,
+            "gzipBytes": 111169
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145387,
+            "gzipBytes": 43411
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "cb065aa8fdc727eb5063dbf4919c3eea39d5904fe34c61500e917245d6e52f25",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 863,
+            "minifiedBytes": 2422060,
+            "gzipBytes": 690277
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 548,
+            "minifiedBytes": 1295806,
+            "gzipBytes": 378363
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 343945,
+            "gzipBytes": 111865
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145387,
+            "gzipBytes": 43572
+          }
+        ]
+      }
+    ],
+    "installedPublicSnippet": {
+      "node": "v22.23.1",
+      "archive": "cb065aa8fdc727eb5063dbf4919c3eea39d5904fe34c61500e917245d6e52f25",
+      "id": "interaction-legend-visibility",
+      "sourceFree": true,
+      "rendered": true,
+      "visible": [
+        "b"
+      ],
+      "errors": []
+    },
+    "sourcePinnedDocs": {
+      "passed": 47,
+      "builtPages": 170,
+      "llmArtifacts": 1458,
+      "visualEvidence": "Previous four-width Axe0 evidence reused; only source revision provenance label changed. Runtime/types/exact archive unchanged."
+    }
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/legend-visibility-cb065aa8.tgz",
+    "sha256": "cb065aa8fdc727eb5063dbf4919c3eea39d5904fe34c61500e917245d6e52f25",
+    "entries": 988,
+    "packed": 1413676,
+    "unpacked": 6442865
+  },
+  "supersededArtifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/legend-visibility-e582ecdc.tgz",
+    "sha256": "e582ecdcafa2c926ef2896f2cab98b257ae9ce194c0aeadbb1c28f7c0005eac9",
+    "entries": 988,
+    "packed": 1413674,
+    "unpacked": 6442836
+  },
+  "packageMeasurementNode20": {
+    "node": "v20.20.2",
+    "entries": 988,
+    "packedBytes": 1416316,
+    "unpackedBytes": 6442865
+  },
+  "limits": {
+    "entries": 988,
+    "packedBytes": 1417000,
+    "unpackedBytes": 6443000,
+    "fullGzip": 690300,
+    "basicGzip": 378400,
+    "interactionGzip": 111900,
+    "svgGzip": 25000,
+    "graphGzip": 44000,
+    "searchBytes": 987000
+  },
+  "preservedFailures": [
+    "Persistence direct import violated the existing boundary; the existing resourceState reexport owns visibility validation. No allowlist relaxation.",
+    "Binned visible domains incorrectly consulted only markConfigs.markFilter. The canonical active filter selector now covers visibility, and literal bin domain tests verify the correction.",
+    "User filter / authored category order validation used visible rows. Both stages now resolve original source for authored intent validation, then project active domains; unknown new values still reject.",
+    "Linked filter projection discarded dormant visibility while replacing the underlying membership. Native filter writes on the original program now preserve the outer recipe and compare pre-visibility membership.",
+    "Nested semantic no-op previously looked at the outer program instead of the resolved owner. The scope-specific identity check retains exact program/trace/revision.",
+    "The render oracle initially passed child IDs through the public edit item shape, then compared flattened scene save/restore calls with nested program calls. It now uses explicit primitive omission and compares the same renderer path; source is unchanged.",
+    "The render module was first placed under unit, outside canonical render discovery. Moving it into the existing mark-selection-points slice closes the two owning discovery failures.",
+    "Catalog final10/11 identified missing Covered evidence markers for the new action sections. Markers were added without changing support claims and the owning11 passed.",
+    "First docs source check45/47 found missing action names in CHANGELOG and search986895 over984000. Names and measured987000cap close47/47.",
+    "First package check exceeded entry cap. New six owners measured988 entries and Node20 packed1416316/unpacked6442865, so only minimum rounded caps changed.",
+    "First Node22 candidate and final Node20 bundle measurements exceeded prior limits. Node20 runtime/types completed; recorded bundle JSON passes new measured caps. Node22/24 final commands pass including budgets.",
+    "Final cb065aa8 supersedes e582ecdc after stored dormant hidden values were recognized for explicit restoration; unknown never-seen input still rejects."
+  ],
+  "globalCoverage": "Not rerun. Focused new/shared critical owners plus final public consumers qualified. Root retains full integration obligations.",
+  "remaining": [
+    "non-categorical legend interaction requirements",
+    "parameter controls/context action targets",
+    "annotation anchor/offset editing",
+    "node drag/partition focus/geo navigation/keyboard",
+    "AT35/38/65/80 complete consumer closure",
+    "STEP074 integrated qualification and STEP077"
+  ],
+  "commands": {
+    "critical": "node --test --experimental-test-coverage --test-coverage-include=src/actions/data/filterGeometry.js --test-coverage-include=src/actions/data/visibility.js --test-coverage-include=src/grammar/markVisibility.js --test-coverage-include=src/interaction/legendCategory.js --test-coverage-include=src/interaction/legendVisibility.js --test-coverage-include=src/materialization/markVisibility.js test/unit/actions/data/mark-visibility.test.js test/unit/grammar/mark-visibility.test.js test/unit/interaction-legend-visibility.test.js test/unit/interaction-legend-selection.test.js test/unit/actions/data/filter-*.test.js",
+    "finalSource": "node --test test/contracts/source-boundaries.test.js test/contracts/test-discovery.test.js test/contracts/interaction-types.test.js test/unit/interaction-legend-visibility.test.js; owning discovery rerun after module move",
+    "realistic": "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT=/Users/hyeonjeon/Projects/ggactionnewbrand/.artifacts/datasets/tidytuesday node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js",
+    "browser": "node --test --test-name-pattern=\"categorical visibility\" test/browser/interaction-session.browser.js",
+    "installed": "Node20/22/24: node .artifacts/visibility-consumer.mjs; Node20 cap-only check: node .artifacts/visibility-budget-check.mjs; Node22: node .artifacts/visibility-doc-consumer.mjs",
+    "docs": "npm run docs:generate; final docs:provenance, docs:images, docs:machine, docs:llms; node --test test/docs/documentation.test.js test/docs/documentation-coverage.test.js; npm run docs:build; npm run test:docs:built; node .artifacts/visibility-doc-browser.mjs"
+  },
+  "evidenceFiles": [
+    {
+      "path": "visibility-boundaries-initial.log.gz",
+      "sha256": "5464b3c7e1e648002c4841d714ff76920a938d5185fb98a0b4f0c7378be97f64"
+    },
+    {
+      "path": "visibility-browser.log.gz",
+      "sha256": "8c642e3ea6ec89e316b3cb6175950153b8c5fef5c7688d685481e653fede3db4"
+    },
+    {
+      "path": "visibility-budget-check.log.gz",
+      "sha256": "4b36eed1e3e08efcf4688e631086e2dde739d6746d0329241ef6bbdaba76dbf3"
+    },
+    {
+      "path": "visibility-budget-check.mjs.gz",
+      "sha256": "bdcf443afdb2e751559e42ca6c34528689b70455a5abb5f4449d823e653b705f"
+    },
+    {
+      "path": "visibility-cards.log.gz",
+      "sha256": "fa43ed5cd94170105f6df52fb57322b13a2683c7b815d8ea03cb2f6c10901a76"
+    },
+    {
+      "path": "visibility-catalog-final.log.gz",
+      "sha256": "263af047fd27d0d55e93a63fa2b0ca64ec0c2e9a409eb63494f06b5a1eba9795"
+    },
+    {
+      "path": "visibility-catalog-qualified.log.gz",
+      "sha256": "7a3e3535568eeb493ae80222d3876f2c8e76b6f73091f4b3d2f5a82a3258714f"
+    },
+    {
+      "path": "visibility-catalog.log.gz",
+      "sha256": "9cf9c583207d9e475c3ef76ca00c831f5aa2f71e2ddc35785499af6b8da2ae58"
+    },
+    {
+      "path": "visibility-composition.log.gz",
+      "sha256": "da836afbdb481bab4d9945a97db2a67e2fedc1d5365209be37e94bb53998e453"
+    },
+    {
+      "path": "visibility-consumer.mjs.gz",
+      "sha256": "a39a29bcf8b78af8af87d61cdab03ef608587b83a7d950a84fbf29ab36118d65"
+    },
+    {
+      "path": "visibility-consumer20-measured.log.gz",
+      "sha256": "5ba64893c52ee778287e1eec2ec446956bb254eb8e555be415e210d783cf39a5"
+    },
+    {
+      "path": "visibility-consumer22-first.log.gz",
+      "sha256": "2159d2fedf07f36a340ee514c74235501c92a98d3e56913fdc4f48b48b12c09b"
+    },
+    {
+      "path": "visibility-contracts-initial.log.gz",
+      "sha256": "753ace3ac42a59fc5c2e19de726131ef95bdb3f0b982b5bc67146ec88c65c867"
+    },
+    {
+      "path": "visibility-discovery-final.log.gz",
+      "sha256": "f1ef46b4e0cd5135ed5376efdfbebcec4bc7f5260dab6a0af697fad19a1fc6ea"
+    },
+    {
+      "path": "visibility-doc-browser.mjs.gz",
+      "sha256": "237a5c67aba596eeeb224bbd1f1108fa1a6a3bbbc800e70c024c11704ba94448"
+    },
+    {
+      "path": "visibility-doc-consumer.mjs.gz",
+      "sha256": "a8f6db78ce0eea1e20c656444aabc3553adccc28c4f482992cadf92c37a6f185"
+    },
+    {
+      "path": "visibility-docs-browser-qualified.log.gz",
+      "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
+    },
+    {
+      "path": "visibility-docs-browser.log.gz",
+      "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
+    },
+    {
+      "path": "visibility-docs-build-qualified.log.gz",
+      "sha256": "57146211a58b1e38bce4c446d0a8c20b3929e82f9f0b8aa9613f64039f46d80a"
+    },
+    {
+      "path": "visibility-docs-build.log.gz",
+      "sha256": "e180edefdf4ab69936af9cbbc3037807a43f7e20869571a794c7d01377e4fe0a"
+    },
+    {
+      "path": "visibility-docs-built-qualified.log.gz",
+      "sha256": "2d16227a9e782a0fc76a306513a1e60f2fe3504b47bc16edc1fb3faeb0b8e395"
+    },
+    {
+      "path": "visibility-docs-built.log.gz",
+      "sha256": "2d16227a9e782a0fc76a306513a1e60f2fe3504b47bc16edc1fb3faeb0b8e395"
+    },
+    {
+      "path": "visibility-docs-generate-final.log.gz",
+      "sha256": "e5e88259035938ad1c0d749a6e25331dc05e1815dce60671d14176260af4bf26"
+    },
+    {
+      "path": "visibility-docs-generate.log.gz",
+      "sha256": "59edcba865091e52a322b32b72e6e56a863f787b603ee330b31a18f212cd35c2"
+    },
+    {
+      "path": "visibility-docs-preflight.log.gz",
+      "sha256": "2f2e9a0ed4ed9454c589ce2ffc2e8c66ee96daed6dfcbf90d00cd2dbb150fe7c"
+    },
+    {
+      "path": "visibility-docs-qualified.log.gz",
+      "sha256": "03b207f8e3fb871b5ebb9a5db86b8dc3275f6c0a31cf5b12ab313c9f9053f27e"
+    },
+    {
+      "path": "visibility-docs-refresh.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "visibility-docs-source-final.log.gz",
+      "sha256": "b67c017b3439fb18fa7b87cefa36be74abe7b906d110da1e4ec89e9dcbf2e70f"
+    },
+    {
+      "path": "visibility-docs-source-qualified.log.gz",
+      "sha256": "2e82f11f8b06924f85d5f6973aacaf2c6f32aec79c3368fb15184ac71e6e3713"
+    },
+    {
+      "path": "visibility-docs-source.log.gz",
+      "sha256": "249b96e366d98f6997523644cfeac1755f565b0004a77e9c1adcb0b087084997"
+    },
+    {
+      "path": "visibility-dormant-final.log.gz",
+      "sha256": "d9d1a7b3ad6c80a47feb114a8b330a54e037eff59e7d0f69ceb78c06af99b6ce"
+    },
+    {
+      "path": "visibility-final-consumer20.log.gz",
+      "sha256": "7f393b6dfddd55cfd2219895e7363c2d417d9b8d86eb37efc70e1b8bd4304063"
+    },
+    {
+      "path": "visibility-final-consumer22.log.gz",
+      "sha256": "63e9922528ede27f84ad44b16195491828a856a9127a45bd5c3c5f604c1cb152"
+    },
+    {
+      "path": "visibility-final-consumer24.log.gz",
+      "sha256": "2372f9ce7324d1e0c60e8c6af8ca91fb648c0ddd1030701a86e3767906f3d80e"
+    },
+    {
+      "path": "visibility-final-doc-consumer.log.gz",
+      "sha256": "c911c4330ac5dc9007e3f283cde12ec730b546923ff9bd1f77b7477bf5744f93"
+    },
+    {
+      "path": "visibility-final-focus.log.gz",
+      "sha256": "48bdb6f82a42ea50a2aec7a0cd24a2e80b065363ca627761f11fd3f4e5cb0aaf"
+    },
+    {
+      "path": "visibility-generation-3.log.gz",
+      "sha256": "445d796ef48d6a6e5aaa2526cd13bd61791e8f68a22097c44dbcbd01ae76f477"
+    },
+    {
+      "path": "visibility-generation-final.log.gz",
+      "sha256": "77396b01f9c4104a66f8afef91ca48a84c2b17bb50e6c147da72f2a60c09b211"
+    },
+    {
+      "path": "visibility-generation.log.gz",
+      "sha256": "5900dab319c20d007936ed5a59dd98874dcb416e0e1f78b7233b72c2540df139"
+    },
+    {
+      "path": "visibility-lifecycle-initial.log.gz",
+      "sha256": "0a31e2d14c93acf5a02238ded8b239d78b46c7051714ca196a668a85ed0b8bb3"
+    },
+    {
+      "path": "visibility-oracle.mjs.gz",
+      "sha256": "9b11d9727d0908da377b99f7efaefd5394efe1bce8fe81b5c1c779dcaa473636"
+    },
+    {
+      "path": "visibility-order-composition.log.gz",
+      "sha256": "c57321e536f3b20a1f10a4e56ab8ac856e98ccb633a11f373693a2c3062363a5"
+    },
+    {
+      "path": "visibility-owner-coverage-2.log.gz",
+      "sha256": "0b256da66eeb238290fcdb175010bfcfa074cef58c3dd6f189ae8a7e24e4fbd7"
+    },
+    {
+      "path": "visibility-owner-coverage-3.log.gz",
+      "sha256": "05b4e3596b2ddf8ddb8db917e896438f5b9110882b263b64f40dcc47c1b5b77a"
+    },
+    {
+      "path": "visibility-owner-coverage.log.gz",
+      "sha256": "03651b8812f01c8dff5c60e04f1e2de4c37b5bc5455d05e95441c1dc864cb4f4"
+    },
+    {
+      "path": "visibility-pack-final.log.gz",
+      "sha256": "23be508c361bed855ac88829d207ceb5ed3b16a190298b22bfefac53997b565b"
+    },
+    {
+      "path": "visibility-pack-qualified.log.gz",
+      "sha256": "167b9677d2a7d371951aec086f6e41c04f22963deb8cc7b81d73d453f992a33c"
+    },
+    {
+      "path": "visibility-pack.log.gz",
+      "sha256": "4f000c5c91d05f64e014d366d3c0bd53d49405c87fb862b5bc66811090c5b559"
+    },
+    {
+      "path": "visibility-package-initial.log.gz",
+      "sha256": "b60b0be7b31ce34da88a9e42e4188a1d1494756de03b8f478d79c8d05b30d815"
+    },
+    {
+      "path": "visibility-package-qualified20.log.gz",
+      "sha256": "c036423afe6f7603ecba3ca55cb25e15e28c4dfdbe542bc31d459e8022192ca6"
+    },
+    {
+      "path": "visibility-public-contracts.log.gz",
+      "sha256": "d94000b44fd79e84c5a3a9cfb4ba22f7a73518041ee785a8bd3aee5ce33044d9"
+    },
+    {
+      "path": "visibility-public-final.log.gz",
+      "sha256": "1d90ef9468c0b8feb0d3e361733a893bb5547f3623fc87334b909d51fa36e240"
+    },
+    {
+      "path": "visibility-qualify.py.gz",
+      "sha256": "abc7cbf0211d0aff72b56a08e80c9e5becb814f250149f8801a37f19be525b1a"
+    },
+    {
+      "path": "visibility-realistic-final.log.gz",
+      "sha256": "3e2366e843ba4211da2bd88fcfae4bba50b9d2082eb0d0a77e8cc41a5b853a55"
+    },
+    {
+      "path": "visibility-realistic.log.gz",
+      "sha256": "b4c843825420b3242d09039f989550f0fd42609d1d38482f78fec4651d455ddc"
+    },
+    {
+      "path": "visibility-render-discovered.log.gz",
+      "sha256": "3fd639d8f873d63b9d8ff610f2181d56493800eedcecb09230c1529b76101e67"
+    },
+    {
+      "path": "visibility-render-final.log.gz",
+      "sha256": "272643e5589dfe84e197261cc3ae4bd060f2ed3aa37b75056b2da34a6e6d257b"
+    },
+    {
+      "path": "visibility-render-qualified.log.gz",
+      "sha256": "1f7f3b3a6e86d6dd702d78f80b76bdf64c10c4bc904f8cf223a5d54a4a5b16d7"
+    },
+    {
+      "path": "visibility-render.log.gz",
+      "sha256": "3df76a78661822cffd7a9b3165bf315fe364af67fd6b648c0a91ba73e08301fd"
+    },
+    {
+      "path": "visibility-retained.log.gz",
+      "sha256": "93bac407b9a29995d7d1ba91f64701a7e7a394f40038b825ae84c9ba49789c4d"
+    },
+    {
+      "path": "visibility-shared-coverage.log.gz",
+      "sha256": "3056dd104141dcef8b2a099234960ab3ed3e98f1e65564e6f0fb77d0e9ea2606"
+    },
+    {
+      "path": "visibility-source-qualified.log.gz",
+      "sha256": "c9fce09fa9962e5142c58e65945246dc51a468a4e582e01be3003fc2badac7fa"
+    },
+    {
+      "path": "visibility-state-validation.log.gz",
+      "sha256": "0bdc9a468ec2c42ad4d40278300ccb6ea52b0b2d9500bb6124400a2407edcf9c"
+    },
+    {
+      "path": "visibility-source-commit.log.gz",
+      "sha256": "a15f1c60c06026fd8fed3744cd15ccda0d26b298d12d90f0ac982a393abdb461"
+    },
+    {
+      "path": "visibility-source-push.log.gz",
+      "sha256": "b4c18c36b74de4dc85732da8550e8d517978ba3b26fbc1480be9266f59f5d0f8"
+    },
+    {
+      "path": "visibility-docs-source-pinned.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "visibility-docs-pinned-tests.log.gz",
+      "sha256": "15e6712c44e360308a94adb30e3187bc26356104a70483efd5b8d7e34bd7d0e7"
+    },
+    {
+      "path": "visibility-docs-pinned-build.log.gz",
+      "sha256": "80f0b117670f9c955dddee4b9dade29c9cd7c3c159d28fb1077fc8a0bf895468"
+    },
+    {
+      "path": "visibility-docs-pinned-built.log.gz",
+      "sha256": "2d16227a9e782a0fc76a306513a1e60f2fe3504b47bc16edc1fb3faeb0b8e395"
+    }
+  ]
+}

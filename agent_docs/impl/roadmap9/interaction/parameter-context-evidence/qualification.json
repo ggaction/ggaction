@@ -1,0 +1,451 @@
+{
+  "baseCommit": "752e80216889ffa6b2cd05073114973103387f42",
+  "sourceCommit": "176c767233d1b8d1d7946dbdc9137affa32c93a0",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "scope": "STEP060 D host parameter controls through the existing command and context semantic-hit requests; no new widget, authoring action, persistence schema or renderer",
+  "sourceHashes": {
+    "src/interaction/session.js": "6aee91be7a5292e368a3b8a59abcc513a6439b61d652fb1cda85bee08823d2e6",
+    "types/interaction.d.ts": "24b0fead310a28e119f1ebf283f45e064cdff8565c38b8cc9fb4d4ce4d271f90",
+    "README.md": "0496bc80f1fdf604b003cd01a6fdb06eff22e77a42c861e9378cd996698acff1"
+  },
+  "checks": {
+    "baseline": 22,
+    "initialFocused": 15,
+    "finalInteractionCoverage": {
+      "passed": 159,
+      "owner": "interaction/session.js",
+      "coverage": [
+        100,
+        95.14,
+        100
+      ],
+      "floor": "Existing critical family unchanged"
+    },
+    "sourceTypesBoundariesDiscovery": 28,
+    "realistic": {
+      "passed": 16,
+      "witness": "Five pinned datasets times observations/categories/series and inventory, context legend hit plus native parameter-backed predicate membership and codec."
+    },
+    "browser": {
+      "passed": 1,
+      "witness": "Canonical public snippet with actual ArrowRight/End, right-click/Enter, Escape/focus, unchanged/rejected updates and disposal."
+    },
+    "nativeParameterRenderers": {
+      "passed": 4,
+      "witness": "Existing owning Canvas/SVG/PNG/PDF, graphic-only codec and scene endpoint tests."
+    },
+    "docs": {
+      "initialPassed": 46,
+      "initialTotal": 47,
+      "searchOwning": 2,
+      "canonicalTruth": 3,
+      "builtPages": 170,
+      "llmArtifacts": 1458,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "5a1675aa40be171cee12f4255bd5bd0c0e5b7437566859c0159f31c2eab06f10",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 863,
+            "minifiedBytes": 2422060,
+            "gzipBytes": 690277
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 548,
+            "minifiedBytes": 1295806,
+            "gzipBytes": 378363
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 344243,
+            "gzipBytes": 111970
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145387,
+            "gzipBytes": 43572
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "5a1675aa40be171cee12f4255bd5bd0c0e5b7437566859c0159f31c2eab06f10",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 863,
+            "minifiedBytes": 2422060,
+            "gzipBytes": 688488
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 548,
+            "minifiedBytes": 1295806,
+            "gzipBytes": 377535
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 344243,
+            "gzipBytes": 111278
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145387,
+            "gzipBytes": 43411
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "5a1675aa40be171cee12f4255bd5bd0c0e5b7437566859c0159f31c2eab06f10",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 863,
+            "minifiedBytes": 2422060,
+            "gzipBytes": 690277
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 548,
+            "minifiedBytes": 1295806,
+            "gzipBytes": 378363
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 344243,
+            "gzipBytes": 111970
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145387,
+            "gzipBytes": 43572
+          }
+        ]
+      }
+    ],
+    "installedPublicSnippet": {
+      "node": "v22.23.1",
+      "archive": "5a1675aa40be171cee12f4255bd5bd0c0e5b7437566859c0159f31c2eab06f10",
+      "id": "interaction-parameter-context",
+      "sourceFree": true,
+      "parameterRevision": 1,
+      "selectionRevision": 2,
+      "selectedCount": 1,
+      "focus": "multiplier",
+      "disposed": true,
+      "errors": []
+    },
+    "sourcePinnedDocs": {
+      "passed": 50,
+      "builtPages": 170,
+      "llmArtifacts": 1458,
+      "visualEvidence": "Four-width Axe0 reused because only provenance revision changed; runtime/types/final archive and page content unchanged."
+    }
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/parameter-context-5a1675aa.tgz",
+    "sha256": "5a1675aa40be171cee12f4255bd5bd0c0e5b7437566859c0159f31c2eab06f10",
+    "entries": 988,
+    "packed": 1413902,
+    "unpacked": 6443877
+  },
+  "supersededArtifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/parameter-context-b8351339.tgz",
+    "sha256": "b83513398e9ed453c203b0d3048176ed98eb554c732d13824a9c9f1c5a566032",
+    "entries": 988,
+    "packed": 1413900,
+    "unpacked": 6443877
+  },
+  "packageMeasurementNode20": {
+    "node": "v20.20.2",
+    "entries": 988,
+    "packedBytes": 1416517,
+    "unpackedBytes": 6443877
+  },
+  "limits": {
+    "entries": 988,
+    "packedBytes": 1417000,
+    "unpackedBytes": 6444000,
+    "fullGzip": 690300,
+    "basicGzip": 378400,
+    "svgGzip": 25000,
+    "graphGzip": 44000,
+    "interactionGzip": 112000,
+    "searchBytes": 987600
+  },
+  "preservedFailures": [
+    "The first browser harness used root-relative imports in a Blob module; absolute same-origin URLs repaired the harness.",
+    "The browser initially looked up the original computed dataset ID after a resource revision; the test now follows the current layer data reference.",
+    "A queued host event could outlive a remount lease. The existing observation path now rechecks the lease at execution, with a context and inspect regression.",
+    "First docs source46/47 exceeded the compact search ceiling; measured987568 requires987600.",
+    "First Node20 interaction bundle111970 exceeded111900; the minimum112000cap was applied. Final archive executions on all three Nodes pass the budget checks.",
+    "Canonical architecture bundle table predated several existing caps and omitted graph; README Basic cap was also stale. Both were synchronized and the owning3 tests pass.",
+    "README is packed, so candidate b8351339 was superseded by5a1675aa and all three final artifact executions plus the browser snippet were repeated."
+  ],
+  "globalCoverage": "Not rerun. Existing interaction family159 and relevant final consumers qualify the change. Root retains integrated/full obligations.",
+  "remaining": [
+    "non-categorical legend interaction requirements",
+    "annotation anchor/offset",
+    "node drag/partition focus/geo navigation",
+    "session keyboard focus/history and full gesture arbitration",
+    "AT35/38/65/80 integrated closure",
+    "STEP074 and STEP077"
+  ],
+  "commands": {
+    "critical": "node --test --experimental-test-coverage --test-coverage-include=src/interaction/session.js test/unit/interaction*.test.js",
+    "contracts": "node --test test/contracts/source-boundaries.test.js test/contracts/test-discovery.test.js test/contracts/interaction-types.test.js",
+    "realistic": "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT=/Users/hyeonjeon/Projects/ggactionnewbrand/.artifacts/datasets/tidytuesday node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js",
+    "browser": "node --test --test-name-pattern=\"native parameter inputs\" test/browser/interaction-session.browser.js",
+    "renderers": "node --test test/unit/renderers/parameter-rendering.test.js",
+    "installed": "Node20/22/24 node .artifacts/context-controls-consumer.mjs; Node22 node .artifacts/context-controls-doc-consumer.mjs",
+    "docs": "npm run docs:generate; docs:search; docs:provenance; docs:machine; docs:llms; owning documentation tests; docs:build; test:docs:built; node .artifacts/context-controls-doc-browser.mjs"
+  },
+  "evidenceFiles": [
+    {
+      "path": "context-controls-baseline.log.gz",
+      "sha256": "afc728a0060aa478f8ee8aea6cc08cc993fc09c5fc1f5274b6d6f9a27c99e9e2"
+    },
+    {
+      "path": "context-controls-browser-final.log.gz",
+      "sha256": "e820a77bf1b8dec9c7ffcc45cb0baf166fc73e1d01d56f83ddb1b15eeac0f9b1"
+    },
+    {
+      "path": "context-controls-browser-qualified.log.gz",
+      "sha256": "990732b0891d5b3b52f12baf97963c972849194e96390755621dccfc564a612a"
+    },
+    {
+      "path": "context-controls-browser.log.gz",
+      "sha256": "1beef1f8103044eacfd209c72292baccfd7dfaa527b47f8397f30f78e04be644"
+    },
+    {
+      "path": "context-controls-budget-check.log.gz",
+      "sha256": "a5348ec224fca0e4fdcc8af60bbcf3fc84b7fe98405b85471c586d59b34d72f0"
+    },
+    {
+      "path": "context-controls-budget-check.mjs.gz",
+      "sha256": "814ba6a638294a353fb02698c562a6118010edb4ad7b841e61827c79fbfc830c"
+    },
+    {
+      "path": "context-controls-build.log.gz",
+      "sha256": "6f86ad8bd2e24862c18d7898fa4c4ba089d516e4f1b08a556c71c66fa79221be"
+    },
+    {
+      "path": "context-controls-built.log.gz",
+      "sha256": "2d16227a9e782a0fc76a306513a1e60f2fe3504b47bc16edc1fb3faeb0b8e395"
+    },
+    {
+      "path": "context-controls-candidate-consumer20.log.gz",
+      "sha256": "3a2a3bf05481f8058b4bed44ee9294e2fcd3b6a6785ed3bdd06becc677c679f1"
+    },
+    {
+      "path": "context-controls-candidate-consumer22.log.gz",
+      "sha256": "786b66fcd030b6b0c9fdc89ee9d51f2f87f36efc2bb0a7efceb8d619fda1affc"
+    },
+    {
+      "path": "context-controls-candidate-consumer24.log.gz",
+      "sha256": "6ab420b32167cbf7f5ab024645c8cbdce31de923e8c40920bfb260787f9d0142"
+    },
+    {
+      "path": "context-controls-candidate-doc-consumer.log.gz",
+      "sha256": "89616ccdd0e00f8fedfbc3c7970559b51601fe8d365037c58e5c120ee7eb07d3"
+    },
+    {
+      "path": "context-controls-consumer.mjs.gz",
+      "sha256": "4c3f272e0e88e354735251b9d4c6c547bdb72f0196a2ac1517de0962848dd018"
+    },
+    {
+      "path": "context-controls-consumer20-measured.log.gz",
+      "sha256": "d3225b4c9680567c04cc3a7789d2fae673e8840b4d4df356fd800a6704a105c4"
+    },
+    {
+      "path": "context-controls-contracts.log.gz",
+      "sha256": "0b42eb0be1ec60d6901ff37f43b21bf87615bcd7e3f920d41ce8572e47a588f7"
+    },
+    {
+      "path": "context-controls-doc-browser.log.gz",
+      "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
+    },
+    {
+      "path": "context-controls-doc-browser.mjs.gz",
+      "sha256": "e149b38c6a7dd2b39400d07972057df9ea50429dace212c80dc225d82a071bd8"
+    },
+    {
+      "path": "context-controls-doc-consumer.mjs.gz",
+      "sha256": "1fe69af1cce435885ca56736f126f22af2f509acaa6d3bd4ec3a4d9bf43a522b"
+    },
+    {
+      "path": "context-controls-doc-truth.log.gz",
+      "sha256": "bb87691c01ba6c01e65af4d62b7baae066dc7b92c52f7e95908210d5240c7729"
+    },
+    {
+      "path": "context-controls-docs-final-generation.log.gz",
+      "sha256": "8a92dbb9016944eea6502d4b04e0fd68d18679df6d1f6a627b6320cfd495c756"
+    },
+    {
+      "path": "context-controls-docs-source.log.gz",
+      "sha256": "df9cb573f6f728869105745a69948611d3641d3c5770374389d285aaba796e32"
+    },
+    {
+      "path": "context-controls-final-consumer20.log.gz",
+      "sha256": "2365b5b528b2c3d65974e8bbed3b7a1e0a0c2bfc0adbf14ebf194edd34a7944c"
+    },
+    {
+      "path": "context-controls-final-consumer22.log.gz",
+      "sha256": "ceff0c2c5a855942cfecd63b021f327dc0b7afd1808e8a8e38c3d70d2d2fd4c3"
+    },
+    {
+      "path": "context-controls-final-consumer24.log.gz",
+      "sha256": "58128ad3670f6fb2a0e1b3598a7e2bd98c6a35e80c5af55894aa92b8dc0d5e68"
+    },
+    {
+      "path": "context-controls-final-coverage.log.gz",
+      "sha256": "0d2efffad074981ef3016964cf747eb8e89612360a06bac4fdc7f331fda7e968"
+    },
+    {
+      "path": "context-controls-final-doc-consumer.log.gz",
+      "sha256": "ddd1dd838d0ecde9d31660a93825bdd0668962d5a43cca1cdd743b8862dedc32"
+    },
+    {
+      "path": "context-controls-focused.log.gz",
+      "sha256": "fe24a7d99bf8c00a6b6773aac82f704f270ab12b5b883e8315ac6e719e8ee01d"
+    },
+    {
+      "path": "context-controls-generation.log.gz",
+      "sha256": "e5e88259035938ad1c0d749a6e25331dc05e1815dce60671d14176260af4bf26"
+    },
+    {
+      "path": "context-controls-pack-final.log.gz",
+      "sha256": "fdf54035bde486e5e309ea3dc4d03ef50788bfc215e2d14c9cd90fc917914aa2"
+    },
+    {
+      "path": "context-controls-pack.log.gz",
+      "sha256": "fc428f3e6e1ee3094bb4c58eba6ca0c7c990d2bd7012c25e9938a6d81a8e8db3"
+    },
+    {
+      "path": "context-controls-package-qualified.log.gz",
+      "sha256": "8ed6c63d4f709a8527e8eb24cfef2205301a5534b90dd6de9bf449c0832b43a5"
+    },
+    {
+      "path": "context-controls-qualify.py.gz",
+      "sha256": "132cdff807191ce6f6a184e777992b24136b2686e03e11fe844c4517191bbfeb"
+    },
+    {
+      "path": "context-controls-realistic.log.gz",
+      "sha256": "3d42606f356779b8e3a4b8c683514b9f3dc2a32baddecc1d23607e4e807ddabe"
+    },
+    {
+      "path": "context-controls-renderers.log.gz",
+      "sha256": "09c94c951e8924c18aff163f86acac97e08553963bf927aeaba0b7b22a90ff73"
+    },
+    {
+      "path": "context-controls-search-qualified.log.gz",
+      "sha256": "7bd18726e71cfa5bb4dce4b9232a0adc958d219638f90a87ae541b4f45d90980"
+    },
+    {
+      "path": "context-controls-shared-coverage.log.gz",
+      "sha256": "a4cfa3172aa18a9bef09ee29bbf23fa0c9b45de9e082e19bbfa49ad4d9d5b539"
+    },
+    {
+      "path": "context-controls-source-commit.log.gz",
+      "sha256": "68503af3547c114cecf6a88a45bcfe6f6bfd8b3e4f35b07e58e8bac1fcd49fc6"
+    },
+    {
+      "path": "context-controls-source-push.log.gz",
+      "sha256": "9399152efded430d0de18fd7b494f1d0f762be1ef4d3106e1fe530f0e6cb1014"
+    },
+    {
+      "path": "context-controls-pinned-generation.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "context-controls-pinned-docs.log.gz",
+      "sha256": "c9be5780259b55d1a8fbba4c3ec68e8cada366cd8c271573bcaa69702731f197"
+    },
+    {
+      "path": "context-controls-pinned-build.log.gz",
+      "sha256": "bde34fc0d1333c9382f804b0bc070e1e59b79d204c0565991e18d5a245c0d309"
+    },
+    {
+      "path": "context-controls-pinned-built.log.gz",
+      "sha256": "2d16227a9e782a0fc76a306513a1e60f2fe3504b47bc16edc1fb3faeb0b8e395"
+    }
+  ]
+}

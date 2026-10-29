@@ -123,7 +123,7 @@ hit targets in that frame.
 `candidates`, `diagnostics`, `statistics`, and `frameVersion`. Singular transforms
 and empty viewports produce no hit plus diagnostics.
 
-Subscribers receive `{ type, state }`; event types are `inspect`, `leave`, `frame`,
+Subscribers receive `{ type, state }`; event types are `inspect`, `contextMenu`, `leave`, `frame`,
 `program`, `mount`, `unmount`, and `destroy`. Dispatch and program updates return
 `{ status: "applied" | "queued" | "stale" | "unchanged" }`. Reentrant operations run FIFO after
 the current event, with a 256-command bound. Subscriber errors propagate and
@@ -482,6 +482,108 @@ have no source-only geometry: keep-hidden preserves them, while explicit drop re
 item keys, data fields or AST predicates for source selections.
 
 
+## Select categories from a legend
+
+Use a categorical legend binding to select every visible item in a clicked category.
+The channel identifies an existing legend block; combined blocks keep their shared categories.
+Numeric and string values remain distinct even when their labels look the same.
+
+Place `<canvas id="chart" aria-label="Selectable legend"></canvas>` in the page, then run:
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use this browser module with the Canvas element whose id is chart. Click a legend symbol or label to toggle that category.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const program = chart().createCanvas({ width: 500, height: 350, margin: 100 })
+  .createData({ keyField: "id", values: [
+    { id: "a", x: 1, y: 2, category: "A" },
+    { id: "b", x: 2, y: 3, category: "B" },
+    { id: "c", x: 3, y: 4, category: "A" }
+  ] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", color: "category", guides: false })
+  .createLegend({ target: "points", channels: ["color"] })
+  .selectMarks({ id: "picked", target: "points", items: [] })
+  .highlightMarks({ selection: "picked", color: "red", dimOthers: false, bringToFront: false });
+const canvas = document.querySelector("#chart"), context = canvas.getContext("2d");
+render(program, context);
+const legendSession = createInteractionSession({ program, bindings: [{
+  type: "legend", effect: "selection", target: "points", channel: "color", selection: "picked"
+}] });
+legendSession.subscribe(event => {
+  if (event.phase === "commit") render(event.current, context);
+});
+legendSession.mount(canvas);
+```
+
+`mode` defaults to `toggle`, which toggles each matching item. Use `replace` to keep
+only that category. Titles, background, overflow summaries and categories without
+visible items do nothing. Continuous, interval and sampled legend blocks are not
+supported by this selection binding. It does not change category visibility or scale domains.
+
+The binding uses the same captured click, cancellation, child scope and linked update
+rules as ordinary click selection. It requires Full and an existing named selection.
+Only one editing pointer binding can be active alongside inspection and linked bindings.
+For SVG, remount the new SVG element after rendering a committed program. Call
+`legendSession.destroy()` when the surface is removed; selection state remains in the chart.
+
+
+## Hide and restore categories from a legend
+
+Use `effect: "visibility"` when clicking a legend should hide actual category items. No named selection is required.
+Choose `scaleDomain: "visible-data"` to fit other automatic domains to the visible items, or `"all-data"` to preserve
+those domains from the input before visibility. An existing user filter remains in force: its result is the all-data
+input. The controlling categorical legend always retains that complete domain and mapping so a second click can
+restore hidden categories. Explicit scale domains keep their precedence.
+
+Place `<canvas id="chart" aria-label="Category visibility"></canvas>` in the page, then run:
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use this browser module with the Canvas element whose id is chart. Click a legend category twice to hide and restore its items.
+
+<!-- snippet-context:end -->
+
+```javascript
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const program = chart().createCanvas({ width: 500, height: 350, margin: 100 })
+  .createData({ keyField: "id", values: [
+    { id: "a", x: 1, y: 2, category: "A" },
+    { id: "b", x: 2, y: 3, category: "B" },
+    { id: "c", x: 3, y: 4, category: "A" }
+  ] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", color: "category", guides: false })
+  .createLegend({ target: "points", channels: ["color"] });
+const canvas = document.querySelector("#chart"), context = canvas.getContext("2d");
+render(program, context);
+const visibilitySession = createInteractionSession({ program, bindings: [{
+  type: "legend", effect: "visibility", target: "points", channel: "color", scaleDomain: "all-data"
+}] });
+visibilitySession.subscribe(event => {
+  if (event.phase === "commit") render(event.current, context);
+});
+visibilitySession.mount(canvas);
+```
+
+The native `setMarkVisibility` action and `setVisibility` session command accept `channel`, unique typed `values`,
+boolean `visible` and the same explicit `scaleDomain`. Use the command payload `{clear:true}` or the native
+`removeMarkVisibility` action to remove visibility alone. User filters and hidden-selection policy remain separate.
+Changing a linked filter preserves visibility. Numeric `1` and string `"1"` are distinct categories; unknown values
+reject. Continuous or interval legends and Basic authoring are unsupported. Empty views retain valid domains.
+
+Session commands commit one final state after selection and linked updates. Hidden items disappear from graphics,
+inspection and hit candidates. `keep-hidden` lets their selection return when shown again; `drop` removes it.
+Visibility survives editable serialization. Recreate runtime bindings after loading, remount a newly rendered SVG
+surface, and destroy the session when its host is removed.
+
+
 ## Automatic click selection
 
 Use a `select` binding when the session should turn clicks into selection commands. The named
@@ -626,3 +728,140 @@ Explicit concat targets retain child scope. Facet-source geometry, Basic editing
 bindings, navigation and history are not inferred. Lasso input is limited to 10,000 samples and
 50,000 candidate anchors, with bounded cumulative geometry work. Dispose the session when its host
 is removed.
+
+
+## Connect parameter inputs and a context action
+
+Use native HTML controls and send their typed values to `setParameter`. The host owns keyboard behavior
+and focus; the session commits the parameter's dependent data, marks and selections together. For a
+context menu, subscribe to `contextMenu` and use its current semantic hit to build your own actions.
+The binding prevents the browser menu only on the mounted surface. A request itself changes no chart state.
+
+This browser module expects `<canvas id="chart" aria-label="Adjustable points"></canvas>`.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use a Canvas with id chart. Arrow keys on Multiplier update computed data; right-click a point and activate the host selection button.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+const panel = document.createElement("div");
+panel.innerHTML = '<label>Multiplier <input id="multiplier" type="range" min="1" max="4" step="1" value="1"></label> <button id="select-context" hidden>Select this point</button>';
+canvas.before(panel);
+const range = panel.querySelector("input");
+const choose = panel.querySelector("button");
+const program = chart().createCanvas({ width: 400, height: 280 })
+  .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 1, y: 3 }, { id: "b", x: 2, y: 6 }] })
+  .createParameter({ id: "factor", value: 1 })
+  .createComputedData({ id: "scaled", source: "rows", as: "height", expression: {
+    version: 2, registry: "standard@1", root: { type: "binary", op: "multiply",
+      left: { type: "field", name: "y" }, right: { type: "parameter", id: "factor" } }
+  } })
+  .createScatterPlot({ id: "points", x: "x", y: { field: "height", scale: { domain: [0, 30] } }, guides: false })
+  .selectMarks({ target: "points", id: "chosen", items: [], empty: "none" })
+  .highlightMarks({ selection: "chosen", color: "red" });
+const parameterSession = createInteractionSession({ program, bindings: [{ type: "contextMenu" }] });
+const draw = value => render(value, canvas.getContext("2d"));
+let contextTarget = null;
+const closeMenu = () => { choose.hidden = true; contextTarget = null; };
+const unsubscribe = parameterSession.subscribe(event => {
+  if (event.type === "contextMenu") {
+    contextTarget = event.state.hit?.target ?? null;
+    choose.hidden = !contextTarget || contextTarget.ownerId !== "points";
+    if (!choose.hidden) choose.focus();
+  }
+  if ("phase" in event && event.phase === "commit") { closeMenu(); draw(event.current); }
+});
+const change = () => parameterSession.dispatch({ type: "setParameter", target: "factor",
+  payload: { value: range.valueAsNumber }, origin: "user" });
+const select = () => {
+  if (!contextTarget) return;
+  parameterSession.dispatch({ type: "select", target: { id: contextTarget.ownerId, childPath: contextTarget.childPath },
+    payload: { id: "chosen", select: { items: [contextTarget.itemKey] } }, origin: "user" });
+  range.focus();
+};
+const escape = event => { if (event.key === "Escape") { closeMenu(); range.focus(); } };
+range.addEventListener("input", change);
+choose.addEventListener("click", select);
+panel.addEventListener("keydown", escape);
+draw(program);
+const unmount = parameterSession.mount(canvas);
+// Call when removing this view.
+const disposeControls = () => {
+  range.removeEventListener("input", change);
+  choose.removeEventListener("click", select);
+  panel.removeEventListener("keydown", escape);
+  unsubscribe(); unmount(); parameterSession.destroy(); panel.remove();
+};
+```
+
+A host keyboard menu can send `dispatch({type:"contextMenu",point:{x,y}})` using its focused item's
+current CSS-local point. The session supplies all overlapping candidates, including guide roles, and the
+host decides which commands are applicable. It does not infer a focused item or menu policy. Without a
+context binding, the mounted surface keeps its normal browser menu.
+
+
+## Navigate a partition view from host controls
+
+Send `focusHierarchy` with a typed node key or grouped path. `focus:null` returns to the current root.
+The native partition view keeps its hierarchy values, layout and logical selection identities. Hidden
+selections follow the configured native and session pruning policies. The host owns navigation controls
+and can display the breadcrumb keys returned by inspection.
+
+This browser module expects `<canvas id="chart" aria-label="Hierarchy partition"></canvas>`.
+
+<!-- snippet-context:start -->
+
+> **Executable complete.** Use a Canvas with id chart. Activate Group A or All groups with a pointer, Enter or Space; the breadcrumb text follows the native partition view.
+
+<!-- snippet-context:end -->
+
+```js
+import { chart, render } from "ggaction";
+import { getMarkItems, inspectProgram } from "ggaction/inspection";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+const nav = document.createElement("nav");
+nav.setAttribute("aria-label", "Partition navigation");
+nav.innerHTML = '<button id="focus-root">All groups</button> <button id="focus-a">Group A</button> <output id="focus-trail" aria-live="polite"></output>';
+canvas.before(nav);
+const program = chart().createCanvas({ width: 600, height: 400 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "root", parent: null }, { id: "A", parent: "root" },
+    { id: "A1", parent: "A", amount: 2 }, { id: "A2", parent: "A", amount: 4 },
+    { id: "B", parent: "root", amount: 4 }
+  ] })
+  .createHierarchyData({ id: "hierarchy", key: "id", parent: "parent", value: "amount" })
+  .layoutHierarchy({ id: "partition-layout", method: "partition" })
+  .createPartitionPlot({ id: "partition", labels: {} });
+const focusSession = createInteractionSession({ program, bindings: [] });
+const draw = current => {
+  render(current, canvas.getContext("2d"));
+  const view = inspectProgram(current).views[0].partition;
+  const names = new Map(getMarkItems(current, { target: "partition" }).map(item => [item.fields.nodeKey, item.fields.id]));
+  nav.querySelector("output").textContent = [...view.breadcrumbKeys, view.focusKey].map(key => names.get(key)).join(" / ");
+};
+const focusA = () => focusSession.dispatch({ type: "focusHierarchy", target: "partition", payload: { focus: { key: "A" } }, origin: "user" });
+const focusRoot = () => focusSession.dispatch({ type: "focusHierarchy", target: "partition", payload: { focus: null }, origin: "user" });
+nav.querySelector("#focus-a").addEventListener("click", focusA);
+nav.querySelector("#focus-root").addEventListener("click", focusRoot);
+const unsubscribe = focusSession.subscribe(event => {
+  if (event.type === "program" || ("phase" in event && event.phase === "commit")) draw(event.state.program);
+});
+draw(program);
+const disposeFocus = () => {
+  nav.querySelector("#focus-a").removeEventListener("click", focusA);
+  nav.querySelector("#focus-root").removeEventListener("click", focusRoot);
+  unsubscribe(); focusSession.destroy(); nav.remove();
+};
+```
+
+Native buttons retain their usual Enter/Space activation and focus. For scoped charts, provide the
+partition's explicit `{childPath,id}` target. This command does not change Tree or Treemap views, create
+an animation, or infer a focused keyboard item.

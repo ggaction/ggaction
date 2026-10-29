@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 import { openBrowserPage, assertNoBrowserErrors, closeBrowserWithEvidence, saveBrowserContextEvidence } from "../support/browser.js";
 import { startStaticServer } from "../support/static-server.js";
+import { documentationPrograms } from "../../scripts/doc-snippets.js";
 let browser, server;
 test.before(async () => { server = await startStaticServer(fileURLToPath(new URL("../../", import.meta.url))); browser = await chromium.launch({ headless: true }); });
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); });
@@ -351,6 +352,196 @@ test("real touch capture cancels movement and commits one tap without a second s
     }
     await protocol.detach(); await page.evaluate(() => window.__captureSessions.forEach(session => session.destroy()));
     assertNoBrowserErrors(errors, 'touch capture'); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});
+
+test("categorical legend clicks and cancellation select the same groups on Canvas and SVG", async () => {
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1200, height: 850 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async () => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      const { chart, render } = await import("/src/index.js"), { renderToSVG } = await import("/src/renderers/svg.js");
+      const { createInteractionSession } = await import("/src/interaction.js");
+      document.body.innerHTML = '<canvas id="legend-canvas" aria-label="Legend selection chart"></canvas><div id="legend-vector"></div>';
+      const program = chart().createCanvas({ width: 500, height: 350, margin: 100 })
+        .createData({ values: [{ id: "a", x: 1, y: 2, category: "A" }, { id: "b", x: 2, y: 3, category: "B" }, { id: "c", x: 3, y: 4, category: "A" }], keyField: "id" })
+        .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" }).encodeColor({ field: "category" })
+        .createLegend({ channels: ["color"] }).selectMarks({ id: "picked", target: "points", items: [] })
+        .highlightMarks({ selection: "picked", color: "red", dimOthers: false, bringToFront: false });
+      window.__legendPhases = [[], []];
+      window.__legendSessions = [0, 1].map(index => {
+        const session = createInteractionSession({ program, bindings: [{ type: "legend", effect: "selection", target: "points", channel: "color", selection: "picked" }] });
+        const draw = current => {
+          if (index === 0) { const element = document.querySelector("#legend-canvas"); render(current, element.getContext("2d"), { pixelRatio: 2 }); session.mount(element); }
+          else { const container = document.querySelector("#legend-vector"); container.innerHTML = renderToSVG(current); session.mount(container.querySelector("svg")); }
+        };
+        session.subscribe(event => { if (event.phase) window.__legendPhases[index].push(event.phase); if (event.phase === "commit") draw(event.current); });
+        draw(program); return session;
+      });
+    });
+    const vector = await page.locator("#legend-vector svg").boundingBox();
+    const label = await page.locator("#legend-vector text").filter({ hasText: /^A$/ }).boundingBox();
+    const local = { x: label.x + label.width / 2 - vector.x, y: label.y + label.height / 2 - vector.y };
+    for (const [index, selector] of ["#legend-canvas", "#legend-vector svg"].entries()) {
+      const box = await page.locator(selector).boundingBox(), point = { x: box.x + local.x, y: box.y + local.y };
+      await page.mouse.move(point.x, point.y); await page.mouse.down(); await page.keyboard.press("Escape"); await page.mouse.up();
+      assert.equal(await page.evaluate(index => window.__legendSessions[index].getState().revision, index), 0);
+      await page.mouse.click(point.x, point.y);
+      assert.deepEqual(await page.evaluate(async index => { const { getMarkItems } = await import("/src/inspection.js"); return getMarkItems(window.__legendSessions[index].getState().program, { target: "points" }).filter(item => item.properties.fill === "red").map(item => item.fields.id); }, index), ["a", "c"]);
+      assert.deepEqual(await page.evaluate(index => window.__legendPhases[index], index), ["cancel", "commit", "settled"]);
+    }
+    assert.deepEqual(await page.locator("#legend-canvas").evaluate(canvas => [canvas.width, canvas.height]), [1000, 700]);
+    await page.evaluate(() => window.__legendSessions.forEach(session => session.destroy()));
+    assertNoBrowserErrors(errors, "legend selection"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});
+
+test("categorical visibility retains control labels and restores actual items on Canvas and SVG", async () => {
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1200, height: 850 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async () => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      const { chart, render } = await import("/src/index.js"), { renderToSVG } = await import("/src/renderers/svg.js");
+      const { createInteractionSession } = await import("/src/interaction.js");
+      document.body.innerHTML = '<canvas id="legend-canvas" aria-label="Category visibility chart"></canvas><div id="legend-vector"></div>';
+      const program = chart().createCanvas({ width: 500, height: 350, margin: 100 })
+        .createData({ values: [{ id: "a", x: 1, y: 2, category: "A" }, { id: "b", x: 2, y: 3, category: "B" }, { id: "c", x: 3, y: 4, category: "A" }], keyField: "id" })
+        .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" }).encodeColor({ field: "category" })
+        .createLegend({ channels: ["color"] }).selectMarks({ id: "picked", target: "points", items: [] })
+        .highlightMarks({ selection: "picked", color: "red", dimOthers: false, bringToFront: false });
+      window.__legendPhases = [[], []];
+      window.__legendSessions = [0, 1].map(index => {
+        const session = createInteractionSession({ program, bindings: [{ type: "legend", effect: "visibility", target: "points", channel: "color", scaleDomain: "all-data" }] });
+        const draw = current => {
+          if (index === 0) { const element = document.querySelector("#legend-canvas"); render(current, element.getContext("2d"), { pixelRatio: 2 }); session.mount(element); }
+          else { const container = document.querySelector("#legend-vector"); container.innerHTML = renderToSVG(current); session.mount(container.querySelector("svg")); }
+        };
+        session.subscribe(event => { if (event.phase) window.__legendPhases[index].push(event.phase); if (event.phase === "commit") draw(event.current); });
+        draw(program); return session;
+      });
+    });
+    const vector = await page.locator("#legend-vector svg").boundingBox();
+    const label = await page.locator("#legend-vector text").filter({ hasText: /^A$/ }).boundingBox();
+    const local = { x: label.x + label.width / 2 - vector.x, y: label.y + label.height / 2 - vector.y };
+    for (const [index, selector] of ["#legend-canvas", "#legend-vector svg"].entries()) {
+      const box = await page.locator(selector).boundingBox(), point = { x: box.x + local.x, y: box.y + local.y };
+      await page.mouse.move(point.x, point.y); await page.mouse.down(); await page.keyboard.press("Escape"); await page.mouse.up();
+      assert.equal(await page.evaluate(index => window.__legendSessions[index].getState().revision, index), 0);
+      await page.mouse.click(point.x, point.y);
+      assert.deepEqual(await page.evaluate(async index => { const { getMarkItems } = await import("/src/inspection.js"); return getMarkItems(window.__legendSessions[index].getState().program, { target: "points" }).map(item => item.fields.id); }, index), ["b"]);
+      await page.mouse.click(point.x, point.y);
+      assert.deepEqual(await page.evaluate(async index => { const { getMarkItems } = await import("/src/inspection.js"); return getMarkItems(window.__legendSessions[index].getState().program, { target: "points" }).map(item => item.fields.id); }, index), ["a", "b", "c"]);
+      assert.deepEqual(await page.evaluate(index => window.__legendPhases[index], index), ["cancel", "commit", "settled", "commit", "settled"]);
+    }
+    assert.deepEqual(await page.locator("#legend-canvas").evaluate(canvas => [canvas.width, canvas.height]), [1000, 700]);
+    await page.evaluate(() => window.__legendSessions.forEach(session => session.destroy()));
+    assertNoBrowserErrors(errors, "legend visibility"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});
+
+
+test("native parameter inputs and host context actions preserve keyboard focus and immutable commits", async () => {
+  const snippet = (await documentationPrograms()).find(program => program.id === "interaction-parameter-context");
+  assert.ok(snippet);
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1000, height: 700 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      document.body.innerHTML = '<canvas id="chart" aria-label="Adjustable points"></canvas><div id="vector"></div>';
+      const source = code.replaceAll('"ggaction"', JSON.stringify(new URL('/src/index.js', location.href).href)).replaceAll('"ggaction/interaction"', JSON.stringify(new URL('/src/interaction.js', location.href).href));
+      const url = URL.createObjectURL(new Blob([source + '\nwindow.__parameterSession=parameterSession;window.__disposeControls=disposeControls;'], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      const { renderToSVG } = await import("/src/renderers/svg.js");
+      window.__parameterPhases = [];
+      window.__parameterSession.subscribe(event => {
+        if (event.phase) window.__parameterPhases.push(event.phase);
+        if (event.phase === "commit") document.querySelector("#vector").innerHTML = renderToSVG(event.current);
+      });
+    }, snippet.code);
+    const range = page.getByRole("slider", { name: "Multiplier" }); await range.focus(); await page.keyboard.press("ArrowRight");
+    assert.deepEqual(await page.evaluate(() => {
+      const state = window.__parameterSession.getState(); return { value: document.querySelector("input").value,
+        computed: state.program.semanticSpec.datasets.find(dataset => dataset.id === state.program.semanticSpec.layers.find(layer => layer.id === "points").data).values.map(row => row.height),
+        revision: state.revision, focus: document.activeElement.id, svg: !!document.querySelector("#vector svg") };
+    }), { value: "2", computed: [6, 12], revision: 1, focus: "multiplier", svg: true });
+    const hit = await page.evaluate(() => {
+      const n = window.__parameterSession.getState().scene.nodes.find(node => node.type === "circle");
+      return { x: n.offset[0] + n.properties.x, y: n.offset[1] + n.properties.y };
+    });
+    const box = await page.locator("canvas").boundingBox();
+    await page.mouse.click(box.x + hit.x, box.y + hit.y, { button: "right" });
+    assert.equal(await page.getByRole("button", { name: "Select this point" }).isVisible(), true);
+    assert.equal(await page.evaluate(() => document.activeElement.id), "select-context");
+    await page.keyboard.press("Escape");
+    assert.equal(await page.evaluate(() => document.activeElement.id), "multiplier");
+    assert.equal(await page.evaluate(() => window.__parameterSession.getState().revision), 1);
+    await page.mouse.click(box.x + hit.x, box.y + hit.y, { button: "right" }); await page.keyboard.press("Enter");
+    assert.deepEqual(await page.evaluate(async () => {
+      const { getMarkItems } = await import("/src/inspection.js"); const state = window.__parameterSession.getState();
+      return { selected: getMarkItems(state.program, { target: "points" }).filter(item => item.properties.fill === "red").map(item => item.fields.id),
+        focus: document.activeElement.id, revision: state.revision, phases: window.__parameterPhases };
+    }), { selected: ["a"], focus: "multiplier", revision: 2, phases: ["commit", "settled", "commit", "settled"] });
+    await page.keyboard.press("End");
+    assert.deepEqual(await page.evaluate(() => {
+      const s = window.__parameterSession, before = s.getState(); let rejected = false;
+      const noop = s.dispatch({ type: "setParameter", target: "factor", payload: { value: 4 } });
+      try { s.dispatch({ type: "setParameter", target: "factor", payload: { value: "bad" } }); } catch { rejected = true; }
+      return { computed: before.program.semanticSpec.datasets.find(dataset => dataset.id === before.program.semanticSpec.layers.find(layer => layer.id === "points").data).values.map(row => row.height),
+        unchanged: before.program === s.getState().program, rejected, noop: noop.status, revision: s.getState().revision };
+    }), { computed: [12, 24], unchanged: true, rejected: true, noop: "unchanged", revision: 3 });
+    assert.deepEqual(await page.evaluate(() => {
+      window.__disposeControls(); const event = new MouseEvent("contextmenu", { cancelable: true, bubbles: true });
+      document.querySelector("canvas").dispatchEvent(event);
+      return { prevented: event.defaultPrevented, destroyed: window.__parameterSession.getState().destroyed, panel: !!document.querySelector("#multiplier") };
+    }), { prevented: false, destroyed: true, panel: false });
+    assertNoBrowserErrors(errors, "parameter inputs and context actions"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});
+
+test("host partition buttons and breadcrumbs follow native focus with pointer and keyboard activation", async () => {
+  const snippet = (await documentationPrograms()).find(program => program.id === "interaction-hierarchy-focus"); assert.ok(snippet);
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1000, height: 750 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      document.body.innerHTML = '<canvas id="chart" aria-label="Hierarchy partition"></canvas><div id="vector"></div>';
+      let source = code;
+      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/inspection", "inspection"], ["ggaction/interaction", "interaction"]]) {
+        source = source.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
+      }
+      const url = URL.createObjectURL(new Blob([source + '\nwindow.__focusSession=focusSession;window.__disposeFocus=disposeFocus;'], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      const { renderToSVG } = await import("/src/renderers/svg.js"); window.__focusPhases = [];
+      window.__focusSession.subscribe(event => { if (event.phase) window.__focusPhases.push(event.phase);
+        if (event.phase === "commit") document.querySelector("#vector").innerHTML = renderToSVG(event.current); });
+    }, snippet.code);
+    assert.equal(await page.locator("output").textContent(), "root");
+    await page.getByRole("button", { name: "Group A", exact: true }).focus(); await page.keyboard.press("Enter");
+    assert.equal(await page.locator("output").textContent(), "root / A");
+    assert.deepEqual(await page.evaluate(async () => {
+      const { getMarkItems } = await import("/src/inspection.js"); const state = window.__focusSession.getState();
+      return { ids: getMarkItems(state.program, { target: "partition" }).filter(item => item.visible).map(item => item.fields.id),
+        revision: state.revision, focus: document.activeElement.id, vector: !!document.querySelector("#vector svg") };
+    }), { ids: ["A", "A1", "A2"], revision: 1, focus: "focus-a", vector: true });
+    await page.getByRole("button", { name: "All groups", exact: true }).focus(); await page.keyboard.press("Space");
+    assert.equal(await page.locator("output").textContent(), "root");
+    await page.getByRole("button", { name: "Group A", exact: true }).click();
+    assert.deepEqual(await page.evaluate(() => ({ revision: window.__focusSession.getState().revision, phases: window.__focusPhases, focus: document.activeElement.id })),
+      { revision: 3, phases: ["commit", "settled", "commit", "settled", "commit", "settled"], focus: "focus-a" });
+    await page.evaluate(() => window.__disposeFocus()); assert.equal(await page.getByRole("navigation").count(), 0);
+    assertNoBrowserErrors(errors, "partition host focus"); await page.close();
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });

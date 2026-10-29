@@ -1,3 +1,4 @@
+import { unfilteredMarkDataset } from "../../../selectors/datasets.js";
 import { findMarkFilterDataset } from "../../../selectors/datasets.js";
 import { readNominalField } from "../../../grammar/scales/fields.js";
 import { calendarScaleValues } from "../../calendar/scaleValues.js";
@@ -100,7 +101,7 @@ export function resolveConsumerCategoryOrder(program, consumer) {
   }
   const dataset = requireConsumerDataset(program, consumer);
   if (order.values !== undefined && findMarkFilterDataset(program, consumer.layer) !== undefined) {
-    const source = requireConsumerDataset(program, { ...consumer, layer: { ...consumer.layer, data: dataset.source } });
+    const source = unfilteredMarkDataset(program, consumer.layer);
     const authored = resolveCategoryOrder(source.values, consumer.encoding.field, order);
     const visible = new Set(readNominalField(dataset.values, consumer.encoding.field));
     return Object.freeze(authored.filter(value => visible.has(value)));

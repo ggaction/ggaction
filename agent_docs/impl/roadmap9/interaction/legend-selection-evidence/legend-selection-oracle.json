@@ -1,0 +1,41 @@
+{
+  "inputCategories": [
+    1,
+    "1",
+    1
+  ],
+  "expected": [
+    [
+      "a",
+      "c"
+    ],
+    [
+      "a",
+      "b",
+      "c"
+    ],
+    [
+      "b"
+    ]
+  ],
+  "actual": [
+    [
+      "a",
+      "c"
+    ],
+    [
+      "a",
+      "b",
+      "c"
+    ],
+    [
+      "b"
+    ]
+  ],
+  "diff": [],
+  "restored": [
+    "b"
+  ],
+  "immutable": true,
+  "listenersAfterDestroy": 0
+}

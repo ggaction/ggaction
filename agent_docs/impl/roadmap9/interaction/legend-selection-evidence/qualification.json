@@ -1,0 +1,494 @@
+{
+  "baseCommit": "beb751bf9",
+  "sourceCommit": "b9bee2b48",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "scope": "STEP060 C1 categorical legend selection; current-frame samples/labels to native immutable selection and linked closure",
+  "sourceHashes": {
+    "src/actions/guides/legends/categorical/layout.js": "4c3d8d766aceef4ea4f01d0b415be825fba6e37910ac190c5cb5c1fbcb6a06f8",
+    "src/actions/guides/legends/target.js": "62ff9875baf45dffbcbd2e27af30b9e7204eae3507fec98420fb0116c75725f7",
+    "src/grammar/legendOverflow.js": "bda08f7d3ce4ab42cfad684b3e879a5b0783e93ca817889b9637eb2791b0ca70",
+    "src/interaction/hitGuides.js": "73b7967584268b29cec05bd97d17edd50b1b9e057513a132b112becc1825cc8e",
+    "src/interaction/hitProgram.js": "13db9c8d49634f92d6bf40fee7b036d26c58fd237db62ba957bbc5ab7b4605df",
+    "src/interaction/legendSelection.js": "12f9042983a013bd5648015e8e0a145ca713318e270e904dfaac6763b2bc5b8c",
+    "src/interaction/selection.js": "5c32d459412dd81dd2d6be8c0a926d71c57decfc2cc7b02164fc6e824ef4c5bc",
+    "src/interaction/session.js": "8511f1492c94a9b64ca215dc9bf7dfe2346441f03fa4ec57fc4be5c6275562e4",
+    "src/materialization/legendTargets.js": "5de7bc70139ea35c3c3586928fdc82f52651139f8afaacfac5e8e63bf53b2f20",
+    "types/interaction.d.ts": "36c729f9451ee7a427550eb478ba3fafe14790c1b57b93bd4fa977cbb8ebdd68"
+  },
+  "checks": {
+    "baseline": 33,
+    "sharedInteractionCoverage": {
+      "passed": 178,
+      "owners": {
+        "hitGuides.js": [
+          100,
+          95.16,
+          100
+        ],
+        "hitProgram.js": [
+          100,
+          95.35,
+          100
+        ],
+        "selection.js": [
+          100,
+          99.14,
+          100
+        ],
+        "session.js": [
+          100,
+          94.34,
+          100
+        ]
+      },
+      "timing": "Before the pure legend-target/overflow relocation; final focused source and exact package checks follow."
+    },
+    "relocatedOwners": 324,
+    "focusedCriticalCoverage": {
+      "passed": 302,
+      "owners": {
+        "grammar/legendOverflow.js": [
+          100,
+          100,
+          100
+        ],
+        "interaction/legendSelection.js": [
+          100,
+          93.75,
+          100
+        ],
+        "materialization/legendTargets.js": [
+          100,
+          100,
+          100
+        ]
+      },
+      "floors": "New critical owners95/90/100; all existing canonical floors unchanged."
+    },
+    "finalSourceTypesBoundariesDiscovery": 37,
+    "realistic": {
+      "passed": 16,
+      "witness": "Five pinned datasets times observations/categories/series with actual categorical legend selection, toggle, typed membership and codec; inventory included."
+    },
+    "browser": {
+      "passed": 1,
+      "witness": "Real Canvas and SVG DPR2 legend activation, Escape cancellation, one committed click, remount and no page errors."
+    },
+    "docs": {
+      "initialPassed": 46,
+      "initialTotal": 47,
+      "refreshedOwning": 47,
+      "responsiveAxeWidths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "sourcePinned": {
+        "passed": 47,
+        "builtPages": 170,
+        "selectiveLLM": 1454,
+        "browserReuse": "Unchanged interaction page body and executable snippet; only source revision labels regenerated after source commit."
+      }
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "c6d8c8cb0e7d64d8d0c4ab2c727bfc6230fb45e2b1334c6e393a454b56a23c96",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 859,
+            "minifiedBytes": 2415390,
+            "gzipBytes": 688226
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 546,
+            "minifiedBytes": 1293085,
+            "gzipBytes": 377520
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 177,
+            "minifiedBytes": 340664,
+            "gzipBytes": 110977
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145387,
+            "gzipBytes": 43572
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "c6d8c8cb0e7d64d8d0c4ab2c727bfc6230fb45e2b1334c6e393a454b56a23c96",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 859,
+            "minifiedBytes": 2415390,
+            "gzipBytes": 686417
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 546,
+            "minifiedBytes": 1293085,
+            "gzipBytes": 376679
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 177,
+            "minifiedBytes": 340664,
+            "gzipBytes": 110536
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145387,
+            "gzipBytes": 43411
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "c6d8c8cb0e7d64d8d0c4ab2c727bfc6230fb45e2b1334c6e393a454b56a23c96",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 859,
+            "minifiedBytes": 2415390,
+            "gzipBytes": 688226
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 546,
+            "minifiedBytes": 1293085,
+            "gzipBytes": 377520
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 177,
+            "minifiedBytes": 340664,
+            "gzipBytes": 110977
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145387,
+            "gzipBytes": 43572
+          }
+        ]
+      }
+    ],
+    "installedPublicSnippet": {
+      "node": "v22.23.1",
+      "archive": "c6d8c8cb0e7d64d8d0c4ab2c727bfc6230fb45e2b1334c6e393a454b56a23c96",
+      "id": "interaction-legend-selection",
+      "sourceFree": true,
+      "rendered": true,
+      "selected": [
+        "a",
+        "c"
+      ],
+      "errors": []
+    }
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/legend-selection-c6d8c8cb.tgz",
+    "sha256": "c6d8c8cb0e7d64d8d0c4ab2c727bfc6230fb45e2b1334c6e393a454b56a23c96",
+    "entries": 982,
+    "packed": 1407526,
+    "unpacked": 6414627
+  },
+  "supersededArtifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/legend-selection-d5a4933f.tgz",
+    "sha256": "d5a4933f2b3511dab005d57237f6ad7e34ec774bedd90fc26270969a14fdc674",
+    "entries": 982,
+    "packed": 1407531,
+    "unpacked": 6414635
+  },
+  "packageMeasurementNode20": {
+    "node": "v20.20.2",
+    "entries": 982,
+    "packedBytes": 1410071,
+    "unpackedBytes": 6414627
+  },
+  "limits": {
+    "entries": 982,
+    "packedBytes": 1411000,
+    "unpackedBytes": 6415000,
+    "fullGzip": 688300,
+    "basicGzip": 378000,
+    "interactionGzip": 111000,
+    "svgGzip": 25000,
+    "graphGzip": 44000,
+    "searchBytes": 984000
+  },
+  "preservedFailures": [
+    "Initial test fixture put first-hidden summary on the default swatch; native validation correctly rejected it. The regression uses the supported line recipe.",
+    "Fixture symbol and opacity shapes were corrected to the existing nested layers contract; no authoring API changed.",
+    "Source boundary rejected an interaction import from actions. Read-only legend target/block resolution moved to materialization, and pure overflow projection to grammar; the action reexports preserve existing callers. No allowlist relaxation.",
+    "Initial package and interaction bundle limits were exceeded. Measured source entry growth and max Node20/24 gzip require the recorded minimal limits.",
+    "Intermediate focused selection omitted existing overflow error branches. The relevant existing legend suite plus new owner tests measured302 and the unchanged grammar floor passed.",
+    "The first source-free docs browser launch used a /var symlink while Vite used /private/var. Realpath consumer root fixed the harness, then the exact final archive example passed.",
+    "After final source edits, one of47 docs checks found stale provenance; provenance/machine/LLM regeneration closed47/47.",
+    "Archive d5a4933f is superseded by c6d8c8cb after EOF normalization and a generic editing-pointer diagnostic. The final exact archive passed all three Nodes."
+  ],
+  "globalCoverage": "Not rerun. Focused changed owners and final public consumers are qualified. The original full integration obligations remain with root.",
+  "remaining": [
+    "C2 categorical legend visibility and explicit visible-data/all-data scale policy",
+    "remaining non-categorical legend interaction requirements",
+    "parameter controls/context actions",
+    "annotation anchor/offset editing",
+    "node drag/partition focus/geo navigation/keyboard",
+    "AT35/38/65/80 complete consumer closure",
+    "STEP074 integrated qualification and STEP077"
+  ],
+  "commands": {
+    "finalSource": "node --test test/unit/interaction-legend-selection.test.js test/contracts/source-boundaries.test.js test/contracts/test-discovery.test.js test/contracts/interaction-types.test.js",
+    "criticalReproduction": "node --test --experimental-test-coverage --test-coverage-include=src/grammar/legendOverflow.js --test-coverage-include=src/interaction/legendSelection.js --test-coverage-include=src/materialization/legendTargets.js test/unit/interaction-legend-selection.test.js test/unit/materialization/legend-targets.test.js test/unit/actions/guides/*legend*.test.js test/unit/grammar/*legend*.test.js",
+    "realistic": "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT=/Users/hyeonjeon/Projects/ggactionnewbrand/.artifacts/datasets/tidytuesday node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js",
+    "browser": "node --test --test-name-pattern=\"categorical legend clicks\" test/browser/interaction-session.browser.js",
+    "installed": "Node20/22/24: node .artifacts/legend-selection-consumer.mjs; Node22: node .artifacts/legend-selection-doc-consumer.mjs",
+    "docs": "npm run docs:generate; final docs:images; docs:capabilities; docs:provenance; docs:machine; docs:llms; node --test test/docs/documentation.test.js test/docs/documentation-coverage.test.js; npm run docs:build; npm run test:docs:built; node .artifacts/legend-selection-doc-browser.mjs"
+  },
+  "evidenceFiles": [
+    {
+      "path": "legend-selection-baseline.log.gz",
+      "sha256": "aa8cba372afcfdfd225cfe48bfbd97f8ce2b132cb791b4626f1f8caa3b16d49b"
+    },
+    {
+      "path": "legend-selection-browser-final.log.gz",
+      "sha256": "67fce7f4293bc9a8995f59c2144f7e7af65b41ca8cec4cff78f175a8bc472917"
+    },
+    {
+      "path": "legend-selection-browser.log.gz",
+      "sha256": "92dc970430081359ba819933ad9e4469829d35917443b56184a79970b2e16baa"
+    },
+    {
+      "path": "legend-selection-build.log.gz",
+      "sha256": "21db60a1b6b1d86627c772247ec8363ef33d9ada095fa3fbe6773ad3e7d193d1"
+    },
+    {
+      "path": "legend-selection-capabilities-final.log.gz",
+      "sha256": "ced9d5f2678b3266716e12a4d5b32a84ddcd5862f3496450c2da2791ab42d064"
+    },
+    {
+      "path": "legend-selection-consumer.mjs.gz",
+      "sha256": "160154b97df02ce93271af071e760cfe8074f78ca389a993d0b8bb23de28d3a8"
+    },
+    {
+      "path": "legend-selection-consumer20.log.gz",
+      "sha256": "b29ed3b0fc6a351a3a404f02b70fd882fb6a9a4d61cfd03ed8088ef2f1eb56d0"
+    },
+    {
+      "path": "legend-selection-consumer22.log.gz",
+      "sha256": "0a893d4ca4901e1a31279f8a3df26b144531bf0204c4f35c1f472191ed409c3f"
+    },
+    {
+      "path": "legend-selection-consumer24.log.gz",
+      "sha256": "2def8d5a44bc1e1782ebde72a846ba9f70adc655e9ad45082edfbd180322fc31"
+    },
+    {
+      "path": "legend-selection-contracts.log.gz",
+      "sha256": "bab9d1831d90117e875c3c02bd054baceec34f8d01f2484a7dbdf97c6c6a3d40"
+    },
+    {
+      "path": "legend-selection-coverage-final.log.gz",
+      "sha256": "221590127ec577cb77a4d98ea50530db8f4c7cba85450efafad382b964777815"
+    },
+    {
+      "path": "legend-selection-coverage-owner.log.gz",
+      "sha256": "bbdf6e9b9e40b4413aa75bd0997c460c82c2b5416089f7bb8c36ee6586035a8f"
+    },
+    {
+      "path": "legend-selection-coverage-verified.log.gz",
+      "sha256": "c3f963a710694c3fd37528b1643a3b33a7f89b9aaccbef209f0363ae6f8d7d27"
+    },
+    {
+      "path": "legend-selection-coverage.log.gz",
+      "sha256": "f8d835ce4f89d5dd7574273f6d13f57a218d2f237a25d4c30f47238d3775538d"
+    },
+    {
+      "path": "legend-selection-critical-final.log.gz",
+      "sha256": "6f686cc97a1d3f5c6cf0aa3b689eac46f3c80857179d268d2b214f2e40f068d5"
+    },
+    {
+      "path": "legend-selection-doc-browser.log.gz",
+      "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
+    },
+    {
+      "path": "legend-selection-doc-browser.mjs.gz",
+      "sha256": "7fa8742e7ada815eb23376d39a286b8ab98e5e65d0ece3f4cc555649f8972430"
+    },
+    {
+      "path": "legend-selection-doc-consumer-final.log.gz",
+      "sha256": "6ea458ac5e79402e29dd159e2e96de194cad9f052fb3adcbff93717b02c4907d"
+    },
+    {
+      "path": "legend-selection-doc-consumer.log.gz",
+      "sha256": "41ef99a4deb456eaac9ba47b55fe3b7591d200891772e1d4989a3943cf9d05ee"
+    },
+    {
+      "path": "legend-selection-doc-consumer.mjs.gz",
+      "sha256": "c722fa1f194af43cfd3648bbc64464d1a2f20c9f773a92d0a2967863cc0d7cc2"
+    },
+    {
+      "path": "legend-selection-docs-final.log.gz",
+      "sha256": "e5781a1d96998bf48c7203a0a7461c27ceaf008f6590e1bdf976c9465bbb68da"
+    },
+    {
+      "path": "legend-selection-docs-refreshed.log.gz",
+      "sha256": "6d2e3b96e973fae3a2cebf145e7b68c95d8ea2954954d72fd48f3c2a3448a6ab"
+    },
+    {
+      "path": "legend-selection-final-consumer20.log.gz",
+      "sha256": "9d75bc96b686e947825f7946656871aa7da89504fd910d2fd5cd04aec07b3462"
+    },
+    {
+      "path": "legend-selection-final-consumer22.log.gz",
+      "sha256": "a581448cfdfb0fbd8e0c556fbe626ef65ebe9f6e2d6d4891cf39f4b83cb4621d"
+    },
+    {
+      "path": "legend-selection-final-consumer24.log.gz",
+      "sha256": "e358511cdae724e7d86d3d35b821e11d60d74c774061d1c56adc6872bda494de"
+    },
+    {
+      "path": "legend-selection-final-doc-consumer.log.gz",
+      "sha256": "1e8595c506c8e35b4df3c75aa9d6d3dd899ae43c42ff57e25dc16d78d50b4490"
+    },
+    {
+      "path": "legend-selection-focused-final.log.gz",
+      "sha256": "78a05be2f832967dffe2c4abfbb6a7d06cacbe67d8e58fad9e682f8fdf98b981"
+    },
+    {
+      "path": "legend-selection-focused-fixed.log.gz",
+      "sha256": "0dc48ecb98b22c19c5a39d84cc01c0695c391a8f6b0b06fa84ac616dc0c191e9"
+    },
+    {
+      "path": "legend-selection-focused.log.gz",
+      "sha256": "479fa55286381098e1212ad7159ec8271b15b5f1b80abc12f6c47482976cae54"
+    },
+    {
+      "path": "legend-selection-generate.log.gz",
+      "sha256": "8da3edb5759a049cc3a455105937da619da042c97508e97f0bcf9676a551c0bf"
+    },
+    {
+      "path": "legend-selection-images-final.log.gz",
+      "sha256": "25ae330fab5eedd5880d73ee48fa810b01b8515fdc7c52cd96ab5028fbd9ca36"
+    },
+    {
+      "path": "legend-selection-oracle.mjs.gz",
+      "sha256": "c2cea2b04ec2dfd96c4619bc59222f6293ba85ac9b73b01248bde4c0cedda9f2"
+    },
+    {
+      "path": "legend-selection-owners.log.gz",
+      "sha256": "91bc5db8d63a1769b4776f0247f2f20b6a7ac50bc25f6baaa7c75303d039d70f"
+    },
+    {
+      "path": "legend-selection-pack-final.log.gz",
+      "sha256": "a3dd562be27ac0e523ab8c271295a8a20d52a13a3ef62e95edbb7c6eecab4d20"
+    },
+    {
+      "path": "legend-selection-pack.log.gz",
+      "sha256": "57b1d525465701f63e7f1bae1a190198956f9189147cc3e6110249ce40840535"
+    },
+    {
+      "path": "legend-selection-package-first.log.gz",
+      "sha256": "c1d4d26a80691e73666ff9604ac4357ecae18c4d95119e2ecdda27b9802d7da9"
+    },
+    {
+      "path": "legend-selection-qualify.py.gz",
+      "sha256": "a23f0ccd6cecb00ff2f3c69668f4121ddf97786e0f393c523c24d29a09feab7d"
+    },
+    {
+      "path": "legend-selection-realistic-final.log.gz",
+      "sha256": "d00b94d7b32c7f55e6a6aa3405d11e573b9c89c4e6f77fe8b55b20cebde93d61"
+    },
+    {
+      "path": "legend-selection-realistic.log.gz",
+      "sha256": "2a198d8a137d2d5b6aaaca2048edffe223ad651a6b24d8801bfed49f5c9041c8"
+    },
+    {
+      "path": "legend-selection-refresh.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "legend-selection-source-final.log.gz",
+      "sha256": "b6f2c3fd4a3c8d02105f12c7fd6702ee7ef83f674d2356cdbe088cb1a1074971"
+    },
+    {
+      "path": "legend-selection-pinned-generation.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "legend-selection-pinned-docs.log.gz",
+      "sha256": "e94c152afdb9cee5fdce9b49d4cd8095af7725eeac4237fbe28a50c482ba52ce"
+    },
+    {
+      "path": "legend-selection-pinned-build.log.gz",
+      "sha256": "611d353c22a96e706d38ff83772391e9f6a05c163c864f4cf09d21e48973cc93"
+    },
+    {
+      "path": "legend-selection-pinned-built.log.gz",
+      "sha256": "d1c4b02e7686ee74b725bff3bd19b5ae06ab60c7243dcb0cff15a7662cc622f0"
+    }
+  ]
+}

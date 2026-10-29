@@ -10,7 +10,7 @@ import { normalizeParameterEditOptions } from "../grammar/parameter.js";
 import { requireStoredResource } from "../selectors/resources.js";
 import { interactionOptions as options } from "./input.js";
 
-export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter", "filter", "reorder"]);
+export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter", "filter", "reorder", "setVisibility", "focusHierarchy"]);
 
 export function interactionTransaction(command, generatedId) {
   const request = options(command, ["type", "target", "payload"],
@@ -91,6 +91,26 @@ export function prepareInteractionEdit(program, command) {
     }
     return { program: invoke(program, method, { ...args, ...address(target, true) }), affectedOwners };
   }
+  if (command.type === "focusHierarchy") {
+    const payload = options(command.payload, ["focus"], [], "Hierarchy focus payload");
+    return { program: invoke(program, "editPartitionPlot", { ...payload, ...address(target, true) }), affectedOwners };
+  }
+  if (command.type === "setVisibility") {
+    const payload = options(command.payload, [], ["clear", "channel", "values", "visible", "scaleDomain"], "Visibility command payload");
+    let method, args;
+    if (Object.hasOwn(payload, "clear")) {
+      options(payload, ["clear"], [], "Clear visibility payload");
+      if (payload.clear !== true) throw new TypeError("Clear requires true.");
+      method = "removeMarkVisibility"; args = {};
+    } else {
+      options(payload, ["channel", "values", "visible", "scaleDomain"], [], "Visibility command payload");
+      method = "setMarkVisibility"; args = payload;
+    }
+    const next = invoke(program, method, { ...args, ...address(target, true) });
+    // Wrapped native no-ops may append trace only. Sessions publish meaningful changes.
+    const nextOwner = interactionOwner(next, target).view;
+    return { program: nextOwner.semanticSpec === view.semanticSpec && nextOwner.graphicSpec === view.graphicSpec ? program : next, affectedOwners };
+  }
   if (command.type === "setParameter") {
     requireMethod(program, "editParameter");
     const payload = options(command.payload, ["value"], [], "Parameter command payload");
@@ -115,11 +135,16 @@ export function prepareInteractionEdit(program, command) {
   return { program: invoke(program, "editMarkSelection", { ...address(target, false), selection: id, ...select, mode }), affectedOwners };
 }
 
-export function scopeSelectionKeys(program, target, keys, spend, reverse = false) {
+export function interactionNamespaces(program, target) {
   const namespaces = [];
   for (const child of target.childPath) {
     namespaces.push(`${program.compositionSpec.id}-${child}`); program = program.children[child];
   }
+  return namespaces;
+}
+
+export function scopeSelectionKeys(program, target, keys, spend, reverse = false) {
+  const namespaces = interactionNamespaces(program, target);
   const prefixWork = JSON.stringify(namespaces).length;
   spend(keys.length * prefixWork * Math.max(1, namespaces.length));
   return keys.map(key => {

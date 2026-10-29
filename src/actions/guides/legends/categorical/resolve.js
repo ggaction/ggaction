@@ -1,6 +1,6 @@
 import { conditionalLegendLayer } from "../../../../materialization/legendEncodings.js";
 import { resolveSizeShapeMapping } from "../../../../grammar/legendCombinations.js";
-import { requireDataset } from "../../../../selectors/datasets.js";
+import { requireDataset, unfilteredMarkDataset } from "../../../../selectors/datasets.js";
 import { readNominalField } from "../../../../grammar/scales/fields.js";
 import { resolveLegendOrderDomain } from "../../../../grammar/categoryOrder.js";
 import { validateUserId } from "../../../../core/identifiers.js";
@@ -13,6 +13,7 @@ import { nonEmptyString } from "./validation.js";
 import { findLegendLayer as findLayer } from "../../../../materialization/legendEncodings.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
 import { horizonLegendPresentation } from "../../../../grammar/horizon.js";
+import { visibilityLegendDataset } from "../../../../materialization/markVisibility.js";
 
 function isCategoricalTarget(layer) {
   if (["line", "point"].includes(layer?.mark?.type)) {
@@ -142,9 +143,10 @@ export function resolveDefinition(program, layer, requestedChannels, requestedTi
     title: nonEmptyString(requestedTitle ?? horizon?.title ?? field, "Legend title"),
     ...(horizon === undefined ? {} : { defaultLabelMap: horizon.labelMap }),
     domain: resolveLegendOrderDomain(resolved.domain, order, linked,
-      order?.values === undefined ? undefined : readNominalField(requireDataset(program, layer.data).values, field)),
+      order?.values === undefined ? undefined : readNominalField(visibilityLegendDataset(program, layer, channels).values, field),
+      order?.values === undefined ? undefined : [...new Set([...resolved.domain, ...readNominalField(unfilteredMarkDataset(program, layer).values, field)])]),
     ...(sizeShape ? {combine:"size-shape",...resolveSizeShapeMapping({layer,
-      scales:program.resolvedScales,order,rows:requireDataset(program,layer.data).values})} : {})
+      scales:program.resolvedScales,order,rows:visibilityLegendDataset(program,layer,channels).values})} : {})
   };
 }
 

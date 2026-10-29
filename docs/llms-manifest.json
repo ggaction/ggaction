@@ -1246,11 +1246,15 @@
         "filter-another-view-from-a-selection",
         "select-the-nearest-item",
         "keep-or-drop-hidden-selections",
+        "select-categories-from-a-legend",
+        "hide-and-restore-categories-from-a-legend",
         "automatic-click-selection",
-        "brush-or-lasso-an-existing-selection"
+        "brush-or-lasso-an-existing-selection",
+        "connect-parameter-inputs-and-a-context-action",
+        "navigate-a-partition-view-from-host-controls"
       ],
-      "bytes": 32573,
-      "sha256": "f799db5b927be78d01e64082f9f4d4e84ecb85d248d8e73db69e803da2487c35"
+      "bytes": 44988,
+      "sha256": "ceb842137d1fc2ad4ca992876bcb9d8a3a89956a57ee15b7f0ad54ddd43ed8cb"
     },
     {
       "order": 74,
@@ -2182,6 +2186,8 @@
         "editprojection",
         "focused-core-data-editing",
         "focused-channel-scale-editors",
+        "setmarkvisibility",
+        "removemarkvisibility",
         "related"
       ],
       "bytes": 264694,
@@ -2473,6 +2479,8 @@
       "headings": [
         "advanced-chart-actions",
         "encodechannels",
+        "setmarkvisibility",
+        "removemarkvisibility",
         "selectmarks",
         "editmarkselection",
         "removemarkselection",
@@ -2487,8 +2495,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 13467,
-      "sha256": "55a67c391887d91bdb3dbe8051577d3a7fb13b37646da3ba7bd4e19192b34b07"
+      "bytes": 16892,
+      "sha256": "2309cdaf3e7680b72a99f5b103e84d6478fe1e22a176456f88847c073035eafe"
     },
     {
       "order": 126,
@@ -3131,6 +3139,7 @@
         "type-markselectionselector",
         "type-markselector",
         "type-markshadow",
+        "type-markvisibilityoptions",
         "type-meanconfidenceintervalmethod",
         "type-measuredradialguideoptions",
         "type-measuredradiusscaleoptions",
@@ -3288,6 +3297,7 @@
         "type-removemarklabelsoptions",
         "type-removemarkoptions",
         "type-removemarkselectionoptions",
+        "type-removemarkvisibilityoptions",
         "type-removeparallelaxisoptions",
         "type-removeparameteroptions",
         "type-removepathorderoptions",

@@ -49,6 +49,9 @@ export function assertRegionInteraction(source, recipe, rows) {
   assertAngularSource(rows);
   assertDirectControls(source);
   assertLinkedFilter(source);
+  assertLegendSelection(source);
+  assertLegendVisibility(source);
+  assertHierarchyFocusSource(rows, recipe);
   assert.equal(serializeProgram(p), original);
 }
 
@@ -118,5 +121,89 @@ function assertLinkedFilter(source) {
     for (const id of ["target", "last"]) assert.deepEqual(getMarkItems(current.children[id], { target: "mark" }).map(item => item.key), expected[index].map(item => item.key));
   }
   assert.deepEqual(phases, ["commit", "settled", "commit", "settled", "commit", "settled"]);
+  assert.equal(serializeProgram(p), before); session.destroy();
+}
+
+function assertLegendSelection(source) {
+  const p = source.editCanvas({ width: 800, height: 500, margin: 140 }).encodeColor({ target: "mark", field: "category" })
+    .createLegend({ target: "mark", channels: ["color"], position: "right", symbol: { layers: [{ type: "swatch", width: 14, height: 12 }] } })
+    .selectMarks({ id: "legend-picked", target: "mark", items: [] })
+    .highlightMarks({ selection: "legend-picked", color: "#d11a2a", dimOthers: false, bringToFront: false });
+  const items = getMarkItems(p, { target: "mark" }), category = items[0].fields.category;
+  const expected = items.filter(item => item.fields.category === category).map(item => item.key);
+  const session = createInteractionSession({ program: p, bindings: [{ type: "legend", effect: "selection", target: "mark", channel: "color", selection: "legend-picked" }] });
+  const listeners = new Map(), host = { getBoundingClientRect: () => ({ left: 0, top: 0, width: 800, height: 500 }),
+    addEventListener: (type, fn) => listeners.set(type, fn), removeEventListener: type => listeners.delete(type) };
+  session.mount(host);
+  const legend = session.getState().scene.nodes.find(node => node.type === "rect" && node.properties.width === 14 && node.properties.height === 12);
+  assert.ok(legend);
+  const point = { clientX: legend.offset[0] + legend.properties.x + 7, clientY: legend.offset[1] + legend.properties.y + 6 };
+  listeners.get("click")(point);
+  const next = deserializeProgram(serializeProgram(session.getState().program));
+  assert.deepEqual(getMarkItems(next, { target: "mark" }).filter(item => item.geometry.some(g => g.properties.fill === "#d11a2a" || g.properties.stroke === "#d11a2a")).map(item => item.key), expected);
+  listeners.get("click")(point);
+  assert.deepEqual(getMarkItems(session.getState().program, { target: "mark" }).filter(item => item.geometry.some(g => g.properties.fill === "#d11a2a" || g.properties.stroke === "#d11a2a")).map(item => item.key), []);
+  session.destroy(); assert.equal(listeners.size, 0);
+  assertContextControls(p, { x: point.clientX, y: point.clientY });
+}
+
+function assertContextControls(source, point) {
+  const items = getMarkItems(source, { target: "mark" }), category = items[0].fields.category;
+  const nextCategory = items.find(item => item.fields.category !== category)?.fields.category ?? category;
+  const p = source.createParameter({ id: "control-category", value: category }).editMarkSelection({ selection: "legend-picked", where: {
+    version: 2, registry: "standard@1", root: { type: "binary", op: "eq", left: { type: "field", name: "category" }, right: { type: "parameter", id: "control-category" } }
+  } });
+  const session = createInteractionSession({ program: p, bindings: [{ type: "contextMenu" }] }), original = serializeProgram(p), events = [];
+  session.subscribe(event => events.push(event));
+  session.dispatch({ type: "contextMenu", point });
+  assert.equal(events.at(-1).type, "contextMenu"); assert.equal(session.getState().hit.target.role, "legend-item");
+  assert.equal(session.getState().program, p); assert.equal(session.getState().revision, 0);
+  session.dispatch({ type: "setParameter", target: "control-category", payload: { value: nextCategory }, origin: "user" });
+  const next = deserializeProgram(serializeProgram(session.getState().program));
+  const selected = getMarkItems(next, { target: "mark" }).filter(item => item.geometry.some(g => g.properties.fill === "#d11a2a" || g.properties.stroke === "#d11a2a")).map(item => item.key);
+  assert.deepEqual(selected, items.filter(item => item.fields.category === nextCategory).map(item => item.key));
+  assert.equal(serializeProgram(p), original); session.destroy();
+}
+
+function assertLegendVisibility(source) {
+  const p = source.editCanvas({ width: 800, height: 500, margin: 140 }).encodeColor({ target: "mark", field: "category" })
+    .createLegend({ target: "mark", channels: ["color"], symbol: { layers: [{ type: "swatch", width: 14, height: 12 }] } });
+  const items = getMarkItems(p, { target: "mark" }), category = items[0].fields.category;
+  const expected = items.filter(item => item.fields.category !== category).map(item => item.key), before = serializeProgram(p);
+  for (const scaleDomain of ["visible-data", "all-data"]) {
+    const session = createInteractionSession({ program: p, bindings: [{ type: "legend", effect: "visibility", target: "mark", channel: "color", scaleDomain }] });
+    const listeners = new Map(), host = { getBoundingClientRect: () => ({ left: 0, top: 0, width: 800, height: 500 }),
+      addEventListener: (type, fn) => listeners.set(type, fn), removeEventListener: type => listeners.delete(type) };
+    session.mount(host);
+    const legend = session.getState().scene.nodes.find(node => node.type === "rect" && node.properties.width === 14 && node.properties.height === 12);
+    const point = { clientX: legend.offset[0] + legend.properties.x + 7, clientY: legend.offset[1] + legend.properties.y + 6 };
+    listeners.get("click")(point);
+    const next = deserializeProgram(serializeProgram(session.getState().program));
+    assert.deepEqual(getMarkItems(next, { target: "mark" }).map(item => item.key), expected);
+    assert.deepEqual(next.guideConfigs.legend.color?.domain ?? next.guideConfigs.legend.series.domain, p.guideConfigs.legend.color?.domain ?? p.guideConfigs.legend.series.domain);
+    for (const item of getMarkItems(next, { target: "mark" })) assert.ok(item.rows.some(row => row.data === "rows"));
+    listeners.get("click")(point); assert.deepEqual(getMarkItems(session.getState().program, { target: "mark" }).map(item => item.key), items.map(item => item.key));
+    session.destroy(); assert.equal(listeners.size, 0);
+  }
+  assert.equal(serializeProgram(p), before);
+}
+
+
+function assertHierarchyFocusSource(rows, recipe) {
+  let p = chart().createCanvas({ width: 500, height: 400, margin: 20 }).createData({ id: "focus-rows", keyField: "key", values: rows })
+    .createComputedData({ id: "counts", source: "focus-rows", as: "unitWeight", expression: { version: 2, registry: "standard@1", root: { type: "literal", value: 1 } } })
+    .createHierarchyData({ id: "h", groupFields: recipe === "observations" ? ["category", "key"] : ["category"], value: "unitWeight" })
+    .layoutHierarchy({ id: "layout", method: "partition" });
+  if (recipe === "series") p = p.createCoordinate({ id: "polar", type: "polar" });
+  p = p.createPartitionPlot({ id: "focus", ...(recipe === "categories" ? { orientation: "vertical" } : {}), ...(recipe === "series" ? { coordinate: "polar", outerRadius: 150 } : {}) });
+  const before = serializeProgram(p), original = getMarkItems(p, { target: "focus" }), category = rows[0].category;
+  const session = createInteractionSession({ program: p, bindings: [] });
+  session.dispatch({ type: "focusHierarchy", target: "focus", payload: { focus: { path: [category] } } });
+  const next = deserializeProgram(serializeProgram(session.getState().program)), visible = getMarkItems(next, { target: "focus" }).filter(item => item.visible);
+  assert.ok(visible.length); assert.ok(visible.every(item => item.fields.category === category));
+  assert.equal(visible[0].fields.value, rows.filter(row => row.category === category).length);
+  assert.ok(visible.every(item => item.rows.some(row => row.data === "focus-rows")));
+  session.dispatch({ type: "focusHierarchy", target: "focus", payload: { focus: null } });
+  assert.deepEqual(getMarkItems(session.getState().program, { target: "focus" }).map(item => item.key), original.map(item => item.key));
   assert.equal(serializeProgram(p), before); session.destroy();
 }

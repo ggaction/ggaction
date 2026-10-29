@@ -75,6 +75,14 @@
     "removeMarkFilter": {
       "availableBy": "v0.0.13"
     },
+    "setMarkVisibility": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "removeMarkVisibility": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
     "selectMarks": {
       "availableBy": "v0.0.13"
     },

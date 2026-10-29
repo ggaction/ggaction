@@ -10,7 +10,7 @@ import { conditionalSelectionMembership } from "../../conditionalSelection.js";
 import { identifyItems } from "../items/common.js";
 import { memberRowReferences } from "../rows.js";
 import { textSelectionPolicy } from "./text.js";
-import { findDataset } from "../../../selectors/datasets.js";
+import { findDataset, isEmptyMarkFilteredView } from "../../../selectors/datasets.js";
 import { requireLayer } from "../../../selectors/layers.js";
 import { areaSelectionPolicy } from "./area.js";
 import { arcSelectionPolicy } from "./arc.js";
@@ -107,7 +107,7 @@ export function resolveMarkSourceItems(program, target, grain = 'item', options 
 }
 
 function emptyFilteredItems(program, layer, dataset) {
-  return program.markConfigs[layer.id]?.markFilter?.empty === true && dataset?.values?.length === 0;
+  return isEmptyMarkFilteredView(program, layer) && dataset?.values?.length === 0;
 }
 
 function withConditionalChannels(program, layer, items, { channels, active = new Set() } = {}) {

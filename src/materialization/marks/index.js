@@ -3,6 +3,7 @@ import { conditionalDependentMarkIds, orderConditionalMarkIds } from "../conditi
 import { conditionalValues } from "../../grammar/conditionalState.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import { findLayer } from "../../selectors/layers.js";
+import { isEmptyMarkFilteredView } from "../../selectors/datasets.js";
 import {
   POSITION_CHANNELS,
   POSITION_ENCODING_CHANNELS
@@ -47,7 +48,7 @@ export function getMarkRematerializationStep(program, layer) {
   if (program.markConfigs?.[layer.id]?.statisticalReference !== undefined) {
     return { op: "rematerializeStatisticalReference", args: { id: layer.id } };
   }
-  if (program.markConfigs?.[layer.id]?.markFilter?.empty === true) {
+  if (isEmptyMarkFilteredView(program, layer)) {
     return { op: "materializeEmptyMark", args: { id: layer.id } };
   }
   const policy = getMarkMaterializationPolicy(layer);

@@ -5,3 +5,4 @@ export type FilterMarksOptions = {
   target?: string;
   mode?: "replace" | "compose";
 } & MarkSelector;
+/** Hide categorical final items independently of an existing user filter. */

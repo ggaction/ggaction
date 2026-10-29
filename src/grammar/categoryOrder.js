@@ -145,13 +145,16 @@ export function normalizeLegendOrder(order) {
   return cloneAndFreeze({ channel: order.channel });
 }
 
-export function resolveLegendOrderDomain(domain, order, linked, observed = domain) {
+export function resolveLegendOrderDomain(domain, order, linked, observed = domain, original = domain) {
   if (order === undefined || order === "scale") return domain;
   const normalized = normalizeLegendOrder(order);
   if (normalized.values !== undefined) {
     const seen = [...new Set(observed)].filter(value => domain.some(item => Object.is(item, value)));
     const available = [...seen, ...domain.filter(value => !seen.some(item => Object.is(item, value)))];
-    return resolveCategoryOrder(available.map(value => ({ value })), "value", normalized);
+    resolveCategoryOrder(original.map(value => ({ value })), "value", normalized);
+    return resolveCategoryOrder(available.map(value => ({ value })), "value", {
+      values: normalized.values.filter(value => domain.some(item => sameValue(item, value)))
+    });
   }
   if (!Array.isArray(linked) || linked.length !== domain.length ||
     !domain.every(value => linked.some(other => Object.is(value, other)))) {

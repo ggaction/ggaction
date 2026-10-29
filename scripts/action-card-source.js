@@ -80,6 +80,7 @@ function unique(values) {
 }
 
 function operationAndSubject(name) {
+  if (name === "setMarkVisibility") return { operation: "edit", subject: "MarkVisibility" };
   if (name === "bundleGraphEdges") return { operation: "layout", subject: "GraphEdges" };
   if (name === "facet") return { operation: "compose", subject: "facet" };
   if (name === "facetGrid") return { operation: "compose", subject: "FacetGrid" };

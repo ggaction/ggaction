@@ -4,16 +4,16 @@
 
 `ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
-`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one click-selection, brush, or lasso binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
+`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, at most one click-selection, categorical legend-selection/visibility, brush, or lasso binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
 
 ## Handle and commands
 
-- `mount(element, { rootTransform? } = {})` accepts an event surface with `addEventListener`, `removeEventListener`, and `getBoundingClientRect`; public declarations use `Element`. It installs passive listeners and returns an idempotent unmount function. A later successful mount removes the previous listeners. Invalid frame/host setup preserves the previous state. `rootTransform` is an explicit six-number local-to-CSS affine matrix; omission is identity. CSS layout matrices and DPR are never guessed. The host renders the same program at the declared logical size and supplies any additional matrix.
+- `mount(element, { rootTransform? } = {})` accepts an event surface with `addEventListener`, `removeEventListener`, and `getBoundingClientRect`; public declarations use `Element`. It installs passive inspection listeners, a nonpassive listener for an explicit context-menu binding, and returns an idempotent unmount function. A later successful mount removes the previous listeners. Invalid frame/host setup preserves the previous state. `rootTransform` is an explicit six-number local-to-CSS affine matrix; omission is identity. CSS layout matrices and DPR are never guessed. The host renders the same program at the declared logical size and supplies any additional matrix.
 - `dispatch({ type: "inspect", point, pointerType?, slop?, hitInvisible? })` accepts an explicit CSS-local `{x,y}`. The pointer type is mouse (default), pen, or touch. Mounted events subtract the current client rectangle once. Root matrices transform indexed shapes and clips, preserving slop in CSS pixels; localPoint remains the child Canvas coordinate. Empty viewports or singular matrices produce no hit with diagnostics.
 - `dispatch({ type: "leave" })` clears the transient hit.
 - `dispatch({ type: "frame", scene, version, generation })` snapshots a version-2 concrete Canvas scene. `generation` must equal current state and `version` must be a greater non-negative safe integer. Stale commands return `{status:"stale"}` without examining scene contents. Current frames retain known node keys, type and topology from the current program; subsets and concrete sampled coordinates are permitted. Unknown keys or changed topology fail atomically. Use the accepted `getState().scene` with `renderTransitionScene` so drawing and targeting share one exact snapshot. The session does not sample animations or infer geometry from endpoints. Region previews use host RAF as specified below. An accepted external frame cancels an active captured gesture before replacing its baseline.
 - `updateProgram(program)` prepares the full replacement before committing it, increments frameVersion, generation and session revision, and clears transient hits. Earlier immutable programs and their indices are unchanged. Existing mounted bindings remain active.
-- `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, leave, frame, program, mount, unmount, or destroy; program events also include `selectionChanges` below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
+- `subscribe(listener)` registers a synchronous listener and returns an unsubscribe function. Events are `{type,state}` with type inspect, contextMenu, leave, frame, program, mount, unmount, or destroy; program events also include `selectionChanges` below. Each state is an immutable snapshot. Reentrant commands run FIFO after the current event, at most 256 commands per drain and queued operations. Subscriber errors propagate, preserve the already published state, and discard pending work.
 - `getState()` returns `{program,previewProgram,scene,frameVersion,generation,revision,hit,linkedSelections,mounted,destroyed}`. It remains readable after destruction and contains no host objects.
 - `destroy()` removes listeners and disposes the active index once; first call returns true and later calls false. Pending work is discarded. Later dispatch, mount, subscribe, or updateProgram calls throw a disposed error.
 
@@ -42,11 +42,12 @@ The following advanced controller commands require an explicit `target` and `pay
 
 - `dispatch({type:"select", target, payload:{id,select,mode?}, transactionId?,origin?,causeTransactionId?})` creates a missing selection with mode `replace` (default) or updates the same ID and owner. `select` is the existing `MarkSelectionSelector`, including item keys, typed ranges and parameter-backed boolean ASTs. `add`, `toggle`, `subtract`, and `intersect` require an existing selection and reuse its native set semantics.
 - `dispatch({type:"clearSelection", target, payload:{id}, transactionId?,origin?,causeTransactionId?})` replaces an existing selection with an empty item set, `empty:"none"`, and its existing grain. The resource, highlight, label and conditional consumers remain valid. It does not remove the resource or reset the chart.
+- `dispatch({type:"focusHierarchy",target,payload:{focus},transactionId?,origin?,causeTransactionId?})` invokes the existing Full partition editor. `focus` is the native typed `HierarchyNodeTarget` or null for the current root. Only an explicit partition owner is accepted; other hierarchy marks and Basic reject. Coordinate, layout, paint and pruning policy remain unchanged. Native source recovery, selection pruning and subsequent session reconciliation/linked closure retain their existing meaning. No new hierarchy calculation or stored schema is introduced.
 - `dispatch({type:"setParameter", target, payload:{value}, transactionId?,origin?,causeTransactionId?})` invokes the existing parameter editor and its entire dependency closure. An unchanged scalar value returns `{status:"unchanged"}` without a trace, revision or event. Basic lacks these editors and rejects them even for unchanged values.
 - `dispatch({type:"filter",target,payload:{select,mode?,recompute?},transactionId?,origin?,causeTransactionId?})` invokes `filterMarks` with the existing inline `MarkSelector`. `mode` is native replace/compose; `recompute` retains the existing inferred-graph restriction. Named-selection AST, region and screen metadata are not inline filter selectors. `{clear:true}` replaces the entire payload to invoke `removeMarkFilter`. Clear removes only that filter; it does not reset other state. Missing active filters and invalid native options reject atomically.
 - `dispatch({type:"reorder",target,payload:{channel,values}|{channel,by,direction?}|{channel,clear:true},transactionId?,origin?,causeTransactionId?})` invokes `orderCategories` or `removeCategoryOrder`. Channel is x/y/theta and all values, computed ordering, shared-scale compatibility and automatic-domain rules are the existing category-order contract. Source rows stay in their original order; mark geometry, axes, linked legends and selection items follow the native order. Clear requires an active order. A clear payload cannot contain replacement options and clear accepts only true. Basic rejects both direct-control editors.
 
-A target is a root owner ID string or `{childPath,id,facetSource?}` using existing action scopes. Selection, filter and reorder commands identify the mark owner; parameter commands identify the parameter. No list or inferred owner is accepted. Concat paths retain exact item namespaces; facet edits require `facetSource:true` and regenerate retained cells. Generated facet cells cannot be edited individually. An existing selection must belong to the stated owner. Child paths are limited to 1,024 components; ordinary action target validation also applies.
+A target is a root owner ID string or `{childPath,id,facetSource?}` using existing action scopes. Selection, filter, reorder and hierarchy-focus commands identify the mark owner; parameter commands identify the parameter. No list or inferred owner is accepted. Concat paths retain exact item namespaces; facet edits require `facetSource:true` and regenerate retained cells. Generated facet cells cannot be edited individually. An existing selection must belong to the stated owner. Child paths are limited to 1,024 components; ordinary action target validation also applies.
 
 Each accepted edit first invokes the wrapped domain action on an immutable candidate and prepares its complete current hit frame. Only successful preparation replaces the session program/scene, increments revision, generation and frameVersion once, and clears the transient hit. The original program remains unchanged. The host renders `event.current` or the current accepted scene; the controller does not draw or prepare renderer assets. `settled` means this synchronous program/frame work has completed, not that a host renderer or asynchronous asset job has finished.
 
@@ -390,3 +391,108 @@ revision and restoration. The preview is an exact existing Polar sector path, cl
 plot, in the separate preview program; Canvas/SVG/PNG/PDF consume it identically.
 Evidence: `test/unit/angular-brush-inversion.test.js`, `test/unit/interaction-angular-selection.test.js`,
 `test/browser/interaction-region.browser.js`, and the interaction selection-preview renderer pair.
+
+
+## Categorical legend selection
+
+Full accepts `{type:"legend",effect:"selection",target,channel,selection,mode?,slop?}` as its one
+editing pointer binding. `target` is an explicit root or concat owner, `channel` is an existing
+public legend channel, and `selection` is an existing authored selection on that owner. The native
+legend-block resolver must find exactly one categorical block. Combined color/stroke/shape/dash
+blocks and categorical size-shape blocks retain their existing channel ownership. Continuous,
+interval and sampled blocks reject; this binding does not implement visibility. Basic rejects.
+
+`mode` defaults to `toggle` and accepts `replace` or `toggle`. Toggle applies the native symmetric
+set difference to every currently visible final item whose own field equals the clicked category.
+Numeric and string categories stay distinct, including when their formatted labels are identical.
+The selector is a key snapshot at the existing grain. Replace of the same explicit snapshot is a
+no-op; live predicates become snapshots even when their effective membership already matches.
+
+Only actual current-frame symbol or label candidates for that target/channel qualify. Composite
+symbol parts share one guide key. Title, background, overflow summary, other legend blocks and
+empty categories do nothing. Native clip/opacity and CSS slop rules apply; `hitInvisible` and
+`onMiss` are not accepted. The binding does not parse label text, expose a new guide key schema,
+or infer a group from a continuous sample. Missing owner, selection or block after update becomes
+dormant; an invalid or ambiguous replacement rejects without changing committed state.
+
+The shared captured-click lifecycle, immutable native command transaction, selection policy and
+linked-selection/filter closure apply with `origin:"user"`. Runtime bindings are recreated after
+codec restoration; the native selection is persisted. Root and explicit child scopes are supported;
+facet-source geometry, competing editing bindings and linked target-selection writers reject.
+Evidence: `test/unit/interaction-legend-selection.test.js`, `test/browser/interaction-session.browser.js`,
+`test/contracts/realistic-logical-selection.test.js`, and the installed interaction consumer.
+
+
+## Categorical legend visibility
+
+Full accepts `{type:"legend",effect:"visibility",target,channel,scaleDomain,slop?}` as its one editing
+pointer binding. It selects an existing categorical legend block at the explicit root/concat owner;
+no named selection is required. Each symbol/label click toggles that typed category using native
+`setMarkVisibility`. Titles, background, overflow summaries and other blocks are inert. Missing
+owners or removed legends become dormant. Continuous/interval blocks, facet geometry, competing
+pointer bindings and Basic authoring reject. Captured-click cancellation, CSS slop, current-frame
+identity and immutable input rules match categorical selection.
+
+`dispatch({type:"setVisibility",target,payload:{channel,values,visible,scaleDomain},transactionId?,origin?,causeTransactionId?})`
+invokes `setMarkVisibility`; `{clear:true}` replaces the payload to call `removeMarkVisibility`.
+Both require the receiver's Full editor even for no-ops. A semantic/graphic no-op emits no transaction,
+trace or revision. A successful transaction emits `setVisibility` commit/settled after selection
+reconciliation and all linked changes. Errors retain the exact previous program, scene and trace.
+
+The native [visibility contract](MARK_SELECTION.md#setmarkvisibility) owns the two explicit domain
+policies and user-filter coexistence. All-data means the user-filter result before visibility. The
+control legend retains that whole category domain and mapping so hidden groups can be re-enabled;
+other automatic domains follow the selected policy, with explicit scale domains retaining precedence.
+Visibility removes actual membership, never just opacity. Existing keep-hidden/drop selection policy
+applies. Linked-filter writers own only the user filter: they project using the unfiltered universe,
+then rebuild the native filter while preserving the separate visibility recipe. Intermediate candidates
+are not published. Hidden-only native membership changes still commit even when the visible set stays
+unchanged. Dormant hidden categories survive source revisions. Runtime bindings must be recreated after
+codec restoration; visibility intent and original-row lineage are persisted in the program.
+
+Evidence: visibility grammar/action/session suites, the real-data selection corpus and Canvas/SVG
+browser interaction suite.
+
+
+## Host controls and context requests
+
+Parameter controls call the existing `setParameter` command with an explicit typed scalar. The host owns
+inputs, parsing, labels, keyboard behavior, focus and listener cleanup. Parameter changes use the native
+resource revision/DAG closure, then the same session reconciliation and linked propagation as other edits.
+Invalid values preserve program/trace/revision; unchanged values do not commit. The session creates no
+DOM widget or implicit coercion and does not bypass Basic's missing parameter editor.
+
+`{type:"contextMenu",slop?,hitInvisible?}` adds one optional context binding alongside inspection and one
+editing pointer binding. Only that explicit mounted binding prevents the native `contextmenu` default.
+It emits `{type:"contextMenu",state}` through existing subscribers; `state.hit` contains current-frame
+semantic candidates with the same CSS coordinates, clips, roles, item/row/resource identities and ordering
+as inspection. Missing geometry produces a null target and diagnostics, never an inferred owner. No raw
+DOM event, menu widget, action list or callback is serialized. The host determines which actions apply,
+renders the menu, manages focus/Escape and dispatches a subsequent existing semantic command.
+
+Headless and host keyboard requests use `dispatch({type:"contextMenu",point,pointerType?,slop?,hitInvisible?})`.
+The point is CSS-local; query defaults match inspection. Requests do not mutate program, trace or session
+revision. Subscriber edits enter the existing bounded FIFO after the context callback. Full and Basic
+support read-only requests; authoring commands retain their own capability limits. Unmount, remount,
+destroy and failed mount release exactly the installed listener, and stale callbacks are ignored.
+
+Evidence: `test/unit/interaction-session.test.js`, `test/unit/interaction-selection.test.js`,
+`test/browser/interaction-session.browser.js` and the installed interaction consumer.
+
+
+## Host partition navigation
+
+`focusHierarchy` uses `editPartitionPlot` for complete preflight and realization. The session refreshes its
+current hit frame and publishes one commit/settled pair with the same scoped owner. The existing native
+focus path clears any previous source-recovery diagnostic. Unknown/ambiguous node targets, incompatible
+owners, invalid payloads and later dependent failures leave the previous committed state and trace intact.
+
+The host can present navigation controls and breadcrumb text from `getMarkItems(...).navigation` and
+`inspectProgram(...).views[].partition`; keys remain opaque. To send a focus command, retain the typed key
+or grouped path from the host's hierarchy definition. No DOM breadcrumb, automatic key decoding or generic
+session keyboard-focus state is created. Native buttons can dispatch the same command for pointer or
+keyboard activation while preserving host focus. Generic gestures, coordinate-morph animation and session
+keyboard focus remain separate capabilities.
+
+Evidence: `test/unit/interaction-hierarchy-focus.test.js`, the canonical partition-focus browser snippet
+and existing partition resource/renderer tests.

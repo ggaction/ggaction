@@ -73,7 +73,7 @@ const DATA_VALUE_KEYS = new Set([
 ]);
 const DATA_SOURCE_CONFIGS = new Set([
   "boxPlot", "density", "ecdfPlot", "endpointPlot", "errorBand", "errorBar",
-  "gradientPlot", "graphPlot", "horizon", "intervalPlot", "markFilter", "raincloudPlot",
+  "gradientPlot", "graphPlot", "horizon", "intervalPlot", "markFilter", "visibilityFilter", "raincloudPlot",
   "regression", "violinPlot", "radarPlot"
 ]);
 const MARK_ID_KEYS = new Set([

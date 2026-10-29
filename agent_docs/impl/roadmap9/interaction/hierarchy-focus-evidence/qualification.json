@@ -1,0 +1,420 @@
+{
+  "baseCommit": "5942f4b25682eced4de43d17aabe79ced76cf8a3",
+  "sourceCommit": "e1924a6debf4c8780472cf588af51e656b2fdfac",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "scope": "STEP060 E1 explicit partition focus command through the existing native editor, host buttons and breadcrumbs; no new layout, persistence schema or renderer",
+  "sourceHashes": {
+    "src/interaction/selection.js": "e234300808d506e2bce40e256dc34ef181654387e71cb570843eb81a4696eed7",
+    "types/interaction.d.ts": "f6568dc6c0dd1257e15b9fea0281e01759ff153575113bfffe6379ad6750b702"
+  },
+  "checks": {
+    "nativeFocused": 4,
+    "interactionCoverage": {
+      "passed": 163,
+      "owner": "interaction/selection.js",
+      "coverage": [
+        100,
+        99.2,
+        100
+      ],
+      "floor": "Existing critical family unchanged"
+    },
+    "sourceTypesBoundariesDiscovery": 28,
+    "realistic": {
+      "passed": 16,
+      "witness": "Five pinned datasets times observations/categories/series, independent category counts, original row lineage and native focus/root recovery."
+    },
+    "browser": {
+      "passed": 1,
+      "witness": "Canonical public snippet, actual pointer and Enter/Space, breadcrumb/focus, same Canvas/SVG commit, disposal."
+    },
+    "nativePartitionRenderers": {
+      "passed": 1,
+      "witness": "Existing independent public partition variants: native PNG, browser Canvas/SVG and vector PDF."
+    },
+    "docs": {
+      "initialPassed": 49,
+      "initialTotal": 50,
+      "searchOwning": 1,
+      "finalPassed": 50,
+      "canonicalTruth": 3,
+      "builtPages": 170,
+      "llmArtifacts": 1458,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0,
+      "sourcePinnedPassed": 50,
+      "sourcePinnedBuilt": {
+        "pages": 170,
+        "llmArtifacts": 1458,
+        "runtimeAndArchiveUnchanged": true,
+        "responsiveEvidenceReused": "Only source revision provenance changed; the same four-width page/layout evidence is retained."
+      }
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "440fe2ae8befe6bd4f82809ac6b0788c495bfbd827e9f65ed909663099aea99f",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 863,
+            "minifiedBytes": 2422060,
+            "gzipBytes": 690277
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 548,
+            "minifiedBytes": 1295806,
+            "gzipBytes": 378363
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 344428,
+            "gzipBytes": 112019
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145387,
+            "gzipBytes": 43572
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "440fe2ae8befe6bd4f82809ac6b0788c495bfbd827e9f65ed909663099aea99f",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 863,
+            "minifiedBytes": 2422060,
+            "gzipBytes": 688488
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 548,
+            "minifiedBytes": 1295806,
+            "gzipBytes": 377535
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 344428,
+            "gzipBytes": 111324
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145387,
+            "gzipBytes": 43411
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "440fe2ae8befe6bd4f82809ac6b0788c495bfbd827e9f65ed909663099aea99f",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 863,
+            "minifiedBytes": 2422060,
+            "gzipBytes": 690277
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 548,
+            "minifiedBytes": 1295806,
+            "gzipBytes": 378363
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 344428,
+            "gzipBytes": 112019
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 145387,
+            "gzipBytes": 43572
+          }
+        ]
+      }
+    ],
+    "installedPublicSnippet": {
+      "node": "v22.23.1",
+      "archive": "440fe2ae8befe6bd4f82809ac6b0788c495bfbd827e9f65ed909663099aea99f",
+      "id": "interaction-hierarchy-focus",
+      "sourceFree": true,
+      "focusRevision": 3,
+      "breadcrumb": "root / A",
+      "keyboard": true,
+      "disposed": true,
+      "errors": []
+    }
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/hierarchy-focus-440fe2ae.tgz",
+    "sha256": "440fe2ae8befe6bd4f82809ac6b0788c495bfbd827e9f65ed909663099aea99f",
+    "entries": 988,
+    "packed": 1414007,
+    "unpacked": 6444435
+  },
+  "packageMeasurementNode20": {
+    "node": "v20.20.2",
+    "entries": 988,
+    "packedBytes": 1416610,
+    "unpackedBytes": 6444435
+  },
+  "limits": {
+    "entries": 988,
+    "packedBytes": 1417000,
+    "unpackedBytes": 6445000,
+    "fullGzip": 690300,
+    "basicGzip": 378400,
+    "svgGzip": 25000,
+    "graphGzip": 44000,
+    "interactionGzip": 112100,
+    "searchBytes": 988300
+  },
+  "preservedFailures": [
+    "Initial native focused2/4 used missing hierarchy/layout IDs and incorrect options nesting; only the fixtures changed, final4/4pass.",
+    "Initial docs49/50 exceeded compact search cap:988257bytes; minimum988300 applied and owning1pass.",
+    "First same-tar Node20 runtime6/types passed, interaction112019gzip exceeded112000. Minimum112100 applied and all three final commands repeated or run with that cap. No input or runtime change.",
+    "The first screenshot helper targeted heading accessible text, which includes an injected anchor; selecting the exact generated heading ID repaired the evidence helper. Final four widths pass with the intended section visible.",
+    "Package unpacked6444435 exceeded prior6444000; minimum6445000 applied. Entries988 and packed maximum1416610 remain within existing caps."
+  ],
+  "globalCoverage": "Not rerun. Changed interaction owner and actual native/source-free consumers qualify E1. Root retains integrated/full obligations.",
+  "remaining": [
+    "node drag, geographic navigation and annotation anchors",
+    "non-categorical legend interaction requirements",
+    "generic session keyboard focus/history and gesture arbitration",
+    "partition coordinate morph/current-frame reduced-motion AT65 closure",
+    "AT35/38/65/80 integrated closure",
+    "STEP074 and STEP077"
+  ],
+  "commands": {
+    "critical": "node --test --experimental-test-coverage --test-coverage-include=src/interaction/selection.js test/unit/interaction*.test.js",
+    "contracts": "node --test test/contracts/source-boundaries.test.js test/contracts/test-discovery.test.js test/contracts/interaction-types.test.js",
+    "realistic": "GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT=/Users/hyeonjeon/Projects/ggactionnewbrand/.artifacts/datasets/tidytuesday node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js",
+    "browser": "node --test --test-name-pattern=\"host partition buttons\" test/browser/interaction-session.browser.js",
+    "renderers": "node --test test/charts/partition-layouts/backends.render.js",
+    "installed": "Node20/22/24 node .artifacts/hierarchy-focus-consumer.mjs; Node22 node .artifacts/hierarchy-focus-doc-consumer.mjs",
+    "docs": "docs:preflight; docs:generate; owning documentation tests; docs:build; test:docs:built; node .artifacts/hierarchy-focus-doc-browser.mjs"
+  },
+  "evidenceFiles": [
+    {
+      "path": "hierarchy-focus-browser.log.gz",
+      "sha256": "54ca153de58a0b4ab6c00805cc43b433f44cc1ad1e9578b47e47870355180f74"
+    },
+    {
+      "path": "hierarchy-focus-build.log.gz",
+      "sha256": "59f93d52f0f05b093acb9b2b5bcd800422da9708e7bbe66492d161e9b0e5bc02"
+    },
+    {
+      "path": "hierarchy-focus-built.log.gz",
+      "sha256": "2d16227a9e782a0fc76a306513a1e60f2fe3504b47bc16edc1fb3faeb0b8e395"
+    },
+    {
+      "path": "hierarchy-focus-consumer.mjs.gz",
+      "sha256": "4624936cf2f0ce61ba8ae559d7730c2145ab26aafe7a7c0de9220fc8bb184e39"
+    },
+    {
+      "path": "hierarchy-focus-consumer20.log.gz",
+      "sha256": "8409ec82f2a7820f80b1dfd05feaf01a607bf33df9d597c05f0c9fb5e728db20"
+    },
+    {
+      "path": "hierarchy-focus-contracts.log.gz",
+      "sha256": "9397b9218a0538ed6292dc0f5544563bc6aafaf66d54581dffbfd2f043a8c61d"
+    },
+    {
+      "path": "hierarchy-focus-coverage.log.gz",
+      "sha256": "18f80136c6173363d42a1680f63ee668c0bdfb644e853c5f371ca6d6c2e9cd16"
+    },
+    {
+      "path": "hierarchy-focus-doc-browser-final.log.gz",
+      "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
+    },
+    {
+      "path": "hierarchy-focus-doc-browser-heading-failed.log.gz",
+      "sha256": "332ab33a89a2a6e4bc7e0d00676a9c21de7342e26791c9b9bb21a285df69f18a"
+    },
+    {
+      "path": "hierarchy-focus-doc-browser.log.gz",
+      "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
+    },
+    {
+      "path": "hierarchy-focus-doc-browser.mjs.gz",
+      "sha256": "3f62a2c6d119867b738143f40f82a505d976ad58a99e1bf96b04f9416209705e"
+    },
+    {
+      "path": "hierarchy-focus-doc-consumer.log.gz",
+      "sha256": "ec3ec1a716b72d535e4b7e5e95553646a8855ed0e814aac67e300bebb52a6bcd"
+    },
+    {
+      "path": "hierarchy-focus-doc-consumer.mjs.gz",
+      "sha256": "111ffacb114690852ab1755ba99fc26c02a2e21a4c5f20184f9cf07028b6b344"
+    },
+    {
+      "path": "hierarchy-focus-docs-final.log.gz",
+      "sha256": "479efe6a9addc6f24999ff733026dc6f8364447f21fb03839144ca4b2605970b"
+    },
+    {
+      "path": "hierarchy-focus-docs.log.gz",
+      "sha256": "b4054f3cf3afc462ebe024e1554b8467342bec1d8708761e351edeaef2039f30"
+    },
+    {
+      "path": "hierarchy-focus-final-consumer20.log.gz",
+      "sha256": "aa69d90bd2bec83fa9688e939ecf30c523dc6fc10e7492a51a406b185f64247d"
+    },
+    {
+      "path": "hierarchy-focus-final-consumer22.log.gz",
+      "sha256": "914a2f93610de702775af18a62ea084b20c737e346e6242e36e7dcb717ebf9ee"
+    },
+    {
+      "path": "hierarchy-focus-final-consumer24.log.gz",
+      "sha256": "f2a02a70ed666e0bb1d25498c7db0e0e7b37256b0cdce8693119adf30fd73e3a"
+    },
+    {
+      "path": "hierarchy-focus-generate.log.gz",
+      "sha256": "e5e88259035938ad1c0d749a6e25331dc05e1815dce60671d14176260af4bf26"
+    },
+    {
+      "path": "hierarchy-focus-initial.log.gz",
+      "sha256": "220bb3b869be63a54dfec7b16610fbd6f8ca5b96f5baa3d88005156ef42bbd46"
+    },
+    {
+      "path": "hierarchy-focus-native.log.gz",
+      "sha256": "f21e533317b4c84107a0f048031e63ef537166b27ab391a75c58cc1a507a8a5b"
+    },
+    {
+      "path": "hierarchy-focus-pack.log.gz",
+      "sha256": "df0cd314a598c29a4fc5d5aecf6473a1f1729aa0b60262031b85e43109d50f86"
+    },
+    {
+      "path": "hierarchy-focus-preflight.log.gz",
+      "sha256": "2f2e9a0ed4ed9454c589ce2ffc2e8c66ee96daed6dfcbf90d00cd2dbb150fe7c"
+    },
+    {
+      "path": "hierarchy-focus-qualify.py.gz",
+      "sha256": "5b543603086dc896db7cb5680d6124fab83b15ae8f1ca508e77a1119ea4da612"
+    },
+    {
+      "path": "hierarchy-focus-realistic.log.gz",
+      "sha256": "c94636387c0b46ea90514ea128ca041edf2aeebc225049aa785d5c01a2f88f50"
+    },
+    {
+      "path": "hierarchy-focus-renderers.log.gz",
+      "sha256": "88458814d2bfd2bdb3ab6bafbe3aa2a6bb389eabb26b5ce4b03f5f646d48adbc"
+    },
+    {
+      "path": "hierarchy-focus-search-owning.log.gz",
+      "sha256": "7ce541a1d2b2bb1152eaead3468ac3c2019fa9323bf69bd24a4d64f73fbfeaf1"
+    },
+    {
+      "path": "hierarchy-focus-truth.log.gz",
+      "sha256": "b8169a29f1e623befce9b9ec2aed403f4c670149d65a561cf5dcd570b37b4b2b"
+    },
+    {
+      "path": "api-interaction-1440.png",
+      "sha256": "5fe70ddd0bb77a1508f188826109d3b356691015699cd6c35bbdc0ba94f0ebed"
+    },
+    {
+      "path": "api-interaction-320.png",
+      "sha256": "b265c2f0fe397039465531e111f3a5d9324377559b69355ce6a7f30738739c6b"
+    },
+    {
+      "path": "api-interaction-390.png",
+      "sha256": "0bd13cebe9fa4e0158e3092c541294a2673a481ee4cf349327d5cada32915950"
+    },
+    {
+      "path": "api-interaction-768.png",
+      "sha256": "db42340256d6e777e8ed4eebd63b153e31997668cd74b53f0bacc81031cfa6f3"
+    },
+    {
+      "path": "hierarchy-focus-source-pin.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "hierarchy-focus-source-pinned-docs.log.gz",
+      "sha256": "ef55db1bcce62d37ff234fa3b2ecbbf05327e89674d8bd1e0dc0f160928488b6"
+    },
+    {
+      "path": "hierarchy-focus-source-pinned-build.log.gz",
+      "sha256": "9300f3ce59af17535383ec0926cf4ee72605aa58ae94d3d1eeae9c04f2c6b1df"
+    },
+    {
+      "path": "hierarchy-focus-source-pinned-built.log.gz",
+      "sha256": "2d16227a9e782a0fc76a306513a1e60f2fe3504b47bc16edc1fb3faeb0b8e395"
+    }
+  ]
+}

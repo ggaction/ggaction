@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 3,
+  "name": "removeMarkVisibility",
+  "layer": "advanced",
+  "domain": "mark-selection",
+  "summary": "Removes category visibility while preserving unrelated chart resources.",
+  "signature": "removeMarkVisibility(options?: TargetedOptions<RemoveMarkVisibilityOptions>): ChartProgram;",
+  "intents": [
+    "remove mark visibility",
+    "remove",
+    "delete",
+    "mark selection",
+    "conditional emphasis",
+    "category visibility",
+    "hide and restore legend categories"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing category visibility",
+      "target mark and selector operands"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing category visibility",
+      "target mark and selector operands"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    }
+  ],
+  "callPatterns": [
+    "removeMarkVisibility({ target? })"
+  ],
+  "snippet": "program.removeMarkVisibility({})",
+  "errors": [],
+  "route": "/reference/actions/advanced/#removemarkvisibility"
+}

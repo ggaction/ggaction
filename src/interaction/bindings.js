@@ -1,5 +1,5 @@
 import { reconcileSelections } from "./reconciliation.js";
-import { findMarkFilterDataset, requireMaterializedDataset } from "../selectors/datasets.js";
+import { findNativeMarkFilterDataset, findMarkVisibilityDataset, requireMaterializedDataset } from "../selectors/datasets.js";
 import { activeGraphFilter } from "../selectors/graphFilters.js";
 import { requireLayer } from "../selectors/layers.js";
 import { cloneAndFreeze } from "../core/immutable.js";
@@ -60,16 +60,22 @@ export function normalizeSelectionLinks(program, input) {
 }
 
 function unfilteredTarget(program, link, actual, cache) {
-  if (!actual || !link.filter) return { program, target: actual };
+  if (!actual || !link.filter) return { program, target: actual, filtered: actual };
   if (typeof program.filterMarks !== "function" || typeof program.removeMarkFilter !== "function") throw new Error("Linked filters require the native filter editors.");
   const layer = requireLayer(actual.view, link.target.id);
-  if (!findMarkFilterDataset(actual.view, layer) && !activeGraphFilter(actual.view, layer)) return { program, target: actual };
+  const visibility = findMarkVisibilityDataset(actual.view, layer)?.transform[0].visibility;
+  const filtered = findNativeMarkFilterDataset(actual.view, layer) || activeGraphFilter(actual.view, layer);
+  if (!visibility && !filtered) return { program, target: actual, filtered: actual };
   let targets = cache.get(program);
   if (!targets) { targets = new Map(); cache.set(program, targets); }
   const key = ownerKey(link.target);
-  if (!targets.has(key)) targets.set(key, prepareInteractionEdit(program, { type: "filter", target: link.target, payload: { clear: true } }).program);
-  const restored = targets.get(key);
-  return { program: restored, target: resolveInteractionSelection(restored, link.target, link.selection) };
+  if (!targets.has(key)) {
+    const base = visibility ? prepareInteractionEdit(program, { type: "setVisibility", target: link.target, payload: { clear: true } }).program : program;
+    const restored = filtered ? prepareInteractionEdit(base, { type: "filter", target: link.target, payload: { clear: true } }).program : base;
+    targets.set(key, { program: restored, target: resolveInteractionSelection(restored, link.target, link.selection),
+      filtered: visibility ? resolveInteractionSelection(base, link.target, link.selection) : actual, visibility });
+  }
+  return targets.get(key);
 }
 
 function projectLink(program, link, spend, before, policy, cache) {
@@ -101,7 +107,7 @@ function projectLink(program, link, spend, before, policy, cache) {
   spend(candidates.length * sets.length);
   const keys = candidates.filter(key => link.resolve === "intersection" ? sets.every(set => set.has(key)) : sets.some(set => set.has(key)));
   const scope = keys => target ? scopeSelectionKeys(program, link.target, keys, spend) : keys;
-  return { target, actual, base: base.program, projection: { id: link.id, target: link.target, selection: link.selection, resolve: link.resolve, ...(link.filter ? { effect: "filter" } : {}),
+  return { target, actual: base.filtered, visibility: base.visibility, projection: { id: link.id, target: link.target, selection: link.selection, resolve: link.resolve, ...(link.filter ? { effect: "filter" } : {}),
     targetAvailable: target !== null, sources: sources.map(source => ({ ...source, keys: scope(source.keys) })), keys: scope(keys) }, keys };
 }
 
@@ -142,10 +148,11 @@ export function applySelectionLinks(program, links, previous, affectedOwners, co
     if (projected.target && affected && !same(projected.keys, currentKeys)) {
       const select = { items: projected.projection.keys, empty: "none", grain: projected.target.resolved.definition.grain };
       const prepared = link.filter
-        ? prepareInteractionEdit(projected.base, { type: "filter", target: link.target, payload: { select } })
+        ? prepareInteractionEdit(program, { type: "filter", target: link.target, payload: { select, mode: "replace" } })
         : prepareInteractionEdit(program, { type: "select", target: link.target, payload: { id: link.selection, select } });
       if (link.filter) {
-        const finalTarget = resolveInteractionSelection(prepared.program, link.target, link.selection);
+        const comparison = projected.visibility ? prepareInteractionEdit(prepared.program, { type: "setVisibility", target: link.target, payload: { clear: true } }).program : prepared.program;
+        const finalTarget = resolveInteractionSelection(comparison, link.target, link.selection);
         const finalKeys = finalTarget.resolved.items.filter(item => item.visible !== false).map(item => item.key);
         spend(finalKeys.length + currentKeys.length);
         // Native filters can add induced members (for example graph edges).

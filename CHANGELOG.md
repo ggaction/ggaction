@@ -6,6 +6,10 @@ All notable changes to `ggaction` are recorded in this file.
 
 - Add Full-only `createGeoJoinData` and `editGeoJoinData` for typed one-to-one geometry/table correspondence. Preserve feature order, shared arcs, exact source rows, unmatched diagnostics, and immutable source revisions through geographic marks and offline restoration.
 
+- Interaction hierarchy-focus commands reuse native partition views and host navigation controls.
+- Interaction context requests expose current semantic candidates to host menus; parameter inputs reuse the existing immutable command lifecycle.
+
+- Add Full-only `setMarkVisibility` and `removeMarkVisibility`, plus categorical legend visibility bindings. Preserve independent user filters, typed categories, explicit domain policies, selections and original row lineage.
 - Add Full-only `createGeoShapeMark`, `editGeoShapeMark`, `createGeoPointMark`, `editGeoPointMark`, `createGeoLineMark`, `editGeoLineMark`, `createGraticule`, and `editGraticule`, with exact Geo coordinate projection bindings, preserved feature identities, bounded spherical disks, split routes, holes, selection and all renderers.
 
 - Add Full-only `createProjection` and `editProjection` for 15 geographic/planar projection types, explicit viewport fits and atomic geometry-dependent revision updates. Preserve exact resource references, immutable transforms and offline validation.

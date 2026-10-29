@@ -221,6 +221,8 @@
   "editRegressionLine": "/reference/actions/statistics/#editregressionline",
   "filterMarks": "/reference/actions/charts-data/#filtermarks",
   "removeMarkFilter": "/reference/actions/charts-data/#removemarkfilter",
+  "setMarkVisibility": "/reference/actions/advanced/#setmarkvisibility",
+  "removeMarkVisibility": "/reference/actions/advanced/#removemarkvisibility",
   "selectMarks": "/reference/actions/advanced/#selectmarks",
   "editMarkSelection": "/reference/actions/advanced/#editmarkselection",
   "removeMarkHighlight": "/reference/actions/charts-data/#removemarkhighlight",

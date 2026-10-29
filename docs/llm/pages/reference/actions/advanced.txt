@@ -53,6 +53,68 @@ guide values or a continuous-only grid make the whole request fail atomically.
 This advanced authoring action is available only
 from `ggaction`; use the focused encoding actions from `ggaction/basic`.
 
+## `setMarkVisibility`
+
+**API layer:** advanced. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+setMarkVisibility(options: TargetedOptions<MarkVisibilityOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`MarkVisibilityOptions`](../../../../reference/types/#type-markvisibilityoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `channel` | Required | `"color" \| "opacity" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth"` |
+| `values` | Required | `readonly (string \| number \| boolean)[]` |
+| `visible` | Required | `boolean` |
+| `scaleDomain` | Required | `"all-data" \| "visible-data"` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```ts
+setMarkVisibility({ target?, channel, values, visible, scaleDomain })
+```
+
+Advanced chart authoring. Hide or restore unique typed category values from an existing categorical legend block. `channel` selects that block; `visible` is boolean and `scaleDomain` must be `"visible-data"` or `"all-data"`. The target can be omitted only when the existing legend identifies one owner. Numeric and string categories remain distinct. Unknown values and unsupported blocks reject.
+
+Visibility removes actual final items and preserves original row lineage. It composes after an existing user filter, and changing or removing that filter preserves the visibility intent. `all-data` uses the user-filtered input before visibility; `visible-data` uses the remaining items. Explicit scale domains keep precedence. The controlling categorical legend always retains its pre-visibility categories and mapping so hidden categories can be restored. Empty results retain valid domains. Full only.
+
+## `removeMarkVisibility`
+
+**API layer:** advanced. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../../../version/).
+
+```typescript
+removeMarkVisibility(options?: TargetedOptions<RemoveMarkVisibilityOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](../../../../reference/types/#type-targetedoptions) · [`RemoveMarkVisibilityOptions`](../../../../reference/types/#type-removemarkvisibilityoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```ts
+removeMarkVisibility({ target? })
+```
+
+Advanced chart authoring. Remove only the category visibility view, restore its user-filtered input and rematerialize dependent marks and guides. Omitted target follows the current eligible mark or unique active owner. A missing or ambiguous owner rejects. Source data, stored selections and the separate user filter remain intact. Full only.
+
 ## `selectMarks`
 
 **API layer:** advanced. **Authoring roles:** H3.

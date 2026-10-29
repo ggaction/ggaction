@@ -10,6 +10,73 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/geographic-context", run() {
+    const p = chart().createCanvas({ width: 300, height: 200, margin: 0 })
+      .createGeometryData({ id: "places", format: "geojson", coordinateKind: "planar", featureKey: "id", values: {
+        type: "Feature", id: 1, properties: { name: "Place" }, geometry: { type: "Point", coordinates: [80, 90] }
+      } }).createProjection({ id: "map", type: "identity" }).createCoordinate({ type: "geo" })
+      .createGeoPointMark({ id: "places", geometry: "places", radiusPx: 8 })
+      .selectMarks({ id: "picked", target: "places", items: [] });
+    const s = createInteractionSession({ program: p, bindings: [] });
+    s.dispatch({ type: "contextMenu", point: { x: 80, y: 90 }, slop: 0 });
+    const hit = s.getState().hit.target; assert.equal(hit.ownerId, "places");
+    assert.deepEqual(hit.resourceRefs, [{ kind: "geometry", id: "places", revision: 0 }]);
+    assert.equal(s.getState().program, p); assert.equal(s.getState().revision, 0);
+    s.dispatch({ type: "select", target: "places", payload: { id: "picked", select: { items: [hit.itemKey] } } });
+    const selected = s.getState().program.highlightMarks({ selection: "picked", color: "gold", dimOthers: false, bringToFront: false });
+    const loaded = deserializeProgram(serializeProgram(selected));
+    assert.deepEqual(getMarkItems(loaded, { target: "places" }).filter(item => item.properties.fill === "gold").map(item => item.fields.name), ["Place"]);
+    s.destroy();
+  } },
+  { id: "interaction/partition-host-focus", run() {
+    const rows = [{ id: "root", parent: null }, { id: 1, parent: "root" }, { id: "1", parent: 1, value: 2 }, { id: "other", parent: "root", value: 4 }];
+    const p = chart().createCanvas({ width: 500, height: 350 }).createData({ id: "rows", values: rows, keyField: "id" })
+      .createHierarchyData({ id: "hierarchy", key: "id", parent: "parent", value: "value" })
+      .layoutHierarchy({ id: "layout", method: "partition" }).createPartitionPlot({ id: "partition" });
+    const source = serializeProgram(p), session = createInteractionSession({ program: p, bindings: [] }), events = [];
+    session.subscribe(event => events.push(event));
+    session.dispatch({ type: "focusHierarchy", target: "partition", payload: { focus: { key: 1 } } });
+    const focused = deserializeProgram(serializeProgram(session.getState().program));
+    assert.deepEqual(getMarkItems(focused, { target: "partition" }).filter(item => item.visible).map(item => item.fields.id), [1, "1"]);
+    assert.deepEqual(focused.graphicSpec, p.editPartitionPlot({ target: "partition", focus: { key: 1 } }).graphicSpec);
+    session.dispatch({ type: "focusHierarchy", target: "partition", payload: { focus: null } });
+    assert.deepEqual(getMarkItems(session.getState().program, { target: "partition" }).filter(item => item.visible).map(item => item.fields.id), rows.map(row => row.id));
+    assert.deepEqual(events.map(event => event.phase), ["commit", "settled", "commit", "settled"]);
+    assert.equal(serializeProgram(p), source); session.destroy();
+    const unsupported = createInteractionSession({ program: basic().createCanvas(), bindings: [] });
+    assert.throws(() => unsupported.dispatch({ type: "focusHierarchy", target: "partition", payload: { focus: null } }), /editPartitionPlot/); unsupported.destroy();
+  } },
+  { id: "interaction/context-host-request", run() {
+    for (const factory of [chart, basic]) {
+      const p = make(factory), original = serializeProgram(p), events = [], listeners = new Map();
+      const s = createInteractionSession({ program: p, bindings: [{ type: "contextMenu" }] });
+      s.subscribe(event => events.push(event));
+      const release = s.mount({ getBoundingClientRect: () => ({ left: 10, top: 20, width: 200, height: 160 }),
+        addEventListener: (type, fn) => listeners.set(type, fn), removeEventListener: type => listeners.delete(type) });
+      let prevented = false;
+      listeners.get("contextmenu")({ clientX: 60, clientY: 80, preventDefault() { prevented = true; } });
+      assert.equal(prevented, true); assert.equal(events.at(-1).type, "contextMenu");
+      assert.equal(s.getState().hit.candidates.length, 2); assert.equal(s.getState().hit.target.ownerId, "points");
+      assert.equal(s.getState().program, p); assert.equal(s.getState().revision, 0); assert.equal(serializeProgram(p), original);
+      assert.equal(release(), true); assert.equal(listeners.size, 0); s.destroy();
+    }
+  } },
+  { id: "interaction/legend-visibility-filter-composition", run() {
+    const p = chart().createCanvas({ width: 500, height: 350, margin: 100 }).createData({ id: "rows", keyField: "id", values: [
+      { id: "a", x: 1, y: 2, category: 1 }, { id: "b", x: 2, y: 20, category: "1" }, { id: "c", x: 3, y: 4, category: 1 }
+    ] }).createScatterPlot({ id: "points", x: "x", y: "y", color: "category", guides: false }).createLegend({ channels: ["color"] })
+      .filterMarks({ target: "points", field: "x", op: "lte", value: 2 });
+    const session = createInteractionSession({ program: p, bindings: [{ type: "legend", effect: "visibility", target: "points", channel: "color", scaleDomain: "all-data" }] });
+    session.dispatch({ type: "setVisibility", target: "points", payload: { channel: "color", values: ["1"], visible: false, scaleDomain: "all-data" } });
+    const q = deserializeProgram(serializeProgram(session.getState().program));
+    assert.deepEqual(getMarkItems(q, { target: "points" }).map(item => item.fields.id), ["a"]);
+    assert.deepEqual(q.resolvedScales.y.domain, [2, 20]); assert.deepEqual(q.guideConfigs.legend.color.domain, [1, "1"]);
+    assert.deepEqual(getMarkItems(q.removeMarkVisibility(), { target: "points" }).map(item => item.fields.id), ["a", "b"]);
+    assert.deepEqual(getMarkItems(q.removeMarkFilter(), { target: "points" }).map(item => item.fields.id), ["a", "c"]);
+    session.dispatch({ type: "setVisibility", target: "points", payload: { clear: true } });
+    assert.deepEqual(getMarkItems(session.getState().program, { target: "points" }).map(item => item.fields.id), ["a", "b"]);
+    assert.equal(typeof basic().setMarkVisibility, "undefined"); session.destroy();
+  } },
   { id: "interaction/full-basic-immutable-inspection", run() {
     for (const factory of [chart, basic]) {
       const p = make(factory), original = serializeProgram(p), session = createInteractionSession({ program: p });
@@ -103,6 +170,20 @@ export const cases = [
     session.destroy();
   } },
   { id: "interaction/guide-and-host-cleanup", run() {
+    {
+      const p=chart().createCanvas({width:500,height:350,margin:100}).createData({values:[{id:'a',x:1,y:2,c:1},{id:'b',x:2,y:3,c:'1'},{id:'c',x:3,y:4,c:1}],keyField:'id'})
+        .createPointMark({id:'points'}).encodeX({field:'x'}).encodeY({field:'y'}).encodeColor({field:'c'}).createLegend({channels:['color']})
+        .selectMarks({id:'picked',target:'points',items:[]}).highlightMarks({selection:'picked',color:'red',dimOthers:false,bringToFront:false});
+      const session=createInteractionSession({program:p,bindings:[{type:'legend',effect:'selection',target:'points',channel:'color',selection:'picked'}]}), callbacks=new Map();
+      session.mount({getBoundingClientRect:()=>({left:0,top:0,width:500,height:350}),addEventListener:(type,fn)=>callbacks.set(type,fn),removeEventListener:type=>callbacks.delete(type)});
+      const symbol=session.getState().scene.nodes.find(n=>n.type==='rect'&&n.properties.width===14&&n.properties.height===12);
+      const point={clientX:symbol.offset[0]+symbol.properties.x+7,clientY:symbol.offset[1]+symbol.properties.y+6};callbacks.get('click')(point);
+      const restored=deserializeProgram(serializeProgram(session.getState().program));
+      assert.deepEqual(getMarkItems(restored,{target:'points'}).filter(item=>item.properties.fill==='red').map(item=>item.fields.id),['a','c']);
+      callbacks.get('click')(point);assert.deepEqual(getMarkItems(session.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red'),[]);
+      session.destroy();assert.equal(callbacks.size,0);
+    }
+
     const autoProgram=make(chart).selectMarks({id:'picked',target:'points',items:[]}).highlightMarks({selection:'picked',color:'red',dimOthers:false,bringToFront:false});
     assert.throws(() => autoProgram.editMarkSelection({ selection: 'picked', region: { x: { ranges: [{min:0,max:1},{min:1,max:2}] } } }), /non-overlapping/);
     const automatic=createInteractionSession({program:autoProgram,bindings:[{type:'select',target:'points',selection:'picked',mode:'toggle'}]}), clicks=new Map();

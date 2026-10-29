@@ -230,6 +230,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editRegressionLine`](current/STATISTICS.md#editregressionline) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`filterMarks`](current/MARK_SELECTION.md#filtermarks) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeMarkFilter`](current/MARK_SELECTION.md#removemarkfilter) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| advanced | [`setMarkVisibility`](current/MARK_SELECTION.md#setmarkvisibility) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| advanced | [`removeMarkVisibility`](current/MARK_SELECTION.md#removemarkvisibility) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | advanced | [`selectMarks`](current/MARK_SELECTION.md#selectmarks) | mark-selection | Stable create-only | Complete | ✅ / ✅ / ✅ |
 | advanced | [`editMarkSelection`](current/MARK_SELECTION.md#editmarkselection) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeMarkHighlight`](current/MARK_SELECTION.md#removemarkhighlight) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |

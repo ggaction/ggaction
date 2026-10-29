@@ -1129,7 +1129,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](../types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -1161,6 +1161,12 @@ export interface InspectBinding {
   readonly slop?: number;
   readonly hitInvisible?: boolean;
 }
+/** Host-owned context UI receives current-frame semantic candidates through subscribe. */
+export interface ContextMenuBinding {
+  readonly type: 'contextMenu';
+  readonly slop?: number;
+  readonly hitInvisible?: boolean;
+}
 export interface ClickSelectionBinding {
   readonly type: 'select';
   /** Existing authored selection on an explicit root or concat mark owner. */
@@ -1170,6 +1176,26 @@ export interface ClickSelectionBinding {
   readonly onMiss?: 'clear' | 'ignore';
   readonly slop?: number;
   readonly hitInvisible?: boolean;
+}
+/** Activate a categorical legend block using its public channel and existing selection. */
+export interface LegendSelectionBinding {
+  readonly type: 'legend';
+  readonly effect: 'selection';
+  readonly target: InteractionTarget;
+  readonly channel: LegendChannel;
+  readonly selection: string;
+  /** toggle applies native symmetric difference to each category member. Defaults to toggle. */
+  readonly mode?: 'replace' | 'toggle';
+  readonly slop?: number;
+}
+/** Toggle actual category membership; the control legend remains available to restore it. */
+export interface LegendVisibilityBinding {
+  readonly type: 'legend';
+  readonly effect: 'visibility';
+  readonly target: InteractionTarget;
+  readonly channel: LegendChannel;
+  readonly scaleDomain: 'visible-data' | 'all-data';
+  readonly slop?: number;
 }
 interface RegionSelectionBindingOptions {
   readonly target: InteractionTarget;
@@ -1254,7 +1280,7 @@ export interface InteractionState {
   readonly destroyed: boolean;
 }
 export interface InteractionLifecycleEvent {
-  readonly type: 'inspect' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
+  readonly type: 'inspect' | 'contextMenu' | 'leave' | 'frame' | 'mount' | 'unmount' | 'destroy';
   readonly state: InteractionState;
 }
 /** One explicit owner; a facet edit addresses its retained source, never a generated cell. */
@@ -1289,6 +1315,13 @@ export type InteractionFilterPayload = {
   readonly recompute?: boolean;
   readonly clear?: never;
 } | { readonly clear: true; readonly select?: never; readonly mode?: never; readonly recompute?: never };
+export type InteractionVisibilityPayload = {
+  readonly channel: LegendChannel;
+  readonly values: readonly (string | number | boolean)[];
+  readonly visible: boolean;
+  readonly scaleDomain: 'visible-data' | 'all-data';
+  readonly clear?: never;
+} | { readonly clear: true; readonly channel?: never; readonly values?: never; readonly visible?: never; readonly scaleDomain?: never };
 export type InteractionReorderPayload = { readonly channel: 'x' | 'y' | 'theta' } & (
   (CategoryOrder & { readonly clear?: never })
   | { readonly clear: true; readonly values?: never; readonly by?: never; readonly direction?: never }
@@ -1310,12 +1343,20 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly target: InteractionTarget;
   readonly payload: InteractionFilterPayload;
 } | {
+  readonly type: 'focusHierarchy';
+  readonly target: InteractionTarget;
+  readonly payload: { readonly focus: HierarchyNodeTarget | null };
+} | {
+  readonly type: 'setVisibility';
+  readonly target: InteractionTarget;
+  readonly payload: InteractionVisibilityPayload;
+} | {
   readonly type: 'reorder';
   readonly target: InteractionTarget;
   readonly payload: InteractionReorderPayload;
 });
 export interface InteractionTransactionEvent {
-  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder';
+  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy';
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
@@ -1335,7 +1376,7 @@ export interface InteractionProgramEvent {
 }
 export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent;
 export type InteractionCommand = InteractionEditCommand | {
-  readonly type: 'inspect';
+  readonly type: 'inspect' | 'contextMenu';
   /** CSS-local point, after subtracting the host client rectangle. */
   readonly point: InteractionPoint;
   readonly pointerType?: 'mouse' | 'pen' | 'touch';
@@ -1362,7 +1403,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ContextMenuBinding | ClickSelectionBinding | LegendSelectionBinding | LegendVisibilityBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 

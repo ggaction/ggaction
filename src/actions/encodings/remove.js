@@ -1,3 +1,4 @@
+import { validateLayerVisibility } from "../../materialization/markVisibility.js";
 import {legendBlockChannels} from "../../grammar/legendBlocks.js";
 import { cartesianAxisOwners, axisTargetArgs } from "../../selectors/axes.js";
 import { closedAction } from "../../core/action.js";
@@ -226,6 +227,9 @@ export const removeEncoding = /* @__PURE__ */ closedAction(
       throw new Error("Remove measured radius before removing its category theta encoding.");
     }
     const channels = activeCascade(layer, args.channel);
+    const candidate = { ...layer, encoding: { ...layer.encoding }, conditionals: { ...layer.conditionals } };
+    for (const channel of channels) { delete candidate.encoding[channel]; delete candidate.conditionals[channel]; }
+    validateLayerVisibility(this, candidate);
     assertEncodingSelectionCompatibility(this, layer.id, channels);
     for (const kind of ["series", "color", "stroke"]) {
       const config = this.guideConfigs.legend?.[kind];

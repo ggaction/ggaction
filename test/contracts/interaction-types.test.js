@@ -16,6 +16,14 @@ import { chart as basic } from ${JSON.stringify(path.join(root, "types/basic.js"
 import { createInteractionSession, type InteractionCommand } from ${JSON.stringify(path.join(root, "types/interaction.js"))};
 import { createTransitionScene } from ${JSON.stringify(path.join(root, "types/scene.js"))};
 const program = chart(); const session = createInteractionSession({ program });
+createInteractionSession({program:basic(),bindings:[{type:'contextMenu',slop:0,hitInvisible:false}]});
+session.dispatch({type:'contextMenu',point:{x:0,y:0},pointerType:'touch'});
+session.subscribe(event=>{if(event.type==='contextMenu'){const candidate=event.state.hit?.target; candidate?.childPath;}});
+// @ts-expect-error host targets come from hits, not an inferred or specified binding owner
+createInteractionSession({program,bindings:[{type:'contextMenu',target:'points'}]});
+// @ts-expect-error context requests are inspection, not authoring transactions
+session.dispatch({type:'contextMenu',point:{x:0,y:0},transactionId:'menu'});
+
 createInteractionSession({program: basic(), bindings: [{type:'inspect',events:['click'],slop:0,hitInvisible:true}]});
 
 createInteractionSession({program,bindings:[{type:'linkSelection',id:'join',target:{childPath:['right'],id:'points'},selection:'picked',resolve:'intersection',sources:[
@@ -28,6 +36,34 @@ createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',targe
 // @ts-expect-error filter projections require a target selection that declares final grain
 createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',target:'points',resolve:'global',sources:[]}]});
 createInteractionSession({program,bindings:[{type:'select',target:{childPath:['left'],id:'points'},selection:'picked',mode:'toggle',onMiss:'ignore',slop:2,hitInvisible:true}]});
+createInteractionSession({program,bindings:[{type:'legend',effect:'selection',target:'points',channel:'shape',selection:'picked',mode:'toggle',slop:0}]});
+// @ts-expect-error legend effect must be explicit
+createInteractionSession({program,bindings:[{type:'legend',target:'points',channel:'color',selection:'picked'}]});
+// @ts-expect-error internal legend representation names are not public channels
+createInteractionSession({program,bindings:[{type:'legend',effect:'selection',target:'points',channel:'series',selection:'picked'}]});
+// @ts-expect-error visibility has no selection ID and requires a domain policy
+createInteractionSession({program,bindings:[{type:'legend',effect:'visibility',target:'points',channel:'color',selection:'picked'}]});
+program.setMarkVisibility({target:{childPath:['right'],id:'points'},channel:'color',values:[1,'1',false],visible:false,scaleDomain:'all-data'});
+program.removeMarkVisibility();
+createInteractionSession({program,bindings:[{type:'legend',effect:'visibility',target:'points',channel:'color',scaleDomain:'visible-data',slop:0}]});
+session.dispatch({type:'setVisibility',target:'points',payload:{channel:'shape',values:['A'],visible:true,scaleDomain:'all-data'}});
+session.dispatch({type:'setVisibility',target:'points',payload:{clear:true}});
+session.dispatch({type:'focusHierarchy',target:'partition',payload:{focus:{key:1}}});
+session.dispatch({type:'focusHierarchy',target:{childPath:['left'],id:'partition'},payload:{focus:{path:['A',2]}}});
+session.dispatch({type:'focusHierarchy',target:'partition',payload:{focus:null}});
+// @ts-expect-error focus is explicit and cannot be omitted
+session.dispatch({type:'focusHierarchy',target:'partition',payload:{}});
+// @ts-expect-error the focus command does not edit styles or coordinate mappings
+session.dispatch({type:'focusHierarchy',target:'partition',payload:{focus:null,rootVisible:false}});
+
+// @ts-expect-error visibility is Full-only
+basic().setMarkVisibility({channel:'color',values:['A'],visible:false,scaleDomain:'all-data'});
+// @ts-expect-error visibility does not accept null categories
+program.setMarkVisibility({channel:'color',values:[null],visible:false,scaleDomain:'all-data'});
+// @ts-expect-error visibility must choose its domain policy
+session.dispatch({type:'setVisibility',target:'points',payload:{channel:'color',values:['A'],visible:false}});
+// @ts-expect-error clear replaces the complete payload
+session.dispatch({type:'setVisibility',target:'points',payload:{clear:true,channel:'color'}});
 createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'xy',mode:'intersect'}]});
 createInteractionSession({program,bindings:[{type:'brush',target:'bars',selection:'picked',axis:'y',channels:{y:'y2'}}]});
 createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',mode:'add'}]});

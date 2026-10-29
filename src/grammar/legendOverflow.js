@@ -23,3 +23,9 @@ export function validateLegendOverflow(kind, config) {
     throw new Error("Legend overflow.summarySymbol requires a categorical line-only sample recipe.");
   }
 }
+
+export function categoricalLegendView(config) {
+  if (config.hiddenCount !== undefined || !config.overflow || config.domain.length <= config.overflow.maxItems) return config;
+  return { ...config, domain: config.domain.slice(0, config.overflow.maxItems + (config.overflow.summarySymbol === "first-hidden" ? 1 : 0)),
+    hiddenCount: config.domain.length - config.overflow.maxItems };
+}

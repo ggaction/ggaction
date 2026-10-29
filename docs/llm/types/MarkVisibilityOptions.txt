@@ -1,0 +1,8 @@
+export interface MarkVisibilityOptions {
+  target?: string;
+  channel: LegendChannel;
+  values: readonly (string | number | boolean)[];
+  visible: boolean;
+  /** all-data means the user-filtered input before visibility. Control legends retain its mapping. */
+  scaleDomain: 'visible-data' | 'all-data';
+}

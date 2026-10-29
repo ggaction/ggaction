@@ -196,6 +196,39 @@ type MarkSelector =
   `test/unit/actions/data/filter-domains.test.js`,
   `test/charts/cars-regression-scatterplot/variants/primitive.test.js`.
 
+## `setMarkVisibility`
+
+- Signature: `setMarkVisibility({target?, channel, values, visible, scaleDomain})`, Full advanced authoring.
+- Select an existing categorical legend block by its public channel and explicit or uniquely inferred target. Values are nonempty unique nominal scalars (finite numbers, strings or booleans), with typed same-zero equality. Null, unknown categories, duplicate values, continuous/interval blocks and non-independent/composite owners reject.
+- `visible:false` adds hidden categories; `visible:true` removes them. Repeating the same intent is semantic/graphic idempotent. The final restored category removes the visibility view. A changed controlling field/channel binding requires removal first. Data revisions preserve dormant hidden categories and show new categories. Stored dormant hidden values remain known for explicit restoration; never-seen values still reject.
+- The canonical visibility recipe lives once in an outer `markFilter` dataset transform `{type:"markFilter",target,visibility:{channels,field,hidden,scaleDomain}}`. It follows the existing user-filter output; `markConfigs[target].visibilityFilter` retains only source/dataset references, empty realization and an optional original histogram bin policy. Native user filtering retains its separate owner. Editing/removing either stage preserves the other, with one final immutable result and meaningful wrapped child trace.
+- `scaleDomain` is explicitly `"visible-data"` or `"all-data"`. All-data means the user-filtered input before visibility. Explicit scale domains keep precedence. The controlling categorical channels are an explicit exception: their legend domain and mapping retain the complete pre-visibility input so hidden categories can be re-enabled and surviving colors/shapes/dashes remain stable. Other channels use the selected policy. Empty views retain valid domains.
+- Final-item membership, source row order, typed row lineage, mark labels, selection/highlight membership, hit entries and graphics use the actual visible items; opacity is not a substitute. Histogram bin boundaries and line missing-value gaps reuse native filtering policy. Linked filters project against their underlying universe and reapply visibility before committing the final result.
+- Source datasets and previous programs remain immutable. Errors, including later dependent materialization failures, do not publish partial state or trace. Basic authoring rejects.
+
+### Formal values — `setMarkVisibility`
+
+- Implemented: `MarkVisibilityOptions` with existing categorical `LegendChannel`, unique nominal values, boolean visible and explicit domain policy; native final-item filtering support and inference above.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `setMarkVisibility`
+
+- ✅ Covered. Evidence: `test/unit/grammar/mark-visibility.test.js`, `test/unit/actions/data/mark-visibility.test.js`, `test/unit/interaction-legend-visibility.test.js`, `test/charts/mark-selection-points/visibility.render.js`.
+
+## `removeMarkVisibility`
+
+- Signature: `removeMarkVisibility({target?} = {})`, Full advanced authoring.
+- Resolve an active visibility owner explicitly, from the current eligible mark, or uniquely. Restore only its source and original histogram policy, release an unreferenced visibility dataset, and explicitly rematerialize dependent marks/scales/guides. Preserve the user filter, selection intent and retained downstream snapshots. Missing/ambiguous owner rejects.
+
+### Formal values — `removeMarkVisibility`
+
+- Implemented: optional explicit/scoped target or unique active owner.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `removeMarkVisibility`
+
+- ✅ Covered. Evidence: the visibility grammar/action/session suites listed above.
+
 ## `removeMarkFilter`
 
 - Signature: `removeMarkFilter({ target? } = {})`.

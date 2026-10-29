@@ -1496,6 +1496,18 @@
       ]
     },
     {
+      "name": "setMarkVisibility",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "removeMarkVisibility",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
       "name": "selectMarks",
       "wraps": [
         "editSemantic"

@@ -5772,6 +5772,14 @@ ranges. A family transition requires an explicit new domain and the destination
 range rules to be satisfied.
 [Scale options](../../api/scales.md)
 
+## Previous reference location {#setmarkvisibility}
+
+This contract moved: [open the current action or shared contract](./advanced.md#setmarkvisibility).
+
+## Previous reference location {#removemarkvisibility}
+
+This contract moved: [open the current action or shared contract](./advanced.md#removemarkvisibility).
+
 ## Related
 
 [Action Reference](../actions.md) · [Chart API](../../api/index.md) · [Supported Features](../../supported-features.md)

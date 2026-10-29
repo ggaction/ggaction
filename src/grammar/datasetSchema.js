@@ -219,6 +219,7 @@ export function transformInputFields(transform) {
     else if (Array.isArray(value)) value.forEach(add);
   };
   add(transform.field);
+  add(transform.visibility?.field);
   add(transform.x);
   add(transform.x?.field);
   add(transform.y);

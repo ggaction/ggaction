@@ -761,6 +761,14 @@
       },
       {
         "type": "file",
+        "path": "unit/materialization/legend-targets.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-legend-selection.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/interaction-linked-filter.test.js"
       },
       {
@@ -798,6 +806,18 @@
       {
         "type": "file",
         "path": "unit/selection-region.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-legend-visibility.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/actions/data/mark-visibility.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/grammar/mark-visibility.test.js"
       }
     ],
     "horizon": [
@@ -1292,6 +1312,14 @@
       {
         "type": "prefix",
         "path": "unit/selectors/"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-hierarchy-focus.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-geo-controls.test.js"
       }
     ],
     "selectors": [

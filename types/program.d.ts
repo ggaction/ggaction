@@ -1487,6 +1487,17 @@ export type FilterMarksOptions = {
   target?: string;
   mode?: "replace" | "compose";
 } & MarkSelector;
+/** Hide categorical final items independently of an existing user filter. */
+export interface MarkVisibilityOptions {
+  target?: string;
+  channel: LegendChannel;
+  values: readonly (string | number | boolean)[];
+  visible: boolean;
+  /** all-data means the user-filtered input before visibility. Control legends retain its mapping. */
+  scaleDomain: 'visible-data' | 'all-data';
+}
+export interface RemoveMarkVisibilityOptions { target?: string; }
+
 export interface RemoveMarkFilterOptions {
   target?: string;
 }
@@ -6554,6 +6565,8 @@ export class ChartProgram {
   filterData(options: TargetedOptions<FilterDataOptions>): ChartProgram;
   filterMarks(options: TargetedOptions<FilterMarksOptions>): ChartProgram;
   removeMarkFilter(options?: TargetedOptions<RemoveMarkFilterOptions>): ChartProgram;
+  setMarkVisibility(options: TargetedOptions<MarkVisibilityOptions>): ChartProgram;
+  removeMarkVisibility(options?: TargetedOptions<RemoveMarkVisibilityOptions>): ChartProgram;
   selectMarks(options: TargetedOptions<SelectMarksOptions>): ChartProgram;
   editMarkSelection(options: TargetedOptions<EditMarkSelectionOptions>): ChartProgram;
   removeMarkHighlight(options?: TargetedOptions<RemoveMarkSelectionOptions>): ChartProgram;

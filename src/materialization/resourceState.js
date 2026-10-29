@@ -281,3 +281,5 @@ export function planStoredResourceRemoval(program, requested, { cascade = false 
   }
   return resources.filter(resource => remove.has(identity(resource)));
 }
+
+export { validateMarkVisibilityState } from "./markVisibility.js";
