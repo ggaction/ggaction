@@ -639,3 +639,46 @@ test("canonical graph node controls preserve current Canvas and SVG hits across 
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });
+
+test("canonical annotation buttons preserve data anchors and exact Canvas SVG text through pointer touch and keyboard", async () => {
+  const snippet = (await documentationPrograms()).find(program => program.id === "interaction-annotation"); assert.ok(snippet);
+  const context = await browser.newContext({ deviceScaleFactor: 2, hasTouch: true, viewport: { width: 1000, height: 750 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      document.body.innerHTML = '<canvas id="chart" aria-label="Annotated points"></canvas><div id="vector"></div>';
+      let source = code;
+      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/interaction", "interaction"]]) {
+        source = source.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
+      }
+      const url = URL.createObjectURL(new Blob([source + '\nwindow.__annotationSession=annotationSession;window.__disposeAnnotation=disposeAnnotationControls;'], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      const { renderToSVG } = await import("/src/renderers/svg.js"); window.__annotationPhases = [];
+      const draw = current => { document.querySelector("#vector").innerHTML = renderToSVG(current); };
+      window.__annotationSession.subscribe(event => { if (event.phase) window.__annotationPhases.push(event.phase); if (event.phase === "commit") draw(event.current); });
+      draw(window.__annotationSession.getState().program);
+    }, snippet.code);
+    const inspect = () => page.evaluate(() => {
+      const state = window.__annotationSession.getState(), properties = state.program.graphicSpec.objects.note.items[0].properties;
+      const text = document.querySelector("#vector text"), canvas = document.querySelector("canvas"), ctx = canvas.getContext("2d");
+      const rgba = ctx.getImageData(properties.x, properties.y - 15, 60, 18).data;
+      return { point: [properties.x, properties.y], vector: [Number(text.getAttribute("x")), Number(text.getAttribute("y"))],
+        text: text.textContent, painted: [...rgba].some((value, i) => i % 4 !== 3 && value < 150 && rgba[i - i % 4 + 3] > 0),
+        revision: state.revision, focus: document.activeElement.id };
+    });
+    await page.getByRole("button", { name: "Revise note", exact: true }).focus(); await page.keyboard.press("Enter");
+    assert.deepEqual(await inspect(), { point: [316,84], vector: [316,84], text: "Revised", painted: true, revision: 1, focus: "revise-note" });
+    await page.getByRole("button", { name: "Offset note", exact: true }).focus(); await page.keyboard.press("Space");
+    assert.deepEqual(await inspect(), { point: [320,76], vector: [320,76], text: "Revised", painted: true, revision: 2, focus: "offset-note" });
+    await page.getByRole("button", { name: "Revise note", exact: true }).tap();
+    await page.getByRole("button", { name: "Offset note", exact: true }).click();
+    assert.deepEqual(await page.evaluate(() => window.__annotationPhases), ["commit","settled","commit","settled","commit","settled","commit","settled"]);
+    assert.equal((await inspect()).revision, 4);
+    await page.evaluate(() => window.__disposeAnnotation()); assert.equal(await page.locator("#revise-note").count(), 0);
+    assert.equal(await page.evaluate(() => window.__annotationSession.getState().destroyed), true);
+    assertNoBrowserErrors(errors, "annotation host controls"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});

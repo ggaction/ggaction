@@ -598,9 +598,79 @@ can accompany polar and parallel-coordinate charts, including facets. Keep the
 note in its Cartesian plot frame by omitting the chart's polar/parallel coordinate.
 
 Omit `layout` or pass `false` to retain the exact anchor. A layout object accepts
-`layoutLabels` options except `target`. Later changes use `encodeText`, `encodeX/Y`,
+`layoutLabels` options except `target`. Later changes use `editAnnotation`, `encodeText`, `encodeX/Y`,
 `editTextMark`, `layoutLabels`, `removeLabelLayout`, `editScale`, and `removeMark`.
 [Text marks](../../api/marks/text.md#createannotationoptions)
+
+
+## `editAnnotation`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editAnnotation(options: TargetedOptions<EditAnnotationOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditAnnotationOptions`](./../types.md#type-editannotationoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `text` | Optional / branch-dependent | `unknown` |
+| `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
+| `x` | Optional / branch-dependent | `unknown` |
+| `y` | Optional / branch-dependent | `unknown` |
+| `placement` | Optional / branch-dependent | `"auto" \| MarkLabelPlacement \| undefined` |
+| `layout` | Optional / branch-dependent | `false \| Omit<LabelLayoutOptions, "target"> \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
+| `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "end" \| "left" \| "right" \| "start" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `dx` | Optional / branch-dependent | `number \| undefined` |
+| `dy` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editAnnotation({ target?, text?, format?, x?, y?, placement?, layout?, blend?, shadow?, clip?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, lineHeight?, blockAlign?, inheritColor?, lineCap?, lineJoin?, miterLimit? })
+```
+
+Edit existing Text or attached labels in one atomic change. Available in Full. Choose `target` explicitly,
+otherwise the current Text or one unique Text is used. An empty edit, ambiguous target or invalid child option rejects
+without changing the program or its trace.
+
+`x` and `y` replace existing independent Cartesian constant datums using the same scales, field types and temporal
+units. Supply either or both. Source-owned labels and field-driven or conditional positions reject this patch.
+`text` supplies constant content; `format` alone reformats existing constant content. Style options follow
+`editTextMark`. An encoded dx/dy channel must be edited through its encoding action instead.
+
+`placement` uses `editMarkLabelPlacement`; `"auto"` restores its ordinary source anchor. A `layout` object uses
+`layoutLabels`, and `false` removes collision layout. These edits retain source ownership, selection, replay and
+removal behavior. The action also accepts ordinary Text layers; no separate annotation registry is required.
+[Text marks](../../api/marks/text.md#editannotationoptions)
 
 
 ## `createTextMark`

@@ -425,6 +425,17 @@ function collectDirectRelationships(trace, directNames, relationships, observed)
   }
 }
 
+function annotationEditingPrograms() {
+  const base = chart().createCanvas().createData({values:[{x:1,y:2},{x:2,y:3}]})
+    .createPointMark().encodeX({field:'x'}).encodeY({field:'y'});
+  const datum = base.createAnnotation({id:'note',text:'Old',x:1,y:2})
+    .editAnnotation({target:'note',text:'New',x:2,y:3,dx:4,layout:{maxDisplacement:0}})
+    .editAnnotation({target:'note',layout:false});
+  const attached = base.createAnnotation({id:'labels',text:'Old'})
+    .editAnnotation({target:'labels',placement:{anchor:'center'},text:'New'});
+  return [datum,attached];
+}
+
 async function imageResourcePrograms() {
   const base = chart().createCanvas({width: 100, height: 80, margin: 0});
   const bytes = new TextEncoder().encode('<svg xmlns="http://www.w3.org/2000/svg" width="2" height="1"><rect width="2" height="1" fill="red"/></svg>');
@@ -462,7 +473,7 @@ export async function buildActionRelationships() {
   const preparedBase = chart();
   const prepared = await prepareDataUpdate(preparedBase, { kind: "create", id: "received",
     source: { kind: "inline", values: [{ x: 1 }] } }, { requestToken: "received" });
-  const programs = [...await fontResourcePrograms(), ...await imageResourcePrograms(), preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
+  const programs = [...annotationEditingPrograms(), ...await fontResourcePrograms(), ...await imageResourcePrograms(), preparedBase.applyDataUpdate({ prepared, requestToken: "received" }), ...buildActionRelationshipPrograms(), chart()
     .createCanvas({ width: 500, height: 400, margin: 70 })
     .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 3 }] })
     .createScatterPlot({ x: "x", y: "y" })

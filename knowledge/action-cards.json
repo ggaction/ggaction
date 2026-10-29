@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 363,
+  "count": 364,
   "cards": [
     {
       "schemaVersion": 3,
@@ -8350,19 +8350,15 @@
         "H2"
       ],
       "wraps": [
-        "createScale",
         "createTextMark",
         "encodeText",
         "encodeX",
-        "encodeY"
+        "encodeY",
+        "createMarkLabels",
+        "createScale"
       ],
       "editableVia": [
-        "encodeText",
-        "editTextMark",
-        "layoutLabels",
-        "removeLabelLayout",
-        "editScale",
-        "removeMark"
+        "editAnnotation"
       ],
       "supports": {
         "entryPoints": [
@@ -8590,6 +8586,232 @@
       "snippet": "program.createAnnotation({ text: \"Peak\", x: 8, y: 9 })",
       "errors": [],
       "route": "/reference/actions/marks/#createannotation"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editAnnotation",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edit existing Text or attached labels in one atomic change.",
+      "signature": "editAnnotation(options: TargetedOptions<EditAnnotationOptions>): ChartProgram;",
+      "intents": [
+        "edit annotation",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "annotation",
+        "anchored note"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing annotation"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "encodeText",
+        "encodeX",
+        "encodeY",
+        "editTextMark",
+        "layoutLabels",
+        "removeLabelLayout",
+        "editMarkLabelPlacement"
+      ],
+      "editableVia": [
+        "editAnnotation"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "lineHeight",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "opacity",
+          "unit": "probability"
+        },
+        {
+          "path": "fontSize",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "rotation",
+          "unit": "angle"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "placement",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing annotation"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "text",
+          "required": false,
+          "type": "unknown"
+        },
+        {
+          "name": "format",
+          "required": false,
+          "type": "ValueFormat | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "unknown"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "unknown"
+        },
+        {
+          "name": "placement",
+          "required": false,
+          "type": "\"auto\" | MarkLabelPlacement | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "false | Omit<LabelLayoutOptions, \"target\"> | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "lineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "blockAlign",
+          "required": false,
+          "type": "\"first\" | \"middle\" | undefined"
+        },
+        {
+          "name": "inheritColor",
+          "required": false,
+          "type": "\"fill\" | \"stroke\" | false | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "FillPaint | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontSize",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontFamily",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fontWeight",
+          "required": false,
+          "type": "string | number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"end\" | \"left\" | \"right\" | \"start\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+        },
+        {
+          "name": "rotation",
+          "required": false,
+          "type": "RotationInput | undefined"
+        },
+        {
+          "name": "dx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "dy",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editAnnotation({ target?, text?, x?, y?, dx?, dy? })",
+        "editAnnotation({ target?, placement?, layout?, fill?, fontSize? })"
+      ],
+      "snippet": "program.editAnnotation({ target: \"annotation\", text: \"Updated note\", dx: 8 })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editannotation"
     },
     {
       "schemaVersion": 3,

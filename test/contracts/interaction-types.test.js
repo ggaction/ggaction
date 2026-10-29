@@ -19,6 +19,14 @@ chart().editLayout({target:'layout',node:{key:[1,'a'],x:1,y:2}});
 // @ts-expect-error a single-node patch cannot also replace layout options
 chart().editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
 const program = chart(); const session = createInteractionSession({ program });
+chart().editAnnotation({target:'note',text:'New',x:2,dy:-8,placement:'auto',layout:false});
+session.dispatch({type:'annotate',target:{childPath:['left'],id:'note'},payload:{text:'New',fill:'red'}});
+// @ts-expect-error annotation patches do not rebind or create sources
+chart().editAnnotation({target:'note',source:'points'});
+// @ts-expect-error annotation command target cannot be redirected in its payload
+session.dispatch({type:'annotate',target:'note',payload:{target:'other',text:'New'}});
+// @ts-expect-error Text annotation authoring is Full-only
+basic().editAnnotation({target:'note',text:'New'});
 createInteractionSession({program,bindings:[{type:'moveNode',target:'network'}]});
 session.dispatch({type:'moveNode',target:'layout',payload:{key:[1,'a'],x:1,y:2}});
 // @ts-expect-error node movement has no implicit key or position

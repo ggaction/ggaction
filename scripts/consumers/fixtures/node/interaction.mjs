@@ -10,6 +10,19 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/annotation-edit", run() {
+    const p=chart().createCanvas({width:300,height:200,margin:20}).createData({values:[{x:1,y:2},{x:9,y:8}]})
+      .createPointMark().encodeX({field:'x',scale:{domain:[0,10]}}).encodeY({field:'y',scale:{domain:[0,10]}})
+      .createAnnotation({id:'note',text:'Before',x:1,y:2});
+    const session=createInteractionSession({program:p,bindings:[]}),events=[];session.subscribe(event=>events.push(event));
+    session.dispatch({type:'annotate',target:'note',payload:{text:'After',x:5,y:5,dx:4,dy:-8}});
+    const next=deserializeProgram(serializeProgram(session.getState().program)),note=getMarkItems(next,{target:'note'})[0].geometry[0];
+    assert.deepEqual([note.properties.text,note.properties.x,note.properties.y],['After',154,92]);
+    assert.deepEqual(events.map(event=>event.phase),['commit','settled']);
+    const before=session.getState().program;assert.throws(()=>session.dispatch({type:'annotate',target:'note',payload:{text:'Partial',opacity:2}}));
+    assert.equal(session.getState().program,before);assert.equal(p.graphicSpec.objects.note.items[0].properties.text,'Before');session.destroy();
+    const b=createInteractionSession({program:basic().createCanvas(),bindings:[]});assert.throws(()=>b.dispatch({type:'annotate',target:'note',payload:{text:'No'}}),/editAnnotation/);b.destroy();
+  } },
   { id: "interaction/geographic-representation", run() {
     const feature = (id, x) => ({ type: 'Feature', id, properties: {}, geometry: { type: 'Point', coordinates: [x,60] } });
     const geometry = features => ({ type: 'FeatureCollection', features });

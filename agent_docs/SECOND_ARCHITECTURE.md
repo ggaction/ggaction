@@ -862,7 +862,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 723,200 bytes |
+| `ggaction` | 723,800 bytes |
 | `ggaction/basic` | 382,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/interaction` | 112,800 bytes |
@@ -3904,3 +3904,16 @@ revision DAG가 LOD와 join, fitted projection, mark union을 명시 갱신한�
 단일 조회하고 Geo selection adapter와 inspection이 재사용한다. Selector는 원 authored key를
 보존하며 현재 item key로 해석하고 hit/frame key는 바꾸지 않는다. 렌더러는 같은 concrete primitives만
 읽는다. 정확한 공개 옵션·제한은 [GEOMETRY](contract/current/GEOMETRY.md)가 소유한다.
+
+### 기존 Text 주석의 원자 편집과 interaction 위임
+
+`editAnnotation`은 Full의 기존 Text/encoding/placement/layout action을 한 wrapped edit로 묶는다.
+별도 annotation registry나 복사된 위치/문구 intent는 두지 않는다. 독립 datum anchor는 기존 scale/type/unit을
+보존하고 source-owned labels는 기존 placement owner를 유지한다. Controller의 `annotate`는 receiver의
+native action만 호출하므로 interaction entry가 Full assembly에 의존하지 않는다. Basic에는 Text authoring이
+없으므로 동일 명령은 지원 오류다. 정확한 옵션·원자 실패·scope는 Current MARKS/INTERACTION이 소유한다.
+
+E5 편집/명령의 별도 source-free 측정은 Node20 Full723,738 / Basic381,811 / interaction112,794 gzip이다.
+새 Full owner 한 개를 더해1037entries이며 이전1036 한도 실패를 보존하고1037로 맞췄다.
+Node20 packed1,475,547/unpacked6,716,141 최종 측정에 맞춰
+최소 cap1,476,000/6,717,000을 적용한다. Full cap723,800만 조정하고 나머지 browser 한도는 유지한다.

@@ -1332,6 +1332,10 @@
       {
         "type": "file",
         "path": "unit/interaction-geo-representation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-annotation.test.js"
       }
     ],
     "selectors": [

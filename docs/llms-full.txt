@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:81c4dc231b43d845887c43dc5781053c999719eead7bf4faff1fa347f7ddedd1. Status: development. Runtime source: 41621fb78e283acec5f046664d5e5038fba8a029. Release baseline: v0.0.13.
+Contract: sha256:b1b6190d77a1b3cb0763a8e6552a77daad51b9a6fed972b141bfa6abbe74de54. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/41621fb78e283acec5f046664d5e5038fba8a029/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/41621fb78e283acec5f046664d5e5038fba8a029/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -7381,6 +7381,19 @@ Omitting `layout`, or passing `false`, preserves the exact anchor. A layout obje
 enables collision placement and accepts `layoutLabels` options except `target`.
 After creation, use the lower Text, position, scale, layout, and mark-removal actions.
 
+## `editAnnotation(options)`
+
+Use this Full action to change an existing annotation's content, offset, style or constant data/plot anchor together.
+It also accepts ordinary Text and attached label layers. The target is explicit, current Text, or the only Text layer.
+An invalid change leaves the old program intact. [Full signature and rules](./reference/actions/marks/#editannotation).
+
+`x` or `y` preserves the stored scale and field type, so a category remains a category and a date remains temporal.
+Field-driven positions and source-owned label positions cannot be replaced here. Change source-owned offsets with
+`dx`/`dy`, or use `placement` for semantic inside/outside positioning. Existing encoded offsets require their encoding action.
+`layout:false` removes collision layout; `placement:"auto"` restores ordinary source placement.
+
+For host controls, the [`annotate` interaction command](./api/interaction/#edit-existing-annotations) calls the same editor.
+
 ## `createMarkLabels(options?)`
 
 See [Attached Mark Labels](./api/marks/labels/#createmarklabelsoptions) for this contract and its examples.
@@ -11601,6 +11614,51 @@ flow layouts do not accept node movement. Gesture cancellation releases capture 
 program. Preview hit frames track the same visible geometry; read the session's current `frameVersion`
 when delivering external frames. General keyboard item navigation, unpin controls and history are not
 installed by this binding.
+
+## Edit existing annotations
+
+Send `annotate` to an existing Text owner to update text, datum anchors, offsets or style in one transaction.
+The payload follows [`editAnnotation`](./api/marks/text/#editannotationoptions) and cannot include another target.
+The Full editor retains the source/data/plot anchor and native replay behavior. Basic does not author Text annotations.
+
+This browser module expects `<canvas id="chart" aria-label="Annotated points"></canvas>`.
+
+> **Executable complete.** Use a Canvas with id chart. Revise note and Offset note work with pointer, touch, Enter and Space; the text keeps its data anchor.
+
+```js
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+const controls = document.createElement("div");
+controls.innerHTML = '<button id="revise-note">Revise note</button> <button id="offset-note">Offset note</button> <output aria-live="polite"></output>';
+canvas.before(controls);
+const program = chart().createCanvas({ width: 400, height: 280, margin: 20 })
+  .createData({ values: [{ x: 2, y: 3 }, { x: 8, y: 7 }] })
+  .createPointMark().encodeX({ field: "x", scale: { domain: [0, 10] } })
+  .encodeY({ field: "y", scale: { domain: [0, 10] } })
+  .createAnnotation({ id: "note", text: "Original", x: 2, y: 3, dx: 8, dy: -8 });
+const annotationSession = createInteractionSession({ program, bindings: [] });
+const draw = current => {
+  render(current, canvas.getContext("2d"));
+  controls.querySelector("output").textContent = current.graphicSpec.objects.note.items[0].properties.text;
+};
+const revise = () => annotationSession.dispatch({ type: "annotate", target: "note", payload: { text: "Revised", x: 8, y: 7 }, origin: "user" });
+const offset = () => annotationSession.dispatch({ type: "annotate", target: "note", payload: { dx: 12, dy: -16 }, origin: "user" });
+controls.querySelector("#revise-note").addEventListener("click", revise);
+controls.querySelector("#offset-note").addEventListener("click", offset);
+const unsubscribe = annotationSession.subscribe(event => { if (event.phase === "commit") draw(event.current); });
+draw(program);
+const disposeAnnotationControls = () => {
+  controls.querySelector("#revise-note").removeEventListener("click", revise);
+  controls.querySelector("#offset-note").removeEventListener("click", offset);
+  unsubscribe(); annotationSession.destroy(); controls.remove();
+};
+```
+
+Pointer, touch and keyboard activation use ordinary host buttons. Each command produces one commit and settled event;
+an invalid patch preserves the current program and trace. Annotation creation and screen-anchor conversion are not
+performed by this command.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -19390,6 +19448,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createYAxisTicks`](./reference/actions/guides/#createyaxisticks) | H3 | user-facing | axes |
 | [`createYAxisTicksAndLabels`](./reference/actions/guides/#createyaxisticksandlabels) | H3 | user-facing | axes |
 | [`createYAxisTitle`](./reference/actions/guides/#createyaxistitle) | H3 | user-facing | axes |
+| [`editAnnotation`](./reference/actions/marks/#editannotation) | H3 | user-facing | marks |
 | [`editArcMark`](./reference/actions/marks/#editarcmark) | H3 | user-facing | marks |
 | [`editAreaMark`](./reference/actions/marks/#editareamark) | H3 | user-facing | marks |
 | [`editAxes`](./reference/actions/guides/#editaxes) | H3 | user-facing | axes |
@@ -25450,9 +25509,75 @@ can accompany polar and parallel-coordinate charts, including facets. Keep the
 note in its Cartesian plot frame by omitting the chart's polar/parallel coordinate.
 
 Omit `layout` or pass `false` to retain the exact anchor. A layout object accepts
-`layoutLabels` options except `target`. Later changes use `encodeText`, `encodeX/Y`,
+`layoutLabels` options except `target`. Later changes use `editAnnotation`, `encodeText`, `encodeX/Y`,
 `editTextMark`, `layoutLabels`, `removeLabelLayout`, `editScale`, and `removeMark`.
 [Text marks](./api/marks/text/#createannotationoptions)
+
+## `editAnnotation`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](./version/).
+
+```typescript
+editAnnotation(options: TargetedOptions<EditAnnotationOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./reference/types/#type-targetedoptions) · [`EditAnnotationOptions`](./reference/types/#type-editannotationoptions).
+
+ Declared options
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `text` | Optional / branch-dependent | `unknown` |
+| `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
+| `x` | Optional / branch-dependent | `unknown` |
+| `y` | Optional / branch-dependent | `unknown` |
+| `placement` | Optional / branch-dependent | `"auto" \| MarkLabelPlacement \| undefined` |
+| `layout` | Optional / branch-dependent | `false \| Omit<LabelLayoutOptions, "target"> \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
+| `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "end" \| "left" \| "right" \| "start" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `dx` | Optional / branch-dependent | `number \| undefined` |
+| `dy` | Optional / branch-dependent | `number \| undefined` |
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editAnnotation({ target?, text?, format?, x?, y?, placement?, layout?, blend?, shadow?, clip?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, lineHeight?, blockAlign?, inheritColor?, lineCap?, lineJoin?, miterLimit? })
+```
+
+Edit existing Text or attached labels in one atomic change. Available in Full. Choose `target` explicitly,
+otherwise the current Text or one unique Text is used. An empty edit, ambiguous target or invalid child option rejects
+without changing the program or its trace.
+
+`x` and `y` replace existing independent Cartesian constant datums using the same scales, field types and temporal
+units. Supply either or both. Source-owned labels and field-driven or conditional positions reject this patch.
+`text` supplies constant content; `format` alone reformats existing constant content. Style options follow
+`editTextMark`. An encoded dx/dy channel must be edited through its encoding action instead.
+
+`placement` uses `editMarkLabelPlacement`; `"auto"` restores its ordinary source anchor. A `layout` object uses
+`layoutLabels`, and `false` removes collision layout. These edits retain source ownership, selection, replay and
+removal behavior. The action also accepts ordinary Text layers; no separate annotation registry is required.
+[Text marks](./api/marks/text/#editannotationoptions)
 
 ## `createTextMark`
 
@@ -34703,6 +34828,7 @@ export type {
   MarkLabelSelectionOptions,
   RemoveMarkLabelsOptions,
   CreateAnnotationOptions,
+  EditAnnotationOptions,
   ReferenceStatistic,
   CreateStatisticalReferenceOptions,
   CreateReferenceLineOptions,
@@ -35314,7 +35440,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](./types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, GraphPosition, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, HierarchyNodeTarget, ProjectionSphereParameters, GraphPosition, EditAnnotationOptions, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -35516,7 +35642,13 @@ export type InteractionReorderPayload = { readonly channel: 'x' | 'y' | 'theta' 
 );
 /** Nonempty native projection transform patch. Pixel units precede composition and host transforms. */
 export type InteractionViewportPayload = Pick<ProjectionSphereParameters, 'scalePx' | 'translatePx' | 'centerDeg' | 'rotateDeg'>;
+/** Nonempty existing Text/label patch; the command target owns the address. Full-only. */
+export type InteractionAnnotationPayload = Omit<EditAnnotationOptions, 'target'>;
 export type InteractionEditCommand = InteractionTransaction & ({
+  readonly type: 'annotate';
+  readonly target: InteractionTarget;
+  readonly payload: InteractionAnnotationPayload;
+} | {
   readonly type: 'select';
   readonly target: InteractionTarget;
   readonly payload: InteractionSelectionPayload;
@@ -35554,7 +35686,7 @@ export type InteractionEditCommand = InteractionTransaction & ({
   readonly payload: InteractionReorderPayload;
 });
 export interface InteractionTransactionEvent {
-  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy' | 'setViewport' | 'moveNode';
+  readonly type: 'select' | 'clearSelection' | 'setParameter' | 'filter' | 'reorder' | 'setVisibility' | 'focusHierarchy' | 'setViewport' | 'moveNode' | 'annotate';
   readonly transactionId: string;
   readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
   readonly causeTransactionId?: string;
@@ -35848,6 +35980,7 @@ interface ChartProgramActions {
   editMarkLabelPlacement(options: TargetedOptions<EditMarkLabelPlacementOptions>): ChartProgram;
   removeMarkLabels(options: TargetedOptions<RemoveMarkLabelsOptions>): ChartProgram;
   createAnnotation(options: TargetedOptions<CreateAnnotationOptions>): ChartProgram;
+  editAnnotation(options: TargetedOptions<EditAnnotationOptions>): ChartProgram;
   createStatisticalReference(options: TargetedOptions<CreateStatisticalReferenceOptions>): ChartProgram;
   createOverlay(options?: TargetedOptions<CreateOverlayOptions>): ChartProgram;
   createLayerPlot(options: TargetedOptions<CreateLayerPlotOptions>): ChartProgram;
@@ -38229,6 +38362,8 @@ Related types: [`AdjacentPlotSpecification`](./reference/types/#type-adjacentplo
 
 ```typescript
 export type CreateAnnotationOptions = AnnotationBaseOptions & AnnotationAnchor;
+
+/** Existing Text or attached labels; preserves stored anchor bindings. Full-only. */
 ```
 
 Related types: [`AnnotationBaseOptions`](./reference/types/#type-annotationbaseoptions) · [`AnnotationAnchor`](./reference/types/#type-annotationanchor).
@@ -40626,6 +40761,26 @@ export interface EdgeRouteLimits {
 ```typescript
 export type EdgeRouteMethod = "hierarchical" | "force-directed" | "density" | "edge-path";
 ```
+
+### `EditAnnotationOptions` {#type-editannotationoptions}
+
+ Expand EditAnnotationOptions
+
+```typescript
+export interface EditAnnotationOptions extends Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "missing"> {
+  target?: string;
+  text?: unknown;
+  /** Without text, reformat the current constant content. */
+  format?: TextFormat;
+  /** Replace one existing independent Cartesian datum using its current scale and field type. */
+  x?: unknown;
+  y?: unknown;
+  placement?: MarkLabelPlacement | "auto";
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+}
+```
+
+Related types: [`TextMarkOptions`](./reference/types/#type-textmarkoptions) · [`TextFormat`](./reference/types/#type-textformat) · [`MarkLabelPlacement`](./reference/types/#type-marklabelplacement) · [`LabelLayoutOptions`](./reference/types/#type-labellayoutoptions).
 
 ### `EditAxesOptions` {#type-editaxesoptions}
 
@@ -49673,12 +49828,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/41621fb78e283acec5f046664d5e5038fba8a029/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/41621fb78e283acec5f046664d5e5038fba8a029/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -52729,11 +52884,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:81c4dc231b43d845887c43dc5781053c999719eead7bf4faff1fa347f7ddedd1` |
+| Contract fingerprint | `sha256:b1b6190d77a1b3cb0763a8e6552a77daad51b9a6fed972b141bfa6abbe74de54` |
 | Example and dataset source | `0a217a83b217d228b6a17dc73e1d5979544acdcb` |
-| Runtime source commit | `41621fb78e283acec5f046664d5e5038fba8a029` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 363 |
+| Declared actions here | 364 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

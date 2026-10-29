@@ -903,3 +903,48 @@ flow layouts do not accept node movement. Gesture cancellation releases capture 
 program. Preview hit frames track the same visible geometry; read the session's current `frameVersion`
 when delivering external frames. General keyboard item navigation, unpin controls and history are not
 installed by this binding.
+
+## Edit existing annotations
+
+Send `annotate` to an existing Text owner to update text, datum anchors, offsets or style in one transaction.
+The payload follows [`editAnnotation`](../../../api/marks/text/#editannotationoptions) and cannot include another target.
+The Full editor retains the source/data/plot anchor and native replay behavior. Basic does not author Text annotations.
+
+This browser module expects `<canvas id="chart" aria-label="Annotated points"></canvas>`.
+
+> **Executable complete.** Use a Canvas with id chart. Revise note and Offset note work with pointer, touch, Enter and Space; the text keeps its data anchor.
+
+```js
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+const controls = document.createElement("div");
+controls.innerHTML = '<button id="revise-note">Revise note</button> <button id="offset-note">Offset note</button> <output aria-live="polite"></output>';
+canvas.before(controls);
+const program = chart().createCanvas({ width: 400, height: 280, margin: 20 })
+  .createData({ values: [{ x: 2, y: 3 }, { x: 8, y: 7 }] })
+  .createPointMark().encodeX({ field: "x", scale: { domain: [0, 10] } })
+  .encodeY({ field: "y", scale: { domain: [0, 10] } })
+  .createAnnotation({ id: "note", text: "Original", x: 2, y: 3, dx: 8, dy: -8 });
+const annotationSession = createInteractionSession({ program, bindings: [] });
+const draw = current => {
+  render(current, canvas.getContext("2d"));
+  controls.querySelector("output").textContent = current.graphicSpec.objects.note.items[0].properties.text;
+};
+const revise = () => annotationSession.dispatch({ type: "annotate", target: "note", payload: { text: "Revised", x: 8, y: 7 }, origin: "user" });
+const offset = () => annotationSession.dispatch({ type: "annotate", target: "note", payload: { dx: 12, dy: -16 }, origin: "user" });
+controls.querySelector("#revise-note").addEventListener("click", revise);
+controls.querySelector("#offset-note").addEventListener("click", offset);
+const unsubscribe = annotationSession.subscribe(event => { if (event.phase === "commit") draw(event.current); });
+draw(program);
+const disposeAnnotationControls = () => {
+  controls.querySelector("#revise-note").removeEventListener("click", revise);
+  controls.querySelector("#offset-note").removeEventListener("click", offset);
+  unsubscribe(); annotationSession.destroy(); controls.remove();
+};
+```
+
+Pointer, touch and keyboard activation use ordinary host buttons. Each command produces one commit and settled event;
+an invalid patch preserves the current program and trace. Annotation creation and screen-anchor conversion are not
+performed by this command.

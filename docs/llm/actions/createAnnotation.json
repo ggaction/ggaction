@@ -35,19 +35,15 @@
     "H2"
   ],
   "wraps": [
-    "createScale",
     "createTextMark",
     "encodeText",
     "encodeX",
-    "encodeY"
+    "encodeY",
+    "createMarkLabels",
+    "createScale"
   ],
   "editableVia": [
-    "encodeText",
-    "editTextMark",
-    "layoutLabels",
-    "removeLabelLayout",
-    "editScale",
-    "removeMark"
+    "editAnnotation"
   ],
   "supports": {
     "entryPoints": [

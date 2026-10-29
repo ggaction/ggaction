@@ -10,7 +10,8 @@
 - [x] C2: categorical legend visibility, 사용자 filter 합성 및 visible-data/all-data 정책
 - [ ] continuous/interval legend 조작의 원 카드 후행 범위
 - [x] D: 기존 setParameter host controls와 context semantic targets
-- [ ] annotation anchor/offset 편집
+- [x] E5: 기존 Text annotation의 datum anchor/offset/content/placement 원자 편집
+- [ ] Geo annotation 연결·screen anchor·item membership/drag 후행 인수
 - [x] E1: native partition focus 명령과 host breadcrumb/button keyboard 연결
 - [x] E2: explicit projection viewport 명령과 host button/keyboard 연결
 - [x] E3: fixed/force node 이동과 실제 pointer/touch drag·host keyboard
@@ -489,3 +490,40 @@ Docs204/204, built172pages/1523LLM 및 네 폭overflow0/Axe0이 통과했다.
 
 E4 source `41621fb78` push 뒤 provenance를 고정해 owning docs30과 built172pages/1523LLM을
 다시 통과했다. Runtime·타입·최종 archive 및 시각 입력은 그대로여서 앞선 설치와 네 폭Axe 증거를 재사용한다.
+
+## E5 annotation 편집의 기존 Text owner 연결
+
+전체 승인 AUTHORIZATION을 재사용한다. `editAnnotation({target?,text?,format?,x?,y?,placement?,layout?,...TextStyle})`는
+Full-only thin wrapped facade이며 기존 annotation이 만든 독립 Text 또는 source-owned labels를 편집한다.
+별도 registry나 저장 schema는 만들지 않고 같은 lower editable resource인 일반 Text도 허용한다.
+명시 target → current eligible Text → unique Text 순서로 해석하며 ambiguity는 거부한다.
+`annotate` command는 명시 owner target과 같은 nonempty payload를 받고 이 action만 호출한다.
+
+x/y는 기존 독립 Cartesian constant datum anchor의 scale/type/temporal unit을 그대로 써서 갱신한다.
+Field/conditional position을 임의로 constant anchor로 바꾸거나 source-owned 위치를 분리하지 않는다.
+text는 encodeText, format-only는 기존 constant text, style/offset은 editTextMark,
+placement는 editMarkLabelPlacement, layout은 layoutLabels/removeLabelLayout으로 위임한다.
+기존 numeric/conditional offset이 있다면 style offset을 조용히 무시하지 않고 명시 거부한다.
+전체 chain을 discarded immutable branch에서 preflight한 뒤 wrapped child actions로 한 번 적용한다.
+
+Consumer matrix는 scoped composition/facet dispatch, data/scale/Canvas replay, label ownership/selection/layout,
+codec, session selection/link closure와 one-commit/error atomicity, Canvas/SVG/PNG/PDF 기존 Text geometry,
+Full installed/Basic unsupported, declarations/current/catalog/docs/realistic witnesses다.
+새 renderer·geometry owner는 없다. Geo feature anchor는 동료의 native editGeoAnnotation 안정 checkpoint 뒤
+별도 연결하고 screen-anchored 생성, item membership 편집/drag, pointer navigation와 history/focus는
+원 카드의 후행 의무로 유지한다.
+
+
+E5 집중 interaction190/190에서 새6회귀와 변경 두 owner100/93.55/100 및100/98.47/100을 확인했다.
+타입·source/package/discovery/catalog60, 실제5datasets×3recipes16, 기존 lifecycle inventory2,
+실제 Chromium pointer/tap/Enter/Space1을 통과했다. Native lower chain/codec와 Canvas calls·SVG,
+PNG·72dpi PDF decoded pixels가 정확히 같다. 새 renderer나 visual primitive는 없다.
+
+동일 tar b9124cb2에서 Node20/22/24 각각10runtime·strictTS·5bundles를 검증했다.
+Node20 최초 Full723,738>723,200 실패를 보존하고 runtime/types 재실행 없이 동일 측정에 최소723,800
+cap을 적용해 확인했다. Node22/24 전체 명령은 exit0이다. Package1037entries,
+Node20 packed1,475,547/unpacked6,716,141에1,476,000/6,717,000 cap을 적용한다.
+Docs 최초202/205의 changelog1·search cap2 실패는 owning49/49로 수리 검증했다.
+Built172pages/1525LLM 및320/390/768/1440px overflow0/Axe0을 통과했다.
+[정확 artifact·명령·원본 실패](annotation-edit-evidence/qualification.json)를 보존한다.
+전수 normal/coverage·전체 installed matrix·STEP060/077 완료는 주장하지 않는다.

@@ -122,3 +122,10 @@ createInteractionSession({program,bindings:[{type:'moveNode',target:'network'}]}
 program.editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
 // @ts-expect-error node dragging has no selection binding
 createInteractionSession({program,bindings:[{type:'moveNode',target:'network',selection:'picked'}]});
+
+program.editAnnotation({target:'note',text:'Revised',x:2,y:3,dx:8,layout:false});
+session.dispatch({type:'annotate',target:'note',payload:{text:'Revised',format:'auto',placement:'auto'}});
+// @ts-expect-error annotation commands do not redirect the native target
+session.dispatch({type:'annotate',target:'note',payload:{target:'other',text:'No'}});
+// @ts-expect-error native annotation edit preserves its existing source
+program.editAnnotation({target:'note',source:'new-source'});

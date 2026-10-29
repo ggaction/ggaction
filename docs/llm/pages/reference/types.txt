@@ -163,6 +163,7 @@ interface ChartProgramActions {
   editMarkLabelPlacement(options: TargetedOptions<EditMarkLabelPlacementOptions>): ChartProgram;
   removeMarkLabels(options: TargetedOptions<RemoveMarkLabelsOptions>): ChartProgram;
   createAnnotation(options: TargetedOptions<CreateAnnotationOptions>): ChartProgram;
+  editAnnotation(options: TargetedOptions<EditAnnotationOptions>): ChartProgram;
   createStatisticalReference(options: TargetedOptions<CreateStatisticalReferenceOptions>): ChartProgram;
   createOverlay(options?: TargetedOptions<CreateOverlayOptions>): ChartProgram;
   createLayerPlot(options: TargetedOptions<CreateLayerPlotOptions>): ChartProgram;
@@ -2544,6 +2545,8 @@ Related types: [`AdjacentPlotSpecification`](../../../reference/types/#type-adja
 
 ```typescript
 export type CreateAnnotationOptions = AnnotationBaseOptions & AnnotationAnchor;
+
+/** Existing Text or attached labels; preserves stored anchor bindings. Full-only. */
 ```
 
 Related types: [`AnnotationBaseOptions`](../../../reference/types/#type-annotationbaseoptions) · [`AnnotationAnchor`](../../../reference/types/#type-annotationanchor).
@@ -4941,6 +4944,26 @@ export interface EdgeRouteLimits {
 ```typescript
 export type EdgeRouteMethod = "hierarchical" | "force-directed" | "density" | "edge-path";
 ```
+
+### `EditAnnotationOptions` {#type-editannotationoptions}
+
+ Expand EditAnnotationOptions
+
+```typescript
+export interface EditAnnotationOptions extends Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "missing"> {
+  target?: string;
+  text?: unknown;
+  /** Without text, reformat the current constant content. */
+  format?: TextFormat;
+  /** Replace one existing independent Cartesian datum using its current scale and field type. */
+  x?: unknown;
+  y?: unknown;
+  placement?: MarkLabelPlacement | "auto";
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+}
+```
+
+Related types: [`TextMarkOptions`](../../../reference/types/#type-textmarkoptions) · [`TextFormat`](../../../reference/types/#type-textformat) · [`MarkLabelPlacement`](../../../reference/types/#type-marklabelplacement) · [`LabelLayoutOptions`](../../../reference/types/#type-labellayoutoptions).
 
 ### `EditAxesOptions` {#type-editaxesoptions}
 

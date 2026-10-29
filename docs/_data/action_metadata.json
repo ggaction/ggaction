@@ -610,6 +610,14 @@
     "layer": "user-facing",
     "domain": "marks"
   },
+  "editAnnotation": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
   "createTextMark": {
     "operation": "create",
     "authoringRoles": [

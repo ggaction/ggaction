@@ -58,6 +58,19 @@ Omitting `layout`, or passing `false`, preserves the exact anchor. A layout obje
 enables collision placement and accepts `layoutLabels` options except `target`.
 After creation, use the lower Text, position, scale, layout, and mark-removal actions.
 
+## `editAnnotation(options)`
+
+Use this Full action to change an existing annotation's content, offset, style or constant data/plot anchor together.
+It also accepts ordinary Text and attached label layers. The target is explicit, current Text, or the only Text layer.
+An invalid change leaves the old program intact. [Full signature and rules](../../../../reference/actions/marks/#editannotation).
+
+`x` or `y` preserves the stored scale and field type, so a category remains a category and a date remains temporal.
+Field-driven positions and source-owned label positions cannot be replaced here. Change source-owned offsets with
+`dx`/`dy`, or use `placement` for semantic inside/outside positioning. Existing encoded offsets require their encoding action.
+`layout:false` removes collision layout; `placement:"auto"` restores ordinary source placement.
+
+For host controls, the [`annotate` interaction command](../../../../api/interaction/#edit-existing-annotations) calls the same editor.
+
 ## `createMarkLabels(options?)`
 
 See [Attached Mark Labels](../../../../api/marks/labels/#createmarklabelsoptions) for this contract and its examples.

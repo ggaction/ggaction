@@ -10,7 +10,7 @@
         "width": 640,
         "height": 390
       },
-      "sourceHash": "177353c88b47261611755c5e5b41f5194b8f63014b21fcf173d10fc289c27387"
+      "sourceHash": "b478663e164f965dba5d15c35bcea1f639bc8f2d37f986c920dcc7185523643f"
     },
     "ordered-category-bar": {
       "width": 1872,
@@ -19,7 +19,7 @@
         "width": 640,
         "height": 227
       },
-      "sourceHash": "b42e44133a91f475b5f40adc240bb732aa933fe41d79e53edb8663275a9325ca"
+      "sourceHash": "d976963b802a700a200998696c63e94f64ac804d51b472dfade0b6372554d6b3"
     },
     "program-composition": {
       "width": 1176,
@@ -28,7 +28,7 @@
         "width": 640,
         "height": 266
       },
-      "sourceHash": "d8801a650240eebb8798e9b276ba8623f0b9fffd553488935b28f1888f17eca6"
+      "sourceHash": "120d9bb98c15aad41117a8f75ac290e6d8ff3d69b6fc05f97013b5c31457e0d2"
     },
     "facet-grid": {
       "width": 1008,
@@ -37,7 +37,7 @@
         "width": 640,
         "height": 345
       },
-      "sourceHash": "519a2fe9e5ba4722a105617cf581cc41e8274316cc637cdcb9303af45b3d286d"
+      "sourceHash": "8141097af3c98a4f75b41fea973dc4be072f77aed5d73444713092f03f3ce509"
     },
     "lookup-data": {
       "width": 800,
@@ -46,7 +46,7 @@
         "width": 640,
         "height": 448
       },
-      "sourceHash": "7556df2b11f8598bddbac7c07196d25815133b4296222808227ebff68d444bcb"
+      "sourceHash": "0ed066224ecd9ddb30abcc72601dc13efe09b66293f568ca388abc9bb16b4bb9"
     },
     "linear-nice-count": {
       "width": 520,
@@ -55,7 +55,7 @@
         "width": 520,
         "height": 340
       },
-      "sourceHash": "15d84bcf27285480c622cbfe56acb1178653416130fedd88a161b0bad40d81af"
+      "sourceHash": "8bdf171d36206ac5ff42078b39c574edccdacf13ee3fa8bbf88db46cc73866fa"
     },
     "linear-nearest-ticks": {
       "width": 520,
@@ -64,7 +64,7 @@
         "width": 520,
         "height": 340
       },
-      "sourceHash": "e046911f39811ab647379a4100f23a96b67b1221ed1a7d6c2d5c07804e90dff0"
+      "sourceHash": "773c2fe09eb734296bb8cb947af0c713e9f7c16d64e3ade06ee227199cbc7337"
     },
     "facet-field-titles": {
       "width": 430,
@@ -73,7 +73,7 @@
         "width": 430,
         "height": 390
       },
-      "sourceHash": "d6b804d4ef5ef23c83f73c82500d2b9f049e54fb256890fa529e36e11d8c9d34"
+      "sourceHash": "0bc29ed2244db21809aa09db836311b7cc0350f76829466002b81624ab5e8f28"
     },
     "facet-header-rotation": {
       "width": 370,
@@ -82,7 +82,7 @@
         "width": 370,
         "height": 390
       },
-      "sourceHash": "1e0d02c8dda219695fbc04d006cddb2760e343290a77e17042953f1df828ceb7"
+      "sourceHash": "a2c3dfb6d551da250bb0e6f53e97f9c76e97eea070c1fb3f40e641fd7ffb8202"
     },
     "repeat-charts": {
       "width": 1376,
@@ -91,7 +91,7 @@
         "width": 640,
         "height": 140
       },
-      "sourceHash": "06c53757fee3d08137110e1b740093ba5ecc865f876dead48bb13dd5d6746ef1"
+      "sourceHash": "3f5d551dc3500d5e0f8ba3a23e0ad90003ea0031b65c7cd7b6b20ec8b0c2332e"
     },
     "cars-origin-scatterplot-facet": {
       "width": 1864,
@@ -100,7 +100,7 @@
         "width": 640,
         "height": 194
       },
-      "sourceHash": "d12b7d247a7a571370b8b29ed7e95ae796ef8b257f85d560ac3dccd7d6179fff"
+      "sourceHash": "560615e8fae8aa1932f05b6740138fc6d547880da151842852693c1352460c02"
     },
     "cars-scatterplot": {
       "width": 1280,
@@ -109,7 +109,7 @@
         "width": 640,
         "height": 400
       },
-      "sourceHash": "db6275c395296ed0109bf30774f1093e24810697b0a760a6a2fef47b348466a0"
+      "sourceHash": "f583d044509be5d87f43759739101b3558ae19f36d022a72c705e7df073b62d3"
     },
     "cars-parallel-coordinates": {
       "width": 1720,
@@ -118,7 +118,7 @@
         "width": 640,
         "height": 372
       },
-      "sourceHash": "cbbb8bb8c7d9ce613b8ba203b4e41db568ecd748a129f970ac39cdc3db695ce1"
+      "sourceHash": "69572b1682b9f35d27242a23adeb50309abe70421caf7edcef45e6cc0127b377"
     },
     "annotated-imdb-scatterplot": {
       "width": 1440,
@@ -127,7 +127,7 @@
         "width": 640,
         "height": 409
       },
-      "sourceHash": "fc6f095561cb32feb9617b21b55d16897dd589fc9dc9b983e47c8dd8540ecfef"
+      "sourceHash": "1c424289e48f712c7389bb0e8d3431fef3fc97b482dfac072783788f46c2dfd0"
     },
     "fitted-long-labels": {
       "width": 1360,
@@ -136,7 +136,7 @@
         "width": 640,
         "height": 395
       },
-      "sourceHash": "ac74ce9b01d531dfd45bd0a13d33aeba94721b78eff03b5e0179b189a245f247"
+      "sourceHash": "fa3d35c68036721b0afc1012157668eda32fd71d71426f23ecdc23c2b746e4cd"
     },
     "gapminder-life-expectancy-heatmap": {
       "width": 1520,
@@ -145,7 +145,7 @@
         "width": 640,
         "height": 371
       },
-      "sourceHash": "b2a4a3b5f4f8b7abf1b7e1cb9cae1038e697baafc8e0534fcdb3df1669263cfd"
+      "sourceHash": "e1a4f0aabfc9f31467a7132666aa3c2606aa2c223c4b208983f1fadd954f73a6"
     },
     "gapminder-development-trajectories": {
       "width": 1520,
@@ -154,7 +154,7 @@
         "width": 640,
         "height": 421
       },
-      "sourceHash": "36068b2c3bb5ce725ab29955a4315ea6bab1aa5c48beb0a70f51bb764d3705e3"
+      "sourceHash": "50783112a20500fe18fbdad863a1bdd2afd5c778e0216d8c53d4c50741035fc8"
     },
     "cars-polar-scatterplot": {
       "width": 1040,
@@ -163,7 +163,7 @@
         "width": 640,
         "height": 640
       },
-      "sourceHash": "5cd001c12cb94faf8e99cdab117782de5d4fd21e961027bfeda49d13a4ad4eac"
+      "sourceHash": "c92df725102894394f323730c02c5633ff29797f500c0f389442cac2bc6ea360"
     },
     "cars-polar-guides": {
       "width": 1240,
@@ -172,7 +172,7 @@
         "width": 640,
         "height": 640
       },
-      "sourceHash": "00ceecd7da45c0899d30cdab89b558753a8698c1888c13980aef60539be349c2"
+      "sourceHash": "0409afa866a168120d40a65b1511e5c7c7b45ebe8edbb7c490656266ca09aae6"
     },
     "gapminder-polar-trends": {
       "width": 1520,
@@ -181,7 +181,7 @@
         "width": 640,
         "height": 522
       },
-      "sourceHash": "262be56711ad272816300e4ab20d2c09a63f5673e0434ed281179ca2af73503d"
+      "sourceHash": "ead4cf348d0ae82ac9af85147f5ebfea0d76d9bafd2026bc62cc2fde151c1f2d"
     },
     "jobs-radar-chart": {
       "width": 1640,
@@ -190,7 +190,7 @@
         "width": 640,
         "height": 507
       },
-      "sourceHash": "ce842393d092d483950300f589e46059246a1e16c3a143221dda9fbcab04ce14"
+      "sourceHash": "b19625175235a662749c5716e998a17c4043dcb6f013b51082bd54cac97f95b2"
     },
     "cars-origin-donut": {
       "width": 1280,
@@ -199,7 +199,7 @@
         "width": 640,
         "height": 500
       },
-      "sourceHash": "d6b2dcd2c317bfd8b1863e282cd8488ff922181a41bf90b5a3350c09e3fd7ba3"
+      "sourceHash": "ceee69168086b69ea9d7e816675a5f8aaddcfdc27c2ab594e1daed04b29b7950"
     },
     "gapminder-population-donut": {
       "width": 1360,
@@ -208,7 +208,7 @@
         "width": 640,
         "height": 489
       },
-      "sourceHash": "4ee01a08d52b5ba378cd03a705241a7e25055321c47ff7d6e9c300e5172c4a11"
+      "sourceHash": "d0c873ad6cae34e78d8acd77840ac3bf303b170efb07b562b0e03eeae8190f3c"
     },
     "nightingale-rose-chart": {
       "width": 1560,
@@ -217,7 +217,7 @@
         "width": 640,
         "height": 525
       },
-      "sourceHash": "fa8386a0198510cd9d0558a7a29b4431ff5d9da97cc927330db2b43483a77b86"
+      "sourceHash": "a9bd5df8b45ba345a543e134e37fcc74a15ee47796ce9721d875c1e7bc437a0c"
     },
     "gapminder-radial-bars": {
       "width": 1560,
@@ -226,7 +226,7 @@
         "width": 640,
         "height": 525
       },
-      "sourceHash": "63f506345f9db59c1e5af49937c6123b7af5e4e6f0d9b2cdf1e615d254d6dbf0"
+      "sourceHash": "65e3540957bac522877ee6508f7e07f90dca04bd46af05266eae071b1cef3801"
     },
     "cars-line-chart": {
       "width": 1440,
@@ -235,7 +235,7 @@
         "width": 640,
         "height": 409
       },
-      "sourceHash": "df694b113df83bfa07ccd9647d95e2eff342a1a744fa020be45c175d65602dd3"
+      "sourceHash": "836714fce5d9d7c7b63184f5361180e1e34f2873f68422b6d2582f3d31cd2484"
     },
     "cars-temporal-bar-line": {
       "width": 1440,
@@ -244,7 +244,7 @@
         "width": 640,
         "height": 391
       },
-      "sourceHash": "53b1392da98fac64fb3a0467c38b2ef37ab73539bf53d5911f4fe56206a2d2ec"
+      "sourceHash": "63d2e0a416b531787b4524ebaf3d86be17f640e67b9c679336a101dfd3a1a8b5"
     },
     "cars-histogram": {
       "width": 864,
@@ -253,7 +253,7 @@
         "width": 640,
         "height": 681
       },
-      "sourceHash": "c48faa906e18d89054c62b6a909f03280e2b15efc0b711895e979b86d4f95dbe"
+      "sourceHash": "b2a7683ea00a1f9b24e71cd2e927b3a8ca882bf578e54079c20bd5a7e3a8fbfa"
     },
     "jobs-grouped-bar": {
       "width": 1440,
@@ -262,7 +262,7 @@
         "width": 640,
         "height": 409
       },
-      "sourceHash": "f1d0df6180999e55b20c1829cdc05b8f834ff6c8f6ec63ca55da151c51abb243"
+      "sourceHash": "85fe69815b50faca9c1274778269263a5ed4ec6106aea0b3b928e6e368798c34"
     },
     "jobs-horizontal-grouped-bar": {
       "width": 1520,
@@ -271,7 +271,7 @@
         "width": 640,
         "height": 539
       },
-      "sourceHash": "5953a621d8a01a5c4125468f52c2f022ae082af9d2abb3dcff3d312ae38288ff"
+      "sourceHash": "973a945f3918fe38396ef6c1fa2e6a94572b20e91cb183cad322f4f0a0658dfe"
     },
     "cars-regression-scatterplot": {
       "width": 1520,
@@ -280,7 +280,7 @@
         "width": 640,
         "height": 404
       },
-      "sourceHash": "c67d74e712d886dc421d512e2fce6b8f09bd74e8ef7fb50d93cc308faa110c27"
+      "sourceHash": "a4564a213490eb06e7e9f22b358c4297d77474f8dfc3c4818be2ceb5fe9fbf16"
     },
     "cars-multi-legend-layout": {
       "width": 1520,
@@ -289,7 +289,7 @@
         "width": 640,
         "height": 522
       },
-      "sourceHash": "b8cdb0b6e62afc2fca3f6eaf173dea478f0a7578b1fd8d7a070c006ad003d234"
+      "sourceHash": "54575036eeb8d3b5a3405ffdaa963eb511df04c512238ec48d425b85cf62641d"
     },
     "cars-density-area": {
       "width": 1440,
@@ -298,7 +298,7 @@
         "width": 640,
         "height": 444
       },
-      "sourceHash": "b2d2c91b37e37c65b3a67472f210bd2472b4d2e177ea775005e71438b265cd13"
+      "sourceHash": "9fe9c00786fe643af493b3606bd93d4210307eebe9b1ad1878bb115adce5f431"
     },
     "gapminder-horizon": {
       "width": 1520,
@@ -307,7 +307,7 @@
         "width": 640,
         "height": 253
       },
-      "sourceHash": "46b13dbdd8ee774f8efe868e5afb95d66b14d60a6cba19f38eb41701d892b72d"
+      "sourceHash": "04c2c93b323d47eb1aa56b349a604db5b578a90e4b0b8a82226799302b28a5a0"
     },
     "cars-acceleration-violins": {
       "width": 1440,
@@ -316,7 +316,7 @@
         "width": 640,
         "height": 462
       },
-      "sourceHash": "70340d012fd1c74e1292fdb045be97aced5399e93cd4fdc7e45a5e74bf75020d"
+      "sourceHash": "f7cdad6c8c4b31c4ff204a78332f4cd91234a24f130e6e017f6dc72985374567"
     },
     "cars-error-bar": {
       "width": 1440,
@@ -325,7 +325,7 @@
         "width": 640,
         "height": 409
       },
-      "sourceHash": "108a5be1e4cdde3e108e8365b228d7d8229dbf5bf81f64bb2137036c11a919d5"
+      "sourceHash": "8444ccf8da8657d2852e9d4dda36897c51a36f841c3b8b362eea7497a140305d"
     },
     "cars-gradient-plot": {
       "width": 1240,
@@ -334,7 +334,7 @@
         "width": 640,
         "height": 475
       },
-      "sourceHash": "f9d489ead4d372715db7a503f25b966fcde79ba05d5255c7c501487807a44c87"
+      "sourceHash": "514a27451ae358f23c2fbe6f0d8d6c795b3a58f9d80f4776cf0c8a95b26fa597"
     },
     "cars-box-plot": {
       "width": 720,
@@ -343,7 +343,7 @@
         "width": 640,
         "height": 818
       },
-      "sourceHash": "1b9f268d6d45f12df1ec889f7e17268682883ccd6ca1d2c5826723c7094666a4"
+      "sourceHash": "9ae139749cce2d688f31072f500939c3bf4390b9ce03979d2ee5ebf0b50f498f"
     },
     "gapminder-error-band": {
       "width": 1520,
@@ -352,7 +352,7 @@
         "width": 640,
         "height": 404
       },
-      "sourceHash": "085d6b70c651e0f1a78dfff0595f8e191bb2bb5e1355fc05ea66f5ba09239046"
+      "sourceHash": "504480420d1dabccc04e68c7f1edb4abc90261acfe3745afcfeb61e86451ce81"
     }
   },
   "tutorials": {
@@ -363,7 +363,7 @@
         "width": 640,
         "height": 320
       },
-      "sourceHash": "2a23e2431d7728bf9900f75cc230307d67e65a4ec64b57951866d2da144f0869"
+      "sourceHash": "4e93bfca72233725dd27021c131e0d1d26757ccab67b0f57a7d915ff5c92b086"
     },
     "mark-outlines": {
       "width": 560,
@@ -372,7 +372,7 @@
         "width": 560,
         "height": 400
       },
-      "sourceHash": "4674eda8178f985d469699d8872d6e9303227ec221bec5c4ecc34067c26f98ba"
+      "sourceHash": "08e60953393cbec3635a9e7f7e64e071bee0ca9c906a71fe70090e8073e62a52"
     },
     "text-shadows": {
       "width": 440,
@@ -381,7 +381,7 @@
         "width": 440,
         "height": 320
       },
-      "sourceHash": "140c69f13ffba2354a6ff578abdb59e0ea8602ba217bd215a7f90ab4a4b876b8"
+      "sourceHash": "6d9eb05ea46634490761ac0caec0f7a9b819d6db8345a19f2a34d4e4692cc42c"
     },
     "mark-shadows": {
       "width": 520,
@@ -390,7 +390,7 @@
         "width": 520,
         "height": 400
       },
-      "sourceHash": "5b838140ed7872ea0c1da01ea1a7d6395dc64cfc1549b13c1297984ff224b037"
+      "sourceHash": "b3c9f250400bc6dd49235512d6e19b3777e94b353d2b9a7e4572d8ce8cb77551"
     },
     "structured-paints": {
       "width": 520,
@@ -399,7 +399,7 @@
         "width": 520,
         "height": 360
       },
-      "sourceHash": "abc1af96b48142bdb36cf24b1453f0d17fef5063fbb71d956c9cfb7068cff45d"
+      "sourceHash": "509aa2530a6b05545b09372adbcf498c1b68d960c0269261a0518762c12e598a"
     },
     "image-assets": {
       "width": 400,
@@ -408,7 +408,7 @@
         "width": 400,
         "height": 420
       },
-      "sourceHash": "62092d08e6a045d875d328ca3ebac413f2e232cc589c5531ba8058f95b76b346"
+      "sourceHash": "e2bc378ee02e8e4dfda0aeba86ff1b77e2667b35a03287190a0215be8c727cd9"
     },
     "compound-path": {
       "width": 800,
@@ -417,7 +417,7 @@
         "width": 640,
         "height": 486
       },
-      "sourceHash": "7ac021adb183bf58248f91d68a29e5d69e5ba6826a615a7437c7a42d14d69904"
+      "sourceHash": "d31d283807791411bd5f8d4207ebb9cb2750f1b997f0a69c19b6a89d495b0d04"
     },
     "bootstrap-mean-ci": {
       "width": 640,
@@ -426,7 +426,7 @@
         "width": 640,
         "height": 440
       },
-      "sourceHash": "408e559ee4e72db5a9490573923bc59fdf9e091287aa761f5aad65fd5bf7d34c"
+      "sourceHash": "bbfceacc396cb0a6b6bbee3318877c56455cd45b7e2f9fcb54b88174ad92f912"
     },
     "continuous-area-color": {
       "width": 640,
@@ -435,7 +435,7 @@
         "width": 640,
         "height": 440
       },
-      "sourceHash": "665437eef5dc14b61543e574a10d9ffd4fd5d26767b1eb851017bc9b1173ddb3"
+      "sourceHash": "b32491ba90c10729414225332f4510daa404bd144e50ebe2de672e33de3c5145"
     },
     "shared-adjacent": {
       "width": 1680,
@@ -444,7 +444,7 @@
         "width": 640,
         "height": 267
       },
-      "sourceHash": "f636a3084f5981d45e2a361cd6a23646e1e67c585121b1493c175fc8be68a27f"
+      "sourceHash": "b65162756378166b835d810c3f5e1c5abca39f60cf1084b1752eba13a540cc74"
     },
     "linked-overlay": {
       "width": 820,
@@ -453,7 +453,7 @@
         "width": 640,
         "height": 546
       },
-      "sourceHash": "c6c069e01e14d6f1556dc611dc57946b4e73b3070900e5da0aad79f01bd10622"
+      "sourceHash": "bb774b139d96cf3700c035bd945dee5b475835a07ab388db47dd035ea637016b"
     },
     "named-shapes": {
       "width": 960,
@@ -462,7 +462,7 @@
         "width": 640,
         "height": 360
       },
-      "sourceHash": "b13125f57fa124fc233ec084c6625a5118a4ac77546ad5f53c9998daabb0590b"
+      "sourceHash": "bf3ba22995fb3324b13c51bf05c3866f3ac68aa87e519e27a72e72dca010354c"
     },
     "axis-owners": {
       "width": 940,
@@ -471,7 +471,7 @@
         "width": 640,
         "height": 368
       },
-      "sourceHash": "b3244ec9193bf423489ae259f3276aa12cd0c14c5f6dd0ddb007495464bd3d53"
+      "sourceHash": "d7f461faf108693f37aaaf54c0ddf3eaf77c97752daced5c52451120b5469769"
     },
     "shared-facet-owner": {
       "width": 890,
@@ -480,7 +480,7 @@
         "width": 640,
         "height": 316
       },
-      "sourceHash": "b51884401a48418366a5402aba4ba15e29ab06852e0afa7fb3c2ef9a5182c40c"
+      "sourceHash": "42be723695b3bdb2a345e286f1a2c95973205a99e2e560447076c2be2b2c2be7"
     },
     "color-controls": {
       "width": 960,
@@ -489,7 +489,7 @@
         "width": 640,
         "height": 360
       },
-      "sourceHash": "972768ab981f4e6df50e8cbd40a88b736b241b07d4be696be2b14a5ce5cd525d"
+      "sourceHash": "d09bbd15ba0ad678e9b51f0ba62c27a713491af22df4f2aacef774f0bd123aad"
     },
     "color-white-point": {
       "width": 960,
@@ -498,7 +498,7 @@
         "width": 640,
         "height": 360
       },
-      "sourceHash": "273da3670a37244f9298785ecf7867d3e3c9cbc0cde2188a454e9a8f0fc59b8c"
+      "sourceHash": "32344df20468a882418d05a336019a8378776ab9f104d74eb8a599f87af52d0a"
     },
     "bar-compositing": {
       "width": 400,
@@ -507,7 +507,7 @@
         "width": 400,
         "height": 400
       },
-      "sourceHash": "bc38e082cf3e95e0e34de5199c1857eed0b4220dabac36be35ae7d8639b36319"
+      "sourceHash": "70770ec8bdfb1fca2663940d31b71cb4af988f9372be93f0bd0b2ee7fba4b096"
     },
     "cars-origin-histogram-facet": {
       "width": 1512,
@@ -516,7 +516,7 @@
         "width": 640,
         "height": 489
       },
-      "sourceHash": "b03cbfa518c068cecc2f5a32274f1b3dde90a1c4b195117009092b2a59f21383"
+      "sourceHash": "c1d1c2a4c28af93d95331a1022cdd841181f41e909e4a056255affe0ce1e6a4e"
     },
     "cars-weighted-rules": {
       "width": 1040,
@@ -525,7 +525,7 @@
         "width": 640,
         "height": 394
       },
-      "sourceHash": "1372e0afa986c1c3abea7a55d273a99d964560fa373c97b1eb6c79fa2b28deb4"
+      "sourceHash": "8576410d5da59d5b2eb0be9ae677e0beb2be72d39f96b88fdb32bbcfbcebb829"
     },
     "raincloud-plot": {
       "width": 1360,
@@ -534,7 +534,7 @@
         "width": 640,
         "height": 395
       },
-      "sourceHash": "731c55396f15500d9f545144784384145e901aca267c42dbdd39acae9ce0d7a8"
+      "sourceHash": "f3e28cbb8ad9452fa043507c371dd4624cb45ef8dad24121c821f7e7809c0b69"
     },
     "beeswarm-plot": {
       "width": 1040,
@@ -543,7 +543,7 @@
         "width": 640,
         "height": 418
       },
-      "sourceHash": "e33183f9ecd1eeccb8b5551569b0a36a07082e5a2ef7231e6b9df52633d595ad"
+      "sourceHash": "e25c564af00106df6e016afb9d66395892faddd21733939276acb606b6909a29"
     },
     "dot-plot": {
       "width": 960,
@@ -552,7 +552,7 @@
         "width": 640,
         "height": 427
       },
-      "sourceHash": "5a10d4804837b20fb8615621e7b32ea2fd1af4dc2cc2c6594c71b05b990658b8"
+      "sourceHash": "97c22200f07c365411e63afed4c03fb542a2b4da74e7f6246ddb565f82aa9449"
     },
     "lollipop-plot": {
       "width": 960,
@@ -561,7 +561,7 @@
         "width": 640,
         "height": 427
       },
-      "sourceHash": "b3c08eeb062e291eb1d79822212a27d10336134ad1dcd070d553c40ebad4d6a0"
+      "sourceHash": "97cdb49689d34b10ddda1a9606217725e9804b67da1b84671acbdbcd3642856b"
     },
     "dumbbell-plot": {
       "width": 960,
@@ -570,7 +570,7 @@
         "width": 640,
         "height": 427
       },
-      "sourceHash": "810e20b853e8d07f84750da5467d28e0fb69b1abe9ed5bd8160bbc6b91e806f4"
+      "sourceHash": "577e86ad04f3c0adeadd594d666bb95d6b6cfaa6daef5e56b7860824e3f093f4"
     },
     "ecdf-plot": {
       "width": 1040,
@@ -579,7 +579,7 @@
         "width": 640,
         "height": 418
       },
-      "sourceHash": "8329f546f4d3740b0c89260a20e02ea5a3d19080110644714ad66b4414992d3d"
+      "sourceHash": "4e85598fb1b7557e7b0fdf88032fc6971dec27d5e5f0a570c76a34c86af2b1c9"
     },
     "color-transitions": {
       "width": 2000,
@@ -588,7 +588,7 @@
         "width": 640,
         "height": 448
       },
-      "sourceHash": "81fff01671a654fcfbb7a41705d0822bd3f1e8e4bf67e5b9b57d2a2653dea6df"
+      "sourceHash": "5854aeb9e297138ca231e0967fb2c0c2c60315b713e5b487a45ccb034d6c6abb"
     },
     "color-midpoint": {
       "width": 2000,
@@ -597,7 +597,7 @@
         "width": 640,
         "height": 448
       },
-      "sourceHash": "c11f83273e5709b0d794a5b96e1a088bb915907194d59ebc320c70ea9bcf4e0c"
+      "sourceHash": "c5935afe6e8684989081c1eff0c7a48e96d1e00f59e0aec376a6e44ae5823d71"
     },
     "radial-sectors": {
       "width": 2000,
@@ -606,7 +606,7 @@
         "width": 640,
         "height": 448
       },
-      "sourceHash": "7bdf456d81b8834f8ec9ddbe205a182832ea221f3717982fc1bec52ec7fa55c9"
+      "sourceHash": "a379538df54255c10a17e2b0a767347937fe02abd101a736e884dc5516d761f1"
     },
     "theta-legend-order": {
       "width": 2000,
@@ -615,7 +615,7 @@
         "width": 640,
         "height": 448
       },
-      "sourceHash": "9e0d6dff3a9e9933518802679d262ca8a98a7d4e2f28e53b1af281f52bfe16d6"
+      "sourceHash": "0aec98e100a8074e4b6d2ef5bd2c662bc6668e985ebec18a3b7bbcca22ef16d2"
     },
     "combined-legends": {
       "width": 2448,
@@ -624,7 +624,7 @@
         "width": 640,
         "height": 157
       },
-      "sourceHash": "7fe3e4d608deb6427391a292948b03410d789392d57c4babb9572bdf437f821b"
+      "sourceHash": "5d340112fcf328932ca094d49e30bc38e0231421ba56fa65cb3521092fb362b2"
     },
     "legend-layout": {
       "width": 960,
@@ -633,7 +633,7 @@
         "width": 640,
         "height": 360
       },
-      "sourceHash": "d39981e17427ae781f4aeec10cbcd2827a9910542b8f160919c3308effb6d486"
+      "sourceHash": "b2b19b665cbab970593afef7de30d2d1af556e4b2658a2e561e64c283ba057c9"
     },
     "legend-recipe-opacity": {
       "width": 960,
@@ -642,7 +642,7 @@
         "width": 640,
         "height": 360
       },
-      "sourceHash": "b48b859e80f03ac7fba26ebfbd3928c8e9494a9f2568f63e6e85f22ad502f72a"
+      "sourceHash": "4ab875a0a5c997e5775d61eb2f46f6cb4dab0425b939aec12cb6bd3d2faa4290"
     },
     "legend-appearance": {
       "width": 800,
@@ -651,7 +651,7 @@
         "width": 640,
         "height": 384
       },
-      "sourceHash": "bba595b209d295fe590a909c6ad67045afad93c5d20187be9c2827836c06070b"
+      "sourceHash": "bca8c944686619e340710d324aa9a81686b1a36e38ccf840f1482be49db4b916"
     },
     "legend-content-spacing": {
       "width": 640,
@@ -660,7 +660,7 @@
         "width": 640,
         "height": 480
       },
-      "sourceHash": "f381c449f916f7cdfe6925f42ecf161372f5f8b07cb41c21ed80d0a8e70cf0f7"
+      "sourceHash": "e6933dc3268b5e4574486bc0b793c4d848da87976314cc2307a25e66dbec8408"
     },
     "plot-guide-underlays": {
       "width": 480,
@@ -669,7 +669,7 @@
         "width": 480,
         "height": 360
       },
-      "sourceHash": "86a1b94dc9c646ca11fef3d721f888b0941b01c340543aa395afc7a5062b04af"
+      "sourceHash": "d7419e33adf884251fb5fbb1ca033c6bcb3be13c34d4eed0a873c27fed32bde0"
     },
     "facet-shared-top-lane": {
       "width": 1016,
@@ -678,7 +678,7 @@
         "width": 640,
         "height": 330
       },
-      "sourceHash": "56a1464f9940f4af9984c156cb643d4424b7aa301d0b0abeb56fc665c0fc759a"
+      "sourceHash": "04b2e7fc8295b549c6da8e0508083b18b4ac6871a80514d46f24b40fa165c048"
     },
     "symbol-window": {
       "width": 800,
@@ -687,7 +687,7 @@
         "width": 640,
         "height": 320
       },
-      "sourceHash": "c00bbdb9c95ae56025b46c8a8f17e585ae68a7b288fba7786ecdc8ead087fa2f"
+      "sourceHash": "67864e6e8aa1615d4e9e2483d70af2c3521cbd35b08d6e0c6313f60c85eec13b"
     },
     "area-layout": {
       "width": 2000,
@@ -696,7 +696,7 @@
         "width": 640,
         "height": 448
       },
-      "sourceHash": "9f4cc9dba105807c64bed46623412f4e0a9166d187c256773087b8be1af6d55d"
+      "sourceHash": "227d79f7d7717889d4d97b52cb26c342e18cdd0cc3007041b0d619f23857833f"
     },
     "calendar": {
       "width": 2160,
@@ -705,7 +705,7 @@
         "width": 640,
         "height": 213
       },
-      "sourceHash": "eae1dbc9c8fd9bdc41e4a60d9847920b3d85c8558c75205e6e2a6bcf7cb88744"
+      "sourceHash": "7ec92409be6325eedbd89c00a01e59e4e35b003c168ce2ec632b0336b3eaab54"
     },
     "calendar-monday": {
       "width": 2160,
@@ -714,7 +714,7 @@
         "width": 640,
         "height": 213
       },
-      "sourceHash": "ac38c0b85d271a6a7373daeb7be892f53b52a1bb65aef1b1433c18b209730490"
+      "sourceHash": "0f3e831df7392251b33414b3aae1aa01a804fb0226de755e7df67923af10b7ad"
     },
     "calendar-omitted": {
       "width": 2160,
@@ -723,7 +723,7 @@
         "width": 640,
         "height": 213
       },
-      "sourceHash": "e4a99e0dc539535f409255d6f4059226ec9eb7fb186cf5ced2455b82fb13e2d7"
+      "sourceHash": "d505878392c2177fe9eb799a71b3283e683f2c6decefc3e24a661794471df053"
     },
     "nested-responsive": {
       "width": 2094,
@@ -732,7 +732,7 @@
         "width": 640,
         "height": 576
       },
-      "sourceHash": "4904b3946925dd57d9719180741a5eb40b2c80581b1a0c5ec5cbdbe61adde5e3"
+      "sourceHash": "ebd49400ebec669ef2c94285e12cf0ac8004a7a7d23bc360f40b698644112ee3"
     },
     "responsive-guides": {
       "width": 800,
@@ -741,7 +741,7 @@
         "width": 640,
         "height": 512
       },
-      "sourceHash": "b46b2365a29996ce79081f2a055f9c476549bba762803eb103f25abf60c9f0d8"
+      "sourceHash": "5f5839cb3f3905092f356abba6d5c8e4a69aa848260f8b67f59d9f6c315d56e1"
     },
     "geographic-marks": {
       "width": 1280,
@@ -750,7 +750,7 @@
         "width": 640,
         "height": 480
       },
-      "sourceHash": "e5f677b1a91b37c8a7ace2f5e94c896a2cd41f0236a02d92ceec9eea3e02a825"
+      "sourceHash": "aea6d697932a51e5ab20c975eb124e2051962ea6bffaedb42f74d2507109d065"
     },
     "geographic-grid": {
       "width": 1280,
@@ -759,7 +759,7 @@
         "width": 640,
         "height": 480
       },
-      "sourceHash": "c9b49c3357c6140ec724f384bf8ee0959e798a2475de000b93d424731072066a"
+      "sourceHash": "f7d37caed705fac60c7cac3a9991f891ad906349c203129b646055f34786ed6f"
     },
     "contours": {
       "width": 1280,
@@ -768,7 +768,7 @@
         "width": 640,
         "height": 480
       },
-      "sourceHash": "970d0ec28c13ebac0fadeb663e5efa3b4a10080a164f4073a0172232a62db7d3"
+      "sourceHash": "20051b11a3226caee13ddc844c3567a18aaab46d8f7b7a989eec8a557efc20cd"
     },
     "contour-bands": {
       "width": 1280,
@@ -777,7 +777,7 @@
         "width": 640,
         "height": 480
       },
-      "sourceHash": "ae8f31fec4c373f3c1f0a3ee4786dbf8e364feefcd1dd259218e10b835bff01a"
+      "sourceHash": "9f41adae4f064924954b44c7cb00887c4a89c7c139b37974fb283a7672c09ad1"
     },
     "contour-holes": {
       "width": 1280,
@@ -786,7 +786,7 @@
         "width": 640,
         "height": 480
       },
-      "sourceHash": "bc041e9953b2552edd97c7445e333b125c76c40ee6af8fcf8c212832c3b20665"
+      "sourceHash": "2e9f34c611721b014cb1b9c26a65ca463466e21225702c745db5c4193a580a40"
     },
     "contour-histogram": {
       "width": 1280,
@@ -795,7 +795,7 @@
         "width": 640,
         "height": 480
       },
-      "sourceHash": "bff30b86ea463fb53efe250f9527e4dd3e74d062e34e3274e004aa720fae040a"
+      "sourceHash": "9364f1ed72fb73b5b3a5e5775958316c77be7506e621d1d8ec64887e319563a2"
     },
     "contour-density": {
       "width": 1280,
@@ -804,7 +804,7 @@
         "width": 640,
         "height": 480
       },
-      "sourceHash": "2afd640a9f026dfe49a4aad152477573b4d0e090b2447241f999fb7d1b8d5346"
+      "sourceHash": "d4b3ac2db3d3deeef9a1d3781cc5b13317ecb89bd67e0314c002e78c06110ec2"
     },
     "edge-routes": {
       "width": 640,
@@ -813,7 +813,7 @@
         "width": 640,
         "height": 480
       },
-      "sourceHash": "9a0943b40325b45af8bb9a4ec6ce31237d756e5ef1848b2fad300b59b7360ae2"
+      "sourceHash": "199f385392a2937f5a352056f423e2ef95212968a939b55265c1ec5de5d767ee"
     },
     "graph-plots": {
       "width": 600,
@@ -822,7 +822,7 @@
         "width": 600,
         "height": 480
       },
-      "sourceHash": "12eeec08cbce491e53848d216ce443eb0e470797df8082f28a6ed81fd36b96ce"
+      "sourceHash": "c9721a7686ea4e041f800f04070208c478c506bac4bec0c9d0972247ed532d41"
     },
     "graph-parallel": {
       "width": 600,
@@ -831,7 +831,7 @@
         "width": 600,
         "height": 480
       },
-      "sourceHash": "44c58347d228c89674d608b5ca225d657c1f0ceb095e3c86b2787a07ec4f20ac"
+      "sourceHash": "3c1f99b984632031a72d22ee78b3bc401c7c24f571d68a27d5c3d0035245145f"
     },
     "graph-self-loop": {
       "width": 600,
@@ -840,7 +840,7 @@
         "width": 600,
         "height": 480
       },
-      "sourceHash": "3a91605edc6a6d5e2dd734961c509d6846db32a71986091ba90a29a39101f286"
+      "sourceHash": "26d5411a75c291723ea7bff6e7e12a5c336f19c0b4199853660e23566561c827"
     },
     "flow-layouts": {
       "width": 1280,
@@ -849,7 +849,7 @@
         "width": 640,
         "height": 500
       },
-      "sourceHash": "9e12784d122eb0e8c2b141b4a5349128f076ac648abff56d9cfd72c48b02708c"
+      "sourceHash": "4af6ff7eaf33b495302f65ca6115249b05bfbe7f7270c29141d5853260b15bcb"
     },
     "flow-vertical": {
       "width": 1280,
@@ -858,7 +858,7 @@
         "width": 640,
         "height": 500
       },
-      "sourceHash": "2792bc22d7b538e407635503189531bce9c13937b026f1cb9f1c7401b59e8628"
+      "sourceHash": "fda9464f8e687e63c4c090e475b06da75cdcba88cf3e8a16b8fd906e784b9e37"
     },
     "flow-cyclic": {
       "width": 1280,
@@ -867,7 +867,7 @@
         "width": 640,
         "height": 500
       },
-      "sourceHash": "d6f198be4e2088f3acc23db853387bbbce56d2cf02336536130b01ed1be4cddf"
+      "sourceHash": "8e9a9359853be26308a8801f573ae4c33a0dde6bf25448c1daaf75131f72dca8"
     },
     "flow-cyclic-vertical": {
       "width": 1280,
@@ -876,7 +876,7 @@
         "width": 640,
         "height": 500
       },
-      "sourceHash": "42217bc3111729d5f27e8c72f0b5dbab76f6b356774d5f50351c61850e0b6ec8"
+      "sourceHash": "96511381a0315186024269e4b822f9c05ccb6227606977e32122d7a7743ceef9"
     },
     "tree-layouts": {
       "width": 1280,
@@ -885,7 +885,7 @@
         "width": 640,
         "height": 500
       },
-      "sourceHash": "2e9c3ddf94ba4ed5c5a72ef83d5801f3a68fb0a2c1f0904e52cab7c7d5a7bed5"
+      "sourceHash": "447e91e120bf85ca027be2e61ef292d8a4e272add082b2bc2f13287b51c2cd12"
     },
     "tree-horizontal": {
       "width": 1280,
@@ -894,7 +894,7 @@
         "width": 640,
         "height": 500
       },
-      "sourceHash": "36af0286ccb99833578a6c23d51b5e85ca2bcc3572107341b6f522f74206f3eb"
+      "sourceHash": "c5ff9fe0784dab9116fc70fb4eea8736cc8de85b15c4e95e62965b44b88e00f2"
     },
     "tree-radial": {
       "width": 1280,
@@ -903,7 +903,7 @@
         "width": 640,
         "height": 500
       },
-      "sourceHash": "65efd623491e727d352a95705e0eb611e8c93738a4f10ee7889dbec287d40c8e"
+      "sourceHash": "54ad32e0eb4690e47519fc59e75cbbdea2c2885835617f7cf9e5eac8304ba5cc"
     },
     "partition-layouts": {
       "width": 960,
@@ -912,7 +912,7 @@
         "width": 640,
         "height": 480
       },
-      "sourceHash": "b15d176760c8f97f1b281992db22432ad2f44f93e5497e6bdf42c5743debfefd"
+      "sourceHash": "94e5a4f802902a755ab3d3c229beb7caf23920151b12c7bf214dd98f314fad85"
     },
     "partition-sunburst": {
       "width": 960,
@@ -921,7 +921,7 @@
         "width": 640,
         "height": 480
       },
-      "sourceHash": "328f218cd62d2eb6870a0edc41076caf1977e0a8ca185851c3d80ef201e86e4a"
+      "sourceHash": "f1a4259d8cf1f0ce1e934339254002872d6e62ed698334c88ee468c2085ca961"
     },
     "treemap-layouts": {
       "width": 1280,
@@ -930,7 +930,7 @@
         "width": 640,
         "height": 500
       },
-      "sourceHash": "4d32e6cbfb0ce873fc729483ba60cf3f67063ce5610be71855ca851c944934ff"
+      "sourceHash": "a902e89f5d0f8f8bac24bc70f3ea2d9a188a0f97e3e7242042276c54c1b69286"
     },
     "treemap-squarify": {
       "width": 1280,
@@ -939,7 +939,7 @@
         "width": 640,
         "height": 500
       },
-      "sourceHash": "a936bb3d26fb32e525c350c3ca2248c436b97df08911f84131f87ae3796ab1e2"
+      "sourceHash": "d00386d9b8822f2147ea91620c9bb28655e80fd4b16707ff30855645f001ea21"
     },
     "horizon-plot": {
       "width": 2000,
@@ -948,7 +948,7 @@
         "width": 640,
         "height": 448
       },
-      "sourceHash": "998b2fe1e4871fbc1f31d9d746ea8c2bda419e83b759c9f523bad5c69aeb1f93"
+      "sourceHash": "aa3fae3264a791a39903349c9f55436904b32b09f07309e5071e62b4714c0bdf"
     },
     "density-plot": {
       "width": 2000,
@@ -957,7 +957,7 @@
         "width": 640,
         "height": 448
       },
-      "sourceHash": "2950bba0dfcd7778d5551ba26dcab452c0718a820228c08fcf018f094081dae1"
+      "sourceHash": "c4c02e2355f3bac8df6bff341c6836878ffeff803baedbc6e98bf46d0b7c5d94"
     },
     "pie-plot": {
       "width": 2000,
@@ -966,7 +966,7 @@
         "width": 640,
         "height": 448
       },
-      "sourceHash": "f5e9663fd928d38254ec034b41508ea1e38e9ad9bc377c04037ff77aad424f12"
+      "sourceHash": "e38e63204d273cd7f366b419053b327b70d5525dc1f04ab1997a70336a068d29"
     },
     "temporal-input": {
       "width": 1520,
@@ -975,7 +975,7 @@
         "width": 640,
         "height": 354
       },
-      "sourceHash": "a21e4c520ccf869495b21dd37ae5fe40be69d53673e64b0b3783cc81a1060690"
+      "sourceHash": "c4db1d291b4d8bd4be4aaab4e6c3a46b21ccc4c253a440df313d88bfad62ea03"
     },
     "series-identity": {
       "width": 1520,
@@ -984,7 +984,7 @@
         "width": 640,
         "height": 387
       },
-      "sourceHash": "39b58f24c4c8ffce86b2cd6ce80991cdbcf7d86c567f72d3f5525aa7020b4f5f"
+      "sourceHash": "efe9cc7b3347ae995a17f3b09440553c71756d10520bcdc7499ca1dc0dbae60f"
     },
     "directional-tick-plot": {
       "width": 2144,
@@ -993,7 +993,7 @@
         "width": 640,
         "height": 222
       },
-      "sourceHash": "e58e3e93e7cb5e799d99a1f94433917331bad25932713188c82c7e22c01febcf"
+      "sourceHash": "9b19636767f899704f35e2136b2cb206b9571954a2cc028f5f7dece9e41ca2e0"
     },
     "cars-binned-heatmap": {
       "width": 1400,
@@ -1002,7 +1002,7 @@
         "width": 640,
         "height": 457
       },
-      "sourceHash": "f166598e70684155df04e217e747db3e897dd5cd4629527b2b8509573e70ef10"
+      "sourceHash": "f93bc95a9fd4f5587a23ca931ac7116a6b1b05938c09bdf2105bccffd027892f"
     },
     "time-unit-data": {
       "width": 1856,
@@ -1011,7 +1011,7 @@
         "width": 640,
         "height": 265
       },
-      "sourceHash": "ce568b71a5c3c7a1c2a121ca48d2e6f6f4eab1ecc9969a272f9e0d77b1796f27"
+      "sourceHash": "5299f76005cf94858b9b8f028ecb7c400fb228d9e2d44a03b8c37db9d99ba381"
     },
     "airline-passenger-moving-windows": {
       "width": 2384,
@@ -1020,7 +1020,7 @@
         "width": 640,
         "height": 200
       },
-      "sourceHash": "67c9066715f158ed6a7fbd85ccb91339be6674ff993e7491517fd85dbbacf84f"
+      "sourceHash": "95bcae30113ccf997871b76a3d2f344729413df7bfd3745307694f75f7acd88a"
     },
     "cars-window-rank-scatterplot": {
       "width": 1520,
@@ -1029,7 +1029,7 @@
         "width": 640,
         "height": 421
       },
-      "sourceHash": "0cf119ebec95e64a8846f9ce34c7da0899974f4e044b1bbdaa717673afc202bd"
+      "sourceHash": "e38c06a6e2362b18cf85a701b707edc026dc258039be1c3a24a2b6565155f48e"
     },
     "cross-feature-dashboard": {
       "width": 2440,
@@ -1038,7 +1038,7 @@
         "width": 640,
         "height": 454
       },
-      "sourceHash": "986f60932dfbbed4ecaf0ab8ef2dee52eb4201a3bb63475701c498f91b249dcb"
+      "sourceHash": "be067b4d523e808f3087f8299d766b21eec85d1a38bcdd434fabe6b67e1a1c3e"
     },
     "cars-origin-jitter": {
       "width": 1280,
@@ -1047,7 +1047,7 @@
         "width": 640,
         "height": 440
       },
-      "sourceHash": "89a6b8bafe0c8504bc016f4b00d3b7588b834b3fd9104e4d0f6758d2a216b359"
+      "sourceHash": "94249bb3b2211feb6b0984b541cbd1615a1ea892df7ac0ee4e213b06e144c9d9"
     },
     "gapminder-cluster-jitter": {
       "width": 1360,
@@ -1056,7 +1056,7 @@
         "width": 640,
         "height": 433
       },
-      "sourceHash": "d36c701e61955d98c3105434f2ba4536df573ccc8743c4675bd52d102ed26b9a"
+      "sourceHash": "4370e8ad3c817f2d11d95c0e541be3923aac894552107b6afc99c85ff7f24794"
     },
     "dark-theme-scatterplot": {
       "width": 1280,
@@ -1065,7 +1065,7 @@
         "width": 640,
         "height": 400
       },
-      "sourceHash": "77b06cd22636d71420a76861a431495cc90dc20cab352a38313d108cb3a801fd"
+      "sourceHash": "ba563641bc991d65a1fe72e688a3841f927c589c25e495a6ee29652783ffa09d"
     },
     "gapminder-country-labels": {
       "width": 1520,
@@ -1074,7 +1074,7 @@
         "width": 640,
         "height": 438
       },
-      "sourceHash": "e5c622571e0eabf62c5445c4e68f2ed6a8be49389e5d3a19f9f260bfa64b0e44"
+      "sourceHash": "845a48d02d369af0aae55999796e89f29cafa3befb80184507111587b21df84f"
     },
     "gapminder-continuous-color-bars": {
       "width": 1360,
@@ -1083,7 +1083,7 @@
         "width": 640,
         "height": 358
       },
-      "sourceHash": "9bbbf7b60ebd2a284dd950f4b43ee0d92c4153d9790b26faf3b08125fe5e3ad3"
+      "sourceHash": "adaf0944f0be0f998f8a398a6616c620f139a44ba8cc6ce8a2b885dc80690bf5"
     },
     "gapminder-discretized-color-scales": {
       "width": 960,
@@ -1092,7 +1092,7 @@
         "width": 640,
         "height": 416
       },
-      "sourceHash": "9431df915ce654a761347b1bcc74d3275336ecdb45666df6b81d20a46c41b61b"
+      "sourceHash": "e2882f69b49cb216a8254cacdb4b9fb4e979df3792ebda3c30394d6e214fe3c0"
     },
     "gapminder-temporal-discrete-scales": {
       "width": 912,
@@ -1101,7 +1101,7 @@
         "width": 640,
         "height": 438
       },
-      "sourceHash": "61f4d3abf3921a1098280c89a4ab84a96855a8c3a3e305b802cb558b57373b9a"
+      "sourceHash": "385eeac5243b33429ccf80d72db4d3e2f2be9b78d3c31e8df2698e577888f18d"
     },
     "gapminder-transformed-scales": {
       "width": 912,
@@ -1110,7 +1110,7 @@
         "width": 640,
         "height": 438
       },
-      "sourceHash": "b1c98d3e8703d169c3b86e58e0703a21a98cfb460d9db39da228aa6682280d2d"
+      "sourceHash": "8f8e46f7a5ffef83fdb561446d4a1d61fc766b9e4661e62443c96ce0ea056d79"
     },
     "mark-selection-points": {
       "width": 1520,
@@ -1119,7 +1119,7 @@
         "width": 640,
         "height": 371
       },
-      "sourceHash": "e1ee920034217d43445a91898109dc3e2348e973931056fd7d5773b1c2423370"
+      "sourceHash": "570bc5b8b55d4fcf45131775669ba14d325aff55a9957d713a8a2a327d251560"
     },
     "mark-selection-bars": {
       "width": 864,
@@ -1128,7 +1128,7 @@
         "width": 640,
         "height": 681
       },
-      "sourceHash": "cc4db4fbec9fcfc161ebc37accd99d5017f44c4e0af129c6ad6f0b494620e908"
+      "sourceHash": "23ac8f055e622a7250d6841fd57621d951b4cedeba62ffe2127795b1b14c7aab"
     },
     "mark-selection-lines": {
       "width": 1440,
@@ -1137,7 +1137,7 @@
         "width": 640,
         "height": 409
       },
-      "sourceHash": "a4863a5a03a97c676836fcfe31a793d4e9ebf995b62cbca8fc9de397c5200ee4"
+      "sourceHash": "72d6019767d656c2ef66dcb9e86406d8a8161e3595bb16ef2e7b4712b2c7b704"
     },
     "inspect-chart": {
       "width": 840,
@@ -1146,7 +1146,7 @@
         "width": 640,
         "height": 457
       },
-      "sourceHash": "cee3d39e90cf0cead62bb8f61f56cacaa8c4eed427d66f99d60793d697cef4f2"
+      "sourceHash": "5f46100c5e406914d95f072c2dd19391ec82614616b2b1174aae016e9450f794"
     },
     "hierarchical-authoring": {
       "width": 2480,
@@ -1155,7 +1155,7 @@
         "width": 640,
         "height": 155
       },
-      "sourceHash": "d3d52fd09e1fb7f0aa0abe33685fd807e9bd739cb88509b3c0b0891df9466065"
+      "sourceHash": "d0cc337aadc4bb80c53b66e692fa363f7f70e39493360ad9a15f9e60a34b2b5e"
     },
     "remove-dependent-resources": {
       "width": 1480,
@@ -1164,7 +1164,7 @@
         "width": 640,
         "height": 242
       },
-      "sourceHash": "de5da6b376489ef9276f5a391f3176fb1e4cfa823db1ea2e838079fe2fa41f7d"
+      "sourceHash": "af054a5f78a27c3164ec9d6e46b7ae70bcf9c3d7bff70ccefb7cfe0f3eaf0020"
     },
     "edit-facet-source": {
       "width": 1620,
@@ -1173,7 +1173,7 @@
         "width": 640,
         "height": 254
       },
-      "sourceHash": "4a780e390b19d5bc5cd010256479e29c2fc1f8b4b81defd4153b425ae47988cc"
+      "sourceHash": "4527bf5c47b2e932ad04b52b22d3307833b62a5fb613d7efd607b258ff98a609"
     },
     "apply-custom-theme": {
       "width": 2224,
@@ -1182,7 +1182,7 @@
         "width": 640,
         "height": 161
       },
-      "sourceHash": "87d96e81accc0d899382edf1b449a0ed2150a5a6ee6159bd161614b7c5a27ddc"
+      "sourceHash": "88f7d1bd0aeba911b42b1fafb76b590d61d8ea7109e8227ada943cf0702975b2"
     },
     "edit-selected-labels": {
       "width": 1720,
@@ -1191,7 +1191,7 @@
         "width": 640,
         "height": 238
       },
-      "sourceHash": "56643020cb3149516dba04dfc062cf593ec3cf0fc3911c06eb3afcdb005e6af8"
+      "sourceHash": "e332dd65057dbf91c3304b0bf89b03b2011d6f1365f06a30a0eaa671d378254b"
     },
     "edit-scales-and-guides": {
       "width": 1800,
@@ -1200,7 +1200,7 @@
         "width": 640,
         "height": 228
       },
-      "sourceHash": "e1d8e4c5932d177ee1920162927d40fefc6cfb873ee5033939022eb76c973239"
+      "sourceHash": "b86f524e3529b882aa8d07bcfd1d9b2222b30bba664794f8518bbe663be0e146"
     },
     "switch-encoding-modes": {
       "width": 2224,
@@ -1209,7 +1209,7 @@
         "width": 640,
         "height": 161
       },
-      "sourceHash": "2c85bb836977524673d2d296fda8b2bfcb5b5118b7df985488345da5fd7c913d"
+      "sourceHash": "cd0a72972ea69837dc6c879c739f93f921d309ddf5d2dc4fae42ac7cea190280"
     },
     "compare-weighted-distributions": {
       "width": 2240,
@@ -1218,7 +1218,7 @@
         "width": 640,
         "height": 171
       },
-      "sourceHash": "19a55cdb4d3b9c25ef19417ef2792c723fbcc5f2e62d63dc5962a4d7141158ac"
+      "sourceHash": "03c702f8b00ea0baac63be8efcf8b2cd320646cea68561fb9f385112eb6eafba"
     },
     "repair-missing-observations": {
       "width": 1720,
@@ -1227,7 +1227,7 @@
         "width": 640,
         "height": 223
       },
-      "sourceHash": "a7c7b776c73de969d2874ee15442b2c571cfd481c699443b6c50b8d7e1f79143"
+      "sourceHash": "2e88585e260892581918f0576ae752b4f4aa4ba7264ac3375064c65104a94045"
     }
   },
   "guides": {
@@ -1238,7 +1238,7 @@
         "width": 640,
         "height": 400
       },
-      "sourceHash": "a8f0b03ad32917596f97c12d5fa4288d18c48e07033d134df965e36ceeb3e59e"
+      "sourceHash": "25d0a0ced938297148e3c07abbd0b5f959b5415d9300ab321f197aab7703cfaa"
     }
   }
 }

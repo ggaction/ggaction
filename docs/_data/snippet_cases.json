@@ -513,5 +513,15 @@
     "prerequisites": "Run the complete module with its inline keyed region fixtures and explicit county-parent mapping.",
     "rendering": "authoring-only",
     "resultKind": "semantic"
+  },
+  {
+    "id": "interaction-annotation",
+    "file": "api/interaction.md",
+    "contains": "const annotationSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Revise note and Offset note work with pointer, touch, Enter and Space; the text keeps its data anchor."
   }
 ]

@@ -162,6 +162,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createYAxisTicks`](../../../reference/actions/guides/#createyaxisticks) | H3 | user-facing | axes |
 | [`createYAxisTicksAndLabels`](../../../reference/actions/guides/#createyaxisticksandlabels) | H3 | user-facing | axes |
 | [`createYAxisTitle`](../../../reference/actions/guides/#createyaxistitle) | H3 | user-facing | axes |
+| [`editAnnotation`](../../../reference/actions/marks/#editannotation) | H3 | user-facing | marks |
 | [`editArcMark`](../../../reference/actions/marks/#editarcmark) | H3 | user-facing | marks |
 | [`editAreaMark`](../../../reference/actions/marks/#editareamark) | H3 | user-facing | marks |
 | [`editAxes`](../../../reference/actions/guides/#editaxes) | H3 | user-facing | axes |

@@ -2576,6 +2576,20 @@
     "executable": true
   },
   {
+    "file": "api/interaction.md",
+    "block": 18,
+    "heading": "Edit existing annotations",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"note\""
+    ],
+    "prerequisites": "Use a Canvas with id chart. Revise note and Offset note work with pointer, touch, Enter and Space; the text keeps its data anchor.",
+    "sha256": "2eade330dcbacd6e895fef1490b7910dd87aa993ce9e9f94e07350c10f686587",
+    "executable": true
+  },
+  {
     "file": "api/legends.md",
     "block": 1,
     "heading": "Editing one block",

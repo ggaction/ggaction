@@ -10,7 +10,7 @@ import { normalizeParameterEditOptions } from "../grammar/parameter.js";
 import { requireStoredResource } from "../selectors/resources.js";
 import { interactionOptions as options } from "./input.js";
 
-export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter", "filter", "reorder", "setVisibility", "focusHierarchy", "setViewport", "moveNode"]);
+export const INTERACTION_EDIT_TYPES = Object.freeze(["select", "clearSelection", "setParameter", "filter", "reorder", "setVisibility", "focusHierarchy", "setViewport", "moveNode", "annotate"]);
 
 export function interactionTransaction(command, generatedId) {
   const request = options(command, ["type", "target", "payload"],
@@ -70,6 +70,12 @@ function invoke(program, method, args) {
 export function prepareInteractionEdit(program, command) {
   const { target, view } = interactionOwner(program, command.target);
   const affectedOwners = cloneAndFreeze([target]);
+  if (command.type === "annotate") {
+    // The wrapped native editor owns the closed payload and complete preflight.
+    // The host may not redirect its explicit command target through the payload.
+    if (Object.hasOwn(command.payload ?? {}, "target")) throw new TypeError("Annotation payload cannot contain target.");
+    return { program: invoke(program, "editAnnotation", { ...command.payload, ...address(target, true) }), affectedOwners };
+  }
   if (command.type === "filter" || command.type === "reorder") {
     const filter = command.type === "filter";
     const payload = options(command.payload, [], filter ? ["clear", "select", "mode", "recompute"] : ["clear", "channel", "values", "by", "direction"], "Direct command payload");

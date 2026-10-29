@@ -1,3 +1,4 @@
+import { assertAnnotationInteraction } from "./annotation-interaction.js";
 import { chart, hconcat } from "../../../src/index.js";
 import assert from "node:assert/strict";
 import { createInteractionSession } from "../../../src/interaction.js";
@@ -54,6 +55,7 @@ export function assertRegionInteraction(source, recipe, rows) {
   assertHierarchyFocusSource(rows, recipe);
   assertViewportSource(rows, recipe);
   assertNodeMovementSource(rows, recipe);
+  assertAnnotationInteraction(rows, recipe);
   assert.equal(serializeProgram(p), original);
 }
 
