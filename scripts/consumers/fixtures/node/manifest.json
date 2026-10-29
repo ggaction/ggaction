@@ -1468,7 +1468,7 @@
     "cases": [
       {
         "id": "stream-baselines/public-lifecycle",
-        "statements": 14
+        "statements": 19
       },
       {
         "id": "stream-baselines/offline-scene-renderers",

@@ -25,6 +25,11 @@ export const cases=[
   assert.equal(selected.graphicSpec.objects.m.items.find(item=>item.identity.key===keys[0]).properties.fill,"red");
   const session=createInteractionSession({program:p});session.dispatch({type:"inspect",point:{x:40,y:100}});assert.equal(session.getState().hit.target.itemKey,keys[1]);session.destroy();
   assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec,q.graphicSpec);
+  const shared=p.createAreaPlot({id:"shared",x:"x",y:{field:"value",scale:{nice:false}},groupBy:"series",layout:"wiggle",guides:false});
+  assert.deepEqual(shared.resolvedScales.y.domain,p.resolvedScales.y.domain);
+  assert.deepEqual(shared.graphicSpec.objects.shared.items.map(item=>item.properties.commands),p.graphicSpec.objects.m.items.map(item=>item.properties.commands));
+  const revisedShared=deserializeProgram(serializeProgram(shared)).reviseData({source:"d",id:"shared-revised",values:rows.map(row=>({...row,value:row.value*2}))});
+  assert.deepEqual(revisedShared.graphicSpec.objects.shared.items.map(item=>item.properties.commands),revisedShared.graphicSpec.objects.m.items.map(item=>item.properties.commands));
   assert.equal(serializeProgram(p),saved);
  }},
  {id:"stream-baselines/offline-scene-renderers",async run(){

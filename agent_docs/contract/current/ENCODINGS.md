@@ -1911,6 +1911,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   marker. An offset conflicting with an explicit group rejects; independent color remains valid at its cell grain.
 - Removing color preserves group/layout. Removing a group required by active accumulation/grouping rejects;
   first assign overlay. Incomplete lower encodings remain empty rather than silently recreating endpoints.
+- The Area facade reuses this final layout/domain plan before creating children and initializes the same
+  canonical mode before its position assignments. Direct layoutSeries still requires complete positions;
+  same-policy Area consumers retain the existing shared-scale rules.
 - Effects are explicit wrapped semantic/scale/offset/mark/guide owners. Renderers still consume only graphics.
   Every invalid target, mode, grain, shared-scale constraint or downstream guide/selection preflight is immutable.
 

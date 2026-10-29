@@ -1,0 +1,10 @@
+{
+  "base": "862a1220e1be5e81712559d0f727bf78f318049f",
+  "files": {
+    "src/actions/charts/area.js": "8c22ea80b5613432a89790e1acaa1c6a0b074fdf605b94a5d9f1ff3cff34e837",
+    "src/actions/encodings/seriesLayout.js": "c2411adc56fd2ba210c123ca9d1406813ab227b8ebea8002a63d13ddb60edbf9",
+    "test/unit/actions/charts/area-facade-policy.test.js": "214474b56cd3ba20338e6fe84073cbab28b976003add8e7b2e8bdc800a2de5e1",
+    "scripts/consumers/fixtures/node/stream-baselines.mjs": "18c66b7ba18ca443739a944231c46c16184143739839b5f5abc3ef7be9421f2e",
+    "scripts/consumers/fixtures/node/manifest.json": "d671aa50c29c93d12d491f8a3b5965f27dd1799d24f1199cd50ec01a6c8ebcdf"
+  }
+}
