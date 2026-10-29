@@ -1,0 +1,80 @@
+{
+  "baseline": "6c3f022cfcfa164aa2af1dfa41d040f73b88cbc6",
+  "scope": "공유 native example dependency bootstrap. Geo marks WIP와 분리한 최소 수리.",
+  "executionContext": "같은 worktree의 미커밋 Geo mark/coordinate WIP가 존재한 상태에서 실행했으며 standalone bootstrap commit 자체나 main 합산 전체 성공을 주장하지 않는다. Parent가 marks 없는 integration에서 다시 검증한다.",
+  "canonicalDependencyOwner": "licenses/geometry-math.json",
+  "changes": [
+    "검증된 installKey/moduleEntry를 공유 비동기 loader에서 import map으로 구성",
+    "기존 115 standalone HTML의 원래 module 경로를 data-example-module로 보존; dependency identity/map 복제 제거",
+    "동일 local package entry를 Node resolver와 대조; npm ci 이후 plain HTTP serve 안내"
+  ],
+  "checks": [
+    {
+      "command": "node scripts/run-tests.js contracts contracts/example-dependencies.test.js contracts/geographic-math.test.js",
+      "tests": 4,
+      "pass": 4,
+      "exit": 0,
+      "log": "bootstrap-contracts-2.log.gz"
+    },
+    {
+      "command": "node scripts/run-tests.js browser browser/example-dependencies.browser.js",
+      "tests": 4,
+      "pass": 4,
+      "exit": 0,
+      "log": "bootstrap-browser-2.log.gz",
+      "surfaces": [
+        "browser-host contours",
+        "inspect-chart",
+        "getting-started Basic",
+        "cars-scatterplot Full"
+      ]
+    },
+    {
+      "command": "node scripts/run-tests.js contracts contracts/test-discovery.test.js",
+      "tests": 16,
+      "pass": 16,
+      "exit": 0,
+      "log": "bootstrap-discovery.log.gz"
+    }
+  ],
+  "firstFailures": [
+    {
+      "log": "bootstrap-contracts.log.gz",
+      "pass": 3,
+      "tests": 4,
+      "reason": "font-assets의 기존 중복 import map 한 곳을 놓침; 공통 loader로 제거 후 통과"
+    },
+    {
+      "log": "bootstrap-browser.log.gz",
+      "pass": 3,
+      "tests": 4,
+      "reason": "기존 getting-started에는 status element가 없어 새 harness wait가 timeout; 실제 Canvas dimension/ink와 optional status로 준비 판정을 수정"
+    }
+  ],
+  "notClaimed": [
+    "전체 browser 또는 docs/installed 반복",
+    "미커밋 Geo mark checkpoint 완료"
+  ],
+  "logs": {
+    "bootstrap-contracts.log.gz": {
+      "sha256": "9f21a3cb5d6f5b9400aea2dbc687fa851083f121770e239dd5cbcfaa2337db33",
+      "bytes": 2166
+    },
+    "bootstrap-contracts-2.log.gz": {
+      "sha256": "7fefba154356c0c142edebb3be5262c3d2f9f78f340b939b1714a129e65e2142",
+      "bytes": 1177
+    },
+    "bootstrap-browser.log.gz": {
+      "sha256": "ae393542bb4f8473af81b48a74ab5c0167366d1a4891b2194bd5ebf759837e3e",
+      "bytes": 1597
+    },
+    "bootstrap-browser-2.log.gz": {
+      "sha256": "00e8de8f0dee0028536718a11e69618de53893091db19aeb8c0ec90e0718b215",
+      "bytes": 1027
+    },
+    "bootstrap-discovery.log.gz": {
+      "sha256": "e59f0594df565845fffa248e31c731fb2ee047158f52aa22fa1b43cc98f8aed0",
+      "bytes": 3282
+    }
+  }
+}

@@ -1,9 +1,10 @@
 # Examples
 
 This index is generated from the canonical public chart catalog. Serve the
-repository root over HTTP, then open any linked directory:
+repository root over HTTP after installing the locked dependencies, then open any linked directory:
 
 ```bash
+npm ci
 python3 -m http.server 8000
 ```
 
