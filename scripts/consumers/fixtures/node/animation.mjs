@@ -28,6 +28,30 @@ const prepare=()=>{
 };
 
 export const cases=[
+  {id:'animation/polar-offline-native',async run(){
+    const base=()=>chart().createCanvas({width:200,height:200,margin:20}).createData({id:'rows',keyField:'id',values:[{id:1,t:350,r:50,c:'A'},{id:'1',t:80,r:70,c:'B'}]});
+    const theta={field:'t',scale:{domain:[0,360],nice:false}},radius={field:'r',scale:{domain:[0,100],nice:false}};
+    const programs=[base().createPointMark({id:'mark',fill:'red'}).encodeSize({value:Math.PI*64}).encodeTheta(theta).encodeR(radius),
+      base().createLineMark({id:'mark'}).encodeTheta({field:'c',fieldType:'nominal'}).encodeR(radius),
+      base().createArcMark({id:'mark',innerRadius:.25}).encodeTheta({field:'r'})];
+    for(const from of programs){
+      const to=from.reviseData({source:'rows',id:'next',values:[{id:1,t:10,r:100,c:'A'},{id:'1',t:90,r:50,c:'B'}]});
+      const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),saved=serializeAnimation(plan),frame=sampleTransition(plan,50);
+      assert.ok(frame.decisions.some(d=>d.kernel==='polar-geometry'));
+      const child=spawnSync(process.execPath,['--input-type=module','-e',`
+        ${offlineNetworkGuard}
+        const {deserializeAnimation,sampleTransition}=await import('ggaction/animation');
+        let text='';for await(const chunk of process.stdin)text+=chunk;
+        console.log(JSON.stringify({frame:sampleTransition(deserializeAnimation(text).plan,50),network}));
+      `],{input:saved,encoding:'utf8',timeout:30000});
+      assert.equal(child.status,0,child.stderr);assert.deepEqual(JSON.parse(child.stdout),{frame:JSON.parse(JSON.stringify(frame)),network:0});
+      const rebased=planTransition({from:frame,to:from,options:{durationMs:100,easing:'linear'}});
+      assert.equal(sampleTransition(rebased,0),frame);assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(rebased)).plan,50),sampleTransition(rebased,50));
+      const canvas=createCanvas(1,1);render(frame,canvas.getContext('2d'));
+      assert.deepEqual((await renderToPNGBuffer(frame)).buffer,await canvas.encode('png'));
+      assert.match(renderToSVG(frame),/<svg/);assert.equal((await renderToPDFBuffer(frame)).buffer.subarray(0,4).toString(),'%PDF');
+    }
+  }},
   {id:'animation/bounded-repeated-interruption',async run(){
     const plan=prepare(),left=sampleTransition(plan,0),right=sampleTransition(plan,100);
     let draws=0;

@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 422_300, // Shared native aggregate geometry: Node20 422,288 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
-  "ggaction/animation": 200_300, // Cartesian/graph typed preparation and flat frame proof: Node20 200,273 gzip bytes.
+  "ggaction/animation": 203_300, // Native polar coordinates plus Cartesian/graph: Node20/24 203,265 gzip bytes.
   "ggaction/interaction": 128_700 // Shared admission and bounded native preparation work: Node20 128,607.
 });
 

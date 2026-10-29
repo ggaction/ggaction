@@ -92,6 +92,26 @@ kernel. All remain renderable through the shared concrete fallback. Authentic
 samples retain current values for interruption and offline replay; unknown kernel
 versions or inconsistent stored geometry reject the restore.
 
+## Move native polar shapes
+
+Polar points, ordered lines, and proportional or radial arcs use the `polar-geometry`
+kernel. Preparation retains their native angles, radii, frame, and ordered member
+keys. Sampling uses the same polar projection, line, and annular-sector builders as
+the original chart. Angles take the shortest path across the seam; an exact half
+turn chooses the positive direction. Full-circle arcs retain their signed sweep.
+
+This interpolates resolved polar coordinates. It does not interpolate arbitrary
+raw values and nonlinear scales together. Changed mapping policies use the explicit
+`polar-mapping` crossfade. A Canvas resize with the same relative radial range is
+compatible. Line member order and closure, arc direction and padding, and appearance
+must remain compatible. Conditional positions, non-circular points, and edited
+geometry retain explicit fallbacks. Native polar Rule/Rect authoring is not added.
+Guide-specific transitions remain outside this kernel.
+
+Current angles stay unwrapped when a frame is reused as an endpoint. Offline replay
+stores the actual polar coordinates and membership with a versioned kernel, validates
+them against the endpoint geometry, and feeds the same frame to all four renderers.
+
 ## Functions
 
 | Function | Result and behavior |

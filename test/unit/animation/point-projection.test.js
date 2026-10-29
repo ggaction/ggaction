@@ -11,9 +11,9 @@ const points = () => base().createPointMark({ id: "points" }).encodeX({ field: "
 const prepare = (from, to = from) => planTransition({ from, to, options: { durationMs: 100 } });
 const reasons = program => prepare(program).tracks.map(t => t.reason);
 
-test("native point restrictions coexist with typed Cartesian line support", () => {
+test("native point restrictions coexist with typed Cartesian and polar support", () => {
   const polar = base().createPointMark({ id: "points" }).encodeTheta({ field: "x", scale: { domain: [0, 10] } }).encodeR({ field: "y", scale: { domain: [0, 100] } });
-  assert.deepEqual(reasons(polar), ["coordinate-family", "coordinate-family"]);
+  assert.deepEqual(prepare(polar).tracks.map(track=>track.kind), ["exact", "exact"]);
   const offset = base([{ id: "a", x: "A", group: "u", y: 20 }, { id: "b", x: "B", group: "v", y: 60 }])
     .createPointMark({ id: "points" }).encodeX({ field: "x", fieldType: "nominal" }).encodeY({ field: "y" }).encodeXOffset({ field: "group" });
   assert.deepEqual(reasons(offset), ["offset-position", "offset-position"]);

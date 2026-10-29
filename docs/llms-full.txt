@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:3d7b6f823bedfb68cc4f2b82fb1469e8d8acc2e99084547bd1139ff7efd4def9. Status: development. Runtime source: ea543c62f1b945da4b777fc3f212237e5cf36cda. Release baseline: v0.0.13.
+Contract: sha256:eb05a3c110157f454dae77ea8102c41e072fb495753d489dc244d406f3238dcc. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/ea543c62f1b945da4b777fc3f212237e5cf36cda/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/ea543c62f1b945da4b777fc3f212237e5cf36cda/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11099,6 +11099,26 @@ fixed/category-slot placements, and density-derived areas are outside this typed
 kernel. All remain renderable through the shared concrete fallback. Authentic
 samples retain current values for interruption and offline replay; unknown kernel
 versions or inconsistent stored geometry reject the restore.
+
+## Move native polar shapes
+
+Polar points, ordered lines, and proportional or radial arcs use the `polar-geometry`
+kernel. Preparation retains their native angles, radii, frame, and ordered member
+keys. Sampling uses the same polar projection, line, and annular-sector builders as
+the original chart. Angles take the shortest path across the seam; an exact half
+turn chooses the positive direction. Full-circle arcs retain their signed sweep.
+
+This interpolates resolved polar coordinates. It does not interpolate arbitrary
+raw values and nonlinear scales together. Changed mapping policies use the explicit
+`polar-mapping` crossfade. A Canvas resize with the same relative radial range is
+compatible. Line member order and closure, arc direction and padding, and appearance
+must remain compatible. Conditional positions, non-circular points, and edited
+geometry retain explicit fallbacks. Native polar Rule/Rect authoring is not added.
+Guide-specific transitions remain outside this kernel.
+
+Current angles stay unwrapped when a frame is reused as an endpoint. Offline replay
+stores the actual polar coordinates and membership with a versioned kernel, validates
+them against the endpoint geometry, and feeds the same frame to all four renderers.
 
 ## Functions
 
@@ -37765,7 +37785,7 @@ export interface TransitionPlan {
   readonly durationMs: number;
   readonly easing: AnimationEasing;
 }
-/** Semantic kernels report cartesian-point, cartesian-geometry, or completed-graph.
+/** Semantic kernels report cartesian-point, cartesian-geometry, polar-geometry, or completed-graph.
  * Unsupported policies retain an explicit crossfade reason. */
 export type TransitionDecision =
   | { readonly kind: 'enter'; readonly targetIndex: number }
@@ -52457,12 +52477,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ea543c62f1b945da4b777fc3f212237e5cf36cda/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/ea543c62f1b945da4b777fc3f212237e5cf36cda/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -55589,9 +55609,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:3d7b6f823bedfb68cc4f2b82fb1469e8d8acc2e99084547bd1139ff7efd4def9` |
+| Contract fingerprint | `sha256:eb05a3c110157f454dae77ea8102c41e072fb495753d489dc244d406f3238dcc` |
 | Example and dataset source | `7830a16a64097fb6e6be8498a63a80da61bb9afc` |
-| Runtime source commit | `ea543c62f1b945da4b777fc3f212237e5cf36cda` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 377 |
 | Declared actions in that release | 234 |

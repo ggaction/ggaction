@@ -4501,3 +4501,11 @@ animation191,948bytes이며 최소100-byte 상한774,100/422,200/192,000을 적�
 Sample은 집계·binning·stack/layout을 다시 실행하지 않는다. Flat frame proof와 optional versioned
 Cartesian vector는 동일한 현재 의미를 rebase/strict restore에 공급한다. 공개 함수와 renderer schema는
 변경하지 않으며 정확한 지원·fallback 범위는 [Animation](contract/current/ANIMATION.md)이 소유한다.
+
+### Native polar animation coordinates
+
+`materialization/animation/polar`는 native point/line/arc mapping 및 sector owner를 준비 때만 호출한다.
+`grammar/animation/polarState`는 준비된 각도·반지름·member grid를 기존 polar/path 계산기에 전달한다.
+Optional versioned `polars` vector와 flat frame proof가 현재 의미를 rebase/strict restore에 보존한다.
+공개 entry 및 renderer schema는 유지하며 resolved coordinate interpolation과 fallback 경계는
+[Animation](contract/current/ANIMATION.md)이 소유한다.
