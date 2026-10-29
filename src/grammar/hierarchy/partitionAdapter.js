@@ -1,5 +1,5 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
-import { ownRecord } from "../../core/ownData.js";
+import { ownArray, ownRecord } from "../../core/ownData.js";
 import { rejectUnknownProperties } from "../../core/validation.js";
 import { interpolateNumber } from "../numeric.js";
 import { partitionRadius } from "./partitionMapping.js";
@@ -41,10 +41,19 @@ export function createPartitionBendAdapter(rectangle, polar) {
 
 export function samplePartitionBendPoint(adapter, point) {
   if (adapter?.compatible !== true) throw new TypeError("Partition bend requires compatible endpoint handedness.");
-  const canonical = bendPartitionPoint(point, adapter.kernel), b = point.bend;
-  const angle = adapter.angle0 + adapter.rotation * b, x = Math.cos(angle), y = Math.sin(angle);
-  const result = { x: interpolateNumber(adapter.origin[0], adapter.center[0], b) + x * canonical.x - adapter.handedness * y * canonical.y,
-    y: interpolateNumber(adapter.origin[1], adapter.center[1], b) + y * canonical.x + adapter.handedness * x * canonical.y };
+  const b = point.bend;
+  return mapPartitionBendPoint({ kernel: adapter.kernel, handedness: adapter.handedness,
+    angle: adapter.angle0 + adapter.rotation * b,
+    origin: adapter.origin.map((value, index) => interpolateNumber(value, adapter.center[index], b)) }, point);
+}
+
+export function mapPartitionBendPoint(frame, point) {
+  record(frame, ["kernel", "handedness", "angle", "origin"], "Partition bend frame");
+  ownArray(frame.origin, "Partition frame origin");
+  if (frame.origin.length !== 2 || !frame.origin.every(Number.isFinite) || !Number.isFinite(frame.angle) || ![1, -1].includes(frame.handedness)) throw new TypeError("Partition bend frame requires finite origin, angle and handedness.");
+  const canonical = bendPartitionPoint(point, frame.kernel), x = Math.cos(frame.angle), y = Math.sin(frame.angle);
+  const result = { x: frame.origin[0] + x * canonical.x - frame.handedness * y * canonical.y,
+    y: frame.origin[1] + y * canonical.x + frame.handedness * x * canonical.y };
   if (!Object.values(result).every(Number.isFinite)) throw new RangeError("Partition screen coordinates exceed finite values.");
   return cloneAndFreeze(result);
 }
