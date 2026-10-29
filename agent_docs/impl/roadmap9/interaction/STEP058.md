@@ -78,3 +78,19 @@ Source focused141(신규 capture14)와 새 owner100/96.81/100·session100/95.96/
 Capture acquisition 실패는 cleanup 뒤 error1을 내고 원본 프로그램을 보존하며 이 마지막 실패 경계는
 집중 검사로 고정했다. Browser 정상/cancel 경로는 그 오류 전용 추가와 입력/동작이 같아 결과를 재사용한다.
 후행 brush/lasso preview·RAF coalescing·history 인수는 여전히 열려 있다.
+
+## Captured click qualification
+
+공개 source `9e92ab01f`의 [qualification](pointer-capture-evidence/qualification.json)과
+[literal expected/actual/diff](pointer-capture-evidence/expected-actual-diff.json)를 보존했다.
+최종 focused141, 경계/타입28, package/문서 계약16, realistic16을 통과했다. 실제 browser10은
+마지막 capture 획득 실패의 error event 추가 전 결과이며 정상/cancel 입력과 경로가 같아 재사용한다.
+추가 오류 경계는 최종 focused 검사가 직접 검증한다.
+
+동일 archive SHA256 `1445af0cd3ce634d5f4f8bc70dc12b777d0bf9e291259e1f3f8c68f485e0cf73`를
+Node20/22/24에서 각각 source-free runtime3, strict declarations, browser entries4로 검증했다.
+최대 interaction gzip100,541과 Node20 package922/1,331,459/6,089,158에 근거해
+limits100,600 및922/1,332,000/6,090,000을 기록했다. 원본 실패와 수정 후 로그를 함께 보존한다.
+Docs source185, 최종 provenance owning32, built164pages/1,411artifacts 및320/390/768/1440
+폭의 overflow0/Axe0을 확인했다. 390px 실제 이미지를 검토했다. 전체 repository sweep 또는
+전체 installed suite 통과로 확대하지 않는다. 후행 domain preview·RAF·keyboard·history 및077은 미완료다.

@@ -1,0 +1,80 @@
+{
+  "scope": "Public captured click; no drag preview or history claim",
+  "expected": [
+    {
+      "name": "escape",
+      "programUnchanged": true,
+      "revision": 0,
+      "selected": [],
+      "events": [
+        "cancel"
+      ],
+      "captures": 0,
+      "listenersAfterDestroy": 0
+    },
+    {
+      "name": "movement",
+      "programUnchanged": true,
+      "revision": 0,
+      "selected": [],
+      "events": [
+        "cancel"
+      ],
+      "captures": 0,
+      "listenersAfterDestroy": 0
+    },
+    {
+      "name": "commit",
+      "programUnchanged": false,
+      "revision": 1,
+      "selected": [
+        "b"
+      ],
+      "events": [
+        "commit",
+        "settled"
+      ],
+      "captures": 0,
+      "listenersAfterDestroy": 0
+    }
+  ],
+  "actual": [
+    {
+      "name": "escape",
+      "programUnchanged": true,
+      "revision": 0,
+      "selected": [],
+      "events": [
+        "cancel"
+      ],
+      "captures": 0,
+      "listenersAfterDestroy": 0
+    },
+    {
+      "name": "movement",
+      "programUnchanged": true,
+      "revision": 0,
+      "selected": [],
+      "events": [
+        "cancel"
+      ],
+      "captures": 0,
+      "listenersAfterDestroy": 0
+    },
+    {
+      "name": "commit",
+      "programUnchanged": false,
+      "revision": 1,
+      "selected": [
+        "b"
+      ],
+      "events": [
+        "commit",
+        "settled"
+      ],
+      "captures": 0,
+      "listenersAfterDestroy": 0
+    }
+  ],
+  "diff": []
+}
