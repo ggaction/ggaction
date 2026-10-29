@@ -7,16 +7,30 @@
 All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
+
+- Prepare native asynchronous session replacements atomically, with revision guards, cancellation and existing worker/asset lifetimes.
+
+- Add atomic interaction asset preparation with abortable host leases, exact revision guards and terminal disposal.
+
+- Add bounded interaction undo/redo/reset with exact program and selection snapshots and explicit external update history policy.
+
+- Added Full `editAnnotation` and the `annotate` interaction command for atomic edits to existing text, datum anchors, offsets, source-item membership, data-less screen anchors, native offset dragging and label placement while preserving native source ownership.
+
 - Added explicit graph node movement and captured pointer dragging with native fixed/force layout edits, typed identities, dormant-coordinate preservation and atomic previews.
 
 
+- Interaction viewport commands reuse named projection edits with absolute transforms and exact feature identity.
+- Interaction hierarchy-focus commands reuse native partition views and host navigation controls.
+- Interaction context requests expose current semantic candidates to host menus; parameter inputs reuse the existing immutable command lifecycle.
+
+- Add Full-only `setMarkVisibility` and `removeMarkVisibility`, plus categorical legend visibility bindings. Preserve independent user filters, typed categories, explicit domain policies, selections and original row lineage.
+- Add Full geographic text anchors through `createGeoAnnotation` and `editGeoAnnotation`, retaining original feature and detail-level identity with shared Text styles, fonts and themes; the `annotate` command routes explicit geographic targets to the same native editor.
 - Extend existing `createMarkLabels` and source-owned `createTextMark` to Full geographic features and graticules, preserving centroid anchors, typed feature identity, actual joined rows, detail representations, native Text styling and immutable revision closure.
 
 - Extend geographic color and point-area encodings with first-match conditions, typed expressions, named selections, exact parameter revisions and native scale/legend lifecycle. Validate every branch and preserve feature identity through joins, detail changes and offline restoration.
 
 - Extend ordinary `encodeColor` to Full geographic shape/point/line fields and `encodeSize` to geographic point area, with existing scales, legends, original feature identity and atomic join/LOD/source revisions. Preserve explicit quantitative color empty-domain policies.
 
-- Add Full geographic text anchors through `createGeoAnnotation` and `editGeoAnnotation`, retaining original feature and detail-level identity with shared Text styles, fonts and themes.
 
 - Add Full-only `createGeoJoinData` and `editGeoJoinData` for typed one-to-one geometry/table correspondence. Preserve feature order, shared arcs, exact source rows, unmatched diagnostics, and immutable source revisions through geographic marks and offline restoration.
 

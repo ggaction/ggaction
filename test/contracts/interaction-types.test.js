@@ -18,7 +18,61 @@ import { createTransitionScene } from ${JSON.stringify(path.join(root, "types/sc
 chart().editLayout({target:'layout',node:{key:[1,'a'],x:1,y:2}});
 // @ts-expect-error a single-node patch cannot also replace layout options
 chart().editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
-const program = chart(); const session = createInteractionSession({ program });
+const program = chart(); const session = createInteractionSession({ program, historyLimit: 50 });
+session.dispatch({type:'undo',origin:'user',transactionId:'back'});
+session.dispatch({type:'redo'}); session.dispatch({type:'reset'});
+session.updateProgram(program,{history:'record',origin:'replay'});
+session.mount(document.createElement('div'),{observeResize:true});
+session.subscribe(event=>{if(event.type==='resize'){const width:number=event.size.width;const height:number=event.size.height;}});
+// @ts-expect-error resize observation is an explicit boolean, not an implicit viewport policy
+session.mount(document.createElement('div'),{observeResize:'auto'});
+const undoCount:number=session.getState().history.undoCount;
+const asyncSession=createInteractionSession({program,async assetResolver(request){
+  const signal:AbortSignal=request.signal;const revision:number=request.baseRevision;
+  const path:readonly string[]|undefined=request.resourceRevisionVector[0]?.childPath;
+  return {dispose(){}};
+}});
+session.updateProgram(async request=>{const signal:AbortSignal=request.signal;const id:string=request.transactionId;return request.program;},{history:'record',transactionId:'job',origin:'linked',causeTransactionId:'cause'});
+session.subscribe(event=>{if(event.type==='update'){const status:'settled'|'cancelled'|'error'=event.status;const id:string=event.transactionId;}});
+// @ts-expect-error native preparation must return a program
+session.updateProgram(async()=>({}));
+// @ts-expect-error explicit IDs belong to callback preparation, not ordinary replacement
+session.updateProgram(program,{transactionId:'ordinary'});
+const ready:Promise<import(${JSON.stringify(path.join(root, "types/interaction.js"))}).InteractionSettlement>=asyncSession.whenSettled();
+// @ts-expect-error asset preparation must return a disposable lease
+createInteractionSession({program,assetResolver:()=>({})});
+// @ts-expect-error asset results use authentic prepared handles
+createInteractionSession({program,assetResolver:()=>({images:{},dispose(){}})});
+// @ts-expect-error dependency vectors are readonly
+asyncSession.getState().preparation?.resourceRevisionVector.push({kind:'parameter',id:'n',revision:0,childPath:[]});
+
+// @ts-expect-error whole-session history has no owner or payload
+session.dispatch({type:'undo',target:'points',payload:{}});
+// @ts-expect-error only record/reset are supported for external updates
+session.updateProgram(program,{history:'append'});
+// @ts-expect-error history counts are immutable
+session.getState().history.undoCount=5;
+chart().editAnnotation({target:'note',text:'New',x:2,dy:-8,placement:'auto',layout:false});
+session.dispatch({type:'annotate',target:{childPath:['left'],id:'note'},payload:{text:'New',fill:'red'}});
+session.dispatch({type:'annotate',target:'map-note',payload:{anchor:{type:'feature',geometry:'regions',key:1,level:'county'},dx:8}});
+session.dispatch({type:'annotate',target:'note',payload:{select:{items:['logical-item']}}});
+chart().createAnnotation({text:'Chosen',source:'bars',selection:'picked'}).editAnnotation({all:true});
+chart().createCanvas().createAnnotation({space:"screen",x:12,y:24,text:"Screen"}).editAnnotation({x:30});
+// @ts-expect-error screen annotations cannot bind a dataset
+chart().createCanvas().createAnnotation({space:"screen",x:12,y:24,text:"Screen",data:"rows"});
+// @ts-expect-error coordinate annotations cannot own item membership
+chart().createAnnotation({text:'Bad',x:1,y:2,select:{items:[]}});
+// @ts-expect-error membership replacement chooses exactly one native mode
+chart().editAnnotation({select:{items:[]},all:true});
+// @ts-expect-error annotation patches do not rebind or create sources
+chart().editAnnotation({target:'note',source:'points'});
+// @ts-expect-error annotation command target cannot be redirected in its payload
+session.dispatch({type:'annotate',target:'note',payload:{target:'other',text:'New'}});
+// @ts-expect-error Text annotation authoring is Full-only
+basic().editAnnotation({target:'note',text:'New'});
+createInteractionSession({program,bindings:[{type:'annotate',target:{childPath:['left'],id:'note'}}]});
+// @ts-expect-error annotation dragging does not own encoded selection or implicit anchors
+createInteractionSession({program,bindings:[{type:'annotate',target:'note',selection:'picked'}]});
 createInteractionSession({program,bindings:[{type:'moveNode',target:'network'}]});
 session.dispatch({type:'moveNode',target:'layout',payload:{key:[1,'a'],x:1,y:2}});
 // @ts-expect-error node movement has no implicit key or position
@@ -66,6 +120,14 @@ session.dispatch({type:'setViewport',target:{childPath:['left'],id:'map'},payloa
 session.dispatch({type:'setViewport',target:'map',payload:{type:'mercator'}});
 // @ts-expect-error zoom is not an implicit scale ratio
 session.dispatch({type:'setViewport',target:'map',payload:{zoom:2}});
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'pan',deltaPx:[10,-5]}}});
+session.dispatch({type:'setViewport',target:{childPath:['left'],id:'map'},payload:{operation:{type:'zoom',anchorPx:[100,100],factor:2,scaleExtent:[0.5,4]}}});
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'resize',canvas:{width:400,height:300},scaling:'preserve'}}});
+// @ts-expect-error absolute transform and native operation are mutually exclusive
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'pan',deltaPx:[1,2]},scalePx:2}});
+// @ts-expect-error anchored zoom requires an explicit scale extent
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'zoom',anchorPx:[1,2],factor:2}}});
+
 // @ts-expect-error an absolute translation requires two coordinates
 session.dispatch({type:'setViewport',target:'map',payload:{translatePx:[1]}});
 // @ts-expect-error focus is explicit and cannot be omitted

@@ -1,3 +1,4 @@
+import { isScreenAnnotation } from "../../../grammar/screenAnnotation.js";
 import { geoLabelSource, identifyGeoLabelItems } from "../../geo/labels.js";
 import { DEFAULT_TEXT_MARK } from '../../../grammar/text.js';
 import { resolveTextGraphicEntries, resolveIndependentTextSourceDefinitions, resolveIndependentTextItemDefinitions } from '../../textGeometry.js';
@@ -5,6 +6,7 @@ import { finalizeItems, identifyItems } from '../items/common.js';
 import { normalizeTextHighlightStyle } from '../styles.js';
 
 export const textSelectionPolicy = Object.freeze({
+  dataOptional: isScreenAnnotation,
   resourceBacked: (program, layer) => geoLabelSource(program, layer) !== undefined,
   supportedGrains: Object.freeze(['item']),
   resolveSourceItems(program, layer, dataset, grain, resolvers) {

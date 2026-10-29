@@ -527,6 +527,16 @@
     "rendering": "authoring-only"
   },
   {
+    "id": "interaction-annotation",
+    "file": "api/interaction.md",
+    "contains": "const annotationSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use a Canvas with id chart. Revise note and Offset note work with pointer, touch, Enter and Space; the text keeps its data anchor."
+  },
+  {
     "id": "geographic-annotation",
     "file": "api/geometry.md",
     "contains": "text: \"Port\", dy: -12",
@@ -549,6 +559,16 @@
       "geographic-marks/program.js": "examples/geographic-marks/program.js",
       "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
     }
+  },
+  {
+    "id": "interaction-history",
+    "file": "api/interaction.md",
+    "contains": "const historySession = createInteractionSession",
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "rendering": "authoring-only",
+    "prerequisites": "Run this ES module headlessly. The final program restores the Original note; history commands take no target or payload."
   },
   {
     "id": "geographic-feature-fields",

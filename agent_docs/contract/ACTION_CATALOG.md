@@ -82,6 +82,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editMarkLabelPlacement`](current/MARKS.md#editmarklabelplacement) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeMarkLabels`](current/MARKS.md#removemarklabels) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createAnnotation`](current/MARKS.md#createannotation) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`editAnnotation`](current/MARKS.md#editannotation) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTextMark`](current/MARKS.md#createtextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTextMark`](current/MARKS.md#edittextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`layoutLabels`](current/MARKS.md#layoutlabels) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |

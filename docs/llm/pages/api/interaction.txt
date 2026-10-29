@@ -35,6 +35,142 @@ rectangle once. Device pixel ratio is never multiplied into hit coordinates.
 Slop remains in CSS pixels under scale or rotation. Use matching logical dimensions
 for the rendered chart and surface when no root matrix is supplied.
 
+## Observe the mounted surface size
+
+Opt into `mount(element, { observeResize: true })` to receive `resize` events from the
+mounted element's browser `ResizeObserver`. `event.size` contains finite, non-negative
+`width` and `height` in content-box CSS pixels. Identical measurements are deduplicated;
+a collapsed surface may report zero. DPR and `rootTransform` do not alter these numbers.
+Observation alone never edits the chart, creates history or changes its revision.
+
+Continue from a Full `program` with a Canvas and a rendered DOM `element`. This host
+policy explicitly resizes the native Canvas; choose your own native projection policy
+when a map needs fitting or a preserved viewport.
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { createInteractionSession } from "ggaction/interaction";
+const resizeSession = createInteractionSession({ program, bindings: [] });
+const stopResize = resizeSession.subscribe(event => {
+  if (event.type !== "resize" || event.size.width === 0 || event.size.height === 0) return;
+  const { width, height } = event.size;
+  resizeSession.updateProgram(({ program }) => program.editCanvas({ width, height }),
+    { history: "record", origin: "programmatic" });
+});
+const stopObservation = resizeSession.mount(element, { observeResize: true });
+function disposeResize() {
+  stopResize(); stopObservation(); resizeSession.destroy();
+}
+```
+
+Render accepted `program` events using your existing Canvas or SVG renderer. Keep the
+surface's CSS dimensions controlled by its container to avoid a render/resize loop.
+Async native work and assets use the same prepared-update cancellation contract below.
+Remount, unmount and destroy disconnect the observer; previous observers cannot publish
+late events. Observation defaults to `false`. An unsupported host or failed observer setup
+rejects the attempted mount while preserving the previous mounted surface.
+
+## Prepare assets before committing
+
+Supply `assetResolver` when a candidate needs asynchronous image, font or shadow preparation.
+The session keeps the previous committed program and history until the new lease is ready.
+Superseding edits and destroy abort the request; a late result is released without committing.
+`whenSettled()` observes the request current at the call and returns a settled, cancelled or error
+result. Native transaction events keep their existing commit/settled/error/cancel phases.
+Initial and external preparation use an `assets` event with a separate `status` field.
+
+Continue from an immutable `program` containing retained images and a Canvas `context`:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `signal`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```javascript
+import { prepareImageRendering, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const assetSession = createInteractionSession({
+  program,
+  bindings: [],
+  async assetResolver({ program, signal }) {
+    const bitmaps = [];
+    const dispose = () => { for (const bitmap of bitmaps.splice(0)) bitmap.close(); };
+    let ready = false;
+    try {
+      const images = await prepareImageRendering(program, {
+        signal,
+        async decode({ bytes, mimeType }) {
+          const image = await createImageBitmap(new Blob([bytes], { type: mimeType }));
+          if (signal.aborted) { image.close(); signal.throwIfAborted(); }
+          bitmaps.push(image);
+          return { image, width: image.width, height: image.height, originClean: true };
+        }
+      });
+      ready = true;
+      return { images, dispose };
+    } finally { if (!ready) dispose(); }
+  }
+});
+const stopDrawing = assetSession.subscribe(event => {
+  if (event.phase === "commit" || (event.type === "assets" && event.status === "settled")) {
+    render(event.state.program, context, event.state.assets);
+  }
+});
+await assetSession.whenSettled();
+const disposeAssets = () => { stopDrawing(); assetSession.destroy(); };
+```
+
+Use the existing font and shadow preparation functions in the same callback when required,
+and release their handles in the lease's `dispose`. Release partially acquired resources if
+preparation throws. Prepared handles belong to the exact committed program; undo/redo/reset
+prepare the restored snapshot again. `state.assets` exposes only the accepted rendering handles;
+`state.preparation` exposes the pending transaction, generation, base revision and scoped resource
+revisions. The host still owns rendering, resize observation and animation-frame preparation.
+
+## Undo, redo and reset
+
+The session retains up to `historyLimit` committed snapshots (default 100; integer 0–10000).
+A drag with many preview frames adds one entry on release. Cancellation, failed commands,
+inspection and unchanged native commands add none. Set `historyLimit: 0` to disable undo/redo.
+
+Use the same dispatch path from host buttons, keyboard controls or headless code:
+
+> **Executable complete.** Run this ES module headlessly. The final program restores the Original note; history commands take no target or payload.
+
+```javascript
+import { chart } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const initial = chart().createCanvas()
+  .createAnnotation({ id: "note", space: "screen", x: 40, y: 60, text: "Original" });
+const historySession = createInteractionSession({ program: initial, bindings: [], historyLimit: 20 });
+historySession.dispatch({ type: "annotate", target: "note", payload: { text: "Revised" } });
+historySession.dispatch({ type: "undo", origin: "user" });
+historySession.dispatch({ type: "redo", origin: "user" });
+historySession.dispatch({ type: "reset", origin: "user" });
+const program = historySession.getState().program; // The original immutable program.
+const { undoCount, redoCount, limit } = historySession.getState().history; // 2, 0, 20.
+historySession.destroy();
+```
+
+Undo and redo restore the exact committed program and its selection state, including hidden
+membership and linked selections. Bindings stay mounted. Reset restores the program supplied when
+the session was created, even after external replacements; it is distinct from `clearSelection`.
+A changed reset is itself undoable. An empty undo/redo or an already-initial reset cancels an active
+preview without creating a commit. New commits discard the redo branch.
+
+`updateProgram(nextProgram, { history: "record", origin: "programmatic" })` records the previous
+snapshot when the program reference changes. Omit the options, or use `history: "reset"`, to clear
+undo and redo on external replacement. Neither changes the initial reset baseline. The `program`
+event reports the chosen `history` policy and origin. Every successful replacement cancels an active
+preview. Runtime history is not serialized; recreate a session after loading a saved program.
+
+History commands use the same transaction IDs, origins, FIFO reentry and commit/settled events as
+native edits. Each restore advances revision and generation, rejecting earlier frame results.
+The event's `previous` and `current` are immutable snapshot references. Reset and recorded external
+replacements affect the whole program and report `affectedOwners: []`; undo/redo of native edits
+retain that transition's owners. A restore has `selectionChanges: []` because it restores saved
+selection state; read `state.linkedSelections` or inspect `current` for its exact membership.
+
 ## Inspect without a DOM
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `session`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
@@ -120,12 +256,11 @@ session.destroy();
 Mounting another element removes the old listeners. Unmount is idempotent.
 `destroy()` removes listeners, disposes the current index, and discards pending
 work; it returns true once and false thereafter. Terminal state remains readable;
-other session methods reject further work.
+mutating session methods reject further work.
 
 Preparation is limited to 100,000 scene nodes and 10,000,000 work units; queries
 are limited to 2,000,000 units. Work includes geometry, metadata and guide sample
-comparisons. The session does not persist host objects or hover state. Keyboard navigation, history, angular gestures, and asset loading
-are not supported commands. PNG/PDF exports remain static.
+comparisons. The session does not persist host objects or hover state. Keyboard navigation and asset loading are not editing commands; the optional resolver prepares assets before accepting a candidate. PNG/PDF exports remain static.
 
 ## Commit selections and parameters
 
@@ -177,8 +312,7 @@ its membership with an explicit empty set. It does not reset the chart.
 
 Transaction events include `type`, `phase`, `transactionId`, `origin`, `revision`,
 `previous`, `current`, `affectedOwners`, `diagnostics`, and `state`. The successful
-order is `commit` then `settled`. `settled` confirms synchronous program/frame
-preparation; the host still owns drawing and renderer asset preparation. The
+order is `commit` then `settled`. `settled` confirms program/frame preparation and, when configured, successful assetResolver preparation; the host still owns drawing. The
 addressed owner is reported with its child path. A failed valid command emits one
 `error` and throws while retaining the prior program. Unsafe input is rejected
 before a transaction starts.
@@ -595,8 +729,7 @@ inspection runs after this up commit. Host controls may still send an activation
 the controller does not assign Enter/Space behavior or a focused item.
 
 Custom event surfaces without pointer-capture methods keep click-only handling. Native Canvas and SVG
-Elements use capture automatically. Brush/lasso dragging, competing bindings, navigation pinch and
-history are not supported by this binding.
+Elements use capture automatically. Brush/lasso dragging, competing bindings, navigation pinch are not supported by this binding. History commands operate on the whole session.
 
 ## Brush or lasso an existing selection
 
@@ -646,7 +779,7 @@ points select nothing. Lasso does not accept axis or channel options.
 Both bindings accept `mode: "replace" | "add" | "toggle" | "subtract" | "intersect"`, default replace.
 Each preview recomputes from the same pointerdown program; repeated toggle previews do not accumulate.
 At most one preview is published per animation frame. Final pointerup uses its last coordinates
-synchronously and creates one commit followed by settled. `state.program` and its revision stay
+through the native reducer and creates one commit followed by settled. An assetResolver delays acceptance until its lease is ready. `state.program` and its revision stay
 unchanged during preview; render `state.previewProgram` for the temporary selection and blue overlay.
 The committed program never contains that overlay. Empty brushes select nothing.
 
@@ -658,7 +791,7 @@ replacing the captured element cancels the gesture. Canvas/SVG use the same prog
 PNG/PDF exports can render a preview snapshot without running a controller.
 
 Explicit concat targets retain child scope. Facet-source geometry, Basic editing, competing gesture
-bindings, navigation and history are not inferred. Lasso input is limited to 10,000 samples and
+bindings and navigation are not inferred. Lasso input is limited to 10,000 samples and
 50,000 candidate anchors, with bounded cumulative geometry work. Dispose the session when its host
 is removed.
 
@@ -797,6 +930,11 @@ also accept their native `centerDeg` and `rotateDeg` options. The command uses t
 edit rules: a scale or translation patch detaches a fitted projection, while an angular patch retains
 and recomputes its fit. It preserves the geometry resource and feature selection identities.
 
+Alternatively, pass only `{operation}` to use [native camera operations](../../../api/geometry/#navigateprojection):
+pan, anchored zoom, pinch, spherical rotation, fit, reset or resize. The operation and absolute transform
+fields cannot be combined. One successful command adds one history entry, including Canvas resize.
+Capture reset parameters explicitly with `getProjectionView`; the session does not infer a home view.
+
 This browser module expects `<canvas id="chart" aria-label="Map points"></canvas>`.
 
 > **Executable complete.** Use a Canvas with id chart. Pan right, Zoom in and Original view work with pointer, Enter and Space; the output reports the current projection transform.
@@ -804,6 +942,7 @@ This browser module expects `<canvas id="chart" aria-label="Map points"></canvas
 ```js
 import { chart, render } from "ggaction";
 import { createInteractionSession } from "ggaction/interaction";
+import { getProjectionView } from "ggaction/inspection";
 
 const canvas = document.querySelector("#chart");
 const nav = document.createElement("nav");
@@ -819,19 +958,17 @@ const program = chart().createCanvas({ width: 400, height: 300, margin: 0 })
   .createProjection({ id: "map", type: "identity", scalePx: 1, translatePx: [0, 0] })
   .createCoordinate({ type: "geo" }).createGeoPointMark({ id: "places", geometry: "places", radiusPx: 8 });
 const viewportSession = createInteractionSession({ program, bindings: [] });
-const transform = current => {
-  const projection = current.semanticSpec.resources.find(resource => resource.kind === "projection" && resource.id === "map");
-  return { ...projection.options, ...projection.result };
-};
+const transform = current => getProjectionView(current, { target: "map" }).parameters;
+const initial = transform(program);
 const draw = current => {
   render(current, canvas.getContext("2d"));
   const { scalePx, translatePx } = transform(current);
   nav.querySelector("output").textContent = `Scale ${scalePx}; translation ${translatePx.join(", ")}`;
 };
-const move = payload => viewportSession.dispatch({ type: "setViewport", target: "map", payload, origin: "user" });
-const pan = () => { const { translatePx: [x, y] } = transform(viewportSession.getState().program); move({ translatePx: [x + 20, y] }); };
-const zoom = () => move({ scalePx: transform(viewportSession.getState().program).scalePx * 2 });
-const home = () => move({ scalePx: 1, translatePx: [0, 0] });
+const move = operation => viewportSession.dispatch({ type: "setViewport", target: "map", payload: { operation }, origin: "user" });
+const pan = () => move({ type: "pan", deltaPx: [20, 0] });
+const zoom = () => move({ type: "zoom", anchorPx: [80, 70], factor: 2, scaleExtent: [0.5, 8] });
+const home = () => move({ type: "reset", initial });
 const controls = [["#map-right", pan], ["#map-zoom", zoom], ["#map-home", home]];
 for (const [selector, handler] of controls) nav.querySelector(selector).addEventListener("click", handler);
 const unsubscribe = viewportSession.subscribe(event => {
@@ -844,10 +981,12 @@ const disposeViewport = () => {
 };
 ```
 
-For a projection in a composed child, use `{childPath,id}`. The nonempty patch accepts only the four
-transform fields above; it does not change projection type, clipping, geometry or level of detail.
-Native buttons keep focus and their usual keyboard behavior. This direct command does not install
-pointer pan or pinch gestures, infer cursor anchoring, or animate the change. It requires Full authoring.
+For a projection in a composed child, use `{childPath,id}`. Zoom and pinch anchors use native local
+projection pixels; convert a host pointer into that coordinate space before dispatching. The native
+operation validates inverse visibility and the explicit scale extent. Reset uses the captured parameters.
+Both payload forms preserve geometry and level of detail. Native buttons keep focus and keyboard behavior.
+Preparation failure or cancellation keeps the committed program, frame and history unchanged. This direct
+command requires Full authoring and does not install pointer gestures or animate the change.
 
 ## Move graph nodes with pointer or keyboard
 
@@ -901,5 +1040,113 @@ const disposeNodeControls = () => {
 The example uses an explicit origin so moving a node does not recenter the whole graph. Circular and
 flow layouts do not accept node movement. Gesture cancellation releases capture and redraws the prior
 program. Preview hit frames track the same visible geometry; read the session's current `frameVersion`
-when delivering external frames. General keyboard item navigation, unpin controls and history are not
+when delivering external frames. General keyboard item navigation and unpin controls are not
 installed by this binding.
+
+## Edit existing annotations
+
+For a [geographic annotation](../../../api/geometry/), the same `annotate` command calls `editGeoAnnotation`.
+Its payload accepts a native `anchor` (position or typed feature key), text and Text styles; geographic coordinates and the original detail level remain native.
+The explicit target chooses the editor. Position fields `x`/`y`, label placement and collision layout belong to ordinary Text annotations and reject on geographic targets.
+
+Send `annotate` to an existing Text owner to update text, datum anchors, offsets, style or source-owned item membership in one transaction.
+The payload follows [`editAnnotation`](../../../api/marks/text/#editannotationoptions) and cannot include another target.
+The Full editor retains the source/data/plot/screen anchor and native replay behavior. Basic does not author Text annotations.
+
+This browser module expects `<canvas id="chart" aria-label="Annotated points"></canvas>`.
+
+> **Executable complete.** Use a Canvas with id chart. Revise note and Offset note work with pointer, touch, Enter and Space; the text keeps its data anchor.
+
+```js
+import { chart, render } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const canvas = document.querySelector("#chart");
+const controls = document.createElement("div");
+controls.innerHTML = '<button id="revise-note">Revise note</button> <button id="offset-note">Offset note</button> <button id="undo-note">Undo</button> <button id="redo-note">Redo</button> <button id="reset-note">Reset</button> <output aria-live="polite"></output>';
+canvas.before(controls);
+const program = chart().createCanvas({ width: 400, height: 280, margin: 20 })
+  .createData({ values: [{ x: 2, y: 3 }, { x: 8, y: 7 }] })
+  .createPointMark().encodeX({ field: "x", scale: { domain: [0, 10] } })
+  .encodeY({ field: "y", scale: { domain: [0, 10] } })
+  .createAnnotation({ id: "note", text: "Original", x: 2, y: 3, dx: 8, dy: -8 });
+const annotationSession = createInteractionSession({ program, bindings: [{ type: "annotate", target: "note" }] });
+const previousTouchAction = canvas.style.touchAction;
+canvas.style.touchAction = "none";
+const draw = current => {
+  render(current, canvas.getContext("2d"));
+  controls.querySelector("output").textContent = current.graphicSpec.objects.note.items[0].properties.text;
+  controls.querySelector("#undo-note").disabled = annotationSession.getState().history.undoCount === 0;
+  controls.querySelector("#redo-note").disabled = annotationSession.getState().history.redoCount === 0;
+};
+const revise = () => annotationSession.dispatch({ type: "annotate", target: "note", payload: { text: "Revised", x: 8, y: 7 }, origin: "user" });
+const offset = () => annotationSession.dispatch({ type: "annotate", target: "note", payload: { dx: 12, dy: -16 }, origin: "user" });
+controls.querySelector("#revise-note").addEventListener("click", revise);
+controls.querySelector("#offset-note").addEventListener("click", offset);
+const historyButtons = ["undo", "redo", "reset"].map(type => {
+  const button = controls.querySelector(`#${type}-note`);
+  const activate = () => annotationSession.dispatch({ type, origin: "user" });
+  button.addEventListener("click", activate);
+  return () => button.removeEventListener("click", activate);
+});
+const unsubscribe = annotationSession.subscribe(event => { if (event.phase) draw(event.state.previewProgram ?? event.state.program); });
+draw(program);
+const unmountAnnotation = annotationSession.mount(canvas);
+const disposeAnnotationControls = () => {
+  controls.querySelector("#revise-note").removeEventListener("click", revise);
+  controls.querySelector("#offset-note").removeEventListener("click", offset);
+  historyButtons.forEach(remove => remove());
+  unmountAnnotation(); unsubscribe(); annotationSession.destroy(); controls.remove();
+  canvas.style.touchAction = previousTouchAction;
+};
+```
+
+Drag the note with mouse, pen or touch to change its native pixel offsets while preserving its anchor.
+The target layer is the editing unit: attached labels all move by the same offset. Use a separate annotation
+with item membership to move one label. Encoded offsets and facet sources reject this binding.
+A drag previews at most once per animation frame, commits the final release position once, and restores the
+committed program on Escape, capture loss or interruption. It requires the owner’s committed frame.
+Nested charts convert root and child coordinates before updating offsets; no scale or projection is inverted.
+
+Keyboard activation uses ordinary host buttons. Each command produces one commit and settled event;
+an invalid patch preserves the current program and trace. Annotation creation and screen-anchor conversion are not
+performed by this command.
+
+## Prepare native work before replacing the program
+
+Pass a callback to `updateProgram` when a native resource needs asynchronous computation. It receives the
+current immutable program and an `AbortSignal`. A newer edit or destruction cancels the request; a late result
+cannot replace the current chart. `whenSettled()` waits for computation and any configured asset preparation.
+The previous program and history stay available until the replacement is ready.
+
+For a Full `program` containing graph `graph`, layout `layout` and graph plot `network`, create a route executor
+and apply its prepared result through the native actions:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "network"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+import { createGraphRouteExecutor, prepareGraphEdgeRoutes } from "ggaction/graph";
+import { createInteractionSession } from "ggaction/interaction";
+
+const routeExecutor = createGraphRouteExecutor();
+const routeSession = createInteractionSession({ program, bindings: [] });
+routeSession.updateProgram(async ({ program, signal, transactionId }) => {
+  const prepared = await prepareGraphEdgeRoutes(program, {
+    kind: "create", id: "routes", graph: "graph", layout: "layout", method: "edge-path"
+  }, { executor: routeExecutor, signal, requestToken: transactionId });
+  return program.bundleGraphEdges({ prepared, requestToken: transactionId })
+    .editGraphPlot({ target: "network", routes: "routes" });
+}, { history: "record" });
+await routeSession.whenSettled();
+
+function disposeRoutes() {
+  routeSession.destroy();
+  routeExecutor.dispose();
+}
+```
+
+Subscribe to the `program` event to render the accepted replacement. The subsequent `update` event reports
+`status: "settled"`; cancellation and failures report `"cancelled"` and `"error"`. Native editing commands keep
+their existing transaction phases. Supply `createWorker` to `createGraphRouteExecutor` when work should run
+in a worker; the executor owns its transport and honors the session signal. Keep the executor until its owning
+view is disposed, then call `disposeRoutes()`.

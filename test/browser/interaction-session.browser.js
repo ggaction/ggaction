@@ -557,7 +557,7 @@ test("host viewport buttons apply native projection transforms to Canvas and SVG
       window.__inspectionSessions.forEach(session => session.destroy());
       document.body.innerHTML = '<canvas id="chart" aria-label="Map points"></canvas><div id="vector"></div>';
       let source = code;
-      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/interaction", "interaction"]]) {
+      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/interaction", "interaction"], ["ggaction/inspection", "inspection"]]) {
         source = source.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
       }
       const url = URL.createObjectURL(new Blob([source + '\nwindow.__viewportSession=viewportSession;window.__disposeViewport=disposeViewport;'], { type: "text/javascript" }));
@@ -580,7 +580,7 @@ test("host viewport buttons apply native projection transforms to Canvas and SVG
     await page.getByRole("button", { name: "Pan right", exact: true }).focus(); await page.keyboard.press("Enter");
     assert.deepEqual(await inspect(), { circles: [[80,70],[140,110]], vector: [[80,70],[140,110]], painted: true, revision: 1, focus: "map-right" });
     await page.getByRole("button", { name: "Zoom in", exact: true }).focus(); await page.keyboard.press("Space");
-    assert.deepEqual(await inspect(), { circles: [[140,140],[260,220]], vector: [[140,140],[260,220]], painted: true, revision: 2, focus: "map-zoom" });
+    assert.deepEqual(await inspect(), { circles: [[80,70],[200,150]], vector: [[80,70],[200,150]], painted: true, revision: 2, focus: "map-zoom" });
     await page.getByRole("button", { name: "Original view", exact: true }).click();
     assert.deepEqual(await inspect(), { circles: [[60,70],[120,110]], vector: [[60,70],[120,110]], painted: true, revision: 3, focus: "map-home" });
     assert.deepEqual(await page.evaluate(() => window.__viewportPhases), ["commit","settled","commit","settled","commit","settled"]);
@@ -638,4 +638,368 @@ test("canonical graph node controls preserve current Canvas and SVG hits across 
     await page.evaluate(() => window.__disposeNodeControls()); assertNoBrowserErrors(errors, "node movement host controls"); await page.close();
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
+});
+
+test("canonical annotation buttons preserve data anchors and exact Canvas SVG text through pointer touch and keyboard", async () => {
+  const snippet = (await documentationPrograms()).find(program => program.id === "interaction-annotation"); assert.ok(snippet);
+  const context = await browser.newContext({ deviceScaleFactor: 2, hasTouch: true, viewport: { width: 1000, height: 750 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      document.body.innerHTML = '<canvas id="chart" aria-label="Annotated points"></canvas><div id="vector"></div>';
+      let source = code;
+      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/interaction", "interaction"]]) {
+        source = source.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
+      }
+      const url = URL.createObjectURL(new Blob([source + '\nwindow.__annotationSession=annotationSession;window.__disposeAnnotation=disposeAnnotationControls;'], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      const { renderToSVG } = await import("/src/renderers/svg.js"); window.__annotationPhases = [];
+      const draw = current => { document.querySelector("#vector").innerHTML = renderToSVG(current); };
+      window.__annotationSession.subscribe(event => { if (event.phase) window.__annotationPhases.push(event.phase); if (event.phase === "commit") draw(event.current); });
+      draw(window.__annotationSession.getState().program);
+    }, snippet.code);
+    const inspect = () => page.evaluate(() => {
+      const state = window.__annotationSession.getState(), properties = state.program.graphicSpec.objects.note.items[0].properties;
+      const text = document.querySelector("#vector text"), canvas = document.querySelector("canvas"), ctx = canvas.getContext("2d");
+      const rgba = ctx.getImageData(properties.x, properties.y - 15, 60, 18).data;
+      return { point: [properties.x, properties.y], vector: [Number(text.getAttribute("x")), Number(text.getAttribute("y"))],
+        text: text.textContent, painted: [...rgba].some((value, i) => i % 4 !== 3 && value < 150 && rgba[i - i % 4 + 3] > 0),
+        revision: state.revision, focus: document.activeElement.id };
+    });
+    await page.getByRole("button", { name: "Revise note", exact: true }).focus(); await page.keyboard.press("Enter");
+    assert.deepEqual(await inspect(), { point: [316,84], vector: [316,84], text: "Revised", painted: true, revision: 1, focus: "revise-note" });
+    await page.getByRole("button", { name: "Offset note", exact: true }).focus(); await page.keyboard.press("Space");
+    assert.deepEqual(await inspect(), { point: [320,76], vector: [320,76], text: "Revised", painted: true, revision: 2, focus: "offset-note" });
+    await page.getByRole("button", { name: "Revise note", exact: true }).tap();
+    await page.getByRole("button", { name: "Offset note", exact: true }).click();
+    assert.deepEqual(await page.evaluate(() => window.__annotationPhases), ["commit","settled","commit","settled","commit","settled","commit","settled"]);
+    assert.equal((await inspect()).revision, 4);
+    await page.evaluate(() => window.__disposeAnnotation()); assert.equal(await page.locator("#revise-note").count(), 0);
+    assert.equal(await page.evaluate(() => window.__annotationSession.getState().destroyed), true);
+    assertNoBrowserErrors(errors, "annotation host controls"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});
+
+test("geographic annotation controls reuse native feature anchors through keyboard touch and projection changes", async () => {
+  const context = await browser.newContext({ deviceScaleFactor: 2, hasTouch: true, viewport: { width: 900, height: 650 } });
+  try {
+    const {page,errors}=await openBrowserPage(context,new URL("examples/inspect-chart/",server.baseUrl).href,{waitFor:()=>window.__inspectionSessions?.length===2});
+    await page.evaluate(async()=>{
+      window.__inspectionSessions.forEach(s=>s.destroy());
+      const {chart,render}=await import('/src/index.js'),{createInteractionSession}=await import('/src/interaction.js'),{renderToSVG}=await import('/src/renderers/svg.js');
+      document.body.innerHTML='<button id="anchor">Move note</button><button id="project">Change viewport</button><canvas id="map"></canvas><div id="vector"></div>';
+      const program=chart().createCanvas({width:300,height:200,margin:0})
+        .createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'FeatureCollection',features:[{type:'Feature',id:1,properties:{},geometry:{type:'Point',coordinates:[30,40]}},{type:'Feature',id:'1',properties:{},geometry:{type:'Point',coordinates:[80,90]}}]}})
+        .createProjection({id:'projection',type:'identity'}).createCoordinate({type:'geo'})
+        .createGeoAnnotation({id:'note',anchor:{type:'feature',geometry:'places',key:1},text:'Port'});
+      const session=createInteractionSession({program,bindings:[]});window.__geoNote=session;window.__geoNotePhases=[];
+      const draw=p=>{render(p,document.querySelector('canvas').getContext('2d'),{pixelRatio:2});document.querySelector('#vector').innerHTML=renderToSVG(p)};
+      session.subscribe(e=>{if(e.phase)window.__geoNotePhases.push(e.phase);if(e.phase==='commit')draw(e.current)});draw(program);
+      document.querySelector('#anchor').onclick=()=>session.dispatch({type:'annotate',target:'note',payload:{anchor:{type:'feature',key:'1'},text:'Harbor',dx:4,dy:-8}});
+      document.querySelector('#project').onclick=()=>session.dispatch({type:'setViewport',target:'projection',payload:{scalePx:2}});
+    });
+    await page.getByRole('button',{name:'Move note'}).focus();await page.keyboard.press('Enter');
+    const inspect=()=>page.evaluate(()=>{
+      const state=window.__geoNote.getState(),p=state.program.graphicSpec.objects.note.items[0].properties,t=document.querySelector('#vector text');
+      const rgba=document.querySelector('canvas').getContext('2d').getImageData(p.x*2,(p.y-14)*2,100,32).data;
+      return {point:[p.x,p.y],svg:[Number(t.getAttribute('x')),Number(t.getAttribute('y'))],text:t.textContent,key:state.program.semanticSpec.layers[0].geoBinding.anchor.key,ink:[...rgba].some((v,i)=>i%4!==3&&v<150&&rgba[i-i%4+3]>0)};
+    });
+    assert.deepEqual(await inspect(),{point:[84,82],svg:[84,82],text:'Harbor',key:'1',ink:true});
+    await page.getByRole('button',{name:'Change viewport'}).tap();
+    assert.deepEqual(await inspect(),{point:[164,172],svg:[164,172],text:'Harbor',key:'1',ink:true});
+    await page.getByRole('button',{name:'Move note'}).focus();await page.keyboard.press('Space');
+    assert.equal(await page.evaluate(()=>document.activeElement.id),'anchor');
+    assert.deepEqual(await page.evaluate(()=>window.__geoNotePhases),['commit','settled','commit','settled','commit','settled']);
+    await page.evaluate(()=>window.__geoNote.destroy());assertNoBrowserErrors(errors,'geographic annotation controls');await page.close();
+  }catch(error){await saveBrowserContextEvidence(context,error);throw error;}finally{await context.close();}
+});
+
+test("annotation membership buttons preserve item anchors and focus across pointer touch and keyboard",async()=>{
+ const context=await browser.newContext({deviceScaleFactor:2,hasTouch:true,viewport:{width:900,height:650}});
+ try{
+  const {page,errors}=await openBrowserPage(context,new URL('examples/inspect-chart/',server.baseUrl).href,{waitFor:()=>window.__inspectionSessions?.length===2});
+  await page.evaluate(async()=>{
+   window.__inspectionSessions.forEach(s=>s.destroy());
+   const {chart,render}=await import('/src/index.js'),{getMarkItems}=await import('/src/inspection.js'),{createInteractionSession}=await import('/src/interaction.js'),{renderToSVG}=await import('/src/renderers/svg.js');
+   document.body.innerHTML='<button id="all">All notes</button><button id="one">First note</button><button id="none">No notes</button><canvas id="notes" aria-label="Selected item notes"></canvas><div id="vector"></div>';
+   const base=chart().createCanvas({width:256,height:160,margin:0}).createData({values:[{x:40,y:60},{x:120,y:90}]})
+    .createPointMark({id:'points'}).encodeX({field:'x',scale:{domain:[0,256],range:[0,256]}}).encodeY({field:'y',scale:{domain:[0,160],range:[0,160]}});
+   const key=getMarkItems(base)[0].key,program=base.selectMarks({id:'picked',target:'points',items:[key]}).createAnnotation({id:'notes',source:'points',text:'Note',selection:'picked',dy:-5});
+   const session=createInteractionSession({program,bindings:[]});window.__memberSession=session;window.__memberPhases=[];
+   const draw=p=>{render(p,document.querySelector('canvas').getContext('2d'),{pixelRatio:2});document.querySelector('#vector').innerHTML=renderToSVG(p)};
+   session.subscribe(e=>{if(e.phase)window.__memberPhases.push(e.phase);if(e.phase==='commit')draw(e.current)});draw(program);
+   for(const[id,payload]of[['all',{all:true}],['one',{selection:'picked'}],['none',{select:{items:[]}}]])document.querySelector('#'+id).onclick=()=>session.dispatch({type:'annotate',target:'notes',payload});
+  });
+  await page.getByRole('button',{name:'All notes'}).focus();await page.keyboard.press('Enter');
+  assert.deepEqual(await page.evaluate(()=>[...document.querySelectorAll('#vector text')].map(t=>[Number(t.getAttribute('x')),Number(t.getAttribute('y'))])),[[40,55],[120,85]]);
+  await page.getByRole('button',{name:'No notes'}).tap();assert.equal(await page.locator('#vector text').count(),0);
+  await page.getByRole('button',{name:'First note'}).click();assert.equal(await page.locator('#vector text').count(),1);
+  await page.keyboard.press('Space');
+  assert.equal(await page.evaluate(()=>document.activeElement.id),'one');
+  assert.deepEqual(await page.evaluate(()=>window.__memberPhases),['commit','settled','commit','settled','commit','settled','commit','settled']);
+  assert.equal(await page.evaluate(()=>{const c=document.querySelector('canvas').getContext('2d'),rgba=c.getImageData(60,70,100,40).data;return [...rgba].some((v,i)=>i%4!==3&&v<150&&rgba[i-i%4+3]>0)}),true);
+  await page.evaluate(()=>window.__memberSession.destroy());assertNoBrowserErrors(errors,'annotation membership controls');await page.close();
+ }catch(error){await saveBrowserContextEvidence(context,error);throw error;}finally{await context.close();}
+});
+
+test("screen annotation controls keep Canvas pixel anchors through resize and keyboard editing", async () => {
+  const context=await browser.newContext({deviceScaleFactor:2,hasTouch:true,viewport:{width:900,height:650}});
+  try {
+    const {page,errors}=await openBrowserPage(context,new URL('examples/inspect-chart/',server.baseUrl).href,{waitFor:()=>window.__inspectionSessions?.length===2});
+    await page.evaluate(async()=>{
+      window.__inspectionSessions.forEach(s=>s.destroy());
+      const {chart,render}=await import('/src/index.js'),{renderToSVG}=await import('/src/renderers/svg.js'),{createInteractionSession}=await import('/src/interaction.js');
+      document.body.innerHTML='<button id="move">Move screen note</button><button id="resize">Resize Canvas</button><canvas aria-label="Screen note"></canvas><div id="vector"></div>';
+      const p=chart().createCanvas({width:300,height:180,margin:30}).createAnnotation({id:'note',space:'screen',x:12,y:24,text:'Screen',fontSize:20});
+      const session=createInteractionSession({program:p,bindings:[]});window.__screenNote=session;window.__screenPhases=[];
+      const draw=p=>{render(p,document.querySelector('canvas').getContext('2d'),{pixelRatio:2});document.querySelector('#vector').innerHTML=renderToSVG(p)};
+      session.subscribe(e=>{window.__screenPhases.push(e.phase);if(e.phase==='commit')draw(e.current)});draw(p);
+      document.querySelector('#move').onclick=()=>session.dispatch({type:'annotate',target:'note',payload:{x:40,y:60,text:'Moved',dx:2,dy:-3}});
+      document.querySelector('#resize').onclick=()=>session.updateProgram(session.getState().program.editCanvas({width:500,height:240,margin:60}));
+    });
+    await page.getByRole('button',{name:'Move screen note'}).focus();await page.keyboard.press('Enter');
+    const inspect=()=>page.evaluate(()=>{const t=document.querySelector('#vector text'),p=window.__screenNote.getState().program;return {x:Number(t.getAttribute('x')),y:Number(t.getAttribute('y')),text:t.textContent,data:p.semanticSpec.datasets.length,scales:p.semanticSpec.scales.length}});
+    assert.deepEqual(await inspect(),{x:42,y:57,text:'Moved',data:0,scales:0});
+    await page.getByRole('button',{name:'Resize Canvas'}).tap();assert.deepEqual(await inspect(),{x:42,y:57,text:'Moved',data:0,scales:0});
+    await page.getByRole('button',{name:'Move screen note'}).click();await page.keyboard.press('Space');
+    assert.equal(await page.evaluate(()=>document.activeElement.id),'move');
+    assert.equal(await page.evaluate(()=>{const rgba=document.querySelector('canvas').getContext('2d').getImageData(80,75,130,45).data;return [...rgba].some((v,i)=>i%4!==3&&v<150&&rgba[i-i%4+3]>0)}),true);
+    await page.evaluate(()=>window.__screenNote.destroy());assertNoBrowserErrors(errors,'screen annotation controls');await page.close();
+  } catch(error) {await saveBrowserContextEvidence(context,error);throw error;} finally {await context.close();}
+});
+
+test("canonical annotation dragging preserves anchors across mouse touch keyboard and cancellation", async () => {
+  const snippet = (await documentationPrograms()).find(program => program.id === "interaction-annotation"); assert.ok(snippet);
+  const context = await browser.newContext({ deviceScaleFactor: 2, hasTouch: true, viewport: { width: 1000, height: 750 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      document.body.innerHTML = '<canvas id="chart" aria-label="Draggable annotation"></canvas><div id="vector"></div>';
+      let source = code;
+      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/interaction", "interaction"]]) source = source.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
+      const url = URL.createObjectURL(new Blob([source + '\nwindow.__annotationDrag=annotationSession;window.__disposeAnnotationDrag=disposeAnnotationControls;'], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      const { renderToSVG } = await import("/src/renderers/svg.js"); window.__annotationDragPhases = [];
+      const draw = p => { document.querySelector("#vector").innerHTML = renderToSVG(p); };
+      window.__annotationDrag.subscribe(event => { if (event.phase) { window.__annotationDragPhases.push(event.phase); draw(event.state.previewProgram ?? event.state.program); } });
+      draw(window.__annotationDrag.getState().program);
+    }, snippet.code);
+    const box = await page.locator("canvas").boundingBox();
+    const inspect = () => page.evaluate(() => {
+      const state = window.__annotationDrag.getState(), p = state.previewProgram ?? state.program;
+      const text = p.graphicSpec.objects.note.items[0].properties, vector = document.querySelector("#vector text");
+      const pixels = document.querySelector("canvas").getContext("2d").getImageData(text.x, text.y - 15, 65, 16).data;
+      const layer = p.semanticSpec.layers.find(layer => layer.id === "note");
+      return { xy: [text.x, text.y], vector: [Number(vector.getAttribute("x")), Number(vector.getAttribute("y"))],
+        anchor: [layer.encoding.x.datum, layer.encoding.y.datum], revision: state.revision,
+        ink: [...pixels].some((value, index) => index % 4 !== 3 && value < 150 && pixels[index - index % 4 + 3] > 0) };
+    });
+    await page.mouse.move(box.x + 104, box.y + 176); await page.mouse.down(); await page.mouse.move(box.x + 134, box.y + 196, { steps: 8 });
+    await page.waitForFunction(() => window.__annotationDrag.getState().previewProgram !== null);
+    assert.deepEqual(await inspect(), { xy: [130, 200], vector: [130, 200], anchor: [2, 3], revision: 0, ink: true });
+    await page.mouse.up(); assert.equal((await inspect()).revision, 1);
+    await page.mouse.move(box.x + 134, box.y + 196); await page.mouse.down(); await page.mouse.move(box.x + 164, box.y + 206);
+    await page.waitForFunction(() => window.__annotationDrag.getState().previewProgram !== null);
+    await page.keyboard.press("Escape"); await page.mouse.up(); assert.deepEqual((await inspect()).xy, [130, 200]);
+    await page.getByRole("button", { name: "Offset note" }).focus(); await page.keyboard.press("Enter");
+    assert.deepEqual((await inspect()).xy, [104, 172]);
+    const protocol = await context.newCDPSession(page);
+    await protocol.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: box.x + 108, y: box.y + 168 }] });
+    await protocol.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: box.x + 128, y: box.y + 178 }] });
+    await page.waitForFunction(() => window.__annotationDrag.getState().previewProgram !== null);
+    await protocol.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    assert.deepEqual(await inspect(), { xy: [124, 182], vector: [124, 182], anchor: [2, 3], revision: 3, ink: true });
+    assert.deepEqual(await page.evaluate(() => ({ commits: window.__annotationDragPhases.filter(phase => phase === "commit").length,
+      cancels: window.__annotationDragPhases.filter(phase => phase === "cancel").length })), { commits: 3, cancels: 1 });
+    assert.equal(await page.evaluate(() => window.__annotationDrag.getState().history.undoCount), 3);
+    await page.getByRole("button", { name: "Undo", exact: true }).focus(); await page.keyboard.press("Enter");
+    assert.deepEqual((await inspect()).xy, [104, 172]);
+    await page.getByRole("button", { name: "Redo", exact: true }).tap(); assert.deepEqual((await inspect()).xy, [124, 182]);
+    await page.getByRole("button", { name: "Reset", exact: true }).click(); assert.deepEqual((await inspect()).xy, [100, 180]);
+    await page.getByRole("button", { name: "Undo", exact: true }).click(); assert.deepEqual((await inspect()).xy, [124, 182]);
+    assert.equal(await page.evaluate(() => window.__annotationDragPhases.filter(phase => phase === "commit").length), 7);
+    await page.evaluate(() => window.__disposeAnnotationDrag()); assertNoBrowserErrors(errors, "annotation dragging"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});
+
+test("canonical asset resolver keeps browser pixels committed and closes late image bitmaps after destroy", async () => {
+  const { readFile } = await import("node:fs/promises"), { documentationCodeBlocks } = await import("../../scripts/doc-snippets.js");
+  const source = documentationCodeBlocks(await readFile(new URL("../../docs/api/interaction.md", import.meta.url), "utf8"))
+    .find(block => block.code.includes("const assetSession = createInteractionSession")).code;
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 900, height: 650 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      const { chart } = await import("/src/index.js");
+      document.body.innerHTML = '<button id="edit">Change level</button><button id="destroy">Destroy session</button><canvas aria-label="Prepared image"></canvas>';
+      const sample = document.createElement("canvas"); sample.width = sample.height = 2;
+      sample.getContext("2d").fillStyle = "#008000"; sample.getContext("2d").fillRect(0, 0, 2, 2);
+      const blob = await new Promise(resolve => sample.toBlob(resolve)), bytes = new Uint8Array(await blob.arrayBuffer());
+      const contentHash = [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map(value => value.toString(16).padStart(2, "0")).join("");
+      const image = { contentHash, mimeType: "image/png", byteLength: bytes.length, width: 2, height: 2, payload: { encoding: "base64", data: btoa(String.fromCharCode(...bytes)) } };
+      let program = chart().createCanvas({ width: 200, height: 120, margin: 0 }).createParameter({ id: "level", value: 0 }).createGraphics({ id: "picture", type: "image", parent: "plot-main" });
+      for (const [property, value] of Object.entries({ image, x: 10, y: 10, width: 40, height: 40 })) program = program.editGraphics({ target: "picture", property, value });
+      window.__assetProgram = program; window.__assetContext = document.querySelector("canvas").getContext("2d");
+      window.__assetHolds = []; window.__assetCloseCount = 0; window.__assetWrites = 0; window.__assetHold = false;
+      const native = window.createImageBitmap.bind(window);
+      window.createImageBitmap = async (...args) => {
+        const bitmap = await native(...args), close = bitmap.close.bind(bitmap);
+        bitmap.close = () => { window.__assetCloseCount++; close(); };
+        if (window.__assetHold) await new Promise(resolve => window.__assetHolds.push(resolve));
+        return bitmap;
+      };
+      let module = 'const program=window.__assetProgram, context=window.__assetContext;\n' + code;
+      for (const [specifier, file] of [["ggaction", "index"], ["ggaction/interaction", "interaction"]]) module = module.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
+      module += '\nwindow.__assetSession=assetSession;window.__assetCleanup=disposeAssets;';
+      const url = URL.createObjectURL(new Blob([module], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      window.__assetSession.subscribe(event => { if (event.phase === "commit") window.__assetWrites++; });
+      window.__assetHold = true; let value = 0;
+      document.querySelector("#edit").onclick = () => window.__assetSession.dispatch({ type: "setParameter", target: "level", payload: { value: ++value } });
+      document.querySelector("#destroy").onclick = () => window.__assetCleanup();
+    }, source);
+    assert.deepEqual(await page.evaluate(() => [...window.__assetContext.getImageData(20, 20, 1, 1).data]), [0, 128, 0, 255]);
+    await page.getByRole("button", { name: "Change level" }).click(); await page.waitForFunction(() => window.__assetHolds.length === 1);
+    await page.getByRole("button", { name: "Change level" }).focus(); await page.keyboard.press("Enter"); await page.waitForFunction(() => window.__assetHolds.length === 2);
+    assert.deepEqual(await page.evaluate(() => [window.__assetSession.getState().revision, window.__assetWrites]), [0, 0]);
+    await page.evaluate(async () => { window.__assetHolds[1](); await window.__assetSession.whenSettled(); window.__assetHolds[0](); });
+    await page.waitForFunction(() => window.__assetCloseCount === 2);
+    assert.deepEqual(await page.evaluate(() => [window.__assetSession.getState().revision, window.__assetSession.getState().history.undoCount, window.__assetWrites]), [1, 1, 1]);
+    await page.getByRole("button", { name: "Change level" }).click(); await page.waitForFunction(() => window.__assetHolds.length === 3);
+    await page.getByRole("button", { name: "Destroy session" }).click();
+    await page.evaluate(() => window.__assetHolds[2]()); await page.waitForFunction(() => window.__assetCloseCount === 4);
+    assert.deepEqual(await page.evaluate(() => [window.__assetSession.getState().destroyed, window.__assetSession.getState().assets, window.__assetWrites]), [true, null, 1]);
+    assert.deepEqual(await page.evaluate(() => [...window.__assetContext.getImageData(20, 20, 1, 1).data]), [0, 128, 0, 255]);
+    assertNoBrowserErrors(errors, "atomic image preparation"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});
+
+test("canonical native update and real browser workers reject stale completion and release transport on destroy", async () => {
+  const { readFile } = await import("node:fs/promises"), { documentationCodeBlocks } = await import("../../scripts/doc-snippets.js");
+  const source = documentationCodeBlocks(await readFile(new URL("../../docs/api/interaction.md", import.meta.url), "utf8"))
+    .find(block => block.code.includes("const routeExecutor = createGraphRouteExecutor")).code;
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 900, height: 650 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      const { chart, render } = await import("/src/index.js"), { renderToSVG } = await import("/src/renderers/svg.js");
+      const { createGraphRouteExecutor, prepareGraphEdgeRoutes, computeGraphEdgeRoutes } = await import("/src/graph.js");
+      document.body.innerHTML = '<button id="prepare">Prepare routes</button><button id="destroy">Destroy routes</button><canvas aria-label="Prepared routes"></canvas><div id="vector"></div>';
+      window.__routeBase = chart().createCanvas({ width: 400, height: 300 }).createData({ id: "nodes", values: [{ id: "a" }, { id: "b" }, { id: "c" }] })
+        .createData({ id: "edges", values: [{ s: "a", t: "c" }, { s: "a", t: "b" }, { s: "b", t: "c" }] })
+        .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", source: "s", target: "t" })
+        .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: "a", x: 0, y: 0 }, { key: "b", x: 50, y: 50 }, { key: "c", x: 100, y: 0 }] } })
+        .createGraphPlot({ id: "network" });
+      let module = 'const program=window.__routeBase;\n' + code;
+      for (const [specifier, file] of [["ggaction/graph", "graph"], ["ggaction/interaction", "interaction"]]) module = module.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
+      module += '\nwindow.__routeSession=routeSession;window.__routeCleanup=disposeRoutes;';
+      const url = URL.createObjectURL(new Blob([module], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      const draw = program => { render(program, document.querySelector("canvas").getContext("2d"), { pixelRatio: 2 }); document.querySelector("#vector").innerHTML = renderToSVG(program); };
+      window.__routeWrites = 0; draw(window.__routeSession.getState().program);
+      window.__routeSession.subscribe(event => { if (event.type === "program") { window.__routeWrites++; draw(event.state.program); } });
+      window.__routeWorkers = [];
+      const workerUrl = URL.createObjectURL(new Blob([`import {computeGraphEdgeRoutes} from ${JSON.stringify(new URL('/src/graph.js', location.href).href)};onmessage=({data})=>postMessage(computeGraphEdgeRoutes(data.job));`], { type: "text/javascript" }));
+      const executor = createGraphRouteExecutor({ createWorker() {
+        const native = new Worker(workerUrl, { type: "module" }), listeners = new Map();
+        const worker = { job: null, terminated: 0, listeners, late: null,
+          postMessage(message) { this.job = message.job; this.late = listeners.get("message"); this.release = () => native.postMessage(message); },
+          addEventListener(type, listener) { listeners.set(type, listener); native.addEventListener(type, listener); },
+          removeEventListener(type, listener) { listeners.delete(type); native.removeEventListener(type, listener); },
+          terminate() { this.terminated++; native.terminate(); } };
+        window.__routeWorkers.push(worker); return worker;
+      } });
+      let exponent = 2;
+      document.querySelector("#prepare").onclick = () => {
+        const value = ++exponent;
+        window.__routeSession.updateProgram(async ({ program, signal, transactionId }) => {
+          const prepared = await prepareGraphEdgeRoutes(program, { kind: "edit", target: "routes", options: { exponent: value } }, { executor, signal, requestToken: transactionId });
+          return program.editEdgeRoute({ prepared, requestToken: transactionId });
+        }, { history: "record" });
+      };
+      document.querySelector("#destroy").onclick = () => { window.__routeCleanup(); executor.dispose(); URL.revokeObjectURL(workerUrl); };
+      window.__routeLate = index => { const worker = window.__routeWorkers[index]; worker.late({ data: computeGraphEdgeRoutes(worker.job) }); };
+      window.__routeParity = () => {
+        const current = window.__routeSession.getState().program, expected = window.__routeBase.bundleGraphEdges({ id: "routes", graph: "graph", layout: "layout", method: "edge-path" })
+          .editGraphPlot({ target: "network", routes: "routes" }).editEdgeRoute({ target: "routes", options: { exponent: 4 } });
+        const canvas = document.createElement("canvas"); render(expected, canvas.getContext("2d"), { pixelRatio: 2 });
+        return { svg: renderToSVG(current) === renderToSVG(expected), pixels: canvas.toDataURL() === document.querySelector("canvas").toDataURL() };
+      };
+    }, source);
+    assert.deepEqual(await page.evaluate(() => [window.__routeSession.getState().revision, window.__routeSession.getState().history.undoCount]), [1, 1]);
+    await page.getByRole("button", { name: "Prepare routes" }).click(); await page.waitForFunction(() => window.__routeWorkers.length === 1);
+    await page.getByRole("button", { name: "Prepare routes" }).focus(); await page.keyboard.press("Enter"); await page.waitForFunction(() => window.__routeWorkers.length === 2);
+    assert.deepEqual(await page.evaluate(() => [window.__routeSession.getState().revision, window.__routeWrites, window.__routeWorkers[0].terminated, window.__routeWorkers[0].listeners.size]), [1, 0, 1, 0]);
+    await page.evaluate(async () => { window.__routeWorkers[1].release(); await window.__routeSession.whenSettled(); window.__routeLate(0); });
+    assert.deepEqual(await page.evaluate(() => window.__routeParity()), { svg: true, pixels: true });
+    assert.deepEqual(await page.evaluate(() => [window.__routeSession.getState().revision, window.__routeSession.getState().history.undoCount, window.__routeWrites]), [2, 2, 1]);
+    await page.getByRole("button", { name: "Prepare routes" }).click(); await page.waitForFunction(() => window.__routeWorkers.length === 3);
+    await page.getByRole("button", { name: "Destroy routes" }).click(); await page.evaluate(() => window.__routeLate(2));
+    assert.deepEqual(await page.evaluate(() => ({ destroyed: window.__routeSession.getState().destroyed, writes: window.__routeWrites,
+      workers: window.__routeWorkers.map(worker => [worker.terminated, worker.listeners.size]) })), { destroyed: true, writes: 1, workers: [[1, 0], [1, 0], [1, 0]] });
+    assertNoBrowserErrors(errors, "native prepared route replacement"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});
+
+test("canonical observed resize uses CSS pixels and prepared native rendering with deterministic teardown", async () => {
+  const { readFile } = await import("node:fs/promises"), { documentationCodeBlocks } = await import("../../scripts/doc-snippets.js");
+  const source = documentationCodeBlocks(await readFile(new URL("../../docs/api/interaction.md", import.meta.url), "utf8"))
+    .find(block => block.code.includes("const resizeSession = createInteractionSession")).code;
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 900, height: 650 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      const { chart, render } = await import("/src/index.js"), { renderToSVG } = await import("/src/renderers/svg.js");
+      document.body.innerHTML = '<div id="surface" style="width:200px;height:160px"><canvas aria-label="Resizable points"></canvas></div><div id="vector"></div>';
+      const program = chart().createCanvas({width:200,height:160,margin:20}).createData({values:[{x:0,y:0},{x:1,y:1}]})
+        .createPointMark({id:"points"}).encodeX({field:"x"}).encodeY({field:"y"});
+      window.__resizeBase=program; window.__resizeEvents=[];window.__resizeWrites=0;window.__resizeObservers=[];
+      const NativeResizeObserver=window.ResizeObserver;
+      window.ResizeObserver=class {
+        constructor(callback){this.disconnected=0;this.native=new NativeResizeObserver(callback);window.__resizeObservers.push(this);}
+        observe(...args){this.native.observe(...args);}disconnect(){this.disconnected++;this.native.disconnect();}
+      };
+      let module='const program=window.__resizeBase,element=document.querySelector("#surface");\n'+code;
+      module=module.replaceAll('"ggaction/interaction"',JSON.stringify(new URL('/src/interaction.js',location.href).href));
+      module+='\nwindow.__resizeSession=resizeSession;window.__resizeCleanup=disposeResize;window.__stopResizePolicy=stopResize;';
+      const url=URL.createObjectURL(new Blob([module],{type:'text/javascript'}));try{await import(url);}finally{URL.revokeObjectURL(url);}
+      const draw=current=>{render(current,document.querySelector('canvas').getContext('2d'),{pixelRatio:2});document.querySelector('#vector').innerHTML=renderToSVG(current);};draw(program);
+      window.__resizeSession.subscribe(event=>{if(event.type==='resize')window.__resizeEvents.push(event.size);if(event.type==='program'){window.__resizeWrites++;draw(event.state.program);}});
+      window.__resizeParity=(width,height)=>{const expected=program.editCanvas({width,height}),canvas=document.createElement('canvas');render(expected,canvas.getContext('2d'),{pixelRatio:2});return{svg:renderToSVG(window.__resizeSession.getState().program)===renderToSVG(expected),pixels:canvas.toDataURL()===document.querySelector('canvas').toDataURL(),physical:[document.querySelector('canvas').width,document.querySelector('canvas').height]};};
+      window.__setSurface=(width,height)=>{const element=document.querySelector('#surface');element.style.width=`${width}px`;element.style.height=`${height}px`;};
+    },source);
+    await page.waitForFunction(()=>window.__resizeWrites===1);
+    await page.evaluate(()=>window.__setSurface(300,200));await page.waitForFunction(()=>window.__resizeWrites===2);
+    assert.deepEqual(await page.evaluate(()=>window.__resizeEvents),[{width:200,height:160},{width:300,height:200}]);
+    assert.deepEqual(await page.evaluate(()=>window.__resizeParity(300,200)),{svg:true,pixels:true,physical:[600,400]});
+    await page.evaluate(()=>{
+      window.__stopResizePolicy();window.__resizePending=[];
+      window.__resizeSession.subscribe(event=>{if(event.type==='resize')window.__resizeSession.updateProgram(request=>new Promise(resolve=>window.__resizePending.push({request,resolve,size:event.size})),{history:'record'});});
+      window.__resizeBefore=window.__resizeSession.getState().program;window.__setSurface(400,250);
+    });
+    await page.waitForFunction(()=>window.__resizePending.length===1);
+    await page.evaluate(()=>window.__setSurface(500,300));await page.waitForFunction(()=>window.__resizePending.length===2);
+    assert.deepEqual(await page.evaluate(()=>[window.__resizeSession.getState().program===window.__resizeBefore,window.__resizePending[0].request.signal.aborted,window.__resizeWrites]),[true,true,2]);
+    await page.evaluate(async()=>{const [old,current]=window.__resizePending;current.resolve(current.request.program.editCanvas(current.size));await window.__resizeSession.whenSettled();old.resolve(old.request.program.editCanvas(old.size));});
+    assert.deepEqual(await page.evaluate(()=>window.__resizeParity(500,300)),{svg:true,pixels:true,physical:[1000,600]});
+    assert.deepEqual(await page.evaluate(()=>[window.__resizeSession.getState().history.undoCount,window.__resizeWrites]),[3,3]);
+    await page.evaluate(()=>window.__setSurface(550,320));await page.waitForFunction(()=>window.__resizePending.length===3);
+    await page.evaluate(async()=>{window.__resizeCleanup();const pending=window.__resizePending[2];pending.resolve(pending.request.program.editCanvas(pending.size));window.__setSurface(600,340);await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});
+    assert.deepEqual(await page.evaluate(()=>[window.__resizeSession.getState().destroyed,window.__resizeWrites,window.__resizeEvents.length,window.__resizeObservers[0].disconnected]),[true,3,5,1]);
+    assertNoBrowserErrors(errors,"observed resize lifecycle");await page.close();
+  }catch(error){await saveBrowserContextEvidence(context,error);throw error;}finally{await context.close();}
 });

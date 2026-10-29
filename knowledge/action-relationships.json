@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 374,
+  "actionCount": 375,
   "relationships": [
     {
       "name": "createCanvas",
@@ -471,11 +471,28 @@
     {
       "name": "createAnnotation",
       "wraps": [
-        "createScale",
         "createTextMark",
         "encodeText",
         "encodeX",
-        "encodeY"
+        "encodeY",
+        "createMarkLabels",
+        "editSemantic",
+        "createGraphics",
+        "createScale"
+      ]
+    },
+    {
+      "name": "editAnnotation",
+      "wraps": [
+        "encodeText",
+        "encodeX",
+        "encodeY",
+        "editTextMark",
+        "layoutLabels",
+        "removeLabelLayout",
+        "editMarkLabelPlacement",
+        "editMarkLabelSelection",
+        "editSemantic"
       ]
     },
     {

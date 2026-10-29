@@ -40,3 +40,18 @@ export function snapshotInteractionInput(input, label) {
   }
   return result;
 }
+
+export function interactionOrigin(value = "programmatic") {
+  if (!["user", "programmatic", "replay", "linked"].includes(value)) throw new TypeError("Unknown interaction command origin.");
+  return value;
+}
+
+// Callers first close and snapshot their own command envelope.
+export function interactionTransactionMetadata(request, generatedId) {
+  const transactionId = request.transactionId === undefined ? generatedId : request.transactionId;
+  for (const id of [transactionId, request.causeTransactionId].filter(id => id !== undefined)) {
+    if (typeof id !== "string" || !id.length || id.length > 1024) throw new TypeError("Transaction IDs require 1 to 1024 characters.");
+  }
+  return { transactionId, origin: interactionOrigin(request.origin),
+    ...(request.causeTransactionId === undefined ? {} : { causeTransactionId: request.causeTransactionId }) };
+}

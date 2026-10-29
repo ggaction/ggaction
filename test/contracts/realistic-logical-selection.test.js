@@ -13,7 +13,7 @@ import { assertRegionInteraction } from "../support/scenarios/region-interaction
 const datasets=["tt-penguins","tt-london-marathon-winners","tt-astronauts","tt-us-births","tt-chocolate-ratings"];
 const witnessed=new Set();
 for (const dataset of datasets) for (const recipe of ["observations","categories","series"]) {
- test(`${dataset} ${recipe} logical selection preserves item grain through toggles and restore`,()=>{
+ test(`${dataset} ${recipe} logical selection preserves item grain through toggles and restore`,async()=>{
   try {
    const view=realisticRecordView(dataset,{rowLimit:24,groupLimit:4});
    const categories=[...new Set(view.rows.map(row=>row.category))];
@@ -91,6 +91,36 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
     assert.deepEqual(actual,expected);
     assertGraphicIntegrity(revised,`${dataset}/${recipe}/expression`);assertSvgIntegrity(renderToSVG(revised),`${dataset}/${recipe}/expression`);
    }
+   const preparedSource=deserializeProgram(astSaved),assetCalls=[],assetReleased=[];
+   const preparedSession=createInteractionSession({program:preparedSource,bindings:[],async assetResolver(request){
+    assetCalls.push(request);return{dispose(){assetReleased.push(request.transactionId)}};
+   }});
+   await preparedSession.whenSettled();
+   preparedSession.dispatch({type:"setParameter",target:"categoryChoice",payload:{value:max},transactionId:"prepared-choice"});
+   assert.equal(preparedSession.getState().program,preparedSource);assert.equal(preparedSession.getState().history.undoCount,0);
+   assert.equal((await preparedSession.whenSettled()).status,"settled");
+   const preparedActual=getMarkItems(preparedSession.getState().program,{target:"mark"}).filter(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")).map(item=>item.key);
+   assert.deepEqual(preparedActual,items.filter(item=>item.fields.category===max).map(item=>item.key));
+   assert.ok(assetCalls[1].resourceRevisionVector.some(ref=>ref.kind==='data'&&ref.logicalId===preparedSource.semanticSpec.datasets[0].logicalId));
+   assert.ok(assetCalls[1].resourceRevisionVector.some(ref=>ref.kind==='parameter'&&ref.id==='categoryChoice'&&ref.revision===1));
+   preparedSession.dispatch({type:"undo"});await preparedSession.whenSettled();assert.equal(preparedSession.getState().program,preparedSource);
+   preparedSession.updateProgram(async({program,signal,resourceRevisionVector})=>{
+    assert.equal(signal.aborted,false);assert.ok(resourceRevisionVector.some(ref=>ref.kind==='parameter'&&ref.id==='categoryChoice'&&ref.revision===0));
+    return program.editParameter({target:"categoryChoice",value:max});
+   },{history:"record",transactionId:"prepared-native-update"});
+   assert.equal(preparedSession.getState().program,preparedSource);await preparedSession.whenSettled();
+   assert.deepEqual(getMarkItems(preparedSession.getState().program,{target:"mark"}).filter(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")).map(item=>item.key),items.filter(item=>item.fields.category===max).map(item=>item.key));
+   preparedSession.dispatch({type:"undo"});await preparedSession.whenSettled();assert.equal(preparedSession.getState().program,preparedSource);
+   let observer,disconnects=0;
+   const host={ownerDocument:{defaultView:{ResizeObserver:class{constructor(callback){this.callback=callback;observer=this}observe(element){this.element=element}disconnect(){disconnects++}}}},
+    addEventListener(){},removeEventListener(){},getBoundingClientRect(){return{left:0,top:0,width:600,height:400}}};
+   const unsubscribeResize=preparedSession.subscribe(event=>{if(event.type==='resize'&&event.size.width>0)preparedSession.updateProgram(({program})=>program.editCanvas({width:event.size.width}),{history:'record'});});
+   const unmountResize=preparedSession.mount(host,{observeResize:true});observer.callback([{target:host,contentRect:{width:600,height:400}}]);await preparedSession.whenSettled();
+   assert.deepEqual(getMarkItems(preparedSession.getState().program,{target:"mark"}).map(item=>item.key),items.map(item=>item.key));
+   assert.equal(preparedSession.getState().program.graphicSpec.objects.canvas.properties.width,600);
+   preparedSession.dispatch({type:'undo'});await preparedSession.whenSettled();assert.equal(preparedSession.getState().program,preparedSource);
+   unmountResize();unsubscribeResize();assert.equal(disconnects,1);observer.callback([{target:host,contentRect:{width:700,height:400}}]);
+   preparedSession.destroy();assert.equal(assetReleased.length,7);assert.ok(assetCalls.every(request=>request.signal.aborted));
    const session=createInteractionSession({program:deserializeProgram(astSaved),bindings:[]}),phases=[];
    session.subscribe(event=>{if('phase' in event)phases.push(event.phase);});
    session.dispatch({type:"setParameter",target:"categoryChoice",payload:{value:max}});

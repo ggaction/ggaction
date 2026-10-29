@@ -408,6 +408,12 @@ Window, normalization and imputation record the rows actually used in their calc
 
 Evidence: `test/unit/actions/data/row-identity.test.js`, `test/unit/actions/data/row-lineage.test.js`, `test/unit/core/item-identity.test.js`.
 
+Screen-anchored Text has no data or named resource lineage. Its concrete identity uses the closed
+`{kind:"screen"}` variant and `[childNamespaces,owner,"item",["annotation","screen"]]` key. The editable
+codec resolves the exact local Text owner and requires its explicit screen anchor; rows and hit resourceRefs
+remain empty. It never synthesizes a dataset revision. Other marks retain their current data/resource validation.
+See [Text annotation](MARKS.md#createannotation) and `test/unit/annotation-screen.test.js`.
+
 ### Formal values — `createData`
 
 - Implemented: `createData<Row extends object>(options: CreateDataOptions<Row>): ChartProgram`.

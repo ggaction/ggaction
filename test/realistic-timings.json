@@ -26,6 +26,12 @@
     "contracts/realistic-facet-column-factors.test.js": 165289,
     "contracts/realistic-facet-raster-bounds.test.js": 82744,
     "contracts/realistic-flow-layouts.test.js": 1611,
+    "contracts/realistic-geographic-annotations.test.js": 1075,
+    "contracts/realistic-geographic-camera.test.js": 1222,
+    "contracts/realistic-geographic-encodings.test.js": 3039,
+    "contracts/realistic-geographic-join.test.js": 1652,
+    "contracts/realistic-geographic-levels.test.js": 997,
+    "contracts/realistic-geographic-marks.test.js": 1752,
     "contracts/realistic-guide-scale-recipes.test.js": 268329,
     "contracts/realistic-hierarchical-facade-matrix.test.js": 367033,
     "contracts/realistic-hierarchy-lifecycle.test.js": 9912,
@@ -39,8 +45,10 @@
     "contracts/realistic-mark-outlines.test.js": 2594,
     "contracts/realistic-mark-shadows.test.js": 3052,
     "contracts/realistic-observed-graphs.test.js": 197,
+    "contracts/realistic-ohlc-plots.test.js": 4654,
     "contracts/realistic-partition-lifecycle.test.js": 5082,
     "contracts/realistic-projections.test.js": 1055,
+    "contracts/realistic-pyramid-plots.test.js": 1121,
     "contracts/realistic-responsive-layout.test.js": 3484,
     "contracts/realistic-row-selection.test.js": 19760,
     "contracts/realistic-scenario-generation-isolation.test.js": 945678,
@@ -48,12 +56,9 @@
     "contracts/realistic-scenario-runner.test.js": 99611,
     "contracts/realistic-scoped-composition.test.js": 843,
     "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
+    "contracts/realistic-stream-baselines.test.js": 3162,
     "contracts/realistic-structured-paints.test.js": 184876,
-    "contracts/realistic-geographic-marks.test.js": 1752,
-    "contracts/realistic-geographic-join.test.js": 1652,
-    "contracts/realistic-geographic-levels.test.js": 997,
-    "contracts/realistic-pyramid-plots.test.js": 1121,
-    "contracts/realistic-ohlc-plots.test.js": 4654,
+    "contracts/realistic-trail-plots.test.js": 2968,
     "contracts/realistic-waterfall-plots.test.js": 3002
   },
   "localMeasurementNotes": {
@@ -225,6 +230,81 @@
       "durationMs": 19760,
       "environment": "macOS arm64, Node 23.5.0",
       "source": "Local canonical realistic runner, 2026-10-26; five pinned datasets with row selection and editable persistence"
+    },
+    {
+      "schemaVersion": 1,
+      "file": "contracts/realistic-geographic-annotations.test.js",
+      "durationMs": 1074.9137090000002,
+      "maxRssKiB": 147776,
+      "status": "passed",
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "run": null,
+      "attempt": null
+    },
+    {
+      "schemaVersion": 1,
+      "file": "contracts/realistic-geographic-camera.test.js",
+      "durationMs": 1221.6012079999998,
+      "maxRssKiB": 150128,
+      "status": "passed",
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "run": null,
+      "attempt": null
+    },
+    {
+      "schemaVersion": 1,
+      "file": "contracts/realistic-geographic-encodings.test.js",
+      "durationMs": 3038.8289590000004,
+      "maxRssKiB": 172992,
+      "status": "passed",
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "run": null,
+      "attempt": null
+    },
+    {
+      "schemaVersion": 1,
+      "file": "contracts/realistic-stream-baselines.test.js",
+      "durationMs": 3161.7817090000003,
+      "maxRssKiB": 203152,
+      "status": "passed",
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "run": null,
+      "attempt": null
+    },
+    {
+      "schemaVersion": 1,
+      "file": "contracts/realistic-trail-plots.test.js",
+      "durationMs": 2967.944792,
+      "maxRssKiB": 198464,
+      "status": "passed",
+      "environment": {
+        "node": "v22.23.1",
+        "platform": "darwin",
+        "arch": "arm64",
+        "runner": "local"
+      },
+      "run": null,
+      "attempt": null
     }
   ],
   "localAdditions": {

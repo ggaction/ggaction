@@ -1,3 +1,4 @@
+import { assertAnnotationInteraction } from "./annotation-interaction.js";
 import { chart, hconcat } from "../../../src/index.js";
 import assert from "node:assert/strict";
 import { createInteractionSession } from "../../../src/interaction.js";
@@ -54,6 +55,7 @@ export function assertRegionInteraction(source, recipe, rows) {
   assertHierarchyFocusSource(rows, recipe);
   assertViewportSource(rows, recipe);
   assertNodeMovementSource(rows, recipe);
+  assertAnnotationInteraction(rows, recipe);
   assert.equal(serializeProgram(p), original);
 }
 
@@ -230,6 +232,19 @@ function assertViewportSource(rows, recipe) {
     assert.equal(item.fields.category, rows[index].category);
     assert.equal(item.fields.value, rows[index].value);
   }
+  // A native camera operation consumes the same real source features and item identities.
+  const anchor = [rows[0].order * scalePx + translatePx[0], rows[0].value * scalePx + translatePx[1]];
+  const factor = recipe === "observations" ? 1.5 : recipe === "categories" ? 2 : 0.5;
+  session.dispatch({ type: "setViewport", target: "map", payload: { operation: { type: "zoom", anchorPx: anchor, factor, scaleExtent: [0.1, 10] } } });
+  const zoomed = getMarkItems(session.getState().program, { target: "places" });
+  for (const [index, item] of zoomed.entries()) {
+    assert.equal(item.key, original[index].key);
+    const expected = [anchor[0] + (items[index].properties.x - anchor[0]) * factor,
+      anchor[1] + (items[index].properties.y - anchor[1]) * factor];
+    assert.ok(Math.abs(item.properties.x - expected[0]) < 1e-8);
+    assert.ok(Math.abs(item.properties.y - expected[1]) < 1e-8);
+  }
+  assert.deepEqual(deserializeProgram(serializeProgram(session.getState().program)).graphicSpec, session.getState().program.graphicSpec);
   assert.equal(serializeProgram(p), before); session.destroy();
 }
 

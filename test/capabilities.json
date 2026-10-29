@@ -1450,6 +1450,34 @@
       {
         "type": "file",
         "path": "unit/interaction-geo-representation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-annotation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/annotation-screen.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-annotation-drag.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-history.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-update.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-resize.test.js"
       }
     ],
     "selectors": [

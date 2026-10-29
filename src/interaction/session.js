@@ -1,3 +1,4 @@
+import { normalizeAnnotationMovement, resolveAnnotationMovement, prepareAnnotationMovement, annotationMovementCommand } from "./annotationMovement.js";
 import { normalizeNodeMovement, resolveNodeMovement, prepareNodeMovement, nodeMovementCommand } from "./nodeMovement.js";
 import { normalizeLegendVisibility, resolveLegendVisibility, legendVisibilityCommand } from "./legendVisibility.js";
 import { normalizeClickSelection, clickSelectionCommand, resolveClickSelection } from "./clickSelection.js";
@@ -10,7 +11,9 @@ import { prepareNearestSelection } from "./nearest.js";
 import { ownHitScene } from "./sceneFrame.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { ownArray } from "../core/ownData.js";
-import { interactionOptions as options, snapshotInteractionInput } from "./input.js";
+import { createInteractionHistory, INTERACTION_HISTORY_TYPES } from "./history.js";
+import { createInteractionPreparation, interactionResourceRevisions } from "./preparation.js";
+import { interactionOptions as options, snapshotInteractionInput, interactionOrigin, interactionTransactionMetadata } from "./input.js";
 import { prepareInteractionEdit, interactionTransaction, INTERACTION_EDIT_TYPES } from "./selection.js";
 import { getErrorDetails } from "../core/diagnostics.js";
 import { resolveHitCoordinates, transformHitPoint } from "../grammar/hitCoordinates.js";
@@ -30,14 +33,14 @@ function bindings(program, value) {
   if (value === undefined) value = [{ type: "inspect" }];
   if (!Array.isArray(value) || value.length > 259) throw new TypeError("Interaction bindings exceed the binding limit.");
   ownArray(value, "Interaction bindings");
-  const inspect = [], context = [], linked = [], selected = [], regions = [], nodes = [];
+  const inspect = [], context = [], linked = [], selected = [], regions = [], nodes = [], annotations = [];
   for (const binding of value) {
     const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss", "axis", "channels", "channel", "effect", "scaleDomain"], "Interaction binding");
-    (head.type === "moveNode" ? nodes : head.type === "contextMenu" ? context : ["linkSelection", "linkFilter"].includes(head.type) ? linked : ["select", "legend"].includes(head.type) ? selected : ["brush", "lasso"].includes(head.type) ? regions : inspect).push(head);
+    (head.type === "annotate" ? annotations : head.type === "moveNode" ? nodes : head.type === "contextMenu" ? context : ["linkSelection", "linkFilter"].includes(head.type) ? linked : ["select", "legend"].includes(head.type) ? selected : ["brush", "lasso"].includes(head.type) ? regions : inspect).push(head);
   }
-  if (inspect.length > 1 || context.length > 1 || selected.length + regions.length + nodes.length > 1) throw new TypeError("Interaction bindings support at most one inspect, one context menu and one editing pointer binding.");
+  if (inspect.length > 1 || context.length > 1 || selected.length + regions.length + nodes.length + annotations.length > 1) throw new TypeError("Interaction bindings support at most one inspect, one context menu and one editing pointer binding.");
   const links = normalizeSelectionLinks(program, linked);
-  return { node: nodes.length ? normalizeNodeMovement(program, nodes[0]) : undefined, linked: links, select: selected.length ? (selected[0].type === "legend" ? (selected[0].effect === "visibility" ? normalizeLegendVisibility : normalizeLegendSelection) : normalizeClickSelection)(program, selected[0], links) : undefined,
+  return { annotation: annotations.length ? normalizeAnnotationMovement(program, annotations[0]) : undefined, node: nodes.length ? normalizeNodeMovement(program, nodes[0]) : undefined, linked: links, select: selected.length ? (selected[0].type === "legend" ? (selected[0].effect === "visibility" ? normalizeLegendVisibility : normalizeLegendSelection) : normalizeClickSelection)(program, selected[0], links) : undefined,
     region: regions.length ? normalizeRegionBinding(program, regions[0], links) : undefined, inspect: freezeOwned([...inspect, ...context].map(binding => {
     const contextual = binding.type === "contextMenu";
     const request = options(binding, ["type"], contextual ? ["slop", "hitInvisible"] : ["events", "slop", "hitInvisible"], "Inspection binding");
@@ -68,21 +71,25 @@ const emptyHit = (frameVersion, diagnostics) => cloneAndFreeze({ target: null, c
 
 /** Browser-safe inspection and atomic authoring command lifecycle. */
 export function createInteractionSession(input) {
-  const request = options(input, ["program"], ["bindings", "selectionPolicy"], "Interaction session");
+  const request = options(input, ["program"], ["bindings", "selectionPolicy", "historyLimit", "assetResolver"], "Interaction session");
   const configured = bindings(request.program, request.bindings), selectionPolicy = normalizeSelectionPolicy(request.selectionPolicy);
   const managedSelections = configured.linked.filter(link => !link.filter);
   let program = request.program, base = prepareProgramHitFrame(program), bridge = createHitFrameBridge(base);
   let linkedSelections = inspectSelectionLinks(program, configured.linked);
   let selectionRecords = reconcileSelections(program, [], selectionPolicy, { initialize: true }).records;
-  let rootTransform = IDENTITY, mounted, destroyed = false, generation = 0, lastHit = null, processing = false;
+  let rootTransform = IDENTITY, mounted, destroyed = false, destroyRequested = false, generation = 0, lastHit = null, processing = false;
   let state, revision = 0, transactionSequence = 0, ignoredClick, previewProgram = null;
+  const committedSnapshot = () => ({ program, selectionRecords, linkedSelections });
+  const history = createInteractionHistory(committedSnapshot(), request.historyLimit);
   const drainedTransactions = new Set();
   const queue = [], listeners = new Set();
-  const snapshot = () => state = freezeOwned({ program, previewProgram, scene: bridge.getState().scene,
-    frameVersion: bridge.getState().version, generation, revision, hit: lastHit, linkedSelections, mounted: mounted !== undefined, destroyed });
+  const preparation = createInteractionPreparation(request.assetResolver, operation => perform(operation), () => snapshot());
+  const snapshot = () => state = freezeOwned({ program, previewProgram, scene: bridge.getState().scene, ...preparation.inspect(),
+    frameVersion: bridge.getState().version, generation, revision, hit: lastHit, linkedSelections, history: history.inspect(), mounted: mounted !== undefined, destroyed });
   snapshot();
   const live = () => { if (destroyed) throw new Error("Interaction session is disposed."); };
   const publish = (type, details) => {
+    if (details?.transactionId !== undefined && details.phase !== "preview") drainedTransactions.add(details.transactionId);
     const event = freezeOwned({ type, ...details, state: snapshot() });
     for (const listener of [...listeners]) if (listeners.has(listener)) listener(event);
   };
@@ -100,6 +107,11 @@ export function createInteractionSession(input) {
         first ??= result;
       }
       return first;
+    } catch (error) {
+      // A queued destroy is terminal even when the requesting subscriber throws.
+      // Preserve that original exception while finishing every owned disposer.
+      if (destroyRequested && !destroyed) { try { close(); } catch {} }
+      throw error;
     } finally { processing = false; queue.length = 0; drainedTransactions.clear(); }
   };
   const inspect = (point, query = {}, type = "inspect") => {
@@ -109,6 +121,8 @@ export function createInteractionSession(input) {
   const detach = (lease, reason = "unmount") => {
     let failure;
     try { lease.capture?.dispose(reason); } catch (error) { failure = error; }
+    try { lease.observer?.disconnect(); } catch (error) { failure ??= error; }
+    lease.observer = undefined;
     for (const [event, listener] of lease.listeners) {
       try { lease.element.removeEventListener(event, listener); } catch (error) { failure ??= error; }
     }
@@ -117,13 +131,25 @@ export function createInteractionSession(input) {
   };
   const close = () => {
     let failure;
-    try { if (mounted !== undefined) detach(mounted, "destroy"); } catch (error) { failure = error; }
-    mounted = undefined; lastHit = null; destroyed = true;
+    try { preparation.dispose(); } catch (error) { failure = error; }
+    try { if (mounted !== undefined) detach(mounted, "destroy"); } catch (error) { failure ??= error; }
+    mounted = undefined; lastHit = null; destroyed = true; history.dispose();
     try { publish("destroy"); } catch (error) { failure ??= error; }
     finally { listeners.clear(); bridge.dispose(); base = null; rootTransform = IDENTITY; queue.length = 0; selectionRecords = []; ignoredClick = undefined; }
     if (failure) throw failure;
     return outcome("applied");
   };
+  const prepareAssets = (candidate, metadata, handlers, vector) => {
+    const previous = program, sessionGeneration = generation, baseRevision = revision;
+    return preparation.start(candidate, { sessionGeneration, transactionId: metadata.transactionId, baseRevision }, {
+      current: tags => !destroyed && program === previous && generation === tags.sessionGeneration && revision === tags.baseRevision,
+      ...handlers
+    }, vector);
+  };
+  const publishAssets = (status, tags, diagnostics = []) => publish("assets", { status, preparation: tags, diagnostics: cloneAndFreeze(diagnostics) });
+  const assetHandlers = prepare => ({ prepare,
+    cancel: (reason, tags) => publishAssets("cancelled", tags, [{ code: "preparation-cancelled", message: reason }]),
+    error: (error, tags) => publishAssets("error", tags, [{ code: getErrorDetails(error)?.code ?? "asset-preparation-failed", message: String(error?.message ?? error) }]) });
   const prepareEdit = command => {
     let prepared = prepareInteractionEdit(program, prepareNearestSelection(program, command, bridge));
     if (prepared.program === program) return null;
@@ -134,13 +160,14 @@ export function createInteractionSession(input) {
     const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
     const candidate = prepareProgramHitFrame(prepared.program, version);
     const frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
-    return { prepared, reconciled, selectionChanges, nextGeneration, nextRevision, candidate, frame };
+    const resourceRevisions = preparation.enabled ? interactionResourceRevisions(prepared.program) : undefined;
+    return { prepared, reconciled, selectionChanges, nextGeneration, nextRevision, candidate, frame, resourceRevisions };
   };
   const edit = (command, draft) => {
     if (drainedTransactions.has(command.transactionId)) return outcome("stale");
     drainedTransactions.add(command.transactionId);
-    const previous = program;
-    let prepared, nextGeneration, nextRevision, candidate, frame, reconciled, selectionChanges = [];
+    const previous = program, previousSnapshot = committedSnapshot();
+    let prepared, nextGeneration, nextRevision, candidate, frame, reconciled, resourceRevisions, selectionChanges = [];
     const details = (phase, affectedOwners, diagnostics = []) => freezeOwned({
       transactionId: command.transactionId, origin: command.origin,
       ...(command.causeTransactionId === undefined ? {} : { causeTransactionId: command.causeTransactionId }),
@@ -148,28 +175,160 @@ export function createInteractionSession(input) {
     });
     try {
       const result = draft ?? prepareEdit(command);
-      if (!result) return outcome("unchanged");
-      ({ prepared, nextGeneration, nextRevision, candidate, frame, reconciled, selectionChanges } = result);
-      if (configured.node && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
+      if (result) {
+        ({ prepared, nextGeneration, nextRevision, candidate, frame, reconciled, selectionChanges, resourceRevisions } = result);
+        if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
+      }
     } catch (error) {
       publish(command.type, details("error", Object.freeze([]), [{ code: getErrorDetails(error)?.code ?? "interaction-command-failed", message: error.message }]));
       throw error;
     }
-    mounted?.capture?.cancel("updateProgram");
-    previewProgram = null;
-    // Geometry previews may already have accepted the same concrete draft.
-    if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
-    bridge.updateFrame(frame); base = candidate; program = prepared.program;
-    linkedSelections = prepared.projections; selectionRecords = reconciled.records;
-    generation = nextGeneration; revision = nextRevision; lastHit = null;
-    publish(command.type, details("commit", prepared.affectedOwners));
-    publish(command.type, details("settled", prepared.affectedOwners));
-    return outcome("applied");
+    if (!prepared) { preparation.cancel("superseded"); return outcome("unchanged"); }
+    const prepareCommit = () => {
+      // Host mount/frame changes while assets load do not invalidate an immutable
+      // candidate. Rebind its concrete geometry to the current host transform.
+      frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+      return () => {
+        mounted?.capture?.cancel("updateProgram"); previewProgram = null;
+        if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+        bridge.updateFrame(frame); base = candidate; program = prepared.program;
+        linkedSelections = prepared.projections; selectionRecords = reconciled.records;
+        generation = nextGeneration; revision = nextRevision; lastHit = null;
+        history.record(previousSnapshot, prepared.affectedOwners);
+        publish(command.type, details("commit", prepared.affectedOwners));
+        publish(command.type, details("settled", prepared.affectedOwners));
+        return outcome("applied");
+      };
+    };
+    if (preparation.enabled) {
+      mounted?.capture?.cancel("updateProgram"); previewProgram = null;
+      return prepareAssets(prepared.program, command, {
+        prepare: prepareCommit,
+        cancel: reason => publish(command.type, details("cancel", [], [{ code: "preparation-cancelled", message: reason }])),
+        error: error => publish(command.type, details("error", [], [{ code: getErrorDetails(error)?.code ?? "asset-preparation-failed", message: String(error?.message ?? error) }]))
+      }, resourceRevisions);
+    }
+    preparation.cancel("superseded");
+    return prepareCommit()();
+  };
+  const restore = command => {
+    if (drainedTransactions.has(command.transactionId)) return outcome("stale");
+    drainedTransactions.add(command.transactionId);
+    const previous = program, previousSnapshot = committedSnapshot(), entry = history.target(command.type);
+    if (!entry || entry.state.program === program) {
+      preparation.cancel("superseded");
+      mounted?.capture?.cancel("updateProgram");
+      return outcome("unchanged");
+    }
+    const details = (phase, diagnostics = []) => freezeOwned({ ...interactionTransactionMetadata(command), phase,
+      revision, previous, current: program, affectedOwners: phase === "error" ? Object.freeze([]) : entry.affectedOwners,
+      diagnostics: cloneAndFreeze(diagnostics), selectionChanges: Object.freeze([]) });
+    let candidate, frame, nextGeneration, nextRevision, resourceRevisions;
+    try {
+      const version = nextInteger(bridge.getState().version);
+      nextGeneration = nextInteger(generation); nextRevision = nextInteger(revision);
+      candidate = prepareProgramHitFrame(entry.state.program, version);
+      frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+      resourceRevisions = preparation.enabled ? interactionResourceRevisions(entry.state.program) : undefined;
+      if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
+    } catch (error) {
+      publish(command.type, details("error", [{ code: getErrorDetails(error)?.code ?? "interaction-history-failed", message: error.message }]));
+      throw error;
+    }
+    const prepareCommit = () => {
+      frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+      return () => {
+        mounted?.capture?.cancel("updateProgram"); previewProgram = null;
+        if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+        bridge.updateFrame(frame); base = candidate;
+        ({ program, selectionRecords, linkedSelections } = entry.state);
+        generation = nextGeneration; revision = nextRevision; lastHit = null;
+        history.accept(command.type, previousSnapshot, entry.affectedOwners);
+        publish(command.type, details("commit")); publish(command.type, details("settled"));
+        return outcome("applied");
+      };
+    };
+    if (preparation.enabled) {
+      mounted?.capture?.cancel("updateProgram"); previewProgram = null;
+      return prepareAssets(entry.state.program, command, { prepare: prepareCommit,
+        cancel: reason => publish(command.type, details("cancel", [{ code: "preparation-cancelled", message: reason }])),
+        error: error => publish(command.type, details("error", [{ code: getErrorDetails(error)?.code ?? "asset-preparation-failed", message: String(error?.message ?? error) }])) }, resourceRevisions);
+    }
+    preparation.cancel("superseded");
+    return prepareCommit()();
+  };
+  const prepareReplacement = (next, policy, origin) => {
+    const previousSnapshot = committedSnapshot();
+    const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
+    const reconciled = reconcileSelections(next, selectionRecords, selectionPolicy, { managed: managedSelections });
+    let linked = { program: reconciled.program, projections: inspectSelectionLinks(reconciled.program, configured.linked, undefined, linkedSelections, selectionPolicy) };
+    if (reconciled.affectedOwners.length || selectionLinksNeedUpdate(linked.projections, linkedSelections)) {
+      linked = applySelectionLinks(linked.program, configured.linked, linkedSelections, reconciled.affectedOwners, { type: "program" }, selectionPolicy, reconciled.records);
+    }
+    if (configured.select) resolvePointerSelection(linked.program, configured.select, true);
+    if (configured.region) resolveRegionBinding(linked.program, configured.region, true);
+    if (configured.node) resolveNodeMovement(linked.program, configured.node, true);
+    if (configured.annotation) resolveAnnotationMovement(linked.program, configured.annotation, true);
+    const verified = reconcileSelections(linked.program, linked.records ?? reconciled.records, selectionPolicy, { verify: true });
+    const selectionChanges = cloneAndFreeze([...reconciled.changes, ...(linked.selectionChanges ?? []), ...verified.changes]);
+    const candidate = prepareProgramHitFrame(linked.program, version);
+    let frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+    if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
+    const prepareCommit = tags => {
+      frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+      return () => {
+        mounted?.capture?.cancel("updateProgram");
+        if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+        bridge.updateFrame(frame); base = candidate; program = linked.program; generation = nextGeneration; revision = nextRevision; lastHit = null;
+        linkedSelections = linked.projections; selectionRecords = verified.records;
+        if (policy === "reset") history.clear();
+        else if (program !== previousSnapshot.program) history.record(previousSnapshot, Object.freeze([]));
+        publish("program", { origin, history: policy, selectionChanges });
+        if (tags) publishAssets("settled", tags);
+        return outcome("applied");
+      };
+    };
+    return { linked, prepareCommit };
+  };
+  const prepareUpdate = (produce, config) => {
+    const metadata = interactionTransactionMetadata(config, `interaction-${nextInteger(transactionSequence)}`);
+    transactionSequence = nextInteger(transactionSequence);
+    return perform(() => {
+      if (drainedTransactions.has(metadata.transactionId)) return outcome("stale");
+      const vector = interactionResourceRevisions(program);
+      drainedTransactions.add(metadata.transactionId);
+      mounted?.capture?.cancel("updateProgram"); previewProgram = null;
+      const report = (status, tags, diagnostics = []) => publish("update", { ...metadata, status, preparation: tags, diagnostics: cloneAndFreeze(diagnostics) });
+      let replacement;
+      return prepareAssets(program, metadata, {
+        async produce(request, resolveAssets) {
+          const next = await produce(request);
+          request.signal.throwIfAborted();
+          perform(() => { replacement = prepareReplacement(next, config.history, metadata.origin); });
+          request.signal.throwIfAborted();
+          if (!resolveAssets) return { dispose() {} };
+          const candidate = replacement.linked.program;
+          return resolveAssets(freezeOwned({ ...request, program: candidate, resourceRevisionVector: interactionResourceRevisions(candidate) }));
+        },
+        prepare: tags => {
+          const commit = replacement.prepareCommit();
+          return () => { const result = commit(); report("settled", tags); return result; };
+        },
+        cancel: (reason, tags) => report("cancelled", tags, [{ code: "update-cancelled", message: reason }]),
+        error: (error, tags) => report("error", tags, [{ code: getErrorDetails(error)?.code ?? "update-failed", message: String(error?.message ?? error) }])
+      }, vector);
+    });
   };
   const dispatch = command => {
     live();
     // Inspect the envelope before reading type; queued edits snapshot all payload data.
     const envelope = options(command, ["type"], ["point", "pointerType", "slop", "hitInvisible", "scene", "version", "generation", "target", "payload", "transactionId", "origin", "causeTransactionId"], "Interaction command");
+    if (INTERACTION_HISTORY_TYPES.includes(envelope.type)) {
+      const owned = options(envelope, ["type"], ["transactionId", "origin", "causeTransactionId"], "History command");
+      transactionSequence = nextInteger(transactionSequence);
+      const command = freezeOwned({ type: owned.type, ...interactionTransactionMetadata(owned, `interaction-${transactionSequence}`) });
+      return perform(() => restore(command));
+    }
     if (INTERACTION_EDIT_TYPES.includes(envelope.type)) {
       const owned = snapshotInteractionInput(envelope, "Interaction command");
       transactionSequence = nextInteger(transactionSequence);
@@ -192,7 +351,7 @@ export function createInteractionSession(input) {
       return perform(() => {
         if (c.generation !== generation || c.version <= bridge.getState().version) return outcome("stale");
         let frame = rebindProgramHitFrame(base, scene, c.version, rootTransform);
-        if (configured.node && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
+        if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
         mounted?.capture?.cancel("updateProgram");
         if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(base, scene, nextInteger(bridge.getState().version), rootTransform);
         bridge.updateFrame(frame); lastHit = null; publish("frame"); return outcome("applied");
@@ -200,30 +359,25 @@ export function createInteractionSession(input) {
     }
     throw new TypeError("Unsupported interaction command type.");
   };
-  return Object.freeze({
+  const session = Object.freeze({
     getState() { return state; },
+    whenSettled() { return preparation.whenSettled(); },
     dispatch,
-    updateProgram(next) {
+    updateProgram(next, configuration = {}) {
+      live();
+      const deferred = typeof next === "function";
+      const config = options(configuration, [], deferred ? ["history", "origin", "transactionId", "causeTransactionId"] : ["history", "origin"], "Interaction update");
+      const policy = config.history === undefined ? "reset" : config.history, origin = interactionOrigin(config.origin);
+      if (!["reset", "record"].includes(policy)) throw new TypeError("Unknown interaction update history policy.");
+      if (deferred) return prepareUpdate(next, { ...config, history: policy, origin });
       return perform(() => {
-        const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
-        const reconciled = reconcileSelections(next, selectionRecords, selectionPolicy, { managed: managedSelections });
-        let linked = { program: reconciled.program, projections: inspectSelectionLinks(reconciled.program, configured.linked, undefined, linkedSelections, selectionPolicy) };
-        if (reconciled.affectedOwners.length || selectionLinksNeedUpdate(linked.projections, linkedSelections)) {
-          linked = applySelectionLinks(linked.program, configured.linked, linkedSelections, reconciled.affectedOwners, { type: "program" }, selectionPolicy, reconciled.records);
+        const { linked, prepareCommit } = prepareReplacement(next, policy, origin);
+        if (preparation.enabled) {
+          mounted?.capture?.cancel("updateProgram"); transactionSequence = nextInteger(transactionSequence);
+          return prepareAssets(linked.program, { transactionId: `interaction-${transactionSequence}` }, assetHandlers(prepareCommit));
         }
-        if (configured.select) resolvePointerSelection(linked.program, configured.select, true);
-        if (configured.region) resolveRegionBinding(linked.program, configured.region, true);
-        if (configured.node) resolveNodeMovement(linked.program, configured.node, true);
-        const verified = reconcileSelections(linked.program, linked.records ?? reconciled.records, selectionPolicy, { verify: true });
-        const selectionChanges = cloneAndFreeze([...reconciled.changes, ...(linked.selectionChanges ?? []), ...verified.changes]);
-        const candidate = prepareProgramHitFrame(linked.program, version);
-        let frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
-        if (configured.node && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
-        mounted?.capture?.cancel("updateProgram");
-        if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
-        bridge.updateFrame(frame); base = candidate; program = linked.program; generation = nextGeneration; revision = nextRevision; lastHit = null;
-        linkedSelections = linked.projections; selectionRecords = verified.records;
-        publish("program", { selectionChanges }); return outcome("applied");
+        preparation.cancel("superseded");
+        return prepareCommit()();
       });
     },
     subscribe(listener) {
@@ -232,13 +386,16 @@ export function createInteractionSession(input) {
     },
     mount(element, configuration = {}) {
       live();
-      const config = options(configuration, [], ["rootTransform"], "Interaction mount");
+      const config = options(configuration, [], ["rootTransform", "observeResize"], "Interaction mount");
+      if (config.observeResize !== undefined && typeof config.observeResize !== "boolean") throw new TypeError("observeResize must be boolean.");
       const matrix = config.rootTransform === undefined ? IDENTITY : config.rootTransform;
       transformHitPoint(matrix, { x: 0, y: 0 });
       const transform = cloneAndFreeze(matrix);
       if (!element || !["addEventListener", "removeEventListener", "getBoundingClientRect"].every(key => typeof element[key] === "function")) {
         throw new TypeError("Interaction mount requires an event surface with a client rectangle.");
       }
+      const ResizeObserver = config.observeResize ? element.ownerDocument?.defaultView?.ResizeObserver : undefined;
+      if (config.observeResize && typeof ResizeObserver !== "function") throw new TypeError("Resize observation requires the mounted element's host ResizeObserver.");
       const lease = { element, listeners: [] };
       perform(() => {
         const version = nextInteger(bridge.getState().version);
@@ -261,8 +418,10 @@ export function createInteractionSession(input) {
               };
             lease.listeners.push([event, listener]); element.addEventListener(event, listener, { passive: binding.type !== "contextMenu" });
           }
-          if (configured.region || configured.node) {
-            const binding = configured.region ?? configured.node, moving = binding.type === "moveNode", eventType = moving ? "moveNode" : "select";
+          if (configured.region || configured.node || configured.annotation) {
+            const binding = configured.region ?? configured.node ?? configured.annotation, moving = binding.type === "moveNode" || binding.type === "annotate", eventType = moving ? binding.type : "select";
+            const movement = binding.type === "annotate" ? { prepare: prepareAnnotationMovement, command: annotationMovementCommand }
+              : { prepare: prepareNodeMovement, command: nodeMovementCommand };
             const scheduler = element.ownerDocument?.defaultView ?? element;
             if (typeof scheduler.requestAnimationFrame !== "function" || typeof scheduler.cancelAnimationFrame !== "function") throw new TypeError("Editing gestures require host animation-frame scheduling.");
             let gesture;
@@ -282,7 +441,7 @@ export function createInteractionSession(input) {
             };
             const preview = token => {
               if (token.previous !== program) throw new Error("Selection gesture baseline is stale.");
-              const result = (moving ? nodeMovementCommand : regionGestureCommand)(token.context, token.points);
+              const result = (moving ? movement.command : regionGestureCommand)(token.context, token.points);
               const command = interactionTransaction(result.command, token.transactionId), draft = prepareEdit(command);
               previewProgram = moving ? draft.prepared.program : materializeRegisteredSelectionPreview(draft?.prepared.program ?? program, result.overlay);
               if (moving) { nextInteger(nextInteger(draft.frame.version)); bridge.updateFrame(draft.frame); token.previewed = true; lastHit = null; }
@@ -296,9 +455,10 @@ export function createInteractionSession(input) {
               point: event => { const coordinates = pointerCoordinates(element, event, transform); return coordinates.localPoint === null ? null : coordinates.screenPoint; },
               begin: point => {
                 const scene = bridge.getState().scene;
-                const context = moving ? prepareNodeMovement(program, binding, base, scene, transform, point, bridge.hit(point, { slop: 0 }))
+                const context = moving ? movement.prepare(program, binding, base, scene, transform, point, bridge.hit(point, { slop: 0 }))
                   : prepareRegionGesture(program, binding, base, scene, transform, point);
                 if (!context) return null;
+                preparation.cancel("gesture");
                 transactionSequence = nextInteger(transactionSequence);
                 return gesture = { transactionId: `interaction-${transactionSequence}`, previous: program, context, points: [point], scene, previewed: false, raf: undefined };
               },
@@ -360,6 +520,7 @@ export function createInteractionSession(input) {
               point: event => { const coordinates = pointerCoordinates(element, event, transform); return coordinates.localPoint === null ? null : coordinates.screenPoint; },
               begin: () => {
                 if (!resolvePointerSelection(program, binding, true)) return null;
+                preparation.cancel("gesture");
                 transactionSequence = nextInteger(transactionSequence);
                 return freezeOwned({ transactionId: `interaction-${transactionSequence}`, previous: program });
               },
@@ -388,7 +549,27 @@ export function createInteractionSession(input) {
             };
             lease.listeners.push(["click", listener]); element.addEventListener("click", listener, { passive: true });
           }
-        } catch (error) { detach(lease); candidate.dispose(); throw error; }
+          if (ResizeObserver) {
+            let measured;
+            lease.observer = new ResizeObserver(entries => {
+              if (destroyed || mounted !== lease) return;
+              if (!Array.isArray(entries) || entries.length > MAX_DISPATCHES) throw new RangeError("Resize observations exceed the entry budget.");
+              const matching = entries.filter(entry => entry.target === lease.element);
+              if (matching.length > 1) throw new TypeError("Resize notification contains duplicate surface measurements.");
+              if (!matching.length) return;
+              const { width, height } = matching[0].contentRect;
+              if (![width, height].every(value => typeof value === "number" && Number.isFinite(value) && value >= 0)) throw new TypeError("Resize measurements require finite non-negative CSS dimensions.");
+              perform(() => {
+                if (destroyed || mounted !== lease || measured?.width === width && measured?.height === height) return outcome("unchanged");
+                measured = freezeOwned({ width, height });
+                publish("resize", { size: measured });
+                return outcome("applied");
+              });
+            });
+            if (typeof lease.observer.observe !== "function" || typeof lease.observer.disconnect !== "function") throw new TypeError("Resize observer requires observe and disconnect methods.");
+            lease.observer.observe(element, { box: "content-box" });
+          }
+        } catch (error) { try { detach(lease); } catch {} finally { candidate.dispose(); } throw error; }
         let failure;
         try { if (mounted !== undefined) detach(mounted); } catch (error) { failure = error; }
         bridge.dispose(); bridge = candidate; mounted = lease; rootTransform = transform; lastHit = null;
@@ -412,9 +593,12 @@ export function createInteractionSession(input) {
       };
     },
     destroy() {
-      if (destroyed || queue.includes(close)) return false;
+      if (destroyed || destroyRequested) return false;
+      destroyRequested = true;
       perform(close);
       return true;
     }
   });
+  if (preparation.enabled) prepareAssets(program, { transactionId: "interaction-initial" }, assetHandlers(tags => () => publishAssets("settled", tags)));
+  return session;
 }

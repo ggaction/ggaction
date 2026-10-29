@@ -1,3 +1,4 @@
+import { isScreenAnnotation } from "../../grammar/screenAnnotation.js";
 import { isGeoLabelSource } from "../../grammar/geo/mark.js";
 import { TEXT_SOURCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { hasPositionBinding, conditionalPositionTemplate } from "../../core/encodingBindings.js";
@@ -198,6 +199,7 @@ export function canMaterializeText(program, layer) {
   if (layer.mark?.type !== "text" || (layer.encoding?.text === undefined && layer.conditionals?.text === undefined)) {
     return false;
   }
+  if (isScreenAnnotation(layer)) return true;
   if (layer.source !== undefined) {
     const source = findLayer(program, layer.source);
     return canMaterializeTextSource(program, source);

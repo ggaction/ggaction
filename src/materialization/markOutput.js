@@ -1,3 +1,4 @@
+import { isScreenAnnotation } from "../grammar/screenAnnotation.js";
 import { CONDITIONAL_APPEARANCE_CHANNELS } from "../grammar/conditionalState.js";
 import { hasPositionBinding } from "../core/encodingBindings.js";
 import { resolveConditionalValues } from "./conditionalValues.js";
@@ -37,8 +38,8 @@ export function materializeMarkOutput(program, id) {
     for (const [index, graphicId] of item.graphicIds.entries()) {
       identities.set(graphicId, {
         key: item.key, topology: item.topology, role: item.graphicRoles[index],
-        lineage: item.lineage ?? { data: dataset.id, logicalDataId: dataset.logicalId, revision: dataset.revision,
-          rowKeys: item.rowKeys }
+        lineage: item.lineage ?? (isScreenAnnotation(layer) ? { kind: "screen" } : { data: dataset.id, logicalDataId: dataset.logicalId, revision: dataset.revision,
+          rowKeys: item.rowKeys })
       });
     }
   }

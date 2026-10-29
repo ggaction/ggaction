@@ -3,7 +3,7 @@ import { chart as basic } from "ggaction/basic";
 import { createInteractionSession, type InteractionCommand, type InteractionEvent } from "ggaction/interaction";
 import { createTransitionScene } from "ggaction/scene";
 const program = chart();
-const session = createInteractionSession({ program, bindings: [{ type: "inspect", events: ["click"] }] });
+const session = createInteractionSession({ program, historyLimit: 20, bindings: [{ type: "inspect", events: ["click"] }] });
 createInteractionSession({ program: basic(), bindings: [] });
 const command: InteractionCommand = { type: "frame", scene: createTransitionScene(program, { format: "canvas" }), version: 1, generation: 0 };
 session.dispatch(command);
@@ -114,11 +114,68 @@ session.dispatch({type:'setViewport',target:{childPath:['left'],id:'map'},payloa
 session.dispatch({type:'setViewport',target:'map',payload:{type:'mercator'}});
 // @ts-expect-error viewport commands do not infer LOD zoom
 session.dispatch({type:'setViewport',target:'map',payload:{zoom:2}});
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'pan',deltaPx:[10,-5]}}});
+session.dispatch({type:'setViewport',target:{childPath:['left'],id:'map'},payload:{operation:{type:'zoom',anchorPx:[100,100],factor:2,scaleExtent:[0.5,4]}}});
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'resize',canvas:{width:400,height:300},scaling:'preserve'}}});
+// @ts-expect-error absolute transform and native operation are mutually exclusive
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'pan',deltaPx:[1,2]},scalePx:2}});
+// @ts-expect-error anchored zoom requires an explicit scale extent
+session.dispatch({type:'setViewport',target:'map',payload:{operation:{type:'zoom',anchorPx:[1,2],factor:2}}});
+
 
 program.editLayout({target:'layout',node:{key:[1,'a'],x:10,y:20}});
 session.dispatch({type:'moveNode',target:'layout',payload:{key:1,x:10,y:20}});
+createInteractionSession({program,bindings:[{type:'annotate',target:{childPath:['left'],id:'note'}}]});
+// @ts-expect-error annotation dragging does not own encoded selection or implicit anchors
+createInteractionSession({program,bindings:[{type:'annotate',target:'note',selection:'picked'}]});
 createInteractionSession({program,bindings:[{type:'moveNode',target:'network'}]});
 // @ts-expect-error node edits cannot simultaneously replace options
 program.editLayout({node:{key:1,x:1,y:2},options:{maxNodes:5}});
 // @ts-expect-error node dragging has no selection binding
 createInteractionSession({program,bindings:[{type:'moveNode',target:'network',selection:'picked'}]});
+
+program.editAnnotation({target:'note',text:'Revised',x:2,y:3,dx:8,layout:false});
+session.dispatch({type:'annotate',target:'note',payload:{text:'Revised',format:'auto',placement:'auto'}});
+session.dispatch({type:'annotate',target:'map-note',payload:{anchor:{type:'feature',geometry:'regions',key:1,level:'county'},dx:8}});
+session.dispatch({type:'annotate',target:'note',payload:{select:{items:['logical-item']}}});
+chart().createAnnotation({text:'Chosen',source:'bars',selection:'picked'}).editAnnotation({all:true});
+chart().createCanvas().createAnnotation({space:"screen",x:12,y:24,text:"Screen"}).editAnnotation({x:30});
+// @ts-expect-error screen annotations cannot bind a dataset
+chart().createCanvas().createAnnotation({space:"screen",x:12,y:24,text:"Screen",data:"rows"});
+// @ts-expect-error coordinate annotations cannot own item membership
+chart().createAnnotation({text:'Bad',x:1,y:2,select:{items:[]}});
+// @ts-expect-error membership replacement chooses exactly one native mode
+chart().editAnnotation({select:{items:[]},all:true});
+// @ts-expect-error annotation commands do not redirect the native target
+session.dispatch({type:'annotate',target:'note',payload:{target:'other',text:'No'}});
+// @ts-expect-error native annotation edit preserves its existing source
+program.editAnnotation({target:'note',source:'new-source'});
+
+session.dispatch({type:'undo',origin:'user'});session.dispatch({type:'redo'});session.dispatch({type:'reset'});
+session.updateProgram(program,{history:'record',origin:'replay'});
+const historyCount:number=session.getState().history.undoCount;
+// @ts-expect-error history commands address the complete session
+session.dispatch({type:'undo',target:'points',payload:{}});
+// @ts-expect-error external history policy is closed
+session.updateProgram(program,{history:'keep'});
+
+const preparing=createInteractionSession({program,async assetResolver({program,signal,resourceRevisionVector}){
+  const vector:readonly import('ggaction').InputRef[]=resourceRevisionVector;
+  const images=await import('ggaction/basic').then(({prepareImageRendering})=>prepareImageRendering(program,{signal,decode(){throw new Error('fixture has no images')}}));
+  return {images,dispose(){}};
+}});
+const preparationStatus:Promise<import('ggaction/interaction').InteractionSettlement>=preparing.whenSettled();
+// @ts-expect-error preparation requires a disposal owner
+createInteractionSession({program,assetResolver:()=>({images:{}})});
+
+session.updateProgram(async request=>{ const signal:AbortSignal=request.signal; const id:string=request.transactionId; return request.program; }, {history:'record',transactionId:'job',origin:'linked'});
+session.subscribe(event=>{if(event.type==='update'){const id:string=event.transactionId;const status:'settled'|'cancelled'|'error'=event.status;}});
+
+session.mount(document.createElement('canvas'),{observeResize:true});
+session.subscribe(event=>{if(event.type==='resize'){const width:number=event.size.width;const height:number=event.size.height;}});
+// @ts-expect-error resize observation is an explicit boolean
+session.mount(document.createElement('canvas'),{observeResize:'auto'});
+
+import { getProjectionView } from 'ggaction/inspection';
+const camera = getProjectionView(program,{target:'map'});
+session.updateProgram(({program})=>{if (!('navigateProjection' in program)) throw new Error('Full navigation required');return program.navigateProjection({target:'map',operation:{type:'reset',initial:camera.parameters}});},{history:'record'});

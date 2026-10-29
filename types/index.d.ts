@@ -502,6 +502,7 @@ export type {
   MarkLabelSelectionOptions,
   RemoveMarkLabelsOptions,
   CreateAnnotationOptions,
+  EditAnnotationOptions,
   ReferenceStatistic,
   CreateStatisticalReferenceOptions,
   CreateReferenceLineOptions,

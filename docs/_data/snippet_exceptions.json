@@ -2882,5 +2882,26 @@
     "mode": "contextual-fragment",
     "owner": "docs/api/interaction.md",
     "reason": "This browser continuation requires the prepared points program, picked selection and mounted Canvas named in the text. Native browser brush and lasso execution with actual rendering and captured pointers is verified at DPR 1 and 2 in interaction-region.browser.js."
+  },
+  {
+    "id": "docs/api/interaction.md#prepare-assets-before-committing:1",
+    "sha256": "77fe8f64e9bce629a4437f83ca728ddf98899fe6a8b60ec33b918fbcb3fae6e1",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "Requires a retained-image program and Canvas context supplied by the host. The exact fragment is executed with real browser image bytes and late bitmap cancellation in test/browser/interaction-session.browser.js; it is not a standalone authoring example."
+  },
+  {
+    "id": "docs/api/interaction.md#prepare-native-work-before-replacing-the-program:1",
+    "sha256": "d2ba963d0e1da08724959b45ef21d2bdb2a21c685e1a8f64307cb695cea5ce1d",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "Requires the explicitly named graph, layout and network plot. The exact fragment is executed by the native-update browser regression before real worker supersession and disposal checks."
+  },
+  {
+    "id": "docs/api/interaction.md#observe-the-mounted-surface-size:1",
+    "sha256": "49988ce70c7af967223aa4d7a3464202cece9489de63334112d603fc7599ec99",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "Requires a rendered Full program and DOM element. The exact fragment is executed with a native browser ResizeObserver at DPR 2 in interaction-session.browser.js, including accepted Canvas/SVG parity and disconnect cleanup."
   }
 ]

@@ -2573,6 +2573,8 @@ export interface SourceSchemaInput {
 }
 
 export interface SemanticLayer {
+  /** Explicit local Canvas logical-pixel anchor for rowless Text. */
+  readonly annotationAnchor?: { readonly space: "screen"; readonly x: number; readonly y: number };
   readonly id: string;
   readonly image?: ImageRef;
   readonly alt?: string;
@@ -2666,7 +2668,7 @@ export interface SemanticSpec {
   readonly title: Readonly<Record<string, unknown>>;
 }
 
-export type GraphicLineageRef = {
+export type GraphicLineageRef = { readonly kind: "screen" } | {
   readonly data: string; readonly logicalDataId: string; readonly revision: number; readonly rowKeys: readonly string[];
 } | { readonly kind: "resource"; readonly resource: { readonly kind: StoredResourceKind; readonly id: string; readonly revision: number } };
 
@@ -5747,8 +5749,12 @@ type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "t
 };
 
 type AnnotationAnchor =
+  | { anchor?: never; space: "screen"; x: number; y: number; source?: never; data?: never;
+      coordinate?: never; select?: never; selection?: never; }
   | {
       anchor: "plot-center";
+      select?: never;
+      selection?: never;
       x?: never;
       y?: never;
       space?: never;
@@ -5758,7 +5764,7 @@ type AnnotationAnchor =
       data?: string;
       coordinate?: string;
     }
-  | {
+  | ({
       anchor?: never;
       x?: never;
       y?: never;
@@ -5766,9 +5772,11 @@ type AnnotationAnchor =
       source?: string;
       data?: never;
       coordinate?: never;
-    }
+    } & MarkLabelSelectionOptions)
   | {
       anchor?: never;
+      select?: never;
+      selection?: never;
       x: unknown;
       y: unknown;
       space?: "data";
@@ -5780,6 +5788,8 @@ type AnnotationAnchor =
       anchor?: never;
       x: number;
       y: number;
+      select?: never;
+      selection?: never;
       space: "plot";
       source?: never;
       data?: string;
@@ -5787,6 +5797,19 @@ type AnnotationAnchor =
     };
 
 export type CreateAnnotationOptions = AnnotationBaseOptions & AnnotationAnchor;
+
+/** Existing Text or attached labels; preserves stored anchor bindings. Full-only. */
+export type EditAnnotationOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "missing"> & {
+  target?: string;
+  text?: unknown;
+  /** Without text, reformat the current constant content. */
+  format?: TextFormat;
+  /** Replace one existing independent Cartesian datum using its current scale and field type. */
+  x?: unknown;
+  y?: unknown;
+  placement?: MarkLabelPlacement | "auto";
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+} & ((MarkLabelSelectionOptions & { all?: never }) | { all: true; select?: never; selection?: never });
 
 type TextPlotPositionChannel =
   | string
@@ -7006,6 +7029,7 @@ export class ChartProgram {
   editMarkLabelPlacement(options: TargetedOptions<EditMarkLabelPlacementOptions>): ChartProgram;
   removeMarkLabels(options: TargetedOptions<RemoveMarkLabelsOptions>): ChartProgram;
   createAnnotation(options: TargetedOptions<CreateAnnotationOptions>): ChartProgram;
+  editAnnotation(options: TargetedOptions<EditAnnotationOptions>): ChartProgram;
   createStatisticalReference(options: TargetedOptions<CreateStatisticalReferenceOptions>): ChartProgram;
   createOverlay(options?: TargetedOptions<CreateOverlayOptions>): ChartProgram;
   createLayerPlot(options: TargetedOptions<CreateLayerPlotOptions>): ChartProgram;

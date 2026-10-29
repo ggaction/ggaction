@@ -865,13 +865,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction` | 743,900 bytes |
 | `ggaction/basic` | 398,300 bytes |
 | `ggaction/svg` | 25,000 bytes |
-| `ggaction/interaction` | 112,900 bytes |
-| `ggaction/graph` | 44,000 bytes |
-| `ggaction` | 730,000 bytes |
-| `ggaction/basic` | 386,000 bytes |
-| `ggaction/svg` | 25,000 bytes |
-| `ggaction/graph` | 46,000 bytes |
-| `ggaction/interaction` | 109,200 bytes |
+| `ggaction/graph` | 44,100 bytes |
+| `ggaction/interaction` | 116,700 bytes |
 
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -3967,6 +3962,19 @@ Entries 1059와 packed 1510000은 유지한다. 같은 archive의 Node20/24 brow
 Basic 398278은 기존 398300 안이며 SVG/Graph/Interaction 한도도 유지한다.
 [정확한 입력·실행 증거](impl/roadmap9/chart/conditional-domain-evidence/status.json)를 보존한다.
 이 수치는 registry 배포나 roadmap 전체 완료를 뜻하지 않는다.
+### 기존 Text 주석의 원자 편집과 interaction 위임
+
+`editAnnotation`은 Full의 기존 Text/encoding/placement/layout action을 한 wrapped edit로 묶는다.
+별도 annotation registry나 복사된 위치/문구 intent는 두지 않는다. 독립 datum anchor는 기존 scale/type/unit을
+보존하고 source-owned labels는 기존 placement owner를 유지한다. Controller의 `annotate`는 receiver의
+native action만 호출하므로 interaction entry가 Full assembly에 의존하지 않는다. Basic에는 Text authoring이
+없으므로 동일 명령은 지원 오류다. 정확한 옵션·원자 실패·scope는 Current MARKS/INTERACTION이 소유한다.
+
+E5 편집/명령의 별도 source-free 측정은 Node20 Full723,738 / Basic381,811 / interaction112,794 gzip이다.
+새 Full owner 한 개를 더해1037entries이며 이전1036 한도 실패를 보존하고1037로 맞췄다.
+Node20 packed1,475,547/unpacked6,716,141 최종 측정에 맞춰
+최소 cap1,476,000/6,717,000을 적용한다. Full cap723,800만 조정하고 나머지 browser 한도는 유지한다.
+
 Geographic annotation은 기존 Geo layer의 닫힌 mode와 native Text primitive를 재사용한다.
 `grammar/geo/centroid.js`는 명시 source geometry의 bounded planar/spherical centroid만 계산하고,
 `materialization/geo/annotationSource.js`는 exact geometry 및 원 LOD level/key를 해석한다.
@@ -3976,6 +3984,114 @@ annotation은 원 feature 의미와 literal text를 보존한다. Typography/the
 기존 owner를 사용하고 renderer에는 concrete Text만 전달한다. 정확한 API는
 [GEOMETRY.md](contract/current/GEOMETRY.md#creategeoannotation)를 따른다.
 
+Geographic annotation의 interaction 연결은 명시 owner layer의 native mode를 읽어 기존 editGeoAnnotation을
+호출한다. 일반 Text editor와 저장 의미를 합치지 않고 controller의 기존 single-transaction closure를 재사용한다.
+Feature centroid·원 LOD level·projection revision은 Geo owner가 유지한다. Basic에는 새 authoring 경로가 없다.
+
+E6 합산 source-free Node20 최대는 Full728,182/Basic383,679/interaction112,841 gzip이고
+한도728,200/384,000/112,900을 적용했다. 1044entries/packed1,481,470/unpacked6,744,953에
+최소 package cap1,482,000/6,745,000을 적용했다. Basic 증분은 기존 native Text 공통 owner 추출에서
+발생하며 geographic authoring assembly 또는 interaction Full import를 추가하지 않는다.
+
+
+E7의 item membership은 기존 label selection owner와 composition scoped-key 변환을 그대로 사용한다.
+source-owned Annotation facade만 native select/selection/all intent에 연결하며 dataset·coordinate·renderer
+소유권을 늘리지 않는다. Exact current syntax와 실패 경계는 MARKS/INTERACTION이 소유한다.
+최종 Node20 Full728,292 gzip에 최소728,300 cap을 적용하고 Basic383,679/interaction112,841은
+유지한다. Package1044entries/packed1,481,747/unpacked6,746,635에 기존 packed1,482,000과
+최소 unpacked6,747,000 cap을 적용한다. 최초 cap 실패와 최종 같은 archive의 소비자 검증을
+[qualification](impl/roadmap9/interaction/annotation-membership-evidence/qualification.json)에 보존한다.
+
+
+### 데이터 없는 화면 좌표 Text 주석
+
+기존 native Text 생성·측정·효과 owner를 재사용하며 `annotationAnchor`가 명시 local Canvas pixel
+좌표만 소유한다. Grammar가 닫힌 저장값과 constant text 조건을 검증하고, materializer가 dataset 없이
+단일 native Text를 구체화한다. Selection의 private dataOptional 정책은 이 검증된 layer만 허용한다.
+기존 dataset Text의 data 요구는 유지한다. Item identity에는 닫힌 screen grain과 `lineage.kind:"screen"`을
+사용하며 rows/resource refs는 비어 있다. Codec은 child namespace 안의 정확한 screen Text owner와 key를
+검증한다. Interaction은 기존 native editor와 hit metadata adapter를 재사용하고 renderer는 변경하지 않는다.
+Full authoring만 추가되며 Basic은 shared concrete/schema 검증을 재사용한다. 정확한 공개 옵션은
+[MARKS](contract/current/MARKS.md#createannotation)와 [INTERACTION](contract/current/INTERACTION.md)이 소유한다.
+
+E8 source-free Node20 실측은 Full729,256/Basic384,464/interaction112,934 gzip이며 최소
+cap729,300/384,500/113,000을 적용한다. Basic 증분은 screen Text의 공통 schema·native Text owner이고
+Full annotation facade를 가져오지 않는다. Package1045entries/packed1,483,625/unpacked6,754,572에
+cap1045/1,484,000/6,755,000을 적용한다. 최초 archive의 runtime12와 strict TypeScript는 통과했고
+bundle ceiling 실패는 원본 그대로 보존한다. Runtime 변경 없이 같은 archive를 다음 Node에서도 검증한다.
+
+
+주석 offset drag는 기존 annotate native command와 pointer capture/preview closure에 연결한다.
+`interaction/movementFrame.js`가 Node/Annotation의 committed-frame 비교와 child/root inverse를
+단일 소유하고, `annotationMovement.js`가 정확 owner·기존 offset 읽기만 맡는다. 저장 anchor와
+renderer는 바뀌지 않는다. Preview와 current hit frame은 같은 native materialization을 읽으며
+commit/cancel은 기존 session transaction owner가 담당한다.
+
+E9의 Full/Basic renderer/authoring bundle은 E8과 동일하며 interaction만 Node20 113,413 gzip으로
+늘어 최소 cap113,500을 적용한다. 새 private frame/annotation owner2개로 package1047entries이며
+packed1,484,961/unpacked6,759,342를 최소 cap1,485,000/6,760,000으로 제한한다. 최초 Node20
+runtime13/strict TypeScript 통과 뒤 interaction ceiling 실패와 같은 archive의 cap 재검사를 분리 보존한다.
+
+
+### Session snapshot history ownership
+
+`interaction/history.js`는 controller만 사용하는 bounded immutable snapshot reference와 초기 reset
+baseline을 소유한다. `session.js`가 native materialization/reconciliation/link closure와 hit frame을
+모두 준비한 뒤 한 commit에 한 항목을 기록하며, preview는 기록하지 않는다. 복원은 기존 program과
+private selection records/projection을 함께 바꾸어 숨겨진 membership을 재해석하지 않는다.
+Program schema/codec/renderers/authoring package 경계는 바뀌지 않는다. 구체 limit·external update·event
+의미는 [Current INTERACTION](contract/current/INTERACTION.md#bounded-session-history)이 소유한다.
+
+
+History source-free Node20의 interaction은114,086gzip이므로 최소cap114,100이며 Full729,256 /
+Basic384,464 / SVG20,196 / graph43,759는 E9와 같다. Package는1048entries,
+packed1,486,675 / unpacked6,765,752로 최소cap1048/1,487,000/6,766,000이다.
+새 helper는 interaction entry만 소비하고 authoring/renderer bundle에는 유입되지 않는다.
+최초 기존 entry/bundle cap 실패와 동일 archive 측정·재검증은 STEP065 qualification에 보존한다.
+
+### Session asset preparation ownership
+
+`interaction/preparation.js`는 명시 host resolver의 AbortSignal·완료 Promise·pending 네 tag와 accepted
+lease 수명을 소유한다. `session.js`는 native candidate·hit frame·단일 committed program을 계속
+소유하며 준비 완료 전에 history나 program을 바꾸지 않는다. state.assets는 accepted lease의 읽기 전용
+renderer handle projection이고 cache나 저장 resource가 아니다. Renderers는 기존 authentic handle과
+exact graphic identity 검증을 유지한다. Session에 decoder/font/raster 또는 private player import는 없다.
+취소·실패·destroy는 candidate와 callback 참조를 해제하고 늦은 lease를 폐기한다. 구체 event와 Promise
+계약은 [Current INTERACTION](contract/current/INTERACTION.md#atomic-asset-preparation)이 소유한다.
+
+Asset preparation source-free Node20/24 interaction은115,827gzip으로 최소cap115,900을 적용했다.
+Full729,256/Basic384,464/SVG20,196/graph43,759는 직전 history와 동일하다. 새 interaction private
+owner1개로1049entries이며 Node20 packed1,490,213/unpacked6,779,434에 cap1,491,000/6,780,000을
+적용한다. 최초 entry·bundle cap 실패와 동일 archive의 cap 재검사를 구분해 증거로 보존한다.
+검색 index1,028,729bytes는 최소cap1,028,800이며 renderer나 authoring bundle 경계는 바뀌지 않는다.
+
+### Prepared native session replacements
+
+Callback형 updateProgram은 기존 interaction/preparation.js의 단일 pending job을 사용한다.
+Base immutable snapshot·네 tag는 native host 작업을 보호하고, 완료 결과는 기존 replacement
+selection/link/binding/hit preflight를 공유한다. 후속 assetResolver만 candidate vector를 받는다.
+Session은 native executor/cache/worker protocol을 import하지 않고 host callback에 AbortSignal을
+전달한다. 따라서 native worker와 renderer lease의 단일 commit 경계를 유지하면서 별도 runtime
+정본이나 generic task engine을 만들지 않는다. 정확한 lifecycle은 Current INTERACTION이 소유한다.
+
+B source-free Node20/24의 interaction116,213gzip은 최소cap116,300으로 반영했다.
+Full729,256/Basic384,464/SVG20,196/graph43,759는 A와 동일하다. Node20 package1049entries /
+1,490,812packed /6,782,476unpacked에 기존entries/packedcap을 유지하고 unpacked만6,783,000으로
+올렸다. 최초unpacked/interaction한도실패와 동일archive재검사, docs검색1,029,453bytes의
+최소1,030,000cap을 [B evidence](impl/roadmap9/interaction/update-evidence/qualification.json)에 보존한다.
+
+### Mounted observer ownership
+
+ResizeObserver는 기존 session mount lease의 명시 옵션으로 연결한다. Content-box CSS 측정은
+읽기 전용 이벤트이며 program/viewport의 새 정본을 만들지 않는다. Host가 기존 native action과
+prepared update를 선택하므로 layout/camera 정책이나 renderer를 interaction에 import하지 않는다.
+Mount setup 실패는 시도한 lease만 정리하고 이전 mount를 보존하며, detach는 observer와 모든
+listener/capture를 함께 해제한다. 정확한 옵션과 이벤트는 Current INTERACTION이 소유한다.
+
+C의 source-free Node20 interaction은116,618gzip이며 최소cap116,700이다. 다른네 entry는 B와
+같다. Node20 package1049entries/1,491,340packed/6,784,871unpacked에 최소cap1,492,000/6,785,000을
+적용했다. 검색index1,030,081bytes는1,030,100cap이다. 최초기존한도실패와 동일archive의
+측정재검사는 resize evidence에 보존하며 런타임 입력이 같은 검사를 반복하지 않는다.
 Geo camera의 private `grammar/geo/camera.js`는 명시 projection parameter와 operation의
 순수 변환만 담당한다. Pointer inverse와 composite eligibility는 기존 projection kernel,
 geometry fit은 기존 fit owner를 재사용한다. `cameraInterpolation.js`는 구면 quaternion과
@@ -4023,9 +4139,29 @@ Trail은 Full façade가 순수 후보를 검사하고 wrapped `applyTrailMark`/
 샘플링한다. 새 grammar ribbon owner는 screen-space sample에서 bounded Path만 계산하며 renderer는 기존
 Path/Text만 소비한다. 별도 renderer·package entry·자동 compiler는 없다. 정확 API와 소비자 범위는
 [Current TRAIL](contract/current/TRAIL.md)이 소유한다. STEP050 final guide/frame 후보 사전검사는 합산의
-기존 `assertFacadeGuidesFrame` 책임으로 남으며 이 slice 검증을 그 의무의 완료로 세지 않는다.
+기존 `assertFacadeGuidesFrame`를 재사용하며 모든 Trail create/edit의 첫 child 전에 실행한다.
 
 공유 curve·stored schema 검증으로 Basic bundle에도 순수 소스가 포함되지만 Full action import는 없다.
 Node20/24 중간 실측 package1028/packed1,473,553/unpacked6,707,821과 Node20 bundle Full726,985/
 Basic392,624gzip에 최소 cap1028/1,474,000/6,708,000 및727,100/392,800을 적용했다.
 검색1,013,957bytes의 cap은1,014,000이며 최종 frozen artifact 실측은 Trail qualification에 별도 고정한다.
+
+### Geo camera와 session Text 경계 합산
+
+Geo source labels와 화면 고정 annotation을 합칠 때 Text의 resource-backed policy와 screen-only
+dataOptional을 별개 조건으로 유지했다. Native createTextLayer helper는 둘 다 동일하게 재사용하고,
+markOutput은 명시 resource lineage를 우선 보존하며 screen layer만 screen lineage를 받는다.
+일반 dataset Text는 기존 dataset 검증을 유지한다. Ordinal legend의 원 데이터·visibility 순서는
+일반 mark에서 보존하고 Geo는 기존 transient feature dataset을 사용한다.
+
+합산 Node20은 Full732,356/Basic386,042/SVG20,196/interaction116,619/graph44,045 gzip이다.
+최소 cap은732,400/386,100/25,000/116,700/44,100이며 shared Text schema·정규화 증가만 포함하고
+Basic에 Geo math/authoring owner를 유입하지 않는다. Package1059entries/1,500,878packed/
+6,826,646unpacked에1059/1,501,000/6,827,000 한도를 적용했다. 검색1,036,885bytes는1,036,900이다.
+기존 cap 실패와 최종 동일archive24cases/types/bundles를 integration evidence에 분리 보존한다.
+
+Interaction camera operation은 기존 closed command owner가 receiver의 native facade로 전달한다.
+정적 Full import나 추가 projection 상태 없이 preparation/history/frame 수명을 그대로 사용한다.
+정확 배타 payload는 Current INTERACTION에 둔다. Source-free Node20 interaction은116,663gzip으로
+기존116,700 한도 안이다. Package1059entries/1,500,976packed/6,827,033unpacked에서 entries/packed는
+유지하고 unpacked만6,828,000으로 올렸다. 검색1,036,903bytes는1,037,000 한도로 변경했다.

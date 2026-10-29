@@ -73,6 +73,7 @@
   "editMarkLabelPlacement": "/reference/actions/marks/#editmarklabelplacement",
   "removeMarkLabels": "/reference/actions/marks/#removemarklabels",
   "createAnnotation": "/reference/actions/marks/#createannotation",
+  "editAnnotation": "/reference/actions/marks/#editannotation",
   "createTextMark": "/reference/actions/marks/#createtextmark",
   "editTextMark": "/reference/actions/marks/#edittextmark",
   "layoutLabels": "/reference/actions/marks/#layoutlabels",

@@ -1106,6 +1106,42 @@
       {
         "id": "interaction/guide-and-host-cleanup",
         "statements": 85
+      },
+      {
+        "id": "interaction/geographic-label-screen-history",
+        "statements": 16
+      },
+      {
+        "id": "interaction/observed-resize-prepared-native-policy",
+        "statements": 27
+      },
+      {
+        "id": "interaction/prepared-update",
+        "statements": 19
+      },
+      {
+        "id": "interaction/asset-preparation",
+        "statements": 25
+      },
+      {
+        "id": "interaction/history",
+        "statements": 19
+      },
+      {
+        "id": "interaction/annotation-drag",
+        "statements": 22
+      },
+      {
+        "id": "interaction/screen-annotation",
+        "statements": 14
+      },
+      {
+        "id": "interaction/geographic-annotation-edit",
+        "statements": 11
+      },
+      {
+        "id": "interaction/annotation-edit",
+        "statements": 29
       }
     ]
   },

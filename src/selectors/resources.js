@@ -1,3 +1,4 @@
+import { requireLayer } from "./layers.js";
 import { annotateError } from "../core/diagnostics.js";
 import { requireDataset } from "./datasets.js";
 
@@ -50,6 +51,12 @@ export function resolveGraphicLineage(program, identity) {
       throw annotateError(new Error("Graphic identity has an unknown child scope."), { code: "missing-resource" });
     }
     scope = scope.children[children[0]];
+  }
+  if (identity.lineage.kind === "screen") {
+    const [, owner, grain, value] = JSON.parse(identity.key), layer = requireLayer(scope, owner);
+    if (layer.mark.type !== "text" || layer.annotationAnchor?.space !== "screen" || grain !== "item" ||
+        value[0] !== "annotation" || value[1] !== "screen") throw new TypeError("Screen lineage requires its exact screen annotation owner.");
+    return layer;
   }
   if (identity.lineage.kind === "resource") return requireStoredResource(scope, identity.lineage.resource);
   const { data, logicalDataId, revision, rowKeys: keys } = identity.lineage;

@@ -562,12 +562,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
 | `layout` | Optional / branch-dependent | `false \| Omit<LabelLayoutOptions, "target"> \| undefined` |
 | `anchor` | Optional / branch-dependent | `"plot-center" \| undefined` |
+| `space` | Optional / branch-dependent | `"data" \| "plot" \| "screen" \| undefined` |
 | `x` | Optional / branch-dependent | `unknown` |
 | `y` | Optional / branch-dependent | `unknown` |
-| `space` | Optional / branch-dependent | `"data" \| "plot" \| undefined` |
 | `source` | Optional / branch-dependent | `string \| undefined` |
 | `data` | Optional / branch-dependent | `string \| undefined` |
 | `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
+| `selection` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
@@ -575,15 +577,17 @@ Generated from the current TypeScript declaration. Union branches can require di
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
-createAnnotation({ clip?, id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
+createAnnotation({ clip?, id?, text, anchor?, format?, source?, select?, selection?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
 ```
 
 Create anchored text. Omit x/y/space for a
 final-item mark anchor; `source` selects the mark, otherwise current/unique mark
-inference applies. Provide both x and y for a data anchor; `source` selects one
+inference applies. A mark anchor can use inline `select` or a named `selection` belonging to the same source; both retain final-item grain, and empty membership stays empty. Coordinate anchors reject these options. Provide both x and y for a data anchor; `source` selects one
 complete Cartesian layer whose data, coordinate, scales, field types, and temporal
 units are reused. The annotation participates in automatic domains without becoming
 a source-owned label.
+
+With `space: "screen"`, x and y are finite logical pixels from the local Canvas top-left, increasing right/down. This branch needs no data, scale or coordinate. It rejects source/data/coordinate/membership and keeps its position across resize, margin, data and scale changes. Nested charts apply their existing child transform. `clip:true` clips to the local Canvas. Edit x/y with `editAnnotation`; field encodings and source placement do not apply.
 
 With `space: "plot"`, x and y are finite fractions in `[0,1]`, where x=0 is left
 and y=0 is bottom. Existing `data` is explicit or inferred, and `coordinate` is
@@ -598,9 +602,84 @@ can accompany polar and parallel-coordinate charts, including facets. Keep the
 note in its Cartesian plot frame by omitting the chart's polar/parallel coordinate.
 
 Omit `layout` or pass `false` to retain the exact anchor. A layout object accepts
-`layoutLabels` options except `target`. Later changes use `encodeText`, `encodeX/Y`,
+`layoutLabels` options except `target`. Later changes use `editAnnotation`, `encodeText`, `encodeX/Y`,
 `editTextMark`, `layoutLabels`, `removeLabelLayout`, `editScale`, and `removeMark`.
 [Text marks](../../api/marks/text.md#createannotationoptions)
+
+
+## `editAnnotation`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editAnnotation(options: TargetedOptions<EditAnnotationOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditAnnotationOptions`](./../types.md#type-editannotationoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `shadow` | Optional / branch-dependent | `false \| MarkShadow \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineHeight` | Optional / branch-dependent | `number \| undefined` |
+| `blockAlign` | Optional / branch-dependent | `"first" \| "middle" \| undefined` |
+| `inheritColor` | Optional / branch-dependent | `"fill" \| "stroke" \| false \| undefined` |
+| `fill` | Optional / branch-dependent | `FillPaint \| undefined` |
+| `outline` | Optional / branch-dependent | `false \| MarkOutline \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "end" \| "left" \| "right" \| "start" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `dx` | Optional / branch-dependent | `number \| undefined` |
+| `dy` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `text` | Optional / branch-dependent | `unknown` |
+| `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
+| `x` | Optional / branch-dependent | `unknown` |
+| `y` | Optional / branch-dependent | `unknown` |
+| `placement` | Optional / branch-dependent | `"auto" \| MarkLabelPlacement \| undefined` |
+| `layout` | Optional / branch-dependent | `false \| Omit<LabelLayoutOptions, "target"> \| undefined` |
+| `all` | Optional / branch-dependent | `true \| undefined` |
+| `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
+| `selection` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editAnnotation({ target?, text?, format?, x?, y?, placement?, layout?, select?, selection?, all?, blend?, shadow?, clip?, fill?, outline?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, lineHeight?, blockAlign?, inheritColor?, lineCap?, lineJoin?, miterLimit? })
+```
+
+Edit existing Text or attached labels in one atomic change. Available in Full. Choose `target` explicitly,
+otherwise the current Text or one unique Text is used. An empty edit, ambiguous target or invalid child option rejects
+without changing the program or its trace.
+
+`x` and `y` replace existing independent Cartesian constant datums using the same scales, field types and temporal
+units. Existing screen anchors instead use finite local Canvas logical pixels. Supply either or both. Source-owned labels and field-driven or conditional positions reject this patch.
+`text` supplies constant content; `format` alone reformats existing constant content. Style options follow
+`editTextMark`. An encoded dx/dy channel must be edited through its encoding action instead.
+
+For attached labels, exactly one of `select`, `selection`, or `all:true` replaces membership through `editMarkLabelSelection`. Independent annotations reject membership edits. Named selection and source revisions keep their native replay and removal rules.
+
+`placement` uses `editMarkLabelPlacement`; `"auto"` restores its ordinary source anchor. A `layout` object uses
+`layoutLabels`, and `false` removes collision layout. These edits retain source ownership, selection, replay and
+removal behavior. The action also accepts ordinary Text layers; no separate annotation registry is required.
+[Text marks](../../api/marks/text.md#editannotationoptions)
 
 
 ## `createTextMark`

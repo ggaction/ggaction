@@ -1359,7 +1359,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "`encodeText`, `encodeX/Y`, `editTextMark`, `layoutLabels`, `removeLabelLayout`, `editScale`, and `removeMark`",
+      "update": "`editAnnotation` and native Text/encoding/label actions; screen anchors remain data-less local Canvas pixels; source-owned labels retain source removal lifecycle",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -1369,6 +1369,24 @@
       "contract": {
         "file": "agent_docs/contract/current/MARKS.md",
         "anchor": "createannotation"
+      }
+    },
+    {
+      "name": "editAnnotation",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Atomically edits an existing Text datum or screen anchor, constant content, native style, source-item membership, placement or collision policy; preserves native owner lifecycle",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "editannotation"
       }
     },
     {

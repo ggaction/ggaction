@@ -1,3 +1,4 @@
+import { normalizeScreenAnnotationAnchor } from "../../../grammar/screenAnnotation.js";
 import { isGeoLabelSource } from "../../../grammar/geo/mark.js";
 import { applyMarkBlend } from "../blend.js";
 import { validateRequestedMarkBlend } from "../../../grammar/markBlend.js";
@@ -46,7 +47,7 @@ import {
   resolveFacadeData,
   resolveFacadeId
 } from "../../charts/shared.js";
-import { resolveMarkGraphicPlacement } from
+import { resolveMarkGraphicPlacement, resolveCanvasGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { validateItemMissing } from "../../../grammar/itemMissing.js";
 
@@ -135,6 +136,19 @@ function requireTextLayer(program, requested, operation) {
   });
 }
 
+function createTextLayer(program, id, data, inherited, args, annotationAnchor) {
+  let next = program.editSemantic({ property: `layer[${id}].mark.type`, value: "text" });
+  if (data !== undefined) next = next.editSemantic({ property: `layer[${id}].data`, value: data });
+  if (annotationAnchor !== undefined) next = next.editSemantic({ property: `layer[${id}].annotationAnchor`, value: annotationAnchor });
+  if (Object.hasOwn(args, "missing")) next = next.editSemantic({ property: `layer[${id}].mark.missing`, value: validateItemMissing(args.missing, "Text missing") });
+  if (inherited?.source !== undefined) next = next.editSemantic({ property: `layer[${id}].source`, value: inherited.source });
+  next = applyMarkBlend(next, id, args);
+  return applyLayeredMarkInheritance(next, id, inherited)
+    .createGraphics({ id, type: "text", length: 0,
+      ...(annotationAnchor === undefined ? resolveMarkGraphicPlacement(next, { data, markType: "text" }) : resolveCanvasGraphicPlacement(next)) })
+    ._withMarkConfig(id, { ...DEFAULT_TEXT_MARK, fillExplicit: false });
+}
+
 const createTextMark = /* @__PURE__ */ action(
   {
     op: "createTextMark",
@@ -162,29 +176,7 @@ const createTextMark = /* @__PURE__ */ action(
     }).data;
     assertMarkAvailable(this, id);
 
-    let next = this.editSemantic({ property: `layer[${id}].mark.type`, value: "text" });
-    if (data !== undefined) next = next.editSemantic({ property: `layer[${id}].data`, value: data });
-    if (Object.hasOwn(args, "missing")) {
-      next = next.editSemantic({
-        property: `layer[${id}].mark.missing`,
-        value: validateItemMissing(args.missing, "Text missing")
-      });
-    }
-    if (inherited?.source !== undefined) {
-      next = next.editSemantic({
-        property: `layer[${id}].source`,
-        value: inherited.source
-      });
-    }
-    next = applyMarkBlend(next, id, args);
-    next = applyLayeredMarkInheritance(next, id, inherited)
-      .createGraphics({
-        id,
-        type: "text",
-        length: 0,
-        ...resolveMarkGraphicPlacement(next, { data, markType: "text" })
-      })
-      ._withMarkConfig(id, { ...DEFAULT_TEXT_MARK, fillExplicit: false });
+    let next = createTextLayer(this, id, data, inherited, args);
 
     const style = Object.fromEntries(
       STYLE_OPTIONS.filter(option => Object.hasOwn(args, option))
@@ -207,6 +199,7 @@ const LABEL_OPTIONS = Object.freeze([
 
 const ANNOTATION_OPTIONS = Object.freeze([
   "id", "text", "format", "anchor", "x", "y", "space", "source", "data", "coordinate", "layout",
+  "select", "selection",
   ...STYLE_OPTIONS
 ]);
 
@@ -233,9 +226,16 @@ function resolveAnnotationBinding(program, args) {
   if (!hasX || !hasY) {
     throw new Error("createAnnotation coordinate anchor requires both x and y.");
   }
+  if (Object.hasOwn(args, "select") || Object.hasOwn(args, "selection")) {
+    throw new Error("createAnnotation membership requires a source-owned item anchor.");
+  }
   const space = args.space ?? "data";
+  if (space === "screen") {
+    if (["source", "data", "coordinate"].some(key => Object.hasOwn(args, key))) throw new TypeError("Screen annotation cannot bind source, data or coordinate.");
+    return { mode: "screen", anchor: normalizeScreenAnnotationAnchor({ space, x: args.x, y: args.y }) };
+  }
   if (space !== "data" && space !== "plot") {
-    throw new Error("createAnnotation space must be data or plot.");
+    throw new Error("createAnnotation space must be data, plot or screen.");
   }
   if (space === "plot") {
     if (Object.hasOwn(args, "source")) {
@@ -312,10 +312,19 @@ const createAnnotation = /* @__PURE__ */ action(
         return program.createMarkLabels({
           id,
           ...(args.source === undefined ? {} : { source: args.source }),
+          ...(Object.hasOwn(args, "select") ? { select: args.select } : {}),
+          ...(Object.hasOwn(args, "selection") ? { selection: args.selection } : {}),
           ...style,
           ...text,
           ...(layout === undefined ? {} : { layout })
         });
+      }
+      if (binding.mode === "screen") {
+        assertMarkAvailable(program, id);
+        let next = createTextLayer(program, id, undefined, undefined, style, binding.anchor);
+        if (Object.keys(style).length) next = next.editTextMark({ target: id, ...style });
+        next = next.encodeText({ target: id, ...text });
+        return layout === undefined ? next : next.layoutLabels({ ...layout, target: id });
       }
       const xScale = binding.mode === "plot" ? `${id}-x` : binding.x.scale;
       const yScale = binding.mode === "plot" ? `${id}-y` : binding.y.scale;

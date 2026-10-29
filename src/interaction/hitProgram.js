@@ -58,6 +58,7 @@ function metadata(identity, context, budget) {
   validateGraphicIdentity(identity);
   const [namespaces, ownerId, role] = JSON.parse(identity.key);
   if (JSON.stringify(namespaces) !== JSON.stringify(context.namespaces)) throw new TypeError("Hit item namespace does not match its composition owner.");
+  if (identity.lineage.kind === "screen") return cloneAndFreeze({ itemKey: identity.key, ownerId, role, childPath: context.childPath, rowKeys: [], resourceRefs: [] });
   const lineage = identity.lineage, resource = lineage.kind === "resource" ? lineage.resource
     : { kind: "data", id: lineage.data, logicalId: lineage.logicalDataId, revision: lineage.revision };
   return cloneAndFreeze({ itemKey: identity.key, ownerId, role, childPath: context.childPath,

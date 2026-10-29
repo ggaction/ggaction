@@ -179,6 +179,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createYAxisTicks`](./actions/guides.md#createyaxisticks) | H3 | user-facing | axes |
 | [`createYAxisTicksAndLabels`](./actions/guides.md#createyaxisticksandlabels) | H3 | user-facing | axes |
 | [`createYAxisTitle`](./actions/guides.md#createyaxistitle) | H3 | user-facing | axes |
+| [`editAnnotation`](./actions/marks.md#editannotation) | H3 | user-facing | marks |
 | [`editArcMark`](./actions/marks.md#editarcmark) | H3 | user-facing | marks |
 | [`editAreaMark`](./actions/marks.md#editareamark) | H3 | user-facing | marks |
 | [`editAxes`](./actions/guides.md#editaxes) | H3 | user-facing | axes |

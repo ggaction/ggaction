@@ -1,4 +1,5 @@
 import { normalizePlotSnapshot, normalizePlotAnchor } from "../../../grammar/plotPosition.js";
+import { validateScreenAnnotationLayer } from "../../../grammar/screenAnnotation.js";
 import { isGeoLabelSource } from "../../../grammar/geo/mark.js";
 import { validateInputReference } from "../../../core/resourceReference.js";
 import { requireStoredResource } from "../../../selectors/resources.js";
@@ -65,6 +66,13 @@ export function validateLayerSemanticValue(
 ) {
   const property = parsed.path.join(".");
   const layer = findLayer(program, parsed.id);
+  if (property === "annotationAnchor") validateScreenAnnotationLayer({ ...layer, annotationAnchor: value });
+  if (layer?.annotationAnchor !== undefined && (
+    ["data", "source", "coordinate", "transform", "mark.missing"].includes(property) ||
+    property === "mark.type" && value !== "text" || property.startsWith("conditionals.") ||
+    property.startsWith("encoding.") && !["encoding.text.datum", "encoding.text.format"].includes(property))) {
+    throw new TypeError("Screen annotation accepts only constant Text content and native style.");
+  }
   if (property === "image") {
     validateInputReference(value);
     if (layer?.mark?.type !== "image" || value.kind !== "image") throw new TypeError("Image binding requires an image mark and resource.");

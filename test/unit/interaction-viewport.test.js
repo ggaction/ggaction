@@ -78,3 +78,115 @@ test("scoped projection edits preserve siblings and reject every invalid patch a
   const b = createInteractionSession({ program: basic().createCanvas(), bindings: [] });
   assert.throws(() => b.dispatch(move({ scalePx: 2 })), /editProjection/); b.destroy();
 });
+
+test("prepared native camera updates preserve geographic label and screen annotation lineage through history", async () => {
+  const p = make().createMarkLabels({source:"places",field:"name"})
+    .createAnnotation({id:"note",space:"screen",x:12,y:18,text:"Fixed"});
+  const source = serializeProgram(p), s = createInteractionSession({program:p,bindings:[]});
+  const label = getMarkItems(p,{target:"places-labels"})[0], note = getMarkItems(p,{target:"note"})[0];
+  assert.deepEqual(p.graphicSpec.objects.note.items[0].identity.lineage,{kind:"screen"});
+  assert.equal(p.graphicSpec.objects['places-labels'].items[0].identity.lineage.resource.kind,"geometry");
+  s.updateProgram(({program})=>program.navigateProjection({target:"map",operation:{type:"pan",deltaPx:[30,-10]}}),{history:"record"});
+  assert.equal((await s.whenSettled()).status,"settled");
+  const q = s.getState().program, moved = getMarkItems(q,{target:"places-labels"})[0];
+  assert.equal(moved.key,label.key);assert.deepEqual(moved.rows,[]);
+  assert.deepEqual(q.graphicSpec.objects['places-labels'].items.map(item=>[item.properties.x,item.properties.y]),[[110,80]]);
+  assert.deepEqual(q.graphicSpec.objects.note,p.graphicSpec.objects.note);assert.equal(getMarkItems(q,{target:"note"})[0].key,note.key);
+  assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec,q.graphicSpec);
+  s.dispatch({type:"undo"});assert.equal(s.getState().program,p);s.dispatch({type:"redo"});assert.equal(s.getState().program,q);
+  assert.equal(serializeProgram(p),source);s.destroy();
+});
+
+test("scoped camera edits retain mixed Text identities and the untouched nested sibling", () => {
+  const child=make().createMarkLabels({source:"places",field:"name"}).createAnnotation({id:"note",space:"screen",x:10,y:20,text:"Local"});
+  const p=hconcat({programs:[{id:"left",program:child},{id:"right",program:child}]}),s=createInteractionSession({program:p,bindings:[]});
+  const before=getMarkItems(p,{target:{childPath:["left"],id:"places-labels"}})[0];
+  s.dispatch({...move({translatePx:[5,6]}),target:{childPath:["left"],id:"map"}});
+  const q=s.getState().program;
+  assert.equal(q.children.right,p.children.right);assert.deepEqual(q.children.left.graphicSpec.objects.note,child.graphicSpec.objects.note);
+  assert.equal(getMarkItems(q,{target:{childPath:["left"],id:"places-labels"}})[0].key,before.key);
+  assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec,q.graphicSpec);
+  assert.deepEqual(getMarkItems(q,{target:{childPath:["left"],id:"note"}})[0].rows,[]);s.destroy();
+});
+
+const camera = (operation, target = "map", transactionId) => ({ type: "setViewport", target, payload: { operation }, ...(transactionId ? { transactionId } : {}) });
+const tick = () => new Promise(resolve => setImmediate(resolve));
+
+test("camera commands preserve an explicit inverse anchor and create one native history transaction", () => {
+  const p=make().createMarkLabels({source:"places",field:"name"}), bytes=serializeProgram(p);
+  const s=createInteractionSession({program:p,bindings:[]}),events=[];s.subscribe(event=>events.push(event));
+  const pan={type:"pan",deltaPx:[20,-10]},zoom={type:"zoom",anchorPx:[100,80],factor:2,scaleExtent:[0.5,4]};
+  s.dispatch(camera(pan,"map","pan"));assert.deepEqual([circle(s.getState()).x,circle(s.getState()).y],[100,80]);
+  const first=s.getState().program; s.dispatch(camera(zoom,"map","zoom"));
+  assert.deepEqual([circle(s.getState()).x,circle(s.getState()).y],[100,80]);
+  assert.deepEqual(s.getState().program.graphicSpec,p.navigateProjection({target:"map",operation:pan}).navigateProjection({target:"map",operation:zoom}).graphicSpec);
+  assert.equal(s.getState().history.undoCount,2);assert.equal(s.getState().revision,2);
+  assert.deepEqual(events.map(e=>[e.type,e.phase,e.transactionId]),[["setViewport","commit","pan"],["setViewport","settled","pan"],["setViewport","commit","zoom"],["setViewport","settled","zoom"]]);
+  assert.deepEqual(events.at(-1).affectedOwners,[{id:"map",childPath:[]}]);
+  assert.deepEqual(s.getState().program.graphicSpec.objects['places-labels'].items.map(x=>[x.properties.x,x.properties.y]),[[100,80]]);
+  const final=s.getState().program;s.dispatch({type:"undo"});assert.equal(s.getState().program,first);
+  s.dispatch({type:"redo"});assert.equal(s.getState().program,final);
+  assert.deepEqual(deserializeProgram(serializeProgram(final)).graphicSpec,final.graphicSpec);
+  assert.equal(serializeProgram(p),bytes);s.destroy();
+});
+
+test("pinch, fitted resize, rotate and explicit reset share the native camera owner", async () => {
+  const {getProjectionView}=await import('../../src/inspection.js');
+  const p=make(),s=createInteractionSession({program:p,bindings:[]});
+  const initial=getProjectionView(p,{target:"map"}).parameters;
+  s.dispatch(camera({type:"pinch",fromPx:[[60,90],[100,90]],toPx:[[50,100],[130,100]],scaleExtent:[0.5,4]}));
+  assert.deepEqual([circle(s.getState()).x,circle(s.getState()).y],[90,100]);
+  s.dispatch(camera({type:"reset",initial}));assert.deepEqual(s.getState().program.graphicSpec,p.graphicSpec);
+  const fit={type:"fit",fit:{geometry:"places",width:400,height:300,pointScale:2}};
+  s.dispatch(camera(fit));assert.deepEqual([circle(s.getState()).x,circle(s.getState()).y],[200,150]);
+  const resize={type:"resize",canvas:{width:800,height:600},scaling:"fit"};
+  const fitted=s.getState().program;s.dispatch(camera(resize));
+  assert.deepEqual(s.getState().program.graphicSpec,fitted.navigateProjection({target:"map",operation:resize}).graphicSpec);
+  assert.deepEqual([circle(s.getState()).x,circle(s.getState()).y],[400,300]);
+  assert.equal(s.getState().history.undoCount,4);s.destroy();
+  const globe=chart().createCanvas({width:400,height:300,margin:0})
+    .createGeometryData({id:'world',format:'geojson',coordinateKind:'geographic',featureKey:'id',values:{...geometry,geometry:{type:'Point',coordinates:[0,0]}}})
+    .createProjection({id:'map',type:'equirectangular',scalePx:180/Math.PI,translatePx:[100,100]})
+    .createCoordinate({type:'geo'}).createGeoPointMark({id:'world',geometry:'world'});
+  const g=createInteractionSession({program:globe,bindings:[]});g.dispatch(camera({type:'rotate',rotateDeg:[10,0,0]}));
+  assert.ok(Math.abs(circle(g.getState()).x-110)<1e-10);assert.equal(circle(g.getState()).y,100);g.destroy();
+});
+
+test("camera operation scope is explicit and mixed, unknown or unsafe inputs preserve the full snapshot", () => {
+  const child=make(),p=hconcat({programs:[{id:'left',program:child},{id:'right',program:child}]}),s=createInteractionSession({program:p,bindings:[]});
+  const target={childPath:['left'],id:'map'};s.dispatch(camera({type:'pan',deltaPx:[5,6]},target));
+  assert.equal(s.getState().program.children.right,child);
+  assert.deepEqual(s.getState().program.children.left.graphicSpec,child.navigateProjection({target:'map',operation:{type:'pan',deltaPx:[5,6]}}).graphicSpec);
+  const before=s.getState(),bytes=serializeProgram(before.program);let reads=0;
+  for(const payload of [{operation:{type:'pan',deltaPx:[1,2]},scalePx:2},{operation:{type:'pan',deltaPx:[1,2]},target:'map'},
+    {operation:null},{operation:{type:'pan',deltaPx:[Infinity,2]}},{operation:{type:'zoom',anchorPx:[1,2],factor:2}},
+    {operation:{type:'pan',deltaPx:[1,2],extra:true}},{operation:{get type(){reads++;return 'pan'},deltaPx:[1,2]}}]) {
+    assert.throws(()=>s.dispatch({type:'setViewport',target,payload}));
+    assert.equal(s.getState().program,before.program);assert.equal(s.getState().scene,before.scene);
+    assert.equal(s.getState().revision,before.revision);assert.deepEqual(s.getState().history,before.history);
+  }
+  for(const owner of ['map',{childPath:['missing'],id:'map'},{childPath:['left']},{childPath:['left'],id:'places'}])assert.throws(()=>s.dispatch(camera({type:'pan',deltaPx:[1,2]},owner)));
+  assert.equal(reads,0);assert.equal(serializeProgram(before.program),bytes);s.destroy();
+  const b=createInteractionSession({program:basic().createCanvas(),bindings:[]});
+  assert.throws(()=>b.dispatch(camera({type:'pan',deltaPx:[1,2]})),/navigateProjection/);b.destroy();
+});
+
+test("camera preparation cancellation and failure leave program, current frame, history and native trace together", async () => {
+  const p=make(),calls=[],released=[],events=[];
+  const s=createInteractionSession({program:p,bindings:[],assetResolver:request=>new Promise((resolve,reject)=>calls.push({request,resolve,reject}))});
+  const lease=id=>({dispose(){released.push(id)}});s.subscribe(event=>events.push(event));
+  await tick();calls[0].resolve(lease('initial'));await s.whenSettled();const baseline=s.getState();
+  s.dispatch(camera({type:'pan',deltaPx:[20,30]},'map','cancel'));const cancelled=s.whenSettled();await tick();
+  assert.equal(s.getState().program,p);assert.equal(s.getState().scene,baseline.scene);assert.equal(s.getState().history.undoCount,0);
+  assert.deepEqual(calls[1].request.resourceRevisionVector.filter(r=>r.kind==='projection'),[{kind:'projection',id:'map',revision:1,childPath:[]}]);
+  s.dispatch({type:'undo'});assert.equal((await cancelled).status,'cancelled');assert.equal(calls[1].request.signal.aborted,true);
+  calls[1].resolve(lease('late'));await tick();assert.deepEqual(released,['late']);
+  assert.equal(s.getState().program,p);assert.equal(s.getState().scene,baseline.scene);assert.equal(s.getState().revision,0);
+  s.dispatch(camera({type:'zoom',anchorPx:[80,90],factor:2,scaleExtent:[0.5,4]},'map','fail'));await tick();
+  calls[2].reject(new Error('offline asset'));assert.equal((await s.whenSettled()).status,'error');
+  assert.equal(s.getState().program,p);assert.equal(s.getState().scene,baseline.scene);assert.equal(s.getState().history.undoCount,0);
+  s.dispatch(camera({type:'pan',deltaPx:[20,30]},'map','success'));await tick();calls[3].resolve(lease('moved'));await s.whenSettled();
+  assert.deepEqual([circle(s.getState()).x,circle(s.getState()).y],[100,120]);assert.equal(s.getState().history.undoCount,1);
+  assert.deepEqual(events.filter(e=>e.type==='setViewport').map(e=>[e.transactionId,e.phase]),[['cancel','cancel'],['fail','error'],['success','commit'],['success','settled']]);
+  assert.deepEqual(released,['late','initial']);s.destroy();assert.deepEqual(released,['late','initial','moved']);
+});

@@ -1,0 +1,460 @@
+{
+  "parent": "cc300db35f86056d1ddd097c56dbe9e6f5db8e42",
+  "sourceCommit": "4931f38f37f9c2995a7b0ece0d4074261b3129b8",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "scope": "Explicit mount observeResize, content-box CSS size event, mount-owned observer cleanup and native prepared-update host policy. No new module, automatic authoring, camera inference, renderer or persisted state.",
+  "runtimeAndTypesFingerprint": "31070adeb465414631a5e9b892752850df5df31c90d97b88d3b95405a79854cd",
+  "checks": {
+    "cross": 273,
+    "resizeCases": 8,
+    "critical": {
+      "scope": "Changed session owner only",
+      "coverage": {
+        "interaction/session.js": {
+          "lines": 100,
+          "branches": 95.01,
+          "functions": 100
+        },
+        "all files": {
+          "lines": 100,
+          "branches": 95.01,
+          "functions": 100
+        }
+      },
+      "floors": {
+        "interaction/session.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      },
+      "status": "passed"
+    },
+    "realistic": {
+      "tests": 16,
+      "datasets": 5,
+      "recipes": 3
+    },
+    "browser": {
+      "tests": 1,
+      "dpr": 2,
+      "canonicalFragment": "docs/api/interaction.md#observe-the-mounted-surface-size",
+      "actualResizeObserver": true,
+      "canvasSvgExact": true,
+      "physicalFinalDimensions": [
+        1000,
+        600
+      ],
+      "disconnectCount": 1,
+      "lateProgramWrites": 0
+    },
+    "lifecycle": {
+      "mountDetachCycles": 100,
+      "finiteNonnegativeCssDimensions": true,
+      "duplicateDeduplication": true,
+      "observeFailurePreservesPreviousMount": true,
+      "disconnectFailureStillCleans": true,
+      "queuedSubscriberDestroy": true
+    },
+    "docsAndBoundaries": {
+      "concurrentInitial": {
+        "total": 55,
+        "passed": 49,
+        "failed": 6
+      },
+      "afterGenerationBeforeSizeAdjustment": {
+        "total": 55,
+        "passed": 53,
+        "failed": 2
+      },
+      "final": 55,
+      "packageManifestPolicy": 2,
+      "sourcePinnedBuild": {
+        "pages": 172,
+        "llmArtifacts": 1531,
+        "owning": 49,
+        "responsiveWidths": [
+          320,
+          390,
+          768,
+          1440
+        ],
+        "axeViolations": 0,
+        "overflow": false,
+        "manualInspection": "320px and1440px inspected: readable resize section, contextual fragment, contained code and navigation"
+      }
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "4cacde970b4973b5e0f733a307ac2697d7d59e616719fb315890bd873dad2aa3",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/observed-resize-prepared-native-policy PASS",
+          "interaction/prepared-update PASS",
+          "interaction/asset-preparation PASS",
+          "interaction/history PASS",
+          "interaction/annotation-drag PASS",
+          "interaction/screen-annotation PASS",
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 965,
+            "minifiedBytes": 2543661,
+            "gzipBytes": 729256
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 562,
+            "minifiedBytes": 1317723,
+            "gzipBytes": 384464
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 187,
+            "minifiedBytes": 363093,
+            "gzipBytes": 116618
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "4cacde970b4973b5e0f733a307ac2697d7d59e616719fb315890bd873dad2aa3",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/observed-resize-prepared-native-policy PASS",
+          "interaction/prepared-update PASS",
+          "interaction/asset-preparation PASS",
+          "interaction/history PASS",
+          "interaction/annotation-drag PASS",
+          "interaction/screen-annotation PASS",
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 965,
+            "minifiedBytes": 2543661,
+            "gzipBytes": 727710
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 562,
+            "minifiedBytes": 1317723,
+            "gzipBytes": 383715
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 187,
+            "minifiedBytes": 363093,
+            "gzipBytes": 116127
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43599
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "4cacde970b4973b5e0f733a307ac2697d7d59e616719fb315890bd873dad2aa3",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/observed-resize-prepared-native-policy PASS",
+          "interaction/prepared-update PASS",
+          "interaction/asset-preparation PASS",
+          "interaction/history PASS",
+          "interaction/annotation-drag PASS",
+          "interaction/screen-annotation PASS",
+          "interaction/geographic-annotation-edit PASS",
+          "interaction/annotation-edit PASS",
+          "interaction/geographic-representation PASS",
+          "interaction/node-movement PASS",
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 965,
+            "minifiedBytes": 2543661,
+            "gzipBytes": 729256
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 562,
+            "minifiedBytes": 1317723,
+            "gzipBytes": 384464
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 187,
+            "minifiedBytes": 363093,
+            "gzipBytes": 116618
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        ]
+      }
+    ]
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1049,
+    "packedBytes": 1491340,
+    "unpackedBytes": 6784871,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-resize-4cacde97.tgz",
+    "sha1": "2126910ff3702da1b1f1003a1f704531f73a8893",
+    "sha256": "4cacde970b4973b5e0f733a307ac2697d7d59e616719fb315890bd873dad2aa3"
+  },
+  "node20PackageMeasurement": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 1049,
+    "packedBytes": 1491340,
+    "unpackedBytes": 6784871
+  },
+  "limits": {
+    "entries": 1049,
+    "packedBytes": 1492000,
+    "unpackedBytes": 6785000,
+    "interactionGzip": 116700,
+    "searchBytes": 1030100
+  },
+  "preservedFailures": [
+    "Initial docs preflight used system Ruby2.6 PATH. Existing Ruby3.2 PATH passes without dependency changes.",
+    "Initial docsAndBoundaries55 started before canonical generator finished: freshness4 and search-size2 failed. After generation only search-size2 remained; measured1030081bytes requires minimal1030100cap, final55passes.",
+    "Initial Node20 package packed1491340 exceeded1491000; measured unpacked6784871 requires6785000. Canonical validator passes1049/1492000/6785000.",
+    "Initial Node20 installed command passed17runtime+strict types and measured5bundles, then failed old116300 interactioncap. Same archive/measurements rechecked against116700; Node22/24 complete commands exit0.",
+    "Initial installed manifest1/2 failed because new runtime case was not registered; exact case+statement count registration passes2/2."
+  ],
+  "reusedEvidence": "Runtime unchanged since cross273. No full normal, full coverage or full installed suite claimed. Existing renderer proofs reused except fresh native resize Canvas/SVG exact browser comparison. Source-pinned docs rerun aftersource commit; generated metadata does not change tar runtime.",
+  "remaining": [
+    "Public animation player/current-frame assets",
+    "Camera gestures/history/reset baseline and source revise/abort/offline restore",
+    "Final AT40/41 and STEP074\u2013077 integration"
+  ],
+  "commands": {
+    "cross": "node --test --experimental-test-coverage --test-coverage-include=src/interaction/session.js test/unit/interaction-*.test.js test/contracts/interaction-types.test.js test/contracts/source-boundaries.test.js test/contracts/test-discovery.test.js",
+    "realistic": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js with pinned cache",
+    "browser": "node --test --test-name-pattern=\"canonical observed resize\" test/browser/interaction-session.browser.js",
+    "installed": "Node20/22/24 node .artifacts/session-resize-consumer.mjs; Node20 same artifact cap recheck",
+    "docs": "docs:preflight; docs:generate; owning49 plus packageboundaries6; source-pinned provenance/machine/llms; owning49/build/built; fourwidth browser/Axe"
+  },
+  "evidenceFiles": [
+    {
+      "path": "session-resize-browser.log.gz",
+      "sha256": "3749e6f6985bc39bfe27783689824b8614fe06568057ddcb40e0afa5eec22188"
+    },
+    {
+      "path": "session-resize-build.log.gz",
+      "sha256": "382d86e8d86e5207d07efd08a6c062548bf3638311f4cbf87f15800772e10291"
+    },
+    {
+      "path": "session-resize-built.log.gz",
+      "sha256": "27ff6e226c96663ea21eaa7bd53a841845ace34abf34cea1a316cafc30ca69cd"
+    },
+    {
+      "path": "session-resize-cap-recheck.mjs.gz",
+      "sha256": "21ceedf51fdef08ecba0959dcea6d58cc1e50e1826206533be910c0cf17ceab0"
+    },
+    {
+      "path": "session-resize-cap-recheck20.log.gz",
+      "sha256": "96e41ad47ce7a757f0bc8f0657f7be55ad23fc102451d44e25408b26eecd1d98"
+    },
+    {
+      "path": "session-resize-consumer.mjs.gz",
+      "sha256": "ce6e2725eb07aa2af211b05091eb0bd0fab21fe18deac112ea5fefaa25918aa7"
+    },
+    {
+      "path": "session-resize-consumer20.log.gz",
+      "sha256": "8847d6b32f4821825088fecb0d7611f571ed740b06cecd2e17496dfd0cb31981"
+    },
+    {
+      "path": "session-resize-consumer22.log.gz",
+      "sha256": "fd58e7c1ba85763a9ebbd9d67773d08b75e792075567d6cb3529ddd06532ee42"
+    },
+    {
+      "path": "session-resize-consumer24.log.gz",
+      "sha256": "71a33ad9af64919363087aeb81cedfb248dff85026f5fe626f3b8000753b5d73"
+    },
+    {
+      "path": "session-resize-critical.json.gz",
+      "sha256": "6c5a6167e23c81742d3b199b4bf3940c86eb6bf52ef4de8358a4d7af8ec4a9d6"
+    },
+    {
+      "path": "session-resize-cross.log.gz",
+      "sha256": "935be57148d3df9e0e21e81c5b49aed4cc09e6f4e4afd08fb5300941b57a8f25"
+    },
+    {
+      "path": "session-resize-doc-browser.log.gz",
+      "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
+    },
+    {
+      "path": "session-resize-doc-browser.mjs.gz",
+      "sha256": "c08ca10a4d422802b15fc0be4974382ef68765d3ad10d6d2f1929905a414ebcc"
+    },
+    {
+      "path": "session-resize-docs-final.log.gz",
+      "sha256": "e68276be041e642dfecfdf1245ae78f098e210c4590c7c222793d8b7e6570bb0"
+    },
+    {
+      "path": "session-resize-docs-initial.log.gz",
+      "sha256": "07232041a3816e2bbf7aeda995ae2c624dbfb1fe5ab82031d5785f802f627637"
+    },
+    {
+      "path": "session-resize-docs-owning.log.gz",
+      "sha256": "6930b1567797fc7584476000710bbacda2e47e95dc31bf7d77ac93b47539c982"
+    },
+    {
+      "path": "session-resize-docs-pinned.log.gz",
+      "sha256": "0a86617e7ba6e83b429aa89a68cb554ebe927b9a237b893de2539f1af719a33f"
+    },
+    {
+      "path": "session-resize-fixed.json.gz",
+      "sha256": "fc2ad80a7c6aef97d5f1fc332b3b4fe2c676c76494601fd364d1e3b26944a267"
+    },
+    {
+      "path": "session-resize-generation.log.gz",
+      "sha256": "601ed194fe70ff42e7a760c0a6bc3bd6fba19c95208f8f92029bdc052f5ad8f9"
+    },
+    {
+      "path": "session-resize-initial.log.gz",
+      "sha256": "dc2fe7f57bed317e7d98dad9e1d229c7d008099bf037fdb8c899fd6cbb97b450"
+    },
+    {
+      "path": "session-resize-manifest-final.log.gz",
+      "sha256": "1fcfa189f1632f19b34de2971ffc3c261ee4d4656a11a47a665701ec6382ee61"
+    },
+    {
+      "path": "session-resize-manifest.log.gz",
+      "sha256": "e6681178a61f3bb7fb49813aacaf277def5d87d0e0d1d03346f5c269da2adc8b"
+    },
+    {
+      "path": "session-resize-package-initial.log.gz",
+      "sha256": "00d85d4802da26633d86bde2bb02b063f128e0da6c65a74982dd5340c6d3d3c5"
+    },
+    {
+      "path": "session-resize-package-measure.json.gz",
+      "sha256": "31eda607609a66ef518e19f341ffb87016a8e1bf1bb09074fafbf5bc32815133"
+    },
+    {
+      "path": "session-resize-package.log.gz",
+      "sha256": "f9c3a846fd9e231fd78fdd3b3c9a547e94603381ee49c79a9c0c80820657a96a"
+    },
+    {
+      "path": "session-resize-preflight-fixed.log.gz",
+      "sha256": "2f2e9a0ed4ed9454c589ce2ffc2e8c66ee96daed6dfcbf90d00cd2dbb150fe7c"
+    },
+    {
+      "path": "session-resize-preflight.log.gz",
+      "sha256": "f85de0cb1897103445773114c19ac8df04bf8ccffc3f1e56905ccfcdac3f0a3c"
+    },
+    {
+      "path": "session-resize-provenance.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "session-resize-qualify.py.gz",
+      "sha256": "979f55a7e26d176142b3b0ccb99b8e24117c006cb73f0c285558f1419d283806"
+    },
+    {
+      "path": "session-resize-realistic.log.gz",
+      "sha256": "81db20ec3c508526a8cfc411a8499c98111fe99bb505895a43dcdfe8bb337f82"
+    },
+    {
+      "path": "api-interaction-1440.png",
+      "sha256": "be73adb56143a6a0bdcf0f7bbf08f9a2c9e6d634bb32e092a75b09ae74c72d46"
+    },
+    {
+      "path": "api-interaction-320.png",
+      "sha256": "f9397d5fc74ccb710221c6efcd6853f9c741e5686505fc36c541dff671f5ff98"
+    },
+    {
+      "path": "api-interaction-390.png",
+      "sha256": "326ca29ef700e732b7ce2791da2bcc85c89a86af2e841796a6bb08b345f58984"
+    },
+    {
+      "path": "api-interaction-768.png",
+      "sha256": "6dab4f23b76fddd5161939b7380b75a407bc9d2ebb229dd889009ad6836f79c7"
+    }
+  ]
+}

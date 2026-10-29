@@ -1,6 +1,7 @@
 import { assertProgramSingleY } from "../materialization/frameState.js";
 import { validateTrailBinding } from "../grammar/trailPlot.js";
 import { deriveTrailSeries } from "../grammar/trailSeries.js";
+import { validateScreenAnnotationLayer } from "../grammar/screenAnnotation.js";
 import { validateResponsiveCanvasState } from "../grammar/responsiveCanvas.js";
 import { validateResponsiveLabelState } from "../grammar/responsiveLabels.js";
 import { normalizeMarkShadow, MARK_SHADOW_TYPES } from "../grammar/markShadow.js";
@@ -270,7 +271,7 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       if (kind === "dataset" && !legacy && resource.source === undefined && Array.isArray(resource.values)) {
         validateSourceIdentity(resource);
       }
-      if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource);
+      if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource); if (resource.annotationAnchor !== undefined) validateScreenAnnotationLayer(resource);
         if (resource.mark?.type === "trail") {
           validateTrailBinding(resource, program.markConfigs[resource.id]?.trailPlot);
           const dataset = findDataset(program, resource.data);

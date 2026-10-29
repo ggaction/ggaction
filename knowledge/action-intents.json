@@ -2379,6 +2379,11 @@
     "editTrailPlot": {
       "target": "trail",
       "width": 12
+    },
+    "editAnnotation": {
+      "target": "annotation",
+      "text": "Updated note",
+      "dx": 8
     }
   },
   "callPatternOverrides": {
@@ -2632,6 +2637,10 @@
     ],
     "removeMarkVisibility": [
       "removeMarkVisibility({ target? })"
+    ],
+    "editAnnotation": [
+      "editAnnotation({ target?, text?, x?, y?, dx?, dy? })",
+      "editAnnotation({ target?, placement?, layout?, fill?, fontSize? })"
     ]
   },
   "errorOverrides": {

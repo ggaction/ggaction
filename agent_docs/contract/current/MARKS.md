@@ -1270,10 +1270,10 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 
 ## `createAnnotation`
 
-- Signature: `createAnnotation({ id?, text, anchor?, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })`.
+- Signature: `createAnnotation({ id?, text, anchor?, format?, source?, select?, selection?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })`.
 - Exactly one anchor branch is selected. Mark anchor omits x/y/space and uses explicit/current/unique final-item source.
   Data anchor requires x and y and selects one explicit/current/unique complete Cartesian layer for data, coordinate,
-  both scales, field types and temporal units. Plot anchor requires `space:"plot"`, finite x/y in [0,1], optional
+  both scales, field types and temporal units. Screen anchor requires `space:"screen"` and finite x/y in local Canvas logical pixels, with x right and y down. It creates no dataset, scale or coordinate and rejects source/data/coordinate/membership. Plot anchor requires `space:"plot"`, finite x/y in [0,1], optional
   existing data/coordinate, and ordinary `<id>-x`/`<id>-y` linear [0,1] scales. x=0 is left; y=0 is bottom.
 - `anchor:"plot-center"`는 plot x/y=.5와 align:center/baseline:middle을 함께 소유한다.
   x/y/space/source/align/baseline 병용은 오류다. data/coordinate/style/dx/dy/layout은 기존 plot branch와 같다.
@@ -1283,22 +1283,26 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
 - `rotation` uses the same `RotationInput` and radians normalization as Text and Mark Labels.
 - Data datum contributes to automatic domains and is independent after creation. Mark anchor retains source-owned
   final-item lifecycle. Plot named scales remain ordinary editable resources. No nearest-mark search, hidden dataset,
-  annotation registry, or editAnnotation action exists.
+  annotation registry exists.
 - The full lower chain is preflighted on a discarded immutable branch. Branch conflicts, ambiguous/incomplete source,
   missing axis, plot bounds, content/style/layout errors fail before child effects. Source-owned Text aliases are excluded
   from data-source inference.
-- Later edits use encodeText, encodeX/Y, editTextMark, layoutLabels/removeLabelLayout, editScale and removeMark.
+- Later edits use editAnnotation or the lower encodeText, encodeX/Y, editTextMark, layoutLabels/removeLabelLayout, editScale and removeMark actions.
 - Plot-anchored annotations can accompany Polar and Parallel facets. Their Cartesian plot frame does not change the primary chart family; notes replay within each populated cell.
 
 ### Formal values — `createAnnotation`
 
 - Implemented: `CreateAnnotationOptions = TextStyle & { id?: UserId; text: unknown; format?: TextFormat;
-  layout?: false | Omit<LabelLayoutOptions,"target"> } & (MarkAnchor | DataAnchor | PlotAnchor | PlotCenterAnchor)`.
-- MarkAnchor: `{ source?: UserId; x?: never; y?: never; space?: never; data?: never; coordinate?: never }`.
+  layout?: false | Omit<LabelLayoutOptions,"target"> } & (MarkAnchor | DataAnchor | PlotAnchor | PlotCenterAnchor | ScreenAnchor)`.
+- MarkAnchor: `{ source?: UserId; x?: never; y?: never; space?: never; data?: never; coordinate?: never } & MarkLabelSelectionOptions`.
+- Mark anchors accept either inline `select` or same-source named `selection`, using createMarkLabels final-item membership. Data/plot/plot-center anchors reject both. Empty membership stays empty; no nearest-row inference occurs.
 - DataAnchor: `{ x: unknown; y: unknown; space?: "data"; source?: UserId; data?: never; coordinate?: never }`.
 - PlotAnchor: `{ x: UnitInterval; y: UnitInterval; space: "plot"; source?: never; data?: UserId; coordinate?: UserId }`.
 - PlotCenterAnchor: `{ anchor:"plot-center"; data?:UserId; coordinate?:UserId; x?:never; y?:never; space?:never; source?:never; align?:never; baseline?:never }`. Other branches reject `anchor`.
-- Proposed (NOT IMPLEMENTED): nearest-mark search, a dedicated annotation registry, and an `editAnnotation` facade.
+- ScreenAnchor: `{ space:"screen"; x:FiniteNumber; y:FiniteNumber; source?:never; data?:never; coordinate?:never; select?:never; selection?:never }`.
+- Screen anchors store `layer.annotationAnchor={space:"screen",x,y}` with existing constant Text encoding and style. They attach to the local Canvas, preserve coordinates across resize/margin/data/scale edits, and use ordinary nested child transforms. `clip:true` uses the local Canvas extent. Collision layout may displace the concrete text while the stored anchor remains unchanged.
+- Screen items have one stable `[childNamespaces,owner,"item",["annotation","screen"]]` key, `{kind:"screen"}` graphic lineage, and no rows/resource references. Codec validates the exact screen Text owner; named selection/highlight and removal retain native lifecycle. Field/conditional encodings and source-owned placement/membership are unavailable.
+- Proposed (NOT IMPLEMENTED): nearest-mark search and a dedicated annotation registry.
 
 ### Value coverage — `createAnnotation`
 
@@ -1306,6 +1310,43 @@ Horizontal Cartesian lines transpose the same series derivation when X is quanti
   plot fractions, empty data, domain/reverse/Canvas replay, layout displacement/leader cleanup, lower edits/removal,
   option/type exclusivity, ambiguity, invalid child inputs, previous/caller immutability, lower/literal graphic and PNG parity.
 - Evidence: `test/unit/actions/marks/annotation.test.js`, `test/contracts/annotation.test.js`, installed package/browser probes.
+
+## `editAnnotation`
+
+- Signature: `editAnnotation({ target?, text?, format?, x?, y?, placement?, layout?, select?, selection?, all?, ...TextStyle })`. Full-only.
+- Targets an existing Text layer created by createAnnotation, createTextMark or createMarkLabels. Resolution is explicit,
+  then current eligible Text, then unique Text; ambiguous/missing/non-Text targets reject. The patch must be nonempty.
+- Independent Cartesian x/y edits require both existing position bindings to be constant datum encodings with scales.
+  Each requested axis preserves its current field type, temporal unit, scale and coordinate. A single axis may change.
+  Existing screen anchors instead accept finite x/y in local Canvas logical pixels. Source-owned, field-driven, conditional and other non-Cartesian positions reject; this facade does not create/rebind an anchor.
+  Plot fraction scales remain ordinary editable scales; subsequent datum edits use native encoding validation.
+- `text` invokes encodeText with a constant value. `format` alone reformats existing unconditional constant content;
+  field/content/conditional definitions require explicit replacement text or the lower encodeText action.
+- TextStyle has the native fill, stroke cap/join details, outline, shadow, blend, clip, opacity, font, alignment, rotation, multiline,
+  inheritColor and dx/dy options. Native applicability/conflict/validation rules are unchanged. dx/dy reject when an
+  offset encoding or conditional owns that channel; explicit lower encoding actions remain available.
+- `select`, `selection`, or `all:true` replaces source-owned label membership through editMarkLabelSelection. Exactly one is allowed; independent Text rejects them. Named selections must target the same source, empty inline membership produces no labels, and native reference/removal/revision semantics remain unchanged.
+- `placement` replaces source-owned semantic placement or accepts `"auto"`; `layout` sets a target-free label layout,
+  while false removes the active collision layout. Disabling collision layout precedes placement replacement so its
+  old leader cannot falsely conflict. Native placement and collision leaders cannot coexist.
+- The complete child chain is preflighted on a discarded immutable branch before applying visible wrapped children.
+  Failure preserves the original program, trace and caller input. Content, position, style, placement and layout keep
+  their existing single owners; source revisions, scale/Canvas replay, selection/highlight, codec and removal remain native.
+- No registry, hidden data, new renderer, creation shortcut or screen-anchor conversion is introduced. Basic rejects.
+
+### Formal values — `editAnnotation`
+
+- Implemented: `EditAnnotationOptions = Omit<TextMarkOptions,"id"|"data"|"source"|"text"|"missing"> &
+  { target?: UserId; text?: unknown; format?: TextFormat; x?: unknown; y?: unknown;
+  placement?: MarkLabelPlacement|"auto"; layout?: false|Omit<LabelLayoutOptions,"target"> } &
+  ((MarkLabelSelectionOptions & {all?:never}) | {all:true; select?:never; selection?:never})`.
+- Proposed (NOT IMPLEMENTED): no additional options in this editor.
+
+### Value coverage — `editAnnotation`
+
+- ✅ Covered: datum/type/scale preservation, categorical/time/plot anchors, source-owned placement, layout/leader removal,
+  native parity, explicit screen anchors and rowless lineage, immutable preflight failures, typed aggregate item membership, named-selection replay, scoped command commit and restore, Basic boundary.
+- Evidence: `test/unit/interaction-annotation.test.js`, `test/unit/annotation-screen.test.js`, `test/contracts/interaction-types.test.js`.
 
 ## `createTextMark`
 

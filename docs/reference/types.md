@@ -181,6 +181,7 @@ interface ChartProgramActions {
   editMarkLabelPlacement(options: TargetedOptions<EditMarkLabelPlacementOptions>): ChartProgram;
   removeMarkLabels(options: TargetedOptions<RemoveMarkLabelsOptions>): ChartProgram;
   createAnnotation(options: TargetedOptions<CreateAnnotationOptions>): ChartProgram;
+  editAnnotation(options: TargetedOptions<EditAnnotationOptions>): ChartProgram;
   createStatisticalReference(options: TargetedOptions<CreateStatisticalReferenceOptions>): ChartProgram;
   createOverlay(options?: TargetedOptions<CreateOverlayOptions>): ChartProgram;
   createLayerPlot(options: TargetedOptions<CreateLayerPlotOptions>): ChartProgram;
@@ -509,8 +510,12 @@ export type AngleEncodingOptions =
 
 ```typescript
 type AnnotationAnchor =
+  | { anchor?: never; space: "screen"; x: number; y: number; source?: never; data?: never;
+      coordinate?: never; select?: never; selection?: never; }
   | {
       anchor: "plot-center";
+      select?: never;
+      selection?: never;
       x?: never;
       y?: never;
       space?: never;
@@ -520,7 +525,7 @@ type AnnotationAnchor =
       data?: string;
       coordinate?: string;
     }
-  | {
+  | ({
       anchor?: never;
       x?: never;
       y?: never;
@@ -528,9 +533,11 @@ type AnnotationAnchor =
       source?: string;
       data?: never;
       coordinate?: never;
-    }
+    } & MarkLabelSelectionOptions)
   | {
       anchor?: never;
+      select?: never;
+      selection?: never;
       x: unknown;
       y: unknown;
       space?: "data";
@@ -542,6 +549,8 @@ type AnnotationAnchor =
       anchor?: never;
       x: number;
       y: number;
+      select?: never;
+      selection?: never;
       space: "plot";
       source?: never;
       data?: string;
@@ -550,6 +559,8 @@ type AnnotationAnchor =
 ```
 
 </details>
+
+Related types: [`MarkLabelSelectionOptions`](#type-marklabelselectionoptions).
 
 ### `AnnotationBaseOptions` {#type-annotationbaseoptions}
 
@@ -2994,6 +3005,8 @@ Related types: [`AdjacentPlotSpecification`](#type-adjacentplotspecification) ·
 
 ```typescript
 export type CreateAnnotationOptions = AnnotationBaseOptions & AnnotationAnchor;
+
+/** Existing Text or attached labels; preserves stored anchor bindings. Full-only. */
 ```
 
 </details>
@@ -5900,6 +5913,29 @@ export type EdgeRouteMethod = "hierarchical" | "force-directed" | "density" | "e
 ```
 
 </details>
+
+### `EditAnnotationOptions` {#type-editannotationoptions}
+
+<details markdown="1">
+<summary>Expand EditAnnotationOptions</summary>
+
+```typescript
+export type EditAnnotationOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "text" | "missing"> & {
+  target?: string;
+  text?: unknown;
+  /** Without text, reformat the current constant content. */
+  format?: TextFormat;
+  /** Replace one existing independent Cartesian datum using its current scale and field type. */
+  x?: unknown;
+  y?: unknown;
+  placement?: MarkLabelPlacement | "auto";
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+} & ((MarkLabelSelectionOptions & { all?: never }) | { all: true; select?: never; selection?: never });
+```
+
+</details>
+
+Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`TextFormat`](#type-textformat) · [`MarkLabelPlacement`](#type-marklabelplacement) · [`LabelLayoutOptions`](#type-labellayoutoptions) · [`MarkLabelSelectionOptions`](#type-marklabelselectionoptions).
 
 ### `EditAxesOptions` {#type-editaxesoptions}
 
