@@ -209,3 +209,95 @@ test("destroy requested by a throwing prepared-update subscriber releases every 
   await assert.rejects(s.whenSettled(), /host observer/); assert.equal(s.getState().destroyed, true); assert.equal(request.signal.aborted, true);
   assert.equal(s.getState().preparation, null); assert.equal(s.getState().assets, null);
 });
+
+test("100 resize worker asset pipelines publish only the latest ready candidate and release every lifetime", async t => {
+  let committed = 0, discarded = 0;
+  for (let cycle = 0; cycle < 100; cycle++) {
+    const p = graph().createGraphPlot({ id: "network" }), saved = serializeProgram(p);
+    const workers = [], assets = [], listeners = new Map(), events = [];
+    const executor = createGraphRouteExecutor({ createWorker() {
+      const callbacks = new Map();
+      const worker = { job: null, late: null, terminated: 0, callbacks,
+        postMessage({ job }) { this.job = structuredClone(job); this.late = callbacks.get("message"); },
+        addEventListener(type, callback) { callbacks.set(type, callback); },
+        removeEventListener(type) { callbacks.delete(type); }, terminate() { this.terminated++; } };
+      workers.push(worker); return worker;
+    } });
+    let observer;
+    class ResizeObserver {
+      constructor(callback) { this.callback = callback; this.disconnected = 0; observer = this; }
+      observe(element) { this.element = element; }
+      disconnect() { this.disconnected++; }
+      resize(width, height) { this.callback([{ target: this.element, contentRect: { width, height } }]); }
+    }
+    const element = { ownerDocument: { defaultView: { ResizeObserver } },
+      getBoundingClientRect() { return { left: 0, top: 0, width: 400, height: 300 }; },
+      addEventListener(type, listener) { listeners.set(type, listener); }, removeEventListener(type) { listeners.delete(type); } };
+    const s = createInteractionSession({ program: p, bindings: [], assetResolver(request) {
+      const entry = { request, releases: 0 };
+      entry.lease = { dispose() { entry.releases++; } };
+      return new Promise(resolve => { entry.resolve = resolve; assets.push(entry); if (assets.length === 1) resolve(entry.lease); });
+    } });
+    assert.equal((await s.whenSettled()).status, "settled"); s.mount(element, { observeResize: true });
+    let sequence = 0;
+    s.subscribe(event => {
+      events.push(event);
+      if (event.type === "resize") {
+        const id = `routes-${++sequence}`, size = event.size, exponent = sequence + 1;
+        s.updateProgram(async ({ program, signal, transactionId }) => {
+          const prepared = await prepareGraphEdgeRoutes(program, { kind: "create", id, graph: "graph", layout: "layout", method: "edge-path", options: { exponent } }, { executor, signal, requestToken: transactionId });
+          return program.bundleGraphEdges({ prepared, requestToken: transactionId }).editGraphPlot({ target: "network", routes: id }).editCanvas(size);
+        }, { history: "record", transactionId: id, origin: "user" });
+      }
+    });
+    observer.resize(500, 300); await tick(); const first = s.whenSettled();
+    workers[0].late({ data: computeGraphEdgeRoutes(workers[0].job) }); await tick();
+    assert.equal(assets.length, 2); assert.equal(s.getState().program, p);
+    observer.resize(600, 350); await tick(); const second = s.whenSettled();
+    assert.equal((await first).status, "cancelled"); assert.equal(assets[1].request.signal.aborted, true);
+    assets[1].resolve(assets[1].lease); await tick(); discarded++;
+    assert.equal(assets[1].releases, 1); assert.equal(s.getState().program, p);
+    assert.equal(s.getState().history.undoCount, 0); assert.equal(events.some(event => event.type === "program"), false);
+    workers[1].late({ data: computeGraphEdgeRoutes(workers[1].job) }); await tick();
+    assert.equal(assets.length, 3); assert.equal(s.getState().program, p);
+    if (cycle % 2 === 0) {
+      assets[2].resolve(assets[2].lease); assert.equal((await second).status, "settled"); committed++;
+      assert.equal(s.getState().program.graphicSpec.objects.canvas.properties.width, 600);
+      assert.equal(s.getState().history.undoCount, 1);
+      observer.resize(700, 400); await tick(); const last = s.whenSettled();
+      s.destroy(); assert.equal((await last).status, "cancelled");
+      workers[2].late({ data: computeGraphEdgeRoutes(workers[2].job) });
+    } else {
+      s.destroy(); assert.equal((await second).status, "cancelled");
+      assets[2].resolve(assets[2].lease); discarded++;
+    }
+    const final = s.getState(), count = events.length;
+    assert.equal(s.destroy(), false); observer.resize(800, 450); await tick();
+    assert.equal(s.getState(), final); assert.equal(events.length, count);
+    assert.equal(listeners.size, 0); assert.equal(observer.disconnected, 1);
+    assert.ok(workers.every(worker => worker.terminated === 1 && worker.callbacks.size === 0));
+    assert.ok(assets.every(asset => asset.releases === 1));
+    assert.deepEqual(events.filter(event => event.type === "update").map(event => event.status), cycle % 2 === 0 ? ["cancelled", "settled", "cancelled"] : ["cancelled", "cancelled"]);
+    assert.equal(events.filter(event => event.type === "program").length, cycle % 2 === 0 ? 1 : 0);
+    assert.equal(serializeProgram(p), saved); executor.dispose();
+  }
+  const actual = { committed, discarded }, expected = { committed: 50, discarded: 150 };
+  assert.deepEqual(actual, expected); t.diagnostic(JSON.stringify({ input: { cycles: 100, replacement: "resize-worker-assets", destroy: "alternating-worker-or-assets" }, expected, actual, diff: [] }));
+});
+
+test("late prepared results cannot replace the newer exact resource revision vector", async t => {
+  const original = base(), firstProgram = original.editParameter({ target: "n", value: 1 });
+  const s = createInteractionSession({ program: original, bindings: [] }), events = [];
+  s.subscribe(event => { if (event.type === "update") events.push(event); });
+  s.updateProgram(firstProgram); const first = pending(s, { transactionId: "job1" }); await tick();
+  const next = firstProgram.editParameter({ target: "n", value: 2 });
+  s.updateProgram(next); const second = pending(s, { transactionId: "job2" }); await tick();
+  const input = { dispatch: [first, second].map((run, index) => `job${index + 1}@revision${run.call.request.resourceRevisionVector[0].revision}`), completion: ["job2", "job1"], revisionOwner: "parameter:n" };
+  assert.deepEqual(input.dispatch, ["job1@revision1", "job2@revision2"]);
+  second.call.resolve(next); await second.settled; const accepted = s.getState();
+  first.call.resolve(firstProgram); await tick(); assert.equal(s.getState(), accepted);
+  const actual = { applied: events.filter(e => e.status === "settled").map(e => e.transactionId), discarded: events.filter(e => e.status === "cancelled").map(e => e.transactionId), finalRevision: s.getState().program.semanticSpec.resources[0].revision };
+  const expected = { applied: ["job2"], discarded: ["job1"], finalRevision: 2 };
+  assert.deepEqual(actual, expected); assert.equal(s.getState().program, next); assert.equal(first.call.request.signal.aborted, true);
+  t.diagnostic(JSON.stringify({ input, expected, actual, diff: [] })); s.destroy();
+});

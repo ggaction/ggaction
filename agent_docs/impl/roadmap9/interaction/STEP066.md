@@ -12,7 +12,9 @@
 - [x] D: 배타 native camera operation 명령·공통 preparation/history/frame 경계
 - [x] E: 명시 native camera drag/wheel/pinch/keyboard binding과 취소·history 경계
 - [x] F: native gesture의 exact asset-bound preview와 transient lease 수명
-- [ ] animation/layout worker/camera 통합과 AT40/41 최종 matrix
+- [x] G: 편집 후보 priority/modifier와 단일 capture·준비 수명
+- [x] H: [현재 native 수명 matrix](SESSION_LIFECYCLE_MATRIX.md), 실제입력 literal·100회 resize/worker/asset 교차
+- [ ] public animation/player 연결 및 AT40/41 최종 합산
 - [ ] STEP074–077 전체 통합
 
 기반은 bounded history `68d09461d`다. [승인 원문](../AUTHORIZATION.json)의 remainingApproval을 재사용한다.

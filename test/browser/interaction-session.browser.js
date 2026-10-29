@@ -340,7 +340,7 @@ async function installCapturedSelections(page) {
   });
 }
 
-test("real mouse capture, Escape and long movement cancel once in Canvas and SVG", async () => {
+test("real mouse capture, Escape and long movement cancel once in Canvas and SVG", async t => {
   const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1100, height: 850 } });
   try {
     const { page, errors } = await openBrowserPage(context, new URL('examples/inspect-chart/', server.baseUrl).href,
@@ -351,10 +351,17 @@ test("real mouse capture, Escape and long movement cancel once in Canvas and SVG
       const before = await page.evaluate(async index => { const { serializeProgram } = await import('/src/persistence.js'); return serializeProgram(window.__captureSessions[index].getState().program); }, index);
       await page.mouse.move(box.x + 294, box.y + 118); await page.mouse.down();
       assert.equal(await page.locator(selector).evaluate((element, index) => element.hasPointerCapture(window.__captureIds[index]), index), true);
-      await page.mouse.move(box.x + 295, box.y + 118); await page.keyboard.press('Escape');
+      for (const dx of [294.25, 294.5, 295]) await page.mouse.move(box.x + dx, box.y + 118); await page.keyboard.press('Escape');
       assert.equal(await page.locator(selector).evaluate((element, index) => element.hasPointerCapture(window.__captureIds[index]), index), false);
       await page.mouse.up();
       assert.deepEqual(await page.evaluate(index => window.__captureEvents[index], index), [['cancel', 'Escape']]);
+      const actual = await page.evaluate(async ({index, selector, before}) => {
+        const {serializeProgram} = await import('/src/persistence.js'); const state = window.__captureSessions[index].getState();
+        return {terminalEvents:window.__captureEvents[index].map(([phase])=>phase),commitCount:window.__captureEvents[index].filter(([phase])=>phase==='commit').length,
+          historyDelta:state.history.undoCount,baselineChanged:serializeProgram(state.program)!==before,capturedPointersAfter:Number(document.querySelector(selector).hasPointerCapture(window.__captureIds[index]))};
+      },{index,selector,before});
+      const expected={terminalEvents:['cancel'],commitCount:0,historyDelta:0,baselineChanged:false,capturedPointersAfter:0};
+      assert.deepEqual(actual,expected);t.diagnostic(JSON.stringify({input:{backend:index===0?'Canvas':'SVG',events:['down','move','move','move','Escape','up']},expected,actual,diff:[]}));
       await page.mouse.move(box.x + 294, box.y + 118); await page.mouse.down();
       await page.mouse.move(box.x + 394, box.y + 118, { steps: 100 }); await page.mouse.up();
       assert.deepEqual(await page.evaluate(index => window.__captureEvents[index], index), [['cancel', 'Escape'], ['cancel', 'movement']]);
@@ -920,7 +927,7 @@ test("canonical asset resolver keeps browser pixels committed and closes late im
   finally { await context.close(); }
 });
 
-test("canonical native update and real browser workers reject stale completion and release transport on destroy", async () => {
+test("canonical native update and real browser workers reject stale completion and release transport on destroy", async t => {
   const { readFile } = await import("node:fs/promises"), { documentationCodeBlocks } = await import("../../scripts/doc-snippets.js");
   const source = documentationCodeBlocks(await readFile(new URL("../../docs/api/interaction.md", import.meta.url), "utf8"))
     .find(block => block.code.includes("const routeExecutor = createGraphRouteExecutor")).code;
@@ -944,8 +951,8 @@ test("canonical native update and real browser workers reject stale completion a
       const url = URL.createObjectURL(new Blob([module], { type: "text/javascript" }));
       try { await import(url); } finally { URL.revokeObjectURL(url); }
       const draw = program => { render(program, document.querySelector("canvas").getContext("2d"), { pixelRatio: 2 }); document.querySelector("#vector").innerHTML = renderToSVG(program); };
-      window.__routeWrites = 0; draw(window.__routeSession.getState().program);
-      window.__routeSession.subscribe(event => { if (event.type === "program") { window.__routeWrites++; draw(event.state.program); } });
+      window.__routeWrites = 0; window.__routeStatuses = []; draw(window.__routeSession.getState().program);
+      window.__routeSession.subscribe(event => { if (event.type === "program") { window.__routeWrites++; draw(event.state.program); } if(event.type === "update") window.__routeStatuses.push([event.transactionId,event.status]); });
       window.__routeWorkers = [];
       const workerUrl = URL.createObjectURL(new Blob([`import {computeGraphEdgeRoutes} from ${JSON.stringify(new URL('/src/graph.js', location.href).href)};onmessage=({data})=>postMessage(computeGraphEdgeRoutes(data.job));`], { type: "text/javascript" }));
       const executor = createGraphRouteExecutor({ createWorker() {
@@ -963,7 +970,7 @@ test("canonical native update and real browser workers reject stale completion a
         window.__routeSession.updateProgram(async ({ program, signal, transactionId }) => {
           const prepared = await prepareGraphEdgeRoutes(program, { kind: "edit", target: "routes", options: { exponent: value } }, { executor, signal, requestToken: transactionId });
           return program.editEdgeRoute({ prepared, requestToken: transactionId });
-        }, { history: "record" });
+        }, { history: "record", transactionId: `job${value - 2}` });
       };
       document.querySelector("#destroy").onclick = () => { window.__routeCleanup(); executor.dispose(); URL.revokeObjectURL(workerUrl); };
       window.__routeLate = index => { const worker = window.__routeWorkers[index]; worker.late({ data: computeGraphEdgeRoutes(worker.job) }); };
@@ -981,6 +988,9 @@ test("canonical native update and real browser workers reject stale completion a
     await page.evaluate(async () => { window.__routeWorkers[1].release(); await window.__routeSession.whenSettled(); window.__routeLate(0); });
     assert.deepEqual(await page.evaluate(() => window.__routeParity()), { svg: true, pixels: true });
     assert.deepEqual(await page.evaluate(() => [window.__routeSession.getState().revision, window.__routeSession.getState().history.undoCount, window.__routeWrites]), [2, 2, 1]);
+    const actual=await page.evaluate(()=>({applied:window.__routeStatuses.filter(([,status])=>status==='settled').map(([id])=>id),discarded:window.__routeStatuses.filter(([,status])=>status==='cancelled').map(([id])=>id),finalRevision:window.__routeSession.getState().revision}));
+    const expected={applied:['job2'],discarded:['job1'],finalRevision:2};assert.deepEqual(actual,expected);
+    t.diagnostic(JSON.stringify({input:{dispatch:['job1','job2'],completion:['job2','job1'],baseRevision:1},expected,actual,diff:[]}));
     await page.getByRole("button", { name: "Prepare routes" }).click(); await page.waitForFunction(() => window.__routeWorkers.length === 3);
     await page.getByRole("button", { name: "Destroy routes" }).click(); await page.evaluate(() => window.__routeLate(2));
     assert.deepEqual(await page.evaluate(() => ({ destroyed: window.__routeSession.getState().destroyed, writes: window.__routeWrites,
