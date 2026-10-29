@@ -184,6 +184,7 @@ test("stops after an injected failure without mutating the input program", () =>
 test("plans point encoding scale, mark, and existing legend in order", () => {
   const program = {
     semanticSpec: {
+      datasets: [],
       layers: [{ id: "points", mark: { type: "point" }, encoding: {} }],
       guides: { legend: { series: {} } }
     },
@@ -310,6 +311,7 @@ test("plans the revised density target before every shared-scale mark", () => {
 test("plans each unique scale after one layer changes data", () => {
   const program = {
     semanticSpec: {
+      datasets: [],
       layers: [{
         id: "points",
         mark: { type: "point" },

@@ -3,7 +3,7 @@ import { requireDataset } from "../../selectors/datasets.js";
 import { requireCoordinate } from "../../selectors/coordinates.js";
 import { validateWaterfallBinding, readWaterfallItems } from "../../grammar/waterfallPlot.js";
 import { formatTextValue } from "../../grammar/text.js";
-import { resolveBarWidth } from "../../grammar/bars/geometry.js";
+import { resolveBarSlotBandwidth, resolveBarWidth } from "../../grammar/bars/geometry.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
 import { resolvePrimitiveGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 import { resolveCoordinateBounds } from "../coordinateBounds.js";
@@ -29,7 +29,7 @@ export function resolveWaterfallPlot(program, layer, config, resolvedScales = pr
   if (xScale === undefined || yScale === undefined) throw new TypeError("Waterfall requires resolved stage and value scales.");
   const categories = readScaleField(rows, xEncoding.field, xEncoding.fieldType);
   const centers = mapOrdinalPositionValues(categories, xScale);
-  const width = resolveBarWidth(config.width, Math.abs(xScale.bandwidth ?? xScale.step));
+  const width = resolveBarWidth(config.width, resolveBarSlotBandwidth(xScale));
   const color = layer.encoding.color;
   const colors = color === undefined ? undefined : mapScaleConsumerValues(readScaleField(rows, color.field, color.fieldType), resolvedScales[color.scale], "color");
   const definitions = layout.items.map((entry, index) => {

@@ -45626,7 +45626,6 @@
         "H2"
       ],
       "wraps": [
-        "editSemantic",
         "createCoordinate"
       ],
       "editableVia": [
@@ -45788,9 +45787,7 @@
       "authoringRoles": [
         "H3"
       ],
-      "wraps": [
-        "editSemantic"
-      ],
+      "wraps": [],
       "editableVia": [
         "editPyramidPlot",
         "removeMark"
@@ -45912,7 +45909,7 @@
       "name": "createOHLCPlot",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Create row-owned open, high, low and close prices with one shared price scale.",
+      "summary": "Draw explicit open, high, low and close roles as one row-owned item.",
       "signature": "createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;",
       "intents": [
         "create ohlc plot",
@@ -45942,7 +45939,6 @@
         "H2"
       ],
       "wraps": [
-        "editSemantic",
         "createScale",
         "createCoordinate"
       ],
@@ -46100,7 +46096,7 @@
       "name": "editOHLCPlot",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Edit OHLC fields and styles while preserving typed row identity.",
+      "summary": "Edit prices and styles while preserving typed row identities.",
       "signature": "editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;",
       "intents": [
         "edit ohlc plot",
@@ -46130,7 +46126,6 @@
         "H3"
       ],
       "wraps": [
-        "editSemantic",
         "createScale"
       ],
       "editableVia": [
@@ -46278,7 +46273,7 @@
       "name": "createWaterfallPlot",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Create ordered contribution bars, subtotals and totals with explicit source roles.",
+      "summary": "Draw ordered contributions, explicit totals and subtotals.",
       "signature": "createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;",
       "intents": [
         "create waterfall plot",
@@ -46309,7 +46304,6 @@
       ],
       "wraps": [
         "createCoordinate",
-        "editSemantic",
         "createScale"
       ],
       "editableVia": [
@@ -46391,7 +46385,7 @@
         {
           "name": "yScale",
           "required": false,
-          "type": "NonPointQuantitativePositionScaleOptions | undefined"
+          "type": "NonPointZeroSupportingPositionScaleOptions | undefined"
         },
         {
           "name": "width",
@@ -46446,7 +46440,7 @@
       "name": "editWaterfallPlot",
       "layer": "user-facing",
       "domain": "marks",
-      "summary": "Edit Waterfall fields and appearance while recalculating running balances and preserving typed stage identity.",
+      "summary": "Edit contribution meaning and appearance with stable stage identities.",
       "signature": "editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;",
       "intents": [
         "edit waterfall plot",
@@ -46476,7 +46470,6 @@
         "H3"
       ],
       "wraps": [
-        "editSemantic",
         "createScale"
       ],
       "editableVia": [
@@ -46554,7 +46547,7 @@
         {
           "name": "yScale",
           "required": false,
-          "type": "NonPointQuantitativePositionScaleOptions | undefined"
+          "type": "NonPointZeroSupportingPositionScaleOptions | undefined"
         },
         {
           "name": "width",

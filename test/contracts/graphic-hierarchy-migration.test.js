@@ -25,6 +25,20 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "waterfall": ["canvas","waterfall"],
+  "waterfall-labels": ["canvas","waterfall"],
+  "waterfall-no-connectors": ["canvas","waterfall"],
+  "ohlc": ["canvas","ohlc"],
+  "ohlc-labels": ["canvas","ohlc"],
+  "ohlc-no-doji": ["canvas","ohlc"],
+  "pyramid": ["canvas","pyramid"],
+  "pyramid-area": ["canvas","pyramid"],
+  "pyramid-up": ["canvas","pyramid"],
+  "pyramid-right": ["canvas","pyramid"],
+  "pyramid-left": ["canvas","pyramid"],
+  "pyramid-point": ["canvas","pyramid"],
+  "geographic-marks": ["canvas","geo-shape","geo-line","geo-point"],
+  "geographic-grid": ["canvas","graticule"],
   "nested-responsive": [],
   "responsive-guides": ["canvas", "horizontalGridLines", "barPlot", "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle", "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"],
   "edge-routes": ["canvas", "routesPlot"],

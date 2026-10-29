@@ -17,6 +17,12 @@ import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/b
 declare const p: ChartProgram; declare const basic: BasicChartProgram;
 const options: CreateWaterfallPlotOptions = {x:"stage",role:"role",value:"value",width:{pixels:8},labels:{content:"end"}};
 p.createWaterfallPlot(options).editWaterfallPlot({target:{childPath:["a"],id:"waterfall"},reset:false,labels:false,connectors:false});
+p.createWaterfallPlot({...options,yScale:{type:"symlog",constant:2}});
+p.editWaterfallPlot({yScale:{type:"pow",exponent:2}});
+// @ts-expect-error zero-origin cumulative geometry cannot use log position
+p.createWaterfallPlot({...options,yScale:{type:"log",domain:[1,20]}});
+// @ts-expect-error edits preserve the zero-origin position contract
+p.editWaterfallPlot({yScale:{type:"log",domain:[1,20]}});
 // @ts-expect-error explicit role and value fields are required
 p.createWaterfallPlot({x:"stage"});
 // @ts-expect-error width policies are mutually exclusive

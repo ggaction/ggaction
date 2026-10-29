@@ -1,4 +1,3 @@
-import { directProgramTrace } from "../support/program-traces.js";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
@@ -220,9 +219,9 @@ test("derives a bounded public option inventory without runtime prototype paths"
 
   assert.equal(inventory.counts.publicActions, 360);
   assert.equal(inventory.counts.topLevelOptionPaths, 3495);
-  assert.equal(inventory.counts.nestedOptionPaths, 31232);
-  assert.equal(inventory.counts.optionPaths, 34727);
-  assert.equal(inventory.counts.requiredOptionPaths, 23351);
+  assert.equal(inventory.counts.nestedOptionPaths, 31230);
+  assert.equal(inventory.counts.optionPaths, 34725);
+  assert.equal(inventory.counts.requiredOptionPaths, 23349);
   assert.equal(inventory.counts.excludedOptionPaths, 11376);
   for (const action of ["createWaterfallPlot", "editWaterfallPlot", "createGeoLODData", "editGeoLODData", "createOHLCPlot", "editOHLCPlot", "createPyramidPlot", "editPyramidPlot", "createGeoJoinData", "editGeoJoinData", "createGeometryData", "editGeometryData", "createProjection", "editProjection", "createGeoShapeMark", "editGeoShapeMark", "createGeoPointMark", "editGeoPointMark", "createGeoLineMark", "editGeoLineMark", "createGraticule", "editGraticule"]) {
     assert.ok(inventory.publicActions.some(value => value.name === action), action);
@@ -256,7 +255,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
   assert.equal(inventory.counts.topLevelCategoricalPaths, 1230);
   assert.equal(inventory.counts.topLevelLiteralValues, 4372);
   assert.equal(inventory.counts.literalFamilies, 277);
-  assert.equal(inventory.counts.pathLiteralRequirements, 16630);
+  assert.equal(inventory.counts.pathLiteralRequirements, 16628);
   assert.equal(inventory.counts.familyLiteralRequirements, 561);
   assert.equal(inventory.counts.pathDiversityRequirements, 560);
   for (const action of ["createHierarchyData", "editHierarchyData", "layoutHierarchy", "editLayout", "removeResource", "createTreePlot", "editTreePlot", "createTreemapPlot", "editTreemapPlot", "createPartitionPlot", "editPartitionPlot"]) {
@@ -649,7 +648,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 40908);
+  assert.equal(ledger.requirements.length, 40904);
   assert.deepEqual(ledger.requirements.filter(requirement =>
     /^(?:option-path:)(?:createTitle|editTitle)\.subtitleLineHeight$/u.test(requirement.id)
   ).map(requirement => requirement.id).sort(), [

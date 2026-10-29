@@ -6,11 +6,9 @@ import { resolveTemporalUnit } from "../../grammar/scales/index.js";
 import { resolveOHLCPlot } from "../../materialization/ohlc/plot.js";
 import { requireDataset } from "../../selectors/datasets.js";
 import { findCoordinate, resolveCartesianCoordinate } from "../../selectors/coordinates.js";
-import { requireLayer, resolveEligibleLayer } from "../../selectors/layers.js";
+import { resolveEligibleLayer } from "../../selectors/layers.js";
 import { resolveFacadeData, normalizeFieldEncoding, inferFacadeFieldType, normalizeGuides, applyFacadeGuides } from "./shared.js";
 import { assertMarkAvailable, resolveMarkId } from "../marks/shared.js";
-import { rematerializeHighlightBaseline } from "../marks/lifecycle.js";
-import { resolveMarkGraphicPlacement } from "../../materialization/graphicHierarchy.js";
 import { applyMaterializationPlan, planLayerDataRematerialization } from "../../materialization/dependencies.js";
 import { hasMaterializedLegend } from "../../materialization/legends.js";
 import { resolvePositionScaleDefinition, resolveColorScaleDefinition, resolveQuantitativeColorScaleDefinition } from "../scales/definitions.js";
@@ -21,21 +19,6 @@ import { legendBlockDescriptors } from "../guides/legends/target.js";
 import { resolveFacadeGuidePlan } from "../guides/facade.js";
 import { assertFacadeGuidesFrame } from "./frame.js";
 
-export const materializeOHLCPlot = /* @__PURE__ */ closedAction(
-  { op: "materializeOHLCPlot", description: "Materialize row-owned price stems, bodies and labels." }, ["id", "scales"], function ({ id, scales } = {}) {
-    if (scales !== undefined && typeof scales !== "boolean") throw new TypeError("OHLC scales must be boolean.");
-    const layer = requireLayer(this, id);
-    if (layer.mark.type !== "ohlc") throw new TypeError("OHLC materialization requires an OHLC mark.");
-    const highlighted = rematerializeHighlightBaseline(this, { target: id, operation: "materializeOHLCPlot", scales, resetProperty: "items", resetValue: [] });
-    if (highlighted !== undefined) return highlighted;
-    let next = this;
-    if (scales !== false) for (const scale of new Set(Object.values(layer.encoding).map(entry => entry.scale))) next = next.rematerializeScale({ id: scale, marks: false, guides: false });
-    const config = next.markConfigs[id].ohlcPlot, resolved = resolveOHLCPlot(next, layer, config);
-    if (!next.graphicSpec.objects[id]) next = next.createGraphics({ id, type: "collection", ...resolveMarkGraphicPlacement(next, { markType: "ohlc" }) });
-    next = next.editGraphics({ target: id, property: "items", value: resolved.graphics });
-    if (config.clip || next.graphicSpec.objects[id].clip !== undefined) next = next.editGraphics({ target: id, property: "clip", value: config.clip ? resolved.frame : false });
-    return next;
-  });
 
 function facade(editing) {
   const op = editing ? "editOHLCPlot" : "createOHLCPlot";
@@ -96,16 +79,7 @@ function facade(editing) {
       for (const channel of ["x", "y"]) if (previous) resolvePositionGuideRebinding(preview, channel, previous.encoding[channel].scale, encoding[channel].scale, id);
       const apply = candidate => {
         let next = findCoordinate(candidate, coordinate.id) ? candidate : candidate.createCoordinate(coordinate);
-        next = next.editSemantic({ property: `layer[${id}].mark.type`, value: "ohlc" })
-          .editSemantic({ property: `layer[${id}].data`, value: data })
-          .editSemantic({ property: `layer[${id}].coordinate`, value: coordinate.id })
-          .editSemantic({ property: `layer[${id}].ohlc`, value: normalized.binding })
-          ._withMarkConfig(id, { ...this.markConfigs[id], ohlcPlot: normalized.config });
-        for (const channel of Object.keys(previous?.encoding ?? {})) if (!encoding[channel]) next = next.editSemantic({ property: `layer[${id}].encoding.${channel}`, remove: true });
-        for (const [channel, binding] of Object.entries(encoding)) {
-          if (previous?.encoding[channel]?.temporalUnit && !binding.temporalUnit) next = next.editSemantic({ property: `layer[${id}].encoding.${channel}.temporalUnit`, remove: true });
-          for (const [property, value] of Object.entries(binding)) next = next.editSemantic({ property: `layer[${id}].encoding.${channel}.${property}`, value });
-        }
+        next = next.applyOHLCMark({ id, data, coordinate: coordinate.id, binding: normalized.binding, config: normalized.config, encoding });
         for (const [definition, options] of definitions) next = applyEncodingScale(next, definition, options, { reassignment: editing, allowTypeChange: true });
         for (const channel of ["x", "y"]) if (previous) next = rebindPositionGuides(next, channel, previous.encoding[channel].scale, encoding[channel].scale, id);
         next = applyMaterializationPlan(next, [...planLayerDataRematerialization(next, id), ...(hasMaterializedLegend(next) ? [{ op: "rematerializeLegend" }] : [])]);

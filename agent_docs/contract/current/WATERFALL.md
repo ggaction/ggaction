@@ -12,8 +12,10 @@
   delta에 reset 필드가 존재하면 false도 오류다. null/undefined, overflow, 미지 역할은 오류이며 추정하지 않는다.
 - encoding.x/y는 categorical stage와 value field/scale을 소유한다. layer.waterfall은 role/reset/label meaning,
   markConfigs.waterfallPlot은 width/bars/connectors/labels/clip을 소유한다. 값을 중복 저장하지 않는다.
-- yScale은 기존 quantitative position 옵션이다. 기본 zero:true/nice:false이며 실제 start/end 값에서 범위를 계산한다.
+- yScale은 zero-supporting quantitative position 옵션(linear/pow/sqrt/symlog)이다. 기본 zero:true/nice:false이며 실제 start/end 값에서 범위를 계산한다.
+  모든 기여는0기준에서 시작하므로 log 위치 척도는 생성·편집에서 거부한다. color의 log 척도는 별개이며 그대로 지원한다.
   기본 scale id는 <id>-x/<id>-y. x 중복은 행을 합치지 않으며 같은 band 위치에서 겹칠 수 있다.
+  band 비율 폭은 band scale의 bandwidth, point scale의 step을 기준으로 한다.
 - width는 {band:.72} 기본, 또는 {pixels:positive}. 두 정책은 배타적이다. bars는 positiveFill/negativeFill/
   totalFill/subtotalFill/stroke/strokeWidth/opacity/outline/shadow. 기본 fill은 #16a34a/#dc2626/#2563eb/#64748b,
   stroke #334155, width 1, opacity 1. structured FillPaint와 공통 outline/shadow를 지원한다.
@@ -39,6 +41,7 @@
 ### Formal values — `createWaterfallPlot`
 
 - Implemented: `createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): No proposal.
 - Required: `x`, `role`, `value`.
 - Optional: `id`, `data`, `coordinate`, `reset`, `yScale`, `width`, `bars`, `connectors`, `labels`, `color`, `clip`, `guides`.
 
@@ -60,6 +63,7 @@
 ### Formal values — `editWaterfallPlot`
 
 - Implemented: `editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): No proposal.
 - Required: nonempty patch.
 - Optional: `target`, every create option except `id`.
 

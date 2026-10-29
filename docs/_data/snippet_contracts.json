@@ -359,15 +359,15 @@
     "file": "api/axes/complete.md",
     "block": 2,
     "heading": "Independent named Cartesian axes",
-    "mode": "fragment",
-    "environment": "esm-context",
+    "mode": "complete",
+    "environment": "node-esm",
     "receivers": [],
     "resources": [
       "target: \"share\""
     ],
-    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: \"share\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "prerequisites": "Import chart from ggaction; this complete example creates its own Canvas, source, mark and single named Y axis.",
     "sha256": "601568e7dfebbcab29d791cf2f0a979dc3237c3721bfa15675feeec8588a7d6c",
-    "executable": false
+    "executable": true
   },
   {
     "file": "api/axes/complete.md",

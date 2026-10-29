@@ -3,7 +3,7 @@ import { requireDataset } from "../../selectors/datasets.js";
 import { requireCoordinate } from "../../selectors/coordinates.js";
 import { validateOHLCBinding, readOHLCItems } from "../../grammar/ohlcPlot.js";
 import { formatTextValue } from "../../grammar/text.js";
-import { resolveBarWidth, resolveBarInterval } from "../../grammar/bars/geometry.js";
+import { resolveBarSlotBandwidth, resolveBarWidth, resolveBarInterval } from "../../grammar/bars/geometry.js";
 import { validateConcreteGraphicProperties } from "../../grammar/schemas/concreteGraphic.js";
 import { resolvePrimitiveGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 import { resolveCoordinateBounds } from "../coordinateBounds.js";
@@ -37,7 +37,7 @@ export function resolveOHLCPlot(program, layer, config, resolvedScales = program
     const row = rows[index], rowKey = dataset.rowKeys[entry.sourceIndex];
     const [low, high, open, close] = mapContinuousScaleValues([entry.low, entry.high, entry.open, entry.close], yScale);
     const band = width.interval ? resolveBarInterval(width, xValues[index], xScale)
-      : { width: resolveBarWidth(width, Math.abs(xScale.bandwidth ?? xScale.step)), position: undefined };
+      : { width: resolveBarWidth(width, resolveBarSlotBandwidth(xScale)), position: undefined };
     const left = band.position ?? centers[index] - band.width / 2;
     return { ...entry, rowKey, members: [row], memberKeys: [rowKey], fields: { ...row },
       channels: { x: xValues[index], low: entry.low, high: entry.high, open: entry.open, close: entry.close, trend: entry.trend, ...(color ? { color: row[color.field] } : {}) },

@@ -817,6 +817,78 @@ Draw geographic shapes, points, lines and graticules with stable feature identit
 
 Representative actions: `createGeometryData`, `createProjection`, `createGeoShapeMark`, `createGeoPointMark`, `createGeoLineMark`, `createGraticule`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
 
+### [Ordered stages by width](./pyramid/)
+
+Keep the process order while matching adjacent stage widths.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Ordered stages by area](./pyramid-area/)
+
+Make stage areas proportional to values with an explicit taper.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Stages progress upward](./pyramid-up/)
+
+Keep input order while changing the direction of progress.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Stages progress rightward](./pyramid-right/)
+
+Use a horizontal process direction without sorting rows.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Stages progress leftward](./pyramid-left/)
+
+Reverse the progression direction while retaining row order.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [An explicit pointed ending](./pyramid-point/)
+
+Request a pointed last stage in width mode.
+
+Representative actions: `createPyramidPlot`, `editPyramidPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/pyramid/).
+
+### [Open, high, low and close](./ohlc/)
+
+Keep four prices in one source-owned observation.
+
+Representative actions: `createOHLCPlot`, `editOHLCPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/ohlc/).
+
+### [Explicit closing price labels](./ohlc-labels/)
+
+Label closing prices without changing body heights.
+
+Representative actions: `createOHLCPlot`, `editOHLCPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/ohlc/).
+
+### [Explicit flat-body policy](./ohlc-no-doji/)
+
+Keep the high-low stem while hiding the flat body.
+
+Representative actions: `createOHLCPlot`, `editOHLCPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/ohlc/).
+
+### [Ordered contributions and totals](./waterfall/)
+
+Show explicit signed contributions, subtotals and totals.
+
+Representative actions: `createWaterfallPlot`, `editWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/waterfall/).
+
+### [Explicit stage labels](./waterfall-labels/)
+
+Show each stage value above the bar.
+
+Representative actions: `createWaterfallPlot`, `editWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/waterfall/).
+
+### [Contribution bars without connectors](./waterfall-no-connectors/)
+
+Omit incoming balance connectors explicitly.
+
+Representative actions: `createWaterfallPlot`, `editWaterfallPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/waterfall/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

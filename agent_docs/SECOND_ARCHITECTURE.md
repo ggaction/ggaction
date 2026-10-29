@@ -865,7 +865,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | `ggaction` | 743,700 bytes |
 | `ggaction/basic` | 398,300 bytes |
 | `ggaction/svg` | 25,000 bytes |
-| `ggaction/interaction` | 112,800 bytes |
+| `ggaction/interaction` | 112,900 bytes |
 | `ggaction/graph` | 44,000 bytes |
 
 
@@ -3934,3 +3934,12 @@ revision DAG가 LOD와 join, fitted projection, mark union을 명시 갱신한�
 단일 조회하고 Geo selection adapter와 inspection이 재사용한다. Selector는 원 authored key를
 보존하며 현재 item key로 해석하고 hit/frame key는 바꾸지 않는다. 렌더러는 같은 concrete primitives만
 읽는다. 정확한 공개 옵션·제한은 [GEOMETRY](contract/current/GEOMETRY.md)가 소유한다.
+
+### Native compound mark action ownership
+
+Pyramid·OHLC·Waterfall의 complete chart action은 순수 후보 검증과 scale/guide orchestration을
+`actions/charts/`에서 유지한다. 검증된 layer 의미·encoding·appearance의 적용은
+`actions/marks/{pyramid,ohlc,waterfall}.js`의 내부 wrapped `apply*Mark`가, 실제 graphics는 같은
+owner의 기존 wrapped `materialize*Plot`이 담당한다. 따라서 facade가 primitive를 직접 쓰지 않으며
+독립된 의미 적용과 materialization 단계가 trace에 남는다. Public API, 저장 state와 renderer 경계는
+동일하다. 정확 계약과 internal 등록은 기존 Current 및 internal action inventory가 소유한다.

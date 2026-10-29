@@ -3,7 +3,7 @@
   "name": "createWaterfallPlot",
   "layer": "user-facing",
   "domain": "marks",
-  "summary": "Create ordered contribution bars, subtotals and totals with explicit source roles.",
+  "summary": "Draw ordered contributions, explicit totals and subtotals.",
   "signature": "createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;",
   "intents": [
     "create waterfall plot",
@@ -34,7 +34,6 @@
   ],
   "wraps": [
     "createCoordinate",
-    "editSemantic",
     "createScale"
   ],
   "editableVia": [
@@ -116,7 +115,7 @@
     {
       "name": "yScale",
       "required": false,
-      "type": "NonPointQuantitativePositionScaleOptions | undefined"
+      "type": "NonPointZeroSupportingPositionScaleOptions | undefined"
     },
     {
       "name": "width",

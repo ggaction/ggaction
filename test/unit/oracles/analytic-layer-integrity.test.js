@@ -209,3 +209,21 @@ test("accepts filled flow ribbons without stroke and rejects collapsed or non-fi
     commands.map(command => command.op === "L" ? { ...command, y: Infinity } : command)
   ]) assert.throws(() => assertAnalyticLayerIntegrity(ribbon(invalid)), /no finite, non-zero geometry/);
 });
+
+
+test("filled Pyramid paths retain nonzero geometry without a stroke", () => {
+  const program = {
+    semanticSpec: { layers: [{ id: "stages", mark: { type: "pyramid" } }] },
+    graphicSpec: { objects: { stages: { type: "collection", items: [{ type: "path", properties: {
+      fill: "#2563eb", strokeWidth: 0,
+      commands: [{ op: "M", x: 0, y: 0 }, { op: "L", x: 20, y: 0 },
+        { op: "L", x: 15, y: 10 }, { op: "L", x: 5, y: 10 }, { op: "Z" }]
+    } }] } } }
+  };
+  assert.equal(assertAnalyticLayerIntegrity(program).nonDegenerateItemCount, 1);
+  const zero = structuredClone(program);
+  for (const command of zero.graphicSpec.objects.stages.items[0].properties.commands) {
+    if (Object.hasOwn(command, "y")) command.y = 0;
+  }
+  assert.throws(() => assertAnalyticLayerIntegrity(zero), /no finite, non-zero geometry/);
+});

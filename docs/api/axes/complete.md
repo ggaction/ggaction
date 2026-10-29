@@ -66,7 +66,7 @@ not its mark or scale. This complete runnable program places the chart’s singl
 
 <!-- snippet-context:start -->
 
-> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Resource selectors used here: `target: "share"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+> **Executable complete.** Import chart from ggaction; this complete example creates its own Canvas, source, mark and single named Y axis.
 
 <!-- snippet-context:end -->
 

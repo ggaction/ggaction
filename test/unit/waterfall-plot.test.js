@@ -141,3 +141,40 @@ test("Waterfall admits a shared Y resource and rejects independent cumulative sc
   assert.equal(writes.length, 0);
   assert.equal(JSON.stringify(source.semanticSpec), before);
 });
+
+test("Waterfall rejects log position before any state-changing child and preserves zero-origin geometry", () => {
+  let writes = 0;
+  class Capturing extends ChartProgram {
+    editSemantic(args) { writes++; return super.editSemantic(args); }
+    createCoordinate(args) { writes++; return super.createCoordinate(args); }
+    createGraphics(args) { writes++; return super.createGraphics(args); }
+    editGraphics(args) { writes++; return super.editGraphics(args); }
+  }
+  const original = base(), existing = build(), before = serializeProgram(existing);
+  for (const yScale of [{ type: "log" }, { type: "log", domain: [1, 20], zero: false, clamp: true }]) {
+    writes = 0;
+    assert.throws(() => new Capturing({ ...original }).createWaterfallPlot({ ...options, yScale }), /log/i);
+    assert.equal(writes, 0);
+    assert.throws(() => new Capturing({ ...existing }).editWaterfallPlot({ target: "steps", yScale }), /log/i);
+    assert.equal(writes, 0);
+  }
+  assert.deepEqual(serializeProgram(existing), before);
+  for (const type of ["linear", "pow", "sqrt", "symlog"]) {
+    const next = existing.editWaterfallPlot({ target: "steps", yScale: { type } });
+    assert.equal(next.resolvedScales["steps-y"].type, type);
+    assert.equal(items(next)[0].channels.start, 0);
+    assert.equal(items(next).at(-1).channels.start, 0);
+  }
+});
+
+test("Waterfall default categorical width uses the nonzero point-scale slot", () => {
+  const p = chart().createCanvas({ width: 360, height: 240, margin: 30 })
+    .createData({ values: [{ stage: "A", lo: 0, hi: 5, o: 1, c: 3, v: 2, r: "delta" },
+      { stage: "B", lo: 1, hi: 6, o: 2, c: 4, v: 3, r: "delta" }] })
+    .createWaterfallPlot({ id: "stages", x: { field: "stage", scale: { type: "point", padding: .5 } },
+      value: "v", role: "r", guides: false });
+  const bodies = p.graphicSpec.objects.stages.items.filter(item => item.identity.role === "bar");
+  assert.equal(bodies.length, 2);
+  assert.deepEqual(bodies.map(item => item.properties.width), [108, 108]);
+  assert.deepEqual(bodies.map(item => item.properties.x), [51, 201]);
+});

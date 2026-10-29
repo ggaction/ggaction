@@ -100,6 +100,10 @@ export function normalizeOffsetScalePolicy(
   return cloneAndFreeze({ paddingInner, paddingOuter, align });
 }
 
+export function resolveBarSlotBandwidth(scale) {
+  return Math.abs(scale.type === "point" ? scale.step : (scale.bandwidth ?? scale.step));
+}
+
 export function resolveBarWidth(config, slotBandwidth) {
   const normalized = normalizeBarWidth(config);
   if (normalized.pixels !== undefined) return normalized.pixels;

@@ -4316,7 +4316,7 @@ Related types: [`PolarTitleOptions`](#type-polartitleoptions) · [`PolarGuideRes
 ```typescript
 export interface CreateWaterfallPlotOptions {
   readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: WaterfallX;
-  readonly role: string; readonly value: string; readonly reset?: string | false; readonly yScale?: NonPointQuantitativePositionScaleOptions;
+  readonly role: string; readonly value: string; readonly reset?: string | false; readonly yScale?: NonPointZeroSupportingPositionScaleOptions;
   readonly width?: WaterfallWidth; readonly bars?: WaterfallBarPaint; readonly connectors?: false | WaterfallConnectorPaint; readonly labels?: false | WaterfallLabelPaint;
   readonly color?: false | WaterfallColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
 }
@@ -4324,7 +4324,7 @@ export interface CreateWaterfallPlotOptions {
 
 </details>
 
-Related types: [`WaterfallX`](#type-waterfallx) · [`NonPointQuantitativePositionScaleOptions`](#type-nonpointquantitativepositionscaleoptions) · [`WaterfallWidth`](#type-waterfallwidth) · [`WaterfallBarPaint`](#type-waterfallbarpaint) · [`WaterfallConnectorPaint`](#type-waterfallconnectorpaint) · [`WaterfallLabelPaint`](#type-waterfalllabelpaint) · [`WaterfallColor`](#type-waterfallcolor) · [`ColorGuides`](#type-colorguides).
+Related types: [`WaterfallX`](#type-waterfallx) · [`NonPointZeroSupportingPositionScaleOptions`](#type-nonpointzerosupportingpositionscaleoptions) · [`WaterfallWidth`](#type-waterfallwidth) · [`WaterfallBarPaint`](#type-waterfallbarpaint) · [`WaterfallConnectorPaint`](#type-waterfallconnectorpaint) · [`WaterfallLabelPaint`](#type-waterfalllabelpaint) · [`WaterfallColor`](#type-waterfallcolor) · [`ColorGuides`](#type-colorguides).
 
 ### `CurveInterpolation` {#type-curveinterpolation}
 

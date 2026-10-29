@@ -1072,16 +1072,40 @@
     "file": "interaction.mjs",
     "cases": [
       {
+        "id": "interaction/geographic-representation",
+        "statements": 5
+      },
+      {
+        "id": "interaction/node-movement",
+        "statements": 27
+      },
+      {
+        "id": "interaction/geographic-context",
+        "statements": 23
+      },
+      {
+        "id": "interaction/partition-host-focus",
+        "statements": 16
+      },
+      {
+        "id": "interaction/context-host-request",
+        "statements": 1
+      },
+      {
+        "id": "interaction/legend-visibility-filter-composition",
+        "statements": 13
+      },
+      {
         "id": "interaction/full-basic-immutable-inspection",
         "statements": 1
       },
       {
         "id": "interaction/current-frame-and-restored-program",
-        "statements": 1
+        "statements": 34
       },
       {
         "id": "interaction/guide-and-host-cleanup",
-        "statements": 1
+        "statements": 85
       }
     ]
   },

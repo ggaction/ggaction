@@ -22,6 +22,9 @@ domain action을 통해서만 실행한다.
 | `materializeBoxPlot` | deferred `createBoxPlot` completion and position encodings |
 | `materializeBinData` | reusable one-dimensional bin data actions |
 | `materializeBin2DData` | rectangular 2D-bin data actions |
+| `applyPyramidMark` | Apply the validated native Pyramid layer binding, encodings and mark configuration |
+| `applyOHLCMark` | Apply the validated native OHLC layer binding, encodings and mark configuration |
+| `applyWaterfallMark` | Apply the validated native Waterfall layer binding, encodings and mark configuration |
 | `materializePyramidPlot` | ordered row-keyed stage paths and labels from the shared width/area kernel |
 | `materializeWaterfallPlot` | Ordered contribution bars, balance connectors and optional labels |
 | `materializeOHLCPlot` | OHLC row-owned stems, bodies and optional labels |

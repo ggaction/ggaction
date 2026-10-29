@@ -2498,20 +2498,16 @@
     {
       "name": "createPyramidPlot",
       "wraps": [
-        "editSemantic",
         "createCoordinate"
       ]
     },
     {
       "name": "editPyramidPlot",
-      "wraps": [
-        "editSemantic"
-      ]
+      "wraps": []
     },
     {
       "name": "createOHLCPlot",
       "wraps": [
-        "editSemantic",
         "createScale",
         "createCoordinate"
       ]
@@ -2519,7 +2515,6 @@
     {
       "name": "editOHLCPlot",
       "wraps": [
-        "editSemantic",
         "createScale"
       ]
     },
@@ -2527,14 +2522,12 @@
       "name": "createWaterfallPlot",
       "wraps": [
         "createCoordinate",
-        "editSemantic",
         "createScale"
       ]
     },
     {
       "name": "editWaterfallPlot",
       "wraps": [
-        "editSemantic",
         "createScale"
       ]
     }

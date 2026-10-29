@@ -1,6 +1,9 @@
-import { createWaterfallPlot, editWaterfallPlot, materializeWaterfallPlot } from "./waterfall.js";
-import { createOHLCPlot, editOHLCPlot, materializeOHLCPlot } from "./ohlc.js";
-import { createPyramidPlot, editPyramidPlot, materializePyramidPlot } from "./pyramid.js";
+import { createWaterfallPlot, editWaterfallPlot } from "./waterfall.js";
+import { applyWaterfallMark, materializeWaterfallPlot } from "../marks/waterfall.js";
+import { createOHLCPlot, editOHLCPlot } from "./ohlc.js";
+import { applyOHLCMark, materializeOHLCPlot } from "../marks/ohlc.js";
+import { createPyramidPlot, editPyramidPlot } from "./pyramid.js";
+import { applyPyramidMark, materializePyramidPlot } from "../marks/pyramid.js";
 import { createRosePlot, createRadialBarPlot } from "./radial.js";
 import { createAreaPlot } from "./area.js";
 import { createHeatmap } from "./heatmap.js";
@@ -25,9 +28,9 @@ import { createBeeswarmPlot } from "./beeswarm.js";
 import { createRaincloudPlot, editRaincloudPlot } from "./raincloud.js";
 
 export function registerChartActions(ProgramClass) {
-  Object.assign(ProgramClass.prototype, { createWaterfallPlot, editWaterfallPlot, materializeWaterfallPlot });
-  Object.assign(ProgramClass.prototype, { createOHLCPlot, editOHLCPlot, materializeOHLCPlot });
-  Object.assign(ProgramClass.prototype, { createPyramidPlot, editPyramidPlot, materializePyramidPlot });
+  Object.assign(ProgramClass.prototype, { createWaterfallPlot, editWaterfallPlot, applyWaterfallMark, materializeWaterfallPlot });
+  Object.assign(ProgramClass.prototype, { createOHLCPlot, editOHLCPlot, applyOHLCMark, materializeOHLCPlot });
+  Object.assign(ProgramClass.prototype, { createPyramidPlot, editPyramidPlot, applyPyramidMark, materializePyramidPlot });
   ProgramClass.prototype.createRosePlot = createRosePlot;
   ProgramClass.prototype.createRadialBarPlot = createRadialBarPlot;
   ProgramClass.prototype.createAreaPlot = createAreaPlot;

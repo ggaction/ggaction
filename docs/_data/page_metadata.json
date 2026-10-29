@@ -1160,36 +1160,42 @@
     "title": "Pyramid Plots",
     "source": "docs/api/pyramid.md",
     "editSource": "docs/api/pyramid.md",
-    "description": "Show ordered stages as adjacent trapezoids. Use width to compare their spans, or area to make each trapezoid's area proportional to its value."
+    "description": "Show ordered stages as adjacent trapezoids. Use width to compare their spans, or area to make each trapezoid's area proportional to its value.",
+    "image": "/assets/images/pyramid.png"
   },
   "/tutorials/pyramid/": {
     "title": "Compare Ordered Stages",
     "source": "docs/tutorials/pyramid.md",
     "editSource": "examples/pyramid/program.js",
-    "description": "These three observations count visits, trials and returns. The order expresses the process. Pyramid keeps it even if a later count exceeds an earlier one."
+    "description": "These three observations count visits, trials and returns. The order expresses the process. Pyramid keeps it even if a later count exceeds an earlier one.",
+    "image": "/assets/images/pyramid.png"
   },
   "/api/ohlc/": {
     "title": "OHLC Plots",
     "source": "docs/api/ohlc.md",
     "editSource": "docs/api/ohlc.md",
-    "description": "Show each observation's open, high, low and close as one selectable item. A thin line spans the low and high; a rectangle spans the open and close."
+    "description": "Show each observation's open, high, low and close as one selectable item. A thin line spans the low and high; a rectangle spans the open and close.",
+    "image": "/assets/images/ohlc.png"
   },
   "/tutorials/ohlc/": {
     "title": "Show open, high, low and close",
     "source": "docs/tutorials/ohlc.md",
     "editSource": "examples/ohlc/program.js",
-    "description": "Keep each observation's four prices together. A high low stem and an open close body are one chart item, so selecting either part selects the same source row."
+    "description": "Keep each observation's four prices together. A high low stem and an open close body are one chart item, so selecting either part selects the same source row.",
+    "image": "/assets/images/ohlc.png"
   },
   "/api/waterfall/": {
     "title": "Waterfall Plots",
     "source": "docs/api/waterfall.md",
     "editSource": "docs/api/waterfall.md",
-    "description": "Show ordered contributions, subtotals and totals as one bar per source row. Connectors show the running balance between stages."
+    "description": "Show ordered contributions, subtotals and totals as one bar per source row. Connectors show the running balance between stages.",
+    "image": "/assets/images/waterfall.png"
   },
   "/tutorials/waterfall/": {
     "title": "Show Contributions and Totals",
     "source": "docs/tutorials/waterfall.md",
     "editSource": "examples/waterfall/program.js",
-    "description": "Declare each row's role so its effect on the running balance is explicit."
+    "description": "Declare each row's role so its effect on the running balance is explicit.",
+    "image": "/assets/images/waterfall.png"
   }
 }

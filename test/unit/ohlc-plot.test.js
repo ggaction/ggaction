@@ -208,3 +208,16 @@ test("OHLC shares the frame price identity and rejects independent scales before
   assert.equal(writes.length, 0);
   assert.equal(snapshot(source), before);
 });
+
+
+test("OHLC default categorical width uses the nonzero point-scale slot", () => {
+  const p = chart().createCanvas({ width: 360, height: 240, margin: 30 })
+    .createData({ values: [{ stage: "A", lo: 0, hi: 5, o: 1, c: 3, v: 2, r: "delta" },
+      { stage: "B", lo: 1, hi: 6, o: 2, c: 4, v: 3, r: "delta" }] })
+    .createOHLCPlot({ id: "stages", x: { field: "stage", scale: { type: "point", padding: .5 } },
+      low: "lo", high: "hi", open: "o", close: "c", guides: false });
+  const bodies = p.graphicSpec.objects.stages.items.filter(item => item.identity.role === "body");
+  assert.equal(bodies.length, 2);
+  assert.deepEqual(bodies.map(item => item.properties.width), [108, 108]);
+  assert.deepEqual(bodies.map(item => item.properties.x), [51, 201]);
+});

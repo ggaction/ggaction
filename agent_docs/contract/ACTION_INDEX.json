@@ -6818,7 +6818,10 @@
       "useProgram",
       "filterGraphPlotView",
       "restoreGraphPlotView",
-      "refreshScreenEdgeRoutes"
+      "refreshScreenEdgeRoutes",
+      "applyPyramidMark",
+      "applyOHLCMark",
+      "applyWaterfallMark"
     ],
     "aggregateComponents": [
       "createBoxMedian",

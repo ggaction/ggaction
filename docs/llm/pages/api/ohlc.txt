@@ -45,7 +45,7 @@ ordinary structured paints. `outline:false` and `shadow:false` remove effects.
 Prices and body heights are never inflated to make a flat observation visible.
 
 Categorical X uses width `{band:.72}` by default; numeric and temporal X use
-`{pixels:5}`. Band widths require categorical X. Temporal interval widths require
+`{pixels:5}`. Band widths require categorical X; point scales use their step as the slot width. Temporal interval widths require
 UTC interval starts and a scale domain covering every interval endpoint.
 
 Labels show `close` by default; `open`, `low` and `high` are also available.

@@ -513,5 +513,17 @@
     "result": "program",
     "rendering": "renders-canvas",
     "prerequisites": "Use a Canvas with id chart. Drag either node with a pointer or touch; activate Move first node right with Enter or Space. Escape cancels a drag."
+  },
+  {
+    "id": "named-cartesian-axis",
+    "file": "api/axes/complete.md",
+    "contains": "const program = chart().createCanvas({ width: 600, height: 400, margin: 80 })",
+    "mode": "complete",
+    "environment": "node-esm",
+    "fixture": "apiExamples",
+    "importChart": false,
+    "result": "program",
+    "prerequisites": "Import chart from ggaction; this complete example creates its own Canvas, source, mark and single named Y axis.",
+    "rendering": "authoring-only"
   }
 ]

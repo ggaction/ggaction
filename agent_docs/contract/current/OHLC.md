@@ -16,7 +16,7 @@
   downFill #dc2626. flat은 doji line(default)/none으로 수평 Line 또는 body없음이다. 가격과 높이를
   보기 좋게 확대하지 않는다. body/stem 기본 stroke #334155, strokeWidth1, opacity1.
 - width는 기존 Bar의 band/pixels/interval 중 하나다. categorical 기본 band.72, numeric/time 기본
-  pixels5. numeric band는 거부한다. interval은 temporal UTC interval start와 covering domain을 요구한다.
+  pixels5. point scale의 band 폭은 bandwidth0 대신 step을 사용한다. numeric band는 거부한다. interval은 temporal UTC interval start와 covering domain을 요구한다.
 - body는 {upFill?,downFill?,stroke?,strokeWidth?,opacity?,outline?,shadow?}, stem은 fill 두 개를
   제외한 동일 style. FillPaint/outline/shadow는 공통 owner이며 false effect reset을 지원한다.
 - labels 기본false. 객체는 {content?,format?,fill?,fontFamily?,fontSize?,fontWeight?,offset?,outline?,shadow?}.

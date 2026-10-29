@@ -3,7 +3,7 @@
   "name": "editOHLCPlot",
   "layer": "user-facing",
   "domain": "marks",
-  "summary": "Edit OHLC fields and styles while preserving typed row identity.",
+  "summary": "Edit prices and styles while preserving typed row identities.",
   "signature": "editOHLCPlot(options: TargetedOptions<EditOHLCPlotOptions>): ChartProgram;",
   "intents": [
     "edit ohlc plot",
@@ -33,7 +33,6 @@
     "H3"
   ],
   "wraps": [
-    "editSemantic",
     "createScale"
   ],
   "editableVia": [

@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:fe1f87d96ad2d6ced8be5b9f4e75147e665c388e8f064f87291381a32198ce5d",
+    "contractId": "sha256:70e26ded7003c849362d2fa7345037f749c7f6d303a0927ff8dd6feb16e38722",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -2266,8 +2266,8 @@
         "editwaterfallplot",
         "related"
       ],
-      "bytes": 145516,
-      "sha256": "d07bab897eba860f0a778594119550aada3a2df234cf0c46add38538c2360db5"
+      "bytes": 145520,
+      "sha256": "5f01e7a419c4208e94807903bb2150b2b982ce30e3d7bc1cafdb278ea3ff2ada"
     },
     {
       "order": 122,
@@ -3461,8 +3461,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 497074,
-      "sha256": "afc0dc217c717263bc727ea384bccbce344aa9203822d235f5412d297b71e373"
+      "bytes": 497080,
+      "sha256": "69c02eb48e26cc1eaafea27aab5eb1168f62970184b797e7deffd5de23db36fa"
     },
     {
       "order": 129,
@@ -3837,7 +3837,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "2a475db974bfbdeff592c58ff32525e0033a7f533c3b6993a166189f09a46628"
+      "sha256": "1a0439d59738cee0099ce2efb63ebe13f623b7c9b56dac71f0a4b3849255062a"
     },
     {
       "order": 152,
@@ -3854,8 +3854,8 @@
         "intentional-title-label-overlap",
         "responsive-labels"
       ],
-      "bytes": 27812,
-      "sha256": "3da78c1b158af4250c78918961e8807ebb7d77fe706e66fa4c8220ef1b8cfac4"
+      "bytes": 27679,
+      "sha256": "9defe018d40293d9dca3d3dc5ab27ae2f8019f266263b0d313ce8b70ceec275f"
     },
     {
       "order": 153,
@@ -4191,8 +4191,8 @@
         "createohlcplot",
         "editohlcplot"
       ],
-      "bytes": 3939,
-      "sha256": "1828d93833eb24ecd508b5eef865e75a6f22311b2253cc8b81ff8bbe691690ab"
+      "bytes": 3986,
+      "sha256": "bbb95d2f8caed8ab21123108150303d5446303b363dd685d6d8cf5c071872fe4"
     },
     {
       "order": 176,
@@ -4215,8 +4215,8 @@
         "createwaterfallplot",
         "editwaterfallplot"
       ],
-      "bytes": 4307,
-      "sha256": "542c43e1fc1b9bd7608b44997a0afb46fd330f3ead1a2446719ed3a337e58969"
+      "bytes": 4516,
+      "sha256": "e0f08eb1e2bdb792b2a1cfc04eacb24ab6996882366c5e4e45b4cad8bee35ea3"
     },
     {
       "order": 178,

@@ -161,13 +161,6 @@
     "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Composite marks over guides\" on docs/api/axes/complete.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
   },
   {
-    "id": "docs/api/axes/complete.md#independent-named-cartesian-axes:1",
-    "sha256": "39795f944a3111610e45fc6d3750e80715d703d4162a80f09c3ee7679234ede9",
-    "mode": "contextual-fragment",
-    "owner": "docs/api/axes/complete.md",
-    "reason": "Not a standalone executable contract. Requires the imports, resource state, and branch in \"Independent named Cartesian axes\" on docs/api/axes/complete.md. Review this context when editing; register a fixture in snippet_cases.json to claim execution coverage."
-  },
-  {
     "id": "docs/api/axes/complete.md#moving-a-complete-axis-and-refining-its-text:1",
     "sha256": "0abdb598ef23e7d49526132441319e723cdcab744b371c7627e26dee37cd242c",
     "mode": "contextual-fragment",

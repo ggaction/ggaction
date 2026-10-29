@@ -32,9 +32,7 @@
   "authoringRoles": [
     "H3"
   ],
-  "wraps": [
-    "editSemantic"
-  ],
+  "wraps": [],
   "editableVia": [
     "editPyramidPlot",
     "removeMark"
