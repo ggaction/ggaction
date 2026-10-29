@@ -1,3 +1,4 @@
+import { createGeographicMarks } from "./geographic-marks/program.js";
 import { createNestedResponsive } from "./nested-responsive/program.js";
 import { createCalendar } from "./calendar/program.js";
 import { createResponsiveGuides } from "./responsive-guides/program.js";
@@ -330,6 +331,12 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "responsive-guides/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "responsive-guides", width: 400, height: 320 } } }
   }),
+  example({ id: "geographic-marks", programDirectory: "geographic-marks", testDirectory: "geographic-marks", data: {}, width: 640, height: 480, docsGroup: "tutorials",
+    createProgram: () => createGeographicMarks("planar"), browser: { path: "browser-host/?chart=geographic-marks", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "geographic-marks", width: 640, height: 480 } } } }),
+  example({ id: "geographic-grid", programDirectory: "geographic-marks", testDirectory: "geographic-marks", data: {}, width: 640, height: 480, docsGroup: "tutorials",
+    createProgram: () => createGeographicMarks("graticule"), browser: { path: "browser-host/?chart=geographic-grid", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "geographic-grid", width: 640, height: 480 } } } }),
   example({ id: "contours", programDirectory: "contours", testDirectory: "contours", data: {}, width: 640, height: 480, docsGroup: "tutorials",
     createProgram: () => createContours("line"),
     browser: { path: "browser-host/?chart=contours", canvas: "#chart",

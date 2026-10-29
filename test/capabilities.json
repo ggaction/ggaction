@@ -464,6 +464,40 @@
         "path": "unit/resources/font-work-budget.test.js"
       }
     ],
+    "geo": [
+      {
+        "type": "prefix",
+        "path": "unit/geo/"
+      },
+      {
+        "type": "file",
+        "path": "contracts/geographic-math.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/projection-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-projections.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/geo-mark-types.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/realistic-geographic-marks.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/geographic-marks/"
+      },
+      {
+        "type": "file",
+        "path": "browser/geographic-marks.browser.js"
+      }
+    ],
     "grammar": [
       {
         "type": "prefix",
@@ -1282,6 +1316,10 @@
       {
         "type": "file",
         "path": "unit/interaction-hierarchy-focus.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-geo-controls.test.js"
       }
     ],
     "selectors": [

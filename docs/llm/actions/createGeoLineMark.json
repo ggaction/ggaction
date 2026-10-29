@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 3,
+  "name": "createGeoLineMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Create projected geographic GeoLineMark geometry with native style.",
+  "signature": "createGeoLineMark(options?: TargetedOptions<GeoLineMarkOptions>): ChartProgram;",
+  "intents": [
+    "create geo line mark",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "geographic lines",
+    "projected routes"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "Canvas",
+      "Geo coordinate",
+      "compatible geometry source"
+    ],
+    "owns": [
+      "geographic mark"
+    ],
+    "idOptions": [
+      "id",
+      "coordinate",
+      "geometry"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editGeoLineMark",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "Canvas",
+      "Geo coordinate",
+      "compatible geometry source"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "fill",
+      "required": false,
+      "type": "\"none\" | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "outline",
+      "required": false,
+      "type": "false | MarkOutline | undefined"
+    },
+    {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "geometry",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "interpolation",
+      "required": false,
+      "type": "\"great-circle\" | \"source-segment\" | undefined"
+    },
+    {
+      "name": "routeHint",
+      "required": false,
+      "type": "false | readonly [number, number] | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createGeoLineMark({ id?, coordinate?, target?, fill?, stroke?, strokeWidth?, opacity?, clip? })"
+  ],
+  "snippet": "program.createGeoLineMark({ id: \"routes\", geometry: \"geometry\", coordinate: \"main\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#creategeolinemark"
+}

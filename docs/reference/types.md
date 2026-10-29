@@ -74,9 +74,21 @@ interface ChartProgramActions {
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
   createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
   editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
+  createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+  createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
+  editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+  editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
+  createGeoShapeMark(options?: TargetedOptions<GeoShapeMarkOptions>): ChartProgram;
+  editGeoShapeMark(options: TargetedOptions<EditGeoShapeMarkOptions>): ChartProgram;
+  createGeoPointMark(options?: TargetedOptions<GeoPointMarkOptions>): ChartProgram;
+  editGeoPointMark(options: TargetedOptions<EditGeoPointMarkOptions>): ChartProgram;
+  createGeoLineMark(options?: TargetedOptions<GeoLineMarkOptions>): ChartProgram;
+  editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;
+  createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;
+  editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;
   createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;
   editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;
   createFlowData(options: CreateFlowDataOptions): ChartProgram;
@@ -3119,14 +3131,14 @@ Related types: [`ContourGrid`](#type-contourgrid).
 <summary>Expand CreateCoordinateOptions</summary>
 
 ```typescript
-export interface CreateCoordinateOptions {
-  id?: string;
-  type?: "cartesian" | "polar" | "parallel";
-  layers?: readonly string[];
-}
+export type CreateCoordinateOptions = CreateNativeCoordinateOptions | {
+  id?: string; type: "geo"; projection?: string; layers?: readonly string[];
+};
 ```
 
 </details>
+
+Related types: [`CreateNativeCoordinateOptions`](#type-createnativecoordinateoptions).
 
 ### `CreateDataOptions` {#type-createdataoptions}
 
@@ -3305,6 +3317,24 @@ export interface CreateFlowDataOptions extends FlowDefinition {
 </details>
 
 Related types: [`FlowDefinition`](#type-flowdefinition).
+
+### `CreateGeometryDataOptions` {#type-creategeometrydataoptions}
+
+<details markdown="1">
+<summary>Expand CreateGeometryDataOptions</summary>
+
+```typescript
+export type CreateGeometryDataOptions = {
+  readonly id: string; readonly coordinateKind: "geographic" | "planar";
+  /** An own field or exact own-property path, such as "id" or ["properties", "code"]. Omission allocates persisted generated keys. */
+  readonly featureKey?: GeometryFeatureKey; readonly limits?: GeometryLimits;
+} & ({ readonly format: "geojson"; readonly values: GeoJSONInput; readonly topoObject?: never }
+  | { readonly format: "topojson"; readonly values: TopoJSONInput; readonly topoObject?: string });
+```
+
+</details>
+
+Related types: [`GeometryFeatureKey`](#type-geometryfeaturekey) · [`GeometryLimits`](#type-geometrylimits) · [`GeoJSONInput`](#type-geojsoninput) · [`TopoJSONInput`](#type-topojsoninput).
 
 ### `CreateGraphDataOptions` {#type-creategraphdataoptions}
 
@@ -3573,6 +3603,21 @@ export type CreateMarkLabelsOptions = Omit<TextMarkOptions, "data" | "text"> & {
 
 Related types: [`TextMarkOptions`](#type-textmarkoptions) · [`LabelLayoutOptions`](#type-labellayoutoptions) · [`MarkLabelPlacement`](#type-marklabelplacement) · [`TextEncodingOptions`](#type-textencodingoptions) · [`TextFormat`](#type-textformat) · [`MarkLabelSelectionOptions`](#type-marklabelselectionoptions).
 
+### `CreateNativeCoordinateOptions` {#type-createnativecoordinateoptions}
+
+<details markdown="1">
+<summary>Expand CreateNativeCoordinateOptions</summary>
+
+```typescript
+export interface CreateNativeCoordinateOptions {
+  id?: string;
+  type?: "cartesian" | "polar" | "parallel";
+  layers?: readonly string[];
+}
+```
+
+</details>
+
 ### `CreateOverlayOptions` {#type-createoverlayoptions}
 
 <details markdown="1">
@@ -3724,6 +3769,19 @@ export interface CreatePolarScatterPlotOptions {
 </details>
 
 Related types: [`PolarThetaChannel`](#type-polarthetachannel) · [`PolarRadiusChannel`](#type-polarradiuschannel) · [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`CreateScatterPlotOptions`](#type-createscatterplotoptions) · [`PolarPointGuideOptions`](#type-polarpointguideoptions).
+
+### `CreateProjectionOptions` {#type-createprojectionoptions}
+
+<details markdown="1">
+<summary>Expand CreateProjectionOptions</summary>
+
+```typescript
+export type CreateProjectionOptions = { readonly id: string } & ((ProjectionParameters & { readonly fit?: never }) | ProjectionFittedOptions);
+```
+
+</details>
+
+Related types: [`ProjectionParameters`](#type-projectionparameters) · [`ProjectionFittedOptions`](#type-projectionfittedoptions).
 
 ### `CreateRadarPlotOptions` {#type-createradarplotoptions}
 
@@ -5968,8 +6026,9 @@ Related types: [`ContourMarkOptions`](#type-contourmarkoptions).
 
 ```typescript
 export type EditCoordinateOptions = EditCoordinateTarget & (
-  | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions }
-  | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions }
+  | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions; projection?: never }
+  | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions; projection?: never }
+  | { projection: string; aspect?: never; polarFrame?: never }
 );
 ```
 
@@ -6343,6 +6402,61 @@ export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
 
 Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`FoldDataOptions`](#type-folddataoptions).
 
+### `EditGeoLineMarkOptions` {#type-editgeolinemarkoptions}
+
+<details markdown="1">
+<summary>Expand EditGeoLineMarkOptions</summary>
+
+```typescript
+export type EditGeoLineMarkOptions = Omit<GeoLineMarkOptions, "id"> & { readonly target?: string };
+```
+
+</details>
+
+Related types: [`GeoLineMarkOptions`](#type-geolinemarkoptions).
+
+### `EditGeoPointMarkOptions` {#type-editgeopointmarkoptions}
+
+<details markdown="1">
+<summary>Expand EditGeoPointMarkOptions</summary>
+
+```typescript
+export type EditGeoPointMarkOptions = GeoEditOptions<GeoPointMarkOptions>;
+```
+
+</details>
+
+Related types: [`GeoEditOptions`](#type-geoeditoptions) · [`GeoPointMarkOptions`](#type-geopointmarkoptions).
+
+### `EditGeoShapeMarkOptions` {#type-editgeoshapemarkoptions}
+
+<details markdown="1">
+<summary>Expand EditGeoShapeMarkOptions</summary>
+
+```typescript
+export type EditGeoShapeMarkOptions = Omit<GeoShapeMarkOptions, "id"> & { readonly target?: string };
+```
+
+</details>
+
+Related types: [`GeoShapeMarkOptions`](#type-geoshapemarkoptions).
+
+### `EditGeometryDataOptions` {#type-editgeometrydataoptions}
+
+<details markdown="1">
+<summary>Expand EditGeometryDataOptions</summary>
+
+```typescript
+export interface EditGeometryDataOptions {
+  readonly target?: string; readonly values?: GeoJSONInput | TopoJSONInput;
+  readonly coordinateKind?: "geographic" | "planar"; readonly topoObject?: string; readonly limits?: GeometryLimits;
+}
+```
+
+</details>
+
+Related types: [`GeoJSONInput`](#type-geojsoninput) · [`TopoJSONInput`](#type-topojsoninput) · [`GeometryLimits`](#type-geometrylimits).
+
 ### `EditGradientPlotOptions` {#type-editgradientplotoptions}
 
 <details markdown="1">
@@ -6406,6 +6520,19 @@ export type EditGraphicsOptions =
 ```
 
 </details>
+
+### `EditGraticuleOptions` {#type-editgraticuleoptions}
+
+<details markdown="1">
+<summary>Expand EditGraticuleOptions</summary>
+
+```typescript
+export type EditGraticuleOptions = Omit<GraticuleOptions, "id"> & { readonly target?: string };
+```
+
+</details>
+
+Related types: [`GraticuleOptions`](#type-graticuleoptions).
 
 ### `EditGridDirectionsOptions` {#type-editgriddirectionsoptions}
 
@@ -6957,6 +7084,20 @@ export interface EditPolarGridOptions {
 </details>
 
 Related types: [`AxisValue`](#type-axisvalue).
+
+### `EditProjectionOptions` {#type-editprojectionoptions}
+
+<details markdown="1">
+<summary>Expand EditProjectionOptions</summary>
+
+```typescript
+export type EditProjectionOptions = { readonly target?: string } & ((Partial<ProjectionParameters> & { readonly fit?: never })
+  | ProjectionEditFittedOptions);
+```
+
+</details>
+
+Related types: [`ProjectionParameters`](#type-projectionparameters) · [`ProjectionEditFittedOptions`](#type-projectioneditfittedoptions).
 
 ### `EditRScaleOptions` {#type-editrscaleoptions}
 
@@ -8626,6 +8767,186 @@ export interface ForceDirectedEdgeRouteOptions extends EdgeRouteCommonOptions { 
 
 Related types: [`EdgeRouteCommonOptions`](#type-edgeroutecommonoptions).
 
+### `GeoEditOptions` {#type-geoeditoptions}
+
+<details markdown="1">
+<summary>Expand GeoEditOptions</summary>
+
+```typescript
+type GeoEditOptions<Options> = Options extends unknown ? Omit<Options, "id"> & { readonly target?: string } : never;
+```
+
+</details>
+
+### `GeoJSONInput` {#type-geojsoninput}
+
+<details markdown="1">
+<summary>Expand GeoJSONInput</summary>
+
+```typescript
+export type GeoJSONInput = GeographicGeometry | GeometryFeature | (Readonly<Record<string, unknown>> & { readonly type: "FeatureCollection"; readonly features: readonly GeometryFeature[] }) | null;
+```
+
+</details>
+
+Related types: [`GeographicGeometry`](#type-geographicgeometry) · [`GeometryFeature`](#type-geometryfeature).
+
+### `GeoLineMarkOptions` {#type-geolinemarkoptions}
+
+<details markdown="1">
+<summary>Expand GeoLineMarkOptions</summary>
+
+```typescript
+export interface GeoLineMarkOptions extends Omit<GeoSourceMarkOptions, "fill"> { readonly fill?: "none"; }
+```
+
+</details>
+
+Related types: [`GeoSourceMarkOptions`](#type-geosourcemarkoptions).
+
+### `GeoMarkStyleOptions` {#type-geomarkstyleoptions}
+
+<details markdown="1">
+<summary>Expand GeoMarkStyleOptions</summary>
+
+```typescript
+export interface GeoMarkStyleOptions {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
+  readonly clip?: boolean; readonly lineCap?: "butt" | "round" | "square"; readonly lineJoin?: "miter" | "round" | "bevel";
+  readonly miterLimit?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false; readonly blend?: BlendMode;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow) · [`BlendMode`](#type-blendmode).
+
+### `GeoPointMarkOptions` {#type-geopointmarkoptions}
+
+<details markdown="1">
+<summary>Expand GeoPointMarkOptions</summary>
+
+```typescript
+export type GeoPointMarkOptions = GeoSourceMarkOptions & (
+  | { readonly radiusPx?: number; readonly radiusDeg?: never }
+  | { readonly radiusDeg: number; readonly radiusPx?: never }
+);
+```
+
+</details>
+
+Related types: [`GeoSourceMarkOptions`](#type-geosourcemarkoptions).
+
+### `GeoShapeMarkOptions` {#type-geoshapemarkoptions}
+
+<details markdown="1">
+<summary>Expand GeoShapeMarkOptions</summary>
+
+```typescript
+export interface GeoShapeMarkOptions extends GeoSourceMarkOptions { readonly radiusPx?: number; }
+```
+
+</details>
+
+Related types: [`GeoSourceMarkOptions`](#type-geosourcemarkoptions).
+
+### `GeoSourceMarkOptions` {#type-geosourcemarkoptions}
+
+<details markdown="1">
+<summary>Expand GeoSourceMarkOptions</summary>
+
+```typescript
+export interface GeoSourceMarkOptions extends GeoMarkStyleOptions {
+  readonly id?: string; readonly coordinate?: string; readonly geometry?: string;
+  readonly interpolation?: "source-segment" | "great-circle";
+  /** Explicit false removes a previous hint. */
+  readonly routeHint?: readonly [number, number] | false;
+}
+```
+
+</details>
+
+Related types: [`GeoMarkStyleOptions`](#type-geomarkstyleoptions).
+
+### `GeographicGeometry` {#type-geographicgeometry}
+
+<details markdown="1">
+<summary>Expand GeographicGeometry</summary>
+
+```typescript
+export type GeographicGeometry = Readonly<Record<string, unknown>> & (
+  | { readonly type: "Point"; readonly coordinates: GeometryPosition }
+  | { readonly type: "MultiPoint" | "LineString"; readonly coordinates: readonly GeometryPosition[] }
+  | { readonly type: "MultiLineString" | "Polygon"; readonly coordinates: readonly (readonly GeometryPosition[])[] }
+  | { readonly type: "MultiPolygon"; readonly coordinates: readonly (readonly (readonly GeometryPosition[])[])[] }
+  | { readonly type: "GeometryCollection"; readonly geometries: readonly (GeographicGeometry | null)[] });
+```
+
+</details>
+
+Related types: [`GeometryPosition`](#type-geometryposition).
+
+### `GeometryFeature` {#type-geometryfeature}
+
+<details markdown="1">
+<summary>Expand GeometryFeature</summary>
+
+```typescript
+export interface GeometryFeature extends Readonly<Record<string, unknown>> {
+  readonly type: "Feature"; readonly id?: string | number;
+  readonly properties: Readonly<Record<string, GeometryJSONValue>> | null;
+  readonly geometry: GeographicGeometry | null;
+}
+```
+
+</details>
+
+Related types: [`GeometryJSONValue`](#type-geometryjsonvalue) · [`GeographicGeometry`](#type-geographicgeometry).
+
+### `GeometryFeatureKey` {#type-geometryfeaturekey}
+
+<details markdown="1">
+<summary>Expand GeometryFeatureKey</summary>
+
+```typescript
+export type GeometryFeatureKey = string | readonly string[];
+```
+
+</details>
+
+### `GeometryJSONValue` {#type-geometryjsonvalue}
+
+<details markdown="1">
+<summary>Expand GeometryJSONValue</summary>
+
+```typescript
+export type GeometryJSONValue = null | boolean | number | string | readonly GeometryJSONValue[] | { readonly [key: string]: GeometryJSONValue };
+```
+
+</details>
+
+### `GeometryLimits` {#type-geometrylimits}
+
+<details markdown="1">
+<summary>Expand GeometryLimits</summary>
+
+```typescript
+export interface GeometryLimits { readonly maxFeatures?: number; readonly maxPositions?: number; readonly maxArcs?: number; readonly maxValues?: number; readonly maxDepth?: number; }
+```
+
+</details>
+
+### `GeometryPosition` {#type-geometryposition}
+
+<details markdown="1">
+<summary>Expand GeometryPosition</summary>
+
+```typescript
+export type GeometryPosition = readonly [number, number, ...number[]];
+```
+
+</details>
+
 ### `GradientPlotAppearanceOptions` {#type-gradientplotappearanceoptions}
 
 <details markdown="1">
@@ -9068,6 +9389,24 @@ export type GraphicType =
 ```
 
 </details>
+
+### `GraticuleOptions` {#type-graticuleoptions}
+
+<details markdown="1">
+<summary>Expand GraticuleOptions</summary>
+
+```typescript
+export interface GraticuleOptions extends Omit<GeoMarkStyleOptions, "fill"> {
+  readonly id?: string; readonly coordinate?: string; readonly fill?: "none";
+  readonly stepDeg?: readonly [number, number];
+  readonly extentDeg?: readonly [readonly [number, number], readonly [number, number]];
+  readonly precisionDeg?: number;
+}
+```
+
+</details>
+
+Related types: [`GeoMarkStyleOptions`](#type-geomarkstyleoptions).
 
 ### `GridDirectionOptions` {#type-griddirectionoptions}
 
@@ -12357,6 +12696,106 @@ export interface PreparedTextMetrics {
 
 </details>
 
+### `ProjectionEditFittedOptions` {#type-projectioneditfittedoptions}
+
+<details markdown="1">
+<summary>Expand ProjectionEditFittedOptions</summary>
+
+```typescript
+type ProjectionEditFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Partial<Omit<Parameters, "scalePx" | "translatePx">> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+/** Type changes start from the new type defaults. Explicit scale/translation edits detach a previous fit. */
+```
+
+</details>
+
+Related types: [`ProjectionParameters`](#type-projectionparameters) · [`ProjectionFitOptions`](#type-projectionfitoptions).
+
+### `ProjectionFitOptions` {#type-projectionfitoptions}
+
+<details markdown="1">
+<summary>Expand ProjectionFitOptions</summary>
+
+```typescript
+export interface ProjectionFitOptions {
+  readonly geometry?: string; readonly width: number; readonly height: number; readonly padding?: number; readonly pointScale?: number;
+}
+```
+
+</details>
+
+### `ProjectionFittedOptions` {#type-projectionfittedoptions}
+
+<details markdown="1">
+<summary>Expand ProjectionFittedOptions</summary>
+
+```typescript
+type ProjectionFittedOptions<Parameters = ProjectionParameters> = Parameters extends unknown
+  ? Omit<Parameters, "scalePx" | "translatePx"> & { readonly fit: ProjectionFitOptions; readonly scalePx?: never; readonly translatePx?: never } : never;
+```
+
+</details>
+
+Related types: [`ProjectionParameters`](#type-projectionparameters) · [`ProjectionFitOptions`](#type-projectionfitoptions).
+
+### `ProjectionParameters` {#type-projectionparameters}
+
+<details markdown="1">
+<summary>Expand ProjectionParameters</summary>
+
+```typescript
+export type ProjectionParameters = ({ readonly type: "identity" } & ProjectionPlaneParameters)
+  | ({ readonly type: Exclude<ProjectionType, "identity" | "albers-usa" | "conic-equal-area" | "conic-conformal" | "conic-equidistant"> } & ProjectionSphereParameters)
+  | ({ readonly type: "conic-equal-area" | "conic-conformal" | "conic-equidistant"; readonly parallelsDeg?: readonly [number, number] } & ProjectionSphereParameters)
+  | { readonly type: "albers-usa"; readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly precisionPx?: number };
+```
+
+</details>
+
+Related types: [`ProjectionPlaneParameters`](#type-projectionplaneparameters) · [`ProjectionType`](#type-projectiontype) · [`ProjectionSphereParameters`](#type-projectionsphereparameters).
+
+### `ProjectionPlaneParameters` {#type-projectionplaneparameters}
+
+<details markdown="1">
+<summary>Expand ProjectionPlaneParameters</summary>
+
+```typescript
+export interface ProjectionPlaneParameters {
+  readonly scalePx?: number; readonly translatePx?: readonly [number, number]; readonly reflectX?: boolean; readonly reflectY?: boolean;
+  readonly clipExtentPx?: readonly [readonly [number, number], readonly [number, number]] | null;
+}
+```
+
+</details>
+
+### `ProjectionSphereParameters` {#type-projectionsphereparameters}
+
+<details markdown="1">
+<summary>Expand ProjectionSphereParameters</summary>
+
+```typescript
+export interface ProjectionSphereParameters extends ProjectionPlaneParameters {
+  readonly centerDeg?: readonly [number, number]; readonly rotateDeg?: readonly [number, number] | readonly [number, number, number];
+  readonly precisionPx?: number; readonly clipAngleDeg?: number | null;
+}
+```
+
+</details>
+
+Related types: [`ProjectionPlaneParameters`](#type-projectionplaneparameters).
+
+### `ProjectionType` {#type-projectiontype}
+
+<details markdown="1">
+<summary>Expand ProjectionType</summary>
+
+```typescript
+export type ProjectionType = "mercator" | "equirectangular" | "equal-earth" | "natural-earth" | "orthographic" | "stereographic" | "gnomonic"
+  | "azimuthal-equal-area" | "azimuthal-equidistant" | "conic-equal-area" | "conic-conformal" | "conic-equidistant" | "transverse-mercator" | "albers-usa" | "identity";
+```
+
+</details>
+
 ### `QuantileColorScaleOptions` {#type-quantilecolorscaleoptions}
 
 <details markdown="1">
@@ -14289,7 +14728,7 @@ type StoredCell<T> = T extends (...args: never[]) => unknown ? never
 <summary>Expand StoredResourceKind</summary>
 
 ```typescript
-export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route";
+export type StoredResourceKind = "persistent-selection" | "parameter" | "data-source" | "hierarchy" | "layout" | "image" | "graph" | "font" | "geometry" | "edge-route" | "projection";
 ```
 
 </details>
@@ -15036,6 +15475,43 @@ export interface TitleTextStyleOptions {
 ```
 
 </details>
+
+### `TopoJSONInput` {#type-topojsoninput}
+
+<details markdown="1">
+<summary>Expand TopoJSONInput</summary>
+
+```typescript
+export interface TopoJSONInput extends Readonly<Record<string, unknown>> {
+  readonly type: "Topology"; readonly objects: Readonly<Record<string, TopologyGeometry>>;
+  readonly arcs: readonly (readonly GeometryPosition[])[];
+  readonly transform?: { readonly scale: readonly [number, number]; readonly translate: readonly [number, number] };
+}
+```
+
+</details>
+
+Related types: [`TopologyGeometry`](#type-topologygeometry) · [`GeometryPosition`](#type-geometryposition).
+
+### `TopologyGeometry` {#type-topologygeometry}
+
+<details markdown="1">
+<summary>Expand TopologyGeometry</summary>
+
+```typescript
+export type TopologyGeometry = Readonly<Record<string, unknown>> & ({ readonly id?: string | number; readonly properties?: Readonly<Record<string, GeometryJSONValue>> | null }) & (
+  | { readonly type: null }
+  | { readonly type: "Point"; readonly coordinates: GeometryPosition }
+  | { readonly type: "MultiPoint"; readonly coordinates: readonly GeometryPosition[] }
+  | { readonly type: "LineString"; readonly arcs: readonly number[] }
+  | { readonly type: "MultiLineString" | "Polygon"; readonly arcs: readonly (readonly number[])[] }
+  | { readonly type: "MultiPolygon"; readonly arcs: readonly (readonly (readonly number[])[])[] }
+  | { readonly type: "GeometryCollection"; readonly geometries: readonly TopologyGeometry[] });
+```
+
+</details>
+
+Related types: [`GeometryJSONValue`](#type-geometryjsonvalue) · [`GeometryPosition`](#type-geometryposition).
 
 ### `TreePlotOptions` {#type-treeplotoptions}
 

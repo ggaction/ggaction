@@ -23,14 +23,16 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 988,
-  packedBytes: 1417000,
-  unpackedBytes: 6445000
+  entries: 1024,
+  packedBytes: 1459000,
+  unpackedBytes: 6638000
 });
 
 const REQUIRED_FILES = Object.freeze([
   "CHANGELOG.md",
   "LICENSE",
+  "THIRD_PARTY_NOTICES",
+  "licenses/geometry-math.json",
   "README.md",
   "package.json",
   "knowledge/action-card.schema.json",
@@ -235,6 +237,8 @@ export function validatePackageManifest(manifest) {
     if (![
       "CHANGELOG.md",
       "LICENSE",
+      "THIRD_PARTY_NOTICES",
+      "licenses/geometry-math.json",
       "README.md",
       "package.json"
     ].includes(file) &&

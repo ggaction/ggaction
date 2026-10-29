@@ -1,0 +1,215 @@
+{
+  "status": "verified-private-stream",
+  "baseline": "4a9125962",
+  "sourceCommit": "0b68912ea39ca7395872cb13c1bb611fac0224db",
+  "approval": "AUTHORIZATION.json remainingApproval",
+  "checks": {
+    "numeric": 26,
+    "geoAndBoundaryAndArtifact": 84,
+    "critical": {
+      "status": "passed",
+      "floors": {
+        "grammar/geo/fit.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "grammar/geo/projectionFit.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "grammar/geo/projectionMath.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "grammar/geo/projectionOptions.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "grammar/geo/projections.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        },
+        "grammar/geo/stream.js": {
+          "lines": 95,
+          "branches": 90,
+          "functions": 100
+        }
+      }
+    },
+    "packedInputParity": {
+      "artifact": "806b2c8cc1c6b8c21982ca7f9af2c14460e844752ad4af130064abee3cd33eb3",
+      "entries": 979,
+      "differences": []
+    },
+    "postCommitDocs": 186
+  },
+  "artifact": {
+    "sha256": "806b2c8cc1c6b8c21982ca7f9af2c14460e844752ad4af130064abee3cd33eb3",
+    "entryCount": 979,
+    "size": 1394296,
+    "unpackedSize": 6358508
+  },
+  "installed": {
+    "sha256": "806b2c8cc1c6b8c21982ca7f9af2c14460e844752ad4af130064abee3cd33eb3",
+    "scope": "Private stream and projection numeric tests from the same installed artifact",
+    "nodes": [
+      {
+        "node": "v22.23.1",
+        "tests": 26,
+        "failures": 0
+      },
+      {
+        "node": "v20.20.2",
+        "tests": 26,
+        "failures": 0
+      },
+      {
+        "node": "v24.22.1",
+        "tests": 26,
+        "failures": 0
+      }
+    ]
+  },
+  "measurements": {
+    "20": {
+      "node": "v20.20.2",
+      "zlib": "1.3.1-e00f703",
+      "entries": 979,
+      "packedBytes": 1397803,
+      "unpackedBytes": 6358508
+    },
+    "22": {
+      "node": "v22.23.1",
+      "zlib": "1.2.12",
+      "entries": 979,
+      "packedBytes": 1394296,
+      "unpackedBytes": 6358508
+    },
+    "24": {
+      "node": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b",
+      "entries": 979,
+      "packedBytes": 1397803,
+      "unpackedBytes": 6358508
+    }
+  },
+  "initialCommandFailure": "The pack runner was given a relative output directory resolved by npm from its isolated staging directory. Absolute outputDirectory fixed it; dependent missing-archive failures did not execute runtime tests.",
+  "sourceHashes": {
+    "src/grammar/geo/stream.js": "134995cc1b3bc338a352a63c113ebb213851872ffefc30ac5ffde27e1a6d199e",
+    "src/grammar/geo/fit.js": "d7a7cdbc240c4613a5742d9257d92a050cd3c54cf659c890a6f70e5067f981c7",
+    "src/grammar/geo/projections.js": "fd10231e60e8595d4b3003e927f66db77c0e1d7d3701d7b7975ab484ca619b40",
+    "src/grammar/geo/projectionMath.js": "1a4639b16275b62610fa6de7b15065b654998c4f94bfb8dc1d31420fc0d3edae",
+    "test/unit/geo/stream.test.js": "7a3317c2716cb1290e387648f29675128aa17fcdecec41b6170235fca7b08ee6",
+    "test/unit/geo/projections.test.js": "bf66378a9c08a1582403de3fca7403bf4f3b726c4410017bf81f6eab2bcd6d58"
+  },
+  "logs": [
+    {
+      "file": "stream-boundaries.log.gz",
+      "sha256": "c1ec5c1e5d48d942d0ea80af763f89d5d48a3ae40ad9dd935f07a9c8f9a10b0c"
+    },
+    {
+      "file": "stream-coverage.log.gz",
+      "sha256": "beac1926680ab11fde9aeabcc7bbb343df59d39c31ef04016b78b03f45c4f295"
+    },
+    {
+      "file": "stream-critical.json.gz",
+      "sha256": "fa44aad44afcb6d6020b9292073243b47a73f97db7a2b9d75e5c067b101d68ff"
+    },
+    {
+      "file": "stream-final-contracts.log.gz",
+      "sha256": "05f32c9450590c8de4d0210a7fd6e5fc1706007e9096ffc43f75ac4b5cf43564"
+    },
+    {
+      "file": "stream-first.log.gz",
+      "sha256": "97fc87712f9f09abe56fc720859d470cf4b7020429fb3d7177bd3ceb5d6fbbb8"
+    },
+    {
+      "file": "stream-installed-summary-initial.log.gz",
+      "sha256": "53ef04db31f895afb61f55f6d5b57b4b2fcca528092f7a754d9ce878a1ab1215"
+    },
+    {
+      "file": "stream-installed-summary.log.gz",
+      "sha256": "9d68611501c2653b25c0b74ff40becf0da50fd865d1b89876a5e5691ab7eb88e"
+    },
+    {
+      "file": "stream-installed-v20.20.2.log.gz",
+      "sha256": "4aa68a81ddffcc394271998f8835f05c64c4f0fac410e3310978d935a9046659"
+    },
+    {
+      "file": "stream-installed-v22.23.1.log.gz",
+      "sha256": "29f81a1bcb0587dddb372e9a7ce62586c615f0b28bfda25e4f9c297b01511221"
+    },
+    {
+      "file": "stream-installed-v24.22.1.log.gz",
+      "sha256": "82048f22b15ef8a484e13939175752396372d0839fc34a32b49f67a4a06ac2ec"
+    },
+    {
+      "file": "stream-installed.json.gz",
+      "sha256": "2924c66de1d6e963671c1aa143da93392ca898ddd41b408020a65cf2cb7f0d70"
+    },
+    {
+      "file": "stream-package-initial.log.gz",
+      "sha256": "2631f775d1f9051748941bdf8fd82e0d363649d238e9491db6043795cf0b3598"
+    },
+    {
+      "file": "stream-package-size-v20.20.2.json.gz",
+      "sha256": "f198119e1bc05cdaaaa246db257c1ec913d39c197b6f4e4b2fe8f822c628ecc5"
+    },
+    {
+      "file": "stream-package-size-v22.23.1.json.gz",
+      "sha256": "b3e002ae1fc548d0d758cc5e8d689d489e128754f54781f58443fee4c4743703"
+    },
+    {
+      "file": "stream-package-size-v24.22.1.json.gz",
+      "sha256": "64600118e231e1f08a7357c45535aff1e89763c6cf519bcb3b9a0dd09d2217ad"
+    },
+    {
+      "file": "stream-package.log.gz",
+      "sha256": "c853277328685a352599a9fbab0dd87f243684c80e693842d05cd455a491045b"
+    },
+    {
+      "file": "stream-packed-inputs-initial.log.gz",
+      "sha256": "12506c45cb54239a865b2a171fd58234e165ecad94b947a3543c06907a6338bd"
+    },
+    {
+      "file": "stream-packed-inputs.json.gz",
+      "sha256": "ae610b5b46f33b135de98f0ef78083fde6c93e9089c94b25c5dfc183d54cbf74"
+    },
+    {
+      "file": "stream-packed-inputs.log.gz",
+      "sha256": "bbcf01063b47527960a6cec70f0bf2f4b2fdb01f6eda14f5d149da1e07b58ae8"
+    },
+    {
+      "file": "stream-size-20.log.gz",
+      "sha256": "53700351d552b9919be13c454ec2b2c4afa78571f2ba42fabd2e526154dcaf5f"
+    },
+    {
+      "file": "stream-size-22.log.gz",
+      "sha256": "40038d25f4146aa6a474b53df60247c9f0478aba97916bef01ff902c8ad5abd4"
+    },
+    {
+      "file": "stream-size-24.log.gz",
+      "sha256": "7b11df26de11db2c01e438ad40300462eaf5dbf925611d70ca0eb46544bbe0c3"
+    },
+    {
+      "file": "stream-provenance.log.gz",
+      "sha256": "ee459806f2c60c707e2a610eb925d2fa6e024898aad84e2190b57e13e74bee84"
+    },
+    {
+      "file": "stream-docs.log.gz",
+      "sha256": "9f04fc6ac97d613dc0d021a1aae1a728d0516fc3db000b18649ce1bd8d0141dd"
+    }
+  ],
+  "remaining": [
+    "Public projection resource and geo coordinate lifecycle",
+    "Native geo marks, guides and complete consumer matrix",
+    "Geo join, shared-arc LOD, camera and original-byte provenance",
+    "Combined Geo whole coverage/render/browser qualification",
+    "Common realistic3 integration assigned to root"
+  ]
+}

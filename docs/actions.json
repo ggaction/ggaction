@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 347,
+  "count": 359,
   "cards": [
     {
       "schemaVersion": 3,
@@ -24363,12 +24363,17 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"cartesian\" | \"parallel\" | \"polar\" | undefined"
+          "type": "\"cartesian\" | \"geo\" | \"parallel\" | \"polar\" | undefined"
         },
         {
           "name": "layers",
           "required": false,
           "type": "readonly string[] | undefined"
+        },
+        {
+          "name": "projection",
+          "required": false,
+          "type": "string | undefined"
         },
         {
           "name": "target",
@@ -24377,7 +24382,7 @@
         }
       ],
       "callPatterns": [
-        "createCoordinate({ id?, target?, type?, layers? })"
+        "createCoordinate({ id?, target?, type?, layers?, projection? })"
       ],
       "snippet": "program.createCoordinate({})",
       "errors": [],
@@ -24452,6 +24457,11 @@
           "name": "polarFrame",
           "required": false,
           "type": "PolarFrameOptions | undefined"
+        },
+        {
+          "name": "projection",
+          "required": false,
+          "type": "string | undefined"
         }
       ],
       "callPatterns": [
@@ -43203,6 +43213,1957 @@
       "snippet": "program.editEdgeRoute({ target: \"routes\", options: { exponent: 3 } })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editedgeroute"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createGeometryData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values.",
+      "signature": "createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;",
+      "intents": [
+        "create geometry data",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "geographic source",
+        "planar shapes"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "geographic source"
+        ],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeometryData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "coordinateKind",
+          "required": true,
+          "type": "\"geographic\" | \"planar\""
+        },
+        {
+          "name": "featureKey",
+          "required": false,
+          "type": "GeometryFeatureKey | undefined"
+        },
+        {
+          "name": "limits",
+          "required": false,
+          "type": "GeometryLimits | undefined"
+        },
+        {
+          "name": "format",
+          "required": true,
+          "type": "\"geojson\" | \"topojson\""
+        },
+        {
+          "name": "values",
+          "required": true,
+          "type": "TopoJSONInput | GeoJSONInput"
+        },
+        {
+          "name": "topoObject",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createGeometryData({ id, coordinateKind, format, values, target?, featureKey?, limits?, topoObject? })"
+      ],
+      "snippet": "program.createGeometryData({ id: \"geometry\", format: \"geojson\", coordinateKind: \"geographic\", featureKey: \"id\", values: { type: \"Feature\", id: \"place\", properties: {}, geometry: { type: \"Point\", coordinates: [12.6, 55.7] } } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#creategeometrydata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editGeometryData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Revise a geometry source atomically while preserving its format and feature-key policy.",
+      "signature": "editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;",
+      "intents": [
+        "edit geometry data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "geographic source",
+        "planar shapes"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing geographic source",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeometryData",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing geographic source",
+          "source dataset"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "values",
+          "required": false,
+          "type": "TopoJSONInput | GeoJSONInput | undefined"
+        },
+        {
+          "name": "coordinateKind",
+          "required": false,
+          "type": "\"geographic\" | \"planar\" | undefined"
+        },
+        {
+          "name": "topoObject",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "limits",
+          "required": false,
+          "type": "GeometryLimits | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })"
+      ],
+      "snippet": "program.editGeometryData({ target: \"geometry\", coordinateKind: \"planar\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editgeometrydata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Create a named projection, optionally fitted to one exact geometry source and explicit viewport.",
+      "signature": "createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;",
+      "intents": [
+        "create projection",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "geographic projection",
+        "map projection"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "explicit native projection type"
+        ],
+        "owns": [
+          "projection resource"
+        ],
+        "idOptions": [
+          "id"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editProjection",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "scalePx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "translatePx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "precisionPx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "clipExtentPx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "centerDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "rotateDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "clipAngleDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "parallelsDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "fit.width",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.height",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.padding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.pointScale",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "explicit native projection type"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "type",
+          "required": true,
+          "type": "ProjectionType"
+        },
+        {
+          "name": "fit",
+          "required": false,
+          "type": "ProjectionFitOptions | undefined"
+        },
+        {
+          "name": "scalePx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "translatePx",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "precisionPx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "reflectX",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reflectY",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "clipExtentPx",
+          "required": false,
+          "type": "readonly [readonly [number, number], readonly [number, number]] | null | undefined"
+        },
+        {
+          "name": "centerDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "rotateDeg",
+          "required": false,
+          "type": "readonly [number, number] | readonly [number, number, number] | undefined"
+        },
+        {
+          "name": "clipAngleDeg",
+          "required": false,
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "parallelsDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createProjection({ id, type, target?, fit?, scalePx?, translatePx?, precisionPx?, reflectX? })"
+      ],
+      "snippet": "program.createProjection({ id: \"projection\", type: \"mercator\", centerDeg: [0, 0] })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createprojection"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editProjection",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edit a projection atomically.",
+      "signature": "editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;",
+      "intents": [
+        "edit projection",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "geographic projection",
+        "map projection"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing named projection"
+        ],
+        "owns": [
+          "projection resource"
+        ],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editProjection",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "scalePx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "translatePx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "precisionPx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "clipExtentPx",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "centerDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "rotateDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "clipAngleDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "parallelsDeg",
+          "unit": "degree"
+        },
+        {
+          "path": "fit.width",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.height",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.padding",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "fit.pointScale",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing named projection"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "ProjectionType"
+        },
+        {
+          "name": "fit",
+          "required": false,
+          "type": "ProjectionFitOptions | undefined"
+        },
+        {
+          "name": "scalePx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "translatePx",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "precisionPx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "reflectX",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reflectY",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "clipExtentPx",
+          "required": false,
+          "type": "readonly [readonly [number, number], readonly [number, number]] | null | undefined"
+        },
+        {
+          "name": "centerDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "rotateDeg",
+          "required": false,
+          "type": "readonly [number, number] | readonly [number, number, number] | undefined"
+        },
+        {
+          "name": "clipAngleDeg",
+          "required": false,
+          "type": "number | null | undefined"
+        },
+        {
+          "name": "parallelsDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editProjection({ target?, type?, fit?, scalePx?, translatePx?, precisionPx?, reflectX?, reflectY? })"
+      ],
+      "snippet": "program.editProjection({ target: \"projection\", scalePx: 200 })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editprojection"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createGeoShapeMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create projected geographic GeoShapeMark geometry with native style.",
+      "signature": "createGeoShapeMark(options?: TargetedOptions<GeoShapeMarkOptions>): ChartProgram;",
+      "intents": [
+        "create geo shape mark",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "geographic shapes",
+        "projected feature geometry"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "Canvas",
+          "Geo coordinate",
+          "compatible geometry source"
+        ],
+        "owns": [
+          "geographic mark"
+        ],
+        "idOptions": [
+          "id",
+          "coordinate",
+          "geometry"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoShapeMark",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "strokeWidth",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "Canvas",
+          "Geo coordinate",
+          "compatible geometry source"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "radiusPx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "FillPaint | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "geometry",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "interpolation",
+          "required": false,
+          "type": "\"great-circle\" | \"source-segment\" | undefined"
+        },
+        {
+          "name": "routeHint",
+          "required": false,
+          "type": "false | readonly [number, number] | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createGeoShapeMark({ id?, coordinate?, target?, radiusPx?, fill?, stroke?, strokeWidth?, opacity? })"
+      ],
+      "snippet": "program.createGeoShapeMark({ id: \"regions\", geometry: \"geometry\", coordinate: \"main\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#creategeoshapemark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editGeoShapeMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edit projected geographic GeoShapeMark geometry with native style.",
+      "signature": "editGeoShapeMark(options: TargetedOptions<EditGeoShapeMarkOptions>): ChartProgram;",
+      "intents": [
+        "edit geo shape mark",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "geographic shapes",
+        "projected feature geometry"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "Canvas",
+          "Geo coordinate",
+          "compatible geometry source"
+        ],
+        "owns": [
+          "geographic mark"
+        ],
+        "idOptions": [
+          "target",
+          "coordinate",
+          "geometry"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoShapeMark",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "strokeWidth",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "Canvas",
+          "Geo coordinate",
+          "compatible geometry source"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "fill",
+          "required": false,
+          "type": "FillPaint | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "geometry",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "interpolation",
+          "required": false,
+          "type": "\"great-circle\" | \"source-segment\" | undefined"
+        },
+        {
+          "name": "routeHint",
+          "required": false,
+          "type": "false | readonly [number, number] | undefined"
+        },
+        {
+          "name": "radiusPx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editGeoShapeMark({ coordinate?, target?, fill?, stroke?, strokeWidth?, opacity?, clip?, lineCap? })"
+      ],
+      "snippet": "program.editGeoShapeMark({ target: \"regions\", opacity: 0.7 })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editgeoshapemark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createGeoPointMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create projected geographic GeoPointMark geometry with native style.",
+      "signature": "createGeoPointMark(options?: TargetedOptions<GeoPointMarkOptions>): ChartProgram;",
+      "intents": [
+        "create geo point mark",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "geographic points",
+        "map symbols"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "Canvas",
+          "Geo coordinate",
+          "compatible geometry source"
+        ],
+        "owns": [
+          "geographic mark"
+        ],
+        "idOptions": [
+          "id",
+          "coordinate",
+          "geometry"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoPointMark",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "strokeWidth",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "Canvas",
+          "Geo coordinate",
+          "compatible geometry source"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "geometry",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "interpolation",
+          "required": false,
+          "type": "\"great-circle\" | \"source-segment\" | undefined"
+        },
+        {
+          "name": "routeHint",
+          "required": false,
+          "type": "false | readonly [number, number] | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "FillPaint | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "radiusPx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "radiusDeg",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createGeoPointMark({ id?, coordinate?, target?, geometry?, interpolation?, routeHint?, fill?, stroke? })"
+      ],
+      "snippet": "program.createGeoPointMark({ id: \"cities\", geometry: \"geometry\", coordinate: \"main\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#creategeopointmark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editGeoPointMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edit projected geographic GeoPointMark geometry with native style.",
+      "signature": "editGeoPointMark(options: TargetedOptions<EditGeoPointMarkOptions>): ChartProgram;",
+      "intents": [
+        "edit geo point mark",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "geographic points",
+        "map symbols"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "Canvas",
+          "Geo coordinate",
+          "compatible geometry source"
+        ],
+        "owns": [
+          "geographic mark"
+        ],
+        "idOptions": [
+          "target",
+          "coordinate",
+          "geometry"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoPointMark",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "strokeWidth",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "Canvas",
+          "Geo coordinate",
+          "compatible geometry source"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "fill",
+          "required": false,
+          "type": "FillPaint | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "geometry",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "interpolation",
+          "required": false,
+          "type": "\"great-circle\" | \"source-segment\" | undefined"
+        },
+        {
+          "name": "routeHint",
+          "required": false,
+          "type": "false | readonly [number, number] | undefined"
+        },
+        {
+          "name": "radiusPx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "radiusDeg",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editGeoPointMark({ coordinate?, target?, fill?, stroke?, strokeWidth?, opacity?, clip?, lineCap? })"
+      ],
+      "snippet": "program.editGeoPointMark({ target: \"cities\", opacity: 0.7 })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editgeopointmark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createGeoLineMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create projected geographic GeoLineMark geometry with native style.",
+      "signature": "createGeoLineMark(options?: TargetedOptions<GeoLineMarkOptions>): ChartProgram;",
+      "intents": [
+        "create geo line mark",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "geographic lines",
+        "projected routes"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "Canvas",
+          "Geo coordinate",
+          "compatible geometry source"
+        ],
+        "owns": [
+          "geographic mark"
+        ],
+        "idOptions": [
+          "id",
+          "coordinate",
+          "geometry"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoLineMark",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "strokeWidth",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "Canvas",
+          "Geo coordinate",
+          "compatible geometry source"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "fill",
+          "required": false,
+          "type": "\"none\" | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "geometry",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "interpolation",
+          "required": false,
+          "type": "\"great-circle\" | \"source-segment\" | undefined"
+        },
+        {
+          "name": "routeHint",
+          "required": false,
+          "type": "false | readonly [number, number] | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createGeoLineMark({ id?, coordinate?, target?, fill?, stroke?, strokeWidth?, opacity?, clip? })"
+      ],
+      "snippet": "program.createGeoLineMark({ id: \"routes\", geometry: \"geometry\", coordinate: \"main\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#creategeolinemark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editGeoLineMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edit projected geographic GeoLineMark geometry with native style.",
+      "signature": "editGeoLineMark(options: TargetedOptions<EditGeoLineMarkOptions>): ChartProgram;",
+      "intents": [
+        "edit geo line mark",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "geographic lines",
+        "projected routes"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "Canvas",
+          "Geo coordinate",
+          "compatible geometry source"
+        ],
+        "owns": [
+          "geographic mark"
+        ],
+        "idOptions": [
+          "target",
+          "coordinate",
+          "geometry"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGeoLineMark",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "strokeWidth",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "Canvas",
+          "Geo coordinate",
+          "compatible geometry source"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "geometry",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "interpolation",
+          "required": false,
+          "type": "\"great-circle\" | \"source-segment\" | undefined"
+        },
+        {
+          "name": "routeHint",
+          "required": false,
+          "type": "false | readonly [number, number] | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "\"none\" | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editGeoLineMark({ coordinate?, target?, stroke?, strokeWidth?, opacity?, clip?, lineCap?, lineJoin? })"
+      ],
+      "snippet": "program.editGeoLineMark({ target: \"routes\", opacity: 0.7 })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editgeolinemark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createGraticule",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create projected geographic Graticule geometry with native style.",
+      "signature": "createGraticule(options?: TargetedOptions<GraticuleOptions>): ChartProgram;",
+      "intents": [
+        "create graticule",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "graticule",
+        "longitude and latitude grid"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "Canvas",
+          "Geo coordinate"
+        ],
+        "owns": [
+          "geographic mark"
+        ],
+        "idOptions": [
+          "id",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGraticule",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "strokeWidth",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "Canvas",
+          "Geo coordinate"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "\"none\" | undefined"
+        },
+        {
+          "name": "stepDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "extentDeg",
+          "required": false,
+          "type": "readonly [readonly [number, number], readonly [number, number]] | undefined"
+        },
+        {
+          "name": "precisionDeg",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createGraticule({ id?, coordinate?, target?, fill?, stepDeg?, extentDeg?, precisionDeg?, stroke? })"
+      ],
+      "snippet": "program.createGraticule({ id: \"grid\", stepDeg: [20, 20] })",
+      "errors": [],
+      "route": "/reference/actions/marks/#creategraticule"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editGraticule",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edit projected geographic Graticule geometry with native style.",
+      "signature": "editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;",
+      "intents": [
+        "edit graticule",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "graticule",
+        "longitude and latitude grid"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "Canvas",
+          "Geo coordinate"
+        ],
+        "owns": [
+          "geographic mark"
+        ],
+        "idOptions": [
+          "target",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editGraticule",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "strokeWidth",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "opacity",
+          "unit": "probability"
+        }
+      ],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "Canvas",
+          "Geo coordinate"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "outline",
+          "required": false,
+          "type": "false | MarkOutline | undefined"
+        },
+        {
+          "name": "shadow",
+          "required": false,
+          "type": "false | MarkShadow | undefined"
+        },
+        {
+          "name": "blend",
+          "required": false,
+          "type": "BlendMode | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "\"none\" | undefined"
+        },
+        {
+          "name": "stepDeg",
+          "required": false,
+          "type": "readonly [number, number] | undefined"
+        },
+        {
+          "name": "extentDeg",
+          "required": false,
+          "type": "readonly [readonly [number, number], readonly [number, number]] | undefined"
+        },
+        {
+          "name": "precisionDeg",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editGraticule({ coordinate?, target?, stroke?, strokeWidth?, opacity?, clip?, lineCap?, lineJoin? })"
+      ],
+      "snippet": "program.editGraticule({ target: \"grid\", opacity: 0.7 })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editgraticule"
     }
   ]
 }

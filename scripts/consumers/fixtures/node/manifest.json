@@ -1169,5 +1169,52 @@
         "statements": 21
       }
     ]
+  },
+  {
+    "file": "geometry.mjs",
+    "cases": [
+      {
+        "id": "geometry/full-basic-identity",
+        "statements": 11
+      },
+      {
+        "id": "geometry/fresh-process-offline",
+        "statements": 8
+      },
+      {
+        "id": "geometry/topology-atomic-failure",
+        "statements": 9
+      }
+    ]
+  },
+  {
+    "file": "projections.mjs",
+    "cases": [
+      {
+        "id": "projection/full-basic-fit-lifecycle",
+        "statements": 16
+      },
+      {
+        "id": "projection/fresh-process-offline-fit",
+        "statements": 7
+      }
+    ]
+  },
+  {
+    "file": "geographic-marks.mjs",
+    "cases": [
+      {
+        "id": "geographic-marks/full-basic-coordinates-and-consumers",
+        "statements": 9
+      },
+      {
+        "id": "geographic-marks/fresh-process-offline-edit",
+        "statements": 7
+      },
+      {
+        "id": "geographic-marks/four-renderers-scene-and-holes",
+        "statements": 17
+      }
+    ]
   }
 ]

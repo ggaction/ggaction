@@ -2,7 +2,7 @@ import { getPositionChannelDefinition } from "../core/vocabulary.js";
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { validateOptionObject } from "../core/validation.js";
 
-const COORDINATE_TYPES = new Set(["cartesian", "polar", "parallel"]);
+const COORDINATE_TYPES = new Set(["cartesian", "polar", "parallel", "geo"]);
 const ASPECT_MODES = new Set(["frame", "data"]);
 const ASPECT_ALIGNMENTS = new Set(["start", "center", "end"]);
 const ASPECT_OPTIONS = Object.freeze(["mode", "ratio", "alignX", "alignY"]);

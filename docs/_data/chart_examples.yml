@@ -2188,3 +2188,34 @@
   tasks: graph edge routes bundling
   url: /tutorials/edge-routes/
   tutorial_order: 225
+- id: geographic-marks
+  tutorial_order: 240
+  example: /examples/geographic-marks/
+  title: A district, stops and service route
+  image: /assets/images/geographic-marks.png
+  alt: Planar feature geometry preserves a courtyard and three independent stops.
+  width: 1280
+  height: 960
+  thumbnail: /assets/images/geographic-marks-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: Planar feature geometry preserves a courtyard and three independent stops.
+  summary: Draw geographic shapes, points, lines and graticules with stable feature identity.
+  actions: createGeometryData · createProjection · createGeoShapeMark · createGeoPointMark · createGeoLineMark · createGraticule
+  tasks: geometry projection map
+  url: /tutorials/geographic-marks/
+- id: geographic-grid
+  example: /examples/geographic-grid/
+  title: Longitude and latitude on one projection
+  image: /assets/images/geographic-grid.png
+  alt: Explicit angular lines share a single spherical projection.
+  width: 1280
+  height: 960
+  thumbnail: /assets/images/geographic-grid-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: Explicit angular lines share a single spherical projection.
+  summary: Draw geographic shapes, points, lines and graticules with stable feature identity.
+  actions: createGeometryData · createProjection · createGeoShapeMark · createGeoPointMark · createGeoLineMark · createGraticule
+  tasks: geometry projection map
+  url: /tutorials/geographic-marks/

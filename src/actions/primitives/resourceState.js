@@ -6,7 +6,7 @@ import { validateResourceGraph, validateStoredResource, resourceDependencies, or
 import { dataSourceValueHash } from "../../grammar/dataSourcePayload.js";
 import { dataSourcesForDataset, validateDataSourceState } from "../../materialization/dataSourceState.js";
 import { preparedResourceResults, preparedResourceDataReplacements, preparedResourceDataRooted, preparedResourceDataProjection, preparedResourceScreenRooted } from "./preparedResourceContext.js";
-import { mapLayerResourceBindings } from "../../core/resourceReferences.js";
+import { mapLayerResourceBindings, mapCoordinateResourceBindings } from "../../core/resourceReferences.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 
 const same = (a, b) => a.kind === b.kind && a.id === b.id;
@@ -56,7 +56,8 @@ export function replaceStoredResource(program, parsed, value, args) {
       : candidate.kind === "data-source" && value.kind === "parameter" ||
         candidate.kind === "layout" && ["hierarchy", "graph"].includes(value.kind) ||
         candidate.kind === "graph" && candidate.provenance.origin === "inferred" && value.kind === "graph" ||
-        candidate.kind === "edge-route" && ["graph", "hierarchy", "layout"].includes(value.kind);
+        candidate.kind === "edge-route" && ["graph", "hierarchy", "layout"].includes(value.kind) ||
+        candidate.kind === "projection" && value.kind === "geometry";
     if (owns && candidate.inputs.some(ref => affected.has(JSON.stringify([ref.kind, ref.id])) ||
         dataRooted && ref.kind === "data" && dataReplacements.has(ref.id))) {
       const key = JSON.stringify([candidate.kind, candidate.id]); affected.add(key); allowed.add(key);
@@ -125,12 +126,14 @@ export function replaceStoredResource(program, parsed, value, args) {
   }
   if (replacements.size) throw annotateError(new Error("Prepared resource replacement is missing from the resource graph."), { code: "stale-result" });
   const resources = supplied.map(resource => updated.get(JSON.stringify([resource.kind, resource.id])));
-  const layers = mapLayerResourceBindings(program.semanticSpec.layers, ref => {
+  const rebindConsumer = ref => {
     const revision = revisions.get(JSON.stringify([ref.kind, ref.id]));
     if (revision !== undefined) resolveInputReference(program, ref);
     return revision === undefined || revision === ref.revision ? ref : { ...ref, revision };
-  });
-  const semanticSpec = { ...program.semanticSpec, resources: cloneAndFreeze(resources), layers: cloneAndFreeze(layers) };
+  };
+  const layers = mapLayerResourceBindings(program.semanticSpec.layers, rebindConsumer);
+  const coordinates = mapCoordinateResourceBindings(program.semanticSpec.coordinates, rebindConsumer);
+  const semanticSpec = { ...program.semanticSpec, resources: cloneAndFreeze(resources), layers: cloneAndFreeze(layers), coordinates: cloneAndFreeze(coordinates) };
   validateResourceGraph({ ...program, semanticSpec }, program.constructor);
   const selections = program.materializationConfigs.selections;
   const rebound = selections === undefined ? undefined : Object.fromEntries(Object.entries(selections).map(([id, definition]) => {

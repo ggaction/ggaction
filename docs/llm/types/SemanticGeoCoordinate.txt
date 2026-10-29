@@ -1,0 +1,5 @@
+export interface SemanticGeoCoordinate {
+  readonly id: string; readonly type: "geo";
+  readonly projection: { readonly kind: "projection"; readonly id: string; readonly revision: number };
+  readonly aspect?: never; readonly polarFrame?: never;
+}

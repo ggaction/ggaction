@@ -529,6 +529,15 @@
     },
     "rendering": "authoring-only"
   },
+  "api/geometry.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "fixture": "values",
+    "result": "program",
+    "prerequisites": "Import ggaction; the example supplies its own feature collection.",
+    "rendering": "authoring-only",
+    "resultKind": "semantic"
+  },
   "tutorials/responsive-guides.md": {
     "mode": "complete",
     "environment": "node-esm",
@@ -548,6 +557,17 @@
     "canonical": {
       "file": "examples/nested-responsive/program.js",
       "exported": "createNestedResponsive"
+    },
+    "rendering": "authoring-only"
+  },
+  "tutorials/geographic-marks.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its own planar geometry.",
+    "canonical": {
+      "file": "examples/geographic-marks/program.js",
+      "exported": "createGeographicMarks"
     },
     "rendering": "authoring-only"
   }

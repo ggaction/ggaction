@@ -1,0 +1,581 @@
+{
+  "status": "private-kernel-qualified",
+  "base": "f2915cd17",
+  "scope": "Pyramid deterministic stage geometry only; no public action, persisted schema, renderer or package export added",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "sourceHashes": {
+    "src/grammar/pyramid/layout.js": "fc28bbb3eb204c84ac305a4883d5845c8efde5e35a87698eef21d65cdf64b835",
+    "test/unit/grammar/pyramid-layout.test.js": "294cd78a8903e1514641b7a1b4e9e67656e5785ef28305d839086eccbd9bf734",
+    "scripts/coverage-policy.js": "48aea5093cbb6c175b045f76dafb1feb1c178179a121257f7926b1dd049dd196"
+  },
+  "checks": {
+    "focused": 9,
+    "coverage": [
+      100,
+      100,
+      100
+    ],
+    "relatedUnit": 32,
+    "initialBoundaries": 27,
+    "finalContracts": 40,
+    "coveragePolicy": 7,
+    "docs": 191,
+    "builtPages": 170,
+    "selectiveLLMArtifacts": 1454
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/pyramid-foundation/package/ggaction-0.0.26.tgz",
+    "entries": 981,
+    "packedBytes": 1406091,
+    "unpackedBytes": 6409665,
+    "sha256": "1adb7ff059ef544be118cae392d3540f361a333d7f39c933743acd4ff6aabc78"
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/pyramid-foundation/package/ggaction-0.0.26.tgz",
+      "kernelTests": 9,
+      "records": [
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        }
+      ],
+      "types": "passed",
+      "optionalPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 859,
+          "minifiedBytes": 2414983,
+          "gzipBytes": 688008
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1292572,
+          "gzipBytes": 377332
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145387,
+          "gzipBytes": 43572
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 173,
+          "minifiedBytes": 333287,
+          "gzipBytes": 108444
+        }
+      }
+    },
+    "22": {
+      "node": "v22.23.1",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/pyramid-foundation/package/ggaction-0.0.26.tgz",
+      "kernelTests": 9,
+      "records": [
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        }
+      ],
+      "types": "passed",
+      "optionalPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 859,
+          "minifiedBytes": 2414983,
+          "gzipBytes": 686198
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1292572,
+          "gzipBytes": 376502
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20055
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145387,
+          "gzipBytes": 43411
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 173,
+          "minifiedBytes": 333287,
+          "gzipBytes": 107805
+        }
+      }
+    },
+    "24": {
+      "node": "v24.22.1",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/pyramid-foundation/package/ggaction-0.0.26.tgz",
+      "kernelTests": 9,
+      "records": [
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        }
+      ],
+      "types": "passed",
+      "optionalPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 859,
+          "minifiedBytes": 2414983,
+          "gzipBytes": 688008
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1292572,
+          "gzipBytes": 377332
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145387,
+          "gzipBytes": 43572
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 173,
+          "minifiedBytes": 333287,
+          "gzipBytes": 108444
+        }
+      }
+    }
+  },
+  "unchangedAllFiveBundleSizes": true,
+  "oracle": "Existing source-independent signedPolygonArea (shoelace) plus literal four-direction polygons and width/area fixtures; deterministic127-stage proportionality/containment",
+  "failure": "Initial8/9 exposed last progress endpoint rounding outside the viewport; exact final endpoint fixes actual geometry. Initial log retained.",
+  "remaining": [
+    "Primitive visual evidence and public create/edit/revise lifecycle",
+    "All public mark consumer matrix cells",
+    "OHLC and waterfall",
+    "STEP050-052 prerequisites",
+    "STEP074/077 final integrated qualification"
+  ],
+  "evidenceFiles": {
+    "boundaries.log": {
+      "sha256": "b80cf5ce05164cbcf018140c5932c0c7116ac8cac96f2362e773f4ad8e452d7a",
+      "bytes": 5480
+    },
+    "coverage-policy.log": {
+      "sha256": "c8404bc436e9608085f90ade0f0ae788c4b5654e5cf22993452c13c026ef598a",
+      "bytes": 1394
+    },
+    "coverage.log": {
+      "sha256": "54cc6b533c0b0e8edead3ef00cfb7ecc461b9cf493d8644aee48f9fdd86da383",
+      "bytes": 2803
+    },
+    "final-contracts.log": {
+      "sha256": "8ed1780e16632a7e5a0e82fb0e8cccfa52fb7a077888a39c7fb6dcf4a8ba69a7",
+      "bytes": 8143
+    },
+    "initial.log": {
+      "sha256": "563f4ad1eeb6fe218b2a7e11a197f9f4e34ebfaba4d5225b7c7ec935ec74d98c",
+      "bytes": 3097
+    },
+    "installed-20.json": {
+      "sha256": "efb9827e787ec3ba30efa3cfee3074dde46e6527f4fff37d491b04ed5abb38cb",
+      "bytes": 3189
+    },
+    "installed-20.log": {
+      "sha256": "74c7401b016da7673b2aa74ec57fc62d7a50c33a7248893ac03793dd670f80fd",
+      "bytes": 5248
+    },
+    "installed-22.json": {
+      "sha256": "13fc7dba291c7c6e57fe47b5d22418a75a5ae7af0160b0ce7783263f826e0e7e",
+      "bytes": 3189
+    },
+    "installed-22.log": {
+      "sha256": "d211e7915f24369cbc4e68415ef774b126b38550291c4cd442c0f341c7bc2737",
+      "bytes": 5392
+    },
+    "installed-24.json": {
+      "sha256": "5e778879628261cd8a782a03a4bcf05d9d64f52fb519dfa3e2ced03bdafbe502",
+      "bytes": 3189
+    },
+    "installed-24.log": {
+      "sha256": "d1abd1b1edac607a7ca564b658158eccc6347faec38c7e5151a88b3ff01da4cc",
+      "bytes": 4188
+    },
+    "installed.mjs": {
+      "sha256": "b6cc495c872709971eda6685ae63e3a5331372598d19811e065c20cb42e24352",
+      "bytes": 2952
+    },
+    "measure.json": {
+      "sha256": "95dead4d8ddd2fdc8fc2a37bb4d72e92083120d9b8247353d86ebafb103299f0",
+      "bytes": 62
+    },
+    "measure.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "package.json": {
+      "sha256": "f3446ee3b928258fbf56b8fa16e9b300e2b94c514884d4241e39ea7defb1f09c",
+      "bytes": 271
+    },
+    "package.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "related.log": {
+      "sha256": "a3ecfea00c60b21569f49ff981ee3641e2dbef17d24640975dd4a353d5763fb2",
+      "bytes": 7346
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "machine.log": {
+      "sha256": "1d87daef0983dfa19149afe8aaf5414d841b7c616d74bc81a80104374341200d",
+      "bytes": 127
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "docs.log": {
+      "sha256": "b8723f96134354b79ef24384cc91dbd8c7909e913208197d43beff0aeb6092ff",
+      "bytes": 44626
+    },
+    "build.log": {
+      "sha256": "ddec7248a678ef6f1927b554cae8a8fc16e7b578cc85358b8d3e0c9e4c027c4f",
+      "bytes": 419
+    },
+    "built.log": {
+      "sha256": "7c3bb9baa90982ce0c8764324c9ad2f0a8aadf2daf50be2fe131edc106fb242b",
+      "bytes": 179
+    },
+    "package-pinned.json": {
+      "sha256": "a2db569fdedb33a62bf04ad6e975206d1a0d9db50cf16ed7ed8f4d8aabea3a18",
+      "bytes": 159
+    },
+    "package-pinned.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    }
+  },
+  "source": "854607630",
+  "pinnedArtifact": {
+    "sha256": "1adb7ff059ef544be118cae392d3540f361a333d7f39c933743acd4ff6aabc78",
+    "byteIdentical": true,
+    "entries": 981,
+    "packedBytes": 1406091,
+    "unpackedBytes": 6409665
+  },
+  "reuse": {
+    "responsiveBrowser": "Source/HTML structure, CSS, scripts and images unchanged; immediate preceding f2915cd17 direct-controls browser widths320/390/768 evidence reused. Pinned source191 and built170/1454 links/assets rechecked."
+  }
+}

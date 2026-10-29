@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "status": "development",
   "packageVersion": "0.0.26",
-  "contractId": "sha256:9997ff34b72d398245a8ac67dc69809bbef28ca2e89cfab573976e193b7578be",
-  "sourceCommit": "e1924a6debf4c8780472cf588af51e656b2fdfac",
-  "sourceRef": "e1924a6debf4c8780472cf588af51e656b2fdfac",
-  "exampleSourceRef": "3a9901e925b04d640f064ff7e06d434011a4d858",
+  "contractId": "sha256:0cd4d50ca946497e086e632259da71c1ac19fd4ba19a111aafefb537fb1ae070",
+  "sourceCommit": null,
+  "sourceRef": "main",
+  "exampleSourceRef": "codex/roadmap9-paints",
   "baseline": {
     "tag": "v0.0.13",
     "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
     "actionCount": 234
   },
-  "actionCount": 347,
+  "actionCount": 359,
   "actionAvailability": {
     "createCanvas": {
       "availableBy": "v0.0.13"
@@ -218,6 +218,22 @@
       "introducedAfter": "v0.0.13",
       "status": "development"
     },
+    "createGeometryData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createProjection": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editProjection": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeometryData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
     "createContourData": {
       "introducedAfter": "v0.0.13",
       "status": "development"
@@ -227,6 +243,38 @@
       "status": "development"
     },
     "editContourData": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGeoShapeMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeoShapeMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGeoPointMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeoPointMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGeoLineMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGeoLineMark": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "createGraticule": {
+      "introducedAfter": "v0.0.13",
+      "status": "development"
+    },
+    "editGraticule": {
       "introducedAfter": "v0.0.13",
       "status": "development"
     },

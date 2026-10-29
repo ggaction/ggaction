@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 3,
+  "name": "editGraticule",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Edit projected geographic Graticule geometry with native style.",
+  "signature": "editGraticule(options: TargetedOptions<EditGraticuleOptions>): ChartProgram;",
+  "intents": [
+    "edit graticule",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "graticule",
+    "longitude and latitude grid"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "Canvas",
+      "Geo coordinate"
+    ],
+    "owns": [
+      "geographic mark"
+    ],
+    "idOptions": [
+      "target",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editGraticule",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "Canvas",
+      "Geo coordinate"
+    ],
+    "allowsEmpty": false
+  },
+  "options": [
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "lineCap",
+      "required": false,
+      "type": "\"butt\" | \"round\" | \"square\" | undefined"
+    },
+    {
+      "name": "lineJoin",
+      "required": false,
+      "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+    },
+    {
+      "name": "miterLimit",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "outline",
+      "required": false,
+      "type": "false | MarkOutline | undefined"
+    },
+    {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
+      "name": "blend",
+      "required": false,
+      "type": "BlendMode | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "\"none\" | undefined"
+    },
+    {
+      "name": "stepDeg",
+      "required": false,
+      "type": "readonly [number, number] | undefined"
+    },
+    {
+      "name": "extentDeg",
+      "required": false,
+      "type": "readonly [readonly [number, number], readonly [number, number]] | undefined"
+    },
+    {
+      "name": "precisionDeg",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editGraticule({ coordinate?, target?, stroke?, strokeWidth?, opacity?, clip?, lineCap?, lineJoin? })"
+  ],
+  "snippet": "program.editGraticule({ target: \"grid\", opacity: 0.7 })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editgraticule"
+}

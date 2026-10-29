@@ -1,5 +1,3 @@
-export interface CreateCoordinateOptions {
-  id?: string;
-  type?: "cartesian" | "polar" | "parallel";
-  layers?: readonly string[];
-}
+export type CreateCoordinateOptions = CreateNativeCoordinateOptions | {
+  id?: string; type: "geo"; projection?: string; layers?: readonly string[];
+};

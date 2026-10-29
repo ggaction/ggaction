@@ -1,9 +1,10 @@
 # Examples
 
 This index is generated from the canonical public chart catalog. Serve the
-repository root over HTTP, then open any linked directory:
+repository root over HTTP after installing the locked dependencies, then open any linked directory:
 
 ```bash
+npm ci
 python3 -m http.server 8000
 ```
 
@@ -803,6 +804,18 @@ Representative actions: `facet`, `hconcat`, `editCanvas`. [Documentation](https:
 Follow existing graph edges with a bounded detour and explicit stored route.
 
 Representative actions: `bundleGraphEdges`, `createGraphPlot`, `editEdgeRoute`. [Documentation](https://ggaction.github.io/ggaction/tutorials/edge-routes/).
+
+### [A district, stops and service route](./geographic-marks/)
+
+Draw geographic shapes, points, lines and graticules with stable feature identity.
+
+Representative actions: `createGeometryData`, `createProjection`, `createGeoShapeMark`, `createGeoPointMark`, `createGeoLineMark`, `createGraticule`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
+
+### [Longitude and latitude on one projection](./geographic-grid/)
+
+Draw geographic shapes, points, lines and graticules with stable feature identity.
+
+Representative actions: `createGeometryData`, `createProjection`, `createGeoShapeMark`, `createGeoPointMark`, `createGeoLineMark`, `createGraticule`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
 
 ## Development fixtures
 

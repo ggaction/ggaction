@@ -1,3 +1,6 @@
+import { registerGeoMarkActions } from "./geo/marks.js";
+import { registerGeometryActions } from "./geo/resources.js";
+import { registerProjectionActions } from "./geo/projections.js";
 import { reviseSourceResourceInputs } from "./data/resourcePlan.js";
 import { registerCalendarResourceActions, reviseCalendarInputs } from "./calendar/resources.js";
 import { registerCalendarPlotActions } from "./calendar/plots.js";
@@ -11,8 +14,7 @@ import { registerHierarchyResourceActions, reviseHierarchyInputs } from "./hiera
 import { registerFontResourceActions } from "./fonts/index.js";
 import { registerPrimitiveActions } from "./primitives/index.js";
 import { registerCanvasActions } from "./canvas/index.js";
-import { registerBasicCoordinateActions } from "./coordinates/actions.js";
-import { registerCoordinateEditActions } from "./coordinates/edit.js";
+import { registerGeoCoordinateActions } from "./geo/coordinates.js";
 import { registerDataActions } from "./data/index.js";
 import { registerMarkActions } from "./marks/index.js";
 import { registerScaleActions } from "./scales/index.js";
@@ -60,8 +62,8 @@ export function registerActions(ProgramClass) {
   registerOverlayActions(ProgramClass);
   registerScaleActions(ProgramClass);
   registerEncodingActions(ProgramClass);
-  registerBasicCoordinateActions(ProgramClass);
-  registerCoordinateEditActions(ProgramClass);
+  registerGeoCoordinateActions(ProgramClass);
+  registerGeoMarkActions(ProgramClass);
   registerGuideActions(ProgramClass);
   registerTitleActions(ProgramClass);
   registerRegressionActions(ProgramClass);
@@ -81,6 +83,8 @@ export function registerActions(ProgramClass) {
   registerFlowPlotActions(ProgramClass);
   registerCalendarResourceActions(ProgramClass);
   registerCalendarPlotActions(ProgramClass);
+  registerGeometryActions(ProgramClass);
+  registerProjectionActions(ProgramClass);
   registerContourResourceActions(ProgramClass);
   registerContourMarkActions(ProgramClass);
   registerHierarchyResourceActions(ProgramClass);

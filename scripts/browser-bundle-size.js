@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 690_300, // Category visibility plus two-stage filter closure: Node20 measured 690,277.
-  "ggaction/basic": 378_400, // Shared filter projection owners: Node20 measured 378,363; editors remain Full-only.
+  ggaction: 716_200, // Geographic marks with category visibility and host controls: Node20 716,101 bytes.
+  "ggaction/basic": 381_400, // Shared viewport and filter projection: Node20 381,341; editors remain Full-only.
   "ggaction/svg": 25_000,
   "ggaction/graph": 44_000, // Shared region predicate validation: 43,572 gzip bytes.
   "ggaction/interaction": 112_100 // Native partition focus command: Node20 measured 112,019.

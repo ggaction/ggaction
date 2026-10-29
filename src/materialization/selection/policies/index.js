@@ -1,3 +1,4 @@
+import { geoSelectionPolicy } from "./geo.js";
 import { calendarSelectionPolicy } from "./calendar.js";
 import { imageSelectionPolicy } from "./image.js";
 import { contourSelectionPolicy } from "./contour.js";
@@ -23,6 +24,7 @@ import { applyItemMissingPolicy } from "../../../grammar/itemMissing.js";
 import { resolveOverlayItems } from "../items/overlay.js";
 
 const POLICIES = Object.freeze({
+  geo: geoSelectionPolicy,
   graph: graphSelectionPolicy,
   image: imageSelectionPolicy,
   calendar: calendarSelectionPolicy,

@@ -862,8 +862,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Current gzip ceiling |
 | --- | --- |
-| `ggaction` | 690,300 bytes |
-| `ggaction/basic` | 378,400 bytes |
+| `ggaction` | 716,200 bytes |
+| `ggaction/basic` | 381,400 bytes |
 | `ggaction/svg` | 25,000 bytes |
 | `ggaction/interaction` | 112,100 bytes |
 | `ggaction/graph` | 44,000 bytes |
@@ -3607,6 +3607,38 @@ Calendar 통합 실측은920entries/6,061,365unpacked bytes이며 Node20/24 pack
 Full 최대658,183/Basic367,366bytes를 확인해659,000/368,000으로 갱신하고 SVG25,000 및
 interaction83,000은 유지한다. Search963,468bytes는964,000으로 올림하며 기존 global/critical
 coverage floor는 유지한다. 정확 고정 archive와 최종 검증은 Calendar evidence가 소유한다.
+
+
+### Geographic source normalization
+
+`grammar/geo/`는 순수 JSON/geometry owner다. Caller source의
+own-data snapshot·유형·finite/closed ring과 TopoJSON shared arc decode를 정규화하며
+기존 immutable/value digest/typed-key/work-budget core를 재사용한다. 프로그램, trace, renderer,
+asset loader를 가져오지 않는다. Full의 `actions/geo/resources.js`는 이 결과와 core identity를
+`materialization/geo/resources.js`의 authored geometry resource로 저장한다. 공통
+`materialization/geometryState.js`는 닫힌 `options.method`로 contour와 geo validator를
+분리하고 각 stored result와 소비자 적격성을 검증한다. `selectors/geometry.js`는 geographic
+source의 명시·현재·유일한 선택만 허용한다. 복원은 retained source와 정규화 결과를 검산하며
+그래픽을 생성하지 않는다. Source values provenance와 실제 asset byte provenance를
+혼동하지 않는다. Projection의 private 순수 kernel은 `grammar/geo/projectionOptions.js`의
+native descriptor/schema, `projectionMath.js`의 고정 mathematical adapter,
+`projections.js`의 visible forward/per-component inverse, `projectionFit.js`의 bounded fit으로
+나뉜다. `stream.js`는 원본 member 경로를 보존하며 날짜변경선·구면/사각 clip·bounded
+resampling을 concrete point/compound path로 계산하고, `fit.js`는 그 동일 stream bounds로
+viewport fit을 계산한다. 구면 ring 방향 변환은 호출 내부에서만 일어나며 원본 geometry와
+feature identity는 바뀌지 않는다. Dependency alias·원본 license·수식 source signature는 배포 manifest/notices가 소유한다.
+Math instance는 호출별 private 객체이며 semantic state/codec에 callback을 저장하지 않는다.
+Full의 `actions/geo/projections.js`는 `grammar/geo/projectionDefinition.js`의 단일 정의를
+`materialization/geo/projectionResource.js`로 구체화한다. 명시 viewport fit은 exact geometry
+InputRef 하나를 보존하고, `projectionState.js`가 복원 시 같은 bounded fit을 검산한다.
+`actions/geo/closure.js`는 geometry와 모든 fitted projection 후보를 먼저 검증하여 private
+prepared-resource authority로 한 번씩 저장한다. Projection 선택은 명시·현재·유일 후보만
+허용하고 Basic에는 이 handler/action을 등록하지 않는다. 정확한 공개 계약은
+[current/GEOMETRY.md](contract/current/GEOMETRY.md)가 소유한다. Geo coordinate가 projection InputRef를 단일 소유하고 mark는 coordinate ID와 geometry ref를 저장한다.
+`materialization/geo/source.js`의 feature metadata 조회는 선택/접근성이 재투영이나 math dependency 없이
+concrete identity를 읽도록 분리되어 있다. `materialization/geo/mark.js`는 동일 stream을 명시 실행하여
+collection의 point/path와 exact source lineage를 생성한다. 기존 data/coordinate materialization planner가
+geometry→fitted projection→mark union을 중복 없이 실행한다. Renderer 입력은 계속 concrete graphicSpec만이다.
 
 ### Interaction의 원자 authoring command 경계
 

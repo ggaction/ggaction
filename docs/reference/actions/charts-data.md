@@ -1471,8 +1471,9 @@ Generated from the current TypeScript declaration. Union branches can require di
 | Option | Presence | Type |
 | --- | --- | --- |
 | `id` | Optional / branch-dependent | `string \| undefined` |
-| `type` | Optional / branch-dependent | `"cartesian" \| "parallel" \| "polar" \| undefined` |
+| `type` | Optional / branch-dependent | `"cartesian" \| "geo" \| "parallel" \| "polar" \| undefined` |
 | `layers` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `projection` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
 
 </details>
@@ -1503,6 +1504,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Required | `string \| ActionTargetList \| ScopedActionTarget` |
 | `aspect` | Optional / branch-dependent | `CoordinateAspect \| undefined` |
 | `polarFrame` | Optional / branch-dependent | `PolarFrameOptions \| undefined` |
+| `projection` | Optional / branch-dependent | `string \| undefined` |
 
 </details>
 
@@ -5462,6 +5464,170 @@ editEdgeRoute({ target?, graph?, layout?, method?, options?, coordinateSpace? })
 ```
 
 Apply a nonempty patch to a stored route and refresh each consuming GraphPlot once. Same-method options preserve omitted values; a changed method starts from its defaults. Exact preparation handles also support `{prepared,requestToken}`. See [Edge routes](../../api/edge-routes.md) for validation, async lifetime, source revision and Canvas invalidation.
+
+
+## `createGeometryData`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createGeometryData(options: TargetedOptions<CreateGeometryDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateGeometryDataOptions`](./../types.md#type-creategeometrydataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `coordinateKind` | Required | `"geographic" \| "planar"` |
+| `featureKey` | Optional / branch-dependent | `GeometryFeatureKey \| undefined` |
+| `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+| `format` | Required | `"geojson" \| "topojson"` |
+| `values` | Required | `TopoJSONInput \| GeoJSONInput` |
+| `topoObject` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, limits? })
+```
+
+Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values. See [Geometry sources](../../api/geometry.md#creategeometrydata).
+
+
+## `editGeometryData`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditGeometryDataOptions`](./../types.md#type-editgeometrydataoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `values` | Optional / branch-dependent | `TopoJSONInput \| GeoJSONInput \| undefined` |
+| `coordinateKind` | Optional / branch-dependent | `"geographic" \| "planar" \| undefined` |
+| `topoObject` | Optional / branch-dependent | `string \| undefined` |
+| `limits` | Optional / branch-dependent | `GeometryLimits \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
+```
+
+Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](../../api/geometry.md#editgeometrydata).
+
+
+## `createProjection`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createProjection(options: TargetedOptions<CreateProjectionOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateProjectionOptions`](./../types.md#type-createprojectionoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `type` | Required | `ProjectionType` |
+| `fit` | Optional / branch-dependent | `ProjectionFitOptions \| undefined` |
+| `scalePx` | Optional / branch-dependent | `number \| undefined` |
+| `translatePx` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `precisionPx` | Optional / branch-dependent | `number \| undefined` |
+| `reflectX` | Optional / branch-dependent | `boolean \| undefined` |
+| `reflectY` | Optional / branch-dependent | `boolean \| undefined` |
+| `clipExtentPx` | Optional / branch-dependent | `readonly [readonly [number, number], readonly [number, number]] \| null \| undefined` |
+| `centerDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `rotateDeg` | Optional / branch-dependent | `readonly [number, number] \| readonly [number, number, number] \| undefined` |
+| `clipAngleDeg` | Optional / branch-dependent | `number \| null \| undefined` |
+| `parallelsDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createProjection({ id, type, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Create a named projection, optionally fitted to one exact geometry source and explicit viewport. See [Geometry and projections](../../api/geometry.md#createprojection).
+
+
+## `editProjection`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editProjection(options: TargetedOptions<EditProjectionOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditProjectionOptions`](./../types.md#type-editprojectionoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `type` | Optional / branch-dependent | `ProjectionType` |
+| `fit` | Optional / branch-dependent | `ProjectionFitOptions \| undefined` |
+| `scalePx` | Optional / branch-dependent | `number \| undefined` |
+| `translatePx` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `precisionPx` | Optional / branch-dependent | `number \| undefined` |
+| `reflectX` | Optional / branch-dependent | `boolean \| undefined` |
+| `reflectY` | Optional / branch-dependent | `boolean \| undefined` |
+| `clipExtentPx` | Optional / branch-dependent | `readonly [readonly [number, number], readonly [number, number]] \| null \| undefined` |
+| `centerDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+| `rotateDeg` | Optional / branch-dependent | `readonly [number, number] \| readonly [number, number, number] \| undefined` |
+| `clipAngleDeg` | Optional / branch-dependent | `number \| null \| undefined` |
+| `parallelsDeg` | Optional / branch-dependent | `readonly [number, number] \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editProjection({ target?, type?, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Edit a projection atomically. Explicit scale or translation detaches an existing geometry fit. See [Geometry and projections](../../api/geometry.md#editprojection).
 
 
 ## Focused core data editing

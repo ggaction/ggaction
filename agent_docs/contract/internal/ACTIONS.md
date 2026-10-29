@@ -24,6 +24,7 @@ domain action을 통해서만 실행한다.
 | `materializeBin2DData` | rectangular 2D-bin data actions |
 | `materializeCalendarPlot` | stored civil-day cells, month boundaries, label roles and exact layout lineage |
 | `materializeContourMark` | stored contour geometry, scale mappings, holes and exact geometry lineage |
+| `materializeGeoMark` | stored feature geometry, exact coordinate projection, split parts and immutable geometry lineage |
 | `materializeFlowNodes` | stored flow rectangles, node labels, source rows and exact layout binding |
 | `materializeFlowLinks` | stored flow attachments and feedback lanes as closed ribbons |
 | `materializeTreePlot` | stored tree layout, plot style and hierarchy resource revisions |

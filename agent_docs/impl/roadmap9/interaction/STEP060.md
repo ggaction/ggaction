@@ -355,3 +355,24 @@ source docs50을 확인했다. Built170pages/1458LLM·네 폭Axe0와 모바일 �
 E1 source `e1924a6de` push 후 provenance→machine→LLM을 고정하고 source docs50 및
 built170pages/1458LLM을 통과했다. Runtime/타입·archive `440fe2ae`는 불변이며
 source revision 표기만 바뀌어 앞선 네 폭Axe0·화면 증거를 재사용한다.
+
+
+## Geo 통합 기준선
+
+E1 `7ed57eb37`에 main의 qualified Geo `7ee7821f9`를 병합했다. 런타임 본문 충돌은 없고
+명시 action vocabulary/intent terms·critical coverage families를 합쳐 canonical generators를 다시 실행했다.
+[Geo integration evidence](geo-integration-evidence/qualification.json)에 양쪽 부모·원본 실패·합산 수치를 보존한다.
+Interaction/Geo/visibility 집중258과 새 nested 교차1, source/types/catalog42, package/vocabulary/cards21,
+실제5×3+inventory16, 공개 browser3이 통과했다. 새 교차는 context feature/ref→같은 Geo 선택을 유지한 채
+형제 visibility/partition focus를 commit하고 원 child 참조·codec·오류 원자성을 확인한다.
+
+동일 최종 tar `8f955699`에서 Node20/22/24 각각 runtime7·strict TS·5bundles가 통과했다.
+Node20 packed1,458,954/unpacked6,637,085/1024entries에 cap1024/1,459,000/6,638,000,
+Full716,101/Basic381,341/interaction112,020gzip에 cap716,200/381,400/112,100을 사용한다.
+Search1,013,107bytes는1,013,200으로 최소 올림했다. README/canonical bundle 표도 동기화했다.
+README 수정 전 candidate `39c94a26`는 superseded이며 최종 세Node 증거와 구분한다.
+
+Pre-commit docs49/50의 유일 실패는 incoming Geo example이 아직 branch ref에 없는 source-link 검사다.
+Source commit 뒤 provenance를 고정해 닫는다. Built172pages/1509LLM과 네 폭Axe0을 통과했으며,
+기존 parent renderer 증거는 renderer source와 출력 정책이 그대로라 재사용한다. 전수 coverage/normal이나
+전체060/077 완료를 주장하지 않는다. 새 annotation·node drag·geo navigation source 구현은 아직 시작하지 않았다.

@@ -39,11 +39,10 @@ export function resolveMarkId(program, requested, {
   defaultId,
   label,
   markType,
-  operation
+  operation,
+  predicate = layer => layer.mark?.type === markType
 }) {
-  const sameRoleExists = program.semanticSpec.layers.some(
-    layer => layer.mark?.type === markType
-  );
+  const sameRoleExists = program.semanticSpec.layers.some(predicate);
   const defaultUnavailable = hasLayer(program, defaultId) ||
     program.graphicSpec.objects[defaultId] !== undefined;
   return resolveOptionalUserId(requested, {

@@ -15,7 +15,7 @@ import { validateParameterResource, parameterEnvironment } from "../grammar/para
 import { validateDataSourceResource } from "./dataSourceState.js";
 import { STORED_RESOURCE_KINDS, validateInputReference, validateResourceRevision } from "../core/resourceReference.js";
 import { getBuiltinResourceKindHandler } from "./resourceKinds.js";
-import { layerResourceBindings, fontMetricResourceBindings } from "../core/resourceReferences.js";
+import { layerResourceBindings, coordinateResourceBindings, fontMetricResourceBindings } from "../core/resourceReferences.js";
 import { normalizeFontMetricProfile } from "../core/textMetricProfile.js";
 
 export { STORED_RESOURCE_KINDS, validateInputReference } from "../core/resourceReference.js";
@@ -127,6 +127,19 @@ export function validateResourceGraph(program, ProgramClass = program.constructo
     resolveInputReference(program, ref);
   }
   for (const { ref } of fontMetricResourceBindings(program)) resolveInputReference(program, ref);
+  const geographicCoordinates = new Set();
+  for (const coordinate of program.semanticSpec.coordinates ?? []) for (const { kind, ref } of coordinateResourceBindings(coordinate)) {
+    validateWorkLimit(++work, "Resource dependency work");
+    exact(coordinate, ["id", "type", "projection"], "Geo coordinate");
+    if (coordinate.type !== "geo") throw error("Projection bindings require a Geo coordinate.");
+    validateInputReference(ref);
+    if (ref.kind !== kind) throw error("Geo coordinate requires a projection reference.");
+    resolveInputReference(program, ref);
+    geographicCoordinates.add(coordinate.id);
+  }
+  for (const layer of program.semanticSpec.layers ?? []) {
+    if (geographicCoordinates.has(layer.coordinate) !== (layer.mark?.type === "geo")) throw error("Geo coordinates require geographic marks and exact coordinate bindings.");
+  }
   for (const resource of resources) getBuiltinResourceKindHandler(ProgramClass, resource.kind)?.validateBindings(program, resource);
 }
 
@@ -229,6 +242,9 @@ export function collectParameterInputReferences(program) {
 }
 
 export function planStoredResourceRemoval(program, requested, { cascade = false } = {}) {
+  for (const coordinate of program.semanticSpec.coordinates ?? []) if (coordinateResourceBindings(coordinate).some(({ ref }) => ref?.kind === requested.kind && ref.id === requested.id)) {
+    throw error("Resource is referenced by a live coordinate.", "resource-in-use", { resourceId: requested.id, dependencies: [coordinate.id] });
+  }
   if (fontMetricResourceBindings(program).some(({ ref }) => ref.kind === requested.kind && ref.id === requested.id)) {
     throw error("Resource is referenced by an active font metric profile.", "resource-in-use", { resourceId: requested.id });
   }

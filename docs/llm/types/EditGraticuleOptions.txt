@@ -1,0 +1,1 @@
+export type EditGraticuleOptions = Omit<GraticuleOptions, "id"> & { readonly target?: string };

@@ -1,0 +1,687 @@
+{
+  "status": "qualified",
+  "source": "e1fec372f",
+  "base": "8eccb04a6",
+  "incoming": "beb751bf9",
+  "scope": "STEP060B linked native filters with regions, responsive routes and private native value kernels",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "sourceHashes": {
+    "src/actions/data/filter.js": "b6aead59a14ffcc3d858cf7a1462d2ce4761d5d78bb05f0b9ab1729a401751f9",
+    "src/interaction/bindings.js": "8aafb50e395496bbbcd10b47b8578a98d3b6dffe24577048055bcbdf087fee47",
+    "src/interaction/clickSelection.js": "1046ff105387a0db8f153ea33a942ca075be1b6e411c9575302f8ff7eb6f6de2",
+    "src/interaction/regionSelection.js": "60091c0e71a4155fdce8dce2ccc06d75ad81416387231d9799c40a091200c8b0",
+    "src/interaction/session.js": "833fbbaa6f8f9684b1ba7c5a4cbcfb97b21a37a736f70b39bf46adcf32061cec",
+    "src/materialization/scales/consumers/index.js": "390520f0ce52bba54faa624a1bca2133b65c7502da67b6dad457bdf8267171ef",
+    "src/materialization/selection/items/bar.js": "bbab147248dcd9b8a909b8529215d740bd8e9fe60473a6bc6f0d489745d2df4b",
+    "src/materialization/selection/policies/bar.js": "956c4b5133f8ce83d458aaf8605ca4985b3e690d355604b51d53b73899939823",
+    "src/materialization/selection/policies/index.js": "61ca399f1fc75027027e6acb0ee7a3d5225ed5ed3b1705c844f6b44bbd66a206",
+    "src/selectors/datasets.js": "97cca51cff80d2cf800efff29a1219ac7ec90674ad019d2e5af01906a259ac03",
+    "types/interaction.d.ts": "9a8a06d8364f063a1d472197591eb12121c05e83d5572b334dad81529ee69976"
+  },
+  "unchangedIncomingRuntimeOwners": [
+    "src/actions/data/filter.js",
+    "src/interaction/bindings.js",
+    "src/interaction/clickSelection.js",
+    "src/interaction/regionSelection.js",
+    "src/interaction/session.js",
+    "src/materialization/scales/consumers/index.js",
+    "src/materialization/selection/items/bar.js",
+    "src/materialization/selection/policies/bar.js",
+    "src/materialization/selection/policies/index.js",
+    "src/selectors/datasets.js",
+    "types/interaction.d.ts"
+  ],
+  "checks": {
+    "coverageTests": 381,
+    "coverageOwners": {
+      "interaction/bindings.js": [
+        100,
+        98.59,
+        100
+      ],
+      "interaction/clickSelection.js": [
+        100,
+        97.87,
+        100
+      ],
+      "interaction/regionSelection.js": [
+        100,
+        95.04,
+        100
+      ],
+      "interaction/session.js": [
+        100,
+        94.25,
+        100
+      ],
+      "materialization/selection/items/bar.js": [
+        92.06,
+        78.64,
+        93.75
+      ],
+      "materialization/selection/policies/bar.js": [
+        100,
+        100,
+        100
+      ],
+      "materialization/selection/policies/index.js": [
+        97.22,
+        94.03,
+        100
+      ],
+      "selectors/datasets.js": [
+        100,
+        98.04,
+        100
+      ]
+    },
+    "contracts": 34,
+    "packageContracts": 7,
+    "realistic": 16,
+    "browser": 20,
+    "docs": 192,
+    "builtPages": 170,
+    "selectiveLLMArtifacts": 1454,
+    "responsiveWidths": [
+      320,
+      390,
+      768
+    ]
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/linked-filter-integration-final/ggaction-0.0.26.tgz",
+    "entries": 983,
+    "packedBytes": 1408387,
+    "unpackedBytes": 6418594,
+    "sha256": "8fa1fb2bf03d60448fe24311a1a16f7edf6c6434293f6ff8602ef7100b144df5"
+  },
+  "pinnedArtifact": {
+    "sha256": "8fa1fb2bf03d60448fe24311a1a16f7edf6c6434293f6ff8602ef7100b144df5",
+    "byteIdentical": true,
+    "entries": 983,
+    "packedBytes": 1408387,
+    "unpackedBytes": 6418594
+  },
+  "installed": {
+    "20": {
+      "node": "v20.20.2",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/linked-filter-integration-final/ggaction-0.0.26.tgz",
+      "kernelTests": 8,
+      "records": [
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        }
+      ],
+      "types": "passed",
+      "optionalPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 859,
+          "minifiedBytes": 2415390,
+          "gzipBytes": 688226
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1293085,
+          "gzipBytes": 377519
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145387,
+          "gzipBytes": 43572
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 174,
+          "minifiedBytes": 335375,
+          "gzipBytes": 109145
+        }
+      }
+    },
+    "22": {
+      "node": "v22.23.1",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/linked-filter-integration-final/ggaction-0.0.26.tgz",
+      "kernelTests": 8,
+      "records": [
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        }
+      ],
+      "types": "passed",
+      "optionalPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 859,
+          "minifiedBytes": 2415390,
+          "gzipBytes": 686417
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1293085,
+          "gzipBytes": 376677
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20055
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145387,
+          "gzipBytes": 43411
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 174,
+          "minifiedBytes": 335375,
+          "gzipBytes": 108513
+        }
+      }
+    },
+    "24": {
+      "node": "v24.22.1",
+      "tar": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/linked-filter-integration-final/ggaction-0.0.26.tgz",
+      "kernelTests": 8,
+      "records": [
+        {
+          "id": "data/observed-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "data/inferred-graph-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "contour/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "contour/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/full-basic-immutable-inspection",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/current-frame-and-restored-program",
+          "status": "passed"
+        },
+        {
+          "id": "interaction/guide-and-host-cleanup",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-item-update",
+          "status": "passed"
+        },
+        {
+          "id": "selection/logical-scoped-update",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/full-basic-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/fresh-process-source-revision",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/shared-resource-source-union",
+          "status": "passed"
+        },
+        {
+          "id": "calendar/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/full-basic-resize-restore",
+          "status": "passed"
+        },
+        {
+          "id": "responsive/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "nested/shared-layout-lifecycle",
+          "status": "passed"
+        },
+        {
+          "id": "nested/projected-graph-source",
+          "status": "passed"
+        },
+        {
+          "id": "nested/renderers-scene-codec",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/responsive-source-and-guide-closure",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/worker-authority-and-cache",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/offline-restore-and-revision",
+          "status": "passed"
+        },
+        {
+          "id": "edge-routes/four-renderers-and-scene",
+          "status": "passed"
+        }
+      ],
+      "types": "passed",
+      "optionalPeers": {
+        "@modelcontextprotocol/sdk": "1.32.1",
+        "@napi-rs/canvas": "1.0.9"
+      },
+      "bundles": {
+        "ggaction": {
+          "specifier": "ggaction",
+          "chunks": 1,
+          "modules": 859,
+          "minifiedBytes": 2415390,
+          "gzipBytes": 688226
+        },
+        "ggaction/basic": {
+          "specifier": "ggaction/basic",
+          "chunks": 1,
+          "modules": 546,
+          "minifiedBytes": 1293085,
+          "gzipBytes": 377519
+        },
+        "ggaction/svg": {
+          "specifier": "ggaction/svg",
+          "chunks": 1,
+          "modules": 37,
+          "minifiedBytes": 59445,
+          "gzipBytes": 20196
+        },
+        "ggaction/graph": {
+          "specifier": "ggaction/graph",
+          "chunks": 1,
+          "modules": 80,
+          "minifiedBytes": 145387,
+          "gzipBytes": 43572
+        },
+        "ggaction/interaction": {
+          "specifier": "ggaction/interaction",
+          "chunks": 1,
+          "modules": 174,
+          "minifiedBytes": 335375,
+          "gzipBytes": 109145
+        }
+      }
+    }
+  },
+  "limits": {
+    "entries": 983,
+    "packedBytes": 1409000,
+    "unpackedBytes": 6419000,
+    "fullGzip": 688300,
+    "basicGzip": 378000,
+    "interactionGzip": 109200,
+    "graphGzip": 44000,
+    "svgGzip": 25000,
+    "searchBytes": 984000
+  },
+  "measuredSearchBytes": 983052,
+  "reuse": {
+    "nativeSharedOwnerCoverage": {
+      "passed": 89,
+      "filter.js": [
+        96.2,
+        84.16,
+        94.74
+      ],
+      "scaleConsumers": [
+        96.33,
+        90.7,
+        100
+      ]
+    },
+    "reason": "All eleven incoming source/declaration owners are byte-identical. Root reruns381 full interaction/selection/conditional consumers plus16 authentic final-grain and20 actual browser witnesses.",
+    "theme": "No theme/appearance owner changed; prior main region/direct-controls90-test theme installed evidence retained.",
+    "commonRealistic": "Common27 is previous route integration evidence; no full corpus or whole-library coverage rerun claimed."
+  },
+  "remaining": [
+    "STEP060 C legend and remaining controls",
+    "STEP050 single Y integration and corpus",
+    "STEP074 full qualification",
+    "STEP077 overall completion"
+  ],
+  "commands": {
+    "coverage": "node --test --experimental-test-coverage --test-coverage-include=src/interaction/bindings.js --test-coverage-include=src/interaction/session.js --test-coverage-include=src/interaction/clickSelection.js --test-coverage-include=src/interaction/regionSelection.js --test-coverage-include=src/selectors/datasets.js --test-coverage-include=src/materialization/selection/policies/index.js --test-coverage-include=src/materialization/selection/policies/bar.js --test-coverage-include=src/materialization/selection/items/bar.js test/unit/interaction-*.test.js test/unit/actions/selection/*.test.js test/unit/actions/conditional-*.test.js test/unit/selectors/datasets.test.js test/unit/actions/marks/linked-overlay*.test.js",
+    "realistic": "node scripts/run-tests.js realistic test/contracts/realistic-logical-selection.test.js with pinned cache",
+    "browser": "node scripts/run-tests.js browser browser/interaction-region.browser.js browser/interaction-session.browser.js browser/edge-routes.browser.js",
+    "installed": "same tar: Node20/22/24 installed.mjs, each kernel8+runtime23+strictTS/optional peers+five bundles",
+    "docs": "source pin provenance/machine/llms; docs192; Jekyll built170/1454; full320/390/768 browser"
+  },
+  "evidenceFiles": {
+    "linked-filter-integration-browser.log": {
+      "sha256": "d0be364b7b1d9bfee247a3ebc0485243edd48495042e6adffa57267d4c0fa94f",
+      "bytes": 4553
+    },
+    "linked-filter-integration-build.log": {
+      "sha256": "54f15ea69e651f9a40379d2b85c9decc8887f3630a86dd1a0bf0c4646f6d33b8",
+      "bytes": 420
+    },
+    "linked-filter-integration-built.log": {
+      "sha256": "7c3bb9baa90982ce0c8764324c9ad2f0a8aadf2daf50be2fe131edc106fb242b",
+      "bytes": 179
+    },
+    "linked-filter-integration-contracts.log": {
+      "sha256": "1f9fdff44218cee8461a19c0e4db0c1ba8b44dc7deb0ab0cdc1366db161645fe",
+      "bytes": 6806
+    },
+    "linked-filter-integration-coverage.log": {
+      "sha256": "af095d7f613d62540e68d722ad11a712c90f0ae4a5a47a27db912344046dfaaa",
+      "bytes": 91151
+    },
+    "linked-filter-integration-doc-browser.log": {
+      "sha256": "019ef1fad4bea22dc57b4c93b72de934f92927d5e2acc6ab10aa50e23ca9d1c3",
+      "bytes": 157
+    },
+    "linked-filter-integration-docs.log": {
+      "sha256": "33f674403ff56f767bed1b01f064207ccd040ed42780cd9ec54d8f4ed08405eb",
+      "bytes": 44935
+    },
+    "linked-filter-integration-generation.log": {
+      "sha256": "e4e14e9ccfcfb65bb822c511317c9b9b1600115329cfc78df1767d862a3c9a85",
+      "bytes": 12105
+    },
+    "linked-filter-integration-installed-20.json": {
+      "sha256": "8c5e86e9bb0d0eae6be497339c051c6fe3007d29be949cafa8a0a9d9235b238c",
+      "bytes": 3194
+    },
+    "linked-filter-integration-installed-20.log": {
+      "sha256": "8968b8a498214fe17fe8a0e1c21f08797803b016f81b5938629497fd97c75041",
+      "bytes": 5111
+    },
+    "linked-filter-integration-installed-22.json": {
+      "sha256": "680f0ae452cd2adfda8e1b47636dc669b0b6b72baa72a063efd6533789fe6ecf",
+      "bytes": 3194
+    },
+    "linked-filter-integration-installed-22.log": {
+      "sha256": "bcb35be686d63e43afd66247676347b52f6146b52c11a46bab8df17a6b5204eb",
+      "bytes": 5232
+    },
+    "linked-filter-integration-installed-24.json": {
+      "sha256": "fba79c0e7b6d133570e13e9fb1d8654fdd2d787a030b05baadefc76959af639c",
+      "bytes": 3194
+    },
+    "linked-filter-integration-installed-24.log": {
+      "sha256": "f579c8f7276063b97ca0f861b6ed7dd23c14ad4b2a5791773a7770543cde4e27",
+      "bytes": 4124
+    },
+    "linked-filter-integration-llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "linked-filter-integration-machine.log": {
+      "sha256": "1d87daef0983dfa19149afe8aaf5414d841b7c616d74bc81a80104374341200d",
+      "bytes": 127
+    },
+    "linked-filter-integration-measure.json": {
+      "sha256": "9b0f70dd650046567e0ac491432351e2c5e20ba42fe1796b656ae239e6c7e99e",
+      "bytes": 62
+    },
+    "linked-filter-integration-measure.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "linked-filter-integration-merge.log": {
+      "sha256": "5fef1f2e958bb5cb1b2f34324acbec8183c03aca14387183dc52ec69ce48106f",
+      "bytes": 1082
+    },
+    "linked-filter-integration-pack-final.json": {
+      "sha256": "ce4ef0eda2d073ce2469e00932867eb42ea885e28e31daf1d1a30254a9b8945f",
+      "bytes": 276
+    },
+    "linked-filter-integration-pack-final.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "linked-filter-integration-pack-pinned.json": {
+      "sha256": "893fc3e551b0f04eab3e3146c0b7d1eff7b633835ee942beacdc37a29e114089",
+      "bytes": 159
+    },
+    "linked-filter-integration-pack-pinned.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "linked-filter-integration-package-contracts.log": {
+      "sha256": "2d1eae049e511d2b163cbb1844d06c30081a6357cea223d4d328d06fc20eb9ae",
+      "bytes": 1713
+    },
+    "linked-filter-integration-preflight.log": {
+      "sha256": "3ed5d9e5da5af40c97893a37dd37afffcd8cfdbd9391e8582234dcdd97d2f28e",
+      "bytes": 257
+    },
+    "linked-filter-integration-provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "linked-filter-integration-qualify.py": {
+      "sha256": "9b78d1fd2c66e6f96ed986c7367bed97dc4560e63e18c2619fc8132cbcbc89c2",
+      "bytes": 3554
+    },
+    "linked-filter-integration-realistic.log": {
+      "sha256": "e4956d79407e91c55ee51bec1555353ea45759ec1964c1ed56f2bde0fe832591",
+      "bytes": 4285
+    }
+  }
+}

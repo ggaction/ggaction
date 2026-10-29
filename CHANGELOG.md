@@ -8,6 +8,11 @@ All notable changes to `ggaction` are recorded in this file.
 - Interaction context requests expose current semantic candidates to host menus; parameter inputs reuse the existing immutable command lifecycle.
 
 - Add Full-only `setMarkVisibility` and `removeMarkVisibility`, plus categorical legend visibility bindings. Preserve independent user filters, typed categories, explicit domain policies, selections and original row lineage.
+- Add Full-only `createGeoShapeMark`, `editGeoShapeMark`, `createGeoPointMark`, `editGeoPointMark`, `createGeoLineMark`, `editGeoLineMark`, `createGraticule`, and `editGraticule`, with exact Geo coordinate projection bindings, preserved feature identities, bounded spherical disks, split routes, holes, selection and all renderers.
+
+- Add Full-only `createProjection` and `editProjection` for 15 geographic/planar projection types, explicit viewport fits and atomic geometry-dependent revision updates. Preserve exact resource references, immutable transforms and offline validation.
+
+- Add Full-only `createGeometryData` and `editGeometryData` for geographic or planar GeoJSON/TopoJSON sources. Retain shared arcs, immutable feature keys and source provenance through bounded validation, edits, inspection and offline restoration.
 
 - Add Full-only `bundleGraphEdges` and `editEdgeRoute` for hierarchical, force-directed, density and edge-path bundling. Bind original graph edges through `createGraphPlot({ routes })`, preserve exact revisions and offline vectors, and use the browser-safe `ggaction/graph` entry for explicit worker preparation, cancellation and bounded caching.
 

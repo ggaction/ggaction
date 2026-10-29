@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 3,
+  "name": "editGeometryData",
+  "layer": "user-facing",
+  "domain": "core",
+  "summary": "Revise a geometry source atomically while preserving its format and feature-key policy.",
+  "signature": "editGeometryData(options: TargetedOptions<EditGeometryDataOptions>): ChartProgram;",
+  "intents": [
+    "edit geometry data",
+    "edit",
+    "change",
+    "chart setup",
+    "data and scales",
+    "geographic source",
+    "planar shapes"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "existing geographic source",
+      "source dataset"
+    ],
+    "owns": [],
+    "idOptions": [
+      "target"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic"
+  ],
+  "editableVia": [
+    "editGeometryData",
+    "removeResource"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "existing geographic source",
+      "source dataset"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "values",
+      "required": false,
+      "type": "TopoJSONInput | GeoJSONInput | undefined"
+    },
+    {
+      "name": "coordinateKind",
+      "required": false,
+      "type": "\"geographic\" | \"planar\" | undefined"
+    },
+    {
+      "name": "topoObject",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "limits",
+      "required": false,
+      "type": "GeometryLimits | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })"
+  ],
+  "snippet": "program.editGeometryData({ target: \"geometry\", coordinateKind: \"planar\" })",
+  "errors": [],
+  "route": "/reference/actions/charts-data/#editgeometrydata"
+}

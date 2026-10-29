@@ -3565,6 +3565,102 @@ editCalendarPlot({ target?, layout?, coordinate?, color?, cells?, monthBoundary?
 
 Edit a calendar plot while preserving day identities and source lineage. See [Calendar plots](../api/calendar.md#editcalendarplot).
 
+### `createGeometryData`
+
+```javascript
+createGeometryData({ id, format, values, coordinateKind, featureKey?, topoObject?, limits? })
+```
+
+Normalize a geographic or planar GeoJSON/TopoJSON source with immutable feature identities and retained source values. See [Geometry sources](../api/geometry.md#creategeometrydata).
+
+### `editGeometryData`
+
+```javascript
+editGeometryData({ target?, values?, coordinateKind?, topoObject?, limits? })
+```
+
+Revise a geometry source atomically while preserving its format and feature-key policy. See [Geometry sources](../api/geometry.md#editgeometrydata).
+
+### `createProjection`
+
+```javascript
+createProjection({ id, type, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Create a named projection, optionally fitted to one exact geometry source and explicit viewport. See [Geometry and projections](../api/geometry.md#createprojection).
+
+### `editProjection`
+
+```javascript
+editProjection({ target?, type?, centerDeg?, rotateDeg?, parallelsDeg?, scalePx?, translatePx?, reflectX?, reflectY?, precisionPx?, clipAngleDeg?, clipExtentPx?, fit? })
+```
+
+Edit a projection atomically. Explicit scale or translation detaches an existing geometry fit. See [Geometry and projections](../api/geometry.md#editprojection).
+
+### `createGeoShapeMark`
+
+```javascript
+createGeoShapeMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Create projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../api/geometry.md#creategeoshapemark).
+
+### `editGeoShapeMark`
+
+```javascript
+editGeoShapeMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Edit projected geographic GeoShapeMark geometry with native style. See [Geometry and projections](../api/geometry.md#editgeoshapemark).
+
+### `createGeoPointMark`
+
+```javascript
+createGeoPointMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Create projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../api/geometry.md#creategeopointmark).
+
+### `editGeoPointMark`
+
+```javascript
+editGeoPointMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Edit projected geographic GeoPointMark geometry with native style. See [Geometry and projections](../api/geometry.md#editgeopointmark).
+
+### `createGeoLineMark`
+
+```javascript
+createGeoLineMark({id?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Create projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../api/geometry.md#creategeolinemark).
+
+### `editGeoLineMark`
+
+```javascript
+editGeoLineMark({target?, coordinate?, geometry?, interpolation?, routeHint?})
+```
+
+Edit projected geographic GeoLineMark geometry with native style. See [Geometry and projections](../api/geometry.md#editgeolinemark).
+
+### `createGraticule`
+
+```javascript
+createGraticule({id?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+```
+
+Create projected geographic Graticule geometry with native style. See [Geometry and projections](../api/geometry.md#creategraticule).
+
+### `editGraticule`
+
+```javascript
+editGraticule({target?, coordinate?, stepDeg?, extentDeg?, precisionDeg?})
+```
+
+Edit projected geographic Graticule geometry with native style. See [Geometry and projections](../api/geometry.md#editgraticule).
+
 ### `createContourData`
 
 ```javascript

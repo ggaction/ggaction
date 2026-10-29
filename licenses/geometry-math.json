@@ -1,0 +1,609 @@
+{
+  "schemaVersion": 1,
+  "scope": "Pure geographic projection, spherical clipping, resampling and topology mathematics; no external chart engine.",
+  "directDependency": "geographic-math",
+  "directVersion": "npm:d3-geo@3.1.1",
+  "packages": [
+    {
+      "name": "d3-geo",
+      "version": "3.1.1",
+      "license": "ISC",
+      "integrity": "sha512-637ln3gXKXOwhalDzinUgY83KzNWZRKbYubaG+fGVuc/dxO64RRljtCTnf5ecMyE1RIdtqpkVcq0IbtU2S8j2Q==",
+      "tarball": "https://registry.npmjs.org/d3-geo/-/d3-geo-3.1.1.tgz",
+      "licenseSha256": "3e3edc1224eec9c39cd26491a21304a62883c1e5b6a65c5283ccc7a6cc94baee",
+      "algorithmSignature": "55a03f7fb6bbd97bb15d236094b27bca4367af7df6f02747ee5526dc6e1595b7",
+      "sources": [
+        {
+          "file": "src/area.js",
+          "sha256": "bd11df8704dc679ca517364f1d46f6517d3729e6ba5c1d8cf1dd184163ff6e46"
+        },
+        {
+          "file": "src/bounds.js",
+          "sha256": "e1ef2d354ad4aba09d7411e805d66f2702cb9c65e355f9aead466e1f18c8759b"
+        },
+        {
+          "file": "src/cartesian.js",
+          "sha256": "c0850bb6906e30821ecc6bd6a00615802e0688e0e01b84f3631de35a5b1a6974"
+        },
+        {
+          "file": "src/centroid.js",
+          "sha256": "e0d254f73a2ab12e07848f3efb22ec967241fd7eedcb3333764e6083c204f43b"
+        },
+        {
+          "file": "src/circle.js",
+          "sha256": "04b126183a6df475f4a7405df169da9ad2c20a430b102cd783d4469f001f51e6"
+        },
+        {
+          "file": "src/clip/antimeridian.js",
+          "sha256": "b7a4f9bde59d267abe5dfaeda19367425b8096eb6b3a18965caa0f136f295a06"
+        },
+        {
+          "file": "src/clip/buffer.js",
+          "sha256": "cb4b6265d1baa6cbb47ab932cf9f5b133c9f5e4307a98f8eeb969db22094c333"
+        },
+        {
+          "file": "src/clip/circle.js",
+          "sha256": "d61cc9efeb49302a2c7ba56c2d559dcd586208745b732f42e53bc2eb0883eb34"
+        },
+        {
+          "file": "src/clip/extent.js",
+          "sha256": "56b5455029a7e0df9abd9ec409ccdb90362c0c0326eb108108b39fe193530141"
+        },
+        {
+          "file": "src/clip/index.js",
+          "sha256": "f0c1f9c8b50696720cb31931d2ccb31da22b2077218c87b6e4139b583b0bd4cb"
+        },
+        {
+          "file": "src/clip/line.js",
+          "sha256": "1b08c2f20a5bb2a9c180bc91695e0a62c95cde2e47395146fc24281fb1f9d92f"
+        },
+        {
+          "file": "src/clip/rectangle.js",
+          "sha256": "e726070528ac5cc903929934fa8d87420d59effdbd996388048ae2cabcad9652"
+        },
+        {
+          "file": "src/clip/rejoin.js",
+          "sha256": "6f70ed7e4cad610c85ef6b15d60a21eb271dfe2365350015e05223e096138043"
+        },
+        {
+          "file": "src/compose.js",
+          "sha256": "316a0fc35ff4b538c19648b79659c0d1bc7d86d9974870a61e5b28dd684055c5"
+        },
+        {
+          "file": "src/constant.js",
+          "sha256": "88f2653180d441d431ad68e0e2cf2c02aea72976c5ff24b6ed988a5bb2b78847"
+        },
+        {
+          "file": "src/contains.js",
+          "sha256": "fbdbbd46a529fc1870d8cf769dbba4cce44899f61fc2bd8c5a8785f21a15a528"
+        },
+        {
+          "file": "src/distance.js",
+          "sha256": "15bec2af551ac9a06ad65632310aac0b6d9b6f8418e191141cf7df959b055ed0"
+        },
+        {
+          "file": "src/graticule.js",
+          "sha256": "33f46a2d8f0e444b33d18bf6dfdcba4cdd3c8e6ad336d3988dbf8ee6daa3f8b5"
+        },
+        {
+          "file": "src/identity.js",
+          "sha256": "36a44dd3cf1e9c8a8a6f4d9fb2055ed65120b929b6561ffe902268fdb0e68389"
+        },
+        {
+          "file": "src/index.js",
+          "sha256": "6cd0cfd7ee4e52c1b02ae15d19bd70a40505dc550bc74b7cc7aaeadba54a4dc5"
+        },
+        {
+          "file": "src/interpolate.js",
+          "sha256": "7da5e4386b4393d737ecdd6ef19747b16b178117655d2eaecd2b62d8dd3cf725"
+        },
+        {
+          "file": "src/length.js",
+          "sha256": "f81caf5f38fb5c31234e0bddaaf162b93dcc5111ca0759f29695ff7ce2488c15"
+        },
+        {
+          "file": "src/math.js",
+          "sha256": "2fd787731d13e29df7f32cefc01079554d86bb87ad2c89d0d7fd5e040487ca90"
+        },
+        {
+          "file": "src/noop.js",
+          "sha256": "3209d333f747a8bcd536b37650340adce79b014015421e78a87bdbfa4217f466"
+        },
+        {
+          "file": "src/path/area.js",
+          "sha256": "b3024380aa2ebb2edcdadce53708166ab45aeeaae6a8e5c86783b3903f38f80c"
+        },
+        {
+          "file": "src/path/bounds.js",
+          "sha256": "74f45574b00114caa10c06f11d7f4b9b86a7a2792cc8ea1a3ae07a525826a274"
+        },
+        {
+          "file": "src/path/centroid.js",
+          "sha256": "68dd475518820e7cbb286c6c1fd9a08dc5c385cc08f3633bd4e66892e2c2d958"
+        },
+        {
+          "file": "src/path/context.js",
+          "sha256": "7ceb8604843ab5da816c419042aaa4ad236d6a74b26958844d34c5d0d5af7487"
+        },
+        {
+          "file": "src/path/index.js",
+          "sha256": "7cdf7ead70d6d31447dc5adfd39a627c5e80f944987932276e3dfed5457ff891"
+        },
+        {
+          "file": "src/path/measure.js",
+          "sha256": "b35c8fd6d194dc542b1fa1409fdbbb069449bf0f10ab851edd970426e8b4b653"
+        },
+        {
+          "file": "src/path/string.js",
+          "sha256": "3e19d06d967c72a5b22537181a50dff25141284e378ef06744269aa30cd3ddf2"
+        },
+        {
+          "file": "src/pointEqual.js",
+          "sha256": "5aff0b464bd215e97924aba96a30f526e879b0a2a594ad49d55981add9f2871b"
+        },
+        {
+          "file": "src/polygonContains.js",
+          "sha256": "a83430f0a9c8e9e6516567d80716230c8e1120c7c1aaac89eeb65c7a943804fd"
+        },
+        {
+          "file": "src/projection/albers.js",
+          "sha256": "8b13808049f2f3d2aaaa49f53b17fdd6b71d51422be89c34e18681ae1f403f93"
+        },
+        {
+          "file": "src/projection/albersUsa.js",
+          "sha256": "3c0aa5d8ca8d92a5557bad7b336fa57831866e8fbb68e15fa3e69983999aa66f"
+        },
+        {
+          "file": "src/projection/azimuthal.js",
+          "sha256": "9e4baff20c2152f8297947e7bb01ec8f8afe61f4e744d0789e5afb5ee51566cd"
+        },
+        {
+          "file": "src/projection/azimuthalEqualArea.js",
+          "sha256": "5fe92333484ca41199f742d9514037d65fe39aa965c72375d355ed68a2db1574"
+        },
+        {
+          "file": "src/projection/azimuthalEquidistant.js",
+          "sha256": "c30d2a57baa8fa66a4f2356903869cecc2c75f0e6b48d336d50f9750c136e085"
+        },
+        {
+          "file": "src/projection/conic.js",
+          "sha256": "08f0b18017637bd3224f3f2604004d20fe69454488cb96ac0dc02b6afd665cbc"
+        },
+        {
+          "file": "src/projection/conicConformal.js",
+          "sha256": "237bc52033f0a75d857d1eb97d7b7043efc1cfe1a47fc66ad3f20c7d05aa5bef"
+        },
+        {
+          "file": "src/projection/conicEqualArea.js",
+          "sha256": "b06b06ac53b5ac1cb106d2c34a2b505cd28bda0cb8404574ff904cd9a6539913"
+        },
+        {
+          "file": "src/projection/conicEquidistant.js",
+          "sha256": "ba4ebceb45d7e6494327726a394a2d6b2d63c10c57c7b98a1443aa9c2c756b8b"
+        },
+        {
+          "file": "src/projection/cylindricalEqualArea.js",
+          "sha256": "0757d3b29ae9db0b6e5df04e3c905ebabfb899a09fc46417d677049227298854"
+        },
+        {
+          "file": "src/projection/equalEarth.js",
+          "sha256": "94c087cb66f21b12421e506ecfce4d16a163f39a85fdddee17b6ce23c99ceb04"
+        },
+        {
+          "file": "src/projection/equirectangular.js",
+          "sha256": "0567dad3dea186702901be8c401f0fc3ee332ef2d802bdbba92b6608faab7fd1"
+        },
+        {
+          "file": "src/projection/fit.js",
+          "sha256": "23801607fefe0576e401270a76f18e16b6421ced96658f00e61d3a5ca3e04b95"
+        },
+        {
+          "file": "src/projection/gnomonic.js",
+          "sha256": "d4a50dfab94b9c024c795ab6e839b21ab95cd5e93ec53edee362f7014007521b"
+        },
+        {
+          "file": "src/projection/identity.js",
+          "sha256": "5f91629fb6837ecb4767f4fb16efd5d81c3da02eaf8f937ccf77ead589298f07"
+        },
+        {
+          "file": "src/projection/index.js",
+          "sha256": "1c2727b0dd8e4219aadb9bc4017575eec16394aff8b0a0000804fe1b15173f54"
+        },
+        {
+          "file": "src/projection/mercator.js",
+          "sha256": "315102b6a64c48fa4a13c642036f8640407b96cad8d2ebe454d519259d2ad17e"
+        },
+        {
+          "file": "src/projection/naturalEarth1.js",
+          "sha256": "178fe2944343025048ad74fcbc253ce9536712c1b531a55cf9c6fc6f4a855b14"
+        },
+        {
+          "file": "src/projection/orthographic.js",
+          "sha256": "7605d995232635e5c6a52440ac4d945bd5cc20aa703aae0d7d559f5be88661d1"
+        },
+        {
+          "file": "src/projection/resample.js",
+          "sha256": "878c3eddfb44d4ff02a2ec155f879e3db059ee93ea1e8660a6edec8a3a8fb0b0"
+        },
+        {
+          "file": "src/projection/stereographic.js",
+          "sha256": "b1504bc703aa038592a2c83c83875b98bf8d5314202769c2317412e95226fd15"
+        },
+        {
+          "file": "src/projection/transverseMercator.js",
+          "sha256": "a1cbb97616493429f1aa079d7f23bec33771f318874a8e41136328a8e7354147"
+        },
+        {
+          "file": "src/rotation.js",
+          "sha256": "1eb2bb01f3647dc3047e30876db5472bce48ac0afd023be2f1c5591d71529f91"
+        },
+        {
+          "file": "src/stream.js",
+          "sha256": "c552b3b095104472e2e0a09e9bc3b77813353666f3d3d57c1125939e4a655294"
+        },
+        {
+          "file": "src/transform.js",
+          "sha256": "4374c6ca1262c33faa09761a161d211978c303953ec43629e796c275cbe2ee30"
+        }
+      ],
+      "installKey": "geographic-math",
+      "moduleEntry": "src/index.js"
+    },
+    {
+      "name": "d3-array",
+      "version": "3.2.4",
+      "license": "ISC",
+      "integrity": "sha512-tdQAmyA18i4J7wprpYq8ClcxZy3SC31QMeByyCFyRt7BVHdREQZ5lpzoe5mFEYZUWe+oq8HBvk9JjpibyEV4Jg==",
+      "tarball": "https://registry.npmjs.org/d3-array/-/d3-array-3.2.4.tgz",
+      "licenseSha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+      "algorithmSignature": "533dfc2f83f2456474460a2eef0aaedfb80e06c5b529fc34ab5414d8482b24cc",
+      "sources": [
+        {
+          "file": "src/array.js",
+          "sha256": "0083c26850f97fa2735802530964aa737683402bbc560d14e0e27696b0c693bb"
+        },
+        {
+          "file": "src/ascending.js",
+          "sha256": "cb830a957d172fa6f6f52c67ef09a264986c3e795156930d342ed74edcea5e6b"
+        },
+        {
+          "file": "src/bin.js",
+          "sha256": "41f7cc39e146683c5da6ea7489903de2c5edb9bf725ca15b7cd015f603b306ac"
+        },
+        {
+          "file": "src/bisect.js",
+          "sha256": "e813696664f50e7c6599a241cebf4ba97eb0426ce55c587b4e93d1c7355423b0"
+        },
+        {
+          "file": "src/bisector.js",
+          "sha256": "b5d06d6c78777d4baea8c25e0e63afc7bbb70bb3bffd2144f65367d06ad9ac85"
+        },
+        {
+          "file": "src/blur.js",
+          "sha256": "924994c1536d8e196530848dd2ea3a902c93b086e60bdbc2bdddd5cbb0f65f67"
+        },
+        {
+          "file": "src/constant.js",
+          "sha256": "b81fa8d3338a33b466bb294a37f47db57d8fcc53a6e189add4884694bb456502"
+        },
+        {
+          "file": "src/count.js",
+          "sha256": "33bde7591337907b718affb4d9eb0ae01bfd58c42bfc9dbcfa1eb725af5051de"
+        },
+        {
+          "file": "src/cross.js",
+          "sha256": "5fc1fb22d574a4acbe1f32f1c4a3c8fc2229db1cd7a17d45d22d6089584a9f0b"
+        },
+        {
+          "file": "src/cumsum.js",
+          "sha256": "b7d288fceae242eefb734fdca763259f8f2e74eddf695da2088c56027ce954a5"
+        },
+        {
+          "file": "src/descending.js",
+          "sha256": "466438976a2e5691b654df12de794cbd76520461da7dd83377eafc742cc4ef2c"
+        },
+        {
+          "file": "src/deviation.js",
+          "sha256": "06932f49072c49ef66119ac3d2cfafa2abd9e2ec36ab453123b48c14ec832197"
+        },
+        {
+          "file": "src/difference.js",
+          "sha256": "cd4dedd7643fb1192606566d3799b9efd05d9e7933a696265dd86c24e6f0b7c0"
+        },
+        {
+          "file": "src/disjoint.js",
+          "sha256": "ced922da3b0d61353310fac8f3b32bb799a17ff343df2f24058b260ce9e3eecb"
+        },
+        {
+          "file": "src/every.js",
+          "sha256": "2374560733806cd88cfbd4f790992ead0d8c485bac98303e94c1afbfc3dc15cf"
+        },
+        {
+          "file": "src/extent.js",
+          "sha256": "c78356665f0539b168b46fac9d172c333c03b89c7231e46428d44c0724465780"
+        },
+        {
+          "file": "src/filter.js",
+          "sha256": "d4401eaecbc507fe6949264f3eb77c0084477328cb8112daea1e11e66e06fa81"
+        },
+        {
+          "file": "src/fsum.js",
+          "sha256": "d6bd9341cf758d6731e8a236f2626a0a48279f9bc5961eb05a2f2a8faa1a88b5"
+        },
+        {
+          "file": "src/greatest.js",
+          "sha256": "c62575888f5cc2edc9e7b0e4a33cbe5ec44036a23f50a8d3d660923a076982c9"
+        },
+        {
+          "file": "src/greatestIndex.js",
+          "sha256": "777fea90da9ac61fb34e161657281ecac9b7025914ad8593e5cba570d1269fe1"
+        },
+        {
+          "file": "src/group.js",
+          "sha256": "63272376bb45ba323e22c56254ed9e068d526ec86d115fc7cd2d23a1c2360f8a"
+        },
+        {
+          "file": "src/groupSort.js",
+          "sha256": "ac5c49060af55755e9c32eb5c1b778cd12bba12561304506e3f128b1a88025f1"
+        },
+        {
+          "file": "src/identity.js",
+          "sha256": "9ef78f0410542ac2fe2d3f93a3ce9b4e4de3cf52bedf8f9cc3e2583dafa8abf1"
+        },
+        {
+          "file": "src/index.js",
+          "sha256": "8aa7dff99fde0ad49f6db78c0234f70a347505db5bf070e1ef3cc2643c5478c8"
+        },
+        {
+          "file": "src/intersection.js",
+          "sha256": "272b6990bdfab7ce884a09b2e88108b2b1d0b7740257d57d51645b4be170aeba"
+        },
+        {
+          "file": "src/least.js",
+          "sha256": "5c99213693829870af85b2556da9165b30578c7a9ac28a2158d40bd53ef5cea1"
+        },
+        {
+          "file": "src/leastIndex.js",
+          "sha256": "7657e7e08db054a405df2f3e8d7770781b544c23aeabe4d42e5cc2efa83ab29f"
+        },
+        {
+          "file": "src/map.js",
+          "sha256": "552da5a0faf5d880aec1b6b75739630075f18a0725d6a4840e5cc7118e1fad2d"
+        },
+        {
+          "file": "src/max.js",
+          "sha256": "691945a453633d9e204846af8ea4e299821b924f82b15eaf7906aba642979b1d"
+        },
+        {
+          "file": "src/maxIndex.js",
+          "sha256": "dd937d4684808226d626c658346c585addc0aae6125eb04a6152485f2d99ba8c"
+        },
+        {
+          "file": "src/mean.js",
+          "sha256": "880f69bfc02be2d3acd943de51cf075b6a9ffb06ce751a42da8a73a091172e48"
+        },
+        {
+          "file": "src/median.js",
+          "sha256": "dea2e0003e4da6da87308f9668550e1797e1dbdec499f25bc1b2b7e285f33e7f"
+        },
+        {
+          "file": "src/merge.js",
+          "sha256": "6d761476e1b5c6d4041a7b5dc9f3a25b4064daf268d3fcab732998fa707cf5b1"
+        },
+        {
+          "file": "src/min.js",
+          "sha256": "6b88ae9f5c3075c0775c2188b8792d2abc61efc5470bde7ff9a3886c8cba4f58"
+        },
+        {
+          "file": "src/minIndex.js",
+          "sha256": "c81ab4639718138482026b1a6bd6e924323f8005a547955597d399ed6eed1662"
+        },
+        {
+          "file": "src/mode.js",
+          "sha256": "b8f42aac04b6d1400149909c10e0576f1701173a2040e4cd4288e4920cc6fa07"
+        },
+        {
+          "file": "src/nice.js",
+          "sha256": "4e541dbb6222cac88cb7a9290164cf13b254855a589f824b3447e633d3be24b6"
+        },
+        {
+          "file": "src/number.js",
+          "sha256": "f7e6cf00cd1b760fd18db3236a51cd174fc1c7667e9929abcfe48a1850884800"
+        },
+        {
+          "file": "src/pairs.js",
+          "sha256": "c44e40e7ff8a056e693651f222effdd9c197acc00cc00d0ef865a5d17f365ba3"
+        },
+        {
+          "file": "src/permute.js",
+          "sha256": "206c0036e1045f75a8090d34c4e917ae810dd01567094594523bcd703bc3e259"
+        },
+        {
+          "file": "src/quantile.js",
+          "sha256": "9befb23a365d3e05d3ff6019a3a97ced470e4e487c04047e8ba4536f12dfb340"
+        },
+        {
+          "file": "src/quickselect.js",
+          "sha256": "6308018da7d7ef6f64d45d771bde3bd5a7f1c749919269c833901b9d237738f5"
+        },
+        {
+          "file": "src/range.js",
+          "sha256": "d0542066a8dc2773c8ef9f31eb1f4e539e99fb700eef4a565a10dd5681856bde"
+        },
+        {
+          "file": "src/rank.js",
+          "sha256": "2211244cd1acd6100b0f60d9d16decc3c3dd3de01e0ad6b61fa8bc3fb0b313c8"
+        },
+        {
+          "file": "src/reduce.js",
+          "sha256": "24266b387094cd0ad82c62363543c338527854a2cc6e060c2182c4c4d84f82b1"
+        },
+        {
+          "file": "src/reverse.js",
+          "sha256": "bdf80cf6cdd21481cb0762121afd2da8118119ddaeae113546f3b946dd3792d5"
+        },
+        {
+          "file": "src/scan.js",
+          "sha256": "65b776b9d7f643a9f99e16638a504a41e2c0ba9b90d5cfe5e71a558b9885ae7b"
+        },
+        {
+          "file": "src/shuffle.js",
+          "sha256": "4e39033e9f9bb3af0e016c14e67a5af8a325feba8b0ddae33fc7f7b2ee794257"
+        },
+        {
+          "file": "src/some.js",
+          "sha256": "aeb1a3c921d97c922fb311dc47943276328ca16a85a4beeaf291b4f6fd8f7945"
+        },
+        {
+          "file": "src/sort.js",
+          "sha256": "00eced0a3857b4082dd911ef0cb8647b4d0f1c5279b6e0b0547f332885d597ca"
+        },
+        {
+          "file": "src/subset.js",
+          "sha256": "c814b3b9539a5f4d2c54ad0565c0848278e986e147d33fa664f06c18c2df8757"
+        },
+        {
+          "file": "src/sum.js",
+          "sha256": "72d1268243bbc16514800da210a4ccd129aa62144d7291d2fbfa7e7f17f6d8df"
+        },
+        {
+          "file": "src/superset.js",
+          "sha256": "b3b8067bf9e65103ec084f1db3a718e9395d556b68a940093ff734dc14a05b2f"
+        },
+        {
+          "file": "src/threshold/freedmanDiaconis.js",
+          "sha256": "6048421956f30bc53a652237bf389e710f5a2b23d3c92c269ec6599ecf68998c"
+        },
+        {
+          "file": "src/threshold/scott.js",
+          "sha256": "450324237ce9e05b724b56f657c79982ac62be509f69b11e232a667c540efdac"
+        },
+        {
+          "file": "src/threshold/sturges.js",
+          "sha256": "66e66f645d83d46c3d4a0d84e9dd99c66eccf46f7b18ef049320a76ae6eace4b"
+        },
+        {
+          "file": "src/ticks.js",
+          "sha256": "79eac11e378fd34364801fd59534cfb3b34f46e54693537ad65c06c93bcb9a0f"
+        },
+        {
+          "file": "src/transpose.js",
+          "sha256": "9e1758c775f94b55b1342564c423208aad395519e8060a49b37f535abcd87cc5"
+        },
+        {
+          "file": "src/union.js",
+          "sha256": "52f4d4f49300887dab10d6dcf56a31575d3bc4a31cc94ce88cf9f2e5e0e47df8"
+        },
+        {
+          "file": "src/variance.js",
+          "sha256": "79c0e4ef379299b44cbc9a5c7d559c5846815377fc38ad89d759cb44c62459a9"
+        },
+        {
+          "file": "src/zip.js",
+          "sha256": "3f311254aaf6620552270613fbd4be33ef12d3bda1fd5a8df2e2a7b19f00261c"
+        }
+      ],
+      "installKey": "d3-array",
+      "moduleEntry": "src/index.js"
+    },
+    {
+      "name": "internmap",
+      "version": "2.0.3",
+      "license": "ISC",
+      "integrity": "sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==",
+      "tarball": "https://registry.npmjs.org/internmap/-/internmap-2.0.3.tgz",
+      "licenseSha256": "9ea8903938dab5f12c4572d60725069bec2d1b0dc3bcc210b09bae946a5ebb1f",
+      "algorithmSignature": "96dd47583906496094c4a70a6d8fd37d28b7c7c6610b80630012193a1dd2e89a",
+      "sources": [
+        {
+          "file": "src/index.js",
+          "sha256": "4da167a52014cf7d2f6fcd9121a5cab3484ef3bfa59055ee92f00ea5c7b33b67"
+        }
+      ],
+      "installKey": "internmap",
+      "moduleEntry": "src/index.js"
+    }
+  ],
+  "projectionSources": [
+    {
+      "type": "mercator",
+      "file": "src/projection/mercator.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/mercator.js"
+    },
+    {
+      "type": "equirectangular",
+      "file": "src/projection/equirectangular.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/equirectangular.js"
+    },
+    {
+      "type": "equal-earth",
+      "file": "src/projection/equalEarth.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/equalEarth.js"
+    },
+    {
+      "type": "natural-earth",
+      "file": "src/projection/naturalEarth1.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/naturalEarth1.js"
+    },
+    {
+      "type": "orthographic",
+      "file": "src/projection/orthographic.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/orthographic.js"
+    },
+    {
+      "type": "stereographic",
+      "file": "src/projection/stereographic.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/stereographic.js"
+    },
+    {
+      "type": "gnomonic",
+      "file": "src/projection/gnomonic.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/gnomonic.js"
+    },
+    {
+      "type": "azimuthal-equal-area",
+      "file": "src/projection/azimuthalEqualArea.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/azimuthalEqualArea.js"
+    },
+    {
+      "type": "azimuthal-equidistant",
+      "file": "src/projection/azimuthalEquidistant.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/azimuthalEquidistant.js"
+    },
+    {
+      "type": "conic-equal-area",
+      "file": "src/projection/conicEqualArea.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/conicEqualArea.js"
+    },
+    {
+      "type": "conic-conformal",
+      "file": "src/projection/conicConformal.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/conicConformal.js"
+    },
+    {
+      "type": "conic-equidistant",
+      "file": "src/projection/conicEquidistant.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/conicEquidistant.js"
+    },
+    {
+      "type": "transverse-mercator",
+      "file": "src/projection/transverseMercator.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/transverseMercator.js"
+    },
+    {
+      "type": "albers-usa",
+      "file": "src/projection/albersUsa.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/albersUsa.js"
+    },
+    {
+      "type": "identity",
+      "file": "src/projection/identity.js",
+      "reference": "https://github.com/d3/d3-geo/blob/v3.1.1/src/projection/identity.js"
+    }
+  ],
+  "adapterRules": {
+    "nativeUnits": "degrees to CSS pixels; raw radians use y-up",
+    "compositeConstants": "lower48/alaska/hawaii parameters and inset rectangles from the pinned composite source",
+    "transverseRaw": "Apply the native transverse rotation before returning y-up raw coordinates"
+  }
+}

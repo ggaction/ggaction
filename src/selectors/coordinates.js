@@ -28,3 +28,18 @@ export function resolveCartesianCoordinate(program, requested, label = "Mark") {
   if (program.semanticSpec.coordinates.some(coordinate => coordinate.id === "main")) throw new TypeError(`${label} default coordinate conflicts with an existing coordinate.`);
   return { id: "main", type: "cartesian" };
 }
+
+export function resolveGeoCoordinate(program, requested) {
+  if (requested !== undefined) {
+    const coordinate = requireCoordinate(program, requested);
+    if (coordinate.type !== "geo") throw new TypeError("Geographic marks require a Geo coordinate.");
+    return coordinate;
+  }
+  const eligible = program.semanticSpec.coordinates.filter(coordinate => coordinate.type === "geo");
+  const current = eligible.find(coordinate => coordinate.id === program.context.currentCoordinate);
+  if (current !== undefined) return current;
+  if (eligible.length !== 1) throw annotateError(new Error("An explicit Geo coordinate is required unless one exists."), {
+    code: eligible.length ? "ambiguous-resource" : "missing-resource", candidates: eligible.map(coordinate => coordinate.id)
+  });
+  return eligible[0];
+}

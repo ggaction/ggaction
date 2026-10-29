@@ -10,6 +10,24 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/geographic-context", run() {
+    const p = chart().createCanvas({ width: 300, height: 200, margin: 0 })
+      .createGeometryData({ id: "places", format: "geojson", coordinateKind: "planar", featureKey: "id", values: {
+        type: "Feature", id: 1, properties: { name: "Place" }, geometry: { type: "Point", coordinates: [80, 90] }
+      } }).createProjection({ id: "map", type: "identity" }).createCoordinate({ type: "geo" })
+      .createGeoPointMark({ id: "places", geometry: "places", radiusPx: 8 })
+      .selectMarks({ id: "picked", target: "places", items: [] });
+    const s = createInteractionSession({ program: p, bindings: [] });
+    s.dispatch({ type: "contextMenu", point: { x: 80, y: 90 }, slop: 0 });
+    const hit = s.getState().hit.target; assert.equal(hit.ownerId, "places");
+    assert.deepEqual(hit.resourceRefs, [{ kind: "geometry", id: "places", revision: 0 }]);
+    assert.equal(s.getState().program, p); assert.equal(s.getState().revision, 0);
+    s.dispatch({ type: "select", target: "places", payload: { id: "picked", select: { items: [hit.itemKey] } } });
+    const selected = s.getState().program.highlightMarks({ selection: "picked", color: "gold", dimOthers: false, bringToFront: false });
+    const loaded = deserializeProgram(serializeProgram(selected));
+    assert.deepEqual(getMarkItems(loaded, { target: "places" }).filter(item => item.properties.fill === "gold").map(item => item.fields.name), ["Place"]);
+    s.destroy();
+  } },
   { id: "interaction/partition-host-focus", run() {
     const rows = [{ id: "root", parent: null }, { id: 1, parent: "root" }, { id: "1", parent: 1, value: 2 }, { id: "other", parent: "root", value: 4 }];
     const p = chart().createCanvas({ width: 500, height: 350 }).createData({ id: "rows", values: rows, keyField: "id" })

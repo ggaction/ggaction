@@ -15,6 +15,7 @@ const LAYER_RESOURCE_BINDINGS = Object.freeze([
   // An empty required-mark list declares an optional, exact typed binding.
   Object.freeze({ path: Object.freeze(["graphBinding", "routes"]), kind: "edge-route", marks: Object.freeze([]) }),
   Object.freeze({ path: Object.freeze(["flowBinding", "layout"]), kind: "layout", marks: Object.freeze(["flow-node", "flow-link"]) }),
+  Object.freeze({ path: Object.freeze(["geoBinding", "geometry"]), kind: "geometry", marks: Object.freeze([]) }),
   Object.freeze({ path: Object.freeze(["contourBinding", "geometry"]), kind: "geometry", marks: Object.freeze(["contour"]) })
 ]);
 
@@ -39,6 +40,24 @@ export function mapLayerResourceBindings(layers, mapReference) {
     return next;
   });
   return changed ? mapped : layers;
+}
+
+export function coordinateResourceBindings(coordinate) {
+  return coordinate.type === "geo" || coordinate.projection !== undefined
+    ? [{ kind: "projection", path: ["projection"], ref: coordinate.projection }] : [];
+}
+
+export function mapCoordinateResourceBindings(coordinates, mapReference) {
+  let changed = false;
+  const mapped = coordinates.map(coordinate => {
+    const binding = coordinateResourceBindings(coordinate)[0];
+    if (binding === undefined) return coordinate;
+    const projection = mapReference(binding.ref);
+    if (projection === binding.ref) return coordinate;
+    changed = true;
+    return { ...coordinate, projection };
+  });
+  return changed ? mapped : coordinates;
 }
 
 export function fontMetricResourceBindings(program) {
@@ -405,6 +424,8 @@ export function collectResourceReferences(program, { kind, id }) {
 
 export function collectAllResourceReferences(program) {
   return [
+    ...program.semanticSpec.coordinates.flatMap(coordinate => coordinateResourceBindings(coordinate).map(({ ref, path }) =>
+      reference(ref?.kind, ref?.id, "coordinate", coordinate.id, path))),
     ...fontMetricResourceBindings(program).map(({ ref, ownerId, path }) =>
       reference(ref.kind, ref.id, "materialization", ownerId, path)),
     ...program.semanticSpec.layers.flatMap(layer => layerResourceBindings(layer).map(({ ref, path }) =>

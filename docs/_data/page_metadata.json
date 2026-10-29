@@ -1101,6 +1101,12 @@
     "description": "Start with a node table and an edge table whose values have one shared unit.",
     "image": "/assets/images/flow-layouts.png"
   },
+  "/api/geometry/": {
+    "title": "Geometry and Projections",
+    "source": "docs/api/geometry.md",
+    "editSource": "docs/api/geometry.md",
+    "description": "Keep geographic or planar shapes in an immutable resource with explicit feature identity."
+  },
   "/api/contours/": {
     "title": "Contours and Two-Dimensional Density",
     "source": "docs/api/contours.md",
@@ -1142,5 +1148,12 @@
     "editSource": "examples/nested-responsive/program.js",
     "description": "Compare five regional panels with an overview. Each child keeps a fixed Canvas; content spacing accounts for rotated headers, long labels, strokes and shared guides.",
     "image": "/assets/images/nested-responsive.png"
+  },
+  "/tutorials/geographic-marks/": {
+    "title": "Draw Geometry on a Map",
+    "source": "docs/tutorials/geographic-marks.md",
+    "editSource": "examples/geographic-marks/program.js",
+    "description": "A geometry resource preserves source features. A projection maps their coordinates, and one Geo coordinate shares that projection among shapes, points and lines.",
+    "image": "/assets/images/geographic-marks.png"
   }
 }

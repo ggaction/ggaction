@@ -1,0 +1,375 @@
+{
+  "parents": [
+    "7ed57eb379b9c84ad4e1b792442c83946917a35b",
+    "7ee7821f9a207e547816b9a588afa05bc9c596b4"
+  ],
+  "sourceCommit": null,
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "scope": "Merge qualified geographic sources/projections/marks with category visibility, host context/parameter controls and partition focus. No new runtime domain or renderer implementation.",
+  "runtimeAndTypesFingerprint": "5051d70b8297c3537db772742e639a22d6a228406c051a015310a52a04d187a5",
+  "checks": {
+    "focusedInteractionGeoVisibility": 258,
+    "newCompositionRegression": 1,
+    "sourceTypesDiscoveryCatalog": 42,
+    "packageBoundariesVocabularyCards": 21,
+    "realistic": 16,
+    "browser": 3,
+    "docs": {
+      "beforeSourceCommit": {
+        "pass": 49,
+        "total": 50,
+        "failure": "Incoming Geo example cannot resolve at the branch ref until this merge is committed."
+      },
+      "builtPages": 172,
+      "llmArtifacts": 1509,
+      "widths": [
+        320,
+        390,
+        768,
+        1440
+      ],
+      "axeViolations": 0
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "8f9556991ee33cfe8426e49cf4637dba40d81c726b65b8d3d34c675dff135297",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 938,
+            "minifiedBytes": 2498367,
+            "gzipBytes": 716101
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 554,
+            "minifiedBytes": 1306356,
+            "gzipBytes": 381341
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 344441,
+            "gzipBytes": 112020
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "8f9556991ee33cfe8426e49cf4637dba40d81c726b65b8d3d34c675dff135297",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 938,
+            "minifiedBytes": 2498367,
+            "gzipBytes": 714444
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 554,
+            "minifiedBytes": 1306356,
+            "gzipBytes": 380491
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 344441,
+            "gzipBytes": 111326
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43599
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "8f9556991ee33cfe8426e49cf4637dba40d81c726b65b8d3d34c675dff135297",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/geographic-context PASS",
+          "interaction/partition-host-focus PASS",
+          "interaction/context-host-request PASS",
+          "interaction/legend-visibility-filter-composition PASS",
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 938,
+            "minifiedBytes": 2498367,
+            "gzipBytes": 716101
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 554,
+            "minifiedBytes": 1306356,
+            "gzipBytes": 381341
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 179,
+            "minifiedBytes": 344441,
+            "gzipBytes": 112020
+          },
+          {
+            "specifier": "ggaction/graph",
+            "chunks": 1,
+            "modules": 80,
+            "minifiedBytes": 146171,
+            "gzipBytes": 43759
+          }
+        ]
+      }
+    ]
+  },
+  "artifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-geo-merge-8f955699.tgz",
+    "sha256": "8f9556991ee33cfe8426e49cf4637dba40d81c726b65b8d3d34c675dff135297",
+    "entries": 1024,
+    "packed": 1455364,
+    "unpacked": 6637085
+  },
+  "supersededArtifact": {
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/interaction-geo-merge-39c94a26.tgz",
+    "sha256": "39c94a260b4fd9a18506d52422a4b4aa1285b48108fc98525c11070028838cde",
+    "entries": 1024,
+    "packed": 1455362,
+    "unpacked": 6637085
+  },
+  "packageMeasurementNode20": {
+    "node": "v20.20.2",
+    "entries": 1024,
+    "packedBytes": 1458954,
+    "unpackedBytes": 6637085
+  },
+  "limits": {
+    "entries": 1024,
+    "packedBytes": 1459000,
+    "unpackedBytes": 6638000,
+    "fullGzip": 716200,
+    "basicGzip": 381400,
+    "svgGzip": 25000,
+    "graphGzip": 44000,
+    "interactionGzip": 112100,
+    "searchBytes": 1013200
+  },
+  "preservedFailures": [
+    "Initial conflict-resolution helper greedily matched beyond conflict markers; Git retained all index stages, so conflicts were recreated and only exact bounded blocks merged. Generated export and the whole files were restored before tests.",
+    "Human-owned action intent aliases must combine both additions; canonical generation caught missing GeometryData before those dictionaries were unioned.",
+    "The new cross-consumer fixture initially omitted the required control legend and then lacked its margin. Only fixture setup changed; final native composition assertion passed.",
+    "The first installed candidate passed runtime7/strict types but Full716101 and Basic381341 gzip exceeded separate branch caps. Minimum caps716200/381400 applied, README synchronized, new exact tar fixed and all3 final commands passed.",
+    "The pre-merge docs source-link failure is retained and closed after source commit; runtime assertions passed."
+  ],
+  "globalQualification": "No full normal/coverage rerun claimed. Existing parent renderer proofs are reused because renderer owners and output policies are unchanged; new composite/context/package boundaries are directly checked.",
+  "remaining": [
+    "annotation, node drag and geographic navigation",
+    "generic session focus/history/gesture closure",
+    "full AT35/38/65/80 and STEP074/077"
+  ],
+  "commands": {
+    "focused": "node --test test/unit/interaction*.test.js test/unit/geo/*.test.js test/unit/actions/data/mark-visibility.test.js test/unit/grammar/mark-visibility.test.js",
+    "cross": "node --test test/unit/interaction-geo-controls.test.js",
+    "contracts": "source-boundaries/test-discovery/interaction-types/action-catalog/documentation-truth42 plus package-boundaries/action-value-vocabulary/compact-action-cards21",
+    "realistic": "node scripts/run-tests.js realistic contracts/realistic-logical-selection.test.js with pinned corpus cache",
+    "browser": "node --test --test-name-pattern=\"native parameter inputs|host partition buttons|legend\" test/browser/interaction-session.browser.js",
+    "installed": "Node20/22/24 node .artifacts/interaction-geo-merge-consumer.mjs",
+    "docs": "docs:generate; owning docs; docs:build; test:docs:built; node .artifacts/hierarchy-focus-doc-browser.mjs"
+  },
+  "evidenceFiles": [
+    {
+      "path": "interaction-geo-merge-browser.log.gz",
+      "sha256": "35f7fcd71587ad6511a6e73b958d55fc5fd0f53193bb33db421f650b7facb3f1"
+    },
+    {
+      "path": "interaction-geo-merge-build.log.gz",
+      "sha256": "1e1f56924d9571694b71b910de8f79176668ad6eb0ec068878fab8b377ee0bab"
+    },
+    {
+      "path": "interaction-geo-merge-built.log.gz",
+      "sha256": "7424833b8ace497e2d58fc2676b7fa8e8389c98aa01a1e73455e7c9e0022f250"
+    },
+    {
+      "path": "interaction-geo-merge-conflict-failed.log.gz",
+      "sha256": "f4a42acb869fb709b29889f0431ba9a0d0a4e8068bf89072b4f8ad8d57761ad1"
+    },
+    {
+      "path": "interaction-geo-merge-consumer.mjs.gz",
+      "sha256": "d3f77c1e60d6b13a05df0ffa0e6ccd5ab6f8606706f7eba2f6464cbe939a1aa3"
+    },
+    {
+      "path": "interaction-geo-merge-consumer20-candidate.log.gz",
+      "sha256": "98fccd3b711d894330e4f569ba11a54fa108205e590f2f647ed7609e439a0179"
+    },
+    {
+      "path": "interaction-geo-merge-consumer20.log.gz",
+      "sha256": "e0561a8c9d52a6bdf435047c6d94a355dbdbf33e6e7769677d73048a64884273"
+    },
+    {
+      "path": "interaction-geo-merge-consumer22.log.gz",
+      "sha256": "b6f99070e51035140dd273e6f39f32bc86bb105970aeec83c1f93bb9f810b340"
+    },
+    {
+      "path": "interaction-geo-merge-consumer24.log.gz",
+      "sha256": "a1e7ed49ee59952fb15b11618d51642f178ab4a67a9cd3efd64693e7c584f527"
+    },
+    {
+      "path": "interaction-geo-merge-contracts.log.gz",
+      "sha256": "2061037dc4815c94897bd651c87152bdfc24dd06ac7f280c36f958d7ad74b794"
+    },
+    {
+      "path": "interaction-geo-merge-cross-final.log.gz",
+      "sha256": "87f40fb4fc5b34f5f79293002e6c18eb59385b8a818bb41b04a62d3bc129bf51"
+    },
+    {
+      "path": "interaction-geo-merge-cross-margin-failed.log.gz",
+      "sha256": "2dcd1120351b8d5119cc099ef123a754e4952de603cb7606188214de45433676"
+    },
+    {
+      "path": "interaction-geo-merge-cross.log.gz",
+      "sha256": "34a4b61cdc8eafe8adbb863f9ce5f236a8bc5d7e38271159a820f69cc45f493f"
+    },
+    {
+      "path": "interaction-geo-merge-doc-browser.log.gz",
+      "sha256": "1451c3cad20e83dd65663707c18240c1d3bb2b6487178162a96fe651b55d4643"
+    },
+    {
+      "path": "interaction-geo-merge-docs.log.gz",
+      "sha256": "556e8cd1ec141c83aff47c8e8b4e19b32377cb97578d4d43d11795d0a3de7111"
+    },
+    {
+      "path": "interaction-geo-merge-fixed.json.gz",
+      "sha256": "1b7bf7ddbc8c80aea0227083fd1d631bb57566aa1e23c4b586ec5e9e898b44d6"
+    },
+    {
+      "path": "interaction-geo-merge-focused.log.gz",
+      "sha256": "bab389460f5c4c709abd6a09da8a117c976b6676b4acb841b401c6a1ae9e9a90"
+    },
+    {
+      "path": "interaction-geo-merge-generate.log.gz",
+      "sha256": "824754e1b8f7a603c4b274dd24e60d6030db482139d7fe50f1369bbcb8ed5a67"
+    },
+    {
+      "path": "interaction-geo-merge-intent-failed.log.gz",
+      "sha256": "9c5a6b42ae58ef1fd19f04a0ef61f7f95079bad3769437f74cb22be5b9a70c2d"
+    },
+    {
+      "path": "interaction-geo-merge-measured20-final.json.gz",
+      "sha256": "71f9bdeed70893a813a67a0f4ffb2640cdf3d6ed4c2283cd6dcc44222e4cce83"
+    },
+    {
+      "path": "interaction-geo-merge-measured20.json.gz",
+      "sha256": "87c085e212d2021d1f05ca11dc1b7b17486ce5dd3c535c2afc0988f9f1c9d507"
+    },
+    {
+      "path": "interaction-geo-merge-measured22.json.gz",
+      "sha256": "3f6f1f7900fe42e133aeff1a6bb4401ceda06ef640977a3bbe6af0d7d5237cbc"
+    },
+    {
+      "path": "interaction-geo-merge-pack-candidate.log.gz",
+      "sha256": "cd199e16ca5f9341dfc7294f37f1b8b11d5a6788cdb7bdab245b4bc4c0890130"
+    },
+    {
+      "path": "interaction-geo-merge-pack-final.log.gz",
+      "sha256": "2ff41e6d27dea127180922dd7b85a8b751024b0204c16e956a682367914da20a"
+    },
+    {
+      "path": "interaction-geo-merge-package-boundaries.log.gz",
+      "sha256": "f8fd7231975db593c15a6304da57c44ed68a7e288c8854e713a5e26b5e820f2a"
+    },
+    {
+      "path": "interaction-geo-merge-qualify.py.gz",
+      "sha256": "f62ce88ba27e0531bb1a8bcc3ae367efd1c9d4a678335ceaee2a7fe3bc778968"
+    },
+    {
+      "path": "interaction-geo-merge-realistic.log.gz",
+      "sha256": "8ec653ef146162100845cadbae2521fe2bd756c786ee19cc575f05fd5ec92648"
+    },
+    {
+      "path": "interaction-geo-merge-superseded.json.gz",
+      "sha256": "ea5aa6c899e48e028eac282647df50cb4057b65508612571a0f85826e7bea401"
+    },
+    {
+      "path": "api-interaction-1440.png",
+      "sha256": "5fe70ddd0bb77a1508f188826109d3b356691015699cd6c35bbdc0ba94f0ebed"
+    },
+    {
+      "path": "api-interaction-320.png",
+      "sha256": "b265c2f0fe397039465531e111f3a5d9324377559b69355ce6a7f30738739c6b"
+    },
+    {
+      "path": "api-interaction-390.png",
+      "sha256": "0bd13cebe9fa4e0158e3092c541294a2673a481ee4cf349327d5cada32915950"
+    },
+    {
+      "path": "api-interaction-768.png",
+      "sha256": "db42340256d6e777e8ed4eebd63b153e31997668cd74b53f0bacc81031cfa6f3"
+    }
+  ]
+}
