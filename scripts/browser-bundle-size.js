@@ -9,7 +9,7 @@ export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   "ggaction/basic": 378_000, // Shared viewport registry retains Full-only computation outside Basic.
   "ggaction/svg": 25_000,
   "ggaction/graph": 44_000, // Shared region predicate validation: 43,572 gzip bytes.
-  "ggaction/interaction": 109_000 // Nested responsive hit metadata with captured click: Node20/24 101,103 gzip bytes.
+  "ggaction/interaction": 109_200 // Linked filter plus routes baseline: Node20 109,145 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {

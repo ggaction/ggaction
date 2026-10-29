@@ -4,7 +4,7 @@
 
 `ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
-`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one click-selection, brush, or lasso binding, plus up to 256 explicit linked-selection bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
+`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one click-selection, brush, or lasso binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
 
 ## Handle and commands
 
@@ -114,6 +114,43 @@ selection resources use the existing program codec; reattach bindings explicitly
 Links do not install DOM listeners or synthesize additional transactions. A cause ID alone never
 creates a link. Evidence includes `test/unit/interaction-links.test.js`, the logical-selection realistic
 corpus, public interaction type checks and source-free interaction consumers.
+
+
+## Linked filters
+
+A Full session accepts `{type:"linkFilter",id,sources,target,selection,resolve}`. Source projections,
+resolution, explicit endpoint scopes, final item grains and all limits follow linked selections above.
+The existing target selection supplies its final-item universe and grain; its selected membership is
+not overwritten. This binding exclusively owns the target's native mark filter while installed.
+Direct session `filter` commands for that owner reject. Direct selection, click and brush edits on
+that owner's selections remain available. A target owner still has one writer across both binding
+kinds, and the combined dependency graph must be acyclic.
+
+Construction validates and computes projections without authoring: an existing target filter is
+retained. On the next relevant source transaction, the binding replaces that native filter with the
+resolved target items. Projection uses the target's unfiltered item universe, so a later wider source
+selection can restore previously filtered items. Native `removeMarkFilter` and `filterMarks` build
+private immutable candidates; neither intermediate program is published. Unsupported native targets
+reject through the same atomic error boundary. Empty-none sources produce an empty view; empty-all
+sources contribute their complete current membership. A filter result with no rows has no final items,
+including aggregate bar and path marks, while retaining native empty-filter domains and validating the requested grain. Graph filters retain their native
+node selection and induced-edge behavior; effective native item membership determines no-op writes.
+
+The target's persistent selections are reconciled under keep-hidden/drop immediately after filtering
+and before downstream links run. The original source change, all filter/selection dependents and the
+new hit frame commit at one revision. Failure preserves the previous committed program, scene, trace,
+selection and projection references; only the error event is published. Brush preview uses the same
+candidate closure, and cancellation discards it. External `updateProgram` changes to source projections
+also refresh affected filters atomically; missing owners remain dormant and are not recreated.
+
+Filter records in `getState().linkedSelections` add `effect:"filter"`; selection-link records retain
+their existing shape. Bindings are runtime-only. Native committed filters and selections use the
+existing codec; recreate the binding after restoring a program. Destroying a session does not remove
+its committed filter. Full authoring is required; Basic rejects these bindings.
+
+Evidence: `test/unit/interaction-linked-filter.test.js`, `test/unit/interaction-region-gesture.test.js`,
+`test/browser/interaction-region.browser.js`, the five-source/three-recipe logical-selection realistic
+suite and the source-free interaction consumer.
 
 
 ## Nearest selection commands

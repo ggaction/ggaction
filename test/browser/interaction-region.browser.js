@@ -72,3 +72,60 @@ for (const ratio of [1, 2]) for (const kind of ["brush", "lasso", "angular"]) te
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });
+
+test("a browser brush publishes linked filtered views atomically for Canvas and SVG", async () => {
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 1000, height: 700 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async () => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      const { chart, hconcat, render } = await import("/src/index.js"), { renderToSVG } = await import("/src/renderers/svg.js");
+      const { createInteractionSession } = await import("/src/interaction.js"), { getMarkItems } = await import("/src/inspection.js");
+      document.body.innerHTML = '<canvas id="filterCanvas" aria-label="Linked filter chart" style="touch-action:none"></canvas><div id="filterSvg" style="width:640px;height:200px;touch-action:none"></div><p id="status" role="status">Preparing</p>';
+      const child = chart().createCanvas({ width: 300, height: 200, margin: 0 }).createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 50, y: 60 }, { id: "b", x: 200, y: 130 }] })
+        .createPointMark({ id: "points" }).encodePointRadius({ value: 8 }).encodeX({ field: "x", scale: { domain: [0, 300], range: [0, 300] } })
+        .encodeY({ field: "y", scale: { domain: [0, 200], range: [0, 200] } }).selectMarks({ id: "picked", items: [] });
+      const program = hconcat({ programs: [{ id: "source", program: child }, { id: "target", program: child }] });
+      const source = { childPath: ["source"], id: "points" }, target = { childPath: ["target"], id: "points" };
+      window.__filterSessions = []; window.__filterEvents = [[], []]; window.__filterSource = program;
+      window.__filterIds = program => getMarkItems(program.children.target, { target: "points" }).map(item => item.fields.id);
+      for (const [index, id] of ["filterCanvas", "filterSvg"].entries()) {
+        const host = document.getElementById(id), session = createInteractionSession({ program, bindings: [
+          { type: "brush", target: source, selection: "picked" },
+          { type: "linkFilter", id: "linked", target, selection: "picked", resolve: "global", sources: [{ target: source, selection: "picked", projection: { type: "rows", sourceData: "rows", targetData: "rows" } }] }
+        ] });
+        const draw = p => index === 0 ? render(p, host.getContext("2d"), { pixelRatio: 2 }) : host.innerHTML = renderToSVG(p);
+        draw(program); host.tabIndex = 0; session.mount(host);
+        session.subscribe(event => {
+          if (!event.phase) return;
+          window.__filterEvents[index].push({ phase: event.phase, revision: event.revision, baseline: event.previous === program,
+            visible: window.__filterIds(event.state.previewProgram ?? event.current) });
+          if (["preview", "commit", "cancel", "error"].includes(event.phase)) draw(event.state.previewProgram ?? event.current);
+        });
+        window.__filterSessions.push(session);
+      }
+      document.querySelector("#status").textContent = "Linked filters ready";
+    });
+    for (const [index, selector] of ["#filterCanvas", "#filterSvg"].entries()) {
+      await page.locator(selector).focus();
+      const box = await page.locator(selector).boundingBox();
+      for (const cancel of [true, false]) {
+        await page.mouse.move(box.x + 20, box.y + 20); await page.mouse.down(); await page.mouse.move(box.x + 100, box.y + 100, { steps: 15 });
+        await page.waitForFunction(index => window.__filterSessions[index].getState().previewProgram !== null, index);
+        assert.deepEqual(await page.evaluate(index => window.__filterIds(window.__filterSessions[index].getState().previewProgram), index), ["a"]);
+        assert.equal(await page.evaluate(index => window.__filterSessions[index].getState().program === window.__filterSource, index), true);
+        if (cancel) await page.keyboard.press("Escape");
+        await page.mouse.up();
+      }
+      const result = await page.evaluate(index => ({ ids: window.__filterIds(window.__filterSessions[index].getState().program), events: window.__filterEvents[index], revision: window.__filterSessions[index].getState().revision }), index);
+      assert.deepEqual(result.ids, ["a"]); assert.equal(result.revision, 1);
+      assert.equal(await page.evaluate(() => document.activeElement.id), selector.slice(1));
+      assert.equal(result.events.filter(e => e.phase === "commit").length, 1); assert.equal(result.events.filter(e => e.phase === "cancel").length, 1);
+      assert.deepEqual(result.events.filter(e => e.phase === "commit")[0].visible, ["a"]); assert.ok(result.events.every(e => e.baseline));
+    }
+    await page.evaluate(() => window.__filterSessions.forEach(session => session.destroy()));
+    assertNoBrowserErrors(errors, "linked filter interaction"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});

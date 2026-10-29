@@ -47,7 +47,7 @@ export function normalizeRegionBinding(program, value, links) {
   if (!["brush", "lasso"].includes(request.type)) throw new TypeError("Region selection requires brush or lasso.");
   if (request.type === "lasso" && (Object.hasOwn(request, "axis") || Object.hasOwn(request, "channels"))) throw new TypeError("Lasso uses screen points and does not accept axes or channels.");
   const owner = resolveClickSelection(program, request.target, request.selection), target = owner.target;
-  if (links.some(link => link.selection === request.selection && link.target.id === target.id && samePath(link.target.childPath, target.childPath))) throw new Error("A linked target selection is owned by its binding.");
+  if (links.some(link => !link.filter && link.selection === request.selection && link.target.id === target.id && samePath(link.target.childPath, target.childPath))) throw new Error("A linked target selection is owned by its binding.");
   const mode = request.mode === undefined ? "replace" : request.mode;
   if (!SELECTION_SET_MODES.includes(mode)) throw new TypeError("Region selection requires a supported set update mode.");
   let channels;

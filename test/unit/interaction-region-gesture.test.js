@@ -5,6 +5,7 @@ import { chart as basic } from "../../src/basic.js";
 import { createInteractionSession } from "../../src/interaction.js";
 import { resolveStoredSelection } from "../../src/materialization/selection/state.js";
 import { serializeProgram, deserializeProgram } from "../../src/persistence.js";
+import { getMarkItems } from "../../src/inspection.js";
 import { renderToSVG } from "../../src/renderers/svg.js";
 
 const program = () => chart().createCanvas({ width: 300, height: 200, margin: 0 })
@@ -227,4 +228,24 @@ test("linked brush previews update the same candidate closure and reject competi
   assert.deepEqual(ids(session.getState().previewProgram.children.target), ["a"]); assert.equal(session.getState().program, p);
   assert.deepEqual(events[0].affectedOwners, [source, target]); host.fire("pointerup", 100, 100);
   assert.deepEqual(ids(session.getState().program.children.target), ["a"]); assert.equal(session.getState().revision, 1); session.destroy();
+});
+
+test("linked filter brush previews cancel without writes and commit the complete downstream view", () => {
+  const child = program(), p = hconcat({ programs: [{ id: "source", program: child }, { id: "target", program: child }] });
+  const source = { childPath: ["source"], id: "points" }, target = { childPath: ["target"], id: "points" };
+  const link = { type: "linkFilter", id: "rows", target, selection: "picked", resolve: "global", sources: [{ target: source, selection: "picked", projection: { type: "rows", sourceData: "rows", targetData: "rows" } }] };
+  const session = createInteractionSession({ program: p, bindings: [link, { type: "brush", target: source, selection: "picked" }] }), host = surface(640, 200), events = [];
+  session.mount(host); session.subscribe(event => { if (event.phase) events.push(event); });
+  const visible = program => getMarkItems(program.children.target, { target: "points" }).map(item => item.fields.id);
+  for (const cancel of [true, false]) {
+    host.fire("pointerdown", 20, 20); host.fire("pointermove", 100, 100); host.flush();
+    assert.deepEqual(visible(session.getState().previewProgram), ["a"]);
+    assert.equal(session.getState().program, p); assert.deepEqual(visible(p), ["a", "b"]);
+    if (cancel) { host.fire("keydown", 0, 0, { key: "Escape" }); assert.equal(session.getState().previewProgram, null); }
+    host.fire("pointerup", 100, 100);
+  }
+  assert.deepEqual(visible(session.getState().program), ["a"]);
+  assert.deepEqual(events.map(event => event.phase), ["preview", "cancel", "preview", "preview", "commit", "settled"]);
+  assert.equal(events.at(-2).previous, p); assert.equal(events.at(-2).current, session.getState().program);
+  assert.equal(session.getState().revision, 1); session.destroy();
 });

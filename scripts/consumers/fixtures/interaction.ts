@@ -76,3 +76,7 @@ session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true}}
 session.dispatch({type:'filter',target:'points',payload:{clear:true,select:{items:[]}}});
 // @ts-expect-error clear cannot also set an order
 session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true,values:['A']}});
+
+createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',target:'points',selection:'universe',resolve:'global',sources:[
+ {target:'source',selection:'picked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}}
+]}]});

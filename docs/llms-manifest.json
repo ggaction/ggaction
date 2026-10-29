@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:c298d517cfe443ae975610137dac07c8f37fc3102928c88674a12571afd06ba8",
+    "contractId": "sha256:83296cf463f8708d14b5e58e077b142c5bd2cad9ca32b66c5f916599e6dd3f4e",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -47,7 +47,7 @@
         "next"
       ],
       "bytes": 6213,
-      "sha256": "bfa62b65dbb6593062c75ae2e47ce3f027a823bc563329c333a4550588b19523"
+      "sha256": "3806cb2df9eb379ab74967bfc02a4b104b34f1700615d856aa5258747930b9f1"
     },
     {
       "order": 3,
@@ -110,7 +110,7 @@
         "run-and-continue"
       ],
       "bytes": 5473,
-      "sha256": "d3160057cfe1685c225747e37fcc861242f92a74726be553d44ebf3a805c7f18"
+      "sha256": "585bb5bd6a807575ae7da65788b47be59b5b72f77c106b13c08ec6e7e5fe2bd9"
     },
     {
       "order": 7,
@@ -126,7 +126,7 @@
         "related"
       ],
       "bytes": 3562,
-      "sha256": "6681c4aeb96f917bf3ebcae1c15846eb0e41e420e562355ca27e0615b9d0e4f7"
+      "sha256": "41bcef575500439054b204f5483d30f648cdaf1670d59ce6c7fef59601febb9a"
     },
     {
       "order": 8,
@@ -141,7 +141,7 @@
         "related"
       ],
       "bytes": 3449,
-      "sha256": "11835f96932b7696d712adde4b9b4d28c85b5c7217fff0ede39ffde86eed6d33"
+      "sha256": "a956c2351ad49af3db0f8f84eb32661cabea37734a986037e2ef2ac6d5ec86c3"
     },
     {
       "order": 9,
@@ -162,7 +162,7 @@
         "related"
       ],
       "bytes": 9986,
-      "sha256": "eaea2b937bdb8ed3589fd3c105e30f254fb83c3959dbffcb0c477fca00ac8663"
+      "sha256": "c9b2c0a67a06487b2456c3e63c0ed31f844f12fdffad7eedab6869c976ad89e9"
     },
     {
       "order": 10,
@@ -179,7 +179,7 @@
         "run-and-continue"
       ],
       "bytes": 4781,
-      "sha256": "1babccf1ea8c98beb4655c6372765d0708f1aaa36cca19b924dd9af8a8120b05"
+      "sha256": "0f0d07a926f480a2126fba22097d17628f5332e43366694fb718555a23b6875b"
     },
     {
       "order": 11,
@@ -194,7 +194,7 @@
         "run-and-continue"
       ],
       "bytes": 4380,
-      "sha256": "1d8194a1b62f15ecd60630e2b470e6cc9c15eea0ba544f8413baabd500b1dae5"
+      "sha256": "c1eed4137221892384204d0c77e8e17edd02b88b4c23a712ceed10fcea93b514"
     },
     {
       "order": 12,
@@ -210,7 +210,7 @@
         "run-and-continue"
       ],
       "bytes": 4153,
-      "sha256": "5089995b57ec5e734abd40dd122997f6fa3eeade709bdea02011b02ec73e5f25"
+      "sha256": "b4d59e80e7cab7eed5e3bfb7cb9a5c9ab13f981d736490f181888a00c128dbb2"
     },
     {
       "order": 13,
@@ -225,7 +225,7 @@
         "run-and-continue"
       ],
       "bytes": 4216,
-      "sha256": "6621fc5cd239b46a03981945e4289df7fe49c35010545b7e03544745b3e6aa08"
+      "sha256": "1cb43a82459713344705c21b9af350e52be1c7fc28f9db83d83923377b134476"
     },
     {
       "order": 14,
@@ -240,7 +240,7 @@
         "keep-gaps-explicit"
       ],
       "bytes": 3527,
-      "sha256": "ba077339ae39c6c63db066b846e7cfd66cc6033bee149e7857c625f76583e3dd"
+      "sha256": "e51dc51bc9735e37219d9be01fb5625ad47965ced8b759f50658595620dde80e"
     },
     {
       "order": 15,
@@ -257,7 +257,7 @@
         "run-and-continue"
       ],
       "bytes": 6267,
-      "sha256": "cea1807277451b3ebc465c3f253809bffd6836e10ae24a22d24e30577d45a711"
+      "sha256": "ce4b6c1b75c1f61ee750e34a0fede9834f99742592d2674db76944df54a8354d"
     },
     {
       "order": 16,
@@ -273,7 +273,7 @@
         "key-action-trace"
       ],
       "bytes": 4650,
-      "sha256": "f8b2c36d7a10fc15151911fc419fe3c4c70e3b2d1f981c7081e7a3a52f77cf49"
+      "sha256": "4024cb75c4f0d2a705c1f6e70b63a5690da827a04391f079094e6e75d8c579f3"
     },
     {
       "order": 17,
@@ -289,7 +289,7 @@
         "run-and-continue"
       ],
       "bytes": 3587,
-      "sha256": "bf28ed4f3a802b3de0b7526582ac5aebe30ddaa028c4f863bb6c600b618fa607"
+      "sha256": "93b2a98e66e60e46b4776ddd064360151badb3962a3397dc4fcf4dafeb8d7cbf"
     },
     {
       "order": 18,
@@ -305,7 +305,7 @@
         "run-and-continue"
       ],
       "bytes": 3811,
-      "sha256": "5ef8282422d848fc3b8fb7ddfa1e8a7d7ae4d4af921b2eea193697adb3585b62"
+      "sha256": "9e2b4c122e5f14b32298e60001291b3f11a1105d424c583cf59d97a8df081e17"
     },
     {
       "order": 19,
@@ -322,7 +322,7 @@
         "run-and-continue"
       ],
       "bytes": 6372,
-      "sha256": "baf3844c4332ed1ddab2330e52323b44aeefc41293bbf9d7779b7a823e286a88"
+      "sha256": "986bf08177d4795a5d637f204d9a76b7e5464131e44ed42b4687c0e7be6d2c84"
     },
     {
       "order": 20,
@@ -349,7 +349,7 @@
         "revise-the-statistical-source"
       ],
       "bytes": 3958,
-      "sha256": "dd064da6a49093cab25e679458e20ff9bbe90948e096fce3ed73f49f43bfde54"
+      "sha256": "b84b87d506aa55190a2818c9eac9be3325f220d64c2be5bafefcf3ce2c602744"
     },
     {
       "order": 22,
@@ -875,7 +875,7 @@
         "related"
       ],
       "bytes": 5887,
-      "sha256": "c01587cbb15d773d4adbda60bdc73ebc9e76653d1d7d71f1c79d76bc961ef6ab"
+      "sha256": "55171b19e7e544ffbe301c182bf5f741436b2f28260499bee5c0d526db4e1ea7"
     },
     {
       "order": 55,
@@ -1243,13 +1243,14 @@
         "commit-selections-and-parameters",
         "filter-and-reorder-a-view",
         "link-named-selections",
+        "filter-another-view-from-a-selection",
         "select-the-nearest-item",
         "keep-or-drop-hidden-selections",
         "automatic-click-selection",
         "brush-or-lasso-an-existing-selection"
       ],
-      "bytes": 29670,
-      "sha256": "7f7d5429e9418d68fd80353805d77660d5cd5fb6c655340cd61687f460d36119"
+      "bytes": 32573,
+      "sha256": "f799db5b927be78d01e64082f9f4d4e84ecb85d248d8e73db69e803da2487c35"
     },
     {
       "order": 74,
@@ -1289,7 +1290,7 @@
         "nested-responsive-panels"
       ],
       "bytes": 9565,
-      "sha256": "4abd5b03dfda08344f52abdde0f6869d974186a870b8c1db2687884c1e5a6f43"
+      "sha256": "d77fa339c146559b10cef1134c425f07e973b70f65331e5d2b23272ed705492e"
     },
     {
       "order": 76,
@@ -1341,7 +1342,7 @@
         "related"
       ],
       "bytes": 7299,
-      "sha256": "5b954433dbe24b86485fd73abe670547d07bd3cf9c417fb3b8651e6873583092"
+      "sha256": "1d8df8a39a5a425e40751492f5c21b5d58c76045feccda2db27b6675b0e7416c"
     },
     {
       "order": 79,
@@ -1423,7 +1424,7 @@
         "related"
       ],
       "bytes": 5794,
-      "sha256": "84464d4a9113e5b0ca7c6e175154fc7741795c915d71f9b10607a7f37b4ee753"
+      "sha256": "e8a70b0cca55e734da8168d1568011b0dba99b26b55327c4c03ea72d1c0b07f4"
     },
     {
       "order": 84,
@@ -2520,8 +2521,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 59642,
-      "sha256": "c6a29da57ecf9cbb5f78dad365351df98f8252389252a80613deeb2461f5b208"
+      "bytes": 59973,
+      "sha256": "9aac9546c455eae9f89efc209e5e810821aa08b5f23ed7aa6a767398c7341510"
     },
     {
       "order": 128,
@@ -3424,7 +3425,7 @@
         "stored-selection-resources-and-concrete-identity"
       ],
       "bytes": 20908,
-      "sha256": "1f59845331519e84008cbbf29d9692df72522a6f26bdbd39d72a11092af78e4e"
+      "sha256": "a7676fbcba76499baef0a4f33aa55aec1230a14a0770f19557d7a58143405e28"
     },
     {
       "order": 131,
@@ -3508,7 +3509,7 @@
         "independently-packed-panels"
       ],
       "bytes": 30024,
-      "sha256": "a51646b2661adb9a15b8993284480d8d2ed27d9031058c040059fb9b06f4b4fe"
+      "sha256": "5857b90e55491c11152f50bceccf4574506a0e7b640667c4d866d076a1fca171"
     },
     {
       "order": 136,
@@ -3555,7 +3556,7 @@
         "removelabellayoutoptions"
       ],
       "bytes": 2614,
-      "sha256": "674a0f4ba499f5b59d2b01f32f220f2e7a8644b364e30c0bab01d3dafbc80276"
+      "sha256": "e7bc61fc415f042cf940fb9e90be43795703108931ed73dbdf79e769b75eb539"
     },
     {
       "order": 139,
@@ -3764,7 +3765,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "a461c1b0d824eccb940c7be83590183e7bc1b52b58ccde3159f348b435bdfad9"
+      "sha256": "46fd52fd83497746605fdf3cbeb2efdcc7d3d593938c756a521edb7bf93b6dd3"
     },
     {
       "order": 152,
@@ -3797,7 +3798,7 @@
         "add-a-pixel-alpha-shadow"
       ],
       "bytes": 6673,
-      "sha256": "00a3779aeb58f2b1dd74234434b86dac9a30cf12d74259e392e859c5301012c1"
+      "sha256": "cee5d49142429d63e0b4945709f1cc6efc7ac5888be69854bae37dc0c2d243ea"
     },
     {
       "order": 154,
@@ -3811,7 +3812,7 @@
         "change-labels-or-fonts"
       ],
       "bytes": 3387,
-      "sha256": "8dbeb0034dcf97c1566c204a2a0aa5983e98e0de14038a3c68a0bf782e455880"
+      "sha256": "1ce52895b71308df72a23740064cdf2e8c7130b072cd3ccf16b980dd3d6a1462"
     },
     {
       "order": 155,
@@ -3849,7 +3850,7 @@
         "edit-data-and-remove-views"
       ],
       "bytes": 5486,
-      "sha256": "d979035318c018e535cb39b2806c3c9e628ab8bdf1cb7c4f7bedcfc524ae0171"
+      "sha256": "59a627f6aa54bd435fda1b872bfb6c56f911880e86843720f50013f5de7b40a4"
     },
     {
       "order": 157,
@@ -3906,7 +3907,7 @@
         "bundle-existing-graph-edges"
       ],
       "bytes": 1812,
-      "sha256": "f77bcf808e6738f88ac65a9e18f592f512f54f59846bca68b15ebc5c69e01325"
+      "sha256": "424d7e32d6665d10b281cc77263d304054c97883f0f45634af00f3036ea6e88a"
     },
     {
       "order": 161,
@@ -3935,7 +3936,7 @@
         "share-intervals-with-a-sunburst"
       ],
       "bytes": 4386,
-      "sha256": "65b21b2ca1a7f4e4e05070858cd56c125e8a3508c0d8fa999b472ae0590038ff"
+      "sha256": "34e46683362bd174b50955cd4a5856865ca424a822f5d858dd5affcad4161a04"
     },
     {
       "order": 163,
@@ -3966,7 +3967,7 @@
         "draw-conserved-flows"
       ],
       "bytes": 3692,
-      "sha256": "90dd2d7a4b3a2affec06ee49aefb1bb225f4ca0150dec8dc8cd81ac7514657b3"
+      "sha256": "538d82c7b409fbafe2292cace37b733a9cc8cc373736b34914401245c268c6b2"
     },
     {
       "order": 165,
@@ -4008,7 +4009,7 @@
         "draw-levels-bands-and-density"
       ],
       "bytes": 2908,
-      "sha256": "2cc0718dc586f7d6473b345131d8bfb8aa6580b55a31d57b5ac86857c1f571ca"
+      "sha256": "62906828a04aaf3015ce807ca8318d574a89f8e2bef0ec1049d6e5cfb9923dcd"
     },
     {
       "order": 168,
@@ -4045,7 +4046,7 @@
         "place-observations-on-a-calendar"
       ],
       "bytes": 2879,
-      "sha256": "6a764f19e7635f69e89b8bc1fcef1774d200b2c3a725f38fb4ebca5f7f300b3b"
+      "sha256": "f72158eab1e7293d099ebb6ff320ed9a2d6148f4a6e52eccb7c78ca5292c3a40"
     },
     {
       "order": 171,

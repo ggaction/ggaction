@@ -299,6 +299,64 @@ source-specific projection sets and their resolved keys. Bindings allow at most
 projection work. They remain runtime state: serialize the committed chart as
 usual and attach the bindings again after restoring it.
 
+## Filter another view from a selection
+
+Use `linkFilter` to make a source selection control a target's native filter.
+The target's existing selection identifies its item grain. Its membership stays
+independent, so target selections can still be edited or brushed. Projections and
+`union`, `intersection`, and `global` resolution follow linked selections above.
+
+> **Executable complete.** Run this ES module with its inline observations. Selecting a in the source leaves only a in the target view.
+
+```javascript
+import { chart, hconcat } from "ggaction";
+import { createInteractionSession } from "ggaction/interaction";
+
+const child = chart().createCanvas({ width: 300, height: 200 })
+  .createData({ id: "rows", keyField: "id", values: [
+    { id: "a", x: 1, y: 2 }, { id: "b", x: 2, y: 4 }
+  ] })
+  .createScatterPlot({ id: "points", x: "x", y: "y", guides: false })
+  .selectMarks({ id: "picked", target: "points", items: [], empty: "all" });
+const program = hconcat({ programs: [
+  { id: "source", program: child }, { id: "target", program: child }
+] });
+const filterSession = createInteractionSession({ program, bindings: [{
+  type: "linkFilter", id: "filterRows", resolve: "global",
+  sources: [{
+    target: { childPath: ["source"], id: "points" }, selection: "picked",
+    projection: { type: "rows", sourceData: "rows", targetData: "rows" }
+  }],
+  target: { childPath: ["target"], id: "points" }, selection: "picked"
+}] });
+filterSession.dispatch({ type: "select",
+  target: { childPath: ["source"], id: "points" },
+  payload: { id: "picked", select: { field: "id", op: "eq", value: "a" } }
+});
+const filteredProgram = filterSession.getState().program;
+filterSession.destroy();
+```
+
+Render `filteredProgram` with any supported renderer. A wider source selection
+restores target items because matching uses its unfiltered universe. Empty-none
+produces an empty target; empty-all contributes every current source item.
+
+The binding owns the target filter. A pre-existing filter stays during session
+creation and is replaced on the next relevant source transaction. Direct session
+filter commands to that target are rejected. Filter and selection bindings share
+one writer per target and must form an acyclic graph. Filters refresh target
+selection visibility before downstream links run, following `selectionPolicy`.
+
+Each source command, all dependent filters and selections, and the hit frame
+publish one commit. Errors preserve the prior state; brush cancellation discards
+the preview. External source projection changes passed to `updateProgram` also
+refresh the filters. Missing targets stay absent. `linkedSelections` identifies
+these records with `effect: "filter"`.
+
+Serialize the committed chart normally and reattach bindings after restoration.
+Destroying the session keeps the committed filter. This authoring binding requires
+Full and the target's existing native filter support.
+
 ## Select the nearest item
 
 Use `nearest` instead of `select` in a selection command. The selection must already exist on the

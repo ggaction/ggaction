@@ -745,6 +745,10 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-linked-filter.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/interaction-links.test.js"
       },
       {

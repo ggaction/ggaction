@@ -185,6 +185,7 @@ type MarkSelector =
   program and explicit layer rebind.
 - ✅ Covered: point scale/axis/grid rematerialization, histogram boundary retention, stack grain, line/area series,
   density provenance, arc sectors, rule/Tick endpoints and categorical legend convergence.
+- Empty active filters expose an empty final-item array to selection, source-only membership and inspection, including aggregate and path marks. Native empty-filter domain preservation remains unchanged.
 - ✅ Covered: empty domain preservation and stale graphic cleanup, removal/source restoration, histogram bin restoration,
   dependent filtered snapshot preservation and invalid mode/missing owner failure.
 - ✅ Covered: regression scatterplot primitive/public equivalence when filtering before statistical layers.

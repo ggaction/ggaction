@@ -411,5 +411,15 @@
     "mode": "complete",
     "result": "orderedProgram",
     "prerequisites": "Install ggaction and import the authoring and interaction entries."
+  },
+  {
+    "id": "interaction-linked-filter",
+    "file": "api/interaction.md",
+    "contains": "const filterSession =",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "mode": "complete",
+    "result": "filteredProgram",
+    "prerequisites": "Run this ES module with its inline observations. Selecting a in the source leaves only a in the target view."
   }
 ]
