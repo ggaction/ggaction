@@ -2365,6 +2365,21 @@
   {
     "file": "api/interaction.md",
     "block": 8,
+    "heading": "Filter another view from a selection",
+    "mode": "complete",
+    "environment": "node-esm",
+    "receivers": [],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"picked\""
+    ],
+    "prerequisites": "Run this ES module with its inline observations. Selecting a in the source leaves only a in the target view.",
+    "sha256": "7a56091d168f534fe42d2594b3818f2a2b6a0a56f1349f77cddc1d266012dfc4",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 9,
     "heading": "Select the nearest item",
     "mode": "complete",
     "environment": "node-esm",
@@ -2379,7 +2394,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 9,
+    "block": 10,
     "heading": "Automatic click selection",
     "mode": "complete",
     "environment": "browser-module",
@@ -2394,7 +2409,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 10,
+    "block": 11,
     "heading": "Brush or lasso an existing selection",
     "mode": "fragment",
     "environment": "esm-context",

@@ -722,6 +722,10 @@
       {
         "type": "file",
         "path": "unit/interaction-calendar-region.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-linked-filter.test.js"
       }
     ],
     "horizon": [

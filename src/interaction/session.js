@@ -14,7 +14,7 @@ import { resolveHitCoordinates, transformHitPoint } from "../grammar/hitCoordina
 import { normalizeHitQuery } from "../grammar/hitShapes.js";
 import { prepareProgramHitFrame, rebindProgramHitFrame } from "./hitProgram.js";
 import { createHitFrameBridge } from "./hitFrame.js";
-import { normalizeSelectionLinks, inspectSelectionLinks, applySelectionLinks, selectionLinksChangedAvailability } from "./bindings.js";
+import { normalizeSelectionLinks, inspectSelectionLinks, applySelectionLinks, selectionLinksNeedUpdate } from "./bindings.js";
 
 const IDENTITY = Object.freeze([1, 0, 0, 1, 0, 0]);
 const MAX_DISPATCHES = 256;
@@ -25,7 +25,7 @@ function bindings(program, value) {
   const inspect = [], linked = [], selected = [], regions = [];
   for (const binding of value) {
     const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss", "axis", "channels"], "Interaction binding");
-    (head.type === "linkSelection" ? linked : head.type === "select" ? selected : ["brush", "lasso"].includes(head.type) ? regions : inspect).push(head);
+    (["linkSelection", "linkFilter"].includes(head.type) ? linked : head.type === "select" ? selected : ["brush", "lasso"].includes(head.type) ? regions : inspect).push(head);
   }
   if (inspect.length > 1 || selected.length + regions.length > 1) throw new TypeError("Interaction bindings support at most one inspect and one select, brush or lasso binding.");
   const links = normalizeSelectionLinks(program, linked);
@@ -61,6 +61,7 @@ const emptyHit = (frameVersion, diagnostics) => cloneAndFreeze({ target: null, c
 export function createInteractionSession(input) {
   const request = options(input, ["program"], ["bindings", "selectionPolicy"], "Interaction session");
   const configured = bindings(request.program, request.bindings), selectionPolicy = normalizeSelectionPolicy(request.selectionPolicy);
+  const managedSelections = configured.linked.filter(link => !link.filter);
   let program = request.program, base = prepareProgramHitFrame(program), bridge = createHitFrameBridge(base);
   let linkedSelections = inspectSelectionLinks(program, configured.linked);
   let selectionRecords = reconcileSelections(program, [], selectionPolicy, { initialize: true }).records;
@@ -117,10 +118,10 @@ export function createInteractionSession(input) {
   const prepareEdit = command => {
     let prepared = prepareInteractionEdit(program, prepareNearestSelection(program, command, bridge));
     if (prepared.program === program) return null;
-    const initial = reconcileSelections(prepared.program, selectionRecords, selectionPolicy, { managed: configured.linked });
-    prepared = applySelectionLinks(initial.program, configured.linked, linkedSelections, [...prepared.affectedOwners, ...initial.affectedOwners], command, selectionPolicy);
-    const reconciled = reconcileSelections(prepared.program, initial.records, selectionPolicy, { verify: true });
-    const selectionChanges = [...initial.changes, ...reconciled.changes];
+    const initial = reconcileSelections(prepared.program, selectionRecords, selectionPolicy, { managed: managedSelections });
+    prepared = applySelectionLinks(initial.program, configured.linked, linkedSelections, [...prepared.affectedOwners, ...initial.affectedOwners], command, selectionPolicy, initial.records);
+    const reconciled = reconcileSelections(prepared.program, prepared.records, selectionPolicy, { verify: true });
+    const selectionChanges = [...initial.changes, ...prepared.selectionChanges, ...reconciled.changes];
     const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
     const candidate = prepareProgramHitFrame(prepared.program, version);
     const frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
@@ -191,15 +192,15 @@ export function createInteractionSession(input) {
     updateProgram(next) {
       return perform(() => {
         const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
-        const reconciled = reconcileSelections(next, selectionRecords, selectionPolicy, { managed: configured.linked });
+        const reconciled = reconcileSelections(next, selectionRecords, selectionPolicy, { managed: managedSelections });
         let linked = { program: reconciled.program, projections: inspectSelectionLinks(reconciled.program, configured.linked, undefined, linkedSelections, selectionPolicy) };
-        if (reconciled.affectedOwners.length || selectionLinksChangedAvailability(linked.projections, linkedSelections)) {
-          linked = applySelectionLinks(linked.program, configured.linked, linkedSelections, reconciled.affectedOwners, { type: "program" }, selectionPolicy);
+        if (reconciled.affectedOwners.length || selectionLinksNeedUpdate(linked.projections, linkedSelections)) {
+          linked = applySelectionLinks(linked.program, configured.linked, linkedSelections, reconciled.affectedOwners, { type: "program" }, selectionPolicy, reconciled.records);
         }
         if (configured.select) resolveClickSelection(linked.program, configured.select.target, configured.select.selection, true);
         if (configured.region) resolveRegionBinding(linked.program, configured.region, true);
-        const verified = reconcileSelections(linked.program, reconciled.records, selectionPolicy, { verify: true });
-        const selectionChanges = cloneAndFreeze([...reconciled.changes, ...verified.changes]);
+        const verified = reconcileSelections(linked.program, linked.records ?? reconciled.records, selectionPolicy, { verify: true });
+        const selectionChanges = cloneAndFreeze([...reconciled.changes, ...(linked.selectionChanges ?? []), ...verified.changes]);
         const candidate = prepareProgramHitFrame(linked.program, version);
         const frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
         mounted?.capture?.cancel("updateProgram");

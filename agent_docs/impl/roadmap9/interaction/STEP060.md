@@ -5,7 +5,7 @@
 - [x] 원 STEP060/interaction/core와 현재 session·action 소유자 확인
 - [x] 전체 승인 AUTHORIZATION 재사용, 아래 공개 최소안 기록
 - [x] A: filter/reorder 직접 명령과 원자 lifecycle 연결
-- [ ] linked filter의 origin/closure, hidden/drop/focus 인수
+- [x] B: linked filter의 origin/closure, hidden/drop 및 host focus 인수
 - [ ] legend visibility/selection, scale visible-data/all-data 정책
 - [ ] parameter controls, context action targets
 - [ ] annotation anchor/offset 편집
@@ -74,3 +74,38 @@ A source는 `c6cff82ab`이고 [최종 qualification](direct-controls-evidence/qu
 동일 archive `ee8c7d3c`의 Node20/22/24 runtime3·strict TS·4bundle 및 공개 snippet1씩을 기록했다.
 Source docs 최초186/189 실패를 보존했고 owning50·source-pinned21·snippet1·built168pages/1435LLM·4폭
 Axe가 통과했다. 새로운 시각 target이나 API action inventory 증가는 없으며 기존 rendered primitive를 사용한다.
+
+
+## B linked filter 구현
+
+`type:"linkFilter"`는 기존 linkSelection과 같은 `id,sources,target,selection,resolve`를 사용한다.
+Source별 projection은 기존 original rows 또는 명시 field tuple이며 target selection은 원 final-item
+universe와 grain을 명시한다. Binding이 target의 native filter writer를 독점하고 selection 자체는 소유하지 않는다.
+Pre-existing filter는 초기 생성에서 바꾸지 않지만 이후 source transaction에서는 binding의 replace 결과가 된다.
+동일 target의 direct filter 명령은 거부한다. Empty-none은 빈 view, empty-all은 전체 투영을 의미한다.
+
+Target의 숨겨진 항목은 기존 removeMarkFilter로 만든 immutable 후보에서 읽으며 같은 후보에
+filterMarks를 적용한다. 두 후보 사이 상태/trace는 host로 발행하지 않고, 최종 closure가 준비된 뒤 한 번 교체한다.
+기존 canonical active-filter lookup을 공유 selector로 추출하고 추가 semantic schema는 만들지 않는다.
+Projection 중의 복원 후보는 한 계산의 WeakMap에서 재사용한 뒤 폐기한다. 필터 후 원 selection records로
+keep-hidden/drop을 재평가하고 그 결과를 downstream DAG에 넘긴다. Cycle/duplicate writer/unknown data와
+누적 projection work 제한을 유지하며 실패 시 committed program·scene·trace·selection은 그대로다.
+
+외부 updateProgram은 기존 revalidation 정책을 유지하고, selection membership/availability의 변화가
+linked filter에 영향을 주면 같은 동기 closure에서 다시 적용한다. 삭제된 owner는 재생성하지 않는다.
+기존 linkedSelections inspection에 filter record만 `effect:"filter"`를 추가하여 source별 투영과 최종keys를 구분한다.
+
+
+B 공개 source와 [qualification](linked-filter-evidence/qualification.json)을 동기화했다. 집중381,
+공유 native89, contracts34, source transaction/origin10, 실제5datasets×3recipes+inventory16,
+Canvas/SVG DPR2 실제 brush1이 통과했다. 빈 native bar/line selection의 grammar 재호출 결함을
+수리했고, empty stack grain 검증 및 Graph induced-edge no-op은 원 소유자 정책으로 보존했다.
+
+동일 archive `e477eeb1`로 Node20/22/24 각각 runtime3·strict TS·4bundles·공개 snippet1이 통과했다.
+Source docs189/191 최초 search cap 실패와 보정31, build168pages/1435LLM·4폭Axe를 구분했다.
+원본 오류/최종 수치·source hashes·독립 expected/actual/diff가 evidence에 있으며 원 trace와 input은
+변경하지 않는다. Source-pinned metadata 최종 검사는 source commit 뒤 별도 기록한다.
+
+B는 original row/field tuple source별 projection, native target filter 독점, 기존 필터의 초기 보존과
+다음 propagation 교체, keep-hidden/drop 뒤 downstream closure 및 runtime/codec 경계를 구현한다.
+Legend/parameter control/context/annotation/drag/focus/navigation/keyboard 및 전체AT/077 완료는 아니다.

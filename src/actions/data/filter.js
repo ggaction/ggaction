@@ -1,3 +1,4 @@
+import { findMarkFilterDataset } from "../../selectors/datasets.js";
 import { MARK_SELECTOR_KEYS } from "../../grammar/markSelection.js";
 import { resolveFilterEnvironment } from "../../materialization/expressionInputs.js";
 import { activeGraphFilter } from "../../selectors/graphFilters.js";
@@ -207,15 +208,9 @@ export const materializeEmptyMark = /* @__PURE__ */ closedAction(
 
 function activeMarkFilter(program, layer) {
   const configured = program.markConfigs[layer.id]?.markFilter;
-  const dataset = findDataset(program, layer.data);
-  const transform = dataset?.transform?.[0];
-  if (
-    dataset?.source === undefined ||
-    transform?.type !== "markFilter" ||
-    transform.target !== layer.id
-  ) {
-    return undefined;
-  }
+  const dataset = findMarkFilterDataset(program, layer);
+  if (dataset === undefined) return undefined;
+  const transform = dataset.transform[0];
   return {
     dataset: dataset.id,
     source: dataset.source,

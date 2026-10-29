@@ -1,4 +1,4 @@
-import { chart } from "../../../src/index.js";
+import { chart, hconcat } from "../../../src/index.js";
 import assert from "node:assert/strict";
 import { createInteractionSession } from "../../../src/interaction.js";
 import { getMarkItems } from "../../../src/inspection.js";
@@ -48,6 +48,7 @@ export function assertRegionInteraction(source, recipe, rows) {
   assert.deepEqual(getMarkItems(restoredMetadata, { target: "mark" }).filter(item => item.geometry.some(g => g.properties.fill === "#d11a2a" || g.properties.stroke === "#d11a2a")).map(item => item.key), [chosen.key]);
   assertAngularSource(rows);
   assertDirectControls(source);
+  assertLinkedFilter(source);
   assert.equal(serializeProgram(p), original);
 }
 
@@ -96,4 +97,26 @@ function assertDirectControls(source) {
   assert.deepEqual(session.getState().program.resolvedScales["control-x"].domain, [...values].reverse());
   assert.deepEqual(phases, Array.from({ length: 6 }, () => ["commit", "settled"]).flat());
   assert.equal(serializeProgram(source), before); session.destroy();
+}
+
+function assertLinkedFilter(source) {
+  const child = source.selectMarks({ id: "filter-universe", target: "mark", items: [], empty: "all" });
+  const p = hconcat({ programs: ["source", "target", "last"].map(id => ({ id, program: child })) });
+  const owner = id => ({ childPath: [id], id: "mark" });
+  const items = getMarkItems(source, { target: "mark" }), category = items[0].fields.category;
+  const bindings = [["source", "target"], ["target", "last"]].map(([from, to]) => ({
+    type: "linkFilter", id: to, target: owner(to), selection: "filter-universe", resolve: "global",
+    sources: [{ target: owner(from), selection: "filter-universe", projection: { type: "fields", sourceFields: ["category"], targetFields: ["category"] } }]
+  }));
+  const session = createInteractionSession({ program: p, bindings }), before = serializeProgram(p), phases = [];
+  session.subscribe(event => { if (event.phase) phases.push(event.phase); });
+  const cases = [{ field: "category", op: "eq", value: category }, { items: [], empty: "none" }, { items: [], empty: "all" }];
+  const expected = [items.filter(item => item.fields.category === category), [], items];
+  for (const [index, select] of cases.entries()) {
+    session.dispatch({ type: "select", target: owner("source"), payload: { id: "filter-universe", select } });
+    const current = deserializeProgram(serializeProgram(session.getState().program));
+    for (const id of ["target", "last"]) assert.deepEqual(getMarkItems(current.children[id], { target: "mark" }).map(item => item.key), expected[index].map(item => item.key));
+  }
+  assert.deepEqual(phases, ["commit", "settled", "commit", "settled", "commit", "settled"]);
+  assert.equal(serializeProgram(p), before); session.destroy();
 }

@@ -22,6 +22,11 @@ createInteractionSession({program,bindings:[{type:'linkSelection',id:'join',targ
  {target:'points',selection:'picked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}},
  {target:{childPath:['left'],id:'points'},selection:'picked',projection:{type:'rows',sourceData:'source',targetData:'source'}}
 ]}]});
+createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',target:'points',selection:'universe',resolve:'global',sources:[
+ {target:'source',selection:'picked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}}
+]}]});
+// @ts-expect-error filter projections require a target selection that declares final grain
+createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',target:'points',resolve:'global',sources:[]}]});
 createInteractionSession({program,bindings:[{type:'select',target:{childPath:['left'],id:'points'},selection:'picked',mode:'toggle',onMiss:'ignore',slop:2,hitInvisible:true}]});
 createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'xy',mode:'intersect'}]});
 createInteractionSession({program,bindings:[{type:'brush',target:'bars',selection:'picked',axis:'y',channels:{y:'y2'}}]});

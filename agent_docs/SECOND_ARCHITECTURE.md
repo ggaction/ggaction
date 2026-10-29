@@ -3568,7 +3568,9 @@ graphicSpec 또는 accepted scene만 읽으며 codec는 기존 selection/paramet
 adapter를 읽고 새 그래픽을 숨겨서 materialize하지 않는다.
 
 연결된 기존 selection resource는 receiver의 wrapped editor가 저장하며 모든 후보·dependency closure와
-hit frame 준비 후 하나의 session commit이 교체한다. Bindings/cache는 직렬화하지 않는다. 정확한
+hit frame 준비 후 하나의 session commit이 교체한다. Bindings/cache는 직렬화하지 않는다. Filter binding도 같은 DAG를 사용하며 native filter 제거·교체의
+private 후보로 전체 target item universe를 복원한다. 대상의 persistent selection을 재평가한 뒤
+downstream 연결을 처리하며 중간 program은 host에 전달하지 않는다. 정확한
 범위·제한과 오류는 [INTERACTION](contract/current/INTERACTION.md#linked-selections)이 소유한다.
 
 
@@ -3729,3 +3731,16 @@ Direct filter/reorder 연결은 controller의 기존 receiver dispatch에만 추
 기존 scale consumer의 category-order 해석은 active final-item filter일 때 원 source에서 저장된
 explicit intent를 검증한 뒤 현재 visible category로 투영한다. 새 입력의 검증은 기존 action이
 현재 dataset에서 수행한다. 필터 해제 시 저장 intent를 그대로 다시 적용하며 별도 순서 상태를 만들지 않는다.
+
+
+### Linked filter와 빈 native view의 final-item 경계
+
+기존 native empty-filter flag와 실제 빈 dataset을 확인하는 selection policy owner가 aggregate/path
+final items를 빈 배열로 반환한다. Grain 검증은 이 단축 경계 전에도 실행되며 Bar의 기존 stack
+검증은 같은 capability policy callback에서 재사용한다. 새 semantic flag나 renderer 예외는 없다.
+
+951 entries 유지, 최종 Node22 packed1,372,003/unpacked6,278,805 및 Node20/24 packed1,374,590을
+측정해 cap951/1,375,000/6,279,000을 적용한다. Node20 gzip Full669,905/Basic376,583/
+interaction109,073에 최소 cap670,000/376,600/109,100을 적용하고 SVG25,000은 유지한다.
+Search975,249bytes에는976,000 cap을 적용한다. 최초 초과와 수정 후 동일 archive 검증은
+[linked filter qualification](impl/roadmap9/interaction/linked-filter-evidence/qualification.json)에 남긴다.
