@@ -8,7 +8,7 @@
 - [x] routed graph lasso·Canvas/source revision 교차6개
 - [x] 같은 tar Node20·22·24 각각 theme90개·runtime23개·strict types/peers/5bundles
 - [x] inventory7개·최종계약35개·문서190개·built170pages/1454LLM·전체320/390/768px browser
-- [ ] 검증한 동일 source와 기록의 main 반영
+- [x] 검증한 동일 source와 기록의 main 반영 (`eb0e8e83c`)
 - [ ] STEP074·077 통합 인수
 
 기존 native selector와 별도 preview program, exact commit/cancel capture 경계를 사용한다.
