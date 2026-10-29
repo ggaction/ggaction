@@ -416,6 +416,36 @@ function buildScaleWitness(action, path, type) {
         ...(path.startsWith("color.") ? { color: colorChannel(type) } : {}),
         guides: false
       });
+    case "createOHLCPlot":
+    case "editOHLCPlot": {
+      const options = { x: "x", low: "lower", high: "upper", open: "center", close: "value", width: { pixels: 8 }, guides: false };
+      const patch = path === "color.scale.type" ? { color: colorChannel(type) }
+        : path === "yScale.type" ? { yScale: positionScale(type) }
+          : { x: positionChannel(type, "x") };
+      return action === "createOHLCPlot"
+        ? source().createOHLCPlot({ ...options, ...patch })
+        : source().createOHLCPlot(options).editOHLCPlot(patch);
+    }
+    case "createPyramidPlot":
+    case "editPyramidPlot": {
+      const options = { stage: "category", value: "value", labels: false };
+      const patch = { color: colorChannel(type) };
+      return action === "createPyramidPlot"
+        ? source().createPyramidPlot({ ...options, ...patch })
+        : source().createPyramidPlot(options).editPyramidPlot(patch);
+    }
+    case "createWaterfallPlot":
+    case "editWaterfallPlot": {
+      const options = { x: "category", value: "value", role: "role", width: { pixels: 8 }, guides: false };
+      const patch = path === "color.scale.type" ? { color: colorChannel(type) }
+        : path === "yScale.type" ? { yScale: positionScale(type) }
+          : { x: positionChannel(type) };
+      const base = observed(chart()).createCanvas({ width: 320, height: 220, margin: 20 })
+        .createData({ values: rows.map(row => ({ ...row, role: "delta" })) });
+      return action === "createWaterfallPlot"
+        ? base.createWaterfallPlot({ ...options, ...patch })
+        : base.createWaterfallPlot(options).editWaterfallPlot(patch);
+    }
     case "createScatterPlot":
       if (path === "stroke.scale.type") {
         return source().createScatterPlot({ x: "x", y: "y", stroke: colorChannel(type), guides: false });
@@ -907,10 +937,17 @@ test("derives only role-reachable nested scale type paths", async () => {
   const conditional = scaleTypes.filter(option => option.path.startsWith("otherwise."));
   assert.deepEqual(conditional.map(option => option.action).sort(), ["encodeColor", "encodeOpacity", "encodeR", "encodeShape", "encodeSize", "encodeStroke", "encodeStrokeDash", "encodeStrokeWidth", "encodeTheta", "encodeX", "encodeXOffset", "encodeY", "encodeYOffset"].sort());
   for (const option of conditional) assert.deepEqual(option.values, options.get(`option-path:${option.action}.${option.path.slice("otherwise.".length)}`).values);
-  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).length, 152);
+  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).length, 166);
   assert.equal(scaleTypes.filter(option => option.action === "createAdjacentPlot").length, 22);
   assert.equal(scaleTypes.filter(option => option.action === "createLayerPlot").length, 22);
-  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).reduce((sum, option) => sum + option.values.length, 0), 701);
+  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).reduce((sum, option) => sum + option.values.length, 0), 793);
+  for (const action of ["createWaterfallPlot", "editWaterfallPlot"]) {
+    assert.deepEqual(options.get(`option-path:${action}.yScale.type`).values,
+      ["string:linear", "string:pow", "string:sqrt", "string:symlog"]);
+  }
+  for (const action of ["createOHLCPlot", "editOHLCPlot"]) {
+    assert.ok(options.get(`option-path:${action}.yScale.type`).values.includes("string:log"));
+  }
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:band"));
   assert.ok(options.get("option-path:createLinePlot.x.scale.type").values.includes("string:point"));
   // Horizontal lines add the same categorical position roles on Y.

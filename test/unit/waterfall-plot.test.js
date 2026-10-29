@@ -117,3 +117,28 @@ test("Waterfall structured paints and negative/zero contributions retain exact e
  assert.deepEqual(items(q).map(i=>[i.channels.start,i.channels.end]),[[0,-3],[-3,-3],[0,-3],[0,5]]);assert.equal(graphics(q).filter(i=>i.type==="rect")[1].properties.height,0);
  assert.deepEqual(deserializeProgram(serializeProgram(p)).graphicSpec,p.graphicSpec);
 });
+
+test("Waterfall rejects log position before any state-changing child and preserves zero-origin geometry", () => {
+  let writes = 0;
+  class Capturing extends ChartProgram {
+    editSemantic(args) { writes++; return super.editSemantic(args); }
+    createCoordinate(args) { writes++; return super.createCoordinate(args); }
+    createGraphics(args) { writes++; return super.createGraphics(args); }
+    editGraphics(args) { writes++; return super.editGraphics(args); }
+  }
+  const original = base(), existing = build(), before = serializeProgram(existing);
+  for (const yScale of [{ type: "log" }, { type: "log", domain: [1, 20], zero: false, clamp: true }]) {
+    writes = 0;
+    assert.throws(() => new Capturing({ ...original }).createWaterfallPlot({ ...options, yScale }), /log/i);
+    assert.equal(writes, 0);
+    assert.throws(() => new Capturing({ ...existing }).editWaterfallPlot({ target: "steps", yScale }), /log/i);
+    assert.equal(writes, 0);
+  }
+  assert.deepEqual(serializeProgram(existing), before);
+  for (const type of ["linear", "pow", "sqrt", "symlog"]) {
+    const next = existing.editWaterfallPlot({ target: "steps", yScale: { type } });
+    assert.equal(next.resolvedScales["steps-y"].type, type);
+    assert.equal(items(next)[0].channels.start, 0);
+    assert.equal(items(next).at(-1).channels.start, 0);
+  }
+});
