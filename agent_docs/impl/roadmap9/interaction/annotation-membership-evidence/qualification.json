@@ -1,6 +1,6 @@
 {
   "parent": "a5918aed0cd819b470c3d5f79353c1a7199bfef3",
-  "sourceCommit": null,
+  "sourceCommit": "81ea3c7910b3521e9a188e30db22d11b50eb6922",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "Connect source-owned annotation creation and editing to existing native final-item label selection. Reuse same-source named selections, inline selectors and all:true. Localize parent item keys with the existing composition action registry. Reject membership on independent coordinate and Geo anchors; no new persisted schema or renderer.",
   "runtimeAndTypesFingerprint": "cd94b25a7510dd6a9099b9a1bd4b750677f6f39d5debaaf1a42df80b7b605a34",
@@ -48,7 +48,12 @@
       "axeViolations": 0,
       "mobileInspected": true,
       "reuse": "Final scoped-action registration does not change documentation example graphics; image source manifests regenerated after the change.",
-      "finalOwning": 34
+      "finalOwning": 34,
+      "sourcePinnedOwning": 47,
+      "sourcePinnedBuilt": {
+        "pages": 172,
+        "llmArtifacts": 1531
+      }
     },
     "installed": [
       {
@@ -437,6 +442,22 @@
     {
       "path": "api-interaction-768.png",
       "sha256": "0d41784191e0d20c968c24c4aa1d3771c93f143cc93dd6576db9eef3e91edc03"
+    },
+    {
+      "path": "annotation-items-provenance.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "annotation-items-docs-pinned.log.gz",
+      "sha256": "74da1082f460c5f005d3ca0176cd3a5b933508ce249061a9e6dcca2fbcc35b9c"
+    },
+    {
+      "path": "annotation-items-build-pinned.log.gz",
+      "sha256": "5adee426a52add23ccaf69f592db1c9468f422a13000e6859e29f30f9471ec45"
+    },
+    {
+      "path": "annotation-items-built-pinned.log.gz",
+      "sha256": "27ff6e226c96663ea21eaa7bd53a841845ace34abf34cea1a316cafc30ca69cd"
     }
   ]
 }

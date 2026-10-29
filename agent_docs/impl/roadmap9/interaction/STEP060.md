@@ -586,3 +586,7 @@ Full gzip728,292→728,300과 package1044entries/packed1,481,747/unpacked6,746,6
 처음 archive07712260의 cap 실패와 scoped key 버그를 보존한다. Source 최종 변경 뒤 owning docs34/34 및
 이미지 manifest를 갱신했고 source commit 뒤 provenance를 다시 고정한다.
 [정확 artifact·명령·원본 실패](annotation-membership-evidence/qualification.json)를 참고한다.
+
+E7 source `81ea3c791` push 뒤 provenance를 고정하고 source docs owning47/47과 built172pages/1531LLM을
+통과했다. Runtime·타입과 finaltar22b79797, 시각 입력은 같으므로 동일 패키지3Node·4backend·네 폭Axe
+증거를 재사용한다. 이후 screen anchor와 pointer anchor drag를 별도 개념으로 계속한다.
