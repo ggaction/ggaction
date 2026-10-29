@@ -228,7 +228,8 @@
         "sha256": "dd68aae37170fbe1acbeb4ed22cb5ed138d013ebbaac35ec80cd2759904c482c",
         "entryCount": 880,
         "size": 1277130,
-        "unpackedSize": 5875530
+        "unpackedSize": 5875530,
+        "verifiedCurrentFiles": 880
       },
       "nodes": [
         {
@@ -320,7 +321,9 @@
         }
       ],
       "original22": "Previous tar passed 231 runtime cases and 6/7 qualifications; font-support copier failed, then 82 tutorial cases passed separately. Final tar passed every qualification on all three Nodes."
-    }
+    },
+    "discovery": 16,
+    "provenanceCheck": "passed"
   },
   "remainingIntegrationObligations": [
     "STEP033: bind Contour body roles through applyTheme using the existing shared paint/effect owners.",

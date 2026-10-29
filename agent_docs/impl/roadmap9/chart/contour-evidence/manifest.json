@@ -7,6 +7,10 @@
     "sha256": "0d26cad869c1d317d5d383042db1c15df5a07d555e30020f613b049b25a1c124",
     "bytes": 1127
   },
+  "final-discovery.log.gz": {
+    "sha256": "0dd5ecfeb148a84a8000c61d6103367650259c831e3d8b00524133b95decf8b0",
+    "bytes": 932
+  },
   "final-docs-browser.log.gz": {
     "sha256": "fcb9f73218e956d0e4b2d64d1bf78f9affaafa35e5f5bfb158c04fbe6a55da85",
     "bytes": 93
@@ -102,6 +106,14 @@
   "final-installed-24.log.gz": {
     "sha256": "12c539ceff000cda6f4ee043824d2ff0de7a21474d38a32527a9fffe48c579da",
     "bytes": 1196
+  },
+  "final-package-inputs.json": {
+    "sha256": "2696f65dea07a7d9e40a8307f6fda2937ba244a8ea406b08b6ac70aa8a44ea55",
+    "bytes": 320
+  },
+  "final-provenance-check.log.gz": {
+    "sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+    "bytes": 20
   },
   "final-realistic.json": {
     "sha256": "432a529f5bd8cebd7e162182e5940d8bac6d49b7e14a581beab9be27c67853d3",
