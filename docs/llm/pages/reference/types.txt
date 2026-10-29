@@ -65,6 +65,8 @@ interface ChartProgramActions {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
+  editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
   createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
   editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
   createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;
@@ -882,7 +884,7 @@ type BarCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 ```
 
@@ -1571,6 +1573,7 @@ Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`Mark
 
 ```typescript
 export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+/** A filled ribbon whose width is measured in logical screen pixels per source sample. */
 ```
 
 ### `CalendarLayoutPatch` {#type-calendarlayoutpatch}
@@ -2072,7 +2075,8 @@ export type ColorLayout =
   | "group"
   | "overlay"
   | "diverging"
-  | "center";
+  | "center"
+  | "wiggle";
 ```
 
 ### `ColorMappedPointGuideOptions` {#type-colormappedpointguideoptions}
@@ -2565,19 +2569,28 @@ Related types: [`AnnotationBaseOptions`](../../../reference/types/#type-annotati
 export type CreateAreaPlotOptions = {
   id?: string; data?: string; coordinate?: string;
   groupBy?: string | readonly [string, ...string[]];
-  layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
+  missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
   area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
-} & (
+} & (({ layout?: Exclude<ColorLayout, "group" | "wiggle"> } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
   | { valueChannel: "x"; x: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: number }
   | { valueChannel: "x"; x: Extract<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: never }
-);
+)) | {
+  layout: "wiggle"; valueChannel?: "y";
+  x: Exclude<AreaPlotIndependentChannel, { fieldType: "nominal" | "ordinal" }>;
+  y: string | { field: string; scale?: NonPointZeroSupportingPositionScaleOptions }
+    | ({ scale?: NonPointZeroSupportingPositionScaleOptions } & (
+      | { lower: string; upper: { datum: 0 } }
+      | { lower: { datum: 0 }; upper: string }
+    ));
+  baseline?: 0;
+});
 ```
 
-Related types: [`ColorLayout`](../../../reference/types/#type-colorlayout) · [`NonPointCategoricalColorScaleOptions`](../../../reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](../../../reference/types/#type-palette) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`FillPaint`](../../../reference/types/#type-fillpaint) · [`CurveInterpolation`](../../../reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](../../../reference/types/#type-densityplotguideoptions) · [`CartesianGridOptions`](../../../reference/types/#type-cartesiangridoptions) · [`AreaPlotIndependentChannel`](../../../reference/types/#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](../../../reference/types/#type-areaplotmeasurechannel).
+Related types: [`NonPointCategoricalColorScaleOptions`](../../../reference/types/#type-nonpointcategoricalcolorscaleoptions) · [`Palette`](../../../reference/types/#type-palette) · [`StrokeStyleDetails`](../../../reference/types/#type-strokestyledetails) · [`FillPaint`](../../../reference/types/#type-fillpaint) · [`CurveInterpolation`](../../../reference/types/#type-curveinterpolation) · [`DensityPlotGuideOptions`](../../../reference/types/#type-densityplotguideoptions) · [`CartesianGridOptions`](../../../reference/types/#type-cartesiangridoptions) · [`ColorLayout`](../../../reference/types/#type-colorlayout) · [`AreaPlotIndependentChannel`](../../../reference/types/#type-areaplotindependentchannel) · [`AreaPlotMeasureChannel`](../../../reference/types/#type-areaplotmeasurechannel) · [`NonPointZeroSupportingPositionScaleOptions`](../../../reference/types/#type-nonpointzerosupportingpositionscaleoptions).
 
 ### `CreateAxesOptions` {#type-createaxesoptions}
 
@@ -3670,6 +3683,22 @@ export type CreateThetaAxisTitleOptions = PolarTitleOptions &
 ```
 
 Related types: [`PolarTitleOptions`](../../../reference/types/#type-polartitleoptions) · [`PolarGuideResourceOptions`](../../../reference/types/#type-polarguideresourceoptions).
+
+### `CreateTrailPlotOptions` {#type-createtrailplotoptions}
+
+ Expand CreateTrailPlotOptions
+
+```typescript
+export type CreateTrailPlotOptions = TrailPlotOptions & (
+  | { readonly x: TrailPosition; readonly y: TrailPosition; readonly theta?: never; readonly radius?: never;
+      readonly order?: string | { readonly field: string; readonly order?: "ascending" | "descending" } | false;
+      readonly curve?: CurveInterpolation; readonly tension?: number; readonly guides?: false | ColorGuides }
+  | { readonly theta: PolarThetaChannel; readonly radius: PolarRadiusChannel; readonly x?: never; readonly y?: never;
+      readonly order?: never; readonly curve?: "linear"; readonly tension?: never; readonly guides?: false | PolarPathGuideOptions }
+);
+```
+
+Related types: [`TrailPlotOptions`](../../../reference/types/#type-trailplotoptions) · [`TrailPosition`](../../../reference/types/#type-trailposition) · [`CurveInterpolation`](../../../reference/types/#type-curveinterpolation) · [`ColorGuides`](../../../reference/types/#type-colorguides) · [`PolarThetaChannel`](../../../reference/types/#type-polarthetachannel) · [`PolarRadiusChannel`](../../../reference/types/#type-polarradiuschannel) · [`PolarPathGuideOptions`](../../../reference/types/#type-polarpathguideoptions).
 
 ### `CreateWaterfallPlotOptions` {#type-createwaterfallplotoptions}
 
@@ -6471,6 +6500,16 @@ export interface EditTitleOptions
 
 Related types: [`TitleOptions`](../../../reference/types/#type-titleoptions).
 
+### `EditTrailPlotOptions` {#type-edittrailplotoptions}
+
+ Expand EditTrailPlotOptions
+
+```typescript
+export type EditTrailPlotOptions = { readonly target?: string } & TrailPatch<CreateTrailPlotOptions>;
+```
+
+Related types: [`TrailPatch`](../../../reference/types/#type-trailpatch) · [`CreateTrailPlotOptions`](../../../reference/types/#type-createtrailplotoptions).
+
 ### `EditTreePlotOptions` {#type-edittreeplotoptions}
 
  Expand EditTreePlotOptions
@@ -8389,7 +8428,7 @@ type HistogramCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 ```
 
@@ -13351,6 +13390,61 @@ export type TopologyGeometry = Readonly<Record<string, unknown>> & ({ readonly i
 ```
 
 Related types: [`GeometryJSONValue`](../../../reference/types/#type-geometryjsonvalue) · [`GeometryPosition`](../../../reference/types/#type-geometryposition).
+
+### `TrailBodyPaint` {#type-trailbodypaint}
+
+ Expand TrailBodyPaint
+
+```typescript
+export interface TrailBodyPaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number;
+  readonly opacity?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+Related types: [`FillPaint`](../../../reference/types/#type-fillpaint) · [`MarkOutline`](../../../reference/types/#type-markoutline) · [`MarkShadow`](../../../reference/types/#type-markshadow).
+
+### `TrailPatch` {#type-trailpatch}
+
+ Expand TrailPatch
+
+```typescript
+type TrailPatch<T> = T extends unknown ? Partial<Omit<T, "id">> : never;
+```
+
+### `TrailPlotOptions` {#type-trailplotoptions}
+
+ Expand TrailPlotOptions
+
+```typescript
+export interface TrailPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string;
+  /** A nonnegative finite pixel width or the name of a field containing one width per sample. */
+  readonly width: number | string;
+  readonly groupBy?: string | readonly string[] | false;
+  readonly missing?: "error" | "break";
+  readonly closed?: boolean; readonly lineJoin?: "miter" | "bevel" | "round";
+  readonly lineCap?: "butt" | "square" | "round"; readonly miterLimit?: number;
+  readonly fillRule?: "nonzero" | "evenodd"; readonly body?: TrailBodyPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly blend?: BlendMode;
+}
+```
+
+Related types: [`TrailBodyPaint`](../../../reference/types/#type-trailbodypaint) · [`OHLCColor`](../../../reference/types/#type-ohlccolor) · [`BlendMode`](../../../reference/types/#type-blendmode).
+
+### `TrailPosition` {#type-trailposition}
+
+ Expand TrailPosition
+
+```typescript
+export type TrailPosition = string | ({ readonly field: string } & (
+  | { readonly fieldType?: "quantitative"; readonly scale?: NonPointQuantitativePositionScaleOptions; readonly temporalUnit?: never }
+  | { readonly fieldType: "temporal"; readonly scale?: NonPointTemporalPositionScaleOptions; readonly temporalUnit?: TemporalInputUnit }
+  | { readonly fieldType: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions; readonly temporalUnit?: never }
+));
+```
+
+Related types: [`NonPointQuantitativePositionScaleOptions`](../../../reference/types/#type-nonpointquantitativepositionscaleoptions) · [`NonPointTemporalPositionScaleOptions`](../../../reference/types/#type-nonpointtemporalpositionscaleoptions) · [`TemporalInputUnit`](../../../reference/types/#type-temporalinputunit) · [`NonPointCategoricalPositionScaleOptions`](../../../reference/types/#type-nonpointcategoricalpositionscaleoptions).
 
 ### `TreePlotOptions` {#type-treeplotoptions}
 

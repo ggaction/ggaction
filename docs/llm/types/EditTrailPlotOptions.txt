@@ -1,0 +1,1 @@
+export type EditTrailPlotOptions = { readonly target?: string } & TrailPatch<CreateTrailPlotOptions>;

@@ -580,3 +580,10 @@
 - title: Show Contributions and Totals
   url: /tutorials/waterfall/
   parent: /tutorials/
+
+- title: Trail Plots
+  url: /api/trail/
+  parent: /api/
+- title: Show Width Along a Series
+  url: /tutorials/trail/
+  parent: /tutorials/

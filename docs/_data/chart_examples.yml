@@ -2445,3 +2445,52 @@
   actions: createGeoPointMark · encodeColor · encodeSize
   tasks: geometry choropleth map proportional symbol
   url: /tutorials/geographic-marks/
+
+- id: trail
+  example: /examples/trail/
+  title: Changing width along each series
+  image: /assets/images/trail.png
+  alt: Draw two independent ribbons with a screen width at each source sample.
+  width: 840
+  height: 480
+  thumbnail: /assets/images/trail-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 366
+  caption: Draw two independent ribbons with a screen width at each source sample.
+  summary: Draw two independent ribbons with a screen width at each source sample.
+  actions: createTrailPlot · editTrailPlot
+  tasks: sample width along ordered series
+  url: /tutorials/trail/
+  tutorial_order: 310
+
+- id: trail-constant-width
+  example: /examples/trail-constant-width/
+  title: An explicit constant ribbon width
+  image: /assets/images/trail-constant-width.png
+  alt: Preserve both centerlines while setting a constant screen width.
+  width: 840
+  height: 480
+  thumbnail: /assets/images/trail-constant-width-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 366
+  caption: Preserve both centerlines while setting a constant screen width.
+  summary: Preserve both centerlines while setting a constant screen width.
+  actions: createTrailPlot · editTrailPlot
+  tasks: sample width along ordered series
+  url: /tutorials/trail/
+
+- id: streamgraph
+  example: /examples/streamgraph/
+  title: Moving streamgraph baseline
+  image: /assets/images/streamgraph.png
+  alt: Blue and teal layers preserve sample thickness while their shared baseline moves
+  width: 760
+  height: 560
+  thumbnail: /assets/images/streamgraph-thumb.png
+  thumbnail_width: 380
+  thumbnail_height: 280
+  caption: Wiggle keeps sample thickness and input series order while minimizing weighted center movement.
+  summary: Choose zero, centered, or moving baselines through the existing Area layout action.
+  actions: createAreaPlot · layoutSeries
+  tasks: composition trend
+  url: /tutorials/area-layout/#use-a-moving-streamgraph-baseline

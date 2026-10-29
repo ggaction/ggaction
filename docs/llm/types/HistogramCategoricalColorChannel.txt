@@ -5,5 +5,5 @@ type HistogramCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };

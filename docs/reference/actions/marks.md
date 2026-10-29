@@ -2981,6 +2981,115 @@ editWaterfallPlot({ target?, data?, coordinate?, x?, role?, value?, reset?, ySca
 Edit contribution meaning and appearance with stable stage identities. See [Waterfall plots](../../api/waterfall.md).
 
 
+## `createTrailPlot`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`CreateTrailPlotOptions`](./../types.md#type-createtrailplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `width` | Required | `string \| number` |
+| `groupBy` | Optional / branch-dependent | `string \| false \| readonly string[] \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
+| `closed` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `fillRule` | Optional / branch-dependent | `"evenodd" \| "nonzero" \| undefined` |
+| `body` | Optional / branch-dependent | `TrailBodyPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `x` | Optional / branch-dependent | `TrailPosition \| undefined` |
+| `y` | Optional / branch-dependent | `TrailPosition \| undefined` |
+| `theta` | Optional / branch-dependent | `PolarThetaChannel \| undefined` |
+| `radius` | Optional / branch-dependent | `PolarRadiusChannel \| undefined` |
+| `order` | Optional / branch-dependent | `string \| false \| { readonly field: string; readonly order?: "ascending" \| "descending" \| undefined; } \| undefined` |
+| `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
+| `tension` | Optional / branch-dependent | `number \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| PolarPathGuideOptions \| undefined` |
+| `target` | Optional / branch-dependent | `ActionTargetList \| ScopedActionTarget` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+createTrailPlot({ id?, data?, coordinate?, x?, y?, theta?, radius?, width, groupBy?, order?, missing?, curve?, tension?, lineJoin?, lineCap?, miterLimit?, fillRule?, closed?, body?, color?, clip?, blend?, guides? })
+```
+
+Draw a filled ribbon with an explicit screen width at each sample. Choose Cartesian x/y or Polar theta/radius. See [Trail plots](../../api/trail.md).
+
+
+## `editTrailPlot`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+**Availability:** Development; added after v0.0.13. See [release compatibility](../../version.md).
+
+```typescript
+editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
+```
+
+Named option contracts: [`TargetedOptions`](./../types.md#type-targetedoptions) · [`EditTrailPlotOptions`](./../types.md#type-edittrailplotoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `width` | Optional / branch-dependent | `string \| number \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| false \| readonly string[] \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
+| `closed` | Optional / branch-dependent | `boolean \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `fillRule` | Optional / branch-dependent | `"evenodd" \| "nonzero" \| undefined` |
+| `body` | Optional / branch-dependent | `TrailBodyPaint \| undefined` |
+| `color` | Optional / branch-dependent | `false \| OHLCColor \| undefined` |
+| `clip` | Optional / branch-dependent | `boolean \| undefined` |
+| `blend` | Optional / branch-dependent | `BlendMode \| undefined` |
+| `x` | Optional / branch-dependent | `TrailPosition \| undefined` |
+| `y` | Optional / branch-dependent | `TrailPosition \| undefined` |
+| `theta` | Optional / branch-dependent | `PolarThetaChannel \| undefined` |
+| `radius` | Optional / branch-dependent | `PolarRadiusChannel \| undefined` |
+| `order` | Optional / branch-dependent | `string \| false \| { readonly field: string; readonly order?: "ascending" \| "descending" \| undefined; } \| undefined` |
+| `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
+| `tension` | Optional / branch-dependent | `number \| undefined` |
+| `guides` | Optional / branch-dependent | `false \| ColorGuides \| PolarPathGuideOptions \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```js
+editTrailPlot({ target?, data?, coordinate?, x?, y?, theta?, radius?, width?, groupBy?, order?, missing?, curve?, tension?, lineJoin?, lineCap?, miterLimit?, fillRule?, closed?, body?, color?, clip?, blend?, guides? })
+```
+
+Patch native series meaning and appearance while preserving typed logical identity. See [Trail plots](../../api/trail.md).
+
+
 ## Related
 
 [Action Reference](../actions.md) · [Chart API](../../api/index.md) · [Supported Features](../../supported-features.md)

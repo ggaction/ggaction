@@ -434,6 +434,15 @@ function buildScaleWitness(action, path, type) {
         ? source().createPyramidPlot({ ...options, ...patch })
         : source().createPyramidPlot(options).editPyramidPlot(patch);
     }
+    case "createTrailPlot":
+    case "editTrailPlot": {
+      const options = { x: "x", y: "y", width: 8, groupBy: "x", guides: false };
+      const polar = path.startsWith("theta.") || path.startsWith("radius.");
+      const initial = polar ? { theta: "x", radius: "y", width: 8, groupBy: "x", guides: false } : options;
+      const patch = path === "color.scale.type" ? { color: colorChannel(type) }
+        : { [path.split(".")[0]]: positionChannel(type, path.startsWith("y.") || path.startsWith("radius.") ? "y" : "x") };
+      return action === "createTrailPlot" ? source().createTrailPlot({ ...initial, ...patch }) : source().createTrailPlot(initial).editTrailPlot(patch);
+    }
     case "createWaterfallPlot":
     case "editWaterfallPlot": {
       const options = { x: "category", value: "value", role: "role", width: { pixels: 8 }, guides: false };
@@ -938,10 +947,10 @@ test("derives only role-reachable nested scale type paths", async () => {
   const conditional = scaleTypes.filter(option => option.path.startsWith("otherwise."));
   assert.deepEqual(conditional.map(option => option.action).sort(), ["encodeColor", "encodeOpacity", "encodeR", "encodeShape", "encodeSize", "encodeStroke", "encodeStrokeDash", "encodeStrokeWidth", "encodeTheta", "encodeX", "encodeXOffset", "encodeY", "encodeYOffset"].sort());
   for (const option of conditional) assert.deepEqual(option.values, options.get(`option-path:${option.action}.${option.path.slice("otherwise.".length)}`).values);
-  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).length, 166);
+  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).length, 176);
   assert.equal(scaleTypes.filter(option => option.action === "createAdjacentPlot").length, 22);
   assert.equal(scaleTypes.filter(option => option.action === "createLayerPlot").length, 22);
-  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).reduce((sum, option) => sum + option.values.length, 0), 793);
+  assert.equal(scaleTypes.filter(option => !["createAdjacentPlot", "createLayerPlot"].includes(option.action) && !conditional.includes(option)).reduce((sum, option) => sum + option.values.length, 0), 861);
   for (const action of ["createWaterfallPlot", "editWaterfallPlot"]) {
     assert.deepEqual(options.get(`option-path:${action}.yScale.type`).values,
       ["string:linear", "string:pow", "string:sqrt", "string:symlog"]);

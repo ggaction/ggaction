@@ -1,0 +1,83 @@
+{
+  "status": "qualified-private-kernel",
+  "base": "cf68512b508093851b379251499880a25366d6d2",
+  "approval": "../AUTHORIZATION.json#remainingApproval",
+  "sourceInputs": {
+    "src/grammar/cells.js": "70a56dc05ab4ca40ea7ad711bc27cdbd38c401a251045ee7205dc30627f8aee6",
+    "test/unit/grammar/table-cells.test.js": "b796614684fe8105332fd684214d8cbf5d789de412e1d1799b8ee954c5090295",
+    "scripts/coverage-policy.js": "d570594d288dc328a231af62b9c3a99c35aedde91ce27519eff921aadfbdff2f",
+    "scripts/package-artifact.js": "37a2fce9726d79015b1f54c8ebbc6ae70dfb1541c6838fc07dbccfba5bfedc17"
+  },
+  "tests": {
+    "Node20": 11,
+    "Node22": 11,
+    "Node24": 11,
+    "extremeCases": 1000,
+    "boundariesAndDiscovery": 27,
+    "packageContracts": 7,
+    "criticalCoverage": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    }
+  },
+  "package": [
+    {
+      "version": "20",
+      "entries": 1030,
+      "packed": 1476686,
+      "unpacked": 6717758
+    },
+    {
+      "version": "22",
+      "entries": 1030,
+      "packed": 1473599,
+      "unpacked": 6717758
+    },
+    {
+      "version": "24",
+      "entries": 1030,
+      "packed": 1476686,
+      "unpacked": 6717758
+    }
+  ],
+  "packageDelta": {
+    "previousArchive": ".artifacts/release/ggaction-0.0.26.tgz",
+    "newArchive": ".artifacts/table-cell-package-22/ggaction-0.0.26.tgz",
+    "previousSha256": "aa6d3ef2e7c28849f1f2ceb88b6151fe6bcef461af07cb3abfd76efe827d9fbe",
+    "newSha256": "a13b5bd6feb9232544e50eb1ad80fcfec45b7d942e32a21da54b2d5e554e3a26",
+    "unchanged": 1029,
+    "modified": [],
+    "added": [
+      "package/src/grammar/cells.js"
+    ],
+    "removed": []
+  },
+  "reusedEvidence": {
+    "checkpoint": "cf68512b5",
+    "reason": "All 1029 previously qualified archive files are byte-identical. Only the unreferenced private src/grammar/cells.js entry is new. Full/Basic/SVG/interaction/node renderer entry graphs and public declarations are unchanged.",
+    "scope": "Previous public browser bundle and installed consumer behavior, not new public Table functionality."
+  },
+  "firstFailures": [
+    "8/10 first numeric cases: raw Date key could not enter plain frozen output; a budget assertion expected the wrong common error text. Canonical typed tokens and actual shared budget expectations fixed these.",
+    "Seeded initial endpoint algorithm failed 116 of 1000 extreme inputs. Bounded endpoint accumulation now passes all 1000.",
+    "First package delta comparison selected an intermediate pre-README archive; comparison with the exact qualified archive aa6d3ef2... shows only the new private file."
+  ],
+  "outstanding": [
+    "Public create/edit and persistence schema",
+    "Exact primitive render and public same-output pair",
+    "Footer source aggregation, format/wrap, bar and sparkline cells",
+    "Selection, hit, accessibility values, resize/source revise/nested consumers",
+    "Current/types/public docs and installed Table consumers",
+    "STEP050 integration and STEP074/077 cumulative acceptance"
+  ],
+  "logs": {
+    "table-cell-kernel-first.log": "cfa4d8727be0d25ac5b4de9fd46cfebf57a7432aee9ae2f58de4b38217273549",
+    "table-cell-kernel-numeric.log": "3baae84886d1683b5d8eaab77ae388c8cd03ec1363c9886482f2c1f156c51b5b",
+    "table-cell-kernel-bounded.log": "a6f1d8e3e8a23f86b0138ec68a76ae8a5c49677e659c2bd6841754ea7d726dcc",
+    "table-cell-boundaries.log": "192e767e96449b533b7c1664753c22aa9b66fb240771c7e79e19a2b87a09ec56",
+    "table-cell-package.log": "b9ab97d8237b71e6d383004a7cd5b20228a4e7c2d611e3de1334d90e2a69baa1",
+    "table-cell-node20.log": "52717beab0b777139f1197f2d10265c1583072a58b8113427422613013fb1c6a",
+    "table-cell-node24.log": "1e74dcaf010d1c552b380b502eb6ab0d33afe40f24988d3049cd794efca65806"
+  }
+}

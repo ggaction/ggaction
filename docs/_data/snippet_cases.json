@@ -597,5 +597,15 @@
       "geographic-marks/program.js": "examples/geographic-marks/program.js",
       "geographic-marks/fixture.js": "examples/geographic-marks/fixture.js"
     }
+  },
+  {
+    "id": "stream-baseline-switching",
+    "file": "tutorials/area-layout.md",
+    "contains": "const stream = base.createAreaPlot",
+    "mode": "complete",
+    "environment": "node-esm",
+    "rendering": "authoring-only",
+    "result": "stream, centered, zeroBased",
+    "prerequisites": "Run this complete ES module with its inline aligned observations. The three immutable programs preserve each series thickness while changing their shared baseline."
   }
 ]

@@ -1,0 +1,7 @@
+export type CreateTrailPlotOptions = TrailPlotOptions & (
+  | { readonly x: TrailPosition; readonly y: TrailPosition; readonly theta?: never; readonly radius?: never;
+      readonly order?: string | { readonly field: string; readonly order?: "ascending" | "descending" } | false;
+      readonly curve?: CurveInterpolation; readonly tension?: number; readonly guides?: false | ColorGuides }
+  | { readonly theta: PolarThetaChannel; readonly radius: PolarRadiusChannel; readonly x?: never; readonly y?: never;
+      readonly order?: never; readonly curve?: "linear"; readonly tension?: never; readonly guides?: false | PolarPathGuideOptions }
+);

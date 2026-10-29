@@ -1,5 +1,6 @@
 import { cloneAndFreeze } from "../core/immutable.js";
 import { readNominalField, readQuantitativeField, readTemporalField } from "./scales/index.js";
+import { layoutWiggleSeries } from "./streamBaseline.js";
 import { layoutSeriesPartition, validateColorLayout } from "./seriesLayout.js";
 import { stableOrderPathValues } from "./pathOrder.js";
 import { deriveCategoricalDensitySeries } from "./categoricalDensity.js";
@@ -336,16 +337,18 @@ export function layoutDensityAreaSeries(derived, layout = "overlay") {
     throw new Error("Density area layout requires aligned non-empty samples.");
   }
 
+  if (layout === "wiggle") validateGeneratedItemLimit(sampleCount * derived.series.length, "Wiggle cell count");
+  const columns = Array.from({ length: sampleCount }, (_, sample) => derived.series.map(series => {
+    if (series.values[sample].x !== derived.series[0].values[sample].x) {
+      throw new Error("Density area layout requires one shared sample grid.");
+    }
+    return series.values[sample].y;
+  }));
+  const wiggle = layout === "wiggle" ? layoutWiggleSeries(columns) : undefined;
   const valuesBySeries = derived.series.map(() => []);
   for (let sample = 0; sample < sampleCount; sample += 1) {
     const x = derived.series[0].values[sample].x;
-    const densities = derived.series.map(series => {
-      if (series.values[sample].x !== x) {
-        throw new Error("Density area layout requires one shared sample grid.");
-      }
-      return series.values[sample].y;
-    });
-    const resolvedSegments = layoutSeriesPartition(densities, layout);
+    const resolvedSegments = wiggle?.[sample] ?? layoutSeriesPartition(columns[sample], layout);
     const segments = indexSegments(resolvedSegments);
     let zeroThicknessEndpoint = layout === "center"
       ? resolvedSegments[0]?.start ?? 0
@@ -376,8 +379,11 @@ export function layoutRawAreaGroups(groups, { layer, vertical, primary, secondar
   const mode = layer.layout?.mode ?? "overlay";
   validateColorLayout(mode);
   if (mode === "overlay") return;
-  if (mode === "group" || (mode === "center" && !vertical)) {
+  if (mode === "group" || (["center", "wiggle"].includes(mode) && !vertical)) {
     throw new Error(`Area layout "${mode}" is incompatible with this orientation.`);
+  }
+  if (mode === "wiggle" && (!["quantitative", "temporal"].includes(layer.encoding.x.fieldType) || layer.encoding.pathOrder !== undefined)) {
+    throw new Error("Wiggle requires increasing quantitative or temporal positions without pathOrder.");
   }
   const primaryDatum = Object.hasOwn(primary, "datum");
   const secondaryDatum = Object.hasOwn(secondary, "datum");
@@ -401,13 +407,18 @@ export function layoutRawAreaGroups(groups, { layer, vertical, primary, secondar
   if (indices.some(index => index.size !== positions.length || positions.some(value => !index.has(value)))) {
     throw new Error("Area layout requires an aligned row for every group and position.");
   }
-  for (const position of positions) {
+  const columns = positions.map(position => {
+    const points = indices.map(index => index.get(position));
+    return points.some(point => point[measure] == null) ? null : points.map(point => point[measure]);
+  });
+  const wiggle = mode === "wiggle" ? layoutWiggleSeries(columns) : undefined;
+  for (const [sample, position] of positions.entries()) {
     const points = indices.map(index => index.get(position));
     if (points.some(point => point[measure] == null)) {
       for (const point of points) { point[lower] = null; point[upper] = null; }
       continue;
     }
-    const segments = layoutSeriesPartition(points.map(point => point[measure]), mode);
+    const segments = wiggle?.[sample] ?? layoutSeriesPartition(columns[sample], mode);
     const byIndex = new Map(segments.map(segment => [segment.index, segment]));
     let endpoint = mode === "center" ? segments[0]?.start ?? 0 : 0;
     points.forEach((point, index) => {

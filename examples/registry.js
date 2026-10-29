@@ -1,4 +1,6 @@
 import { createGeographicMarks } from "./geographic-marks/program.js";
+import { createTrail } from "./trail/program.js";
+import { variants as trailVariants } from "./trail/fixture.js";
 import { createWaterfall } from "./waterfall/program.js";
 import { variants as waterfallVariants } from "./waterfall/fixture.js";
 import { createOHLC } from "./ohlc/program.js";
@@ -58,6 +60,7 @@ import { createBarTransition } from "./color-transitions/program.js";
 import { createMidpoint } from "./color-midpoint/program.js";
 import { createRoseHole } from "./radial-sectors/program.js";
 import { createLinkedThetaLegend } from "./theta-legend-order/program.js";
+import { createStreamgraph } from "./streamgraph/program.js";
 import { createAreaSimple } from "./area-layout/program.js";
 import { createDotPlotExample } from "./dot-plot/program.js";
 import { createLollipopPlotExample } from "./lollipop-plot/program.js";
@@ -314,6 +317,13 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "area-layout/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
   }),
+  example({ id: "streamgraph", data: {}, width: 380, height: 280, docsGroup: "tutorials", createProgram: createStreamgraph,
+    browser: { path: "streamgraph/", canvas: "#chart", state: { global: "__ggactionExample", expected: { id: "streamgraph", width: 380, height: 280 } } }
+  }),
+  ...trailVariants.map(variant => example({ id: variant.chart, programDirectory: "trail", testDirectory: "trail", data: {}, width: 420, height: 240, docsGroup: "tutorials",
+    createProgram: () => createTrail(variant.id),
+    browser: { path: `browser-host/?chart=${variant.chart}`, canvas: "#chart", state: { global: "__ggactionExample", expected: { id: variant.chart, width: 420, height: 240 } } }
+  })),
   ...waterfallVariants.map(variant => example({ id: variant.chart, programDirectory: "waterfall", testDirectory: "waterfall", data: {}, width: 500, height: 320, docsGroup: "tutorials",
     createProgram: () => createWaterfall(variant.id),
     browser: { path: `browser-host/?chart=${variant.chart}`, canvas: "#chart", state: { global: "__ggactionExample", expected: { id: variant.chart, width: 500, height: 320 } } }

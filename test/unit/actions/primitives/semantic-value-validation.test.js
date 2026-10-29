@@ -416,7 +416,7 @@ test("validates stack and color-layout semantics through primitives", () => {
     }
   }
   for (const layout of [
-    "stack", "fill", "group", "overlay", "diverging", "center"
+    "stack", "fill", "group", "overlay", "diverging", "center", "wiggle"
   ]) {
     const program = chart().editSemantic({
       property: "layer[bars].encoding.color.layout",

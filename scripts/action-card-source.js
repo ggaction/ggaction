@@ -213,6 +213,7 @@ function actionResources(action, optionNames, intentSource) {
     prerequisites: ["existing graph and compatible node layout"], owns: ["edge-route resource"],
     idOptions: [action.name === "bundleGraphEdges" ? "id" : "target", "graph", "layout"]
   };
+  if (["createTrailPlot", "editTrailPlot"].includes(action.name)) return { prerequisites: ["materialized dataset", "Canvas"], owns: ["Trail variable-width series mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "data", "coordinate"] };
   if (["createWaterfallPlot", "editWaterfallPlot"].includes(action.name)) return { prerequisites: ["materialized dataset", "Canvas"], owns: ["Waterfall contribution mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "data", "coordinate"] };
   if (["createOHLCPlot", "editOHLCPlot"].includes(action.name)) return { prerequisites: ["materialized dataset", "Canvas"], owns: ["OHLC price mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "data", "coordinate"] };
   if (["createPyramidPlot", "editPyramidPlot"].includes(action.name)) return { prerequisites: ["materialized dataset", "Canvas"], owns: ["Pyramid stage mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "data", "coordinate"] };

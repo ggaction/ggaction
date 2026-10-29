@@ -67,6 +67,7 @@ function eligibleSource(program, layer, requestedData) {
   ) return false;
   if (isGeoLabelSource(layer)) return canMaterializeTextSource(program, layer);
   if (["x", "y", "theta", "radius"].some(channel => layer.conditionals?.[channel] !== undefined)) return canMaterializeTextSource(program, layer);
+  if (layer.mark.type === "trail") return canMaterializeTextSource(program, layer);
   if (layer.mark.type === "arc") return canMaterializeArc(program, layer);
   if (
     layer.mark.type === "point" &&
@@ -117,7 +118,7 @@ function textInheritance(program, source) {
     source: source.id,
     data: source.data,
     coordinate: source.coordinate,
-    encoding: isGeoLabelSource(source) || source.mark.type === "arc" ||
+    encoding: isGeoLabelSource(source) || source.mark.type === "trail" || source.mark.type === "arc" ||
       (source.mark.type === "point" &&
         findCoordinate(program, source.coordinate)?.type === "polar")
       ? {}

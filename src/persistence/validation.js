@@ -1,4 +1,6 @@
 import { assertProgramSingleY } from "../materialization/frameState.js";
+import { validateTrailBinding } from "../grammar/trailPlot.js";
+import { deriveTrailSeries } from "../grammar/trailSeries.js";
 import { validateResponsiveCanvasState } from "../grammar/responsiveCanvas.js";
 import { validateResponsiveLabelState } from "../grammar/responsiveLabels.js";
 import { normalizeMarkShadow, MARK_SHADOW_TYPES } from "../grammar/markShadow.js";
@@ -269,6 +271,12 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
         validateSourceIdentity(resource);
       }
       if (kind === "layer") { validateTickColorChannels(resource); validateImageBinding(program, resource);
+        if (resource.mark?.type === "trail") {
+          validateTrailBinding(resource, program.markConfigs[resource.id]?.trailPlot);
+          const dataset = findDataset(program, resource.data);
+          if (dataset === undefined) throw new TypeError("Trail requires an existing dataset.");
+          deriveTrailSeries(dataset.values, resource, { scales: semantic.scales });
+        }
         if (resource.mark?.type === "waterfall") {
           validateWaterfallBinding(resource, program.markConfigs[resource.id]?.waterfallPlot);
           const dataset = findDataset(program, resource.data);

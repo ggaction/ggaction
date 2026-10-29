@@ -1,4 +1,5 @@
 import { validateGeoCoordinateValue } from "../../materialization/geo/coordinateState.js";
+import { TEXT_SOURCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { createSemanticPrimitiveAction } from "./semanticAction.js";
 import { planResourceRemoval } from "../resources/remove.js";
 import { validateDatasetTransforms } from "../../grammar/transforms.js";
@@ -24,7 +25,7 @@ function fullSemanticValidator() {
     validateDatasetTransforms,
     validateParallel,
     validateGeoCoordinate: validateGeoCoordinateValue,
-    sourceMarkTypes: ["point", "bar", "line", "rule", "rect", "arc", "geo"]
+    sourceMarkTypes: TEXT_SOURCE_MARK_TYPES
   });
 }
 

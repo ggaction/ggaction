@@ -37,7 +37,7 @@ export function identifyItems(program, layer, grain, definitions) {
       ? ["members", [...memberKeys].sort()] : ["row", definition.rowKey]);
     const key = JSON.stringify([[], layer.id, grain, [itemNamespace(program, dataset, memberKeys), canonicalJSON(encodeValue(identity))]]);
     return { ...definition, key, memberKeys,
-      topology: ["line", "area"].includes(layer.mark.type) ? contentDigest(JSON.stringify(definition.topologyKeys ?? memberKeys)) : "" };
+      topology: ["line", "area", "trail"].includes(layer.mark.type) ? contentDigest(JSON.stringify(definition.topologyKeys ?? memberKeys)) : "" };
   });
 }
 

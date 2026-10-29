@@ -1,4 +1,5 @@
 import { isGeoLabelSource } from "../../grammar/geo/mark.js";
+import { TEXT_SOURCE_MARK_TYPES } from "../../core/vocabulary.js";
 import { hasPositionBinding, conditionalPositionTemplate } from "../../core/encodingBindings.js";
 import { isHorizontalLine } from "../../grammar/lineSeries.js";
 import { findDataset } from "../../selectors/datasets.js";
@@ -173,6 +174,7 @@ export function canMaterializeRule(program, layer) {
 }
 
 const TEXT_SOURCE_CAPABILITIES = Object.freeze({
+  trail: (_program, layer) => layer.trail !== undefined && (hasCartesianPositionScales(layer) || hasPolarPositionScales(layer)),
   point: canMaterializePoint,
   line: canMaterializeLine,
   bar: canMaterializeBar,
@@ -183,8 +185,8 @@ const TEXT_SOURCE_CAPABILITIES = Object.freeze({
 });
 
 export function isTextSource(layer) {
-  return isGeoLabelSource(layer) || layer?.data !== undefined &&
-    Object.hasOwn(TEXT_SOURCE_CAPABILITIES, layer.mark?.type);
+  return layer?.mark?.type === "geo" ? isGeoLabelSource(layer) : layer?.data !== undefined &&
+    TEXT_SOURCE_MARK_TYPES.includes(layer.mark?.type);
 }
 
 export function canMaterializeTextSource(program, source) {

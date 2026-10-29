@@ -1197,5 +1197,19 @@
     "editSource": "examples/waterfall/program.js",
     "description": "Declare each row's role so its effect on the running balance is explicit.",
     "image": "/assets/images/waterfall.png"
+  },
+  "/api/trail/": {
+    "title": "Trail Plots",
+    "source": "docs/api/trail.md",
+    "editSource": "docs/api/trail.md",
+    "description": "Draw a filled ribbon whose width changes at each sample. A width is measured in logical screen pixels, independently of the position scales.",
+    "image": "/assets/images/trail.png"
+  },
+  "/tutorials/trail/": {
+    "title": "Show Width Along a Series",
+    "source": "docs/tutorials/trail.md",
+    "editSource": "examples/trail/program.js",
+    "description": "Keep position and sample width separate. These two signals have constant vertical positions while the first ribbon widens and the second narrows.",
+    "image": "/assets/images/trail.png"
   }
 }

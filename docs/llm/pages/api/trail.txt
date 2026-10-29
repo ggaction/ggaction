@@ -1,0 +1,79 @@
+# Trail plots
+
+Draw a filled ribbon whose width changes at each sample. A width is measured in
+logical screen pixels, independently of the position scales. Trail plots are
+available in the Full entry and share Canvas, SVG, PNG and PDF output.
+
+## `createTrailPlot`
+
+**Chart authoring.**
+
+```typescript
+createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
+```
+
+Supply `x`, `y` and `width`, or Polar `theta`, `radius` and `width`.
+Positions accept a field string or `{field,fieldType?,scale?,temporalUnit?}`.
+One Cartesian position is quantitative; the other may be quantitative, temporal or categorical. Polar radius is
+quantitative. Fields refer to actual samples; aggregate, bin, datum and conditional
+position bindings are not accepted. Use this action's position and color options
+instead of generic encoders for a Trail.
+
+`width` is a nonnegative finite number, or a field containing one such number per
+sample. Use `createComputedData` first when the width needs an explicit calculation.
+The ribbon's border `body.strokeWidth` is a separate appearance option.
+
+| Option | Behavior |
+| --- | --- |
+| `id`, `data`, `coordinate` | Default ID `trail`; data and coordinate use explicit/current/unique selection |
+| `groupBy` | A field or field tuple; otherwise categorical color groups samples, or one series is used |
+| `order` | Cartesian field string or `{field,order?:"ascending"\|"descending"}`; default uses native path position order |
+| `missing` | `"error"` by default; `"break"` splits at nullish positions or widths and excludes them from automatic position domains |
+| `curve`, `tension` | Existing nine Cartesian line interpolations; tension belongs only to cardinal |
+| `closed` | `false` by default; closes an uninterrupted series with a hollow ribbon |
+| `lineJoin`, `lineCap` | `miter` and `butt` by default; bevel/round joins and square/round caps are available |
+| `miterLimit`, `fillRule` | `4` and `nonzero` by default; `evenodd` uses the same compound path |
+| `body` | `fill`, `stroke`, `strokeWidth`, `opacity`, `outline`, `shadow` |
+| `color` | Field string or `{field,fieldType?,scale?,palette?}`; each series needs one color value |
+| `blend` | Ordinary blend mode; default `normal` |
+| `clip`, `guides` | Plot clipping defaults to true; ordinary guide options or `false` |
+
+Body defaults are fill `#2563eb`, stroke `none`, border width `0`, opacity `1`.
+Structured fills and common effects apply to the filled ribbon. Polar Trail uses
+linear projected segments and theta ordering; it does not accept Cartesian order
+or non-linear curves. A gap always stays open, even with `closed:true`.
+
+Adjacent identical screen positions use the last width and retain source membership.
+Exactly reversed segments split into capped paths. A single sample with a butt cap
+has zero area; round or square caps give it the corresponding local shape. Zero
+width is allowed. Self intersections use the selected fill rule.
+
+Position and width interpolation share the same samples. A curve that overshoots
+below zero width fails instead of silently clamping. Geometry is bounded by 10,000
+samples and 30,000 path commands; overflow or an unsatisfied subdivision tolerance
+also fails.
+
+## `editTrailPlot`
+
+**Chart authoring.**
+
+```typescript
+editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
+```
+
+Patch an existing Trail by explicit/current/unique target, including a scoped
+composition target. Omitted values stay unchanged. Null, undefined and an empty
+patch are errors. Coordinate families cannot be switched in place.
+
+Use `groupBy:false`, `order:false` or `color:false` to remove that choice. Use
+`outline:false`, `shadow:false` or `blend:"normal"` to remove effects. Changing
+away from cardinal without a new tension removes the old tension. Omitting guides
+on edit preserves existing guide presence.
+
+Selections and hits identify source series using typed row membership. Broken runs
+stay one logical item. Revisions, scale and Canvas edits rematerialize the ribbon;
+filtering preserves missing boundaries. Facets and nested scoped edits retain local
+ownership. `createMarkLabels` with an explicit `field` or `value` places labels at
+the last valid endpoint, using the ordinary baseline-before-highlight policy.
+
+See [the Trail tutorial](../../../tutorials/trail/) for a complete shared program.

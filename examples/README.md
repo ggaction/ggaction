@@ -900,6 +900,23 @@ Representative actions: `createGeoAnnotation`, `editGeoAnnotation`, `createProje
 Map geographic feature properties or joined measurements to color and point area.
 
 Representative actions: `createGeoPointMark`, `encodeColor`, `encodeSize`. [Documentation](https://ggaction.github.io/ggaction/tutorials/geographic-marks/).
+### [Changing width along each series](./trail/)
+
+Draw two independent ribbons with a screen width at each source sample.
+
+Representative actions: `createTrailPlot`, `editTrailPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/trail/).
+
+### [An explicit constant ribbon width](./trail-constant-width/)
+
+Preserve both centerlines while setting a constant screen width.
+
+Representative actions: `createTrailPlot`, `editTrailPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/trail/).
+
+### [Moving streamgraph baseline](./streamgraph/)
+
+Choose zero, centered, or moving baselines through the existing Area layout action.
+
+Representative actions: `createAreaPlot`, `layoutSeries`. [Documentation](https://ggaction.github.io/ggaction/tutorials/area-layout/#use-a-moving-streamgraph-baseline).
 
 ## Development fixtures
 

@@ -35,6 +35,7 @@ function classifyPrimaryLayer(semanticSpec, layer) {
     if (!layer.hierarchyBinding?.layout) throw new Error("Hierarchy facets require a complete layout binding.");
     return "hierarchy";
   }
+  if (type === "trail" && layer.trail !== undefined && coordinateType(semanticSpec, layer) === "cartesian") return "cartesian";
   if (type === "waterfall" && layer.waterfall !== undefined && coordinateType(semanticSpec, layer) === "cartesian") return "cartesian";
   if (type === "ohlc" && layer.ohlc !== undefined && coordinateType(semanticSpec, layer) === "cartesian") return "cartesian";
   if (type === "pyramid" && layer.pyramid !== undefined && coordinateType(semanticSpec, layer) === "cartesian") return "cartesian";
@@ -57,7 +58,7 @@ function classifyPrimaryLayer(semanticSpec, layer) {
   if (polar) {
     const theta = layer.encoding?.theta?.scale !== undefined;
     const radius = layer.encoding?.radius?.scale !== undefined;
-    const complete = (type === "point" || type === "line")
+    const complete = (type === "point" || type === "line" || type === "trail")
       ? theta && radius
       : type === "arc" && theta;
     if (!complete) {

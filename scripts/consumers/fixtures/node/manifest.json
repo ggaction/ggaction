@@ -1405,5 +1405,39 @@
         "statements": 5
       }
     ]
+  },
+  {
+    "file": "trail-plots.mjs",
+    "cases": [
+      {
+        "id": "trail/public-lifecycle",
+        "statements": 14
+      },
+      {
+        "id": "trail/offline-scene-renderers",
+        "statements": 11
+      },
+      {
+        "id": "trail/fresh-process-and-nested",
+        "statements": 10
+      }
+    ]
+  },
+  {
+    "file": "stream-baselines.mjs",
+    "cases": [
+      {
+        "id": "stream-baselines/public-lifecycle",
+        "statements": 14
+      },
+      {
+        "id": "stream-baselines/offline-scene-renderers",
+        "statements": 13
+      },
+      {
+        "id": "stream-baselines/fresh-process-nested",
+        "statements": 10
+      }
+    ]
   }
 ]

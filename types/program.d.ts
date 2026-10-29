@@ -1525,7 +1525,8 @@ export type ColorLayout =
   | "group"
   | "overlay"
   | "diverging"
-  | "center";
+  | "center"
+  | "wiggle";
 export type ScalarAggregateOperation =
   | "count" | "sum" | "mean" | "median" | "min" | "max"
   | "distinct" | "valid" | "missing"
@@ -2069,6 +2070,37 @@ export interface CalendarLabelPaint {
   readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
 }
 export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+/** A filled ribbon whose width is measured in logical screen pixels per source sample. */
+export interface TrailBodyPaint {
+  readonly fill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number;
+  readonly opacity?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export type TrailPosition = string | ({ readonly field: string } & (
+  | { readonly fieldType?: "quantitative"; readonly scale?: NonPointQuantitativePositionScaleOptions; readonly temporalUnit?: never }
+  | { readonly fieldType: "temporal"; readonly scale?: NonPointTemporalPositionScaleOptions; readonly temporalUnit?: TemporalInputUnit }
+  | { readonly fieldType: "nominal" | "ordinal"; readonly scale?: NonPointCategoricalPositionScaleOptions; readonly temporalUnit?: never }
+));
+export interface TrailPlotOptions {
+  readonly id?: string; readonly data?: string; readonly coordinate?: string;
+  /** A nonnegative finite pixel width or the name of a field containing one width per sample. */
+  readonly width: number | string;
+  readonly groupBy?: string | readonly string[] | false;
+  readonly missing?: "error" | "break";
+  readonly closed?: boolean; readonly lineJoin?: "miter" | "bevel" | "round";
+  readonly lineCap?: "butt" | "square" | "round"; readonly miterLimit?: number;
+  readonly fillRule?: "nonzero" | "evenodd"; readonly body?: TrailBodyPaint;
+  readonly color?: false | OHLCColor; readonly clip?: boolean; readonly blend?: BlendMode;
+}
+export type CreateTrailPlotOptions = TrailPlotOptions & (
+  | { readonly x: TrailPosition; readonly y: TrailPosition; readonly theta?: never; readonly radius?: never;
+      readonly order?: string | { readonly field: string; readonly order?: "ascending" | "descending" } | false;
+      readonly curve?: CurveInterpolation; readonly tension?: number; readonly guides?: false | ColorGuides }
+  | { readonly theta: PolarThetaChannel; readonly radius: PolarRadiusChannel; readonly x?: never; readonly y?: never;
+      readonly order?: never; readonly curve?: "linear"; readonly tension?: never; readonly guides?: false | PolarPathGuideOptions }
+);
+type TrailPatch<T> = T extends unknown ? Partial<Omit<T, "id">> : never;
+export type EditTrailPlotOptions = { readonly target?: string } & TrailPatch<CreateTrailPlotOptions>;
+
 export interface WaterfallBarPaint {
   readonly positiveFill?: FillPaint; readonly negativeFill?: FillPaint; readonly totalFill?: FillPaint; readonly subtotalFill?: FillPaint;
   readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number;
@@ -4532,7 +4564,7 @@ type HistogramCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 type LineCategoricalColorChannel<Scale = NonPointCategoricalColorScaleOptions> =
   | string
@@ -4559,7 +4591,7 @@ type BarCategoricalColorChannel =
       fieldType?: "nominal" | "ordinal";
       scale?: NonPointCategoricalColorScaleOptions;
       palette?: Palette;
-      layout?: Exclude<ColorLayout, "center">;
+      layout?: Exclude<ColorLayout, "center" | "wiggle">;
     };
 type BarColorChannel =
   | BarCategoricalColorChannel
@@ -5133,7 +5165,7 @@ export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & 
 );
 
 export interface SeriesLayoutOptions { target?: string; mode: ColorLayout; }
-export interface BasicSeriesLayoutOptions { target?: string; mode: Exclude<ColorLayout, "center">; }
+export interface BasicSeriesLayoutOptions { target?: string; mode: Exclude<ColorLayout, "center" | "wiggle">; }
 export type AreaPlotIndependentChannel = string | ({ field: string } & (
   | { fieldType: "nominal" | "ordinal"; scale?: NonPointCategoricalPositionScaleOptions }
   | { fieldType?: "quantitative"; scale?: NonPointQuantitativePositionScaleOptions }
@@ -5147,16 +5179,25 @@ export type AreaPlotMeasureChannel = string | { field: string; scale?: NonPointQ
 export type CreateAreaPlotOptions = {
   id?: string; data?: string; coordinate?: string;
   groupBy?: string | readonly [string, ...string[]];
-  layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
+  missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
   area?: StrokeStyleDetails & { clip?: boolean; fill?: FillPaint; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | (Omit<DensityPlotGuideOptions, "grid"> & { grid?: false | CartesianGridOptions });
-} & (
+} & (({ layout?: Exclude<ColorLayout, "group" | "wiggle"> } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
   | { valueChannel: "x"; x: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: number }
   | { valueChannel: "x"; x: Extract<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: never }
-);
+)) | {
+  layout: "wiggle"; valueChannel?: "y";
+  x: Exclude<AreaPlotIndependentChannel, { fieldType: "nominal" | "ordinal" }>;
+  y: string | { field: string; scale?: NonPointZeroSupportingPositionScaleOptions }
+    | ({ scale?: NonPointZeroSupportingPositionScaleOptions } & (
+      | { lower: string; upper: { datum: 0 } }
+      | { lower: { datum: 0 }; upper: string }
+    ));
+  baseline?: 0;
+});
 
 interface LinePlotCommonOptions {
   id?: string;
@@ -6720,6 +6761,8 @@ export class ChartProgram {
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
   createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createTrailPlot(options: TargetedOptions<CreateTrailPlotOptions>): ChartProgram;
+  editTrailPlot(options: TargetedOptions<EditTrailPlotOptions>): ChartProgram;
   createWaterfallPlot(options: TargetedOptions<CreateWaterfallPlotOptions>): ChartProgram;
   editWaterfallPlot(options: TargetedOptions<EditWaterfallPlotOptions>): ChartProgram;
   createOHLCPlot(options: TargetedOptions<CreateOHLCPlotOptions>): ChartProgram;

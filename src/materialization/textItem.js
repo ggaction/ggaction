@@ -28,4 +28,3 @@ export function concreteTextItem(program, config, position, text, { offsets = tr
     })
   };
 }
-

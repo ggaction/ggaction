@@ -28,7 +28,7 @@ Evidence: `test/unit/core/action.test.js`, `test/unit/grammar/expression-validat
   semantic references를 검사하고 resolvedScales/currentScale을 정리한다. Coordinate/currentData pointer도 삭제된 실제
   ID를 가리키면 unset한다. Facet parent는 title과 전체 참조 검사에 통과한 named-resource removal만 허용한다.
   그래픽은 변경하지 않는다. Basic 내부 primitive에는 Full resource-removal policy dependency를 포함하지 않는다.
-- Series policy leaves: `layer[id].layout.mode`는 group/stack/fill/overlay/diverging/center,
+- Series policy leaves: `layer[id].layout.mode`는 group/stack/fill/overlay/diverging/center/wiggle,
   `layer[id].mark.missing`은 error/break, `layer[id].encoding.group.inferredFrom`은 color/offset이다.
   `layer[id].layout` container 제거를 지원한다. 이 primitive 저장은 layout·path segmentation을 실행하지 않는다.
 - Measured radial primitive leaves: `scale[id].radialMapping`은 `area | radius-length`,

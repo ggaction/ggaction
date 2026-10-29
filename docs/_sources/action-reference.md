@@ -3549,6 +3549,22 @@ createCalendarLayout({ id?, data?, date, value?, start, end, timeZone, weekStart
 
 Store civil-day aggregates, week/weekday cells and month boundaries. See [Calendar plots](../api/calendar.md#createcalendarlayout).
 
+### `createTrailPlot`
+
+```js
+createTrailPlot({ id?, data?, coordinate?, x?, y?, theta?, radius?, width, groupBy?, order?, missing?, curve?, tension?, lineJoin?, lineCap?, miterLimit?, fillRule?, closed?, body?, color?, clip?, blend?, guides? })
+```
+
+Draw a filled ribbon with an explicit screen width at each sample. Choose Cartesian x/y or Polar theta/radius. See [Trail plots](../api/trail.md).
+
+### `editTrailPlot`
+
+```js
+editTrailPlot({ target?, data?, coordinate?, x?, y?, theta?, radius?, width?, groupBy?, order?, missing?, curve?, tension?, lineJoin?, lineCap?, miterLimit?, fillRule?, closed?, body?, color?, clip?, blend?, guides? })
+```
+
+Patch native series meaning and appearance while preserving typed logical identity. See [Trail plots](../api/trail.md).
+
 ### `createWaterfallPlot`
 
 ```javascript

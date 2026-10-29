@@ -1134,6 +1134,11 @@
       "geographic annotation",
       "feature anchor",
       "map text"
+    ],
+    "TrailPlot": [
+      "Trail plot",
+      "variable width ribbon",
+      "sample width path"
     ]
   },
   "summaryOverrides": {
@@ -1156,7 +1161,9 @@
     "createGraphics": "Creates one backend-neutral concrete graphic resource inside an extension action.",
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action.",
     "encodeChannels": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state.",
-    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token."
+    "applyDataUpdate": "Apply prepared source or parameter data to the exact immutable base with the current host token.",
+    "createTrailPlot": "Create native filled ribbons with a screen width at each ordered source sample.",
+    "editTrailPlot": "Edit Trail positions, sample widths and appearance while preserving typed series membership."
   },
   "sampleOverrides": {
     "createStackData": {
@@ -2363,6 +2370,15 @@
           0
         ]
       }
+    },
+    "createTrailPlot": {
+      "x": "time",
+      "y": "signal",
+      "width": "width"
+    },
+    "editTrailPlot": {
+      "target": "trail",
+      "width": 12
     }
   },
   "callPatternOverrides": {

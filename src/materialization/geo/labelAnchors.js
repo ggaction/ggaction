@@ -12,4 +12,3 @@ export function geoLabelAnchors(program, layer, items) {
     return [geoFeatureKey(layer, source.resource, feature), point === null ? undefined : { x: point[0], y: point[1] }];
   }));
 }
-

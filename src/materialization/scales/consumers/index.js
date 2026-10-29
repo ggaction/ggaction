@@ -1,4 +1,5 @@
 import { unfilteredMarkDataset } from "../../../selectors/datasets.js";
+import { trailScaleValues } from "../../trail/plot.js";
 import { waterfallScaleValues } from "../../waterfall/plot.js";
 import { ohlcScaleValues } from "../../ohlc/plot.js";
 import { geoScaleValues } from "../../geo/appearance.js";
@@ -29,6 +30,7 @@ export {
 } from "./seriesLayout.js";
 
 export function resolveConsumerValuesForDataset(program, consumer, dataset) {
+  if (consumer.layer.mark.type === "trail") return trailScaleValues(program, dataset, consumer.layer, consumer.encoding, consumer.channel);
   if (consumer.layer.mark.type === "waterfall") return waterfallScaleValues(dataset, consumer.layer, consumer.encoding, consumer.channel);
   if (consumer.layer.mark.type === "ohlc") return ohlcScaleValues(dataset, consumer.layer, consumer.encoding);
   const arc = resolveConditionalArcConsumer(program, consumer.layer, consumer.encoding, consumer.channel);

@@ -1163,7 +1163,7 @@ Layer가 data, optional source/coordinate, semantic mark와 encoding을 연결�
 
 `core/vocabulary.js`의 positional descriptor가 coordinate family, role, shared-scale relation, guide/grid binding과 mark capability를 소유한다. Inference, consumer discovery, inheritance와 removal이 같은 descriptor를 사용한다.
 
-Field mapping과 grouping/order/series layout은 semantic intent다. Constant appearance와 pixel/band placement intent는 materialization config다. `layoutSeries`는 semantic layout 변경 후 offset/endpoint/scale/mark/guide owner를 명시적으로 호출한다. Automatic scale의 private ownership만 config에 기록하고 semantic scale 정책을 이중 저장하지 않는다.
+Field mapping과 grouping/order/series layout은 semantic intent다. Constant appearance와 pixel/band placement intent는 materialization config다. `layoutSeries`는 semantic layout 변경 후 offset/endpoint/scale/mark/guide owner를 명시적으로 호출한다. Automatic scale의 private ownership만 config에 기록하고 semantic scale 정책을 이중 저장하지 않는다. 정렬된 Area의 움직이는 기준선은 `grammar/streamBaseline.js` 한 순수 owner가 계산하며 raw/density materializer와 domain consumer가 동일 경계를 재사용한다.
 
 Series identity, appearance field 유일성, row eligibility와 order는 geometry 전에 확정한다. Aggregate/bin/stack, ordered vertices와 missing-data segmentation은 같은 final grain을 scale, mark와 selection에 제공해야 한다. `grammar/areaEndpoints.js`가 Area endpoint의 datum/field/missing 값을 공유하고 `actions/encodings/ranged.js`는 complete pair를 preview한 뒤 wrapped primary/secondary를 실행한다.
 
@@ -4015,3 +4015,17 @@ unpacked6,729,227bytes를 측정했다. 캡은1043/1,481,000/6,731,000으로 둔
 동일 minified bytes의 Node20·24 gzip은 Full728,161/Basic384,468/Graph44,044이며
 각각730,000/386,000/46,000으로 최소1,000bytes 여유를 둔다. SVG·interaction은
 기존 한도를 유지한다. Graph 입력 검증은 Full 등록 handler 분리 뒤 측정했다.
+### Native Trail의 sample-width와 shared curve 경계
+
+Trail은 Full façade가 순수 후보를 검사하고 wrapped `applyTrailMark`/`materializeTrailPlot`을 호출한다.
+의미 width binding은 layer, 모양 옵션은 mark config에 각각 한 번 저장한다. 기존 Line의 series/order/missing
+결과와 source-row identity를 읽고, shared curve/subdivision owner가 위치와 scalar width를 같은 parameter로
+샘플링한다. 새 grammar ribbon owner는 screen-space sample에서 bounded Path만 계산하며 renderer는 기존
+Path/Text만 소비한다. 별도 renderer·package entry·자동 compiler는 없다. 정확 API와 소비자 범위는
+[Current TRAIL](contract/current/TRAIL.md)이 소유한다. STEP050 final guide/frame 후보 사전검사는 합산의
+기존 `assertFacadeGuidesFrame` 책임으로 남으며 이 slice 검증을 그 의무의 완료로 세지 않는다.
+
+공유 curve·stored schema 검증으로 Basic bundle에도 순수 소스가 포함되지만 Full action import는 없다.
+Node20/24 중간 실측 package1028/packed1,473,553/unpacked6,707,821과 Node20 bundle Full726,985/
+Basic392,624gzip에 최소 cap1028/1,474,000/6,708,000 및727,100/392,800을 적용했다.
+검색1,013,957bytes의 cap은1,014,000이며 최종 frozen artifact 실측은 Trail qualification에 별도 고정한다.

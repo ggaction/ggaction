@@ -370,5 +370,7 @@
   "createOHLCPlot": "/reference/actions/marks/#createohlcplot",
   "editOHLCPlot": "/reference/actions/marks/#editohlcplot",
   "createWaterfallPlot": "/reference/actions/marks/#createwaterfallplot",
-  "editWaterfallPlot": "/reference/actions/marks/#editwaterfallplot"
+  "editWaterfallPlot": "/reference/actions/marks/#editwaterfallplot",
+  "createTrailPlot": "/reference/actions/marks/#createtrailplot",
+  "editTrailPlot": "/reference/actions/marks/#edittrailplot"
 }
