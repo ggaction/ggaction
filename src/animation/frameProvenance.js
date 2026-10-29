@@ -39,10 +39,14 @@ export function registerAnimationFrame(frame, input) {
   if (input.graphs !== undefined && (!Array.isArray(input.graphs.items) || input.graphs.items.length !== frame.scene.nodes.length)) {
     throw new TypeError("Animation frame graph items must follow its exact node order.");
   }
+  if (input.partitions !== undefined && (!Array.isArray(input.partitions.items) || input.partitions.items.length !== frame.scene.nodes.length)) {
+    throw new TypeError("Animation partition items must follow the exact node order.");
+  }
   frames.set(frame, Object.freeze({ planIdentity: plan.identity, timeMs: input.timeMs,
     ...(input.positions === undefined ? {} : { positions: cloneAndFreeze(input.positions) }),
     ...(input.graphs === undefined ? {} : { graphs: cloneAndFreeze(input.graphs) }),
     ...(input.cartesian === undefined ? {} : { cartesian: cloneAndFreeze(input.cartesian) }),
+    ...(input.partitions === undefined ? {} : { partitions: cloneAndFreeze(input.partitions) }),
     ...(input.meaning === undefined ? {} : { endpoint: input.meaning.endpoint, native: input.meaning.native }) }));
   return frame;
 }

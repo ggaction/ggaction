@@ -76,6 +76,28 @@ rule, fixed-span/box-span/category-slot 특수 배치와 density-derived area는
 저장 payload는 endpoint별 optional Cartesian state와 `semantic-cartesian-geometry@1` version을
 포함하며 unknown version·다른 row membership·forward geometry 오염을 원자적으로 거부한다.
 기존 public 함수 signature와 scene schema는 바뀌지 않는다. 다른 typed family의 완료를 뜻하지 않는다.
+## Partition의 native 일반 방향 전환
+
+PartitionPlot은 저장된 hierarchy layout/view의 normalized cell interval과 정확한
+node/parent identity에서 Icicle↔Sunburst 및 같은 좌표 계열의 전환을 준비한다.
+호환되는 일반 방향은 기존 bend kernel로 frame origin/basis·치수·각도·hole·CSS gap을
+보간한다. 원 구간을 먼저 휜 뒤 현재 CSS gap을 적용하며, body path와 label anchor는
+같은 현재 cell을 사용한다. 매 frame hierarchy layout을 다시 계산하지 않는다.
+Decision kernel은 `partition`이며 정확 endpoint는 원 native graphics를 보존한다.
+
+현재 curved frame을 양방향 endpoint로 재사용해도 보간한 normalized interval/frame을
+보존하고 pixel에서 의미값을 복원하지 않는다. Scene 순서의 body/label item refs와
+namespace별 group은 flat provenance에 저장되며 앞선 계획을 붙잡지 않는다.
+정확한 layout/hierarchy refs·node lineage·forward geometry·closed kernel version을
+저장·복원 시 검증한다. Native cubic sector와 현재 tessellated cell은 각 owner의
+동일 계산 결과와 일치해야 한다. 별도 공개 함수나 ChartProgram 저장 schema는 추가하지 않는다.
+
+Hierarchy topology·보이는 item 집합·handedness·radial depth direction·radius policy·
+clip·appearance 불일치, 명시 geometry 편집은 사유가 있는 concrete crossfade다.
+현재 CSS gap이 cell을 소비하면 `partition-collapsed-cell` 사유로 body와 label이 함께
+fallback한다. Structured paint를 의미별로 보간한다고 주장하지 않는다. Native 현재
+path hit는 현재 shape와 정확한 native item metadata를 재사용한다. Offline animation
+복원에는 editable native 프로그램 권한이 포함되지 않는다.
 
 ## 오프라인 저장·복원
 
@@ -88,7 +110,7 @@ runtime Infinity는 저장에서만 문자열 `infinite`로 표현한다.
 schema1 envelope는 `{kind:'animation',schemaVersion:1,packageVersion,payload,digest}`다.
 payload의 plan은 planner 단일 export/restore owner가 검증하며 kernels manifest를 포함한다.
 digest는 기존 tagged value의 canonical JSON SHA256이다. 실제 endpoint graphicSpec의
-image/font base64 bytes와 semantic position·Cartesian geometry·완료 graph layout/route 준비값을 보존한다. hash만 저장하지 않는다.
+image/font base64 bytes와 semantic position·Cartesian geometry·완료 graph layout/route·normalized partition 준비값을 보존한다. hash만 저장하지 않는다.
 tracks·correspondence는 동일 version owner에서 재구성하며 중복 authority로 저장하지 않는다.
 unknown schema/kernel, 잘못된 forward mapping/identity, 오염·빠진 asset bytes는 복원실패다.
 복원에는 semantic dataset 조회·fetch·loader·clock·renderer 호출이 없다.

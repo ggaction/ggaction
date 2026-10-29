@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:32256abcc674cbcf2a3c6ad77be7ac3aeaf91d9f208930f527557ccc59823349",
+    "contractId": "sha256:217b7baecf94a6bf33c99182b037f37511a8628114424aabddb6cad702935d43",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1289,13 +1289,14 @@
         "prepare-save-and-sample",
         "move-a-completed-graph-layout",
         "move-cartesian-shapes-and-series",
+        "bend-an-icicle-into-a-sunburst",
         "functions",
         "render-the-same-frame",
         "play-with-an-explicit-clock",
         "offline-replay-and-limits"
       ],
-      "bytes": 10683,
-      "sha256": "69ea81a39fad36e6aec4c95e48af69113e4f46d05935feeffcb6a1abecc40927"
+      "bytes": 11962,
+      "sha256": "8ad288c9bddb3680d6c6ed0fc71d03b79a3149277d3de348378c5f5a0fe1ce85"
     },
     {
       "order": 77,
@@ -3950,7 +3951,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "d5ad5e910d0ab225706457e7caf2b14986176b1dd878923973142004c675b3da"
+      "sha256": "e0b88d3dd919722d1f588588ef18dee20cb2a0d9a848c2da44ec55e2ac7dc48a"
     },
     {
       "order": 156,

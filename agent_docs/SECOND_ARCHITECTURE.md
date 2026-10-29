@@ -16,6 +16,14 @@ endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한
 > [`architecture/README.md`](architecture/README.md)의 작업별 경로에서 시작한다. 이 파일은 현재
 > macro-architecture의 canonical 원문으로 유지한다.
 
+Partition의 비공개 animation 입력은 `materialization/animation/partition.js`가 기존
+partition owner에서 저장된 normalized interval·focus와 명시 coordinate frame을 투영한다.
+Child namespace별 group은 exact layout/hierarchy refs와 label offset을 한 번 보유하며,
+scene 순서의 item vector가 group·key·role을 참조한다. `grammar/animation/partitionState.js`는
+명시 frame을 기존 hierarchy bend kernel에 연결하고, 현재 curved state를 보존해 재기준화한다.
+Hierarchy layout을 다시 실행하거나 pixel에서 의미를 추측하지 않는다. 이 준비 owner는 아직
+공개 planner·offline transport에 연결되지 않았으며 현재 공개 지원은 Current 계약이 소유한다.
+
 ### Boolean filter 의존성
 
 AST filter는 computed와 같은 closed v2 expression 및 exact parameter-reference 검증을
@@ -4539,3 +4547,12 @@ Native origin은 준비 state별 private WeakMap에서 실제 program/child IDs/
 Sample은 집계·binning·stack/layout을 다시 실행하지 않는다. Flat frame proof와 optional versioned
 Cartesian vector는 동일한 현재 의미를 rebase/strict restore에 공급한다. 공개 함수와 renderer schema는
 변경하지 않으며 정확한 지원·fallback 범위는 [Animation](contract/current/ANIMATION.md)이 소유한다.
+### Public partition animation integration
+
+기존 공개 animation planner/sampler가 `materialization/animation/partition`의 exact
+layout/view 의미를 namespace별 group/item vector로 소비한다. Current frame은 normalized
+cell·basis·bend 의미를 flat private provenance에 보존하고 offline payload도 같은 owner로
+검증한다. `grammar/hierarchy/partitionCell`이 이전 private partition frame과 공개 animation의
+현재 cell path/anchor 계산을 공유한다. Native endpoint renderer, ChartProgram semantic state,
+공개 함수 signature는 변하지 않으며 renderer는 완성된 graphicSpec만 읽는다. 정확한 지원과
+fallback 경계는 [ANIMATION](contract/current/ANIMATION.md#partition의-native-일반-방향-전환)이 소유한다.

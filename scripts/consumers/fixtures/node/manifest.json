@@ -1639,5 +1639,22 @@
         "statements": 10
       }
     ]
+  },
+  {
+    "file": "animation-partition.mjs",
+    "cases": [
+      {
+        "id": "animation-partition/offline-four-renderers",
+        "statements": 12
+      },
+      {
+        "id": "animation-partition/current-frame-interruption",
+        "statements": 8
+      },
+      {
+        "id": "animation-partition/fallback-and-immutable-failure",
+        "statements": 10
+      }
+    ]
   }
 ]

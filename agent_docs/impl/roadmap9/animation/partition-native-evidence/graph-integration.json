@@ -1,0 +1,51 @@
+{
+  "status": "verified-prerequisite-integration",
+  "sourceRevision": "22eb6fcc3",
+  "graphSource": "350b72e550cf03d508d7b98346ba49bbbbd23d39",
+  "graphEvidence": "6492d12f6d57bccf5a203212f650bf47e9d9eabd",
+  "checks": {
+    "owningNode22": 214,
+    "boundariesDiscoveryTypes": 36,
+    "packageNode20": 7,
+    "packageNode22": 7,
+    "packageNode24": 7,
+    "docs": 231
+  },
+  "packageMeasurements": {
+    "20": {
+      "node": "v20.20.2",
+      "entries": 1137,
+      "packed": 1623735,
+      "unpacked": 7356372,
+      "sha256": "5006dbd701a3b15740006301b6b6837bbc3ad74100fe6ddcc58da91da4034615"
+    },
+    "22": {
+      "node": "v22.23.1",
+      "entries": 1137,
+      "packed": 1621329,
+      "unpacked": 7356372,
+      "sha256": "caa93bafbd87b5a3b03613595788913c58998318fe2c28fc8df13574b590a577"
+    },
+    "24": {
+      "node": "v24.22.1",
+      "entries": 1137,
+      "packed": 1623735,
+      "unpacked": 7356372,
+      "sha256": "5006dbd701a3b15740006301b6b6837bbc3ad74100fe6ddcc58da91da4034615"
+    }
+  },
+  "limits": {
+    "entries": 1137,
+    "packedBytes": 1624000,
+    "unpackedBytes": 7357000
+  },
+  "reuse": {
+    "evidence": "../../qualification/animation-graph-public-evidence/qualification.json",
+    "predicate": "No graph runtime or public entry closure changes. The two new partition preparation modules remain unreferenced by the public entry. Peer installed consumer archive693bb41872f3db33cefc17897b790728a780f717799642f0aecfb0c4611ed097 remains separate from this integration archive.",
+    "claims": "Peer graph consumer and four-backend evidence is preserved; no new whole-package installed matrix or STEP077 completion is claimed."
+  },
+  "remaining": [
+    "Actual public partition track sampling, strict offline state proof and four backends",
+    "Other typed families and final current-frame/session/native qualification"
+  ]
+}
