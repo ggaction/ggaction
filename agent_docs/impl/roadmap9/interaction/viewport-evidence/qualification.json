@@ -1,6 +1,6 @@
 {
   "base": "2b12743ec7c6ff6ad2ae37081f0e4e989e41658b",
-  "sourceCommit": null,
+  "sourceCommit": "c9d3bccca07570ed8c02453d349283cbb9adc5e1",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "Full-only setViewport direct command invokes native editProjection with explicit projection target and nonempty scalePx/translatePx/centerDeg/rotateDeg patch. Host pointer and keyboard buttons share immutable commit/frame lifecycle.",
   "runtimeAndTypesFingerprint": "fe04a47e0bc78a4e918e6b08bbc11fd3015e11acb5b75532d0af93367b2cf119",
@@ -36,7 +36,9 @@
         768,
         1440
       ],
-      "axeViolations": 0
+      "axeViolations": 0,
+      "sourcePinned": 50,
+      "sourcePinnedBuiltPages": 172
     },
     "installed": [
       {
@@ -385,6 +387,22 @@
     {
       "path": "api-interaction-768.png",
       "sha256": "ee2a7e3ac66fcf3d747710670cec4ce8b0bf4a0af714d59166b55bde7e7b3164"
+    },
+    {
+      "path": "viewport-pinned-generation.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "viewport-pinned-docs.log.gz",
+      "sha256": "8162da818607352bfb8e429fd05e3b2c7d4b67c3df03264f70758f6a92a399da"
+    },
+    {
+      "path": "viewport-pinned-build.log.gz",
+      "sha256": "7c8119cbc129aa967f5774562dde51b3eaf1f5afb0556817d297a0d288015abc"
+    },
+    {
+      "path": "viewport-pinned-built-links.log.gz",
+      "sha256": "7424833b8ace497e2d58fc2676b7fa8e8389c98aa01a1e73455e7c9e0022f250"
     }
   ]
 }

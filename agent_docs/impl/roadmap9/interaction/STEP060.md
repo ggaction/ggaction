@@ -417,3 +417,6 @@ unpacked6,637,912/1024entries에 최소 cap1,460,000을 적용했다. Browser bu
 Renderer/Geo projection owner는 변경하지 않아 기존 네 backend 증거를 재사용하며 전수 normal/coverage를
 재실행했다고 주장하지 않는다. Pointer pan/pinch, cursor anchoring, camera/LOD 결합, node drag,
 annotation, 일반 focus/history/coordinate morph 및 전체060/074/077은 계속 남아 있다.
+
+E2 source `c9d3bccca`를 push한 뒤 provenance를 고정해 docs50과 built172pages/1509LLM을
+다시 통과했다. Runtime·타입·동일 최종 tar와 시각입력은 그대로라 네 폭Axe/화면을 재사용한다.
