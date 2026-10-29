@@ -1,6 +1,6 @@
 {
   "parent": "41c026e000e4ebbc846114a591ee2bef734b561c",
-  "sourceCommit": null,
+  "sourceCommit": "1e28f4bfb700faeba6295731ac225632ca62487a",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "Full createAnnotation screen anchors use finite local Canvas pixels without synthetic data, scales or coordinates. Reuse native Text/style/font/effects, selection, codec, composition and interaction editing. Closed screen lineage has no row/resource refs. Ordinary Text still requires data; renderers are unchanged.",
   "runtimeAndTypesFingerprint": "12a7ddecfd7845057a6734d93add8a73b1b6e4b695edbdd0ac2d97da936883ab",
@@ -54,7 +54,12 @@
         1440
       ],
       "axeViolations": 0,
-      "mobileInspected": true
+      "mobileInspected": true,
+      "finalOwning": 34,
+      "sourcePinned": 47,
+      "finalBuiltPages": 172,
+      "finalLlmArtifacts": 1531,
+      "finalBrowserReuse": "Same site CSS/JS and runtime; final rebuild changes source provenance and clarifies one data/plot versus screen sentence. Eight previous viewport/axe checks remain applicable."
     },
     "installed": [
       {
@@ -287,8 +292,16 @@
       "sha256": "a2d413c8a300ab7d74c7a17abf13fde9aa5c399493e60309abda7ddef2146ce1"
     },
     {
+      "path": "annotation-screen-build-final.log.gz",
+      "sha256": "54ccce75b2ffd6a5f29bf75697bd5f8005881ec0122d3d93962ae06e1dbd876b"
+    },
+    {
       "path": "annotation-screen-build.log.gz",
       "sha256": "306c888f6c593b845d0391fa7046dc665c95fd2133b061f9bd155cb1b0d8efa3"
+    },
+    {
+      "path": "annotation-screen-built-final.log.gz",
+      "sha256": "27ff6e226c96663ea21eaa7bd53a841845ace34abf34cea1a316cafc30ca69cd"
     },
     {
       "path": "annotation-screen-built.log.gz",
@@ -351,6 +364,10 @@
       "sha256": "7de7bdc05b271fb8413bde62dccef32f34321223f942a0381087594373151b09"
     },
     {
+      "path": "annotation-screen-docs-pinned.log.gz",
+      "sha256": "5e863d5bdedac6452acfaf4ca3d50949e259cde7ec48b2f7a7d8bb7c133824fc"
+    },
+    {
       "path": "annotation-screen-docs.log.gz",
       "sha256": "376034d3854a019e8ccb5c42f62d3ef288cf7f9f2382562f69453ea279f1ad29"
     },
@@ -405,6 +422,10 @@
     {
       "path": "annotation-screen-preflight.log.gz",
       "sha256": "2f2e9a0ed4ed9454c589ce2ffc2e8c66ee96daed6dfcbf90d00cd2dbb150fe7c"
+    },
+    {
+      "path": "annotation-screen-provenance.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
     },
     {
       "path": "annotation-screen-qualify.py.gz",
