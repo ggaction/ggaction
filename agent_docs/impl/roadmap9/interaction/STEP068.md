@@ -196,3 +196,8 @@ C2의 실제 host 코드는 라이브러리 source/type fingerprint를 바꾸지
 3Node native/typing/bundle 검증은 유효 입력에 한해 재사용하고, 새 문서3종의 source-free 실제
 keyboard/touch 동작은 Node22/Vite/Chromium에서 다시 실행한다. Public player/reduced-motion과
 AT53 전체 및074–077 합산은 계속 미완료다.
+
+C2 source `cae13ebe4`와 [machine evidence](native-controls-evidence/qualification.json)에 정확
+fingerprint·같은tar·명령·기존/신규 검증·실패·문서 화면을 보존했다. 마지막 입력 기준 browser7+5,
+owning66, executable3, source-free 문서3, build172/1535 및4폭 overflow0/Axe0을 확인했다.
+320/1440 화면을 직접 확인했다. Library source/type 및 B package는 그대로다.
