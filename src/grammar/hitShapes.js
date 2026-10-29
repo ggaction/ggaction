@@ -1,4 +1,4 @@
-import { clippedBoundaryDistance } from "./hitClipDistance.js";
+import { clippedBoundaryDistance, clippedBoundaryPoint } from "./hitClipDistance.js";
 import { cloneAndFreeze, freezeOwned } from "../core/immutable.js";
 import { ownArray, ownRecord } from "../core/ownData.js";
 import { flattenPathCommands, pathFillContains, pathStrokeDistance, arcToCubicCommands, resolvePathCommandBounds } from "./pathGeometry.js";
@@ -220,3 +220,50 @@ export function hitShape(prepared, point, options = {}) { return queryShape(prep
 
 // Reuse painted footprints and clip admission, but include distance to fill edges.
 export function nearestHitShape(prepared, point, options, spend) { return queryShape(prepared, point, options, true, spend); }
+
+
+// Circle fill membership is analytic, so split a clip edge at its analytic
+// circle crossings as well as the existing flattened path crossings.
+function circleCuts(part, edge) {
+  const [a, b] = edge.map(point => coordinate(point, part.transform).localPoint);
+  if (a === null || b === null) return [];
+  const { x, y, radius } = part.circle;
+  const scale = Math.max(Math.abs(a.x), Math.abs(a.y), Math.abs(b.x), Math.abs(b.y), Math.abs(x), Math.abs(y), radius, 1);
+  const ax = a.x / scale - x / scale, ay = a.y / scale - y / scale;
+  const dx = b.x / scale - a.x / scale, dy = b.y / scale - a.y / scale, r = radius / scale;
+  const length = Math.hypot(dx, dy);
+  if (!(length > 0)) return [];
+  const ux = dx / length, uy = dy / length, along = -(ax * ux + ay * uy);
+  const away = Math.abs(ax * uy - ay * ux);
+  if (away > r) return [];
+  const delta = Math.sqrt(Math.max(0, (r - away) * (r + away)));
+  return [(along - delta) / length, (along + delta) / length].filter(t => t >= 0 && t <= 1);
+}
+
+/** Private CSS-space focus anchor, admitted by the exact current hit owner. */
+export function hitShapeAnchor(prepared, spend) {
+  const state = states.get(prepared);
+  if (!state) throw new TypeError("Hit shape requires its prepared geometry.");
+  const budget = { value: 0 }; spend ??= count => work(count, budget);
+  spend(state.work);
+  if (prepared.diagnostics.length || state.opacity === 0) return null;
+  const inClips = point => state.clips.every(parts => parts.some(part => contains(part, point)));
+  for (const part of [...state.fill, ...state.strokes]) {
+    const admit = point => { spend(state.work); return contains(part, point) && inClips(point); };
+    if (part.circle) {
+      const center = transformHitPoint(part.transform, { x: part.circle.x, y: part.circle.y });
+      if (admit(center)) return freezeOwned(center);
+    }
+    let point = clippedBoundaryPoint(part, state.clips, admit, spend);
+    if (point !== null) return freezeOwned(point);
+    // A clip can be wholly inside paint, or several clips can intersect away
+    // from the paint boundary. Their admitted boundaries then supply the point.
+    for (let index = 0; index < state.clips.length; index++) for (const clip of state.clips[index]) {
+      const others = state.clips.filter((_, i) => i !== index);
+      if (!part.circle) others.push([part]);
+      point = clippedBoundaryPoint(clip, others, admit, spend, part.circle ? edge => circleCuts(part, edge) : undefined);
+      if (point !== null) return freezeOwned(point);
+    }
+  }
+  return null;
+}

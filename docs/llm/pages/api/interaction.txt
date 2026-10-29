@@ -1260,3 +1260,87 @@ There are at most256 editing bindings and259 total records. A click clear-on-mis
 command; use `onMiss:"ignore"` when a miss should fall through. Wheel and keyboard arbitrate navigation
 bindings, while native Ctrl/Meta/Alt shortcuts remain with the host. SVG hosts keep the root during a drag
 and remount when replacing it. Call `disposeGestures()` when removing this view.
+
+## Keyboard item focus
+
+A keyboard binding navigates native logical items that are painted in the accepted current frame.
+It respects clipping, opacity, nested scopes and geographic representations. Focus alone changes no
+program or history. Enter or Space executes an explicitly configured native selection; partition
+activation can instead use `activation: { type: "focusHierarchy" }`.
+
+> **Executable complete.** Use the preceding item-focus HTML. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.
+
+```html
+<div id="item-focus" role="listbox" aria-label="Measurements" tabindex="0"
+     style="position:relative;width:360px;height:240px">
+  <canvas id="item-canvas" aria-label="Measurements" aria-hidden="true"></canvas>
+  <span id="item-ring" aria-hidden="true" style="position:absolute;pointer-events:none;border:2px solid #111;border-radius:50%;width:16px;height:16px;display:none"></span>
+  <div id="item-options" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)"></div>
+</div>
+```
+
+> **Executable complete.** Use the preceding item-focus HTML. Press Tab, Arrow keys and Enter. The host owns roles and safe option text.
+
+```javascript
+import { chart } from "ggaction";
+import { exportAccessibleData } from "ggaction/accessibility";
+import { createInteractionSession } from "ggaction/interaction";
+import { renderTransitionScene } from "ggaction/scene";
+
+const program = chart().createCanvas({ width: 360, height: 240 })
+  .createData({ id: "rows", keyField: "name", values: [
+    { name: "A", x: 1, y: 2 }, { name: "B", x: 2, y: 3 }
+  ] })
+  .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+  .selectMarks({ id: "chosen", items: [], empty: "none" })
+  .highlightMarks({ selection: "chosen", color: "#dc2626", dimOthers: false });
+const surface = document.querySelector("#item-focus");
+const canvas = document.querySelector("#item-canvas");
+const ring = document.querySelector("#item-ring");
+const descriptions = document.querySelector("#item-options");
+const keyboardSession = createInteractionSession({ program, bindings: [{
+  type: "keyboard", targets: [{ target: "points", activation: {
+    type: "select", selection: "chosen", mode: "toggle"
+  } }]
+}] });
+const drawFocus = state => {
+  renderTransitionScene(state.scene, canvas.getContext("2d"));
+  const items = exportAccessibleData(state.program, { format: "items", target: "points" }).views[0].items;
+  descriptions.replaceChildren();
+  surface.removeAttribute("aria-activedescendant");
+  items.forEach((item, index) => {
+    const option = document.createElement("span");
+    option.id = `measurement-${index}`;
+    option.setAttribute("role", "option");
+    option.setAttribute("aria-selected", String(item.selectedBy.includes("chosen")));
+    option.textContent = `${item.fields.name}: x ${item.fields.x}, y ${item.fields.y}`;
+    descriptions.append(option);
+    if (state.focus?.currentItemKey === item.key) surface.setAttribute("aria-activedescendant", option.id);
+  });
+  const point = state.focus?.screenPoint;
+  ring.style.display = point ? "block" : "none";
+  if (point) { ring.style.left = `${point.x - 10}px`; ring.style.top = `${point.y - 10}px`; }
+};
+const unsubscribeKeyboard = keyboardSession.subscribe(event => drawFocus(event.state));
+const unmountKeyboard = keyboardSession.mount(surface);
+drawFocus(keyboardSession.getState());
+const disposeKeyboard = () => { unmountKeyboard(); unsubscribeKeyboard(); keyboardSession.destroy(); };
+```
+
+The controller keeps a stable authored key when exactly one current geographic item represents it.
+If the item becomes hidden, fully clipped, transparent, deleted or ambiguous, focus returns to its
+configured owner container; the host clears `aria-activedescendant`. The native program remains the
+source for descriptions, selected state and restored data. Use explicit `{childPath,id}` targets for
+nested charts and opaque scoped item keys from `exportAccessibleData` or inspection.
+
+Headless hosts can dispatch `{type:"focus",move:"first"}`, `{type:"focus",target:"points",itemKey}`
+or `{type:"activate"}`. Moves are next, previous, first, last, parent, firstChild, previousSibling,
+nextSibling and root. The hierarchy moves follow native navigation metadata. On a hierarchy item,
+Left/Right visit parent/first child, Up/Down visit siblings, Home visits root, and Escape invokes the
+configured partition parent's native focus. Unavailable neighbors are unchanged. Tab and modified
+keys stay with the host; nested text controls are never intercepted. A keyboard binding takes the
+surface's key navigation role when a camera navigation binding is also present; wheel and drag remain
+with that camera binding. For independent keyboard camera controls, use a separate focusable surface.
+
+Focus uses current paint and clip footprints. Text retains its metric-box hit policy. PNG and PDF
+exports are static; the same accessible item snapshot can accompany them without installing listeners.

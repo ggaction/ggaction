@@ -29,7 +29,7 @@ const pointAt = ([a, b], t) => ({ x: interpolateNumber(a.x, b.x, t), y: interpol
 
 // Inputs are the geometry owner's already validated flattened footprints. Split
 // only painted boundaries; clip boundaries can enter paint only at these crossings.
-export function clippedBoundaryDistance(part, clips, point, spend) {
+function visitClippedBoundary(part, clips, spend, visit, extraCuts) {
   const edgeCount = part.commands.length + clips.reduce((sum, parts) => sum + parts.reduce((total, clip) => total + clip.commands.length, 0), 0);
   spend(edgeCount);
   const boundaries = clips.flatMap(parts => parts.flatMap(clip => segments(clip.commands)));
@@ -37,19 +37,39 @@ export function clippedBoundaryDistance(part, clips, point, spend) {
     spend(edgeCount);
     return clips.every(parts => parts.some(clip => pathFillContains(clip.commands, point, { fillRule: clip.fillRule })));
   };
-  let distance = Infinity;
   for (const edge of segments(part.commands)) {
-    const cuts = [0, 1];
+    const cuts = [0, 1, ...(extraCuts?.(edge) ?? [])];
     for (const boundary of boundaries) { spend(1); cuts.push(...crossing(edge, boundary)); }
     cuts.sort((a, b) => { spend(1); return a - b; });
     for (let index = 0; index < cuts.length; index++) {
       const start = pointAt(edge, cuts[index]);
-      if (admitted(start)) distance = Math.min(distance, segmentDistance(point, start, start));
+      if (admitted(start) && visit(start, start)) return true;
       if (index === 0 || cuts[index] === cuts[index - 1]) continue;
       if (admitted(pointAt(edge, (cuts[index] + cuts[index - 1]) / 2))) {
-        distance = Math.min(distance, segmentDistance(point, pointAt(edge, cuts[index - 1]), start));
+        if (visit(pointAt(edge, cuts[index - 1]), start)) return true;
       }
     }
   }
+  return false;
+}
+
+export function clippedBoundaryDistance(part, clips, point, spend) {
+  let distance = Infinity;
+  visitClippedBoundary(part, clips, spend, (from, to) => {
+    distance = Math.min(distance, segmentDistance(point, from, to));
+    return false;
+  });
   return distance;
+}
+
+// Reuse the same clipped boundary subdivision for an admitted focus point.
+// The predicate owns exact paint membership; no bounds-centre approximation.
+export function clippedBoundaryPoint(part, clips, admit, spend, extraCuts) {
+  let result = null;
+  visitClippedBoundary(part, clips, spend, (from, to) => {
+    const middle = pointAt([from, to], 0.5);
+    for (const point of [middle, from, to]) if (admit(point)) { result = point; return true; }
+    return false;
+  }, extraCuts);
+  return result;
 }

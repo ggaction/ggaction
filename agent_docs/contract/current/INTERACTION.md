@@ -4,7 +4,7 @@
 
 `ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy?, historyLimit?, assetResolver? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
-`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, up to 256 editing pointer bindings, and up to 256 explicit linked-selection/filter bindings described below, with 259 total records maximum. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including clock, are rejected. Asset preparation is opt-in as specified below.
+`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one context-menu binding, at most one keyboard binding, up to 256 editing pointer bindings, and up to 256 explicit linked-selection/filter bindings described below, with 259 total records maximum. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including clock, are rejected. Asset preparation is opt-in as specified below.
 
 ## Handle and commands
 
@@ -31,7 +31,7 @@ Filled paths honor nonzero/evenodd holes, strokes honor widths, dash gaps, caps 
 
 Preparation supports at most 100,000 scene nodes and a 10,000,000-unit cumulative work budget; a query has a 2,000,000-unit budget. External frame snapshot work is bounded before canonical concrete validation. Guide layout reuse accounts for sample comparisons before computation. Frames containing accessors, cycles, unsupported objects, excessive work or mismatched semantic cardinality are rejected atomically.
 
-Navigation gestures, keyboard focus and async assets have no commands in this entry yet. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
+Native navigation, keyboard focus and async asset preparation follow their sections below. PNG/PDF exports remain static; the controller targets the same concrete geometry in browser Canvas/SVG or a headless host.
 
 Evidence: `test/unit/interaction-session.test.js`, `test/unit/interaction-selection.test.js`, `test/unit/hit-guides.test.js`, `test/unit/hit-program.test.js`, `test/unit/hit-frame.test.js`, `test/browser/interaction-session.browser.js`, `test/contracts/interaction-types.test.js`.
 
@@ -302,8 +302,7 @@ transaction phase. A successful up uses one generated transaction ID for commit 
 
 Capture is released before terminal subscribers run. The subsequent browser click is suppressed,
 including when an up subscriber replaces the SVG root and remounts it. An explicit activation click
-with `detail:0` remains available to host keyboard controls. The controller does not add Enter/Space
-behavior or guess a focused item. An independent click-inspection binding receives the later click;
+with `detail:0` remains available to host keyboard controls. The pointer binding does not add Enter/Space behavior; the explicit keyboard binding below owns keyboard focus and activation. An independent click-inspection binding receives the later click;
 on capture-capable hosts selection commits on up before that click inspection.
 
 Custom event surfaces without either capture method retain click-only handling. Supplying exactly one
@@ -799,5 +798,56 @@ surfaces remain supported; any drag binding requires capture and host RAF method
 Wheel/keyboard select among matching navigation bindings; synthetic/keyboard click selects among matching
 click/legend bindings. Native Ctrl/Meta/Alt keyboard shortcuts remain host-owned. Modifiers choose bindings
 and never silently change a binding's authored update mode. An active pointer gesture does not switch
-owners mid-drag. Public animation and accessible focus are separate integrations. Evidence:
+owners mid-drag. Public animation remains a separate integration. Keyboard focus is defined below. Evidence:
 `test/unit/interaction-gesture-arbitration.test.js`, common capture regressions and actual browser consumers.
+
+## Keyboard focus and native activation
+
+A single `{type:'keyboard',targets:[{target,activation?}]}` binding accepts 1–256 distinct explicit
+leaf mark targets in caller order. Targets use the existing root/concat `InteractionTarget`; an owner
+component is addressed explicitly. Composite roots with no materialized native layer, facet sources
+and implicit composition targets reject. Omitted activation provides read-only focus for Full/Basic.
+`activation:{type:'select',selection,mode?}` requires an existing authored selection on the target;
+mode is replace (default) or toggle and linked target writers reject. `{type:'focusHierarchy'}` requires
+a Full partition owner and uses its existing native focus action. Unsupported activation options reject.
+
+- `dispatch({type:'focus',target,itemKey})` accepts a scoped native item key or null for its owner
+  container. A key must identify an eligible current item or exactly one current representation.
+  Unknown, hidden, ambiguous, fully clipped and opacity-zero keys reject without a state change.
+- `dispatch({type:'focus',move})` accepts next/previous/first/last across eligible targets and native
+  item order, or parent/firstChild/previousSibling/nextSibling/root using the existing hierarchy
+  navigation metadata. Traversal clamps at the ends; unavailable hierarchy neighbors are no-ops.
+- `dispatch({type:'activate'})` uses only the configured activation of the focused current item.
+  Selection delegates to the same native command as pointer selection. Partition activation resolves
+  the exact original typed key or grouped path using the existing hierarchy source adapter; it never
+  decodes opaque item keys. No activation or owner-container focus is a no-op.
+
+`state.focus` starts null. Its immutable non-null value is
+`{target,itemKey,currentItemKey,screenPoint,role}`. `itemKey` is the stable authored scoped identity;
+`currentItemKey` is the present representation. For container focus both keys, screenPoint and role
+are null. Focus survives accepted program/frame/host changes only while exactly one eligible item
+represents it; otherwise it falls back to that configured owner container, including owner removal.
+A later reappearance does not silently move container focus. Destroy clears focus. Focus is runtime
+state, excluded from program serialization and history; only a changed focus dispatch emits `focus`.
+Native edits and accepted frame changes include reconciled focus in their existing events.
+
+Eligibility intersects native logical visibility with actual current-frame painted geometry and every
+transformed clip. The shared hit geometry owner supplies an admitted CSS point with zero slop, preserving
+fill rules, stroke caps/joins and dash gaps. Opacity zero and singular transforms are ineligible. Text
+uses the existing declared metric-box hit policy, not a glyph-alpha claim. Overlapping items remain
+eligible; z order chooses a primitive within one item and does not hide other logical items. Model work
+is bounded by 100,000 items and 10M cumulative units; preparation precedes program/history commitment.
+The same preparation and frame-generation rules still govern asynchronous candidates.
+
+Mounted keyboard handling owns only the explicit surface (`event.target === element`), leaves nested
+controls and Alt/Ctrl/Meta/Shift combinations to the host, and never traps Tab. Arrow/Home/End move focus;
+for a hierarchy item Left/Right are parent/firstChild, Up/Down previous/next sibling and Home root.
+Enter/Space activate. Escape invokes a partition activation's parent focus; elsewhere it is a no-op.
+When keyboard and navigate bindings share one surface, the keyboard binding owns those key events and
+camera wheel/pointer operations remain available. Existing capture cancellation still owns Escape for
+an active drag. Remount/unmount/destroy remove listeners, and queued stale lease callbacks cannot act.
+The host supplies tabIndex, roles, safe text descriptions, active-descendant IDs and focus drawing.
+No DOM, HTML string, inferred accessible name or new renderer state is authored by the library.
+
+Tooltip/touch parity for additional controls and public animation/reduced-motion integration remain
+separate capabilities; this entry does not invent a player or an implicit timer.

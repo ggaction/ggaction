@@ -4157,3 +4157,26 @@ interaction entry는 별도로 검증하며 기존 네 entry의 한도는 유지
 동일 arbitration archive의 Node20 interaction은191modules/120,959gzip이다. 기존120,000 한도
 초과 원본과 이미 통과한21runtime/strict types를 보존하고 최소100단위121,000으로 조정했다.
 같은 bundle 측정값을 새 한도로 검증하며 Node22/24는 각 소비자를 독립 실행한다.
+
+
+### Keyboard focus projection
+
+`interaction/keyboardFocus.js`는 명시 scoped native layer의 final items를 exact accepted frame의
+prepared paint/clip footprint와 결합한다. 공유 hit geometry owner의 boundary subdivision으로
+CSS anchor를 계산하며 별도 renderer geometry나 endpoint 추정을 만들지 않는다. Session은
+후보 model을 program/history commit 전에 검사하고 runtime focus만 보존·복원한다. native 선택과
+partition focus activation은 기존 command reducer·asset preparation·history를 그대로 통과한다.
+명시 host surface의 키 listener와 읽기전용 focus state만 소유하며 DOM/ARIA/description은 host가
+소유한다. 공개 값과 fallback 정책은 [INTERACTION](contract/current/INTERACTION.md#keyboard-focus-and-native-activation)이 소유한다.
+
+Full and Basic assemblies register their existing native final-item reader once per
+exact constructor in `materialization/selection/itemResolver.js`. Interaction reads
+this fixed private boundary; it does not import the complete native mark policy graph.
+This adds neither a public registration API nor another selection implementation.
+Final staging measured 1,064 entries / 1,512,831
+packed / 6,874,696 unpacked (bounds 1,064 / 1,512,900 / 6,874,700). The corrected
+Node20 Full bundle is 732,895 gzip bytes (732,900 bound) and interaction is 126,826
+(126,900 bound); Basic 385,729, SVG 20,196 and graph 44,045 retain existing bounds.
+The host example search payload is 1,039,320 bytes with a 1,039,400 bound.
+Original failed measurements are retained in the STEP068 evidence; combined integration
+remeasures its archive rather than reusing these branch-specific caps.

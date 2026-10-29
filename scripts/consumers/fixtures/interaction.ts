@@ -197,3 +197,17 @@ session.updateProgram(({program})=>{if (!('navigateProjection' in program)) thro
 const previewImages = session.getState().previewAssets?.images;
 // @ts-expect-error preview handles are read-only
 session.getState().previewAssets = null;
+
+const keyboard = createInteractionSession({program:chart(),bindings:[{type:'keyboard',targets:[
+ {target:'points',activation:{type:'select',selection:'chosen',mode:'toggle'}},
+ {target:{childPath:['child'],id:'partition'},activation:{type:'focusHierarchy'}}
+]}]});
+keyboard.dispatch({type:'focus',move:'firstChild'});
+keyboard.dispatch({type:'focus',target:'points',itemKey:null});keyboard.dispatch({type:'activate'});
+const focusedKey:string|null|undefined=keyboard.getState().focus?.currentItemKey;
+// @ts-expect-error focus movement and an explicit item are mutually exclusive
+keyboard.dispatch({type:'focus',move:'next',target:'points',itemKey:'item'});
+// @ts-expect-error focus state is readonly
+keyboard.getState().focus!.itemKey='changed';
+// @ts-expect-error activation does not accept arbitrary payloads
+keyboard.dispatch({type:'activate',payload:{}});
