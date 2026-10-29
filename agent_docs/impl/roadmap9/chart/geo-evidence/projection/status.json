@@ -35,7 +35,8 @@
       "artifact": "d951d3f0ca46121c637a518fc28ebeef23943b1b41272a58f020938758a8cdd8",
       "entries": 977,
       "differences": []
-    }
+    },
+    "postCommitDocs": 186
   },
   "initialFailure": {
     "tests": 13,
@@ -363,6 +364,10 @@
     {
       "file": "projection-size-24.log.gz",
       "sha256": "a50790afd8bb3b66b82236d52dd93beeefc49a98fdf5f8e27ce2672418b09b4c"
+    },
+    {
+      "file": "projection-docs.log.gz",
+      "sha256": "d9433c644e21f501848c3951c00a58f5fcc5fb0a25bf6cd83d88caf29451f142"
     }
   ],
   "remaining": [
@@ -371,5 +376,6 @@
     "Geo join, shared-arc LOD, camera and asset original-byte provenance",
     "Combined Geo whole coverage/render/browser qualification",
     "Common realistic3 integration remains assigned to root"
-  ]
+  ],
+  "sourceCommit": "690ce4522"
 }
