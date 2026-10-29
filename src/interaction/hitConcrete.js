@@ -44,12 +44,13 @@ function clipGeometry(clip) {
 }
 
 /** Consume validated concrete scene geometry, never semantic encodings or renderer objects. */
-export function prepareConcreteHitShape(node, metrics) {
+export function prepareConcreteHitShape(node, metrics, rootTransform = identity) {
   const p = node.properties, edge = stroke(p);
+  const origin = transformHitPoint(rootTransform, { x: node.offset[0], y: node.offset[1] });
   const fill = node.type === "image" || p.fill !== undefined && p.fill !== "none";
   return prepareHitShape({ geometry: geometry(node, metrics),
     paint: { fill: node.type === "text" ? fill || edge !== null : fill,
       stroke: node.type === "text" ? null : edge, opacity: p.opacity ?? 1 },
-    transform: [1, 0, 0, 1, ...node.offset],
-    clips: [node.clip, ...node.clips].map(clip => ({ geometry: clipGeometry(clip), transform: identity })) });
+    transform: [...rootTransform.slice(0, 4), origin.x, origin.y],
+    clips: [node.clip, ...(node.clips ?? [])].map(clip => ({ geometry: clipGeometry(clip), transform: rootTransform })) });
 }

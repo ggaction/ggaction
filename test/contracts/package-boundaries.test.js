@@ -17,6 +17,7 @@ import {
 } from "../../src/inspection.js";
 
 const PUBLIC_ENTRIES = Object.freeze({
+  "./interaction": Object.freeze({ runtime: "./src/interaction.js", types: "./types/interaction.d.ts", values: Object.freeze(["createInteractionSession"]) }),
   "./scene": Object.freeze({ runtime: "./src/scene.js", types: "./types/scene.d.ts", values: Object.freeze(["createTransitionScene", "renderTransitionScene"]) }),
   ".": Object.freeze({
     runtime: "./src/index.js",

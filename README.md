@@ -212,6 +212,7 @@ The package is ESM-only and requires Node.js 20 or later.
 | `ggaction/diagnostics` | Read structured error codes and resource details in Browser or Node |
 | `ggaction/svg` | Serialize a completed program to browser-safe SVG |
 | `ggaction/scene` | Read-only structured transition scenes and native Canvas scene drawing |
+| `ggaction/interaction` | Inspect marks and guides through browser events or headless CSS-point queries |
 | `ggaction-mcp` | Run the local read-only MCP authoring server over stdio in Node.js |
 
 All module entries include TypeScript declarations. The default, basic,

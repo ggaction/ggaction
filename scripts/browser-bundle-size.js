@@ -7,10 +7,12 @@ import { build } from "vite";
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 635_000, // Integrated inference, Flow and role effects, Node20: 634,881 gzip bytes.
   "ggaction/basic": 360_000, // Integrated shared effect preparation, Node20: 359,550 gzip bytes.
-  "ggaction/svg": 25_000
+  "ggaction/svg": 25_000,
+  "ggaction/interaction": 83_000 // Dedicated controller: Node20/24 measured 82,299 gzip bytes.
 });
 
 function minimalBrowserSource(specifier) {
+  if (specifier === "ggaction/interaction") return `import { createInteractionSession } from "ggaction/interaction"; globalThis.createChartInspection = createInteractionSession;`;
   if (specifier === "ggaction/svg") {
     return `
 import { renderToSVG } from "ggaction/svg";

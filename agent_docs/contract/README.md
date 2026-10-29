@@ -10,6 +10,10 @@ overview, use the generated [`ACTION_CATALOG.md`](ACTION_CATALOG.md).
 
 Shared formal types used by those contracts live in [`FORMAL_TYPES.md`](FORMAL_TYPES.md).
 
+Non-action package functions retain their own current contract. The advanced
+[interaction session](current/INTERACTION.md) is an ephemeral controller, so it
+does not add a chainable action or trace entry to `ACTION_INDEX.json`.
+
 ## Structure
 
 - `ACTION_INDEX.json`: canonical machine-readable inventory, lifecycle, status, coverage, and contract links.

@@ -5,6 +5,9 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "axis-label-text": { prefix: "materialization/axisLabelText", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Shared axis text and physical line grouping must retain semantic guide identity." },
+  "interaction-session": { prefix: "interaction/session", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Public session events, exact frame swaps and disposal must preserve immutable state and bounded host lifetimes." },
+  "interaction-scene-frame": { prefix: "interaction/sceneFrame", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Host frames require bounded own-data snapshots and canonical concrete validation before becoming current." },
   "scene-snapshot": { prefix: "sceneSnapshot.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Exact node associations must retain concrete scene cache identity without semantic materialization." },
   "hit-frame": { prefix: "interaction/hit", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Current frame lifecycle must reject stale updates, preserve atomic index replacement and release disposed state." },
   "hit-geometry": { prefix: "grammar/hit", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "CSS coordinate, transform and exact hit decisions must reject stale or non-finite geometry without mutating chart state." },

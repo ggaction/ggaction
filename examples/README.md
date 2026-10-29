@@ -732,6 +732,12 @@ Validate a directed flow graph, store its layout, then draw links and nodes.
 
 Representative actions: `createFlowData`, `layoutFlow`, `createFlowLinks`, `createFlowNodes`. [Documentation](https://ggaction.github.io/ggaction/tutorials/flows/).
 
+### [Inspect overlapping chart items](./inspect-chart/)
+
+Inspect the same final chart items through Canvas, SVG, or headless CSS points.
+
+Representative actions: `createPointMark`, `encodeX`, `encodeY`. [Documentation](https://ggaction.github.io/ggaction/recipes/inspect-chart/).
+
 ## Development fixtures
 
 The catalog includes every maintained public chart program. Getting Started

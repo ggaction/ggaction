@@ -77,7 +77,8 @@ export async function testPackageConsumer(options) {
       { id: "tutorials", run: () => testTutorialConsumers(consumer.directory) },
       { id: "bundle-full", run: () => bundle("ggaction") },
       { id: "bundle-basic", run: () => bundle("ggaction/basic") },
-      { id: "bundle-svg", run: () => bundle("ggaction/svg") }
+      { id: "bundle-svg", run: () => bundle("ggaction/svg") },
+      { id: "bundle-interaction", run: () => bundle("ggaction/interaction") }
     ], path.join(root, ".artifacts/consumers/qualification.json"));
     const mcp = results.mcp;
     const fullBundle = results["bundle-full"];
@@ -86,7 +87,7 @@ export async function testPackageConsumer(options) {
     return {
       ...consumer,
       mcp,
-      browserBundles: { full: fullBundle, basic: basicBundle, svg: svgBundle }
+      browserBundles: { full: fullBundle, basic: basicBundle, svg: svgBundle, interaction: results["bundle-interaction"] }
     };
   } finally {
     await consumer.cleanup();
