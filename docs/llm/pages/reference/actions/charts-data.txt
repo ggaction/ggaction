@@ -1939,6 +1939,8 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
 | `mode` | Optional / branch-dependent | `"compose" \| "replace" \| undefined` |
 | `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `items` | Optional / branch-dependent | `readonly string[] \| undefined` |
+| `empty` | Optional / branch-dependent | `"all" \| "none" \| undefined` |
 | `rows` | Optional / branch-dependent | `{ data: string; indices: readonly number[]; }` |
 | `field` | Optional / branch-dependent | `string` |
 | `channel` | Optional / branch-dependent | `"color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset"` |
@@ -1946,12 +1948,14 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `op` | Optional / branch-dependent | `"eq" \| "gt" \| "gte" \| "lt" \| "lte" \| "neq"` |
 | `value` | Optional / branch-dependent | `unknown` |
 | `values` | Optional / branch-dependent | `readonly unknown[]` |
-| `min` | Optional / branch-dependent | `string \| number` |
-| `max` | Optional / branch-dependent | `string \| number` |
-| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
 | `count` | Optional / branch-dependent | `number \| undefined` |
 | `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
 | `ties` | Optional / branch-dependent | `"all" \| "first" \| undefined` |
+| `min` | Optional / branch-dependent | `FilterBound` |
+| `max` | Optional / branch-dependent | `FilterBound \| undefined` |
+| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `minInclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `maxInclusive` | Optional / branch-dependent | `boolean \| undefined` |
 
 The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
@@ -2058,7 +2062,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `fontSize` | Optional / branch-dependent | `number \| undefined` |
 | `id` | Optional / branch-dependent | `string \| undefined` |
 | `target` | Optional / branch-dependent | `string \| ActionTargetList \| ScopedActionTarget \| undefined` |
-| `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
+| `select` | Optional / branch-dependent | `MarkSelectionSelector \| undefined` |
 | `selection` | Optional / branch-dependent | `string \| undefined` |
 | `color` | Optional / branch-dependent | `string \| undefined` |
 | `opacity` | Optional / branch-dependent | `number \| undefined` |

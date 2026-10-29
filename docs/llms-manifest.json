@@ -4,7 +4,7 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:e377ff82245a12d7120d00405b3d36d4fd08deda448ac870023c43a67dd3b7a3",
+    "contractId": "sha256:11befb09be2ba348cd09f3035cb5669aa8a35914c5d93861d4f917f473edff67",
     "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
@@ -1471,11 +1471,13 @@
       "headings": [
         "selection-and-highlighting",
         "mark-selection-and-highlighting",
+        "selecting-stable-item-keys",
         "editing-and-removing-stored-intent",
+        "selections-from-expressions",
         "related"
       ],
-      "bytes": 11206,
-      "sha256": "58ef3b2d5023e08359e272dbe17d7e3422837bba74781344b2fbc82fa1c4c834"
+      "bytes": 16138,
+      "sha256": "e88da2003612496ddabef73b3e0f62133e00122506478b5b3c5b8ff5e5cf3c54"
     },
     {
       "order": 88,
@@ -2162,8 +2164,8 @@
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 249422,
-      "sha256": "a0d22150054143c54f93ffb60c5d92500d7dc73d7006364a12782ace4c6ba1ac"
+      "bytes": 249734,
+      "sha256": "92ae96a79d7f69d35e35aeb581b28c81d90e65633ee22ad391cdcba2ee449f5b"
     },
     {
       "order": 121,
@@ -2457,8 +2459,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 10927,
-      "sha256": "08044c231bf3535a3759dbb8802b5f2736eb082f5ad1c60f85465ab0ae421575"
+      "bytes": 12653,
+      "sha256": "499db4c40e61bfc0fe21c3cf56200d58217b21ba04b5ab825c1ea2c00f008eaf"
     },
     {
       "order": 126,
@@ -2500,8 +2502,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 48098,
-      "sha256": "f0bf7fb89bd44907640114445642289af57b7a03c407b22ba3e32088312fa98e"
+      "bytes": 48123,
+      "sha256": "82d3695602919329bf3c0f24e080782bc65cef5f4fdf19f1c17b0d210d388501"
     },
     {
       "order": 128,
@@ -3061,6 +3063,7 @@
         "type-marklabelplacementleaderoptions",
         "type-marklabelselectionoptions",
         "type-markoutline",
+        "type-markselectionselector",
         "type-markselector",
         "type-markshadow",
         "type-meanconfidenceintervalmethod",
@@ -3332,8 +3335,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 454593,
-      "sha256": "3dce73f43578ca9973d8026c196cb70b52edd194c0b6f8e68080a683888daed1"
+      "bytes": 455533,
+      "sha256": "02fd51319f4acd1b4e5b0cdfb2eb12c99bc338a6afa2006d7b629591c127533d"
     },
     {
       "order": 129,
@@ -3708,7 +3711,7 @@
         "migration-from-v0013"
       ],
       "bytes": 3000,
-      "sha256": "37dab73a27daadd10f4257817890b970f6ec06208365e24442e9067f9a9677cf"
+      "sha256": "f74769f81df7eb72efa77d2039b2ad13806e3049ee09f2b59d04a823bd3acb4b"
     },
     {
       "order": 152,

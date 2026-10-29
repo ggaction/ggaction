@@ -21,6 +21,8 @@
 기준은 Calendar `c96637495`와 통합 `ff1ff820a`의 병합 `f0d674fe7`이다.
 병합 관련 theme/Calendar/source resource/boundary/discovery 검사는 169/169 통과했다.
 
+공개 연결의 구체화와 통합 기준은 [공개 연결 기록](edge-bundling-public.md)에 둔다.
+
 ## 최종 공개 계약
 
 `bundleGraphEdges({ id, graph, layout, method, options, coordinateSpace })`는 명시 graph와

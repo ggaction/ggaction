@@ -124,3 +124,19 @@ test("native-only source revisions share the same union while Basic keeps its sm
   assert.equal(basicChart().createCalendarPlot, undefined);
   assert.equal(basicChart().reviseData, undefined);
 });
+
+test("resource-only source revisions validate unconsumed expression selections at the final cell grain", () => {
+  const values = rows.map(row => ({ ...row, enabled: true }));
+  const p = chart().createCanvas().createData({ id: "samples", keyField: "id", values })
+    .createCalendarLayout({ date: "date", value: "value", start: "2024-02-28", end: "2024-02-29", timeZone: "UTC", weekStartsOn: 1, aggregate: "sum", missing: "empty" })
+    .createCalendarPlot({ color: false })
+    .selectMarks({ id: "enabled", target: "calendar", where: { version: 2, registry: "standard@1",
+      root: { type: "field", name: "enabled" } } });
+  const before = serializeProgram(p), trace = p.trace;
+  assert.throws(() => p.reviseData({ source: "samples", id: "invalid", values: values.map(row => ({ ...row, enabled: "yes" })) }), /boolean/i);
+  assert.equal(serializeProgram(p), before);
+  assert.equal(p.trace, trace);
+  const q = p.reviseData({ source: "samples", id: "next", values: values.map(row => ({ ...row, value: row.value * 2, enabled: false })) });
+  assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec, q.graphicSpec);
+  assert.equal(resource(q, "calendarLayout").result.cells.at(-1).value, 10);
+});

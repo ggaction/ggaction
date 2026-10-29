@@ -1,0 +1,101 @@
+{
+  "artifact": "7b44bd9f4051bb586b4720581f5e65373989767d9f4d611a5602749b16098524",
+  "records": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 824,
+      "minifiedBytes": 2335046,
+      "gzipBytes": 661152,
+      "gzip": [
+        {
+          "node": "v20.20.2",
+          "zlib": "1.3.1-e00f703",
+          "gzipBytes": 662620
+        },
+        {
+          "node": "v22.23.1",
+          "zlib": "1.2.12",
+          "gzipBytes": 661152
+        },
+        {
+          "node": "v24.22.1",
+          "zlib": "1.3.2.1-motley-285e94b",
+          "gzipBytes": 662620
+        }
+      ]
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 537,
+      "minifiedBytes": 1271722,
+      "gzipBytes": 369979,
+      "gzip": [
+        {
+          "node": "v20.20.2",
+          "zlib": "1.3.1-e00f703",
+          "gzipBytes": 370736
+        },
+        {
+          "node": "v22.23.1",
+          "zlib": "1.2.12",
+          "gzipBytes": 369979
+        },
+        {
+          "node": "v24.22.1",
+          "zlib": "1.3.2.1-motley-285e94b",
+          "gzipBytes": 370736
+        }
+      ]
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 37,
+      "minifiedBytes": 59445,
+      "gzipBytes": 20055,
+      "gzip": [
+        {
+          "node": "v20.20.2",
+          "zlib": "1.3.1-e00f703",
+          "gzipBytes": 20196
+        },
+        {
+          "node": "v22.23.1",
+          "zlib": "1.2.12",
+          "gzipBytes": 20055
+        },
+        {
+          "node": "v24.22.1",
+          "zlib": "1.3.2.1-motley-285e94b",
+          "gzipBytes": 20196
+        }
+      ]
+    },
+    {
+      "specifier": "ggaction/interaction",
+      "chunks": 1,
+      "modules": 139,
+      "minifiedBytes": 249755,
+      "gzipBytes": 82311,
+      "gzip": [
+        {
+          "node": "v20.20.2",
+          "zlib": "1.3.1-e00f703",
+          "gzipBytes": 82859
+        },
+        {
+          "node": "v22.23.1",
+          "zlib": "1.2.12",
+          "gzipBytes": 82311
+        },
+        {
+          "node": "v24.22.1",
+          "zlib": "1.3.2.1-motley-285e94b",
+          "gzipBytes": 82859
+        }
+      ]
+    }
+  ]
+}

@@ -63,6 +63,7 @@ import { STORED_RESOURCE_KINDS } from "../core/resourceReference.js";
 import { requiredTraceExtension } from "../core/extensionRegistry.js";
 import { resolveDatasetReference } from "../selectors/datasets.js";
 import { normalizeMarkSelector, validateRowSelectionDataset } from "../grammar/markSelection.js";
+import { normalizeSelectionSelector } from "../grammar/selectionExpression.js";
 import { highlightTargets } from "../selectors/selectionTargets.js";
 import { parseSemanticPath } from "../grammar/schemas/semanticPath.js";
 import { validateStoredSemanticValue } from "../actions/primitives/semantic.js";
@@ -575,7 +576,8 @@ export function validateProgramState(program, path, { allowMissingLookupSchemas 
       exactKeys(selection.projection, Object.hasOwn(selection.projection, "data") ? ["data"] : [], path);
       if (resource.options.mode === "row-keys" && !selection.projection.data) throw invalidSnapshot("Row-key selection requires a data projection.", path);
     }
-    normalizeMarkSelector(legacy ? selection.selector : storedSelectionSelector(program, selection));
+    if (legacy) normalizeMarkSelector(selection.selector);
+    else normalizeSelectionSelector(storedSelectionSelector(program, selection));
     if (Object.hasOwn(selection, "sourceSelection")) validateUserId(selection.sourceSelection, "Composite selection owner");
   }
   resources.set("selection", new Map(Object.entries(selections)));

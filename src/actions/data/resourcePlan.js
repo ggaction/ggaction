@@ -1,3 +1,4 @@
+import { validateSelectionExpressionTargets } from "../../materialization/selection/expression.js";
 import { requireLayer } from "../../selectors/layers.js";
 import { layerResourceBindings, mapLayerResourceBindings } from "../../core/resourceReferences.js";
 import { orderResourceDependencies, validateResourceGraph } from "../../materialization/resourceState.js";
@@ -105,5 +106,6 @@ export function reviseSourceResourceInputs(program, replacements, nativeMarks) {
     if (layer.mark.type === "partition") next = prunePartitionSelections(next, id,
       resolveHierarchyPlot(next, layer, next.markConfigs[id].hierarchyPlot), program);
   }
+  validateSelectionExpressionTargets(next, [...nativeMarks, ...plan.marks]);
   return next;
 }

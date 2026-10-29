@@ -81,6 +81,16 @@
       "type": "\"item\" | \"stack\" | undefined"
     },
     {
+      "name": "items",
+      "required": false,
+      "type": "readonly string[] | undefined"
+    },
+    {
+      "name": "empty",
+      "required": false,
+      "type": "\"all\" | \"none\" | undefined"
+    },
+    {
       "name": "rows",
       "required": false,
       "type": "{ data: string; indices: readonly number[]; }"
@@ -116,21 +126,6 @@
       "type": "readonly unknown[]"
     },
     {
-      "name": "min",
-      "required": false,
-      "type": "string | number"
-    },
-    {
-      "name": "max",
-      "required": false,
-      "type": "string | number"
-    },
-    {
-      "name": "inclusive",
-      "required": false,
-      "type": "boolean | undefined"
-    },
-    {
       "name": "count",
       "required": false,
       "type": "number | undefined"
@@ -144,11 +139,37 @@
       "name": "ties",
       "required": false,
       "type": "\"all\" | \"first\" | undefined"
+    },
+    {
+      "name": "min",
+      "required": false,
+      "type": "FilterBound"
+    },
+    {
+      "name": "max",
+      "required": false,
+      "type": "FilterBound | undefined"
+    },
+    {
+      "name": "inclusive",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "minInclusive",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "maxInclusive",
+      "required": false,
+      "type": "boolean | undefined"
     }
   ],
   "callPatterns": [
     "filterMarks({ field | channel | property, op, ...operands })",
-    "filterMarks({ target?, mode: replace | compose, ...selector })"
+    "filterMarks({ target?, mode: replace | compose, ...selector })",
+    "filterMarks({ target?, items: logicalKeys, empty?: none | all })"
   ],
   "snippet": "program.filterMarks({ field: \"value\", op: \"gt\", value: 0 })",
   "errors": [],

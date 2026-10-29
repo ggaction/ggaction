@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 661_000, // Combined Calendar and theme: Node20/24 660,081 gzip bytes.
-  "ggaction/basic": 370_000, // Shared theme and revision boundary: Node20/24 369,582 gzip bytes.
+  ggaction: 663_000, // Calendar, selection and theme owners: Node20 662,620 bytes.
+  "ggaction/basic": 371_000, // Calendar source-resource closure: Node20 370,736 bytes.
   "ggaction/svg": 25_000,
   "ggaction/interaction": 83_000 // Dedicated controller; measured independently.
 });
