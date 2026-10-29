@@ -4,8 +4,8 @@
   "sourceStatus": "checked-out-repository-documentation",
   "provenance": {
     "status": "development",
-    "contractId": "sha256:6e1077bf9e693cc955b0a823d0cfb907eea64f5b599fff8a8a2bb3edf7c59ab0",
-    "sourceCommit": "6167df3a215bd25367ece40e6376f673e710ab80",
+    "contractId": "sha256:7e54727b1a1b9740e2a6ce1dd5a0bc5f7fb227b1e3418a8d6d703605b8188d4e",
+    "sourceCommit": null,
     "baseline": {
       "tag": "v0.0.13",
       "commit": "6115fdd286303fc77e60a92fa3baf634cb282b8c",
@@ -14,7 +14,7 @@
     "manifest": "doc-provenance.json"
   },
   "bundle": "llms-full.txt",
-  "sectionCount": 162,
+  "sectionCount": 164,
   "sections": [
     {
       "order": 1,
@@ -46,8 +46,8 @@
         "runnable-repository-examples",
         "next"
       ],
-      "bytes": 6213,
-      "sha256": "4bd83b3722396debd4618200a6f7d6b08ce90c6ea1e087c3f6661dc1496a7664"
+      "bytes": 6179,
+      "sha256": "d748b6211864a204a07ac7b865c00e590c7476464e1e6d4ea5e28c632c13c1a3"
     },
     {
       "order": 3,
@@ -65,8 +65,8 @@
         "long-requests-and-execution-recovery",
         "related"
       ],
-      "bytes": 12058,
-      "sha256": "f3bd003d27a591f54243d4abc26e980c7e7b89a2d4e7f422ac3e38e65a94ae72"
+      "bytes": 11986,
+      "sha256": "c14c078d0d79db1cb04ee38a587d53a79e71b64caa952352b8ea4e083bc94523"
     },
     {
       "order": 4,
@@ -109,8 +109,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 5473,
-      "sha256": "60e808bd5776038e43738431e949dfc2527ef05a51ae206be8d32affea5bafae"
+      "bytes": 5405,
+      "sha256": "4ac0f325ea99e95470efc5050908e45eb7089728c559d03dbdd5e0db573ea80b"
     },
     {
       "order": 7,
@@ -125,8 +125,8 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 3562,
-      "sha256": "80b89c8187261865b4c2556d609f0661d0c0411140104cc9d712ca2d10f768bb"
+      "bytes": 3545,
+      "sha256": "5655d7bf6acbfb17b5965e3a4731cee04676cffc3d9c8de83934870256c2ed6c"
     },
     {
       "order": 8,
@@ -140,8 +140,8 @@
         "closed-radar-paths",
         "related"
       ],
-      "bytes": 3449,
-      "sha256": "9ae9e14ab40d4ef6d9f7db3bf2dc2f4e37690a9d3dd27c8d9a8ad4ab2d3af765"
+      "bytes": 3432,
+      "sha256": "91d564cdcdc08e8f69f8282b654454a282d9cae2aef57663a8aa2bea111d0f5e"
     },
     {
       "order": 9,
@@ -161,8 +161,8 @@
         "editing-an-arc",
         "related"
       ],
-      "bytes": 9986,
-      "sha256": "14c7c35a5368c1a9aa45f06c27cdeb87afc410f3b2371a57ce6892067b9ba3ea"
+      "bytes": 9969,
+      "sha256": "799673eebd41d592e7361609ed16cdef9d06ff04ee638e242b0b72c17968f795"
     },
     {
       "order": 10,
@@ -178,8 +178,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4781,
-      "sha256": "1bd255de48ec559338ec9b3ece72f076df0ea2eefac8b7bbf7fddb3347225d6c"
+      "bytes": 4713,
+      "sha256": "4e9c30ed0e167a121bce3b5fe3c984461b61e6625cd10487efd16d6e7298b6e1"
     },
     {
       "order": 11,
@@ -193,8 +193,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4380,
-      "sha256": "37b035c28290eb5548f456c282833e5d2b3f0c5cc07d942b2151ee2486ef2d18"
+      "bytes": 4312,
+      "sha256": "4b8499a8dab13df50c88937cf96b5e7f21f3c69a892be585a94e7d9a1bc88ebb"
     },
     {
       "order": 12,
@@ -209,8 +209,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4153,
-      "sha256": "0975352328a1939cd16d03b03560fcaafb73530efcedae65b0daca0d7cc0d1cd"
+      "bytes": 4085,
+      "sha256": "e8347e129611861f5ae5a977e72a6e2790ec6d55bc0509e81ffe429caf795c65"
     },
     {
       "order": 13,
@@ -224,8 +224,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4216,
-      "sha256": "302ffbf0ea9c9c32f7c9ab6ac545dbd8520864838e5ea155222d269431a64fbd"
+      "bytes": 4165,
+      "sha256": "23d188d0a959605ea220acc426e2994f190e443f16a946c9b26d3bde06d6284d"
     },
     {
       "order": 14,
@@ -239,8 +239,8 @@
         "separate-series-identity-placement-and-color",
         "keep-gaps-explicit"
       ],
-      "bytes": 3527,
-      "sha256": "b8f7134a2c32858bc367b805e15473c4f5fa6420ddf581dcc6a50d5fdbd4dda5"
+      "bytes": 3510,
+      "sha256": "41573a038105b690c378d6214004934bb32811dbce7ff07283accff006c6d116"
     },
     {
       "order": 15,
@@ -256,8 +256,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 6267,
-      "sha256": "f61ce436076e78d46f918207874dd9ca9b770f88f12185bca1d3c7ea62e65131"
+      "bytes": 6182,
+      "sha256": "06f4de427c2813df1a0740528a42bed75004361f3702de932730a6d0699e863c"
     },
     {
       "order": 16,
@@ -272,8 +272,8 @@
         "revise-without-mutation",
         "key-action-trace"
       ],
-      "bytes": 4650,
-      "sha256": "b6716b9fa8c0d3dd06937d7de837bb9e63b9146162bc3943fa1dfba3f8cb3a4a"
+      "bytes": 4599,
+      "sha256": "9092e58e9cc267e9a0d0d360c53f4ddddea88d6a4c84e13693c1d9abe644780a"
     },
     {
       "order": 17,
@@ -288,8 +288,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3587,
-      "sha256": "5c6f083e60c814459bc87cfd68b48ca3c639ab9ff94a9f24157f09f34bf5b97b"
+      "bytes": 3536,
+      "sha256": "6b889b0612c06bf516ae74fa88a41c061e8acc93b51246bbb6fc2c47987bbaa8"
     },
     {
       "order": 18,
@@ -304,8 +304,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3811,
-      "sha256": "827a2ad83f6980337524574989904d7b9aca71e3f5893fad58103d461b226bd7"
+      "bytes": 3760,
+      "sha256": "8203b88cd60161ef9a56272782fef7b9b482715cfdedec454f16be09558cc823"
     },
     {
       "order": 19,
@@ -321,8 +321,8 @@
         "choose-filtering-reusable-selection-or-highlighting",
         "run-and-continue"
       ],
-      "bytes": 6372,
-      "sha256": "1be904380f86e519334ca62b1f3855dd7162ae50e4f948a5c2a5d6929d735f9c"
+      "bytes": 6321,
+      "sha256": "1d4b840132ca223a88d704b6afd4b751a45527e7895067f58c9aa3833dfa5d00"
     },
     {
       "order": 20,
@@ -348,8 +348,8 @@
         "missing-values-and-grouping",
         "revise-the-statistical-source"
       ],
-      "bytes": 3958,
-      "sha256": "ab133dc3481cf4f749e66cd238696738129f8d5e9475771a5813d0a5b328280f"
+      "bytes": 3941,
+      "sha256": "c9df798002434855d5fd3ab095b3d1978dfbe8faf3b416df044acb76200b098d"
     },
     {
       "order": 22,
@@ -873,8 +873,8 @@
         "createwindowdata-id-source-partitionby-sortby-operations-temporalunit",
         "related"
       ],
-      "bytes": 5887,
-      "sha256": "a0e6c5541bc7a78c9f8071bf74833debc4728cb9fbaedded5f99aaf162cf1ea4"
+      "bytes": 5870,
+      "sha256": "e32b781ad9b4cde18538b7fa06302a6e39d1dbfa750e79c33c0ca9eef6309274"
     },
     {
       "order": 55,
@@ -1250,8 +1250,8 @@
         "path-layer-color",
         "shared-color-legends"
       ],
-      "bytes": 8499,
-      "sha256": "fba40c4ec0e6aa5b128ad70ba86f4d235088e05fc60b910b61a7f30f93def305"
+      "bytes": 8465,
+      "sha256": "85740351586132de9a08964b0e5925b65180f7c2cd7d6dd9709c68b2807547d8"
     },
     {
       "order": 74,
@@ -1302,8 +1302,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 7299,
-      "sha256": "7e249a57c121380f035adb9a5060c1fcf2d800288ee9b91b614daa9b7385281b"
+      "bytes": 7282,
+      "sha256": "4e1adf705e355fb8128790983aa7082ca699e9644146b94123c084ef3bb55e0c"
     },
     {
       "order": 77,
@@ -1384,8 +1384,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 5794,
-      "sha256": "eca2a78106f29ea96c88d3dfeed5c6b37740966d2216b02e87694288c74ab447"
+      "bytes": 5777,
+      "sha256": "22ebb615ed2463a380bd3ab86fd8810b3a82befbf269d45aa40246fa60602443"
     },
     {
       "order": 82,
@@ -1991,8 +1991,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 36315,
-      "sha256": "b6a5040e5788995791c5e73490d8d5ba2ae85f7e10d28c50351dfbba07b45f5b"
+      "bytes": 36623,
+      "sha256": "d968a053ee7040820dc7baeb4a4ce16d8cc55823f26579ecdc06f0b46d27f843"
     },
     {
       "order": 118,
@@ -2127,12 +2127,13 @@
         "createcontourdata",
         "createdensitycontourdata",
         "editcontourdata",
+        "createcalendarlayout",
         "focused-core-data-editing",
         "focused-channel-scale-editors",
         "related"
       ],
-      "bytes": 247385,
-      "sha256": "c1ba07d865dd46c696bf880009b02593b86aa17ffb1c36c86555c88da7e684f8"
+      "bytes": 249036,
+      "sha256": "ffed687c821eb8dc1884efda94552bc0c19179c48d2bc22ba2b3a3cbce417167"
     },
     {
       "order": 119,
@@ -2185,10 +2186,12 @@
         "editflowlinks",
         "createcontourmark",
         "editcontourmark",
+        "createcalendarplot",
+        "editcalendarplot",
         "related"
       ],
-      "bytes": 109208,
-      "sha256": "665347819c76d9013f238977e6c3cf01b57a1611024da1722a3964988eef8d26"
+      "bytes": 112801,
+      "sha256": "4925d246536d5bca60ec2b28ae8af488c4f8edb2d3166e57ca50959d7d2da022"
     },
     {
       "order": 120,
@@ -2466,8 +2469,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 43539,
-      "sha256": "aca7584e93984ddfc987bf5782d68e39b7ea7d1cd5d3173ab5f00005ade55dd3"
+      "bytes": 43852,
+      "sha256": "a69b882d7c57ba2c3c23daab984d1f7472a3bc7dd2664154429dca1ce8d19418"
     },
     {
       "order": 126,
@@ -2548,7 +2551,15 @@
         "type-caxisticks",
         "type-ccategoricalguides",
         "type-cpathguides",
+        "type-calendarboundarypaint",
+        "type-calendarcellpaint",
         "type-calendardaydomain",
+        "type-calendardayoptions",
+        "type-calendardefinition",
+        "type-calendarlabelpaint",
+        "type-calendarlabelrole",
+        "type-calendarlayoutpatch",
+        "type-calendarplotoptions",
         "type-canvasoptions",
         "type-cartesianaxesoptions",
         "type-cartesianaxislabelcolormap",
@@ -2616,6 +2627,7 @@
         "type-createaxesoptions",
         "type-createbarplotoptions",
         "type-createbeeswarmplotoptions",
+        "type-createcalendarlayoutoptions",
         "type-createcontourdataoptions",
         "type-createcoordinateoptions",
         "type-createdataoptions",
@@ -2748,6 +2760,7 @@
         "type-editbin2ddataoptions",
         "type-editbindataoptions",
         "type-editboxplotoptions",
+        "type-editcalendarplotoptions",
         "type-editcolorscaleoptions",
         "type-editcompletedataoptions",
         "type-editcompositionlayoutoptions",
@@ -3288,8 +3301,8 @@
         "type-zerosupportingpositionscaletype",
         "related"
       ],
-      "bytes": 448934,
-      "sha256": "f21b938c38f08f9d2b0d3db96bef493f956a2dec8884f9562b21b8989077cb58"
+      "bytes": 453726,
+      "sha256": "43a74fbaa6957d667c8534f19ff58f471cd3714bef86d62c7edea743319da0ec"
     },
     {
       "order": 127,
@@ -3323,8 +3336,8 @@
         "scale-materialization",
         "stored-selection-resources-and-concrete-identity"
       ],
-      "bytes": 20980,
-      "sha256": "5242969d869fbb942c3f0d524b19c5cb25ce060f79ba455e63924f8980a0e2e6"
+      "bytes": 20874,
+      "sha256": "ba1d2ca4c27e8c8d512ce3ad48bc9e0d1274fe2d7721055850e453fc4f88c0d1"
     },
     {
       "order": 129,
@@ -3407,8 +3420,8 @@
         "name-the-complete-facet-field",
         "independently-packed-panels"
       ],
-      "bytes": 30024,
-      "sha256": "45be3ca7a7115cbcbd6f3381601490cf07b33be75b56ff7a85824da9849cd07d"
+      "bytes": 29956,
+      "sha256": "3ef16849d2d618f8db9ffa9687af0cf069e4d68cf3d08c4a9b58a5169bb1c162"
     },
     {
       "order": 134,
@@ -3454,8 +3467,8 @@
         "layoutlabelsoptions",
         "removelabellayoutoptions"
       ],
-      "bytes": 2614,
-      "sha256": "a2dd9fbef237ddeb871457235d25e90de45617d389b97d4f1df371bf24aec8e0"
+      "bytes": 2597,
+      "sha256": "02db5a24c278bbcceabe71c7bf7d00978ead52edaae425f9124f186a99ab011b"
     },
     {
       "order": 137,
@@ -3663,8 +3676,8 @@
         "choose-the-matching-documentation",
         "migration-from-v0013"
       ],
-      "bytes": 3033,
-      "sha256": "4050eab087e41d8364aff640d37ede374c7db05ce460a535b9c464e788a8f2dd"
+      "bytes": 2983,
+      "sha256": "30fc4041ec806152cb2fc90a451651f8dda6267ef5a6c04db92d4cecac3bd8d4"
     },
     {
       "order": 150,
@@ -3695,8 +3708,8 @@
         "complete-program",
         "add-a-pixel-alpha-shadow"
       ],
-      "bytes": 6673,
-      "sha256": "816ba4f4d1d53af9b76c3e32da2e1017be765d576729bb7685fb1157c13ab78a"
+      "bytes": 6639,
+      "sha256": "ee5a407539366319318824aee2ed8b4fc4772ec8c9b4eedbcb05d1e8f4ea965d"
     },
     {
       "order": 152,
@@ -3709,8 +3722,8 @@
         "draw-the-prepared-text",
         "change-labels-or-fonts"
       ],
-      "bytes": 3387,
-      "sha256": "cd07105776e1036370c7497d0b663b21b9aefdfec8a6a2d29cc1ab06b8f96395"
+      "bytes": 3336,
+      "sha256": "9ee132505e08528586933ed4505374f99c8a9f18f27dbd3bda854c04e82daecb"
     },
     {
       "order": 153,
@@ -3747,8 +3760,8 @@
         "compare-rectangle-layouts",
         "edit-data-and-remove-views"
       ],
-      "bytes": 5486,
-      "sha256": "d19c541bb5a4682affe9d05e6eac6353712f485948e1f1ca0695edac10c0d252"
+      "bytes": 5452,
+      "sha256": "18b0b8b15e3efa8e392174007c89ab8384f8d70e35416117d34e789fb33336a3"
     },
     {
       "order": 155,
@@ -3806,8 +3819,8 @@
         "focus-and-return",
         "share-intervals-with-a-sunburst"
       ],
-      "bytes": 4386,
-      "sha256": "299b1f6003b50894a6671c1208188a6b7311c1854a0e4e3fba15b025c0085282"
+      "bytes": 4369,
+      "sha256": "8c2b250e27ebb3df3f3cdb853d811ec3ab22e402c432ffb1da80c4c947da7327"
     },
     {
       "order": 159,
@@ -3837,8 +3850,8 @@
       "headings": [
         "draw-conserved-flows"
       ],
-      "bytes": 3692,
-      "sha256": "b6e264989f8582f02857d452f81fc72a70bbeb83ee6ca949ccd329b2f34eb069"
+      "bytes": 3675,
+      "sha256": "98445fd1585ec93e52f33ba8e69b10a8dd5585dbcb0c07ed9054b794ba2fbad6"
     },
     {
       "order": 161,
@@ -3864,8 +3877,34 @@
       "headings": [
         "draw-levels-bands-and-density"
       ],
-      "bytes": 2908,
-      "sha256": "52e8bf77572c8733b973017b1d2e2009040c35638fc12877b5857f5858aede9b"
+      "bytes": 2891,
+      "sha256": "eb563d2a0c5922768b9d1ed7ebc30d6275eb25b0114464e28141f8d6e7ffaafc"
+    },
+    {
+      "order": 163,
+      "title": "Calendar Plots",
+      "route": "/api/calendar/",
+      "source": "api/calendar.md",
+      "headings": [
+        "calendar-plots",
+        "createcalendarlayout",
+        "createcalendarplot",
+        "editcalendarplot",
+        "update-the-calendar-data-and-layout"
+      ],
+      "bytes": 6334,
+      "sha256": "8e88eb1f99d510f81b32de0043e77fd64eef6a0527135597a0f0a987ff8dba55"
+    },
+    {
+      "order": 164,
+      "title": "Place Observations on a Calendar",
+      "route": "/tutorials/calendar/",
+      "source": "tutorials/calendar.md",
+      "headings": [
+        "place-observations-on-a-calendar"
+      ],
+      "bytes": 2862,
+      "sha256": "537a8236e13a55ef83407f3fee72980c5815e6bb7edc0c2cdf07726a02821253"
     }
   ]
 }

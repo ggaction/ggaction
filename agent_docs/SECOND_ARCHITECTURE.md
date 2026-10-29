@@ -3350,3 +3350,12 @@ unpacked5,875,172 bytes와 같은 minified bytes의 gzip Full643,501 / Basic361,
 기준으로 한도를 880 / packed1,278,000 / unpacked5,876,000 및 Full644,000 / Basic362,000으로
 갱신한다. Packed 한도는 측정값의 1,000-byte 경계가 3 bytes밖에 남지 않아 다음 1,000-byte
 경계를 사용하며 최종 tar에서 다시 검증한다. SVG25,000 및 source coverage floors는 유지한다.
+
+### Calendar layout owner
+
+Calendar civil-day grouping and cell/month topology belong to `src/grammar/calendar/`.
+`src/actions/calendar/` composes explicit resource and graphic actions; `src/materialization/calendar/`
+validates stored data-backed layouts and emits backend-neutral Rect/Path/Text. The existing layout
+resource dispatch recognizes `input.kind:data` with `options.method:calendar`. Final day selection,
+color-scale domains, typography and source revision closure use their existing common consumers.
+Exact public behavior belongs to [Calendar](contract/current/CALENDAR.md).

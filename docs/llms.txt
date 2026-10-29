@@ -226,3 +226,5 @@ requirements after resolving each part.
 - Draw Conserved Flows: ./tutorials/flows/
 - Contours and Two-Dimensional Density: ./api/contours/
 - Draw Levels, Bands and Density: ./tutorials/contours/
+- Calendar Plots: ./api/calendar/
+- Place Observations on a Calendar: ./tutorials/calendar/

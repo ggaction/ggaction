@@ -1,0 +1,3 @@
+export type CalendarDefinition = CalendarDayOptions & { readonly date: string } &
+  ({ readonly aggregate: "count"; readonly value?: never }
+  | { readonly aggregate: "sum" | "mean" | "median" | "min" | "max"; readonly value: string });

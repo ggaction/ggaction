@@ -67,6 +67,9 @@ interface ChartProgramActions {
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
+  editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;
@@ -1653,6 +1656,37 @@ type CPathGuides = Omit<CartesianPathGuideOptions, "axes"> & {
 
 Related types: [`CartesianPathGuideOptions`](#type-cartesianpathguideoptions) · [`CAxes`](#type-caxes).
 
+### `CalendarBoundaryPaint` {#type-calendarboundarypaint}
+
+<details markdown="1">
+<summary>Expand CalendarBoundaryPaint</summary>
+
+```typescript
+export interface CalendarBoundaryPaint {
+  readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
+### `CalendarCellPaint` {#type-calendarcellpaint}
+
+<details markdown="1">
+<summary>Expand CalendarCellPaint</summary>
+
+```typescript
+export interface CalendarCellPaint {
+  readonly fill?: FillPaint; readonly emptyFill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number;
+  readonly opacity?: number; readonly gap?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
 ### `CalendarDayDomain` {#type-calendardaydomain}
 
 <details markdown="1">
@@ -1670,6 +1704,94 @@ export interface CalendarDayDomain {
 ```
 
 </details>
+
+### `CalendarDayOptions` {#type-calendardayoptions}
+
+<details markdown="1">
+<summary>Expand CalendarDayOptions</summary>
+
+```typescript
+export interface CalendarDayOptions {
+  readonly start: string; readonly end: string; readonly timeZone: string;
+  readonly weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6; readonly missing: "empty" | "omit";
+}
+```
+
+</details>
+
+### `CalendarDefinition` {#type-calendardefinition}
+
+<details markdown="1">
+<summary>Expand CalendarDefinition</summary>
+
+```typescript
+export type CalendarDefinition = CalendarDayOptions & { readonly date: string } &
+  ({ readonly aggregate: "count"; readonly value?: never }
+  | { readonly aggregate: "sum" | "mean" | "median" | "min" | "max"; readonly value: string });
+```
+
+</details>
+
+Related types: [`CalendarDayOptions`](#type-calendardayoptions).
+
+### `CalendarLabelPaint` {#type-calendarlabelpaint}
+
+<details markdown="1">
+<summary>Expand CalendarLabelPaint</summary>
+
+```typescript
+export interface CalendarLabelPaint {
+  readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+```
+
+</details>
+
+Related types: [`FillPaint`](#type-fillpaint) · [`MarkOutline`](#type-markoutline) · [`MarkShadow`](#type-markshadow).
+
+### `CalendarLabelRole` {#type-calendarlabelrole}
+
+<details markdown="1">
+<summary>Expand CalendarLabelRole</summary>
+
+```typescript
+export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+```
+
+</details>
+
+### `CalendarLayoutPatch` {#type-calendarlayoutpatch}
+
+<details markdown="1">
+<summary>Expand CalendarLayoutPatch</summary>
+
+```typescript
+export type CalendarLayoutPatch = Partial<CalendarDayOptions> & { readonly date?: string; readonly value?: string;
+  readonly aggregate?: "count" | "sum" | "mean" | "median" | "min" | "max" };
+```
+
+</details>
+
+Related types: [`CalendarDayOptions`](#type-calendardayoptions).
+
+### `CalendarPlotOptions` {#type-calendarplotoptions}
+
+<details markdown="1">
+<summary>Expand CalendarPlotOptions</summary>
+
+```typescript
+export interface CalendarPlotOptions {
+  readonly id?: string; readonly layout?: string; readonly coordinate?: string; readonly clip?: boolean;
+  readonly color?: false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+  readonly cells?: CalendarCellPaint; readonly monthBoundary?: false | CalendarBoundaryPaint;
+  readonly labels?: false | Readonly<Partial<Record<CalendarLabelRole, false | CalendarLabelPaint>>>;
+}
+```
+
+</details>
+
+Related types: [`ContinuousColorScaleOptions`](#type-continuouscolorscaleoptions) · [`DiscretizedColorScaleOptions`](#type-discretizedcolorscaleoptions) · [`CalendarCellPaint`](#type-calendarcellpaint) · [`CalendarBoundaryPaint`](#type-calendarboundarypaint) · [`CalendarLabelRole`](#type-calendarlabelrole) · [`CalendarLabelPaint`](#type-calendarlabelpaint).
 
 ### `CanvasOptions` {#type-canvasoptions}
 
@@ -2927,6 +3049,19 @@ export type CreateBeeswarmPlotOptions = {
 </details>
 
 Related types: [`BasicColorChannel`](#type-basiccolorchannel) · [`BasicSizeChannel`](#type-basicsizechannel) · [`BasicShapeChannel`](#type-basicshapechannel) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape) · [`FilledMarkStroke`](#type-filledmarkstroke) · [`BeeswarmPackingOptions`](#type-beeswarmpackingoptions) · [`ColorMappedPointGuideOptions`](#type-colormappedpointguideoptions) · [`RugMeasureChannel`](#type-rugmeasurechannel) · [`StripCategoryChannel`](#type-stripcategorychannel).
+
+### `CreateCalendarLayoutOptions` {#type-createcalendarlayoutoptions}
+
+<details markdown="1">
+<summary>Expand CreateCalendarLayoutOptions</summary>
+
+```typescript
+export type CreateCalendarLayoutOptions = CalendarDefinition & { readonly id?: string; readonly data?: string };
+```
+
+</details>
+
+Related types: [`CalendarDefinition`](#type-calendardefinition).
 
 ### `CreateContourDataOptions` {#type-createcontourdataoptions}
 
@@ -5602,6 +5737,19 @@ export interface EditBoxPlotOptions {
 
 Related types: [`BoxPlotSummaryFields`](#type-boxplotsummaryfields) · [`BoxPlotPositionChannel`](#type-boxplotpositionchannel) · [`BoxPlotWhisker`](#type-boxplotwhisker) · [`BoxPlotWidth`](#type-boxplotwidth) · [`RectStyleDetails`](#type-rectstyledetails) · [`StrokeStyleDetails`](#type-strokestyledetails) · [`PointShape`](#type-pointshape).
 
+### `EditCalendarPlotOptions` {#type-editcalendarplotoptions}
+
+<details markdown="1">
+<summary>Expand EditCalendarPlotOptions</summary>
+
+```typescript
+export interface EditCalendarPlotOptions extends Omit<CalendarPlotOptions, "id"> { readonly target?: string; }
+```
+
+</details>
+
+Related types: [`CalendarPlotOptions`](#type-calendarplotoptions).
+
 ### `EditColorScaleOptions` {#type-editcolorscaleoptions}
 
 <details markdown="1">
@@ -6273,12 +6421,12 @@ Related types: [`FocusedDerivedDataEdit`](#type-focusedderiveddataedit) · [`Int
 ```typescript
 export type EditLayoutOptions = { target?: string } & (
   { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
-  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions });
+  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch });
 ```
 
 </details>
 
-Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions) · [`GraphFixedOptions`](#type-graphfixedoptions) · [`GraphCircularOptions`](#type-graphcircularoptions) · [`GraphForceOptions`](#type-graphforceoptions) · [`FlowLayoutOptions`](#type-flowlayoutoptions).
+Related types: [`HierarchyOrder`](#type-hierarchyorder) · [`HierarchyTreeOptions`](#type-hierarchytreeoptions) · [`HierarchyTreemapOptions`](#type-hierarchytreemapoptions) · [`GraphFixedOptions`](#type-graphfixedoptions) · [`GraphCircularOptions`](#type-graphcircularoptions) · [`GraphForceOptions`](#type-graphforceoptions) · [`FlowLayoutOptions`](#type-flowlayoutoptions) · [`CalendarLayoutPatch`](#type-calendarlayoutpatch).
 
 ### `EditLegendBlockOptions` {#type-editlegendblockoptions}
 

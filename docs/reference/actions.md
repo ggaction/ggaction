@@ -48,6 +48,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createBin2DData`](./actions/charts-data.md#createbin2ddata) | H2 | user-facing | core |
 | [`createBinData`](./actions/statistics.md#createbindata) | H1 | user-facing | statistics |
 | [`createBoxPlot`](./actions/statistics.md#createboxplot) | H0, H1 | user-facing | statistics |
+| [`createCalendarLayout`](./actions/charts-data.md#createcalendarlayout) | H2 | user-facing | core |
+| [`createCalendarPlot`](./actions/marks.md#createcalendarplot) | H2 | user-facing | marks |
 | [`createCanvas`](./actions/charts-data.md#createcanvas) | H3 | user-facing | core |
 | [`createCompleteData`](./actions/statistics.md#createcompletedata) | H1 | user-facing | statistics |
 | [`createComputedData`](./actions/statistics.md#createcomputeddata) | H1 | user-facing | statistics |
@@ -170,6 +172,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editBin2DData`](./actions/charts-data.md#editbin2ddata) | H2 | user-facing | core |
 | [`editBinData`](./actions/statistics.md#editbindata) | H1, H3 | user-facing | statistics |
 | [`editBoxPlot`](./actions/statistics.md#editboxplot) | H1, H3 | user-facing | statistics |
+| [`editCalendarPlot`](./actions/marks.md#editcalendarplot) | H3 | user-facing | marks |
 | [`editCanvas`](./actions/charts-data.md#editcanvas) | H3 | user-facing | core |
 | [`editColorScale`](./actions/charts-data.md#editcolorscale) | H2 | user-facing | core |
 | [`editCompleteData`](./actions/statistics.md#editcompletedata) | H1, H3 | user-facing | statistics |

@@ -1921,6 +1921,54 @@ export interface FlowLinksOptions {
 export interface EditFlowNodesOptions extends Omit<FlowNodesOptions, "id"> { readonly target?: string; }
 export interface EditFlowLinksOptions extends Omit<FlowLinksOptions, "id"> { readonly target?: string; }
 /** Grid coordinates are sample centers. Values are row-major; null excludes adjoining cells. */
+export interface CalendarDayOptions {
+  readonly start: string; readonly end: string; readonly timeZone: string;
+  readonly weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6; readonly missing: "empty" | "omit";
+}
+export type CalendarDefinition = CalendarDayOptions & { readonly date: string } &
+  ({ readonly aggregate: "count"; readonly value?: never }
+  | { readonly aggregate: "sum" | "mean" | "median" | "min" | "max"; readonly value: string });
+export type CreateCalendarLayoutOptions = CalendarDefinition & { readonly id?: string; readonly data?: string };
+export type CalendarLayoutPatch = Partial<CalendarDayOptions> & { readonly date?: string; readonly value?: string;
+  readonly aggregate?: "count" | "sum" | "mean" | "median" | "min" | "max" };
+export interface CalendarCell {
+  readonly key: string; readonly instant: number; readonly year: number; readonly month: number; readonly day: number;
+  readonly yearIndex: number; readonly week: number; readonly weekday: number; readonly value: number | null; readonly sourceIndices: readonly number[];
+}
+export interface CalendarLayoutResult {
+  readonly algorithm: "civil-day-cells@1";
+  readonly years: readonly { readonly year: number; readonly yearIndex: number; readonly weeks: number }[];
+  readonly cells: readonly CalendarCell[];
+  readonly months: readonly { readonly key: string; readonly year: number; readonly month: number; readonly yearIndex: number;
+    readonly cells: readonly string[]; readonly bounds: { readonly left: number; readonly right: number; readonly top: number; readonly bottom: number };
+    readonly polygons: readonly ContourPolygon[] }[];
+}
+export interface CalendarLayoutResource {
+  readonly kind: "layout"; readonly id: string; readonly revision: number; readonly algorithmVersion: "1";
+  readonly ownership: { readonly mode: "authored" }; readonly inputs: readonly Extract<InputRef, { readonly kind: "data" }>[];
+  readonly options: { readonly method: "calendar"; readonly fields: { readonly date: string; readonly value?: string };
+    readonly options: CalendarDayOptions & { readonly aggregate: "count" | "sum" | "mean" | "median" | "min" | "max" } };
+  readonly result: CalendarLayoutResult; readonly provenance: { readonly origin: "inferred"; readonly sourceRows: readonly InputRowRef[] };
+}
+export interface CalendarCellPaint {
+  readonly fill?: FillPaint; readonly emptyFill?: FillPaint; readonly stroke?: string; readonly strokeWidth?: number;
+  readonly opacity?: number; readonly gap?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export interface CalendarBoundaryPaint {
+  readonly stroke?: string; readonly strokeWidth?: number; readonly opacity?: number; readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export interface CalendarLabelPaint {
+  readonly fill?: FillPaint; readonly fontFamily?: string; readonly fontSize?: number; readonly fontWeight?: string | number;
+  readonly outline?: MarkOutline | false; readonly shadow?: MarkShadow | false;
+}
+export type CalendarLabelRole = "month" | "weekday" | "week" | "year";
+export interface CalendarPlotOptions {
+  readonly id?: string; readonly layout?: string; readonly coordinate?: string; readonly clip?: boolean;
+  readonly color?: false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+  readonly cells?: CalendarCellPaint; readonly monthBoundary?: false | CalendarBoundaryPaint;
+  readonly labels?: false | Readonly<Partial<Record<CalendarLabelRole, false | CalendarLabelPaint>>>;
+}
+export interface EditCalendarPlotOptions extends Omit<CalendarPlotOptions, "id"> { readonly target?: string; }
 export interface ContourGridFrame {
   readonly origin: readonly [number, number]; readonly dx: number; readonly dy: number;
   readonly width: number; readonly height: number;
@@ -2000,7 +2048,7 @@ export type LayoutHierarchyOptions = { id: string; hierarchy?: string; order?: H
 /** The method remains fixed; supplied options patch its existing layout intent. */
 export type EditLayoutOptions = { target?: string } & (
   { order?: HierarchyOrder; options?: Partial<HierarchyTreeOptions> | Partial<HierarchyTreemapOptions> | { maxNodes?: number } }
-  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions });
+  | { order?: never; options: Partial<GraphFixedOptions> | GraphCircularOptions | GraphForceOptions | FlowLayoutOptions | CalendarLayoutPatch });
 export interface RemoveStoredResourceOptions { kind: StoredResourceKind; id: string; cascade?: boolean; }
 export interface HierarchyNode {
   readonly key: string; readonly parentKey: string | null; readonly childrenKeys: readonly string[]; readonly depth: number;
@@ -2121,6 +2169,8 @@ export interface SemanticLayer {
   readonly id: string;
   readonly image?: ImageRef;
   readonly alt?: string;
+  readonly calendarBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
+  readonly calendarLabels?: Readonly<Record<CalendarLabelRole, boolean>>;
   readonly contourBinding?: { readonly geometry: { readonly kind: "geometry"; readonly id: string; readonly revision: number }; readonly mode: "line" | "filled" };
   readonly partitionView?: PartitionViewState;
   readonly flowBinding?: { readonly layout: { readonly kind: "layout"; readonly id: string; readonly revision: number } };
@@ -2191,7 +2241,7 @@ export interface SemanticCoordinate {
 }
 
 export interface SemanticSpec {
-  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource)[];
+  readonly resources: readonly (PersistentSelectionResource | ParameterResource | DataSourceResource | ImageResource | HierarchyResource | HierarchyLayoutResource | GraphResource | GraphLayoutResource | FontResource | FlowResource | FlowLayoutResource | ContourResource | CalendarLayoutResource)[];
   readonly datasets: readonly SemanticDataset[];
   readonly layers: readonly SemanticLayer[];
   readonly scales: readonly SemanticScale[];
@@ -6256,6 +6306,9 @@ export class ChartProgram {
   createTreemapPlot(options?: TargetedOptions<TreemapPlotOptions>): ChartProgram;
   editTreemapPlot(options: TargetedOptions<EditTreemapPlotOptions>): ChartProgram;
   createParameter(options: TargetedOptions<CreateParameterOptions>): ChartProgram;
+  createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;
+  createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;
+  editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;
   createContourData(options: TargetedOptions<CreateContourDataOptions>): ChartProgram;
   createDensityContourData(options: TargetedOptions<CreateDensityContourDataOptions>): ChartProgram;
   editContourData(options: TargetedOptions<EditContourDataOptions>): ChartProgram;

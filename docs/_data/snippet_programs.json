@@ -495,5 +495,16 @@
       "exported": "createContours"
     },
     "rendering": "authoring-only"
+  },
+  "tutorials/calendar.md": {
+    "mode": "complete",
+    "environment": "node-esm",
+    "result": "program",
+    "prerequisites": "Import the Full ggaction package; this example declares its civil-day observations.",
+    "canonical": {
+      "file": "examples/calendar/program.js",
+      "exported": "createCalendar"
+    },
+    "rendering": "authoring-only"
   }
 }

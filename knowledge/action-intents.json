@@ -1057,6 +1057,14 @@
     "ContourMark": [
       "contour bands",
       "level boundaries"
+    ],
+    "CalendarLayout": [
+      "calendar layout",
+      "civil-day aggregation"
+    ],
+    "CalendarPlot": [
+      "calendar plot",
+      "day cells and month boundaries"
     ]
   },
   "summaryOverrides": {
@@ -2099,6 +2107,26 @@
     "editContourMark": {
       "target": "contour",
       "opacity": 0.5
+    },
+    "createCalendarLayout": {
+      "id": "days",
+      "date": "date",
+      "value": "value",
+      "start": "2024-01-01",
+      "end": "2024-12-31",
+      "timeZone": "UTC",
+      "weekStartsOn": 1,
+      "aggregate": "sum",
+      "missing": "empty"
+    },
+    "createCalendarPlot": {
+      "layout": "days"
+    },
+    "editCalendarPlot": {
+      "target": "calendar",
+      "cells": {
+        "opacity": 0.5
+      }
     }
   },
   "callPatternOverrides": {

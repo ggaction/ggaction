@@ -5,6 +5,9 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "calendar-actions": { prefix: "actions/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Calendar source changes must preflight all consumers and preserve exact atomic revision closure." },
+  "calendar-materialization": { prefix: "materialization/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Stored calendar results and all cell, month boundary and label consumers require exact source identity and responsive geometry." },
+  "calendar-selection": { prefix: "materialization/selection/policies/calendar.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Calendar final day items must preserve contributing rows and exclude decorative roles from selection." },
   "calendar-grammar": { prefix: "grammar/calendar/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Civil-day aggregation, leap/DST mapping and month boundaries require independent date and topology evidence." },
   "grid-boundary": { prefix: "grammar/gridBoundary.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Contour and calendar cell unions share one bounded edge cancellation and ring topology owner." },
   "contour-grammar": { prefix: "grammar/contour/", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Grid topology, density values and closed ring boundaries require independent numeric and malformed-input evidence." },

@@ -9,11 +9,11 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:6e1077bf9e693cc955b0a823d0cfb907eea64f5b599fff8a8a2bb3edf7c59ab0` |
-| Example and dataset source | `4c7ca8379649235cc282672b11fda4c74f7f628a` |
-| Runtime source commit | `6167df3a215bd25367ece40e6376f673e710ab80` |
+| Contract fingerprint | `sha256:7e54727b1a1b9740e2a6ce1dd5a0bc5f7fb227b1e3418a8d6d703605b8188d4e` |
+| Example and dataset source | `codex/roadmap9-calendar` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
-| Declared actions here | 340 |
+| Declared actions here | 343 |
 | Declared actions in that release | 234 |
 
 ## Choose the matching documentation

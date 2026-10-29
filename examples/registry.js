@@ -1,3 +1,4 @@
+import { createCalendar } from "./calendar/program.js";
 import { createContours } from "./contours/program.js";
 import { createGraph } from "./graph-plots/program.js";
 import { createTextShadowExample } from "./text-shadows/program.js";
@@ -300,6 +301,21 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: () => createAreaSimple(),
     browser: { path: "area-layout/", canvas: "#chart",
       state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
+  }),
+  example({ id: "calendar", programDirectory: "calendar", testDirectory: "calendar", data: {}, width: 1080, height: 360, docsGroup: "tutorials",
+    createProgram: () => createCalendar("year"),
+    browser: { path: "browser-host/?chart=calendar", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "calendar", width: 1080, height: 360 } } }
+  }),
+  example({ id: "calendar-monday", programDirectory: "calendar", testDirectory: "calendar", data: {}, width: 1080, height: 360, docsGroup: "tutorials",
+    createProgram: () => createCalendar("monday"),
+    browser: { path: "browser-host/?chart=calendar-monday", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "calendar-monday", width: 1080, height: 360 } } }
+  }),
+  example({ id: "calendar-omitted", programDirectory: "calendar", testDirectory: "calendar", data: {}, width: 1080, height: 360, docsGroup: "tutorials",
+    createProgram: () => createCalendar("omitted"),
+    browser: { path: "browser-host/?chart=calendar-omitted", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "calendar-omitted", width: 1080, height: 360 } } }
   }),
   example({ id: "contours", programDirectory: "contours", testDirectory: "contours", data: {}, width: 640, height: 480, docsGroup: "tutorials",
     createProgram: () => createContours("line"),

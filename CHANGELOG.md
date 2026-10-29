@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Add Full-only `createCalendarLayout`, `createCalendarPlot`, and `editCalendarPlot` for explicit civil-day aggregation, month boundaries and date labels. Preserve missing-day policy, exact source rows, selection and rendering through source, layout and Canvas revisions.
+
 - Add Full-only `createContourData`, `createDensityContourData`, `editContourData`, `createContourMark`, and `editContourMark` for explicit scalar grids, histogram/KDE density, contour lines and filled bands. Preserve disconnected regions, holes, exact source lineage, shared scales and selections through revisions and offline snapshots across Canvas, SVG, PNG and PDF.
 - Add `prepareFontResource`, `createFontResource`, `replaceFontResource`, `prepareTextMetrics`, and `prepareFontRendering` for explicit font loading, exact measured layout and immutable resource replacement. Preserve embedded font bytes through offline snapshots and Canvas/SVG/PNG/PDF/scene output; reject missing widths, stale preparation and disposed rendering handles.
 - Add Full-only `createInferredGraphData` and `editInferredGraphData` for nearest-neighbor, radius, similarity, spanning, group and sequence relationships. Preserve typed edge identities, source revisions, preprocessing and search diagnostics through dependent layouts, inspection, accessibility and offline restoration.

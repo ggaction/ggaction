@@ -74,6 +74,8 @@ const ENTITY_PATHS = Object.freeze({
       "partitionView",
       "flowBinding",
       "flowLabels",
+      "calendarBinding",
+      "calendarLabels",
       "contourBinding",
       "mark.missing",
       "mark.orientation",

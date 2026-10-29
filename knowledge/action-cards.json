@@ -3,7 +3,7 @@
   "packageVersion": "0.0.26",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 340,
+  "count": 343,
   "cards": [
     {
       "schemaVersion": 3,
@@ -39652,7 +39652,7 @@
         {
           "name": "options",
           "required": false,
-          "type": "FlowLayoutOptions | GraphCircularOptions | GraphForceOptions | Partial<...> | Partial<...> | { ...; } | Partial<...> | undefined"
+          "type": "FlowLayoutOptions | GraphCircularOptions | GraphForceOptions | Partial<GraphFixedOptions> | ... 4 more ... | undefined"
         }
       ],
       "callPatterns": [
@@ -42294,6 +42294,376 @@
       "snippet": "program.editContourMark({ target: \"contour\", opacity: 0.5 })",
       "errors": [],
       "route": "/reference/actions/marks/#editcontourmark"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createCalendarLayout",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Store civil-day aggregates, week/weekday cells and month boundaries.",
+      "signature": "createCalendarLayout(options: TargetedOptions<CreateCalendarLayoutOptions>): ChartProgram;",
+      "intents": [
+        "create calendar layout",
+        "create",
+        "add",
+        "chart setup",
+        "data and scales",
+        "calendar layout",
+        "civil-day aggregation"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "materialized civil-day observations"
+        ],
+        "owns": [
+          "calendar layout resource"
+        ],
+        "idOptions": [
+          "id",
+          "data"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editLayout",
+        "removeResource"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "data",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "materialized civil-day observations"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "start",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "end",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "timeZone",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "weekStartsOn",
+          "required": true,
+          "type": "0 | 1 | 2 | 3 | 4 | 5 | 6"
+        },
+        {
+          "name": "missing",
+          "required": true,
+          "type": "\"empty\" | \"omit\""
+        },
+        {
+          "name": "date",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "aggregate",
+          "required": true,
+          "type": "\"count\" | \"max\" | \"mean\" | \"median\" | \"min\" | \"sum\""
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createCalendarLayout({ start, end, timeZone, weekStartsOn, missing, date, aggregate, id? })"
+      ],
+      "snippet": "program.createCalendarLayout({ id: \"days\", date: \"date\", value: \"value\", start: \"2024-01-01\", end: \"2024-12-31\", timeZone: \"UTC\", weekStartsOn: 1, aggregate: \"sum\", missing: \"empty\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createcalendarlayout"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createCalendarPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Draw a stored calendar layout with explicit day, month and label roles.",
+      "signature": "createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;",
+      "intents": [
+        "create calendar plot",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "calendar plot",
+        "day cells and month boundaries"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "stored calendar layout",
+          "Canvas"
+        ],
+        "owns": [
+          "calendar mark"
+        ],
+        "idOptions": [
+          "id",
+          "layout",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic",
+        "createCoordinate",
+        "createScale"
+      ],
+      "editableVia": [
+        "editCalendarPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "stored calendar layout",
+          "Canvas"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions | undefined"
+        },
+        {
+          "name": "cells",
+          "required": false,
+          "type": "CalendarCellPaint | undefined"
+        },
+        {
+          "name": "monthBoundary",
+          "required": false,
+          "type": "false | CalendarBoundaryPaint | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | Readonly<Partial<Record<CalendarLabelRole, false | CalendarLabelPaint>>> | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "ActionTargetList | ScopedActionTarget"
+        }
+      ],
+      "callPatterns": [
+        "createCalendarPlot({ id?, coordinate?, target?, layout?, clip?, color?, cells?, monthBoundary? })"
+      ],
+      "snippet": "program.createCalendarPlot({ layout: \"days\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#createcalendarplot"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editCalendarPlot",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edit a calendar plot while preserving day identities and source lineage.",
+      "signature": "editCalendarPlot(options: TargetedOptions<EditCalendarPlotOptions>): ChartProgram;",
+      "intents": [
+        "edit calendar plot",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "calendar plot",
+        "day cells and month boundaries"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "stored calendar layout",
+          "Canvas"
+        ],
+        "owns": [
+          "calendar mark"
+        ],
+        "idOptions": [
+          "target",
+          "layout",
+          "coordinate"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ],
+      "editableVia": [
+        "editCalendarPlot",
+        "removeMark"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "coordinate",
+          "strategy": "explicit-current-unique-or-error"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "stored calendar layout",
+          "Canvas"
+        ],
+        "allowsEmpty": true
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "clip",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions | undefined"
+        },
+        {
+          "name": "cells",
+          "required": false,
+          "type": "CalendarCellPaint | undefined"
+        },
+        {
+          "name": "monthBoundary",
+          "required": false,
+          "type": "false | CalendarBoundaryPaint | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | Readonly<Partial<Record<CalendarLabelRole, false | CalendarLabelPaint>>> | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editCalendarPlot({ target?, coordinate?, layout?, clip?, color?, cells?, monthBoundary?, labels? })"
+      ],
+      "snippet": "program.editCalendarPlot({ target: \"calendar\", cells: { opacity: 0.5 } })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editcalendarplot"
     }
   ]
 }

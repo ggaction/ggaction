@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 3,
+  "name": "createCalendarPlot",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Draw a stored calendar layout with explicit day, month and label roles.",
+  "signature": "createCalendarPlot(options?: TargetedOptions<CalendarPlotOptions>): ChartProgram;",
+  "intents": [
+    "create calendar plot",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "calendar plot",
+    "day cells and month boundaries"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "stored calendar layout",
+      "Canvas"
+    ],
+    "owns": [
+      "calendar mark"
+    ],
+    "idOptions": [
+      "id",
+      "layout",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createCoordinate",
+    "createScale"
+  ],
+  "editableVia": [
+    "editCalendarPlot",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [],
+  "inference": [
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "stored calendar layout",
+      "Canvas"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "layout",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions | undefined"
+    },
+    {
+      "name": "cells",
+      "required": false,
+      "type": "CalendarCellPaint | undefined"
+    },
+    {
+      "name": "monthBoundary",
+      "required": false,
+      "type": "false | CalendarBoundaryPaint | undefined"
+    },
+    {
+      "name": "labels",
+      "required": false,
+      "type": "false | Readonly<Partial<Record<CalendarLabelRole, false | CalendarLabelPaint>>> | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createCalendarPlot({ id?, coordinate?, target?, layout?, clip?, color?, cells?, monthBoundary? })"
+  ],
+  "snippet": "program.createCalendarPlot({ layout: \"days\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#createcalendarplot"
+}
