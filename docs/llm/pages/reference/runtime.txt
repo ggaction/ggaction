@@ -1247,6 +1247,7 @@ export interface SelectionChange {
   readonly selection: string;
   readonly policy: SelectionPolicy;
   readonly ownerMissing: boolean;
+  /** Authored logical keys, including selections represented by another visible geographic detail item. */
   readonly hiddenKeys: readonly string[];
   readonly restoredKeys: readonly string[];
   readonly droppedKeys: readonly string[];

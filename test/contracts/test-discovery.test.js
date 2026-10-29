@@ -70,6 +70,7 @@ test("separates network-backed corpus sweeps from source coverage", () => {
     "realistic-geographic-join.test.js",
     "realistic-pyramid-plots.test.js",
     "realistic-ohlc-plots.test.js",
+    "realistic-waterfall-plots.test.js",
     "realistic-geographic-levels.test.js",
     "realistic-calendar-plots.test.js",
     "realistic-axis-facet-owner-witness.test.js",

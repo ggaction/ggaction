@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { chart } from "../../src/index.js";
+import { createInteractionSession } from "../../src/interaction.js";
 import { getMarkItems } from "../../src/inspection.js";
 import { serializeProgram, deserializeProgram } from "../../src/persistence.js";
 import { resolveStoredSelection } from "../../src/materialization/selection/state.js";
@@ -41,6 +42,19 @@ for (const dataset of datasets) for (const recipe of ["hysteresis", "selection-r
       } else {
         q = p.editGeometryData({ target: "fine", values: { ...fine, features: [...fine.features].reverse() } });
         assert.deepEqual(getMarkItems(q).map(item => item.key), original.map(item => item.key).reverse());
+      }
+      for (const selectionPolicy of ["keep-hidden", "drop"]) {
+        const start = p.selectMarks({ id: "logical", target: "points", items: [original[0].key] });
+        const session = createInteractionSession({ program: start, selectionPolicy, bindings: [] }), events = [];
+        session.subscribe(event => events.push(event));
+        session.updateProgram(start.editGeoLODData({ target: "detail", zoom: 3 }));
+        assert.deepEqual(events[0].selectionChanges, []);
+        const coarse = session.getState().program, selected = resolveStoredSelection(coarse, "logical").keys;
+        assert.ok(getMarkItems(coarse).find(item => selected.includes(item.key)).representationKeys.includes(original[0].key));
+        session.updateProgram(deserializeProgram(serializeProgram(coarse)).editGeoLODData({ target: "detail", zoom: 5 }));
+        assert.deepEqual(events[1].selectionChanges, []);
+        assert.deepEqual(resolveStoredSelection(session.getState().program, "logical").keys, [original[0].key]);
+        session.destroy();
       }
       assert.deepEqual(deserializeProgram(serializeProgram(q)).graphicSpec, q.graphicSpec); assert.equal(serializeProgram(p), saved);
       for (const entry of p.trace.children) if (witnessed.has(entry.op)) {

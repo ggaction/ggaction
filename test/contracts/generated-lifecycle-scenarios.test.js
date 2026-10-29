@@ -126,7 +126,7 @@ test("calls every user-facing action directly from a generated scenario root", (
     directTraceOperations(buildScenario(descriptor), directOperations);
   }
 
-  assert.equal(publicActions.length, 356);
+  assert.equal(publicActions.length, 360);
   for (const operation of [
     "createWaterfallPlot", "editWaterfallPlot", "createOHLCPlot", "editOHLCPlot",
     "bundleGraphEdges", "editEdgeRoute",

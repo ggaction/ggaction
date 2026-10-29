@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:5a728e1938775d20793426dd4ae01e857609d87b9568ce1c1f65a0a8c824db92. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
+Contract: sha256:fe1f87d96ad2d6ced8be5b9f4e75147e665c388e8f064f87291381a32198ce5d. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -11113,7 +11113,9 @@ It commits with the same transaction, linked-selection and failure behavior as o
 
 Pass `selectionPolicy: "keep-hidden"` (the default) to preserve selections when a filter,
 partition focus or removed child hides their logical items. Matching selected keys can become visible
-again. Use `selectionPolicy: "drop"` to replace affected membership with its surviving item keys.
+again. Geographic detail changes preserve the original selected region while a visible region explicitly
+represents it. Hidden/restored events keep the original selection key; current hits use the visible region.
+Use `selectionPolicy: "drop"` to replace affected membership with its surviving item keys.
 A live range or predicate becomes a key snapshot only when items must be dropped. Explicitly authored
 replacement selection options take precedence. Opacity zero and sampled animation frames do not count
 as removed items.
@@ -35715,6 +35717,7 @@ export interface SelectionChange {
   readonly selection: string;
   readonly policy: SelectionPolicy;
   readonly ownerMissing: boolean;
+  /** Authored logical keys, including selections represented by another visible geographic detail item. */
   readonly hiddenKeys: readonly string[];
   readonly restoredKeys: readonly string[];
   readonly droppedKeys: readonly string[];
@@ -53269,7 +53272,7 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:5a728e1938775d20793426dd4ae01e857609d87b9568ce1c1f65a0a8c824db92` |
+| Contract fingerprint | `sha256:fe1f87d96ad2d6ced8be5b9f4e75147e665c388e8f064f87291381a32198ce5d` |
 | Example and dataset source | `0a46877e019d00163dc55c681ce4833b14d8e541` |
 | Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |

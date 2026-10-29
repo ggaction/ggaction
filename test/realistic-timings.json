@@ -50,7 +50,11 @@
     "contracts/realistic-statistical-facade-coverage-recipes.test.js": 98393,
     "contracts/realistic-structured-paints.test.js": 184876,
     "contracts/realistic-geographic-marks.test.js": 1752,
-    "contracts/realistic-geographic-join.test.js": 1652
+    "contracts/realistic-geographic-join.test.js": 1652,
+    "contracts/realistic-geographic-levels.test.js": 997,
+    "contracts/realistic-pyramid-plots.test.js": 1121,
+    "contracts/realistic-ohlc-plots.test.js": 4654,
+    "contracts/realistic-waterfall-plots.test.js": 3002
   },
   "localMeasurementNotes": {
     "contracts/realistic-combined-legend-witness.test.js": {
@@ -118,6 +122,22 @@
       },
       "source": "Canonical realistic runner; successful isolated test process elapsed time, no coverage instrumentation.",
       "measuredDurationMs": 1651.55975
+    },
+    "contracts/realistic-geographic-levels.test.js": {
+      "environment": "macOS arm64, Node22.23.1, max-old-space-size512, test-concurrency2",
+      "measurement": "Sum of 16 successful canonical realistic runner per-test durations 996.998583ms, rounded upward; five pinned sources and three level-of-detail recipes. Source: geo-evidence/levels-public/realistic.log.gz. Scheduling estimate only."
+    },
+    "contracts/realistic-pyramid-plots.test.js": {
+      "environment": "macOS arm64, Node22.23.1, canonical realistic heap and concurrency",
+      "measurement": "Sum of 16 successful canonical realistic per-test durations 1120.287626ms, rounded upward. Source: agent_docs/impl/roadmap9/chart/pyramid-evidence/pyramid-readable-realistic-2.log.gz. Scheduling estimate only."
+    },
+    "contracts/realistic-ohlc-plots.test.js": {
+      "environment": "macOS arm64, Node22.23.1, canonical realistic heap and concurrency",
+      "measurement": "Sum of 16 successful canonical realistic per-test durations 4653.623497ms, rounded upward. Source: agent_docs/impl/roadmap9/chart/ohlc-evidence/ohlc-realistic-final.log.gz. Scheduling estimate only."
+    },
+    "contracts/realistic-waterfall-plots.test.js": {
+      "environment": "macOS arm64, Node22.23.1, canonical realistic heap and concurrency",
+      "measurement": "Sum of 16 successful canonical realistic per-test durations 3001.387998ms, rounded upward. Source: agent_docs/impl/roadmap9/chart/waterfall-evidence/waterfall-realistic.log.gz. Scheduling estimate only."
     }
   },
   "localMeasurements": {

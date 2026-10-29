@@ -888,6 +888,10 @@
       {
         "type": "file",
         "path": "unit/inspection.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-native-composition.test.js"
       }
     ],
     "label-layout": [
@@ -1404,6 +1408,10 @@
       {
         "type": "file",
         "path": "unit/interaction-node-move.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-geo-representation.test.js"
       }
     ],
     "selectors": [
