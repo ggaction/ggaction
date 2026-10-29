@@ -3,7 +3,7 @@
     "7ed57eb379b9c84ad4e1b792442c83946917a35b",
     "7ee7821f9a207e547816b9a588afa05bc9c596b4"
   ],
-  "sourceCommit": null,
+  "sourceCommit": "0e8c8c093691c52ff1b998073b48ee639bf2d2de",
   "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
   "scope": "Merge qualified geographic sources/projections/marks with category visibility, host context/parameter controls and partition focus. No new runtime domain or renderer implementation.",
   "runtimeAndTypesFingerprint": "5051d70b8297c3537db772742e639a22d6a228406c051a015310a52a04d187a5",
@@ -28,7 +28,13 @@
         768,
         1440
       ],
-      "axeViolations": 0
+      "axeViolations": 0,
+      "sourcePinnedPassed": 50,
+      "sourcePinnedBuilt": {
+        "pages": 172,
+        "llmArtifacts": 1509,
+        "runtimeAndArchiveUnchanged": true
+      }
     },
     "installed": [
       {
@@ -370,6 +376,22 @@
     {
       "path": "api-interaction-768.png",
       "sha256": "db42340256d6e777e8ed4eebd63b153e31997668cd74b53f0bacc81031cfa6f3"
+    },
+    {
+      "path": "interaction-geo-merge-source-pin.log.gz",
+      "sha256": "14151aa516ea6115412bd32a823218719729f940210d919116237b32a1c7d5c9"
+    },
+    {
+      "path": "interaction-geo-merge-source-pinned-docs.log.gz",
+      "sha256": "64408cc24e355d64ca88ebe1434d28a7d2a7c8ad6d1c73c2b1151d21152d7d30"
+    },
+    {
+      "path": "interaction-geo-merge-source-pinned-build.log.gz",
+      "sha256": "56e612317a8f324421e7a9a2ef5ac3db6a841e1f9c26d99e79c3378f53cace04"
+    },
+    {
+      "path": "interaction-geo-merge-source-pinned-built.log.gz",
+      "sha256": "7424833b8ace497e2d58fc2676b7fa8e8389c98aa01a1e73455e7c9e0022f250"
     }
   ]
 }

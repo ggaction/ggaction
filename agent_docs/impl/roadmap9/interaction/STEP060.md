@@ -376,3 +376,7 @@ Pre-commit docs49/50의 유일 실패는 incoming Geo example이 아직 branch r
 Source commit 뒤 provenance를 고정해 닫는다. Built172pages/1509LLM과 네 폭Axe0을 통과했으며,
 기존 parent renderer 증거는 renderer source와 출력 정책이 그대로라 재사용한다. 전수 coverage/normal이나
 전체060/077 완료를 주장하지 않는다. 새 annotation·node drag·geo navigation source 구현은 아직 시작하지 않았다.
+
+Geo merge source `0e8c8c093` push 후 source-pinned docs50과 built172pages/1509LLM을 통과해
+incoming example source-link를 닫았다. Runtime/타입·최종 archive는 그대로이며 source provenance만
+고정했으므로 앞선 네 폭Axe/화면을 재사용한다.
