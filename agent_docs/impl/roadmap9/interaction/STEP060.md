@@ -122,3 +122,6 @@ capability witness 중복을 제거하고 linked-filter 증거를 유지했다. 
 runtime3/strict TS/5bundle 측정을 완료했다. 문서47 중 최초45통과, 남은2는
 미커밋 신규 example source ref와 search cap이며 source commit 뒤 owning 검사를 닫는다.
 원본 로그는 linked-filter-merge-evidence에 보존한다. 전체077 완료로 보지 않는다.
+
+병합 source `239a077d8` 고정 뒤 provenance→machine→LLM 및 문서47/47이 통과했다.
+앞선 설치 결과의 동일5bundle 측정값도 최소 조정 cap 아래임을 별도 consumer.json으로 검사했다.
