@@ -5,15 +5,16 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 772_400, // Native final-item reader registration and combined authoring: Node22 772,312 gzip bytes.
-  "ggaction/basic": 421_200, // Shared schemas, materialization and weighted rendering: Node22 421,200.
+  ggaction: 774_000, // Combined installed authoring: Node20/24 773,950 gzip bytes.
+  "ggaction/basic": 422_100, // Combined installed Basic authoring: Node20/24 422,008 gzip bytes.
   "ggaction/svg": 26_000,
   "ggaction/graph": 46_000,
   "ggaction/animation": 185_500, // Installed public transition preparation, playback and offline export.
-  "ggaction/interaction": 128_200 // Shared closed-program admission and sampled-frame metric handling: Node22 128,129.
+  "ggaction/interaction": 128_600 // Shared closed-program admission and sampled-frame metrics: Node20/24 128,570.
 });
 
 function minimalBrowserSource(specifier) {
+  if (specifier === "ggaction/animation") return `import * as animation from "ggaction/animation"; globalThis.chartAnimation = animation;`;
   if (specifier === "ggaction/graph") return `import { prepareGraphEdgeRoutes, computeGraphEdgeRoutes, createGraphRouteExecutor } from "ggaction/graph"; globalThis.graphRoutes = { prepareGraphEdgeRoutes, computeGraphEdgeRoutes, createGraphRouteExecutor };`;
   if (specifier === "ggaction/interaction") return `import { createInteractionSession } from "ggaction/interaction"; globalThis.createChartInspection = createInteractionSession;`;
   if (specifier === "ggaction/svg") {
