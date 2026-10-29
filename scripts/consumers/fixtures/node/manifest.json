@@ -1576,5 +1576,14 @@
         "statements": 9
       }
     ]
+  },
+  {
+    "file": "static-delivery.mjs",
+    "cases": [
+      {
+        "id": "static-delivery/interacted-native-offline-four-formats",
+        "statements": 16
+      }
+    ]
   }
 ]
