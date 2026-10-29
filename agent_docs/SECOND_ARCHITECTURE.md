@@ -3810,3 +3810,21 @@ STEP060 B와 qualified routes/direct-controls baseline 통합은 기존 소유�
 합산 package980entries/1,408,440packed/6,408,744unpacked와 Full688,226/Basic377,519/
 interaction109,145/graph43,572gzip bytes를 측정했다. Cap은980/1,409,000/6,409,000,
 Full688,300/Basic378,000/interaction109,200/graph44,000이며 최초 초과를 보존한다.
+
+
+### Categorical legend activation
+
+범례 선택은 기존 public channel→block 해석과 guide hit identity, composition namespace를 공유한다.
+실제 current-frame sample/label의 typed category를 기존 final-item own field에 대응하고 native
+selection command/transaction/linked closure를 사용한다. 별도 mark compiler나 renderer, 저장 schema는
+추가하지 않는다. visibility와 domain 정책은 별도 미완료 의무이며 selection binding으로 대체하지 않는다.
+
+Read-only public legend target/block 해석은 materialization/legendTargets에 두고 기존 action target은
+재수출한다. Categorical overflow projection은 grammar/legendOverflow의 단일 계산이며 기존
+layout과 interaction이 함께 사용한다. Interaction에서 authoring action module로 새 import를 만들지 않는다.
+
+이 두 소유자 추가 후 package982entries, Node22 packed1,407,526 및 Node20 packed1,410,071,
+unpacked6,414,627을 실측했다. Cap982/1,411,000/6,415,000을 적용한다. Node20/24
+interaction gzip110,977에는111,000 cap을 적용하며 Full688,300/Basic378,000/SVG25,000/
+graph44,000은 유지한다. 동일 archive 세Node·source-free 문서 실행과 최초 초과는
+[C1 qualification](impl/roadmap9/interaction/legend-selection-evidence/qualification.json)에 보존한다.

@@ -2395,6 +2395,21 @@
   {
     "file": "api/interaction.md",
     "block": 10,
+    "heading": "Select categories from a legend",
+    "mode": "complete",
+    "environment": "browser-module",
+    "receivers": [],
+    "resources": [
+      "target: \"points\"",
+      "selection: \"picked\""
+    ],
+    "prerequisites": "Use this browser module with the Canvas element whose id is chart. Click a legend symbol or label to toggle that category.",
+    "sha256": "64989a2e3760614cf7438897ce02ef2705abe976e5e5b561221ab774ca360624",
+    "executable": true
+  },
+  {
+    "file": "api/interaction.md",
+    "block": 11,
     "heading": "Automatic click selection",
     "mode": "complete",
     "environment": "browser-module",
@@ -2409,7 +2424,7 @@
   },
   {
     "file": "api/interaction.md",
-    "block": 11,
+    "block": 12,
     "heading": "Brush or lasso an existing selection",
     "mode": "fragment",
     "environment": "esm-context",

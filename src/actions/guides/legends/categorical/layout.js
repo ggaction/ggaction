@@ -1,8 +1,9 @@
 import { themePatternForValues } from "../../../theme/palettes.js";
-import { validateLegendOverflow } from "../../../../grammar/legendOverflow.js";
+import { validateLegendOverflow, categoricalLegendView } from "../../../../grammar/legendOverflow.js";
 import{validateLegendClip,clippedSampleBounds}from"../../../../grammar/legendClip.js";
 import {categoricalLegendSymbolId as symbolGraphic}from"../../../../grammar/legendBlocks.js";
 export {symbolGraphic};
+export { categoricalLegendView } from "../../../../grammar/legendOverflow.js";
 import { findLegendLayer as findLayer } from "../../../../materialization/legendEncodings.js";
 import { isLinearGradientPaint, isPatternPaint, isRadialGradientPaint } from "../../../../grammar/paint.js";
 import { intrinsicLegendConfig } from "../../../../materialization/legendGroups.js";
@@ -78,11 +79,6 @@ export function symbolWidth(config) {
   }));
 }
 
-export function categoricalLegendView(config) {
-  if (config.hiddenCount !== undefined || !config.overflow || config.domain.length <= config.overflow.maxItems) return config;
-  return { ...config, domain: config.domain.slice(0, config.overflow.maxItems + (config.overflow.summarySymbol === "first-hidden" ? 1 : 0)),
-    hiddenCount: config.domain.length - config.overflow.maxItems };
-}
 
 export function categoricalLegendLabels(config) {
   config = categoricalLegendView(config);

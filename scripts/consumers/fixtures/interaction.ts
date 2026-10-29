@@ -80,3 +80,7 @@ session.dispatch({type:'reorder',target:'bars',payload:{channel:'x',clear:true,v
 createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',target:'points',selection:'universe',resolve:'global',sources:[
  {target:'source',selection:'picked',projection:{type:'fields',sourceFields:['category'],targetFields:['group']}}
 ]}]});
+
+createInteractionSession({program,bindings:[{type:'legend',effect:'selection',target:'points',channel:'color',selection:'picked',mode:'toggle'}]});
+// @ts-expect-error internal representation is not a public legend channel
+createInteractionSession({program,bindings:[{type:'legend',effect:'selection',target:'points',channel:'series',selection:'picked'}]});

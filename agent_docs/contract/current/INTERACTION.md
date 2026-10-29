@@ -4,7 +4,7 @@
 
 `ggaction/interaction` exports `createInteractionSession({ program, bindings?, selectionPolicy? })` as an advanced browser-safe controller function. It is not a wrapped action. Inspection supports Full and Basic programs without changing their state. Editing commands invoke the receiver’s existing Full domain actions, retain their trace decomposition and replace only the session’s current immutable program. Selection storage and dependent rendering follow the native selection contract. The default authoring and rendering entries do not import the controller.
 
-`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one click-selection, brush, or lasso binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
+`bindings` accepts at most one `{ type: "inspect", events?, slop?, hitInvisible? }` record, at most one click-selection, categorical legend-selection, brush, or lasso binding, plus up to 256 explicit linked-selection/filter bindings described below. Omission enables `pointermove` and `click`; `[]` keeps headless commands available without DOM listeners. Explicit events must contain one or two distinct values from those names. `slop` is a finite non-negative CSS-pixel distance; omission resolves to 3 for mouse/pen and 6 for touch. `hitInvisible` defaults to false. Unknown options, including navigation gestures, clock and assetResolver, are rejected.
 
 ## Handle and commands
 
@@ -390,3 +390,33 @@ revision and restoration. The preview is an exact existing Polar sector path, cl
 plot, in the separate preview program; Canvas/SVG/PNG/PDF consume it identically.
 Evidence: `test/unit/angular-brush-inversion.test.js`, `test/unit/interaction-angular-selection.test.js`,
 `test/browser/interaction-region.browser.js`, and the interaction selection-preview renderer pair.
+
+
+## Categorical legend selection
+
+Full accepts `{type:"legend",effect:"selection",target,channel,selection,mode?,slop?}` as its one
+editing pointer binding. `target` is an explicit root or concat owner, `channel` is an existing
+public legend channel, and `selection` is an existing authored selection on that owner. The native
+legend-block resolver must find exactly one categorical block. Combined color/stroke/shape/dash
+blocks and categorical size-shape blocks retain their existing channel ownership. Continuous,
+interval and sampled blocks reject; this binding does not implement visibility. Basic rejects.
+
+`mode` defaults to `toggle` and accepts `replace` or `toggle`. Toggle applies the native symmetric
+set difference to every currently visible final item whose own field equals the clicked category.
+Numeric and string categories stay distinct, including when their formatted labels are identical.
+The selector is a key snapshot at the existing grain. Replace of the same explicit snapshot is a
+no-op; live predicates become snapshots even when their effective membership already matches.
+
+Only actual current-frame symbol or label candidates for that target/channel qualify. Composite
+symbol parts share one guide key. Title, background, overflow summary, other legend blocks and
+empty categories do nothing. Native clip/opacity and CSS slop rules apply; `hitInvisible` and
+`onMiss` are not accepted. The binding does not parse label text, expose a new guide key schema,
+or infer a group from a continuous sample. Missing owner, selection or block after update becomes
+dormant; an invalid or ambiguous replacement rejects without changing committed state.
+
+The shared captured-click lifecycle, immutable native command transaction, selection policy and
+linked-selection/filter closure apply with `origin:"user"`. Runtime bindings are recreated after
+codec restoration; the native selection is persisted. Root and explicit child scopes are supported;
+facet-source geometry, competing editing bindings and linked target-selection writers reject.
+Evidence: `test/unit/interaction-legend-selection.test.js`, `test/browser/interaction-session.browser.js`,
+`test/contracts/realistic-logical-selection.test.js`, and the installed interaction consumer.

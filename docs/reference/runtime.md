@@ -1124,7 +1124,7 @@ export declare function renderTransitionScene(scene: CanvasTransitionScene, cont
 [Complete declaration and relative dependencies](../types/interaction.d.ts)
 
 ```typescript
-import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, ScopedActionTarget } from './program.js';
+import type { ChartProgram, InputRef, MarkSelector, MarkSelectionSelector, CategoryOrder, LegendChannel, ScopedActionTarget } from './program.js';
 import type { BasicChartProgram } from './basic.js';
 export type InteractionProgram = ChartProgram | BasicChartProgram;
 import type { CanvasTransitionScene } from './scene.js';
@@ -1165,6 +1165,17 @@ export interface ClickSelectionBinding {
   readonly onMiss?: 'clear' | 'ignore';
   readonly slop?: number;
   readonly hitInvisible?: boolean;
+}
+/** Activate a categorical legend block using its public channel and existing selection. */
+export interface LegendSelectionBinding {
+  readonly type: 'legend';
+  readonly effect: 'selection';
+  readonly target: InteractionTarget;
+  readonly channel: LegendChannel;
+  readonly selection: string;
+  /** toggle applies native symmetric difference to each category member. Defaults to toggle. */
+  readonly mode?: 'replace' | 'toggle';
+  readonly slop?: number;
 }
 interface RegionSelectionBindingOptions {
   readonly target: InteractionTarget;
@@ -1357,7 +1368,7 @@ export declare function createInteractionSession(options: {
   /** Removed final items remain selected by default; drop snapshots surviving membership. */
   readonly selectionPolicy?: SelectionPolicy;
   /** Omission enables pointermove and click inspection; [] enables headless dispatch only. */
-  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
+  readonly bindings?: readonly (InspectBinding | ClickSelectionBinding | LegendSelectionBinding | BrushSelectionBinding | LassoSelectionBinding | LinkedSelectionBinding | LinkedFilterBinding)[];
 }): InteractionSession;
 ```
 

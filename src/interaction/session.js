@@ -1,4 +1,5 @@
 import { normalizeClickSelection, clickSelectionCommand, resolveClickSelection } from "./clickSelection.js";
+import { normalizeLegendSelection, resolveLegendSelection, legendSelectionCommand } from "./legendSelection.js";
 import { prepareSelectionCapture } from "./pointerCapture.js";
 import { normalizeRegionBinding, resolveRegionBinding, prepareRegionGesture, regionGestureCommand } from "./regionSelection.js";
 import { materializeRegisteredSelectionPreview } from "../materialization/selection/expression.js";
@@ -16,6 +17,11 @@ import { prepareProgramHitFrame, rebindProgramHitFrame } from "./hitProgram.js";
 import { createHitFrameBridge } from "./hitFrame.js";
 import { normalizeSelectionLinks, inspectSelectionLinks, applySelectionLinks, selectionLinksNeedUpdate } from "./bindings.js";
 
+function resolvePointerSelection(program, binding, allowMissing) {
+  return binding.type === "legend" ? resolveLegendSelection(program, binding, allowMissing)
+    : resolveClickSelection(program, binding.target, binding.selection, allowMissing);
+}
+
 const IDENTITY = Object.freeze([1, 0, 0, 1, 0, 0]);
 const MAX_DISPATCHES = 256;
 function bindings(program, value) {
@@ -24,12 +30,12 @@ function bindings(program, value) {
   ownArray(value, "Interaction bindings");
   const inspect = [], linked = [], selected = [], regions = [];
   for (const binding of value) {
-    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss", "axis", "channels"], "Interaction binding");
-    (["linkSelection", "linkFilter"].includes(head.type) ? linked : head.type === "select" ? selected : ["brush", "lasso"].includes(head.type) ? regions : inspect).push(head);
+    const head = options(binding, ["type"], ["events", "slop", "hitInvisible", "id", "sources", "target", "selection", "resolve", "mode", "onMiss", "axis", "channels", "channel", "effect"], "Interaction binding");
+    (["linkSelection", "linkFilter"].includes(head.type) ? linked : ["select", "legend"].includes(head.type) ? selected : ["brush", "lasso"].includes(head.type) ? regions : inspect).push(head);
   }
-  if (inspect.length > 1 || selected.length + regions.length > 1) throw new TypeError("Interaction bindings support at most one inspect and one select, brush or lasso binding.");
+  if (inspect.length > 1 || selected.length + regions.length > 1) throw new TypeError("Interaction bindings support at most one inspect and one editing pointer binding.");
   const links = normalizeSelectionLinks(program, linked);
-  return { linked: links, select: selected.length ? normalizeClickSelection(program, selected[0], links) : undefined,
+  return { linked: links, select: selected.length ? (selected[0].type === "legend" ? normalizeLegendSelection : normalizeClickSelection)(program, selected[0], links) : undefined,
     region: regions.length ? normalizeRegionBinding(program, regions[0], links) : undefined, inspect: freezeOwned(inspect.map(binding => {
     const request = options(binding, ["type"], ["events", "slop", "hitInvisible"], "Inspect binding");
     if (request.type !== "inspect") throw new TypeError("Unsupported interaction binding type.");
@@ -197,7 +203,7 @@ export function createInteractionSession(input) {
         if (reconciled.affectedOwners.length || selectionLinksNeedUpdate(linked.projections, linkedSelections)) {
           linked = applySelectionLinks(linked.program, configured.linked, linkedSelections, reconciled.affectedOwners, { type: "program" }, selectionPolicy, reconciled.records);
         }
-        if (configured.select) resolveClickSelection(linked.program, configured.select.target, configured.select.selection, true);
+        if (configured.select) resolvePointerSelection(linked.program, configured.select, true);
         if (configured.region) resolveRegionBinding(linked.program, configured.region, true);
         const verified = reconcileSelections(linked.program, linked.records ?? reconciled.records, selectionPolicy, { verify: true });
         const selectionChanges = cloneAndFreeze([...reconciled.changes, ...(linked.selectionChanges ?? []), ...verified.changes]);
@@ -320,7 +326,7 @@ export function createInteractionSession(input) {
             const select = (point, pointerType, transactionId) => {
               const query = normalizeHitQuery({ pointerType, hitInvisible: binding.hitInvisible,
                 ...(binding.slop === undefined ? {} : { slop: binding.slop }) });
-              const command = clickSelectionCommand(program, binding, bridge.hit(point, query));
+              const command = (binding.type === "legend" ? legendSelectionCommand : clickSelectionCommand)(program, binding, bridge.hit(point, query));
               if (!command) return outcome("unchanged");
               if (transactionId === undefined) { transactionSequence = nextInteger(transactionSequence); transactionId = `interaction-${transactionSequence}`; }
               return edit(interactionTransaction(command, transactionId));
@@ -330,7 +336,7 @@ export function createInteractionSession(input) {
               perform,
               point: event => { const coordinates = pointerCoordinates(element, event, transform); return coordinates.localPoint === null ? null : coordinates.screenPoint; },
               begin: () => {
-                if (!resolveClickSelection(program, binding.target, binding.selection, true)) return null;
+                if (!resolvePointerSelection(program, binding, true)) return null;
                 transactionSequence = nextInteger(transactionSequence);
                 return freezeOwned({ transactionId: `interaction-${transactionSequence}`, previous: program });
               },

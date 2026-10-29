@@ -49,6 +49,7 @@ export function assertRegionInteraction(source, recipe, rows) {
   assertAngularSource(rows);
   assertDirectControls(source);
   assertLinkedFilter(source);
+  assertLegendSelection(source);
   assert.equal(serializeProgram(p), original);
 }
 
@@ -119,4 +120,26 @@ function assertLinkedFilter(source) {
   }
   assert.deepEqual(phases, ["commit", "settled", "commit", "settled", "commit", "settled"]);
   assert.equal(serializeProgram(p), before); session.destroy();
+}
+
+function assertLegendSelection(source) {
+  const p = source.editCanvas({ width: 800, height: 500, margin: 140 }).encodeColor({ target: "mark", field: "category" })
+    .createLegend({ target: "mark", channels: ["color"], position: "right", symbol: { layers: [{ type: "swatch", width: 14, height: 12 }] } })
+    .selectMarks({ id: "legend-picked", target: "mark", items: [] })
+    .highlightMarks({ selection: "legend-picked", color: "#d11a2a", dimOthers: false, bringToFront: false });
+  const items = getMarkItems(p, { target: "mark" }), category = items[0].fields.category;
+  const expected = items.filter(item => item.fields.category === category).map(item => item.key);
+  const session = createInteractionSession({ program: p, bindings: [{ type: "legend", effect: "selection", target: "mark", channel: "color", selection: "legend-picked" }] });
+  const listeners = new Map(), host = { getBoundingClientRect: () => ({ left: 0, top: 0, width: 800, height: 500 }),
+    addEventListener: (type, fn) => listeners.set(type, fn), removeEventListener: type => listeners.delete(type) };
+  session.mount(host);
+  const legend = session.getState().scene.nodes.find(node => node.type === "rect" && node.properties.width === 14 && node.properties.height === 12);
+  assert.ok(legend);
+  const point = { clientX: legend.offset[0] + legend.properties.x + 7, clientY: legend.offset[1] + legend.properties.y + 6 };
+  listeners.get("click")(point);
+  const next = deserializeProgram(serializeProgram(session.getState().program));
+  assert.deepEqual(getMarkItems(next, { target: "mark" }).filter(item => item.geometry.some(g => g.properties.fill === "#d11a2a" || g.properties.stroke === "#d11a2a")).map(item => item.key), expected);
+  listeners.get("click")(point);
+  assert.deepEqual(getMarkItems(session.getState().program, { target: "mark" }).filter(item => item.geometry.some(g => g.properties.fill === "#d11a2a" || g.properties.stroke === "#d11a2a")).map(item => item.key), []);
+  session.destroy(); assert.equal(listeners.size, 0);
 }

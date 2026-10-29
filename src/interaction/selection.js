@@ -115,11 +115,16 @@ export function prepareInteractionEdit(program, command) {
   return { program: invoke(program, "editMarkSelection", { ...address(target, false), selection: id, ...select, mode }), affectedOwners };
 }
 
-export function scopeSelectionKeys(program, target, keys, spend, reverse = false) {
+export function interactionNamespaces(program, target) {
   const namespaces = [];
   for (const child of target.childPath) {
     namespaces.push(`${program.compositionSpec.id}-${child}`); program = program.children[child];
   }
+  return namespaces;
+}
+
+export function scopeSelectionKeys(program, target, keys, spend, reverse = false) {
+  const namespaces = interactionNamespaces(program, target);
   const prefixWork = JSON.stringify(namespaces).length;
   spend(keys.length * prefixWork * Math.max(1, namespaces.length));
   return keys.map(key => {

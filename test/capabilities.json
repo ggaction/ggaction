@@ -727,6 +727,14 @@
       },
       {
         "type": "file",
+        "path": "unit/materialization/legend-targets.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-legend-selection.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/interaction-linked-filter.test.js"
       },
       {

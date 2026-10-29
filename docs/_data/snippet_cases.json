@@ -410,5 +410,15 @@
     "mode": "complete",
     "result": "filteredProgram",
     "prerequisites": "Run this ES module with its inline observations. Selecting a in the source leaves only a in the target view."
+  },
+  {
+    "id": "interaction-legend-selection",
+    "file": "api/interaction.md",
+    "contains": "const legendSession = createInteractionSession",
+    "mode": "complete",
+    "environment": "browser-module",
+    "result": "program",
+    "rendering": "renders-canvas",
+    "prerequisites": "Use this browser module with the Canvas element whose id is chart. Click a legend symbol or label to toggle that category."
   }
 ]

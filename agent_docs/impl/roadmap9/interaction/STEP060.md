@@ -6,6 +6,7 @@
 - [x] 전체 승인 AUTHORIZATION 재사용, 아래 공개 최소안 기록
 - [x] A: filter/reorder 직접 명령과 원자 lifecycle 연결
 - [x] B: linked filter의 origin/closure, hidden/drop 및 host focus 인수
+- [x] C1: categorical legend sample/label의 typed selection binding
 - [ ] legend visibility/selection, scale visible-data/all-data 정책
 - [ ] parameter controls, context action targets
 - [ ] annotation anchor/offset 편집
@@ -125,3 +126,42 @@ runtime3/strict TS/5bundle 측정을 완료했다. 문서47 중 최초45통과, 
 
 병합 source `239a077d8` 고정 뒤 provenance→machine→LLM 및 문서47/47이 통과했다.
 앞선 설치 결과의 동일5bundle 측정값도 최소 조정 cap 아래임을 별도 consumer.json으로 검사했다.
+
+
+## C1 범례 선택 최소 계약
+
+기존 승인에 따라 `{type:"legend",effect:"selection",target,channel,selection,mode?:"replace"|"toggle",slop?}` binding을 추가한다.
+Target과 기존 public legend channel, authored selection은 모두 명시한다. 기존 resolveLegendBlock이 channel을 categorical block으로 해석하며 내부 kind를 공개하지 않는다. mode 기본값은 toggle이고
+기존 native set semantics(해당 범주의 각 final item을 toggle)를 사용한다. Background/title/summary/
+다른 legend는 선택을 바꾸지 않는다. Continuous/interval 및 visibility effect는 이 checkpoint에서
+명시 거부하고 후행 C2 요구를 보존한다. 기존 한 개 editing gesture 한도를 그대로 적용한다.
+
+Guide hit token과 composition namespace의 기존 소유자를 공유한다. 원 numeric/string category를
+동일한 label text로 합치지 않는다. 현재 rendered legend의 실제 sample/label hit만 소비하고,
+현재 selection grain의 own field값으로 대응한 visible final items를 native select 명령에 넘긴다.
+숨김/overflow summary는 집합으로 임의 추정하지 않는다. Missing owner/selection/legend는 외부
+update 후 dormant이고 owner mismatch·불명확 field projection은 원자 실패한다. Current scene,
+capture/cancel, native selection closure, linked filtering, codec 및 immutable trace는 기존 경로다.
+
+### C1 검증 및 소비자 행렬
+
+범례 선택은 categorical block만 연결하고 visibility/continuous/interval을 완료했다고 주장하지 않는다.
+[qualification](legend-selection-evidence/qualification.json)에 최초 오류, source hash와 실행 로그를 보존한다.
+
+| 소비자 | 결과 / 후행 |
+|---|---|
+| typed category/final grain | numeric1/string1 분리, point item/line series, empty category·partial replace·live predicate 검증 |
+| 실제 guide/current frame | symbol/label 공유 identity, summary/title/background 제외, opacity/clip 정책·nested transform 재사용 |
+| transaction/linked closure | native toggle/replace, 한 commit/settled, keep-hidden/drop와 linked filter closure, 오류 시 이전 상태 보존 |
+| composition/lifecycle | explicit child scope·형제 참조 보존, sampled frame·cancel·duplicate click, 제거된 owner dormant |
+| codec/inspection | selection만 기존 program codec에 저장, typed rows와 restore 후 highlight 일치, binding은 session 수명 |
+| Full/Basic/package | Full native selection만, Basic 명시 실패, 기존 entry 유지·interaction→actions 신규 정적 의존 없음 |
+| 브라우저/문서 | Canvas/SVG DPR2 실제 클릭·Escape, 설치 패키지로 공개 snippet 실행, 네 폭 Axe0 |
+| PNG/PDF | 새 geometry·renderer 없음. 기존 selection/highlight concrete 소비자 재사용 |
+| visibility/도메인 | C2 미완료, opacity로 대체하지 않고 원 범주·선택·복원 정책을 후속 연결 |
+
+집중 owner324, critical302, final source/type/boundary/discovery37, 실제5datasets×3recipes와 inventory16,
+실제 browser1이 통과했다. 새 selection owner100/93.75/100, 공유 target와 overflow100/100/100이며
+기존 canonical floor는 낮추지 않았다. 같은 최종 archive `c6d8c8cb`로 Node20/22/24 각각 runtime3,
+strict TS와5bundle이 통과했고 Node22 설치 문서 예제는 클릭 결과a/c를 확인했다. 문서47 최초46통과의
+원인은 마지막 소스 수정 뒤 stale provenance였으며 재생성 후47/47이다. 전수 coverage·전체060/077은 미완료다.

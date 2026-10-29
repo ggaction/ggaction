@@ -8,7 +8,7 @@ import { validateGraphicIdentity } from "../grammar/schemas/graphicIdentity.js";
 import { MAX_HIT_INDEX_ITEMS, MAX_HIT_INDEX_WORK } from "../grammar/hitIndex.js";
 import { hitShapeWork } from "../grammar/hitShapes.js";
 import { prepareConcreteHitShape } from "./hitConcrete.js";
-import { guideHitMetadata } from "./hitGuides.js";
+import { guideHitMetadata, guideHitItemKey } from "./hitGuides.js";
 
 const frameSources = new WeakMap();
 
@@ -92,7 +92,7 @@ export function prepareProgramHitFrame(program, version = 0) {
       if (!guides.has(context.program)) guides.set(context.program, guideHitMetadata(context.program, count => spend(budget, count)));
       const guide = guides.get(context.program).get(context.localId);
       if (guide === undefined) continue;
-      const itemKey = JSON.stringify(["guide", context.namespaces, guide.ownerId, guide.role, guide.value]);
+      const itemKey = guideHitItemKey(context.namespaces, guide);
       spend(budget, itemKey.length);
       itemMetadata = cloneAndFreeze({ itemKey, ownerId: guide.ownerId, role: guide.role,
         childPath: context.childPath, rowKeys: [], resourceRefs: [] });

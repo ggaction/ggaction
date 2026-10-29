@@ -103,6 +103,20 @@ export const cases = [
     session.destroy();
   } },
   { id: "interaction/guide-and-host-cleanup", run() {
+    {
+      const p=chart().createCanvas({width:500,height:350,margin:100}).createData({values:[{id:'a',x:1,y:2,c:1},{id:'b',x:2,y:3,c:'1'},{id:'c',x:3,y:4,c:1}],keyField:'id'})
+        .createPointMark({id:'points'}).encodeX({field:'x'}).encodeY({field:'y'}).encodeColor({field:'c'}).createLegend({channels:['color']})
+        .selectMarks({id:'picked',target:'points',items:[]}).highlightMarks({selection:'picked',color:'red',dimOthers:false,bringToFront:false});
+      const session=createInteractionSession({program:p,bindings:[{type:'legend',effect:'selection',target:'points',channel:'color',selection:'picked'}]}), callbacks=new Map();
+      session.mount({getBoundingClientRect:()=>({left:0,top:0,width:500,height:350}),addEventListener:(type,fn)=>callbacks.set(type,fn),removeEventListener:type=>callbacks.delete(type)});
+      const symbol=session.getState().scene.nodes.find(n=>n.type==='rect'&&n.properties.width===14&&n.properties.height===12);
+      const point={clientX:symbol.offset[0]+symbol.properties.x+7,clientY:symbol.offset[1]+symbol.properties.y+6};callbacks.get('click')(point);
+      const restored=deserializeProgram(serializeProgram(session.getState().program));
+      assert.deepEqual(getMarkItems(restored,{target:'points'}).filter(item=>item.properties.fill==='red').map(item=>item.fields.id),['a','c']);
+      callbacks.get('click')(point);assert.deepEqual(getMarkItems(session.getState().program,{target:'points'}).filter(item=>item.properties.fill==='red'),[]);
+      session.destroy();assert.equal(callbacks.size,0);
+    }
+
     const autoProgram=make(chart).selectMarks({id:'picked',target:'points',items:[]}).highlightMarks({selection:'picked',color:'red',dimOthers:false,bringToFront:false});
     assert.throws(() => autoProgram.editMarkSelection({ selection: 'picked', region: { x: { ranges: [{min:0,max:1},{min:1,max:2}] } } }), /non-overlapping/);
     const automatic=createInteractionSession({program:autoProgram,bindings:[{type:'select',target:'points',selection:'picked',mode:'toggle'}]}), clicks=new Map();

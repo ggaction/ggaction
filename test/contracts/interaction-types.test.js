@@ -28,6 +28,13 @@ createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',targe
 // @ts-expect-error filter projections require a target selection that declares final grain
 createInteractionSession({program,bindings:[{type:'linkFilter',id:'filter',target:'points',resolve:'global',sources:[]}]});
 createInteractionSession({program,bindings:[{type:'select',target:{childPath:['left'],id:'points'},selection:'picked',mode:'toggle',onMiss:'ignore',slop:2,hitInvisible:true}]});
+createInteractionSession({program,bindings:[{type:'legend',effect:'selection',target:'points',channel:'shape',selection:'picked',mode:'toggle',slop:0}]});
+// @ts-expect-error legend effect must be explicit
+createInteractionSession({program,bindings:[{type:'legend',target:'points',channel:'color',selection:'picked'}]});
+// @ts-expect-error internal legend representation names are not public channels
+createInteractionSession({program,bindings:[{type:'legend',effect:'selection',target:'points',channel:'series',selection:'picked'}]});
+// @ts-expect-error legend selection does not implement visibility
+createInteractionSession({program,bindings:[{type:'legend',effect:'visibility',target:'points',channel:'color',selection:'picked'}]});
 createInteractionSession({program,bindings:[{type:'brush',target:'points',selection:'picked',axis:'xy',mode:'intersect'}]});
 createInteractionSession({program,bindings:[{type:'brush',target:'bars',selection:'picked',axis:'y',channels:{y:'y2'}}]});
 createInteractionSession({program,bindings:[{type:'lasso',target:'points',selection:'picked',mode:'add'}]});
