@@ -856,7 +856,7 @@ test("canonical asset resolver keeps browser pixels committed and closes late im
         if (window.__assetHold) await new Promise(resolve => window.__assetHolds.push(resolve));
         return bitmap;
       };
-      let module = 'const program=window.__assetProgram, context=window.__assetContext;\n' + code;
+      let module = 'const program=window.__assetProgram, context=window.__assetContext, interactionBindings=[];\n' + code;
       for (const [specifier, file] of [["ggaction", "index"], ["ggaction/interaction", "interaction"]]) module = module.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
       module += '\nwindow.__assetSession=assetSession;window.__assetCleanup=disposeAssets;';
       const url = URL.createObjectURL(new Blob([module], { type: "text/javascript" }));
@@ -1058,5 +1058,39 @@ test('rotation navigation sends real pointer and keyboard input through native g
   assert.ok(Math.abs(await x()-(200+100*Math.sin(Math.PI/18)))<1e-9);await canvas.focus();await page.keyboard.press('ArrowRight');assert.ok(Math.abs(await x()-(200+100*Math.sin(Math.PI/12)))<1e-9);
   assert.equal(await page.evaluate(()=>window.__globe.getState().history.undoCount),2);await page.keyboard.press('Home');assert.equal(await x(),200);
   await page.evaluate(()=>window.__globe.destroy());assertNoBrowserErrors(errors,'rotation navigation');await page.close();
+ }catch(error){await saveBrowserContextEvidence(context,error);throw error}finally{await context.close()}
+});
+
+test("canonical preview asset rendering waits for real browser bitmaps and releases cancelled gesture leases",async()=>{
+ const {readFile}=await import('node:fs/promises'),{documentationCodeBlocks}=await import('../../scripts/doc-snippets.js');
+ const code=documentationCodeBlocks(await readFile(new URL('../../docs/api/interaction.md',import.meta.url),'utf8')).find(b=>b.code.includes('const assetSession = createInteractionSession')).code;
+ const context=await browser.newContext({deviceScaleFactor:2,viewport:{width:900,height:650}});
+ try{
+  const{page,errors}=await openBrowserPage(context,new URL('examples/inspect-chart/',server.baseUrl).href,{waitFor:()=>window.__inspectionSessions?.length===2});
+  await page.evaluate(async code=>{
+   window.__inspectionSessions.forEach(s=>s.destroy());const {chart}=await import('/src/index.js'),{getProjectionView}=await import('/src/inspection.js');
+   document.body.innerHTML='<canvas id="map" tabindex="0" aria-label="Prepared map" style="touch-action:none"></canvas>';
+   const sample=document.createElement('canvas');sample.width=sample.height=2;sample.getContext('2d').fillStyle='#008000';sample.getContext('2d').fillRect(0,0,2,2);
+   const blob=await new Promise(resolve=>sample.toBlob(resolve)),bytes=new Uint8Array(await blob.arrayBuffer()),contentHash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('');
+   const image={contentHash,mimeType:'image/png',byteLength:bytes.length,width:2,height:2,payload:{encoding:'base64',data:btoa(String.fromCharCode(...bytes))}};
+   let p=chart().createCanvas({width:200,height:160,margin:0}).createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'Feature',id:'a',properties:{},geometry:{type:'Point',coordinates:[80,90]}}}).createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'}).createGeoPointMark({id:'places',radiusPx:6}).createGraphics({id:'picture',type:'image',parent:'plot-main'});
+   for(const[property,value]of Object.entries({image,x:2,y:2,width:12,height:12}))p=p.editGraphics({target:'picture',property,value});
+   window.__previewBase=p;window.__previewBindings=[{type:'navigate',target:'map',mode:'pan',scaleExtent:[0.5,8],initial:getProjectionView(p,{target:'map'}).parameters}];
+   window.__previewHolds=[];window.__previewCloses=0;window.__previewHold=false;const native=createImageBitmap.bind(window);
+   window.createImageBitmap=async(...args)=>{const bitmap=await native(...args),close=bitmap.close.bind(bitmap);bitmap.close=()=>{window.__previewCloses++;close();};if(window.__previewHold)await new Promise(resolve=>window.__previewHolds.push(resolve));return bitmap;};
+   let source='const program=window.__previewBase,context=document.querySelector("canvas").getContext("2d"),interactionBindings=window.__previewBindings;\n'+code;
+   for(const[specifier,file]of[['ggaction','index'],['ggaction/interaction','interaction']])source=source.replaceAll(JSON.stringify(specifier),JSON.stringify(new URL(`/src/${file}.js`,location.href).href));
+   source+='\nwindow.__previewSession=assetSession;window.__previewDispose=disposeAssets;assetSession.mount(document.querySelector("canvas"));';
+   const url=URL.createObjectURL(new Blob([source],{type:'text/javascript'}));try{await import(url)}finally{URL.revokeObjectURL(url)}window.__previewHold=true;
+  },code);
+  const canvas=page.locator('canvas'),box=await canvas.boundingBox(),point=(x,y)=>[box.x+x,box.y+y];
+  const state=()=>page.evaluate(()=>{const s=window.__previewSession.getState(),ctx=document.querySelector('canvas').getContext('2d');return{preview:s.previewProgram!==null,x:s.scene.nodes.find(n=>n.type==='circle').properties.x,green:[...ctx.getImageData(5,5,1,1).data],history:s.history.undoCount};});
+  await page.mouse.move(...point(80,90));await page.mouse.down();await page.mouse.move(...point(100,90));await page.waitForFunction(()=>window.__previewHolds.length===1);
+  assert.deepEqual(await state(),{preview:false,x:80,green:[0,128,0,255],history:0});
+  await page.evaluate(async()=>{window.__previewHolds[0]();await window.__previewSession.whenSettled();});assert.deepEqual(await state(),{preview:true,x:100,green:[0,128,0,255],history:0});
+  await page.mouse.move(...point(120,90));await page.waitForFunction(()=>window.__previewHolds.length===2);await page.keyboard.press('Escape');await page.mouse.up();
+  assert.deepEqual(await state(),{preview:false,x:80,green:[0,128,0,255],history:0});assert.equal(await page.evaluate(()=>window.__previewCloses),1);
+  await page.evaluate(()=>window.__previewHolds[1]());await page.waitForFunction(()=>window.__previewCloses===2);assert.equal((await state()).x,80);
+  await page.evaluate(()=>window.__previewDispose());assert.equal(await page.evaluate(()=>window.__previewCloses),3);assertNoBrowserErrors(errors,'prepared native gesture preview');await page.close();
  }catch(error){await saveBrowserContextEvidence(context,error);throw error}finally{await context.close()}
 });

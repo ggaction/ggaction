@@ -11,7 +11,8 @@
 - [x] C: 명시 ResizeObserver mount 수명·CSS 크기 이벤트·host native resize 연결
 - [x] D: 배타 native camera operation 명령·공통 preparation/history/frame 경계
 - [x] E: 명시 native camera drag/wheel/pinch/keyboard binding과 취소·history 경계
-- [ ] asset-bound preview 및 animation/layout worker/camera 통합과 AT40/41 최종 matrix
+- [x] F: native gesture의 exact asset-bound preview와 transient lease 수명
+- [ ] animation/layout worker/camera 통합과 AT40/41 최종 matrix
 - [ ] STEP074–077 전체 통합
 
 기반은 bounded history `68d09461d`다. [승인 원문](../AUTHORIZATION.json)의 remainingApproval을 재사용한다.
@@ -254,3 +255,33 @@ E source `68ac482dd` 고정 뒤 문서 source pin49/49, build172pages/1535LLM을
 320/390/768/1440의 overflow0/Axe0 및320/1440 직접확인 증거는 내용·CSS가 같은 pin 이전
 화면을 재사용한다. [정확 navigation qualification](navigation-evidence/qualification.json)은
 source/type fingerprint, 동일 tar, 3Node 결과, 최초실패와 원본로그를 구분해 보존한다.
+
+## F 최소 공개안 — exact preview asset lease
+
+같은 remainingApproval 아래 기존 assetResolver와 preparation owner를 재사용한다. 각 활성 편집
+gesture는 private preparation 인스턴스 하나만 소유하고, RAF 후보마다 이전 pending 작업을 취소한다.
+이전 accepted preview는 다음 준비가 끝날 때까지 표시한다. 성공하면 previewProgram·previewAssets·
+hit frame을 함께 공개한다. state.assets는 committed program 전용이며 history는 변하지 않는다.
+공개 추가 상태는 readonly previewAssets 하나다. preparation은 현재 pending preview 또는 native
+commit의 기존 네 tag이고 whenSettled는 가장 최근 시작한 준비 Promise를 관찰한다.
+
+Final up은 최신 좌표로 candidate만 계산하고 기존 native commit 준비로 전달한다. Preview 준비와
+기존 accepted transient lease는 취소/교체/resize-source-update/unmount/destroy에서 해제한다.
+초기 committed asset 준비 전에는 편집 capture를 시작하지 않아 복원 가능한 baseline을 보존한다.
+새 renderer나 별도 권위 program/cache는 만들지 않는다. 실패 시 gesture error1·commit0, 늦은
+lease dispose1·화면write0, previous program/trace/history equality와 실제 renderer stale 거부를
+image/font/shadow 조합 및 독립 cancellation 순서로 확인한다. 공개 animation은 후행이다.
+
+F runtime 집중302/302와 변경session owner100/95.75/100(95/90/100floor), 추가 owner·타입13/13,
+실제5datasets×3recipes+inventory16/16, 정확 공개문서 fragment의 실제 browser bitmap2/2가 통과했다.
+Image뿐 아니라 실제 font/glyph/shadow를 함께 준비하고 Canvas/PNG pixels와 SVG payload를 비교했다.
+Node 이동·navigation·annotation·brush가 같은 owner를 쓰며 초기준비·지연교체·취소·100회수명·
+동기 abort 관찰·subscriber 재진입·throwing disposer 회귀를 보존한다. 별도 PDF/전체 sweep 완료를
+주장하지 않으며 기존 native renderer 증거는 해당 source가 불변인 부분만 재사용한다.
+
+동일 tar7811b16f…는20runtime/strict TypeScript/five-entry bundle을Node20/22/24에서 검증했다.
+Node20 최초명령은 runtime/types가 통과한 뒤 interaction119,991gzip의 기존119,700cap에서 실패했고,
+동일 측정 bundle만120,000cap으로 재검사했다. Node22/24는 독립 명령 exit0이다. Package1060/
+Node20packed1,504,715/unpacked6,842,266이며 unpacked만6,843,000으로 올리고 기존 entries/packed
+한도는 유지한다. 최초 async-preview 기대·잘못된fixture·snippet hash·package/bundle 한도 실패는
+최종 source pin 문서와 함께 preview-evidence에 별도 기록한다. 전체066/067/077 완료는 아니다.

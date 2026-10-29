@@ -1072,6 +1072,10 @@
     "file": "interaction.mjs",
     "cases": [
       {
+        "id": "interaction/prepared-native-preview",
+        "statements": 27
+      },
+      {
         "id": "interaction/native-camera-navigation",
         "statements": 23
       },

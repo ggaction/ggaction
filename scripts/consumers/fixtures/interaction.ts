@@ -187,3 +187,7 @@ session.mount(document.createElement('canvas'),{observeResize:'auto'});
 import { getProjectionView } from 'ggaction/inspection';
 const camera = getProjectionView(program,{target:'map'});
 session.updateProgram(({program})=>{if (!('navigateProjection' in program)) throw new Error('Full navigation required');return program.navigateProjection({target:'map',operation:{type:'reset',initial:camera.parameters}});},{history:'record'});
+
+const previewImages = session.getState().previewAssets?.images;
+// @ts-expect-error preview handles are read-only
+session.getState().previewAssets = null;

@@ -1349,6 +1349,10 @@
       },
       {
         "type": "file",
+        "path": "unit/interaction-preview-preparation.test.js"
+      },
+      {
+        "type": "file",
         "path": "unit/interaction-node-move.test.js"
       },
       {

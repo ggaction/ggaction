@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:3e9f83dd745ad314781b91f30a68642eee8dc1861fb280d5fdec79a68c77eaf6. Status: development. Runtime source: 68ac482dd70550182d80c489815e19ea3909e4bb. Release baseline: v0.0.13.
+Contract: sha256:df6ca1f548d3c70ac74bc3104498200d430d7a50ea17e752d3e19508f725431c. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/68ac482dd70550182d80c489815e19ea3909e4bb/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/68ac482dd70550182d80c489815e19ea3909e4bb/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -10798,7 +10798,8 @@ Superseding edits and destroy abort the request; a late result is released witho
 result. Native transaction events keep their existing commit/settled/error/cancel phases.
 Initial and external preparation use an `assets` event with a separate `status` field.
 
-Continue from an immutable `program` containing retained images and a Canvas `context`:
+Continue from an immutable `program` containing retained images, a Canvas `context`, and an
+explicit `interactionBindings` array (use `[]` for commands without pointer editing):
 
 > **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `signal`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
 
@@ -10808,7 +10809,7 @@ import { createInteractionSession } from "ggaction/interaction";
 
 const assetSession = createInteractionSession({
   program,
-  bindings: [],
+  bindings: interactionBindings,
   async assetResolver({ program, signal }) {
     const bitmaps = [];
     const dispose = () => { for (const bitmap of bitmaps.splice(0)) bitmap.close(); };
@@ -10829,9 +10830,11 @@ const assetSession = createInteractionSession({
   }
 });
 const stopDrawing = assetSession.subscribe(event => {
-  if (event.phase === "commit" || (event.type === "assets" && event.status === "settled")) {
-    render(event.state.program, context, event.state.assets);
-  }
+  const state = event.state;
+  if (state.destroyed) return;
+  const current = state.previewProgram ?? state.program;
+  const assets = state.previewProgram ? state.previewAssets : state.assets;
+  if (assets) render(current, context, assets);
 });
 await assetSession.whenSettled();
 const disposeAssets = () => { stopDrawing(); assetSession.destroy(); };
@@ -10842,7 +10845,13 @@ and release their handles in the lease's `dispose`. Release partially acquired r
 preparation throws. Prepared handles belong to the exact committed program; undo/redo/reset
 prepare the restored snapshot again. `state.assets` exposes only the accepted rendering handles;
 `state.preparation` exposes the pending transaction, generation, base revision and scoped resource
-revisions. The host still owns rendering, resize observation and animation-frame preparation.
+revisions. With editing bindings, the same resolver prepares each exact preview.
+`previewProgram`, `previewAssets` and its hit frame appear together only when ready. While a new
+preview is pending, the previous accepted frame remains visible. New samples abort older pending
+work; cancellation restores the committed program and releases transient handles. Initial asset
+preparation must finish before editing capture begins. Final release prepares the latest candidate
+through the ordinary commit path and adds one history entry. The host still owns drawing and
+public animation-frame preparation.
 
 ## Undo, redo and reset
 
@@ -36053,6 +36062,8 @@ export interface InteractionState {
   readonly history: { readonly undoCount: number; readonly redoCount: number; readonly limit: number };
   /** Prepared handles for this exact committed program; host passes them to its renderer. */
   readonly assets: Readonly<InteractionAssets> | null;
+  /** Transient handles for the exact previewProgram; never use committed assets for that preview. */
+  readonly previewAssets: Readonly<InteractionAssets> | null;
   /** Pending candidate identity. Program and history remain committed until ready. */
   readonly preparation: InteractionPreparation | null;
   readonly mounted: boolean;
@@ -50404,12 +50415,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/68ac482dd70550182d80c489815e19ea3909e4bb/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/68ac482dd70550182d80c489815e19ea3909e4bb/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -53492,9 +53503,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:3e9f83dd745ad314781b91f30a68642eee8dc1861fb280d5fdec79a68c77eaf6` |
+| Contract fingerprint | `sha256:df6ca1f548d3c70ac74bc3104498200d430d7a50ea17e752d3e19508f725431c` |
 | Example and dataset source | `369cc8ec66d295eaade171d0a32a3c7a3d985cc8` |
-| Runtime source commit | `68ac482dd70550182d80c489815e19ea3909e4bb` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 367 |
 | Declared actions in that release | 234 |

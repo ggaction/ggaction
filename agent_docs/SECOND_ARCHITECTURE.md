@@ -4122,3 +4122,19 @@ Navigation 모듈 추가의 package 실측은1060entries/1,504,297packed/6,840,0
 동일 navigation tar의 Node20 interaction bundle은119,691gzip(190modules)이며 한도를119,700으로
 최소100단위 올렸다. 새 adapter와 기존 pure projection 옵션 검증을 포함하고 Full/Basic/SVG/graph
 번들은 변화가 없어 기존 한도를 유지한다. 최초116,700 한도 실패와 통과한 runtime/types를 보존한다.
+
+Prepared native preview는 기존 interaction/preparation의 인스턴스를 활성 gesture의 transient
+수명에 한정해 재사용한다. Committed lease는 session이 보존하고, preview lease는 정확한
+previewProgram과 hit frame의 원자 publication에만 연결된다. Public readonly previewAssets는
+해당 transient lease의 projection이며 별도 asset cache나 authoritative chart state가 아니다.
+Pending 교체는 이전 accepted frame을 유지하고, 종료는 원 frame 복원 뒤 transient lease를 해제한다.
+최종 candidate는 기존 native commit/history 준비 경로 하나로 들어간다. Renderer는 여전히
+graphicSpec과 authentic prepared handles만 받으며 animation scene 준비는 분리된 후행 경계다.
+
+Preview 연결의 Node20 package는 기존1060entries/1,504,715packed, 새6,842,266unpacked로
+측정했다. Entries/packed 한도는 유지하고 unpacked만6,843,000으로 올린다. 검색1,037,619bytes는
+기존1,037,700 한도 안이며 runtime 준비 owner를 새로 복제하지 않는다.
+
+동일 preview tar의 Node20 interaction은119,991gzip으로 이전navigation보다300bytes 증가했다.
+최소100단위 한도120,000을 적용하고 나머지 네 entry 한도는 유지한다. 최초119,700 초과 시 이미
+통과한20runtime/strict types와 동일 archive의 측정 bundle을 cap 변경 뒤 재검사한 결과를 분리 보존한다.

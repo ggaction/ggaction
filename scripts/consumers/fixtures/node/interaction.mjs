@@ -11,6 +11,14 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/prepared-native-preview", async run() {
+    const p=chart().createCanvas({width:200,height:160,margin:0}).createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'Feature',id:'a',properties:{},geometry:{type:'Point',coordinates:[80,90]}}}).createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'}).createGeoPointMark({id:'places'});
+    const calls=[],released=[],s=createInteractionSession({program:p,bindings:[{type:'navigate',target:'map',mode:'pan',scaleExtent:[0.5,8],initial:getProjectionView(p,{target:'map'}).parameters}],async assetResolver(q){calls.push(q);const images=await prepareImageRendering(q.program,{decode(){throw new Error('No image decode expected');},signal:q.signal});return {images,dispose(){released.push(q.program);}};}});
+    const listeners=new Map();let frame;const h={getBoundingClientRect:()=>({left:0,top:0,width:200,height:160}),addEventListener(type,fn){const set=listeners.get(type)??new Set();set.add(fn);listeners.set(type,set);},removeEventListener:(type,fn)=>listeners.get(type)?.delete(fn),setPointerCapture(){},releasePointerCapture(){},requestAnimationFrame:fn=>(frame=fn,1),cancelAnimationFrame(){frame=undefined}};
+    const fire=(type,x=80,y=90,extra={})=>{for(const fn of listeners.get(type)??[])fn({pointerId:1,pointerType:'mouse',button:0,clientX:x,clientY:y,preventDefault(){},...extra});};s.mount(h);await s.whenSettled();const assets=s.getState().assets;
+    fire('pointerdown');fire('pointermove',100,90);frame();assert.equal(s.getState().previewProgram,null);await s.whenSettled();const preview=s.getState();assert.equal(preview.previewAssets.images.kind,'image-rendering');assert.equal(preview.program,p);assert.equal(preview.assets,assets);assert.equal(preview.scene.nodes.find(n=>n.type==='circle').properties.x,100);
+    fire('keydown',0,0,{key:'Escape'});assert.equal(s.getState().previewAssets,null);assert.equal(s.getState().history.undoCount,0);assert.equal(calls[1].signal.aborted,true);assert.equal(released.length,1);s.destroy();assert.equal(released.length,2);assert.ok([...listeners.values()].every(set=>set.size===0));
+  } },
   { id: "interaction/native-camera-navigation", run() {
     const p=chart().createCanvas({width:400,height:300,margin:0}).createGeometryData({id:'places',format:'geojson',coordinateKind:'planar',featureKey:'id',values:{type:'Feature',id:'a',properties:{},geometry:{type:'Point',coordinates:[80,90]}}})
       .createProjection({id:'map',type:'identity'}).createCoordinate({type:'geo'}).createGeoPointMark({id:'places'});
