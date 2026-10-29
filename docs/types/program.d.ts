@@ -2070,7 +2070,7 @@ export type WaterfallColor = OHLCColor;
 export type WaterfallWidth = { readonly band: number; readonly pixels?: never } | { readonly pixels: number; readonly band?: never };
 export interface CreateWaterfallPlotOptions {
   readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: WaterfallX;
-  readonly role: string; readonly value: string; readonly reset?: string | false; readonly yScale?: NonPointQuantitativePositionScaleOptions;
+  readonly role: string; readonly value: string; readonly reset?: string | false; readonly yScale?: NonPointZeroSupportingPositionScaleOptions;
   readonly width?: WaterfallWidth; readonly bars?: WaterfallBarPaint; readonly connectors?: false | WaterfallConnectorPaint; readonly labels?: false | WaterfallLabelPaint;
   readonly color?: false | WaterfallColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
 }

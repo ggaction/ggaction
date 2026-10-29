@@ -2419,7 +2419,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `role` | Required | `string` |
 | `value` | Required | `string` |
 | `reset` | Optional / branch-dependent | `string \| false \| undefined` |
-| `yScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `yScale` | Optional / branch-dependent | `NonPointZeroSupportingPositionScaleOptions \| undefined` |
 | `width` | Optional / branch-dependent | `WaterfallWidth \| undefined` |
 | `bars` | Optional / branch-dependent | `WaterfallBarPaint \| undefined` |
 | `connectors` | Optional / branch-dependent | `false \| WaterfallConnectorPaint \| undefined` |
@@ -2466,7 +2466,7 @@ Generated from the current TypeScript declaration. Union branches can require di
 | `role` | Optional / branch-dependent | `string \| undefined` |
 | `value` | Optional / branch-dependent | `string \| undefined` |
 | `reset` | Optional / branch-dependent | `string \| false \| undefined` |
-| `yScale` | Optional / branch-dependent | `NonPointQuantitativePositionScaleOptions \| undefined` |
+| `yScale` | Optional / branch-dependent | `NonPointZeroSupportingPositionScaleOptions \| undefined` |
 | `width` | Optional / branch-dependent | `WaterfallWidth \| undefined` |
 | `bars` | Optional / branch-dependent | `WaterfallBarPaint \| undefined` |
 | `connectors` | Optional / branch-dependent | `false \| WaterfallConnectorPaint \| undefined` |

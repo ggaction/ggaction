@@ -116,7 +116,7 @@
     {
       "name": "yScale",
       "required": false,
-      "type": "NonPointQuantitativePositionScaleOptions | undefined"
+      "type": "NonPointZeroSupportingPositionScaleOptions | undefined"
     },
     {
       "name": "width",

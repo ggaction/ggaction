@@ -3627,13 +3627,13 @@ Related types: [`PolarTitleOptions`](../../../reference/types/#type-polartitleop
 ```typescript
 export interface CreateWaterfallPlotOptions {
   readonly id?: string; readonly data?: string; readonly coordinate?: string; readonly x: WaterfallX;
-  readonly role: string; readonly value: string; readonly reset?: string | false; readonly yScale?: NonPointQuantitativePositionScaleOptions;
+  readonly role: string; readonly value: string; readonly reset?: string | false; readonly yScale?: NonPointZeroSupportingPositionScaleOptions;
   readonly width?: WaterfallWidth; readonly bars?: WaterfallBarPaint; readonly connectors?: false | WaterfallConnectorPaint; readonly labels?: false | WaterfallLabelPaint;
   readonly color?: false | WaterfallColor; readonly clip?: boolean; readonly guides?: false | ColorGuides;
 }
 ```
 
-Related types: [`WaterfallX`](../../../reference/types/#type-waterfallx) · [`NonPointQuantitativePositionScaleOptions`](../../../reference/types/#type-nonpointquantitativepositionscaleoptions) · [`WaterfallWidth`](../../../reference/types/#type-waterfallwidth) · [`WaterfallBarPaint`](../../../reference/types/#type-waterfallbarpaint) · [`WaterfallConnectorPaint`](../../../reference/types/#type-waterfallconnectorpaint) · [`WaterfallLabelPaint`](../../../reference/types/#type-waterfalllabelpaint) · [`WaterfallColor`](../../../reference/types/#type-waterfallcolor) · [`ColorGuides`](../../../reference/types/#type-colorguides).
+Related types: [`WaterfallX`](../../../reference/types/#type-waterfallx) · [`NonPointZeroSupportingPositionScaleOptions`](../../../reference/types/#type-nonpointzerosupportingpositionscaleoptions) · [`WaterfallWidth`](../../../reference/types/#type-waterfallwidth) · [`WaterfallBarPaint`](../../../reference/types/#type-waterfallbarpaint) · [`WaterfallConnectorPaint`](../../../reference/types/#type-waterfallconnectorpaint) · [`WaterfallLabelPaint`](../../../reference/types/#type-waterfalllabelpaint) · [`WaterfallColor`](../../../reference/types/#type-waterfallcolor) · [`ColorGuides`](../../../reference/types/#type-colorguides).
 
 ### `CurveInterpolation` {#type-curveinterpolation}
 
