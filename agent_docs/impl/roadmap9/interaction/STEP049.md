@@ -56,3 +56,7 @@ animation sampler와 session의 stale asset/transaction bridge가 남아 있다.
 재현을 발견했다. b36280156 이전 index와 수정 index를 같은 입력으로 실행한 expected/actual/diff를
 `frame-evidence/overflow-regression.json`에 보존했다. Query 진단은 semantic key별 한 번 전달하며
 기존 static 진단 복사도 query work budget에 포함한다. No-hit와 후속 정상 query는 그대로 유지된다.
+
+최종 source `6d07bf122`로 provenance/machine/LLM을 고정한 뒤 docs19/19와 built160pages/1390artifacts를 통과했다.
+Full/Basic/SVG/scene import graph에 private hit owner가 없음을 실제 import traversal로 확인했다.
+Source provenance만 변경했고 UI assets/layout은 main f1800607d와 동일하여 해당 browser 증거를 재사용한다.

@@ -74,5 +74,14 @@
     "STEP035 nested composition",
     "public interaction session entry and types",
     "browser event/animation sampler integration and AT33/34 closure"
-  ]
+  ],
+  "sourceCommit": "6d07bf122",
+  "initialFrameSource": "b36280156",
+  "documentation": {
+    "sourceChecks": 19,
+    "builtPages": 160,
+    "selectiveLlmArtifacts": 1390,
+    "browserReuse": "Source provenance only; main f1800607d browser CSS/JS/images/layout unchanged."
+  },
+  "publicImportGraphProof": "public-imports.json"
 }
