@@ -322,7 +322,7 @@ export function resolveGradientLegendCreation(program, args = {}, channel = "col
   const { representation, ...options } = args;
   if (representation !== undefined && !["gradient", "symbols"].includes(representation)) throw new Error("Legend representation must be gradient or symbols.");
   if (channel !== "color" && representation !== undefined) throw new Error("Legend representation requires continuous color.");
-  const config = representation === "symbols" ? normalizeColorSymbols(options) : normalizeContinuousLegend(options, "gradient");
+  const config = representation === "symbols" ? normalizeColorSymbols(options, undefined, "create", program.materializationConfigs.theme) : normalizeContinuousLegend(options, "gradient");
   if (args.channels !== undefined && (
     !Array.isArray(args.channels) ||
     args.channels.length !== 1 ||

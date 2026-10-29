@@ -210,7 +210,7 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
       args.symbol,
       definition.kind
     )
-  }, definition.kind, { internalSymbol: inferredSymbol });
+  }, definition.kind, { internalSymbol: inferredSymbol, theme: program.materializationConfigs.theme });
   const config = {
     target: layer.id,
     ...definition,

@@ -1,3 +1,4 @@
+import { applyThemePatternPalette } from "../theme/palettes.js";
 import { rebindConditionalInputs, orderConditionalMarkIds } from "../../materialization/conditionalState.js";
 import { applyLayerDataRematerialization } from "../../materialization/dependencies.js";
 import { requireDataset } from "../../selectors/datasets.js";
@@ -139,6 +140,7 @@ function rebuildTargetHighlights(program, target, { labels = [] } = {}) {
   baseline = baseline[requireSelectionPolicy(
     layer.mark.type
   ).rematerializeOp]({ id: target });
+  baseline = applyThemePatternPalette(baseline, target);
   baseline = rematerializeLabels(baseline, labels);
   baseline = resetCategoricalLegendSymbols(baseline, target);
   return highlights.length === 0

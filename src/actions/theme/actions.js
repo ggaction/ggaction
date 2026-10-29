@@ -1,6 +1,6 @@
 import { action } from "../../core/action.js";
 import { noOptions, validateOptionObject } from "../../core/validation.js";
-import { normalizeThemeDefinition } from "../../theme/defaults.js";
+import { normalizeThemeDefinition } from "./definition.js";
 import {
   LOCAL_THEME_OWNER,
   createThemeFrame,

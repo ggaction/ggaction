@@ -228,7 +228,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
   for (const id of ["option-path:createFlowData.value", "option-path:layoutFlow.options.order", "option-path:createFlowLinks.links.overrides[].key", "option-path:createFlowNodes.labels.content.field"]) {
     assert.ok(inventory.optionPaths.some(value => value.id === id), id);
   }
-  for (const path of ["theme.tokens.fontSize", "theme.tokens.fontWeight", "theme.tokens.axisStrokeWidth", "theme.tokens.tickStrokeWidth", "theme.tokens.tickSize", "theme.tokens.gridStrokeWidth"]) {
+  for (const path of ["theme.tokens.fontSize", "theme.tokens.fontWeight", "theme.tokens.axisStrokeWidth", "theme.tokens.tickStrokeWidth", "theme.tokens.tickSize", "theme.tokens.gridStrokeWidth", "theme.tokens.axisLabelGap", "theme.tokens.axisTitleGap", "theme.tokens.legendItemGap", "theme.tokens.palette", "theme.tokens.patternPalette"]) {
     const option = inventory.optionPaths.find(option => option.action === "applyTheme" && option.path === path);
     assert.equal(option?.required, true, path);
     assert.equal(option?.evidence, "direct-trace", path);

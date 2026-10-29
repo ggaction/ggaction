@@ -5,6 +5,10 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "theme-definition": { prefix: "actions/theme/definition.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Theme tokens require closed, descriptor-safe normalization and bounded structured paint palettes." },
+  "theme-palettes": { prefix: "actions/theme/palettes.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Categorical paint must preserve typed category identity, authored ranges and named overlays." },
+  "legend-highlight-membership": { prefix: "materialization/selection/legend.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Legend pixels and inspection share exact final-item membership and component style eligibility." },
+  "theme-provenance": { prefix: "actions/theme/provenance.js", floor: { lines: 95, branches: 85, functions: 100 }, rationale: "Read-only appearance evidence must distinguish authored authority from unknown legacy state." },
   "theme-native-guide-defaults": { prefix: "actions/theme/guideDefaults.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Theme removal must reuse native guide defaults and preserve child-owned snapshots and explicit colors." },
   "theme-typography-roles": { prefix: "actions/theme/typographyRoles.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Typography tokens must resolve native family defaults and authored precedence without losing exact font preparation." },
   "resource-mark-effects": { prefix: "grammar/markEffects.js", floor: { lines: 95, branches: 90, functions: 100 }, rationale: "Role effects must share normalized authoring and strict stored validation without mutating input." },

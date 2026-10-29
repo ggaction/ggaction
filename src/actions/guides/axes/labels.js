@@ -2,7 +2,7 @@ import { materializeTextFont } from "../../../materialization/textFont.js";
 import { axisTitleAllowsLabelOverlap, axisTitleFollowsLabels } from "../../../grammar/axisTextPlacement.js";
 import { selectCartesianAxis, axisTargetArgs } from "../../../selectors/axes.js";
 import { axisGraphicIds, hasPendingAxisTitleRematerialization } from "../../../materialization/guides/resources.js";
-import { axisThemeTypography } from "../../theme/state.js";
+import { axisThemeTypography, axisThemeOffset } from "../../theme/state.js";
 import { validateAxisLabelFlushThreshold, validateAxisTextPlacement } from "../../../grammar/axisTextPlacement.js";
 import { canvasOverflowError } from "../../../layout/canvas.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
@@ -69,6 +69,7 @@ const DEFAULTS = Object.freeze({
   overlap: "error"
 });
 export { DEFAULTS as CARTESIAN_AXIS_LABEL_DEFAULTS };
+export const cartesianAxisLabelOffset = channel => channel === "x" ? 18 : 12;
 
 function normalizeLabelLayout(config, args, operation) {
   const next = { ...config };
@@ -507,7 +508,7 @@ function makeCreate(channel) {
     let config = normalizeLabelLayout({
       scale,
       position: defaultAxisPosition(channel),
-      offset: channel === "x" ? 18 : 12,
+      offset: axisThemeOffset(this.materializationConfigs.theme, "labels") ?? cartesianAxisLabelOffset(channel),
       format: "auto",
       color: DEFAULTS.color,
       fontSize: DEFAULTS.fontSize,

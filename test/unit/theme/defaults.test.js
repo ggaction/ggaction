@@ -1,3 +1,4 @@
+import { normalizeThemeDefinition, resolveThemeTokens } from "../../../src/actions/theme/definition.js";
 import assert from "node:assert/strict";
 import test from "node:test";
 
@@ -5,8 +6,6 @@ import {
   THEME_TOKEN_KEYS,
   GUIDE_NUMERIC_THEME_TOKENS,
   THEME_TOKENS,
-  normalizeThemeDefinition,
-  resolveThemeTokens
 } from "../../../src/theme/defaults.js";
 
 test("normalizes built-in and custom theme requests into owned partial definitions", () => {
@@ -28,8 +27,8 @@ test("normalizes built-in and custom theme requests into owned partial definitio
 });
 
 test("resolves base tokens and the closed optional typography vocabulary", () => {
-  assert.equal(THEME_TOKEN_KEYS.length, 29);
-  const baseKeys = THEME_TOKEN_KEYS.filter(key => ![...GUIDE_NUMERIC_THEME_TOKENS, "fontSize", "fontWeight", "axisLabel", "axisLabelFontFamily", "axisTitleFontFamily", "axisLabelFontSize", "axisTitleFontSize"].includes(key));
+  assert.equal(THEME_TOKEN_KEYS.length, 34);
+  const baseKeys = THEME_TOKEN_KEYS.filter(key => ![...GUIDE_NUMERIC_THEME_TOKENS, "legendItemGap", "palette", "patternPalette", "fontSize", "fontWeight", "axisLabel", "axisLabelFontFamily", "axisTitleFontFamily", "axisLabelFontSize", "axisTitleFontSize"].includes(key));
   assert.deepEqual(Object.keys(THEME_TOKENS.light), [...baseKeys]);
   assert.deepEqual(Object.keys(THEME_TOKENS.dark), [...baseKeys]);
 

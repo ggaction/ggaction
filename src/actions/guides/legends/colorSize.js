@@ -39,7 +39,7 @@ export function resolveColorSizeConfig(program,args={}) {
  const mapping=resolveColorSizeOwner(program,args.target,combine,args.channels);
  const sampling=normalizeLegendSampling(args,{label:'Color-size legend'});
  if(combine==='color-size-shape')validateColorSizeShapeSamples(sampling,program.resolvedScales[mapping.colorScale]);
- return {...mapping,...normalizeItemLegendConfig(args,{field:mapping.field},40),
+ return {...mapping,...normalizeItemLegendConfig(args,{field:mapping.field},"colorSize",program.materializationConfigs.theme),
   sampling,symbol:normalizeColorSizeSymbol(args.symbol,undefined,{...mapping,combine}),combine};
 }
 
@@ -139,7 +139,7 @@ export function resolveColorSizeEdit(program,previous,args) {
  const normalized=normalizeItemLegendConfig({...previous,...layoutArgs,title,
   ...(args.position!==undefined&&args.position!==previous.position&&args.direction===undefined?{direction:undefined}:{}),
   labels:{...previous.labels,...args.labels},titleStyle:mergeLegendTitleStyle(previous.titleStyle,args.titleStyle,{edit:true}),border},
-  {field:previous.field},40);
+  {field:previous.field},"colorSize");
  const config={...previous,...normalized,title,
   inferredTitle:args.title==='auto'?true:typeof args.title==='string'?false:previous.inferredTitle,
   titleVisible:args.title===false?false:args.title===undefined?previous.titleVisible:true,
