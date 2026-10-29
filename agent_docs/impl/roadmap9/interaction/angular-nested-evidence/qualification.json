@@ -1,0 +1,273 @@
+{
+  "sourceCommit": "89ed1008dedef33c73f623eaa7381288a9909806",
+  "upstream": "de634f88e",
+  "scope": "Angular and Cartesian/lasso with nested responsive composition",
+  "authorization": "agent_docs/impl/roadmap9/AUTHORIZATION.json",
+  "checks": {
+    "focused": 42,
+    "boundariesTypesDiscovery": 34,
+    "browser": 6,
+    "realistic": 16,
+    "docs": {
+      "initialPassed": 18,
+      "initialTotal": 20,
+      "pinnedPassed": 20,
+      "builtPages": 168,
+      "selectiveLLM": 1435,
+      "responsiveAxeCells": 12
+    },
+    "installed": [
+      {
+        "node": "v20.20.2",
+        "artifact": "5d94ce0e8666b68e2b5cefb56cc73b414a4337ce3faa87cc368b4707d4499874",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 833,
+            "minifiedBytes": 2357247,
+            "gzipBytes": 669657
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 544,
+            "minifiedBytes": 1289463,
+            "gzipBytes": 376363
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 173,
+            "minifiedBytes": 332257,
+            "gzipBytes": 108129
+          }
+        ]
+      },
+      {
+        "node": "v22.23.1",
+        "artifact": "5d94ce0e8666b68e2b5cefb56cc73b414a4337ce3faa87cc368b4707d4499874",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 833,
+            "minifiedBytes": 2357247,
+            "gzipBytes": 668066
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 544,
+            "minifiedBytes": 1289463,
+            "gzipBytes": 375536
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20055
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 173,
+            "minifiedBytes": 332257,
+            "gzipBytes": 107489
+          }
+        ]
+      },
+      {
+        "node": "v24.22.1",
+        "artifact": "5d94ce0e8666b68e2b5cefb56cc73b414a4337ce3faa87cc368b4707d4499874",
+        "sourceFree": true,
+        "runtime": [
+          "interaction/full-basic-immutable-inspection PASS",
+          "interaction/current-frame-and-restored-program PASS",
+          "interaction/guide-and-host-cleanup PASS"
+        ],
+        "types": "passed",
+        "bundles": [
+          {
+            "specifier": "ggaction",
+            "chunks": 1,
+            "modules": 833,
+            "minifiedBytes": 2357247,
+            "gzipBytes": 669657
+          },
+          {
+            "specifier": "ggaction/basic",
+            "chunks": 1,
+            "modules": 544,
+            "minifiedBytes": 1289463,
+            "gzipBytes": 376363
+          },
+          {
+            "specifier": "ggaction/svg",
+            "chunks": 1,
+            "modules": 37,
+            "minifiedBytes": 59445,
+            "gzipBytes": 20196
+          },
+          {
+            "specifier": "ggaction/interaction",
+            "chunks": 1,
+            "modules": 173,
+            "minifiedBytes": 332257,
+            "gzipBytes": 108129
+          }
+        ]
+      }
+    ],
+    "canonicalPack": "passed; same5d94ce0e artifact"
+  },
+  "artifact": {
+    "name": "ggaction",
+    "version": "0.0.26",
+    "filename": "ggaction-0.0.26.tgz",
+    "entryCount": 951,
+    "packedBytes": 1370214,
+    "unpackedBytes": 6271222,
+    "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-paints/ggactionnewbrand/.artifacts/release/angular-nested-5d94ce0e.tgz",
+    "sha1": "9af074a80c5c3a269da34ff5e9a15737c6ed6126",
+    "sha256": "5d94ce0e8666b68e2b5cefb56cc73b414a4337ce3faa87cc368b4707d4499874"
+  },
+  "limits": {
+    "entries": 951,
+    "packedBytes": 1371000,
+    "unpackedBytes": 6272000,
+    "fullGzip": 669700,
+    "basicGzip": 376400,
+    "interactionGzip": 108200,
+    "searchBytes": 974000
+  },
+  "measuredSearchBytes": 973997,
+  "preservedFailures": [
+    "Combined951 entries exceeded prior945 cap",
+    "CombinedNode20 runtime/types passed, previous bundle caps exceeded; minimally measured caps corrected",
+    "Realistic runner initially omitted explicit shared corpus cache; corrected invocation16/16",
+    "Precommit docs18/20: combinedsearch973997 exceeded973000 and nestedexample source link not yet on branch; cap974000 and source pin20/20 passed"
+  ],
+  "globalCoverage": "Not rerun; unchanged existing owner evidence and new consumer intersection used",
+  "remaining": [
+    "STEP060 direct controls and later history",
+    "STEP074 integrated qualification",
+    "STEP077 full completion"
+  ],
+  "evidenceFiles": {
+    "angular-main-browser.log": {
+      "sha256": "ea38e3126105fedbfd0c904a87be6ac618ba3104c8f9efd01207533968c42951",
+      "bytes": 1437
+    },
+    "angular-main-build.log": {
+      "sha256": "97e001b61ce0a9e82ed1a77be5a4b26a2fbfc189c996b70f2147ec883d6d5636",
+      "bytes": 420
+    },
+    "angular-main-built.log": {
+      "sha256": "8584fac4a3443cc69e41a6ea5d921573b0b775ad5b301d689dacef1ff356b7f3",
+      "bytes": 102
+    },
+    "angular-main-consumer-final20.log": {
+      "sha256": "9882ed83e24748d27421165f46c4536dda5e7f21bdf1167ece05e16d6ffaaed9",
+      "bytes": 939
+    },
+    "angular-main-consumer-final22.log": {
+      "sha256": "2e103e3a83f1747a98f1d8c41b682aa2e0d614430df4d8e55926ac5815fecb39",
+      "bytes": 939
+    },
+    "angular-main-consumer-final24.log": {
+      "sha256": "1c9d77adcaa8f42ef5a1070ac5f90c158f23b2cc6847168643c48ec58eab7196",
+      "bytes": 939
+    },
+    "angular-main-consumer-initial20.log": {
+      "sha256": "86b02bc8fa107b0c6be6817bf05334cea25138d34aa4d5d0d70a6cdcafb75376",
+      "bytes": 1469
+    },
+    "angular-main-consumer.mjs": {
+      "sha256": "2965d6ed6f1f34947efcb82779e8efbc36ba007f9c6f5476327477268ff1d831",
+      "bytes": 2004
+    },
+    "angular-main-contracts.log": {
+      "sha256": "6e49db22a173663933783bfe1f521a83309c18f03dd1a18a9fd400656f2518fe",
+      "bytes": 6803
+    },
+    "angular-main-doc-browser.log": {
+      "sha256": "09ad10af898efb9c401c5ae25170806358bd455941ea8c865da306162919dc15",
+      "bytes": 1019
+    },
+    "angular-main-doc-browser.mjs": {
+      "sha256": "6af32743c0b2744df070523861ac1b4fc922fd588715f07423a446c6e5cfa895",
+      "bytes": 2902
+    },
+    "angular-main-docs.log": {
+      "sha256": "58e0064c3def2feadcce24adfcf4352c543f4af003b85dc0c7715a5d2197e2f4",
+      "bytes": 6427
+    },
+    "angular-main-fixed.json": {
+      "sha256": "550009f1d4640aedb3409ad7d5e7d17c12f41496cdea728ae2c8ed29b66c4314",
+      "bytes": 413
+    },
+    "angular-main-focused.log": {
+      "sha256": "4bfac91f6ea1f849e7fdddf7ad32458147d9545613ee687fc64dc5b277901c96",
+      "bytes": 10558
+    },
+    "angular-main-generation.log": {
+      "sha256": "7dd43625db21caf625ca0db3e814e4671306337a92a6afbf30edf924c23a6a27",
+      "bytes": 12047
+    },
+    "angular-main-measure.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
+    },
+    "angular-main-measure.mjs": {
+      "sha256": "5833f56eb7a23e68c74438bbfd87f068412e6954b37c7ffae4acf9cdf68c8bf8",
+      "bytes": 9479
+    },
+    "angular-main-package-final.log": {
+      "sha256": "07fcc9e8340e76fc2c37a444be3e7f86bf011a81dc08be470ecbfcf2afc15569",
+      "bytes": 621
+    },
+    "angular-main-package-initial.log": {
+      "sha256": "82265aac3023a4c022c9f31f17c2a303263091fff0b63747d0863c2fc63889c5",
+      "bytes": 894
+    },
+    "angular-main-pinned-docs.log": {
+      "sha256": "1edcf37b6fb3cfc511df76e83562272736f44b6fe4a5a245a630022e2eb1741d",
+      "bytes": 4737
+    },
+    "angular-main-pinned-generation.log": {
+      "sha256": "08ae846004379daf9c73d157586ff752a74283713825f4828282d74f088e7353",
+      "bytes": 335
+    },
+    "angular-main-realistic-missing-cache.log": {
+      "sha256": "1bfc4f3863614199053f3c0a6c91448cd6a4494ff414a25c809040f4f2dd2280",
+      "bytes": 24046
+    },
+    "angular-main-realistic.log": {
+      "sha256": "b7995cfcadabb06aa51d1a921abfb27f6e59dd2cae43322c8b0db2912c3fe23e",
+      "bytes": 4272
+    }
+  }
+}

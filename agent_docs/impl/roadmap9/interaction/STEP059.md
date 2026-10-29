@@ -11,7 +11,8 @@
 - [x] 실제 capture/RAF preview/final-up/cancel lifecycle 연결
 - [x] Cartesian/lasso types/Current/docs/codec/installed/browser 소비자 검증
 - [x] AT36 구현 인수 matrix와 source-fixed evidence
-- [ ] 최신 responsive/nested composition 통합 및 STEP074 qualification
+- [x] 최신 responsive/nested composition 통합
+- [ ] STEP074 qualification
 - [ ] 후행 history/077 종료
 
 [전체 승인](../AUTHORIZATION.json)을 재사용한다. 원 카드의 요구를 삭제하거나 private 계산을
@@ -203,3 +204,9 @@ Main `de634f88e`를 병합했고 source 충돌은 없었다. 양쪽 architecture
 초기 docs18/20의두실패는 search상한973,000<실측973,997와 미커밋nested예제링크였으며
 전자는 최소974,000으로교정했고후자는 mergecommit뒤pin하여검증한다. 최초realistic cache환경누락은
 그대로보존했고명시된공유cache로canonical16/16을재실행했다. Runtime실패는없었다.
+
+Responsive nested 통합 qualification은 [고정 증거](angular-nested-evidence/qualification.json)가 소유한다.
+Source89ed1008d와 동일5d94ce0e archive로 Node20/22/24각3runtime+TS+4bundle이통과했다.
+Pinned문서20/20, built168pages/1435LLM, interaction/selection/composition3pages×4width의
+responsive+Axe12cells도통과했다. 코드변경없이source지시링크만핀한metadata후속이다.
+STEP059구현인수는이합산본까지유효하며STEP074/077종합종료는계속남는다.
