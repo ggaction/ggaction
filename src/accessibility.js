@@ -80,7 +80,7 @@ function finalRows(program, layer) {
         values: { ...channelMapFromRow(point.fields, layer), x: point.channels.x, y: point.channels.y }
       })));
   }
-  if (["flow-node", "flow-link"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
+  if (["flow-node", "flow-link", "contour"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({
     series: {}, values: item.fields
   }));
   if (["tree", "treemap", "partition"].includes(layer.mark.type)) return resolveMarkItems(program, layer.id).map(item => ({

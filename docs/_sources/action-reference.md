@@ -3505,6 +3505,46 @@ layoutGraph({ id, graph?, method, options? })
 Store a fixed, circular, or deterministic force layout of an existing graph. Full only.
 [Graph data and layouts](../api/data/source-and-derived.md#layoutgraph)
 
+### `createContourData`
+
+```javascript
+createContourData({ id, grid, thresholds })
+```
+
+Create bounded contour geometry from an explicit scalar grid and thresholds. See [Contours and two-dimensional density](../api/contours.md#createcontourdata).
+
+### `createDensityContourData`
+
+```javascript
+createDensityContourData({ id, data?, x, y, weight?, grid, estimator, normalization, bandwidth?, kernel?, thresholds })
+```
+
+Create weighted two-dimensional histogram or kernel density contours with explicit grid and bandwidth policies. See [Contours and two-dimensional density](../api/contours.md#createdensitycontourdata).
+
+### `editContourData`
+
+```javascript
+editContourData({ target?, grid?, thresholds?, data?, definition? })
+```
+
+Revise contour geometry and update its shared scales, marks and guides atomically. See [Contours and two-dimensional density](../api/contours.md#editcontourdata).
+
+### `createContourMark`
+
+```javascript
+createContourMark({ id?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip?, outline?, shadow? })
+```
+
+Draw stored contour level boundaries or filled bands with shared position and color scales. See [Contours and two-dimensional density](../api/contours.md#createcontourmark).
+
+### `editContourMark`
+
+```javascript
+editContourMark({ target?, geometry?, coordinate?, mode?, x?, y?, color?, fill?, stroke?, strokeWidth?, opacity?, clip?, outline?, shadow? })
+```
+
+Edit contour geometry bindings, mappings and appearance while retaining item identity. See [Contours and two-dimensional density](../api/contours.md#editcontourmark).
+
 ### `createPartitionPlot`
 
 ```javascript

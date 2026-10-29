@@ -186,6 +186,13 @@ function buildIntents(action, intentSource) {
 }
 
 function actionResources(action, optionNames, intentSource) {
+  if (["createContourData", "createDensityContourData", "editContourData"].includes(action.name)) return {
+    prerequisites: action.name === "createDensityContourData" ? ["materialized point dataset"] : action.name === "editContourData" ? ["stored contour geometry"] : ["explicit scalar grid"],
+    owns: ["geometry resource"], idOptions: (action.name.startsWith("create") ? ["id", "data"] : ["target", "data"]).filter(name => optionNames.includes(name))
+  };
+  if (["createContourMark", "editContourMark"].includes(action.name)) return {
+    prerequisites: ["stored contour geometry", "Canvas"], owns: ["contour mark"], idOptions: [action.name.startsWith("create") ? "id" : "target", "geometry", "coordinate"]
+  };
   if (action.name === "createInferredGraphData" || action.name === "editInferredGraphData") return {
     prerequisites: action.name === "createInferredGraphData" ? ["materialized source dataset"] : ["existing inferred graph"],
     owns: action.name === "createInferredGraphData" ? ["graph resource"] : [],

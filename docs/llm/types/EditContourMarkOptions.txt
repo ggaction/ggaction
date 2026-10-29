@@ -1,0 +1,1 @@
+export interface EditContourMarkOptions extends Omit<ContourMarkOptions, "id"> { readonly target?: string; }

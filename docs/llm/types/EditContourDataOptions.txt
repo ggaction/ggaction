@@ -1,0 +1,4 @@
+export interface EditContourDataOptions {
+  readonly target?: string; readonly grid?: ContourGrid; readonly thresholds?: readonly number[];
+  readonly data?: string; readonly definition?: Partial<ContourDensityDefinition>;
+}

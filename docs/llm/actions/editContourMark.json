@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 3,
+  "name": "editContourMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Edit contour geometry bindings, mappings and appearance while retaining item identity.",
+  "signature": "editContourMark(options: TargetedOptions<EditContourMarkOptions>): ChartProgram;",
+  "intents": [
+    "edit contour mark",
+    "edit",
+    "change",
+    "graphical mark",
+    "mark appearance",
+    "contour bands",
+    "level boundaries"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "stored contour geometry",
+      "Canvas"
+    ],
+    "owns": [
+      "contour mark"
+    ],
+    "idOptions": [
+      "target",
+      "geometry",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H3"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createScale"
+  ],
+  "editableVia": [
+    "editContourMark",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "stored contour geometry",
+      "Canvas"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "target",
+      "required": false,
+      "type": "string | ActionTargetList | ScopedActionTarget | undefined"
+    },
+    {
+      "name": "outline",
+      "required": false,
+      "type": "false | MarkOutline | undefined"
+    },
+    {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
+      "name": "geometry",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "mode",
+      "required": false,
+      "type": "\"filled\" | \"line\" | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "QuantitativePositionScaleOptions | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "QuantitativePositionScaleOptions | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "FillPaint | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    }
+  ],
+  "callPatterns": [
+    "editContourMark({ target?, coordinate?, outline?, shadow?, geometry?, mode?, x?, y? })"
+  ],
+  "snippet": "program.editContourMark({ target: \"contour\", opacity: 0.5 })",
+  "errors": [],
+  "route": "/reference/actions/marks/#editcontourmark"
+}

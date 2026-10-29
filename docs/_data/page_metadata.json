@@ -1072,5 +1072,19 @@
     "editSource": "examples/flow-layouts/program.js",
     "description": "Start with a node table and an edge table whose values have one shared unit.",
     "image": "/assets/images/flow-layouts.png"
+  },
+  "/api/contours/": {
+    "title": "Contours and Two-Dimensional Density",
+    "source": "docs/api/contours.md",
+    "editSource": "docs/api/contours.md",
+    "description": "Create contour geometry from an explicit scalar grid or a point dataset, then draw level boundaries or filled bands.",
+    "image": "/assets/images/contour-bands.png"
+  },
+  "/tutorials/contours/": {
+    "title": "Draw Levels, Bands and Density",
+    "source": "docs/tutorials/contours.md",
+    "editSource": "examples/contours/program.js",
+    "description": "A scalar grid states where measurements were sampled. Contours interpolate the boundaries between those samples.",
+    "image": "/assets/images/contours.png"
   }
 }

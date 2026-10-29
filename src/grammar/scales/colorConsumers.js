@@ -1,4 +1,5 @@
 import { isNominalValue, readNominalField } from "./fields.js";
+import { CONTINUOUS_COLOR_MARK_TYPES } from "../../core/vocabulary.js";
 import { BAR_GRAINS, resolveBarChannels, resolveBarGrain } from "../bars/policy.js";
 import { validateAggregate, validateAggregateFieldType } from "../aggregate.js";
 import { isDiscretizedColorScaleType } from "./types.js";
@@ -42,7 +43,7 @@ export function validateContinuousColorConsumer(layer, encoding, scale, {
     }
     return undefined;
   }
-  if (!["point", "line", "bar", "rect", "text", "area", "arc", "tick"].includes(kind)) {
+  if (!CONTINUOUS_COLOR_MARK_TYPES.includes(kind)) {
     throw new Error("Continuous color requires a Point, Line, aggregate Bar, Rect, Text, Arc, Tick, or quantitative Area consumer.");
   }
   if (!["quantitative", "temporal"].includes(encoding.fieldType) ||

@@ -6068,6 +6068,96 @@
         "file": "agent_docs/contract/current/FLOWS.md",
         "anchor": "editflowlinks"
       }
+    },
+    {
+      "name": "createContourData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editContourData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CONTOURS.md",
+        "anchor": "createcontourdata"
+      }
+    },
+    {
+      "name": "createDensityContourData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editContourData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CONTOURS.md",
+        "anchor": "createdensitycontourdata"
+      }
+    },
+    {
+      "name": "editContourData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editContourData`, `removeResource`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CONTOURS.md",
+        "anchor": "editcontourdata"
+      }
+    },
+    {
+      "name": "createContourMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editContourMark`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CONTOURS.md",
+        "anchor": "createcontourmark"
+      }
+    },
+    {
+      "name": "editContourMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editContourMark`, `removeMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CONTOURS.md",
+        "anchor": "editcontourmark"
+      }
     }
   ],
   "plannedActions": [],
@@ -6160,7 +6250,8 @@
       "materializeGraphPlot",
       "materializePartitionPlot",
       "materializeFlowNodes",
-      "materializeFlowLinks"
+      "materializeFlowLinks",
+      "materializeContourMark"
     ],
     "guideComponents": [
       "createLegendBackground",

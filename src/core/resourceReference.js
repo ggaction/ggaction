@@ -2,7 +2,7 @@ import { annotateError } from "./diagnostics.js";
 import { validateUserId } from "./identifiers.js";
 import { ownRecord } from "./ownData.js";
 
-export const BUILTIN_RESOURCE_KINDS = Object.freeze(["hierarchy", "layout", "image", "font", "graph"]);
+export const BUILTIN_RESOURCE_KINDS = Object.freeze(["hierarchy", "layout", "image", "font", "graph", "geometry"]);
 export const STORED_RESOURCE_KINDS = Object.freeze(["persistent-selection", "parameter", "data-source", ...BUILTIN_RESOURCE_KINDS]);
 const invalid = message => annotateError(new Error(message), { code: "invalid-value" });
 

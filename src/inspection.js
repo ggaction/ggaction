@@ -4,6 +4,7 @@ import { findStoredResource } from "./selectors/resources.js";
 import { resolveHierarchyPlot } from "./materialization/hierarchy/plot.js";
 import { resolveGraphPlot } from "./materialization/graph/plot.js";
 import { resolveFlowPlot } from "./materialization/flow/plot.js";
+import { resolveContourPlot } from "./materialization/contour/plot.js";
 import { hierarchyFacetSource, resolveHierarchyLayerResources } from "./selectors/hierarchy.js";
 import { findSelectionPolicy } from "./materialization/selection/policies/index.js";
 import { namespaceItemKey } from "./grammar/schemas/graphicIdentity.js";
@@ -487,7 +488,8 @@ function inspectMark(program, layer, childPath) {
   const hierarchy = layer.hierarchyBinding === undefined ? undefined : resolveHierarchyPlot(program, layer, program.markConfigs[layer.id].hierarchyPlot);
   const network = layer.graphBinding === undefined ? undefined : resolveGraphPlot(program, layer, program.markConfigs[layer.id].graphPlot);
   const flow = layer.flowBinding === undefined ? undefined : resolveFlowPlot(program, layer, program.markConfigs[layer.id].flowPlot);
-  const dataset = hierarchy?.dataset ?? flow?.dataset ?? findDataset(program, layer.data);
+  const contour = layer.contourBinding === undefined ? undefined : resolveContourPlot(program, layer, program.markConfigs[layer.id].contour);
+  const dataset = hierarchy?.dataset ?? flow?.dataset ?? contour?.dataset ?? findDataset(program, layer.data);
   const boundedTypes = new Set(["circle", "rect", "line", "path", "image"]);
   const items = graphic?.items ?? (graphic?.properties ? [{ properties: graphic.properties }] : []);
   const concreteTypes = items.map(item => item.type ?? graphic?.type);
@@ -516,7 +518,7 @@ function inspectMark(program, layer, childPath) {
   return {
     owner: resourceRef("mark", layer.id, childPath), grain,
     rawRows: network === undefined ? dataset?.values?.length ?? null : [...new Set([network.nodesData, network.edgesData])].reduce((sum, data) => sum + data.values.length, 0),
-    logicalDataItems: logicalSupported ? network?.items.length ?? hierarchy?.items.length ?? flow?.items.length ?? items.length : null,
+    logicalDataItems: logicalSupported ? network?.items.length ?? hierarchy?.items.length ?? flow?.items.length ?? contour?.items.length ?? items.length : null,
     drawablePrimitives: logicalSupported ? items.length : null,
     visibleCandidates: geometrySupported ? Math.max(0, items.length - new Set([
       ...items.map((item, index) => item.properties.opacity === 0 ? index : -1),

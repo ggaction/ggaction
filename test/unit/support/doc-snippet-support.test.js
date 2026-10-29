@@ -5,13 +5,13 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { copyDocumentationSupportFiles } from "../../../scripts/doc-snippets.js";
 
-test("documentation support preserves explicit example modules and bytes without private source imports", async () => {
+test("documentation support maps the canonical public entry while preserving example calls and binary assets", async () => {
   const directory = await mkdtemp(path.join(tmpdir(), "ggaction-doc-support-"));
   try {
     await copyDocumentationSupportFiles({ supportFiles: { "program.js": "examples/font-assets/program.js", "fonts/korean.otf": "examples/font-assets/fonts/korean.otf" } }, directory);
-    assert.equal(await readFile(path.join(directory, "program.js"), "utf8"), await readFile(new URL("../../../examples/font-assets/program.js", import.meta.url), "utf8"));
+    assert.equal(await readFile(path.join(directory, "program.js"), "utf8"), (await readFile(new URL("../../../examples/font-assets/program.js", import.meta.url), "utf8")).replace('from "../../src/index.js"', 'from "ggaction"'));
     assert.deepEqual(await readFile(path.join(directory, "fonts/korean.otf")), await readFile(new URL("../../../examples/font-assets/fonts/korean.otf", import.meta.url)));
-    await assert.rejects(copyDocumentationSupportFiles({ supportFiles: { "private.js": "examples/cars-scatterplot/program.js" } }, directory), /public installed package/);
+    await assert.rejects(copyDocumentationSupportFiles({ supportFiles: { "private.js": "examples/getting-started/program.js" } }, directory), /public installed package/);
   } finally { await rm(directory, { recursive: true, force: true }); }
 });
 

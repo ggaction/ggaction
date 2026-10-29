@@ -69,7 +69,8 @@ test("every registered transform emits unique row keys and exact resolvable line
           assert.equal(identity.role, item.graphicRoles[index]);
           if (identity.lineage.kind === "resource") {
             const resource = resolveGraphicLineage(program, identity);
-            assert.equal(resource.kind, "layout");
+            assert.equal(resource.kind, layer.mark.type === "contour" ? "geometry" : "layout");
+            assert.equal(resource.id, identity.lineage.resource.id);
             assert.equal(resource.revision, identity.lineage.resource.revision);
             assert.ok(item.rows.every(ref => data(program, ref.data).rowKeys.includes(ref.rowKey)));
           } else assert.deepEqual(identity.lineage.rowKeys, rowKeys);

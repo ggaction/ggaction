@@ -2,13 +2,17 @@
 
 ## 진행 상태
 
-- [ ] 계약과 선행 단계 확인
-- [ ] 독립 실패 시험 작성
-- [ ] 구현과 모든 소비자 연결
-- [ ] 명령 실행 및 evidence 저장
-- [ ] 타입·문서·Gate·인계 종료
+- [x] 계약과 선행 단계 확인
+- [x] 독립 실패 시험 작성
+- [x] 현재 공개 범위 구현과 소비자 연결 (STEP033/035 통합 의무 별도)
+- [x] 명령 실행 및 evidence 저장
+- [x] 타입·문서·기존 Gate 승인 및 checkpoint 인계
 
-상태 planned. 작업 묶음 WP-08. 선행 단계 STEP-022. 현재 구현 또는 테스트 성공을 뜻하지 않는다.
+상태 verified-conceptual-checkpoint. 작업 묶음 WP-08. 선행 단계 STEP-022.
+현재 공개 계약과 검증 결과는 [chart 계약](../../../../agent_docs/impl/roadmap9/chart/contour-layouts.md) 및
+[checkpoint](../../../../agent_docs/impl/roadmap9/chart/contour-checkpoint.json)에 있다.
+전체 coverage 최초 실패와 owning repair를 구분하여 보존했다. STEP033 theme 역할, STEP035 implicit
+facet/repeat geometry partition과 최종 공통 realistic 통합은 인계 의무이며 전체 로드맵 완료를 뜻하지 않는다.
 
 ## 먼저 읽을 것
 

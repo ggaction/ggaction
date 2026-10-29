@@ -1,0 +1,53 @@
+{
+  "totalCriticalFloors": 398,
+  "originalPassed": 396,
+  "sourcePresence": "passed",
+  "originalGlobal": {
+    "lines": 96.56,
+    "branches": 94.45,
+    "functions": 98.97
+  },
+  "repairs": [
+    {
+      "path": "selectors/datasets.js",
+      "floor": {
+        "lines": 80,
+        "branches": 80,
+        "functions": 80
+      },
+      "original": {
+        "lines": 87.84,
+        "branches": 87.1,
+        "functions": 78.57
+      },
+      "focused": {
+        "lines": 100,
+        "branches": 97.56,
+        "functions": 100
+      }
+    },
+    {
+      "path": "selectors/flow.js",
+      "floor": {
+        "lines": 95,
+        "branches": 90,
+        "functions": 100
+      },
+      "original": {
+        "lines": 100,
+        "branches": 83.33,
+        "functions": 100
+      },
+      "focused": {
+        "lines": 100,
+        "branches": 100,
+        "functions": 100
+      }
+    }
+  ],
+  "floorsLowered": false,
+  "runtimeChangesAfterFullRun": [
+    "src/selectors/flow.js"
+  ],
+  "note": "Original full global coverage is not recomputed or synthesized; two final owner results are independent focused evidence."
+}

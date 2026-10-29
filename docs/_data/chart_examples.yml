@@ -1998,3 +1998,79 @@
   actions: createFlowData · layoutFlow · createFlowLinks · createFlowNodes
   tasks: flow conservation
   url: /tutorials/flows/
+- id: contours
+  tutorial_order: 210
+  example: /examples/contours/
+  title: A level boundary
+  image: /assets/images/contours.png
+  alt: The line encloses grid values of at least one
+  width: 1280
+  height: 960
+  thumbnail: /assets/images/contours-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: The line encloses grid values of at least one.
+  summary: Draw explicit level boundaries and filled bands with preserved holes.
+  actions: createContourData · createDensityContourData · createContourMark
+  tasks: contour density
+  url: /tutorials/contours/
+- id: contour-bands
+  example: /examples/contour-bands/
+  title: Bands between levels
+  image: /assets/images/contour-bands.png
+  alt: Two bands share one interpolated boundary
+  width: 1280
+  height: 960
+  thumbnail: /assets/images/contour-bands-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: Two bands share one interpolated boundary.
+  summary: Draw explicit level boundaries and filled bands with preserved holes.
+  actions: createContourData · createDensityContourData · createContourMark
+  tasks: contour density
+  url: /tutorials/contours/
+- id: contour-holes
+  example: /examples/contour-holes/
+  title: A missing center remains empty
+  image: /assets/images/contour-holes.png
+  alt: Cells touching a missing sample are excluded
+  width: 1280
+  height: 960
+  thumbnail: /assets/images/contour-holes-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: Cells touching a missing sample are excluded.
+  summary: Draw explicit level boundaries and filled bands with preserved holes.
+  actions: createContourData · createDensityContourData · createContourMark
+  tasks: contour density
+  url: /tutorials/contours/
+- id: contour-histogram
+  example: /examples/contour-histogram/
+  title: Weighted point bins
+  image: /assets/images/contour-histogram.png
+  alt: An explicit histogram grid preserves total weight
+  width: 1280
+  height: 960
+  thumbnail: /assets/images/contour-histogram-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: An explicit histogram grid preserves total weight.
+  summary: Draw explicit level boundaries and filled bands with preserved holes.
+  actions: createContourData · createDensityContourData · createContourMark
+  tasks: contour density
+  url: /tutorials/contours/
+- id: contour-density
+  example: /examples/contour-density/
+  title: A two-dimensional kernel
+  image: /assets/images/contour-density.png
+  alt: A triangular product kernel uses explicit bandwidth
+  width: 1280
+  height: 960
+  thumbnail: /assets/images/contour-density-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 480
+  caption: A triangular product kernel uses explicit bandwidth.
+  summary: Draw explicit level boundaries and filled bands with preserved holes.
+  actions: createContourData · createDensityContourData · createContourMark
+  tasks: contour density
+  url: /tutorials/contours/

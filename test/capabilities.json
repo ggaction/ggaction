@@ -154,6 +154,36 @@
         "path": "charts/"
       }
     ],
+    "contour": [
+      {
+        "type": "file",
+        "path": "unit/contour-layouts.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/contour-density.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/contour-resources.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/resources/contour-marks.test.js"
+      },
+      {
+        "type": "file",
+        "path": "contracts/contour-types.test.js"
+      },
+      {
+        "type": "prefix",
+        "path": "charts/contours/"
+      },
+      {
+        "type": "file",
+        "path": "browser/contours.browser.js"
+      }
+    ],
     "data": [
       {
         "type": "prefix",

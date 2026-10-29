@@ -283,7 +283,7 @@ export function resolveContinuousColorLayer(program, requested, channel = "color
     requested,
     candidate => (channel === "stroke"
       ? ["point", "line", "area", "bar", "rect", "arc", "rule", "tick"]
-      : ["point", "line", "bar", "rect", "text", "area", "arc", "tick"]
+      : CONTINUOUS_COLOR_MARK_TYPES
     ).includes(candidate.mark?.type) &&
       candidate.encoding?.[channel]?.scale !== undefined &&
       (channel !== "color" || ["quantitative", "temporal"].includes(candidate.encoding[channel].fieldType))
@@ -505,3 +505,4 @@ export function createItemLegendGraphics(program, kind, config, count, type, pla
   if (config.titleVisible !== false) next = next.createGraphics({ id: `${prefix}Title`, type: "text", ...placement });
   return next;
 }
+import { CONTINUOUS_COLOR_MARK_TYPES } from "../../../../core/vocabulary.js";

@@ -1,0 +1,4 @@
+export interface ContourPolygon {
+  readonly outer: readonly (readonly [number, number])[];
+  readonly holes: readonly (readonly (readonly [number, number])[])[];
+}

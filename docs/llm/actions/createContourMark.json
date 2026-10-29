@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 3,
+  "name": "createContourMark",
+  "layer": "user-facing",
+  "domain": "marks",
+  "summary": "Draw stored contour level boundaries or filled bands with shared position and color scales.",
+  "signature": "createContourMark(options?: TargetedOptions<ContourMarkOptions>): ChartProgram;",
+  "intents": [
+    "create contour mark",
+    "create",
+    "add",
+    "graphical mark",
+    "mark appearance",
+    "contour bands",
+    "level boundaries"
+  ],
+  "lifecycle": "Mutable resource",
+  "resources": {
+    "prerequisites": [
+      "stored contour geometry",
+      "Canvas"
+    ],
+    "owns": [
+      "contour mark"
+    ],
+    "idOptions": [
+      "id",
+      "geometry",
+      "coordinate"
+    ]
+  },
+  "authoringRoles": [
+    "H2"
+  ],
+  "wraps": [
+    "editSemantic",
+    "createScale",
+    "createCoordinate"
+  ],
+  "editableVia": [
+    "editContourMark",
+    "removeMark"
+  ],
+  "supports": {
+    "entryPoints": [
+      "default"
+    ]
+  },
+  "units": [
+    {
+      "path": "strokeWidth",
+      "unit": "logical-pixel"
+    },
+    {
+      "path": "opacity",
+      "unit": "probability"
+    }
+  ],
+  "inference": [
+    {
+      "input": "coordinate",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "target",
+      "strategy": "explicit-current-unique-or-error"
+    },
+    {
+      "input": "omitted optional options",
+      "strategy": "documented-default"
+    }
+  ],
+  "completionRequirements": {
+    "state": "contextual",
+    "requires": [
+      "stored contour geometry",
+      "Canvas"
+    ],
+    "allowsEmpty": true
+  },
+  "options": [
+    {
+      "name": "outline",
+      "required": false,
+      "type": "false | MarkOutline | undefined"
+    },
+    {
+      "name": "shadow",
+      "required": false,
+      "type": "false | MarkShadow | undefined"
+    },
+    {
+      "name": "id",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "geometry",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "coordinate",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "mode",
+      "required": false,
+      "type": "\"filled\" | \"line\" | undefined"
+    },
+    {
+      "name": "x",
+      "required": false,
+      "type": "QuantitativePositionScaleOptions | undefined"
+    },
+    {
+      "name": "y",
+      "required": false,
+      "type": "QuantitativePositionScaleOptions | undefined"
+    },
+    {
+      "name": "color",
+      "required": false,
+      "type": "false | ContinuousColorScaleOptions | DiscretizedColorScaleOptions | undefined"
+    },
+    {
+      "name": "fill",
+      "required": false,
+      "type": "FillPaint | undefined"
+    },
+    {
+      "name": "stroke",
+      "required": false,
+      "type": "string | undefined"
+    },
+    {
+      "name": "strokeWidth",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "opacity",
+      "required": false,
+      "type": "number | undefined"
+    },
+    {
+      "name": "clip",
+      "required": false,
+      "type": "boolean | undefined"
+    },
+    {
+      "name": "target",
+      "required": false,
+      "type": "ActionTargetList | ScopedActionTarget"
+    }
+  ],
+  "callPatterns": [
+    "createContourMark({ id?, coordinate?, target?, outline?, shadow?, geometry?, mode?, x? })"
+  ],
+  "snippet": "program.createContourMark({ geometry: \"surface\" })",
+  "errors": [],
+  "route": "/reference/actions/marks/#createcontourmark"
+}

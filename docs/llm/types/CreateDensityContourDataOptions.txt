@@ -1,0 +1,1 @@
+export type CreateDensityContourDataOptions = ContourDensityDefinition & { readonly id: string; readonly data?: string; readonly thresholds: readonly number[]; };
