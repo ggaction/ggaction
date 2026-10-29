@@ -4234,3 +4234,6 @@ Node20/24 측정packed1,486,571bytes, unpacked6,755,280bytes이며 cap은
 합산 후보의 native chart·Table·weighted primitive 참조를 모두 생성한 검색 payload는
 1,065,602bytes다. 이전1,037,700 한도 실패를 보존하며 최소100byte 단위인
 1,065,700으로 조정한다. 검색은 기존 canonical content 생성과 on-demand loading을 유지한다.
+
+Area 최종 공유 layout 정책의 공개 예제를 추가한 합산 검색 payload는1,066,036bytes다.
+이전1,065,700 한도 실패를 보존하고 최소100byte 단위인1,066,100을 적용한다.
