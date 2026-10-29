@@ -10,8 +10,8 @@ The comparison baseline below is the older release used by the migration notes.
 | Identity | Value |
 | --- | --- |
 | Contract fingerprint | `sha256:449fc8fef42573cb3dab86578302f1afbbe67aaab60d02a42f29ed9d5179d170` |
-| Example and dataset source | `codex/roadmap9-theme` |
-| Runtime source commit | `current` |
+| Example and dataset source | `b63c5f8739681aae0603281f97d065a26d564efa` |
+| Runtime source commit | `cad229d88c27a4b82535ec8d1d2e419f7232c00f` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 335 |
 | Declared actions in that release | 234 |
