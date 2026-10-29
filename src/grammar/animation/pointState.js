@@ -5,12 +5,13 @@ import { mapContinuousScaleValues } from "../scales/mapping.js";
 
 const reasons = new Set(["anonymous", "semantic-unavailable", "primitive-role", "unsupported-family",
   "overlay-position", "coordinate-family", "offset-position", "computed-point-position", "incomplete-position",
-  "scale-type", "nonfinite-semantic-value", "unsupported-point-primitive", "edited-position"]);
+  "scale-type", "nonfinite-semantic-value", "unsupported-point-primitive", "edited-position", "sampled-concrete"]);
 
 export function unavailablePointAnimationPosition(reason) {
   if (!reasons.has(reason)) throw new TypeError("Unknown animation point fallback reason.");
   return Object.freeze({ reason });
 }
+export const isPointAnimationFallbackReason = reason => reasons.has(reason);
 
 export function pointPositionMatchesNode(position, node) {
   return ["x", "y"].every(channel => mapContinuousScaleValues([position[channel].value], position[channel].scale)[0] === node.properties[channel]);

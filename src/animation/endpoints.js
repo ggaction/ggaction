@@ -36,11 +36,29 @@ export function projectAnimationEndpoint(program) {
   const matching = identities.map(identity => identity === undefined ? undefined
     : freezeOwned({key: identity.key, role: identity.role}));
   matchItemIdentities(matching, []);
-  const endpoint = freezeOwned({graphicSpec, scene: snapshot.scene,
+  const endpoint = freezeOwned({format:"native",graphicSpec, scene: snapshot.scene,
     sources: snapshot.sources, canvases: snapshot.canvases,
+    backgrounds: freezeOwned(snapshot.sources.flatMap((source,index)=>snapshot.canvases.some(canvas=>`${canvas.graphicId}/background`===source.graphicId)
+      ? [freezeOwned({index,owner:source.graphicId})] : [])),
     identities: freezeOwned(identities), matching: freezeOwned(matching)});
   endpoints.add(endpoint);
   return endpoint;
+}
+
+// Sampled endpoints already have resolved concrete scene coordinates. Keep their
+// explicit identities separate from compiler-generated graphic IDs.
+export function projectSampledAnimationEndpoint(frame, identities, backgrounds) {
+  if(!isOwned(frame.graphicSpec)||!isOwned(frame.scene)||!isOwned(identities)||!isOwned(backgrounds)||identities.length!==frame.scene.nodes.length)
+    throw new TypeError("Sampled animation endpoint requires owned scene and identity mappings.");
+  const matching=identities.map(identity=>{
+    if(identity===undefined)return undefined;
+    validateGraphicIdentity(identity);return freezeOwned({key:identity.key,role:identity.role});
+  });
+  matchItemIdentities(matching,[]);
+  const endpoint=freezeOwned({format:"sampled",graphicSpec:frame.graphicSpec,scene:frame.scene,identities,backgrounds,
+    sources:freezeOwned(frame.scene.nodes.map((node,index)=>freezeOwned({nodeKey:node.key,graphicId:`animation/node/${index}`}))),
+    canvases:freezeOwned([]),matching:freezeOwned(matching)});
+  endpoints.add(endpoint);return endpoint;
 }
 
 // Scene keys include anonymous serialization fallbacks. Only explicit persisted

@@ -5,6 +5,12 @@ Private animation plan transport는 실제 endpoint 그래픽과 준비한 의�
 닫힌 입력을 검증하고 endpoint/matching owner로 scene·track·enter/exit를 재생한다.
 Point adapter와 복원은 같은 fallback vocabulary 및 forward mapping 정합성 검증을 공유한다.
 저장된 plan을 다시 native action으로 실행하거나 pixel에서 의미값을 복원하지 않는다.
+`animation/frameProvenance.js`는 native receiver와 authentic sample의 현재 의미값/scale을
+WeakMap에 보관한다. Planner는 from/to 모두 현재 frame을 받을 수 있고 endpoint의 명시
+correspondence로 identity/background를 평탄화한다. Sampled endpoint transport는 actual scene과
+identity/meaning만 저장하여 공통 scene compiler가 graphicSpec을 재생한다. Runtime exact
+endpoint는 기존 frame 객체이며 serializer는 그 진단 view도 보존한다. 이 private 경계는
+일반 player/session 또는 offline hit의 완성을 뜻하지 않는다.
 
 > 작업에 필요한 section만 빠르게 찾으려면
 > [`architecture/README.md`](architecture/README.md)의 작업별 경로에서 시작한다. 이 파일은 현재

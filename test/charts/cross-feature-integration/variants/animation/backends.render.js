@@ -10,10 +10,10 @@ import { renderToSVG } from "../../../../../src/renderers/svgSerialization.js";
 import { sampleTransition } from "../../../../../src/animation/sample.js";
 import { animationPointFrame } from "../../../../support/animation-point-frame.js";
 
-test("renderer-ready semantic point frames preserve native endpoints and logarithmic middle pixels", async () => {
-  const directory = new URL("../../../../../.artifacts/test/png/charts/cross-feature-integration/animation/", import.meta.url);
+for(const rebased of [false,true])test(`renderer-ready ${rebased?"rebased":"native"} point frames preserve endpoints and logarithmic middle pixels`, async () => {
+  const directory = new URL(`../../../../../.artifacts/test/png/charts/cross-feature-integration/animation/${rebased?"rebased":"native"}/`, import.meta.url);
   await mkdir(directory, { recursive: true });
-  const { from, to, plan, frame, checks } = animationPointFrame();
+  const { from, to, plan, frame, checks } = animationPointFrame(rebased);
   const png = await renderToPNGBuffer(frame), pdf = await renderToPDFBuffer(frame);
   await writeFile(new URL("point-middle.png", directory), png.buffer);
   await writeFile(new URL("point-middle.pdf", directory), pdf.buffer);
