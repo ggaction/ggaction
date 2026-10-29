@@ -7,10 +7,10 @@
 - [x] 기존 guide action·layout transaction으로 concrete geometry 갱신
 - [x] Full/Basic·nested descendants·scale/Canvas edit·codec·원자적 실패 검증
 - [x] 집중 coverage·실제 light/dark recipe·source-free 설치와 TypeScript 검증
-- [ ] 최종 generated docs·inventory·package 기록
+- [x] 최종 generated docs177·inventory7·package 기록
 - [ ] STEP-033 간격·palette·winning provenance 및 STEP-034/035
 
-기준은 `52207ed93`이다. 공개 API는 기존 `applyTheme`의 partial token 확장이다.
+기준은 `52207ed93`, source는 `a273eeef5`다. 공개 API는 기존 `applyTheme`의 partial token 확장이다.
 `axisStrokeWidth`, `tickStrokeWidth`, `tickSize`, `gridStrokeWidth`는 finite nonnegative
 number이며 CSS pixel 단위를 쓴다. Omission과 remove는 각 guide family의 실제 native 기본값을
 복원한다. Built-in light/dark의 숫자 기본값을 새로 통일하지 않는다. 기존 line/tick/grid owner에서
@@ -24,7 +24,7 @@ Named Cartesian axis와 root composition의 child snapshots는 기존 owner를 �
 
 독립 회귀에서 색과 굵기를 동시에 바꿀 때 축선 action이 이전 graphic 색을 config에 다시 넣는
 문제를 찾았다. Geometry plan이 resolved config 색을 함께 전달하되 명시 extension stroke는
-그대로 유지하도록 고쳤다. 간격 변경으로 Canvas를 넘는 경우 수신 program/trace는 바뀌지 않는다.
+그대로 유지하도록 고쳤다. tick 길이 변경으로 Canvas를 넘는 경우 수신 program/trace는 바뀌지 않는다.
 
 새 9개를 포함한 집중 116개, 경계 40개와 package 7개가 통과했다. `guideDefaults` coverage는
 100/99.15/100으로 기존 95/90/100 floor를 유지한다. Hierarchical authoring의 실제 light/dark
