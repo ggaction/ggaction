@@ -9,9 +9,9 @@ import { unnamespaceItemKey } from "../../grammar/schemas/graphicIdentity.js";
 import { applyItemMissingPolicy } from "../../grammar/itemMissing.js";
 import { resolveRowEncodingValues } from "../rowEncoding.js";
 import { resolveMarkIdentities, resolveMarkItems, resolveMarkSourceItems } from "../selection/policies/index.js";
+import { unavailablePointAnimationPosition as unavailable, pointPositionMatchesNode } from "../../grammar/animation/pointState.js";
 
 const supported = new Set(["linear", "time", "log", "pow", "sqrt", "symlog"]);
-const unavailable = reason => Object.freeze({ reason });
 function position(input) {
   if (input === undefined) return unavailable("incomplete-position");
   const scale = input.scale;
@@ -46,7 +46,7 @@ function layerPositions(program, layer) {
 // Draw order and source row indices never establish correspondence.
 export function projectPointAnimationPositions(program, endpoint) {
   const layers = new Map();
-  return Object.freeze(endpoint.identities.map(identity => {
+  return Object.freeze(endpoint.identities.map((identity,index) => {
     if (identity === undefined) return unavailable("anonymous");
     const scope = resolveGraphicScope(program, identity), [namespaces, owner] = JSON.parse(identity.key);
     const layer = findLayer(scope, owner);
@@ -64,6 +64,9 @@ export function projectPointAnimationPositions(program, endpoint) {
     if (identity.lineage.rowKeys.length !== 1 || identity.lineage.rowKeys[0] !== result.rowKey) {
       throw new TypeError("Animation point lineage does not match its exact final row.");
     }
-    return result.position;
+    if(result.position.reason)return result.position;
+    const node=endpoint.scene.nodes[index];
+    if(node.type!=="circle")return unavailable("unsupported-point-primitive");
+    return pointPositionMatchesNode(result.position,node)?result.position:unavailable("edited-position");
   }));
 }

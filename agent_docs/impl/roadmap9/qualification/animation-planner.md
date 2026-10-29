@@ -5,8 +5,14 @@
 - [x] 원안 animation/STEP061–062와 기존 owner를 대조했다.
 - [x] remainingApproval를 재사용하고 첫 실행 범위를 기록했다.
 - [x] 실제 semantic point 준비와 concrete sample을 구현·검증했다.
-- [ ] 지원 Node·owner coverage·경계·패키지와 증거를 고정한다.
-- [ ] 검증 checkpoint를 push하고 다음 public·typed family 연결로 이어간다.
+- [x] 지원 Node·owner coverage·경계·패키지와 증거를 고정했다.
+- [x] source bd296d031를 push했다. 다음 public·typed family 연결은 진행 중이다.
+
+첫 private point checkpoint의 정확한 범위와 원 실패·회복 구분은
+[qualification.json](animation-planner-evidence/qualification.json)에 보존한다.
+canonical owning 118, 경계 40, 새 owner coverage 100/95.24/100,
+weighted 네 backend/browser 13, semantic point 네 backend/browser 2가 통과했다.
+Node20/24의 각87은 소스 실행이며 설치 패키지 검증으로 주장하지 않는다.
 
 ## 승인과 경계
 
@@ -74,3 +80,22 @@ adapter, rule/rect/line/area/polar/graph/guide kernels, 네 renderer export를 �
 private provenance에 보존하여 같은 planner가 consume하며 pixel 역산이나 원 endpoint로의 되돌림을 금지한다.
 Offline 담당은 exportTransitionPlan/restoreTransitionPlan의 단일 owner 검증을 공유한다.
 플레이어 wrapper는 root 소유이며 plan의 duration/easing과 별도로 playback 설정을 한 번 보관한다.
+
+## Private plan 복원 경계
+
+같은 remainingApproval 안에서 exportTransitionPlan/restoreTransitionPlan을 추가한다.
+Payload는 kind/version, kernels={transition:1,position:기존 positions version}, duration/easing,
+from/to 각각의 실제 graphicSpec과 node별 positions만 가진다. transition version은 timing,
+easing, matching, weighted crossfade 정책을 함께 고정한다. scene/track/index/enter/exit는
+저장하지 않고 기존 endpoint projection과 planner가 다시 생성한다. 같은 결정을 두 번 저장하지 않는다.
+positions는 닫힌 x/y 의미값과 resolved scale 또는 현재 adapter의 명시 unsupported reason이다.
+복원은 descriptor-safe 순회·depth128·기존 work 한도 뒤 기존 graphic validator 및 position
+owner를 호출한다. 모든 node의 자료를 검증하고 x/y forward mapping과 concrete endpoint의
+정합성을 확인한다. getter·추가 field·undefined·unknown version/kernel·cycle·잘못된 reason은
+거부하며 native action, source resolver, layout solver를 실행하지 않는다.
+이것은 저장된 준비값의 내부 정합성 증명이며 임의로 재서명한 파일의 역사적 출처 인증은 아니다.
+원 bytes 변조 감지는 별도 envelope의 canonical payload digest가 소유한다.
+
+현재 frame provenance는 root의 lightweight WeakMap owner가 단독 소유한다.
+native plan receiver와 sample의 현재 의미값/scale을 private 등록하며 offline hit의 childPath
+복원은 아직 후속 의무다. 이 checkpoint는 공개 API·완전한 interrupt/player 완료를 주장하지 않는다.

@@ -1,5 +1,11 @@
 # `ggaction` Second Architecture
 
+Private animation plan transport는 실제 endpoint 그래픽과 준비한 의미값/scale만 저장한다.
+`animation/planner.js`가 기존 graphic validator와 `grammar/animation/pointState.js`를 통해
+닫힌 입력을 검증하고 endpoint/matching owner로 scene·track·enter/exit를 재생한다.
+Point adapter와 복원은 같은 fallback vocabulary 및 forward mapping 정합성 검증을 공유한다.
+저장된 plan을 다시 native action으로 실행하거나 pixel에서 의미값을 복원하지 않는다.
+
 > 작업에 필요한 section만 빠르게 찾으려면
 > [`architecture/README.md`](architecture/README.md)의 작업별 경로에서 시작한다. 이 파일은 현재
 > macro-architecture의 canonical 원문으로 유지한다.
