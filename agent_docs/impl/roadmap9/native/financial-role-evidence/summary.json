@@ -17,7 +17,10 @@
       100
     ],
     "boundariesDiscovery": 27,
-    "packageContracts": 13
+    "packageContracts": 13,
+    "docs": 191,
+    "builtPages": 170,
+    "selectiveLLMArtifacts": 1454
   },
   "artifact": {
     "file": "/Users/hyeonjeon/.codex/worktrees/roadmap9-theme/ggactionnewbrand/.artifacts/financial-roles/package/ggaction-0.0.26.tgz",
@@ -453,7 +456,6 @@
   },
   "allFiveBundleSizesUnchanged": true,
   "remaining": [
-    "Source-pinned docs provenance",
     "OHLC and waterfall primitive visual and public create/edit/revise consumers",
     "Pyramid public consumers",
     "STEP050-052 prerequisite integration",
@@ -519,6 +521,49 @@
     "package.log": {
       "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
       "bytes": 208
+    },
+    "provenance.log": {
+      "sha256": "de8e81557a1db8844a365ca2fc0e79a978464bb47facb6d6ab8dfa8f1a9022c5",
+      "bytes": 69
+    },
+    "machine.log": {
+      "sha256": "1d87daef0983dfa19149afe8aaf5414d841b7c616d74bc81a80104374341200d",
+      "bytes": 127
+    },
+    "llms.log": {
+      "sha256": "28f691996dc398f0abd2a9493c08d537646b09951c9628dc495017003489cc2f",
+      "bytes": 139
+    },
+    "docs.log": {
+      "sha256": "eb44f9cb0d4ccefebd208b4fddb638b6901f60a10fe80b25c01409483f9c7946",
+      "bytes": 44629
+    },
+    "build.log": {
+      "sha256": "3bcc4d19aca3aeed71f3b291d67972398bc10fcf65c1841d7c413059cd5bfc62",
+      "bytes": 419
+    },
+    "built.log": {
+      "sha256": "7c3bb9baa90982ce0c8764324c9ad2f0a8aadf2daf50be2fe131edc106fb242b",
+      "bytes": 179
+    },
+    "package-pinned.json": {
+      "sha256": "682f601cb212b28f828635cc231cef24019c8d3ab4e92a4953b677dd4bdf732b",
+      "bytes": 159
+    },
+    "package-pinned.log": {
+      "sha256": "022fb710897fe61a4d6ceb735192a433d8d680a60e4cbbb9470c223d0c430e1a",
+      "bytes": 208
     }
+  },
+  "source": "07bf9c821",
+  "pinnedArtifact": {
+    "sha256": "01f7d405068a42047d0e88d69efce00bb6faea70481cd9d3c9d6123da9b61747",
+    "byteIdentical": true,
+    "entries": 983,
+    "packedBytes": 1407290,
+    "unpackedBytes": 6413792
+  },
+  "reuse": {
+    "browser": "No public UI, example, renderer, CSS or source snippet changed. Prior c92679870/source191/built170 and f2915cd17 responsive browser proof retained; new source191 and built170/1454 rechecked."
   }
 }

@@ -65,3 +65,5 @@ value, delta에 reset을 넣으면 거부한다. label 문자열로 역할을 �
 검증했고 다섯 bundle gzip은 앞선 Pyramid checkpoint와 정확히 같다. 패키지는983entries,
 1407290packed/6413792unpacked이며 최소 상한983/1408000/6414000을 적용했다.
 [수치·설치 증거](financial-role-evidence/summary.json)는 공개 소비자 및 최종074/077 검증을 대신하지 않는다.
+
+역할 source `07bf9c821`의 source pin 문서191·built170pages/1454LLM과 같은 archive 재생성을 확인했다. 이 private 값 계산 checkpoint에는 공개 UI·도형·예제 변경이 없으며 기존 browser 증거를 재사용한다.
