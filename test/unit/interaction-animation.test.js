@@ -84,6 +84,34 @@ test("enter and exit shapes are inspectable but focus and activation intersect c
   }
 });
 
+test("overlapping enter, exit and weighted shapes keep one candidate per item and one native click transaction", () => {
+  const values = ids => ids.map(id => ({ id, x: 5, y: 5 }));
+  const a = points().reviseData({ source: "rows", id: "overlap", values: values(["a", "b", "c"]) }).encodeRadius({ value: 12 });
+  const b = a.reviseData({ source: "overlap", id: "end", values: values(["a", "b", "d"]) }).encodeColor({ value: "red" });
+  const beforeKeys = getMarkItems(a).map(item => item.key), afterKeys = getMarkItems(b).map(item => item.key);
+  const transition = plan(a, b), keys = { a: beforeKeys[0], b: beforeKeys[1], c: beforeKeys[2], d: afterKeys[2] };
+  for (const [program, native] of [[a, "before"], [b, "after"]]) for (const time of [0, 25, 50, 75, 100]) {
+    const frame = sampleTransition(transition, time), listeners = new Map(), events = [], original = serializeProgram(program);
+    const s = createInteractionSession({ program, bindings: [{ type: "select", target: "points", selection: "picked", mode: "toggle", slop: 0 }, keyboard()] });
+    s.mount({ addEventListener(type, listener) { listeners.set(type, listener); }, removeEventListener(type) { listeners.delete(type); },
+      getBoundingClientRect: () => ({ left: 0, top: 0, width: 240, height: 180 }) });
+    s.dispatch(frameCommand(s, frame)); s.subscribe(event => events.push(event));
+    s.dispatch({ type: "inspect", point: { x: 120, y: 90 }, slop: 0 });
+    const expected = time === 0 ? ["c", "b", "a"] : time === 100 ? ["d", "b", "a"] : ["c", "d", "b", "a"];
+    const hits = s.getState().hit.candidates;
+    assert.deepEqual(hits.map(item => item.itemKey), expected.map(name => keys[name]));
+    assert.equal(new Set(hits.map(item => item.itemKey)).size, hits.length);
+    assert.equal(events.filter(event => event.type === "inspect").length, 1);
+    assert.equal(s.getState().history.undoCount, 0);
+    listeners.get("click")({ button: 0, detail: 0, clientX: 120, clientY: 90 });
+    const selected = native === "before" ? time === 100 ? "b" : "c" : time === 0 ? "b" : "d";
+    assert.deepEqual(resolveStoredSelection(s.getState().program, "picked").keys, [keys[selected]]);
+    assert.equal(s.getState().history.undoCount, 1); assert.equal(s.getState().animationFrame, null);
+    assert.deepEqual(events.filter(event => event.type === "select").map(event => event.phase), ["commit", "settled"]);
+    assert.equal(serializeProgram(program), original); s.destroy(); assert.equal(listeners.size, 0);
+  }
+});
+
 test("nested sampled frames retain namespace through transformed mount, plain frame replacement and unmount", () => {
   const p = points(), a = hconcat({ id: "pair", programs: [{ id: "left", program: p }, { id: "right", program: p }] });
   const b = hconcat({ id: "pair", programs: [{ id: "left", program: moved(p) }, { id: "right", program: moved(p) }] });

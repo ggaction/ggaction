@@ -41,9 +41,10 @@ export const cases=[
    let network=0;const deny=()=>{network++;throw Error('offline');};globalThis.fetch=deny;for(const m of[http,https]){m.get=deny;m.request=deny;}net.connect=deny;net.createConnection=deny;net.Socket.prototype.connect=deny;tls.connect=deny;syncBuiltinESMExports();
    const{deserializeProgram}=await import('ggaction/persistence'),{planTransition,sampleTransition,serializeAnimation,deserializeAnimation}=await import('ggaction/animation'),{createInteractionSession}=await import('ggaction/interaction');
    let text='';for await(const chunk of process.stdin)text+=chunk;const p=deserializeProgram(text),to=p.reviseData({source:'rows',id:'next',values:[{id:'a',x:9,y:9}]}),plan=planTransition({from:p,to,options:{durationMs:100,easing:'linear'}}),frame=sampleTransition(plan,50),s=createInteractionSession({program:p});
-   s.dispatch({type:'frame',frame,version:1,generation:0});s.dispatch({type:'inspect',point:{x:120,y:90},slop:0});let rejected=false;try{s.dispatch({type:'frame',frame:sampleTransition(deserializeAnimation(serializeAnimation(plan)).plan,50),version:2,generation:0});}catch(e){rejected=/native endpoint metadata/.test(e.message);}
-   console.log(JSON.stringify({network,rejected,hit:!!s.getState().hit.target,version:s.getState().frameVersion}));s.destroy();
+   const offline=sampleTransition(deserializeAnimation(serializeAnimation(plan)).plan,50);
+   s.dispatch({type:'frame',frame,version:1,generation:0});s.dispatch({type:'inspect',point:{x:120,y:90},slop:0});let rejected=false;try{s.dispatch({type:'frame',frame:offline,version:2,generation:0});}catch(e){rejected=/native endpoint metadata/.test(e.message);}
+   console.log(JSON.stringify({network,rejected,sameScene:JSON.stringify(frame.scene)===JSON.stringify(offline.scene),hit:!!s.getState().hit.target,version:s.getState().frameVersion}));s.destroy();
   `],{input:serializeProgram(source()),encoding:'utf8',timeout:30000});
-  assert.equal(child.status,0,child.stderr);assert.deepEqual(JSON.parse(child.stdout),{network:0,rejected:true,hit:true,version:1});
+  assert.equal(child.status,0,child.stderr);assert.deepEqual(JSON.parse(child.stdout),{network:0,rejected:true,sameScene:true,hit:true,version:1});
  }}
 ];

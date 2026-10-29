@@ -14,12 +14,66 @@ test.before(async () => {
   directory = await mkdtemp(path.join(tmpdir(), "ggaction-current-frame-"));
   const root = fileURLToPath(new URL("../../", import.meta.url));
   const installed = process.env.GGACTION_BROWSER_PACKAGE_DIRECTORY;
-  const entries = installed ? ['ggaction', 'ggaction/svg', 'ggaction/animation', 'ggaction/interaction'] : ['./src/index.js', './src/renderers/svg.js', './src/animation.js', './src/interaction.js'];
-  const bundle = await build({ stdin: { contents: `export {chart,render,prepareImageRendering} from '${entries[0]}';export {renderToSVG} from '${entries[1]}';export * from '${entries[2]}';export {createInteractionSession} from '${entries[3]}';`, resolveDir: installed ?? root }, bundle: true, platform: "browser", format: "esm", write: false, metafile: true });
+  const entries = installed ? ['ggaction', 'ggaction/svg', 'ggaction/animation', 'ggaction/interaction', 'ggaction/accessibility'] : ['./src/index.js', './src/renderers/svg.js', './src/animation.js', './src/interaction.js', './src/accessibility.js'];
+  const bundle = await build({ stdin: { contents: `export {chart,render,prepareImageRendering} from '${entries[0]}';export {renderToSVG} from '${entries[1]}';export * from '${entries[2]}';export {createInteractionSession} from '${entries[3]}';export {exportAccessibleData} from '${entries[4]}';`, resolveDir: installed ?? root }, bundle: true, platform: "browser", format: "esm", write: false, metafile: true });
   if (installed) assert.ok(Object.keys(bundle.metafile.inputs).every(name => !name.startsWith('src/') && !name.includes('/ggactionnewbrand/src/')));
   await writeFile(path.join(directory, "public.js"), bundle.outputFiles[0].contents);
   await writeFile(path.join(directory, "index.html"), '<!doctype html><html lang="en"><title>Current frame inspection</title><link rel="icon" href="data:,"><main><div id="surface" tabindex="0" aria-label="Interactive measurements" style="width:240px;height:180px"><canvas aria-label="Animated measurements" width="240" height="180" style="width:240px;height:180px"></canvas></div><p id="status">Ready</p></main></html>');
   server = await startStaticServer(directory); browser = await chromium.launch({ headless: true });
+});
+
+for (const backend of ["canvas", "svg"]) for (const native of ["before", "after"]) test(`overlapping animated ${backend} candidates commit once against the ${native} native scope`, async () => {
+  const context = await browser.newContext();
+  try {
+    const { page, errors } = await openBrowserPage(context, server.baseUrl, { waitFor: () => document.querySelector("#status").textContent === "Ready" });
+    for (const time of [50, 100]) {
+      const keys = await page.evaluate(async ({ backend, native, time }) => {
+        window.overlap?.session.destroy();
+        const api = await import("/public.js"), rows = ids => ids.map(id => ({ id, x: 5, y: 5 }));
+        const from = api.chart().createCanvas({ width: 240, height: 180, margin: 20 })
+          .createData({ id: "rows", keyField: "id", values: rows(["a", "b", "c"]) }).createPointMark({ id: "points" })
+          .encodeX({ field: "x", scale: { domain: [0, 10], nice: false } }).encodeY({ field: "y", scale: { domain: [0, 10], nice: false } })
+          .encodeRadius({ value: 12 }).selectMarks({ id: "picked", items: [], empty: "none" });
+        const to = from.reviseData({ source: "rows", id: "next", values: rows(["a", "b", "d"]) }).encodeColor({ value: "red" });
+        const itemKeys = program => api.exportAccessibleData(program, { format: "items" }).views[0].items.map(item => item.key);
+        const first = itemKeys(from), last = itemKeys(to), keys = { a: first[0], b: first[1], c: first[2], d: last[2] };
+        const surface = document.querySelector("#surface");
+        surface.innerHTML = '<canvas aria-label="Overlapping animated measurements" width="240" height="180" style="width:240px;height:180px"></canvas>';
+        const session = api.createInteractionSession({ program: native === "before" ? from : to, bindings: [{ type: "inspect", slop: 0 },
+          { type: "select", target: "points", selection: "picked", mode: "toggle", slop: 0 },
+          { type: "keyboard", targets: [{ target: "points", activation: { type: "select", selection: "picked", mode: "toggle" } }] }] });
+        const events = [];
+        session.subscribe(event => {
+          events.push({ type: event.type, phase: event.phase });
+          const state = session.getState(), displayed = state.animationFrame ?? state.program;
+          if (backend === "canvas") api.render(displayed, surface.querySelector("canvas").getContext("2d"));
+          else surface.innerHTML = api.renderToSVG(displayed);
+        });
+        session.mount(surface);
+        const frame = api.sampleTransition(api.planTransition({ from, to, options: { durationMs: 100, easing: "linear" } }), time);
+        session.dispatch({ type: "frame", frame, version: session.getState().frameVersion + 1, generation: session.getState().generation });
+        window.overlap = { api, session, events }; return keys;
+      }, { backend, native, time });
+      const box = await page.locator("#surface").boundingBox();
+      await page.mouse.move(box.x + 5, box.y + 5); await page.mouse.move(box.x + 120, box.y + 90);
+      await page.waitForFunction(() => window.overlap.session.getState().hit?.target != null);
+      const candidates = await page.evaluate(() => window.overlap.session.getState().hit.candidates.map(candidate => candidate.itemKey));
+      assert.deepEqual(candidates, (time === 50 ? ["c", "d", "b", "a"] : ["d", "b", "a"]).map(name => keys[name]));
+      assert.equal(new Set(candidates).size, candidates.length);
+      await page.locator("#surface").focus(); await page.keyboard.press("Home");
+      assert.deepEqual(await page.evaluate(() => window.overlap.session.getState().focus.screenPoint), { x: 120, y: 90 });
+      await page.mouse.click(box.x + 120, box.y + 90); await page.evaluate(() => window.overlap.session.whenSettled());
+      const actual = await page.evaluate(() => {
+        const { api, session, events } = window.overlap, state = session.getState();
+        return { selected: api.exportAccessibleData(state.program, { format: "items" }).views[0].items.filter(item => item.selectedBy.includes("picked")).map(item => item.key),
+          phases: events.filter(event => event.type === "select").map(event => event.phase), history: state.history.undoCount, frame: state.animationFrame };
+      });
+      const selected = native === "before" ? time === 100 ? "b" : "c" : "d";
+      assert.deepEqual(actual, { selected: [keys[selected]], phases: ["commit", "settled"], history: 1, frame: null });
+    }
+    await page.evaluate(() => window.overlap.session.destroy()); assertNoBrowserErrors(errors, `Overlapping ${backend} ${native}`); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
 });
 test.after(async () => { await closeBrowserWithEvidence(browser); await server?.close(); if (directory) await rm(directory, { recursive: true, force: true }); });
 

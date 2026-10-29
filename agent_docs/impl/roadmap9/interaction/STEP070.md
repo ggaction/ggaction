@@ -10,6 +10,8 @@
 - [x] current native final-item 교집합 activation과 frame transient asset lease
 - [x] source/update/gesture/cancel/destroy/reentry 및 100/1000회 focus/lease 검증
 - [x] 실제 Canvas/SVG 현재 프레임, reduced motion, source-free 설치 교차
+- [x] AT34 대표 overlap: enter/exit/weighted 후보와 native activation의 단일 commit
+- [x] Offline replay와 native 편집 권한의 원안·Current·manifest 감사
 - [ ] 원 카드 AT34/65/80/81/82의 나머지 partition/routes/Geo/LOD/worker 통합
 
 원본은 [STEP-070 카드](../../../../study/coverage-expansion-2026-10-27/roadmap/tasks/STEP-070-cross-feature-integration.ko.md)다.
@@ -82,3 +84,30 @@ overflow0·Axe0·browser errors0를 확인했다. 첫 잘못된 HTML 경로 실�
 성공과 함께 보존했다. `session-frame-evidence/summary.json`과 압축 로그가 전체 근거다.
 후속 metadata commit은 소스·타입·archive를 바꾸지 않는다. D1만 qualified이며 상단 원 카드와
 offline native authority 복원, typed 움직임·domain 통합은 계속 미완료다.
+
+## D2 — 겹친 현재 항목과 오프라인 권한 감사
+
+Runtime은 D1 source `8cd965393` 그대로다. 같은 위치의 a/b는 색상 weighted 전환,
+c는 exit, d는 enter인 공개 fixture를 추가했다. 시각0의 후보는 c/b/a, 내부25/50/75는
+c/d/b/a, 시각100은 d/b/a다. 각 semantic item은 두 weighted source가 겹쳐도 후보 한 개다.
+Current native from/to 각각에서 허용되는 첫 후보를 click이 선택하며, original snapshot은
+변하지 않고 `commit`1회·`settled`1회·history1개다. Native scope에 없는 가장 앞 후보가
+실제 활성 후보를 차단하지 않는다.
+
+Owning unit15개(새10scope/time조합), Canvas/SVG 실제 pointer·keyboard browser8개가 통과했다.
+동일 ae486 archive의 설치본으로 같은 browser8개를 실행해 checkout 소스 import0을 확인했다.
+Runtime/type/package가 그대로이므로 이미 통과한 D1 bundle/cap 증거를 재사용했다.
+
+원안 감사 결과는 [NATIVE_AUTHORITY_AUDIT.md](NATIVE_AUTHORITY_AUDIT.md)에 있다. 앞선 D1의
+“offline native authority 복원”은 당시 미해결 검토 항목이었으며, animation envelope만으로
+editable program 권한을 복원하라는 명시 요구는 확인되지 않았다. 현재의 두 저장 흐름을
+유지한다. 새 schema/API를 추가하거나 native 권한을 ID/hash로 추정하지 않는다.
+
+기존 fresh-process 소비자를 같은 tar Node20/22/24에서 각각 보강 실행했다. 같은 시각 scene는
+동일하고, 복원한 native program으로 새로 만든 plan만 현재 session 권한을 가진다.
+Animation envelope 복원 frame의 렌더링은 가능하되 native activation은 의도대로 거부한다.
+Import 전에 network guard를 설치했고 호출0, 원 frame/version 보존을 확인했다.
+
+증거는 `session-overlap-evidence/summary.json`이다. 경계22개와 문서경로1개도 통과했다.
+AT34 대표 셀과 최종 STEP074 전수 qualification, 나머지 STEP070 domain 의무를 구분하며,
+전체 STEP069/070/077 완료로 확대하지 않는다.
