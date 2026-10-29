@@ -20,14 +20,62 @@ finite time은 양 끝으로 clamp하며0duration의 time0은 target이다. exac
 원 graphicSpec/scene 참조를 보존한다. 중간 graphicSpec은 기존 scene concrete owner를
 재사용하므로 네 공개 renderer에 frame 자체를 전달할 수 있다. frame clone은 authentic
 계획 입력이 아니며 외부에서 재생결과처럼 꾸민 object를 허용하지 않는다.
+호환되는 bounded geometry를 반복 중단해도 이전 계획의 재귀 깊이를 누적하지 않는다.
+현재 sample의 identity·준비된 의미값만 유지하며 이전 playback controller를 보존하지 않는다.
+Weighted crossfade의 실제 source/clip 수 제한은 그대로 적용한다.
 
-현재 typed vertical은 resolved continuous Cartesian circle point다. 실제 semantic
+Cartesian point typed vertical은 resolved continuous circle point다. 실제 semantic
 값과 scale(domain/range/clamp/parameters)을 먼저 보간한 다음 forward mapping한다.
 linear/time/log/pow/sqrt/symlog의 기존 버전 kernel을 사용하며 log pixel 역산으로 값을
 추정하지 않는다. topology·appearance·coordinate·scale policy가 호환되지 않거나
 현재 typed family가 없는 항목은 명시한 reason과 공통 weighted concrete crossfade다.
 새 item은 enter, 사라진 item은 exit이며 role/childPath/typed key를 보존한다.
 계획 준비의 누적work10,000,000과 양 endpoint 총node10,000 한도를 적용한다.
+
+## 완료된 Graph 배치 전환
+
+GraphPlot은 stable node/edge key와 실제 역할에 따라 완료된 layout의 좌표·반지름·origin·
+label offset을 보간한다. Ordinary parallel/loop edge와 arrow는 현재 node anchor에서 기존
+geometry 규칙으로 계산한다. Stored world/screen route는 공통 arc-length 기준으로 보간한
+뒤 현재 anchor와 radius inset을 적용한다. 매 frame layout·inference·bundling을 다시 실행하지 않는다.
+Node/edge reorder, enter/exit, composition namespace와 현재 frame 양방향 재기준을 보존한다.
+
+동일 graph 의미와 concrete output은 exact이며, pixel만 같고 raw layout/origin이 다르면
+의미 값을 계속 보간한다. 같은 centerline/anchor는 원 경로의 모서리를 유지한다. Endpoint
+관계·parallel 순서·route kind/coordinate space·primitive/clip/appearance 불일치 및 경로
+붕괴/stretch는 항목별 명시 사유 crossfade다. 호환 node는 해당 edge와 독립적으로 계속 움직인다.
+현재 typed 계산의 decision kernel은 `completed-graph`다. Structured paint 전환 자체는
+별도 typed paint 지원이 아니며 실제 공통 weighted concrete 경로를 사용한다.
+
+Graph 준비값은 group당 한 번 보존하고 각 scene item은 key/kind/role로 참조한다. 같은
+10M work 한도를 적용하며 복원은 exact refs·원 item identity·forward geometry·kernel version을
+검증한다. 재기준 graph 의미는 flat private frame proof에 보존되어 이전 plan 연쇄를 만들지 않는다.
+Native current-frame hit는 현재 node/edge 모양과 정확한 endpoint metadata를 사용한다.
+Offline 복원 frame은 렌더링·재기준 가능하나 native 프로그램 metadata가 없어 session hit binding은
+지원하지 않는다.
+
+## Cartesian Rule·Rect·Bar·Line·Area 전환
+
+동일 final item key/role과 실제 source row lineage를 가진 Cartesian rule, range/band rect,
+aggregate/ranged/centered bar, histogram, ordered line 및 area는 `cartesian-geometry` kernel을
+사용한다. 준비 시 기존 native owner에서 각 item의 값·resolved scale·구간 endpoint와
+곡선/막대 폭/모서리 정책을 읽고 concrete endpoint로 forward 검산한다. 범위·stack·fill·center·
+wiggle은 이때 완성한 endpoint 값을 보존하며 sampling 때 집계·binning·stack/layout을 다시 하지 않는다.
+
+Continuous mapping은 point와 같은 linear/time/log/pow/sqrt/symlog owner를 사용한다.
+동일 typed categorical domain/order/value와 padding policy의 ordinal/band/point는 range를
+보간하고 기존 native band resolver를 사용한다. 선의 linear/step/step-before/step-after/basis/
+cardinal/monotone/monotone-steffen/natural 및 area의 허용 curve는 기존 path 계산기를 재사용한다.
+수평/수직 방향, 명시 pixel/band/calendar interval 폭과 native grouped offset placement를 보존한다.
+
+곡선·layout·radius·폭 policy, ordered vertex row membership, categorical domain/order 또는
+scale policy가 달라지면 명시 reason crossfade다. 위치 conditional, non-Cartesian, overlay/offset
+rule, fixed-span/box-span/category-slot 특수 배치와 density-derived area는 이 typed kernel에
+포함되지 않는다. Structured paint나 appearance 변경도 공통 concrete fallback이다.
+성공한 sample은 현재 의미 vector만 flat proof에 보존하여 양방향 재기준과 offline 복원을 지원한다.
+저장 payload는 endpoint별 optional Cartesian state와 `semantic-cartesian-geometry@1` version을
+포함하며 unknown version·다른 row membership·forward geometry 오염을 원자적으로 거부한다.
+기존 public 함수 signature와 scene schema는 바뀌지 않는다. 다른 typed family의 완료를 뜻하지 않는다.
 
 ## 오프라인 저장·복원
 
@@ -40,7 +88,7 @@ runtime Infinity는 저장에서만 문자열 `infinite`로 표현한다.
 schema1 envelope는 `{kind:'animation',schemaVersion:1,packageVersion,payload,digest}`다.
 payload의 plan은 planner 단일 export/restore owner가 검증하며 kernels manifest를 포함한다.
 digest는 기존 tagged value의 canonical JSON SHA256이다. 실제 endpoint graphicSpec의
-image/font base64 bytes와 semantic position 준비값을 보존한다. hash만 저장하지 않는다.
+image/font base64 bytes와 semantic position·Cartesian geometry·완료 graph layout/route 준비값을 보존한다. hash만 저장하지 않는다.
 tracks·correspondence는 동일 version owner에서 재구성하며 중복 authority로 저장하지 않는다.
 unknown schema/kernel, 잘못된 forward mapping/identity, 오염·빠진 asset bytes는 복원실패다.
 복원에는 semantic dataset 조회·fetch·loader·clock·renderer 호출이 없다.

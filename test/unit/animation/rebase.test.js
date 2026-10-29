@@ -3,7 +3,7 @@ import test from "node:test";
 import { chart, hconcat } from "../../../src/index.js";
 import { planTransition, exportTransitionPlan, restoreTransitionPlan, requireTransitionEndpoint } from "../../../src/animation/planner.js";
 import { sampleTransition, withSampleTime } from "../../../src/animation/sample.js";
-import { animationFrameProvenance } from "../../../src/animation/frameProvenance.js";
+import { animationFrameProvenance, animationPlanProvenance } from "../../../src/animation/frameProvenance.js";
 
 const points = () => chart().createCanvas({ width: 240, height: 180, margin: 20 })
   .createData({ id: "rows", keyField: "id", values: [{ id: "a", x: 1, y: 20 }, { id: "b", x: 100, y: 80 }] })
@@ -34,10 +34,10 @@ test("timed exported frames retain authenticity and exact captured endpoint view
   const from=points(),to=revise(from,100),plan=prepare(from,to);
   for(const time of [0,50,100]){
     const frame=sampleTransition(plan,time),view=withSampleTime(frame,time);
-    assert.equal(view.timeMs,time);assert.equal(animationFrameProvenance(view).plan,plan);
+    assert.equal(view.timeMs,time);assert.equal(animationFrameProvenance(view).planIdentity,animationPlanProvenance(plan).identity);
     const rebased=prepare(view,to);assert.equal(sampleTransition(rebased,0),view);
     const timed=withSampleTime(sampleTransition(rebased,0),0,rebased);
-    assert.equal(timed.timeMs,0);assert.equal(animationFrameProvenance(timed).plan,rebased);
+    assert.equal(timed.timeMs,0);assert.equal(animationFrameProvenance(timed).planIdentity,animationPlanProvenance(rebased).identity);
     const restored=restoreTransitionPlan(structuredClone(exportTransitionPlan(rebased)));
     assert.deepEqual(sampleTransition(restored,0),view);
     assert.deepEqual(sampleTransition(restored,40),sampleTransition(rebased,40));

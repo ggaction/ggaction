@@ -1590,6 +1590,10 @@
     "file": "animation.mjs",
     "cases": [
       {
+        "id": "animation/bounded-repeated-interruption",
+        "statements": 12
+      },
+      {
         "id": "animation/public-player-interruption",
         "statements": 32
       },
@@ -1608,6 +1612,14 @@
       {
         "id": "animation/immutable-schedules-and-corruption",
         "statements": 11
+      },
+      {
+        "id": "animation/cartesian-native-families",
+        "statements": 4
+      },
+      {
+        "id": "animation/cartesian-offline-renderers",
+        "statements": 13
       }
     ]
   }

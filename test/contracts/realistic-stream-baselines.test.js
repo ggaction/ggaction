@@ -25,3 +25,30 @@ for(const source of sources)for(const mode of ["stack","center","wiggle"])test(`
   assertGraphicIntegrity(q,`${source.id}/${mode}`);assertSvgIntegrity(renderToSVG(q),`${source.id}/${mode}`);assert.equal(serializeProgram(p),saved);
  }finally{releaseTidyTuesdaySourceCache(source.id);}
 });
+
+// The same authentic observations, source order keys and units are preserved.
+// Only the viewport and physical row order change between animation endpoints.
+for(const source of sources)test(`${source.id} animates native bars, steps and stream values through offline resize`,async()=>{
+  const {planTransition,sampleTransition,serializeAnimation,deserializeAnimation}=await import('../../src/animation.js');
+  try {
+    const original=tidyTuesdaySourceRows(source.id);
+    const rows=original.flatMap((row,index)=>Number.isFinite(row[source.field])&&row[source.field]>=0&&(!source.eligible||source.eligible(row))?[{...row,sourceRowIndex:index}]:[]).slice(0,12);
+    assert.equal(rows.length,12);
+    for(const row of rows)assert.equal(row[source.field],original[row.sourceRowIndex][source.field]);
+    const base=chart().createCanvas({width:600,height:300,margin:30}).createData({id:'raw',values:rows,keyField:'sourceRowIndex'});
+    const programs=[
+      base.createBarMark({id:'m'}).encodeX({field:'sourceRowIndex',fieldType:'nominal',scale:{domain:rows.map(row=>row.sourceRowIndex)}}).encodeY({field:source.field,aggregate:'sum'}),
+      base.createLineMark({id:'m',curve:'step'}).encodeX({field:'sourceRowIndex'}).encodeY({field:source.field}),
+      ...['stack','center','wiggle'].map(layout=>base.createAreaPlot({id:'m',x:'sourceRowIndex',y:source.field,layout,guides:false}))
+    ];
+    for(const from of programs) {
+      const to=from.reviseData({source:'raw',id:'reordered',values:[...rows].reverse()}).editCanvas({width:800,height:400});
+      const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),frame=sampleTransition(plan,50);
+      assert.ok(frame.decisions.some(decision=>decision.kernel==='cartesian-geometry'));
+      assert.ok(frame.decisions.filter(decision=>decision.itemKey!==undefined).every(decision=>decision.kind!=='crossfade'));
+      assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(plan)).plan,50),frame);
+      assertSvgIntegrity(renderToSVG(frame),`${source.id}/animated`);
+      assert.deepEqual(from.semanticSpec.datasets.find(dataset=>dataset.id==='raw').values,rows);
+    }
+  }finally{releaseTidyTuesdaySourceCache(source.id);}
+});

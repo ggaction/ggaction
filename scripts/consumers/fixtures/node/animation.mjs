@@ -9,6 +9,14 @@ import { renderToPNGBuffer } from 'ggaction/png';
 import { renderToPDFBuffer } from 'ggaction/pdf';
 import { createCanvas } from '@napi-rs/canvas';
 
+const offlineNetworkGuard=`
+import http from 'node:http';import https from 'node:https';import net from 'node:net';import tls from 'node:tls';
+import {syncBuiltinESMExports} from 'node:module';
+let network=0;const deny=()=>{network++;throw Error('offline');};globalThis.fetch=deny;
+for(const module of [http,https]){module.get=deny;module.request=deny;}
+net.connect=deny;net.createConnection=deny;net.Socket.prototype.connect=deny;tls.connect=deny;syncBuiltinESMExports();
+`;
+
 const points=()=>chart().createCanvas({width:300,height:200,margin:20})
   .createData({id:'rows',keyField:'id',values:[{id:'a',x:1,y:50}]})
   .createPointMark({id:'points',fill:'red'})
@@ -20,6 +28,25 @@ const prepare=()=>{
 };
 
 export const cases=[
+  {id:'animation/bounded-repeated-interruption',async run(){
+    const plan=prepare(),left=sampleTransition(plan,0),right=sampleTransition(plan,100);
+    let draws=0;
+    const player=createAnimationPlayer({plan,clock:{now:()=>0,requestFrame(){throw Error('Paused player scheduled a callback');},cancelFrame(){}},render(){draws++;}});
+    player.seek(50);
+    for(let i=0;i<1000;i++){
+      const captured=player.getFrame(),finished=player.finished;
+      player.interrupt({to:i%2?left:right,options:{durationMs:100,easing:'linear'}});
+      assert.equal(player.getFrame(),captured);assert.equal((await finished).reason,'interrupted');
+      player.seek(50);
+      const node=player.getFrame().scene.nodes.find(node=>node.type==='circle');
+      assert.ok(node&&Number.isFinite(node.properties.x)&&Number.isFinite(node.properties.y));
+      assert.equal(player.getFrame().scene.nodes.length,2);
+    }
+    const last=player.getFrame(),saved=serializeAnimation(planTransition({from:last,to:left,options:{durationMs:100}}));
+    assert.deepEqual(sampleTransition(deserializeAnimation(saved).plan,0),last);
+    player.dispose();assert.equal(player.getFrame(),undefined);const before=draws;
+    assert.throws(()=>player.seek(50),/disposed/);assert.equal(draws,before);
+  }},
   {id:'animation/public-player-interruption',async run(){
     const plan=prepare();let now=0,sequence=0;const pending=new Map(),frames=[],commits=[];
     const clock={now:()=>now,requestFrame:fn=>{const id=++sequence;pending.set(id,fn);return id;},cancelFrame:id=>pending.delete(id)};
@@ -40,8 +67,8 @@ export const cases=[
     const plan=prepare(),saved=serializeAnimation(plan,{rate:-1,repeat:Infinity,reducedMotion:true});
     const expected=exportAnimationFrames(plan,{timesMs:[0,50,100]}).map(frame=>frame.scene);
     const child=spawnSync(process.execPath,['--input-type=module','-e',`
-      import {deserializeAnimation,exportAnimationFrames} from 'ggaction/animation';
-      let network=0;globalThis.fetch=()=>{network++;throw Error('offline');};
+      ${offlineNetworkGuard}
+      const {deserializeAnimation,exportAnimationFrames}=await import('ggaction/animation');
       let text='';for await(const chunk of process.stdin)text+=chunk;
       const {plan,playback}=deserializeAnimation(text);
       console.log(JSON.stringify({scenes:exportAnimationFrames(plan,{timesMs:[0,50,100]}).map(f=>f.scene),network,
@@ -76,8 +103,9 @@ export const cases=[
     assert.ok(saved.includes(font.payload.data));assert.ok(saved.includes(image.payload.data));
     const expected=hash((await renderToPNGBuffer(sampleTransition(plan,0))).buffer);
     const child=spawnSync(process.execPath,['--input-type=module','-e',`
-      import {createHash} from 'node:crypto';import {deserializeAnimation,sampleTransition} from 'ggaction/animation';import {renderToPNGBuffer} from 'ggaction/png';
-      let text='';for await(const chunk of process.stdin)text+=chunk;let network=0;globalThis.fetch=()=>{network++;throw Error('offline');};
+      ${offlineNetworkGuard}
+      const {createHash}=await import('node:crypto');const {deserializeAnimation,sampleTransition}=await import('ggaction/animation');const {renderToPNGBuffer}=await import('ggaction/png');
+      let text='';for await(const chunk of process.stdin)text+=chunk;
       const {plan}=deserializeAnimation(text),png=await renderToPNGBuffer(sampleTransition(plan,0));
       console.log(JSON.stringify({hash:createHash('sha256').update(png.buffer).digest('hex'),network}));
     `],{input:saved,encoding:'utf8',timeout:30000});
@@ -93,5 +121,46 @@ export const cases=[
     assert.throws(()=>deserializeAnimation(JSON.stringify(broken)),/digest/);
     assert.throws(()=>serializeAnimation(structuredClone(plan)),/authentic/);
     assert.deepEqual(sampleTransition(plan,50),before);
+  }},
+  {id:'animation/cartesian-native-families',async run(){
+    const values=[{id:1,x:1,y:20,high:50,category:'A'},{id:'1',x:3,y:40,high:70,category:'B'}];
+    const base=()=>chart().createCanvas({width:300,height:200}).createData({id:'rows',values,keyField:'id'});
+    const programs=[
+      base().createRuleMark({id:'mark'}).encodeX({field:'x',fieldType:'quantitative'}),
+      base().createRectMark({id:'mark'}).encodeXRange({lower:'x',upper:{datum:4},fieldType:'quantitative'}).encodeYRange({lower:'y',upper:'high',fieldType:'quantitative'}),
+      base().createBarMark({id:'mark'}).encodeX({field:'category',fieldType:'nominal'}).encodeY({field:'y',aggregate:'sum'}),
+      base().createLineMark({id:'mark',curve:'step'}).encodeX({field:'x'}).encodeY({field:'y'}),
+      base().createAreaMark({id:'mark'}).encodeX({field:'x'}).encodeYRange({lower:'y',upper:'high'}),
+      base().createHistogram({id:'mark',field:'x',binBoundaries:[0,2,4],guides:false})
+    ];
+    for(const from of programs){
+      const to=from.editCanvas({width:500,height:300});
+      const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),frame=sampleTransition(plan,50);
+      assert.ok(frame.decisions.some(decision=>decision.kernel==='cartesian-geometry'));
+      const restored=deserializeAnimation(serializeAnimation(plan)).plan;
+      assert.deepEqual(sampleTransition(restored,50),frame);
+      const rebase=planTransition({from:frame,to:from,options:{durationMs:100}});
+      assert.equal(sampleTransition(rebase,0),frame);
+      assert.deepEqual(sampleTransition(deserializeAnimation(serializeAnimation(rebase)).plan,50),sampleTransition(rebase,50));
+    }
+  }},
+  {id:'animation/cartesian-offline-renderers',async run(){
+    const from=chart().createCanvas({width:300,height:200,margin:20})
+      .createData({id:'rows',values:[{id:'a',x:1}],keyField:'id'}).createRectMark({id:'mark',fill:'red'})
+      .encodeXRange({lower:'x',upper:{datum:1000},fieldType:'quantitative',scale:{type:'log',domain:[1,1000],nice:false}})
+      .encodeYRange({lower:{datum:20},upper:{datum:80},fieldType:'quantitative',scale:{domain:[0,100],nice:false,zero:false}});
+    const to=from.reviseData({source:'rows',id:'next',values:[{id:'a',x:100}]});
+    const plan=planTransition({from,to,options:{durationMs:100,easing:'linear'}}),saved=serializeAnimation(plan),frame=sampleTransition(plan,50);
+    const child=spawnSync(process.execPath,['--input-type=module','-e',`
+      import {deserializeAnimation,sampleTransition} from 'ggaction/animation';
+      globalThis.fetch=()=>{throw Error('network forbidden');};let text='';for await(const c of process.stdin)text+=c;
+      console.log(JSON.stringify(sampleTransition(deserializeAnimation(text).plan,50)));
+    `],{input:saved,encoding:'utf8',timeout:30000});
+    assert.equal(child.status,0,child.stderr);assert.deepEqual(JSON.parse(child.stdout),JSON.parse(JSON.stringify(frame)));
+    const canvas=createCanvas(1,1);render(frame,canvas.getContext('2d'));
+    assert.deepEqual([...canvas.getContext('2d').getImageData(200,100,1,1).data],[255,0,0,255]);
+    assert.deepEqual([...canvas.getContext('2d').getImageData(106,100,1,1).data],[255,255,255,255]);
+    assert.deepEqual((await renderToPNGBuffer(frame)).buffer,await canvas.encode('png'));
+    assert.match(renderToSVG(frame),/<rect/);assert.equal((await renderToPDFBuffer(frame)).buffer.subarray(0,4).toString(),'%PDF');
   }}
 ];
