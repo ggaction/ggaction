@@ -2630,6 +2630,22 @@
     "executable": true
   },
   {
+    "file": "api/interaction.md",
+    "block": 21,
+    "heading": "Prepare native work before replacing the program",
+    "mode": "fragment",
+    "environment": "esm-context",
+    "receivers": [
+      "program"
+    ],
+    "resources": [
+      "target: \"network\""
+    ],
+    "prerequisites": "Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: \"network\"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.",
+    "sha256": "d2ba963d0e1da08724959b45ef21d2bdb2a21c685e1a8f64307cb695cea5ce1d",
+    "executable": false
+  },
+  {
     "file": "api/legends.md",
     "block": 1,
     "heading": "Editing one block",

@@ -1171,3 +1171,46 @@ Nested charts convert root and child coordinates before updating offsets; no sca
 Keyboard activation uses ordinary host buttons. Each command produces one commit and settled event;
 an invalid patch preserves the current program and trace. Annotation creation and screen-anchor conversion are not
 performed by this command.
+
+## Prepare native work before replacing the program
+
+Pass a callback to `updateProgram` when a native resource needs asynchronous computation. It receives the
+current immutable program and an `AbortSignal`. A newer edit or destruction cancels the request; a late result
+cannot replace the current chart. `whenSettled()` waits for computation and any configured asset preparation.
+The previous program and history stay available until the replacement is ready.
+
+For a Full `program` containing graph `graph`, layout `layout` and graph plot `network`, create a route executor
+and apply its prepared result through the native actions:
+
+<!-- snippet-context:start -->
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "network"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+<!-- snippet-context:end -->
+
+```js
+import { createGraphRouteExecutor, prepareGraphEdgeRoutes } from "ggaction/graph";
+import { createInteractionSession } from "ggaction/interaction";
+
+const routeExecutor = createGraphRouteExecutor();
+const routeSession = createInteractionSession({ program, bindings: [] });
+routeSession.updateProgram(async ({ program, signal, transactionId }) => {
+  const prepared = await prepareGraphEdgeRoutes(program, {
+    kind: "create", id: "routes", graph: "graph", layout: "layout", method: "edge-path"
+  }, { executor: routeExecutor, signal, requestToken: transactionId });
+  return program.bundleGraphEdges({ prepared, requestToken: transactionId })
+    .editGraphPlot({ target: "network", routes: "routes" });
+}, { history: "record" });
+await routeSession.whenSettled();
+
+function disposeRoutes() {
+  routeSession.destroy();
+  routeExecutor.dispose();
+}
+```
+
+Subscribe to the `program` event to render the accepted replacement. The subsequent `update` event reports
+`status: "settled"`; cancellation and failures report `"cancelled"` and `"error"`. Native editing commands keep
+their existing transaction phases. Supply `createWorker` to `createGraphRouteExecutor` when work should run
+in a worker; the executor owns its transport and honors the session signal. Keep the executor until its owning
+view is disposed, then call `disposeRoutes()`.

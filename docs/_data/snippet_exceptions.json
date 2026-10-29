@@ -2896,5 +2896,12 @@
     "mode": "contextual-fragment",
     "owner": "docs/api/interaction.md",
     "reason": "Requires a retained-image program and Canvas context supplied by the host. The exact fragment is executed with real browser image bytes and late bitmap cancellation in test/browser/interaction-session.browser.js; it is not a standalone authoring example."
+  },
+  {
+    "id": "docs/api/interaction.md#prepare-native-work-before-replacing-the-program:1",
+    "sha256": "d2ba963d0e1da08724959b45ef21d2bdb2a21c685e1a8f64307cb695cea5ce1d",
+    "mode": "contextual-fragment",
+    "owner": "docs/api/interaction.md",
+    "reason": "Requires the explicitly named graph, layout and network plot. The exact fragment is executed by the native-update browser regression before real worker supersession and disposal checks."
   }
 ]

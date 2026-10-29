@@ -1356,6 +1356,10 @@
       {
         "type": "file",
         "path": "unit/interaction-preparation.test.js"
+      },
+      {
+        "type": "file",
+        "path": "unit/interaction-update.test.js"
       }
     ],
     "selectors": [

@@ -6,6 +6,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+- Prepare native asynchronous session replacements atomically, with revision guards, cancellation and existing worker/asset lifetimes.
+
 - Add atomic interaction asset preparation with abortable host leases, exact revision guards and terminal disposal.
 
 - Add bounded interaction undo/redo/reset with exact program and selection snapshots and explicit external update history policy.

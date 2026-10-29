@@ -159,3 +159,6 @@ const preparing=createInteractionSession({program,async assetResolver({program,s
 const preparationStatus:Promise<import('ggaction/interaction').InteractionSettlement>=preparing.whenSettled();
 // @ts-expect-error preparation requires a disposal owner
 createInteractionSession({program,assetResolver:()=>({images:{}})});
+
+session.updateProgram(async request=>{ const signal:AbortSignal=request.signal; const id:string=request.transactionId; return request.program; }, {history:'record',transactionId:'job',origin:'linked'});
+session.subscribe(event=>{if(event.type==='update'){const id:string=event.transactionId;const status:'settled'|'cancelled'|'error'=event.status;}});

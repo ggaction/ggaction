@@ -882,3 +882,73 @@ test("canonical asset resolver keeps browser pixels committed and closes late im
   } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
   finally { await context.close(); }
 });
+
+test("canonical native update and real browser workers reject stale completion and release transport on destroy", async () => {
+  const { readFile } = await import("node:fs/promises"), { documentationCodeBlocks } = await import("../../scripts/doc-snippets.js");
+  const source = documentationCodeBlocks(await readFile(new URL("../../docs/api/interaction.md", import.meta.url), "utf8"))
+    .find(block => block.code.includes("const routeExecutor = createGraphRouteExecutor")).code;
+  const context = await browser.newContext({ deviceScaleFactor: 2, viewport: { width: 900, height: 650 } });
+  try {
+    const { page, errors } = await openBrowserPage(context, new URL("examples/inspect-chart/", server.baseUrl).href,
+      { waitFor: () => window.__inspectionSessions?.length === 2 });
+    await page.evaluate(async code => {
+      window.__inspectionSessions.forEach(session => session.destroy());
+      const { chart, render } = await import("/src/index.js"), { renderToSVG } = await import("/src/renderers/svg.js");
+      const { createGraphRouteExecutor, prepareGraphEdgeRoutes, computeGraphEdgeRoutes } = await import("/src/graph.js");
+      document.body.innerHTML = '<button id="prepare">Prepare routes</button><button id="destroy">Destroy routes</button><canvas aria-label="Prepared routes"></canvas><div id="vector"></div>';
+      window.__routeBase = chart().createCanvas({ width: 400, height: 300 }).createData({ id: "nodes", values: [{ id: "a" }, { id: "b" }, { id: "c" }] })
+        .createData({ id: "edges", values: [{ s: "a", t: "c" }, { s: "a", t: "b" }, { s: "b", t: "c" }] })
+        .createGraphData({ id: "graph", nodes: "nodes", edges: "edges", nodeKey: "id", source: "s", target: "t" })
+        .layoutGraph({ id: "layout", method: "fixed", options: { positions: [{ key: "a", x: 0, y: 0 }, { key: "b", x: 50, y: 50 }, { key: "c", x: 100, y: 0 }] } })
+        .createGraphPlot({ id: "network" });
+      let module = 'const program=window.__routeBase;\n' + code;
+      for (const [specifier, file] of [["ggaction/graph", "graph"], ["ggaction/interaction", "interaction"]]) module = module.replaceAll(JSON.stringify(specifier), JSON.stringify(new URL(`/src/${file}.js`, location.href).href));
+      module += '\nwindow.__routeSession=routeSession;window.__routeCleanup=disposeRoutes;';
+      const url = URL.createObjectURL(new Blob([module], { type: "text/javascript" }));
+      try { await import(url); } finally { URL.revokeObjectURL(url); }
+      const draw = program => { render(program, document.querySelector("canvas").getContext("2d"), { pixelRatio: 2 }); document.querySelector("#vector").innerHTML = renderToSVG(program); };
+      window.__routeWrites = 0; draw(window.__routeSession.getState().program);
+      window.__routeSession.subscribe(event => { if (event.type === "program") { window.__routeWrites++; draw(event.state.program); } });
+      window.__routeWorkers = [];
+      const workerUrl = URL.createObjectURL(new Blob([`import {computeGraphEdgeRoutes} from ${JSON.stringify(new URL('/src/graph.js', location.href).href)};onmessage=({data})=>postMessage(computeGraphEdgeRoutes(data.job));`], { type: "text/javascript" }));
+      const executor = createGraphRouteExecutor({ createWorker() {
+        const native = new Worker(workerUrl, { type: "module" }), listeners = new Map();
+        const worker = { job: null, terminated: 0, listeners, late: null,
+          postMessage(message) { this.job = message.job; this.late = listeners.get("message"); this.release = () => native.postMessage(message); },
+          addEventListener(type, listener) { listeners.set(type, listener); native.addEventListener(type, listener); },
+          removeEventListener(type, listener) { listeners.delete(type); native.removeEventListener(type, listener); },
+          terminate() { this.terminated++; native.terminate(); } };
+        window.__routeWorkers.push(worker); return worker;
+      } });
+      let exponent = 2;
+      document.querySelector("#prepare").onclick = () => {
+        const value = ++exponent;
+        window.__routeSession.updateProgram(async ({ program, signal, transactionId }) => {
+          const prepared = await prepareGraphEdgeRoutes(program, { kind: "edit", target: "routes", options: { exponent: value } }, { executor, signal, requestToken: transactionId });
+          return program.editEdgeRoute({ prepared, requestToken: transactionId });
+        }, { history: "record" });
+      };
+      document.querySelector("#destroy").onclick = () => { window.__routeCleanup(); executor.dispose(); URL.revokeObjectURL(workerUrl); };
+      window.__routeLate = index => { const worker = window.__routeWorkers[index]; worker.late({ data: computeGraphEdgeRoutes(worker.job) }); };
+      window.__routeParity = () => {
+        const current = window.__routeSession.getState().program, expected = window.__routeBase.bundleGraphEdges({ id: "routes", graph: "graph", layout: "layout", method: "edge-path" })
+          .editGraphPlot({ target: "network", routes: "routes" }).editEdgeRoute({ target: "routes", options: { exponent: 4 } });
+        const canvas = document.createElement("canvas"); render(expected, canvas.getContext("2d"), { pixelRatio: 2 });
+        return { svg: renderToSVG(current) === renderToSVG(expected), pixels: canvas.toDataURL() === document.querySelector("canvas").toDataURL() };
+      };
+    }, source);
+    assert.deepEqual(await page.evaluate(() => [window.__routeSession.getState().revision, window.__routeSession.getState().history.undoCount]), [1, 1]);
+    await page.getByRole("button", { name: "Prepare routes" }).click(); await page.waitForFunction(() => window.__routeWorkers.length === 1);
+    await page.getByRole("button", { name: "Prepare routes" }).focus(); await page.keyboard.press("Enter"); await page.waitForFunction(() => window.__routeWorkers.length === 2);
+    assert.deepEqual(await page.evaluate(() => [window.__routeSession.getState().revision, window.__routeWrites, window.__routeWorkers[0].terminated, window.__routeWorkers[0].listeners.size]), [1, 0, 1, 0]);
+    await page.evaluate(async () => { window.__routeWorkers[1].release(); await window.__routeSession.whenSettled(); window.__routeLate(0); });
+    assert.deepEqual(await page.evaluate(() => window.__routeParity()), { svg: true, pixels: true });
+    assert.deepEqual(await page.evaluate(() => [window.__routeSession.getState().revision, window.__routeSession.getState().history.undoCount, window.__routeWrites]), [2, 2, 1]);
+    await page.getByRole("button", { name: "Prepare routes" }).click(); await page.waitForFunction(() => window.__routeWorkers.length === 3);
+    await page.getByRole("button", { name: "Destroy routes" }).click(); await page.evaluate(() => window.__routeLate(2));
+    assert.deepEqual(await page.evaluate(() => ({ destroyed: window.__routeSession.getState().destroyed, writes: window.__routeWrites,
+      workers: window.__routeWorkers.map(worker => [worker.terminated, worker.listeners.size]) })), { destroyed: true, writes: 1, workers: [[1, 0], [1, 0], [1, 0]] });
+    assertNoBrowserErrors(errors, "native prepared route replacement"); await page.close();
+  } catch (error) { await saveBrowserContextEvidence(context, error); throw error; }
+  finally { await context.close(); }
+});

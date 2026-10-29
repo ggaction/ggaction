@@ -104,7 +104,14 @@ for (const dataset of datasets) for (const recipe of ["observations","categories
    assert.ok(assetCalls[1].resourceRevisionVector.some(ref=>ref.kind==='data'&&ref.logicalId===preparedSource.semanticSpec.datasets[0].logicalId));
    assert.ok(assetCalls[1].resourceRevisionVector.some(ref=>ref.kind==='parameter'&&ref.id==='categoryChoice'&&ref.revision===1));
    preparedSession.dispatch({type:"undo"});await preparedSession.whenSettled();assert.equal(preparedSession.getState().program,preparedSource);
-   preparedSession.destroy();assert.equal(assetReleased.length,3);assert.ok(assetCalls.every(request=>request.signal.aborted));
+   preparedSession.updateProgram(async({program,signal,resourceRevisionVector})=>{
+    assert.equal(signal.aborted,false);assert.ok(resourceRevisionVector.some(ref=>ref.kind==='parameter'&&ref.id==='categoryChoice'&&ref.revision===0));
+    return program.editParameter({target:"categoryChoice",value:max});
+   },{history:"record",transactionId:"prepared-native-update"});
+   assert.equal(preparedSession.getState().program,preparedSource);await preparedSession.whenSettled();
+   assert.deepEqual(getMarkItems(preparedSession.getState().program,{target:"mark"}).filter(item=>item.geometry.some(g=>g.properties.fill==="#ef4444"||g.properties.stroke==="#ef4444")).map(item=>item.key),items.filter(item=>item.fields.category===max).map(item=>item.key));
+   preparedSession.dispatch({type:"undo"});await preparedSession.whenSettled();assert.equal(preparedSession.getState().program,preparedSource);
+   preparedSession.destroy();assert.equal(assetReleased.length,5);assert.ok(assetCalls.every(request=>request.signal.aborted));
    const session=createInteractionSession({program:deserializeProgram(astSaved),bindings:[]}),phases=[];
    session.subscribe(event=>{if('phase' in event)phases.push(event.phase);});
    session.dispatch({type:"setParameter",target:"categoryChoice",payload:{value:max}});

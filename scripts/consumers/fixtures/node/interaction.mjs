@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { chart, hconcat, prepareImageRendering } from "ggaction";
 import { chart as basic } from "ggaction/basic";
 import { createInteractionSession } from "ggaction/interaction";
+import { createGraphRouteExecutor, prepareGraphEdgeRoutes } from "ggaction/graph";
 import { getMarkItems } from "ggaction/inspection";
 import { serializeProgram, deserializeProgram } from "ggaction/persistence";
 const make = factory => factory().createCanvas({ width: 200, height: 160, margin: 0 })
@@ -10,6 +11,24 @@ const make = factory => factory().createCanvas({ width: 200, height: 160, margin
   .encodeX({ field: "x", scale: { domain: [0, 200], range: [0, 200] } })
   .encodeY({ field: "y", scale: { domain: [0, 160], range: [0, 160] } });
 export const cases = [
+  { id: "interaction/prepared-update", async run() {
+    const p=chart().createCanvas({width:400,height:300}).createData({id:"nodes",values:[{id:"a"},{id:"b"}]}).createData({id:"edges",values:[{s:"a",t:"b"}]})
+      .createGraphData({id:"graph",nodes:"nodes",edges:"edges",nodeKey:"id",source:"s",target:"t"})
+      .layoutGraph({id:"layout",method:"fixed",options:{positions:[{key:"a",x:0,y:0},{key:"b",x:100,y:100}]}}).createGraphPlot({id:"network"});
+    const executor=createGraphRouteExecutor(),session=createInteractionSession({program:p,bindings:[]}),events=[];
+    session.subscribe(event=>events.push(event));
+    session.updateProgram(async({program,signal,transactionId})=>{
+      const prepared=await prepareGraphEdgeRoutes(program,{kind:"create",id:"routes",graph:"graph",layout:"layout",method:"edge-path"},{executor,signal,requestToken:transactionId});
+      return program.bundleGraphEdges({prepared,requestToken:transactionId}).editGraphPlot({target:"network",routes:"routes"});
+    },{history:"record",transactionId:"route"});
+    assert.equal(session.getState().program,p);assert.equal((await session.whenSettled()).status,"settled");
+    const expected=p.bundleGraphEdges({id:"routes",graph:"graph",layout:"layout",method:"edge-path"}).editGraphPlot({target:"network",routes:"routes"});
+    assert.deepEqual(session.getState().program.graphicSpec,expected.graphicSpec);assert.deepEqual(deserializeProgram(serializeProgram(session.getState().program)).semanticSpec,expected.semanticSpec);
+    assert.deepEqual(events.map(e=>[e.type,e.status]),[["program",undefined],["update","settled"]]);
+    session.dispatch({type:"undo"});assert.equal(session.getState().program,p);
+    let finish,aborted;session.updateProgram(({signal})=>new Promise(resolve=>{finish=resolve;aborted=signal}));const waiting=session.whenSettled();await new Promise(setImmediate);
+    session.destroy();assert.equal((await waiting).status,"cancelled");assert.equal(aborted.aborted,true);finish(expected);await new Promise(setImmediate);assert.equal(session.getState().program,p);executor.dispose();
+  } },
   { id: "interaction/asset-preparation", async run() {
     const p=make(chart).createParameter({id:"level",value:1}),calls=[],disposed=[];
     const session=createInteractionSession({program:p,bindings:[],async assetResolver(request){

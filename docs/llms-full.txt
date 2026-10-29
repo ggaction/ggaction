@@ -4,7 +4,7 @@
 
 Package metadata version: 0.0.26.
 
-Contract: sha256:ab53e7e42cd61fba42ba55f1a8a8ff294877f628fa55b9e1cb016036420990a7. Status: development. Runtime source: 57a2463deb9fca9f37af08684939bf696892c003. Release baseline: v0.0.13.
+Contract: sha256:2847aeb0d1f758cccd428339c347b16b62c1b8b7f6044d6ec333286dd246999a. Status: development. Runtime source: uncommitted. Release baseline: v0.0.13.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -266,9 +266,9 @@ these totals rather than being removed after the run.
 These results describe one fixed task set and its model and provider conditions;
 they are evidence for the authoring route, not a performance guarantee for every
 request. See the
-[compact benchmark record](https://github.com/ggaction/ggaction/tree/57a2463deb9fca9f37af08684939bf696892c003/benchmarks/llm-authoring-v1)
+[compact benchmark record](https://github.com/ggaction/ggaction/tree/main/benchmarks/llm-authoring-v1)
 for the reviewable aggregate data and the
-[complete evaluation record](https://github.com/ggaction/ggaction/blob/57a2463deb9fca9f37af08684939bf696892c003/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
+[complete evaluation record](https://github.com/ggaction/ggaction/blob/main/agent_docs/impl/roadmap5.4/phase6/ATTEMPT11.md)
 for the condition definitions, paired comparisons, cost boundaries, provider
 failure analysis, and limitations.
 
@@ -11784,6 +11784,45 @@ Nested charts convert root and child coordinates before updating offsets; no sca
 Keyboard activation uses ordinary host buttons. Each command produces one commit and settled event;
 an invalid patch preserves the current program and trace. Annotation creation and screen-anchor conversion are not
 performed by this command.
+
+## Prepare native work before replacing the program
+
+Pass a callback to `updateProgram` when a native resource needs asynchronous computation. It receives the
+current immutable program and an `AbortSignal`. A newer edit or destruction cancels the request; a late result
+cannot replace the current chart. `whenSettled()` waits for computation and any configured asset preparation.
+The previous program and history stay available until the replacement is ready.
+
+For a Full `program` containing graph `graph`, layout `layout` and graph plot `network`, create a route executor
+and apply its prepared result through the native actions:
+
+> **Contextual fragment.** Use an ES module with the imports, data, and prepared resource state described in this section. Caller-provided receivers: `program`. Resource selectors used here: `target: "network"`. Resolve these names from setup in this fragment or section; alternatives branch from the same base.
+
+```js
+import { createGraphRouteExecutor, prepareGraphEdgeRoutes } from "ggaction/graph";
+import { createInteractionSession } from "ggaction/interaction";
+
+const routeExecutor = createGraphRouteExecutor();
+const routeSession = createInteractionSession({ program, bindings: [] });
+routeSession.updateProgram(async ({ program, signal, transactionId }) => {
+  const prepared = await prepareGraphEdgeRoutes(program, {
+    kind: "create", id: "routes", graph: "graph", layout: "layout", method: "edge-path"
+  }, { executor: routeExecutor, signal, requestToken: transactionId });
+  return program.bundleGraphEdges({ prepared, requestToken: transactionId })
+    .editGraphPlot({ target: "network", routes: "routes" });
+}, { history: "record" });
+await routeSession.whenSettled();
+
+function disposeRoutes() {
+  routeSession.destroy();
+  routeExecutor.dispose();
+}
+```
+
+Subscribe to the `program` event to render the accepted replacement. The subsequent `update` event reports
+`status: "settled"`; cancellation and failures report `"cancelled"` and `"error"`. Native editing commands keep
+their existing transaction phases. Supply `createWorker` to `createGraphRouteExecutor` when work should run
+in a worker; the executor owns its transport and honors the session signal. Keep the executor until its owning
+view is disposed, then call `disposeRoutes()`.
 
 <!-- Source: /recipes/inspect-chart/ -->
 
@@ -35696,10 +35735,11 @@ export interface InteractionPreparation {
   readonly baseRevision: number;
   readonly resourceRevisionVector: readonly (InputRef & { readonly childPath: readonly string[] })[];
 }
-export interface InteractionAssetRequest extends InteractionPreparation {
+export interface InteractionUpdateRequest extends InteractionPreparation {
   readonly program: InteractionProgram;
   readonly signal: AbortSignal;
 }
+export interface InteractionAssetRequest extends InteractionUpdateRequest {}
 export interface InteractionSettlement {
   readonly status: 'settled' | 'cancelled' | 'error';
   readonly preparation?: InteractionPreparation;
@@ -35984,7 +36024,13 @@ export interface InteractionAssetEvent {
   readonly diagnostics: readonly { readonly code: string; readonly message: string }[];
   readonly state: InteractionState;
 }
-export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent | InteractionAssetEvent;
+export interface InteractionUpdateEvent extends Omit<InteractionAssetEvent, 'type'> {
+  readonly type: 'update';
+  readonly transactionId: string;
+  readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
+  readonly causeTransactionId?: string;
+}
+export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent | InteractionAssetEvent | InteractionUpdateEvent;
 export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | {
   readonly type: 'inspect' | 'contextMenu';
   /** CSS-local point, after subtracting the host client rectangle. */
@@ -36004,6 +36050,8 @@ export interface InteractionSession {
   mount(element: Element, options?: { readonly rootTransform?: InteractionTransform }): () => boolean;
   /** External replacement cancels previews. Default clears history; record retains the previous snapshot. */
   updateProgram(program: InteractionProgram, options?: { readonly history?: 'reset' | 'record'; readonly origin?: 'user' | 'programmatic' | 'replay' | 'linked' }): InteractionDispatchResult;
+  /** Prepare native async work from the exact committed base; stale results never replace newer state. */
+  updateProgram(prepare: (request: InteractionUpdateRequest) => InteractionProgram | Promise<InteractionProgram>, options?: InteractionTransaction & { readonly history?: 'reset' | 'record' }): InteractionDispatchResult;
   dispatch(command: InteractionCommand): InteractionDispatchResult;
   subscribe(listener: (event: InteractionEvent) => void): () => boolean;
   getState(): InteractionState;
@@ -50160,12 +50208,12 @@ the complete render before native output changes. SVG preserves all finite
 JavaScript coordinates.
 
 The complete low-level line-chart example is available in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/57a2463deb9fca9f37af08684939bf696892c003/test/charts/cars-line-chart/primitive.program.js).
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-line-chart/primitive.program.js).
 It explicitly authors semantic line state, paths, axes, a combined legend, and
 title graphics without chart-level convenience actions.
 
 The regression scatterplot baseline in
-[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/57a2463deb9fca9f37af08684939bf696892c003/test/charts/cars-regression-scatterplot/primitive.program.js)
+[`primitive.program.js`](https://github.com/ggaction/ggaction/blob/main/test/charts/cars-regression-scatterplot/primitive.program.js)
 uses a heterogeneous point collection, grouped filled confidence-band paths,
 grouped line paths, and two concrete legends.
 
@@ -53216,9 +53264,9 @@ The comparison baseline below is the older release used by the migration notes.
 
 | Identity | Value |
 | --- | --- |
-| Contract fingerprint | `sha256:ab53e7e42cd61fba42ba55f1a8a8ff294877f628fa55b9e1cb016036420990a7` |
+| Contract fingerprint | `sha256:2847aeb0d1f758cccd428339c347b16b62c1b8b7f6044d6ec333286dd246999a` |
 | Example and dataset source | `d665f6bbcdd97ed5e5d22ce63c73d5b3afdbfaa4` |
-| Runtime source commit | `57a2463deb9fca9f37af08684939bf696892c003` |
+| Runtime source commit | `current` |
 | Published comparison baseline | `v0.0.13` |
 | Declared actions here | 366 |
 | Declared actions in that release | 234 |

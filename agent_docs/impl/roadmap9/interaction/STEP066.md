@@ -77,3 +77,42 @@ fragment hash 등록이며 changed owning49가 통과한다. 이후 source 변�
 Source `57a2463deb9fca9f37af08684939bf696892c003`에 고정한 owning49, built172pages/1531LLM이
 통과했다. 문서320/390/768/1440px에서 overflow0/Axe0이며320/1440px 화면을 직접 확인했다.
 [qualification](preparation-evidence/qualification.json)은 최초 실패와 최종 source·tar·명령·화면을 함께 보존한다. 전체 normal/source/installed sweep이나066/067전체 완료를 주장하지 않는다.
+
+## B 최소 공개안 — 준비형 updateProgram
+
+A의 안정 source57a2463de/evidence63ef4ca2a 뒤, 같은 remainingApproval 아래 구현한다.
+`updateProgram(prepare,{history?,origin?,transactionId?,causeTransactionId?})`의 prepare는
+`({program,signal,sessionGeneration,transactionId,baseRevision,resourceRevisionVector})`를 받아
+native action으로 완성한 immutable program 또는 Promise를 반환한다. callback의 program은
+요청 시작의 committed snapshot이고 vector도 그 base의 정확한 scoped resource refs다.
+
+기존 preparation owner의 단일 pending job을 재사용한다. 준비된 program은 기존 external replacement의
+선택/링크/native binding/hit preflight를 통과한 뒤 optional assetResolver로 들어간다. 이 asset request는
+candidate program과 candidate vector를 받으며 outer job은 base 네 tag 및 exact program identity로
+계속 보호된다. 준비 중 program/history/accepted assets는 바뀌지 않는다. 성공 시 기존 program event
+뒤 새 `update` status settled를 한 번, 실패 시 update error, supersede/destroy 시 update cancelled를
+한 번 보낸다. callback형 update의 whenSettled는 native 계산과 asset 준비 모두를 기다린다.
+
+Callback은 기존 prepareGraphEdgeRoutes/createGraphRouteExecutor 같은 native owner에 signal을
+전달하고 자체 부분 자원을 finally에서 정리한다. session이 worker protocol/cache나 geometry 계산을
+추가하지 않는다. producer failure·invalid program·invalid native binding·asset failure는 원자 실패다.
+유효한 새 native edit/restore/external replacement/gesture는 이전 pending job을 취소하고, invalid command는
+취소하지 않는다. 단순 inspect/mount/frame은 현재 committed state를 유지한다. 같은 ID의 subscriber
+재진입은 기존 FIFO loop guard를 재사용한다. worker의 늦은 결과가 다른 revision을 덮을 수 없다.
+
+직접 검증은 실제 native route worker 및 AbortSignal/listener/terminate, out-of-order completion,
+같은 base의 수정 경쟁, undo/history와 assets 두 단계, hidden child vector, empty/invalid 결과,
+subscriber throw/reentry 및100회 destroy를 포함한다. source-free/browser 증거를 뒤에 닫는다.
+ResizeObserver 및 public player/current-frame 통합은 계속 후행 의무다.
+
+B 구현은263 interaction/타입/source boundary/discovery, 추가14 focused(type포함), 실제5×3/16,
+실제 browserworker+canonical 문서 fragment1이 통과했다. 두 변경 owner는 각각100/90.80/100과
+100/94.55/100으로95/90/100 floor를 유지한다.100회 native worker abort/dispose 및100회 callback
+취소 후 늦은 완료에서도 추가 program write가 없었다. 공개 scene·codec는 기존 native route owner를
+사용하며 Canvas/SVG exact browser 및 real Node worker→native 동기 결과 동일성을 확인했다.
+
+고정 tar51699d37를 세 Node에서16runtime+stricttypes+5bundle로 확인했다. Node20은 모든측정 뒤
+기존 interactioncap 실패를 보존하고 같은 측정값으로 최소cap을 재검사했다. Node22/24 명령은 exit0이다.
+Docs+packageboundary55중 검색cap2실패는 실측 최소cap으로 고쳐 owning49를 통과했다. 전체suite
+통과로 바꾸어 쓰지 않으며 [B qualification](update-evidence/qualification.json)에 원본과 최종을 기록한다.
+Source-pinned build와 최종화면은 source commit 뒤 evidence에 고정한다.

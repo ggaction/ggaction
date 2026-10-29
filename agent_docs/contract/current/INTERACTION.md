@@ -651,3 +651,33 @@ subscriber remains terminal even if that subscriber throws; the original subscri
 preserved. Reentrant commands still use the bounded FIFO and transaction-ID guard when asynchronous
 completion enters the reducer. The session does not schedule worker layouts, observe resize, prepare
 animation frames or import a renderer; those owners must pass their accepted native program explicitly.
+
+## Prepared native replacements
+
+`updateProgram(prepare, {history?,origin?,transactionId?,causeTransactionId?} = {})` accepts a host callback
+returning an immutable program or a Promise of one. The callback receives a frozen `InteractionUpdateRequest`:
+`{program,signal,sessionGeneration,transactionId,baseRevision,resourceRevisionVector}`. Its program is the exact
+committed base at request start; the scoped vector includes that base's datasets and resources as specified above.
+Use the existing native resource preparers and actions inside this callback. Forward `signal` to workers and
+release partially acquired host resources in the callback's own `finally` block. No executor, worker protocol,
+resource result or authoring action is implemented by the session.
+
+The callback form returns queued and uses the same single pending preparation slot as asset preparation.
+`whenSettled()` observes native computation, replacement validation and optional asset preparation together.
+After computation, existing replacement selection/link/binding/hit validation runs before `assetResolver`.
+That resolver receives the validated candidate and its candidate resource vector, while the outer job continues
+to guard its original base tags and exact program identity. State preparation describes the outer base request.
+The committed program, revision, history and accepted assets remain unchanged until all preparation succeeds.
+
+Success publishes the existing `program` event followed by exactly one `update` event with status settled.
+Failure publishes one update error and no program event; supersession or destruction publishes one update
+cancelled. Update events have `transactionId`, `origin`, optional `causeTransactionId`, preparation tags,
+diagnostics and current state. Their status is separate from native transaction phase. The history and origin
+options retain the ordinary replacement defaults. Explicit transaction IDs and causes are accepted only by
+the callback overload and reuse the existing bounded validation and subscriber loop guard.
+
+A valid newer prepared replacement, ordinary replacement, native edit, restore or editing gesture aborts the
+pending job. Invalid native input leaves it pending. Late success or failure cannot publish or overwrite newer
+state. Inspecting, remounting or sampling a frame does not change the committed base; final candidate geometry
+is checked against the current host transform before commit. Destroy aborts the native signal and disposes the
+accepted renderer lease; duplicate destruction remains safe. Ordinary synchronous replacement is unchanged.

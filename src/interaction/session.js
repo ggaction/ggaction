@@ -206,6 +206,7 @@ export function createInteractionSession(input) {
         error: error => publish(command.type, details("error", [], [{ code: getErrorDetails(error)?.code ?? "asset-preparation-failed", message: String(error?.message ?? error) }]))
       }, resourceRevisions);
     }
+    preparation.cancel("superseded");
     return prepareCommit()();
   };
   const restore = command => {
@@ -251,7 +252,70 @@ export function createInteractionSession(input) {
         cancel: reason => publish(command.type, details("cancel", [{ code: "preparation-cancelled", message: reason }])),
         error: error => publish(command.type, details("error", [{ code: getErrorDetails(error)?.code ?? "asset-preparation-failed", message: String(error?.message ?? error) }])) }, resourceRevisions);
     }
+    preparation.cancel("superseded");
     return prepareCommit()();
+  };
+  const prepareReplacement = (next, policy, origin) => {
+    const previousSnapshot = committedSnapshot();
+    const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
+    const reconciled = reconcileSelections(next, selectionRecords, selectionPolicy, { managed: managedSelections });
+    let linked = { program: reconciled.program, projections: inspectSelectionLinks(reconciled.program, configured.linked, undefined, linkedSelections, selectionPolicy) };
+    if (reconciled.affectedOwners.length || selectionLinksNeedUpdate(linked.projections, linkedSelections)) {
+      linked = applySelectionLinks(linked.program, configured.linked, linkedSelections, reconciled.affectedOwners, { type: "program" }, selectionPolicy, reconciled.records);
+    }
+    if (configured.select) resolvePointerSelection(linked.program, configured.select, true);
+    if (configured.region) resolveRegionBinding(linked.program, configured.region, true);
+    if (configured.node) resolveNodeMovement(linked.program, configured.node, true);
+    if (configured.annotation) resolveAnnotationMovement(linked.program, configured.annotation, true);
+    const verified = reconcileSelections(linked.program, linked.records ?? reconciled.records, selectionPolicy, { verify: true });
+    const selectionChanges = cloneAndFreeze([...reconciled.changes, ...(linked.selectionChanges ?? []), ...verified.changes]);
+    const candidate = prepareProgramHitFrame(linked.program, version);
+    let frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
+    if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
+    const prepareCommit = tags => {
+      frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+      return () => {
+        mounted?.capture?.cancel("updateProgram");
+        if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
+        bridge.updateFrame(frame); base = candidate; program = linked.program; generation = nextGeneration; revision = nextRevision; lastHit = null;
+        linkedSelections = linked.projections; selectionRecords = verified.records;
+        if (policy === "reset") history.clear();
+        else if (program !== previousSnapshot.program) history.record(previousSnapshot, Object.freeze([]));
+        publish("program", { origin, history: policy, selectionChanges });
+        if (tags) publishAssets("settled", tags);
+        return outcome("applied");
+      };
+    };
+    return { linked, prepareCommit };
+  };
+  const prepareUpdate = (produce, config) => {
+    const metadata = interactionTransactionMetadata(config, `interaction-${nextInteger(transactionSequence)}`);
+    transactionSequence = nextInteger(transactionSequence);
+    return perform(() => {
+      if (drainedTransactions.has(metadata.transactionId)) return outcome("stale");
+      const vector = interactionResourceRevisions(program);
+      drainedTransactions.add(metadata.transactionId);
+      mounted?.capture?.cancel("updateProgram"); previewProgram = null;
+      const report = (status, tags, diagnostics = []) => publish("update", { ...metadata, status, preparation: tags, diagnostics: cloneAndFreeze(diagnostics) });
+      let replacement;
+      return prepareAssets(program, metadata, {
+        async produce(request, resolveAssets) {
+          const next = await produce(request);
+          request.signal.throwIfAborted();
+          perform(() => { replacement = prepareReplacement(next, config.history, metadata.origin); });
+          request.signal.throwIfAborted();
+          if (!resolveAssets) return { dispose() {} };
+          const candidate = replacement.linked.program;
+          return resolveAssets(freezeOwned({ ...request, program: candidate, resourceRevisionVector: interactionResourceRevisions(candidate) }));
+        },
+        prepare: tags => {
+          const commit = replacement.prepareCommit();
+          return () => { const result = commit(); report("settled", tags); return result; };
+        },
+        cancel: (reason, tags) => report("cancelled", tags, [{ code: "update-cancelled", message: reason }]),
+        error: (error, tags) => report("error", tags, [{ code: getErrorDetails(error)?.code ?? "update-failed", message: String(error?.message ?? error) }])
+      }, vector);
+    });
   };
   const dispatch = command => {
     live();
@@ -299,44 +363,18 @@ export function createInteractionSession(input) {
     dispatch,
     updateProgram(next, configuration = {}) {
       live();
-      const config = options(configuration, [], ["history", "origin"], "Interaction update");
+      const deferred = typeof next === "function";
+      const config = options(configuration, [], deferred ? ["history", "origin", "transactionId", "causeTransactionId"] : ["history", "origin"], "Interaction update");
       const policy = config.history === undefined ? "reset" : config.history, origin = interactionOrigin(config.origin);
       if (!["reset", "record"].includes(policy)) throw new TypeError("Unknown interaction update history policy.");
+      if (deferred) return prepareUpdate(next, { ...config, history: policy, origin });
       return perform(() => {
-        const previousSnapshot = committedSnapshot();
-        const version = nextInteger(bridge.getState().version), nextGeneration = nextInteger(generation), nextRevision = nextInteger(revision);
-        const reconciled = reconcileSelections(next, selectionRecords, selectionPolicy, { managed: managedSelections });
-        let linked = { program: reconciled.program, projections: inspectSelectionLinks(reconciled.program, configured.linked, undefined, linkedSelections, selectionPolicy) };
-        if (reconciled.affectedOwners.length || selectionLinksNeedUpdate(linked.projections, linkedSelections)) {
-          linked = applySelectionLinks(linked.program, configured.linked, linkedSelections, reconciled.affectedOwners, { type: "program" }, selectionPolicy, reconciled.records);
-        }
-        if (configured.select) resolvePointerSelection(linked.program, configured.select, true);
-        if (configured.region) resolveRegionBinding(linked.program, configured.region, true);
-        if (configured.node) resolveNodeMovement(linked.program, configured.node, true);
-        if (configured.annotation) resolveAnnotationMovement(linked.program, configured.annotation, true);
-        const verified = reconcileSelections(linked.program, linked.records ?? reconciled.records, selectionPolicy, { verify: true });
-        const selectionChanges = cloneAndFreeze([...reconciled.changes, ...(linked.selectionChanges ?? []), ...verified.changes]);
-        const candidate = prepareProgramHitFrame(linked.program, version);
-        let frame = rebindProgramHitFrame(candidate, candidate.scene, version, rootTransform);
-        if ((configured.node || configured.annotation) && previewProgram !== null) nextInteger(nextInteger(bridge.getState().version));
-        const prepareCommit = tags => {
-          frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
-          return () => {
-            mounted?.capture?.cancel("updateProgram");
-            if (frame.version <= bridge.getState().version) frame = rebindProgramHitFrame(candidate, candidate.scene, nextInteger(bridge.getState().version), rootTransform);
-            bridge.updateFrame(frame); base = candidate; program = linked.program; generation = nextGeneration; revision = nextRevision; lastHit = null;
-            linkedSelections = linked.projections; selectionRecords = verified.records;
-            if (policy === "reset") history.clear();
-            else if (program !== previousSnapshot.program) history.record(previousSnapshot, Object.freeze([]));
-            publish("program", { origin, history: policy, selectionChanges });
-            if (tags) publishAssets("settled", tags);
-            return outcome("applied");
-          };
-        };
+        const { linked, prepareCommit } = prepareReplacement(next, policy, origin);
         if (preparation.enabled) {
           mounted?.capture?.cancel("updateProgram"); transactionSequence = nextInteger(transactionSequence);
           return prepareAssets(linked.program, { transactionId: `interaction-${transactionSequence}` }, assetHandlers(prepareCommit));
         }
+        preparation.cancel("superseded");
         return prepareCommit()();
       });
     },

@@ -1153,10 +1153,11 @@ export interface InteractionPreparation {
   readonly baseRevision: number;
   readonly resourceRevisionVector: readonly (InputRef & { readonly childPath: readonly string[] })[];
 }
-export interface InteractionAssetRequest extends InteractionPreparation {
+export interface InteractionUpdateRequest extends InteractionPreparation {
   readonly program: InteractionProgram;
   readonly signal: AbortSignal;
 }
+export interface InteractionAssetRequest extends InteractionUpdateRequest {}
 export interface InteractionSettlement {
   readonly status: 'settled' | 'cancelled' | 'error';
   readonly preparation?: InteractionPreparation;
@@ -1441,7 +1442,13 @@ export interface InteractionAssetEvent {
   readonly diagnostics: readonly { readonly code: string; readonly message: string }[];
   readonly state: InteractionState;
 }
-export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent | InteractionAssetEvent;
+export interface InteractionUpdateEvent extends Omit<InteractionAssetEvent, 'type'> {
+  readonly type: 'update';
+  readonly transactionId: string;
+  readonly origin: 'user' | 'programmatic' | 'replay' | 'linked';
+  readonly causeTransactionId?: string;
+}
+export type InteractionEvent = InteractionLifecycleEvent | InteractionProgramEvent | InteractionTransactionEvent | InteractionAssetEvent | InteractionUpdateEvent;
 export type InteractionCommand = InteractionEditCommand | InteractionHistoryCommand | {
   readonly type: 'inspect' | 'contextMenu';
   /** CSS-local point, after subtracting the host client rectangle. */
@@ -1461,6 +1468,8 @@ export interface InteractionSession {
   mount(element: Element, options?: { readonly rootTransform?: InteractionTransform }): () => boolean;
   /** External replacement cancels previews. Default clears history; record retains the previous snapshot. */
   updateProgram(program: InteractionProgram, options?: { readonly history?: 'reset' | 'record'; readonly origin?: 'user' | 'programmatic' | 'replay' | 'linked' }): InteractionDispatchResult;
+  /** Prepare native async work from the exact committed base; stale results never replace newer state. */
+  updateProgram(prepare: (request: InteractionUpdateRequest) => InteractionProgram | Promise<InteractionProgram>, options?: InteractionTransaction & { readonly history?: 'reset' | 'record' }): InteractionDispatchResult;
   dispatch(command: InteractionCommand): InteractionDispatchResult;
   subscribe(listener: (event: InteractionEvent) => void): () => boolean;
   getState(): InteractionState;

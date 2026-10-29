@@ -4007,3 +4007,18 @@ Full729,256/Basic384,464/SVG20,196/graph43,759는 직전 history와 동일하다
 owner1개로1049entries이며 Node20 packed1,490,213/unpacked6,779,434에 cap1,491,000/6,780,000을
 적용한다. 최초 entry·bundle cap 실패와 동일 archive의 cap 재검사를 구분해 증거로 보존한다.
 검색 index1,028,729bytes는 최소cap1,028,800이며 renderer나 authoring bundle 경계는 바뀌지 않는다.
+
+### Prepared native session replacements
+
+Callback형 updateProgram은 기존 interaction/preparation.js의 단일 pending job을 사용한다.
+Base immutable snapshot·네 tag는 native host 작업을 보호하고, 완료 결과는 기존 replacement
+selection/link/binding/hit preflight를 공유한다. 후속 assetResolver만 candidate vector를 받는다.
+Session은 native executor/cache/worker protocol을 import하지 않고 host callback에 AbortSignal을
+전달한다. 따라서 native worker와 renderer lease의 단일 commit 경계를 유지하면서 별도 runtime
+정본이나 generic task engine을 만들지 않는다. 정확한 lifecycle은 Current INTERACTION이 소유한다.
+
+B source-free Node20/24의 interaction116,213gzip은 최소cap116,300으로 반영했다.
+Full729,256/Basic384,464/SVG20,196/graph43,759는 A와 동일하다. Node20 package1049entries /
+1,490,812packed /6,782,476unpacked에 기존entries/packedcap을 유지하고 unpacked만6,783,000으로
+올렸다. 최초unpacked/interaction한도실패와 동일archive재검사, docs검색1,029,453bytes의
+최소1,030,000cap을 [B evidence](impl/roadmap9/interaction/update-evidence/qualification.json)에 보존한다.

@@ -60,7 +60,7 @@ export function createInteractionPreparation(resolver, perform, changed) {
     try { value.controller.abort(); }
     finally { const lease = value.lease; value.lease = undefined; lease?.dispose(); }
   };
-  const forget = job => { job.program = job.prepare = job.current = job.error = job.cancel = undefined; };
+  const forget = job => { job.program = job.prepare = job.produce = job.current = job.error = job.cancel = undefined; };
   const cancel = reason => {
     const job = pending;
     if (!job) return false;
@@ -96,7 +96,7 @@ export function createInteractionPreparation(resolver, perform, changed) {
       };
       Promise.resolve().then(() => {
         if (disposed || pending !== job) return;
-        return resolver(freezeOwned({ program: job.program, signal: controller.signal, ...job.tags }));
+        return (job.produce ?? resolver)(freezeOwned({ program: job.program, signal: controller.signal, ...job.tags }), resolver);
       }).then(value => {
         if (value === undefined && (disposed || pending !== job)) return;
         job.lease = ownLease(value);

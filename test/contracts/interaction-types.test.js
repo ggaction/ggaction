@@ -28,6 +28,12 @@ const asyncSession=createInteractionSession({program,async assetResolver(request
   const path:readonly string[]|undefined=request.resourceRevisionVector[0]?.childPath;
   return {dispose(){}};
 }});
+session.updateProgram(async request=>{const signal:AbortSignal=request.signal;const id:string=request.transactionId;return request.program;},{history:'record',transactionId:'job',origin:'linked',causeTransactionId:'cause'});
+session.subscribe(event=>{if(event.type==='update'){const status:'settled'|'cancelled'|'error'=event.status;const id:string=event.transactionId;}});
+// @ts-expect-error native preparation must return a program
+session.updateProgram(async()=>({}));
+// @ts-expect-error explicit IDs belong to callback preparation, not ordinary replacement
+session.updateProgram(program,{transactionId:'ordinary'});
 const ready:Promise<import(${JSON.stringify(path.join(root, "types/interaction.js"))}).InteractionSettlement>=asyncSession.whenSettled();
 // @ts-expect-error asset preparation must return a disposable lease
 createInteractionSession({program,assetResolver:()=>({})});
